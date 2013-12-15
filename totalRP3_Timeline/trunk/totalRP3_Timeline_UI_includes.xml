@@ -1,0 +1,182 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+	<Button name="TRP3tl_timeline_icon" virtual="true">
+		<Size x="26" y="26"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="$parent_icon" file="Interface\ICONS\INV_Misc_QuestionMark">
+					<Size x="26" y="26"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+	    </Layers>
+	    <NormalTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">
+	      <Size x="65" y="65"/>
+	      <Anchors>
+	        <Anchor point="CENTER" x="14" y="-14"/>
+	      </Anchors>
+	    </NormalTexture>
+	    <PushedTexture file="Interface\Buttons\UI-EmptySlot">
+		  <Size x="50" y="50"/>
+	      <Anchors>
+	        <Anchor point="CENTER" x="0" y="0"/>
+	      </Anchors>
+		</PushedTexture>
+		 <DisabledTexture file="Interface\Buttons\UI-EmptySlot-Disabled">
+		  <Size x="47" y="47"/>
+		  <Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+			</Anchors>
+		</DisabledTexture>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		
+	</Button>
+	
+	<!--  Antes QuestLogTitleButtonTemplate -->
+	<Button name="TRP3tl_template_yearbutton" virtual="true">
+        <Size x="299" y="16"/>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <FontString name="$parentTag" inherits="GameFontNormal" justifyH="RIGHT" parentKey="tag">
+                    <Size x="0" y="16"/>
+                    <Anchors>
+                        <Anchor point="RIGHT" x="-2" y="0"/>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentGroupMates" inherits="GameFontNormalSmall" justifyH="RIGHT" parentKey="groupMates">
+                    <Size x="0" y="16"/>
+                    <Anchors>
+                        <Anchor point="LEFT" x="8" y="0"/>
+                    </Anchors>
+                </FontString>
+                
+                <Texture name="$parentCheck" file="Interface\Buttons\UI-CheckBox-Check" hidden="true" parentKey="check">
+                    <Size x="16" y="16"/>
+                    <Anchors>
+                        <Anchor point="LEFT"/>
+                    </Anchors> 
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                
+            </OnLoad>
+            <OnEvent>
+                
+            </OnEvent>
+            <OnClick>
+                print("test");
+                TRP3tl_yearClicked(self);
+            </OnClick>
+            <OnEnter>
+               
+            </OnEnter>
+            <OnLeave>
+                
+            </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-MinusButton-UP">
+            <Size x="16" y="16"/>
+            <Anchors>
+                <Anchor point="LEFT" x="3" y="0"/>
+            </Anchors>
+        </NormalTexture>
+        <HighlightTexture name="$parentHighlight" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD">
+            <Size x="16" y="16"/>
+            <Anchors>
+                <Anchor point="LEFT" x="3" y="0"/>
+            </Anchors>
+        </HighlightTexture>
+        <ButtonText name="$parentNormalText" nonspacewrap="true" parentKey="normalText">
+            <Size x="0" y="10"/>
+            <Anchors>
+                <Anchor point="LEFT" x="20" y="0"/>
+            </Anchors> 
+        </ButtonText>
+        <NormalFont style="GameFontNormalLeft"/>
+        <HighlightFont style="GameFontHighlightLeft"/>
+        <DisabledFont style="GameFontHighlightLeft"/>
+    </Button>
+	
+	<Slider name="TRP3tl_timeline_drag" inherits="VideoOptionsSliderTemplate" minValue="1" maxValue="29" valueStep="1" openRight="true" virtual ="true" >
+		<Size x="410" y="12"/>
+		<Anchors>
+		    <Anchor point="BOTTOMLEFT" >
+		        <Offset x="10" y="-17"/>
+		    </Anchor>
+		</Anchors>
+		<Layers>
+		    <Layer level="ARTWORK">
+		        <FontString name="$parentLow2" inherits="OptionsFontSmall" text="VIDEO_QUALITY_LABEL1">
+		            <Anchors>
+		                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+		                    <Offset>
+		                        <AbsDimension x="1" y="3"/>
+		                    </Offset>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		        <FontString name="$parentFair" inherits="OptionsFontSmall" text="VIDEO_QUALITY_LABEL2">
+		            <Anchors>
+		                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+		                    <Offset>
+		                        <AbsDimension x="140" y="3"/>
+		                    </Offset>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		        <FontString name="Graphics_RightQualityLabel" inherits="OptionsFontHighlight" text="CUSTOM" >
+		            <Anchors>
+		                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+		                    <Offset x="256" y="0"/>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		        <FontString name="$parentMed" inherits="OptionsFontSmall" text="VIDEO_QUALITY_LABEL3">
+		            <Anchors>
+		                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+		                    <Offset>
+		                        <AbsDimension x="265" y="3"/>
+		                    </Offset>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		        <FontString name="$parentHigh2" inherits="OptionsFontSmall" text="VIDEO_QUALITY_LABEL4">
+		            <Anchors>
+		                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+		                    <Offset>
+		                        <AbsDimension x="400" y="3"/>
+		                    </Offset>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		        <FontString name="$parentUltra" inherits="OptionsFontSmall" text="VIDEO_QUALITY_LABEL5">
+		            <Anchors>
+		                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+		                    <Offset>
+		                        <AbsDimension x="535" y="3"/>
+		                    </Offset>
+		                </Anchor>
+		            </Anchors>
+		        </FontString>
+		    </Layer>
+		</Layers>
+	</Slider>
+	<Button name="TRP3tl_navButton" inherits="UIPanelButtonTemplate" virtual="true">
+		<Size>
+		    <AbsDimension x="20" y="20"/>
+		</Size>
+		<Scripts>
+			
+		    <OnClick>
+		    	print("nav btn")
+		
+		    </OnClick>
+		</Scripts>
+	</Button>
+</Ui>

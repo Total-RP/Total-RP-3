@@ -1,0 +1,7 @@
+﻿## Interface: 50400
+## Title: Total RP 3 : Unit testing
+## Author: Telkostrasz
+## RequiredDeps: totalRP3
+## DefaultState: Enabled
+## LoadOnDemand: 0
+totalRP3_zTest.lua

@@ -1,0 +1,423 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+	
+	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="488" y="105"/>
+		<Frames>
+			<Button name="$parentIcon" inherits="TRP3_IconButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="15" y="-12"/>
+				</Anchors>
+			</Button>
+			<Frame name="$parentBkg" inherits="UIDropDownMenuTemplate" enableMouse="true">
+		        <Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentIcon" x="-20" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+		    </Frame>
+		    <Frame name="$parentText">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="300" y="0"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="LEFT" x="15" y="0"/>
+							<Anchor point="RIGHT" x="-18" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<EditBox name="$parentText" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
+								<Size x="275" y="130"/>
+								<Scripts>
+									<OnTextChanged>
+										if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
+											self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+										end
+									</OnTextChanged>
+									<OnEscapePressed>
+										self:ClearFocus();
+									</OnEscapePressed>
+									<OnEditFocusGained>
+										self:HighlightText();
+									</OnEditFocusGained>
+									<OnEditFocusLost>
+										self:HighlightText(0,0);
+									</OnEditFocusLost>
+								</Scripts>
+								<FontString inherits="ChatFontNormal"/>
+							</EditBox>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTitle" inherits="GameFontNormal" justifyV="TOP">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIcon" x="10" y="0"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<!-- Register about template 2 frame -->
+	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="75"/>
+		<Frames>
+			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
+				<Size x="50" y="50"/>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentText" inherits="GameFontNormal" justifyV="TOP">
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	 <!-- Register characteristics panel -->
+	<Frame name="TRP3_RegisterAbout" hidden="true">
+	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		</Backdrop>
+		<Size x="530" y="0"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="TRP3_RegisterAbout_BackgroundTexture" file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="526" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" inherits="TRP3_FieldSetFrame">
+				<Size x="510" y="0"/>
+				<Anchors>	
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<Button name="TRP3_RegisterAbout_Edit_SaveButton" inherits="TRP3_IconButton">
+						<Anchors>	
+							<Anchor point="TOPRIGHT" x="-15" y="-15"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_InitIconButton(self, TRP3_ICON_SAVE);
+							</OnLoad>
+							<OnClick>
+								TRP3_UI_AboutSaveButton();
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button name="TRP3_RegisterAbout_Edit_CancelButton" inherits="TRP3_IconButton">
+						<Anchors>	
+							<Anchor point="RIGHT" x="-10" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterAbout_Edit_SaveButton"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_InitIconButton(self, TRP3_ICON_CANCEL);
+							</OnLoad>
+							<OnClick>
+								TRP3_UI_AboutCancelButton();
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_LabelledListBox" enableMouse="true">
+				        <Anchors>
+							<Anchor point="TOPLEFT" x="20" y="-15"/>
+						</Anchors>
+				    </Frame>
+				    <Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_LabelledListBox" enableMouse="true">
+				        <Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
+						</Anchors>
+				    </Frame>
+				    <Frame name="TRP3_RegisterAbout_Edit_Template1">
+				    	<Anchors>	
+							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+							<Anchor point="LEFT" x="0" y="0"/>
+							<Anchor point="RIGHT" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Frame>
+								<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+								</Backdrop>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="50"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+								</Anchors>
+								<Frames>
+									<ScrollFrame name="TRP3_RegisterAbout_Edit_Template1_Scroll" inherits="UIPanelScrollFrameTemplate">
+										<Anchors>
+											<Anchor point="TOP" x="0" y="-10"/>
+											<Anchor point="BOTTOM" x="0" y="10"/>
+											<Anchor point="LEFT" x="15" y="0"/>
+											<Anchor point="RIGHT" x="-18" y="0"/>
+										</Anchors>
+										<ScrollChild>
+											<EditBox name="TRP3_RegisterAbout_Edit_Template1_Scroll_Text" letters="3000" multiLine="true" enableMouse="false" autoFocus="false">
+												<Size x="450" y="230"/>
+												<Scripts>
+													<OnTextChanged>
+														if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
+															self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+														end
+													</OnTextChanged>
+													<OnEscapePressed>
+														self:ClearFocus();
+													</OnEscapePressed>
+													<OnEditFocusGained>
+														self:HighlightText();
+													</OnEditFocusGained>
+													<OnEditFocusLost>
+														self:HighlightText(0,0);
+													</OnEditFocusLost>
+												</Scripts>
+												<FontString inherits="ChatFontNormal"/>
+											</EditBox>
+										</ScrollChild>
+									</ScrollFrame>
+								</Frames>
+							</Frame>
+						</Frames>
+				    </Frame>
+				    <Frame name="TRP3_RegisterAbout_Edit_Template2">
+				    	<Anchors>	
+							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+							<Anchor point="LEFT" x="0" y="0"/>
+							<Anchor point="RIGHT" x="0" y="0"/>
+						</Anchors>
+					</Frame>
+				    <Frame name="TRP3_RegisterAbout_Edit_Template3">
+				    	<Anchors>	
+							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+							<Anchor point="LEFT" x="0" y="0"/>
+							<Anchor point="RIGHT" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Frame name="TRP3_RegisterAbout_Edit_Template3_Phys" inherits="TRP3_RegisterAbout_Edit_Template3Frame">
+								<Anchors>	
+									<Anchor point="TOP" x="0" y="-10"/>
+								</Anchors>
+							</Frame>
+							<Frame name="TRP3_RegisterAbout_Edit_Template3_Psy" inherits="TRP3_RegisterAbout_Edit_Template3Frame">
+								<Anchors>	
+									<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Template3_Phys"/>
+								</Anchors>
+							</Frame>
+							<Frame name="TRP3_RegisterAbout_Edit_Template3_Hist" inherits="TRP3_RegisterAbout_Edit_Template3Frame">
+								<Anchors>	
+									<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Template3_Psy"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+				    </Frame>
+				</Frames>
+			</Frame>
+			<Frame name="TRP3_RegisterAbout_AboutPanel" inherits="TRP3_FieldSetFrame">
+				<Size x="510" y="0"/>
+				<Anchors>	
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="10" y="-11"/>
+							<Anchor point="BOTTOMRIGHT" x="-28" y="9"/>
+						</Anchors>
+						<ScrollChild>
+							<Frame>
+								<Size x="10" y="10"/>
+								<Frames>
+									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1">
+										<Size x="465" y="5"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="5" y="-5"/>
+										</Anchors>
+										<Scripts>
+											<OnHyperlinkClick>
+												TRP3_RegisterAbout_link(link,text);
+											</OnHyperlinkClick>
+										</Scripts>
+										<FontString inherits="GameFontNormalSmall"/>
+									</SimpleHTML>
+									<Frame name="TRP3_RegisterAbout_AboutPanel_Template2">
+										<Size x="468" y="50"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="5" y="-5"/>
+										</Anchors>
+										<Layers>
+											<Layer level="OVERLAY">
+												<FontString name="TRP3_RegisterAbout_AboutPanel_Template2Title" text="[Title]" inherits="GameFontNormalLarge">
+													<Size x="0" y="10"/>
+													<Anchors>
+														<Anchor point="TOPLEFT" x="0" y="-5"/>
+														<Anchor point="RIGHT" x="0" y="0"/>
+													</Anchors>
+												</FontString>
+											</Layer>
+										</Layers>
+									</Frame>
+									<Frame name="TRP3_RegisterAbout_AboutPanel_Template3">
+										<Size x="468" y="50"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="5" y="-5"/>
+										</Anchors>
+										<Frames>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1">
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+												</Backdrop>
+												<Anchors>
+													<Anchor point="TOPLEFT" x="0" y="-5"/>
+													<Anchor point="RIGHT" x="0" y="0"/>
+												</Anchors>
+												<Layers>
+													<Layer level="OVERLAY">
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_1_Title" text="[Title]" inherits="GameFontNormalLarge">
+															<Anchors>
+																<Anchor point="TOPLEFT" x="0" y="-10"/>
+																<Anchor point="RIGHT" x="0" y="0"/>
+															</Anchors>
+														</FontString>
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_1_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+															<Anchors>
+																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1_Title"/>
+																<Anchor point="BOTTOM" x="0" y="5"/>
+																<Anchor point="LEFT" x="15" y="0"/>
+																<Anchor point="RIGHT" x="-15" y="0"/>
+															</Anchors>
+															<Color b="0.95" r="0.95" g="0.95"/>
+														</FontString>
+													</Layer>
+												</Layers>
+											</Frame>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2">
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+												</Backdrop>
+												<Anchors>
+													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1"/>
+													<Anchor point="RIGHT" x="0" y="0"/>
+												</Anchors>
+												<Layers>
+													<Layer level="OVERLAY">
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_2_Title" text="[Title]" inherits="GameFontNormalLarge">
+															<Anchors>
+																<Anchor point="TOPLEFT" x="0" y="-10"/>
+																<Anchor point="RIGHT" x="0" y="0"/>
+															</Anchors>
+														</FontString>
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_2_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+															<Anchors>
+																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2_Title"/>
+																<Anchor point="BOTTOM" x="0" y="5"/>
+																<Anchor point="LEFT" x="15" y="0"/>
+																<Anchor point="RIGHT" x="-15" y="0"/>
+															</Anchors>
+															<Color b="0.95" r="0.95" g="0.95"/>
+														</FontString>
+													</Layer>
+												</Layers>
+											</Frame>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3">
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+												</Backdrop>
+												<Anchors>
+													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2"/>
+													<Anchor point="RIGHT" x="0" y="0"/>
+												</Anchors>
+												<Layers>
+													<Layer level="OVERLAY">
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_3_Title" text="[Title]" inherits="GameFontNormalLarge">
+															<Anchors>
+																<Anchor point="TOPLEFT" x="0" y="-10"/>
+																<Anchor point="RIGHT" x="0" y="0"/>
+															</Anchors>
+														</FontString>
+														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_3_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+															<Anchors>
+																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_3_Title"/>
+																<Anchor point="BOTTOM" x="0" y="5"/>
+																<Anchor point="LEFT" x="15" y="0"/>
+																<Anchor point="RIGHT" x="-15" y="0"/>
+															</Anchors>
+															<Color b="0.95" r="0.95" g="0.95"/>
+														</FontString>
+													</Layer>
+												</Layers>
+											</Frame>
+										</Frames>
+									</Frame>
+								</Frames>
+							</Frame>
+						</ScrollChild>
+						<Frames>
+							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_IconButton">
+								<Anchors>	
+									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										TRP3_InitIconButton(self, TRP3_ICON_EDIT);
+									</OnLoad>
+									<OnClick>
+										TRP3_UI_AboutEditButton();
+									</OnClick>
+								</Scripts>
+							</Button>
+						</Frames>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+    
+</Ui>
