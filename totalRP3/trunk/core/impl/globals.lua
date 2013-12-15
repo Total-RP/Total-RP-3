@@ -3,6 +3,8 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_ADDON_NAME = "Total RP 3";
+TRP3_ADDON_NAME_SHORT = "TRP3";
+TRP3_ADDON_NAME_ALT = "TotalRP3";
 TRP3_ID_LENGTH = 15;
 TRP3_VERSION = 0.1;
 TRP3_VERSION_USER = "0.1-SNAPSHOT";

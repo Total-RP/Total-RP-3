@@ -18,7 +18,7 @@ local color = TRP3_Color;
 
 -- Mock
 TRP3_GetDefaultProfile().player.current = {
-	vernum = 1,
+	version = 1,
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

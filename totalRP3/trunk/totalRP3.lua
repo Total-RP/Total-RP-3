@@ -20,7 +20,7 @@ function TRP3_GetAddon()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Loading sequence & Event dispatching
+-- LOADING SEQUENCE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Called when TRP3 is loaded.
@@ -48,7 +48,7 @@ function trp3Addon:OnEnable()
 	TRP3_UI_InitMainPage();
 	TRP3_UI_InitConfiguration();
 	TRP3_UI_InitRegister();
-	TRP3_UI_InitIconBrowser();
+	TRP3_UI_InitPopups();
 	
 	TRP3_LoadProfile(); -- Load profile
 	TRP3_SelectMenu("main_00_player"); -- Select first menu
@@ -63,12 +63,32 @@ function trp3Addon:OnEnable()
 	log("OnEnable() DONE");
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- EVENT HANDLING
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local REGISTERED_EVENTS = {};
+
+function TRP3_RegisterToEvent(event, callback)
+	assert(event, "Event must be set.");
+	assert(callback and type(callback) == "function", "Callback must be a function");
+	if not REGISTERED_EVENTS[event] then
+		REGISTERED_EVENTS[event] = {};
+		TRP3_EventFrame:RegisterEvent(event);
+	end
+	tinsert(REGISTERED_EVENTS[event], callback);
+	log("Registered event: " ..tostring(event));
+end
+
 function TRP3_EventDispatcher(self, event, ...)
+	-- Main event function, if exists
 	if _G["TRP3_onEvent_"..event] then
 		_G["TRP3_onEvent_"..event](...);
 	end
-end
-
-function TRP3_InitEventHandler(self)
-
+	-- Callbacks
+	if REGISTERED_EVENTS[event] then
+		for _, callback in pairs(REGISTERED_EVENTS[event]) do
+			callback(...);
+		end
+	end
 end

@@ -159,10 +159,13 @@ function TRP3_SetPage(pageId)
 	if currentPage.onPagePreShow then
 		currentPage.onPagePreShow();
 	end
+	if currentPage.background then -- TODO: change background of what ?
+--		TRP3_MainFrameContainerBackground:SetTexture(currentPage.background);
+	end
 	currentPage.frame:ClearAllPoints();
 	currentPage.frame:SetParent(TRP3_MainFramePageContainer);
 	currentPage.frame:SetPoint("TOPRIGHT", 0, 0);
-	currentPage.frame:SetPoint("BOTTOMRIGHT", 0, 0);
+	currentPage.frame:SetPoint("BOTTOMLEFT", 0, 0);
 	currentPage.frame:Show();
 	-- Show
 	if currentPage.onPagePostShow then

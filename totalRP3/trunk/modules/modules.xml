@@ -1,0 +1,11 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+	
+	<Script file="module_management.lua"/>
+	
+	<Script file="flyway\flyway.lua"/>
+	<Script file="flyway\flyway_patches.lua"/>
+	
+	<Include file="register\register_includes.xml"/>
+</Ui>

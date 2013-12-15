@@ -12,115 +12,81 @@ local get = TRP3_Profile_DataGetter;
 local tcopy = TRP3_DupplicateTab;
 local loc = TRP3_L;
 
-local PSYCHO_PRESETS_UNKOWN = {
-	left = loc("CM_UNKNOWN"),
-	right = loc("CM_UNKNOWN"),
-	leftIcon = "INV_Misc_QuestionMark",
-	rightIcon = "INV_Misc_QuestionMark"
-};
-
-local PSYCHO_PRESETS = {
-	{
-		left = loc("REG_PLAYER_PSYCHO_CHAOTIC"),
-		right = loc("REG_PLAYER_PSYCHO_Loyal"),
-		leftIcon = "INV_Inscription_TarotChaos",
-		rightIcon = "Spell_Shaman_AncestralAwakening",
-	}
-};
-
-local PSYCHO_PRESETS_DROPDOWN = {
-	{loc("REG_PLAYER_PSYCHO_SOCIAL")},
-	{loc("REG_PLAYER_PSYCHO_CHAOTIC") .. " - " .. loc("REG_PLAYER_PSYCHO_Loyal"), 1},
-	{loc("REG_PLAYER_PSYCHO_Chaste") .. " - " .. loc("REG_PLAYER_PSYCHO_Luxurieux"), 2},
-	{loc("REG_PLAYER_PSYCHO_Indulgent") .. " - " .. loc("REG_PLAYER_PSYCHO_Rencunier"), 3},
-	{loc("REG_PLAYER_PSYCHO_Genereux") .. " - " .. loc("REG_PLAYER_PSYCHO_Egoiste"), 4},
-	{loc("REG_PLAYER_PSYCHO_Sincere") .. " - " .. loc("REG_PLAYER_PSYCHO_Trompeur"), 5},
-	{loc("REG_PLAYER_PSYCHO_Misericordieux") .. " - " .. loc("REG_PLAYER_PSYCHO_Cruel"), 6},
-	{loc("REG_PLAYER_PSYCHO_Modeste") .. " - " .. loc("REG_PLAYER_PSYCHO_Vantard"), 7},
-	{loc("REG_PLAYER_PSYCHO_Conciliant") .. " - " .. loc("REG_PLAYER_PSYCHO_Rationnel"), 8},
-	{loc("REG_PLAYER_PSYCHO_Valeureux") .. " - " .. loc("REG_PLAYER_PSYCHO_Couard"), 9},
-	{loc("REG_PLAYER_PSYCHO_PERSONAL")},
-	{loc("REG_PLAYER_PSYCHO_Pieux") .. " - " .. loc("REG_PLAYER_PSYCHO_Pragmatique"), 10},
-	{loc("REG_PLAYER_PSYCHO_Reflechi") .. " - " .. loc("REG_PLAYER_PSYCHO_Impulsif"), 11},
-	{loc("REG_PLAYER_PSYCHO_Acete") .. " - " .. loc("REG_PLAYER_PSYCHO_Bonvivant"), 12},
-	{loc("REG_PLAYER_PSYCHO_CUSTOM")},
-	{loc("REG_PLAYER_PSYCHO_CREATENEW"), "new"},
-}
+local PSYCHO_PRESETS_UNKOWN;
+local PSYCHO_PRESETS;
+local PSYCHO_PRESETS_DROPDOWN;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_GetDefaultProfile().player.characteristics = {
-	version = 1,
-	race = TRP3_RACE_LOC,
-	class = TRP3_CLASS_LOC,
-	misc = {},
-	psycho = {}
-};
-
--- Mock
 --TRP3_GetDefaultProfile().player.characteristics = {
 --	version = 1,
---	firstName = "Telkos le fou",
---	lastName = "Arkale",
---	title = "Sir",
---	fullTitle = UnitPVPName("player"),
---	icon = "ABILITY_SEAL",
---	race = "Drrrrrragon",
---	class = "Ingénieur",
---	residence = "Hurlevent",
---	birthplace = "Berceau de l'hiver",
---	age = "47 balais",
---	eyeColor = "Emerald green",
---	height = "182 cm",
---	weight = "92 kg",
---	faction = "Alliance",
---	showMisc = true,
---	bkg = 2;
---	misc = {
---		{
---			name = "Strength",
---			value = "Very strong !",
---			icon = "Ability_Warrior_StrengthOfArms",
---		},
---		{
---			name = "Intelligence",
---			value = "Very smart either !",
---			icon = "Spell_Holy_ArcaneIntellect",
---		},
---		{
---			name = "Mon custom avec un nom foutrement trop long juste pour faire chier",
---			value = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
---			icon = "Spell_Holy_ArcaneIntellect",
---		},
---	},
---	showPsycho = true,
---	psycho = {
---		{
---			left = "Chaotic",
---			leftIcon = "INV_Inscription_TarotChaos",
---			right = "Loyal",
---			rightIcon = "Spell_Shaman_AncestralAwakening",
---			value = 2,
---		},
---		{
---			left = "A very very long left term",
---			leftIcon = "INV_Inscription_TarotChaos",
---			right = "A very very long right term",
---			rightIcon = "Spell_Shaman_AncestralAwakening",
---			value = 5,
---		},
---		{
---			presetID = 1,
---			value = 4
---		},
---		{
---			presetID = 10,
---			value = 1
---		}
---	},
+--	race = TRP3_RACE_LOC,
+--	class = TRP3_CLASS_LOC,
+--	misc = {},
+--	psycho = {}
 --};
+
+-- Mock
+TRP3_GetDefaultProfile().player.characteristics = {
+	version = 1,
+	firstName = "Telkos le fou",
+	lastName = "Arkale",
+	title = "Sir",
+	fullTitle = UnitPVPName("player"),
+	icon = "ABILITY_SEAL",
+	race = "Drrrrrragon",
+	class = "Ingénieur",
+	residence = "Hurlevent",
+	birthplace = "Berceau de l'hiver",
+	age = "47 balais",
+	eyeColor = "Emerald green",
+	height = "182 cm",
+	weight = "92 kg",
+	faction = "Alliance",
+	misc = {
+		{
+			name = "Strength",
+			value = "Very strong !",
+			icon = "Ability_Warrior_StrengthOfArms",
+		},
+		{
+			name = "Intelligence",
+			value = "Very smart either !",
+			icon = "Spell_Holy_ArcaneIntellect",
+		},
+		{
+			name = "Mon custom avec un nom foutrement trop long juste pour faire chier",
+			value = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
+			icon = "Spell_Holy_ArcaneIntellect",
+		},
+	},
+	psycho = {
+		{
+			left = "Chaotic",
+			leftIcon = "INV_Inscription_TarotChaos",
+			right = "Loyal",
+			rightIcon = "Spell_Shaman_AncestralAwakening",
+			value = 2,
+		},
+		{
+			left = "A very very long left term",
+			leftIcon = "INV_Inscription_TarotChaos",
+			right = "A very very long right term",
+			rightIcon = "Spell_Shaman_AncestralAwakening",
+			value = 5,
+		},
+		{
+			presetID = 1,
+			value = 4
+		},
+		{
+			presetID = 10,
+			value = 1
+		}
+	},
+};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTERISTICS - CONSULT
@@ -141,9 +107,9 @@ local registerCharLocals = {
 local miscCharFrame = {};
 local psychoCharFrame = {};
 
-function TRP3_GetCompleteName(dataTab)
-	assert(type(dataTab) == "table", "Error: Nil data or not a table.");
-	return strconcat(dataTab.title or "", " ", dataTab.firstName or TRP3_PLAYER, " ", dataTab.lastName or "");
+function TRP3_GetCompleteName(characteristicsTab, name)
+	assert(type(characteristicsTab) == "table", "Error: Nil data or not a table.");
+	return strconcat(characteristicsTab.title or "", " ", characteristicsTab.firstName or name, " ", characteristicsTab.lastName or "");
 end
 
 local function refreshPsycho(psychoLine, value)
@@ -156,14 +122,6 @@ local function refreshPsycho(psychoLine, value)
 			_G[psychoLine:GetName().."JaugeDot"..dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
 		end
 	end
-	_G[psychoLine:GetName().."LeftText"]:SetFont("Fonts\\FRIZQT__.TTF", 10 + value);
-	_G[psychoLine:GetName().."RightText"]:SetFont("Fonts\\FRIZQT__.TTF", 10 + (6-value));
-	local lerpDelta = (value-1)/5;
-	local r1, g1, b1 = TRP3_Lerp_Color(lerpDelta, 0.75, 0.75, 0.75, 1, 1, 1);
-	local r2, g2, b2 = TRP3_Lerp_Color(lerpDelta, 1, 1, 1, 0.75, 0.75, 0.75);
-	_G[psychoLine:GetName().."LeftText"]:SetTextColor(r1, g1, b1);
-	_G[psychoLine:GetName().."RightText"]:SetTextColor(r2, g2, b2);
-	
 	psychoLine.value = value;
 end
 
@@ -178,7 +136,7 @@ local function setConsultDisplay()
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	
 	-- Icon, complete name and titles
-	local completeName = TRP3_GetCompleteName(dataTab);
+	local completeName = TRP3_GetCompleteName(dataTab, TRP3_PLAYER);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.fullTitle or "");
 	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.icon or TRP3_ICON_PROFILE_DEFAULT);
@@ -216,7 +174,7 @@ local function setConsultDisplay()
 			tinsert(registerCharFrame, frame);
 		end
 		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
 		_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
 		_G[frame:GetName().."FieldName"]:SetText(loc(registerCharLocals[charName]));
@@ -225,7 +183,8 @@ local function setConsultDisplay()
 	end
 	
 	-- Psycho chars
-	if dataTab.showPsycho then
+	assert(type(dataTab.psycho) == "table", "Error: Nil psycho data or not a table.");
+	if #dataTab.psycho > 0 then
 		assert(type(dataTab.psycho) == "table", "Error: Nil psycho data or not a table.");
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
@@ -259,7 +218,8 @@ local function setConsultDisplay()
 	end
 	
 	-- Misc chars
-	if dataTab.showMisc then
+	assert(type(dataTab.misc) == "table", "Error: Nil misc data or not a table.");
+	if #dataTab.misc > 0 then
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
@@ -272,7 +232,7 @@ local function setConsultDisplay()
 				tinsert(miscCharFrame, frame);
 			end
 			frame:ClearAllPoints();
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -3);
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
 			_G[frame:GetName().."FieldName"]:SetText(strconcat(TRP3_Icon(miscStructure.icon, 18)," ", miscStructure.name or ""));
 			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.value or "");
@@ -297,7 +257,6 @@ local miscEditCharFrame = {};
 
 local function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
-	draftData.bkg = TRP3_RegisterCharact_Edit_BckFieldDD:GetSelectedValue();
 	draftData.title = stEtN(strtrim(TRP3_RegisterCharact_Edit_TitleField:GetText()));
 	draftData.firstName = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText()));
 	draftData.lastName = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
@@ -311,7 +270,6 @@ local function saveInDraft()
 	draftData.residence = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
 	draftData.birthplace = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
 	-- Save psycho values
-	draftData.showPsycho = TRP3_RegisterCharact_Edit_PsychoCheck:GetChecked();
 	for index, psychoStructure in pairs(draftData.psycho) do
 		psychoStructure.value = psychoEditCharFrame[index].value;
 		if not psychoStructure.presetID then
@@ -327,7 +285,6 @@ local function saveInDraft()
 		end
 	end
 	-- Save Misc
-	draftData.showMisc = TRP3_RegisterCharact_Edit_MiscCheck:GetChecked();
 	for index, miscStructure in pairs(draftData.misc) do
 		miscStructure.value = stEtN(_G[miscEditCharFrame[index]:GetName().."ValueField"]:GetText()) or loc("CM_VALUE");
 		miscStructure.name = stEtN(_G[miscEditCharFrame[index]:GetName().."NameField"]:GetText()) or loc("CM_NAME");
@@ -351,12 +308,6 @@ end
 
 local function onRightClick(button)
 	onPsychoClick(button:GetParent(), button:GetParent().value or 3, -1);
-end
-
-local function setEditBkg(backgroundIndex)
-	local backdrop = TRP3_RegisterCharact_Edit_CharactPanel:GetBackdrop();
-	backdrop.bgFile = TRP3_getTiledBackground(backgroundIndex);
-	TRP3_RegisterCharact_Edit_CharactPanel:SetBackdrop(backdrop);
 end
 
 local function refreshEditIcon(frame)
@@ -418,9 +369,6 @@ setEditDisplay = function()
 		tcopy(draftData, dataTab);
 	end
 	
-	TRP3_RegisterCharact_Edit_BckFieldDD:SetSelectedIndex(draftData.bkg or 1);
-	setEditBkg(draftData.bkg or 1);
-	
 	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.icon or TRP3_ICON_PROFILE_DEFAULT);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.title or "");
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.firstName or TRP3_PLAYER);
@@ -437,7 +385,6 @@ setEditDisplay = function()
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.birthplace or "");
 	
 	-- Psycho
-	TRP3_RegisterCharact_Edit_PsychoCheck:SetChecked(draftData.showPsycho);
 	local previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.psycho) do
@@ -452,9 +399,7 @@ setEditDisplay = function()
 			_G[frame:GetName().."RightFieldText"]:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
 			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
 			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 0, loc("CM_REMOVE"));
+			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
 			tinsert(psychoEditCharFrame, frame);
 		end
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
@@ -523,7 +468,6 @@ setEditDisplay = function()
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:ClearAllPoints();
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 	previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
-	TRP3_RegisterCharact_Edit_MiscCheck:SetChecked(draftData.showMisc);
 	for _, frame in pairs(miscEditCharFrame) do frame:Hide(); end
 	for frameIndex, miscStructure in pairs(draftData.misc) do
 		local frame = miscEditCharFrame[frameIndex];
@@ -597,7 +541,8 @@ local function refreshDisplay()
 	end
 end
 
-local function onCharacteristicsShown()
+function TRP3_onCharacteristicsShown()
+	TRP3_RegisterCharact:Show();
 	isEditMode = false;
 	refreshDisplay();
 end
@@ -613,71 +558,147 @@ end
 
 function TRP3_UI_CharacteristicsSaveButton()
 	saveCharacteristics();
-	onCharacteristicsShown();
+	TRP3_onCharacteristicsShown();
 end
 
 function TRP3_UI_CharacteristicsCancelButton()
-	onCharacteristicsShown();
+	TRP3_onCharacteristicsShown();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTERISTICS - INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function initStructures()
+	PSYCHO_PRESETS_UNKOWN = {
+		left = loc("CM_UNKNOWN"),
+		right = loc("CM_UNKNOWN"),
+		leftIcon = "INV_Misc_QuestionMark",
+		rightIcon = "INV_Misc_QuestionMark"
+	};
+	
+	PSYCHO_PRESETS = {
+		{
+			left = loc("REG_PLAYER_PSYCHO_CHAOTIC"),
+			right = loc("REG_PLAYER_PSYCHO_Loyal"),
+			leftIcon = "Ability_Rogue_WrongfullyAccused",
+			rightIcon = "Ability_Paladin_SanctifiedWrath",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Chaste"),
+			right = loc("REG_PLAYER_PSYCHO_Luxurieux"),
+			leftIcon = "INV_Belt_27",
+			rightIcon = "Spell_Shadow_SummonSuccubus",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Indulgent"),
+			right = loc("REG_PLAYER_PSYCHO_Rencunier"),
+			leftIcon = "INV_RoseBouquet01",
+			rightIcon = "Ability_Hunter_SniperShot",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Genereux"),
+			right = loc("REG_PLAYER_PSYCHO_Egoiste"),
+			leftIcon = "INV_Misc_Gift_02",
+			rightIcon = "INV_Misc_Coin_02",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Sincere"),
+			right = loc("REG_PLAYER_PSYCHO_Trompeur"),
+			leftIcon = "INV_Misc_Toy_07",
+			rightIcon = "Ability_Rogue_Disguise",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Misericordieux"),
+			right = loc("REG_PLAYER_PSYCHO_Cruel"),
+			leftIcon = "INV_ValentinesCandySack",
+			rightIcon = "Ability_Warrior_Trauma",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Pieux"),
+			right = loc("REG_PLAYER_PSYCHO_Rationnel"),
+			leftIcon = "Spell_Holy_HolyGuidance",
+			rightIcon = "INV_Gizmo_02",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Pragmatique"),
+			right = loc("REG_PLAYER_PSYCHO_Conciliant"),
+			leftIcon = "Ability_Rogue_HonorAmongstThieves",
+			rightIcon = "INV_Misc_GroupNeedMore",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Reflechi"),
+			right = loc("REG_PLAYER_PSYCHO_Impulsif"),
+			leftIcon = "Spell_Shadow_Brainwash",
+			rightIcon = "Achievement_BG_CaptureFlag_EOS",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Acete"),
+			right = loc("REG_PLAYER_PSYCHO_Bonvivant"),
+			leftIcon = "INV_Misc_Food_PineNut",
+			rightIcon = "INV_Misc_Food_99",
+		},
+		{
+			left = loc("REG_PLAYER_PSYCHO_Valeureux"),
+			right = loc("REG_PLAYER_PSYCHO_Couard"),
+			leftIcon = "Ability_Paladin_BeaconofLight",
+			rightIcon = "Ability_Druid_Cower",
+		},
+	};
+	
+	PSYCHO_PRESETS_DROPDOWN = {
+		{loc("REG_PLAYER_PSYCHO_SOCIAL")},
+		{loc("REG_PLAYER_PSYCHO_CHAOTIC") .. " - " .. loc("REG_PLAYER_PSYCHO_Loyal"), 1},
+		{loc("REG_PLAYER_PSYCHO_Chaste") .. " - " .. loc("REG_PLAYER_PSYCHO_Luxurieux"), 2},
+		{loc("REG_PLAYER_PSYCHO_Indulgent") .. " - " .. loc("REG_PLAYER_PSYCHO_Rencunier"), 3},
+		{loc("REG_PLAYER_PSYCHO_Genereux") .. " - " .. loc("REG_PLAYER_PSYCHO_Egoiste"), 4},
+		{loc("REG_PLAYER_PSYCHO_Sincere") .. " - " .. loc("REG_PLAYER_PSYCHO_Trompeur"), 5},
+		{loc("REG_PLAYER_PSYCHO_Misericordieux") .. " - " .. loc("REG_PLAYER_PSYCHO_Cruel"), 6},
+		{loc("REG_PLAYER_PSYCHO_Pieux") .. " - " .. loc("REG_PLAYER_PSYCHO_Rationnel"), 7},
+		{loc("REG_PLAYER_PSYCHO_PERSONAL")},
+		{loc("REG_PLAYER_PSYCHO_Pragmatique") .. " - " .. loc("REG_PLAYER_PSYCHO_Conciliant"), 8},
+		{loc("REG_PLAYER_PSYCHO_Reflechi") .. " - " .. loc("REG_PLAYER_PSYCHO_Impulsif"), 9},
+		{loc("REG_PLAYER_PSYCHO_Acete") .. " - " .. loc("REG_PLAYER_PSYCHO_Bonvivant"), 10},
+		{loc("REG_PLAYER_PSYCHO_Valeureux") .. " - " .. loc("REG_PLAYER_PSYCHO_Couard"), 11},
+		{loc("REG_PLAYER_PSYCHO_CUSTOM")},
+		{loc("REG_PLAYER_PSYCHO_CREATENEW"), "new"},
+	};
+end
+
 function TRP3_Register_CharInit()
-	TRP3_RegisterMenu({
-		id = "main_01_player_caract",
-		text = TRP3_L("REG_PLAYER_CARACT"),
-		isChildOf = "main_00_player",
-		onSelected = function() TRP3_SetPage("player_charact"); end,
-	});
-	TRP3_RegisterPage({
-		id = "player_charact",
-		templateName = "TRP3_RegisterCharact",
-		frameName = "TRP3_RegisterCharact",
-		frame = TRP3_RegisterCharact,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
-		onPagePostShow = function() onCharacteristicsShown(); end,
-	});
+	initStructures();
 	
 	-- UI
-	local bkgTab = TRP3_getTiledBkgListForListbox();
-	TRP3_LabelledListBox_Setup(loc("REG_PLAYER_BKG"), TRP3_RegisterCharact_Edit_BckFieldDD, bkgTab, setEditBkg, nil, 150, true, 150);
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_MiscAdd, TRP3_ICON_ADD);
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_PsychoAdd, TRP3_ICON_ADD);
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
 	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onPlayerIconSelected) end );
 	
 	TRP3_SetupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
 	-- Localz
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_Edit_SaveButton, "TOP", 0, 5, loc("CM_SAVE"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_Edit_CancelButton, "TOP", 0, 5, loc("CM_CANCEL"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_NamePanel_EditButton, "TOP", 0, 5, loc("REG_PLAYER_EDIT_NAME"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "BOTTOMRIGHT", -30, -5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleField, "BOTTOM", 0, 0, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstField, "BOTTOM", 0, 0, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(TRP3_PLAYER));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastField, "BOTTOM", 0, 0, loc("REG_PLAYER_LASTNAME"), loc("REG_PLAYER_LASTNAME_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleField, "BOTTOM", 0, 0, loc("REG_PLAYER_FULLTITLE"), loc("REG_PLAYER_FULLTITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_BckFieldDDButton, "TOP", 0, 0, loc("REG_PLAYER_BKG"), loc("REG_PLAYER_BKG_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceField, "TOP", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(TRP3_RACE_LOC));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassField, "TOP", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(TRP3_CLASS_LOC));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_AgeField, "TOP", 0, 5, loc("REG_PLAYER_AGE"), loc("REG_PLAYER_AGE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceField, "TOP", 0, 5, loc("REG_PLAYER_BIRTHPLACE"), loc("REG_PLAYER_BIRTHPLACE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceField, "TOP", 0, 5, loc("REG_PLAYER_RESIDENCE"), loc("REG_PLAYER_RESIDENCE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeField, "TOP", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightField, "TOP", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightField, "TOP", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_PsychoCheck, "TOP", 0, 5, loc("REG_PLAYER_SHOWPSYCHO"), loc("REG_PLAYER_SHOWPSYCHO_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_MiscCheck, "TOP", 0, 5, loc("REG_PLAYER_SHOWMISC"), loc("REG_PLAYER_SHOWMISC_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_MiscAdd, "TOP", 0, 5, loc("REG_PLAYER_MISC_ADD"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_PsychoAdd, "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_ADD"));
-	
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(TRP3_PLAYER));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_LASTNAME"), loc("REG_PLAYER_LASTNAME_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FULLTITLE"), loc("REG_PLAYER_FULLTITLE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(TRP3_RACE_LOC));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(TRP3_CLASS_LOC));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_AgeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_AGE"), loc("REG_PLAYER_AGE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_BIRTHPLACE"), loc("REG_PLAYER_BIRTHPLACE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RESIDENCE"), loc("REG_PLAYER_RESIDENCE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
+
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_Edit_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	
+	TRP3_RegisterCharact_Edit_MiscAdd:SetText(loc("REG_PLAYER_MISC_ADD"));
+	TRP3_RegisterCharact_Edit_PsychoAdd:SetText(loc("REG_PLAYER_PSYCHO_ADD"));
+	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetText(loc("CM_CANCEL"));
+	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetText(loc("CM_SAVE"));
+	TRP3_RegisterCharact_NamePanel_EditButton:SetText(loc("CM_EDIT"));
 	TRP3_RegisterCharact_Edit_TitleFieldText:SetText(loc("REG_PLAYER_TITLE"));
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc("REG_PLAYER_FIRSTNAME"));
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc("REG_PLAYER_LASTNAME"));
@@ -696,7 +717,4 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_WeightFieldText:SetText(loc("REG_PLAYER_WEIGHT"));
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc("REG_PLAYER_RESIDENCE"));
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc("REG_PLAYER_BIRTHPLACE"));
-	TRP3_RegisterCharact_Edit_PsychoCheckText:SetText(loc("REG_PLAYER_SHOWPSYCHO"));
-	TRP3_RegisterCharact_Edit_MiscCheckText:SetText(loc("REG_PLAYER_SHOWMISC"));
-	
 end

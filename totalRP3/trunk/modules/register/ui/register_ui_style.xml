@@ -2,6 +2,132 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
+	<Frame name="TRP3_RegisterRPStyleMain_Display_Line" virtual="true">
+		<Size x="0" y="30"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
+				 	<Size x="220" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10"/>
+				</FontString>
+				<FontString name="$parentFieldValue" inherits="GameFontNormal" justifyH="LEFT" text="[Value]">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentFieldName"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
 	
+	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
+		<Size x="0" y="30"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
+				 	<Size x="220" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentValues" inherits="UIDropDownMenuTemplate" enableMouse="true">
+		        <Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentFieldName" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+		    </Frame>
+		</Frames>
+	</Frame>
+	
+	<!-- Register characteristics panel -->
+	<Frame name="TRP3_RegisterRPStyleTemplate" virtual="true">
+	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="506" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- CONSULT MODE -->
+			<Frame name="TRP3_RegisterRPStyleMain" inherits="TRP3_FieldSetFrame">
+				<Anchors>	
+					<Anchor point="TOPLEFT" x="10" y="-20"/>
+					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<!-- CONSULT MODE -->
+					<Frame name="TRP3_RegisterRPStyleMain_Display">
+						<Size x="10" y="10"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="40" y="-10"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Button name="TRP3_RegisterRPStyleMain_Display_Edit" inherits="TRP3_CommonButton">
+								<Size x="70" y="20"/>
+								<Anchors>	
+									<Anchor point="TOPRIGHT" x="-15" y="-5"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+					<!-- EDIT MODE -->
+					<Frame name="TRP3_RegisterRPStyleMain_Edit">
+						<Size x="10" y="10"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="40" y="-10"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="0"/>
+						</Anchors>
+						<Frames>
+							<Button name="TRP3_RegisterRPStyleMain_Edit_Save" inherits="TRP3_CommonButton">
+								<Size x="75" y="20"/>
+								<Anchors>	
+									<Anchor point="TOPRIGHT" x="-15" y="-5"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_RegisterRPStyleMain_Edit_Cancel" inherits="TRP3_CommonButton">
+								<Size x="75" y="20"/>
+								<Anchors>	
+									<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterRPStyleMain_Edit_Save"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+					
+		</Frames>
+	</Frame>
     
 </Ui>

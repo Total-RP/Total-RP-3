@@ -147,15 +147,26 @@ end
 -- Colors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+--- Value must be 256 based
+function TRP3_NumberToHexa(number)
+	local number = string.format('%x', number);
+	if number:len() == 1 then 
+		number = '0' .. number;
+	end
+	return number;
+end
+
 --- Values must be 256 based
 function TRP3_ColorCode(red, green, blue)
-	local redH = string.format('%x', red);
-	if redH:len() == 1 then redH = '0' .. redH; end
-	local greenH = string.format('%x', green);
-	if greenH:len() == 1 then greenH = '0' .. greenH; end
-	local blueH = string.format('%x', blue);
-	if blueH:len() == 1 then blueH = '0' .. blueH; end
+	local redH = TRP3_NumberToHexa(red);
+	local greenH = TRP3_NumberToHexa(green);
+	local blueH = TRP3_NumberToHexa(blue);
 	return strconcat("|cff", redH, greenH, blueH);
+end
+
+--- Values must be 0..1 based
+function TRP3_ColorCodeFloat(red, green, blue)
+	return TRP3_ColorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -183,8 +194,12 @@ local function convertTextTags(tag)
 end
 
 function TRP3_ConvertTextTags(text)
-	text = string.gsub(text, "%{(.-)%}", convertTextTags);
+	text = text:gsub("%{(.-)%}", convertTextTags);
 	return text;
+end
+
+function TRP3_RemoveColorTags(text)
+	return text:gsub("%|c%x%x%x%x%x%x", "");
 end
 
 local escapedHTMLCharacters = {
@@ -274,7 +289,7 @@ function TRP2_toHTML(text)
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
 			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
 		
-		line = line:gsub("{link:(.-):(.-)}",
+		line = line:gsub("{link||(.-)||(.-)}",
 			"<a href=\"%1\">|cff00ff00["..loc("CM_LINK").." : %2]|r</a>");
 
 		finalText = finalText..line;

@@ -155,6 +155,81 @@ function TRP3_HidePopups()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Music browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local musicWidgetTab = {};
+local filteredMusicList;
+
+local function decorateMusic(lineFrame, musicURL)
+	musicURL = filteredMusicList[musicURL];
+	local musicName = musicURL:reverse();
+	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
+	
+	TRP3_SetTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
+		("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
+	_G[lineFrame:GetName().."Text"]:SetText(musicName);
+	lineFrame.musicURL = musicURL;
+end
+
+local function onMusicClick(lineFrame, mousebutton)
+	if mousebutton == "LeftButton" then
+		if TRP3_MusicBrowserContent.callback then
+			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
+		end
+		TRP3_HidePopups();
+	elseif lineFrame.musicURL then
+		TRP3_PlayMusic(lineFrame.musicURL);
+	end
+	
+end
+
+local function filteredMusicBrowser()
+	local filter = TRP3_MusicBrowserFilterBox:GetText();
+	if filteredMusicList and filteredMusicList ~= TRP3_GetMusicList() then
+		wipe(filteredMusicList);
+		filteredMusicList = nil;
+	end
+	filteredMusicList = TRP3_GetMusicList(filter); -- Music tab is unfiltered
+	
+	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. TRP3_GetMusicListSize() );
+	TRP3_InitList(
+		{
+			widgetTab = musicWidgetTab,
+			decorate = decorateMusic
+		},
+		filteredMusicList,
+		TRP3_MusicBrowserContentSlider
+	);
+end
+
+function TRP3_UI_InitMusicBrowser()
+	TRP3_HandleMouseWheel(TRP3_MusicBrowserContent, TRP3_MusicBrowserContentSlider);
+	TRP3_MusicBrowserContentSlider:SetValue(0);
+	-- Create lines
+	for line = 0, 8 do
+		local lineFrame = CreateFrame("Button", "TRP3_MusicBrowserButton_"..line, TRP3_MusicBrowserContent, "TRP3_MusicBrowserLine");
+		lineFrame:SetPoint("TOP", TRP3_MusicBrowserContent, "TOP", 0, -10 + (line * (-31)));
+		lineFrame:SetScript("OnClick", onMusicClick);
+		tinsert(musicWidgetTab, lineFrame);
+	end
+	
+	TRP3_MusicBrowserFilterBox:SetScript("OnTextChanged", filteredMusicBrowser);
+	
+	TRP3_MusicBrowserTitle:SetText(loc("UI_MUSIC_BROWSER"));
+	TRP3_MusicBrowserFilterBoxText:SetText(loc("UI_FILTER"));
+	TRP3_MusicBrowserFilterStop:SetText(loc("REG_PLAYER_ABOUT_MUSIC_STOP"));
+	filteredMusicBrowser();
+end
+
+function TRP3_OpenMusicBrowser(callback)
+	TRP3_MusicBrowserContent.callback = callback;
+	TRP3_MusicBrowserFilterBox:SetText("");
+	TRP3_ShowPopup(TRP3_MusicBrowser);
+	TRP3_MusicBrowserFilterBox:SetFocus();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Icon browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -164,19 +239,19 @@ local filteredIconList = {};
 local function decorateIcon(icon, index)
 	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
 	icon:SetPushedTexture("Interface\\ICONS\\"..filteredIconList[index]);
+	TRP3_SetTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, TRP3_Icon(filteredIconList[index], 75), filteredIconList[index]);
 	icon.index = index;
 end
 
 local function onIconClick(icon)
 	if TRP3_IconBrowserContent.callback then
-		TRP3_IconBrowserContent.callback(filteredIconList[icon.index]);
+		TRP3_IconBrowserContent.callback(filteredIconList[icon.index], icon);
 	end
 	TRP3_HidePopups();
 end
 
 local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
-	filteredIconList = {}; -- TODO: possible memory leak
 	filteredIconList = TRP3_GetIconList(filter);
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. TRP3_GetIconListSize() );
 	TRP3_InitList(
@@ -191,6 +266,7 @@ end
 
 function TRP3_UI_InitIconBrowser()
 	TRP3_HandleMouseWheel(TRP3_IconBrowserContent, TRP3_IconBrowserContentSlider);
+	TRP3_IconBrowserContentSlider:SetValue(0);
 	-- Create icons
 	local row, column;
 	
@@ -216,4 +292,128 @@ function TRP3_OpenIconBrowser(callback)
 	TRP3_IconBrowserFilterBox:SetText("");
 	TRP3_ShowPopup(TRP3_IconBrowser);
 	TRP3_IconBrowserFilterBox:SetFocus();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Color browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onColorSliderChanged()
+	local red = TRP3_ColorBrowserRed:GetValue() / 255;
+	local green = TRP3_ColorBrowserGreen:GetValue() / 255;
+	local blue = TRP3_ColorBrowserBlue:GetValue() / 255;
+	TRP3_ColorBrowserView:SetTexture(red, green, blue);
+	TRP3_ColorBrowserViewText:SetTextColor(red, green, blue);
+end
+
+function TRP3_UI_InitColorBrowser()
+	TRP3_ColorBrowserViewText:SetText(loc("UI_COLOR_BROWSER_PREVIEW"));
+	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
+	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
+	TRP3_ColorBrowserRedText:SetText(loc("UI_COLOR_BROWSER_RED"));
+	TRP3_ColorBrowserRedHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
+	TRP3_ColorBrowserRedLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
+	TRP3_ColorBrowserGreenText:SetText(loc("UI_COLOR_BROWSER_GREEN"));
+	TRP3_ColorBrowserGreenHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
+	TRP3_ColorBrowserGreenLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
+	TRP3_ColorBrowserBlueText:SetText(loc("UI_COLOR_BROWSER_BLUE"));
+	TRP3_ColorBrowserBlueHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
+	TRP3_ColorBrowserBlueLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
+	TRP3_ColorBrowserRed:SetValue(255);
+	TRP3_ColorBrowserGreen:SetValue(255);
+	TRP3_ColorBrowserBlue:SetValue(255);
+	onColorSliderChanged();
+	
+	TRP3_ColorBrowserRed:SetScript("OnValueChanged", onColorSliderChanged);
+	TRP3_ColorBrowserGreen:SetScript("OnValueChanged", onColorSliderChanged);
+	TRP3_ColorBrowserBlue:SetScript("OnValueChanged", onColorSliderChanged);
+	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
+		local red = math.ceil(TRP3_ColorBrowserRed:GetValue());
+		local green = math.ceil(TRP3_ColorBrowserGreen:GetValue());
+		local blue = math.ceil(TRP3_ColorBrowserBlue:GetValue());
+		if TRP3_ColorBrowser.callback ~= nil then
+			TRP3_ColorBrowser.callback(red, green, blue);
+		end
+		TRP3_HidePopups();
+	end);
+end
+
+function TRP3_OpenColorBrowser(callback)
+	TRP3_ColorBrowser.callback = callback;
+	TRP3_ShowPopup(TRP3_ColorBrowser);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Color browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local imageWidgetTab = {};
+local filteredImageList = {};
+
+local function onImageSelect()
+	assert(TRP3_ImageBrowserContent.currentImage, "No current image ...");
+	if TRP3_ImageBrowser.callback then
+		TRP3_ImageBrowser.callback(filteredImageList[TRP3_ImageBrowserContent.currentImage]);
+	end
+	TRP3_HidePopups();
+end
+
+local function decorateImage(texture, index)
+	local image = filteredImageList[index];
+	local ratio = image.height / image.width;
+	texture:SetHeight(texture:GetWidth() * ratio);
+	texture:SetTexture(image.url);
+	TRP3_ImageBrowserContentURL:SetText(image.url:sub(11));
+	TRP3_ImageBrowserContent.currentImage = index;
+end
+
+local function filteredImageBrowser()
+--	TRP3_ImageBrowserContentTexture
+	local filter = TRP3_ImageBrowserFilterBox:GetText();
+	filteredImageList = TRP3_GetImageList(filter);
+	local size = #filteredImageList;
+	TRP3_ImageBrowserTotal:SetText( size .. " / " .. TRP3_GetImageListSize() );
+	if size > 0 then
+		TRP3_ImageBrowserSelect:Enable();
+	else
+		TRP3_ImageBrowserSelect:Disable();
+	end
+	TRP3_InitList(
+		{
+			widgetTab = imageWidgetTab,
+			decorate = decorateImage
+		},
+		filteredImageList,
+		TRP3_ImageBrowserContentSlider
+	);
+end
+
+function TRP3_UI_InitImageBrowser()
+	TRP3_HandleMouseWheel(TRP3_ImageBrowserContent, TRP3_ImageBrowserContentSlider);
+	TRP3_ImageBrowserContentSlider:SetValue(0);
+	TRP3_ImageBrowserFilterBox:SetScript("OnTextChanged", filteredImageBrowser);
+	TRP3_ImageBrowserSelect:SetScript("OnClick", onImageSelect);
+	
+	tinsert(imageWidgetTab, TRP3_ImageBrowserContentTexture);
+	
+	TRP3_ImageBrowserTitle:SetText(loc("UI_IMAGE_BROWSER"));
+	TRP3_ImageBrowserFilterBoxText:SetText(loc("UI_FILTER"));
+	TRP3_ImageBrowserSelect:SetText(loc("UI_IMAGE_SELECT"));
+	filteredImageBrowser();
+end
+
+function TRP3_OpenImageBrowser(callback)
+	TRP3_ImageBrowser.callback = callback;
+	TRP3_ShowPopup(TRP3_ImageBrowser);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- INIT
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_UI_InitPopups()
+	TRP3_UI_InitIconBrowser();
+	TRP3_UI_InitMusicBrowser();
+	TRP3_UI_InitColorBrowser();
+	TRP3_UI_InitImageBrowser();
 end

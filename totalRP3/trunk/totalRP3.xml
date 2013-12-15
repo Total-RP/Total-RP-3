@@ -3,41 +3,16 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ UI.xsd">
 
 	<!-- Please note that the loading order matters a lot -->
-	<Script file="resources\iconList.lua"/>
-	
-	<Script file="core\impl\globals.lua"/>
-	<Script file="core\impl\locale.lua"/>
-	<Script file="core\impl\utils.lua"/>
-	<Script file="core\impl\widgets.lua"/>
-	<Script file="core\impl\configuration.lua"/>
-	<Script file="core\impl\communication_protocol.lua"/>
-	<Script file="core\impl\popup.lua"/>
-	<Script file="core\impl\ui_tools.lua"/>
-	<Script file="core\impl\main_structure.lua"/>
-	<Script file="core\impl\toolbar.lua"/>
-	<Script file="core\impl\ui_main.lua"/>
-	<Script file="core\impl\profiles.lua"/>
+	<Include file="resources\resources.xml"/>
+	<Include file="core\core.xml"/>
 	<Script file="totalRP3.lua"/>
-	<Script file="modules\module_management.lua"/>
+	<Include file="modules\modules.xml"/>
 
-	<Include file="core\ui\widgets.xml"/>
-	<Include file="core\ui\toolbar.xml"/>
-	<Include file="core\ui\profiles.xml"/>
-	<Include file="core\ui\main.xml"/>
-	<Include file="core\ui\tools.xml"/>
-	<Include file="core\ui\configuration.xml"/>
-	
-	<Script file="modules\flyway\flyway.lua"/>
-	<Script file="modules\flyway\flyway_patches.lua"/>
-
-	<Include file="modules\register\register_includes.xml"/>
-
-	<Frame parent="UIParent">
+	<Frame parent="UIParent" name="TRP3_EventFrame">
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
 		<Scripts>
-			<OnLoad function="TRP3_InitEventHandler"/>
 			<OnEvent function="TRP3_EventDispatcher"/>
 		</Scripts>
 	</Frame>

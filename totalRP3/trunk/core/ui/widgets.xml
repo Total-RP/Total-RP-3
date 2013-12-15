@@ -225,6 +225,34 @@
 		</Scripts>
 	</EditBox>
 	
+	<!-- Titled edit box, TRP2 style, with help TT button -->
+	<EditBox name="TRP3_TitledHelpEditBox" inherits="TRP3_TitledEditBox" virtual="true">
+		<Frames>
+			<Button name="$parentHelp" inherits="TRP3_HelpButton" hidden="true">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="2" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEditFocusGained>
+				if self.disabled then
+					self:ClearFocus();
+				else
+					self:HighlightText();
+				end
+				if _G[self:GetName().."Help"].titleText then
+					_G[self:GetName().."Help"]:Show();
+				end
+			</OnEditFocusGained>
+			<OnEditFocusLost>
+				self:HighlightText(0,0);
+				_G[self:GetName().."Help"]:Hide();
+			</OnEditFocusLost>
+		</Scripts>
+	</EditBox>
+	
 	<!-- Template d'un bouton check petit texte-->
 	<CheckButton name="TRP3_CheckBox" inherits="OptionsCheckButtonTemplate" virtual="true" checked="false">
 		<Scripts>
@@ -267,4 +295,58 @@
 			</OnLoad>
 		</Scripts>
 	</Frame>
+	
+	<Button name="TRP3_TabBar_Tab" virtual="true">
+        <Size><AbsDimension x="10" y="32"/></Size>
+        <Layers>
+        	<Layer level="BACKGROUND">
+				<Texture name="$parentLeft" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+        			<Size><AbsDimension x="10" y="32"/></Size>
+        			<Anchors>
+        				<Anchor point="BOTTOMLEFT" x="0" y="0"/>
+        			</Anchors>
+					<TexCoords left="0.08" right="0.15625" top="1.0" bottom="0"/>
+        		</Texture>
+        		<Texture name="$parentRight" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+        			<Size><AbsDimension x="10" y="32"/></Size>
+        			<Anchors>
+        				<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+        			</Anchors>
+					<TexCoords left="0.84375" right="0.92" top="1.0" bottom="0"/>
+        		</Texture>
+				<Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+        			<Anchors>
+        				<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
+        				<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.15625" right="0.84375" top="1.0" bottom="0"/>
+        		</Texture>
+        	</Layer>
+        </Layers>
+		<ButtonText name="$parentText">
+			<Size><AbsDimension x="0" y="32"/></Size>
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset><AbsDimension x="0" y="-2"/></Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontHighlightSmall"/>
+		<HighlightFont style="GameFontHighlightSmall"/>
+		<DisabledFont style="GameFontHighlight"/>
+		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="5" y="-2"/>
+					</Offset>
+				</Anchor>
+				<Anchor point="BOTTOMRIGHT">
+					<Offset>
+						<AbsDimension x="-5" y="-2"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+    </Button>
 </Ui>

@@ -4,7 +4,7 @@
 	
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="488" y="105"/>
@@ -87,10 +87,10 @@
 	<!-- Register about template 2 frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="0" y="75"/>
+		<Size x="480" y="75"/>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
 				<Size x="50" y="50"/>
@@ -99,72 +99,192 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentText" inherits="GameFontNormal" justifyV="TOP">
+					<Size x="380" y="0"/>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
 			</Layer>
 		</Layers>
 	</Frame>
 	
+	<!-- Register about template 2 edit frame -->
+	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="460" y="120"/>
+		<Frames>
+			<Button name="$parentIcon" inherits="TRP3_IconButton">
+				<Anchors>
+					<Anchor point="LEFT" x="20" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentDown">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="5"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-ExpandButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-ExpandButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+			<Button name="$parentDelete" inherits="TRP3_CommonButton" text="[DELETE]">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentDown" x="-10" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentUp">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentDelete" x="-10" y="0"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+			<Frame name="$parentBkg" inherits="UIDropDownMenuTemplate" enableMouse="true">
+		        <Anchors>
+					<Anchor point="BOTTOMLEFT" x="42" y="5"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+		    </Frame>
+			<Frame name="$parentText">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="0" y="0"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="35"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="LEFT" x="15" y="0"/>
+							<Anchor point="RIGHT" x="-18" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<EditBox name="$parentBox" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
+								<Size x="275" y="130"/>
+								<Scripts>
+									<OnTextChanged>
+										if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
+											self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+										end
+									</OnTextChanged>
+									<OnEscapePressed>
+										self:ClearFocus();
+									</OnEscapePressed>
+									<OnEditFocusGained>
+										self:HighlightText();
+									</OnEditFocusGained>
+									<OnEditFocusLost>
+										self:HighlightText(0,0);
+									</OnEditFocusLost>
+								</Scripts>
+								<FontString inherits="ChatFontNormal"/>
+							</EditBox>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				
+			</Layer>
+		</Layers>
+	</Frame>
+	
 	 <!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterAbout" hidden="true">
+	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
 			<EdgeSize><AbsValue val="32"/></EdgeSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="530" y="0"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="TRP3_RegisterAbout_BackgroundTexture" file="Interface\SPELLBOOK\Spellbook-Page-1">
-					<Size x="526" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="0" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
-				</Texture>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit">
 				<Size x="510" y="0"/>
 				<Anchors>	
-					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="TOP" x="0" y="-10"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Frames>
-					<Button name="TRP3_RegisterAbout_Edit_SaveButton" inherits="TRP3_IconButton">
+					<Button name="TRP3_RegisterAbout_Edit_SaveButton" inherits="TRP3_CommonButton">
+						<Size x="75" y="20"/>
 						<Anchors>	
-							<Anchor point="TOPRIGHT" x="-15" y="-15"/>
+							<Anchor point="TOPRIGHT" x="-15" y="-5"/>
 						</Anchors>
 						<Scripts>
-							<OnLoad>
-								TRP3_InitIconButton(self, TRP3_ICON_SAVE);
-							</OnLoad>
 							<OnClick>
 								TRP3_UI_AboutSaveButton();
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Button name="TRP3_RegisterAbout_Edit_CancelButton" inherits="TRP3_IconButton">
+					<Button name="TRP3_RegisterAbout_Edit_CancelButton" inherits="TRP3_CommonButton">
+						<Size x="75" y="20"/>
 						<Anchors>	
-							<Anchor point="RIGHT" x="-10" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterAbout_Edit_SaveButton"/>
+							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_SaveButton"/>
 						</Anchors>
 						<Scripts>
-							<OnLoad>
-								TRP3_InitIconButton(self, TRP3_ICON_CANCEL);
-							</OnLoad>
 							<OnClick>
 								TRP3_UI_AboutCancelButton();
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="TRP3_LabelledListBox" enableMouse="true">
+					<Frame name="TRP3_RegisterAbout_Edit_Music">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+						</Anchors>
+						<Frames>
+							<Button name="TRP3_RegisterAbout_Edit_Music_Action">
+								<Size x="32" y="32"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" x="15" y="0"/>
+								</Anchors>
+								<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+								<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+								<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="TRP3_RegisterAbout_Edit_Music_Text" inherits="GameFontNormal" justifyH="LEFT" text="[Music_title]">
+									<Size x="350" y="10"/>
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Music_Action" x="0" y="0"/>
+									</Anchors>
+									<Color b="1.0" r="1.0" g="1.0"/>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
-							<Anchor point="TOPLEFT" x="20" y="-15"/>
+							<Anchor point="TOPLEFT" x="0" y="-30"/>
 						</Anchors>
 				    </Frame>
-				    <Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="TRP3_LabelledListBox" enableMouse="true">
+				    <Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="130" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
 				    </Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template1">
@@ -175,14 +295,87 @@
 							<Anchor point="RIGHT" x="0" y="0"/>
 						</Anchors>
 						<Frames>
+							<!-- Toolbar -->
+							<Frame name="TRP3_RegisterAbout_Edit_Template1_Toolbar">
+								<Size x="0" y="30"/>
+								<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+									<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+								</Backdrop>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
+											<Anchors>
+												<Anchor point="TOP" x="0" y="13"/>
+											</Anchors>
+											<Color b="0.1" r="1.0" g="0.75"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H1" inherits="TRP3_CommonButton" text="H1">
+										<Size x="50" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="10" y="2"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H2" inherits="TRP3_CommonButton" text="H2">
+										<Size x="50" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H1"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H3" inherits="TRP3_CommonButton" text="H3">
+										<Size x="50" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H2"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_P" inherits="TRP3_CommonButton" text="P">
+										<Size x="40" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H3"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Image" inherits="TRP3_CommonButton" text="[Image]">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_P"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon" inherits="TRP3_CommonButton" text="[Icon]">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Image"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Color" inherits="TRP3_CommonButton" text="[Color]">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Link" inherits="TRP3_CommonButton" text="[Link]">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Color"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
 							<Frame>
 								<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 								</Backdrop>
 								<Anchors>
-									<Anchor point="TOP" x="0" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="50"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar" x="0" y="-5"/>
+									<Anchor point="BOTTOM" x="0" y="5"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
@@ -222,12 +415,37 @@
 						</Frames>
 				    </Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template2">
+				    	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+						</Backdrop>
 				    	<Anchors>	
 							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
-							<Anchor point="BOTTOM" x="0" y="0"/>
-							<Anchor point="LEFT" x="0" y="0"/>
-							<Anchor point="RIGHT" x="0" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="20"/>
+							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
+						<Frames>
+							<Button name="TRP3_RegisterAbout_Edit_Template2_Add" inherits="TRP3_CommonButton" text="[ADD_NEW_FRAME]">
+								<Size x="150" y="18"/>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="0"/>
+								</Anchors>
+							</Button>
+							<ScrollFrame name="TRP3_RegisterAbout_Edit_Template2_Scroll" inherits="UIPanelScrollFrameTemplate">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+									<Anchor point="LEFT" x="15" y="0"/>
+									<Anchor point="RIGHT" x="-18" y="0"/>
+								</Anchors>
+								<ScrollChild>
+									<Frame name="TRP3_RegisterAbout_Edit_Template2_Container">
+										<Size x="10" y="10"/>
+									</Frame>
+								</ScrollChild>
+							</ScrollFrame>
+						</Frames>
 					</Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template3">
 				    	<Anchors>	
@@ -239,7 +457,7 @@
 						<Frames>
 							<Frame name="TRP3_RegisterAbout_Edit_Template3_Phys" inherits="TRP3_RegisterAbout_Edit_Template3Frame">
 								<Anchors>	
-									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="TOP" x="0" y="0"/>
 								</Anchors>
 							</Frame>
 							<Frame name="TRP3_RegisterAbout_Edit_Template3_Psy" inherits="TRP3_RegisterAbout_Edit_Template3Frame">
@@ -256,36 +474,31 @@
 				    </Frame>
 				</Frames>
 			</Frame>
-			<Frame name="TRP3_RegisterAbout_AboutPanel" inherits="TRP3_FieldSetFrame">
+			<Frame name="TRP3_RegisterAbout_AboutPanel">
 				<Size x="510" y="0"/>
 				<Anchors>	
-					<Anchor point="TOP" x="0" y="-20"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="TOP" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="0"/>
 				</Anchors>
 				<Frames>
 					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-11"/>
-							<Anchor point="BOTTOMRIGHT" x="-28" y="9"/>
+							<Anchor point="BOTTOMRIGHT" x="-14" y="9"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame>
 								<Size x="10" y="10"/>
 								<Frames>
 									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1">
-										<Size x="465" y="5"/>
+										<Size x="479" y="5"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
-										<Scripts>
-											<OnHyperlinkClick>
-												TRP3_RegisterAbout_link(link,text);
-											</OnHyperlinkClick>
-										</Scripts>
 										<FontString inherits="GameFontNormalSmall"/>
 									</SimpleHTML>
 									<Frame name="TRP3_RegisterAbout_AboutPanel_Template2">
-										<Size x="468" y="50"/>
+										<Size x="479" y="50"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
@@ -297,12 +510,13 @@
 														<Anchor point="TOPLEFT" x="0" y="-5"/>
 														<Anchor point="RIGHT" x="0" y="0"/>
 													</Anchors>
+													<Color b="0.95" r="0.95" g="0.95"/>
 												</FontString>
 											</Layer>
 										</Layers>
 									</Frame>
 									<Frame name="TRP3_RegisterAbout_AboutPanel_Template3">
-										<Size x="468" y="50"/>
+										<Size x="479" y="50"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
@@ -314,7 +528,7 @@
 												</Backdrop>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5"/>
-													<Anchor point="RIGHT" x="0" y="0"/>
+													<Anchor point="TOPRIGHT" x="0" y="-5"/>
 												</Anchors>
 												<Layers>
 													<Layer level="OVERLAY">
@@ -327,9 +541,6 @@
 														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_1_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 															<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1_Title"/>
-																<Anchor point="BOTTOM" x="0" y="5"/>
-																<Anchor point="LEFT" x="15" y="0"/>
-																<Anchor point="RIGHT" x="-15" y="0"/>
 															</Anchors>
 															<Color b="0.95" r="0.95" g="0.95"/>
 														</FontString>
@@ -356,9 +567,6 @@
 														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_2_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 															<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2_Title"/>
-																<Anchor point="BOTTOM" x="0" y="5"/>
-																<Anchor point="LEFT" x="15" y="0"/>
-																<Anchor point="RIGHT" x="-15" y="0"/>
 															</Anchors>
 															<Color b="0.95" r="0.95" g="0.95"/>
 														</FontString>
@@ -385,9 +593,6 @@
 														<FontString name="TRP3_RegisterAbout_AboutPanel_Template3_3_Text" text="[Title]" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 															<Anchors>
 																<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_3_Title"/>
-																<Anchor point="BOTTOM" x="0" y="5"/>
-																<Anchor point="LEFT" x="15" y="0"/>
-																<Anchor point="RIGHT" x="-15" y="0"/>
 															</Anchors>
 															<Color b="0.95" r="0.95" g="0.95"/>
 														</FontString>
@@ -400,19 +605,69 @@
 							</Frame>
 						</ScrollChild>
 						<Frames>
-							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_IconButton">
+							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_CommonButton">
+								<Size x="70" y="20"/>
 								<Anchors>	
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
 								<Scripts>
-									<OnLoad>
-										TRP3_InitIconButton(self, TRP3_ICON_EDIT);
-									</OnLoad>
 									<OnClick>
 										TRP3_UI_AboutEditButton();
 									</OnClick>
 								</Scripts>
 							</Button>
+							<!-- Music player -->
+							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer">
+								<Size x="200" y="65"/>
+								<Backdrop bgFile="Interface\FrameGeneral\UI-Background-Marble" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+									<EdgeSize><AbsValue val="36"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+								</Backdrop>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="5"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title" text="[Title]" inherits="GameFontNormal">
+											<Anchors>
+												<Anchor point="TOP" x="0" y="-8"/>
+											</Anchors>
+										</FontString>
+										<FontString name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL" text="[URL]" inherits="GameFontNormalSmall">
+											<Anchors>
+												<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title" x="0" y="-3"/>
+												<Anchor point="LEFT" x="15" y="0"/>
+												<Anchor point="RIGHT" x="-15" y="0"/>
+											</Anchors>
+											<Color b="0" r="0" g="1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play" inherits="TRP3_CommonButton">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="BOTTOMLEFT" x="20" y="10"/>
+										</Anchors>
+										<Scripts>
+											<OnClick>
+												TRP3_PlayMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
+											</OnClick>
+										</Scripts>
+									</Button>
+									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop" inherits="TRP3_CommonButton">
+										<Size x="70" y="20"/>
+										<Anchors>	
+											<Anchor point="BOTTOMRIGHT" x="-17" y="10"/>
+										</Anchors>
+										<Scripts>
+											<OnClick>
+												TRP3_StopMusic();
+											</OnClick>
+										</Scripts>
+									</Button>
+								</Frames>
+							</Frame>
 						</Frames>
 					</ScrollFrame>
 				</Frames>

@@ -17,7 +17,17 @@ local tiledBackgrounds = {
 	"Interface\\HELPFRAME\\DarkSandstone-Tile",
 	"Interface\\HELPFRAME\\Tileable-Parchment",
 	"Interface\\QuestionFrame\\question-background",
-	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg"
+	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg",
+	"Interface\\Destiny\\EndscreenBG",
+	"Interface\\Stationery\\AuctionStationery1",
+	"Interface\\Stationery\\Stationery_ill1",
+	"Interface\\Stationery\\Stationery_OG1",
+	"Interface\\Stationery\\Stationery_TB1",
+	"Interface\\Stationery\\Stationery_UC1",
+	"Interface\\Stationery\\StationeryTest1",
+	"Interface\\WorldMap\\UI-WorldMap-Middle1",
+	"Interface\\WorldMap\\UI-WorldMap-Middle2",
+	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",	
 };
 
 function TRP3_getTiledBackground(index)
@@ -136,7 +146,18 @@ local function listBoxSetSelected(self, index)
 	_G[self:GetName().."Text"]:SetText(self.values[index][1]);
 	self.selectedValue = self.values[index][2];
 	if self.callback then
-		self.callback(self.values[index][2]);
+		self.callback(self.values[index][2], self);
+	end
+end
+
+local function listBoxSetSelectedValue(self, value)
+	assert(self and self.values, "Badly initialized listbox");
+	for index, tab in pairs(self.values) do
+		local val = tab[2];
+		if val == value then
+			listBoxSetSelected(self, index);
+			break;
+		end
 	end
 end
 
@@ -160,7 +181,7 @@ function TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, ad
 			end
 		end
 		if callback then
-			callback(value);
+			callback(value, listBox);
 		end
 	end;
 	
@@ -168,6 +189,7 @@ function TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, ad
 	
 	listBox.SetSelectedIndex = listBoxSetSelected;
 	listBox.GetSelectedValue = listBoxGetValue;
+	listBox.SetSelectedValue = listBoxSetSelectedValue;
 	
 	if defaultText then
 		_G[listBox:GetName().."Text"]:SetText(defaultText);
@@ -201,21 +223,21 @@ end
 
 local function listShowPage(infoTab, pageNum)
 	assert(infoTab.uiTab, "Error : no uiTab in infoTab.");
-	
+
 	-- Hide all widgets
 	for k=1,infoTab.maxPerPage do
 		infoTab.widgetTab[k]:Hide();
 	end
+	
 	-- Show list
-	local i = 1;
-	local widgetIndex = 1;
-	for index,key in pairs(infoTab.uiTab) do
-		if i > pageNum*infoTab.maxPerPage and i <= (pageNum+1)*infoTab.maxPerPage then
+	for widgetIndex=1, infoTab.maxPerPage do
+		local dataIndex = pageNum*infoTab.maxPerPage + widgetIndex;
+		if dataIndex <= #infoTab.uiTab then
 			infoTab.widgetTab[widgetIndex]:Show();
-			infoTab.decorate(infoTab.widgetTab[widgetIndex], key);
-			widgetIndex = widgetIndex + 1;
+			infoTab.decorate(infoTab.widgetTab[widgetIndex], infoTab.uiTab[dataIndex]);
+		else
+			break;
 		end
-		i = i + 1;
 	end
 end
 
@@ -232,7 +254,6 @@ function TRP3_InitList(infoTab, dataTab, slider)
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
 	
 	local count = 0;
-	local totalCount = 0;
 	local maxPerPage = #infoTab.widgetTab;
 	infoTab.maxPerPage = maxPerPage;
 	
@@ -241,28 +262,29 @@ function TRP3_InitList(infoTab, dataTab, slider)
 	end
 
 	slider:Hide();
-	slider:SetValue(0);
 	wipe(infoTab.uiTab);
 	
 	for key,_ in pairs(dataTab) do
-		count = count + 1;
-		totalCount = totalCount + 1;
-		infoTab.uiTab[count] = key;
+		tinsert(infoTab.uiTab, key);
 	end
+	count = #infoTab.uiTab;
 	
 	table.sort(infoTab.uiTab);
 	
+	slider:SetScript("OnValueChanged", nil);
 	if count > maxPerPage then
 		slider:Show();
 		local total = floor((count-1)/maxPerPage);
-		slider:SetMinMaxValues(0,total);
+		slider:SetMinMaxValues(0, total);
+	else
+		slider:SetValue(0);
 	end
 	slider:SetScript("OnValueChanged",function(self)
 		if self:IsVisible() then
 			listShowPage(infoTab, math.floor(self:GetValue()));
 		end
 	end);
-	listShowPage(infoTab, 0);
+	listShowPage(infoTab, slider:GetValue());
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -279,6 +301,10 @@ end
 
 local function tooltipSimpleOnLeave(self)
 	TRP3_MainTooltip:Hide();
+end
+
+function TRP3_SetTooltipOnMain(frame, title, text)
+	TRP3_SetTooltipForFrame(frame, TRP3_MainFrame, "RIGHT", 0, -500, title, text);
 end
 
 -- Setup the frame tooltip (position and text)

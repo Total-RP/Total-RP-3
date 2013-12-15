@@ -30,6 +30,8 @@ end
 
 local function onLoaded()
 	log("onLoaded test module");
+	
+	
 end
 
 local MODULE_STRUCTURE = {

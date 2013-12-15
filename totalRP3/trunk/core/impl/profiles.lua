@@ -116,11 +116,14 @@ local function decorateProfileList(widget, id)
 	local mainText = profile.profileName;
 	
 	if id == currentProfileId then
+		
 		widget:SetBackdropBorderColor(0, 1, 0);
 		_G[widget:GetName().."Current"]:Show();
+		_G[widget:GetName().."Select"]:Disable();
 	else
 		widget:SetBackdropBorderColor(1, 1, 1);
 		_G[widget:GetName().."Current"]:Hide();
+		_G[widget:GetName().."Select"]:Enable();
 	end
 
 	TRP3_InitIconButton(_G[widget:GetName().."Icon"], dataTab.icon or TRP3_ICON_PROFILE_DEFAULT);
@@ -237,15 +240,19 @@ local function uiDupplicateProfile(profileID)
 	);
 end
 
+local function onProfileSelected(button)
+	local profileID = button:GetParent().profileID;
+	uiSelectProfile(profileID);
+end
+
 local function onActionSelected(value, button)
 	local profileID = button:GetParent().profileID;
+
 	if value == 1 then
-		uiSelectProfile(profileID);
-	elseif value == 2 then
 		uiDeleteProfile(profileID);
-	elseif value == 3 then
+	elseif value == 2 then
 		uiEditProfile(profileID);
-	elseif value == 4 then
+	elseif value == 3 then
 		uiDupplicateProfile(profileID);
 	end
 end
@@ -254,11 +261,10 @@ local function onActionClicked(button)
 	local profileID = button:GetParent().profileID;
 	local values = {};
 	if currentProfileId ~= profileID then
-		tinsert(values, {loc("PR_PROFILEMANAGER_SWITCH"), 1});
-		tinsert(values, {loc("PR_DELETE_PROFILE"), 2});
+		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
 	end
-	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 3});
-	tinsert(values, {loc("PR_DUPPLICATE_PROFILE"), 4});
+	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
+	tinsert(values, {loc("PR_DUPPLICATE_PROFILE"), 3});
 	TRP3_DisplayDropDown(button, values, onActionSelected, 0, true);
 end
 
@@ -288,13 +294,16 @@ function TRP3_InitProfiles()
 	
 	-- UI
 	TRP3_HandleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);
+	TRP3_ProfileManagerSlider:SetValue(0);
 	local widgetTab = {};
 	for i=1,5 do
 		local widget = _G["TRP3_ProfileManagerLine"..i];
+		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc("PR_PROFILEMANAGER_CURRENT"));
 		TRP3_SetTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 		table.insert(widgetTab, widget);
+		
 	end
 	TRP3_ProfileManagerList.widgetTab = widgetTab;
 	TRP3_ProfileManagerList.decorate = decorateProfileList;

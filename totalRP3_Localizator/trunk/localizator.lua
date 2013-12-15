@@ -116,7 +116,7 @@ local function onLoaded()
 	end
 	
 	TRP3_HandleMouseWheel(TRP3_ConfigurationLocalizator, TRP3_ConfigurationLocalizatorContainerSlider);
-	
+	TRP3_ConfigurationLocalizatorContainerSlider:SetValue(0);
 	TRP3_InitList(
 		{
 			widgetTab = frames,
