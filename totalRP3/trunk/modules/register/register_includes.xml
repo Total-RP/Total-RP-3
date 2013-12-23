@@ -15,21 +15,4 @@
 	<Script file="impl\register_tooltip.lua"/>
     <Include file="ui\register_ui_main.xml"/>
     
-    <!-- Character tooltip -->
-	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
-		<Scripts>
-			<OnUpdate>
-				if self.target and self.targetType and not self.isFading then
-					if self.target ~= UnitName(self.targetType) then
-						self.isFading = true;
-						self.target = nil;
-						self:FadeOut();
-					end
-				end
-			</OnUpdate>
-			<OnHide>
-				self.isFading = nil;
-			</OnHide>
-		</Scripts>
-	</GameTooltip>
 </Ui>

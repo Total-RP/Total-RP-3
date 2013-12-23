@@ -2,6 +2,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
+	<!-- Character tooltip -->
+	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnUpdate>
+				if self.target and self.targetType and not self.isFading then
+					if self.target ~= UnitName(self.targetType) then
+						self.isFading = true;
+						self.target = nil;
+						self:FadeOut();
+					end
+				end
+			</OnUpdate>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
