@@ -248,7 +248,7 @@ local function writeTooltipForCharacter(targetName, originalTexts, targetType)
 	--TODO
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Description changed
+	-- Notifications
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	
 	--TODO

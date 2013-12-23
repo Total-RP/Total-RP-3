@@ -9,8 +9,8 @@
 	<Include file="ui\register_ui_about.xml"/>
 	<Script file="impl\register_style.lua"/>
 	<Include file="ui\register_ui_style.xml"/>
-	<Script file="impl\register_current.lua"/>
-	<Include file="ui\register_ui_current.xml"/>
+	<Script file="impl\register_misc.lua"/>
+	<Include file="ui\register_ui_misc.xml"/>
 	<Script file="impl\register_exchange.lua"/>
 	<Script file="impl\register_tooltip.lua"/>
     <Include file="ui\register_ui_main.xml"/>

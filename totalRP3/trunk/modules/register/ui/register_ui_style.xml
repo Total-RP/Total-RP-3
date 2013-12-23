@@ -55,7 +55,7 @@
 		</Frames>
 	</Frame>
 	
-	<!-- Register characteristics panel -->
+	<!-- Register rp style panel -->
 	<Frame name="TRP3_RegisterRPStyleTemplate" virtual="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
 			<EdgeSize><AbsValue val="32"/></EdgeSize>

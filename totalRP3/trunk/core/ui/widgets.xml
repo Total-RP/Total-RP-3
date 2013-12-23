@@ -54,7 +54,7 @@
 			<Size x="47" y="47"/>
 			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
 		</DisabledTexture>
-	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);

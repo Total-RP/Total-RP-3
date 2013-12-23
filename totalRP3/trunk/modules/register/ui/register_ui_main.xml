@@ -49,6 +49,12 @@
 					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
 				</Anchors>
 			</Frame>
+			<Frame name="TRP3_RegisterPeek" inherits="TRP3_RegisterPeekTemplate" frameLevel="2">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-33"/>
+					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+				</Anchors>
+			</Frame>
 		</Frames>
 	</Frame>
     

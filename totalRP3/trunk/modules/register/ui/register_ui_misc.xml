@@ -1,0 +1,124 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+	
+	<!-- Glance consult button : ButtonHilight-Square -->
+	<Button name="TRP3_RegisterPeekGlanceButton" virtual="true">
+		<Size x="40" y="40"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+	
+	<!-- Register Peek panel -->
+	<Frame name="TRP3_RegisterPeekTemplate" virtual="true">
+	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="506" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- CONSULT MODE -->
+			<Frame name="TRP3_RegisterPeekView">
+				<Anchors>	
+					<Anchor point="TOPLEFT" x="10" y="-20"/>
+					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<!-- CURRENTLY -->
+					<Frame name="TRP3_RegisterPeekViewCurrent" inherits="TRP3_FieldSetFrame">
+						<Size x="0" y="50"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+							<Anchor point="TOPRIGHT" x="-3" y="0"/>
+						</Anchors>
+						<Frames>
+							<ScrollFrame name="TRP3_RegisterPeekViewCurrentScroll" inherits="UIPanelScrollFrameTemplate">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-10"/>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+									<Anchor point="LEFT" x="15" y="0"/>
+									<Anchor point="RIGHT" x="-18" y="0"/>
+								</Anchors>
+								<ScrollChild>
+									<Frame>
+										<Size x="10" y="10"/>
+										<Anchors>	
+											<Anchor point="TOPLEFT" x="0" y="0"/>
+										</Anchors>
+										<Layers>
+											<Layer level="OVERLAY">
+												 <FontString name="TRP3_RegisterPeekViewCurrentText" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
+												 	<Size x="460" y="0"/>
+													<Anchors>
+														<Anchor point="TOPLEFT" x="0" y="-3"/>
+													</Anchors>
+													<Color r="0.95" g="0.95" b="0.95"/>
+												</FontString>
+											</Layer>
+										</Layers>
+									</Frame>
+								</ScrollChild>
+							</ScrollFrame>
+						</Frames>
+					</Frame>
+					<!-- CURRENTLY -->
+					<Frame name="TRP3_RegisterPeekViewGlance" inherits="TRP3_FieldSetFrame">
+						<Size x="0" y="70"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterPeekViewCurrent" x="0" y="-10"/>
+							<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterPeekViewCurrent" x="0" y="-10"/>
+						</Anchors>
+						<Frames>
+							<Button name="TRP3_RegisterPeekViewGlanceSlot3" inherits="TRP3_RegisterPeekGlanceButton">
+								<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+							</Button>
+							<Button name="TRP3_RegisterPeekViewGlanceSlot2" inherits="TRP3_RegisterPeekGlanceButton">
+								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterPeekViewGlanceSlot3" x="-45" y="0"/></Anchors>
+							</Button>
+							<Button name="TRP3_RegisterPeekViewGlanceSlot1" inherits="TRP3_RegisterPeekGlanceButton">
+								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterPeekViewGlanceSlot2" x="-45" y="0"/></Anchors>
+							</Button>
+							<Button name="TRP3_RegisterPeekViewGlanceSlot4" inherits="TRP3_RegisterPeekGlanceButton">
+								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekViewGlanceSlot3" x="45" y="0"/></Anchors>
+							</Button>
+							<Button name="TRP3_RegisterPeekViewGlanceSlot5" inherits="TRP3_RegisterPeekGlanceButton">
+								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekViewGlanceSlot4" x="45" y="0"/></Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+			<!-- EDIT MODE -->
+			<Frame name="TRP3_RegisterPeekEdit">
+				<Anchors>	
+					<Anchor point="TOPLEFT" x="10" y="-20"/>
+					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+    
+</Ui>
