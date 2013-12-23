@@ -80,6 +80,7 @@ function TRP3_UI_InitRegister()
 	TRP3_Register_AboutInit();
 	TRP3_Register_StyleInit();
 	TRP3_Register_CurrentInit();
+	TRP3_Register_DataExchangeInit();
 	TRP3_Register_TooltipInit();
 	
 	createTabBar();

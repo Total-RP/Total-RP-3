@@ -89,6 +89,10 @@ function TRP3_GenerateID()
 	return ID;
 end
 
+function TRP3_GetUnitID(unitName, unitRealm)
+    return strconcat((unitRealm or TRP3_REALM), '|', unitName);
+end
+
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function TRP3_Icon(iconPath, iconSize)
 	iconPath = iconPath or TRP3_ICON_DEFAULT
