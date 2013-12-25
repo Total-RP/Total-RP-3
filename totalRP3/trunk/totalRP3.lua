@@ -39,6 +39,7 @@ function trp3Addon:OnEnable()
 	-- Inits impl
 	TRP3_InitConfiguration();
 	TRP3_InitLocalization(TRP3_GetConfigValue("Locale"));
+	TRP3_InitCommunicationProtocol();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
 	
@@ -61,34 +62,4 @@ function trp3Addon:OnEnable()
 	TRP3_Configuration_OnModuleLoaded();
 	
 	log("OnEnable() DONE");
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- EVENT HANDLING
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local REGISTERED_EVENTS = {};
-
-function TRP3_RegisterToEvent(event, callback)
-	assert(event, "Event must be set.");
-	assert(callback and type(callback) == "function", "Callback must be a function");
-	if not REGISTERED_EVENTS[event] then
-		REGISTERED_EVENTS[event] = {};
-		TRP3_EventFrame:RegisterEvent(event);
-	end
-	tinsert(REGISTERED_EVENTS[event], callback);
-	log("Registered event: " ..tostring(event));
-end
-
-function TRP3_EventDispatcher(self, event, ...)
-	-- Main event function, if exists
-	if _G["TRP3_onEvent_"..event] then
-		_G["TRP3_onEvent_"..event](...);
-	end
-	-- Callbacks
-	if REGISTERED_EVENTS[event] then
-		for _, callback in pairs(REGISTERED_EVENTS[event]) do
-			callback(...);
-		end
-	end
 end

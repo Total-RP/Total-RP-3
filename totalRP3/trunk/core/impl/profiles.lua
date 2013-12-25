@@ -5,13 +5,14 @@
 -- functions
 local log = TRP3_Log;
 local loc = TRP3_L;
+-- Saved variables references
+local profiles, profilesLinks;
 
 local PATH_DELIMITER = "/";
 local currentProfile = nil;
 local currentProfileId = nil;
-local DEFAULT_PROFILE_ID = "\1default"; -- "\1" so it's first when we sort the list
-local PR_DEFAULT_PROFILE = {
-};
+local PR_DEFAULT_PROFILE = {};
+local SELECT_CALLBACKS = {};
 
 function TRP3_GetDefaultProfile()
 	return PR_DEFAULT_PROFILE;
@@ -39,11 +40,13 @@ end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
+-- For decoupling reasons, the saved variables TRP3_Profiles and TRP3_ProfileLinks should'nt be used outside this file !
+-- You should use all the public methods instead.
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Check if the profileName is not already used
 local function isProfileNameAvailable(profileName)
-	for profileID, profile in pairs(TRP3_Profiles) do
+	for profileID, profile in pairs(profiles) do
 		if profile.profileName == profileName then
 			return false;
 		end
@@ -56,9 +59,9 @@ local function dupplicateProfile(duplicatedProfile, profileName)
 	assert(duplicatedProfile, "Nil profile");
 	assert(isProfileNameAvailable(profileName), "Unavailable profile name: "..tostring(profileName));
 	local profileID = TRP3_GenerateID();
-	TRP3_Profiles[profileID] = {};
-	TRP3_DupplicateTab(TRP3_Profiles[profileID], duplicatedProfile);
-	TRP3_Profiles[profileID].profileName = profileName;
+	profiles[profileID] = {};
+	TRP3_DupplicateTab(profiles[profileID], duplicatedProfile);
+	profiles[profileID].profileName = profileName;
 	TRP3_DisplayMessage(loc("PR_PROFILE_CREATED"):format(TRP3_Color("g")..profileName.."|r"));
 	return profileID;
 end
@@ -70,30 +73,42 @@ end
 
 -- Just internally switch the current profile structure. That's all.
 local function selectProfile(profileID)
-	if not TRP3_Profiles[profileID] then
+	if not profiles[profileID] then
 		error("Unknown profile id: "+profileID);
 	end
-	currentProfile = TRP3_Profiles[profileID];
+	currentProfile = profiles[profileID];
 	currentProfileId = profileID;
-	TRP3_ProfileLinks[TRP3_USER_ID] = profileID;
+	profilesLinks[TRP3_USER_ID] = profileID;
+	for _, callback in pairs(SELECT_CALLBACKS) do
+		callback();
+	end
+end
+
+function TRP3_RegisterProfileSelectionHandler(callback)
+	assert(type(callback) == "function", "Callback must be a function.");
+	tinsert(SELECT_CALLBACKS, callback);
 end
 
 -- Edit a profile name
 local function editProfile(profileID, newName)
-	assert(TRP3_Profiles[profileID], "Unknown profile: "..tostring(profileID));
+	assert(profiles[profileID], "Unknown profile: "..tostring(profileID));
 	assert(isProfileNameAvailable(newName), "Unavailable profile name: "..tostring(newName));
-	TRP3_Profiles[profileID]["profileName"] = newName;
+	profiles[profileID]["profileName"] = newName;
 end
 
 -- Delete a profile
 -- If the deleted profile is the currently selected one, assign the default profile
 local function deleteProfile(profileID)
-	assert(TRP3_Profiles[profileID], "Unknown profile: "..tostring(profileID));
+	assert(profiles[profileID], "Unknown profile: "..tostring(profileID));
 	assert(currentProfileId ~= profileID, "You can't delete the currently selected profile !");
-	local profileName = TRP3_Profiles[profileID]["profileName"];
-	wipe(TRP3_Profiles[profileID]);
-	TRP3_Profiles[profileID] = nil;
+	local profileName = profiles[profileID]["profileName"];
+	wipe(profiles[profileID]);
+	profiles[profileID] = nil;
 	TRP3_DisplayMessage(loc("PR_PROFILE_DELETED"):format(TRP3_Color("g")..profileName.."|r"));
+end
+
+function TRP3_GetProfileID()
+	return currentProfileId;
 end
 
 function TRP3_GetProfile()
@@ -102,7 +117,7 @@ end
 
 -- This method has to handle everything when the player switch to another profile
 function TRP3_LoadProfile()
-	TRP3_DisplayMessage(loc("PR_PROFILE_LOADED"):format(TRP3_Color("g")..TRP3_Profiles[TRP3_ProfileLinks[TRP3_USER_ID]]["profileName"].."|r"));
+	TRP3_DisplayMessage(loc("PR_PROFILE_LOADED"):format(TRP3_Color("g")..profiles[profilesLinks[TRP3_USER_ID]]["profileName"].."|r"));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -111,7 +126,7 @@ end
 
 local function decorateProfileList(widget, id)
 	widget.profileID = id;
-	local profile = TRP3_Profiles[id];
+	local profile = profiles[id];
 	local dataTab = TRP3_Profile_DataGetter("player/characteristics", profile);
 	local mainText = profile.profileName;
 	
@@ -131,7 +146,7 @@ local function decorateProfileList(widget, id)
 	
 	local listText = "";
 	local i = 0;
-	for character,profileID in pairs(TRP3_ProfileLinks) do
+	for character,profileID in pairs(profilesLinks) do
 		if profileID == id then
 			listText = listText.."- |cff00ff00"..character:sub((character:find("|"))+1).." ( "..character:sub(1,(character:find("|"))-1).." )|r\n";
 			i = i + 1;
@@ -140,9 +155,6 @@ local function decorateProfileList(widget, id)
 	_G[widget:GetName().."Count"]:SetText(loc("PR_PROFILEMANAGER_COUNT"):format(i));
 	
 	local text = "";
-	if id == DEFAULT_PROFILE_ID then
-		text = text..loc("PR_DEFAULT_PROFILE_HINTE").."\n\n";
-	end
 	if i > 0 then 
 		text = text..loc("PR_PROFILE_DETAIL")..":\n"..listText;
 	else
@@ -158,7 +170,7 @@ end
 
 -- Refresh list display
 local function uiInitProfileList()
-	TRP3_InitList(TRP3_ProfileManagerList, TRP3_Profiles, TRP3_ProfileManagerSlider);
+	TRP3_InitList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerSlider);
 end
 
 local function uiCheckNameAvailability(profileName)
@@ -185,10 +197,7 @@ end
 
 -- Promps profile delete confirmation
 local function uiDeleteProfile(profileID)
-	if DEFAULT_PROFILE_ID == profileID then
-		return;
-	end
-	TRP3_ShowConfirmPopup(loc("PR_PROFILEMANAGER_DELETE_WARNING"):format(TRP3_Color("g")..TRP3_Profiles[profileID].profileName.."|r"), 
+	TRP3_ShowConfirmPopup(loc("PR_PROFILEMANAGER_DELETE_WARNING"):format(TRP3_Color("g")..profiles[profileID].profileName.."|r"), 
 	function()
 		deleteProfile(profileID);
 		uiInitProfileList();
@@ -196,11 +205,8 @@ local function uiDeleteProfile(profileID)
 end
 
 local function uiEditProfile(profileID)
-	if DEFAULT_PROFILE_ID == profileID then
-		return;
-	end
 	TRP3_ShowTextInputPopup(
-		loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(TRP3_Color("g")..TRP3_Profiles[profileID].profileName.."|r"),
+		loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(TRP3_Color("g")..profiles[profileID].profileName.."|r"),
 		function(newName)
 			if newName and #newName ~= 0 then
 				if not uiCheckNameAvailability(newName) then return end
@@ -209,12 +215,12 @@ local function uiEditProfile(profileID)
 			end
 		end,
 		nil,
-		TRP3_Profiles[profileID].profileName
+		profiles[profileID].profileName
 	);
 end
 
 local function uiSelectProfile(profileID)
-	if TRP3_ProfileLinks[TRP3_USER_ID] == profileID then
+	if profilesLinks[TRP3_USER_ID] == profileID then
 		return;
 	end
 	selectProfile(profileID);
@@ -223,20 +229,17 @@ local function uiSelectProfile(profileID)
 end
 
 local function uiDupplicateProfile(profileID)
-	if DEFAULT_PROFILE_ID == profileID then
-		return;
-	end
 	TRP3_ShowTextInputPopup(
-		loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(TRP3_Color("g")..TRP3_Profiles[profileID].profileName.."|r"),
+		loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(TRP3_Color("g")..profiles[profileID].profileName.."|r"),
 		function(newName)
 			if newName and #newName ~= 0 then
 				if not uiCheckNameAvailability(newName) then return end
-				dupplicateProfile(TRP3_Profiles[profileID], newName);
+				dupplicateProfile(profiles[profileID], newName);
 				uiInitProfileList();
 			end
 		end,
 		nil,
-		TRP3_Profiles[profileID].profileName
+		profiles[profileID].profileName
 	);
 end
 
@@ -277,19 +280,18 @@ function TRP3_InitProfiles()
 	if not TRP3_Profiles then
 		TRP3_Profiles = {};
 	end
+	profiles = TRP3_Profiles;
 	if not TRP3_ProfileLinks then
 		TRP3_ProfileLinks = {};
 	end
-	
-	-- Setting the default profile
-	TRP3_GetDefaultProfile().profileName = loc("PR_DEFAULT_PROFILE");
+	profilesLinks = TRP3_ProfileLinks;
 	
 	-- First time this character is connected with TRP3 or if deleted profile through another character
 	-- So we create a new profile named by his pseudo.
-	if not TRP3_ProfileLinks[TRP3_USER_ID] or not TRP3_Profiles[TRP3_ProfileLinks[TRP3_USER_ID]] then
+	if not profilesLinks[TRP3_USER_ID] or not profiles[profilesLinks[TRP3_USER_ID]] then
 		selectProfile(createProfile(TRP3_PLAYER.." - "..TRP3_REALM));
 	else
-		selectProfile(TRP3_ProfileLinks[TRP3_USER_ID]);
+		selectProfile(profilesLinks[TRP3_USER_ID]);
 	end
 	
 	-- UI

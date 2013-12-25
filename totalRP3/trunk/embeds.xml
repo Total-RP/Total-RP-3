@@ -6,4 +6,5 @@
   <Include file="libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>
   <Include file="libs\AceConsole-3.0\AceConsole-3.0.xml"/>
   <Include file="libs\AceTimer-3.0\AceTimer-3.0.xml"/>
+  <Include file="libs\LibCompress\LibCompress.lua"/>
 </Ui>

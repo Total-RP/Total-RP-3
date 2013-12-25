@@ -7,10 +7,13 @@
 -- TODO: compression ?
 -- TODO: 255 base encoding numbers ?
 
+-- TRP3 API
+local log = TRP3_Log;
 -- function definition
 local handlePacketsIn;
 local handleStructureIn;
 local receiveObject;
+local onAddonMessageReceived;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LAYER 0 : CONNECTION LAYER
@@ -18,30 +21,47 @@ local receiveObject;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local wowCom_prefix = "TRP3";
-local connection_id = 1; -- 1 = Wow, 2 = localhost, 3 = print
 TRP3_COMM_INTERFACE = {
 	WOW = 1,
 	DIRECT_RELAY = 2,
 	DIRECT_PRINT = 3
 };
+local connection_id = TRP3_COMM_INTERFACE.WOW;
+
+function TRP3_InitCommunicationProtocol()
+	TRP3_RegisterToEvent("CHAT_MSG_ADDON", onAddonMessageReceived);
+	TRP3_RegisterToEvent("PLAYER_ENTERING_WORLD", function() 
+		RegisterAddonMessagePrefix(wowCom_prefix);
+	end);
+end
 
 -- This is the main communication interface, using ChatThrottleLib to
 -- avoid being kicked by the server when sending a lot of data.
 local function wowCommunicationInterface(packet, target, priority)
-	ChatThrottleLib:SendAddonPackage(priority or "BULK", wowCom_prefix, packet, "WHISPER", target);
+	ChatThrottleLib:SendAddonMessage(priority or "BULK", wowCom_prefix, packet, "WHISPER", target);
 end
 
--- A "direct relay" (like localhost) communication interface, used for development purpose.
--- Any message sent to this communication interface is directly rerouted to the user itself.
--- Note that the messages are not really sent.
-local function directRelayInterface(packet, target)
-	handlePacketsIn(packet, target);
+onAddonMessageReceived = function(...)
+	local prefix, packet , distributionType, sender = ...;
+	if prefix == wowCom_prefix then
+		-- TODO: check here ignore
+		handlePacketsIn(packet, sender);
+	end
 end
 
 -- This communication interface print all sent message to the chat frame.
 -- Note that the messages are not really sent.
 local function directPrint(packet, target, priority)
-	print("Message to: "..tostring(target).." - Priority: "..tostring(priority).." - Message:\n" .. tostring(packet));
+	log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), TRP3_LOG_LEVEL.DEBUG);
+	log(packet:sub(4), TRP3_LOG_LEVEL.DEBUG);
+end
+
+-- A "direct relay" (like localhost) communication interface, used for development purpose.
+-- Any message sent to this communication interface is directly rerouted to the user itself.
+-- Note that the messages are not really sent.
+local function directRelayInterface(packet, target, priority)
+	directPrint(packet, target, priority)
+	handlePacketsIn(packet, target);
 end
 
 -- Returns the function reference to be used as communication interface.
@@ -52,7 +72,7 @@ local function getCommunicationInterface()
 end
 
 -- Changes the communication interface to use
-function TRP3_setCommunicationInterfaceId(id)
+function TRP3_SetCommunicationInterfaceId(id)
 	connection_id = id;
 end
 
@@ -61,6 +81,7 @@ end
 -- Packet sending and receiving
 -- Handles packet sequences
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 -- 254 - TRP3(4) - MESSAGE_ID(2) - control character(1)
 local AVAILABLE_CHARACTERS = 246;
 local NEXT_PACKET_PREFIX = 1;
@@ -71,7 +92,7 @@ local PACKETS_RECEPTOR = {};
 local function handlePacketsOut(messageID, packets, target, priority)
 	if #packets ~= 0 then
 		for index, packet in pairs(packets) do
-			assert(packet:len() <= AVAILABLE_CHARACTERS, "Too long packet !");
+			assert(packet:len() <= AVAILABLE_CHARACTERS, "Too long packet: " .. packet:len());
 			local control = string.char(NEXT_PACKET_PREFIX);
 			if index == #packets then
 				control = string.char(LAST_PACKET_PREFIX);
@@ -118,19 +139,20 @@ end
 -- Message cutting in packets / Message reconstitution
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local MESSAGE_ID_1 = 0;
-local MESSAGE_ID_2 = 0;
+local MESSAGE_ID_1 = 1;
+local MESSAGE_ID_2 = 1;
 local MESSAGE_ID = string.char(MESSAGE_ID_1, MESSAGE_ID_2);
+local COMPRESS_MESSAGE = true;
 
 -- Message IDs are 256 base number encoded on 2 chars (256*256 = 65536 available Message IDs)
 local function getMessageIDAndIncrement()
 	local toReturn = MESSAGE_ID;
 	MESSAGE_ID_2 = MESSAGE_ID_2 + 1;
 	if MESSAGE_ID_2 > 255 then
-		MESSAGE_ID_2 = 0;
+		MESSAGE_ID_2 = 1;
 		MESSAGE_ID_1 = MESSAGE_ID_1 + 1;
 		if MESSAGE_ID_1 > 255 then
-			MESSAGE_ID_1 = 0;
+			MESSAGE_ID_1 = 1;
 		end
 	end
 	MESSAGE_ID = string.char(MESSAGE_ID_1, MESSAGE_ID_2);
@@ -145,8 +167,8 @@ local function handleStructureOut(structure, target, priority)
 	local packetTab = {};
 	local index = 0;
 	while index < messageSize do
-		tinsert(packetTab, message:sub(index, index + AVAILABLE_CHARACTERS));
-		index = index + AVAILABLE_CHARACTERS + 1;
+		tinsert(packetTab, message:sub(index, index + (AVAILABLE_CHARACTERS - 1)));
+		index = index + AVAILABLE_CHARACTERS;
 	end
 	handlePacketsOut(messageID, packetTab, target, priority);
 end
@@ -160,6 +182,8 @@ handleStructureIn = function(packets, sender)
 	local status, structure = TRP3_GetAddon():Deserialize(message);
 	if status then
 		receiveObject(structure, sender);
+	else
+		log(("Deserialization error. Message:\n%s"):format(message), TRP3_LOG_LEVEL.SEVERE);
 	end
 end
 
@@ -199,7 +223,11 @@ receiveObject = function(structure, sender)
 			for _, callback in pairs(PREFIX_REGISTRATION[prefix]) do
 				callback(structure[2], sender);
 			end
+		else
+			log("No registration for prefix: " .. prefix, TRP3_LOG_LEVEL.INFO);
 		end
+	else
+		log("Bad structure composition.", TRP3_LOG_LEVEL.SEVERE);
 	end
 end
 

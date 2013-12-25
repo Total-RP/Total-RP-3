@@ -20,7 +20,7 @@ function TRP3_Log(message, level)
 	if level == TRP3_LOG_LEVEL.DEBUG and not isDebug then
 		return;
 	end
-	print( "[TRP3"..(TRP3_LOG_LEVEL[level] or TRP3_LOG_LEVEL.INFO)..tostring(message));
+	print( "[TRP3"..(level or TRP3_LOG_LEVEL.INFO)..tostring(message));
 end
 
 function string.log(a)
@@ -28,10 +28,10 @@ function string.log(a)
 end
 
 function TRP3_DumpTab(tab)
-	print("Dump tab "..tostring(tab));
+	TRP3_Log("Dump tab "..tostring(tab), TRP3_LOG_LEVEL.DEBUG);
 	if tab then
 		for k,v in pairs(tab) do
-			print(k.." : "..tostring(v).." ( "..type(v).." )");
+			TRP3_Log(k.." : "..tostring(v).." ( "..type(v).." )", TRP3_LOG_LEVEL.DEBUG);
 		end
 	end
 end
@@ -90,7 +90,7 @@ function TRP3_GenerateID()
 end
 
 function TRP3_GetUnitID(unitName, unitRealm)
-    return strconcat((unitRealm or TRP3_REALM), '|', unitName);
+    return strconcat((unitRealm or TRP3_REALM), '|', unitName or "_");
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
@@ -300,4 +300,67 @@ function TRP2_toHTML(text)
 	end
 	
 	return "<HTML><BODY>"..TRP3_ConvertTextTags(finalText).."</BODY></HTML>";
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMPRESSION / Serialization
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local libCompress = LibStub:GetLibrary("LibCompress");
+local libCompressEncoder = libCompress:GetAddonEncodeTable();
+
+function TRP3_Serialize(structure)
+	return TRP3_GetAddon():Serialize(structure);
+end
+
+function TRP3_Deserialize(structure)
+	local status, data = TRP3_GetAddon():Deserialize(structure);
+	assert(status, "Deserialization error:\n" .. tostring(structure));
+	return data;
+end
+
+function TRP3_EncodeCompressMessage(message)
+	return libCompress:GetAddonEncodeTable():Encode(libCompress:Compress(message));
+end
+
+function TRP3_DecompressCodedMessage(message)
+	return libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message));
+end
+
+function TRP3_DecompressCodedStructure(message)
+	return TRP3_Deserialize(libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message)));
+end
+
+function TRP3_EncodeCompressStructure(structure)
+	return TRP3_EncodeCompressMessage(TRP3_Serialize(structure));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- EVENT HANDLING
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local REGISTERED_EVENTS = {};
+
+function TRP3_RegisterToEvent(event, callback)
+	assert(event, "Event must be set.");
+	assert(callback and type(callback) == "function", "Callback must be a function");
+	if not REGISTERED_EVENTS[event] then
+		REGISTERED_EVENTS[event] = {};
+		TRP3_EventFrame:RegisterEvent(event);
+	end
+	tinsert(REGISTERED_EVENTS[event], callback);
+	TRP3_Log("Registered event: " ..tostring(event));
+end
+
+function TRP3_EventDispatcher(self, event, ...)
+	-- Main event function, if exists
+	if _G["TRP3_onEvent_"..event] then
+		_G["TRP3_onEvent_"..event](...);
+	end
+	-- Callbacks
+	if REGISTERED_EVENTS[event] then
+		for _, callback in pairs(REGISTERED_EVENTS[event]) do
+			callback(...);
+		end
+	end
 end

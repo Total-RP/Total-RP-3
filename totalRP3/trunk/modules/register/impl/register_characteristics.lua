@@ -20,73 +20,99 @@ local PSYCHO_PRESETS_DROPDOWN;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---TRP3_GetDefaultProfile().player.characteristics = {
---	version = 1,
---	race = TRP3_RACE_LOC,
---	class = TRP3_CLASS_LOC,
---	misc = {},
---	psycho = {}
---};
-
--- Mock
 TRP3_GetDefaultProfile().player.characteristics = {
 	version = 1,
-	firstName = "Telkos le fou",
-	lastName = "Arkale",
-	title = "Sir",
-	fullTitle = UnitPVPName("player"),
-	icon = "ABILITY_SEAL",
-	race = "Drrrrrragon",
-	class = "Ingénieur",
-	residence = "Hurlevent",
-	birthplace = "Berceau de l'hiver",
-	age = "47 balais",
-	eyeColor = "Emerald green",
-	height = "182 cm",
-	weight = "92 kg",
-	faction = "Alliance",
-	misc = {
-		{
-			name = "Strength",
-			value = "Very strong !",
-			icon = "Ability_Warrior_StrengthOfArms",
-		},
-		{
-			name = "Intelligence",
-			value = "Very smart either !",
-			icon = "Spell_Holy_ArcaneIntellect",
-		},
-		{
-			name = "Mon custom avec un nom foutrement trop long juste pour faire chier",
-			value = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
-			icon = "Spell_Holy_ArcaneIntellect",
-		},
-	},
-	psycho = {
-		{
-			left = "Chaotic",
-			leftIcon = "INV_Inscription_TarotChaos",
-			right = "Loyal",
-			rightIcon = "Spell_Shaman_AncestralAwakening",
-			value = 2,
-		},
-		{
-			left = "A very very long left term",
-			leftIcon = "INV_Inscription_TarotChaos",
-			right = "A very very long right term",
-			rightIcon = "Spell_Shaman_AncestralAwakening",
-			value = 5,
-		},
-		{
-			presetID = 1,
-			value = 4
-		},
-		{
-			presetID = 10,
-			value = 1
-		}
-	},
+	race = TRP3_RACE_LOC,
+	class = TRP3_CLASS_LOC,
+	misc = {},
+	psycho = {}
 };
+
+-- Mock
+--TRP3_GetDefaultProfile().player.characteristics = {
+--	version = 1,
+--	firstName = "Telkos le fou",
+--	lastName = "Arkale",
+--	title = "Sir",
+--	fullTitle = UnitPVPName("player"),
+--	icon = "ABILITY_SEAL",
+--	race = "Drrrrrragon",
+--	class = "Ingénieur",
+--	residence = "Hurlevent",
+--	birthplace = "Berceau de l'hiver",
+--	age = "47 balais",
+--	eyeColor = "Emerald green",
+--	height = "182 cm",
+--	weight = "92 kg",
+--	faction = "Alliance",
+--	misc = {
+--		{
+--			name = "Strength",
+--			value = "Very strong !",
+--			icon = "Ability_Warrior_StrengthOfArms",
+--		},
+--		{
+--			name = "Intelligence",
+--			value = "Very smart either !",
+--			icon = "Spell_Holy_ArcaneIntellect",
+--		},
+--		{
+--			name = "Mon custom avec un nom foutrement trop long juste pour faire chier",
+--			value = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
+--			icon = "Spell_Holy_ArcaneIntellect",
+--		},
+--	},
+--	psycho = {
+--		{
+--			left = "Chaotic",
+--			leftIcon = "INV_Inscription_TarotChaos",
+--			right = "Loyal",
+--			rightIcon = "Spell_Shaman_AncestralAwakening",
+--			value = 2,
+--		},
+--		{
+--			left = "A very very long left term",
+--			leftIcon = "INV_Inscription_TarotChaos",
+--			right = "A very very long right term",
+--			rightIcon = "Spell_Shaman_AncestralAwakening",
+--			value = 5,
+--		},
+--		{
+--			presetID = 1,
+--			value = 4
+--		},
+--		{
+--			presetID = 10,
+--			value = 1
+--		}
+--	},
+--};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMPRESSION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local currentCompressed;
+
+local function compressData()
+	local dataTab = get("player/characteristics");
+	local serial = TRP3_Serialize(dataTab);
+	local compressed = TRP3_EncodeCompressMessage(serial);
+	if compressed:len() < serial:len() then
+		currentCompressed = compressed;
+--		log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+	else
+		currentCompressed = nil;
+	end
+end
+
+function TRP3_RegisterCharacteristicsGetExchangeData()
+	if currentCompressed ~= nil then
+		return currentCompressed;
+	else
+		return get("player/characteristics");
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTERISTICS - CONSULT
@@ -513,7 +539,9 @@ local function saveCharacteristics()
 	tcopy(dataTab, draftData);
 	-- version increment
 	assert(type(dataTab.version) == "number", "Error: No version in draftData or not a number.");
-	dataTab.version = dataTab.version + 1;
+	dataTab.version = TRP3_IncrementVersion(dataTab.version, 2);
+	
+	compressData();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -717,4 +745,6 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_WeightFieldText:SetText(loc("REG_PLAYER_WEIGHT"));
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc("REG_PLAYER_RESIDENCE"));
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc("REG_PLAYER_BIRTHPLACE"));
+	
+	compressData();
 end

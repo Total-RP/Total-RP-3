@@ -14,13 +14,13 @@ local get = TRP3_Profile_DataGetter;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---TRP3_GetDefaultProfile().player.peek = {
+--TRP3_GetDefaultProfile().player.misc = {
 --	vernum = 1,
 -- quicks = {},
 --}
 
 -- Mock
-TRP3_GetDefaultProfile().player.peek = {
+TRP3_GetDefaultProfile().player.misc = {
 	version = 1,
 	currentIC = "My pretty current ic which is purposely very very long a lot more than 130 characters.",
 	quicks = {
@@ -54,7 +54,7 @@ local function showView()
 	TRP3_RegisterPeekEdit:Hide();
 	TRP3_RegisterPeekView:Show();
 	
-	local data = get("player/peek");
+	local data = get("player/misc");
 	assert(type(data) == "table", "Error: Nil peek data or not a table.");
 	
 	TRP3_RegisterPeekViewCurrentText:SetText(data.currentIC or "");

@@ -504,7 +504,7 @@ local function save()
 	tcopy(dataTab, draftData);
 	-- version increment
 	assert(type(dataTab.version) == "number", "Error: No version in draftData or not a number.");
-	dataTab.version = dataTab.version + 1;
+	dataTab.version = TRP3_IncrementVersion(dataTab.version, 2);
 end
 
 local function refreshEditDisplay()

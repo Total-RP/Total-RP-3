@@ -113,17 +113,17 @@ end
 
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
-local function getCharacterInfoTab(characterID)
-	if characterID == TRP3_PLAYER then
+local function getCharacterInfoTab(targetName, realm)
+	if targetName == TRP3_PLAYER then
 		return TRP3_Profile_DataGetter("player");
 	else
-		return {}; --TODO when registered players.
+		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
 	end
 end
 
-local function writeTooltipForCharacter(targetName, originalTexts, targetType)
+local function writeTooltipForCharacter(targetName, realm, originalTexts, targetType)
 	local lineIndex = 1;
-	local info = getCharacterInfoTab(targetName);
+	local info = getCharacterInfoTab(targetName, realm);
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -279,7 +279,7 @@ end
 local function show(targetType)
 	TRP3_CharacterTooltip:Hide();
 	
-	local targetName = UnitName(targetType);
+	local targetName, realm = UnitName(targetType);
 	
 	-- If we have a target
 	if targetName then
@@ -290,7 +290,7 @@ local function show(targetType)
 		
 		-- The target is a player
 		if UnitIsPlayer(targetType) then
-			writeTooltipForCharacter(targetName, originalTexts, targetType);
+			writeTooltipForCharacter(targetName, realm, originalTexts, targetType);
 			TRP3_CharacterTooltip.target = targetName;
 			TRP3_CharacterTooltip.targetType = targetType;
 			TRP3_CharacterTooltip:Show();
@@ -307,6 +307,12 @@ end
 
 local function onMouseOver()
 	show("mouseover");
+end
+
+function TRP3_ShouldRefreshTooltip(targetName)
+	if UnitName("mouseover") == targetName then
+		onMouseOver();
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

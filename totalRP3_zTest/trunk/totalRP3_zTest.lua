@@ -20,12 +20,12 @@ function TRP3_DEBUG_CLEAR()
 	TRP3_Profiles = nil;
 	TRP3_ProfileLinks = nil;
 	TRP3_Flyway = nil;
+	TRP3_Register = nil;
 	ReloadUI();
 end
 
 local function onInit()
 	log("onInit test module");
---	error("PLOU");
 end
 
 local function onLoaded()
