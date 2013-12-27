@@ -14,9 +14,10 @@ local DND_ICON = "Ability_Mage_IncantersAbsorbtion";
 local ALLIANCE_ICON = "INV_BannerPVP_02";
 local HORDE_ICON = "INV_BannerPVP_01";
 local PVP_ICON = "Ability_DualWield";
+local PEEK_ICON_SIZE = 20;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Config getters 
+-- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getAnchoredFrame()
@@ -40,7 +41,7 @@ local function getSubLineFontSize()
 end
 
 local function getSmallLineFontSize()
-	return 8; --TODO load config
+	return 10; --TODO load config
 end
 
 local function showIcons()
@@ -73,6 +74,18 @@ end
 
 local function showClient()
 	return true; --TODO load config
+end
+
+local function showNotifications()
+	return true; --TODO load config
+end
+
+local function showCurrently()
+	return true; --TODO load config
+end
+
+local function getCurrentMaxSize()
+	return 140;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -112,18 +125,18 @@ end
 local function writeTooltipForCharacter(targetName, realm, originalTexts, targetType)
 	local lineIndex = 1;
 	local info = getCharacterInfoTab(targetName, realm);
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
 	local completeName = TRP3_GetCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
-	
+
 	-- TODO: color blocker param
-	
+
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
@@ -145,16 +158,16 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		end
 		-- TODO: Beginner icon + volunteer icon
 	end
-	
+
 	TRP3_CharacterTooltip:AddDoubleLine(completeName, rightIcons);
 	setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getMainLineFontSize());
 	_G[strconcat(TRP3_CharacterTooltip:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
 	lineIndex = lineIndex + 1;
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	if showFullTitle() then
 		local fullTitle = "";
 		if info.characteristics and info.characteristics.FT then
@@ -168,95 +181,121 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 			lineIndex = lineIndex + 1;
 		end
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- race, class and level
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	if showRaceClass() then
 		local lineLeft = "";
 		local lineRight;
 		local race = UnitRace(targetType);
 		local class = localizedClass;
 		if info.characteristics and info.characteristics.RA then
-		  race = info.characteristics.RA;
+			race = info.characteristics.RA;
 		end
 		if info.characteristics and info.characteristics.CL then
-          class = info.characteristics.CL;
-        end
+			class = info.characteristics.CL;
+		end
 		lineLeft = strconcat("|cffffffff", race, " ", TRP3_ColorCodeFloat(classColor.r, classColor.g, classColor.b), class);
-		
+
 		if UnitLevel(targetType) ~= -1 then
 			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format(UnitLevel(targetType)), ")");
 		else
 			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format("|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Skull:16:16|t"), ")");
 		end
-		
+
 		TRP3_CharacterTooltip:AddDoubleLine(lineLeft, lineRight);
 		setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Realm
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	local _, realm = UnitName(targetType);
 	if showRealm() and realm then
 		TRP3_CharacterTooltip:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1);
 		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Guild
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
 		TRP3_CharacterTooltip:AddLine(loc("REG_TT_GUILD"):format(grade, guild), 1, 1, 1);
 		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- BLOCKED
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	--TODO
+	
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CURRENTLY
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCurrently() and info.misc and info.misc.CU then
+		TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
+		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+		
+		local text = info.misc.CU;
+		if text:len() > getCurrentMaxSize() then
+			text = text:sub(1, getCurrentMaxSize()) .. "...";
+		end
+		TRP3_CharacterTooltip:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
+		setLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
+		lineIndex = lineIndex + 1;
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Quick peek & new description notifications
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showNotifications() then
+		local glance = false;
+		local description = false;
+		if info.misc and info.misc.PE and TRP3_HashTableSize(info.misc.PE) > 0 then
+			glance = true;
+		end
+		if not targetName ~= TRP3_PLAYER and true then -- TODO: has new
+			description = true;
+		end
+		if glance or description then
+			TRP3_CharacterTooltip:AddDoubleLine(loc("REG_PLAYER_GLANCE"), loc("REG_TT_NOTIF"), 1, 1, 1, 0, 1, 0);
+			setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
+			lineIndex = lineIndex + 1;
+		end
+	end
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	if showTarget() and UnitName(targetType .. "target") then
 		TRP3_CharacterTooltip:AddLine(loc("REG_TT_TARGET"):format(UnitName(targetType .. "target")), 1, 1, 1);
 		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- BLOCKED
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	--TODO
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Quick peek
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	--TODO
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Notifications
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	--TODO
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	if showClient() then
 		local text = "";
 		if targetName == TRP3_PLAYER then
 			text = strconcat("|cffffffff", TRP3_ADDON_NAME_ALT, " v", TRP3_VERSION_USER);
 		else
-			-- TODO: check character client
+		-- TODO: check character client
 		end
 		if text:len() > 0 then
 			TRP3_CharacterTooltip:AddDoubleLine(" ", text);
@@ -272,16 +311,16 @@ end
 
 local function show(targetType)
 	TRP3_CharacterTooltip:Hide();
-	
+
 	local targetName, realm = UnitName(targetType);
-	
+
 	-- If we have a target
 	if targetName then
 		-- Stock all the current text from the GameTooltip
 		local originalTexts = getGameTooltipTexts();
-		
+
 		TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
-		
+
 		-- The target is a player
 		if UnitIsPlayer(targetType) then
 			writeTooltipForCharacter(targetName, realm, originalTexts, targetType);
@@ -294,7 +333,7 @@ local function show(targetType)
 		else
 			TRP3_CharacterTooltip:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
 		end
-		
+
 		TRP3_CharacterTooltip:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 	end
 end
@@ -316,7 +355,7 @@ end
 function TRP3_Register_TooltipInit()
 	-- Listen to the mouse over event
 	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-	
 
-	-- TODO: declare configuration UI here ?
+
+-- TODO: declare configuration UI here ?
 end

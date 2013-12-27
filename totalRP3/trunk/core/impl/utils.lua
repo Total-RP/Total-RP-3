@@ -45,7 +45,7 @@ function TRP3_Print(...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Common utils
+-- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Recursively copy all content from a table to another one.
@@ -60,6 +60,14 @@ function TRP3_DupplicateTab(destination, source)
 			destination[k] = v;
 		end
     end
+end
+
+function TRP3_HashTableSize(table)
+    local count = 0;
+    for _,_ in pairs(table) do
+        count = count + 1;
+    end
+    return count;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

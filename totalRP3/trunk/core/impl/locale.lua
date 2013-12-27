@@ -160,6 +160,7 @@ local LOCALE_EN = {
 		REG_TT_REALM = "Realm: |cffff9900%s",
 		REG_TT_GUILD = "%s of |cffff9900%s",
 		REG_TT_TARGET = "Target: |cffff9900%s",
+		REG_TT_NOTIF = "New description",
 		-- Configuration
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
