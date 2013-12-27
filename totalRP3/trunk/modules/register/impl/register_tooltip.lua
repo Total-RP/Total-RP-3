@@ -95,18 +95,6 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont("Fonts\\FRIZQT__.TTF", fontSize);
 end
 
-local function getCompleteName(characteristicsTab, name)
-	local text = "";
-	if showTitle() and characteristicsTab.title then
-		text = strconcat(characteristicsTab.title, " ");
-	end
-	text = strconcat(text, characteristicsTab.firstName or name);
-	if characteristicsTab.lastName then
-		text = strconcat(text, " ", characteristicsTab.lastName);
-	end
-	return text;
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -131,15 +119,15 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
-	local completeName = getCompleteName(info.characteristics or {}, targetName);
+	local completeName = TRP3_GetCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
 	
 	-- TODO: color blocker param
 	
 	if showIcons() then
 		-- Player icon
-		if info.characteristics and info.characteristics.icon then
-			completeName = strconcat(TRP3_Icon(info.characteristics.icon, 25), " ", completeName);
+		if info.characteristics and info.characteristics.IC then
+			completeName = strconcat(TRP3_Icon(info.characteristics.IC, 25), " ", completeName);
 		elseif UnitFactionGroup(targetType) == "Alliance" then
 			completeName = strconcat(TRP3_Icon(ALLIANCE_ICON, 25), " ", completeName);
 		elseif UnitFactionGroup(targetType) == "Horde" then
@@ -169,8 +157,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	
 	if showFullTitle() then
 		local fullTitle = "";
-		if info.characteristics and info.characteristics.fullTitle then
-			fullTitle = strconcat("< ", info.characteristics.fullTitle, " >");
+		if info.characteristics and info.characteristics.FT then
+			fullTitle = strconcat("< ", info.characteristics.FT, " >");
 		elseif UnitPVPName(targetType) ~= targetName then
 			fullTitle = strconcat("< ", UnitPVPName(targetType), " >");
 		end
@@ -190,6 +178,12 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		local lineRight;
 		local race = UnitRace(targetType);
 		local class = localizedClass;
+		if info.characteristics and info.characteristics.RA then
+		  race = info.characteristics.RA;
+		end
+		if info.characteristics and info.characteristics.CL then
+          class = info.characteristics.CL;
+        end
 		lineLeft = strconcat("|cffffffff", race, " ", TRP3_ColorCodeFloat(classColor.r, classColor.g, classColor.b), class);
 		
 		if UnitLevel(targetType) ~= -1 then

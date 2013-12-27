@@ -60,7 +60,7 @@ function TRP3_RegisterShouldUpdateInfo(unitName, infoType, version)
 		return true; -- If we don't have any information about its current profile, yes we should update.
 	end
 	local unitProfile = register[unitID].profiles[register[unitID].currentProfileID];
-	return not unitProfile[infoType] or not unitProfile[infoType].version or unitProfile[infoType].version ~= version;
+	return not unitProfile[infoType] or not unitProfile[infoType].v or unitProfile[infoType].v ~= version;
 end
 
 function TRP3_RegisterSetCurrentProfile(unitName, currentProfileID)

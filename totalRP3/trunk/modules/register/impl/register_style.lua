@@ -16,8 +16,8 @@ local tcopy = TRP3_DupplicateTab;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_GetDefaultProfile().player.style = {
-	version = 1,
-	values = {},
+	v = 1,
+	VA = {},
 }
 
 local STYLE_FIELDS;
@@ -130,7 +130,7 @@ local function showConsult()
 	local previous = nil;
 	local index = 1;
 	for _, fieldData in pairs(STYLE_FIELDS) do
-		local selectedValue = dataTab.values[fieldData.id] or 0;
+		local selectedValue = dataTab.VA[fieldData.id] or 0;
 		if selectedValue ~= 0 then
 			local frame = consultLines[index];
 			if frame == nil then
@@ -166,7 +166,7 @@ local draftData = {};
 local function onEditSelection(choice, frame)
 	frame = frame:GetParent();
 	assert(frame.fieldData, "No data in frame !");
-	draftData.values[frame.fieldData.id] = choice;
+	draftData.VA[frame.fieldData.id] = choice;
 end
 
 local function showEdit()
@@ -179,8 +179,8 @@ local function showEdit()
 	wipe(draftData);
 	tcopy(draftData, dataTab);
 	
-	if not draftData.values then
-		draftData.values = {};
+	if not draftData.VA then
+		draftData.VA = {};
 	end
 	
 	-- Hide all
@@ -208,7 +208,7 @@ local function showEdit()
 		frame:SetPoint("RIGHT", 0, 0);
 		
 		-- Value
-		local selectedValue = draftData.values[fieldData.id] or 0;
+		local selectedValue = draftData.VA[fieldData.id] or 0;
 		_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
 		_G[frame:GetName().."Values"]:SetSelectedValue(selectedValue);
 		
@@ -224,8 +224,8 @@ local function saveRPStyle()
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab, draftData);
 	-- version increment
-	assert(type(dataTab.version) == "number", "Error: No version in draftData or not a number.");
-	dataTab.version = TRP3_IncrementVersion(dataTab.version, 2);
+	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
 	
 	TRP3_onPlayerRPStyleShow();
 end

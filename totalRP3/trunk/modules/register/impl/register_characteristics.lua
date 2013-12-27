@@ -20,73 +20,72 @@ local PSYCHO_PRESETS_DROPDOWN;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_GetDefaultProfile().player.characteristics = {
-	version = 1,
-	race = TRP3_RACE_LOC,
-	class = TRP3_CLASS_LOC,
-	misc = {},
-	psycho = {}
-};
+--TRP3_GetDefaultProfile().player.characteristics = {
+--	v = 1,
+--	RA = TRP3_RACE_LOC,
+--	CL = TRP3_CLASS_LOC,
+--	MI = {},
+--	PS = {}
+--};
 
 -- Mock
---TRP3_GetDefaultProfile().player.characteristics = {
---	version = 1,
---	firstName = "Telkos le fou",
---	lastName = "Arkale",
---	title = "Sir",
---	fullTitle = UnitPVPName("player"),
---	icon = "ABILITY_SEAL",
---	race = "Drrrrrragon",
---	class = "Ingénieur",
---	residence = "Hurlevent",
---	birthplace = "Berceau de l'hiver",
---	age = "47 balais",
---	eyeColor = "Emerald green",
---	height = "182 cm",
---	weight = "92 kg",
---	faction = "Alliance",
---	misc = {
---		{
---			name = "Strength",
---			value = "Very strong !",
---			icon = "Ability_Warrior_StrengthOfArms",
---		},
---		{
---			name = "Intelligence",
---			value = "Very smart either !",
---			icon = "Spell_Holy_ArcaneIntellect",
---		},
---		{
---			name = "Mon custom avec un nom foutrement trop long juste pour faire chier",
---			value = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
---			icon = "Spell_Holy_ArcaneIntellect",
---		},
---	},
---	psycho = {
---		{
---			left = "Chaotic",
---			leftIcon = "INV_Inscription_TarotChaos",
---			right = "Loyal",
---			rightIcon = "Spell_Shaman_AncestralAwakening",
---			value = 2,
---		},
---		{
---			left = "A very very long left term",
---			leftIcon = "INV_Inscription_TarotChaos",
---			right = "A very very long right term",
---			rightIcon = "Spell_Shaman_AncestralAwakening",
---			value = 5,
---		},
---		{
---			presetID = 1,
---			value = 4
---		},
---		{
---			presetID = 10,
---			value = 1
---		}
---	},
---};
+TRP3_GetDefaultProfile().player.characteristics = {
+	v = 1,
+	FN = "Telkos le fou",
+	LN = "Arkale",
+	TI = "Sir",
+	FT = UnitPVPName("player"),
+	IC = "ABILITY_SEAL",
+	RA = "Drrrrrragon",
+	CL = "Ingénieur",
+	RE = "Hurlevent",
+	BP = "Berceau de l'hiver",
+	AG = "47 balais",
+	EC = "Emerald green",
+	HE = "182 cm",
+	WE = "92 kg",
+	MI = {
+		{
+			NA = "Strength",
+			VA = "Very strong !",
+			IC = "Ability_Warrior_StrengthOfArms",
+		},
+		{
+			NA = "Intelligence",
+			VA = "Very smart either !",
+			IC = "Spell_Holy_ArcaneIntellect",
+		},
+		{
+			NA = "Mon custom avec un nom foutrement trop long juste pour faire chier",
+			VA = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
+			IC = "Spell_Holy_ArcaneIntellect",
+		},
+	},
+	PS = {
+		{
+			LT = "Chaotic",
+			LI = "INV_Inscription_TarotChaos",
+			RT = "Loyal",
+			RI = "Spell_Shaman_AncestralAwakening",
+			VA = 2,
+		},
+		{
+			LT = "A very very long left term",
+			LI = "INV_Inscription_TarotChaos",
+			RT = "A very very long right term",
+			RI = "Spell_Shaman_AncestralAwakening",
+			VA = 5,
+		},
+		{
+			ID = 1,
+			VA = 4
+		},
+		{
+			ID = 10,
+			VA = 1
+		}
+	},
+};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
@@ -121,21 +120,28 @@ end
 local isEditMode;
 local registerCharFrame = {};
 local registerCharLocals = {
-	race = "REG_PLAYER_RACE",
-	class = "REG_PLAYER_CLASS",
-	age = "REG_PLAYER_AGE",
-	eyeColor = "REG_PLAYER_EYE",
-	height = "REG_PLAYER_HEIGHT",
-	weight = "REG_PLAYER_WEIGHT",
-	birthplace = "REG_PLAYER_BIRTHPLACE",
-	residence = "REG_PLAYER_RESIDENCE"
+	RA = "REG_PLAYER_RACE",
+	CL = "REG_PLAYER_CLASS",
+	AG = "REG_PLAYER_AGE",
+	EC = "REG_PLAYER_EYE",
+	HE = "REG_PLAYER_HEIGHT",
+	WE = "REG_PLAYER_WEIGHT",
+	BP = "REG_PLAYER_BIRTHPLACE",
+	RE = "REG_PLAYER_RESIDENCE"
 };
 local miscCharFrame = {};
 local psychoCharFrame = {};
 
-function TRP3_GetCompleteName(characteristicsTab, name)
-	assert(type(characteristicsTab) == "table", "Error: Nil data or not a table.");
-	return strconcat(characteristicsTab.title or "", " ", characteristicsTab.firstName or name, " ", characteristicsTab.lastName or "");
+function TRP3_GetCompleteName(characteristicsTab, name, hideTitle)
+	local text = "";
+    if not hideTitle and characteristicsTab.TI then
+        text = strconcat(characteristicsTab.TI, " ");
+    end
+    text = strconcat(text, characteristicsTab.FN or name);
+    if characteristicsTab.LN then
+        text = strconcat(text, " ", characteristicsTab.LN);
+    end
+    return text;
 end
 
 local function refreshPsycho(psychoLine, value)
@@ -148,7 +154,7 @@ local function refreshPsycho(psychoLine, value)
 			_G[psychoLine:GetName().."JaugeDot"..dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
 		end
 	end
-	psychoLine.value = value;
+	psychoLine.VA = value;
 end
 
 local function setBkg(backgroundIndex)
@@ -164,8 +170,8 @@ local function setConsultDisplay()
 	-- Icon, complete name and titles
 	local completeName = TRP3_GetCompleteName(dataTab, TRP3_PLAYER);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
-	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.fullTitle or "");
-	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.icon or TRP3_ICON_PROFILE_DEFAULT);
+	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
+	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or TRP3_ICON_PROFILE_DEFAULT);
 	
 	setBkg(dataTab.bkg or 1);
 	
@@ -180,12 +186,12 @@ local function setConsultDisplay()
 	local previous = TRP3_RegisterCharact_CharactPanel_RegisterTitle;
 
 	-- Which directory chars must be shown ?
-	local shownCharacteristics = {"race", "class"}; -- Race and class are mandatory values
+	local shownCharacteristics = {"RA", "CL"}; -- Race and class are mandatory values
 	local shownValues = {
-		race = stEtN(dataTab.race) or TRP3_RACE_LOC,
-		class = stEtN(dataTab.class) or TRP3_CLASS_LOC,
+		RA = stEtN(dataTab.RA) or TRP3_RACE_LOC,
+		CL = stEtN(dataTab.CL) or TRP3_CLASS_LOC,
 	};
-	for _,attribute in pairs({"age", "eyeColor", "height", "weight", "birthplace", "residence"}) do -- Optional values
+	for _,attribute in pairs({"AG", "EC", "HE", "WE", "BP", "RE"}) do -- Optional values
 		if stEtN(dataTab[attribute]) then
 			tinsert(shownCharacteristics, attribute);
 			shownValues[attribute] = dataTab[attribute];
@@ -209,34 +215,34 @@ local function setConsultDisplay()
 	end
 	
 	-- Psycho chars
-	assert(type(dataTab.psycho) == "table", "Error: Nil psycho data or not a table.");
-	if #dataTab.psycho > 0 then
-		assert(type(dataTab.psycho) == "table", "Error: Nil psycho data or not a table.");
+	assert(type(dataTab.PS) == "table", "Error: Nil psycho data or not a table.");
+	if #dataTab.PS > 0 then
+		assert(type(dataTab.PS) == "table", "Error: Nil psycho data or not a table.");
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
 		
-		for frameIndex, psychoStructure in pairs(dataTab.psycho) do
+		for frameIndex, psychoStructure in pairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
-			local value = psychoStructure.value;
+			local value = psychoStructure.VA;
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoInfoLine"..frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
 				tinsert(psychoCharFrame, frame);
 			end
 
 			-- Preset pointer
-			if psychoStructure.presetID then
-				psychoStructure = PSYCHO_PRESETS[psychoStructure.presetID] or PSYCHO_PRESETS_UNKOWN;
+			if psychoStructure.ID then
+				psychoStructure = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			end
 			
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName().."LeftText"]:SetText(psychoStructure.left or "");
-			_G[frame:GetName().."RightText"]:SetText(psychoStructure.right or "");
-			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.leftIcon or TRP3_ICON_DEFAULT));
-			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.rightIcon or TRP3_ICON_DEFAULT));
+			_G[frame:GetName().."LeftText"]:SetText(psychoStructure.LT or "");
+			_G[frame:GetName().."RightText"]:SetText(psychoStructure.RT or "");
+			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.LI or TRP3_ICON_DEFAULT));
+			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.RI or TRP3_ICON_DEFAULT));
 			refreshPsycho(frame, value or 3);
 			frame:Show();
 			previous = frame;
@@ -244,14 +250,14 @@ local function setConsultDisplay()
 	end
 	
 	-- Misc chars
-	assert(type(dataTab.misc) == "table", "Error: Nil misc data or not a table.");
-	if #dataTab.misc > 0 then
+	assert(type(dataTab.MI) == "table", "Error: Nil misc data or not a table.");
+	if #dataTab.MI > 0 then
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
 		
-		for frameIndex, miscStructure in pairs(dataTab.misc) do
+		for frameIndex, miscStructure in pairs(dataTab.MI) do
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine"..frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
@@ -260,8 +266,8 @@ local function setConsultDisplay()
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName().."FieldName"]:SetText(strconcat(TRP3_Icon(miscStructure.icon, 18)," ", miscStructure.name or ""));
-			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.value or "");
+			_G[frame:GetName().."FieldName"]:SetText(strconcat(TRP3_Icon(miscStructure.IC, 18)," ", miscStructure.NA or ""));
+			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.VA or "");
 			frame:Show();
 			previous = frame;
 		end
@@ -283,43 +289,43 @@ local miscEditCharFrame = {};
 
 local function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
-	draftData.title = stEtN(strtrim(TRP3_RegisterCharact_Edit_TitleField:GetText()));
-	draftData.firstName = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText()));
-	draftData.lastName = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
-	draftData.fullTitle = stEtN(strtrim(TRP3_RegisterCharact_Edit_FullTitleField:GetText()));
-	draftData.race = stEtN(strtrim(TRP3_RegisterCharact_Edit_RaceField:GetText()));
-	draftData.class = stEtN(strtrim(TRP3_RegisterCharact_Edit_ClassField:GetText()));
-	draftData.age = stEtN(strtrim(TRP3_RegisterCharact_Edit_AgeField:GetText()));
-	draftData.eyeColor = stEtN(strtrim(TRP3_RegisterCharact_Edit_EyeField:GetText()));
-	draftData.height = stEtN(strtrim(TRP3_RegisterCharact_Edit_HeightField:GetText()));
-	draftData.weight = stEtN(strtrim(TRP3_RegisterCharact_Edit_WeightField:GetText()));
-	draftData.residence = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
-	draftData.birthplace = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
+	draftData.TI = stEtN(strtrim(TRP3_RegisterCharact_Edit_TitleField:GetText()));
+	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText()));
+	draftData.LN = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
+	draftData.FT = stEtN(strtrim(TRP3_RegisterCharact_Edit_FullTitleField:GetText()));
+	draftData.RA = stEtN(strtrim(TRP3_RegisterCharact_Edit_RaceField:GetText()));
+	draftData.CL = stEtN(strtrim(TRP3_RegisterCharact_Edit_ClassField:GetText()));
+	draftData.AG = stEtN(strtrim(TRP3_RegisterCharact_Edit_AgeField:GetText()));
+	draftData.EC = stEtN(strtrim(TRP3_RegisterCharact_Edit_EyeField:GetText()));
+	draftData.HE = stEtN(strtrim(TRP3_RegisterCharact_Edit_HeightField:GetText()));
+	draftData.WE = stEtN(strtrim(TRP3_RegisterCharact_Edit_WeightField:GetText()));
+	draftData.RE = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
+	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
 	-- Save psycho values
-	for index, psychoStructure in pairs(draftData.psycho) do
-		psychoStructure.value = psychoEditCharFrame[index].value;
-		if not psychoStructure.presetID then
+	for index, psychoStructure in pairs(draftData.PS) do
+		psychoStructure.VA = psychoEditCharFrame[index].VA;
+		if not psychoStructure.ID then
 			-- If not a preset
-			psychoStructure.left = stEtN(_G[psychoEditCharFrame[index]:GetName().."LeftField"]:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
-			psychoStructure.right = stEtN(_G[psychoEditCharFrame[index]:GetName().."RightField"]:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
+			psychoStructure.LT = stEtN(_G[psychoEditCharFrame[index]:GetName().."LeftField"]:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
+			psychoStructure.RT = stEtN(_G[psychoEditCharFrame[index]:GetName().."RightField"]:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
 		else
 			-- Don't save preset data !
-			psychoStructure.left = nil;
-			psychoStructure.right = nil;
-			psychoStructure.leftIcon = nil;
-			psychoStructure.rightIcon = nil;
+			psychoStructure.LT = nil;
+			psychoStructure.RT = nil;
+			psychoStructure.LI = nil;
+			psychoStructure.RI = nil;
 		end
 	end
 	-- Save Misc
-	for index, miscStructure in pairs(draftData.misc) do
-		miscStructure.value = stEtN(_G[miscEditCharFrame[index]:GetName().."ValueField"]:GetText()) or loc("CM_VALUE");
-		miscStructure.name = stEtN(_G[miscEditCharFrame[index]:GetName().."NameField"]:GetText()) or loc("CM_NAME");
+	for index, miscStructure in pairs(draftData.MI) do
+		miscStructure.VA = stEtN(_G[miscEditCharFrame[index]:GetName().."ValueField"]:GetText()) or loc("CM_VALUE");
+		miscStructure.NA = stEtN(_G[miscEditCharFrame[index]:GetName().."NameField"]:GetText()) or loc("CM_NAME");
 	end
 end
 
 local function onPlayerIconSelected(icon)
-	draftData.icon = icon;
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.icon or TRP3_ICON_PROFILE_DEFAULT);
+	draftData.IC = icon;
+	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_ICON_PROFILE_DEFAULT);
 end
 
 local function onPsychoClick(frame, value, modif)
@@ -329,33 +335,33 @@ local function onPsychoClick(frame, value, modif)
 end
 
 local function onLeftClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().value or 3, 1);
+	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, 1);
 end
 
 local function onRightClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().value or 3, -1);
+	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, -1);
 end
 
 local function refreshEditIcon(frame)
-	TRP3_InitIconButton(frame, frame.icon or TRP3_ICON_PROFILE_DEFAULT);
+	TRP3_InitIconButton(frame, frame.IC or TRP3_ICON_PROFILE_DEFAULT);
 end
 
 local function onMiscDelete(self)
 	assert(self and self:GetParent(), "Badly initialiazed remove button, reference");
 	local frame = self:GetParent();
-	assert(frame.miscIndex and draftData.misc[frame.miscIndex], "Badly initialiazed remove button, index");
+	assert(frame.miscIndex and draftData.misc[frame.miIndex], "Badly initialiazed remove button, index");
 	saveInDraft();
-	wipe(draftData.misc[frame.miscIndex]);
-	tremove(draftData.misc, frame.miscIndex);
+	wipe(draftData.MI[frame.miscIndex]);
+	tremove(draftData.MI, frame.miscIndex);
 	setEditDisplay();
 end
 
 local function miscAdd()
 	saveInDraft();
-	tinsert(draftData.misc, {
-		name = loc("CM_NAME"),
-		value = loc("CM_VALUE"),
-		icon = "TEMP",
+	tinsert(draftData.MI, {
+		NA = loc("CM_NAME"),
+		VA = loc("CM_VALUE"),
+		IC = "TEMP",
 	});
 	setEditDisplay();
 end
@@ -363,15 +369,15 @@ end
 local function psychoAdd(presetID)
 	saveInDraft();
 	if presetID == "new" then
-		tinsert(draftData.psycho, {
-			left = loc("REG_PLAYER_LEFTTRAIT"),
-			leftIcon = "TEMP",
-			right = loc("REG_PLAYER_RIGHTTRAIT"),
-			rightIcon = "TEMP",
-			value = 3,
+		tinsert(draftData.PS, {
+			LT = loc("REG_PLAYER_LEFTTRAIT"),
+			LI = "TEMP",
+			RT = loc("REG_PLAYER_RIGHTTRAIT"),
+			RI = "TEMP",
+			VA = 3,
 		});
 	else
-		tinsert(draftData.psycho, {presetID = presetID, value = 3});
+		tinsert(draftData.PS, {ID = presetID, VA = 3});
 	end
 	setEditDisplay();
 end
@@ -379,10 +385,10 @@ end
 local function onPsychoDelete(self)
 	assert(self and self:GetParent(), "Badly initialiazed remove button, reference");
 	local frame = self:GetParent();
-	assert(frame.psychoIndex and draftData.psycho[frame.psychoIndex], "Badly initialiazed remove button, index");
+	assert(frame.psychoIndex and draftData.PS[frame.psychoIndex], "Badly initialiazed remove button, index");
 	saveInDraft();
-	wipe(draftData.psycho[frame.psychoIndex]);
-	tremove(draftData.psycho, frame.psychoIndex);
+	wipe(draftData.PS[frame.psychoIndex]);
+	tremove(draftData.PS, frame.psychoIndex);
 	setEditDisplay();
 end
 
@@ -395,25 +401,25 @@ setEditDisplay = function()
 		tcopy(draftData, dataTab);
 	end
 	
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.icon or TRP3_ICON_PROFILE_DEFAULT);
-	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.title or "");
-	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.firstName or TRP3_PLAYER);
-	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.lastName or "");
-	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.fullTitle or "");
+	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_ICON_PROFILE_DEFAULT);
+	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
+	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or TRP3_PLAYER);
+	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
+	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 	
-	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.race or TRP3_RACE_LOC);
-	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.class or TRP3_CLASS_LOC);
-	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.age or "");
-	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.eyeColor or "");
-	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.height or "");
-	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.weight or "");
-	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.residence or "");
-	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.birthplace or "");
+	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or TRP3_RACE_LOC);
+	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or TRP3_CLASS_LOC);
+	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
+	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
+	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
+	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
+	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
+	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
 	
 	-- Psycho
 	local previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
-	for frameIndex, psychoStructure in pairs(draftData.psycho) do
+	for frameIndex, psychoStructure in pairs(draftData.PS) do
 		local frame = psychoEditCharFrame[frameIndex];
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
@@ -430,18 +436,18 @@ setEditDisplay = function()
 		end
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
 			TRP3_OpenIconBrowser(function(icon)
-				psychoStructure.leftIcon = icon;
+				psychoStructure.LI = icon;
 				TRP3_InitIconButton(self, icon or TRP3_ICON_DEFAULT);
 			end);
 		end);
 		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self) 
 			TRP3_OpenIconBrowser(function(icon)
-				psychoStructure.rightIcon = icon;
+				psychoStructure.RI = icon;
 				TRP3_InitIconButton(self, icon or TRP3_ICON_DEFAULT);
 			end);
 		end);
 		
-		if psychoStructure.presetID then
+		if psychoStructure.ID then
 			_G[frame:GetName().."JaugeLeftIcon"]:Show();
 			_G[frame:GetName().."JaugeRightIcon"]:Show();
 			_G[frame:GetName().."LeftText"]:Show();
@@ -455,11 +461,11 @@ setEditDisplay = function()
 			_G[frame:GetName().."JaugeRightIcon"]:ClearAllPoints();
 			_G[frame:GetName().."JaugeRightIcon"]:SetPoint("LEFT", _G[frame:GetName().."Jauge"], "RIGHT", 22, 2);
 			
-			local preset = PSYCHO_PRESETS[psychoStructure.presetID] or PSYCHO_PRESETS_UNKOWN;
-			_G[frame:GetName().."LeftText"]:SetText(preset.left or "");
-			_G[frame:GetName().."RightText"]:SetText(preset.right or "");
-			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(preset.leftIcon or TRP3_ICON_DEFAULT));
-			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(preset.rightIcon or TRP3_ICON_DEFAULT));
+			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
+			_G[frame:GetName().."LeftText"]:SetText(preset.LT or "");
+			_G[frame:GetName().."RightText"]:SetText(preset.RT or "");
+			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(preset.LI or TRP3_ICON_DEFAULT));
+			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(preset.RI or TRP3_ICON_DEFAULT));
 		else
 			_G[frame:GetName().."JaugeLeftIcon"]:Hide();
 			_G[frame:GetName().."JaugeRightIcon"]:Hide();
@@ -470,10 +476,10 @@ setEditDisplay = function()
 			_G[frame:GetName().."LeftIcon"]:Show();
 			_G[frame:GetName().."RightIcon"]:Show();
 			
-			_G[frame:GetName().."LeftField"]:SetText(psychoStructure.left or "");
-			_G[frame:GetName().."RightField"]:SetText(psychoStructure.right or "");
-			_G[frame:GetName().."LeftIcon"].icon = psychoStructure.leftIcon or TRP3_ICON_DEFAULT;
-			_G[frame:GetName().."RightIcon"].icon = psychoStructure.rightIcon or TRP3_ICON_DEFAULT;
+			_G[frame:GetName().."LeftField"]:SetText(psychoStructure.LT or "");
+			_G[frame:GetName().."RightField"]:SetText(psychoStructure.RT or "");
+			_G[frame:GetName().."LeftIcon"].IC = psychoStructure.LI or TRP3_ICON_DEFAULT;
+			_G[frame:GetName().."RightIcon"].IC = psychoStructure.RI or TRP3_ICON_DEFAULT;
 			refreshEditIcon(_G[frame:GetName().."LeftIcon"]);
 			refreshEditIcon(_G[frame:GetName().."RightIcon"]);
 		end
@@ -482,7 +488,7 @@ setEditDisplay = function()
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
-		refreshPsycho(frame, psychoStructure.value or 3);
+		refreshPsycho(frame, psychoStructure.VA or 3);
 		frame:Show();
 		previous = frame;
 	end
@@ -495,7 +501,7 @@ setEditDisplay = function()
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 	previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
 	for _, frame in pairs(miscEditCharFrame) do frame:Hide(); end
-	for frameIndex, miscStructure in pairs(draftData.misc) do
+	for frameIndex, miscStructure in pairs(draftData.MI) do
 		local frame = miscEditCharFrame[frameIndex];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine"..frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
@@ -506,15 +512,15 @@ setEditDisplay = function()
 		end
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function() 
 			TRP3_OpenIconBrowser(function(icon)
-				miscStructure.icon = icon;
+				miscStructure.IC = icon;
 				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon or TRP3_ICON_DEFAULT);
 			end);
 		end);
 		
 		frame.miscIndex = frameIndex;
-		_G[frame:GetName().."Icon"].icon = miscStructure.icon or TRP3_ICON_DEFAULT;
-		_G[frame:GetName().."NameField"]:SetText(miscStructure.name or loc("CM_NAME"));
-		_G[frame:GetName().."ValueField"]:SetText(miscStructure.value or loc("CM_VALUE"));
+		_G[frame:GetName().."Icon"].IC = miscStructure.IC or TRP3_ICON_DEFAULT;
+		_G[frame:GetName().."NameField"]:SetText(miscStructure.NA or loc("CM_NAME"));
+		_G[frame:GetName().."ValueField"]:SetText(miscStructure.VA or loc("CM_VALUE"));
 		refreshEditIcon(_G[frame:GetName().."Icon"]);
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
@@ -538,8 +544,8 @@ local function saveCharacteristics()
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab, draftData);
 	-- version increment
-	assert(type(dataTab.version) == "number", "Error: No version in draftData or not a number.");
-	dataTab.version = TRP3_IncrementVersion(dataTab.version, 2);
+	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
 	
 	compressData();
 end
@@ -599,78 +605,78 @@ end
 
 local function initStructures()
 	PSYCHO_PRESETS_UNKOWN = {
-		left = loc("CM_UNKNOWN"),
-		right = loc("CM_UNKNOWN"),
-		leftIcon = "INV_Misc_QuestionMark",
-		rightIcon = "INV_Misc_QuestionMark"
+		LT = loc("CM_UNKNOWN"),
+		RT = loc("CM_UNKNOWN"),
+		LI = "INV_Misc_QuestionMark",
+		RI = "INV_Misc_QuestionMark"
 	};
 	
 	PSYCHO_PRESETS = {
 		{
-			left = loc("REG_PLAYER_PSYCHO_CHAOTIC"),
-			right = loc("REG_PLAYER_PSYCHO_Loyal"),
-			leftIcon = "Ability_Rogue_WrongfullyAccused",
-			rightIcon = "Ability_Paladin_SanctifiedWrath",
+			LT = loc("REG_PLAYER_PSYCHO_CHAOTIC"),
+			RT = loc("REG_PLAYER_PSYCHO_Loyal"),
+			LI = "Ability_Rogue_WrongfullyAccused",
+			RI = "Ability_Paladin_SanctifiedWrath",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Chaste"),
-			right = loc("REG_PLAYER_PSYCHO_Luxurieux"),
-			leftIcon = "INV_Belt_27",
-			rightIcon = "Spell_Shadow_SummonSuccubus",
+			LT = loc("REG_PLAYER_PSYCHO_Chaste"),
+			RT = loc("REG_PLAYER_PSYCHO_Luxurieux"),
+			LI = "INV_Belt_27",
+			RI = "Spell_Shadow_SummonSuccubus",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Indulgent"),
-			right = loc("REG_PLAYER_PSYCHO_Rencunier"),
-			leftIcon = "INV_RoseBouquet01",
-			rightIcon = "Ability_Hunter_SniperShot",
+			LT = loc("REG_PLAYER_PSYCHO_Indulgent"),
+			RT = loc("REG_PLAYER_PSYCHO_Rencunier"),
+			LI = "INV_RoseBouquet01",
+			RI = "Ability_Hunter_SniperShot",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Genereux"),
-			right = loc("REG_PLAYER_PSYCHO_Egoiste"),
-			leftIcon = "INV_Misc_Gift_02",
-			rightIcon = "INV_Misc_Coin_02",
+			LT = loc("REG_PLAYER_PSYCHO_Genereux"),
+			RT = loc("REG_PLAYER_PSYCHO_Egoiste"),
+			LI = "INV_Misc_Gift_02",
+			RI = "INV_Misc_Coin_02",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Sincere"),
-			right = loc("REG_PLAYER_PSYCHO_Trompeur"),
-			leftIcon = "INV_Misc_Toy_07",
-			rightIcon = "Ability_Rogue_Disguise",
+			LT = loc("REG_PLAYER_PSYCHO_Sincere"),
+			RT = loc("REG_PLAYER_PSYCHO_Trompeur"),
+			LI = "INV_Misc_Toy_07",
+			RI = "Ability_Rogue_Disguise",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Misericordieux"),
-			right = loc("REG_PLAYER_PSYCHO_Cruel"),
-			leftIcon = "INV_ValentinesCandySack",
-			rightIcon = "Ability_Warrior_Trauma",
+			LT = loc("REG_PLAYER_PSYCHO_Misericordieux"),
+			RT = loc("REG_PLAYER_PSYCHO_Cruel"),
+			LI = "INV_ValentinesCandySack",
+			RI = "Ability_Warrior_Trauma",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Pieux"),
-			right = loc("REG_PLAYER_PSYCHO_Rationnel"),
-			leftIcon = "Spell_Holy_HolyGuidance",
-			rightIcon = "INV_Gizmo_02",
+			LT = loc("REG_PLAYER_PSYCHO_Pieux"),
+			RT = loc("REG_PLAYER_PSYCHO_Rationnel"),
+			LI = "Spell_Holy_HolyGuidance",
+			RI = "INV_Gizmo_02",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Pragmatique"),
-			right = loc("REG_PLAYER_PSYCHO_Conciliant"),
-			leftIcon = "Ability_Rogue_HonorAmongstThieves",
-			rightIcon = "INV_Misc_GroupNeedMore",
+			LT = loc("REG_PLAYER_PSYCHO_Pragmatique"),
+			RT = loc("REG_PLAYER_PSYCHO_Conciliant"),
+			LI = "Ability_Rogue_HonorAmongstThieves",
+			RI = "INV_Misc_GroupNeedMore",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Reflechi"),
-			right = loc("REG_PLAYER_PSYCHO_Impulsif"),
-			leftIcon = "Spell_Shadow_Brainwash",
-			rightIcon = "Achievement_BG_CaptureFlag_EOS",
+			LT = loc("REG_PLAYER_PSYCHO_Reflechi"),
+			RT = loc("REG_PLAYER_PSYCHO_Impulsif"),
+			LI = "Spell_Shadow_Brainwash",
+			RI = "Achievement_BG_CaptureFlag_EOS",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Acete"),
-			right = loc("REG_PLAYER_PSYCHO_Bonvivant"),
-			leftIcon = "INV_Misc_Food_PineNut",
-			rightIcon = "INV_Misc_Food_99",
+			LT = loc("REG_PLAYER_PSYCHO_Acete"),
+			RT = loc("REG_PLAYER_PSYCHO_Bonvivant"),
+			LI = "INV_Misc_Food_PineNut",
+			RI = "INV_Misc_Food_99",
 		},
 		{
-			left = loc("REG_PLAYER_PSYCHO_Valeureux"),
-			right = loc("REG_PLAYER_PSYCHO_Couard"),
-			leftIcon = "Ability_Paladin_BeaconofLight",
-			rightIcon = "Ability_Druid_Cower",
+			LT = loc("REG_PLAYER_PSYCHO_Valeureux"),
+			RT = loc("REG_PLAYER_PSYCHO_Couard"),
+			LI = "Ability_Paladin_BeaconofLight",
+			RI = "Ability_Druid_Cower",
 		},
 	};
 	

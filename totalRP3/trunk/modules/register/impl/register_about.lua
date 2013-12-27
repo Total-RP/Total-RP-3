@@ -18,28 +18,27 @@ local tcopy = TRP3_DupplicateTab;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 --TRP3_GetDefaultProfile().player.about = {
---	version = 1,
---	currentTemplate = 1,
---  backgroundId = 1,
---	template1 = {
+--	v = 1,
+--	TE = 1,
+--	T1 = {
 --	
 --	},
---	template2 = {
+--	T2 = {
 --	
 --	},
---	template3 = {
---		ph = {}, ps = {}, hi = {}
+--	T3 = {
+--		PH = {}, PS = {}, HI = {}
 --	},
 --}
 
 -- Mock
 TRP3_GetDefaultProfile().player.about = {
-	version = 1,
-	currentTemplate = 1,
-	bkg = 1,
-	music = "ZoneMusic\\GrizzlyHills\\GH_Intro1Uni01",
-	template1 = {
-		text = [[{h1}A big left title{/h1}
+	v = 1,
+	TE = 1,
+	BK = 1,
+	MU = "ZoneMusic\\GrizzlyHills\\GH_Intro1Uni01",
+	T1 = {
+		TX = [[{h1}A big left title{/h1}
 {h1:c}A big centered title{/h1}
 {h1:r}A big right title{/h1}
 {h3}A left title{/h3}
@@ -51,30 +50,30 @@ TRP3_GetDefaultProfile().player.about = {
 Le poème en prose a pour origine la prose poétique. Toutefois,{fake_balise} la prose poétique restait de la prose, un moyen supplémentaire pour le romancier, une marque de son style, sans constituer une véritable forme de poème. Autour de 1800, pendant que se constitue le romantisme, les aspirations des écrivains tendent de plus en plus vers l'absolu. La poésie suscite à nouveau de l'intérêt (contrairement au siècle des Lumières où elle était considérée comme un ornement) et la versification sera assouplie. Cependant, cela ne suffit pas pour certains tempéraments, qui se soumettent plus difficilement à la tyrannie de la rime et du mètre. François-René de Chateaubriand, très porté vers le lyrisme, mais peu vers le vers, écrit une épopée en prose, Les Martyrs (1809).{/p}
 {p:r}{icon:Ability_Rogue_CheatDeath:50}{/p}]],
 	},
-	template2 = {
+	T2 = {
 		{
-			text = "Mon beau texte",
+			TX = "Mon beau texte",
 		},
 		{
-			icon = "ACHIEVEMENT_GUILDPERK_LADYLUCK",
-			text = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
-			bkg = 2,
+			IC = "ACHIEVEMENT_GUILDPERK_LADYLUCK",
+			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
+			BK = 2,
 		},
 		{
-			icon = "ACHIEVEMENT_GUILDPERK_CASHFLOW_RANK2",
-			text = "Mon beau texte 3",
-			bkg = 3,
+			IC = "ACHIEVEMENT_GUILDPERK_CASHFLOW_RANK2",
+			TX = "Mon beau texte 3",
+			BK = 3,
 		},
 	},
-	template3 = {
-		ph = {
-			text = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
+	T3 = {
+		PH = {
+			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
 		},
-		ps = {
-			text = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
+		PS = {
+			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
 		},
-		hi = {
-			text = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
+		HI = {
+			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
 		},
 	},
 }
@@ -131,10 +130,10 @@ local TAGS_INFO = {
 }
 
 local function showTemplate1()
-	local dataTab = get("player/about/template1");
+	local dataTab = get("player/about/T1");
 	assert(type(dataTab) == "table", "Error: Nil template1 data or not a table.");
 	
-	local text = TRP2_toHTML(dataTab.text or "");
+	local text = TRP2_toHTML(dataTab.TX or "");
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
 	TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 end
@@ -219,7 +218,7 @@ local template2Frames = {};
 local TEMPLATE2_PADDING = 30;
 
 local function showTemplate2()
-	local dataTab = get("player/about/template2");
+	local dataTab = get("player/about/T2");
 	assert(type(dataTab) == "table", "Error: Nil template2 data or not a table.");
 	
 	-- Hide all
@@ -242,10 +241,10 @@ local function showTemplate2()
 		local icon = _G[frame:GetName().."Icon"];
 		local text = _G[frame:GetName().."Text"];
 		local backdrop = frame:GetBackdrop();
-		backdrop.bgFile = TRP3_getTiledBackground(frameTab.bkg or 1);
+		backdrop.bgFile = TRP3_getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
-		TRP3_InitIconButton(icon, frameTab.icon or TRP3_ICON_DEFAULT);
-		text:SetText(frameTab.text);
+		TRP3_InitIconButton(icon, frameTab.IC or TRP3_ICON_DEFAULT);
+		text:SetText(frameTab.TX);
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
 		if bool then
@@ -278,13 +277,13 @@ local function setTemplate2EditBkg(bkg, frame)
 	frame = frame:GetParent();
 	assert(frame.frameData, "No frameData in the frame ...");
 	setBkg(frame, bkg);
-	frame.frameData.bkg = bkg;
+	frame.frameData.BK = bkg;
 end
 
 local function template2DeleteFrame(button)
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
-	local templateData = draftData.template2;
+	local templateData = draftData.T2;
 	tremove(templateData, frame.index);
 	refreshTemplate2EditDisplay();
 end
@@ -292,7 +291,7 @@ end
 local function template2UpFrame(button)
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
-	local templateData = draftData.template2;
+	local templateData = draftData.T2;
 	local frameData = templateData[frame.index];
 	tremove(templateData, frame.index);
 	tinsert(templateData, frame.index - 1, frameData);
@@ -302,7 +301,7 @@ end
 local function template2DownFrame(button)
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
-	local templateData = draftData.template2;
+	local templateData = draftData.T2;
 	local frameData = templateData[frame.index];
 	tremove(templateData, frame.index);
 	tinsert(templateData, frame.index + 1, frameData);
@@ -316,7 +315,7 @@ refreshTemplate2EditDisplay = function()
 		frame.frameData = nil; -- Helps garbage collection
 	end
 	
-	local templateData = draftData.template2;
+	local templateData = draftData.T2;
 	assert(type(templateData) == "table", "Error: Nil template3 data or not a table.");
 	
 	local previous = nil;
@@ -343,12 +342,12 @@ refreshTemplate2EditDisplay = function()
 		-- Values
 		frame.index = frameIndex;
 		frame.frameData = frameData;
-		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.bkg or 1);
-		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.text or "");
-		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.icon or TRP3_ICON_DEFAULT);
+		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
+		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.TX or "");
+		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_ICON_DEFAULT);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
 			TRP3_OpenIconBrowser(function(icon)
-				frame.frameData.icon = icon;
+				frame.frameData.IC = icon;
 				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon);
 			end);
 		end);
@@ -370,8 +369,8 @@ refreshTemplate2EditDisplay = function()
 end
 
 local function template2AddFrame()
-	local templateData = draftData.template2;
-	tinsert(templateData, {text = loc("REG_PLAYER_ABOUT_SOME")});
+	local templateData = draftData.T2;
+	tinsert(templateData, {TX = loc("REG_PLAYER_ABOUT_SOME")});
 	refreshTemplate2EditDisplay();
 end
 
@@ -380,7 +379,7 @@ local function template2SaveToDraft()
 	for _, frame in pairs(template2EditFrames) do
 		if frame:IsVisible() then
 			assert(frame.frameData, "Frame has no frameData !");
-			frame.frameData.text = stEtN(_G[frame:GetName().."TextScrollBox"]:GetText());
+			frame.frameData.TX = stEtN(_G[frame:GetName().."TextScrollBox"]:GetText());
 		end
 	end
 end
@@ -405,33 +404,33 @@ local function setTemplate3HistBkg(bkg)
 end
 
 local function onPhisIconSelected(icon)
-	draftData.template3.ph.icon = icon;
+	draftData.T3.PH.IC = icon;
 	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or TRP3_ICON_DEFAULT);
 end
 
 local function onPsychoIconSelected(icon)
-	draftData.template3.ps.icon = icon;
+	draftData.T3.PS.IC = icon;
 	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or TRP3_ICON_DEFAULT);
 end
 
 local function onHistoIconSelected(icon)
-	draftData.template3.hi.icon = icon;
+	draftData.T3.HI.IC = icon;
 	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or TRP3_ICON_DEFAULT);
 end
 
 local function showTemplate3()
-	local datas = {get("player/about/template3/ph"), get("player/about/template3/ps"), get("player/about/template3/hi")};
+	local datas = {get("player/about/T3/PH"), get("player/about/T3/PS"), get("player/about/T3/HI")};
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
 	for i=1, 3 do
 		local data = datas[i];
 		assert(type(data) == "table", "Error: Nil template3 data or not a table.");
-		local icon = TRP3_Icon(data.icon or TRP3_ICON_DEFAULT, 25);
+		local icon = TRP3_Icon(data.IC or TRP3_ICON_DEFAULT, 25);
 		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
 		title:SetText(icon.."    "..titles[i].."    "..icon);
-		text:SetText(TRP3_ConvertTextTags(data.text));
-		setBkg(frame, data.bkg or 1);
+		text:SetText(TRP3_ConvertTextTags(data.TX));
+		setBkg(frame, data.BK or 1);
 		frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
 	end
 
@@ -452,36 +451,36 @@ local templatesFunction = {
 local function refreshConsultDisplay()
 	local dataTab = get("player/about");
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
-	assert(dataTab.currentTemplate, "Error: no player.about.currentTemplate detected");
-	assert(type(templatesFunction[dataTab.currentTemplate]) == "function", "Error: no function for about template: " .. tostring(dataTab.currentTemplate));
+	assert(dataTab.TE, "Error: no player.about.TE detected");
+	assert(type(templatesFunction[dataTab.TE]) == "function", "Error: no function for about template: " .. tostring(dataTab.TE));
 	
-	TRP3_RegisterAbout_AboutPanel.musicURL = dataTab.music;
-	if dataTab.music then
-		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(TRP3_GetMusicTitle(dataTab.music));
+	TRP3_RegisterAbout_AboutPanel.musicURL = dataTab.MU;
+	if dataTab.MU then
+		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(TRP3_GetMusicTitle(dataTab.MU));
 	end
 	
 	TRP3_RegisterAbout_AboutPanel:Show();
 	-- Putting the right templates
-	templatesFunction[dataTab.currentTemplate]();
+	templatesFunction[dataTab.TE]();
 	-- Putting the righ background
-	setConsultBkg(dataTab.bkg);
+	setConsultBkg(dataTab.BK);
 end
 
 local function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
-	draftData.bkg = TRP3_RegisterAbout_Edit_BckField:GetSelectedValue();
-	draftData.currentTemplate = TRP3_RegisterAbout_Edit_TemplateField:GetSelectedValue();
+	draftData.BK = TRP3_RegisterAbout_Edit_BckField:GetSelectedValue();
+	draftData.TE = TRP3_RegisterAbout_Edit_TemplateField:GetSelectedValue();
 	-- Template 1
-	draftData.template1.text = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetText();
+	draftData.T1.TX = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetText();
 	-- Template 2
 	template2SaveToDraft();
 	-- Template 3
-	draftData.template3.ph.bkg = TRP3_RegisterAbout_Edit_Template3_PhysBkg:GetSelectedValue();
-	draftData.template3.ps.bkg = TRP3_RegisterAbout_Edit_Template3_PsyBkg:GetSelectedValue();
-	draftData.template3.hi.bkg = TRP3_RegisterAbout_Edit_Template3_HistBkg:GetSelectedValue();
-	draftData.template3.ph.text = stEtN(TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:GetText());
-	draftData.template3.ps.text = stEtN(TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:GetText());
-	draftData.template3.hi.text = stEtN(TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:GetText());
+	draftData.T3.PH.BK = TRP3_RegisterAbout_Edit_Template3_PhysBkg:GetSelectedValue();
+	draftData.T3.PS.BK = TRP3_RegisterAbout_Edit_Template3_PsyBkg:GetSelectedValue();
+	draftData.T3.HI.BK = TRP3_RegisterAbout_Edit_Template3_HistBkg:GetSelectedValue();
+	draftData.T3.PH.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:GetText());
+	draftData.T3.PS.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:GetText());
+	draftData.T3.HI.TX = stEtN(TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:GetText());
 end
 
 local function setEditTemplate(value)
@@ -503,8 +502,8 @@ local function save()
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab, draftData);
 	-- version increment
-	assert(type(dataTab.version) == "number", "Error: No version in draftData or not a number.");
-	dataTab.version = TRP3_IncrementVersion(dataTab.version, 2);
+	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
 end
 
 local function refreshEditDisplay()
@@ -516,33 +515,33 @@ local function refreshEditDisplay()
 		tcopy(draftData, dataTab);
 	end
 	
-	TRP3_RegisterAbout_Edit_BckField:SetSelectedIndex(draftData.bkg or 1);
-	TRP3_RegisterAbout_Edit_TemplateField:SetSelectedIndex(draftData.currentTemplate or 1);
-	selectMusic(draftData.music);
+	TRP3_RegisterAbout_Edit_BckField:SetSelectedIndex(draftData.BK or 1);
+	TRP3_RegisterAbout_Edit_TemplateField:SetSelectedIndex(draftData.TE or 1);
+	selectMusic(draftData.MU);
 	-- Template 1
-	local template1Data = draftData.template1;
+	local template1Data = draftData.T1;
 	assert(type(template1Data) == "table", "Error: Nil template1 data or not a table.");
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetText(template1Data.text or "");
+	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetText(template1Data.TX or "");
 	-- Template 2
 	refreshTemplate2EditDisplay();
 	-- Template 3
-	local template3Data = draftData.template3;
+	local template3Data = draftData.T3;
 	assert(type(template3Data) == "table", "Error: Nil template3 data or not a table.");
-	setTemplate3PhysBkg(template3Data.ph.bkg or 1);
-	setTemplate3PsyBkg(template3Data.ps.bkg or 1);
-	setTemplate3HistBkg(template3Data.hi.bkg or 1);
-	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.ph.bkg or 1);
-	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.ps.bkg or 1);
-	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.hi.bkg or 1);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.ph.icon or TRP3_ICON_DEFAULT);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.ps.icon or TRP3_ICON_DEFAULT);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.hi.icon or TRP3_ICON_DEFAULT);
-	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.ph.text or "");
-	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.ps.text or "");
-	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.hi.text or "");
+	setTemplate3PhysBkg(template3Data.PH.BK or 1);
+	setTemplate3PsyBkg(template3Data.PS.BK or 1);
+	setTemplate3HistBkg(template3Data.HI.BK or 1);
+	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.PH.BK or 1);
+	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.PS.BK or 1);
+	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.HI.BK or 1);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or TRP3_ICON_DEFAULT);
+	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.PH.TX or "");
+	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.PS.TX or "");
+	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.HI.TX or "");
 	
 	TRP3_RegisterAbout_AboutPanel_Edit:Show();
-	setEditTemplate(draftData.currentTemplate or 1);
+	setEditTemplate(draftData.TE or 1);
 end
 
 local function refreshDisplay()
@@ -581,19 +580,19 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onMusicSelected(music)
-	draftData.music = music;
-	selectMusic(draftData.music);
+	draftData.MU = music;
+	selectMusic(draftData.MU);
 end
 
 local function onMusicEditSelected(value, button)
 	if value == 1 then
 		TRP3_OpenMusicBrowser(onMusicSelected);
-	elseif value == 2 and draftData.music then
-		draftData.music = nil;
-		selectMusic(draftData.music);
-	elseif value == 3 and draftData.music then
-		TRP3_PlayMusic(draftData.music);
-	elseif value == 4 and draftData.music then
+	elseif value == 2 and draftData.MU then
+		draftData.MU = nil;
+		selectMusic(draftData.MU);
+	elseif value == 3 and draftData.MU then
+		TRP3_PlayMusic(draftData.MU);
+	elseif value == 4 and draftData.MU then
 		TRP3_StopMusic();
 	end
 end
@@ -602,7 +601,7 @@ local function onMusicEditClicked(button)
 	local profileID = button:GetParent().profileID;
 	local values = {};
 	tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_SELECT"), 1});
-	if draftData.music then
+	if draftData.MU then
 		tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_REMOVE"), 2});
 		tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_LISTEN"), 3});
 		tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_STOP"), 4});

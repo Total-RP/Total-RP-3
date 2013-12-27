@@ -45,10 +45,10 @@ local function createVernumQuery()
 	tinsert(query, TRP3_VERSION); -- Your TRP3 version (number)
 	tinsert(query, TRP3_VERSION_USER); -- Your TRP3 version (as it should be shown on tooltip)
 	tinsert(query, TRP3_GetProfileID());
-	tinsert(query, get("player/characteristics").version);
-	tinsert(query, get("player/about").version);
-	tinsert(query, get("player/style").version);
-	tinsert(query, get("player/misc").version);
+	tinsert(query, get("player/characteristics").v);
+	tinsert(query, get("player/about").v);
+	tinsert(query, get("player/style").v);
+	tinsert(query, get("player/misc").v);
 	return query;
 end
 

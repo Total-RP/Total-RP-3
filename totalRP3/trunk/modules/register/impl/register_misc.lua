@@ -15,24 +15,24 @@ local get = TRP3_Profile_DataGetter;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 --TRP3_GetDefaultProfile().player.misc = {
---	vernum = 1,
--- quicks = {},
+-- v = 1,
+-- PE = {},
 --}
 
 -- Mock
 TRP3_GetDefaultProfile().player.misc = {
-	version = 1,
-	currentIC = "My pretty current ic which is purposely very very long a lot more than 130 characters.",
-	quicks = {
+	v = 1,
+	CU = "My pretty current ic which is purposely very very long a lot more than 130 characters.",
+	PE = {
 		["1"] = {
-			icon = "SPELL_FIRE_SOULBURN",
-			text = "Plou",
-			title = "Plou",
+			IC = "SPELL_FIRE_SOULBURN",
+			TE = "Plou",
+			TI = "Plou",
 		},
 		["4"] = {
-			icon = "SPELL_FIRE_SELFDESTRUCT",
-			text = "Plou",
-			title = "Plou",
+			IC = "SPELL_FIRE_SELFDESTRUCT",
+			TE = "Plou",
+			TI = "Plou",
 		},
 	},
 }
@@ -57,14 +57,14 @@ local function showView()
 	local data = get("player/misc");
 	assert(type(data) == "table", "Error: Nil peek data or not a table.");
 	
-	TRP3_RegisterPeekViewCurrentText:SetText(data.currentIC or "");
+	TRP3_RegisterPeekViewCurrentText:SetText(data.CU or "");
 	
 	for i=1,5 do
-		local glanceData = data.quicks[tostring(i)];
+		local glanceData = data.PE[tostring(i)];
 		local button = _G["TRP3_RegisterPeekViewGlanceSlot" .. i];
 		if glanceData then
 			button:Enable();
-			setupGlanceButton(button, glanceData.icon, glanceData.title, glanceData.text);
+			setupGlanceButton(button, glanceData.IC, glanceData.TI, glanceData.TE);
 			button:SetAlpha(1);
 		else
 			button:Disable();
