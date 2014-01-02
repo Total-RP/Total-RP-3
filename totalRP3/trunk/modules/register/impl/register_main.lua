@@ -10,7 +10,8 @@ local color = TRP3_Color;
 local loc = TRP3_L;
 
 -- Saved variables references
-local register;
+local profiles;
+local profileLinks;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -39,12 +40,13 @@ end
 
 function TRP3_IsPlayerKnown(unitName)
 	local unitID = TRP3_GetUnitID(unitName);
-	return register[unitID] ~= nil;
+	return profileLinks[unitID] ~= nil;
 end
 
 function TRP3_IsPlayerIgnored(unitName)
 	local unitID = TRP3_GetUnitID(unitName);
-	return TRP3_IsPlayerKnown(unitName) and register[unitID].ignored == true;
+	-- TODO: also block unitID
+	return TRP3_IsPlayerKnown(unitName) and profiles[profileLinks[unitID]].ignored == true;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -55,53 +57,53 @@ end
 
 function TRP3_RegisterShouldUpdateInfo(unitName, infoType, version)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	if not register[unitID].currentProfileID or not register[unitID].profiles[register[unitID].currentProfileID] then
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	if not profiles[unitID].currentProfileID or not profiles[unitID].profiles[profiles[unitID].currentProfileID] then
 		return true; -- If we don't have any information about its current profile, yes we should update.
 	end
-	local unitProfile = register[unitID].profiles[register[unitID].currentProfileID];
+	local unitProfile = profiles[unitID].profiles[profiles[unitID].currentProfileID];
 	return not unitProfile[infoType] or not unitProfile[infoType].v or unitProfile[infoType].v ~= version;
 end
 
 function TRP3_RegisterSetCurrentProfile(unitName, currentProfileID)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	local old = register[unitID].currentProfileID;
-	register[unitID].currentProfileID = currentProfileID;
-	if old ~= register[unitID].currentProfileID then
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	local old = profiles[unitID].currentProfileID;
+	profiles[unitID].currentProfileID = currentProfileID;
+	if old ~= profiles[unitID].currentProfileID then
 		TRP3_ShouldRefreshTooltip(unitName);
 	end
 end
 
 function TRP3_RegisterSetClient(unitName, client, clientVersion)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	register[unitID].client = client;
-	register[unitID].clientVersion = clientVersion;
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	profiles[unitID].client = client;
+	profiles[unitID].clientVersion = clientVersion;
 end
 
 function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, zone)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	if not register[unitID].info then 
-		register[unitID].info = {};
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	if not profiles[unitID].info then 
+		profiles[unitID].info = {};
 	end
-	register[unitID].info.class = class;
-	register[unitID].info.race = race;
-	register[unitID].info.gender = gender;
-	register[unitID].info.faction = faction;
-	register[unitID].info.time = time;
-	register[unitID].info.zone = zone;
+	profiles[unitID].info.class = class;
+	profiles[unitID].info.race = race;
+	profiles[unitID].info.gender = gender;
+	profiles[unitID].info.faction = faction;
+	profiles[unitID].info.time = time;
+	profiles[unitID].info.zone = zone;
 end
 
 function TRP3_RegisterSetInforType(unitName, informationType, data)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	assert(register[unitID].currentProfileID, "Unknown current profile: " .. tostring(unitID));
-	if not register[unitID].profiles[register[unitID].currentProfileID] then
-		register[unitID].profiles[register[unitID].currentProfileID] = {};
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	assert(profiles[unitID].currentProfileID, "Unknown current profile: " .. tostring(unitID));
+	if not profiles[unitID].profiles[profiles[unitID].currentProfileID] then
+		profiles[unitID].profiles[profiles[unitID].currentProfileID] = {};
 	end
-	local unitProfile = register[unitID].profiles[register[unitID].currentProfileID];
+	local unitProfile = profiles[unitID].profiles[profiles[unitID].currentProfileID];
 	if unitProfile[informationType] then
 		wipe(unitProfile[informationType]);
 	end
@@ -110,17 +112,17 @@ end
 
 function TRP3_RegisterAddCharacter(unitName)
 	local unitID = TRP3_GetUnitID(unitName);
-	assert(not register[unitID], "Already known character: " .. tostring(unitID));
-	register[unitID] = {};
-	register[unitID].profiles = {};
+	assert(not profiles[unitID], "Already known character: " .. tostring(unitID));
+	profiles[unitID] = {};
+	profiles[unitID].profiles = {};
 	log("Added to the register: " .. unitID);
 end
 
 function TRP3_RegisterGetCurrentProfile(unitName, unitRealm)
 	local unitID = TRP3_GetUnitID(unitName, unitRealm);
-	assert(register[unitID], "Unknown character: " .. tostring(unitID));
-	if register[unitID].currentProfileID then
-		return register[unitID].profiles[register[unitID].currentProfileID];
+	assert(profiles[unitID], "Unknown character: " .. tostring(unitID));
+	if profiles[unitID].currentProfileID then
+		return profiles[unitID].profiles[profiles[unitID].currentProfileID];
 	end
 end
 
@@ -183,7 +185,14 @@ function TRP3_InitRegister()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
-	register = TRP3_Register;
+	if not TRP3_Register.links then
+		TRP3_Register.links = {};
+	end
+	if not TRP3_Register.profiles then
+		TRP3_Register.profiles = {};
+	end
+	profiles = TRP3_Register.profiles;
+	profileLinks = TRP3_Register.links;
 	
 	-- Listen to the mouse over event
 	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", onMouseOver);
