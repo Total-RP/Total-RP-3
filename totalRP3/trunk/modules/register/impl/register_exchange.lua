@@ -115,8 +115,8 @@ local function incomingVernumQuery(structure, sender, bResponse)
 	-- TODO: show version alert.
 	end
 
-	if TRP3_IsPlayerKnown(sender) or configIsAutoAdd() then
-		if not TRP3_IsPlayerKnown(sender) then
+	if TRP3_IsUnitKnown(sender) or configIsAutoAdd() then
+		if not TRP3_IsUnitKnown(sender) then
 			TRP3_RegisterAddCharacter(sender);
 		end
 		TRP3_RegisterSetClient(sender, TRP3_CLIENTS.TRP3, senderVersionText);
@@ -185,7 +185,7 @@ local function onMouseOver(...)
 		and UnitFactionGroup("mouseover") == UnitFactionGroup("player") -- Don't query other faction !
 		and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
 		and not TRP3_IsPlayerIgnored(unitName)
-		and TRP3_IsPlayerKnown(unitName) -- Only query known characters
+		and TRP3_IsUnitKnown(unitName) -- Only query known characters
 		and (not LAST_QUERY[unitName] or time() - LAST_QUERY[unitName] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
 		LAST_QUERY[unitName] = time();
@@ -206,7 +206,7 @@ local function onTargetChanged(...)
 		and unitName ~= UNKNOWNOBJECT -- Name could equals UNKNOWNOBJECT if the player is not "loaded" (far away, disconnected ...)
 		and UnitFactionGroup("target") == UnitFactionGroup("player") -- Don't query other faction !
 		and not TRP3_IsPlayerIgnored(unitName)
-		and not TRP3_IsPlayerKnown(unitName)
+		and not TRP3_IsUnitKnown(unitName)
 		and (not LAST_QUERY[unitName] or time() - LAST_QUERY[unitName] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
 		LAST_QUERY[unitName] = time();

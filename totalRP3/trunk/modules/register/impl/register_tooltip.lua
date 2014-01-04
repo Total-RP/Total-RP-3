@@ -7,6 +7,7 @@
 local log = TRP3_Log;
 local loc = TRP3_L;
 local color = TRP3_Color;
+local getUnitID = TRP3_GetUnitID;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -117,11 +118,13 @@ end
 local function getCharacterInfoTab(targetName, realm)
 	if targetName == TRP3_PLAYER then
 		return TRP3_Profile_DataGetter("player");
-	else
-		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
+	elseif TRP3_IsUnitIDKnown(getUnitID(targetName, realm)) then
+		return TRP3_RegisterGetCurrentProfile(targetName, realm);
 	end
+	return {};
 end
 
+--- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetName, realm, originalTexts, targetType)
 	local lineIndex = 1;
 	local info = getCharacterInfoTab(targetName, realm);

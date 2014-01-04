@@ -752,5 +752,6 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc("REG_PLAYER_RESIDENCE"));
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc("REG_PLAYER_BIRTHPLACE"));
 	
+	TRP3_RegisterProfileSelectionHandler(compressData); -- On profile change, compress the new data
 	compressData();
 end
