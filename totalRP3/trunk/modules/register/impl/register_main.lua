@@ -263,6 +263,7 @@ function TRP3_UI_InitRegister()
 	TRP3_Register_PeekInit();
 	TRP3_Register_DataExchangeInit();
 	TRP3_Register_TooltipInit();
+	TRP3_Register_ListInit();
 
 	createTabBar();
 end
