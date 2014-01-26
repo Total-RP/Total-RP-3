@@ -365,3 +365,87 @@ function TRP3_RefreshTooltipForFrame(Frame)
 		TRP3_MainTooltip:Show();
 	end
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tooltip tools
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local unitTexture = {
+	Human = {
+		"Achievement_Character_Human_Male",
+		"Achievement_Character_Human_Female",
+	},
+	Gnome = {
+		"Achievement_Character_Gnome_Male",
+		"Achievement_Character_Gnome_Female",
+	},
+	Scourge = {
+		"Achievement_Character_Undead_Male",
+		"Achievement_Character_Undead_Female",
+	},
+	NightElf = {
+		"Achievement_Character_Nightelf_Male",
+		"Achievement_Character_Nightelf_Female",
+	},
+	Dwarf = {
+		"Achievement_Character_Dwarf_Male",
+		"Achievement_Character_Dwarf_Female",
+	},
+	Draenei = {
+		"Achievement_Character_Draenei_Male",
+		"Achievement_Character_Draenei_Female",
+	},
+	Orc = {
+		"Achievement_Character_Orc_Male",
+		"Achievement_Character_Orc_Female",
+	},
+	BloodElf = {
+		"Achievement_Character_Bloodelf_Male",
+		"Achievement_Character_Bloodelf_Female",
+	},
+	Troll = {
+		"Achievement_Character_Troll_Male",
+		"Achievement_Character_Troll_Female",
+	},
+	Tauren = {
+		"Achievement_Character_Tauren_Male",
+		"Achievement_Character_Tauren_Female",
+	},
+	Worgen = {
+		"Ability_Racial_TwoForms",
+		"Ability_Racial_Viciousness",
+	},
+	Goblin = {
+		"Ability_Racial_RocketJump",
+		"Ability_Racial_RocketJump",
+	},
+	Pandaren = {
+      "Achievement_Guild_ClassyPanda",
+      "Achievement_Character_Pandaren_Female",
+    },
+};
+
+local classTexture = {
+	ROGUE = "Ability_Rogue_DualWeild",
+	WARLOCK = "Ability_Warlock_Eradication",
+	PALADIN = "Spell_Paladin_Clarityofpurpose",
+	MONK = "Monk_Ability_Transcendence",
+	MAGE = "spell_Mage_NetherTempest",
+	HUNTER = "Ability_Hunter_MasterMarksman",
+	WARRIOR = "Ability_Warrior_OffensiveStance",
+	DEATHKNIGHT = "Spell_Deathknight_FrostPresence",
+	DRUID = "Spell_druid_tirelesspursuit",
+	SHAMAN = "Ability_Shaman_WindwalkTotem",
+	PRIEST = "Priest_icon_Chakra",
+}
+
+function TRP3_GetUnitTexture(race, gender)
+	if unitTexture[race] and unitTexture[race][gender - 1] then
+		return unitTexture[race][gender - 1];
+	end
+	return TRP3_ICON_DEFAULT;
+end
+
+function TRP3_GetClassTexture(class)
+	return classTexture[class] or TRP3_ICON_DEFAULT;
+end

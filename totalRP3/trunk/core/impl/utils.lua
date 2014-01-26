@@ -101,6 +101,10 @@ function TRP3_GetUnitID(unitName, unitRealm)
     return strconcat((unitRealm or TRP3_REALM), '|', unitName or "_");
 end
 
+function TRP3_GetUnitInfo(unitID)
+    return unitID:sub(1, unitID:find('|') - 1),  unitID:sub(unitID:find('|') + 1);
+end
+
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function TRP3_Icon(iconPath, iconSize)
 	iconPath = iconPath or TRP3_ICON_DEFAULT

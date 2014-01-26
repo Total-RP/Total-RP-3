@@ -23,5 +23,6 @@ TRP3_ICON_EDIT = "INV_Feather_11";
 TRP3_ICON_SAVE = "INV_Feather_12";
 TRP3_ICON_CANCEL = "INV_Feather_10";
 TRP3_ICON_DEFAULT = "TEMP";
+TRP3_ICON_UNKNOWN = "INV_Misc_QuestionMark";
 TRP3_ICON_PROFILE_DEFAULT = "INV_Misc_GroupLooking";
 TRP3_ICON_ADD = "Spell_ChargePositive";

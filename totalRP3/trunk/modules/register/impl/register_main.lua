@@ -106,7 +106,7 @@ function TRP3_RegisterSetClient(unitName, client, clientVersion)
 end
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, zone)
+function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, zone, guild)
 	local character = getCharacter(getUnitID(unitName));
 	character.class = class;
 	character.race = race;
@@ -114,6 +114,7 @@ function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, 
 	character.faction = faction;
 	character.time = time;
 	character.zone = zone;
+	character.guild = guild;
 end
 
 --- Raises error if unknown unitName or unit hasn't profile ID
@@ -153,6 +154,18 @@ function TRP3_RegisterShouldUpdateInfo(unitName, infoType, version)
 	return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
 end
 
+function TRP3_GetCharacterList()
+	return characters;
+end
+
+function TRP3_GetCharacter(unitID)
+	return characters[unitID];
+end
+
+function TRP3_GetProfileList()
+	return profiles;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -171,7 +184,7 @@ local function onMouseOver(...)
 		local _, race = UnitRace("mouseover");
 		local _, class, _ = UnitClass("mouseover");
 		local englishFaction = UnitFactionGroup("mouseover");
-		TRP3_RegisterSetMainInfo(unitName, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText());
+		TRP3_RegisterSetMainInfo(unitName, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText(), GetGuildInfo("mouseover"));
 	end
 end
 
@@ -219,6 +232,8 @@ end
 -- API declaration
 TRP3_IsUnitIDKnown = isUnitIDKnown;
 TRP3_IsUnitKnown = isUnitKnown;
+TRP3_GetUnitProfile = getProfile;
+TRP3_HasProfile = hasProfile;
 
 function TRP3_InitRegister()
 	if not TRP3_Register then

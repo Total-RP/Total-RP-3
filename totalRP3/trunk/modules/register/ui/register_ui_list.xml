@@ -31,6 +31,15 @@
 			</Layer>
 		</Layers>
 		<Frames>
+			<Button name="$parentClick">
+			 	<Size x="450" y="22"/>
+				<Anchors>
+					<Anchor point="LEFT" x="30" y="0"/>
+				</Anchors>
+				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+					<TexCoords bottom="0" left="0.25" top="1" right="1"/>
+				</HighlightTexture>
+			</Button>
 			<CheckButton name="$parentSelect" inherits="TRP3_CheckBox" checked="false">
 				<Anchors>
 					<Anchor point="LEFT" x="0" y="0"/>

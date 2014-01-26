@@ -161,6 +161,11 @@ local LOCALE_EN = {
 		REG_TT_GUILD = "%s of |cffff9900%s",
 		REG_TT_TARGET = "Target: |cffff9900%s",
 		REG_TT_NOTIF = "New description",
+		REG_LIST_TITLE = "Character list",
+		REG_LIST_FILTERS = "Filters",
+		REG_LIST_REALMONLY = "This realm only",
+		REG_LIST_GUILD = "Guild",
+		REG_LIST_NAME = "Name",
 		-- Configuration
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
