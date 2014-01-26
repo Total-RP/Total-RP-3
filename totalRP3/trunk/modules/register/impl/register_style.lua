@@ -257,6 +257,10 @@ function TRP3_onPlayerRPStyleShow()
 	showConsult(context);
 end
 
+function TRP3_RegisterRPStyleGetExchangeData()
+	return get("player/style");
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

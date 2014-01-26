@@ -81,6 +81,10 @@ function TRP3_onPlayerPeekShow()
 	showView();
 end
 
+function TRP3_RegisterMiscGetExchangeData()
+	return get("player/misc");
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

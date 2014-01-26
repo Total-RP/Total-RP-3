@@ -81,8 +81,8 @@ end
 local infoTypeTab = {
 	TRP3_RegisterInfoTypes.CHARACTERISTICS,
 	TRP3_RegisterInfoTypes.ABOUT,
---	TRP3_RegisterInfoTypes.STYLE,
---	TRP3_RegisterInfoTypes.MISC
+	TRP3_RegisterInfoTypes.STYLE,
+	TRP3_RegisterInfoTypes.MISC
 };
 
 --- Incoming vernum query
@@ -147,6 +147,10 @@ local function incomingInformationType(informationType, sender)
 		data = TRP3_RegisterCharacteristicsGetExchangeData();
 	elseif informationType == TRP3_RegisterInfoTypes.ABOUT then
 		data = TRP3_RegisterAboutGetExchangeData();
+	elseif informationType == TRP3_RegisterInfoTypes.STYLE then
+		data = TRP3_RegisterRPStyleGetExchangeData();
+	elseif informationType == TRP3_RegisterInfoTypes.MISC then
+		data = TRP3_RegisterMiscGetExchangeData();
 	end
 	TRP3_SendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, sender, INFO_TYPE_SEND_PRIORITY);
 end

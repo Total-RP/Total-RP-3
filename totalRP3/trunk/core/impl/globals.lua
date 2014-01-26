@@ -13,6 +13,10 @@ TRP3_REALM = GetRealmName();
 TRP3_USER_ID = TRP3_REALM..'|'..TRP3_PLAYER;
 TRP3_RACE_LOC, TRP3_RACE = UnitRace("player");
 TRP3_CLASS_LOC, TRP3_CLASS, TRP3_CLASS_I = UnitClass("player");
+TRP3_PLAYER_CHARACTER = {
+	race = TRP3_RACE,
+	class = TRP3_CLASS
+}
 TRP3_CLIENTS = {
 	TRP3 = "trp3",
 	MSP = "msp",

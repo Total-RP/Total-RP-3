@@ -159,6 +159,9 @@ function TRP3_GetCharacterList()
 end
 
 function TRP3_GetCharacter(unitID)
+	if unitID == TRP3_USER_ID then
+		return TRP3_PLAYER_CHARACTER;
+	end
 	assert(characters[unitID], "Unknown character ID: " .. tostring(unitID));
 	return characters[unitID];
 end
