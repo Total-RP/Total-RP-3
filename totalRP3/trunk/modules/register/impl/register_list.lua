@@ -14,6 +14,43 @@ local get = TRP3_Profile_DataGetter;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local currentlyOpenedCharacterPrefix = "main_11_";
+local currentlyOpenedCharacter = {};
+
+local function openPage(unitID)
+	if unitID == TRP3_USER_ID then
+		-- If the selected is player, simply oen his sheet.
+		TRP3_SelectMenu("main_00_player");
+	else
+		if currentlyOpenedCharacter[unitID] then
+			-- If the character already has his "tab", simply open it
+			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
+		else
+			-- Else, create a new menu entry and open it.
+			local unitRealm, unitName = TRP3_GetUnitInfo(unitID);
+			local tabText = unitName;
+			if TRP3_HasProfile(unitID) then
+				local profile = TRP3_GetUnitProfile(unitID);
+				if profile.characteristics then
+					tabText = profile.characteristics.FN or unitName;
+				end
+			end
+			TRP3_RegisterMenu({
+				id = currentlyOpenedCharacterPrefix .. unitID,
+				text = tabText,
+				onSelected = function() TRP3_SetPage("player_main", {unitID = unitID}) end,
+				isChildOf = "main_10_register",
+			});
+			currentlyOpenedCharacter[unitID] = true;
+			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local ICON_SIZE = 20;
 local currentSelection;
 
@@ -83,6 +120,11 @@ local function onLineClicked(self, button)
 	refreshList();
 end
 
+local function onLineDClicked(self, button)
+	assert(self:GetParent().unitID, "No unit ID on line.");
+	openPage(self:GetParent().unitID);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -111,6 +153,7 @@ function TRP3_Register_ListInit()
 		local widget = _G["TRP3_RegisterListLine"..i];
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
 		widgetClick:SetScript("OnClick", onLineClicked);
+		widgetClick:SetScript("OnDoubleClick", onLineDClicked);
 		table.insert(widgetTab, widget);
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;

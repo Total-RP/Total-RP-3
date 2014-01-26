@@ -264,7 +264,19 @@ local LOCALE_EN = {
 		CM_ICON = "Icon",
 		CM_IMAGE = "Image",
 		CM_MOVE_UP = "Move up",
-		CM_MOVE_DOWN = "Move down"
+		CM_MOVE_DOWN = "Move down",
+		CM_CLASS_WARRIOR = "Warrior",
+		CM_CLASS_PALADIN = "Paladin",
+		CM_CLASS_HUNTER = "Hunter",
+		CM_CLASS_ROGUE = "Rogue",
+		CM_CLASS_PRIEST = "Priest",
+		CM_CLASS_DEATHKNIGHT = "Death Knight",
+		CM_CLASS_SHAMAN = "Shaman",
+		CM_CLASS_MAGE = "Mage",
+		CM_CLASS_WARLOCK = "Warlock",
+		CM_CLASS_MONK = "Monk",
+		CM_CLASS_DRUID = "Druid",
+		CM_CLASS_UNKNOWN = "Unknown",
 	},
 };
 

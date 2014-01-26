@@ -38,10 +38,10 @@ local tabBar_HEIGHT_SELECTED = 34;
 local tabBar_HEIGHT_NORMAL = 32;
 
 local function tabBar_onSelect(tabGroup, index)
-	assert(#tabGroup >= index, "Index out of bound.");
+	assert(#tabGroup.tabs >= index, "Index out of bound.");
 	local i;
-	for i=1, #tabGroup do
-		local widget = tabGroup[i];
+	for i=1, #tabGroup.tabs do
+		local widget = tabGroup.tabs[i];
 		if i == index then
 			widget:SetAlpha(1);
 			widget:Disable();
@@ -64,21 +64,51 @@ local function tabBar_onSelect(tabGroup, index)
 	end
 end
 
+local function tabBar_redraw(tabGroup)
+	local lastWidget = nil;
+	for _, tabWidget in pairs(tabGroup.tabs) do
+		if tabWidget:IsShown() then
+			tabWidget:ClearAllPoints();
+			if lastWidget == nil then
+				tabWidget:SetPoint("LEFT", 0, 0);
+			else
+				tabWidget:SetPoint("LEFT", lastWidget, "RIGHT", 2, 0);
+			end
+			lastWidget = tabWidget;
+		end
+	end
+end
+
+local function tabBar_size(tabGroup)
+	return #tabGroup.tabs;
+end
+
+local function tabBar_setTabVisible(tabGroup, index, isVisible)
+	assert(tabGroup.tabs[index], "Tab index out of bound.");
+	if isVisible then
+		tabGroup.tabs[index]:Show();
+	else
+		tabGroup.tabs[index]:Hide();
+	end
+	tabGroup:Redraw();
+end
+
+local function tabBar_selectTab(tabGroup, index)
+	assert(tabGroup.tabs[index], "Tab index out of bound.");
+	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
+	tabGroup.tabs[index]:GetScript("OnClick")(tabGroup.tabs[index]);
+end
+
 function TRP3_TabBar_Create(tabBar, data, callback)
 	assert(tabBar, "The tabBar can't be nil");
 	
-	local lastWidget = nil;
 	local tabGroup = {};
+	tabGroup.tabs = {};
 	for index, tabData in pairs(data) do
 		local text = tabData[1];
 		local value = tabData[2];
 		local width = tabData[3];
 		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabBar_Tab");
-		if lastWidget == nil then
-			tabWidget:SetPoint("LEFT", 0, 0);
-		else
-			tabWidget:SetPoint("LEFT", lastWidget, "RIGHT", 2, 0);
-		end
 		tabWidget:SetText(text);
 		tabWidget:SetWidth(width or (text:len() * 11));
 		tabWidget:SetScript("OnClick", function(self)
@@ -88,10 +118,15 @@ function TRP3_TabBar_Create(tabBar, data, callback)
 			end
 		end);
 		
-		tinsert(tabGroup, tabWidget);
-		lastWidget = tabWidget;
+		tinsert(tabGroup.tabs, tabWidget);
 		tabBar_index = tabBar_index + 1;
 	end
-	tabGroup[1]:GetScript("OnClick")(tabGroup[1]);
+	
+	tabGroup.Redraw = tabBar_redraw;
+	tabGroup.Size = tabBar_size;
+	tabGroup.SetTabVisible = tabBar_setTabVisible;
+	tabGroup.SelectTab = tabBar_selectTab;
+	tabGroup:Redraw();
+	
 	return tabGroup;
 end

@@ -159,6 +159,7 @@ function TRP3_GetCharacterList()
 end
 
 function TRP3_GetCharacter(unitID)
+	assert(characters[unitID], "Unknown character ID: " .. tostring(unitID));
 	return characters[unitID];
 end
 
@@ -225,6 +226,17 @@ local function createTabBar()
 	);
 end
 
+local function showTabs(context)
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	local isSelf = context.unitID == TRP3_USER_ID;
+	
+	tabGroup:SetTabVisible(2, isSelf or hasProfile(context.unitID));
+	tabGroup:SetTabVisible(3, isSelf or hasProfile(context.unitID));
+	tabGroup:SetTabVisible(4, isSelf or hasProfile(context.unitID));
+	tabGroup:SelectTab(1);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -256,7 +268,7 @@ function TRP3_UI_InitRegister()
 	TRP3_RegisterMenu({
 		id = "main_00_player",
 		text = TRP3_PLAYER,
-		onSelected = function() TRP3_SetPage("player_main"); end,
+		onSelected = function() TRP3_SetPage("player_main", {unitID = TRP3_USER_ID}); end,
 	});
 
 	TRP3_RegisterPage({
@@ -265,10 +277,8 @@ function TRP3_UI_InitRegister()
 		frameName = "TRP3_RegisterMain",
 		frame = TRP3_RegisterMain,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
-		onPagePostShow = function()
-			if tabGroup ~= nil and #tabGroup > 0 then
-				tabGroup[1]:GetScript("OnClick")(tabGroup[1]); -- Select the first tab
-			end
+		onPagePostShow = function(context)
+			showTabs(context);
 		end,
 	});
 

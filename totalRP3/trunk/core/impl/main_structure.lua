@@ -34,7 +34,8 @@ end
 function TRP3_UnregisterMenu(menuId)
 	menuStructures[menuId] = nil;
 	if selectedMenuId == menuId then
-		-- TODO: what to do when unregister the currently selected menu ?
+		-- TODO: what to do when unregister the currently selected menu ? Error for now
+		error("Cannot unregister the current selected menu entry");
 	end
 	TRP3_RefreshMenuDisplay();
 end
@@ -127,6 +128,7 @@ end
 local pageStructures = {};
 -- Currently displayed page
 local currentPageId;
+local currentContext;
 
 local function checkPageSelection()
 	if currentPageId == nil then
@@ -134,10 +136,11 @@ local function checkPageSelection()
 	end
 end
 
-function TRP3_SetPage(pageId)
-	log("TRP3_SetPage: "..pageId, "DEBUG");
+function TRP3_SetPage(pageId, context)
+	log("TRP3_SetPage: "..pageId, TRP3_LOG_LEVEL.DEBUG);
 	
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
+	assert(context == nil or type(context) == "table", "Context must be a table or nil.");
 	
 	if currentPageId then -- Hide current page
 		if pageStructures[currentPageId].frame then
@@ -146,6 +149,7 @@ function TRP3_SetPage(pageId)
 	end
 	
 	currentPageId = pageId;
+	currentContext = context;
 	local currentPage = pageStructures[currentPageId];
 	if not currentPage.frame then
 		if not _G[currentPage.frameName] then
@@ -157,7 +161,7 @@ function TRP3_SetPage(pageId)
 	
 	-- Show
 	if currentPage.onPagePreShow then
-		currentPage.onPagePreShow();
+		currentPage.onPagePreShow(context);
 	end
 	if currentPage.background then -- TODO: change background of what ?
 --		TRP3_MainFrameContainerBackground:SetTexture(currentPage.background);
@@ -169,8 +173,16 @@ function TRP3_SetPage(pageId)
 	currentPage.frame:Show();
 	-- Show
 	if currentPage.onPagePostShow then
-		currentPage.onPagePostShow();
+		currentPage.onPagePostShow(context);
 	end
+end
+
+function TRP3_GetCurrentPageContext()
+	return currentContext;
+end
+
+function TRP3_GetCurrentPageID()
+	return currentPageId;
 end
 
 function TRP3_RegisterPage(pageStructure)

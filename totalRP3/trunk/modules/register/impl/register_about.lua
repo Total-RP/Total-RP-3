@@ -129,11 +129,10 @@ local TAGS_INFO = {
 	}
 }
 
-local function showTemplate1()
-	local dataTab = get("player/about/T1");
-	assert(type(dataTab) == "table", "Error: Nil template1 data or not a table.");
+local function showTemplate1(dataTab)
+	local templateData = dataTab.T1 or {};
 	
-	local text = TRP2_toHTML(dataTab.TX or "");
+	local text = TRP2_toHTML(templateData.TX or "");
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
 	TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 end
@@ -217,9 +216,8 @@ end
 local template2Frames = {};
 local TEMPLATE2_PADDING = 30;
 
-local function showTemplate2()
-	local dataTab = get("player/about/T2");
-	assert(type(dataTab) == "table", "Error: Nil template2 data or not a table.");
+local function showTemplate2(dataTab)
+	local templateData = dataTab.T2 or {};
 	
 	-- Hide all
 	for _, frame in pairs(template2Frames) do
@@ -229,7 +227,7 @@ local function showTemplate2()
 	local frameIndex = 1;
 	local previous = TRP3_RegisterAbout_AboutPanel_Template2Title;
 	local bool = true;
-	for _, frameTab in pairs(dataTab) do
+	for _, frameTab in pairs(templateData) do
 		local frame = template2Frames[frameIndex];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterAbout_Template2_Frame"..frameIndex, TRP3_RegisterAbout_AboutPanel_Template2, "TRP3_RegisterAbout_Template2_Frame");
@@ -418,23 +416,68 @@ local function onHistoIconSelected(icon)
 	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or TRP3_ICON_DEFAULT);
 end
 
-local function showTemplate3()
-	local datas = {get("player/about/T3/PH"), get("player/about/T3/PS"), get("player/about/T3/HI")};
+local function showTemplate3(dataTab)
+	local templateData = dataTab.T3 or {};
+	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
 	for i=1, 3 do
-		local data = datas[i];
-		assert(type(data) == "table", "Error: Nil template3 data or not a table.");
+		local data = datas[i] or {};
 		local icon = TRP3_Icon(data.IC or TRP3_ICON_DEFAULT, 25);
 		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
 		title:SetText(icon.."    "..titles[i].."    "..icon);
 		text:SetText(TRP3_ConvertTextTags(data.TX));
-		setBkg(frame, data.BK or 1);
+		setBkg(frame, data.BK);
 		frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
 	end
 
 	TRP3_RegisterAbout_AboutPanel_Template3:Show();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMPRESSION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local currentCompressed;
+
+local function getOptimizedData()
+	local dataTab = get("player/about");
+	-- Optimize : only send the selected template
+	local dataToSend = {};
+	TRP3_DupplicateTab(dataToSend, dataTab);
+	local template = dataToSend.TE or 1;
+	if template ~= 1 then
+		dataToSend.T1 = nil;
+	end
+	if template ~= 2 then
+		dataToSend.T2 = nil;
+	end
+	if template ~= 3 then
+		dataToSend.T3 = nil;
+	end
+	return dataToSend;
+end
+
+local function compressData()
+	local dataTab = getOptimizedData();
+	local serial = TRP3_Serialize(dataTab);
+	local compressed = TRP3_EncodeCompressMessage(serial);
+	
+--	log(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+	if compressed:len() < serial:len() then
+		currentCompressed = compressed;
+	else
+		currentCompressed = nil;
+	end
+end
+
+function TRP3_RegisterAboutGetExchangeData()
+	if currentCompressed ~= nil then
+		return currentCompressed;
+	else
+		return getOptimizedData();
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -448,20 +491,37 @@ local templatesFunction = {
 	showTemplate3
 }
 
-local function refreshConsultDisplay()
-	local dataTab = get("player/about");
+local function refreshConsultDisplay(context)
+	local dataTab = nil;
+	local template = nil;
+	TRP3_RegisterAbout_AboutPanel.isMine = nil;
+	if context.unitID == TRP3_USER_ID then
+		dataTab = get("player/about");
+		template = dataTab.TE or 1;
+		TRP3_RegisterAbout_AboutPanel.isMine = true;
+	else
+		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+			dataTab = TRP3_GetUnitProfile(context.unitID).about;
+			template = dataTab.TE or 1;
+		else
+			dataTab = {};
+			template = 1;
+		end
+	end
+
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
-	assert(dataTab.TE, "Error: no player.about.TE detected");
-	assert(type(templatesFunction[dataTab.TE]) == "function", "Error: no function for about template: " .. tostring(dataTab.TE));
+	assert(template, "Error: No about template ID.");
+	assert(type(templatesFunction[template]) == "function", "Error: no function for about template: " .. tostring(template));
 	
 	TRP3_RegisterAbout_AboutPanel.musicURL = dataTab.MU;
 	if dataTab.MU then
 		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(TRP3_GetMusicTitle(dataTab.MU));
 	end
 	
+	TRP3_RegisterAbout_AboutPanel_EditButton:Hide();
 	TRP3_RegisterAbout_AboutPanel:Show();
 	-- Putting the right templates
-	templatesFunction[dataTab.TE]();
+	templatesFunction[template](dataTab);
 	-- Putting the righ background
 	setConsultBkg(dataTab.BK);
 end
@@ -504,6 +564,8 @@ local function save()
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
+	
+	compressData();
 end
 
 local function refreshEditDisplay()
@@ -545,6 +607,10 @@ local function refreshEditDisplay()
 end
 
 local function refreshDisplay()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	local isSelf = context.unitID == TRP3_USER_ID;
+	
 	--Hide all templates
 	TRP3_RegisterAbout_AboutPanel_Template1:Hide();
 	TRP3_RegisterAbout_AboutPanel_Template2:Hide();
@@ -553,9 +619,10 @@ local function refreshDisplay()
 	TRP3_RegisterAbout_AboutPanel_Edit:Hide();
 	
 	if isEditMode then
-		refreshEditDisplay()
+		assert(isSelf, "Trying to show About edition for another unitID than me ...");
+		refreshEditDisplay();
 	else
-		refreshConsultDisplay()
+		refreshConsultDisplay(context);
 	end
 end
 
@@ -614,7 +681,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onPlayerAboutRefresh()
-	TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
+	if TRP3_RegisterAbout_AboutPanel.isMine then
+		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
+	end
 	if TRP3_RegisterAbout_AboutPanel.musicURL then
 		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_MusicPlayer, TRP3_RegisterAbout_AboutPanel);
 	end
@@ -697,4 +766,6 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3",1,1,1);
+	
+	compressData();
 end

@@ -4,6 +4,7 @@
 
 local loc = TRP3_L;
 local isDebug = true;
+local showLog = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
@@ -17,14 +18,10 @@ TRP3_LOG_LEVEL = {
 }
 
 function TRP3_Log(message, level)
-	if level == TRP3_LOG_LEVEL.DEBUG and not isDebug then
+	if not showLog or (level == TRP3_LOG_LEVEL.DEBUG and not isDebug) then
 		return;
 	end
 	print( "[TRP3"..(level or TRP3_LOG_LEVEL.INFO)..tostring(message));
-end
-
-function string.log(a)
-	return TRP3_Log(a);
 end
 
 function TRP3_DumpTab(tab)

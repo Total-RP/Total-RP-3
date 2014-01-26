@@ -163,12 +163,29 @@ local function setBkg(backgroundIndex)
 	TRP3_RegisterCharact_CharactPanel:SetBackdrop(backdrop);
 end
 
-local function setConsultDisplay()
-	local dataTab = get("player/characteristics");
+local function setConsultDisplay(context)
+	local dataTab = nil;
+	local character = TRP3_GetCharacter(context.unitID);
+	local race, class = nil;
+	local unitRealm, unitName = TRP3_GetUnitInfo(context.unitID);
+	if context.unitID == TRP3_USER_ID then
+		dataTab = get("player/characteristics");
+		race = TRP3_RACE_LOC;
+		class = TRP3_CLASS_LOC;
+	else
+		race = character.race or UNKNOWN;
+		class = loc("CM_CLASS_" .. (stEtN(character.class) or "UNKNOWN"));
+		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).characteristics then
+			dataTab = TRP3_GetUnitProfile(context.unitID).characteristics;
+		else
+			dataTab = {};
+		end
+	end
+	
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	
 	-- Icon, complete name and titles
-	local completeName = TRP3_GetCompleteName(dataTab, TRP3_PLAYER);
+	local completeName = TRP3_GetCompleteName(dataTab, unitName);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or TRP3_ICON_PROFILE_DEFAULT);
@@ -188,8 +205,8 @@ local function setConsultDisplay()
 	-- Which directory chars must be shown ?
 	local shownCharacteristics = {"RA", "CL"}; -- Race and class are mandatory values
 	local shownValues = {
-		RA = stEtN(dataTab.RA) or TRP3_RACE_LOC,
-		CL = stEtN(dataTab.CL) or TRP3_CLASS_LOC,
+		RA = stEtN(dataTab.RA) or race,
+		CL = stEtN(dataTab.CL) or class,
 	};
 	for _,attribute in pairs({"AG", "EC", "HE", "WE", "BP", "RE"}) do -- Optional values
 		if stEtN(dataTab[attribute]) then
@@ -215,8 +232,7 @@ local function setConsultDisplay()
 	end
 	
 	-- Psycho chars
-	assert(type(dataTab.PS) == "table", "Error: Nil psycho data or not a table.");
-	if #dataTab.PS > 0 then
+	if type(dataTab.PS) == "table" and #dataTab.PS > 0 then
 		assert(type(dataTab.PS) == "table", "Error: Nil psycho data or not a table.");
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
@@ -250,8 +266,7 @@ local function setConsultDisplay()
 	end
 	
 	-- Misc chars
-	assert(type(dataTab.MI) == "table", "Error: Nil misc data or not a table.");
-	if #dataTab.MI > 0 then
+	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
@@ -555,6 +570,10 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function refreshDisplay()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	local isSelf = context.unitID == TRP3_USER_ID;
+
 	-- Hide all
 	TRP3_RegisterCharact_NamePanel:Hide();
 	TRP3_RegisterCharact_CharactPanel:Hide();
@@ -564,14 +583,21 @@ local function refreshDisplay()
 	for _, frame in pairs(psychoCharFrame) do frame:Hide(); end
 	for _, frame in pairs(miscCharFrame) do frame:Hide(); end
 	
+	-- IsSelf ?
+	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
+	if isSelf then
+		TRP3_RegisterCharact_NamePanel_EditButton:Show();
+	end
+	
 	if isEditMode then
+		assert(isSelf, "Trying to show Characteristics edition for another unitID than me ...");
 		TRP3_RegisterCharact_Edit_NamePanel:Show();
 		TRP3_RegisterCharact_Edit_CharactPanel:Show();
 		setEditDisplay();
 	else
 		TRP3_RegisterCharact_NamePanel:Show();
 		TRP3_RegisterCharact_CharactPanel:Show();
-		setConsultDisplay();
+		setConsultDisplay(context);
 	end
 end
 

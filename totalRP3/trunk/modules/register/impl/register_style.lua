@@ -115,12 +115,21 @@ end
 
 local consultLines = {};
 
-local function showConsult()
+local function showConsult(context)
 	TRP3_RegisterRPStyleMain_Display:Show();
 	TRP3_RegisterRPStyleMain_Edit:Hide();
 	
-	local dataTab = get("player/style");
-	assert(type(dataTab) == "table", "Error: Nil style data or not a table.");
+	
+	local dataTab = nil;
+	if context.unitID == TRP3_USER_ID then
+		dataTab = get("player/style");
+	else
+		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).style then
+			dataTab = TRP3_GetUnitProfile(context.unitID).style;
+		else
+			dataTab = {};
+		end
+	end
 	
 	-- Hide all
 	for _, frame in pairs(consultLines) do
@@ -129,34 +138,37 @@ local function showConsult()
 
 	local previous = nil;
 	local index = 1;
-	for _, fieldData in pairs(STYLE_FIELDS) do
-		local selectedValue = dataTab.VA[fieldData.id] or 0;
-		if selectedValue ~= 0 then
-			local frame = consultLines[index];
-			if frame == nil then
-				frame = CreateFrame("Frame", "TRP3_RegisterRPStyleMain_Display_Line"..index, TRP3_RegisterRPStyleMain_Display, "TRP3_RegisterRPStyleMain_Display_Line");
-				tinsert(consultLines, frame);
+	if type(dataTab.VA) == "table" then
+		for _, fieldData in pairs(STYLE_FIELDS) do
+			local selectedValue = dataTab.VA[fieldData.id] or 0;
+			if selectedValue ~= 0 then
+				local frame = consultLines[index];
+				if frame == nil then
+					frame = CreateFrame("Frame", "TRP3_RegisterRPStyleMain_Display_Line"..index, TRP3_RegisterRPStyleMain_Display, "TRP3_RegisterRPStyleMain_Display_Line");
+					tinsert(consultLines, frame);
+				end
+				-- Position
+				frame:ClearAllPoints();
+				if previous == nil then
+					frame:SetPoint("TOPLEFT", TRP3_RegisterRPStyleMain_Display, "TOPLEFT", -5, -30);
+				else
+					frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+				end
+				frame:SetPoint("LEFT", 0, 0);
+				frame:SetPoint("RIGHT", 0, 0);
+				
+				-- Value
+				_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
+				_G[frame:GetName().."FieldValue"]:SetText(fieldData.values[selectedValue][1]);
+				
+				frame:Show();
+				previous = frame;
+				index = index + 1;
 			end
-			-- Position
-			frame:ClearAllPoints();
-			if previous == nil then
-				frame:SetPoint("TOPLEFT", TRP3_RegisterRPStyleMain_Display, "TOPLEFT", -5, -30);
-			else
-				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
-			end
-			frame:SetPoint("LEFT", 0, 0);
-			frame:SetPoint("RIGHT", 0, 0);
-			
-			-- Value
-			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
-			_G[frame:GetName().."FieldValue"]:SetText(fieldData.values[selectedValue][1]);
-			
-			frame:Show();
-			previous = frame;
-			index = index + 1;
-		else
-			
 		end
+	end
+	if index == 1 then
+		-- TODO: is empty, place a text
 	end
 end
 
@@ -231,8 +243,18 @@ local function saveRPStyle()
 end
 
 function TRP3_onPlayerRPStyleShow()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	local isSelf = context.unitID == TRP3_USER_ID;
+	
+	-- IsSelf ?
+	TRP3_RegisterRPStyleMain_Display_Edit:Hide();
+	if isSelf then
+		TRP3_RegisterRPStyleMain_Display_Edit:Show();
+	end
+	
 	TRP3_RegisterRPStyle:Show();
-	showConsult();
+	showConsult(context);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
