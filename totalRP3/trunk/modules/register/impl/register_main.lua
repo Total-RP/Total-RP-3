@@ -11,6 +11,7 @@ local loc = TRP3_L;
 local getUnitID = TRP3_GetUnitID;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
+local TRP3_USER_ID = TRP3_USER_ID;
 
 -- Saved variables references
 local profiles;

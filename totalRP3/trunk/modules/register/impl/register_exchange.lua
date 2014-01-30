@@ -12,6 +12,9 @@ local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
 local UnitIsPlayer = UnitIsPlayer;
 local UnitFactionGroup = UnitFactionGroup;
+local tinsert = tinsert;
+local type = type;
+local time = time;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils

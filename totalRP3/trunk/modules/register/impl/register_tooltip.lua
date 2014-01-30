@@ -119,7 +119,7 @@ local function getCharacterInfoTab(targetName, realm)
 	if targetName == TRP3_PLAYER then
 		return TRP3_Profile_DataGetter("player");
 	elseif TRP3_IsUnitIDKnown(getUnitID(targetName, realm)) then
-		return TRP3_RegisterGetCurrentProfile(targetName, realm);
+		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
 	end
 	return {};
 end
@@ -264,16 +264,16 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showNotifications() then
-		local glance = false;
-		local description = false;
+		local glance;
+		local description;
 		if info.misc and info.misc.PE and TRP3_HashTableSize(info.misc.PE) > 0 then
-			glance = true;
+			glance = loc("REG_PLAYER_GLANCE");
 		end
-		if not targetName ~= TRP3_PLAYER and true then -- TODO: has new
-			description = true;
+		if not targetName ~= TRP3_PLAYER and info.about and not info.about.read then
+			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then
-			TRP3_CharacterTooltip:AddDoubleLine(loc("REG_PLAYER_GLANCE"), loc("REG_TT_NOTIF"), 1, 1, 1, 0, 1, 0);
+			TRP3_CharacterTooltip:AddDoubleLine(glance, description, 1, 1, 1, 0, 1, 0);
 			setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
 		end

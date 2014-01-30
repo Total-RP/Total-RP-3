@@ -502,6 +502,7 @@ local function refreshConsultDisplay(context)
 	else
 		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
 			dataTab = TRP3_GetUnitProfile(context.unitID).about;
+			dataTab.read = true;
 			template = dataTab.TE or 1;
 		else
 			dataTab = {};
