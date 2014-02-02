@@ -246,7 +246,11 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCurrently() and info.misc and info.misc.CU then
-		TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
+		if info.misc.CO then
+			TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENTOOC"), 1, 1, 1);
+		else
+			TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
+		end
 		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 		
@@ -269,7 +273,7 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		if info.misc and info.misc.PE and TRP3_HashTableSize(info.misc.PE) > 0 then
 			glance = loc("REG_PLAYER_GLANCE");
 		end
-		if not targetName ~= TRP3_PLAYER and info.about and not info.about.read then
+		if targetName ~= TRP3_PLAYER and info.about and not info.about.read then
 			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then

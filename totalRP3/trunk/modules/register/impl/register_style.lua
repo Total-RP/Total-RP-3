@@ -10,6 +10,7 @@ local color = TRP3_Color;
 local get = TRP3_Profile_DataGetter;
 local loc = TRP3_L;
 local tcopy = TRP3_DupplicateTab;
+local assert = assert;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -118,11 +119,13 @@ local consultLines = {};
 local function showConsult(context)
 	TRP3_RegisterRPStyleMain_Display:Show();
 	TRP3_RegisterRPStyleMain_Edit:Hide();
+	TRP3_RegisterRPStyleMain_Display_Edit:Hide();
 	
 	
 	local dataTab = nil;
 	if context.unitID == TRP3_USER_ID then
 		dataTab = get("player/style");
+		TRP3_RegisterRPStyleMain_Display_Edit:Show();
 	else
 		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).style then
 			dataTab = TRP3_GetUnitProfile(context.unitID).style;
@@ -182,6 +185,10 @@ local function onEditSelection(choice, frame)
 end
 
 local function showEdit()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	assert(context.unitID == TRP3_USER_ID, "Trying to show Style edition for another unitID than me ...");
+
 	TRP3_RegisterRPStyleMain_Display:Hide();
 	TRP3_RegisterRPStyleMain_Edit:Show();
 	
@@ -245,14 +252,6 @@ end
 function TRP3_onPlayerRPStyleShow()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == TRP3_USER_ID;
-	
-	-- IsSelf ?
-	TRP3_RegisterRPStyleMain_Display_Edit:Hide();
-	if isSelf then
-		TRP3_RegisterRPStyleMain_Display_Edit:Show();
-	end
-	
 	TRP3_RegisterRPStyle:Show();
 	showConsult(context);
 end

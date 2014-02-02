@@ -31,7 +31,11 @@ end
 local function onLoaded()
 	log("onLoaded test module");
 	
-	
+--	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", function()
+--		if UnitIsPlayer("mouseover") then
+--			TRP3_RegisterAddCharacter(UnitName("mouseover"))
+--		end
+--	end);
 end
 
 local MODULE_STRUCTURE = {
