@@ -436,6 +436,53 @@ local function showTemplate3(dataTab)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- VOTE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function refreshVoteDisplay(aboutTab)
+	if aboutTab.vote == 1 then
+		TRP3_RegisterAbout_AboutPanel_ThumbUp:LockHighlight();
+		TRP3_RegisterAbout_AboutPanel_ThumbUp:GetHighlightTexture():SetVertexColor(0, 1, 0);
+	else
+		TRP3_RegisterAbout_AboutPanel_ThumbUp:UnlockHighlight();
+		TRP3_RegisterAbout_AboutPanel_ThumbUp:GetHighlightTexture():SetVertexColor(1, 1, 1);
+	end
+	if aboutTab.vote == -1 then
+		TRP3_RegisterAbout_AboutPanel_ThumbDown:LockHighlight();
+		TRP3_RegisterAbout_AboutPanel_ThumbDown:GetHighlightTexture():SetVertexColor(0, 1, 0);
+	else
+		TRP3_RegisterAbout_AboutPanel_ThumbDown:UnlockHighlight();
+		TRP3_RegisterAbout_AboutPanel_ThumbDown:GetHighlightTexture():SetVertexColor(1, 1, 1);
+	end
+end
+
+local function voteUp()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	if context.unitID ~= TRP3_USER_ID and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+		if TRP3_GetUnitProfile(context.unitID).about.vote == 1 then
+			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
+		else
+			TRP3_GetUnitProfile(context.unitID).about.vote = 1;
+		end
+		refreshVoteDisplay(TRP3_GetUnitProfile(context.unitID).about);
+	end
+end
+
+local function voteDown()
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	if context.unitID ~= TRP3_USER_ID and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+		if TRP3_GetUnitProfile(context.unitID).about.vote == -1 then
+			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
+		else
+			TRP3_GetUnitProfile(context.unitID).about.vote = -1;
+		end
+		refreshVoteDisplay(TRP3_GetUnitProfile(context.unitID).about);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -508,6 +555,7 @@ local function refreshConsultDisplay(context)
 			dataTab = {};
 			template = 1;
 		end
+		refreshVoteDisplay(dataTab);
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
@@ -520,6 +568,7 @@ local function refreshConsultDisplay(context)
 	end
 	
 	TRP3_RegisterAbout_AboutPanel_EditButton:Hide();
+	TRP3_RegisterAbout_AboutPanel_Thumb:Hide();
 	TRP3_RegisterAbout_AboutPanel:Show();
 	-- Putting the right templates
 	templatesFunction[template](dataTab);
@@ -684,6 +733,8 @@ end
 local function onPlayerAboutRefresh()
 	if TRP3_RegisterAbout_AboutPanel.isMine then
 		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
+	else
+		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.musicURL then
 		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_MusicPlayer, TRP3_RegisterAbout_AboutPanel);
@@ -767,6 +818,13 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3",1,1,1);
+
+	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
+	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT"));
+	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", voteUp);
+	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", voteDown);
 	
 	compressData();
 end

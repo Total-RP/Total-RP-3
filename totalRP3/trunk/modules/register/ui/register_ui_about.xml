@@ -616,6 +616,28 @@
 									</OnClick>
 								</Scripts>
 							</Button>
+							<Frame name="TRP3_RegisterAbout_AboutPanel_Thumb">
+								<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+								</Backdrop>
+								<Size x="90" y="50"/>
+								<Anchors>
+									<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+								</Anchors>
+								<Frames>
+									<Button name="TRP3_RegisterAbout_AboutPanel_ThumbUp" inherits="TRP3_IconButton">
+										<Anchors>
+											<Anchor point="BOTTOMRIGHT" x="-13" y="13"/>
+										</Anchors>
+									</Button>
+									<Button name="TRP3_RegisterAbout_AboutPanel_ThumbDown" inherits="TRP3_IconButton">
+										<Anchors>
+											<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_ThumbUp" x="-10" y="0"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
 							<!-- Music player -->
 							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer">
 								<Size x="200" y="65"/>

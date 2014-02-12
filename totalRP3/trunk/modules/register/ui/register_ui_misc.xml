@@ -17,6 +17,20 @@
 		</Scripts>
 	</Button>
 	
+	<!-- Glance consult button : ButtonHilight-Square -->
+	<Button name="TRP3_RegisterPeekGlanceButtonEdit" inherits="TRP3_RegisterPeekGlanceButton" virtual="true">
+		<Size x="40" y="40"/>
+		<DisabledTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="BLEND" file="Interface\HELPFRAME\HelpIcon-CharacterStuck" name="$parentSelected">
+					<Size x="40" y="40"/>
+					<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Button>
+	
 	<!-- Register Peek panel -->
 	<Frame name="TRP3_RegisterPeekTemplate" virtual="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
@@ -46,55 +60,12 @@
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Frames>
-					<Button name="TRP3_RegisterPeekView_Edit" inherits="TRP3_CommonButton">
-						<Size x="70" y="20"/>
-						<Anchors>	
-							<Anchor point="TOPRIGHT" x="-15" y="8"/>
-						</Anchors>
-					</Button>
-					<!-- CURRENTLY -->
-					<Frame name="TRP3_RegisterPeekViewCurrent" inherits="TRP3_FieldSetFrame">
-						<Size x="0" y="50"/>
-						<Anchors>	
-							<Anchor point="TOPLEFT" x="0" y="-15"/>
-							<Anchor point="TOPRIGHT" x="-3" y="-15"/>
-						</Anchors>
-						<Frames>
-							<ScrollFrame name="TRP3_RegisterPeekViewCurrentScroll" inherits="UIPanelScrollFrameTemplate">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-10"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="LEFT" x="15" y="0"/>
-									<Anchor point="RIGHT" x="-18" y="0"/>
-								</Anchors>
-								<ScrollChild>
-									<Frame>
-										<Size x="10" y="10"/>
-										<Anchors>	
-											<Anchor point="TOPLEFT" x="0" y="0"/>
-										</Anchors>
-										<Layers>
-											<Layer level="OVERLAY">
-												 <FontString name="TRP3_RegisterPeekViewCurrentText" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-												 	<Size x="460" y="0"/>
-													<Anchors>
-														<Anchor point="TOPLEFT" x="0" y="-3"/>
-													</Anchors>
-													<Color r="0.95" g="0.95" b="0.95"/>
-												</FontString>
-											</Layer>
-										</Layers>
-									</Frame>
-								</ScrollChild>
-							</ScrollFrame>
-						</Frames>
-					</Frame>
-					<!-- CURRENTLY -->
+					<!-- GLANCES -->
 					<Frame name="TRP3_RegisterPeekViewGlance" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
 						<Anchors>	
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterPeekViewCurrent" x="0" y="-20"/>
-							<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterPeekViewCurrent" x="0" y="-20"/>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+							<Anchor point="TOPRIGHT" x="-3" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="TRP3_RegisterPeekViewGlanceSlot3" inherits="TRP3_RegisterPeekGlanceButton">
@@ -116,177 +87,117 @@
 					</Frame>
 				</Frames>
 			</Frame>
-			<!-- EDIT MODE -->
-			<Frame name="TRP3_RegisterPeekEdit">
-				<Anchors>	
-					<Anchor point="TOPLEFT" x="10" y="-20"/>
-					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+		</Frames>
+	</Frame>
+	
+    <Frame name="TRP3_RegisterGlanceEditor" parent="TRP3_PopupsFrame" hidden="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="420" y="200"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_RegisterGlanceEditorTitle" text="[GLANCE_EDITOR]" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_HidePopups();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="TRP3_RegisterPeekEdit_Glance_Edit">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterGlanceEditorTitle"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
 				</Anchors>
 				<Frames>
-					<Button name="TRP3_RegisterPeekEdit_Save" inherits="TRP3_CommonButton">
+					<CheckButton name="TRP3_RegisterPeekEdit_Glance_Active" inherits="TRP3_CheckBox" checked="true">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="15" y="-10"/>
+						</Anchors>
+					</CheckButton>
+					<EditBox name="TRP3_RegisterPeekEdit_Glance_Title" inherits="TRP3_TitledHelpEditBox">
+						<Size x="200" y="18"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterPeekEdit_Glance_Active"/>
+						</Anchors>
+					</EditBox>
+					<Button name="TRP3_RegisterPeekEdit_Glance_Icon" inherits="TRP3_IconButton">
+						<Anchors>
+							<Anchor point="LEFT" x="24" y="-25"/>
+						</Anchors>
+					</Button>
+					<Button name="TRP3_RegisterPeekEdit_Glance_Apply" inherits="TRP3_CommonButton">
 						<Size x="70" y="20"/>
 						<Anchors>	
 							<Anchor point="TOPRIGHT" x="-15" y="-20"/>
 						</Anchors>
 					</Button>
-					<Button name="TRP3_RegisterPeekEdit_Cancel" inherits="TRP3_CommonButton">
-						<Size x="70" y="20"/>
-						<Anchors>	
-							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterPeekEdit_Save"/>
-						</Anchors>
-					</Button>
-					<!-- CURRENTLY -->
-					<Frame name="TRP3_RegisterPeekEdit_Current" inherits="TRP3_FieldSetFrame">
-						<Size x="0" y="100"/>
-						<Anchors>	
-							<Anchor point="TOPLEFT" x="0" y="-15"/>
-							<Anchor point="TOPRIGHT" x="-100" y="-15"/>
+					<Frame name="TRP3_RegisterPeekEdit_Glance_Text">
+						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+							<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+						</Backdrop>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterPeekEdit_Glance_Title"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="RIGHT" x="-10" y="0" />
+							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekEdit_Glance_Icon"/>
 						</Anchors>
 						<Frames>
-							<CheckButton name="TRP3_RegisterPeekEdit_Current_OOC" inherits="TRP3_CheckBox" checked="true">
+							<ScrollFrame name="TRP3_RegisterPeekEdit_Glance_TextScroll" inherits="UIPanelScrollFrameTemplate">
 								<Anchors>
-									<Anchor point="TOPLEFT" x="15" y="-10"/>
-								</Anchors>
-							</CheckButton>
-							<Frame name="TRP3_RegisterPeekEdit_Current_Text">
-								<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-								</Backdrop>
-								<Anchors>
-									<Anchor point="TOP" x="0" y="0" relativePoint="BOTTOM" relativeTo="TRP3_RegisterPeekEdit_Current_OOC"/>
+									<Anchor point="TOP" x="0" y="-10"/>
 									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="LEFT" x="15" y="0"/>
+									<Anchor point="RIGHT" x="-18" y="0"/>
 								</Anchors>
-								<Frames>
-									<ScrollFrame name="TRP3_RegisterPeekEdit_Current_TextScroll" inherits="UIPanelScrollFrameTemplate">
-										<Anchors>
-											<Anchor point="TOP" x="0" y="-10"/>
-											<Anchor point="BOTTOM" x="0" y="10"/>
-											<Anchor point="LEFT" x="15" y="0"/>
-											<Anchor point="RIGHT" x="-18" y="0"/>
-										</Anchors>
-										<ScrollChild>
-											<EditBox name="TRP3_RegisterPeekEdit_Current_TextScrollText" letters="300" multiLine="true" enableMouse="false" autoFocus="false">
-												<Size x="340" y="130"/>
-												<Scripts>
-													<OnTextChanged>
-														if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-															self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-														end
-													</OnTextChanged>
-													<OnEscapePressed>
-														self:ClearFocus();
-													</OnEscapePressed>
-													<OnEditFocusGained>
-														self:HighlightText();
-													</OnEditFocusGained>
-													<OnEditFocusLost>
-														self:HighlightText(0,0);
-													</OnEditFocusLost>
-												</Scripts>
-												<FontString inherits="ChatFontNormal"/>
-											</EditBox>
-										</ScrollChild>
-									</ScrollFrame>
-								</Frames>
-							</Frame>
-						</Frames>
-					</Frame>
-					
-					<!-- PEEK -->
-					<Frame name="TRP3_RegisterPeekEdit_Glance" inherits="TRP3_FieldSetFrame">
-						<Size x="0" y="200"/>
-						<Anchors>	
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterPeekEdit_Current" x="0" y="-20"/>
-							<Anchor point="RIGHT" x="0" y="-20"/>
-						</Anchors>
-						<Frames>
-							<Button name="TRP3_RegisterPeekEdit_GlanceSlot3" inherits="TRP3_RegisterPeekGlanceButton">
-								<Anchors><Anchor point="TOP" x="0" y="-18"/></Anchors>
-							</Button>
-							<Button name="TRP3_RegisterPeekEdit_GlanceSlot2" inherits="TRP3_RegisterPeekGlanceButton">
-								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterPeekEdit_GlanceSlot3" x="-45" y="0"/></Anchors>
-							</Button>
-							<Button name="TRP3_RegisterPeekEdit_GlanceSlot1" inherits="TRP3_RegisterPeekGlanceButton">
-								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterPeekEdit_GlanceSlot2" x="-45" y="0"/></Anchors>
-							</Button>
-							<Button name="TRP3_RegisterPeekEdit_GlanceSlot4" inherits="TRP3_RegisterPeekGlanceButton">
-								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekEdit_GlanceSlot3" x="45" y="0"/></Anchors>
-							</Button>
-							<Button name="TRP3_RegisterPeekEdit_GlanceSlot5" inherits="TRP3_RegisterPeekGlanceButton">
-								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekEdit_GlanceSlot4" x="45" y="0"/></Anchors>
-							</Button>
-							<Frame name="TRP3_RegisterPeekEdit_Glance_Edit">
-								<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-								</Backdrop>
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterPeekEdit_GlanceSlot1"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-									<Anchor point="LEFT" x="10" y="0"/>
-								</Anchors>
-								<Frames>
-									<CheckButton name="TRP3_RegisterPeekEdit_Glance_Active" inherits="TRP3_CheckBox" checked="true">
-										<Anchors>
-											<Anchor point="TOPLEFT" x="15" y="-10"/>
-										</Anchors>
-									</CheckButton>
-									<Button name="TRP3_RegisterPeekEdit_Glance_Icon" inherits="TRP3_IconButton">
-										<Anchors>
-											<Anchor point="LEFT" x="24" y="-10"/>
-										</Anchors>
-									</Button>
-									<Frame name="TRP3_RegisterPeekEdit_Glance_Text">
-										<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-											<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-											<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-										</Backdrop>
-										<Anchors>
-											<Anchor point="TOP" x="0" y="0" relativePoint="BOTTOM" relativeTo="TRP3_RegisterPeekEdit_Glance_Active"/>
-											<Anchor point="BOTTOM" x="0" y="10"/>
-											<Anchor point="RIGHT" x="-10" y="0" />
-											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterPeekEdit_Glance_Icon"/>
-										</Anchors>
-										<Frames>
-											<ScrollFrame name="TRP3_RegisterPeekEdit_Glance_TextScroll" inherits="UIPanelScrollFrameTemplate">
-												<Anchors>
-													<Anchor point="TOP" x="0" y="-10"/>
-													<Anchor point="BOTTOM" x="0" y="10"/>
-													<Anchor point="LEFT" x="15" y="0"/>
-													<Anchor point="RIGHT" x="-18" y="0"/>
-												</Anchors>
-												<ScrollChild>
-													<EditBox name="TRP3_RegisterPeekEdit_Glance_TextScrollText" letters="300" multiLine="true" enableMouse="false" autoFocus="false">
-														<Size x="340" y="130"/>
-														<Scripts>
-															<OnTextChanged>
-																if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-																	self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-																end
-															</OnTextChanged>
-															<OnEscapePressed>
-																self:ClearFocus();
-															</OnEscapePressed>
-															<OnEditFocusGained>
-																self:HighlightText();
-															</OnEditFocusGained>
-															<OnEditFocusLost>
-																self:HighlightText(0,0);
-															</OnEditFocusLost>
-														</Scripts>
-														<FontString inherits="ChatFontNormal"/>
-													</EditBox>
-												</ScrollChild>
-											</ScrollFrame>
-										</Frames>
-									</Frame>
-								</Frames>
-							</Frame>
+								<ScrollChild>
+									<EditBox name="TRP3_RegisterPeekEdit_Glance_TextScrollText" letters="300" multiLine="true" enableMouse="false" autoFocus="false">
+										<Size x="340" y="130"/>
+										<Scripts>
+											<OnTextChanged>
+												if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
+													self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+												end
+											</OnTextChanged>
+											<OnEscapePressed>
+												self:ClearFocus();
+											</OnEscapePressed>
+											<OnEditFocusGained>
+												self:HighlightText();
+											</OnEditFocusGained>
+											<OnEditFocusLost>
+												self:HighlightText(0,0);
+											</OnEditFocusLost>
+										</Scripts>
+										<FontString inherits="ChatFontNormal"/>
+									</EditBox>
+								</ScrollChild>
+							</ScrollFrame>
 						</Frames>
 					</Frame>
 				</Frames>

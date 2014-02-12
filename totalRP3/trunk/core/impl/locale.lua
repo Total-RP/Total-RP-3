@@ -9,6 +9,7 @@ local LOCALE_EN = {
 		-- General
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3! Have fun!",
 		GEN_WELCOME_VERSION = "You are using Total RP 3 version %s",
+		GEN_VERSION = "Version: %s",
 		-- Register
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
@@ -127,6 +128,9 @@ local LOCALE_EN = {
 		REG_PLAYER_ABOUT_P = "Paragraph tag",
 		REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 		REG_PLAYER_ABOUT_SOME = "Some text ...",
+		REG_PLAYER_ABOUT_VOTE_UP = "I like this content",
+		REG_PLAYER_ABOUT_VOTE_DOWN = "I don't like this content",
+		REG_PLAYER_ABOUT_VOTE_TT = "The vote is totally anonymous and can only be seen by this player.",
 		REG_PLAYER_STYLE_RPSTYLE_SHORT = "RP style",
 		REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
 		REG_PLAYER_STYLE_RPXP = "Roleplay experience",
@@ -157,6 +161,10 @@ local LOCALE_EN = {
 		REG_PLAYER_CURRENT_OOC = "This is a OOC information";
 		REG_PLAYER_GLANCE = "At first glance",
 		REG_PLAYER_GLANCE_USE = "Activate this slot",
+		REG_PLAYER_GLANCE_TITLE = "Slot name",
+		REG_PLAYER_GLANCE_UNUSED = "Unused slot",
+		REG_PLAYER_GLANCE_CONFIG = "Click to configure slot",
+		REG_PLAYER_GLANCE_EDITOR = "Slot editor",
 		REG_REGISTER = "Directory",
 		REG_REGISTER_CHAR_LIST = "Characters list",
 		REG_TT_LEVEL = "Level %s",
@@ -280,6 +288,7 @@ local LOCALE_EN = {
 		CM_CLASS_MONK = "Monk",
 		CM_CLASS_DRUID = "Druid",
 		CM_CLASS_UNKNOWN = "Unknown",
+		CM_APPLY = "Apply",
 	},
 };
 

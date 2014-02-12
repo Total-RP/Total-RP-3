@@ -174,10 +174,10 @@ end
 
 local function onMusicClick(lineFrame, mousebutton)
 	if mousebutton == "LeftButton" then
+		TRP3_HidePopups();
 		if TRP3_MusicBrowserContent.callback then
 			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
 		end
-		TRP3_HidePopups();
 	elseif lineFrame.musicURL then
 		TRP3_PlayMusic(lineFrame.musicURL);
 	end
@@ -244,10 +244,10 @@ local function decorateIcon(icon, index)
 end
 
 local function onIconClick(icon)
+	TRP3_HidePopups();
 	if TRP3_IconBrowserContent.callback then
 		TRP3_IconBrowserContent.callback(filteredIconList[icon.index], icon);
 	end
-	TRP3_HidePopups();
 end
 
 local function filteredIconBrowser()
@@ -331,10 +331,10 @@ function TRP3_UI_InitColorBrowser()
 		local red = math.ceil(TRP3_ColorBrowserRed:GetValue());
 		local green = math.ceil(TRP3_ColorBrowserGreen:GetValue());
 		local blue = math.ceil(TRP3_ColorBrowserBlue:GetValue());
+		TRP3_HidePopups();
 		if TRP3_ColorBrowser.callback ~= nil then
 			TRP3_ColorBrowser.callback(red, green, blue);
 		end
-		TRP3_HidePopups();
 	end);
 end
 
@@ -352,10 +352,10 @@ local filteredImageList = {};
 
 local function onImageSelect()
 	assert(TRP3_ImageBrowserContent.currentImage, "No current image ...");
+	TRP3_HidePopups();
 	if TRP3_ImageBrowser.callback then
 		TRP3_ImageBrowser.callback(filteredImageList[TRP3_ImageBrowserContent.currentImage]);
 	end
-	TRP3_HidePopups();
 end
 
 local function decorateImage(texture, index)

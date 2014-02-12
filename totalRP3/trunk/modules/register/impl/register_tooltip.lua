@@ -109,6 +109,13 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont("Fonts\\FRIZQT__.TTF", fontSize);
 end
 
+local function checkGlanceActivation(dataTab)
+	for _, glanceTab in pairs(dataTab) do
+		if glanceTab.AC then return true end
+	end
+	return false;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -262,7 +269,7 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		setLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-
+	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -270,14 +277,14 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	if showNotifications() then
 		local glance;
 		local description;
-		if info.misc and info.misc.PE and TRP3_HashTableSize(info.misc.PE) > 0 then
+		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
 			glance = loc("REG_PLAYER_GLANCE");
 		end
 		if targetName ~= TRP3_PLAYER and info.about and not info.about.read then
 			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then
-			TRP3_CharacterTooltip:AddDoubleLine(glance, description, 1, 1, 1, 0, 1, 0);
+			TRP3_CharacterTooltip:AddDoubleLine(glance or " ", description or " ", 1, 1, 1, 0, 1, 0);
 			setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
 		end

@@ -54,7 +54,9 @@ function trp3Addon:OnEnable()
 	TRP3_LoadProfile(); -- Load profile
 	TRP3_SelectMenu("main_00_player"); -- Select first menu
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
-	print(TRP3_L("GEN_WELCOME_VERSION"):format(TRP3_VERSION_USER)); -- Welcome \o/
+	-- Version \o/
+	print(TRP3_L("GEN_WELCOME_VERSION"):format(TRP3_VERSION_USER));
+	TRP3_MainFrameVersionText:SetText(TRP3_L("GEN_VERSION"):format(TRP3_VERSION_USER));
 	
 	TRP3_StartModules();
 	
