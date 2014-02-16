@@ -4,6 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
+local globals = TRP3_GLOBALS;
 local stEtN = TRP3_StringEmptyToNil;
 local log = TRP3_Log;
 local color = TRP3_Color;
@@ -241,7 +242,7 @@ local function showTemplate2(dataTab)
 		local backdrop = frame:GetBackdrop();
 		backdrop.bgFile = TRP3_getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
-		TRP3_InitIconButton(icon, frameTab.IC or TRP3_ICON_DEFAULT);
+		TRP3_InitIconButton(icon, frameTab.IC or globals.icon.default);
 		text:SetText(frameTab.TX);
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
@@ -265,7 +266,7 @@ local function showTemplate2(dataTab)
 	end
 	
 	TRP3_RegisterAbout_AboutPanel_Template2:Show();
-	TRP3_RegisterAbout_AboutPanel_Template2Title:SetText(safeGet("player/characteristics/firstName", TRP3_PLAYER));
+	TRP3_RegisterAbout_AboutPanel_Template2Title:SetText(safeGet("player/characteristics/firstName", globals.player));
 end
 
 local template2EditFrames = {};
@@ -342,7 +343,7 @@ refreshTemplate2EditDisplay = function()
 		frame.frameData = frameData;
 		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
 		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.TX or "");
-		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_ICON_DEFAULT);
+		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.IC or globals.icon.default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
 			TRP3_OpenIconBrowser(function(icon)
 				frame.frameData.IC = icon;
@@ -403,17 +404,17 @@ end
 
 local function onPhisIconSelected(icon)
 	draftData.T3.PH.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or globals.icon.default);
 end
 
 local function onPsychoIconSelected(icon)
 	draftData.T3.PS.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or globals.icon.default);
 end
 
 local function onHistoIconSelected(icon)
 	draftData.T3.HI.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or globals.icon.default);
 end
 
 local function showTemplate3(dataTab)
@@ -422,7 +423,7 @@ local function showTemplate3(dataTab)
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
 	for i=1, 3 do
 		local data = datas[i] or {};
-		local icon = TRP3_Icon(data.IC or TRP3_ICON_DEFAULT, 25);
+		local icon = TRP3_Icon(data.IC or globals.icon.default, 25);
 		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
@@ -459,7 +460,7 @@ end
 local function voteUp()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID ~= TRP3_USER_ID and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+	if context.unitID ~= globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
 		if TRP3_GetUnitProfile(context.unitID).about.vote == 1 then
 			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
 		else
@@ -472,7 +473,7 @@ end
 local function voteDown()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID ~= TRP3_USER_ID and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+	if context.unitID ~= globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
 		if TRP3_GetUnitProfile(context.unitID).about.vote == -1 then
 			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
 		else
@@ -542,7 +543,7 @@ local function refreshConsultDisplay(context)
 	local dataTab = nil;
 	local template = nil;
 	TRP3_RegisterAbout_AboutPanel.isMine = nil;
-	if context.unitID == TRP3_USER_ID then
+	if context.unitID == globals.player_id then
 		dataTab = get("player/about");
 		template = dataTab.TE or 1;
 		TRP3_RegisterAbout_AboutPanel.isMine = true;
@@ -645,9 +646,9 @@ local function refreshEditDisplay()
 	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.PH.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.PS.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.HI.BK or 1);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or TRP3_ICON_DEFAULT);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or TRP3_ICON_DEFAULT);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or TRP3_ICON_DEFAULT);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or globals.icon.default);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or globals.icon.default);
+	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or globals.icon.default);
 	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.PH.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.PS.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.HI.TX or "");
@@ -659,7 +660,7 @@ end
 local function refreshDisplay()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == TRP3_USER_ID;
+	local isSelf = context.unitID == globals.player_id;
 	
 	--Hide all templates
 	TRP3_RegisterAbout_AboutPanel_Template1:Hide();

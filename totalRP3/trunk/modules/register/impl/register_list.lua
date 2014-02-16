@@ -4,6 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
+local globals = TRP3_GLOBALS;
 local stEtN = TRP3_StringEmptyToNil;
 local log = TRP3_Log;
 local color = TRP3_Color;
@@ -18,7 +19,7 @@ local currentlyOpenedCharacterPrefix = "main_11_";
 local currentlyOpenedCharacter = {};
 
 local function openPage(unitID)
-	if unitID == TRP3_USER_ID then
+	if unitID == globals.player_id then
 		-- If the selected is player, simply oen his sheet.
 		TRP3_SelectMenu("main_00_player");
 	else
@@ -64,12 +65,12 @@ local function decorateLine(line, unitID)
 	
 	line.unitID = unitID;
 	
-	local unitTexture = TRP3_ICON_UNKNOWN;
+	local unitTexture = globals.icons.unknown;
 	if character.race and character.gender then
 		unitTexture = TRP3_GetUnitTexture(character.race, character.gender);
 	end
 	
-	local classTexture = TRP3_ICON_UNKNOWN;
+	local classTexture = globals.icons.unknown;
 	if character.class then
 		classTexture = TRP3_GetClassTexture(character.class);
 	end

@@ -2,6 +2,7 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -443,9 +444,9 @@ function TRP3_GetUnitTexture(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
-	return TRP3_ICON_DEFAULT;
+	return globals.icon.default;
 end
 
 function TRP3_GetClassTexture(class)
-	return classTexture[class] or TRP3_ICON_DEFAULT;
+	return classTexture[class] or globals.icon.default;
 end

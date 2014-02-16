@@ -3,6 +3,8 @@
 -- Register : RP Style section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local globals = TRP3_GLOBALS;
+
 -- functions
 local log = TRP3_Log;
 local loc = TRP3_L;
@@ -123,7 +125,7 @@ end
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
 local function getCharacterInfoTab(targetName, realm)
-	if targetName == TRP3_PLAYER then
+	if targetName == globals.player then
 		return TRP3_Profile_DataGetter("player");
 	elseif TRP3_IsUnitIDKnown(getUnitID(targetName, realm)) then
 		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
@@ -280,7 +282,7 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
 			glance = loc("REG_PLAYER_GLANCE");
 		end
-		if targetName ~= TRP3_PLAYER and info.about and not info.about.read then
+		if targetName ~= globals.player and info.about and not info.about.read then
 			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then
@@ -306,8 +308,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	if showClient() then
 		local text = "";
-		if targetName == TRP3_PLAYER then
-			text = strconcat("|cffffffff", TRP3_ADDON_NAME_ALT, " v", TRP3_VERSION_USER);
+		if targetName == globals.player then
+			text = strconcat("|cffffffff", globals.addon_name_alt, " v", globals.version_display);
 		else
 		-- TODO: check character client
 		end

@@ -2,8 +2,10 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local globals = TRP3_GLOBALS;
+
 function TRP3_UI_InitToolbar()
-	TRP3_ToolbarTopFrameText:SetText(TRP3_ADDON_NAME);
+	TRP3_ToolbarTopFrameText:SetText(globals.addon_name);
 	-- Show/hide cape
 	TRP3_ToolbarAddButton({
 		id = "trp3_main_a",

@@ -2,31 +2,36 @@
 -- Global variables
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_ADDON_NAME = "Total RP 3";
-TRP3_ADDON_NAME_SHORT = "TRP3";
-TRP3_ADDON_NAME_ALT = "TotalRP3";
-TRP3_ID_LENGTH = 15;
-TRP3_VERSION = 1;
-TRP3_VERSION_USER = "0.1-SNAPSHOT";
-TRP3_PLAYER = UnitName("player");
-TRP3_REALM = GetRealmName();
-TRP3_USER_ID = TRP3_REALM..'|'..TRP3_PLAYER;
-TRP3_RACE_LOC, TRP3_RACE = UnitRace("player");
-TRP3_CLASS_LOC, TRP3_CLASS, TRP3_CLASS_I = UnitClass("player");
-TRP3_PLAYER_CHARACTER = {
-	race = TRP3_RACE,
-	class = TRP3_CLASS
-}
-TRP3_CLIENTS = {
-	TRP3 = "trp3",
-	MSP = "msp",
-}
+local race_loc, race = UnitRace("player");
+local class_loc, class, class_index = UnitClass("player");
 
--- ICONS
-TRP3_ICON_EDIT = "INV_Feather_11";
-TRP3_ICON_SAVE = "INV_Feather_12";
-TRP3_ICON_CANCEL = "INV_Feather_10";
-TRP3_ICON_DEFAULT = "TEMP";
-TRP3_ICON_UNKNOWN = "INV_Misc_QuestionMark";
-TRP3_ICON_PROFILE_DEFAULT = "INV_Misc_GroupLooking";
-TRP3_ICON_ADD = "Spell_ChargePositive";
+TRP3_GLOBALS = {
+
+	addon_name = "Total RP 3",
+	addon_name_short = "TRP3",
+	addon_name_alt = "TotalRP3",
+	addon_id_length = 15,
+	
+	version = 1,
+	version_display = "0.1-SNAPSHOT",
+	
+	player = UnitName("player"),
+	player_realm = GetRealmName(),
+	player_id = GetRealmName()..'|'..UnitName("player"),
+	player_race_loc = race_loc,
+	player_race = race,
+	player_class_loc = class_loc,
+	player_class = class,
+	player_class_index = class_index,
+	
+	clients = {
+		TRP3 = "trp3",
+		MSP = "msp",
+	},
+	
+	icons = {
+		default = "TEMP";
+		unknown = "INV_Misc_QuestionMark";
+		profile_default = "INV_Misc_GroupLooking";
+	},
+};

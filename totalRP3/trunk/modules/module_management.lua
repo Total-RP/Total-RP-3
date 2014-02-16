@@ -13,6 +13,7 @@ TRP3_MODULE_STATUS = {
 	OK = 5
 };
 
+local globals = TRP3_GLOBALS;
 local log = TRP3_Log;
 local loc = TRP3_L;
 local MODULE_REGISTRATION = {};
@@ -157,5 +158,5 @@ end
 -- Return true if TRP version is OK. 
 function TRP3_CheckModuleTRPVersion(moduleID)
 	local module = TRP3_GetModule(moduleID);
-	return module.min_version <= TRP3_VERSION;
+	return module.min_version <= globals.version;
 end

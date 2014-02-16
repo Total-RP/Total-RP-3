@@ -2,6 +2,7 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
 local isDebug = true;
 local showLog = true;
@@ -84,7 +85,7 @@ end
 
 --	Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
---	ID's have a TRP3_ID_LENGTH characters length
+--	ID's have a id_length characters length
 function TRP3_GenerateID()
 	local i;
 	local ID = date("%m%d%H%M%S");
@@ -95,7 +96,7 @@ function TRP3_GenerateID()
 end
 
 function TRP3_GetUnitID(unitName, unitRealm)
-    return strconcat((unitRealm or TRP3_REALM), '|', unitName or "_");
+    return strconcat((unitRealm or globals.player_realm), '|', unitName or "_");
 end
 
 function TRP3_GetUnitInfo(unitID)
@@ -104,7 +105,7 @@ end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function TRP3_Icon(iconPath, iconSize)
-	iconPath = iconPath or TRP3_ICON_DEFAULT
+	iconPath = iconPath or globals.icon.default
 	iconSize = iconSize or 15;
 	return strconcat("|TInterface\\ICONS\\", iconPath, ":", iconSize, ":", iconSize, "|t");
 end

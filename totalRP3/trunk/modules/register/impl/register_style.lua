@@ -4,6 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
+local globals = TRP3_GLOBALS;
 local stEtN = TRP3_StringEmptyToNil;
 local log = TRP3_Log;
 local color = TRP3_Color;
@@ -123,7 +124,7 @@ local function showConsult(context)
 	
 	
 	local dataTab = nil;
-	if context.unitID == TRP3_USER_ID then
+	if context.unitID == globals.player_id then
 		dataTab = get("player/style");
 		TRP3_RegisterRPStyleMain_Display_Edit:Show();
 	else
@@ -187,7 +188,7 @@ end
 local function showEdit()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	assert(context.unitID == TRP3_USER_ID, "Trying to show Style edition for another unitID than me ...");
+	assert(context.unitID == globals.player_id, "Trying to show Style edition for another unitID than me ...");
 
 	TRP3_RegisterRPStyleMain_Display:Hide();
 	TRP3_RegisterRPStyleMain_Edit:Show();

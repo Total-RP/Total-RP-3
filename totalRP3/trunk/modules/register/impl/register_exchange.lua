@@ -7,6 +7,7 @@
 local stEtN = TRP3_StringEmptyToNil;
 local log = TRP3_Log;
 local get = TRP3_Profile_DataGetter;
+local globals = TRP3_GLOBALS;
 -- WoW API
 local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
@@ -45,8 +46,8 @@ local INFO_TYPE_SEND_PRIORITY = "BULK";
 --- Vernum query builder
 local function createVernumQuery()
 	local query = {};
-	tinsert(query, TRP3_VERSION); -- Your TRP3 version (number)
-	tinsert(query, TRP3_VERSION_USER); -- Your TRP3 version (as it should be shown on tooltip)
+	tinsert(query, globals.version); -- Your TRP3 version (number)
+	tinsert(query, globals.version_display); -- Your TRP3 version (as it should be shown on tooltip)
 	tinsert(query, TRP3_GetProfileID());
 	tinsert(query, get("player/characteristics").v);
 	tinsert(query, get("player/about").v);
@@ -114,7 +115,7 @@ local function incomingVernumQuery(structure, sender, bResponse)
 	local senderVersionText = structure[2];
 	local senderProfileID = structure[3];
 
-	if configShowVersionAlert() and senderVersion > TRP3_VERSION then
+	if configShowVersionAlert() and senderVersion > globals.version then
 	-- TODO: show version alert.
 	end
 
@@ -122,7 +123,7 @@ local function incomingVernumQuery(structure, sender, bResponse)
 		if not TRP3_IsUnitKnown(sender) then
 			TRP3_RegisterAddCharacter(sender);
 		end
-		TRP3_RegisterSetClient(sender, TRP3_CLIENTS.TRP3, senderVersionText);
+		TRP3_RegisterSetClient(sender, globals.clients.TRP3, senderVersionText);
 		TRP3_RegisterSetCurrentProfile(sender, senderProfileID);
 
 		-- Query specific data, depending on version number.
@@ -190,7 +191,7 @@ local function onMouseOver(...)
 	if unitName -- unitName equals nil if no character under the mouse (possible if the event trigger is delayed)
 		and unitRealm == nil -- Don't send query to players from other realm. You just can't.
 		and UnitIsPlayer("mouseover") -- Don't query NPC
-		and unitName ~= TRP3_PLAYER -- Don't query yourself
+		and unitName ~= globals.player -- Don't query yourself
 		and unitName ~= UNKNOWNOBJECT -- Name could equals UNKNOWNOBJECT if the player is not "loaded" (far away, disconnected ...)
 		and UnitFactionGroup("mouseover") == UnitFactionGroup("player") -- Don't query other faction !
 		and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
@@ -212,7 +213,7 @@ local function onTargetChanged(...)
 	if unitName -- unitName equals nil if no character under the mouse (possible if the event trigger is delayed)
 		and unitRealm == nil -- Don't send query to players from other realm. You just can't.
 		and UnitIsPlayer("target") -- Don't query NPC
-		and unitName ~= TRP3_PLAYER -- Don't query yourself
+		and unitName ~= globals.player -- Don't query yourself
 		and unitName ~= UNKNOWNOBJECT -- Name could equals UNKNOWNOBJECT if the player is not "loaded" (far away, disconnected ...)
 		and UnitFactionGroup("target") == UnitFactionGroup("player") -- Don't query other faction !
 		and not TRP3_IsPlayerIgnored(unitName)

@@ -3,8 +3,10 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
+local globals = TRP3_GLOBALS;
 local log = TRP3_Log;
 local loc = TRP3_L;
+
 -- Saved variables references
 local profiles, profilesLinks;
 
@@ -78,7 +80,7 @@ local function selectProfile(profileID)
 	end
 	currentProfile = profiles[profileID];
 	currentProfileId = profileID;
-	profilesLinks[TRP3_USER_ID] = profileID;
+	profilesLinks[globals.player_id] = profileID;
 	for _, callback in pairs(SELECT_CALLBACKS) do
 		callback();
 	end
@@ -117,7 +119,7 @@ end
 
 -- This method has to handle everything when the player switch to another profile
 function TRP3_LoadProfile()
-	TRP3_DisplayMessage(loc("PR_PROFILE_LOADED"):format(TRP3_Color("g")..profiles[profilesLinks[TRP3_USER_ID]]["profileName"].."|r"));
+	TRP3_DisplayMessage(loc("PR_PROFILE_LOADED"):format(TRP3_Color("g")..profiles[profilesLinks[globals.player_id]]["profileName"].."|r"));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -141,7 +143,7 @@ local function decorateProfileList(widget, id)
 		_G[widget:GetName().."Select"]:Enable();
 	end
 
-	TRP3_InitIconButton(_G[widget:GetName().."Icon"], dataTab.icon or TRP3_ICON_PROFILE_DEFAULT);
+	TRP3_InitIconButton(_G[widget:GetName().."Icon"], dataTab.icon or globals.icons.profile_default);
 	_G[widget:GetName().."Name"]:SetText(mainText);
 	
 	local listText = "";
@@ -220,7 +222,7 @@ local function uiEditProfile(profileID)
 end
 
 local function uiSelectProfile(profileID)
-	if profilesLinks[TRP3_USER_ID] == profileID then
+	if profilesLinks[globals.player_id] == profileID then
 		return;
 	end
 	selectProfile(profileID);
@@ -288,10 +290,10 @@ function TRP3_InitProfiles()
 	
 	-- First time this character is connected with TRP3 or if deleted profile through another character
 	-- So we create a new profile named by his pseudo.
-	if not profilesLinks[TRP3_USER_ID] or not profiles[profilesLinks[TRP3_USER_ID]] then
-		selectProfile(createProfile(TRP3_PLAYER.." - "..TRP3_REALM));
+	if not profilesLinks[globals.player_id] or not profiles[profilesLinks[globals.player_id]] then
+		selectProfile(createProfile(globals.player .. " - " .. globals.player_realm));
 	else
-		selectProfile(profilesLinks[TRP3_USER_ID]);
+		selectProfile(profilesLinks[globals.player_id]);
 	end
 	
 	-- UI
