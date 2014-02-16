@@ -444,9 +444,9 @@ function TRP3_GetUnitTexture(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
-	return globals.icon.default;
+	return globals.icons.default;
 end
 
 function TRP3_GetClassTexture(class)
-	return classTexture[class] or globals.icon.default;
+	return classTexture[class] or globals.icons.default;
 end

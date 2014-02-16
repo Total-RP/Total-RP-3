@@ -3,6 +3,9 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local icon = Utils.str.icon;
+local color = Utils.str.color;
 
 function TRP3_UI_InitToolbar()
 	TRP3_ToolbarTopFrameText:SetText(globals.addon_name);
@@ -14,11 +17,11 @@ function TRP3_UI_InitToolbar()
 		onUpdate = function(Uibutton, buttonStructure)
 			if GetMouseFocus() == Uibutton then
 				if not ShowingCloak() then
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, TRP3_Icon("INV_Misc_Cape_18", 20) .. " " .. SHOW_CLOAK,
-						strconcat(TRP3_Color("y"), TRP3_L("CM_CLICK"), ": ", TRP3_Color("w"), TRP3_L("TB_SWITCH_CAPE_1")));
+					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " " .. SHOW_CLOAK,
+						strconcat(color("y"), TRP3_L("CM_CLICK"), ": ", color("w"), TRP3_L("TB_SWITCH_CAPE_1")));
 				else
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, TRP3_Icon("INV_Misc_Cape_18", 20) .. " "..SHOW_CLOAK,
-						strconcat(TRP3_Color("y"), TRP3_L("CM_CLICK"), ": ", TRP3_Color("w"), TRP3_L("TB_SWITCH_CAPE_2")));
+					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " "..SHOW_CLOAK,
+						strconcat(color("y"), TRP3_L("CM_CLICK"), ": ", color("w"), TRP3_L("TB_SWITCH_CAPE_2")));
 				end
 				TRP3_RefreshTooltipForFrame(Uibutton);
 			end
@@ -38,11 +41,11 @@ function TRP3_UI_InitToolbar()
 		onUpdate = function(Uibutton, buttonStructure)
 			if GetMouseFocus() == Uibutton then
 				if not ShowingHelm() then
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, TRP3_Icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
-						TRP3_Color("y")..TRP3_L("CM_CLICK")..": "..TRP3_Color("w")..TRP3_L("TB_SWITCH_HELM_1"));
+					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
+						color("y")..TRP3_L("CM_CLICK")..": "..color("w")..TRP3_L("TB_SWITCH_HELM_1"));
 				else
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, TRP3_Icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
-						TRP3_Color("y")..TRP3_L("CM_CLICK")..": "..TRP3_Color("w")..TRP3_L("TB_SWITCH_HELM_2"));
+					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
+						color("y")..TRP3_L("CM_CLICK")..": "..color("w")..TRP3_L("TB_SWITCH_HELM_2"));
 				end
 				TRP3_RefreshTooltipForFrame(Uibutton);
 			end
@@ -62,17 +65,17 @@ function TRP3_UI_InitToolbar()
 		onUpdate = function(Uibutton, buttonStructure)
 			if UnitIsDND("player") then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, TRP3_Icon("Ability_Mage_IncantersAbsorbtion", 20).." "..TRP3_Color("w")..MODE..": "..TRP3_Color("r")..DEFAULT_DND_MESSAGE,
-					TRP3_Color("y")..TRP3_L("CM_CLICK")..": "..TRP3_Color("w")..(TRP3_L("TB_GO_TO_MODE"):format(TRP3_Color("g")..TRP3_L("TB_NORMAL_MODE")..TRP3_Color("w"))));
+				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Mage_IncantersAbsorbtion", 20).." "..color("w")..MODE..": "..color("r")..DEFAULT_DND_MESSAGE,
+					color("y")..TRP3_L("CM_CLICK")..": "..color("w")..(TRP3_L("TB_GO_TO_MODE"):format(color("g")..TRP3_L("TB_NORMAL_MODE")..color("w"))));
 			elseif UnitIsAFK("player") then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0,TRP3_Icon("Spell_Nature_Sleep", 20).." "..TRP3_Color("w")..MODE..": "..TRP3_Color("o")..DEFAULT_AFK_MESSAGE,
-					TRP3_Color("y")..TRP3_L("CM_CLICK")..": "..TRP3_Color("w")..(TRP3_L("TB_GO_TO_MODE"):format(TRP3_Color("g")..TRP3_L("TB_NORMAL_MODE")..TRP3_Color("w"))));
+				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Spell_Nature_Sleep", 20).." "..color("w")..MODE..": "..color("o")..DEFAULT_AFK_MESSAGE,
+					color("y")..TRP3_L("CM_CLICK")..": "..color("w")..(TRP3_L("TB_GO_TO_MODE"):format(color("g")..TRP3_L("TB_NORMAL_MODE")..color("w"))));
 			else
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0,TRP3_Icon("Ability_Rogue_MasterOfSubtlety", 20).." "..TRP3_Color("w")..MODE..": "..TRP3_Color("g")..PLAYER_DIFFICULTY1,
-					TRP3_Color("y")..TRP3_L("CM_L_CLICK")..": "..TRP3_Color("w")..(TRP3_L("TB_GO_TO_MODE"):format(TRP3_Color("o")..TRP3_L("TB_AFK_MODE")..TRP3_Color("w")))
-					.."\n"..TRP3_Color("y")..TRP3_L("CM_R_CLICK")..": "..TRP3_Color("w")..(TRP3_L("TB_GO_TO_MODE"):format(TRP3_Color("r")..TRP3_L("TB_DND_MODE")..TRP3_Color("w"))));
+				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Rogue_MasterOfSubtlety", 20).." "..color("w")..MODE..": "..color("g")..PLAYER_DIFFICULTY1,
+					color("y")..TRP3_L("CM_L_CLICK")..": "..color("w")..(TRP3_L("TB_GO_TO_MODE"):format(color("o")..TRP3_L("TB_AFK_MODE")..color("w")))
+					.."\n"..color("y")..TRP3_L("CM_R_CLICK")..": "..color("w")..(TRP3_L("TB_GO_TO_MODE"):format(color("r")..TRP3_L("TB_DND_MODE")..color("w"))));
 			end
 			if GetMouseFocus() == Uibutton then
 				TRP3_RefreshTooltipForFrame(Uibutton);

@@ -1,0 +1,55 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+
+	<!-- Target Frame -->
+	<Frame name="TRP3_TargetFrame" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="false" movable="true">
+		<TitleRegion setAllPoints="true" />
+		<Size x="100" y="100" />
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0" />
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetClampedToScreen(true);
+			</OnLoad>
+		</Scripts>
+		<Frames>
+			<Frame name="TRP3_TargetFramePortrait">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+					<EdgeSize><AbsValue val="20" /></EdgeSize>
+					<TileSize><AbsValue val="20" /></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
+				</Backdrop>
+				<Size x="84" y="84" />
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\DialogFrame\UI-DialogBox-Gold-Dragon">
+							<Size x="128" y="128" />
+							<Anchors>
+								<Anchor point="LEFT" x="-34" y="0" />
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<PlayerModel  name="TRP3_TargetFramePortraitModel" scale="1">
+						<Size x="82" y="82"/>
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnUpdate>
+								
+							</OnUpdate>
+						</Scripts>
+					</PlayerModel>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+
+</Ui>

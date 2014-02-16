@@ -14,7 +14,8 @@ TRP3_MODULE_STATUS = {
 };
 
 local globals = TRP3_GLOBALS;
-local log = TRP3_Log;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
 local loc = TRP3_L;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
@@ -53,7 +54,7 @@ function TRP3_RegisterModule(moduleStructure)
 	
 	MODULE_REGISTRATION[moduleStructure.module_id] = moduleStructure;
 	
-	log("Module registered: " .. moduleStructure.module_id);
+	Log.log("Module registered: " .. moduleStructure.module_id);
 end
 
 --- This is fired on TRP3 init.

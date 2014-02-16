@@ -1,3 +1,5 @@
+local Utils = TRP3_UTILS;
+
 local iconList = {
 	"Ability_Ambush",
 	"Ability_AnimusDraw",
@@ -11456,7 +11458,7 @@ function TRP3_GetIconList(filter)
 	end
 	local newList = {};
 	for _, icon in pairs(iconList) do
-		if TRP3_StringMatches(icon, filter) then
+		if Utils.str.match(icon, filter) then
 			tinsert(newList, icon);
 		end
 	end

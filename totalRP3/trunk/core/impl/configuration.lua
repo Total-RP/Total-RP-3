@@ -3,6 +3,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local loc = TRP3_L;
+local Utils = TRP3_UTILS;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -42,7 +43,7 @@ end
 local function changeLocale(newLocale)
 	if newLocale ~= TRP3_GetCurrentLocale() then
 		TRP3_Configuration["Locale"] = newLocale;
-		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(TRP3_Color("g")..TRP3_GetLocaleText(newLocale).."|r"), 
+		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..TRP3_GetLocaleText(newLocale).."|r"), 
 		function()
 			ReloadUI();
 		end);

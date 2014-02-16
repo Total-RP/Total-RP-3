@@ -4,13 +4,12 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
-local globals = TRP3_GLOBALS;
-local stEtN = TRP3_StringEmptyToNil;
-local stNtE = TRP3_StringNilToEmpty;
-local log = TRP3_Log;
-local color = TRP3_Color;
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local stEtN = Utils.str.emptyToNil;
+local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_Profile_DataGetter;
-local tcopy = TRP3_DupplicateTab;
+local tcopy = Utils.table.copy;
 local loc = TRP3_L;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -23,8 +22,8 @@ local PSYCHO_PRESETS_DROPDOWN;
 
 --TRP3_GetDefaultProfile().player.characteristics = {
 --	v = 1,
---	RA = globals.player_race_loc,
---	CL = globals.player_class_loc,
+--	RA = Globals.player_race_loc,
+--	CL = Globals.player_class_loc,
 --	MI = {},
 --	PS = {}
 --};
@@ -168,11 +167,11 @@ local function setConsultDisplay(context)
 	local dataTab = nil;
 	local character = TRP3_GetCharacter(context.unitID);
 	local race, class = nil;
-	local unitRealm, unitName = TRP3_GetUnitInfo(context.unitID);
-	if context.unitID == globals.player_id then
+	local unitRealm, unitName = Utils.str.unitIDToInfo(context.unitID);
+	if context.unitID == Globals.player_id then
 		dataTab = get("player/characteristics");
-		race = globals.player_race_loc;
-		class = globals.player_class_loc;
+		race = Globals.player_race_loc;
+		class = Globals.player_class_loc;
 	else
 		race = character.race or UNKNOWN;
 		class = loc("CM_CLASS_" .. (stEtN(character.class) or "UNKNOWN"));
@@ -189,7 +188,7 @@ local function setConsultDisplay(context)
 	local completeName = TRP3_GetCompleteName(dataTab, unitName);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
-	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or globals.icons.profile_default);
+	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 	
 	setBkg(dataTab.bkg or 1);
 	
@@ -258,8 +257,8 @@ local function setConsultDisplay(context)
 			frame:SetPoint("RIGHT", 0, 0);
 			_G[frame:GetName().."LeftText"]:SetText(psychoStructure.LT or "");
 			_G[frame:GetName().."RightText"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.LI or globals.icon.default));
-			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.RI or globals.icon.default));
+			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.LI or Globals.icons.default));
+			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.RI or Globals.icons.default));
 			refreshPsycho(frame, value or 3);
 			frame:Show();
 			previous = frame;
@@ -282,7 +281,7 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName().."FieldName"]:SetText(strconcat(TRP3_Icon(miscStructure.IC, 18)," ", miscStructure.NA or ""));
+			_G[frame:GetName().."FieldName"]:SetText(strconcat(Utils.str.icon(miscStructure.IC, 18)," ", miscStructure.NA or ""));
 			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.VA or "");
 			frame:Show();
 			previous = frame;
@@ -341,7 +340,7 @@ end
 
 local function onPlayerIconSelected(icon)
 	draftData.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or globals.icons.profile_default);
+	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 end
 
 local function onPsychoClick(frame, value, modif)
@@ -359,7 +358,7 @@ local function onRightClick(button)
 end
 
 local function refreshEditIcon(frame)
-	TRP3_InitIconButton(frame, frame.IC or globals.icons.profile_default);
+	TRP3_InitIconButton(frame, frame.IC or Globals.icons.profile_default);
 end
 
 local function onMiscDelete(self)
@@ -417,14 +416,14 @@ setEditDisplay = function()
 		tcopy(draftData, dataTab);
 	end
 	
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or globals.icons.profile_default);
+	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
-	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or globals.player);
+	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 	
-	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or globals.player_race_loc);
-	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or globals.player_class_loc);
+	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or Globals.player_race_loc);
+	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or Globals.player_class_loc);
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
@@ -453,13 +452,13 @@ setEditDisplay = function()
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
 			TRP3_OpenIconBrowser(function(icon)
 				psychoStructure.LI = icon;
-				TRP3_InitIconButton(self, icon or globals.icon.default);
+				TRP3_InitIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self) 
 			TRP3_OpenIconBrowser(function(icon)
 				psychoStructure.RI = icon;
-				TRP3_InitIconButton(self, icon or globals.icon.default);
+				TRP3_InitIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 		
@@ -480,8 +479,8 @@ setEditDisplay = function()
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			_G[frame:GetName().."LeftText"]:SetText(preset.LT or "");
 			_G[frame:GetName().."RightText"]:SetText(preset.RT or "");
-			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(preset.LI or globals.icon.default));
-			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(preset.RI or globals.icon.default));
+			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(preset.LI or Globals.icons.default));
+			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(preset.RI or Globals.icons.default));
 		else
 			_G[frame:GetName().."JaugeLeftIcon"]:Hide();
 			_G[frame:GetName().."JaugeRightIcon"]:Hide();
@@ -494,8 +493,8 @@ setEditDisplay = function()
 			
 			_G[frame:GetName().."LeftField"]:SetText(psychoStructure.LT or "");
 			_G[frame:GetName().."RightField"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName().."LeftIcon"].IC = psychoStructure.LI or globals.icon.default;
-			_G[frame:GetName().."RightIcon"].IC = psychoStructure.RI or globals.icon.default;
+			_G[frame:GetName().."LeftIcon"].IC = psychoStructure.LI or Globals.icons.default;
+			_G[frame:GetName().."RightIcon"].IC = psychoStructure.RI or Globals.icons.default;
 			refreshEditIcon(_G[frame:GetName().."LeftIcon"]);
 			refreshEditIcon(_G[frame:GetName().."RightIcon"]);
 		end
@@ -529,12 +528,12 @@ setEditDisplay = function()
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function() 
 			TRP3_OpenIconBrowser(function(icon)
 				miscStructure.IC = icon;
-				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon or globals.icon.default);
+				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
 			end);
 		end);
 		
 		frame.miscIndex = frameIndex;
-		_G[frame:GetName().."Icon"].IC = miscStructure.IC or globals.icon.default;
+		_G[frame:GetName().."Icon"].IC = miscStructure.IC or Globals.icons.default;
 		_G[frame:GetName().."NameField"]:SetText(miscStructure.NA or loc("CM_NAME"));
 		_G[frame:GetName().."ValueField"]:SetText(miscStructure.VA or loc("CM_VALUE"));
 		refreshEditIcon(_G[frame:GetName().."Icon"]);
@@ -573,7 +572,7 @@ end
 local function refreshDisplay()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == globals.player_id;
+	local isSelf = context.unitID == Globals.player_id;
 
 	-- Hide all
 	TRP3_RegisterCharact_NamePanel:Hide();
@@ -738,11 +737,11 @@ function TRP3_Register_CharInit()
 	-- Localz
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(globals.player));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(Globals.player));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_LASTNAME"), loc("REG_PLAYER_LASTNAME_TT"));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FULLTITLE"), loc("REG_PLAYER_FULLTITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(globals.player_race_loc));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(globals.player_class_loc));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(Globals.player_race_loc));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(Globals.player_class_loc));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_AgeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_AGE"), loc("REG_PLAYER_AGE_TT"));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_BIRTHPLACE"), loc("REG_PLAYER_BIRTHPLACE_TT"));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RESIDENCE"), loc("REG_PLAYER_RESIDENCE_TT"));
@@ -764,12 +763,12 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc("REG_PLAYER_FIRSTNAME"));
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc("REG_PLAYER_LASTNAME"));
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc("REG_PLAYER_FULLTITLE"));
-	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(TRP3_Icon("INV_Misc_Book_09", 25).." "..loc("REG_PLAYER_REGISTER"));
-	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(TRP3_Icon("INV_Misc_Book_09", 25).." "..loc("REG_PLAYER_REGISTER"));
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(TRP3_Icon("Spell_Arcane_MindMastery", 25).." "..loc("REG_PLAYER_PSYCHO"));
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(TRP3_Icon("Spell_Arcane_MindMastery", 25).." "..loc("REG_PLAYER_PSYCHO"));
-	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(TRP3_Icon("INV_MISC_NOTE_06", 25).." "..loc("REG_PLAYER_MISC"));
-	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(TRP3_Icon("INV_MISC_NOTE_06", 25).." "..loc("REG_PLAYER_MISC"));
+	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25).." "..loc("REG_PLAYER_REGISTER"));
+	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25).." "..loc("REG_PLAYER_REGISTER"));
+	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon("Spell_Arcane_MindMastery", 25).." "..loc("REG_PLAYER_PSYCHO"));
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon("Spell_Arcane_MindMastery", 25).." "..loc("REG_PLAYER_PSYCHO"));
+	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25).." "..loc("REG_PLAYER_MISC"));
+	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25).." "..loc("REG_PLAYER_MISC"));
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc("REG_PLAYER_RACE"));
 	TRP3_RegisterCharact_Edit_ClassFieldText:SetText(loc("REG_PLAYER_CLASS"));
 	TRP3_RegisterCharact_Edit_AgeFieldText:SetText(loc("REG_PLAYER_AGE"));

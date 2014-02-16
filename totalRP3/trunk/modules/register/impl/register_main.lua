@@ -4,12 +4,11 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
-local globals = TRP3_GLOBALS;
-local stEtN = TRP3_StringEmptyToNil;
-local log = TRP3_Log;
-local color = TRP3_Color;
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local getUnitID = Utils.str.unitInfoToID;
+local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
-local getUnitID = TRP3_GetUnitID;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
 
@@ -160,7 +159,7 @@ function TRP3_GetCharacterList()
 end
 
 function TRP3_GetCharacter(unitID)
-	if unitID == globals.player_id then
+	if unitID == Globals.player_id then
 		return player_CHARACTER;
 	end
 	assert(characters[unitID], "Unknown character ID: " .. tostring(unitID));
@@ -233,7 +232,7 @@ end
 local function showTabs(context)
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == globals.player_id;
+	local isSelf = context.unitID == Globals.player_id;
 	
 	tabGroup:SetTabVisible(2, isSelf or hasProfile(context.unitID));
 	tabGroup:SetTabVisible(3, isSelf or hasProfile(context.unitID));
@@ -271,8 +270,8 @@ end
 function TRP3_UI_InitRegister()
 	TRP3_RegisterMenu({
 		id = "main_00_player",
-		text = globals.player,
-		onSelected = function() TRP3_SetPage("player_main", {unitID = globals.player_id}); end,
+		text = Globals.player,
+		onSelected = function() TRP3_SetPage("player_main", {unitID = Globals.player_id}); end,
 	});
 
 	TRP3_RegisterPage({

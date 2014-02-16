@@ -4,13 +4,13 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
-local globals = TRP3_GLOBALS;
-local stEtN = TRP3_StringEmptyToNil;
-local log = TRP3_Log;
-local color = TRP3_Color;
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local stEtN = Utils.str.emptyToNil;
+local color = Utils.str.color;
 local loc = TRP3_L;
 local get = TRP3_Profile_DataGetter;
-local tcopy = TRP3_DupplicateTab;
+local tcopy = Utils.table.copy;
 local assert = assert;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -36,21 +36,21 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		if not isMine then
 			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
 		else
-			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "...") .. "\n" .. TRP3_Color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "...") .. "\n" .. color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
 		end
 	else
 		button:SetAlpha(0.1);
 		if not isMine then
 			button:Disable();
 		else
-			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"), TRP3_Color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"), color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
 		end
 	end
 end
 
 local function showView(context)
 	local dataTab = nil;
-	if context.unitID == globals.player_id then
+	if context.unitID == Globals.player_id then
 		dataTab = get("player/misc");
 	else
 		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).misc then
@@ -63,7 +63,7 @@ local function showView(context)
 	for i=1,5 do
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_RegisterPeekViewGlanceSlot" .. i];
-		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.unitID == globals.player_id);
+		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.unitID == Globals.player_id);
 	end
 	
 end
@@ -76,7 +76,7 @@ local currentSelected;
 local draftData = {};
 
 local function onIconSelected(icon)
-	icon = icon or globals.icon.default;
+	icon = icon or Globals.icons.default;
 	TRP3_InitIconButton(TRP3_RegisterPeekEdit_Glance_Icon, icon);
 	TRP3_RegisterPeekEdit_Glance_Icon.icon = icon;
 	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
@@ -85,7 +85,7 @@ end
 local function onSlotClick(button)
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID == globals.player_id then
+	if context.unitID == Globals.player_id then
 		currentSelected = button.index;
 		local dataTab = get("player/misc");
 		draftData = (dataTab.PE or {})[currentSelected] or {};

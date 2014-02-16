@@ -5,6 +5,7 @@
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 
+-- Public accessor
 TRP3_GLOBALS = {
 
 	addon_name = "Total RP 3",

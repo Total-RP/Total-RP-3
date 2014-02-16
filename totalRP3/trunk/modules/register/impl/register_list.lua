@@ -4,10 +4,9 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
-local globals = TRP3_GLOBALS;
-local stEtN = TRP3_StringEmptyToNil;
-local log = TRP3_Log;
-local color = TRP3_Color;
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local get = TRP3_Profile_DataGetter;
 
@@ -19,7 +18,7 @@ local currentlyOpenedCharacterPrefix = "main_11_";
 local currentlyOpenedCharacter = {};
 
 local function openPage(unitID)
-	if unitID == globals.player_id then
+	if unitID == Globals.player_id then
 		-- If the selected is player, simply oen his sheet.
 		TRP3_SelectMenu("main_00_player");
 	else
@@ -28,7 +27,7 @@ local function openPage(unitID)
 			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		else
 			-- Else, create a new menu entry and open it.
-			local unitRealm, unitName = TRP3_GetUnitInfo(unitID);
+			local unitRealm, unitName = Utils.str.unitIDToInfo(unitID);
 			local tabText = unitName;
 			if TRP3_HasProfile(unitID) then
 				local profile = TRP3_GetUnitProfile(unitID);
@@ -61,21 +60,21 @@ end
 
 local function decorateLine(line, unitID)
 	local character = TRP3_GetCharacter(unitID);
-	local unitRealm, unitName = TRP3_GetUnitInfo(unitID);
+	local unitRealm, unitName = Utils.str.unitIDToInfo(unitID);
 	
 	line.unitID = unitID;
 	
-	local unitTexture = globals.icons.unknown;
+	local unitTexture = Globals.icons.unknown;
 	if character.race and character.gender then
 		unitTexture = TRP3_GetUnitTexture(character.race, character.gender);
 	end
 	
-	local classTexture = globals.icons.unknown;
+	local classTexture = Globals.icons.unknown;
 	if character.class then
 		classTexture = TRP3_GetClassTexture(character.class);
 	end
 	
-	local textures = TRP3_Icon(unitTexture, ICON_SIZE) .. " " .. TRP3_Icon(classTexture, ICON_SIZE);
+	local textures = Utils.str.icon(unitTexture, ICON_SIZE) .. " " .. Utils.str.icon(classTexture, ICON_SIZE);
 	
 	if TRP3_HasProfile(unitID) then
 		local profile = TRP3_GetUnitProfile(unitID);
@@ -104,7 +103,7 @@ end
 
 local function decorateSelectionFrame()
 	local character = TRP3_GetCharacter(currentSelection);
-	local unitRealm, unitName = TRP3_GetUnitInfo(currentSelection);
+	local unitRealm, unitName = Utils.str.unitIDToInfo(currentSelection);
 	
 	if TRP3_HasProfile(currentSelection) then
 		local profile = TRP3_GetUnitProfile(currentSelection);

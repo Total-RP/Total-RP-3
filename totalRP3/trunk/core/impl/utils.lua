@@ -2,65 +2,86 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local globals = TRP3_GLOBALS;
+-- Public accessor
+TRP3_UTILS = {
+	log = {},
+	table = {},
+	str = {},
+};
+-- TRP3 API
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
 local loc = TRP3_L;
+
+-- WOW API
+local tostring = tostring;
+local pairs = pairs;
+local type = type;
+local print = print;
+local string = string;
+local pcall = pcall;
+local date = date;
+local math = math;
+local strconcat = strconcat;
+
 local isDebug = true;
 local showLog = true;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Chat frame
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+Utils.print = function(...)
+	print(...);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_LOG_LEVEL = {
+Log.level = {
 	DEBUG = "-|cff6666ffDEBUG|r] ",
 	INFO = "-|cff00ffffINFO|r] ",
 	WARNING = "-|cffffaa00WARNING|r] ",
 	SEVERE = "-|cffff0000SEVERE|r] "
 }
 
-function TRP3_Log(message, level)
-	if not showLog or (level == TRP3_LOG_LEVEL.DEBUG and not isDebug) then
+Log.log = function(message, level)
+	if not showLog or (level == Log.level.DEBUG and not isDebug) then
 		return;
 	end
-	print( "[TRP3"..(level or TRP3_LOG_LEVEL.INFO)..tostring(message));
-end
-
-function TRP3_DumpTab(tab)
-	TRP3_Log("Dump tab "..tostring(tab), TRP3_LOG_LEVEL.DEBUG);
-	if tab then
-		for k,v in pairs(tab) do
-			TRP3_Log(k.." : "..tostring(v).." ( "..type(v).." )", TRP3_LOG_LEVEL.DEBUG);
-		end
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Chat frame
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_Print(...)
-	print(...);
+	Utils.print( "[TRP3"..(level or Log.level.INFO)..tostring(message));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+Utils.table.dumpTab = function(tab)
+	Log.log("Dump tab "..tostring(tab), Log.level.DEBUG);
+	if tab then
+		for k,v in pairs(tab) do
+			Log.log(k.." : "..tostring(v).." ( "..type(v).." )", Log.level.DEBUG);
+		end
+	end
+end
+
 -- Recursively copy all content from a table to another one.
 -- Argument "destination" must be a non nil table reference.
-function TRP3_DupplicateTab(destination, source)
+Utils.table.copy = function(destination, source)
 	if destination == nil or source == nil then return end
     for k,v in pairs(source) do
 		if(type(v)=="table") then
 			destination[k] = {};
-			TRP3_DupplicateTab(destination[k], v);
+			Utils.table.copy(destination[k], v);
 		else
 			destination[k] = v;
 		end
     end
 end
 
-function TRP3_HashTableSize(table)
+Utils.table.size = function(table)
     local count = 0;
     for _,_ in pairs(table) do
         count = count + 1;
@@ -74,7 +95,7 @@ end
 
 -- A secure way to check if a String matches a pattern.
 -- This is useful when using user-given pattern, as malformed pattern would produce lua error.
-function TRP3_StringMatches(stringToCheck, pattern)
+Utils.str.match = function(stringToCheck, pattern)
 	local ok, result = pcall(string.find, string.lower(stringToCheck), string.lower(pattern));
 	if not ok then
 		return false; -- Syntax error.
@@ -86,7 +107,7 @@ end
 --	Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
 --	ID's have a id_length characters length
-function TRP3_GenerateID()
+Utils.str.id = function()
 	local i;
 	local ID = date("%m%d%H%M%S");
 	for i=1, 5 do
@@ -95,23 +116,23 @@ function TRP3_GenerateID()
 	return ID;
 end
 
-function TRP3_GetUnitID(unitName, unitRealm)
-    return strconcat((unitRealm or globals.player_realm), '|', unitName or "_");
+Utils.str.unitInfoToID = function(unitName, unitRealm)
+    return strconcat((unitRealm or Globals.player_realm), '|', unitName or "_");
 end
 
-function TRP3_GetUnitInfo(unitID)
+Utils.str.unitIDToInfo = function(unitID)
     return unitID:sub(1, unitID:find('|') - 1),  unitID:sub(unitID:find('|') + 1);
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
-function TRP3_Icon(iconPath, iconSize)
-	iconPath = iconPath or globals.icon.default
+Utils.str.icon = function(iconPath, iconSize)
+	iconPath = iconPath or Globals.icons.default
 	iconSize = iconSize or 15;
 	return strconcat("|TInterface\\ICONS\\", iconPath, ":", iconSize, ":", iconSize, "|t");
 end
 
 -- Return a color tag based on a letter
-function TRP3_Color(color)
+Utils.str.color = function(color)
 	color = color or "w"; -- default color if bad argument
 	if color == "r" then return "|cffff0000" end -- red
 	if color == "g" then return "|cff00ff00" end -- green
@@ -125,7 +146,7 @@ function TRP3_Color(color)
 end
 
 -- If the given string is empty, return nil
-function TRP3_StringEmptyToNil(text)
+Utils.str.emptyToNil = function(text)
 	if text and #text > 0 then
 		return text;
 	end
@@ -133,7 +154,7 @@ function TRP3_StringEmptyToNil(text)
 end
 
 -- Assure that the given string will not be nil
-function TRP3_StringNilToEmpty(text)
+Utils.str.nilToEmpty = function(text)
 	return text or "";
 end
 
@@ -196,12 +217,12 @@ local function convertTextTags(tag)
 	if directReplacements[tag] then -- Direct replacement
 		return directReplacements[tag];
 	elseif tag:match("^col%:%a$") then -- Color replacement
-		 return TRP3_Color(tag:match("^col%:(%a)$"));
+		 return Utils.str.color(tag:match("^col%:(%a)$"));
 	elseif tag:match("^col:%x%x%x%x%x%x$") then -- Hexa color replacement
 		return "|cff"..tag:match("^col:(%x%x%x%x%x%x)$");
 	elseif tag:match("^icon%:[%w%s%_%-%d]+%:%d+$") then -- Icon
 		local icon, size = tag:match("^icon%:([%w%s%_%-%d]+)%:(%d+)$");
-		return TRP3_Icon(icon, size);
+		return Utils.str.icon(icon, size);
 	end
 	
 	return "{"..tag.."}";
@@ -277,21 +298,21 @@ function TRP2_toHTML(text)
 		after = text:sub(#before + #tagText + 1);
 		text = after;
 		
---		TRP3_Log("Iteration "..i);
---		TRP3_Log("before ("..(#before).."): "..before);
---		TRP3_Log("tagText ("..(#tagText).."): "..tagText);
---		TRP3_Log("after ("..(#before).."): "..after);
+--		Log.log("Iteration "..i);
+--		Log.log("before ("..(#before).."): "..before);
+--		Log.log("tagText ("..(#tagText).."): "..tagText);
+--		Log.log("after ("..(#before).."): "..after);
 		
 		i = i+1;
 		if i == 200 then
-			TRP3_Log("HTML overfloooow !", TRP3_LOG_LEVEL.SEVERE);
+			Log.log("HTML overfloooow !", Log.level.SEVERE);
 		end
 	end
 	if #text > 0 then
 		tinsert(tab, text); -- Rest of the text
 	end
 	
---	TRP3_Log("Parts count "..(#tab));
+--	Log.log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
@@ -359,7 +380,7 @@ function TRP3_RegisterToEvent(event, callback)
 		TRP3_EventFrame:RegisterEvent(event);
 	end
 	tinsert(REGISTERED_EVENTS[event], callback);
-	TRP3_Log("Registered event: " ..tostring(event));
+	Log.log("Registered event: " ..tostring(event));
 end
 
 function TRP3_EventDispatcher(self, event, ...)
@@ -373,4 +394,23 @@ function TRP3_EventDispatcher(self, event, ...)
 			callback(...);
 		end
 	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MUSIC
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_PlayMusic(music)
+	assert(music, "Music can't be nil.")
+	Log.log("Playing music: " .. music);
+	PlayMusic("Sound\\Music\\" .. music .. ".mp3");
+end
+
+function TRP3_StopMusic()
+	StopMusic();
+end
+
+function TRP3_GetMusicTitle(musicURL)
+	local musicName = musicURL:reverse();
+	return (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 end

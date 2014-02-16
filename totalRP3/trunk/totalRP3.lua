@@ -3,6 +3,8 @@
 --]]
 
 local globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Libs management
@@ -11,7 +13,6 @@ local globals = TRP3_GLOBALS;
 -- AceTimer is used for handling some generic timers
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 local trp3Addon = LibStub("AceAddon-3.0"):NewAddon(globals.addon_name, "AceSerializer-3.0", "AceConsole-3.0", "AceTimer-3.0");
-local log = TRP3_Log;
 
 -- Returns the Ace addon object representing TRP3. All libs calls can be made on this object.
 function TRP3_GetAddon()
@@ -29,7 +30,7 @@ end
 
 -- Called upon PLAYER_LOGIN after all addons are loaded.
 function trp3Addon:OnEnable()
-	log("OnEnable() START");
+	Log.log("OnEnable() START");
 	
 	TRP3_Flyway_Patches(); -- Adapt saved variables structures between versions
 	TRP3_ModuleManagement_Init();
@@ -63,5 +64,5 @@ function trp3Addon:OnEnable()
 	-- Must be called after module start.
 	TRP3_Configuration_OnModuleLoaded();
 	
-	log("OnEnable() DONE");
+	Log.log("OnEnable() DONE");
 end

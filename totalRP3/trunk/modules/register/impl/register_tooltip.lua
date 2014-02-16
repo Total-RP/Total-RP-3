@@ -3,13 +3,10 @@
 -- Register : RP Style section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local globals = TRP3_GLOBALS;
-
--- functions
-local log = TRP3_Log;
+local Globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local getUnitID = Utils.str.unitInfoToID;
 local loc = TRP3_L;
-local color = TRP3_Color;
-local getUnitID = TRP3_GetUnitID;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -125,7 +122,7 @@ end
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
 local function getCharacterInfoTab(targetName, realm)
-	if targetName == globals.player then
+	if targetName == Globals.player then
 		return TRP3_Profile_DataGetter("player");
 	elseif TRP3_IsUnitIDKnown(getUnitID(targetName, realm)) then
 		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
@@ -152,21 +149,21 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
-			completeName = strconcat(TRP3_Icon(info.characteristics.IC, 25), " ", completeName);
+			completeName = strconcat(Utils.str.icon(info.characteristics.IC, 25), " ", completeName);
 		elseif UnitFactionGroup(targetType) == "Alliance" then
-			completeName = strconcat(TRP3_Icon(ALLIANCE_ICON, 25), " ", completeName);
+			completeName = strconcat(Utils.str.icon(ALLIANCE_ICON, 25), " ", completeName);
 		elseif UnitFactionGroup(targetType) == "Horde" then
-			completeName = strconcat(TRP3_Icon(HORDE_ICON, 25), " ", completeName);
+			completeName = strconcat(Utils.str.icon(HORDE_ICON, 25), " ", completeName);
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
-			rightIcons = strconcat(rightIcons, TRP3_Icon(AFK_ICON, 25));
+			rightIcons = strconcat(rightIcons, Utils.str.icon(AFK_ICON, 25));
 		elseif UnitIsDND(targetType) then
-			rightIcons = strconcat(rightIcons, TRP3_Icon(DND_ICON, 25));
+			rightIcons = strconcat(rightIcons, Utils.str.icon(DND_ICON, 25));
 		end
 		-- PVP icon
 		if UnitIsPVP(targetType) then -- Icone PVP
-			rightIcons = strconcat(rightIcons, TRP3_Icon(PVP_ICON, 25));
+			rightIcons = strconcat(rightIcons, Utils.str.icon(PVP_ICON, 25));
 		end
 		-- TODO: Beginner icon + volunteer icon
 	end
@@ -282,7 +279,7 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
 			glance = loc("REG_PLAYER_GLANCE");
 		end
-		if targetName ~= globals.player and info.about and not info.about.read then
+		if targetName ~= Globals.player and info.about and not info.about.read then
 			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then
@@ -308,8 +305,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	if showClient() then
 		local text = "";
-		if targetName == globals.player then
-			text = strconcat("|cffffffff", globals.addon_name_alt, " v", globals.version_display);
+		if targetName == Globals.player then
+			text = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
 		else
 		-- TODO: check character client
 		end

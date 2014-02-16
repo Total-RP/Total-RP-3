@@ -1,3 +1,5 @@
+local Utils = TRP3_UTILS;
+
 local musicList = {
 	"ZoneMusic\\GrizzlyHills\\GH_Intro1Uni01",
 	"GlueScreenMusic\\BC_main_theme",
@@ -2234,7 +2236,7 @@ function TRP3_GetMusicList(filter)
 	end
 	local newList = {};
 	for _, musicURL in pairs(musicList) do
-		if TRP3_StringMatches(musicURL, filter) then
+		if Utils.str.match(musicURL, filter) then
 			tinsert(newList, musicURL);
 		end
 	end
@@ -2243,19 +2245,4 @@ end
 
 function TRP3_GetMusicListSize()
 	return musicListSize;
-end
-
-function TRP3_PlayMusic(music)
-	assert(music, "Music can't be nil.")
-	TRP3_Log("Playing music: " .. music);
-	PlayMusic("Sound\\Music\\" .. music .. ".mp3");
-end
-
-function TRP3_StopMusic()
-	StopMusic();
-end
-
-function TRP3_GetMusicTitle(musicURL)
-	local musicName = musicURL:reverse();
-	return (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 end

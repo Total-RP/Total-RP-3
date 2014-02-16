@@ -323,7 +323,7 @@ function TRP3_InitLocalization(locale)
 	if not TRP3_LOCALS[locale] then
 		current = DEFAULT_LOCALE;
 	end
-	TRP3_DupplicateTab(effectiveLocal, TRP3_LOCALS[current].localeContent);
+	TRP3_UTILS.table.copy(effectiveLocal, TRP3_LOCALS[current].localeContent);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

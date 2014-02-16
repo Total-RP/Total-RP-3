@@ -3,12 +3,10 @@
 -- This is a regular protocol based on layers 1 & 3 & 4 & 5 from the ISO-OSI model.
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- Ideas:
--- TODO: compression ?
--- TODO: 255 base encoding numbers ?
-
 -- TRP3 API
-local log = TRP3_Log;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
+
 -- function definition
 local handlePacketsIn;
 local handleStructureIn;
@@ -52,8 +50,8 @@ end
 -- This communication interface print all sent message to the chat frame.
 -- Note that the messages are not really sent.
 local function directPrint(packet, target, priority)
-	log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), TRP3_LOG_LEVEL.DEBUG);
-	log(packet:sub(4), TRP3_LOG_LEVEL.DEBUG);
+	log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), log.level.DEBUG);
+	log.log(packet:sub(4), log.level.DEBUG);
 end
 
 -- A "direct relay" (like localhost) communication interface, used for development purpose.
@@ -183,7 +181,7 @@ handleStructureIn = function(packets, sender)
 	if status then
 		receiveObject(structure, sender);
 	else
-		log(("Deserialization error. Message:\n%s"):format(message), TRP3_LOG_LEVEL.SEVERE);
+		log.log(("Deserialization error. Message:\n%s"):format(message), log.level.SEVERE);
 	end
 end
 
@@ -224,10 +222,10 @@ receiveObject = function(structure, sender)
 				callback(structure[2], sender);
 			end
 		else
-			log("No registration for prefix: " .. prefix, TRP3_LOG_LEVEL.INFO);
+			log.log("No registration for prefix: " .. prefix, log.level.INFO);
 		end
 	else
-		log("Bad structure composition.", TRP3_LOG_LEVEL.SEVERE);
+		log.log("Bad structure composition.", log.level.SEVERE);
 	end
 end
 

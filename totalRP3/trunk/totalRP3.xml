@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ UI.xsd">
 
 	<!-- Please note that the loading order matters a lot -->
-	<Include file="resources\resources.xml"/>
 	<Include file="core\core.xml"/>
+	<Include file="resources\resources.xml"/>
 	<Script file="totalRP3.lua"/>
 	<Include file="modules\modules.xml"/>
 

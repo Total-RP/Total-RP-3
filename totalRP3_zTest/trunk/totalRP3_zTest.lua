@@ -5,8 +5,8 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 assert(TRP3_GetAddon, "Unable to find TRP3_GetAddon.");
-
-local log = TRP3_Log;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
@@ -25,11 +25,11 @@ function TRP3_DEBUG_CLEAR()
 end
 
 local function onInit()
-	log("onInit test module");
+	Log.log("onInit test module");
 end
 
 local function onLoaded()
-	log("onLoaded test module");
+	Log.log("onLoaded test module");
 	
 --	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", function()
 --		if UnitIsPlayer("mouseover") then

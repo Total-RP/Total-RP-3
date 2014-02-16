@@ -3,7 +3,8 @@
 -- Handles the main page content and left menu
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local log = TRP3_Log;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Menu management
@@ -137,7 +138,7 @@ local function checkPageSelection()
 end
 
 function TRP3_SetPage(pageId, context)
-	log("TRP3_SetPage: "..pageId, TRP3_LOG_LEVEL.DEBUG);
+	Log.log("TRP3_SetPage: "..pageId, Log.level.DEBUG);
 	
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");

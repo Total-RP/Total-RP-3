@@ -1,3 +1,5 @@
+local Utils = TRP3_UTILS;
+
 local IMAGES = {
 	{
 		url = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-Bling",
@@ -293,7 +295,7 @@ function TRP3_GetImageList(filter)
 	end
 	local newList = {};
 	for _, image in pairs(IMAGES) do
-		if TRP3_StringMatches(image.url, filter) then
+		if Utils.str.match(image.url, filter) then
 			tinsert(newList, image);
 		end
 	end

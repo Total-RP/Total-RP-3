@@ -2,7 +2,7 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local log = TRP3_Log;
+local Utils = TRP3_UTILS;
 local loc = TRP3_L;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -239,7 +239,7 @@ local filteredIconList = {};
 local function decorateIcon(icon, index)
 	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
 	icon:SetPushedTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	TRP3_SetTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, TRP3_Icon(filteredIconList[index], 75), filteredIconList[index]);
+	TRP3_SetTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index], 75), filteredIconList[index]);
 	icon.index = index;
 end
 
