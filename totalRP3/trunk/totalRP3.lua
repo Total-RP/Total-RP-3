@@ -2,34 +2,21 @@
 	Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --]]
 
-local globals = TRP3_GLOBALS;
+local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Libs management
--- AceSerializer is used for the communication serialization/dezerialization
--- AceCommand is used for TRP3 console commands handling
--- AceTimer is used for handling some generic timers
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-local trp3Addon = LibStub("AceAddon-3.0"):NewAddon(globals.addon_name, "AceSerializer-3.0", "AceConsole-3.0", "AceTimer-3.0");
-
--- Returns the Ace addon object representing TRP3. All libs calls can be made on this object.
-function TRP3_GetAddon()
-	return trp3Addon;
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOADING SEQUENCE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Called when TRP3 is loaded.
-function trp3Addon:OnInitialize()
+function Globals.addon:OnInitialize()
 	
 end
 
 -- Called upon PLAYER_LOGIN after all addons are loaded.
-function trp3Addon:OnEnable()
+function Globals.addon:OnEnable()
 	Log.log("OnEnable() START");
 	
 	TRP3_Flyway_Patches(); -- Adapt saved variables structures between versions
@@ -56,8 +43,8 @@ function trp3Addon:OnEnable()
 	TRP3_SelectMenu("main_00_player"); -- Select first menu
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
-	print(TRP3_L("GEN_WELCOME_VERSION"):format(globals.version_display));
-	TRP3_MainFrameVersionText:SetText(TRP3_L("GEN_VERSION"):format(globals.version_display));
+	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));
+	TRP3_MainFrameVersionText:SetText(TRP3_L("GEN_VERSION"):format(Globals.version_display));
 	
 	TRP3_StartModules();
 	

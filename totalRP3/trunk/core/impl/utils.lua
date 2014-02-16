@@ -7,6 +7,11 @@ TRP3_UTILS = {
 	log = {},
 	table = {},
 	str = {},
+	color = {},
+	lerp = {},
+	serial = {},
+	event = {},
+	music = {},
 };
 -- TRP3 API
 local Globals = TRP3_GLOBALS;
@@ -24,6 +29,11 @@ local pcall = pcall;
 local date = date;
 local math = math;
 local strconcat = strconcat;
+local tinsert = tinsert;
+local assert = assert;
+local PlayMusic = PlayMusic;
+local StopMusic = StopMusic;
+local _G = _G;
 
 local isDebug = true;
 local showLog = true;
@@ -47,39 +57,41 @@ Log.level = {
 	SEVERE = "-|cffff0000SEVERE|r] "
 }
 
-Log.log = function(message, level)
+local function log(message, level)
 	if not showLog or (level == Log.level.DEBUG and not isDebug) then
 		return;
 	end
 	Utils.print( "[TRP3"..(level or Log.level.INFO)..tostring(message));
 end
+Log.log = log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 Utils.table.dumpTab = function(tab)
-	Log.log("Dump tab "..tostring(tab), Log.level.DEBUG);
+	log("Dump tab "..tostring(tab), Log.level.DEBUG);
 	if tab then
 		for k,v in pairs(tab) do
-			Log.log(k.." : "..tostring(v).." ( "..type(v).." )", Log.level.DEBUG);
+			log(k.." : "..tostring(v).." ( "..type(v).." )", Log.level.DEBUG);
 		end
 	end
 end
 
 -- Recursively copy all content from a table to another one.
 -- Argument "destination" must be a non nil table reference.
-Utils.table.copy = function(destination, source)
+local function tableCopy(destination, source)
 	if destination == nil or source == nil then return end
     for k,v in pairs(source) do
 		if(type(v)=="table") then
 			destination[k] = {};
-			Utils.table.copy(destination[k], v);
+			tableCopy(destination[k], v);
 		else
 			destination[k] = v;
 		end
     end
 end
+Utils.table.copy = tableCopy;
 
 Utils.table.size = function(table)
     local count = 0;
@@ -159,49 +171,52 @@ Utils.str.nilToEmpty = function(text)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Linear interpolations
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
---- Return the interpolation.
--- delta is a number between 0 and 1;
-function TRP3_Lerp(delta, from, to)
-	local diff = to - from;
-	return from + (delta * diff);
-end
-
-function TRP3_Lerp_Color(delta, fromR, fromG, fromB, toR, toG, toB)
-	return TRP3_Lerp(delta, fromR, toR), TRP3_Lerp(delta, fromG, toG), TRP3_Lerp(delta, fromB, toB);
-end
-
---- Values must be 256 based
-function TRP3_Lerp_ColorCode(delta, fromR, fromG, fromB, toR, toG, toB)
-	return TRP3_ColorCode(TRP3_Lerp(delta, fromR, toR), TRP3_Lerp(delta, fromG, toG), TRP3_Lerp(delta, fromB, toB));
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Colors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 --- Value must be 256 based
-function TRP3_NumberToHexa(number)
+local function numberToHexa(number)
 	local number = string.format('%x', number);
 	if number:len() == 1 then 
 		number = '0' .. number;
 	end
 	return number;
 end
+Utils.color.numberToHexa = numberToHexa;
 
 --- Values must be 256 based
-function TRP3_ColorCode(red, green, blue)
-	local redH = TRP3_NumberToHexa(red);
-	local greenH = TRP3_NumberToHexa(green);
-	local blueH = TRP3_NumberToHexa(blue);
+local function colorCode(red, green, blue)
+	local redH = numberToHexa(red);
+	local greenH = numberToHexa(green);
+	local blueH = numberToHexa(blue);
 	return strconcat("|cff", redH, greenH, blueH);
 end
+Utils.color.colorCode = colorCode;
 
 --- Values must be 0..1 based
-function TRP3_ColorCodeFloat(red, green, blue)
-	return TRP3_ColorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
+Utils.color.colorCodeFloat = function(red, green, blue)
+	return colorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Linear interpolations
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--- Return the interpolation.
+-- delta is a number between 0 and 1;
+local function lerp(delta, from, to)
+	local diff = to - from;
+	return from + (delta * diff);
+end
+Utils.lerp.lerp = lerp;
+
+Utils.lerp.color = function(delta, fromR, fromG, fromB, toR, toG, toB)
+	return lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB);
+end
+
+--- Values must be 256 based
+Utils.lerp.colorCode = function(delta, fromR, fromG, fromB, toR, toG, toB)
+	return colorCode(lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -212,7 +227,7 @@ local directReplacements = {
 	["/col"] = "|r",
 };
 
-local function convertTextTags(tag)
+local function convertTextTag(tag)
 
 	if directReplacements[tag] then -- Direct replacement
 		return directReplacements[tag];
@@ -228,14 +243,11 @@ local function convertTextTags(tag)
 	return "{"..tag.."}";
 end
 
-function TRP3_ConvertTextTags(text)
-	text = text:gsub("%{(.-)%}", convertTextTags);
+local function convertTextTags(text)
+	text = text:gsub("%{(.-)%}", convertTextTag);
 	return text;
 end
-
-function TRP3_RemoveColorTags(text)
-	return text:gsub("%|c%x%x%x%x%x%x", "");
-end
+Utils.str.convertTextTags = convertTextTags;
 
 local escapedHTMLCharacters = {
 	["<"] = "&lt;",
@@ -256,7 +268,7 @@ local structureTags = {
 };
 
 -- Convert the given text by his HTML representation
-function TRP2_toHTML(text)
+Utils.str.toHTML = function(text)
 	
 	-- 1) Replacement : & character
 	text = text:gsub("&", "&amp;");
@@ -305,14 +317,14 @@ function TRP2_toHTML(text)
 		
 		i = i+1;
 		if i == 200 then
-			Log.log("HTML overfloooow !", Log.level.SEVERE);
+			log("HTML overfloooow !", Log.level.SEVERE);
 		end
 	end
 	if #text > 0 then
 		tinsert(tab, text); -- Rest of the text
 	end
 	
---	Log.log("Parts count "..(#tab));
+--	log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
@@ -330,7 +342,7 @@ function TRP2_toHTML(text)
 		finalText = finalText..line;
 	end
 	
-	return "<HTML><BODY>"..TRP3_ConvertTextTags(finalText).."</BODY></HTML>";
+	return "<HTML><BODY>"..convertTextTags(finalText).."</BODY></HTML>";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -340,30 +352,33 @@ end
 local libCompress = LibStub:GetLibrary("LibCompress");
 local libCompressEncoder = libCompress:GetAddonEncodeTable();
 
-function TRP3_Serialize(structure)
-	return TRP3_GetAddon():Serialize(structure);
+local function serialize(structure)
+	return Globals.addon:Serialize(structure);
 end
+Utils.serial.serialize = serialize;
 
-function TRP3_Deserialize(structure)
-	local status, data = TRP3_GetAddon():Deserialize(structure);
+local function deserialize(structure)
+	local status, data = Globals.addon:Deserialize(structure);
 	assert(status, "Deserialization error:\n" .. tostring(structure));
 	return data;
 end
+Utils.serial.deserialize = deserialize;
 
-function TRP3_EncodeCompressMessage(message)
+local function encodeCompressMessage(message)
 	return libCompress:GetAddonEncodeTable():Encode(libCompress:Compress(message));
 end
+Utils.serial.encodeCompressMessage = encodeCompressMessage;
 
-function TRP3_DecompressCodedMessage(message)
+Utils.serial.decompressCodedMessage = function(message)
 	return libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message));
 end
 
-function TRP3_DecompressCodedStructure(message)
-	return TRP3_Deserialize(libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message)));
+Utils.serial.decompressCodedStructure = function(message)
+	return deserialize(libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message)));
 end
 
-function TRP3_EncodeCompressStructure(structure)
-	return TRP3_EncodeCompressMessage(TRP3_Serialize(structure));
+Utils.serial.encodeCompressStructure = function(structure)
+	return encodeCompressMessage(serialize(structure));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -372,7 +387,7 @@ end
 
 local REGISTERED_EVENTS = {};
 
-function TRP3_RegisterToEvent(event, callback)
+Utils.event.registerHandler = function(event, callback)
 	assert(event, "Event must be set.");
 	assert(callback and type(callback) == "function", "Callback must be a function");
 	if not REGISTERED_EVENTS[event] then
@@ -400,17 +415,17 @@ end
 -- MUSIC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_PlayMusic(music)
+Utils.music.play = function(music)
 	assert(music, "Music can't be nil.")
 	Log.log("Playing music: " .. music);
 	PlayMusic("Sound\\Music\\" .. music .. ".mp3");
 end
 
-function TRP3_StopMusic()
+Utils.music.stop = function()
 	StopMusic();
 end
 
-function TRP3_GetMusicTitle(musicURL)
+Utils.music.getTitle = function(musicURL)
 	local musicName = musicURL:reverse();
 	return (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 end

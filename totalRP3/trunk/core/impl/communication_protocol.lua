@@ -4,6 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- TRP3 API
+local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 
@@ -27,8 +28,8 @@ TRP3_COMM_INTERFACE = {
 local connection_id = TRP3_COMM_INTERFACE.WOW;
 
 function TRP3_InitCommunicationProtocol()
-	TRP3_RegisterToEvent("CHAT_MSG_ADDON", onAddonMessageReceived);
-	TRP3_RegisterToEvent("PLAYER_ENTERING_WORLD", function() 
+	Utils.event.registerHandler("CHAT_MSG_ADDON", onAddonMessageReceived);
+	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function() 
 		RegisterAddonMessagePrefix(wowCom_prefix);
 	end);
 end
@@ -159,7 +160,7 @@ end
 
 -- Convert structure to message, cut message in packets.
 local function handleStructureOut(structure, target, priority)
-	local message = TRP3_GetAddon():Serialize(structure);
+	local message = Globals.addon:Serialize(structure);
 	local messageID = getMessageIDAndIncrement();
 	local messageSize = message:len();
 	local packetTab = {};
@@ -177,7 +178,7 @@ handleStructureIn = function(packets, sender)
 	for index, packet in pairs(packets) do
 		message = message..packet;
 	end
-	local status, structure = TRP3_GetAddon():Deserialize(message);
+	local status, structure = Globals.addon:Deserialize(message);
 	if status then
 		receiveObject(structure, sender);
 	else
@@ -232,5 +233,5 @@ end
 -- Estimate the number of packet needed to send a object.
 function TRP3_EstimateStructureLoad(object)
 	assert(object, "Object nil");
-	return math.ceil((#(TRP3_GetAddon():Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
+	return math.ceil((#(Globals.addon:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
 end

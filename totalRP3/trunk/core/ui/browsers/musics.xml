@@ -125,7 +125,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								TRP3_StopMusic()
+								TRP3_UTILS.music.stop();
 							</OnClick>
 						</Scripts>
 					</Button>

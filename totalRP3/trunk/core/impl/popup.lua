@@ -179,7 +179,7 @@ local function onMusicClick(lineFrame, mousebutton)
 			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
 		end
 	elseif lineFrame.musicURL then
-		TRP3_PlayMusic(lineFrame.musicURL);
+		Utils.music.play(lineFrame.musicURL);
 	end
 	
 end

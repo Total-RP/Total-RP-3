@@ -671,22 +671,12 @@
 										<Anchors>	
 											<Anchor point="BOTTOMLEFT" x="20" y="10"/>
 										</Anchors>
-										<Scripts>
-											<OnClick>
-												TRP3_PlayMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
-											</OnClick>
-										</Scripts>
 									</Button>
 									<Button name="TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop" inherits="TRP3_CommonButton">
 										<Size x="70" y="20"/>
 										<Anchors>	
 											<Anchor point="BOTTOMRIGHT" x="-17" y="10"/>
 										</Anchors>
-										<Scripts>
-											<OnClick>
-												TRP3_StopMusic();
-											</OnClick>
-										</Scripts>
 									</Button>
 								</Frames>
 							</Frame>

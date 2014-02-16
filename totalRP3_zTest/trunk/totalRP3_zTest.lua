@@ -4,7 +4,9 @@
 -- This is Telkostrasz's test file, don't touch it ! ;)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-assert(TRP3_GetAddon, "Unable to find TRP3_GetAddon.");
+local globals = TRP3_GLOBALS;
+assert(globals, "Unable to find TRP3.");
+
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 
@@ -31,7 +33,7 @@ end
 local function onLoaded()
 	Log.log("onLoaded test module");
 	
---	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", function()
+--	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
 --		if UnitIsPlayer("mouseover") then
 --			TRP3_RegisterAddCharacter(UnitName("mouseover"))
 --		end

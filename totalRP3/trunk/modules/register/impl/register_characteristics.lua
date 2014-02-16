@@ -95,8 +95,8 @@ local currentCompressed;
 
 local function compressData()
 	local dataTab = get("player/characteristics");
-	local serial = TRP3_Serialize(dataTab);
-	local compressed = TRP3_EncodeCompressMessage(serial);
+	local serial = Utils.serial.serialize(dataTab);
+	local compressed = Utils.serial.encodeCompressMessage(serial);
 	if compressed:len() < serial:len() then
 		currentCompressed = compressed;
 --		log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));

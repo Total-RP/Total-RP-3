@@ -36,3 +36,11 @@ TRP3_GLOBALS = {
 		profile_default = "INV_Misc_GroupLooking";
 	},
 };
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Libs management
+-- AceSerializer is used for the communication serialization/dezerialization
+-- AceCommand is used for TRP3 console commands handling
+-- AceTimer is used for handling some generic timers
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+TRP3_GLOBALS.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_GLOBALS.addon_name, "AceSerializer-3.0", "AceConsole-3.0", "AceTimer-3.0");

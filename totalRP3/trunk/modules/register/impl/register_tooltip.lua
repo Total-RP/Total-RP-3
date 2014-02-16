@@ -6,6 +6,7 @@
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local getUnitID = Utils.str.unitInfoToID;
+local colorCodeFloat = Utils.color.colorCodeFloat;
 local loc = TRP3_L;
 
 -- ICONS
@@ -206,7 +207,7 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		if info.characteristics and info.characteristics.CL then
 			class = info.characteristics.CL;
 		end
-		lineLeft = strconcat("|cffffffff", race, " ", TRP3_ColorCodeFloat(classColor.r, classColor.g, classColor.b), class);
+		lineLeft = strconcat("|cffffffff", race, " ", colorCodeFloat(classColor.r, classColor.g, classColor.b), class);
 
 		if UnitLevel(targetType) ~= -1 then
 			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format(UnitLevel(targetType)), ")");
@@ -367,7 +368,7 @@ end
 
 function TRP3_Register_TooltipInit()
 	-- Listen to the mouse over event
-	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
 
 -- TODO: declare configuration UI here ?

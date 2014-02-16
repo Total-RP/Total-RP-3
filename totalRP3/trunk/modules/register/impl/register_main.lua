@@ -264,7 +264,7 @@ function TRP3_InitRegister()
 	characters = TRP3_Register.character;
 	
 	-- Listen to the mouse over event
-	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 end
 
 function TRP3_UI_InitRegister()

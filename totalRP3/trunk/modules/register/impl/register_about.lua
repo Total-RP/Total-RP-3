@@ -12,6 +12,7 @@ local safeGet = TRP3_Profile_NilSafeDataAccess;
 local loc = TRP3_L;
 local stNtE = Utils.str.nilToEmpty;
 local tcopy = Utils.table.copy;
+local numberToHexa = Utils.color.numberToHexa;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -100,7 +101,7 @@ end
 
 local function selectMusic(music)
 	if music then
-		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc("REG_PLAYER_ABOUT_MUSIC"), TRP3_GetMusicTitle(music)));
+		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc("REG_PLAYER_ABOUT_MUSIC"), Utils.music.getTitle(music)));
 	else
 		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc("REG_PLAYER_ABOUT_MUSIC"), loc("REG_PLAYER_ABOUT_NOMUSIC")));
 	end
@@ -132,7 +133,7 @@ local TAGS_INFO = {
 local function showTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
 	
-	local text = TRP2_toHTML(templateData.TX or "");
+	local text = Utils.str.toHTML(templateData.TX or "");
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
 	TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 end
@@ -160,7 +161,7 @@ end
 
 local function onColorTagSelected(red, green, blue)
 	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
-	local tag = ("{col:%s}"):format(strconcat(TRP3_NumberToHexa(red), TRP3_NumberToHexa(green), TRP3_NumberToHexa(blue)));
+	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
 	insertTag(tag, cursorIndex);
 	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(cursorIndex + tag:len());
 end
@@ -427,7 +428,7 @@ local function showTemplate3(dataTab)
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
 		title:SetText(icon.."    "..titles[i].."    "..icon);
-		text:SetText(TRP3_ConvertTextTags(data.TX));
+		text:SetText(Utils.str.convertTextTags(data.TX));
 		setBkg(frame, data.BK);
 		frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
 	end
@@ -508,8 +509,8 @@ end
 
 local function compressData()
 	local dataTab = getOptimizedData();
-	local serial = TRP3_Serialize(dataTab);
-	local compressed = TRP3_EncodeCompressMessage(serial);
+	local serial = Utils.serial.serialize(dataTab);
+	local compressed = Utils.serial.encodeCompressMessage(serial);
 	
 --	log(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
 	if compressed:len() < serial:len() then
@@ -564,7 +565,7 @@ local function refreshConsultDisplay(context)
 	
 	TRP3_RegisterAbout_AboutPanel.musicURL = dataTab.MU;
 	if dataTab.MU then
-		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(TRP3_GetMusicTitle(dataTab.MU));
+		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(Utils.music.getTitle(dataTab.MU));
 	end
 	
 	TRP3_RegisterAbout_AboutPanel_EditButton:Hide();
@@ -708,9 +709,9 @@ local function onMusicEditSelected(value, button)
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
 	elseif value == 3 and draftData.MU then
-		TRP3_PlayMusic(draftData.MU);
+		Utils.music.play(draftData.MU);
 	elseif value == 4 and draftData.MU then
-		TRP3_StopMusic();
+		Utils.music.stop();
 	end
 end
 
@@ -825,6 +826,13 @@ function TRP3_Register_AboutInit()
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT"));
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", voteUp);
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", voteDown);
+	
+	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
+		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);
+	end);
+	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetScript("OnClick", function()
+		Utils.music.stop();
+	end);
 	
 	compressData();
 end

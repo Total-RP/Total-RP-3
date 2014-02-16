@@ -169,7 +169,7 @@ local function incomingInformationTypeSent(structure, sender)
 	log(("Received %s's %s info !"):format(sender, informationType));
 	local decodedData = data;
 	if type(data) == "string" then
-		decodedData = TRP3_DecompressCodedStructure(decodedData);
+		decodedData = Utils.serial.decompressCodedStructure(decodedData);
 	end
 	TRP3_RegisterSetInforType(sender, informationType, decodedData);
 	TRP3_ShouldRefreshTooltip(sender);
@@ -236,8 +236,8 @@ function TRP3_Register_DataExchangeInit()
 	end
 
 	-- Listen to the mouse over event
-	TRP3_RegisterToEvent("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-	TRP3_RegisterToEvent("PLAYER_TARGET_CHANGED", onTargetChanged);
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange
 	TRP3_RegisterProtocolPrefix(VERNUM_QUERY_PREFIX, incomingVernumQuery);

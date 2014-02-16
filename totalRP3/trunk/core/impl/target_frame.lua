@@ -2,6 +2,7 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local Utils = TRP3_UTILS;
 local loc = TRP3_L;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -17,5 +18,5 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_UI_InitTargetFrame()
-	TRP3_RegisterToEvent("PLAYER_TARGET_CHANGED", onTargetChanged);
+	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 end
