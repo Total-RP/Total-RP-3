@@ -3,10 +3,26 @@
 -- This is a regular protocol based on layers 1 & 3 & 4 & 5 from the ISO-OSI model.
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- TRP3 API
+-- Public accessor
+TRP3_COMM = {
+	
+};
+
+-- API
+local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
+local tostring = tostring;
+local pairs = pairs;
+local assert = assert;
+local string = string;
+local wipe = wipe;
+local tinsert = tinsert;
+local type = type;
+local math = math;
+local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
+local Comm = TRP3_COMM;
 
 -- function definition
 local handlePacketsIn;
@@ -20,14 +36,15 @@ local onAddonMessageReceived;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local wowCom_prefix = "TRP3";
-TRP3_COMM_INTERFACE = {
+local interface_id = {
 	WOW = 1,
 	DIRECT_RELAY = 2,
 	DIRECT_PRINT = 3
 };
-local connection_id = TRP3_COMM_INTERFACE.WOW;
+Comm.interface_id = interface_id;
+local selected_interface_id = interface_id.WOW;
 
-function TRP3_InitCommunicationProtocol()
+Comm.init = function()
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onAddonMessageReceived);
 	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function() 
 		RegisterAddonMessagePrefix(wowCom_prefix);
@@ -51,8 +68,8 @@ end
 -- This communication interface print all sent message to the chat frame.
 -- Note that the messages are not really sent.
 local function directPrint(packet, target, priority)
-	log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), log.level.DEBUG);
-	log.log(packet:sub(4), log.level.DEBUG);
+	Log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), Log.level.DEBUG);
+	Log.log(packet:sub(4), Log.level.DEBUG);
 end
 
 -- A "direct relay" (like localhost) communication interface, used for development purpose.
@@ -65,14 +82,14 @@ end
 
 -- Returns the function reference to be used as communication interface.
 local function getCommunicationInterface()
-	if connection_id == TRP3_COMM_INTERFACE.WOW then return wowCommunicationInterface end
-	if connection_id == TRP3_COMM_INTERFACE.DIRECT_RELAY then return directRelayInterface end
-	if connection_id == TRP3_COMM_INTERFACE.DIRECT_PRINT then return directPrint end
+	if selected_interface_id == interface_id.WOW then return wowCommunicationInterface end
+	if selected_interface_id == interface_id.DIRECT_RELAY then return directRelayInterface end
+	if selected_interface_id == interface_id.DIRECT_PRINT then return directPrint end
 end
 
 -- Changes the communication interface to use
-function TRP3_SetCommunicationInterfaceId(id)
-	connection_id = id;
+Comm.setInterfaceID = function(id)
+	selected_interface_id = id;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -182,7 +199,7 @@ handleStructureIn = function(packets, sender)
 	if status then
 		receiveObject(structure, sender);
 	else
-		log.log(("Deserialization error. Message:\n%s"):format(message), log.level.SEVERE);
+		Log.log(("Deserialization error. Message:\n%s"):format(message), Log.level.SEVERE);
 	end
 end
 
@@ -194,7 +211,7 @@ end
 local PREFIX_REGISTRATION = {};
 
 -- Register a function to callback when receiving a object attached to the given prefix
-function TRP3_RegisterProtocolPrefix(prefix, callback)
+Comm.registerProtocolPrefix = function(prefix, callback)
 	assert(prefix and callback and type(callback) == "function", "Usage: prefix, callback");
 	if PREFIX_REGISTRATION[prefix] == nil then
 		PREFIX_REGISTRATION[prefix] = {};
@@ -206,7 +223,7 @@ end
 -- Prefix must have been registered before use this function
 -- The object can be any lua type (numbers, strings, tables, but NOT functions or userdatas)
 -- Priority is optional ("Bulk" by default)
-function TRP3_SendObject(prefix, object, target, priority)
+Comm.sendObject = function(prefix, object, target, priority)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	local structure = {prefix, object};
 	handleStructureOut(structure, target, priority);
@@ -223,15 +240,15 @@ receiveObject = function(structure, sender)
 				callback(structure[2], sender);
 			end
 		else
-			log.log("No registration for prefix: " .. prefix, log.level.INFO);
+			Log.log("No registration for prefix: " .. prefix, Log.level.INFO);
 		end
 	else
-		log.log("Bad structure composition.", log.level.SEVERE);
+		Log.log("Bad structure composition.", Log.level.SEVERE);
 	end
 end
 
 -- Estimate the number of packet needed to send a object.
-function TRP3_EstimateStructureLoad(object)
+Comm.estimateStructureLoad = function(object)
 	assert(object, "Object nil");
 	return math.ceil((#(Globals.addon:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
 end

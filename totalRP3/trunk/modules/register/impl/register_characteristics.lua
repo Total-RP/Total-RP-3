@@ -6,6 +6,7 @@
 -- functions
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
+local Comm = TRP3_COMM;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_Profile_DataGetter;
@@ -551,7 +552,7 @@ local function saveCharacteristics()
 	saveInDraft();
 	
 	--TODO: check size and warn if too long
-	local characteristicsSize = TRP3_EstimateStructureLoad(draftData);
+	local characteristicsSize = Comm.estimateStructureLoad(draftData);
 	
 	local dataTab = get("player/characteristics");
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");

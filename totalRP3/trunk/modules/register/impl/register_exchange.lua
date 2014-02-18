@@ -7,6 +7,7 @@
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local get = TRP3_Profile_DataGetter;
+local Comm = TRP3_COMM;
 -- WoW API
 local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
@@ -57,7 +58,7 @@ end
 
 local function queryVernum(unitName)
 	local query = createVernumQuery();
-	TRP3_SendObject(VERNUM_QUERY_PREFIX, query, unitName, VERNUM_QUERY_PRIORITY);
+	Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitName, VERNUM_QUERY_PRIORITY);
 end
 
 local function queryMarySueProtocol(unitName)
@@ -74,7 +75,7 @@ local function queryInformationType(unitName, informationType)
 		CURRENT_QUERY_EXCHANGES[unitName] = {};
 	end
 	CURRENT_QUERY_EXCHANGES[unitName][informationType] = time();
-	TRP3_SendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
+	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -106,7 +107,7 @@ local function incomingVernumQuery(structure, sender, bResponse)
 	-- First send back or own vernum
 	if not bResponse and (not LAST_QUERY[sender] or time() - LAST_QUERY[sender] > COOLDOWN_DURATION) then
 		local query = createVernumQuery();
-		TRP3_SendObject(VERNUM_R_QUERY_PREFIX, query, sender, VERNUM_QUERY_PRIORITY);
+		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, sender, VERNUM_QUERY_PRIORITY);
 	end
 
 	-- Data processing
@@ -155,7 +156,7 @@ local function incomingInformationType(informationType, sender)
 	elseif informationType == TRP3_RegisterInfoTypes.MISC then
 		data = TRP3_RegisterMiscGetExchangeData();
 	end
-	TRP3_SendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, sender, INFO_TYPE_SEND_PRIORITY);
+	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, sender, INFO_TYPE_SEND_PRIORITY);
 end
 
 local function incomingInformationTypeSent(structure, sender)
@@ -240,8 +241,8 @@ function TRP3_Register_DataExchangeInit()
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange
-	TRP3_RegisterProtocolPrefix(VERNUM_QUERY_PREFIX, incomingVernumQuery);
-	TRP3_RegisterProtocolPrefix(VERNUM_R_QUERY_PREFIX, incomingVernumResponseQuery);
-	TRP3_RegisterProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
-	TRP3_RegisterProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
+	Comm.registerProtocolPrefix(VERNUM_QUERY_PREFIX, incomingVernumQuery);
+	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, incomingVernumResponseQuery);
+	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
+	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 end

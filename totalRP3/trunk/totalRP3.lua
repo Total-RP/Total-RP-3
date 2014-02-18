@@ -4,6 +4,7 @@
 
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
+local Comm = TRP3_COMM;
 local Log = Utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -26,7 +27,7 @@ function Globals.addon:OnEnable()
 	-- Inits impl
 	TRP3_InitConfiguration();
 	TRP3_InitLocalization(TRP3_GetConfigValue("Locale"));
-	TRP3_InitCommunicationProtocol();
+	Comm.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
 	

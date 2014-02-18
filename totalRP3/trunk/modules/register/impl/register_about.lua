@@ -6,6 +6,7 @@
 -- functions
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
+local Comm = TRP3_COMM;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_Profile_DataGetter;
 local safeGet = TRP3_Profile_NilSafeDataAccess;
@@ -605,7 +606,7 @@ local function save()
 	saveInDraft();
 	
 	--TODO: check size and warn if too long
-	local aboutSize = TRP3_EstimateStructureLoad(draftData);
+	local aboutSize = Comm.estimateStructureLoad(draftData);
 	
 	local dataTab = get("player/about");
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
