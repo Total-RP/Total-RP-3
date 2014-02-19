@@ -8,7 +8,8 @@ local fullName, realm = UnitFullName("player");
 
 -- Public accessor
 TRP3_GLOBALS = {
-
+	empty = {},
+	
 	addon_name = "Total RP 3",
 	addon_name_short = "TRP3",
 	addon_name_alt = "TotalRP3",

@@ -2,21 +2,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
+	
+	<Include file="ui\register_ui_characteristics.xml"/>
+	<Include file="ui\register_ui_about.xml"/>
+	<Include file="ui\register_ui_style.xml"/>
+	<Include file="ui\register_ui_misc.xml"/>
+	<Include file="ui\register_ui_list.xml"/>
+    <Include file="ui\register_ui_main.xml"/>
+    
 	<Script file="impl\register_main.lua"/>
 	<Script file="impl\register_characteristics.lua"/>
-	<Include file="ui\register_ui_characteristics.xml"/>
 	<Script file="impl\register_about.lua"/>
-	<Include file="ui\register_ui_about.xml"/>
 	<Script file="impl\register_style.lua"/>
-	<Include file="ui\register_ui_style.xml"/>
 	<Script file="impl\register_misc.lua"/>
-	<Include file="ui\register_ui_misc.xml"/>
 	<Script file="impl\register_exchange.lua"/>
 	<Script file="impl\register_tooltip.lua"/>
-	
 	<Script file="impl\register_list.lua"/>
-	<Include file="ui\register_ui_list.xml"/>
-	
-    <Include file="ui\register_ui_main.xml"/>
     
 </Ui>

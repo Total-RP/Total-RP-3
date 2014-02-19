@@ -5,15 +5,6 @@
 	<!-- Character tooltip -->
 	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
 		<Scripts>
-			<OnUpdate>
-				if self.target and self.targetType and not self.isFading then
-					if self.target ~= UnitName(self.targetType) then
-						self.isFading = true;
-						self.target = nil;
-						self:FadeOut();
-					end
-				end
-			</OnUpdate>
 			<OnHide>
 				self.isFading = nil;
 			</OnHide>

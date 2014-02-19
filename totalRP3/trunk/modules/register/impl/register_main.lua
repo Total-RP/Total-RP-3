@@ -3,6 +3,9 @@
 -- Register : Main section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Public accessor
+TRP3_REGISTER = {};
+
 -- functions
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
@@ -44,8 +47,10 @@ function TRP3_IncrementVersion(version, figures)
 end
 
 local function isUnitIDKnown(unitID)
+	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;
 end
+TRP3_REGISTER.isUnitIDKnown = isUnitIDKnown;
 
 local function hasProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
@@ -136,13 +141,13 @@ end
 -- GETTERS
 
 --- Raises error if unknown unitName
-function TRP3_RegisterGetCurrentProfile(unitName, unitRealm)
-	local unitID = getUnitID(unitName, unitRealm);
+local function getCurrentProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	if hasProfile(unitID) then
 		return getProfile(unitID, true);
 	end
 end
+TRP3_REGISTER.getCurrentProfile = getCurrentProfile;
 
 --- Raises error if unknown unitID or unit hasn't profile ID or no profile exists
 function TRP3_RegisterShouldUpdateInfo(unitID, infoType, version)
@@ -167,6 +172,16 @@ end
 function TRP3_GetProfileList()
 	return profiles;
 end
+
+--- Raises error if unknown unitID
+local function getMiscData(unitID)
+	local profile = getCurrentProfile(unitID);
+	if not profile or not profile.misc then
+		return {};
+	end
+	return profile.misc;
+end
+TRP3_REGISTER.getMiscData = getMiscData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools

@@ -185,7 +185,7 @@ end
 
 --- Send vernum request to the player
 local function sendQuery(type)
-	local unitID = Utils.str.getFullName(type);
+	local unitID = Utils.str.getUnitID(type);
 	if unitID -- unitID equals nil if no character under the mouse (possible if the event trigger is delayed), or if UNKOWN (if player not loaded)
 		and UnitIsPlayer(type) -- Don't query NPC
 		and unitID ~= Globals.player_id -- Don't query yourself

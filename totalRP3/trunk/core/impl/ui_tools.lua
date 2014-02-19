@@ -2,6 +2,10 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_UI_UTILS = {
+	Tooltip = {},
+}
+
 local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
 
@@ -326,12 +330,14 @@ function TRP3_SetTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenFr
 		end
 	end
 end
+TRP3_UI_UTILS.setTooltipForFrame = TRP3_SetTooltipForFrame;
 
 -- Setup the frame tooltip (position and text)
 -- The tooltip can be shown by using TRP3_RefreshTooltipForFrame(Frame)
 function TRP3_SetTooltipForSameFrame(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	TRP3_SetTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
 end
+TRP3_UI_UTILS.setTooltipForSameFrame = TRP3_SetTooltipForSameFrame;
 
 -- Setup the frame tooltip and add the Enter and Leave scripts
 function TRP3_SetTooltipAll(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)

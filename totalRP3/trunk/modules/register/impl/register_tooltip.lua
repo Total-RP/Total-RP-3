@@ -8,6 +8,9 @@ local Utils = TRP3_UTILS;
 local getUnitID = Utils.str.unitInfoToID;
 local colorCodeFloat = Utils.color.colorCodeFloat;
 local loc = TRP3_L;
+local getCurrentProfile = TRP3_REGISTER.getCurrentProfile;
+local ui_CharacterTT = TRP3_CharacterTooltip;
+local getUnitID = Utils.str.getUnitID;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -122,19 +125,20 @@ end
 
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
-local function getCharacterInfoTab(targetName, realm)
-	if targetName == Globals.player then
+local function getCharacterInfoTab(unitID)
+	if unitID == Globals.player_id then
 		return TRP3_Profile_DataGetter("player");
-	elseif TRP3_IsUnitIDKnown(getUnitID(targetName, realm)) then
-		return TRP3_RegisterGetCurrentProfile(targetName, realm) or {};
+	elseif TRP3_IsUnitIDKnown(unitID) then
+		return getCurrentProfile(unitID) or {};
 	end
 	return {};
 end
 
 --- The complete character's tooltip writing sequence.
-local function writeTooltipForCharacter(targetName, realm, originalTexts, targetType)
+local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local lineIndex = 1;
-	local info = getCharacterInfoTab(targetName, realm);
+	local info = getCharacterInfoTab(targetID);
+	local targetName = UnitName(targetType);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -169,9 +173,9 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		-- TODO: Beginner icon + volunteer icon
 	end
 
-	TRP3_CharacterTooltip:AddDoubleLine(completeName, rightIcons);
-	setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getMainLineFontSize());
-	_G[strconcat(TRP3_CharacterTooltip:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
+	ui_CharacterTT:AddDoubleLine(completeName, rightIcons);
+	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
+	_G[strconcat(ui_CharacterTT:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
 	lineIndex = lineIndex + 1;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -186,8 +190,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 			fullTitle = strconcat("< ", UnitPVPName(targetType), " >");
 		end
 		if fullTitle:len() > 0 then
-			TRP3_CharacterTooltip:AddLine(fullTitle, 1, 0.50, 0);
-			setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+			ui_CharacterTT:AddLine(fullTitle, 1, 0.50, 0);
+			setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 			lineIndex = lineIndex + 1;
 		end
 	end
@@ -215,8 +219,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format("|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Skull:16:16|t"), ")");
 		end
 
-		TRP3_CharacterTooltip:AddDoubleLine(lineLeft, lineRight);
-		setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		ui_CharacterTT:AddDoubleLine(lineLeft, lineRight);
+		setDoubleLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
 
@@ -226,8 +230,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	local _, realm = UnitName(targetType);
 	if showRealm() and realm then
-		TRP3_CharacterTooltip:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1);
-		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		ui_CharacterTT:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
 
@@ -237,8 +241,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
-		TRP3_CharacterTooltip:AddLine(loc("REG_TT_GUILD"):format(grade, guild), 1, 1, 1);
-		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		ui_CharacterTT:AddLine(loc("REG_TT_GUILD"):format(grade, guild), 1, 1, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
 
@@ -254,19 +258,19 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	if showCurrently() and info.misc and info.misc.CU then
 		if info.misc.CO then
-			TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENTOOC"), 1, 1, 1);
+			ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENTOOC"), 1, 1, 1);
 		else
-			TRP3_CharacterTooltip:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
+			ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
 		end
-		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 		
 		local text = info.misc.CU;
 		if text:len() > getCurrentMaxSize() then
 			text = text:sub(1, getCurrentMaxSize()) .. "...";
 		end
-		TRP3_CharacterTooltip:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
-		setLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
+		ui_CharacterTT:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
 	
@@ -280,12 +284,12 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
 			glance = loc("REG_PLAYER_GLANCE");
 		end
-		if targetName ~= Globals.player and info.about and not info.about.read then
+		if targetID ~= Globals.player_id and info.about and not info.about.read then
 			description = loc("REG_TT_NOTIF");
 		end
 		if glance or description then
-			TRP3_CharacterTooltip:AddDoubleLine(glance or " ", description or " ", 1, 1, 1, 0, 1, 0);
-			setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
+			ui_CharacterTT:AddDoubleLine(glance or " ", description or " ", 1, 1, 1, 0, 1, 0);
+			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
 		end
 	end
@@ -295,8 +299,8 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showTarget() and UnitName(targetType .. "target") then
-		TRP3_CharacterTooltip:AddLine(loc("REG_TT_TARGET"):format(UnitName(targetType .. "target")), 1, 1, 1);
-		setLineFont(TRP3_CharacterTooltip, lineIndex, getSubLineFontSize());
+		ui_CharacterTT:AddLine(loc("REG_TT_TARGET"):format(UnitName(targetType .. "target")), 1, 1, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
 
@@ -306,14 +310,14 @@ local function writeTooltipForCharacter(targetName, realm, originalTexts, target
 
 	if showClient() then
 		local text = "";
-		if targetName == Globals.player then
+		if targetID == Globals.player_id then
 			text = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
 		else
 		-- TODO: check character client
 		end
 		if text:len() > 0 then
-			TRP3_CharacterTooltip:AddDoubleLine(" ", text);
-			setDoubleLineFont(TRP3_CharacterTooltip, lineIndex, getSmallLineFontSize());
+			ui_CharacterTT:AddDoubleLine(" ", text);
+			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
 		end
 	end
@@ -324,31 +328,31 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function show(targetType)
-	TRP3_CharacterTooltip:Hide();
-
-	local targetName, realm = UnitName(targetType);
+	ui_CharacterTT:Hide();
+	
+	local targetID = getUnitID(targetType);
 
 	-- If we have a target
-	if targetName then
+	if targetID then
 		-- Stock all the current text from the GameTooltip
 		local originalTexts = getGameTooltipTexts();
 
-		TRP3_CharacterTooltip:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+		ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 
 		-- The target is a player
 		if UnitIsPlayer(targetType) then
-			writeTooltipForCharacter(targetName, realm, originalTexts, targetType);
-			TRP3_CharacterTooltip.target = targetName;
-			TRP3_CharacterTooltip.targetType = targetType;
-			TRP3_CharacterTooltip:Show();
+			writeTooltipForCharacter(targetID, originalTexts, targetType);
+			ui_CharacterTT.target = targetID;
+			ui_CharacterTT.targetType = targetType;
+			ui_CharacterTT:Show();
 			if shouldHideGameTooltip() then
 				GameTooltip:Hide();
 			end
 		else
-			TRP3_CharacterTooltip:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
+			ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
 		end
 
-		TRP3_CharacterTooltip:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
+		ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 	end
 end
 
@@ -357,9 +361,23 @@ local function onMouseOver()
 end
 
 function TRP3_ShouldRefreshTooltip(targetID)
-	local mouseID = Utils.str.getFullName("mouseover");
+	local mouseID = getUnitID("mouseover");
 	if mouseID == targetID then
 		onMouseOver();
+	end
+end
+
+local function onUpdate(self, elapsed)
+	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed; 	
+	if (self.TimeSinceLastUpdate > 0.5) then
+		self.TimeSinceLastUpdate = 0;
+		if self.target and self.targetType and not self.isFading then
+			if self.target ~= getUnitID(self.targetType) then
+				self.isFading = true;
+				self.target = nil;
+				self:FadeOut();
+			end
+		end
 	end
 end
 
@@ -371,6 +389,6 @@ function TRP3_Register_TooltipInit()
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
-
--- TODO: declare configuration UI here ?
+	ui_CharacterTT.TimeSinceLastUpdate = 0;
+	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
 end

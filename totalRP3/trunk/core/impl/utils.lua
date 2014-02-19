@@ -12,6 +12,7 @@ TRP3_UTILS = {
 	serial = {},
 	event = {},
 	music = {},
+	texture = {},
 };
 -- TRP3 API
 local Globals = TRP3_GLOBALS;
@@ -34,6 +35,9 @@ local assert = assert;
 local PlayMusic = PlayMusic;
 local StopMusic = StopMusic;
 local _G = _G;
+local UnitFullName = UnitFullName;
+local UNKNOWNOBJECT = UNKNOWNOBJECT;
+local SetPortraitToTexture = SetPortraitToTexture;
 
 local isDebug = true;
 local showLog = true;
@@ -69,12 +73,15 @@ Log.log = log;
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-Utils.table.dumpTab = function(tab)
+Utils.table.dumpTable = function(tab)
 	log("Dump tab "..tostring(tab), Log.level.DEBUG);
 	if tab then
+		local i = 0;
 		for k,v in pairs(tab) do
 			log(k.." : "..tostring(v).." ( "..type(v).." )", Log.level.DEBUG);
+			i = i + 1;
 		end
+		log("Table size: "..i, Log.level.DEBUG);
 	end
 end
 
@@ -136,7 +143,7 @@ Utils.str.unitIDToInfo = function(unitID)
     return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
 end
 
-Utils.str.getFullName = function(unit)
+Utils.str.getUnitID = function(unit)
     local playerName, realm = UnitFullName(unit);
     if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
     	return nil;
@@ -439,4 +446,16 @@ end
 Utils.music.getTitle = function(musicURL)
 	local musicName = musicURL:reverse();
 	return (musicName:sub(1, musicName:find("%\\")-1)):reverse();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Textures
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTexture)
+	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
+	if not ok then
+		Log.log("Fail to round texture: " .. errorMess, Log.level.DEBUG);
+		SetPortraitToTexture(textureFrame, failTexture);
+	end
 end
