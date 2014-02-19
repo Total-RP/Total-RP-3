@@ -8,6 +8,7 @@ local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local get = TRP3_Profile_DataGetter;
 local Comm = TRP3_COMM;
+local log = Utils.log.log;
 -- WoW API
 local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
@@ -92,7 +93,7 @@ local infoTypeTab = {
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
 -- His main query is to receive your vernum tab. But you can already read his tab to query information.
-local function incomingVernumQuery(structure, sender, bResponse)
+local function incomingVernumQuery(structure, senderID, bResponse)
 	-- First: Integrity check
 	if type(structure) ~= "table"
 	or #structure <= 0
@@ -100,14 +101,14 @@ local function incomingVernumQuery(structure, sender, bResponse)
 	or type(structure[2]) ~= "string"
 	or type(structure[3]) ~= "string"
 	then
-		log("Incoming vernum integrity check fails. Sender: " .. sender);
+		log("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
 	end
 
 	-- First send back or own vernum
-	if not bResponse and (not LAST_QUERY[sender] or time() - LAST_QUERY[sender] > COOLDOWN_DURATION) then
+	if not bResponse and (not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION) then
 		local query = createVernumQuery();
-		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, sender, VERNUM_QUERY_PRIORITY);
+		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 	end
 
 	-- Data processing
@@ -119,19 +120,19 @@ local function incomingVernumQuery(structure, sender, bResponse)
 	-- TODO: show version alert.
 	end
 
-	if TRP3_IsUnitKnown(sender) or configIsAutoAdd() then
-		if not TRP3_IsUnitKnown(sender) then
-			TRP3_RegisterAddCharacter(sender);
+	if TRP3_IsUnitIDKnown(senderID) or configIsAutoAdd() then
+		if not TRP3_IsUnitIDKnown(senderID) then
+			TRP3_RegisterAddCharacter(senderID);
 		end
-		TRP3_RegisterSetClient(sender, Globals.clients.TRP3, senderVersionText);
-		TRP3_RegisterSetCurrentProfile(sender, senderProfileID);
+		TRP3_RegisterSetClient(senderID, Globals.clients.TRP3, senderVersionText);
+		TRP3_RegisterSetCurrentProfile(senderID, senderProfileID);
 
 		-- Query specific data, depending on version number.
 		local index = 4;
 		for _, infoType in pairs(infoTypeTab) do
-			if TRP3_RegisterShouldUpdateInfo(sender, infoType, structure[index]) then
-				log(("Should update: %s's %s"):format(sender, infoType));
-				queryInformationType(sender, infoType);
+			if TRP3_RegisterShouldUpdateInfo(senderID, infoType, structure[index]) then
+				log(("Should update: %s's %s"):format(senderID, infoType));
+				queryInformationType(senderID, infoType);
 			end
 			index = index + 1;
 		end
@@ -141,11 +142,11 @@ end
 --- Incoming vernum response
 -- This is received when you asked a player for his vernum tab and he responses.
 -- In that case we shouldn't query him anymore as it would bring an infinite loop.
-local function incomingVernumResponseQuery(structure, sender)
-	incomingVernumQuery(structure, sender, true);
+local function incomingVernumResponseQuery(structure, senderID)
+	incomingVernumQuery(structure, senderID, true);
 end
 
-local function incomingInformationType(informationType, sender)
+local function incomingInformationType(informationType, senderID)
 	local data = nil;
 	if informationType == TRP3_RegisterInfoTypes.CHARACTERISTICS then
 		data = TRP3_RegisterCharacteristicsGetExchangeData();
@@ -156,74 +157,58 @@ local function incomingInformationType(informationType, sender)
 	elseif informationType == TRP3_RegisterInfoTypes.MISC then
 		data = TRP3_RegisterMiscGetExchangeData();
 	end
-	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, sender, INFO_TYPE_SEND_PRIORITY);
+	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
 end
 
-local function incomingInformationTypeSent(structure, sender)
+local function incomingInformationTypeSent(structure, senderID)
 	local informationType = structure[1];
 	local data = structure[2];
 	
-	if not CURRENT_QUERY_EXCHANGES[sender] or not CURRENT_QUERY_EXCHANGES[sender][informationType] then
+	if not CURRENT_QUERY_EXCHANGES[senderID] or not CURRENT_QUERY_EXCHANGES[senderID][informationType] then
 		return; -- We didn't ask for theses information ...
 	end
 	
-	log(("Received %s's %s info !"):format(sender, informationType));
+	log(("Received %s's %s info !"):format(senderID, informationType));
 	local decodedData = data;
 	if type(data) == "string" then
 		decodedData = Utils.serial.decompressCodedStructure(decodedData);
 	end
-	TRP3_RegisterSetInforType(sender, informationType, decodedData);
-	TRP3_ShouldRefreshTooltip(sender);
+	TRP3_RegisterSetInforType(senderID, informationType, decodedData);
+	TRP3_ShouldRefreshTooltip(senderID);
 	
-	CURRENT_QUERY_EXCHANGES[sender][informationType] = nil;
+	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TRIGGERS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---- Send vernum request to the player if this is a known TRP player
--- The main rule is : we send a vernum query only to known characters
--- Note: we can't send query to a player from another realm.
-local function onMouseOver(...)
-	local unitName, unitRealm = UnitName("mouseover");
-
-	if unitName -- unitName equals nil if no character under the mouse (possible if the event trigger is delayed)
-		and unitRealm == nil -- Don't send query to players from other realm. You just can't.
-		and UnitIsPlayer("mouseover") -- Don't query NPC
-		and unitName ~= Globals.player -- Don't query yourself
-		and unitName ~= UNKNOWNOBJECT -- Name could equals UNKNOWNOBJECT if the player is not "loaded" (far away, disconnected ...)
-		and UnitFactionGroup("mouseover") == UnitFactionGroup("player") -- Don't query other faction !
-		and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
-		and not TRP3_IsPlayerIgnored(unitName)
-		and TRP3_IsUnitKnown(unitName) -- Only query known characters
-		and (not LAST_QUERY[unitName] or time() - LAST_QUERY[unitName] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
+--- Send vernum request to the player
+local function sendQuery(type)
+	local unitID = Utils.str.getFullName(type);
+	if unitID -- unitID equals nil if no character under the mouse (possible if the event trigger is delayed), or if UNKOWN (if player not loaded)
+		and UnitIsPlayer(type) -- Don't query NPC
+		and unitID ~= Globals.player_id -- Don't query yourself
+		and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
+		
+		and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
+		and (type ~= "mouseover" or TRP3_IsUnitIDKnown(unitID)) -- Only query known characters
+		
+		and not TRP3_IsPlayerIgnored(unitID)
+		and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
-		LAST_QUERY[unitName] = time();
-		queryVernum(unitName);
-		queryMarySueProtocol(unitName);
+		LAST_QUERY[unitID] = time();
+		queryVernum(unitID);
+		queryMarySueProtocol(unitID);
 	end
 end
 
---- Send vernum request to the player if this is a known TRP player
--- The main rule is : we send a vernum query only to unknown characters
--- Note: we can't send query to a player from another realm.
+local function onMouseOver(...)
+	sendQuery("mouseover");
+end
+
 local function onTargetChanged(...)
-	local unitName, unitRealm = UnitName("target");
-	if unitName -- unitName equals nil if no character under the mouse (possible if the event trigger is delayed)
-		and unitRealm == nil -- Don't send query to players from other realm. You just can't.
-		and UnitIsPlayer("target") -- Don't query NPC
-		and unitName ~= Globals.player -- Don't query yourself
-		and unitName ~= UNKNOWNOBJECT -- Name could equals UNKNOWNOBJECT if the player is not "loaded" (far away, disconnected ...)
-		and UnitFactionGroup("target") == UnitFactionGroup("player") -- Don't query other faction !
-		and not TRP3_IsPlayerIgnored(unitName)
-		and not TRP3_IsUnitKnown(unitName)
-		and (not LAST_QUERY[unitName] or time() - LAST_QUERY[unitName] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
-	then
-		LAST_QUERY[unitName] = time();
-		queryVernum(unitName);
-		queryMarySueProtocol(unitName);
-	end
+	sendQuery("target");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

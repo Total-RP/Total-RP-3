@@ -13,13 +13,14 @@
 	<Script file="impl\ui_tools.lua"/>
 	<Script file="impl\main_structure.lua"/>
 	<Script file="impl\toolbar.lua"/>
-	<Script file="impl\target_frame.lua"/>
 	<Script file="impl\ui_main.lua"/>
 	<Script file="impl\profiles.lua"/>
 	
 	<Include file="ui\widgets.xml"/>
 	<Include file="ui\toolbar.xml"/>
+	
 	<Include file="ui\target_frame.xml"/>
+	<Script file="impl\target_frame.lua"/>
 	
 	<Include file="ui\profiles.xml"/>
 	<Include file="ui\main.xml"/>

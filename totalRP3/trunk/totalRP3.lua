@@ -24,7 +24,7 @@ function Globals.addon:OnEnable()
 	TRP3_ModuleManagement_Init();
 	TRP3_InitModules();
 	
-	-- Inits impl
+	-- Inits logic
 	TRP3_InitConfiguration();
 	TRP3_InitLocalization(TRP3_GetConfigValue("Locale"));
 	Comm.init();
@@ -34,7 +34,7 @@ function Globals.addon:OnEnable()
 	-- Inits UI
 	TRP3_UI_PlaceMinimapIcon();
 	TRP3_UI_InitToolbar();
-	TRP3_UI_InitTargetFrame();
+	TRP3_TARGET_FRAME.init();
 	TRP3_UI_InitMainPage();
 	TRP3_UI_InitConfiguration();
 	TRP3_UI_InitRegister();

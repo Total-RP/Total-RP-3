@@ -9,6 +9,7 @@ local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local get = TRP3_Profile_DataGetter;
+local unitIDToInfo = Utils.str.unitIDToInfo;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -27,7 +28,7 @@ local function openPage(unitID)
 			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		else
 			-- Else, create a new menu entry and open it.
-			local unitRealm, unitName = Utils.str.unitIDToInfo(unitID);
+			local unitName, unitRealm = unitIDToInfo(unitID);
 			local tabText = unitName;
 			if TRP3_HasProfile(unitID) then
 				local profile = TRP3_GetUnitProfile(unitID);
@@ -60,7 +61,7 @@ end
 
 local function decorateLine(line, unitID)
 	local character = TRP3_GetCharacter(unitID);
-	local unitRealm, unitName = Utils.str.unitIDToInfo(unitID);
+	local unitName, unitRealm = unitIDToInfo(unitID);
 	
 	line.unitID = unitID;
 	
@@ -103,7 +104,7 @@ end
 
 local function decorateSelectionFrame()
 	local character = TRP3_GetCharacter(currentSelection);
-	local unitRealm, unitName = Utils.str.unitIDToInfo(currentSelection);
+	local unitName, unitRealm = Utils.str.unitIDToInfo(currentSelection);
 	
 	if TRP3_HasProfile(currentSelection) then
 		local profile = TRP3_GetUnitProfile(currentSelection);

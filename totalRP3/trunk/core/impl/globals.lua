@@ -4,6 +4,7 @@
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
+local fullName, realm = UnitFullName("player");
 
 -- Public accessor
 TRP3_GLOBALS = {
@@ -18,12 +19,15 @@ TRP3_GLOBALS = {
 	
 	player = UnitName("player"),
 	player_realm = GetRealmName(),
-	player_id = GetRealmName()..'|'..UnitName("player"),
+	player_realm_id = realm;
+	player_id = fullName .. "-" .. realm,
 	player_race_loc = race_loc,
-	player_race = race,
 	player_class_loc = class_loc,
-	player_class = class,
 	player_class_index = class_index,
+	player_character = {
+		race = race,
+		class = class
+	},
 	
 	clients = {
 		TRP3 = "trp3",

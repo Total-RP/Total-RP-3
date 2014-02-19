@@ -9,8 +9,10 @@ local Utils = TRP3_UTILS;
 local getUnitID = Utils.str.unitInfoToID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
+local log = Utils.log.log;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
+local wipe = wipe;
 
 -- Saved variables references
 local profiles;
@@ -73,8 +75,7 @@ local function isUnitKnown(unitName)
 	return isUnitIDKnown(getUnitID(unitName));
 end
 
-function TRP3_IsPlayerIgnored(unitName)
-	local unitID = getUnitID(unitName);
+function TRP3_IsPlayerIgnored(unitID)
 	return characters[unitID] and characters[unitID].ignored == true;
 end
 
@@ -87,20 +88,19 @@ end
 -- SETTERS
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetCurrentProfile(unitName, currentProfileID)
-	local unitID = getUnitID(unitName);
+function TRP3_RegisterSetCurrentProfile(unitID, currentProfileID)
 	local character = getCharacter(unitID);
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	if oldProfileID ~= currentProfileID then
-		TRP3_ShouldRefreshTooltip(unitName);
+		TRP3_ShouldRefreshTooltip(unitID);
 	end
 	getProfile(unitID, true); -- Already create the profile if missing
 end
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetClient(unitName, client, clientVersion)
-	local character = getCharacter(getUnitID(unitName));
+function TRP3_RegisterSetClient(unitID, client, clientVersion)
+	local character = getCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
 end
@@ -117,9 +117,8 @@ function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, 
 	character.guild = guild;
 end
 
---- Raises error if unknown unitName or unit hasn't profile ID
-function TRP3_RegisterSetInforType(unitName, informationType, data)
-	local unitID = getUnitID(unitName);
+--- Raises error if unknown unitID or unit hasn't profile ID
+function TRP3_RegisterSetInforType(unitID, informationType, data)
 	local profile = getProfile(unitID, true);
 	if profile[informationType] then
 		wipe(profile[informationType]);
@@ -127,9 +126,8 @@ function TRP3_RegisterSetInforType(unitName, informationType, data)
 	profile[informationType] = data;
 end
 
---- Raises error if KNOWN unitName
-function TRP3_RegisterAddCharacter(unitName)
-	local unitID = getUnitID(unitName);
+--- Raises error if KNOWN unitID
+function TRP3_RegisterAddCharacter(unitID)
 	assert(not isUnitIDKnown(unitID), "Already known character: " .. tostring(unitID));
 	characters[unitID] = {};
 	log("Added to the register: " .. unitID);
@@ -146,9 +144,8 @@ function TRP3_RegisterGetCurrentProfile(unitName, unitRealm)
 	end
 end
 
---- Raises error if unknown unitName or unit hasn't profile ID or no profile exists
-function TRP3_RegisterShouldUpdateInfo(unitName, infoType, version)
-	local unitID = getUnitID(unitName);
+--- Raises error if unknown unitID or unit hasn't profile ID or no profile exists
+function TRP3_RegisterShouldUpdateInfo(unitID, infoType, version)
 	local character = getCharacter(unitID);
 	local profile = getProfile(unitID);
 	return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
@@ -158,9 +155,10 @@ function TRP3_GetCharacterList()
 	return characters;
 end
 
+--- Raises error if unknown unitID
 function TRP3_GetCharacter(unitID)
 	if unitID == Globals.player_id then
-		return player_CHARACTER;
+		return Globals.player_character;
 	end
 	assert(characters[unitID], "Unknown character ID: " .. tostring(unitID));
 	return characters[unitID];

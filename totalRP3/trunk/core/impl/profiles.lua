@@ -148,9 +148,10 @@ local function decorateProfileList(widget, id)
 	
 	local listText = "";
 	local i = 0;
-	for character,profileID in pairs(profilesLinks) do
+	for characterID, profileID in pairs(profilesLinks) do
 		if profileID == id then
-			listText = listText.."- |cff00ff00"..character:sub((character:find("|"))+1).." ( "..character:sub(1,(character:find("|"))-1).." )|r\n";
+			local charactName, charactRealm = unitIDToInfo(characterID);
+			listText = listText.."- |cff00ff00"..charactName.." ( "..charactRealm.." )|r\n";
 			i = i + 1;
 		end
 	end

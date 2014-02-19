@@ -1,8 +1,32 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	
+	<Button name="TRP3_TargetFrameGlanceSlotTemplate" virtual="true">
+		<Size x="32" y="32" />
+		<Layers>
+			<Layer level="BORDER">
+				<Texture file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
+					<Size x="53" y="53" />
+					<Anchors>
+						<Anchor point="CENTER" x="11" y="-12" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<NormalTexture name="$parentImage" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
 
 	<!-- Target Frame -->
-	<Frame name="TRP3_TargetFrame" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="false" movable="true">
+	<Frame name="TRP3_TargetFrame" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="true" movable="true">
 		<TitleRegion setAllPoints="true" />
 		<Size x="100" y="100" />
 		<Anchors>
@@ -24,22 +48,49 @@
 				<Anchors>
 					<Anchor point="CENTER" x="0" y="0" />
 				</Anchors>
-				<Layers>
-					<Layer level="ARTWORK">
-						<Texture file="Interface\DialogFrame\UI-DialogBox-Gold-Dragon">
-							<Size x="128" y="128" />
-							<Anchors>
-								<Anchor point="LEFT" x="-34" y="0" />
-							</Anchors>
-						</Texture>
-					</Layer>
-				</Layers>
 				<Frames>
 					<PlayerModel  name="TRP3_TargetFramePortraitModel" scale="1">
-						<Size x="82" y="82"/>
+						<Size x="70" y="70"/>
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture file="Interface\DialogFrame\UI-DialogBox-Gold-Dragon">
+									<Size x="128" y="128" />
+									<Anchors>
+										<Anchor point="CENTER" x="-12" y="0" />
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button name="TRP3_TargetFrameGlanceSlot1" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+								<Anchors>
+									<Anchor point="CENTER" relativePoint="BOTTOM" x="-5" y="-10"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_TargetFrameGlanceSlot2" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+								<Anchors>
+									<Anchor point="CENTER" relativePoint="BOTTOMLEFT" x="-5" y="0"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_TargetFrameGlanceSlot3" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+								<Anchors>
+									<Anchor point="CENTER" relativePoint="LEFT" x="-15" y="0"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_TargetFrameGlanceSlot4" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+								<Anchors>
+									<Anchor point="CENTER" relativePoint="TOPLEFT" x="-5" y="0"/>
+								</Anchors>
+							</Button>
+							<Button name="TRP3_TargetFrameGlanceSlot5" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+								<Anchors>
+									<Anchor point="CENTER" relativePoint="TOP" x="-5" y="10"/>
+								</Anchors>
+							</Button>
+						</Frames>
 						<Scripts>
 							<OnUpdate>
 								

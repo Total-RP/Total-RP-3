@@ -128,12 +128,23 @@ Utils.str.id = function()
 	return ID;
 end
 
-Utils.str.unitInfoToID = function(unitName, unitRealm)
-    return strconcat((unitRealm or Globals.player_realm), '|', unitName or "_");
+Utils.str.unitInfoToID = function(unitName, unitRealmID)
+    return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
 end
 
 Utils.str.unitIDToInfo = function(unitID)
-    return unitID:sub(1, unitID:find('|') - 1),  unitID:sub(unitID:find('|') + 1);
+    return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
+end
+
+Utils.str.getFullName = function(unit)
+    local playerName, realm = UnitFullName(unit);
+    if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
+    	return nil;
+    end
+    if not realm then
+    	realm = Globals.player_realm_id;
+    end
+    return playerName .. "-" .. realm;
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.

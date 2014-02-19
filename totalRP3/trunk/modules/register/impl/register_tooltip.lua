@@ -356,8 +356,9 @@ local function onMouseOver()
 	show("mouseover");
 end
 
-function TRP3_ShouldRefreshTooltip(targetName)
-	if UnitName("mouseover") == targetName then
+function TRP3_ShouldRefreshTooltip(targetID)
+	local mouseID = Utils.str.getFullName("mouseover");
+	if mouseID == targetID then
 		onMouseOver();
 	end
 end

@@ -168,7 +168,7 @@ local function setConsultDisplay(context)
 	local dataTab = nil;
 	local character = TRP3_GetCharacter(context.unitID);
 	local race, class = nil;
-	local unitRealm, unitName = Utils.str.unitIDToInfo(context.unitID);
+	local unitName, unitRealm  = Utils.str.unitIDToInfo(context.unitID);
 	if context.unitID == Globals.player_id then
 		dataTab = get("player/characteristics");
 		race = Globals.player_race_loc;
