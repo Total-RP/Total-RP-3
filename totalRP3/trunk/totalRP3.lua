@@ -19,6 +19,7 @@ end
 -- Called upon PLAYER_LOGIN after all addons are loaded.
 function Globals.addon:OnEnable()
 	Log.log("OnEnable() START");
+	Globals.build(); -- Get info we can't have earlier
 	
 	TRP3_Flyway_Patches(); -- Adapt saved variables structures between versions
 	TRP3_ModuleManagement_Init();

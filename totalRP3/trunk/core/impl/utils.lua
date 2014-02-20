@@ -8,7 +8,7 @@ TRP3_UTILS = {
 	table = {},
 	str = {},
 	color = {},
-	lerp = {},
+	math = {},
 	serial = {},
 	event = {},
 	music = {},
@@ -51,9 +51,10 @@ Utils.print = function(...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DEBUG
+-- DEBUG / LOGGING
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- The log level defines the prefix color and serves as filter
 Log.level = {
 	DEBUG = "-|cff6666ffDEBUG|r] ",
 	INFO = "-|cff00ffffINFO|r] ",
@@ -61,11 +62,13 @@ Log.level = {
 	SEVERE = "-|cffff0000SEVERE|r] "
 }
 
+-- Print a log message to the chatFrame.
 local function log(message, level)
+	if not level then level = Log.level.INFO; end
 	if not showLog or (level == Log.level.DEBUG and not isDebug) then
 		return;
 	end
-	Utils.print( "[TRP3"..(level or Log.level.INFO)..tostring(message));
+	Utils.print( "[TRP3".. level ..tostring(message));
 end
 Log.log = log;
 
@@ -73,6 +76,8 @@ Log.log = log;
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Print all the level 1 element of the table (not recursive dump)
+-- Debug purpose
 Utils.table.dumpTable = function(tab)
 	log("Dump tab "..tostring(tab), Log.level.DEBUG);
 	if tab then
@@ -100,6 +105,8 @@ local function tableCopy(destination, source)
 end
 Utils.table.copy = tableCopy;
 
+-- Return the table size.
+-- Less effective than #table but works for hash table as well (#hashtable don't).
 Utils.table.size = function(table)
     local count = 0;
     for _,_ in pairs(table) do
@@ -135,14 +142,19 @@ Utils.str.id = function()
 	return ID;
 end
 
+-- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
+-- This method ALWAYS return a nil free UnitName-RealmShortName string.
 Utils.str.unitInfoToID = function(unitName, unitRealmID)
     return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
 end
 
+-- Separates the unit name and realm from an unit ID
 Utils.str.unitIDToInfo = function(unitID)
     return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
 end
 
+-- Create a unit ID based on a targetType (target, player, mouseover ...)
+-- The returned id can be nil.
 Utils.str.getUnitID = function(unit)
     local playerName, realm = UnitFullName(unit);
     if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
@@ -217,8 +229,17 @@ Utils.color.colorCodeFloat = function(red, green, blue)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Linear interpolations
+-- Math
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function incrementNumber(version, figures)
+	local incremented = version + 1;
+	if incremented >= math.pow(10, figures) then
+		incremented = 1;
+	end
+	return incremented;
+end
+Utils.math.incrementNumber = incrementNumber;
 
 --- Return the interpolation.
 -- delta is a number between 0 and 1;
@@ -226,14 +247,14 @@ local function lerp(delta, from, to)
 	local diff = to - from;
 	return from + (delta * diff);
 end
-Utils.lerp.lerp = lerp;
+Utils.math.lerp = lerp;
 
-Utils.lerp.color = function(delta, fromR, fromG, fromB, toR, toG, toB)
+Utils.math.color = function(delta, fromR, fromG, fromB, toR, toG, toB)
 	return lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB);
 end
 
 --- Values must be 256 based
-Utils.lerp.colorCode = function(delta, fromR, fromG, fromB, toR, toG, toB)
+Utils.math.colorCode = function(delta, fromR, fromG, fromB, toR, toG, toB)
 	return colorCode(lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB));
 end
 

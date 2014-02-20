@@ -4,7 +4,6 @@
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
-local fullName, realm = UnitFullName("player");
 
 -- Public accessor
 TRP3_GLOBALS = {
@@ -20,8 +19,6 @@ TRP3_GLOBALS = {
 	
 	player = UnitName("player"),
 	player_realm = GetRealmName(),
-	player_realm_id = realm;
-	player_id = fullName .. "-" .. realm,
 	player_race_loc = race_loc,
 	player_class_loc = class_loc,
 	player_class_index = class_index,
@@ -41,6 +38,13 @@ TRP3_GLOBALS = {
 		profile_default = "INV_Misc_GroupLooking";
 	},
 };
+
+TRP3_GLOBALS.build = function()
+	local fullName, realm = UnitFullName("player");
+	assert(realm, "Cannot have realm name information !");
+	TRP3_GLOBALS.player_realm_id = realm;
+	TRP3_GLOBALS.player_id = fullName .. "-" .. realm;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Libs management

@@ -9,13 +9,21 @@ TRP3_REGISTER = {};
 -- functions
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
-local getUnitID = Utils.str.unitInfoToID;
+local unitID = Utils.str.unitInfoToID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local log = Utils.log.log;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
 local wipe = wipe;
+local strconcat = strconcat;
+local getUnitID = Utils.str.getUnitID;
+local UnitRace = UnitRace;
+local UnitClass = UnitClass;
+local UnitFactionGroup = UnitFactionGroup;
+local UnitSex = UnitSex;
+local time = time;
+local GetGuildInfo = GetGuildInfo;
 
 -- Saved variables references
 local profiles;
@@ -37,14 +45,6 @@ TRP3_GetDefaultProfile().player = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_IncrementVersion(version, figures)
-	local incremented = version + 1;
-	if incremented >= math.pow(10, figures) then
-		incremented = 1;
-	end
-	return incremented;
-end
 
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
@@ -111,8 +111,8 @@ function TRP3_RegisterSetClient(unitID, client, clientVersion)
 end
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, zone, guild)
-	local character = getCharacter(getUnitID(unitName));
+local function setMainInfo(unitID, race, class, gender, faction, time, zone, guild)
+	local character = getCharacter(unitID);
 	character.class = class;
 	character.race = race;
 	character.gender = gender;
@@ -121,6 +121,7 @@ function TRP3_RegisterSetMainInfo(unitName, race, class, gender, faction, time, 
 	character.zone = zone;
 	character.guild = guild;
 end
+TRP3_REGISTER.setMainInfo = setMainInfo;
 
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_RegisterSetInforType(unitID, informationType, data)
@@ -196,12 +197,12 @@ local function buildZoneText()
 end
 
 local function onMouseOver(...)
-	local unitName, unitRealm = UnitName("mouseover");
-	if unitName and not unitRealm and isUnitKnown(unitName) then
+	local unitID, unitRealm = getUnitID("mouseover");
+	if unitID and isUnitIDKnown(unitID) then
 		local _, race = UnitRace("mouseover");
 		local _, class, _ = UnitClass("mouseover");
 		local englishFaction = UnitFactionGroup("mouseover");
-		TRP3_RegisterSetMainInfo(unitName, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText(), GetGuildInfo("mouseover"));
+		setMainInfo(unitID, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText(), GetGuildInfo("mouseover"));
 	end
 end
 

@@ -561,7 +561,7 @@ local function saveCharacteristics()
 	tcopy(dataTab, draftData);
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
+	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	
 	compressData();
 end

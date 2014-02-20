@@ -117,7 +117,7 @@ local function applyPeek()
 	peekTab.TX = stEtN(TRP3_RegisterPeekEdit_Glance_TextScrollText:GetText());
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-	dataTab.v = TRP3_IncrementVersion(dataTab.v, 2);
+	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	-- Refresh display
 	TRP3_HidePopups();
 	TRP3_onPlayerPeekShow();
