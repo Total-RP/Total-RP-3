@@ -17,6 +17,7 @@ local _G = _G;
 local tostring = tostring;
 local getUnitID = Utils.str.getUnitID;
 local setTooltipForSameFrame = TRP3_UI_UTILS.setTooltipForSameFrame;
+local get = TRP3_PROFILE.getData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Business logic
@@ -29,7 +30,9 @@ local function onTargetChanged(...)
 		ui_TargetFrameModel:SetUnit("target");
 		ui_TargetFrameModel:SetCamera(0);
 		local peekTab = EMPTY;
-		if isUnitIDKnown(unitID) then
+		if unitID == Globals.player_id then
+			peekTab = get("player/misc").PE or EMPTY;
+		elseif isUnitIDKnown(unitID) then
 			peekTab = getMiscData(unitID).PE or EMPTY;
 		end
 		for i=1,5,1 do

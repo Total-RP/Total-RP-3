@@ -9,9 +9,11 @@ local Utils = TRP3_UTILS;
 local Comm = TRP3_COMM;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
-local get = TRP3_Profile_DataGetter;
+local get = TRP3_PROFILE.getData;
 local tcopy = Utils.table.copy;
 local loc = TRP3_L;
+local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
+local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -21,7 +23,7 @@ local PSYCHO_PRESETS_DROPDOWN;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---TRP3_GetDefaultProfile().player.characteristics = {
+--getDefaultProfile().player.characteristics = {
 --	v = 1,
 --	RA = Globals.player_race_loc,
 --	CL = Globals.player_class_loc,
@@ -30,7 +32,7 @@ local PSYCHO_PRESETS_DROPDOWN;
 --};
 
 -- Mock
-TRP3_GetDefaultProfile().player.characteristics = {
+getDefaultProfile().player.characteristics = {
 	v = 1,
 	FN = "Telkos le fou",
 	LN = "Arkale",
@@ -365,7 +367,7 @@ end
 local function onMiscDelete(self)
 	assert(self and self:GetParent(), "Badly initialiazed remove button, reference");
 	local frame = self:GetParent();
-	assert(frame.miscIndex and draftData.misc[frame.miIndex], "Badly initialiazed remove button, index");
+	assert(frame.miscIndex and draftData.MI[frame.miscIndex], "Badly initialiazed remove button, index");
 	saveInDraft();
 	wipe(draftData.MI[frame.miscIndex]);
 	tremove(draftData.MI, frame.miscIndex);
@@ -451,13 +453,13 @@ setEditDisplay = function()
 			tinsert(psychoEditCharFrame, frame);
 		end
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
-			TRP3_OpenIconBrowser(function(icon)
+			openIconBrowser(function(icon)
 				psychoStructure.LI = icon;
 				TRP3_InitIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self) 
-			TRP3_OpenIconBrowser(function(icon)
+			openIconBrowser(function(icon)
 				psychoStructure.RI = icon;
 				TRP3_InitIconButton(self, icon or Globals.icons.default);
 			end);
@@ -527,7 +529,7 @@ setEditDisplay = function()
 			tinsert(miscEditCharFrame, frame);
 		end
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function() 
-			TRP3_OpenIconBrowser(function(icon)
+			openIconBrowser(function(icon)
 				miscStructure.IC = icon;
 				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
 			end);
@@ -731,7 +733,7 @@ function TRP3_Register_CharInit()
 	
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onPlayerIconSelected) end );
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() openIconBrowser(onPlayerIconSelected) end );
 	
 	TRP3_SetupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	

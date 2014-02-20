@@ -6,7 +6,7 @@
 -- TRP3 API
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
-local get = TRP3_Profile_DataGetter;
+local get = TRP3_PROFILE.getData;
 local Comm = TRP3_COMM;
 local log = Utils.log.log;
 -- WoW API

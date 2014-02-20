@@ -8,7 +8,7 @@ local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
-local get = TRP3_Profile_DataGetter;
+local get = TRP3_PROFILE.getData;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

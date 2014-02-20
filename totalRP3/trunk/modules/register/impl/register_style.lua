@@ -7,16 +7,17 @@
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
-local get = TRP3_Profile_DataGetter;
+local get = TRP3_PROFILE.getData;
 local loc = TRP3_L;
 local tcopy = Utils.table.copy;
 local assert = assert;
+local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_GetDefaultProfile().player.style = {
+getDefaultProfile().player.style = {
 	v = 1,
 	VA = {},
 }

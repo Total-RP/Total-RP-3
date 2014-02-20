@@ -3,32 +3,38 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
 	
 	<!-- Please note that the loading order matters a lot -->
+	
 	<Script file="impl\globals.lua"/>
 	<Script file="impl\locale.lua"/>
 	<Script file="impl\utils.lua"/>
 	<Script file="impl\widgets.lua"/>
+	
+	<Include file="ui\configuration.xml"/>
 	<Script file="impl\configuration.lua"/>
+	
 	<Script file="impl\communication_protocol.lua"/>
-	<Script file="impl\popup.lua"/>
-	<Script file="impl\ui_tools.lua"/>
-	<Script file="impl\main_structure.lua"/>
-	<Script file="impl\toolbar.lua"/>
-	<Script file="impl\ui_main.lua"/>
-	<Script file="impl\profiles.lua"/>
 	
 	<Include file="ui\widgets.xml"/>
-	<Include file="ui\toolbar.xml"/>
 	
-	<Include file="ui\target_frame.xml"/>
-	<Script file="impl\target_frame.lua"/>
-	
-	<Include file="ui\profiles.xml"/>
 	<Include file="ui\main.xml"/>
-	<Include file="ui\configuration.xml"/>
+	<Script file="impl\ui_main.lua"/>
 	
 	<Include file="ui\browsers\icons.xml"/>
 	<Include file="ui\browsers\musics.xml"/>
 	<Include file="ui\browsers\colors.xml"/>
 	<Include file="ui\browsers\images.xml"/>
+	<Script file="impl\popup.lua"/>
 	
+	<Script file="impl\ui_tools.lua"/>
+	<Script file="impl\main_structure.lua"/>
+	
+	<Include file="ui\toolbar.xml"/>
+	<Script file="impl\toolbar.lua"/>
+	
+	<Include file="ui\profiles.xml"/>
+	<Script file="impl\profiles.lua"/>
+	
+	<Include file="ui\target_frame.xml"/>
+	<Script file="impl\target_frame.lua"/>
+
 </Ui>

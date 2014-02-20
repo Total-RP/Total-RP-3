@@ -8,18 +8,20 @@ local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Comm = TRP3_COMM;
 local stEtN = Utils.str.emptyToNil;
-local get = TRP3_Profile_DataGetter;
-local safeGet = TRP3_Profile_NilSafeDataAccess;
+local get = TRP3_PROFILE.getData;
+local safeGet = TRP3_PROFILE.getDataDefault;
 local loc = TRP3_L;
 local stNtE = Utils.str.nilToEmpty;
 local tcopy = Utils.table.copy;
 local numberToHexa = Utils.color.numberToHexa;
+local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
+local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---TRP3_GetDefaultProfile().player.about = {
+--getDefaultProfile().player.about = {
 --	v = 1,
 --	TE = 1,
 --	T1 = {
@@ -34,7 +36,7 @@ local numberToHexa = Utils.color.numberToHexa;
 --}
 
 -- Mock
-TRP3_GetDefaultProfile().player.about = {
+getDefaultProfile().player.about = {
 	v = 1,
 	TE = 1,
 	BK = 1,
@@ -346,7 +348,7 @@ refreshTemplate2EditDisplay = function()
 		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.TX or "");
 		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.IC or Globals.icons.default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
-			TRP3_OpenIconBrowser(function(icon)
+			openIconBrowser(function(icon)
 				frame.frameData.IC = icon;
 				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon);
 			end);
@@ -766,9 +768,9 @@ function TRP3_Register_AboutInit()
 	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 120, true);
 	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 120, true);
 	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 120, true);
-	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onPhisIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onPsychoIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onHistoIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() openIconBrowser(onPhisIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() openIconBrowser(onPsychoIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() openIconBrowser(onHistoIconSelected) end );
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	
@@ -785,7 +787,7 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_H2:SetScript("OnClick", onContainerTagClicked);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_H3:SetScript("OnClick", onContainerTagClicked);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_P:SetScript("OnClick", onContainerPTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetScript("OnClick", function() TRP3_OpenIconBrowser(onIconTagSelected) end);
+	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetScript("OnClick", function() openIconBrowser(onIconTagSelected) end);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Color:SetScript("OnClick", function() TRP3_OpenColorBrowser(onColorTagSelected) end);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetScript("OnClick", function() TRP3_OpenImageBrowser(onImageTagSelected) end);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Link:SetScript("OnClick", onLinkTagClicked);

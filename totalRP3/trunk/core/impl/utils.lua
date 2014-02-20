@@ -13,6 +13,7 @@ TRP3_UTILS = {
 	event = {},
 	music = {},
 	texture = {},
+	message = {},
 };
 -- TRP3 API
 local Globals = TRP3_GLOBALS;
@@ -71,6 +72,42 @@ local function log(message, level)
 	Utils.print( "[TRP3".. level ..tostring(message));
 end
 Log.log = log;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Messaging
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local MESSAGE_PREFIX = "[|cffffaa00TRP3|r] ";
+
+local function getChatFrame()
+	return DEFAULT_CHAT_FRAME;
+end
+
+-- CHAT_FRAME : ChatFrame (given by chatFrameIndex or default if nil)
+-- ALERT_POPUP : TRP3 alert popup
+-- RAID_ALERT : On screen alert (Raid notice frame)
+Utils.message.type = {
+	CHAT_FRAME = 1,
+	ALERT_POPUP = 2,
+	RAID_ALERT = 3
+};
+local messageType = Utils.message.type;
+
+-- Display a simple message. Nil free.
+Utils.message.displayMessage = function(message, messageType, noPrefix, chatFrameIndex)
+	if not messageType or messageType == messageType.CHAT_FRAME then
+		local chatFrame = _G["ChatFrame"..tostring(chatFrameIndex)] or getChatFrame();
+		if noPrefix then
+			chatFrame:AddMessage(tostring(message), 1, 1, 1);
+		else
+			chatFrame:AddMessage(MESSAGE_PREFIX..tostring(message), 1, 1, 1);
+		end
+	elseif messageType == messageType.ALERT_POPUP then
+		TRP3_ShowAlertPopup(tostring(message));
+	elseif messageType == messageType.RAID_ALERT then
+		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Table utils
@@ -476,7 +513,7 @@ end
 Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTexture)
 	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
 	if not ok then
-		Log.log("Fail to round texture: " .. errorMess, Log.level.DEBUG);
+		Log.log("Fail to round texture: " .. tostring(errorMess), Log.level.DEBUG);
 		SetPortraitToTexture(textureFrame, failTexture);
 	end
 end

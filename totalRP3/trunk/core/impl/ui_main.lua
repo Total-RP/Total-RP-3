@@ -3,29 +3,32 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Messaging
+-- Minimap button widget
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local MESSAGE_PREFIX = "[|cffffaa00TRP3|r] ";
+local getConfigValue = TRP3_GetConfigValue;
+local TRP3_MinimapButton = TRP3_MinimapButton;
 
-local function getChatFrame()
-	return DEFAULT_CHAT_FRAME;
+-- Refresh the minimap icon position
+local function placeMinimapIcon()
+	local minimap = _G[getConfigValue("MiniMapToUse")];
+	if minimap then
+		local x = sin(getConfigValue("MiniMapIconDegree"))*getConfigValue("MiniMapIconPosition");
+		local y = cos(getConfigValue("MiniMapIconDegree"))*getConfigValue("MiniMapIconPosition");
+		TRP3_MinimapButton:SetParent(minimap);
+		TRP3_MinimapButton:SetPoint("CENTER", minimap, "CENTER", x, y);
+	end
 end
 
--- MessageType 1 : ChatFrame (given by chatFrameIndex or default if nil)
--- MessageType 2 : Alert popup
--- MessageType 3 : On screen alert (Raid notice frame)
-function TRP3_DisplayMessage(message, chatFrameIndex, noPrefix, messageType)
-	if not messageType or messageType == 1 then
-		chatFrame = _G["ChatFrame"..tostring(chatFrameIndex)] or getChatFrame();
-		if noPrefix then
-			chatFrame:AddMessage(message,1,1,1);
+-- Init the minimap icon button.
+function TRP3_InitMinimapButton()
+	placeMinimapIcon();
+	TRP3_MinimapButton:RegisterForClicks("LeftButtonUp","RightButtonUp");
+	TRP3_MinimapButton:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			TRP3_SwitchToolbar();
 		else
-			chatFrame:AddMessage(MESSAGE_PREFIX..message,1,1,1);
+			TRP3_SwitchMainFrame();
 		end
-	elseif messageType == 2 then
-		TRP3_ShowAlertPopup(message);
-	elseif messageType == 3 then
-		RaidNotice_AddMessage(RaidWarningFrame, message, ChatTypeInfo["RAID_WARNING"]);
-	end
+	end);
 end

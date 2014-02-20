@@ -9,15 +9,17 @@ local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
 local color = Utils.str.color;
 local loc = TRP3_L;
-local get = TRP3_Profile_DataGetter;
+local get = TRP3_PROFILE.getData;
 local tcopy = Utils.table.copy;
 local assert = assert;
+local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
+local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_GetDefaultProfile().player.misc = {
+getDefaultProfile().player.misc = {
 	v = 1,
 	PE = {},
 }
@@ -82,6 +84,10 @@ local function onIconSelected(icon)
 	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
 end
 
+local function onIconClosed()
+	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
+end
+
 local function onSlotClick(button)
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
@@ -95,10 +101,6 @@ local function onSlotClick(button)
 		onIconSelected(draftData.IC);
 		TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
 	end
-end
-
-local function openIconBrowser()
-	TRP3_OpenIconBrowser(onIconSelected);
 end
 
 local function applyPeek()
@@ -152,7 +154,7 @@ function TRP3_Register_PeekInit()
 	TRP3_RegisterPeekEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
 	
-	TRP3_RegisterPeekEdit_Glance_Icon:SetScript("OnClick", openIconBrowser);
+	TRP3_RegisterPeekEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
 	TRP3_RegisterPeekEdit_Glance_Apply:SetScript("OnClick", applyPeek);
 	for index=1,5,1 do
 		-- DISPLAY

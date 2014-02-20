@@ -2,6 +2,9 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Public accessor
+TRP3_POPUPS = {};
+
 local Utils = TRP3_UTILS;
 local loc = TRP3_L;
 
@@ -203,7 +206,7 @@ local function filteredMusicBrowser()
 	);
 end
 
-function TRP3_UI_InitMusicBrowser()
+local function initMusicBrowser()
 	TRP3_HandleMouseWheel(TRP3_MusicBrowserContent, TRP3_MusicBrowserContentSlider);
 	TRP3_MusicBrowserContentSlider:SetValue(0);
 	-- Create lines
@@ -235,6 +238,7 @@ end
 
 local iconWidgetTab = {};
 local filteredIconList = {};
+local ui_IconBrowserContent = TRP3_IconBrowserContent;
 
 local function decorateIcon(icon, index)
 	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
@@ -245,8 +249,15 @@ end
 
 local function onIconClick(icon)
 	TRP3_HidePopups();
-	if TRP3_IconBrowserContent.callback then
-		TRP3_IconBrowserContent.callback(filteredIconList[icon.index], icon);
+	if ui_IconBrowserContent.onSelectCallback then
+		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index], icon);
+	end
+end
+
+local function onIconClose()
+	TRP3_HidePopups();
+	if ui_IconBrowserContent.onCancelCallback then
+		ui_IconBrowserContent.onCancelCallback();
 	end
 end
 
@@ -264,35 +275,38 @@ local function filteredIconBrowser()
 	);
 end
 
-function TRP3_UI_InitIconBrowser()
-	TRP3_HandleMouseWheel(TRP3_IconBrowserContent, TRP3_IconBrowserContentSlider);
+local function initIconBrowser()
+	TRP3_HandleMouseWheel(ui_IconBrowserContent, TRP3_IconBrowserContentSlider);
 	TRP3_IconBrowserContentSlider:SetValue(0);
 	-- Create icons
 	local row, column;
 	
 	for row = 0, 5 do
 		for column = 0, 7 do
-			local button = CreateFrame("Button", "TRP3_IconBrowserButton_"..row.."_"..column, TRP3_IconBrowserContent, "TRP3_IconBrowserButton");
+			local button = CreateFrame("Button", "TRP3_IconBrowserButton_"..row.."_"..column, ui_IconBrowserContent, "TRP3_IconBrowserButton");
 			button:ClearAllPoints();
-			button:SetPoint("TOPLEFT", TRP3_IconBrowserContent, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
+			button:SetPoint("TOPLEFT", ui_IconBrowserContent, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
 			button:SetScript("OnClick", onIconClick);
 			tinsert(iconWidgetTab, button);
 		end
 	end
 	
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
+	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
 	
 	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
 	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	filteredIconBrowser();
 end
 
-function TRP3_OpenIconBrowser(callback)
-	TRP3_IconBrowserContent.callback = callback;
+local function openIconBrowser(onSelectCallback, onCancelCallback)
+	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
+	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
 	TRP3_ShowPopup(TRP3_IconBrowser);
 	TRP3_IconBrowserFilterBox:SetFocus();
 end
+TRP3_POPUPS.openIconBrowser = openIconBrowser;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Color browser
@@ -306,7 +320,7 @@ local function onColorSliderChanged()
 	TRP3_ColorBrowserViewText:SetTextColor(red, green, blue);
 end
 
-function TRP3_UI_InitColorBrowser()
+local function initColorBrowser()
 	TRP3_ColorBrowserViewText:SetText(loc("UI_COLOR_BROWSER_PREVIEW"));
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
@@ -344,7 +358,7 @@ function TRP3_OpenColorBrowser(callback)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Color browser
+-- Image browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local imageWidgetTab = {};
@@ -388,7 +402,7 @@ local function filteredImageBrowser()
 	);
 end
 
-function TRP3_UI_InitImageBrowser()
+local function initImageBrowser()
 	TRP3_HandleMouseWheel(TRP3_ImageBrowserContent, TRP3_ImageBrowserContentSlider);
 	TRP3_ImageBrowserContentSlider:SetValue(0);
 	TRP3_ImageBrowserFilterBox:SetScript("OnTextChanged", filteredImageBrowser);
@@ -412,8 +426,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_UI_InitPopups()
-	TRP3_UI_InitIconBrowser();
-	TRP3_UI_InitMusicBrowser();
-	TRP3_UI_InitColorBrowser();
-	TRP3_UI_InitImageBrowser();
+	initIconBrowser();
+	initMusicBrowser();
+	initColorBrowser();
+	initImageBrowser();
 end

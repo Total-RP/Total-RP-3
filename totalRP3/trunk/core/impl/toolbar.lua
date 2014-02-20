@@ -215,30 +215,3 @@ function TRP3_ToolbarAddButton(buttonStructure)
 	buttonStructures[buttonStructure.id] = buttonStructure;
 	buildToolbar();
 end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Minimap button widget
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Init the minimap icon button. Shouldn't be called manually
-function TRP3_InitMinimapButton(frame)
-	frame:RegisterForClicks("LeftButtonUp","RightButtonUp");
-	frame:SetScript("OnClick", function(self, button)
-		if button == "RightButton" then
-			TRP3_SwitchToolbar();
-		else
-			TRP3_SwitchMainFrame();
-		end
-	end);
-end
-
--- Refresh the minimap icon position
-function TRP3_UI_PlaceMinimapIcon()
-	local minimap = _G[TRP3_GetConfigValue("MiniMapToUse")];
-	if minimap then
-		local x = sin(TRP3_GetConfigValue("MiniMapIconDegree"))*TRP3_GetConfigValue("MiniMapIconPosition");
-		local y = cos(TRP3_GetConfigValue("MiniMapIconDegree"))*TRP3_GetConfigValue("MiniMapIconPosition");
-		TRP3_MinimapButton:SetParent(minimap);
-		TRP3_MinimapButton:SetPoint("CENTER", minimap, "CENTER", x, y);
-	end
-end

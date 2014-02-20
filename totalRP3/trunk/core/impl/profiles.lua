@@ -2,10 +2,19 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Public accessor
+TRP3_PROFILE = {};
+
 -- functions
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local loc = TRP3_L;
+local unitIDToInfo = Utils.str.unitIDToInfo;
+local strsplit = strsplit;
+local pairs = pairs;
+local type = type;
+local assert = assert;
+local displayMessage = Utils.message.displayMessage;
 
 -- Saved variables references
 local profiles, profilesLinks;
@@ -16,15 +25,16 @@ local currentProfileId = nil;
 local PR_DEFAULT_PROFILE = {};
 local SELECT_CALLBACKS = {};
 
-function TRP3_GetDefaultProfile()
+-- Return the default profile.
+-- Note that this profile is never directly linked to a character, only dupplicated !
+TRP3_PROFILE.getDefaultProfile = function()
 	return PR_DEFAULT_PROFILE;
 end
 
-function TRP3_Profile_NilSafeDataAccess(fieldPath, ifNilValue)
-	return TRP3_Profile_DataGetter(fieldPath) or ifNilValue;
-end
-
-function TRP3_Profile_DataGetter(fieldPath, profileRef)
+-- Get data from a profile in a XPATH way.
+-- Example : "player/misc/PE" is equivalent to currentProfile.player.misc.PE but in a nil safe way.
+-- Use currentProfile if profileRef is nil
+local function getData(fieldPath, profileRef)
 	assert(fieldPath, "Error: Fieldpath is nil.");
 	local split = {strsplit(PATH_DELIMITER, fieldPath)};
 	local pathPart = #split;
@@ -39,6 +49,15 @@ function TRP3_Profile_DataGetter(fieldPath, profileRef)
 		end
 	end
 end
+TRP3_PROFILE.getData = getData;
+
+-- Get data from a profile in a XPATH way.
+-- Example : "player/misc/PE" is equivalent to currentProfile.player.misc.PE but in a nil safe way.
+-- Use currentProfile. If value is nil, return the ifNilValue.
+local function getDataDefault(fieldPath, ifNilValue)
+	return getData(fieldPath) or ifNilValue;
+end
+TRP3_PROFILE.getDataDefault = getDataDefault;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -64,7 +83,7 @@ local function dupplicateProfile(duplicatedProfile, profileName)
 	profiles[profileID] = {};
 	Utils.table.copy(profiles[profileID], duplicatedProfile);
 	profiles[profileID].profileName = profileName;
-	TRP3_DisplayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
+	displayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
 
@@ -106,7 +125,7 @@ local function deleteProfile(profileID)
 	local profileName = profiles[profileID]["profileName"];
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
-	TRP3_DisplayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
+	displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
 end
 
 function TRP3_GetProfileID()
@@ -119,7 +138,7 @@ end
 
 -- This method has to handle everything when the player switch to another profile
 function TRP3_LoadProfile()
-	TRP3_DisplayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[profilesLinks[Globals.player_id]]["profileName"].."|r"));
+	displayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[profilesLinks[Globals.player_id]]["profileName"].."|r"));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -129,7 +148,7 @@ end
 local function decorateProfileList(widget, id)
 	widget.profileID = id;
 	local profile = profiles[id];
-	local dataTab = TRP3_Profile_DataGetter("player/characteristics", profile);
+	local dataTab = getData("player/characteristics", profile);
 	local mainText = profile.profileName;
 	
 	if id == currentProfileId then

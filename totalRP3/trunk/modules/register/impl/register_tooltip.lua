@@ -11,6 +11,7 @@ local loc = TRP3_L;
 local getCurrentProfile = TRP3_REGISTER.getCurrentProfile;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getUnitID = Utils.str.getUnitID;
+local get = TRP3_PROFILE.getData;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -127,7 +128,7 @@ end
 -- The returned table is not nil, but could be empty.
 local function getCharacterInfoTab(unitID)
 	if unitID == Globals.player_id then
-		return TRP3_Profile_DataGetter("player");
+		return get("player");
 	elseif TRP3_IsUnitIDKnown(unitID) then
 		return getCurrentProfile(unitID) or {};
 	end

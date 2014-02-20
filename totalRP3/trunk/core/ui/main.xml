@@ -206,4 +206,30 @@
 			</Button>
 		</Frames>
 	</Frame>
+	
+	<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="LOW">
+		<Size x="32" y="32" />
+		<Layers>
+			<Layer level="BORDER">
+				<Texture name="TRP3_MinimapButtonIcon" file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
+					<Size x="53" y="53" />
+					<Anchors>
+						<Anchor point="CENTER" x="11" y="-12" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<NormalTexture name="TRP3_MinimapButtonNormal"
+			file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"
+			alphaMode="ADD" />
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
 </Ui>

@@ -24,6 +24,7 @@ local UnitFactionGroup = UnitFactionGroup;
 local UnitSex = UnitSex;
 local time = time;
 local GetGuildInfo = GetGuildInfo;
+local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 
 -- Saved variables references
 local profiles;
@@ -40,7 +41,7 @@ TRP3_RegisterInfoTypes = {
 	MISC = "misc"
 }
 
-TRP3_GetDefaultProfile().player = {};
+getDefaultProfile().player = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools

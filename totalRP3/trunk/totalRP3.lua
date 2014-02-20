@@ -33,7 +33,7 @@ function Globals.addon:OnEnable()
 	TRP3_InitRegister();
 	
 	-- Inits UI
-	TRP3_UI_PlaceMinimapIcon();
+	TRP3_InitMinimapButton();
 	TRP3_UI_InitToolbar();
 	TRP3_TARGET_FRAME.init();
 	TRP3_UI_InitMainPage();
