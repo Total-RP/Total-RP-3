@@ -16,6 +16,7 @@ local tcopy = Utils.table.copy;
 local numberToHexa = Utils.color.numberToHexa;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local unitIDToInfo = Utils.str.unitIDToInfo;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -443,6 +444,11 @@ end
 -- VOTE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local VOTE_MESSAGE_PREFIX = "ABVT";
+local VOTE_MESSAGE_PRIORITY = "ALERT";
+local VOTE_MESSAGE_R_PREFIX = "ABVR";
+local VOTE_MESSAGE_R_PRIORITY = "ALERT";
+
 local function refreshVoteDisplay(aboutTab)
 	if aboutTab.vote == 1 then
 		TRP3_RegisterAbout_AboutPanel_ThumbUp:LockHighlight();
@@ -460,28 +466,31 @@ local function refreshVoteDisplay(aboutTab)
 	end
 end
 
-local function voteUp()
+local function sendVote(voteValue)
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
-		if TRP3_GetUnitProfile(context.unitID).about.vote == 1 then
-			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
-		else
-			TRP3_GetUnitProfile(context.unitID).about.vote = 1;
+	if context.unitID and context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
+		if voteValue == TRP3_GetUnitProfile(context.unitID).about.vote then
+			voteValue = 0; -- Unvoting
 		end
-		refreshVoteDisplay(TRP3_GetUnitProfile(context.unitID).about);
+		Comm.sendObject(VOTE_MESSAGE_PREFIX, voteValue, context.unitID, VOTE_MESSAGE_PRIORITY);
+		local playerName = unitIDToInfo(context.unitID);
+		Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_SENDING"):format(playerName));
 	end
 end
 
-local function voteDown()
+-- Someone vote for your description
+local function vote(sender, value)
+	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
+end
+
+-- Your vote has been registered
+local function voteResponse(sender, value)
+	local value = tonumber(value);
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
 	if context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
-		if TRP3_GetUnitProfile(context.unitID).about.vote == -1 then
-			TRP3_GetUnitProfile(context.unitID).about.vote = nil;
-		else
-			TRP3_GetUnitProfile(context.unitID).about.vote = -1;
-		end
+		TRP3_GetUnitProfile(context.unitID).about.vote = value;
 		refreshVoteDisplay(TRP3_GetUnitProfile(context.unitID).about);
 	end
 end
@@ -759,6 +768,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_Register_AboutInit()
+
+	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
+	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
 	
 	-- UI
 	TRP3_CreateRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
@@ -825,10 +837,10 @@ function TRP3_Register_AboutInit()
 
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT"));
-	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", voteUp);
-	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", voteDown);
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
+	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
+	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() sendVote(1) end);
+	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() sendVote(-1) end);
 	
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);

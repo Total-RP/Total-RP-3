@@ -9,6 +9,7 @@ assert(globals, "Unable to find TRP3.");
 
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
+local Comm = TRP3_COMM;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
@@ -32,6 +33,10 @@ end
 
 local function onLoaded()
 	Log.log("onLoaded test module");
+	
+	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", function()
+		
+	end);
 	
 --	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
 --		if UnitIsPlayer("mouseover") then

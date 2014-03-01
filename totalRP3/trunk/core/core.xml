@@ -13,6 +13,7 @@
 	<Script file="impl\configuration.lua"/>
 	
 	<Script file="impl\communication_protocol.lua"/>
+	<Script file="impl\communication_protocol_broadcast.lua"/>
 	
 	<Include file="ui\widgets.xml"/>
 	

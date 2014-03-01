@@ -29,6 +29,7 @@ function Globals.addon:OnEnable()
 	TRP3_InitConfiguration();
 	TRP3_InitLocalization(TRP3_GetConfigValue("Locale"));
 	Comm.init();
+	Comm.broadcast.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
 	

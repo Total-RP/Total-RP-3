@@ -115,7 +115,7 @@ end
 
 -- Print all the level 1 element of the table (not recursive dump)
 -- Debug purpose
-Utils.table.dumpTable = function(tab)
+Utils.table.dump = function(tab)
 	log("Dump tab "..tostring(tab), Log.level.DEBUG);
 	if tab then
 		local i = 0;
@@ -131,25 +131,25 @@ end
 -- Argument "destination" must be a non nil table reference.
 local function tableCopy(destination, source)
 	if destination == nil or source == nil then return end
-    for k,v in pairs(source) do
+	for k,v in pairs(source) do
 		if(type(v)=="table") then
 			destination[k] = {};
 			tableCopy(destination[k], v);
 		else
 			destination[k] = v;
 		end
-    end
+	end
 end
 Utils.table.copy = tableCopy;
 
 -- Return the table size.
 -- Less effective than #table but works for hash table as well (#hashtable don't).
 Utils.table.size = function(table)
-    local count = 0;
-    for _,_ in pairs(table) do
-        count = count + 1;
-    end
-    return count;
+	local count = 0;
+	for _,_ in pairs(table) do
+		count = count + 1;
+	end
+	return count;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -182,25 +182,28 @@ end
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.
 Utils.str.unitInfoToID = function(unitName, unitRealmID)
-    return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
+	return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
 end
 
 -- Separates the unit name and realm from an unit ID
 Utils.str.unitIDToInfo = function(unitID)
-    return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
+	if not unitID:find('-') then
+		return unitID, nil;
+	end
+	return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
 end
 
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
 Utils.str.getUnitID = function(unit)
-    local playerName, realm = UnitFullName(unit);
-    if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
-    	return nil;
-    end
-    if not realm then
-    	realm = Globals.player_realm_id;
-    end
-    return playerName .. "-" .. realm;
+	local playerName, realm = UnitFullName(unit);
+	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
+		return nil;
+	end
+	if not realm then
+		realm = Globals.player_realm_id;
+	end
+	return playerName .. "-" .. realm;
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
@@ -244,7 +247,7 @@ end
 --- Value must be 256 based
 local function numberToHexa(number)
 	local number = string.format('%x', number);
-	if number:len() == 1 then 
+	if number:len() == 1 then
 		number = '0' .. number;
 	end
 	return number;
@@ -308,14 +311,14 @@ local function convertTextTag(tag)
 	if directReplacements[tag] then -- Direct replacement
 		return directReplacements[tag];
 	elseif tag:match("^col%:%a$") then -- Color replacement
-		 return Utils.str.color(tag:match("^col%:(%a)$"));
+		return Utils.str.color(tag:match("^col%:(%a)$"));
 	elseif tag:match("^col:%x%x%x%x%x%x$") then -- Hexa color replacement
 		return "|cff"..tag:match("^col:(%x%x%x%x%x%x)$");
 	elseif tag:match("^icon%:[%w%s%_%-%d]+%:%d+$") then -- Icon
 		local icon, size = tag:match("^icon%:([%w%s%_%-%d]+)%:(%d+)$");
 		return Utils.str.icon(icon, size);
 	end
-	
+
 	return "{"..tag.."}";
 end
 
@@ -336,7 +339,7 @@ local structureTags = {
 	["{h(%d):c}"] = "<h%1 align=\"center\">",
 	["{h(%d):r}"] = "<h%1 align=\"right\">",
 	["{/h(%d)}"] = "</h%1>",
-	
+
 	["{p}"] = "<P>",
 	["{p:c}"] = "<P align=\"center\">",
 	["{p:r}"] = "<P align=\"right\">",
@@ -345,7 +348,7 @@ local structureTags = {
 
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text)
-	
+
 	-- 1) Replacement : & character
 	text = text:gsub("&", "&amp;");
 
@@ -358,11 +361,11 @@ Utils.str.toHTML = function(text)
 	for pattern, replacement in pairs(structureTags) do
 		text = text:gsub(pattern, replacement);
 	end
-	
+
 	local tab = {};
 	local i=1;
 	while text:find("<") and i<200 do
-	
+
 		local before;
 		before = text:sub(1, text:find("<") - 1);
 		if #before > 0 then
@@ -370,7 +373,7 @@ Utils.str.toHTML = function(text)
 		end
 
 		local tagText;
-		
+
 		local tag = text:match("</(.-)>");
 		if tag then
 			tagText = text:sub( text:find("<"), text:find("</") + #tag + 2);
@@ -385,12 +388,12 @@ Utils.str.toHTML = function(text)
 		local after;
 		after = text:sub(#before + #tagText + 1);
 		text = after;
-		
---		Log.log("Iteration "..i);
---		Log.log("before ("..(#before).."): "..before);
---		Log.log("tagText ("..(#tagText).."): "..tagText);
---		Log.log("after ("..(#before).."): "..after);
-		
+
+		--		Log.log("Iteration "..i);
+		--		Log.log("before ("..(#before).."): "..before);
+		--		Log.log("tagText ("..(#tagText).."): "..tagText);
+		--		Log.log("after ("..(#before).."): "..after);
+
 		i = i+1;
 		if i == 200 then
 			log("HTML overfloooow !", Log.level.SEVERE);
@@ -399,8 +402,8 @@ Utils.str.toHTML = function(text)
 	if #text > 0 then
 		tinsert(tab, text); -- Rest of the text
 	end
-	
---	log("Parts count "..(#tab));
+
+	--	log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
@@ -408,16 +411,16 @@ Utils.str.toHTML = function(text)
 			line = "<P>"..line.."</P>";
 		end
 		line = line:gsub("\n","<br/>");
-		
+
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
-			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
-		
+		"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+
 		line = line:gsub("{link||(.-)||(.-)}",
-			"<a href=\"%1\">|cff00ff00["..loc("CM_LINK").." : %2]|r</a>");
+		"<a href=\"%1\">|cff00ff00["..loc("CM_LINK").." : %2]|r</a>");
 
 		finalText = finalText..line;
 	end
-	
+
 	return "<HTML><BODY>"..convertTextTags(finalText).."</BODY></HTML>";
 end
 
