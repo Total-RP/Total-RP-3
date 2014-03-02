@@ -2,8 +2,16 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- public accessor
+TRP3_CONFIG = {};
+
+local pairs = pairs;
+local tostring = tostring;
+local assert = assert;
 local loc = TRP3_L;
+local type = type;
 local Utils = TRP3_UTILS;
+local Config = TRP3_CONFIG;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -13,59 +21,140 @@ if TRP3_Configuration == nil then
 	TRP3_Configuration = {};
 end
 
-local defaultValues = {
-	["Locale"] = GetLocale(),
-	["MiniMapToUse"] = "Minimap",
-	["MiniMapIconDegree"] = 210,
-	["MiniMapIconPosition"] = 80,
-	
-};
+local defaultValues = {};
 
--- Copy all absent keys from the default values to the effective configuration map.
-function TRP3_InitConfiguration()
-	for key,defaultValue in pairs(defaultValues) do
-		if not TRP3_Configuration[key] then
-			TRP3_Configuration[key] = defaultValue;
-		end
-	end
-	-- Localization
-	TRP3_ConfigurationGeneralTitle:SetText(loc("CO_GENERAL"));
+Config.setValue = function(key, value)
+	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
+	TRP3_Configuration[key] = value;
 end
 
-function TRP3_GetConfigValue(key)
+Config.getValue = function(key)
+	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
 	return TRP3_Configuration[key];
 end
 
--------------------------
+Config.registerConfigKey = function (key, defaultValue)
+	assert(type(key) == "string" and defaultValue ~= nil, "Must be a string key and a not nil default value.");
+	assert(not defaultValues[key], "Config key already registered: " .. tostring(key));
+	defaultValues[key] = defaultValue;
+	if not TRP3_Configuration[key] then
+		Config.setValue(key, defaultValue);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Configuration builder
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local GENERATED_WIDGET_INDEX = 0;
+
+local function buildConfigurationPage(structure)
+	local lastWidget = nil;
+	local marginLeft = structure.marginLeft or 0;
+	for index, element in pairs(structure.elements) do
+		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
+		widget:SetParent(structure.parent);
+		widget:ClearAllPoints();
+		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 0), 0);
+		if lastWidget ~= nil then
+			widget:SetPoint("TOP", lastWidget, "BOTTOM", 0, element.marginTop or 0);
+		else
+			widget:SetPoint("TOP", structure.parent, "TOP", 0, element.marginTop or 0);
+		end
+
+		if element.title and _G[widget:GetName().."Title"] then
+			_G[widget:GetName().."Title"]:SetText(element.title);
+		end
+		
+		-- Specific for EditBox
+		if _G[widget:GetName().."Box"] then
+			local box = _G[widget:GetName().."Box"];
+			if element.configKey then
+				box:SetScript("OnTextChanged", function(self, value)
+					Config.setValue(element.configKey, self:GetText());
+					if element.onChange then
+						element.onChange();
+					end
+				end);
+				box:SetText(tostring(Config.getValue(element.configKey)));
+			else
+				box:SetScript("OnTextChanged", element.onChange);
+			end
+			box:SetNumeric(element.numeric);
+			box:SetMaxLetters(element.maxLetters or 0);
+			local boxTitle = _G[widget:GetName().."BoxText"];
+			if boxTitle then
+				boxTitle:SetText(element.boxTitle);
+			end
+		end
+
+		lastWidget = widget;
+		GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
+	end
+end
+
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- GENERAL SETTINGS
-------------------------
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function changeLocale(newLocale)
 	if newLocale ~= TRP3_GetCurrentLocale() then
 		TRP3_Configuration["Locale"] = newLocale;
-		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..TRP3_GetLocaleText(newLocale).."|r"), 
+		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..TRP3_GetLocaleText(newLocale).."|r"),
 		function()
 			ReloadUI();
 		end);
-	end	
+	end
 end
 
 local function generalInit()
+	-- Build widgets
+	local CONFIG_STRUCTURE_GENERAL = {
+		marginLeft = 10,
+		parent = TRP3_ConfigurationGeneralContainer,
+		elements = {
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_LOCALE"),
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationGeneral_LangWidget",
+				title = loc("CO_GENERAL_LOCALE"),
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_MM"),
+			},
+			{
+				inherit = "TRP3_ConfigEditBox",
+				title = loc("CO_GENERAL_MM_USE"),
+				configKey = "MiniMapToUse",
+			},
+		}
+	}
+	buildConfigurationPage(CONFIG_STRUCTURE_GENERAL);
+	
+	-- Texts
+	TRP3_ConfigurationGeneralTitle:SetText(loc("CO_GENERAL"));
+	
 	-- localization
 	local localeTab = {};
 	for _, locale in pairs(TRP3_GetLocales()) do
 		tinsert(localeTab, {TRP3_GetLocaleText(locale), locale});
 	end
-	TRP3_ListBox_Setup(TRP3_ConfigurationGeneral_LangWidget,
+	TRP3_ListBox_Setup(
+		TRP3_ConfigurationGeneral_LangWidgetDropDown,
 		localeTab,
-		changeLocale, 
+		changeLocale,
 		TRP3_GetLocaleText(TRP3_GetCurrentLocale()), nil, true
 	);
 end
 
--------------------------
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MODULES STATUS
-------------------------
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function moduleInit()
 	TRP3_ConfigurationModuleTitle:SetText(loc("CO_MODULES"));
@@ -114,11 +203,11 @@ end
 
 local function getModuleTooltip(module)
 	local message = getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
-	
+
 	if module.error ~= nil then
 		message = message .. (loc("CO_MODULES_TT_ERROR"):format(module.error));
 	end
-	
+
 	return message;
 end
 
@@ -126,13 +215,13 @@ function TRP3_Configuration_OnModuleLoaded()
 	local modules = TRP3_GetModules();
 	local i=0;
 	local sortedID = {};
-	
+
 	-- Sort module id
 	for moduleID, module in pairs(modules) do
 		tinsert(sortedID, moduleID);
 	end
 	table.sort(sortedID);
-	
+
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
 		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_"..i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
@@ -142,14 +231,14 @@ function TRP3_Configuration_OnModuleLoaded()
 		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
 		_G[frame:GetName().."Status"]:SetText(loc("CO_MODULES_STATUS"):format(moduleStatusText(module.status)));
 		TRP3_SetTooltipForFrame(_G[frame:GetName().."Info"], _G[frame:GetName().."Info"], "BOTTOMLEFT", 0, -15, module.module_name, getModuleTooltip(module));
-		
+
 		i = i + 1;
 	end
 end
 
--------------------------
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
-------------------------
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_UI_InitConfiguration()
 	-- Page and menu
@@ -184,7 +273,7 @@ function TRP3_UI_InitConfiguration()
 		isChildOf = "main_90_config",
 		onSelected = function() TRP3_SetPage("main_config_module"); end,
 	});
-	
+
 	generalInit();
 	moduleInit();
 end

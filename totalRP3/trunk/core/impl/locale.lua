@@ -183,6 +183,11 @@ local LOCALE_EN = {
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
 		CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
+		CO_GENERAL_LOCALE = "Addon locale",
+		CO_GENERAL_MM = "Minimap button",
+		CO_GENERAL_MM_USE = "Frame to use",
+		CO_GENERAL_MM_DISTANCE = "Distance from center",
+		CO_GENERAL_MM_ROTATION = "Rotation",
 		CO_MODULES = "Modules status",
 		CO_MODULES_VERSION = "Version: %s",
 		CO_MODULES_ID = "Module ID: %s",
@@ -320,9 +325,11 @@ TRP3_RegisterLocale(LOCALE_FR);
 -- Initialize a locale for the addon.
 -- This function shoudn't be called manually. It's called in the addon loading process.
 -- Changing it after manually will results in an incomplete locale change.
-function TRP3_InitLocalization(locale)
-	current = locale;
-	if not TRP3_LOCALS[locale] then
+function TRP3_InitLocalization()
+	-- Register config
+	TRP3_CONFIG.registerConfigKey("AddonLocale", GetLocale());
+	current = TRP3_CONFIG.getValue("AddonLocale");
+	if not TRP3_LOCALS[current] then
 		current = DEFAULT_LOCALE;
 	end
 	TRP3_UTILS.table.copy(effectiveLocal, TRP3_LOCALS[current].localeContent);

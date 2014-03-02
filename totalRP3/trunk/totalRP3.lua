@@ -6,6 +6,7 @@ local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Comm = TRP3_COMM;
 local Log = Utils.log;
+local Config = TRP3_CONFIG;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOADING SEQUENCE
@@ -26,21 +27,20 @@ function Globals.addon:OnEnable()
 	TRP3_InitModules();
 	
 	-- Inits logic
-	TRP3_InitConfiguration();
-	TRP3_InitLocalization(TRP3_GetConfigValue("Locale"));
+	TRP3_InitLocalization();
 	Comm.init();
 	Comm.broadcast.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
 	
 	-- Inits UI
-	TRP3_InitMinimapButton();
 	TRP3_UI_InitToolbar();
 	TRP3_TARGET_FRAME.init();
 	TRP3_UI_InitMainPage();
-	TRP3_UI_InitConfiguration();
 	TRP3_UI_InitRegister();
 	TRP3_UI_InitPopups();
+	TRP3_InitMinimapButton();
+	TRP3_UI_InitConfiguration();
 	
 	TRP3_LoadProfile(); -- Load profile
 	TRP3_SelectMenu("main_00_player"); -- Select first menu

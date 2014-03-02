@@ -1,6 +1,70 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	
+	<!-- 
+		WIDGETS
+	 -->
+	 
+	 <Frame name="TRP3_ConfigH1" virtual="true">
+	 	<Size x="50" y="35"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="LEFT" text="[h1_title]">
+			    	<Size x="220" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 </Frame>
+	 
+	 <Frame name="TRP3_ConfigEditBox" virtual="true">
+	 	<Size x="50" y="25"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" text="[editbox_title]">
+			    	<Size x="225" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 	<Frames>
+	 		<EditBox name="$parentBox" inherits="TRP3_TitledEditBox" virtual="true">
+	 			<Size x="140" y="18"/>
+	 			<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
+				</Anchors>
+	 		</EditBox>
+	 	</Frames>
+	 </Frame>
+	 
+	 <Frame name="TRP3_ConfigDropDown" virtual="true">
+	 	<Size x="50" y="30"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" text="[editbox_title]">
+			    	<Size x="203" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 	<Frames>
+	 		<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
+		        <Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
+				</Anchors>
+		    </Frame>
+	 	</Frames>
+	 </Frame>
 	
 	<!-- 
 		GENERAL SETTINGS
@@ -53,26 +117,8 @@
 							<Anchor point="RIGHT" x="-17" y="0"/>
 						</Anchors>
 						<ScrollChild>
-							<Frame>
+							<Frame name="TRP3_ConfigurationGeneralContainer">
 								<Size x="50" y="50"/>
-								<Layers>
-								    <Layer level="OVERLAY">
-									    <FontString name="TRP3_ConfigurationGeneral_LangText" inherits="GameFontNormal" justifyH="LEFT" text="[locale_text]">
-									        <Size x="130" y="0"/>
-											<Anchors>
-												<Anchor point="TOPLEFT" x="25" y="-10"/>
-											</Anchors>
-											<Color r="0.95" g="0.95" b="0.95"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-								    <Frame name="TRP3_ConfigurationGeneral_LangWidget" inherits="UIDropDownMenuTemplate" enableMouse="true">
-								        <Anchors>
-											<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ConfigurationGeneral_LangText" x="0" y="-2"/>
-										</Anchors>
-								    </Frame>
-								</Frames>
 							</Frame>
 						</ScrollChild>
 					</ScrollFrame>
