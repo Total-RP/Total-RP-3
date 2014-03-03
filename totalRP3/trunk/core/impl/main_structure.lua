@@ -188,7 +188,7 @@ end
 
 function TRP3_RegisterPage(pageStructure)
 	assert(pageStructure and pageStructure.id, "pageStructure must have an id field.");
-	assert(pageStructure.templateName and pageStructure.frameName, "pageStructure must have an templateName and a frameName field.");
+	assert(pageStructure.frame or (pageStructure.templateName and pageStructure.frameName), "pageStructure must have a frame or a templateName and a frameName field.");
 	assert(not pageStructures[pageStructure.id], "The page with id "..(pageStructure.id).." has already been registered.");
 	pageStructures[pageStructure.id] = pageStructure;
 end

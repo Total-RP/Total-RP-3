@@ -12,6 +12,10 @@ local getCurrentProfile = TRP3_REGISTER.getCurrentProfile;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getUnitID = Utils.str.getUnitID;
 local get = TRP3_PROFILE.getData;
+local Config = TRP3_CONFIG;
+local getConfigValue = TRP3_CONFIG.getValue;
+local setConfigValue = TRP3_CONFIG.setValue;
+local registerConfigKey = TRP3_CONFIG.registerConfigKey;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -21,76 +25,95 @@ local HORDE_ICON = "INV_BannerPVP_01";
 local PVP_ICON = "Ability_DualWield";
 local PEEK_ICON_SIZE = 20;
 
+-- Config keys
+local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
+local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
+local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
+local CONFIG_CHARACT_MAIN_SIZE = "tooltip_char_mainSize";
+local CONFIG_CHARACT_SUB_SIZE = "tooltip_char_subSize";
+local CONFIG_CHARACT_TER_SIZE = "tooltip_char_terSize";
+local CONFIG_CHARACT_ICONS = "tooltip_char_icons";
+local CONFIG_CHARACT_FT = "tooltip_char_ft";
+local CONFIG_CHARACT_RACECLASS = "tooltip_char_rc";
+local CONFIG_CHARACT_REALM = "tooltip_char_realm";
+local CONFIG_CHARACT_GUILD = "tooltip_char_guild";
+local CONFIG_CHARACT_TARGET = "tooltip_char_target";
+local CONFIG_CHARACT_TITLE = "tooltip_char_title";
+local CONFIG_CHARACT_CLIENT = "tooltip_char_client";
+local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
+local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
+local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getAnchoredFrame()
-	return _G["GameTooltip"] or GameTooltip; --TODO load config
+	return _G[getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME)] or GameTooltip or error("Can't find any frame to anchor.");
 end
 
 local function getAnchoredPosition()
-	return "ANCHOR_TOPRIGHT"; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_ANCHOR);
 end
 
 local function shouldHideGameTooltip()
-	return false; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_HIDE_ORIGINAL);
 end
 
 local function getMainLineFontSize()
-	return 16; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_MAIN_SIZE);
 end
 
 local function getSubLineFontSize()
-	return 12; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_SUB_SIZE);
 end
 
 local function getSmallLineFontSize()
-	return 10; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_TER_SIZE);
 end
 
 local function showIcons()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_ICONS);
 end
 
 local function showFullTitle()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_FT);
 end
 
 local function showRaceClass()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_RACECLASS);
 end
 
 local function showRealm()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_REALM);
 end
 
 local function showGuild()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_GUILD);
 end
 
 local function showTarget()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_TARGET);
 end
 
 local function showTitle()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_TITLE);
 end
 
 local function showClient()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_CLIENT);
 end
 
 local function showNotifications()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_NOTIF);
 end
 
 local function showCurrently()
-	return true; --TODO load config
+	return getConfigValue(CONFIG_CHARACT_CURRENT);
 end
 
 local function getCurrentMaxSize()
-	return 140;
+	return getConfigValue(CONFIG_CHARACT_CURRENT_SIZE);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -149,8 +172,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local classColor = RAID_CLASS_COLORS[englishClass];
 	local completeName = TRP3_GetCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
-
-	-- TODO: color blocker param
 
 	if showIcons() then
 		-- Player icon
@@ -392,4 +413,136 @@ function TRP3_Register_TooltipInit()
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
+	
+	-- Config default value
+	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
+	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
+	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, false);
+	registerConfigKey(CONFIG_CHARACT_MAIN_SIZE, 16);
+	registerConfigKey(CONFIG_CHARACT_SUB_SIZE, 12);
+	registerConfigKey(CONFIG_CHARACT_TER_SIZE, 10);
+	registerConfigKey(CONFIG_CHARACT_ICONS, true);
+	registerConfigKey(CONFIG_CHARACT_FT, true);
+	registerConfigKey(CONFIG_CHARACT_RACECLASS, true);
+	registerConfigKey(CONFIG_CHARACT_REALM, true);
+	registerConfigKey(CONFIG_CHARACT_GUILD, true);
+	registerConfigKey(CONFIG_CHARACT_TARGET, true);
+	registerConfigKey(CONFIG_CHARACT_TITLE, true);
+	registerConfigKey(CONFIG_CHARACT_CLIENT, true);
+	registerConfigKey(CONFIG_CHARACT_NOTIF, true);
+	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
+	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
+	
+	-- Build configuration page
+	local CONFIG_STRUCTURE = {
+		id = "main_config_tooltip",
+		marginLeft = 10,
+		menuText = loc("CO_TOOLTIP"),
+		pageText = loc("CO_TOOLTIP"),
+		elements = {
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_TOOLTIP_CHARACTER"),
+			},
+			{
+				inherit = "TRP3_ConfigEditBox",
+				title = loc("CO_TOOLTIP_ANCHORED"),
+				configKey = CONFIG_CHARACT_ANCHORED_FRAME,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Charact_Anchor",
+				title = loc("CO_TOOLTIP_ANCHOR"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_HIDE_ORIGINAL"),
+				configKey = CONFIG_CHARACT_HIDE_ORIGINAL,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CO_TOOLTIP_MAINSIZE"),
+				configKey = CONFIG_CHARACT_MAIN_SIZE,
+				min = 6,
+				max = 20,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CO_TOOLTIP_SUBSIZE"),
+				configKey = CONFIG_CHARACT_SUB_SIZE,
+				min = 6,
+				max = 20,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CO_TOOLTIP_TERSIZE"),
+				configKey = CONFIG_CHARACT_TER_SIZE,
+				min = 6,
+				max = 20,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_ICONS"),
+				configKey = CONFIG_CHARACT_ICONS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_TITLE"),
+				configKey = CONFIG_CHARACT_TITLE,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_FT"),
+				configKey = CONFIG_CHARACT_FT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_RACE"),
+				configKey = CONFIG_CHARACT_RACECLASS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_REALM"),
+				configKey = CONFIG_CHARACT_REALM,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_GUILD"),
+				configKey = CONFIG_CHARACT_GUILD,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_TARGET"),
+				configKey = CONFIG_CHARACT_TARGET,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_CLIENT"),
+				configKey = CONFIG_CHARACT_CLIENT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_NOTIF"),
+				configKey = CONFIG_CHARACT_NOTIF,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_CURRENT"),
+				configKey = CONFIG_CHARACT_CURRENT,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CO_TOOLTIP_CURRENT_SIZE"),
+				configKey = CONFIG_CHARACT_CURRENT_SIZE,
+				min = 40,
+				max = 300,
+				integer = true,
+			},
+		}
+	}
+	Config.registerConfigurationPage(CONFIG_STRUCTURE);
+	
 end

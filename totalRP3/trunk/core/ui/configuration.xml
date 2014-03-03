@@ -65,12 +65,71 @@
 		    </Frame>
 	 	</Frames>
 	 </Frame>
+	 
+	 <Frame name="TRP3_ConfigCheck" virtual="true">
+	 	<Size x="50" y="30"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" text="[editbox_title]">
+			    	<Size x="220" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 	<Frames>
+	 		<CheckButton name="$parentCheck" inherits="TRP3_CheckBox" enableMouse="true">
+		        <Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
+				</Anchors>
+		    </CheckButton>
+	 	</Frames>
+	 </Frame>
+	 
+	 
+	 
+	 <Frame name="TRP3_ConfigSlider" virtual="true">
+	 	<Size x="50" y="30"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" text="[editbox_title]">
+			    	<Size x="225" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 	<Frames>
+	 		<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
+	 			<Size x="140" y="15"/>
+	 			<Layers>
+			 		<Layer level="OVERLAY">
+					    <FontString name="$parentValText" inherits="GameFontNormal" justifyH="CENTER" text="[value]">
+					    	<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="LEFT"/>
+								<Anchor point="RIGHT"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+			 	</Layers>
+		        <Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
+				</Anchors>
+		    </Slider>
+	 	</Frames>
+	 </Frame>
 	
 	<!-- 
 		GENERAL SETTINGS
 	 -->
 	
-    <Frame name="TRP3_ConfigurationGeneral" parent="TRP3_MainFramePageContainer" hidden="true">
+    <Frame name="TRP3_ConfigurationPage" virtual="true">
         <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -92,7 +151,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-			    <FontString name="TRP3_ConfigurationGeneralTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[general_settings]">
+			    <FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[settings_title]">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-25"/>
 					</Anchors>
@@ -101,7 +160,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-		    <Frame>
+		    <Frame name="$parentInner">
 		        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -111,13 +170,13 @@
 					<Anchor point="BOTTOM" x="0" y="20"/>
 				</Anchors>
 				<Frames>
-				    <ScrollFrame name="TRP3_ConfigurationGeneralScroll" inherits="UIPanelScrollFrameTemplate">
+				    <ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
 						<Size x="420" y="365"/>
 						<Anchors>
 							<Anchor point="RIGHT" x="-17" y="0"/>
 						</Anchors>
 						<ScrollChild>
-							<Frame name="TRP3_ConfigurationGeneralContainer">
+							<Frame name="$parentContainer">
 								<Size x="50" y="50"/>
 							</Frame>
 						</ScrollChild>
