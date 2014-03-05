@@ -16,6 +16,11 @@ local Config = TRP3_CONFIG;
 local getConfigValue = TRP3_CONFIG.getValue;
 local setConfigValue = TRP3_CONFIG.setValue;
 local registerConfigKey = TRP3_CONFIG.registerConfigKey;
+local strconcat = strconcat;
+local getCharacter = TRP3_REGISTER.getCharacter;
+local getCharacter = TRP3_REGISTER.getCharacter;
+local IsUnitIDKnown = TRP3_IsUnitIDKnown;
+local UnitAffectingCombat = UnitAffectingCombat;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -23,9 +28,13 @@ local DND_ICON = "Ability_Mage_IncantersAbsorbtion";
 local ALLIANCE_ICON = "INV_BannerPVP_02";
 local HORDE_ICON = "INV_BannerPVP_01";
 local PVP_ICON = "Ability_DualWield";
+local BEGINNER_ICON = "inv_misc_toy_01";
+local VOLUNTEER_ICON = "achievement_bg_tophealer_AB";
 local PEEK_ICON_SIZE = 20;
 
 -- Config keys
+local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
+local CONFIG_CHARACT_USE = "tooltip_char_use";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -172,15 +181,16 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local classColor = RAID_CLASS_COLORS[englishClass];
 	local completeName = TRP3_GetCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
+	local leftIcons = "";
 
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
-			completeName = strconcat(Utils.str.icon(info.characteristics.IC, 25), " ", completeName);
+			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons);
 		elseif UnitFactionGroup(targetType) == "Alliance" then
-			completeName = strconcat(Utils.str.icon(ALLIANCE_ICON, 25), " ", completeName);
+			leftIcons = strconcat(Utils.str.icon(ALLIANCE_ICON, 25), leftIcons);
 		elseif UnitFactionGroup(targetType) == "Horde" then
-			completeName = strconcat(Utils.str.icon(HORDE_ICON, 25), " ", completeName);
+			leftIcons = strconcat(Utils.str.icon(HORDE_ICON, 25), leftIcons);
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
@@ -192,10 +202,18 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if UnitIsPVP(targetType) then -- Icone PVP
 			rightIcons = strconcat(rightIcons, Utils.str.icon(PVP_ICON, 25));
 		end
-		-- TODO: Beginner icon + volunteer icon
+		-- Beginner icon / volunteer icon
+		if info.style and info.style.VA then
+			if info.style.VA["1"] and info.style.VA["1"] == 1 then
+				rightIcons = strconcat(Utils.str.icon(BEGINNER_ICON, 25), rightIcons);
+			end
+			if info.style.VA["4"] and info.style.VA["4"] == 1 then
+				rightIcons = strconcat(Utils.str.icon(VOLUNTEER_ICON, 25), rightIcons);
+			end
+		end
 	end
 
-	ui_CharacterTT:AddDoubleLine(completeName, rightIcons);
+	ui_CharacterTT:AddDoubleLine(leftIcons .. " " .. completeName, rightIcons);
 	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
 	_G[strconcat(ui_CharacterTT:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
 	lineIndex = lineIndex + 1;
@@ -334,8 +352,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local text = "";
 		if targetID == Globals.player_id then
 			text = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
-		else
-		-- TODO: check character client
+		elseif IsUnitIDKnown(targetID) then
+			local character = getCharacter(targetID);
+			if character.client then
+				text = strconcat("|cffffffff", character.client, " v", character.clientVersion);
+			end
 		end
 		if text:len() > 0 then
 			ui_CharacterTT:AddDoubleLine(" ", text);
@@ -352,29 +373,31 @@ end
 local function show(targetType)
 	ui_CharacterTT:Hide();
 	
-	local targetID = getUnitID(targetType);
-
-	-- If we have a target
-	if targetID then
-		-- Stock all the current text from the GameTooltip
-		local originalTexts = getGameTooltipTexts();
-
-		ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
-
-		-- The target is a player
-		if UnitIsPlayer(targetType) then
-			writeTooltipForCharacter(targetID, originalTexts, targetType);
-			ui_CharacterTT.target = targetID;
-			ui_CharacterTT.targetType = targetType;
-			ui_CharacterTT:Show();
-			if shouldHideGameTooltip() then
-				GameTooltip:Hide();
+	-- If using TRP TT
+	if getConfigValue(CONFIG_CHARACT_USE) and (not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT)) then
+		local targetID = getUnitID(targetType);
+		-- If we have a target
+		if targetID then
+			-- Stock all the current text from the GameTooltip
+			local originalTexts = getGameTooltipTexts();
+	
+			ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+	
+			-- The target is a player
+			if UnitIsPlayer(targetType) then
+				writeTooltipForCharacter(targetID, originalTexts, targetType);
+				ui_CharacterTT.target = targetID;
+				ui_CharacterTT.targetType = targetType;
+				ui_CharacterTT:Show();
+				if shouldHideGameTooltip() then
+					GameTooltip:Hide();
+				end
+			else
+				ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
 			end
-		else
-			ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
+	
+			ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 		end
-
-		ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 	end
 end
 
@@ -415,6 +438,8 @@ function TRP3_Register_TooltipInit()
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
 	
 	-- Config default value
+	registerConfigKey(CONFIG_CHARACT_USE, true);
+	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, false);
@@ -443,6 +468,16 @@ function TRP3_Register_TooltipInit()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_TOOLTIP_CHARACTER"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_USE"),
+				configKey = CONFIG_CHARACT_USE,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_COMBAT"),
+				configKey = CONFIG_CHARACT_COMBAT,
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",

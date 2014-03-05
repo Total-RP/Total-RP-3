@@ -76,6 +76,7 @@ local function getCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
 end
+TRP3_REGISTER.getCharacter = getCharacter;
 
 local function isUnitKnown(unitName)
 	return isUnitIDKnown(getUnitID(unitName));

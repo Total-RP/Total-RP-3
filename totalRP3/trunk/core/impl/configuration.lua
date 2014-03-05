@@ -85,6 +85,19 @@ local function buildConfigurationPage(structure)
 			_G[widget:GetName().."Title"]:SetText(element.title);
 		end
 		
+		-- Specific for Dropdown
+		if _G[widget:GetName().."DropDown"] then
+			local dropDown = _G[widget:GetName().."DropDown"];
+			TRP3_ListBox_Setup(
+				dropDown,
+				element.listContent or {},
+				element.listCallback,
+				element.listDefault or "", 
+				element.listWidth or 134,
+				element.listCancel
+			);
+		end
+		
 		-- Specific for EditBox
 		if _G[widget:GetName().."Box"] then
 			local box = _G[widget:GetName().."Box"];
@@ -187,7 +200,7 @@ Config.registerConfigurationPage = registerConfigurationPage;
 
 local function changeLocale(newLocale)
 	if newLocale ~= TRP3_GetCurrentLocale() then
-		TRP3_Configuration["Locale"] = newLocale;
+		Config.setValue("AddonLocale", newLocale);
 		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..TRP3_GetLocaleText(newLocale).."|r"),
 		function()
 			ReloadUI();
@@ -196,6 +209,12 @@ local function changeLocale(newLocale)
 end
 
 local function generalInit()
+	-- localization
+	local localeTab = {};
+	for _, locale in pairs(TRP3_GetLocales()) do
+		tinsert(localeTab, {TRP3_GetLocaleText(locale), locale});
+	end
+	
 	-- Build widgets
 	local CONFIG_STRUCTURE_GENERAL = {
 		id = "main_config_general",
@@ -211,6 +230,11 @@ local function generalInit()
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationGeneral_LangWidget",
 				title = loc("CO_GENERAL_LOCALE"),
+				listContent = localeTab,
+				listCallback = changeLocale,
+				listDefault = TRP3_GetLocaleText(TRP3_GetCurrentLocale()),
+				listWidth = nil,
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -241,17 +265,6 @@ local function generalInit()
 	}
 	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
 	
-	-- localization
-	local localeTab = {};
-	for _, locale in pairs(TRP3_GetLocales()) do
-		tinsert(localeTab, {TRP3_GetLocaleText(locale), locale});
-	end
-	TRP3_ListBox_Setup(
-		TRP3_ConfigurationGeneral_LangWidgetDropDown,
-		localeTab,
-		changeLocale,
-		TRP3_GetLocaleText(TRP3_GetCurrentLocale()), nil, true
-	);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

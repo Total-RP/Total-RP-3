@@ -188,8 +188,9 @@ local LOCALE_EN = {
 		CO_GENERAL_MM_USE = "Frame to use",
 		CO_GENERAL_MM_DISTANCE = "Distance from center",
 		CO_GENERAL_MM_ROTATION = "Rotation",
-		
 		CO_TOOLTIP = "Tooltip settings",
+		CO_TOOLTIP_USE = "Use custom tooltip for character",
+		CO_TOOLTIP_COMBAT = "Hide during combat",
 		CO_TOOLTIP_CHARACTER = "Characters tooltip",
 		CO_TOOLTIP_ANCHORED = "Anchored frame",
 		CO_TOOLTIP_ANCHOR = "Anchor point",
@@ -199,7 +200,7 @@ local LOCALE_EN = {
 		CO_TOOLTIP_TERSIZE = "Tertiary font size",
 		CO_TOOLTIP_ICONS = "Show icons",
 		CO_TOOLTIP_FT = "Show full title",
-		CO_TOOLTIP_RACE = "Show race and class",
+		CO_TOOLTIP_RACE = "Show race, class and level",
 		CO_TOOLTIP_REALM = "Show realm",
 		CO_TOOLTIP_GUILD = "Show guild info",
 		CO_TOOLTIP_TARGET = "Show target",
@@ -208,7 +209,6 @@ local LOCALE_EN = {
 		CO_TOOLTIP_NOTIF = "Show notifications",
 		CO_TOOLTIP_CURRENT = "Show \"current\" information",
 		CO_TOOLTIP_CURRENT_SIZE = "Max \"current\" information length",
-		
 		CO_MODULES = "Modules status",
 		CO_MODULES_VERSION = "Version: %s",
 		CO_MODULES_ID = "Module ID: %s",
