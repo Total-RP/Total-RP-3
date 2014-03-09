@@ -16,6 +16,9 @@ local tinsert = tinsert;
 local math = math;
 local tonumber = tonumber;
 local _G = _G;
+local getLocaleText = TRP3_Locale.getLocaleText;
+local getLocales = TRP3_Locale.getLocales;
+local getCurrentLocale = TRP3_Locale.getCurrentLocale;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -199,9 +202,9 @@ Config.registerConfigurationPage = registerConfigurationPage;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function changeLocale(newLocale)
-	if newLocale ~= TRP3_GetCurrentLocale() then
+	if newLocale ~= getCurrentLocale() then
 		Config.setValue("AddonLocale", newLocale);
-		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..TRP3_GetLocaleText(newLocale).."|r"),
+		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..getLocaleText(newLocale).."|r"),
 		function()
 			ReloadUI();
 		end);
@@ -211,8 +214,8 @@ end
 local function generalInit()
 	-- localization
 	local localeTab = {};
-	for _, locale in pairs(TRP3_GetLocales()) do
-		tinsert(localeTab, {TRP3_GetLocaleText(locale), locale});
+	for _, locale in pairs(getLocales()) do
+		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
 	
 	-- Build widgets
@@ -232,7 +235,7 @@ local function generalInit()
 				title = loc("CO_GENERAL_LOCALE"),
 				listContent = localeTab,
 				listCallback = changeLocale,
-				listDefault = TRP3_GetLocaleText(TRP3_GetCurrentLocale()),
+				listDefault = getLocaleText(getCurrentLocale()),
 				listWidth = nil,
 				listCancel = true,
 			},

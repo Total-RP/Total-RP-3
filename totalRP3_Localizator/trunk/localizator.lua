@@ -6,9 +6,10 @@ local loc = TRP3_L;
 -- Frame placeholder
 local frames = {};
 local keys = {};
+local getDefaultLocaleStructure = TRP3_Locale.getDefaultLocaleStructure;
 
 local function injectLocale()
-	local locale = TRP3_GetEffectiveLocale();
+	local locale = TRP3_Locale.getEffectiveLocale();
 	-- default locale ("enUS")
 	locale.LOCALIZATOR_MENU = "Localizator";
 	locale.LOCALIZATOR_EXPLAIN = 
@@ -33,7 +34,7 @@ local function onInit()
 	if not TRP3_Localizator then
 		TRP3_Localizator = {};
 	end
-	for key, value in pairs(TRP3_GetDefaultLocaleStructure().localeContent) do
+	for key, value in pairs(getDefaultLocaleStructure().localeContent) do
 		if not TRP3_Localizator[key] then
 			TRP3_Localizator[key] = value;
 		end
@@ -43,11 +44,11 @@ local function onInit()
 		localeText = "Custom",
 		localeContent = TRP3_Localizator,
 	};
-	TRP3_RegisterLocale(CUSTOM_LOCALE);
+	TRP3_Locale.registerLocale(CUSTOM_LOCALE);
 end
 
 local function decorateBox(widget, index)
-	local locale = TRP3_GetDefaultLocaleStructure().localeContent;
+	local locale = getDefaultLocaleStructure().localeContent;
 	local key = keys[index];
 	_G[widget:GetName().."ScrollText"].key = key;
 	_G[widget:GetName().."ScrollText"]:SetText(escapeText(TRP3_Localizator[key] or locale[key]));
@@ -100,7 +101,7 @@ local function onLoaded()
 	TRP3_ConfigurationLocalizatorTitle:SetText(loc("LOCALIZATOR_MENU"));
 	
 	-- Generate list based on default locale
-	local locale = TRP3_GetDefaultLocaleStructure().localeContent;
+	local locale = getDefaultLocaleStructure().localeContent;
 	-- List is sorted alphabetically by key name
 	for key, _ in pairs(locale) do
 		tinsert(keys, key);

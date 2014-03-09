@@ -27,7 +27,7 @@ function Globals.addon:OnEnable()
 	TRP3_InitModules();
 	
 	-- Inits logic
-	TRP3_InitLocalization();
+	TRP3_Locale.init();
 	Comm.init();
 	Comm.broadcast.init();
 	TRP3_InitProfiles();

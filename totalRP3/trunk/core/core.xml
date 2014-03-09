@@ -5,7 +5,7 @@
 	<!-- Please note that the loading order matters a lot -->
 	
 	<Script file="impl\globals.lua"/>
-	<Script file="impl\locale.lua"/>
+	<Include file="impl\locale\locale.xml"/>
 	<Script file="impl\utils.lua"/>
 	<Script file="impl\widgets.lua"/>
 	
