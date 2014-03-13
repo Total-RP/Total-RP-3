@@ -261,6 +261,13 @@ local LOCALE_EN = {
 		PR_PROFILEMANAGER_SWITCH = "Select profile",
 		PR_PROFILEMANAGER_RENAME = "Rename profile",
 		PR_PROFILEMANAGER_CURRENT = "Current profile",
+		-- Dashboard
+		DB_STATUS = "Status",
+		DB_STATUS_CURRENTLY = "Currently",
+		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief !",
+		DB_STATUS_RP = "Character status",
+		DB_STATUS_RP_IC = "In character",
+		DB_STATUS_RP_OOC = "Out of character",
 		-- UI
 		UI_BKG = "Background %s",
 		UI_ICON_BROWSER = "Icon browser",
@@ -321,4 +328,4 @@ local LOCALE_EN = {
 	},
 };
 
-TRP3_Locale.registerLocale(LOCALE_EN);
+TRP3_LOCALE.registerLocale(LOCALE_EN);

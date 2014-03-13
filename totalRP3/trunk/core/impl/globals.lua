@@ -37,6 +37,11 @@ TRP3_GLOBALS = {
 		unknown = "INV_Misc_QuestionMark";
 		profile_default = "INV_Misc_GroupLooking";
 	},
+	
+	status = {
+		ic = 1,
+		ooc = 2
+	},
 };
 
 TRP3_GLOBALS.build = function()

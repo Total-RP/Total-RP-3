@@ -136,47 +136,12 @@
 					<Anchor point="BOTTOMRIGHT" x="-20" y="17"/>
 				</Anchors>
 		    </Frame>
-		    <!-- BOTTOM LEFT PART : Version frame -->
-		    <Frame name="TRP3_MainFrameVersion">
-		        <Size x="190" y="30"/>
-				<Anchors>
-					<Anchor point="BOTTOMLEFT" x="24" y="23"/>
-				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\ARCHEOLOGY\ArcheologyToast">
-							<Size x="190" y="50"/>
-							<Anchors>
-								<Anchor point="BOTTOM" x="0" y="0"/>
-							</Anchors>
-							<TexCoords top="0.36" bottom="0.66" left="0.25"  right="0.9"/>
-						</Texture>
-					</Layer>
-					<Layer level="BORDER">
-						<Texture file="Interface\AddOns\totalRP3\resources\trp3logo">
-					        <Size x="225" y="22"/>
-							<Anchors>
-								<Anchor point="TOP" x="0" y="16"/>
-							</Anchors>
-							<TexCoords left="0" right="1" top="0.77" bottom="1"/>
-						</Texture>
-					</Layer>
-					<Layer level="OVERLAY">
-						<FontString name="TRP3_MainFrameVersionText" inherits="GameFontNormal" justifyV="TOP" text="[VERSION_XXXX]">
-							<Anchors>
-								<Anchor point="BOTTOM" x="0" y="9"/>
-							</Anchors>
-							<Color b="1.0" r="1.0" g="1.0"/>
-						</FontString>
-					</Layer>
-				</Layers>
-		    </Frame>
 		    <!-- LEFT PART : Menu -->
 		    <ScrollFrame name="TRP3_MainFrameMenuScroll" inherits="UIPanelScrollFrameTemplate">
 				<Size x="175" y="0"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="20" y="-23"/>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_MainFrameVersion" x="0" y="20"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
 				</Anchors>
 				<ScrollChild>
 					<Frame name="TRP3_MainFrameMenuContainer">

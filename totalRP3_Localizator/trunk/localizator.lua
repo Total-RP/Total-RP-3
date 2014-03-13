@@ -6,10 +6,10 @@ local loc = TRP3_L;
 -- Frame placeholder
 local frames = {};
 local keys = {};
-local getDefaultLocaleStructure = TRP3_Locale.getDefaultLocaleStructure;
+local getDefaultLocaleStructure = TRP3_LOCALE.getDefaultLocaleStructure;
 
 local function injectLocale()
-	local locale = TRP3_Locale.getEffectiveLocale();
+	local locale = TRP3_LOCALE.getEffectiveLocale();
 	-- default locale ("enUS")
 	locale.LOCALIZATOR_MENU = "Localizator";
 	locale.LOCALIZATOR_EXPLAIN = 
@@ -44,7 +44,7 @@ local function onInit()
 		localeText = "Custom",
 		localeContent = TRP3_Localizator,
 	};
-	TRP3_Locale.registerLocale(CUSTOM_LOCALE);
+	TRP3_LOCALE.registerLocale(CUSTOM_LOCALE);
 end
 
 local function decorateBox(widget, index)

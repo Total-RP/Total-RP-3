@@ -2,14 +2,14 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_Locale = {}
+TRP3_LOCALE = {}
 
 local TRP3_LOCALS = {};
 local DEFAULT_LOCALE = "enUS";
 local effectiveLocal = {};
 local current;
 
-TRP3_Locale.registerLocale = function(localeStructure)
+TRP3_LOCALE.registerLocale = function(localeStructure)
 	assert(localeStructure and localeStructure.locale and localeStructure.localeText and localeStructure.localeContent, "Usage: localeStructure with locale, localeText and localeContent.");
 	if not TRP3_LOCALS[localeStructure.locale] then
 		TRP3_LOCALS[localeStructure.locale] = localeStructure;
@@ -17,7 +17,7 @@ TRP3_Locale.registerLocale = function(localeStructure)
 end
 
 -- Initialize a locale for the addon.
-TRP3_Locale.init = function()
+TRP3_LOCALE.init = function()
 	-- Register config
 	TRP3_CONFIG.registerConfigKey("AddonLocale", GetLocale());
 	current = TRP3_CONFIG.getValue("AddonLocale");
@@ -32,7 +32,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Get a sorted list of registered locales ID ("frFR", "enUS" ...).
-TRP3_Locale.getLocales = function()
+TRP3_LOCALE.getLocales = function()
 	local locales = {};
 	for locale,_ in pairs(TRP3_LOCALS) do
 		tinsert(locales, locale);
@@ -42,22 +42,22 @@ TRP3_Locale.getLocales = function()
 end
 
 -- Get the display name of a locale ("Français", "English" ...)
-TRP3_Locale.getLocaleText = function(locale)
+TRP3_LOCALE.getLocaleText = function(locale)
 	if TRP3_LOCALS[locale] then
 		return TRP3_LOCALS[locale].localeText
 	end
 	return UNKNOWN;
 end
 
-TRP3_Locale.getEffectiveLocale = function()
+TRP3_LOCALE.getEffectiveLocale = function()
 	return effectiveLocal;
 end
 
-TRP3_Locale.getDefaultLocaleStructure = function()
+TRP3_LOCALE.getDefaultLocaleStructure = function()
 	return TRP3_LOCALS[DEFAULT_LOCALE];
 end
 
-TRP3_Locale.getCurrentLocale = function()
+TRP3_LOCALE.getCurrentLocale = function()
 	return current;
 end
 

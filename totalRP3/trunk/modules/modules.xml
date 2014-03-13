@@ -7,5 +7,9 @@
 	<Script file="flyway\flyway.lua"/>
 	<Script file="flyway\flyway_patches.lua"/>
 	
-	<Include file="register\register_includes.xml"/>>
+	<Include file="dashboard\dashboard.xml"/>
+	
+	<Include file="register\register_includes.xml"/>
+	
+	
 </Ui>

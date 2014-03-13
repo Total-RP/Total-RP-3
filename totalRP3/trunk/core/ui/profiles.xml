@@ -82,7 +82,7 @@
 		<Size x="530" y="0"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\Archeology\Arch-BookItemLeft">
+				<Texture file="Interface\AchievementFrame\UI-Achievement-StatsBackground">
 					<Size x="526" y="0"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="0" y="0"/>

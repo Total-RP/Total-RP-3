@@ -27,11 +27,12 @@ function Globals.addon:OnEnable()
 	TRP3_InitModules();
 	
 	-- Inits logic
-	TRP3_Locale.init();
+	TRP3_LOCALE.init();
 	Comm.init();
 	Comm.broadcast.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
+	TRP3_DASHBOARD.init();
 	
 	-- Inits UI
 	TRP3_UI_InitToolbar();
@@ -43,7 +44,7 @@ function Globals.addon:OnEnable()
 	TRP3_UI_InitConfiguration();
 	
 	TRP3_LoadProfile(); -- Load profile
-	TRP3_SelectMenu("main_00_player"); -- Select first menu
+	TRP3_SelectMenu("main_00_dashboard"); -- Select first menu
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
 	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));

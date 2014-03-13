@@ -285,7 +285,7 @@ end
 
 function TRP3_UI_InitRegister()
 	TRP3_RegisterMenu({
-		id = "main_00_player",
+		id = "main_10_player",
 		text = Globals.player,
 		onSelected = function() TRP3_SetPage("player_main", {unitID = Globals.player_id}); end,
 	});

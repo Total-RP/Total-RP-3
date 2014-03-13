@@ -16,9 +16,9 @@ local tinsert = tinsert;
 local math = math;
 local tonumber = tonumber;
 local _G = _G;
-local getLocaleText = TRP3_Locale.getLocaleText;
-local getLocales = TRP3_Locale.getLocales;
-local getCurrentLocale = TRP3_Locale.getCurrentLocale;
+local getLocaleText = TRP3_LOCALE.getLocaleText;
+local getLocales = TRP3_LOCALE.getLocales;
+local getCurrentLocale = TRP3_LOCALE.getCurrentLocale;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
