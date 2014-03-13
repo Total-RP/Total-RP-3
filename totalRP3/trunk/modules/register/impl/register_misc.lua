@@ -14,6 +14,8 @@ local tcopy = Utils.table.copy;
 local assert = assert;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local tinsert = tinsert;
+local pairs = pairs;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -22,10 +24,135 @@ local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 getDefaultProfile().player.misc = {
 	v = 1,
 	PE = {},
+	ST = {},
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Misc display
+-- RP Style
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local STYLE_FIELDS;
+local function buildStyleStructure()
+	STYLE_FIELDS = {
+		{
+			id = "1",
+			name = loc("REG_PLAYER_STYLE_FREQ"),
+			values = {
+				{loc("REG_PLAYER_STYLE_FREQ_1"), 1},
+				{loc("REG_PLAYER_STYLE_FREQ_2"), 2},
+				{loc("REG_PLAYER_STYLE_FREQ_3"), 3},
+				{loc("REG_PLAYER_STYLE_FREQ_4"), 4},
+				{loc("REG_PLAYER_STYLE_FREQ_5"), 5},
+				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+			}
+		},
+		{
+			id = "2",
+			name = loc("REG_PLAYER_STYLE_INJURY"),
+			values = {
+				{YES, 1},
+				{NO, 2},
+				{loc("REG_PLAYER_STYLE_PERMI"), 3},
+				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+			}
+		},
+		{
+			id = "3",
+			name = loc("REG_PLAYER_STYLE_DEATH"),
+			values = {
+				{YES, 1},
+				{"No", 2},
+				{loc("REG_PLAYER_STYLE_PERMI"), 3},
+				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+			}
+		},
+		{
+			id = "4",
+			name = loc("REG_PLAYER_STYLE_ROMANCE"),
+			values = {
+				{YES, 1},
+				{NO, 2},
+				{loc("REG_PLAYER_STYLE_PERMI"), 3},
+				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+			}
+		},
+		{
+			id = "5",
+			name = loc("REG_PLAYER_STYLE_BATTLE"),
+			values = {
+				{loc("REG_PLAYER_STYLE_BATTLE_1"), 1},
+				{loc("REG_PLAYER_STYLE_BATTLE_2"), 2},
+				{loc("REG_PLAYER_STYLE_BATTLE_3"), 3},
+				{loc("REG_PLAYER_STYLE_BATTLE_4"), 4},
+				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+			}
+		},
+	};
+end
+
+local styleLines = {};
+
+local function onEditStyle(choice, frame)
+	frame = frame:GetParent();
+	assert(frame.fieldData, "No data in frame !");
+	local context = TRP3_GetCurrentPageContext();
+	assert(context, "No context for page player_main !");
+	assert(context.unitID == Globals.player_id, "Trying to edit someone else style !");
+	if context.unitID == Globals.player_id then
+		local dataTab = get("player/misc");
+		dataTab.ST[frame.fieldData.id] = choice;
+	end
+end
+
+local function displayRPStyle(context)
+	local dataTab = nil;
+	if context.unitID == Globals.player_id then
+		dataTab = get("player/misc");
+	else
+		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).misc then
+			dataTab = TRP3_GetUnitProfile(context.unitID).misc;
+		else
+			dataTab = {};
+		end
+	end
+	local styleData = dataTab.ST or {};
+	
+	-- Hide all
+	for _, frame in pairs(styleLines) do
+		frame:Hide();
+	end
+	
+	local previous = nil;
+	for index, fieldData in pairs(STYLE_FIELDS) do
+		local frame = styleLines[index];
+		if frame == nil then
+			frame = CreateFrame("Frame", "TRP3_RegisterMiscViewRPStyle_line"..index, TRP3_RegisterMiscViewRPStyle, "TRP3_RegisterRPStyleMain_Edit_Line");
+			TRP3_ListBox_Setup(_G[frame:GetName().."Values"], fieldData.values, onEditStyle, nil, 180, true);
+			frame.fieldData = fieldData;
+			tinsert(styleLines, frame);
+		end
+		-- Position
+		frame:ClearAllPoints();
+		if previous == nil then
+			frame:SetPoint("TOPLEFT", TRP3_RegisterMiscViewRPStyle, "TOPLEFT", 25, -20);
+		else
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+		end
+		frame:SetPoint("LEFT", 0, 0);
+		frame:SetPoint("RIGHT", 0, 0);
+		
+		-- Value
+		local selectedValue = styleData[fieldData.id] or 0;
+		_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
+		_G[frame:GetName().."Values"]:SetSelectedValue(selectedValue);
+		
+		frame:Show();
+		previous = frame;
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- PEEK
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local GLANCE_NOT_USED_ICON = "INV_Misc_QuestionMark";
@@ -50,7 +177,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	end
 end
 
-local function showView(context)
+local function displayPeek(context)
 	local dataTab = nil;
 	if context.unitID == Globals.player_id then
 		dataTab = get("player/misc");
@@ -64,14 +191,14 @@ local function showView(context)
 	
 	for i=1,5 do
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
-		local button = _G["TRP3_RegisterPeekViewGlanceSlot" .. i];
+		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.unitID == Globals.player_id);
 	end
 	
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Misc Edit
+-- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local currentSelected;
@@ -79,8 +206,8 @@ local draftData = {};
 
 local function onIconSelected(icon)
 	icon = icon or Globals.icons.default;
-	TRP3_InitIconButton(TRP3_RegisterPeekEdit_Glance_Icon, icon);
-	TRP3_RegisterPeekEdit_Glance_Icon.icon = icon;
+	TRP3_InitIconButton(TRP3_RegisterMiscEdit_Glance_Icon, icon);
+	TRP3_RegisterMiscEdit_Glance_Icon.icon = icon;
 	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
 end
 
@@ -95,9 +222,9 @@ local function onSlotClick(button)
 		currentSelected = button.index;
 		local dataTab = get("player/misc");
 		draftData = (dataTab.PE or {})[currentSelected] or {};
-		TRP3_RegisterPeekEdit_Glance_Active:SetChecked(draftData.AC);
-		TRP3_RegisterPeekEdit_Glance_TextScrollText:SetText(draftData.TX or "");
-		TRP3_RegisterPeekEdit_Glance_Title:SetText(draftData.TI or "");
+		TRP3_RegisterMiscEdit_Glance_Active:SetChecked(draftData.AC);
+		TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(draftData.TX or "");
+		TRP3_RegisterMiscEdit_Glance_Title:SetText(draftData.TI or "");
 		onIconSelected(draftData.IC);
 		TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
 	end
@@ -113,10 +240,10 @@ local function applyPeek()
 		dataTab.PE[currentSelected] = {};
 	end
 	local peekTab = dataTab.PE[currentSelected];
-	peekTab.IC = TRP3_RegisterPeekEdit_Glance_Icon.icon;
-	peekTab.AC = TRP3_RegisterPeekEdit_Glance_Active:GetChecked();
-	peekTab.TI = stEtN(TRP3_RegisterPeekEdit_Glance_Title:GetText());
-	peekTab.TX = stEtN(TRP3_RegisterPeekEdit_Glance_TextScrollText:GetText());
+	peekTab.IC = TRP3_RegisterMiscEdit_Glance_Icon.icon;
+	peekTab.AC = TRP3_RegisterMiscEdit_Glance_Active:GetChecked();
+	peekTab.TI = stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText());
+	peekTab.TX = stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText());
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
@@ -132,8 +259,9 @@ end
 function TRP3_onPlayerPeekShow()
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	TRP3_RegisterPeek:Show();
-	showView(context);
+	TRP3_RegisterMisc:Show();
+	displayPeek(context);
+	displayRPStyle(context);
 end
 
 function TRP3_RegisterMiscGetExchangeData()
@@ -145,23 +273,28 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_Register_PeekInit()
-	TRP3_FieldSet_SetCaption(TRP3_RegisterPeekViewCurrent, loc("REG_PLAYER_CURRENT"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterPeekViewGlance, loc("REG_PLAYER_GLANCE"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterPeekEdit_Current, loc("REG_PLAYER_CURRENT"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterPeekEdit_Glance, loc("REG_PLAYER_GLANCE"), 150);
-	TRP3_RegisterPeekEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
-	TRP3_RegisterPeekEdit_Glance_Apply:SetText(loc("CM_APPLY"));
-	TRP3_RegisterPeekEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
+	buildStyleStructure();
+	
+	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewCurrent, loc("REG_PLAYER_CURRENT"), 150);
+	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
+	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscEdit_Current, loc("REG_PLAYER_CURRENT"), 150);
+	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscEdit_Glance, loc("REG_PLAYER_GLANCE"), 150);
+	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
+	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
+	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
 	
-	TRP3_RegisterPeekEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
-	TRP3_RegisterPeekEdit_Glance_Apply:SetScript("OnClick", applyPeek);
+	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
+	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", applyPeek);
 	for index=1,5,1 do
 		-- DISPLAY
-		local button = _G["TRP3_RegisterPeekViewGlanceSlot" .. index];
+		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onSlotClick);
 		button.index = tostring(index);
 	end
+	
+	-- RP style
+	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
 end

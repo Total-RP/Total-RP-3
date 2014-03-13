@@ -11,6 +11,10 @@ local function onStatusChange(status)
 
 end
 
+local function onStatusXPChange(status)
+
+end
+
 local function onShow(context)
 	
 end
@@ -37,11 +41,19 @@ TRP3_DASHBOARD.init = function()
 	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
 	TRP3_SetTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
+	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
 	
 	local statusTab = {
-		{loc("DB_STATUS_RP_IC"), TRP3_GLOBALS.status.ic},
-		{loc("DB_STATUS_RP_OOC"), TRP3_GLOBALS.status.ooc},
+		{loc("DB_STATUS_RP_IC"), 1},
+		{loc("DB_STATUS_RP_OOC"), 2},
 	};
 	TRP3_ListBox_Setup(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 120, true);
+	
+	local xpTab = {
+		{loc("DB_STATUS_XP_BEGINNER"), 1},
+		{loc("DB_STATUS_RP_EXP"), 2},
+		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
+	};
+	TRP3_ListBox_Setup(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
 	
 end

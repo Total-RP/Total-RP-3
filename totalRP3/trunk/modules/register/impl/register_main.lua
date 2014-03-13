@@ -37,7 +37,6 @@ local characters;
 TRP3_RegisterInfoTypes = {
 	CHARACTERISTICS = "characteristics",
 	ABOUT = "about",
-	STYLE = "style",
 	MISC = "misc"
 }
 
@@ -223,22 +222,18 @@ local function createTabBar()
 	{
 		{loc("REG_PLAYER_CARACT"), 1, 150},
 		{loc("REG_PLAYER_ABOUT"), 2, 110},
-		{loc("REG_PLAYER_STYLE_RPSTYLE_SHORT"), 3, 105},
-		{loc("REG_PLAYER_PEEK"), 4, 130}
+		{loc("REG_PLAYER_PEEK"), 3, 130}
 	},
 	function(tabWidget, value)
 		-- Clear all
 		TRP3_RegisterCharact:Hide();
 		TRP3_RegisterAbout:Hide();
-		TRP3_RegisterRPStyle:Hide();
-		TRP3_RegisterPeek:Hide();
+		TRP3_RegisterMisc:Hide();
 		if value == 1 then
 			TRP3_onCharacteristicsShown();
 		elseif value == 2 then
 			TRP3_onPlayerAboutShow();
 		elseif value == 3 then
-			TRP3_onPlayerRPStyleShow();
-		elseif value == 4 then
 			TRP3_onPlayerPeekShow();
 		end
 	end
@@ -252,7 +247,6 @@ local function showTabs(context)
 	
 	tabGroup:SetTabVisible(2, isSelf or hasProfile(context.unitID));
 	tabGroup:SetTabVisible(3, isSelf or hasProfile(context.unitID));
-	tabGroup:SetTabVisible(4, isSelf or hasProfile(context.unitID));
 	tabGroup:SelectTab(1);
 end
 
@@ -303,7 +297,6 @@ function TRP3_UI_InitRegister()
 
 	TRP3_Register_CharInit();
 	TRP3_Register_AboutInit();
-	TRP3_Register_StyleInit();
 	TRP3_Register_PeekInit();
 	TRP3_Register_DataExchangeInit();
 	TRP3_Register_TooltipInit();

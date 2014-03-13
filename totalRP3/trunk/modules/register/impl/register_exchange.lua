@@ -52,7 +52,6 @@ local function createVernumQuery()
 	tinsert(query, TRP3_GetProfileID());
 	tinsert(query, get("player/characteristics").v);
 	tinsert(query, get("player/about").v);
-	tinsert(query, get("player/style").v);
 	tinsert(query, get("player/misc").v);
 	return query;
 end
@@ -86,7 +85,6 @@ end
 local infoTypeTab = {
 	TRP3_RegisterInfoTypes.CHARACTERISTICS,
 	TRP3_RegisterInfoTypes.ABOUT,
-	TRP3_RegisterInfoTypes.STYLE,
 	TRP3_RegisterInfoTypes.MISC
 };
 
@@ -152,8 +150,6 @@ local function incomingInformationType(informationType, senderID)
 		data = TRP3_RegisterCharacteristicsGetExchangeData();
 	elseif informationType == TRP3_RegisterInfoTypes.ABOUT then
 		data = TRP3_RegisterAboutGetExchangeData();
-	elseif informationType == TRP3_RegisterInfoTypes.STYLE then
-		data = TRP3_RegisterRPStyleGetExchangeData();
 	elseif informationType == TRP3_RegisterInfoTypes.MISC then
 		data = TRP3_RegisterMiscGetExchangeData();
 	end
