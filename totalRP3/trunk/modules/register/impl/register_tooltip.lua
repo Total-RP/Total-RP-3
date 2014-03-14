@@ -17,8 +17,8 @@ local getConfigValue = TRP3_CONFIG.getValue;
 local setConfigValue = TRP3_CONFIG.setValue;
 local registerConfigKey = TRP3_CONFIG.registerConfigKey;
 local strconcat = strconcat;
-local getCharacter = TRP3_REGISTER.getCharacter;
-local getCharacter = TRP3_REGISTER.getCharacter;
+local getOtherCharacter = TRP3_REGISTER.getCharacter;
+local getYourCharacter = TRP3_PROFILE.getCharacter;
 local IsUnitIDKnown = TRP3_IsUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 
@@ -167,10 +167,19 @@ local function getCharacterInfoTab(unitID)
 	return {};
 end
 
+local function getCharacter(unitID)
+	if unitID == Globals.player_id then
+		return getYourCharacter();
+	else
+		return getOtherCharacter(unitID);
+	end
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local lineIndex = 1;
 	local info = getCharacterInfoTab(targetID);
+	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -203,13 +212,10 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			rightIcons = strconcat(rightIcons, Utils.str.icon(PVP_ICON, 25));
 		end
 		-- Beginner icon / volunteer icon
-		if info.style and info.style.VA then
-			if info.style.VA["1"] and info.style.VA["1"] == 1 then
-				rightIcons = strconcat(Utils.str.icon(BEGINNER_ICON, 25), rightIcons);
-			end
-			if info.style.VA["4"] and info.style.VA["4"] == 1 then
-				rightIcons = strconcat(Utils.str.icon(VOLUNTEER_ICON, 25), rightIcons);
-			end
+		if character.XP == 1 then
+			rightIcons = strconcat(Utils.str.icon(BEGINNER_ICON, 25), rightIcons);
+		elseif character.XP == 3 then
+			rightIcons = strconcat(Utils.str.icon(VOLUNTEER_ICON, 25), rightIcons);
 		end
 	end
 
@@ -296,16 +302,12 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	-- CURRENTLY
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showCurrently() and info.misc and info.misc.CU then
-		if info.misc.CO then
-			ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENTOOC"), 1, 1, 1);
-		else
-			ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
-		end
+	if showCurrently() and character.CU and character.CU:len() > 0 then
+		ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 		
-		local text = info.misc.CU;
+		local text = character.CU;
 		if text:len() > getCurrentMaxSize() then
 			text = text:sub(1, getCurrentMaxSize()) .. "...";
 		end
@@ -353,7 +355,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if targetID == Globals.player_id then
 			text = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
 		elseif IsUnitIDKnown(targetID) then
-			local character = getCharacter(targetID);
 			if character.client then
 				text = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end

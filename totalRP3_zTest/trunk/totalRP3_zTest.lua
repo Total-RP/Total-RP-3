@@ -21,7 +21,7 @@ end
 
 function TRP3_DEBUG_CLEAR()
 	TRP3_Profiles = nil;
-	TRP3_ProfileLinks = nil;
+	TRP3_Characters = nil;
 	TRP3_Flyway = nil;
 	TRP3_Register = nil;
 	ReloadUI();

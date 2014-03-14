@@ -17,7 +17,7 @@ local assert = assert;
 local displayMessage = Utils.message.displayMessage;
 
 -- Saved variables references
-local profiles, profilesLinks;
+local profiles, profilesLinks, character;
 
 local PATH_DELIMITER = "/";
 local currentProfile = nil;
@@ -61,7 +61,7 @@ TRP3_PROFILE.getDataDefault = getDataDefault;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
--- For decoupling reasons, the saved variables TRP3_Profiles and TRP3_ProfileLinks should'nt be used outside this file !
+-- For decoupling reasons, the saved variables TRP3_Profiles and TRP3_Characters should'nt be used outside this file !
 -- You should use all the public methods instead.
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -294,6 +294,14 @@ local function onActionClicked(button)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Character
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+TRP3_PROFILE.getCharacter = function()
+	return character;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -303,10 +311,16 @@ function TRP3_InitProfiles()
 		TRP3_Profiles = {};
 	end
 	profiles = TRP3_Profiles;
-	if not TRP3_ProfileLinks then
-		TRP3_ProfileLinks = {};
+	if not TRP3_Characters then
+		TRP3_Characters = {};
 	end
-	profilesLinks = TRP3_ProfileLinks;
+	if not TRP3_Characters.profilesLinks then
+		TRP3_Characters.profilesLinks = {};
+	end
+	if not TRP3_Characters.characters then
+		TRP3_Characters.characters = {};
+	end
+	profilesLinks = TRP3_Characters.profilesLinks;
 	
 	-- First time this character is connected with TRP3 or if deleted profile through another character
 	-- So we create a new profile named by his pseudo.
@@ -315,6 +329,11 @@ function TRP3_InitProfiles()
 	else
 		selectProfile(profilesLinks[Globals.player_id]);
 	end
+	
+	if not TRP3_Characters.characters[Globals.player_id] then
+		TRP3_Characters.characters[Globals.player_id] = {};
+	end
+	character = TRP3_Characters.characters[Globals.player_id];
 	
 	-- UI
 	TRP3_HandleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);
