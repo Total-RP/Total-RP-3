@@ -218,6 +218,10 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			rightIcons = strconcat(Utils.str.icon(VOLUNTEER_ICON, 25), rightIcons);
 		end
 	end
+	
+	if character.RP ~= 1 then
+		completeName = completeName .. "|cffff0000 " .. loc("REG_TT_OOC");
+	end
 
 	ui_CharacterTT:AddDoubleLine(leftIcons .. " " .. completeName, rightIcons);
 	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());

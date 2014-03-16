@@ -17,6 +17,7 @@ local numberToHexa = Utils.color.numberToHexa;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local Log = Utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -480,18 +481,25 @@ local function sendVote(voteValue)
 end
 
 -- Someone vote for your description
-local function vote(sender, value)
+local function vote(value, sender)
+	Log.log(("Receive vote from %s: %s"):format(sender, value));
 	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
 end
 
 -- Your vote has been registered
-local function voteResponse(sender, value)
+local function voteResponse(value, sender)
 	local value = tonumber(value);
-	local context = TRP3_GetCurrentPageContext();
-	assert(context, "No context for page player_main !");
-	if context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
-		TRP3_GetUnitProfile(context.unitID).about.vote = value;
-		refreshVoteDisplay(TRP3_GetUnitProfile(context.unitID).about);
+	if TRP3_IsUnitIDKnown(sender) and TRP3_HasProfile(sender) and TRP3_GetUnitProfile(sender).about then
+		TRP3_GetUnitProfile(sender).about.vote = value;
+		local playerName = unitIDToInfo(sender);
+		Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_SENDING_OK"):format(playerName));
+		if TRP3_GetCurrentPageID() == "player_main" then
+			local context = TRP3_GetCurrentPageContext();
+			assert(context, "No context for page player_main !");
+			if context.unitID == sender then
+				refreshVoteDisplay(TRP3_GetUnitProfile(sender).about);
+			end
+		end
 	end
 end
 

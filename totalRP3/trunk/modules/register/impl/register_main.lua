@@ -25,6 +25,7 @@ local UnitSex = UnitSex;
 local time = time;
 local GetGuildInfo = GetGuildInfo;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
+local getPlayerCharacter = TRP3_PROFILE.getCharacter;
 
 -- Saved variables references
 local profiles;
@@ -37,7 +38,8 @@ local characters;
 TRP3_RegisterInfoTypes = {
 	CHARACTERISTICS = "characteristics",
 	ABOUT = "about",
-	MISC = "misc"
+	MISC = "misc",
+	CHARACTER = "character",
 }
 
 getDefaultProfile().player = {};
@@ -126,11 +128,19 @@ TRP3_REGISTER.setMainInfo = setMainInfo;
 
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_RegisterSetInforType(unitID, informationType, data)
-	local profile = getProfile(unitID, true);
-	if profile[informationType] then
-		wipe(profile[informationType]);
+	if informationType == TRP3_RegisterInfoTypes.CHARACTER then
+		local character = getCharacter(unitID);
+		character.v = data.v or 1;
+		character.CU = data.CU;
+		character.RP = data.RP;
+		character.XP = data.XP;
+	else
+		local profile = getProfile(unitID, true);
+		if profile[informationType] then
+			wipe(profile[informationType]);
+		end
+		profile[informationType] = data;
 	end
-	profile[informationType] = data;
 end
 
 --- Raises error if KNOWN unitID
@@ -151,11 +161,16 @@ local function getCurrentProfile(unitID)
 end
 TRP3_REGISTER.getCurrentProfile = getCurrentProfile;
 
---- Raises error if unknown unitID or unit hasn't profile ID or no profile exists
+--- Raises error if unknown unitID
 function TRP3_RegisterShouldUpdateInfo(unitID, infoType, version)
 	local character = getCharacter(unitID);
-	local profile = getProfile(unitID);
-	return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
+	if infoType == TRP3_RegisterInfoTypes.CHARACTER then
+		return not character.v or character.v ~= version;
+	else
+		--- Raises error if unit hasn't profile ID or no profile exists
+		local profile = getProfile(unitID);
+		return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
+	end
 end
 
 function TRP3_GetCharacterList()
@@ -184,6 +199,10 @@ local function getMiscData(unitID)
 	return profile.misc;
 end
 TRP3_REGISTER.getMiscData = getMiscData;
+
+TRP3_REGISTER.getCharacterExchangeData = function()
+	return getPlayerCharacter();
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools

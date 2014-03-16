@@ -17,6 +17,8 @@ local UnitFactionGroup = UnitFactionGroup;
 local tinsert = tinsert;
 local type = type;
 local time = time;
+local getPlayerCharacter = TRP3_PROFILE.getCharacter;
+local getCharacterExchangeData = TRP3_REGISTER.getCharacterExchangeData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -53,6 +55,7 @@ local function createVernumQuery()
 	tinsert(query, get("player/characteristics").v);
 	tinsert(query, get("player/about").v);
 	tinsert(query, get("player/misc").v);
+	tinsert(query, getPlayerCharacter().v or 1);
 	return query;
 end
 
@@ -85,7 +88,8 @@ end
 local infoTypeTab = {
 	TRP3_RegisterInfoTypes.CHARACTERISTICS,
 	TRP3_RegisterInfoTypes.ABOUT,
-	TRP3_RegisterInfoTypes.MISC
+	TRP3_RegisterInfoTypes.MISC,
+	TRP3_RegisterInfoTypes.CHARACTER
 };
 
 --- Incoming vernum query
@@ -152,6 +156,8 @@ local function incomingInformationType(informationType, senderID)
 		data = TRP3_RegisterAboutGetExchangeData();
 	elseif informationType == TRP3_RegisterInfoTypes.MISC then
 		data = TRP3_RegisterMiscGetExchangeData();
+	elseif informationType == TRP3_RegisterInfoTypes.CHARACTER then
+		data = getCharacterExchangeData();
 	end
 	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
 end

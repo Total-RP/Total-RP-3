@@ -7,20 +7,33 @@
 TRP3_DASHBOARD = {};
 local loc = TRP3_L;
 local getcharacter = TRP3_PROFILE.getCharacter;
+local Utils = TRP3_UTILS;
 
 local function onStatusChange(status)
 	local character = getcharacter();
+	local old = character.RP;
 	character.RP = status;
+	if old ~= status then
+		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+	end
 end
 
 local function onStatusXPChange(status)
 	local character = getcharacter();
+	local old = character.XP;
 	character.XP = status;
+	if old ~= status then
+		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+	end
 end
 
 local function onCurrentlyChanged()
 	local character = getcharacter();
+	local old = character.CU;
 	character.CU = TRP3_DashboardStatus_Currently:GetText();
+	if old ~= character.CU then
+		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+	end
 end
 
 local function onShow(context)
