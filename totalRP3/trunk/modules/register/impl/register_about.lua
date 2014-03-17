@@ -18,6 +18,7 @@ local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
+local getConfigValue = TRP3_CONFIG.getValue;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -483,6 +484,11 @@ end
 -- Someone vote for your description
 local function vote(value, sender)
 	Log.log(("Receive vote from %s: %s"):format(sender, value));
+	local about = get("player/about");
+	if not about.vote then
+		about.vote = {};
+	end
+	about.vote[sender] = value;
 	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
 end
 
@@ -559,14 +565,37 @@ local templatesFunction = {
 	showTemplate3
 }
 
+local function aggregateVotes(voteData)
+	local voteUp = 0;
+	local voteDown = 0;
+	for voter, vote in pairs(voteData or {}) do
+		if vote == 1 then
+			voteUp = voteUp + 1;
+		elseif vote == -1 then
+			voteDown = voteDown + 1;
+		end
+	end
+	return voteUp, voteDown;
+end
+
 local function refreshConsultDisplay(context)
 	local dataTab = nil;
 	local template = nil;
 	TRP3_RegisterAbout_AboutPanel.isMine = nil;
+	TRP3_RegisterAbout_AboutPanel_ThumbResult:Hide();
+	TRP3_RegisterAbout_AboutPanel_ThumbUp:Hide();
+	TRP3_RegisterAbout_AboutPanel_ThumbDown:Hide();
+	
 	if context.unitID == Globals.player_id then
 		dataTab = get("player/about");
 		template = dataTab.TE or 1;
 		TRP3_RegisterAbout_AboutPanel.isMine = true;
+		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
+		local voteUp, voteDown = aggregateVotes(dataTab.vote);
+		TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
+			"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
+			loc("REG_PLAYER_ABOUT_VOTES_R"):format(voteUp, voteDown)
+		);
 	else
 		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
 			dataTab = TRP3_GetUnitProfile(context.unitID).about;
@@ -576,6 +605,8 @@ local function refreshConsultDisplay(context)
 			dataTab = {};
 			template = 1;
 		end
+		TRP3_RegisterAbout_AboutPanel_ThumbUp:Show();
+		TRP3_RegisterAbout_AboutPanel_ThumbDown:Show();
 		refreshVoteDisplay(dataTab);
 	end
 
@@ -752,10 +783,11 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onPlayerAboutRefresh()
+	if getConfigValue("register_about_use_vote") then
+		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
+	end
 	if TRP3_RegisterAbout_AboutPanel.isMine then
 		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
-	else
-		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.musicURL then
 		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_MusicPlayer, TRP3_RegisterAbout_AboutPanel);
@@ -843,8 +875,10 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3",1,1,1);
 
+	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
+	
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() sendVote(1) end);

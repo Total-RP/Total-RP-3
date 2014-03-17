@@ -26,6 +26,8 @@ local time = time;
 local GetGuildInfo = GetGuildInfo;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local getPlayerCharacter = TRP3_PROFILE.getCharacter;
+local Config = TRP3_CONFIG;
+local registerConfigKey = Config.registerConfigKey;
 
 -- Saved variables references
 local profiles;
@@ -313,6 +315,24 @@ function TRP3_UI_InitRegister()
 			showTabs(context);
 		end,
 	});
+	
+	registerConfigKey("register_about_use_vote", true);
+	
+	-- Build configuration page
+	local CONFIG_STRUCTURE = {
+		id = "main_config_register",
+		marginLeft = 10,
+		menuText = loc("CO_REGISTER"),
+		pageText = loc("CO_REGISTER"),
+		elements = {
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_REGISTER_ABOUT_VOTE"),
+				configKey = "register_about_use_vote",
+			},
+		}
+	};
+	Config.registerConfigurationPage(CONFIG_STRUCTURE);
 
 	TRP3_Register_CharInit();
 	TRP3_Register_AboutInit();

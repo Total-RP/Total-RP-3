@@ -626,6 +626,11 @@
 									<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
 								</Anchors>
 								<Frames>
+									<Button name="TRP3_RegisterAbout_AboutPanel_ThumbResult" inherits="TRP3_IconButton">
+										<Anchors>
+											<Anchor point="CENTER" x="0" y="0"/>
+										</Anchors>
+									</Button>
 									<Button name="TRP3_RegisterAbout_AboutPanel_ThumbUp" inherits="TRP3_IconButton">
 										<Anchors>
 											<Anchor point="BOTTOMRIGHT" x="-13" y="13"/>
