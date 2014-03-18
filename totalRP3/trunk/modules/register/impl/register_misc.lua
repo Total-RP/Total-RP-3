@@ -16,6 +16,7 @@ local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local tinsert = tinsert;
 local pairs = pairs;
+local type = type;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -97,10 +98,12 @@ local function onEditStyle(choice, frame)
 	assert(frame.fieldData, "No data in frame !");
 	local context = TRP3_GetCurrentPageContext();
 	assert(context, "No context for page player_main !");
-	assert(context.unitID == Globals.player_id, "Trying to edit someone else style !");
 	if context.unitID == Globals.player_id then
 		local dataTab = get("player/misc");
 		dataTab.ST[frame.fieldData.id] = choice;
+		-- version increment
+		assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+		dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	end
 end
 
@@ -123,6 +126,7 @@ local function displayRPStyle(context)
 	end
 	
 	local previous = nil;
+	local count = 0;
 	for index, fieldData in pairs(STYLE_FIELDS) do
 		local frame = styleLines[index];
 		if frame == nil then
@@ -131,23 +135,50 @@ local function displayRPStyle(context)
 			frame.fieldData = fieldData;
 			tinsert(styleLines, frame);
 		end
-		-- Position
-		frame:ClearAllPoints();
-		if previous == nil then
-			frame:SetPoint("TOPLEFT", TRP3_RegisterMiscViewRPStyle, "TOPLEFT", 25, -20);
-		else
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
-		end
-		frame:SetPoint("LEFT", 0, 0);
-		frame:SetPoint("RIGHT", 0, 0);
 		
-		-- Value
 		local selectedValue = styleData[fieldData.id] or 0;
-		_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
-		_G[frame:GetName().."Values"]:SetSelectedValue(selectedValue);
 		
-		frame:Show();
-		previous = frame;
+		if context.unitID == Globals.player_id or selectedValue ~= 0 then
+			-- Position
+			frame:ClearAllPoints();
+			if previous == nil then
+				frame:SetPoint("TOPLEFT", TRP3_RegisterMiscViewRPStyle, "TOPLEFT", 25, -20);
+			else
+				frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+			end
+			frame:SetPoint("LEFT", 0, 0);
+			frame:SetPoint("RIGHT", 0, 0);
+			
+			-- Value
+			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
+			local dropDown = _G[frame:GetName().."Values"];
+			local readOnlyValue = _G[frame:GetName().."FieldValue"];
+			if context.unitID == Globals.player_id then
+				dropDown:SetSelectedValue(selectedValue);
+				dropDown:Show();
+				readOnlyValue:Hide();
+			else
+				dropDown:Hide();
+				readOnlyValue:Show();
+				local valueText = nil;
+				for _, data in pairs(fieldData.values) do
+					if data[2] == selectedValue then
+						valueText = data[1];
+						break;
+					end
+				end
+				readOnlyValue:SetText(valueText);
+			end
+			
+			frame:Show();
+			previous = frame;
+			count = count + 1;
+		end
+	end
+	
+	TRP3_RegisterMiscViewRPStyleEmpty:Hide();
+	if context.unitID ~= Globals.player_id and count == 0 then
+		TRP3_RegisterMiscViewRPStyleEmpty:Show();
 	end
 end
 
@@ -275,14 +306,12 @@ end
 function TRP3_Register_PeekInit()
 	buildStyleStructure();
 	
-	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewCurrent, loc("REG_PLAYER_CURRENT"), 150);
 	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscEdit_Current, loc("REG_PLAYER_CURRENT"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscEdit_Glance, loc("REG_PLAYER_GLANCE"), 150);
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
+	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
 	
 	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
 	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", applyPeek);

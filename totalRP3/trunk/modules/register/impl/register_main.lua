@@ -28,6 +28,8 @@ local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local getPlayerCharacter = TRP3_PROFILE.getCharacter;
 local Config = TRP3_CONFIG;
 local registerConfigKey = Config.registerConfigKey;
+local Events = TRP3_EVENTS;
+local assert = assert;
 
 -- Saved variables references
 local profiles;
@@ -103,16 +105,17 @@ function TRP3_RegisterSetCurrentProfile(unitID, currentProfileID)
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	if oldProfileID ~= currentProfileID then
-		TRP3_ShouldRefreshTooltip(unitID);
+		Events.fireEvent(Events.REGISTER_EXCHANGE_PROFILE_CHANGED, unitID, currentProfileID);
 	end
 	getProfile(unitID, true); -- Already create the profile if missing
 end
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetClient(unitID, client, clientVersion)
+function TRP3_RegisterSetClient(unitID, client, clientVersion, msp)
 	local character = getCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
+	character.msp = msp;
 end
 
 --- Raises error if unknown unitName
@@ -143,6 +146,7 @@ function TRP3_RegisterSetInforType(unitID, informationType, data)
 		end
 		profile[informationType] = data;
 	end
+	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, unitID, informationType);
 end
 
 --- Raises error if KNOWN unitID
@@ -271,6 +275,22 @@ local function showTabs(context)
 	tabGroup:SelectTab(1);
 end
 
+local function onReceivedInfo(unitID, infoType)
+	if TRP3_GetCurrentPageID() == "player_main" then
+		local context = TRP3_GetCurrentPageContext();
+		assert(context, "No context for page player_main !");
+		if unitID == context.unitID then
+			if infoType == TRP3_RegisterInfoTypes.ABOUT and tabGroup.current == 2 then
+				TRP3_onPlayerAboutShow();
+			elseif  infoType == TRP3_RegisterInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
+				TRP3_onCharacteristicsShown();
+			elseif  infoType == TRP3_RegisterInfoTypes.MISC and tabGroup.current == 3 then
+				TRP3_onPlayerPeekShow();
+			end
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -299,6 +319,8 @@ function TRP3_InitRegister()
 end
 
 function TRP3_UI_InitRegister()
+	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
+
 	TRP3_RegisterMenu({
 		id = "main_10_player",
 		text = Globals.player,

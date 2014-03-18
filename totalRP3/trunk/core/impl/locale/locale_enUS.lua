@@ -157,6 +157,7 @@ local LOCALE_EN = {
 		REG_PLAYER_STYLE_BATTLE_2 = "TRP Dice battle",
 		REG_PLAYER_STYLE_BATTLE_3 = "/rand battle",
 		REG_PLAYER_STYLE_BATTLE_4 = "Emote battle",
+		REG_PLAYER_STYLE_EMPTY = "No roleplay attribute shared",
 		REG_PLAYER_PEEK = "Miscellaneous",
 		REG_PLAYER_CURRENT = "Currently",
 		REG_PLAYER_CURRENTOOC = "Currently (OOC)",

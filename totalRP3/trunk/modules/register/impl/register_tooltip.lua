@@ -21,6 +21,7 @@ local getOtherCharacter = TRP3_REGISTER.getCharacter;
 local getYourCharacter = TRP3_PROFILE.getCharacter;
 local IsUnitIDKnown = TRP3_IsUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
+local Events = TRP3_EVENTS;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -170,9 +171,10 @@ end
 local function getCharacter(unitID)
 	if unitID == Globals.player_id then
 		return getYourCharacter();
-	else
+	elseif TRP3_IsUnitIDKnown(unitID) then
 		return getOtherCharacter(unitID);
 	end
+	return {};
 end
 
 --- The complete character's tooltip writing sequence.
@@ -410,7 +412,7 @@ local function onMouseOver()
 	show("mouseover");
 end
 
-function TRP3_ShouldRefreshTooltip(targetID)
+local function refreshIfNeeded(targetID)
 	local mouseID = getUnitID("mouseover");
 	if mouseID == targetID then
 		onMouseOver();
@@ -441,6 +443,8 @@ function TRP3_Register_TooltipInit()
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
+	
+	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
 	
 	-- Config default value
 	registerConfigKey(CONFIG_CHARACT_USE, true);

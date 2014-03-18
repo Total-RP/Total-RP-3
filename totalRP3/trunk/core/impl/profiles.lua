@@ -17,7 +17,7 @@ local assert = assert;
 local displayMessage = Utils.message.displayMessage;
 
 -- Saved variables references
-local profiles, profilesLinks, character;
+local profiles, character, characters;
 
 local PATH_DELIMITER = "/";
 local currentProfile = nil;
@@ -99,7 +99,7 @@ local function selectProfile(profileID)
 	end
 	currentProfile = profiles[profileID];
 	currentProfileId = profileID;
-	profilesLinks[Globals.player_id] = profileID;
+	character.profileID = profileID;
 	for _, callback in pairs(SELECT_CALLBACKS) do
 		callback();
 	end
@@ -138,7 +138,7 @@ end
 
 -- This method has to handle everything when the player switch to another profile
 function TRP3_LoadProfile()
-	displayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[profilesLinks[Globals.player_id]]["profileName"].."|r"));
+	displayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[character.profileID]["profileName"].."|r"));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -167,8 +167,8 @@ local function decorateProfileList(widget, id)
 	
 	local listText = "";
 	local i = 0;
-	for characterID, profileID in pairs(profilesLinks) do
-		if profileID == id then
+	for characterID, characterInfo in pairs(characters) do
+		if characterInfo.profileID == id then
 			local charactName, charactRealm = unitIDToInfo(characterID);
 			listText = listText.."- |cff00ff00"..charactName.." ( "..charactRealm.." )|r\n";
 			i = i + 1;
@@ -242,7 +242,7 @@ local function uiEditProfile(profileID)
 end
 
 local function uiSelectProfile(profileID)
-	if profilesLinks[Globals.player_id] == profileID then
+	if character.profileID == profileID then
 		return;
 	end
 	selectProfile(profileID);
@@ -314,26 +314,20 @@ function TRP3_InitProfiles()
 	if not TRP3_Characters then
 		TRP3_Characters = {};
 	end
-	if not TRP3_Characters.profilesLinks then
-		TRP3_Characters.profilesLinks = {};
+	characters = TRP3_Characters;
+	
+	if not characters[Globals.player_id] then
+		characters[Globals.player_id] = {};
 	end
-	if not TRP3_Characters.characters then
-		TRP3_Characters.characters = {};
-	end
-	profilesLinks = TRP3_Characters.profilesLinks;
+	character = characters[Globals.player_id];
 	
 	-- First time this character is connected with TRP3 or if deleted profile through another character
 	-- So we create a new profile named by his pseudo.
-	if not profilesLinks[Globals.player_id] or not profiles[profilesLinks[Globals.player_id]] then
+	if not character.profileID or not profiles[character.profileID] then
 		selectProfile(createProfile(Globals.player .. " - " .. Globals.player_realm));
 	else
-		selectProfile(profilesLinks[Globals.player_id]);
+		selectProfile(character.profileID);
 	end
-	
-	if not TRP3_Characters.characters[Globals.player_id] then
-		TRP3_Characters.characters[Globals.player_id] = {};
-	end
-	character = TRP3_Characters.characters[Globals.player_id];
 	
 	-- UI
 	TRP3_HandleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);

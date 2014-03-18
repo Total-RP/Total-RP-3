@@ -14,6 +14,10 @@ local tcopy = Utils.table.copy;
 local loc = TRP3_L;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local Events = TRP3_EVENTS;
+local assert = assert;
+local type = type;
+local wipe = wipe;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -553,9 +557,6 @@ end
 local function saveCharacteristics()
 	saveInDraft();
 	
-	--TODO: check size and warn if too long
-	local characteristicsSize = Comm.estimateStructureLoad(draftData);
-	
 	local dataTab = get("player/characteristics");
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	wipe(dataTab);
@@ -566,6 +567,7 @@ local function saveCharacteristics()
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	
 	compressData();
+	Events.fireEvent(Events.REGISTER_CHARACTERISTICS_SAVED);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

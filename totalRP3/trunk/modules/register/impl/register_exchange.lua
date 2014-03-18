@@ -9,6 +9,7 @@ local Utils = TRP3_UTILS;
 local get = TRP3_PROFILE.getData;
 local Comm = TRP3_COMM;
 local log = Utils.log.log;
+local Events = TRP3_EVENTS;
 -- WoW API
 local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
@@ -126,7 +127,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		if not TRP3_IsUnitIDKnown(senderID) then
 			TRP3_RegisterAddCharacter(senderID);
 		end
-		TRP3_RegisterSetClient(senderID, Globals.clients.TRP3, senderVersionText);
+		TRP3_RegisterSetClient(senderID, Globals.addon_name, senderVersionText, false);
 		TRP3_RegisterSetCurrentProfile(senderID, senderProfileID);
 
 		-- Query specific data, depending on version number.
@@ -176,7 +177,6 @@ local function incomingInformationTypeSent(structure, senderID)
 		decodedData = Utils.serial.decompressCodedStructure(decodedData);
 	end
 	TRP3_RegisterSetInforType(senderID, informationType, decodedData);
-	TRP3_ShouldRefreshTooltip(senderID);
 	
 	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 end
@@ -214,6 +214,20 @@ local function onTargetChanged(...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Check size
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local ALERT_FOR_SIZE = 20;
+
+local function checkPlayerDataWeight()
+	local totalData = {TRP3_RegisterCharacteristicsGetExchangeData(), TRP3_RegisterAboutGetExchangeData(), TRP3_RegisterMiscGetExchangeData(), getCharacterExchangeData()};
+	local computedSize = Comm.estimateStructureLoad(totalData);
+	if computedSize > ALERT_FOR_SIZE then
+		log(("Profile to heavy ! It would take %s messages to send."):format(computedSize));
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -222,6 +236,8 @@ function TRP3_Register_DataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
+	
+	Events.listenToEvents({Events.REGISTER_ABOUT_SAVED, Events.REGISTER_CHARACTERISTICS_SAVED}, checkPlayerDataWeight);
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);

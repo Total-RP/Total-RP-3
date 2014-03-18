@@ -19,6 +19,10 @@ local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
 local getConfigValue = TRP3_CONFIG.getValue;
+local Events = TRP3_EVENTS;
+local assert = assert;
+local type = type;
+local wipe = wipe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -520,6 +524,8 @@ local function getOptimizedData()
 	-- Optimize : only send the selected template
 	local dataToSend = {};
 	tcopy(dataToSend, dataTab);
+	dataToSend.vote = nil; -- Don't send your votes ...
+	-- Don't send data about templates you don't use ...
 	local template = dataToSend.TE or 1;
 	if template ~= 1 then
 		dataToSend.T1 = nil;
@@ -655,9 +661,6 @@ end
 local function save()
 	saveInDraft();
 	
-	--TODO: check size and warn if too long
-	local aboutSize = Comm.estimateStructureLoad(draftData);
-	
 	local dataTab = get("player/about");
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
 	wipe(dataTab);
@@ -668,6 +671,7 @@ local function save()
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	
 	compressData();
+	Events.fireEvent(Events.REGISTER_ABOUT_SAVED);
 end
 
 local function refreshEditDisplay()

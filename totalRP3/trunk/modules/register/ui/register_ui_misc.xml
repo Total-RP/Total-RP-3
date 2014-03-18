@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
-	<Frame name="TRP3_RegisterRPStyleMain_Display_Line" virtual="true">
+	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
 		<Size x="0" y="30"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -20,21 +20,6 @@
 						<Anchor point="RIGHT" x="0" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-			</Layer>
-		</Layers>
-	</Frame>
-	
-	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
-		<Size x="0" y="30"/>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-				 	<Size x="220" y="10"/>
-					<Anchors>
-						<Anchor point="LEFT" x="0" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -147,6 +132,17 @@
 							<Anchor point="RIGHT" x="-3" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="TRP3_RegisterMiscViewRPStyleEmpty" text="[EMPTY]" inherits="GameFontNormalLarge">
+									<Size x="0" y="10"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+									<Color b="0.95" r="0.95" g="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
 						<Frames>
 							
 						</Frames>

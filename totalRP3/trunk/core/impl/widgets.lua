@@ -49,6 +49,7 @@ local function tabBar_onSelect(tabGroup, index)
 			_G[widget:GetName().."Right"]:SetHeight(tabBar_HEIGHT_SELECTED);
 			widget:GetHighlightTexture():SetAlpha(0.7);
 			widget:GetHighlightTexture():SetDesaturated(1);
+			tabGroup.current = index;
 		else
 			widget:SetAlpha(0.85);
 			widget:Enable();
