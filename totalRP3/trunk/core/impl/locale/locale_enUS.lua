@@ -186,10 +186,6 @@ local LOCALE_EN = {
 		CO_GENERAL = "General settings",
 		CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
 		CO_GENERAL_LOCALE = "Addon locale",
-		CO_GENERAL_MM = "Minimap button",
-		CO_GENERAL_MM_USE = "Frame to use",
-		CO_GENERAL_MM_DISTANCE = "Distance from center",
-		CO_GENERAL_MM_ROTATION = "Rotation",
 		CO_TOOLTIP = "Tooltip settings",
 		CO_TOOLTIP_USE = "Use custom tooltip for character",
 		CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -332,6 +328,9 @@ local LOCALE_EN = {
 		CM_CLASS_DRUID = "Druid",
 		CM_CLASS_UNKNOWN = "Unknown",
 		CM_APPLY = "Apply",
+		-- Minimap
+		MM_SHOW_HIDE_MAIN= "Show/hide the main frame";
+		MM_SHOW_HIDE_SHORTCUT= "Show/hide the shortcut bar";
 	},
 };
 

@@ -239,31 +239,6 @@ local function generalInit()
 				listWidth = nil,
 				listCancel = true,
 			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc("CO_GENERAL_MM"),
-			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = loc("CO_GENERAL_MM_USE"),
-				configKey = "MiniMapToUse",
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_GENERAL_MM_DISTANCE"),
-				configKey = "MiniMapIconPosition",
-				min = 0,
-				max = 120,
-				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_GENERAL_MM_ROTATION"),
-				configKey = "MiniMapIconDegree",
-				min = 0,
-				max = 360,
-				integer = true,
-			},
 		}
 	}
 	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);

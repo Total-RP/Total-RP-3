@@ -1,54 +1,65 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
+-- Total RP 3, by Telkostrasz & Ellypse(Kirin Tor - Eu/Fr)
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Minimap button widget
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Total RP 3, by Telkostrasz & Ellypse (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Minimap button widget
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local getConfigValue = TRP3_CONFIG.getValue;
-local setConfigValue = TRP3_CONFIG.setValue;
-local registerConfigKey = TRP3_CONFIG.registerConfigKey;
-local TRP3_MinimapButton = TRP3_MinimapButton;
-local _G = _G;
-local sin = sin;
-local cos = cos;
-local error = error;
-local Minimap = Minimap;
-local registerHandler = TRP3_CONFIG.registerHandler;
+local loc = TRP3_L;
 
--- Refresh the minimap icon position
-local function placeMinimapIcon()
-	local minimap = _G[getConfigValue("MiniMapToUse")];
-	minimap = minimap or Minimap or error("No MiniMap to anchor button.");
-	
-	local x = sin(getConfigValue("MiniMapIconDegree"))*getConfigValue("MiniMapIconPosition");
-	local y = cos(getConfigValue("MiniMapIconDegree"))*getConfigValue("MiniMapIconPosition");
-	TRP3_MinimapButton:SetParent(minimap);
-	TRP3_MinimapButton:SetPoint("CENTER", minimap, "CENTER", x, y);
+-- Loading LDBIcon library
+local libDBIcon = LibStub("LibDBIcon-1.0")
 
+
+-- Initialize the minimap icon button
+function TRP3_InitMinimapButton(addon)
+
+	-- Create the minimap button, a LibDB object
+	local TRP3_MinimapButton = LibStub("LibDataBroker-1.1"):NewDataObject("TRP3_MinimapButton", {
+		type = "launcher", 	-- Indicates that this object is a launcher data source and does not provide any data to be rendered in an always-up frame
+		tocname = "totalRP3", -- The name of the addon providing the launcher. Used by displays to get TOC metadata about the addon
+		icon = "Interface\\AddOns\\totalRP3\\resources\\trp3minimap.tga",
+		OnClick = function(clickedframe, button)			
+			if button == "RightButton" then
+				TRP3_SwitchToolbar();
+			else
+				TRP3_SwitchMainFrame();
+			end
+		end,
+		OnLoad = function() self:RegisterForClicks("LeftButtonUp","RightButtonUp"); end,
+		OnTooltipShow = function(tooltip)
+		-- Function called by the object to display its tooltip.
+		-- The display will manage positioning, clearing and showing the tooltip, 
+		-- all this handler needs to do is populate the tooltip using :AddLine or similar. 
+	    TRP3_MinimapTooltip(tooltip)
+	    end,
+	});
+
+	-- Create a saved variable for the minimap object
+	-- Using profile means every character can have the minimap button
+	-- in a different place
+	addon.db = LibStub("AceDB-3.0"):New("TRP3_Configuration", {
+		profile = {
+			minimap = {
+				hide = false,
+			},
+		},
+	});
+	libDBIcon:Register("TRP3_MinimapButton", TRP3_MinimapButton, addon.db.profile.minimap)
 end
 
-local function onConfigChanged()
-	placeMinimapIcon();
+-- Populates the LDB tooltip
+function TRP3_MinimapTooltip(tooltip)
+	tooltip:AddLine("Total RP 3")
+    tooltip:AddLine(loc("CM_R_CLICK").." : "..loc("MM_SHOW_HIDE_MAIN"));
+    tooltip:AddLine(loc("CM_L_CLICK").." : "..loc("MM_SHOW_HIDE_SHORTCUT"));
 end
 
--- Init the minimap icon button.
-function TRP3_InitMinimapButton()
-	registerConfigKey("MiniMapToUse", "Minimap");
-	registerConfigKey("MiniMapIconDegree", 210);
-	registerConfigKey("MiniMapIconPosition", 80);
-	registerHandler("MiniMapToUse", onConfigChanged);
-	registerHandler("MiniMapIconDegree", onConfigChanged);
-	registerHandler("MiniMapIconPosition", onConfigChanged);
-	
-	TRP3_MinimapButton:RegisterForClicks("LeftButtonUp","RightButtonUp");
-	TRP3_MinimapButton:SetScript("OnClick", function(self, button)
-		if button == "RightButton" then
-			TRP3_SwitchToolbar();
-		else
-			TRP3_SwitchMainFrame();
-		end
-	end);
-	placeMinimapIcon();
-end

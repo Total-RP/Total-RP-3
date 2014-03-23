@@ -37,10 +37,10 @@ function Globals.addon:OnEnable()
 	-- Inits UI
 	TRP3_UI_InitToolbar();
 	TRP3_TARGET_FRAME.init();
+	TRP3_InitMinimapButton(self);
 	TRP3_UI_InitMainPage();
 	TRP3_UI_InitRegister();
 	TRP3_UI_InitPopups();
-	TRP3_InitMinimapButton();
 	TRP3_UI_InitConfiguration();
 	
 	TRP3_LoadProfile(); -- Load profile
