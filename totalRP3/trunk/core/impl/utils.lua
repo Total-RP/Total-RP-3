@@ -395,7 +395,7 @@ Utils.str.toHTML = function(text)
 		--		Log.log("after ("..(#before).."): "..after);
 
 		i = i+1;
-		if i == 200 then
+		if i == 500 then
 			log("HTML overfloooow !", Log.level.SEVERE);
 		end
 	end

@@ -14,7 +14,6 @@ local getUnitID = Utils.str.getUnitID;
 local get = TRP3_PROFILE.getData;
 local Config = TRP3_CONFIG;
 local getConfigValue = TRP3_CONFIG.getValue;
-local setConfigValue = TRP3_CONFIG.setValue;
 local registerConfigKey = TRP3_CONFIG.registerConfigKey;
 local strconcat = strconcat;
 local getOtherCharacter = TRP3_REGISTER.getCharacter;
@@ -509,6 +508,7 @@ function TRP3_Register_TooltipInit()
 				configKey = CONFIG_CHARACT_MAIN_SIZE,
 				min = 6,
 				max = 20,
+				step = 1,
 				integer = true,
 			},
 			{
@@ -517,6 +517,7 @@ function TRP3_Register_TooltipInit()
 				configKey = CONFIG_CHARACT_SUB_SIZE,
 				min = 6,
 				max = 20,
+				step = 1,
 				integer = true,
 			},
 			{
@@ -525,6 +526,7 @@ function TRP3_Register_TooltipInit()
 				configKey = CONFIG_CHARACT_TER_SIZE,
 				min = 6,
 				max = 20,
+				step = 1,
 				integer = true,
 			},
 			{
@@ -583,6 +585,7 @@ function TRP3_Register_TooltipInit()
 				configKey = CONFIG_CHARACT_CURRENT_SIZE,
 				min = 40,
 				max = 300,
+				step = 10,
 				integer = true,
 			},
 		}

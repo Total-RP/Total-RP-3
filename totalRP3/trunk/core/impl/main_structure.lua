@@ -69,6 +69,7 @@ local function buildMenu()
 				uiButton = CreateFrame("Button", "TRP3_MainFrameMenuButton"..index, TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
 				tinsert(uiMenuWidgets, uiButton);
 			end
+			local label = _G[uiButton:GetName().."Label"];
 			uiButton:Enable();
 			uiButton:UnlockHighlight();
 			
@@ -80,14 +81,16 @@ local function buildMenu()
 			if menuStructure.isChildOf then
 				uiButton:SetPoint("LEFT", 30, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				_G[uiButton:GetName().."Label"]:SetTextColor(1, 1, 1);
+				label:SetTextColor(1, 1, 1);
+				label:SetJustifyH(menuStructure.align or "RIGHT");
 			else
 				uiButton:SetPoint("LEFT", 0, y);
 				uiButton:SetPoint("RIGHT", -15, y);
-				_G[uiButton:GetName().."Label"]:SetTextColor(1, 0.75, 0);
+				label:SetTextColor(1, 0.75, 0);
+				label:SetJustifyH(menuStructure.align or "LEFT");
 			end
 			
-			_G[uiButton:GetName().."Label"]:SetText(menuStructure.text);
+			label:SetText(menuStructure.text);
 			uiButton:SetScript("OnClick", function()
 				TRP3_SelectMenu(id);
 			end);

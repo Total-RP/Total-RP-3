@@ -4,11 +4,15 @@
 
 -- Public accessor
 TRP3_EVENTS = {
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Total RP 3 events
-	REGISTER_EXCHANGE_PROFILE_CHANGED = "register_exchange_profile_changed",
-	REGISTER_EXCHANGE_RECEIVED_INFO = "register_exchange_received_info",
-	REGISTER_ABOUT_SAVED = "register_about_saved",
-	REGISTER_CHARACTERISTICS_SAVED = "register_charact_saved",
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Profiles changes
+	REGISTER_EXCHANGE_PROFILE_CHANGED = "\1",
+	REGISTER_EXCHANGE_RECEIVED_INFO = "\2",
+	REGISTER_MISC_SAVED = "\3",
+	REGISTER_ABOUT_SAVED = "\4",
+	REGISTER_CHARACTERISTICS_SAVED = "\5",
 };
 
 -- TRP3 API

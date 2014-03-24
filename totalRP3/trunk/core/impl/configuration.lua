@@ -31,12 +31,22 @@ end
 local defaultValues = {};
 local configHandlers = {};
 
-Config.registerHandler =  function (key, callback)
+local function registerHandler(key, callback)
 	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
 	if not configHandlers[key] then
 		configHandlers[key] = {};
 	end
 	tinsert(configHandlers[key], callback);
+end
+
+Config.registerHandler =  function (key, callback)
+	if type(key) == "table" then
+		for _, k in pairs(key) do
+			registerHandler(k, callback);
+		end
+	else
+		registerHandler(key, callback);
+	end
 end
 
 Config.setValue = function(key, value)
@@ -141,6 +151,8 @@ local function buildConfigurationPage(structure)
 			slider:SetMinMaxValues(min, max);
 			_G[widget:GetName().."SliderLow"]:SetText(min);
 			_G[widget:GetName().."SliderHigh"]:SetText(max);
+			slider:SetValueStep(element.step);
+			slider:SetObeyStepOnDrag(element.integer);
 			
 			local onChange = function(self, value)
 				if element.integer then

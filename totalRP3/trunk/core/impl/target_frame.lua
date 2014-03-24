@@ -4,8 +4,7 @@
 
 -- Public accessor
 TRP3_TARGET_FRAME = {};
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
 local loc = TRP3_L;
 local ui_TargetFrame = TRP3_TargetFrame;
 local ui_TargetFrameModel = TRP3_TargetFramePortraitModel;
@@ -23,8 +22,11 @@ local get = TRP3_PROFILE.getData;
 -- Business logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local currentTarget = nil;
+
 local function onTargetChanged(...)
 	local unitID = getUnitID("target");
+	currentTarget = unitID;
 	if unitID then
 		ui_TargetFrame:Show();
 		ui_TargetFrameModel:SetUnit("target");
@@ -61,4 +63,10 @@ TRP3_TARGET_FRAME.init = function()
 	isUnitIDKnown = TRP3_REGISTER.isUnitIDKnown;
 	
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
+	
+	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
+		if currentTarget == Globals.player_id then
+			onTargetChanged();
+		end
+	end);
 end

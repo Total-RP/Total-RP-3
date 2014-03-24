@@ -9,6 +9,9 @@ local loc = TRP3_L;
 local getcharacter = TRP3_PROFILE.getCharacter;
 local Utils = TRP3_UTILS;
 
+-- The variable which gonna make people cry : Currently status characters limit. :D
+local CURRENTLY_SIZE = 200;
+
 local function onStatusChange(status)
 	local character = getcharacter();
 	local old = character.RP;
@@ -51,6 +54,7 @@ TRP3_DASHBOARD.init = function()
 
 	TRP3_RegisterMenu({
 		id = "main_00_dashboard",
+		align = "CENTER",
 		text = TRP3_GLOBALS.addon_name,
 		onSelected = function() TRP3_SetPage("dashboard"); end,
 	});
@@ -67,6 +71,8 @@ TRP3_DASHBOARD.init = function()
 	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
 	TRP3_SetTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
+	
+	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
 	
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
 	local statusTab = {

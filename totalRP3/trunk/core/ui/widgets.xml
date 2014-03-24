@@ -95,10 +95,10 @@
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" text="This is a Category" inherits="GameFontNormalLeftBottom" wordwrap="false">
+				<FontString name="$parentLabel" text="This is a Category" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="16" y="4"/> 
-						<Anchor point="TOPRIGHT" x="-8" y="-4"/> 
+						<Anchor point="TOPRIGHT" x="-16" y="-4"/> 
 					</Anchors>					
 				</FontString>
 			</Layer>

@@ -239,6 +239,14 @@ local LOCALE_EN = {
 		CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
 		CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
 		CO_MODULES_SHOWERROR = "Show error",
+		CO_TOOLBAR = "Toolbar settings",
+		CO_TOOLBAR_GENERAL = "Display settings",
+		CO_TOOLBAR_CONTENT = "Toolbar content",
+		CO_TOOLBAR_ICON_SIZE = "Icons size",
+		CO_TOOLBAR_MAX = "Max icons per line",
+		CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
+		CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
+		CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

@@ -4,8 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- functions
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
 local stEtN = Utils.str.emptyToNil;
 local color = Utils.str.color;
 local loc = TRP3_L;
@@ -282,6 +281,7 @@ local function applyPeek()
 	-- Refresh display
 	TRP3_HidePopups();
 	TRP3_onPlayerPeekShow();
+	Events.fireEvent(Events.REGISTER_MISC_SAVED);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

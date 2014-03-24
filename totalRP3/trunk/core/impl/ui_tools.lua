@@ -8,6 +8,7 @@ TRP3_UI_UTILS = {
 
 local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
+local floor, tinsert, pairs, wipe, assert, _G, tostring = floor, tinsert, pairs, wipe, assert, _G, tostring;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Background
@@ -267,6 +268,8 @@ function TRP3_InitList(infoTab, dataTab, slider)
 	end
 
 	slider:Hide();
+	slider:SetValueStep(1);
+	slider:SetObeyStepOnDrag(true);
 	wipe(infoTab.uiTab);
 	
 	for key,_ in pairs(dataTab) do
@@ -286,7 +289,7 @@ function TRP3_InitList(infoTab, dataTab, slider)
 	end
 	slider:SetScript("OnValueChanged",function(self)
 		if self:IsVisible() then
-			listShowPage(infoTab, math.floor(self:GetValue()));
+			listShowPage(infoTab, floor(self:GetValue()));
 		end
 	end);
 	listShowPage(infoTab, slider:GetValue());

@@ -3,9 +3,7 @@
 --]]
 
 local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
-local Comm = TRP3_COMM;
-local Log = Utils.log;
+local Log = TRP3_UTILS.log;
 local Config = TRP3_CONFIG;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -28,14 +26,14 @@ function Globals.addon:OnEnable()
 	
 	-- Inits logic
 	TRP3_LOCALE.init();
-	Comm.init();
-	Comm.broadcast.init();
+	TRP3_COMM.init();
+	TRP3_COMM.broadcast.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
 	TRP3_DASHBOARD.init();
 	
 	-- Inits UI
-	TRP3_UI_InitToolbar();
+	TRP3_TOOLBAR.init();
 	TRP3_TARGET_FRAME.init();
 	TRP3_InitMinimapButton(self);
 	TRP3_UI_InitMainPage();
