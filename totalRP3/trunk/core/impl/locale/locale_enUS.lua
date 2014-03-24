@@ -7,11 +7,19 @@ local LOCALE_EN = {
 	locale = "enUS",
 	localeText = "English",
 	localeContent = {
-		-- General
+	
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- GENERAL
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3! Have fun!",
 		GEN_WELCOME_VERSION = "You are using Total RP 3 version %s",
 		GEN_VERSION = "Version: %s",
-		-- Register
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- REGISTER
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
 		REG_PLAYER_CHARACTERISTICS = "Characteristics",
@@ -168,6 +176,8 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_UNUSED = "Unused slot",
 		REG_PLAYER_GLANCE_CONFIG = "Click to configure slot",
 		REG_PLAYER_GLANCE_EDITOR = "Slot editor",
+		REG_PLAYER_GLANCE_PRESET = "Use a preset",
+		REG_PLAYER_GLANCE_PRESET_SELECT = "Select a preset",
 		REG_REGISTER = "Directory",
 		REG_REGISTER_CHAR_LIST = "Characters list",
 		REG_TT_OOC = "(OOC)",
@@ -181,7 +191,11 @@ local LOCALE_EN = {
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
 		REG_LIST_NAME = "Name",
-		-- Configuration
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- CONFIGURATION
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
 		CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
@@ -225,7 +239,11 @@ local LOCALE_EN = {
 		CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
 		CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
 		CO_MODULES_SHOWERROR = "Show error",
-		-- Toolbar and minimap button
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- TOOLBAR AND UI BUTTONS
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		TB_TOOLBAR = "Toolbar",
 		TB_SWITCH_TOOLBAR = "Switch toolbar",
 		TB_SWITCH_CAPE_1 = "Show cloak",
@@ -236,7 +254,11 @@ local LOCALE_EN = {
 		TB_NORMAL_MODE = "Normal",
 		TB_DND_MODE = "Do not disturb",
 		TB_AFK_MODE = "Away",
-		-- Profiles
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- PROFILE
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		PR_PROFILEMANAGER_TITLE = "Profile Manager",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
@@ -260,7 +282,11 @@ local LOCALE_EN = {
 		PR_PROFILEMANAGER_SWITCH = "Select profile",
 		PR_PROFILEMANAGER_RENAME = "Rename profile",
 		PR_PROFILEMANAGER_CURRENT = "Current profile",
-		-- Dashboard
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- DASHBOARD
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 		DB_STATUS = "Status",
 		DB_STATUS_CURRENTLY = "Currently",
 		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief !",
@@ -271,7 +297,13 @@ local LOCALE_EN = {
 		DB_STATUS_XP_BEGINNER = "Beginner",
 		DB_STATUS_RP_EXP = "Experienced",
 		DB_STATUS_RP_VOLUNTEER = "Volunteer",
-		-- UI
+		DB_NOTIFICATIONS = "Notifications",
+		DB_NOTIFICATIONS_NO = "You haven't any notification",
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- COMMON UI TEXTS
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 		UI_BKG = "Background %s",
 		UI_ICON_BROWSER = "Icon browser",
 		UI_ICON_SELECT = "Select icon",
@@ -291,7 +323,11 @@ local LOCALE_EN = {
 		UI_LINK_URL = "http://your.url.here",
 		UI_LINK_TEXT = "Your text here",
 		UI_LINK_WARNING = "Here's the link URL.\nYou can copy/paste it in your web browser.\n\n|cffff0000!! Disclaimer !!|r\nTotal RP is not responsible for links leading to harmful content.",
-		-- Common
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- COMMON TEXTS
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		CM_CLICK = "Click",
 		CM_R_CLICK = "Right-click",
 		CM_L_CLICK = "Left-click",
@@ -328,9 +364,17 @@ local LOCALE_EN = {
 		CM_CLASS_DRUID = "Druid",
 		CM_CLASS_UNKNOWN = "Unknown",
 		CM_APPLY = "Apply",
-		-- Minimap
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Minimap button
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
 		MM_SHOW_HIDE_MAIN= "Show/hide the main frame";
 		MM_SHOW_HIDE_SHORTCUT= "Show/hide the shortcut bar";
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- PEEK PRESETS
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	},
 };
 

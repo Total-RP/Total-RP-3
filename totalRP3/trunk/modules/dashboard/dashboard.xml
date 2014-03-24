@@ -24,7 +24,7 @@
 			</Layer>
 			<Layer level="ARTWORK">
 				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
-			        <Size x="225" y="100"/>
+			        <Size x="256" y="128"/>
 					<Anchors>
 						<Anchor point="TOP" x="0" y="-10"/>
 					</Anchors>
@@ -33,7 +33,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TRP3_MainFrameVersionText" inherits="GameFontNormal" justifyV="TOP" text="[VERSION_XXXX]">
 					<Anchors>
-						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-5"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="10"/>
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
@@ -46,7 +46,7 @@
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_MainFrameVersionText" x="0" y="-10"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -87,6 +87,26 @@
 						</Anchors>
 				    </Frame>
 				</Frames>
+			</Frame>
+			<!-- Notification -->
+			<Frame name="TRP3_DashboardNotifications" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="110"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="10" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_DashboardNotifications_No" inherits="GameFontNormalLarge" justifyH="LEFT" text="[NO_NOTIFICATION]">
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+							<Color b="1.0" r="1.0" g="1.0"/>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
 		</Frames>
 	</Frame>

@@ -62,7 +62,9 @@ TRP3_DASHBOARD.init = function()
 	});
 	
 	TRP3_FieldSet_SetCaption(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
+	TRP3_FieldSet_SetCaption(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 150);
 	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
+	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
 	TRP3_SetTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
 	

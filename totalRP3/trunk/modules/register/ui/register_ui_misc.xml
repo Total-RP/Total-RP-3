@@ -157,7 +157,7 @@
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="200"/>
+		<Size x="420" y="250"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -184,6 +184,44 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+			<Frame name="TRP3_RegisterMiscEdit_Glance_Preset">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="0" y="50"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetText" text="[LOAD_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
+							<Size x="150" y="10"/>
+							<Anchors>
+								<Anchor point="LEFT" x="20" y="3"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="TRP3_RegisterMiscEdit_Glance_PresetList" inherits="UIDropDownMenuTemplate" enableMouse="true">
+				        <Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetText" x="0" y="-3"/>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								TRP3_RefreshTooltipForFrame(self);
+							</OnEnter>
+							<OnLeave>
+								TRP3_MainTooltip:Hide();
+							</OnLeave>
+						</Scripts>
+				    </Frame>
+				</Frames>
+			</Frame>
 			<Frame name="TRP3_RegisterMiscEdit_Glance_Edit">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
@@ -191,10 +229,10 @@
 				</Backdrop>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterGlanceEditorTitle"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="BOTTOM" x="0" y="2" relativePoint="TOP" relativeTo="TRP3_RegisterMiscEdit_Glance_Preset"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-				</Anchors>
+				</Anchors>	
 				<Frames>
 					<CheckButton name="TRP3_RegisterMiscEdit_Glance_Active" inherits="TRP3_CheckBox" checked="true">
 						<Anchors>

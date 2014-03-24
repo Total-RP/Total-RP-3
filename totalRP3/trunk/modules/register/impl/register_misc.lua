@@ -17,6 +17,7 @@ local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local tinsert = tinsert;
 local pairs = pairs;
 local type = type;
+local tostring = tostring;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -300,6 +301,43 @@ function TRP3_RegisterMiscGetExchangeData()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Presets
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local PEEK_PRESETS;
+
+local function buildPresetListData()
+	PEEK_PRESETS = {
+		humor1 = {
+			icon = "Spell_Shadow_MindSteal",
+			name = "Apathetic",
+			text = "This character is dispassionate and nonchalant."
+		}
+	};
+
+	local listData = {};
+	local tmp = {};
+	tinsert(listData, {loc("REG_PLAYER_GLANCE_PRESET_SELECT"), nil});
+	for presetID,_ in pairs(PEEK_PRESETS) do
+		tinsert(tmp, presetID);
+	end
+	table.sort(tmp);
+	for _, presetID in pairs(tmp) do
+		local preset = PEEK_PRESETS[presetID];
+		tinsert(listData, {preset.name, presetID});
+	end
+	
+	return listData;
+end
+
+local function onPresetSelected(presetID)
+	assert(presetID == nil or PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
+	if presetID ~= nil then
+		TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -312,6 +350,7 @@ function TRP3_Register_PeekInit()
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
+	TRP3_RegisterMiscEdit_Glance_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
 	
 	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
 	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", applyPeek);
@@ -323,6 +362,9 @@ function TRP3_Register_PeekInit()
 		button:SetScript("OnClick", onSlotClick);
 		button.index = tostring(index);
 	end
+	
+	TRP3_ListBox_Setup(TRP3_RegisterMiscEdit_Glance_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
+	TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
 	
 	-- RP style
 	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
