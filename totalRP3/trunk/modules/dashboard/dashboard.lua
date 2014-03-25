@@ -5,9 +5,13 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_DASHBOARD = {};
+
+-- imports
 local loc = TRP3_L;
 local getcharacter = TRP3_PROFILE.getCharacter;
 local Utils = TRP3_UTILS;
+local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 
 -- The variable which gonna make people cry : Currently status characters limit. :D
 local CURRENTLY_SIZE = 200;
@@ -69,7 +73,7 @@ TRP3_DASHBOARD.init = function()
 	TRP3_FieldSet_SetCaption(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 150);
 	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
 	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
-	TRP3_SetTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
+	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
 	
 	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
@@ -79,7 +83,7 @@ TRP3_DASHBOARD.init = function()
 		{loc("DB_STATUS_RP_IC"), 1},
 		{loc("DB_STATUS_RP_OOC"), 2},
 	};
-	TRP3_ListBox_Setup(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 120, true);
+	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 120, true);
 	
 	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
 	local xpTab = {
@@ -87,6 +91,6 @@ TRP3_DASHBOARD.init = function()
 		{loc("DB_STATUS_RP_EXP"), 2},
 		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
 	};
-	TRP3_ListBox_Setup(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
+	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
 	
 end

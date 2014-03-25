@@ -5,6 +5,7 @@
 -- public accessor
 TRP3_CONFIG = {};
 
+-- imports
 local pairs = pairs;
 local tostring = tostring;
 local assert = assert;
@@ -19,6 +20,8 @@ local _G = _G;
 local getLocaleText = TRP3_LOCALE.getLocaleText;
 local getLocales = TRP3_LOCALE.getLocales;
 local getCurrentLocale = TRP3_LOCALE.getCurrentLocale;
+local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
+local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -101,7 +104,7 @@ local function buildConfigurationPage(structure)
 		-- Specific for Dropdown
 		if _G[widget:GetName().."DropDown"] then
 			local dropDown = _G[widget:GetName().."DropDown"];
-			TRP3_ListBox_Setup(
+			setupListBox(
 				dropDown,
 				element.listContent or {},
 				element.listCallback,
@@ -335,7 +338,7 @@ function TRP3_Configuration_OnModuleLoaded()
 		_G[frame:GetName().."ModuleVersion"]:SetText(loc("CO_MODULES_VERSION"):format(module.module_version));
 		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
 		_G[frame:GetName().."Status"]:SetText(loc("CO_MODULES_STATUS"):format(moduleStatusText(module.status)));
-		TRP3_SetTooltipForFrame(_G[frame:GetName().."Info"], _G[frame:GetName().."Info"], "BOTTOMLEFT", 0, -15, module.module_name, getModuleTooltip(module));
+		setTooltipForFrame(_G[frame:GetName().."Info"], _G[frame:GetName().."Info"], "BOTTOMLEFT", 0, -15, module.module_name, getModuleTooltip(module));
 
 		i = i + 1;
 	end

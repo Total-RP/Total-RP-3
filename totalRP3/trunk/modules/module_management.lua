@@ -4,6 +4,15 @@
 --	- Module management
 --
 
+-- imports
+local globals = TRP3_GLOBALS;
+local Utils = TRP3_UTILS;
+local Log = Utils.log;
+local loc = TRP3_L;
+local MODULE_REGISTRATION = {};
+local MODULE_ACTIVATION;
+local hasBeenInit = false;
+
 TRP3_MODULE_STATUS = {
 	MISSING_DEPENDENCY = 0,
 	OUT_TO_DATE_TRP3 = 1,
@@ -12,14 +21,6 @@ TRP3_MODULE_STATUS = {
 	DISABLED = 4,
 	OK = 5
 };
-
-local globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
-local Log = Utils.log;
-local loc = TRP3_L;
-local MODULE_REGISTRATION = {};
-local MODULE_ACTIVATION;
-local hasBeenInit = false;
 
 --- Register a module structure.
 -- 

@@ -3,14 +3,14 @@
 -- Register : Data exchange
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- TRP3 API
+-- TRP3 imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local get = TRP3_PROFILE.getData;
 local Comm = TRP3_COMM;
 local log = Utils.log.log;
 local Events = TRP3_EVENTS;
--- WoW API
+-- WoW imports
 local UnitName = UnitName;
 local CheckInteractDistance = CheckInteractDistance;
 local UnitIsPlayer = UnitIsPlayer;

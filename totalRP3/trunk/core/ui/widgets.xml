@@ -2,8 +2,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
-	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
-	
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
 		<Scripts>
@@ -267,34 +265,6 @@
 			</OnLeave>
 		</Scripts>
 	</CheckButton>
-	
-	<Frame name="TRP3_LabelledListBox" virtual="true">
-		<Size x="130" y="30"/>
-		<Layers>
-		    <Layer level="OVERLAY">
-			    <FontString name="$parentLabel" inherits="GameFontNormal" justifyH="LEFT" text="[label]">
-			        <Size x="100" y="0"/>
-					<Anchors>
-						<Anchor point="LEFT" x="0" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-		    <Frame name="$parentDD" inherits="UIDropDownMenuTemplate" enableMouse="true">
-		        <Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentLabel" x="0" y="-3"/>
-				</Anchors>
-		    </Frame>
-		</Frames>
-		<Scripts>
-			<!-- Set the button eligible for tooltip -->
-			<OnLoad>
-				TRP3_InitDropDown(_G[self:GetName().."DD"]);
-			</OnLoad>
-		</Scripts>
-	</Frame>
 	
 	<Button name="TRP3_TabBar_Tab" virtual="true">
         <Size><AbsDimension x="10" y="32"/></Size>

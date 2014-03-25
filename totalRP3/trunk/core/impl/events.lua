@@ -15,7 +15,7 @@ TRP3_EVENTS = {
 	REGISTER_CHARACTERISTICS_SAVED = "\5",
 };
 
--- TRP3 API
+-- TRP3 imports
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 local assert = assert;

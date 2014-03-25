@@ -5,16 +5,18 @@
 -- Public accessor
 TRP3_PROFILE = {};
 
--- functions
+-- imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local loc = TRP3_L;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local strsplit = strsplit;
-local pairs = pairs;
-local type = type;
-local assert = assert;
+local strsplit, tinsert, pairs, type, assert, _G, table = strsplit, tinsert, pairs, type, assert, _G, table;
 local displayMessage = Utils.message.displayMessage;
+local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
+local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
+local initList = TRP3_UI_UTILS.list.initList;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -183,8 +185,8 @@ local function decorateProfileList(widget, id)
 		text = text..loc("PR_UNUSED_PROFILE");
 	end
 	
-	TRP3_SetTooltipForFrame(
-		_G[widget:GetName().."Info"], _G[widget:GetName().."Info"], "RIGHT", 0, 0,
+	setTooltipForSameFrame(
+		_G[widget:GetName().."Info"], "RIGHT", 0, 0,
 		loc("PR_PROFILE"),
 		text
 	)
@@ -192,7 +194,7 @@ end
 
 -- Refresh list display
 local function uiInitProfileList()
-	TRP3_InitList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerSlider);
+	initList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerSlider);
 end
 
 local function uiCheckNameAvailability(profileName)
@@ -290,7 +292,7 @@ local function onActionClicked(button)
 	end
 	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
 	tinsert(values, {loc("PR_DUPPLICATE_PROFILE"), 3});
-	TRP3_DisplayDropDown(button, values, onActionSelected, 0, true);
+	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -330,7 +332,7 @@ function TRP3_InitProfiles()
 	end
 	
 	-- UI
-	TRP3_HandleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);
+	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);
 	TRP3_ProfileManagerSlider:SetValue(0);
 	local widgetTab = {};
 	for i=1,5 do
@@ -338,7 +340,7 @@ function TRP3_InitProfiles()
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc("PR_PROFILEMANAGER_CURRENT"));
-		TRP3_SetTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
+		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 		table.insert(widgetTab, widget);
 		
 	end
@@ -349,7 +351,7 @@ function TRP3_InitProfiles()
 	--Localization
 	TRP3_ProfileManagerTitle:SetText(Utils.str.color("w")..loc("PR_PROFILEMANAGER_TITLE"));
 	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
-	TRP3_SetTooltipForSameFrame(TRP3_ProfileManagerHelp, "BOTTOM", 0, -15, loc("PR_PROFILE"), loc("PR_PROFILE_HELP"));
+	setTooltipForSameFrame(TRP3_ProfileManagerHelp, "BOTTOM", 0, -15, loc("PR_PROFILE"), loc("PR_PROFILE_HELP"));
 	
 	TRP3_RegisterPage({
 		id = "main_profile",

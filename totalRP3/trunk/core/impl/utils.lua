@@ -15,27 +15,16 @@ TRP3_UTILS = {
 	texture = {},
 	message = {},
 };
--- TRP3 API
+-- TRP3 imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 local loc = TRP3_L;
 
--- WOW API
-local tostring = tostring;
-local pairs = pairs;
-local type = type;
-local print = print;
-local string = string;
-local pcall = pcall;
-local date = date;
-local math = math;
-local strconcat = strconcat;
-local tinsert = tinsert;
-local assert = assert;
-local PlayMusic = PlayMusic;
-local StopMusic = StopMusic;
-local _G = _G;
+-- WOW imports
+local pcall, tostring, pairs, type, print, string, date, math, strconcat = pcall, tostring, pairs, type, print, string, date, math, strconcat;
+local tinsert, assert, _G = tinsert, assert, _G;
+local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;

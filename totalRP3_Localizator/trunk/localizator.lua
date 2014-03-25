@@ -7,6 +7,9 @@ local loc = TRP3_L;
 local frames = {};
 local keys = {};
 local getDefaultLocaleStructure = TRP3_LOCALE.getDefaultLocaleStructure;
+local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
+local initList = TRP3_UI_UTILS.list.initList;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 
 local function injectLocale()
 	local locale = TRP3_LOCALE.getEffectiveLocale();
@@ -80,8 +83,8 @@ local function onLoaded()
 	TRP3_ConfigurationLocalizatorReset:SetText(loc("LOCALIZATOR_RESET"));
 	TRP3_ConfigurationLocalizatorApply:SetScript("OnClick", apply);
 	TRP3_ConfigurationLocalizatorApply:SetText(loc("LOCALIZATOR_APPLY"));
-	TRP3_SetTooltipForSameFrame(TRP3_ConfigurationLocalizatorApply, "TOP", 0, 5, loc("LOCALIZATOR_APPLY"), loc("LOCALIZATOR_APPLY_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_ConfigurationLocalizatorReset, "TOP", 0, 5, loc("LOCALIZATOR_RESET"), loc("LOCALIZATOR_RESET_TT"));
+	setTooltipForSameFrame(TRP3_ConfigurationLocalizatorApply, "TOP", 0, 5, loc("LOCALIZATOR_APPLY"), loc("LOCALIZATOR_APPLY_TT"));
+	setTooltipForSameFrame(TRP3_ConfigurationLocalizatorReset, "TOP", 0, 5, loc("LOCALIZATOR_RESET"), loc("LOCALIZATOR_RESET_TT"));
 	
 	TRP3_RegisterPage({
 		id = "main_config_localizator",
@@ -116,9 +119,9 @@ local function onLoaded()
 		tinsert(frames, frame);
 	end
 	
-	TRP3_HandleMouseWheel(TRP3_ConfigurationLocalizator, TRP3_ConfigurationLocalizatorContainerSlider);
+	handleMouseWheel(TRP3_ConfigurationLocalizator, TRP3_ConfigurationLocalizatorContainerSlider);
 	TRP3_ConfigurationLocalizatorContainerSlider:SetValue(0);
-	TRP3_InitList(
+	initList(
 		{
 			widgetTab = frames,
 			decorate = decorateBox

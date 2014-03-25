@@ -3,6 +3,7 @@
 -- Register : RP Style section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local getUnitID = Utils.str.unitInfoToID;

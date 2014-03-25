@@ -3,10 +3,8 @@
 -- Register
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- functions
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
-local Comm = TRP3_COMM;
+-- imports
+local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_EVENTS;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_PROFILE.getData;
@@ -14,10 +12,10 @@ local tcopy = Utils.table.copy;
 local loc = TRP3_L;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
-local Events = TRP3_EVENTS;
-local assert = assert;
-local type = type;
-local wipe = wipe;
+local assert, type, wipe = assert, type, wipe;
+local getTiledBackground = TRP3_UI_UTILS.background.getTiledBackground;
+local setupDropDownMenu = TRP3_UI_UTILS.listbox.setupDropDownMenu;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -166,7 +164,7 @@ end
 
 local function setBkg(backgroundIndex)
 	local backdrop = TRP3_RegisterCharact_CharactPanel:GetBackdrop();
-	backdrop.bgFile = TRP3_getTiledBackground(backgroundIndex);
+	backdrop.bgFile = getTiledBackground(backgroundIndex);
 	TRP3_RegisterCharact_CharactPanel:SetBackdrop(backdrop);
 end
 
@@ -451,9 +449,9 @@ setEditDisplay = function()
 			_G[frame:GetName().."Delete"]:SetScript("OnClick", onPsychoDelete);
 			_G[frame:GetName().."LeftFieldText"]:SetText(loc("REG_PLAYER_LEFTTRAIT"));
 			_G[frame:GetName().."RightFieldText"]:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
-			TRP3_SetTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
+			setTooltipForSameFrame(_G[frame:GetName().."LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
+			setTooltipForSameFrame(_G[frame:GetName().."RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
+			setTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
 			tinsert(psychoEditCharFrame, frame);
 		end
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
@@ -737,22 +735,22 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
 	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() openIconBrowser(onPlayerIconSelected) end );
 	
-	TRP3_SetupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
+	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
 	-- Localz
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(Globals.player));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_LASTNAME"), loc("REG_PLAYER_LASTNAME_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FULLTITLE"), loc("REG_PLAYER_FULLTITLE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(Globals.player_race_loc));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(Globals.player_class_loc));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_AgeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_AGE"), loc("REG_PLAYER_AGE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_BIRTHPLACE"), loc("REG_PLAYER_BIRTHPLACE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RESIDENCE"), loc("REG_PLAYER_RESIDENCE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FirstFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FIRSTNAME"), loc("REG_PLAYER_FIRSTNAME_TT"):format(Globals.player));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_LastFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_LASTNAME"), loc("REG_PLAYER_LASTNAME_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_FullTitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_FULLTITLE"), loc("REG_PLAYER_FULLTITLE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_RaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RACE"), loc("REG_PLAYER_RACE_TT"):format(Globals.player_race_loc));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_CLASS"), loc("REG_PLAYER_CLASS_TT"):format(Globals.player_class_loc));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_AgeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_AGE"), loc("REG_PLAYER_AGE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_BIRTHPLACE"), loc("REG_PLAYER_BIRTHPLACE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_RESIDENCE"), loc("REG_PLAYER_RESIDENCE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
 
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

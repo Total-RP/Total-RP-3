@@ -2,7 +2,7 @@
 -- Total RP 3 Broadcast Communication protocol
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- API
+-- imports
 local GetChannelRosterInfo = GetChannelRosterInfo;
 local GetChannelDisplayInfo = GetChannelDisplayInfo;
 local GetChannelName = GetChannelName;

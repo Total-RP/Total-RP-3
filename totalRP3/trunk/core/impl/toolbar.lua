@@ -5,14 +5,17 @@
 -- Public accessor
 TRP3_TOOLBAR = {};
 
+-- imports
 local Globals, Utils = TRP3_GLOBALS, TRP3_UTILS;
 local loc = TRP3_L;
 local icon = Utils.str.icon;
 local color = Utils.str.color;
-local assert, pairs, tContains, tinsert, table, math = assert, pairs, tContains, tinsert, table, math;
+local assert, pairs, tContains, tinsert, table, math, _G = assert, pairs, tContains, tinsert, table, math, _G;
 local CreateFrame = CreateFrame;
 local toolbar, toolbarContainer, mainTooltip = TRP3_Toolbar, TRP3_ToolbarContainer, TRP3_MainTooltip;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler;
+local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
+local refreshTooltip = TRP3_UI_UTILS.tooltip.refresh;
 
 local CONFIG_ICON_SIZE = "toolbar_icon_size"; 
 local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
@@ -145,7 +148,7 @@ end
 TRP3_TOOLBAR.toolbarAddButton = toolbarAddButton;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
+-- INIT & TRP3 toolbar content
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_TOOLBAR.init = function()
@@ -221,13 +224,13 @@ TRP3_TOOLBAR.init = function()
 		onUpdate = function(Uibutton, buttonStructure)
 			if GetMouseFocus() == Uibutton then
 				if not ShowingCloak() then
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " " .. SHOW_CLOAK,
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " " .. SHOW_CLOAK,
 						strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_1")));
 				else
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " "..SHOW_CLOAK,
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Misc_Cape_18", 20) .. " "..SHOW_CLOAK,
 						strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_2")));
 				end
-				TRP3_RefreshTooltipForFrame(Uibutton);
+				refreshTooltip(Uibutton);
 			end
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
@@ -247,13 +250,13 @@ TRP3_TOOLBAR.init = function()
 		onUpdate = function(Uibutton, buttonStructure)
 			if GetMouseFocus() == Uibutton then
 				if not ShowingHelm() then
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
 						color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1"));
 				else
-					TRP3_SetTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon("INV_Helmet_13", 20) .. " "..SHOW_HELM,
 						color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2"));
 				end
-				TRP3_RefreshTooltipForFrame(Uibutton);
+				refreshTooltip(Uibutton);
 			end
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
@@ -273,20 +276,20 @@ TRP3_TOOLBAR.init = function()
 		onUpdate = function(Uibutton, buttonStructure)
 			if UnitIsDND("player") then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Mage_IncantersAbsorbtion", 20).." "..color("w")..MODE..": "..color("r")..DEFAULT_DND_MESSAGE,
+				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Mage_IncantersAbsorbtion", 20).." "..color("w")..MODE..": "..color("r")..DEFAULT_DND_MESSAGE,
 					color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w"))));
 			elseif UnitIsAFK("player") then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Spell_Nature_Sleep", 20).." "..color("w")..MODE..": "..color("o")..DEFAULT_AFK_MESSAGE,
+				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Spell_Nature_Sleep", 20).." "..color("w")..MODE..": "..color("o")..DEFAULT_AFK_MESSAGE,
 					color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w"))));
 			else
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety.blp");
-				TRP3_SetTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Rogue_MasterOfSubtlety", 20).." "..color("w")..MODE..": "..color("g")..PLAYER_DIFFICULTY1,
+				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, icon("Ability_Rogue_MasterOfSubtlety", 20).." "..color("w")..MODE..": "..color("g")..PLAYER_DIFFICULTY1,
 					color("y")..loc("CM_L_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("o")..loc("TB_AFK_MODE")..color("w")))
 					.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("r")..loc("TB_DND_MODE")..color("w"))));
 			end
 			if GetMouseFocus() == Uibutton then
-				TRP3_RefreshTooltipForFrame(Uibutton);
+				refreshTooltip(Uibutton);
 			end
 		end,
 		onClick = function(Uibutton, buttonStructure, button)

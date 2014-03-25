@@ -3,13 +3,18 @@
 -- Register : Character list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- functions
+-- imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local get = TRP3_PROFILE.getData;
+local assert, table, _G = assert, table, _G;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
+local initList = TRP3_UI_UTILS.list.initList;
+local getUnitTexture = TRP3_UI_UTILS.misc.getUnitTexture;
+local getClassTexture = TRP3_UI_UTILS.misc.getClassTexture;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -56,7 +61,7 @@ local ICON_SIZE = 20;
 local currentSelection;
 
 local function refreshList()
-	TRP3_InitList(TRP3_RegisterList, TRP3_GetCharacterList(), TRP3_RegisterListSlider);
+	initList(TRP3_RegisterList, TRP3_GetCharacterList(), TRP3_RegisterListSlider);
 end
 
 local function decorateLine(line, unitID)
@@ -67,12 +72,12 @@ local function decorateLine(line, unitID)
 	
 	local unitTexture = Globals.icons.unknown;
 	if character.race and character.gender then
-		unitTexture = TRP3_GetUnitTexture(character.race, character.gender);
+		unitTexture = getUnitTexture(character.race, character.gender);
 	end
 	
 	local classTexture = Globals.icons.unknown;
 	if character.class then
-		classTexture = TRP3_GetClassTexture(character.class);
+		classTexture = getClassTexture(character.class);
 	end
 	
 	local textures = Utils.str.icon(unitTexture, ICON_SIZE) .. " " .. Utils.str.icon(classTexture, ICON_SIZE);
@@ -148,7 +153,7 @@ function TRP3_Register_ListInit()
 	});
 	
 	TRP3_RegisterListSlider:SetValue(0);
-	TRP3_HandleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
+	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
 	local widgetTab = {};
 	for i=1,10 do
 		local widget = _G["TRP3_RegisterListLine"..i];

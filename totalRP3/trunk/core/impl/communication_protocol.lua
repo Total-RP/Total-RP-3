@@ -8,7 +8,7 @@ TRP3_COMM = {
 	
 };
 
--- API
+-- imports
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
 local tostring = tostring;
 local pairs = pairs;

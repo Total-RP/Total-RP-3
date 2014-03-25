@@ -3,10 +3,8 @@
 -- Register : About section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- functions
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
-local Comm = TRP3_COMM;
+-- imports
+local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_EVENTS;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_PROFILE.getData;
 local safeGet = TRP3_PROFILE.getDataDefault;
@@ -19,10 +17,17 @@ local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
 local getConfigValue = TRP3_CONFIG.getValue;
-local Events = TRP3_EVENTS;
-local assert = assert;
-local type = type;
-local wipe = wipe;
+local CreateFrame = CreateFrame;
+local assert, tinsert, type, wipe, _G, strconcat = assert, tinsert, type, wipe, _G, strconcat;
+local getTiledBackground = TRP3_UI_UTILS.background.getTiledBackground;
+local getTiledBackgroundList = TRP3_UI_UTILS.background.getTiledBackgroundList;
+local showIfMouseOver = TRP3_UI_UTILS.misc.showIfMouseOver;
+local createRefreshOnFrame = TRP3_UI_UTILS.misc.createRefreshOnFrame;
+local TRP3_RegisterAbout_AboutPanel = TRP3_RegisterAbout_AboutPanel;
+local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
+local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -97,7 +102,7 @@ local draftData = nil;
 
 local function setBkg(frame, bkg)
 	local backdrop = frame:GetBackdrop();
-	backdrop.bgFile = TRP3_getTiledBackground(bkg or 1);
+	backdrop.bgFile = getTiledBackground(bkg or 1);
 	frame:SetBackdrop(backdrop);
 end
 
@@ -205,7 +210,7 @@ local function onContainerTagClicked(button)
 	tinsert(values, {loc("CM_LEFT"), 1});
 	tinsert(values, {loc("CM_CENTER"), 2});
 	tinsert(values, {loc("CM_RIGHT"), 3});
-	TRP3_DisplayDropDown(button, values, insertContainerTag, 0, true);
+	displayDropDown(button, values, insertContainerTag, 0, true);
 end
 
 local function onContainerPTagClicked(button)
@@ -213,7 +218,7 @@ local function onContainerPTagClicked(button)
 	tinsert(values, {loc("REG_PLAYER_ABOUT_P")});
 	tinsert(values, {loc("CM_CENTER"), 1});
 	tinsert(values, {loc("CM_RIGHT"), 2});
-	TRP3_DisplayDropDown(button, values, insertContainerTag, 0, true);
+	displayDropDown(button, values, insertContainerTag, 0, true);
 end
 
 local function onLinkClicked(self, url)
@@ -250,7 +255,7 @@ local function showTemplate2(dataTab)
 		local icon = _G[frame:GetName().."Icon"];
 		local text = _G[frame:GetName().."Text"];
 		local backdrop = frame:GetBackdrop();
-		backdrop.bgFile = TRP3_getTiledBackground(frameTab.BK or 1);
+		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
 		TRP3_InitIconButton(icon, frameTab.IC or Globals.icons.default);
 		text:SetText(frameTab.TX);
@@ -332,13 +337,13 @@ refreshTemplate2EditDisplay = function()
 		local frame = template2EditFrames[frameIndex];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterAbout_Template2_Edit"..frameIndex, TRP3_RegisterAbout_Edit_Template2_Container, "TRP3_RegisterAbout_Template2_Edit");
-			TRP3_ListBox_Setup(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"], TRP3_getTiledBkgListForListbox(), setTemplate2EditBkg, nil, 120, true);
+			setupListBox(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"], getTiledBackgroundList(), setTemplate2EditBkg, nil, 120, true);
 			_G[frame:GetName().."Delete"]:SetScript("OnClick", template2DeleteFrame);
 			_G[frame:GetName().."Delete"]:SetText(loc("CM_REMOVE"));
 			_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
 			_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
-			TRP3_SetTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc("CM_MOVE_UP"));
-			TRP3_SetTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+			setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc("CM_MOVE_UP"));
+			setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc("CM_MOVE_DOWN"));
 			tinsert(template2EditFrames, frame);
 		end
 		-- Position
@@ -598,7 +603,7 @@ local function refreshConsultDisplay(context)
 		TRP3_RegisterAbout_AboutPanel.isMine = true;
 		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
 		local voteUp, voteDown = aggregateVotes(dataTab.vote);
-		TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
+		setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
 			"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
 			loc("REG_PLAYER_ABOUT_VOTES_R"):format(voteUp, voteDown)
 		);
@@ -779,7 +784,7 @@ local function onMusicEditClicked(button)
 		tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_LISTEN"), 3});
 		tinsert(values, {loc("REG_PLAYER_ABOUT_MUSIC_STOP"), 4});
 	end
-	TRP3_DisplayDropDown(button, values, onMusicEditSelected, 0, true);
+	displayDropDown(button, values, onMusicEditSelected, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -788,13 +793,13 @@ end
 
 local function onPlayerAboutRefresh()
 	if getConfigValue("register_about_use_vote") then
-		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
+		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.isMine then
-		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
+		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.musicURL then
-		TRP3_ShowIfMouseOver(TRP3_RegisterAbout_AboutPanel_MusicPlayer, TRP3_RegisterAbout_AboutPanel);
+		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_MusicPlayer, TRP3_RegisterAbout_AboutPanel);
 	end
 end
 
@@ -817,13 +822,13 @@ function TRP3_Register_AboutInit()
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
 	
 	-- UI
-	TRP3_CreateRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
-	local bkgTab = TRP3_getTiledBkgListForListbox();
-	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_BckField, bkgTab, setEditBkg, nil, 120, true);
-	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 120, true);
-	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 120, true);
-	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 120, true);
-	TRP3_ListBox_Setup(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 120, true);
+	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
+	local bkgTab = getTiledBackgroundList();
+	setupListBox(TRP3_RegisterAbout_Edit_BckField, bkgTab, setEditBkg, nil, 120, true);
+	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 120, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 120, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 120, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 120, true);
 	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() openIconBrowser(onPhisIconSelected) end );
 	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() openIconBrowser(onPsychoIconSelected) end );
 	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() openIconBrowser(onHistoIconSelected) end );
@@ -883,8 +888,8 @@ function TRP3_Register_AboutInit()
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
 	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
 	
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
-	TRP3_SetTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
+	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
+	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() sendVote(1) end);
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() sendVote(-1) end);
 	

@@ -4,6 +4,8 @@
 
 -- Public accessor
 TRP3_TARGET_FRAME = {};
+
+-- imports
 local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
 local loc = TRP3_L;
 local ui_TargetFrame = TRP3_TargetFrame;
@@ -15,7 +17,7 @@ local isUnitIDKnown;
 local _G = _G;
 local tostring = tostring;
 local getUnitID = Utils.str.getUnitID;
-local setTooltipForSameFrame = TRP3_UI_UTILS.setTooltipForSameFrame;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local get = TRP3_PROFILE.getData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

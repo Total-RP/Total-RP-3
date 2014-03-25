@@ -3,7 +3,7 @@
 -- Register : Peek section
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- functions
+-- imports
 local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
 local stEtN = Utils.str.emptyToNil;
 local color = Utils.str.color;
@@ -17,6 +17,8 @@ local tinsert = tinsert;
 local pairs = pairs;
 local type = type;
 local tostring = tostring;
+local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -131,7 +133,7 @@ local function displayRPStyle(context)
 		local frame = styleLines[index];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterMiscViewRPStyle_line"..index, TRP3_RegisterMiscViewRPStyle, "TRP3_RegisterRPStyleMain_Edit_Line");
-			TRP3_ListBox_Setup(_G[frame:GetName().."Values"], fieldData.values, onEditStyle, nil, 180, true);
+			setupListBox(_G[frame:GetName().."Values"], fieldData.values, onEditStyle, nil, 180, true);
 			frame.fieldData = fieldData;
 			tinsert(styleLines, frame);
 		end
@@ -194,16 +196,16 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 	if active then
 		button:SetAlpha(1);
 		if not isMine then
-			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
 		else
-			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "...") .. "\n" .. color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "...") .. "\n" .. color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
 		end
 	else
 		button:SetAlpha(0.1);
 		if not isMine then
 			button:Disable();
 		else
-			TRP3_SetTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"), color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"), color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
 		end
 	end
 end
@@ -363,7 +365,7 @@ function TRP3_Register_PeekInit()
 		button.index = tostring(index);
 	end
 	
-	TRP3_ListBox_Setup(TRP3_RegisterMiscEdit_Glance_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
+	setupListBox(TRP3_RegisterMiscEdit_Glance_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
 	TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
 	
 	-- RP style

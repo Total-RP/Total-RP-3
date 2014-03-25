@@ -3,12 +3,20 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_UI_UTILS = {
-	Tooltip = {},
+	background = {},
+	tooltip = {},
+	listbox = {},
+	list = {},
+	misc = {},
 }
 
+-- imports
 local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
-local floor, tinsert, pairs, wipe, assert, _G, tostring = floor, tinsert, pairs, wipe, assert, _G, tostring;
+local floor, tinsert, pairs, wipe, assert, _G, tostring, table = floor, tinsert, pairs, wipe, assert, _G, tostring, table;
+local MouseIsOver, CreateFrame = MouseIsOver, CreateFrame;
+local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
+local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Background
@@ -36,11 +44,11 @@ local tiledBackgrounds = {
 	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",	
 };
 
-function TRP3_getTiledBackground(index)
+TRP3_UI_UTILS.background.getTiledBackground = function(index)
 	return tiledBackgrounds[index] or tiledBackgrounds[1];
 end
 
-function TRP3_getTiledBkgListForListbox()
+TRP3_UI_UTILS.background.getTiledBackgroundList = function()
 	local tab = {};
 	for index, _ in pairs(tiledBackgrounds) do
 		tinsert(tab, {loc("UI_BKG"):format(tostring(index)), index});
@@ -52,7 +60,7 @@ end
 -- Misc
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_ShowIfMouseOver(frame, frameOver)
+TRP3_UI_UTILS.misc.showIfMouseOver = function(frame, frameOver)
 	assert(frame and frameOver, "Frames can't be nil");
 	if MouseIsOver(frameOver) then
 		frame:Show();
@@ -61,12 +69,12 @@ function TRP3_ShowIfMouseOver(frame, frameOver)
 	end
 end
 
-function TRP3_CreateRefreshOnFrame(frame, time, callback)
+TRP3_UI_UTILS.misc.createRefreshOnFrame = function(frame, time, callback)
 	assert(frame and time and callback, "Argument must be not nil");
 	frame.refreshTimer = 1000;
 	frame:SetScript("OnUpdate", function(arg, elapsed)
 		frame.refreshTimer = frame.refreshTimer + elapsed;
-		if (frame.refreshTimer > time) then
+		if frame.refreshTimer > time then
 			frame.refreshTimer = 0;
 			callback(frame);
 		end
@@ -83,7 +91,7 @@ local DROPDOWN_FRAME = "TRP3_UIDD";
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	local frame = _G[DROPDOWN_FRAME];
 	if not frame then
-		frame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent,"UIDropDownMenuTemplate");
+		frame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
 	UIDropDownMenu_Initialize(frame,
 		function(uiFrame,level,menuList)
@@ -120,27 +128,16 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	ToggleDropDownMenu(1, nil, frame, anchoredFrame:GetName(), -((space or -10)), 0);
 	PlaySound("igMainMenuOptionCheckBoxOn");
 end
-
---- Display a dropdown menu on the anchoredFrame
-function TRP3_DisplayDropDown(anchoredFrame, values, callback, space, addCancel)
-	openDropDown(anchoredFrame, values, callback, space, addCancel);
-end
+TRP3_UI_UTILS.listbox.displayDropDown = openDropDown;
 
 --- Setup a drop down menu for a clickable (Button ...)
-function TRP3_SetupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
+local function setupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
 	hasClickFrame:SetScript("OnClick", function(self, button)
 		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
-		TRP3_DisplayDropDown(hasClickFrame, values, callback, space, addCancel);
+		openDropDown(hasClickFrame, values, callback, space, addCancel);
 	end);
 end
-
-function TRP3_InitDropDown(dropDown)
-	assert(dropDown, "Dropdown is nil");
-	assert(_G[dropDown:GetName().."Button"], "Dropdown does not have a button child");
-	_G[dropDown:GetName().."Button"]:SetScript("OnEnter", function(self) TRP3_RefreshTooltipForFrame(self) end);
-	
-	_G[dropDown:GetName().."Button"]:SetScript("OnLeave", function() TRP3_MainTooltip:Hide() end);
-end
+TRP3_UI_UTILS.listbox.setupDropDownMenu = setupDropDownMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- ListBox tools
@@ -172,7 +169,7 @@ local function listBoxGetValue(self)
 end
 
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-function TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, addCancel)
+local function setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel)
 	assert(listBox and values, "Invalid arguments");
 	assert(_G[listBox:GetName().."Button"], "Invalid arguments: listbox doesn't have a button");
 	boxWidth = boxWidth or 115;
@@ -191,7 +188,7 @@ function TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, ad
 		end
 	end;
 	
-	TRP3_SetupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
+	setupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
 	
 	listBox.SetSelectedIndex = listBoxSetSelected;
 	listBox.GetSelectedValue = listBoxGetValue;
@@ -203,19 +200,14 @@ function TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, ad
 	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
 	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
 end
-
-function TRP3_LabelledListBox_Setup(label, listBox, values, callback, defaultText, boxWidth, addCancel, labelWidth)
-	TRP3_ListBox_Setup(listBox, values, callback, defaultText, boxWidth, addCancel);
-	_G[listBox:GetParent():GetName().."Label"]:SetText(label or "");
-	_G[listBox:GetParent():GetName().."Label"]:SetWidth(labelWidth or 100);
-end
+TRP3_UI_UTILS.listbox.setupListBox = setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Handle the mouse wheel for the frame in order to slide the slider
-function TRP3_HandleMouseWheel(frame,slider)
+TRP3_UI_UTILS.list.handleMouseWheel = function(frame,slider)
 	frame:SetScript("OnMouseWheel",function(self,delta) 
 		local mini,maxi = slider:GetMinMaxValues();
 		if delta == 1 and slider:GetValue() > mini then
@@ -254,7 +246,7 @@ end
 -- 			- A decorate function, which will receive 3 arguments : a widget and an ID. Decorate will be called on every couple "widget from widgetTab" and "id from dataTab".
 --		dataTab, all the possible values
 --		slider, the slider :3
-function TRP3_InitList(infoTab, dataTab, slider)
+TRP3_UI_UTILS.list.initList = function(infoTab, dataTab, slider)
 	assert(infoTab and dataTab and slider, "Error : no argument can be nil.");
 	assert(infoTab.widgetTab, "Error : no widget tab in infoTab.");
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
@@ -303,55 +295,9 @@ local function getTooltipSize()
 	return 10; --TODO: Use config
 end
 
-local function tooltipSimpleOnEnter(self)
-	TRP3_RefreshTooltipForFrame(self);
-end
-
-local function tooltipSimpleOnLeave(self)
-	TRP3_MainTooltip:Hide();
-end
-
-function TRP3_SetTooltipOnMain(frame, title, text)
-	TRP3_SetTooltipForFrame(frame, TRP3_MainFrame, "RIGHT", 0, -500, title, text);
-end
-
--- Setup the frame tooltip (position and text)
--- The tooltip can be shown by using TRP3_RefreshTooltipForFrame(Frame)
-function TRP3_SetTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
-	assert(Frame and GenFrame, "Frame and GenFrame cannot be nil.");
-	if Frame and GenFrame then
-		Frame.GenFrame = GenFrame;
-		Frame.GenFrameX = GenFrameX;
-		Frame.GenFrameY = GenFrameY;
-		Frame.titleText = titleText;
-		Frame.bodyText = bodyText;
-		Frame.rightText = rightText;
-		if GenFrameAnch then
-			Frame.GenFrameAnch = "ANCHOR_"..GenFrameAnch;
-		else
-			Frame.GenFrameAnch = "ANCHOR_TOPRIGHT";
-		end
-	end
-end
-TRP3_UI_UTILS.setTooltipForFrame = TRP3_SetTooltipForFrame;
-
--- Setup the frame tooltip (position and text)
--- The tooltip can be shown by using TRP3_RefreshTooltipForFrame(Frame)
-function TRP3_SetTooltipForSameFrame(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
-	TRP3_SetTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
-end
-TRP3_UI_UTILS.setTooltipForSameFrame = TRP3_SetTooltipForSameFrame;
-
--- Setup the frame tooltip and add the Enter and Leave scripts
-function TRP3_SetTooltipAll(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
-	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
-	Frame:SetScript("OnLeave", tooltipSimpleOnLeave);
-	TRP3_SetTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
-end
-
--- Show the tooltip for this Frame (the frame must have been set up with TRP3_SetTooltipForFrame).
+-- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
 -- If already shown, the tooltip text will be refreshed.
-function TRP3_RefreshTooltipForFrame(Frame)
+local function refreshTooltip(Frame)
 	if Frame.titleText and Frame.GenFrame and Frame.GenFrameX and Frame.GenFrameY and Frame.GenFrameAnch then
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
@@ -374,6 +320,49 @@ function TRP3_RefreshTooltipForFrame(Frame)
 		end
 		TRP3_MainTooltip:Show();
 	end
+end
+TRP3_UI_UTILS.tooltip.refresh = refreshTooltip;
+TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
+
+local function tooltipSimpleOnEnter(self)
+	refreshTooltip(self);
+end
+
+local function tooltipSimpleOnLeave(self)
+	TRP3_MainTooltip:Hide();
+end
+
+-- Setup the frame tooltip (position and text)
+-- The tooltip can be shown by using refreshTooltip(Frame)
+local function setTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+	assert(Frame and GenFrame, "Frame and GenFrame cannot be nil.");
+	if Frame and GenFrame then
+		Frame.GenFrame = GenFrame;
+		Frame.GenFrameX = GenFrameX;
+		Frame.GenFrameY = GenFrameY;
+		Frame.titleText = titleText;
+		Frame.bodyText = bodyText;
+		Frame.rightText = rightText;
+		if GenFrameAnch then
+			Frame.GenFrameAnch = "ANCHOR_"..GenFrameAnch;
+		else
+			Frame.GenFrameAnch = "ANCHOR_TOPRIGHT";
+		end
+	end
+end
+TRP3_UI_UTILS.tooltip.setTooltipForFrame = setTooltipForFrame;
+
+-- Setup the frame tooltip (position and text)
+-- The tooltip can be shown by using refreshTooltip(Frame)
+TRP3_UI_UTILS.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
+end
+
+-- Setup the frame tooltip and add the Enter and Leave scripts
+TRP3_UI_UTILS.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
+	Frame:SetScript("OnLeave", tooltipSimpleOnLeave);
+	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -449,13 +438,13 @@ local classTexture = {
 	PRIEST = "Priest_icon_Chakra",
 }
 
-function TRP3_GetUnitTexture(race, gender)
+TRP3_UI_UTILS.misc.getUnitTexture = function(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
 	return globals.icons.default;
 end
 
-function TRP3_GetClassTexture(class)
+TRP3_UI_UTILS.misc.getClassTexture = function (class)
 	return classTexture[class] or globals.icons.default;
 end

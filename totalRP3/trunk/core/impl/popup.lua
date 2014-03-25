@@ -5,8 +5,13 @@
 -- Public accessor
 TRP3_POPUPS = {};
 
+-- imports
 local Utils = TRP3_UTILS;
 local loc = TRP3_L;
+local initList = TRP3_UI_UTILS.list.initList;
+local tinsert, _G = tinsert, _G;
+local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
+local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -169,7 +174,7 @@ local function decorateMusic(lineFrame, musicURL)
 	local musicName = musicURL:reverse();
 	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 	
-	TRP3_SetTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
+	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
 		("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 	lineFrame.musicURL = musicURL;
@@ -196,7 +201,7 @@ local function filteredMusicBrowser()
 	filteredMusicList = TRP3_GetMusicList(filter); -- Music tab is unfiltered
 	
 	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. TRP3_GetMusicListSize() );
-	TRP3_InitList(
+	initList(
 		{
 			widgetTab = musicWidgetTab,
 			decorate = decorateMusic
@@ -207,7 +212,7 @@ local function filteredMusicBrowser()
 end
 
 local function initMusicBrowser()
-	TRP3_HandleMouseWheel(TRP3_MusicBrowserContent, TRP3_MusicBrowserContentSlider);
+	handleMouseWheel(TRP3_MusicBrowserContent, TRP3_MusicBrowserContentSlider);
 	TRP3_MusicBrowserContentSlider:SetValue(0);
 	-- Create lines
 	for line = 0, 8 do
@@ -243,7 +248,7 @@ local ui_IconBrowserContent = TRP3_IconBrowserContent;
 local function decorateIcon(icon, index)
 	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
 	icon:SetPushedTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	TRP3_SetTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index], 75), filteredIconList[index]);
+	setTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index], 75), filteredIconList[index]);
 	icon.index = index;
 end
 
@@ -265,7 +270,7 @@ local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
 	filteredIconList = TRP3_GetIconList(filter);
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. TRP3_GetIconListSize() );
-	TRP3_InitList(
+	initList(
 		{
 			widgetTab = iconWidgetTab,
 			decorate = decorateIcon
@@ -276,7 +281,7 @@ local function filteredIconBrowser()
 end
 
 local function initIconBrowser()
-	TRP3_HandleMouseWheel(ui_IconBrowserContent, TRP3_IconBrowserContentSlider);
+	handleMouseWheel(ui_IconBrowserContent, TRP3_IconBrowserContentSlider);
 	TRP3_IconBrowserContentSlider:SetValue(0);
 	-- Create icons
 	local row, column;
@@ -392,7 +397,7 @@ local function filteredImageBrowser()
 	else
 		TRP3_ImageBrowserSelect:Disable();
 	end
-	TRP3_InitList(
+	initList(
 		{
 			widgetTab = imageWidgetTab,
 			decorate = decorateImage
@@ -403,7 +408,7 @@ local function filteredImageBrowser()
 end
 
 local function initImageBrowser()
-	TRP3_HandleMouseWheel(TRP3_ImageBrowserContent, TRP3_ImageBrowserContentSlider);
+	handleMouseWheel(TRP3_ImageBrowserContent, TRP3_ImageBrowserContentSlider);
 	TRP3_ImageBrowserContentSlider:SetValue(0);
 	TRP3_ImageBrowserFilterBox:SetScript("OnTextChanged", filteredImageBrowser);
 	TRP3_ImageBrowserSelect:SetScript("OnClick", onImageSelect);

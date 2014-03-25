@@ -6,7 +6,7 @@
 -- Public accessor
 TRP3_REGISTER = {};
 
--- functions
+-- imports
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local unitID = Utils.str.unitInfoToID;

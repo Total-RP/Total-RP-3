@@ -2,9 +2,9 @@
 	Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --]]
 
+-- Imports
 local Globals = TRP3_GLOBALS;
 local Log = TRP3_UTILS.log;
-local Config = TRP3_CONFIG;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOADING SEQUENCE
