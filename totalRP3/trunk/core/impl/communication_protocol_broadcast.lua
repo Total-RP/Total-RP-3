@@ -8,29 +8,23 @@ local GetChannelDisplayInfo = GetChannelDisplayInfo;
 local GetChannelName = GetChannelName;
 local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
-local tostring = tostring;
-local pairs = pairs;
-local assert = assert;
-local string = string;
-local wipe = wipe;
-local tinsert = tinsert;
-local type = type;
-local math = math;
+local wipe, string = wipe, string;
 local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 local Comm = TRP3_COMM;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local getConfigValue = TRP3_CONFIG.getValue;
 
 Comm.broadcast = {};
 
 local function config_UseBroadcast()
-	return true; -- TODO: locals
+	return getConfigValue("comm_broad_use");
 end
 
 local function config_BroadcastChannel()
-	return "xtensionxtooltip2"; -- TODO: locals
+	return getConfigValue("comm_broad_chan");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -69,14 +63,14 @@ Comm.broadcast.resetPlayers = function()
 end
 
 local function onChannelJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-	if arg2 and arg9 == config_BroadcastChannel() then
+	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = 1;
 	end
 end
 
 local function onChannelLeave(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-	if arg2 and arg9 == config_BroadcastChannel() then
+	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = nil;
 	end
@@ -98,7 +92,7 @@ local function helloWorld()
 end
 
 local function onChannelNotice(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-	if arg9 == config_BroadcastChannel() and arg1 == "YOU_JOINED" then
+	if config_UseBroadcast() and arg9 == config_BroadcastChannel() and arg1 == "YOU_JOINED" then
 		helloWorld();
 	end
 end

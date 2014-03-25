@@ -52,7 +52,7 @@ Config.registerHandler =  function (key, callback)
 	end
 end
 
-Config.setValue = function(key, value)
+local function setValue(key, value)
 	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
 	local old = TRP3_Configuration[key];
 	TRP3_Configuration[key] = value;
@@ -62,20 +62,23 @@ Config.setValue = function(key, value)
 		end
 	end
 end
+Config.setValue = setValue;
 
-Config.getValue = function(key)
+local function getValue(key)
 	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
 	return TRP3_Configuration[key];
 end
+Config.getValue = getValue;
 
-Config.registerConfigKey = function (key, defaultValue)
+local function registerConfigKey(key, defaultValue)
 	assert(type(key) == "string" and defaultValue ~= nil, "Must be a string key and a not nil default value.");
 	assert(not defaultValues[key], "Config key already registered: " .. tostring(key));
 	defaultValues[key] = defaultValue;
-	if not TRP3_Configuration[key] then
-		Config.setValue(key, defaultValue);
+	if TRP3_Configuration[key] == nil then
+		setValue(key, defaultValue);
 	end
 end
+Config.registerConfigKey = registerConfigKey;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration builder
@@ -120,9 +123,9 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				box:SetScript("OnTextChanged", function(self)
 					local value = self:GetText();
-					Config.setValue(element.configKey, value);
+					setValue(element.configKey, value);
 				end);
-				box:SetText(tostring(Config.getValue(element.configKey)));
+				box:SetText(tostring(getValue(element.configKey)));
 			end
 			box:SetNumeric(element.numeric);
 			box:SetMaxLetters(element.maxLetters or 0);
@@ -138,9 +141,9 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				box:SetScript("OnClick", function(self)
 					local value = self:GetChecked();
-					Config.setValue(element.configKey, value);
+					setValue(element.configKey, value ~= nil);
 				end);
-				box:SetChecked(Config.getValue(element.configKey));
+				box:SetChecked(getValue(element.configKey));
 			end
 		end
 		
@@ -163,13 +166,13 @@ local function buildConfigurationPage(structure)
 				end
 				text:SetText(value);
 				if element.configKey then
-					Config.setValue(element.configKey, value);
+					setValue(element.configKey, value);
 				end
 			end
 			slider:SetScript("OnValueChanged", onChange);
 			
 			if element.configKey then
-				slider:SetValue(tonumber(Config.getValue(element.configKey)) or min);
+				slider:SetValue(tonumber(getValue(element.configKey)) or min);
 			else
 				slider:SetValue(0);
 			end
@@ -218,7 +221,7 @@ Config.registerConfigurationPage = registerConfigurationPage;
 
 local function changeLocale(newLocale)
 	if newLocale ~= getCurrentLocale() then
-		Config.setValue("AddonLocale", newLocale);
+		setValue("AddonLocale", newLocale);
 		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..getLocaleText(newLocale).."|r"),
 		function()
 			ReloadUI();
@@ -232,6 +235,9 @@ local function generalInit()
 	for _, locale in pairs(getLocales()) do
 		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
+	
+	registerConfigKey("comm_broad_use", true);
+	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
 	
 	-- Build widgets
 	local CONFIG_STRUCTURE_GENERAL = {
@@ -253,6 +259,20 @@ local function generalInit()
 				listDefault = getLocaleText(getCurrentLocale()),
 				listWidth = nil,
 				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_COM"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_BROADCAST"),
+				configKey = "comm_broad_use",
+			},
+			{
+				inherit = "TRP3_ConfigEditBox",
+				title = loc("CO_GENERAL_BROADCAST_C"),
+				configKey = "comm_broad_chan",
 			},
 		}
 	}
