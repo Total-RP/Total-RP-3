@@ -30,10 +30,8 @@ function Globals.addon:OnEnable()
 	TRP3_COMM.broadcast.init();
 	TRP3_InitProfiles();
 	TRP3_InitRegister();
-	TRP3_DASHBOARD.init();
-	
-	-- Inits UI
 	TRP3_TOOLBAR.init();
+	TRP3_DASHBOARD.init();
 	TRP3_TARGET_FRAME.init();
 	TRP3_InitMinimapButton(self);
 	TRP3_UI_InitMainPage();

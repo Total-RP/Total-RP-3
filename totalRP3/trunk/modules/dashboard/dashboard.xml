@@ -2,8 +2,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
-	<Script file="dashboard.lua"/>
-	
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
@@ -111,4 +109,5 @@
 		</Frames>
 	</Frame>
 	
+	<Script file="dashboard.lua"/>
 </Ui>

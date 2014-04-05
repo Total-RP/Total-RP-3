@@ -257,14 +257,23 @@ local LOCALE_EN = {
 		
 		TB_TOOLBAR = "Toolbar",
 		TB_SWITCH_TOOLBAR = "Switch toolbar",
+		TB_SWITCH_CAPE_ON = "Cloak: |cff00ff00Shown",
+		TB_SWITCH_CAPE_OFF = "Cloak: |cffff0000Hidden",
 		TB_SWITCH_CAPE_1 = "Show cloak",
 		TB_SWITCH_CAPE_2 = "Hide cloak",
+		TB_SWITCH_HELM_ON = "Helm: |cff00ff00Shown",
+		TB_SWITCH_HELM_OFF = "Helm: |cffff0000Hidden",
 		TB_SWITCH_HELM_1 = "Show helmet",
 		TB_SWITCH_HELM_2 = "Hide helmet",
 		TB_GO_TO_MODE = "Switch to %s mode",
 		TB_NORMAL_MODE = "Normal",
 		TB_DND_MODE = "Do not disturb",
 		TB_AFK_MODE = "Away",
+		TB_STATUS = "Player",
+		TB_RPSTATUS_ON = "Character: |cff00ff00In character",
+		TB_RPSTATUS_OFF = "Character: |cffff0000Out of character",
+		TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
+		TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE
