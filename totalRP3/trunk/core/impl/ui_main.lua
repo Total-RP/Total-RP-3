@@ -14,6 +14,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local loc = TRP3_L;
+local switchMainFrame = TRP3_NAVIGATION.switchMainFrame;
 
 -- Loading LDBIcon library
 local libDBIcon = LibStub("LibDBIcon-1.0")
@@ -31,7 +32,7 @@ function TRP3_InitMinimapButton(addon)
 			if button == "RightButton" then
 				TRP3_SwitchToolbar();
 			else
-				TRP3_SwitchMainFrame();
+				switchMainFrame();
 			end
 		end,
 		OnLoad = function() self:RegisterForClicks("LeftButtonUp","RightButtonUp"); end,

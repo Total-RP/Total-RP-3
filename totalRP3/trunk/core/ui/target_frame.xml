@@ -97,6 +97,17 @@
 							</OnUpdate>
 						</Scripts>
 					</PlayerModel>
+					<Frame name="TRP3_TargetFrameContent">
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+							<EdgeSize><AbsValue val="20" /></EdgeSize>
+							<TileSize><AbsValue val="20" /></TileSize>
+							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
+						</Backdrop>
+						<Size x="150" y="42" />
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-5" y="0" />
+						</Anchors>
+					</Frame>
 				</Frames>
 			</Frame>
 		</Frames>

@@ -22,6 +22,7 @@ local getYourCharacter = TRP3_PROFILE.getCharacter;
 local IsUnitIDKnown = TRP3_IsUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_EVENTS;
+local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
 
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
@@ -135,6 +136,7 @@ local function getGameTooltipTexts()
 	for j = 1, GameTooltip:NumLines() do
 		tab[j] = _G["GameTooltipTextLeft" ..  j]:GetText();
 	end
+	return tab;
 end
 
 local function setLineFont(tooltip, lineIndex, fontSize)

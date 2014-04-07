@@ -19,6 +19,7 @@ local type = type;
 local tostring = tostring;
 local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local getCurrentContext = TRP3_NAVIGATION.page.getCurrentContext;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -98,7 +99,7 @@ local styleLines = {};
 local function onEditStyle(choice, frame)
 	frame = frame:GetParent();
 	assert(frame.fieldData, "No data in frame !");
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if context.unitID == Globals.player_id then
 		local dataTab = get("player/misc");
@@ -249,7 +250,7 @@ local function onIconClosed()
 end
 
 local function onSlotClick(button)
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if context.unitID == Globals.player_id then
 		currentSelected = button.index;
@@ -291,7 +292,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_onPlayerPeekShow()
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	TRP3_RegisterMisc:Show();
 	displayPeek(context);

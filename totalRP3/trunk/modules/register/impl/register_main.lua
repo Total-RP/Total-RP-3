@@ -30,6 +30,9 @@ local Config = TRP3_CONFIG;
 local registerConfigKey = Config.registerConfigKey;
 local Events = TRP3_EVENTS;
 local assert = assert;
+local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
 
 -- Saved variables references
 local profiles;
@@ -266,7 +269,7 @@ local function createTabBar()
 end
 
 local function showTabs(context)
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	local isSelf = context.unitID == Globals.player_id;
 	
@@ -276,8 +279,8 @@ local function showTabs(context)
 end
 
 local function onReceivedInfo(unitID, infoType)
-	if TRP3_GetCurrentPageID() == "player_main" then
-		local context = TRP3_GetCurrentPageContext();
+	if getCurrentPageID() == "player_main" then
+		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
 		if unitID == context.unitID then
 			if infoType == TRP3_RegisterInfoTypes.ABOUT and tabGroup.current == 2 then
@@ -321,13 +324,20 @@ end
 function TRP3_UI_InitRegister()
 	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_10_player",
 		text = Globals.player,
-		onSelected = function() TRP3_SetPage("player_main", {unitID = Globals.player_id}); end,
+		onSelected = function() selectMenu("main_10_player_01_character") end,
+	});
+	
+	registerMenu({
+		id = "main_10_player_01_character",
+		text = loc("REG_PLAYER"),
+		onSelected = function() setPage("player_main", {unitID = Globals.player_id}); end,
+		isChildOf = "main_10_player",
 	});
 
-	TRP3_RegisterPage({
+	registerPage({
 		id = "player_main",
 		templateName = "TRP3_RegisterMain",
 		frameName = "TRP3_RegisterMain",
@@ -362,6 +372,7 @@ function TRP3_UI_InitRegister()
 	TRP3_Register_DataExchangeInit();
 	TRP3_Register_TooltipInit();
 	TRP3_Register_ListInit();
+	TRP3_REGISTER.initPets();
 
 	createTabBar();
 end

@@ -3,13 +3,17 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local loc = TRP3_L;
--- Frame placeholder
-local frames = {};
-local keys = {};
 local getDefaultLocaleStructure = TRP3_LOCALE.getDefaultLocaleStructure;
 local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
 local initList = TRP3_UI_UTILS.list.initList;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local registerMenu = TRP3_NAVIGATION.menu.registerMenu;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local table, pairs, tinsert = table, pairs, tinsert;
+
+-- Frame placeholder
+local frames = {};
+local keys = {};
 
 local function injectLocale()
 	local locale = TRP3_LOCALE.getEffectiveLocale();
@@ -86,18 +90,18 @@ local function onLoaded()
 	setTooltipForSameFrame(TRP3_ConfigurationLocalizatorApply, "TOP", 0, 5, loc("LOCALIZATOR_APPLY"), loc("LOCALIZATOR_APPLY_TT"));
 	setTooltipForSameFrame(TRP3_ConfigurationLocalizatorReset, "TOP", 0, 5, loc("LOCALIZATOR_RESET"), loc("LOCALIZATOR_RESET_TT"));
 	
-	TRP3_RegisterPage({
+	registerPage({
 		id = "main_config_localizator",
 		templateName = "TRP3_ConfigurationLocalizator",
 		frameName = "TRP3_ConfigurationLocalizator",
 		frame = TRP3_ConfigurationLocalizator,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_9z_config_gen",
 		text = loc("LOCALIZATOR_MENU"),
 		isChildOf = "main_90_config",
-		onSelected = function() TRP3_SetPage("main_config_localizator"); end,
+		onSelected = function() setPage("main_config_localizator"); end,
 	});
 	
 	--Text

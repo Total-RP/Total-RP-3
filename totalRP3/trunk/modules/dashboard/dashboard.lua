@@ -18,6 +18,8 @@ local icon, color = Utils.str.icon, Utils.str.color;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler;
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_UI_UTILS.tooltip.setTooltipForFrame, TRP3_UI_UTILS.tooltip.refresh, TRP3_MainTooltip;
 local buildToolbar = TRP3_TOOLBAR.buildToolbar;
+local registerMenu, registerPage = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.page.registerPage;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 -- The variable which gonna make people cry : Currently status characters limit. :D
 local CURRENTLY_SIZE = 200;
@@ -71,14 +73,14 @@ local CONFIG_CONTENT_STATUS = "toolbar_content_status";
 
 TRP3_DASHBOARD.init = function()
 
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_00_dashboard",
 		align = "CENTER",
 		text = TRP3_GLOBALS.addon_name,
-		onSelected = function() TRP3_SetPage("dashboard"); end,
+		onSelected = function() setPage("dashboard"); end,
 	});
 	
-	TRP3_RegisterPage({
+	registerPage({
 		id = "dashboard",
 		frame = TRP3_Dashboard,
 		onPagePostShow = onShow,

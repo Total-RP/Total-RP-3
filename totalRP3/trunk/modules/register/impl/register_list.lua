@@ -15,6 +15,8 @@ local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
 local initList = TRP3_UI_UTILS.list.initList;
 local getUnitTexture = TRP3_UI_UTILS.misc.getUnitTexture;
 local getClassTexture = TRP3_UI_UTILS.misc.getClassTexture;
+local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -26,11 +28,11 @@ local currentlyOpenedCharacter = {};
 local function openPage(unitID)
 	if unitID == Globals.player_id then
 		-- If the selected is player, simply oen his sheet.
-		TRP3_SelectMenu("main_00_player");
+		selectMenu("main_00_player");
 	else
 		if currentlyOpenedCharacter[unitID] then
 			-- If the character already has his "tab", simply open it
-			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
+			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		else
 			-- Else, create a new menu entry and open it.
 			local unitName, unitRealm = unitIDToInfo(unitID);
@@ -41,14 +43,14 @@ local function openPage(unitID)
 					tabText = profile.characteristics.FN or unitName;
 				end
 			end
-			TRP3_RegisterMenu({
+			registerMenu({
 				id = currentlyOpenedCharacterPrefix .. unitID,
 				text = tabText,
-				onSelected = function() TRP3_SetPage("player_main", {unitID = unitID}) end,
+				onSelected = function() setPage("player_main", {unitID = unitID}) end,
 				isChildOf = "main_10_register",
 			});
 			currentlyOpenedCharacter[unitID] = true;
-			TRP3_SelectMenu(currentlyOpenedCharacterPrefix .. unitID);
+			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		end
 	end
 end
@@ -137,13 +139,13 @@ end
 
 function TRP3_Register_ListInit()
 
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_10_register",
 		text = loc("REG_REGISTER"),
-		onSelected = function() TRP3_SetPage("register_list"); end,
+		onSelected = function() setPage("register_list"); end,
 	});
 	
-	TRP3_RegisterPage({
+	registerPage({
 		id = "register_list",
 		templateName = "TRP3_RegisterList",
 		frameName = "TRP3_RegisterList",

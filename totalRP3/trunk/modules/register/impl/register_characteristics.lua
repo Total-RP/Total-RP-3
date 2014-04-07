@@ -16,6 +16,7 @@ local assert, type, wipe = assert, type, wipe;
 local getTiledBackground = TRP3_UI_UTILS.background.getTiledBackground;
 local setupDropDownMenu = TRP3_UI_UTILS.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local getCurrentContext = TRP3_NAVIGATION.page.getCurrentContext;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -573,7 +574,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function refreshDisplay()
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	local isSelf = context.unitID == Globals.player_id;
 

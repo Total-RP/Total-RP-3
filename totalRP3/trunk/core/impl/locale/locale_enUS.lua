@@ -19,7 +19,7 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+		REG_PLAYER = "Character",
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
 		REG_PLAYER_CHARACTERISTICS = "Characteristics",
@@ -191,7 +191,7 @@ local LOCALE_EN = {
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
 		REG_LIST_NAME = "Name",
-		
+		REG_COMPANIONS = "Companions",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

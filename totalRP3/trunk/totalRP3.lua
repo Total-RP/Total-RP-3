@@ -34,13 +34,13 @@ function Globals.addon:OnEnable()
 	TRP3_DASHBOARD.init();
 	TRP3_TARGET_FRAME.init();
 	TRP3_InitMinimapButton(self);
-	TRP3_UI_InitMainPage();
+	TRP3_NAVIGATION.Init();
 	TRP3_UI_InitRegister();
 	TRP3_UI_InitPopups();
 	TRP3_UI_InitConfiguration();
 	
 	TRP3_LoadProfile(); -- Load profile
-	TRP3_SelectMenu("main_00_dashboard"); -- Select first menu
+	TRP3_NAVIGATION.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
 	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));

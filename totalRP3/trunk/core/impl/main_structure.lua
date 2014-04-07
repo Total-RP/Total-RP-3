@@ -3,9 +3,18 @@
 -- Handles the main page content and left menu
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Public accessor
+TRP3_NAVIGATION = {
+	menu = {},
+	page = {}
+};
+
 -- imports
-local Utils = TRP3_UTILS;
-local Log = Utils.log;
+local Log = TRP3_UTILS.log;
+local CreateFrame = CreateFrame;
+local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
+local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
+local selectMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Menu management
@@ -22,28 +31,8 @@ local marginTop = -5;
 -- Menu button height, determine the vertical gap between each button
 local buttonHeight = 25;
 
--- Register a menu structure
--- Automatically refresh the menu display
-function TRP3_RegisterMenu(menuStructure)
-	assert(menuStructure and menuStructure.id, "menuStructure must have an id field.");
-	assert(not menuStructures[menuStructure.id], "The menu with id "..(menuStructure.id).." has already been registered.");
-	menuStructures[menuStructure.id] = menuStructure;
-	TRP3_RefreshMenuDisplay();
-end
-
--- Unregister a menu structure.
--- Automatically refresh the menu display
-function TRP3_UnregisterMenu(menuId)
-	menuStructures[menuId] = nil;
-	if selectedMenuId == menuId then
-		-- TODO: what to do when unregister the currently selected menu ? Error for now
-		error("Cannot unregister the current selected menu entry");
-	end
-	TRP3_RefreshMenuDisplay();
-end
-
--- The menu is built by SORTED menu key.
-local function buildMenu()
+-- The menu is built by SORTED menu item key.
+local function rebuildMenu()
 	-- Hide all
 	for _, widget in pairs(uiMenuWidgets) do
 		widget:Hide();
@@ -93,7 +82,7 @@ local function buildMenu()
 			
 			label:SetText(menuStructure.text);
 			uiButton:SetScript("OnClick", function()
-				TRP3_SelectMenu(id);
+				selectMenu(id);
 			end);
 			uiButton:Show();
 			index = index + 1;
@@ -101,29 +90,49 @@ local function buildMenu()
 		end
 	end
 end
+TRP3_NAVIGATION.menu.rebuildMenu = rebuildMenu;
 
--- Refresh the menu display.
-function TRP3_RefreshMenuDisplay()
-	buildMenu();
+-- Register a menu structure
+-- Automatically refresh the menu display
+local function registerMenu(menuStructure)
+	assert(menuStructure and menuStructure.id, "menuStructure must have an id field.");
+	assert(not menuStructures[menuStructure.id], "The menu with id "..(menuStructure.id).." has already been registered.");
+	menuStructures[menuStructure.id] = menuStructure;
+	rebuildMenu();
 end
+TRP3_NAVIGATION.menu.registerMenu = registerMenu;
+
+-- Unregister a menu structure.
+-- Automatically refresh the menu display
+local function unregisterMenu(menuId)
+	menuStructures[menuId] = nil;
+	if selectedMenuId == menuId then
+		-- TODO: what to do when unregister the currently selected menu ? Error for now
+		error("Cannot unregister the current selected menu entry");
+	end
+	rebuildMenu();
+end
+TRP3_NAVIGATION.menu.unregisterMenu = unregisterMenu;
 
 -- Set a menu or submenu as selected
-function TRP3_SelectMenu(menuId)
+selectMenu = function(menuId)
 	assert(menuStructures[menuId], "Unknown menuId "..menuId);
 	selectedMenuId = menuId;
-	TRP3_RefreshMenuDisplay();
+	rebuildMenu();
 	if menuStructures[menuId].onSelected then
 		menuStructures[menuId].onSelected();
 	end
 	TRP3_HidePopups();
 end
+TRP3_NAVIGATION.menu.selectMenu = selectMenu;
 
 -- Use to access and change menu properties.
--- Any properties can be changed be TRP3_RefreshMenuDisplay must be called in order to apply these changes.
-function TRP3_GetMenu(menuId)
+-- Any properties can be changed but rebuildMenu must be called in order to apply these changes.
+local function getMenuItem(menuId)
 	assert(menuStructures[menuId], "Unknown menuId "..menuId);
 	return menuStructures[menuId];
 end
+TRP3_NAVIGATION.menu.getMenuItem = getMenuItem;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main structure & page system
@@ -141,8 +150,16 @@ local function checkPageSelection()
 	end
 end
 
-function TRP3_SetPage(pageId, context)
-	Log.log("TRP3_SetPage: "..pageId, Log.level.DEBUG);
+local function registerPage(pageStructure)
+	assert(pageStructure and pageStructure.id, "pageStructure must have an id field.");
+	assert(pageStructure.frame or (pageStructure.templateName and pageStructure.frameName), "pageStructure must have a frame or a templateName and a frameName field.");
+	assert(not pageStructures[pageStructure.id], "The page with id "..(pageStructure.id).." has already been registered.");
+	pageStructures[pageStructure.id] = pageStructure;
+end
+TRP3_NAVIGATION.page.registerPage = registerPage;
+
+local function setPage(pageId, context)
+	Log.log("setPage: "..pageId, Log.level.DEBUG);
 	
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");
@@ -181,35 +198,32 @@ function TRP3_SetPage(pageId, context)
 		currentPage.onPagePostShow(context);
 	end
 end
+TRP3_NAVIGATION.page.setPage = setPage;
 
-function TRP3_GetCurrentPageContext()
+local function getCurrentContext()
 	return currentContext;
 end
+TRP3_NAVIGATION.page.getCurrentContext = getCurrentContext;
 
-function TRP3_GetCurrentPageID()
+local function getCurrentPageID()
 	return currentPageId;
 end
+TRP3_NAVIGATION.page.getCurrentPageID = getCurrentPageID;
 
-function TRP3_RegisterPage(pageStructure)
-	assert(pageStructure and pageStructure.id, "pageStructure must have an id field.");
-	assert(pageStructure.frame or (pageStructure.templateName and pageStructure.frameName), "pageStructure must have a frame or a templateName and a frameName field.");
-	assert(not pageStructures[pageStructure.id], "The page with id "..(pageStructure.id).." has already been registered.");
-	pageStructures[pageStructure.id] = pageStructure;
-end
-
-function TRP3_SwitchMainFrame()
+local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();
 	else
 		TRP3_MainFrame:Show();
 	end
 end
+TRP3_NAVIGATION.switchMainFrame = switchMainFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_UI_InitMainPage()
+TRP3_NAVIGATION.Init = function()
 	TRP3_MainFrame:SetScript("OnShow", function() checkPageSelection() end);
-	TRP3_MainFrameClose:SetScript("OnClick", function() TRP3_SwitchMainFrame() end);
+	TRP3_MainFrameClose:SetScript("OnClick", function() switchMainFrame() end);
 end

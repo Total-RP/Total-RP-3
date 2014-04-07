@@ -22,6 +22,8 @@ local getLocales = TRP3_LOCALE.getLocales;
 local getCurrentLocale = TRP3_LOCALE.getCurrentLocale;
 local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
 local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
+local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -198,17 +200,17 @@ local function registerConfigurationPage(pageStructure)
 	pageStructure.parent = _G["TRP3_ConfigurationPage" .. configurationPageCount .. "InnerScrollContainer"];
 	_G["TRP3_ConfigurationPage" .. configurationPageCount .. "Title"]:SetText(pageStructure.pageText);
 
-	TRP3_RegisterPage({
+	registerPage({
 		id = pageStructure.id,
 		frame = pageStructure.frame,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
 	
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_91_config_" .. configurationPageCount,
 		text = pageStructure.menuText,
 		isChildOf = "main_90_config",
-		onSelected = function() TRP3_SetPage(pageStructure.id); end,
+		onSelected = function() setPage(pageStructure.id); end,
 	});
 	
 	buildConfigurationPage(pageStructure);
@@ -370,23 +372,23 @@ end
 
 function TRP3_UI_InitConfiguration()
 	-- Page and menu
-	TRP3_RegisterPage({
+	registerPage({
 		id = "main_config_module",
 		templateName = "TRP3_ConfigurationModule",
 		frameName = "TRP3_ConfigurationModule",
 		frame = TRP3_ConfigurationModule,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_90_config",
 		text = loc("CO_CONFIGURATION"),
-		onSelected = function() TRP3_SelectMenu("main_91_config_1") end,
+		onSelected = function() selectMenu("main_91_config_1") end,
 	});
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_99_config_mod",
 		text = loc("CO_MODULES"),
 		isChildOf = "main_90_config",
-		onSelected = function() TRP3_SetPage("main_config_module"); end,
+		onSelected = function() setPage("main_config_module"); end,
 	});
 
 	generalInit();

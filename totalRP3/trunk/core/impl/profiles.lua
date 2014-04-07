@@ -17,6 +17,8 @@ local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
 local initList = TRP3_UI_UTILS.list.initList;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
+local registerMenu, registerPage = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.page.registerPage;
+local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -353,7 +355,7 @@ function TRP3_InitProfiles()
 	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
 	setTooltipForSameFrame(TRP3_ProfileManagerHelp, "BOTTOM", 0, -15, loc("PR_PROFILE"), loc("PR_PROFILE_HELP"));
 	
-	TRP3_RegisterPage({
+	registerPage({
 		id = "main_profile",
 		templateName = "TRP3_ProfileManager",
 		frameName = "TRP3_ProfileManager",
@@ -362,9 +364,9 @@ function TRP3_InitProfiles()
 		onPagePostShow = function() uiInitProfileList(); end,
 	});
 
-	TRP3_RegisterMenu({
+	registerMenu({
 		id = "main_80_profile",
 		text = loc("PR_PROFILEMANAGER_TITLE"),
-		onSelected = function() TRP3_SetPage("main_profile"); end,
+		onSelected = function() setPage("main_profile"); end,
 	});
 end

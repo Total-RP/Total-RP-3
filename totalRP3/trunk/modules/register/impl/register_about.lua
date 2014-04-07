@@ -28,6 +28,7 @@ local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
 local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
+local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -478,7 +479,7 @@ local function refreshVoteDisplay(aboutTab)
 end
 
 local function sendVote(voteValue)
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if context.unitID and context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
 		if voteValue == TRP3_GetUnitProfile(context.unitID).about.vote then
@@ -508,8 +509,8 @@ local function voteResponse(value, sender)
 		TRP3_GetUnitProfile(sender).about.vote = value;
 		local playerName = unitIDToInfo(sender);
 		Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_SENDING_OK"):format(playerName));
-		if TRP3_GetCurrentPageID() == "player_main" then
-			local context = TRP3_GetCurrentPageContext();
+		if getCurrentPageID() == "player_main" then
+			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");
 			if context.unitID == sender then
 				refreshVoteDisplay(TRP3_GetUnitProfile(sender).about);
@@ -718,7 +719,7 @@ local function refreshEditDisplay()
 end
 
 local function refreshDisplay()
-	local context = TRP3_GetCurrentPageContext();
+	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	local isSelf = context.unitID == Globals.player_id;
 	
