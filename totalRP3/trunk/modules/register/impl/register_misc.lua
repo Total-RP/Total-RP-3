@@ -6,11 +6,11 @@
 -- imports
 local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
 local stEtN = Utils.str.emptyToNil;
-local color = Utils.str.color;
+local color, getIcon = Utils.str.color, Utils.str.icon;
 local loc = TRP3_L;
 local get = TRP3_PROFILE.getData;
 local tcopy = Utils.table.copy;
-local assert = assert;
+local assert, table = assert, table;
 local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
 local openIconBrowser = TRP3_POPUPS.openIconBrowser;
 local tinsert = tinsert;
@@ -307,27 +307,42 @@ end
 -- Presets
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local PEEK_PRESETS;
+local PEEK_PRESETS, PEEK_PRESETS_CATEGORY;
 
 local function buildPresetListData()
+	PEEK_PRESETS_CATEGORY = {
+		["Category 1"] = {"Preset 1", "Preset 2"}
+	};
+	
 	PEEK_PRESETS = {
-		humor1 = {
+		["Preset 1"] = {
 			icon = "Spell_Shadow_MindSteal",
-			name = "Apathetic",
-			text = "This character is dispassionate and nonchalant."
-		}
+			text = "Preset 1 text",
+		},
+		["Preset 2"] = {
+			icon = "inv_belt_88",
+			text = "Preset 2 text",
+		},
 	};
 
 	local listData = {};
-	local tmp = {};
+	-- Title
 	tinsert(listData, {loc("REG_PLAYER_GLANCE_PRESET_SELECT"), nil});
-	for presetID,_ in pairs(PEEK_PRESETS) do
-		tinsert(tmp, presetID);
+	-- Category sorting
+	local tmp = {};
+	for category, _ in pairs(PEEK_PRESETS_CATEGORY) do
+		tinsert(tmp, category);
 	end
 	table.sort(tmp);
-	for _, presetID in pairs(tmp) do
-		local preset = PEEK_PRESETS[presetID];
-		tinsert(listData, {preset.name, presetID});
+	for _, category in pairs(tmp) do
+		local categoryTab = PEEK_PRESETS_CATEGORY[category];
+		local categoryListElement = {category, {}};
+		-- Peek
+		for _, peek in pairs(categoryTab) do
+			local peekInfo = PEEK_PRESETS[peek];
+			tinsert(categoryListElement[2], {getIcon(peekInfo.icon, 20) .. " " .. peek, peek});
+		end
+		tinsert(listData, categoryListElement);
 	end
 	
 	return listData;
@@ -337,6 +352,11 @@ local function onPresetSelected(presetID)
 	assert(presetID == nil or PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
 	if presetID ~= nil then
 		TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
+		local preset = PEEK_PRESETS[presetID];
+		TRP3_RegisterMiscEdit_Glance_Active:SetChecked(true);
+		TRP3_RegisterMiscEdit_Glance_Title:SetText(presetID or "");
+		TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(preset.text or "");
+		onIconSelected(preset.icon);
 	end
 end
 
@@ -346,6 +366,18 @@ end
 
 function TRP3_Register_PeekInit()
 	buildStyleStructure();
+	
+	if not TRP3_Presets then
+		TRP3_Presets = {};
+	end
+	if not TRP3_Presets.peek then
+		TRP3_Presets.peek = {};
+	end
+	if not TRP3_Presets.peekCategory then
+		TRP3_Presets.peekCategory = {};
+	end
+	PEEK_PRESETS = TRP3_Presets.peek;
+	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
 	
 	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));

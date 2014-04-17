@@ -13,8 +13,8 @@ TRP3_UI_UTILS = {
 -- imports
 local globals = TRP3_GLOBALS;
 local loc = TRP3_L;
-local floor, tinsert, pairs, wipe, assert, _G, tostring, table = floor, tinsert, pairs, wipe, assert, _G, tostring, table;
-local MouseIsOver, CreateFrame = MouseIsOver, CreateFrame;
+local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type;
+local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 
@@ -41,7 +41,7 @@ local tiledBackgrounds = {
 	"Interface\\Stationery\\StationeryTest1",
 	"Interface\\WorldMap\\UI-WorldMap-Middle1",
 	"Interface\\WorldMap\\UI-WorldMap-Middle2",
-	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",	
+	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 };
 
 TRP3_UI_UTILS.background.getTiledBackground = function(index)
@@ -79,7 +79,7 @@ TRP3_UI_UTILS.misc.createRefreshOnFrame = function(frame, time, callback)
 			callback(frame);
 		end
 	end);
-	
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -94,35 +94,44 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		frame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
 	UIDropDownMenu_Initialize(frame,
-		function(uiFrame,level,menuList)
-			for index, tab in pairs(values) do
-				local text = tab[1];
-				local value = tab[2];
-				local info = UIDropDownMenu_CreateInfo();
-				info.notCheckable = "true";
-				info.text = text;
-				if value then
-					info.func = function()
-						if callback then
-							callback(value, anchoredFrame);
-						end
-						anchoredFrame:GetParent().selectedValue = value;
-					end;
-					info.isTitle = false;
-				else
-					info.func = function() end;
-					info.isTitle = true;
-				end
-				UIDropDownMenu_AddButton(info);
+	function(uiFrame, level, menuList)
+		local levelValues = menuList or values;
+		
+		level = level or 1;
+		for index, tab in pairs(levelValues) do
+			assert(type(tab) == "table", "Level value is not a table !");
+			local text = tab[1];
+			local value = tab[2];
+			local info = UIDropDownMenu_CreateInfo();
+			info.notCheckable = "true";
+			info.text = text;
+			info.isTitle = false;
+			if type(value) == "table" then
+				info.hasArrow = true;
+				info.keepShownOnClick = true;
+				info.menuList = value;
+			elseif value then
+				info.func = function()
+					if callback then
+						callback(value, anchoredFrame);
+					end
+					anchoredFrame:GetParent().selectedValue = value;
+				end;
+			else
+				info.func = function() end;
+				info.isTitle = true;
 			end
-			if addCancel then
-				local info = UIDropDownMenu_CreateInfo();
-				info.notCheckable = "true";
-				info.text = CANCEL;
-				UIDropDownMenu_AddButton(info,level);
-			end
-		end, 
-		"MENU"
+			UIDropDownMenu_AddButton(info, level);
+		end
+		if menuList == nil and addCancel then
+			local info = UIDropDownMenu_CreateInfo();
+			info.notCheckable = "true";
+			info.text = CANCEL;
+			UIDropDownMenu_AddButton(info, level);
+		end
+
+	end,
+	"MENU"
 	);
 	frame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, frame, anchoredFrame:GetName(), -((space or -10)), 0);
@@ -187,13 +196,13 @@ local function setupListBox(listBox, values, callback, defaultText, boxWidth, ad
 			callback(value, listBox);
 		end
 	end;
-	
+
 	setupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
-	
+
 	listBox.SetSelectedIndex = listBoxSetSelected;
 	listBox.GetSelectedValue = listBoxGetValue;
 	listBox.SetSelectedValue = listBoxSetSelectedValue;
-	
+
 	if defaultText then
 		_G[listBox:GetName().."Text"]:SetText(defaultText);
 	end
@@ -208,7 +217,7 @@ TRP3_UI_UTILS.listbox.setupListBox = setupListBox;
 
 -- Handle the mouse wheel for the frame in order to slide the slider
 TRP3_UI_UTILS.list.handleMouseWheel = function(frame,slider)
-	frame:SetScript("OnMouseWheel",function(self,delta) 
+	frame:SetScript("OnMouseWheel",function(self,delta)
 		local mini,maxi = slider:GetMinMaxValues();
 		if delta == 1 and slider:GetValue() > mini then
 			slider:SetValue(slider:GetValue()-1);
@@ -226,7 +235,7 @@ local function listShowPage(infoTab, pageNum)
 	for k=1,infoTab.maxPerPage do
 		infoTab.widgetTab[k]:Hide();
 	end
-	
+
 	-- Show list
 	for widgetIndex=1, infoTab.maxPerPage do
 		local dataIndex = pageNum*infoTab.maxPerPage + widgetIndex;
@@ -250,11 +259,11 @@ TRP3_UI_UTILS.list.initList = function(infoTab, dataTab, slider)
 	assert(infoTab and dataTab and slider, "Error : no argument can be nil.");
 	assert(infoTab.widgetTab, "Error : no widget tab in infoTab.");
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
-	
+
 	local count = 0;
 	local maxPerPage = #infoTab.widgetTab;
 	infoTab.maxPerPage = maxPerPage;
-	
+
 	if not infoTab.uiTab then
 		infoTab.uiTab = {};
 	end
@@ -263,14 +272,14 @@ TRP3_UI_UTILS.list.initList = function(infoTab, dataTab, slider)
 	slider:SetValueStep(1);
 	slider:SetObeyStepOnDrag(true);
 	wipe(infoTab.uiTab);
-	
+
 	for key,_ in pairs(dataTab) do
 		tinsert(infoTab.uiTab, key);
 	end
 	count = #infoTab.uiTab;
-	
+
 	table.sort(infoTab.uiTab);
-	
+
 	slider:SetScript("OnValueChanged", nil);
 	if count > maxPerPage then
 		slider:Show();
@@ -419,9 +428,9 @@ local unitTexture = {
 		"Ability_Racial_RocketJump",
 	},
 	Pandaren = {
-      "Achievement_Guild_ClassyPanda",
-      "Achievement_Character_Pandaren_Female",
-    },
+		"Achievement_Guild_ClassyPanda",
+		"Achievement_Character_Pandaren_Female",
+	},
 };
 
 local classTexture = {
