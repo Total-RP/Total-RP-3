@@ -157,7 +157,7 @@
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="250"/>
+		<Size x="420" y="300"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -189,7 +189,7 @@
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
-				<Size x="0" y="50"/>
+				<Size x="0" y="100"/>
 				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
@@ -200,7 +200,14 @@
 						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetText" text="[LOAD_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
 							<Size x="150" y="10"/>
 							<Anchors>
-								<Anchor point="LEFT" x="20" y="3"/>
+								<Anchor point="TOPLEFT" x="20" y="-20"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetSave" text="[SAVE_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
+							<Size x="150" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetText" x="0" y="-17"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
@@ -220,6 +227,25 @@
 							</OnLeave>
 						</Scripts>
 				    </Frame>
+				    <EditBox name="TRP3_RegisterMiscEdit_Glance_PresetSaveCategory" inherits="TRP3_TitledEditBox">
+						<Size x="100" y="18"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSave" x="5" y="-13"/>
+						</Anchors>
+					</EditBox>
+					<EditBox name="TRP3_RegisterMiscEdit_Glance_PresetSaveName" inherits="TRP3_TitledEditBox">
+						<Size x="100" y="18"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSaveCategory" x="15" y="0"/>
+						</Anchors>
+					</EditBox>
+				    <Button name="TRP3_RegisterMiscEdit_Glance_PresetSaveButton" inherits="TRP3_CommonButton" text="[SAVE_AS_PRESET]">
+						<Size x="0" y="20"/>
+						<Anchors>	
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSaveName" x="10" y="1"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 			<Frame name="TRP3_RegisterMiscEdit_Glance_Edit">

@@ -14,11 +14,11 @@ local UnitName = UnitName;
 local EMPTY = Globals.empty;
 local getMiscData;
 local isUnitIDKnown;
-local _G = _G;
-local tostring = tostring;
+local _G, assert, tostring = _G, assert, tostring;
 local getUnitID = Utils.str.getUnitID;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local get = TRP3_PROFILE.getData;
+local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Buttons logic
@@ -38,28 +38,55 @@ end
 
 local currentTarget = nil;
 
+local function onPeekSelection(value, button)
+	if value then
+		TRP3_RegisterMiscSetPeek(button.slot, value);
+	end
+end
+
+local function onPeekClickMine(button)
+	displayDropDown(button, TRP3_RegisterMiscGetPeekPresetStructure(), function(value) onPeekSelection(value, button) end, 0, true);
+end
+
+local function displayPeekSlots(unitID, targetInfo)
+	for i=1,5,1 do
+		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
+		slot:Hide();
+	end
+	
+	if UnitIsPlayer("target") then
+		local peekTab;
+		if unitID == Globals.player_id then
+			peekTab = get("player/misc").PE or EMPTY;
+		elseif isUnitIDKnown(unitID) then
+			peekTab = getMiscData(unitID).PE or EMPTY;
+		end
+		for i=1,5,1 do
+			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
+			local peek = peekTab[tostring(i)];
+			if peek and peek.AC then
+				slot:Show();
+				local iconTag = Utils.str.icon(peek.IC or Globals.icons.default, 30);
+				setTooltipForSameFrame(slot, "TOP_LEFT", 0, 0, iconTag .. " " .. (peek.TI or "..."), peek.TX);
+				Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. (peek.IC or ""), "Interface\\ICONS\\" .. Globals.icons.default);
+				if unitID == Globals.player_id then
+					slot:SetScript("OnClick", onPeekClickMine);
+				else
+					slot:SetScript("OnClick", nil);
+				end
+			else
+				slot:Hide();
+			end
+		end
+	end
+end
+
 local function displayTargetFrame(unitID, targetInfo)
 	ui_TargetFrame:Show();
 	ui_TargetFrameModel:SetUnit("target");
 	ui_TargetFrameModel:SetCamera(0);
-	local peekTab;
-	if unitID == Globals.player_id then
-		peekTab = get("player/misc").PE or EMPTY;
-	elseif isUnitIDKnown(unitID) then
-		peekTab = getMiscData(unitID).PE or EMPTY;
-	end
-	for i=1,5,1 do
-		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
-		local peek = peekTab[tostring(i)];
-		if peek and peek.AC then
-			slot:Show();
-			local iconTag = Utils.str.icon(peek.IC or Globals.icons.default, 30);
-			setTooltipForSameFrame(slot, "TOP_LEFT", 0, 0, iconTag .. " " .. (peek.TI or "..."), peek.TX);
-			Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. (peek.IC or ""), "Interface\\ICONS\\" .. Globals.icons.default);
-		else
-			slot:Hide();
-		end
-	end
+	
+	displayPeekSlots(unitID, targetInfo);
 end
 
 local function getTargetInformation(unitID)
@@ -93,4 +120,9 @@ TRP3_TARGET_FRAME.init = function()
 			onTargetChanged();
 		end
 	end);
+	
+	for i=1,5,1 do
+		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
+		slot.slot = tostring(i);
+	end
 end

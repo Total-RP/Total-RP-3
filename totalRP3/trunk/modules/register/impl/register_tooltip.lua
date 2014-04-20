@@ -24,6 +24,8 @@ local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_EVENTS;
 local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
 
+local IC_GUILD, OOC_GUILD;
+
 -- ICONS
 local AFK_ICON = "Spell_Nature_Sleep";
 local DND_ICON = "Ability_Mage_IncantersAbsorbtion";
@@ -295,7 +297,16 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
-		ui_CharacterTT:AddLine(loc("REG_TT_GUILD"):format(grade, guild), 1, 1, 1);
+		local text = loc("REG_TT_GUILD"):format(grade, guild);
+		if info.misc and info.misc.ST then
+			if info.misc.ST["6"] == 1 then -- IC guild membership
+				text = text .. IC_GUILD;
+			elseif info.misc.ST["6"] == 2 then -- OOC guild membership
+				text = text .. OOC_GUILD;
+			end
+		end
+		
+		ui_CharacterTT:AddLine(text, 1, 1, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
@@ -447,6 +458,9 @@ function TRP3_Register_TooltipInit()
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
 	
 	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
+	
+	IC_GUILD = " |cff00ff00(" .. loc("CM_IC") .. ")";
+	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";
 	
 	-- Config default value
 	registerConfigKey(CONFIG_CHARACT_USE, true);

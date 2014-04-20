@@ -87,13 +87,17 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DROPDOWN_FRAME = "TRP3_UIDD";
+local dropDownFrame;
+
+TRP3_UI_UTILS.listbox.toggle = function()
+	ToggleDropDownMenu(nil, nil, dropDownFrame);
+end
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
-	local frame = _G[DROPDOWN_FRAME];
-	if not frame then
-		frame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
+	if not dropDownFrame then
+		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
-	UIDropDownMenu_Initialize(frame,
+	UIDropDownMenu_Initialize(dropDownFrame,
 	function(uiFrame, level, menuList)
 		local levelValues = menuList or values;
 		
@@ -133,8 +137,8 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	end,
 	"MENU"
 	);
-	frame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, frame, anchoredFrame:GetName(), -((space or -10)), 0);
+	dropDownFrame:SetParent(anchoredFrame);
+	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
 	PlaySound("igMainMenuOptionCheckBoxOn");
 end
 TRP3_UI_UTILS.listbox.displayDropDown = openDropDown;
@@ -375,7 +379,34 @@ TRP3_UI_UTILS.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, G
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Tooltip tools
+-- Toast
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+local TRP3_Toast, TRP3_ToastTextLeft1 = TRP3_Toast, TRP3_ToastTextLeft1;
+
+local function toastUpdate(self, elapsed)
+	self.delay = self.delay - elapsed;
+	if self.delay <= 0 and not self.isFading then
+		self.isFading = true;
+		self:FadeOut();
+	end
+end
+
+TRP3_Toast.delay = 0;
+TRP3_Toast:SetScript("OnUpdate", toastUpdate);
+
+TRP3_UI_UTILS.tooltip.toast = function(text, duration)
+	TRP3_Toast:Hide();
+	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
+	TRP3_Toast:AddLine(text, 1, 1, 1,true);
+	TRP3_ToastTextLeft1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize());
+	TRP3_ToastTextLeft1:SetNonSpaceWrap(true);
+	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
+	TRP3_Toast:Show();
+	TRP3_Toast.delay = duration;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Textures tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local unitTexture = {

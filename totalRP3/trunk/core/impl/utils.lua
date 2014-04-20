@@ -23,7 +23,7 @@ local loc = TRP3_L;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat = pcall, tostring, pairs, type, print, string, date, math, strconcat;
-local tinsert, assert, _G = tinsert, assert, _G;
+local tinsert, assert, _G, tremove = tinsert, assert, _G, tremove;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
@@ -139,6 +139,19 @@ Utils.table.size = function(table)
 		count = count + 1;
 	end
 	return count;
+end
+
+-- Remove an object from table
+-- Return true if the object is found.
+-- Object is search with == operator.
+Utils.table.remove = function(table, object)
+	for index, value in pairs(table) do
+		if value == object then
+			tremove(table, index);
+			return true;
+		end
+	end
+	return false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
