@@ -130,6 +130,7 @@ TRP3_TOOLBAR.buildToolbar = buildToolbar;
 local function onConfigContentChanged()
 	Button_Cape.visible = getConfigValue(CONFIG_CONTENT_CAPE);
 	Button_Helmet.visible = getConfigValue(CONFIG_CONTENT_HELMET);
+	Button_Status.visible = getConfigValue(CONFIG_CONTENT_STATUS);
 	buildToolbar();
 end
 
@@ -159,9 +160,10 @@ TRP3_TOOLBAR.init = function()
 	registerConfigKey(CONFIG_CONTENT_CAPE, true);
 	registerConfigKey(CONFIG_CONTENT_HELMET, true);
 	registerConfigKey(CONFIG_CONTENT_STATUS, true);
+	registerConfigKey(CONFIG_CONTENT_RPSTATUS, true);
 	
 	registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
-	registerConfigHandler({CONFIG_CONTENT_CAPE, CONFIG_CONTENT_HELMET}, onConfigContentChanged);
+	registerConfigHandler({CONFIG_CONTENT_CAPE, CONFIG_CONTENT_HELMET, CONFIG_CONTENT_STATUS}, onConfigContentChanged);
 	
 	
 	-- Build configuration page
@@ -211,6 +213,11 @@ TRP3_TOOLBAR.init = function()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLBAR_CONTENT_STATUS"),
 				configKey = CONFIG_CONTENT_STATUS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
+				configKey = CONFIG_CONTENT_RPSTATUS,
 			},
 		},
 	};

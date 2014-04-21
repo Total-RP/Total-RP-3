@@ -259,6 +259,7 @@ local LOCALE_EN = {
 		CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
 		CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
 		CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
+		CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

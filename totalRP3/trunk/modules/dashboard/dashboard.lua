@@ -10,7 +10,7 @@ TRP3_DASHBOARD = {};
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently = GetMouseFocus, _G, TRP3_DashboardStatus_Currently;
 local loc = TRP3_L;
 local getcharacter = TRP3_PROFILE.getCharacter;
-local Utils = TRP3_UTILS;
+local Utils, Events = TRP3_UTILS, TRP3_EVENTS;
 local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local toolbarAddButton = TRP3_TOOLBAR.toolbarAddButton;
@@ -18,6 +18,7 @@ local icon, color = Utils.str.icon, Utils.str.color;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler;
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_UI_UTILS.tooltip.setTooltipForFrame, TRP3_UI_UTILS.tooltip.refresh, TRP3_MainTooltip;
 local buildToolbar = TRP3_TOOLBAR.buildToolbar;
+local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
 local registerMenu, registerPage = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.page.registerPage;
 local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
@@ -30,14 +31,16 @@ local function onStatusChange(status)
 	character.RP = status;
 	if old ~= status then
 		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+		Events.fireEvent(Events.REGISTER_RPSTATUS_CHANGED);
 	end
 end
 
 local function switchStatus()
-	local character = getcharacter();
-	local old = character.RP or 1;
-	if old == 1 then character.RP = 2 else character.RP = 1 end
-	character.v = Utils.math.incrementNumber(character.v or 1, 2);
+	if getcharacter().RP == 1 then
+		onStatusChange(2);
+	else
+		onStatusChange(1);
+	end
 end
 
 local function onStatusXPChange(status)
@@ -69,7 +72,8 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CONFIG_CONTENT_STATUS = "toolbar_content_status";
+local CONFIG_CONTENT_RPSTATUS = "toolbar_content_rpstatus";
+local DASHBOARD_PAGE_ID = "dashboard";
 
 TRP3_DASHBOARD.init = function()
 
@@ -77,11 +81,11 @@ TRP3_DASHBOARD.init = function()
 		id = "main_00_dashboard",
 		align = "CENTER",
 		text = TRP3_GLOBALS.addon_name,
-		onSelected = function() setPage("dashboard"); end,
+		onSelected = function() setPage(DASHBOARD_PAGE_ID); end,
 	});
 	
 	registerPage({
-		id = "dashboard",
+		id = DASHBOARD_PAGE_ID,
 		frame = TRP3_Dashboard,
 		onPagePostShow = onShow,
 	});
@@ -141,9 +145,13 @@ TRP3_DASHBOARD.init = function()
 		visible = 1
 	};
 	toolbarAddButton(Button_RPStatus);
-	registerConfigHandler({CONFIG_CONTENT_STATUS}, function()
-		Button_RPStatus.visible = getConfigValue(CONFIG_CONTENT_STATUS);
+	registerConfigHandler({CONFIG_CONTENT_RPSTATUS}, function()
+		Button_RPStatus.visible = getConfigValue(CONFIG_CONTENT_RPSTATUS);
 		buildToolbar();
 	end);
-	
+	Events.listenToEvent(Events.REGISTER_RPSTATUS_CHANGED, function()
+		if getCurrentPageID() == DASHBOARD_PAGE_ID then
+			onShow(nil);
+		end
+	end);
 end
