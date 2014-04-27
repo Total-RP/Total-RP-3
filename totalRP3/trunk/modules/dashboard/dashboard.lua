@@ -68,6 +68,10 @@ local function onShow(context)
 	TRP3_DashboardStatus_Currently:SetText(character.CU or "");
 end
 
+TRP3_DASHBOARD.isPlayerIC = function()
+	return getcharacter().RP == 1;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

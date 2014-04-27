@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
 	<Button name="TRP3_TargetFrameGlanceSlotTemplate" virtual="true">
-		<Size x="30" y="30" />
+		<Size x="20" y="20" />
 		<Layers>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
-					<Size x="55" y="55" />
+					<Size x="40" y="40" />
 					<Anchors>
-						<Anchor point="CENTER" x="11" y="-12" />
+						<Anchor point="CENTER" x="8" y="-8" />
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -26,9 +26,9 @@
 	</Button>
 
 	<!-- Target Frame -->
-	<Frame name="TRP3_TargetFrame" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="true" movable="true">
+	<Frame name="TRP3_TargetFrame" toplevel="true" parent="UIParent" enableMouse="true" hidden="true" movable="true" inherits="TRP3_FieldSetFrame">
 		<TitleRegion setAllPoints="true" />
-		<Size x="100" y="100" />
+		<Size x="200" y="50" />
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0" />
 		</Anchors>
@@ -38,76 +38,31 @@
 			</OnLoad>
 		</Scripts>
 		<Frames>
-			<Frame name="TRP3_TargetFramePortrait">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-					<EdgeSize><AbsValue val="20" /></EdgeSize>
-					<TileSize><AbsValue val="20" /></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
+			<Frame name="TRP3_TargetFrameGlance">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="300"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
-				<Size x="84" y="84" />
+				<Size x="140" y="32" />
 				<Anchors>
-					<Anchor point="CENTER" x="0" y="0" />
+					<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="15" />
 				</Anchors>
 				<Frames>
-					<PlayerModel  name="TRP3_TargetFramePortraitModel" scale="1">
-						<Size x="70" y="70"/>
-						<Anchors>
-							<Anchor point="CENTER" x="0" y="0"/>
-						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture file="Interface\DialogFrame\UI-DialogBox-Gold-Dragon">
-									<Size x="128" y="128" />
-									<Anchors>
-										<Anchor point="CENTER" x="-12" y="0" />
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Frames>
-							<Button name="TRP3_TargetFrameGlanceSlot1" inherits="TRP3_TargetFrameGlanceSlotTemplate">
-								<Anchors>
-									<Anchor point="CENTER" relativePoint="BOTTOM" x="-5" y="-10"/>
-								</Anchors>
-							</Button>
-							<Button name="TRP3_TargetFrameGlanceSlot2" inherits="TRP3_TargetFrameGlanceSlotTemplate">
-								<Anchors>
-									<Anchor point="CENTER" relativePoint="BOTTOMLEFT" x="-5" y="0"/>
-								</Anchors>
-							</Button>
-							<Button name="TRP3_TargetFrameGlanceSlot3" inherits="TRP3_TargetFrameGlanceSlotTemplate">
-								<Anchors>
-									<Anchor point="CENTER" relativePoint="LEFT" x="-15" y="0"/>
-								</Anchors>
-							</Button>
-							<Button name="TRP3_TargetFrameGlanceSlot4" inherits="TRP3_TargetFrameGlanceSlotTemplate">
-								<Anchors>
-									<Anchor point="CENTER" relativePoint="TOPLEFT" x="-5" y="0"/>
-								</Anchors>
-							</Button>
-							<Button name="TRP3_TargetFrameGlanceSlot5" inherits="TRP3_TargetFrameGlanceSlotTemplate">
-								<Anchors>
-									<Anchor point="CENTER" relativePoint="TOP" x="-5" y="10"/>
-								</Anchors>
-							</Button>
-						</Frames>
-						<Scripts>
-							<OnUpdate>
-								
-							</OnUpdate>
-						</Scripts>
-					</PlayerModel>
-					<Frame name="TRP3_TargetFrameContent">
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-							<EdgeSize><AbsValue val="20" /></EdgeSize>
-							<TileSize><AbsValue val="20" /></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5" /></BackgroundInsets>
-						</Backdrop>
-						<Size x="150" y="42" />
-						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="-5" y="0" />
-						</Anchors>
-					</Frame>
+					<Button name="TRP3_TargetFrameGlanceSlot3" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="CENTER" x="2" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot2" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_TargetFrameGlanceSlot3" x="-5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot1" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_TargetFrameGlanceSlot2" x="-5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot4" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_TargetFrameGlanceSlot3" x="5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot5" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_TargetFrameGlanceSlot4" x="5" y="0"/></Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 		</Frames>

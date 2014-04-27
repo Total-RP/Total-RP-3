@@ -251,15 +251,21 @@ local LOCALE_EN = {
 		CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
 		CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
 		CO_MODULES_SHOWERROR = "Show error",
-		CO_TOOLBAR = "Toolbar settings",
-		CO_TOOLBAR_GENERAL = "Display settings",
-		CO_TOOLBAR_CONTENT = "Toolbar content",
+		CO_MODULES_DISABLE = "Disable module",
+		CO_MODULES_ENABLE = "Enable module",
+		CO_TOOLBAR = "Frames settings",
+		CO_TOOLBAR_CONTENT = "Toolbar settings",
 		CO_TOOLBAR_ICON_SIZE = "Icons size",
 		CO_TOOLBAR_MAX = "Max icons per line",
 		CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
 		CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
 		CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
 		CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
+		CO_TARGETFRAME = "Target frame settings",
+		CO_TARGETFRAME_USE = "TRP3 target frame usage",
+		CO_TARGETFRAME_USE_1 = "Active",
+		CO_TARGETFRAME_USE_2 = "Only when IC",
+		CO_TARGETFRAME_USE_3 = "Disabled",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
@@ -284,6 +290,7 @@ local LOCALE_EN = {
 		TB_RPSTATUS_OFF = "Character: |cffff0000Out of character",
 		TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
 		TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
+		TF_OPEN_CHARACTER = "Show character page",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE
@@ -357,7 +364,7 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+		CM_ACTIONS = "Actions",
 		CM_IC = "IC",
 		CM_OOC = "OOC",
 		CM_CLICK = "Click",
@@ -403,7 +410,7 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
 		MM_SHOW_HIDE_MAIN= "Show/hide the main frame";
-		MM_SHOW_HIDE_SHORTCUT= "Show/hide the shortcut bar";
+		MM_SHOW_HIDE_SHORTCUT= "Show/hide the toolbar";
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PEEK PRESETS

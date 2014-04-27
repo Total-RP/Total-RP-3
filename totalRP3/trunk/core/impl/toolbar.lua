@@ -167,7 +167,7 @@ TRP3_TOOLBAR.init = function()
 	
 	
 	-- Build configuration page
-	local CONFIG_STRUCTURE = {
+	TRP3_TOOLBARS_CONFIG_STRUCTURE = {
 		id = "main_config_toolbar",
 		marginLeft = 10,
 		menuText = loc("CO_TOOLBAR"),
@@ -175,7 +175,7 @@ TRP3_TOOLBAR.init = function()
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLBAR_GENERAL"),
+				title = loc("CO_TOOLBAR_CONTENT"),
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
@@ -194,10 +194,6 @@ TRP3_TOOLBAR.init = function()
 				max = 25,
 				step = 1,
 				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLBAR_CONTENT"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -221,7 +217,6 @@ TRP3_TOOLBAR.init = function()
 			},
 		},
 	};
-	TRP3_CONFIG.registerConfigurationPage(CONFIG_STRUCTURE);
 
 	TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 	

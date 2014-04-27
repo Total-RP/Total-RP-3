@@ -10,25 +10,26 @@ local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local get = TRP3_PROFILE.getData;
 local assert, table, _G = assert, table, _G;
+local isUnitIDKnown = TRP3_REGISTER.isUnitIDKnown;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
 local initList = TRP3_UI_UTILS.list.initList;
 local getUnitTexture = TRP3_UI_UTILS.misc.getUnitTexture;
 local getClassTexture = TRP3_UI_UTILS.misc.getClassTexture;
-local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
+local registerMenu, selectMenu, openMainFrame = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu, TRP3_NAVIGATION.openMainFrame;
 local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentlyOpenedCharacterPrefix = "main_11_";
+local currentlyOpenedCharacterPrefix = "main_21_";
 local currentlyOpenedCharacter = {};
 
 local function openPage(unitID)
 	if unitID == Globals.player_id then
 		-- If the selected is player, simply oen his sheet.
-		selectMenu("main_00_player");
+		selectMenu("main_10_player");
 	else
 		if currentlyOpenedCharacter[unitID] then
 			-- If the character already has his "tab", simply open it
@@ -47,13 +48,14 @@ local function openPage(unitID)
 				id = currentlyOpenedCharacterPrefix .. unitID,
 				text = tabText,
 				onSelected = function() setPage("player_main", {unitID = unitID}) end,
-				isChildOf = "main_10_register",
+				isChildOf = "main_20_register",
 			});
 			currentlyOpenedCharacter[unitID] = true;
 			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		end
 	end
 end
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
@@ -140,7 +142,7 @@ end
 function TRP3_Register_ListInit()
 
 	registerMenu({
-		id = "main_10_register",
+		id = "main_20_register",
 		text = loc("REG_REGISTER"),
 		onSelected = function() setPage("register_list"); end,
 	});
@@ -152,6 +154,19 @@ function TRP3_Register_ListInit()
 		frame = TRP3_RegisterList,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
 		onPagePostShow = refreshList,
+	});
+	
+	TRP3_TARGET_FRAME.registerButton({
+		id = "aa_page_player",
+		condition = function(unitID, targetInfo)
+			return unitID == Globals.player_id or isUnitIDKnown(unitID);
+		end,
+		onClick = function(unitID)
+			openMainFrame();
+			openPage(unitID);
+		end,
+		getTooltip = function() return loc("TF_OPEN_CHARACTER") end,
+		icon = "inv_inscription_scroll"
 	});
 	
 	TRP3_RegisterListSlider:SetValue(0);

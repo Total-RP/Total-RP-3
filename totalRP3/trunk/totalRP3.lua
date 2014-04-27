@@ -21,8 +21,8 @@ function Globals.addon:OnEnable()
 	Globals.build(); -- Get info we can't have earlier
 	
 	TRP3_Flyway_Patches(); -- Adapt saved variables structures between versions
-	TRP3_ModuleManagement_Init();
-	TRP3_InitModules();
+	TRP3_MODULE.init();
+	TRP3_MODULE.initModules();
 	
 	-- Inits logic
 	TRP3_LOCALE.init();
@@ -46,10 +46,10 @@ function Globals.addon:OnEnable()
 	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));
 	TRP3_MainFrameVersionText:SetText(TRP3_L("GEN_VERSION"):format(Globals.version_display));
 	
-	TRP3_StartModules();
+	TRP3_MODULE.startModules();
 	
 	-- Must be called after module start.
-	TRP3_Configuration_OnModuleLoaded();
+	TRP3_MODULE.onModuleStarted();
 	
 	Log.log("OnEnable() DONE");
 end

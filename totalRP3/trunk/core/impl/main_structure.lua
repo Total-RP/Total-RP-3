@@ -210,6 +210,10 @@ local function getCurrentPageID()
 end
 TRP3_NAVIGATION.page.getCurrentPageID = getCurrentPageID;
 
+TRP3_NAVIGATION.openMainFrame = function()
+	TRP3_MainFrame:Show();
+end
+
 local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();

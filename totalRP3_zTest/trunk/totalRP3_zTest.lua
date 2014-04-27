@@ -80,5 +80,5 @@ local MODULE_STRUCTURE = {
 	}
 };
 
-TRP3_RegisterModule(MODULE_STRUCTURE);
+TRP3_MODULE.registerModule(MODULE_STRUCTURE);
 
