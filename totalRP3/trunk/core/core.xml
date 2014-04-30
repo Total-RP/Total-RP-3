@@ -46,5 +46,7 @@
 	
 	<Include file="ui\target_frame.xml"/>
 	<Script file="impl\target_frame.lua"/>
+	
+	<Script file="impl\generation\code_generation.lua"/>
 
 </Ui>
