@@ -277,8 +277,14 @@ TRP3_UI_UTILS.list.initList = function(infoTab, dataTab, slider)
 	slider:SetObeyStepOnDrag(true);
 	wipe(infoTab.uiTab);
 
-	for key,_ in pairs(dataTab) do
-		tinsert(infoTab.uiTab, key);
+	if type(dataTab) == "table" then
+		for key,_ in pairs(dataTab) do
+			tinsert(infoTab.uiTab, key);
+		end
+	else
+		for i=1, dataTab, 1 do
+			tinsert(infoTab.uiTab, i);
+		end
 	end
 	count = #infoTab.uiTab;
 

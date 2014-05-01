@@ -22,7 +22,7 @@ local Log = Utils.log;
 local loc = TRP3_L;
 
 -- WOW imports
-local pcall, tostring, pairs, type, print, string, date, math, strconcat = pcall, tostring, pairs, type, print, string, date, math, strconcat;
+local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe;
 local tinsert, assert, _G, tremove = tinsert, assert, _G, tremove;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
@@ -133,13 +133,14 @@ Utils.table.copy = tableCopy;
 
 -- Return the table size.
 -- Less effective than #table but works for hash table as well (#hashtable don't).
-Utils.table.size = function(table)
+local function tableSize(table)
 	local count = 0;
 	for _,_ in pairs(table) do
 		count = count + 1;
 	end
 	return count;
 end
+Utils.table.size = tableSize;
 
 -- Remove an object from table
 -- Return true if the object is found.
@@ -172,7 +173,7 @@ end
 --	Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
 --	ID's have a id_length characters length
-Utils.str.id = function()
+local function generateID()
 	local i;
 	local ID = date("%m%d%H%M%S");
 	for i=1, 5 do
@@ -180,6 +181,7 @@ Utils.str.id = function()
 	end
 	return ID;
 end
+Utils.str.id = generateID;
 
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.
@@ -476,15 +478,32 @@ Utils.event.registerHandler = function(event, callback)
 		REGISTERED_EVENTS[event] = {};
 		TRP3_EventFrame:RegisterEvent(event);
 	end
-	tinsert(REGISTERED_EVENTS[event], callback);
-	Log.log("Registered event: " ..tostring(event));
+	local handlerID = generateID();
+	while REGISTERED_EVENTS[event][handlerID] do -- Avoiding collision
+		handlerID = generateID();
+	end
+	REGISTERED_EVENTS[event][handlerID] = callback;
+	Log.log(("Registered event %s with id %s"):format(tostring(event), handlerID));
+	return handlerID;
+end
+
+Utils.event.unregisterHandler = function(handlerID)
+	assert(handlerID, "handlerID must be set.");
+	for event, eventTab in pairs(REGISTERED_EVENTS) do
+		if eventTab[handlerID] then
+			eventTab[handlerID] = nil;
+			if tableSize(eventTab) == 0 then
+				REGISTERED_EVENTS[event] = nil;
+				TRP3_EventFrame:UnregisterEvent(event);
+			end
+			Log.log(("Unregistered event %s with id %s"):format(tostring(event), handlerID));
+			return;
+		end
+	end
+	Log.log(("handlerID not found %s"):format(handlerID));
 end
 
 function TRP3_EventDispatcher(self, event, ...)
-	-- Main event function, if exists
-	if _G["TRP3_onEvent_"..event] then
-		_G["TRP3_onEvent_"..event](...);
-	end
 	-- Callbacks
 	if REGISTERED_EVENTS[event] then
 		for _, callback in pairs(REGISTERED_EVENTS[event]) do

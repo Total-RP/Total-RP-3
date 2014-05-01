@@ -136,9 +136,9 @@ local function onLoaded()
 end
 
 local MODULE_STRUCTURE = {
-	["module_name"] = "Dynamic locale",
-	["module_version"] = 1,
-	["module_id"] = "dyn_locale",
+	["name"] = "Dynamic locale",
+	["version"] = 1,
+	["id"] = "dyn_locale",
 	["onInit"] = onInit,
 	["onLoaded"] = onLoaded,
 };

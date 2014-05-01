@@ -8,22 +8,20 @@ TRP3_EVENTS = {
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Profiles changes
-	REGISTER_EXCHANGE_PROFILE_CHANGED = "\1",
-	REGISTER_EXCHANGE_RECEIVED_INFO = "\2",
-	REGISTER_MISC_SAVED = "\3",
-	REGISTER_ABOUT_SAVED = "\4",
-	REGISTER_CHARACTERISTICS_SAVED = "\5",
-	REGISTER_RPSTATUS_CHANGED = "\6",
+	REGISTER_EXCHANGE_PROFILE_CHANGED = "REGISTER_EXCHANGE_PROFILE_CHANGED",
+	REGISTER_EXCHANGE_RECEIVED_INFO = "REGISTER_EXCHANGE_RECEIVED_INFO",
+	REGISTER_MISC_SAVED = "REGISTER_MISC_SAVED",
+	REGISTER_ABOUT_SAVED = "REGISTER_ABOUT_SAVED",
+	REGISTER_CHARACTERISTICS_SAVED = "REGISTER_CHARACTERISTICS_SAVED",
+	REGISTER_RPSTATUS_CHANGED = "REGISTER_RPSTATUS_CHANGED",
+	-- Notifications
+	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
 };
 
 -- TRP3 imports
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
-local assert = assert;
-local tostring = tostring;
-local type = type;
-local tinsert = tinsert;
-local pairs = pairs;
+local assert, tostring, type, tinsert, pairs = assert, tostring, type, tinsert, pairs;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- EVENT HANDLING
@@ -36,7 +34,7 @@ local function registerEvent(event)
 	assert(event, "Event must be set.");
 	assert(not REGISTERED_EVENTS[event], "Event already registered.");
 	REGISTERED_EVENTS[event] = {};
-	Log.log("Registered TRP event: " ..tostring(event));
+	Log.log("Registered TRP event: " .. event);
 end
 
 -- Register main Total RP 3 events

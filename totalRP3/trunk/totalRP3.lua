@@ -40,7 +40,6 @@ function Globals.addon:OnEnable()
 	TRP3_UI_InitConfiguration();
 	
 	TRP3_LoadProfile(); -- Load profile
-	TRP3_NAVIGATION.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
 	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));
@@ -50,6 +49,8 @@ function Globals.addon:OnEnable()
 	
 	-- Must be called after module start.
 	TRP3_MODULE.onModuleStarted();
+	
+	TRP3_NAVIGATION.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	
 	Log.log("OnEnable() DONE");
 end

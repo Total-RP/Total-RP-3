@@ -33,37 +33,37 @@ local TRP3_MODULE_STATUS = TRP3_MODULE_STATUS;
 --- Register a module structure.
 -- 
 -- These parameters are mandatory :
--- module_id : The moduleID. It must be unique. You can't register two modules having the same ID.
+-- id : The moduleID. It must be unique. You can't register two modules having the same ID.
 -- 
 -- These parameters are optional :
--- module_name : The module name is a non empty string. If nil, equals the module ID.
--- module_version : The version is a number. If nil, equals 1.
--- min_version : The minimum version of TRP3 required. If nil, equals 0;
+-- name : The module name is a non empty string. If nil, equals the module ID.
+-- version : The version is a number. If nil, equals 1.
+-- minVersion : The minimum version of TRP3 required. If nil, equals 0;
 -- autoEnable : Should the module be enabled by default ? If nil equals true.
 -- onInit : A callback triggered before Total RP 3 initialization.
 -- onLoaded : A callback triggered after Total RP 3 initialization.
 TRP3_MODULE.registerModule = function(moduleStructure)
 	
 	assert(moduleStructure, "Module structure can't be nil");
-	assert(moduleStructure.module_id, "Illegal module structure. Module id: "..moduleStructure.module_id);
-	assert(not MODULE_REGISTRATION[moduleStructure.module_id], "This module is already register: "..moduleStructure.module_id);
-	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: "..moduleStructure.module_id);
+	assert(moduleStructure.id, "Illegal module structure. Module id: "..moduleStructure.id);
+	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: "..moduleStructure.id);
+	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: "..moduleStructure.id);
 	
-	if not moduleStructure.module_name or not type(moduleStructure.module_name) == "string" or moduleStructure.module_name:len() == 0 then
-		moduleStructure.module_name = moduleStructure.module_id;
+	if not moduleStructure.name or not type(moduleStructure.name) == "string" or moduleStructure.name:len() == 0 then
+		moduleStructure.name = moduleStructure.id;
 	end
 	
-	if not moduleStructure.module_version then
-		moduleStructure.module_version = 1;
+	if not moduleStructure.version then
+		moduleStructure.version = 1;
 	end
 	
-	if not moduleStructure.min_version then
-		moduleStructure.min_version = 0;
+	if not moduleStructure.minVersion then
+		moduleStructure.minVersion = 0;
 	end
 	
-	MODULE_REGISTRATION[moduleStructure.module_id] = moduleStructure;
+	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
 	
-	Log.log("Module registered: " .. moduleStructure.module_id);
+	Log.log("Module registered: " .. moduleStructure.id);
 end
 
 --- Initializing modules.
@@ -115,7 +115,7 @@ end
 -- Return true if dependency is OK.
 local function checkModuleDependency(moduleID, dependency_id, dependency_version)
 	local module = getModule(moduleID);
-	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].module_version >= dependency_version and MODULE_ACTIVATION[dependency_id] ~= false;
+	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and MODULE_ACTIVATION[dependency_id] ~= false;
 end
 
 --- Check off dependencies for a module
@@ -134,7 +134,7 @@ end
 -- Return true if TRP version is OK. 
 local function checkModuleTRPVersion(moduleID)
 	local module = getModule(moduleID);
-	return module.min_version <= Globals.version;
+	return module.minVersion <= Globals.version;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -167,7 +167,7 @@ local function getModuleHint_TRP(module)
 	if module.status == TRP3_MODULE_STATUS.OUT_TO_DATE_TRP3 then
 		trp_version_color = "|cffff0000";
 	end
-	return loc("CO_MODULES_TT_TRP"):format(trp_version_color, module.min_version);
+	return loc("CO_MODULES_TT_TRP"):format(trp_version_color, module.minVersion);
 end
 
 local function getModuleHint_Deps(module)
@@ -177,7 +177,7 @@ local function getModuleHint_Deps(module)
 	else
 		for _, depTab in pairs(module.requiredDeps) do
 			local deps_version_color = "|cff00ff00";
-			if not checkModuleDependency(module.module_id, depTab[1], depTab[2]) then
+			if not checkModuleDependency(module.id, depTab[1], depTab[2]) then
 				deps_version_color = "|cffff0000";
 			end
 			deps = deps..(loc("CO_MODULES_TT_DEP"):format(deps_version_color, depTab[1], depTab[2]));
@@ -199,10 +199,10 @@ end
 local function onActionSelected(value, button)
 	local module = button:GetParent().module;
 	if value == 1 then
-		MODULE_ACTIVATION[module.module_id] = false;
+		MODULE_ACTIVATION[module.id] = false;
 		ReloadUI();
 	elseif value == 2 then
-		MODULE_ACTIVATION[module.module_id] = true;
+		MODULE_ACTIVATION[module.id] = true;
 		ReloadUI();
 	end
 end
@@ -210,7 +210,7 @@ end
 local function onActionClicked(button)
 	local module = button:GetParent().module;
 	local values = {};
-	if MODULE_ACTIVATION[module.module_id] ~= false then
+	if MODULE_ACTIVATION[module.id] ~= false then
 		tinsert(values, {loc("CO_MODULES_DISABLE"), 1});
 	else
 		tinsert(values, {loc("CO_MODULES_ENABLE"), 2});
@@ -234,11 +234,11 @@ TRP3_MODULE.onModuleStarted = function()
 		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_"..i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
 		frame.module = module;
 		frame:SetPoint("TOPLEFT", 0, (i * -63) - 8);
-		_G[frame:GetName().."ModuleName"]:SetText(module.module_name);
-		_G[frame:GetName().."ModuleVersion"]:SetText(loc("CO_MODULES_VERSION"):format(module.module_version));
+		_G[frame:GetName().."ModuleName"]:SetText(module.name);
+		_G[frame:GetName().."ModuleVersion"]:SetText(loc("CO_MODULES_VERSION"):format(module.version));
 		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
 		_G[frame:GetName().."Status"]:SetText(loc("CO_MODULES_STATUS"):format(moduleStatusText(module.status)));
-		setTooltipForSameFrame(_G[frame:GetName().."Info"], "BOTTOMRIGHT", 0, 0, module.module_name, getModuleTooltip(module));
+		setTooltipForSameFrame(_G[frame:GetName().."Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
 		local actionButton = _G[frame:GetName().."Action"];
 		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc("CM_ACTIONS"));
 		actionButton:SetScript("OnClick", onActionClicked);

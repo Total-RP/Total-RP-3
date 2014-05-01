@@ -336,6 +336,7 @@ local LOCALE_EN = {
 		DB_STATUS_RP_VOLUNTEER = "Volunteer",
 		DB_NOTIFICATIONS = "Notifications",
 		DB_NOTIFICATIONS_NO = "You haven't any notification",
+		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON UI TEXTS
@@ -364,6 +365,8 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		
+		CM_SHOW = "Show",
 		CM_ACTIONS = "Actions",
 		CM_IC = "IC",
 		CM_OOC = "OOC",

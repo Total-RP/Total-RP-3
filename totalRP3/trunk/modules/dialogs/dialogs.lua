@@ -7,7 +7,7 @@ local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_E
 local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
-local tostring, strsplit = tostring, strsplit;
+local tostring, strsplit, wipe = tostring, strsplit, wipe;
 local ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText = ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText;
 local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 
@@ -23,11 +23,13 @@ local ANIMATION_SEQUENCE_DURATION = {
 	["60"] = 4000,
 	["0"] = 2000,
 }
+local ANIMATION_EMPTY = {0};
+local animTab = {};
 
 local function playText(textIndex)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
-	local animTab = {};
 	local sound;
+	wipe(animTab);
 	text:gsub("[%.%?%!]+", function(finder)
 		if finder:sub(1, 1) == "!" then
 			animTab[#animTab+1] = 64;
@@ -38,9 +40,16 @@ local function playText(textIndex)
 		end
 	end);
 	animTab[#animTab+1] = 0;
-
-	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
-	TRP3_NPCDialogFrameChatText:SetText(text);
+	
+	if text:byte() == 60 then -- Emote if begins with <
+		TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		TRP3_NPCDialogFrameChatText:SetText(text:sub(2, text:len() - 1));
+		wipe(animTab);
+		animTab[1] = 0;
+	else
+		TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
+		TRP3_NPCDialogFrameChatText:SetText(text);
+	end
 
 	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
 	TRP3_NPCDialogFrameModelsYou.sequenceTab = animTab;
@@ -150,11 +159,11 @@ local function init()
 end
 
 local MODULE_STRUCTURE = {
-	["module_name"] = "Better NPC chat",
-	["module_version"] = 1.000,
-	["module_id"] = "better_npc_chat",
+	["name"] = "Better NPC chat",
+	["version"] = 1.000,
+	["id"] = "better_npc_chat",
 	["onLoaded"] = init,
-	["min_version"] = 0.1,
+	["minVersion"] = 0.1,
 };
 
 TRP3_MODULE.registerModule(MODULE_STRUCTURE);
