@@ -172,7 +172,7 @@
 		</Frames>
 	</Frame>
 	
-		<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" hidden="false">
+	<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" hidden="false">
 		<Size>
 			<AbsDimension x="33" y="33"/>
 		</Size>
@@ -205,15 +205,6 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<Frames>
-			<Frame name="TRP3_MinimapButton_DraggingFrame" hidden="true">
-				<Scripts>
-					<OnUpdate>
-						TRP3_MinimapButton_DraggingFrame_OnUpdate()
-					</OnUpdate>
-				</Scripts>
-			</Frame>
-		</Frames>
 		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
 		<Scripts>
 			<OnLoad>
@@ -221,27 +212,25 @@
 				self:RegisterForDrag("LeftButton","RightButton")
 			</OnLoad>
 			<OnDragStart>
-				self:LockHighlight()
-				TRP3_MinimapButton_DraggingFrame:Show()
+				self.isDraging = true;
+				self:LockHighlight();
 			</OnDragStart>
 			<OnDragStop>
-				self:UnlockHighlight()
-				TRP3_MinimapButton_DraggingFrame:Hide()
+				self.isDraging = nil;
+				self:UnlockHighlight();
 			</OnDragStop>
 			<OnClick>
 				if button == "RightButton" then
 					TRP3_SwitchToolbar();
 				else
-						TRP3_NAVIGATION.switchMainFrame();
+					TRP3_NAVIGATION.switchMainFrame();
 				end
 			</OnClick>
 			<OnEnter>
-				-- TODO
-				-- TRP3_RefreshTooltipForFrame(self);
+				TRP3_RefreshTooltipForFrame(self);
 			</OnEnter>
 			<OnLeave>
-				-- TODO
-				-- TRP3_MainTooltip:Hide();
+				TRP3_MainTooltip:Hide();
 			</OnLeave>
 		</Scripts>
 	</Button>
