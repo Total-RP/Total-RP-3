@@ -63,7 +63,7 @@ local function decorateNotificationList(widget, index)
 	_G[widget:GetName().."TopText"]:SetText(date(DATE_FORMAT, widget.notification.time));
 	
 	local notificationType = NOTIFICATION_TYPES[widget.notification.id];
-	if notificationType.callback then
+	if notificationType and notificationType.callback then
 		_G[widget:GetName().."Show"]:Show();
 	else
 		_G[widget:GetName().."Show"]:Hide();

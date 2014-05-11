@@ -9,13 +9,15 @@ local Utils = TRP3_UTILS;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_L;
 local get = TRP3_PROFILE.getData;
-local assert, table, _G = assert, table, _G;
+local assert, table, _G, date = assert, table, _G, date;
 local isUnitIDKnown = TRP3_REGISTER.isUnitIDKnown;
-local unitIDToInfo = Utils.str.unitIDToInfo;
+local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
 local initList = TRP3_UI_UTILS.list.initList;
 local getUnitTexture = TRP3_UI_UTILS.misc.getUnitTexture;
 local getClassTexture = TRP3_UI_UTILS.misc.getClassTexture;
+local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local isMenuRegistered = TRP3_NAVIGATION.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu, TRP3_NAVIGATION.openMainFrame;
 local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
@@ -24,14 +26,13 @@ local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local currentlyOpenedCharacterPrefix = "main_21_";
-local currentlyOpenedCharacter = {};
 
 local function openPage(unitID)
 	if unitID == Globals.player_id then
 		-- If the selected is player, simply oen his sheet.
 		selectMenu("main_10_player");
 	else
-		if currentlyOpenedCharacter[unitID] then
+		if isMenuRegistered(currentlyOpenedCharacterPrefix .. unitID) then
 			-- If the character already has his "tab", simply open it
 			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		else
@@ -49,8 +50,8 @@ local function openPage(unitID)
 				text = tabText,
 				onSelected = function() setPage("player_main", {unitID = unitID}) end,
 				isChildOf = "main_20_register",
+				closeable = true,
 			});
-			currentlyOpenedCharacter[unitID] = true;
 			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
 		end
 	end
@@ -61,12 +62,12 @@ end
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ICON_SIZE = 20;
-local currentSelection;
+local MODE_CHARACTER = 1;
+local MODE_PETS = 2;
 
-local function refreshList()
-	initList(TRP3_RegisterList, TRP3_GetCharacterList(), TRP3_RegisterListSlider);
-end
+local ICON_SIZE = 30;
+local currentMode = "characters";
+local DATE_FORMAT = "%d/%m/%y %H:%M";
 
 local function decorateLine(line, unitID)
 	local character = TRP3_GetCharacter(unitID);
@@ -74,60 +75,78 @@ local function decorateLine(line, unitID)
 	
 	line.unitID = unitID;
 	
-	local unitTexture = Globals.icons.unknown;
-	if character.race and character.gender then
-		unitTexture = getUnitTexture(character.race, character.gender);
-	end
-	
-	local classTexture = Globals.icons.unknown;
-	if character.class then
-		classTexture = getClassTexture(character.class);
-	end
-	
-	local textures = Utils.str.icon(unitTexture, ICON_SIZE) .. " " .. Utils.str.icon(classTexture, ICON_SIZE);
-	
+	local name = unitName;
 	if TRP3_HasProfile(unitID) then
 		local profile = TRP3_GetUnitProfile(unitID);
-		_G[line:GetName().."Name"]:SetText(textures .. " " .. TRP3_GetCompleteName(profile.characteristics or {}, unitName, true));
+		name = TRP3_GetCompleteName(profile.characteristics or {}, unitName, true);
+		_G[line:GetName().."Name"]:SetText(name);
+		if profile.characteristics and profile.characteristics.IC then
+			name = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
+		end
 	else
-		_G[line:GetName().."Name"]:SetText(textures .. " " .. unitName);
+		_G[line:GetName().."Name"]:SetText(unitName);
 	end
 	if character.guild and character.guild:len() > 0 then
 		_G[line:GetName().."Guild"]:SetText(character.guild);
 	else
 		_G[line:GetName().."Guild"]:SetText("");
 	end
-	_G[line:GetName().."Realm"]:SetText(unitRealm);
 	
 	local clickButton = _G[line:GetName().."Click"];
-	if currentSelection == unitID then
-		clickButton:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
-		clickButton:SetAlpha(0.7);
-		clickButton:LockHighlight();
-	else
-		clickButton:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar");
-		clickButton:SetAlpha(0.25);
-		clickButton:UnlockHighlight();
-	end
-end
-
-local function decorateSelectionFrame()
-	local character = TRP3_GetCharacter(currentSelection);
-	local unitName, unitRealm = Utils.str.unitIDToInfo(currentSelection);
 	
-	if TRP3_HasProfile(currentSelection) then
-		local profile = TRP3_GetUnitProfile(currentSelection);
-		TRP3_RegisterListSelectionName:SetText(TRP3_GetCompleteName(profile.characteristics or {}, unitName, true));
-	else
-		TRP3_RegisterListSelectionName:SetText(unitName);
+	local secondLine = "";
+	if character.time and character.zone then
+		local formatDate = date(DATE_FORMAT, character.time);
+		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, character.zone, unitRealm) .. "\n";
 	end
+	
+	setTooltipForSameFrame(clickButton, "TOPLEFT", 0, 5, name, loc("REG_LIST_CHAR_TT"):format(secondLine));
 end
 
-local function onLineClicked(self, button)
-	assert(self:GetParent().unitID, "No unit ID on line.");
-	currentSelection = self:GetParent().unitID;
-	decorateSelectionFrame();
-	refreshList();
+local function refreshCharacters()
+	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
+	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
+	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
+	local fullSize = tsize(TRP3_GetCharacterList());
+	local lines = {};
+	
+	for unitID, character in pairs(TRP3_GetCharacterList()) do
+		local name, realm = unitIDToInfo(unitID);
+		local guild = character.guild or "";
+		if (nameSearch:len() == 0 or name:lower():find(nameSearch))
+			and (guildSearch:len() == 0 or guild:lower():find(guildSearch))
+			and (not realmOnly or realm == Globals.player_realm_id)
+		then
+			lines[unitID] = character;
+		end
+	end
+	local lineSize = tsize(lines);
+	if lineSize == 0 then
+		if fullSize == 0 then
+			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY"));
+		else
+			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY2"));
+		end
+	end
+	TRP3_FieldSet_SetCaption(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
+	
+	return lines;
+end
+
+local function refreshList()
+	local lines;
+	TRP3_RegisterListEmpty:Hide();
+	
+	if currentMode == MODE_CHARACTER then
+		lines = refreshCharacters();
+	else
+		lines = {};
+	end
+	
+	if tsize(lines) == 0 then
+		TRP3_RegisterListEmpty:Show();
+	end
+	initList(TRP3_RegisterList, lines, TRP3_RegisterListSlider);
 end
 
 local function onLineDClicked(self, button)
@@ -135,9 +154,35 @@ local function onLineDClicked(self, button)
 	openPage(self:GetParent().unitID);
 end
 
+local function changeMode(tabWidget, value)
+	currentMode = value;
+	TRP3_RegisterListCharactFilter:Hide();
+	if currentMode == MODE_CHARACTER then
+		TRP3_RegisterListCharactFilter:Show();
+	end
+	refreshList();
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tabGroup;
+
+local function createTabBar()
+	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterList);
+	frame:SetSize(400, 30);
+	frame:SetPoint("TOPLEFT", 17, -5);
+	frame:SetFrameLevel(1);
+	tabGroup = TRP3_TabBar_Create(frame,
+		{
+			{loc("REG_LIST_CHAR_TITLE"), 1, 150},
+			{loc("REG_LIST_PETS_TITLE"), 2, 150},
+		},
+		changeMode
+	);
+	tabGroup:SelectTab(1);
+end
 
 function TRP3_Register_ListInit()
 
@@ -153,7 +198,7 @@ function TRP3_Register_ListInit()
 		frameName = "TRP3_RegisterList",
 		frame = TRP3_RegisterList,
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
-		onPagePostShow = refreshList,
+		onPagePostShow = function() tabGroup:SelectTab(1); end,
 	});
 	
 	TRP3_TARGET_FRAME.registerButton({
@@ -172,20 +217,24 @@ function TRP3_Register_ListInit()
 	TRP3_RegisterListSlider:SetValue(0);
 	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
 	local widgetTab = {};
-	for i=1,10 do
+	for i=1,15 do
 		local widget = _G["TRP3_RegisterListLine"..i];
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
-		widgetClick:SetScript("OnClick", onLineClicked);
 		widgetClick:SetScript("OnDoubleClick", onLineDClicked);
+		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
+		widgetClick:SetAlpha(0.75);
 		table.insert(widgetTab, widget);
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
 	TRP3_RegisterList.decorate = decorateLine;
+	TRP3_RegisterListFilterCharactName:SetScript("OnTextChanged", refreshList);
+	TRP3_RegisterListFilterCharactGuild:SetScript("OnTextChanged", refreshList);
+	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
+
+	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
+	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
+	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
 	
-	TRP3_RegisterListTitle:SetText(loc("REG_LIST_TITLE"));
-	TRP3_RegisterListFilter:SetText(loc("REG_LIST_FILTERS"));
-	TRP3_RegisterListFilterNameText:SetText(loc("REG_LIST_NAME"));
-	TRP3_RegisterListFilterGuildText:SetText(loc("REG_LIST_GUILD"));
-	TRP3_RegisterListFilterRealmText:SetText(loc("REG_LIST_REALMONLY"));
+	createTabBar();
 	
 end

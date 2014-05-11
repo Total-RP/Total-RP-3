@@ -14,7 +14,7 @@ local Log = TRP3_UTILS.log;
 local CreateFrame = CreateFrame;
 local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
 local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
-local selectMenu;
+local selectMenu, unregisterMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Menu management
@@ -30,6 +30,16 @@ local uiMenuWidgets = {};
 local marginTop = -5;
 -- Menu button height, determine the vertical gap between each button
 local buttonHeight = 25;
+
+local function onMenuClick(menu)
+	assert(menu.id, "Menu button does not have a attached menu id.");
+	selectMenu(menu.id);
+end
+
+local function onMenuClosed(menu)
+	assert(menu:GetParent().id, "Menu button does not have a attached menu id.");
+	unregisterMenu(menu:GetParent().id);
+end
 
 -- The menu is built by SORTED menu item key.
 local function rebuildMenu()
@@ -57,9 +67,10 @@ local function rebuildMenu()
 			local uiButton = uiMenuWidgets[index+1];
 			if uiButton == nil then -- Create the button
 				uiButton = CreateFrame("Button", "TRP3_MainFrameMenuButton"..index, TRP3_MainFrameMenuContainer, "TRP3_CategoryButton");
+				uiButton:SetScript("OnClick", onMenuClick);
+				_G[uiButton:GetName().."Close"]:SetScript("OnClick", onMenuClosed);
 				tinsert(uiMenuWidgets, uiButton);
 			end
-			local label = _G[uiButton:GetName().."Label"];
 			uiButton:Enable();
 			uiButton:UnlockHighlight();
 			
@@ -68,23 +79,28 @@ local function rebuildMenu()
 				uiButton:LockHighlight();
 			end
 			uiButton:ClearAllPoints();
+			
+			local label = _G[uiButton:GetName().."Label"];
+			local close = _G[uiButton:GetName().."Close"];
+			close:Hide();
 			if menuStructure.isChildOf then
 				uiButton:SetPoint("LEFT", 30, y);
 				uiButton:SetPoint("RIGHT", -15, y);
 				label:SetTextColor(1, 1, 1);
 				label:SetJustifyH(menuStructure.align or "RIGHT");
+				if menuStructure.closeable  then
+					close:Show();
+				end
 			else
 				uiButton:SetPoint("LEFT", 0, y);
 				uiButton:SetPoint("RIGHT", -15, y);
 				label:SetTextColor(1, 0.75, 0);
 				label:SetJustifyH(menuStructure.align or "LEFT");
 			end
-			
 			label:SetText(menuStructure.text);
-			uiButton:SetScript("OnClick", function()
-				selectMenu(id);
-			end);
+			
 			uiButton:Show();
+			uiButton.id = id;
 			index = index + 1;
 			y = y - buttonHeight;
 		end
@@ -104,12 +120,15 @@ TRP3_NAVIGATION.menu.registerMenu = registerMenu;
 
 -- Unregister a menu structure.
 -- Automatically refresh the menu display
-local function unregisterMenu(menuId)
-	menuStructures[menuId] = nil;
-	if selectedMenuId == menuId then
-		-- TODO: what to do when unregister the currently selected menu ? Error for now
-		error("Cannot unregister the current selected menu entry");
+unregisterMenu = function(menuId)
+	if selectedMenuId == menuId then 
+		if menuStructures[menuId].isChildOf then
+			selectMenu(menuStructures[menuId].isChildOf);
+		else
+			error("Cannot unregister the current selected menu entry");
+		end
 	end
+	menuStructures[menuId] = nil;
 	rebuildMenu();
 end
 TRP3_NAVIGATION.menu.unregisterMenu = unregisterMenu;
@@ -133,6 +152,10 @@ local function getMenuItem(menuId)
 	return menuStructures[menuId];
 end
 TRP3_NAVIGATION.menu.getMenuItem = getMenuItem;
+
+TRP3_NAVIGATION.menu.isMenuRegistered = function(menuID)
+	return menuStructures[menuID] ~= nil;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main structure & page system

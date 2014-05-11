@@ -108,6 +108,13 @@
 			</Anchors>
 			<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
 		</HighlightTexture>
+		<Frames>
+			<Button name="$parentClose" inherits="TRP3_CloseButton">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" x="5" y="-2"/>
+				</Anchors>
+			</Button>
+		</Frames>
 	</Button>
 	
 	<!-- A bordered frame with a title -->

@@ -86,8 +86,8 @@ local function getCharacter(unitID)
 end
 TRP3_REGISTER.getCharacter = getCharacter;
 
-local function isUnitKnown(unitName)
-	return isUnitIDKnown(getUnitID(unitName));
+local function isUnitKnown(targetType)
+	return isUnitIDKnown(getUnitID(targetType));
 end
 
 function TRP3_IsPlayerIgnored(unitID)

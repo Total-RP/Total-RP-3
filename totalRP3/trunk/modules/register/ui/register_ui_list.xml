@@ -5,26 +5,36 @@
 	<Frame name="TRP3_RegisterListLine" virtual="true">
 		<Size x="0" y="22"/>
 		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords top="0.40625" bottom="0.60125" left="0" right="1"/>
+				</Texture>
+			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT" text="[ ][ ] [Characters name]">
-				 	<Size x="200" y="10"/>
+				 	<Size x="150" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="30" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
-				<FontString name="$parentGuild" inherits="GameFontNormal" justifyH="LEFT" text="[Guild name]">
-					<Size x="100" y="10"/>
+				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[info ?]">
+					<Size x="125" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
-				<FontString name="$parentRealm" inherits="GameFontNormal" justifyH="LEFT" text="[Realm name]">
+				<FontString name="$parentGuild" inherits="GameFontNormal" justifyH="LEFT" text="[Realm name]">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentGuild"/>
-						<Anchor point="RIGHT" x="0" y="0"/>
+						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo"/>
+						<Anchor point="RIGHT" x="-15" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
@@ -34,11 +44,19 @@
 			<Button name="$parentClick">
 			 	<Size x="450" y="22"/>
 				<Anchors>
-					<Anchor point="LEFT" x="30" y="0"/>
+					<Anchor point="LEFT" x="25" y="0"/>
 				</Anchors>
 				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
 					<TexCoords bottom="0" left="0.25" top="1" right="1"/>
 				</HighlightTexture>
+				<Scripts>
+					<OnEnter>
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
 			</Button>
 			<CheckButton name="$parentSelect" inherits="TRP3_CheckBox" checked="false">
 				<Anchors>
@@ -52,78 +70,53 @@
 	</Frame>
 
 	<Frame name="TRP3_RegisterList" hidden="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground" tile="true">
-			<EdgeSize><AbsValue val="32" /></EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
-			<TileSize val="425" />
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+			<TileSize val="425"/>
 		</Backdrop>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="TRP3_RegisterListTitle" inherits="GameFontNormalHuge" justifyH="LEFT" text="[Characters list]">
-				 	<Size x="0" y="10"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="50" y="-30"/>
-						<Anchor point="RIGHT" x="-15" y="-30"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-				<FontString name="TRP3_RegisterListFilter" inherits="GameFontNormal" justifyH="LEFT" text="[Filters]">
-				 	<Size x="70" y="10"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="-30" y="-22" relativeTo="TRP3_RegisterListTitle"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
+				
 			</Layer>
 		</Layers>
 		<Frames>
-			<EditBox name="TRP3_RegisterListFilterName" inherits="TRP3_TitledEditBox">
-				<Size x="125" y="18"/>
-				<Anchors>
-					<Anchor point="LEFT" x="5" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilter"/>
-				</Anchors>
-			</EditBox>
-			<EditBox name="TRP3_RegisterListFilterGuild" inherits="TRP3_TitledEditBox">
-				<Size x="125" y="18"/>
-				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterName"/>
-				</Anchors>
-			</EditBox>
-			<CheckButton name="TRP3_RegisterListFilterRealm" inherits="TRP3_CheckBox" checked="true">
-				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterGuild"/>
-				</Anchors>
-			</CheckButton>
-			<Frame name="TRP3_RegisterListFilterActions" inherits="UIDropDownMenuTemplate" enableMouse="true">
-		        <Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="-15" y="-7" relativeTo="TRP3_RegisterListFilter"/>
-				</Anchors>
-				<Scripts>
-					<OnEnter>
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave>
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
-		    </Frame>
 			<Frame name="TRP3_RegisterListContainer">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-					<EdgeSize><AbsValue val="24" /></EdgeSize>
-					<BackgroundInsets left="4" right="4" top="4" bottom="4" />
-					<TileSize val="425" />
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+					<EdgeSize><AbsValue val="32"/></EdgeSize>
 				</Backdrop>
-				<Size x="0" y="238"/>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground">
+							<Size x="506" y="0"/>
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-4" y="0"/>
+								<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_RegisterListEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="30"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Size x="0" y="0"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" x="15" y="-110"/>
-					<Anchor point="TOPRIGHT" x="-15" y="-110"/>
+					<Anchor point="TOPLEFT" x="5" y="-35"/>
+					<Anchor point="TOPRIGHT" x="-5" y="-35"/>
+					<Anchor point="BOTTOMLEFT" x="5" y="8"/>
+					<Anchor point="BOTTOMRIGHT" x="-5" y="8"/>
 				</Anchors>
 				<Frames>
 					<Slider name="TRP3_RegisterListSlider" inherits="OptionsSliderTemplate">
 						<Size x="15" y="340"/>
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="4" y="-2"/>
-							<Anchor point="BOTTOMRIGHT" x="4" y="2"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
@@ -138,8 +131,8 @@
 					</Slider>
 					<Frame name="TRP3_RegisterListLine1" inherits="TRP3_RegisterListLine">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-8"/>
-							<Anchor point="TOPRIGHT" x="-10" y="-8"/>
+							<Anchor point="TOPLEFT" x="15" y="-18"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-18"/>
 						</Anchors>
 					</Frame>
 					<Frame name="TRP3_RegisterListLine2" inherits="TRP3_RegisterListLine">
@@ -196,40 +189,64 @@
 							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine9"/>
 						</Anchors>
 					</Frame>
+					<Frame name="TRP3_RegisterListLine11" inherits="TRP3_RegisterListLine">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine10"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine10"/>
+						</Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterListLine12" inherits="TRP3_RegisterListLine">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine11"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine11"/>
+						</Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterListLine13" inherits="TRP3_RegisterListLine">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine12"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine12"/>
+						</Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterListLine14" inherits="TRP3_RegisterListLine">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine13"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine13"/>
+						</Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterListLine15" inherits="TRP3_RegisterListLine">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine14"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine14"/>
+						</Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterListCharactFilter" inherits="TRP3_FieldSetFrame">
+						<Size x="0" y="50"/>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+							<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+						</Anchors>
+						<Frames>
+							<EditBox name="TRP3_RegisterListFilterCharactName" inherits="TRP3_TitledEditBox">
+								<Size x="125" y="18"/>
+								<Anchors>
+									<Anchor point="LEFT" x="25" y="0"/>
+								</Anchors>
+							</EditBox>
+							<EditBox name="TRP3_RegisterListFilterCharactGuild" inherits="TRP3_TitledEditBox">
+								<Size x="125" y="18"/>
+								<Anchors>
+									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterCharactName"/>
+								</Anchors>
+							</EditBox>
+							<CheckButton name="TRP3_RegisterListFilterCharactRealm" inherits="TRP3_CheckBox" checked="true">
+								<Anchors>
+									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterCharactGuild"/>
+								</Anchors>
+							</CheckButton>
+						</Frames>
+					</Frame>
 				</Frames>
 			</Frame>
-			<Frame name="TRP3_RegisterListSelection">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-					<EdgeSize><AbsValue val="24" /></EdgeSize>
-					<BackgroundInsets left="4" right="4" top="4" bottom="4" />
-					<TileSize val="425" />
-				</Backdrop>
-				<Anchors>
-					<Anchor point="TOPLEFT" x="15" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListContainer"/>
-					<Anchor point="TOPRIGHT" x="-15" y="-5" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListContainer"/>
-					<Anchor point="BOTTOMLEFT" x="15" y="50"/>
-					<Anchor point="BOTTOMRIGHT" x="-15" y="50"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="TRP3_RegisterListSelectionName" inherits="GameFontNormalLarge" justifyH="LEFT" text="[Character's name]">
-						 	<Size x="0" y="10"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" x="15" y="-10"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-						<FontString name="TRP3_RegisterListSelectionLast" inherits="GameFontNormal" justifyH="LEFT" text="[Last seen: plou plou plou]">
-						 	<Size x="0" y="10"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListSelectionName" x="15" y="-15"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-			</Frame>
-			
 		</Frames>
 	</Frame>
 

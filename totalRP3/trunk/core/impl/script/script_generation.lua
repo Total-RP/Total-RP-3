@@ -3,11 +3,41 @@
 -- Code generation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_SCRIPTS = {};
+
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local tableCopy = TRP3_UTILS.table.copy;
 local writeElement;
 
 local DEBUG = true;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Utils
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- Escape " in string argument, to avoid script injection
+local function escapeArguments(args)
+	local escaped = {};
+	for index, arg in pairs(args) do
+		if type(arg) == "string" then
+			escaped[index] = arg:gsub("\"", "\\\"");
+		else
+			escaped[index] = arg;
+		end
+	end
+	return escaped;
+end
+
+TRP3_SCRIPTS.eval = function(conditionValue, conditionID, conditionStorage)
+	if conditionID and conditionValue then
+		conditionStorage[conditionID] = true;
+	end
+	return conditionValue;
+end
+
+TRP3_SCRIPTS.delayed = function(delay, func)
+	-- TODO
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Writer
@@ -16,8 +46,12 @@ local DEBUG = true;
 local CURRENT_CODE, CURRENT_INDENT, CURRENT_STRUCTURE, CURRENT_ENVIRONMENT;
 local INDENT_CHAR = "\t";
 
-local function writeLine(code)
-	CURRENT_CODE = CURRENT_CODE .. CURRENT_INDENT .. code .. "\n";
+local function writeLine(code, onTop)
+	if onTop then
+		CURRENT_CODE =  CURRENT_INDENT .. code .. "\n" .. CURRENT_CODE;
+	else
+		CURRENT_CODE = CURRENT_CODE .. CURRENT_INDENT .. code .. "\n";
+	end
 end
 
 local function addIndent()
@@ -46,21 +80,8 @@ end
 -- LEVEL 1 : Test
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TEST_OPERANDE = {
-	["tar_name"] = {
-		codeReplacement= "tostring(name(\"target\"))",
-		env = {
-			["name"] = UnitName,
-		},
-	},
-	["cond"] = {
-		codeReplacement= "conditionStorage[\"%s\"]",
-		args = 1
-	},
-}
-
 local function getTestOperande(id)
-	return TEST_OPERANDE[id];
+	return TRP3_SCRIPTS.getOperand(id);
 end
 
 local function writeOperand(testStructure, comparatorType)
@@ -89,7 +110,7 @@ local function writeOperand(testStructure, comparatorType)
 		if operandInfo.args then -- has arguments
 			assert(args, "Missing arguments for operand: " .. testStructure.i);
 			assert(#args == operandInfo.args, ("Incomplete arguments for %s: %s / %s"):format(testStructure.i, #args, operandInfo.args));
-			codeReplacement = codeReplacement:format(unpack(args));
+			codeReplacement = codeReplacement:format(unpack(escapeArguments(args)));
 		end
 		code = codeReplacement;
 		
@@ -185,18 +206,8 @@ end
 -- LEVEL 3 : Effect
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local EFFECTS = {
-	["text"] = {
-		codeReplacement= "print(\"%s\");",
-		args = 1,
-		env = {
-			print = print,
-		}
-	},
-}
-
 local function getEffectInfo(id)
-	return EFFECTS[id];
+	return TRP3_SCRIPTS.getEffect(id);
 end
 
 local function writeEffect(effectStructure)
@@ -216,7 +227,7 @@ local function writeEffect(effectStructure)
 	if (effectInfo.args or 0) > 0 then
 		assert(effectStructure.args, "Missing args for effect: " .. effectStructure.id);
 		assert(#effectStructure.args == effectInfo.args, ("Incomplete arguments for %s: %s / %s"):format(effectStructure.id, #effectStructure.args, effectInfo.args));
-		effectCode = effectCode:format(unpack(effectStructure.args));
+		effectCode = effectCode:format(unpack(escapeArguments(effectStructure.args)));
 	end
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
@@ -325,54 +336,49 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- TODO: move this to another file
-function TRP3_Effect_Eval(conditionValue, conditionID, conditionStorage)
-	if conditionID and conditionValue then
-		conditionStorage[conditionID] = true;
-	end
-	return conditionValue;
-end
-
--- TODO: move this to another file
-function TRP3_Effect_Delayed(delay, func)
-	
-end
-
-local BASE_ENV = {delayed = TRP3_Effect_Delayed, eval = TRP3_Effect_Eval, tostring = tostring};
+local BASE_ENV = {delayed = "TRP3_SCRIPTS.delayed", eval = "TRP3_SCRIPTS.eval"};
+local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
-	if DEBUG then
-		writeLine("-- Imports");
+	for alias, global in pairs(CURRENT_ENVIRONMENT) do
+		writeLine(IMPORT_PATTERN:format(alias, global), true);
 	end
-	writeLine("local delayed, eval = delayed, eval;"); -- Delay method
+	if DEBUG then
+		writeLine("-- Imports", true);
+	end
 end
 
 local function generateCode(effectStructure)
 	CURRENT_CODE = "";
 	CURRENT_INDENT = "";
+	
 	if not CURRENT_ENVIRONMENT then
 		CURRENT_ENVIRONMENT = {};
 	end
 	wipe(CURRENT_ENVIRONMENT);
-	CURRENT_STRUCTURE = effectStructure;
-	writeImports();
+	tableCopy(CURRENT_ENVIRONMENT, BASE_ENV);
 	
-	writeLine("return function(...)");
+	CURRENT_STRUCTURE = effectStructure;
+
+	writeLine("local func = function(...)");
 	addIndent();
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
 	writeElement("1"); -- 1 is always the first element
-	
 	if DEBUG then
-		writeLine("return true, conditionStorage;");
+		writeLine("return 0, conditionStorage;");
 	else
-		writeLine("return true;");
+		writeLine("return 0;");
 	end
 	closeBlock();
-	return CURRENT_CODE, CURRENT_ENVIRONMENT;
+	writeImports();
+	writeLine("setfenv(func, {});");
+	writeLine("return func;");
+	
+	return CURRENT_CODE;
 end
 
 local function generate(effectStructure)
-	local code, usedEnv = generateCode(effectStructure);
+	local code = generateCode(effectStructure);
 	
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
@@ -380,16 +386,6 @@ local function generate(effectStructure)
 		print(errorMessage);
 		return nil, code;
 	end
-	
-	-- Setting up the global environment
-	local finalEnvironment = {};
-	for funcName, ref in pairs(BASE_ENV) do
-		finalEnvironment[funcName] = ref;
-	end
-	for funcName, ref in pairs(usedEnv) do
-		finalEnvironment[funcName] = ref;
-	end
-	setfenv(func, finalEnvironment);
 	
 	return func, code;
 end
@@ -421,7 +417,7 @@ local MOCK_STRUCTURE = {
 					{l = {v = true,},c = "~=",r = {i = "cond", a = {1}}},
 				},
 				args = {
-					"La cible n'est pas Telkostrasz",
+					"La cible\");print(\"you just got hacked\");print(\"",
 				}
 			}
 		}
@@ -436,6 +432,10 @@ function TRP3_Generate()
 	if functionFactory then
 		local func = functionFactory();
 		local status, ret, conditions = pcall(func);
-		TRP3_UTILS.table.dump(conditions);
+		if status then
+			TRP3_UTILS.table.dump(conditions);
+		else
+			print(ret);
+		end
 	end
 end
