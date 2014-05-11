@@ -29,7 +29,7 @@ local currentlyOpenedCharacterPrefix = "main_21_";
 
 local function openPage(unitID)
 	if unitID == Globals.player_id then
-		-- If the selected is player, simply oen his sheet.
+		-- If the selected is player, simply open his sheet.
 		selectMenu("main_10_player");
 	else
 		if isMenuRegistered(currentlyOpenedCharacterPrefix .. unitID) then

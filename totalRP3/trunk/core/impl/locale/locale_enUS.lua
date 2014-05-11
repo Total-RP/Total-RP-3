@@ -351,6 +351,8 @@ local LOCALE_EN = {
 
 		UI_BKG = "Background %s",
 		UI_ICON_BROWSER = "Icon browser",
+		UI_ICON_BROWSER_HELP = "Copy icon",
+		UI_ICON_BROWSER_HELP_TT = "While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name. This will works:\n|cff00ff00- On any item in your bags\n- On any icon in the spellbook",
 		UI_ICON_SELECT = "Select icon",
 		UI_MUSIC_BROWSER = "Music browser",
 		UI_MUSIC_SELECT = "Select music",

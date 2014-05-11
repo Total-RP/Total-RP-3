@@ -11,7 +11,8 @@ local loc = TRP3_L;
 local initList = TRP3_UI_UTILS.list.initList;
 local tinsert, _G = tinsert, _G;
 local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
-local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
+local setTooltipForFrame, setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame, TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -241,6 +242,7 @@ end
 -- Icon browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local TRP3_IconBrowser = TRP3_IconBrowser;
 local iconWidgetTab = {};
 local filteredIconList = {};
 local ui_IconBrowserContent = TRP3_IconBrowserContent;
@@ -299,9 +301,29 @@ local function initIconBrowser()
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
 	
+	setTooltipForSameFrame(TRP3_IconBrowserFilterHelp, "BOTTOMLEFT", 0, 0, loc("UI_ICON_BROWSER_HELP") ,loc("UI_ICON_BROWSER_HELP_TT"));
+	
 	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
 	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	filteredIconBrowser();
+	
+	-- Icon from item
+	hooksecurefunc("HandleModifiedItemClick", function(link)
+		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() and link and GetItemIcon(link) then
+			local icon = GetItemIcon(link):match("([^\\]+)$");
+			TRP3_IconBrowserFilterBox:SetText(icon);
+			TRP3_IconBrowserFilterBox:HighlightText();
+		end
+	end);
+	-- Icon from spellbook
+	local GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame = GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame;
+	hooksecurefunc("SpellButton_OnModifiedClick", function(self)
+		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() then
+			local icon = GetSpellBookItemTexture(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType):match("([^\\]+)$");
+			TRP3_IconBrowserFilterBox:SetText(icon);
+			TRP3_IconBrowserFilterBox:HighlightText();
+		end
+	end);
 end
 
 local function openIconBrowser(onSelectCallback, onCancelCallback)

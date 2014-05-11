@@ -102,6 +102,11 @@
 							<Anchor point="BOTTOM" x="0" y="10"/>
 						</Anchors>
 					</EditBox>
+					<Button name="TRP3_IconBrowserFilterHelp" inherits="TRP3_HelpButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 		</Frames>
