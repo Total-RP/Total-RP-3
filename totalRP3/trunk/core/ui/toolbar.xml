@@ -6,7 +6,7 @@
 		<Size x="25" y="25" />
 		<NormalTexture name="$parentNormal" />
 		<HighlightTexture alphaMode="ADD"
-			file="Interface\BUTTONS\IconBorder-GlowRing" />
+			file="Interface/BUTTONS/ButtonHilight-Square" />
 	</Button>
 
 	<!-- Toolbar -->

@@ -172,28 +172,76 @@
 		</Frames>
 	</Frame>
 	
-	<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="HIGH">
-		<Size x="32" y="32" />
+		<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" hidden="false">
+		<Size>
+			<AbsDimension x="33" y="33"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT"/>
+		</Anchors>
 		<Layers>
-			<Layer level="BORDER">
-				<Texture name="TRP3_MinimapButtonIcon" file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
-					<Size x="53" y="53" />
+			<Layer level="BACKGROUND">
+				<Texture name="TRP3_MinimapButton_Icon" file="Interface\AddOns\totalRP3\resources\trp3minimap.blp">
+					<Size>
+						<AbsDimension x="21" y="21"/>
+					</Size>
 					<Anchors>
-						<Anchor point="CENTER" x="11" y="-12" />
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+					<Size>
+						<AbsDimension x="56" y="56"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
-		<NormalTexture name="TRP3_MinimapButtonNormal"
-			file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
-		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"
-			alphaMode="ADD" />
+		<Frames>
+			<Frame name="TRP3_MinimapButton_DraggingFrame" hidden="true">
+				<Scripts>
+					<OnUpdate>
+						TRP3_MinimapButton_DraggingFrame_OnUpdate()
+					</OnUpdate>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
 		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
+				self:RegisterForDrag("LeftButton","RightButton")
+			</OnLoad>
+			<OnDragStart>
+				self:LockHighlight()
+				TRP3_MinimapButton_DraggingFrame:Show()
+			</OnDragStart>
+			<OnDragStop>
+				self:UnlockHighlight()
+				TRP3_MinimapButton_DraggingFrame:Hide()
+			</OnDragStop>
+			<OnClick>
+				if button == "RightButton" then
+					TRP3_SwitchToolbar();
+				else
+						TRP3_NAVIGATION.switchMainFrame();
+				end
+			</OnClick>
 			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
+				-- TODO
+				-- TRP3_RefreshTooltipForFrame(self);
 			</OnEnter>
 			<OnLeave>
-				TRP3_MainTooltip:Hide();
+				-- TODO
+				-- TRP3_MainTooltip:Hide();
 			</OnLeave>
 		</Scripts>
 	</Button>
