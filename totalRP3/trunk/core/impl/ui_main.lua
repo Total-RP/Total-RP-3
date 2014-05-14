@@ -7,14 +7,18 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Config
+local Utils = TRP3_UTILS;
 local getConfigValue, registerConfigKey, setConfigValue = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.setValue;
 local math, GetCursorPosition, Minimap, UIParent, cos, sin = math, GetCursorPosition, Minimap, UIParent, cos, sin;
+local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
+local color, loc = TRP3_UTILS.str.color, TRP3_L;
 local CONFIG_MINIMAP_POS = "minimap_pos";
+local minimapButton;
 
 
 -- Reposition the minimap button using the config values
 local function minimapButton_Reposition()
-	TRP3_MinimapButton:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-(80*cos(getConfigValue(CONFIG_MINIMAP_POS))),(80*sin(getConfigValue(CONFIG_MINIMAP_POS)))-52)
+	minimapButton:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-(80*cos(getConfigValue(CONFIG_MINIMAP_POS))),(80*sin(getConfigValue(CONFIG_MINIMAP_POS)))-52)
 end
 
 -- Function called when the minimap icon is dragged
@@ -34,10 +38,29 @@ local function minimapButton_DraggingFrame_OnUpdate(self)
 end
 
 -- Initialize the minimap icon button
-function TRP3_InitMinimapButton(addon)
+function TRP3_InitMinimapButton()
+	local toggleMainPane, toggleToolbar = TRP3_NAVIGATION.switchMainFrame, TRP3_SwitchToolbar;
+	minimapButton = TRP3_MinimapButton;
+
 	registerConfigKey(CONFIG_MINIMAP_POS, 202);
-	TRP3_MinimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);
+	
+	minimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);
+	minimapButton:SetScript("OnClick", function(self, button)
+			if button == "RightButton" then
+				-- For some reason, TRP3_SwitchToolbar() is not instanciated at launch
+				-- So we will store it the first time so we can use it localy later
+				if not toogleToolbar then toogleToolbar = TRP3_SwitchToolbar end
+				toogleToolbar();
+			else
+				toggleMainPane();
+			end
+		end);
 	minimapButton_Reposition();
+
+	-- Show/hide cape
+	local minimapTooltip = strconcat(color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"), "\n",
+							color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
+	setTooltipForFrame(minimapButton, minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
 end
 
 

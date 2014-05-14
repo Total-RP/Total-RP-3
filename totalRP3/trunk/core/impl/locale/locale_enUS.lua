@@ -421,8 +421,8 @@ local LOCALE_EN = {
 		-- Minimap button
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
-		MM_SHOW_HIDE_MAIN= "Show/hide the main frame";
-		MM_SHOW_HIDE_SHORTCUT= "Show/hide the toolbar";
+		MM_SHOW_HIDE_MAIN = "Show/hide the main frame";
+		MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar";
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PEEK PRESETS

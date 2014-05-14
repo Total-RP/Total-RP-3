@@ -33,7 +33,7 @@ function Globals.addon:OnEnable()
 	TRP3_TOOLBAR.init();
 	TRP3_DASHBOARD.init();
 	TRP3_TARGET_FRAME.init();
-	TRP3_InitMinimapButton(self);
+	TRP3_InitMinimapButton();
 	TRP3_NAVIGATION.Init();
 	TRP3_UI_InitRegister();
 	TRP3_UI_InitPopups();

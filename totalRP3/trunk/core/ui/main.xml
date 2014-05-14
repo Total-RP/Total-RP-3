@@ -219,13 +219,6 @@
 				self.isDraging = nil;
 				self:UnlockHighlight();
 			</OnDragStop>
-			<OnClick>
-				if button == "RightButton" then
-					TRP3_SwitchToolbar();
-				else
-					TRP3_NAVIGATION.switchMainFrame();
-				end
-			</OnClick>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
 			</OnEnter>
