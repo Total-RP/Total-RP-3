@@ -43,7 +43,7 @@ function TRP3_InitMinimapButton()
 	minimapButton = TRP3_MinimapButton;
 
 	registerConfigKey(CONFIG_MINIMAP_POS, 202);
-	
+
 	minimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);
 	minimapButton:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
@@ -55,9 +55,9 @@ function TRP3_InitMinimapButton()
 				toggleMainPane();
 			end
 		end);
+	
 	minimapButton_Reposition();
 
-	-- Show/hide cape
 	local minimapTooltip = strconcat(color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"), "\n",
 							color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
 	setTooltipForFrame(minimapButton, minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
