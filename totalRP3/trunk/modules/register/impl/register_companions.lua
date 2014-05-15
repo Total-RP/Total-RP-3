@@ -5,7 +5,7 @@
 
 -- imports
 local Globals, loc = TRP3_GLOBALS, TRP3_L;
-local registerMenu = TRP3_NAVIGATION.menu.registerMenu;
+local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
 local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -23,14 +23,20 @@ end
 TRP3_REGISTER.initPets = function()
 
 	registerMenu({
-		id = "main_10_player_02_companions",
+		id = "main_20_companions",
 		text = loc("REG_COMPANIONS"),
-		onSelected = function() setPage("player_companions") end,
-		isChildOf = "main_10_player",
+		onSelected = function() selectMenu("main_21_companions_list") end,
+	});
+	
+	registerMenu({
+		id = "main_21_companions_list",
+		text = loc("REG_COMPANIONS_LIST"),
+		onSelected = function() setPage("companions_list") end,
+		isChildOf = "main_20_companions",
 	});
 	
 	registerPage({
-		id = "player_companions",
+		id = "companions_list",
 		frame = TRP3_RegisterCompanions,
 		onPagePostShow = function(context)
 			onPageShow(context);

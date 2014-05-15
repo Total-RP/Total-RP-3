@@ -25,7 +25,8 @@ local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentlyOpenedCharacterPrefix = "main_21_";
+local currentlyOpenedCharacterPrefix = "main_31_";
+local REGISTER_PAGE = "main_30_register";
 
 local function openPage(unitID)
 	if unitID == Globals.player_id then
@@ -49,7 +50,7 @@ local function openPage(unitID)
 				id = currentlyOpenedCharacterPrefix .. unitID,
 				text = tabText,
 				onSelected = function() setPage("player_main", {unitID = unitID}) end,
-				isChildOf = "main_20_register",
+				isChildOf = REGISTER_PAGE,
 				closeable = true,
 			});
 			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
@@ -72,9 +73,9 @@ local DATE_FORMAT = "%d/%m/%y %H:%M";
 local function decorateLine(line, unitID)
 	local character = TRP3_GetCharacter(unitID);
 	local unitName, unitRealm = unitIDToInfo(unitID);
-	
+
 	line.unitID = unitID;
-	
+
 	local name = unitName;
 	if TRP3_HasProfile(unitID) then
 		local profile = TRP3_GetUnitProfile(unitID);
@@ -91,15 +92,15 @@ local function decorateLine(line, unitID)
 	else
 		_G[line:GetName().."Guild"]:SetText("");
 	end
-	
+
 	local clickButton = _G[line:GetName().."Click"];
-	
+
 	local secondLine = "";
 	if character.time and character.zone then
 		local formatDate = date(DATE_FORMAT, character.time);
 		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, character.zone, unitRealm) .. "\n";
 	end
-	
+
 	setTooltipForSameFrame(clickButton, "TOPLEFT", 0, 5, name, loc("REG_LIST_CHAR_TT"):format(secondLine));
 end
 
@@ -109,13 +110,13 @@ local function refreshCharacters()
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
 	local fullSize = tsize(TRP3_GetCharacterList());
 	local lines = {};
-	
+
 	for unitID, character in pairs(TRP3_GetCharacterList()) do
 		local name, realm = unitIDToInfo(unitID);
 		local guild = character.guild or "";
 		if (nameSearch:len() == 0 or name:lower():find(nameSearch))
-			and (guildSearch:len() == 0 or guild:lower():find(guildSearch))
-			and (not realmOnly or realm == Globals.player_realm_id)
+		and (guildSearch:len() == 0 or guild:lower():find(guildSearch))
+		and (not realmOnly or realm == Globals.player_realm_id)
 		then
 			lines[unitID] = character;
 		end
@@ -129,20 +130,20 @@ local function refreshCharacters()
 		end
 	end
 	TRP3_FieldSet_SetCaption(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
-	
+
 	return lines;
 end
 
 local function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
-	
+
 	if currentMode == MODE_CHARACTER then
 		lines = refreshCharacters();
 	else
 		lines = {};
 	end
-	
+
 	if tsize(lines) == 0 then
 		TRP3_RegisterListEmpty:Show();
 	end
@@ -175,11 +176,11 @@ local function createTabBar()
 	frame:SetPoint("TOPLEFT", 17, -5);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_TabBar_Create(frame,
-		{
-			{loc("REG_LIST_CHAR_TITLE"), 1, 150},
-			{loc("REG_LIST_PETS_TITLE"), 2, 150},
-		},
-		changeMode
+	{
+		{loc("REG_LIST_CHAR_TITLE"), 1, 150},
+		{loc("REG_LIST_PETS_TITLE"), 2, 150},
+	},
+	changeMode
 	);
 	tabGroup:SelectTab(1);
 end
@@ -187,11 +188,11 @@ end
 function TRP3_Register_ListInit()
 
 	registerMenu({
-		id = "main_20_register",
+		id = REGISTER_PAGE,
 		text = loc("REG_REGISTER"),
 		onSelected = function() setPage("register_list"); end,
 	});
-	
+
 	registerPage({
 		id = "register_list",
 		templateName = "TRP3_RegisterList",
@@ -200,7 +201,7 @@ function TRP3_Register_ListInit()
 		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
 		onPagePostShow = function() tabGroup:SelectTab(1); end,
 	});
-	
+
 	TRP3_TARGET_FRAME.registerButton({
 		id = "aa_page_player",
 		condition = function(unitID, targetInfo)
@@ -213,7 +214,7 @@ function TRP3_Register_ListInit()
 		getTooltip = function() return loc("TF_OPEN_CHARACTER") end,
 		icon = "inv_inscription_scroll"
 	});
-	
+
 	TRP3_RegisterListSlider:SetValue(0);
 	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
 	local widgetTab = {};
@@ -234,7 +235,7 @@ function TRP3_Register_ListInit()
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
-	
+
 	createTabBar();
-	
+
 end

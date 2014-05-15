@@ -105,7 +105,7 @@ local function compressData()
 	local compressed = Utils.serial.encodeCompressMessage(serial);
 	if compressed:len() < serial:len() then
 		currentCompressed = compressed;
---		log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+--		Utils.log.log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
 	else
 		currentCompressed = nil;
 	end
@@ -782,6 +782,6 @@ function TRP3_Register_CharInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc("REG_PLAYER_RESIDENCE"));
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc("REG_PLAYER_BIRTHPLACE"));
 	
-	TRP3_RegisterProfileSelectionHandler(compressData); -- On profile change, compress the new data
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 end

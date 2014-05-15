@@ -39,7 +39,6 @@ function Globals.addon:OnEnable()
 	TRP3_UI_InitPopups();
 	TRP3_UI_InitConfiguration();
 	
-	TRP3_LoadProfile(); -- Load profile
 	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
 	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));

@@ -208,6 +208,7 @@ local LOCALE_EN = {
 		REG_LIST_GUILD = "Guild",
 		REG_LIST_NAME = "Name",
 		REG_COMPANIONS = "Companions",
+		REG_COMPANIONS_LIST = "Profiles",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -303,7 +304,7 @@ local LOCALE_EN = {
 		-- PROFILE
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
-		PR_PROFILEMANAGER_TITLE = "Profile Manager",
+		PR_PROFILEMANAGER_TITLE = "Profiles",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
 		PR_NEW_PROFILE = "New profile",

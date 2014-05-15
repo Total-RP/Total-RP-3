@@ -24,7 +24,7 @@ local UnitFactionGroup = UnitFactionGroup;
 local UnitSex = UnitSex;
 local time = time;
 local GetGuildInfo = GetGuildInfo;
-local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
+local getDefaultProfile, get = TRP3_PROFILE.getDefaultProfile, TRP3_PROFILE.getData;
 local getPlayerCharacter = TRP3_PROFILE.getCharacter;
 local Config = TRP3_CONFIG;
 local registerConfigKey = Config.registerConfigKey;
@@ -272,7 +272,7 @@ local function showTabs(context)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	local isSelf = context.unitID == Globals.player_id;
-	
+
 	tabGroup:SetTabVisible(2, isSelf or hasProfile(context.unitID));
 	tabGroup:SetTabVisible(3, isSelf or hasProfile(context.unitID));
 	tabGroup:SelectTab(1);
@@ -316,7 +316,7 @@ function TRP3_InitRegister()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
-	
+
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 end
@@ -324,14 +324,27 @@ end
 function TRP3_UI_InitRegister()
 	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
-	registerMenu({
+	local refreshMenu = TRP3_NAVIGATION.menu.rebuildMenu;
+	local playerMenu = {
 		id = "main_10_player",
-		text = Globals.player,
-		onSelected = function() selectMenu("main_10_player_01_character") end,
-	});
-	
+		text = get("player/characteristics/FN") or Globals.player,
+		onSelected = function() selectMenu("main_12_player_character") end,
+	}
+	registerMenu(playerMenu);
+	Events.listenToEvents({Events.REGISTER_CHARACTERISTICS_SAVED, Events.REGISTER_PROFILES_LOADED}, function()
+		playerMenu.text = get("player/characteristics/FN") or Globals.player;
+		refreshMenu();
+	end);
+
 	registerMenu({
-		id = "main_10_player_01_character",
+		id = "main_11_profiles",
+		text = loc("PR_PROFILEMANAGER_TITLE"),
+		onSelected = function() setPage("player_profiles"); end,
+		isChildOf = "main_10_player",
+	});
+
+	registerMenu({
+		id = "main_12_player_character",
 		text = loc("REG_PLAYER"),
 		onSelected = function() setPage("player_main", {unitID = Globals.player_id}); end,
 		isChildOf = "main_10_player",
@@ -347,9 +360,9 @@ function TRP3_UI_InitRegister()
 			showTabs(context);
 		end,
 	});
-	
+
 	registerConfigKey("register_about_use_vote", true);
-	
+
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_register",

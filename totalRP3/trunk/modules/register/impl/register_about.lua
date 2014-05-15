@@ -901,5 +901,6 @@ function TRP3_Register_AboutInit()
 		Utils.music.stop();
 	end);
 	
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 end
