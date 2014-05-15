@@ -47,10 +47,7 @@ function TRP3_InitMinimapButton()
 	minimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);
 	minimapButton:SetScript("OnClick", function(self, button)
 			if button == "RightButton" then
-				-- For some reason, TRP3_SwitchToolbar() is not instanciated at launch
-				-- So we will store it the first time so we can use it localy later
-				if not toogleToolbar then toogleToolbar = TRP3_SwitchToolbar end
-				toogleToolbar();
+				toggleToolbar();
 			else
 				toggleMainPane();
 			end
