@@ -23,6 +23,7 @@ local Globals = TRP3_GLOBALS;
 local Utils = TRP3_UTILS;
 local Log = Utils.log;
 local Comm = TRP3_COMM;
+local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 -- function definition
 local handlePacketsIn;
@@ -177,7 +178,7 @@ end
 
 -- Convert structure to message, cut message in packets.
 local function handleStructureOut(structure, target, priority)
-	local message = Globals.addon:Serialize(structure);
+	local message = libSerializer:Serialize(structure);
 	local messageID = getMessageIDAndIncrement();
 	local messageSize = message:len();
 	local packetTab = {};
@@ -195,7 +196,7 @@ handleStructureIn = function(packets, sender)
 	for index, packet in pairs(packets) do
 		message = message..packet;
 	end
-	local status, structure = Globals.addon:Deserialize(message);
+	local status, structure = libSerializer:Deserialize(message);
 	if status then
 		receiveObject(structure, sender);
 	else
@@ -250,5 +251,5 @@ end
 -- Estimate the number of packet needed to send a object.
 Comm.estimateStructureLoad = function(object)
 	assert(object, "Object nil");
-	return math.ceil((#(Globals.addon:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
+	return math.ceil((#(libSerializer:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
 end

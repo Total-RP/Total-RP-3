@@ -153,6 +153,7 @@ local function displayPeekSlots(unitID, targetInfo)
 				setTooltipForSameFrame(slot, "LEFT", 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), peek.TX);
 			else
 				slot:SetAlpha(0.25);
+				setTooltipForSameFrame(slot);
 			end
 			Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. icon, "Interface\\ICONS\\" .. Globals.icons.default);
 			if unitID == Globals.player_id then

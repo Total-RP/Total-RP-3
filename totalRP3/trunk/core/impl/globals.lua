@@ -46,10 +46,4 @@ TRP3_GLOBALS.build = function()
 	TRP3_GLOBALS.player_id = fullName .. "-" .. realm;
 end
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Libs management
--- AceSerializer is used for the communication serialization/dezerialization
--- AceCommand is used for TRP3 console commands handling
--- AceTimer is used for handling some generic timers
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-TRP3_GLOBALS.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_GLOBALS.addon_name, "AceSerializer-3.0", "AceConsole-3.0", "AceTimer-3.0");
+TRP3_GLOBALS.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_GLOBALS.addon_name);

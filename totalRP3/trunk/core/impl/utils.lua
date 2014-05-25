@@ -434,30 +434,31 @@ end
 
 local libCompress = LibStub:GetLibrary("LibCompress");
 local libCompressEncoder = libCompress:GetAddonEncodeTable();
+local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 local function serialize(structure)
-	return Globals.addon:Serialize(structure);
+	return libSerializer:Serialize(structure);
 end
 Utils.serial.serialize = serialize;
 
 local function deserialize(structure)
-	local status, data = Globals.addon:Deserialize(structure);
+	local status, data = libSerializer:Deserialize(structure);
 	assert(status, "Deserialization error:\n" .. tostring(structure));
 	return data;
 end
 Utils.serial.deserialize = deserialize;
 
 local function encodeCompressMessage(message)
-	return libCompress:GetAddonEncodeTable():Encode(libCompress:Compress(message));
+	return libCompressEncoder:Encode(libCompress:Compress(message));
 end
 Utils.serial.encodeCompressMessage = encodeCompressMessage;
 
 Utils.serial.decompressCodedMessage = function(message)
-	return libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message));
+	return libCompress:Decompress(libCompressEncoder:Decode(message));
 end
 
 Utils.serial.decompressCodedStructure = function(message)
-	return deserialize(libCompress:Decompress(libCompress:GetAddonEncodeTable():Decode(message)));
+	return deserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
 end
 
 Utils.serial.encodeCompressStructure = function(structure)

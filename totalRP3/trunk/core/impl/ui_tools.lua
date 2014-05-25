@@ -457,7 +457,7 @@ local unitTexture = {
 		"Achievement_Character_Tauren_Female",
 	},
 	Worgen = {
-		"Ability_Racial_TwoForms",
+		"achievement_worganhead",
 		"Ability_Racial_Viciousness",
 	},
 	Goblin = {

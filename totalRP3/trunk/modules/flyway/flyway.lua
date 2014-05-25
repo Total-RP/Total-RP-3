@@ -5,6 +5,8 @@
 -- In TRP we use this principle to adapt structural saved variables
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local type, _G = type, _G;
+
 local SCHEMA_VERSION = 0001;
 
 if not TRP3_Flyway then

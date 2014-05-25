@@ -23,6 +23,8 @@ local IsUnitIDKnown = TRP3_IsUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_EVENTS;
 local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
+local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
+local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
 
 local IC_GUILD, OOC_GUILD;
 

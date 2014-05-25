@@ -16,5 +16,4 @@
 			<OnEvent function="TRP3_EventDispatcher"/>
 		</Scripts>
 	</Frame>
-
 </Ui>

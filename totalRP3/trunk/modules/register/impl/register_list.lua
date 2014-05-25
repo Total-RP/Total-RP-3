@@ -95,10 +95,10 @@ local function decorateLine(line, unitID)
 
 	local clickButton = _G[line:GetName().."Click"];
 
-	local secondLine = "";
+	local secondLine = loc("REG_LIST_CHAR_TT_CHAR"):format(unitName);
 	if character.time and character.zone then
 		local formatDate = date(DATE_FORMAT, character.time);
-		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, character.zone, unitRealm) .. "\n";
+		secondLine = secondLine .. "\n" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, character.zone, unitRealm);
 	end
 
 	setTooltipForSameFrame(clickButton, "TOPLEFT", 0, 5, name, loc("REG_LIST_CHAR_TT"):format(secondLine));
@@ -114,10 +114,17 @@ local function refreshCharacters()
 	for unitID, character in pairs(TRP3_GetCharacterList()) do
 		local name, realm = unitIDToInfo(unitID);
 		local guild = character.guild or "";
-		if (nameSearch:len() == 0 or name:lower():find(nameSearch))
-		and (guildSearch:len() == 0 or guild:lower():find(guildSearch))
-		and (not realmOnly or realm == Globals.player_realm_id)
-		then
+		local nameIsConform = nameSearch:len() == 0 or name:lower():find(nameSearch);
+		if not nameIsConform then -- Don't check profile if is already conform
+			if TRP3_HasProfile(unitID) then
+				local profile = TRP3_GetUnitProfile(unitID);
+				local fullName = TRP3_GetCompleteName(profile.characteristics or {}, name, true);
+				nameIsConform = fullName:lower():find(nameSearch);
+			end
+		end
+		local guildIsConform = guildSearch:len() == 0 or guild:lower():find(guildSearch);
+		local realmIsConform = not realmOnly or realm == Globals.player_realm_id;
+		if nameIsConform and guildIsConform and realmIsConform then
 			lines[unitID] = character;
 		end
 	end
