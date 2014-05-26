@@ -33,7 +33,7 @@ local uiButtons = {};
 local marginLeft = 10;
 
 local function createButton(index)
-	local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, buttonContainer, "TRP3_ToolbarButtonTemplate");
+	local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, buttonContainer, "TRP3_TargetFrameButton");
 	uiButton:ClearAllPoints();
 	uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	uiButton:SetScript("OnEnter", function(self)
@@ -51,7 +51,7 @@ local function createButton(index)
 end
 
 local function displayButtonsPanel(unitID, targetInfo)
-	local buttonSize = 25;
+	local buttonSize = 30;
 
 	--Hide all
 	for _,uiButton in pairs(uiButtons) do
@@ -78,6 +78,11 @@ local function displayButtonsPanel(unitID, targetInfo)
 			uiButton = createButton(index);
 			tinsert(uiButtons, uiButton);
 		end
+		
+		if buttonStructure.adapter then
+			buttonStructure.adapter(buttonStructure, unitID, targetInfo);
+		end
+		
 		uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
 		uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
 		uiButton:GetPushedTexture():SetDesaturated(1);
@@ -87,16 +92,29 @@ local function displayButtonsPanel(unitID, targetInfo)
 		uiButton:Show();
 		uiButton.buttonId = id;
 		uiButton.onClick = buttonStructure.onClick;
-		uiButton.getTooltip = buttonStructure.getTooltip;
 		uiButton.unitID = unitID;
 		uiButton.targetInfo = targetInfo;
-		setTooltipForSameFrame(uiButton, "BOTTOM", 0, -5, buttonStructure.getTooltip(unitID, targetInfo));
+		if buttonStructure.tooltip then
+			setTooltipForSameFrame(uiButton, "BOTTOM", 0, -5, buttonStructure.tooltip, buttonStructure.tooltipSub);
+		else
+			setTooltipForSameFrame(uiButton);
+		end
+		
+		local uiAlert = _G[uiButton:GetName() .. "Alert"];
+		uiAlert:Hide();
+		if buttonStructure.alert and buttonStructure.alertIcon then
+			uiAlert:Show();
+			uiAlert:SetWidth(buttonSize / 1.7);
+			uiAlert:SetHeight(buttonSize / 1.7);
+			uiAlert:SetTexture(buttonStructure.alertIcon);
+		end
 		
 		index = index + 1;
 		x = x + buttonSize + 2;
 	end
 	
 	buttonContainer:SetWidth(math.max(20 + index * buttonSize, 200));
+	buttonContainer:SetHeight(buttonSize + 25);
 end
 
 local function registerButton(targetButton)
@@ -223,7 +241,7 @@ TRP3_TARGET_FRAME.init = function()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	
-	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
+	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO, Events.REGISTER_ABOUT_READ}, refreshIfNeeded);
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
 		if currentTarget == Globals.player_id then
 			onTargetChanged();

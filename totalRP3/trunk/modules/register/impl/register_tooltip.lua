@@ -54,7 +54,6 @@ local CONFIG_CHARACT_REALM = "tooltip_char_realm";
 local CONFIG_CHARACT_GUILD = "tooltip_char_guild";
 local CONFIG_CHARACT_TARGET = "tooltip_char_target";
 local CONFIG_CHARACT_TITLE = "tooltip_char_title";
-local CONFIG_CHARACT_CLIENT = "tooltip_char_client";
 local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
@@ -113,10 +112,6 @@ end
 
 local function showTitle()
 	return getConfigValue(CONFIG_CHARACT_TITLE);
-end
-
-local function showClient()
-	return getConfigValue(CONFIG_CHARACT_CLIENT);
 end
 
 local function showNotifications()
@@ -338,26 +333,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	end
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Quick peek & new description notifications
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	if showNotifications() then
-		local glance;
-		local description;
-		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
-			glance = loc("REG_PLAYER_GLANCE");
-		end
-		if targetID ~= Globals.player_id and info.about and not info.about.read then
-			description = loc("REG_TT_NOTIF");
-		end
-		if glance or description then
-			ui_CharacterTT:AddDoubleLine(glance or " ", description or " ", 1, 1, 1, 0, 1, 0);
-			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
-			lineIndex = lineIndex + 1;
-		end
-	end
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -366,22 +341,32 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-
+	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Client
+	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	local GLANCE_ICON = "|TInterface\\GossipFrame\\PetitionGossipIcon:18:18|t";
+	local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
 
-	if showClient() then
-		local text = "";
+	if showNotifications() then
+		local notifText = "";
+		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
+			notifText = GLANCE_ICON;
+		end
+		if targetID ~= Globals.player_id and info.about and not info.about.read then
+			notifText = notifText .. " " ..NEW_ABOUT_ICON;
+		end
+		local clientText = "";
 		if targetID == Globals.player_id then
-			text = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
+			clientText = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
-				text = strconcat("|cffffffff", character.client, " v", character.clientVersion);
+				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end
 		end
-		if text:len() > 0 then
-			ui_CharacterTT:AddDoubleLine(" ", text);
+		if notifText:len() > 0 or clientText:len() > 0 then
+			ui_CharacterTT:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0);
 			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
 		end
@@ -480,7 +465,6 @@ function TRP3_Register_TooltipInit()
 	registerConfigKey(CONFIG_CHARACT_GUILD, true);
 	registerConfigKey(CONFIG_CHARACT_TARGET, true);
 	registerConfigKey(CONFIG_CHARACT_TITLE, true);
-	registerConfigKey(CONFIG_CHARACT_CLIENT, true);
 	registerConfigKey(CONFIG_CHARACT_NOTIF, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
@@ -582,11 +566,6 @@ function TRP3_Register_TooltipInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_TARGET"),
 				configKey = CONFIG_CHARACT_TARGET,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_CLIENT"),
-				configKey = CONFIG_CHARACT_CLIENT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

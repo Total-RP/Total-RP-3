@@ -29,6 +29,7 @@ local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
 local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
 local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
+local getUnitID = Utils.str.getUnitID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -613,6 +614,7 @@ local function refreshConsultDisplay(context)
 			dataTab = TRP3_GetUnitProfile(context.unitID).about;
 			dataTab.read = true;
 			template = dataTab.TE or 1;
+			Events.fireEvent(Events.REGISTER_ABOUT_READ, context.unitID);
 		else
 			dataTab = {};
 			template = 1;

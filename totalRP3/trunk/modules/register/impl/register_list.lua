@@ -171,6 +171,19 @@ local function changeMode(tabWidget, value)
 	refreshList();
 end
 
+local function targetButtonAdapter(buttonStructure, unitID, targetInfo)
+	buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
+	buttonStructure.tooltipSub = nil;
+	buttonStructure.alert = nil;
+	if unitID ~= Globals.player_id and TRP3_HasProfile(unitID) then
+		local profile = TRP3_GetUnitProfile(unitID);
+		if profile.about and not profile.about.read then
+			buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+			buttonStructure.alert = true;
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -218,7 +231,8 @@ function TRP3_Register_ListInit()
 			openMainFrame();
 			openPage(unitID);
 		end,
-		getTooltip = function() return loc("TF_OPEN_CHARACTER") end,
+		adapter = targetButtonAdapter,
+		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 		icon = "inv_inscription_scroll"
 	});
 
