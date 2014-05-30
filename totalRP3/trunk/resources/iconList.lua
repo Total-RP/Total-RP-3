@@ -1,5 +1,3 @@
-local Utils = TRP3_UTILS;
-
 local iconList = {
 	"Ability_Ambush",
 	"Ability_AnimusDraw",
@@ -11450,21 +11448,24 @@ local iconList = {
 	"Warrior_Wild_strike"
 }
 
+local match = TRP3_API.utils.str.match;
+local pairs, tinsert = pairs, tinsert;
+
 local iconListSize = #iconList;
 
-function TRP3_GetIconList(filter)
+function TRP3_API.utils.resources.getIconList(filter)
 	if filter == nil or filter:len() == 0 then
 		return iconList;
 	end
 	local newList = {};
 	for _, icon in pairs(iconList) do
-		if Utils.str.match(icon, filter) then
+		if match(icon, filter) then
 			tinsert(newList, icon);
 		end
 	end
 	return newList;
 end
 
-function TRP3_GetIconListSize()
+function TRP3_API.utils.resources.getIconListSize()
 	return iconListSize;
 end

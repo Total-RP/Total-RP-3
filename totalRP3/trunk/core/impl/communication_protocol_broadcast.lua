@@ -10,12 +10,12 @@ local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
 local wipe, string = wipe, string;
 local ChatThrottleLib = ChatThrottleLib;
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm = TRP3_COMM;
+local Comm = TRP3_API.communication;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local getConfigValue = TRP3_CONFIG.getValue;
+local getConfigValue = TRP3_API.configuration.getValue;
 
 Comm.broadcast = {};
 

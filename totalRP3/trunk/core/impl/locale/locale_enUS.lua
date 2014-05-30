@@ -432,4 +432,4 @@ local LOCALE_EN = {
 	},
 };
 
-TRP3_LOCALE.registerLocale(LOCALE_EN);
+TRP3_API.locale.registerLocale(LOCALE_EN);

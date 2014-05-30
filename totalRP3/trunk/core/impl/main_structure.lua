@@ -4,13 +4,13 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_NAVIGATION = {
+TRP3_API.navigation = {
 	menu = {},
 	page = {}
 };
 
 -- imports
-local Log = TRP3_UTILS.log;
+local Log = TRP3_API.utils.log;
 local CreateFrame = CreateFrame;
 local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
 local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
@@ -106,7 +106,7 @@ local function rebuildMenu()
 		end
 	end
 end
-TRP3_NAVIGATION.menu.rebuildMenu = rebuildMenu;
+TRP3_API.navigation.menu.rebuildMenu = rebuildMenu;
 
 -- Register a menu structure
 -- Automatically refresh the menu display
@@ -116,7 +116,7 @@ local function registerMenu(menuStructure)
 	menuStructures[menuStructure.id] = menuStructure;
 	rebuildMenu();
 end
-TRP3_NAVIGATION.menu.registerMenu = registerMenu;
+TRP3_API.navigation.menu.registerMenu = registerMenu;
 
 -- Unregister a menu structure.
 -- Automatically refresh the menu display
@@ -131,7 +131,7 @@ unregisterMenu = function(menuId)
 	menuStructures[menuId] = nil;
 	rebuildMenu();
 end
-TRP3_NAVIGATION.menu.unregisterMenu = unregisterMenu;
+TRP3_API.navigation.menu.unregisterMenu = unregisterMenu;
 
 -- Set a menu or submenu as selected
 selectMenu = function(menuId)
@@ -141,9 +141,9 @@ selectMenu = function(menuId)
 	if menuStructures[menuId].onSelected then
 		menuStructures[menuId].onSelected();
 	end
-	TRP3_HidePopups();
+	TRP3_API.popup.hidePopups();
 end
-TRP3_NAVIGATION.menu.selectMenu = selectMenu;
+TRP3_API.navigation.menu.selectMenu = selectMenu;
 
 -- Use to access and change menu properties.
 -- Any properties can be changed but rebuildMenu must be called in order to apply these changes.
@@ -151,9 +151,9 @@ local function getMenuItem(menuId)
 	assert(menuStructures[menuId], "Unknown menuId "..menuId);
 	return menuStructures[menuId];
 end
-TRP3_NAVIGATION.menu.getMenuItem = getMenuItem;
+TRP3_API.navigation.menu.getMenuItem = getMenuItem;
 
-TRP3_NAVIGATION.menu.isMenuRegistered = function(menuID)
+TRP3_API.navigation.menu.isMenuRegistered = function(menuID)
 	return menuStructures[menuID] ~= nil;
 end
 
@@ -179,7 +179,7 @@ local function registerPage(pageStructure)
 	assert(not pageStructures[pageStructure.id], "The page with id "..(pageStructure.id).." has already been registered.");
 	pageStructures[pageStructure.id] = pageStructure;
 end
-TRP3_NAVIGATION.page.registerPage = registerPage;
+TRP3_API.navigation.page.registerPage = registerPage;
 
 local function setPage(pageId, context)
 	Log.log("setPage: "..pageId, Log.level.DEBUG);
@@ -208,9 +208,6 @@ local function setPage(pageId, context)
 	if currentPage.onPagePreShow then
 		currentPage.onPagePreShow(context);
 	end
-	if currentPage.background then -- TODO: change background of what ?
---		TRP3_MainFrameContainerBackground:SetTexture(currentPage.background);
-	end
 	currentPage.frame:ClearAllPoints();
 	currentPage.frame:SetParent(TRP3_MainFramePageContainer);
 	currentPage.frame:SetPoint("TOPRIGHT", 0, 0);
@@ -221,19 +218,19 @@ local function setPage(pageId, context)
 		currentPage.onPagePostShow(context);
 	end
 end
-TRP3_NAVIGATION.page.setPage = setPage;
+TRP3_API.navigation.page.setPage = setPage;
 
 local function getCurrentContext()
 	return currentContext;
 end
-TRP3_NAVIGATION.page.getCurrentContext = getCurrentContext;
+TRP3_API.navigation.page.getCurrentContext = getCurrentContext;
 
 local function getCurrentPageID()
 	return currentPageId;
 end
-TRP3_NAVIGATION.page.getCurrentPageID = getCurrentPageID;
+TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
 
-TRP3_NAVIGATION.openMainFrame = function()
+TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 end
 
@@ -244,13 +241,13 @@ local function switchMainFrame()
 		TRP3_MainFrame:Show();
 	end
 end
-TRP3_NAVIGATION.switchMainFrame = switchMainFrame;
+TRP3_API.navigation.switchMainFrame = switchMainFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_NAVIGATION.Init = function()
+TRP3_API.navigation.init = function()
 	TRP3_MainFrame:SetScript("OnShow", function() checkPageSelection() end);
 	TRP3_MainFrameClose:SetScript("OnClick", function() switchMainFrame() end);
 end

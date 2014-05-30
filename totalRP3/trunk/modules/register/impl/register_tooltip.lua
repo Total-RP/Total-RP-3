@@ -4,24 +4,24 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local getUnitID = Utils.str.unitInfoToID;
 local colorCodeFloat = Utils.color.colorCodeFloat;
-local loc = TRP3_L;
-local getCurrentProfile = TRP3_REGISTER.getCurrentProfile;
+local loc = TRP3_API.locale.getText;
+local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getUnitID = Utils.str.getUnitID;
-local get = TRP3_PROFILE.getData;
-local Config = TRP3_CONFIG;
-local getConfigValue = TRP3_CONFIG.getValue;
-local registerConfigKey = TRP3_CONFIG.registerConfigKey;
+local get = TRP3_API.profile.getData;
+local Config = TRP3_API.configuration;
+local getConfigValue = TRP3_API.configuration.getValue;
+local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local strconcat = strconcat;
-local getOtherCharacter = TRP3_REGISTER.getCharacter;
-local getYourCharacter = TRP3_PROFILE.getCharacter;
-local IsUnitIDKnown = TRP3_IsUnitIDKnown;
+local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
+local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
+local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
-local Events = TRP3_EVENTS;
+local Events = TRP3_API.events;
 local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
 local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
 local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
@@ -163,8 +163,8 @@ end
 local function getCharacterInfoTab(unitID)
 	if unitID == Globals.player_id then
 		return get("player");
-	elseif TRP3_IsUnitIDKnown(unitID) then
-		return getCurrentProfile(unitID) or {};
+	elseif IsUnitIDKnown(unitID) then
+		return getUnitIDCurrentProfile(unitID) or {};
 	end
 	return {};
 end
@@ -172,7 +172,7 @@ end
 local function getCharacter(unitID)
 	if unitID == Globals.player_id then
 		return getYourCharacter();
-	elseif TRP3_IsUnitIDKnown(unitID) then
+	elseif IsUnitIDKnown(unitID) then
 		return getOtherCharacter(unitID);
 	end
 	return {};
@@ -366,6 +366,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			end
 		end
 		if notifText:len() > 0 or clientText:len() > 0 then
+			if notifText:len() == 0 then
+				notifText = " "; -- Prevent bad right line height
+			end
 			ui_CharacterTT:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0);
 			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 			lineIndex = lineIndex + 1;
@@ -437,7 +440,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_Register_TooltipInit()
+function TRP3_API.register.inits.tooltipInit()
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 

@@ -2,13 +2,15 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local loc = TRP3_L;
-local getDefaultLocaleStructure = TRP3_LOCALE.getDefaultLocaleStructure;
-local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
-local initList = TRP3_UI_UTILS.list.initList;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local registerMenu = TRP3_NAVIGATION.menu.registerMenu;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+assert(TRP3_API, "Unable to find TRP3.");
+
+local loc = TRP3_API.locale.getText;
+local getDefaultLocaleStructure = TRP3_API.locale.getDefaultLocaleStructure;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local initList = TRP3_API.ui.list.initList;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local registerMenu = TRP3_API.navigation.menu.registerMenu;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local table, pairs, tinsert = table, pairs, tinsert;
 
 -- Frame placeholder
@@ -16,7 +18,7 @@ local frames = {};
 local keys = {};
 
 local function injectLocale()
-	local locale = TRP3_LOCALE.getEffectiveLocale();
+	local locale = TRP3_API.locale.getEffectiveLocale();
 	-- default locale ("enUS")
 	locale.LOCALIZATOR_MENU = "Localizator";
 	locale.LOCALIZATOR_EXPLAIN = 
@@ -38,40 +40,40 @@ local function unescapeText(text)
 end
 
 local function onInit()
-	if not TRP3_Localizator then
-		TRP3_Localizator = {};
+	if not TRP3_API.locale.getTextocalizator then
+		TRP3_API.locale.getTextocalizator = {};
 	end
 	for key, value in pairs(getDefaultLocaleStructure().localeContent) do
-		if not TRP3_Localizator[key] then
-			TRP3_Localizator[key] = value;
+		if not TRP3_API.locale.getTextocalizator[key] then
+			TRP3_API.locale.getTextocalizator[key] = value;
 		end
 	end
 	local CUSTOM_LOCALE = {
 		locale = "custom",
 		localeText = "Custom",
-		localeContent = TRP3_Localizator,
+		localeContent = TRP3_API.locale.getTextocalizator,
 	};
-	TRP3_LOCALE.registerLocale(CUSTOM_LOCALE);
+	TRP3_API.locale.registerLocale(CUSTOM_LOCALE);
 end
 
 local function decorateBox(widget, index)
 	local locale = getDefaultLocaleStructure().localeContent;
 	local key = keys[index];
 	_G[widget:GetName().."ScrollText"].key = key;
-	_G[widget:GetName().."ScrollText"]:SetText(escapeText(TRP3_Localizator[key] or locale[key]));
+	_G[widget:GetName().."ScrollText"]:SetText(escapeText(TRP3_API.locale.getTextocalizator[key] or locale[key]));
 	_G[widget:GetName().."Text"]:SetText(loc("LOCALIZATOR_TEXT"):format(index, key));
 end
 
 local function onTextChanged(self)
 	local unescapedText = unescapeText(self:GetText());
-	if self.key and TRP3_Localizator[self.key] ~= unescapedText then
-		TRP3_Localizator[self.key] = unescapedText;
+	if self.key and TRP3_API.locale.getTextocalizator[self.key] ~= unescapedText then
+		TRP3_API.locale.getTextocalizator[self.key] = unescapedText;
 	end
 end
 
 local function reset()
-	TRP3_ShowConfirmPopup(loc("LOCALIZATOR_RESET_TT"), function() 
-		TRP3_Localizator = nil;
+	TRP3_API.popup.showConfirmPopup(loc("LOCALIZATOR_RESET_TT"), function() 
+		TRP3_API.locale.getTextocalizator = nil;
 		ReloadUI();
 	end);
 end
@@ -95,7 +97,6 @@ local function onLoaded()
 		templateName = "TRP3_ConfigurationLocalizator",
 		frameName = "TRP3_ConfigurationLocalizator",
 		frame = TRP3_ConfigurationLocalizator,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
 	registerMenu({
 		id = "main_9z_config_gen",
@@ -143,4 +144,4 @@ local MODULE_STRUCTURE = {
 	["onLoaded"] = onLoaded,
 };
 
-TRP3_MODULE.registerModule(MODULE_STRUCTURE);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

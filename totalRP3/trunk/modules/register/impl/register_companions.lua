@@ -4,9 +4,9 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals, loc = TRP3_GLOBALS, TRP3_L;
-local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local Globals, loc = TRP3_API.globals, TRP3_API.locale.getText;
+local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -20,7 +20,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_REGISTER.initPets = function()
+function TRP3_API.register.inits.companionInit()
 
 	registerMenu({
 		id = "main_20_companions",

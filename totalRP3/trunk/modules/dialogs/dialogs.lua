@@ -3,7 +3,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_EVENTS;
+local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
@@ -166,4 +166,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 0.1,
 };
 
-TRP3_MODULE.registerModule(MODULE_STRUCTURE);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

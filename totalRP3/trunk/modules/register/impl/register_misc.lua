@@ -4,22 +4,27 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
+local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local stEtN = Utils.str.emptyToNil;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
-local loc = TRP3_L;
-local get = TRP3_PROFILE.getData;
+local loc = TRP3_API.locale.getText;
+local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
 local assert, table, wipe, _G = assert, table, wipe, _G;
-local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
-local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
+local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local tinsert = tinsert;
 local pairs = pairs;
 local type = type;
 local tostring = tostring;
-local setupListBox, toggleDropDown = TRP3_UI_UTILS.listbox.setupListBox, TRP3_UI_UTILS.listbox.toggle;
-local setTooltipForSameFrame, toast = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame, TRP3_UI_UTILS.tooltip.toast;
-local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
+local setupListBox, toggleDropDown = TRP3_API.ui.listbox.setupListBox, TRP3_API.ui.listbox.toggle;
+local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
+local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local showPopup = TRP3_API.popup.showPopup;
+local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
+local hasProfile = TRP3_API.register.hasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -124,8 +129,8 @@ local function displayRPStyle(context)
 	if context.unitID == Globals.player_id then
 		dataTab = get("player/misc");
 	else
-		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).misc then
-			dataTab = TRP3_GetUnitProfile(context.unitID).misc;
+		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).misc then
+			dataTab = getUnitIDProfile(context.unitID).misc;
 		else
 			dataTab = {};
 		end
@@ -225,8 +230,8 @@ local function displayPeek(context)
 	if context.unitID == Globals.player_id then
 		dataTab = get("player/misc");
 	else
-		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).misc then
-			dataTab = TRP3_GetUnitProfile(context.unitID).misc;
+		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).misc then
+			dataTab = getUnitIDProfile(context.unitID).misc;
 		else
 			dataTab = {};
 		end
@@ -249,13 +254,13 @@ local draftData = {};
 
 local function onIconSelected(icon)
 	icon = icon or Globals.icons.default;
-	TRP3_InitIconButton(TRP3_RegisterMiscEdit_Glance_Icon, icon);
+	setupIconButton(TRP3_RegisterMiscEdit_Glance_Icon, icon);
 	TRP3_RegisterMiscEdit_Glance_Icon.icon = icon;
-	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
+	showPopup(TRP3_RegisterGlanceEditor);
 end
 
 local function onIconClosed()
-	TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
+	showPopup(TRP3_RegisterGlanceEditor);
 end
 
 local function onSlotClick(button)
@@ -271,7 +276,7 @@ local function onSlotClick(button)
 		TRP3_RegisterMiscEdit_Glance_PresetSaveCategory:SetText("");
 		TRP3_RegisterMiscEdit_Glance_PresetSaveName:SetText("");
 		onIconSelected(draftData.IC);
-		TRP3_ShowPopup(TRP3_RegisterGlanceEditor);
+		showPopup(TRP3_RegisterGlanceEditor);
 	end
 end
 
@@ -456,7 +461,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_Register_PeekInit()
+function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
 	
 	if not TRP3_Presets then
@@ -471,7 +476,7 @@ function TRP3_Register_PeekInit()
 	PEEK_PRESETS = TRP3_Presets.peek;
 	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
 	
-	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
+	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
@@ -484,7 +489,7 @@ function TRP3_Register_PeekInit()
 	TRP3_RegisterMiscEdit_Glance_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
 	
 	TRP3_RegisterMiscEdit_Glance_PresetSaveButton:SetScript("OnClick", savePreset);
-	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() openIconBrowser(onIconSelected, onIconClosed); end);
+	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() showIconBrowser(onIconSelected, onIconClosed); end);
 	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", peekEditorApply);
 	for index=1,5,1 do
 		-- DISPLAY
@@ -500,11 +505,11 @@ function TRP3_Register_PeekInit()
 	rebuildPresetListBox();
 	
 	-- RP style
-	TRP3_FieldSet_SetCaption(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
+	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
 	
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
 		if getCurrentPageID() == "player_main" then
-			TRP3_HidePopups();
+			TRP3_API.popup.hidePopups();
 			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");
 			displayPeek(context);

@@ -16,7 +16,6 @@
 	<Include file="impl\locale\locale.xml"/>
 	<Script file="impl\utils.lua"/>
 	<Script file="impl\events.lua"/>
-	<Script file="impl\widgets.lua"/>
 	<Script file="impl\ui_tools.lua"/>
 	
 	<Include file="ui\widgets.xml"/>

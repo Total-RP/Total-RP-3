@@ -2,24 +2,24 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_UI_UTILS = {
-	background = {},
+TRP3_API.ui = {
 	tooltip = {},
 	listbox = {},
 	list = {},
 	misc = {},
+	frame = {}
 }
 
 -- imports
-local globals = TRP3_GLOBALS;
-local loc = TRP3_L;
+local globals = TRP3_API.globals;
+local loc = TRP3_API.locale.getText;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type;
 local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Background
+-- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tiledBackgrounds = {
@@ -44,11 +44,11 @@ local tiledBackgrounds = {
 	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 };
 
-TRP3_UI_UTILS.background.getTiledBackground = function(index)
+function TRP3_API.ui.frame.getTiledBackground(index)
 	return tiledBackgrounds[index] or tiledBackgrounds[1];
 end
 
-TRP3_UI_UTILS.background.getTiledBackgroundList = function()
+function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
 	for index, _ in pairs(tiledBackgrounds) do
 		tinsert(tab, {loc("UI_BKG"):format(tostring(index)), index});
@@ -56,11 +56,7 @@ TRP3_UI_UTILS.background.getTiledBackgroundList = function()
 	return tab;
 end
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Misc
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-TRP3_UI_UTILS.misc.showIfMouseOver = function(frame, frameOver)
+function TRP3_API.ui.frame.showIfMouseOverFrame(frame, frameOver)
 	assert(frame and frameOver, "Frames can't be nil");
 	if MouseIsOver(frameOver) then
 		frame:Show();
@@ -69,7 +65,7 @@ TRP3_UI_UTILS.misc.showIfMouseOver = function(frame, frameOver)
 	end
 end
 
-TRP3_UI_UTILS.misc.createRefreshOnFrame = function(frame, time, callback)
+function TRP3_API.ui.frame.createRefreshOnFrame(frame, time, callback)
 	assert(frame and time and callback, "Argument must be not nil");
 	frame.refreshTimer = 1000;
 	frame:SetScript("OnUpdate", function(arg, elapsed)
@@ -79,7 +75,6 @@ TRP3_UI_UTILS.misc.createRefreshOnFrame = function(frame, time, callback)
 			callback(frame);
 		end
 	end);
-
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -89,7 +84,7 @@ end
 local DROPDOWN_FRAME = "TRP3_UIDD";
 local dropDownFrame;
 
-TRP3_UI_UTILS.listbox.toggle = function()
+TRP3_API.ui.listbox.toggle = function()
 	ToggleDropDownMenu(nil, nil, dropDownFrame);
 end
 
@@ -141,7 +136,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
 	PlaySound("igMainMenuOptionCheckBoxOn");
 end
-TRP3_UI_UTILS.listbox.displayDropDown = openDropDown;
+TRP3_API.ui.listbox.displayDropDown = openDropDown;
 
 --- Setup a drop down menu for a clickable (Button ...)
 local function setupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
@@ -150,7 +145,7 @@ local function setupDropDownMenu(hasClickFrame, values, callback, space, addCanc
 		openDropDown(hasClickFrame, values, callback, space, addCancel);
 	end);
 end
-TRP3_UI_UTILS.listbox.setupDropDownMenu = setupDropDownMenu;
+TRP3_API.ui.listbox.setupDropDownMenu = setupDropDownMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- ListBox tools
@@ -213,14 +208,14 @@ local function setupListBox(listBox, values, callback, defaultText, boxWidth, ad
 	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
 	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
 end
-TRP3_UI_UTILS.listbox.setupListBox = setupListBox;
+TRP3_API.ui.listbox.setupListBox = setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Handle the mouse wheel for the frame in order to slide the slider
-TRP3_UI_UTILS.list.handleMouseWheel = function(frame,slider)
+TRP3_API.ui.list.handleMouseWheel = function(frame,slider)
 	frame:SetScript("OnMouseWheel",function(self,delta)
 		local mini,maxi = slider:GetMinMaxValues();
 		if delta == 1 and slider:GetValue() > mini then
@@ -259,7 +254,7 @@ end
 -- 			- A decorate function, which will receive 3 arguments : a widget and an ID. Decorate will be called on every couple "widget from widgetTab" and "id from dataTab".
 --		dataTab, all the possible values
 --		slider, the slider :3
-TRP3_UI_UTILS.list.initList = function(infoTab, dataTab, slider)
+TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 	assert(infoTab and dataTab and slider, "Error : no argument can be nil.");
 	assert(infoTab.widgetTab, "Error : no widget tab in infoTab.");
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
@@ -340,7 +335,7 @@ local function refreshTooltip(Frame)
 		TRP3_MainTooltip:Show();
 	end
 end
-TRP3_UI_UTILS.tooltip.refresh = refreshTooltip;
+TRP3_API.ui.tooltip.refresh = refreshTooltip;
 TRP3_RefreshTooltipForFrame = refreshTooltip; -- For XML integration without too much perf' issue
 
 local function tooltipSimpleOnEnter(self)
@@ -369,16 +364,16 @@ local function setTooltipForFrame(Frame, GenFrame, GenFrameAnch, GenFrameX, GenF
 		end
 	end
 end
-TRP3_UI_UTILS.tooltip.setTooltipForFrame = setTooltipForFrame;
+TRP3_API.ui.tooltip.setTooltipForFrame = setTooltipForFrame;
 
 -- Setup the frame tooltip (position and text)
 -- The tooltip can be shown by using refreshTooltip(Frame)
-TRP3_UI_UTILS.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+TRP3_API.ui.tooltip.setTooltipForSameFrame = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
 end
 
 -- Setup the frame tooltip and add the Enter and Leave scripts
-TRP3_UI_UTILS.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
+TRP3_API.ui.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText)
 	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
 	Frame:SetScript("OnLeave", tooltipSimpleOnLeave);
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
@@ -400,7 +395,7 @@ end
 TRP3_Toast.delay = 0;
 TRP3_Toast:SetScript("OnUpdate", toastUpdate);
 
-TRP3_UI_UTILS.tooltip.toast = function(text, duration)
+function TRP3_API.ui.tooltip.toast(text, duration)
 	TRP3_Toast:Hide();
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
 	TRP3_Toast:AddLine(text, 1, 1, 1,true);
@@ -409,6 +404,134 @@ TRP3_UI_UTILS.tooltip.toast = function(text, duration)
 	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
 	TRP3_Toast:Show();
 	TRP3_Toast.delay = duration;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Icon utils
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.frame.setupIconButton(self, icon)
+	assert(self, "Frame is nil");
+	assert(_G[self:GetName().."Icon"], "Frame must have a Icon");
+	_G[self:GetName().."Icon"]:SetTexture("Interface\\ICONS\\"..icon);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Fieldsets
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local FIELDSET_DEFAULT_CAPTION_WIDTH = 100;
+
+function TRP3_API.ui.frame.setupFieldPanel(fieldset, text, size)
+	if fieldset and _G[fieldset:GetName().."CaptionPanelCaption"] then
+		_G[fieldset:GetName().."CaptionPanelCaption"]:SetText(text);
+		if _G[fieldset:GetName().."CaptionPanel"] then
+			_G[fieldset:GetName().."CaptionPanel"]:SetWidth(size or FIELDSET_DEFAULT_CAPTION_WIDTH);
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tab bar
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tabBar_index = 0;
+local tabBar_HEIGHT_SELECTED = 34;
+local tabBar_HEIGHT_NORMAL = 32;
+
+local function tabBar_onSelect(tabGroup, index)
+	assert(#tabGroup.tabs >= index, "Index out of bound.");
+	local i;
+	for i=1, #tabGroup.tabs do
+		local widget = tabGroup.tabs[i];
+		if i == index then
+			widget:SetAlpha(1);
+			widget:Disable();
+			widget:LockHighlight();
+			_G[widget:GetName().."Left"]:SetHeight(tabBar_HEIGHT_SELECTED);
+			_G[widget:GetName().."Middle"]:SetHeight(tabBar_HEIGHT_SELECTED);
+			_G[widget:GetName().."Right"]:SetHeight(tabBar_HEIGHT_SELECTED);
+			widget:GetHighlightTexture():SetAlpha(0.7);
+			widget:GetHighlightTexture():SetDesaturated(1);
+			tabGroup.current = index;
+		else
+			widget:SetAlpha(0.85);
+			widget:Enable();
+			widget:UnlockHighlight();
+			_G[widget:GetName().."Left"]:SetHeight(tabBar_HEIGHT_NORMAL);
+			_G[widget:GetName().."Middle"]:SetHeight(tabBar_HEIGHT_NORMAL);
+			_G[widget:GetName().."Right"]:SetHeight(tabBar_HEIGHT_NORMAL);
+			widget:GetHighlightTexture():SetAlpha(0.5);
+			widget:GetHighlightTexture():SetDesaturated(0);
+		end
+	end
+end
+
+local function tabBar_redraw(tabGroup)
+	local lastWidget = nil;
+	for _, tabWidget in pairs(tabGroup.tabs) do
+		if tabWidget:IsShown() then
+			tabWidget:ClearAllPoints();
+			if lastWidget == nil then
+				tabWidget:SetPoint("LEFT", 0, 0);
+			else
+				tabWidget:SetPoint("LEFT", lastWidget, "RIGHT", 2, 0);
+			end
+			lastWidget = tabWidget;
+		end
+	end
+end
+
+local function tabBar_size(tabGroup)
+	return #tabGroup.tabs;
+end
+
+local function tabBar_setTabVisible(tabGroup, index, isVisible)
+	assert(tabGroup.tabs[index], "Tab index out of bound.");
+	if isVisible then
+		tabGroup.tabs[index]:Show();
+	else
+		tabGroup.tabs[index]:Hide();
+	end
+	tabGroup:Redraw();
+end
+
+local function tabBar_selectTab(tabGroup, index)
+	assert(tabGroup.tabs[index], "Tab index out of bound.");
+	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
+	tabGroup.tabs[index]:GetScript("OnClick")(tabGroup.tabs[index]);
+end
+
+function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback)
+	assert(tabBar, "The tabBar can't be nil");
+	
+	local tabGroup = {};
+	tabGroup.tabs = {};
+	for index, tabData in pairs(data) do
+		local text = tabData[1];
+		local value = tabData[2];
+		local width = tabData[3];
+		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabBar_Tab");
+		tabWidget:SetText(text);
+		tabWidget:SetWidth(width or (text:len() * 11));
+		tabWidget:SetScript("OnClick", function(self)
+			tabBar_onSelect(tabGroup, index);
+			if callback then
+				callback(tabWidget, value);
+			end
+		end);
+		
+		tinsert(tabGroup.tabs, tabWidget);
+		tabBar_index = tabBar_index + 1;
+	end
+	
+	tabGroup.Redraw = tabBar_redraw;
+	tabGroup.Size = tabBar_size;
+	tabGroup.SetTabVisible = tabBar_setTabVisible;
+	tabGroup.SelectTab = tabBar_selectTab;
+	tabGroup:Redraw();
+	
+	return tabGroup;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -484,13 +607,13 @@ local classTexture = {
 	PRIEST = "Priest_icon_Chakra",
 }
 
-TRP3_UI_UTILS.misc.getUnitTexture = function(race, gender)
+TRP3_API.ui.misc.getUnitTexture = function(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
 	return globals.icons.default;
 end
 
-TRP3_UI_UTILS.misc.getClassTexture = function (class)
+TRP3_API.ui.misc.getClassTexture = function (class)
 	return classTexture[class] or globals.icons.default;
 end

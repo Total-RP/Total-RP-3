@@ -3,7 +3,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_UTILS = {
+TRP3_API.utils = {
 	log = {},
 	table = {},
 	str = {},
@@ -14,12 +14,13 @@ TRP3_UTILS = {
 	music = {},
 	texture = {},
 	message = {},
+	resources = {},
 };
 -- TRP3 imports
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local loc = TRP3_L;
+local loc = TRP3_API.locale.getText;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe;
@@ -92,7 +93,7 @@ Utils.message.displayMessage = function(message, messageType, noPrefix, chatFram
 			chatFrame:AddMessage(MESSAGE_PREFIX..tostring(message), 1, 1, 1);
 		end
 	elseif messageType == messageType.ALERT_POPUP then
-		TRP3_ShowAlertPopup(tostring(message));
+		TRP3_API.popup.showAlertPopup(tostring(message));
 	elseif messageType == messageType.RAID_ALERT then
 		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
 	end

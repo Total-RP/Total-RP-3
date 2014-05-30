@@ -24,12 +24,12 @@ local OPERANDS = {
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_SCRIPTS.registerOperand = function(operand)
+TRP3_API.script.registerOperand = function(operand)
 	assert(type(operand) == "table" and operand.id, "Operand must have an id.");
 	assert(not OPERANDS[operand.id], "Already registered operand id: " .. operand.id);
 	OPERANDS[operand.id] = operand;
 end
 
-TRP3_SCRIPTS.getOperand = function(operandID)
+TRP3_API.script.getOperand = function(operandID)
 	return OPERANDS[operandID];
 end

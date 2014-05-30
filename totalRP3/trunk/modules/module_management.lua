@@ -4,23 +4,23 @@
 --	- Module management
 --
 
-TRP3_MODULE = {};
+TRP3_API.module = {};
 
 -- imports
-local Globals, Utils = TRP3_GLOBALS, TRP3_UTILS;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, type, assert, pcall, tinsert, table, _G = pairs, type, assert, pcall, tinsert, table, _G;
 local Log = Utils.log;
-local loc = TRP3_L;
+local loc = TRP3_API.locale.getText;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
-local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
-local setTooltipForSameFrame, setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame, TRP3_UI_UTILS.tooltip.setTooltipAll;
-local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
+local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
 
-TRP3_MODULE_STATUS = {
+TRP3_API.module.status = {
 	MISSING_DEPENDENCY = 0,
 	OUT_TO_DATE_TRP3 = 1,
 	ERROR_ON_INIT = 2,
@@ -28,7 +28,7 @@ TRP3_MODULE_STATUS = {
 	DISABLED = 4,
 	OK = 5
 };
-local TRP3_MODULE_STATUS = TRP3_MODULE_STATUS;
+local MODULE_STATUS = TRP3_API.module.status;
 
 --- Register a module structure.
 -- 
@@ -42,7 +42,7 @@ local TRP3_MODULE_STATUS = TRP3_MODULE_STATUS;
 -- autoEnable : Should the module be enabled by default ? If nil equals true.
 -- onInit : A callback triggered before Total RP 3 initialization.
 -- onLoaded : A callback triggered after Total RP 3 initialization.
-TRP3_MODULE.registerModule = function(moduleStructure)
+TRP3_API.module.registerModule = function(moduleStructure)
 	
 	assert(moduleStructure, "Module structure can't be nil");
 	assert(moduleStructure.id, "Illegal module structure. Module id: "..moduleStructure.id);
@@ -70,12 +70,12 @@ end
 -- This is called at the START of the TRP3 loading sequence.
 -- The onInit callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired.
 -- The onInit is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
-TRP3_MODULE.initModules = function()
+TRP3_API.module.initModules = function()
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == TRP3_MODULE_STATUS.OK and module.onInit and type(module.onInit) == "function" then
+		if module.status == MODULE_STATUS.OK and module.onInit and type(module.onInit) == "function" then
 			local ok, mess = pcall(module.onInit);
 			if not ok then
-				module.status = TRP3_MODULE_STATUS.ERROR_ON_INIT;
+				module.status = MODULE_STATUS.ERROR_ON_INIT;
 				module.error = mess;
 			end
 		end
@@ -86,12 +86,12 @@ end
 -- This is called at the END of the TRP3 loading sequence.
 -- The onLoaded callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
 -- onLoaded is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
-TRP3_MODULE.startModules = function()
+TRP3_API.module.startModules = function()
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == TRP3_MODULE_STATUS.OK and module.onLoaded and type(module.onLoaded) == "function" then
+		if module.status == MODULE_STATUS.OK and module.onLoaded and type(module.onLoaded) == "function" then
 			local ok, mess = pcall(module.onLoaded);
 			if not ok then
-				module.status = TRP3_MODULE_STATUS.ERROR_ON_LOAD;
+				module.status = MODULE_STATUS.ERROR_ON_LOAD;
 				module.error = mess;
 			end
 		end
@@ -146,17 +146,17 @@ local function moduleInit()
 end
 
 local function moduleStatusText(statusCode)
-	if statusCode == TRP3_MODULE_STATUS.OK then
+	if statusCode == MODULE_STATUS.OK then
 		return "|cff00ff00"..loc("CO_MODULES_STATUS_1");
-	elseif statusCode == TRP3_MODULE_STATUS.DISABLED then
+	elseif statusCode == MODULE_STATUS.DISABLED then
 		return "|cff999999"..loc("CO_MODULES_STATUS_2");
-	elseif statusCode == TRP3_MODULE_STATUS.OUT_TO_DATE_TRP3 then
+	elseif statusCode == MODULE_STATUS.OUT_TO_DATE_TRP3 then
 		return "|cffff0000"..loc("CO_MODULES_STATUS_3");
-	elseif statusCode == TRP3_MODULE_STATUS.ERROR_ON_INIT then
+	elseif statusCode == MODULE_STATUS.ERROR_ON_INIT then
 		return "|cffff0000"..loc("CO_MODULES_STATUS_4");
-	elseif statusCode == TRP3_MODULE_STATUS.ERROR_ON_LOAD then
+	elseif statusCode == MODULE_STATUS.ERROR_ON_LOAD then
 		return "|cffff0000"..loc("CO_MODULES_STATUS_5");
-	elseif statusCode == TRP3_MODULE_STATUS.MISSING_DEPENDENCY then
+	elseif statusCode == MODULE_STATUS.MISSING_DEPENDENCY then
 		return "|cffff0000"..loc("CO_MODULES_STATUS_0");
 	end
 	error("Unknown status code");
@@ -164,7 +164,7 @@ end
 
 local function getModuleHint_TRP(module)
 	local trp_version_color = "|cff00ff00";
-	if module.status == TRP3_MODULE_STATUS.OUT_TO_DATE_TRP3 then
+	if module.status == MODULE_STATUS.OUT_TO_DATE_TRP3 then
 		trp_version_color = "|cffff0000";
 	end
 	return loc("CO_MODULES_TT_TRP"):format(trp_version_color, module.minVersion);
@@ -218,7 +218,7 @@ local function onActionClicked(button)
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
-TRP3_MODULE.onModuleStarted = function()
+TRP3_API.module.onModuleStarted = function()
 	local modules = getModules();
 	local i=0;
 	local sortedID = {};
@@ -250,7 +250,7 @@ end
 -- Get the saved module activation reference.
 -- Check the modules dependencies, if any.
 -- Once this method has been fired, all future registration are refused !
-TRP3_MODULE.init = function()
+TRP3_API.module.init = function()
 	assert(TRP3_Configuration, "TRP3_Configuration should be set. Problem in the include sequence ?");
 	hasBeenInit = true; -- Refuse all future registration
 	if not TRP3_Configuration.MODULE_ACTIVATION then
@@ -260,7 +260,7 @@ TRP3_MODULE.init = function()
 	
 	-- If new module (MODULE_ACTIVATION is saved), then activate if autoEnable;
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		module.status = TRP3_MODULE_STATUS.OK;
+		module.status = MODULE_STATUS.OK;
 	
 		if MODULE_ACTIVATION[moduleID] == nil then
 			MODULE_ACTIVATION[moduleID] = true;
@@ -269,15 +269,15 @@ TRP3_MODULE.init = function()
 			end
 		end
 		if MODULE_ACTIVATION[moduleID] == false then
-			module.status = TRP3_MODULE_STATUS.DISABLED;
+			module.status = MODULE_STATUS.DISABLED;
 		else
 			-- Check TRP requirement
 			if not checkModuleTRPVersion(moduleID) then
-				module.status = TRP3_MODULE_STATUS.OUT_TO_DATE_TRP3;
+				module.status = MODULE_STATUS.OUT_TO_DATE_TRP3;
 			-- Check dependencies
 			elseif module.requiredDeps then
 				if not checkModuleDependencies(moduleID) then
-					module.status = TRP3_MODULE_STATUS.MISSING_DEPENDENCY;
+					module.status = MODULE_STATUS.MISSING_DEPENDENCY;
 				end
 			end
 		end
@@ -288,7 +288,6 @@ TRP3_MODULE.init = function()
 		templateName = "TRP3_ConfigurationModule",
 		frameName = "TRP3_ConfigurationModule",
 		frame = TRP3_ConfigurationModule,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
 	registerMenu({
 		id = "main_99_config_mod",

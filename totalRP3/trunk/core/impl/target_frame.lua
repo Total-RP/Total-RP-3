@@ -3,24 +3,24 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_TARGET_FRAME = {};
+TRP3_API.target = {};
 
 -- imports
-local Utils, Events, Globals = TRP3_UTILS, TRP3_EVENTS, TRP3_GLOBALS;
-local loc = TRP3_L;
+local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
+local loc = TRP3_API.locale.getText;
 local ui_TargetFrame = TRP3_TargetFrame;
-local UnitName, CreateFrame = UnitName, CreateFrame;
+local UnitName, CreateFrame, UnitIsPlayer = UnitName, CreateFrame, UnitIsPlayer;
 local EMPTY = Globals.empty;
-local getMiscData, isPlayerIC, isUnitIDKnown;
-local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler, TRP3_CONFIG.setValue;
+local isPlayerIC, isUnitIDKnown;
+local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 local assert, pairs, tContains, tinsert, table, math, _G, tostring = assert, pairs, tContains, tinsert, table, math, _G, tostring;
 local getUnitID, unitIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo;
-local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
-local get = TRP3_PROFILE.getData;
-local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
-local getCurrentProfile;
+local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
+local get, getDataDefault = TRP3_API.profile.getData, TRP3_API.profile.getDataDefault;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
-local TRP3_FieldSet_SetCaption = TRP3_FieldSet_SetCaption;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 
 local CONFIG_TARGET_USE = "target_use";
 
@@ -122,7 +122,7 @@ local function registerButton(targetButton)
 	assert(not targetButtons[targetButton.id], "Already registered button id: " .. targetButton.id);
 	targetButtons[targetButton.id] = targetButton;
 end
-TRP3_TARGET_FRAME.registerButton = registerButton;
+TRP3_API.target.registerButton = registerButton;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Display logic
@@ -144,19 +144,14 @@ local function getInfo(unitID)
 	if unitID == Globals.player_id then
 		return get("player") or EMPTY;
 	elseif isUnitIDKnown(unitID) then
-		return getCurrentProfile(unitID) or EMPTY;
+		return getUnitIDCurrentProfile(unitID) or EMPTY;
 	end
 	return EMPTY;
 end
 
 local function displayPeekSlots(unitID, targetInfo)
 	if UnitIsPlayer("target") then
-		local peekTab = EMPTY;
-		if unitID == Globals.player_id then
-			peekTab = get("player/misc").PE or EMPTY;
-		elseif isUnitIDKnown(unitID) then
-			peekTab = getMiscData(unitID).PE or EMPTY;
-		end
+		local peekTab = getDataDefault("misc/PE", EMPTY, getInfo(unitID));
 		for i=1,5,1 do
 			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
 			local peek = peekTab[tostring(i)];
@@ -187,9 +182,9 @@ local function displayTargetName(unitID, targetInfo)
 	local info = getInfo(unitID);
 	local name, realm = unitIDToInfo(unitID);
 	if info.characteristics then
-		TRP3_FieldSet_SetCaption(ui_TargetFrame, (info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""), 168);
+		setupFieldSet(ui_TargetFrame, (info.characteristics.FN or name) .. " " .. (info.characteristics.LN or ""), 168);
 	else
-		TRP3_FieldSet_SetCaption(ui_TargetFrame, name, 168);
+		setupFieldSet(ui_TargetFrame, name, 168);
 	end
 end
 
@@ -231,13 +226,12 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_TARGET_FRAME.init = function()
-	getMiscData = TRP3_REGISTER.getMiscData;
-	isUnitIDKnown = TRP3_REGISTER.isUnitIDKnown;
-	getCurrentProfile = TRP3_REGISTER.getCurrentProfile;
-	isPlayerIC = TRP3_DASHBOARD.isPlayerIC;
+TRP3_API.target.init = function()
+	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
+	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	
-	TRP3_FieldSet_SetCaption(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
+	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	
@@ -257,11 +251,11 @@ TRP3_TARGET_FRAME.init = function()
 	registerConfigKey(CONFIG_TARGET_USE, 1);
 	registerConfigHandler({CONFIG_TARGET_USE}, onTargetChanged);
 	
-	tinsert(TRP3_TOOLBARS_CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.toolbarS_CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc("CO_TARGETFRAME"),
 	});
-	tinsert(TRP3_TOOLBARS_CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.toolbarS_CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigTarget_Usage",
 		title = loc("CO_TARGETFRAME_USE"),
@@ -274,5 +268,5 @@ TRP3_TARGET_FRAME.init = function()
 		listWidth = nil,
 		listCancel = true,
 	});
-	TRP3_CONFIG.registerConfigurationPage(TRP3_TOOLBARS_CONFIG_STRUCTURE);
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.toolbarS_CONFIG_STRUCTURE);
 end

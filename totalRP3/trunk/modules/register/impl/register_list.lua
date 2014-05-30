@@ -4,22 +4,26 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_L;
-local get = TRP3_PROFILE.getData;
-local assert, table, _G, date = assert, table, _G, date;
-local isUnitIDKnown = TRP3_REGISTER.isUnitIDKnown;
+local loc = TRP3_API.locale.getText;
+local get = TRP3_API.profile.getData;
+local assert, table, _G, date, pairs = assert, table, _G, date, pairs;
+local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
-local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
-local initList = TRP3_UI_UTILS.list.initList;
-local getUnitTexture = TRP3_UI_UTILS.misc.getUnitTexture;
-local getClassTexture = TRP3_UI_UTILS.misc.getClassTexture;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local isMenuRegistered = TRP3_NAVIGATION.menu.isMenuRegistered;
-local registerMenu, selectMenu, openMainFrame = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu, TRP3_NAVIGATION.openMainFrame;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local initList = TRP3_API.ui.list.initList;
+local getUnitTexture = TRP3_API.ui.misc.getUnitTexture;
+local getClassTexture = TRP3_API.ui.misc.getClassTexture;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
+local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
+local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
+local hasProfile = TRP3_API.register.hasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -40,8 +44,8 @@ local function openPage(unitID)
 			-- Else, create a new menu entry and open it.
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			local tabText = unitName;
-			if TRP3_HasProfile(unitID) then
-				local profile = TRP3_GetUnitProfile(unitID);
+			if hasProfile(unitID) then
+				local profile = getUnitIDProfile(unitID);
 				if profile.characteristics then
 					tabText = profile.characteristics.FN or unitName;
 				end
@@ -71,14 +75,14 @@ local currentMode = "characters";
 local DATE_FORMAT = "%d/%m/%y %H:%M";
 
 local function decorateLine(line, unitID)
-	local character = TRP3_GetCharacter(unitID);
+	local character = getUnitIDCharacter(unitID);
 	local unitName, unitRealm = unitIDToInfo(unitID);
 
 	line.unitID = unitID;
 
 	local name = unitName;
-	if TRP3_HasProfile(unitID) then
-		local profile = TRP3_GetUnitProfile(unitID);
+	if hasProfile(unitID) then
+		local profile = getUnitIDProfile(unitID);
 		name = TRP3_GetCompleteName(profile.characteristics or {}, unitName, true);
 		_G[line:GetName().."Name"]:SetText(name);
 		if profile.characteristics and profile.characteristics.IC then
@@ -105,19 +109,20 @@ local function decorateLine(line, unitID)
 end
 
 local function refreshCharacters()
+	-- TODO: list profiles, and not characters !!!!
 	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
 	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
-	local fullSize = tsize(TRP3_GetCharacterList());
+	local fullSize = tsize(getCharacterList());
 	local lines = {};
 
-	for unitID, character in pairs(TRP3_GetCharacterList()) do
+	for unitID, character in pairs(getCharacterList()) do
 		local name, realm = unitIDToInfo(unitID);
 		local guild = character.guild or "";
 		local nameIsConform = nameSearch:len() == 0 or name:lower():find(nameSearch);
 		if not nameIsConform then -- Don't check profile if is already conform
-			if TRP3_HasProfile(unitID) then
-				local profile = TRP3_GetUnitProfile(unitID);
+			if hasProfile(unitID) then
+				local profile = getUnitIDProfile(unitID);
 				local fullName = TRP3_GetCompleteName(profile.characteristics or {}, name, true);
 				nameIsConform = fullName:lower():find(nameSearch);
 			end
@@ -136,7 +141,7 @@ local function refreshCharacters()
 			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY2"));
 		end
 	end
-	TRP3_FieldSet_SetCaption(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
+	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
 
 	return lines;
 end
@@ -175,8 +180,8 @@ local function targetButtonAdapter(buttonStructure, unitID, targetInfo)
 	buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
 	buttonStructure.tooltipSub = nil;
 	buttonStructure.alert = nil;
-	if unitID ~= Globals.player_id and TRP3_HasProfile(unitID) then
-		local profile = TRP3_GetUnitProfile(unitID);
+	if unitID ~= Globals.player_id and hasProfile(unitID) then
+		local profile = getUnitIDProfile(unitID);
 		if profile.about and not profile.about.read then
 			buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
 			buttonStructure.alert = true;
@@ -195,7 +200,7 @@ local function createTabBar()
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, -5);
 	frame:SetFrameLevel(1);
-	tabGroup = TRP3_TabBar_Create(frame,
+	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 	{
 		{loc("REG_LIST_CHAR_TITLE"), 1, 150},
 		{loc("REG_LIST_PETS_TITLE"), 2, 150},
@@ -205,7 +210,7 @@ local function createTabBar()
 	tabGroup:SelectTab(1);
 end
 
-function TRP3_Register_ListInit()
+function TRP3_API.register.inits.directoryInit()
 
 	registerMenu({
 		id = REGISTER_PAGE,
@@ -218,11 +223,10 @@ function TRP3_Register_ListInit()
 		templateName = "TRP3_RegisterList",
 		frameName = "TRP3_RegisterList",
 		frame = TRP3_RegisterList,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
 		onPagePostShow = function() tabGroup:SelectTab(1); end,
 	});
 
-	TRP3_TARGET_FRAME.registerButton({
+	TRP3_API.target.registerButton({
 		id = "aa_page_player",
 		condition = function(unitID, targetInfo)
 			return unitID == Globals.player_id or isUnitIDKnown(unitID);

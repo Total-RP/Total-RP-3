@@ -3,21 +3,23 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_PROFILE = {};
+TRP3_API.profile = {};
 
 -- imports
-local Globals, Events, Utils = TRP3_GLOBALS, TRP3_EVENTS, TRP3_UTILS;
-local loc = TRP3_L;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local loc = TRP3_API.locale.getText;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error;
+local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayMessage = Utils.message.displayMessage;
-local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
-local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
-local initList = TRP3_UI_UTILS.list.initList;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
-local registerMenu, registerPage = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.page.registerPage;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local initList = TRP3_API.ui.list.initList;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local getPlayerCurrentProfile;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -29,7 +31,7 @@ local PR_DEFAULT_PROFILE = {};
 
 -- Return the default profile.
 -- Note that this profile is never directly linked to a character, only dupplicated !
-TRP3_PROFILE.getDefaultProfile = function()
+TRP3_API.profile.getDefaultProfile = function()
 	return PR_DEFAULT_PROFILE;
 end
 
@@ -40,7 +42,7 @@ local function getData(fieldPath, profileRef)
 	assert(fieldPath, "Error: Fieldpath is nil.");
 	local split = {strsplit(PATH_DELIMITER, fieldPath)};
 	local pathPart = #split;
-	local ref = profileRef or TRP3_GetProfile();
+	local ref = profileRef or getPlayerCurrentProfile();
 	for index, path in pairs(split) do
 		if index == pathPart then -- Last
 			return ref[path];
@@ -51,15 +53,15 @@ local function getData(fieldPath, profileRef)
 		end
 	end
 end
-TRP3_PROFILE.getData = getData;
+TRP3_API.profile.getData = getData;
 
 -- Get data from a profile in a XPATH way.
 -- Example : "player/misc/PE" is equivalent to currentProfile.player.misc.PE but in a nil safe way.
 -- Use currentProfile. If value is nil, return the ifNilValue.
-local function getDataDefault(fieldPath, ifNilValue)
-	return getData(fieldPath) or ifNilValue;
+local function getDataDefault(fieldPath, ifNilValue, profileRef)
+	return getData(fieldPath, profileRef) or ifNilValue;
 end
-TRP3_PROFILE.getDataDefault = getDataDefault;
+TRP3_API.profile.getDataDefault = getDataDefault;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -124,13 +126,14 @@ local function deleteProfile(profileID)
 	displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
 end
 
-function TRP3_GetProfileID()
+function TRP3_API.profile.getPlayerCurrentProfileID()
 	return currentProfileId;
 end
 
-function TRP3_GetProfile()
+function getPlayerCurrentProfile()
 	return currentProfile;
 end
+TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
@@ -153,7 +156,7 @@ local function decorateProfileList(widget, id)
 		_G[widget:GetName().."Select"]:Enable();
 	end
 
-	TRP3_InitIconButton(_G[widget:GetName().."Icon"], dataTab.icon or Globals.icons.profile_default);
+	setupIconButton(_G[widget:GetName().."Icon"], dataTab.icon or Globals.icons.profile_default);
 	_G[widget:GetName().."Name"]:SetText(mainText);
 
 	local listText = "";
@@ -186,16 +189,18 @@ local function uiInitProfileList()
 	initList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerSlider);
 end
 
+local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
+
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
-		TRP3_ShowAlertPopup(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("g")..profileName.."|r"));
+		showAlertPopup(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("g")..profileName.."|r"));
 		return false;
 	end
 	return true;
 end
 
 local function uiCreateProfile()
-	TRP3_ShowTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
+	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -210,7 +215,7 @@ end
 
 -- Promps profile delete confirmation
 local function uiDeleteProfile(profileID)
-	TRP3_ShowConfirmPopup(loc("PR_PROFILEMANAGER_DELETE_WARNING"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	showConfirmPopup(loc("PR_PROFILEMANAGER_DELETE_WARNING"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function()
 		deleteProfile(profileID);
 		uiInitProfileList();
@@ -218,7 +223,7 @@ local function uiDeleteProfile(profileID)
 end
 
 local function uiEditProfile(profileID)
-	TRP3_ShowTextInputPopup(
+	showTextInputPopup(
 	loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -241,7 +246,7 @@ local function uiSelectProfile(profileID)
 end
 
 local function uiDupplicateProfile(profileID)
-	TRP3_ShowTextInputPopup(
+	showTextInputPopup(
 	loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
@@ -287,7 +292,7 @@ end
 -- Character
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_PROFILE.getCharacter = function()
+TRP3_API.profile.getPlayerCharacter = function()
 	return character;
 end
 
@@ -295,7 +300,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_InitProfiles()
+function TRP3_API.profile.init()
 	-- Saved structures
 	if not TRP3_Profiles then
 		TRP3_Profiles = {};
@@ -346,7 +351,6 @@ function TRP3_InitProfiles()
 		templateName = "TRP3_ProfileManager",
 		frameName = "TRP3_ProfileManager",
 		frame = TRP3_ProfileManager,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 		onPagePostShow = function() uiInitProfileList(); end,
 	});
 end

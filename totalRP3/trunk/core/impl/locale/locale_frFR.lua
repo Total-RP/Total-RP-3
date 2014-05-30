@@ -12,4 +12,4 @@ local LOCALE = {
 	},
 };
 
-TRP3_LOCALE.registerLocale(LOCALE);
+TRP3_API.locale.registerLocale(LOCALE);

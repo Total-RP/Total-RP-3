@@ -4,6 +4,8 @@
 -- Patches source
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_FlyWayPatches_2()
+TRP3_API.flyway.patches = {};
+
+TRP3_API.flyway.patches["1"] = function()
 	error("");
 end

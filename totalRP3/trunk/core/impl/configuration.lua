@@ -3,27 +3,21 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- public accessor
-TRP3_CONFIG = {};
+TRP3_API.configuration = {};
 
 -- imports
-local pairs = pairs;
-local tostring = tostring;
-local assert = assert;
-local loc = TRP3_L;
-local type = type;
-local Utils = TRP3_UTILS;
-local Config = TRP3_CONFIG;
-local tinsert = tinsert;
-local math = math;
-local tonumber = tonumber;
-local _G = _G;
-local getLocaleText = TRP3_LOCALE.getLocaleText;
-local getLocales = TRP3_LOCALE.getLocales;
-local getCurrentLocale = TRP3_LOCALE.getCurrentLocale;
-local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
-local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
-local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local loc = TRP3_API.locale.getText;
+local Utils = TRP3_API.utils;
+local Config = TRP3_API.configuration;
+local _G, tonumber, math, tinsert, type, assert, tostring, pairs = _G, tonumber, math, tinsert, type, assert, tostring, pairs;
+local CreateFrame = CreateFrame;
+local getLocaleText = TRP3_API.locale.getLocaleText;
+local getLocales = TRP3_API.locale.getLocales;
+local getCurrentLocale = TRP3_API.locale.getCurrentLocale;
+local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration methods
@@ -213,7 +207,6 @@ local function registerConfigurationPage(pageStructure)
 	registerPage({
 		id = pageStructure.id,
 		frame = pageStructure.frame,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
 	});
 	
 	registerMenu({
@@ -234,7 +227,7 @@ Config.registerConfigurationPage = registerConfigurationPage;
 local function changeLocale(newLocale)
 	if newLocale ~= getCurrentLocale() then
 		setValue("AddonLocale", newLocale);
-		TRP3_ShowConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..getLocaleText(newLocale).."|r"),
+		TRP3_API.popup.showConfirmPopup(loc("CO_GENERAL_CHANGELOCALE_ALERT"):format(Utils.str.color("g")..getLocaleText(newLocale).."|r"),
 		function()
 			ReloadUI();
 		end);
@@ -296,7 +289,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_UI_InitConfiguration()
+function TRP3_API.configuration.init()
 	-- Page and menu
 	registerMenu({
 		id = "main_90_config",

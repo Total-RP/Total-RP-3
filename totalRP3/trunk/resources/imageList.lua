@@ -1,5 +1,3 @@
-local Utils = TRP3_UTILS;
-
 local IMAGES = {
 	{
 		url = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-Bling",
@@ -283,19 +281,22 @@ local IMAGES = {
 	},
 };
 
+local match = TRP3_API.utils.str.match;
+local pairs, tinsert = pairs, tinsert;
+
 local size = #IMAGES;
 
-function TRP3_GetImageListSize()
+function TRP3_API.utils.resources.getImageListSize()
 	return size;
 end
 
-function TRP3_GetImageList(filter)
+function TRP3_API.utils.resources.getImageList(filter)
 	if filter == nil or filter:len() == 0 then
 		return IMAGES;
 	end
 	local newList = {};
 	for _, image in pairs(IMAGES) do
-		if Utils.str.match(image.url, filter) then
+		if match(image.url, filter) then
 			tinsert(newList, image);
 		end
 	end

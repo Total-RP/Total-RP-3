@@ -1,5 +1,3 @@
-local Utils = TRP3_UTILS;
-
 local musicList = {
 	"ZoneMusic\\GrizzlyHills\\GH_Intro1Uni01",
 	"GlueScreenMusic\\BC_main_theme",
@@ -2226,23 +2224,25 @@ local musicList = {
 	"Pandaria\\mus_54_valehealing"
 }
 
-table.sort(musicList);
+local match = TRP3_API.utils.str.match;
+local pairs, tinsert = pairs, tinsert;
 
 local musicListSize = #musicList;
+table.sort(musicList);
 
-function TRP3_GetMusicList(filter)
+function TRP3_API.utils.resources.getMusicList(filter)
 	if filter == nil or filter:len() == 0 then
 		return musicList;
 	end
 	local newList = {};
 	for _, musicURL in pairs(musicList) do
-		if Utils.str.match(musicURL, filter) then
+		if match(musicURL, filter) then
 			tinsert(newList, musicURL);
 		end
 	end
 	return newList;
 end
 
-function TRP3_GetMusicListSize()
+function TRP3_API.utils.resources.getMusicListSize()
 	return musicListSize;
 end

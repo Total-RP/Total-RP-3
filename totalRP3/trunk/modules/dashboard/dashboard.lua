@@ -4,26 +4,27 @@
 -- Dashboard page
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_DASHBOARD = {};
+TRP3_API.dashboard = {};
 
 -- imports
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently = GetMouseFocus, _G, TRP3_DashboardStatus_Currently;
-local loc = TRP3_L;
-local getcharacter = TRP3_PROFILE.getCharacter;
-local Utils, Events = TRP3_UTILS, TRP3_EVENTS;
-local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local toolbarAddButton = TRP3_TOOLBAR.toolbarAddButton;
+local loc = TRP3_API.locale.getText;
+local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
+local Utils, Events = TRP3_API.utils, TRP3_API.events;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local toolbarAddButton = TRP3_API.toolbar.toolbarAddButton;
 local icon, color = Utils.str.icon, Utils.str.color;
-local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler;
-local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_UI_UTILS.tooltip.setTooltipForFrame, TRP3_UI_UTILS.tooltip.refresh, TRP3_MainTooltip;
-local buildToolbar = TRP3_TOOLBAR.buildToolbar;
-local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
-local registerMenu, registerPage = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.page.registerPage;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
+local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
+local buildToolbar = TRP3_API.toolbar.buildToolbar;
+local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local assert, tostring, tinsert, date, time, pairs, tremove, EMPTY, unpack, wipe = assert, tostring, tinsert, date, time, pairs, tremove, {}, unpack, wipe;
-local initList, handleMouseWheel = TRP3_UI_UTILS.list.initList, TRP3_UI_UTILS.list.handleMouseWheel;
+local initList, handleMouseWheel = TRP3_API.ui.list.initList, TRP3_API.ui.list.handleMouseWheel;
 local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No = TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NOTIFICATIONS
@@ -32,16 +33,16 @@ local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_Dashb
 local DATE_FORMAT = "%d/%m/%y %H:%M:%S";
 local NOTIFICATION_TYPES = {};
 
-TRP3_DASHBOARD.registerNotificationType = function(notificationType)
+TRP3_API.dashboard.registerNotificationType = function(notificationType)
 	assert(notificationType and notificationType.id, "Nil notificationType or no id");
 	assert(not NOTIFICATION_TYPES[notificationType.id], "Already registered notification type: " .. notificationType.id);
 	NOTIFICATION_TYPES[notificationType.id] = notificationType;
 end
 
-TRP3_DASHBOARD.notify = function(notificationID, text, ...)
+TRP3_API.dashboard.notify = function(notificationID, text, ...)
 	assert(NOTIFICATION_TYPES[notificationID], "Unknown notification type: " .. tostring(notificationID));
 	local notificationType = NOTIFICATION_TYPES[notificationID];
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	local notification = {};
 	if not character.notifications then
 		character.notifications = {};
@@ -57,7 +58,7 @@ TRP3_DASHBOARD.notify = function(notificationID, text, ...)
 end
 
 local function decorateNotificationList(widget, index)
-	local notifications = getcharacter().notifications;
+	local notifications = getPlayerCharacter().notifications;
 	widget.notification = notifications[index];
 	_G[widget:GetName().."Text"]:SetText(widget.notification.text);
 	_G[widget:GetName().."TopText"]:SetText(date(DATE_FORMAT, widget.notification.time));
@@ -72,7 +73,7 @@ end
 
 local function refreshNotifications()
 	local count = 0;
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	if character.notifications then
 		count = #character.notifications;
 	end
@@ -90,7 +91,7 @@ end
 local function onNotificationRemove(button)
 	local notification = button:GetParent().notification;
 	assert(notification, "No attached notification to the line.");
-	local notifications = getcharacter().notifications;
+	local notifications = getPlayerCharacter().notifications;
 	for index, n in pairs(notifications) do
 		if n.id == notification.id then
 			tremove(notifications, index);
@@ -102,7 +103,7 @@ local function onNotificationRemove(button)
 end
 
 local function clearAllNotifications()
-	local notifications = getcharacter().notifications;
+	local notifications = getPlayerCharacter().notifications;
 	if notifications then
 		wipe(notifications);
 	end
@@ -129,7 +130,7 @@ end
 local CURRENTLY_SIZE = 200;
 
 local function onStatusChange(status)
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	local old = character.RP;
 	character.RP = status;
 	if old ~= status then
@@ -139,7 +140,7 @@ local function onStatusChange(status)
 end
 
 local function switchStatus()
-	if getcharacter().RP == 1 then
+	if getPlayerCharacter().RP == 1 then
 		onStatusChange(2);
 	else
 		onStatusChange(1);
@@ -147,7 +148,7 @@ local function switchStatus()
 end
 
 local function onStatusXPChange(status)
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	local old = character.XP;
 	character.XP = status;
 	if old ~= status then
@@ -156,7 +157,7 @@ local function onStatusXPChange(status)
 end
 
 local function onCurrentlyChanged()
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	local old = character.CU;
 	character.CU = TRP3_DashboardStatus_Currently:GetText();
 	if old ~= character.CU then
@@ -165,15 +166,15 @@ local function onCurrentlyChanged()
 end
 
 local function onShow(context)
-	local character = getcharacter();
+	local character = getPlayerCharacter();
 	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
 	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
 	TRP3_DashboardStatus_Currently:SetText(character.CU or "");
 	refreshNotifications();
 end
 
-TRP3_DASHBOARD.isPlayerIC = function()
-	return getcharacter().RP == 1;
+TRP3_API.dashboard.isPlayerIC = function()
+	return getPlayerCharacter().RP == 1;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -183,12 +184,12 @@ end
 local CONFIG_CONTENT_RPSTATUS = "toolbar_content_rpstatus";
 local DASHBOARD_PAGE_ID = "dashboard";
 
-TRP3_DASHBOARD.init = function()
+TRP3_API.dashboard.init = function()
 
 	registerMenu({
 		id = "main_00_dashboard",
 		align = "CENTER",
-		text = TRP3_GLOBALS.addon_name,
+		text = TRP3_API.globals.addon_name,
 		onSelected = function() setPage(DASHBOARD_PAGE_ID); end,
 	});
 	
@@ -213,8 +214,8 @@ TRP3_DASHBOARD.init = function()
 	TRP3_DashboardNotificationsClear:SetText(loc("DB_NOTIFICATIONS_CLEAR"));
 	TRP3_DashboardNotificationsClear:SetScript("OnClick", clearAllNotifications);
 	
-	TRP3_FieldSet_SetCaption(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 150);
+	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
+	setupFieldSet(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 150);
 	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
 	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
 	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
@@ -238,7 +239,7 @@ TRP3_DASHBOARD.init = function()
 	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
 	
 	-- Toolbar RP status
-	local character = TRP3_PROFILE.getCharacter();
+	local playerCharacter = TRP3_API.profile.getPlayerCharacter();
 	local rpTextOn = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_ON");
 	local rpTextOff = icon("inv_leather_a_03defias", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 	local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
@@ -248,7 +249,7 @@ TRP3_DASHBOARD.init = function()
 		icon = "Inv_misc_grouplooking",
 		onEnter = function(Uibutton, buttonStructure) end,
 		onUpdate = function(Uibutton, buttonStructure)
-			if character.RP == 1 then
+			if playerCharacter.RP == 1 then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOn, rpText3);
 			else

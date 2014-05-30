@@ -4,22 +4,24 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- TRP3 imports
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
-local get = TRP3_PROFILE.getData;
-local Comm = TRP3_COMM;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
+local get = TRP3_API.profile.getData;
+local Comm = TRP3_API.communication;
 local log = Utils.log.log;
-local Events = TRP3_EVENTS;
+local Events = TRP3_API.events;
+local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
+local getCharacterExchangeData = TRP3_API.register.getCharacterExchangeData;
+local registerInfoTypes = TRP3_API.register.registerInfoTypes;
+local isUnitIDIgnored, shouldUpdateInformation = TRP3_API.register.isUnitIDIgnored;
+local addCharacter = TRP3_API.register.addCharacter, TRP3_API.register.shouldUpdateInformation;
+local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
+local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
+local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+
 -- WoW imports
-local UnitName = UnitName;
-local CheckInteractDistance = CheckInteractDistance;
-local UnitIsPlayer = UnitIsPlayer;
-local UnitFactionGroup = UnitFactionGroup;
-local tinsert = tinsert;
-local type = type;
-local time = time;
-local getPlayerCharacter = TRP3_PROFILE.getCharacter;
-local getCharacterExchangeData = TRP3_REGISTER.getCharacterExchangeData;
+local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
+local tinsert, time, type = tinsert, time, type;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -52,7 +54,7 @@ local function createVernumQuery()
 	local query = {};
 	tinsert(query, Globals.version); -- Your TRP3 version (number)
 	tinsert(query, Globals.version_display); -- Your TRP3 version (as it should be shown on tooltip)
-	tinsert(query, TRP3_GetProfileID());
+	tinsert(query, getPlayerCurrentProfileID());
 	tinsert(query, get("player/characteristics").v);
 	tinsert(query, get("player/about").v);
 	tinsert(query, get("player/misc").v);
@@ -87,10 +89,10 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local infoTypeTab = {
-	TRP3_RegisterInfoTypes.CHARACTERISTICS,
-	TRP3_RegisterInfoTypes.ABOUT,
-	TRP3_RegisterInfoTypes.MISC,
-	TRP3_RegisterInfoTypes.CHARACTER
+	registerInfoTypes.CHARACTERISTICS,
+	registerInfoTypes.ABOUT,
+	registerInfoTypes.MISC,
+	registerInfoTypes.CHARACTER
 };
 
 --- Incoming vernum query
@@ -123,17 +125,17 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	-- TODO: show version alert.
 	end
 
-	if TRP3_IsUnitIDKnown(senderID) or configIsAutoAdd() then
-		if not TRP3_IsUnitIDKnown(senderID) then
-			TRP3_RegisterAddCharacter(senderID);
+	if isUnitIDKnown(senderID) or configIsAutoAdd() then
+		if not isUnitIDKnown(senderID) then
+			addCharacter(senderID);
 		end
-		TRP3_RegisterSetClient(senderID, Globals.addon_name, senderVersionText, false);
-		TRP3_RegisterSetCurrentProfile(senderID, senderProfileID);
+		saveClientInformation(senderID, Globals.addon_name, senderVersionText, false);
+		saveCurrentProfileID(senderID, senderProfileID);
 
 		-- Query specific data, depending on version number.
 		local index = 4;
 		for _, infoType in pairs(infoTypeTab) do
-			if TRP3_RegisterShouldUpdateInfo(senderID, infoType, structure[index]) then
+			if shouldUpdateInformation(senderID, infoType, structure[index]) then
 				log(("Should update: %s's %s"):format(senderID, infoType));
 				queryInformationType(senderID, infoType);
 			end
@@ -151,13 +153,13 @@ end
 
 local function incomingInformationType(informationType, senderID)
 	local data = nil;
-	if informationType == TRP3_RegisterInfoTypes.CHARACTERISTICS then
+	if informationType == registerInfoTypes.CHARACTERISTICS then
 		data = TRP3_RegisterCharacteristicsGetExchangeData();
-	elseif informationType == TRP3_RegisterInfoTypes.ABOUT then
+	elseif informationType == registerInfoTypes.ABOUT then
 		data = TRP3_RegisterAboutGetExchangeData();
-	elseif informationType == TRP3_RegisterInfoTypes.MISC then
+	elseif informationType == registerInfoTypes.MISC then
 		data = TRP3_RegisterMiscGetExchangeData();
-	elseif informationType == TRP3_RegisterInfoTypes.CHARACTER then
+	elseif informationType == registerInfoTypes.CHARACTER then
 		data = getCharacterExchangeData();
 	end
 	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
@@ -176,7 +178,7 @@ local function incomingInformationTypeSent(structure, senderID)
 	if type(data) == "string" then
 		decodedData = Utils.serial.decompressCodedStructure(decodedData);
 	end
-	TRP3_RegisterSetInforType(senderID, informationType, decodedData);
+	saveInformation(senderID, informationType, decodedData);
 	
 	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 end
@@ -194,9 +196,9 @@ local function sendQuery(type)
 		and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
 		
 		and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
-		and (type ~= "mouseover" or TRP3_IsUnitIDKnown(unitID)) -- Only query known characters
+		and (type ~= "mouseover" or isUnitIDKnown(unitID)) -- Only query known characters
 		
-		and not TRP3_IsPlayerIgnored(unitID)
+		and not isUnitIDIgnored(unitID)
 		and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
 		LAST_QUERY[unitID] = time();
@@ -231,7 +233,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_Register_DataExchangeInit()
+function TRP3_API.register.inits.dataExchangeInit()
 
 	if not TRP3_Register then
 		TRP3_Register = {};

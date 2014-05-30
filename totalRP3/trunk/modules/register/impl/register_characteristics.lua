@@ -4,19 +4,24 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_EVENTS;
+local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
-local get = TRP3_PROFILE.getData;
+local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
-local loc = TRP3_L;
-local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
-local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local loc = TRP3_API.locale.getText;
+local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
+local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local assert, type, wipe = assert, type, wipe;
-local getTiledBackground = TRP3_UI_UTILS.background.getTiledBackground;
-local setupDropDownMenu = TRP3_UI_UTILS.listbox.setupDropDownMenu;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local getCurrentContext = TRP3_NAVIGATION.page.getCurrentContext;
+local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
+local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
+local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
+local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
+local hasProfile = TRP3_API.register.hasProfile;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -171,7 +176,7 @@ end
 
 local function setConsultDisplay(context)
 	local dataTab = nil;
-	local character = TRP3_GetCharacter(context.unitID);
+	local character = getUnitIDCharacter(context.unitID);
 	local race, class = nil;
 	local unitName, unitRealm  = Utils.str.unitIDToInfo(context.unitID);
 	if context.unitID == Globals.player_id then
@@ -181,8 +186,8 @@ local function setConsultDisplay(context)
 	else
 		race = character.race or UNKNOWN;
 		class = loc("CM_CLASS_" .. (stEtN(character.class) or "UNKNOWN"));
-		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).characteristics then
-			dataTab = TRP3_GetUnitProfile(context.unitID).characteristics;
+		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).characteristics then
+			dataTab = getUnitIDProfile(context.unitID).characteristics;
 		else
 			dataTab = {};
 		end
@@ -194,7 +199,7 @@ local function setConsultDisplay(context)
 	local completeName = TRP3_GetCompleteName(dataTab, unitName);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
-	TRP3_InitIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 	
 	setBkg(dataTab.bkg or 1);
 	
@@ -346,7 +351,7 @@ end
 
 local function onPlayerIconSelected(icon)
 	draftData.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 end
 
 local function onPsychoClick(frame, value, modif)
@@ -364,7 +369,7 @@ local function onRightClick(button)
 end
 
 local function refreshEditIcon(frame)
-	TRP3_InitIconButton(frame, frame.IC or Globals.icons.profile_default);
+	setupIconButton(frame, frame.IC or Globals.icons.profile_default);
 end
 
 local function onMiscDelete(self)
@@ -422,7 +427,7 @@ setEditDisplay = function()
 		tcopy(draftData, dataTab);
 	end
 	
-	TRP3_InitIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
@@ -456,15 +461,15 @@ setEditDisplay = function()
 			tinsert(psychoEditCharFrame, frame);
 		end
 		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
-			openIconBrowser(function(icon)
+			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
-				TRP3_InitIconButton(self, icon or Globals.icons.default);
+				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self) 
-			openIconBrowser(function(icon)
+			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
-				TRP3_InitIconButton(self, icon or Globals.icons.default);
+				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 		
@@ -532,9 +537,9 @@ setEditDisplay = function()
 			tinsert(miscEditCharFrame, frame);
 		end
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function() 
-			openIconBrowser(function(icon)
+			showIconBrowser(function(icon)
 				miscStructure.IC = icon;
-				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
+				setupIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
 			end);
 		end);
 		
@@ -729,12 +734,12 @@ local function initStructures()
 	};
 end
 
-function TRP3_Register_CharInit()
+function TRP3_API.register.inits.characteristicsInit()
 	initStructures();
 	
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
-	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() openIconBrowser(onPlayerIconSelected) end );
+	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end );
 	
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
@@ -753,10 +758,10 @@ function TRP3_Register_CharInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
 
-	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
-	TRP3_FieldSet_SetCaption(TRP3_RegisterCharact_Edit_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
+	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
+	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
+	setupFieldSet(TRP3_RegisterCharact_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
+	setupFieldSet(TRP3_RegisterCharact_Edit_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	
 	TRP3_RegisterCharact_Edit_MiscAdd:SetText(loc("REG_PLAYER_MISC_ADD"));
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetText(loc("REG_PLAYER_PSYCHO_ADD"));

@@ -4,25 +4,16 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_COMM = {
-	
-};
+TRP3_API.communication = {};
 
 -- imports
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
-local tostring = tostring;
-local pairs = pairs;
-local assert = assert;
-local string = string;
-local wipe = wipe;
-local tinsert = tinsert;
-local type = type;
-local math = math;
+local tostring, pairs, assert, string, wipe, tinsert, type, math = tostring, pairs, assert, string, wipe, tinsert, type, math;
 local ChatThrottleLib = ChatThrottleLib;
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm = TRP3_COMM;
+local Comm = TRP3_API.communication;
 local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 -- function definition

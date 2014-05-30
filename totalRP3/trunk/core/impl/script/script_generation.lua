@@ -3,10 +3,10 @@
 -- Code generation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_SCRIPTS = {};
+TRP3_API.script = {};
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
-local tableCopy = TRP3_UTILS.table.copy;
+local tableCopy = TRP3_API.utils.table.copy;
 local writeElement;
 
 local DEBUG = true;
@@ -28,14 +28,14 @@ local function escapeArguments(args)
 	return escaped;
 end
 
-TRP3_SCRIPTS.eval = function(conditionValue, conditionID, conditionStorage)
+TRP3_API.script.eval = function(conditionValue, conditionID, conditionStorage)
 	if conditionID and conditionValue then
 		conditionStorage[conditionID] = true;
 	end
 	return conditionValue;
 end
 
-TRP3_SCRIPTS.delayed = function(delay, func)
+TRP3_API.script.delayed = function(delay, func)
 	-- TODO
 end
 
@@ -81,7 +81,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getTestOperande(id)
-	return TRP3_SCRIPTS.getOperand(id);
+	return TRP3_API.script.getOperand(id);
 end
 
 local function writeOperand(testStructure, comparatorType)
@@ -207,7 +207,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getEffectInfo(id)
-	return TRP3_SCRIPTS.getEffect(id);
+	return TRP3_API.script.getEffect(id);
 end
 
 local function writeEffect(effectStructure)
@@ -336,7 +336,7 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BASE_ENV = {delayed = "TRP3_SCRIPTS.delayed", eval = "TRP3_SCRIPTS.eval"};
+local BASE_ENV = {delayed = "TRP3_API.script.delayed", eval = "TRP3_API.script.eval"};
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
@@ -433,7 +433,7 @@ function TRP3_Generate()
 		local func = functionFactory();
 		local status, ret, conditions = pcall(func);
 		if status then
-			TRP3_UTILS.table.dump(conditions);
+			TRP3_API.utils.table.dump(conditions);
 		else
 			print(ret);
 		end

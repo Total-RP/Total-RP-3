@@ -4,35 +4,34 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_REGISTER = {};
+TRP3_API.register = {
+	inits = {}
+};
 
 -- imports
-local Globals = TRP3_GLOBALS;
-local Utils = TRP3_UTILS;
+local Globals = TRP3_API.globals;
+local Utils = TRP3_API.utils;
 local unitID = Utils.str.unitInfoToID;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_L;
+local loc = TRP3_API.locale.getText;
 local log = Utils.log.log;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
-local wipe = wipe;
-local strconcat = strconcat;
 local getUnitID = Utils.str.getUnitID;
 local UnitRace = UnitRace;
 local UnitClass = UnitClass;
 local UnitFactionGroup = UnitFactionGroup;
 local UnitSex = UnitSex;
-local time = time;
 local GetGuildInfo = GetGuildInfo;
-local getDefaultProfile, get = TRP3_PROFILE.getDefaultProfile, TRP3_PROFILE.getData;
-local getPlayerCharacter = TRP3_PROFILE.getCharacter;
-local Config = TRP3_CONFIG;
+local getDefaultProfile, get = TRP3_API.profile.getDefaultProfile, TRP3_API.profile.getData;
+local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
+local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
-local Events = TRP3_EVENTS;
-local assert = assert;
-local registerMenu, selectMenu = TRP3_NAVIGATION.menu.registerMenu, TRP3_NAVIGATION.menu.selectMenu;
-local registerPage, setPage = TRP3_NAVIGATION.page.registerPage, TRP3_NAVIGATION.page.setPage;
-local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
+local Events = TRP3_API.events;
+local assert, tostring, time, wipe, strconcat = assert, tostring, time, wipe, strconcat;
+local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 
 -- Saved variables references
 local profiles;
@@ -42,13 +41,14 @@ local characters;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_RegisterInfoTypes = {
+TRP3_API.register.registerInfoTypes = {
 	CHARACTERISTICS = "characteristics",
 	ABOUT = "about",
 	MISC = "misc",
 	CHARACTER = "character",
 }
 
+local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 getDefaultProfile().player = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -59,18 +59,19 @@ local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;
 end
-TRP3_REGISTER.isUnitIDKnown = isUnitIDKnown;
+TRP3_API.register.isUnitIDKnown = isUnitIDKnown;
 
 local function hasProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID].profileID;
 end
+TRP3_API.register.hasProfile = hasProfile;
 
 local function profileExists(unitID)
 	return hasProfile(unitID) and profiles[characters[unitID].profileID];
 end
 
-local function getProfile(unitID, create)
+local function getUnitIDProfile(unitID, create)
 	if create then
 		if hasProfile(unitID) and not profileExists(unitID) then
 			profiles[characters[unitID].profileID] = {};
@@ -79,18 +80,20 @@ local function getProfile(unitID, create)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
 	return profiles[characters[unitID].profileID];
 end
+TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
 
-local function getCharacter(unitID)
+local function getUnitIDCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
 end
-TRP3_REGISTER.getCharacter = getCharacter;
+TRP3_API.register.getUnitIDCharacter = getUnitIDCharacter;
 
-local function isUnitKnown(targetType)
+function TRP3_API.register.isUnitKnown(targetType)
 	return isUnitIDKnown(getUnitID(targetType));
 end
 
-function TRP3_IsPlayerIgnored(unitID)
+function TRP3_API.register.isUnitIDIgnored(unitID)
+	-- TODO: to change, as it's the profile which is ignored, not the character ?
 	return characters[unitID] and characters[unitID].ignored == true;
 end
 
@@ -103,27 +106,27 @@ end
 -- SETTERS
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetCurrentProfile(unitID, currentProfileID)
-	local character = getCharacter(unitID);
+function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
+	local character = getUnitIDCharacter(unitID);
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_EXCHANGE_PROFILE_CHANGED, unitID, currentProfileID);
 	end
-	getProfile(unitID, true); -- Already create the profile if missing
+	getUnitIDProfile(unitID, true); -- Already create the profile if missing
 end
 
 --- Raises error if unknown unitName
-function TRP3_RegisterSetClient(unitID, client, clientVersion, msp)
-	local character = getCharacter(unitID);
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp)
+	local character = getUnitIDCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
 	character.msp = msp;
 end
 
 --- Raises error if unknown unitName
-local function setMainInfo(unitID, race, class, gender, faction, time, zone, guild)
-	local character = getCharacter(unitID);
+local function saveCharacterInformation(unitID, race, class, gender, faction, time, zone, guild)
+	local character = getUnitIDCharacter(unitID);
 	character.class = class;
 	character.race = race;
 	character.gender = gender;
@@ -132,18 +135,18 @@ local function setMainInfo(unitID, race, class, gender, faction, time, zone, gui
 	character.zone = zone;
 	character.guild = guild;
 end
-TRP3_REGISTER.setMainInfo = setMainInfo;
+TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
 --- Raises error if unknown unitID or unit hasn't profile ID
-function TRP3_RegisterSetInforType(unitID, informationType, data)
-	if informationType == TRP3_RegisterInfoTypes.CHARACTER then
-		local character = getCharacter(unitID);
+function TRP3_API.register.saveInformation(unitID, informationType, data)
+	if informationType == registerInfoTypes.CHARACTER then
+		local character = getUnitIDCharacter(unitID);
 		character.v = data.v or 1;
 		character.CU = data.CU;
 		character.RP = data.RP;
 		character.XP = data.XP;
 	else
-		local profile = getProfile(unitID, true);
+		local profile = getUnitIDProfile(unitID, true);
 		if profile[informationType] then
 			wipe(profile[informationType]);
 		end
@@ -153,7 +156,7 @@ function TRP3_RegisterSetInforType(unitID, informationType, data)
 end
 
 --- Raises error if KNOWN unitID
-function TRP3_RegisterAddCharacter(unitID)
+function TRP3_API.register.addCharacter(unitID)
 	assert(not isUnitIDKnown(unitID), "Already known character: " .. tostring(unitID));
 	characters[unitID] = {};
 	log("Added to the register: " .. unitID);
@@ -162,32 +165,32 @@ end
 -- GETTERS
 
 --- Raises error if unknown unitName
-local function getCurrentProfile(unitID)
+local function getUnitIDCurrentProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	if hasProfile(unitID) then
-		return getProfile(unitID, true);
+		return getUnitIDProfile(unitID, true);
 	end
 end
-TRP3_REGISTER.getCurrentProfile = getCurrentProfile;
+TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
 --- Raises error if unknown unitID
-function TRP3_RegisterShouldUpdateInfo(unitID, infoType, version)
-	local character = getCharacter(unitID);
-	if infoType == TRP3_RegisterInfoTypes.CHARACTER then
+function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
+	local character = getUnitIDCharacter(unitID);
+	if infoType == registerInfoTypes.CHARACTER then
 		return not character.v or character.v ~= version;
 	else
 		--- Raises error if unit hasn't profile ID or no profile exists
-		local profile = getProfile(unitID);
+		local profile = getUnitIDProfile(unitID);
 		return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
 	end
 end
 
-function TRP3_GetCharacterList()
+function TRP3_API.register.getCharacterList()
 	return characters;
 end
 
 --- Raises error if unknown unitID
-function TRP3_GetCharacter(unitID)
+function TRP3_API.register.getUnitIDCharacter(unitID)
 	if unitID == Globals.player_id then
 		return Globals.player_character;
 	end
@@ -195,27 +198,19 @@ function TRP3_GetCharacter(unitID)
 	return characters[unitID];
 end
 
-function TRP3_GetProfileList()
+function TRP3_API.register.getUnitIDProfileList()
 	return profiles;
 end
 
---- Raises error if unknown unitID
-local function getMiscData(unitID)
-	local profile = getCurrentProfile(unitID);
-	if not profile or not profile.misc then
-		return {};
-	end
-	return profile.misc;
-end
-TRP3_REGISTER.getMiscData = getMiscData;
-
-TRP3_REGISTER.getCharacterExchangeData = function()
+TRP3_API.register.getCharacterExchangeData = function()
 	return getPlayerCharacter();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tabGroup; -- Reference to the tab panel tabs group
 
 local function buildZoneText()
 	local text = getZoneText(); -- assuming that there is ALWAYS a zone text. Don't know if it's true.
@@ -231,7 +226,23 @@ local function onMouseOver(...)
 		local _, race = UnitRace("mouseover");
 		local _, class, _ = UnitClass("mouseover");
 		local englishFaction = UnitFactionGroup("mouseover");
-		setMainInfo(unitID, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText(), GetGuildInfo("mouseover"));
+		saveCharacterInformation(unitID, race, class, UnitSex("mouseover"), englishFaction, time(), buildZoneText(), GetGuildInfo("mouseover"));
+	end
+end
+
+local function onReceivedInfo(unitID, infoType)
+	if getCurrentPageID() == "player_main" then
+		local context = getCurrentContext();
+		assert(context, "No context for page player_main !");
+		if unitID == context.unitID then
+			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
+				TRP3_onPlayerAboutShow();
+			elseif  infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
+				TRP3_onCharacteristicsShown();
+			elseif  infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
+				TRP3_onPlayerPeekShow();
+			end
+		end
 	end
 end
 
@@ -239,14 +250,12 @@ end
 -- UI: TAB MANAGEMENT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tabGroup;
-
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, -5);
 	frame:SetFrameLevel(1);
-	tabGroup = TRP3_TabBar_Create(frame,
+	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 	{
 		{loc("REG_PLAYER_CARACT"), 1, 150},
 		{loc("REG_PLAYER_ABOUT"), 2, 110},
@@ -278,33 +287,11 @@ local function showTabs(context)
 	tabGroup:SelectTab(1);
 end
 
-local function onReceivedInfo(unitID, infoType)
-	if getCurrentPageID() == "player_main" then
-		local context = getCurrentContext();
-		assert(context, "No context for page player_main !");
-		if unitID == context.unitID then
-			if infoType == TRP3_RegisterInfoTypes.ABOUT and tabGroup.current == 2 then
-				TRP3_onPlayerAboutShow();
-			elseif  infoType == TRP3_RegisterInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
-				TRP3_onCharacteristicsShown();
-			elseif  infoType == TRP3_RegisterInfoTypes.MISC and tabGroup.current == 3 then
-				TRP3_onPlayerPeekShow();
-			end
-		end
-	end
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- API declaration
-TRP3_IsUnitIDKnown = isUnitIDKnown;
-TRP3_IsUnitKnown = isUnitKnown;
-TRP3_GetUnitProfile = getProfile;
-TRP3_HasProfile = hasProfile;
-
-function TRP3_InitRegister()
+function TRP3_API.register.init()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
@@ -319,12 +306,10 @@ function TRP3_InitRegister()
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-end
-
-function TRP3_UI_InitRegister()
+	
 	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
-	local refreshMenu = TRP3_NAVIGATION.menu.rebuildMenu;
+	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
 	local playerMenu = {
 		id = "main_10_player",
 		text = get("player/characteristics/FN") or Globals.player,
@@ -355,7 +340,6 @@ function TRP3_UI_InitRegister()
 		templateName = "TRP3_RegisterMain",
 		frameName = "TRP3_RegisterMain",
 		frame = TRP3_RegisterMain,
-		background = "Interface\\ACHIEVEMENTFRAME\\UI-GuildAchievement-Parchment-Horizontal-Desaturated",
 		onPagePostShow = function(context)
 			showTabs(context);
 		end,
@@ -379,13 +363,16 @@ function TRP3_UI_InitRegister()
 	};
 	Config.registerConfigurationPage(CONFIG_STRUCTURE);
 
-	TRP3_Register_CharInit();
-	TRP3_Register_AboutInit();
-	TRP3_Register_PeekInit();
-	TRP3_Register_DataExchangeInit();
-	TRP3_Register_TooltipInit();
-	TRP3_Register_ListInit();
-	TRP3_REGISTER.initPets();
+	-- Initialization
+	TRP3_API.register.inits.characteristicsInit();
+	TRP3_API.register.inits.aboutInit();
+	TRP3_API.register.inits.miscInit();
+	TRP3_API.register.inits.dataExchangeInit();
+	TRP3_API.register.inits.tooltipInit();
+	TRP3_API.register.inits.directoryInit();
+	TRP3_API.register.inits.companionInit();
+	wipe(TRP3_API.register.inits);
+	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 
 	createTabBar();
 end

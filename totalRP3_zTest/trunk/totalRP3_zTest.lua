@@ -4,12 +4,12 @@
 -- This is Telkostrasz's test file, don't touch it ! ;)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local globals = TRP3_GLOBALS;
-assert(globals and globals.addon, "Unable to find TRP3.");
+assert(TRP3_API, "Unable to find TRP3.");
+local globals = TRP3_API.globals;
 
-local Utils = TRP3_UTILS;
+local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm = TRP3_COMM;
+local Comm = TRP3_API.communication;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
@@ -34,29 +34,29 @@ end
 local function onLoaded()
 	Log.log("onLoaded test module");
 	
---	TRP3_DASHBOARD.registerNotificationType({
+--	TRP3_API.dashboard.registerNotificationType({
 --		id = "ma notif",
 --		callback = function(unitID)
---			TRP3_NAVIGATION.page.setPage("player_main", {unitID = unitID});
+--			TRP3_API.navigation.page.setPage("player_main", {unitID = unitID});
 --		end,
 --		removeOnShown = true
 --	});
---	TRP3_DASHBOARD.registerNotificationType({
+--	TRP3_API.dashboard.registerNotificationType({
 --		id = "ma notif2"
 --	});
 --	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", function()
 --		if UnitName("target") then
---			TRP3_DASHBOARD.notify("ma notif", ("%s has been added to the directory"):format(UnitName("target")), Utils.str.getUnitID("target"));
+--			TRP3_API.dashboard.notify("ma notif", ("%s has been added to the directory"):format(UnitName("target")), Utils.str.getUnitID("target"));
 --		else
---			TRP3_DASHBOARD.notify("ma notif2", "Voici un beau petit texte pour juste notifier bien comme il faut.");
+--			TRP3_API.dashboard.notify("ma notif2", "Voici un beau petit texte pour juste notifier bien comme il faut.");
 --		end
 --		
 --	end);
 	
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
---		if UnitIsPlayer("mouseover") and not TRP3_IsUnitIDKnown(Utils.str.getUnitID("mouseover")) then
---			TRP3_RegisterAddCharacter(Utils.str.getUnitID("mouseover"))
---		end
+		if UnitIsPlayer("mouseover") and not TRP3_API.register.isUnitIDKnown(Utils.str.getUnitID("mouseover")) then
+			TRP3_API.register.addCharacter(Utils.str.getUnitID("mouseover"))
+		end
 	end);
 
 end
@@ -74,5 +74,5 @@ local MODULE_STRUCTURE = {
 	}
 };
 
-TRP3_MODULE.registerModule(MODULE_STRUCTURE);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);
 

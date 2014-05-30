@@ -3,20 +3,20 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_TOOLBAR = {};
+TRP3_API.toolbar = {};
 
 -- imports
-local Globals, Utils = TRP3_GLOBALS, TRP3_UTILS;
-local loc = TRP3_L;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
+local loc = TRP3_API.locale.getText;
 local icon = Utils.str.icon;
 local color = Utils.str.color;
 local assert, pairs, tContains, tinsert, table, math, _G = assert, pairs, tContains, tinsert, table, math, _G;
 local ShowingHelm, ShowingCloak = ShowingHelm, ShowingCloak;
 local CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus = CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus;
 local toolbar, toolbarContainer, mainTooltip = TRP3_Toolbar, TRP3_ToolbarContainer, TRP3_MainTooltip;
-local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.registerHandler;
-local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
-local refreshTooltip = TRP3_UI_UTILS.tooltip.refresh;
+local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 local CONFIG_ICON_SIZE = "toolbar_icon_size"; 
 local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
@@ -125,7 +125,7 @@ local function buildToolbar()
 		toolbar:SetWidth(toolbarContainer:GetWidth() + 10);
 	end
 end
-TRP3_TOOLBAR.buildToolbar = buildToolbar;
+TRP3_API.toolbar.buildToolbar = buildToolbar;
 
 local function onConfigContentChanged()
 	Button_Cape.visible = getConfigValue(CONFIG_CONTENT_CAPE);
@@ -147,13 +147,13 @@ local function toolbarAddButton(buttonStructure)
 	buttonStructures[buttonStructure.id] = buttonStructure;
 	buildToolbar();
 end
-TRP3_TOOLBAR.toolbarAddButton = toolbarAddButton;
+TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT & TRP3 toolbar content
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_TOOLBAR.init = function()
+TRP3_API.toolbar.init = function()
 
 	registerConfigKey(CONFIG_ICON_SIZE, 25);
 	registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
@@ -167,7 +167,7 @@ TRP3_TOOLBAR.init = function()
 	
 	
 	-- Build configuration page
-	TRP3_TOOLBARS_CONFIG_STRUCTURE = {
+	TRP3_API.toolbarS_CONFIG_STRUCTURE = {
 		id = "main_config_toolbar",
 		marginLeft = 10,
 		menuText = loc("CO_TOOLBAR"),

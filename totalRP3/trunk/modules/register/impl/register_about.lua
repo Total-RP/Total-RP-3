@@ -4,32 +4,36 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_GLOBALS, TRP3_UTILS, TRP3_COMM, TRP3_EVENTS;
+local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local stEtN = Utils.str.emptyToNil;
-local get = TRP3_PROFILE.getData;
-local safeGet = TRP3_PROFILE.getDataDefault;
-local loc = TRP3_L;
+local get = TRP3_API.profile.getData;
+local safeGet = TRP3_API.profile.getDataDefault;
+local loc = TRP3_API.locale.getText;
 local stNtE = Utils.str.nilToEmpty;
 local tcopy = Utils.table.copy;
 local numberToHexa = Utils.color.numberToHexa;
-local getDefaultProfile = TRP3_PROFILE.getDefaultProfile;
-local openIconBrowser = TRP3_POPUPS.openIconBrowser;
+local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
+local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
-local getConfigValue = TRP3_CONFIG.getValue;
+local getConfigValue = TRP3_API.configuration.getValue;
 local CreateFrame = CreateFrame;
 local assert, tinsert, type, wipe, _G, strconcat = assert, tinsert, type, wipe, _G, strconcat;
-local getTiledBackground = TRP3_UI_UTILS.background.getTiledBackground;
-local getTiledBackgroundList = TRP3_UI_UTILS.background.getTiledBackgroundList;
-local showIfMouseOver = TRP3_UI_UTILS.misc.showIfMouseOver;
-local createRefreshOnFrame = TRP3_UI_UTILS.misc.createRefreshOnFrame;
+local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
+local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
+local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
+local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local TRP3_RegisterAbout_AboutPanel = TRP3_RegisterAbout_AboutPanel;
-local displayDropDown = TRP3_UI_UTILS.listbox.displayDropDown;
-local setupListBox = TRP3_UI_UTILS.listbox.setupListBox;
-local setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_UI_UTILS.tooltip.setTooltipAll;
-local getCurrentContext, getCurrentPageID = TRP3_NAVIGATION.page.getCurrentContext, TRP3_NAVIGATION.page.getCurrentPageID;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local getUnitID = Utils.str.getUnitID;
+local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
+local hasProfile = TRP3_API.register.hasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -224,7 +228,7 @@ local function onContainerPTagClicked(button)
 end
 
 local function onLinkClicked(self, url)
-	TRP3_ShowTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+	TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -259,7 +263,7 @@ local function showTemplate2(dataTab)
 		local backdrop = frame:GetBackdrop();
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
-		TRP3_InitIconButton(icon, frameTab.IC or Globals.icons.default);
+		setupIconButton(icon, frameTab.IC or Globals.icons.default);
 		text:SetText(frameTab.TX);
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
@@ -360,11 +364,11 @@ refreshTemplate2EditDisplay = function()
 		frame.frameData = frameData;
 		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
 		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.TX or "");
-		TRP3_InitIconButton(_G[frame:GetName().."Icon"], frameData.IC or Globals.icons.default);
+		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or Globals.icons.default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
-			openIconBrowser(function(icon)
+			showIconBrowser(function(icon)
 				frame.frameData.IC = icon;
-				TRP3_InitIconButton(_G[frame:GetName().."Icon"], icon);
+				setupIconButton(_G[frame:GetName().."Icon"], icon);
 			end);
 		end);
 		-- Buttons
@@ -421,17 +425,17 @@ end
 
 local function onPhisIconSelected(icon)
 	draftData.T3.PH.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or Globals.icons.default);
 end
 
 local function onPsychoIconSelected(icon)
 	draftData.T3.PS.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or Globals.icons.default);
 end
 
 local function onHistoIconSelected(icon)
 	draftData.T3.HI.IC = icon;
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or Globals.icons.default);
 end
 
 local function showTemplate3(dataTab)
@@ -482,8 +486,8 @@ end
 local function sendVote(voteValue)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID and context.unitID ~= Globals.player_id and TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
-		if voteValue == TRP3_GetUnitProfile(context.unitID).about.vote then
+	if context.unitID and context.unitID ~= Globals.player_id and hasProfile(context.unitID) and getUnitIDProfile(context.unitID).about then
+		if voteValue == getUnitIDProfile(context.unitID).about.vote then
 			voteValue = 0; -- Unvoting
 		end
 		Comm.sendObject(VOTE_MESSAGE_PREFIX, voteValue, context.unitID, VOTE_MESSAGE_PRIORITY);
@@ -506,15 +510,15 @@ end
 -- Your vote has been registered
 local function voteResponse(value, sender)
 	local value = tonumber(value);
-	if TRP3_IsUnitIDKnown(sender) and TRP3_HasProfile(sender) and TRP3_GetUnitProfile(sender).about then
-		TRP3_GetUnitProfile(sender).about.vote = value;
+	if isUnitIDKnown(sender) and hasProfile(sender) and getUnitIDProfile(sender).about then
+		getUnitIDProfile(sender).about.vote = value;
 		local playerName = unitIDToInfo(sender);
 		Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_SENDING_OK"):format(playerName));
 		if getCurrentPageID() == "player_main" then
 			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");
 			if context.unitID == sender then
-				refreshVoteDisplay(TRP3_GetUnitProfile(sender).about);
+				refreshVoteDisplay(getUnitIDProfile(sender).about);
 			end
 		end
 	end
@@ -610,8 +614,8 @@ local function refreshConsultDisplay(context)
 			loc("REG_PLAYER_ABOUT_VOTES_R"):format(voteUp, voteDown)
 		);
 	else
-		if TRP3_HasProfile(context.unitID) and TRP3_GetUnitProfile(context.unitID).about then
-			dataTab = TRP3_GetUnitProfile(context.unitID).about;
+		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).about then
+			dataTab = getUnitIDProfile(context.unitID).about;
 			dataTab.read = true;
 			template = dataTab.TE or 1;
 			Events.fireEvent(Events.REGISTER_ABOUT_READ, context.unitID);
@@ -709,9 +713,9 @@ local function refreshEditDisplay()
 	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.PH.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.PS.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.HI.BK or 1);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or Globals.icons.default);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or Globals.icons.default);
-	TRP3_InitIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or Globals.icons.default);
 	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.PH.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.PS.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.HI.TX or "");
@@ -767,7 +771,7 @@ end
 
 local function onMusicEditSelected(value, button)
 	if value == 1 then
-		TRP3_OpenMusicBrowser(onMusicSelected);
+		TRP3_API.popup.showMusicBrowser(onMusicSelected);
 	elseif value == 2 and draftData.MU then
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
@@ -819,7 +823,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_Register_AboutInit()
+function TRP3_API.register.inits.aboutInit()
 
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
@@ -832,9 +836,9 @@ function TRP3_Register_AboutInit()
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 120, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 120, true);
 	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 120, true);
-	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() openIconBrowser(onPhisIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() openIconBrowser(onPsychoIconSelected) end );
-	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() openIconBrowser(onHistoIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() showIconBrowser(onPhisIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() showIconBrowser(onPsychoIconSelected) end );
+	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected) end );
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
 	
@@ -851,9 +855,9 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_H2:SetScript("OnClick", onContainerTagClicked);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_H3:SetScript("OnClick", onContainerTagClicked);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_P:SetScript("OnClick", onContainerPTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetScript("OnClick", function() openIconBrowser(onIconTagSelected) end);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Color:SetScript("OnClick", function() TRP3_OpenColorBrowser(onColorTagSelected) end);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetScript("OnClick", function() TRP3_OpenImageBrowser(onImageTagSelected) end);
+	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetScript("OnClick", function() showIconBrowser(onIconTagSelected) end);
+	TRP3_RegisterAbout_Edit_Template1_Toolbar_Color:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(onColorTagSelected) end);
+	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(onImageTagSelected) end);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Link:SetScript("OnClick", onLinkTagClicked);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
 	
@@ -887,9 +891,9 @@ function TRP3_Register_AboutInit()
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2",1,1,1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3",1,1,1);
 
-	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
-	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
-	TRP3_InitIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
+	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
+	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
+	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
 	
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));

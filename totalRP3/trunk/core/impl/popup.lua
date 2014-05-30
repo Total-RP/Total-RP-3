@@ -3,16 +3,17 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_POPUPS = {};
+TRP3_API.popup = {};
 
 -- imports
-local Utils = TRP3_UTILS;
-local loc = TRP3_L;
-local initList = TRP3_UI_UTILS.list.initList;
-local tinsert, _G = tinsert, _G;
-local handleMouseWheel = TRP3_UI_UTILS.list.handleMouseWheel;
-local setTooltipForFrame, setTooltipForSameFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame, TRP3_UI_UTILS.tooltip.setTooltipForSameFrame;
+local Utils = TRP3_API.utils;
+local loc = TRP3_API.locale.getText;
+local initList = TRP3_API.ui.list.initList;
+local tinsert, _G, pairs, wipe, math, assert = tinsert, _G, pairs, wipe, math, assert;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
+local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -101,47 +102,47 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
 
 -- Show a simple alert with a OK button.
-function TRP3_ShowAlertPopup(text)
+function TRP3_API.popup.showAlertPopup(text)
 	StaticPopupDialogs["TRP3_INFO"].text = POPUP_HEAD..text;
 	local dialog = StaticPopup_Show("TRP3_INFO");
     if dialog then
 		dialog:ClearAllPoints();
-		dialog:SetPoint("CENTER",UIParent,"CENTER");
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
 	end
 end
 
-function TRP3_ShowConfirmPopup(text, onAccept, onCancel)
+function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
 	StaticPopupDialogs["TRP3_CONFIRM"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_CONFIRM");
     if dialog then
 		dialog:ClearAllPoints();
-		dialog:SetPoint("CENTER",UIParent,"CENTER");
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
 	end
 end
 
-function TRP3_ShowTextInputPopup(text, onAccept, onCancel, default)
+function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_INPUT_TEXT");
     if dialog then
 		dialog:ClearAllPoints();
-		dialog:SetPoint("CENTER",UIParent,"CENTER");
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
 		_G[dialog:GetName().."EditBox"]:SetText(default);
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
 end
 
-function TRP3_ShowNumberInputPopup(text, onAccept, onCancel, default)
+function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].text = POPUP_HEAD..text.."\n\n";
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_INPUT_NUMBER");
     if dialog then
 		dialog:ClearAllPoints();
-		dialog:SetPoint("CENTER",UIParent,"CENTER");
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
 		_G[dialog:GetName().."EditBox"]:SetNumber(default);
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
@@ -151,17 +152,21 @@ end
 -- Dynamic popup
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_ShowPopup(popup)
+local TRP3_PopupsFrame = TRP3_PopupsFrame;
+
+local function showPopup(popup)
 	for _, frame in pairs({TRP3_PopupsFrame:GetChildren()}) do
 		frame:Hide();
 	end
 	TRP3_PopupsFrame:Show();
 	popup:Show();
 end
+TRP3_API.popup.showPopup = showPopup;
 
-function TRP3_HidePopups()
+local function hidePopups()
 	TRP3_PopupsFrame:Hide();
 end
+TRP3_API.popup.hidePopups = hidePopups;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Music browser
@@ -183,7 +188,7 @@ end
 
 local function onMusicClick(lineFrame, mousebutton)
 	if mousebutton == "LeftButton" then
-		TRP3_HidePopups();
+		hidePopups();
 		if TRP3_MusicBrowserContent.callback then
 			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
 		end
@@ -195,13 +200,13 @@ end
 
 local function filteredMusicBrowser()
 	local filter = TRP3_MusicBrowserFilterBox:GetText();
-	if filteredMusicList and filteredMusicList ~= TRP3_GetMusicList() then
+	if filteredMusicList and filteredMusicList ~= getMusicList() then
 		wipe(filteredMusicList);
 		filteredMusicList = nil;
 	end
-	filteredMusicList = TRP3_GetMusicList(filter); -- Music tab is unfiltered
+	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
 	
-	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. TRP3_GetMusicListSize() );
+	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
 	initList(
 		{
 			widgetTab = musicWidgetTab,
@@ -231,10 +236,10 @@ local function initMusicBrowser()
 	filteredMusicBrowser();
 end
 
-function TRP3_OpenMusicBrowser(callback)
+function TRP3_API.popup.showMusicBrowser(callback)
 	TRP3_MusicBrowserContent.callback = callback;
 	TRP3_MusicBrowserFilterBox:SetText("");
-	TRP3_ShowPopup(TRP3_MusicBrowser);
+	showPopup(TRP3_MusicBrowser);
 	TRP3_MusicBrowserFilterBox:SetFocus();
 end
 
@@ -255,14 +260,14 @@ local function decorateIcon(icon, index)
 end
 
 local function onIconClick(icon)
-	TRP3_HidePopups();
+	hidePopups();
 	if ui_IconBrowserContent.onSelectCallback then
 		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index], icon);
 	end
 end
 
 local function onIconClose()
-	TRP3_HidePopups();
+	hidePopups();
 	if ui_IconBrowserContent.onCancelCallback then
 		ui_IconBrowserContent.onCancelCallback();
 	end
@@ -270,8 +275,8 @@ end
 
 local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
-	filteredIconList = TRP3_GetIconList(filter);
-	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. TRP3_GetIconListSize() );
+	filteredIconList = getIconList(filter);
+	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
 	initList(
 		{
 			widgetTab = iconWidgetTab,
@@ -326,14 +331,13 @@ local function initIconBrowser()
 	end);
 end
 
-local function openIconBrowser(onSelectCallback, onCancelCallback)
+function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback)
 	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
 	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
-	TRP3_ShowPopup(TRP3_IconBrowser);
+	showPopup(TRP3_IconBrowser);
 	TRP3_IconBrowserFilterBox:SetFocus();
 end
-TRP3_POPUPS.openIconBrowser = openIconBrowser;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Color browser
@@ -372,16 +376,16 @@ local function initColorBrowser()
 		local red = math.ceil(TRP3_ColorBrowserRed:GetValue());
 		local green = math.ceil(TRP3_ColorBrowserGreen:GetValue());
 		local blue = math.ceil(TRP3_ColorBrowserBlue:GetValue());
-		TRP3_HidePopups();
+		hidePopups();
 		if TRP3_ColorBrowser.callback ~= nil then
 			TRP3_ColorBrowser.callback(red, green, blue);
 		end
 	end);
 end
 
-function TRP3_OpenColorBrowser(callback)
+function TRP3_API.popup.showColorBrowser(callback)
 	TRP3_ColorBrowser.callback = callback;
-	TRP3_ShowPopup(TRP3_ColorBrowser);
+	showPopup(TRP3_ColorBrowser);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -393,7 +397,7 @@ local filteredImageList = {};
 
 local function onImageSelect()
 	assert(TRP3_ImageBrowserContent.currentImage, "No current image ...");
-	TRP3_HidePopups();
+	hidePopups();
 	if TRP3_ImageBrowser.callback then
 		TRP3_ImageBrowser.callback(filteredImageList[TRP3_ImageBrowserContent.currentImage]);
 	end
@@ -411,9 +415,9 @@ end
 local function filteredImageBrowser()
 --	TRP3_ImageBrowserContentTexture
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
-	filteredImageList = TRP3_GetImageList(filter);
+	filteredImageList = getImageList(filter);
 	local size = #filteredImageList;
-	TRP3_ImageBrowserTotal:SetText( size .. " / " .. TRP3_GetImageListSize() );
+	TRP3_ImageBrowserTotal:SetText( size .. " / " .. getImageListSize() );
 	if size > 0 then
 		TRP3_ImageBrowserSelect:Enable();
 	else
@@ -443,16 +447,20 @@ local function initImageBrowser()
 	filteredImageBrowser();
 end
 
-function TRP3_OpenImageBrowser(callback)
+function TRP3_API.popup.showImageBrowser(callback)
 	TRP3_ImageBrowser.callback = callback;
-	TRP3_ShowPopup(TRP3_ImageBrowser);
+	showPopup(TRP3_ImageBrowser);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_UI_InitPopups()
+function TRP3_API.popup.init()
+	getIconList, getIconListSize = TRP3_API.utils.resources.getIconList, TRP3_API.utils.resources.getIconListSize;
+	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
+	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
+	
 	initIconBrowser();
 	initMusicBrowser();
 	initColorBrowser();

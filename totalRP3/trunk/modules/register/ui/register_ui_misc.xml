@@ -180,7 +180,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						TRP3_HidePopups();
+						TRP3_API.popup.hidePopups();
 					</OnClick>
 				</Scripts>
 			</Button>

@@ -3,8 +3,8 @@
 --]]
 
 -- Imports
-local Globals = TRP3_GLOBALS;
-local Log = TRP3_UTILS.log;
+local Globals = TRP3_API.globals;
+local Log = TRP3_API.utils.log;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOADING SEQUENCE
@@ -20,36 +20,33 @@ function Globals.addon:OnEnable()
 	Log.log("OnEnable() START");
 	Globals.build(); -- Get info we can't have earlier
 	
-	TRP3_Flyway_Patches(); -- Adapt saved variables structures between versions
-	TRP3_MODULE.init();
-	TRP3_MODULE.initModules();
+	TRP3_API.flyway.applyPatches(); -- Adapt saved variables structures between versions
+	TRP3_API.module.init();
+	TRP3_API.module.initModules(); -- Call the init callback on all modules
 	
 	-- Inits logic
-	TRP3_LOCALE.init();
-	TRP3_COMM.init();
-	TRP3_COMM.broadcast.init();
-	TRP3_InitProfiles();
-	TRP3_InitRegister();
-	TRP3_TOOLBAR.init();
-	TRP3_DASHBOARD.init();
-	TRP3_TARGET_FRAME.init();
-	TRP3_InitMinimapButton();
-	TRP3_NAVIGATION.Init();
-	TRP3_UI_InitRegister();
-	TRP3_UI_InitPopups();
-	TRP3_UI_InitConfiguration();
+	TRP3_API.locale.init();
+	TRP3_API.communication.init();
+	TRP3_API.communication.broadcast.init();
+	TRP3_API.profile.init();
+	TRP3_API.toolbar.init();
+	TRP3_API.dashboard.init();
+	TRP3_API.target.init();
+	TRP3_API.ui.initMinimapButton();
+	TRP3_API.navigation.init();
+	TRP3_API.register.init();
+	TRP3_API.popup.init();
+	TRP3_API.configuration.init();
 	
-	print(TRP3_L("GEN_WELCOME_MESSAGE")); -- Welcome \o/
+	print(TRP3_API.locale.getText("GEN_WELCOME_MESSAGE")); -- Welcome \o/
 	-- Version \o/
-	print(TRP3_L("GEN_WELCOME_VERSION"):format(Globals.version_display));
-	TRP3_MainFrameVersionText:SetText(TRP3_L("GEN_VERSION"):format(Globals.version_display));
+	print(TRP3_API.locale.getText("GEN_WELCOME_VERSION"):format(Globals.version_display));
+	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(Globals.version_display));
 	
-	TRP3_MODULE.startModules();
+	TRP3_API.module.startModules(); -- Call module callback for all modules
+	TRP3_API.module.onModuleStarted(); -- Call module callback for all modules
 	
-	-- Must be called after module start.
-	TRP3_MODULE.onModuleStarted();
-	
-	TRP3_NAVIGATION.menu.selectMenu("main_00_dashboard"); -- Select first menu
+	TRP3_API.navigation.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	
 	Log.log("OnEnable() DONE");
 end

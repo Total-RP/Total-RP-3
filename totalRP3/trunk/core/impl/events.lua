@@ -3,7 +3,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Public accessor
-TRP3_EVENTS = {
+TRP3_API.events = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -21,7 +21,7 @@ TRP3_EVENTS = {
 };
 
 -- TRP3 imports
-local Utils = TRP3_UTILS;
+local Utils = TRP3_API.utils;
 local Log = Utils.log;
 local assert, tostring, type, tinsert, pairs = assert, tostring, type, tinsert, pairs;
 
@@ -40,11 +40,11 @@ local function registerEvent(event)
 end
 
 -- Register main Total RP 3 events
-for event, eventID in pairs(TRP3_EVENTS) do
+for event, eventID in pairs(TRP3_API.events) do
 	registerEvent(eventID);
 end
 
-TRP3_EVENTS.registerEvent = registerEvent;
+TRP3_API.events.registerEvent = registerEvent;
 
 local function listenToEvent(event, handler)
 	assert(event, "Event must be set.");
@@ -52,16 +52,16 @@ local function listenToEvent(event, handler)
 	assert(handler and type(handler) == "function", "Handler must be a function");
 	tinsert(REGISTERED_EVENTS[event], handler);
 end
-TRP3_EVENTS.listenToEvent = listenToEvent;
+TRP3_API.events.listenToEvent = listenToEvent;
 
-TRP3_EVENTS.listenToEvents = function(events, handler)
+TRP3_API.events.listenToEvents = function(events, handler)
 	assert(events and type(events) == "table", "Events must be a table.");
 	for _, event in pairs(events) do
 		listenToEvent(event, handler);
 	end
 end
 
-TRP3_EVENTS.fireEvent = function(event, ...)
+TRP3_API.events.fireEvent = function(event, ...)
 	assert(event, "Event must be set.");
 	assert(REGISTERED_EVENTS[event], "Unknown event: " .. tostring(event));
 	for _, handler in pairs(REGISTERED_EVENTS[event]) do

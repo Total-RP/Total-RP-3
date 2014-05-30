@@ -7,11 +7,11 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Config
-local Utils = TRP3_UTILS;
-local getConfigValue, registerConfigKey, setConfigValue = TRP3_CONFIG.getValue, TRP3_CONFIG.registerConfigKey, TRP3_CONFIG.setValue;
-local math, GetCursorPosition, Minimap, UIParent, cos, sin = math, GetCursorPosition, Minimap, UIParent, cos, sin;
-local setTooltipForFrame = TRP3_UI_UTILS.tooltip.setTooltipForFrame;
-local color, loc = TRP3_UTILS.str.color, TRP3_L;
+local Utils = TRP3_API.utils;
+local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
+local math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat = math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat;
+local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+local color, loc = TRP3_API.utils.str.color, TRP3_API.locale.getText;
 local CONFIG_MINIMAP_POS = "minimap_pos";
 local minimapButton;
 
@@ -38,8 +38,8 @@ local function minimapButton_DraggingFrame_OnUpdate(self)
 end
 
 -- Initialize the minimap icon button
-function TRP3_InitMinimapButton()
-	local toggleMainPane, toggleToolbar = TRP3_NAVIGATION.switchMainFrame, TRP3_SwitchToolbar;
+function TRP3_API.ui.initMinimapButton()
+	local toggleMainPane, toggleToolbar = TRP3_API.navigation.switchMainFrame, TRP3_SwitchToolbar;
 	minimapButton = TRP3_MinimapButton;
 
 	registerConfigKey(CONFIG_MINIMAP_POS, 202);
