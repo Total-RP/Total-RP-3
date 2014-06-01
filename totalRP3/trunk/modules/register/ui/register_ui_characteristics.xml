@@ -231,11 +231,6 @@
 						<Anchors>	
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_UI_CharacteristicsEditButton();
-							</OnClick>
-						</Scripts>
 					</Button>
 				</Frames>
 				<Layers>
@@ -318,22 +313,12 @@
 						<Anchors>	
 							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
 						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_UI_CharacteristicsSaveButton();
-							</OnClick>
-						</Scripts>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_CancelButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
 						<Anchors>	
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_Edit_SaveButton"/>
 						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_UI_CharacteristicsCancelButton();
-							</OnClick>
-						</Scripts>
 					</Button>
 					<EditBox name="TRP3_RegisterCharact_Edit_TitleField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>	

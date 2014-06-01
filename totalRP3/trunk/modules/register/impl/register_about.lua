@@ -18,7 +18,8 @@ local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
 local getConfigValue = TRP3_API.configuration.getValue;
 local CreateFrame = CreateFrame;
-local assert, tinsert, type, wipe, _G, strconcat = assert, tinsert, type, wipe, _G, strconcat;
+local tostring = tostring;
+local assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math = assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
@@ -34,69 +35,23 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
+local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---getDefaultProfile().player.about = {
---	v = 1,
---	TE = 1,
---	T1 = {
---	
---	},
---	T2 = {
---	
---	},
---	T3 = {
---		PH = {}, PS = {}, HI = {}
---	},
---}
-
--- Mock
 getDefaultProfile().player.about = {
 	v = 1,
 	TE = 1,
-	BK = 1,
-	MU = "ZoneMusic\\GrizzlyHills\\GH_Intro1Uni01",
 	T1 = {
-		TX = [[{h1}A big left title{/h1}
-{h1:c}A big centered title{/h1}
-{h1:r}A big right title{/h1}
-{h3}A left title{/h3}
-{h3:c}A centered title{/h3}
-{h3:r}A right title{/h3}
-{img:Interface\Challenges\challenges-bronze:128:128}
-{p}{col:r}This is my description as a {col:ff00ff}dragon !{/col}
-
-Le poème en prose a pour origine la prose poétique. Toutefois,{fake_balise} la prose poétique restait de la prose, un moyen supplémentaire pour le romancier, une marque de son style, sans constituer une véritable forme de poème. Autour de 1800, pendant que se constitue le romantisme, les aspirations des écrivains tendent de plus en plus vers l'absolu. La poésie suscite à nouveau de l'intérêt (contrairement au siècle des Lumières où elle était considérée comme un ornement) et la versification sera assouplie. Cependant, cela ne suffit pas pour certains tempéraments, qui se soumettent plus difficilement à la tyrannie de la rime et du mètre. François-René de Chateaubriand, très porté vers le lyrisme, mais peu vers le vers, écrit une épopée en prose, Les Martyrs (1809).{/p}
-{p:r}{icon:Ability_Rogue_CheatDeath:50}{/p}]],
+	
 	},
 	T2 = {
-		{
-			TX = "Mon beau texte",
-		},
-		{
-			IC = "ACHIEVEMENT_GUILDPERK_LADYLUCK",
-			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
-			BK = 2,
-		},
-		{
-			IC = "ACHIEVEMENT_GUILDPERK_CASHFLOW_RANK2",
-			TX = "Mon beau texte 3",
-			BK = 3,
-		},
+	
 	},
 	T3 = {
-		PH = {
-			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
-		},
-		PS = {
-			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
-		},
-		HI = {
-			TX = [[This Widget API reference and the term Widget refer to the UIObject Lua API and the specific APIs of those Lua UIObjects found in WoW. This is a list of all of the Widget API UIObject specific functions found by scanning the in-game environment. You may also be interested in the various Widget handlers and XML UI.]],
-		},
+		PH = {}, PS = {}, HI = {}
 	},
 }
 
@@ -151,12 +106,21 @@ local TAGS_INFO = {
 	}
 }
 
+local function shouldShowTemplate1(dataTab)
+	local templateData = dataTab.T1 or {};
+	return templateData.TX and templateData.TX:len() > 0;
+end
+
 local function showTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
-	
-	local text = Utils.str.toHTML(templateData.TX or "");
+	if shouldShowTemplate1(dataTab) then
+		local text = Utils.str.toHTML(templateData.TX or "");
+		TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
+	else
+		TRP3_RegisterAbout_AboutPanel_Empty:Show();
+		TRP3_RegisterAbout_AboutPanel_Template1:SetText("");
+	end
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
-	TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
 end
 
 local function insertTag(tag, index)
@@ -238,6 +202,17 @@ end
 local template2Frames = {};
 local TEMPLATE2_PADDING = 30;
 
+local function shouldShowTemplate2(dataTab)
+	local templateData = dataTab.T2 or {};
+	local atLeastOneFrame = false;
+	for _, frameTab in pairs(templateData) do
+		if frameTab.TX and frameTab.TX:len() > 0 then
+			atLeastOneFrame = true;
+		end
+	end
+	return atLeastOneFrame;
+end
+
 local function showTemplate2(dataTab)
 	local templateData = dataTab.T2 or {};
 	
@@ -280,14 +255,22 @@ local function showTemplate2(dataTab)
 		local height = math.max(text:GetHeight(), icon:GetHeight()) + TEMPLATE2_PADDING;
 		frame:SetHeight(height);
 		
-		frame:Show();
-		previous = frame;
+		if frameTab.TX and frameTab.TX:len() > 0 then
+			frame:Show();
+			previous = frame;
+		else
+			frame:Hide();
+		end
+		
 		frameIndex = frameIndex + 1;
 		bool = not bool;
 	end
 	
+	if not shouldShowTemplate2(dataTab) then
+		TRP3_RegisterAbout_AboutPanel_Empty:Show();
+	end
+	
 	TRP3_RegisterAbout_AboutPanel_Template2:Show();
-	TRP3_RegisterAbout_AboutPanel_Template2Title:SetText(safeGet("player/characteristics/firstName", Globals.player));
 end
 
 local template2EditFrames = {};
@@ -328,7 +311,7 @@ local function template2DownFrame(button)
 	refreshTemplate2EditDisplay();
 end
 
-refreshTemplate2EditDisplay = function()
+function refreshTemplate2EditDisplay()
 	-- Hide all
 	for _, frame in pairs(template2EditFrames) do
 		frame:Hide();
@@ -438,22 +421,44 @@ local function onHistoIconSelected(icon)
 	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or Globals.icons.default);
 end
 
+local function shouldShowTemplate3(dataTab)
+	local atLeastOneFrame = false;
+	local templateData = dataTab.T3 or {};
+	local datas = {templateData.PH, templateData.PS, templateData.HI};
+	for i=1, 3 do
+		local data = datas[i] or {};
+		if data.TX and data.TX:len() > 0 then
+			atLeastOneFrame = true;
+		end
+	end
+	return atLeastOneFrame;
+end
+
 local function showTemplate3(dataTab)
 	local templateData = dataTab.T3 or {};
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
+	
 	for i=1, 3 do
 		local data = datas[i] or {};
-		local icon = Utils.str.icon(data.IC or Globals.icons.default, 25);
-		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
-		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
-		title:SetText(icon.."    "..titles[i].."    "..icon);
-		text:SetText(Utils.str.convertTextTags(data.TX));
-		setBkg(frame, data.BK);
-		frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
+		if data.TX and data.TX:len() > 0 then
+			local icon = Utils.str.icon(data.IC or Globals.icons.default, 25);
+			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
+			local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
+			title:SetText(icon.."    "..titles[i].."    "..icon);
+			text:SetText(Utils.str.convertTextTags(data.TX));
+			setBkg(frame, data.BK);
+			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
+			frame:Show();
+		else
+			frame:Hide();
+			frame:SetHeight(1);
+		end
 	end
-
+	if not shouldShowTemplate3(dataTab) then
+		TRP3_RegisterAbout_AboutPanel_Empty:Show();
+	end
 	TRP3_RegisterAbout_AboutPanel_Template3:Show();
 end
 
@@ -563,7 +568,7 @@ local function compressData()
 	end
 end
 
-function TRP3_RegisterAboutGetExchangeData()
+function TRP3_API.register.player.getAboutExchangeData()
 	if currentCompressed ~= nil then
 		return currentCompressed;
 	else
@@ -678,6 +683,11 @@ local function save()
 	wipe(dataTab);
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab, draftData);
+	-- Reinit votes
+	if dataTab.vote then
+		wipe(dataTab.vote);
+	end
+	dataTab.vote = nil;
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
@@ -733,6 +743,7 @@ local function refreshDisplay()
 	TRP3_RegisterAbout_AboutPanel_Template1:Hide();
 	TRP3_RegisterAbout_AboutPanel_Template2:Hide();
 	TRP3_RegisterAbout_AboutPanel_Template3:Hide();
+	TRP3_RegisterAbout_AboutPanel_Empty:Hide();
 	TRP3_RegisterAbout_AboutPanel:Hide();
 	TRP3_RegisterAbout_AboutPanel_Edit:Hide();
 	
@@ -744,20 +755,31 @@ local function refreshDisplay()
 	end
 end
 
-function TRP3_onPlayerAboutShow()
+local function showAboutTab()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer:Hide();
 	TRP3_RegisterAbout:Show();
 	isEditMode = false;
 	refreshDisplay();
 end
+TRP3_API.register.ui.showAboutTab = showAboutTab;
 
-function TRP3_UI_AboutEditButton()
+local function onEdit()
 	if draftData then
 		wipe(draftData);
 		draftData = nil;
 	end
 	isEditMode = true;
 	refreshDisplay();
+end
+
+function TRP3_API.register.ui.shouldShowCharacterAboutTab(unitID)
+	if hasProfile(unitID) and getUnitIDProfile(unitID).about then
+		local dataTab = getUnitIDProfile(unitID).about;
+		return (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
+			or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
+			or (dataTab.TE == 3 and shouldShowTemplate3(dataTab));
+	end
+	return false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -798,6 +820,10 @@ end
 -- UI MISC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local TRP3_RegisterAbout_AboutPanel_Thumb = TRP3_RegisterAbout_AboutPanel_Thumb;
+local TRP3_RegisterAbout_AboutPanel_EditButton = TRP3_RegisterAbout_AboutPanel_EditButton;
+local TRP3_RegisterAbout_AboutPanel_MusicPlayer = TRP3_RegisterAbout_AboutPanel_MusicPlayer;
+
 local function onPlayerAboutRefresh()
 	if getConfigValue("register_about_use_vote") then
 		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
@@ -810,13 +836,9 @@ local function onPlayerAboutRefresh()
 	end
 end
 
-function TRP3_UI_AboutSaveButton()
+local function onSave()
 	save();
-	TRP3_onPlayerAboutShow();
-end
-
-function TRP3_UI_AboutCancelButton()
-	TRP3_onPlayerAboutShow();
+	showAboutTab();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -841,7 +863,11 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected) end );
 	TRP3_RegisterAbout_Edit_Music_Action:SetScript("OnClick", onMusicEditClicked);
 	TRP3_RegisterAbout_Edit_Template2_Add:SetScript("OnClick", template2AddFrame);
+	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
+	TRP3_RegisterAbout_Edit_SaveButton:SetScript("OnClick", onSave);
+	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 	
+	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetText(loc("CM_IMAGE"));
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetText(loc("CM_ICON"));

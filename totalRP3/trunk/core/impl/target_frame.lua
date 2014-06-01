@@ -21,6 +21,7 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local getMiscPresetDropListData, setGlanceSlotPreset;
 
 local CONFIG_TARGET_USE = "target_use";
 
@@ -132,12 +133,12 @@ local currentTarget = nil;
 
 local function onPeekSelection(value, button)
 	if value then
-		TRP3_RegisterMiscSetPeek(button.slot, value);
+		setGlanceSlotPreset(button.slot, value);
 	end
 end
 
 local function onPeekClickMine(button)
-	displayDropDown(button, TRP3_RegisterMiscGetPeekPresetStructure(), function(value) onPeekSelection(value, button) end, 0, true);
+	displayDropDown(button, getMiscPresetDropListData(), function(value) onPeekSelection(value, button) end, 0, true);
 end
 
 local function getInfo(unitID)
@@ -227,6 +228,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.target.init = function()
+	setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
+	getMiscPresetDropListData = TRP3_API.register.ui.getMiscPresetDropListData;
 	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;

@@ -103,17 +103,37 @@ end
 -- Table utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- Print all the level 1 element of the table (not recursive dump)
+-- Print all table content (resursively)
 -- Debug purpose
-Utils.table.dump = function(tab)
-	log("Dump tab "..tostring(tab), Log.level.DEBUG);
-	if tab then
-		local i = 0;
-		for k,v in pairs(tab) do
-			log(k.." : "..tostring(v).." ( "..type(v).." )", Log.level.DEBUG);
-			i = i + 1;
+-- Better than /dump as it prints one message per line (avoid chat show limit)
+local dumpColor1, dumpColor2, dumpColor3 = "|cffffaa00", "|cff00ff00", "|cffffff00";
+local function tableDump(table, level, withCount)
+	local i = 0;
+	local dumpIndent = "";
+	
+	for indent = 1, level, 1 do
+		dumpIndent = dumpIndent .. "    ";
+	end
+	
+	for key, value in pairs(table) do
+		if type(value) == "table" then
+			print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
+			tableDump(value, level + 1);
+			print(dumpIndent .. dumpColor3 .. "}");
+		else
+			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. " <" .. type(value) ..">");
 		end
-		log("Table size: "..i, Log.level.DEBUG);
+		i = i + 1;
+	end
+	if withCount then
+		print(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i));
+	end
+end
+
+Utils.table.dump = function(table, withCount)
+	print(dumpColor1 .. "Dump table "..tostring(table));
+	if table then
+		tableDump(table, 1, withCount);
 	end
 end
 
@@ -328,8 +348,10 @@ local function convertTextTag(tag)
 end
 
 local function convertTextTags(text)
-	text = text:gsub("%{(.-)%}", convertTextTag);
-	return text;
+	if text then
+		text = text:gsub("%{(.-)%}", convertTextTag);
+		return text;
+	end
 end
 Utils.str.convertTextTags = convertTextTags;
 

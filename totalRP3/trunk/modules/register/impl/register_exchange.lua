@@ -13,15 +13,19 @@ local Events = TRP3_API.events;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local getCharacterExchangeData = TRP3_API.register.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-local isUnitIDIgnored, shouldUpdateInformation = TRP3_API.register.isUnitIDIgnored;
-local addCharacter = TRP3_API.register.addCharacter, TRP3_API.register.shouldUpdateInformation;
+local isUnitIDIgnored, shouldUpdateInformation = TRP3_API.register.isUnitIDIgnored, TRP3_API.register.shouldUpdateInformation;
+local addCharacter = TRP3_API.register.addCharacter;
 local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local playerAPI = TRP3_API.register.player;
+local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
+local getAboutExchangeData = playerAPI.getAboutExchangeData;
+local getMiscExchangeData = playerAPI.getMiscExchangeData;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
-local tinsert, time, type = tinsert, time, type;
+local tinsert, time, type, pairs = tinsert, time, type, pairs;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -154,11 +158,11 @@ end
 local function incomingInformationType(informationType, senderID)
 	local data = nil;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
-		data = TRP3_RegisterCharacteristicsGetExchangeData();
+		data = getCharExchangeData();
 	elseif informationType == registerInfoTypes.ABOUT then
-		data = TRP3_RegisterAboutGetExchangeData();
+		data = getAboutExchangeData();
 	elseif informationType == registerInfoTypes.MISC then
-		data = TRP3_RegisterMiscGetExchangeData();
+		data = getMiscExchangeData();
 	elseif informationType == registerInfoTypes.CHARACTER then
 		data = getCharacterExchangeData();
 	end
@@ -222,7 +226,7 @@ end
 local ALERT_FOR_SIZE = 20;
 
 local function checkPlayerDataWeight()
-	local totalData = {TRP3_RegisterCharacteristicsGetExchangeData(), TRP3_RegisterAboutGetExchangeData(), TRP3_RegisterMiscGetExchangeData(), getCharacterExchangeData()};
+	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
 		log(("Profile to heavy ! It would take %s messages to send."):format(computedSize));

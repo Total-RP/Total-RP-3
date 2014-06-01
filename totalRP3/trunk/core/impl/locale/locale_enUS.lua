@@ -145,6 +145,7 @@ local LOCALE_EN = {
 		REG_PLAYER_ABOUT_VOTE_SENDING_OK = "Your vote has been sent to %s !",
 		REG_PLAYER_ABOUT_VOTES = "Statistics",
 		REG_PLAYER_ABOUT_VOTES_R = "|cff00ff00%s like this content\n|cffff0000%s dislike this content",
+		REG_PLAYER_ABOUT_EMPTY = "No description for this character",
 		REG_PLAYER_STYLE_RPSTYLE_SHORT = "RP style",
 		REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
 		REG_PLAYER_STYLE_HIDE = "Do not show",

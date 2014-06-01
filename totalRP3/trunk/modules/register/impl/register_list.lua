@@ -24,6 +24,8 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
+local getCompleteName = TRP3_API.register.getCompleteName;
+local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -83,7 +85,7 @@ local function decorateLine(line, unitID)
 	local name = unitName;
 	if hasProfile(unitID) then
 		local profile = getUnitIDProfile(unitID);
-		name = TRP3_GetCompleteName(profile.characteristics or {}, unitName, true);
+		name = getCompleteName(profile.characteristics or {}, unitName, true);
 		_G[line:GetName().."Name"]:SetText(name);
 		if profile.characteristics and profile.characteristics.IC then
 			name = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
@@ -123,7 +125,7 @@ local function refreshCharacters()
 		if not nameIsConform then -- Don't check profile if is already conform
 			if hasProfile(unitID) then
 				local profile = getUnitIDProfile(unitID);
-				local fullName = TRP3_GetCompleteName(profile.characteristics or {}, name, true);
+				local fullName = getCompleteName(profile.characteristics or {}, name, true);
 				nameIsConform = fullName:lower():find(nameSearch);
 			end
 		end

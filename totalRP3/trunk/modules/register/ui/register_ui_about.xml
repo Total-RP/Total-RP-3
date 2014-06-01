@@ -232,22 +232,12 @@
 						<Anchors>	
 							<Anchor point="TOPRIGHT" x="-15" y="-5"/>
 						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_UI_AboutSaveButton();
-							</OnClick>
-						</Scripts>
 					</Button>
 					<Button name="TRP3_RegisterAbout_Edit_CancelButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
 						<Anchors>	
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_SaveButton"/>
 						</Anchors>
-						<Scripts>
-							<OnClick>
-								TRP3_UI_AboutCancelButton();
-							</OnClick>
-						</Scripts>
 					</Button>
 					<Frame name="TRP3_RegisterAbout_Edit_Music">
 						<Size x="10" y="10"/>
@@ -480,6 +470,17 @@
 					<Anchor point="TOP" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="0"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						 <FontString name="TRP3_RegisterAbout_AboutPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
 					<ScrollFrame name="TRP3_RegisterAbout_AboutPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
@@ -504,10 +505,10 @@
 										</Anchors>
 										<Layers>
 											<Layer level="OVERLAY">
-												<FontString name="TRP3_RegisterAbout_AboutPanel_Template2Title" text="[Title]" inherits="GameFontNormalLarge">
+												<FontString name="TRP3_RegisterAbout_AboutPanel_Template2Title" inherits="GameFontNormalLarge">
 													<Size x="0" y="10"/>
 													<Anchors>
-														<Anchor point="TOPLEFT" x="0" y="-5"/>
+														<Anchor point="TOPLEFT" x="0" y="25"/>
 														<Anchor point="RIGHT" x="0" y="0"/>
 													</Anchors>
 													<Color b="0.95" r="0.95" g="0.95"/>
@@ -610,11 +611,6 @@
 								<Anchors>	
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
-								<Scripts>
-									<OnClick>
-										TRP3_UI_AboutEditButton();
-									</OnClick>
-								</Scripts>
 							</Button>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Thumb">
 								<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">

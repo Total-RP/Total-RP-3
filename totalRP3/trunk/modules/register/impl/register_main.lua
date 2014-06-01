@@ -5,7 +5,9 @@
 
 -- Public accessor
 TRP3_API.register = {
-	inits = {}
+	inits = {},
+	player = {},
+	ui = {},
 };
 
 -- imports
@@ -32,6 +34,7 @@ local assert, tostring, time, wipe, strconcat = assert, tostring, time, wipe, st
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local showCharacteristicsTab, showAboutTab, showMiscTab;
 
 -- Saved variables references
 local profiles;
@@ -175,8 +178,8 @@ TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
 --- Raises error if unknown unitID
 function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
-	local character = getUnitIDCharacter(unitID);
 	if infoType == registerInfoTypes.CHARACTER then
+		local character = getUnitIDCharacter(unitID);
 		return not character.v or character.v ~= version;
 	else
 		--- Raises error if unit hasn't profile ID or no profile exists
@@ -236,11 +239,11 @@ local function onReceivedInfo(unitID, infoType)
 		assert(context, "No context for page player_main !");
 		if unitID == context.unitID then
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
-				TRP3_onPlayerAboutShow();
+				showAboutTab();
 			elseif  infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
-				TRP3_onCharacteristicsShown();
+				showCharacteristicsTab();
 			elseif  infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
-				TRP3_onPlayerPeekShow();
+				showMiscTab();
 			end
 		end
 	end
@@ -267,11 +270,11 @@ local function createTabBar()
 		TRP3_RegisterAbout:Hide();
 		TRP3_RegisterMisc:Hide();
 		if value == 1 then
-			TRP3_onCharacteristicsShown();
+			showCharacteristicsTab();
 		elseif value == 2 then
-			TRP3_onPlayerAboutShow();
+			showAboutTab();
 		elseif value == 3 then
-			TRP3_onPlayerPeekShow();
+			showMiscTab();
 		end
 	end
 	);
@@ -287,11 +290,25 @@ local function showTabs(context)
 	tabGroup:SelectTab(1);
 end
 
+function TRP3_API.register.ui.getSelectedTabIndex(infoType)
+	return tabGroup.current;
+end
+
+function TRP3_API.register.ui.isTabSelected(infoType)
+	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
+		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
+		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.register.init()
+	showCharacteristicsTab = TRP3_API.register.ui.showCharacteristicsTab;
+	showAboutTab = TRP3_API.register.ui.showAboutTab;
+	showMiscTab = TRP3_API.register.ui.showMiscTab;
+
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end

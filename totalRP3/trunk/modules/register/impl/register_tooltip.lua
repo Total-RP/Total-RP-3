@@ -17,6 +17,7 @@ local Config = TRP3_API.configuration;
 local getConfigValue = TRP3_API.configuration.getValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local strconcat = strconcat;
+local getCompleteName = TRP3_API.register.getCompleteName;
 local getOtherCharacter = TRP3_API.register.getUnitIDCharacter;
 local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -191,7 +192,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
-	local completeName = TRP3_GetCompleteName(info.characteristics or {}, targetName, not showTitle());
+	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
 	local leftIcons = "";
 

@@ -315,15 +315,16 @@ end
 -- Misc logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_onPlayerPeekShow()
+local function showMiscTab()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	TRP3_RegisterMisc:Show();
 	displayPeek(context);
 	displayRPStyle(context);
 end
+TRP3_API.register.ui.showMiscTab = showMiscTab;
 
-function TRP3_RegisterMiscGetExchangeData()
+function TRP3_API.register.player.getMiscExchangeData()
 	return get("player/misc");
 end
 
@@ -338,11 +339,11 @@ local titleElement, noneElement;
 local rebuildPresetListBox;
 local presetStructureForTargetFrame = {};
 
-function TRP3_RegisterMiscGetPeekPresetStructure()
+function TRP3_API.register.ui.getMiscPresetDropListData()
 	return presetStructureForTargetFrame;
 end
 
-function TRP3_RegisterMiscSetPeek(slot, presetID)
+function TRP3_API.register.player.setGlanceSlotPreset(slot, presetID)
 	if presetID == -1 then
 		applyPeekSlot(slot, nil, nil, nil, nil);
 	else
@@ -425,7 +426,7 @@ local function onPresetSelected(presetAction)
 	end
 end
 
-rebuildPresetListBox = function()
+function rebuildPresetListBox()
 	setupListBox(TRP3_RegisterMiscEdit_Glance_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
 	TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
 end

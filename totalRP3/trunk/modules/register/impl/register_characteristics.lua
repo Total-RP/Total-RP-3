@@ -12,7 +12,7 @@ local tcopy = Utils.table.copy;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
-local assert, type, wipe = assert, type, wipe;
+local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -22,6 +22,7 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
+local CreateFrame = CreateFrame;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -31,71 +32,12 @@ local PSYCHO_PRESETS_DROPDOWN;
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
---getDefaultProfile().player.characteristics = {
---	v = 1,
---	RA = Globals.player_race_loc,
---	CL = Globals.player_class_loc,
---	MI = {},
---	PS = {}
---};
-
--- Mock
 getDefaultProfile().player.characteristics = {
 	v = 1,
-	FN = "Telkos le fou",
-	LN = "Arkale",
-	TI = "Sir",
-	FT = UnitPVPName("player"),
-	IC = "ABILITY_SEAL",
-	RA = "Drrrrrragon",
-	CL = "Ingénieur",
-	RE = "Hurlevent",
-	BP = "Berceau de l'hiver",
-	AG = "47 balais",
-	EC = "Emerald green",
-	HE = "182 cm",
-	WE = "92 kg",
-	MI = {
-		{
-			NA = "Strength",
-			VA = "Very strong !",
-			IC = "Ability_Warrior_StrengthOfArms",
-		},
-		{
-			NA = "Intelligence",
-			VA = "Very smart either !",
-			IC = "Spell_Holy_ArcaneIntellect",
-		},
-		{
-			NA = "Mon custom avec un nom foutrement trop long juste pour faire chier",
-			VA = "Very smart either ! Very smart either ! Very smart either ! Very smart either ! Very smart either !",
-			IC = "Spell_Holy_ArcaneIntellect",
-		},
-	},
-	PS = {
-		{
-			LT = "Chaotic",
-			LI = "INV_Inscription_TarotChaos",
-			RT = "Loyal",
-			RI = "Spell_Shaman_AncestralAwakening",
-			VA = 2,
-		},
-		{
-			LT = "A very very long left term",
-			LI = "INV_Inscription_TarotChaos",
-			RT = "A very very long right term",
-			RI = "Spell_Shaman_AncestralAwakening",
-			VA = 5,
-		},
-		{
-			ID = 1,
-			VA = 4
-		},
-		{
-			ID = 10,
-			VA = 1
-		}
-	},
+	RA = Globals.player_race_loc,
+	CL = Globals.player_class_loc,
+	MI = {},
+	PS = {}
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -116,7 +58,7 @@ local function compressData()
 	end
 end
 
-function TRP3_RegisterCharacteristicsGetExchangeData()
+function TRP3_API.register.player.getCharacteristicsExchangeData()
 	if currentCompressed ~= nil then
 		return currentCompressed;
 	else
@@ -143,7 +85,7 @@ local registerCharLocals = {
 local miscCharFrame = {};
 local psychoCharFrame = {};
 
-function TRP3_GetCompleteName(characteristicsTab, name, hideTitle)
+local function getCompleteName(characteristicsTab, name, hideTitle)
 	local text = "";
     if not hideTitle and characteristicsTab.TI then
         text = strconcat(characteristicsTab.TI, " ");
@@ -154,6 +96,7 @@ function TRP3_GetCompleteName(characteristicsTab, name, hideTitle)
     end
     return text;
 end
+TRP3_API.register.getCompleteName = getCompleteName;
 
 local function refreshPsycho(psychoLine, value)
 	local dotIndex;
@@ -196,7 +139,7 @@ local function setConsultDisplay(context)
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	
 	-- Icon, complete name and titles
-	local completeName = TRP3_GetCompleteName(dataTab, unitName);
+	local completeName = getCompleteName(dataTab, unitName);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
@@ -610,13 +553,14 @@ local function refreshDisplay()
 	end
 end
 
-function TRP3_onCharacteristicsShown()
+local function showCharacteristicsTab()
 	TRP3_RegisterCharact:Show();
 	isEditMode = false;
 	refreshDisplay();
 end
+TRP3_API.register.ui.showCharacteristicsTab = showCharacteristicsTab;
 
-function TRP3_UI_CharacteristicsEditButton()
+local function onEdit()
 	if draftData then
 		wipe(draftData);
 		draftData = nil;
@@ -625,13 +569,9 @@ function TRP3_UI_CharacteristicsEditButton()
 	refreshDisplay();
 end
 
-function TRP3_UI_CharacteristicsSaveButton()
+local function onSave()
 	saveCharacteristics();
-	TRP3_onCharacteristicsShown();
-end
-
-function TRP3_UI_CharacteristicsCancelButton()
-	TRP3_onCharacteristicsShown();
+	showCharacteristicsTab();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -740,6 +680,9 @@ function TRP3_API.register.inits.characteristicsInit()
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
 	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end );
+	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
+	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
+	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
 	
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
