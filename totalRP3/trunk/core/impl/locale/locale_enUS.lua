@@ -301,6 +301,8 @@ local LOCALE_EN = {
 		TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
 		TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
 		TF_OPEN_CHARACTER = "Show character page",
+		TF_PLAY_THEME = "Play character theme",
+		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop music",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE

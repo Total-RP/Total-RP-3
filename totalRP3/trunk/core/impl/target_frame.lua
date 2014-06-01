@@ -45,7 +45,7 @@ local function createButton(index)
 	end);
 	uiButton:SetScript("OnClick", function(self, button)
 		if self.onClick then
-			self.onClick(self.unitID, self.targetInfo);
+			self.onClick(self.unitID, self.targetInfo, button);
 		end
 	end);
 	return uiButton;

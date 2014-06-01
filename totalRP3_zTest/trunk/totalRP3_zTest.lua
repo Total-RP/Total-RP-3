@@ -15,6 +15,10 @@ local Comm = TRP3_API.communication;
 -- DEBUG
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+function TRP3_DUMP_API()
+	Utils.table.dump(TRP3_API);
+end
+
 function TRP3_TEST()
 	print(string.format('%x %x %x', 255, 125, 12));
 end

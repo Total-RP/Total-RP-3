@@ -120,6 +120,8 @@ local function tableDump(table, level, withCount)
 			print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
 			tableDump(value, level + 1);
 			print(dumpIndent .. dumpColor3 .. "}");
+		elseif type(value) == "function" then
+			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. " <" .. type(value) ..">");
 		else
 			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. " <" .. type(value) ..">");
 		end
@@ -131,7 +133,7 @@ local function tableDump(table, level, withCount)
 end
 
 Utils.table.dump = function(table, withCount)
-	print(dumpColor1 .. "Dump table "..tostring(table));
+	print(dumpColor1 .. "Dump table ".. tostring(table));
 	if table then
 		tableDump(table, 1, withCount);
 	end

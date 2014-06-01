@@ -62,7 +62,7 @@
 				</Backdrop>
 				<Size x="140" y="32" />
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="15" />
+					<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="12" />
 				</Anchors>
 				<Frames>
 					<Button name="TRP3_TargetFrameGlanceSlot3" inherits="TRP3_TargetFrameGlanceSlotTemplate">

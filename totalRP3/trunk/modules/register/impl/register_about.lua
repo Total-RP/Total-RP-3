@@ -816,6 +816,14 @@ local function onMusicEditClicked(button)
 	displayDropDown(button, values, onMusicEditSelected, 0, true);
 end
 
+local function getUnitIDTheme(unitID)
+	if unitID == Globals.player_id then
+		return get("player/about/MU");
+	elseif isUnitIDKnown(unitID) and hasProfile(unitID) and getUnitIDProfile(unitID).about then
+		return getUnitIDProfile(unitID).about.MU;
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI MISC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -849,6 +857,28 @@ function TRP3_API.register.inits.aboutInit()
 
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
+	
+	TRP3_API.target.registerButton({
+		id = "char_music",
+		condition = function(unitID, targetInfo)
+			return getUnitIDTheme(unitID) ~= nil;
+		end,
+		onClick = function(unitID, _, button)
+			if button == "LeftButton" then
+				Utils.music.play(getUnitIDTheme(unitID));
+			else
+				Utils.music.stop();
+			end
+		end,
+		adapter = function(buttonStructure, unitID)
+			local theme = getUnitIDTheme(unitID);
+			if theme then
+				buttonStructure.tooltipSub = loc("TF_PLAY_THEME_TT"):format(Utils.music.getTitle(theme));
+			end
+		end,
+		tooltip = loc("TF_PLAY_THEME"),
+		icon = "inv_misc_drum_06"
+	});
 	
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
