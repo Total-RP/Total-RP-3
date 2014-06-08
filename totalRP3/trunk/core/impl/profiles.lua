@@ -201,15 +201,15 @@ end
 
 local function uiCreateProfile()
 	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
-	function(newName)
-		if newName and #newName ~= 0 then
-			if not uiCheckNameAvailability(newName) then return end
-			createProfile(newName);
-			uiInitProfileList();
-		end
-	end,
-	nil,
-	loc("PR_NEW_PROFILE")
+		function(newName)
+			if newName and #newName ~= 0 then
+				if not uiCheckNameAvailability(newName) then return end
+				createProfile(newName);
+				uiInitProfileList();
+			end
+		end,
+		nil,
+		Globals.player
 	);
 end
 
@@ -224,16 +224,16 @@ end
 
 local function uiEditProfile(profileID)
 	showTextInputPopup(
-	loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
-	function(newName)
-		if newName and #newName ~= 0 then
-			if not uiCheckNameAvailability(newName) then return end
-			editProfile(profileID, newName);
-			uiInitProfileList();
-		end
-	end,
-	nil,
-	profiles[profileID].profileName
+		loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+		function(newName)
+			if newName and #newName ~= 0 then
+				if not uiCheckNameAvailability(newName) then return end
+				editProfile(profileID, newName);
+				uiInitProfileList();
+			end
+		end,
+		nil,
+		profiles[profileID].profileName
 	);
 end
 

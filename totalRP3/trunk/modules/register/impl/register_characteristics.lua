@@ -12,7 +12,7 @@ local tcopy = Utils.table.copy;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
-local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G;
+local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -23,6 +23,7 @@ local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local CreateFrame = CreateFrame;
+local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -36,6 +37,7 @@ getDefaultProfile().player.characteristics = {
 	v = 1,
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
+	FN = Globals.player,
 	MI = {},
 	PS = {}
 };
@@ -118,28 +120,12 @@ local function setBkg(backgroundIndex)
 end
 
 local function setConsultDisplay(context)
-	local dataTab = nil;
-	local character = getUnitIDCharacter(context.unitID);
-	local race, class = nil;
-	local unitName, unitRealm  = Utils.str.unitIDToInfo(context.unitID);
-	if context.unitID == Globals.player_id then
-		dataTab = get("player/characteristics");
-		race = Globals.player_race_loc;
-		class = Globals.player_class_loc;
-	else
-		race = character.race or UNKNOWN;
-		class = loc("CM_CLASS_" .. (stEtN(character.class) or "UNKNOWN"));
-		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).characteristics then
-			dataTab = getUnitIDProfile(context.unitID).characteristics;
-		else
-			dataTab = {};
-		end
-	end
-	
+	local dataTab = context.profile.characteristics or Globals.empty;
+	local hasCharac, hasPsycho, hasMisc, margin;
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	
 	-- Icon, complete name and titles
-	local completeName = getCompleteName(dataTab, unitName);
+	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
@@ -155,18 +141,23 @@ local function setConsultDisplay(context)
 	
 	-- Previous var helps for layout building
 	local previous = TRP3_RegisterCharact_CharactPanel_RegisterTitle;
+	TRP3_RegisterCharact_CharactPanel_RegisterTitle:Hide();
 
 	-- Which directory chars must be shown ?
-	local shownCharacteristics = {"RA", "CL"}; -- Race and class are mandatory values
-	local shownValues = {
-		RA = stEtN(dataTab.RA) or race,
-		CL = stEtN(dataTab.CL) or class,
-	};
-	for _,attribute in pairs({"AG", "EC", "HE", "WE", "BP", "RE"}) do -- Optional values
+	local shownCharacteristics = {};
+	local shownValues = {};
+	for _,attribute in pairs({"RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE"}) do
 		if stEtN(dataTab[attribute]) then
 			tinsert(shownCharacteristics, attribute);
 			shownValues[attribute] = dataTab[attribute];
 		end
+	end
+	if #shownCharacteristics > 0 then
+		hasCharac = true;
+		TRP3_RegisterCharact_CharactPanel_RegisterTitle:Show();
+		margin = 0;
+	else
+		margin = 50;
 	end
 	
 	-- Show directory chars values
@@ -179,18 +170,19 @@ local function setConsultDisplay(context)
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
-		_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
 		_G[frame:GetName().."FieldName"]:SetText(loc(registerCharLocals[charName]));
+		_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
 		frame:Show();
 		previous = frame;
 	end
 	
 	-- Psycho chars
 	if type(dataTab.PS) == "table" and #dataTab.PS > 0 then
-		assert(type(dataTab.PS) == "table", "Error: Nil psycho data or not a table.");
+		hasPsycho = true;
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
-		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
+		margin = 0;
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
 		
 		for frameIndex, psychoStructure in pairs(dataTab.PS) do
@@ -221,9 +213,10 @@ local function setConsultDisplay(context)
 	
 	-- Misc chars
 	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
+		hasMisc = true;
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
 		
 		for frameIndex, miscStructure in pairs(dataTab.MI) do
@@ -242,6 +235,9 @@ local function setConsultDisplay(context)
 		end
 	end
 	
+	if not hasCharac and not hasPsycho and not hasMisc then
+		TRP3_RegisterCharact_CharactPanel_Empty:Show();
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -259,7 +255,7 @@ local miscEditCharFrame = {};
 local function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
 	draftData.TI = stEtN(strtrim(TRP3_RegisterCharact_Edit_TitleField:GetText()));
-	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText()));
+	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText())) or Globals.player;
 	draftData.LN = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
 	draftData.FT = stEtN(strtrim(TRP3_RegisterCharact_Edit_FullTitleField:GetText()));
 	draftData.RA = stEtN(strtrim(TRP3_RegisterCharact_Edit_RaceField:GetText()));
@@ -361,7 +357,7 @@ local function onPsychoDelete(self)
 	setEditDisplay();
 end
 
-setEditDisplay = function()
+function setEditDisplay()
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
 		local dataTab = get("player/characteristics");
@@ -376,8 +372,8 @@ setEditDisplay = function()
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 	
-	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or Globals.player_race_loc);
-	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or Globals.player_class_loc);
+	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or "");
+	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or "");
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
@@ -524,11 +520,12 @@ end
 local function refreshDisplay()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == Globals.player_id;
+	assert(context.profile, "No profile in context");
 
 	-- Hide all
 	TRP3_RegisterCharact_NamePanel:Hide();
 	TRP3_RegisterCharact_CharactPanel:Hide();
+	TRP3_RegisterCharact_CharactPanel_Empty:Hide();
 	TRP3_RegisterCharact_Edit_NamePanel:Hide();
 	TRP3_RegisterCharact_Edit_CharactPanel:Hide();
 	for _, frame in pairs(registerCharFrame) do frame:Hide(); end
@@ -537,12 +534,12 @@ local function refreshDisplay()
 	
 	-- IsSelf ?
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
-	if isSelf then
+	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
 	end
 	
 	if isEditMode then
-		assert(isSelf, "Trying to show Characteristics edition for another unitID than me ...");
+		assert(context.isPlayer, "Trying to show Characteristics edition but is not mine ...");
 		TRP3_RegisterCharact_Edit_NamePanel:Show();
 		TRP3_RegisterCharact_Edit_CharactPanel:Show();
 		setEditDisplay();
@@ -706,6 +703,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setupFieldSet(TRP3_RegisterCharact_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	
+	TRP3_RegisterCharact_CharactPanel_Empty:SetText(loc("REG_PLAYER_NO_CHAR"));
 	TRP3_RegisterCharact_Edit_MiscAdd:SetText(loc("REG_PLAYER_MISC_ADD"));
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetText(loc("REG_PLAYER_PSYCHO_ADD"));
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetText(loc("CM_CANCEL"));

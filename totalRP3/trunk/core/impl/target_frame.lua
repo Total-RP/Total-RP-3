@@ -22,6 +22,7 @@ local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getMiscPresetDropListData, setGlanceSlotPreset;
+local hasProfile
 
 local CONFIG_TARGET_USE = "target_use";
 
@@ -144,7 +145,7 @@ end
 local function getInfo(unitID)
 	if unitID == Globals.player_id then
 		return get("player") or EMPTY;
-	elseif isUnitIDKnown(unitID) then
+	elseif isUnitIDKnown(unitID) and hasProfile(unitID) then
 		return getUnitIDCurrentProfile(unitID) or EMPTY;
 	end
 	return EMPTY;
@@ -223,6 +224,17 @@ local function refreshIfNeeded(targetID)
 	end
 end
 
+local function refreshIfNeededTab(unitIDTab)
+	if unitIDTab then
+		for unitID, _ in pairs(unitIDTab) do
+			if currentTarget == unitID then
+				onTargetChanged();
+				break;
+			end
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -232,13 +244,15 @@ TRP3_API.target.init = function()
 	getMiscPresetDropListData = TRP3_API.register.ui.getMiscPresetDropListData;
 	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
+	hasProfile = TRP3_API.register.hasProfile
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	
 	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	
-	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO, Events.REGISTER_ABOUT_READ}, refreshIfNeeded);
+	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
+	Events.listenToEvents({Events.REGISTER_ABOUT_READ}, refreshIfNeededTab);
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
 		if currentTarget == Globals.player_id then
 			onTargetChanged();

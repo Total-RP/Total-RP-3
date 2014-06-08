@@ -46,6 +46,15 @@ TRP3_API.globals.build = function()
 	assert(realm, "Cannot have realm name information !");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
+	
+	-- Build BNet account Hash
+	local bn = select(2, BNGetInfo());
+	if bn then
+		TRP3_API.globals.player_hash = TRP3_API.utils.serial.hashCode(bn);
+	else
+		-- Trial account ..etc.
+		TRP3_API.globals.player_hash = TRP3_API.utils.serial.hashCode(TRP3_API.globals.player_id);
+	end
 end
 
 TRP3_API.globals.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_API.globals.addon_name);

@@ -10,7 +10,7 @@ local get = TRP3_API.profile.getData;
 local safeGet = TRP3_API.profile.getDataDefault;
 local loc = TRP3_API.locale.getText;
 local stNtE = Utils.str.nilToEmpty;
-local tcopy = Utils.table.copy;
+local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local numberToHexa = Utils.color.numberToHexa;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
@@ -18,7 +18,7 @@ local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
 local getConfigValue = TRP3_API.configuration.getValue;
 local CreateFrame = CreateFrame;
-local tostring = tostring;
+local tostring, unpack = tostring, unpack;
 local assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math = assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
@@ -466,6 +466,7 @@ end
 -- VOTE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local sendVote;
 local VOTE_MESSAGE_PREFIX = "ABVT";
 local VOTE_MESSAGE_PRIORITY = "ALERT";
 local VOTE_MESSAGE_R_PREFIX = "ABVR";
@@ -488,27 +489,44 @@ local function refreshVoteDisplay(aboutTab)
 	end
 end
 
-local function sendVote(voteValue)
+local function showVotingOption(voteValue)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID and context.unitID ~= Globals.player_id and hasProfile(context.unitID) and getUnitIDProfile(context.unitID).about then
-		if voteValue == getUnitIDProfile(context.unitID).about.vote then
+	assert(context.profile, "No profile in context !");
+	assert(not context.isPlayer, "Trying to vote for yourself ...");
+	
+	local profile = context.profile;
+	if profile.link then
+		if tsize(profile.link) == 1 then
+			for unitID, _ in pairs(profile.link) do -- For loop because it's a hash table
+				sendVote(voteValue, unitID, profile);
+			end
+		else
+			-- TODO: auto detect which is online
+		end
+	end
+end
+
+function sendVote(voteValue, target, profile)
+	if target ~= Globals.player_id and profile and profile.about then
+		if voteValue == profile.about.vote then
 			voteValue = 0; -- Unvoting
 		end
-		Comm.sendObject(VOTE_MESSAGE_PREFIX, voteValue, context.unitID, VOTE_MESSAGE_PRIORITY);
-		local playerName = unitIDToInfo(context.unitID);
+		Comm.sendObject(VOTE_MESSAGE_PREFIX, {voteValue, Globals.player_hash}, target, VOTE_MESSAGE_PRIORITY);
+		local playerName = unitIDToInfo(target);
 		Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_SENDING"):format(playerName));
 	end
 end
 
 -- Someone vote for your description
-local function vote(value, sender)
-	Log.log(("Receive vote from %s: %s"):format(sender, value));
+local function vote(values, sender)
+	local value, fromHash = unpack(values);
+	Log.log(("Receive vote from %s: %s (%s)"):format(sender, value, fromHash));
 	local about = get("player/about");
 	if not about.vote then
 		about.vote = {};
 	end
-	about.vote[sender] = value;
+	about.vote[fromHash] = value;
 	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
 end
 
@@ -522,7 +540,7 @@ local function voteResponse(value, sender)
 		if getCurrentPageID() == "player_main" then
 			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");
-			if context.unitID == sender then
+			if context.profile == getUnitIDProfile(sender) then
 				refreshVoteDisplay(getUnitIDProfile(sender).about);
 			end
 		end
@@ -601,33 +619,24 @@ local function aggregateVotes(voteData)
 end
 
 local function refreshConsultDisplay(context)
-	local dataTab = nil;
-	local template = nil;
-	TRP3_RegisterAbout_AboutPanel.isMine = nil;
+	local dataTab = context.profile.about or Globals.empty;
+	local template = dataTab.TE or 1;
+	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
 	TRP3_RegisterAbout_AboutPanel_ThumbResult:Hide();
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:Hide();
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:Hide();
 	
-	if context.unitID == Globals.player_id then
-		dataTab = get("player/about");
-		template = dataTab.TE or 1;
-		TRP3_RegisterAbout_AboutPanel.isMine = true;
+	if context.isPlayer then
 		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
-		local voteUp, voteDown = aggregateVotes(dataTab.vote);
 		setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
 			"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
-			loc("REG_PLAYER_ABOUT_VOTES_R"):format(voteUp, voteDown)
+			loc("REG_PLAYER_ABOUT_VOTES_R"):format(aggregateVotes(dataTab.vote))
 		);
 	else
-		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).about then
-			dataTab = getUnitIDProfile(context.unitID).about;
+		if dataTab ~= Globals.empty then
 			dataTab.read = true;
-			template = dataTab.TE or 1;
-			Events.fireEvent(Events.REGISTER_ABOUT_READ, context.unitID);
-		else
-			dataTab = {};
-			template = 1;
 		end
+		Events.fireEvent(Events.REGISTER_ABOUT_READ, context.profile.link);
 		TRP3_RegisterAbout_AboutPanel_ThumbUp:Show();
 		TRP3_RegisterAbout_AboutPanel_ThumbDown:Show();
 		refreshVoteDisplay(dataTab);
@@ -737,7 +746,7 @@ end
 local function refreshDisplay()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == Globals.player_id;
+	assert(context.profile, "No profile in context");
 	
 	--Hide all templates
 	TRP3_RegisterAbout_AboutPanel_Template1:Hide();
@@ -748,7 +757,7 @@ local function refreshDisplay()
 	TRP3_RegisterAbout_AboutPanel_Edit:Hide();
 	
 	if isEditMode then
-		assert(isSelf, "Trying to show About edition for another unitID than me ...");
+		assert(context.isPlayer, "Trying to show About edition for another than mine ...");
 		refreshEditDisplay();
 	else
 		refreshConsultDisplay(context);
@@ -772,9 +781,9 @@ local function onEdit()
 	refreshDisplay();
 end
 
-function TRP3_API.register.ui.shouldShowCharacterAboutTab(unitID)
-	if hasProfile(unitID) and getUnitIDProfile(unitID).about then
-		local dataTab = getUnitIDProfile(unitID).about;
+function TRP3_API.register.ui.shouldShowAboutTab(profile)
+	if profile and profile.about then
+		local dataTab = profile.about;
 		return (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
 			or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
 			or (dataTab.TE == 3 and shouldShowTemplate3(dataTab));
@@ -833,7 +842,7 @@ local TRP3_RegisterAbout_AboutPanel_EditButton = TRP3_RegisterAbout_AboutPanel_E
 local TRP3_RegisterAbout_AboutPanel_MusicPlayer = TRP3_RegisterAbout_AboutPanel_MusicPlayer;
 
 local function onPlayerAboutRefresh()
-	if getConfigValue("register_about_use_vote") then
+	if getConfigValue("register_about_use_vote") and (getCurrentContext().isPlayer or (getCurrentContext().profile.link and tsize(getCurrentContext().profile.link) > 0)) then
 		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.isMine then
@@ -953,8 +962,8 @@ function TRP3_API.register.inits.aboutInit()
 	
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
-	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() sendVote(1) end);
-	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() sendVote(-1) end);
+	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() showVotingOption(1) end);
+	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() showVotingOption(-1) end);
 	
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);

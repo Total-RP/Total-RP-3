@@ -23,7 +23,6 @@ local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentC
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local showPopup = TRP3_API.popup.showPopup;
-local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -115,7 +114,7 @@ local function onEditStyle(choice, frame)
 	assert(frame.fieldData, "No data in frame !");
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID == Globals.player_id then
+	if context.isPlayer then
 		local dataTab = get("player/misc");
 		dataTab.ST[frame.fieldData.id] = choice;
 		-- version increment
@@ -125,16 +124,7 @@ local function onEditStyle(choice, frame)
 end
 
 local function displayRPStyle(context)
-	local dataTab = nil;
-	if context.unitID == Globals.player_id then
-		dataTab = get("player/misc");
-	else
-		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).misc then
-			dataTab = getUnitIDProfile(context.unitID).misc;
-		else
-			dataTab = {};
-		end
-	end
+	local dataTab = context.profile.misc or Globals.empty;
 	local styleData = dataTab.ST or {};
 	
 	-- Hide all
@@ -155,7 +145,7 @@ local function displayRPStyle(context)
 		
 		local selectedValue = styleData[fieldData.id] or 0;
 		
-		if context.unitID == Globals.player_id or selectedValue ~= 0 then
+		if context.isPlayer or selectedValue ~= 0 then
 			-- Position
 			frame:ClearAllPoints();
 			if previous == nil then
@@ -170,7 +160,7 @@ local function displayRPStyle(context)
 			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
 			local dropDown = _G[frame:GetName().."Values"];
 			local readOnlyValue = _G[frame:GetName().."FieldValue"];
-			if context.unitID == Globals.player_id then
+			if context.isPlayer then
 				dropDown:SetSelectedValue(selectedValue);
 				dropDown:Show();
 				readOnlyValue:Hide();
@@ -194,7 +184,7 @@ local function displayRPStyle(context)
 	end
 	
 	TRP3_RegisterMiscViewRPStyleEmpty:Hide();
-	if context.unitID ~= Globals.player_id and count == 0 then
+	if not context.isPlayer and count == 0 then
 		TRP3_RegisterMiscViewRPStyleEmpty:Show();
 	end
 end
@@ -226,23 +216,12 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 end
 
 local function displayPeek(context)
-	local dataTab = nil;
-	if context.unitID == Globals.player_id then
-		dataTab = get("player/misc");
-	else
-		if hasProfile(context.unitID) and getUnitIDProfile(context.unitID).misc then
-			dataTab = getUnitIDProfile(context.unitID).misc;
-		else
-			dataTab = {};
-		end
-	end
-	
+	local dataTab = context.profile.misc or Globals.empty;
 	for i=1,5 do
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
-		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.unitID == Globals.player_id);
+		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
 	end
-	
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -266,7 +245,7 @@ end
 local function onSlotClick(button)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	if context.unitID == Globals.player_id then
+	if context.isPlayer then
 		currentSelected = button.index;
 		local dataTab = get("player/misc");
 		draftData = (dataTab.PE or {})[currentSelected] or {};
@@ -318,6 +297,7 @@ end
 local function showMiscTab()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
+	assert(context.profile, "No profile in context");
 	TRP3_RegisterMisc:Show();
 	displayPeek(context);
 	displayRPStyle(context);

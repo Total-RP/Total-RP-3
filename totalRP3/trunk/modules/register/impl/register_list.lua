@@ -9,7 +9,7 @@ local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local get = TRP3_API.profile.getData;
-local assert, table, _G, date, pairs = assert, table, _G, date, pairs;
+local assert, table, _G, date, pairs, error = assert, table, _G, date, pairs, error;
 local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -26,41 +26,43 @@ local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local getCompleteName = TRP3_API.register.getCompleteName;
 local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
+local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.register.getProfileList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentlyOpenedCharacterPrefix = "main_31_";
+local playerMenu = "main_10_player";
+local currentlyOpenedProfilePrefix = "main_31_";
 local REGISTER_PAGE = "main_30_register";
 
-local function openPage(unitID)
-	if unitID == Globals.player_id then
-		-- If the selected is player, simply open his sheet.
-		selectMenu("main_10_player");
+local function openPage(profileID)
+	local profile = getProfile(profileID);
+	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+		-- If the character already has his "tab", simply open it
+		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	else
-		if isMenuRegistered(currentlyOpenedCharacterPrefix .. unitID) then
-			-- If the character already has his "tab", simply open it
-			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
-		else
-			-- Else, create a new menu entry and open it.
-			local unitName, unitRealm = unitIDToInfo(unitID);
-			local tabText = unitName;
-			if hasProfile(unitID) then
-				local profile = getUnitIDProfile(unitID);
-				if profile.characteristics then
-					tabText = profile.characteristics.FN or unitName;
-				end
-			end
-			registerMenu({
-				id = currentlyOpenedCharacterPrefix .. unitID,
-				text = tabText,
-				onSelected = function() setPage("player_main", {unitID = unitID}) end,
-				isChildOf = REGISTER_PAGE,
-				closeable = true,
-			});
-			selectMenu(currentlyOpenedCharacterPrefix .. unitID);
+		-- Else, create a new menu entry and open it.
+		local tabText = UNKNOWN;
+		if profile.characteristics and profile.characteristics.FN then
+			tabText = profile.characteristics.FN;
 		end
+		registerMenu({
+			id = currentlyOpenedProfilePrefix .. profileID,
+			text = tabText,
+			onSelected = function() setPage("player_main", {profile = profile}) end,
+			isChildOf = REGISTER_PAGE,
+			closeable = true,
+		});
+		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+	end
+end
+
+local function openPageByUnitID(unitID)
+	if unitID == Globals.player_id then
+		selectMenu(playerMenu);
+	elseif isUnitIDKnown(unitID) and hasProfile(unitID) then
+		openPage(hasProfile(unitID));
 	end
 end
 
@@ -76,65 +78,73 @@ local ICON_SIZE = 30;
 local currentMode = "characters";
 local DATE_FORMAT = "%d/%m/%y %H:%M";
 
-local function decorateLine(line, unitID)
-	local character = getUnitIDCharacter(unitID);
-	local unitName, unitRealm = unitIDToInfo(unitID);
+local function decorateLine(line, profileID)
+	local profile = getProfile(profileID);
+	line.profileID = profileID;
 
-	line.unitID = unitID;
+	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
+	local tooltip, secondLine = name, "";
 
-	local name = unitName;
-	if hasProfile(unitID) then
-		local profile = getUnitIDProfile(unitID);
-		name = getCompleteName(profile.characteristics or {}, unitName, true);
-		_G[line:GetName().."Name"]:SetText(name);
-		if profile.characteristics and profile.characteristics.IC then
-			name = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
+	_G[line:GetName().."Name"]:SetText(name);
+	if profile.characteristics and profile.characteristics.IC then
+		tooltip = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
+	end
+	
+	if profile.link and tsize(profile.link) > 0 then
+		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR") .. "|cff00ff00";
+		for unitID, _ in pairs(profile.link) do
+			local unitName, unitRealm = unitIDToInfo(unitID);
+			secondLine = secondLine .. "\n - " .. unitName .. " ( " .. unitRealm .. " )";
 		end
 	else
-		_G[line:GetName().."Name"]:SetText(unitName);
-	end
-	if character.guild and character.guild:len() > 0 then
-		_G[line:GetName().."Guild"]:SetText(character.guild);
-	else
-		_G[line:GetName().."Guild"]:SetText("");
+		secondLine = secondLine .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
 	end
 
-	local clickButton = _G[line:GetName().."Click"];
-
-	local secondLine = loc("REG_LIST_CHAR_TT_CHAR"):format(unitName);
-	if character.time and character.zone then
-		local formatDate = date(DATE_FORMAT, character.time);
-		secondLine = secondLine .. "\n" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, character.zone, unitRealm);
+	if profile.time and profile.zone then
+		local formatDate = date(DATE_FORMAT, profile.time);
+		secondLine = secondLine .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
 	end
 
-	setTooltipForSameFrame(clickButton, "TOPLEFT", 0, 5, name, loc("REG_LIST_CHAR_TT"):format(secondLine));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
 end
 
 local function refreshCharacters()
-	-- TODO: list profiles, and not characters !!!!
 	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
 	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
-	local fullSize = tsize(getCharacterList());
+	local fullSize = tsize(getProfileList());
 	local lines = {};
-
-	for unitID, character in pairs(getCharacterList()) do
-		local name, realm = unitIDToInfo(unitID);
-		local guild = character.guild or "";
-		local nameIsConform = nameSearch:len() == 0 or name:lower():find(nameSearch);
-		if not nameIsConform then -- Don't check profile if is already conform
-			if hasProfile(unitID) then
-				local profile = getUnitIDProfile(unitID);
-				local fullName = getCompleteName(profile.characteristics or {}, name, true);
-				nameIsConform = fullName:lower():find(nameSearch);
+	
+	for profileID, profile in pairs(getProfileList()) do
+		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
+		
+		-- Defines if at least one character is conform to the search criteria
+		for unitID, _ in pairs(profile.link) do
+			local unitName, unitRealm = unitIDToInfo(unitID);
+			if unitName:lower():find(nameSearch) then
+				nameIsConform = true;
+			end
+			if unitRealm == Globals.player_realm_id then
+				realmIsConform = true;
+			end
+			local character = getUnitIDCharacter(unitID);
+			if character.guild and character.guild:lower():find(guildSearch) then
+				guildIsConform = true;
 			end
 		end
-		local guildIsConform = guildSearch:len() == 0 or guild:lower():find(guildSearch);
-		local realmIsConform = not realmOnly or realm == Globals.player_realm_id;
+		if not nameIsConform and (getCompleteName(profile.characteristics or {}, "", true):lower():find(nameSearch)) then
+			nameIsConform = true;
+		end
+		
+		nameIsConform = nameIsConform or nameSearch:len() == 0;
+		guildIsConform = guildIsConform or guildSearch:len() == 0;
+		realmIsConform = realmIsConform or not realmOnly;
+		
 		if nameIsConform and guildIsConform and realmIsConform then
-			lines[unitID] = character;
+			lines[profileID] = profile;
 		end
 	end
+	
 	local lineSize = tsize(lines);
 	if lineSize == 0 then
 		if fullSize == 0 then
@@ -165,8 +175,8 @@ local function refreshList()
 end
 
 local function onLineDClicked(self, button)
-	assert(self:GetParent().unitID, "No unit ID on line.");
-	openPage(self:GetParent().unitID);
+	assert(self:GetParent().profileID, "No profileID on line.");
+	openPage(self:GetParent().profileID);
 end
 
 local function changeMode(tabWidget, value)
@@ -231,11 +241,11 @@ function TRP3_API.register.inits.directoryInit()
 	TRP3_API.target.registerButton({
 		id = "aa_page_player",
 		condition = function(unitID, targetInfo)
-			return unitID == Globals.player_id or isUnitIDKnown(unitID);
+			return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 		end,
 		onClick = function(unitID)
 			openMainFrame();
-			openPage(unitID);
+			openPageByUnitID(unitID);
 		end,
 		adapter = targetButtonAdapter,
 		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",

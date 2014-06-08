@@ -454,7 +454,7 @@ Utils.str.toHTML = function(text)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMPRESSION / Serialization
+-- COMPRESSION / Serialization / HASH
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local libCompress = LibStub:GetLibrary("LibCompress");
@@ -489,6 +489,12 @@ end
 Utils.serial.encodeCompressStructure = function(structure)
 	return encodeCompressMessage(serialize(structure));
 end
+
+Utils.serial.hashCode = function(str)
+	return libCompress:fcs32final(libCompress:fcs32update(libCompress:fcs32init(), str));
+end
+
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- EVENT HANDLING
@@ -553,8 +559,7 @@ Utils.music.stop = function()
 end
 
 Utils.music.getTitle = function(musicURL)
-	local musicName = musicURL:reverse();
-	return (musicName:sub(1, musicName:find("%\\")-1)):reverse();
+	return musicURL:match("[%\\]?([^%\\]+)$");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

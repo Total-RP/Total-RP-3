@@ -30,7 +30,7 @@ local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local Events = TRP3_API.events;
-local assert, tostring, time, wipe, strconcat = assert, tostring, time, wipe, strconcat;
+local assert, tostring, time, wipe, strconcat, pairs = assert, tostring, time, wipe, strconcat, pairs;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
@@ -58,6 +58,12 @@ getDefaultProfile().player = {};
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function getProfile(profileID)
+	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
+	return profiles[profileID];
+end
+TRP3_API.register.getProfile = getProfile;
+
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;
@@ -74,12 +80,15 @@ local function profileExists(unitID)
 	return hasProfile(unitID) and profiles[characters[unitID].profileID];
 end
 
-local function getUnitIDProfile(unitID, create)
-	if create then
-		if hasProfile(unitID) and not profileExists(unitID) then
-			profiles[characters[unitID].profileID] = {};
-		end
-	end
+local function createUnitIDProfile(unitID)
+	assert(characters[unitID].profileID, "UnitID don't have a profileID: " .. unitID);
+	assert(not profiles[characters[unitID].profileID], "Profile already exist: " .. characters[unitID].profileID);
+	profiles[characters[unitID].profileID] = {};
+	profiles[characters[unitID].profileID].link = {};
+	return profiles[characters[unitID].profileID];
+end
+
+local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
 	return profiles[characters[unitID].profileID];
 end
@@ -109,14 +118,26 @@ end
 -- SETTERS
 
 --- Raises error if unknown unitName
+-- Link a unitID to a profileID. This link is bidirectional.
 function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
 	local character = getUnitIDCharacter(unitID);
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
+	-- Search if this character was bounded to another profile
+	for profileID, profile in pairs(profiles) do
+		if profile.link and profile.link[unitID] then
+			profile.link[unitID] = nil; -- unbound
+		end
+	end
+	if not profileExists(unitID) then
+		createUnitIDProfile(unitID);
+	end
+	local profile = getProfile(currentProfileID);
+	profile.link[unitID] = 1; -- bound
+	
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_EXCHANGE_PROFILE_CHANGED, unitID, currentProfileID);
 	end
-	getUnitIDProfile(unitID, true); -- Already create the profile if missing
 end
 
 --- Raises error if unknown unitName
@@ -134,9 +155,12 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 	character.race = race;
 	character.gender = gender;
 	character.faction = faction;
-	character.time = time;
-	character.zone = zone;
 	character.guild = guild;
+	if hasProfile(unitID) then
+		local profile = getProfile(character.profileID);
+		profile.time = time;
+		profile.zone = zone;
+	end
 end
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
@@ -149,7 +173,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		character.RP = data.RP;
 		character.XP = data.XP;
 	else
-		local profile = getUnitIDProfile(unitID, true);
+		local profile = getUnitIDProfile(unitID);
 		if profile[informationType] then
 			wipe(profile[informationType]);
 		end
@@ -171,7 +195,7 @@ end
 local function getUnitIDCurrentProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	if hasProfile(unitID) then
-		return getUnitIDProfile(unitID, true);
+		return getUnitIDProfile(unitID);
 	end
 end
 TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
@@ -201,7 +225,7 @@ function TRP3_API.register.getUnitIDCharacter(unitID)
 	return characters[unitID];
 end
 
-function TRP3_API.register.getUnitIDProfileList()
+function TRP3_API.register.getProfileList()
 	return profiles;
 end
 
@@ -283,14 +307,10 @@ end
 local function showTabs(context)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	local isSelf = context.unitID == Globals.player_id;
-
-	tabGroup:SetTabVisible(2, isSelf or hasProfile(context.unitID));
-	tabGroup:SetTabVisible(3, isSelf or hasProfile(context.unitID));
 	tabGroup:SelectTab(1);
 end
 
-function TRP3_API.register.ui.getSelectedTabIndex(infoType)
+function TRP3_API.register.ui.getSelectedTabIndex()
 	return tabGroup.current;
 end
 
@@ -348,7 +368,13 @@ function TRP3_API.register.init()
 	registerMenu({
 		id = "main_12_player_character",
 		text = loc("REG_PLAYER"),
-		onSelected = function() setPage("player_main", {unitID = Globals.player_id}); end,
+		onSelected = function()
+			setPage("player_main", {
+				unitID = Globals.player_id,
+				profile = get("player"),
+				isPlayer = true,
+			});
+		end,
 		isChildOf = "main_10_player",
 	});
 

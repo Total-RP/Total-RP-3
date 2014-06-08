@@ -56,13 +56,6 @@ local function onLoaded()
 --		end
 --		
 --	end);
-	
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
-		if UnitIsPlayer("mouseover") and not TRP3_API.register.isUnitIDKnown(Utils.str.getUnitID("mouseover")) then
-			TRP3_API.register.addCharacter(Utils.str.getUnitID("mouseover"))
-		end
-	end);
-
 end
 
 local MODULE_STRUCTURE = {

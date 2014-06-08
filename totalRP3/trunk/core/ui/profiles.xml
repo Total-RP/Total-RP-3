@@ -35,7 +35,7 @@
 			</Button>
 			<Button name="$parentInfo" inherits="TRP3_HelpButton">
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="230" y="2"/>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -65,7 +65,7 @@
 				<FontString name="$parentCount" inherits="GameFontNormalSmall" justifyH="LEFT" text="[PROFILE_COUNT]">
 					<Size x="230" y="10"/>
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="5"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5"/>
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>

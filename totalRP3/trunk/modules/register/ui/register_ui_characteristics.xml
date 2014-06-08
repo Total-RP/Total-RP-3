@@ -258,6 +258,17 @@
 					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_NamePanel"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						 <FontString name="TRP3_RegisterCharact_CharactPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
 					<ScrollFrame name="TRP3_RegisterCharact_CharactPanel_Scroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
