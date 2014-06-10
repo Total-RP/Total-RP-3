@@ -30,13 +30,14 @@ local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = Un
 local IC_GUILD, OOC_GUILD;
 
 -- ICONS
-local AFK_ICON = "Spell_Nature_Sleep";
-local DND_ICON = "Ability_Mage_IncantersAbsorbtion";
+local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
+local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
 local ALLIANCE_ICON = "INV_BannerPVP_02";
 local HORDE_ICON = "INV_BannerPVP_01";
-local PVP_ICON = "Ability_DualWield";
-local BEGINNER_ICON = "inv_misc_toy_01";
-local VOLUNTEER_ICON = "achievement_bg_tophealer_AB";
+local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
+local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
+local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
+local BANNED_ICON = "|TInterface\\EncounterJournal\\UI-EJ-HeroicTextIcon:15:15|t";
 local PEEK_ICON_SIZE = 20;
 
 -- Config keys
@@ -207,19 +208,19 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
-			rightIcons = strconcat(rightIcons, Utils.str.icon(AFK_ICON, 25));
+			rightIcons = strconcat(rightIcons, AFK_ICON);
 		elseif UnitIsDND(targetType) then
-			rightIcons = strconcat(rightIcons, Utils.str.icon(DND_ICON, 25));
+			rightIcons = strconcat(rightIcons, DND_ICON);
 		end
 		-- PVP icon
 		if UnitIsPVP(targetType) then -- Icone PVP
-			rightIcons = strconcat(rightIcons, Utils.str.icon(PVP_ICON, 25));
+			rightIcons = strconcat(rightIcons, PVP_ICON);
 		end
 		-- Beginner icon / volunteer icon
 		if character.XP == 1 then
-			rightIcons = strconcat(Utils.str.icon(BEGINNER_ICON, 25), rightIcons);
+			rightIcons = strconcat(rightIcons, BEGINNER_ICON);
 		elseif character.XP == 3 then
-			rightIcons = strconcat(Utils.str.icon(VOLUNTEER_ICON, 25), rightIcons);
+			rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
 		end
 	end
 	

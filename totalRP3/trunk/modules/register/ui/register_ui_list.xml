@@ -23,14 +23,14 @@
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
-				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[info ?]">
+				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
 					<Size x="125" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName"/>
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
-				<FontString name="$parentGuild" inherits="GameFontNormal" justifyH="LEFT" text="[Realm name]">
+				<FontString name="$parentGuild" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
 					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo"/>
