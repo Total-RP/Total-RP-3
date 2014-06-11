@@ -181,7 +181,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="TRP3_MinimapButton_Icon" file="Interface\AddOns\totalRP3\resources\trp3minimap.blp">
+				<Texture name="TRP3_MinimapButton_Icon" file="Interface\AddOns\totalRP3\resources\trp3minimap.tga">
 					<Size>
 						<AbsDimension x="21" y="21"/>
 					</Size>
