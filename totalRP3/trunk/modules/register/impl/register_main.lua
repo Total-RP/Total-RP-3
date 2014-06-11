@@ -20,11 +20,8 @@ local log = Utils.log.log;
 local getZoneText = GetZoneText;
 local getSubZoneText = GetSubZoneText;
 local getUnitID = Utils.str.getUnitID;
-local UnitRace = UnitRace;
-local UnitClass = UnitClass;
-local UnitFactionGroup = UnitFactionGroup;
-local UnitSex = UnitSex;
-local GetGuildInfo = GetGuildInfo;
+local UnitRace, UnitIsPlayer, UnitClass = UnitRace, UnitIsPlayer, UnitClass;
+local UnitFactionGroup, UnitSex, GetGuildInfo = UnitFactionGroup, UnitSex, GetGuildInfo;
 local getDefaultProfile, get = TRP3_API.profile.getDefaultProfile, TRP3_API.profile.getData;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Config = TRP3_API.configuration;
@@ -34,11 +31,11 @@ local assert, tostring, time, wipe, strconcat, pairs = assert, tostring, time, w
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 
 -- Saved variables references
-local profiles;
-local characters;
+local profiles, characters, blackList, whiteList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -104,9 +101,37 @@ function TRP3_API.register.isUnitKnown(targetType)
 	return isUnitIDKnown(getUnitID(targetType));
 end
 
-function TRP3_API.register.isUnitIDIgnored(unitID)
-	-- TODO: to change, as it's the profile which is ignored, not the character ?
-	return characters[unitID] and characters[unitID].ignored == true;
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Ignore list
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local IGNORE_UNIT_ID, IGNORE_PROFILE_ID = 1, 2;
+
+local function isIDIgnored(ID)
+	return blackList[ID] ~= nil;
+end
+TRP3_API.register.isIDIgnored = isIDIgnored;
+
+local function ignoreID(ID, type)
+	showConfirmPopup(loc("TF_IGNORE_CONFIRM"):format(ID), function()
+		blackList[ID] = type;
+		if type == IGNORE_UNIT_ID then
+			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, ID);
+		end
+	end);
+end
+TRP3_API.register.ignoreID = ignoreID;
+
+function TRP3_API.register.unignoreID(ID)
+	local old = blackList[ID];
+	blackList[ID] = nil;
+	if old == IGNORE_UNIT_ID then
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, ID);
+	end
+end
+
+function TRP3_API.register.getIgnoredList()
+	return blackList;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -338,8 +363,16 @@ function TRP3_API.register.init()
 	if not TRP3_Register.profiles then
 		TRP3_Register.profiles = {};
 	end
+	if not TRP3_Register.blackList then
+		TRP3_Register.blackList = {};
+	end
+	if not TRP3_Register.whiteList then
+		TRP3_Register.whiteList = {};
+	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
+	blackList = TRP3_Register.blackList;
+	whiteList = TRP3_Register.whiteList;
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
@@ -405,6 +438,20 @@ function TRP3_API.register.init()
 		}
 	};
 	Config.registerConfigurationPage(CONFIG_STRUCTURE);
+	
+	-- Ignore button on target frame
+	TRP3_API.target.registerButton({
+		id = "z_ignore",
+		condition = function(unitID, targetInfo)
+			return UnitIsPlayer("target") and unitID ~= Globals.player_id and not isIDIgnored(unitID);
+		end,
+		onClick = function(unitID)
+			ignoreID(unitID, IGNORE_UNIT_ID);
+		end,
+		tooltipSub = loc("TF_IGNORE_TT"),
+		tooltip = loc("TF_IGNORE"),
+		icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
+	});
 
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();

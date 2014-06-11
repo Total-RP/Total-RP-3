@@ -13,7 +13,7 @@ local Events = TRP3_API.events;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local getCharacterExchangeData = TRP3_API.register.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-local isUnitIDIgnored, shouldUpdateInformation = TRP3_API.register.isUnitIDIgnored, TRP3_API.register.shouldUpdateInformation;
+local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3_API.register.shouldUpdateInformation;
 local addCharacter = TRP3_API.register.addCharacter;
 local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
@@ -198,11 +198,9 @@ local function sendQuery(type)
 		and UnitIsPlayer(type) -- Don't query NPC
 		and unitID ~= Globals.player_id -- Don't query yourself
 		and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
-		
 		and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
 		and (type ~= "mouseover" or isUnitIDKnown(unitID)) -- Only query known characters
-		
-		and not isUnitIDIgnored(unitID)
+		and not isIDIgnored(unitID)
 		and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
 		LAST_QUERY[unitID] = time();

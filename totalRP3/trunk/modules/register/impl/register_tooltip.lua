@@ -9,7 +9,7 @@ local Utils = TRP3_API.utils;
 local getUnitID = Utils.str.unitInfoToID;
 local colorCodeFloat = Utils.color.colorCodeFloat;
 local loc = TRP3_API.locale.getText;
-local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
+local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
@@ -186,6 +186,17 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
+	
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- BLOCKED
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	if isIDIgnored(targetID) or (character.profileID and isIDIgnored(character.profileID)) then
+		ui_CharacterTT:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+		return;
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -309,12 +320,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- BLOCKED
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	--TODO
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CURRENTLY
@@ -401,7 +406,7 @@ local function show(targetType)
 				ui_CharacterTT.target = targetID;
 				ui_CharacterTT.targetType = targetType;
 				ui_CharacterTT:Show();
-				if shouldHideGameTooltip() then
+				if shouldHideGameTooltip() and not isIDIgnored(targetID) then
 					GameTooltip:Hide();
 				end
 			else

@@ -9,15 +9,15 @@ local class_loc, class, class_index = UnitClass("player");
 TRP3_API = {
 	globals = {
 		empty = {},
-	
+
 		addon_name = "Total RP 3",
 		addon_name_short = "TRP3",
 		addon_name_alt = "TotalRP3",
 		addon_id_length = 15,
-		
+
 		version = 1,
 		version_display = "0.1-SNAPSHOT",
-		
+
 		player = UnitName("player"),
 		player_realm = GetRealmName(),
 		player_race_loc = race_loc,
@@ -27,12 +27,12 @@ TRP3_API = {
 			race = race,
 			class = class
 		},
-		
+
 		clients = {
 			TRP3 = "trp3",
 			MSP = "msp",
 		},
-		
+
 		icons = {
 			default = "TEMP";
 			unknown = "INV_Misc_QuestionMark";
@@ -46,7 +46,7 @@ TRP3_API.globals.build = function()
 	assert(realm, "Cannot have realm name information !");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
-	
+
 	-- Build BNet account Hash
 	local bn = select(2, BNGetInfo());
 	if bn then

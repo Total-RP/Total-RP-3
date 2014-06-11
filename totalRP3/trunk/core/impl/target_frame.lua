@@ -22,7 +22,7 @@ local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getMiscPresetDropListData, setGlanceSlotPreset;
-local hasProfile
+local hasProfile, isIDIgnored;
 
 local CONFIG_TARGET_USE = "target_use";
 
@@ -203,7 +203,10 @@ local function getTargetInformation(unitID)
 end
 
 local function shouldShowTargetFrame(unitID, config)
-	return unitID and (isUnitIDKnown(unitID) or unitID == Globals.player_id) and (getConfigValue(config) == 1 or (getConfigValue(config) == 2 and isPlayerIC()));
+	return unitID
+		and not isIDIgnored(unitID)
+		and (isUnitIDKnown(unitID) or unitID == Globals.player_id)
+		and (getConfigValue(config) == 1 or (getConfigValue(config) == 2 and isPlayerIC()));
 end
 
 local function onTargetChanged(...)
@@ -246,6 +249,7 @@ TRP3_API.target.init = function()
 	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 	hasProfile = TRP3_API.register.hasProfile
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
+	isIDIgnored = TRP3_API.register.isIDIgnored;
 	
 	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 

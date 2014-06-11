@@ -197,6 +197,7 @@ local LOCALE_EN = {
 		REG_TT_GUILD = "%s of |cffff9900%s",
 		REG_TT_TARGET = "Target: |cffff9900%s",
 		REG_TT_NOTIF = "Unread description",
+		REG_TT_IGNORED = "< Ignored >";
 		REG_LIST_CHAR_TITLE = "Character list",
 		REG_LIST_CHAR_SEL = "Selected character",
 		REG_LIST_CHAR_TT = "%s\n\n|cffffff00Double-click to show page",
@@ -305,6 +306,9 @@ local LOCALE_EN = {
 		TF_OPEN_CHARACTER = "Show character page",
 		TF_PLAY_THEME = "Play character theme",
 		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
+		TF_IGNORE = "Ignore player",
+		TF_IGNORE_TT = "|cffffff00Click:|r Ignore player",
+		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this ID ?\nThis will remove all profiles and characters liked to it.\n\n|cffffff00ID : %s",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE

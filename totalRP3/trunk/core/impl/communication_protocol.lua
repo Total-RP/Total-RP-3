@@ -13,7 +13,7 @@ local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm = TRP3_API.communication;
+local Comm, isIDIgnored = TRP3_API.communication;
 local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 -- function definition
@@ -36,7 +36,8 @@ local interface_id = {
 Comm.interface_id = interface_id;
 local selected_interface_id = interface_id.WOW;
 
-Comm.init = function()
+function Comm.init()
+	isIDIgnored = TRP3_API.register.isIDIgnored;
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onAddonMessageReceived);
 	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function() 
 		RegisterAddonMessagePrefix(wowCom_prefix);
@@ -49,7 +50,7 @@ local function wowCommunicationInterface(packet, target, priority)
 	ChatThrottleLib:SendAddonMessage(priority or "BULK", wowCom_prefix, packet, "WHISPER", target);
 end
 
-onAddonMessageReceived = function(...)
+function onAddonMessageReceived(...)
 	local prefix, packet , distributionType, sender = ...;
 	if prefix == wowCom_prefix then
 		-- TODO: check here ignore
@@ -80,7 +81,7 @@ local function getCommunicationInterface()
 end
 
 -- Changes the communication interface to use
-Comm.setInterfaceID = function(id)
+function Comm.setInterfaceID(id)
 	selected_interface_id = id;
 end
 
@@ -131,13 +132,15 @@ local function endPacket(sender, messageID)
 	PACKETS_RECEPTOR[sender][messageID] = nil;
 end
 
-handlePacketsIn = function(packet, sender)
-	local messageID = packet:sub(1, 2);
-	local control = packet:sub(3, 3);
-	savePacket(sender, messageID, packet:sub(4));
-	if control:byte(1) == LAST_PACKET_PREFIX then
-		handleStructureIn(getPackets(sender, messageID), sender);
-		endPacket(sender, messageID);
+function handlePacketsIn(packet, sender)
+	if not isIDIgnored(sender) then
+		local messageID = packet:sub(1, 2);
+		local control = packet:sub(3, 3);
+		savePacket(sender, messageID, packet:sub(4));
+		if control:byte(1) == LAST_PACKET_PREFIX then
+			handleStructureIn(getPackets(sender, messageID), sender);
+			endPacket(sender, messageID);
+		end
 	end
 end
 
@@ -182,7 +185,7 @@ local function handleStructureOut(structure, target, priority)
 end
 
 -- Reassemble the message based on the packets, and deserialize it.
-handleStructureIn = function(packets, sender)
+function handleStructureIn(packets, sender)
 	local message = "";
 	for index, packet in pairs(packets) do
 		message = message..packet;
@@ -203,7 +206,7 @@ end
 local PREFIX_REGISTRATION = {};
 
 -- Register a function to callback when receiving a object attached to the given prefix
-Comm.registerProtocolPrefix = function(prefix, callback)
+ function Comm.registerProtocolPrefix(prefix, callback)
 	assert(prefix and callback and type(callback) == "function", "Usage: prefix, callback");
 	if PREFIX_REGISTRATION[prefix] == nil then
 		PREFIX_REGISTRATION[prefix] = {};
@@ -215,16 +218,18 @@ end
 -- Prefix must have been registered before use this function
 -- The object can be any lua type (numbers, strings, tables, but NOT functions or userdatas)
 -- Priority is optional ("Bulk" by default)
-Comm.sendObject = function(prefix, object, target, priority)
+function Comm.sendObject(prefix, object, target, priority)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
-	local structure = {prefix, object};
-	handleStructureOut(structure, target, priority);
+	if not isIDIgnored(target) then
+		local structure = {prefix, object};
+		handleStructureOut(structure, target, priority);
+	end
 end
 
 -- Receive a structure from a player (sender)
 -- Call any callback registered for this prefix.
 -- Structure[1] contains the prefix, structure[2] contains the object
-receiveObject = function(structure, sender)
+function receiveObject(structure, sender)
 	if type(structure) == "table" and #structure == 2 then
 		local prefix = structure[1];
 		if PREFIX_REGISTRATION[prefix] then
@@ -240,7 +245,7 @@ receiveObject = function(structure, sender)
 end
 
 -- Estimate the number of packet needed to send a object.
-Comm.estimateStructureLoad = function(object)
+function Comm.estimateStructureLoad(object)
 	assert(object, "Object nil");
 	return math.ceil((#(libSerializer:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
 end
