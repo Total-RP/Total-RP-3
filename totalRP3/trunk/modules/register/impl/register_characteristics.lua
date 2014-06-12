@@ -24,6 +24,7 @@ local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local CreateFrame = CreateFrame;
 local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -525,6 +526,7 @@ local function refreshDisplay()
 	-- Hide all
 	TRP3_RegisterCharact_NamePanel:Hide();
 	TRP3_RegisterCharact_CharactPanel:Hide();
+	TRP3_RegisterCharact_ActionButton:Hide();
 	TRP3_RegisterCharact_CharactPanel_Empty:Hide();
 	TRP3_RegisterCharact_Edit_NamePanel:Hide();
 	TRP3_RegisterCharact_Edit_CharactPanel:Hide();
@@ -536,6 +538,8 @@ local function refreshDisplay()
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
+	else
+    TRP3_RegisterCharact_ActionButton:Show();
 	end
 	
 	if isEditMode then
@@ -548,6 +552,15 @@ local function refreshDisplay()
 		TRP3_RegisterCharact_CharactPanel:Show();
 		setConsultDisplay(context);
 	end
+end
+
+local function onActionClicked(button)
+  local values = {};
+  tinsert(values,{"TEM", 0});
+  tinsert(values,{ "PO", 1});
+  tinsert(values, {"RA", 2});
+  tinsert(values,{"RY", 3});
+  displayDropDown(button, values, nil, 0, true);
 end
 
 local function showCharacteristicsTab()
@@ -680,6 +693,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
+	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
 	
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
@@ -697,6 +711,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_ActionButton, "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
