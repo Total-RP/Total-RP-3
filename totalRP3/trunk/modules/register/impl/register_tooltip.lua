@@ -191,7 +191,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	
-	if isIDIgnored(targetID) or (character.profileID and isIDIgnored(character.profileID)) then
+	if isIDIgnored(targetID) then
 		ui_CharacterTT:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;

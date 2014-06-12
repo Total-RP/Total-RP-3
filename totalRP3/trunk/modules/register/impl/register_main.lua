@@ -27,13 +27,14 @@ local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local Events = TRP3_API.events;
-local assert, tostring, time, wipe, strconcat, pairs = assert, tostring, time, wipe, strconcat, pairs;
+local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 
+local EMPTY = Globals.empty;
 -- Saved variables references
 local profiles, characters, blackList, whiteList;
 
@@ -105,22 +106,49 @@ end
 -- Ignore list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local IGNORE_UNIT_ID, IGNORE_PROFILE_ID = 1, 2;
-
 local function isIDIgnored(ID)
 	return blackList[ID] ~= nil;
 end
 TRP3_API.register.isIDIgnored = isIDIgnored;
 
-local function ignoreID(ID, type)
+local function ignoreID(ID)
 	showConfirmPopup(loc("TF_IGNORE_CONFIRM"):format(ID), function()
-		blackList[ID] = type;
-		if type == IGNORE_UNIT_ID then
-			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, ID);
-		end
+		blackList[ID] = true;
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, ID);
 	end);
 end
 TRP3_API.register.ignoreID = ignoreID;
+
+function TRP3_API.register.purgeIgnored(ID)
+	local charactersToIgnore = {};
+	local profileToIgnore;
+	
+	-- Determine what to ignore
+	if characters[ID] then
+		profileToIgnore = characters[ID].profileID;
+		if profiles[profileToIgnore] then
+			local links = profiles[profileToIgnore].link or EMPTY;
+			for unitID, _ in pairs(links) do
+				tinsert(charactersToIgnore, unitID);
+			end
+		end
+	end
+	-- Ignore and delete all characters !
+	for _, unitID in pairs(charactersToIgnore) do
+		blackList[unitID] = true;
+		if characters[unitID] then
+			wipe(characters[unitID]);
+			characters[unitID] = nil;
+		end
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, unitID);
+	end
+	-- Delete related profile
+	if profileToIgnore and profiles[profileToIgnore] then
+		wipe(profiles[profileToIgnore]);
+		profiles[profileToIgnore] = nil;
+		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileToIgnore);
+	end
+end
 
 function TRP3_API.register.unignoreID(ID)
 	local old = blackList[ID];

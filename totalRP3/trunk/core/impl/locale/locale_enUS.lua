@@ -308,7 +308,7 @@ local LOCALE_EN = {
 		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
 		TF_IGNORE = "Ignore player",
 		TF_IGNORE_TT = "|cffffff00Click:|r Ignore player",
-		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this ID ?\nThis will remove all profiles and characters liked to it.\n\n|cffffff00ID : %s",
+		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this/these ID ?\nThis will remove all profiles and characters liked to it.\n\n|cffffff00%s",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE
