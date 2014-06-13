@@ -240,6 +240,7 @@ function TRP3_API.register.inits.directoryInit()
 
 	TRP3_API.target.registerButton({
 		id = "aa_page_player",
+		configText = loc("TF_OPEN_CHARACTER"),
 		condition = function(unitID, targetInfo)
 			return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 		end,

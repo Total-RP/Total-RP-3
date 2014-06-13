@@ -25,6 +25,7 @@ local getMiscPresetDropListData, setGlanceSlotPreset;
 local hasProfile, isIDIgnored;
 
 local CONFIG_TARGET_USE = "target_use";
+local CONFIG_CONTENT_PREFIX = "target_content_";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Buttons logic
@@ -33,6 +34,7 @@ local CONFIG_TARGET_USE = "target_use";
 local targetButtons = {};
 local uiButtons = {};
 local marginLeft = 10;
+local loaded = false;
 
 local function createButton(index)
 	local uiButton = CreateFrame("Button", "TRP3_TargetFrameButton"..index, buttonContainer, "TRP3_TargetFrameButton");
@@ -63,7 +65,7 @@ local function displayButtonsPanel(unitID, targetInfo)
 	-- Test which buttons to show
 	local ids = {};
 	for id, buttonStructure in pairs(targetButtons) do
-		if buttonStructure.condition and buttonStructure.condition(unitID, targetInfo) then
+		if buttonStructure.visible and buttonStructure.condition and buttonStructure.condition(unitID, targetInfo) then
 			tinsert(ids, id);
 		end
 	end
@@ -120,6 +122,7 @@ local function displayButtonsPanel(unitID, targetInfo)
 end
 
 local function registerButton(targetButton)
+	assert(not loaded, "All button must be registered on addon load. You're too late !");
 	assert(targetButton and targetButton.id, "Usage: button structure containing 'id' field");
 	assert(not targetButtons[targetButton.id], "Already registered button id: " .. targetButton.id);
 	targetButtons[targetButton.id] = targetButton;
@@ -242,6 +245,55 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function onLoaded()
+	loaded = true;
+	
+	-- Config
+	registerConfigKey(CONFIG_TARGET_USE, 1);
+	registerConfigHandler({CONFIG_TARGET_USE}, onTargetChanged);
+	
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_TARGETFRAME"),
+	});
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigDropDown",
+		widgetName = "TRP3_ConfigTarget_Usage",
+		title = loc("CO_TARGETFRAME_USE"),
+		listContent = {
+			{loc("CO_TARGETFRAME_USE_1"), 1},
+			{loc("CO_TARGETFRAME_USE_2"), 2},
+			{loc("CO_TARGETFRAME_USE_3"), 3}
+		},
+		configKey = CONFIG_TARGET_USE,
+		listWidth = nil,
+		listCancel = true,
+	});
+	
+	local ids = {};
+	for buttonID, button in pairs(targetButtons) do
+		tinsert(ids, buttonID);
+	end
+	table.sort(ids);
+	for _, buttonID in pairs(ids) do
+		local button = targetButtons[buttonID];
+		local configKey = CONFIG_CONTENT_PREFIX .. buttonID;
+		registerConfigKey(configKey, true);
+		registerConfigHandler(configKey, function()
+			button.visible = getConfigValue(configKey);
+			onTargetChanged();
+		end);
+		button.visible = getConfigValue(configKey);
+		tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = button.configText or buttonID,
+			configKey = configKey,
+		});
+	end
+	
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.toolbar.CONFIG_STRUCTURE);
+end
+
 TRP3_API.target.init = function()
 	setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
 	getMiscPresetDropListData = TRP3_API.register.ui.getMiscPresetDropListData;
@@ -250,6 +302,8 @@ TRP3_API.target.init = function()
 	hasProfile = TRP3_API.register.hasProfile
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	isIDIgnored = TRP3_API.register.isIDIgnored;
+	
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
 	
 	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 
@@ -267,27 +321,4 @@ TRP3_API.target.init = function()
 		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
 		slot.slot = tostring(i);
 	end
-	
-	-- Config
-	registerConfigKey(CONFIG_TARGET_USE, 1);
-	registerConfigHandler({CONFIG_TARGET_USE}, onTargetChanged);
-	
-	tinsert(TRP3_API.toolbarS_CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc("CO_TARGETFRAME"),
-	});
-	tinsert(TRP3_API.toolbarS_CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigDropDown",
-		widgetName = "TRP3_ConfigTarget_Usage",
-		title = loc("CO_TARGETFRAME_USE"),
-		listContent = {
-			{loc("CO_TARGETFRAME_USE_1"), 1},
-			{loc("CO_TARGETFRAME_USE_2"), 2},
-			{loc("CO_TARGETFRAME_USE_3"), 3}
-		},
-		configKey = CONFIG_TARGET_USE,
-		listWidth = nil,
-		listCancel = true,
-	});
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.toolbarS_CONFIG_STRUCTURE);
 end

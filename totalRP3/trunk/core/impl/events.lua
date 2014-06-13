@@ -7,6 +7,8 @@ TRP3_API.events = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Workflow
+	WORKFLOW_ON_LOADED = "WORKFLOW_ON_LOADED",
 	-- Profiles changes
 	REGISTER_PROFILES_LOADED = "REGISTER_PROFILES_LOADED",
 	REGISTER_PROFILE_DELETED = "REGISTER_PROFILE_DELETED",

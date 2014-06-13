@@ -48,5 +48,7 @@ function Globals.addon:OnEnable()
 	
 	TRP3_API.navigation.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	
+	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOADED);
+	
 	Log.log("OnEnable() DONE");
 end

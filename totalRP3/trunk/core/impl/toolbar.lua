@@ -11,7 +11,6 @@ local loc = TRP3_API.locale.getText;
 local icon = Utils.str.icon;
 local color = Utils.str.color;
 local assert, pairs, tContains, tinsert, table, math, _G = assert, pairs, tContains, tinsert, table, math, _G;
-local ShowingHelm, ShowingCloak = ShowingHelm, ShowingCloak;
 local CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus = CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus;
 local toolbar, toolbarContainer, mainTooltip = TRP3_Toolbar, TRP3_ToolbarContainer, TRP3_MainTooltip;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
@@ -20,12 +19,7 @@ local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 local CONFIG_ICON_SIZE = "toolbar_icon_size"; 
 local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
-local CONFIG_CONTENT_CAPE = "toolbar_content_cape";
-local CONFIG_CONTENT_HELMET = "toolbar_content_helmet";
-local CONFIG_CONTENT_STATUS = "toolbar_content_status";
-local CONFIG_CONTENT_RPSTATUS = "toolbar_content_rpstatus";
-
-local Button_Cape, Button_Helmet, Button_Status, Button_RPStatus;
+local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Toolbar Logic
@@ -125,27 +119,20 @@ local function buildToolbar()
 		toolbar:SetWidth(toolbarContainer:GetWidth() + 10);
 	end
 end
-TRP3_API.toolbar.buildToolbar = buildToolbar;
-
-local function onConfigContentChanged()
-	Button_Cape.visible = getConfigValue(CONFIG_CONTENT_CAPE);
-	Button_Helmet.visible = getConfigValue(CONFIG_CONTENT_HELMET);
-	Button_Status.visible = getConfigValue(CONFIG_CONTENT_STATUS);
-	buildToolbar();
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Toolbar API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local loaded = false;
+
 -- Add a new button to the toolbar. The toolbar layout is automatically handled.
 -- Button structure :
--- { id [string], icon [string], onClick [function(button, buttonStructure)] };
 local function toolbarAddButton(buttonStructure)
+	assert(not loaded, "All button must be registered on addon load. You're too late !");
 	assert(buttonStructure and buttonStructure.id, "Usage: button structure containing 'id' field");
 	assert(not buttonStructures[buttonStructure.id], "The toolbar button with id "..buttonStructure.id.." already exists.");
 	buttonStructures[buttonStructure.id] = buttonStructure;
-	buildToolbar();
 end
 TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
@@ -153,21 +140,15 @@ TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 -- INIT & TRP3 toolbar content
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.toolbar.init = function()
-
+local function onLoaded()
+	loaded = true;
+	
 	registerConfigKey(CONFIG_ICON_SIZE, 25);
 	registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
-	registerConfigKey(CONFIG_CONTENT_CAPE, true);
-	registerConfigKey(CONFIG_CONTENT_HELMET, true);
-	registerConfigKey(CONFIG_CONTENT_STATUS, true);
-	registerConfigKey(CONFIG_CONTENT_RPSTATUS, true);
-	
 	registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
-	registerConfigHandler({CONFIG_CONTENT_CAPE, CONFIG_CONTENT_HELMET, CONFIG_CONTENT_STATUS}, onConfigContentChanged);
-	
 	
 	-- Build configuration page
-	TRP3_API.toolbarS_CONFIG_STRUCTURE = {
+	TRP3_API.toolbar.CONFIG_STRUCTURE = {
 		id = "main_config_toolbar",
 		marginLeft = 10,
 		menuText = loc("CO_TOOLBAR"),
@@ -195,137 +176,36 @@ TRP3_API.toolbar.init = function()
 				step = 1,
 				integer = true,
 			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLBAR_CONTENT_CAPE"),
-				configKey = CONFIG_CONTENT_CAPE,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLBAR_CONTENT_HELMET"),
-				configKey = CONFIG_CONTENT_HELMET,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLBAR_CONTENT_STATUS"),
-				configKey = CONFIG_CONTENT_STATUS,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
-				configKey = CONFIG_CONTENT_RPSTATUS,
-			},
 		},
 	};
+	
+	local ids = {};
+	for buttonID, button in pairs(buttonStructures) do
+		tinsert(ids, buttonID);
+	end
+	table.sort(ids);
+	for _, buttonID in pairs(ids) do
+		local button = buttonStructures[buttonID];
+		local configKey = CONFIG_CONTENT_PREFIX .. buttonID;
+		registerConfigKey(configKey, true);
+		registerConfigHandler(configKey, function()
+			button.visible = getConfigValue(configKey);
+			buildToolbar();
+		end);
+		button.visible = getConfigValue(configKey);
+		tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = button.configText or buttonID,
+			configKey = configKey,
+		});
+	end
 
+	buildToolbar();
+end
+
+TRP3_API.toolbar.init = function()
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
 	TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
-	
-	-- Show/hide cape
-	local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");
-	local capeTextOff = icon("item_icecrowncape", 25) .. " ".. loc("TB_SWITCH_CAPE_OFF");
-	local capeText2 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_1"));
-	local capeText3 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_2"));
-	Button_Cape = {
-		id = "aa_trp3_a",
-		icon = "INV_Misc_Cape_18",
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if not ShowingCloak() then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			ShowCloak(not ShowingCloak());
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Cape);
-	
-	-- Show / hide helmet
-	local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
-	local helmTextOff = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
-	local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
-	local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
-	Button_Helmet = {
-		id = "aa_trp3_b",
-		icon = "INV_Helmet_13",
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if not ShowingHelm() then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Helmet_13");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			ShowHelm(not ShowingHelm());
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Helmet);
-	
-	-- away/dnd
-	local status1Text = icon("Ability_Mage_IncantersAbsorbtion", 25).." "..color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
-	local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-	local status2Text = icon("Spell_Nature_Sleep", 25).." "..color("w")..loc("TB_STATUS")..": "..color("o")..loc("TB_AFK_MODE");
-	local status2SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-	local status3Text = icon("Ability_Rogue_MasterOfSubtlety", 25).." "..color("w")..loc("TB_STATUS")..": "..color("g")..loc("TB_NORMAL_MODE");
-	local status3SubText = color("y")..loc("CM_L_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("o")..loc("TB_AFK_MODE")..color("w"))).."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("r")..loc("TB_DND_MODE")..color("w")));
-	Button_Status = {
-		id = "aa_trp3_c",
-		icon = "Ability_Rogue_MasterOfSubtlety",
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if UnitIsDND("player") then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status1Text, status1SubText);
-			elseif UnitIsAFK("player") then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status2Text, status2SubText);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status3Text, status3SubText);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			if UnitIsAFK("player") then
-				SendChatMessage("","AFK");
-			elseif UnitIsDND("player") then
-				SendChatMessage("","DND");
-			else
-				if button == "LeftButton" then
-					SendChatMessage("","AFK");
-				else
-					SendChatMessage("","DND");
-				end
-			end
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Status);
-	
-	onConfigContentChanged();
 end
 
 -- TODO: via events

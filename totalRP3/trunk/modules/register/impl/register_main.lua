@@ -470,6 +470,7 @@ function TRP3_API.register.init()
 	-- Ignore button on target frame
 	TRP3_API.target.registerButton({
 		id = "z_ignore",
+		configText = loc("TF_IGNORE"),
 		condition = function(unitID, targetInfo)
 			return UnitIsPlayer("target") and unitID ~= Globals.player_id and not isIDIgnored(unitID);
 		end,

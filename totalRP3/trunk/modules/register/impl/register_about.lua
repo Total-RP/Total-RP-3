@@ -869,6 +869,7 @@ function TRP3_API.register.inits.aboutInit()
 	
 	TRP3_API.target.registerButton({
 		id = "char_music",
+		configText = loc("TF_PLAY_THEME"),
 		condition = function(unitID, targetInfo)
 			return getUnitIDTheme(unitID) ~= nil;
 		end,
