@@ -13,9 +13,9 @@
 	</GameTooltip>
 	
 	<Script file="impl\globals.lua"/>
+	<Script file="impl\events.lua"/>
 	<Include file="impl\locale\locale.xml"/>
 	<Script file="impl\utils.lua"/>
-	<Script file="impl\events.lua"/>
 	<Script file="impl\ui_tools.lua"/>
 	
 	<Include file="ui\widgets.xml"/>

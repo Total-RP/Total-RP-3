@@ -8,6 +8,7 @@ TRP3_API.events = {
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Workflow
+	WORKFLOW_ON_LOAD = "WORKFLOW_ON_LOAD",
 	WORKFLOW_ON_LOADED = "WORKFLOW_ON_LOADED",
 	-- Profiles changes
 	REGISTER_PROFILES_LOADED = "REGISTER_PROFILES_LOADED",
@@ -24,8 +25,6 @@ TRP3_API.events = {
 };
 
 -- TRP3 imports
-local Utils = TRP3_API.utils;
-local Log = Utils.log;
 local assert, tostring, type, tinsert, pairs = assert, tostring, type, tinsert, pairs;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -39,7 +38,6 @@ local function registerEvent(event)
 	assert(event, "Event must be set.");
 	assert(not REGISTERED_EVENTS[event], "Event already registered.");
 	REGISTERED_EVENTS[event] = {};
-	Log.log("Registered TRP event: " .. event);
 end
 
 -- Register main Total RP 3 events

@@ -81,20 +81,20 @@ Utils.message.type = {
 	ALERT_POPUP = 2,
 	RAID_ALERT = 3
 };
-local messageType = Utils.message.type;
+local messageTypes = Utils.message.type;
 
 -- Display a simple message. Nil free.
 Utils.message.displayMessage = function(message, messageType, noPrefix, chatFrameIndex)
-	if not messageType or messageType == messageType.CHAT_FRAME then
+	if not messageType or messageType == messageTypes.CHAT_FRAME then
 		local chatFrame = _G["ChatFrame"..tostring(chatFrameIndex)] or getChatFrame();
 		if noPrefix then
 			chatFrame:AddMessage(tostring(message), 1, 1, 1);
 		else
 			chatFrame:AddMessage(MESSAGE_PREFIX..tostring(message), 1, 1, 1);
 		end
-	elseif messageType == messageType.ALERT_POPUP then
+	elseif messageType == messageTypes.ALERT_POPUP then
 		TRP3_API.popup.showAlertPopup(tostring(message));
-	elseif messageType == messageType.RAID_ALERT then
+	elseif messageType == messageTypes.RAID_ALERT then
 		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
 	end
 end

@@ -130,7 +130,7 @@ function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
     if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
-		_G[dialog:GetName().."EditBox"]:SetText(default);
+		_G[dialog:GetName().."EditBox"]:SetText(default or "");
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
 end
@@ -143,7 +143,7 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
     if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
-		_G[dialog:GetName().."EditBox"]:SetNumber(default);
+		_G[dialog:GetName().."EditBox"]:SetNumber(default or 0);
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
 end

@@ -30,7 +30,7 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
-				<FontString name="$parentGuild" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+				<FontString name="$parentInfo2" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
 					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo"/>

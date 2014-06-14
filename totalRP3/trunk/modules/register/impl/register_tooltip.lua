@@ -10,6 +10,7 @@ local getUnitID = Utils.str.unitInfoToID;
 local colorCodeFloat = Utils.color.colorCodeFloat;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
+local getIgnoreReason = TRP3_API.register.getIgnoreReason;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
@@ -194,6 +195,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	if isIDIgnored(targetID) then
 		ui_CharacterTT:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+		ui_CharacterTT:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
 		return;
 	end

@@ -9,7 +9,7 @@ local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local get = TRP3_API.profile.getData;
-local assert, table, _G, date, pairs, error = assert, table, _G, date, pairs, error;
+local assert, table, _G, date, pairs, error, tinsert = assert, table, _G, date, pairs, error, tinsert;
 local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -27,6 +27,7 @@ local hasProfile = TRP3_API.register.hasProfile;
 local getCompleteName = TRP3_API.register.getCompleteName;
 local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
 local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.register.getProfileList;
+local getIgnoredList, unignoreID = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -71,14 +72,17 @@ end
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local MODE_CHARACTER = 1;
-local MODE_PETS = 2;
+local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
 
 local ICON_SIZE = 30;
-local currentMode = "characters";
+local currentMode = 1;
 local DATE_FORMAT = "%d/%m/%y %H:%M";
 
-local function decorateLine(line, profileID)
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI : CHARACTERS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateCharacterLine(line, profileID)
 	local profile = getProfile(profileID);
 	line.profileID = profileID;
 
@@ -108,7 +112,7 @@ local function decorateLine(line, profileID)
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
 end
 
-local function refreshCharacters()
+local function getCharacterLines()
 	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
 	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
@@ -158,14 +162,55 @@ local function refreshCharacters()
 	return lines;
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI : COMPANIONS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateCompanionLine(line, profileID)
+	
+end
+
+local function getCompanionLines()
+	TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
+	return {};
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI : IGNORED
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function decorateIgnoredLine(line, unitID)
+	line.unitID = unitID;
+	_G[line:GetName().."Name"]:SetText(unitID);
+	_G[line:GetName().."Info"]:SetText("");
+	_G[line:GetName().."Info2"]:SetText("");
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(tostring(getIgnoredList()[unitID])));
+end
+
+local function getIgnoredLines()
+	if tsize(getIgnoredList()) == 0 then
+		TRP3_RegisterListEmpty:SetText(loc("REG_LIST_IGNORE_EMPTY"));
+	end
+	return getIgnoredList();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI : LIST
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
 
 	if currentMode == MODE_CHARACTER then
-		lines = refreshCharacters();
-	else
-		lines = {};
+		lines = getCharacterLines();
+		TRP3_RegisterList.decorate = decorateCharacterLine;
+	elseif currentMode == MODE_PETS then
+		lines = getCompanionLines();
+		TRP3_RegisterList.decorate = decorateCompanionLine;
+	elseif currentMode == MODE_IGNORE then
+		lines = getIgnoredLines();
+		TRP3_RegisterList.decorate = decorateIgnoredLine;
 	end
 
 	if tsize(lines) == 0 then
@@ -175,8 +220,14 @@ local function refreshList()
 end
 
 local function onLineDClicked(self, button)
-	assert(self:GetParent().profileID, "No profileID on line.");
-	openPage(self:GetParent().profileID);
+	if currentMode == MODE_CHARACTER then
+		assert(self:GetParent().profileID, "No profileID on line.");
+		openPage(self:GetParent().profileID);
+	elseif currentMode == MODE_IGNORE then
+		assert(self:GetParent().unitID, "No unitID on line.");
+		unignoreID(self:GetParent().unitID);
+		refreshList();
+	end
 end
 
 local function changeMode(tabWidget, value)
@@ -186,19 +237,6 @@ local function changeMode(tabWidget, value)
 		TRP3_RegisterListCharactFilter:Show();
 	end
 	refreshList();
-end
-
-local function targetButtonAdapter(buttonStructure, unitID, targetInfo)
-	buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
-	buttonStructure.tooltipSub = nil;
-	buttonStructure.alert = nil;
-	if unitID ~= Globals.player_id and hasProfile(unitID) then
-		local profile = getUnitIDProfile(unitID);
-		if profile.about and not profile.about.read then
-			buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
-			buttonStructure.alert = true;
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -216,6 +254,7 @@ local function createTabBar()
 	{
 		{loc("REG_LIST_CHAR_TITLE"), 1, 150},
 		{loc("REG_LIST_PETS_TITLE"), 2, 150},
+		{loc("REG_LIST_IGNORE_TITLE"), 3, 150},
 	},
 	changeMode
 	);
@@ -248,7 +287,18 @@ function TRP3_API.register.inits.directoryInit()
 			openMainFrame();
 			openPageByUnitID(unitID);
 		end,
-		adapter = targetButtonAdapter,
+		adapter = function(buttonStructure, unitID, targetInfo)
+			buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
+			buttonStructure.tooltipSub = nil;
+			buttonStructure.alert = nil;
+			if unitID ~= Globals.player_id and hasProfile(unitID) then
+				local profile = getUnitIDProfile(unitID);
+				if profile.about and not profile.about.read then
+					buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+					buttonStructure.alert = true;
+				end
+			end
+		end,
 		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 		icon = "inv_inscription_scroll"
 	});
@@ -265,7 +315,6 @@ function TRP3_API.register.inits.directoryInit()
 		table.insert(widgetTab, widget);
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
-	TRP3_RegisterList.decorate = decorateLine;
 	TRP3_RegisterListFilterCharactName:SetScript("OnTextChanged", refreshList);
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnTextChanged", refreshList);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);

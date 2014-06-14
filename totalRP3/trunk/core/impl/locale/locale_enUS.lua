@@ -207,7 +207,11 @@ local LOCALE_EN = {
 		REG_LIST_CHAR_FILTER = "Characters: %s / %s",
 		REG_LIST_CHAR_EMPTY = "No character",
 		REG_LIST_CHAR_EMPTY2 = "No character matches your selection",
+		REG_LIST_IGNORE_TITLE = "Ignored list",
+		REG_LIST_IGNORE_EMPTY = "No ignored character",
+		REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Double-click to remove from ignore list",
 		REG_LIST_PETS_TITLE = "Companion list",
+		REG_LIST_PETS_EMPTY = "No companion",
 		REG_LIST_FILTERS = "Filters",
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
@@ -308,7 +312,8 @@ local LOCALE_EN = {
 		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
 		TF_IGNORE = "Ignore player",
 		TF_IGNORE_TT = "|cffffff00Click:|r Ignore player",
-		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this/these ID ?\nThis will remove all profiles and characters liked to it.\n\n|cffffff00%s",
+		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this/these ID ?\nThis will remove all profiles and characters liked to it.\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore them. This is a personal note, it won't be visible by others and will serve as a reminder.",
+		TF_IGNORE_NO_REASON = "No reason",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILE
