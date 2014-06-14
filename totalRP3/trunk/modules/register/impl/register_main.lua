@@ -362,7 +362,6 @@ function TRP3_API.register.init()
 		text = loc("REG_PLAYER"),
 		onSelected = function()
 			setPage("player_main", {
-				unitID = Globals.player_id,
 				profile = get("player"),
 				isPlayer = true,
 			});
