@@ -184,7 +184,7 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(tostring(getIgnoredList()[unitID])));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(getIgnoredList()[unitID]));
 end
 
 local function getIgnoredLines()

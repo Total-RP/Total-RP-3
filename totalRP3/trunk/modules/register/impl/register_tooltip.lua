@@ -33,8 +33,9 @@ local IC_GUILD, OOC_GUILD;
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
 local DND_ICON = "|TInterface\\FriendsFrame\\StatusIcon-DnD:15:15|t";
-local ALLIANCE_ICON = "INV_BannerPVP_02";
-local HORDE_ICON = "INV_BannerPVP_01";
+local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
+local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
+local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
 local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
 local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
 local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
@@ -181,6 +182,22 @@ local function getCharacter(unitID)
 	return {};
 end
 
+local function getFactionIcon(targetType)
+	if UnitFactionGroup(targetType) == "Alliance" then
+		return ALLIANCE_ICON;
+	elseif UnitFactionGroup(targetType) == "Horde" then
+		return HORDE_ICON;
+	end
+end
+
+local function getLevelIconOrText(targetType)
+	if UnitLevel(targetType) ~= -1 then
+		return UnitLevel(targetType);
+	else
+		return "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Skull:16:16|t";
+	end
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local lineIndex = 1;
@@ -215,11 +232,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
-			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons);
-		elseif UnitFactionGroup(targetType) == "Alliance" then
-			leftIcons = strconcat(Utils.str.icon(ALLIANCE_ICON, 25), leftIcons);
-		elseif UnitFactionGroup(targetType) == "Horde" then
-			leftIcons = strconcat(Utils.str.icon(HORDE_ICON, 25), leftIcons);
+			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
+		end
+		-- OOC 
+		if character.RP ~= 1 then
+			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
@@ -238,12 +255,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
 		end
 	end
-	
-	if character.RP ~= 1 then
-		completeName = completeName .. "|cffff0000 " .. loc("REG_TT_OOC");
-	end
 
-	ui_CharacterTT:AddDoubleLine(leftIcons .. " " .. completeName, rightIcons);
+	ui_CharacterTT:AddDoubleLine(leftIcons .. completeName, rightIcons);
 	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
 	_G[strconcat(ui_CharacterTT:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
 	lineIndex = lineIndex + 1;
@@ -267,7 +280,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- race, class and level
+	-- race, class, level and faction
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showRaceClass() then
@@ -282,12 +295,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			class = info.characteristics.CL;
 		end
 		lineLeft = strconcat("|cffffffff", race, " ", colorCodeFloat(classColor.r, classColor.g, classColor.b), class);
-
-		if UnitLevel(targetType) ~= -1 then
-			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format(UnitLevel(targetType)), ")");
-		else
-			lineRight = strconcat("|cffffffff(", loc("REG_TT_LEVEL"):format("|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Skull:16:16|t"), ")");
-		end
+		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
 		ui_CharacterTT:AddDoubleLine(lineLeft, lineRight);
 		setDoubleLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
