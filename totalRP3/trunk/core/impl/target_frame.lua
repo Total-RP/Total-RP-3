@@ -260,6 +260,7 @@ local function onLoaded()
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigTarget_Usage",
 		title = loc("CO_TARGETFRAME_USE"),
+		help = loc("CO_TARGETFRAME_USE_TT"),
 		listContent = {
 			{loc("CO_TARGETFRAME_USE_1"), 1},
 			{loc("CO_TARGETFRAME_USE_2"), 2},

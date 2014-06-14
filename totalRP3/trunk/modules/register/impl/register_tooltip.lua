@@ -593,6 +593,7 @@ function TRP3_API.register.inits.tooltipInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_NOTIF"),
 				configKey = CONFIG_CHARACT_NOTIF,
+				help = loc("CO_TOOLTIP_NOTIF_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

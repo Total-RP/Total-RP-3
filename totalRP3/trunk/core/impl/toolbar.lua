@@ -170,6 +170,7 @@ local function onLoaded()
 			{
 				inherit = "TRP3_ConfigSlider",
 				title = loc("CO_TOOLBAR_MAX"),
+				help = loc("CO_TOOLBAR_MAX_TT"),
 				configKey = CONFIG_ICON_MAX_PER_LINE,
 				min = 1,
 				max = 25,

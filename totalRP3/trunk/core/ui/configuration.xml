@@ -35,6 +35,12 @@
 			</Layer>
 	 	</Layers>
 	 	<Frames>
+	 		<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
 	 		<EditBox name="$parentBox" inherits="TRP3_TitledEditBox" virtual="true">
 	 			<Size x="140" y="18"/>
 	 			<Anchors>
@@ -58,6 +64,12 @@
 			</Layer>
 	 	</Layers>
 	 	<Frames>
+	 		<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
 	 		<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
 		        <Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
@@ -80,6 +92,12 @@
 			</Layer>
 	 	</Layers>
 	 	<Frames>
+	 		<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
 	 		<CheckButton name="$parentCheck" inherits="TRP3_CheckBox" enableMouse="true">
 		        <Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="10" y="0"/>
@@ -104,6 +122,12 @@
 			</Layer>
 	 	</Layers>
 	 	<Frames>
+	 		<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
 	 		<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
 	 			<Size x="140" y="15"/>
 	 			<Layers>

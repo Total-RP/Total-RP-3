@@ -14,7 +14,7 @@ local CreateFrame = CreateFrame;
 local getLocaleText = TRP3_API.locale.getLocaleText;
 local getLocales = TRP3_API.locale.getLocales;
 local getCurrentLocale = TRP3_API.locale.getCurrentLocale;
-local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
@@ -98,6 +98,15 @@ local function buildConfigurationPage(structure)
 
 		if element.title and _G[widget:GetName().."Title"] then
 			_G[widget:GetName().."Title"]:SetText(element.title);
+			if _G[widget:GetName().."Help"] then
+				local help = _G[widget:GetName().."Help"];
+				if element.help then
+					help:Show();
+					setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
+				else
+					help:Hide();
+				end
+			end
 		end
 		
 		-- Specific for Dropdown
@@ -273,6 +282,7 @@ local function generalInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_GENERAL_BROADCAST"),
 				configKey = "comm_broad_use",
+				help = loc("CO_GENERAL_BROADCAST_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",

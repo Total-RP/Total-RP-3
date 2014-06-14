@@ -392,6 +392,7 @@ function TRP3_API.register.init()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_REGISTER_ABOUT_VOTE"),
 				configKey = "register_about_use_vote",
+				help = loc("CO_REGISTER_ABOUT_VOTE_TT")
 			},
 		}
 	};
