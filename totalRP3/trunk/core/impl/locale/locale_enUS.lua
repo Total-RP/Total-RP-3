@@ -383,6 +383,8 @@ local LOCALE_EN = {
 		DB_NOTIFICATIONS = "Notifications",
 		DB_NOTIFICATIONS_NO = "You haven't any notification",
 		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
+		DB_TUTO_1 = "These are OOC information.\n\n|cff00ff00It will be placed in your character tooltip.",
+		DB_TUTO_2 = "Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.\n\n|cffff9900All notifications are configurable in the appropriate settings page.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON UI TEXTS

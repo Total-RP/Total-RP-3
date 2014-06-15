@@ -187,6 +187,41 @@ local SendChatMessage, UnitIsDND, UnitIsAFK = SendChatMessage, UnitIsDND, UnitIs
 
 TRP3_API.dashboard.init = function()
 
+	local TUTORIAL_STRUCTURE = {
+		{
+			box = {
+				x = 15,
+				y = -139,
+				anchor = "TOPLEFT",
+				width = 510,
+				height = 115,
+			},
+			button = {
+				x = -30,
+				y = 0,
+				anchor = "RIGHT",
+				text = loc("DB_TUTO_1"):format(TRP3_API.globals.player_id),
+				arrow = "UP"
+			}
+		},
+		{
+			box = {
+				x = 15,
+				y = -258,
+				anchor = "TOPLEFT",
+				width = 510,
+				height = 195,
+			},
+			button = {
+				x = -30,
+				y = 0,
+				anchor = "RIGHT",
+				text = loc("DB_TUTO_2"),
+				arrow = "LEFT"
+			}
+		}
+	}
+
 	registerMenu({
 		id = "main_00_dashboard",
 		align = "CENTER",
@@ -198,6 +233,7 @@ TRP3_API.dashboard.init = function()
 		id = DASHBOARD_PAGE_ID,
 		frame = TRP3_Dashboard,
 		onPagePostShow = onShow,
+		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
 	
 	TRP3_DashboardNotificationsSlider:SetValue(0);

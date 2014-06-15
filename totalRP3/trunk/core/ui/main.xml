@@ -2,6 +2,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
+	<Button name="TRP3_TutorialButton" virtual="true" frameStrata="DIALOG" hidden="true">
+		<Size x="46" y="46"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\common\help-i" setallpoints="true"/>
+			</Layer>
+		</Layers>
+		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
+			<Size x="46" y="46"/>
+			<Anchors>
+				<Anchor point="CENTER" x="-1" y="-1"/>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
+	
     <Frame name="TRP3_MainFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<TitleRegion setAllPoints="true"/>
 		<Size x="768" y="500"/>
@@ -150,13 +165,43 @@
 						</Frames>
 					</Frame>
 				</ScrollChild>
+				<Frames>
+					<Button name="TRP3_MainTutorialButton">
+						<Size x="46" y="46"/>
+						<Anchors><Anchor point="BOTTOMLEFT" x="75" y="-15"/></Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture parentKey="I" file="Interface\common\help-i">
+									<Size x="46" y="46"/><Anchors><Anchor point="CENTER"/></Anchors>
+								</Texture>
+							</Layer>
+							<Layer level="BORDER">
+								<Texture parentKey="Ring" file="Interface\Minimap\MiniMap-TrackingBorder">
+									<Size x="64" y="64"/><Anchors><Anchor point="CENTER" x="12" y="-13"/></Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+						<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
+							<Size x="46" y="46"/><Anchors><Anchor point="CENTER" x="-1" y="1"/></Anchors>
+						</HighlightTexture>
+					</Button>
+				</Frames>
 			</ScrollFrame>
+			
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
 			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true">
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
+				<Size x="535" y="0"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
+					<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+				</Anchors>
+			</Frame>
+			<!-- RIGHT PART : TUTORIAL FRAME : blocking access to content behind it -->
+			<Frame name="TRP3_TutorialFrame" frameStrata="DIALOG" enableMouse="true" hidden="true">
 				<Size x="535" y="0"/>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-20" y="-20"/>
@@ -254,4 +299,5 @@
 			</EditBox>
 		</ScrollChild>
 	</ScrollFrame>
+
 </Ui>

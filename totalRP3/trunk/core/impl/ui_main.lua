@@ -59,5 +59,3 @@ function TRP3_API.ui.initMinimapButton()
 							color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
 	setTooltipAll(minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
 end
-
-

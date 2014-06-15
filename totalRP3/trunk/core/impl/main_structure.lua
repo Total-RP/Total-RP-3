@@ -12,6 +12,7 @@ TRP3_API.navigation = {
 -- imports
 local Log = TRP3_API.utils.log;
 local CreateFrame = CreateFrame;
+local TRP3_TutorialFrame, HelpPlateTooltip, TRP3_MainTutorialButton = TRP3_TutorialFrame, HelpPlateTooltip, TRP3_MainTutorialButton;
 local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
 local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
 local selectMenu, unregisterMenu;
@@ -208,14 +209,25 @@ local function setPage(pageId, context)
 	if currentPage.onPagePreShow then
 		currentPage.onPagePreShow(context);
 	end
+	
 	currentPage.frame:ClearAllPoints();
 	currentPage.frame:SetParent(TRP3_MainFramePageContainer);
 	currentPage.frame:SetPoint("TOPRIGHT", 0, 0);
 	currentPage.frame:SetPoint("BOTTOMLEFT", 0, 0);
 	currentPage.frame:Show();
+	
 	-- Show
 	if currentPage.onPagePostShow then
 		currentPage.onPagePostShow(context);
+	end
+	
+	-- Tutorial
+	TRP3_TutorialFrame:Hide();
+	if currentPage.tutorialProvider and currentPage.tutorialProvider() then
+		TRP3_MainTutorialButton:Show();
+		TRP3_MainTutorialButton.provider = currentPage.tutorialProvider;
+	else
+		TRP3_MainTutorialButton:Hide();
 	end
 end
 TRP3_API.navigation.page.setPage = setPage;
@@ -244,10 +256,108 @@ end
 TRP3_API.navigation.switchMainFrame = switchMainFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tutorial frame
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local BUTTONS = {};
+
+local function buttonOnLeave(button)
+	button.box:Show();
+	button.boxHighlight:Hide();
+	HelpPlateTooltip:ClearAllPoints();
+	HelpPlateTooltip.ArrowRIGHT:Hide();
+	HelpPlateTooltip.ArrowGlowRIGHT:Hide();
+	HelpPlateTooltip.ArrowUP:Hide();
+	HelpPlateTooltip.ArrowGlowUP:Hide();
+	HelpPlateTooltip.ArrowDOWN:Hide();
+	HelpPlateTooltip.ArrowGlowDOWN:Hide();
+	HelpPlateTooltip.ArrowLEFT:Hide();
+	HelpPlateTooltip.ArrowGlowLEFT:Hide();
+	HelpPlateTooltip:Hide();
+end
+
+local function buttonOnEnter(button)
+	button.box:Hide();
+	button.boxHighlight:Show();
+	
+	if button.arrow == "RIGHT" then
+		HelpPlateTooltip:SetPoint("LEFT", button, "RIGHT", 10, 0);
+		HelpPlateTooltip.ArrowRIGHT:Show();
+		HelpPlateTooltip.ArrowGlowRIGHT:Show();
+	elseif button.arrow == "LEFT" then
+		HelpPlateTooltip:SetPoint("RIGHT", button, "LEFT", -10, 0);
+		HelpPlateTooltip.ArrowLEFT:Show();
+		HelpPlateTooltip.ArrowGlowLEFT:Show();
+	elseif button.arrow == "UP" then
+		HelpPlateTooltip:SetPoint("BOTTOM", button, "TOP", 0, 10);
+		HelpPlateTooltip.ArrowUP:Show();
+		HelpPlateTooltip.ArrowGlowUP:Show();
+	else
+		HelpPlateTooltip:SetPoint("TOP", button, "BOTTOM", 0, -10);
+		HelpPlateTooltip.ArrowDOWN:Show();
+		HelpPlateTooltip.ArrowGlowDOWN:Show();
+	end
+	
+	HelpPlateTooltip.Text:SetText(button.text);
+	HelpPlateTooltip:Show();
+end
+
+local function configureButton(button)
+	button:SetSize(46, 46);
+	button:SetScript("OnEnter", buttonOnEnter);
+	button:SetScript("OnLeave", buttonOnLeave);
+end
+
+local function showTutorial(tutorialStructure)
+	-- Hide all
+	for _, buttonWidget in pairs(BUTTONS) do
+		buttonWidget:Hide();
+		buttonWidget.box:Hide();
+		buttonWidget.boxHighlight:Hide();
+	end
+
+	for frameIndex, frameInfo in pairs(tutorialStructure) do
+		if not BUTTONS[frameIndex] then
+			BUTTONS[frameIndex] = CreateFrame( "Button", nil, TRP3_TutorialFrame, "TRP3_TutorialButton" );
+			BUTTONS[frameIndex].box = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBox" );
+			BUTTONS[frameIndex].boxHighlight = CreateFrame( "Frame", nil, TRP3_TutorialFrame, "HelpPlateBoxHighlight" );
+			configureButton(BUTTONS[frameIndex]);
+		end
+		local buttonWidget = BUTTONS[frameIndex];
+		buttonWidget:ClearAllPoints();
+		buttonWidget:SetPoint( frameInfo.button.anchor, buttonWidget.box, frameInfo.button.anchor, frameInfo.button.x, frameInfo.button.y );
+		buttonWidget:Show();
+		buttonWidget.arrow = frameInfo.button.arrow or "RIGHT";
+		buttonWidget.text = frameInfo.button.text;
+		
+		local box = buttonWidget.box;
+		box:SetSize(frameInfo.box.width, frameInfo.box.height);
+		box:ClearAllPoints();
+		box:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
+		box:Show();
+		
+		local highlight = buttonWidget.boxHighlight;
+		highlight:SetSize(frameInfo.box.width, frameInfo.box.height);
+		highlight:ClearAllPoints();
+		highlight:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
+		highlight:Hide();
+	end
+	TRP3_TutorialFrame:Show();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.navigation.init = function()
 	TRP3_MainFrame:SetScript("OnShow", function() checkPageSelection() end);
 	TRP3_MainFrameClose:SetScript("OnClick", function() switchMainFrame() end);
+	
+	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
+		if TRP3_TutorialFrame:IsShown() then
+			TRP3_TutorialFrame:Hide();
+		elseif not TRP3_PopupsFrame:IsShown() and self.provider and self.provider() then
+			showTutorial(self.provider());
+		end
+	end);
 end
