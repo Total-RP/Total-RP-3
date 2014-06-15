@@ -308,7 +308,7 @@
 			<Button name="TRP3_RegisterCharact_ActionButton">
 				<Size x="32" y="32"/>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+					<Anchor point="TOPRIGHT" x="-15" y="-15"/>
 				</Anchors>
 				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
 				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
@@ -318,12 +318,6 @@
 						self:RegisterForClicks("LeftButtonUp","RightButtonUp")
 						self:RegisterForDrag("LeftButton","RightButton")
 					</OnLoad>
-					<OnEnter>
-						TRP3_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave>
-						TRP3_MainTooltip:Hide();
-					</OnLeave>
 				</Scripts>
 			</Button>
 			<!-- EDIT MODE -->
