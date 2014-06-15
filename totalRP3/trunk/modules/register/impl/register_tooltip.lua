@@ -27,7 +27,7 @@ local Events = TRP3_API.events;
 local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
 local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
 local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
-
+local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local IC_GUILD, OOC_GUILD;
 
 -- ICONS
@@ -420,6 +420,11 @@ local function show(targetType)
 				ui_CharacterTT:Show();
 				if shouldHideGameTooltip() and not isIDIgnored(targetID) then
 					GameTooltip:Hide();
+				end
+				if targetID ~= Globals.player_id and hasProfile(targetID) then
+					ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
+				else
+					ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
 				end
 			else
 				ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.

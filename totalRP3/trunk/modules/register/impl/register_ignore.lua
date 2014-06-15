@@ -75,6 +75,26 @@ local function getRelationTexture(profileID)
 end
 TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
+local function getRelationColors(profileID)
+	local relation = getRelation(profileID);
+	if relation == RELATIONS.NONE then
+		return 1, 1, 1;
+	elseif relation == RELATIONS.UNFRIENDLY then
+		return 1, 0, 0;
+	elseif relation == RELATIONS.NEUTRAL then
+		return 0, 0, 1;
+	elseif relation == RELATIONS.BUSINESS then
+		return 1, 1, 0;
+	elseif relation == RELATIONS.FRIEND then
+		return 0, 1, 0;
+	elseif relation == RELATIONS.LOVE then
+		return 1, 0.5, 1;
+	elseif relation == RELATIONS.FAMILY then
+		return 1, 0.75, 0;
+	end
+end
+TRP3_API.register.relation.getRelationColors = getRelationColors;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Ignore list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
