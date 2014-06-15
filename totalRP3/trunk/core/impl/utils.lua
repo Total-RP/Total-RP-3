@@ -106,7 +106,7 @@ end
 -- Print all table content (resursively)
 -- Debug purpose
 -- Better than /dump as it prints one message per line (avoid chat show limit)
-local dumpColor1, dumpColor2, dumpColor3 = "|cffffaa00", "|cff00ff00", "|cffffff00";
+local dumpColor1, dumpColor2, dumpColor3, dumpColor4 = "|cffffaa00", "|cff00ff00", "|cffffff00", "|cffff9900";
 local function tableDump(table, level, withCount)
 	local i = 0;
 	local dumpIndent = "";
@@ -121,9 +121,9 @@ local function tableDump(table, level, withCount)
 			tableDump(value, level + 1);
 			print(dumpIndent .. dumpColor3 .. "}");
 		elseif type(value) == "function" then
-			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. " <" .. type(value) ..">");
+			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">");
 		else
-			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. " <" .. type(value) ..">");
+			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">");
 		end
 		i = i + 1;
 	end

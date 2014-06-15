@@ -12,6 +12,38 @@ local UnitIsPlayer = UnitIsPlayer;
 local profiles, characters, blackList, whiteList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Relation
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local RELATIONS = {
+	UNFRIENDLY = "UNFRIENDLY",
+	NONE = "NONE",
+	NEUTRAL = "NEUTRAL",
+	BUSINESS = "BUSINESS",
+	FRIEND = "FRIEND",
+	LOVE = "LOVE",
+	FAMILY = "FAMILY"
+}
+TRP3_API.register.relation = RELATIONS;
+
+local function getRelation(profileID)
+	return RELATIONS.NONE;
+end
+TRP3_API.register.relation.getRelation = getRelation;
+
+function TRP3_API.register.relation.getRelationText(profileID)
+	local relation = getRelation(profileID);
+	if relation == RELATIONS.NONE then
+		return "";
+	end
+	return loc("REG_RELATION_" .. relation);
+end
+
+function TRP3_API.register.relation.getRelationTooltipText(profileID)
+	return loc("REG_RELATION_" .. getRelation(profileID) .. "_TT");
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Ignore list
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -107,4 +139,18 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
 		tooltip = loc("TF_IGNORE"),
 		icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
 	});
+	
+--	TRP3_API.target.registerButton({
+--		id = "r_relation",
+--		configText = loc("TF_IGNORE"),
+--		condition = function(unitID, targetInfo)
+--			return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
+--		end,
+--		onClick = function(unitID)
+--			ignoreID(unitID);
+--		end,
+--		tooltipSub = loc("TF_IGNORE_TT"),
+--		tooltip = loc("TF_IGNORE"),
+--		icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
+--	});
 end);

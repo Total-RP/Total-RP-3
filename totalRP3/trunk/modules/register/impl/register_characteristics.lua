@@ -20,7 +20,7 @@ local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
-local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
+local getUnitIDProfile, getPlayerCurrentProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.profile.getPlayerCurrentProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local CreateFrame = CreateFrame;
 local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
@@ -100,6 +100,11 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
     return text;
 end
 TRP3_API.register.getCompleteName = getCompleteName;
+
+function TRP3_API.register.getPlayerCompleteName(hideTitle)
+	local profile = getPlayerCurrentProfile();
+	return getCompleteName(profile.player.characteristics or Globals.empty, Globals.player, hideTitle);
+end
 
 local function refreshPsycho(psychoLine, value)
 	local dotIndex;

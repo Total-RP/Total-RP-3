@@ -404,7 +404,6 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.miscInit();
 	TRP3_API.register.inits.dataExchangeInit();
 	TRP3_API.register.inits.tooltipInit();
-	TRP3_API.register.inits.directoryInit();
 	TRP3_API.register.inits.companionInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory

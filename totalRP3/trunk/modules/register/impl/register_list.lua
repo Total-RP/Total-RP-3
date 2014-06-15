@@ -24,10 +24,11 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
-local getCompleteName = TRP3_API.register.getCompleteName;
+local getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
 local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
 local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.register.getProfileList;
-local getIgnoredList, unignoreID = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID;
+local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
+local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -95,10 +96,21 @@ local function decorateCharacterLine(line, profileID)
 	end
 	
 	if profile.link and tsize(profile.link) > 0 then
-		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR") .. "|cff00ff00";
+		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR");
+		local atLeastOneIgnored = false;
 		for unitID, _ in pairs(profile.link) do
 			local unitName, unitRealm = unitIDToInfo(unitID);
-			secondLine = secondLine .. "\n - " .. unitName .. " ( " .. unitRealm .. " )";
+			if isIDIgnored(unitID) then
+				secondLine = secondLine .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. loc("REG_LIST_CHAR_IGNORED");
+				atLeastOneIgnored = true;
+			else
+				secondLine = secondLine .. "\n|cff00ff00 - " .. unitName .. " ( " .. unitRealm .. " )";
+			end
+		end
+		if atLeastOneIgnored then
+			_G[line:GetName().."Info2"]:SetText("|cffff0000" .. loc("REG_LIST_CHAR_IGNORED"));
+		else
+			_G[line:GetName().."Info2"]:SetText("");
 		end
 	else
 		secondLine = secondLine .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
@@ -108,8 +120,14 @@ local function decorateCharacterLine(line, profileID)
 		local formatDate = date(DATE_FORMAT, profile.time);
 		secondLine = secondLine .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
 	end
+	
+	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID):format(getPlayerCompleteName(true), name));
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
+	
+	local relation = getRelationText(profileID);
+	_G[line:GetName().."Info"]:SetText(relation);
+	
 end
 
 local function getCharacterLines()
@@ -261,7 +279,7 @@ local function createTabBar()
 	tabGroup:SelectTab(1);
 end
 
-function TRP3_API.register.inits.directoryInit()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	registerMenu({
 		id = REGISTER_PAGE,
@@ -325,4 +343,4 @@ function TRP3_API.register.inits.directoryInit()
 
 	createTabBar();
 
-end
+end);
