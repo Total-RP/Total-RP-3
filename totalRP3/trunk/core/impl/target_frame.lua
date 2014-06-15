@@ -48,7 +48,7 @@ local function createButton(index)
 	end);
 	uiButton:SetScript("OnClick", function(self, button)
 		if self.onClick then
-			self.onClick(self.unitID, self.targetInfo, button);
+			self.onClick(self.unitID, self.targetInfo, button, self);
 		end
 	end);
 	return uiButton;
@@ -99,7 +99,7 @@ local function displayButtonsPanel(unitID, targetInfo)
 		uiButton.unitID = unitID;
 		uiButton.targetInfo = targetInfo;
 		if buttonStructure.tooltip then
-			setTooltipForSameFrame(uiButton, "BOTTOM", 0, -5, buttonStructure.tooltip, buttonStructure.tooltipSub);
+			setTooltipForSameFrame(uiButton, "TOP", 0, 5, buttonStructure.tooltip, buttonStructure.tooltipSub);
 		else
 			setTooltipForSameFrame(uiButton);
 		end
@@ -224,8 +224,8 @@ local function onTargetChanged(...)
 	end
 end
 
-local function refreshIfNeeded(targetID)
-	if currentTarget == targetID then
+local function refreshIfNeeded(unitID)
+	if not unitID or currentTarget == unitID then
 		onTargetChanged();
 	end
 end
@@ -310,8 +310,8 @@ TRP3_API.target.init = function()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	
-	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
-	Events.listenToEvents({Events.REGISTER_ABOUT_READ}, refreshIfNeededTab);
+	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
+	Events.listenToEvent(Events.REGISTER_ABOUT_READ, refreshIfNeededTab);
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
 		if currentTarget == Globals.player_id then
 			onTargetChanged();

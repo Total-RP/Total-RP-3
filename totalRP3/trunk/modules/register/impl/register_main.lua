@@ -16,7 +16,6 @@ TRP3_API.register.MENU_LIST_ID_TAB = "main_31_";
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local unitID = Utils.str.unitInfoToID;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local log = Utils.log.log;
@@ -141,7 +140,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
 	profile.link[unitID] = 1; -- bound
 	
 	if oldProfileID ~= currentProfileID then
-		Events.fireEvent(Events.REGISTER_EXCHANGE_PROFILE_CHANGED, unitID, currentProfileID);
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, currentProfileID);
 	end
 end
 
@@ -177,14 +176,17 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		character.CU = data.CU;
 		character.RP = data.RP;
 		character.XP = data.XP;
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
 	else
 		local profile = getUnitIDProfile(unitID);
 		if profile[informationType] then
 			wipe(profile[informationType]);
 		end
 		profile[informationType] = data;
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType);
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
 	end
-	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, unitID, informationType);
+	
 end
 
 --- Raises error if KNOWN unitID
@@ -262,16 +264,16 @@ local function onMouseOver(...)
 	end
 end
 
-local function onReceivedInfo(unitID, infoType)
+local function onReceivedInfo(profileID, infoType)
 	if getCurrentPageID() == "player_main" then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
-		if unitID == context.unitID then
+		if profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
 				showAboutTab();
-			elseif  infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
+			elseif infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
 				showCharacteristicsTab();
-			elseif  infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
+			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
 				showMiscTab();
 			end
 		end

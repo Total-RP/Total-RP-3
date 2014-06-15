@@ -17,14 +17,14 @@
 			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT" text="[ ][ ] [Characters name]">
-				 	<Size x="150" y="10"/>
+				 	<Size x="180" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="30" y="0"/>
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10"/>
 				</FontString>
 				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
-					<Size x="125" y="10"/>
+					<Size x="110" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName"/>
 					</Anchors>

@@ -22,7 +22,9 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile, getPlayerCurrentProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.profile.getPlayerCurrentProfile;
-local hasProfile = TRP3_API.register.hasProfile;
+local hasProfile, getRelationTexture = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationTexture;
+local RELATIONS = TRP3_API.register.relation;
+local getRelationText, getRelationTooltipText, setRelation = RELATIONS.getRelationText, RELATIONS.getRelationTooltipText, RELATIONS.setRelation;
 local CreateFrame = CreateFrame;
 local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
@@ -108,10 +110,11 @@ local function getCompleteName(characteristicsTab, name, hideTitle)
 end
 TRP3_API.register.getCompleteName = getCompleteName;
 
-function TRP3_API.register.getPlayerCompleteName(hideTitle)
+local function getPlayerCompleteName(hideTitle)
 	local profile = getPlayerCurrentProfile();
 	return getCompleteName(profile.player.characteristics or Globals.empty, Globals.player, hideTitle);
 end
+TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function refreshPsycho(psychoLine, value)
 	local dotIndex;
@@ -509,6 +512,16 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_MiscAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 end
 
+local function setupRelationButton(profileID, profile)
+	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),
+		loc("REG_RELATION_BUTTON_TT"):format(
+			getRelationText(profileID),
+			getRelationTooltipText(profileID, profile)
+		)
+	);
+end
+
 local function saveCharacteristics()
 	saveInDraft();
 	
@@ -550,7 +563,9 @@ local function refreshDisplay()
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
 	else
+		assert(context.profileID, "No profileID in context");
 		TRP3_RegisterCharact_ActionButton:Show();
+		setupRelationButton(context.profileID, context.profile);
 	end
 	
 	if isEditMode then
@@ -577,14 +592,34 @@ end
 
 local function onActionSelected(value, button)
 	local context = getCurrentContext();
+	assert(context, "No context for page player_main !");
+	assert(context.profile, "No profile in context");
+	assert(context.profileID, "No profileID in context");
+	
 	if value == 1 then
 		uiDeleteProfileEntry(context.profileID);
+	elseif type(value) == "string" then
+		setRelation(context.profileID, value);
+		setupRelationButton(context.profileID, context.profile);
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, nil, context.profileID);
 	end
 end
 
 local function onActionClicked(button)
-  local values = {};
+	local values = {};
 	tinsert(values,{"Delete profile", 1});
+	tinsert(values, {
+		loc("REG_RELATION"), 
+		{
+			{loc("REG_RELATION_NONE"), RELATIONS.NONE},
+			{loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY},
+			{loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL},
+			{loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS},
+			{loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND},
+			{loc("REG_RELATION_LOVE"), RELATIONS.LOVE},
+			{loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY},
+		},
+	});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
@@ -738,7 +773,6 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "TOPLEFT", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

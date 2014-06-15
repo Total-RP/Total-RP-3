@@ -121,7 +121,7 @@ local function decorateCharacterLine(line, profileID)
 		secondLine = secondLine .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
 	end
 	
-	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID):format(getPlayerCompleteName(true), name));
+	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID, profile));
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
 	

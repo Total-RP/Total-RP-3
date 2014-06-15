@@ -434,9 +434,9 @@ local function onMouseOver()
 	show("mouseover");
 end
 
-local function refreshIfNeeded(targetID)
+local function refreshIfNeeded(unitID)
 	local mouseID = getUnitID("mouseover");
-	if mouseID == targetID then
+	if mouseID == unitID then
 		onMouseOver();
 	end
 end
@@ -466,7 +466,7 @@ function TRP3_API.register.inits.tooltipInit()
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
 	
-	Events.listenToEvents({Events.REGISTER_EXCHANGE_PROFILE_CHANGED, Events.REGISTER_EXCHANGE_RECEIVED_INFO}, refreshIfNeeded);
+	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
 	
 	IC_GUILD = " |cff00ff00(" .. loc("CM_IC") .. ")";
 	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";

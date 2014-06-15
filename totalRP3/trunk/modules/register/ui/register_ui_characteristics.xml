@@ -305,20 +305,10 @@
 					</ScrollFrame>
 				</Frames>
 			</Frame>
-			<Button name="TRP3_RegisterCharact_ActionButton">
-				<Size x="32" y="32"/>
+			<Button name="TRP3_RegisterCharact_ActionButton" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-15" y="-15"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_EditButton" x="0" y="5"/>
 				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-				<Scripts>
-					<OnLoad>
-						self:RegisterForClicks("LeftButtonUp","RightButtonUp")
-						self:RegisterForDrag("LeftButton","RightButton")
-					</OnLoad>
-				</Scripts>
 			</Button>
 			<!-- EDIT MODE -->
 			
