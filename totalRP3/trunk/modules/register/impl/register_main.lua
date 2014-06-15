@@ -10,6 +10,9 @@ TRP3_API.register = {
 	ui = {},
 };
 
+TRP3_API.register.MENU_LIST_ID = "main_30_register";
+TRP3_API.register.MENU_LIST_ID_TAB = "main_31_";
+
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -60,6 +63,16 @@ local function getProfile(profileID)
 	return profiles[profileID];
 end
 TRP3_API.register.getProfile = getProfile;
+
+local function deleteProfile(profileID)
+	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
+	for character, _ in pairs(profiles[profileID].link) do
+		characters[character].profileID = nil;
+	end
+	wipe(profiles[profileID]);
+	profiles[profileID] = nil;
+end
+TRP3_API.register.deleteProfile = deleteProfile;
 
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");

@@ -19,6 +19,7 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
 		REG_PLAYER = "Character",
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
@@ -215,6 +216,7 @@ local LOCALE_EN = {
 		REG_TT_IGNORED = "< Ignored >";
 		REG_LIST_CHAR_TITLE = "Character list",
 		REG_LIST_CHAR_SEL = "Selected character",
+		REG_LIST_CHAR_TT = "%s\n\n|cffffff00Click to show page",
 		REG_LIST_CHAR_TT_RELATION = "Relation:\n|cff00ff00%s",
 		REG_LIST_CHAR_TT = "%s\n\n|cffffff00Double-click to show page",
 		REG_LIST_CHAR_TT_CHAR = "Bounded WoW character(s):",
@@ -226,7 +228,7 @@ local LOCALE_EN = {
 		REG_LIST_CHAR_IGNORED = "Ignored",
 		REG_LIST_IGNORE_TITLE = "Ignored list",
 		REG_LIST_IGNORE_EMPTY = "No ignored character",
-		REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Double-click to remove from ignore list",
+		REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Click to remove from ignore list",
 		REG_LIST_PETS_TITLE = "Companion list",
 		REG_LIST_PETS_EMPTY = "No companion",
 		REG_LIST_FILTERS = "Filters",

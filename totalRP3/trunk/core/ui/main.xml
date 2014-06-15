@@ -219,12 +219,6 @@
 				self.isDraging = nil;
 				self:UnlockHighlight();
 			</OnDragStop>
-			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
-			</OnEnter>
-			<OnLeave>
-				TRP3_MainTooltip:Hide();
-			</OnLeave>
 		</Scripts>
 	</Button>
 	

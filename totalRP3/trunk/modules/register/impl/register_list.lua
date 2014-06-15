@@ -35,8 +35,8 @@ local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRe
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local playerMenu = "main_10_player";
-local currentlyOpenedProfilePrefix = "main_31_";
-local REGISTER_PAGE = "main_30_register";
+local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
+local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
 
 local function openPage(profileID)
 	local profile = getProfile(profileID);
@@ -327,7 +327,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	for i=1,15 do
 		local widget = _G["TRP3_RegisterListLine"..i];
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
-		widgetClick:SetScript("OnDoubleClick", onLineDClicked);
+		widgetClick:SetScript("OnClick", onLineDClicked);
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);
 		table.insert(widgetTab, widget);

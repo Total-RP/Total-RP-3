@@ -10,7 +10,7 @@
 local Utils = TRP3_API.utils;
 local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
 local math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat = math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat;
-local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color, loc = TRP3_API.utils.str.color, TRP3_API.locale.getText;
 local CONFIG_MINIMAP_POS = "minimap_pos";
 local minimapButton;
@@ -57,7 +57,7 @@ function TRP3_API.ui.initMinimapButton()
 
 	local minimapTooltip = strconcat(color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"), "\n",
 							color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
-	setTooltipForFrame(minimapButton, minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
+	setTooltipAll(minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
 end
 
 

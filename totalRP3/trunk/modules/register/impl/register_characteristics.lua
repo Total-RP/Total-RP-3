@@ -8,6 +8,7 @@ local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
+local getProfile = TRP3_API.register.getProfile;
 local tcopy = Utils.table.copy;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
@@ -25,6 +26,12 @@ local hasProfile = TRP3_API.register.hasProfile;
 local CreateFrame = CreateFrame;
 local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
+local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
+local deleteProfile = TRP3_API.register.deleteProfile;
+local selectMenu = TRP3_API.navigation.menu.selectMenu;
+local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
+local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
@@ -129,7 +136,6 @@ local function setConsultDisplay(context)
 	local dataTab = context.profile.characteristics or Globals.empty;
 	local hasCharac, hasPsycho, hasMisc, margin;
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
-	
 	-- Icon, complete name and titles
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
@@ -544,7 +550,7 @@ local function refreshDisplay()
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
 	else
-    TRP3_RegisterCharact_ActionButton:Show();
+		TRP3_RegisterCharact_ActionButton:Show();
 	end
 	
 	if isEditMode then
@@ -559,14 +565,30 @@ local function refreshDisplay()
 	end
 end
 
+local function uiDeleteProfileEntry(profileID)
+	local profil = getProfile(profileID);
+	showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
+	function()
+		deleteProfile(profileID);
+		selectMenu(TRP3_API.register.MENU_LIST_ID);
+		unregisterMenu(TRP3_API.register.MENU_LIST_ID_TAB..profileID);
+	end);
+end
+
+local function onActionSelected(value, button)
+	local context = getCurrentContext();
+	if value == 1 then
+		uiDeleteProfileEntry(context.profileID);
+	end
+end
+
 local function onActionClicked(button)
   local values = {};
-  tinsert(values,{"TEM", 0});
-  tinsert(values,{ "PO", 1});
-  tinsert(values, {"RA", 2});
-  tinsert(values,{"RY", 3});
-  displayDropDown(button, values, nil, 0, true);
+	tinsert(values,{"Delete profile", 1});
+	displayDropDown(button, values, onActionSelected, 0, true);
 end
+
+
 
 local function showCharacteristicsTab()
 	TRP3_RegisterCharact:Show();
@@ -716,7 +738,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
-	setTooltipForSameFrame(TRP3_RegisterCharact_ActionButton, "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "TOPLEFT", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
