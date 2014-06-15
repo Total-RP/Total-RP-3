@@ -70,6 +70,7 @@ local function deleteProfile(profileID)
 	end
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
+	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 end
 TRP3_API.register.deleteProfile = deleteProfile;
 

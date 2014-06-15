@@ -120,7 +120,7 @@ TRP3_API.navigation.menu.registerMenu = registerMenu;
 
 -- Unregister a menu structure.
 -- Automatically refresh the menu display
-unregisterMenu = function(menuId)
+function unregisterMenu(menuId)
 	if selectedMenuId == menuId then 
 		if menuStructures[menuId].isChildOf then
 			selectMenu(menuStructures[menuId].isChildOf);

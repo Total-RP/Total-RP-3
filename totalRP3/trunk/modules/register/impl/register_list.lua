@@ -4,7 +4,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- imports
-local Globals = TRP3_API.globals;
+local Globals, Events = TRP3_API.globals, TRP3_API.events;
 local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
@@ -29,6 +29,7 @@ local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
 local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.register.getProfileList;
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
 local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
+local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -340,6 +341,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
+	
+	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
+		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+		end
+	end);
 
 	createTabBar();
 

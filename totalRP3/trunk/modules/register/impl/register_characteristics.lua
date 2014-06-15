@@ -585,8 +585,6 @@ local function uiDeleteProfileEntry(profileID)
 	showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
 	function()
 		deleteProfile(profileID);
-		selectMenu(TRP3_API.register.MENU_LIST_ID);
-		unregisterMenu(TRP3_API.register.MENU_LIST_ID_TAB..profileID);
 	end);
 end
 

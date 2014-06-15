@@ -10,7 +10,7 @@ local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring
 local EMPTY = TRP3_API.globals.empty;
 local UnitIsPlayer = UnitIsPlayer;
 local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_API.profile.getPlayerCurrentProfile, TRP3_API.register.hasProfile;
-local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
+local getProfile, getUnitID, deleteProfile = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID, TRP3_API.register.deleteProfile;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local getCompleteName, getPlayerCompleteName;
@@ -125,9 +125,7 @@ function TRP3_API.register.purgeIgnored(ID)
 	end
 	-- Delete related profile
 	if profileToIgnore and profiles[profileToIgnore] then
-		wipe(profiles[profileToIgnore]);
-		profiles[profileToIgnore] = nil;
-		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileToIgnore);
+		deleteProfile(profileToIgnore);
 	end
 end
 
