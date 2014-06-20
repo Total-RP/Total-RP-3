@@ -310,8 +310,8 @@
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_EditButton" x="0" y="5"/>
 				</Anchors>
 			</Button>
-			<!-- EDIT MODE -->
 			
+			<!-- EDIT MODE -->
 			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_FieldSetFrame">
 				<Size x="414" y="70"/>
 				<Anchors>	

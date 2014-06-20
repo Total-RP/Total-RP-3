@@ -421,7 +421,7 @@ local function show(targetType)
 				if shouldHideGameTooltip() and not isIDIgnored(targetID) then
 					GameTooltip:Hide();
 				end
-				if targetID ~= Globals.player_id and hasProfile(targetID) then
+				if targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 					ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
 				else
 					ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);

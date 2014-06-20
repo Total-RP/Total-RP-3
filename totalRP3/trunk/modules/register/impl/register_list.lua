@@ -9,7 +9,7 @@ local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local get = TRP3_API.profile.getData;
-local assert, table, _G, date, pairs, error, tinsert = assert, table, _G, date, pairs, error, tinsert;
+local assert, table, _G, date, pairs, error, tinsert, wipe, time = assert, table, _G, date, pairs, error, tinsert, wipe, time;
 local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -30,6 +30,9 @@ local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.regist
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
 local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
+local displayDropDown, showAlertPopup, showConfirmPopup = TRP3_API.ui.listbox.displayDropDown, TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
+local deleteProfile, deleteCharacter = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter;
+local refreshList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -75,7 +78,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
-
+local selectedIDs = {};
 local ICON_SIZE = 30;
 local currentMode = 1;
 local DATE_FORMAT = "%d/%m/%y %H:%M";
@@ -86,7 +89,7 @@ local DATE_FORMAT = "%d/%m/%y %H:%M";
 
 local function decorateCharacterLine(line, profileID)
 	local profile = getProfile(profileID);
-	line.profileID = profileID;
+	line.id = profileID;
 
 	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
 	local tooltip, secondLine = name, "";
@@ -95,7 +98,7 @@ local function decorateCharacterLine(line, profileID)
 	if profile.characteristics and profile.characteristics.IC then
 		tooltip = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
-	
+
 	if profile.link and tsize(profile.link) > 0 then
 		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR");
 		local atLeastOneIgnored = false;
@@ -121,14 +124,16 @@ local function decorateCharacterLine(line, profileID)
 		local formatDate = date(DATE_FORMAT, profile.time);
 		secondLine = secondLine .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
 	end
-	
+
 	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID, profile));
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
-	
+
+	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
+
 	local relation = getRelationText(profileID);
 	_G[line:GetName().."Info"]:SetText(relation);
-	
+
 end
 
 local function getCharacterLines()
@@ -137,10 +142,10 @@ local function getCharacterLines()
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
 	local fullSize = tsize(getProfileList());
 	local lines = {};
-	
+
 	for profileID, profile in pairs(getProfileList()) do
 		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
-		
+
 		-- Defines if at least one character is conform to the search criteria
 		for unitID, _ in pairs(profile.link) do
 			local unitName, unitRealm = unitIDToInfo(unitID);
@@ -158,16 +163,16 @@ local function getCharacterLines()
 		if not nameIsConform and (getCompleteName(profile.characteristics or {}, "", true):lower():find(nameSearch)) then
 			nameIsConform = true;
 		end
-		
+
 		nameIsConform = nameIsConform or nameSearch:len() == 0;
 		guildIsConform = guildIsConform or guildSearch:len() == 0;
 		realmIsConform = realmIsConform or not realmOnly;
-		
+
 		if nameIsConform and guildIsConform and realmIsConform then
 			lines[profileID] = profile;
 		end
 	end
-	
+
 	local lineSize = tsize(lines);
 	if lineSize == 0 then
 		if fullSize == 0 then
@@ -181,12 +186,83 @@ local function getCharacterLines()
 	return lines;
 end
 
+local MONTH_IN_SECONDS = 2592000;
+
+local function onActionSelected(value, button)
+	if value == "purge_time" then
+		local profiles = getProfileList();
+		local profilesToPurge = {};
+		for profileID, profile in pairs(profiles) do
+			if profile.time and time() - profile.time > MONTH_IN_SECONDS then
+				tinsert(profilesToPurge, profileID);
+			end
+		end
+		if #profilesToPurge == 0 then
+			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_TIME_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+		else
+			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_TIME_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
+				for _, profileID in pairs(profilesToPurge) do
+					deleteProfile(profileID);
+				end
+				refreshList();
+			end);
+		end
+	elseif value == "purge_unlinked" then
+		local profiles = getProfileList();
+		local profilesToPurge = {};
+		for profileID, profile in pairs(profiles) do
+			if not profile.link or tsize(profile.link) == 0 then
+				tinsert(profilesToPurge, profileID);
+			end
+		end
+		if #profilesToPurge == 0 then
+			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_UNLINKED_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+		else
+			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_UNLINKED_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
+				for _, profileID in pairs(profilesToPurge) do
+					deleteProfile(profileID);
+				end
+				refreshList();
+			end);
+		end
+	elseif value == "purge_ignore" then
+		local profilesToPurge, characterToPurge = TRP3_API.register.getIDsToPurge();
+		if #profilesToPurge + #characterToPurge == 0 then
+			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_IGNORE_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+		else
+			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_IGNORE_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge + #characterToPurge)), function()
+				for _, profileID in pairs(profilesToPurge) do
+					deleteProfile(profileID);
+				end
+				for _, unitID in pairs(characterToPurge) do
+					deleteCharacter(unitID);
+				end
+				refreshList();
+			end);
+		end
+	end
+end
+
+local function onActions(self)
+	local values = {};
+	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
+			{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
+			{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
+			{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
+		}});
+	tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
+			{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
+			{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
+		}});
+	displayDropDown(self, values, onActionSelected, 0, true);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI : COMPANIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function decorateCompanionLine(line, profileID)
-	
+
 end
 
 local function getCompanionLines()
@@ -199,7 +275,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function decorateIgnoredLine(line, unitID)
-	line.unitID = unitID;
+	line.id = unitID;
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
@@ -217,9 +293,10 @@ end
 -- UI : LIST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function refreshList()
+function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
+	wipe(selectedIDs);
 
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
@@ -240,13 +317,18 @@ end
 
 local function onLineDClicked(self, button)
 	if currentMode == MODE_CHARACTER then
-		assert(self:GetParent().profileID, "No profileID on line.");
-		openPage(self:GetParent().profileID);
+		assert(self:GetParent().id, "No profileID on line.");
+		openPage(self:GetParent().id);
 	elseif currentMode == MODE_IGNORE then
-		assert(self:GetParent().unitID, "No unitID on line.");
-		unignoreID(self:GetParent().unitID);
+		assert(self:GetParent().id, "No unitID on line.");
+		unignoreID(self:GetParent().id);
 		refreshList();
 	end
+end
+
+local function onLineSelected(self, button)
+	assert(self:GetParent().id, "No id on line.");
+	selectedIDs[self:GetParent().id] = true;
 end
 
 local function changeMode(tabWidget, value)
@@ -328,6 +410,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	for i=1,15 do
 		local widget = _G["TRP3_RegisterListLine"..i];
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
+		local widgetSelect = _G["TRP3_RegisterListLine"..i.."Select"];
+		widgetSelect:SetScript("OnClick", onLineSelected);
 		widgetClick:SetScript("OnClick", onLineDClicked);
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);
@@ -341,7 +425,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
-	
+
+	setTooltipForSameFrame(TRP3_RegisterListFilter_Action, "TOP", 0, 0, loc("CM_ACTIONS"));
+	TRP3_RegisterListFilter_Action:SetScript("OnClick", onActions);
+
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
 		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);

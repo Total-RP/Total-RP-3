@@ -19,7 +19,6 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
 		REG_PLAYER = "Character",
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
@@ -121,6 +120,9 @@ local LOCALE_EN = {
 		REG_PLAYER_PSYCHO_CREATENEW = "Create a trait",
 		REG_PLAYER_LEFTTRAIT = "Left attribute",
 		REG_PLAYER_RIGHTTRAIT = "Right attribute",
+		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
+		REG_PLAYER_IGNORE = "Ignore linked characters (%s)",
+		REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters ?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
 		REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
 		REG_PLAYER_SHOWMISC_TT = "Check if you want to show custom fields for your character.\n\nIf you don't want to show custom fields, keep this box unchecked and the miscellaneous frame will remain totally hidden.",
 		REG_PLAYER_MISC_ADD = "Add a custom field",
@@ -236,6 +238,18 @@ local LOCALE_EN = {
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
 		REG_LIST_NAME = "Name",
+		REG_LIST_ACTIONS_PURGE = "Purge register from profile",
+		REG_LIST_ACTIONS_PURGE_TIME = "Not seen for 1 month",
+		REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles whose has not been seen for a month.\n\n|cff00ff00%s",
+		REG_LIST_ACTIONS_PURGE_UNLINKED = "Not bounded to a character",
+		REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles whose are not bounded to a WoW character.\n\n|cff00ff00%s",
+		REG_LIST_ACTIONS_PURGE_IGNORE = "From ignored characters",
+		REG_LIST_ACTIONS_PURGE_IGNORE_C = "This purge will remove all profiles linked to a ignored WoW character.\n\n|cff00ff00%s",
+		REG_LIST_ACTIONS_PURGE_EMPTY = "No profile to purge.",
+		REG_LIST_ACTIONS_PURGE_COUNT = "%s profiles will be removed.",
+		REG_LIST_ACTIONS_MASS = "Action on %s selected profiles",
+		REG_LIST_ACTIONS_MASS_REMOVE = "Remove profiles",
+		REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
 		REG_COMPANIONS = "Companions",
 		REG_COMPANIONS_LIST = "Profiles",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

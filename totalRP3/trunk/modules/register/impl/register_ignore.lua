@@ -104,49 +104,39 @@ local function isIDIgnored(ID)
 end
 TRP3_API.register.isIDIgnored = isIDIgnored;
 
-local function ignoreID(unitID)
-	showTextInputPopup(loc("TF_IGNORE_CONFIRM"):format(unitID), function(text)
-		if text:len() == 0 then
-			text = loc("TF_IGNORE_NO_REASON");
-		end
-		blackList[unitID] = text;
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
-	end);
+local function ignoreID(unitID, reason)
+	if reason:len() == 0 then
+		reason = loc("TF_IGNORE_NO_REASON");
+	end
+	blackList[unitID] = reason;
+	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
 end
 TRP3_API.register.ignoreID = ignoreID;
+
+local function ignoreIDConfirm(unitID)
+	showTextInputPopup(loc("TF_IGNORE_CONFIRM"):format(unitID), function(text)
+		ignoreID(unitID, text);
+	end);
+end
+TRP3_API.register.ignoreIDConfirm = ignoreIDConfirm;
 
 local function getIgnoreReason(unitID)
 	return blackList[unitID];
 end
 TRP3_API.register.getIgnoreReason = getIgnoreReason;
 
-function TRP3_API.register.purgeIgnored(ID)
-	local charactersToIgnore = {};
-	local profileToIgnore;
-	
-	-- Determine what to ignore
-	if characters[ID] then
-		profileToIgnore = characters[ID].profileID;
-		if profiles[profileToIgnore] then
-			local links = profiles[profileToIgnore].link or EMPTY;
-			for unitID, _ in pairs(links) do
-				tinsert(charactersToIgnore, unitID);
+function TRP3_API.register.getIDsToPurge()
+	local profileToPurge = {};
+	local characterToPurge = {};
+	for unitID, reason in pairs(blackList) do
+		if characters[unitID] then
+			tinsert(characterToPurge, unitID);
+			if characters[unitID].profileID then
+				tinsert(profileToPurge, characters[unitID].profileID);
 			end
 		end
 	end
-	-- Ignore and delete all characters !
-	for _, unitID in pairs(charactersToIgnore) do
-		blackList[unitID] = true;
-		if characters[unitID] then
-			wipe(characters[unitID]);
-			characters[unitID] = nil;
-		end
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
-	end
-	-- Delete related profile
-	if profileToIgnore and profiles[profileToIgnore] then
-		deleteProfile(profileToIgnore);
-	end
+	return profileToPurge, characterToPurge;
 end
 
 function TRP3_API.register.unignoreID(unitID)
@@ -198,7 +188,7 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
 	characters = TRP3_Register.character;
 	blackList = TRP3_Register.blackList;
 	whiteList = TRP3_Register.whiteList;
-	
+
 	-- Ignore button on target frame
 	local player_id = TRP3_API.globals.player_id;
 	TRP3_API.target.registerButton({
@@ -208,13 +198,13 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
 			return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
 		end,
 		onClick = function(unitID)
-			ignoreID(unitID);
+			ignoreIDConfirm(unitID);
 		end,
 		tooltipSub = loc("TF_IGNORE_TT"),
 		tooltip = loc("TF_IGNORE"),
 		icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
 	});
-	
+
 	TRP3_API.target.registerButton({
 		id = "r_relation",
 		configText = loc("REG_RELATION"),

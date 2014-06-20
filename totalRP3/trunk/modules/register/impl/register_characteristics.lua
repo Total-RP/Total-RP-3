@@ -9,11 +9,12 @@ local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
-local tcopy = Utils.table.copy;
+local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
+local strjoin, unpack, getKeys = strjoin, unpack, Utils.table.keys;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -29,10 +30,11 @@ local CreateFrame = CreateFrame;
 local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPanel_Empty;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
+local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
 local selectMenu = TRP3_API.navigation.menu.selectMenu;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
+local ignoreID = TRP3_API.register.ignoreID;
 local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -596,6 +598,12 @@ local function onActionSelected(value, button)
 	
 	if value == 1 then
 		uiDeleteProfileEntry(context.profileID);
+	elseif value == 2 then
+		showTextInputPopup(loc("REG_PLAYER_IGNORE_WARNING"):format(strjoin("\n", unpack(getKeys(context.profile.link)))), function(text)
+			for unitID, _ in pairs(context.profile.link) do
+				ignoreID(unitID, text);
+			end
+		end);
 	elseif type(value) == "string" then
 		setRelation(context.profileID, value);
 		setupRelationButton(context.profileID, context.profile);
@@ -604,8 +612,15 @@ local function onActionSelected(value, button)
 end
 
 local function onActionClicked(button)
+	local context = getCurrentContext();
+	assert(context, "No context for page player_main !");
+	assert(context.profile, "No profile in context");
+	
 	local values = {};
 	tinsert(values,{"Delete profile", 1});
+	if context.profile.link and tsize(context.profile.link) > 0 then
+		tinsert(values,{loc("REG_PLAYER_IGNORE"):format(tsize(context.profile.link)), 2});
+	end
 	tinsert(values, {
 		loc("REG_RELATION"), 
 		{

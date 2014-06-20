@@ -245,14 +245,10 @@
 							<Anchor point="TOPLEFT"/>
 						</Anchors>
 						<Frames>
-							<Button name="TRP3_RegisterAbout_Edit_Music_Action">
-								<Size x="32" y="32"/>
+							<Button name="TRP3_RegisterAbout_Edit_Music_Action" inherits="TRP3_ActionButton">
 								<Anchors>
 									<Anchor point="TOPLEFT" x="15" y="0"/>
 								</Anchors>
-								<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-								<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-								<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 							</Button>
 						</Frames>
 						<Layers>

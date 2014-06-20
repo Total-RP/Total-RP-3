@@ -243,6 +243,11 @@
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterCharactGuild"/>
 								</Anchors>
 							</CheckButton>
+							<Button name="TRP3_RegisterListFilter_Action" inherits="TRP3_ActionButton">
+								<Anchors>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+								</Anchors>
+							</Button>
 						</Frames>
 					</Frame>
 				</Frames>

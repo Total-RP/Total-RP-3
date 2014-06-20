@@ -74,6 +74,16 @@ local function deleteProfile(profileID)
 end
 TRP3_API.register.deleteProfile = deleteProfile;
 
+local function deleteCharacter(unitID)
+	assert(characters[unitID], "Unknown unitID: " .. tostring(unitID));
+	if characters[unitID].profileID and profiles[characters[unitID].profileID] and profiles[characters[unitID].profileID].link then
+		profiles[characters[unitID].profileID].link[unitID] = nil;
+	end
+	wipe(characters[unitID]);
+	characters[unitID] = nil;
+end
+TRP3_API.register.deleteCharacter = deleteCharacter;
+
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;

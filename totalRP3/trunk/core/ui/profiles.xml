@@ -24,14 +24,10 @@
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
 			</Button>
-			<Button name="$parentAction">
-				<Size x="32" y="32"/>
+			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
 				</Anchors>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 			<Button name="$parentInfo" inherits="TRP3_HelpButton">
 				<Anchors>

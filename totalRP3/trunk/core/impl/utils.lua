@@ -178,6 +178,14 @@ Utils.table.remove = function(table, object)
 	return false;
 end
 
+function Utils.table.keys(table)
+	local keys = {};
+	for key, _ in pairs(table) do
+		tinsert(keys, key);
+	end
+	return keys;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- String utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
