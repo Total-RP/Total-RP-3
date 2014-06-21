@@ -249,7 +249,9 @@ local LOCALE_EN = {
 		REG_LIST_ACTIONS_PURGE_COUNT = "%s profiles will be removed.",
 		REG_LIST_ACTIONS_MASS = "Action on %s selected profiles",
 		REG_LIST_ACTIONS_MASS_REMOVE = "Remove profiles",
+		REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected profile(s)|r.",
 		REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
+		REG_LIST_ACTIONS_MASS_IGNORE_C = "This action will add |cff00ff00%s character(s)|r to the ignore list.\n\nYou can optionally enter the reason below. This is a personal note, it will serves as a reminder.",
 		REG_COMPANIONS = "Companions",
 		REG_COMPANIONS_LIST = "Profiles",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

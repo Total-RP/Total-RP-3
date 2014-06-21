@@ -31,7 +31,9 @@ local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList
 local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local displayDropDown, showAlertPopup, showConfirmPopup = TRP3_API.ui.listbox.displayDropDown, TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
+local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local deleteProfile, deleteCharacter = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter;
+local ignoreID = TRP3_API.register.ignoreID;
 local refreshList;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -189,6 +191,7 @@ end
 local MONTH_IN_SECONDS = 2592000;
 
 local function onActionSelected(value, button)
+	-- PURGES
 	if value == "purge_time" then
 		local profiles = getProfileList();
 		local profilesToPurge = {};
@@ -240,20 +243,43 @@ local function onActionSelected(value, button)
 				refreshList();
 			end);
 		end
+	-- Mass actions
+	elseif value == "actions_delete" then
+		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
+			for profileID, _ in pairs(selectedIDs) do
+				deleteProfile(profileID);
+			end
+			refreshList();
+		end);
+	elseif value == "actions_ignore" then
+		local charactToIgnore = {};
+		for profileID, _ in pairs(selectedIDs) do
+			for unitID, _ in pairs(getProfile(profileID).link or Globals.empty) do
+				charactToIgnore[unitID] = true;
+			end
+		end
+		showTextInputPopup(loc("REG_LIST_ACTIONS_MASS_IGNORE_C"):format(tsize(charactToIgnore)), function(text)
+			for unitID, _ in pairs(charactToIgnore) do
+				ignoreID(unitID, text);
+			end
+			refreshList();
+		end);
 	end
 end
 
 local function onActions(self)
 	local values = {};
 	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
-			{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
-			{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
-			{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
-		}});
-	tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
+		{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
+		{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
+		{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
+	}});
+	if tsize(selectedIDs) > 0 then
+		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
 			{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
 			{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
 		}});
+	end
 	displayDropDown(self, values, onActionSelected, 0, true);
 end
 
@@ -328,7 +354,7 @@ end
 
 local function onLineSelected(self, button)
 	assert(self:GetParent().id, "No id on line.");
-	selectedIDs[self:GetParent().id] = true;
+	selectedIDs[self:GetParent().id] = self:GetChecked();
 end
 
 local function changeMode(tabWidget, value)
