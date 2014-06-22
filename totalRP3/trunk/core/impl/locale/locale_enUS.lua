@@ -334,11 +334,18 @@ local LOCALE_EN = {
 		CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
 		CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
 		CO_TARGETFRAME = "Target frame settings",
-		CO_TARGETFRAME_USE = "Show conditions",
+		CO_TARGETFRAME_USE = "Display conditions",
 		CO_TARGETFRAME_USE_TT = "Determines in which conditions the target frame should be shown on target selection.",
 		CO_TARGETFRAME_USE_1 = "Always",
 		CO_TARGETFRAME_USE_2 = "Only when IC",
 		CO_TARGETFRAME_USE_3 = "Never (Disabled)",
+		CO_MINIMAP_BUTTON = "Minimap button",
+		CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
+		CO_MINIMAP_BUTTON_FRAME_TT = "Indicates which frame to use as parent for the button.\n\n|cff00ff00To move the button relatively from this frame you can drag & drop the button.",
+		CO_MINIMAP_BUTTON_RESET = "Reset position",
+		CO_MINIMAP_BUTTON_RESET_TT = "In case you lost the button, this action will center the button relatively from the parent frame.",
+		CO_MINIMAP_BUTTON_LOCK = "Lock button",
+		CO_MINIMAP_BUTTON_LOCK_TT = "Prevents the button from being dragged.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
@@ -458,6 +465,7 @@ local LOCALE_EN = {
 		CM_L_CLICK = "Left-click",
 		CM_CTRL = "Ctrl",
 		CM_SHIFT = "Shift",
+		CM_DRAGDROP = "Drag & drop",
 		CM_LINK = "Link",
 		CM_SAVE = "Save",
 		CM_CANCEL = "Cancel",
@@ -497,10 +505,7 @@ local LOCALE_EN = {
 		
 		MM_SHOW_HIDE_MAIN = "Show/hide the main frame";
 		MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar";
-		
-		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- PEEK PRESETS
-		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		MM_SHOW_HIDE_MOVE = "Move button";
 	},
 };
 

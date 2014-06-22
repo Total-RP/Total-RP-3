@@ -310,12 +310,12 @@ local CONFIG_TOOLTIP_SIZE = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE;
 local getConfigValue;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	TRP3_API.configuration.registerConfigKey(TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE, 12);
+	TRP3_API.configuration.registerConfigKey(TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE, 11);
 	getConfigValue = TRP3_API.configuration.getValue;
 end);
 
 local function getTooltipSize()
-	return getConfigValue(CONFIG_TOOLTIP_SIZE) or 12;
+	return getConfigValue(CONFIG_TOOLTIP_SIZE) or 11;
 end
 
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).

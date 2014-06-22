@@ -17,7 +17,7 @@ local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.config
 local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
-local CONFIG_ICON_SIZE = "toolbar_icon_size"; 
+local CONFIG_ICON_SIZE = "toolbar_icon_size";
 local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 
@@ -33,7 +33,7 @@ local marginTop = 7;
 local function buildToolbar()
 	local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
 	local buttonSize = getConfigValue(CONFIG_ICON_SIZE);
-	
+
 	local ids = {};
 	for id, buttonStructure in pairs(buttonStructures) do
 		if buttonStructure.visible then
@@ -45,7 +45,7 @@ local function buildToolbar()
 	for _,uiButton in pairs(uiButtons) do
 		uiButton:Hide();
 	end
-	
+
 	if #ids == 0 then
 		toolbarContainer:Hide();
 	else
@@ -84,7 +84,7 @@ local function buildToolbar()
 			end);
 			uiButton.TimeSinceLastUpdate = 10;
 			uiButton:SetScript("OnUpdate", function(self, elapsed)
-				self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed; 	
+				self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 				if (self.TimeSinceLastUpdate > 0.2) then
 					self.TimeSinceLastUpdate = 0;
 					if buttonStructure.onUpdate then
@@ -96,9 +96,9 @@ local function buildToolbar()
 			uiButton:SetHeight(buttonSize);
 			uiButton:Show();
 			uiButton.buttonId = id;
-			
+
 			index = index + 1;
-			
+
 			if math.fmod(index, maxButtonPerLine) == 0 then
 				y = y - buttonSize;
 				x = marginLeft;
@@ -140,46 +140,38 @@ TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 -- INIT & TRP3 toolbar content
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoaded()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	loaded = true;
-	
+
 	registerConfigKey(CONFIG_ICON_SIZE, 25);
 	registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 	registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
-	
+
 	-- Build configuration page
-	TRP3_API.toolbar.CONFIG_STRUCTURE = {
-		id = "main_config_toolbar",
-		marginLeft = 10,
-		menuText = loc("CO_TOOLBAR"),
-		pageText = loc("CO_TOOLBAR"),
-		elements = {
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLBAR_CONTENT"),
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLBAR_ICON_SIZE"),
-				configKey = CONFIG_ICON_SIZE,
-				min = 15,
-				max = 50,
-				step = 1,
-				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLBAR_MAX"),
-				help = loc("CO_TOOLBAR_MAX_TT"),
-				configKey = CONFIG_ICON_MAX_PER_LINE,
-				min = 1,
-				max = 25,
-				step = 1,
-				integer = true,
-			},
-		},
-	};
-	
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_TOOLBAR_CONTENT"),
+	});
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc("CO_TOOLBAR_ICON_SIZE"),
+		configKey = CONFIG_ICON_SIZE,
+		min = 15,
+		max = 50,
+		step = 1,
+		integer = true,
+	});
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc("CO_TOOLBAR_MAX"),
+		help = loc("CO_TOOLBAR_MAX_TT"),
+		configKey = CONFIG_ICON_MAX_PER_LINE,
+		min = 1,
+		max = 25,
+		step = 1,
+		integer = true,
+	});
+
 	local ids = {};
 	for buttonID, button in pairs(buttonStructures) do
 		tinsert(ids, buttonID);
@@ -202,10 +194,16 @@ local function onLoaded()
 	end
 
 	buildToolbar();
-end
+end);
 
 TRP3_API.toolbar.init = function()
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
+	TRP3_API.toolbar.CONFIG_STRUCTURE = {
+		id = "main_config_toolbar",
+		marginLeft = 10,
+		menuText = loc("CO_TOOLBAR"),
+		pageText = loc("CO_TOOLBAR"),
+		elements = {},
+	};
 	TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 end
 

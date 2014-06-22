@@ -176,7 +176,7 @@ local function onTargetButtonClicked(unitID, _, _, button)
 	displayDropDown(button, values, onRelationSelected, 0, true);
 end
 
-Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
+Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
 
 	if not TRP3_Register.blackList then

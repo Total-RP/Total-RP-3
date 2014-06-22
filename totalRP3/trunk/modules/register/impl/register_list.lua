@@ -448,6 +448,7 @@ local function tutorialProvider()
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
 	-- Notification
 	TRP3_API.dashboard.registerNotificationType({
 		id = NOTIFICATION_ID_NEW_CHARACTER,
@@ -461,9 +462,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		removeOnShown = true,
 		configText = loc("REG_LIST_NOTIF_ADD_CONFIG"),
 	});
-end);
-
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	
 	-- To try, but I'm afraid for performances ...
 	TRP3_API.events.listenToEvent(Events.REGISTER_DATA_CHANGED, function()

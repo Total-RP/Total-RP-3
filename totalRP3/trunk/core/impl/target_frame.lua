@@ -245,7 +245,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoaded()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	loaded = true;
 	
 	-- Config
@@ -293,7 +293,7 @@ local function onLoaded()
 	end
 	
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.toolbar.CONFIG_STRUCTURE);
-end
+end);
 
 TRP3_API.target.init = function()
 	setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
@@ -303,8 +303,6 @@ TRP3_API.target.init = function()
 	hasProfile = TRP3_API.register.hasProfile
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	isIDIgnored = TRP3_API.register.isIDIgnored;
-	
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, onLoaded);
 	
 	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 

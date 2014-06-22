@@ -32,7 +32,6 @@ function Globals.addon:OnEnable()
 	TRP3_API.toolbar.init();
 	TRP3_API.dashboard.init();
 	TRP3_API.target.init();
-	TRP3_API.ui.initMinimapButton();
 	TRP3_API.navigation.init();
 	TRP3_API.register.init();
 	TRP3_API.popup.init();
