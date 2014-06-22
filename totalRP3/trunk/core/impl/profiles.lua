@@ -201,15 +201,15 @@ end
 
 local function uiCreateProfile()
 	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
-		function(newName)
-			if newName and #newName ~= 0 then
-				if not uiCheckNameAvailability(newName) then return end
-				createProfile(newName);
-				uiInitProfileList();
-			end
-		end,
-		nil,
-		Globals.player
+	function(newName)
+		if newName and #newName ~= 0 then
+			if not uiCheckNameAvailability(newName) then return end
+			createProfile(newName);
+			uiInitProfileList();
+		end
+	end,
+	nil,
+	Globals.player
 	);
 end
 
@@ -224,16 +224,16 @@ end
 
 local function uiEditProfile(profileID)
 	showTextInputPopup(
-		loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
-		function(newName)
-			if newName and #newName ~= 0 then
-				if not uiCheckNameAvailability(newName) then return end
-				editProfile(profileID, newName);
-				uiInitProfileList();
-			end
-		end,
-		nil,
-		profiles[profileID].profileName
+	loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	function(newName)
+		if newName and #newName ~= 0 then
+			if not uiCheckNameAvailability(newName) then return end
+			editProfile(profileID, newName);
+			uiInitProfileList();
+		end
+	end,
+	nil,
+	profiles[profileID].profileName
 	);
 end
 
@@ -300,6 +300,21 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Tutorial
+local TUTORIAL_STRUCTURE = {
+	{
+		box = {
+			allPoints = TRP3_ProfileManagerList
+		},
+		button = {
+			x = 0, y = -110, anchor = "CENTER",
+			text = loc("PR_PROFILE_HELP"),
+			textWidth = 400,
+			arrow = "UP"
+		}
+	}
+}
+
 function TRP3_API.profile.init()
 	-- Saved structures
 	if not TRP3_Profiles then
@@ -344,7 +359,6 @@ function TRP3_API.profile.init()
 	--Localization
 	TRP3_ProfileManagerTitle:SetText(Utils.str.color("w")..loc("PR_PROFILEMANAGER_TITLE"));
 	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
-	setTooltipForSameFrame(TRP3_ProfileManagerHelp, "BOTTOM", 0, -15, loc("PR_PROFILE"), loc("PR_PROFILE_HELP"));
 
 	registerPage({
 		id = "player_profiles",
@@ -352,5 +366,6 @@ function TRP3_API.profile.init()
 		frameName = "TRP3_ProfileManager",
 		frame = TRP3_ProfileManager,
 		onPagePostShow = function() uiInitProfileList(); end,
+		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 end

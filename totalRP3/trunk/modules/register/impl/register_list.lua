@@ -40,6 +40,7 @@ local refreshList;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local REGISTER_LIST_PAGEID = "register_list";
 local playerMenu = "main_10_player";
 local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
 local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
@@ -184,6 +185,11 @@ local function getCharacterLines()
 		end
 	end
 	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
+	
+	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
+	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION"));
+	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
+	TRP3_RegisterListHeaderActions:Show();
 
 	return lines;
 end
@@ -293,6 +299,10 @@ end
 
 local function getCompanionLines()
 	TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
+	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
+	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderInfo2:SetText("");
+	
 	return {};
 end
 
@@ -312,6 +322,10 @@ local function getIgnoredLines()
 	if tsize(getIgnoredList()) == 0 then
 		TRP3_RegisterListEmpty:SetText(loc("REG_LIST_IGNORE_EMPTY"));
 	end
+	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
+	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderInfo2:SetText("");
+	
 	return getIgnoredList();
 end
 
@@ -322,6 +336,7 @@ end
 function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
+	TRP3_RegisterListHeaderActions:Hide();
 	wipe(selectedIDs);
 
 	if currentMode == MODE_CHARACTER then
@@ -364,6 +379,7 @@ local function changeMode(tabWidget, value)
 		TRP3_RegisterListCharactFilter:Show();
 	end
 	refreshList();
+	Events.fireEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -388,12 +404,42 @@ local function createTabBar()
 	tabGroup:SelectTab(1);
 end
 
+local TUTORIAL_CHARACTER = {
+	{
+		box = {
+			x = 20, y = -45, anchor = "TOPLEFT", width = 28, height = 340
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_LIST_CHAR_TUTO_ACTIONS"),
+			arrow = "LEFT"
+		}
+	},
+	{
+		box = {
+			x = 50, y = -45, anchor = "TOPLEFT", width = 470, height = 340
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_LIST_CHAR_TUTO_LIST"),
+			textWidth = 400,
+			arrow = "DOWN"
+		}
+	},
+}
+
+local function tutorialProvider()
+	if currentMode == MODE_CHARACTER then
+		return TUTORIAL_CHARACTER;
+	end
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	registerMenu({
 		id = REGISTER_PAGE,
 		text = loc("REG_REGISTER"),
-		onSelected = function() setPage("register_list"); end,
+		onSelected = function() setPage(REGISTER_LIST_PAGEID); end,
 	});
 
 	registerPage({
@@ -402,6 +448,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		frameName = "TRP3_RegisterList",
 		frame = TRP3_RegisterList,
 		onPagePostShow = function() tabGroup:SelectTab(1); end,
+		tutorialProvider = tutorialProvider,
 	});
 
 	TRP3_API.target.registerButton({
@@ -433,7 +480,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_RegisterListSlider:SetValue(0);
 	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
 	local widgetTab = {};
-	for i=1,15 do
+	for i=1,14 do
 		local widget = _G["TRP3_RegisterListLine"..i];
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
 		local widgetSelect = _G["TRP3_RegisterListLine"..i.."Select"];
@@ -452,8 +499,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
 
-	setTooltipForSameFrame(TRP3_RegisterListFilter_Action, "TOP", 0, 0, loc("CM_ACTIONS"));
-	TRP3_RegisterListFilter_Action:SetScript("OnClick", onActions);
+	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
+	TRP3_RegisterListHeaderActions:SetScript("OnClick", onActions);
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
 		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then

@@ -193,8 +193,9 @@ TRP3_API.dashboard.init = function()
 				x = 15, y = -139, anchor = "TOPLEFT", width = 510, height = 115,
 			},
 			button = {
-				x = -30, y = 0, anchor = "RIGHT",
+				x = 0, y = -10, anchor = "TOP",
 				text = loc("DB_TUTO_1"):format(TRP3_API.globals.player_id),
+				textWidth = 425,
 				arrow = "UP"
 			}
 		},
@@ -205,6 +206,7 @@ TRP3_API.dashboard.init = function()
 			button = {
 				x = -30, y = 0, anchor = "RIGHT",
 				text = loc("DB_TUTO_2"),
+				textWidth = 375,
 				arrow = "LEFT"
 			}
 		}

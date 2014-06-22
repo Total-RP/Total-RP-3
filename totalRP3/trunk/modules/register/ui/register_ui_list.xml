@@ -30,7 +30,7 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
-				<FontString name="$parentInfo2" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+				<FontString name="$parentInfo2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
 					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo"/>
@@ -114,9 +114,9 @@
 				</Anchors>
 				<Frames>
 					<Slider name="TRP3_RegisterListSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="340"/>
+						<Size x="15" y="310"/>
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-40"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
@@ -129,10 +129,60 @@
 							</OnLoad>
 						</Scripts>
 					</Slider>
+					<Frame name="TRP3_RegisterListHeader">
+						<Size x="0" y="22"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="15" y="-15"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-15"/>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
+									<Size x="0" y="23"/>
+									<Anchors>
+										<Anchor point="LEFT" x="0" y="0"/>
+										<Anchor point="RIGHT" x="0" y="0"/>
+									</Anchors>
+									<TexCoords top="0.0" bottom="0.335" left="0" right="1"/>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<FontString name="TRP3_RegisterListHeaderName" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
+								 	<Size x="180" y="10"/>
+									<Anchors>
+										<Anchor point="LEFT" x="30" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+									<Size x="110" y="10"/>
+									<Anchors>
+										<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString name="TRP3_RegisterListHeaderInfo2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
+									<Size x="0" y="10"/>
+									<Anchors>
+										<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo"/>
+										<Anchor point="RIGHT" x="-15" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button name="TRP3_RegisterListHeaderActions" inherits="TRP3_ActionButton">
+								<Anchors>
+									<Anchor point="LEFT" x="-3" y="0"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
 					<Frame name="TRP3_RegisterListLine1" inherits="TRP3_RegisterListLine">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="15" y="-18"/>
-							<Anchor point="TOPRIGHT" x="-10" y="-18"/>
+							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListHeader"/>
+							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListHeader"/>
 						</Anchors>
 					</Frame>
 					<Frame name="TRP3_RegisterListLine2" inherits="TRP3_RegisterListLine">
@@ -213,12 +263,6 @@
 							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine13"/>
 						</Anchors>
 					</Frame>
-					<Frame name="TRP3_RegisterListLine15" inherits="TRP3_RegisterListLine">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="0" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterListLine14"/>
-							<Anchor point="TOPRIGHT" x="0" y="0" relativePoint="BOTTOMRIGHT" relativeTo="TRP3_RegisterListLine14"/>
-						</Anchors>
-					</Frame>
 					<Frame name="TRP3_RegisterListCharactFilter" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="50"/>
 						<Anchors>
@@ -243,11 +287,6 @@
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterListFilterCharactGuild"/>
 								</Anchors>
 							</CheckButton>
-							<Button name="TRP3_RegisterListFilter_Action" inherits="TRP3_ActionButton">
-								<Anchors>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-								</Anchors>
-							</Button>
 						</Frames>
 					</Frame>
 				</Frames>

@@ -238,6 +238,7 @@ local LOCALE_EN = {
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
 		REG_LIST_NAME = "Name",
+		REG_LIST_FLAGS = "Flags",
 		REG_LIST_ACTIONS_PURGE = "Purge register from profile",
 		REG_LIST_ACTIONS_PURGE_TIME = "Not seen for 1 month",
 		REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles whose has not been seen for a month.\n\n|cff00ff00%s",
@@ -252,6 +253,9 @@ local LOCALE_EN = {
 		REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected profile(s)|r.",
 		REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
 		REG_LIST_ACTIONS_MASS_IGNORE_C = "This action will add |cff00ff00%s character(s)|r to the ignore list.\n\nYou can optionally enter the reason below. This is a personal note, it will serves as a reminder.",
+		REG_LIST_CHAR_TUTO_ACTIONS = "This column allows you to select multiple characters and perform an action on all of them.",
+		REG_LIST_CHAR_TUTO_LIST = "The first column shows the character's name.\n\nThe second column shows the relation between these characters and your current character.\n\nThe last column is for various flags. (ignored ..etc.)",
+		REG_COMPANION = "Companion",
 		REG_COMPANIONS = "Companions",
 		REG_COMPANIONS_LIST = "Profiles",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -399,7 +403,7 @@ local LOCALE_EN = {
 		DB_NOTIFICATIONS = "Notifications",
 		DB_NOTIFICATIONS_NO = "You haven't any notification",
 		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
-		DB_TUTO_1 = "These are OOC information.\n\n|cff00ff00It will be placed in your character tooltip.",
+		DB_TUTO_1 = "|cffffff00The \"currently\" status|r is a length-limited free text. It can be IC or OOC information.\n\n|cffffff00The character status|r indicates if you are currently playing your character's role or not.\n\n|cffffff00The experience status|r allows you to state that you are a beginner or a veteran willing to help rookies !\n\n|cff00ff00All these three information will be placed in your character tooltip.",
 		DB_TUTO_2 = "Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.\n\n|cffff9900All notifications are configurable in the appropriate settings page.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

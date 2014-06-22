@@ -146,11 +146,6 @@
 					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ProfileManagerList" x="0" y="5"/>
 				</Anchors>
 			</Button>
-			<Button name="TRP3_ProfileManagerHelp" inherits="TRP3_HelpButton">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-25" y="-25"/>
-				</Anchors>
-			</Button>
 		</Frames>
 		<Scripts>
 			<OnLoad>
