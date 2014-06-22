@@ -110,6 +110,7 @@ local function ignoreID(unitID, reason)
 	end
 	blackList[unitID] = reason;
 	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
+	Events.fireEvent(Events.REGISTER_IGNORED, unitID);
 end
 TRP3_API.register.ignoreID = ignoreID;
 

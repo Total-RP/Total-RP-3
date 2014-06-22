@@ -582,13 +582,7 @@ local function refreshDisplay()
 	end
 end
 
-local function uiDeleteProfileEntry(profileID)
-	local profil = getProfile(profileID);
-	showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
-	function()
-		deleteProfile(profileID);
-	end);
-end
+local toast = TRP3_API.ui.tooltip.toast;
 
 local function onActionSelected(value, button)
 	local context = getCurrentContext();
@@ -597,12 +591,17 @@ local function onActionSelected(value, button)
 	assert(context.profileID, "No profileID in context");
 	
 	if value == 1 then
-		uiDeleteProfileEntry(context.profileID);
+		local profil = getProfile(context.profileID);
+		showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
+		function()
+			deleteProfile(context.profileID);
+		end);
 	elseif value == 2 then
 		showTextInputPopup(loc("REG_PLAYER_IGNORE_WARNING"):format(strjoin("\n", unpack(getKeys(context.profile.link)))), function(text)
 			for unitID, _ in pairs(context.profile.link) do
 				ignoreID(unitID, text);
 			end
+			toast(loc("REG_IGNORE_TOAST"), 2);
 		end);
 	elseif type(value) == "string" then
 		setRelation(context.profileID, value);

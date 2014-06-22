@@ -4,7 +4,9 @@
 -- Dashboard page
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.dashboard = {};
+TRP3_API.dashboard = {
+	NOTIF_CONFIG_PREFIX = "notification_"
+};
 
 -- imports
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently = GetMouseFocus, _G, TRP3_DashboardStatus_Currently;
@@ -31,15 +33,18 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 
 local DATE_FORMAT = "%d/%m/%y %H:%M:%S";
 local NOTIFICATION_TYPES = {};
+local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
 
-TRP3_API.dashboard.registerNotificationType = function(notificationType)
+function TRP3_API.dashboard.registerNotificationType(notificationType)
 	assert(notificationType and notificationType.id, "Nil notificationType or no id");
 	assert(not NOTIFICATION_TYPES[notificationType.id], "Already registered notification type: " .. notificationType.id);
 	NOTIFICATION_TYPES[notificationType.id] = notificationType;
+	Utils.log.log("Registered notification: " .. notificationType.id);
 end
 
-TRP3_API.dashboard.notify = function(notificationID, text, ...)
+function TRP3_API.dashboard.notify(notificationID, text, ...)
 	assert(NOTIFICATION_TYPES[notificationID], "Unknown notification type: " .. tostring(notificationID));
+	if getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID) ~= true then return end
 	local notificationType = NOTIFICATION_TYPES[notificationID];
 	local character = getPlayerCharacter();
 	local notification = {};
@@ -54,6 +59,10 @@ TRP3_API.dashboard.notify = function(notificationID, text, ...)
 	notification.time = time();
 	tinsert(character.notifications, notification);
 	Events.fireEvent(Events.NOTIFICATION_CHANGED);
+end
+
+function TRP3_API.dashboard.getNotificationTypeList()
+	return NOTIFICATION_TYPES;
 end
 
 local function decorateNotificationList(widget, index)

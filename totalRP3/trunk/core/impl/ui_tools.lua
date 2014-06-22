@@ -398,12 +398,12 @@ TRP3_Toast:SetScript("OnUpdate", toastUpdate);
 function TRP3_API.ui.tooltip.toast(text, duration)
 	TRP3_Toast:Hide();
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
-	TRP3_Toast:AddLine(text, 1, 1, 1,true);
+	TRP3_Toast:AddLine(text, 1, 1, 1, true);
 	TRP3_ToastTextLeft1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize());
 	TRP3_ToastTextLeft1:SetNonSpaceWrap(true);
 	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
 	TRP3_Toast:Show();
-	TRP3_Toast.delay = duration;
+	TRP3_Toast.delay = duration or 3;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

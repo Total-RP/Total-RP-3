@@ -9,7 +9,7 @@ TRP3_API.configuration = {};
 local loc = TRP3_API.locale.getText;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
-local _G, tonumber, math, tinsert, type, assert, tostring, pairs = _G, tonumber, math, tinsert, type, assert, tostring, pairs;
+local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort = _G, tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
 local CreateFrame = CreateFrame;
 local getLocaleText = TRP3_API.locale.getLocaleText;
 local getLocales = TRP3_API.locale.getLocales;
@@ -219,7 +219,7 @@ local function registerConfigurationPage(pageStructure)
 	});
 	
 	registerMenu({
-		id = "main_91_config_" .. configurationPageCount,
+		id = "main_91_config_" .. pageStructure.id,
 		text = pageStructure.menuText,
 		isChildOf = "main_90_config",
 		onSelected = function() setPage(pageStructure.id); end,
@@ -243,7 +243,19 @@ local function changeLocale(newLocale)
 	end
 end
 
-local function generalInit()
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- INIT
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- Page and menu
+	registerMenu({
+		id = "main_90_config",
+		text = loc("CO_CONFIGURATION"),
+		onSelected = function() selectMenu("main_91_config_main_config_general") end,
+	});
+	
+	-- GENERAL SETTINGS INIT
 	-- localization
 	local localeTab = {};
 	for _, locale in pairs(getLocales()) do
@@ -289,22 +301,27 @@ local function generalInit()
 				title = loc("CO_GENERAL_BROADCAST_C"),
 				configKey = "comm_broad_chan",
 			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_NOTIF"),
+			},
 		}
 	}
-	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
 	
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.configuration.init()
-	-- Page and menu
-	registerMenu({
-		id = "main_90_config",
-		text = loc("CO_CONFIGURATION"),
-		onSelected = function() selectMenu("main_91_config_1") end,
-	});
-	generalInit();
-end
+	-- Notifications
+	local notifs = TRP3_API.dashboard.getNotificationTypeList();
+	local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
+	local sortedNotifs = Utils.table.keys(notifs);
+	sort(sortedNotifs);
+	for _, notificationID in pairs(sortedNotifs) do
+		local notification = notifs[notificationID];
+		registerConfigKey(NOTIF_CONFIG_PREFIX .. notificationID, true);
+		tinsert(CONFIG_STRUCTURE_GENERAL.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = notification.configText or notificationID,
+			configKey = NOTIF_CONFIG_PREFIX .. notificationID,
+		});
+	end
+	
+	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
+end);

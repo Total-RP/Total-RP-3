@@ -8,6 +8,7 @@ TRP3_API.register = {
 	inits = {},
 	player = {},
 	ui = {},
+	NOTIFICATION_ID_NEW_CHARACTER = "add_character",
 };
 
 TRP3_API.register.MENU_LIST_ID = "main_30_register";
@@ -33,9 +34,11 @@ local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local notify = TRP3_API.dashboard.notify;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 
 local EMPTY = Globals.empty;
+local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references
 local profiles, characters;
 
@@ -65,8 +68,12 @@ TRP3_API.register.getProfile = getProfile;
 
 local function deleteProfile(profileID)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
+	-- We shouldn't keep unbounded characters.
 	for character, _ in pairs(profiles[profileID].link) do
-		characters[character].profileID = nil;
+		if characters[character].profileID == profileID then
+			wipe(characters[character]);
+			characters[character] = nil;
+		end
 	end
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
@@ -146,6 +153,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
 	end
 	if not profileExists(unitID) then
 		createUnitIDProfile(unitID);
+		notify(NOTIFICATION_ID_NEW_CHARACTER, loc("REG_LIST_NOTIF_ADD"):format(unitID), currentProfileID);
 	end
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound

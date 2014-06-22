@@ -61,6 +61,7 @@ local CONFIG_CHARACT_TITLE = "tooltip_char_title";
 local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
+local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -68,6 +69,10 @@ local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 
 local function getAnchoredFrame()
 	return _G[getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME)] or GameTooltip or error("Can't find any frame to anchor.");
+end
+
+local function showRelationColor()
+	return getConfigValue(CONFIG_CHARACT_RELATION);
 end
 
 local function getAnchoredPosition()
@@ -421,7 +426,7 @@ local function show(targetType)
 				if shouldHideGameTooltip() and not isIDIgnored(targetID) then
 					GameTooltip:Hide();
 				end
-				if targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
+				if showRelationColor() and targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 					ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
 				else
 					ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
@@ -495,6 +500,7 @@ function TRP3_API.register.inits.tooltipInit()
 	registerConfigKey(CONFIG_CHARACT_NOTIF, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
+	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -604,6 +610,12 @@ function TRP3_API.register.inits.tooltipInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_CURRENT"),
 				configKey = CONFIG_CHARACT_CURRENT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_RELATION"),
+				help = loc("CO_TOOLTIP_RELATION_TT"),
+				configKey = CONFIG_CHARACT_RELATION,
 			},
 			{
 				inherit = "TRP3_ConfigSlider",

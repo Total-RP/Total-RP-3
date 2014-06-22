@@ -32,9 +32,12 @@ local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRe
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local displayDropDown, showAlertPopup, showConfirmPopup = TRP3_API.ui.listbox.displayDropDown, TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-local deleteProfile, deleteCharacter = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter;
+local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter, TRP3_API.register.getProfileList;
+local toast = TRP3_API.ui.tooltip.toast;
 local ignoreID = TRP3_API.register.ignoreID;
 local refreshList;
+local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
+local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -102,6 +105,7 @@ local function decorateCharacterLine(line, profileID)
 		tooltip = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
 
+	_G[line:GetName().."Info2"]:SetText("");
 	if profile.link and tsize(profile.link) > 0 then
 		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR");
 		local atLeastOneIgnored = false;
@@ -116,8 +120,6 @@ local function decorateCharacterLine(line, profileID)
 		end
 		if atLeastOneIgnored then
 			_G[line:GetName().."Info2"]:SetText("|cffff0000" .. loc("REG_LIST_CHAR_IGNORED"));
-		else
-			_G[line:GetName().."Info2"]:SetText("");
 		end
 	else
 		secondLine = secondLine .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
@@ -337,7 +339,6 @@ function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
 	TRP3_RegisterListHeaderActions:Hide();
-	wipe(selectedIDs);
 
 	if currentMode == MODE_CHARACTER then
 		lines = getCharacterLines();
@@ -374,6 +375,7 @@ end
 
 local function changeMode(tabWidget, value)
 	currentMode = value;
+	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
 	if currentMode == MODE_CHARACTER then
 		TRP3_RegisterListCharactFilter:Show();
@@ -426,6 +428,17 @@ local TUTORIAL_CHARACTER = {
 			arrow = "DOWN"
 		}
 	},
+	{
+		box = {
+			x = 20, y = -387, anchor = "TOPLEFT", width = 500, height = 60
+		},
+		button = {
+			x = 0, y = 10, anchor = "CENTER",
+			text = loc("REG_LIST_CHAR_TUTO_FILTER"),
+			textWidth = 400,
+			arrow = "UP"
+		}
+	},
 }
 
 local function tutorialProvider()
@@ -434,7 +447,30 @@ local function tutorialProvider()
 	end
 end
 
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	-- Notification
+	TRP3_API.dashboard.registerNotificationType({
+		id = NOTIFICATION_ID_NEW_CHARACTER,
+		callback = function(profileID)
+			if getProfileList()[profileID] then
+				openPage(profileID);
+			else
+				toast(loc("REG_LIST_NOTIF_ADD_NOT"));
+			end
+		end,
+		removeOnShown = true,
+		configText = loc("REG_LIST_NOTIF_ADD_CONFIG"),
+	});
+end);
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	
+	-- To try, but I'm afraid for performances ...
+	TRP3_API.events.listenToEvent(Events.REGISTER_DATA_CHANGED, function()
+		if getCurrentPageID() == REGISTER_LIST_PAGEID then
+			refreshList();
+		end
+	end);
 
 	registerMenu({
 		id = REGISTER_PAGE,
@@ -443,7 +479,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	});
 
 	registerPage({
-		id = "register_list",
+		id = REGISTER_LIST_PAGEID,
 		templateName = "TRP3_RegisterList",
 		frameName = "TRP3_RegisterList",
 		frame = TRP3_RegisterList,
@@ -503,8 +539,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_RegisterListHeaderActions:SetScript("OnClick", onActions);
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
+		selectedIDs[profileID] = nil;
 		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+		end
+		if getCurrentPageID() == REGISTER_LIST_PAGEID then
+			refreshList();
 		end
 	end);
 
