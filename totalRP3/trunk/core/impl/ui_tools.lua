@@ -93,44 +93,44 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
 	UIDropDownMenu_Initialize(dropDownFrame,
-	function(uiFrame, level, menuList)
-		local levelValues = menuList or values;
-		
-		level = level or 1;
-		for index, tab in pairs(levelValues) do
-			assert(type(tab) == "table", "Level value is not a table !");
-			local text = tab[1];
-			local value = tab[2];
-			local info = UIDropDownMenu_CreateInfo();
-			info.notCheckable = "true";
-			info.text = text;
-			info.isTitle = false;
-			if type(value) == "table" then
-				info.hasArrow = true;
-				info.keepShownOnClick = true;
-				info.menuList = value;
-			elseif value then
-				info.func = function()
-					if callback then
-						callback(value, anchoredFrame);
-					end
-					anchoredFrame:GetParent().selectedValue = value;
-				end;
-			else
-				info.func = function() end;
-				info.isTitle = true;
-			end
-			UIDropDownMenu_AddButton(info, level);
-		end
-		if menuList == nil and addCancel then
-			local info = UIDropDownMenu_CreateInfo();
-			info.notCheckable = "true";
-			info.text = CANCEL;
-			UIDropDownMenu_AddButton(info, level);
-		end
+		function(uiFrame, level, menuList)
+			local levelValues = menuList or values;
 
-	end,
-	"MENU"
+			level = level or 1;
+			for index, tab in pairs(levelValues) do
+				assert(type(tab) == "table", "Level value is not a table !");
+				local text = tab[1];
+				local value = tab[2];
+				local info = UIDropDownMenu_CreateInfo();
+				info.notCheckable = "true";
+				info.text = text;
+				info.isTitle = false;
+				if type(value) == "table" then
+					info.hasArrow = true;
+					info.keepShownOnClick = true;
+					info.menuList = value;
+				elseif value then
+					info.func = function()
+						if callback then
+							callback(value, anchoredFrame);
+						end
+						anchoredFrame:GetParent().selectedValue = value;
+					end;
+				else
+					info.func = function() end;
+					info.isTitle = true;
+				end
+				UIDropDownMenu_AddButton(info, level);
+			end
+			if menuList == nil and addCancel then
+				local info = UIDropDownMenu_CreateInfo();
+				info.notCheckable = "true";
+				info.text = CANCEL;
+				UIDropDownMenu_AddButton(info, level);
+			end
+
+		end,
+		"MENU"
 	);
 	dropDownFrame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
@@ -305,8 +305,17 @@ end
 -- Tooltip tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE = "CONFIG_TOOLTIP_SIZE";
+local CONFIG_TOOLTIP_SIZE = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE;
+local getConfigValue;
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.configuration.registerConfigKey(TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE, 12);
+	getConfigValue = TRP3_API.configuration.getValue;
+end);
+
 local function getTooltipSize()
-	return 10; --TODO: Use config
+	return getConfigValue(CONFIG_TOOLTIP_SIZE) or 12;
 end
 
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
@@ -316,21 +325,21 @@ local function refreshTooltip(Frame)
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
 		if not Frame.rightText then
-			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1,true);
+			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1, true);
 		else
 			TRP3_MainTooltip:AddDoubleLine(Frame.titleText, Frame.rightText);
 			TRP3_MainTooltipTextRight1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize()+4);
 			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
-			TRP3_MainTooltipTextRight1:SetTextColor(1,1,1);
+			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
 		end
 		TRP3_MainTooltipTextLeft1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize()+4);
 		TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
-		TRP3_MainTooltipTextLeft1:SetTextColor(1,1,1);
+		TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
 		if Frame.bodyText then
-			TRP3_MainTooltip:AddLine(Frame.bodyText,1,0.6666,0,true);
+			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
 			TRP3_MainTooltipTextLeft2:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize());
 			TRP3_MainTooltipTextLeft2:SetNonSpaceWrap(true);
-			TRP3_MainTooltipTextLeft2:SetTextColor(1,0.75,0);
+			TRP3_MainTooltipTextLeft2:SetTextColor(1, 0.75, 0);
 		end
 		TRP3_MainTooltip:Show();
 	end
@@ -504,7 +513,7 @@ end
 
 function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback)
 	assert(tabBar, "The tabBar can't be nil");
-	
+
 	local tabGroup = {};
 	tabGroup.tabs = {};
 	for index, tabData in pairs(data) do
@@ -520,17 +529,17 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback)
 				callback(tabWidget, value);
 			end
 		end);
-		
+
 		tinsert(tabGroup.tabs, tabWidget);
 		tabBar_index = tabBar_index + 1;
 	end
-	
+
 	tabGroup.Redraw = tabBar_redraw;
 	tabGroup.Size = tabBar_size;
 	tabGroup.SetTabVisible = tabBar_setTabVisible;
 	tabGroup.SelectTab = tabBar_selectTab;
 	tabGroup:Redraw();
-	
+
 	return tabGroup;
 end
 

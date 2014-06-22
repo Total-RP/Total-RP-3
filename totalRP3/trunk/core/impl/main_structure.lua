@@ -184,7 +184,7 @@ end
 TRP3_API.navigation.page.registerPage = registerPage;
 
 local function setPage(pageId, context)
-	Log.log("setPage: "..pageId, Log.level.DEBUG);
+	Log.log("setPage: "..pageId);
 	
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");

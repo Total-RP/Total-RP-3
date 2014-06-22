@@ -89,7 +89,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-		    <Frame>
+		    <Frame name="TRP3_ConfigurationModuleFrame">
 		        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>

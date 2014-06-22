@@ -61,8 +61,8 @@ end
 -- This communication interface print all sent message to the chat frame.
 -- Note that the messages are not really sent.
 local function directPrint(packet, target, priority)
-	Log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()), Log.level.DEBUG);
-	Log.log(packet:sub(4), Log.level.DEBUG);
+	Log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()));
+	Log.log(packet:sub(4));
 end
 
 -- A "direct relay" (like localhost) communication interface, used for development purpose.

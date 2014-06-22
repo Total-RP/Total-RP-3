@@ -303,6 +303,19 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_MISC"),
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc("CO_GENERAL_TT_SIZE"),
+				configKey = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE,
+				min = 6,
+				max = 25,
+				step = 1,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
 				title = loc("CO_GENERAL_NOTIF"),
 			},
 		}

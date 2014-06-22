@@ -29,8 +29,6 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-
-local isDebug = true;
 local showLog = true;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -42,12 +40,11 @@ Utils.print = function(...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DEBUG / LOGGING
+-- LOGGING
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- The log level defines the prefix color and serves as filter
 Log.level = {
-	DEBUG = "-|cff6666ffDEBUG|r] ",
 	INFO = "-|cff00ffffINFO|r] ",
 	WARNING = "-|cffffaa00WARNING|r] ",
 	SEVERE = "-|cffff0000SEVERE|r] "
@@ -56,7 +53,7 @@ Log.level = {
 -- Print a log message to the chatFrame.
 local function log(message, level)
 	if not level then level = Log.level.INFO; end
-	if not showLog or (level == Log.level.DEBUG and not isDebug) then
+	if not showLog then
 		return;
 	end
 	Utils.print( "[TRP3".. level ..tostring(message));
@@ -577,7 +574,7 @@ end
 Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTexture)
 	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
 	if not ok then
-		Log.log("Fail to round texture: " .. tostring(errorMess), Log.level.DEBUG);
+		Log.log("Fail to round texture: " .. tostring(errorMess));
 		SetPortraitToTexture(textureFrame, failTexture);
 	end
 end

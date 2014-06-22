@@ -60,6 +60,7 @@ end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",
+	["description"] = "Telkos private module to test the world !",
 	["version"] = 1.000,
 	["id"] = "unit_testing",
 	["onInit"] = onInit,

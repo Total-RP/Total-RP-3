@@ -159,7 +159,8 @@ local function init()
 end
 
 local MODULE_STRUCTURE = {
-	["name"] = "Better NPC chat",
+	["name"] = "Better quest text !",
+	["description"] = "Enhance and add more immersion to original WoW quests texts.",
 	["version"] = 1.000,
 	["id"] = "better_npc_chat",
 	["onLoaded"] = init,

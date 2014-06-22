@@ -138,6 +138,7 @@ end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Dynamic locale",
+	["description"] = "In-game tool to easily localize the addon.",
 	["version"] = 1,
 	["id"] = "dyn_locale",
 	["onInit"] = onInit,
