@@ -12,8 +12,7 @@ local LOCALE_EN = {
 		-- GENERAL
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
-		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3! Have fun!",
-		GEN_WELCOME_VERSION = "You are using Total RP 3 version %s",
+		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -38,11 +37,11 @@ local LOCALE_EN = {
 		REG_PLAYER_FULLTITLE = "Full title",
 		REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
 		REG_PLAYER_RACE = "Race",
-		REG_PLAYER_RACE_TT = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes ...\n\nThis is a mandatory field, so if you don't specify a race, the default character's race (|cffffff00%s|r) will be used.",
+		REG_PLAYER_RACE_TT = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes ...",
 		REG_PLAYER_BKG = "Background layout",
 		REG_PLAYER_BKG_TT = "This represents the graphical background to use for your Characteristics layout.",
 		REG_PLAYER_CLASS = "Class",
-		REG_PLAYER_CLASS_TT = "This is your character's custom class.\n\n|cff00ff00For instance :|r\nKnight, Pyrotechnist, Necromancer, Elite shooter, Arcanist ...\n\nThis is a mandatory field, so if you don't specify a class, the default character's class (|cffffff00%s|r) will be used.",
+		REG_PLAYER_CLASS_TT = "This is your character's custom class.\n\n|cff00ff00For instance :|r\nKnight, Pyrotechnist, Necromancer, Elite shooter, Arcanist ...",
 		REG_PLAYER_AGE = "Age",
 		REG_PLAYER_AGE_TT = "Here you can indicate how old your character is.\n\nThere are several way to do this:|c0000ff00\n- Either use years,\n- Or an adjective (Young, Mature, Adult, Venerable, etc.).",
 		REG_PLAYER_EYE = "Eye color",
@@ -181,7 +180,7 @@ local LOCALE_EN = {
 		REG_PLAYER_CURRENT_OOC = "This is a OOC information";
 		REG_PLAYER_GLANCE = "At first glance",
 		REG_PLAYER_GLANCE_USE = "Activate this slot",
-		REG_PLAYER_GLANCE_TITLE = "Slot name",
+		REG_PLAYER_GLANCE_TITLE = "Attribute name",
 		REG_PLAYER_GLANCE_UNUSED = "Unused slot",
 		REG_PLAYER_GLANCE_CONFIG = "Click to configure slot",
 		REG_PLAYER_GLANCE_EDITOR = "Slot editor",
@@ -410,7 +409,7 @@ local LOCALE_EN = {
 
 		DB_STATUS = "Status",
 		DB_STATUS_CURRENTLY = "Currently",
-		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief !",
+		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief as |cff00ff00by default players will only see the first 140 characters of it !",
 		DB_STATUS_RP = "Character status",
 		DB_STATUS_RP_IC = "In character",
 		DB_STATUS_RP_OOC = "Out of character",

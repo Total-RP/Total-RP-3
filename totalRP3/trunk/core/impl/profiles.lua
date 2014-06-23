@@ -156,7 +156,7 @@ local function decorateProfileList(widget, id)
 		_G[widget:GetName().."Select"]:Enable();
 	end
 
-	setupIconButton(_G[widget:GetName().."Icon"], dataTab.icon or Globals.icons.profile_default);
+	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or Globals.icons.profile_default);
 	_G[widget:GetName().."Name"]:SetText(mainText);
 
 	local listText = "";

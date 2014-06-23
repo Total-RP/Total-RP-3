@@ -22,18 +22,18 @@ end
 
 function TRP3_API.register.inits.companionInit()
 
-	registerMenu({
-		id = "main_20_companions",
-		text = loc("REG_COMPANIONS"),
-		onSelected = function() selectMenu("main_21_companions_list") end,
-	});
-	
-	registerMenu({
-		id = "main_21_companions_list",
-		text = loc("REG_COMPANIONS_LIST"),
-		onSelected = function() setPage("companions_list") end,
-		isChildOf = "main_20_companions",
-	});
+--	registerMenu({
+--		id = "main_20_companions",
+--		text = loc("REG_COMPANIONS"),
+--		onSelected = function() selectMenu("main_21_companions_list") end,
+--	});
+--	
+--	registerMenu({
+--		id = "main_21_companions_list",
+--		text = loc("REG_COMPANIONS_LIST"),
+--		onSelected = function() setPage("companions_list") end,
+--		isChildOf = "main_20_companions",
+--	});
 	
 	registerPage({
 		id = "companions_list",

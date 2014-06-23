@@ -40,6 +40,8 @@ local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
 local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
 local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
 local BANNED_ICON = "|TInterface\\EncounterJournal\\UI-EJ-HeroicTextIcon:15:15|t";
+local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
+local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
 local PEEK_ICON_SIZE = 20;
 
 -- Config keys
@@ -369,9 +371,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	local GLANCE_ICON = "|TInterface\\GossipFrame\\PetitionGossipIcon:18:18|t";
-	local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
 
 	if showNotifications() then
 		local notifText = "";
