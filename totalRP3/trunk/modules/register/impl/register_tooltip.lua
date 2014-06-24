@@ -601,14 +601,14 @@ function TRP3_API.register.inits.tooltipInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_NOTIF"),
-				configKey = CONFIG_CHARACT_NOTIF,
-				help = loc("CO_TOOLTIP_NOTIF_TT"),
+				title = loc("CO_TOOLTIP_CURRENT"),
+				configKey = CONFIG_CHARACT_CURRENT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_CURRENT"),
-				configKey = CONFIG_CHARACT_CURRENT,
+				title = loc("CO_TOOLTIP_NOTIF"),
+				configKey = CONFIG_CHARACT_NOTIF,
+				help = loc("CO_TOOLTIP_NOTIF_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -621,7 +621,7 @@ function TRP3_API.register.inits.tooltipInit()
 				title = loc("CO_TOOLTIP_CURRENT_SIZE"),
 				configKey = CONFIG_CHARACT_CURRENT_SIZE,
 				min = 40,
-				max = 300,
+				max = 200,
 				step = 10,
 				integer = true,
 			},
