@@ -27,49 +27,13 @@
 					</OnLeave>
 				</Scripts>
 		    </Frame>
-		    <Frame name="$parentText">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+		    <Frame name="$parentText" inherits="TRP3_TextArea">
 				<Size x="300" y="0"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
-				<Frames>
-					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-							<Anchor point="LEFT" x="15" y="0"/>
-							<Anchor point="RIGHT" x="-18" y="0"/>
-						</Anchors>
-						<ScrollChild>
-							<EditBox name="$parentText" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
-								<Size x="275" y="130"/>
-								<Scripts>
-									<OnTextChanged>
-										if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-											self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-										end
-									</OnTextChanged>
-									<OnEscapePressed>
-										self:ClearFocus();
-									</OnEscapePressed>
-									<OnEditFocusGained>
-										self:HighlightText();
-									</OnEditFocusGained>
-									<OnEditFocusLost>
-										self:HighlightText(0,0);
-									</OnEditFocusLost>
-								</Scripts>
-								<FontString inherits="ChatFontNormal"/>
-							</EditBox>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
 			</Frame>
 		</Frames>
 		<Layers>
@@ -156,50 +120,13 @@
 					</OnLeave>
 				</Scripts>
 		    </Frame>
-			<Frame name="$parentText">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
-				<Size x="0" y="0"/>
+			<Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
 					<Anchor point="BOTTOM" x="0" y="35"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
 				</Anchors>
-				<Frames>
-					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-							<Anchor point="LEFT" x="15" y="0"/>
-							<Anchor point="RIGHT" x="-18" y="0"/>
-						</Anchors>
-						<ScrollChild>
-							<EditBox name="$parentBox" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
-								<Size x="275" y="130"/>
-								<Scripts>
-									<OnTextChanged>
-										if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-											self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-										end
-									</OnTextChanged>
-									<OnEscapePressed>
-										self:ClearFocus();
-									</OnEscapePressed>
-									<OnEditFocusGained>
-										self:HighlightText();
-									</OnEditFocusGained>
-									<OnEditFocusLost>
-										self:HighlightText(0,0);
-									</OnEditFocusLost>
-								</Scripts>
-								<FontString inherits="ChatFontNormal"/>
-							</EditBox>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
 			</Frame>
 		</Frames>
 		<Layers>
@@ -354,49 +281,13 @@
 									</Button>
 								</Frames>
 							</Frame>
-							<Frame>
-								<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-								</Backdrop>
+							<Frame name="TRP3_RegisterAbout_Edit_Template1" inherits="TRP3_TextArea">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar" x="0" y="-5"/>
 									<Anchor point="BOTTOM" x="0" y="5"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
-								<Frames>
-									<ScrollFrame name="TRP3_RegisterAbout_Edit_Template1_Scroll" inherits="UIPanelScrollFrameTemplate">
-										<Anchors>
-											<Anchor point="TOP" x="0" y="-10"/>
-											<Anchor point="BOTTOM" x="0" y="10"/>
-											<Anchor point="LEFT" x="15" y="0"/>
-											<Anchor point="RIGHT" x="-18" y="0"/>
-										</Anchors>
-										<ScrollChild>
-											<EditBox name="TRP3_RegisterAbout_Edit_Template1_Scroll_Text" letters="3000" multiLine="true" enableMouse="false" autoFocus="false">
-												<Size x="450" y="230"/>
-												<Scripts>
-													<OnTextChanged>
-														if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-															self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-														end
-													</OnTextChanged>
-													<OnEscapePressed>
-														self:ClearFocus();
-													</OnEscapePressed>
-													<OnEditFocusGained>
-														self:HighlightText();
-													</OnEditFocusGained>
-													<OnEditFocusLost>
-														self:HighlightText(0,0);
-													</OnEditFocusLost>
-												</Scripts>
-												<FontString inherits="ChatFontNormal"/>
-											</EditBox>
-										</ScrollChild>
-									</ScrollFrame>
-								</Frames>
 							</Frame>
 						</Frames>
 				    </Frame>

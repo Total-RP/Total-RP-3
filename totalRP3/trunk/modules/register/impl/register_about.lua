@@ -124,53 +124,53 @@ local function showTemplate1(dataTab)
 end
 
 local function insertTag(tag, index)
-	local text = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetText();
+	local text = TRP3_RegisterAbout_Edit_Template1ScrollText:GetText();
 	local pre = text:sub(1, index);
 	local post = text:sub(index + 1);
 	text = strconcat(pre, tag, post);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetText(text);
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetText(text);
 end
 
 local function postInsertHighlight(index, tagSize, textSize)
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(index + tagSize + textSize);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:HighlightText(index + tagSize, index + tagSize + textSize);
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(index + tagSize + textSize);
+	TRP3_RegisterAbout_Edit_Template1ScrollText:HighlightText(index + tagSize, index + tagSize + textSize);
 end
 
 local function insertContainerTag(alignIndex, button)
 	assert(button.tagIndex and TAGS_INFO[button.tagIndex], "Button is not properly init with a tag index");
 	local tagInfo = TAGS_INFO[button.tagIndex];
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
+	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
 	insertTag(strconcat(tagInfo.openTags[alignIndex], loc("REG_PLAYER_ABOUT_T1_YOURTEXT"), tagInfo.closeTag), cursorIndex);
 	postInsertHighlight(cursorIndex, tagInfo.openTags[alignIndex]:len(), loc("REG_PLAYER_ABOUT_T1_YOURTEXT"):len());
 end
 
 local function onColorTagSelected(red, green, blue)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
+	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
 	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
 	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(cursorIndex + tag:len());
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
 end
 
 local function onIconTagSelected(icon)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
+	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
 	local tag = ("{icon:%s:25}"):format(icon);
 	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(cursorIndex + tag:len());
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
 end
 
 local function onImageTagSelected(image)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
+	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
 	local tag = ("{img:%s:%s:%s}"):format(image.url, math.min(image.width, 512), math.min(image.height, 512));
 	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(cursorIndex + tag:len());
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
 end
 
 local function onLinkTagClicked()
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetCursorPosition();
+	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
 	local tag = ("{link||%s||%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
 	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetCursorPosition(cursorIndex + 6);
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + 6);
+	TRP3_RegisterAbout_Edit_Template1ScrollText:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());
 end
 
 -- Drop down
@@ -346,7 +346,7 @@ function refreshTemplate2EditDisplay()
 		frame.index = frameIndex;
 		frame.frameData = frameData;
 		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
-		_G[frame:GetName().."TextScrollBox"]:SetText(frameData.TX or "");
+		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
 		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or Globals.icons.default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
 			showIconBrowser(function(icon)
@@ -382,7 +382,7 @@ local function template2SaveToDraft()
 	for _, frame in pairs(template2EditFrames) do
 		if frame:IsVisible() then
 			assert(frame.frameData, "Frame has no frameData !");
-			frame.frameData.TX = stEtN(_G[frame:GetName().."TextScrollBox"]:GetText());
+			frame.frameData.TX = stEtN(_G[frame:GetName().."TextScrollText"]:GetText());
 		end
 	end
 end
@@ -665,7 +665,7 @@ local function saveInDraft()
 	draftData.BK = TRP3_RegisterAbout_Edit_BckField:GetSelectedValue();
 	draftData.TE = TRP3_RegisterAbout_Edit_TemplateField:GetSelectedValue();
 	-- Template 1
-	draftData.T1.TX = TRP3_RegisterAbout_Edit_Template1_Scroll_Text:GetText();
+	draftData.T1.TX = TRP3_RegisterAbout_Edit_Template1ScrollText:GetText();
 	-- Template 2
 	template2SaveToDraft();
 	-- Template 3
@@ -720,7 +720,7 @@ local function refreshEditDisplay()
 	-- Template 1
 	local template1Data = draftData.T1;
 	assert(type(template1Data) == "table", "Error: Nil template1 data or not a table.");
-	TRP3_RegisterAbout_Edit_Template1_Scroll_Text:SetText(template1Data.TX or "");
+	TRP3_RegisterAbout_Edit_Template1ScrollText:SetText(template1Data.TX or "");
 	-- Template 2
 	refreshTemplate2EditDisplay();
 	-- Template 3

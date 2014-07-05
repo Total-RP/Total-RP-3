@@ -273,7 +273,7 @@
 		</Scripts>
 	</EditBox>
 	
-	<!-- Template d'un bouton check petit texte-->
+	<!-- Checkbox with small label and TT compatible -->
 	<CheckButton name="TRP3_CheckBox" inherits="OptionsCheckButtonTemplate" virtual="true" checked="false">
 		<Scripts>
 			<OnLoad>
@@ -288,6 +288,7 @@
 		</Scripts>
 	</CheckButton>
 	
+	<!-- Tab bar tab button -->
 	<Button name="TRP3_TabBar_Tab" virtual="true">
         <Size><AbsDimension x="10" y="32"/></Size>
         <Layers>
@@ -341,4 +342,58 @@
 			</Anchors>
 		</HighlightTexture>
     </Button>
+    
+    <!-- Text area -->
+    <Frame name="TRP3_TextArea" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Frames>
+			<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="LEFT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="-18" y="0"/>
+				</Anchors>
+				<ScrollChild>
+					<EditBox name="$parentText" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
+						<Scripts>
+							<OnShow>
+								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
+							</OnShow>
+							<OnTextChanged>
+								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
+									self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+								end
+							</OnTextChanged>
+							<OnEscapePressed>
+								self:ClearFocus();
+							</OnEscapePressed>
+							<OnEditFocusGained>
+								self:HighlightText();
+								_G[self:GetParent():GetParent():GetName() .. "FocusDummy"]:Hide();
+							</OnEditFocusGained>
+							<OnEditFocusLost>
+								self:HighlightText(0,0);
+								_G[self:GetParent():GetParent():GetName() .. "FocusDummy"]:Show();
+							</OnEditFocusLost>
+						</Scripts>
+						<FontString inherits="ChatFontNormal"/>
+					</EditBox>
+				</ScrollChild>
+			</ScrollFrame>
+			<Button name="$parentFocusDummy">
+				<Scripts>
+					<OnLoad>
+						self:SetAllPoints(self:GetParent():GetName() .. "Scroll");
+					</OnLoad>
+					<OnClick>
+						_G[self:GetParent():GetName() .. "ScrollText"]:SetFocus();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
 </Ui>

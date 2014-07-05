@@ -282,49 +282,13 @@
 							<Anchor point="TOPRIGHT" x="-15" y="-20"/>
 						</Anchors>
 					</Button>
-					<Frame name="TRP3_RegisterMiscEdit_Glance_Text">
-						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-							<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
+					<Frame name="TRP3_RegisterMiscEdit_Glance_Text" inherits="TRP3_TextArea">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscEdit_Glance_Title"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
 							<Anchor point="RIGHT" x="-10" y="0" />
 							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_Icon"/>
 						</Anchors>
-						<Frames>
-							<ScrollFrame name="TRP3_RegisterMiscEdit_Glance_TextScroll" inherits="UIPanelScrollFrameTemplate">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-10"/>
-									<Anchor point="BOTTOM" x="0" y="10"/>
-									<Anchor point="LEFT" x="15" y="0"/>
-									<Anchor point="RIGHT" x="-18" y="0"/>
-								</Anchors>
-								<ScrollChild>
-									<EditBox name="TRP3_RegisterMiscEdit_Glance_TextScrollText" letters="300" multiLine="true" enableMouse="false" autoFocus="false">
-										<Size x="340" y="130"/>
-										<Scripts>
-											<OnTextChanged>
-												if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-													self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-												end
-											</OnTextChanged>
-											<OnEscapePressed>
-												self:ClearFocus();
-											</OnEscapePressed>
-											<OnEditFocusGained>
-												self:HighlightText();
-											</OnEditFocusGained>
-											<OnEditFocusLost>
-												self:HighlightText(0,0);
-											</OnEditFocusLost>
-										</Scripts>
-										<FontString inherits="ChatFontNormal"/>
-									</EditBox>
-								</ScrollChild>
-							</ScrollFrame>
-						</Frames>
 					</Frame>
 				</Frames>
 			</Frame>
