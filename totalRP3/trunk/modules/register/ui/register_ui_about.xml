@@ -303,7 +303,7 @@
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
-							<Button name="TRP3_RegisterAbout_Edit_Template2_Add" inherits="TRP3_CommonButton" text="[ADD_NEW_FRAME]">
+							<Button name="TRP3_RegisterAbout_Edit_Template2_Add" inherits="TRP3_CommonButton">
 								<Size x="150" y="18"/>
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="0"/>

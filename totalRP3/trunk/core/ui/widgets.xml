@@ -358,7 +358,7 @@
 					<Anchor point="RIGHT" x="-18" y="0"/>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="$parentText" letters="2000" multiLine="true" enableMouse="false" autoFocus="false">
+					<EditBox name="$parentText" letters="5000" multiLine="true" enableMouse="false" autoFocus="false">
 						<Scripts>
 							<OnShow>
 								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);

@@ -37,6 +37,8 @@ local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
+local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -274,7 +276,6 @@ local function showTemplate2(dataTab)
 end
 
 local template2EditFrames = {};
-local refreshTemplate2EditDisplay; -- Function reference
 
 local function setTemplate2EditBkg(bkg, frame)
 	frame = frame:GetParent();
@@ -284,6 +285,7 @@ local function setTemplate2EditBkg(bkg, frame)
 end
 
 local function template2DeleteFrame(button)
+	template2SaveToDraft();
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
 	local templateData = draftData.T2;
@@ -292,6 +294,7 @@ local function template2DeleteFrame(button)
 end
 
 local function template2UpFrame(button)
+	template2SaveToDraft();
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
 	local templateData = draftData.T2;
@@ -302,6 +305,7 @@ local function template2UpFrame(button)
 end
 
 local function template2DownFrame(button)
+	template2SaveToDraft();
 	local frame = button:GetParent();
 	assert(frame.index, "No index in the frame ...");
 	local templateData = draftData.T2;
@@ -309,6 +313,19 @@ local function template2DownFrame(button)
 	tremove(templateData, frame.index);
 	tinsert(templateData, frame.index + 1, frameData);
 	refreshTemplate2EditDisplay();
+end
+
+local function createTemplate2Frame(frameIndex)
+	local frame = CreateFrame("Frame", "TRP3_RegisterAbout_Template2_Edit"..frameIndex, TRP3_RegisterAbout_Edit_Template2_Container, "TRP3_RegisterAbout_Template2_Edit");
+	setupListBox(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"], getTiledBackgroundList(), setTemplate2EditBkg, nil, 120, true);
+	_G[frame:GetName().."Delete"]:SetScript("OnClick", template2DeleteFrame);
+	_G[frame:GetName().."Delete"]:SetText(loc("CM_REMOVE"));
+	_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
+	_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
+	setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc("CM_MOVE_UP"));
+	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+	tinsert(template2EditFrames, frame);
+	return frame;
 end
 
 function refreshTemplate2EditDisplay()
@@ -325,15 +342,7 @@ function refreshTemplate2EditDisplay()
 	for frameIndex, frameData in pairs(templateData) do
 		local frame = template2EditFrames[frameIndex];
 		if frame == nil then
-			frame = CreateFrame("Frame", "TRP3_RegisterAbout_Template2_Edit"..frameIndex, TRP3_RegisterAbout_Edit_Template2_Container, "TRP3_RegisterAbout_Template2_Edit");
-			setupListBox(_G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."Bkg"], getTiledBackgroundList(), setTemplate2EditBkg, nil, 120, true);
-			_G[frame:GetName().."Delete"]:SetScript("OnClick", template2DeleteFrame);
-			_G[frame:GetName().."Delete"]:SetText(loc("CM_REMOVE"));
-			_G[frame:GetName().."Up"]:SetScript("OnClick", template2UpFrame);
-			_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
-			setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc("CM_MOVE_UP"));
-			setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc("CM_MOVE_DOWN"));
-			tinsert(template2EditFrames, frame);
+			frame = createTemplate2Frame(frameIndex);
 		end
 		-- Position
 		frame:ClearAllPoints();
@@ -372,13 +381,16 @@ function refreshTemplate2EditDisplay()
 end
 
 local function template2AddFrame()
+	template2SaveToDraft();
 	local templateData = draftData.T2;
 	tinsert(templateData, {TX = loc("REG_PLAYER_ABOUT_SOME")});
+	TRP3_RegisterAbout_AboutPanel_Edit:Hide(); -- Hack to prevent invisible ScrollFontString bug
 	refreshTemplate2EditDisplay();
+	TRP3_RegisterAbout_AboutPanel_Edit:Show();
 end
 
 --- Save to draft all the frames texts
-local function template2SaveToDraft()
+function template2SaveToDraft()
 	for _, frame in pairs(template2EditFrames) do
 		if frame:IsVisible() then
 			assert(frame.frameData, "Frame has no frameData !");
@@ -660,7 +672,7 @@ local function refreshConsultDisplay(context)
 	setConsultBkg(dataTab.BK);
 end
 
-local function saveInDraft()
+function saveInDraft()
 	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
 	draftData.BK = TRP3_RegisterAbout_Edit_BckField:GetSelectedValue();
 	draftData.TE = TRP3_RegisterAbout_Edit_TemplateField:GetSelectedValue();
@@ -942,6 +954,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc("REG_PLAYER_PHYSICAL"));
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc("REG_PLAYER_PSYCHO"));
 	TRP3_RegisterAbout_Edit_Template3_HistTitle:SetText(loc("REG_PLAYER_HISTORY"));
+	TRP3_RegisterAbout_Edit_Template2_Add:SetText(loc("REG_PLAYER_ABOUT_ADD_FRAME"));
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetText(loc("CM_EDIT"));
 	TRP3_RegisterAbout_Edit_SaveButton:SetText(loc("CM_SAVE"));
 	TRP3_RegisterAbout_Edit_CancelButton:SetText(loc("CM_CANCEL"));

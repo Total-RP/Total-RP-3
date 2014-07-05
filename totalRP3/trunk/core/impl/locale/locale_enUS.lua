@@ -138,6 +138,7 @@ local LOCALE_EN = {
 		REG_PLAYER_ABOUT_MUSIC_SELECT2 = "Select theme",
 		REG_PLAYER_ABOUT_T1_YOURTEXT = "Your text here",
 		REG_PLAYER_ABOUT_HEADER = "Title tag",
+		REG_PLAYER_ABOUT_ADD_FRAME = "Add a frame",
 		REG_PLAYER_ABOUT_P = "Paragraph tag",
 		REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 		REG_PLAYER_ABOUT_SOME = "Some text ...",
