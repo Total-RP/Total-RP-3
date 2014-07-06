@@ -50,6 +50,7 @@ getDefaultProfile().player.characteristics = {
 	RA = Globals.player_race_loc,
 	CL = Globals.player_class_loc,
 	FN = Globals.player,
+	IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player")),
 	MI = {},
 	PS = {}
 };
