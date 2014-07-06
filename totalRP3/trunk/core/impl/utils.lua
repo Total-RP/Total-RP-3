@@ -575,6 +575,10 @@ Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTextur
 	local ok, errorMess = pcall(SetPortraitToTexture, textureFrame, texturePath);
 	if not ok then
 		Log.log("Fail to round texture: " .. tostring(errorMess));
-		SetPortraitToTexture(textureFrame, failTexture);
+		if failTexture then
+			SetPortraitToTexture(textureFrame, failTexture);
+		elseif _G[textureFrame] then
+			_G[textureFrame]:SetTexture(texturePath);
+		end
 	end
 end

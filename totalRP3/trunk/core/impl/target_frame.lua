@@ -173,7 +173,7 @@ local function displayPeekSlots(unitID, targetInfo)
 				slot:SetAlpha(0.25);
 				setTooltipForSameFrame(slot);
 			end
-			Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. icon, "Interface\\ICONS\\" .. Globals.icons.default);
+			Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. icon);
 			if unitID == Globals.player_id then
 				slot:SetScript("OnClick", onPeekClickMine);
 			else
