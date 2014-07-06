@@ -511,7 +511,7 @@ local function tabBar_selectTab(tabGroup, index)
 	tabGroup.tabs[index]:GetScript("OnClick")(tabGroup.tabs[index]);
 end
 
-function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback)
+function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallback)
 	assert(tabBar, "The tabBar can't be nil");
 
 	local tabGroup = {};
@@ -523,13 +523,19 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback)
 		local tabWidget = CreateFrame("Button", "TRP3_TabBar_Tab_" .. tabBar_index, tabBar, "TRP3_TabBar_Tab");
 		tabWidget:SetText(text);
 		tabWidget:SetWidth(width or (text:len() * 11));
-		tabWidget:SetScript("OnClick", function(self)
+		local clickFunction = function()
 			tabBar_onSelect(tabGroup, index);
-			if callback then
-				callback(tabWidget, value);
+				if callback then
+					callback(tabWidget, value);
+				end
+		end
+		tabWidget:SetScript("OnClick", function(self)
+			if not confirmCallback then
+				clickFunction();
+			else
+				confirmCallback(function() clickFunction() end);
 			end
 		end);
-
 		tinsert(tabGroup.tabs, tabWidget);
 		tabBar_index = tabBar_index + 1;
 	end

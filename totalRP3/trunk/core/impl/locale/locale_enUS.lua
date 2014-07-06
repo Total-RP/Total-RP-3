@@ -19,6 +19,7 @@ local LOCALE_EN = {
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		REG_PLAYER = "Character",
+		REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway ?\n|cffff9900Any changes will be lost.",
 		REG_PLAYER_CARACT = "Characteristics",
 		REG_PLAYER_NAMESTITLES = "Names and titles",
 		REG_PLAYER_CHARACTERISTICS = "Characteristics",

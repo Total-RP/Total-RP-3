@@ -84,7 +84,6 @@ end
 -- CHARACTERISTICS - CONSULT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local isEditMode;
 local registerCharFrame = {};
 local registerCharLocals = {
 	RA = "REG_PLAYER_RACE",
@@ -570,7 +569,7 @@ local function refreshDisplay()
 		setupRelationButton(context.profileID, context.profile);
 	end
 	
-	if isEditMode then
+	if context.isEditMode then
 		assert(context.isPlayer, "Trying to show Characteristics edition but is not mine ...");
 		TRP3_RegisterCharact_Edit_NamePanel:Show();
 		TRP3_RegisterCharact_Edit_CharactPanel:Show();
@@ -639,7 +638,7 @@ end
 
 local function showCharacteristicsTab()
 	TRP3_RegisterCharact:Show();
-	isEditMode = false;
+	getCurrentContext().isEditMode = false;
 	refreshDisplay();
 end
 TRP3_API.register.ui.showCharacteristicsTab = showCharacteristicsTab;
@@ -649,7 +648,7 @@ local function onEdit()
 		wipe(draftData);
 		draftData = nil;
 	end
-	isEditMode = true;
+	getCurrentContext().isEditMode = true;
 	refreshDisplay();
 end
 

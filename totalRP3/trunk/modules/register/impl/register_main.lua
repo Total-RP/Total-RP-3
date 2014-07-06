@@ -326,6 +326,18 @@ local function createTabBar()
 		elseif value == 3 then
 			showMiscTab();
 		end
+	end,
+	-- Confirmation callback
+	function(callback)
+		if getCurrentContext() and getCurrentContext().isEditMode then
+			TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
+				function()
+					callback();
+				end
+			);
+		else
+			callback();
+		end
 	end
 	);
 end

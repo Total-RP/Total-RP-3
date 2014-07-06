@@ -610,7 +610,6 @@ end
 -- LOGIC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local isEditMode;
 local templatesFunction = {
 	showTemplate1,
 	showTemplate2,
@@ -768,7 +767,7 @@ local function refreshDisplay()
 	TRP3_RegisterAbout_AboutPanel:Hide();
 	TRP3_RegisterAbout_AboutPanel_Edit:Hide();
 	
-	if isEditMode then
+	if context.isEditMode then
 		assert(context.isPlayer, "Trying to show About edition for another than mine ...");
 		refreshEditDisplay();
 	else
@@ -779,7 +778,7 @@ end
 local function showAboutTab()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer:Hide();
 	TRP3_RegisterAbout:Show();
-	isEditMode = false;
+	getCurrentContext().isEditMode = false;
 	refreshDisplay();
 end
 TRP3_API.register.ui.showAboutTab = showAboutTab;
@@ -789,7 +788,7 @@ local function onEdit()
 		wipe(draftData);
 		draftData = nil;
 	end
-	isEditMode = true;
+	getCurrentContext().isEditMode = true;
 	refreshDisplay();
 end
 
