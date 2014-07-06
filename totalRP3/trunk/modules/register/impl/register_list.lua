@@ -135,6 +135,7 @@ local function decorateCharacterLine(line, profileID)
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, loc("REG_LIST_CHAR_TT"):format(secondLine));
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
+	_G[line:GetName().."Select"]:Show();
 
 	local relation = getRelationText(profileID);
 	_G[line:GetName().."Info"]:SetText(relation);
@@ -296,7 +297,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function decorateCompanionLine(line, profileID)
-
+	_G[line:GetName().."Select"]:Show();
 end
 
 local function getCompanionLines()
@@ -317,6 +318,7 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
+	_G[line:GetName().."Select"]:Hide();
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(getIgnoredList()[unitID]));
 end
 
