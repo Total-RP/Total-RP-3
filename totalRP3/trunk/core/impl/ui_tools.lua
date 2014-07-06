@@ -82,7 +82,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DROPDOWN_FRAME = "TRP3_UIDD";
-local dropDownFrame;
+local dropDownFrame, currentlyOpenedDrop;
 
 TRP3_API.ui.listbox.toggle = function()
 	ToggleDropDownMenu(nil, nil, dropDownFrame);
@@ -92,6 +92,12 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	if not dropDownFrame then
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
+	
+	if currentlyOpenedDrop == anchoredFrame then
+		ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
+		return;
+	end
+	
 	UIDropDownMenu_Initialize(dropDownFrame,
 		function(uiFrame, level, menuList)
 			local levelValues = menuList or values;
@@ -135,6 +141,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	dropDownFrame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
 	PlaySound("igMainMenuOptionCheckBoxOn");
+	currentlyOpenedDrop = anchoredFrame;
 end
 TRP3_API.ui.listbox.displayDropDown = openDropDown;
 
