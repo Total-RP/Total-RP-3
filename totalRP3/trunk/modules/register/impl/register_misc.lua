@@ -17,7 +17,7 @@ local tinsert = tinsert;
 local pairs = pairs;
 local type = type;
 local tostring = tostring;
-local setupListBox, toggleDropDown = TRP3_API.ui.listbox.setupListBox, TRP3_API.ui.listbox.toggle;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -331,7 +331,6 @@ function TRP3_API.register.player.setGlanceSlotPreset(slot, presetID)
 		local preset = PEEK_PRESETS[presetID];
 		applyPeekSlot(slot, preset.icon, true, preset.title, preset.text);
 	end
-	toggleDropDown();
 end
 
 local function createPeekFinalElement(peek)
@@ -392,7 +391,6 @@ local function removePreset(presetID)
 			PEEK_PRESETS_CATEGORY[category] = nil;
 		end
 	end
-	toggleDropDown();
 	rebuildPresetListBox();
 end
 

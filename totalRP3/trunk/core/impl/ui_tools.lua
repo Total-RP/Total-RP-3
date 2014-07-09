@@ -84,10 +84,6 @@ end
 local DROPDOWN_FRAME = "TRP3_UIDD";
 local dropDownFrame, currentlyOpenedDrop;
 
-TRP3_API.ui.listbox.toggle = function()
-	ToggleDropDownMenu(nil, nil, dropDownFrame);
-end
-
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	if not dropDownFrame then
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
@@ -101,7 +97,6 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	UIDropDownMenu_Initialize(dropDownFrame,
 		function(uiFrame, level, menuList)
 			local levelValues = menuList or values;
-
 			level = level or 1;
 			for index, tab in pairs(levelValues) do
 				assert(type(tab) == "table", "Level value is not a table !");
@@ -121,6 +116,9 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 							callback(value, anchoredFrame);
 						end
 						anchoredFrame:GetParent().selectedValue = value;
+						if level > 1 then
+							ToggleDropDownMenu(nil, nil, dropDownFrame);
+						end
 					end;
 				else
 					info.func = function() end;
