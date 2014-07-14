@@ -112,6 +112,11 @@
 				<AbsInset left="5" right="5" top="5" bottom="5"/>
 			</BackgroundInsets>
 		</Backdrop>
+		<Scripts>
+			<OnLoad>
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
 		<Layers>
 			<Layer level="BACKGROUND">
 			    <Texture file="Interface\TutorialFrame\TutorialFrameBackground">
