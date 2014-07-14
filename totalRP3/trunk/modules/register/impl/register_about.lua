@@ -47,10 +47,10 @@ getDefaultProfile().player.about = {
 	v = 1,
 	TE = 1,
 	T1 = {
-	
+
 	},
 	T2 = {
-	
+
 	},
 	T3 = {
 		PH = {}, PS = {}, HI = {}
@@ -217,12 +217,12 @@ end
 
 local function showTemplate2(dataTab)
 	local templateData = dataTab.T2 or {};
-	
+
 	-- Hide all
 	for _, frame in pairs(template2Frames) do
 		frame:Hide();
 	end
-	
+
 	local frameIndex = 1;
 	local previous = TRP3_RegisterAbout_AboutPanel_Template2Title;
 	local bool = true;
@@ -234,7 +234,7 @@ local function showTemplate2(dataTab)
 		end
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -10);
-		
+
 		local icon = _G[frame:GetName().."Icon"];
 		local text = _G[frame:GetName().."Text"];
 		local backdrop = frame:GetBackdrop();
@@ -253,25 +253,25 @@ local function showTemplate2(dataTab)
 			text:SetPoint("RIGHT", icon, "LEFT", -10, 0);
 			text:SetJustifyH("RIGHT")
 		end
-		
+
 		local height = math.max(text:GetHeight(), icon:GetHeight()) + TEMPLATE2_PADDING;
 		frame:SetHeight(height);
-		
+
 		if frameTab.TX and frameTab.TX:len() > 0 then
 			frame:Show();
 			previous = frame;
 		else
 			frame:Hide();
 		end
-		
+
 		frameIndex = frameIndex + 1;
 		bool = not bool;
 	end
-	
+
 	if not shouldShowTemplate2(dataTab) then
 		TRP3_RegisterAbout_AboutPanel_Empty:Show();
 	end
-	
+
 	TRP3_RegisterAbout_AboutPanel_Template2:Show();
 end
 
@@ -334,10 +334,10 @@ function refreshTemplate2EditDisplay()
 		frame:Hide();
 		frame.frameData = nil; -- Helps garbage collection
 	end
-	
+
 	local templateData = draftData.T2;
 	assert(type(templateData) == "table", "Error: Nil template3 data or not a table.");
-	
+
 	local previous = nil;
 	for frameIndex, frameData in pairs(templateData) do
 		local frame = template2EditFrames[frameIndex];
@@ -374,7 +374,7 @@ function refreshTemplate2EditDisplay()
 		else
 			_G[frame:GetName().."Down"]:Show();
 		end
-		
+
 		frame:Show();
 		previous = frame;
 	end
@@ -450,7 +450,7 @@ local function showTemplate3(dataTab)
 	local templateData = dataTab.T3 or {};
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
-	
+
 	for i=1, 3 do
 		local data = datas[i] or {};
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
@@ -506,7 +506,7 @@ local function showVotingOption(voteValue)
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context !");
 	assert(not context.isPlayer, "Trying to vote for yourself ...");
-	
+
 	local profile = context.profile;
 	if profile.link then
 		if tsize(profile.link) == 1 then
@@ -514,7 +514,7 @@ local function showVotingOption(voteValue)
 				sendVote(voteValue, unitID, profile);
 			end
 		else
-			-- TODO: auto detect which is online
+		-- TODO: auto detect which is online
 		end
 	end
 end
@@ -530,6 +530,31 @@ function sendVote(voteValue, target, profile)
 	end
 end
 
+local function aggregateVotes(voteData)
+	local voteUp = 0;
+	local voteDown = 0;
+	for voter, vote in pairs(voteData or {}) do
+		if vote == 1 then
+			voteUp = voteUp + 1;
+		elseif vote == -1 then
+			voteDown = voteDown + 1;
+		end
+	end
+	return voteUp, voteDown;
+end
+
+local function refreshPlayerVoteDisplay()
+	if getCurrentPageID() == "player_main" then
+		local context = getCurrentContext();
+		if context and context.isPlayer and context.profile and context.profile.about then
+			setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
+				"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
+				loc("REG_PLAYER_ABOUT_VOTES_R"):format(aggregateVotes(context.profile.about.vote))
+			);
+		end
+	end
+end
+
 -- Someone vote for your description
 local function vote(values, sender)
 	local value, fromHash = unpack(values);
@@ -540,6 +565,7 @@ local function vote(values, sender)
 	end
 	about.vote[fromHash] = value;
 	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
+	refreshPlayerVoteDisplay();
 end
 
 -- Your vote has been registered
@@ -589,8 +615,8 @@ local function compressData()
 	local dataTab = getOptimizedData();
 	local serial = Utils.serial.serialize(dataTab);
 	local compressed = Utils.serial.encodeCompressMessage(serial);
-	
---	log(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+
+	--	log(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
 	if compressed:len() < serial:len() then
 		currentCompressed = compressed;
 	else
@@ -616,19 +642,6 @@ local templatesFunction = {
 	showTemplate3
 }
 
-local function aggregateVotes(voteData)
-	local voteUp = 0;
-	local voteDown = 0;
-	for voter, vote in pairs(voteData or {}) do
-		if vote == 1 then
-			voteUp = voteUp + 1;
-		elseif vote == -1 then
-			voteDown = voteDown + 1;
-		end
-	end
-	return voteUp, voteDown;
-end
-
 local function refreshConsultDisplay(context)
 	local dataTab = context.profile.about or Globals.empty;
 	local template = dataTab.TE or 1;
@@ -636,13 +649,10 @@ local function refreshConsultDisplay(context)
 	TRP3_RegisterAbout_AboutPanel_ThumbResult:Hide();
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:Hide();
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:Hide();
-	
+
 	if context.isPlayer then
 		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
-		setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
-			"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
-			loc("REG_PLAYER_ABOUT_VOTES_R"):format(aggregateVotes(dataTab.vote))
-		);
+		refreshPlayerVoteDisplay();
 	else
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
@@ -656,12 +666,12 @@ local function refreshConsultDisplay(context)
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
 	assert(template, "Error: No about template ID.");
 	assert(type(templatesFunction[template]) == "function", "Error: no function for about template: " .. tostring(template));
-	
+
 	TRP3_RegisterAbout_AboutPanel.musicURL = dataTab.MU;
 	if dataTab.MU then
 		TRP3_RegisterAbout_AboutPanel_MusicPlayer_URL:SetText(Utils.music.getTitle(dataTab.MU));
 	end
-	
+
 	TRP3_RegisterAbout_AboutPanel_EditButton:Hide();
 	TRP3_RegisterAbout_AboutPanel_Thumb:Hide();
 	TRP3_RegisterAbout_AboutPanel:Show();
@@ -697,7 +707,7 @@ end
 
 local function save()
 	saveInDraft();
-	
+
 	local dataTab = get("player/about");
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
 	wipe(dataTab);
@@ -711,7 +721,7 @@ local function save()
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-	
+
 	compressData();
 	Events.fireEvent(Events.REGISTER_ABOUT_SAVED);
 end
@@ -724,7 +734,7 @@ local function refreshEditDisplay()
 		draftData = {};
 		tcopy(draftData, dataTab);
 	end
-	
+
 	TRP3_RegisterAbout_Edit_BckField:SetSelectedIndex(draftData.BK or 1);
 	TRP3_RegisterAbout_Edit_TemplateField:SetSelectedIndex(draftData.TE or 1);
 	selectMusic(draftData.MU);
@@ -749,7 +759,7 @@ local function refreshEditDisplay()
 	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.PH.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.PS.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.HI.TX or "");
-	
+
 	TRP3_RegisterAbout_AboutPanel_Edit:Show();
 	setEditTemplate(draftData.TE or 1);
 end
@@ -758,7 +768,7 @@ local function refreshDisplay()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
-	
+
 	--Hide all templates
 	TRP3_RegisterAbout_AboutPanel_Template1:Hide();
 	TRP3_RegisterAbout_AboutPanel_Template2:Hide();
@@ -766,7 +776,7 @@ local function refreshDisplay()
 	TRP3_RegisterAbout_AboutPanel_Empty:Hide();
 	TRP3_RegisterAbout_AboutPanel:Hide();
 	TRP3_RegisterAbout_AboutPanel_Edit:Hide();
-	
+
 	if context.isEditMode then
 		assert(context.isPlayer, "Trying to show About edition for another than mine ...");
 		refreshEditDisplay();
@@ -796,8 +806,8 @@ function TRP3_API.register.ui.shouldShowAboutTab(profile)
 	if profile and profile.about then
 		local dataTab = profile.about;
 		return (dataTab.TE == 1 and shouldShowTemplate1(dataTab))
-			or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
-			or (dataTab.TE == 3 and shouldShowTemplate3(dataTab));
+		or (dataTab.TE == 2 and shouldShowTemplate2(dataTab))
+		or (dataTab.TE == 3 and shouldShowTemplate3(dataTab));
 	end
 	return false;
 end
@@ -877,7 +887,7 @@ function TRP3_API.register.inits.aboutInit()
 
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
-	
+
 	TRP3_API.target.registerButton({
 		id = "char_music",
 		configText = loc("TF_PLAY_THEME"),
@@ -900,7 +910,7 @@ function TRP3_API.register.inits.aboutInit()
 		tooltip = loc("TF_PLAY_THEME"),
 		icon = "inv_misc_drum_06"
 	});
-	
+
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
 	local bkgTab = getTiledBackgroundList();
@@ -917,7 +927,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterAbout_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
-	
+
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetText(loc("CM_IMAGE"));
@@ -937,7 +947,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(onImageTagSelected) end);
 	TRP3_RegisterAbout_Edit_Template1_Toolbar_Link:SetScript("OnClick", onLinkTagClicked);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
-	
+
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(TRP3_RegisterAbout_AboutPanel, "ANCHOR_CURSOR");
@@ -960,7 +970,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetText(loc("CM_PLAY"));
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetText(loc("CM_STOP"));
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc("REG_PLAYER_ABOUT_MUSIC"));
-	
+
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p",GameFontNormal);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1",GameFontNormalHuge3);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h2",GameFontNormalHuge);
@@ -972,19 +982,19 @@ function TRP3_API.register.inits.aboutInit()
 	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
 	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
 	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
-	
+
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_UP"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTE_DOWN"), loc("REG_PLAYER_ABOUT_VOTE_TT") .. "\n\n" .. Utils.str.color("y") .. loc("REG_PLAYER_ABOUT_VOTE_TT2"));
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() showVotingOption(1) end);
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() showVotingOption(-1) end);
-	
+
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetScript("OnClick", function()
 		Utils.music.stop();
 	end);
-	
+
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 end
