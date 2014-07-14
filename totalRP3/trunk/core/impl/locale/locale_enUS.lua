@@ -61,7 +61,7 @@ local LOCALE_EN = {
 									.."\nNote that your character could be a homeless, a wanderer...\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
 		REG_PLAYER_PSYCHO = "Personality",
 		REG_PLAYER_HISTORY = "History",
-		REG_PLAYER_MISC = "Miscellaneous",
+		REG_PLAYER_MORE_INFO = "More information",
 		REG_PLAYER_PHYSICAL = "Physical",
 		REG_PLAYER_NO_CHAR = "No characteristics",
 		REG_PLAYER_SHOWPSYCHO = "Show personality frame",
