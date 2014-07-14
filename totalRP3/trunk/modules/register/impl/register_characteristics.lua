@@ -35,6 +35,7 @@ local deleteProfile = TRP3_API.register.deleteProfile;
 local selectMenu = TRP3_API.navigation.menu.selectMenu;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
+local buildZoneText = Utils.str.buildZoneText;
 local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -768,6 +769,12 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
+	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function()
+		TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+	end);
+	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
+		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
+	end);
 	
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 	
@@ -785,6 +792,8 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

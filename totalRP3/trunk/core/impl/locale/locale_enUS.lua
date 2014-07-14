@@ -35,6 +35,8 @@ local LOCALE_EN = {
 								.."\n\nYou can use a |c0000ff00nickname |r!",
 		REG_PLAYER_LASTNAME = "Last name",
 		REG_PLAYER_LASTNAME_TT = "This is your character's family name.",
+		REG_PLAYER_HERE = "Get position",
+		REG_PLAYER_HERE_TT = "Click to get your current position",
 		REG_PLAYER_FULLTITLE = "Full title",
 		REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
 		REG_PLAYER_RACE = "Race",

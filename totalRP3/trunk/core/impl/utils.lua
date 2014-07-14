@@ -30,6 +30,7 @@ local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local showLog = true;
+local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Chat frame
@@ -276,6 +277,14 @@ end
 -- Assure that the given string will not be nil
 Utils.str.nilToEmpty = function(text)
 	return text or "";
+end
+
+function Utils.str.buildZoneText()
+	local text = getZoneText(); -- assuming that there is ALWAYS a zone text. Don't know if it's true.
+	if getSubZoneText():len() > 0 then
+		text = strconcat(text, " - ", getSubZoneText());
+	end
+	return text;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

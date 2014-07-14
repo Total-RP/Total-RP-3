@@ -20,8 +20,7 @@ local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.locale.getText;
 local log = Utils.log.log;
-local getZoneText = GetZoneText;
-local getSubZoneText = GetSubZoneText;
+local buildZoneText = Utils.str.buildZoneText;
 local getUnitID = Utils.str.getUnitID;
 local UnitRace, UnitIsPlayer, UnitClass = UnitRace, UnitIsPlayer, UnitClass;
 local UnitFactionGroup, UnitSex, GetGuildInfo = UnitFactionGroup, UnitSex, GetGuildInfo;
@@ -264,14 +263,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tabGroup; -- Reference to the tab panel tabs group
-
-local function buildZoneText()
-	local text = getZoneText(); -- assuming that there is ALWAYS a zone text. Don't know if it's true.
-	if getSubZoneText():len() > 0 then
-		text = strconcat(text, "-", getSubZoneText());
-	end
-	return text;
-end
 
 local function onMouseOver(...)
 	local unitID, unitRealm = getUnitID("mouseover");

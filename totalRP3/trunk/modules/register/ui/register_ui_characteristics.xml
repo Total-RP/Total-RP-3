@@ -2,6 +2,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
+	<!-- Common icon button  -->
+	<Button name="TRP3_MapHereButton" virtual="true">
+		<Size x="16" y="16"/>
+	    <NormalTexture file="Interface\Buttons\UI-HomeButton"/>
+	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+	
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_MiscEditLine" virtual="true">
 		<Size x="20" y="40"/>
@@ -416,38 +431,47 @@
 									<EditBox name="TRP3_RegisterCharact_Edit_AgeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_EyeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_HeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_ResidenceField" inherits="TRP3_TitledHelpEditBox">
-										<Size x="200" y="18"/>
+										<Size x="175" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 										</Anchors>
 									</EditBox>
+									<Button name="TRP3_RegisterCharact_Edit_ResidenceButton" inherits="TRP3_MapHereButton">
+										<Anchors>	
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
+										</Anchors>
+									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_BirthplaceField" inherits="TRP3_TitledHelpEditBox">
-										<Size x="200" y="18"/>
+										<Size x="175" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
 										</Anchors>
 									</EditBox>
-									
+									<Button name="TRP3_RegisterCharact_Edit_BirthplaceButton" inherits="TRP3_MapHereButton">
+										<Anchors>	
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
+										</Anchors>
+									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_WeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>	
-											<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
+											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_MiscAdd" inherits="TRP3_CommonButton">
