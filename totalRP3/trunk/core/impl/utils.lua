@@ -238,11 +238,17 @@ Utils.str.getUnitID = function(unit)
 	return playerName .. "-" .. realm;
 end
 
+-- Return an texture text tag based on the given image url and size.
+Utils.str.texture = function(iconPath, iconSize)
+	assert(iconPath, "Icon path is nil.");
+	iconSize = iconSize or 15;
+	return strconcat("|T", iconPath, ":", iconSize, ":", iconSize, "|t");
+end
+
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 Utils.str.icon = function(iconPath, iconSize)
-	iconPath = iconPath or Globals.icons.default
-	iconSize = iconSize or 15;
-	return strconcat("|TInterface\\ICONS\\", iconPath, ":", iconSize, ":", iconSize, "|t");
+	iconPath = iconPath or Globals.icons.default;
+	return Utils.str.texture("Interface\\ICONS\\" .. iconPath, iconSize);
 end
 
 -- Return a color tag based on a letter

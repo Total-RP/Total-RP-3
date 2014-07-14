@@ -437,6 +437,17 @@ local function savePreset()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Tool
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.register.checkGlanceActivation(dataTab)
+	for _, glanceTab in pairs(dataTab) do
+		if glanceTab.AC then return true end
+	end
+	return false;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

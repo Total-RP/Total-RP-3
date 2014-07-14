@@ -28,6 +28,7 @@ local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
 local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
 local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
+local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local IC_GUILD, OOC_GUILD;
 
 -- ICONS
@@ -156,13 +157,6 @@ end
 local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	setLineFont(tooltip, lineIndex, fontSize);
 	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont("Fonts\\FRIZQT__.TTF", fontSize);
-end
-
-local function checkGlanceActivation(dataTab)
-	for _, glanceTab in pairs(dataTab) do
-		if glanceTab.AC then return true end
-	end
-	return false;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
