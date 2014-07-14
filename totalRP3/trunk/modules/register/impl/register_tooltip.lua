@@ -66,6 +66,8 @@ local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 
+local ANCHOR_TAB;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -495,6 +497,17 @@ function TRP3_API.register.inits.tooltipInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	
+	ANCHOR_TAB = {
+		{loc("CO_ANCHOR_TOP_LEFT"), "ANCHOR_TOPLEFT"},
+		{loc("CO_ANCHOR_TOP"), "ANCHOR_TOP"},
+		{loc("CO_ANCHOR_TOP_RIGHT"), "ANCHOR_TOPRIGHT"},
+		{loc("CO_ANCHOR_RIGHT"), "ANCHOR_RIGHT"},
+		{loc("CO_ANCHOR_BOTTOM_RIGHT"), "ANCHOR_BOTTOMRIGHT"},
+		{loc("CO_ANCHOR_BOTTOM"), "ANCHOR_BOTTOM"},
+		{loc("CO_ANCHOR_BOTTOM_LEFT"), "ANCHOR_BOTTOMLEFT"},
+		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"}
+	};
+	
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_tooltip",
@@ -525,6 +538,10 @@ function TRP3_API.register.inits.tooltipInit()
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationTooltip_Charact_Anchor",
 				title = loc("CO_TOOLTIP_ANCHOR"),
+				listContent = ANCHOR_TAB,
+				configKey = CONFIG_CHARACT_ANCHOR,
+				listWidth = nil,
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

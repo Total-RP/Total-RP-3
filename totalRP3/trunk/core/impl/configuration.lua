@@ -248,6 +248,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+
 	-- Page and menu
 	registerMenu({
 		id = "main_90_config",

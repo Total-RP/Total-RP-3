@@ -352,6 +352,14 @@ local LOCALE_EN = {
 		CO_MINIMAP_BUTTON_RESET_TT = "In case you lost the button, this action will center the button relatively from the parent frame.",
 		CO_MINIMAP_BUTTON_LOCK = "Lock button",
 		CO_MINIMAP_BUTTON_LOCK_TT = "Prevents the button from being dragged.",
+		CO_ANCHOR_TOP = "Top",
+		CO_ANCHOR_TOP_LEFT = "Top left",
+		CO_ANCHOR_TOP_RIGHT = "Top right",
+		CO_ANCHOR_BOTTOM = "Bottom",
+		CO_ANCHOR_BOTTOM_LEFT = "Bottom left",
+		CO_ANCHOR_BOTTOM_RIGHT = "Bottom right",
+		CO_ANCHOR_LEFT = "Left",
+		CO_ANCHOR_RIGHT = "Right",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
