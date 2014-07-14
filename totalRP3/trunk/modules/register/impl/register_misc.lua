@@ -474,7 +474,7 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
 	TRP3_RegisterMiscEdit_Glance_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
 	TRP3_RegisterMiscEdit_Glance_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
-	TRP3_RegisterMiscEdit_Glance_PresetSaveButton:SetText(loc("CM_SAVE"));
+	TRP3_RegisterMiscEdit_Glance_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
 	TRP3_RegisterMiscEdit_Glance_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
 	TRP3_RegisterMiscEdit_Glance_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
 	

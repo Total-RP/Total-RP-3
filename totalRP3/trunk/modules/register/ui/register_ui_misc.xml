@@ -205,9 +205,10 @@
 							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
 						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetSave" text="[SAVE_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
-							<Size x="150" y="10"/>
+							<Size x="0" y="10"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetText" x="0" y="-17"/>
+								<Anchor point="RIGHT"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
