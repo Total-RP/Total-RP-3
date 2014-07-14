@@ -388,6 +388,7 @@ TRP3_API.dashboard.init = function()
 	local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
 	local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
 	local get = TRP3_API.profile.getData;
+	local defaultIcon = TRP3_API.globals.player_icon;
 	
 	local Button_RPStatus = {
 		id = "aa_trp3_rpstatus",
@@ -396,7 +397,7 @@ TRP3_API.dashboard.init = function()
 		onEnter = function(Uibutton, buttonStructure) end,
 		onUpdate = function(Uibutton, buttonStructure)
 			if playerCharacter.RP == 1 then
-				local iconURL = get("player/characteristics/IC");
+				local iconURL = get("player/characteristics/IC") or defaultIcon;
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
 			else
