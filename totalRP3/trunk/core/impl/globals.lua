@@ -46,6 +46,7 @@ TRP3_API.globals.build = function()
 	assert(realm, "Cannot have realm name information !");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
+	TRP3_API.globals.player_icon = TRP3_API.ui.misc.getUnitTexture(race, UnitSex("player"));
 
 	-- Build BNet account Hash
 	local bn = select(2, BNGetInfo());

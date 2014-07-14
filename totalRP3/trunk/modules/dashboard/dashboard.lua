@@ -307,7 +307,7 @@ TRP3_API.dashboard.init = function()
 	
 	-- Show / hide helmet
 	local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
-	local helmTextOff = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
+	local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
 	local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
 	local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
 	Button_Helmet = {
@@ -384,10 +384,10 @@ TRP3_API.dashboard.init = function()
 	
 	-- Toolbar RP status
 	local playerCharacter = TRP3_API.profile.getPlayerCharacter();
-	local rpTextOn = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_ON");
-	local rpTextOff = icon("inv_leather_a_03defias", 25) .. " ".. loc("TB_RPSTATUS_OFF");
+	local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 	local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
 	local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
+	local get = TRP3_API.profile.getData;
 	
 	local Button_RPStatus = {
 		id = "aa_trp3_rpstatus",
@@ -396,10 +396,11 @@ TRP3_API.dashboard.init = function()
 		onEnter = function(Uibutton, buttonStructure) end,
 		onUpdate = function(Uibutton, buttonStructure)
 			if playerCharacter.RP == 1 then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOn, rpText3);
+				local iconURL = get("player/characteristics/IC");
+				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
+				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
 			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\inv_leather_a_03defias");
+				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
 			end
 			if GetMouseFocus() == Uibutton then
