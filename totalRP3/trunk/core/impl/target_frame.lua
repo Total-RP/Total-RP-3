@@ -315,6 +315,7 @@ TRP3_API.target.init = function()
 			onTargetChanged();
 		end
 	end);
+	Events.listenToEvent(Events.REGISTER_RPSTATUS_CHANGED, onTargetChanged);
 	
 	for i=1,5,1 do
 		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
