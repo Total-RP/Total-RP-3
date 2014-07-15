@@ -276,6 +276,13 @@ local function onActionSelected(value, button)
 				refreshList();
 			end);
 		end
+	elseif value == "purge_all" then
+		local list = getProfileList();
+		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_C"):format(tsize(list)), function()
+			for profileID, _ in pairs(list) do
+				deleteProfile(profileID);
+			end
+		end);
 	-- Mass actions
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
@@ -306,6 +313,7 @@ local function onActions(self)
 		{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
 		{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
 		{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
+		{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
 	}});
 	if tsize(selectedIDs) > 0 then
 		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
