@@ -36,6 +36,7 @@ local selectMenu = TRP3_API.navigation.menu.selectMenu;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
+local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
 local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -389,6 +390,12 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
+
+	setupEditBoxesNavigation({TRP3_RegisterCharact_Edit_TitleField, 
+		TRP3_RegisterCharact_Edit_FirstField,
+		TRP3_RegisterCharact_Edit_LastField,
+		TRP3_RegisterCharact_Edit_FullTitleField
+	});
 	
 	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or "");
 	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or "");
@@ -398,6 +405,18 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
+	
+	setupEditBoxesNavigation({
+		TRP3_RegisterCharact_Edit_RaceField,
+		TRP3_RegisterCharact_Edit_ClassField,
+		TRP3_RegisterCharact_Edit_AgeField,
+		TRP3_RegisterCharact_Edit_ResidenceField,
+		TRP3_RegisterCharact_Edit_EyeField,
+		TRP3_RegisterCharact_Edit_BirthplaceField,
+		TRP3_RegisterCharact_Edit_HeightField,
+		TRP3_RegisterCharact_Edit_WeightField
+	})
+	
 	
 	-- Psycho
 	local previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;

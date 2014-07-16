@@ -17,7 +17,7 @@ local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type = floor, ti
 local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
-
+local shiftDown = IsShiftKeyDown;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -442,6 +442,24 @@ function TRP3_API.ui.frame.setupFieldPanel(fieldset, text, size)
 		if _G[fieldset:GetName().."CaptionPanel"] then
 			_G[fieldset:GetName().."CaptionPanel"]:SetWidth(size or FIELDSET_DEFAULT_CAPTION_WIDTH);
 		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Editboxes
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
+	local maxBound = # tabEditBoxes;
+	local minBound = 0;
+	for index, editbox in pairs(tabEditBoxes) do
+		editbox:SetScript("OnTabPressed", function(self, button)
+			if  shiftDown() and index - 1 ~= minBound then
+				tabEditBoxes[index-1]:SetFocus();
+			elseif not shiftDown() and index ~= maxBound then
+				tabEditBoxes[index+1]:SetFocus();
+			end
+		end)
 	end
 end
 
