@@ -454,9 +454,7 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	local minBound = 1;
 	local oldTabEvent = nil;
 	for index, editbox in pairs(tabEditBoxes) do
-		if editbox:GetScript("OnTabPressed") ~= nil then
-			oldTabEvent = editbox:GetScript("OnTabPressed")
-		end
+		oldTabEvent = editbox:GetScript("OnTabPressed")
 		editbox:SetScript("OnTabPressed", function(self, button)
 			local cursor = index
 			if  shiftDown() then
