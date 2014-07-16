@@ -8,7 +8,7 @@
 
 -- Config
 local Utils = TRP3_API.utils;
-local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
+local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 local math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat = math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local color, loc, tinsert, _G = TRP3_API.utils.str.color, TRP3_API.locale.getText, tinsert, _G;
@@ -21,29 +21,36 @@ end
 
 -- Reposition the minimap button using the config values
 local function minimapButton_Reposition()
-	minimapButton:SetParent(getParentFrame());
+	local parentFrame = getParentFrame();
+	local parentScale = UIParent:GetEffectiveScale();
+	minimapButton:SetParent(parentFrame);
 	minimapButton:ClearAllPoints();
-	minimapButton:SetPoint("TOPLEFT", getConfigValue(CONFIG_MINIMAP_X), getConfigValue(CONFIG_MINIMAP_Y));
+	minimapButton:SetPoint("CENTER", parentFrame, "BOTTOMLEFT", getConfigValue(CONFIG_MINIMAP_X) / parentScale, getConfigValue(CONFIG_MINIMAP_Y) / parentScale);
 end
-
-local OFFSET_CORRECTION_Y = -130;
-local OFFSET_CORRECTION_X = -10;
 
 -- Function called when the minimap icon is dragged
 local function minimapButton_DraggingFrame_OnUpdate(self)
 	if not getConfigValue(CONFIG_MINIMAP_LOCK) and self.isDraging then
+		local parentFrame = getParentFrame();
+		local scaleFactor = UIParent:GetEffectiveScale();
 		local xpos, ypos = GetCursorPosition();
-		local xmin, ymin = getParentFrame():GetLeft(), getParentFrame():GetBottom();
+		local xmin, ymin = parentFrame:GetLeft(), parentFrame:GetBottom();
 
-		xpos = xpos / UIParent:GetScale() - xmin + OFFSET_CORRECTION_X;
-		ypos = ypos / UIParent:GetScale() - ymin + OFFSET_CORRECTION_Y;
+		xpos = xpos - xmin * scaleFactor;
+		ypos = ypos - ymin * scaleFactor;
 
-		-- Setting the minimap coordanate
+		-- Setting the minimap coordinates
 		setConfigValue(CONFIG_MINIMAP_X, xpos);
 		setConfigValue(CONFIG_MINIMAP_Y, ypos);
 
 		minimapButton_Reposition();
 	end
+end
+
+local function resetPosition()
+	setConfigValue(CONFIG_MINIMAP_X, 0);
+	setConfigValue(CONFIG_MINIMAP_Y, 0);
+	minimapButton_Reposition();
 end
 
 -- Initialize the minimap icon button
@@ -53,8 +60,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	registerConfigKey(CONFIG_MINIMAP_FRAME, "Minimap");
 	registerConfigKey(CONFIG_MINIMAP_LOCK, false);
-	registerConfigKey(CONFIG_MINIMAP_X, 10);
-	registerConfigKey(CONFIG_MINIMAP_Y, -120);
+	registerConfigKey(CONFIG_MINIMAP_X, 22);
+	registerConfigKey(CONFIG_MINIMAP_Y, 5);
+	
+	registerConfigHandler(CONFIG_MINIMAP_FRAME, function()
+		minimapButton_Reposition();
+	end);
 
 	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
@@ -71,6 +82,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		title = loc("CO_MINIMAP_BUTTON_LOCK"),
 		help = loc("CO_MINIMAP_BUTTON_LOCK_TT"),
 		configKey = CONFIG_MINIMAP_LOCK,
+	});
+	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigButton",
+		title = loc("CO_MINIMAP_BUTTON_RESET"),
+		help = loc("CO_MINIMAP_BUTTON_RESET_TT"),
+		text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
+		callback = resetPosition,
 	});
 
 	minimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);

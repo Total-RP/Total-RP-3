@@ -133,6 +133,15 @@ local function buildConfigurationPage(structure)
 		end
 		
 		-- Specific for EditBox
+		if _G[widget:GetName().."Button"] then
+			local button = _G[widget:GetName().."Button"];
+			if element.callback then
+				button:SetScript("OnClick", element.callback);
+			end
+			button:SetText(element.text or "");
+		end
+		
+		-- Specific for EditBox
 		if _G[widget:GetName().."Box"] then
 			local box = _G[widget:GetName().."Box"];
 			if element.configKey then
