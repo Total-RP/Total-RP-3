@@ -451,14 +451,31 @@ end
 
 function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	local maxBound = # tabEditBoxes;
-	local minBound = 0;
+	local minBound = 1;
+	local oldTabEvent = nil;
 	for index, editbox in pairs(tabEditBoxes) do
+		if editbox:GetScript("OnTabPressed") ~= nil then
+			oldTabEvent = editbox:GetScript("OnTabPressed")
+		end
 		editbox:SetScript("OnTabPressed", function(self, button)
-			if  shiftDown() and index - 1 ~= minBound then
-				tabEditBoxes[index-1]:SetFocus();
-			elseif not shiftDown() and index ~= maxBound then
-				tabEditBoxes[index+1]:SetFocus();
-			end
+			local cursor = index
+			if  shiftDown() then
+				if cursor == minBound then
+					cursor = maxBound
+				else
+					cursor = cursor -1
+				end
+			elseif not shiftDown() then
+				if cursor == maxBound then
+					cursor = minBound
+				else
+					cursor = cursor + 1
+				end
+			end			
+			tabEditBoxes[cursor]:SetFocus();		
+			if oldTabEvent ~= nil then
+				oldTabEvent()
+			end			
 		end)
 	end
 end
