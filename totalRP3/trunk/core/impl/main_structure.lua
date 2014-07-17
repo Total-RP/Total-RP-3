@@ -43,10 +43,10 @@ local function onMenuClosed(menu)
 	unregisterMenu(menu:GetParent().id);
 end
 
-local function closeAll(parentMenu)
-	assert(parentMenu, "No parent menu in close all button.");
+local function closeAll(parentMenuID)
+	assert(parentMenuID, "No parent menu ID in close all button.");
 	for id, menuStructure in pairs(menuStructures) do
-		if menuStructure.isChildOf then
+		if menuStructure.isChildOf == parentMenuID then
 			unregisterMenu(id);
 		end
 	end
