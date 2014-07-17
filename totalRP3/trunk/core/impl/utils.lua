@@ -301,6 +301,15 @@ local function numberToHexa(number)
 end
 Utils.color.numberToHexa = numberToHexa;
 
+--- Value must be 256 based
+local function hexaToNumber(hexa)
+	local redH = tonumber(hexa:sub(1,2), 16)
+	local greenH = tonumber(hexa:sub(3,4), 16)
+	local blueH = tonumber(hexa:sub(5,6), 16)
+	return redH, greenH, blueH;
+end
+Utils.color.hexaToNumber = hexaToNumber;
+
 --- Values must be 256 based
 local function colorCode(red, green, blue)
 	local redH = numberToHexa(red);

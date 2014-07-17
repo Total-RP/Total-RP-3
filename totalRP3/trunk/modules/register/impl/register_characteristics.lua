@@ -10,6 +10,7 @@ local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
+local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
@@ -37,6 +38,7 @@ local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
+local escapeColorTag = Utils.str.escapeColorTag;
 local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
@@ -147,8 +149,6 @@ local function setConsultDisplay(context)
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
-	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
-	
 	setBkg(dataTab.bkg or 1);
 	
 	-- hide all
@@ -190,7 +190,12 @@ local function setConsultDisplay(context)
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
 		_G[frame:GetName().."FieldName"]:SetText(loc(registerCharLocals[charName]));
-		_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
+		if charName == "EC" then
+			local hexa = dataTab.EH or "ffffff"
+			_G[frame:GetName().."FieldValue"]:SetText("|cff"..hexa..shownValues[charName].."|r");
+		else
+			_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
+		end
 		frame:Show();
 		previous = frame;
 	end
@@ -312,6 +317,19 @@ local function onPlayerIconSelected(icon)
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 end
 
+local function onEyeColorSelected(color)
+	draftData.EH = color;
+end
+
+local function onColorTagSelected(red, green, blue)
+	TRP3_RegisterCharact_Edit_EyeButton.red = red;
+	TRP3_RegisterCharact_Edit_EyeButton.green = green;
+	TRP3_RegisterCharact_Edit_EyeButton.blue = blue;
+	local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+	TRP3_RegisterCharact_Edit_EyeButtonSwatchBg:SetTexture(red/255, green/255, blue/255)
+	onEyeColorSelected(hexa)
+end
+
 local function onPsychoClick(frame, value, modif)
 	if value + modif < 6 and value + modif > 0 then
 		refreshPsycho(frame, value + modif);
@@ -401,6 +419,19 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or "");
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
+	
+	local redH, greenH, blueH = hexaToNumber(draftData.EH or "ffffff");
+	TRP3_RegisterCharact_Edit_EyeButtonSwatchBg:SetTexture(redH/255, greenH/255, blueH/255)
+	TRP3_RegisterCharact_Edit_EyeButton.red = redH;
+	TRP3_RegisterCharact_Edit_EyeButton.green = greenH;
+	TRP3_RegisterCharact_Edit_EyeButton.blue = blueH;
+	TRP3_RegisterCharact_Edit_EyeButton:SetScript("OnClick", function(self)
+		TRP3_API.popup.showColorBrowser(onColorTagSelected)
+		TRP3_ColorBrowserRed:SetValue(self.red);
+		TRP3_ColorBrowserGreen:SetValue(self.green);
+		TRP3_ColorBrowserBlue:SetValue(self.blue);
+	end);
+	
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");

@@ -435,11 +435,35 @@
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_EyeField" inherits="TRP3_TitledHelpEditBox">
-										<Size x="200" y="18"/>
+										<Size x="175" y="18"/>
 										<Anchors>	
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
 										</Anchors>
 									</EditBox>
+									<Button name="TRP3_RegisterCharact_Edit_EyeButton">
+										<Size x="16" y="16"/>
+									    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+										<Layers>
+											<Layer level="BACKGROUND">
+												<Texture name="$parentSwatchBg">
+						                            <Color r="1.0" g="1.0" b="1.0"/>
+						                        </Texture>
+											</Layer>
+											<Layer level="OVERLAY">
+												<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-IconFrame">
+													<Size>
+														<AbsDimension x="45" y="45"/>
+													</Size>
+													<Anchors>
+														<Anchor x="-5" y="5" point="TOPLEFT"/>
+													</Anchors>
+												</Texture>
+											</Layer>
+										</Layers>
+                						<Anchors>	
+											<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
+										</Anchors>
+									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_HeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
 										<Anchors>	
