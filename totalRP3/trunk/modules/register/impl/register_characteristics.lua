@@ -38,7 +38,6 @@ local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
-local escapeColorTag = Utils.str.escapeColorTag;
 local UNKNOWN = UNKNOWN;
 
 local PSYCHO_PRESETS_UNKOWN;
