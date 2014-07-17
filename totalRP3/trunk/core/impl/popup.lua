@@ -21,9 +21,9 @@ local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList
 
 StaticPopupDialogs["TRP3_INFO"] = {
 	button1 = OKAY,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true
 };
 
 StaticPopupDialogs["TRP3_CONFIRM"] = {
@@ -39,9 +39,9 @@ StaticPopupDialogs["TRP3_CONFIRM"] = {
 			StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel();
 		end
 	end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1,
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true,
 	showAlert = true,
 };
 
@@ -56,18 +56,21 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept(_G[self:GetName().."EditBox"]:GetText());
 		end
 	end,
-	OnHide = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(0);
-	end,
 	OnCancel = function(arg1,arg2)
 		if StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel then
 			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel();
 		end
 	end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1,
-	hasEditBox = 1,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:GetScript("OnClick")(self:GetParent().button1);
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:GetScript("OnClick")(self:GetParent().button2);
+	end,
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
 };
 
 StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
@@ -89,10 +92,16 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 			StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel();
 		end
 	end,
-	timeout = 0,
-	whileDead = 1,
-	hideOnEscape = 1,
-	hasEditBox = 1,
+	EditBoxOnEnterPressed = function(self)
+		self:GetParent().button1:GetScript("OnClick")(self:GetParent().button1);
+	end,
+	EditBoxOnEscapePressed = function(self)
+		self:GetParent().button2:GetScript("OnClick")(self:GetParent().button2);
+	end,
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true,
+	hasEditBox = true,
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -143,7 +152,7 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
     if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
-		_G[dialog:GetName().."EditBox"]:SetNumber(default or 0);
+		_G[dialog:GetName().."EditBox"]:SetNumber(default or false);
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
 end
