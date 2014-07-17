@@ -50,8 +50,8 @@ end
 
 function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
-	for index, _ in pairs(tiledBackgrounds) do
-		tinsert(tab, {loc("UI_BKG"):format(tostring(index)), index});
+	for index, texture in pairs(tiledBackgrounds) do
+		tinsert(tab, {loc("UI_BKG"):format(tostring(index)), index, "|T" .. texture .. ":200:200|t"});
 	end
 	return tab;
 end
@@ -106,6 +106,11 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				info.notCheckable = "true";
 				info.text = text;
 				info.isTitle = false;
+				if tab[3] then
+					info.tooltipTitle = tab[1];
+					info.tooltipText = tab[3];
+					info.tooltipOnButton = true;
+				end
 				if type(value) == "table" then
 					info.hasArrow = true;
 					info.keepShownOnClick = true;
