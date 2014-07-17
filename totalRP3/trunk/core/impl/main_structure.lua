@@ -43,9 +43,25 @@ local function onMenuClosed(menu)
 	unregisterMenu(menu:GetParent().id);
 end
 
+local function closeAll(parentMenu)
+	assert(parentMenu, "No parent menu in close all button.");
+	for id, menuStructure in pairs(menuStructures) do
+		if menuStructure.isChildOf then
+			unregisterMenu(id);
+		end
+	end
+end
+
+local function isCloseable(menuID)
+	return menuStructures[menuID] and menuStructures[menuID].closeable;
+end
+
+local closeAllButton = CreateFrame("Button", "TRP3_MainFrameMenuButtonCloseAll", TRP3_MainFrameMenuContainer, "TRP3_CommonButton");
+
 -- The menu is built by SORTED menu item key.
 local function rebuildMenu()
 	-- Hide all
+	closeAllButton:Hide();
 	for _, widget in pairs(uiMenuWidgets) do
 		widget:Hide();
 	end
@@ -62,6 +78,7 @@ local function rebuildMenu()
 
 	local index = 0;
 	local y = marginTop;
+	local latestID;
 	for i, id in pairs(ids) do
 		local menuStructure = menuStructures[id];
 		-- if Top button || Selected parent || Selected sibling
@@ -90,7 +107,7 @@ local function rebuildMenu()
 				uiButton:SetPoint("RIGHT", -15, y);
 				label:SetTextColor(1, 1, 1);
 				label:SetJustifyH(menuStructure.align or "RIGHT");
-				if menuStructure.closeable  then
+				if isCloseable(id) or isCloseable(menuStructure.isChildOf) then
 					close:Show();
 				end
 			else
@@ -101,10 +118,20 @@ local function rebuildMenu()
 			end
 			label:SetText(menuStructure.text);
 			
+			latestID = id;
 			uiButton:Show();
 			uiButton.id = id;
 			index = index + 1;
 			y = y - buttonHeight;
+			
+			if menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then
+				-- Place close all button
+				closeAllButton:SetPoint("LEFT", 32, y);
+				closeAllButton:SetPoint("RIGHT", -20, y);
+				closeAllButton.parentMenu = menuStructure.isChildOf;
+				closeAllButton:Show();
+				y = y - buttonHeight;
+			end
 		end
 	end
 end
@@ -380,6 +407,10 @@ TRP3_API.navigation.init = function()
 		end
 	end);
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "TOP", 0, 0, loc("UI_TUTO_BUTTON"), loc("UI_TUTO_BUTTON_TT"));
+	closeAllButton:SetText(loc("UI_CLOSE_ALL"));
+	closeAllButton:SetScript("OnClick", function(self)
+		closeAll(self.parentMenu);
+	end);
 	
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
 end

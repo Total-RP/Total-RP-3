@@ -64,7 +64,6 @@ local function openPage(profileID)
 			text = tabText,
 			onSelected = function() setPage("player_main", {profile = profile, profileID = profileID}) end,
 			isChildOf = REGISTER_PAGE,
-			closeable = true,
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
@@ -506,6 +505,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	registerMenu({
 		id = REGISTER_PAGE,
+		closeable = true,
 		text = loc("REG_REGISTER"),
 		onSelected = function() setPage(REGISTER_LIST_PAGEID); end,
 	});

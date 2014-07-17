@@ -470,6 +470,7 @@ local LOCALE_EN = {
 		UI_LINK_WARNING = "Here's the link URL.\nYou can copy/paste it in your web browser.\n\n|cffff0000!! Disclaimer !!|r\nTotal RP is not responsible for links leading to harmful content.",
 		UI_TUTO_BUTTON = "Tutorial mode",
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
+		UI_CLOSE_ALL = "Close all",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS
