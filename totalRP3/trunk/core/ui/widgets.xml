@@ -431,10 +431,7 @@
 				end
 			</OnLoad>
 			<OnClick>
-				TRP3_ColorBrowserRed:SetValue(self.red);
-				TRP3_ColorBrowserGreen:SetValue(self.green);
-				TRP3_ColorBrowserBlue:SetValue(self.blue);
-				TRP3_API.popup.showColorBrowser(self.setColor);
+				TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
 			</OnClick>
 		</Scripts>
 	</Button>

@@ -392,7 +392,10 @@ local function initColorBrowser()
 	end);
 end
 
-function TRP3_API.popup.showColorBrowser(callback)
+function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
+	TRP3_ColorBrowserRed:SetValue(red or 255);
+	TRP3_ColorBrowserGreen:SetValue(green or 255);
+	TRP3_ColorBrowserBlue:SetValue(blue or 255);
 	TRP3_ColorBrowser.callback = callback;
 	showPopup(TRP3_ColorBrowser);
 end

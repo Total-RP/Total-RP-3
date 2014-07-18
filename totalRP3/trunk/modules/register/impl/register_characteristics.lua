@@ -426,8 +426,7 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_EyeButton.blue = blueH;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 	
-	redH, greenH, blueH = hexaToNumber(draftData.CH or "ffffff");
-	TRP3_RegisterCharact_Edit_ClassButton.setColor(redH, greenH, blueH);
+	TRP3_RegisterCharact_Edit_ClassButton.setColor(hexaToNumber(draftData.CH or "ffffff"));
 
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
