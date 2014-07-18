@@ -7,7 +7,7 @@
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local getUnitID = Utils.str.unitInfoToID;
-local colorCodeFloat = Utils.color.colorCodeFloat;
+local colorCode = Utils.color.colorCode;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -297,7 +297,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if info.characteristics and info.characteristics.CL then
 			class = info.characteristics.CL;
 		end
-		lineLeft = strconcat("|cffffffff", race, " ", colorCodeFloat(classColor.r, classColor.g, classColor.b), class);
+		local colorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
+		if info.characteristics and info.characteristics.CH then
+			colorCode = "|cff" .. info.characteristics.CH;
+		end
+		lineLeft = strconcat("|cffffffff", race, " ", colorCode, class);
 		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
 		ui_CharacterTT:AddDoubleLine(lineLeft, lineRight);

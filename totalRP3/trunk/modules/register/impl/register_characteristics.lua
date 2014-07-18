@@ -70,7 +70,7 @@ local function compressData()
 	local compressed = Utils.serial.encodeCompressMessage(serial);
 	if compressed:len() < serial:len() then
 		currentCompressed = compressed;
---		Utils.log.log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+	--		Utils.log.log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
 	else
 		currentCompressed = nil;
 	end
@@ -104,14 +104,14 @@ local psychoCharFrame = {};
 
 local function getCompleteName(characteristicsTab, name, hideTitle)
 	local text = "";
-    if not hideTitle and characteristicsTab.TI then
-        text = strconcat(characteristicsTab.TI, " ");
-    end
-    text = strconcat(text, characteristicsTab.FN or name);
-    if characteristicsTab.LN then
-        text = strconcat(text, " ", characteristicsTab.LN);
-    end
-    return text;
+	if not hideTitle and characteristicsTab.TI then
+		text = strconcat(characteristicsTab.TI, " ");
+	end
+	text = strconcat(text, characteristicsTab.FN or name);
+	if characteristicsTab.LN then
+		text = strconcat(text, " ", characteristicsTab.LN);
+	end
+	return text;
 end
 TRP3_API.register.getCompleteName = getCompleteName;
 
@@ -149,14 +149,14 @@ local function setConsultDisplay(context)
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	setBkg(dataTab.bkg or 1);
-	
+
 	-- hide all
 	for _, regCharFrame in pairs(registerCharFrame) do
 		regCharFrame:Hide();
 	end
 	TRP3_RegisterCharact_CharactPanel_PsychoTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_MiscTitle:Hide();
-	
+
 	-- Previous var helps for layout building
 	local previous = TRP3_RegisterCharact_CharactPanel_RegisterTitle;
 	TRP3_RegisterCharact_CharactPanel_RegisterTitle:Hide();
@@ -177,7 +177,7 @@ local function setConsultDisplay(context)
 	else
 		margin = 50;
 	end
-	
+
 	-- Show directory chars values
 	for frameIndex, charName in pairs(shownCharacteristics) do
 		local frame = registerCharFrame[frameIndex];
@@ -192,13 +192,16 @@ local function setConsultDisplay(context)
 		if charName == "EC" then
 			local hexa = dataTab.EH or "ffffff"
 			_G[frame:GetName().."FieldValue"]:SetText("|cff"..hexa..shownValues[charName].."|r");
+		elseif charName == "CL" then
+			local hexa = dataTab.CH or "ffffff";
+			_G[frame:GetName().."FieldValue"]:SetText("|cff"..hexa..shownValues[charName].."|r");
 		else
 			_G[frame:GetName().."FieldValue"]:SetText(shownValues[charName]);
 		end
 		frame:Show();
 		previous = frame;
 	end
-	
+
 	-- Psycho chars
 	if type(dataTab.PS) == "table" and #dataTab.PS > 0 then
 		hasPsycho = true;
@@ -207,7 +210,7 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
 		margin = 0;
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
-		
+
 		for frameIndex, psychoStructure in pairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
 			local value = psychoStructure.VA;
@@ -220,7 +223,7 @@ local function setConsultDisplay(context)
 			if psychoStructure.ID then
 				psychoStructure = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			end
-			
+
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
@@ -233,7 +236,7 @@ local function setConsultDisplay(context)
 			previous = frame;
 		end
 	end
-	
+
 	-- Misc chars
 	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
 		hasMisc = true;
@@ -241,7 +244,7 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
-		
+
 		for frameIndex, miscStructure in pairs(dataTab.MI) do
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
@@ -257,7 +260,7 @@ local function setConsultDisplay(context)
 			previous = frame;
 		end
 	end
-	
+
 	if not hasCharac and not hasPsycho and not hasMisc then
 		TRP3_RegisterCharact_CharactPanel_Empty:Show();
 	end
@@ -316,17 +319,14 @@ local function onPlayerIconSelected(icon)
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 end
 
-local function onEyeColorSelected(color)
-	draftData.EH = color;
+local function onEyeColorSelected(red, green, blue)
+	local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+	draftData.EH = hexa;
 end
 
-local function onColorTagSelected(red, green, blue)
-	TRP3_RegisterCharact_Edit_EyeButton.red = red;
-	TRP3_RegisterCharact_Edit_EyeButton.green = green;
-	TRP3_RegisterCharact_Edit_EyeButton.blue = blue;
+local function onClassColorSelected(red, green, blue)
 	local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
-	TRP3_RegisterCharact_Edit_EyeButtonSwatchBg:SetTexture(red/255, green/255, blue/255)
-	onEyeColorSelected(hexa)
+	draftData.CH = hexa;
 end
 
 local function onPsychoClick(frame, value, modif)
@@ -401,41 +401,39 @@ function setEditDisplay()
 		draftData = {};
 		tcopy(draftData, dataTab);
 	end
-	
+
 	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
 	TRP3_RegisterCharact_Edit_FullTitleField:SetText(draftData.FT or "");
 
-	setupEditBoxesNavigation({TRP3_RegisterCharact_Edit_TitleField, 
+	setupEditBoxesNavigation({TRP3_RegisterCharact_Edit_TitleField,
 		TRP3_RegisterCharact_Edit_FirstField,
 		TRP3_RegisterCharact_Edit_LastField,
 		TRP3_RegisterCharact_Edit_FullTitleField
 	});
-	
+
 	TRP3_RegisterCharact_Edit_RaceField:SetText(draftData.RA or "");
 	TRP3_RegisterCharact_Edit_ClassField:SetText(draftData.CL or "");
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
-	
+
 	local redH, greenH, blueH = hexaToNumber(draftData.EH or "ffffff");
 	TRP3_RegisterCharact_Edit_EyeButtonSwatchBg:SetTexture(redH/255, greenH/255, blueH/255)
 	TRP3_RegisterCharact_Edit_EyeButton.red = redH;
 	TRP3_RegisterCharact_Edit_EyeButton.green = greenH;
 	TRP3_RegisterCharact_Edit_EyeButton.blue = blueH;
-	TRP3_RegisterCharact_Edit_EyeButton:SetScript("OnClick", function(self)
-		TRP3_API.popup.showColorBrowser(onColorTagSelected)
-		TRP3_ColorBrowserRed:SetValue(self.red);
-		TRP3_ColorBrowserGreen:SetValue(self.green);
-		TRP3_ColorBrowserBlue:SetValue(self.blue);
-	end);
+	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 	
+	redH, greenH, blueH = hexaToNumber(draftData.CH or "ffffff");
+	TRP3_RegisterCharact_Edit_ClassButton.setColor(redH, greenH, blueH);
+
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
-	
+
 	setupEditBoxesNavigation({
 		TRP3_RegisterCharact_Edit_RaceField,
 		TRP3_RegisterCharact_Edit_ClassField,
@@ -446,8 +444,8 @@ function setEditDisplay()
 		TRP3_RegisterCharact_Edit_HeightField,
 		TRP3_RegisterCharact_Edit_WeightField
 	})
-	
-	
+
+
 	-- Psycho
 	local previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
@@ -466,19 +464,19 @@ function setEditDisplay()
 			setTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
 			tinsert(psychoEditCharFrame, frame);
 		end
-		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self) 
+		_G[frame:GetName().."LeftIcon"]:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
-		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self) 
+		_G[frame:GetName().."RightIcon"]:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
-		
+
 		if psychoStructure.ID then
 			_G[frame:GetName().."JaugeLeftIcon"]:Show();
 			_G[frame:GetName().."JaugeRightIcon"]:Show();
@@ -492,7 +490,7 @@ function setEditDisplay()
 			_G[frame:GetName().."JaugeLeftIcon"]:SetPoint("RIGHT", _G[frame:GetName().."Jauge"], "LEFT", -22, 2);
 			_G[frame:GetName().."JaugeRightIcon"]:ClearAllPoints();
 			_G[frame:GetName().."JaugeRightIcon"]:SetPoint("LEFT", _G[frame:GetName().."Jauge"], "RIGHT", 22, 2);
-			
+
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			_G[frame:GetName().."LeftText"]:SetText(preset.LT or "");
 			_G[frame:GetName().."RightText"]:SetText(preset.RT or "");
@@ -507,7 +505,7 @@ function setEditDisplay()
 			_G[frame:GetName().."RightField"]:Show();
 			_G[frame:GetName().."LeftIcon"]:Show();
 			_G[frame:GetName().."RightIcon"]:Show();
-			
+
 			_G[frame:GetName().."LeftField"]:SetText(psychoStructure.LT or "");
 			_G[frame:GetName().."RightField"]:SetText(psychoStructure.RT or "");
 			_G[frame:GetName().."LeftIcon"].IC = psychoStructure.LI or Globals.icons.default;
@@ -515,7 +513,7 @@ function setEditDisplay()
 			refreshEditIcon(_G[frame:GetName().."LeftIcon"]);
 			refreshEditIcon(_G[frame:GetName().."RightIcon"]);
 		end
-		
+
 		frame.psychoIndex = frameIndex;
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
@@ -527,7 +525,7 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_PsychoAdd:ClearAllPoints();
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 	previous = TRP3_RegisterCharact_Edit_PsychoAdd;
-	
+
 	-- Misc
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:ClearAllPoints();
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
@@ -542,13 +540,13 @@ function setEditDisplay()
 			_G[frame:GetName().."Delete"]:SetScript("OnClick", onMiscDelete);
 			tinsert(miscEditCharFrame, frame);
 		end
-		_G[frame:GetName().."Icon"]:SetScript("OnClick", function() 
+		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
 			showIconBrowser(function(icon)
 				miscStructure.IC = icon;
 				setupIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
 			end);
 		end);
-		
+
 		frame.miscIndex = frameIndex;
 		_G[frame:GetName().."Icon"].IC = miscStructure.IC or Globals.icons.default;
 		_G[frame:GetName().."NameField"]:SetText(miscStructure.NA or loc("CM_NAME"));
@@ -576,7 +574,7 @@ end
 
 local function saveCharacteristics()
 	saveInDraft();
-	
+
 	local dataTab = get("player/characteristics");
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	wipe(dataTab);
@@ -585,7 +583,7 @@ local function saveCharacteristics()
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-	
+
 	compressData();
 	Events.fireEvent(Events.REGISTER_CHARACTERISTICS_SAVED);
 end
@@ -609,7 +607,7 @@ local function refreshDisplay()
 	for _, frame in pairs(registerCharFrame) do frame:Hide(); end
 	for _, frame in pairs(psychoCharFrame) do frame:Hide(); end
 	for _, frame in pairs(miscCharFrame) do frame:Hide(); end
-	
+
 	-- IsSelf ?
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
 	if context.isPlayer then
@@ -619,7 +617,7 @@ local function refreshDisplay()
 		TRP3_RegisterCharact_ActionButton:Show();
 		setupRelationButton(context.profileID, context.profile);
 	end
-	
+
 	if context.isEditMode then
 		assert(context.isPlayer, "Trying to show Characteristics edition but is not mine ...");
 		TRP3_RegisterCharact_Edit_NamePanel:Show();
@@ -639,13 +637,13 @@ local function onActionSelected(value, button)
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
 	assert(context.profileID, "No profileID in context");
-	
+
 	if value == 1 then
 		local profil = getProfile(context.profileID);
 		showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
-		function()
-			deleteProfile(context.profileID);
-		end);
+			function()
+				deleteProfile(context.profileID);
+			end);
 	elseif value == 2 then
 		showTextInputPopup(loc("REG_PLAYER_IGNORE_WARNING"):format(strjoin("\n", unpack(getKeys(context.profile.link)))), function(text)
 			for unitID, _ in pairs(context.profile.link) do
@@ -664,14 +662,14 @@ local function onActionClicked(button)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
-	
+
 	local values = {};
 	tinsert(values,{"Delete profile", 1});
 	if context.profile.link and tsize(context.profile.link) > 0 then
 		tinsert(values,{loc("REG_PLAYER_IGNORE"):format(tsize(context.profile.link)), 2});
 	end
 	tinsert(values, {
-		loc("REG_RELATION"), 
+		loc("REG_RELATION"),
 		{
 			{loc("REG_RELATION_NONE"), RELATIONS.NONE},
 			{loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY},
@@ -719,7 +717,7 @@ local function initStructures()
 		LI = "INV_Misc_QuestionMark",
 		RI = "INV_Misc_QuestionMark"
 	};
-	
+
 	PSYCHO_PRESETS = {
 		{
 			LT = loc("REG_PLAYER_PSYCHO_CHAOTIC"),
@@ -788,7 +786,7 @@ local function initStructures()
 			RI = "Ability_Druid_Cower",
 		},
 	};
-	
+
 	PSYCHO_PRESETS_DROPDOWN = {
 		{loc("REG_PLAYER_PSYCHO_SOCIAL")},
 		{loc("REG_PLAYER_PSYCHO_CHAOTIC") .. " - " .. loc("REG_PLAYER_PSYCHO_Loyal"), 1},
@@ -810,7 +808,7 @@ end
 
 function TRP3_API.register.inits.characteristicsInit()
 	initStructures();
-	
+
 	-- UI
 	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
 	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end );
@@ -824,9 +822,10 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
-	
+	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
+
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
-	
+
 	-- Localz
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_NamePanel_Icon, "RIGHT", 0, 5, loc("REG_PLAYER_ICON"), loc("REG_PLAYER_ICON_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_TitleFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_TITLE"), loc("REG_PLAYER_TITLE_TT"));
@@ -848,7 +847,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_CharactPanel, loc("REG_PLAYER_CHARACTERISTICS"), 150);
-	
+
 	TRP3_RegisterCharact_CharactPanel_Empty:SetText(loc("REG_PLAYER_NO_CHAR"));
 	TRP3_RegisterCharact_Edit_MiscAdd:SetText(loc("REG_PLAYER_MISC_ADD"));
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetText(loc("REG_PLAYER_PSYCHO_ADD"));
@@ -873,7 +872,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_WeightFieldText:SetText(loc("REG_PLAYER_WEIGHT"));
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc("REG_PLAYER_RESIDENCE"));
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc("REG_PLAYER_BIRTHPLACE"));
-	
+
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 end
