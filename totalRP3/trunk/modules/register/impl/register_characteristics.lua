@@ -148,6 +148,8 @@ local function setConsultDisplay(context)
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
+	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
+	
 	setBkg(dataTab.bkg or 1);
 
 	-- hide all
@@ -419,13 +421,7 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 
-	local redH, greenH, blueH = hexaToNumber(draftData.EH or "ffffff");
-	TRP3_RegisterCharact_Edit_EyeButtonSwatchBg:SetTexture(redH/255, greenH/255, blueH/255)
-	TRP3_RegisterCharact_Edit_EyeButton.red = redH;
-	TRP3_RegisterCharact_Edit_EyeButton.green = greenH;
-	TRP3_RegisterCharact_Edit_EyeButton.blue = blueH;
-	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
-	
+	TRP3_RegisterCharact_Edit_EyeButton.setColor(hexaToNumber(draftData.EH or "ffffff"))
 	TRP3_RegisterCharact_Edit_ClassButton.setColor(hexaToNumber(draftData.CH or "ffffff"));
 
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
@@ -821,7 +817,8 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
-	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
+  TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
+	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
 
@@ -841,6 +838,8 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR"), loc("REG_PLAYER_COLOR_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR"), loc("REG_PLAYER_COLOR_TT"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

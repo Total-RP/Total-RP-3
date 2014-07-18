@@ -400,7 +400,16 @@
 	<!-- Color picker button -->
 	<Button name="TRP3_ColorPickerButton" virtual="true">
 		<Size x="16" y="16"/>
-	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+	    <HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight" file="Interface\SpellActivationOverlay\IconAlert">
+	    	<Size>
+				<AbsDimension x="71" y="68"/>
+			</Size>
+			<Anchors>
+				<Anchor x="-11" y="11" point="TOPLEFT"/>
+			</Anchors>
+			<TexCoords left="0" right="1" top="0.53" bottom="1" />
+			<Color r="1.0" g="1.0" b="1.0"/>
+	    </HighlightTexture>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentSwatchBg">
@@ -425,6 +434,7 @@
 					self.green = green;
 					self.blue = blue;
 					_G[self:GetName() .. "SwatchBg"]:SetTexture(red / 255, green / 255, blue / 255);
+					_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
 					if self.onSelection then
 						self.onSelection(red, green, blue);
 					end
@@ -433,6 +443,12 @@
 			<OnClick>
 				TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
 			</OnClick>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
 		</Scripts>
 	</Button>
 </Ui>
