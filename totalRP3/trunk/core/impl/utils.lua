@@ -23,13 +23,13 @@ local Log = Utils.log;
 local loc = TRP3_API.locale.getText;
 
 -- WOW imports
-local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe;
+local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
 local tinsert, assert, _G, tremove = tinsert, assert, _G, tremove;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = true;
+local showLog = false;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -301,11 +301,11 @@ local function numberToHexa(number)
 end
 Utils.color.numberToHexa = numberToHexa;
 
---- Value must be 256 based
+--- Value must be a string with hexa decimal representation
 local function hexaToNumber(hexa)
-	local redH = tonumber(hexa:sub(1,2), 16)
-	local greenH = tonumber(hexa:sub(3,4), 16)
-	local blueH = tonumber(hexa:sub(5,6), 16)
+	local redH = tonumber(hexa:sub(1, 2), 16)
+	local greenH = tonumber(hexa:sub(3, 4), 16)
+	local blueH = tonumber(hexa:sub(5, 6), 16)
 	return redH, greenH, blueH;
 end
 Utils.color.hexaToNumber = hexaToNumber;
