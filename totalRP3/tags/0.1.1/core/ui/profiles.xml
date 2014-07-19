@@ -1,0 +1,156 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	
+	<!-- Profile manager : Line -->
+	<Frame name="TRP3_ProfileManagerLine" virtual="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="425" y="65"/>
+		<Frames>
+			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
+				<Size x="40" y="40"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="15" y="0"/>
+				</Anchors>
+			</Frame>
+			<Button name="$parentSelect" inherits="UIPanelButtonTemplate" text="Select">
+				<Size>
+	                <AbsDimension x="80" y="25"/>
+	            </Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentAction" inherits="TRP3_ActionButton">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentInfo" inherits="TRP3_HelpButton">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="20" y="3"/>
+					</Anchors>
+					<Color r="0.0" g="0.95" b="0.0"/>
+				</FontString>
+				<FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT" text="[PROFILE_NAME]">
+					<Size x="270" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString name="$parentCount" inherits="GameFontNormalSmall" justifyH="LEFT" text="[PROFILE_COUNT]">
+					<Size x="230" y="10"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<!-- Profile manager -->
+	<Frame name="TRP3_ProfileManager" hidden="true">
+	     <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="530" y="0"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\AchievementFrame\UI-Achievement-StatsBackground">
+					<Size x="526" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_ProfileManagerTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[PROFILES MANAGER]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-25"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_ProfileManagerList">
+				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="450" y="350"/>
+		         <Anchors>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+				</Anchors>
+				<Frames>
+					<Frame name="TRP3_ProfileManagerLine1" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="12" y="-10"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_ProfileManagerLine2" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine1" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_ProfileManagerLine3" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine2" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_ProfileManagerLine4" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine3" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_ProfileManagerLine5" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine4" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Slider name="TRP3_ProfileManagerSlider" inherits="OptionsSliderTemplate">
+						<Size x="15" y="340"/>
+						<Anchors>
+							<Anchor point="RIGHT" x="4" y="2"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_ProfileManagerSliderText:SetText("");
+								TRP3_ProfileManagerSliderHigh:SetText("");
+								TRP3_ProfileManagerSliderLow:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+			</Frame>
+			<Button name="TRP3_ProfileManagerAdd" inherits="UIPanelButtonTemplate">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ProfileManagerList" x="0" y="5"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				TRP3_ProfileManagerTitle:SetTextColor(0.95,0.95,0.95);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+</Ui>

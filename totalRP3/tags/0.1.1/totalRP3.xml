@@ -1,0 +1,19 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ UI.xsd">
+
+	<!-- Please note that the loading order matters a lot -->
+	<Include file="core\core.xml"/>
+	<Include file="resources\resources.xml"/>
+	<Script file="totalRP3.lua"/>
+	<Include file="modules\modules.xml"/>
+
+	<Frame parent="UIParent" name="TRP3_EventFrame">
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Scripts>
+			<OnEvent function="TRP3_EventDispatcher"/>
+		</Scripts>
+	</Frame>
+</Ui>
