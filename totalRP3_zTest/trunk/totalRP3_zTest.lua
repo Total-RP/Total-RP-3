@@ -37,24 +37,28 @@ end
 
 local function onLoaded()
 	Log.log("onLoaded test module");
-	
---	TRP3_API.dashboard.registerNotificationType({
---		id = "ma notif",
---		callback = function(unitID)
---			TRP3_API.navigation.page.setPage("player_main", {unitID = unitID});
---		end,
---		removeOnShown = true
---	});
---	TRP3_API.dashboard.registerNotificationType({
---		id = "ma notif2"
---	});
+
+	--	TRP3_API.dashboard.registerNotificationType({
+	--		id = "ma notif",
+	--		callback = function(unitID)
+	--			TRP3_API.navigation.page.setPage("player_main", {unitID = unitID});
+	--		end,
+	--		removeOnShown = true
+	--	});
+	--	TRP3_API.dashboard.registerNotificationType({
+	--		id = "ma notif2"
+	--	});
 --	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", function()
---		if UnitName("target") then
---			TRP3_API.dashboard.notify("ma notif", ("%s has been added to the directory"):format(UnitName("target")), Utils.str.getUnitID("target"));
---		else
---			TRP3_API.dashboard.notify("ma notif2", "Voici un beau petit texte pour juste notifier bien comme il faut.");
---		end
---		
+--		print("UnitIsOtherPlayersPet: " .. tostring(UnitIsOtherPlayersPet("target")));
+--		print("UnitIsBattlePetCompanion: " .. tostring(UnitIsBattlePetCompanion("target")));
+--		print("UnitIsOtherPlayersBattlePet: " .. tostring(UnitIsOtherPlayersBattlePet("target")));
+--		print("Target NPC ID:", tonumber((UnitGUID("target")):sub(-12, -9), 16))
+--		local speciesID, customName, level, xp, maxXp, displayID, isFavorite, name, icon, petType, creatureID = C_PetJournal.GetPetInfoByPetID(C_PetJournal.GetSummonedPetGUID());
+--		print("Current pet ID:", creatureID);
+--	end);
+--	
+--	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
+--		print(GameTooltip:GetUnit());
 --	end);
 end
 
@@ -68,7 +72,7 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 0.1,
 	["requiredDeps"] = {
 		{"dyn_locale", 1},
---		{"test", 0.57}
+	--		{"test", 0.57}
 	}
 };
 

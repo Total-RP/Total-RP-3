@@ -2,22 +2,22 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 
 
-	<Include file="ui\register_ui_characteristics.xml" />
-	<Include file="ui\register_ui_about.xml" />
-	<Include file="ui\register_ui_misc.xml" />
-	<Include file="ui\register_ui_list.xml" />
-	<Include file="ui\register_ui_main.xml" />
-	<Include file="ui\register_ui_companions.xml" />
+	<Include file="characters\register_ui_characteristics.xml" />
+	<Include file="characters\register_ui_about.xml" />
+	<Include file="characters\register_ui_misc.xml" />
+	<Include file="main\register_ui_list.xml" />
+	<Include file="characters\register_ui_main.xml" />
 	
-
-	<Script file="impl\register_main.lua" />
-	<Script file="impl\register_ignore.lua" />
-	<Script file="impl\register_characteristics.lua" />
-	<Script file="impl\register_about.lua" />
-	<Script file="impl\register_misc.lua" />
-	<Script file="impl\register_exchange.lua" />
-	<Script file="impl\register_tooltip.lua" />
-	<Script file="impl\register_list.lua" />
-	<Script file="impl\register_companions.lua" />
+	<Script file="characters\register_main.lua" />
+	<Script file="characters\register_ignore.lua" />
+	<Script file="characters\register_characteristics.lua" />
+	<Script file="characters\register_about.lua" />
+	<Script file="characters\register_misc.lua" />
+	
+	<Script file="main\register_exchange.lua" />
+	<Script file="main\register_tooltip.lua" />
+	<Script file="main\register_list.lua" />
+	
+	<Include file="companions\register_ui_companions_main.xml" />
 
 </Ui>

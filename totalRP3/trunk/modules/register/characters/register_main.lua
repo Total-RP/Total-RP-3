@@ -156,7 +156,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
 	end
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound
-	
+
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, currentProfileID);
 	end
@@ -204,7 +204,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType);
 		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
 	end
-	
+
 end
 
 --- Raises error if KNOWN unitID
@@ -322,9 +322,9 @@ local function createTabBar()
 	function(callback)
 		if getCurrentContext() and getCurrentContext().isEditMode then
 			TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
-				function()
-					callback();
-				end
+			function()
+				callback();
+			end
 			);
 		else
 			callback();
@@ -345,8 +345,8 @@ end
 
 function TRP3_API.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
-		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+	or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
+	or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -372,20 +372,15 @@ function TRP3_API.register.init()
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-	
+
 	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
-	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
-	local playerMenu = {
+
+	registerMenu({
 		id = "main_10_player",
-		text = get("player/characteristics/FN") or Globals.player,
+		text = loc("REG_PLAYER"),
 		onSelected = function() selectMenu("main_12_player_character") end,
-	}
-	registerMenu(playerMenu);
-	Events.listenToEvents({Events.REGISTER_CHARACTERISTICS_SAVED, Events.REGISTER_PROFILES_LOADED}, function()
-		playerMenu.text = get("player/characteristics/FN") or Globals.player;
-		refreshMenu();
-	end);
+	});
 
 	registerMenu({
 		id = "main_11_profiles",
@@ -394,9 +389,9 @@ function TRP3_API.register.init()
 		isChildOf = "main_10_player",
 	});
 
-	registerMenu({
+	local currentPlayerMenu = {
 		id = "main_12_player_character",
-		text = loc("REG_PLAYER"),
+		text = get("player/characteristics/FN") or Globals.player,
 		onSelected = function()
 			setPage("player_main", {
 				profile = get("player"),
@@ -404,7 +399,13 @@ function TRP3_API.register.init()
 			});
 		end,
 		isChildOf = "main_10_player",
-	});
+	};
+	registerMenu(currentPlayerMenu);
+	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
+	Events.listenToEvents({Events.REGISTER_CHARACTERISTICS_SAVED, Events.REGISTER_PROFILES_LOADED}, function()
+		currentPlayerMenu.text = get("player/characteristics/FN") or Globals.player;
+		refreshMenu();
+	end);
 
 	registerPage({
 		id = "player_main",
@@ -441,7 +442,6 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.miscInit();
 	TRP3_API.register.inits.dataExchangeInit();
 	TRP3_API.register.inits.tooltipInit();
-	TRP3_API.register.inits.companionInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 

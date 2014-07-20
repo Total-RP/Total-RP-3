@@ -12,35 +12,18 @@ local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.na
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onPageShow()
-	
-end
+TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.register.inits.companionInit()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
---	registerMenu({
---		id = "main_20_companions",
---		text = loc("REG_COMPANIONS"),
---		onSelected = function() selectMenu("main_21_companions_list") end,
---	});
---	
---	registerMenu({
---		id = "main_21_companions_list",
---		text = loc("REG_COMPANIONS_LIST"),
---		onSelected = function() setPage("companions_list") end,
---		isChildOf = "main_20_companions",
---	});
-	
-	registerPage({
-		id = "companions_list",
-		frame = TRP3_RegisterCompanions,
-		onPagePostShow = function(context)
-			onPageShow(context);
-		end,
+	registerMenu({
+		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
+		text = loc("REG_COMPANIONS"),
+		onSelected = function() selectMenu(TRP3_API.navigation.menu.id.COMPANIONS_PROFILES) end,
 	});
-	
-end
+
+end);

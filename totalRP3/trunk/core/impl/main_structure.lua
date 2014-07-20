@@ -5,8 +5,12 @@
 
 -- Public accessor
 TRP3_API.navigation = {
-	menu = {},
-	page = {}
+	menu = {
+		id = {}
+	},
+	page = {
+		id = {}
+	}
 };
 
 -- imports
