@@ -16,7 +16,7 @@
 					<Anchor point="LEFT" x="15" y="0"/>
 				</Anchors>
 			</Frame>
-			<Button name="$parentSelect" inherits="UIPanelButtonTemplate" text="Select">
+			<Button name="$parentSelect" inherits="UIPanelButtonTemplate" text="[SELECT]">
 				<Size>
 	                <AbsDimension x="80" y="25"/>
 	            </Size>
@@ -45,7 +45,7 @@
 		</Scripts>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]">
+				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]" hidden="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="3"/>
 					</Anchors>
@@ -70,7 +70,7 @@
 	</Frame>
 
 	<!-- Profile manager -->
-	<Frame name="TRP3_ProfileManager" hidden="true">
+	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
 	     <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -88,7 +88,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="TRP3_ProfileManagerTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[PROFILES MANAGER]">
+				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[PROFILES MANAGER]">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-25"/>
 					</Anchors>
@@ -97,41 +97,53 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="TRP3_ProfileManagerList">
+			<Frame name="$parentList">
 				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
 				<Size x="450" y="350"/>
-		         <Anchors>
+				<Anchors>
 					<Anchor point="BOTTOM" x="0" y="20"/>
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]" hidden="true">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
-					<Frame name="TRP3_ProfileManagerLine1" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
 						<Anchors><Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="12" y="-10"/></Anchors>
 					</Frame>
-					<Frame name="TRP3_ProfileManagerLine2" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine1" x="0" y="-1"/></Anchors>
+					<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1"/></Anchors>
 					</Frame>
-					<Frame name="TRP3_ProfileManagerLine3" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine2" x="0" y="-1"/></Anchors>
+					<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1"/></Anchors>
 					</Frame>
-					<Frame name="TRP3_ProfileManagerLine4" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine3" x="0" y="-1"/></Anchors>
+					<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1"/></Anchors>
 					</Frame>
-					<Frame name="TRP3_ProfileManagerLine5" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ProfileManagerLine4" x="0" y="-1"/></Anchors>
+					<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1"/></Anchors>
 					</Frame>
-					<Slider name="TRP3_ProfileManagerSlider" inherits="OptionsSliderTemplate">
+					<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
 						<Size x="15" y="340"/>
 						<Anchors>
 							<Anchor point="RIGHT" x="4" y="2"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								TRP3_ProfileManagerSliderText:SetText("");
-								TRP3_ProfileManagerSliderHigh:SetText("");
-								TRP3_ProfileManagerSliderLow:SetText("");
+								local name = self:GetName();
+								_G[name .. "Text"]:SetText("");
+								_G[name .. "High"]:SetText("");
+								_G[name .. "Low"]:SetText("");
 								self:SetMinMaxValues(0, 6);
 								self:SetValueStep(1);
 								self:SetOrientation("VERTICAL");
@@ -140,17 +152,14 @@
 					</Slider>
 				</Frames>
 			</Frame>
-			<Button name="TRP3_ProfileManagerAdd" inherits="UIPanelButtonTemplate">
+			<Button name="$parentAdd" inherits="UIPanelButtonTemplate">
 				<Size x="150" y="20"/>
 				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ProfileManagerList" x="0" y="5"/>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5"/>
 				</Anchors>
 			</Button>
 		</Frames>
-		<Scripts>
-			<OnLoad>
-				TRP3_ProfileManagerTitle:SetTextColor(0.95,0.95,0.95);
-			</OnLoad>
-		</Scripts>
 	</Frame>
+	
+	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
 </Ui>

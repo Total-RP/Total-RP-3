@@ -384,7 +384,7 @@ function TRP3_API.register.init()
 
 	registerMenu({
 		id = "main_11_profiles",
-		text = loc("PR_PROFILEMANAGER_TITLE"),
+		text = loc("PR_PROFILES"),
 		onSelected = function() setPage("player_profiles"); end,
 		isChildOf = "main_10_player",
 	});

@@ -34,9 +34,9 @@ TRP3_API = {
 		},
 
 		icons = {
-			default = "TEMP";
-			unknown = "INV_Misc_QuestionMark";
-			profile_default = "INV_Misc_GroupLooking";
+			default = "TEMP",
+			unknown = "INV_Misc_QuestionMark",
+			profile_default = "INV_Misc_GroupLooking",
 		},
 	}
 }

@@ -47,17 +47,17 @@ local function onMenuClosed(menu)
 	unregisterMenu(menu:GetParent().id);
 end
 
+local function isCloseable(menuID)
+	return menuStructures[menuID] and menuStructures[menuID].closeable;
+end
+
 local function closeAll(parentMenuID)
 	assert(parentMenuID, "No parent menu ID in close all button.");
 	for id, menuStructure in pairs(menuStructures) do
-		if menuStructure.isChildOf == parentMenuID then
+		if menuStructure.isChildOf == parentMenuID and isCloseable(id) then
 			unregisterMenu(id);
 		end
 	end
-end
-
-local function isCloseable(menuID)
-	return menuStructures[menuID] and menuStructures[menuID].closeable;
 end
 
 local closeAllButton = CreateFrame("Button", "TRP3_MainFrameMenuButtonCloseAll", TRP3_MainFrameMenuContainer, "TRP3_CommonButton");
@@ -80,6 +80,7 @@ local function rebuildMenu()
 	end
 	table.sort(ids);
 
+	local closeableChildCount = 0;
 	local index = 0;
 	local y = marginTop;
 	local latestID;
@@ -111,7 +112,8 @@ local function rebuildMenu()
 				uiButton:SetPoint("RIGHT", -15, y);
 				label:SetTextColor(1, 1, 1);
 				label:SetJustifyH(menuStructure.align or "RIGHT");
-				if isCloseable(id) or isCloseable(menuStructure.isChildOf) then
+				if isCloseable(id) then
+					closeableChildCount = closeableChildCount + 1;
 					close:Show();
 				end
 			else
@@ -128,7 +130,7 @@ local function rebuildMenu()
 			index = index + 1;
 			y = y - buttonHeight;
 			
-			if menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then
+			if closeableChildCount > 0 and menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then
 				-- Place close all button
 				closeAllButton:SetPoint("LEFT", 32, y);
 				closeAllButton:SetPoint("RIGHT", -20, y);

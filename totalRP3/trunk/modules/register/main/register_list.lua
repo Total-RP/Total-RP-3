@@ -64,6 +64,7 @@ local function openPage(profileID)
 			text = tabText,
 			onSelected = function() setPage("player_main", {profile = profile, profileID = profileID}) end,
 			isChildOf = REGISTER_PAGE,
+			closeable = true,
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end

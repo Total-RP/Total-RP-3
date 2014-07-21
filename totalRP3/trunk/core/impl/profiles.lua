@@ -186,7 +186,7 @@ end
 
 -- Refresh list display
 local function uiInitProfileList()
-	initList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerSlider);
+	initList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerListSlider);
 end
 
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
@@ -340,12 +340,13 @@ function TRP3_API.profile.init()
 	end
 
 	-- UI
-	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerSlider);
-	TRP3_ProfileManagerSlider:SetValue(0);
+	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerListSlider);
+	TRP3_ProfileManagerListSlider:SetValue(0);
 	local widgetTab = {};
 	for i=1,5 do
-		local widget = _G["TRP3_ProfileManagerLine"..i];
+		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
+		_G[widget:GetName().."Select"]:SetText(loc("CM_SELECT"));
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc("PR_PROFILEMANAGER_CURRENT"));
 		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
@@ -362,8 +363,6 @@ function TRP3_API.profile.init()
 
 	registerPage({
 		id = "player_profiles",
-		templateName = "TRP3_ProfileManager",
-		frameName = "TRP3_ProfileManager",
 		frame = TRP3_ProfileManager,
 		onPagePostShow = function() uiInitProfileList(); end,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,

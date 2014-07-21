@@ -272,7 +272,7 @@ local LOCALE_EN = {
 		REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
 		REG_COMPANION = "Companion",
 		REG_COMPANIONS = "Companions",
-		REG_COMPANIONS_LIST = "Profiles",
+		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -400,12 +400,13 @@ local LOCALE_EN = {
 		TF_IGNORE_NO_REASON = "No reason",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- PROFILE
+		-- PROFILES
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
-		PR_PROFILEMANAGER_TITLE = "Profiles",
+		PR_PROFILEMANAGER_TITLE = "Character profiles",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
+		PR_PROFILES = "Profiles",
 		PR_PROFILE_CREATED = "Profile %s created.",
 		PR_CREATE_PROFILE = "Create profile",
 		PR_PROFILE_DELETED = "Profile %s deleted.",
@@ -424,6 +425,16 @@ local LOCALE_EN = {
 		PR_PROFILEMANAGER_SWITCH = "Select profile",
 		PR_PROFILEMANAGER_RENAME = "Rename profile",
 		PR_PROFILEMANAGER_CURRENT = "Current profile",
+		PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
+		PR_CO_EMPTY = "No companion profile",
+		PR_CO_NEW_PROFILE = "New companion profile",
+		PR_CO_COUNT = "%s pets/mounts bounded to this profile.",
+		PR_CO_UNUSED_PROFILE = "This profile is currently not bounded to any pet or mount.",
+		PR_CO_PROFILE_DETAIL = "This profile is currently bounded to:\n\nMounts:\n%s\n\nPets:\n%s",
+		PR_CO_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the companion profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile will be destroyed !",
+		PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts bounds to %s.",
+		PR_CO_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your pets/mounts.",
+		
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD
@@ -505,6 +516,9 @@ local LOCALE_EN = {
 		CM_COLOR = "Color",
 		CM_ICON = "Icon",
 		CM_IMAGE = "Image",
+		CM_SELECT = "Select",
+		CM_OPEN = "Open",
+		CM_APPLY = "Apply",
 		CM_MOVE_UP = "Move up",
 		CM_MOVE_DOWN = "Move down",
 		CM_CLASS_WARRIOR = "Warrior",
@@ -519,7 +533,6 @@ local LOCALE_EN = {
 		CM_CLASS_MONK = "Monk",
 		CM_CLASS_DRUID = "Druid",
 		CM_CLASS_UNKNOWN = "Unknown",
-		CM_APPLY = "Apply",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Minimap button
