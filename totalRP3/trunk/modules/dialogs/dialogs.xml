@@ -145,14 +145,24 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Button name="TRP3_NPCDialogFrameChatNext">
-						<Size x="26" y="26"/>
+					<Frame>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture name="TRP3_NPCDialogFrameChatPortrait">
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
 						<Anchors>
-							<Anchor point="BOTTOM" x="30" y="10"/>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
 						</Anchors>
-						<NormalTexture file="Interface\GLUES\COMMON\Glue-RightArrow-Button-Up"/>
-						<PushedTexture file="Interface\GLUES\COMMON\Glue-RightArrow-Button-Down"/>
-						<HighlightTexture alphaMode="ADD" file="Interface\GLUES\COMMON\Glue-RightArrow-Button-Highlight"/>
+					</Frame>
+					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="100" y="10"/>
+						</Anchors>
 					</Button>
 					<Button name="TRP3_NPCDialogFrameChatPrevious">
 						<Size x="26" y="26"/>

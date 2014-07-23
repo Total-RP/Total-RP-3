@@ -60,7 +60,16 @@ end
 
 local function playNext()
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
-	playText(TRP3_NPCDialogFrameChat.currentIndex);
+	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
+		playText(TRP3_NPCDialogFrameChat.currentIndex);
+		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
+			TRP3_NPCDialogFrameChatNext:SetText("[[NEXT]]");
+		else
+			TRP3_NPCDialogFrameChatNext:SetText("[[FINISH]]");
+		end
+	else
+		TRP3_NPCDialogFrame:Hide();
+	end
 end
 
 local function playPrevious()
@@ -68,13 +77,19 @@ local function playPrevious()
 	playText(TRP3_NPCDialogFrameChat.currentIndex);
 end
 
+local LINE_FEED_CODE = string.char(10);
+local CARRIAGE_RETURN_CODE = string.char(13);
+local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
+
 local function startDialog(targetType, fullText)
 	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
 	TRP3_NPCDialogFrameModelsYou:SetFacing(-0.75);
 	TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
 	TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-
-	fullText = fullText:gsub("\n+", "\n");
+	
+	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
+	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
+	
 	local texts = {strsplit("\n", fullText)};
 	TRP3_NPCDialogFrameChat.texts = texts;
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
@@ -167,4 +182,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 0.1,
 };
 
---TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);
