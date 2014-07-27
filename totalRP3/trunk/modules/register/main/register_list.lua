@@ -523,14 +523,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.target.registerButton({
 		id = "aa_page_player",
 		configText = loc("TF_OPEN_CHARACTER"),
-		condition = function(unitID, targetInfo)
+		onlyForType = TRP3_API.target.TYPE_CHARACTER,
+		condition = function(targetType, unitID)
 			return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 		end,
 		onClick = function(unitID)
 			openMainFrame();
 			openPageByUnitID(unitID);
 		end,
-		adapter = function(buttonStructure, unitID, targetInfo)
+		adapter = function(buttonStructure, unitID, currentTargetType)
 			buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
 			buttonStructure.tooltipSub = nil;
 			buttonStructure.alert = nil;

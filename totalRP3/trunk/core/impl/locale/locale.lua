@@ -4,12 +4,17 @@
 
 TRP3_API.locale = {}
 
-local error, pairs, tinsert, assert, table, tostring = error, pairs, tinsert, assert, table, tostring;
+local error, pairs, tinsert, assert, table, tostring, GetLocale = error, pairs, tinsert, assert, table, tostring, GetLocale;
 
 local LOCALS = {};
 local DEFAULT_LOCALE = "enUS";
 local effectiveLocal = {};
 local current;
+local localeFont;
+
+function TRP3_API.locale.getLocaleFont()
+	return localeFont;
+end
 
 function TRP3_API.locale.registerLocale(localeStructure)
 	assert(localeStructure and localeStructure.locale and localeStructure.localeText and localeStructure.localeContent, "Usage: localeStructure with locale, localeText and localeContent.");
@@ -25,6 +30,12 @@ function TRP3_API.locale.init()
 	current = TRP3_API.configuration.getValue("AddonLocale");
 	if not LOCALS[current] then
 		current = DEFAULT_LOCALE;
+	end
+	-- Pick the right font
+	if current == "zhCN" then
+		localeFont = "Fonts\\ZYKai_T.TTF";
+	else
+		localeFont = "Fonts\\FRIZQT__.TTF";
 	end
 	TRP3_API.utils.table.copy(effectiveLocal, LOCALS[current].localeContent);
 end
@@ -71,4 +82,24 @@ function TRP3_API.locale.getText(key)
 		return effectiveLocal[key] or LOCALS[DEFAULT_LOCALE].localeContent[key];
 	end
 	error("Unknown localization key: ".. tostring(key));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Companion utils
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local COMPANION_PET_PATTERN = UNITNAME_TITLE_PET:gsub("%%s", "([%%S%%P%%-]-)");
+
+function TRP3_API.locale.findPetOwner(lines)
+	if lines[2] then
+		return lines[2]:match(COMPANION_PET_PATTERN);
+	end
+end
+
+local COMPANION_BATTLE_PET_PATTERN = UNITNAME_TITLE_COMPANION:gsub("%%s", "([%%S%%P%%-]-)");
+
+function TRP3_API.locale.findBattlePetOwner(lines)
+	if lines[3] then
+		return lines[3]:match(COMPANION_BATTLE_PET_PATTERN);
+	end
 end

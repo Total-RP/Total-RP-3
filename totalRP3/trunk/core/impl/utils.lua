@@ -226,6 +226,14 @@ Utils.str.unitIDToInfo = function(unitID)
 	return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
 end
 
+-- Separates the owner ID and companion name from a companion ID
+Utils.str.companionIDToInfo = function(companionID)
+	if not companionID:find('_') then
+		return companionID, nil;
+	end
+	return companionID:sub(1, companionID:find('_') - 1), companionID:sub(companionID:find('_') + 1);
+end
+
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
 Utils.str.getUnitID = function(unit)

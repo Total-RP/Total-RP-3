@@ -272,6 +272,11 @@ local LOCALE_EN = {
 		REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
 		REG_COMPANION = "Companion",
 		REG_COMPANIONS = "Companions",
+		REG_COMPANION_TF_PROFILE = "Companion profile",
+		REG_COMPANION_TF_NO = "No profile",
+		REG_COMPANION_TF_CREATE = "Create new profile",
+		REG_COMPANION_TF_UNBOUND = "Unlink from profile",
+		REG_COMPANION_TF_BOUND_TO = "Select a profile",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION

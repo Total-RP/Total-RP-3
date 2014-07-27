@@ -8,6 +8,7 @@ TRP3_API.register = {
 	inits = {},
 	player = {},
 	ui = {},
+	companion = {},
 	NOTIFICATION_ID_NEW_CHARACTER = "add_character",
 };
 

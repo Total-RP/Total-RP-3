@@ -18,6 +18,10 @@ local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, Cre
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
+local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
+local UnitIsPlayer = UnitIsPlayer;
+local getUnitID = TRP3_API.utils.str.getUnitID;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -81,16 +85,16 @@ end
 -- Drop down
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DROPDOWN_FRAME = "TRP3_UIDD";
+local DROPDOWN_FRAME, DropDownList1, CloseDropDownMenus = "TRP3_UIDD", DropDownList1, CloseDropDownMenus;
 local dropDownFrame, currentlyOpenedDrop;
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	if not dropDownFrame then
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
-	
-	if currentlyOpenedDrop == anchoredFrame then
-		ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
+
+	if DropDownList1:IsVisible() then
+		CloseDropDownMenus();
 		return;
 	end
 	
@@ -124,6 +128,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 						if level > 1 then
 							ToggleDropDownMenu(nil, nil, dropDownFrame);
 						end
+						currentlyOpenedDrop = nil;
 					end;
 				else
 					info.func = function() end;
@@ -331,6 +336,7 @@ end
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
 -- If already shown, the tooltip text will be refreshed.
 local function refreshTooltip(Frame)
+	local localeFont = TRP3_API.locale.getLocaleFont();
 	if Frame.titleText and Frame.GenFrame and Frame.GenFrameX and Frame.GenFrameY and Frame.GenFrameAnch then
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
@@ -338,16 +344,16 @@ local function refreshTooltip(Frame)
 			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1, true);
 		else
 			TRP3_MainTooltip:AddDoubleLine(Frame.titleText, Frame.rightText);
-			TRP3_MainTooltipTextRight1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize()+4);
+			TRP3_MainTooltipTextRight1:SetFont(localeFont, getTooltipSize() + 4);
 			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
 		end
-		TRP3_MainTooltipTextLeft1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize()+4);
+		TRP3_MainTooltipTextLeft1:SetFont(localeFont, getTooltipSize() + 4);
 		TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
 		TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
 		if Frame.bodyText then
 			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
-			TRP3_MainTooltipTextLeft2:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize());
+			TRP3_MainTooltipTextLeft2:SetFont(localeFont, getTooltipSize());
 			TRP3_MainTooltipTextLeft2:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextLeft2:SetTextColor(1, 0.75, 0);
 		end
@@ -396,6 +402,65 @@ TRP3_API.ui.tooltip.setTooltipAll = function(Frame, GenFrameAnch, GenFrameX, Gen
 	Frame:SetScript("OnEnter", tooltipSimpleOnEnter);
 	Frame:SetScript("OnLeave", tooltipSimpleOnLeave);
 	setTooltipForFrame(Frame, Frame, GenFrameAnch, GenFrameX, GenFrameY, titleText, bodyText, rightText);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Companion ID
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local DUMMY_TOOLTIP = CreateFrame("GameTooltip", "TRP3_DUMMY_TOOLTIP", nil, "GameTooltipTemplate");
+DUMMY_TOOLTIP:SetOwner( WorldFrame, "ANCHOR_NONE" );
+
+local findPetOwner, findBattlePetOwner = TRP3_API.locale.findPetOwner, TRP3_API.locale.findBattlePetOwner;
+TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
+TRP3_API.ui.misc.TYPE_PET = "PET";
+TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";
+local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
+local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
+local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+
+---
+-- Returns target type as first return value and boolean isMine as second.
+function TRP3_API.ui.misc.getTargetType(unitType)
+	if UnitIsPlayer(unitType) then
+		return TYPE_CHARACTER, getUnitID(unitType) == globals.player_id;
+	elseif UnitIsBattlePetCompanion(unitType) then
+		return TYPE_BATTLE_PET, not UnitIsOtherPlayersBattlePet(unitType);
+	elseif UnitIsUnit(unitType, "pet") or UnitIsOtherPlayersPet(unitType) then
+		return TYPE_PET, UnitIsUnit(unitType, "pet");
+	end
+end
+
+local function getDummyGameTooltipTexts()
+	local tab = {};
+	for j = 1, DUMMY_TOOLTIP:NumLines() do
+		tab[j] = _G["TRP3_DUMMY_TOOLTIPTextLeft" ..  j]:GetText();
+	end
+	return tab;
+end
+
+local function getCompanionOwner(unitType, targetType)
+	DUMMY_TOOLTIP:SetUnit(unitType);
+	if targetType == TYPE_PET then
+		return findPetOwner(getDummyGameTooltipTexts());
+	elseif targetType == TYPE_BATTLE_PET then
+		return findBattlePetOwner(getDummyGameTooltipTexts());
+	end
+end
+TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
+
+function TRP3_API.ui.misc.getCompanionFullID(unitType, targetType)
+	local unitName = UnitName(unitType);
+	if unitName then
+		local owner = getCompanionOwner(unitType, targetType);
+		if owner ~= nil then
+			if not owner:find("-") then
+				owner = owner .. "-" .. globals.player_realm_id;
+			end
+			return owner .. "_" .. unitName, owner;
+		end
+	end
+	return nil;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

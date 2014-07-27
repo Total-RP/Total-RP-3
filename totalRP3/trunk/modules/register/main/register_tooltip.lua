@@ -144,6 +144,8 @@ end
 -- UTIL METHOD
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local localeFont;
+
 local function getGameTooltipTexts()
 	local tab = {};
 	for j = 1, GameTooltip:NumLines() do
@@ -153,12 +155,12 @@ local function getGameTooltipTexts()
 end
 
 local function setLineFont(tooltip, lineIndex, fontSize)
-	_G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)]:SetFont("Fonts\\FRIZQT__.TTF", fontSize);
+	_G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)]:SetFont(localeFont, fontSize);
 end
 
 local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	setLineFont(tooltip, lineIndex, fontSize);
-	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont("Fonts\\FRIZQT__.TTF", fontSize);
+	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont(localeFont, fontSize);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -469,6 +471,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.register.inits.tooltipInit()
+	localeFont = TRP3_API.locale.getLocaleFont();
+	
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
@@ -643,5 +647,4 @@ function TRP3_API.register.inits.tooltipInit()
 		}
 	}
 	Config.registerConfigurationPage(CONFIG_STRUCTURE);
-	
 end

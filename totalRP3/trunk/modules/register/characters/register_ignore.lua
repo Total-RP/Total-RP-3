@@ -195,7 +195,8 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.target.registerButton({
 		id = "z_ignore",
 		configText = loc("TF_IGNORE"),
-		condition = function(unitID, targetInfo)
+		onlyForType = TRP3_API.target.TYPE_CHARACTER,
+		condition = function(targetType, unitID)
 			return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
 		end,
 		onClick = function(unitID)
@@ -209,7 +210,8 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.target.registerButton({
 		id = "r_relation",
 		configText = loc("REG_RELATION"),
-		condition = function(unitID, targetInfo)
+		onlyForType = TRP3_API.target.TYPE_CHARACTER,
+		condition = function(targetType, unitID)
 			return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
 		end,
 		onClick = onTargetButtonClicked,

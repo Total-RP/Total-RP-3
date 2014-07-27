@@ -10,23 +10,70 @@ TRP3_API.companions = {
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
-local pairs, assert, tostring, wipe = pairs, assert, tostring, wipe;
+local pairs, assert, tostring, wipe, tinsert, type = pairs, assert, tostring, wipe, tinsert, type;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
 local displayMessage = Utils.message.displayMessage;
+local companionIDToInfo = Utils.str.companionIDToInfo;
+local EMPTY = Globals.empty;
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Player's companions
+-- Player's companions : API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local playerCompanions;
+local PROFILE_DEFAULT_ICON = "INV_Box_PetCarrier_01";
+TRP3_API.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
 local DEFAULT_PROFILE = {
 	data = {
-		IC = "INV_Box_PetCarrier_01",
+		IC = PROFILE_DEFAULT_ICON,
 	}
 };
+
+local playerProfileAssociation = {};
+
+local function getCompanionProfileID(companionID)
+	return playerProfileAssociation[companionID];
+end
+TRP3_API.companions.player.getCompanionProfileID = getCompanionProfileID;
+
+local function getCompanionProfile(companionID)
+	if playerProfileAssociation[companionID] then
+		return playerCompanions[playerProfileAssociation[companionID]];
+	end
+end
+TRP3_API.companions.player.getCompanionProfile = getCompanionProfile;
+
+local function parsePlayerProfiles(profiles)
+	for profileID, profile in pairs(profiles) do
+		for companionID, _ in pairs(profile.links or EMPTY) do
+			playerProfileAssociation[companionID] = profileID;
+		end
+	end
+end
+
+local function boundPlayerCompanion(companionID, profileID)
+	assert(playerCompanions[profileID], "Unknown profile: "..tostring(profileID));
+	if not playerCompanions[profileID].links then
+		playerCompanions[profileID].links = {};
+	end
+	playerCompanions[profileID].links[companionID] = 1;
+	playerProfileAssociation[companionID] = profileID;
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH, companionID);
+end
+
+local function unboundPlayerCompanion(companionID)
+	local profileID = playerProfileAssociation[companionID];
+	assert(profileID, "Cannot find any bound for companionID " .. tostring(companionID));
+	playerProfileAssociation[companionID] = nil;
+	if profileID and playerCompanions[profileID] and playerCompanions[profileID].links then
+		playerCompanions[profileID].links[companionID] = nil;
+	end
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH, companionID);
+end
 
 -- Check if the profileName is not already used
 local function isProfileNameAvailable(profileName)
@@ -85,9 +132,71 @@ function TRP3_API.companions.player.getProfiles()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Player's companions : UI
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+
+local function createNewAndBound(companionID)
+	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
+	function(newName)
+		if newName and #newName ~= 0 then
+			if not isProfileNameAvailable(newName) then return end
+			local profileID = createProfile(newName);
+			boundPlayerCompanion(companionID, profileID);
+		end
+	end,
+	nil,
+	loc("PR_CO_NEW_PROFILE")
+	);
+end
+
+local function onCompanionProfileSelection(value, companionID)
+	if value == 1 then
+		unboundPlayerCompanion(companionID);
+	elseif value == 2 then
+		createNewAndBound(companionID);
+	elseif type(value) == "string" then
+		boundPlayerCompanion(companionID, value);
+	end
+end
+
+local function getPlayerCompanionProfilesAsList()
+	local list = {};
+	tinsert(list, {loc("REG_COMPANION_TF_CREATE"), 2});
+	for profileID, profile in pairs(playerCompanions) do
+		tinsert(list, {profile.profileName, profileID});
+	end
+	return list;
+end
+
+local function companionProfileSelectionList(companionFullID, _, buttonStructure, button)
+	local list = {};
+
+	local ownerID, companionID = companionIDToInfo(companionFullID);
+
+	if playerProfileAssociation[companionID] then
+		tinsert(list, {loc("REG_COMPANION_TF_UNBOUND"), 1});
+	end
+	tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList()});
+
+	displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID) end, 0, true);
+end
+
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Register companions (other players companions)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local registerProfileAssociation = {};
+
+local function parseRegisterProfiles(profiles)
+	for profileID, profile in pairs(profiles) do
+		for fullID, _ in pairs(profile.links or EMPTY) do
+			registerProfileAssociation[fullID] = profileID;
+		end
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
@@ -98,22 +207,71 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	if not TRP3_Companions then
 		TRP3_Companions = {};
 	end
-	
+
 	if not TRP3_Companions.player then
 		TRP3_Companions.player = {};
 	end
 	playerCompanions = TRP3_Companions.player;
-	
+	parsePlayerProfiles(playerCompanions);
+
 	if not TRP3_Companions.register then
 		TRP3_Companions.register = {};
 	end
 	registerCompanions = TRP3_Companions.register;
+	parseRegisterProfiles(registerCompanions);
+
+	-- MOCKUP
+	TRP3_Companions.player["123456789"] = {
+		profileName = "Marud",
+		data = {
+			NA = "Ploutre", -- Le nom du companion, si "nil" utiliser le nom de profil !
+			IC = "INV_Box_PetCarrier_01", -- L'icone, si "nil" utiliser "INV_Box_PetCarrier_01"
+			TI = "Maitre des loups", -- Le titre
+			TX = "Pouic pouic", -- La description
+			PE = { -- At a glance slots
+				{ -- Slot 1
+					AC = true, -- Activated
+					TX = "Ce serpent sent la morue", -- Text
+					TI = "Odeur de morue", -- Title
+					IC = "icon_petfamily_critter", -- Icon
+				},
+			}
+		}
+	}
 
 	registerMenu({
 		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
 		text = loc("REG_COMPANIONS"),
 		onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
 		closeable = true,
+	});
+
+	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
+	-- Target bar
+	TRP3_API.target.registerButton({
+		id = "companion_profile",
+		configText = loc("REG_COMPANION_TF_PROFILE"),
+		condition = function(targetType, unitID)
+			if targetType == TYPE_BATTLE_PET or targetType == TYPE_PET then
+				local ownerID, companionID = companionIDToInfo(unitID);
+				return ownerID == Globals.player_id;
+			end
+		end,
+		onClick = companionProfileSelectionList,
+		adapter = function(buttonStructure, unitID)
+			-- Set icon relative to profile
+			buttonStructure.icon = "icon_petfamily_mechanical";
+			buttonStructure.tooltip = loc("REG_COMPANION_TF_NO");
+			local ownerID, companionID = companionIDToInfo(unitID);
+			local profile = getCompanionProfile(companionID);
+			if profile then
+				buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
+				if profile.data and profile.data.IC then
+					buttonStructure.icon = profile.data.IC;
+				end
+			end
+		end,
 	});
 
 end);
