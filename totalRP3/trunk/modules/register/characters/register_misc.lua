@@ -441,8 +441,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.register.checkGlanceActivation(dataTab)
-	for _, glanceTab in pairs(dataTab) do
-		if glanceTab.AC then return true end
+	for i=1, 5, 1 do
+		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then return true end
 	end
 	return false;
 end

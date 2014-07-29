@@ -22,7 +22,7 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local getMiscPresetDropListData, setGlanceSlotPreset;
+local getMiscPresetDropListData, setGlanceSlotPreset, setCompanionGlanceSlotPreset;
 local hasProfile, isIDIgnored;
 local originalGetTargetType, getCompanionFullID, getCompanionProfile = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
@@ -146,6 +146,8 @@ local function onPeekSelection(value, button)
 	if value then
 		if currentTargetType == TYPE_CHARACTER then
 			setGlanceSlotPreset(button.slot, value);
+		else
+			setCompanionGlanceSlotPreset(button.slot, value, currentTargetID);
 		end
 	end
 end
@@ -189,7 +191,7 @@ local function displayPeekSlots()
 		ui_TargetFrameGlance:Show();
 		for i=1,5,1 do
 			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
-			local peek = peekTab[tostring(i)] or peekTab[i];
+			local peek = peekTab[tostring(i)];
 
 			local icon = Globals.icons.default;
 
@@ -342,6 +344,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 end);
 
 TRP3_API.target.init = function()
+	setCompanionGlanceSlotPreset = TRP3_API.companions.player.setGlanceSlotPreset;
 	setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
 	getMiscPresetDropListData = TRP3_API.register.ui.getMiscPresetDropListData;
 	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
