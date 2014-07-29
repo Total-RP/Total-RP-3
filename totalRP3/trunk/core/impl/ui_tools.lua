@@ -411,7 +411,7 @@ end
 local DUMMY_TOOLTIP = CreateFrame("GameTooltip", "TRP3_DUMMY_TOOLTIP", nil, "GameTooltipTemplate");
 DUMMY_TOOLTIP:SetOwner( WorldFrame, "ANCHOR_NONE" );
 
-local findPetOwner, findBattlePetOwner = TRP3_API.locale.findPetOwner, TRP3_API.locale.findBattlePetOwner;
+local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.locale.findPetOwner, TRP3_API.locale.findBattlePetOwner, UnitName;
 TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
 TRP3_API.ui.misc.TYPE_PET = "PET";
 TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";

@@ -23,6 +23,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty = TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty;
+local EMPTY = Globals.empty;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -137,13 +138,10 @@ local function decorateProfileList(widget, id)
 
 	local listText = "";
 	local i = 0;
---	for characterID, characterInfo in pairs(characters) do
---		if characterInfo.profileID == id then
---			local charactName, charactRealm = unitIDToInfo(characterID);
---			listText = listText.."- |cff00ff00"..charactName.." ( "..charactRealm.." )|r\n";
---			i = i + 1;
---		end
---	end
+	for companionID, _ in pairs(profile.links or EMPTY) do
+		listText = listText .. "- |cff00ff00" .. companionID .. "|r\n";
+		i = i + 1;
+	end
 	_G[widget:GetName().."Count"]:SetText(loc("PR_CO_COUNT"):format(i));
 
 	local text = "";

@@ -435,11 +435,11 @@ local LOCALE_EN = {
 		PR_CO_NEW_PROFILE = "New companion profile",
 		PR_CO_COUNT = "%s pets/mounts bounded to this profile.",
 		PR_CO_UNUSED_PROFILE = "This profile is currently not bounded to any pet or mount.",
-		PR_CO_PROFILE_DETAIL = "This profile is currently bounded to:\n\nMounts:\n%s\n\nPets:\n%s",
+		PR_CO_PROFILE_DETAIL = "This profile is currently bounded to",
 		PR_CO_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the companion profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile will be destroyed !",
 		PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts bounds to %s.",
 		PR_CO_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your pets/mounts.",
-		
+		PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway ?",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD

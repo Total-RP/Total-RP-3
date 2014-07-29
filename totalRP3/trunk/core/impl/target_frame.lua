@@ -55,7 +55,7 @@ local function createButton(index)
 	end);
 	uiButton:SetScript("OnClick", function(self, button)
 		if self.onClick then
-			self.onClick(self.unitID, self.targetInfo, button, self);
+			self.onClick(self.unitID, self.targetType, button, self);
 		end
 	end);
 	return uiButton;
@@ -106,7 +106,7 @@ local function displayButtonsPanel()
 		uiButton.buttonId = id;
 		uiButton.onClick = buttonStructure.onClick;
 		uiButton.unitID = currentTargetID;
-		uiButton.targetInfo = targetInfo;
+		uiButton.targetType = currentTargetType;
 		if buttonStructure.tooltip then
 			setTooltipForSameFrame(uiButton, "TOP", 0, 5, buttonStructure.tooltip, buttonStructure.tooltipSub);
 		else
@@ -144,7 +144,9 @@ TRP3_API.target.registerButton = registerButton;
 
 local function onPeekSelection(value, button)
 	if value then
-		setGlanceSlotPreset(button.slot, value);
+		if currentTargetType == TYPE_CHARACTER then
+			setGlanceSlotPreset(button.slot, value);
+		end
 	end
 end
 
@@ -177,17 +179,17 @@ local function displayPeekSlots()
 
 	if currentTargetType == TYPE_CHARACTER then
 		peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
-	elseif currentTargetType == TYPE_BATTLE_PET then
-		peekTab = nil;
-	elseif currentTargetType == TYPE_PET then
-		peekTab = nil;
+	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+		local owner, name = companionIDToInfo(currentTargetID);
+		local info = getCompanionInfo(owner, name);
+		peekTab = info.PE or EMPTY;
 	end
 
 	if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and tsize(peekTab) > 0) then
 		ui_TargetFrameGlance:Show();
 		for i=1,5,1 do
 			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
-			local peek = peekTab[tostring(i)];
+			local peek = peekTab[tostring(i)] or peekTab[i];
 
 			local icon = Globals.icons.default;
 

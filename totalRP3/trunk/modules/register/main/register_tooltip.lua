@@ -6,13 +6,12 @@
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local getUnitID = Utils.str.unitInfoToID;
 local colorCode = Utils.color.colorCode;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
 local ui_CharacterTT = TRP3_CharacterTooltip;
-local getUnitID = Utils.str.getUnitID;
+local getCharacterUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
 local Config = TRP3_API.configuration;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -30,6 +29,12 @@ local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = Un
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local IC_GUILD, OOC_GUILD;
+local originalGetTargetType, getCompanionFullID, getCompanionProfile = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
+local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
+local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local EMPTY = Globals.empty;
+local unitIDToInfo = Utils.str.unitIDToInfo;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -209,11 +214,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	if isIDIgnored(targetID) then
 		ui_CharacterTT:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
@@ -239,7 +244,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if info.characteristics and info.characteristics.IC then
 			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
 		end
-		-- OOC 
+		-- OOC
 		if character.RP ~= 1 then
 			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
@@ -336,12 +341,12 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				text = text .. OOC_GUILD;
 			end
 		end
-		
+
 		ui_CharacterTT:AddLine(text, 1, 1, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CURRENTLY
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -350,7 +355,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
-		
+
 		local text = character.CU;
 		if text:len() > getCurrentMaxSize() then
 			text = text:sub(1, getCurrentMaxSize()) .. "...";
@@ -359,7 +364,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Target
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -369,7 +374,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -402,40 +407,209 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMPANION TOOLTIP
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local UnitBattlePetType, UnitBattlePetLevel = UnitBattlePetType, UnitBattlePetLevel;
+local companionIDToInfo = Utils.str.companionIDToInfo;
+local getCompanionProfile;
+
+local function showCompanionIcons()
+	return true; -- TODO config
+end
+
+local function showCompanionFullTitle()
+	return true; -- TODO config
+end
+
+local function showCompanionOwner()
+	return true; -- TODO config
+end
+
+local function showCompanionNotifications()
+	return true; -- TODO config
+end
+
+local function showCompanionWoWInfo()
+	return true; -- TODO config
+end
+
+local function getCompanionInfo(owner, name)
+	local profile;
+	if owner == Globals.player_id then
+		profile = getCompanionProfile(name) or EMPTY;
+	else
+		profile = EMPTY;
+	end
+	return profile.data or EMPTY;
+end
+
+local function writeCompanionTooltip(companionFullID, originalTexts, targetType, targetMode)
+	local lineIndex = 1;
+	local ownerID, companionID = companionIDToInfo(companionFullID);
+	local info = getCompanionInfo(ownerID, companionID);
+	local targetName = UnitName(targetType);
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Icon and name
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	local leftIcons = "";
+
+	if showCompanionIcons() then
+		-- Player icon
+		if info.IC then
+			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
+		end
+	end
+
+	ui_CharacterTT:AddLine(leftIcons .. (info.NA or companionID));
+	setLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
+	lineIndex = lineIndex + 1;
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- full title
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionFullTitle() then
+		local fullTitle = "";
+		if info.TI then
+			fullTitle = strconcat("< ", info.TI, " >");
+		end
+		if fullTitle:len() > 0 then
+			ui_CharacterTT:AddLine(fullTitle, 1, 0.50, 0);
+			setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
+			lineIndex = lineIndex + 1;
+		end
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Owner
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionOwner() then
+		local ownerName, ownerRealm = unitIDToInfo(ownerID);
+		local ownerFinalName, ownerColor = ownerName, "";
+		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
+			local ownerInfo = getCharacterInfoTab(ownerID);
+			if ownerInfo.characteristics then
+				if ownerInfo.characteristics.FN then
+					ownerFinalName = ownerInfo.characteristics.FN;
+				end
+				if ownerInfo.characteristics.CH then
+					ownerColor = "|cff" .. ownerInfo.characteristics.CH;
+				end
+			end
+		else
+			if ownerRealm ~= Globals.player_realm_id then
+				ownerFinalName = ownerID;
+			end
+		end
+
+		ownerFinalName = ownerColor .. ownerFinalName .. "|r";
+		if targetMode == TYPE_PET then
+			ownerFinalName = UNITNAME_TITLE_PET:format(ownerFinalName);
+		elseif targetMode == TYPE_BATTLE_PET then
+			ownerFinalName = UNITNAME_TITLE_COMPANION:format(ownerFinalName);
+		end
+
+		ui_CharacterTT:AddLine(ownerFinalName, 1, 1, 1);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Wow info
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionWoWInfo() then
+		local text;
+		if targetMode == TYPE_PET then
+			local creatureType = UnitCreatureType(targetType);
+			text = TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:format(UnitLevel(targetType) or "??", creatureType);
+		elseif targetMode == TYPE_BATTLE_PET then
+			local type = UnitBattlePetType(targetType);
+			local type = _G["BATTLE_PET_DAMAGE_NAME_" .. type];
+			text = TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:format(UnitBattlePetLevel(targetType) or "??", type);
+		end
+		ui_CharacterTT:AddLine(text, 1, 1, 1, 0, 1, 0);
+		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Quick peek & new description notifications
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionNotifications() then
+		local notifText = "";
+		if info.PE and checkGlanceActivation(info.PE) then
+			notifText = GLANCE_ICON;
+		end
+		if ownerID ~= Globals.player_id and not info.read then
+			notifText = notifText .. " " .. NEW_ABOUT_ICON;
+		end
+		if notifText:len() > 0 then
+			ui_CharacterTT:AddLine(notifText, 1, 1, 1, 0, 1, 0);
+			setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
+			lineIndex = lineIndex + 1;
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MAIN
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function getUnitID(targetType)
+	local currentTargetType, isCurrentMine = originalGetTargetType(targetType);
+	if currentTargetType == TYPE_CHARACTER then
+		return getCharacterUnitID(targetType), currentTargetType;
+	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+		return getCompanionFullID(targetType, currentTargetType), currentTargetType;
+	end
+end
+
 local function show(targetType)
 	ui_CharacterTT:Hide();
-	
+
 	-- If using TRP TT
 	if getConfigValue(CONFIG_CHARACT_USE) and (not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT)) then
-		local targetID = getUnitID(targetType);
+		local targetID, targetMode = getUnitID(targetType);
 		-- If we have a target
 		if targetID then
 			-- Stock all the current text from the GameTooltip
 			local originalTexts = getGameTooltipTexts();
-	
+
 			ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
-	
+
 			-- The target is a player
-			if UnitIsPlayer(targetType) then
-				writeTooltipForCharacter(targetID, originalTexts, targetType);
+			if targetMode then
 				ui_CharacterTT.target = targetID;
 				ui_CharacterTT.targetType = targetType;
+				ui_CharacterTT.targetMode = targetMode;
+
+				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
+				if targetMode == TYPE_CHARACTER then
+					writeTooltipForCharacter(targetID, originalTexts, targetType);
+					if showRelationColor() and targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
+						ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
+					end
+					if shouldHideGameTooltip() and not isIDIgnored(targetID) then
+						GameTooltip:Hide();
+					end
+				elseif targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET then
+					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
+					if shouldHideGameTooltip() then
+						GameTooltip:Hide();
+					end
+				end
+
 				ui_CharacterTT:Show();
-				if shouldHideGameTooltip() and not isIDIgnored(targetID) then
-					GameTooltip:Hide();
-				end
-				if showRelationColor() and targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-					ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
-				else
-					ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
-				end
 			else
 				ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
 			end
-	
+
 			ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
 		end
 	end
@@ -453,7 +627,7 @@ local function refreshIfNeeded(unitID)
 end
 
 local function onUpdate(self, elapsed)
-	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed; 	
+	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 	if (self.TimeSinceLastUpdate > 0.5) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
@@ -472,18 +646,19 @@ end
 
 function TRP3_API.register.inits.tooltipInit()
 	localeFont = TRP3_API.locale.getLocaleFont();
-	
+	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
+
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
-	
+
 	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
-	
+
 	IC_GUILD = " |cff00ff00(" .. loc("CM_IC") .. ")";
 	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";
-	
+
 	-- Config default value
 	registerConfigKey(CONFIG_CHARACT_USE, true);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
@@ -504,7 +679,7 @@ function TRP3_API.register.inits.tooltipInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
-	
+
 	ANCHOR_TAB = {
 		{loc("CO_ANCHOR_TOP_LEFT"), "ANCHOR_TOPLEFT"},
 		{loc("CO_ANCHOR_TOP"), "ANCHOR_TOP"},
@@ -515,7 +690,7 @@ function TRP3_API.register.inits.tooltipInit()
 		{loc("CO_ANCHOR_BOTTOM_LEFT"), "ANCHOR_BOTTOMLEFT"},
 		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"}
 	};
-	
+
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_tooltip",
