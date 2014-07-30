@@ -145,7 +145,7 @@ local function setConsultDisplay(context)
 	assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
 	-- Icon, complete name and titles
 	local completeName = getCompleteName(dataTab, UNKNOWN);
-	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
+	TRP3_RegisterCharact_NamePanel_Name:SetText("|cff" .. (dataTab.CH or "ffffff") .. completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 

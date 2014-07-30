@@ -12,11 +12,12 @@ local getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
-local assert, tostring, type, _G, wipe, strtrim = assert, tostring, type, _G, wipe, strtrim;
+local assert, tostring, type, _G, wipe, strtrim, strconcat = assert, tostring, type, _G, wipe, strtrim, strconcat;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
@@ -113,6 +114,15 @@ local function saveInDraft(profileName)
 	draftData.TX = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_About_TextScrollText:GetText()));
 end
 
+local function onNameColorSelected(red, green, blue)
+	if red and green and blue then
+		local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+		draftData.NH = hexa;
+	else
+		draftData.NH = nil;
+	end
+end
+
 local function setBkg(frame, bkg)
 	local backdrop = frame:GetBackdrop();
 	backdrop.bgFile = getTiledBackground(bkg or 1);
@@ -162,6 +172,7 @@ local function displayEdit()
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
 	TRP3_CompanionsPageInformationEdit_About_BckField:SetSelectedIndex(draftData.BK or 1);
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(hexaToNumber(draftData.NH))
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -172,7 +183,7 @@ function displayConsult(context)
 	local profileName = context.profile.profileName;
 	local dataTab = context.profile.data or Globals.empty;
 
-	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText(dataTab.NA or UNKNOWN);
+	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.TI or "");
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 
@@ -287,6 +298,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetScript("OnClick", onSave);
 	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end );
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.onSelection = onNameColorSelected;
 
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_Glance, loc("REG_PLAYER_GLANCE"), 150);
@@ -294,6 +306,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc("CM_EDIT"));
 	
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc("REG_COMPANION_NAME_COLOR"), loc("REG_PLAYER_COLOR_TT"));
 	setupFieldSet(TRP3_CompanionsPageInformationEdit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_CompanionsPageInformationEdit_About, loc("REG_PLAYER_ABOUT"), 150);
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc("REG_COMPANION_NAME"));

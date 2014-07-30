@@ -464,7 +464,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		end
 	end
 
-	ui_CharacterTT:AddLine(leftIcons .. (info.NA or companionID));
+	ui_CharacterTT:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or companionID));
 	setLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
 	lineIndex = lineIndex + 1;
 

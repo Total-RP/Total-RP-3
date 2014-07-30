@@ -281,6 +281,7 @@ local LOCALE_EN = {
 		REG_COMPANION_INFO = "Information",
 		REG_COMPANION_NAME = "Name",
 		REG_COMPANION_TITLE = "Title",
+		REG_COMPANION_NAME_COLOR = "Name color",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION

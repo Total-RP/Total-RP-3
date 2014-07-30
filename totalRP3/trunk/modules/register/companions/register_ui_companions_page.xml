@@ -160,11 +160,16 @@
 								</Anchors>
 							</Button>
 							<EditBox name="$parent_NameField" inherits="TRP3_TitledHelpEditBox">
-								<Size x="330" y="18"/>
+								<Size x="300" y="18"/>
 								<Anchors>	
 									<Anchor point="TOPLEFT" x="20" y="8" relativePoint="TOPRIGHT" relativeTo="$parent_Icon"/>
 								</Anchors>
 							</EditBox>
+							<Button name="$parent_NameColor" inherits="TRP3_ColorPickerButton">
+              					<Anchors>	
+									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parent_NameField"/>
+								</Anchors>
+							</Button>
 							<EditBox name="$parent_TitleField" inherits="TRP3_TitledHelpEditBox">
 								<Size x="330" y="18"/>
 								<Anchors>	
