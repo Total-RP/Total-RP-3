@@ -148,7 +148,7 @@ local function setConsultDisplay(context)
 	TRP3_RegisterCharact_NamePanel_Name:SetText(completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
 	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
-	
+
 	setBkg(dataTab.bkg or 1);
 
 	-- hide all
@@ -321,13 +321,21 @@ local function onPlayerIconSelected(icon)
 end
 
 local function onEyeColorSelected(red, green, blue)
-	local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
-	draftData.EH = hexa;
+	if red and green and blue then
+		local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+		draftData.EH = hexa;
+	else
+		draftData.EH = nil;
+	end
 end
 
 local function onClassColorSelected(red, green, blue)
-	local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
-	draftData.CH = hexa;
+	if red and green and blue then
+		local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+		draftData.CH = hexa;
+	else
+		draftData.CH = nil;
+	end
 end
 
 local function onPsychoClick(frame, value, modif)
@@ -420,8 +428,8 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_AgeField:SetText(draftData.AG or "");
 	TRP3_RegisterCharact_Edit_EyeField:SetText(draftData.EC or "");
 
-	TRP3_RegisterCharact_Edit_EyeButton.setColor(hexaToNumber(draftData.EH or "ffffff"))
-	TRP3_RegisterCharact_Edit_ClassButton.setColor(hexaToNumber(draftData.CH or "ffffff"));
+	TRP3_RegisterCharact_Edit_EyeButton.setColor(hexaToNumber(draftData.EH))
+	TRP3_RegisterCharact_Edit_ClassButton.setColor(hexaToNumber(draftData.CH));
 
 	TRP3_RegisterCharact_Edit_HeightField:SetText(draftData.HE or "");
 	TRP3_RegisterCharact_Edit_WeightField:SetText(draftData.WE or "");
@@ -559,10 +567,10 @@ end
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
 	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),
-		loc("REG_RELATION_BUTTON_TT"):format(
-			getRelationText(profileID),
-			getRelationTooltipText(profileID, profile)
-		)
+	loc("REG_RELATION_BUTTON_TT"):format(
+	getRelationText(profileID),
+	getRelationTooltipText(profileID, profile)
+	)
 	);
 end
 
@@ -635,9 +643,9 @@ local function onActionSelected(value, button)
 	if value == 1 then
 		local profil = getProfile(context.profileID);
 		showConfirmPopup(loc("REG_DELETE_WARNING"):format(Utils.str.color("g")..getCompleteName(profil.characteristics or {}, UNKNOWN , true).."|r"),
-			function()
-				deleteProfile(context.profileID);
-			end);
+		function()
+			deleteProfile(context.profileID);
+		end);
 	elseif value == 2 then
 		showTextInputPopup(loc("REG_PLAYER_IGNORE_WARNING"):format(strjoin("\n", unpack(getKeys(context.profile.link)))), function(text)
 			for unitID, _ in pairs(context.profile.link) do
@@ -816,7 +824,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
 	end);
-  TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
+	TRP3_RegisterCharact_Edit_ClassButton.onSelection = onClassColorSelected;
 	TRP3_RegisterCharact_Edit_EyeButton.onSelection = onEyeColorSelected;
 
 	setupDropDownMenu(TRP3_RegisterCharact_Edit_PsychoAdd, PSYCHO_PRESETS_DROPDOWN, psychoAdd, 0, true, false);
@@ -837,8 +845,8 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR"), loc("REG_PLAYER_COLOR_TT"));
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR"), loc("REG_PLAYER_COLOR_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_COLOR_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR_CLASS"), loc("REG_PLAYER_COLOR_TT"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

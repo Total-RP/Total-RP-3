@@ -311,6 +311,9 @@ Utils.color.numberToHexa = numberToHexa;
 
 --- Value must be a string with hexa decimal representation
 local function hexaToNumber(hexa)
+	if not hexa then
+		return nil, nil, nil;
+	end
 	local redH = tonumber(hexa:sub(1, 2), 16)
 	local greenH = tonumber(hexa:sub(3, 4), 16)
 	local blueH = tonumber(hexa:sub(5, 6), 16)

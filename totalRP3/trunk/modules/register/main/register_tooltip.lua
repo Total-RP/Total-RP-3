@@ -228,6 +228,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		lineIndex = lineIndex + 1;
 		return;
 	end
+	
+	
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -235,9 +237,13 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
-	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
 	local rightIcons = "";
 	local leftIcons = "";
+	local characterColorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
+	if info.characteristics and info.characteristics.CH then
+		characterColorCode = "|cff" .. info.characteristics.CH;
+	end
+	local completeName = characterColorCode .. getCompleteName(info.characteristics or {}, targetName, not showTitle());
 
 	if showIcons() then
 		-- Player icon
@@ -268,7 +274,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	ui_CharacterTT:AddDoubleLine(leftIcons .. completeName, rightIcons);
 	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
-	_G[strconcat(ui_CharacterTT:GetName(), "TextLeft", lineIndex)]:SetTextColor(classColor.r, classColor.g, classColor.b);
 	lineIndex = lineIndex + 1;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -304,11 +309,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if info.characteristics and info.characteristics.CL then
 			class = info.characteristics.CL;
 		end
-		local colorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
-		if info.characteristics and info.characteristics.CH then
-			colorCode = "|cff" .. info.characteristics.CH;
-		end
-		lineLeft = strconcat("|cffffffff", race, " ", colorCode, class);
+		lineLeft = strconcat("|cffffffff", race, " ", characterColorCode, class);
 		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
 		ui_CharacterTT:AddDoubleLine(lineLeft, lineRight);

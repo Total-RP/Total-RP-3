@@ -424,19 +424,29 @@
 		</Layers>
 		<Scripts>
 			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 				self.setColor = function(red, green, blue)
 					self.red = red;
 					self.green = green;
 					self.blue = blue;
-					_G[self:GetName() .. "SwatchBg"]:SetTexture(red / 255, green / 255, blue / 255);
-					_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
+					if red and green and blue then
+						_G[self:GetName() .. "SwatchBg"]:SetTexture(red / 255, green / 255, blue / 255);
+						_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
+					else
+						_G[self:GetName() .. "SwatchBg"]:SetTexture("Interface\\ICONS\\icon_petfamily_mechanical");
+						_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
+					end
 					if self.onSelection then
 						self.onSelection(red, green, blue);
 					end
 				end
 			</OnLoad>
 			<OnClick>
-				TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
+				if button == "LeftButton" then
+					TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
+				elseif  button == "RightButton" then
+					self.setColor(nil, nil, nil);
+				end
 			</OnClick>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
