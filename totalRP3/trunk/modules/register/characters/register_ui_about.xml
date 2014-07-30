@@ -2,6 +2,75 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
+	<!-- Toolbar -->
+	<Frame name="TRP3_TextToolbar" virtual="true">
+		<Size x="0" y="30"/>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parent_Title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
+					<Anchors>
+						<Anchor point="TOP" x="0" y="13"/>
+					</Anchors>
+					<Color b="0.1" r="1.0" g="0.75"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parent_H1" inherits="TRP3_CommonButton" text="H1">
+				<Size x="50" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="10" y="2"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_H2" inherits="TRP3_CommonButton" text="H2">
+				<Size x="50" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H1"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_H3" inherits="TRP3_CommonButton" text="H3">
+				<Size x="50" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H2"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_P" inherits="TRP3_CommonButton" text="P">
+				<Size x="40" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H3"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_Image" inherits="TRP3_CommonButton" text="[Image]">
+				<Size x="70" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_P"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_Icon" inherits="TRP3_CommonButton" text="[Icon]">
+				<Size x="70" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Image"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_Color" inherits="TRP3_CommonButton" text="[Color]">
+				<Size x="70" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Icon"/>
+				</Anchors>
+			</Button>
+			<Button name="$parent_Link" inherits="TRP3_CommonButton" text="[Link]">
+				<Size x="70" y="20"/>
+				<Anchors>	
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Color"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+	
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
@@ -209,77 +278,12 @@
 						</Anchors>
 						<Frames>
 							<!-- Toolbar -->
-							<Frame name="TRP3_RegisterAbout_Edit_Template1_Toolbar">
-								<Size x="0" y="30"/>
-								<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-									<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-								</Backdrop>
+							<Frame name="TRP3_RegisterAbout_Edit_Template1_Toolbar" inherits="TRP3_TextToolbar">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-10"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
-								<Layers>
-									<Layer level="OVERLAY">
-										<FontString name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
-											<Anchors>
-												<Anchor point="TOP" x="0" y="13"/>
-											</Anchors>
-											<Color b="0.1" r="1.0" g="0.75"/>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Frames>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H1" inherits="TRP3_CommonButton" text="H1">
-										<Size x="50" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="10" y="2"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H2" inherits="TRP3_CommonButton" text="H2">
-										<Size x="50" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H1"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_H3" inherits="TRP3_CommonButton" text="H3">
-										<Size x="50" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H2"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_P" inherits="TRP3_CommonButton" text="P">
-										<Size x="40" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_H3"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Image" inherits="TRP3_CommonButton" text="[Image]">
-										<Size x="70" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_P"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon" inherits="TRP3_CommonButton" text="[Icon]">
-										<Size x="70" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Image"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Color" inherits="TRP3_CommonButton" text="[Color]">
-										<Size x="70" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon"/>
-										</Anchors>
-									</Button>
-									<Button name="TRP3_RegisterAbout_Edit_Template1_Toolbar_Link" inherits="TRP3_CommonButton" text="[Link]">
-										<Size x="70" y="20"/>
-										<Anchors>	
-											<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar_Color"/>
-										</Anchors>
-									</Button>
-								</Frames>
 							</Frame>
 							<Frame name="TRP3_RegisterAbout_Edit_Template1" inherits="TRP3_TextArea">
 								<Anchors>

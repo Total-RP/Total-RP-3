@@ -277,7 +277,10 @@ local LOCALE_EN = {
 		REG_COMPANION_TF_CREATE = "Create new profile",
 		REG_COMPANION_TF_UNBOUND = "Unlink from profile",
 		REG_COMPANION_TF_BOUND_TO = "Select a profile",
+		REG_COMPANION_TF_OPEN = "Open page",
 		REG_COMPANION_INFO = "Information",
+		REG_COMPANION_NAME = "Name",
+		REG_COMPANION_TITLE = "Title",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION

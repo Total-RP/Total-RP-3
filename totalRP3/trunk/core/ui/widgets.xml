@@ -134,15 +134,10 @@
 	
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="300"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Layers>
-			<Layer level="ARTWORK">
-				
-			</Layer>
-		</Layers>
 		<Frames>
 			<Frame name="$parentCaptionPanel">
 				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">

@@ -135,6 +135,81 @@
 			<Frame name="$parentEdit" setAllPoints="true">
 				<Frames>
 				
+					<!-- Names and titles -->
+					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
+						<Size x="414" y="70"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="10" y="-20"/>
+						</Anchors>
+						<Frames>
+							<Button name="$parent_Icon" inherits="TRP3_IconButton">
+								<Anchors>	
+									<Anchor point="LEFT" x="20" y="-2"/>
+								</Anchors>
+							</Button>
+							<Button name="$parent_SaveButton" inherits="TRP3_CommonButton">
+								<Size x="75" y="20"/>
+								<Anchors>	
+									<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
+								</Anchors>
+							</Button>
+							<Button name="$parent_CancelButton" inherits="TRP3_CommonButton">
+								<Size x="75" y="20"/>
+								<Anchors>	
+									<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="$parent_SaveButton"/>
+								</Anchors>
+							</Button>
+							<EditBox name="$parent_NameField" inherits="TRP3_TitledHelpEditBox">
+								<Size x="330" y="18"/>
+								<Anchors>	
+									<Anchor point="TOPLEFT" x="20" y="8" relativePoint="TOPRIGHT" relativeTo="$parent_Icon"/>
+								</Anchors>
+							</EditBox>
+							<EditBox name="$parent_TitleField" inherits="TRP3_TitledHelpEditBox">
+								<Size x="330" y="18"/>
+								<Anchors>	
+									<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="$parent_NameField"/>
+								</Anchors>
+							</EditBox>
+						</Frames>
+					</Frame>
+					
+					<!-- Description -->
+					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
+						<Size x="494" y="0"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+						<Frames>
+							<Frame name="$parent_BckField" inherits="UIDropDownMenuTemplate" enableMouse="true">
+						        <Anchors>
+									<Anchor point="TOPLEFT" x="0" y="-15"/>
+								</Anchors>
+						    </Frame>
+						    
+						    <!-- Toolbar -->
+							<Frame name="$parent_Toolbar" inherits="TRP3_TextToolbar">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-50"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+								</Anchors>
+							</Frame>
+							
+							 <!-- Text -->
+							<Frame name="$parent_Text" inherits="TRP3_TextArea">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_Toolbar" x="0" y="-5"/>
+									<Anchor point="BOTTOM" x="0" y="5"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+								</Anchors>
+							</Frame>
+							
+						</Frames>
+					</Frame>
+					
 				</Frames>
 			</Frame>
 		</Frames>

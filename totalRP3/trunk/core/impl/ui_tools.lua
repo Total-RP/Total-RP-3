@@ -7,13 +7,14 @@ TRP3_API.ui = {
 	listbox = {},
 	list = {},
 	misc = {},
-	frame = {}
+	frame = {},
+	text = {}
 }
 
 -- imports
 local globals = TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
-local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type;
+local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
@@ -21,6 +22,7 @@ local shiftDown = IsShiftKeyDown;
 local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
+local numberToHexa = TRP3_API.utils.color.numberToHexa;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
@@ -739,3 +741,113 @@ end
 TRP3_API.ui.misc.getClassTexture = function (class)
 	return classTexture[class] or globals.icons.default;
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Text toolbar
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TAGS_INFO = {
+	{
+		openTags = {"{h1}", "{h1:c}", "{h1:r}"},
+		closeTag = "{/h1}",
+	},
+	{
+		openTags = {"{h2}", "{h2:c}", "{h2:r}"},
+		closeTag = "{/h2}",
+	},
+	{
+		openTags = {"{h3}", "{h3:c}", "{h3:r}"},
+		closeTag = "{/h3}",
+	},
+	{
+		openTags = {"{p:c}", "{p:r}"},
+		closeTag = "{/p}",
+	}
+}
+
+local function insertTag(tag, index, frame)
+	local text = frame:GetText();
+	local pre = text:sub(1, index);
+	local post = text:sub(index + 1);
+	text = strconcat(pre, tag, post);
+	frame:SetText(text);
+end
+
+local function postInsertHighlight(index, tagSize, textSize, frame)
+	frame:SetCursorPosition(index + tagSize + textSize);
+	frame:HighlightText(index + tagSize, index + tagSize + textSize);
+end
+
+local function insertContainerTag(alignIndex, button, frame)
+	assert(button.tagIndex and TAGS_INFO[button.tagIndex], "Button is not properly init with a tag index");
+	local tagInfo = TAGS_INFO[button.tagIndex];
+	local cursorIndex = frame:GetCursorPosition();
+	insertTag(strconcat(tagInfo.openTags[alignIndex], loc("REG_PLAYER_ABOUT_T1_YOURTEXT"), tagInfo.closeTag), cursorIndex, frame);
+	postInsertHighlight(cursorIndex, tagInfo.openTags[alignIndex]:len(), loc("REG_PLAYER_ABOUT_T1_YOURTEXT"):len(), frame);
+end
+
+local function onColorTagSelected(red, green, blue, frame)
+	local cursorIndex = frame:GetCursorPosition();
+	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
+	insertTag(tag, cursorIndex, frame);
+	frame:SetCursorPosition(cursorIndex + tag:len());
+end
+
+local function onIconTagSelected(icon, frame)
+	local cursorIndex = frame:GetCursorPosition();
+	local tag = ("{icon:%s:25}"):format(icon);
+	insertTag(tag, cursorIndex, frame);
+	frame:SetCursorPosition(cursorIndex + tag:len());
+end
+
+local function onImageTagSelected(image, frame)
+	local cursorIndex = frame:GetCursorPosition();
+	local tag = ("{img:%s:%s:%s}"):format(image.url, math.min(image.width, 512), math.min(image.height, 512));
+	insertTag(tag, cursorIndex, frame);
+	frame:SetCursorPosition(cursorIndex + tag:len());
+end
+
+local function onLinkTagClicked(frame)
+	local cursorIndex = frame:GetCursorPosition();
+	local tag = ("{link||%s||%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
+	insertTag(tag, cursorIndex, frame);
+	frame:SetCursorPosition(cursorIndex + 6);
+	frame:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());
+end
+
+-- Drop down
+local function onContainerTagClicked(button, frame, isP)
+	local values = {};
+	if not isP then
+		tinsert(values, {loc("REG_PLAYER_ABOUT_P")});
+		tinsert(values, {loc("CM_LEFT"), 1});
+		tinsert(values, {loc("CM_CENTER"), 2});
+		tinsert(values, {loc("CM_RIGHT"), 3});
+	else
+		tinsert(values, {loc("REG_PLAYER_ABOUT_HEADER")});
+		tinsert(values, {loc("CM_CENTER"), 1});
+		tinsert(values, {loc("CM_RIGHT"), 2});
+	end
+	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
+end
+
+function TRP3_API.ui.text.setupToolbar(toolbar, textFrame)
+	_G[toolbar .. "_Title"]:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
+	_G[toolbar .. "_Image"]:SetText(loc("CM_IMAGE"));
+	_G[toolbar .. "_Icon"]:SetText(loc("CM_ICON"));
+	_G[toolbar .. "_Color"]:SetText(loc("CM_COLOR"));
+	_G[toolbar .. "_Link"]:SetText(loc("CM_LINK"));
+	_G[toolbar .. "_H1"].tagIndex = 1;
+	_G[toolbar .. "_H2"].tagIndex = 2;
+	_G[toolbar .. "_H3"].tagIndex = 3;
+	_G[toolbar .. "_P"].tagIndex = 4;
+	_G[toolbar .. "_H1"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	_G[toolbar .. "_H2"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	_G[toolbar .. "_H3"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	_G[toolbar .. "_P"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
+	_G[toolbar .. "_Icon"]:SetScript("OnClick", function() TRP3_API.popup.showIconBrowser(function(icon) onIconTagSelected(icon, textFrame) end) end);
+	_G[toolbar .. "_Color"]:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end) end);
+	_G[toolbar .. "_Image"]:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(function(image) onImageTagSelected(image, textFrame) end) end);
+	_G[toolbar .. "_Link"]:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
+end
+

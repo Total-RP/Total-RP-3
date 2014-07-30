@@ -9,9 +9,7 @@ local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local safeGet = TRP3_API.profile.getDataDefault;
 local loc = TRP3_API.locale.getText;
-local stNtE = Utils.str.nilToEmpty;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local numberToHexa = Utils.color.numberToHexa;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
@@ -89,25 +87,6 @@ end
 -- TEMPLATE 1
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TAGS_INFO = {
-	{
-		openTags = {"{h1}", "{h1:c}", "{h1:r}"},
-		closeTag = "{/h1}",
-	},
-	{
-		openTags = {"{h2}", "{h2:c}", "{h2:r}"},
-		closeTag = "{/h2}",
-	},
-	{
-		openTags = {"{h3}", "{h3:c}", "{h3:r}"},
-		closeTag = "{/h3}",
-	},
-	{
-		openTags = {"{p:c}", "{p:r}"},
-		closeTag = "{/p}",
-	}
-}
-
 local function shouldShowTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
 	return templateData.TX and templateData.TX:len() > 0;
@@ -123,74 +102,6 @@ local function showTemplate1(dataTab)
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText("");
 	end
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
-end
-
-local function insertTag(tag, index)
-	local text = TRP3_RegisterAbout_Edit_Template1ScrollText:GetText();
-	local pre = text:sub(1, index);
-	local post = text:sub(index + 1);
-	text = strconcat(pre, tag, post);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetText(text);
-end
-
-local function postInsertHighlight(index, tagSize, textSize)
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(index + tagSize + textSize);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:HighlightText(index + tagSize, index + tagSize + textSize);
-end
-
-local function insertContainerTag(alignIndex, button)
-	assert(button.tagIndex and TAGS_INFO[button.tagIndex], "Button is not properly init with a tag index");
-	local tagInfo = TAGS_INFO[button.tagIndex];
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
-	insertTag(strconcat(tagInfo.openTags[alignIndex], loc("REG_PLAYER_ABOUT_T1_YOURTEXT"), tagInfo.closeTag), cursorIndex);
-	postInsertHighlight(cursorIndex, tagInfo.openTags[alignIndex]:len(), loc("REG_PLAYER_ABOUT_T1_YOURTEXT"):len());
-end
-
-local function onColorTagSelected(red, green, blue)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
-	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
-	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
-end
-
-local function onIconTagSelected(icon)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
-	local tag = ("{icon:%s:25}"):format(icon);
-	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
-end
-
-local function onImageTagSelected(image)
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
-	local tag = ("{img:%s:%s:%s}"):format(image.url, math.min(image.width, 512), math.min(image.height, 512));
-	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + tag:len());
-end
-
-local function onLinkTagClicked()
-	local cursorIndex = TRP3_RegisterAbout_Edit_Template1ScrollText:GetCursorPosition();
-	local tag = ("{link||%s||%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
-	insertTag(tag, cursorIndex);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:SetCursorPosition(cursorIndex + 6);
-	TRP3_RegisterAbout_Edit_Template1ScrollText:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());
-end
-
--- Drop down
-local function onContainerTagClicked(button)
-	local values = {};
-	tinsert(values, {loc("REG_PLAYER_ABOUT_HEADER")});
-	tinsert(values, {loc("CM_LEFT"), 1});
-	tinsert(values, {loc("CM_CENTER"), 2});
-	tinsert(values, {loc("CM_RIGHT"), 3});
-	displayDropDown(button, values, insertContainerTag, 0, true);
-end
-
-local function onContainerPTagClicked(button)
-	local values = {};
-	tinsert(values, {loc("REG_PLAYER_ABOUT_P")});
-	tinsert(values, {loc("CM_CENTER"), 1});
-	tinsert(values, {loc("CM_RIGHT"), 2});
-	displayDropDown(button, values, insertContainerTag, 0, true);
 end
 
 local function onLinkClicked(self, url)
@@ -930,25 +841,9 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetText(loc("CM_IMAGE"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetText(loc("CM_ICON"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Color:SetText(loc("CM_COLOR"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Link:SetText(loc("CM_LINK"));
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H1.tagIndex = 1;
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H2.tagIndex = 2;
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H3.tagIndex = 3;
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_P.tagIndex = 4;
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H1:SetScript("OnClick", onContainerTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H2:SetScript("OnClick", onContainerTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_H3:SetScript("OnClick", onContainerTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_P:SetScript("OnClick", onContainerPTagClicked);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Icon:SetScript("OnClick", function() showIconBrowser(onIconTagSelected) end);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Color:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(onColorTagSelected) end);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Image:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(onImageTagSelected) end);
-	TRP3_RegisterAbout_Edit_Template1_Toolbar_Link:SetScript("OnClick", onLinkTagClicked);
+	TRP3_API.ui.text.setupToolbar("TRP3_RegisterAbout_Edit_Template1_Toolbar", TRP3_RegisterAbout_Edit_Template1ScrollText);
+	
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
-
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(TRP3_RegisterAbout_AboutPanel, "ANCHOR_CURSOR");
@@ -972,13 +867,13 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetText(loc("CM_STOP"));
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc("REG_PLAYER_ABOUT_MUSIC"));
 
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p",GameFontNormal);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1",GameFontNormalHuge3);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h2",GameFontNormalHuge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h3",GameFontNormalLarge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1",1,1,1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2",1,1,1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3",1,1,1);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p", GameFontNormal);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1", GameFontNormalHuge3);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h2", GameFontNormalHuge);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h3", GameFontNormalLarge);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1", 1, 1, 1);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2", 1, 1, 1);
+	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3", 1, 1, 1);
 
 	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
 	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");

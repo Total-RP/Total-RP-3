@@ -16,9 +16,15 @@ local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
-local assert, tostring, type, _G = assert, tostring, type, _G;
+local assert, tostring, type, _G, wipe, strtrim = assert, tostring, type, _G, wipe, strtrim;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
+local tcopy, tsize = Utils.table.copy, Utils.table.size;
+local stEtN = Utils.str.emptyToNil;
+local stNtE = Utils.str.nilToEmpty;
+local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
+local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -97,11 +103,65 @@ end
 -- Edit Mode
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function displayEdit()
+local draftData;
+
+local function saveInDraft(profileName)
+	assert(type(draftData) == "table", "Error: Nil draftData or not a table.");
+	draftData.NA = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_NamePanel_NameField:GetText())) or profileName;
+	draftData.TI = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:GetText()));
+	draftData.BK = TRP3_CompanionsPageInformationEdit_About_BckField:GetSelectedValue();
+	draftData.TX = stEtN(strtrim(TRP3_CompanionsPageInformationEdit_About_TextScrollText:GetText()));
+end
+
+local function setBkg(frame, bkg)
+	local backdrop = frame:GetBackdrop();
+	backdrop.bgFile = getTiledBackground(bkg or 1);
+	frame:SetBackdrop(backdrop);
+end
+
+local function saveInformation()
 	local context = getCurrentContext();
 	assert(context, "No context !");
 	assert(context.profile, "No profile in context");
 
+	local dataTab = context.profile;
+	assert(type(dataTab.data) == "table", "Error: Nil information data or not a table.");
+	
+	saveInDraft(context.profile.profileName);
+	
+	wipe(dataTab.data);
+	-- By simply copy the draftData we get everything we need about ordering and structures.
+	tcopy(dataTab.data, draftData);
+	-- version increment
+	dataTab.data.v1 = Utils.math.incrementNumber(dataTab.data.v1 or 0, 2);
+
+--	compressData();
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+end
+
+local function onPlayerIconSelected(icon)
+	draftData.IC = icon;
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+end
+
+local function displayEdit()
+	local context = getCurrentContext();
+	assert(context, "No context !");
+	assert(context.profile, "No profile in context");
+	
+	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
+	if not draftData then
+		local dataTab = context.profile.data;
+		assert(type(dataTab) == "table", "Error: Nil characteristics data or not a table.");
+		draftData = {};
+		tcopy(draftData, dataTab);
+	end
+
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:SetText(draftData.TI or "");
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
+	TRP3_CompanionsPageInformationEdit_About_BckField:SetSelectedIndex(draftData.BK or 1);
+	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -113,7 +173,7 @@ function displayConsult(context)
 	local dataTab = context.profile.data or Globals.empty;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText(dataTab.NA or UNKNOWN);
-	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.FT or "");
+	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.TI or "");
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 
 	for i=1,5 do
@@ -124,10 +184,13 @@ function displayConsult(context)
 	end
 
 	TRP3_CompanionsPageInformationConsult_About_Empty:Show();
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText("");
 	if dataTab.TX and dataTab.TX:len() > 0 then
 		TRP3_CompanionsPageInformationConsult_About_Empty:Hide();
-
+		local text = Utils.str.toHTML(dataTab.TX);
+		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(text);
 	end
+	setBkg(TRP3_CompanionsPageInformationConsult_About, dataTab.BK);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -166,7 +229,13 @@ local function showInformationTab()
 	refresh();
 end
 
+local function onSave()
+	saveInformation();
+	showInformationTab();
+end
+
 local function toEditMode()
+	draftData = nil;
 	getCurrentContext().isEditMode = true;
 	refresh();
 end
@@ -200,6 +269,8 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local showIconBrowser = TRP3_API.popup.showIconBrowser;
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	PEEK_PRESETS = TRP3_Presets.peek;
 
@@ -213,13 +284,34 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
+	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);
+	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetScript("OnClick", onSave);
+	TRP3_CompanionsPageInformationEdit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end );
 
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_Glance, loc("REG_PLAYER_GLANCE"), 150);
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_About, loc("REG_PLAYER_ABOUT"), 150);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc("CM_EDIT"));
-
+	
+	setupFieldSet(TRP3_CompanionsPageInformationEdit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
+	setupFieldSet(TRP3_CompanionsPageInformationEdit_About, loc("REG_PLAYER_ABOUT"), 150);
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameFieldText:SetText(loc("REG_COMPANION_NAME"));
+	TRP3_CompanionsPageInformationEdit_NamePanel_TitleFieldText:SetText(loc("REG_COMPANION_TITLE"));
+	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetText(loc("CM_CANCEL"));
+	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetText(loc("CM_SAVE"));
+	local bkgTab = getTiledBackgroundList();
+	setupListBox(TRP3_CompanionsPageInformationEdit_About_BckField, bkgTab, function(value) setBkg(TRP3_CompanionsPageInformationEdit_About, value) end, nil, 120, true);
+	TRP3_API.ui.text.setupToolbar("TRP3_CompanionsPageInformationEdit_About_Toolbar", TRP3_CompanionsPageInformationEdit_About_TextScrollText);
+	
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("p", GameFontNormal);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h1", GameFontNormalHuge3);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h2", GameFontNormalHuge);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h3", GameFontNormalLarge);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h1", 1, 1, 1);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h2", 1, 1, 1);
+	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h3", 1, 1, 1);
+	
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
