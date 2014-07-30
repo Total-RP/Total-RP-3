@@ -24,6 +24,9 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty = TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty;
 local EMPTY = Globals.empty;
+local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
+local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
+local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -54,7 +57,7 @@ local function openProfile(profileID)
 		registerMenu({
 			id = currentlyOpenedProfilePrefix .. profileID,
 			text = tabText,
-			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID}) end,
+			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = true}) end,
 			isChildOf = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
 			closeable = true,
 		});
@@ -127,6 +130,15 @@ end
 -- List
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function getCompanionTypeText(companionType)
+	if companionType == TYPE_PET then
+		return loc("PR_CO_PET");
+	elseif companionType == TYPE_BATTLE_PET then
+		return loc("PR_CO_BATTLE");
+	end
+	return "";
+end
+
 local function decorateProfileList(widget, id)
 	widget.profileID = id;
 	local profile = getProfiles()[id];
@@ -138,8 +150,8 @@ local function decorateProfileList(widget, id)
 
 	local listText = "";
 	local i = 0;
-	for companionID, _ in pairs(profile.links or EMPTY) do
-		listText = listText .. "- |cff00ff00" .. companionID .. "|r\n";
+	for companionID, companionType in pairs(profile.links or EMPTY) do
+		listText = listText .. "- |cff00ff00" .. companionID .. "|cffff9900 (" .. getCompanionTypeText(companionType) .. ")|r\n";
 		i = i + 1;
 	end
 	_G[widget:GetName().."Count"]:SetText(loc("PR_CO_COUNT"):format(i));

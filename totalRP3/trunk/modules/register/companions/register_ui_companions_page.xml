@@ -3,16 +3,158 @@
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
 	
 	 <!-- Register characteristics panel -->
+	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true">
+	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize><AbsValue val="32"/></EdgeSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="506" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentConsult" setAllPoints="true">
+				<Frames>
+				
+					<!-- Names and titles -->
+					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
+						<Size x="414" y="70"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="10" y="-20"/>
+						</Anchors>
+						<Frames>
+							<Frame name="$parent_Icon" inherits="TRP3_SimpleIcon">
+								<Size x="40" y="40"/>
+								<Anchors>	
+									<Anchor point="LEFT" x="15" y="-2"/>
+								</Anchors>
+							</Frame>
+							<Button name="$parent_EditButton" inherits="TRP3_CommonButton">
+								<Size x="75" y="20"/>
+								<Anchors>	
+									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
+								</Anchors>
+							</Button>
+						</Frames>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="$parent_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="$parent_Icon"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>				
+									<Color b="0.95" r="0.95" g="0.95"/>	
+								</FontString>
+								<FontString name="$parent_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="$parent_Name"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>		
+									<Color b="0.1" r="0.95" g="0.60"/>				
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+					
+					<!-- At a glance -->
+					<Frame name="$parent_Glance" inherits="TRP3_FieldSetFrame">
+						<Size x="494" y="70"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
+						</Anchors>
+						<Frames>
+							<Button name="$parentSlot3" inherits="TRP3_RegisterMiscGlanceButton">
+								<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+							</Button>
+							<Button name="$parentSlot2" inherits="TRP3_RegisterMiscGlanceButton">
+								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot3" x="-45" y="0"/></Anchors>
+							</Button>
+							<Button name="$parentSlot1" inherits="TRP3_RegisterMiscGlanceButton">
+								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot2" x="-45" y="0"/></Anchors>
+							</Button>
+							<Button name="$parentSlot4" inherits="TRP3_RegisterMiscGlanceButton">
+								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot3" x="45" y="0"/></Anchors>
+							</Button>
+							<Button name="$parentSlot5" inherits="TRP3_RegisterMiscGlanceButton">
+								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot4" x="45" y="0"/></Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+					
+					<!-- Description -->
+					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
+						<Size x="494" y="0"/>
+						<Anchors>	
+							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_Glance"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								 <FontString name="$parent_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+									<Size x="0" y="10"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<ScrollFrame name="$parent_Scroll" inherits="UIPanelScrollFrameTemplate">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="10" y="-11"/>
+									<Anchor point="BOTTOMRIGHT" x="-18" y="9"/>
+								</Anchors>
+								<ScrollChild>
+									<Frame>
+										<Size x="10" y="10"/>
+										<Frames>
+											<SimpleHTML name="$parentText">
+												<Size x="479" y="5"/>
+												<Anchors>
+													<Anchor point="TOPLEFT" x="5" y="-5"/>
+												</Anchors>
+												<FontString inherits="GameFontNormalSmall"/>
+											</SimpleHTML>
+										</Frames>
+									</Frame>
+								</ScrollChild>
+							</ScrollFrame>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+			<Frame name="$parentEdit" setAllPoints="true">
+				<Frames>
+				
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+	
+	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPage" hidden="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 			<TileSize val="425"/>
 		</Backdrop>
-		<Layers>
-			
-		</Layers>
-		
+		<Frames>
+			<Frame name="TRP3_CompanionsPageInformation" inherits="TRP3_CompanionsPageInformationTemplate" frameLevel="2">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-8" y="-33"/>
+					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 	</Frame>
     
 </Ui>

@@ -126,12 +126,12 @@ end
 local function displayRPStyle(context)
 	local dataTab = context.profile.misc or Globals.empty;
 	local styleData = dataTab.ST or {};
-	
+
 	-- Hide all
 	for _, frame in pairs(styleLines) do
 		frame:Hide();
 	end
-	
+
 	local previous = nil;
 	local count = 0;
 	for index, fieldData in pairs(STYLE_FIELDS) do
@@ -142,9 +142,9 @@ local function displayRPStyle(context)
 			frame.fieldData = fieldData;
 			tinsert(styleLines, frame);
 		end
-		
+
 		local selectedValue = styleData[fieldData.id] or 0;
-		
+
 		if context.isPlayer or selectedValue ~= 0 then
 			-- Position
 			frame:ClearAllPoints();
@@ -155,7 +155,7 @@ local function displayRPStyle(context)
 			end
 			frame:SetPoint("LEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			
+
 			-- Value
 			_G[frame:GetName().."FieldName"]:SetText(fieldData.name);
 			local dropDown = _G[frame:GetName().."Values"];
@@ -176,13 +176,13 @@ local function displayRPStyle(context)
 				end
 				readOnlyValue:SetText(valueText);
 			end
-			
+
 			frame:Show();
 			previous = frame;
 			count = count + 1;
 		end
 	end
-	
+
 	TRP3_RegisterMiscViewRPStyleEmpty:Hide();
 	if not context.isPlayer and count == 0 then
 		TRP3_RegisterMiscViewRPStyleEmpty:Show();
@@ -214,6 +214,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		end
 	end
 end
+TRP3_API.register.setupGlanceButton = setupGlanceButton;
 
 local function displayPeek(context)
 	local dataTab = context.profile.misc or Globals.empty;
@@ -228,7 +229,6 @@ end
 -- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentSelected;
 local draftData = {};
 
 local function onIconSelected(icon)
@@ -242,22 +242,27 @@ local function onIconClosed()
 	showPopup(TRP3_RegisterGlanceEditor);
 end
 
-local function onSlotClick(button)
-	local context = getCurrentContext();
-	assert(context, "No context for page player_main !");
-	if context.isPlayer then
-		currentSelected = button.index;
-		local dataTab = get("player/misc");
-		draftData = (dataTab.PE or {})[currentSelected] or {};
-		TRP3_RegisterMiscEdit_Glance_Active:SetChecked(draftData.AC);
-		TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(draftData.TX or "");
-		TRP3_RegisterMiscEdit_Glance_Title:SetText(draftData.TI or "");
-		TRP3_RegisterMiscEdit_Glance_PresetSaveCategory:SetText("");
-		TRP3_RegisterMiscEdit_Glance_PresetSaveName:SetText("");
-		onIconSelected(draftData.IC);
-		showPopup(TRP3_RegisterGlanceEditor);
-	end
+local function openGlanceEditor(button, callback)
+	assert(button, "No button");
+	assert(button.data, "No data in button");
+	TRP3_RegisterMiscEdit_Glance_Active:SetChecked(button.data.AC);
+	TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(button.data.TX or "");
+	TRP3_RegisterMiscEdit_Glance_Title:SetText(button.data.TI or "");
+	TRP3_RegisterGlanceEditor_PresetSaveCategory:SetText("");
+	TRP3_RegisterGlanceEditor_PresetSaveName:SetText("");
+	onIconSelected(button.data.IC);
+	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", function()
+		callback(
+			button,
+			TRP3_RegisterMiscEdit_Glance_Icon.icon,
+			TRP3_RegisterMiscEdit_Glance_Active:GetChecked(),
+			stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText()),
+			stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText())
+		);
+	end);
+	showPopup(TRP3_RegisterGlanceEditor);
 end
+TRP3_API.register.openGlanceEditor = openGlanceEditor;
 
 local function applyPeekSlot(slot, ic, ac, ti, tx)
 	assert(slot, "No selection ...");
@@ -280,14 +285,19 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 	Events.fireEvent(Events.REGISTER_MISC_SAVED);
 end
 
-local function peekEditorApply()
-	applyPeekSlot(
-		currentSelected,
-		TRP3_RegisterMiscEdit_Glance_Icon.icon,
-		TRP3_RegisterMiscEdit_Glance_Active:GetChecked(),
-		stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText()),
-		stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText())
-	);
+local function peekEditorApply(button, ic, ac, ti, tx)
+	applyPeekSlot(button.index, ic, ac, ti, tx);
+end
+
+local function onSlotClick(button)
+	local context = getCurrentContext();
+	assert(context, "No context for page player_main !");
+	if context.isPlayer then
+		local dataTab = get("player/misc");
+		draftData = (dataTab.PE or {})[button.index] or {};
+		button.data = draftData;
+		openGlanceEditor(button, peekEditorApply);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -366,13 +376,13 @@ local function buildPresetListData()
 		tinsert(listData, categoryListElement);
 		tinsert(presetStructureForTargetFrame, categoryListElementTarget);
 	end
-	
+
 	return listData;
 end
 
 local function loadPreset(presetID)
 	assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
-	TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
+	TRP3_RegisterGlanceEditor_PresetList:SetSelectedIndex(1);
 	local preset = PEEK_PRESETS[presetID];
 	TRP3_RegisterMiscEdit_Glance_Active:SetChecked(true);
 	TRP3_RegisterMiscEdit_Glance_Title:SetText(preset.title or "");
@@ -405,16 +415,16 @@ local function onPresetSelected(presetAction)
 end
 
 function rebuildPresetListBox()
-	setupListBox(TRP3_RegisterMiscEdit_Glance_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
-	TRP3_RegisterMiscEdit_Glance_PresetList:SetSelectedIndex(1);
+	setupListBox(TRP3_RegisterGlanceEditor_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
+	TRP3_RegisterGlanceEditor_PresetList:SetSelectedIndex(1);
 end
 
 local function savePreset()
 	local presetTitle = TRP3_RegisterMiscEdit_Glance_Title:GetText();
 	local presetText = TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText();
 	local presetIcon = TRP3_RegisterMiscEdit_Glance_Icon.icon;
-	local presetCategory = TRP3_RegisterMiscEdit_Glance_PresetSaveCategory:GetText();
-	local presetID = TRP3_RegisterMiscEdit_Glance_PresetSaveName:GetText();
+	local presetCategory = TRP3_RegisterGlanceEditor_PresetSaveCategory:GetText();
+	local presetID = TRP3_RegisterGlanceEditor_PresetSaveName:GetText();
 	if presetCategory:len() == 0 or presetID:len() == 0 then
 		toast(loc("REG_PLAYER_GLANCE_PRESET_ALERT1"), 2);
 		return;
@@ -428,8 +438,8 @@ local function savePreset()
 			PEEK_PRESETS_CATEGORY[presetCategory] = {};
 		end
 		tinsert(PEEK_PRESETS_CATEGORY[presetCategory], presetID);
-		TRP3_RegisterMiscEdit_Glance_PresetSaveCategory:SetText("");
-		TRP3_RegisterMiscEdit_Glance_PresetSaveName:SetText("");
+		TRP3_RegisterGlanceEditor_PresetSaveCategory:SetText("");
+		TRP3_RegisterGlanceEditor_PresetSaveName:SetText("");
 		rebuildPresetListBox();
 	else
 		toast(loc("REG_PLAYER_GLANCE_PRESET_ALERT2"):format(presetID), 2);
@@ -453,7 +463,7 @@ end
 
 function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
-	
+
 	if not TRP3_Presets then
 		TRP3_Presets = {};
 	end
@@ -465,22 +475,21 @@ function TRP3_API.register.inits.miscInit()
 	end
 	PEEK_PRESETS = TRP3_Presets.peek;
 	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
-	
+
 	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
-	TRP3_RegisterMiscEdit_Glance_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
-	TRP3_RegisterMiscEdit_Glance_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
-	TRP3_RegisterMiscEdit_Glance_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
-	TRP3_RegisterMiscEdit_Glance_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
-	TRP3_RegisterMiscEdit_Glance_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
-	
-	TRP3_RegisterMiscEdit_Glance_PresetSaveButton:SetScript("OnClick", savePreset);
+	TRP3_RegisterGlanceEditor_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
+	TRP3_RegisterGlanceEditor_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
+	TRP3_RegisterGlanceEditor_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
+	TRP3_RegisterGlanceEditor_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
+	TRP3_RegisterGlanceEditor_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
+
+	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
 	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() showIconBrowser(onIconSelected, onIconClosed); end);
-	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", peekEditorApply);
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
@@ -489,14 +498,14 @@ function TRP3_API.register.inits.miscInit()
 		button:SetScript("OnClick", onSlotClick);
 		button.index = tostring(index);
 	end
-	
+
 	titleElement = {loc("REG_PLAYER_GLANCE_PRESET_SELECT"), nil};
 	noneElement = {loc("REG_PLAYER_GLANCE_PRESET_NONE"), -1};
 	rebuildPresetListBox();
-	
+
 	-- RP style
 	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
-	
+
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
 		if getCurrentPageID() == "player_main" then
 			TRP3_API.popup.hidePopups();

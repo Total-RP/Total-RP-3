@@ -184,7 +184,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame name="TRP3_RegisterMiscEdit_Glance_Preset">
+			<Frame name="TRP3_RegisterGlanceEditor_Preset">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -197,17 +197,17 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetText" text="[LOAD_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
+						<FontString name="TRP3_RegisterGlanceEditor_PresetText" text="[LOAD_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
 							<Size x="150" y="10"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" x="20" y="-20"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
-						<FontString name="TRP3_RegisterMiscEdit_Glance_PresetSave" text="[SAVE_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
+						<FontString name="TRP3_RegisterGlanceEditor_PresetSave" text="[SAVE_PRESET]" justifyH="LEFT" inherits="GameFontNormal">
 							<Size x="0" y="10"/>
 							<Anchors>
-								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetText" x="0" y="-17"/>
+								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterGlanceEditor_PresetText" x="0" y="-17"/>
 								<Anchor point="RIGHT"/>
 							</Anchors>
 							<Color b="0.95" r="0.95" g="0.95"/>
@@ -215,9 +215,9 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="TRP3_RegisterMiscEdit_Glance_PresetList" inherits="UIDropDownMenuTemplate" enableMouse="true">
+					<Frame name="TRP3_RegisterGlanceEditor_PresetList" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetText" x="0" y="-3"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetText" x="0" y="-3"/>
 						</Anchors>
 						<Scripts>
 							<OnEnter>
@@ -228,35 +228,35 @@
 							</OnLeave>
 						</Scripts>
 				    </Frame>
-				    <EditBox name="TRP3_RegisterMiscEdit_Glance_PresetSaveCategory" inherits="TRP3_TitledEditBox">
+				    <EditBox name="TRP3_RegisterGlanceEditor_PresetSaveCategory" inherits="TRP3_TitledEditBox">
 						<Size x="100" y="18"/>
 						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSave" x="5" y="-13"/>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterGlanceEditor_PresetSave" x="5" y="-13"/>
 						</Anchors>
 					</EditBox>
-					<EditBox name="TRP3_RegisterMiscEdit_Glance_PresetSaveName" inherits="TRP3_TitledEditBox">
+					<EditBox name="TRP3_RegisterGlanceEditor_PresetSaveName" inherits="TRP3_TitledEditBox">
 						<Size x="100" y="18"/>
 						<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSaveCategory" x="15" y="0"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetSaveCategory" x="15" y="0"/>
 						</Anchors>
 					</EditBox>
-				    <Button name="TRP3_RegisterMiscEdit_Glance_PresetSaveButton" inherits="TRP3_CommonButton" text="[SAVE_AS_PRESET]">
+				    <Button name="TRP3_RegisterGlanceEditor_PresetSaveButton" inherits="TRP3_CommonButton" text="[SAVE_AS_PRESET]">
 						<Size x="0" y="20"/>
 						<Anchors>	
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_PresetSaveName" x="10" y="1"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetSaveName" x="10" y="1"/>
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 					</Button>
 				</Frames>
 			</Frame>
-			<Frame name="TRP3_RegisterMiscEdit_Glance_Edit">
+			<Frame name="TRP3_RegisterGlanceEditor_Edit">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterGlanceEditorTitle"/>
-					<Anchor point="BOTTOM" x="0" y="2" relativePoint="TOP" relativeTo="TRP3_RegisterMiscEdit_Glance_Preset"/>
+					<Anchor point="BOTTOM" x="0" y="2" relativePoint="TOP" relativeTo="TRP3_RegisterGlanceEditor_Preset"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 				</Anchors>	

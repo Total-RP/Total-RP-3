@@ -104,7 +104,9 @@ TRP3_API.companions.player.dupplicateProfile = dupplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
 local function createProfile(profileName)
-	return dupplicateProfile(DEFAULT_PROFILE, profileName);
+	local profileID = dupplicateProfile(DEFAULT_PROFILE, profileName);
+	playerCompanions[profileID].data.NA = profileName;
+	return profileID;
 end
 TRP3_API.companions.player.createProfile = createProfile;
 
@@ -154,13 +156,16 @@ local function createNewAndBound(companionID, targetType)
 	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
 	function(newName)
 		if newName and #newName ~= 0 then
-			if not isProfileNameAvailable(newName) then return end
+			if not isProfileNameAvailable(newName) then 
+				showAlertPopup(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("g")..newName.."|r"));
+				return;
+			end
 			local profileID = createProfile(newName);
 			ui_boundPlayerCompanion(companionID, profileID, targetType);
 		end
 	end,
 	nil,
-	loc("PR_CO_NEW_PROFILE")
+	companionID
 	);
 end
 
