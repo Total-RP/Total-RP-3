@@ -565,7 +565,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getUnitID(targetType)
-	local currentTargetType, isCurrentMine = originalGetTargetType(targetType);
+	local currentTargetType = originalGetTargetType(targetType);
 	if currentTargetType == TYPE_CHARACTER then
 		return getCharacterUnitID(targetType), currentTargetType;
 	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
@@ -574,11 +574,13 @@ local function getUnitID(targetType)
 end
 
 local function show(targetType)
+	local targetID, targetMode = getUnitID(targetType);
+	Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
+
 	ui_CharacterTT:Hide();
 
 	-- If using TRP TT
 	if getConfigValue(CONFIG_CHARACT_USE) and (not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT)) then
-		local targetID, targetMode = getUnitID(targetType);
 		-- If we have a target
 		if targetID then
 			-- Stock all the current text from the GameTooltip

@@ -55,7 +55,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LAST_QUERY = {};
-local COOLDOWN_DURATION = 1; -- Should be integer
+local COOLDOWN_DURATION = 4; -- Should be integer
 local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
 local INFO_TYPE_QUERY_PREFIX = "GI";
@@ -141,7 +141,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	or type(structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY]) ~= "string"
 	or type(structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE]) ~= "string"
 	then
-		log("Incoming vernum integrity check fails. Sender: " .. senderID);
+		debug("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
 	end
 
@@ -159,8 +159,8 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	if configShowVersionAlert() and senderVersion > Globals.version then
 	-- TODO: show version alert.
 	end
-	
---	Utils.table.dump(structure);
+
+	--	Utils.table.dump(structure);
 
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
@@ -178,7 +178,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 			end
 			index = index + 1;
 		end
-		
+
 		-- Battle pet
 		local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
 		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
@@ -273,7 +273,7 @@ local function incomingInformationTypeSent(structure, senderID)
 	if not CURRENT_QUERY_EXCHANGES[senderID] or not CURRENT_QUERY_EXCHANGES[senderID][informationType] then
 		return; -- We didn't ask for theses information ...
 	end
-	
+
 	debug(("Received %s's %s info !"):format(senderID, informationType));
 	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 
@@ -297,30 +297,38 @@ end
 -- TRIGGERS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local companionIDToInfo = Utils.str.companionIDToInfo;
+
 --- Send vernum request to the player
-local function sendQuery(type)
-	local unitID = Utils.str.getUnitID(type);
-	if unitID -- unitID equals nil if no character under the mouse (possible if the event trigger is delayed), or if UNKOWN (if player not loaded)
-	and UnitIsPlayer(type) -- Don't query NPC
-	and unitID ~= Globals.player_id -- Don't query yourself
-	and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
-	and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
-	and (type ~= "mouseover" or isUnitIDKnown(unitID)) -- Only query known characters
-	and not isIDIgnored(unitID)
-	and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
-	then
+local function sendQuery(unitID)
+	if not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
 		LAST_QUERY[unitID] = time();
 		queryVernum(unitID);
 		queryMarySueProtocol(unitID);
 	end
 end
 
-local function onMouseOver(...)
-	sendQuery("mouseover");
+local function onMouseOverCharacter(unitID)
+	if UnitIsPlayer("mouseover") -- Don't query NPC
+	and unitID ~= Globals.player_id -- Don't query yourself
+	and UnitFactionGroup("player") == UnitFactionGroup("mouseover") -- Don't query other faction !
+	and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
+	and isUnitIDKnown(unitID) -- For mouseover only query known people
+	then
+		sendQuery(unitID);
+	end
 end
 
-local function onTargetChanged(...)
-	sendQuery("target");
+local function onMouseOverCompanion(companionFullID)
+	local ownerID, companionID = companionIDToInfo(companionFullID);
+	sendQuery(ownerID);
+end
+
+local function onTargetChanged()
+	local unitID = Utils.str.getUnitID("target");
+	if UnitIsPlayer("target") and unitID ~= Globals.player_id and UnitFactionGroup("player") == UnitFactionGroup("target") then
+		sendQuery(unitID);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -333,13 +341,17 @@ local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile to heavy ! It would take %s messages to send."):format(computedSize));
+		debug(("Profile to heavy ! It would take %s messages to send."):format(computedSize));
 	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
+local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
+local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
 function TRP3_API.register.inits.dataExchangeInit()
 
@@ -350,7 +362,13 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Events.listenToEvents({Events.REGISTER_ABOUT_SAVED, Events.REGISTER_CHARACTERISTICS_SAVED}, checkPlayerDataWeight);
 
 	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	TRP3_API.events.listenToEvent(TRP3_API.events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
+		if targetMode == TYPE_CHARACTER and targetID then
+			onMouseOverCharacter(targetID);
+		elseif (targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and targetID then
+			onMouseOverCompanion(targetID);
+		end
+	end);
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange

@@ -278,6 +278,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 		registerProfileAssociation[companionFullID] = nil;
 		if old and registerCompanions[old] then
 			registerCompanions[old].links[companionFullID] = nil;
+			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 		end
 	end
 end
@@ -288,6 +289,7 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 	if v == "1" then
 		wipe(profile.data);
 		tcopy(profile.data, data);
+		profile.data.read = false;
 	elseif v == "2" then
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
