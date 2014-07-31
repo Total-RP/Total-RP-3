@@ -119,6 +119,9 @@
 							<Anchor point="TOP" x="0" y="-15"/>
 						</Anchors>
 						<Scripts>
+							<OnEditFocusLost>
+								
+							</OnEditFocusLost>
 							<OnEnterPressed>
 								_G[self:GetName() .. "HighlightAnimate"]:Play();
 								_G[self:GetName() .. "Animate"]:Play();
@@ -144,11 +147,11 @@
 							</Layer>
 					    </Layers>
 					    <Animations>
-									<AnimationGroup name="$parentAnimate" looping="NONE">
-										<Alpha duration="0.25" change="-0.4"  order="1"/>
-										<Alpha duration="0.25" change="0.4"  order="2"/>
-									</AnimationGroup>
-								</Animations>
+							<AnimationGroup name="$parentAnimate" looping="NONE">
+								<Alpha duration="0.25" change="-0.4"  order="1"/>
+								<Alpha duration="0.25" change="0.4"  order="2"/>
+							</AnimationGroup>
+						</Animations>
 					</EditBox>
 					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>

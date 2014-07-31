@@ -413,7 +413,7 @@ end
 
 local UnitBattlePetType, UnitBattlePetLevel = UnitBattlePetType, UnitBattlePetLevel;
 local companionIDToInfo = Utils.str.companionIDToInfo;
-local getCompanionProfile;
+local getCompanionProfile, getCompanionRegisterProfile;
 
 local function showCompanionIcons()
 	return true; -- TODO config
@@ -435,20 +435,22 @@ local function showCompanionWoWInfo()
 	return true; -- TODO config
 end
 
-local function getCompanionInfo(owner, name)
+local function getCompanionInfo(owner, companionID)
 	local profile;
 	if owner == Globals.player_id then
-		profile = getCompanionProfile(name) or EMPTY;
+		profile = getCompanionProfile(companionID) or EMPTY;
 	else
-		profile = EMPTY;
+		profile = getCompanionRegisterProfile(owner .. "_" .. companionID) or EMPTY;
 	end
-	return profile.data or EMPTY;
+	return profile or EMPTY;
 end
 
 local function writeCompanionTooltip(companionFullID, originalTexts, targetType, targetMode)
 	local lineIndex = 1;
 	local ownerID, companionID = companionIDToInfo(companionFullID);
-	local info = getCompanionInfo(ownerID, companionID);
+	local data = getCompanionInfo(ownerID, companionID);
+	local info = data.data or EMPTY;
+	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -544,7 +546,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 	if showCompanionNotifications() then
 		local notifText = "";
-		if info.PE and checkGlanceActivation(info.PE) then
+		if PE and checkGlanceActivation(PE) then
 			notifText = GLANCE_ICON;
 		end
 		if ownerID ~= Globals.player_id and info.read == false then
@@ -620,13 +622,6 @@ local function onMouseOver()
 	show("mouseover");
 end
 
-local function refreshIfNeeded(unitID)
-	local mouseID = getUnitID("mouseover");
-	if mouseID == unitID then
-		onMouseOver();
-	end
-end
-
 local function onUpdate(self, elapsed)
 	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 	if (self.TimeSinceLastUpdate > 0.5) then
@@ -648,14 +643,14 @@ end
 function TRP3_API.register.inits.tooltipInit()
 	localeFont = TRP3_API.locale.getLocaleFont();
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
+	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
+	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_DATA_CHANGED}, onMouseOver);
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
-
-	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
 
 	IC_GUILD = " |cff00ff00(" .. loc("CM_IC") .. ")";
 	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";

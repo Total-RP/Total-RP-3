@@ -55,25 +55,22 @@ end
 
 local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx)
 	assert(slot, "No selection ...");
-	if not dataTab.PE then
-		dataTab.PE = {};
+	if not dataTab[slot] then
+		dataTab[slot] = {};
 	end
-	if not dataTab.PE[slot] then
-		dataTab.PE[slot] = {};
-	end
-	local peekTab = dataTab.PE[slot];
+	local peekTab = dataTab[slot];
 	peekTab.IC = ic;
 	peekTab.AC = ac;
 	peekTab.TI = ti;
 	peekTab.TX = tx;
 	-- version increment
-	dataTab.v2 = Utils.math.incrementNumber(dataTab.v2 or 0, 2);
+	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
 	-- Refresh display & target frame
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
 local function applyPeekSlot(slot, companionID, ic, ac, ti, tx)
-	local dataTab = (getCompanionProfile(companionID) or {}).data or {};
+	local dataTab = (getCompanionProfile(companionID) or {}).PE or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx);
 end
 
@@ -92,7 +89,7 @@ end
 local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 	local context = getCurrentContext();
 	assert(context and context.profile, "No profile in context !");
-	applyPeekSlotProfile(button.index, context.profile.data, ic, ac, ti, tx);
+	applyPeekSlotProfile(button.index, context.profile.PE, ic, ac, ti, tx);
 	refreshIfNeeded();
 end
 
@@ -143,7 +140,7 @@ local function saveInformation()
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab.data, draftData);
 	-- version increment
-	dataTab.data.v1 = Utils.math.incrementNumber(dataTab.data.v1 or 0, 2);
+	dataTab.data.v = Utils.math.incrementNumber(dataTab.data.v or 0, 2);
 
 --	compressData();
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
@@ -188,7 +185,7 @@ function displayConsult(context)
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
 
 	for i=1,5 do
-		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
+		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. i];
 		button.data = glanceData;
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);

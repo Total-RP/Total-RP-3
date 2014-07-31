@@ -14,7 +14,7 @@ local UnitName, CreateFrame, UnitIsPlayer = UnitName, CreateFrame, UnitIsPlayer;
 local EMPTY = Globals.empty;
 local isPlayerIC, isUnitIDKnown;
 local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-local assert, pairs, tContains, tinsert, table, math, _G, tostring = assert, pairs, tContains, tinsert, table, math, _G, tostring;
+local assert, pairs, tContains, tinsert, table, math, _G, tostring, type = assert, pairs, tContains, tinsert, table, math, _G, tostring, type;
 local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
 local get, getDataDefault = TRP3_API.profile.getData, TRP3_API.profile.getDataDefault;
@@ -24,7 +24,8 @@ local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getMiscPresetDropListData, setGlanceSlotPreset, setCompanionGlanceSlotPreset;
 local hasProfile, isIDIgnored;
-local originalGetTargetType, getCompanionFullID, getCompanionProfile = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
@@ -165,14 +166,23 @@ local function getCharacterInfo()
 	return EMPTY;
 end
 
-local function getCompanionInfo(owner, name)
+local function getCompanionInfo(owner, companionID, currentTargetID)
 	local profile;
 	if owner == Globals.player_id then
-		profile = getCompanionProfile(name) or EMPTY;
+		profile = getCompanionProfile(companionID) or EMPTY;
 	else
-		profile = EMPTY;
+		profile = getCompanionRegisterProfile(currentTargetID);
 	end
-	return profile.data or EMPTY;
+	return profile;
+end
+
+local function atLeastOneactivePeek(tab)
+	for i, info in pairs(tab) do
+		if type(info) == "table" and info.AC then
+			return true;
+		end
+	end
+	return false;
 end
 
 local function displayPeekSlots()
@@ -182,12 +192,11 @@ local function displayPeekSlots()
 	if currentTargetType == TYPE_CHARACTER then
 		peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
 	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
-		local owner, name = companionIDToInfo(currentTargetID);
-		local info = getCompanionInfo(owner, name);
-		peekTab = info.PE or EMPTY;
+		local owner, companionID = companionIDToInfo(currentTargetID);
+		peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE or EMPTY;
 	end
 
-	if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and tsize(peekTab) > 0) then
+	if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and atLeastOneactivePeek(peekTab)) then
 		ui_TargetFrameGlance:Show();
 		for i=1,5,1 do
 			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
@@ -229,9 +238,9 @@ local function displayTargetName()
 			setupFieldSet(ui_TargetFrame, name, TARGET_NAME_WIDTH);
 		end
 	elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
-		local owner, name = companionIDToInfo(currentTargetID);
-		local info = getCompanionInfo(owner, name);
-		setupFieldSet(ui_TargetFrame, info.NA or name, TARGET_NAME_WIDTH);
+		local owner, companionID = companionIDToInfo(currentTargetID);
+		local info = getCompanionInfo(owner, companionID, currentTargetID).data or EMPTY;
+		setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
 	end
 end
 
@@ -252,9 +261,7 @@ local function shouldShowTargetFrame(config)
 		return false;
 	elseif currentTargetType == TYPE_CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
 		return true;
-	elseif currentTargetType == TYPE_PET and isCurrentMine then
-		return true;
-	elseif currentTargetType == TYPE_BATTLE_PET and isCurrentMine then
+	elseif (currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET) and (isCurrentMine or companionHasProfile(currentTargetID)) then
 		return true;
 	end
 end
@@ -353,6 +360,8 @@ TRP3_API.target.init = function()
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
+	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
+	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 
@@ -365,8 +374,7 @@ TRP3_API.target.init = function()
 			onTargetChanged();
 		end
 	end);
-	Events.listenToEvent(Events.REGISTER_RPSTATUS_CHANGED, onTargetChanged);
-	Events.listenToEvent(Events.TARGET_SHOULD_REFRESH, onTargetChanged);
+	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.TARGET_SHOULD_REFRESH}, onTargetChanged);
 
 	for i=1,5,1 do
 		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];

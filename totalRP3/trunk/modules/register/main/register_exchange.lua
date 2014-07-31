@@ -23,6 +23,9 @@ local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
 local getMiscExchangeData = playerAPI.getMiscExchangeData;
 local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
+local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
+local getCompanionData = TRP3_API.companions.player.getCompanionData;
+local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
@@ -40,8 +43,15 @@ local function configShowVersionAlert()
 	return false; --TODO : config
 end
 
+local DEBUG = true;
+local function debug(text)
+	if DEBUG then
+		log(text);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Outgoing queries
+-- Vernum queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LAST_QUERY = {};
@@ -71,10 +81,19 @@ local VERNUM_QUERY_INDEX_COMPANION_MOUNT = 14;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
 
-local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
+local queryInformationType, createVernumQuery;
+
+local function queryVernum(unitName)
+	local query = createVernumQuery();
+	Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitName, VERNUM_QUERY_PRIORITY);
+end
+
+local function queryMarySueProtocol(unitName)
+
+end
 
 --- Vernum query builder
-local function createVernumQuery()
+function createVernumQuery()
 	local query = {};
 	query[VERNUM_QUERY_INDEX_VERSION] = Globals.version; -- Your TRP3 version (number)
 	query[VERNUM_QUERY_INDEX_VERSION_DISPLAY] = Globals.version_display; -- Your TRP3 version (as it should be shown on tooltip)
@@ -93,34 +112,13 @@ local function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_PET] = petLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_PET_V1] = petV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_PET_V2] = petV2 or 0;
-	
+
 	return query;
 end
 
-local function queryVernum(unitName)
-	local query = createVernumQuery();
-	Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitName, VERNUM_QUERY_PRIORITY);
-end
-
-local function queryMarySueProtocol(unitName)
-
-end
-
-local CURRENT_QUERY_EXCHANGES = {};
-
-local function queryInformationType(unitName, informationType)
-	if CURRENT_QUERY_EXCHANGES[unitName] and CURRENT_QUERY_EXCHANGES[unitName][informationType] then
-		return; -- Don't ask again for information that are incoming !
-	end
-	if not CURRENT_QUERY_EXCHANGES[unitName] then
-		CURRENT_QUERY_EXCHANGES[unitName] = {};
-	end
-	CURRENT_QUERY_EXCHANGES[unitName][informationType] = time();
-	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Incoming queries
+-- Incoming vernum queries
+-- Check version numbers and perform information queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local infoTypeTab = {
@@ -129,6 +127,8 @@ local infoTypeTab = {
 	registerInfoTypes.MISC,
 	registerInfoTypes.CHARACTER
 };
+
+local COMPANION_PREFIX = "comp_";
 
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
@@ -159,6 +159,8 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	if configShowVersionAlert() and senderVersion > Globals.version then
 	-- TODO: show version alert.
 	end
+	
+--	Utils.table.dump(structure);
 
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
@@ -171,7 +173,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
 		for _, infoType in pairs(infoTypeTab) do
 			if shouldUpdateInformation(senderID, infoType, structure[index]) then
-				log(("Should update: %s's %s"):format(senderID, infoType));
+				debug(("Should update: %s's %s"):format(senderID, infoType));
 				queryInformationType(senderID, infoType);
 			end
 			index = index + 1;
@@ -184,13 +186,15 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		if battlePetLine and battlePetV1 and battlePetV2 then
 			local profileID, queryV1, queryV2 = boundAndCheckCompanion(battlePetLine, senderID, senderProfileID, battlePetV1, battlePetV2);
 			if queryV1 then
-				log(("Should update v1 for companion profileID %s"):format(profileID));
+				debug(("Should update v1 for companion profileID %s"):format(profileID));
+				queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
 			end
 			if queryV2 then
-				log(("Should update v2 for companion profileID %s"):format(profileID));
+				debug(("Should update v2 for companion profileID %s"):format(profileID));
+				queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
 			end
 		end
-		
+
 		-- Pet
 		local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
 		local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
@@ -198,10 +202,12 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		if petLine and petV1 and petV2 then
 			local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
 			if queryV1 then
-				log(("Should update v1 for companion profileID %s"):format(profileID));
+				debug(("Should update v1 for companion profileID %s"):format(profileID));
+				queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
 			end
 			if queryV2 then
-				log(("Should update v2 for companion profileID %s"):format(profileID));
+				debug(("Should update v2 for companion profileID %s"):format(profileID));
+				queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
 			end
 		end
 	end
@@ -214,6 +220,27 @@ local function incomingVernumResponseQuery(structure, senderID)
 	incomingVernumQuery(structure, senderID, true);
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Query for information
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local CURRENT_QUERY_EXCHANGES = {};
+
+function queryInformationType(unitName, informationType)
+	if CURRENT_QUERY_EXCHANGES[unitName] and CURRENT_QUERY_EXCHANGES[unitName][informationType] then
+		return; -- Don't ask again for information that are incoming !
+	end
+	if not CURRENT_QUERY_EXCHANGES[unitName] then
+		CURRENT_QUERY_EXCHANGES[unitName] = {};
+	end
+	CURRENT_QUERY_EXCHANGES[unitName][informationType] = time();
+	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Incoming query for information, and send information
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local function incomingInformationType(informationType, senderID)
 	local data = nil;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
@@ -224,26 +251,46 @@ local function incomingInformationType(informationType, senderID)
 		data = getMiscExchangeData();
 	elseif informationType == registerInfoTypes.CHARACTER then
 		data = getCharacterExchangeData();
+	elseif informationType:sub(1, COMPANION_PREFIX:len()) == COMPANION_PREFIX then
+		local v = informationType:sub(COMPANION_PREFIX:len() + 1, COMPANION_PREFIX:len() + 1);
+		local profileID = informationType:sub(COMPANION_PREFIX:len() + 2);
+		data = getCompanionData(profileID, v);
 	end
-	Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
+	if data then
+		debug(("Send %s info to %s"):format(informationType, senderID));
+		Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
+	end
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Received information
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function incomingInformationTypeSent(structure, senderID)
 	local informationType = structure[1];
 	local data = structure[2];
-	
+
 	if not CURRENT_QUERY_EXCHANGES[senderID] or not CURRENT_QUERY_EXCHANGES[senderID][informationType] then
 		return; -- We didn't ask for theses information ...
 	end
 	
-	log(("Received %s's %s info !"):format(senderID, informationType));
+	debug(("Received %s's %s info !"):format(senderID, informationType));
+	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
+
 	local decodedData = data;
+	-- If the data is a string, we assume that it was compressed.
 	if type(data) == "string" then
 		decodedData = Utils.serial.decompressCodedStructure(decodedData);
 	end
-	saveInformation(senderID, informationType, decodedData);
-	
-	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
+
+	if informationType == registerInfoTypes.CHARACTERISTICS or informationType == registerInfoTypes.ABOUT
+	or informationType == registerInfoTypes.MISC or informationType == registerInfoTypes.CHARACTER then
+		saveInformation(senderID, informationType, decodedData);
+	elseif informationType:sub(1, COMPANION_PREFIX:len()) == COMPANION_PREFIX then
+		local v = informationType:sub(COMPANION_PREFIX:len() + 1, COMPANION_PREFIX:len() + 1);
+		local profileID = informationType:sub(COMPANION_PREFIX:len() + 2);
+		saveCompanionInformation(profileID, v, data)
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -254,13 +301,13 @@ end
 local function sendQuery(type)
 	local unitID = Utils.str.getUnitID(type);
 	if unitID -- unitID equals nil if no character under the mouse (possible if the event trigger is delayed), or if UNKOWN (if player not loaded)
-		and UnitIsPlayer(type) -- Don't query NPC
-		and unitID ~= Globals.player_id -- Don't query yourself
-		and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
-		and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
-		and (type ~= "mouseover" or isUnitIDKnown(unitID)) -- Only query known characters
-		and not isIDIgnored(unitID)
-		and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
+	and UnitIsPlayer(type) -- Don't query NPC
+	and unitID ~= Globals.player_id -- Don't query yourself
+	and UnitFactionGroup(type) == UnitFactionGroup(type) -- Don't query other faction !
+	and (type ~= "mouseover" or CheckInteractDistance(type, 4)) -- Should be at range, this is kind of optimization
+	and (type ~= "mouseover" or isUnitIDKnown(unitID)) -- Only query known characters
+	and not isIDIgnored(unitID)
+	and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) -- Optimization (cooldown from last query)
 	then
 		LAST_QUERY[unitID] = time();
 		queryVernum(unitID);
@@ -299,7 +346,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
-	
+
 	Events.listenToEvents({Events.REGISTER_ABOUT_SAVED, Events.REGISTER_CHARACTERISTICS_SAVED}, checkPlayerDataWeight);
 
 	-- Listen to the mouse over event

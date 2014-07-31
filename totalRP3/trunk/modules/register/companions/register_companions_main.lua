@@ -18,6 +18,7 @@ local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.show
 local displayMessage, openMainFrame = Utils.message.displayMessage, TRP3_API.navigation.openMainFrame;
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local EMPTY = Globals.empty;
+local tcopy = Utils.table.copy;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
@@ -34,8 +35,10 @@ TRP3_API.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
 local DEFAULT_PROFILE = {
 	data = {
 		IC = PROFILE_DEFAULT_ICON,
-		v1 = 1,
-		v2 = 1
+		v = 1,
+	},
+	PE = {
+		v = 1
 	}
 };
 
@@ -161,7 +164,7 @@ local GetSummonedPetGUID, GetPetInfoByPetID = C_PetJournal.GetSummonedPetGUID, C
 local function getCompanionVersionNumbers(profileID)
 	local profile = playerCompanions[profileID];
 	if profile and profile.data then
-		return profile.data.v1, profile.data.v2;
+		return profile.data.v, profile.PE.v;
 	end
 end
 
@@ -191,6 +194,19 @@ function TRP3_API.companions.player.getCurrentPetQueryLine()
 	end
 end
 
+function TRP3_API.companions.player.getCompanionData(profileID, v)
+	local profile = playerCompanions[profileID];
+	local data = {};
+	if profile and profile.data then
+		if v == "1" then
+			tcopy(data, profile.data);
+		elseif v == "2" then
+			tcopy(data, profile.PE);
+		end
+	end
+	return data;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Register companions (other players companions)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -208,8 +224,10 @@ end
 local function registerCreateProfile(profileID)
 	registerCompanions[profileID] = {
 		data = {
-			v1 = 0,
-			v2 = 0
+			v = 0,
+		},
+		PE = {
+			v = 0
 		},
 		masters = {},
 		links = {}
@@ -244,6 +262,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			end
 			profile.links[companionFullID] = 1;
 			log(("Bound %s to profile %s"):format(companionFullID, profileID));
+			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 		end
 		
 		-- Check master link
@@ -253,7 +272,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			log(("Bound %s to master %s"):format(companionFullID, masterProfileID));
 		end
 		
-		return profileID, profile.data.v1 < v1, profile.data.v2 < v2;
+		return profileID, profile.data.v ~= v1, profile.PE.v ~= v2;
 	else
 		local old = registerProfileAssociation[companionFullID];
 		registerProfileAssociation[companionFullID] = nil;
@@ -261,6 +280,29 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			registerCompanions[old].links[companionFullID] = nil;
 		end
 	end
+end
+
+function TRP3_API.companions.register.saveInformation(profileID, v, data)
+	local profile = registerCompanions[profileID];
+	assert(profile, "Profile does not exists: " .. tostring(profileID));
+	if v == "1" then
+		wipe(profile.data);
+		tcopy(profile.data, data);
+	elseif v == "2" then
+		wipe(profile.PE);
+		tcopy(profile.PE, data);
+	end
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+end
+
+function TRP3_API.companions.register.getCompanionProfile(companionFullID)
+	if registerProfileAssociation[companionFullID] and registerCompanions[registerProfileAssociation[companionFullID]] then
+		return registerCompanions[registerProfileAssociation[companionFullID]];
+	end
+end
+
+function TRP3_API.companions.register.companionHasProfile(companionFullID)
+	return registerProfileAssociation[companionFullID];
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
