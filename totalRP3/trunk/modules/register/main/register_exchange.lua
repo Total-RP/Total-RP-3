@@ -301,7 +301,7 @@ local companionIDToInfo = Utils.str.companionIDToInfo;
 
 --- Send vernum request to the player
 local function sendQuery(unitID)
-	if not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
+	if unitID ~= Globals.player_id and not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
 		LAST_QUERY[unitID] = time();
 		queryVernum(unitID);
 		queryMarySueProtocol(unitID);
@@ -310,7 +310,6 @@ end
 
 local function onMouseOverCharacter(unitID)
 	if UnitIsPlayer("mouseover") -- Don't query NPC
-	and unitID ~= Globals.player_id -- Don't query yourself
 	and UnitFactionGroup("player") == UnitFactionGroup("mouseover") -- Don't query other faction !
 	and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
 	and isUnitIDKnown(unitID) -- For mouseover only query known people
@@ -326,7 +325,7 @@ end
 
 local function onTargetChanged()
 	local unitID = Utils.str.getUnitID("target");
-	if UnitIsPlayer("target") and unitID ~= Globals.player_id and UnitFactionGroup("player") == UnitFactionGroup("target") then
+	if UnitIsPlayer("target") and UnitFactionGroup("player") == UnitFactionGroup("target") then
 		sendQuery(unitID);
 	end
 end
