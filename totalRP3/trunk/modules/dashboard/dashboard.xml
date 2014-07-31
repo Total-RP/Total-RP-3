@@ -119,44 +119,9 @@
 							<Anchor point="TOP" x="0" y="-15"/>
 						</Anchors>
 						<Scripts>
-							<OnLoad>
-								-- Highlight
-								self.highlight = TRP3_DashboardStatus_CurrentlyHighlight:CreateAnimationGroup();
-								-- Fade-in
-								local highlight1=self.highlight:CreateAnimation("Alpha");
-								highlight1:SetChange(1);
-								highlight1:SetSmoothing("IN");
-								highlight1:SetDuration(0.3);
-								-- Translation
-								local highlight2=self.highlight:CreateAnimation("Translation");
-								highlight2:SetOffset(400, 0)
-								highlight1:SetSmoothing("IN_OUT");
-								highlight2:SetDuration(1);
-								-- Fade-out
-								local highlight3=self.highlight:CreateAnimation("Alpha");
-								highlight3:SetChange(-1	);
-								highlight3:SetDuration(0.5);
-								highlight3:SetSmoothing("OUT");
-								highlight3:SetStartDelay(0.3);
-								
-								-- Border
-								self.glow = TRP3_DashboardStatus_CurrentlyGlow:CreateAnimationGroup();
-								-- Fade-in
-								local glow1=self.glow:CreateAnimation("Alpha");
-								glow1:SetChange(0.8);
-								glow1:SetDuration(0.4);
-								-- Fade-out
-								local glow2=self.glow:CreateAnimation("Alpha");
-								glow2:SetChange(-0.8);
-								glow2:SetDuration(0.4);
-								glow2:SetStartDelay(0.4);
-							</OnLoad>
 							<OnEnterPressed>
-							-- TODO : if not self.glow:isPlaying()
-							-- INTERFACE/BUTTONS/ListButtons
-							-- INTERFACE/COMMON/bluemenu-main
-								self.glow:Play();
-								self.highlight:Play();
+								_G[self:GetName() .. "HighlightAnimate"]:Play();
+								_G[self:GetName() .. "Animate"]:Play();
 								self:ClearFocus();
 							</OnEnterPressed>
 						</Scripts>
@@ -168,18 +133,22 @@
 									<Anchors>
 										<Anchor point="LEFT" x="-20" y="0"/>
 									</Anchors>
-								</Texture>
-							</Layer>
-							<Layer level="OVERLAY">
-								<Texture alphaMode="ADD" alpha="0" name="$parentGlow" file="INTERFACE/COMMON/bluemenu-main">
-									<Size x="550" y="44"/>
-									<TexCoords left="0" right="1" top="0.82" bottom="1" />
-									<Anchors>
-										<Anchor point="LEFT" x="-17" y="-9"/>
-									</Anchors>
+									<Animations>
+									<AnimationGroup name="$parentAnimate" looping="NONE">
+										<Alpha duration="0.6" change="1" smoothing="IN" order="1"/>
+										<Translation duration="1.2" offsetX="400" smoothing="IN_OUT" order="1"/>
+										<Alpha duration="0.3" change="-1" smoothing="OUT" order="1" StartDelay="0.7"/>
+									</AnimationGroup>
+								</Animations>
 								</Texture>
 							</Layer>
 					    </Layers>
+					    <Animations>
+									<AnimationGroup name="$parentAnimate" looping="NONE">
+										<Alpha duration="0.25" change="-0.4"  order="1"/>
+										<Alpha duration="0.25" change="0.4"  order="2"/>
+									</AnimationGroup>
+								</Animations>
 					</EditBox>
 					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
