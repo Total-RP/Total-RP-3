@@ -29,7 +29,7 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = false;
+local showLog = true;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

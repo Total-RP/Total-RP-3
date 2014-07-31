@@ -547,7 +547,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		if info.PE and checkGlanceActivation(info.PE) then
 			notifText = GLANCE_ICON;
 		end
-		if ownerID ~= Globals.player_id and not info.read then
+		if ownerID ~= Globals.player_id and info.read == false then
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText:len() > 0 then

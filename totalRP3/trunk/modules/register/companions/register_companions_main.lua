@@ -10,6 +10,7 @@ TRP3_API.companions = {
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
+local log = Utils.log.log;
 local pairs, assert, tostring, wipe, tinsert, type = pairs, assert, tostring, wipe, tinsert, type;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
@@ -33,6 +34,8 @@ TRP3_API.companions.PROFILE_DEFAULT_ICON = PROFILE_DEFAULT_ICON;
 local DEFAULT_PROFILE = {
 	data = {
 		IC = PROFILE_DEFAULT_ICON,
+		v1 = 1,
+		v2 = 1
 	}
 };
 
@@ -72,6 +75,7 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 	end
 	playerProfileAssociation[companionID] = profileID;
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	log(("%s bounded to profile %s"):format(companionID, profileID));
 end
 TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
 
@@ -83,6 +87,7 @@ local function unboundPlayerCompanion(companionID)
 		playerCompanions[profileID].links[companionID] = nil;
 	end
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	log(("%s unbounded"):format(companionID));
 end
 TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
 
@@ -131,6 +136,9 @@ TRP3_API.companions.player.editProfile = editProfile;
 local function deleteProfile(profileID)
 	assert(playerCompanions[profileID], "Unknown profile: "..tostring(profileID));
 	local profileName = playerCompanions[profileID]["profileName"];
+	for companionID, _ in pairs(playerCompanions[profileID].links) do
+		unboundPlayerCompanion(companionID);
+	end
 	wipe(playerCompanions[profileID]);
 	playerCompanions[profileID] = nil;
 	displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
@@ -142,6 +150,45 @@ local registerCompanions;
 
 function TRP3_API.companions.player.getProfiles()
 	return playerCompanions;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Exchange
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local GetSummonedPetGUID, GetPetInfoByPetID = C_PetJournal.GetSummonedPetGUID, C_PetJournal.GetPetInfoByPetID;
+
+local function getCompanionVersionNumbers(profileID)
+	local profile = playerCompanions[profileID];
+	if profile and profile.data then
+		return profile.data.v1, profile.data.v2;
+	end
+end
+
+function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
+	local summonedPetGUID = GetSummonedPetGUID();
+	if summonedPetGUID then
+		local _, customName, _, _, _, _, _, name = GetPetInfoByPetID(summonedPetGUID);
+		local queryLine = customName or name;
+		if getCompanionProfileID(customName or name) then
+			local profileID =  getCompanionProfileID(customName or name);
+			return queryLine .. "_" .. profileID, getCompanionVersionNumbers(profileID);
+		end
+		return queryLine;
+	end
+end
+
+
+function TRP3_API.companions.player.getCurrentPetQueryLine()
+	local summonedPet = UnitName("pet");
+	if summonedPet then
+		local queryLine = summonedPet;
+		if getCompanionProfileID(summonedPet) then
+			local profileID =  getCompanionProfileID(summonedPet);
+			return queryLine .. "_" .. profileID, getCompanionVersionNumbers(profileID);
+		end
+		return queryLine;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -158,33 +205,91 @@ local function parseRegisterProfiles(profiles)
 	end
 end
 
+local function registerCreateProfile(profileID)
+	registerCompanions[profileID] = {
+		data = {
+			v1 = 0,
+			v2 = 0
+		},
+		masters = {},
+		links = {}
+	};
+	log(("Create companion register profile %s"):format(profileID));
+end
+
+function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, masterProfileID, v1, v2)
+	local companionID, profileID, companionFullID;
+	if queryLine:find("_") then
+		companionID = queryLine:sub(1, queryLine:find('_') - 1);
+		profileID = queryLine:sub(queryLine:find('_') + 1);
+	else
+		companionID = queryLine;
+	end
+
+	companionFullID = ownerID .. "_" .. companionID;
+
+	if profileID then
+		-- Check profile exists
+		if not registerCompanions[profileID] then
+			registerCreateProfile(profileID);
+		end
+		local profile = registerCompanions[profileID];
+		
+		-- Check profile link
+		registerProfileAssociation[companionFullID] = profileID;
+		if not profile.links[companionFullID] then
+			-- Unbound from others
+			for id, profile in pairs(registerCompanions) do
+				profile.links[companionFullID] = nil;
+			end
+			profile.links[companionFullID] = 1;
+			log(("Bound %s to profile %s"):format(companionFullID, profileID));
+		end
+		
+		-- Check master link
+		-- TODO: check masters on register purge
+		if masterProfileID and not profile.masters[masterProfileID] then
+			profile.masters[masterProfileID] = 1;
+			log(("Bound %s to master %s"):format(companionFullID, masterProfileID));
+		end
+		
+		return profileID, profile.data.v1 < v1, profile.data.v2 < v2;
+	else
+		local old = registerProfileAssociation[companionFullID];
+		registerProfileAssociation[companionFullID] = nil;
+		if old and registerCompanions[old] then
+			registerCompanions[old].links[companionFullID] = nil;
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
-	if not TRP3_Companions then
-		TRP3_Companions = {};
-	end
+		if not TRP3_Companions then
+			TRP3_Companions = {};
+		end
 
-	if not TRP3_Companions.player then
-		TRP3_Companions.player = {};
-	end
-	playerCompanions = TRP3_Companions.player;
-	parsePlayerProfiles(playerCompanions);
+		if not TRP3_Companions.player then
+			TRP3_Companions.player = {};
+		end
+		playerCompanions = TRP3_Companions.player;
+		parsePlayerProfiles(playerCompanions);
 
-	if not TRP3_Companions.register then
-		TRP3_Companions.register = {};
-	end
-	registerCompanions = TRP3_Companions.register;
-	parseRegisterProfiles(registerCompanions);
-
-	registerMenu({
-		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
-		text = loc("REG_COMPANIONS"),
-		onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
-		closeable = true,
-	});
+		if not TRP3_Companions.register then
+			TRP3_Companions.register = {};
+		end
+		registerCompanions = TRP3_Companions.register;
+		parseRegisterProfiles(registerCompanions);
+		
+		registerMenu({
+			id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
+			text = loc("REG_COMPANIONS"),
+			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
+			closeable = true,
+		});
 
 end);

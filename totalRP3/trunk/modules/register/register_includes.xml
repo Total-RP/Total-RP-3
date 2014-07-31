@@ -14,10 +14,10 @@
 	<Script file="characters\register_about.lua" />
 	<Script file="characters\register_misc.lua" />
 	
+	<Include file="companions\register_ui_companions_main.xml" />
+	
 	<Script file="main\register_exchange.lua" />
 	<Script file="main\register_tooltip.lua" />
 	<Script file="main\register_list.lua" />
-	
-	<Include file="companions\register_ui_companions_main.xml" />
 
 </Ui>

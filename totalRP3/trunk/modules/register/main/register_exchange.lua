@@ -22,6 +22,7 @@ local playerAPI = TRP3_API.register.player;
 local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
 local getMiscExchangeData = playerAPI.getMiscExchangeData;
+local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
@@ -53,16 +54,46 @@ local VERNUM_QUERY_PRIORITY = "NORMAL";
 local INFO_TYPE_QUERY_PRIORITY = "NORMAL";
 local INFO_TYPE_SEND_PRIORITY = "BULK";
 
+local VERNUM_QUERY_INDEX_VERSION = 1;
+local VERNUM_QUERY_INDEX_VERSION_DISPLAY = 2;
+local VERNUM_QUERY_INDEX_CHARACTER_PROFILE = 3;
+local VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V = 4;
+local VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V = 5;
+local VERNUM_QUERY_INDEX_CHARACTER_MISC_V = 6;
+local VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V = 7;
+local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET = 8;
+local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1 = 9;
+local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2 = 10;
+local VERNUM_QUERY_INDEX_COMPANION_PET = 11;
+local VERNUM_QUERY_INDEX_COMPANION_PET_V1 = 12;
+local VERNUM_QUERY_INDEX_COMPANION_PET_V2 = 13;
+local VERNUM_QUERY_INDEX_COMPANION_MOUNT = 14;
+local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
+local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
+
+local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
+
 --- Vernum query builder
 local function createVernumQuery()
 	local query = {};
-	tinsert(query, Globals.version); -- Your TRP3 version (number)
-	tinsert(query, Globals.version_display); -- Your TRP3 version (as it should be shown on tooltip)
-	tinsert(query, getPlayerCurrentProfileID());
-	tinsert(query, get("player/characteristics").v);
-	tinsert(query, get("player/about").v);
-	tinsert(query, get("player/misc").v);
-	tinsert(query, getPlayerCharacter().v or 1);
+	query[VERNUM_QUERY_INDEX_VERSION] = Globals.version; -- Your TRP3 version (number)
+	query[VERNUM_QUERY_INDEX_VERSION_DISPLAY] = Globals.version_display; -- Your TRP3 version (as it should be shown on tooltip)
+	-- Character
+	query[VERNUM_QUERY_INDEX_CHARACTER_PROFILE] = getPlayerCurrentProfileID() or "";
+	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V] = get("player/characteristics").v or 0;
+	query[VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V] = get("player/about").v or 0;
+	query[VERNUM_QUERY_INDEX_CHARACTER_MISC_V] = get("player/misc").v or 0;
+	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V] = getPlayerCharacter().v or 1;
+	-- Companion
+	local battlePetLine, battlePetV1, battlePetV2 = getCurrentBattlePetQueryLine();
+	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET] = battlePetLine or "";
+	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1] = battlePetV1 or 0;
+	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2] = battlePetV2 or 0;
+	local petLine, petV1, petV2 = getCurrentPetQueryLine();
+	query[VERNUM_QUERY_INDEX_COMPANION_PET] = petLine or "";
+	query[VERNUM_QUERY_INDEX_COMPANION_PET_V1] = petV1 or 0;
+	query[VERNUM_QUERY_INDEX_COMPANION_PET_V2] = petV2 or 0;
+	
 	return query;
 end
 
@@ -106,9 +137,9 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	-- First: Integrity check
 	if type(structure) ~= "table"
 	or #structure <= 0
-	or type(structure[1]) ~= "number"
-	or type(structure[2]) ~= "string"
-	or type(structure[3]) ~= "string"
+	or type(structure[VERNUM_QUERY_INDEX_VERSION]) ~= "number"
+	or type(structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY]) ~= "string"
+	or type(structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE]) ~= "string"
 	then
 		log("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
@@ -121,9 +152,9 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	end
 
 	-- Data processing
-	local senderVersion = structure[1];
-	local senderVersionText = structure[2];
-	local senderProfileID = structure[3];
+	local senderVersion = structure[VERNUM_QUERY_INDEX_VERSION];
+	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
+	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 
 	if configShowVersionAlert() and senderVersion > Globals.version then
 	-- TODO: show version alert.
@@ -137,13 +168,41 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		saveCurrentProfileID(senderID, senderProfileID);
 
 		-- Query specific data, depending on version number.
-		local index = 4;
+		local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
 		for _, infoType in pairs(infoTypeTab) do
 			if shouldUpdateInformation(senderID, infoType, structure[index]) then
 				log(("Should update: %s's %s"):format(senderID, infoType));
 				queryInformationType(senderID, infoType);
 			end
 			index = index + 1;
+		end
+		
+		-- Battle pet
+		local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
+		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
+		local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
+		if battlePetLine and battlePetV1 and battlePetV2 then
+			local profileID, queryV1, queryV2 = boundAndCheckCompanion(battlePetLine, senderID, senderProfileID, battlePetV1, battlePetV2);
+			if queryV1 then
+				log(("Should update v1 for companion profileID %s"):format(profileID));
+			end
+			if queryV2 then
+				log(("Should update v2 for companion profileID %s"):format(profileID));
+			end
+		end
+		
+		-- Pet
+		local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
+		local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
+		local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
+		if petLine and petV1 and petV2 then
+			local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
+			if queryV1 then
+				log(("Should update v1 for companion profileID %s"):format(profileID));
+			end
+			if queryV2 then
+				log(("Should update v2 for companion profileID %s"):format(profileID));
+			end
 		end
 	end
 end
