@@ -411,7 +411,7 @@
 					<Color r="1.0" g="1.0" b="1.0"/>
 				</Texture>
 			</Layer>
-			<Layer level="OVERLAY">
+			<Layer level="BORDER">
 				<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-IconFrame">
 					<Size>
 						<AbsDimension x="45" y="45"/>
@@ -419,6 +419,21 @@
 					<Anchors>
 						<Anchor x="-5" y="5" point="TOPLEFT"/>
 					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\Cooldown\star4" name="$parentBlink" alpha="0.0" alphaMode="ADD">
+					<Animations>
+						<AnimationGroup name="$parentAnimate" looping="NONE">
+							<Alpha duration="0.4" change="1" smoothing="IN_OUT" order="1"/>
+							<Rotation degrees="-45" duration="0.4" smoothing="IN_OUT" order="1"/>
+							<Alpha duration="0.4" change="-1" smoothing="IN_OUT" order="2"/>
+							<Rotation degrees="-45" duration="0.4" smoothing="IN_OUT" order="2"/>
+							
+						</AnimationGroup>
+					</Animations>
+					<Size x="40" y="40"/>
+					<Anchors><Anchor x="0" y="0" point="CENTER"/></Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -439,6 +454,8 @@
 					if self.onSelection then
 						self.onSelection(red, green, blue);
 					end
+					_G[self:GetName() .. "BlinkAnimate"]:Play();
+					_G[self:GetName() .. "BlinkAnimate"]:Finish();
 				end
 				self.setColor();
 			</OnLoad>
