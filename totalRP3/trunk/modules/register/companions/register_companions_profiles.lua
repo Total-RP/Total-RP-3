@@ -25,10 +25,12 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty = TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty;
 local EMPTY, PetCanBeRenamed = Globals.empty, PetCanBeRenamed;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
+local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -86,15 +88,15 @@ local function uiDupplicateProfile(profileID)
 	local profile = getProfiles()[profileID];
 	showTextInputPopup(
 	loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(Utils.str.color("g").. profile.profileName .. "|r"),
-		function(newName)
-			if newName and #newName ~= 0 then
-				if not uiCheckNameAvailability(newName) then return end
-				local profileID = dupplicateProfile(profile, newName);
-				openProfile(profileID);
-			end
-		end,
-		nil,
-		profile.profileName
+	function(newName)
+		if newName and #newName ~= 0 then
+			if not uiCheckNameAvailability(newName) then return end
+			local profileID = dupplicateProfile(profile, newName);
+			openProfile(profileID);
+		end
+	end,
+	nil,
+	profile.profileName
 	);
 end
 
@@ -113,19 +115,19 @@ local function uiEditProfile(profileID)
 	local profile = getProfiles()[profileID];
 	showTextInputPopup(
 	loc("PR_CO_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g") .. profile.profileName .. "|r"),
-		function(newName)
-			if newName and #newName ~= 0 then
-				if not uiCheckNameAvailability(newName) then return end
-				editProfile(profileID, newName);
-				uiInitProfileList();
-				if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
-					getMenuItem(currentlyOpenedProfilePrefix .. profileID).text = newName;
-					rebuildMenu();
-				end
+	function(newName)
+		if newName and #newName ~= 0 then
+			if not uiCheckNameAvailability(newName) then return end
+			editProfile(profileID, newName);
+			uiInitProfileList();
+			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+				getMenuItem(currentlyOpenedProfilePrefix .. profileID).text = newName;
+				rebuildMenu();
 			end
-		end,
-		nil,
-		profile.profileName
+		end
+	end,
+	nil,
+	profile.profileName
 	);
 end
 
@@ -167,9 +169,9 @@ local function decorateProfileList(widget, id)
 	end
 
 	setTooltipForSameFrame(
-		_G[widget:GetName().."Info"], "RIGHT", 0, 0,
-		loc("PR_PROFILE"),
-		text
+	_G[widget:GetName().."Info"], "RIGHT", 0, 0,
+	loc("PR_PROFILE"),
+	text
 	)
 end
 
@@ -177,7 +179,7 @@ end
 function uiInitProfileList()
 	local size = tsize(getProfiles());
 	TRP3_CompanionsProfilesListEmpty:Hide();
-	if size == 0 then 
+	if size == 0 then
 		TRP3_CompanionsProfilesListEmpty:Show();
 	end
 	initList(TRP3_CompanionsProfilesList, getProfiles(), TRP3_CompanionsProfilesListSlider);
@@ -212,7 +214,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local displayDropDown, UnitName = TRP3_API.ui.listbox.displayDropDown, UnitName;
-local openPage = TRP3_API.companions.openPage;
 local getProfiles, boundPlayerCompanion, unboundPlayerCompanion = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.boundPlayerCompanion, TRP3_API.companions.player.unboundPlayerCompanion;
 
 local function ui_boundPlayerCompanion(companionID, profileID, targetType)
@@ -229,7 +230,7 @@ local function createNewAndBound(companionID, targetType)
 	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
 	function(newName)
 		if newName and #newName ~= 0 then
-			if not isProfileNameAvailable(newName) then 
+			if not isProfileNameAvailable(newName) then
 				showAlertPopup(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("g")..newName.."|r"));
 				return;
 			end
@@ -244,7 +245,7 @@ end
 
 local function onCompanionProfileSelection(value, companionID, targetType)
 	if value == 0 then
-		openPage(getCompanionProfileID(companionID));
+		openProfile(getCompanionProfileID(companionID));
 		openMainFrame();
 	elseif value == 1 then
 		unboundPlayerCompanion(companionID);
@@ -264,18 +265,33 @@ local function getPlayerCompanionProfilesAsList()
 	return list;
 end
 
-local function companionProfileSelectionList(companionFullID, targetType, buttonStructure, button)
-	local list = {};
-
-	local ownerID, companionID = companionIDToInfo(companionFullID);
-
-	if getCompanionProfile(companionID) then
-		tinsert(list, {loc("REG_COMPANION_TF_OPEN"), 0});
-		tinsert(list, {loc("REG_COMPANION_TF_UNBOUND"), 1});
+local function getCompanionInfo(owner, companionID, companionFullID)
+	local profile;
+	if owner == Globals.player_id then
+		profile = getCompanionProfile(companionID) or EMPTY;
+	else
+		profile = getCompanionRegisterProfile(companionFullID) or EMPTY;
 	end
-	tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList()});
+	return profile or EMPTY;
+end
 
-	displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
+local function companionProfileSelectionList(companionFullID, targetType, buttonStructure, button)
+	local ownerID, companionID = companionIDToInfo(companionFullID);
+	if ownerID == Globals.player_id then
+		local list = {};
+		if getCompanionProfile(companionID) then
+			tinsert(list, {loc("REG_COMPANION_TF_OPEN"), 0});
+			tinsert(list, {loc("REG_COMPANION_TF_UNBOUND"), 1});
+		end
+		tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList()});
+	
+		displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
+	else
+		if companionHasProfile(companionFullID) then
+			TRP3_API.companions.register.openPage(companionHasProfile(companionFullID));
+			openMainFrame();
+		end
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -293,7 +309,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 		end
 	end);
-	
+
 	registerPage({
 		id = TRP3_API.navigation.page.id.COMPANIONS_PROFILES,
 		frame = TRP3_CompanionsProfiles,
@@ -301,7 +317,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			onPageShow(context);
 		end,
 	});
-	
+
 	-- UI
 	handleMouseWheel(TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider);
 	TRP3_CompanionsProfilesListSlider:SetValue(0);
@@ -317,7 +333,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsProfilesList.widgetTab = widgetTab;
 	TRP3_CompanionsProfilesList.decorate = decorateProfileList;
 	TRP3_CompanionsProfilesAdd:SetScript("OnClick", uiCreateProfile);
-	
+
 	--Localization
 	TRP3_CompanionsProfilesTitle:SetText(Utils.str.color("w")..loc("PR_CO_PROFILEMANAGER_TITLE"));
 	TRP3_CompanionsProfilesAdd:SetText(loc("PR_CREATE_PROFILE"));
@@ -328,25 +344,33 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		id = "companion_profile",
 		configText = loc("REG_COMPANION_TF_PROFILE"),
 		condition = function(targetType, unitID)
-			if targetType == TYPE_BATTLE_PET or targetType == TYPE_PET then
+			if isTargetTypeACompanion(targetType) then
 				local ownerID, companionID = companionIDToInfo(unitID);
-				return ownerID == Globals.player_id;
+				return ownerID == Globals.player_id or companionHasProfile(unitID);
 			end
 		end,
 		onClick = companionProfileSelectionList,
 		adapter = function(buttonStructure, unitID, targetType)
-			-- Set icon relative to profile
-			buttonStructure.icon = "icon_petfamily_mechanical";
-			buttonStructure.tooltip = loc("REG_COMPANION_TF_NO");
 			local ownerID, companionID = companionIDToInfo(unitID);
-			local profile = getCompanionProfile(companionID);
-			if profile then
-				buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
-				if profile.data and profile.data.IC then
+			local profile = getCompanionInfo(ownerID, companionID, unitID);
+			if ownerID == Globals.player_id then
+				if profile then
+					buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
+					if profile.data and profile.data.IC then
+						buttonStructure.icon = profile.data.IC;
+					end
+				else
+					buttonStructure.icon = "icon_petfamily_mechanical";
+					buttonStructure.tooltip = loc("REG_COMPANION_TF_NO");
+				end
+			else
+				if profile and profile.data and profile.data.IC then
 					buttonStructure.icon = profile.data.IC;
+				else
+					buttonStructure.icon = Globals.icons.unknown;
 				end
 			end
 		end,
 	});
-	
+
 end);

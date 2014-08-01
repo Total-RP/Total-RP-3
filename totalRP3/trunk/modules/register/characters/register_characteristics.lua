@@ -666,7 +666,7 @@ local function onActionClicked(button)
 	assert(context.profile, "No profile in context");
 
 	local values = {};
-	tinsert(values,{"Delete profile", 1});
+	tinsert(values,{loc("PR_DELETE_PROFILE"), 1});
 	if context.profile.link and tsize(context.profile.link) > 0 then
 		tinsert(values,{loc("REG_PLAYER_IGNORE"):format(tsize(context.profile.link)), 2});
 	end

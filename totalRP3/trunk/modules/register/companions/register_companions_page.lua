@@ -17,15 +17,18 @@ local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
-local assert, tostring, type, _G, wipe, strtrim, strconcat = assert, tostring, type, _G, wipe, strtrim, strconcat;
+local assert, tostring, type, _G, wipe, strtrim, strconcat, pairs = assert, tostring, type, _G, wipe, strtrim, strconcat, pairs;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
-local tcopy, tsize = Utils.table.copy, Utils.table.size;
+local tcopy, tsize, tinsert, EMPTY = Utils.table.copy, Utils.table.size, tinsert, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local isUnitIDKnown, hasProfile, getUnitIDProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getUnitIDProfile;
+local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -94,7 +97,10 @@ local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 end
 
 local function onGlanceClick(button)
-	openGlanceEditor(button, onGlanceEditorConfirm);
+	local context = getCurrentContext();
+	if context.isPlayer then
+		openGlanceEditor(button, onGlanceEditorConfirm);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -201,6 +207,38 @@ function displayConsult(context)
 	setBkg(TRP3_CompanionsPageInformationConsult_About, dataTab.BK);
 end
 
+local function onActionSelected(value)
+	if type(value) == "string" then
+		openPageByUnitID(value);
+	end
+end
+
+local function onActionClick(button)
+	local context = getCurrentContext();
+	assert(context, "No context !");
+	assert(context.profile, "No profile in context");
+	
+	local values = {};
+	tinsert(values,{loc("PR_DELETE_PROFILE"), 1});
+	local masters = {};
+	for companionFullId, _ in pairs(context.profile.links or EMPTY) do
+		local ownerID, _ = companionIDToInfo(companionFullId);
+		masters[ownerID] = true;
+	end
+	if tsize(masters) > 0 then
+		local masterTab = {};
+		for ownerID, _ in pairs(masters) do
+			if isUnitIDKnown(ownerID) and hasProfile(ownerID) then
+				local profile = getUnitIDProfile(ownerID);
+				local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
+				tinsert(masterTab, {name, ownerID});
+			end
+		end
+		tinsert(values, {loc("PR_CO_MASTERS"), masterTab});
+	end
+	displayDropDown(button, values, onActionSelected, 0, true);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI: TAB MANAGEMENT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -215,9 +253,11 @@ local function refresh()
 	TRP3_CompanionsPageInformationConsult:Hide();
 	TRP3_CompanionsPageInformationEdit:Hide();
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:Hide();
+	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:Show();
 
 	if context.isPlayer then
 		TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:Show();
+		TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:Hide();
 	end
 
 	if getCurrentContext().isEditMode then
@@ -281,6 +321,7 @@ local showIconBrowser = TRP3_API.popup.showIconBrowser;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	PEEK_PRESETS = TRP3_Presets.peek;
+	openPageByUnitID = TRP3_API.register.openPageByUnitID;
 
 	registerPage({
 		id = TRP3_API.navigation.page.id.COMPANIONS_PAGE,
@@ -302,6 +343,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_About, loc("REG_PLAYER_ABOUT"), 150);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc("CM_EDIT"));
+	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "icon_petfamily_mechanical");
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "TOP", 0, 5, loc("CM_ACTIONS"));
+	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnClick", onActionClick);
 	
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc("REG_COMPANION_NAME_COLOR"), loc("REG_PLAYER_COLOR_TT"));
 	setupFieldSet(TRP3_CompanionsPageInformationEdit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

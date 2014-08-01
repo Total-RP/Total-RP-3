@@ -38,6 +38,7 @@ local refreshList;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
+local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -70,6 +71,28 @@ local function openPage(profileID)
 	end
 end
 
+function TRP3_API.companions.register.openPage(profileID)
+	local profile = getCompanionProfiles()[profileID];
+	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+		-- If the character already has his "tab", simply open it
+		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+	else
+		-- Else, create a new menu entry and open it.
+		local tabText = UNKNOWN;
+		if profile.data and profile.data.NA then
+			tabText = profile.data.NA;
+		end
+		registerMenu({
+			id = currentlyOpenedProfilePrefix .. profileID,
+			text = tabText,
+			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
+			isChildOf = REGISTER_PAGE,
+			closeable = true,
+		});
+		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+	end
+end
+
 local function openPageByUnitID(unitID)
 	if unitID == Globals.player_id then
 		selectMenu(playerMenu);
@@ -77,6 +100,7 @@ local function openPageByUnitID(unitID)
 		openPage(hasProfile(unitID));
 	end
 end
+TRP3_API.register.openPageByUnitID = openPageByUnitID;
 
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

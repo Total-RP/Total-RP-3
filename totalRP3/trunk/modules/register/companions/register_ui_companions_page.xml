@@ -43,6 +43,11 @@
 									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 								</Anchors>
 							</Button>
+							<Button name="$parent_ActionButton" inherits="TRP3_IconButton">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_EditButton" x="0" y="5"/>
+								</Anchors>
+							</Button>
 						</Frames>
 						<Layers>
 							<Layer level="OVERLAY">

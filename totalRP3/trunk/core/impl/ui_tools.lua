@@ -421,6 +421,10 @@ local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
+function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
+	return unitType == TYPE_BATTLE_PET or unitType == TYPE_PET;
+end
+
 ---
 -- Returns target type as first return value and boolean isMine as second.
 function TRP3_API.ui.misc.getTargetType(unitType)

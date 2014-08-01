@@ -436,6 +436,7 @@ local LOCALE_EN = {
 		PR_PROFILEMANAGER_RENAME = "Rename profile",
 		PR_PROFILEMANAGER_CURRENT = "Current profile",
 		PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
+		PR_CO_MASTERS = "Masters",
 		PR_CO_EMPTY = "No companion profile",
 		PR_CO_NEW_PROFILE = "New companion profile",
 		PR_CO_COUNT = "%s pets/mounts bounded to this profile.",

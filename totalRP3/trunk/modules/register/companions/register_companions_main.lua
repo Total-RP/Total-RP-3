@@ -14,6 +14,7 @@ local log = Utils.log.log;
 local pairs, assert, tostring, wipe, tinsert, type = pairs, assert, tostring, wipe, tinsert, type;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
 local displayMessage, openMainFrame = Utils.message.displayMessage, TRP3_API.navigation.openMainFrame;
 local companionIDToInfo = Utils.str.companionIDToInfo;
@@ -229,7 +230,6 @@ local function registerCreateProfile(profileID)
 		PE = {
 			v = 0
 		},
-		masters = {},
 		links = {}
 	};
 	log(("Create companion register profile %s"):format(profileID));
@@ -252,7 +252,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			registerCreateProfile(profileID);
 		end
 		local profile = registerCompanions[profileID];
-		
+
 		-- Check profile link
 		registerProfileAssociation[companionFullID] = profileID;
 		if not profile.links[companionFullID] then
@@ -264,14 +264,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			log(("Bound %s to profile %s"):format(companionFullID, profileID));
 			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 		end
-		
-		-- Check master link
-		-- TODO: check masters on register purge
-		if masterProfileID and not profile.masters[masterProfileID] then
-			profile.masters[masterProfileID] = 1;
-			log(("Bound %s to master %s"):format(companionFullID, masterProfileID));
-		end
-		
+
 		return profileID, profile.data.v ~= v1, profile.PE.v ~= v2;
 	else
 		local old = registerProfileAssociation[companionFullID];
@@ -307,33 +300,37 @@ function TRP3_API.companions.register.companionHasProfile(companionFullID)
 	return registerProfileAssociation[companionFullID];
 end
 
+function TRP3_API.companions.register.getProfiles()
+	return registerCompanions;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
-		if not TRP3_Companions then
-			TRP3_Companions = {};
-		end
+	if not TRP3_Companions then
+		TRP3_Companions = {};
+	end
 
-		if not TRP3_Companions.player then
-			TRP3_Companions.player = {};
-		end
-		playerCompanions = TRP3_Companions.player;
-		parsePlayerProfiles(playerCompanions);
+	if not TRP3_Companions.player then
+		TRP3_Companions.player = {};
+	end
+	playerCompanions = TRP3_Companions.player;
+	parsePlayerProfiles(playerCompanions);
 
-		if not TRP3_Companions.register then
-			TRP3_Companions.register = {};
-		end
-		registerCompanions = TRP3_Companions.register;
-		parseRegisterProfiles(registerCompanions);
-		
-		registerMenu({
-			id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
-			text = loc("REG_COMPANIONS"),
-			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
-			closeable = true,
-		});
+	if not TRP3_Companions.register then
+		TRP3_Companions.register = {};
+	end
+	registerCompanions = TRP3_Companions.register;
+	parseRegisterProfiles(registerCompanions);
+
+	registerMenu({
+		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
+		text = loc("REG_COMPANIONS"),
+		onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
+		closeable = true,
+	});
 
 end);

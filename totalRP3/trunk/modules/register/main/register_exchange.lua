@@ -309,11 +309,7 @@ local function sendQuery(unitID)
 end
 
 local function onMouseOverCharacter(unitID)
-	if UnitIsPlayer("mouseover") -- Don't query NPC
-	and UnitFactionGroup("player") == UnitFactionGroup("mouseover") -- Don't query other faction !
-	and CheckInteractDistance("mouseover", 4) -- Should be at range, this is kind of optimization
-	and isUnitIDKnown(unitID) -- For mouseover only query known people
-	then
+	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and CheckInteractDistance("mouseover", 4) and isUnitIDKnown(unitID) then
 		sendQuery(unitID);
 	end
 end
@@ -340,7 +336,7 @@ local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
-		debug(("Profile to heavy ! It would take %s messages to send."):format(computedSize));
+		debug(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 	end
 end
 
