@@ -66,12 +66,13 @@ local function openPage(profileID)
 			onSelected = function() setPage("player_main", {profile = profile, profileID = profileID}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
+			icon = "Interface\\ICONS\\pet_type_humanoid",
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
 end
 
-function TRP3_API.companions.register.openPage(profileID)
+local function openCompanionPage(profileID)
 	local profile = getCompanionProfiles()[profileID];
 	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 		-- If the character already has his "tab", simply open it
@@ -88,10 +89,12 @@ function TRP3_API.companions.register.openPage(profileID)
 			onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PAGE, {profile = profile, profileID = profileID, isPlayer = false}) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
+			icon = "Interface\\ICONS\\pet_type_beast",
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 	end
 end
+TRP3_API.companions.register.openPage = openCompanionPage;
 
 local function openPageByUnitID(unitID)
 	if unitID == Globals.player_id then
@@ -131,7 +134,7 @@ local function decorateCharacterLine(line, profileID)
 	if profile.characteristics and profile.characteristics.IC then
 		tooltip = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
-	
+
 	local hasGlance = profile.misc and profile.misc.PE and checkGlanceActivation(profile.misc.PE);
 	local hasNewAbout = profile.about and not profile.about.read;
 
@@ -158,7 +161,7 @@ local function decorateCharacterLine(line, profileID)
 	end
 
 	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID, profile)) .. "\n|r";
-	
+
 	if hasGlance then
 		secondLine = secondLine .. "\n" .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
 	end
@@ -166,14 +169,14 @@ local function decorateCharacterLine(line, profileID)
 		secondLine = secondLine .. "\n" .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
 	end
 
-	
+
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
 
 	local relation = getRelationText(profileID);
 	_G[line:GetName().."Info"]:SetText(relation);
-	
+
 	-- Third column : flags
 	local flags = "";
 	if atLeastOneIgnored then
@@ -186,7 +189,7 @@ local function decorateCharacterLine(line, profileID)
 		flags = flags .. " " .. NEW_ABOUT_ICON;
 	end
 	_G[line:GetName().."Info2"]:SetText(flags);
-	
+
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 end
 
@@ -236,7 +239,7 @@ local function getCharacterLines()
 		end
 	end
 	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
-	
+
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
 	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION"));
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
@@ -334,16 +337,16 @@ end
 local function onActions(self)
 	local values = {};
 	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
-		{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
-		{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
-		{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
-		{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
-	}});
+			{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
+			{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
+			{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
+			{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
+		}});
 	if tsize(selectedIDs) > 0 then
 		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
-			{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
-			{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
-		}});
+				{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
+				{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
+			}});
 	end
 	displayDropDown(self, values, onActionSelected, 0, true);
 end
@@ -353,16 +356,33 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function decorateCompanionLine(line, profileID)
+	local profile = TRP3_API.companions.register.getProfiles()[profileID];
+	line.id = profileID;
+	
+	local name = UNKNOWN;
+	if profile.data and profile.data.NA then
+		name = profile.data.NA;
+	end
+	_G[line:GetName().."Name"]:SetText(name);
+	
+	_G[line:GetName().."Info2"]:SetText("");
+	
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5);
+
 	_G[line:GetName().."Select"]:Show();
+	_G[line:GetName().."Info"]:SetText("");
 end
 
 local function getCompanionLines()
 	TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
 	TRP3_RegisterListHeaderInfo:SetText("");
-	TRP3_RegisterListHeaderInfo2:SetText("");
-	
-	return {};
+	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
+	TRP3_RegisterListHeaderActions:Show();
+
+	local profiles = TRP3_API.companions.register.getProfiles();
+
+	return profiles;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -385,7 +405,7 @@ local function getIgnoredLines()
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText("");
-	
+
 	return getIgnoredList();
 end
 
@@ -415,10 +435,13 @@ function refreshList()
 	initList(TRP3_RegisterList, lines, TRP3_RegisterListSlider);
 end
 
-local function onLineDClicked(self, button)
+local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
 		openPage(self:GetParent().id);
+	elseif currentMode == MODE_PETS then
+		assert(self:GetParent().id, "No profileID on line.");
+		openCompanionPage(self:GetParent().id);
 	elseif currentMode == MODE_IGNORE then
 		assert(self:GetParent().id, "No unitID on line.");
 		unignoreID(self:GetParent().id);
@@ -520,7 +543,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		removeOnShown = true,
 		configText = loc("REG_LIST_NOTIF_ADD_CONFIG"),
 	});
-	
+
 	-- To try, but I'm afraid for performances ...
 	TRP3_API.events.listenToEvent(Events.REGISTER_DATA_CHANGED, function()
 		if getCurrentPageID() == REGISTER_LIST_PAGEID then
@@ -579,7 +602,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
 		local widgetSelect = _G["TRP3_RegisterListLine"..i.."Select"];
 		widgetSelect:SetScript("OnClick", onLineSelected);
-		widgetClick:SetScript("OnClick", onLineDClicked);
+		widgetClick:SetScript("OnClick", onLineClicked);
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);
 		table.insert(widgetTab, widget);

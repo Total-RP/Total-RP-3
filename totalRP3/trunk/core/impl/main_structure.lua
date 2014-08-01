@@ -124,6 +124,13 @@ local function rebuildMenu()
 			end
 			label:SetText(menuStructure.text);
 			
+			local icon = _G[uiButton:GetName().."Icon"];
+			icon:Hide();
+			if menuStructure.icon then
+				icon:Show();
+				icon:SetTexture(menuStructure.icon);
+			end
+			
 			latestID = id;
 			uiButton:Show();
 			uiButton.id = id;

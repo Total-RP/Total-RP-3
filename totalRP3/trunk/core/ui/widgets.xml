@@ -107,6 +107,14 @@
 					<TexCoords left="0" right="0.6640625" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
+			<Layer level="BORDER">
+				<Texture name="$parentIcon" file="Interface\ICONS\pet_type_beast" hidden="true">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="LEFT" x="10" y="-2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 			<Layer level="ARTWORK">
 				<FontString name="$parentLabel" text="This is a Category" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
 					<Anchors>
