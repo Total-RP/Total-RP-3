@@ -29,6 +29,8 @@ local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local isUnitIDKnown, hasProfile, getUnitIDProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getUnitIDProfile;
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
+local deleteProfile = TRP3_API.companions.register.deleteProfile;
+local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -208,7 +210,15 @@ function displayConsult(context)
 end
 
 local function onActionSelected(value)
-	if type(value) == "string" then
+	if value == 1 then
+		local context = getCurrentContext();
+		assert(context, "No context !");
+		assert(context.profileID, "No profile ID in context");
+		assert(context.profile, "No profile in context");
+		showConfirmPopup(loc("REG_DELETE_WARNING"):format(context.profile.data.NA), function()
+			deleteProfile(context.profileID)
+		end);
+	elseif type(value) == "string" then
 		openPageByUnitID(value);
 	end
 end

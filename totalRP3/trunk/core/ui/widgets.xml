@@ -1,4 +1,4 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/"
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 	
@@ -433,10 +433,10 @@
 				<Texture file="Interface\Cooldown\star4" name="$parentBlink" alpha="0.0" alphaMode="ADD">
 					<Animations>
 						<AnimationGroup name="$parentAnimate" looping="NONE">
-							<Alpha duration="0.4" change="1" smoothing="IN_OUT" order="1"/>
-							<Rotation degrees="-45" duration="0.4" smoothing="IN_OUT" order="1"/>
-							<Alpha duration="0.4" change="-1" smoothing="IN_OUT" order="2"/>
-							<Rotation degrees="-45" duration="0.4" smoothing="IN_OUT" order="2"/>
+							<Alpha duration="0.4" change="1" smoothing="IN" order="1"/>
+							<Rotation degrees="-45" duration="0.4" smoothing="IN" order="1"/>
+							<Alpha duration="0.4" change="-1" smoothing="OUT" startDelay="0.4" order="1"/>
+							<Rotation degrees="-45" duration="0.4" smoothing="OUT" startDelay="0.4" order="1"/>
 							
 						</AnimationGroup>
 					</Animations>
