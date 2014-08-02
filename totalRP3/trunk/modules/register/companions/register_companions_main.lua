@@ -310,7 +310,7 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 	registerCompanions[profileID] = nil;
 	for key, value in pairs(registerProfileAssociation) do
 		if value == profileID then
-			registerProfileAssociation[key] = nill;
+			registerProfileAssociation[key] = nil;
 		end
 	end
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
