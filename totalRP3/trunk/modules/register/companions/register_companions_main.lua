@@ -308,8 +308,13 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 	assert(registerCompanions[profileID], "Unknown profile ID: " .. tostring(profileID));
 	wipe(registerCompanions[profileID]);
 	registerCompanions[profileID] = nil;
+	for key, value in pairs(registerProfileAssociation) do
+		if value == profileID then
+			registerProfileAssociation[key] = nill;
+		end
+	end
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
-	print("Suppression");
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

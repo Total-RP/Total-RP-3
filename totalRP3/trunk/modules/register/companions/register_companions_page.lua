@@ -215,7 +215,7 @@ local function onActionSelected(value)
 		assert(context, "No context !");
 		assert(context.profileID, "No profile ID in context");
 		assert(context.profile, "No profile in context");
-		showConfirmPopup(loc("REG_DELETE_WARNING"):format(context.profile.data.NA), function()
+		showConfirmPopup(loc("REG_DELETE_WARNING"):format(context.profile.data.NA or UNKOWN), function()
 			deleteProfile(context.profileID)
 		end);
 	elseif type(value) == "string" then
