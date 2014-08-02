@@ -8,6 +8,7 @@ local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
 local Comm = TRP3_API.communication;
+local loc = TRP3_API.locale.getText;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
@@ -26,21 +27,29 @@ local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompani
 local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
+local getConfigValue = TRP3_API.configuration.getValue;
+local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
 local tinsert, time, type, pairs = tinsert, time, type, pairs;
 
+-- Config keys
+local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
+local CONFIG_NEW_VERSION = "new_version_alert";
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local has_seen_update_alert = false;
+
 local function configIsAutoAdd()
-	return true; --TODO : config
+	return getConfigValue(CONFIG_REGISTRE_AUTO_ADD);
 end
 
 local function configShowVersionAlert()
-	return false; --TODO : config
+	return getConfigValue(CONFIG_NEW_VERSION);
 end
 
 local DEBUG = true;
@@ -156,8 +165,9 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 
-	if configShowVersionAlert() and senderVersion > Globals.version then
-	-- TODO: show version alert.
+	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
+		showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display,senderVersionText));
+		has_seen_update_alert = true;
 	end
 
 	--	Utils.table.dump(structure);

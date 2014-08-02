@@ -419,6 +419,7 @@ function TRP3_API.register.init()
 	});
 
 	registerConfigKey("register_about_use_vote", true);
+	registerConfigKey("register_auto_add", true);
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -432,6 +433,12 @@ function TRP3_API.register.init()
 				title = loc("CO_REGISTER_ABOUT_VOTE"),
 				configKey = "register_about_use_vote",
 				help = loc("CO_REGISTER_ABOUT_VOTE_TT")
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_REGISTER_AUTO_ADD"),
+				configKey = "register_auto_add",
+				help = loc("CO_REGISTER_AUTO_ADD_TT")
 			},
 		}
 	};

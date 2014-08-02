@@ -14,6 +14,7 @@ local LOCALE_EN = {
 		
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s",
+		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version : %s\n|c0000ff00New version %s|r\n\nPlease update !\n\nThis message will only appear once per session.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
@@ -298,6 +299,8 @@ local LOCALE_EN = {
 		CO_GENERAL_NOTIF = "Notifications",
 		CO_GENERAL_MISC = "Miscellaneous",
 		CO_GENERAL_TT_SIZE = "Info tooltip text size",
+		CO_GENERAL_NEW_VERSION = "Update alert",
+		CO_GENERAL_NEW_VERSION_TT = "Get an alert when a new version is available.",
 		CO_TOOLTIP = "Tooltip settings",
 		CO_TOOLTIP_USE = "Use custom tooltip for character",
 		CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -325,6 +328,8 @@ local LOCALE_EN = {
 		CO_REGISTER = "Register settings",
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
+		CO_REGISTER_AUTO_ADD = "Auto add new players",
+		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
 		CO_MODULES = "Modules status",
 		CO_MODULES_VERSION = "Version: %s",
 		CO_MODULES_ID = "Module ID: %s",
