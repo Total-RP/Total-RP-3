@@ -84,12 +84,12 @@ local GENERATED_WIDGET_INDEX = 0;
 
 local function buildConfigurationPage(structure)
 	local lastWidget = nil;
-	local marginLeft = structure.marginLeft or 10;
+	local marginLeft = structure.marginLeft or 5;
 	for index, element in pairs(structure.elements) do
 		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
 		widget:SetParent(structure.parent);
 		widget:ClearAllPoints();
-		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 10), 0);
+		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
 		if lastWidget ~= nil then
 			widget:SetPoint("TOP", lastWidget, "BOTTOM", 0, element.marginTop or 0);
 		else

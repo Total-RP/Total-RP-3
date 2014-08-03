@@ -199,7 +199,6 @@ end);
 TRP3_API.toolbar.init = function()
 	TRP3_API.toolbar.CONFIG_STRUCTURE = {
 		id = "main_config_toolbar",
-		marginLeft = 10,
 		menuText = loc("CO_TOOLBAR"),
 		pageText = loc("CO_TOOLBAR"),
 		elements = {},

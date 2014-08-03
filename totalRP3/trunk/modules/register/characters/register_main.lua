@@ -78,6 +78,7 @@ local function deleteProfile(profileID)
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 TRP3_API.register.deleteProfile = deleteProfile;
 
@@ -424,7 +425,6 @@ function TRP3_API.register.init()
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_register",
-		marginLeft = 10,
 		menuText = loc("CO_REGISTER"),
 		pageText = loc("CO_REGISTER"),
 		elements = {

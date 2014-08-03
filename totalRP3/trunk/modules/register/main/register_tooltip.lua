@@ -691,7 +691,6 @@ function TRP3_API.register.inits.tooltipInit()
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_tooltip",
-		marginLeft = 10,
 		menuText = loc("CO_TOOLTIP"),
 		pageText = loc("CO_TOOLTIP"),
 		elements = {
