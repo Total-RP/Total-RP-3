@@ -128,4 +128,8 @@
 	<Include file="register\register_includes.xml"/>
 	
 	<Include file="dialogs\dialogs.xml"/>
+	
+	<Include file="gamemaster\gamemaster.xml"/>
+	
+	<Include file="chatframe\chatframe.xml"/>
 </Ui>

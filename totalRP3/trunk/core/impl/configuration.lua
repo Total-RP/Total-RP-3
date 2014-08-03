@@ -84,12 +84,12 @@ local GENERATED_WIDGET_INDEX = 0;
 
 local function buildConfigurationPage(structure)
 	local lastWidget = nil;
-	local marginLeft = structure.marginLeft or 0;
+	local marginLeft = structure.marginLeft or 10;
 	for index, element in pairs(structure.elements) do
 		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
 		widget:SetParent(structure.parent);
 		widget:ClearAllPoints();
-		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 0), 0);
+		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 10), 0);
 		if lastWidget ~= nil then
 			widget:SetPoint("TOP", lastWidget, "BOTTOM", 0, element.marginTop or 0);
 		else
@@ -262,7 +262,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	registerMenu({
 		id = "main_90_config",
 		text = loc("CO_CONFIGURATION"),
-		onSelected = function() selectMenu("main_91_config_main_config_general") end,
+		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
 	});
 	
 	-- GENERAL SETTINGS INIT
@@ -278,8 +278,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	
 	-- Build widgets
 	local CONFIG_STRUCTURE_GENERAL = {
-		id = "main_config_general",
-		marginLeft = 10,
+		id = "main_config_aaa_general",
 		menuText = loc("CO_GENERAL"),
 		pageText = loc("CO_GENERAL"),
 		elements = {

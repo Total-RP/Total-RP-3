@@ -13,7 +13,7 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
-		GEN_VERSION = "Version: %s",
+		GEN_VERSION = "Version: %s (Build %s)",
 		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version : %s\n|c0000ff00New version %s|r\n\nPlease update !\n\nThis message will only appear once per session.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -244,6 +244,8 @@ local LOCALE_EN = {
 		REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Click to remove from ignore list",
 		REG_LIST_PETS_TITLE = "Companion list",
 		REG_LIST_PETS_EMPTY = "No companion",
+		REG_LIST_PETS_TOOLTIP = "Has been seen on",
+		REG_LIST_PETS_TOOLTIP2 = "Has been seen with",
 		REG_LIST_FILTERS = "Filters",
 		REG_LIST_REALMONLY = "This realm only",
 		REG_LIST_GUILD = "Guild",
@@ -342,10 +344,10 @@ local LOCALE_EN = {
 		CO_MODULES_STATUS_5 = "Error on startup",
 		CO_MODULES_TT_NONE = "No dependencies";
 		CO_MODULES_TT_DEPS = "Dependencies";
-		CO_MODULES_TT_TRP = "%sFor Total RP 3 version %s minimum.|r",
+		CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",
 		CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
 		CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
-		CO_MODULES_TUTO = "A module is a independent feature that can be enable or disable.\n\nPossible status:\n|cff00ff00Loaded:|r The module is loaded.\n|cff999999Disabled:|r The module is disabled.\n|cffff9900Missing dependencies:|r Some dependencies are not loaded.\n|cffff9900TRP update required:|r The module required a more recent version of TRP3.\n|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !\n\n|cffff9900When disabling a feature, a UI reload is necessary.",
+		CO_MODULES_TUTO = "A module is a independent feature that can be enable or disable.\n\nPossible status:\n|cff00ff00Loaded:|r The module is enabled and loaded.\n|cff999999Disabled:|r The module is disabled.\n|cffff9900Missing dependencies:|r Some dependencies are not loaded.\n|cffff9900TRP update required:|r The module required a more recent version of TRP3.\n|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !\n\n|cffff9900When disabling a module, a UI reload is necessary.",
 		CO_MODULES_SHOWERROR = "Show error",
 		CO_MODULES_DISABLE = "Disable module",
 		CO_MODULES_ENABLE = "Enable module",
@@ -382,7 +384,19 @@ local LOCALE_EN = {
 		CO_ANCHOR_BOTTOM_RIGHT = "Bottom right",
 		CO_ANCHOR_LEFT = "Left",
 		CO_ANCHOR_RIGHT = "Right",
-		
+		CO_CHAT = "Chat settings",
+		CO_CHAT_MAIN = "Chat main settings",
+		CO_CHAT_MAIN_METHOD = "Hooking method",
+		CO_CHAT_MAIN_METHOD_TT = "",
+		CO_CHAT_MAIN_METHOD_1 = "Replace original",
+		CO_CHAT_MAIN_METHOD_2 = "Append original",
+		CO_CHAT_MAIN_NAMING = "Naming method",
+		CO_CHAT_MAIN_NAMING_1 = "Keep original names",
+		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
+		CO_CHAT_MAIN_NAMING_3 = "First name + last name",
+		CO_CHAT_MAIN_COLOR = "Use custom colors",
+		CO_CHAT_USE = "Used chat channels",
+		CO_CHAT_USE_SAY = "Say channel",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -407,6 +421,7 @@ local LOCALE_EN = {
 		TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
 		TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
 		TF_OPEN_CHARACTER = "Show character page",
+		TF_OPEN_COMPANION = "Show companion page",
 		TF_PLAY_THEME = "Play character theme",
 		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
 		TF_IGNORE = "Ignore player",

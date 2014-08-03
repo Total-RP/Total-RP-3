@@ -194,7 +194,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
 		local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
 		if battlePetLine and battlePetV1 and battlePetV2 then
-			local profileID, queryV1, queryV2 = boundAndCheckCompanion(battlePetLine, senderID, senderProfileID, battlePetV1, battlePetV2);
+			local profileID, queryV1, queryV2 = boundAndCheckCompanion(battlePetLine, senderID, senderProfileID,  battlePetV1, battlePetV2);
 			if queryV1 then
 				debug(("Should update v1 for companion profileID %s"):format(profileID));
 				queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);

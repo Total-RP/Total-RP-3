@@ -268,11 +268,11 @@ end
 local function getCompanionInfo(owner, companionID, companionFullID)
 	local profile;
 	if owner == Globals.player_id then
-		profile = getCompanionProfile(companionID) or EMPTY;
+		profile = getCompanionProfile(companionID);
 	else
-		profile = getCompanionRegisterProfile(companionFullID) or EMPTY;
+		profile = getCompanionRegisterProfile(companionFullID);
 	end
-	return profile or EMPTY;
+	return profile;
 end
 
 local function companionProfileSelectionList(companionFullID, targetType, buttonStructure, button)
@@ -350,9 +350,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			end
 		end,
 		onClick = companionProfileSelectionList,
+		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 		adapter = function(buttonStructure, unitID, targetType)
 			local ownerID, companionID = companionIDToInfo(unitID);
 			local profile = getCompanionInfo(ownerID, companionID, unitID);
+			buttonStructure.alert = nil;
+			buttonStructure.tooltip = loc("TF_OPEN_COMPANION");
+			buttonStructure.tooltipSub = nil;
 			if ownerID == Globals.player_id then
 				if profile then
 					buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
@@ -368,6 +372,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 					buttonStructure.icon = profile.data.IC;
 				else
 					buttonStructure.icon = Globals.icons.unknown;
+				end
+				if profile and profile.data and profile.data.read == false then
+					buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+					buttonStructure.alert = true;
 				end
 			end
 		end,

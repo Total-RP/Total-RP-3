@@ -40,7 +40,8 @@ local DEFAULT_PROFILE = {
 	},
 	PE = {
 		v = 1
-	}
+	},
+	links = {}
 };
 
 local playerProfileAssociation = {};
@@ -140,7 +141,7 @@ TRP3_API.companions.player.editProfile = editProfile;
 local function deleteProfile(profileID)
 	assert(playerCompanions[profileID], "Unknown profile: "..tostring(profileID));
 	local profileName = playerCompanions[profileID]["profileName"];
-	for companionID, _ in pairs(playerCompanions[profileID].links) do
+	for companionID, _ in pairs(playerCompanions[profileID].links or EMPTY) do
 		unboundPlayerCompanion(companionID);
 	end
 	wipe(playerCompanions[profileID]);
@@ -287,6 +288,7 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
 	end
+	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, profileID, v);
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
@@ -302,6 +304,16 @@ end
 
 function TRP3_API.companions.register.getProfiles()
 	return registerCompanions;
+end
+
+function TRP3_API.companions.register.getAssociationsForProfile(profileID)
+	local list = {};
+	for companionFullID, id in pairs(registerProfileAssociation) do
+		if id == profileID then
+			tinsert(list, companionFullID);
+		end
+	end
+	return list;
 end
 
 function TRP3_API.companions.register.deleteProfile(profileID)

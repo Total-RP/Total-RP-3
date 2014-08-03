@@ -13,7 +13,6 @@ local getIgnoreReason = TRP3_API.register.getIgnoreReason;
 local ui_CharacterTT = TRP3_CharacterTooltip;
 local getCharacterUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
-local Config = TRP3_API.configuration;
 local getConfigValue = TRP3_API.configuration.getValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local strconcat = strconcat;
@@ -819,5 +818,5 @@ function TRP3_API.register.inits.tooltipInit()
 			},
 		}
 	}
-	Config.registerConfigurationPage(CONFIG_STRUCTURE);
+	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end

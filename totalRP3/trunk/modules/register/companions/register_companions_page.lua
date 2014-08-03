@@ -37,7 +37,7 @@ local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.navigation.page.id.COMPANIONS_PAGE = "companions_page";
-
+local COMPANIONS_PAGE_ID = TRP3_API.navigation.page.id.COMPANIONS_PAGE;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek management
@@ -48,7 +48,7 @@ local GLANCE_NOT_USED_ICON = "INV_Misc_QuestionMark";
 local setupGlanceButton, openGlanceEditor = TRP3_API.register.setupGlanceButton, TRP3_API.register.openGlanceEditor;
 
 local function refreshIfNeeded()
-	if getCurrentPageID() == TRP3_API.navigation.page.id.COMPANIONS_PAGE then
+	if getCurrentPageID() == COMPANIONS_PAGE_ID then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
 		if not context.isEditMode then
@@ -276,6 +276,10 @@ local function refresh()
 		TRP3_CompanionsPageInformationEdit:Show();
 	else
 		displayConsult(context);
+		if not context.isPlayer and context.profile.data and context.profile.data.read == false then
+			context.profile.data.read = true;
+			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+		end
 		TRP3_CompanionsPageInformationConsult:Show();
 	end
 
@@ -323,6 +327,16 @@ local function onPageShow(context)
 	tabGroup:SelectTab(1);
 end
 
+local function onReceivedInfo(profileID, infoType)
+	if getCurrentPageID() == COMPANIONS_PAGE_ID then
+		local context = getCurrentContext();
+		assert(context, "No context for page player_main !");
+		if not context.isPlayer and profileID == context.profileID then
+			showInformationTab();
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -334,13 +348,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	openPageByUnitID = TRP3_API.register.openPageByUnitID;
 
 	registerPage({
-		id = TRP3_API.navigation.page.id.COMPANIONS_PAGE,
+		id = COMPANIONS_PAGE_ID,
 		frame = TRP3_CompanionsPage,
 		onPagePostShow = function(context)
 			assert(context, "Missing context.");
 			onPageShow(context);
 		end,
 	});
+	
+	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);

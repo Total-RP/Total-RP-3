@@ -111,14 +111,14 @@
 				<Texture name="$parentIcon" file="Interface\ICONS\pet_type_beast" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="10" y="-2"/>
+						<Anchor point="LEFT" x="9" y="-2"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" text="This is a Category" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
+				<FontString name="$parentLabel" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="16" y="4"/> 
+						<Anchor point="BOTTOMLEFT" x="20" y="4"/> 
 						<Anchor point="TOPRIGHT" x="-16" y="-4"/> 
 					</Anchors>					
 				</FontString>
@@ -143,7 +143,7 @@
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="300"/></TileSize>
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="380"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Frames>

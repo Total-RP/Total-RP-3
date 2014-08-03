@@ -355,9 +355,14 @@ end
 -- UI : COMPANIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
+
 local function decorateCompanionLine(line, profileID)
 	local profile = TRP3_API.companions.register.getProfiles()[profileID];
 	line.id = profileID;
+	
+	local hasGlance = profile.PE and checkGlanceActivation(profile.PE);
+	local hasNewAbout = profile.data and profile.data.read == false;
 	
 	local name = UNKNOWN;
 	if profile.data and profile.data.NA then
@@ -365,9 +370,41 @@ local function decorateCompanionLine(line, profileID)
 	end
 	_G[line:GetName().."Name"]:SetText(name);
 	
-	_G[line:GetName().."Info2"]:SetText("");
+	local tooltip, secondLine = name, "";
+	if profile.data and profile.data.IC then
+		tooltip = Utils.str.icon(profile.data.IC, ICON_SIZE) .. " " .. name;
+	end
+
+	local links, masters = {}, {};
+	local fulllinks = getAssociationsForProfile(profileID);
+	for _, companionFullID in pairs(fulllinks) do
+		local ownerID, companionID = companionIDToInfo(companionFullID);
+		links[companionID] = 1;
+		masters[ownerID] = 1;
+	end
 	
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5);
+	local companionList = "";
+	for companionID, _ in pairs(links) do
+		companionList = companionList .. "- |cff00ff00" .. companionID .. "|r\n";
+	end
+	local masterList = "";
+	for ownerID, _ in pairs(masters) do
+		masterList = masterList .. "- |cff00ff00" .. ownerID .. "|r\n";
+	end
+	
+	secondLine = loc("REG_LIST_PETS_TOOLTIP") .. ":\n" .. companionList .. "\n" .. loc("REG_LIST_PETS_TOOLTIP2") .. ":\n" .. masterList;
+	
+	-- Third column : flags
+	local flags = "";
+	if hasGlance then
+		flags = flags .. " " .. GLANCE_ICON;
+	end
+	if hasNewAbout then
+		flags = flags .. " " .. NEW_ABOUT_ICON;
+	end
+	_G[line:GetName().."Info2"]:SetText(flags);
+	
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 
 	_G[line:GetName().."Select"]:Show();
 	_G[line:GetName().."Info"]:SetText("");

@@ -39,9 +39,6 @@ function Globals.addon:OnEnable()
 	TRP3_API.register.init();
 	TRP3_API.popup.init();
 	
-	-- Version
-	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(Globals.version_display));
-	
 	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOAD);
 	
 	TRP3_API.module.startModules(); -- Call module callback for all modules

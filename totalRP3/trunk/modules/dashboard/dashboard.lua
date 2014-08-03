@@ -257,6 +257,8 @@ TRP3_API.dashboard.init = function()
 	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
 	
+	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
+	
 	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
 	
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
