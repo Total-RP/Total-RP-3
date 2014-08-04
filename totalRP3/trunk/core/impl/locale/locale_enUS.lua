@@ -397,6 +397,7 @@ local LOCALE_EN = {
 		CO_CHAT_MAIN_COLOR = "Use custom colors",
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",
+		CO_CHAT_MAIN_NPC = "Detect NPC talk pattern",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -517,6 +518,10 @@ local LOCALE_EN = {
 		UI_TUTO_BUTTON = "Tutorial mode",
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
 		UI_CLOSE_ALL = "Close all",
+		
+		NPC_TALK_SAY_PATTERN = "says: ";
+		NPC_TALK_YELL_PATTERN = "yells: ";
+		NPC_TALK_WHISPER_PATTERN = "whispers: ";
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS

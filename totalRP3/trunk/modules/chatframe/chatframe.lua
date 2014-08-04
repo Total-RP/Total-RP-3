@@ -28,6 +28,7 @@ local POSSIBLE_CHANNELS = {
 local CONFIG_HOOK_METHOD = "chat_method";
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
+local CONFIG_NPC_TALK = "chat_npc_talk";
 local CONFIG_USAGE = "chat_use_";
 
 local function configHookingMethod()
@@ -46,11 +47,16 @@ local function configIsChannelUsed(channel)
 	return getConfigValue(CONFIG_USAGE .. channel);
 end
 
+local function configDoHandleNPCTalk()
+	return getConfigValue(CONFIG_NPC_TALK);
+end
+
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_HOOK_METHOD, 1);
 	registerConfigKey(CONFIG_NAME_METHOD, 2);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
+	registerConfigKey(CONFIG_NPC_TALK, true);
 
 	local HOOK_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_METHOD_1"), 1},
@@ -98,6 +104,11 @@ local function createConfigPage()
 				configKey = CONFIG_NAME_COLOR,
 			},
 			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_MAIN_NPC"),
+				configKey = CONFIG_NPC_TALK,
+			},
+			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_USE"),
 			},
@@ -120,7 +131,7 @@ end
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getCharacterClassColor(chatInfo, event, text, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, GUID)
+local function getCharacterClassColor(chatInfo, event, text, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, GUID)
 	local color;
 	if ( chatInfo and chatInfo.colorNameByClass and GUID ) then
 		local localizedClass, englishClass = GetPlayerInfoByGUID(GUID);
@@ -141,6 +152,32 @@ local function getCharacterInfoTab(unitID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC talk detection
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local NPC_TALK_PREFIX = "|| ";
+local NPC_TALK_CHANNELS = {
+	CHAT_MSG_SAY = 1, CHAT_MSG_EMOTE = 1, CHAT_MSG_PARTY = 1, CHAT_MSG_RAID = 1, CHAT_MSG_PARTY_LEADER = 1, CHAT_MSG_RAID_LEADER = 1
+};
+local NPC_TALK_PATTERNS;
+
+local function handleNPCTalk(chatFrame, message, characterID, messageID)
+	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
+	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
+		if message:find(TALK_TYPE) then
+			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
+			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
+			local content = message:sub(name:len() + 4);
+			playerLink = playerLink .. name;
+			chatFrame:AddMessage("|cffff9900" .. playerLink .. "|h|r" .. content, chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id);
+			return;
+		end
+	end
+	local chatInfo = ChatTypeInfo["MONSTER_EMOTE"];
+	chatFrame:AddMessage(playerLink .. message:sub(4) .. "|h", chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Chatframe management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -150,7 +187,7 @@ end
 
 function handleCharacterMessage(chatFrame, event, ...)
 	local characterName, characterColor;
-	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16 = ...;
+	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
 	local languageHeader = "";
 	local character, realm = unitIDToInfo(characterID);
 	if not realm then -- Thanks Blizzard to not always send a full character ID
@@ -158,16 +195,22 @@ function handleCharacterMessage(chatFrame, event, ...)
 		characterID = unitInfoToID(character, realm);
 	end
 	local info = getCharacterInfoTab(characterID);
-
+	
 	-- Get chat type and configuration
 	local type = strsub(event, 10);
 	local chatInfo = ChatTypeInfo[type];
 	
+	-- Detect NPC talk pattern on authorized channels
+	if message:sub(1, 3) == NPC_TALK_PREFIX and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
+		handleNPCTalk(chatFrame, message, characterID, messageID);
+		return false;
+	end
+
 	-- WHISPER and WHISPER_INFORM have the same chat info
 	if ( strsub(type, 1, 7) == "WHISPER" ) then
 		chatInfo = ChatTypeInfo["WHISPER"];
 	end
-	
+
 	-- WHISPER respond
 	if type == "WHISPER" then
 		ChatEdit_SetLastTellTarget(characterID, type);
@@ -213,7 +256,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 
 	-- Show
 	message = RemoveExtraSpaces(message);
-	local playerLink = "|Hplayer:".. characterID .. ":" .. arg11 .. "|h";
+	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
 	local body;
 	if type == "EMOTE" then
 		body = format(_G["CHAT_"..type.."_GET"] .. message, playerLink .. characterName .. "|h");
@@ -301,6 +344,11 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onLoaded()
+	NPC_TALK_PATTERNS = {
+		[loc("NPC_TALK_SAY_PATTERN")] = "MONSTER_SAY",
+		[loc("NPC_TALK_YELL_PATTERN")] = "MONSTER_YELL",
+		[loc("NPC_TALK_WHISPER_PATTERN")] = "MONSTER_WHISPER",
+	};
 	createConfigPage();
 	hooking();
 end
