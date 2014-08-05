@@ -29,6 +29,7 @@ local CONFIG_HOOK_METHOD = "chat_method";
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
+local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
 local CONFIG_USAGE = "chat_use_";
 
 local function configHookingMethod()
@@ -51,12 +52,17 @@ local function configDoHandleNPCTalk()
 	return getConfigValue(CONFIG_NPC_TALK);
 end
 
+local function configNPCTalkPrefix()
+	return getConfigValue(CONFIG_NPC_TALK_PREFIX);
+end
+
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_HOOK_METHOD, 1);
 	registerConfigKey(CONFIG_NAME_METHOD, 2);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_NPC_TALK, true);
+	registerConfigKey(CONFIG_NPC_TALK_PREFIX, "|| ");
 
 	local HOOK_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_METHOD_1"), 1},
@@ -109,6 +115,12 @@ local function createConfigPage()
 				configKey = CONFIG_NPC_TALK,
 			},
 			{
+				inherit = "TRP3_ConfigEditBox",
+				title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
+				configKey = CONFIG_NPC_TALK_PREFIX,
+				help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT")
+			},
+			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_USE"),
 			},
@@ -152,10 +164,30 @@ local function getCharacterInfoTab(unitID)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Emote and OOC detection
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function configDoEmoteDetection()
+	return true; -- TODO config
+end
+
+local function configEmoteDetectionPattern()
+	return "(%*.-%*)"; -- TODO config
+end
+
+local function detectEmoteAndOOC(type, message)
+	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
+		message = message:gsub(configEmoteDetectionPattern(), function(content)
+			return "|cffff9900" .. content .. "|r";
+		end);
+	end
+	return message;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC talk detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local NPC_TALK_PREFIX = "|| ";
 local NPC_TALK_CHANNELS = {
 	CHAT_MSG_SAY = 1, CHAT_MSG_EMOTE = 1, CHAT_MSG_PARTY = 1, CHAT_MSG_RAID = 1, CHAT_MSG_PARTY_LEADER = 1, CHAT_MSG_RAID_LEADER = 1
 };
@@ -201,7 +233,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 	local chatInfo = ChatTypeInfo[type];
 	
 	-- Detect NPC talk pattern on authorized channels
-	if message:sub(1, 3) == NPC_TALK_PREFIX and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
+	if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
 		handleNPCTalk(chatFrame, message, characterID, messageID);
 		return false;
 	end
@@ -256,6 +288,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 
 	-- Show
 	message = RemoveExtraSpaces(message);
+	message = detectEmoteAndOOC(type, message);
 	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
 	local body;
 	if type == "EMOTE" then

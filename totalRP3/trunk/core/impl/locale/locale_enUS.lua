@@ -394,10 +394,13 @@ local LOCALE_EN = {
 		CO_CHAT_MAIN_NAMING_1 = "Keep original names",
 		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
 		CO_CHAT_MAIN_NAMING_3 = "First name + last name",
-		CO_CHAT_MAIN_COLOR = "Use custom colors",
+		CO_CHAT_MAIN_COLOR = "Use custom colors for names",
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",
-		CO_CHAT_MAIN_NPC = "Detect NPC talk pattern",
+		CO_CHAT_MAIN_NPC = "NPC talk detection",
+		CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
+		CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in SAY, EMOTE, GROUP or RAID channel begins with this prefix, it will be interpreted as a NPC chat.\n\n|cff00ff00By default : \"|| \" (without the \" and with a space after the pipe)",
+		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
