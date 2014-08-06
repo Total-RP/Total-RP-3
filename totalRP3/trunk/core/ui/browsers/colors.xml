@@ -49,7 +49,7 @@
 				<Frames>
 				
 					<ColorSelect name="TRP3_ColorBrowserColor" enableMouse="true" enableKeyboard="true">
-						<Size x="365" y="200"/>
+						<Size x="365" y="128"/>
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-30"/>
 						</Anchors>
