@@ -352,50 +352,23 @@ end
 -- Color browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onColorSliderChanged()
-	local red = TRP3_ColorBrowserRed:GetValue() / 255;
-	local green = TRP3_ColorBrowserGreen:GetValue() / 255;
-	local blue = TRP3_ColorBrowserBlue:GetValue() / 255;
-	TRP3_ColorBrowserView:SetTexture(red, green, blue);
-	TRP3_ColorBrowserViewText:SetTextColor(red, green, blue);
-end
-
 local function initColorBrowser()
-	TRP3_ColorBrowserViewText:SetText(loc("UI_COLOR_BROWSER_PREVIEW"));
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
-	TRP3_ColorBrowserRedText:SetText(loc("UI_COLOR_BROWSER_RED"));
-	TRP3_ColorBrowserRedHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
-	TRP3_ColorBrowserRedLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
-	TRP3_ColorBrowserGreenText:SetText(loc("UI_COLOR_BROWSER_GREEN"));
-	TRP3_ColorBrowserGreenHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
-	TRP3_ColorBrowserGreenLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
-	TRP3_ColorBrowserBlueText:SetText(loc("UI_COLOR_BROWSER_BLUE"));
-	TRP3_ColorBrowserBlueHigh:SetText(loc("UI_COLOR_BROWSER_MAX"));
-	TRP3_ColorBrowserBlueLow:SetText(loc("UI_COLOR_BROWSER_MIN"));
-	TRP3_ColorBrowserRed:SetValue(255);
-	TRP3_ColorBrowserGreen:SetValue(255);
-	TRP3_ColorBrowserBlue:SetValue(255);
-	onColorSliderChanged();
-	
-	TRP3_ColorBrowserRed:SetScript("OnValueChanged", onColorSliderChanged);
-	TRP3_ColorBrowserGreen:SetScript("OnValueChanged", onColorSliderChanged);
-	TRP3_ColorBrowserBlue:SetScript("OnValueChanged", onColorSliderChanged);
+
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
-		local red = math.ceil(TRP3_ColorBrowserRed:GetValue());
-		local green = math.ceil(TRP3_ColorBrowserGreen:GetValue());
-		local blue = math.ceil(TRP3_ColorBrowserBlue:GetValue());
 		hidePopups();
 		if TRP3_ColorBrowser.callback ~= nil then
-			TRP3_ColorBrowser.callback(red, green, blue);
+			TRP3_ColorBrowser.callback(TRP3_ColorBrowser.red * 255, TRP3_ColorBrowser.green * 255, TRP3_ColorBrowser.blue * 255);
 		end
 	end);
 end
 
 function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
-	TRP3_ColorBrowserRed:SetValue(red or 255);
-	TRP3_ColorBrowserGreen:SetValue(green or 255);
-	TRP3_ColorBrowserBlue:SetValue(blue or 255);
+	TRP3_ColorBrowser.red = (red or 255) / 255;
+	TRP3_ColorBrowser.green = (green or 255) / 255;
+	TRP3_ColorBrowser.blue = (blue or 255) / 255;
+	TRP3_ColorBrowserColor:SetColorRGB(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue);
 	TRP3_ColorBrowser.callback = callback;
 	showPopup(TRP3_ColorBrowser);
 end

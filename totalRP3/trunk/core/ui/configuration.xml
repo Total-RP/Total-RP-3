@@ -21,6 +21,34 @@
 	 	</Layers>
 	 </Frame>
 	 
+	 <Frame name="TRP3_ConfigColorPicker" virtual="true">
+	 	<Size x="50" y="30"/>
+	 	<Layers>
+	 		<Layer level="OVERLAY">
+			    <FontString name="$parentTitle" inherits="GameFontNormal" justifyH="LEFT" text="[editbox_title]">
+			    	<Size x="203" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+	 	</Layers>
+	 	<Frames>
+	 		<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
+	 		<Button name="$parentPicker" inherits="TRP3_ColorPickerButton">
+		        <Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentTitle" x="32" y="0"/>
+				</Anchors>
+		    </Button>
+	 	</Frames>
+	 </Frame>
+	 
 	 <Frame name="TRP3_ConfigEditBox" virtual="true">
 	 	<Size x="50" y="25"/>
 	 	<Layers>
@@ -222,7 +250,7 @@
 				</Anchors>
 				<Frames>
 				    <ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
-						<Size x="420" y="365"/>
+						<Size x="420" y="360"/>
 						<Anchors>
 							<Anchor point="RIGHT" x="-17" y="0"/>
 						</Anchors>

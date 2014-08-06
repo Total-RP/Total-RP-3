@@ -387,7 +387,7 @@ local LOCALE_EN = {
 		CO_CHAT = "Chat settings",
 		CO_CHAT_MAIN = "Chat main settings",
 		CO_CHAT_MAIN_METHOD = "Hooking method",
-		CO_CHAT_MAIN_METHOD_TT = "",
+		CO_CHAT_MAIN_METHOD_TT = "|cff00ff00Replace original:\n|rThis will replace the WoW original chat frames method. This method allows you to directly use the system without configuration, but can cause incompatibilities with others communication addons.\n\n|cff00ff00Append original:\n|rWith this method, TRP will not overwrite any Blizzard function. It's a good way to avoid incompatibilities but force you to configure WoW chat frame (or you will see the messages twice).",
 		CO_CHAT_MAIN_METHOD_1 = "Replace original",
 		CO_CHAT_MAIN_METHOD_2 = "Append original",
 		CO_CHAT_MAIN_NAMING = "Naming method",
@@ -398,8 +398,17 @@ local LOCALE_EN = {
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",
 		CO_CHAT_MAIN_NPC = "NPC talk detection",
+		CO_CHAT_MAIN_NPC_USE = "Use NPC talk detection",
 		CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
-		CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in SAY, EMOTE, GROUP or RAID channel begins with this prefix, it will be interpreted as a NPC chat.\n\n|cff00ff00By default : \"|| \" (without the \" and with a space after the pipe)",
+		CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in SAY, EMOTE, GROUP or RAID channel begins with this prefix, it will be interpreted as a NPC chat.\n\n|cff00ff00By default : \"|| \"\n(without the \" and with a space after the pipe)",
+		CO_CHAT_MAIN_EMOTE = "Emote detection",
+		CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
+		CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
+		CO_CHAT_MAIN_OOC = "OOC detection",
+		CO_CHAT_MAIN_OOC_USE = "Use OOC detection",
+		CO_CHAT_MAIN_OOC_PATTERN = "OOC detection pattern",
+		CO_CHAT_MAIN_OOC_COLOR = "OOC color",
+		
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
@@ -511,7 +520,6 @@ local LOCALE_EN = {
 		UI_COLOR_BROWSER_MAX = "Maximum",
 		UI_COLOR_BROWSER_MIN = "None",
 		UI_COLOR_BROWSER_SELECT = "Select color",
-		UI_COLOR_BROWSER_PREVIEW = "Color preview",
 		UI_IMAGE_BROWSER = "Image browser",
 		UI_IMAGE_SELECT = "Select image",
 		UI_FILTER = "Filter",

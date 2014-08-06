@@ -9,7 +9,8 @@ TRP3_API.configuration = {};
 local loc = TRP3_API.locale.getText;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
-local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort = _G, tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
+local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort, strconcat = _G, tonumber, math, tinsert, type, assert, tostring, pairs, table.sort, strconcat;
+local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local CreateFrame = CreateFrame;
 local getLocaleText = TRP3_API.locale.getLocaleText;
 local getLocales = TRP3_API.locale.getLocales;
@@ -132,7 +133,23 @@ local function buildConfigurationPage(structure)
 			end
 		end
 		
-		-- Specific for EditBox
+		-- Specific for Color picker
+		if _G[widget:GetName().."Picker"] then
+			if element.configKey then
+				local button = _G[widget:GetName().."Picker"];
+				button.setColor(hexaToNumber(getValue(element.configKey)));
+				button.onSelection = function(red, green, blue)
+					if red and green and blue then
+						local hexa = strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue))
+						setValue(element.configKey, hexa);
+					else
+						button.setColor(hexaToNumber(defaultValues[element.configKey]));
+					end
+				end;
+			end
+		end
+		
+		-- Specific for Button
 		if _G[widget:GetName().."Button"] then
 			local button = _G[widget:GetName().."Button"];
 			if element.callback then

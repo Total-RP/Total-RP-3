@@ -8,7 +8,7 @@
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="300"/>
+		<Size x="420" y="250"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -47,71 +47,59 @@
 					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
 				</Anchors>
 				<Frames>
-					<Slider name="TRP3_ColorBrowserRed" inherits="OptionsSliderTemplate">
-						<Size x="200" y="15"/>
+				
+					<ColorSelect name="TRP3_ColorBrowserColor" enableMouse="true" enableKeyboard="true">
+						<Size x="365" y="200"/>
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-25"/>
-							<Anchor point="LEFT" x="25" y="0"/>
-							<Anchor point="RIGHT" x="-25" y="0"/>
+							<Anchor point="TOP" x="0" y="-30"/>
 						</Anchors>
+						<ColorWheelTexture name="TRP3_ColorBrowserColorWheel">
+							<Size x="128" y="128"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="16" y="0"/>
+							</Anchors>
+						</ColorWheelTexture>
+						<ColorWheelThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+							<Size x="10" y="10"/>
+							<TexCoords left="0" right="0.15625" top="0" bottom="0.625"/>
+						</ColorWheelThumbTexture>
+						<ColorValueTexture>
+							<Size x="32" y="128"/>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserColorWheel" x="50" y="0"/>
+							</Anchors>
+						</ColorValueTexture>
+						<ColorValueThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+							<Size x="48" y="14"/>
+							<TexCoords left="0.25" right="1.0" top="0" bottom="0.875"/>
+						</ColorValueThumbTexture>
 						<Scripts>
-							<OnLoad>
-								self:SetMinMaxValues(0, 255);
-								self:SetValueStep(1);
-							</OnLoad>
+							<OnColorSelect>
+								TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
+								TRP3_ColorBrowser.red = r;
+								TRP3_ColorBrowser.green = g;
+								TRP3_ColorBrowser.blue = b;
+							</OnColorSelect>
 						</Scripts>
-					</Slider>
-					<Slider name="TRP3_ColorBrowserGreen" inherits="OptionsSliderTemplate">
-						<Size x="200" y="15"/>
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserRed" x="0" y="-25"/>
-							<Anchor point="LEFT" x="25" y="0"/>
-							<Anchor point="RIGHT" x="-25" y="0"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self:SetMinMaxValues(0, 255);
-								self:SetValueStep(1);
-							</OnLoad>
-						</Scripts>
-					</Slider>
-					<Slider name="TRP3_ColorBrowserBlue" inherits="OptionsSliderTemplate">
-						<Size x="200" y="15"/>
-						<Anchors>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserGreen" x="0" y="-25"/>
-							<Anchor point="LEFT" x="25" y="0"/>
-							<Anchor point="RIGHT" x="-25" y="0"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self:SetMinMaxValues(0, 255);
-								self:SetValueStep(1);
-							</OnLoad>
-						</Scripts>
-					</Slider>
+					</ColorSelect>
+					
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
 						<Size x="120" y="20"/>
 						<Anchors>	
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
 					</Button>
+					
 				</Frames>
 				<Layers>
 					<Layer level="ARTWORK">
-						<Texture name="TRP3_ColorBrowserView">
-							<Size x="200" y="25"/>
+						<Texture name="TRP3_ColorBrowserSwatch">
+							<Size><AbsDimension x="32" y="32"/></Size>
 							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserBlue" x="0" y="-25"/>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserColorWheel" x="150" y="0"/>
 							</Anchors>
+							<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
 						</Texture>
-					</Layer>
-					<Layer level="OVERLAY">
-						<FontString name="TRP3_ColorBrowserViewText" text="[placeholder]" inherits="GameFontNormalLarge">
-							<Size x="0" y="10"/>
-							<Anchors>
-								<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserView" x="0" y="-15"/>
-							</Anchors>
-						</FontString>
 					</Layer>
 				</Layers>
 			</Frame>

@@ -30,7 +30,12 @@ local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
 local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
+local CONFIG_EMOTE = "chat_emote";
+local CONFIG_EMOTE_PATTERN = "chat_emote_pattern";
 local CONFIG_USAGE = "chat_use_";
+local CONFIG_OOC = "chat_ooc";
+local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
+local CONFIG_OOC_COLOR = "chat_ooc_color";
 
 local function configHookingMethod()
 	return getConfigValue(CONFIG_HOOK_METHOD);
@@ -56,6 +61,26 @@ local function configNPCTalkPrefix()
 	return getConfigValue(CONFIG_NPC_TALK_PREFIX);
 end
 
+local function configDoEmoteDetection()
+	return getConfigValue(CONFIG_EMOTE);
+end
+
+local function configEmoteDetectionPattern()
+	return getConfigValue(CONFIG_EMOTE_PATTERN);
+end
+
+local function configDoOOCDetection()
+	return getConfigValue(CONFIG_OOC);
+end
+
+local function configOOCDetectionPattern()
+	return getConfigValue(CONFIG_OOC_PATTERN);
+end
+
+local function configOOCDetectionColor()
+	return getConfigValue(CONFIG_OOC_COLOR);
+end
+
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_HOOK_METHOD, 1);
@@ -63,6 +88,11 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_NPC_TALK, true);
 	registerConfigKey(CONFIG_NPC_TALK_PREFIX, "|| ");
+	registerConfigKey(CONFIG_EMOTE, true);
+	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
+	registerConfigKey(CONFIG_OOC, true);
+	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
+	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
 
 	local HOOK_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_METHOD_1"), 1},
@@ -73,6 +103,17 @@ local function createConfigPage()
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
 		{loc("CO_CHAT_MAIN_NAMING_2"), 2},
 		{loc("CO_CHAT_MAIN_NAMING_3"), 3},
+	}
+	
+	local EMOTE_PATTERNS = {
+		{"* Emote *", "(%*.-%*)"},
+		{"** Emote **", "(%*%*.-%*%*)"},
+		{"< Emote >", "(%<.-%>)"},
+	}
+	
+	local OOC_PATTERNS = {
+		{"( OOC )", "(%(.-%))"},
+		{"(( OOC ))", "(%(%(.-%)%))"},
 	}
 
 	-- Build configuration page
@@ -92,7 +133,6 @@ local function createConfigPage()
 				help = loc("CO_CHAT_MAIN_METHOD_TT"),
 				listContent = HOOK_METHOD_TAB,
 				configKey = CONFIG_HOOK_METHOD,
-				listWidth = nil,
 				listCancel = true,
 			},
 			{
@@ -101,7 +141,6 @@ local function createConfigPage()
 				title = loc("CO_CHAT_MAIN_NAMING"),
 				listContent = NAMING_METHOD_TAB,
 				configKey = CONFIG_NAME_METHOD,
-				listWidth = nil,
 				listCancel = true,
 			},
 			{
@@ -110,8 +149,12 @@ local function createConfigPage()
 				configKey = CONFIG_NAME_COLOR,
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
+				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN_NPC"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_MAIN_NPC_USE"),
 				configKey = CONFIG_NPC_TALK,
 			},
 			{
@@ -119,6 +162,45 @@ local function createConfigPage()
 				title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
 				configKey = CONFIG_NPC_TALK_PREFIX,
 				help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT")
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_CHAT_MAIN_EMOTE"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_MAIN_EMOTE_USE"),
+				configKey = CONFIG_EMOTE,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Chat_EmotePattern",
+				title = loc("CO_CHAT_MAIN_EMOTE_PATTERN"),
+				listContent = EMOTE_PATTERNS,
+				configKey = CONFIG_EMOTE_PATTERN,
+				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_CHAT_MAIN_OOC"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_MAIN_OOC_USE"),
+				configKey = CONFIG_OOC,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Chat_OOCPattern",
+				title = loc("CO_CHAT_MAIN_OOC_PATTERN"),
+				listContent = OOC_PATTERNS,
+				configKey = CONFIG_OOC_PATTERN,
+				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = loc("CO_CHAT_MAIN_OOC_COLOR"),
+				configKey = CONFIG_OOC_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -167,18 +249,17 @@ end
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function configDoEmoteDetection()
-	return true; -- TODO config
-end
-
-local function configEmoteDetectionPattern()
-	return "(%*.-%*)"; -- TODO config
-end
-
 local function detectEmoteAndOOC(type, message)
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
+		local chatInfo = ChatTypeInfo["EMOTE"];
+		local color = ("|cff%.2x%.2x%.2x"):format(chatInfo.r*255, chatInfo.g*255, chatInfo.b*255);
 		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return "|cffff9900" .. content .. "|r";
+			return color .. content .. "|r";
+		end);
+	end
+	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+		message = message:gsub(configOOCDetectionPattern(), function(content)
+			return "|cff" .. configOOCDetectionColor() .. content .. "|r";
 		end);
 	end
 	return message;
