@@ -116,7 +116,7 @@ local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t
 function TRP3_API.popup.showAlertPopup(text)
 	StaticPopupDialogs["TRP3_INFO"].text = POPUP_HEAD..text;
 	local dialog = StaticPopup_Show("TRP3_INFO");
-    if dialog then
+	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
 	end
@@ -127,7 +127,7 @@ function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_CONFIRM");
-    if dialog then
+	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
 	end
@@ -138,7 +138,7 @@ function TRP3_API.popup.showTextInputPopup(text, onAccept, onCancel, default)
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_INPUT_TEXT");
-    if dialog then
+	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
 		_G[dialog:GetName().."EditBox"]:SetText(default or "");
@@ -151,7 +151,7 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_INPUT_NUMBER");
-    if dialog then
+	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
 		_G[dialog:GetName().."EditBox"]:SetNumber(default or false);
@@ -190,9 +190,9 @@ local function decorateMusic(lineFrame, musicURL)
 	musicURL = filteredMusicList[musicURL];
 	local musicName = musicURL:reverse();
 	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
-	
+
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-		("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
+	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 	lineFrame.musicURL = musicURL;
 end
@@ -206,7 +206,7 @@ local function onMusicClick(lineFrame, mousebutton)
 	elseif lineFrame.musicURL then
 		Utils.music.play(lineFrame.musicURL);
 	end
-	
+
 end
 
 local function filteredMusicBrowser()
@@ -216,15 +216,15 @@ local function filteredMusicBrowser()
 		filteredMusicList = nil;
 	end
 	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
-	
+
 	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
 	initList(
-		{
-			widgetTab = musicWidgetTab,
-			decorate = decorateMusic
-		},
-		filteredMusicList,
-		TRP3_MusicBrowserContentSlider
+	{
+		widgetTab = musicWidgetTab,
+		decorate = decorateMusic
+	},
+	filteredMusicList,
+	TRP3_MusicBrowserContentSlider
 	);
 end
 
@@ -238,9 +238,9 @@ local function initMusicBrowser()
 		lineFrame:SetScript("OnClick", onMusicClick);
 		tinsert(musicWidgetTab, lineFrame);
 	end
-	
+
 	TRP3_MusicBrowserFilterBox:SetScript("OnTextChanged", filteredMusicBrowser);
-	
+
 	TRP3_MusicBrowserTitle:SetText(loc("UI_MUSIC_BROWSER"));
 	TRP3_MusicBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	TRP3_MusicBrowserFilterStop:SetText(loc("REG_PLAYER_ABOUT_MUSIC_STOP"));
@@ -289,12 +289,12 @@ local function filteredIconBrowser()
 	filteredIconList = getIconList(filter);
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
 	initList(
-		{
-			widgetTab = iconWidgetTab,
-			decorate = decorateIcon
-		},
-		filteredIconList,
-		TRP3_IconBrowserContentSlider
+	{
+		widgetTab = iconWidgetTab,
+		decorate = decorateIcon
+	},
+	filteredIconList,
+	TRP3_IconBrowserContentSlider
 	);
 end
 
@@ -303,7 +303,7 @@ local function initIconBrowser()
 	TRP3_IconBrowserContentSlider:SetValue(0);
 	-- Create icons
 	local row, column;
-	
+
 	for row = 0, 5 do
 		for column = 0, 7 do
 			local button = CreateFrame("Button", "TRP3_IconBrowserButton_"..row.."_"..column, ui_IconBrowserContent, "TRP3_IconBrowserButton");
@@ -313,16 +313,16 @@ local function initIconBrowser()
 			tinsert(iconWidgetTab, button);
 		end
 	end
-	
+
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
-	
+
 	setTooltipForSameFrame(TRP3_IconBrowserFilterHelp, "BOTTOMLEFT", 0, 0, loc("UI_ICON_BROWSER_HELP") ,loc("UI_ICON_BROWSER_HELP_TT"));
-	
+
 	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
 	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	filteredIconBrowser();
-	
+
 	-- Icon from item
 	hooksecurefunc("HandleModifiedItemClick", function(link)
 		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() and link and GetItemIcon(link) then
@@ -354,33 +354,34 @@ end
 -- Color browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local TRP3_ColorBrowser, TRP3_ColorBrowserColor = TRP3_ColorBrowser, TRP3_ColorBrowserColor;
+local toast = TRP3_API.ui.tooltip.toast;
+
 local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
+	
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
-				local r,g,b = hexaToNumber(self:GetText());
-				r = r/255;
-				g = g/255;
-				b = b/255;
-				TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
-				TRP3_ColorBrowserColor:SetColorRGB(r,g,b);
-				TRP3_ColorBrowser.red = r;
-				TRP3_ColorBrowser.green = g;
-				TRP3_ColorBrowser.blue = b;
-				self:ClearFocus();
+		if self:GetText():match("^%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number
+			local r, g, b = hexaToNumber(self:GetText());
+			TRP3_ColorBrowserColor:SetColorRGB(r / 255, g / 255, b / 255);
+			self:ClearFocus();
+		else
+			toast(loc("BW_COLOR_CODE_ALERT"), 1);
+		end
 	end);
 	
-	TRP3_ColorBrowserColor:SetScript("OnColorSelect",function(self,r,g,b)
+	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
 		TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
-		TRP3_ColorBrowserEditBox:SetText(strconcat(numberToHexa(r*255), numberToHexa(g*255), numberToHexa(b*255)));
+		TRP3_ColorBrowserEditBox:SetText(("%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255));
 	end);
-	
+
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
 		hidePopups();
 		if TRP3_ColorBrowser.callback ~= nil then
@@ -390,12 +391,9 @@ local function initColorBrowser()
 end
 
 function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
-	TRP3_ColorBrowser.red = (red or 255) / 255;
-	TRP3_ColorBrowser.green = (green or 255) / 255;
-	TRP3_ColorBrowser.blue = (blue or 255) / 255;
-	TRP3_ColorBrowserColor:SetColorRGB(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue);
+	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
 	TRP3_ColorBrowser.callback = callback;
-	showPopup(TRP3_ColorBrowser);					
+	showPopup(TRP3_ColorBrowser);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -423,7 +421,7 @@ local function decorateImage(texture, index)
 end
 
 local function filteredImageBrowser()
---	TRP3_ImageBrowserContentTexture
+	--	TRP3_ImageBrowserContentTexture
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
 	filteredImageList = getImageList(filter);
 	local size = #filteredImageList;
@@ -434,12 +432,12 @@ local function filteredImageBrowser()
 		TRP3_ImageBrowserSelect:Disable();
 	end
 	initList(
-		{
-			widgetTab = imageWidgetTab,
-			decorate = decorateImage
-		},
-		filteredImageList,
-		TRP3_ImageBrowserContentSlider
+	{
+		widgetTab = imageWidgetTab,
+		decorate = decorateImage
+	},
+	filteredImageList,
+	TRP3_ImageBrowserContentSlider
 	);
 end
 
@@ -448,9 +446,9 @@ local function initImageBrowser()
 	TRP3_ImageBrowserContentSlider:SetValue(0);
 	TRP3_ImageBrowserFilterBox:SetScript("OnTextChanged", filteredImageBrowser);
 	TRP3_ImageBrowserSelect:SetScript("OnClick", onImageSelect);
-	
+
 	tinsert(imageWidgetTab, TRP3_ImageBrowserContentTexture);
-	
+
 	TRP3_ImageBrowserTitle:SetText(loc("UI_IMAGE_BROWSER"));
 	TRP3_ImageBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	TRP3_ImageBrowserSelect:SetText(loc("UI_IMAGE_SELECT"));
@@ -470,7 +468,7 @@ function TRP3_API.popup.init()
 	getIconList, getIconListSize = TRP3_API.utils.resources.getIconList, TRP3_API.utils.resources.getIconListSize;
 	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
 	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
-	
+
 	initIconBrowser();
 	initMusicBrowser();
 	initColorBrowser();

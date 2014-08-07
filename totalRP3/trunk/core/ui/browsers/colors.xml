@@ -76,22 +76,21 @@
 						</ColorValueThumbTexture>
 						<Layers>
 							<Layer level="OVERLAY">
-									<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
-										<Size><AbsDimension x="253" y="226"/></Size>
-										<Anchors>
-											<Anchor x="-86" y="13"/>
-										</Anchors>
-										<TexCoords left="0" right="1" top="0.11" bottom="1" /> 
-									</Texture>
-									<Texture file="Interface\BUTTONS/UI-Quickslot2">
-										<Size><AbsDimension x="60" y="60"/></Size>
-										<Anchors>
-											<Anchor x="280" y="-35"/>
-										</Anchors> 
-									</Texture>
-									
-								</Layer>
-							</Layers>
+								<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
+									<Size x="253" y="226"/>
+									<Anchors>
+										<Anchor x="-86" y="13"/>
+									</Anchors>
+									<TexCoords left="0" right="1" top="0.11" bottom="1" /> 
+								</Texture>
+								<Texture file="Interface\BUTTONS/UI-Quickslot2">
+									<Size x="60" y="60"/>
+									<Anchors>
+										<Anchor x="280" y="-35"/>
+									</Anchors> 
+								</Texture>
+							</Layer>
+						</Layers>
 					</ColorSelect>
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
@@ -101,7 +100,7 @@
 						</Anchors>
 					</Button>
 					
-					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox">
+					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="6">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserSelect" x="20" y="0"/>
 						</Anchors>
