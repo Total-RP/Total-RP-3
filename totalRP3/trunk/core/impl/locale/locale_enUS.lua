@@ -590,6 +590,12 @@ local LOCALE_EN = {
 		MM_SHOW_HIDE_MAIN = "Show/hide the main frame";
 		MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar";
 		MM_SHOW_HIDE_MOVE = "Move button";
+		
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Browsers
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		BW_COLOR_CODE = "Color code";
+		BW_COLOR_CODE_TT = "You can copy an hexadecimal color code here."
 	},
 };
 

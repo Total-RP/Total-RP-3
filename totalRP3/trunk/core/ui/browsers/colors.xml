@@ -23,6 +23,7 @@
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
 			</Layer>
+			
 		</Layers>
 		<Frames>
 			<Button inherits="UIPanelCloseButton">
@@ -73,22 +74,38 @@
 							<Size x="48" y="14"/>
 							<TexCoords left="0.25" right="1.0" top="0" bottom="0.875"/>
 						</ColorValueThumbTexture>
-						<Scripts>
-							<OnColorSelect>
-								TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
-								TRP3_ColorBrowser.red = r;
-								TRP3_ColorBrowser.green = g;
-								TRP3_ColorBrowser.blue = b;
-							</OnColorSelect>
-						</Scripts>
+						<Layers>
+							<Layer level="OVERLAY">
+									<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
+										<Size><AbsDimension x="253" y="226"/></Size>
+										<Anchors>
+											<Anchor x="-86" y="13"/>
+										</Anchors>
+										<TexCoords left="0" right="1" top="0.11" bottom="1" /> 
+									</Texture>
+									<Texture file="Interface\BUTTONS/UI-Quickslot2">
+										<Size><AbsDimension x="60" y="60"/></Size>
+										<Anchors>
+											<Anchor x="280" y="-35"/>
+										</Anchors> 
+									</Texture>
+									
+								</Layer>
+							</Layers>
 					</ColorSelect>
-					
+
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
 						<Size x="120" y="20"/>
 						<Anchors>	
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
 					</Button>
+					
+					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserSelect" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
 					
 				</Frames>
 				<Layers>

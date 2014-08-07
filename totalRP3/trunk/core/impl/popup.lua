@@ -14,6 +14,8 @@ local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
 local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
+local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.utils.color.numberToHexa;
+local strconcat = strconcat;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -356,6 +358,29 @@ local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
 
+	TRP3_ColorBrowserEditBoxText:SetText("Code");
+	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
+	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
+				local r,g,b = hexaToNumber(self:GetText());
+				r = r/255;
+				g = g/255;
+				b = b/255;
+				TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
+				TRP3_ColorBrowserColor:SetColorRGB(r,g,b);
+				TRP3_ColorBrowser.red = r;
+				TRP3_ColorBrowser.green = g;
+				TRP3_ColorBrowser.blue = b;
+				self:ClearFocus();
+	end);
+	
+	TRP3_ColorBrowserColor:SetScript("OnColorSelect",function(self,r,g,b)
+		TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
+		TRP3_ColorBrowser.red = r;
+		TRP3_ColorBrowser.green = g;
+		TRP3_ColorBrowser.blue = b;
+		TRP3_ColorBrowserEditBox:SetText(strconcat(numberToHexa(r*255), numberToHexa(g*255), numberToHexa(b*255)));
+	end);
+	
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
 		hidePopups();
 		if TRP3_ColorBrowser.callback ~= nil then
@@ -370,7 +395,7 @@ function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
 	TRP3_ColorBrowser.blue = (blue or 255) / 255;
 	TRP3_ColorBrowserColor:SetColorRGB(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue);
 	TRP3_ColorBrowser.callback = callback;
-	showPopup(TRP3_ColorBrowser);
+	showPopup(TRP3_ColorBrowser);					
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
