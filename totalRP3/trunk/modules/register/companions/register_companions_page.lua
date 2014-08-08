@@ -27,7 +27,7 @@ local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local isUnitIDKnown, hasProfile, getUnitIDProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getUnitIDProfile;
+local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
@@ -141,16 +141,16 @@ local function saveInformation()
 
 	local dataTab = context.profile;
 	assert(type(dataTab.data) == "table", "Error: Nil information data or not a table.");
-	
+
 	saveInDraft(context.profile.profileName);
-	
+
 	wipe(dataTab.data);
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab.data, draftData);
 	-- version increment
 	dataTab.data.v = Utils.math.incrementNumber(dataTab.data.v or 0, 2);
 
---	compressData();
+	--	compressData();
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
@@ -163,7 +163,7 @@ local function displayEdit()
 	local context = getCurrentContext();
 	assert(context, "No context !");
 	assert(context.profile, "No profile in context");
-	
+
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
 		local dataTab = context.profile.data;
@@ -227,7 +227,7 @@ local function onActionClick(button)
 	local context = getCurrentContext();
 	assert(context, "No context !");
 	assert(context.profile, "No profile in context");
-	
+
 	local values = {};
 	tinsert(values,{loc("PR_DELETE_PROFILE"), 1});
 	local masters = {};
@@ -235,17 +235,20 @@ local function onActionClick(button)
 		local ownerID, _ = companionIDToInfo(companionFullId);
 		masters[ownerID] = true;
 	end
-	if tsize(masters) > 0 then
-		local masterTab = {};
-		for ownerID, _ in pairs(masters) do
-			if isUnitIDKnown(ownerID) and hasProfile(ownerID) then
-				local profile = getUnitIDProfile(ownerID);
-				local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
-				tinsert(masterTab, {name, ownerID});
-			end
+	local mastersProfiles = {};
+	for ownerID, _ in pairs(masters) do
+		if isUnitIDKnown(ownerID) and hasProfile(ownerID) then
+			mastersProfiles[hasProfile(ownerID)] = ownerID;
 		end
-		tinsert(values, {loc("PR_CO_MASTERS"), masterTab});
 	end
+	local masterTab = {};
+	for profileID, ownerID in pairs(mastersProfiles) do
+		local profile = getUnitProfile(profileID);
+		local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
+		tinsert(masterTab, {name, ownerID});
+	end
+	tinsert(values, {loc("PR_CO_MASTERS"), masterTab});
+
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
@@ -308,16 +311,16 @@ local function createTabBar()
 	frame:SetPoint("TOPLEFT", 17, -5);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
-		{
-			{loc("REG_COMPANION_INFO"), 1, 150}
-		},
-		function(tabWidget, value)
-			-- Clear all
-			TRP3_CompanionsPageInformation:Hide();
-			if value == 1 then
-				showInformationTab();
-			end
+	{
+		{loc("REG_COMPANION_INFO"), 1, 150}
+	},
+	function(tabWidget, value)
+		-- Clear all
+		TRP3_CompanionsPageInformation:Hide();
+		if value == 1 then
+			showInformationTab();
 		end
+	end
 	);
 end
 
@@ -355,7 +358,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			onPageShow(context);
 		end,
 	});
-	
+
 	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
@@ -372,7 +375,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "icon_petfamily_mechanical");
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "TOP", 0, 5, loc("CM_ACTIONS"));
 	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnClick", onActionClick);
-	
+
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationEdit_NamePanel_NameColor, "RIGHT", 0, 5, loc("REG_COMPANION_NAME_COLOR"), loc("REG_PLAYER_COLOR_TT"));
 	setupFieldSet(TRP3_CompanionsPageInformationEdit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_CompanionsPageInformationEdit_About, loc("REG_PLAYER_ABOUT"), 150);
@@ -383,7 +386,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local bkgTab = getTiledBackgroundList();
 	setupListBox(TRP3_CompanionsPageInformationEdit_About_BckField, bkgTab, function(value) setBkg(TRP3_CompanionsPageInformationEdit_About, value) end, nil, 120, true);
 	TRP3_API.ui.text.setupToolbar("TRP3_CompanionsPageInformationEdit_About_Toolbar", TRP3_CompanionsPageInformationEdit_About_TextScrollText);
-	
+
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("p", GameFontNormal);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h1", GameFontNormalHuge3);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h2", GameFontNormalHuge);
@@ -391,7 +394,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h1", 1, 1, 1);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h2", 1, 1, 1);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetTextColor("h3", 1, 1, 1);
-	
+
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];

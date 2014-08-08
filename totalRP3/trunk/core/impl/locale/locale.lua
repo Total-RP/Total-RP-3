@@ -88,18 +88,38 @@ end
 -- Companion utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local COMPANION_PET_PATTERN = UNITNAME_TITLE_PET:gsub("%%s", "([%%S%%P%%-]-)");
+if GetLocale() == "frFR" then
+	-- Thank you French language to be such a pain in the ass.
+	-- It will be less effective on French client. Do I look like I care ? Fuck no. :D
+	function TRP3_API.locale.findPetOwner(lines)
+		if lines[2] then
+			return lines[2]:match("Familier de ([%S%-%P]+)") or lines[2]:match("Familier d'([%S%-%P]+)") or
+			lines[2]:match("Serviteur de ([%S%-%P]+)") or lines[2]:match("Serviteur d'([%S%-%P]+)");
+		end
+	end
+	
+	function TRP3_API.locale.findBattlePetOwner(lines)
+		if lines[3] then
+			return lines[3]:match("Mascotte de ([%S%-%P]+)") or lines[3]:match("Mascotte d'([%S%-%P]+)");
+		end
+	end
+else
+	local REPLACE_PATTERN, NAME_PATTERN = "%%s", "([%%S%%-%%P]+)";
+	local COMPANION_PET_PATTERN = UNITNAME_TITLE_PET:gsub(REPLACE_PATTERN, NAME_PATTERN);
+	local COMPANION_DEMON_PATTERN = UNITNAME_TITLE_MINION:gsub(REPLACE_PATTERN, NAME_PATTERN);
 
-function TRP3_API.locale.findPetOwner(lines)
-	if lines[2] then
-		return lines[2]:match(COMPANION_PET_PATTERN);
+	function TRP3_API.locale.findPetOwner(lines)
+		if lines[2] then
+			return lines[2]:match(COMPANION_PET_PATTERN) or lines[2]:match(COMPANION_DEMON_PATTERN);
+		end
+	end
+
+	local COMPANION_BATTLE_PET_PATTERN = UNITNAME_TITLE_COMPANION:gsub(REPLACE_PATTERN, NAME_PATTERN);
+
+	function TRP3_API.locale.findBattlePetOwner(lines)
+		if lines[3] then
+			return lines[3]:match(COMPANION_BATTLE_PET_PATTERN);
+		end
 	end
 end
 
-local COMPANION_BATTLE_PET_PATTERN = UNITNAME_TITLE_COMPANION:gsub("%%s", "([%%S%%P%%-]-)");
-
-function TRP3_API.locale.findBattlePetOwner(lines)
-	if lines[3] then
-		return lines[3]:match(COMPANION_BATTLE_PET_PATTERN);
-	end
-end

@@ -410,7 +410,7 @@ end
 -- COMPANION TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local UnitBattlePetType, UnitBattlePetLevel = UnitBattlePetType, UnitBattlePetLevel;
+local UnitBattlePetType, UnitBattlePetLevel, UnitCreatureType = UnitBattlePetType, UnitBattlePetLevel, UnitCreatureType;
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local getCompanionProfile, getCompanionRegisterProfile;
 
@@ -451,6 +451,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	local info = data.data or EMPTY;
 	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
+	local companionFamily = UnitCreatureType(targetType);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Icon and name
@@ -510,7 +511,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 		ownerFinalName = ownerColor .. ownerFinalName .. "|r";
 		if targetMode == TYPE_PET then
-			ownerFinalName = UNITNAME_TITLE_PET:format(ownerFinalName);
+			ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName, companionFamily);
 		elseif targetMode == TYPE_BATTLE_PET then
 			ownerFinalName = UNITNAME_TITLE_COMPANION:format(ownerFinalName);
 		end

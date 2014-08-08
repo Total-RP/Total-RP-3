@@ -281,6 +281,7 @@ local LOCALE_EN = {
 		REG_COMPANION_TF_UNBOUND = "Unlink from profile",
 		REG_COMPANION_TF_BOUND_TO = "Select a profile",
 		REG_COMPANION_TF_OPEN = "Open page",
+		REG_COMPANION_TF_OWNER = "%s's %s",
 		REG_COMPANION_INFO = "Information",
 		REG_COMPANION_NAME = "Name",
 		REG_COMPANION_TITLE = "Title",
@@ -481,9 +482,9 @@ local LOCALE_EN = {
 		PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts bounds to %s.",
 		PR_CO_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your pets/mounts.",
 		PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway ?",
-		PR_CO_PET = "Hunter pet",
+		PR_CO_PET = "Pet",
 		PR_CO_BATTLE = "Companion",
-		PR_CO_DEMON = "Minion",
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
