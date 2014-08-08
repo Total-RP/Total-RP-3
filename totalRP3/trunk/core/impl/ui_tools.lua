@@ -24,6 +24,8 @@ local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
 
+local CONFIG_UI_SOUNDS = "ui_sounds";
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -855,3 +857,12 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame)
 	_G[toolbar .. "_Link"]:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
 end
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Sounds
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.misc.playUISound(pathToSound)
+	if getConfigValue(CONFIG_UI_SOUNDS) then
+		PlaySound(pathToSound,"SFX");
+	end
+end

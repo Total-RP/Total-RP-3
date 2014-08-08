@@ -291,6 +291,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	
 	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("new_version_alert", true);
+	registerConfigKey("ui_sounds", true);
 	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
 	
 	-- Build widgets
@@ -346,6 +347,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				title = loc("CO_GENERAL_NEW_VERSION"),
 				configKey = "new_version_alert",
 				help = loc("CO_GENERAL_NEW_VERSION_TT"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_UI_SOUNDS"),
+				configKey = "ui_sounds",
+				help = loc("CO_GENERAL_UI_SOUNDS_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigH1",

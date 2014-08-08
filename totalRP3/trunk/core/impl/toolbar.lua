@@ -210,7 +210,9 @@ end
 function TRP3_SwitchToolbar()
 	if toolbar:IsVisible() then
 		toolbar:Hide()
+		TRP3_API.ui.misc.playUISound("GAMEDIALOGCLOSE");
 	else
+		TRP3_API.ui.misc.playUISound("GAMEDIALOGOPEN");
 		toolbar:Show();
 	end
 end

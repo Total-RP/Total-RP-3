@@ -283,8 +283,10 @@ end
 local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();
+		TRP3_API.ui.misc.playUISound("AchievementMenuClose");
 	else
 		TRP3_MainFrame:Show();
+		TRP3_API.ui.misc.playUISound("AchievementMenuOpen");
 	end
 end
 TRP3_API.navigation.switchMainFrame = switchMainFrame;
