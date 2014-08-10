@@ -291,9 +291,13 @@ TRP3_API.dashboard.init = function()
 		onUpdate = function(Uibutton, buttonStructure)
 			if not ShowingCloak() then
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
+				_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
+				_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
 			else
 				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+				_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+				_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
 			end
 			if GetMouseFocus() == Uibutton then

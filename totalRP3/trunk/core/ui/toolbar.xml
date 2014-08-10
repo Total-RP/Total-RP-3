@@ -5,6 +5,7 @@
 	<Button name="TRP3_ToolbarButtonTemplate" virtual="true">
 		<Size x="25" y="25" />
 		<NormalTexture name="$parentNormal" />
+		<PushedTexture name="$parentPushed" />
 		<HighlightTexture alphaMode="ADD"
 			file="Interface/BUTTONS/ButtonHilight-Square" />
 	</Button>
