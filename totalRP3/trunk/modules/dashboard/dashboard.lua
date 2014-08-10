@@ -325,10 +325,14 @@ TRP3_API.dashboard.init = function()
 		onEnter = function(Uibutton, buttonStructure) end,
 		onUpdate = function(Uibutton, buttonStructure)
 			if not ShowingHelm() then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
+				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
+				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
+				Uibutton:GetPushedTexture():SetDesaturated(1);
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
 			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Helmet_13");
+				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
+				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
+				Uibutton:GetPushedTexture():SetDesaturated(1);
 				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
 			end
 			if GetMouseFocus() == Uibutton then

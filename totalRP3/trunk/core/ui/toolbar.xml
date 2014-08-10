@@ -1,18 +1,15 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
 
 	<!-- Toolbar button -->
 	<Button name="TRP3_ToolbarButtonTemplate" virtual="true">
 		<Size x="25" y="25" />
 		<NormalTexture name="$parentNormal" />
 		<PushedTexture name="$parentPushed" />
-		<HighlightTexture alphaMode="ADD"
-			file="Interface/BUTTONS/ButtonHilight-Square" />
+		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square" />
 	</Button>
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_Toolbar" frameStrata="DIALOG" toplevel="true"
-		parent="UIParent" enableMouse="true" hidden="false" movable="true">
+	<Frame name="TRP3_Toolbar" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="false" movable="true">
 		<TitleRegion setAllPoints="true" />
 		<Size x="190" y="60" />
 		<Scripts>
@@ -28,8 +25,7 @@
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-18" />
 				</Anchors>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-					edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="20" />
 					</EdgeSize>
@@ -44,8 +40,7 @@
 			<!-- Cadre Titre -->
 			<Frame name="TRP3_ToolbarTopFrame">
 				<Size x="80" y="25" />
-				<Backdrop bgFile="Interface\CHARACTERFRAME\UI-Party-Background"
-					edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+				<Backdrop bgFile="Interface\CHARACTERFRAME\UI-Party-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="16" />
 					</EdgeSize>
@@ -61,8 +56,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_ToolbarTopFrameText" inherits="GameFontNormalSmall"
-							justifyH="CENTER">
+						<FontString name="TRP3_ToolbarTopFrameText" inherits="GameFontNormalSmall" justifyH="CENTER">
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0" />
 							</Anchors>
@@ -73,6 +67,5 @@
 			</Frame>
 		</Frames>
 	</Frame>
-
 
 </Ui>

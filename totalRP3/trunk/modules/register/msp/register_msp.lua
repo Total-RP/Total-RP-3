@@ -2,12 +2,14 @@
 -- Mary Sue Protocol implementation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local _G, error, tinsert, assert, setmetatable, type, pairs = _G, error, tinsert, assert, setmetatable, type, pairs;
+local _G, error, tinsert, assert, setmetatable, type, pairs, wipe = _G, error, tinsert, assert, setmetatable, type, pairs, wipe;
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local log = Utils.log.log;
 local loc = TRP3_API.locale.getText;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
+local isIgnored = TRP3_API.register.isIDIgnored;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LibMSP
@@ -61,7 +63,7 @@ local function loadLibMSP()
 
 	local strfind, strmatch, strsub, strgmatch = strfind, strmatch, strsub, string.gmatch
 	local tconcat = table.concat
-	local tostring, tonumber, wipe, next, ipairs = tostring, tonumber, wipe, next, ipairs
+	local tostring, tonumber, next, ipairs = tostring, tonumber, next, ipairs
 	local GetTime = GetTime
 
 	local MSP_TT_ALONE = { 'TT' }
@@ -431,11 +433,91 @@ local function onCharacterChanged()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Received
+-- Exchange
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function onInformationReceived()
+local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
+local getConfigValue = TRP3_API.configuration.getValue;
+local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
+local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
+local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
+local hasProfile = TRP3_API.register.hasProfile;
 
+function onInformationReceived(senderID)
+	if isUnitIDKnown(senderID) and not isIgnored(senderID) and msp.char[senderID].field['VA'] ~= "" and msp.char[senderID].field['VA']:sub(1, 8) ~= "TotalRP3" then
+		log(("Received MSP info from %s"):format(senderID));
+		
+		-- Check that the character has a profileID.
+		local character = getUnitIDCharacter(senderID);
+		if not profileExists(senderID) then
+			-- Generate profileID
+			character.profileID = Utils.str.id();
+			local profile = createUnitIDProfile(senderID);
+			profile.link[senderID] = 1;
+		end
+		
+		local profile = getUnitIDProfile(senderID);
+		if not profile.characteristics then
+			profile.characteristics = {};
+		end
+		wipe(profile.characteristics);
+		
+		local fields = msp.char[senderID].field;
+		
+		profile.characteristics.FT = fields['NT'];
+		profile.characteristics.RA = fields['RA'];
+		profile.characteristics.AG = fields['AG'];
+		profile.characteristics.EC = fields['AE'];
+		profile.characteristics.HE = fields['AH'];
+		profile.characteristics.WE = fields['AW'];
+		profile.characteristics.RE = fields['HH'];
+		profile.characteristics.BP = fields['HB'];
+		profile.characteristics.FT = fields['NT'];
+		profile.characteristics.FN = fields['NA'];
+		
+		if not profile.about then
+			profile.about = {};
+		end
+		wipe(profile.about);
+		profile.about.BK = 5;
+		profile.about.TE = 3;
+		profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
+		profile.about.T3.HI.TX = fields['HI'];
+		profile.about.T3.PH.TX = fields['DE'];
+		profile.about.read = true;
+		
+		character.XP = 2;
+		if fields['FR'] == "4" then
+			character.XP = 1;
+		end
+		character.RP = 2;
+		if fields['FC'] == "2" then
+			character.RP = 1;
+		end
+		character.CU = fields['CU'];
+		if fields['VA'] and fields['VA']:find("%/") then
+			character.client = fields['VA']:sub(1, fields['VA']:find("%/") - 1);
+			character.clientVersion = fields['VA']:sub(fields['VA']:find("%/") + 1);
+		end
+		character.msp = true;
+		
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "about");
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "characteristics");
+		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "character");
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, senderID, hasProfile(senderID));
+	end
+end
+
+local function requestInformation(targetID, targetMode)
+	if targetMode == TYPE_CHARACTER and not isIgnored(targetID) and msp.char[targetID].supported ~= false and msp.char[targetID].field['VA']:sub(1, 8) ~= "TotalRP3" then
+		if isUnitIDKnown(targetID) or getConfigValue("register_auto_add") then
+			-- Eligible ! So check that the character exists and request data.
+			if not isUnitIDKnown(targetID) then
+				addCharacter(targetID);
+			end
+			msp:Request( targetID, {"TT", "HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"} );
+		end
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -453,6 +535,10 @@ local function onLoaded()
 	
 	loadLibMSP();
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
+	msp.my['GU'] = UnitGUID("player");
+	msp.my['GS'] = tostring( UnitSex("player") );
+	msp.my['GC'] = Globals.player_character.class;
+	msp.my['GR'] = Globals.player_character.race;
 
 	-- MSP versions handling
 	local character = getPlayerCharacter();
@@ -473,6 +559,8 @@ local function onLoaded()
 	Events.listenToEvent(Events.REGISTER_CHARACTERISTICS_SAVED, onCharactChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_SAVED, onAboutChanged);
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.REGISTER_XPSTATUS_CHANGED, Events.REGISTER_CURRENTLY_CHANGED}, onCharacterChanged);
+	
+	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
 end
 
 local MODULE_STRUCTURE = {

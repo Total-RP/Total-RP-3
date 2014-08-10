@@ -107,6 +107,7 @@ TRP3_API.register.hasProfile = hasProfile;
 local function profileExists(unitID)
 	return hasProfile(unitID) and profiles[characters[unitID].profileID];
 end
+TRP3_API.register.profileExists = profileExists;
 
 local function createUnitIDProfile(unitID)
 	assert(characters[unitID].profileID, "UnitID don't have a profileID: " .. unitID);
@@ -115,6 +116,7 @@ local function createUnitIDProfile(unitID)
 	profiles[characters[unitID].profileID].link = {};
 	return profiles[characters[unitID].profileID];
 end
+TRP3_API.register.createUnitIDProfile = createUnitIDProfile;
 
 local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
@@ -352,6 +354,18 @@ function TRP3_API.register.ui.isTabSelected(infoType)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CLEANUP
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function cleanupCharacters()
+	for unitID, character in pairs(characters) do
+		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
+			character.profileID = nil;
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -371,6 +385,8 @@ function TRP3_API.register.init()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
+	
+	cleanupCharacters();
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
