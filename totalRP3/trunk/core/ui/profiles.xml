@@ -23,6 +23,11 @@
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
+				<Scripts>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+					</PostClick>
+				</Scripts>
 			</Button>
 			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
@@ -38,9 +43,12 @@
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
+				self.oldR, self.oldG, self.oldB, self.oldA = self:GetBackdropBorderColor();
+				self:SetBackdropBorderColor(1, 1, 0);
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
+				self:SetBackdropBorderColor(self.oldR, self.oldG, self.oldB, self.oldA);
 			</OnLeave>
 		</Scripts>
 		<Layers>

@@ -52,6 +52,9 @@
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
+			<PostClick>
+				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+			</PostClick>
 		</Scripts>
 	</Button>
 	
@@ -182,6 +185,9 @@
 					<OnClick>
 						TRP3_API.popup.hidePopups();
 					</OnClick>
+					<PostClick>
+						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+					</PostClick>
 				</Scripts>
 			</Button>
 			<Frame name="TRP3_RegisterGlanceEditor_Preset">

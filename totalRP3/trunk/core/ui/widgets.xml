@@ -305,6 +305,9 @@
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
+			<PostClick>
+				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+			</PostClick>
 		</Scripts>
 	</CheckButton>
 	
