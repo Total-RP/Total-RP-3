@@ -402,10 +402,8 @@ TRP3_API.navigation.init = function()
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
 		if TRP3_TutorialFrame:IsShown() then
 			TRP3_TutorialFrame:Hide();
-			TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 		elseif not TRP3_PopupsFrame:IsShown() and self.provider and self.provider() then
 			showTutorial(self.provider());
-			TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 		end
 	end);
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "TOP", 0, 0, loc("UI_TUTO_BUTTON"), loc("UI_TUTO_BUTTON_TT"));

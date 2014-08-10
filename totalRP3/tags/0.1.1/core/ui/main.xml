@@ -267,11 +267,6 @@
 						<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">
 							<Size x="46" y="46"/><Anchors><Anchor point="CENTER" x="-1" y="1"/></Anchors>
 						</HighlightTexture>
-						<Scripts>
-							<PostClick>
-								TRP3_API.ui.misc.playUISound("gsCharacterSelection");
-							</PostClick>
-						</Scripts>
 					</Button>
 				</Frames>
 			</ScrollFrame>
