@@ -161,6 +161,7 @@ local function onStatusXPChange(status)
 	character.XP = status;
 	if old ~= status then
 		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+		Events.fireEvent(Events.REGISTER_XPSTATUS_CHANGED);
 	end
 end
 
@@ -170,6 +171,7 @@ local function onCurrentlyChanged()
 	character.CU = TRP3_DashboardStatus_Currently:GetText();
 	if old ~= character.CU then
 		character.v = Utils.math.incrementNumber(character.v or 1, 2);
+		Events.fireEvent(Events.REGISTER_CURRENTLY_CHANGED);
 	end
 end
 

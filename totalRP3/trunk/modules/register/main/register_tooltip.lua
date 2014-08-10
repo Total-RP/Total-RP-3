@@ -69,6 +69,7 @@ local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
+local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 
 local ANCHOR_TAB;
 
@@ -144,6 +145,10 @@ local function getCurrentMaxSize()
 	return getConfigValue(CONFIG_CHARACT_CURRENT_SIZE);
 end
 
+local function showSpacing()
+	return getConfigValue(CONFIG_CHARACT_SPACING);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTIL METHOD
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -207,6 +212,15 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
+local function makeSpace(tooltip, lineIndex)
+	if showSpacing() then
+		tooltip:AddLine(" ", 1, 0.50, 0);
+		setLineFont(tooltip, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+	end
+	return lineIndex;
+end
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local lineIndex = 1;
@@ -227,8 +241,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		lineIndex = lineIndex + 1;
 		return;
 	end
-	
-	
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -293,6 +305,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 	end
 
+	lineIndex = makeSpace(ui_CharacterTT, lineIndex);
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- race, class, level and faction
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -346,6 +360,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
+	
+	lineIndex = makeSpace(ui_CharacterTT, lineIndex);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CURRENTLY
@@ -363,6 +379,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		ui_CharacterTT:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
+		
+		lineIndex = makeSpace(ui_CharacterTT, lineIndex);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -677,6 +695,7 @@ function TRP3_API.register.inits.tooltipInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
+	registerConfigKey(CONFIG_CHARACT_SPACING, true);
 
 	ANCHOR_TAB = {
 		{loc("CO_ANCHOR_TOP_LEFT"), "ANCHOR_TOPLEFT"},
@@ -754,6 +773,12 @@ function TRP3_API.register.inits.tooltipInit()
 				max = 20,
 				step = 1,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_SPACING"),
+				help = loc("CO_TOOLTIP_SPACING_TT"),
+				configKey = CONFIG_CHARACT_SPACING,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

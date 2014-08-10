@@ -19,5 +19,7 @@
 	<Script file="main\register_exchange.lua" />
 	<Script file="main\register_tooltip.lua" />
 	<Script file="main\register_list.lua" />
+	
+	<Script file="msp\register_msp.lua" />
 
 </Ui>

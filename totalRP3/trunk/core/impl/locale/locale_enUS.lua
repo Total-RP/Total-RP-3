@@ -286,6 +286,7 @@ local LOCALE_EN = {
 		REG_COMPANION_NAME = "Name",
 		REG_COMPANION_TITLE = "Title",
 		REG_COMPANION_NAME_COLOR = "Name color",
+		REG_MSP_ALERT = "|cffff0000WARNING\n\nYou can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.\n\n|rCurrently loaded: |cff00ff00%s\n\n|cffff9900Therefore the MSP support for Total RP3 will be disabled.\n\n|rIf you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
@@ -316,6 +317,8 @@ local LOCALE_EN = {
 		CO_TOOLTIP_MAINSIZE = "Main font size",
 		CO_TOOLTIP_SUBSIZE = "Secondary font size",
 		CO_TOOLTIP_TERSIZE = "Tertiary font size",
+		CO_TOOLTIP_SPACING = "Show spacing",
+		CO_TOOLTIP_SPACING_TT = "Places spaces to lighten the tooltip, in the style of MyRoleplay tooltip.",
 		CO_TOOLTIP_ICONS = "Show icons",
 		CO_TOOLTIP_FT = "Show full title",
 		CO_TOOLTIP_RACE = "Show race, class and level",
@@ -389,10 +392,6 @@ local LOCALE_EN = {
 		CO_ANCHOR_RIGHT = "Right",
 		CO_CHAT = "Chat settings",
 		CO_CHAT_MAIN = "Chat main settings",
-		CO_CHAT_MAIN_METHOD = "Hooking method",
-		CO_CHAT_MAIN_METHOD_TT = "|cff00ff00Replace original:\n|rThis will replace the WoW original chat frames method. This method allows you to directly use the system without configuration, but can cause incompatibilities with others communication addons.\n\n|cff00ff00Append original:\n|rWith this method, TRP will not overwrite any Blizzard function. It's a good way to avoid incompatibilities but force you to configure WoW chat frame (or you will see the messages twice).",
-		CO_CHAT_MAIN_METHOD_1 = "Replace original",
-		CO_CHAT_MAIN_METHOD_2 = "Append original",
 		CO_CHAT_MAIN_NAMING = "Naming method",
 		CO_CHAT_MAIN_NAMING_1 = "Keep original names",
 		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
