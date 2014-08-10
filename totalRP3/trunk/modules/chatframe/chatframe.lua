@@ -11,9 +11,10 @@ local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local strsub, strlen, format, _G, pairs, tinsert, time = strsub, strlen, format, _G, pairs, tinsert, time;
 local GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound = GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound;
-local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
+local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
 local oldChatFrameOnEvent;
-local handleCharacterMessage;
+local handleCharacterMessage, hooking;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config
@@ -25,7 +26,6 @@ local POSSIBLE_CHANNELS = {
 	"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
 };
 
-local CONFIG_HOOK_METHOD = "chat_method";
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
@@ -36,10 +36,6 @@ local CONFIG_USAGE = "chat_use_";
 local CONFIG_OOC = "chat_ooc";
 local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
-
-local function configHookingMethod()
-	return getConfigValue(CONFIG_HOOK_METHOD);
-end
 
 local function configNameMethod()
 	return getConfigValue(CONFIG_NAME_METHOD);
@@ -83,7 +79,6 @@ end
 
 local function createConfigPage()
 	-- Config default value
-	registerConfigKey(CONFIG_HOOK_METHOD, 1);
 	registerConfigKey(CONFIG_NAME_METHOD, 2);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_NPC_TALK, true);
@@ -93,11 +88,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_OOC, true);
 	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
-
-	local HOOK_METHOD_TAB = {
-		{loc("CO_CHAT_MAIN_METHOD_1"), 1},
-		{loc("CO_CHAT_MAIN_METHOD_2"), 2},
-	}
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -125,15 +115,6 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN"),
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationTooltip_Chat_HookMethod",
-				title = loc("CO_CHAT_MAIN_METHOD"),
-				help = loc("CO_CHAT_MAIN_METHOD_TT"),
-				listContent = HOOK_METHOD_TAB,
-				configKey = CONFIG_HOOK_METHOD,
-				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -211,6 +192,7 @@ local function createConfigPage()
 
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
 		registerConfigKey(CONFIG_USAGE .. channel, true);
+		registerHandler(CONFIG_USAGE .. channel, hooking);
 		tinsert(CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = _G[channel],
@@ -316,7 +298,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 	-- Detect NPC talk pattern on authorized channels
 	if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
 		handleNPCTalk(chatFrame, message, characterID, messageID);
-		return false;
+		return true;
 	end
 
 	-- WHISPER and WHISPER_INFORM have the same chat info
@@ -390,66 +372,15 @@ function handleCharacterMessage(chatFrame, event, ...)
 
 	chatFrame:AddMessage(body, chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id, false);
 
-	return false;
+	return true;
 end
 
-local TREATABLE_EVENTS = {
-	CHAT_MSG_SAY = handleCharacterMessage,
-	CHAT_MSG_YELL = handleCharacterMessage,
-	CHAT_MSG_PARTY = handleCharacterMessage,
-	CHAT_MSG_RAID = handleCharacterMessage,
-	CHAT_MSG_GUILD = handleCharacterMessage,
-	CHAT_MSG_EMOTE = handleCharacterMessage,
-	CHAT_MSG_TEXT_EMOTE = handleCharacterMessage,
-	CHAT_MSG_PARTY_LEADER = handleCharacterMessage,
-	CHAT_MSG_RAID_LEADER = handleCharacterMessage,
-	CHAT_MSG_OFFICER = handleCharacterMessage,
-	CHAT_MSG_WHISPER = handleCharacterMessage,
-	CHAT_MSG_WHISPER_INFORM = handleCharacterMessage,
-}
-
-local function secureHook(event, func, ...)
-	if configIsChannelUsed(event) and func then
-		func(DEFAULT_CHAT_FRAME, event, ...);
-	end
-end
-
-local function hooking()
-	local hookingMethod = configHookingMethod();
-
-	if hookingMethod == 1 then
-		--[[
-		The method 1 consists on replacing the original ChatFrame_OnEvent.
-		The advantage is that we can prevent the original ChatFrame_OnEvent to show the messages we treated.
-		The disadvantage is that it can create compatibility issues with any Chat addon, and must be maintained as Blizzard could change its code at any patch.
-		]]
-
-		-- Replace original chat frame on event
-		oldChatFrameOnEvent = ChatFrame_OnEvent;
-		local function chatFrameOnEvent(chatFrame, event, ...)
-			if TREATABLE_EVENTS[event] and configIsChannelUsed(event) then
-				local doOriginal = TREATABLE_EVENTS[event](chatFrame, event, ...);
-				if doOriginal then
-					oldChatFrameOnEvent(chatFrame, event, ...);
-				end
-			else
-				oldChatFrameOnEvent(chatFrame, event, ...);
-			end
+function hooking()
+	for _, channel in pairs(POSSIBLE_CHANNELS) do
+		ChatFrame_RemoveMessageEventFilter(channel, handleCharacterMessage);
+		if configIsChannelUsed(channel) then
+			ChatFrame_AddMessageEventFilter(channel, handleCharacterMessage);
 		end
-		ChatFrame_OnEvent = chatFrameOnEvent;
-
-	else
-		--[[
-		The second method consists of staying completely independent from Blizzard code, only using events.
-		The advantage is that there will be no compatibilities issues with others addon.
-		The disadvantage is that we can't prevent the original ChatFrame_OnEvent to happend, so the user must configure himself the chat frame to not show the treated channels.
-		]]
-
-		-- Listen to event
-		for event, func in pairs(TREATABLE_EVENTS) do
-			Utils.event.registerHandler(event, function(...) secureHook(event, func, ...); end);
-		end
-
 	end
 end
 
