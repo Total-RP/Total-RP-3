@@ -2,8 +2,9 @@
 -- Mary Sue Protocol implementation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local _G, error, tinsert, assert, setmetatable, type, pairs, wipe = _G, error, tinsert, assert, setmetatable, type, pairs, wipe;
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime;
+local tsize = Utils.table.size;
 local log = Utils.log.log;
 local loc = TRP3_API.locale.getText;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
@@ -13,7 +14,7 @@ local isIgnored = TRP3_API.register.isIDIgnored;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LibMSP
--- This is a huge modification of Eterna's LibMSP
+-- This is a huge modification of Etarna's LibMSP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local msp, onInformationReceived;
@@ -21,11 +22,8 @@ local msp, onInformationReceived;
 local function loadLibMSP()
 
 	_G.msp_RPAddOn = "Total RP 3";
-	
-	msp = {};
-	local ChatThrottleLib = assert(ChatThrottleLib, "LibMSP requires ChatThrottleLib");
-	assert(ChatThrottleLib.version >= 22, "LibMSP requires ChatThrottleLib v22 or later");
 
+	msp = {};
 	msp.protocolversion = 1;
 
 	local UNKNOWN = _G.UNKNOWN or "Unknown";
@@ -42,8 +40,11 @@ local function loadLibMSP()
 		elseif key == "ver" or key == "time" then
 			table[key] = {}
 			return table[key]
+		elseif key == "VA" then
+			table[key] = "";
+			return table[key];
 		else
-			return nil
+			return nil;
 		end
 	end
 
@@ -64,7 +65,6 @@ local function loadLibMSP()
 	local strfind, strmatch, strsub, strgmatch = strfind, strmatch, strsub, string.gmatch
 	local tconcat = table.concat
 	local tostring, tonumber, next, ipairs = tostring, tonumber, next, ipairs
-	local GetTime = GetTime
 
 	local MSP_TT_ALONE = { 'TT' }
 	local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU' }
@@ -141,26 +141,40 @@ local function loadLibMSP()
 		elseif head == "" then
 			msp.char[ sender ].ver[ field ] = ver
 			msp.char[ sender ].time[ field ] = GetTime()
-			msp.char[ sender ].field[ field ] = body or ""
+			if field == "VA" then
+				msp.char[ sender ].VA = body or "";
+			end
+			return field, body or "";
 		end
 	end
 
 	function msp_incoming( sender, body )
-		msp.char[ sender ].supported = true
-		msp.char[ sender ].scantime = nil
-		msp.reply = newtable()
+		msp.char[ sender ].supported = true;
+		msp.char[ sender ].scantime = nil;
+
 		if body ~= "" then
+			msp.reply = newtable();
+			local updatedData = newtable();
 			if strfind( body, "\1", 1, true ) then
 				for chunk in strgmatch( body, "([^\1]+)\1*" ) do
-					msp_incomingchunk( sender, chunk )
+					local field, value = msp_incomingchunk( sender, chunk );
+					if field then
+						updatedData[ field ] = value;
+					end
 				end
 			else
-				msp_incomingchunk( sender, body )
+				local field, value = msp_incomingchunk( sender, body );
+				if field then
+					updatedData[ field ] = value;
+				end
 			end
+			if tsize(updatedData) > 0 then
+				onInformationReceived(sender, updatedData);
+			end
+			msp:Send( sender, msp.reply );
+			garbage[ msp.reply ] = true;
+			garbage[ updatedData ] = true;
 		end
-		onInformationReceived( sender )
-		msp:Send( sender, msp.reply )
-		garbage[ msp.reply ] = true
 	end
 
 	function msp_incominglast( sender, body )
@@ -207,11 +221,6 @@ local function loadLibMSP()
 		msp_tt_cache = (tconcat( tt, "\1" ) or "") .. "\1TT" .. msp.myver.TT;
 	end
 
-	--[[
-	msp:Update()
-	Call this function when you update (or might have updated) one of the fields in the player's own profile (msp.my).
-	It'll deal with any version updates necessary and will rebuild the cached tooltip reply.
-	]]
 	function msp:Update()
 		local updated = false
 		local tt = newtable()
@@ -249,22 +258,6 @@ local function loadLibMSP()
 		return updated
 	end
 
-	--[[
-	msp:Request( player, fields )
-	player = Player name to query; if from a different realm, format should be "Name-Realm"
-	fields = One (string) or more (table) fields to request from the player in question
-
-	Returns true if we sent them a request, and false if we didn't (because we either have it
-	recently cached already, or they didn't respond to our last request so might not support MSP).
-
-	Notes:
-	- This function does not spam: feel free to use frequently.
-	- To avoid problems with network congestion, doesn't work on a player called "Unknown".
-	- Player names are CASE SENSITIVE; pass them as you got them.
-	- Replies aren't instant: to be notified if/when we get a reply, register a callback function.
-	- For a quick shortcut, request field TT to get basic data you'll probably use in the tooltip.
-	- Defaults to a TT (tooltip) request, if there is only one parameter.
-	]]
 	function msp:Request( player, fields )
 		if player == UNKNOWN then
 			return false
@@ -333,10 +326,6 @@ local function loadLibMSP()
 		return 0
 	end
 
-	--[[
-	WoW 4.0.3.13329: Bug Workaround
-	(Invisible SendAddonMessage() returning visible ERR_CHAT_PLAYER_NOT_FOUND_S system message on failure)
-	]]
 	ChatFrame_AddMessageEventFilter( "CHAT_MSG_SYSTEM", function( self, event, msg )
 		return msp:PlayerKnownAbout( msg:match( ERR_CHAT_PLAYER_NOT_FOUND_S:format( "(.+)" ) ) )
 	end )
@@ -443,79 +432,116 @@ local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_
 local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
 
-function onInformationReceived(senderID)
-	if isUnitIDKnown(senderID) and not isIgnored(senderID) and msp.char[senderID].field['VA'] ~= "" and msp.char[senderID].field['VA']:sub(1, 8) ~= "TotalRP3" then
-		log(("Received MSP info from %s"):format(senderID));
-		
-		-- Check that the character has a profileID.
-		local character = getUnitIDCharacter(senderID);
-		if not profileExists(senderID) then
-			-- Generate profileID
-			character.profileID = Utils.str.id();
-			local profile = createUnitIDProfile(senderID);
-			profile.link[senderID] = 1;
-		end
-		
+local CHARACTERISTICS_FIELDS = {
+	NT = "FT",
+	RA = "RA",
+	AG = "AG",
+	AH = "HE",
+	AW = "WE",
+	HH = "RE",
+	HB = "BP",
+	NT = "FT",
+	NA = "FN",
+}
+
+local ABOUT_FIELDS = {
+	HI = "HI",
+	DE = "PH"
+}
+
+local CHARACTER_FIELDS = {
+	FR = true, FC = true, CU = true, VA = true
+}
+
+function onInformationReceived(senderID, data)
+	if not isIgnored(senderID) and isUnitIDKnown(senderID) and hasProfile(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
+		local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
 		local profile = getUnitIDProfile(senderID);
-		if not profile.characteristics then
-			profile.characteristics = {};
-		end
-		wipe(profile.characteristics);
-		
-		local fields = msp.char[senderID].field;
-		
-		profile.characteristics.FT = fields['NT'];
-		profile.characteristics.RA = fields['RA'];
-		profile.characteristics.AG = fields['AG'];
-		profile.characteristics.EC = fields['AE'];
-		profile.characteristics.HE = fields['AH'];
-		profile.characteristics.WE = fields['AW'];
-		profile.characteristics.RE = fields['HH'];
-		profile.characteristics.BP = fields['HB'];
-		profile.characteristics.FT = fields['NT'];
-		profile.characteristics.FN = fields['NA'];
-		
-		if not profile.about then
-			profile.about = {};
-		end
-		wipe(profile.about);
-		profile.about.BK = 5;
-		profile.about.TE = 3;
-		profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
-		profile.about.T3.HI.TX = fields['HI'];
-		profile.about.T3.PH.TX = fields['DE'];
-		profile.about.read = true;
-		
-		character.XP = 2;
-		if fields['FR'] == "4" then
-			character.XP = 1;
-		end
-		character.RP = 2;
-		if fields['FC'] == "2" then
-			character.RP = 1;
-		end
-		character.CU = fields['CU'];
-		if fields['VA'] and fields['VA']:find("%/") then
-			character.client = fields['VA']:sub(1, fields['VA']:find("%/") - 1);
-			character.clientVersion = fields['VA']:sub(fields['VA']:find("%/") + 1);
-		end
+		local character = getUnitIDCharacter(senderID);
 		character.msp = true;
+
+		for field, value in pairs(data) do
+			if CHARACTERISTICS_FIELDS[field] then
+				updatedCharacteristics = true;
+				profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
+			elseif ABOUT_FIELDS[field] then
+				updatedAbout = true;
+				profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+			elseif CHARACTER_FIELDS[field] then
+				updatedCharacter = true;
+				if field == "FC" then
+					character.RP = 2;
+					if value == "2" then
+						character.RP = 1;
+					end
+				elseif field == "CU" then
+					character.CU = value;
+				elseif field == "FR" then
+					character.XP = 2;
+					if value == "4" then
+						character.XP = 1;
+					end
+				elseif field == "VA" and value:find("%/") then
+					character.client = value:sub(1, value:find("%/") - 1);
+					character.clientVersion = value:sub(value:find("%/") + 1);
+				end
+			end
+		end
 		
-		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "about");
-		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "characteristics");
-		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "character");
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, senderID, hasProfile(senderID));
+		if updatedCharacteristics then
+			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "characteristics");
+		end
+		if updatedAbout then
+			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "about");
+		end
+		if updatedCharacter then
+			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "character");
+		end
+		if updatedCharacter or updatedCharacteristics or updatedAbout then
+			Events.fireEvent(Events.REGISTER_DATA_CHANGED, senderID, hasProfile(senderID));
+		end
 	end
 end
 
+local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
+local TT_DELAY, FIELDS_DELAY = 5, 20;
+local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"};
+
 local function requestInformation(targetID, targetMode)
-	if targetMode == TYPE_CHARACTER and not isIgnored(targetID) and msp.char[targetID].supported ~= false and msp.char[targetID].field['VA']:sub(1, 8) ~= "TotalRP3" then
+	if targetMode == TYPE_CHARACTER and not isIgnored(targetID) and msp.char[targetID].supported ~= false and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3" then
 		if isUnitIDKnown(targetID) or getConfigValue("register_auto_add") then
 			-- Eligible ! So check that the character exists and request data.
 			if not isUnitIDKnown(targetID) then
 				addCharacter(targetID);
 			end
-			msp:Request( targetID, {"TT", "HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"} );
+			-- Check that the character has a profileID.
+			local character = getUnitIDCharacter(targetID);
+			if not profileExists(targetID) then
+				-- Generate profileID
+				character.profileID = Utils.str.id();
+				local profile = createUnitIDProfile(targetID);
+				profile.link[targetID] = 1;
+			end
+			local profile = getUnitIDProfile(targetID);
+			if not profile.characteristics then
+				profile.characteristics = {};
+			end
+			if not profile.about then
+				profile.about = {};
+				profile.about.BK = 5;
+				profile.about.TE = 3;
+				profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
+			end
+			
+			local request = {};
+			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
+				msp:Request( targetID ); -- Request TT
+				TT_TIMER_TAB[targetID] = time();
+			end
+			if not FIELDS_TIMER_TAB[targetID] or time() - FIELDS_TIMER_TAB[targetID] >= FIELDS_DELAY then
+				msp:Request( targetID, REQUEST_TAB); -- Request fields
+				FIELDS_TIMER_TAB[targetID] = time();
+			end
 		end
 	end
 end
@@ -532,7 +558,7 @@ local function onLoaded()
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(addonName));
 	end
-	
+
 	loadLibMSP();
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
 	msp.my['GU'] = UnitGUID("player");
@@ -559,7 +585,7 @@ local function onLoaded()
 	Events.listenToEvent(Events.REGISTER_CHARACTERISTICS_SAVED, onCharactChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_SAVED, onAboutChanged);
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.REGISTER_XPSTATUS_CHANGED, Events.REGISTER_CURRENTLY_CHANGED}, onCharacterChanged);
-	
+
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
 end
 

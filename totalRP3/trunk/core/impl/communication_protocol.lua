@@ -9,6 +9,7 @@ TRP3_API.communication = {};
 -- imports
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
 local tostring, pairs, assert, string, wipe, tinsert, type, math = tostring, pairs, assert, string, wipe, tinsert, type, math;
+local tconcat = table.concat;
 local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -186,10 +187,7 @@ end
 
 -- Reassemble the message based on the packets, and deserialize it.
 function handleStructureIn(packets, sender)
-	local message = "";
-	for index, packet in pairs(packets) do
-		message = message..packet;
-	end
+	local message = tconcat(packets);
 	local status, structure = libSerializer:Deserialize(message);
 	if status then
 		receiveObject(structure, sender);
