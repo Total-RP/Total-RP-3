@@ -37,7 +37,7 @@ local function loadLibMSP()
 		if key == "field" then
 			table[key] = setmetatable( {}, { __index = emptyindex, } )
 			return table[key]
-		elseif key == "ver" or key == "time" then
+		elseif key == "time" then
 			table[key] = {}
 			return table[key]
 		elseif key == "VA" then
@@ -87,7 +87,7 @@ local function loadLibMSP()
 
 	function msp_onevent( this, event, prefix, body, dist, sender )
 		if event == "CHAT_MSG_ADDON" then
-			if MSP_INCOMING_HANDLER[ prefix ] then
+			if not isIgnored(sender) and MSP_INCOMING_HANDLER[ prefix ] then
 				MSP_INCOMING_HANDLER[ prefix ]( sender, body )
 			end
 		end
@@ -531,6 +531,12 @@ local function requestInformation(targetID, targetMode)
 				profile.about.BK = 5;
 				profile.about.TE = 3;
 				profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
+			end
+			if not profile.mspver then
+				profile.mspver = {};
+			end
+			if not msp.char[targetID].ver then
+				msp.char[targetID].ver = profile.mspver; -- Init vernums
 			end
 			
 			local request = {};
