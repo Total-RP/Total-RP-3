@@ -169,8 +169,6 @@ local function decorateCharacterLine(line, profileID)
 		secondLine = secondLine .. "\n" .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
 	end
 
-
-
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
 
@@ -250,7 +248,7 @@ end
 
 local MONTH_IN_SECONDS = 2592000;
 
-local function onActionSelected(value, button)
+local function onCharactersActionSelected(value, button)
 	-- PURGES
 	if value == "purge_time" then
 		local profiles = getProfileList();
@@ -334,7 +332,7 @@ local function onActionSelected(value, button)
 	end
 end
 
-local function onActions(self)
+local function onCharactersActions(self)
 	local values = {};
 	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
 			{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
@@ -348,7 +346,7 @@ local function onActions(self)
 				{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
 			}});
 	end
-	displayDropDown(self, values, onActionSelected, 0, true);
+	displayDropDown(self, values, onCharactersActionSelected, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -356,20 +354,21 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
+local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 
 local function decorateCompanionLine(line, profileID)
-	local profile = TRP3_API.companions.register.getProfiles()[profileID];
+	local profile = getCompanionProfiles()[profileID];
 	line.id = profileID;
-	
+
 	local hasGlance = profile.PE and checkGlanceActivation(profile.PE);
 	local hasNewAbout = profile.data and profile.data.read == false;
-	
+
 	local name = UNKNOWN;
 	if profile.data and profile.data.NA then
 		name = profile.data.NA;
 	end
 	_G[line:GetName().."Name"]:SetText(name);
-	
+
 	local tooltip, secondLine = name, "";
 	if profile.data and profile.data.IC then
 		tooltip = Utils.str.icon(profile.data.IC, ICON_SIZE) .. " " .. name;
@@ -382,7 +381,7 @@ local function decorateCompanionLine(line, profileID)
 		links[companionID] = 1;
 		masters[ownerID] = 1;
 	end
-	
+
 	local companionList = "";
 	for companionID, _ in pairs(links) do
 		companionList = companionList .. "- |cff00ff00" .. companionID .. "|r\n";
@@ -391,9 +390,9 @@ local function decorateCompanionLine(line, profileID)
 	for ownerID, _ in pairs(masters) do
 		masterList = masterList .. "- |cff00ff00" .. ownerID .. "|r\n";
 	end
-	
+
 	secondLine = loc("REG_LIST_PETS_TOOLTIP") .. ":\n" .. companionList .. "\n" .. loc("REG_LIST_PETS_TOOLTIP2") .. ":\n" .. masterList;
-	
+
 	-- Third column : flags
 	local flags = "";
 	if hasGlance then
@@ -403,23 +402,72 @@ local function decorateCompanionLine(line, profileID)
 		flags = flags .. " " .. NEW_ABOUT_ICON;
 	end
 	_G[line:GetName().."Info2"]:SetText(flags);
-	
+
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 
+	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
+
 	_G[line:GetName().."Info"]:SetText("");
 end
 
 local function getCompanionLines()
-	TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
+	local nameSearch = TRP3_RegisterListPetFilterName:GetText():lower();
+	local typeSearch = TRP3_RegisterListPetFilterType:GetText():lower();
+	local masterSearch = TRP3_RegisterListPetFilterMaster:GetText():lower();
+	local profiles = getCompanionProfiles();
+	local fullSize = tsize(profiles);
+	local lines = {};
+
+	for profileID, profile in pairs(profiles) do
+		local nameIsConform, typeIsConform, masterIsConform = false, false, false;
+
+		-- Run this test only if there are criterias
+		if typeSearch:len() > 0 or masterSearch:len() > 0 then
+			for companionFullID, _ in pairs(profile.links) do
+				local masterID, companionID = companionIDToInfo(companionFullID);
+				if companionID:lower():find(typeSearch) then
+					typeIsConform = true;
+				end
+				if masterID:lower():find(masterSearch) then
+					masterIsConform = true;
+				end
+			end
+		end
+
+		if masterSearch:len() ~= 0 and profile.data and profile.data.NA and (profile.data.NA:lower():find(nameSearch)) then
+			nameIsConform = true;
+		end
+
+		nameIsConform = nameIsConform or nameSearch:len() == 0;
+		typeIsConform = typeIsConform or typeSearch:len() == 0;
+		masterIsConform = masterIsConform or masterSearch:len() == 0;
+
+		if nameIsConform and typeIsConform and masterIsConform then
+			lines[profileID] = profile;
+		end
+	end
+
+	local lineSize = tsize(lines);
+	if lineSize == 0 then
+		if fullSize == 0 then
+			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
+		else
+			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY2"));
+		end
+	end
+	setupFieldSet(TRP3_RegisterListPetFilter, loc("REG_LIST_PETS_FILTER"):format(lineSize, fullSize), 200);
+
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
 	TRP3_RegisterListHeaderActions:Show();
 
-	local profiles = TRP3_API.companions.register.getProfiles();
+	return lines;
+end
 
-	return profiles;
+local function onPetsActions(self)
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -495,8 +543,11 @@ local function changeMode(tabWidget, value)
 	currentMode = value;
 	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
+	TRP3_RegisterListPetFilter:Hide();
 	if currentMode == MODE_CHARACTER then
 		TRP3_RegisterListCharactFilter:Show();
+	elseif currentMode == MODE_PETS then
+		TRP3_RegisterListPetFilter:Show();
 	end
 	refreshList();
 	Events.fireEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
@@ -648,13 +699,35 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListFilterCharactName:SetScript("OnTextChanged", refreshList);
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnTextChanged", refreshList);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
-
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
 
+	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListPetFilterMaster:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListPetFilterButton:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			TRP3_RegisterListPetFilterName:SetText("");
+			TRP3_RegisterListPetFilterType:SetText("");
+			TRP3_RegisterListPetFilterMaster:SetText("");
+		end
+		refreshList();
+	end)
+	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "LEFT", 0, 5, loc("REG_LIST_FILTERS"), loc("REG_LIST_FILTERS_TT"));
+	TRP3_RegisterListPetFilterNameText:SetText(loc("REG_LIST_PET_NAME"));
+	TRP3_RegisterListPetFilterTypeText:SetText(loc("REG_LIST_PET_TYPE"));
+	TRP3_RegisterListPetFilterMasterText:SetText(loc("REG_LIST_PET_MASTER"));
+	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterMaster});
+
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
-	TRP3_RegisterListHeaderActions:SetScript("OnClick", onActions);
+	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)
+		if currentMode == MODE_CHARACTER then
+			onCharactersActions(self);
+		elseif currentMode == MODE_PETS then
+			onPetsActions(self);
+		end
+	end);
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
 		selectedIDs[profileID] = nil;

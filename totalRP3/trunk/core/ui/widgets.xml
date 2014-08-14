@@ -426,12 +426,21 @@
 	</Frame>
 	
 	<!-- Color picker button -->
+	<Button name="TRP3_SearchButton" virtual="true" inherits="TRP3_IconButton">
+		<Scripts>
+			<OnLoad>
+				self:SetScale(0.8);
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				_G[self:GetName() .. "Icon"]:SetTexture("Interface\\MINIMAP\\TRACKING\\None");
+			</OnLoad>
+		</Scripts>
+	</Button>
+	
+	<!-- Color picker button -->
 	<Button name="TRP3_ColorPickerButton" virtual="true">
 		<Size x="16" y="16"/>
 	    <HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight" file="Interface\SpellActivationOverlay\IconAlert">
-	    	<Size>
-				<AbsDimension x="71" y="68"/>
-			</Size>
+	    	<Size x="71" y="68"/>
 			<Anchors>
 				<Anchor x="-11" y="11" point="TOPLEFT"/>
 			</Anchors>

@@ -487,7 +487,7 @@ function onInformationReceived(senderID, data)
 				end
 			end
 		end
-		
+
 		if updatedCharacteristics then
 			Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "characteristics");
 		end
@@ -508,7 +508,12 @@ local TT_DELAY, FIELDS_DELAY = 5, 20;
 local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"};
 
 local function requestInformation(targetID, targetMode)
-	if targetMode == TYPE_CHARACTER and not isIgnored(targetID) and msp.char[targetID].supported ~= false and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3" then
+	if targetMode == TYPE_CHARACTER
+		and not targetID == Globals.player_id
+		and not isIgnored(targetID)
+		and msp.char[targetID].supported ~= false
+		and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3"
+	then
 		if isUnitIDKnown(targetID) or getConfigValue("register_auto_add") then
 			-- Eligible ! So check that the character exists and request data.
 			if not isUnitIDKnown(targetID) then
@@ -538,7 +543,7 @@ local function requestInformation(targetID, targetMode)
 			if not msp.char[targetID].ver then
 				msp.char[targetID].ver = profile.mspver; -- Init vernums
 			end
-			
+
 			local request = {};
 			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
 				msp:Request( targetID ); -- Request TT
