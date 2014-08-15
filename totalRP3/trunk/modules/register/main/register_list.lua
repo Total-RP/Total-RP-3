@@ -696,12 +696,21 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		table.insert(widgetTab, widget);
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
-	TRP3_RegisterListFilterCharactName:SetScript("OnTextChanged", refreshList);
-	TRP3_RegisterListFilterCharactGuild:SetScript("OnTextChanged", refreshList);
+	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
+	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
+	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			TRP3_RegisterListFilterCharactName:SetText("");
+			TRP3_RegisterListFilterCharactGuild:SetText("");
+			TRP3_RegisterListFilterCharactRealm:SetChecked(true);
+		end
+		refreshList();
+	end)
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
+	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);

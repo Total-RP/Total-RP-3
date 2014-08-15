@@ -241,13 +241,15 @@ local function onActionClick(button)
 			mastersProfiles[hasProfile(ownerID)] = ownerID;
 		end
 	end
-	local masterTab = {};
-	for profileID, ownerID in pairs(mastersProfiles) do
-		local profile = getUnitProfile(profileID);
-		local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
-		tinsert(masterTab, {name, ownerID});
+	if tsize(mastersProfiles) > 0 then
+		local masterTab = {};
+		for profileID, ownerID in pairs(mastersProfiles) do
+			local profile = getUnitProfile(profileID);
+			local name = getCompleteName(profile.characteristics or EMPTY, ownerID, true);
+			tinsert(masterTab, {name, ownerID});
+		end
+		tinsert(values, {loc("PR_CO_MASTERS"), masterTab});
 	end
-	tinsert(values, {loc("PR_CO_MASTERS"), masterTab});
 
 	displayDropDown(button, values, onActionSelected, 0, true);
 end

@@ -78,6 +78,7 @@ local ANCHOR_TAB;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getAnchoredFrame()
+	if getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME) == "" then return nil end;
 	return _G[getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME)] or GameTooltip or error("Can't find any frame to anchor.");
 end
 
@@ -175,6 +176,15 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function getUnitID(targetType)
+	local currentTargetType = originalGetTargetType(targetType);
+	if currentTargetType == TYPE_CHARACTER then
+		return getCharacterUnitID(targetType), currentTargetType;
+	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+		return getCompanionFullID(targetType, currentTargetType), currentTargetType;
+	end
+end
 
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
@@ -360,7 +370,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
-	
+
 	lineIndex = makeSpace(ui_CharacterTT, lineIndex);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -379,7 +389,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		ui_CharacterTT:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
 		lineIndex = lineIndex + 1;
-		
+
 		lineIndex = makeSpace(ui_CharacterTT, lineIndex);
 	end
 
@@ -388,7 +398,17 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showTarget() and UnitName(targetType .. "target") then
-		ui_CharacterTT:AddLine(loc("REG_TT_TARGET"):format(UnitName(targetType .. "target")), 1, 1, 1);
+		local name = UnitName(targetType .. "target");
+		local targetTargetID = getUnitID(targetType .. "target");
+		if targetTargetID then
+			local targetInfo = getCharacterInfoTab(targetTargetID);
+			local characterColorCode = "";
+			if targetInfo.characteristics and targetInfo.characteristics.CH then
+				characterColorCode = "|cff" .. targetInfo.characteristics.CH;
+			end
+			name = characterColorCode .. getCompleteName(targetInfo.characteristics or {}, targetName, true);
+		end
+		ui_CharacterTT:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1);
 		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
 		lineIndex = lineIndex + 1;
 	end
@@ -582,14 +602,7 @@ end
 -- MAIN
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getUnitID(targetType)
-	local currentTargetType = originalGetTargetType(targetType);
-	if currentTargetType == TYPE_CHARACTER then
-		return getCharacterUnitID(targetType), currentTargetType;
-	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
-		return getCompanionFullID(targetType, currentTargetType), currentTargetType;
-	end
-end
+local GameTooltip_SetDefaultAnchor, UIParent = GameTooltip_SetDefaultAnchor, UIParent;
 
 local function show(targetType)
 	local targetID, targetMode = getUnitID(targetType);
@@ -603,8 +616,12 @@ local function show(targetType)
 		if targetID then
 			-- Stock all the current text from the GameTooltip
 			local originalTexts = getGameTooltipTexts();
-
-			ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+			local anchoredFrame = getAnchoredFrame();
+			if not anchoredFrame then
+				GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+			else
+				ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+			end
 
 			-- The target is a player
 			if targetMode then
