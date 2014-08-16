@@ -144,7 +144,7 @@ end
 
 --- Raises error if unknown unitName
 -- Link a unitID to a profileID. This link is bidirectional.
-function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
+function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local character = getUnitIDCharacter(unitID);
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
@@ -160,6 +160,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID)
 	end
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound
+	profile.msp = isMSP;
 
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, currentProfileID);
@@ -465,7 +466,6 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.aboutInit();
 	TRP3_API.register.inits.miscInit();
 	TRP3_API.register.inits.dataExchangeInit();
-	TRP3_API.register.inits.tooltipInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 

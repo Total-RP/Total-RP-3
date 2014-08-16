@@ -774,7 +774,8 @@ local TRP3_RegisterAbout_AboutPanel_EditButton = TRP3_RegisterAbout_AboutPanel_E
 local TRP3_RegisterAbout_AboutPanel_MusicPlayer = TRP3_RegisterAbout_AboutPanel_MusicPlayer;
 
 local function onPlayerAboutRefresh()
-	if getConfigValue("register_about_use_vote") and (getCurrentContext().isPlayer or (getCurrentContext().profile.link and tsize(getCurrentContext().profile.link) > 0)) then
+	local profile = getCurrentContext().profile;
+	if getConfigValue("register_about_use_vote") and (getCurrentContext().isPlayer or (not profile.msp and profile.link and tsize(profile.link) > 0)) then
 		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
 	end
 	if TRP3_RegisterAbout_AboutPanel.isMine then

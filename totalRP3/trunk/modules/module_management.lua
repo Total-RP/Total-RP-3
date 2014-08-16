@@ -245,6 +245,11 @@ TRP3_API.module.onModuleStarted = function()
 		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
 		_G[frame:GetName().."Status"]:SetText(loc("CO_MODULES_STATUS"):format(moduleStatusText(module.status)));
 		setTooltipForSameFrame(_G[frame:GetName().."Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+		if module.status == MODULE_STATUS.OK then
+			frame:SetBackdropBorderColor(0, 1, 0);
+		else
+			frame:SetBackdropBorderColor(1, 1, 1);
+		end
 		local actionButton = _G[frame:GetName().."Action"];
 		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc("CM_ACTIONS"));
 		actionButton:SetScript("OnClick", onActionClicked);

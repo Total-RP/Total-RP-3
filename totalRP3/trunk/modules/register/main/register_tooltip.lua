@@ -6,7 +6,7 @@
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local colorCode = Utils.color.colorCode;
+local colorCode, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.table.getTempTable, Utils.table.releaseTempTable;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -22,7 +22,7 @@ local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_API.events;
-local GameTooltip, _G, pairs = GameTooltip, _G, pairs;
+local GameTooltip, _G, pairs, wipe, tinsert = GameTooltip, _G, pairs, wipe, tinsert;
 local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
 local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
@@ -50,8 +50,8 @@ local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18
 local PEEK_ICON_SIZE = 20;
 
 -- Config keys
+local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
-local CONFIG_CHARACT_USE = "tooltip_char_use";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -173,6 +173,83 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont(localeFont, fontSize);
 end
 
+local function makeSpace(tooltip, lineIndex)
+	if showSpacing() then
+		tooltip:AddLine(" ", 1, 0.50, 0);
+		setLineFont(tooltip, lineIndex, getSubLineFontSize());
+		lineIndex = lineIndex + 1;
+	end
+	return lineIndex;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TOOLTIP BUILDER
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local BUILDER_TYPE_LINE = 1;
+local BUILDER_TYPE_DOUBLELINE = 2;
+local BUILDER_TYPE_SPACE = 3;
+
+local tooltipBuilder = {
+	_content = {},
+	tooltip = ui_CharacterTT,
+};
+
+function tooltipBuilder:AddLine(text, red, green, blue, lineSize, lineWrap)
+	local lineStructure = getTempTable();
+	lineStructure.type = BUILDER_TYPE_LINE;
+	lineStructure.text = text;
+	lineStructure.red = red;
+	lineStructure.green = green;
+	lineStructure.blue = blue;
+	lineStructure.lineSize = lineSize;
+	lineStructure.lineWrap = lineWrap;
+	tinsert(self._content, lineStructure);
+end
+
+function tooltipBuilder:AddDoubleLine(textL, textR, redL, greenL, blueL, redR, greenR, blueR, lineSize)
+	local lineStructure = getTempTable();
+	lineStructure.type = BUILDER_TYPE_DOUBLELINE;
+	lineStructure.textL = textL;
+	lineStructure.redL = redL;
+	lineStructure.greenL = greenL;
+	lineStructure.blueL = blueL;
+	lineStructure.textR = textR;
+	lineStructure.redR = redR;
+	lineStructure.greenR = greenR;
+	lineStructure.blueR = blueR;
+	lineStructure.lineSize = lineSize;
+	tinsert(self._content, lineStructure);
+end
+
+function tooltipBuilder:AddSpace()
+	if #self._content > 0 and self._content[#self._content].type == BUILDER_TYPE_SPACE then
+		return; -- Don't add two spaces in a row.
+	end
+	local lineStructure = getTempTable();
+	lineStructure.type = BUILDER_TYPE_SPACE;
+	tinsert(self._content, lineStructure);
+end
+
+function tooltipBuilder:Build()
+	local size = #self._content;
+	for lineIndex, line in pairs(self._content) do
+		if line.type == BUILDER_TYPE_LINE then
+			self.tooltip:AddLine(line.text, line.red, line.green, line.blue, line.lineWrap);
+			setLineFont(self.tooltip, lineIndex, line.lineSize);
+		elseif line.type == BUILDER_TYPE_DOUBLELINE then
+			self.tooltip:AddDoubleLine(line.textL, line.textR, line.redL, line.greenL, line.blueL, line.redR, line.greenR, line.blueR);
+			setDoubleLineFont(self.tooltip, lineIndex, line.lineSize);
+		elseif line.type == BUILDER_TYPE_SPACE and lineIndex ~= size then
+			makeSpace(self.tooltip, lineIndex);
+		end
+	end
+	for index, tempTable in pairs(self._content) do
+		self._content[index] = nil;
+		releaseTempTable(tempTable);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -222,18 +299,8 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
-local function makeSpace(tooltip, lineIndex)
-	if showSpacing() then
-		tooltip:AddLine(" ", 1, 0.50, 0);
-		setLineFont(tooltip, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
-	end
-	return lineIndex;
-end
-
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, originalTexts, targetType)
-	local lineIndex = 1;
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
@@ -243,12 +310,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if isIDIgnored(targetID) then
-		ui_CharacterTT:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
-		ui_CharacterTT:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0, getSubLineFontSize());
+		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		return;
 	end
 
@@ -293,9 +356,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 	end
 
-	ui_CharacterTT:AddDoubleLine(leftIcons .. completeName, rightIcons);
-	setDoubleLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
-	lineIndex = lineIndex + 1;
+	tooltipBuilder:AddDoubleLine(leftIcons .. completeName, rightIcons, 1, 1, 1, 1, 1, 1, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -303,19 +364,17 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	if showFullTitle() then
 		local fullTitle = "";
-		if info.characteristics and info.characteristics.FT then
-			fullTitle = strconcat("< ", info.characteristics.FT, " >");
+		if info.characteristics and info.characteristics.FT and info.characteristics.FT:len() > 0 then
+			fullTitle = info.characteristics.FT;
 		elseif UnitPVPName(targetType) ~= targetName then
-			fullTitle = strconcat("< ", UnitPVPName(targetType), " >");
+			fullTitle = UnitPVPName(targetType);
 		end
 		if fullTitle:len() > 0 then
-			ui_CharacterTT:AddLine(fullTitle, 1, 0.50, 0);
-			setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-			lineIndex = lineIndex + 1;
+			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " >"), 1, 0.50, 0, getSubLineFontSize());
 		end
 	end
 
-	lineIndex = makeSpace(ui_CharacterTT, lineIndex);
+	tooltipBuilder:AddSpace();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- race, class, level and faction
@@ -326,18 +385,16 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local lineRight;
 		local race = UnitRace(targetType);
 		local class = localizedClass;
-		if info.characteristics and info.characteristics.RA then
+		if info.characteristics and info.characteristics.RA and info.characteristics.RA:len() > 0 then
 			race = info.characteristics.RA;
 		end
-		if info.characteristics and info.characteristics.CL then
+		if info.characteristics and info.characteristics.CL and info.characteristics.CL:len() > 0 then
 			class = info.characteristics.CL;
 		end
 		lineLeft = strconcat("|cffffffff", race, " ", characterColorCode, class);
 		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
-		ui_CharacterTT:AddDoubleLine(lineLeft, lineRight);
-		setDoubleLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -346,9 +403,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local _, realm = UnitName(targetType);
 	if showRealm() and realm then
-		ui_CharacterTT:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -365,33 +420,26 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				text = text .. OOC_GUILD;
 			end
 		end
-
-		ui_CharacterTT:AddLine(text, 1, 1, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
 	end
 
-	lineIndex = makeSpace(ui_CharacterTT, lineIndex);
+	tooltipBuilder:AddSpace();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CURRENTLY
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCurrently() and character.CU and character.CU:len() > 0 then
-		ui_CharacterTT:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1, getSubLineFontSize());
 
 		local text = character.CU;
 		if text:len() > getCurrentMaxSize() then
 			text = text:sub(1, getCurrentMaxSize()) .. "...";
 		end
-		ui_CharacterTT:AddLine("\"" .. text .. "\"", 1, 0.75, 0, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
-		lineIndex = lineIndex + 1;
-
-		lineIndex = makeSpace(ui_CharacterTT, lineIndex);
+		tooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, getSmallLineFontSize(), true);
 	end
+	
+	tooltipBuilder:AddSpace();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Target
@@ -408,9 +456,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			end
 			name = characterColorCode .. getCompleteName(targetInfo.characteristics or {}, targetName, true);
 		end
-		ui_CharacterTT:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -437,11 +483,15 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			if notifText:len() == 0 then
 				notifText = " "; -- Prevent bad right line height
 			end
-			ui_CharacterTT:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0);
-			setDoubleLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
-			lineIndex = lineIndex + 1;
+			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
 		end
 	end
+	
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Build tooltip
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	tooltipBuilder:Build();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -452,24 +502,30 @@ local UnitBattlePetType, UnitBattlePetLevel, UnitCreatureType = UnitBattlePetTyp
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local getCompanionProfile, getCompanionRegisterProfile;
 
+local CONFIG_PETS_ICON = "tooltip_pets_icons";
+local CONFIG_PETS_TITLE = "tooltip_pets_title";
+local CONFIG_PETS_OWNER = "tooltip_pets_owner";
+local CONFIG_PETS_NOTIF = "tooltip_pets_notif";
+local CONFIG_PETS_INFO = "tooltip_pets_info";
+
 local function showCompanionIcons()
-	return true; -- TODO config
+	return getConfigValue(CONFIG_PETS_ICON);
 end
 
 local function showCompanionFullTitle()
-	return true; -- TODO config
+	return getConfigValue(CONFIG_PETS_TITLE);
 end
 
 local function showCompanionOwner()
-	return true; -- TODO config
+	return getConfigValue(CONFIG_PETS_OWNER);
 end
 
 local function showCompanionNotifications()
-	return true; -- TODO config
+	return getConfigValue(CONFIG_PETS_NOTIF);
 end
 
 local function showCompanionWoWInfo()
-	return true; -- TODO config
+	return getConfigValue(CONFIG_PETS_INFO);
 end
 
 local function getCompanionInfo(owner, companionID)
@@ -483,7 +539,6 @@ local function getCompanionInfo(owner, companionID)
 end
 
 local function writeCompanionTooltip(companionFullID, originalTexts, targetType, targetMode)
-	local lineIndex = 1;
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
@@ -504,9 +559,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		end
 	end
 
-	ui_CharacterTT:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or companionID));
-	setLineFont(ui_CharacterTT, lineIndex, getMainLineFontSize());
-	lineIndex = lineIndex + 1;
+	tooltipBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or companionID), 1, 1, 1, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -518,11 +571,11 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle:len() > 0 then
-			ui_CharacterTT:AddLine(fullTitle, 1, 0.50, 0);
-			setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-			lineIndex = lineIndex + 1;
+			tooltipBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
 		end
 	end
+
+	tooltipBuilder:AddSpace();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Owner
@@ -554,9 +607,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			ownerFinalName = UNITNAME_TITLE_COMPANION:format(ownerFinalName);
 		end
 
-		ui_CharacterTT:AddLine(ownerFinalName, 1, 1, 1);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -573,14 +624,15 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			local type = _G["BATTLE_PET_DAMAGE_NAME_" .. type];
 			text = TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:format(UnitBattlePetLevel(targetType) or "??", type);
 		end
-		ui_CharacterTT:AddLine(text, 1, 1, 1, 0, 1, 0);
-		setLineFont(ui_CharacterTT, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
+
+		tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	tooltipBuilder:AddSpace();
 
 	if showCompanionNotifications() then
 		local notifText = "";
@@ -591,11 +643,15 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText:len() > 0 then
-			ui_CharacterTT:AddLine(notifText, 1, 1, 1, 0, 1, 0);
-			setLineFont(ui_CharacterTT, lineIndex, getSmallLineFontSize());
-			lineIndex = lineIndex + 1;
+			tooltipBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
 		end
 	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Build tooltip
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	tooltipBuilder:Build();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -604,16 +660,23 @@ end
 
 local GameTooltip_SetDefaultAnchor, UIParent = GameTooltip_SetDefaultAnchor, UIParent;
 
-local function show(targetType)
-	local targetID, targetMode = getUnitID(targetType);
-	Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
-
+local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
 
 	-- If using TRP TT
-	if getConfigValue(CONFIG_CHARACT_USE) and (not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT)) then
+	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
 		-- If we have a target
 		if targetID then
+			-- Check if has a profile
+			if getConfigValue(CONFIG_PROFILE_ONLY) then
+				if targetMode == TYPE_CHARACTER and targetID ~= Globals.player_id and (not IsUnitIDKnown(targetID) or not hasProfile(targetID)) then
+					return;
+				end
+				if (targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and (getCompanionInfo(companionIDToInfo(targetID)) == EMPTY) then
+					return;
+				end
+			end
+			
 			-- Stock all the current text from the GameTooltip
 			local originalTexts = getGameTooltipTexts();
 			local anchoredFrame = getAnchoredFrame();
@@ -655,10 +718,6 @@ local function show(targetType)
 	end
 end
 
-local function onMouseOver()
-	show("mouseover");
-end
-
 local function onUpdate(self, elapsed)
 	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 	if (self.TimeSinceLastUpdate > 0.5) then
@@ -677,14 +736,28 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.register.inits.tooltipInit()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	-- Listen to the mouse over event
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
+		local targetID, targetMode = getUnitID("mouseover");
+		Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
+	end);
+end);
+
+local function onModuleInit()
 	localeFont = TRP3_API.locale.getLocaleFont();
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 
-	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_DATA_CHANGED}, onMouseOver);
+	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
+		show("mouseover", targetID, targetMode);
+	end);
+	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_DATA_CHANGED}, function()
+		local targetID, targetMode = getUnitID("mouseover");
+		if ui_CharacterTT.target == targetID then
+			show("mouseover", targetID, targetMode);
+		end
+	end);
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
@@ -693,11 +766,11 @@ function TRP3_API.register.inits.tooltipInit()
 	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";
 
 	-- Config default value
-	registerConfigKey(CONFIG_CHARACT_USE, true);
+	registerConfigKey(CONFIG_PROFILE_ONLY, true);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
-	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, false);
+	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, true);
 	registerConfigKey(CONFIG_CHARACT_MAIN_SIZE, 16);
 	registerConfigKey(CONFIG_CHARACT_SUB_SIZE, 12);
 	registerConfigKey(CONFIG_CHARACT_TER_SIZE, 10);
@@ -713,6 +786,11 @@ function TRP3_API.register.inits.tooltipInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
+	registerConfigKey(CONFIG_PETS_ICON, true);
+	registerConfigKey(CONFIG_PETS_TITLE, true);
+	registerConfigKey(CONFIG_PETS_OWNER, true);
+	registerConfigKey(CONFIG_PETS_NOTIF, true);
+	registerConfigKey(CONFIG_PETS_INFO, true);
 
 	ANCHOR_TAB = {
 		{loc("CO_ANCHOR_TOP_LEFT"), "ANCHOR_TOPLEFT"},
@@ -733,12 +811,12 @@ function TRP3_API.register.inits.tooltipInit()
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLTIP_CHARACTER"),
+				title = loc("CO_TOOLTIP_COMMON"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_USE"),
-				configKey = CONFIG_CHARACT_USE,
+				title = loc("CO_TOOLTIP_PROFILE_ONLY"),
+				configKey = CONFIG_PROFILE_ONLY,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -796,6 +874,10 @@ function TRP3_API.register.inits.tooltipInit()
 				title = loc("CO_TOOLTIP_SPACING"),
 				help = loc("CO_TOOLTIP_SPACING_TT"),
 				configKey = CONFIG_CHARACT_SPACING,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_TOOLTIP_CHARACTER"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -858,7 +940,47 @@ function TRP3_API.register.inits.tooltipInit()
 				step = 10,
 				integer = true,
 			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_TOOLTIP_PETS"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_ICONS"),
+				configKey = CONFIG_PETS_ICON,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_FT"),
+				configKey = CONFIG_PETS_TITLE,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_OWNER"),
+				configKey = CONFIG_PETS_OWNER,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_PETS_INFO"),
+				configKey = CONFIG_PETS_INFO,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_NOTIF"),
+				configKey = CONFIG_PETS_NOTIF,
+			},
 		}
 	}
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
+
+local MODULE_STRUCTURE = {
+	["name"] = "Characters and Companion tooltip",
+	["description"] = "Use TRP3 custom tooltip for characters and companions",
+	["version"] = 1.000,
+	["id"] = "trp3_tooltips",
+	["onLoaded"] = onModuleInit,
+	["minVersion"] = 3,
+};
+
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

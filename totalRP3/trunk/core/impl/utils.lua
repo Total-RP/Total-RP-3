@@ -24,7 +24,7 @@ local loc = TRP3_API.locale.getText;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
-local tinsert, assert, _G, tremove = tinsert, assert, _G, tremove;
+local tinsert, assert, _G, tremove, next = tinsert, assert, _G, tremove, next;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
@@ -108,11 +108,11 @@ local dumpColor1, dumpColor2, dumpColor3, dumpColor4 = "|cffffaa00", "|cff00ff00
 local function tableDump(table, level, withCount)
 	local i = 0;
 	local dumpIndent = "";
-	
+
 	for indent = 1, level, 1 do
 		dumpIndent = dumpIndent .. "    ";
 	end
-	
+
 	for key, value in pairs(table) do
 		if type(value) == "table" then
 			print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
@@ -182,6 +182,25 @@ function Utils.table.keys(table)
 		tinsert(keys, key);
 	end
 	return keys;
+end
+
+-- Create a weak tables pool.
+local TABLE_POOL = setmetatable( {}, { __mode = "k" } );
+
+-- Return an already created table, or a new one if the pool is empty
+-- It ultra mega important to release the table once you finished using it !
+function Utils.table.getTempTable()
+	local t = next( TABLE_POOL );
+	if t then
+		TABLE_POOL[t] = nil;
+		return wipe(t);
+	end
+	return {};
+end
+
+-- Release a temp table.
+function Utils.table.releaseTempTable(table)
+	TABLE_POOL[ table ] = true;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

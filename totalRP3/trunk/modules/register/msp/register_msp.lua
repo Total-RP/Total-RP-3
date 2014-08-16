@@ -3,7 +3,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
-local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime;
+local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time;
 local tsize = Utils.table.size;
 local log = Utils.log.log;
 local loc = TRP3_API.locale.getText;
@@ -430,7 +430,7 @@ local getConfigValue = TRP3_API.configuration.getValue;
 local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
 local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
-local hasProfile = TRP3_API.register.hasProfile;
+local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
 
 local CHARACTERISTICS_FIELDS = {
 	NT = "FT",
@@ -454,19 +454,56 @@ local CHARACTER_FIELDS = {
 }
 
 function onInformationReceived(senderID, data)
-	if not isIgnored(senderID) and isUnitIDKnown(senderID) and hasProfile(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
-		local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
-		local profile = getUnitIDProfile(senderID);
+
+	if not isIgnored(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
+		-- If sender is not known
+		if not isUnitIDKnown(senderID) then
+			-- We add him
+			if getConfigValue("register_auto_add") then
+				addCharacter(senderID);
+			else
+				return; -- The user choose not to add automatically new characters
+			end
+		end
+
+		-- Check that the character has a profileID.
 		local character = getUnitIDCharacter(senderID);
 		character.msp = true;
+		character.profileID = "[MSP]" .. senderID;
+		if not profileExists(senderID) then
+			-- Generate profile
+			saveCurrentProfileID(senderID, character.profileID);
+		end
 
+		-- Init profile if not already done
+		local profile = getUnitIDProfile(senderID);
+		profile.msp = true;
+		if not profile.characteristics then
+			profile.characteristics = {};
+		end
+		if not profile.about then
+			profile.about = {};
+		end
+		if not profile.mspver then
+			profile.mspver = {};
+		end
+		if not msp.char[senderID].ver then
+			msp.char[senderID].ver = profile.mspver; -- Init vernums
+		end
+
+		-- And only after all these checks, store data !
+		local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
 		for field, value in pairs(data) do
 			if CHARACTERISTICS_FIELDS[field] then
 				updatedCharacteristics = true;
 				profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 			elseif ABOUT_FIELDS[field] then
 				updatedAbout = true;
+				profile.about.BK = 5;
+				profile.about.TE = 3;
+				profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
 				profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+				profile.about.read = value == nil or value:len() == 0;
 			elseif CHARACTER_FIELDS[field] then
 				updatedCharacter = true;
 				if field == "FC" then
@@ -509,50 +546,21 @@ local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"};
 
 local function requestInformation(targetID, targetMode)
 	if targetMode == TYPE_CHARACTER
-		and not targetID == Globals.player_id
-		and not isIgnored(targetID)
-		and msp.char[targetID].supported ~= false
-		and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3"
+	and targetID ~= Globals.player_id
+	and not isIgnored(targetID)
+	and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3"
 	then
-		if isUnitIDKnown(targetID) or getConfigValue("register_auto_add") then
-			-- Eligible ! So check that the character exists and request data.
-			if not isUnitIDKnown(targetID) then
-				addCharacter(targetID);
-			end
-			-- Check that the character has a profileID.
-			local character = getUnitIDCharacter(targetID);
-			if not profileExists(targetID) then
-				-- Generate profileID
-				character.profileID = Utils.str.id();
-				local profile = createUnitIDProfile(targetID);
-				profile.link[targetID] = 1;
-			end
-			local profile = getUnitIDProfile(targetID);
-			if not profile.characteristics then
-				profile.characteristics = {};
-			end
-			if not profile.about then
-				profile.about = {};
-				profile.about.BK = 5;
-				profile.about.TE = 3;
-				profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
-			end
-			if not profile.mspver then
-				profile.mspver = {};
-			end
-			if not msp.char[targetID].ver then
-				msp.char[targetID].ver = profile.mspver; -- Init vernums
-			end
-
-			local request = {};
-			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
-				msp:Request( targetID ); -- Request TT
-				TT_TIMER_TAB[targetID] = time();
-			end
-			if not FIELDS_TIMER_TAB[targetID] or time() - FIELDS_TIMER_TAB[targetID] >= FIELDS_DELAY then
-				msp:Request( targetID, REQUEST_TAB); -- Request fields
-				FIELDS_TIMER_TAB[targetID] = time();
-			end
+		if not msp.char[targetID].ver then
+			msp.char[targetID].ver = {};
+		end
+		local request = {}; -- TODO : create a compound rather than two calls
+		if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
+			msp:Request( targetID ); -- Request TT
+			TT_TIMER_TAB[targetID] = time();
+		end
+		if not FIELDS_TIMER_TAB[targetID] or time() - FIELDS_TIMER_TAB[targetID] >= FIELDS_DELAY then
+			msp:Request( targetID, REQUEST_TAB); -- Request fields
+			FIELDS_TIMER_TAB[targetID] = time();
 		end
 	end
 end

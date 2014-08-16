@@ -17,7 +17,7 @@
 		</HighlightTexture>
 	</Button>
 	
-	<Frame name="TRP3_TutorialTooltip" inherits="GlowBoxTemplate" parent="UIParent" hidden="true" frameStrata="FULLSCREEN_DIALOG" frameLevel="2">
+	<Frame name="TRP3_TutorialTooltip" inherits="GlowBoxTemplate" parent="UIParent" hidden="true" frameStrata="FULLSCREEN_DIALOG">
 		<Size x="220" y="100"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -95,7 +95,7 @@
 		</Scripts>
 	</Frame>
 	
-    <Frame name="TRP3_MainFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+    <Frame name="TRP3_MainFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true">
 		<TitleRegion setAllPoints="true"/>
 		<Size x="768" y="500"/>
 		<Anchors>	

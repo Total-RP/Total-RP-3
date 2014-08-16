@@ -116,10 +116,13 @@ local function onEditStyle(choice, frame)
 	assert(context, "No context for page player_main !");
 	if context.isPlayer then
 		local dataTab = get("player/misc");
+		local old = dataTab.ST[frame.fieldData.id];
 		dataTab.ST[frame.fieldData.id] = choice;
-		-- version increment
-		assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-		dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+		if old ~= choice then
+			-- version increment
+			assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+			dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+		end
 	end
 end
 

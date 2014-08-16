@@ -130,7 +130,7 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentLabel" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="20" y="4"/> 
+						<Anchor point="BOTTOMLEFT" x="24" y="4"/> 
 						<Anchor point="TOPRIGHT" x="-16" y="-4"/> 
 					</Anchors>					
 				</FontString>
