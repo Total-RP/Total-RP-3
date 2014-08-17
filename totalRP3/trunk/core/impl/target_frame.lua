@@ -7,13 +7,12 @@ TRP3_API.target = {};
 
 -- imports
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-local tsize = Utils.table.size;
 local loc = TRP3_API.locale.getText;
-local ui_TargetFrame, ui_TargetFrameGlance = TRP3_TargetFrame, TRP3_TargetFrameGlance;
-local UnitName, CreateFrame, UnitIsPlayer = UnitName, CreateFrame, UnitIsPlayer;
+local ui_TargetFrame = TRP3_TargetFrame;
+local CreateFrame = CreateFrame;
 local EMPTY = Globals.empty;
 local isPlayerIC, isUnitIDKnown;
-local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
+local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local assert, pairs, tContains, tinsert, table, math, _G, tostring, type = assert, pairs, tContains, tinsert, table, math, _G, tostring, type;
 local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
