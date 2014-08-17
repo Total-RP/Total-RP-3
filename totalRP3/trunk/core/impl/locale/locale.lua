@@ -100,7 +100,11 @@ if GetLocale() == "frFR" then
 	
 	function TRP3_API.locale.findBattlePetOwner(lines)
 		if lines[3] then
-			return lines[3]:match("Mascotte de ([%S%-%P]+)") or lines[3]:match("Mascotte d'([%S%-%P]+)");
+			local master = lines[3]:match("Mascotte de ([%S%-%P]+)") or lines[3]:match("Mascotte d'([%S%-%P]+)");
+			if master:find("%s") then -- Hack for "Mascotte de niveau xxx" ...
+				return nil;
+			end
+			return master;
 		end
 	end
 else
