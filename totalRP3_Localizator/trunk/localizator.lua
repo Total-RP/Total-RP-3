@@ -82,7 +82,7 @@ local function apply()
 	ReloadUI();
 end
 
-local function onLoaded()
+local function onStart()
 	injectLocale();
 	
 	TRP3_ConfigurationLocalizatorReset:SetScript("OnClick", reset);
@@ -142,7 +142,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1,
 	["id"] = "dyn_locale",
 	["onInit"] = onInit,
-	["onLoaded"] = onLoaded,
+	["onStart"] = onStart,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

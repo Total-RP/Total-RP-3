@@ -35,8 +35,8 @@ local function onInit()
 	Log.log("onInit test module");
 end
 
-local function onLoaded()
-	Log.log("onLoaded test module");
+local function onStart()
+	Log.log("onStart test module");
 
 	--	TRP3_API.dashboard.registerNotificationType({
 	--		id = "ma notif",
@@ -68,7 +68,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "unit_testing",
 	["onInit"] = onInit,
-	["onLoaded"] = onLoaded,
+	["onStart"] = onStart,
 	["minVersion"] = 0.1,
 	["requiredDeps"] = {
 		{"dyn_locale", 1},
