@@ -189,37 +189,41 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	characters = TRP3_Register.character;
 	blackList = TRP3_Register.blackList;
 	whiteList = TRP3_Register.whiteList;
+end);
 
-	-- Ignore button on target frame
-	local player_id = TRP3_API.globals.player_id;
-	TRP3_API.target.registerButton({
-		id = "z_ignore",
-		configText = loc("TF_IGNORE"),
-		onlyForType = TRP3_API.target.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
-			return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
-		end,
-		onClick = function(unitID)
-			ignoreIDConfirm(unitID);
-		end,
-		tooltipSub = loc("TF_IGNORE_TT"),
-		tooltip = loc("TF_IGNORE"),
-		icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
-	});
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		-- Ignore button on target frame
+		local player_id = TRP3_API.globals.player_id;
+		TRP3_API.target.registerButton({
+			id = "z_ignore",
+			configText = loc("TF_IGNORE"),
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			condition = function(targetType, unitID)
+				return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
+			end,
+			onClick = function(unitID)
+				ignoreIDConfirm(unitID);
+			end,
+			tooltipSub = loc("TF_IGNORE_TT"),
+			tooltip = loc("TF_IGNORE"),
+			icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
+		});
 
-	TRP3_API.target.registerButton({
-		id = "r_relation",
-		configText = loc("REG_RELATION"),
-		onlyForType = TRP3_API.target.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
-			return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
-		end,
-		onClick = onTargetButtonClicked,
-		adapter = function(buttonStructure, unitID)
-			local profileID = hasProfile(unitID);
-			buttonStructure.tooltip = loc("REG_RELATION") .. ": " .. getRelationText(profileID);
-			buttonStructure.tooltipSub = "|cff00ff00" .. getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc("REG_RELATION_TARGET");
-			buttonStructure.icon = getRelationTexture(profileID);
-		end,
-	});
+		TRP3_API.target.registerButton({
+			id = "r_relation",
+			configText = loc("REG_RELATION"),
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			condition = function(targetType, unitID)
+				return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
+			end,
+			onClick = onTargetButtonClicked,
+			adapter = function(buttonStructure, unitID)
+				local profileID = hasProfile(unitID);
+				buttonStructure.tooltip = loc("REG_RELATION") .. ": " .. getRelationText(profileID);
+				buttonStructure.tooltipSub = "|cff00ff00" .. getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc("REG_RELATION_TARGET");
+				buttonStructure.icon = getRelationTexture(profileID);
+			end,
+		});
+	end
 end);

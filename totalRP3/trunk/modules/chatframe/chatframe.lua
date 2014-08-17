@@ -388,7 +388,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoaded()
+local function onStart()
 	NPC_TALK_PATTERNS = {
 		[loc("NPC_TALK_SAY_PATTERN")] = "MONSTER_SAY",
 		[loc("NPC_TALK_YELL_PATTERN")] = "MONSTER_YELL",
@@ -403,7 +403,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "Global enhancement for chat frames. Use roleplay information, detect emotes and OOC sentences and use colors.",
 	["version"] = 1.000,
 	["id"] = "trp3_chatframes",
-	["onLoaded"] = onLoaded,
+	["onStart"] = onStart,
 	["minVersion"] = 3,
 };
 

@@ -19,6 +19,7 @@ local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForS
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
+local onModuleStarted;
 
 TRP3_API.module.status = {
 	MISSING_DEPENDENCY = 0,
@@ -29,6 +30,10 @@ TRP3_API.module.status = {
 	OK = 5
 };
 local MODULE_STATUS = TRP3_API.module.status;
+
+function TRP3_API.module.isModuleLoaded(moduleID)
+	return MODULE_REGISTRATION[moduleID] and MODULE_REGISTRATION[moduleID].status == MODULE_STATUS.OK;
+end
 
 --- Register a module structure.
 -- 
@@ -41,7 +46,7 @@ local MODULE_STATUS = TRP3_API.module.status;
 -- minVersion : The minimum version of TRP3 required. If nil, equals 0;
 -- autoEnable : Should the module be enabled by default ? If nil equals true.
 -- onInit : A callback triggered before Total RP 3 initialization.
--- onLoaded : A callback triggered after Total RP 3 initialization.
+-- onStart : A callback triggered after Total RP 3 initialization.
 TRP3_API.module.registerModule = function(moduleStructure)
 	
 	assert(moduleStructure, "Module structure can't be nil");
@@ -84,18 +89,19 @@ end
 
 --- Loading modules
 -- This is called at the END of the TRP3 loading sequence.
--- The onLoaded callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
--- onLoaded is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
+-- The onStart callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
+-- onStart is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
 TRP3_API.module.startModules = function()
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == MODULE_STATUS.OK and module.onLoaded and type(module.onLoaded) == "function" then
-			local ok, mess = pcall(module.onLoaded);
+		if module.status == MODULE_STATUS.OK and module.onStart and type(module.onStart) == "function" then
+			local ok, mess = pcall(module.onStart);
 			if not ok then
 				module.status = MODULE_STATUS.ERROR_ON_LOAD;
 				module.error = mess;
 			end
 		end
 	end
+	onModuleStarted();
 end
 
 --- Return an array of all registered module structures. 
@@ -224,7 +230,7 @@ local function onActionClicked(button)
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
-TRP3_API.module.onModuleStarted = function()
+function onModuleStarted()
 	local modules = getModules();
 	local i=0;
 	local sortedID = {};

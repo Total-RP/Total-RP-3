@@ -795,34 +795,38 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		TRP3_API.target.registerButton({
+			id = "char_music",
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			configText = loc("TF_PLAY_THEME"),
+			condition = function(targetType, unitID)
+				return getUnitIDTheme(unitID) ~= nil;
+			end,
+			onClick = function(unitID, _, button)
+				if button == "LeftButton" then
+					Utils.music.play(getUnitIDTheme(unitID));
+				else
+					Utils.music.stop();
+				end
+			end,
+			adapter = function(buttonStructure, unitID)
+				local theme = getUnitIDTheme(unitID);
+				if theme then
+					buttonStructure.tooltipSub = loc("TF_PLAY_THEME_TT"):format(Utils.music.getTitle(theme));
+				end
+			end,
+			tooltip = loc("TF_PLAY_THEME"),
+			icon = "inv_misc_drum_06"
+		});
+	end
+end);
+
 function TRP3_API.register.inits.aboutInit()
 
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
-
-	TRP3_API.target.registerButton({
-		id = "char_music",
-		onlyForType = TRP3_API.target.TYPE_CHARACTER,
-		configText = loc("TF_PLAY_THEME"),
-		condition = function(targetType, unitID)
-			return getUnitIDTheme(unitID) ~= nil;
-		end,
-		onClick = function(unitID, _, button)
-			if button == "LeftButton" then
-				Utils.music.play(getUnitIDTheme(unitID));
-			else
-				Utils.music.stop();
-			end
-		end,
-		adapter = function(buttonStructure, unitID)
-			local theme = getUnitIDTheme(unitID);
-			if theme then
-				buttonStructure.tooltipSub = loc("TF_PLAY_THEME_TT"):format(Utils.music.getTitle(theme));
-			end
-		end,
-		tooltip = loc("TF_PLAY_THEME"),
-		icon = "inv_misc_drum_06"
-	});
 
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);

@@ -2,7 +2,7 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoaded()
+local function onStart()
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Imports
@@ -256,7 +256,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "Add a bar showing the content of the target's \"At first glance\".",
 	["version"] = 1.000,
 	["id"] = "trp3_glance_bar",
-	["onLoaded"] = onLoaded,
+	["onStart"] = onStart,
 	["minVersion"] = 3,
 };
 

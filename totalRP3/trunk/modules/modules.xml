@@ -132,4 +132,6 @@
 	<Include file="gamemaster\gamemaster.xml"/>
 	
 	<Include file="chatframe\chatframe.xml"/>
+	
+	<Include file="targetframe\target_frame.xml"/>
 </Ui>

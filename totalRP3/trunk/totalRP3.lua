@@ -33,20 +33,20 @@ function Globals.addon:OnEnable()
 	TRP3_API.communication.broadcast.init();
 	TRP3_API.profile.init();
 	TRP3_API.dashboard.init();
-	TRP3_API.target.init();
 	TRP3_API.navigation.init();
 	TRP3_API.register.init();
 	TRP3_API.popup.init();
 	
 	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOAD);
 	
-	TRP3_API.module.startModules(); -- Call module callback for all modules (onInit)
-	TRP3_API.module.onModuleStarted(); -- Call module callback for all modules (onLoaded)
+	TRP3_API.module.startModules(); -- Call module callback for all modules (onStart)
 	
 	TRP3_API.navigation.menu.selectMenu("main_00_dashboard"); -- Select first menu
 	
 	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOADED);
 	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_FINISH);
+	
+	TRP3_API.configuration.constructConfigPage();
 	
 	Log.log("OnEnable() DONE");
 end

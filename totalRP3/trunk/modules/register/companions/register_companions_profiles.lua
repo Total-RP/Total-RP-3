@@ -284,7 +284,7 @@ local function companionProfileSelectionList(companionFullID, targetType, button
 			tinsert(list, {loc("REG_COMPANION_TF_UNBOUND"), 1});
 		end
 		tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList()});
-	
+
 		displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
 	else
 		if companionHasProfile(companionFullID) then
@@ -339,46 +339,50 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsProfilesAdd:SetText(loc("PR_CREATE_PROFILE"));
 	TRP3_CompanionsProfilesListEmpty:SetText(loc("PR_CO_EMPTY"));
 
-	-- Target bar
-	TRP3_API.target.registerButton({
-		id = "companion_profile",
-		configText = loc("REG_COMPANION_TF_PROFILE"),
-		condition = function(targetType, unitID)
-			if isTargetTypeACompanion(targetType) then
+end);
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		-- Target bar
+		TRP3_API.target.registerButton({
+			id = "companion_profile",
+			configText = loc("REG_COMPANION_TF_PROFILE"),
+			condition = function(targetType, unitID)
+				if isTargetTypeACompanion(targetType) then
+					local ownerID, companionID = companionIDToInfo(unitID);
+					return ownerID == Globals.player_id or companionHasProfile(unitID);
+				end
+			end,
+			onClick = companionProfileSelectionList,
+			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			adapter = function(buttonStructure, unitID, targetType)
 				local ownerID, companionID = companionIDToInfo(unitID);
-				return ownerID == Globals.player_id or companionHasProfile(unitID);
-			end
-		end,
-		onClick = companionProfileSelectionList,
-		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-		adapter = function(buttonStructure, unitID, targetType)
-			local ownerID, companionID = companionIDToInfo(unitID);
-			local profile = getCompanionInfo(ownerID, companionID, unitID);
-			buttonStructure.alert = nil;
-			buttonStructure.tooltip = loc("TF_OPEN_COMPANION");
-			buttonStructure.tooltipSub = nil;
-			if ownerID == Globals.player_id then
-				if profile then
-					buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
-					if profile.data and profile.data.IC then
-						buttonStructure.icon = profile.data.IC;
+				local profile = getCompanionInfo(ownerID, companionID, unitID);
+				buttonStructure.alert = nil;
+				buttonStructure.tooltip = loc("TF_OPEN_COMPANION");
+				buttonStructure.tooltipSub = nil;
+				if ownerID == Globals.player_id then
+					if profile then
+						buttonStructure.tooltip = loc("PR_PROFILE") .. ": |cff00ff00" .. profile.profileName;
+						if profile.data and profile.data.IC then
+							buttonStructure.icon = profile.data.IC;
+						end
+					else
+						buttonStructure.icon = "icon_petfamily_mechanical";
+						buttonStructure.tooltip = loc("REG_COMPANION_TF_NO");
 					end
 				else
-					buttonStructure.icon = "icon_petfamily_mechanical";
-					buttonStructure.tooltip = loc("REG_COMPANION_TF_NO");
+					if profile and profile.data and profile.data.IC then
+						buttonStructure.icon = profile.data.IC;
+					else
+						buttonStructure.icon = Globals.icons.unknown;
+					end
+					if profile and profile.data and profile.data.read == false then
+						buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+						buttonStructure.alert = true;
+					end
 				end
-			else
-				if profile and profile.data and profile.data.IC then
-					buttonStructure.icon = profile.data.IC;
-				else
-					buttonStructure.icon = Globals.icons.unknown;
-				end
-				if profile and profile.data and profile.data.read == false then
-					buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
-					buttonStructure.alert = true;
-				end
-			end
-		end,
-	});
-
+			end,
+		});
+	end
 end);

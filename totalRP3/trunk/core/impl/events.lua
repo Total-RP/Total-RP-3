@@ -8,6 +8,7 @@ TRP3_API.events = {
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Workflow
+	WORKFLOW_ON_API = "WORKFLOW_ON_API",
 	WORKFLOW_ON_LOAD = "WORKFLOW_ON_LOAD",
 	WORKFLOW_ON_LOADED = "WORKFLOW_ON_LOADED",
 	WORKFLOW_ON_FINISH = "WORKFLOW_ON_FINISH",

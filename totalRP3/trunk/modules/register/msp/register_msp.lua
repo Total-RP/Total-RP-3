@@ -569,7 +569,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onLoaded()
+local function onStart()
 	-- Check for already loaded MSP addon
 	if _G.msp_RPAddOn then
 		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
@@ -613,7 +613,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "MSP implementation for a compatibility with all MSP addons (MyRoleplay, FlagRSP, TotalRP2 ...)",
 	["version"] = 1.000,
 	["id"] = "trp3_msp",
-	["onLoaded"] = onLoaded,
+	["onStart"] = onStart,
 	["minVersion"] = 3,
 };
 

@@ -273,8 +273,21 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	-- Page and menu
+	registerMenu({
+		id = "main_90_config",
+		text = loc("CO_CONFIGURATION"),
+		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
+	});
+
+	TRP3_API.configuration.CONFIG_FRAME_PAGE = {
+		id = "main_config_toolbar",
+		menuText = loc("CO_TOOLBAR"),
+		pageText = loc("CO_TOOLBAR"),
+		elements = {},
+	};
 end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -375,19 +388,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
 end);
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-
-	-- Page and menu
-	registerMenu({
-		id = "main_90_config",
-		text = loc("CO_CONFIGURATION"),
-		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
-	});
-
-	TRP3_API.configuration.CONFIG_FRAME_PAGE = {
-		id = "main_config_toolbar",
-		menuText = loc("CO_TOOLBAR"),
-		pageText = loc("CO_TOOLBAR"),
-		elements = {},
-	};
-end);
+function TRP3_API.configuration.constructConfigPage()
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);
+end

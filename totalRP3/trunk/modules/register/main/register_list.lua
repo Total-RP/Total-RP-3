@@ -461,7 +461,7 @@ local function getCompanionLines()
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
---	TRP3_RegisterListHeaderActions:Show();
+	--	TRP3_RegisterListHeaderActions:Show();
 
 	return lines;
 end
@@ -655,33 +655,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tutorialProvider = tutorialProvider,
 	});
 
-	TRP3_API.target.registerButton({
-		id = "aa_page_player",
-		configText = loc("TF_OPEN_CHARACTER"),
-		onlyForType = TRP3_API.target.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
-			return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
-		end,
-		onClick = function(unitID)
-			openMainFrame();
-			openPageByUnitID(unitID);
-		end,
-		adapter = function(buttonStructure, unitID, currentTargetType)
-			buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
-			buttonStructure.tooltipSub = nil;
-			buttonStructure.alert = nil;
-			if unitID ~= Globals.player_id and hasProfile(unitID) then
-				local profile = getUnitIDProfile(unitID);
-				if profile.about and not profile.about.read then
-					buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
-					buttonStructure.alert = true;
-				end
-			end
-		end,
-		alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-		icon = "inv_inscription_scroll"
-	});
-
 	TRP3_RegisterListSlider:SetValue(0);
 	handleMouseWheel(TRP3_RegisterListContainer, TRP3_RegisterListSlider);
 	local widgetTab = {};
@@ -750,4 +723,35 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	createTabBar();
 
+end);
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		TRP3_API.target.registerButton({
+			id = "aa_page_player",
+			configText = loc("TF_OPEN_CHARACTER"),
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			condition = function(targetType, unitID)
+				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
+			end,
+			onClick = function(unitID)
+				openMainFrame();
+				openPageByUnitID(unitID);
+			end,
+			adapter = function(buttonStructure, unitID, currentTargetType)
+				buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
+				buttonStructure.tooltipSub = nil;
+				buttonStructure.alert = nil;
+				if unitID ~= Globals.player_id and hasProfile(unitID) then
+					local profile = getUnitIDProfile(unitID);
+					if profile.about and not profile.about.read then
+						buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+						buttonStructure.alert = true;
+					end
+				end
+			end,
+			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			icon = "inv_inscription_scroll"
+		});
+	end
 end);

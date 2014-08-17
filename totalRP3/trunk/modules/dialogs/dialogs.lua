@@ -178,7 +178,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "Enhance and add more immersion to original WoW quests texts.",
 	["version"] = 1.000,
 	["id"] = "better_npc_chat",
-	["onLoaded"] = init,
+	["onStart"] = init,
 	["minVersion"] = 0.1,
 };
 

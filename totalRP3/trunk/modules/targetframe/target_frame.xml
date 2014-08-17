@@ -32,5 +32,6 @@
 		</Scripts>
 	</Frame>
 
+	<Script file="target_frame.lua"/>
 
 </Ui>

@@ -43,9 +43,6 @@
 	<Include file="ui\profiles.xml"/>
 	<Script file="impl\profiles.lua"/>
 	
-	<Include file="ui\target_frame.xml"/>
-	<Script file="impl\target_frame.lua"/>
-	
 	<Script file="impl\script\script_generation.lua"/>
 	<Script file="impl\script\script_operands.lua"/>
 	<Script file="impl\script\script_effects.lua"/>

@@ -995,7 +995,7 @@ local MODULE_STRUCTURE = {
 	["description"] = "Use TRP3 custom tooltip for characters and companions",
 	["version"] = 1.000,
 	["id"] = "trp3_tooltips",
-	["onLoaded"] = onModuleInit,
+	["onStart"] = onModuleInit,
 	["minVersion"] = 3,
 };
 
