@@ -22,7 +22,6 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local getUnitIDCurrentProfile;
 local buttonContainer = TRP3_TargetFrame;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local getMiscPresetDropListData, setGlanceSlotPreset, setCompanionGlanceSlotPreset;
 local hasProfile, isIDIgnored;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile;
@@ -143,20 +142,6 @@ TRP3_API.target.registerButton = registerButton;
 -- Display logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onPeekSelection(value, button)
-	if value then
-		if currentTargetType == TYPE_CHARACTER then
-			setGlanceSlotPreset(button.slot, value);
-		else
-			setCompanionGlanceSlotPreset(button.slot, value, currentTargetID);
-		end
-	end
-end
-
-local function onPeekClickMine(button)
-	displayDropDown(button, getMiscPresetDropListData(), function(value) onPeekSelection(value, button) end, 0, true);
-end
-
 local function getCharacterInfo()
 	if currentTargetID == Globals.player_id then
 		return get("player") or EMPTY;
@@ -174,56 +159,6 @@ local function getCompanionInfo(owner, companionID, currentTargetID)
 		profile = getCompanionRegisterProfile(currentTargetID);
 	end
 	return profile;
-end
-
-local function atLeastOneactivePeek(tab)
-	for i, info in pairs(tab) do
-		if type(info) == "table" and info.AC then
-			return true;
-		end
-	end
-	return false;
-end
-
-local function displayPeekSlots()
-	ui_TargetFrameGlance:Hide();
-	local peekTab = nil;
-
-	if currentTargetType == TYPE_CHARACTER then
-		peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
-	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
-		local owner, companionID = companionIDToInfo(currentTargetID);
-		peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE;
-	end
-
-	if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and atLeastOneactivePeek(peekTab)) then
-		ui_TargetFrameGlance:Show();
-		for i=1,5,1 do
-			local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
-			local peek = peekTab[tostring(i)];
-
-			local icon = Globals.icons.default;
-
-			if peek and peek.AC then
-				slot:SetAlpha(1);
-				if peek.IC and peek.IC:len() > 0 then
-					icon = peek.IC;
-				end
-				setTooltipForSameFrame(slot, "LEFT", 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), peek.TX);
-			else
-				slot:SetAlpha(0.25);
-				setTooltipForSameFrame(slot);
-			end
-
-			Utils.texture.applyRoundTexture("TRP3_TargetFrameGlanceSlot"..i.."Image", "Interface\\ICONS\\" .. icon);
-
-			if isCurrentMine then
-				slot:SetScript("OnClick", onPeekClickMine);
-			else
-				slot:SetScript("OnClick", nil);
-			end
-		end
-	end
 end
 
 local TARGET_NAME_WIDTH = 168;
@@ -248,7 +183,6 @@ local function displayTargetFrame()
 	ui_TargetFrame:Show();
 
 	displayTargetName();
-	displayPeekSlots();
 	displayButtonsPanel();
 end
 
@@ -307,11 +241,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_TARGET_USE, 1);
 	registerConfigHandler({CONFIG_TARGET_USE}, onTargetChanged);
 
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc("CO_TARGETFRAME"),
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigTarget_Usage",
 		title = loc("CO_TARGETFRAME_USE"),
@@ -340,20 +274,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onTargetChanged();
 		end);
 		button.visible = getConfigValue(configKey);
-		tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = button.configText or buttonID,
 			configKey = configKey,
 		});
 	end
-
-	TRP3_API.configuration.registerConfigurationPage(TRP3_API.toolbar.CONFIG_STRUCTURE);
 end);
 
 TRP3_API.target.init = function()
-	setCompanionGlanceSlotPreset = TRP3_API.companions.player.setGlanceSlotPreset;
-	setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
-	getMiscPresetDropListData = TRP3_API.register.ui.getMiscPresetDropListData;
 	isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 	getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 	hasProfile = TRP3_API.register.hasProfile
@@ -362,8 +291,6 @@ TRP3_API.target.init = function()
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
-
-	setupFieldSet(TRP3_PeekSAFrame, loc("REG_PLAYER_GLANCE"), 150);
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
@@ -375,9 +302,4 @@ TRP3_API.target.init = function()
 		end
 	end);
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.TARGET_SHOULD_REFRESH}, onTargetChanged);
-
-	for i=1,5,1 do
-		local slot = _G["TRP3_TargetFrameGlanceSlot"..i];
-		slot.slot = tostring(i);
-	end
 end

@@ -67,23 +67,23 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		minimapButton_Reposition();
 	end);
 
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc("CO_MINIMAP_BUTTON"),
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigEditBox",
 		title = loc("CO_MINIMAP_BUTTON_FRAME"),
 		help = loc("CO_MINIMAP_BUTTON_FRAME_TT"),
 		configKey = CONFIG_MINIMAP_FRAME,
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc("CO_MINIMAP_BUTTON_LOCK"),
 		help = loc("CO_MINIMAP_BUTTON_LOCK_TT"),
 		configKey = CONFIG_MINIMAP_LOCK,
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigButton",
 		title = loc("CO_MINIMAP_BUTTON_RESET"),
 		help = loc("CO_MINIMAP_BUTTON_RESET_TT"),

@@ -142,17 +142,19 @@ TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	loaded = true;
+	
+	TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
 	registerConfigKey(CONFIG_ICON_SIZE, 25);
 	registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 	registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
 
 	-- Build configuration page
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc("CO_TOOLBAR_CONTENT"),
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc("CO_TOOLBAR_ICON_SIZE"),
 		configKey = CONFIG_ICON_SIZE,
@@ -161,7 +163,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		step = 1,
 		integer = true,
 	});
-	tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigSlider",
 		title = loc("CO_TOOLBAR_MAX"),
 		help = loc("CO_TOOLBAR_MAX_TT"),
@@ -186,7 +188,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			buildToolbar();
 		end);
 		button.visible = getConfigValue(configKey);
-		tinsert(TRP3_API.toolbar.CONFIG_STRUCTURE.elements, {
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = button.configText or buttonID,
 			configKey = configKey,
@@ -195,16 +197,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	buildToolbar();
 end);
-
-TRP3_API.toolbar.init = function()
-	TRP3_API.toolbar.CONFIG_STRUCTURE = {
-		id = "main_config_toolbar",
-		menuText = loc("CO_TOOLBAR"),
-		pageText = loc("CO_TOOLBAR"),
-		elements = {},
-	};
-	TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
-end
 
 -- TODO: via events
 function TRP3_SwitchToolbar()

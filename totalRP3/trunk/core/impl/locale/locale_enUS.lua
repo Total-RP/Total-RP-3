@@ -422,7 +422,15 @@ local LOCALE_EN = {
 		CO_CHAT_MAIN_OOC_USE = "Use OOC detection",
 		CO_CHAT_MAIN_OOC_PATTERN = "OOC detection pattern",
 		CO_CHAT_MAIN_OOC_COLOR = "OOC color",
-		
+		CO_GLANCE_MAIN = "\"At a glance\" bar",
+		CO_GLANCE_RESET_TT = "Reset the bar position to the bottom left of the anchored frame.",
+		CO_GLANCE_LOCK = "Lock bar",
+		CO_GLANCE_LOCK_TT = "Prevent the bar for being dragged",
+		CO_GLANCE_PRESET_TRP2 = "Use Total RP 2 style positions",
+		CO_GLANCE_PRESET_TRP2_BUTTON = "Use",
+		CO_GLANCE_PRESET_TRP2_HELP = "Shortcut to setup the bar in a TRP2 style : to the right of WoW target frame.",
+		CO_GLANCE_PRESET_TRP3 = "Use Total RP 3 style positions",
+		CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

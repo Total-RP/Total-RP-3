@@ -109,7 +109,7 @@ local function buildConfigurationPage(structure)
 				end
 			end
 		end
-		
+
 		-- Specific for Dropdown
 		if _G[widget:GetName().."DropDown"] then
 			local dropDown = _G[widget:GetName().."DropDown"];
@@ -121,18 +121,18 @@ local function buildConfigurationPage(structure)
 				end
 			end
 			setupListBox(
-				dropDown,
-				element.listContent or {},
-				element.listCallback,
-				element.listDefault or "", 
-				element.listWidth or 134,
-				element.listCancel
+			dropDown,
+			element.listContent or {},
+			element.listCallback,
+			element.listDefault or "",
+			element.listWidth or 134,
+			element.listCancel
 			);
 			if element.configKey and not element.listDefault then
 				dropDown:SetSelectedValue(getValue(element.configKey));
 			end
 		end
-		
+
 		-- Specific for Color picker
 		if _G[widget:GetName().."Picker"] then
 			if element.configKey then
@@ -148,7 +148,7 @@ local function buildConfigurationPage(structure)
 				end;
 			end
 		end
-		
+
 		-- Specific for Button
 		if _G[widget:GetName().."Button"] then
 			local button = _G[widget:GetName().."Button"];
@@ -157,7 +157,7 @@ local function buildConfigurationPage(structure)
 			end
 			button:SetText(element.text or "");
 		end
-		
+
 		-- Specific for EditBox
 		if _G[widget:GetName().."Box"] then
 			local box = _G[widget:GetName().."Box"];
@@ -175,7 +175,7 @@ local function buildConfigurationPage(structure)
 				boxTitle:SetText(element.boxTitle);
 			end
 		end
-		
+
 		-- Specific for Check
 		if _G[widget:GetName().."Check"] then
 			local box = _G[widget:GetName().."Check"];
@@ -187,20 +187,20 @@ local function buildConfigurationPage(structure)
 				box:SetChecked(getValue(element.configKey));
 			end
 		end
-		
+
 		-- Specific for Sliders
 		if _G[widget:GetName().."Slider"] then
 			local slider = _G[widget:GetName().."Slider"];
 			local text = _G[widget:GetName().."SliderValText"];
 			local min = element.min or 0;
 			local max = element.max or 100;
-			
+
 			slider:SetMinMaxValues(min, max);
 			_G[widget:GetName().."SliderLow"]:SetText(min);
 			_G[widget:GetName().."SliderHigh"]:SetText(max);
 			slider:SetValueStep(element.step);
 			slider:SetObeyStepOnDrag(element.integer);
-			
+
 			local onChange = function(self, value)
 				if element.integer then
 					value = math.floor(value);
@@ -211,13 +211,13 @@ local function buildConfigurationPage(structure)
 				end
 			end
 			slider:SetScript("OnValueChanged", onChange);
-			
+
 			if element.configKey then
 				slider:SetValue(tonumber(getValue(element.configKey)) or min);
 			else
 				slider:SetValue(0);
 			end
-			
+
 			onChange(slider, slider:GetValue());
 		end
 
@@ -243,14 +243,14 @@ local function registerConfigurationPage(pageStructure)
 		id = pageStructure.id,
 		frame = pageStructure.frame,
 	});
-	
+
 	registerMenu({
 		id = "main_91_config_" .. pageStructure.id,
 		text = pageStructure.menuText,
 		isChildOf = "main_90_config",
 		onSelected = function() setPage(pageStructure.id); end,
 	});
-	
+
 	buildConfigurationPage(pageStructure);
 end
 Config.registerConfigurationPage = registerConfigurationPage;
@@ -273,27 +273,23 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);
+end);
 
-	-- Page and menu
-	registerMenu({
-		id = "main_90_config",
-		text = loc("CO_CONFIGURATION"),
-		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
-	});
-	
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- GENERAL SETTINGS INIT
 	-- localization
 	local localeTab = {};
 	for _, locale in pairs(getLocales()) do
 		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
-	
+
 	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
-	
+
 	-- Build widgets
 	local CONFIG_STRUCTURE_GENERAL = {
 		id = "main_config_aaa_general",
@@ -360,7 +356,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			},
 		}
 	}
-	
+
 	-- Notifications
 	local notifs = TRP3_API.dashboard.getNotificationTypeList();
 	local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
@@ -375,6 +371,23 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			configKey = NOTIF_CONFIG_PREFIX .. notificationID,
 		});
 	end
-	
+
 	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
+end);
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	-- Page and menu
+	registerMenu({
+		id = "main_90_config",
+		text = loc("CO_CONFIGURATION"),
+		onSelected = function() selectMenu("main_91_config_main_config_aaa_general") end,
+	});
+
+	TRP3_API.configuration.CONFIG_FRAME_PAGE = {
+		id = "main_config_toolbar",
+		menuText = loc("CO_TOOLBAR"),
+		pageText = loc("CO_TOOLBAR"),
+		elements = {},
+	};
 end);
