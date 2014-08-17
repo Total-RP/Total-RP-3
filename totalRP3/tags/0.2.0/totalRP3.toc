@@ -1,0 +1,17 @@
+﻿## Interface: 50400
+## Title: Total RP 3 (For Wow 5.4)
+## Title-frFR: Total RP 3 (Pour Wow 5.4)
+## Title-esES: Total RP 3 (Para Wow 5.4)
+## Title-deDE: Total RP 3 (für Wow 5.4)
+## Author: Telkostrasz
+## Version: 0.2-SNAPSHOT
+## Notes: Main module
+## Notes-frFR: Module principal
+## Notes-esES: Módulo principal
+## Notes-deDE: Hauptmodul
+## URL: http://forums.telkostrasz.be/index.php
+## RequiredDeps: 
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Register, TRP3_Presets, TRP3_Companions
+totalRP3.xml

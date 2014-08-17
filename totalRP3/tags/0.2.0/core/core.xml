@@ -1,0 +1,53 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
+	
+	<!-- Please note that the loading order matters a lot -->
+	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
+	<GameTooltip name="TRP3_Toast" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+	
+	<Script file="impl\globals.lua"/>
+	<Script file="impl\events.lua"/>
+	<Include file="impl\locale\locale.xml"/>
+	<Script file="impl\utils.lua"/>
+	<Script file="impl\ui_tools.lua"/>
+	
+	<Include file="ui\widgets.xml"/>
+	
+	<Include file="ui\main.xml"/>
+	<Script file="impl\main_structure.lua"/>
+	
+	<Include file="ui\configuration.xml"/>
+	<Script file="impl\configuration.lua"/>
+	
+	<Script file="impl\communication_protocol.lua"/>
+	<Script file="impl\communication_protocol_broadcast.lua"/>
+	
+	<Script file="impl\ui_main.lua"/>
+	
+	<Include file="ui\browsers\icons.xml"/>
+	<Include file="ui\browsers\musics.xml"/>
+	<Include file="ui\browsers\colors.xml"/>
+	<Include file="ui\browsers\images.xml"/>
+	<Script file="impl\popup.lua"/>
+	
+	<Include file="ui\toolbar.xml"/>
+	<Script file="impl\toolbar.lua"/>
+	
+	<Include file="ui\profiles.xml"/>
+	<Script file="impl\profiles.lua"/>
+	
+	<Include file="ui\target_frame.xml"/>
+	<Script file="impl\target_frame.lua"/>
+	
+	<Script file="impl\script\script_generation.lua"/>
+	<Script file="impl\script\script_operands.lua"/>
+	<Script file="impl\script\script_effects.lua"/>
+
+</Ui>

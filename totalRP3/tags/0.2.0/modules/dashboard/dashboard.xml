@@ -1,0 +1,230 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	
+	<!-- Dashboard notification -->
+	<Frame name="TRP3_DashboardNotification" virtual="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="18"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="34"/>
+		<Anchors>
+			<Anchor point="LEFT" x="13" y="0"/>
+			<Anchor point="RIGHT" x="-23" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="LEFT" text="[Text]">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="10" y="6"/>
+						<Anchor point="BOTTOMRIGHT" x="-100" y="6"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+				<FontString name="$parentTopText" inherits="GameFontNormalSmall" justifyH="LEFT" text="[TopText]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="10" y="-6"/>
+						<Anchor point="TOPRIGHT" x="-100" y="-6"/>
+					</Anchors>
+					<Color b="0" r="1.0" g="0.75"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentRemove" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="RIGHT" x="0" y="0"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentShow" inherits="UIPanelButtonTemplate">
+				<Size x="0" y="20"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentRemove" x="0" y="6"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentText" x="5" y="6"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+	
+	<!-- Dashboard -->
+	<Frame name="TRP3_Dashboard" hidden="true">
+	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+			<TileSize val="425"/>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="526" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
+			        <Size x="256" y="128"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_MainFrameVersionText" inherits="GameFontNormal" justifyV="TOP" text="[VERSION_XXXX]">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="10"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- Status -->
+			<Frame name="TRP3_DashboardStatus" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="110"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_MainFrameVersionText" x="0" y="-10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_DashboardStatus_XPStatus" inherits="GameFontNormal" justifyH="LEFT" text="[XP_STATUS]">
+							<Size x="150" y="18"/>
+							<Anchors>
+								<Anchor point="LEFT" x="30" y="0"/>
+								<Anchor point="BOTTOM" x="0" y="18"/>
+							</Anchors>
+							<Color b="1.0" r="1.0" g="1.0"/>
+						</FontString>
+						<FontString name="TRP3_DashboardStatus_CharactStatus" inherits="GameFontNormal" justifyH="LEFT"  text="[CHARACTER_STATUS]">
+							<Size x="150" y="18"/>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="TRP3_DashboardStatus_XPStatus" x="0" y="13"/>
+							</Anchors>
+							<Color b="1.0" r="1.0" g="1.0"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox name="TRP3_DashboardStatus_Currently" inherits="TRP3_TitledHelpEditBox">
+						<Size x="0" y="18"/>
+						<Anchors>	
+							<Anchor point="LEFT" x="30" y="0"/>
+							<Anchor point="RIGHT" x="-30" y="0"/>
+							<Anchor point="TOP" x="0" y="-15"/>
+						</Anchors>
+						<Scripts>
+							<OnEditFocusLost>
+								
+							</OnEditFocusLost>
+							<OnEnterPressed>
+								_G[self:GetName() .. "HighlightAnimate"]:Play();
+								_G[self:GetName() .. "Animate"]:Play();
+								self:ClearFocus();
+							</OnEnterPressed>
+						</Scripts>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture alphaMode="ADD" alpha="0" name="$parentHighlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
+									<Size x="70" y="16"/>
+									<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
+									<Anchors>
+										<Anchor point="LEFT" x="-20" y="0"/>
+									</Anchors>
+									<Animations>
+										<AnimationGroup name="$parentAnimate" looping="NONE">
+											<Alpha duration="0.6" change="1" smoothing="IN" order="1"/>
+											<Translation duration="1.2" offsetX="400" smoothing="IN_OUT" order="1"/>
+											<Alpha duration="0.3" change="-1" smoothing="OUT" order="1" StartDelay="0.7"/>
+										</AnimationGroup>
+									</Animations>
+								</Texture>
+							</Layer>
+					    </Layers>
+					    <Animations>
+							<AnimationGroup name="$parentAnimate" looping="NONE">
+								<Alpha duration="0.25" change="-0.4"  order="1"/>
+								<Alpha duration="0.25" change="0.4"  order="2"/>
+							</AnimationGroup>
+						</Animations>
+					</EditBox>
+					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
+				        <Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_CharactStatus" x="10" y="-2"/>
+						</Anchors>
+				    </Frame>
+				    <Frame name="TRP3_DashboardStatus_XPStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
+				        <Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_XPStatus" x="10" y="-2"/>
+						</Anchors>
+				    </Frame>
+				</Frames>
+			</Frame>
+			<!-- Notification -->
+			<Frame name="TRP3_DashboardNotifications" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="0"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="10" y="-10"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_DashboardNotifications_No" inherits="GameFontNormalLarge" justifyH="LEFT" text="[NO_NOTIFICATION]">
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+							<Color b="1.0" r="1.0" g="1.0"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="TRP3_DashboardNotifications1" inherits="TRP3_DashboardNotification">
+						<Anchors><Anchor point="TOP" relativePoint="TOP" x="0" y="-14"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_DashboardNotifications2" inherits="TRP3_DashboardNotification">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardNotifications1" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_DashboardNotifications3" inherits="TRP3_DashboardNotification">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardNotifications2" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Frame name="TRP3_DashboardNotifications4" inherits="TRP3_DashboardNotification">
+						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardNotifications3" x="0" y="-1"/></Anchors>
+					</Frame>
+					<Slider name="TRP3_DashboardNotificationsSlider" inherits="OptionsSliderTemplate">
+						<Size x="15" y="0"/>
+						<Anchors>
+							<Anchor point="RIGHT" x="-7" y="2"/>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="27"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_DashboardNotificationsSliderText:SetText("");
+								TRP3_DashboardNotificationsSliderHigh:SetText("");
+								TRP3_DashboardNotificationsSliderLow:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+					<Button name="TRP3_DashboardNotificationsClear" inherits="UIPanelButtonTemplate">
+						<Size x="200" y="20"/>
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+	
+	<Script file="dashboard.lua"/>
+</Ui>

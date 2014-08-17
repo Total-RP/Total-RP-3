@@ -1,0 +1,89 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+	
+	<!-- Target frame button -->
+	<Button name="TRP3_TargetFrameButton" virtual="true">
+		<Size x="30" y="30" />
+		<NormalTexture name="$parentNormal" />
+		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture name="$parentAlert">
+					<Size x="15" y="15" />
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="0" y="0" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Button>
+	
+	<Button name="TRP3_TargetFrameGlanceSlotTemplate" virtual="true">
+		<Size x="20" y="20" />
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
+					<Size x="40" y="40" />
+					<Anchors>
+						<Anchor point="CENTER" x="8" y="-8" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<NormalTexture name="$parentImage" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<!-- Target Frame -->
+	<Frame name="TRP3_TargetFrame" toplevel="true" parent="UIParent" enableMouse="true" hidden="true" movable="true" inherits="TRP3_FieldSetFrame">
+		<TitleRegion setAllPoints="true" />
+		<Size x="200" y="50" />
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0" />
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				self:SetClampedToScreen(true);
+			</OnLoad>
+		</Scripts>
+		<Frames>
+			<Frame name="TRP3_TargetFrameGlance">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="300"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="140" y="32" />
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="12" />
+				</Anchors>
+				<Frames>
+					<Button name="TRP3_TargetFrameGlanceSlot3" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="CENTER" x="2" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot2" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_TargetFrameGlanceSlot3" x="-5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot1" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_TargetFrameGlanceSlot2" x="-5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot4" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_TargetFrameGlanceSlot3" x="5" y="0"/></Anchors>
+					</Button>
+					<Button name="TRP3_TargetFrameGlanceSlot5" inherits="TRP3_TargetFrameGlanceSlotTemplate">
+						<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_TargetFrameGlanceSlot4" x="5" y="0"/></Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+
+</Ui>
