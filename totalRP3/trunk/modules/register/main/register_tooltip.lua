@@ -79,7 +79,7 @@ local ANCHOR_TAB;
 
 local function getAnchoredFrame()
 	if getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME) == "" then return nil end;
-	return _G[getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME)] or GameTooltip or error("Can't find any frame to anchor.");
+	return _G[getConfigValue(CONFIG_CHARACT_ANCHORED_FRAME)] or GameTooltip;
 end
 
 local function showRelationColor()
@@ -312,6 +312,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	if isIDIgnored(targetID) then
 		tooltipBuilder:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0, getSubLineFontSize());
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
+		tooltipBuilder:Build();
 		return;
 	end
 
@@ -438,7 +439,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 		tooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, getSmallLineFontSize(), true);
 	end
-	
+
 	tooltipBuilder:AddSpace();
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -486,11 +487,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
 		end
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Build tooltip
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	tooltipBuilder:Build();
 end
 
@@ -538,6 +539,11 @@ local function getCompanionInfo(owner, companionID)
 	return profile or EMPTY;
 end
 
+local function ownerIsIgnored(compagnonFullID)
+	local ownerID, companionID = companionIDToInfo(compagnonFullID);
+	return isIDIgnored(ownerID);
+end
+
 local function writeCompanionTooltip(companionFullID, originalTexts, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
@@ -545,6 +551,17 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
 	local companionFamily = UnitCreatureType(targetType);
+	
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- BLOCKED
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if isIDIgnored(ownerID) then
+		tooltipBuilder:AddLine(loc("REG_TT_IGNORED_OWNER"), 1, 0, 0, getSubLineFontSize());
+		tooltipBuilder:AddLine("\"" .. getIgnoreReason(ownerID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
+		tooltipBuilder:Build();
+		return;
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Icon and name
@@ -631,8 +648,6 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	tooltipBuilder:AddSpace();
 
 	if showCompanionNotifications() then
 		local notifText = "";
@@ -676,18 +691,21 @@ local function show(targetType, targetID, targetMode)
 					return;
 				end
 			end
-			
-			-- Stock all the current text from the GameTooltip
-			local originalTexts = getGameTooltipTexts();
-			local anchoredFrame = getAnchoredFrame();
-			if not anchoredFrame then
-				GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
-			else
-				ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
-			end
 
 			-- The target is a player
 			if targetMode then
+			
+				-- Stock all the current text from the GameTooltip
+				local originalTexts = getGameTooltipTexts();
+				
+				if (targetMode == TYPE_CHARACTER and isIDIgnored(targetID)) or ((targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and ownerIsIgnored(targetID)) then
+					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
+				elseif not getAnchoredFrame() then
+					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+				else
+					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+				end
+
 				ui_CharacterTT.target = targetID;
 				ui_CharacterTT.targetType = targetType;
 				ui_CharacterTT.targetMode = targetMode;
@@ -695,7 +713,7 @@ local function show(targetType, targetID, targetMode)
 				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
 				if targetMode == TYPE_CHARACTER then
 					writeTooltipForCharacter(targetID, originalTexts, targetType);
-					if showRelationColor() and targetID ~= Globals.player_id and IsUnitIDKnown(targetID) and hasProfile(targetID) then
+					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 						ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
 					end
 					if shouldHideGameTooltip() and not isIDIgnored(targetID) then
@@ -703,14 +721,12 @@ local function show(targetType, targetID, targetMode)
 					end
 				elseif targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET then
 					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
-					if shouldHideGameTooltip() then
+					if shouldHideGameTooltip() and not ownerIsIgnored(targetID) then
 						GameTooltip:Hide();
 					end
 				end
 
 				ui_CharacterTT:Show();
-			else
-				ui_CharacterTT:Hide(); -- As SetOwner shows the tooltip, must hide if eventually nothing to show.
 			end
 
 			ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
@@ -754,7 +770,7 @@ local function onModuleInit()
 	end);
 	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_DATA_CHANGED}, function()
 		local targetID, targetMode = getUnitID("mouseover");
-		if ui_CharacterTT.target == targetID then
+		if ui_CharacterTT.targetMode == targetMode and ui_CharacterTT.target == targetID then
 			show("mouseover", targetID, targetMode);
 		end
 	end);
@@ -975,7 +991,7 @@ local function onModuleInit()
 end
 
 local MODULE_STRUCTURE = {
-	["name"] = "Characters and Companion tooltip",
+	["name"] = "Characters and companions tooltip",
 	["description"] = "Use TRP3 custom tooltip for characters and companions",
 	["version"] = 1.000,
 	["id"] = "trp3_tooltips",

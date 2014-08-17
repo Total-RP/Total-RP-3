@@ -617,4 +617,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 3,
 };
 
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+--TRP3_API.module.registerModule(MODULE_STRUCTURE);

@@ -406,7 +406,7 @@ local function decorateCompanionLine(line, profileID)
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
-	_G[line:GetName().."Select"]:Show();
+	_G[line:GetName().."Select"]:Hide();
 
 	_G[line:GetName().."Info"]:SetText("");
 end
@@ -461,7 +461,7 @@ local function getCompanionLines()
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
-	TRP3_RegisterListHeaderActions:Show();
+--	TRP3_RegisterListHeaderActions:Show();
 
 	return lines;
 end
