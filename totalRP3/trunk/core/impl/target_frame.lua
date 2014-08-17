@@ -193,7 +193,7 @@ local function displayPeekSlots()
 		peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
 	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
 		local owner, companionID = companionIDToInfo(currentTargetID);
-		peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE or EMPTY;
+		peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE;
 	end
 
 	if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and atLeastOneactivePeek(peekTab)) then
