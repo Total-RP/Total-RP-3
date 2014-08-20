@@ -30,7 +30,7 @@ local function onStart()
 	local EMPTY = Globals.empty;
 
 	-- UI
-	local ui_GlanceBar = TRP3_GlanceBar;
+	local ui_GlanceBar = CreateFrame("Frame", "TRP3_GlanceBar", UIParent, "TRP3_GlanceBarTemplate");
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Logic

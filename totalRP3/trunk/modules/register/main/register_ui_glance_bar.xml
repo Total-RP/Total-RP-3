@@ -24,7 +24,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_GlanceBar" parent="UIParent" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" >
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 			<EdgeSize>
 				<AbsValue val="24" />
@@ -41,29 +41,29 @@
 			<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0" />
 		</Anchors>
 		<Frames>
-			<Button name="TRP3_GlanceBarSlot3" inherits="TRP3_GlanceBarSlotTemplate">
+			<Button name="$parentSlot3" inherits="TRP3_GlanceBarSlotTemplate">
 				<Anchors>
 					<Anchor point="CENTER" x="2" y="0" />
 				</Anchors>
 			</Button>
-			<Button name="TRP3_GlanceBarSlot2" inherits="TRP3_GlanceBarSlotTemplate">
+			<Button name="$parentSlot2" inherits="TRP3_GlanceBarSlotTemplate">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_GlanceBarSlot3" x="-5" y="0" />
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot3" x="-5" y="0" />
 				</Anchors>
 			</Button>
-			<Button name="TRP3_GlanceBarSlot1" inherits="TRP3_GlanceBarSlotTemplate">
+			<Button name="$parentSlot1" inherits="TRP3_GlanceBarSlotTemplate">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_GlanceBarSlot2" x="-5" y="0" />
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot2" x="-5" y="0" />
 				</Anchors>
 			</Button>
-			<Button name="TRP3_GlanceBarSlot4" inherits="TRP3_GlanceBarSlotTemplate">
+			<Button name="$parentSlot4" inherits="TRP3_GlanceBarSlotTemplate">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_GlanceBarSlot3" x="5" y="0" />
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot3" x="5" y="0" />
 				</Anchors>
 			</Button>
-			<Button name="TRP3_GlanceBarSlot5" inherits="TRP3_GlanceBarSlotTemplate">
+			<Button name="$parentSlot5" inherits="TRP3_GlanceBarSlotTemplate">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_GlanceBarSlot4" x="5" y="0" />
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot4" x="5" y="0" />
 				</Anchors>
 			</Button>
 		</Frames>
