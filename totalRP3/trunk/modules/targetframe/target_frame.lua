@@ -27,7 +27,7 @@ local function onStart()
 
 	local currentTargetID, currentTargetType, isCurrentMine = nil, nil, nil;
 	
-	local ui_TargetFrame = TRP3_TargetFrame;
+	local ui_TargetFrame = CreateFrame("Frame", "TRP3_TargetFrame", UIParent, "TRP3_TargetFrameTemplate");
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic

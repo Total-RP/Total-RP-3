@@ -225,18 +225,20 @@ local function onStart()
 			replaceBar();
 		end,
 	});
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigButton",
-		title = loc("CO_GLANCE_PRESET_TRP3"),
-		text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
-		help = loc("CO_GLANCE_PRESET_TRP3_HELP"),
-		callback = function()
-			setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-			setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
-			setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
-			replaceBar();
-		end,
-	});
+	if TRP3_API.target then
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigButton",
+			title = loc("CO_GLANCE_PRESET_TRP3"),
+			text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
+			help = loc("CO_GLANCE_PRESET_TRP3_HELP"),
+			callback = function()
+				setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
+				setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+				setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
+				replaceBar();
+			end,
+		});
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init

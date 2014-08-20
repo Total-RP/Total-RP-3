@@ -19,7 +19,7 @@
 	</Button>
 
 	<!-- Target Frame -->
-	<Frame name="TRP3_TargetFrame" toplevel="true" parent="UIParent" enableMouse="true" hidden="true" movable="true" inherits="TRP3_FieldSetFrame">
+	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" movable="true" inherits="TRP3_FieldSetFrame" virtual="true">
 		<TitleRegion setAllPoints="true" />
 		<Size x="200" y="50" />
 		<Anchors>
