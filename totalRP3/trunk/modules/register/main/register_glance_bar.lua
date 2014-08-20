@@ -243,7 +243,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_MISC_SAVED, Events.REGISTER_DATA_CHANGED}, onTargetChanged);
+	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_MISC_SAVED, Events.REGISTER_DATA_CHANGED, Events.REGISTER_PROFILES_LOADED}, onTargetChanged);
 
 	for i=1,5,1 do
 		local slot = _G["TRP3_GlanceBarSlot"..i];

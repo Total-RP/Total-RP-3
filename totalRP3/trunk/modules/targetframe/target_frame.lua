@@ -8,7 +8,7 @@ local function onStart()
 
 	-- imports
 	local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-	local loc, ui_TargetFrame, CreateFrame, EMPTY = TRP3_API.locale.getText, TRP3_TargetFrame, CreateFrame, Globals.empty;
+	local loc, CreateFrame, EMPTY = TRP3_API.locale.getText, CreateFrame, Globals.empty;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
 	local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 	local assert, pairs, tinsert, table, math, _G, type = assert, pairs, tinsert, table, math, _G, type;
@@ -26,6 +26,8 @@ local function onStart()
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
 	local currentTargetID, currentTargetType, isCurrentMine = nil, nil, nil;
+	
+	local ui_TargetFrame = TRP3_TargetFrame;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic
@@ -289,7 +291,7 @@ local function onStart()
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-
+	
 	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, refreshIfNeededTab);
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
@@ -297,7 +299,7 @@ local function onStart()
 			onTargetChanged();
 		end
 	end);
-	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.TARGET_SHOULD_REFRESH}, onTargetChanged);
+	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.TARGET_SHOULD_REFRESH, Events.REGISTER_PROFILES_LOADED}, onTargetChanged);
 end
 
 local MODULE_STRUCTURE = {
