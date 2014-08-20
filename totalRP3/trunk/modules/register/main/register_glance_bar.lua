@@ -2,6 +2,13 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local ui_GlanceBar;
+
+-- Always build UI on init. Because maybe other modules would like to anchor it on start.
+local function onInit()
+	ui_GlanceBar = CreateFrame("Frame", "TRP3_GlanceBar", UIParent, "TRP3_GlanceBarTemplate");
+end
+
 local function onStart()
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -28,9 +35,6 @@ local function onStart()
 	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 	local EMPTY = Globals.empty;
-
-	-- UI
-	local ui_GlanceBar = CreateFrame("Frame", "TRP3_GlanceBar", UIParent, "TRP3_GlanceBarTemplate");
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Logic
@@ -191,54 +195,57 @@ local function onStart()
 	replaceBar();
 	ui_GlanceBar:SetScript("OnUpdate", glanceBar_DraggingFrame_OnUpdate);
 
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc("CO_GLANCE_MAIN"),
-	});
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigEditBox",
-		title = loc("CO_MINIMAP_BUTTON_FRAME"),
-		configKey = CONFIG_GLANCE_PARENT,
-	});
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc("CO_GLANCE_LOCK"),
-		help = loc("CO_GLANCE_LOCK_TT"),
-		configKey = CONFIG_GLANCE_LOCK,
-	});
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigButton",
-		title = loc("CO_MINIMAP_BUTTON_RESET"),
-		help = loc("CO_GLANCE_RESET_TT"),
-		text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
-		callback = resetPosition,
-	});
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigButton",
-		title = loc("CO_GLANCE_PRESET_TRP2"),
-		text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
-		help = loc("CO_GLANCE_PRESET_TRP2_HELP"),
-		callback = function()
-			setConfigValue(CONFIG_GLANCE_PARENT, "TargetFrame");
-			setConfigValue(CONFIG_GLANCE_ANCHOR_X, 161);
-			setConfigValue(CONFIG_GLANCE_ANCHOR_Y, 31);
-			replaceBar();
-		end,
-	});
-	if TRP3_API.target then
+	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigH1",
+			title = loc("CO_GLANCE_MAIN"),
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigEditBox",
+			title = loc("CO_MINIMAP_BUTTON_FRAME"),
+			configKey = CONFIG_GLANCE_PARENT,
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc("CO_GLANCE_LOCK"),
+			help = loc("CO_GLANCE_LOCK_TT"),
+			configKey = CONFIG_GLANCE_LOCK,
+		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("CO_GLANCE_PRESET_TRP3"),
+			title = loc("CO_MINIMAP_BUTTON_RESET"),
+			help = loc("CO_GLANCE_RESET_TT"),
+			text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
+			callback = resetPosition,
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigButton",
+			title = loc("CO_GLANCE_PRESET_TRP2"),
 			text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
-			help = loc("CO_GLANCE_PRESET_TRP3_HELP"),
+			help = loc("CO_GLANCE_PRESET_TRP2_HELP"),
 			callback = function()
-				setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-				setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
-				setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
+				setConfigValue(CONFIG_GLANCE_PARENT, "TargetFrame");
+				setConfigValue(CONFIG_GLANCE_ANCHOR_X, 161);
+				setConfigValue(CONFIG_GLANCE_ANCHOR_Y, 31);
 				replaceBar();
 			end,
 		});
-	end
+		if TRP3_API.target then
+			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+				inherit = "TRP3_ConfigButton",
+				title = loc("CO_GLANCE_PRESET_TRP3"),
+				text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
+				help = loc("CO_GLANCE_PRESET_TRP3_HELP"),
+				callback = function()
+					setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
+					setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+					setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
+					replaceBar();
+				end,
+			});
+		end
+	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
@@ -259,6 +266,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_glance_bar",
 	["onStart"] = onStart,
+	["onInit"] = onInit,
 	["minVersion"] = 3,
 };
 

@@ -24,7 +24,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" virtual="true">
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 			<EdgeSize>
 				<AbsValue val="24" />

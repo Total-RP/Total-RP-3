@@ -2,6 +2,13 @@
 -- Total RP 3, by Telkostrasz (Kirin Tor - Eu/Fr)
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local ui_TargetFrame;
+
+-- Always build UI on init. Because maybe other modules would like to anchor it on start.
+local function onInit()
+	ui_TargetFrame = CreateFrame("Frame", "TRP3_TargetFrame", UIParent, "TRP3_TargetFrameTemplate");
+end
+
 local function onStart()
 	-- Public accessor
 	TRP3_API.target = {};
@@ -10,7 +17,7 @@ local function onStart()
 	local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 	local loc, CreateFrame, EMPTY = TRP3_API.locale.getText, CreateFrame, Globals.empty;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
-	local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local assert, pairs, tinsert, table, math, _G, type = assert, pairs, tinsert, table, math, _G, type;
 	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
@@ -26,8 +33,6 @@ local function onStart()
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
 	local currentTargetID, currentTargetType, isCurrentMine = nil, nil, nil;
-	
-	local ui_TargetFrame = CreateFrame("Frame", "TRP3_TargetFrame", UIParent, "TRP3_TargetFrameTemplate");
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic
@@ -224,11 +229,38 @@ local function onStart()
 			end
 		end
 	end
-	
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Position
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	local CONFIG_TARGET_POS_X = "CONFIG_TARGET_POS_X";
+	local CONFIG_TARGET_POS_Y = "CONFIG_TARGET_POS_Y";
+	local CONFIG_TARGET_POS_A = "CONFIG_TARGET_POS_A";
+
+	registerConfigKey(CONFIG_TARGET_POS_A, "CENTER");
+	registerConfigKey(CONFIG_TARGET_POS_X, 0);
+	registerConfigKey(CONFIG_TARGET_POS_Y, 0);
+	ui_TargetFrame:SetPoint(getConfigValue("CONFIG_TARGET_POS_A"), UIParent, getConfigValue("CONFIG_TARGET_POS_A"),
+	getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
+
+	ui_TargetFrame:RegisterForDrag("LeftButton");
+	ui_TargetFrame:SetMovable();
+	ui_TargetFrame:SetScript("OnDragStart", function(self)
+		self:StartMoving();
+	end);
+	ui_TargetFrame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing();
+		local anchor, _, _, x, y = ui_TargetFrame:GetPoint(1);
+		setConfigValue(CONFIG_TARGET_POS_A, anchor);
+		setConfigValue(CONFIG_TARGET_POS_X, x);
+		setConfigValue(CONFIG_TARGET_POS_Y, y);
+	end);
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Config
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
+
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
 		loaded = true;
 
@@ -253,6 +285,18 @@ local function onStart()
 			configKey = CONFIG_TARGET_USE,
 			listWidth = nil,
 			listCancel = true,
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigButton",
+			title = loc("CO_MINIMAP_BUTTON_RESET"),
+			text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
+			callback = function()
+				setConfigValue(CONFIG_TARGET_POS_A, "CENTER");
+				setConfigValue(CONFIG_TARGET_POS_X, 0);
+				setConfigValue(CONFIG_TARGET_POS_Y, 0);
+				ui_TargetFrame:ClearAllPoints();
+				ui_TargetFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+			end,
 		});
 
 		local ids = {};
@@ -291,7 +335,7 @@ local function onStart()
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	
+
 	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, refreshIfNeededTab);
 	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
@@ -308,6 +352,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_target_bar",
 	["onStart"] = onStart,
+	["onInit"] = onInit,
 	["minVersion"] = 3,
 };
 

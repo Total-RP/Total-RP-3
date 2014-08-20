@@ -19,12 +19,8 @@
 	</Button>
 
 	<!-- Target Frame -->
-	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" movable="true" inherits="TRP3_FieldSetFrame" virtual="true">
-		<TitleRegion setAllPoints="true" />
+	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" inherits="TRP3_FieldSetFrame" virtual="true">
 		<Size x="200" y="50" />
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0" />
-		</Anchors>
 		<Scripts>
 			<OnLoad>
 				self:SetClampedToScreen(true);
