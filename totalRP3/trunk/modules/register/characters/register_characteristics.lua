@@ -203,6 +203,30 @@ local function setConsultDisplay(context)
 		previous = frame;
 	end
 
+	-- Misc chars
+	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
+		hasMisc = true;
+		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
+		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
+		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
+		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
+
+		for frameIndex, miscStructure in pairs(dataTab.MI) do
+			local frame = miscCharFrame[frameIndex];
+			if frame == nil then
+				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine"..frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
+				tinsert(miscCharFrame, frame);
+			end
+			frame:ClearAllPoints();
+			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
+			frame:SetPoint("RIGHT", 0, 0);
+			_G[frame:GetName().."FieldName"]:SetText(strconcat(Utils.str.icon(miscStructure.IC, 18)," ", miscStructure.NA or ""));
+			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.VA or "");
+			frame:Show();
+			previous = frame;
+		end
+	end
+
 	-- Psycho chars
 	if type(dataTab.PS) == "table" and #dataTab.PS > 0 then
 		hasPsycho = true;
@@ -233,30 +257,6 @@ local function setConsultDisplay(context)
 			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.LI or Globals.icons.default));
 			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(psychoStructure.RI or Globals.icons.default));
 			refreshPsycho(frame, value or 3);
-			frame:Show();
-			previous = frame;
-		end
-	end
-
-	-- Misc chars
-	if type(dataTab.MI) == "table" and #dataTab.MI > 0 then
-		hasMisc = true;
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:Show();
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:ClearAllPoints();
-		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
-		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
-
-		for frameIndex, miscStructure in pairs(dataTab.MI) do
-			local frame = miscCharFrame[frameIndex];
-			if frame == nil then
-				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine"..frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
-				tinsert(miscCharFrame, frame);
-			end
-			frame:ClearAllPoints();
-			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
-			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName().."FieldName"]:SetText(strconcat(Utils.str.icon(miscStructure.IC, 18)," ", miscStructure.NA or ""));
-			_G[frame:GetName().."FieldValue"]:SetText(miscStructure.VA or "");
 			frame:Show();
 			previous = frame;
 		end
@@ -447,9 +447,45 @@ function setEditDisplay()
 		TRP3_RegisterCharact_Edit_WeightField
 	})
 
+	-- Misc
+	local previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
+	for _, frame in pairs(miscEditCharFrame) do frame:Hide(); end
+	for frameIndex, miscStructure in pairs(draftData.MI) do
+		local frame = miscEditCharFrame[frameIndex];
+		if frame == nil then
+			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine"..frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
+			_G[frame:GetName().."NameFieldText"]:SetText(loc("CM_NAME"));
+			_G[frame:GetName().."ValueFieldText"]:SetText(loc("CM_VALUE"));
+			_G[frame:GetName().."Delete"]:SetScript("OnClick", onMiscDelete);
+			setTooltipForSameFrame(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
+			tinsert(miscEditCharFrame, frame);
+		end
+		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
+			showIconBrowser(function(icon)
+				miscStructure.IC = icon;
+				setupIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
+			end);
+		end);
+
+		frame.miscIndex = frameIndex;
+		_G[frame:GetName().."Icon"].IC = miscStructure.IC or Globals.icons.default;
+		_G[frame:GetName().."NameField"]:SetText(miscStructure.NA or loc("CM_NAME"));
+		_G[frame:GetName().."ValueField"]:SetText(miscStructure.VA or loc("CM_VALUE"));
+		refreshEditIcon(_G[frame:GetName().."Icon"]);
+		frame:ClearAllPoints();
+		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
+		frame:SetPoint("RIGHT", 0, 0);
+		frame:Show();
+		previous = frame;
+	end
+	TRP3_RegisterCharact_Edit_MiscAdd:ClearAllPoints();
+	TRP3_RegisterCharact_Edit_MiscAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+	previous = TRP3_RegisterCharact_Edit_MiscAdd;
 
 	-- Psycho
-	local previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:ClearAllPoints();
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+	previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.PS) do
 		local frame = psychoEditCharFrame[frameIndex];
@@ -527,41 +563,6 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_PsychoAdd:ClearAllPoints();
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 	previous = TRP3_RegisterCharact_Edit_PsychoAdd;
-
-	-- Misc
-	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:ClearAllPoints();
-	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
-	previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
-	for _, frame in pairs(miscEditCharFrame) do frame:Hide(); end
-	for frameIndex, miscStructure in pairs(draftData.MI) do
-		local frame = miscEditCharFrame[frameIndex];
-		if frame == nil then
-			frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscEditLine"..frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_MiscEditLine");
-			_G[frame:GetName().."NameFieldText"]:SetText(loc("CM_NAME"));
-			_G[frame:GetName().."ValueFieldText"]:SetText(loc("CM_VALUE"));
-			_G[frame:GetName().."Delete"]:SetScript("OnClick", onMiscDelete);
-			tinsert(miscEditCharFrame, frame);
-		end
-		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
-			showIconBrowser(function(icon)
-				miscStructure.IC = icon;
-				setupIconButton(_G[frame:GetName().."Icon"], icon or Globals.icons.default);
-			end);
-		end);
-
-		frame.miscIndex = frameIndex;
-		_G[frame:GetName().."Icon"].IC = miscStructure.IC or Globals.icons.default;
-		_G[frame:GetName().."NameField"]:SetText(miscStructure.NA or loc("CM_NAME"));
-		_G[frame:GetName().."ValueField"]:SetText(miscStructure.VA or loc("CM_VALUE"));
-		refreshEditIcon(_G[frame:GetName().."Icon"]);
-		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
-		frame:SetPoint("RIGHT", 0, 0);
-		frame:Show();
-		previous = frame;
-	end
-	TRP3_RegisterCharact_Edit_MiscAdd:ClearAllPoints();
-	TRP3_RegisterCharact_Edit_MiscAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 end
 
 local function setupRelationButton(profileID, profile)

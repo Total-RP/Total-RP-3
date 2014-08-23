@@ -402,14 +402,14 @@
 											</Anchors>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
+										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
 									    	<Size x="455" y="50"/>
-											<Anchors>
+									    	<Anchors>
 												<Anchor point="TOPLEFT" x="10" y="-145"/>
 											</Anchors>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
-										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
+										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
 									    	<Size x="455" y="50"/>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
