@@ -144,13 +144,13 @@
 	<Frame name="TRP3_RegisterCharact_PsychoInfoEditLine" inherits="TRP3_RegisterCharact_PsychoInfoDisplayLine" virtual="true">
 		<Size x="0" y="40"/>
 		<Frames>
-			<Button name="$parentLeftButton" inherits="TRP3_CommonButton" text="&gt;">
+			<Button name="$parentLeftButton" inherits="TRP3_CommonButton" text="+">
 				<Size x="20" y="15"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="1" relativeTo="$parentJauge"/>
 				</Anchors>
 			</Button>
-			<Button name="$parentRightButton" inherits="TRP3_CommonButton" text="&lt;">
+			<Button name="$parentRightButton" inherits="TRP3_CommonButton" text="+">
 				<Size x="20" y="15"/>
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="1" relativeTo="$parentJauge"/>

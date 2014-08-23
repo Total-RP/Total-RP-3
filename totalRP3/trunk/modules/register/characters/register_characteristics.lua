@@ -528,12 +528,13 @@ function setEditDisplay()
 			_G[frame:GetName().."JaugeLeftIcon"]:SetPoint("RIGHT", _G[frame:GetName().."Jauge"], "LEFT", -22, 2);
 			_G[frame:GetName().."JaugeRightIcon"]:ClearAllPoints();
 			_G[frame:GetName().."JaugeRightIcon"]:SetPoint("LEFT", _G[frame:GetName().."Jauge"], "RIGHT", 22, 2);
-
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			_G[frame:GetName().."LeftText"]:SetText(preset.LT or "");
 			_G[frame:GetName().."RightText"]:SetText(preset.RT or "");
 			_G[frame:GetName().."JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\"..(preset.LI or Globals.icons.default));
 			_G[frame:GetName().."JaugeRightIcon"]:SetTexture("Interface\\ICONS\\"..(preset.RI or Globals.icons.default));
+			setTooltipForSameFrame(_G[frame:GetName().."LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.LT));
+			setTooltipForSameFrame(_G[frame:GetName().."RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.RT));
 		else
 			_G[frame:GetName().."JaugeLeftIcon"]:Hide();
 			_G[frame:GetName().."JaugeRightIcon"]:Hide();
@@ -543,13 +544,14 @@ function setEditDisplay()
 			_G[frame:GetName().."RightField"]:Show();
 			_G[frame:GetName().."LeftIcon"]:Show();
 			_G[frame:GetName().."RightIcon"]:Show();
-
 			_G[frame:GetName().."LeftField"]:SetText(psychoStructure.LT or "");
 			_G[frame:GetName().."RightField"]:SetText(psychoStructure.RT or "");
 			_G[frame:GetName().."LeftIcon"].IC = psychoStructure.LI or Globals.icons.default;
 			_G[frame:GetName().."RightIcon"].IC = psychoStructure.RI or Globals.icons.default;
 			refreshEditIcon(_G[frame:GetName().."LeftIcon"]);
 			refreshEditIcon(_G[frame:GetName().."RightIcon"]);
+			setTooltipForSameFrame(_G[frame:GetName().."LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_LEFTTRAIT")));
+			setTooltipForSameFrame(_G[frame:GetName().."RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_RIGHTTRAIT")));
 		end
 
 		frame.psychoIndex = frameIndex;
