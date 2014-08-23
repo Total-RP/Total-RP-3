@@ -354,7 +354,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
-local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
+local getCompanionProfiles, deleteCompanionProfile = TRP3_API.companions.register.getProfiles, TRP3_API.companions.register.deleteProfile;
 
 local function decorateCompanionLine(line, profileID)
 	local profile = getCompanionProfiles()[profileID];
@@ -406,7 +406,7 @@ local function decorateCompanionLine(line, profileID)
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
-	_G[line:GetName().."Select"]:Hide();
+	_G[line:GetName().."Select"]:Show();
 
 	_G[line:GetName().."Info"]:SetText("");
 end
@@ -461,13 +461,39 @@ local function getCompanionLines()
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
-	--	TRP3_RegisterListHeaderActions:Show();
+	TRP3_RegisterListHeaderActions:Show();
 
 	return lines;
 end
 
-local function onPetsActions(self)
+local function onCompanionActionSelected(value, button)
+	if value == "purge_all" then
+		local list = getCompanionProfiles();
+		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_COMP_C"):format(tsize(list)), function()
+			for profileID, _ in pairs(list) do
+				deleteCompanionProfile(profileID);
+			end
+		end);
+	elseif value == "actions_delete" then
+		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
+			for profileID, _ in pairs(selectedIDs) do
+				deleteCompanionProfile(profileID);
+			end
+		end);
+	end
+end
 
+local function onPetsActions(self)
+	local values = {};
+	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
+			{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
+		}});
+	if tsize(selectedIDs) > 0 then
+		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
+				{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
+			}});
+	end
+	displayDropDown(self, values, onCompanionActionSelected, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
