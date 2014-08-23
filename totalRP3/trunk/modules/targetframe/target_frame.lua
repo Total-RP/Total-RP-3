@@ -238,9 +238,9 @@ local function onStart()
 	local CONFIG_TARGET_POS_Y = "CONFIG_TARGET_POS_Y";
 	local CONFIG_TARGET_POS_A = "CONFIG_TARGET_POS_A";
 
-	registerConfigKey(CONFIG_TARGET_POS_A, "CENTER");
+	registerConfigKey(CONFIG_TARGET_POS_A, "BOTTOM");
 	registerConfigKey(CONFIG_TARGET_POS_X, 0);
-	registerConfigKey(CONFIG_TARGET_POS_Y, 0);
+	registerConfigKey(CONFIG_TARGET_POS_Y, 200);
 	ui_TargetFrame:SetPoint(getConfigValue("CONFIG_TARGET_POS_A"), UIParent, getConfigValue("CONFIG_TARGET_POS_A"),
 	getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
 

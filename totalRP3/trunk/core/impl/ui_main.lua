@@ -54,8 +54,8 @@ local function resetPosition()
 end
 
 -- Initialize the minimap icon button
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-	local toggleMainPane, toggleToolbar = TRP3_API.navigation.switchMainFrame, TRP3_SwitchToolbar;
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	local toggleMainPane = TRP3_API.navigation.switchMainFrame;
 	minimapButton = TRP3_MinimapButton;
 
 	registerConfigKey(CONFIG_MINIMAP_FRAME, "Minimap");
@@ -93,8 +93,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	minimapButton:SetScript("OnUpdate", minimapButton_DraggingFrame_OnUpdate);
 	minimapButton:SetScript("OnClick", function(self, button)
-		if button == "RightButton" then
-			toggleToolbar();
+		if button == "RightButton" and TRP3_API.toolbar then
+			TRP3_API.toolbar.switch();
 		else
 			toggleMainPane();
 		end
@@ -102,10 +102,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	minimapButton_Reposition();
 
-	local minimapTooltip = strconcat(
-		color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"),
-		"\n", color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"),
-		"\n", color("y"), loc("CM_DRAGDROP"), ": ", color("w"), loc("MM_SHOW_HIDE_MOVE")
-	);
+	local minimapTooltip = strconcat(color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"));
+	if TRP3_API.toolbar then
+		minimapTooltip = strconcat(minimapTooltip, "\n", color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
+	end
+	minimapTooltip = strconcat(minimapTooltip, "\n", color("y"), loc("CM_DRAGDROP"), ": ", color("w"), loc("MM_SHOW_HIDE_MOVE"));
 	setTooltipAll(minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
 end);

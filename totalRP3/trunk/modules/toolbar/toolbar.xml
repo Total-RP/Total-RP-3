@@ -1,4 +1,4 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\UI.xsd">
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
 
 	<!-- Toolbar button -->
 	<Button name="TRP3_ToolbarButtonTemplate" virtual="true">
@@ -9,19 +9,15 @@
 	</Button>
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_Toolbar" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" hidden="false" movable="true">
-		<TitleRegion setAllPoints="true" />
+	<Frame name="TRP3_ToolbarTemplate" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" virtual="true">
 		<Size x="190" y="60" />
 		<Scripts>
 			<OnLoad>
 				self:SetClampedToScreen(true);
 			</OnLoad>
 		</Scripts>
-		<Anchors>
-			<Anchor point="TOP" x="0" y="0" />
-		</Anchors>
 		<Frames>
-			<Frame name="TRP3_ToolbarContainer">
+			<Frame name="$parentContainer">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-18" />
 				</Anchors>
@@ -38,7 +34,7 @@
 				</Backdrop>
 			</Frame>
 			<!-- Cadre Titre -->
-			<Frame name="TRP3_ToolbarTopFrame">
+			<Frame name="$parentTopFrame">
 				<Size x="80" y="25" />
 				<Backdrop bgFile="Interface\CHARACTERFRAME\UI-Party-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 					<EdgeSize>
@@ -56,7 +52,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_ToolbarTopFrameText" inherits="GameFontNormalSmall" justifyH="CENTER">
+						<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="CENTER">
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0" />
 							</Anchors>
@@ -67,5 +63,7 @@
 			</Frame>
 		</Frames>
 	</Frame>
+	
+	<Script file="toolbar.lua"/>
 
 </Ui>

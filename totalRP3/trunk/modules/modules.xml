@@ -134,4 +134,6 @@
 	<Include file="chatframe\chatframe.xml"/>
 	
 	<Include file="targetframe\target_frame.xml"/>
+	
+	<Include file="toolbar\toolbar.xml"/>
 </Ui>

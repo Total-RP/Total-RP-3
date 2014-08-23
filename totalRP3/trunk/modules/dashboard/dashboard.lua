@@ -15,7 +15,6 @@ local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Utils, Events = TRP3_API.utils, TRP3_API.events;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local toolbarAddButton = TRP3_API.toolbar.toolbarAddButton;
 local icon, color = Utils.str.icon, Utils.str.color;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
@@ -70,7 +69,7 @@ local function decorateNotificationList(widget, index)
 	widget.notification = notifications[index];
 	_G[widget:GetName().."Text"]:SetText(widget.notification.text);
 	_G[widget:GetName().."TopText"]:SetText(date(DATE_FORMAT, widget.notification.time));
-	
+
 	local notificationType = NOTIFICATION_TYPES[widget.notification.id];
 	if notificationType and notificationType.callback then
 		_G[widget:GetName().."Show"]:Show();
@@ -92,7 +91,7 @@ local function refreshNotifications()
 		TRP3_DashboardNotifications_No:Hide();
 		TRP3_DashboardNotificationsClear:Show();
 	end
-	
+
 	initList(TRP3_DashboardNotifications, count, TRP3_DashboardNotificationsSlider);
 end
 
@@ -103,7 +102,7 @@ local function onNotificationRemove(button)
 	for index, n in pairs(notifications) do
 		if n.id == notification.id then
 			tremove(notifications, index);
---			wipe(notification);
+			--			wipe(notification);
 			break;
 		end
 	end
@@ -229,14 +228,14 @@ TRP3_API.dashboard.init = function()
 		text = TRP3_API.globals.addon_name,
 		onSelected = function() setPage(DASHBOARD_PAGE_ID); end,
 	});
-	
+
 	registerPage({
 		id = DASHBOARD_PAGE_ID,
 		frame = TRP3_Dashboard,
 		onPagePostShow = onShow,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
-	
+
 	TRP3_DashboardNotificationsSlider:SetValue(0);
 	handleMouseWheel(TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider);
 	local widgetTab = {};
@@ -251,25 +250,25 @@ TRP3_API.dashboard.init = function()
 	TRP3_DashboardNotifications.decorate = decorateNotificationList;
 	TRP3_DashboardNotificationsClear:SetText(loc("DB_NOTIFICATIONS_CLEAR"));
 	TRP3_DashboardNotificationsClear:SetScript("OnClick", clearAllNotifications);
-	
+
 	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
 	setupFieldSet(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 200);
 	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
 	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
 	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
-	
+
 	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
-	
+
 	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
-	
+
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
 	local statusTab = {
 		{loc("DB_STATUS_RP_IC"), 1},
 		{loc("DB_STATUS_RP_OOC"), 2},
 	};
 	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 120, true);
-	
+
 	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
 	local xpTab = {
 		{loc("DB_STATUS_XP_BEGINNER"), 1},
@@ -277,162 +276,166 @@ TRP3_API.dashboard.init = function()
 		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
 	};
 	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
-	
-	-- Show/hide cape
-	local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");
-	local capeTextOff = icon("item_icecrowncape", 25) .. " ".. loc("TB_SWITCH_CAPE_OFF");
-	local capeText2 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_1"));
-	local capeText3 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_2"));
-	Button_Cape = {
-		id = "aa_trp3_a",
-		icon = "INV_Misc_Cape_18",
-		configText = loc("CO_TOOLBAR_CONTENT_CAPE"),
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if not ShowingCloak() then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
-				_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
-				_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-				_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-				_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			ShowCloak(not ShowingCloak());
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Cape);
-	
-	-- Show / hide helmet
-	local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
-	local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
-	local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
-	local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
-	Button_Helmet = {
-		id = "aa_trp3_b",
-		icon = "INV_Helmet_13",
-		configText = loc("CO_TOOLBAR_CONTENT_HELMET"),
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if not ShowingHelm() then
-				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
-				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
-				Uibutton:GetPushedTexture():SetDesaturated(1);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
-			else
-				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
-				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
-				Uibutton:GetPushedTexture():SetDesaturated(1);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			ShowHelm(not ShowingHelm());
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Helmet);
-	
-	-- away/dnd
-	local status1Text = icon("Ability_Mage_IncantersAbsorbtion", 25).." "..color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
-	local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-	local status2Text = icon("Spell_Nature_Sleep", 25).." "..color("w")..loc("TB_STATUS")..": "..color("o")..loc("TB_AFK_MODE");
-	local status2SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-	local status3Text = icon("Ability_Rogue_MasterOfSubtlety", 25).." "..color("w")..loc("TB_STATUS")..": "..color("g")..loc("TB_NORMAL_MODE");
-	local status3SubText = color("y")..loc("CM_L_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("o")..loc("TB_AFK_MODE")..color("w"))).."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("r")..loc("TB_DND_MODE")..color("w")));
-	Button_Status = {
-		id = "aa_trp3_c",
-		icon = "Ability_Rogue_MasterOfSubtlety",
-		configText = loc("CO_TOOLBAR_CONTENT_STATUS"),
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if UnitIsDND("player") then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status1Text, status1SubText);
-			elseif UnitIsAFK("player") then
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status2Text, status2SubText);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
-				setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status3Text, status3SubText);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			if UnitIsAFK("player") then
-				SendChatMessage("","AFK");
-			elseif UnitIsDND("player") then
-				SendChatMessage("","DND");
-			else
-				if button == "LeftButton" then
-					SendChatMessage("","AFK");
-				else
-					SendChatMessage("","DND");
-				end
-			end
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-	};
-	toolbarAddButton(Button_Status);
-	
-	-- Toolbar RP status
-	local playerCharacter = TRP3_API.profile.getPlayerCharacter();
-	local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
-	local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
-	local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
-	local get = TRP3_API.profile.getData;
-	local defaultIcon = TRP3_API.globals.player_icon;
-	
-	local Button_RPStatus = {
-		id = "aa_trp3_rpstatus",
-		icon = "Inv_misc_grouplooking",
-		configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
-		onEnter = function(Uibutton, buttonStructure) end,
-		onUpdate = function(Uibutton, buttonStructure)
-			if playerCharacter.RP == 1 then
-				local iconURL = get("player/characteristics/IC") or defaultIcon;
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
-			else
-				_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
-			end
-			if GetMouseFocus() == Uibutton then
-				refreshTooltip(Uibutton);
-			end
-		end,
-		onClick = function(Uibutton, buttonStructure, button)
-			switchStatus();
-		end,
-		onLeave = function()
-			mainTooltip:Hide();
-		end,
-		visible = 1
-	};
-	toolbarAddButton(Button_RPStatus);
-	
+
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.NOTIFICATION_CHANGED}, function()
 		if getCurrentPageID() == DASHBOARD_PAGE_ID then
 			onShow(nil);
 		end
 	end);
 end
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.toolbar then
+		-- Show/hide cape
+		local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");
+		local capeTextOff = icon("item_icecrowncape", 25) .. " ".. loc("TB_SWITCH_CAPE_OFF");
+		local capeText2 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_1"));
+		local capeText3 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_2"));
+		Button_Cape = {
+			id = "aa_trp3_a",
+			icon = "INV_Misc_Cape_18",
+			configText = loc("CO_TOOLBAR_CONTENT_CAPE"),
+			onEnter = function(Uibutton, buttonStructure) end,
+			onUpdate = function(Uibutton, buttonStructure)
+				if not ShowingCloak() then
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
+					_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
+					_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
+				else
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+					_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+					_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
+				end
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onClick = function(Uibutton, buttonStructure, button)
+				ShowCloak(not ShowingCloak());
+			end,
+			onLeave = function()
+				mainTooltip:Hide();
+			end,
+		};
+		TRP3_API.toolbar.toolbarAddButton(Button_Cape);
+	
+		-- Show / hide helmet
+		local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
+		local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
+		local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
+		local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
+		Button_Helmet = {
+			id = "aa_trp3_b",
+			icon = "INV_Helmet_13",
+			configText = loc("CO_TOOLBAR_CONTENT_HELMET"),
+			onEnter = function(Uibutton, buttonStructure) end,
+			onUpdate = function(Uibutton, buttonStructure)
+				if not ShowingHelm() then
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
+				else
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
+				end
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onClick = function(Uibutton, buttonStructure, button)
+				ShowHelm(not ShowingHelm());
+			end,
+			onLeave = function()
+				mainTooltip:Hide();
+			end,
+		};
+		TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
+	
+		-- away/dnd
+		local status1Text = icon("Ability_Mage_IncantersAbsorbtion", 25).." "..color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
+		local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
+		local status2Text = icon("Spell_Nature_Sleep", 25).." "..color("w")..loc("TB_STATUS")..": "..color("o")..loc("TB_AFK_MODE");
+		local status2SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
+		local status3Text = icon("Ability_Rogue_MasterOfSubtlety", 25).." "..color("w")..loc("TB_STATUS")..": "..color("g")..loc("TB_NORMAL_MODE");
+		local status3SubText = color("y")..loc("CM_L_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("o")..loc("TB_AFK_MODE")..color("w"))).."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("r")..loc("TB_DND_MODE")..color("w")));
+		Button_Status = {
+			id = "aa_trp3_c",
+			icon = "Ability_Rogue_MasterOfSubtlety",
+			configText = loc("CO_TOOLBAR_CONTENT_STATUS"),
+			onEnter = function(Uibutton, buttonStructure) end,
+			onUpdate = function(Uibutton, buttonStructure)
+				if UnitIsDND("player") then
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
+					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status1Text, status1SubText);
+				elseif UnitIsAFK("player") then
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
+					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status2Text, status2SubText);
+				else
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
+					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status3Text, status3SubText);
+				end
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onClick = function(Uibutton, buttonStructure, button)
+				if UnitIsAFK("player") then
+					SendChatMessage("","AFK");
+				elseif UnitIsDND("player") then
+					SendChatMessage("","DND");
+				else
+					if button == "LeftButton" then
+						SendChatMessage("","AFK");
+					else
+						SendChatMessage("","DND");
+					end
+				end
+			end,
+			onLeave = function()
+				mainTooltip:Hide();
+			end,
+		};
+		TRP3_API.toolbar.toolbarAddButton(Button_Status);
+	
+		-- Toolbar RP status
+		local playerCharacter = TRP3_API.profile.getPlayerCharacter();
+		local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
+		local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
+		local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
+		local get = TRP3_API.profile.getData;
+		local defaultIcon = TRP3_API.globals.player_icon;
+	
+		local Button_RPStatus = {
+			id = "aa_trp3_rpstatus",
+			icon = "Inv_misc_grouplooking",
+			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
+			onEnter = function(Uibutton, buttonStructure) end,
+			onUpdate = function(Uibutton, buttonStructure)
+				if playerCharacter.RP == 1 then
+					local iconURL = get("player/characteristics/IC") or defaultIcon;
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
+				else
+					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
+				end
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onClick = function(Uibutton, buttonStructure, button)
+				switchStatus();
+			end,
+			onLeave = function()
+				mainTooltip:Hide();
+			end,
+			visible = 1
+		};
+		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
+	end
+end);

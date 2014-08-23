@@ -37,9 +37,6 @@
 	<Include file="ui\browsers\images.xml"/>
 	<Script file="impl\popup.lua"/>
 	
-	<Include file="ui\toolbar.xml"/>
-	<Script file="impl\toolbar.lua"/>
-	
 	<Include file="ui\profiles.xml"/>
 	<Script file="impl\profiles.lua"/>
 	
