@@ -165,8 +165,8 @@ local function setConsultDisplay(context)
 	-- Which directory chars must be shown ?
 	local shownCharacteristics = {};
 	local shownValues = {};
-	for _,attribute in pairs({"RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE"}) do
-		if stEtN(dataTab[attribute]) then
+	for _, attribute in pairs({"RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE"}) do
+		if strtrim(dataTab[attribute] or ""):len() > 0 then
 			tinsert(shownCharacteristics, attribute);
 			shownValues[attribute] = dataTab[attribute];
 		end

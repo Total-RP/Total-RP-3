@@ -56,7 +56,7 @@ local function onStart()
 		if owner == Globals.player_id then
 			profile = getCompanionProfile(companionID) or EMPTY;
 		else
-			profile = getCompanionRegisterProfile(currentTargetID);
+			profile = getCompanionRegisterProfile(currentTargetID) or EMPTY;
 		end
 		return profile;
 	end
@@ -89,7 +89,6 @@ local function onStart()
 	end
 
 	local function displayPeekSlots()
-		ui_GlanceBar:Hide();
 		local peekTab = nil;
 
 		if currentTargetType == TYPE_CHARACTER then
@@ -130,13 +129,16 @@ local function onStart()
 	end
 
 	local function onTargetChanged()
+		ui_GlanceBar:Hide();
 		currentTargetType, isCurrentMine = getTargetType();
 		if currentTargetType == TYPE_CHARACTER then
 			currentTargetID = getUnitID("target");
-		else
+		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
 			currentTargetID = getCompanionFullID("target", currentTargetType);
 		end
-		displayPeekSlots();
+		if currentTargetID then
+			displayPeekSlots();
+		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

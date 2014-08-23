@@ -551,7 +551,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
 	local companionFamily = UnitCreatureType(targetType);
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -682,6 +682,10 @@ local function show(targetType, targetID, targetMode)
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
 		-- If we have a target
 		if targetID then
+			ui_CharacterTT.target = targetID;
+			ui_CharacterTT.targetType = targetType;
+			ui_CharacterTT.targetMode = targetMode;
+
 			-- Check if has a profile
 			if getConfigValue(CONFIG_PROFILE_ONLY) then
 				if targetMode == TYPE_CHARACTER and targetID ~= Globals.player_id and (not IsUnitIDKnown(targetID) or not hasProfile(targetID)) then
@@ -694,10 +698,10 @@ local function show(targetType, targetID, targetMode)
 
 			-- The target is a player
 			if targetMode then
-			
+
 				-- Stock all the current text from the GameTooltip
 				local originalTexts = getGameTooltipTexts();
-				
+
 				if (targetMode == TYPE_CHARACTER and isIDIgnored(targetID)) or ((targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and ownerIsIgnored(targetID)) then
 					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
@@ -705,10 +709,6 @@ local function show(targetType, targetID, targetMode)
 				else
 					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
-
-				ui_CharacterTT.target = targetID;
-				ui_CharacterTT.targetType = targetType;
-				ui_CharacterTT.targetMode = targetMode;
 
 				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
 				if targetMode == TYPE_CHARACTER then
