@@ -4,7 +4,7 @@
 ## Title-esES: Total RP 3 (Para Wow 5.4)
 ## Title-deDE: Total RP 3 (für Wow 5.4)
 ## Author: Telkostrasz
-## Version: 0.2.1
+## Version: 0.2.2-SNAPSHOT
 ## Notes: Main module
 ## Notes-frFR: Module principal
 ## Notes-esES: Módulo principal

@@ -9,7 +9,7 @@ local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToI
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
-local strsub, strlen, format, _G, pairs, tinsert, time = strsub, strlen, format, _G, pairs, tinsert, time;
+local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
 local GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound = GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
@@ -36,6 +36,11 @@ local CONFIG_USAGE = "chat_use_";
 local CONFIG_OOC = "chat_ooc";
 local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
+local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
+
+local function configNoYelledEmote()
+	return getConfigValue(CONFIG_YELL_NO_EMOTE);
+end
 
 local function configNameMethod()
 	return getConfigValue(CONFIG_NAME_METHOD);
@@ -88,6 +93,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_OOC, true);
 	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
+	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -147,6 +153,12 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN_EMOTE"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_MAIN_EMOTE_YELL"),
+				help = loc("CO_CHAT_MAIN_EMOTE_YELL_TT"),
+				configKey = CONFIG_YELL_NO_EMOTE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -351,7 +363,21 @@ function handleCharacterMessage(chatFrame, event, ...)
 
 	-- Show
 	message = RemoveExtraSpaces(message);
+	
+	-- No yelled emote ?
+	if event == "CHAT_MSG_YELL" and configNoYelledEmote() then
+		message = message:gsub("%*.-%*", "");
+		message = message:gsub("%<.-%>", "");
+	end
+	
+	-- Colorize emote and OOC
 	message = detectEmoteAndOOC(type, message);
+	
+	-- Is there still something to show ?
+	if strtrim(message):len() == 0 then
+		return true;
+	end
+	
 	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
 	local body;
 	if type == "EMOTE" then
