@@ -1,0 +1,219 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+
+	<Frame name="TRP3_NPCDialogFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		<TitleRegion setAllPoints="true"/>
+		<Size x="700" y="450"/>
+		<Anchors>	
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Backdrop edgeFile="Interface\AchievementFrame\UI-Achievement-WoodBorder" tile="true">
+			<EdgeSize>
+				<AbsValue val="64"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+			    <Texture file="Interface\TutorialFrame\TutorialFrameBackground">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
+						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
+					<Size x="16" y="436"/>
+					<Anchors>
+						<Anchor point="LEFT" x="14" y="0"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom=".87"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
+					<Size x="16" y="436"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-13" y="0"/>
+					</Anchors>
+					<TexCoords left="1" right="0" top=".87" bottom="0"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
+					<Size x="450" y="16"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="28" y="13"/>
+						<Anchor point="BOTTOMRIGHT" x="-28" y="13"/>
+					</Anchors>
+					<TexCoords left="0" right=".87" top="1.0" bottom="0"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Top">
+					<Size x="450" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="28" y="-12"/>
+						<Anchor point="TOPRIGHT" x="-28" y="-12"/>
+					</Anchors>
+					<TexCoords left=".87" right="0" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="9" y="-7"/>
+					</Anchors>
+					<TexCoords left="1" right="0" top="1" bottom="0"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-8" y="-7"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="1" bottom="0"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
+					</Anchors>
+					<TexCoords left="1" right="0" top="0" bottom="1"/>				
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
+					<Size x="32" y="32"/>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>				
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4" y="-2"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
+				</Texture>
+				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="-2"/>
+					</Anchors>
+					<TexCoords left="1" right="0" top="0" bottom="1"/>
+				</Texture>		
+				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="4" y="3"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="1" bottom="0"/>
+				</Texture>		
+				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
+					<Size x="64" y="64"/>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="3"/>
+					</Anchors>
+					<TexCoords left="1" right="0" top="1" bottom="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_NPCDialogFrameChat" frameLevel="2">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="300"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Size x="0" y="150"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="15" />
+					<Anchor point="LEFT" x="16" y="0" />
+					<Anchor point="RIGHT" x="-20" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_NPCDialogFrameChatText" text="[text]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="LEFT" x="100" y="0"/>
+								<Anchor point="RIGHT" x="-100" y="0"/>
+								<Anchor point="TOP" x="0" y="-25"/>
+								<Anchor point="BOTTOM" x="0" y="25"/>
+							</Anchors>
+							<Color r="1" g="1" b="0.4"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture name="TRP3_NPCDialogFrameChatPortrait">
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+						</Anchors>
+					</Frame>
+					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_CommonButton">
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" x="100" y="10"/>
+						</Anchors>
+					</Button>
+					<Button name="TRP3_NPCDialogFrameChatPrevious">
+						<Size x="26" y="26"/>
+						<Anchors>
+							<Anchor point="BOTTOM" x="-30" y="10"/>
+						</Anchors>
+						<NormalTexture file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Up"/>
+						<PushedTexture file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Down"/>
+						<HighlightTexture alphaMode="ADD" file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Highlight"/>
+					</Button>
+				</Frames>
+			</Frame>
+			<Frame name="TRP3_NPCDialogFrameModels">
+				<Size x="0" y="0"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-15" />
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_NPCDialogFrameChat" x="0" y="15" />
+					<Anchor point="LEFT" x="16" y="0" />
+					<Anchor point="RIGHT" x="-20" y="0" />
+				</Anchors>
+				<Frames>
+					<PlayerModel  name="TRP3_NPCDialogFrameModelsMe" scale="1" frameLevel="1">
+						<Size x="300" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="0" />
+							<Anchor point="BOTTOM" relativeTo="TRP3_NPCDialogFrameChat" x="0" y="0" />
+							<Anchor point="LEFT" x="0" y="0"/>
+						</Anchors>
+					</PlayerModel>
+					<PlayerModel  name="TRP3_NPCDialogFrameModelsYou" scale="1" frameLevel="1">
+						<Size x="300" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="0" />
+							<Anchor point="BOTTOM" relativeTo="TRP3_NPCDialogFrameChat" x="0" y="0" />
+							<Anchor point="RIGHT" x="0" y="0"/>
+						</Anchors>
+					</PlayerModel>
+				</Frames>
+			</Frame>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+	
+	<Script file="dialogs.lua" />
+</Ui>
