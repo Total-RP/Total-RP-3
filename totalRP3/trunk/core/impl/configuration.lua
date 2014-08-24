@@ -299,6 +299,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	registerConfigKey("comm_broad_use", true);
+	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
@@ -350,6 +351,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				max = 25,
 				step = 1,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_HEAVY"),
+				configKey = "heavy_profile_alert",
+				help = loc("CO_GENERAL_HEAVY_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

@@ -24,6 +24,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local showPopup = TRP3_API.popup.showPopup;
 local hasProfile = TRP3_API.register.hasProfile;
+local compressData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -122,6 +123,7 @@ local function onEditStyle(choice, frame)
 			-- version increment
 			assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 			dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+			compressData();
 		end
 	end
 end
@@ -256,11 +258,11 @@ local function openGlanceEditor(button, callback)
 	onIconSelected(button.data.IC);
 	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", function()
 		callback(
-			button,
-			TRP3_RegisterMiscEdit_Glance_Icon.icon,
-			TRP3_RegisterMiscEdit_Glance_Active:GetChecked(),
-			stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText()),
-			stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText())
+		button,
+		TRP3_RegisterMiscEdit_Glance_Icon.icon,
+		TRP3_RegisterMiscEdit_Glance_Active:GetChecked(),
+		stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText()),
+		stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText())
 		);
 	end);
 	showPopup(TRP3_RegisterGlanceEditor);
@@ -284,6 +286,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+	compressData();
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_MISC_SAVED);
 end
@@ -317,8 +320,35 @@ local function showMiscTab()
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
+local currentCompressed = nil;
+
+function compressData()
+	local data = get("player/misc");
+	local dataToSend = {
+		v = data.v,
+		ST = data.ST,
+		PE = {},
+	};
+	-- Only send used slot !
+	for slotIndex, slot in pairs(data.PE) do
+		if slot.AC then
+			dataToSend.PE[slotIndex] = slot;
+		end
+	end
+
+	local serial = Utils.serial.serialize(dataToSend);
+	local compressed = Utils.serial.encodeCompressMessage(serial);
+
+	--	print(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
+	if compressed:len() < serial:len() then
+		currentCompressed = compressed;
+	else
+		currentCompressed = dataToSend;
+	end
+end
+
 function TRP3_API.register.player.getMiscExchangeData()
-	return get("player/misc");
+	return currentCompressed;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -517,4 +547,7 @@ function TRP3_API.register.inits.miscInit()
 			displayPeek(context);
 		end
 	end);
+
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
+	compressData();
 end
