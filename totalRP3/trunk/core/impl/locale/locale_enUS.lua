@@ -62,10 +62,12 @@ local LOCALE_EN = {
 		REG_PLAYER_RESIDENCE = "Residence",
 		REG_PLAYER_RESIDENCE_TT = "Here you can indicate where you character normally lives. This could be his personal address (his home) or a place he \"crashes\"."
 									.."\nNote that your character could be a homeless, a wanderer...\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
+		REG_PLAYER_MSP_MOTTO = "Motto",
+		REG_PLAYER_MSP_HOUSE = "House name",
 		REG_PLAYER_PSYCHO = "Personality traits",
 		REG_PLAYER_HISTORY = "History",
 		REG_PLAYER_MORE_INFO = "Additional information",
-		REG_PLAYER_PHYSICAL = "Physical",
+		REG_PLAYER_PHYSICAL = "Physical Description",
 		REG_PLAYER_NO_CHAR = "No characteristics",
 		REG_PLAYER_SHOWPSYCHO = "Show personality frame",
 		REG_PLAYER_SHOWPSYCHO_TT = "Check if you want to use the personality description.\n\nIf you don't want to indicate your character's personality this way, keep this box unchecked and the personality frame will remain totally hidden.",

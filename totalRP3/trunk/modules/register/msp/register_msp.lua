@@ -404,6 +404,15 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
+		if dataTab.MI then
+			for _, miscData in pairs(dataTab.MI) do
+				if miscData.NA == loc("REG_PLAYER_MSP_MOTTO") then
+					msp.my['MO'] = miscData.VA;
+				elseif miscData.NA == loc("REG_PLAYER_MSP_HOUSE") then
+					msp.my['NH'] = miscData.VA;
+				end
+			end
+		end
 	end
 
 	local function onProfileChanged()
@@ -437,7 +446,7 @@ local function onStart()
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
-	local strtrim = strtrim;
+	local strtrim, emptyToNil, unitIDToInfo = strtrim, Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
@@ -502,7 +511,11 @@ local function onStart()
 				profile.mspver[field] = msp.char[senderID].ver[field];
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
-					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
+					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(strtrim(value));
+					-- Hack for spaced name tolerated in MRP
+					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
+						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+					end
 				elseif ABOUT_FIELDS[field] then
 					updatedAbout = true;
 					local old = nil;
@@ -512,7 +525,7 @@ local function onStart()
 					wipe(profile.about);
 					profile.about.BK = 5;
 					profile.about.TE = 3;
-					profile.about.T3 = {HI = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 1, IC = "INV_Misc_Book_17"}};
+					profile.about.T3 = {HI = {BK = 1, IC = "INV_Misc_Book_17"}, PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"}};
 					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 					profile.about.read = value == old or value:len() == 0;
 				elseif CHARACTER_FIELDS[field] then
@@ -532,6 +545,46 @@ local function onStart()
 					elseif field == "VA" and value:find("%/") then
 						character.client = value:sub(1, value:find("%/") - 1);
 						character.clientVersion = value:sub(value:find("%/") + 1);
+					end
+				elseif field == "MO" then
+					if strtrim(value):len() ~= 0 then
+						if not profile.characteristics.MI then
+							profile.characteristics.MI = {};
+						end
+						local index = 1;
+						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
+							if miscStructure.NA == loc("REG_PLAYER_MSP_MOTTO") then
+								index = miscIndex;
+							end
+						end
+						if not profile.characteristics.MI[index] then
+							profile.characteristics.MI[index] = {};
+						else
+							wipe(profile.characteristics.MI[index]);
+						end
+						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_MOTTO");
+						profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
+						profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
+					end
+				elseif field == "NH" then
+					if strtrim(value):len() ~= 0 then
+						if not profile.characteristics.MI then
+							profile.characteristics.MI = {};
+						end
+						local index = 1;
+						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
+							if miscStructure.NA == loc("REG_PLAYER_MSP_HOUSE") then
+								index = miscIndex;
+							end
+						end
+						if not profile.characteristics.MI[index] then
+							profile.characteristics.MI[index] = {};
+						else
+							wipe(profile.characteristics.MI[index]);
+						end
+						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_HOUSE");
+						profile.characteristics.MI[index].VA = value;
+						profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
 					end
 				end
 			end
