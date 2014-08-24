@@ -9,7 +9,7 @@ local function onStart()
 	-- Check for already loaded MSP addon
 	if _G.msp_RPAddOn then
 		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
-		showAlertPopup(loc("REG_MSP_ALERT"):format(addonName));
+		TRP3_API.popup.showAlertPopup(TRP3_API.locale.getText("REG_MSP_ALERT"):format(addonName));
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(addonName));
 	end
@@ -19,7 +19,6 @@ local function onStart()
 	local tsize = Utils.table.size;
 	local log = Utils.log.log;
 	local loc = TRP3_API.locale.getText;
-	local showAlertPopup = TRP3_API.popup.showAlertPopup;
 	local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
@@ -44,11 +43,11 @@ local function onStart()
 
 		local function charindex( table, key )
 			if key == "field" then
-				table[key] = setmetatable( {}, { __index = emptyindex, } )
-				return table[key]
-			elseif key == "time" then
-				table[key] = {}
-				return table[key]
+				table[key] = setmetatable( {}, { __index = emptyindex, } );
+				return table[key];
+			elseif key == "time" or key == "ver" then
+				table[key] = {};
+				return table[key];
 			elseif key == "VA" then
 				table[key] = "";
 				return table[key];
@@ -288,10 +287,10 @@ local function onStart()
 				for k, field in ipairs(fields) do
 					if not msp.char[ player ].supported or not msp.char[ player ].time[ field ] or (now > msp.char[ player ].time[ field ] + MSP_FIELD_UPDATE_FREQUENCY) then
 						updateneeded = true
-						if not msp.char[ player ].supported or not msp.char[ player ].ver[ field ] or msp.char[ player ].ver[ field ] == 0 then
-							tinsert( tosend, "?" .. field )
-						else
+						if msp.char[ player ].ver[ field ] and msp.char[ player ].ver[ field ] ~= 0 then
 							tinsert( tosend, "?" .. field .. tostring( msp.char[ player ].ver[ field ] ) )
+						else
+							tinsert( tosend, "?" .. field )
 						end
 					end
 				end
@@ -438,6 +437,7 @@ local function onStart()
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
+	local strtrim = strtrim;
 
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
@@ -449,11 +449,6 @@ local function onStart()
 		HB = "BP",
 		NT = "FT",
 		NA = "FN",
-	}
-
-	local ABOUT_FIELDS = {
-		HI = "HI",
-		DE = "PH"
 	}
 
 	local CHARACTER_FIELDS = {
@@ -479,7 +474,7 @@ local function onStart()
 			character.profileID = "[MSP]" .. senderID;
 			if not profileExists(senderID) then
 				-- Generate profile
-				saveCurrentProfileID(senderID, character.profileID);
+				saveCurrentProfileID(senderID, character.profileID, true);
 			end
 
 			-- Init profile if not already done
@@ -494,23 +489,29 @@ local function onStart()
 			if not profile.mspver then
 				profile.mspver = {};
 			end
-			if not msp.char[senderID].ver then
-				msp.char[senderID].ver = profile.mspver; -- Init vernums
-			end
 
 			-- And only after all these checks, store data !
 			local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
 			for field, value in pairs(data) do
+				-- Save version
+				profile.mspver[field] = msp.char[senderID].ver[field];
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
 					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
-				elseif ABOUT_FIELDS[field] then
+				elseif field == "DE" then
 					updatedAbout = true;
+					local old = nil;
+					if profile.about.T1 then
+						old = profile.about.T1.TX;
+					end
+					wipe(profile.about);
 					profile.about.BK = 5;
-					profile.about.TE = 3;
-					profile.about.T3 = {HI = {BK = 2, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 2, IC = "INV_Misc_Book_17"}};
-					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-					profile.about.read = value == nil or value:len() == 0;
+					profile.about.TE = 1;
+					profile.about.T1 = {};
+					local DE = strtrim(value or "");
+					profile.about.T1.TX = DE;
+					profile.about.read = old == DE or DE:len() == 0;
+--					print("Updated DE");
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then
@@ -552,7 +553,7 @@ local function onStart()
 	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"};
 
 	local function requestInformation(targetID, targetMode)
-		if targetMode == TYPE_CHARACTER
+		if targetID and targetMode == TYPE_CHARACTER
 		and targetID ~= Globals.player_id
 		and not isIgnored(targetID)
 		and msp.char[targetID].VA:sub(1, 8) ~= "TotalRP3"
@@ -576,7 +577,7 @@ local function onStart()
 			end
 		end
 	end
-	
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -594,6 +595,17 @@ local function onStart()
 	end
 	msp.myver = character.mspver;
 
+	-- Init others vernum
+	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
+		if profile.msp and profile.mspver and profile.link then
+			for fieldID, version in pairs(profile.mspver) do
+				for ownerID, _ in pairs(profile.link) do
+					msp.char[ownerID].ver[fieldID] = version;
+				end
+			end
+		end
+	end
+
 	-- Initial update
 	updateCharacteristicsData();
 	updateAboutData();
@@ -606,8 +618,14 @@ local function onStart()
 	Events.listenToEvent(Events.REGISTER_CHARACTERISTICS_SAVED, onCharactChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_SAVED, onAboutChanged);
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.REGISTER_XPSTATUS_CHANGED, Events.REGISTER_CURRENTLY_CHANGED}, onCharacterChanged);
-
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
+	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
+		for _, ownerID in pairs(mspOwners) do
+			wipe(msp.char[ownerID].ver);
+			TT_TIMER_TAB[ownerID] = nil;
+			FIELDS_TIMER_TAB[ownerID] = nil;
+		end
+	end);
 end
 
 local MODULE_STRUCTURE = {

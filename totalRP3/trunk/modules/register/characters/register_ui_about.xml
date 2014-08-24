@@ -72,7 +72,7 @@
 	</Frame>
 	
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>

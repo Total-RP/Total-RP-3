@@ -75,9 +75,16 @@ local function deleteProfile(profileID)
 			characters[character] = nil;
 		end
 	end
+	local mspOwners = nil;
+	if profiles[profileID].msp then
+		mspOwners = {};
+		for ownerID, _ in pairs(profiles[profileID].link) do
+			tinsert(mspOwners, ownerID);
+		end
+	end
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
-	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
 	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 TRP3_API.register.deleteProfile = deleteProfile;
