@@ -266,8 +266,14 @@ function TRP3_API.register.getProfileList()
 	return profiles;
 end
 
-TRP3_API.register.getCharacterExchangeData = function()
-	return getPlayerCharacter();
+function TRP3_API.register.getCharacterExchangeData()
+	local characterData = getPlayerCharacter();
+	local dataToSend = {
+		CU = characterData.CU,
+		XP = characterData.XP,
+		RP = characterData.RP
+	};
+	return dataToSend;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

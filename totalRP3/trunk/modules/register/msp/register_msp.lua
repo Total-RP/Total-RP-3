@@ -455,6 +455,11 @@ local function onStart()
 		FR = true, FC = true, CU = true, VA = true
 	}
 
+	local ABOUT_FIELDS = {
+		HI = "HI",
+		DE = "PH"
+	}
+
 	function onInformationReceived(senderID, data)
 
 		if not isIgnored(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
@@ -498,20 +503,18 @@ local function onStart()
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
 					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
-				elseif field == "DE" then
+				elseif ABOUT_FIELDS[field] then
 					updatedAbout = true;
 					local old = nil;
-					if profile.about.T1 then
-						old = profile.about.T1.TX;
+					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
+						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
 					end
 					wipe(profile.about);
 					profile.about.BK = 5;
-					profile.about.TE = 1;
-					profile.about.T1 = {};
-					local DE = strtrim(value or "");
-					profile.about.T1.TX = DE;
-					profile.about.read = old == DE or DE:len() == 0;
---					print("Updated DE");
+					profile.about.TE = 3;
+					profile.about.T3 = {HI = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"}, PH = {BK = 1, IC = "INV_Misc_Book_17"}};
+					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+					profile.about.read = value == old or value:len() == 0;
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then

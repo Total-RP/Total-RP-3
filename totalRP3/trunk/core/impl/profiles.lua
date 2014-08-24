@@ -292,7 +292,7 @@ end
 -- Character
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.profile.getPlayerCharacter = function()
+function TRP3_API.profile.getPlayerCharacter()
 	return character;
 end
 
