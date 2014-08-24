@@ -126,6 +126,7 @@
 								_G[self:GetName() .. "HighlightAnimate"]:Play();
 								_G[self:GetName() .. "Animate"]:Play();
 								self:ClearFocus();
+								self:HighlightText(0, 0);
 							</OnEnterPressed>
 						</Scripts>
 						<Layers>

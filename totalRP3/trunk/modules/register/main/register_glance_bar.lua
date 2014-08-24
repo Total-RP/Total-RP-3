@@ -88,6 +88,12 @@ local function onStart()
 		displayDropDown(button, getMiscPresetDropListData(), function(value) onPeekSelection(value, button) end, 0, true);
 	end
 
+	local CONFIG_GLANCE_TT_ANCHOR = "CONFIG_GLANCE_TT_ANCHOR";
+
+	local function configTooltipAnchor()
+		return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
+	end
+
 	local function displayPeekSlots()
 		local peekTab = nil;
 
@@ -111,7 +117,7 @@ local function onStart()
 					if peek.IC and peek.IC:len() > 0 then
 						icon = peek.IC;
 					end
-					setTooltipForSameFrame(slot, "LEFT", 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), peek.TX);
+					setTooltipForSameFrame(slot, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), peek.TX);
 				else
 					slot:SetAlpha(0.25);
 					setTooltipForSameFrame(slot);
@@ -193,7 +199,9 @@ local function onStart()
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 24);
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_Y, -14);
 	registerConfigKey(CONFIG_GLANCE_LOCK, true);
+	registerConfigKey(CONFIG_GLANCE_TT_ANCHOR, "LEFT");
 	registerConfigHandler({CONFIG_GLANCE_PARENT}, replaceBar);
+	registerConfigHandler({CONFIG_GLANCE_TT_ANCHOR}, onTargetChanged);
 	replaceBar();
 	ui_GlanceBar:SetScript("OnUpdate", glanceBar_DraggingFrame_OnUpdate);
 
@@ -247,6 +255,24 @@ local function onStart()
 				end,
 			});
 		end
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "TRP3_ConfigurationTooltip_GlanceTT_Anchor",
+			title = loc("CO_GLANCE_TT_ANCHOR"),
+			listContent = {
+				{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
+				{loc("CO_ANCHOR_TOP"), "TOP"},
+				{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"},
+				{loc("CO_ANCHOR_RIGHT"), "RIGHT"},
+				{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
+				{loc("CO_ANCHOR_BOTTOM"), "BOTTOM"},
+				{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
+				{loc("CO_ANCHOR_LEFT"), "LEFT"}
+			},
+			configKey = CONFIG_GLANCE_TT_ANCHOR,
+			listWidth = nil,
+			listCancel = true,
+		});
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

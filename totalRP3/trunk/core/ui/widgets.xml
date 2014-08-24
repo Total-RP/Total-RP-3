@@ -150,11 +150,6 @@
 				</Anchors>
 			</Button>
 		</Frames>
-		<Scripts>
-			<PostClick>
-				TRP3_API.ui.misc.playUISound("igCharacterInfoTab");
-			</PostClick>
-		</Scripts>
 	</Button>
 	
 	<!-- A bordered frame with a title -->

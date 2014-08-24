@@ -206,7 +206,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		character.CU = data.CU;
 		character.RP = data.RP;
 		character.XP = data.XP;
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
+		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
 	else
 		local profile = getUnitIDProfile(unitID);
 		if profile[informationType] then
@@ -271,7 +271,8 @@ function TRP3_API.register.getCharacterExchangeData()
 	local dataToSend = {
 		CU = characterData.CU,
 		XP = characterData.XP,
-		RP = characterData.RP
+		RP = characterData.RP,
+		v = characterData.v
 	};
 	return dataToSend;
 end

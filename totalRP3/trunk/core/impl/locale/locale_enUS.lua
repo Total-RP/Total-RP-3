@@ -14,7 +14,7 @@ local LOCALE_EN = {
 		
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
-		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version : %s\n|c0000ff00New version %s|r\n\nPlease update !\n\nThis message will only appear once per session.",
+		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version : %s\n|c0000ff00New version %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
@@ -64,6 +64,7 @@ local LOCALE_EN = {
 									.."\nNote that your character could be a homeless, a wanderer...\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
 		REG_PLAYER_MSP_MOTTO = "Motto",
 		REG_PLAYER_MSP_HOUSE = "House name",
+		REG_PLAYER_MSP_NICK = "Nickname",
 		REG_PLAYER_PSYCHO = "Personality traits",
 		REG_PLAYER_HISTORY = "History",
 		REG_PLAYER_MORE_INFO = "Additional information",
@@ -434,6 +435,7 @@ local LOCALE_EN = {
 		CO_GLANCE_PRESET_TRP2_HELP = "Shortcut to setup the bar in a TRP2 style : to the right of WoW target frame.",
 		CO_GLANCE_PRESET_TRP3 = "Use Total RP 3 style positions",
 		CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
+		CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

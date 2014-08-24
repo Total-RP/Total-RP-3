@@ -410,6 +410,8 @@ local function onStart()
 					msp.my['MO'] = miscData.VA;
 				elseif miscData.NA == loc("REG_PLAYER_MSP_HOUSE") then
 					msp.my['NH'] = miscData.VA;
+				elseif miscData.NA == loc("REG_PLAYER_MSP_NICK") then
+					msp.my['NI'] = miscData.VA;
 				end
 			end
 		end
@@ -522,10 +524,18 @@ local function onStart()
 					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
 						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
 					end
-					wipe(profile.about);
 					profile.about.BK = 5;
 					profile.about.TE = 3;
-					profile.about.T3 = {HI = {BK = 1, IC = "INV_Misc_Book_17"}, PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"}};
+					if not profile.about.T3 then
+						profile.about.T3 = {};
+					end
+					if not profile.about.T3.HI then
+						profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+					end
+					if not profile.about.T3.PH then
+						profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+					end
+					value = emptyToNil(strtrim(value));
 					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 					profile.about.read = value == old or value:len() == 0;
 				elseif CHARACTER_FIELDS[field] then
@@ -551,7 +561,7 @@ local function onStart()
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
-						local index = 1;
+						local index = #profile.characteristics.MI + 1;
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc("REG_PLAYER_MSP_MOTTO") then
 								index = miscIndex;
@@ -571,7 +581,7 @@ local function onStart()
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
-						local index = 1;
+						local index = #profile.characteristics.MI + 1;
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc("REG_PLAYER_MSP_HOUSE") then
 								index = miscIndex;
@@ -585,6 +595,26 @@ local function onStart()
 						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_HOUSE");
 						profile.characteristics.MI[index].VA = value;
 						profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
+					end
+				elseif field == "NI" then
+					if strtrim(value):len() ~= 0 then
+						if not profile.characteristics.MI then
+							profile.characteristics.MI = {};
+						end
+						local index = #profile.characteristics.MI + 1;
+						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
+							if miscStructure.NA == loc("REG_PLAYER_MSP_NICK") then
+								index = miscIndex;
+							end
+						end
+						if not profile.characteristics.MI[index] then
+							profile.characteristics.MI[index] = {};
+						else
+							wipe(profile.characteristics.MI[index]);
+						end
+						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_NICK");
+						profile.characteristics.MI[index].VA = value;
+						profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
 					end
 				end
 			end
@@ -606,7 +636,7 @@ local function onStart()
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
 	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO"};
+	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH"};
 
 	local function requestInformation(targetID, targetMode)
 		if targetID and targetMode == TYPE_CHARACTER
@@ -676,10 +706,12 @@ local function onStart()
 	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.REGISTER_XPSTATUS_CHANGED, Events.REGISTER_CURRENTLY_CHANGED}, onCharacterChanged);
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
-		for _, ownerID in pairs(mspOwners) do
-			wipe(msp.char[ownerID].ver);
-			TT_TIMER_TAB[ownerID] = nil;
-			FIELDS_TIMER_TAB[ownerID] = nil;
+		if mspOwners then
+			for _, ownerID in pairs(mspOwners) do
+				wipe(msp.char[ownerID].ver);
+				TT_TIMER_TAB[ownerID] = nil;
+				FIELDS_TIMER_TAB[ownerID] = nil;
+			end
 		end
 	end);
 end

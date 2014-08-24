@@ -862,7 +862,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.ui.misc.playUISound(pathToSound)
-	if getConfigValue(CONFIG_UI_SOUNDS) then
+	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
 		PlaySound(pathToSound,"SFX");
 	end
 end

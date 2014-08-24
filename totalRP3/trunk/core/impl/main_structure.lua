@@ -17,6 +17,7 @@ TRP3_API.navigation = {
 local Log = TRP3_API.utils.log;
 local CreateFrame = CreateFrame;
 local loc = TRP3_API.locale.getText;
+local playUISound = TRP3_API.ui.misc.playUISound;
 local TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton = TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton;
 local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
 local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
@@ -263,6 +264,7 @@ local function setPage(pageId, context)
 	end
 	
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, pageId);
+	playUISound("gsCharacterSelection");
 end
 TRP3_API.navigation.page.setPage = setPage;
 
