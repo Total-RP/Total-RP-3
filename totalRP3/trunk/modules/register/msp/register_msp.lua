@@ -351,7 +351,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local function updateCharacterData()
-		local character = getPlayerCharacter();
+		local character = get("player/character");
 		msp.my['CU'] = character.CU;
 		if character.XP == 1 then
 			msp.my['FR'] = "Beginner roleplayer";
@@ -502,6 +502,9 @@ local function onStart()
 			if not profile.about then
 				profile.about = {};
 			end
+			if not profile.character then
+				profile.character = {};
+			end
 			if not profile.mspver then
 				profile.mspver = {};
 			end
@@ -541,16 +544,16 @@ local function onStart()
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then
-						character.RP = 2;
+						profile.character.RP = 2;
 						if value == "2" then
-							character.RP = 1;
+							profile.character.RP = 1;
 						end
 					elseif field == "CU" then
-						character.CU = value;
+						profile.character.CU = value;
 					elseif field == "FR" then
-						character.XP = 2;
+						profile.character.XP = 2;
 						if value == "4" then
-							character.XP = 1;
+							profile.character.XP = 1;
 						end
 					elseif field == "VA" and value:find("%/") then
 						character.client = value:sub(1, value:find("%/") - 1);
