@@ -336,7 +336,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
 		end
 		-- OOC
-		if character.RP ~= 1 then
+		if info.character and info.character.RP ~= 1 then
 			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
 		-- AFK / DND status
@@ -350,9 +350,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			rightIcons = strconcat(rightIcons, PVP_ICON);
 		end
 		-- Beginner icon / volunteer icon
-		if character.XP == 1 then
+		if info.character and info.character.XP == 1 then
 			rightIcons = strconcat(rightIcons, BEGINNER_ICON);
-		elseif character.XP == 3 then
+		elseif info.character and info.character.XP == 3 then
 			rightIcons = strconcat(rightIcons, VOLUNTEER_ICON);
 		end
 	end
@@ -430,12 +430,12 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	-- CURRENTLY
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showCurrently() and character.CU and character.CU:len() > 0 then
+	if showCurrently() and info.character and (info.character.CU or ""):len() > 0 then
 		tooltipBuilder:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1, getSubLineFontSize());
 
-		local text = strtrim(character.CU);
+		local text = strtrim(info.character.CU);
 		if text:len() > getCurrentMaxSize() then
-			text = text:sub(1, getCurrentMaxSize()) .. "...";
+			text = text:sub(1, getCurrentMaxSize()) .. "…";
 		end
 		tooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, getSmallLineFontSize(), true);
 	end

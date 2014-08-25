@@ -27,7 +27,9 @@ local profiles, character, characters;
 local PATH_DELIMITER = "/";
 local currentProfile = nil;
 local currentProfileId = nil;
-local PR_DEFAULT_PROFILE = {};
+local PR_DEFAULT_PROFILE = {
+	player = {},
+};
 
 -- Return the default profile.
 -- Note that this profile is never directly linked to a character, only dupplicated !

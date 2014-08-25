@@ -12,7 +12,7 @@ local loc = TRP3_API.locale.getText;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
-local getCharacterExchangeData = TRP3_API.register.getCharacterExchangeData;
+local getCharacterExchangeData = TRP3_API.dashboard.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3_API.register.shouldUpdateInformation;
 local addCharacter = TRP3_API.register.addCharacter;
@@ -111,7 +111,7 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V] = get("player/characteristics").v or 0;
 	query[VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V] = get("player/about").v or 0;
 	query[VERNUM_QUERY_INDEX_CHARACTER_MISC_V] = get("player/misc").v or 0;
-	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V] = getPlayerCharacter().v or 1;
+	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V] = get("player/character").v or 1;
 	-- Companion
 	local battlePetLine, battlePetV1, battlePetV2 = getCurrentBattlePetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET] = battlePetLine or "";

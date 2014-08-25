@@ -130,6 +130,16 @@ local function onNotificationShow(button)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SCHEMA
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDefaultProfile;
+
+getDefaultProfile().player.character = {
+	v = 1,
+}
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -137,7 +147,7 @@ end
 local CURRENTLY_SIZE = 200;
 
 local function onStatusChange(status)
-	local character = getPlayerCharacter();
+	local character = get("player/character");
 	local old = character.RP;
 	character.RP = status;
 	if old ~= status then
@@ -147,7 +157,7 @@ local function onStatusChange(status)
 end
 
 local function switchStatus()
-	if getPlayerCharacter().RP == 1 then
+	if get("player/character/RP") == 1 then
 		onStatusChange(2);
 	else
 		onStatusChange(1);
@@ -155,7 +165,7 @@ local function switchStatus()
 end
 
 local function onStatusXPChange(status)
-	local character = getPlayerCharacter();
+	local character = get("player/character");
 	local old = character.XP;
 	character.XP = status;
 	if old ~= status then
@@ -165,7 +175,7 @@ local function onStatusXPChange(status)
 end
 
 local function onCurrentlyChanged()
-	local character = getPlayerCharacter();
+	local character = get("player/character");
 	local old = character.CU;
 	character.CU = TRP3_DashboardStatus_Currently:GetText();
 	if old ~= character.CU then
@@ -175,15 +185,19 @@ local function onCurrentlyChanged()
 end
 
 local function onShow(context)
-	local character = getPlayerCharacter();
+	local character = get("player/character");
 	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
 	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
 	TRP3_DashboardStatus_Currently:SetText(character.CU or "");
 	refreshNotifications();
 end
 
-TRP3_API.dashboard.isPlayerIC = function()
-	return getPlayerCharacter().RP == 1;
+function TRP3_API.dashboard.isPlayerIC()
+	return get("player/character/RP") == 1;
+end
+
+function TRP3_API.dashboard.getCharacterExchangeData()
+	return get("player/character");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -403,7 +417,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
 	
 		-- Toolbar RP status
-		local playerCharacter = TRP3_API.profile.getPlayerCharacter();
 		local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 		local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
 		local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
@@ -416,7 +429,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
-				if playerCharacter.RP == 1 then
+				if get("player/character/RP") == 1 then
 					local iconURL = get("player/characteristics/IC") or defaultIcon;
 					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);

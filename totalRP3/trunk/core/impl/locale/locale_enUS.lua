@@ -207,7 +207,7 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Please enter a category and a name",
 		REG_PLAYER_GLANCE_PRESET_ALERT2 = "There is already a preset called %s",
 		REG_RELATION = "Relationship",
-		REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
+		REG_RELATION_BUTTON_TT = "Currently:\n|cff00ff00%s|r\n\nRelation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
 		REG_RELATION_UNFRIENDLY = "Unfriendly",
 		REG_RELATION_NONE = "None",
 		REG_RELATION_NEUTRAL = "Neutral",
@@ -520,7 +520,7 @@ local LOCALE_EN = {
 
 		DB_STATUS = "Status",
 		DB_STATUS_CURRENTLY = "Currently",
-		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief as |cff00ff00by default players will only see the first 140 characters of it !",
+		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
 		DB_STATUS_RP = "Character status",
 		DB_STATUS_RP_IC = "In character",
 		DB_STATUS_RP_OOC = "Out of character",

@@ -569,11 +569,12 @@ end
 
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
+	local CU;
+	if profile.character and profile.character.CU and profile.character.CU:len() > 0 then
+		CU = profile.character.CU;
+	end
 	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),
-	loc("REG_RELATION_BUTTON_TT"):format(
-	getRelationText(profileID),
-	getRelationTooltipText(profileID, profile)
-	)
+		loc("REG_RELATION_BUTTON_TT"):format(CU or "…", getRelationText(profileID),getRelationTooltipText(profileID, profile))
 	);
 end
 

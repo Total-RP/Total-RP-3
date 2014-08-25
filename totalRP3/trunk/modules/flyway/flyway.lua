@@ -9,7 +9,7 @@ TRP3_API.flyway = {};
 
 local type, _G, tostring = type, _G, tostring;
 
-local SCHEMA_VERSION = 1;
+local SCHEMA_VERSION = 2;
 
 if not TRP3_Flyway then
 	TRP3_Flyway = {};
@@ -19,6 +19,7 @@ local function applyPatches(fromBuild, toBuild)
 	local i;
 	for i=fromBuild, toBuild do
 		if type(TRP3_API.flyway.patches[tostring(i)]) == "function" then
+			TRP3_API.utils.log.log(("Applying patch %s"):format(i));
 			TRP3_API.flyway.patches[tostring(i)]();
 		end
 	end

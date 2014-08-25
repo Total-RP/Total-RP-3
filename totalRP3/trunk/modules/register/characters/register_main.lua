@@ -54,7 +54,6 @@ TRP3_API.register.registerInfoTypes = {
 }
 
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-getDefaultProfile().player = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
@@ -200,23 +199,13 @@ TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
-	if informationType == registerInfoTypes.CHARACTER then
-		local character = getUnitIDCharacter(unitID);
-		character.v = data.v or 1;
-		character.CU = data.CU;
-		character.RP = data.RP;
-		character.XP = data.XP;
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
-	else
-		local profile = getUnitIDProfile(unitID);
-		if profile[informationType] then
-			wipe(profile[informationType]);
-		end
-		profile[informationType] = data;
-		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType);
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
+	local profile = getUnitIDProfile(unitID);
+	if profile[informationType] then
+		wipe(profile[informationType]);
 	end
-
+	profile[informationType] = data;
+	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType);
+	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
 end
 
 --- Raises error if KNOWN unitID
@@ -239,14 +228,9 @@ TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
 --- Raises error if unknown unitID
 function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
-	if infoType == registerInfoTypes.CHARACTER then
-		local character = getUnitIDCharacter(unitID);
-		return not character.v or character.v ~= version;
-	else
-		--- Raises error if unit hasn't profile ID or no profile exists
-		local profile = getUnitIDProfile(unitID);
-		return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
-	end
+	--- Raises error if unit hasn't profile ID or no profile exists
+	local profile = getUnitIDProfile(unitID);
+	return not profile[infoType] or not profile[infoType].v or profile[infoType].v ~= version;
 end
 
 function TRP3_API.register.getCharacterList()
@@ -264,17 +248,6 @@ end
 
 function TRP3_API.register.getProfileList()
 	return profiles;
-end
-
-function TRP3_API.register.getCharacterExchangeData()
-	local characterData = getPlayerCharacter();
-	local dataToSend = {
-		CU = characterData.CU,
-		XP = characterData.XP,
-		RP = characterData.RP,
-		v = characterData.v
-	};
-	return dataToSend;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -300,7 +273,7 @@ local function onReceivedInfo(profileID, infoType)
 		if profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
 				showAboutTab();
-			elseif infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1 then
+			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
 				showCharacteristicsTab();
 			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
 				showMiscTab();
@@ -400,7 +373,7 @@ function TRP3_API.register.init()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
-	
+
 	cleanupCharacters();
 
 	-- Listen to the mouse over event
