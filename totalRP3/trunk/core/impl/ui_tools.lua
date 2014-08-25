@@ -815,7 +815,7 @@ end
 
 local function onLinkTagClicked(frame)
 	local cursorIndex = frame:GetCursorPosition();
-	local tag = ("{link||%s||%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
+	local tag = ("{link*%s*%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
 	insertTag(tag, cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + 6);
 	frame:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());

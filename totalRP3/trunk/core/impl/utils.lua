@@ -503,7 +503,7 @@ Utils.str.toHTML = function(text)
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
 		"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
 
-		line = line:gsub("{link||(.-)||(.-)}",
+		line = line:gsub("{link%*(.-)%*(.-)}",
 		"<a href=\"%1\">|cff00ff00["..loc("CM_LINK").." : %2]|r</a>");
 
 		finalText = finalText..line;

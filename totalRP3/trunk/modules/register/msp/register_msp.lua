@@ -16,6 +16,7 @@ local function onStart()
 
 	local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 	local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time;
+	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local tsize = Utils.table.size;
 	local log = Utils.log.log;
 	local loc = TRP3_API.locale.getText;
@@ -23,6 +24,7 @@ local function onStart()
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
 	local msp, onInformationReceived;
+	local CONFIG_T3_ONLY = "msp_t3";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP
@@ -377,8 +379,13 @@ local function onStart()
 		local dataTab = get("player/about");
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
-		if dataTab.TE == 1 then
-			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
+		
+		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
+			msp.my['HI'] = dataTab.T3.HI.TX;
+			msp.my['DE'] = dataTab.T3.PH.TX;
+		elseif dataTab.TE == 1 then
+			local text = Utils.str.convertTextTags(dataTab.T1.TX);
+			msp.my['DE'] = removeTextTags(text);
 		elseif dataTab.TE == 2 then
 			local text;
 			for _, data in pairs(dataTab.T2) do
@@ -386,9 +393,6 @@ local function onStart()
 				text = text .. (data.TX or "") .. "\n\n";
 			end
 			msp.my['DE'] = text;
-		elseif dataTab.TE == 3 then
-			msp.my['HI'] = dataTab.T3.HI.TX;
-			msp.my['DE'] = dataTab.T3.PH.TX;
 		end
 	end
 
@@ -397,9 +401,17 @@ local function onStart()
 		msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		msp.my['NT'] = dataTab.FT;
 		msp.my['RA'] = dataTab.RA;
-		msp.my['RC'] = dataTab.CL;
+		if dataTab.CL and dataTab.CH and dataTab.CH:len() > 0 then
+			msp.my['RC'] = "|cff"..dataTab.CH..dataTab.CL.."|r";
+		else
+			msp.my['RC'] = dataTab.CL;
+		end
 		msp.my['AG'] = dataTab.AG;
-		msp.my['AE'] = dataTab.EC;
+		if dataTab.EC and dataTab.EH and dataTab.EH:len() > 0 then
+			msp.my['AE'] = "|cff"..dataTab.EH..dataTab.EC.."|r";
+		else
+			msp.my['AE'] = dataTab.EC;
+		end
 		msp.my['AH'] = dataTab.HE;
 		msp.my['AW'] = dataTab.WE;
 		msp.my['HH'] = dataTab.RE;
@@ -697,6 +709,20 @@ local function onStart()
 			end
 		end
 	end
+	
+	-- Build configuration page
+	registerConfigKey(CONFIG_T3_ONLY, false);
+	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_MSP"),
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc("CO_MSP_T3"),
+		help = loc("CO_MSP_T3_TT"),
+		configKey = CONFIG_T3_ONLY,
+	});
 
 	-- Initial update
 	updateCharacteristicsData();
@@ -720,6 +746,7 @@ local function onStart()
 			end
 		end
 	end);
+
 end
 
 local MODULE_STRUCTURE = {

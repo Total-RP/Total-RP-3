@@ -427,7 +427,7 @@ function TRP3_API.register.init()
 	registerConfigKey("register_auto_add", true);
 
 	-- Build configuration page
-	local CONFIG_STRUCTURE = {
+	TRP3_API.register.CONFIG_STRUCTURE = {
 		id = "main_config_register",
 		menuText = loc("CO_REGISTER"),
 		pageText = loc("CO_REGISTER"),
@@ -446,7 +446,10 @@ function TRP3_API.register.init()
 			},
 		}
 	};
-	Config.registerConfigurationPage(CONFIG_STRUCTURE);
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
+	end);
+	
 
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
