@@ -75,7 +75,7 @@ local function onStart()
 		local tostring, tonumber, next, ipairs = tostring, tonumber, next, ipairs
 
 		local MSP_TT_ALONE = { 'TT' }
-		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU' }
+		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC' }
 		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true }
 		local MSP_PROBE_FREQUENCY = 300.0 + math.random(0, 60) -- Wait 5-6 minutes for someone to respond before asking again
 		local MSP_FIELD_UPDATE_FREQUENCY = 10.0 + math.random(0, 5) -- Fields newer than 10-15 seconds old are still fresh
@@ -397,6 +397,7 @@ local function onStart()
 		msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		msp.my['NT'] = dataTab.FT;
 		msp.my['RA'] = dataTab.RA;
+		msp.my['RC'] = dataTab.CL;
 		msp.my['AG'] = dataTab.AG;
 		msp.my['AE'] = dataTab.EC;
 		msp.my['AH'] = dataTab.HE;
@@ -453,6 +454,7 @@ local function onStart()
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
 		RA = "RA",
+		RC = "CL",
 		AG = "AG",
 		AH = "HE",
 		AW = "WE",
@@ -676,6 +678,7 @@ local function onStart()
 	msp.my['GS'] = tostring( UnitSex("player") );
 	msp.my['GC'] = Globals.player_character.class;
 	msp.my['GR'] = Globals.player_character.race;
+	msp.my['GF'] = Globals.player_character.faction;
 
 	-- MSP versions handling
 	local character = getPlayerCharacter();

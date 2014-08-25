@@ -4,6 +4,7 @@
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
+local faction, faction_loc = UnitFactionGroup("player");
 
 -- Public accessor
 TRP3_API = {
@@ -22,10 +23,12 @@ TRP3_API = {
 		player_realm = GetRealmName(),
 		player_race_loc = race_loc,
 		player_class_loc = class_loc,
+		player_faction_loc = faction_loc,
 		player_class_index = class_index,
 		player_character = {
 			race = race,
-			class = class
+			class = class,
+			faction = faction
 		},
 
 		clients = {
