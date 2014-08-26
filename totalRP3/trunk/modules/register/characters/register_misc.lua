@@ -24,6 +24,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local showPopup = TRP3_API.popup.showPopup;
 local hasProfile = TRP3_API.register.hasProfile;
+local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local compressData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -306,13 +307,8 @@ local function onSlotClick(button, mouseClick)
 			openGlanceEditor(button, peekEditorApply);
 		else
 			if dataTab.PE[button.index] then
-				dataTab.PE[button.index] = {};
-				-- version increment
-				assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-				dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-				compressData();
-				-- Refresh display & target frame
-				Events.fireEvent(Events.REGISTER_MISC_SAVED);		
+				peekEditorApply(button, dataTab.PE[button.index]["IC"], not dataTab.PE[button.index]["AC"], dataTab.PE[button.index]["TI"], dataTab.PE[button.index]["TX"])	
+				refreshTooltip(button);
 			end
 		end
 	end
