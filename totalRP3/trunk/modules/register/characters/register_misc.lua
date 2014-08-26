@@ -295,14 +295,26 @@ local function peekEditorApply(button, ic, ac, ti, tx)
 	applyPeekSlot(button.index, ic, ac, ti, tx);
 end
 
-local function onSlotClick(button)
+local function onSlotClick(button, mouseClick)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	if context.isPlayer then
 		local dataTab = get("player/misc");
-		draftData = (dataTab.PE or {})[button.index] or {};
-		button.data = draftData;
-		openGlanceEditor(button, peekEditorApply);
+		if mouseClick == "LeftButton" then
+			draftData = (dataTab.PE or {})[button.index] or {};
+			button.data = draftData;
+			openGlanceEditor(button, peekEditorApply);
+		else
+			if dataTab.PE[button.index] then
+				dataTab.PE[button.index] = {};
+				-- version increment
+				assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+				dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+				compressData();
+				-- Refresh display & target frame
+				Events.fireEvent(Events.REGISTER_MISC_SAVED);		
+			end
+		end
 	end
 end
 
@@ -529,6 +541,7 @@ function TRP3_API.register.inits.miscInit()
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onSlotClick);
+		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
 		button.index = tostring(index);
 	end
 
