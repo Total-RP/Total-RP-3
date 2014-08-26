@@ -112,19 +112,22 @@ local function tableDump(table, level, withCount)
 	for indent = 1, level, 1 do
 		dumpIndent = dumpIndent .. "    ";
 	end
-
-	for key, value in pairs(table) do
-		if type(value) == "table" then
-			print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
-			tableDump(value, level + 1);
-			print(dumpIndent .. dumpColor3 .. "}");
-		elseif type(value) == "function" then
-			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">");
-		else
-			print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">");
+	
+	if type(table) == "table" then
+		for key, value in pairs(table) do
+			if type(value) == "table" then
+				print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
+				tableDump(value, level + 1);
+				print(dumpIndent .. dumpColor3 .. "}");
+			elseif type(value) == "function" then
+				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">");
+			else
+				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">");
+			end
+			i = i + 1;
 		end
-		i = i + 1;
 	end
+	
 	if withCount then
 		print(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i));
 	end

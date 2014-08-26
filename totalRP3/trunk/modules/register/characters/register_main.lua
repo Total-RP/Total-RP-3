@@ -204,7 +204,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 	profile[informationType] = data;
-	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType);
+	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType, profile[informationType]);
 	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
 end
 

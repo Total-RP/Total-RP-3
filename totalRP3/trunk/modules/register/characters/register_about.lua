@@ -459,8 +459,8 @@ local function refreshPlayerVoteDisplay()
 		local context = getCurrentContext();
 		if context and context.isPlayer and context.profile and context.profile.about then
 			setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
-				"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
-				loc("REG_PLAYER_ABOUT_VOTES_R"):format(aggregateVotes(context.profile.about.vote))
+			"LEFT", 0, 5, loc("REG_PLAYER_ABOUT_VOTES"),
+			loc("REG_PLAYER_ABOUT_VOTES_R"):format(aggregateVotes(context.profile.about.vote))
 			);
 		end
 	end
@@ -791,6 +791,17 @@ local function onSave()
 	showAboutTab();
 end
 
+local function onAboutReceived(profileID, type, aboutData)
+	if type == "about" then
+		-- Check that there is a description. If not => set read to true !
+		local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
+		if noDescr then
+			aboutData.read = true;
+			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -847,7 +858,7 @@ function TRP3_API.register.inits.aboutInit()
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_API.ui.text.setupToolbar("TRP3_RegisterAbout_Edit_Template1_Toolbar", TRP3_RegisterAbout_Edit_Template1ScrollText);
-	
+
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
 		TRP3_MainTooltip:Hide();
@@ -898,4 +909,6 @@ function TRP3_API.register.inits.aboutInit()
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
+
+	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onAboutReceived);
 end
