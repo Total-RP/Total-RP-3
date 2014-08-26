@@ -312,14 +312,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
 				if not ShowingCloak() then
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
-					_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\item_icecrowncape");
-					_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\item_icecrowncape");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\item_icecrowncape");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
 				else
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-					_G[Uibutton:GetName().."Pushed"]:SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-					_G[Uibutton:GetName().."Pushed"]:SetDesaturated(1);
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
 				end
 				if GetMouseFocus() == Uibutton then
@@ -384,13 +384,19 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
 				if UnitIsDND("player") then
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Ability_Mage_IncantersAbsorbtion");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status1Text, status1SubText);
 				elseif UnitIsAFK("player") then
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Spell_Nature_Sleep");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status2Text, status2SubText);
 				else
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Ability_Rogue_MasterOfSubtlety");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton,Uibutton,"BOTTOM",0,0, status3Text, status3SubText);
 				end
 				if GetMouseFocus() == Uibutton then
@@ -431,10 +437,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onUpdate = function(Uibutton, buttonStructure)
 				if get("player/character/RP") == 1 then
 					local iconURL = get("player/characteristics/IC") or defaultIcon;
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\" .. iconURL);
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
 				else
-					_G[Uibutton:GetName().."Normal"]:SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
+					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
 				end
 				if GetMouseFocus() == Uibutton then
