@@ -792,7 +792,7 @@ local function onSave()
 end
 
 local function onAboutReceived(profileID, type, aboutData)
-	if type == "about" then
+	if type == "about" and aboutData then
 		-- Check that there is a description. If not => set read to true !
 		local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
 		if noDescr then
