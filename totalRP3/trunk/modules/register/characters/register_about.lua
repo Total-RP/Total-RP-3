@@ -16,7 +16,7 @@ local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log = Utils.log;
 local getConfigValue = TRP3_API.configuration.getValue;
 local CreateFrame = CreateFrame;
-local tostring, unpack = tostring, unpack;
+local tostring, unpack, strtrim = tostring, unpack, strtrim;
 local assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math = assert, tinsert, type, wipe, _G, strconcat, tonumber, pairs, tremove, math;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
@@ -89,7 +89,7 @@ end
 
 local function shouldShowTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
-	return templateData.TX and templateData.TX:len() > 0;
+	return templateData.TX and strtrim(templateData.TX:len()) > 0;
 end
 
 local function showTemplate1(dataTab)
@@ -119,7 +119,7 @@ local function shouldShowTemplate2(dataTab)
 	local templateData = dataTab.T2 or {};
 	local atLeastOneFrame = false;
 	for _, frameTab in pairs(templateData) do
-		if frameTab.TX and frameTab.TX:len() > 0 then
+		if frameTab.TX and strtrim(frameTab.TX):len() > 0 then
 			atLeastOneFrame = true;
 		end
 	end
@@ -350,7 +350,7 @@ local function shouldShowTemplate3(dataTab)
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	for i=1, 3 do
 		local data = datas[i] or {};
-		if data.TX and data.TX:len() > 0 then
+		if data.TX and strtrim(data.TX):len() > 0 then
 			atLeastOneFrame = true;
 		end
 	end

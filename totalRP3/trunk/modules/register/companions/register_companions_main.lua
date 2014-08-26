@@ -11,7 +11,7 @@ TRP3_API.companions = {
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
 local log = Utils.log.log;
-local pairs, assert, tostring, wipe, tinsert, type = pairs, assert, tostring, wipe, tinsert, type;
+local pairs, assert, tostring, wipe, tinsert, type, strtrim = pairs, assert, tostring, wipe, tinsert, type, strtrim;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
@@ -283,7 +283,7 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 	if v == "1" then
 		wipe(profile.data);
 		tcopy(profile.data, data);
-		profile.data.read = false;
+		profile.data.read = not profile.data.TX or strtrim(profile.data.TX):len() == 0;
 	elseif v == "2" then
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
