@@ -768,10 +768,10 @@ local function onModuleInit()
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
 		show("mouseover", targetID, targetMode);
 	end);
-	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_DATA_CHANGED}, function()
-		local targetID, targetMode = getUnitID("mouseover");
-		if ui_CharacterTT.targetMode == targetMode and ui_CharacterTT.target == targetID then
-			show("mouseover", targetID, targetMode);
+	
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if not unitID or (ui_CharacterTT.target == unitID) then
+			show("mouseover", getUnitID("mouseover"));
 		end
 	end);
 

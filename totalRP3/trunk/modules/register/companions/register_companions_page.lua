@@ -31,6 +31,7 @@ local isUnitIDKnown, hasProfile, getUnitProfile = TRP3_API.register.isUnitIDKnow
 local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
+local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -70,13 +71,12 @@ local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx)
 	peekTab.TX = tx;
 	-- version increment
 	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
-	-- Refresh display & target frame
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
 local function applyPeekSlot(slot, companionID, ic, ac, ti, tx)
 	local dataTab = (getCompanionProfile(companionID) or {}).PE or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, getCompanionProfileID(companionID), "glance");
 end
 
 function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companionFullID)
@@ -95,6 +95,7 @@ local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 	local context = getCurrentContext();
 	assert(context and context.profile, "No profile in context !");
 	applyPeekSlotProfile(button.index, context.profile.PE, ic, ac, ti, tx);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "glance");
 	refreshIfNeeded();
 end
 
@@ -151,7 +152,7 @@ local function saveInformation()
 	dataTab.data.v = Utils.math.incrementNumber(dataTab.data.v or 0, 2);
 
 	--	compressData();
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID);
 end
 
 local function onPlayerIconSelected(icon)
@@ -283,7 +284,7 @@ local function refresh()
 		displayConsult(context);
 		if not context.isPlayer and context.profile.data and context.profile.data.read == false then
 			context.profile.data.read = true;
-			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+			Events.fireEvent(Events.REGISTER_ABOUT_READ);
 		end
 		TRP3_CompanionsPageInformationConsult:Show();
 	end
@@ -332,7 +333,7 @@ local function onPageShow(context)
 	tabGroup:SelectTab(1);
 end
 
-local function onReceivedInfo(profileID, infoType)
+local function onReceivedInfo(profileID)
 	if getCurrentPageID() == COMPANIONS_PAGE_ID then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
@@ -360,8 +361,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			onPageShow(context);
 		end,
 	});
-
-	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
+	
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		onReceivedInfo(profileID, dataType);
+	end);
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);
 	TRP3_CompanionsPageInformationEdit_NamePanel_CancelButton:SetScript("OnClick", showInformationTab);

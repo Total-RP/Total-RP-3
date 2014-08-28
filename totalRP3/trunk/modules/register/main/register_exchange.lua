@@ -367,7 +367,11 @@ function TRP3_API.register.inits.dataExchangeInit()
 		TRP3_Register = {};
 	end
 
-	Events.listenToEvents({Events.REGISTER_ABOUT_SAVED, Events.REGISTER_CHARACTERISTICS_SAVED}, checkPlayerDataWeight);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID)
+		if unitID == Globals.player_id then
+			checkPlayerDataWeight();
+		end
+	end);
 
 	-- Listen to the mouse over event
 	TRP3_API.events.listenToEvent(TRP3_API.events.MOUSE_OVER_CHANGED, function(targetID, targetMode)

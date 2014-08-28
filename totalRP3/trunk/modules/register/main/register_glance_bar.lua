@@ -40,7 +40,11 @@ local function onStart()
 	-- Logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local currentTargetID, currentTargetType, isCurrentMine = nil, nil, nil;
+	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID = nil, nil, nil, nil;
+	
+	local function setCurrentTargetProfileID()
+		-- TODO ...
+	end
 
 	local function getCharacterInfo()
 		if currentTargetID == Globals.player_id then
@@ -137,12 +141,14 @@ local function onStart()
 	local function onTargetChanged()
 		ui_GlanceBar:Hide();
 		currentTargetType, isCurrentMine = getTargetType();
+		currentTargetProfileID = nil;
 		if currentTargetType == TYPE_CHARACTER then
 			currentTargetID = getUnitID("target");
 		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
 			currentTargetID = getCompanionFullID("target", currentTargetType);
 		end
 		if currentTargetID then
+			setCurrentTargetProfileID();
 			displayPeekSlots();
 		end
 	end
@@ -280,7 +286,11 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Events.listenToEvents({Events.TARGET_SHOULD_REFRESH, Events.REGISTER_MISC_SAVED, Events.REGISTER_DATA_CHANGED, Events.REGISTER_PROFILES_LOADED}, onTargetChanged);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "glance") then
+			onTargetChanged();
+		end
+	end);
 
 	for i=1,5,1 do
 		local slot = _G["TRP3_GlanceBarSlot"..i];

@@ -591,7 +591,7 @@ local function saveCharacteristics()
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
 	compressData();
-	Events.fireEvent(Events.REGISTER_CHARACTERISTICS_SAVED);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "characteristics");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -660,7 +660,7 @@ local function onActionSelected(value, button)
 	elseif type(value) == "string" then
 		setRelation(context.profileID, value);
 		setupRelationButton(context.profileID, context.profile);
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, nil, context.profileID);
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "characteristics");
 	end
 end
 

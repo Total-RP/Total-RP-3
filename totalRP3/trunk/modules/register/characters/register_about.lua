@@ -32,7 +32,7 @@ local getUnitID = Utils.str.getUnitID;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
-local hasProfile = TRP3_API.register.hasProfile;
+local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
@@ -89,7 +89,7 @@ end
 
 local function shouldShowTemplate1(dataTab)
 	local templateData = dataTab.T1 or {};
-	return templateData.TX and strtrim(templateData.TX:len()) > 0;
+	return templateData.TX and strtrim(templateData.TX):len() > 0;
 end
 
 local function showTemplate1(dataTab)
@@ -634,7 +634,7 @@ local function save()
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
 	compressData();
-	Events.fireEvent(Events.REGISTER_ABOUT_SAVED);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "about");
 end
 
 local function refreshEditDisplay()
@@ -791,13 +791,14 @@ local function onSave()
 	showAboutTab();
 end
 
-local function onAboutReceived(profileID, type, aboutData)
-	if type == "about" and aboutData then
+local function onAboutReceived(profileID, type)
+	if type == "about" then
+		local aboutData = getProfile(profileID);
 		-- Check that there is a description. If not => set read to true !
 		local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
 		if noDescr then
 			aboutData.read = true;
-			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+			Events.fireEvent(Events.REGISTER_ABOUT_READ);
 		end
 	end
 end
@@ -910,5 +911,7 @@ function TRP3_API.register.inits.aboutInit()
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
 
-	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onAboutReceived);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		onAboutReceived(profileID, dataType);
+	end);
 end

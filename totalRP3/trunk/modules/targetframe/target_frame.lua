@@ -32,7 +32,7 @@ local function onStart()
 	local CONFIG_TARGET_USE = "target_use";
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
-	local currentTargetID, currentTargetType, isCurrentMine = nil, nil, nil;
+	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID = nil, nil, nil, nil;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic
@@ -141,6 +141,11 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Display logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	local function setCurrentTargetProfileID()
+		currentTargetProfileID = nil;
+		-- TODO ...
+	end
 
 	local function getCharacterInfo()
 		if currentTargetID == Globals.player_id then
@@ -181,7 +186,8 @@ local function onStart()
 
 	local function displayTargetFrame()
 		ui_TargetFrame:Show();
-
+		
+		setCurrentTargetProfileID();
 		displayTargetName();
 		displayButtonsPanel();
 	end
@@ -336,14 +342,12 @@ local function onStart()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
-	Events.listenToEvent(Events.REGISTER_DATA_CHANGED, refreshIfNeeded);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, refreshIfNeededTab);
-	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
-		if currentTargetID == Globals.player_id then
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "characteristics" or dataType == "about") then
 			onTargetChanged();
 		end
 	end);
-	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.TARGET_SHOULD_REFRESH, Events.REGISTER_PROFILES_LOADED}, onTargetChanged);
 end
 
 local MODULE_STRUCTURE = {

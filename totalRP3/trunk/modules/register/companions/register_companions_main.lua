@@ -79,7 +79,7 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 		end
 	end
 	playerProfileAssociation[companionID] = profileID;
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, profileID);
 	log(("%s bounded to profile %s"):format(companionID, profileID));
 end
 TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
@@ -91,7 +91,7 @@ local function unboundPlayerCompanion(companionID)
 	if profileID and playerCompanions[profileID] and playerCompanions[profileID].links then
 		playerCompanions[profileID].links[companionID] = nil;
 	end
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, profileID);
 	log(("%s unbounded"):format(companionID));
 end
 TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
@@ -263,7 +263,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			end
 			profile.links[companionFullID] = 1;
 			log(("Bound %s to profile %s"):format(companionFullID, profileID));
-			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID);
 		end
 
 		return profileID, profile.data.v ~= v1, profile.PE.v ~= v2;
@@ -272,7 +272,7 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 		registerProfileAssociation[companionFullID] = nil;
 		if old and registerCompanions[old] then
 			registerCompanions[old].links[companionFullID] = nil;
-			Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, nil);
 		end
 	end
 end
@@ -284,12 +284,13 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 		wipe(profile.data);
 		tcopy(profile.data, data);
 		profile.data.read = not profile.data.TX or strtrim(profile.data.TX):len() == 0;
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
 	elseif v == "2" then
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "glance");
 	end
-	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, profileID, v);
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
+	
 end
 
 function TRP3_API.companions.register.getCompanionProfile(companionFullID)
@@ -326,7 +327,6 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 		end
 	end
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

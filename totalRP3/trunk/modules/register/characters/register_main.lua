@@ -83,8 +83,8 @@ local function deleteProfile(profileID)
 	end
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
-	Events.fireEvent(Events.TARGET_SHOULD_REFRESH);
 end
 TRP3_API.register.deleteProfile = deleteProfile;
 
@@ -169,7 +169,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	profile.msp = isMSP;
 
 	if oldProfileID ~= currentProfileID then
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, currentProfileID);
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
 	end
 end
 
@@ -204,8 +204,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 	profile[informationType] = data;
-	Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), informationType, profile[informationType]);
-	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
 
 --- Raises error if KNOWN unitID
@@ -270,7 +269,7 @@ local function onReceivedInfo(profileID, infoType)
 	if getCurrentPageID() == "player_main" then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
-		if profileID == context.profileID then
+		if not context.isPlayer and profileID == context.profileID then
 			if infoType == registerInfoTypes.ABOUT and tabGroup.current == 2 then
 				showAboutTab();
 			elseif (infoType == registerInfoTypes.CHARACTERISTICS or infoType == registerInfoTypes.CHARACTER) and tabGroup.current == 1 then
@@ -379,7 +378,9 @@ function TRP3_API.register.init()
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
-	Events.listenToEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, onReceivedInfo);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		onReceivedInfo(profileID, dataType);
+	end);
 
 
 	registerMenu({
@@ -408,9 +409,11 @@ function TRP3_API.register.init()
 	};
 	registerMenu(currentPlayerMenu);
 	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
-	Events.listenToEvents({Events.REGISTER_CHARACTERISTICS_SAVED, Events.REGISTER_PROFILES_LOADED}, function()
-		currentPlayerMenu.text = get("player/characteristics/FN") or Globals.player;
-		refreshMenu();
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
+			currentPlayerMenu.text = get("player/characteristics/FN") or Globals.player;
+			refreshMenu();
+		end
 	end);
 
 	registerPage({

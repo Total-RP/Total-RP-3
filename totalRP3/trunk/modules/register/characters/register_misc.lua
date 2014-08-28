@@ -289,7 +289,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	compressData();
 	-- Refresh display & target frame
-	Events.fireEvent(Events.REGISTER_MISC_SAVED);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "glance");
 end
 
 local function peekEditorApply(button, ic, ac, ti, tx)
@@ -548,8 +548,8 @@ function TRP3_API.register.inits.miscInit()
 	-- RP style
 	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
 
-	Events.listenToEvent(Events.REGISTER_MISC_SAVED, function()
-		if getCurrentPageID() == "player_main" then
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "glance") then
 			TRP3_API.popup.hidePopups();
 			local context = getCurrentContext();
 			assert(context, "No context for page player_main !");

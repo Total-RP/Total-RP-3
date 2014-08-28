@@ -109,8 +109,7 @@ local function ignoreID(unitID, reason)
 		reason = loc("TF_IGNORE_NO_REASON");
 	end
 	blackList[unitID] = reason;
-	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
-	Events.fireEvent(Events.REGISTER_IGNORED, unitID);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 end
 TRP3_API.register.ignoreID = ignoreID;
 
@@ -142,7 +141,7 @@ end
 
 function TRP3_API.register.unignoreID(unitID)
 	blackList[unitID] = nil;
-	Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 end
 
 function TRP3_API.register.getIgnoredList()
@@ -157,8 +156,7 @@ local function onRelationSelected(value)
 	local unitID = getUnitID("target");
 	if hasProfile(unitID) then
 		setRelation(hasProfile(unitID), value);
-		Events.fireEvent(Events.REGISTER_DATA_CHANGED, unitID, hasProfile(unitID));
-		Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(unitID), registerInfoTypes.CHARACTERISTICS);
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), "characteristics");
 	end
 end
 

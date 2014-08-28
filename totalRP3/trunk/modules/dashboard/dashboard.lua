@@ -11,8 +11,8 @@ TRP3_API.dashboard = {
 -- imports
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently = GetMouseFocus, _G, TRP3_DashboardStatus_Currently;
 local loc = TRP3_API.locale.getText;
-local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
-local Utils, Events = TRP3_API.utils, TRP3_API.events;
+local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
+local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local icon, color = Utils.str.icon, Utils.str.color;
@@ -139,6 +139,12 @@ getDefaultProfile().player.character = {
 	v = 1,
 }
 
+local function incrementCharacterVernum()
+	local character = get("player/character");
+	character.v = Utils.math.incrementNumber(character.v or 1, 2);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -151,8 +157,7 @@ local function onStatusChange(status)
 	local old = character.RP;
 	character.RP = status;
 	if old ~= status then
-		character.v = Utils.math.incrementNumber(character.v or 1, 2);
-		Events.fireEvent(Events.REGISTER_RPSTATUS_CHANGED);
+		incrementCharacterVernum();
 	end
 end
 
@@ -169,8 +174,7 @@ local function onStatusXPChange(status)
 	local old = character.XP;
 	character.XP = status;
 	if old ~= status then
-		character.v = Utils.math.incrementNumber(character.v or 1, 2);
-		Events.fireEvent(Events.REGISTER_XPSTATUS_CHANGED);
+		incrementCharacterVernum();
 	end
 end
 
@@ -179,8 +183,7 @@ local function onCurrentlyChanged()
 	local old = character.CU;
 	character.CU = TRP3_DashboardStatus_Currently:GetText();
 	if old ~= character.CU then
-		character.v = Utils.math.incrementNumber(character.v or 1, 2);
-		Events.fireEvent(Events.REGISTER_CURRENTLY_CHANGED);
+		incrementCharacterVernum();
 	end
 end
 
@@ -290,8 +293,13 @@ TRP3_API.dashboard.init = function()
 		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
 	};
 	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
-
-	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.NOTIFICATION_CHANGED}, function()
+	
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then
+			onShow(nil);
+		end
+	end);
+	Events.listenToEvent(Events.NOTIFICATION_CHANGED, function()
 		if getCurrentPageID() == DASHBOARD_PAGE_ID then
 			onShow(nil);
 		end

@@ -436,11 +436,6 @@ local function onStart()
 		msp:Update();
 	end
 
-	local function onCharactChanged()
-		updateCharacteristicsData();
-		msp:Update();
-	end
-
 	local function onAboutChanged()
 		updateAboutData();
 		msp:Update();
@@ -636,17 +631,8 @@ local function onStart()
 				end
 			end
 
-			if updatedCharacteristics then
-				Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "characteristics");
-			end
-			if updatedAbout then
-				Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "about");
-			end
-			if updatedCharacter then
-				Events.fireEvent(Events.REGISTER_EXCHANGE_RECEIVED_INFO, hasProfile(senderID), "character");
-			end
 			if updatedCharacter or updatedCharacteristics or updatedAbout then
-				Events.fireEvent(Events.REGISTER_DATA_CHANGED, senderID, hasProfile(senderID));
+				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 			end
 		end
 	end
@@ -726,17 +712,22 @@ local function onStart()
 
 	-- Initial update
 	updateCharacteristicsData();
-	updateAboutData();
-	updateCharacterData();
+	onProfileChanged();
+	onCharacterChanged();
 
 	msp:InitCache();
 	msp:Update();
 
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, onProfileChanged);
-	Events.listenToEvent(Events.REGISTER_CHARACTERISTICS_SAVED, onCharactChanged);
-	Events.listenToEvent(Events.REGISTER_ABOUT_SAVED, onAboutChanged);
-	Events.listenToEvents({Events.REGISTER_RPSTATUS_CHANGED, Events.REGISTER_XPSTATUS_CHANGED, Events.REGISTER_CURRENTLY_CHANGED}, onCharacterChanged);
-	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+		if unitID == Globals.player_id and (not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character") then
+			onProfileChanged();
+		end
+	end);
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
+		if unitID == Globals.player_id and (not dataType or dataType == "character") then
+			onCharacterChanged();
+		end
+	end);
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
 		if mspOwners then
 			for _, ownerID in pairs(mspOwners) do
@@ -746,6 +737,7 @@ local function onStart()
 			end
 		end
 	end);
+	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
 
 end
 

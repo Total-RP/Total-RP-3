@@ -12,25 +12,40 @@ TRP3_API.events = {
 	WORKFLOW_ON_LOAD = "WORKFLOW_ON_LOAD",
 	WORKFLOW_ON_LOADED = "WORKFLOW_ON_LOADED",
 	WORKFLOW_ON_FINISH = "WORKFLOW_ON_FINISH",
+	
 	-- Navigation
 	NAVIGATION_TUTORIAL_REFRESH = "NAVIGATION_TUTORIAL_REFRESH",
-	-- Profiles changes
+	
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Data changed
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	
+	-- General event when a data changed in a profile of a certain unitID (character or companion)
+	-- Arg1 : (optional) unitID or companionFullID
+	-- Arg2 : profile ID
+	-- Arg3 : (optional) Data type : either nil or "characteristics", "about", "glance", "character", "unitID"
+	REGISTER_DATA_UPDATED = "REGISTER_DATA_UPDATED",
+	
+	-- Called when you switch from one profile to another
+	-- Use to known when re-compress all of the current profile.
+	-- Arg1 : profile structure
 	REGISTER_PROFILES_LOADED = "REGISTER_PROFILES_LOADED",
+	
+	-- Called when a profile is deleted (character or companion)
+	-- Arg1 : Profile ID
+	-- Arg2 : (optional, currently only for characters) A tab containing all the linked unitIDs to the profile
 	REGISTER_PROFILE_DELETED = "REGISTER_PROFILE_DELETED",
-	REGISTER_DATA_CHANGED = "REGISTER_DATA_CHANGED",
-	REGISTER_IGNORED = "REGISTER_IGNORED",
-	REGISTER_EXCHANGE_RECEIVED_INFO = "REGISTER_EXCHANGE_RECEIVED_INFO",
-	REGISTER_MISC_SAVED = "REGISTER_MISC_SAVED",
-	REGISTER_ABOUT_SAVED = "REGISTER_ABOUT_SAVED",
-	REGISTER_CHARACTERISTICS_SAVED = "REGISTER_CHARACTERISTICS_SAVED",
-	REGISTER_RPSTATUS_CHANGED = "REGISTER_RPSTATUS_CHANGED",
-	REGISTER_XPSTATUS_CHANGED = "REGISTER_XPSTATUS_CHANGED",
-	REGISTER_CURRENTLY_CHANGED = "REGISTER_CURRENTLY_CHANGED",
+	
+	-- Called when as "About" page is shown.
+	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
-	-- Notifications
+
+	-- Called when a notifications is created
 	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
-	-- Target
-	TARGET_SHOULD_REFRESH = "TARGET_SHOULD_REFRESH",
+	
+	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired
+	-- Arg1 : Target ID
+	-- Arg2 : Target mode (Character, pet, battle pet ...)
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
 };
 

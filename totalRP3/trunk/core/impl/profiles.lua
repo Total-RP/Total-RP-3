@@ -101,13 +101,14 @@ end
 -- Just internally switch the current profile structure. That's all.
 local function selectProfile(profileID)
 	if not profiles[profileID] then
-		error("Unknown profile id: "+profileID);
+		error("Unknown profile id: " + profileID);
 	end
 	currentProfile = profiles[profileID];
 	currentProfileId = profileID;
 	character.profileID = profileID;
 	displayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[character.profileID]["profileName"].."|r"));
 	Events.fireEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 end
 
 -- Edit a profile name

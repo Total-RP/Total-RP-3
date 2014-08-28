@@ -659,8 +659,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 
 	-- To try, but I'm afraid for performances ...
-	TRP3_API.events.listenToEvent(Events.REGISTER_DATA_CHANGED, function()
-		if getCurrentPageID() == REGISTER_LIST_PAGEID then
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		if getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then
 			refreshList();
 		end
 	end);
