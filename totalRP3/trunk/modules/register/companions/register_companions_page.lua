@@ -76,7 +76,6 @@ end
 local function applyPeekSlot(slot, companionID, ic, ac, ti, tx)
 	local dataTab = (getCompanionProfile(companionID) or {}).PE or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, getCompanionProfileID(companionID), "glance");
 end
 
 function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companionFullID)
@@ -88,6 +87,7 @@ function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companio
 		local preset = PEEK_PRESETS[presetID];
 		applyPeekSlot(slot, companionID, preset.icon, true, preset.title, preset.text);
 	end
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, getCompanionProfileID(companionID), "misc");
 	refreshIfNeeded();
 end
 
@@ -95,7 +95,7 @@ local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 	local context = getCurrentContext();
 	assert(context and context.profile, "No profile in context !");
 	applyPeekSlotProfile(button.index, context.profile.PE, ic, ac, ti, tx);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "glance");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "misc");
 	refreshIfNeeded();
 end
 
@@ -333,7 +333,7 @@ local function onPageShow(context)
 	tabGroup:SelectTab(1);
 end
 
-local function onReceivedInfo(profileID)
+local function onInformationUpdated(profileID)
 	if getCurrentPageID() == COMPANIONS_PAGE_ID then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
@@ -363,7 +363,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 	
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		onReceivedInfo(profileID, dataType);
+		onInformationUpdated(profileID, dataType);
 	end);
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetScript("OnClick", toEditMode);

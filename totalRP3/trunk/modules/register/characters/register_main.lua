@@ -265,7 +265,7 @@ local function onMouseOver(...)
 	end
 end
 
-local function onReceivedInfo(profileID, infoType)
+local function onInformationUpdated(profileID, infoType)
 	if getCurrentPageID() == "player_main" then
 		local context = getCurrentContext();
 		assert(context, "No context for page player_main !");
@@ -379,7 +379,7 @@ function TRP3_API.register.init()
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		onReceivedInfo(profileID, dataType);
+		onInformationUpdated(profileID, dataType);
 	end);
 
 

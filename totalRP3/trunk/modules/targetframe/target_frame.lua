@@ -219,23 +219,6 @@ local function onStart()
 		end
 	end
 
-	local function refreshIfNeeded(targetID)
-		if not targetID or currentTargetID == targetID then
-			onTargetChanged();
-		end
-	end
-
-	local function refreshIfNeededTab(unitIDTab)
-		if unitIDTab then
-			for unitID, _ in pairs(unitIDTab) do
-				if currentTargetID == unitID then
-					onTargetChanged();
-					break;
-				end
-			end
-		end
-	end
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -341,8 +324,7 @@ local function onStart()
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-
-	Events.listenToEvent(Events.REGISTER_ABOUT_READ, refreshIfNeededTab);
+	Events.listenToEvent(Events.REGISTER_ABOUT_READ, onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "characteristics" or dataType == "about") then
 			onTargetChanged();

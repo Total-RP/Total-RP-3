@@ -568,7 +568,7 @@ local function refreshConsultDisplay(context)
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
-		Events.fireEvent(Events.REGISTER_ABOUT_READ, context.profile.link);
+		Events.fireEvent(Events.REGISTER_ABOUT_READ);
 		TRP3_RegisterAbout_AboutPanel_ThumbUp:Show();
 		TRP3_RegisterAbout_AboutPanel_ThumbDown:Show();
 		refreshVoteDisplay(dataTab);
@@ -791,15 +791,13 @@ local function onSave()
 	showAboutTab();
 end
 
-local function onAboutReceived(profileID, type)
-	if type == "about" then
-		local aboutData = getProfile(profileID);
-		-- Check that there is a description. If not => set read to true !
-		local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
-		if noDescr then
-			aboutData.read = true;
-			Events.fireEvent(Events.REGISTER_ABOUT_READ);
-		end
+local function onAboutReceived(profileID)
+	local aboutData = getProfile(profileID);
+	-- Check that there is a description. If not => set read to true !
+	local noDescr = (aboutData.TE == 1 and not shouldShowTemplate1(aboutData)) or (aboutData.TE == 2 and not shouldShowTemplate2(aboutData)) or (aboutData.TE == 3 and not shouldShowTemplate3(aboutData))
+	if noDescr then
+		aboutData.read = true;
+		Events.fireEvent(Events.REGISTER_ABOUT_READ);
 	end
 end
 
@@ -912,6 +910,8 @@ function TRP3_API.register.inits.aboutInit()
 	compressData();
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		onAboutReceived(profileID, dataType);
+		if dataType == "about" and unitID and unitID ~= Globals.player_id then
+			onAboutReceived(profileID);
+		end
 	end);
 end

@@ -142,6 +142,7 @@ local function onStart()
 		ui_GlanceBar:Hide();
 		currentTargetType, isCurrentMine = getTargetType();
 		currentTargetProfileID = nil;
+		currentTargetID = nil;
 		if currentTargetType == TYPE_CHARACTER then
 			currentTargetID = getUnitID("target");
 		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
@@ -287,7 +288,8 @@ local function onStart()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "glance") then
+		print(("%s (%s) %s %s"):format(tostring(unitID), tostring(currentTargetID), tostring(profileID), tostring(dataType)));
+		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "misc") then
 			onTargetChanged();
 		end
 	end);

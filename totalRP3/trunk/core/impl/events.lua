@@ -23,7 +23,7 @@ TRP3_API.events = {
 	-- General event when a data changed in a profile of a certain unitID (character or companion)
 	-- Arg1 : (optional) unitID or companionFullID
 	-- Arg2 : profile ID
-	-- Arg3 : (optional) Data type : either nil or "characteristics", "about", "glance", "character", "unitID"
+	-- Arg3 : (optional) Data type : either nil or "characteristics", "about", "misc", "character", "unitID"
 	REGISTER_DATA_UPDATED = "REGISTER_DATA_UPDATED",
 	
 	-- Called when you switch from one profile to another
@@ -40,7 +40,7 @@ TRP3_API.events = {
 	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
 
-	-- Called when a notifications is created
+	-- Called when a notifications is created/read/removed
 	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
 	
 	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired

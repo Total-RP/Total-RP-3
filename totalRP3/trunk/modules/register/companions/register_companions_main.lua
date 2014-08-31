@@ -288,7 +288,7 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 	elseif v == "2" then
 		wipe(profile.PE);
 		tcopy(profile.PE, data);
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "glance");
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	end
 	
 end
