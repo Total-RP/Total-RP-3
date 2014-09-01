@@ -420,12 +420,18 @@ local function showVotingOption(voteValue)
 
 	local profile = context.profile;
 	if profile.link then
-		if tsize(profile.link) == 1 then
-			for unitID, _ in pairs(profile.link) do -- For loop because it's a hash table
+		local sent = false;
+		for unitID, _ in pairs(profile.link) do
+			local isOnline = true;
+			if isOnline then
+				-- TODO: check if is online
 				sendVote(voteValue, unitID, profile);
+				sent = true;
+				break;
 			end
-		else
-		-- TODO: auto detect which is online
+		end
+		if not sent then
+			Utils.message.displayMessage(loc("REG_PLAYER_ABOUT_VOTE_NO"));
 		end
 	end
 end

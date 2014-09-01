@@ -288,7 +288,6 @@ local function onStart()
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		print(("%s (%s) %s %s"):format(tostring(unitID), tostring(currentTargetID), tostring(profileID), tostring(dataType)));
 		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "misc") then
 			onTargetChanged();
 		end
