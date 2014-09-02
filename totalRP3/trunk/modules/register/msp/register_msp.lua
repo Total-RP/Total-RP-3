@@ -77,8 +77,8 @@ local function onStart()
 		local tostring, tonumber, next, ipairs = tostring, tonumber, next, ipairs
 
 		local MSP_TT_ALONE = { 'TT' }
-		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC' }
-		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true }
+		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC', 'IC' }
+		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true, RC=true, IC=true }
 		local MSP_PROBE_FREQUENCY = 300.0 + math.random(0, 60) -- Wait 5-6 minutes for someone to respond before asking again
 		local MSP_FIELD_UPDATE_FREQUENCY = 10.0 + math.random(0, 5) -- Fields newer than 10-15 seconds old are still fresh
 
@@ -399,6 +399,7 @@ local function onStart()
 	local function updateCharacteristicsData()
 		local dataTab = get("player/characteristics");
 		msp.my['NA'] = getCompleteName(dataTab, Globals.player);
+		msp.my['IC'] = dataTab.IC or Globals.icons.profile_default;
 		msp.my['NT'] = dataTab.FT;
 		msp.my['RA'] = dataTab.RA;
 		if dataTab.CL and dataTab.CH and dataTab.CH:len() > 0 then
@@ -469,6 +470,7 @@ local function onStart()
 		HB = "BP",
 		NT = "FT",
 		NA = "FN",
+		IC = "IC"
 	}
 
 	local CHARACTER_FIELDS = {
@@ -639,7 +641,7 @@ local function onStart()
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
 	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH"};
+	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH","IC"};
 
 	local function requestInformation(targetID, targetMode)
 		if targetID and targetMode == TYPE_CHARACTER
