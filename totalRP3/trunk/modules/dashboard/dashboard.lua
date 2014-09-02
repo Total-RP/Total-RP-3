@@ -9,7 +9,7 @@ TRP3_API.dashboard = {
 };
 
 -- imports
-local GetMouseFocus, _G, TRP3_DashboardStatus_Currently = GetMouseFocus, _G, TRP3_DashboardStatus_Currently;
+local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage;
 local loc = TRP3_API.locale.getText;
 local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -25,10 +25,22 @@ local assert, tostring, tinsert, date, time, pairs, tremove, EMPTY, unpack, wipe
 local initList, handleMouseWheel = TRP3_API.ui.list.initList, TRP3_API.ui.list.handleMouseWheel;
 local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No = TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NOTIFICATIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- No : no notification
+-- Simple : notification
+-- Double : notification + chat frame
+-- Triple : notification + chat frame + raid alert
+local NOTIFICATION_METHOD = {
+	SIMPLE = 1,
+	DOUBLE = 2,
+	TRIPLE = 3
+};
+TRP3_API.dashboard.NOTIFICATION_METHOD = NOTIFICATION_METHOD;
 
 local DATE_FORMAT = "%d/%m/%y %H:%M:%S";
 local NOTIFICATION_TYPES = {};
@@ -43,7 +55,11 @@ end
 
 function TRP3_API.dashboard.notify(notificationID, text, ...)
 	assert(NOTIFICATION_TYPES[notificationID], "Unknown notification type: " .. tostring(notificationID));
-	if getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID) ~= true then return end
+	if not getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID) then
+		return
+	end
+	
+	local method = getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID);
 	local notificationType = NOTIFICATION_TYPES[notificationID];
 	local character = getPlayerCharacter();
 	local notification = {};
@@ -57,11 +73,18 @@ function TRP3_API.dashboard.notify(notificationID, text, ...)
 	end
 	notification.time = time();
 	tinsert(character.notifications, notification);
+	
+	-- Chat message
+	if method == NOTIFICATION_METHOD.DOUBLE or method == NOTIFICATION_METHOD.TRIPLE then
+		displayMessage(notification.text);
+	end
+	
+	-- Raid alert
+	if method == NOTIFICATION_METHOD.TRIPLE then
+		RaidNotice_AddMessage(RaidWarningFrame, notification.text, ChatTypeInfo["RAID_WARNING"]);
+	end
+	
 	Events.fireEvent(Events.NOTIFICATION_CHANGED);
-end
-
-function TRP3_API.dashboard.getNotificationTypeList()
-	return NOTIFICATION_TYPES;
 end
 
 local function decorateNotificationList(widget, index)
@@ -126,6 +149,39 @@ local function onNotificationShow(button)
 	end
 	if notificationType.removeOnShown ~= false then
 		onNotificationRemove(button);
+	end
+end
+
+local function buildNotificationConfig()
+	-- Notifications
+	local sortedNotifs = Utils.table.keys(NOTIFICATION_TYPES);
+
+	table.sort(sortedNotifs);
+
+	tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_GENERAL_NOTIF"),
+	});
+
+	local NOTIFICATION_METHOD_TAB = {
+		{loc("CO_NOTIF_NO"), false},
+		{loc("CO_NOTIF_SIMPLE"), 1},
+		{loc("CO_NOTIF_DOUBLE"), 2},
+		{loc("CO_NOTIF_TRIPLE"), 3},
+	}
+
+	for _, notificationID in pairs(sortedNotifs) do
+		local notification = NOTIFICATION_TYPES[notificationID];
+		registerConfigKey(NOTIF_CONFIG_PREFIX .. notificationID, notification.defaultMethod or NOTIFICATION_METHOD.SIMPLE);
+
+		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
+			inherit = "TRP3_ConfigDropDown",
+			widgetName = "TRP3_ConfigurationTooltip_Notif_" .. notificationID,
+			title = notification.configText or notificationID,
+			configKey = NOTIF_CONFIG_PREFIX .. notificationID,
+			listContent = NOTIFICATION_METHOD_TAB,
+			listCancel = true,
+		});
 	end
 end
 
@@ -293,7 +349,7 @@ TRP3_API.dashboard.init = function()
 		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
 	};
 	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
-	
+
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then
 			onShow(nil);
@@ -307,6 +363,7 @@ TRP3_API.dashboard.init = function()
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	buildNotificationConfig();
 	if TRP3_API.toolbar then
 		-- Show/hide cape
 		local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");
@@ -342,7 +399,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Cape);
-	
+
 		-- Show / hide helmet
 		local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
 		local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
@@ -377,7 +434,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
-	
+
 		-- away/dnd
 		local status1Text = icon("Ability_Mage_IncantersAbsorbtion", 25).." "..color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
 		local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
@@ -429,14 +486,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
-	
+
 		-- Toolbar RP status
 		local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 		local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
 		local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
 		local get = TRP3_API.profile.getData;
 		local defaultIcon = TRP3_API.globals.player_icon;
-	
+
 		local Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
 			icon = "Inv_misc_grouplooking",

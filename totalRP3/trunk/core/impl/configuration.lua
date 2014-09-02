@@ -288,9 +288,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		pageText = loc("CO_TOOLBAR"),
 		elements = {},
 	};
-end);
-
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	
 	-- GENERAL SETTINGS INIT
 	-- localization
 	local localeTab = {};
@@ -305,7 +303,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
 
 	-- Build widgets
-	local CONFIG_STRUCTURE_GENERAL = {
+	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
 		id = "main_config_aaa_general",
 		menuText = loc("CO_GENERAL"),
 		pageText = loc("CO_GENERAL"),
@@ -370,31 +368,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				configKey = "ui_sounds",
 				help = loc("CO_GENERAL_UI_SOUNDS_TT"),
 			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc("CO_GENERAL_NOTIF"),
-			},
 		}
 	}
-
-	-- Notifications
-	local notifs = TRP3_API.dashboard.getNotificationTypeList();
-	local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
-	local sortedNotifs = Utils.table.keys(notifs);
-	sort(sortedNotifs);
-	for _, notificationID in pairs(sortedNotifs) do
-		local notification = notifs[notificationID];
-		registerConfigKey(NOTIF_CONFIG_PREFIX .. notificationID, true);
-		tinsert(CONFIG_STRUCTURE_GENERAL.elements, {
-			inherit = "TRP3_ConfigCheck",
-			title = notification.configText or notificationID,
-			configKey = NOTIF_CONFIG_PREFIX .. notificationID,
-		});
-	end
-
-	registerConfigurationPage(CONFIG_STRUCTURE_GENERAL);
 end);
 
 function TRP3_API.configuration.constructConfigPage()
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);
+	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL);
 end

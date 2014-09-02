@@ -39,6 +39,7 @@ local LOCALE_EN = {
 		REG_PLAYER_HERE = "Get position",
 		REG_PLAYER_HERE_TT = "Click to get your current position",
 		REG_PLAYER_COLOR_CLASS = "Class color",
+		REG_PLAYER_COLOR_CLASS_TT = "This will also determines the name color.\n\n",
 		REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
 		REG_PLAYER_FULLTITLE = "Full title",
 		REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
@@ -423,6 +424,10 @@ local LOCALE_EN = {
 		CO_MSP = "Mary Sue Protocol",
 		CO_MSP_T3 = "Use template 3 only",
 		CO_MSP_T3_TT = "Event if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
+		CO_NOTIF_NO = "No notification",
+		CO_NOTIF_SIMPLE = "Notification",
+		CO_NOTIF_DOUBLE = "Notification + chat message",
+		CO_NOTIF_TRIPLE = "Notification + chat message + raid alert",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

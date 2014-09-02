@@ -850,7 +850,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_COLOR_TT"));
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR_CLASS"), loc("REG_PLAYER_COLOR_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR_CLASS"), loc("REG_PLAYER_COLOR_CLASS_TT") .. loc("REG_PLAYER_COLOR_TT"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
