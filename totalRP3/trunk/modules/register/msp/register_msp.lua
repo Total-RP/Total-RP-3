@@ -398,7 +398,7 @@ local function onStart()
 
 	local function updateCharacteristicsData()
 		local dataTab = get("player/characteristics");
-		msp.my['NA'] = getCompleteName(dataTab, Globals.player);
+		msp.my['NA'] = "|cff"..dataTab.CH..getCompleteName(dataTab, Globals.player).."|r";
 		msp.my['IC'] = dataTab.IC or Globals.icons.profile_default;
 		msp.my['NT'] = dataTab.FT;
 		msp.my['RA'] = dataTab.RA;
