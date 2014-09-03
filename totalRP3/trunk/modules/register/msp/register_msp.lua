@@ -79,8 +79,8 @@ local function onStart()
 		local MSP_TT_ALONE = { 'TT' }
 		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC', 'IC' }
 		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true, RC=true, IC=true }
-		local MSP_PROBE_FREQUENCY = 300.0 + math.random(0, 60) -- Wait 5-6 minutes for someone to respond before asking again
-		local MSP_FIELD_UPDATE_FREQUENCY = 10.0 + math.random(0, 5) -- Fields newer than 10-15 seconds old are still fresh
+		local MSP_PROBE_FREQUENCY = 300.0; -- Wait 5 minutes for someone to respond before asking again
+		local MSP_FIELD_UPDATE_FREQUENCY = 10.0; -- Fields newer than 10 seconds old are still fresh
 
 		local garbage = setmetatable( {}, { __mode = "k" } )
 		local function newtable()
@@ -398,7 +398,11 @@ local function onStart()
 
 	local function updateCharacteristicsData()
 		local dataTab = get("player/characteristics");
-		msp.my['NA'] = "|cff"..dataTab.CH..getCompleteName(dataTab, Globals.player).."|r";
+		if dataTab.CH and dataTab.CH:len() > 0 then
+			msp.my['NA'] = "|cff" .. dataTab.CH .. getCompleteName(dataTab, Globals.player) .. "|r";
+		else
+			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
+		end
 		msp.my['IC'] = dataTab.IC or Globals.icons.profile_default;
 		msp.my['NT'] = dataTab.FT;
 		msp.my['RA'] = dataTab.RA;

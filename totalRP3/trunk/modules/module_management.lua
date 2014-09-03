@@ -82,6 +82,7 @@ TRP3_API.module.initModules = function()
 			if not ok then
 				module.status = MODULE_STATUS.ERROR_ON_INIT;
 				module.error = mess;
+				Log.log(("Error on module %s init: "):format(moduleID) .. mess);
 			end
 		end
 	end
@@ -98,6 +99,7 @@ TRP3_API.module.startModules = function()
 			if not ok then
 				module.status = MODULE_STATUS.ERROR_ON_LOAD;
 				module.error = mess;
+				Log.log(("Error on module %s start: "):format(moduleID) .. mess);
 			end
 		end
 	end
