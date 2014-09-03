@@ -94,8 +94,8 @@ end
 
 -- 254 - TRP3(4) - MESSAGE_ID(2) - control character(1)
 local AVAILABLE_CHARACTERS = 246;
-local NEXT_PACKET_PREFIX = 1;
-local LAST_PACKET_PREFIX = 2;
+local NEXT_PACKET_PREFIX = "\001";
+local LAST_PACKET_PREFIX = "\002";
 local PACKETS_RECEPTOR = {};
 
 -- Send each packet to the current communication interface.
@@ -103,9 +103,9 @@ local function handlePacketsOut(messageID, packets, target, priority)
 	if #packets ~= 0 then
 		for index, packet in pairs(packets) do
 			assert(packet:len() <= AVAILABLE_CHARACTERS, "Too long packet: " .. packet:len());
-			local control = string.char(NEXT_PACKET_PREFIX);
+			local control = NEXT_PACKET_PREFIX;
 			if index == #packets then
-				control = string.char(LAST_PACKET_PREFIX);
+				control = LAST_PACKET_PREFIX;
 			end
 			getCommunicationInterface()(messageID..control..packet, target, priority);
 		end
@@ -138,7 +138,7 @@ function handlePacketsIn(packet, sender)
 		local messageID = packet:sub(1, 2);
 		local control = packet:sub(3, 3);
 		savePacket(sender, messageID, packet:sub(4));
-		if control:byte(1) == LAST_PACKET_PREFIX then
+		if control == LAST_PACKET_PREFIX then
 			handleStructureIn(getPackets(sender, messageID), sender);
 			endPacket(sender, messageID);
 		end
@@ -177,8 +177,8 @@ local function handleStructureOut(structure, target, priority)
 	local messageID = getMessageIDAndIncrement();
 	local messageSize = message:len();
 	local packetTab = {};
-	local index = 0;
-	while index < messageSize do
+	local index = 1;
+	while index <= messageSize do
 		tinsert(packetTab, message:sub(index, index + (AVAILABLE_CHARACTERS - 1)));
 		index = index + AVAILABLE_CHARACTERS;
 	end
