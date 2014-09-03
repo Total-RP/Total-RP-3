@@ -32,6 +32,7 @@ local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
+local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -99,10 +100,17 @@ local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 	refreshIfNeeded();
 end
 
-local function onGlanceClick(button)
+local function onGlanceClick(button,mouseClick)
 	local context = getCurrentContext();
 	if context.isPlayer then
-		openGlanceEditor(button, onGlanceEditorConfirm);
+		if mouseClick == "LeftButton" then
+			openGlanceEditor(button, onGlanceEditorConfirm);
+		else
+			if context.profile.PE[button.index] then
+				onGlanceEditorConfirm(button, context.profile.PE[button.index]["IC"], not context.profile.PE[button.index]["AC"], context.profile.PE[button.index]["TI"], context.profile.PE[button.index]["TX"]);
+				refreshTooltip(button);
+			end
+		end
 	end
 end
 
@@ -406,6 +414,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onGlanceClick);
+		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
 		button.index = tostring(index);
 	end
 
