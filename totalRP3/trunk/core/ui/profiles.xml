@@ -45,10 +45,12 @@
 				TRP3_RefreshTooltipForFrame(self);
 				self.oldR, self.oldG, self.oldB, self.oldA = self:GetBackdropBorderColor();
 				self:SetBackdropBorderColor(1, 1, 0);
+				SetCursor("Interface\\CURSOR\\Cast")
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
 				self:SetBackdropBorderColor(self.oldR, self.oldG, self.oldB, self.oldA);
+				SetCursor(nil);
 			</OnLeave>
 		</Scripts>
 		<Layers>
