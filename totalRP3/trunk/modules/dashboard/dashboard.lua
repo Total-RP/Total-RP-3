@@ -42,11 +42,14 @@ local NOTIFICATION_METHOD = {
 };
 TRP3_API.dashboard.NOTIFICATION_METHOD = NOTIFICATION_METHOD;
 
+local loaded = false;
 local DATE_FORMAT = "%d/%m/%y %H:%M:%S";
 local NOTIFICATION_TYPES = {};
 local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
+local NOTIF_INDEXES = {};
 
 function TRP3_API.dashboard.registerNotificationType(notificationType)
+	assert(not loaded, "Please register your notification type before WORKFLOW_ON_LOADED.");
 	assert(notificationType and notificationType.id, "Nil notificationType or no id");
 	assert(not NOTIFICATION_TYPES[notificationType.id], "Already registered notification type: " .. notificationType.id);
 	NOTIFICATION_TYPES[notificationType.id] = notificationType;
@@ -87,7 +90,8 @@ function TRP3_API.dashboard.notify(notificationID, text, ...)
 	Events.fireEvent(Events.NOTIFICATION_CHANGED);
 end
 
-local function decorateNotificationList(widget, index)
+local function decorateNotificationList(widget, i)
+	local index = NOTIF_INDEXES[i];
 	local notifications = getPlayerCharacter().notifications;
 	widget.notification = notifications[index];
 	_G[widget:GetName().."Text"]:SetText(widget.notification.text);
@@ -101,13 +105,18 @@ local function decorateNotificationList(widget, index)
 	end
 end
 
-local function refreshNotifications()
-	local count = 0;
+local function refreshNotifications(filter)
 	local character = getPlayerCharacter();
+	filter = filter or 0;
+	wipe(NOTIF_INDEXES);
 	if character.notifications then
-		count = #character.notifications;
+		for index, notif in pairs(character.notifications) do
+			if filter == 0 or notif.id == filter then
+				tinsert(NOTIF_INDEXES, index);
+			end
+		end
 	end
-	if count == 0 then
+	if #NOTIF_INDEXES == 0 then
 		TRP3_DashboardNotifications_No:Show();
 		TRP3_DashboardNotificationsClear:Hide();
 	else
@@ -115,7 +124,7 @@ local function refreshNotifications()
 		TRP3_DashboardNotificationsClear:Show();
 	end
 
-	initList(TRP3_DashboardNotifications, count, TRP3_DashboardNotificationsSlider);
+	initList(TRP3_DashboardNotifications, NOTIF_INDEXES, TRP3_DashboardNotificationsSlider);
 end
 
 local function onNotificationRemove(button)
@@ -153,7 +162,8 @@ local function onNotificationShow(button)
 end
 
 local function buildNotificationConfig()
-	-- Notifications
+	loaded = true;
+	-- Config
 	local sortedNotifs = Utils.table.keys(NOTIFICATION_TYPES);
 
 	table.sort(sortedNotifs);
@@ -169,11 +179,15 @@ local function buildNotificationConfig()
 		{loc("CO_NOTIF_DOUBLE"), 2},
 		{loc("CO_NOTIF_TRIPLE"), 3},
 	}
+	
+	local notifList = {
+		{loc("DB_NOTIFICATIONS_ALL"), 0},
+	};
 
 	for _, notificationID in pairs(sortedNotifs) do
 		local notification = NOTIFICATION_TYPES[notificationID];
 		registerConfigKey(NOTIF_CONFIG_PREFIX .. notificationID, notification.defaultMethod or NOTIFICATION_METHOD.SIMPLE);
-
+		tinsert(notifList, {notification.configText or notificationID, notificationID});
 		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigurationTooltip_Notif_" .. notificationID,
@@ -183,6 +197,10 @@ local function buildNotificationConfig()
 			listCancel = true,
 		});
 	end
+	
+	-- Filter
+	setupListBox(TRP3_DashboardNotificationsFilter, notifList, refreshNotifications, nil, 170, true);
+	TRP3_DashboardNotificationsFilter:SetSelectedValue(0);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -69,7 +69,7 @@
 				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
 			        <Size x="256" y="128"/>
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="TOP" x="0" y="0"/>
 					</Anchors>
 				</Texture>
 			</Layer>
@@ -203,7 +203,7 @@
 						<Anchors>
 							<Anchor point="RIGHT" x="-7" y="2"/>
 							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="BOTTOM" x="0" y="27"/>
+							<Anchor point="BOTTOM" x="0" y="37"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
@@ -216,10 +216,15 @@
 							</OnLoad>
 						</Scripts>
 					</Slider>
+					<Frame name="TRP3_DashboardNotificationsFilter" inherits="UIDropDownMenuTemplate" enableMouse="true">
+				        <Anchors>
+							<Anchor point="BOTTOMLEFT" x="-3" y="7"/>
+						</Anchors>
+				    </Frame>
 					<Button name="TRP3_DashboardNotificationsClear" inherits="UIPanelButtonTemplate">
 						<Size x="200" y="20"/>
 						<Anchors>
-							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="BOTTOMRIGHT" x="-22" y="15"/>
 						</Anchors>
 					</Button>
 				</Frames>
