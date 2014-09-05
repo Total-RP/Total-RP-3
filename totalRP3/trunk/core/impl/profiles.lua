@@ -348,6 +348,9 @@ function TRP3_API.profile.init()
 	local widgetTab = {};
 	for i=1,5 do
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
+		widget:SetScript("OnMouseUp",function (self)
+			onProfileSelected(_G[self:GetName().."Select"]);
+		end);
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
 		_G[widget:GetName().."Select"]:SetText(loc("CM_SELECT"));
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
