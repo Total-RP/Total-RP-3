@@ -39,18 +39,22 @@
 					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2"/>
 				</Anchors>
 			</Button>
+			<Frame name="$parentHighlight" setAllPoints="true" inherits="GlowBorderTemplate" hidden="true">
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.55);
+					</OnLoad>
+				</Scripts>
+			</Frame>
 		</Frames>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
-				self.oldR, self.oldG, self.oldB, self.oldA = self:GetBackdropBorderColor();
-				self:SetBackdropBorderColor(1, 1, 0);
-				SetCursor("Interface\\CURSOR\\Cast")
+				_G[self:GetName().."Highlight"]:Show();
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
-				self:SetBackdropBorderColor(self.oldR, self.oldG, self.oldB, self.oldA);
-				SetCursor(nil);
+				_G[self:GetName().."Highlight"]:Hide();
 			</OnLeave>
 		</Scripts>
 		<Layers>
