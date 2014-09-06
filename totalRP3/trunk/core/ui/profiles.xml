@@ -1,27 +1,32 @@
-﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
-	
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+
 	<!-- Profile manager : Line -->
 	<Frame name="TRP3_ProfileManagerLine" virtual="true">
 		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<EdgeSize>
+				<AbsValue val="24" />
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="418" />
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5" />
+			</BackgroundInsets>
 		</Backdrop>
-		<Size x="425" y="65"/>
+		<Size x="425" y="65" />
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
-				<Size x="40" y="40"/>
-				<Anchors>	
-					<Anchor point="LEFT" x="15" y="0"/>
+				<Size x="40" y="40" />
+				<Anchors>
+					<Anchor point="LEFT" x="15" y="0" />
 				</Anchors>
 			</Frame>
 			<Button name="$parentSelect" inherits="UIPanelButtonTemplate" text="[SELECT]">
 				<Size>
-	                <AbsDimension x="80" y="25"/>
-	            </Size>
+					<AbsDimension x="80" y="25" />
+				</Size>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
+					<Anchor point="TOPRIGHT" x="-8" y="-8" />
 				</Anchors>
 				<Scripts>
 					<PostClick>
@@ -31,12 +36,12 @@
 			</Button>
 			<Button name="$parentAction" inherits="TRP3_ActionButton">
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+					<Anchor point="BOTTOMRIGHT" x="-4" y="4" />
 				</Anchors>
 			</Button>
 			<Button name="$parentInfo" inherits="TRP3_HelpButton">
 				<Anchors>
-					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2"/>
+					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2" />
 				</Anchors>
 			</Button>
 			<Frame name="$parentHighlight" setAllPoints="true" inherits="GlowBorderTemplate" hidden="true">
@@ -61,23 +66,23 @@
 			<Layer level="OVERLAY">
 				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]" hidden="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="3"/>
+						<Anchor point="TOPLEFT" x="20" y="3" />
 					</Anchors>
-					<Color r="0.0" g="0.95" b="0.0"/>
+					<Color r="0.0" g="0.95" b="0.0" />
 				</FontString>
 				<FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT" text="[PROFILE_NAME]">
-					<Size x="270" y="20"/>
+					<Size x="270" y="20" />
 					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0"/>
+						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0" />
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
+					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 				<FontString name="$parentCount" inherits="GameFontNormalSmall" justifyH="LEFT" text="[PROFILE_COUNT]">
-					<Size x="230" y="10"/>
+					<Size x="230" y="10" />
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5" />
 					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10"/>
+					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>
 			</Layer>
 		</Layers>
@@ -85,75 +90,98 @@
 
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
-	     <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
+			<EdgeSize>
+				<AbsValue val="24" />
+			</EdgeSize>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
+			<TileSize val="425" />
 		</Backdrop>
-		<Size x="530" y="0"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-StatsBackground">
-					<Size x="526" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="0" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
-					</Anchors>
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[PROFILES MANAGER]">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="50" y="-25"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
-			</Layer>
-		</Layers>
+		<Size x="530" y="0" />
 		<Frames>
-			<Frame name="$parentList">
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<Frame frameLevel="2">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+					<EdgeSize>
+						<AbsValue val="32" />
+					</EdgeSize>
 				</Backdrop>
-				<Size x="450" y="350"/>
 				<Anchors>
-					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="TOPRIGHT" x="-8" y="-33" />
+					<Anchor point="BOTTOMLEFT" x="8" y="8" />
 				</Anchors>
 				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="$parentEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]" hidden="true">
-							<Size x="0" y="10"/>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+							<Size x="506" y="0" />
 							<Anchors>
-								<Anchor point="CENTER" x="0" y="0"/>
+								<Anchor point="TOPRIGHT" x="-4" y="0" />
+								<Anchor point="BOTTOMRIGHT" x="-4" y="0" />
 							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
+							<TexCoords left="0.07" right="1" top="0" bottom="0.98" />
+						</Texture>
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="12" y="-10"/></Anchors>
-					</Frame>
-					<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1"/></Anchors>
-					</Frame>
-					<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1"/></Anchors>
-					</Frame>
-					<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1"/></Anchors>
-					</Frame>
-					<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
-						<Anchors><Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1"/></Anchors>
-					</Frame>
-					<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="340"/>
+					<Frame name="$parentList">
+						<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="32" />
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="418" />
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+						</Backdrop>
+						<Size x="450" y="350" />
 						<Anchors>
-							<Anchor point="RIGHT" x="4" y="2"/>
+							<Anchor point="BOTTOM" x="0" y="20" />
 						</Anchors>
-						<Scripts>
-							<OnLoad>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="$parentEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]" hidden="true">
+									<Size x="0" y="10" />
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0" />
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="12" y="-10" />
+								</Anchors>
+							</Frame>
+							<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1" />
+								</Anchors>
+							</Frame>
+							<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1" />
+								</Anchors>
+							</Frame>
+							<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1" />
+								</Anchors>
+							</Frame>
+							<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
+								<Anchors>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1" />
+								</Anchors>
+							</Frame>
+							<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
+								<Size x="15" y="340" />
+								<Anchors>
+									<Anchor point="RIGHT" x="4" y="2" />
+								</Anchors>
+								<Scripts>
+									<OnLoad>
 								local name = self:GetName();
 								_G[name .. "Text"]:SetText("");
 								_G[name .. "High"]:SetText("");
@@ -162,18 +190,20 @@
 								self:SetValueStep(1);
 								self:SetOrientation("VERTICAL");
 							</OnLoad>
-						</Scripts>
-					</Slider>
+								</Scripts>
+							</Slider>
+						</Frames>
+					</Frame>
+					<Button name="$parentAdd" inherits="UIPanelButtonTemplate">
+						<Size x="150" y="20" />
+						<Anchors>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5" />
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
-			<Button name="$parentAdd" inherits="UIPanelButtonTemplate">
-				<Size x="150" y="20"/>
-				<Anchors>
-					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5"/>
-				</Anchors>
-			</Button>
 		</Frames>
 	</Frame>
-	
-	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
+
+	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true" />
 </Ui>

@@ -32,7 +32,7 @@ local PR_DEFAULT_PROFILE = {
 };
 
 -- Return the default profile.
--- Note that this profile is never directly linked to a character, only dupplicated !
+-- Note that this profile is never directly linked to a character, only duplicated !
 TRP3_API.profile.getDefaultProfile = function()
 	return PR_DEFAULT_PROFILE;
 end
@@ -343,6 +343,7 @@ function TRP3_API.profile.init()
 	end
 
 	-- UI
+	local tabGroup; -- Reference to the tab panel tabs group
 	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerListSlider);
 	TRP3_ProfileManagerListSlider:SetValue(0);
 	local widgetTab = {};
@@ -364,13 +365,38 @@ function TRP3_API.profile.init()
 	TRP3_ProfileManagerAdd:SetScript("OnClick", uiCreateProfile);
 
 	--Localization
-	TRP3_ProfileManagerTitle:SetText(Utils.str.color("w")..loc("PR_PROFILEMANAGER_TITLE"));
 	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
 
 	registerPage({
 		id = "player_profiles",
 		frame = TRP3_ProfileManager,
-		onPagePostShow = function() uiInitProfileList(); end,
+		onPagePostShow = function() 
+			tabGroup:SelectTab(1);
+			uiInitProfileList(); 
+		end,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
+
+	local frame = CreateFrame("Frame", "TRP3_ProfileManagerTabBar", TRP3_ProfileManager);
+	frame:SetSize(400, 30);
+	frame:SetPoint("TOPLEFT", 17, -5);
+	frame:SetFrameLevel(1);
+
+	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+		{
+			{loc("PR_PROFILEMANAGER_TITLE"), 1, 150},
+			{loc("PR_IMPORT_CHAR_TAB"), 2, 150},
+		},
+		function(tabWidget, value)
+			local list, importer = TRP3_ProfileManager:GetChildren();
+			importer:Hide();
+			list:Hide();
+			if value == 1 then
+				list:Show();
+			elseif value == 2 then
+				importer:Show();
+			end
+		end
+	);
+	tabGroup:SelectTab(1);
 end

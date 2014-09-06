@@ -136,4 +136,6 @@
 	<Include file="targetframe\target_frame.xml"/>
 	
 	<Include file="toolbar\toolbar.xml"/>
+	
+	<Include file="importer\importer.xml"/>
 </Ui>

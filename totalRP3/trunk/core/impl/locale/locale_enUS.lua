@@ -500,6 +500,7 @@ local LOCALE_EN = {
 		PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway ?",
 		PR_CO_PET = "Pet",
 		PR_CO_BATTLE = "Companion",
+		PR_IMPORT_CHAR_TAB = "Character importer",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD

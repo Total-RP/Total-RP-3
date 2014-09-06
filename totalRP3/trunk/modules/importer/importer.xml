@@ -1,0 +1,42 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+
+	<Frame name="TRP3_ImporterTemplate" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Size x="506" y="0" />
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-4" y="0" />
+						<Anchor point="BOTTOMRIGHT" x="-4" y="0" />
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98" />
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_CharacterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2" hidden="true">
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="-8" y="-33" />
+			<Anchor point="BOTTOMLEFT" x="8" y="8" />
+		</Anchors>
+	</Frame>
+	
+	<Frame name="TRP3_CompanionImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_CompanionsProfiles" frameLevel="2" hidden="true">
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="-8" y="-33" />
+			<Anchor point="BOTTOMLEFT" x="8" y="8" />
+		</Anchors>
+	</Frame>
+
+	<Script file="importer.lua" />
+
+</Ui>

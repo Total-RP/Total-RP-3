@@ -335,7 +335,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsProfilesAdd:SetScript("OnClick", uiCreateProfile);
 
 	--Localization
-	TRP3_CompanionsProfilesTitle:SetText(Utils.str.color("w")..loc("PR_CO_PROFILEMANAGER_TITLE"));
 	TRP3_CompanionsProfilesAdd:SetText(loc("PR_CREATE_PROFILE"));
 	TRP3_CompanionsProfilesListEmpty:SetText(loc("PR_CO_EMPTY"));
 
