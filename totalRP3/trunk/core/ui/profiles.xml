@@ -44,7 +44,13 @@
 					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="5" y="2" />
 				</Anchors>
 			</Button>
-			<Frame name="$parentHighlight" setAllPoints="true" inherits="GlowBorderTemplate" hidden="true">
+			<Frame name="$parentHighlight" inherits="GlowBorderTemplate" hidden="true">
+				<Size>
+	                <AbsDimension x="417" y="58"/>
+	            </Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="5" y="-2"/>
+				</Anchors>
 				<Scripts>
 					<OnLoad>
 						self:SetAlpha(0.55);

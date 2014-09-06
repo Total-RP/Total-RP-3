@@ -19,6 +19,7 @@ local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local playUISound = TRP3_API.ui.misc.playUISound;
 local getPlayerCurrentProfile;
 
 -- Saved variables references
@@ -351,6 +352,7 @@ function TRP3_API.profile.init()
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
 			onProfileSelected(_G[self:GetName().."Select"]);
+			playUISound("gsCharacterSelection");
 		end);
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
 		_G[widget:GetName().."Select"]:SetText(loc("CM_SELECT"));
