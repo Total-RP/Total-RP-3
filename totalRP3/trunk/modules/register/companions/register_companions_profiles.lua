@@ -30,6 +30,7 @@ local companionIDToInfo = Utils.str.companionIDToInfo;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -324,6 +325,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local widgetTab = {};
 	for i=1,5 do
 		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
+		widget:SetScript("OnMouseUp",function (self)
+			onOpenProfile(_G[self:GetName().."Select"]);
+			playUISound("gsCharacterSelection");
+		end);
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onOpenProfile);
 		_G[widget:GetName().."Select"]:SetText(loc("CM_OPEN"));
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
