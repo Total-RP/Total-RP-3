@@ -45,11 +45,9 @@
 				</Anchors>
 			</Button>
 			<Frame name="$parentHighlight" inherits="GlowBorderTemplate" hidden="true">
-				<Size>
-	                <AbsDimension x="417" y="58"/>
-	            </Size>
 				<Anchors>
 					<Anchor point="TOPLEFT" x="5" y="-2"/>
+					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
