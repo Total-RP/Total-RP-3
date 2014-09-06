@@ -311,10 +311,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 	end);
 
+	local tabGroup; -- Reference to the tab panel tabs group
 	registerPage({
 		id = TRP3_API.navigation.page.id.COMPANIONS_PROFILES,
 		frame = TRP3_CompanionsProfiles,
 		onPagePostShow = function(context)
+			tabGroup:SelectTab(1);
 			onPageShow(context);
 		end,
 	});
@@ -342,6 +344,29 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	--Localization
 	TRP3_CompanionsProfilesAdd:SetText(loc("PR_CREATE_PROFILE"));
 	TRP3_CompanionsProfilesListEmpty:SetText(loc("PR_CO_EMPTY"));
+	
+	local frame = CreateFrame("Frame", "TRP3_CompanionsProfilesTabBar", TRP3_CompanionsProfiles);
+	frame:SetSize(400, 30);
+	frame:SetPoint("TOPLEFT", 17, -5);
+	frame:SetFrameLevel(1);
+
+	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+		{
+			{loc("PR_PROFILEMANAGER_TITLE"), 1, 175},
+			{loc("PR_IMPORT_PETS_TAB"), 2, 175},
+		},
+		function(tabWidget, value)
+			local list, importer = TRP3_CompanionsProfiles:GetChildren();
+			importer:Hide();
+			list:Hide();
+			if value == 1 then
+				list:Show();
+			elseif value == 2 then
+				importer:Show();
+			end
+		end
+	);
+	tabGroup:SelectTab(1);
 
 end);
 

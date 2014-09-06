@@ -269,6 +269,7 @@ local LOCALE_EN = {
 		REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
 		REG_COMPANION = "Companion",
 		REG_COMPANIONS = "Companions",
+		REG_COMPANION_PROFILES = "Companions profiles",
 		REG_COMPANION_TF_PROFILE = "Companion profile",
 		REG_COMPANION_TF_NO = "No profile",
 		REG_COMPANION_TF_CREATE = "Create new profile",
@@ -465,7 +466,7 @@ local LOCALE_EN = {
 		-- PROFILES
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		
-		PR_PROFILEMANAGER_TITLE = "Character profiles",
+		PR_PROFILEMANAGER_TITLE = "Characters profiles",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
 		PR_PROFILES = "Profiles",
@@ -500,7 +501,8 @@ local LOCALE_EN = {
 		PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway ?",
 		PR_CO_PET = "Pet",
 		PR_CO_BATTLE = "Companion",
-		PR_IMPORT_CHAR_TAB = "Character importer",
+		PR_IMPORT_CHAR_TAB = "Characters importer",
+		PR_IMPORT_PETS_TAB = "Companions importer",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD
