@@ -664,6 +664,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			refreshList();
 		end
 	end);
+	
+	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
+		selectedIDs[profileID] = nil;
+		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+		end
+		if getCurrentPageID() == REGISTER_LIST_PAGEID then
+			refreshList();
+		end
+	end);
 
 	registerMenu({
 		id = REGISTER_PAGE,
@@ -735,16 +745,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			onCharactersActions(self);
 		elseif currentMode == MODE_PETS then
 			onPetsActions(self);
-		end
-	end);
-
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
-		selectedIDs[profileID] = nil;
-		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
-			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
-		end
-		if getCurrentPageID() == REGISTER_LIST_PAGEID then
-			refreshList();
 		end
 	end);
 

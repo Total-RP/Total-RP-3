@@ -29,7 +29,8 @@ local function onStart()
 	local companionHasProfile, setCompanionGlanceSlotPreset = TRP3_API.companions.register.companionHasProfile, TRP3_API.companions.player.setGlanceSlotPreset;
 	local getMiscPresetDropListData, setGlanceSlotPreset = TRP3_API.register.ui.getMiscPresetDropListData, TRP3_API.register.player.setGlanceSlotPreset;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-
+	local isIDIgnored = TRP3_API.register.isIDIgnored;
+	
 	-- CONSTANTS
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
@@ -41,10 +42,6 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID = nil, nil, nil, nil;
-	
-	local function setCurrentTargetProfileID()
-		-- TODO ...
-	end
 
 	local function getCharacterInfo()
 		if currentTargetID == Globals.player_id then
@@ -102,9 +99,15 @@ local function onStart()
 		local peekTab = nil;
 
 		if currentTargetType == TYPE_CHARACTER then
+			if isIDIgnored(currentTargetID) then
+				return;
+			end
 			peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
 		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
+			if isIDIgnored(owner) then
+				return;
+			end
 			peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE;
 		end
 
@@ -149,7 +152,6 @@ local function onStart()
 			currentTargetID = getCompanionFullID("target", currentTargetType);
 		end
 		if currentTargetID then
-			setCurrentTargetProfileID();
 			displayPeekSlots();
 		end
 	end

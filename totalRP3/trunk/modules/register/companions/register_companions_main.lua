@@ -326,6 +326,7 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 			registerProfileAssociation[key] = nil;
 		end
 	end
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 end
 

@@ -645,7 +645,7 @@ local function onStart()
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
 	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH","IC"};
+	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC"};
 
 	local function requestInformation(targetID, targetMode)
 		if targetID and targetMode == TYPE_CHARACTER

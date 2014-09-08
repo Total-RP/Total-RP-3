@@ -141,11 +141,6 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Display logic
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	local function setCurrentTargetProfileID()
-		currentTargetProfileID = nil;
-		-- TODO ...
-	end
 
 	local function getCharacterInfo()
 		if currentTargetID == Globals.player_id then
@@ -186,8 +181,7 @@ local function onStart()
 
 	local function displayTargetFrame()
 		ui_TargetFrame:Show();
-		
-		setCurrentTargetProfileID();
+
 		displayTargetName();
 		displayButtonsPanel();
 	end
@@ -201,8 +195,9 @@ local function onStart()
 			return false;
 		elseif currentTargetType == TYPE_CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
 			return true;
-		elseif (currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET) and (isCurrentMine or companionHasProfile(currentTargetID)) then
-			return true;
+		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
+			local owner, companionID = companionIDToInfo(currentTargetID);
+			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
 		end
 	end
 
