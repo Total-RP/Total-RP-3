@@ -402,3 +402,31 @@ function TRP3_API.profile.init()
 	);
 	tabGroup:SelectTab(1);
 end
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.toolbar then
+		local icon, color, get = Utils.str.icon, Utils.str.color, TRP3_API.profile.getData;
+		local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
+		local defaultIcon = TRP3_API.globals.player_icon;
+		local Button_RPStatus = {
+			id = "aa_trp3_profiles",
+			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
+			onEnter = function(Uibutton, buttonStructure)
+				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
+			end,
+			onUpdate = function(Uibutton, buttonStructure)
+				local iconURL = get("player/characteristics/IC") or defaultIcon;
+				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
+				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
+			end,
+			onClick = function(Uibutton, buttonStructure, button)
+				
+			end,
+			onLeave = function()
+				mainTooltip:Hide();
+			end,
+			visible = 1
+		};
+		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
+	end
+end);

@@ -72,8 +72,8 @@ local function onStart()
 					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 					tinsert(uiButtons, uiButton);
 				end
-				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
-				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+				uiButton:SetNormalTexture("Interface\\ICONS\\".. (buttonStructure.icon or Globals.icons.default));
+				uiButton:SetPushedTexture("Interface\\ICONS\\".. (buttonStructure.icon or Globals.icons.default));
 				uiButton:GetPushedTexture():SetDesaturated(1);
 				uiButton:SetPoint("TOPLEFT", x, y);
 				uiButton:SetScript("OnClick", function(self, button)
