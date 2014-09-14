@@ -1,7 +1,21 @@
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+----------------------------------------------------------------------------------
 -- Total RP 3
--- Register : Peek section
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Character page : Miscellaneous
+--	---------------------------------------------------------------------------
+--	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--
+--	Licensed under the Apache License, Version 2.0 (the "License");
+--	you may not use this file except in compliance with the License.
+--	You may obtain a copy of the License at
+--
+--		http://www.apache.org/licenses/LICENSE-2.0
+--
+--	Unless required by applicable law or agreed to in writing, software
+--	distributed under the License is distributed on an "AS IS" BASIS,
+--	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--	See the License for the specific language governing permissions and
+--	limitations under the License.
+----------------------------------------------------------------------------------
 
 -- imports
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -13,14 +27,11 @@ local tcopy = Utils.table.copy;
 local assert, table, wipe, _G = assert, table, wipe, _G;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
-local tinsert = tinsert;
-local pairs = pairs;
-local type = type;
-local tostring = tostring;
+local tinsert, pairs, type, tostring = tinsert, pairs, type, tostring;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local setupIconButton, getPlayerCurrentProfileID = TRP3_API.ui.frame.setupIconButton, TRP3_API.profile.getPlayerCurrentProfileID;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local showPopup = TRP3_API.popup.showPopup;
 local hasProfile = TRP3_API.register.hasProfile;
@@ -289,7 +300,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	compressData();
 	-- Refresh display & target frame
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "misc");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 end
 
 local function peekEditorApply(button, ic, ac, ti, tx)
