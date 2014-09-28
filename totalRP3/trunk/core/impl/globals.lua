@@ -3,6 +3,7 @@
 -- Global variables
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2014 Renaud Parize (renaud@parize.me)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -32,7 +33,7 @@ TRP3_API = {
 		addon_id_length = 15,
 
 		version = 5,
-		version_display = "0.2.2-SNAPSHOT",
+		version_display = "0.2.2",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),

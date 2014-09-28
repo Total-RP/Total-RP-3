@@ -544,8 +544,19 @@ local function onStart()
 			for field, value in pairs(data) do
 				-- Save version
 				profile.mspver[field] = msp.char[senderID].ver[field];
+				-- Save fields
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
+					-- NA color escaping
+					if field == "NA" and value then
+						local color = nil;
+						value:gsub("|c%x%x(%x%x%x%x%x%x)", function(arg1)
+							if not color then color = arg1 end
+							return "";
+						end);
+						value = value:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|T.-|t", "");
+						profile.characteristics["CH"] = color;
+					end
 					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(strtrim(value));
 					-- Hack for spaced name tolerated in MRP
 					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then

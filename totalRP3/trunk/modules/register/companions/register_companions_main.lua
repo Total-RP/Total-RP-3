@@ -93,7 +93,7 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 		end
 	end
 	playerProfileAssociation[companionID] = profileID;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, profileID);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	log(("%s bounded to profile %s"):format(companionID, profileID));
 end
 TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
@@ -105,7 +105,7 @@ local function unboundPlayerCompanion(companionID)
 	if profileID and playerCompanions[profileID] and playerCompanions[profileID].links then
 		playerCompanions[profileID].links[companionID] = nil;
 	end
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionID, profileID);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
 	log(("%s unbounded"):format(companionID));
 end
 TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;

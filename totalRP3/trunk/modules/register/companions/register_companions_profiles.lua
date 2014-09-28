@@ -367,7 +367,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{loc("PR_PROFILEMANAGER_TITLE"), 1, 175},
-			{loc("PR_IMPORT_PETS_TAB"), 2, 175},
+--			{loc("PR_IMPORT_PETS_TAB"), 2, 175},
 		},
 		function(tabWidget, value)
 			local list, importer = TRP3_CompanionsProfiles:GetChildren();

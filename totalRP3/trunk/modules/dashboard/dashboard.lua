@@ -519,7 +519,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
 
 		-- Toolbar RP status
-		local rpTextOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
+		local RP_ICON, OOC_ICON = "spell_shadow_charm", "Inv_misc_grouplooking";
+		local rpTextOn = icon(RP_ICON, 25) .. " ".. loc("TB_RPSTATUS_ON");
+		local rpTextOff = icon(OOC_ICON, 25) .. " ".. loc("TB_RPSTATUS_OFF");
 		local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
 		local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
 		local get = TRP3_API.profile.getData;
@@ -532,14 +534,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
 				if get("player/character/RP") == 1 then
-					local iconURL = get("player/characteristics/IC") or defaultIcon;
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\" .. iconURL);
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\" .. RP_ICON);
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\" .. RP_ICON);
 					Uibutton:GetPushedTexture():SetDesaturated(1);
-					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(iconURL, 25) .. " ".. loc("TB_RPSTATUS_ON"), rpText3);
+					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOn, rpText3);
 				else
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Inv_misc_grouplooking");
+					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\" .. OOC_ICON);
+					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\" .. OOC_ICON);
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, rpTextOff, rpText2);
 				end
