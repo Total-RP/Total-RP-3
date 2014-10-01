@@ -196,8 +196,7 @@ local function buildConfigurationPage(structure)
 			local box = _G[widget:GetName().."Check"];
 			if element.configKey then
 				box:SetScript("OnClick", function(self)
-					local value = self:GetChecked();
-					setValue(element.configKey, value ~= nil);
+					setValue(element.configKey, self:GetChecked());
 				end);
 				box:SetChecked(getValue(element.configKey));
 			end
