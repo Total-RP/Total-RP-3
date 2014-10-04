@@ -218,7 +218,7 @@ local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.show
 
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
-		showAlertPopup(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("g")..profileName.."|r"));
+		TRP3_API.ui.tooltip.toast(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("r")..profileName.."|r"), 3);
 		return false;
 	end
 	return true;

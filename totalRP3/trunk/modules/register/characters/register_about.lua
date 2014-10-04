@@ -330,6 +330,9 @@ end
 
 local TEMPLATE3_MINIMAL_HEIGHT = 100;
 local TEMPLATE3_MARGIN = 30;
+local TEMPLATE3_ICON_PHYSICAL = "Ability_Warrior_StrengthOfArms";
+local TEMPLATE3_ICON_PSYCHO = "Spell_Arcane_MindMastery";
+local TEMPLATE3_ICON_HISTORY = "INV_Misc_Book_12";
 
 local function setTemplate3PhysBkg(bkg)
 	setBkg(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
@@ -345,17 +348,17 @@ end
 
 local function onPhisIconSelected(icon)
 	draftData.T3.PH.IC = icon;
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, icon or TEMPLATE3_ICON_PHYSICAL);
 end
 
 local function onPsychoIconSelected(icon)
 	draftData.T3.PS.IC = icon;
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, icon or TEMPLATE3_ICON_PSYCHO);
 end
 
 local function onHistoIconSelected(icon)
 	draftData.T3.HI.IC = icon;
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, icon or TEMPLATE3_ICON_HISTORY);
 end
 
 local function shouldShowTemplate3(dataTab)
@@ -375,15 +378,16 @@ local function showTemplate3(dataTab)
 	local templateData = dataTab.T3 or {};
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
 	local titles = {loc("REG_PLAYER_PHYSICAL"), loc("REG_PLAYER_PSYCHO"), loc("REG_PLAYER_HISTORY")};
+	local icons = {TEMPLATE3_ICON_PHYSICAL, TEMPLATE3_ICON_PSYCHO, TEMPLATE3_ICON_HISTORY};
 
 	for i=1, 3 do
 		local data = datas[i] or {};
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		if data.TX and data.TX:len() > 0 then
-			local icon = Utils.str.icon(data.IC or Globals.icons.default, 25);
+			local icon = Utils.str.icon(data.IC or icons[i], 25);
 			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 			local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
-			title:SetText(icon.."    "..titles[i].."    "..icon);
+			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
 			text:SetText(Utils.str.convertTextTags(data.TX));
 			setBkg(frame, data.BK);
 			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
@@ -684,9 +688,9 @@ local function refreshEditDisplay()
 	TRP3_RegisterAbout_Edit_Template3_PhysBkg:SetSelectedIndex(template3Data.PH.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_PsyBkg:SetSelectedIndex(template3Data.PS.BK or 1);
 	TRP3_RegisterAbout_Edit_Template3_HistBkg:SetSelectedIndex(template3Data.HI.BK or 1);
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or Globals.icons.default);
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or Globals.icons.default);
-	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or Globals.icons.default);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PhysIcon, template3Data.PH.IC or TEMPLATE3_ICON_PHYSICAL);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_PsyIcon, template3Data.PS.IC or TEMPLATE3_ICON_PSYCHO);
+	setupIconButton(TRP3_RegisterAbout_Edit_Template3_HistIcon, template3Data.HI.IC or TEMPLATE3_ICON_HISTORY);
 	TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetText(template3Data.PH.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetText(template3Data.PS.TX or "");
 	TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetText(template3Data.HI.TX or "");
