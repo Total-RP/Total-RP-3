@@ -41,6 +41,7 @@ local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_Dashb
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
+local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NOTIFICATIONS
@@ -443,12 +444,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
-				ShowCloak(not ShowingCloak());
+
 				if(ShowingCloak()) then
 					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
 				else
 					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
 				end
+
+				ShowCloak(not ShowingCloak());
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
@@ -501,6 +504,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				local helmet = GetInventoryItemID("player",1);
 				local sound;
 				local soundTable;
+
 				if ShowingHelm() then
 					soundTable = helmetOffSound;
 				else
@@ -612,7 +616,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
 
-				local dump = TRP3_API.utils.table.dump;
 				if button == "RightButton" then
 
 					local list = TRP3_API.profile.getProfiles();

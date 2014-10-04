@@ -46,7 +46,7 @@ local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
-
+local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -271,11 +271,15 @@ local function onCompanionProfileSelection(value, companionID, targetType)
 	end
 end
 
-local function getPlayerCompanionProfilesAsList()
+local function getPlayerCompanionProfilesAsList(companionID)
 	local list = {};
 	tinsert(list, {loc("REG_COMPANION_TF_CREATE"), 2});
 	for profileID, profile in pairs(getProfiles()) do
-		tinsert(list, {profile.profileName, profileID});
+		if getCompanionProfileID(companionID) == profileID then
+			tinsert(list, {profile.profileName, nil});
+		else
+			tinsert(list, {profile.profileName, profileID});
+		end
 	end
 	return list;
 end
@@ -298,7 +302,7 @@ local function companionProfileSelectionList(companionFullID, targetType, button
 			tinsert(list, {loc("REG_COMPANION_TF_OPEN"), 0});
 			tinsert(list, {loc("REG_COMPANION_TF_UNBOUND"), 1});
 		end
-		tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList()});
+		tinsert(list, {loc("REG_COMPANION_TF_BOUND_TO"), getPlayerCompanionProfilesAsList(companionID)});
 
 		displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
 	else
