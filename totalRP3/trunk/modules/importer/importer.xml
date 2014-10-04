@@ -35,9 +35,6 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<Frames>
-			
-		</Frames>
 	</Frame>
 
 	<Frame name="TRP3_CharacterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2" hidden="true">

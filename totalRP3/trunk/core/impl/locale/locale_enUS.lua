@@ -467,6 +467,7 @@ local LOCALE_EN = {
 		TB_RPSTATUS_OFF = "Character: |cffff0000Out of character",
 		TB_RPSTATUS_TO_ON = "Go |cff00ff00in character",
 		TB_RPSTATUS_TO_OFF = "Go |cffff0000out of character",
+		TB_SWITCH_PROFILE = "Switch to another profile",
 		TF_OPEN_CHARACTER = "Show character page",
 		TF_OPEN_COMPANION = "Show companion page",
 		TF_PLAY_THEME = "Play character theme",

@@ -30,7 +30,7 @@ TRP3_API.ui = {
 local globals = TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
-local MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu = MouseIsOver, CreateFrame, PlaySound, ToggleDropDownMenu;
+local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
@@ -167,7 +167,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	);
 	dropDownFrame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
-	PlaySound("igMainMenuOptionCheckBoxOn");
+	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
 	currentlyOpenedDrop = anchoredFrame;
 end
 TRP3_API.ui.listbox.displayDropDown = openDropDown;
@@ -546,7 +546,6 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	local maxBound = # tabEditBoxes;
 	local minBound = 1;
 	for index, editbox in pairs(tabEditBoxes) do
-		editbox.oldTabEvent = editbox:GetScript("OnTabPressed")
 		editbox:SetScript("OnTabPressed", function(self, button)
 			local cursor = index
 			if shiftDown() then
@@ -563,9 +562,6 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 				end
 			end			
 			tabEditBoxes[cursor]:SetFocus();		
-			if self.oldTabEvent ~= nil then
-				self.oldTabEvent()
-			end			
 		end)
 	end
 end
@@ -876,8 +872,12 @@ end
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.misc.playUISound(pathToSound)
+function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
-		PlaySound(pathToSound,"SFX");
+		if url then
+			PlaySoundFile(pathToSound, "SFX");
+		else
+			PlaySound(pathToSound,"SFX");
+		end
 	end
 end

@@ -120,9 +120,6 @@
 						<ScrollChild>
 							<Frame name="TRP3_ConfigurationModuleContainer">
 								<Size x="50" y="50"/>
-								<Frames>
-								    
-								</Frames>
 							</Frame>
 						</ScrollChild>
 					</ScrollFrame>

@@ -81,6 +81,11 @@ local function getDataDefault(fieldPath, ifNilValue, profileRef)
 end
 TRP3_API.profile.getDataDefault = getDataDefault;
 
+local function getProfiles()
+	return profiles;
+end
+TRP3_API.profile.getProfiles = getProfiles;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 -- For decoupling reasons, the saved variables TRP3_Profiles and TRP3_Characters should'nt be used outside this file !
@@ -126,6 +131,7 @@ local function selectProfile(profileID)
 	Events.fireEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 end
+TRP3_API.profile.selectProfile = selectProfile;
 
 -- Edit a profile name
 local function editProfile(profileID, newName)

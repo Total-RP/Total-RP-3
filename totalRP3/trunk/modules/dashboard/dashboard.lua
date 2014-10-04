@@ -29,6 +29,7 @@ local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local icon, color = Utils.str.icon, Utils.str.color;
+local playUISound = TRP3_API.ui.misc.playUISound;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
@@ -38,6 +39,7 @@ local assert, tostring, tinsert, date, time, pairs, tremove, EMPTY, unpack, wipe
 local initList, handleMouseWheel = TRP3_API.ui.list.initList, TRP3_API.ui.list.handleMouseWheel;
 local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No = TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -407,6 +409,10 @@ TRP3_API.dashboard.init = function()
 	end);
 end
 
+local function profileSelected(profileID)
+	TRP3_API.profile.selectProfile(profileID);
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	buildNotificationConfig();
 	if TRP3_API.toolbar then
@@ -438,6 +444,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
 				ShowCloak(not ShowingCloak());
+				if(ShowingCloak()) then
+					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
+				else
+					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
+				end
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
@@ -450,6 +461,21 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
 		local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
 		local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
+
+		local helmetOnSound = {
+			Cloth = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav",
+			Leather = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav",
+			Mail = "Sound\\Interface\\Pickup\\Pickupsmallchain.wav",
+			Plate = "Sound\\Interface\\Pickup\\Pickupmetallarge.wav",
+			Miscellaneous = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav"
+		};
+		local helmetOffSound = {
+			Cloth = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav",
+			Leather = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav",
+			Mail = "Sound\\Interface\\Pickup\\Putdownsmallchain.wav",
+			Plate = "Sound\\Interface\\Pickup\\Putdownmetallarge.wav",
+			Miscellaneous = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav"
+		};
 		Button_Helmet = {
 			id = "aa_trp3_b",
 			icon = "INV_Helmet_13",
@@ -472,7 +498,26 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
+				local helmet = GetInventoryItemID("player",1);
+				local sound;
+				local soundTable;
+				if ShowingHelm() then
+					soundTable = helmetOffSound;
+				else
+					soundTable = helmetOnSound;
+				end
+
+				if helmet ~= nil then
+					local _, _, _, _, _, _, itemType = GetItemInfo(helmet);
+					sound = soundTable[itemType];
+				else
+					sound = soundTable["Cloth"];
+				end
+
 				ShowHelm(not ShowingHelm());
+
+				playUISound(sound, true);
+
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
@@ -525,6 +570,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						SendChatMessage("","DND");
 					end
 				end
+				playUISound("igMainMenuOptionCheckBoxOn");
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
@@ -536,8 +582,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local RP_ICON, OOC_ICON = "spell_shadow_charm", "Inv_misc_grouplooking";
 		local rpTextOn = icon(RP_ICON, 25) .. " ".. loc("TB_RPSTATUS_ON");
 		local rpTextOff = icon(OOC_ICON, 25) .. " ".. loc("TB_RPSTATUS_OFF");
-		local rpText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
-		local rpText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
+		local rpText2 = color("y")..loc("CM_L_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
+		rpText2 = rpText2.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
+		local rpText3 = color("y")..loc("CM_L_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
+		rpText3 = rpText3.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
 		local get = TRP3_API.profile.getData;
 		local defaultIcon = TRP3_API.globals.player_icon;
 
@@ -563,7 +611,25 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
-				switchStatus();
+
+				local dump = TRP3_API.utils.table.dump;
+				if button == "RightButton" then
+
+					local list = TRP3_API.profile.getProfiles();
+
+					local dropdownItems = {};
+					for key, value in pairs(list) do
+						if key == TRP3_API.profile.getPlayerCurrentProfileID() then
+							tinsert(dropdownItems,{value.profileName, nil});
+						else
+							tinsert(dropdownItems,{value.profileName, key});
+						end
+					end
+					displayDropDown(Uibutton, dropdownItems, profileSelected, 0, true);
+				else
+					switchStatus();
+					playUISound("igMainMenuOptionCheckBoxOn");
+				end
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
