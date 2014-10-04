@@ -396,14 +396,14 @@ function handleCharacterMessage(chatFrame, event, ...)
 	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
 	local body;
 	if type == "EMOTE" then
-		body = format(_G["CHAT_"..type.."_GET"] .. message, playerLink .. characterName .. "|h");
+		body = format(_G["CHAT_"..type.."_GET"], playerLink .. characterName .. "|h") .. message;
 	elseif type == "TEXT_EMOTE" then
 		body = message;
 		if characterID ~= Globals.player_id then
 			body = body:gsub("^([^%s]+)", playerLink .. characterName .. "|h");
 		end
 	else
-		body = format(_G["CHAT_"..type.."_GET"] .. languageHeader .. message, playerLink .. "[" .. characterName .. "]" .. "|h");
+		body = format(_G["CHAT_"..type.."_GET"], playerLink .. "[" .. characterName .. "]" .. "|h")  .. languageHeader .. message;
 	end
 
 	--Add Timestamps
