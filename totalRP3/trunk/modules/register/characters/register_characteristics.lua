@@ -577,9 +577,8 @@ local function setupRelationButton(profileID, profile)
 	if profile.character and profile.character.CO and profile.character.CO:len() > 0 then
 		CO = profile.character.CO;
 	end
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),
-	loc("REG_RELATION_BUTTON_TT"):format(CU or "…", getRelationText(profileID), getRelationTooltipText(profileID, profile)));
-	loc("REG_RELATION_BUTTON_TT"):format(CU or "…", CO or "…", getRelationText(profileID),getRelationTooltipText(profileID, profile))
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),loc("REG_RELATION_BUTTON_TT"):format(CU or "…", CO or "…", getRelationText(profileID),getRelationTooltipText(profileID, profile))
+	);
 end
 
 local function saveCharacteristics()
