@@ -187,15 +187,6 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont(localeFont, fontSize);
 end
 
-local function makeSpace(tooltip, lineIndex)
-	if showSpacing() then
-		tooltip:AddLine(" ", 1, 0.50, 0);
-		setLineFont(tooltip, lineIndex, getSubLineFontSize());
-		lineIndex = lineIndex + 1;
-	end
-	return lineIndex;
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TOOLTIP BUILDER
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -247,17 +238,23 @@ end
 
 function tooltipBuilder:Build()
 	local size = #self._content;
+	local tooltipLineIndex = 1;
 	for lineIndex, line in pairs(self._content) do
 		if line.type == BUILDER_TYPE_LINE then
 			self.tooltip:AddLine(line.text, line.red, line.green, line.blue, line.lineWrap);
-			setLineFont(self.tooltip, lineIndex, line.lineSize);
+			setLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
+			tooltipLineIndex = tooltipLineIndex + 1;
 		elseif line.type == BUILDER_TYPE_DOUBLELINE then
 			self.tooltip:AddDoubleLine(line.textL, line.textR, line.redL, line.greenL, line.blueL, line.redR, line.greenR, line.blueR);
-			setDoubleLineFont(self.tooltip, lineIndex, line.lineSize);
-		elseif line.type == BUILDER_TYPE_SPACE and lineIndex ~= size then
-			makeSpace(self.tooltip, lineIndex);
+			setDoubleLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
+			tooltipLineIndex = tooltipLineIndex + 1;
+		elseif line.type == BUILDER_TYPE_SPACE and showSpacing() and lineIndex ~= size then
+			self.tooltip:AddLine(" ", 1, 0.50, 0);
+			setLineFont(self.tooltip, tooltipLineIndex, getSubLineFontSize());
+			tooltipLineIndex = tooltipLineIndex + 1;
 		end
 	end
+	self.tooltip:Show();
 	for index, tempTable in pairs(self._content) do
 		self._content[index] = nil;
 		releaseTempTable(tempTable);
@@ -739,8 +736,6 @@ local function show(targetType, targetID, targetMode)
 						GameTooltip:Hide();
 					end
 				end
-
-				ui_CharacterTT:Show();
 			end
 
 			ui_CharacterTT:ClearAllPoints(); -- Prevent to break parent frame fade out if parent is a tooltip.
