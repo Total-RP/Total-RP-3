@@ -81,6 +81,7 @@ local CONFIG_CHARACT_TARGET = "tooltip_char_target";
 local CONFIG_CHARACT_TITLE = "tooltip_char_title";
 local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
+local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
@@ -154,6 +155,10 @@ end
 
 local function showCurrently()
 	return getConfigValue(CONFIG_CHARACT_CURRENT);
+end
+
+local function showMoreInformation()
+	return getConfigValue(CONFIG_CHARACT_OOC);
 end
 
 local function getCurrentMaxSize()
@@ -445,6 +450,22 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CU);
+		if text:len() > getCurrentMaxSize() then
+			text = text:sub(1, getCurrentMaxSize()) .. "…";
+		end
+		tooltipBuilder:AddLine("\"" .. text .. "\"", 1, 0.75, 0, getSmallLineFontSize(), true);
+	end
+
+	tooltipBuilder:AddSpace();
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- OOC More information
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showMoreInformation() and info.character and (info.character.CO or ""):len() > 0 then
+		tooltipBuilder:AddLine(loc("DB_STATUS_CURRENTLY_OOC"), 1, 1, 1, getSubLineFontSize());
+
+		local text = strtrim(info.character.CO);
 		if text:len() > getCurrentMaxSize() then
 			text = text:sub(1, getCurrentMaxSize()) .. "…";
 		end
@@ -808,6 +829,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_TITLE, true);
 	registerConfigKey(CONFIG_CHARACT_NOTIF, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
+	registerConfigKey(CONFIG_CHARACT_OOC, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
@@ -943,6 +965,11 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_CURRENT"),
 				configKey = CONFIG_CHARACT_CURRENT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("DB_STATUS_CURRENTLY_OOC"),
+				configKey = CONFIG_CHARACT_OOC,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

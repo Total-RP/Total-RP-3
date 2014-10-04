@@ -523,8 +523,10 @@ local LOCALE_EN = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		DB_STATUS = "Status",
-		DB_STATUS_CURRENTLY = "Currently",
-		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
+		DB_STATUS_CURRENTLY = "Currently (IC)",
+		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\n|cff00ff00This is an in-character information.|r\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
+		DB_STATUS_CURRENTLY_OOC = "Other information (OOC)",
+		DB_STATUS_CURRENTLY_OOC_TT = "This status will be displayed on your character's tooltip.\n\n|cff00ff00This is an out-of-character information.|r\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
 		DB_STATUS_RP = "Character status",
 		DB_STATUS_RP_IC = "In character",
 		DB_STATUS_RP_OOC = "Out of character",

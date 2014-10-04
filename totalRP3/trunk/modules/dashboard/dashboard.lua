@@ -22,7 +22,7 @@ TRP3_API.dashboard = {
 };
 
 -- imports
-local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage;
+local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo;
 local loc = TRP3_API.locale.getText;
 local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -274,11 +274,21 @@ local function onCurrentlyChanged()
 	end
 end
 
+local function onOOCInfoChanged()
+	local character = get("player/character");
+	local old = character.CO;
+	character.CO = TRP3_DashboardStatus_OOCInfo:GetText();
+	if old ~= character.CO then
+		incrementCharacterVernum();
+	end
+end
+
 local function onShow(context)
 	local character = get("player/character");
 	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
 	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
 	TRP3_DashboardStatus_Currently:SetText(character.CU or "");
+	TRP3_DashboardStatus_OOCInfo:SetText(character.CO or "");
 	refreshNotifications();
 end
 
@@ -362,7 +372,11 @@ TRP3_API.dashboard.init = function()
 	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
 	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
 
-	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
+	TRP3_DashboardStatus_OOCInfoText:SetText(loc("DB_STATUS_CURRENTLY_OOC"));
+	setTooltipForSameFrame(TRP3_DashboardStatus_OOCInfoHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY_OOC"), loc("DB_STATUS_CURRENTLY_OOC_TT"));
+	TRP3_DashboardStatus_OOCInfo:SetScript("OnTextChanged", onOOCInfoChanged);
+
+--	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
 
 	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
 
