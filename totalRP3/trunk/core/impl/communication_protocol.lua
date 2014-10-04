@@ -233,6 +233,10 @@ end
 function Comm.sendObject(prefix, object, target, priority)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	if not isIDIgnored(target) then
+		if not target:match("[^%-]+%-[^%-]+") then
+			Log.log("Trying to send data to bad formed target: " .. target, Log.level.WARNING);
+			return; -- Avoid display "The player "Pouic-" doesn't seemed to be online".
+		end
 		local structure = {prefix, object};
 		handleStructureOut(structure, target, priority);
 	end

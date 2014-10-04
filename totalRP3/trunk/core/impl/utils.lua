@@ -44,7 +44,7 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = false;
+local showLog = true;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -58,6 +58,14 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOGGING
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.utils.log.on()
+	showLog = true;
+end
+
+function TRP3_API.utils.log.off()
+	showLog = false;
+end
 
 -- The log level defines the prefix color and serves as filter
 Log.level = {
