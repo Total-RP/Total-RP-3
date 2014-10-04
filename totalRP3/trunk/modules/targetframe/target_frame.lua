@@ -244,7 +244,7 @@ local function onStart()
 	getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
 
 	ui_TargetFrame:RegisterForDrag("LeftButton");
-	ui_TargetFrame:SetMovable();
+	ui_TargetFrame:SetMovable(true);
 	ui_TargetFrame:SetScript("OnDragStart", function(self)
 		self:StartMoving();
 	end);

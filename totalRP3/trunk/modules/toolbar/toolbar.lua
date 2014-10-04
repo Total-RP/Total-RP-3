@@ -175,7 +175,7 @@ local function onStart()
 	getConfigValue("CONFIG_TOOLBAR_POS_X"), getConfigValue("CONFIG_TOOLBAR_POS_Y"));
 
 	toolbar:RegisterForDrag("LeftButton");
-	toolbar:SetMovable();
+	toolbar:SetMovable(true);
 	toolbar:SetScript("OnDragStart", function(self)
 		self:StartMoving();
 	end);

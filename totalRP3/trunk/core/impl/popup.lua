@@ -66,7 +66,7 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(0);
+		_G[self:GetName().."EditBox"]:SetNumeric(false);
 	end,
 	OnAccept = function(self)
 		if StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept then
@@ -94,7 +94,7 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnShow = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(1);
+		_G[self:GetName().."EditBox"]:SetNumeric(true);
 	end,
 	OnAccept = function(self)
 		if StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onAccept then
@@ -102,7 +102,7 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 		end
 	end,
 	OnHide = function(self)
-		_G[self:GetName().."EditBox"]:SetNumeric(0);
+		_G[self:GetName().."EditBox"]:SetNumeric(false);
 	end,
 	OnCancel = function(arg1,arg2)
 		if StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel then
