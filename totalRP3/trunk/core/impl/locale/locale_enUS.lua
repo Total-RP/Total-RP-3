@@ -386,6 +386,7 @@ local LOCALE_EN = {
 		CO_TARGETFRAME_USE_1 = "Always",
 		CO_TARGETFRAME_USE_2 = "Only when IC",
 		CO_TARGETFRAME_USE_3 = "Never (Disabled)",
+		CO_TARGETFRAME_ICON_SIZE = "Icons size",
 		CO_MINIMAP_BUTTON = "Minimap button",
 		CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 		CO_MINIMAP_BUTTON_FRAME_TT = "Indicates which frame to use as parent for the button.\n\n|cff00ff00To move the button relatively from this frame you can drag & drop the button.",

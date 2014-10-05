@@ -45,6 +45,7 @@ local function onStart()
 	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
 	local CONFIG_TARGET_USE = "target_use";
+	local CONFIG_TARGET_ICON_SIZE = "target_icon_size";
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
 	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID = nil, nil, nil, nil;
@@ -77,7 +78,7 @@ local function onStart()
 	end
 
 	local function displayButtonsPanel()
-		local buttonSize = 30;
+		local buttonSize = getConfigValue(CONFIG_TARGET_ICON_SIZE);
 
 		--Hide all
 		for _,uiButton in pairs(uiButtons) do
@@ -265,7 +266,8 @@ local function onStart()
 
 		-- Config
 		registerConfigKey(CONFIG_TARGET_USE, 1);
-		registerConfigHandler({CONFIG_TARGET_USE}, onTargetChanged);
+		registerConfigKey(CONFIG_TARGET_ICON_SIZE, 30);
+		registerConfigHandler({CONFIG_TARGET_USE, CONFIG_TARGET_ICON_SIZE}, onTargetChanged);
 
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
@@ -284,6 +286,15 @@ local function onStart()
 			configKey = CONFIG_TARGET_USE,
 			listWidth = nil,
 			listCancel = true,
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigSlider",
+			title = loc("CO_TARGETFRAME_ICON_SIZE"),
+			configKey = CONFIG_TARGET_ICON_SIZE,
+			min = 15,
+			max = 50,
+			step = 1,
+			integer = true,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",

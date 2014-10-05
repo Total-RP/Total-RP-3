@@ -581,7 +581,7 @@ local function onStart()
 					end
 					value = emptyToNil(strtrim(value));
 					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-					profile.about.read = value == old or value:len() == 0;
+					profile.about.read = value == old or value == nil or value:len() == 0;
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then

@@ -317,7 +317,7 @@ TRP3_API.dashboard.init = function()
 	local TUTORIAL_STRUCTURE = {
 		{
 			box = {
-				x = 15, y = -139, anchor = "TOPLEFT", width = 510, height = 115,
+				x = 15, y = -104, anchor = "TOPLEFT", width = 510, height = 150,
 			},
 			button = {
 				x = 0, y = -10, anchor = "TOP",
