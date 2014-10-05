@@ -31,7 +31,7 @@ local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local initList = TRP3_API.ui.list.initList;
 local getProfiles, isProfileNameAvailable = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.isProfileNameAvailable;
 local createProfile, deleteProfile = TRP3_API.companions.player.createProfile, TRP3_API.companions.player.deleteProfile;
-local dupplicateProfile = TRP3_API.companions.player.dupplicateProfile;
+local duplicateProfile = TRP3_API.companions.player.duplicateProfile;
 local editProfile = TRP3_API.companions.player.editProfile;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -99,14 +99,14 @@ local function uiCreateProfile()
 	);
 end
 
-local function uiDupplicateProfile(profileID)
+local function uiDuplicateProfile(profileID)
 	local profile = getProfiles()[profileID];
 	showTextInputPopup(
 	loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(Utils.str.color("g").. profile.profileName .. "|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
-			local profileID = dupplicateProfile(profile, newName);
+			local profileID = duplicateProfile(profile, newName);
 			openProfile(profileID);
 		end
 	end,
@@ -207,7 +207,7 @@ local function onActionSelected(value, button)
 	elseif value == 2 then
 		uiEditProfile(profileID);
 	elseif value == 3 then
-		uiDupplicateProfile(profileID);
+		uiDuplicateProfile(profileID);
 	end
 end
 
@@ -216,7 +216,7 @@ local function onActionClicked(button)
 	local values = {};
 	tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
 	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
-	tinsert(values, {loc("PR_DUPPLICATE_PROFILE"), 3});
+	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 

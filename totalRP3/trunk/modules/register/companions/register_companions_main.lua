@@ -122,7 +122,7 @@ end
 TRP3_API.companions.player.isProfileNameAvailable = isProfileNameAvailable;
 
 -- Duplicate an existing profile
-local function dupplicateProfile(duplicatedProfile, profileName)
+local function duplicateProfile(duplicatedProfile, profileName)
 	assert(duplicatedProfile, "Nil profile");
 	assert(isProfileNameAvailable(profileName), "Unavailable profile name: "..tostring(profileName));
 	local profileID = Utils.str.id();
@@ -132,11 +132,11 @@ local function dupplicateProfile(duplicatedProfile, profileName)
 	displayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
-TRP3_API.companions.player.dupplicateProfile = dupplicateProfile;
+TRP3_API.companions.player.duplicateProfile = duplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
 local function createProfile(profileName)
-	local profileID = dupplicateProfile(DEFAULT_PROFILE, profileName);
+	local profileID = duplicateProfile(DEFAULT_PROFILE, profileName);
 	playerCompanions[profileID].data.NA = profileName;
 	return profileID;
 end

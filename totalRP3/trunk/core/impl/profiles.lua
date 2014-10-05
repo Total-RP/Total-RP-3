@@ -101,9 +101,10 @@ local function isProfileNameAvailable(profileName)
 	end
 	return true;
 end
+TRP3_API.profile.isProfileNameAvailable = isProfileNameAvailable;
 
 -- Duplicate an existing profile
-local function dupplicateProfile(duplicatedProfile, profileName)
+local function duplicateProfile(duplicatedProfile, profileName)
 	assert(duplicatedProfile, "Nil profile");
 	assert(isProfileNameAvailable(profileName), "Unavailable profile name: "..tostring(profileName));
 	local profileID = Utils.str.id();
@@ -113,10 +114,11 @@ local function dupplicateProfile(duplicatedProfile, profileName)
 	displayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
+TRP3_API.profile.duplicateProfile = duplicateProfile;
 
 -- Creating a new profile using PR_DEFAULT_PROFILE as a template
 local function createProfile(profileName)
-	return dupplicateProfile(PR_DEFAULT_PROFILE, profileName);
+	return duplicateProfile(PR_DEFAULT_PROFILE, profileName);
 end
 
 -- Just internally switch the current profile structure. That's all.
@@ -270,13 +272,13 @@ local function uiSelectProfile(profileID)
 	uiInitProfileList();
 end
 
-local function uiDupplicateProfile(profileID)
+local function uiDuplicateProfile(profileID)
 	showTextInputPopup(
 	loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
-			dupplicateProfile(profiles[profileID], newName);
+			duplicateProfile(profiles[profileID], newName);
 			uiInitProfileList();
 		end
 	end,
@@ -298,7 +300,7 @@ local function onActionSelected(value, button)
 	elseif value == 2 then
 		uiEditProfile(profileID);
 	elseif value == 3 then
-		uiDupplicateProfile(profileID);
+		uiDuplicateProfile(profileID);
 	end
 end
 
@@ -309,7 +311,7 @@ local function onActionClicked(button)
 		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
 	end
 	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
-	tinsert(values, {loc("PR_DUPPLICATE_PROFILE"), 3});
+	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
