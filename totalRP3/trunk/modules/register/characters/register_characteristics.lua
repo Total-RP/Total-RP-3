@@ -301,8 +301,8 @@ local function saveInDraft()
 	draftData.FN = stEtN(strtrim(TRP3_RegisterCharact_Edit_FirstField:GetText())) or Globals.player;
 	draftData.LN = stEtN(strtrim(TRP3_RegisterCharact_Edit_LastField:GetText()));
 	draftData.FT = stEtN(strtrim(TRP3_RegisterCharact_Edit_FullTitleField:GetText()));
-	draftData.RA = stEtN(strtrim(TRP3_RegisterCharact_Edit_RaceField:GetText()));
-	draftData.CL = stEtN(strtrim(TRP3_RegisterCharact_Edit_ClassField:GetText()));
+	draftData.RA = stEtN(TRP3_RegisterCharact_Edit_RaceField:GetText());
+	draftData.CL = stEtN(TRP3_RegisterCharact_Edit_ClassField:GetText());
 	draftData.AG = stEtN(strtrim(TRP3_RegisterCharact_Edit_AgeField:GetText()));
 	draftData.EC = stEtN(strtrim(TRP3_RegisterCharact_Edit_EyeField:GetText()));
 	draftData.HE = stEtN(strtrim(TRP3_RegisterCharact_Edit_HeightField:GetText()));

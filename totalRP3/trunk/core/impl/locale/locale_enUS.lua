@@ -444,6 +444,8 @@ local LOCALE_EN = {
 		CO_NOTIF_SIMPLE = "Notification",
 		CO_NOTIF_DOUBLE = "Notification + chat message",
 		CO_NOTIF_TRIPLE = "Notification + chat message + raid alert",
+		CO_WIM = "|cffff9900Whisper channels are disabled.",
+		CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

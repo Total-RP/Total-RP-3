@@ -215,8 +215,8 @@ local function createConfigPage(useWIM)
 	if useWIM then
 		tinsert(CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigNote",
-			help = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
-			title = "|cffff9900Whisper channels are disabled.",
+			help = loc("CO_WIM_TT"),
+			title = loc("CO_WIM"),
 		});
 	end
 
@@ -402,8 +402,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 		body = format(_G["CHAT_"..type.."_GET"], playerLink .. characterName .. "|h") .. message;
 	elseif type == "TEXT_EMOTE" then
 		body = message;
-		if characterID ~= Globals.player_id then
---			body = body:gsub(characterID, playerLink .. characterName .. "|h");
+		if characterID ~= Globals.player_id and body:sub(1, character:len()) == character then
 			body = body:gsub("^([^%s]+)", playerLink .. characterName .. "|h");
 		end
 	else

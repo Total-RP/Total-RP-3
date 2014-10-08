@@ -188,6 +188,13 @@ function TRP3_PATTERN()
 	assert(("Fäedora-KïrinTür"):match(pattern), "Ca doit passer ...");
 end
 
+function TRP3_PATTERN2()
+	local pattern = "[^%-]+%-[^%-]+";
+	local characterID = "Ellypse-KirinTor";
+	local phrase = "Ellëpse-KirinTor est super sexy.";
+	print(phrase:find(characterID:gsub("%-", "%%-")));
+end
+
 function TRP3_DEBUG_CLEAR()
 	TRP3_Profiles = nil;
 	TRP3_Characters = nil;
