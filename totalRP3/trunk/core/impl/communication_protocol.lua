@@ -25,7 +25,6 @@ local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
 local tostring, pairs, assert, string, wipe, tinsert, type, math = tostring, pairs, assert, string, wipe, tinsert, type, math;
 local tconcat = table.concat;
 local ChatThrottleLib = ChatThrottleLib;
-local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
 local Comm, isIDIgnored = TRP3_API.communication;
@@ -168,7 +167,6 @@ end
 local MESSAGE_ID_1 = 1;
 local MESSAGE_ID_2 = 1;
 local MESSAGE_ID = string.char(MESSAGE_ID_1, MESSAGE_ID_2);
-local COMPRESS_MESSAGE = true;
 
 -- Message IDs are 256 base number encoded on 2 chars (256*256 = 65536 available Message IDs)
 local function getMessageIDAndIncrement()

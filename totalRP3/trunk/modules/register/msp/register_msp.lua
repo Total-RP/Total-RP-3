@@ -92,8 +92,8 @@ local function onStart()
 		local tostring, tonumber, next, ipairs = tostring, tonumber, next, ipairs
 
 		local MSP_TT_ALONE = { 'TT' }
-		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC', 'IC' }
-		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true, RC=true, IC=true }
+		local MSP_FIELDS_IN_TT = { 'VP', 'VA', 'NA', 'NH', 'NI', 'NT', 'RA', 'FR', 'FC', 'CU', 'RC', 'IC', 'CO' }
+		local MSP_TT_FIELD = { VP=true, VA=true, NA=true, NH=true, NI=true, NT=true, RA=true, FR=true, FC=true, CU=true, RC=true, IC=true, CO=true }
 		local MSP_PROBE_FREQUENCY = 300.0; -- Wait 5 minutes for someone to respond before asking again
 		local MSP_FIELD_UPDATE_FREQUENCY = 10.0; -- Fields newer than 10 seconds old are still fresh
 
@@ -370,6 +370,7 @@ local function onStart()
 	local function updateCharacterData()
 		local character = get("player/character");
 		msp.my['CU'] = character.CU;
+		msp.my['CO'] = character.CO;
 		if character.XP == 1 then
 			msp.my['FR'] = "Beginner roleplayer";
 		elseif character.XP == 2 then
@@ -489,11 +490,11 @@ local function onStart()
 		HB = "BP",
 		NT = "FT",
 		NA = "FN",
-		IC = "IC"
+		IC = "IC",
 	}
 
 	local CHARACTER_FIELDS = {
-		FR = true, FC = true, CU = true, VA = true
+		FR = true, FC = true, CU = true, VA = true, CO = true
 	}
 
 	local ABOUT_FIELDS = {
@@ -564,7 +565,7 @@ local function onStart()
 					end
 				elseif ABOUT_FIELDS[field] then
 					updatedAbout = true;
-					local old = nil;
+					local old;
 					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
 						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
 					end
@@ -591,6 +592,8 @@ local function onStart()
 						end
 					elseif field == "CU" then
 						profile.character.CU = value;
+					elseif field == "CO" then
+						profile.character.CO = value;
 					elseif field == "FR" then
 						profile.character.XP = 2;
 						if value == "4" then
@@ -671,7 +674,7 @@ local function onStart()
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
 	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC"};
+	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
 
 	local function requestInformation(targetID, targetMode)
 		if targetID and targetMode == TYPE_CHARACTER

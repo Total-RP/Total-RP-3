@@ -1,23 +1,23 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
-	
-<!--
-	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+	<!--
+		Total RP 3
+		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-		http://www.apache.org/licenses/LICENSE-2.0
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->	
+			http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
 
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
@@ -32,7 +32,7 @@
 				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 			</PostClick>
 		</Scripts>
-	</Button>	
+	</Button>
 
 	<!-- Common red Wow button template  -->
 	<Button name="TRP3_CommonButton" inherits="UIPanelButtonTemplate" virtual="true">
@@ -49,11 +49,11 @@
 			</PostClick>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Common icon button  -->
 	<Button name="TRP3_IconButton" virtual="true">
 		<Size x="26" y="26"/>
-	    <Layers>
+		<Layers>
 			<Layer level="OVERLAY">
 				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
 					<Size x="26" y="26"/>
@@ -62,20 +62,26 @@
 					</Anchors>
 				</Texture>
 			</Layer>
-	    </Layers>
-	    <NormalTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">
+		</Layers>
+		<NormalTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">
 			<Size x="65" y="65"/>
-			<Anchors><Anchor point="CENTER" x="14" y="-14"/></Anchors>
-	    </NormalTexture>
-	    <PushedTexture file="Interface\Buttons\UI-EmptySlot">
+			<Anchors>
+				<Anchor point="CENTER" x="14" y="-14"/>
+			</Anchors>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-EmptySlot">
 			<Size x="50" y="50"/>
-			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+			<Anchors>
+				<Anchor point="CENTER" x="0" y="0"/>
+			</Anchors>
 		</PushedTexture>
 		<DisabledTexture file="Interface\Buttons\UI-EmptySlot-Disabled">
 			<Size x="47" y="47"/>
-			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+			<Anchors>
+				<Anchor point="CENTER" x="0" y="0"/>
+			</Anchors>
 		</DisabledTexture>
-	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -88,12 +94,12 @@
 			</PostClick>
 		</Scripts>
 	</Button>
-	
+
 	<Button name="TRP3_ActionButton" virtual="true">
-		<Size x="32" y="32" />
-		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up" />
-		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down" />
-		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+		<Size x="32" y="32"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -106,12 +112,12 @@
 			</PostClick>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Help button  -->
 	<Button name="TRP3_HelpButton" virtual="true">
 		<Size x="16" y="16"/>
-	    <NormalTexture file="Interface\FriendsFrame\InformationIcon"/>
-	    <HighlightTexture file="Interface\FriendsFrame\InformationIcon-Highlight"/>
+		<NormalTexture file="Interface\FriendsFrame\InformationIcon"/>
+		<HighlightTexture file="Interface\FriendsFrame\InformationIcon-Highlight"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -121,7 +127,7 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Category button -->
 	<Button name="TRP3_CategoryButton" virtual="true">
 		<Size x="158" y="24"/>
@@ -147,9 +153,9 @@
 			<Layer level="ARTWORK">
 				<FontString name="$parentLabel" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="24" y="4"/> 
-						<Anchor point="TOPRIGHT" x="-16" y="-4"/> 
-					</Anchors>					
+						<Anchor point="BOTTOMLEFT" x="24" y="4"/>
+						<Anchor point="TOPRIGHT" x="-16" y="-4"/>
+					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -168,23 +174,40 @@
 			</Button>
 		</Frames>
 	</Button>
-	
+
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="380"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+				  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="380"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
 		</Backdrop>
 		<Frames>
 			<Frame name="$parentCaptionPanel">
-				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="100"/></TileSize>
-					<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
+				<Backdrop bgFile="Interface\BankFrame\Bank-Background"
+						  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="100"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="4" right="2" top="2" bottom="2"/>
+					</BackgroundInsets>
 				</Backdrop>
 				<Size x="150" y="20"/>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal" wordwrap="false" >
+						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal"
+									wordwrap="false">
 							<Anchors>
 								<Anchor point="LEFT" x="10" y="2"/>
 								<Anchor point="RIGHT" x="-10" y="2"/>
@@ -193,13 +216,13 @@
 						</FontString>
 					</Layer>
 				</Layers>
-				<Anchors>	
+				<Anchors>
 					<Anchor point="TOPLEFT" x="16" y="10"/>
 				</Anchors>
 			</Frame>
 		</Frames>
 	</Frame>
-	
+
 	<!-- A bordered icon -->
 	<Frame name="TRP3_SimpleIcon" virtual="true">
 		<Size x="35" y="35"/>
@@ -214,7 +237,7 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 	<!-- Titled edit box, TRP2 style -->
 	<EditBox name="TRP3_TitledEditBox" letters="0" historyLines="10" autoFocus="false" virtual="true">
 		<Size x="100" y="18"/>
@@ -260,9 +283,9 @@
 			</OnEscapePressed>
 			<OnEditFocusGained>
 				if self.disabled then
-					self:ClearFocus();
+				self:ClearFocus();
 				else
-					self:HighlightText();
+				self:HighlightText();
 				end
 			</OnEditFocusGained>
 			<OnEditFocusLost>
@@ -276,7 +299,7 @@
 			</OnLeave>
 		</Scripts>
 	</EditBox>
-	
+
 	<!-- Titled edit box, TRP2 style, with help TT button -->
 	<EditBox name="TRP3_TitledHelpEditBox" inherits="TRP3_TitledEditBox" virtual="true">
 		<Frames>
@@ -290,12 +313,12 @@
 		<Scripts>
 			<OnEditFocusGained>
 				if self.disabled then
-					self:ClearFocus();
+				self:ClearFocus();
 				else
-					self:HighlightText();
+				self:HighlightText();
 				end
 				if _G[self:GetName().."Help"].titleText then
-					_G[self:GetName().."Help"]:Show();
+				_G[self:GetName().."Help"]:Show();
 				end
 			</OnEditFocusGained>
 			<OnEditFocusLost>
@@ -304,7 +327,7 @@
 			</OnEditFocusLost>
 		</Scripts>
 	</EditBox>
-	
+
 	<!-- Checkbox with small label and TT compatible -->
 	<CheckButton name="TRP3_CheckBox" inherits="OptionsCheckButtonTemplate" virtual="true" checked="false">
 		<Scripts>
@@ -322,47 +345,58 @@
 			</PostClick>
 		</Scripts>
 	</CheckButton>
-	
+
 	<!-- Tab bar tab button -->
 	<Button name="TRP3_TabBar_Tab" virtual="true">
-        <Size><AbsDimension x="10" y="32"/></Size>
-        <Layers>
-        	<Layer level="BACKGROUND">
+		<Size>
+			<AbsDimension x="10" y="32"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
 				<Texture name="$parentLeft" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
-        			<Size><AbsDimension x="10" y="32"/></Size>
-        			<Anchors>
-        				<Anchor point="BOTTOMLEFT" x="0" y="0"/>
-        			</Anchors>
+					<Size>
+						<AbsDimension x="10" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
+					</Anchors>
 					<TexCoords left="0.08" right="0.15625" top="1.0" bottom="0"/>
-        		</Texture>
-        		<Texture name="$parentRight" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
-        			<Size><AbsDimension x="10" y="32"/></Size>
-        			<Anchors>
-        				<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
-        			</Anchors>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+					<Size>
+						<AbsDimension x="10" y="32"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
 					<TexCoords left="0.84375" right="0.92" top="1.0" bottom="0"/>
-        		</Texture>
+				</Texture>
 				<Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
-        			<Anchors>
-        				<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
-        				<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
 					<TexCoords left="0.15625" right="0.84375" top="1.0" bottom="0"/>
-        		</Texture>
-        	</Layer>
-        </Layers>
+				</Texture>
+			</Layer>
+		</Layers>
 		<ButtonText name="$parentText">
-			<Size><AbsDimension x="0" y="32"/></Size>
+			<Size>
+				<AbsDimension x="0" y="32"/>
+			</Size>
 			<Anchors>
 				<Anchor point="CENTER">
-					<Offset><AbsDimension x="0" y="-2"/></Offset>
+					<Offset>
+						<AbsDimension x="0" y="-2"/>
+					</Offset>
 				</Anchor>
 			</Anchors>
 		</ButtonText>
 		<NormalFont style="GameFontHighlightSmall"/>
 		<HighlightFont style="GameFontHighlightSmall"/>
 		<DisabledFont style="GameFontHighlight"/>
-		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
+		<HighlightTexture name="$parentHighlightTexture"
+						  file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
@@ -381,13 +415,21 @@
 				TRP3_API.ui.misc.playUISound("igCharacterInfoTab");
 			</PostClick>
 		</Scripts>
-    </Button>
-    
-    <!-- Text area -->
-    <Frame name="TRP3_TextArea" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+	</Button>
+
+	<!-- Text area -->
+	<Frame name="TRP3_TextArea" virtual="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border"
+				  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="200"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
 		</Backdrop>
 		<Frames>
 			<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
@@ -405,7 +447,7 @@
 							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-									self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
 								end
 							</OnTextChanged>
 							<OnEscapePressed>
@@ -436,7 +478,7 @@
 			</Button>
 		</Frames>
 	</Frame>
-	
+
 	<!-- Color picker button -->
 	<Button name="TRP3_SearchButton" virtual="true" inherits="TRP3_IconButton">
 		<Scripts>
@@ -447,18 +489,19 @@
 			</OnLoad>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Color picker button -->
 	<Button name="TRP3_ColorPickerButton" virtual="true">
 		<Size x="16" y="16"/>
-	    <HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight" file="Interface\SpellActivationOverlay\IconAlert">
-	    	<Size x="71" y="68"/>
+		<HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight"
+						  file="Interface\SpellActivationOverlay\IconAlert">
+			<Size x="71" y="68"/>
 			<Anchors>
 				<Anchor x="-11" y="11" point="TOPLEFT"/>
 			</Anchors>
-			<TexCoords left="0" right="1" top="0.53" bottom="1" />
+			<TexCoords left="0" right="1" top="0.53" bottom="1"/>
 			<Color r="1.0" g="1.0" b="1.0" a="0.40"/>
-	    </HighlightTexture>
+		</HighlightTexture>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentSwatchBg">
@@ -483,11 +526,13 @@
 							<Rotation degrees="-45" duration="0.4" smoothing="IN" order="1"/>
 							<Alpha duration="0.4" change="-1" smoothing="OUT" startDelay="0.4" order="1"/>
 							<Rotation degrees="-45" duration="0.4" smoothing="OUT" startDelay="0.4" order="1"/>
-							
+
 						</AnimationGroup>
 					</Animations>
 					<Size x="40" y="40"/>
-					<Anchors><Anchor x="0" y="0" point="CENTER"/></Anchors>
+					<Anchors>
+						<Anchor x="0" y="0" point="CENTER"/>
+					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -515,9 +560,9 @@
 			</OnLoad>
 			<OnClick>
 				if button == "LeftButton" then
-					TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
-				elseif  button == "RightButton" then
-					self.setColor(nil, nil, nil);
+				TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
+				elseif button == "RightButton" then
+				self.setColor(nil, nil, nil);
 				end
 			</OnClick>
 			<OnEnter>

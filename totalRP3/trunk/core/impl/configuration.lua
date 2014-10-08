@@ -112,16 +112,23 @@ local function buildConfigurationPage(structure)
 			widget:SetPoint("TOP", structure.parent, "TOP", 0, element.marginTop or 0);
 		end
 
-		if element.title and _G[widget:GetName().."Title"] then
-			_G[widget:GetName().."Title"]:SetText(element.title);
-			if _G[widget:GetName().."Help"] then
-				local help = _G[widget:GetName().."Help"];
-				if element.help then
-					help:Show();
-					setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
-				else
-					help:Hide();
-				end
+		-- Titles
+		if element.title then
+			if _G[widget:GetName().."Title"] then
+				_G[widget:GetName().."Title"]:SetText(element.title);
+			elseif element.title and _G[widget:GetName().."Text"] then
+				_G[widget:GetName().."Text"]:SetText(element.title);
+			end
+		end
+
+		-- Help
+		if _G[widget:GetName().."Help"] then
+			local help = _G[widget:GetName().."Help"];
+			if element.help then
+				help:Show();
+				setTooltipForFrame(help, "RIGHT", 0, 5, element.title, element.help);
+			else
+				help:Hide();
 			end
 		end
 

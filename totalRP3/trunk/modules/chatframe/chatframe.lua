@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
@@ -35,11 +35,7 @@ local handleCharacterMessage, hooking;
 -- Config
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local POSSIBLE_CHANNELS = {
-	"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
-	"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
-	"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
-};
+local POSSIBLE_CHANNELS
 
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
@@ -97,7 +93,7 @@ local function configOOCDetectionColor()
 	return getConfigValue(CONFIG_OOC_COLOR);
 end
 
-local function createConfigPage()
+local function createConfigPage(useWIM)
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 2);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
@@ -216,6 +212,13 @@ local function createConfigPage()
 			},
 		}
 	};
+	if useWIM then
+		tinsert(CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigNote",
+			help = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
+			title = "|cffff9900Whisper channels are disabled.",
+		});
+	end
 
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
 		registerConfigKey(CONFIG_USAGE .. channel, true);
@@ -400,6 +403,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 	elseif type == "TEXT_EMOTE" then
 		body = message;
 		if characterID ~= Globals.player_id then
+--			body = body:gsub(characterID, playerLink .. characterName .. "|h");
 			body = body:gsub("^([^%s]+)", playerLink .. characterName .. "|h");
 		end
 	else
@@ -430,12 +434,29 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onStart()
+	local useWIM = WIM ~= nil;
+
+	if useWIM then
+		POSSIBLE_CHANNELS = {
+			"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
+			"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
+			"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER"
+		};
+	else
+		POSSIBLE_CHANNELS = {
+			"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
+			"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
+			"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
+		};
+	end
+
+
 	NPC_TALK_PATTERNS = {
 		[loc("NPC_TALK_SAY_PATTERN")] = "MONSTER_SAY",
 		[loc("NPC_TALK_YELL_PATTERN")] = "MONSTER_YELL",
 		[loc("NPC_TALK_WHISPER_PATTERN")] = "MONSTER_WHISPER",
 	};
-	createConfigPage();
+	createConfigPage(useWIM);
 	hooking();
 end
 
