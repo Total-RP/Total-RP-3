@@ -621,11 +621,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					local list = TRP3_API.profile.getProfiles();
 
 					local dropdownItems = {};
+					tinsert(dropdownItems,{loc("TB_SWITCH_PROFILE"), nil});
 					for key, value in pairs(list) do
+						local icon = value.player.characteristics.IC or Globals.icons.profile_default;
 						if key == TRP3_API.profile.getPlayerCurrentProfileID() then
-							tinsert(dropdownItems,{value.profileName, nil});
+							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t|cff00ff00 "..value.profileName.."|r", nil});
 						else
-							tinsert(dropdownItems,{value.profileName, key});
+							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t "..value.profileName, key});
 						end
 					end
 					displayDropDown(Uibutton, dropdownItems, profileSelected, 0, true);
