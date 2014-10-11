@@ -550,7 +550,7 @@ local function onStart()
 					updatedCharacteristics = true;
 					-- NA color escaping
 					if field == "NA" and value then
-						local color = nil;
+						local color;
 						value:gsub("|c%x%x(%x%x%x%x%x%x)", function(arg1)
 							if not color then color = arg1 end
 							return "";

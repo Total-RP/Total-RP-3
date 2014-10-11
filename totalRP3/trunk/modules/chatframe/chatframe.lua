@@ -95,7 +95,7 @@ end
 
 local function createConfigPage(useWIM)
 	-- Config default value
-	registerConfigKey(CONFIG_NAME_METHOD, 2);
+	registerConfigKey(CONFIG_NAME_METHOD, 3);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_NPC_TALK, true);
 	registerConfigKey(CONFIG_NPC_TALK_PREFIX, "|| ");
