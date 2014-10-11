@@ -53,6 +53,7 @@ local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHAR
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
+local getRelationColors = TRP3_API.register.relation.getRelationColors;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -142,11 +143,11 @@ local function decorateCharacterLine(line, profileID)
 	line.id = profileID;
 
 	local name = getCompleteName(profile.characteristics or {}, UNKNOWN, true);
-	local tooltip, secondLine = name, "";
+	local leftTooltipTitle, leftTooltipText = name, "";
 
 	_G[line:GetName().."Name"]:SetText(name);
 	if profile.characteristics and profile.characteristics.IC then
-		tooltip = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
+		leftTooltipTitle = Utils.str.icon(profile.characteristics.IC, ICON_SIZE) .. " " .. name;
 	end
 
 	local hasGlance = profile.misc and profile.misc.PE and checkGlanceActivation(profile.misc.PE);
@@ -155,54 +156,67 @@ local function decorateCharacterLine(line, profileID)
 	local atLeastOneIgnored = false;
 	_G[line:GetName().."Info2"]:SetText("");
 	if profile.link and tsize(profile.link) > 0 then
-		secondLine = secondLine .. loc("REG_LIST_CHAR_TT_CHAR");
+		leftTooltipText = leftTooltipText .. loc("REG_LIST_CHAR_TT_CHAR");
 		for unitID, _ in pairs(profile.link) do
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if isIDIgnored(unitID) then
-				secondLine = secondLine .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_IGNORED");
+				leftTooltipText = leftTooltipText .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_IGNORED");
 				atLeastOneIgnored = true;
 			else
-				secondLine = secondLine .. "\n|cff00ff00 - " .. unitName .. " ( " .. unitRealm .. " )";
+				leftTooltipText = leftTooltipText .. "\n|cff00ff00 - " .. unitName .. " ( " .. unitRealm .. " )";
 			end
 		end
 	else
-		secondLine = secondLine .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
+		leftTooltipText = leftTooltipText .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
 	end
 
 	if profile.time and profile.zone then
 		local formatDate = date(DATE_FORMAT, profile.time);
-		secondLine = secondLine .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
+		leftTooltipText = leftTooltipText .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
 	end
 
-	secondLine = secondLine .. "\n\n|r" .. loc("REG_LIST_CHAR_TT_RELATION"):format(getRelationTooltipText(profileID, profile)) .. "\n|r";
+	-- Middle column : relation
+	local relation, relationRed, relationGreen, relationBlue = getRelationText(profileID), getRelationColors(profileID);
+	local color = Utils.color.colorCode(relationRed * 255, relationGreen * 255, relationBlue * 255);
+	if relation:len() > 0 then
+		local middleTooltipTitle, middleTooltipText = relation, getRelationTooltipText(profileID, profile);
+		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"], "TOPLEFT", 0, 5, middleTooltipTitle, color .. middleTooltipText);
+	else
+		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
+	end
+	_G[line:GetName().."Info"]:SetText(color .. relation);
 
+	-- Third column : flags
+	local rightTooltipTitle, rightTooltipText, flags;
+	if atLeastOneIgnored then
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. IGNORED_ICON;
+		rightTooltipText = rightTooltipText .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_TT_IGNORE");
+	end
 	if hasGlance then
-		secondLine = secondLine .. "\n" .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. GLANCE_ICON;
+		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
 	end
 	if hasNewAbout then
-		secondLine = secondLine .. "\n" .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. NEW_ABOUT_ICON;
+		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
 	end
+	if rightTooltipText then
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
+	else
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
+	end
+	_G[line:GetName().."Info2"]:SetText(flags);
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
 
-	local relation = getRelationText(profileID);
-	_G[line:GetName().."Info"]:SetText(relation);
-
-	-- Third column : flags
-	local flags = "";
-	if atLeastOneIgnored then
-		flags = flags .. IGNORED_ICON;
-	end
-	if hasGlance then
-		flags = flags .. " " .. GLANCE_ICON;
-	end
-	if hasNewAbout then
-		flags = flags .. " " .. NEW_ABOUT_ICON;
-	end
-	_G[line:GetName().."Info2"]:SetText(flags);
-
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 end
 
 local function getCharacterLines()
@@ -406,18 +420,29 @@ local function decorateCompanionLine(line, profileID)
 	end
 
 	secondLine = loc("REG_LIST_PETS_TOOLTIP") .. ":\n" .. companionList .. "\n" .. loc("REG_LIST_PETS_TOOLTIP2") .. ":\n" .. masterList;
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
+	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
 	-- Third column : flags
-	local flags = "";
+	local rightTooltipTitle, rightTooltipText, flags;
 	if hasGlance then
-		flags = flags .. " " .. GLANCE_ICON;
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. GLANCE_ICON;
+		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
 	end
 	if hasNewAbout then
-		flags = flags .. " " .. NEW_ABOUT_ICON;
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. NEW_ABOUT_ICON;
+		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
+	end
+	if rightTooltipText then
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
+	else
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
 	_G[line:GetName().."Info2"]:SetText(flags);
-
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
@@ -521,6 +546,8 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Info2"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(getIgnoredList()[unitID]));
+	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
+	setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 end
 
 local function getIgnoredLines()

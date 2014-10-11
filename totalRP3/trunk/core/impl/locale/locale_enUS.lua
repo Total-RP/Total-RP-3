@@ -236,6 +236,7 @@ local LOCALE_EN = {
 		REG_LIST_CHAR_TT_DATE = "Last seen date: |cff00ff00%s|r\nLast seen location: |cff00ff00%s|r",
 		REG_LIST_CHAR_TT_GLANCE = "At first glance",
 		REG_LIST_CHAR_TT_NEW_ABOUT = "Unread description",
+		REG_LIST_CHAR_TT_IGNORE = "Ignored character(s)",
 		REG_LIST_CHAR_FILTER = "Characters: %s / %s",
 		REG_LIST_CHAR_EMPTY = "No character",
 		REG_LIST_CHAR_EMPTY2 = "No character matches your selection",

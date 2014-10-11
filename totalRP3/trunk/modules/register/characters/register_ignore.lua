@@ -96,7 +96,7 @@ local function getRelationColors(profileID)
 	elseif relation == RELATIONS.UNFRIENDLY then
 		return 1, 0, 0;
 	elseif relation == RELATIONS.NEUTRAL then
-		return 0, 0, 1;
+		return 0.5, 0.5, 1;
 	elseif relation == RELATIONS.BUSINESS then
 		return 1, 1, 0;
 	elseif relation == RELATIONS.FRIEND then
