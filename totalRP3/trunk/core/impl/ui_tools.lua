@@ -125,10 +125,14 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				assert(type(tab) == "table", "Level value is not a table !");
 				local text = tab[1];
 				local value = tab[2];
+				local tooltipText = tab[3];
 				local info = UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				info.text = text;
 				info.isTitle = false;
+				info.tooltipOnButton = tooltipText ~= nil;
+				info.tooltipTitle = text;
+				info.tooltipText = tooltipText;
 				if tab[3] then
 					info.tooltipTitle = tab[1];
 					info.tooltipText = tab[3];

@@ -203,6 +203,12 @@ function TRP3_DEBUG_CLEAR()
 	ReloadUI();
 end
 
+function TRP3_TERTIARY()
+	local bool = true;
+	print(bool and "ok" or "not");
+	print(not bool and "ok" or "not");
+end
+
 local function onInit()
 	Log.log("onInit test module");
 end

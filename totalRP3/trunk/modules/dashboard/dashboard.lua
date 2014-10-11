@@ -384,19 +384,23 @@ TRP3_API.dashboard.init = function()
 	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
 
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
+	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
+	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
 	local statusTab = {
-		{loc("DB_STATUS_RP_IC"), 1},
-		{loc("DB_STATUS_RP_OOC"), 2},
+		{IC_ICON .. " " .. loc("DB_STATUS_RP_IC"), 1, loc("DB_STATUS_RP_IC_TT")},
+		{OOC_ICON .. " " .. loc("DB_STATUS_RP_OOC"), 2, loc("DB_STATUS_RP_OOC_TT")},
 	};
-	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 120, true);
+	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 150, true);
 
 	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
+	local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
+	local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15|t";
 	local xpTab = {
-		{loc("DB_STATUS_XP_BEGINNER"), 1},
-		{loc("DB_STATUS_RP_EXP"), 2},
-		{loc("DB_STATUS_RP_VOLUNTEER"), 3},
+		{BEGINNER_ICON .. " " .. loc("DB_STATUS_XP_BEGINNER"), 1, loc("DB_STATUS_XP_BEGINNER_TT")},
+		{loc("DB_STATUS_RP_EXP"), 2, loc("DB_STATUS_RP_EXP_TT")},
+		{VOLUNTEER_ICON .. " " .. loc("DB_STATUS_RP_VOLUNTEER"), 3, loc("DB_STATUS_RP_VOLUNTEER_TT")},
 	};
-	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 120, true);
+	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 150, true);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then
