@@ -33,10 +33,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 	local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
 	local assert, pairs = assert, pairs;
-
-	-- DEV imports
-	-- TODO Remove :P
-	local dump = TRP3_API.utils.table.dump;
+	local tsize = TRP3_API.utils.table.size;
+	local playAnimation = TRP3_API.ui.misc.playAnimation;
 
 	local totalRP2Profiles = {};
 	local importableData = {};
@@ -44,6 +42,59 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- LOGIC
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	local function TRP2TagsToTRP3Tags(text)
+
+		if not text then
+			return;
+		end
+		local predefinedTRP2Color = {
+			r = "ff0000",
+			v = "00ff00",
+			b = "0000ff";
+			j = "ffff00";
+			p = "ff00ff";
+			c = "00ffff";
+			w = "ffffff";
+			n = "000000";
+			o = "ffaa00";
+		}
+		local result = text:gsub("%{.-%}", function(tag) -- Not : The tag is received with the {}
+			-- Pre-defined color
+			if predefinedTRP2Color[tag:sub(2, -2)] then
+				return "{col:" .. predefinedTRP2Color[tag:sub(2, -2)] .. "}";
+			end
+
+			-- Custom color
+			if tag:match("%x%x%x%x%x%x") then
+				return "{col:" .. tag:sub(2, -2) .. "}";
+			end
+
+			-- Icon tag
+			if tag:sub(2, 6) == "icone" then
+				return tag:gsub("icone", "icon");
+			end
+
+			-- Random text
+			if tag:sub(2, 9) == "randtext" then
+				local texts = tag:sub(11, -2);
+				texts = {strsplit("+", texts)};
+				return texts[math.random(1,#texts)];
+			end
+
+			-- Link
+			if tag:sub(2, 5) == "link" then
+				local _, url, text = strsplit(":", tag:sub(2, -2));
+				return "(" .. text .. " : " .. url .. ")";
+			end
+
+			return ""; -- If we don't know the tag, return empty string to clear the tag.
+		end)
+		return result;
+	end
+
+	local function stripTRP2Tags(text)
+		return text and text:gsub("%{.-%}","") or "";
+	end
 
 
 	local function importProfile(profileId)
@@ -63,39 +114,39 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 		local profile = getDefaultProfile();
 
-		profile["player"]["characteristics"]["TI"] = importedProfile.info.shortTitle;
-		profile["player"]["characteristics"]["FN"] = importedProfile.info.firstName;
-		profile["player"]["characteristics"]["LN"] = importedProfile.info.lastName;
-		profile["player"]["characteristics"]["FT"] = importedProfile.info.fullTitle;
-		profile["player"]["characteristics"]["RA"] = importedProfile.info.race;
-		profile["player"]["characteristics"]["CL"] = importedProfile.info.class;
-		profile["player"]["characteristics"]["AG"] = importedProfile.info.age;
-		profile["player"]["characteristics"]["RE"] = importedProfile.info.residence;
-		profile["player"]["characteristics"]["BP"] = importedProfile.info.birthplace;
-		profile["player"]["characteristics"]["EC"] = importedProfile.info.eyesColor;
-		profile["player"]["characteristics"]["HE"] = importedProfile.info.height;
-		profile["player"]["characteristics"]["WE"] = importedProfile.info.bodyShape;
-		profile["player"]["characteristics"]["IC"] = importedProfile.info.icon;
+		profile["player"]["characteristics"]["TI"] = stripTRP2Tags(importedProfile.info.shortTitle);
+		profile["player"]["characteristics"]["FN"] = stripTRP2Tags(importedProfile.info.firstName);
+		profile["player"]["characteristics"]["LN"] = stripTRP2Tags(importedProfile.info.lastName);
+		profile["player"]["characteristics"]["FT"] = stripTRP2Tags(importedProfile.info.fullTitle);
+		profile["player"]["characteristics"]["RA"] = stripTRP2Tags(importedProfile.info.race);
+		profile["player"]["characteristics"]["CL"] = stripTRP2Tags(importedProfile.info.class);
+		profile["player"]["characteristics"]["AG"] = stripTRP2Tags(importedProfile.info.age);
+		profile["player"]["characteristics"]["RE"] = stripTRP2Tags(importedProfile.info.residence);
+		profile["player"]["characteristics"]["BP"] = stripTRP2Tags(importedProfile.info.birthplace);
+		profile["player"]["characteristics"]["EC"] = stripTRP2Tags(importedProfile.info.eyesColor);
+		profile["player"]["characteristics"]["HE"] = stripTRP2Tags(importedProfile.info.height);
+		profile["player"]["characteristics"]["WE"] = stripTRP2Tags(importedProfile.info.bodyShape);
+		profile["player"]["characteristics"]["IC"] = stripTRP2Tags(importedProfile.info.icon);
 		if importedProfile.info.piercing then
 			tinsert(profile["player"]["characteristics"]["MI"], {
 				["IC"] = "INV_Jewelry_ring_07",
 				["NA"] = importableData.piercing,
-				["VA"] = importedProfile.info.piercing,
+				["VA"] = stripTRP2Tags(importedProfile.info.piercing),
 			});
 		end
 		if importedProfile.info.face then
 			tinsert(profile["player"]["characteristics"]["MI"], {
 				["IC"] = "Spell_Shadow_MindSteal",
 				["NA"] = importableData.face,
-				["VA"] = importedProfile.info.face,
+				["VA"] = stripTRP2Tags(importedProfile.info.face),
 			});
 		end
-		profile["player"]["character"]["CO"] = importedProfile.info.currentlyOOC;
-		profile["player"]["character"]["CU"] = importedProfile.info.currently;
-		profile["player"]["character"]["RP"] = importedProfile.info.rpStatus;
-		profile["player"]["character"]["XP"] = importedProfile.info.experienceStatus;
-		profile["player"]["about"]["T3"]["PH"]["TX"] = importedProfile.info.physicalDescription;
-		profile["player"]["about"]["T3"]["HI"]["TX"] = importedProfile.info.history;
+		profile["player"]["character"]["CO"] = stripTRP2Tags(importedProfile.info.currentlyOOC);
+		profile["player"]["character"]["CU"] = stripTRP2Tags(importedProfile.info.currently);
+		profile["player"]["character"]["RP"] = stripTRP2Tags(importedProfile.info.rpStatus);
+		profile["player"]["character"]["XP"] = stripTRP2Tags(importedProfile.info.experienceStatus);
+		profile["player"]["about"]["T3"]["PH"]["TX"] = TRP2TagsToTRP3Tags(importedProfile.info.physicalDescription);
+		profile["player"]["about"]["T3"]["HI"]["TX"] = TRP2TagsToTRP3Tags(importedProfile.info.history);
 		profile["player"]["about"]["TE"] = 3;
 
 		TRP3_API.profile.duplicateProfile(profile, nameForNewProfile);
@@ -108,8 +159,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		for i = 1, 5 do
 			local widget = _G["TRP3_CharacterImporterListLine" .. i];
 			C_Timer.After((0.1 * (i - 1)), function()
-				_G[widget:GetName() .. "Animate"]:Play();
-				_G[widget:GetName() .. "HighlightAnimate"]:Play();
+				playAnimation(_G[widget:GetName() .. "Animate"]);
+				playAnimation(_G[widget:GetName() .. "HighlightAnimate"]);
+
 			end
 			);
 		end
@@ -198,12 +250,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	local function uiInitProfileList()
 		initList(TRP3_CharacterImporterList, getTotalRP2ProfilesList(), TRP3_CharacterImporterListSlider);
+		TRP3_CharacterImporterAll:SetText(loc("PR_IMPORT_IMPORT_ALL") .. " (" .. (tsize(getTotalRP2ProfilesList())) .. ")");
 	end
 
 	local function onImportButtonClicked(button)
 		importProfile(button:GetParent().profileID);
-		_G[button:GetParent():GetName() .. "Animate"]:Play();
-		_G[button:GetParent():GetName() .. "HighlightAnimate"]:Play();
+		playAnimation(_G[button:GetParent():GetName() .. "Animate"]);
+		playAnimation(_G[button:GetParent():GetName() .. "HighlightAnimate"]);
 		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
 	end
 
@@ -242,7 +295,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CharacterImporter:SetScript("OnShow", refreshDisplay);
 
 	handleMouseWheel(TRP3_CharacterImporterList, TRP3_CharacterImporterListSlider);
-	TRP3_CharacterImporterAll:SetText("Import all");
 	TRP3_CharacterImporterListSlider:SetValue(0);
 	local widgetTab = {};
 	for i = 1, 5 do

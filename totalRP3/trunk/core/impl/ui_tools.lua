@@ -40,6 +40,7 @@ local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
+local CONFIG_UI_ANIMATIONS = "ui_animations";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
@@ -883,5 +884,15 @@ function TRP3_API.ui.misc.playUISound(pathToSound, url)
 		else
 			PlaySound(pathToSound,"SFX");
 		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Animation
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.misc.playAnimation(animationGroup)
+	if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) and animationGroup then
+		animationGroup:Play();
 	end
 end

@@ -316,7 +316,9 @@ local LOCALE_EN = {
 		CO_GENERAL_NEW_VERSION = "Update alert",
 		CO_GENERAL_NEW_VERSION_TT = "Get an alert when a new version is available.",
 		CO_GENERAL_UI_SOUNDS = "UI sounds",
-		CO_GENERAL_UI_SOUNDS_TT = "Active the UI sounds (when opening windows, switching tabs, clicking buttons).",
+		CO_GENERAL_UI_SOUNDS_TT = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
+		CO_GENERAL_UI_ANIMATIONS = "UI animations",
+		CO_GENERAL_UI_ANIMATIONS_TT = "Activate the UI animations.",
 		CO_TOOLTIP = "Tooltip settings",
 		CO_TOOLTIP_USE = "Use characters/companions tooltip",
 		CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -522,6 +524,7 @@ local LOCALE_EN = {
 		PR_CO_BATTLE = "Companion",
 		PR_IMPORT_CHAR_TAB = "Characters importer",
 		PR_IMPORT_PETS_TAB = "Companions importer",
+		PR_IMPORT_IMPORT_ALL = "Import all";
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD

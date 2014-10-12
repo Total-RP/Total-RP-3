@@ -84,7 +84,7 @@
 			</OnLeave>
 		</Scripts>
 		<Layers>
-			<Layer level="OVERLAY">
+			<Layer level="BORDER">
 				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]" hidden="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="3" />
@@ -106,7 +106,32 @@
 					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>
 			</Layer>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="ADD" alpha="0" name="$parentHighlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
+					<Size x="150" y="60"/>
+					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-20" y="-2"/>
+					</Anchors>
+					<Animations>
+						<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
+							<Alpha duration="0.4" change="1" smoothing="IN" order="1"/>
+							<Translation duration="0.8" offsetX="400" smoothing="IN_OUT" order="1"/>
+							<Alpha duration="0.2" change="-1" smoothing="OUT" order="1" startDelay="0.5"/>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+			</Layer>
 		</Layers>
+		<Layers>
+
+		</Layers>
+		<Animations>
+			<AnimationGroup name="$parentAnimate" looping="NONE">
+				<Alpha duration="0.25" change="-0.4"  order="1"/>
+				<Alpha duration="0.25" change="0.4"  order="2"/>
+			</AnimationGroup>
+		</Animations>
 	</Frame>
 
 	<!-- Profile manager -->
