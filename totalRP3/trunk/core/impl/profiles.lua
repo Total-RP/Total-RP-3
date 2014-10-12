@@ -41,8 +41,7 @@ local getPlayerCurrentProfile;
 local profiles, character, characters;
 
 local PATH_DELIMITER = "/";
-local currentProfile = nil;
-local currentProfileId = nil;
+local currentProfile, currentProfileId;
 local PR_DEFAULT_PROFILE = {
 	player = {},
 };
@@ -397,7 +396,6 @@ function TRP3_API.profile.init()
 		frame = TRP3_ProfileManager,
 		onPagePostShow = function() 
 			tabGroup:SelectTab(1);
-			uiInitProfileList(); 
 		end,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
@@ -418,10 +416,21 @@ function TRP3_API.profile.init()
 			list:Hide();
 			if value == 1 then
 				list:Show();
+				uiInitProfileList();
 			elseif value == 2 then
 				importer:Show();
 			end
 		end
 	);
 	tabGroup:SelectTab(1);
+
+	local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
+
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, function()
+		if getCurrentPageID() == "player_profiles" then
+			if tabGroup.current == 1 then
+				tabGroup:SelectTab(1); -- Force refresh
+			end
+		end
+	end);
 end
