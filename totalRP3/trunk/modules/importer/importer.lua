@@ -130,7 +130,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		profile["player"]["characteristics"]["EC"] = stripTRP2Tags(importedProfile.info.eyesColor);
 		profile["player"]["characteristics"]["HE"] = stripTRP2Tags(importedProfile.info.height);
 		profile["player"]["characteristics"]["WE"] = stripTRP2Tags(importedProfile.info.bodyShape);
-		profile["player"]["characteristics"]["IC"] = stripTRP2Tags(importedProfile.info.icon);
+		profile["player"]["characteristics"]["IC"] = importedProfile.info.icon;
 		if importedProfile.info.piercing then
 			tinsert(profile["player"]["characteristics"]["MI"], {
 				["IC"] = "INV_Jewelry_ring_07",
@@ -147,8 +147,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		profile["player"]["character"]["CO"] = stripTRP2Tags(importedProfile.info.currentlyOOC);
 		profile["player"]["character"]["CU"] = stripTRP2Tags(importedProfile.info.currently);
-		profile["player"]["character"]["RP"] = stripTRP2Tags(importedProfile.info.rpStatus);
-		profile["player"]["character"]["XP"] = stripTRP2Tags(importedProfile.info.experienceStatus);
+		profile["player"]["character"]["RP"] = importedProfile.info.rpStatus;
+		profile["player"]["character"]["XP"] = importedProfile.info.experienceStatus;
 		profile["player"]["about"]["T3"]["PH"]["TX"] = TRP2TagsToTRP3Tags(importedProfile.info.physicalDescription);
 		profile["player"]["about"]["T3"]["HI"]["TX"] = TRP2TagsToTRP3Tags(importedProfile.info.history);
 		profile["player"]["about"]["TE"] = 3;

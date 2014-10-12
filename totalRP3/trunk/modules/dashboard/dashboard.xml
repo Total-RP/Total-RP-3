@@ -84,7 +84,7 @@
 						<Anchor point="LEFT" x="-20" y="0"/>
 					</Anchors>
 					<Animations>
-						<AnimationGroup name="$parentAnimate" looping="NONE">
+						<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
 							<Alpha duration="0.6" change="1" smoothing="IN" order="1"/>
 							<Translation duration="1.2" offsetX="400" smoothing="IN_OUT" order="1"/>
 							<Alpha duration="0.3" change="-1" smoothing="OUT" order="1" startDelay="0.7"/>

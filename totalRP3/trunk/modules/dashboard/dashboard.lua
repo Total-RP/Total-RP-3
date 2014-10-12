@@ -419,11 +419,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 				if(ShowingCloak()) then
 					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
+					ShowCloak(false);
 				else
 					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
+					ShowCloak(true);
 				end
 
-				ShowCloak(not ShowingCloak());
+
 			end,
 			onLeave = function()
 				mainTooltip:Hide();
@@ -473,26 +475,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
-				local helmet = GetInventoryItemID("player",1);
-				local sound;
-				local soundTable;
 
 				if ShowingHelm() then
-					soundTable = helmetOffSound;
+					ShowHelm(false);
+					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
+
 				else
-					soundTable = helmetOnSound;
+					ShowHelm(true);
+					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
 				end
 
-				if helmet ~= nil then
-					local _, _, _, _, _, _, itemType = GetItemInfo(helmet);
-					sound = soundTable[itemType];
-				else
-					sound = soundTable["Cloth"];
-				end
-
-				ShowHelm(not ShowingHelm());
-
-				playUISound(sound, true);
 
 			end,
 			onLeave = function()

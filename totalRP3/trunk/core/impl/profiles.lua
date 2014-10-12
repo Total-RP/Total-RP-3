@@ -376,10 +376,12 @@ function TRP3_API.profile.init()
 	for i=1,5 do
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
-			onProfileSelected(_G[self:GetName().."Select"]);
-			playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
-			playAnimation(_G[self:GetName() .. "Animate"]);
-			playUISound("gsCharacterSelection");
+			if currentProfileId ~= self.profileID then
+				onProfileSelected(_G[self:GetName().."Select"]);
+				playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
+				playAnimation(_G[self:GetName() .. "Animate"]);
+				playUISound("gsCharacterSelection");
+			end
 		end);
 		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
 		_G[widget:GetName().."Select"]:SetText(loc("CM_SELECT"));
