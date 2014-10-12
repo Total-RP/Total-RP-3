@@ -27,7 +27,7 @@ local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local Log = Utils.log;
+local Log, convertTextTags = Utils.log, Utils.str.convertTextTags;
 local getConfigValue = TRP3_API.configuration.getValue;
 local CreateFrame = CreateFrame;
 local tostring, unpack, strtrim = tostring, unpack, strtrim;
@@ -166,7 +166,7 @@ local function showTemplate2(dataTab)
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
 		setupIconButton(icon, frameTab.IC or Globals.icons.default);
-		text:SetText(frameTab.TX);
+		text:SetText(convertTextTags(frameTab.TX));
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
 		if bool then
@@ -388,7 +388,7 @@ local function showTemplate3(dataTab)
 			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 			local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
-			text:SetText(Utils.str.convertTextTags(data.TX));
+			text:SetText(convertTextTags(data.TX));
 			setBkg(frame, data.BK);
 			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
 			frame:Show();
