@@ -524,7 +524,8 @@ local LOCALE_EN = {
 		PR_CO_BATTLE = "Companion",
 		PR_IMPORT_CHAR_TAB = "Characters importer",
 		PR_IMPORT_PETS_TAB = "Companions importer",
-		PR_IMPORT_IMPORT_ALL = "Import all";
+		PR_IMPORT_IMPORT_ALL = "Import all",
+		PR_IMPORT_EMPTY = "No importable profile",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD

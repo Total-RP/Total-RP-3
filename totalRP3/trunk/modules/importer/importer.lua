@@ -93,7 +93,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	local function stripTRP2Tags(text)
-		return text and text:gsub("%{.-%}","") or "";
+		if type(text) ~= "string" then
+			return "";
+		else
+			return text:gsub("%{.-%}","");
+		end
 	end
 
 
@@ -195,7 +199,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		if TRP2_Module_PlayerInfo then
 			for realm, characters in pairs(TRP2_Module_PlayerInfo) do
 				for name, info in pairs(characters) do
-					if (info["Registre"]) then
+					if info["Registre"] or info["Histoire"] or info["Actu"] then
 						totalRP2Profiles[name .. " - " .. realm] = {
 							name = name .. " - " .. realm,
 							addonVersion = TRP2_addonname .. " " .. TRP2_version,
@@ -251,6 +255,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local function uiInitProfileList()
 		initList(TRP3_CharacterImporterList, getTotalRP2ProfilesList(), TRP3_CharacterImporterListSlider);
 		TRP3_CharacterImporterAll:SetText(loc("PR_IMPORT_IMPORT_ALL") .. " (" .. (tsize(getTotalRP2ProfilesList())) .. ")");
+		if tsize(getTotalRP2ProfilesList()) == 0 then
+			TRP3_CharacterImporterAll:Disable();
+			TRP3_CharacterImporterListEmpty:Show();
+		else
+			TRP3_CharacterImporterAll:Enable();
+			TRP3_CharacterImporterListEmpty:Hide();
+		end
 	end
 
 	local function onImportButtonClicked(button)
@@ -307,4 +318,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CharacterImporterList.widgetTab = widgetTab;
 	TRP3_CharacterImporterList.decorate = decorateProfileList;
 	TRP3_CharacterImporterAll:SetScript("OnClick", importAll);
+	TRP3_CharacterImporterListEmpty:SetText(loc("PR_IMPORT_EMPTY"));
 end);
