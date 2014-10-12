@@ -32,7 +32,7 @@ TRP3_API = {
 		addon_name_alt = "TotalRP3",
 		addon_id_length = 15,
 
-		version = 6,
+		version = 5,
 		version_display = "0.2.3-SNAPSHOT",
 
 		player = UnitName("player"),

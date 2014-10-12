@@ -430,14 +430,15 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
 		local text = loc("REG_TT_GUILD"):format(grade, guild);
+		local membership;
 		if info.misc and info.misc.ST then
 			if info.misc.ST["6"] == 1 then -- IC guild membership
-				text = text .. IC_GUILD;
+				membership = IC_GUILD;
 			elseif info.misc.ST["6"] == 2 then -- OOC guild membership
-				text = text .. OOC_GUILD;
+				membership = OOC_GUILD;
 			end
 		end
-		tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddDoubleLine(text, membership, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
 	end
 
 	tooltipBuilder:AddSpace();
@@ -808,8 +809,8 @@ local function onModuleInit()
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
 
-	IC_GUILD = " |cff00ff00(" .. loc("CM_IC") .. ")";
-	OOC_GUILD = " |cffff0000(" .. loc("CM_OOC") .. ")";
+	IC_GUILD = " |cff00ff00(" .. loc("REG_TT_GUILD_IC") .. ")";
+	OOC_GUILD = " |cffff0000(" .. loc("REG_TT_GUILD_OOC") .. ")";
 
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);

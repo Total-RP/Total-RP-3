@@ -207,6 +207,9 @@ function TRP3_TERTIARY()
 	local bool = true;
 	print(bool and "ok" or "not");
 	print(not bool and "ok" or "not");
+
+	local string = nil;
+	print(string and string:gsub("pouic", "pouic") or "pouic");
 end
 
 function TRP3_TRP2_TAG()
