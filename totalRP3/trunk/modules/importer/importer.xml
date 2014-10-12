@@ -67,27 +67,27 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine1" inherits="TRP3_ProfileImporterLine">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="12" y="-10"/>
 						</Anchors>
 					</Frame>
-					<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine2" inherits="TRP3_ProfileImporterLine">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1"/>
 						</Anchors>
 					</Frame>
-					<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine3" inherits="TRP3_ProfileImporterLine">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1"/>
 						</Anchors>
 					</Frame>
-					<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine4" inherits="TRP3_ProfileImporterLine">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1"/>
 						</Anchors>
 					</Frame>
-					<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
+					<Frame name="$parentLine5" inherits="TRP3_ProfileImporterLine">
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1"/>
 						</Anchors>
@@ -118,6 +118,33 @@
 				</Anchors>
 			</Button>
 		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ProfileImporterLine" inherits="TRP3_ProfileManagerLine" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="ADD" alpha="0" name="$parentHighlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
+					<Size x="150" y="60"/>
+					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-20" y="-2"/>
+					</Anchors>
+					<Animations>
+						<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
+							<Alpha duration="0.6" change="1" smoothing="IN" order="1"/>
+							<Translation duration="1.2" offsetX="400" smoothing="IN_OUT" order="1"/>
+							<Alpha duration="0.3" change="-1" smoothing="OUT" order="1" startDelay="0.7"/>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Animations>
+			<AnimationGroup name="$parentAnimate" looping="NONE">
+				<Alpha duration="0.25" change="-0.4"  order="1"/>
+				<Alpha duration="0.25" change="0.4"  order="2"/>
+			</AnimationGroup>
+		</Animations>
 	</Frame>
 
 	<Frame name="TRP3_CharacterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2"

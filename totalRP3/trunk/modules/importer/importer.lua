@@ -29,12 +29,17 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local initList = TRP3_API.ui.list.initList;
 	local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+	local playUISound = TRP3_API.ui.misc.playUISound;
+	local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
+	local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
+	local assert, pairs = assert, pairs;
 
 	-- DEV imports
 	-- TODO Remove :P
 	local dump = TRP3_API.utils.table.dump;
 
 	local totalRP2Profiles = {};
+	local importableData = {};
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LOGIC
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -44,51 +49,106 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local function importProfile(profileId)
 		assert(totalRP2Profiles[profileId], "Nil profile");
 		local importedProfile = totalRP2Profiles[profileId];
-		local profileName = importedProfile["name"];
+		local profileName = importedProfile.name;
 
-		while not TRP3_API.profile.isProfileNameAvailable(profileName) do
-			profileName = profileName .. "_1";
+		local i = 0;
+		local nameForNewProfile = profileName;
+		while not isProfileNameAvailable(nameForNewProfile) and i < 500 do
+			i = i + 1;
+			nameForNewProfile = profileName .. " " .. i;
+		end
+		if i == 500 then
+			return;
 		end
 
-		-- TODO Create new profile from info
+		local profile = getDefaultProfile();
+
+		profile["player"]["characteristics"]["TI"] = importedProfile.info.shortTitle;
+		profile["player"]["characteristics"]["FN"] = importedProfile.info.firstName;
+		profile["player"]["characteristics"]["LN"] = importedProfile.info.lastName;
+		profile["player"]["characteristics"]["FT"] = importedProfile.info.fullTitle;
+		profile["player"]["characteristics"]["RA"] = importedProfile.info.race;
+		profile["player"]["characteristics"]["CL"] = importedProfile.info.class;
+		profile["player"]["characteristics"]["AG"] = importedProfile.info.age;
+		profile["player"]["characteristics"]["RE"] = importedProfile.info.residence;
+		profile["player"]["characteristics"]["BP"] = importedProfile.info.birthplace;
+		profile["player"]["characteristics"]["EC"] = importedProfile.info.eyesColor;
+		profile["player"]["characteristics"]["HE"] = importedProfile.info.height;
+		profile["player"]["characteristics"]["WE"] = importedProfile.info.bodyShape;
+		profile["player"]["characteristics"]["IC"] = importedProfile.info.icon;
+		if importedProfile.info.piercing then
+			tinsert(profile["player"]["characteristics"]["MI"], {
+				["IC"] = "INV_Jewelry_ring_07",
+				["NA"] = importableData.piercing,
+				["VA"] = importedProfile.info.piercing,
+			});
+		end
+		if importedProfile.info.face then
+			tinsert(profile["player"]["characteristics"]["MI"], {
+				["IC"] = "Spell_Shadow_MindSteal",
+				["NA"] = importableData.face,
+				["VA"] = importedProfile.info.face,
+			});
+		end
+		profile["player"]["character"]["CO"] = importedProfile.info.currentlyOOC;
+		profile["player"]["character"]["CU"] = importedProfile.info.currently;
+		profile["player"]["character"]["RP"] = importedProfile.info.rpStatus;
+		profile["player"]["character"]["XP"] = importedProfile.info.experienceStatus;
+		profile["player"]["about"]["T3"]["PH"]["TX"] = importedProfile.info.physicalDescription;
+		profile["player"]["about"]["T3"]["HI"]["TX"] = importedProfile.info.history;
+		profile["player"]["about"]["TE"] = 3;
+
+		TRP3_API.profile.duplicateProfile(profile, nameForNewProfile);
 	end
 
 	local function importAll()
+		for k, v in pairs(totalRP2Profiles) do
+			importProfile(k);
+		end
+		for i = 1, 5 do
+			local widget = _G["TRP3_CharacterImporterListLine" .. i];
+			C_Timer.After((0.1 * (i - 1)), function()
+				_G[widget:GetName() .. "Animate"]:Play();
+				_G[widget:GetName() .. "HighlightAnimate"]:Play();
+			end
+			);
+		end
+		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
 	end
 
-	local importableData = {
-		firstName = "First name",
-		lastName = "Last name",
-		shortTitle = "Short title",
-		fullTitle = "Full title",
-		race = "Race",
-		class = "Class",
-		age = "Age",
-		class = "Class",
-		residence = "Residence",
-		birthplace = "Birthplace",
-		eyesColor = "Eyes color",
-		height = "Height",
-		bodyShape = "Body shape",
-		history = "History",
-		physicalDescription = "Physical description",
-		icon = "Icon",
-		currently = "Currently",
-		currentlyOOC = "Other information (OOC)",
-		rpStatus = "Roleplay status",
-		experienceStatus = "Experience status"
-	}
-
 	local function initTotalRP2Profiles()
+		importableData = {
+			firstName = TRP2_LOC_PRENOM,
+			lastName = TRP2_LOC_NOM,
+			shortTitle = TRP2_LOC_TITRE,
+			fullTitle = TRP2_LOC_SOUSTITRE,
+			race = TRP2_LOC_RACE,
+			age = TRP2_LOC_AGE,
+			class = CLASS,
+			residence = TRP2_LOC_HABITAT,
+			birthplace = TRP2_LOC_ORIGINE,
+			eyesColor = TRP2_LOC_VISAGEYEUX,
+			height = TRP2_LOC_TAILLE,
+			bodyShape = TRP2_LOC_SILHOUETTE,
+			history = TRP2_LOC_Histoire,
+			physicalDescription = TRP2_LOC_Description,
+			icon = TRP2_LOC_PlayerIcon,
+			currently = TRP2_LOC_Actu3,
+			currentlyOOC = TRP2_LOC_HRPINFO,
+			rpStatus = TRP2_LOC_StatutRP,
+			experienceStatus = TRP2_LOC_StatutHRP,
+			piercing = TRP2_LOC_VISAGEPIERCING,
+			face = TRP2_LOC_VISAGETRAIT
+		}
 		if TRP2_Module_PlayerInfo then
 			for realm, characters in pairs(TRP2_Module_PlayerInfo) do
 				for name, info in pairs(characters) do
 					if (info["Registre"]) then
 						totalRP2Profiles[name .. " - " .. realm] = {
-							name = name .. " " .. realm,
+							name = name .. " - " .. realm,
 							addonVersion = TRP2_addonname .. " " .. TRP2_version,
 							info = {
-								firstName = info["Registre"]["Preom"],
+								firstName = info["Registre"]["Prenom"] or name,
 								lastName = info["Registre"]["Nom"],
 								shortTitle = info["Registre"]["Titre"],
 								fullTitle = info["Registre"]["TitreComplet"],
@@ -98,6 +158,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 								residence = info["Registre"]["Habitation"],
 								birthplace = info["Registre"]["Origine"],
 								eyesColor = info["Registre"]["YeuxVisage"],
+								face = info["Registre"]["TraitVisage"],
+								piercing = info["Registre"]["Piercing"],
 								height = TRP2_LOC_TAILLE_TEXTE[info["Registre"]["Taille"]],
 								bodyShape = TRP2_LOC_SILHOUETTE_TEXTE[info["Registre"]["Silhouette"]],
 							}
@@ -112,7 +174,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 							totalRP2Profiles[name .. " - " .. realm]["info"]["icon"] = info["Actu"]["PlayerIcon"];
 							totalRP2Profiles[name .. " - " .. realm]["info"]["currently"] = info["Actu"]["ActuTexte"];
 							totalRP2Profiles[name .. " - " .. realm]["info"]["currentlyOOC"] = info["Actu"]["ActuTexteHRP"];
-							totalRP2Profiles[name .. " - " .. realm]["info"]["rpStatus"] = info["Actu"]["StatutRP"];
+							totalRP2Profiles[name .. " - " .. realm]["info"]["rpStatus"] = info["Actu"]["StatutRP"] == 1 and 2 or 1;
 							totalRP2Profiles[name .. " - " .. realm]["info"]["experienceStatus"] = info["Actu"]["StatutXP"];
 						end
 					end
@@ -140,6 +202,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	local function onImportButtonClicked(button)
 		importProfile(button:GetParent().profileID);
+		_G[button:GetParent():GetName() .. "Animate"]:Play();
+		_G[button:GetParent():GetName() .. "HighlightAnimate"]:Play();
+		playUISound("Sound\\Interface\\Ui_Pet_Levelup_01.wav", true);
 	end
 
 	local function decorateProfileList(widget, id)
