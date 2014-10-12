@@ -201,7 +201,7 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Please enter a category and a name",
 		REG_PLAYER_GLANCE_PRESET_ALERT2 = "There is already a preset called %s",
 		REG_RELATION = "Relationship",
-		REG_RELATION_BUTTON_TT = "Currently:\n|cff00ff00%s|r\n\nOther information (OOC):\n|cff00ff00%s|r\n\nRelation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
+		REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
 		REG_RELATION_UNFRIENDLY = "Unfriendly",
 		REG_RELATION_NONE = "None",
 		REG_RELATION_NEUTRAL = "Neutral",
@@ -548,7 +548,7 @@ local LOCALE_EN = {
 		DB_NOTIFICATIONS_NO = "You haven't any notification",
 		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
 		DB_NOTIFICATIONS_ALL = "All notification types",
-		DB_TUTO_1 = "|cffffff00The \"currently\" status|r is a length-limited free text. It can be IC or OOC information.\n\n|cffffff00The character status|r indicates if you are currently playing your character's role or not.\n\n|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !\n\n|cff00ff00These information will be placed in your character tooltip.",
+		DB_TUTO_1 = "|cffffff00The character status|r indicates if you are currently playing your character's role or not.\n\n|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !\n\n|cff00ff00These information will be placed in your character tooltip.",
 		DB_TUTO_2 = "Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.\n\nAll notifications are configurable in the |cffff9900general settings page|r.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

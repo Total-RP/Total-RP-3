@@ -1,30 +1,30 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
-	
-<!--
-	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+	<!--
+		Total RP 3
+		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-		http://www.apache.org/licenses/LICENSE-2.0
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->
-	
+			http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
+
 	<Frame name="TRP3_RegisterRPStyleMain_Edit_Line" virtual="true">
 		<Size x="0" y="30"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-				 	<Size x="220" y="10"/>
+					<Size x="220" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="0" y="0"/>
 					</Anchors>
@@ -42,7 +42,7 @@
 		</Layers>
 		<Frames>
 			<Frame name="$parentValues" inherits="UIDropDownMenuTemplate" enableMouse="true">
-		        <Anchors>
+				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentFieldName" x="0" y="0"/>
 				</Anchors>
 				<Scripts>
@@ -53,10 +53,10 @@
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>
-		    </Frame>
+			</Frame>
 		</Frames>
 	</Frame>
-	
+
 	<!-- Glance consult button : ButtonHilight-Square -->
 	<Button name="TRP3_RegisterMiscGlanceButton" virtual="true">
 		<Size x="40" y="40"/>
@@ -74,7 +74,7 @@
 			</PostClick>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Glance consult button : ButtonHilight-Square -->
 	<Button name="TRP3_RegisterMiscGlanceButtonEdit" inherits="TRP3_RegisterMiscGlanceButton" virtual="true">
 		<Size x="40" y="40"/>
@@ -83,16 +83,20 @@
 			<Layer level="OVERLAY">
 				<Texture alphaMode="BLEND" file="Interface\HELPFRAME\HelpIcon-CharacterStuck" name="$parentSelected">
 					<Size x="40" y="40"/>
-					<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>
 	</Button>
-	
+
 	<!-- Register Peek panel -->
 	<Frame name="TRP3_RegisterMiscTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -106,12 +110,12 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				
+
 			</Layer>
 		</Layers>
 		<Frames>
 			<Frame name="TRP3_RegisterMiscView">
-				<Anchors>	
+				<Anchors>
 					<Anchor point="TOPLEFT" x="10" y="-20"/>
 					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
@@ -120,34 +124,71 @@
 					<!-- PEEK -->
 					<Frame name="TRP3_RegisterMiscViewGlance" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="0"/>
 							<Anchor point="TOPRIGHT" x="-3" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="TRP3_RegisterMiscViewGlanceSlot3" inherits="TRP3_RegisterMiscGlanceButton">
-								<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="0"/>
+								</Anchors>
 							</Button>
 							<Button name="TRP3_RegisterMiscViewGlanceSlot2" inherits="TRP3_RegisterMiscGlanceButton">
-								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewGlanceSlot3" x="-45" y="0"/></Anchors>
+								<Anchors>
+									<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewGlanceSlot3" x="-45" y="0"/>
+								</Anchors>
 							</Button>
 							<Button name="TRP3_RegisterMiscViewGlanceSlot1" inherits="TRP3_RegisterMiscGlanceButton">
-								<Anchors><Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewGlanceSlot2" x="-45" y="0"/></Anchors>
+								<Anchors>
+									<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewGlanceSlot2" x="-45" y="0"/>
+								</Anchors>
 							</Button>
 							<Button name="TRP3_RegisterMiscViewGlanceSlot4" inherits="TRP3_RegisterMiscGlanceButton">
-								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot3" x="45" y="0"/></Anchors>
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot3" x="45" y="0"/>
+								</Anchors>
 							</Button>
 							<Button name="TRP3_RegisterMiscViewGlanceSlot5" inherits="TRP3_RegisterMiscGlanceButton">
-								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot4" x="45" y="0"/></Anchors>
+								<Anchors>
+									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot4" x="45" y="0"/>
+								</Anchors>
 							</Button>
 						</Frames>
 					</Frame>
-					
+
 					<!-- RP Style -->
-					<Frame name="TRP3_RegisterMiscViewRPStyle" inherits="TRP3_FieldSetFrame">
+					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" x="0" y="-10"/>
+							<Anchor point="LEFT" x="0" y="0"/>
+							<Anchor point="RIGHT" x="-3" y="0"/>
+						</Anchors>
+						<Frames>
+							<EditBox name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_DashboardAnimatedEditbox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="LEFT" x="30" y="0"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="TOP" x="0" y="-15"/>
+								</Anchors>
+							</EditBox>
+							<EditBox name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_DashboardAnimatedEditbox">
+								<Size x="0" y="18"/>
+								<Anchors>
+									<Anchor point="LEFT" x="30" y="0"/>
+									<Anchor point="RIGHT" x="-30" y="0"/>
+									<Anchor point="TOP" relativeTo="TRP3_RegisterMiscViewCurrentlyIC" relativePoint="BOTTOM" x="0" y="-5"/>
+								</Anchors>
+							</EditBox>
+						</Frames>
+					</Frame>
+
+					<!-- RP Style -->
+					<Frame name="TRP3_RegisterMiscViewRPStyle" inherits="TRP3_FieldSetFrame">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewCurrently" x="0" y="-10"/>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" x="-3" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
@@ -163,19 +204,23 @@
 								</FontString>
 							</Layer>
 						</Layers>
-						<Frames>
-							
-						</Frames>
 					</Frame>
 				</Frames>
 			</Frame>
 		</Frames>
 	</Frame>
-	
-    <Frame name="TRP3_RegisterGlanceEditor" parent="TRP3_PopupsFrame" hidden="true">
+
+	<Frame name="TRP3_RegisterGlanceEditor" parent="TRP3_PopupsFrame" hidden="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="415"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
 		</Backdrop>
 		<Size x="420" y="300"/>
 		<Anchors>
@@ -209,8 +254,15 @@
 			</Button>
 			<Frame name="TRP3_RegisterGlanceEditor_Preset">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+					<EdgeSize>
+						<AbsValue val="32"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="200"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
 				</Backdrop>
 				<Size x="0" y="100"/>
 				<Anchors>
@@ -239,7 +291,7 @@
 				</Layers>
 				<Frames>
 					<Frame name="TRP3_RegisterGlanceEditor_PresetList" inherits="UIDropDownMenuTemplate" enableMouse="true">
-				        <Anchors>
+						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetText" x="0" y="-3"/>
 						</Anchors>
 						<Scripts>
@@ -250,8 +302,8 @@
 								TRP3_MainTooltip:Hide();
 							</OnLeave>
 						</Scripts>
-				    </Frame>
-				    <EditBox name="TRP3_RegisterGlanceEditor_PresetSaveCategory" inherits="TRP3_TitledEditBox">
+					</Frame>
+					<EditBox name="TRP3_RegisterGlanceEditor_PresetSaveCategory" inherits="TRP3_TitledEditBox">
 						<Size x="100" y="18"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterGlanceEditor_PresetSave" x="5" y="-13"/>
@@ -263,9 +315,9 @@
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetSaveCategory" x="15" y="0"/>
 						</Anchors>
 					</EditBox>
-				    <Button name="TRP3_RegisterGlanceEditor_PresetSaveButton" inherits="TRP3_CommonButton" text="[SAVE_AS_PRESET]">
+					<Button name="TRP3_RegisterGlanceEditor_PresetSaveButton" inherits="TRP3_CommonButton" text="[SAVE_AS_PRESET]">
 						<Size x="0" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterGlanceEditor_PresetSaveName" x="10" y="1"/>
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
@@ -274,15 +326,22 @@
 			</Frame>
 			<Frame name="TRP3_RegisterGlanceEditor_Edit">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+					<EdgeSize>
+						<AbsValue val="32"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="200"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
 				</Backdrop>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterGlanceEditorTitle"/>
 					<Anchor point="BOTTOM" x="0" y="2" relativePoint="TOP" relativeTo="TRP3_RegisterGlanceEditor_Preset"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-				</Anchors>	
+				</Anchors>
 				<Frames>
 					<CheckButton name="TRP3_RegisterMiscEdit_Glance_Active" inherits="TRP3_CheckBox" checked="true">
 						<Anchors>
@@ -291,7 +350,7 @@
 					</CheckButton>
 					<EditBox name="TRP3_RegisterMiscEdit_Glance_Title" inherits="TRP3_TitledHelpEditBox">
 						<Size x="200" y="18"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_Active"/>
 						</Anchors>
 					</EditBox>
@@ -302,7 +361,7 @@
 					</Button>
 					<Button name="TRP3_RegisterMiscEdit_Glance_Apply" inherits="TRP3_CommonButton">
 						<Size x="70" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPRIGHT" x="-15" y="-20"/>
 						</Anchors>
 					</Button>
@@ -310,7 +369,7 @@
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscEdit_Glance_Title"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
-							<Anchor point="RIGHT" x="-10" y="0" />
+							<Anchor point="RIGHT" x="-10" y="0"/>
 							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_Icon"/>
 						</Anchors>
 					</Frame>
@@ -318,5 +377,5 @@
 			</Frame>
 		</Frames>
 	</Frame>
-    
+
 </Ui>

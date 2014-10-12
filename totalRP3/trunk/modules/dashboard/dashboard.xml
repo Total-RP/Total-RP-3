@@ -127,15 +127,23 @@
 					</Anchors>
 				</Texture>
 			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_MainFrameVersionText" inherits="GameFontNormal" justifyV="TOP" text="[VERSION_XXXX]">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="5"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
 		</Layers>
 		<Frames>
 			<!-- Status -->
 			<Frame name="TRP3_DashboardStatus" inherits="TRP3_FieldSetFrame">
-				<Size x="0" y="135"/>
+				<Size x="0" y="90"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="15"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-30"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -143,7 +151,7 @@
 							<Size x="150" y="18"/>
 							<Anchors>
 								<Anchor point="LEFT" x="30" y="0"/>
-								<Anchor point="BOTTOM" x="0" y="18"/>
+								<Anchor point="BOTTOM" x="0" y="20"/>
 							</Anchors>
 							<Color b="1.0" r="1.0" g="1.0"/>
 						</FontString>
@@ -157,24 +165,6 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<EditBox name="TRP3_DashboardStatus_Currently" inherits="TRP3_DashboardAnimatedEditbox">
-						<Size x="0" y="18"/>
-						<Anchors>
-							<Anchor point="LEFT" x="30" y="0"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
-							<Anchor point="TOP" x="0" y="-15"/>
-						</Anchors>
-					</EditBox>
-
-					<EditBox name="TRP3_DashboardStatus_OOCInfo" inherits="TRP3_DashboardAnimatedEditbox">
-						<Size x="0" y="18"/>
-						<Anchors>
-							<Anchor point="LEFT" x="30" y="0"/>
-							<Anchor point="RIGHT" x="-30" y="0"/>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus_Currently" x="0" y="-7"/>
-						</Anchors>
-					</EditBox>
-
 					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_CharactStatus" x="10" y="-2"/>

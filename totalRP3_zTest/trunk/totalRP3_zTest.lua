@@ -209,6 +209,48 @@ function TRP3_TERTIARY()
 	print(not bool and "ok" or "not");
 end
 
+function TRP3_TRP2_TAG()
+	local test = "Coucou {r} ! Ca va {icone:Temp:25} ? {ff5577} Couleur ! Rand {randtext:text1+text2}! Lien: {link:www.google.be:Google}";
+
+	local predefinedTRP2Color = {
+		r = "ff0000",
+		v = "00ff00",
+		-- A completer
+	}
+	local result = test:gsub("%{.-%}", function(tag) -- Not : The tag is received with the {}
+		-- Pre-defined color
+		if predefinedTRP2Color[tag:sub(2, -2)] then
+			return "{col:" .. predefinedTRP2Color[tag:sub(2, -2)] .. "}";
+		end
+
+		-- Custom color
+		if tag:match("%x%x%x%x%x%x") then
+			return "{col:" .. tag:sub(2, -2) .. "}";
+		end
+
+		-- Icon tag
+		if tag:sub(2, 6) == "icone" then
+			return tag:gsub("icone", "icon");
+		end
+
+		-- Random text
+		if tag:sub(2, 9) == "randtext" then
+			local texts = tag:sub(11, -2);
+			texts = {strsplit("+", texts)};
+			return texts[1];
+		end
+
+		-- Link
+		if tag:sub(2, 5) == "link" then
+			local _, url, text = strsplit(":", tag:sub(2, -2));
+			return "{link*" .. url .. "*" .. text .. "}"
+		end
+
+		return ""; -- If we don't know the tag, return empty string to clear the tag.
+	end)
+	print(result);
+end
+
 local function onInit()
 	Log.log("onInit test module");
 end

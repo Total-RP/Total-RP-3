@@ -239,9 +239,6 @@ end
 -- STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- The variable which gonna make people cry : Currently status characters limit. :D
-local CURRENTLY_SIZE = 200;
-
 local function onStatusChange(status)
 	local character = get("player/character");
 	local old = character.RP;
@@ -268,30 +265,10 @@ local function onStatusXPChange(status)
 	end
 end
 
-local function onCurrentlyChanged()
-	local character = get("player/character");
-	local old = character.CU;
-	character.CU = TRP3_DashboardStatus_Currently:GetText();
-	if old ~= character.CU then
-		incrementCharacterVernum();
-	end
-end
-
-local function onOOCInfoChanged()
-	local character = get("player/character");
-	local old = character.CO;
-	character.CO = TRP3_DashboardStatus_OOCInfo:GetText();
-	if old ~= character.CO then
-		incrementCharacterVernum();
-	end
-end
-
 local function onShow(context)
 	local character = get("player/character");
 	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
 	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
-	TRP3_DashboardStatus_Currently:SetText(character.CU or "");
-	TRP3_DashboardStatus_OOCInfo:SetText(character.CO or "");
 	refreshNotifications();
 end
 
@@ -370,18 +347,9 @@ TRP3_API.dashboard.init = function()
 
 	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
 	setupFieldSet(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 200);
-	TRP3_DashboardStatus_CurrentlyText:SetText(loc("DB_STATUS_CURRENTLY"));
 	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
-	setTooltipForSameFrame(TRP3_DashboardStatus_CurrentlyHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
-	TRP3_DashboardStatus_Currently:SetScript("OnTextChanged", onCurrentlyChanged);
 
-	TRP3_DashboardStatus_OOCInfoText:SetText(loc("DB_STATUS_CURRENTLY_OOC"));
-	setTooltipForSameFrame(TRP3_DashboardStatus_OOCInfoHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY_OOC"), loc("DB_STATUS_CURRENTLY_OOC_TT"));
-	TRP3_DashboardStatus_OOCInfo:SetScript("OnTextChanged", onOOCInfoChanged);
-
---	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
-
-	TRP3_DashboardStatus_Currently:SetMaxLetters(CURRENTLY_SIZE);
+	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
 
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
 	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";

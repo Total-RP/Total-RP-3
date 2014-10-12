@@ -149,7 +149,7 @@ local function displayRPStyle(context)
 		frame:Hide();
 	end
 
-	local previous = nil;
+	local previous;
 	local count = 0;
 	for index, fieldData in pairs(STYLE_FIELDS) do
 		local frame = styleLines[index];
@@ -326,6 +326,60 @@ local function onSlotClick(button, mouseClick)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Currently
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TRP3_RegisterMiscViewCurrentlyIC, TRP3_RegisterMiscViewCurrentlyOOC = TRP3_RegisterMiscViewCurrentlyIC, TRP3_RegisterMiscViewCurrentlyOOC;
+
+local function displayCurrently(context)
+	if context.isPlayer then
+		TRP3_RegisterMiscViewCurrentlyIC:Enable();
+		TRP3_RegisterMiscViewCurrentlyOOC:Enable();
+	else
+		TRP3_RegisterMiscViewCurrentlyIC:Disable();
+		TRP3_RegisterMiscViewCurrentlyOOC:Disable();
+	end
+
+	local dataTab = context.profile.character or Globals.empty;
+	TRP3_RegisterMiscViewCurrentlyIC:SetText(dataTab.CU or "");
+	TRP3_RegisterMiscViewCurrentlyOOC:SetText(dataTab.CO or "");
+	if not context.isPlayer and dataTab.CU and dataTab.CU:len() > 0 then
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC, "TOP", 0, 5, loc("DB_STATUS_CURRENTLY"), dataTab.CU);
+	else
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC);
+	end
+	if not context.isPlayer and dataTab.CO and dataTab.CO:len() > 0 then
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC, "TOP", 0, 5, loc("DB_STATUS_CURRENTLY_OOC"), dataTab.CO);
+	else
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC);
+	end
+end
+
+local function onCurrentlyChanged()
+	if getCurrentContext().isPlayer then
+		local character = get("player/character");
+		local old = character.CU;
+		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetText();
+		if old ~= character.CU then
+			character.v = Utils.math.incrementNumber(character.v or 1, 2);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
+		end
+	end
+end
+
+local function onOOCInfoChanged()
+	if getCurrentContext().isPlayer then
+		local character = get("player/character");
+		local old = character.CO;
+		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetText();
+		if old ~= character.CO then
+			character.v = Utils.math.incrementNumber(character.v or 1, 2);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Misc logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -336,10 +390,11 @@ local function showMiscTab()
 	TRP3_RegisterMisc:Show();
 	displayPeek(context);
 	displayRPStyle(context);
+	displayCurrently(context);
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
-local currentCompressed = nil;
+local currentCompressed;
 
 function compressData()
 	local data = get("player/misc");
@@ -529,6 +584,7 @@ function TRP3_API.register.inits.miscInit()
 	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
 
 	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
+	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc("REG_PLAYER_CURRENT"), 150);
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
@@ -539,6 +595,14 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
 	TRP3_RegisterGlanceEditor_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
 	TRP3_RegisterGlanceEditor_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
+
+	TRP3_RegisterMiscViewCurrentlyICText:SetText(loc("DB_STATUS_CURRENTLY"));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
+	TRP3_RegisterMiscViewCurrentlyIC:SetScript("OnTextChanged", onCurrentlyChanged);
+
+	TRP3_RegisterMiscViewCurrentlyOOCText:SetText(loc("DB_STATUS_CURRENTLY_OOC"));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOCHelp, "LEFT", 0, 5, loc("DB_STATUS_CURRENTLY_OOC"), loc("DB_STATUS_CURRENTLY_OOC_TT"));
+	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
 
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
 	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() showIconBrowser(onIconSelected, onIconClosed); end);
