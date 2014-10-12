@@ -128,6 +128,19 @@
 		</Scripts>
 	</Button>
 
+	<!-- Invisible button  -->
+	<Button name="TRP3_InvisibleButton" virtual="true">
+		<Size x="90" y="20"/>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 	<!-- Category button -->
 	<Button name="TRP3_CategoryButton" virtual="true">
 		<Size x="158" y="24"/>

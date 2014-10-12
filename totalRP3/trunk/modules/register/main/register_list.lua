@@ -125,6 +125,60 @@ TRP3_API.register.openPageByUnitID = openPageByUnitID;
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local sortingType = 1;
+
+local function switchNameSorting()
+	sortingType = sortingType == 2 and 1 or 2;
+	refreshList();
+end
+
+local function switchInfoSorting()
+	sortingType = sortingType == 4 and 3 or 4;
+	refreshList();
+end
+
+local function nameComparator(elem1, elem2)
+	return elem1[2] < elem2[2];
+end
+
+local function nameComparatorInverted(elem1, elem2)
+	return elem1[2] > elem2[2];
+end
+
+local function infoComparator(elem1, elem2)
+	return elem1[3] < elem2[3];
+end
+
+local function infoComparatorInverted(elem1, elem2)
+	return elem1[3] > elem2[3];
+end
+
+local comparators = {
+	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted
+}
+
+local function getCurrentComparator()
+	return comparators[sortingType];
+end
+
+local ARROW_DOWN = "Interface\\Buttons\\Arrow-Down-Up";
+local ARROW_UP = "Interface\\Buttons\\Arrow-Up-Up";
+local ARROW_SIZE = 15;
+
+local function getComparatorArrows()
+	local nameArrow, relationArrow = "", "";
+	if sortingType == 1 then
+		nameArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 2 then
+		nameArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 3 then
+		relationArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 4 then
+		relationArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+	end
+	return nameArrow, relationArrow;
+end
+
 local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
 local selectedIDs = {};
 local ICON_SIZE = 30;
@@ -137,8 +191,10 @@ local NEW_ABOUT_ICON = Utils.str.texture("Interface\\Buttons\\UI-GuildButton-Pub
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI : CHARACTERS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+local characterLines = {};
 
-local function decorateCharacterLine(line, profileID)
+local function decorateCharacterLine(line, characterIndex)
+	local profileID = characterLines[characterIndex][1];
 	local profile = getProfile(profileID);
 	line.id = profileID;
 
@@ -223,10 +279,11 @@ local function getCharacterLines()
 	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
 	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
-	local fullSize = tsize(getProfileList());
-	local lines = {};
+	local profileList = getProfileList();
+	local fullSize = tsize(profileList);
+	wipe(characterLines);
 
-	for profileID, profile in pairs(getProfileList()) do
+	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
 
 		-- Defines if at least one character is conform to the search criteria
@@ -243,7 +300,8 @@ local function getCharacterLines()
 				guildIsConform = true;
 			end
 		end
-		if not nameIsConform and (getCompleteName(profile.characteristics or {}, "", true):lower():find(nameSearch)) then
+		local completeName = getCompleteName(profile.characteristics or {}, "", true);
+		if not nameIsConform and (completeName:lower():find(nameSearch)) then
 			nameIsConform = true;
 		end
 
@@ -252,11 +310,13 @@ local function getCharacterLines()
 		realmIsConform = realmIsConform or not realmOnly;
 
 		if nameIsConform and guildIsConform and realmIsConform then
-			lines[profileID] = profile;
+			tinsert(characterLines, {profileID, completeName, getRelationText(profileID)});
 		end
 	end
 
-	local lineSize = tsize(lines);
+	table.sort(characterLines, getCurrentComparator());
+
+	local lineSize = #characterLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
 			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY"));
@@ -266,12 +326,13 @@ local function getCharacterLines()
 	end
 	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
 
-	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
-	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION"));
+	local nameArrow, relationArrow = getComparatorArrows();
+	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER") .. nameArrow);
+	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION") .. relationArrow);
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
 	TRP3_RegisterListHeaderActions:Show();
 
-	return lines;
+	return characterLines;
 end
 
 local MONTH_IN_SECONDS = 2592000;
@@ -383,8 +444,10 @@ end
 
 local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
 local getCompanionProfiles, deleteCompanionProfile = TRP3_API.companions.register.getProfiles, TRP3_API.companions.register.deleteProfile;
+local companionLines = {};
 
-local function decorateCompanionLine(line, profileID)
+local function decorateCompanionLine(line, index)
+	local profileID = companionLines[index][1];
 	local profile = getCompanionProfiles()[profileID];
 	line.id = profileID;
 
@@ -456,7 +519,7 @@ local function getCompanionLines()
 	local masterSearch = TRP3_RegisterListPetFilterMaster:GetText():lower();
 	local profiles = getCompanionProfiles();
 	local fullSize = tsize(profiles);
-	local lines = {};
+	wipe(companionLines);
 
 	for profileID, profile in pairs(profiles) do
 		local nameIsConform, typeIsConform, masterIsConform = false, false, false;
@@ -474,6 +537,10 @@ local function getCompanionLines()
 			end
 		end
 
+		local companionName = UNKNOWN;
+		if profile.data and profile.data.NA then
+			companionName = profile.data.NA;
+		end
 		if masterSearch:len() ~= 0 and profile.data and profile.data.NA and (profile.data.NA:lower():find(nameSearch)) then
 			nameIsConform = true;
 		end
@@ -483,11 +550,13 @@ local function getCompanionLines()
 		masterIsConform = masterIsConform or masterSearch:len() == 0;
 
 		if nameIsConform and typeIsConform and masterIsConform then
-			lines[profileID] = profile;
+			tinsert(companionLines, {profileID, companionName, companionName});
 		end
 	end
 
-	local lineSize = tsize(lines);
+	table.sort(companionLines, getCurrentComparator());
+
+	local lineSize = #companionLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
 			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
@@ -497,12 +566,13 @@ local function getCompanionLines()
 	end
 	setupFieldSet(TRP3_RegisterListPetFilter, loc("REG_LIST_PETS_FILTER"):format(lineSize, fullSize), 200);
 
-	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION"));
+	local nameArrow, relationArrow = getComparatorArrows();
+	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
 	TRP3_RegisterListHeaderActions:Show();
 
-	return lines;
+	return companionLines;
 end
 
 local function onCompanionActionSelected(value, button)
@@ -779,6 +849,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListPetFilterTypeText:SetText(loc("REG_LIST_PET_TYPE"));
 	TRP3_RegisterListPetFilterMasterText:SetText(loc("REG_LIST_PET_MASTER"));
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterMaster});
+
+	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", switchNameSorting);
+	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
 
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
 	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)

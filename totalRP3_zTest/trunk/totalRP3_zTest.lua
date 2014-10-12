@@ -208,8 +208,12 @@ function TRP3_TERTIARY()
 	print(bool and "ok" or "not");
 	print(not bool and "ok" or "not");
 
-	local string = nil;
+	local string;
 	print(string and string:gsub("pouic", "pouic") or "pouic");
+end
+
+function TRP3_ITEMTYPE()
+	Utils.table.dump({GetAuctionItemSubClasses(2)})
 end
 
 function TRP3_TRP2_TAG()

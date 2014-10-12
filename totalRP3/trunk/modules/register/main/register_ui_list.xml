@@ -220,6 +220,18 @@
 							</Layer>
 						</Layers>
 						<Frames>
+							<Button name="TRP3_RegisterListHeaderNameTT" inherits="TRP3_InvisibleButton">
+								<Size x="180" y="20" />
+								<Anchors>
+									<Anchor point="LEFT" x="30" y="0" />
+								</Anchors>
+							</Button>
+							<Button name="TRP3_RegisterListHeaderInfoTT" inherits="TRP3_InvisibleButton">
+								<Size x="110" y="20" />
+								<Anchors>
+									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName" />
+								</Anchors>
+							</Button>
 							<Button name="TRP3_RegisterListHeaderActions" inherits="TRP3_ActionButton">
 								<Anchors>
 									<Anchor point="LEFT" x="-3" y="0" />
