@@ -225,12 +225,28 @@
 								<Anchors>
 									<Anchor point="LEFT" x="30" y="0" />
 								</Anchors>
+								<Scripts>
+									<OnEnter>
+										TRP3_RegisterListHeaderName:SetTextColor(0.95, 0.75, 0);
+									</OnEnter>
+									<OnLeave>
+										TRP3_RegisterListHeaderName:SetTextColor(0.95, 0.95, 0.95);
+									</OnLeave>
+								</Scripts>
 							</Button>
 							<Button name="TRP3_RegisterListHeaderInfoTT" inherits="TRP3_InvisibleButton">
 								<Size x="110" y="20" />
 								<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName" />
 								</Anchors>
+								<Scripts>
+									<OnEnter>
+										TRP3_RegisterListHeaderInfo:SetTextColor(0.95, 0.75, 0);
+									</OnEnter>
+									<OnLeave>
+										TRP3_RegisterListHeaderInfo:SetTextColor(0.95, 0.95, 0.95);
+									</OnLeave>
+								</Scripts>
 							</Button>
 							<Button name="TRP3_RegisterListHeaderActions" inherits="TRP3_ActionButton">
 								<Anchors>
