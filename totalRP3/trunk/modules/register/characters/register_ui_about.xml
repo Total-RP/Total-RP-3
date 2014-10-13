@@ -80,9 +80,10 @@
 				</Anchors>
 			</Button>
 			<Button name="$parent_Link" inherits="TRP3_CommonButton" text="[Link]">
-				<Size x="70" y="20"/>
+				<Size x="0" y="20"/>
 				<Anchors>	
 					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Color"/>
+					<Anchor point="RIGHT" x="-5" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
