@@ -143,7 +143,7 @@
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-30"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-25"/>
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -183,7 +183,7 @@
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="10" y="-10"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="10" y="-15"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Layers>

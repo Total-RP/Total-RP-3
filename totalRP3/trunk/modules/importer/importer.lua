@@ -33,7 +33,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 	local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
 	local assert, pairs = assert, pairs;
-	local tsize = TRP3_API.utils.table.size;
+	local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
 	local playAnimation = TRP3_API.ui.misc.playAnimation;
 
 	local totalRP2Profiles = {};
@@ -116,7 +116,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			return;
 		end
 
-		local profile = getDefaultProfile();
+		local profile = {};
+		tcopy(profile, getDefaultProfile());
 
 		profile["player"]["characteristics"]["TI"] = stripTRP2Tags(importedProfile.info.shortTitle);
 		profile["player"]["characteristics"]["FN"] = stripTRP2Tags(importedProfile.info.firstName);

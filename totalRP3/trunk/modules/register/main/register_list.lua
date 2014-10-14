@@ -329,6 +329,8 @@ local function getCharacterLines()
 	local nameArrow, relationArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION") .. relationArrow);
+	TRP3_RegisterListHeaderInfoTT:Enable();
+	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
 	TRP3_RegisterListHeaderActions:Show();
 
@@ -569,6 +571,8 @@ local function getCompanionLines()
 	local nameArrow, relationArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderInfoTT:Disable();
+	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
 	TRP3_RegisterListHeaderActions:Show();
 
@@ -626,6 +630,8 @@ local function getIgnoredLines()
 	end
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderInfoTT:Disable();
+	TRP3_RegisterListHeaderNameTT:Disable();
 	TRP3_RegisterListHeaderInfo2:SetText("");
 
 	return getIgnoredList();
