@@ -1,0 +1,84 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\UI.xsd">
+
+<!--
+	Total RP 3
+	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<!-- Toolbar button -->
+	<Button name="TRP3_ToolbarButtonTemplate" virtual="true">
+		<Size x="25" y="25" />
+		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square" />
+	</Button>
+
+	<!-- Toolbar -->
+	<Frame name="TRP3_ToolbarTemplate" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" virtual="true">
+		<Size x="190" y="60" />
+		<Scripts>
+			<OnLoad>
+				self:SetClampedToScreen(true);
+			</OnLoad>
+		</Scripts>
+		<Frames>
+			<Frame name="$parentContainer">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-18" />
+				</Anchors>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="20" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="20" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+			</Frame>
+			<!-- Cadre Titre -->
+			<Frame name="$parentTopFrame">
+				<Size x="80" y="25" />
+				<Backdrop bgFile="Interface\CHARACTERFRAME\UI-Party-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="16" />
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="16" />
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5" />
+					</BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="CENTER">
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0" />
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95" />
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+	</Frame>
+	
+	<Script file="toolbar.lua"/>
+
+</Ui>

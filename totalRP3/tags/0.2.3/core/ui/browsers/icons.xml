@@ -1,0 +1,144 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+	
+<!--
+	Total RP 3
+	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+	
+	<!-- Icon browser button  -->
+	<Button name="TRP3_IconBrowserButton" virtual="true">
+		<Size x="40" y="40"/>
+	    <NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+			<Size x="40" y="40"/>
+			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+	    </NormalTexture>
+	    <PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+			<Size x="40" y="40"/>
+			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
+		</PushedTexture>
+	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<Scripts>
+			<OnLoad>
+				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+			</OnLoad>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+	
+	<!-- Icon browser  -->
+    <Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="420" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Frames>
+			<Button name="TRP3_IconBrowserClose" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+			</Button>
+			<Frame name="TRP3_IconBrowserContent">
+				<Size x="390" y="295"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+				</Anchors>
+				<Frames>
+					<Slider name="TRP3_IconBrowserContentSlider" inherits="OptionsSliderTemplate">
+						<Size x="15" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="RIGHT" x="0" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_IconBrowserContentSliderText:SetText("");
+								TRP3_IconBrowserContentSliderHigh:SetText("");
+								TRP3_IconBrowserContentSliderLow:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+			</Frame>
+			<!-- Filter section -->
+			<Frame name="TRP3_IconBrowserFilter">
+				<Size x="0" y="60"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_IconBrowserTotal" text="[placeholder total]" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox name="TRP3_IconBrowserFilterBox" inherits="TRP3_TitledEditBox">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+					<Button name="TRP3_IconBrowserFilterHelp" inherits="TRP3_HelpButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_IconBrowserTitle" text="[placeholder]" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+</Ui>

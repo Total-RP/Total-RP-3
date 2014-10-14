@@ -1,0 +1,11 @@
+﻿## Interface: 60000
+## Title: Total RP 3 (For Wow 6.0.2)
+## Author: Telkostrasz
+## Version: 0.2.3
+## Notes: Main addon
+## URL: http://forums.telkostrasz.be/index.php
+## RequiredDeps: 
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Register, TRP3_Presets, TRP3_Companions
+totalRP3.xml
