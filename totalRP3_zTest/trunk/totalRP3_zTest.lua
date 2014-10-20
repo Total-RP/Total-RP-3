@@ -264,7 +264,6 @@ end
 
 local function onStart()
 	Log.log("onStart test module");
-
 	--	TRP3_API.dashboard.registerNotificationType({
 	--		id = "ma notif",
 	--		callback = function(unitID)

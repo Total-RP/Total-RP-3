@@ -21,7 +21,7 @@ TRP3_API.module = {};
 
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local pairs, type, assert, pcall, tinsert, table, _G = pairs, type, assert, pcall, tinsert, table, _G;
+local pairs, type, assert, pcall, tinsert, table, _G, tostring = pairs, type, assert, pcall, tinsert, table, _G, tostring;
 local Log = Utils.log;
 local loc = TRP3_API.locale.getText;
 local MODULE_REGISTRATION = {};
@@ -95,7 +95,9 @@ TRP3_API.module.initModules = function()
 			if not ok then
 				module.status = MODULE_STATUS.ERROR_ON_INIT;
 				module.error = mess;
-				Log.log(("Error on module %s init: "):format(moduleID) .. mess);
+				if DEFAULT_CHAT_FRAME then
+					DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while init module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+				end
 			end
 		end
 	end
@@ -112,7 +114,9 @@ TRP3_API.module.startModules = function()
 			if not ok then
 				module.status = MODULE_STATUS.ERROR_ON_LOAD;
 				module.error = mess;
-				Log.log(("Error on module %s start: "):format(moduleID) .. mess);
+				if DEFAULT_CHAT_FRAME then
+					DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+				end
 			end
 		end
 	end
