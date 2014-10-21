@@ -200,40 +200,43 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		if TRP2_Module_PlayerInfo then
 			for realm, characters in pairs(TRP2_Module_PlayerInfo) do
 				for name, info in pairs(characters) do
-					if info["Registre"] or info["Histoire"] or info["Actu"] then
-						totalRP2Profiles[name .. " - " .. realm] = {
-							name = name .. " - " .. realm,
-							addonVersion = TRP2_addonname .. " " .. TRP2_version,
-							info = {
-								firstName = info["Registre"]["Prenom"] or name,
-								lastName = info["Registre"]["Nom"],
-								shortTitle = info["Registre"]["Titre"],
-								fullTitle = info["Registre"]["TitreComplet"],
-								race = info["Registre"]["RacePerso"],
-								class = info["Registre"]["ClassePerso"],
-								age = info["Registre"]["Age"],
-								residence = info["Registre"]["Habitation"],
-								birthplace = info["Registre"]["Origine"],
-								eyesColor = info["Registre"]["YeuxVisage"],
-								face = info["Registre"]["TraitVisage"],
-								piercing = info["Registre"]["Piercing"],
-								height = TRP2_LOC_TAILLE_TEXTE[info["Registre"]["Taille"]],
-								bodyShape = TRP2_LOC_SILHOUETTE_TEXTE[info["Registre"]["Silhouette"]],
-							}
+					if info.Registre or info.Histoire or info.Actu then
+						local profileName = name .. " - " .. realm
+						totalRP2Profiles[profileName] = {
+							name = profileName,
+							addonVersion = TRP2_addonname .. " " .. TRP2_version
 						};
-						if info["Histoire"] then
-							totalRP2Profiles[name .. " - " .. realm]["info"]["history"] = info["Histoire"]["HistoireTexte"];
+						local infoTemp = {};
+						if info.Registre then
+							infoTemp.firstName = info.Registre.Prenom or name;
+							infoTemp.lastName = info.Registre.Nom;
+							infoTemp.shortTitle = info.Registre.Titre;
+							infoTemp.fullTitle = info.Registre.TitreComplet;
+							infoTemp.race = info.Registre.RacePerso;
+							infoTemp.class = info.Registre.ClassePerso;
+							infoTemp.age = info.Registre.Age;
+							infoTemp.residence = info.Registre.Habitation;
+							infoTemp.birthplace = info.Registre.Origine;
+							infoTemp.eyesColor = info.Registre.YeuxVisage;
+							infoTemp.face = info.Registre.TraitVisage;
+							infoTemp.piercing = info.Registre.Piercing;
+							infoTemp.height = TRP2_LOC_TAILLE_TEXTE[info.Registre.Taille];
+							infoTemp.bodyShape = TRP2_LOC_SILHOUETTE_TEXTE[info.Registre.Silhouette];
 						end
-						if info["Physique"] then
-							totalRP2Profiles[name .. " - " .. realm]["info"]["physicalDescription"] = info["Physique"]["PhysiqueTexte"];
+						if info.Histoire then
+							infoTemp.history = info.Histoire.HistoireTexte;
 						end
-						if info["Actu"] then
-							totalRP2Profiles[name .. " - " .. realm]["info"]["icon"] = info["Actu"]["PlayerIcon"];
-							totalRP2Profiles[name .. " - " .. realm]["info"]["currently"] = info["Actu"]["ActuTexte"];
-							totalRP2Profiles[name .. " - " .. realm]["info"]["currentlyOOC"] = info["Actu"]["ActuTexteHRP"];
-							totalRP2Profiles[name .. " - " .. realm]["info"]["rpStatus"] = info["Actu"]["StatutRP"] == 1 and 2 or 1;
-							totalRP2Profiles[name .. " - " .. realm]["info"]["experienceStatus"] = info["Actu"]["StatutXP"];
+						if info.Physique then
+							infoTemp.physicalDescription = info.Physique.PhysiqueTexte;
 						end
+						if info.Actu then
+							infoTemp.icon = info.Actu.PlayerIcon;
+							infoTemp.currently = info.Actu.ActuTexte;
+							infoTemp.currentlyOOC = info.Actu.ActuTexteHRP;
+							infoTemp.rpStatus = info.Actu.StatutRP == 1 and 2 or 1;
+							infoTemp.experienceStatus = info.Actu.StatutXP;
+						end
+						totalRP2Profiles.profileName.info = infoTemp;
 					end
 				end
 			end
