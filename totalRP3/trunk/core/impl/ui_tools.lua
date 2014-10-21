@@ -893,6 +893,7 @@ end
 
 function TRP3_API.ui.misc.playAnimation(animationGroup)
 	if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) and animationGroup then
+		animationGroup:Stop();
 		animationGroup:Play();
 	end
 end
