@@ -20,6 +20,10 @@
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
+	if not TRP2_Module_PlayerInfo then
+		return;
+	end
+
 	local TRP2 = {};
 	local tcopy = TRP3_API.utils.table.copy;
 	local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
@@ -238,7 +242,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return importableData;
 	end
 
-	if TRP2.isAvailable() then
-		TRP3_API.importer.addAddOn(TRP2.addOnVersion(), TRP2);
-	end
+	TRP3_API.importer.addAddOn(TRP2.addOnVersion(), TRP2);
 end);

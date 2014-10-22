@@ -19,35 +19,56 @@
 ----------------------------------------------------------------------------------
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	if not mrpSaved then
+		return;
+	end
+
 	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
+	local loc = TRP3_API.locale.getText;
 
 	local MRP = {};
-	local loc = {
-	};
+	local L = mrp.L;
 	local importableData = {
-
-	}
+		HH = L.HH,
+		HI = L.HI,
+		DE = L.DE,
+		AE = L.AE,
+		AG = L.AG,
+		HB = L.HB,
+		AH = L.AH,
+		NA = L.NA,
+		RA = L.RA,
+		AW = L.AW,
+		FC = L.FC,
+		NH = L.NH,
+		NI = L.NI,
+		NT = L.NT,
+		MO = L.MO,
+		FR = L.FR,
+		CU = L.CU
+	};
 	local profilesList;
 
-	-- TODO fill profilesList with available profiles from MRP
 	local function initProfilesList()
 		profilesList = {};
 		for name, profile in pairs(mrpSaved.Profiles) do
-			profilesList[name] = { name = name}
+			if name == "Default" then
+				name = TRP3_API.globals.player_id;
+			end
+			profilesList[name] = { name = name, info = {}};
 			for field, value in pairs(profile) do
-				print(field, value);
+				profilesList[name]["info"][field] = value;
 			end
 		end
 	end
 
-	-- TODO Check if we have what we need
 	MRP.isAvailable = function()
 		return mrpSaved ~= nil;
 	end
 
-	-- TODO Return the version number for MRP
 	MRP.addOnVersion = function()
-
+		return mrp.VersionString;
 	end
 
 
@@ -60,9 +81,45 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		assert(profilesList[profileID], "Given profileID does not exist.");
 
 		local profile = {};
-		local importedProfile = profilesList[profileID];
+		local importedProfile = profilesList[profileID].info;
 
 		tcopy(profile, getDefaultProfile());
+		profile.player.characteristics.FN = importedProfile.NA;
+		profile.player.characteristics.FT = importedProfile.NT;
+		profile.player.characteristics.RA = importedProfile.RA;
+		profile.player.characteristics.AG = importedProfile.AG;
+		profile.player.characteristics.RE = importedProfile.HH;
+		profile.player.characteristics.BP = importedProfile.HB;
+		profile.player.characteristics.EC = importedProfile.AE;
+		profile.player.characteristics.HE = importedProfile.AH;
+		profile.player.characteristics.WE = importedProfile.AW;
+		if importedProfile.MO then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_MOTTO");
+				VA = "\"" .. importedProfile.MO .. "\"";
+				IC = "INV_Inscription_ScrollOfWisdom_01";
+			});
+		end
+		if importedProfile.NI then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_NICK");
+				VA = importedProfile.NI;
+				IC = "Ability_Hunter_BeastCall";
+			});
+		end
+		if importedProfile.NH then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_HOUSE");
+				VA = importedProfile.NH;
+				IC = "inv_misc_kingsring1";
+			});
+		end
+		profile.player.character.CU = importedProfile.CU;
+		profile.player.about.T3.PH.TX = importedProfile.DE;
+		profile.player.about.T3.HI.TX = importedProfile.HI;
+		profile.player.about.TE = 3;
+
+		-- TODO Custom RP styles
 
 		return profile;
 	end
@@ -80,7 +137,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return importableData;
 	end
 
-	if MRP.isAvailable() then
-		TRP3_API.importer.addAddOn(MRP.addOnVersion(), MRP);
-	end
+	TRP3_API.importer.addAddOn(MRP.addOnVersion(), MRP);
 end);

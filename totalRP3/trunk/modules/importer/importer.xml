@@ -143,5 +143,6 @@
 
 	<Script file="importer.lua"/>
     <Script file="totalRP2_API.lua"/>
+    <Script file="MRP_API.lua"/>
 
 </Ui>
