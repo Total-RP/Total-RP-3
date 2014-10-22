@@ -28,7 +28,6 @@ local initList = TRP3_API.ui.list.initList;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local playUISound = TRP3_API.ui.misc.playUISound;
-local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local isProfileNameAvailable = TRP3_API.profile.isProfileNameAvailable;
 local assert, pairs = assert, pairs;
 local tsize, tcopy = TRP3_API.utils.table.size, TRP3_API.utils.table.copy;
@@ -40,7 +39,17 @@ local profiles = {};
 local addOns = {};
 
 TRP3_API.importer.addAddOn = function(addOnName, API)
-	addOns[addOnName] = API;
+	if
+	type(API.isAvailable) == "function" and
+	type(API.addOnVersion) == "function" and
+	type(API.getProfile) == "function" and
+	type(API.getFormatedProfile) == "function" and
+	type(API.listAvailableProfiles) == "function" and
+	type(API.getImportableData) == "function" then
+		addOns[addOnName] = API;
+	else
+		print("An API for the addon " .. addOnName .. " tried to register itself in the importer module, but misses some of the required functions.");
+	end
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
@@ -51,6 +60,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 
 	local function importProfile(addOn, profileID)
+		assert(addOns[addOn], "Error accessing the addon for this profile");
+
 		local newProfile = addOns[addOn].getFormatedProfile(profileID);
 
 		assert(newProfile, "Nil profile");
@@ -127,6 +138,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		setupIconButton(_G[widget:GetName() .. "Icon"], profile.info.icon or Globals.icons.profile_default);
 
 		local tooltip = "";
+
+		-- If the given profile has a value for the index of the importable data,
+		-- it will be displayed as "will be imported". If not, it will be greyed out.
 		for k, v in pairs(importableData) do
 			if profile.info[k] then
 				tooltip = tooltip .. "|cff00ff00" .. v .. "|r\n";
@@ -136,7 +150,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 
 		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 0,
-			"Will be imported :", -- TODO locale
+			loc("PR_IMPORT_WILL_BE_IMPORTED") .. " :",
 			tooltip);
 	end
 
