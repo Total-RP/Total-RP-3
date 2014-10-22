@@ -96,7 +96,7 @@ TRP3_API.profile.getProfiles = getProfiles;
 local function isProfileNameAvailable(profileName)
 	for profileID, profile in pairs(profiles) do
 		if profile.profileName == profileName then
-			return false;
+			return false, profileID;
 		end
 	end
 	return true;
@@ -363,7 +363,13 @@ function TRP3_API.profile.init()
 	-- First time this character is connected with TRP3 or if deleted profile through another character
 	-- So we create a new profile named by his pseudo.
 	if not character.profileID or not profiles[character.profileID] then
-		selectProfile(createProfile(Globals.player .. " - " .. Globals.player_realm));
+		-- Detect if a profile with name - realm already exists
+		local available, profileID = isProfileNameAvailable(Globals.player .. " - " .. Globals.player_realm);
+		if not available and profileID then
+			selectProfile(profileID);
+		else
+			selectProfile(createProfile(Globals.player .. " - " .. Globals.player_realm));
+		end
 	else
 		selectProfile(character.profileID);
 	end
