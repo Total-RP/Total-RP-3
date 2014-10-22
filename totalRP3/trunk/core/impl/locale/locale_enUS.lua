@@ -298,7 +298,16 @@ local LOCALE_EN = {
 		REG_COMPANION_TITLE = "Title",
 		REG_COMPANION_NAME_COLOR = "Name color",
 		REG_MSP_ALERT = "|cffff0000WARNING\n\nYou can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.\n\n|rCurrently loaded: |cff00ff00%s\n\n|cffff9900Therefore the MSP support for Total RP3 will be disabled.\n\n|rIf you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.",
-		
+		REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
+		REG_COMPANION_PAGE_TUTO_E_1 = "This is |cff00ff00your companion main information|r.\n\nAll these information will appear on |cffff9900your companion's tooltip|r.",
+		REG_COMPANION_PAGE_TUTO_E_2 = [[This is |cff00ff00your companion description|r.
+
+It isn't limited to |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+
+There are a lot of ways to customize the description.
+You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
+These tools also allow you to insert |cffffff00images, icons or link to external web site|r.]],
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

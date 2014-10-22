@@ -312,6 +312,7 @@ local function refresh()
 	end
 
 	TRP3_CompanionsPageInformation:Show();
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, COMPANIONS_PAGE_ID);
 end
 
 local function showInformationTab()
@@ -371,6 +372,32 @@ end
 
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
 
+-- Tutorial
+local TUTORIAL_STRUCTURE_EDIT = {
+	{
+		box = {
+			allPoints = TRP3_CompanionsPageInformationEdit_NamePanel
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_COMPANION_PAGE_TUTO_E_1"),
+			textWidth = 400,
+			arrow = "DOWN"
+		}
+	},
+	{
+		box = {
+			allPoints = TRP3_CompanionsPageInformationEdit_About
+		},
+		button = {
+			x = 0, y = -110, anchor = "CENTER",
+			text = loc("REG_COMPANION_PAGE_TUTO_E_2"),
+			textWidth = 400,
+			arrow = "UP"
+		}
+	}
+}
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	PEEK_PRESETS = TRP3_Presets.peek;
 	openPageByUnitID = TRP3_API.register.openPageByUnitID;
@@ -382,6 +409,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			assert(context, "Missing context.");
 			onPageShow(context);
 		end,
+		tutorialProvider = function()
+			if getCurrentContext().isEditMode then
+				return TUTORIAL_STRUCTURE_EDIT;
+			end
+		end
 	});
 	
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
