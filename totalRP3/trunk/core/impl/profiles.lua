@@ -309,11 +309,13 @@ end
 local function onActionClicked(button)
 	local profileID = button:GetParent().profileID;
 	local values = {};
-	if currentProfileId ~= profileID then
-		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
-	end
 	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
 	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
+	if currentProfileId ~= profileID then
+		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
+	else
+		tinsert(values, {"|cff999999" .. loc("PR_DELETE_PROFILE"), nil});
+	end
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
