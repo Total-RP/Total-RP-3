@@ -2,7 +2,6 @@
 -- Total RP 3
 -- TRP2 / MRP / XRP profiles importer
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,12 +60,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	local function importProfile(addOn, profileID)
 		assert(addOns[addOn], "Error accessing the addon for this profile");
+		local profile = addOns[addOn].getProfile(profileID);
 
 		local newProfile = addOns[addOn].getFormatedProfile(profileID);
 
 		assert(newProfile, "Nil profile");
 
-		local profileName = profileID;
+		local profileName = profile.name;
 
 		local i = 0;
 		local nameForNewProfile = profileName;

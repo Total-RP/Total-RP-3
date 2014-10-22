@@ -2,7 +2,6 @@
 -- Total RP 3
 -- Total RP 2 API for profile importing
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,10 +65,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				for name, info in pairs(characters) do
 					if info.Registre or info.Histoire or info.Actu then
 
-						local profileName = name .. " - " .. realm
+						local profileName = TRP2.addOnVersion().."-"..name .. " - " .. realm
 						local infoTemp = {};
 
-						profilesList[profileName] = { name = profileName };
+						profilesList[profileName] = { name = name .. " - " .. realm };
 
 						if info.Registre then
 							infoTemp.firstName = info.Registre.Prenom or name;

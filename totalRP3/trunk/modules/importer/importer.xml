@@ -3,7 +3,6 @@
 
 	<!--
 		Total RP 3
-		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 		Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 
 		Licensed under the Apache License, Version 2.0 (the "License");
@@ -144,5 +143,6 @@
 	<Script file="importer.lua"/>
     <Script file="totalRP2_API.lua"/>
     <Script file="MRP_API.lua"/>
+    <Script file="XRP_API.lua"/>
 
 </Ui>

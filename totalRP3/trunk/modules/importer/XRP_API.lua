@@ -2,7 +2,6 @@
 -- Total RP 3
 -- XRP API for profile importing
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,29 +18,61 @@
 ----------------------------------------------------------------------------------
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	if not xrpSaved then
+		return;
+	end
+
 	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
+	local loc = TRP3_API.locale.getText;
 
 	local XRP = {};
-	local loc = {
-	};
-	local importableData = {
 
+	local importableData = {
+		HH = XRP_HH,
+		HI = XRP_HI,
+		DE = XRP_DE,
+		AE = XRP_AE,
+		FC = XRP_FC,
+		HB = XRP_HB,
+		AH = XRP_AH,
+		NA = XRP_NA,
+		RA = XRP_RA,
+		AW = XRP_AW,
+		NT = XRP_NT,
+		FR = XRP_FR,
+		NH = XRP_NH,
+		NI = XRP_NI,
+		RC = XRP_RC,
+		MO = XRP_MO,
+		AG = XRP_AG,
+		CU = XRP_CU
 	}
 	local profilesList;
 
-	-- TODO fill profilesList with available profiles from XRP
 	local function initProfilesList()
 		profilesList = {};
+
+		for name, profile in pairs(xrpSaved.profiles) do
+			if name == "Default" then
+				name = TRP3_API.globals.player_id;
+			end
+			local profileName = XRP.addOnVersion().."-"..name;
+			profilesList[profileName] = { name = name };
+			local infoTemp = {};
+			for k, v in pairs(profile.fields) do
+				infoTemp[k] = v;
+			end
+			profilesList[profileName].info = infoTemp;
+		end
 	end
 
-	-- TODO Check if we have what we need
 	XRP.isAvailable = function()
-		return "XRPSaved" ~= nil;
+		return xrpSaved.profiles ~= nil;
 	end
 
-	-- TODO Return the version number for XRP
 	XRP.addOnVersion = function()
-
+		return "XRP " .. xrp.version;
 	end
 
 
@@ -49,15 +80,50 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return profilesList[profileID];
 	end
 
-	-- TODO Format MSP profile into a TRP3 profile
 	XRP.getFormatedProfile = function(profileID)
 		assert(profilesList[profileID], "Given profileID does not exist.");
 
 		local profile = {};
-		local importedProfile = profilesList[profileID];
+		local importedProfile = profilesList[profileID].info;
 
 		tcopy(profile, getDefaultProfile());
+		profile.player.characteristics.FN = importedProfile.NA;
+		profile.player.characteristics.FT = importedProfile.NT;
+		profile.player.characteristics.RA = importedProfile.RA;
+		profile.player.characteristics.AG = importedProfile.AG;
+		profile.player.characteristics.RE = importedProfile.HH;
+		profile.player.characteristics.BP = importedProfile.HB;
+		profile.player.characteristics.EC = importedProfile.AE;
+		profile.player.characteristics.HE = importedProfile.AH;
+		profile.player.characteristics.WE = importedProfile.AW;
+		if importedProfile.MO then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_MOTTO");
+				VA = "\"" .. importedProfile.MO .. "\"";
+				IC = "INV_Inscription_ScrollOfWisdom_01";
+			});
+		end
+		if importedProfile.NI then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_NICK");
+				VA = importedProfile.NI;
+				IC = "Ability_Hunter_BeastCall";
+			});
+		end
+		if importedProfile.NH then
+			tinsert(profile.player.characteristics.MI, {
+				NA = loc("REG_PLAYER_MSP_HOUSE");
+				VA = importedProfile.NH;
+				IC = "inv_misc_kingsring1";
+			});
+		end
+		profile.player.character.CU = importedProfile.CU;
+		profile.player.about.T3.PH.TX = importedProfile.DE;
+		profile.player.about.T3.HI.TX = importedProfile.HI;
+		profile.player.about.TE = 3;
 
+		-- TODO Custom RP styles
+		
 		return profile;
 	end
 
@@ -74,7 +140,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return importableData;
 	end
 
-	if XRP.isAvailable() then
-		TRP3_API.importer.addAddOn(XRP.addOnVersion(), XRP);
-	end
+	TRP3_API.importer.addAddOn(XRP.addOnVersion(), XRP);
 end);

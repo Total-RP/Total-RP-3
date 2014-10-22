@@ -2,7 +2,6 @@
 -- Total RP 3
 -- MyRolePlay API for profile importing
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,9 +55,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			if name == "Default" then
 				name = TRP3_API.globals.player_id;
 			end
-			profilesList[name] = { name = name, info = {}};
+			local profileName = MRP.addOnVersion().."-"..name;
+			profilesList[profileName] = { name = name, info = {}};
 			for field, value in pairs(profile) do
-				profilesList[name]["info"][field] = value;
+				profilesList[profileName]["info"][field] = value;
 			end
 		end
 	end
