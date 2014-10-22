@@ -321,6 +321,32 @@ local function onPageShow(context)
 	uiInitProfileList();
 end
 
+-- Tutorial
+local TUTORIAL_STRUCTURE = {
+	{
+		box = {
+			allPoints = TRP3_CompanionsProfilesList
+		},
+		button = {
+			x = 0, y = -150, anchor = "CENTER",
+			text = loc("PR_CO_PROFILE_HELP"),
+			textWidth = 400,
+			arrow = "UP"
+		},
+	},
+	{
+		box = {
+			allPoints = TRP3_CompanionsProfilesAdd
+		},
+		button = {
+			x = 0, y = 15, anchor = "CENTER",
+			text = loc("PR_CO_PROFILE_HELP2"),
+			textWidth = 400,
+			arrow = "DOWN"
+		},
+	}
+}
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
@@ -337,6 +363,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			tabGroup:SelectTab(1);
 			onPageShow(context);
 		end,
+		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
 	-- UI

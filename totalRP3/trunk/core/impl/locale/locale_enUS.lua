@@ -511,6 +511,21 @@ local LOCALE_EN = {
 		PR_PROFILEMANAGER_RENAME = "Rename profile",
 		PR_PROFILEMANAGER_CURRENT = "Current profile",
 		PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
+		PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
+
+A companion profile can be linked to:
+- A battle pet |cffff9900(only if it has been renamed)|r
+- A hunter pet
+- A warlock minion
+- A mage elemental
+- A death knight ghoul |cffff9900(see below)|r
+
+Just like characters profiles, a |cff00ff00companion profile|r can be linked to |cffffff00several pets|r, and a |cffffff00pet|r can switch easily from a profile to another.
+
+|cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
+		PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
+
+|cff00ff00To link a profile to a pet, just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
 		PR_CO_MASTERS = "Masters",
 		PR_CO_EMPTY = "No companion profile",
 		PR_CO_NEW_PROFILE = "New companion profile",
