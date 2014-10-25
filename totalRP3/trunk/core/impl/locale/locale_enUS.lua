@@ -276,10 +276,22 @@ local LOCALE_EN = {
 		REG_LIST_ACTIONS_MASS_REMOVE = "Remove profiles",
 		REG_LIST_ACTIONS_MASS_REMOVE_C = "This action will remove |cff00ff00%s selected profile(s)|r.",
 		REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
-		REG_LIST_ACTIONS_MASS_IGNORE_C = "This action will add |cff00ff00%s character(s)|r to the ignore list.\n\nYou can optionally enter the reason below. This is a personal note, it will serves as a reminder.",
+		REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s character(s)|r to the ignore list.
+
+You can optionally enter the reason below. This is a personal note, it will serves as a reminder.]],
 		REG_LIST_CHAR_TUTO_ACTIONS = "This column allows you to select multiple characters and perform an action on all of them.",
-		REG_LIST_CHAR_TUTO_LIST = "The first column shows the character's name.\n\nThe second column shows the relation between these characters and your current character.\n\nThe last column is for various flags. (ignored ..etc.)",
-		REG_LIST_CHAR_TUTO_FILTER = "You can filter the character list.\n\nThe |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any bounded WoW characters.\n\nThe |cff00ff00guild filter|r will search on guild name from bounded WoW characters.\n\nThe |cff00ff00realm only filter|r will show only profiles bounded to a WoW character of your current realm.",
+		REG_LIST_CHAR_TUTO_LIST = [[The first column shows the character's name.
+
+The second column shows the relation between these characters and your current character.
+
+The last column is for various flags. (ignored ..etc.)]],
+		REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
+
+The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any bounded WoW characters.
+
+The |cff00ff00guild filter|r will search on guild name from bounded WoW characters.
+
+The |cff00ff00realm only filter|r will show only profiles bounded to a WoW character of your current realm.]],
 		REG_LIST_NOTIF_ADD = "New profile discovered for |cff00ff00%s",
 		REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 		REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
@@ -297,7 +309,15 @@ local LOCALE_EN = {
 		REG_COMPANION_NAME = "Name",
 		REG_COMPANION_TITLE = "Title",
 		REG_COMPANION_NAME_COLOR = "Name color",
-		REG_MSP_ALERT = "|cffff0000WARNING\n\nYou can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.\n\n|rCurrently loaded: |cff00ff00%s\n\n|cffff9900Therefore the MSP support for Total RP3 will be disabled.\n\n|rIf you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.",
+		REG_MSP_ALERT = [[|cffff0000WARNING
+
+You can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.|r
+
+Currently loaded: |cff00ff00%s
+
+|cffff9900Therefore the MSP support for Total RP3 will be disabled.|r
+
+If you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.]],
 		REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
 		REG_COMPANION_PAGE_TUTO_E_1 = "This is |cff00ff00your companion main information|r.\n\nAll these information will appear on |cffff9900your companion's tooltip|r.",
 		REG_COMPANION_PAGE_TUTO_E_2 = [[This is |cff00ff00your companion description|r.
@@ -380,7 +400,16 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",
 		CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
 		CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
-		CO_MODULES_TUTO = "A module is a independent feature that can be enable or disable.\n\nPossible status:\n|cff00ff00Loaded:|r The module is enabled and loaded.\n|cff999999Disabled:|r The module is disabled.\n|cffff9900Missing dependencies:|r Some dependencies are not loaded.\n|cffff9900TRP update required:|r The module required a more recent version of TRP3.\n|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !\n\n|cffff9900When disabling a module, a UI reload is necessary.",
+		CO_MODULES_TUTO = [[A module is a independent feature that can be enable or disable.
+
+Possible status:
+|cff00ff00Loaded:|r The module is enabled and loaded.
+|cff999999Disabled:|r The module is disabled.
+|cffff9900Missing dependencies:|r Some dependencies are not loaded.
+|cffff9900TRP update required:|r The module required a more recent version of TRP3.
+|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !
+
+|cffff9900When disabling a module, a UI reload is necessary.]],
 		CO_MODULES_SHOWERROR = "Show error",
 		CO_MODULES_DISABLE = "Disable module",
 		CO_MODULES_ENABLE = "Enable module",
@@ -578,8 +607,14 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		DB_NOTIFICATIONS_NO = "You haven't any notification",
 		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
 		DB_NOTIFICATIONS_ALL = "All notification types",
-		DB_TUTO_1 = "|cffffff00The character status|r indicates if you are currently playing your character's role or not.\n\n|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !\n\n|cff00ff00These information will be placed in your character tooltip.",
-		DB_TUTO_2 = "Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.\n\nAll notifications are configurable in the |cffff9900general settings page|r.",
+		DB_TUTO_1 = [[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
+
+|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
+
+|cff00ff00These information will be placed in your character tooltip.]],
+		DB_TUTO_2 = [[Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.
+
+All notifications are configurable in the |cffff9900general settings page|r.]],
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON UI TEXTS
@@ -588,7 +623,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		UI_BKG = "Background %s",
 		UI_ICON_BROWSER = "Icon browser",
 		UI_ICON_BROWSER_HELP = "Copy icon",
-		UI_ICON_BROWSER_HELP_TT = "While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name. This will works:\n|cff00ff00- On any item in your bags\n- On any icon in the spellbook",
+		UI_ICON_BROWSER_HELP_TT = [[|TInterface\\CURSOR\\Cast:40|t While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
+
+This will works:|cff00ff00
+- On any item in your bags
+- On any icon in the spellbook|r]],
 		UI_ICON_SELECT = "Select icon",
 		UI_MUSIC_BROWSER = "Music browser",
 		UI_MUSIC_SELECT = "Select music",
@@ -604,7 +643,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		UI_FILTER = "Filter",
 		UI_LINK_URL = "http://your.url.here",
 		UI_LINK_TEXT = "Your text here",
-		UI_LINK_WARNING = "Here's the link URL.\nYou can copy/paste it in your web browser.\n\n|cffff0000!! Disclaimer !!|r\nTotal RP is not responsible for links leading to harmful content.",
+		UI_LINK_WARNING = [[Here's the link URL.
+You can copy/paste it in your web browser.
+
+|cffff0000!! Disclaimer !!|r
+Total RP is not responsible for links leading to harmful content.]],
 		UI_TUTO_BUTTON = "Tutorial mode",
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
 		UI_CLOSE_ALL = "Close all",
@@ -677,6 +720,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		BW_COLOR_CODE = "Color code",
 		BW_COLOR_CODE_TT = "You can paste an 6 figures hexadecimal color code here and press Enter.",
 		BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Bidings
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
 	},
 };
 

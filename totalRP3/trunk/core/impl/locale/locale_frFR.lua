@@ -22,6 +22,7 @@ local LOCALE = {
 	localeText = "Français",
 	localeContent = {
 		GEN_WELCOME_MESSAGE = "Merci d'utiliser Total RP 3 ! Bon jeu !",
+		BINDING_NAME_TRP3_TOGGLE = "Afficher/masquer la fenêtre principale"
 	},
 };
 
