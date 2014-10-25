@@ -68,7 +68,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	MRP.addOnVersion = function()
-		return mrp.VersionString;
+		return "MyRolePlay - " .. GetAddOnMetadata("MyRolePlay", "Version");
 	end
 
 

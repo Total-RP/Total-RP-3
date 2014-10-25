@@ -2,7 +2,6 @@
 -- Total RP 3
 -- FlagRSP API for profile importing (some people are still using it ¯\_(ツ)_/¯ )
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,29 +18,40 @@
 ----------------------------------------------------------------------------------
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	if not FlagRSPData then
+		return;
+	end
 	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
 
 	local FRSP = {};
-	local loc = {
-	};
 	local importableData = {
-
+		Fullname = "Name",
+		Title = "Title",
+		CharDesc = "Description"
 	}
 	local profilesList;
 
-	-- TODO fill profilesList with available profiles from FRSP
 	local function initProfilesList()
-		profilesList = {};
+		profilesList = {}
+		local profileName = FRSP.addOnVersion().."-"..TRP3_API.globals.player_id
+		profilesList[profileName] = {
+			name = TRP3_API.globals.player_id,
+			info = {}
+		};
+		for k, v in pairs(importableData) do
+			if FlagRSPData[k] then
+				profilesList[profileName].info[k] = FlagRSPData[k];
+			end
+		end
 	end
 
-	-- TODO Check if we have what we need
 	FRSP.isAvailable = function()
-		return "FRSPSaved" ~= nil;
+		return FlagRSPData ~= nil;
 	end
 
-	-- TODO Return the version number for FRSP
 	FRSP.addOnVersion = function()
-
+		return "flagRSP - " .. GetAddOnMetadata("flagRSP", "Version");
 	end
 
 
@@ -49,14 +59,19 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return profilesList[profileID];
 	end
 
-	-- TODO Format MSP profile into a TRP3 profile
 	FRSP.getFormatedProfile = function(profileID)
 		assert(profilesList[profileID], "Given profileID does not exist.");
 
 		local profile = {};
-		local importedProfile = profilesList[profileID];
+		local importedProfile = profilesList[profileID].info;
 
 		tcopy(profile, getDefaultProfile());
+
+		profile.player.characteristics.FN = importedProfile.Fullname;
+		profile.player.characteristics.FT = importedProfile.Title;
+
+		profile.player.about.T3.PH.TX = importedProfile.CharDesc;
+		profile.player.about.TE = 3;
 
 		return profile;
 	end
@@ -74,7 +89,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return importableData;
 	end
 
-	if FRSP.isAvailable() then
-		TRP3_API.importer.addAddOn(FRSP.addOnVersion(), FRSP);
-	end
+	TRP3_API.importer.addAddOn(FRSP.addOnVersion(), FRSP);
 end);

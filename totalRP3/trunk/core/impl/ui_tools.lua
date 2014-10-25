@@ -811,7 +811,7 @@ end
 local function onColorTagSelected(red, green, blue, frame)
 	local cursorIndex = frame:GetCursorPosition();
 	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
-	insertTag(tag, cursorIndex, frame);
+	insertTag(tag .. "{/col}", cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + tag:len());
 end
 

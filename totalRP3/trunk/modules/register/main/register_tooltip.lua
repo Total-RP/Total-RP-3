@@ -618,7 +618,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	if showCompanionFullTitle() then
 		local fullTitle = "";
 		if info.TI then
-			fullTitle = strconcat("< ", info.TI, " >");
+			fullTitle = strconcat("< ", info.TI, " |r>");
 		end
 		if fullTitle:len() > 0 then
 			tooltipBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());

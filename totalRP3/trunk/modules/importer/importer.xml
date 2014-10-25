@@ -144,5 +144,7 @@
     <Script file="totalRP2_API.lua"/>
     <Script file="MRP_API.lua"/>
     <Script file="XRP_API.lua"/>
+    <Script file="FlagRSP_API.lua"/>
+    <Script file="FlagRSP2_API.lua"/>
 
 </Ui>

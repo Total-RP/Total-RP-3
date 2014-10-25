@@ -170,11 +170,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	TRP2.addOnVersion = function()
-		if TRP2.isAvailable then
-			return TRP2_addonname .. " " .. TRP2_version;
-		else
-			return "";
-		end
+		return  "Total RP 2 - " .. GetAddOnMetadata("totalRP2", "Version")
 	end
 
 

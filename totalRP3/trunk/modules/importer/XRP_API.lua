@@ -72,7 +72,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	XRP.addOnVersion = function()
-		return "XRP " .. xrp.version;
+		return "XRP - " .. GetAddOnMetadata("xrp", "Version");
 	end
 
 
@@ -90,6 +90,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		profile.player.characteristics.FN = importedProfile.NA;
 		profile.player.characteristics.FT = importedProfile.NT;
 		profile.player.characteristics.RA = importedProfile.RA;
+		profile.player.characteristics.CL = importedProfile.CL;
 		profile.player.characteristics.AG = importedProfile.AG;
 		profile.player.characteristics.RE = importedProfile.HH;
 		profile.player.characteristics.BP = importedProfile.HB;
@@ -123,7 +124,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		profile.player.about.TE = 3;
 
 		-- TODO Custom RP styles
-		
+
 		return profile;
 	end
 

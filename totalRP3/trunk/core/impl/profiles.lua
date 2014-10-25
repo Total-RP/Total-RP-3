@@ -411,6 +411,11 @@ function TRP3_API.profile.init()
 		frame = TRP3_ProfileManager,
 		onPagePostShow = function() 
 			tabGroup:SelectTab(1);
+			if TRP3_API.importer.charactersProfilesAvailable() then
+				tabGroup:SetTabVisible(2, true);
+			else
+				tabGroup:SetTabVisible(2, false);
+			end
 		end,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});

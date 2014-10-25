@@ -545,6 +545,12 @@ local function onStart()
 			for field, value in pairs(data) do
 				-- Save version
 				profile.mspver[field] = msp.char[senderID].ver[field];
+
+				-- Fixing never closed color tags (Total RP 2 < v. 1.031) and icons in fields
+				if not ABOUT_FIELDS[field] and value then
+					value = value:gsub("|T.-|t", "");
+				end
+
 				-- Save fields
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
@@ -555,7 +561,7 @@ local function onStart()
 							if not color then color = arg1 end
 							return "";
 						end);
-						value = value:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|T.-|t", "");
+						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
 						profile.characteristics["CH"] = color;
 					end
 					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(strtrim(value));

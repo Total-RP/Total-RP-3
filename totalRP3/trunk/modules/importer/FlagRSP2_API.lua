@@ -2,7 +2,6 @@
 -- Total RP 3
 -- FlagRSP2 API for profile importing (some people are still using it ¯\_(ツ)_/¯ )
 -- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 -- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,29 +18,43 @@
 ----------------------------------------------------------------------------------
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	if not flagRSP2 or not flagRSP2.db  or not flagRSP2.db.sv or not flagRSP2.db.sv.char then
+		return;
+	end
+
 	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
 
 	local FRSP2 = {};
-	local loc = {
-	};
 	local importableData = {
-
+		flagRSP2OptionsCharName = "Name",
+		flagRSP2OptionsCharTitle = "Title",
+		flagRSP2OptionsPhysDesc = "Description"
 	}
 	local profilesList;
 
-	-- TODO fill profilesList with available profiles from FRSP2
 	local function initProfilesList()
 		profilesList = {};
+		for key, profile in pairs(flagRSP2.db.sv.char) do
+			local profileName = FRSP2.addOnVersion().."-"..key;
+			profilesList[profileName] = {
+				name = key,
+				info = {}
+			}
+			for key, value in pairs(importableData) do
+				if profile[key] then
+					profilesList[profileName].info[key] = profile[key];
+				end
+			end
+		end
 	end
 
-	-- TODO Check if we have what we need
 	FRSP2.isAvailable = function()
-		return "FRSP2Saved" ~= nil;
+		return flagRSP2 ~= nil;
 	end
 
-	-- TODO Return the version number for FRSP2
 	FRSP2.addOnVersion = function()
-
+		return "flagRSP2 - " .. GetAddOnMetadata("flagRSP2", "Version");
 	end
 
 
@@ -49,14 +62,19 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return profilesList[profileID];
 	end
 
-	-- TODO Format MSP profile into a TRP3 profile
 	FRSP2.getFormatedProfile = function(profileID)
 		assert(profilesList[profileID], "Given profileID does not exist.");
 
 		local profile = {};
-		local importedProfile = profilesList[profileID];
+		local importedProfile = profilesList[profileID].info;
 
 		tcopy(profile, getDefaultProfile());
+
+		profile.player.characteristics.FN = importedProfile.flagRSP2OptionsCharName
+		profile.player.characteristics.FT = importedProfile.flagRSP2OptionsCharTitle
+
+		profile.player.about.T3.PH.TX = importedProfile.flagRSP2OptionsPhysDesc;
+		profile.player.about.TE = 3;
 
 		return profile;
 	end
@@ -74,7 +92,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return importableData;
 	end
 
-	if FRSP2.isAvailable() then
-		TRP3_API.importer.addAddOn(FRSP2.addOnVersion(), FRSP2);
-	end
+	TRP3_API.importer.addAddOn(FRSP2.addOnVersion(), FRSP2);
 end);
