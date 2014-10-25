@@ -725,6 +725,7 @@ Total RP is not responsible for links leading to harmful content.]],
 		-- Bidings
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
+		BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
 	},
 };
 

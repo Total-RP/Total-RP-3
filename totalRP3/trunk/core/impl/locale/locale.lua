@@ -22,6 +22,7 @@ TRP3_API.locale = {}
 -- Bindings locale
 BINDING_HEADER_TRP3 = "Total RP 3";
 BINDING_NAME_TRP3_TOGGLE = "";
+BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "";
 
 local error, pairs, tinsert, assert, table, tostring, GetLocale = error, pairs, tinsert, assert, table, tostring, GetLocale;
 
@@ -57,8 +58,8 @@ function TRP3_API.locale.init()
 		localeFont = "Fonts\\FRIZQT__.TTF";
 	end
 	TRP3_API.utils.table.copy(effectiveLocal, LOCALS[current].localeContent);
-	TRP3_API.utils.table.dump(LOCALS[current].localeContent);
 	BINDING_NAME_TRP3_TOGGLE = effectiveLocal["BINDING_NAME_TRP3_TOGGLE"] or LOCALS[DEFAULT_LOCALE].localeContent["BINDING_NAME_TRP3_TOGGLE"];
+	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = effectiveLocal["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] or LOCALS[DEFAULT_LOCALE].localeContent["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"];
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
