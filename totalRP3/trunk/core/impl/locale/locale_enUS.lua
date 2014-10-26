@@ -190,7 +190,7 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_USE = "Activate this slot",
 		REG_PLAYER_GLANCE_TITLE = "Attribute name",
 		REG_PLAYER_GLANCE_UNUSED = "Unused slot",
-		REG_PLAYER_GLANCE_CONFIG = "Click to configure slot\nRight-click to toggle",
+		REG_PLAYER_GLANCE_CONFIG = "\n|cffffff00Click:|r configure slot\n|cffffff00Right-click:|r toggle slot activation\n|cffffff00Drag & drop:|r reorder slots",
 		REG_PLAYER_GLANCE_EDITOR = "Slot editor",
 		REG_PLAYER_GLANCE_PRESET = "Load a preset",
 		REG_PLAYER_GLANCE_PRESET_SELECT = "Select a preset",
@@ -227,11 +227,12 @@ The description doesn't have to be limited to your character |cffff9900physical 
 You don't have to fill all the frames as |cffff9900if you leave an empty frame it won't be shown on your description|r.
 
 Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.]],
-		REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides you |cffffff005 slots|r with which you can describe |cffffff00the most important pieces of information about your character|r.
+		REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides you |cffffff005 slots|r with which you can describe |cff00ff00the most important pieces of information about your character|r.
 
-These slots will be visible on the \"At first glance bar\" when someone selects your character.
+These slots will be visible on the |cffffff00"At first glance bar"|r when someone selects your character.
 
-Hint: You can drag & drop slots to reorder them. It also works on the \"At first glance bar\".]],
+|cff00ff00Hint: You can drag & drop slots to reorder them.|r
+It also works on the |cffffff00"At first glance bar"|r!]],
 		REG_PLAYER_TUTO_ABOUT_MISC_3 = [[This section contains |cffffff00a list of flags|r to answer a lot of |cffffff00common questions people could ask about you, your character and the way you want to play him/her|r.]],
 		REG_RELATION = "Relationship",
 		REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
