@@ -249,6 +249,8 @@ local function createTemplate2Frame(frameIndex)
 	_G[frame:GetName().."Down"]:SetScript("OnClick", template2DownFrame);
 	setTooltipAll(_G[frame:GetName().."Up"], "TOP", 0, 0, loc("CM_MOVE_UP"));
 	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc("CM_MOVE_DOWN"));
+	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc("REG_PLAYER_ABOUT_REMOVE_FRAME"));
+	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc("UI_ICON_SELECT"));
 	tinsert(template2EditFrames, frame);
 	return frame;
 end
@@ -842,7 +844,7 @@ local TUTORIAL_EDIT_COMMON = {
 	button = {
 		x = 125, y = 0, anchor = "CENTER",
 		text = loc("REG_PLAYER_TUTO_ABOUT_COMMON"),
-		textWidth = 400,
+		textWidth = 450,
 		arrow = "DOWN"
 	}
 };
@@ -854,10 +856,10 @@ local TUTORIAL_EDIT_T1 = {
 			allPoints = TRP3_RegisterAbout_Edit_Template1
 		},
 		button = {
-			x = 0, y = 0, anchor = "CENTER",
+			x = 0, y = 20, anchor = "BOTTOM",
 			text = loc("REG_PLAYER_TUTO_ABOUT_T1"),
-			textWidth = 400,
-			arrow = "DOWN"
+			textWidth = 450,
+			arrow = "UP"
 		}
 	},
 	TUTORIAL_EDIT_COMMON
@@ -869,9 +871,9 @@ local TUTORIAL_EDIT_T2 = {
 			allPoints = TRP3_RegisterAbout_Edit_Template1
 		},
 		button = {
-			x = 0, y = 0, anchor = "CENTER",
+			x = 0, y = 20, anchor = "BOTTOM",
 			text = loc("REG_PLAYER_TUTO_ABOUT_T2"),
-			textWidth = 400,
+			textWidth = 450,
 			arrow = "UP"
 		}
 	},
@@ -880,35 +882,13 @@ local TUTORIAL_EDIT_T2 = {
 local TUTORIAL_EDIT_T3 = {
 	{
 		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template3_Phys
+			allPoints = TRP3_RegisterAbout_Edit_Template3
 		},
 		button = {
-			x = 80, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T3_D"),
-			textWidth = 400,
-			arrow = "RIGHT"
-		}
-	},
-	{
-		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template3_Psy
-		},
-		button = {
-			x = 80, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T3_P"),
-			textWidth = 400,
-			arrow = "RIGHT"
-		}
-	},
-	{
-		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template3_Hist
-		},
-		button = {
-			x = 80, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T3_H"),
-			textWidth = 400,
-			arrow = "RIGHT"
+			x = 0, y = 20, anchor = "BOTTOM",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T3"),
+			textWidth = 450,
+			arrow = "UP"
 		}
 	},
 	TUTORIAL_EDIT_COMMON

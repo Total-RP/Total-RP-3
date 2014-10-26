@@ -141,6 +141,7 @@ local LOCALE_EN = {
 		REG_PLAYER_ABOUT_T1_YOURTEXT = "Your text here",
 		REG_PLAYER_ABOUT_HEADER = "Title tag",
 		REG_PLAYER_ABOUT_ADD_FRAME = "Add a frame",
+		REG_PLAYER_ABOUT_REMOVE_FRAME = "Remove this frame",
 		REG_PLAYER_ABOUT_P = "Paragraph tag",
 		REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 		REG_PLAYER_ABOUT_SOME = "Some text ...",
@@ -200,15 +201,34 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_PRESET_NONE = "Clear slot",
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Please enter a category and a name",
 		REG_PLAYER_GLANCE_PRESET_ALERT2 = "There is already a preset called %s",
-		REG_PLAYER_TUTO_ABOUT_COMMON = "Common",
-		REG_PLAYER_TUTO_ABOUT_T1 = "Template1",
-		REG_PLAYER_TUTO_ABOUT_T2 = "Template2",
-		REG_PLAYER_TUTO_ABOUT_T3_D = "Template3 Descri",
-		REG_PLAYER_TUTO_ABOUT_T3_P = "Template3 Psycho",
-		REG_PLAYER_TUTO_ABOUT_T3_H = "Template3 History",
-		REG_PLAYER_TUTO_ABOUT_MISC_1 = "At first glance",
-		REG_PLAYER_TUTO_ABOUT_MISC_2 = "Currently",
-		REG_PLAYER_TUTO_ABOUT_MISC_3 = "Roleplay style",
+		REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
+You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
+
+|cff00ff00Background:|r
+This is a |cffffff00background texture|r for your character description.
+
+|cff00ff00Template:|r
+The chosen template defines |cffffff00the general layout and writing possibilities|r for your description.
+|cffff9900Only the selected template is visible by others, so you haven't to fill them all.|r
+Once a template is selected, you can open this tutorial again to have more help about each template.]],
+		REG_PLAYER_TUTO_ABOUT_T1 = [[This template allows you to |cff00ff00freely structure your description|r.
+
+The description doesn't have to be limited to your character |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+
+With this template you can use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
+These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
+		REG_PLAYER_TUTO_ABOUT_T2 = [[This template is more structured and consist of |cff00ff00a list of independant frames|r.
+
+Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.
+
+The description doesn't have to be limited to your character |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.]],
+		REG_PLAYER_TUTO_ABOUT_T3 = [[This template is cut in 3 sections: |cff00ff00Physical description, personality and history|r.
+
+You don't have to fill all the frames as |cffff9900if you leave an empty frame it won't be shown on your description|r.
+
+Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.]],
+		REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides you |cffffff005 slots|r with which you can describe |cffffff00the most important pieces of information about your character|r.]],
+		REG_PLAYER_TUTO_ABOUT_MISC_3 = [[This section contains |cffffff00a list of flags|r to answer a lot of |cffffff00common questions people could ask about you, your character and the way you want to play him/her|r.]],
 		REG_RELATION = "Relationship",
 		REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
 		REG_RELATION_UNFRIENDLY = "Unfriendly",
@@ -596,10 +616,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		DB_STATUS = "Status",
+		DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
 		DB_STATUS_CURRENTLY = "Currently (IC)",
-		DB_STATUS_CURRENTLY_TT = "This status will be displayed on your character's tooltip.\n\n|cff00ff00This is an in-character information.|r\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
+		DB_STATUS_CURRENTLY_TT = "Here you can indicate something important about your character.",
 		DB_STATUS_CURRENTLY_OOC = "Other information (OOC)",
-		DB_STATUS_CURRENTLY_OOC_TT = "This status will be displayed on your character's tooltip.\n\n|cff00ff00This is an out-of-character information.|r\n\nKeep it clear and brief as |cff00ff00by default TRP3 players will only see the first 140 characters of it !",
+		DB_STATUS_CURRENTLY_OOC_TT = "Here you can indicate something important about you, as a player, or anything out of your character.",
 		DB_STATUS_RP = "Character status",
 		DB_STATUS_RP_IC = "In character",
 		DB_STATUS_RP_IC_TT = "That means you are currently playing your character.\nAll your actions will be interpreted as if it's your character doing them.",
@@ -738,7 +759,7 @@ Total RP is not responsible for links leading to harmful content.]],
 		BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- About
+		-- About TRP3
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		ABOUT_TITLE = "About",

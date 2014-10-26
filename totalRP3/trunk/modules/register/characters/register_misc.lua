@@ -586,7 +586,7 @@ local TUTORIAL_EDIT = {
 		},
 		button = {
 			x = 0, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_2"),
+			text = loc("DB_STATUS_CURRENTLY_COMMON") .. "\n\n" .. "|cff00ff00" .. loc("DB_STATUS_CURRENTLY") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_TT") .. "\n\n|cff00ff00" .. loc("DB_STATUS_CURRENTLY_OOC") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_OOC_TT"),
 			textWidth = 400,
 			arrow = "RIGHT"
 		}
