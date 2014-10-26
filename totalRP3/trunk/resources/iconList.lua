@@ -11582,7 +11582,6 @@ local iconList = {
 	"INV_Shoulder_Leather_DraenorCrafted_D_01_Horde",
 	"INV_Shoulder_Leather_DraenorLFR_C_01",
 	"INV_Shoulder_Leather_DraenorQuest90_B_01",
-	"INV_Shoulder_Leather_DraenorQuest90_C_01",
 	"INV_Shoulder_Leather_DungeonLeather_C_05",
 	"INV_Shoulder_Leather_DungeonLeather_C_06",
 	"INV_Shoulder_Leather_FirelandsDruid_D_01",
@@ -13093,10 +13092,6 @@ local iconList = {
 	"Shield_DraenorCrafted_D_02_B_Horde",
 	"Shield_DraenorCrafted_D_02_C_Alliance",
 	"Shield_DraenorCrafted_D_02_C_Horde",
-	"Shield_DraenorRaid_D_01Blue",
-	"Shield_DraenorRaid_D_01Green",
-	"Shield_DraenorRaid_D_01Orange",
-	"Shield_DraenorRaid_D_01Purple",
 	"SOR-mail",
 	"Spell_Arcane_Arcane01",
 	"Spell_Arcane_Arcane02",
@@ -13948,10 +13943,6 @@ local iconList = {
 	"TalentSpec_Druid_Feral_Cat",
 	"TalentSpec_Druid_Restoration",
 	"TEMP",
-	"THROWN_1H_HARPOON_D_01",
-	"Thrown_1H_Harpoon_D_01Blue",
-	"Thrown_1H_Harpoon_D_01Bronze",
-	"Thrown_1H_Harpoon_D_01Silver",
 	"THUMBSDOWN",
 	"THUMBSUP",
 	"THUMBUP",
@@ -14223,3 +14214,13 @@ end
 function TRP3_API.utils.resources.getIconListSize()
 	return iconListSize;
 end
+
+-- Ignore list
+--	"THROWN_1H_HARPOON_D_01"
+--	"Thrown_1H_Harpoon_D_01Blue"
+--	"Thrown_1H_Harpoon_D_01Bronze"
+--	"Thrown_1H_Harpoon_D_01Silver"
+--	"Shield_DraenorRaid_D_01Blue"
+--	"Shield_DraenorRaid_D_01Green"
+--	"Shield_DraenorRaid_D_01Orange"
+--	"Shield_DraenorRaid_D_01Purple"

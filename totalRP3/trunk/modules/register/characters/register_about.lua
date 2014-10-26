@@ -638,6 +638,8 @@ local function setEditTemplate(value)
 	TRP3_RegisterAbout_Edit_Template2:Hide();
 	TRP3_RegisterAbout_Edit_Template3:Hide();
 	_G["TRP3_RegisterAbout_Edit_Template"..value]:Show();
+	draftData.TE = value;
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 end
 
 local function save()
@@ -822,6 +824,106 @@ local function onAboutReceived(profileID)
 	if noDescr then
 		aboutData.read = true;
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TUTORIAL
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TUTORIAL_EDIT_COMMON = {
+	box = {
+		width = 510,
+		height = 70,
+		anchor = "TOP",
+		x = 1,
+		y = -40
+	},
+	button = {
+		x = 125, y = 0, anchor = "CENTER",
+		text = loc("REG_PLAYER_TUTO_ABOUT_COMMON"),
+		textWidth = 400,
+		arrow = "DOWN"
+	}
+};
+
+-- Tutorial
+local TUTORIAL_EDIT_T1 = {
+	{
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Template1
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T1"),
+			textWidth = 400,
+			arrow = "DOWN"
+		}
+	},
+	TUTORIAL_EDIT_COMMON
+}
+
+local TUTORIAL_EDIT_T2 = {
+	{
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Template1
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T2"),
+			textWidth = 400,
+			arrow = "UP"
+		}
+	},
+	TUTORIAL_EDIT_COMMON
+}
+local TUTORIAL_EDIT_T3 = {
+	{
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Template3_Phys
+		},
+		button = {
+			x = 80, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T3_D"),
+			textWidth = 400,
+			arrow = "RIGHT"
+		}
+	},
+	{
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Template3_Psy
+		},
+		button = {
+			x = 80, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T3_P"),
+			textWidth = 400,
+			arrow = "RIGHT"
+		}
+	},
+	{
+		box = {
+			allPoints = TRP3_RegisterAbout_Edit_Template3_Hist
+		},
+		button = {
+			x = 80, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_T3_H"),
+			textWidth = 400,
+			arrow = "RIGHT"
+		}
+	},
+	TUTORIAL_EDIT_COMMON
+}
+
+function TRP3_API.register.ui.aboutTutorialProvider()
+	local context = getCurrentContext();
+	if context and context.isEditMode and draftData then
+		if draftData.TE == 1 then
+			return TUTORIAL_EDIT_T1;
+		elseif draftData.TE == 2 then
+			return TUTORIAL_EDIT_T2;
+		else
+			return TUTORIAL_EDIT_T3;
+		end
 	end
 end
 

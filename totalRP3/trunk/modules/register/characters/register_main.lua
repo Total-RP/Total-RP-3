@@ -299,6 +299,18 @@ end
 -- UI: TAB MANAGEMENT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function tutorialProvider()
+	if tabGroup then
+		if tabGroup.current == 1 then
+--			return TRP3_API.register.ui.characteristicsTutorialProvider();
+		elseif tabGroup.current == 2 then
+			return TRP3_API.register.ui.aboutTutorialProvider();
+		elseif tabGroup.current == 3 then
+			return TRP3_API.register.ui.miscTutorialProvider();
+		end
+	end
+end
+
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
 	frame:SetSize(400, 30);
@@ -322,6 +334,7 @@ local function createTabBar()
 		elseif value == 3 then
 			showMiscTab();
 		end
+		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 	end,
 	-- Confirmation callback
 	function(callback)
@@ -438,6 +451,7 @@ function TRP3_API.register.init()
 		onPagePostShow = function(context)
 			showTabs(context);
 		end,
+		tutorialProvider = tutorialProvider
 	});
 
 	registerConfigKey("register_about_use_vote", true);

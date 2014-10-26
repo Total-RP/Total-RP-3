@@ -387,7 +387,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			fullTitle = UnitPVPName(targetType);
 		end
 		if fullTitle:len() > 0 then
-			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " >"), 1, 0.50, 0, getSubLineFontSize(), true);
+			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " |r>"), 1, 0.50, 0, getSubLineFontSize(), true);
 		end
 	end
 

@@ -23,6 +23,7 @@
 
 -- Config
 local Utils = TRP3_API.utils;
+local displayMessage = TRP3_API.utils.message.displayMessage;
 local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 local math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat = math, GetCursorPosition, Minimap, UIParent, cos, sin, strconcat;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
@@ -123,4 +124,51 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 	minimapTooltip = strconcat(minimapTooltip, "\n", color("y"), loc("CM_DRAGDROP"), ": ", color("w"), loc("MM_SHOW_HIDE_MOVE"));
 	setTooltipAll(minimapButton, "BOTTOMLEFT", 0, 0, "Total RP 3", minimapTooltip);
+
+	-- Slash command to switch frames
+	TRP3_API.slash.registerCommand({
+		id = "switch",
+		helpLine = " main || toolbar",
+		handler = function(arg1)
+			if arg1 ~= "main" and arg1 ~= "toolbar" then
+				displayMessage(loc("COM_SWITCH_USAGE"));
+			elseif arg1 == "main" then
+				TRP3_API.navigation.switchMainFrame();
+			else
+				if TRP3_API.toolbar then
+					TRP3_API.toolbar.switch();
+				end
+			end
+		end
+	});
+
+	-- Slash command to reset frames
+	TRP3_API.slash.registerCommand({
+		id = "reset",
+		helpLine = " frames",
+		handler = function(arg1)
+			if arg1 ~= "frames" then
+				displayMessage(loc("COM_RESET_USAGE"));
+			else
+				-- Minimap button
+				setConfigValue(CONFIG_MINIMAP_FRAME, "Minimap");
+				setConfigValue(CONFIG_MINIMAP_LOCK, false);
+				setConfigValue(CONFIG_MINIMAP_X, 22);
+				setConfigValue(CONFIG_MINIMAP_Y, 5);
+				-- Target frame
+				if TRP3_API.target then
+					TRP3_API.target.reset();
+				end
+				-- Glance bar
+				if TRP3_API.register.resetGlanceBar then
+					TRP3_API.register.resetGlanceBar();
+				end
+				-- Toolbar
+				if TRP3_API.toolbar then
+					TRP3_API.toolbar.reset();
+				end
+				ReloadUI();
+			end
+		end
+	});
 end);

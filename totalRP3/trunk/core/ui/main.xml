@@ -23,7 +23,7 @@
 		<Size x="46" y="46"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture file="Interface\common\help-i" setallpoints="true"/>
+				<Texture file="Interface\common\help-i" setAllPoints="true"/>
 			</Layer>
 		</Layers>
 		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight">

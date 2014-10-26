@@ -409,7 +409,7 @@ function TRP3_API.profile.init()
 	registerPage({
 		id = "player_profiles",
 		frame = TRP3_ProfileManager,
-		onPagePostShow = function() 
+		onPagePostShow = function()
 			tabGroup:SelectTab(1);
 			if TRP3_API.importer.charactersProfilesAvailable() then
 				tabGroup:SetTabVisible(2, true);

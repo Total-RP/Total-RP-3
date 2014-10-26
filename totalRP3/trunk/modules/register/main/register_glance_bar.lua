@@ -229,6 +229,12 @@ local function onStart()
 	replaceBar();
 	ui_GlanceBar:SetScript("OnUpdate", glanceBar_DraggingFrame_OnUpdate);
 
+	function TRP3_API.register.resetGlanceBar()
+		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
+		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
+	end
+
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {

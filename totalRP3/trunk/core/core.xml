@@ -34,6 +34,7 @@
 	<Include file="impl\locale\locale.xml"/>
 	<Script file="impl\utils.lua"/>
 	<Script file="impl\ui_tools.lua"/>
+	<Script file="impl\slash.lua"/>
 	
 	<Include file="ui\widgets.xml"/>
 	
@@ -60,5 +61,8 @@
 	<Script file="impl\script\script_generation.lua"/>
 	<Script file="impl\script\script_operands.lua"/>
 	<Script file="impl\script\script_effects.lua"/>
+
+	<Include file="ui\about.xml"/>
+	<Script file="impl\about.lua"/>
 
 </Ui>

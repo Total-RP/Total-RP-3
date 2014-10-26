@@ -200,6 +200,15 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_PRESET_NONE = "Clear slot",
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Please enter a category and a name",
 		REG_PLAYER_GLANCE_PRESET_ALERT2 = "There is already a preset called %s",
+		REG_PLAYER_TUTO_ABOUT_COMMON = "Common",
+		REG_PLAYER_TUTO_ABOUT_T1 = "Template1",
+		REG_PLAYER_TUTO_ABOUT_T2 = "Template2",
+		REG_PLAYER_TUTO_ABOUT_T3_D = "Template3 Descri",
+		REG_PLAYER_TUTO_ABOUT_T3_P = "Template3 Psycho",
+		REG_PLAYER_TUTO_ABOUT_T3_H = "Template3 History",
+		REG_PLAYER_TUTO_ABOUT_MISC_1 = "At first glance",
+		REG_PLAYER_TUTO_ABOUT_MISC_2 = "Currently",
+		REG_PLAYER_TUTO_ABOUT_MISC_3 = "Roleplay style",
 		REG_RELATION = "Relationship",
 		REG_RELATION_BUTTON_TT = "Relation: %s\n|cff00ff00%s\n\n|cffffff00Click to display possible actions",
 		REG_RELATION_UNFRIENDLY = "Unfriendly",
@@ -623,7 +632,7 @@ All notifications are configurable in the |cffff9900general settings page|r.]],
 		UI_BKG = "Background %s",
 		UI_ICON_BROWSER = "Icon browser",
 		UI_ICON_BROWSER_HELP = "Copy icon",
-		UI_ICON_BROWSER_HELP_TT = [[|TInterface\\CURSOR\\Cast:40|t While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
+		UI_ICON_BROWSER_HELP_TT = [[While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
 
 This will works:|cff00ff00
 - On any item in your bags
@@ -722,10 +731,26 @@ Total RP is not responsible for links leading to harmful content.]],
 		BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- Bidings
+		-- Bindings
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 		BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
 		BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- About
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		ABOUT_TITLE = "About",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- COMMANDS
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		COM_LIST = "List of commands:",
+		COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
+		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
+		COM_RESET_RESET = "The frames positions have been reset!",
 	},
 };
 

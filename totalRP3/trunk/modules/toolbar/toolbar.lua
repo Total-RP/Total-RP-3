@@ -187,6 +187,12 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, y);
 	end);
 
+	function TRP3_API.toolbar.reset()
+		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
+		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
+		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
+	end
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- INIT & TRP3 toolbar content
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -262,8 +268,8 @@ local function onStart()
 end
 
 local MODULE_STRUCTURE = {
-	["name"] = "Tool bar",
-	["description"] = "Add a tool bar containing several handy actions !",
+	["name"] = "Toolbar",
+	["description"] = "Add a toolbar containing several handy actions!",
 	["version"] = 1.000,
 	["id"] = "trp3_tool_bar",
 	["onStart"] = onStart,

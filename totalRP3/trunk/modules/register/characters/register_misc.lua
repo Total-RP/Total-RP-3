@@ -565,6 +565,53 @@ function TRP3_API.register.checkGlanceActivation(dataTab)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TUTORIAL
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TUTORIAL_EDIT = {
+	{
+		box = {
+			allPoints = TRP3_RegisterMiscViewGlance
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_1"),
+			textWidth = 400,
+			arrow = "DOWN"
+		}
+	},
+	{
+		box = {
+			allPoints = TRP3_RegisterMiscViewCurrently
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_2"),
+			textWidth = 400,
+			arrow = "RIGHT"
+		}
+	},
+	{
+		box = {
+			allPoints = TRP3_RegisterMiscViewRPStyle
+		},
+		button = {
+			x = 0, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_3"),
+			textWidth = 400,
+			arrow = "RIGHT"
+		}
+	}
+}
+
+function TRP3_API.register.ui.miscTutorialProvider()
+	local context = getCurrentContext();
+	if context and context.isPlayer then
+		return TUTORIAL_EDIT;
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

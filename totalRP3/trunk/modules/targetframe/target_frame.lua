@@ -241,8 +241,18 @@ local function onStart()
 	registerConfigKey(CONFIG_TARGET_POS_A, "BOTTOM");
 	registerConfigKey(CONFIG_TARGET_POS_X, 0);
 	registerConfigKey(CONFIG_TARGET_POS_Y, 200);
-	ui_TargetFrame:SetPoint(getConfigValue("CONFIG_TARGET_POS_A"), UIParent, getConfigValue("CONFIG_TARGET_POS_A"),
-	getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
+
+	local function reposition()
+		ui_TargetFrame:SetPoint(getConfigValue("CONFIG_TARGET_POS_A"), UIParent, getConfigValue("CONFIG_TARGET_POS_A"),
+			getConfigValue("CONFIG_TARGET_POS_X"), getConfigValue("CONFIG_TARGET_POS_Y"));
+	end
+	reposition();
+
+	function TRP3_API.target.reset()
+		setConfigValue(CONFIG_TARGET_POS_A, "BOTTOM");
+		setConfigValue(CONFIG_TARGET_POS_X, 0);
+		setConfigValue(CONFIG_TARGET_POS_Y, 200);
+	end
 
 	ui_TargetFrame:RegisterForDrag("LeftButton");
 	ui_TargetFrame:SetMovable(true);
