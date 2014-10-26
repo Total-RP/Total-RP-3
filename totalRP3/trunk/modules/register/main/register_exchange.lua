@@ -184,8 +184,6 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		has_seen_update_alert = true;
 	end
 
-	--	Utils.table.dump(structure);
-
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
 			addCharacter(senderID);

@@ -266,7 +266,7 @@ end
 -- Separates the unit name and realm from an unit ID
 Utils.str.unitIDToInfo = function(unitID)
 	if not unitID:find('-') then
-		return unitID, nil;
+		return unitID, Globals.player_realm_id;
 	end
 	return unitID:sub(1, unitID:find('-') - 1), unitID:sub(unitID:find('-') + 1);
 end
