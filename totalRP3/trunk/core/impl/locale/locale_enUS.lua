@@ -209,7 +209,7 @@ This is a |cffffff00background texture|r for your character description.
 
 |cff00ff00Template:|r
 The chosen template defines |cffffff00the general layout and writing possibilities|r for your description.
-|cffff9900Only the selected template is visible by others, so you haven't to fill them all.|r
+|cffff9900Only the selected template is visible by others, so you don't have to fill them all.|r
 Once a template is selected, you can open this tutorial again to have more help about each template.]],
 		REG_PLAYER_TUTO_ABOUT_T1 = [[This template allows you to |cff00ff00freely structure your description|r.
 
@@ -224,7 +224,7 @@ Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note
 The description doesn't have to be limited to your character |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.]],
 		REG_PLAYER_TUTO_ABOUT_T3 = [[This template is cut in 3 sections: |cff00ff00Physical description, personality and history|r.
 
-You don't have to fill all the frames as |cffff9900if you leave an empty frame it won't be shown on your description|r.
+You don't have to fill all the frames, |cffff9900if you leave an empty frame it won't be shown on your description|r.
 
 Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.]],
 		REG_PLAYER_TUTO_ABOUT_MISC_1 = [[This section provides you |cffffff005 slots|r with which you can describe |cff00ff00the most important pieces of information about your character|r.
@@ -592,7 +592,7 @@ A companion profile can be linked to:
 - A mage elemental
 - A death knight ghoul |cffff9900(see below)|r
 
-Just like characters profiles, a |cff00ff00companion profile|r can be linked to |cffffff00several pets|r, and a |cffffff00pet|r can switch easily from a profile to another.
+Just like characters profiles, a |cff00ff00companion profile|r can be linked to |cffffff00several pets|r, and a |cffffff00pet|r can switch easily from one profile to another.
 
 |cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
 		PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
@@ -621,7 +621,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		DB_STATUS = "Status",
-		DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
+		DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
 		DB_STATUS_CURRENTLY = "Currently (IC)",
 		DB_STATUS_CURRENTLY_TT = "Here you can indicate something important about your character.",
 		DB_STATUS_CURRENTLY_OOC = "Other information (OOC)",
@@ -646,7 +646,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 
 |cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
 
-|cff00ff00These information will be placed in your character tooltip.]],
+|cff00ff00These information will be placed in your character's tooltip.]],
 		DB_TUTO_2 = [[Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.
 
 All notifications are configurable in the |cffff9900general settings page|r.]],

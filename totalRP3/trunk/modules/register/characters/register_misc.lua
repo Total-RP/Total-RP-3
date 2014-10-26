@@ -639,7 +639,7 @@ local TUTORIAL_EDIT = {
 		button = {
 			x = 0, y = 0, anchor = "CENTER",
 			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_3"),
-			textWidth = 400,
+			textWidth = 300,
 			arrow = "RIGHT"
 		}
 	}
