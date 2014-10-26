@@ -131,6 +131,7 @@ local function onStart()
 			for i=1,5,1 do
 				local slot = _G["TRP3_GlanceBarSlot"..i];
 				local peek = peekTab[tostring(i)];
+				slot.data = peek;
 
 				local icon = Globals.icons.default;
 
@@ -151,6 +152,26 @@ local function onStart()
 					slot:SetScript("OnClick", onPeekClickMine);
 				else
 					slot:SetScript("OnClick", nil);
+				end
+			end
+		end
+	end
+
+	local function onGlanceDragStart(button)
+		if isCurrentMine and button.data then
+			SetCursor("Interface\\ICONS\\" .. (button.data.IC or Globals.icons.default));
+		end
+	end
+
+	local function onGlanceDragStop(button)
+		ResetCursor();
+		if isCurrentMine and button and button.slot then
+			local from, to = button.slot;
+			local toButton = GetMouseFocus();
+			if toButton.slot then
+				to = toButton.slot;
+				if to ~= from then
+					TRP3_API.register.swapGlanceSlot(from, to);
 				end
 			end
 		end
@@ -319,6 +340,9 @@ local function onStart()
 	for i=1,5,1 do
 		local slot = _G["TRP3_GlanceBarSlot"..i];
 		slot.slot = tostring(i);
+		slot:RegisterForDrag("LeftButton");
+		slot:SetScript("OnDragStart", onGlanceDragStart);
+		slot:SetScript("OnDragStop", onGlanceDragStop);
 	end
 end
 

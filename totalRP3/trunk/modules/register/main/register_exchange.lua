@@ -325,7 +325,7 @@ local companionIDToInfo = Utils.str.companionIDToInfo;
 
 --- Send vernum request to the player
 local function sendQuery(unitID)
-	if unitID ~= Globals.player_id and not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
+	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
 		LAST_QUERY[unitID] = time();
 		queryVernum(unitID);
 		queryMarySueProtocol(unitID);

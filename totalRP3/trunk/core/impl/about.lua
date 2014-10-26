@@ -26,10 +26,10 @@ local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort, strconca
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	-- Page and menu
-	registerMenu({
-		id = "main_zz_about",
-		text = loc("ABOUT_TITLE"),
-		onSelected = function()  end,
-	});
+--	registerMenu({
+--		id = "main_zz_about",
+--		text = loc("ABOUT_TITLE"),
+--		onSelected = function()  end,
+--	});
 
 end);

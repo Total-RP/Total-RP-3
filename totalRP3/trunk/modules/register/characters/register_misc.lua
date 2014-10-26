@@ -238,6 +238,7 @@ local function displayPeek(context)
 	for i=1,5 do
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
+		button.data = glanceData;
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
 	end
 end
@@ -249,7 +250,7 @@ end
 local draftData = {};
 
 local function onIconSelected(icon)
-	icon = icon or Globals.icons.default;
+	icon = icon or GLANCE_NOT_USED_ICON;
 	setupIconButton(TRP3_RegisterMiscEdit_Glance_Icon, icon);
 	TRP3_RegisterMiscEdit_Glance_Icon.icon = icon;
 	showPopup(TRP3_RegisterGlanceEditor);
@@ -303,6 +304,24 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 end
 
+local function swapGlanceSlot(from, to)
+	local dataTab = get("player/misc");
+	if not dataTab.PE then
+		dataTab.PE = {};
+	end
+	local fromData = dataTab.PE[from];
+	local toData = dataTab.PE[to];
+	dataTab.PE[from] = toData;
+	dataTab.PE[to] = fromData;
+	-- version increment
+	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+	compressData();
+	-- Refresh display & target frame
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
+end
+TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
+
 local function peekEditorApply(button, ic, ac, ti, tx)
 	applyPeekSlot(button.index, ic, ac, ti, tx);
 end
@@ -320,6 +339,28 @@ local function onSlotClick(button, mouseClick)
 			if dataTab.PE[button.index] then
 				peekEditorApply(button, dataTab.PE[button.index]["IC"], not dataTab.PE[button.index]["AC"], dataTab.PE[button.index]["TI"], dataTab.PE[button.index]["TX"])	
 				refreshTooltip(button);
+			end
+		end
+	end
+end
+
+local function onGlanceDragStart(button)
+	local context = getCurrentContext();
+	if context.isPlayer and button.data then
+		SetCursor("Interface\\ICONS\\" .. (button.data.IC or GLANCE_NOT_USED_ICON));
+	end
+end
+
+local function onGlanceDragStop(button)
+	ResetCursor();
+	local context = getCurrentContext();
+	if context.isPlayer and button and button.data then
+		local from, to = button.index;
+		local toButton = GetMouseFocus();
+		if toButton.index and toButton.data then
+			to = toButton.index;
+			if to ~= from then
+				swapGlanceSlot(from, to);
 			end
 		end
 	end
@@ -660,6 +701,9 @@ function TRP3_API.register.inits.miscInit()
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onSlotClick);
 		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
+		button:RegisterForDrag("LeftButton");
+		button:SetScript("OnDragStart", onGlanceDragStart);
+		button:SetScript("OnDragStop", onGlanceDragStop);
 		button.index = tostring(index);
 	end
 

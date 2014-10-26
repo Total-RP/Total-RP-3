@@ -114,6 +114,21 @@ local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
 	refreshIfNeeded();
 end
 
+local function swapGlanceSlot(from, to)
+	local context = getCurrentContext();
+	assert(context and context.profile, "No profile in context!");
+	assert(context.profile.PE and context.profile.PE.v, "Unversionned profile!");
+	local dataTab = context.profile.PE;
+	local fromData = dataTab[from];
+	local toData = dataTab[to];
+	dataTab[from] = toData;
+	dataTab[to] = fromData;
+	-- version increment
+	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "misc");
+	refreshIfNeeded();
+end
+
 local function onGlanceClick(button,mouseClick)
 	local context = getCurrentContext();
 	if context.isPlayer then
@@ -123,6 +138,28 @@ local function onGlanceClick(button,mouseClick)
 			if context.profile.PE[button.index] then
 				onGlanceEditorConfirm(button, context.profile.PE[button.index]["IC"], not context.profile.PE[button.index]["AC"], context.profile.PE[button.index]["TI"], context.profile.PE[button.index]["TX"]);
 				refreshTooltip(button);
+			end
+		end
+	end
+end
+
+local function onGlanceDragStart(button)
+	local context = getCurrentContext();
+	if context.isPlayer and button.data then
+		SetCursor("Interface\\ICONS\\" .. (button.data.IC or GLANCE_NOT_USED_ICON));
+	end
+end
+
+local function onGlanceDragStop(button)
+	ResetCursor();
+	local context = getCurrentContext();
+	if context.isPlayer and button and button.data then
+		local from, to = button.index;
+		local toButton = GetMouseFocus();
+		if toButton.index and toButton.data then
+			to = toButton.index;
+			if to ~= from then
+				swapGlanceSlot(from, to);
 			end
 		end
 	end
@@ -461,6 +498,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onGlanceClick);
 		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
+		button:RegisterForDrag("LeftButton");
+		button:SetScript("OnDragStart", onGlanceDragStart);
+		button:SetScript("OnDragStop", onGlanceDragStop);
 		button.index = tostring(index);
 	end
 
