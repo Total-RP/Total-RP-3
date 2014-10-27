@@ -216,8 +216,9 @@ local function onStart()
 	end
 
 	local function resetPosition()
-		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
-		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, 0);
+		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
+		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
 		replaceBar();
 	end
 
