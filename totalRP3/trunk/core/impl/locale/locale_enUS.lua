@@ -81,6 +81,7 @@ local LOCALE_EN = {
 		REG_PLAYER_MSP_HOUSE = "House name",
 		REG_PLAYER_MSP_NICK = "Nickname",
 		REG_PLAYER_PSYCHO = "Personality traits",
+		REG_PLAYER_ADD_NEW = "Create new",
 		REG_PLAYER_HISTORY = "History",
 		REG_PLAYER_MORE_INFO = "Additional information",
 		REG_PLAYER_PHYSICAL = "Physical Description",

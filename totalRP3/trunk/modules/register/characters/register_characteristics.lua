@@ -382,14 +382,52 @@ local function onMiscDelete(self)
 	setEditDisplay();
 end
 
-local function miscAdd()
+local function miscAdd(NA, VA, IC)
 	saveInDraft();
 	tinsert(draftData.MI, {
-		NA = loc("CM_NAME"),
-		VA = loc("CM_VALUE"),
-		IC = "TEMP",
+		NA = NA,
+		VA = VA,
+		IC = IC,
 	});
 	setEditDisplay();
+end
+
+local MISC_PRESET = {
+	{
+		NA = loc("REG_PLAYER_MSP_HOUSE"),
+		VA = "",
+		IC = "inv_misc_kingsring1"
+	},
+	{
+		NA = loc("REG_PLAYER_MSP_NICK"),
+		VA = "",
+		IC = "Ability_Hunter_BeastCall"
+	},
+	{
+		NA = loc("REG_PLAYER_MSP_MOTTO"),
+		VA = "",
+		IC = "INV_Inscription_ScrollOfWisdom_01"
+	},
+	{
+		list = loc("REG_PLAYER_ADD_NEW"),
+		NA = loc("CM_NAME"),
+		VA = loc("CM_VALUE"),
+		IC = "TEMP"
+	},
+}
+
+local function miscAddDropDownSelection(index)
+	local preset = MISC_PRESET[index];
+	miscAdd(preset.NA, preset.VA, preset.IC);
+end
+
+local function miscAddDropDown()
+	local values = {};
+	tinsert(values, { loc("REG_PLAYER_MISC_ADD") });
+	for index, preset in pairs(MISC_PRESET) do
+		tinsert(values, { preset.list or preset.NA, index });
+	end
+	displayDropDown(TRP3_RegisterCharact_Edit_MiscAdd, values, miscAddDropDownSelection, 0, true);
 end
 
 local function psychoAdd(presetID)
@@ -570,8 +608,7 @@ end
 
 local function setupRelationButton(profileID, profile)
 	setupIconButton(TRP3_RegisterCharact_ActionButton, getRelationTexture(profileID));
-	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"),loc("REG_RELATION_BUTTON_TT"):format(getRelationText(profileID),getRelationTooltipText(profileID, profile))
-	);
+	setTooltipAll(TRP3_RegisterCharact_ActionButton, "LEFT", 0, 0, loc("CM_ACTIONS"), loc("REG_RELATION_BUTTON_TT"):format(getRelationText(profileID), getRelationTooltipText(profileID, profile)));
 end
 
 local function saveCharacteristics()
@@ -813,7 +850,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	initStructures();
 
 	-- UI
-	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAdd);
+	TRP3_RegisterCharact_Edit_MiscAdd:SetScript("OnClick", miscAddDropDown);
 	TRP3_RegisterCharact_Edit_NamePanel_Icon:SetScript("OnClick", function() showIconBrowser(onPlayerIconSelected) end);
 	TRP3_RegisterCharact_NamePanel_Edit_CancelButton:SetScript("OnClick", showCharacteristicsTab);
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);

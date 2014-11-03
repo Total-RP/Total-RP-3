@@ -1,7 +1,7 @@
 ﻿## Interface: 60000
 ## Title: Total RP 3 (For Wow 6.0.2)
 ## Author: Telkostrasz
-## Version: 0.2.4
+## Version: 0.2.5-SNAPSHOT
 ## Notes: Main addon
 ## URL: http://forums.telkostrasz.be/index.php
 ## RequiredDeps: 
