@@ -116,6 +116,7 @@ local function createConfigPage(useWIM)
 		{"* Emote *", "(%*.-%*)"},
 		{"** Emote **", "(%*%*.-%*%*)"},
 		{"< Emote >", "(%<.-%>)"},
+		{"* Emote * + < Emote >", "([%*%<].-[%*%>])"},
 	}
 	
 	local OOC_PATTERNS = {

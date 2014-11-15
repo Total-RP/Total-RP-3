@@ -409,7 +409,22 @@ local MISC_PRESET = {
 		IC = "INV_Inscription_ScrollOfWisdom_01"
 	},
 	{
-		list = loc("REG_PLAYER_ADD_NEW"),
+		NA = loc("REG_PLAYER_TRP2_TRAITS"),
+		VA = "",
+		IC = "spell_shadow_mindsteal"
+	},
+	{
+		NA = loc("REG_PLAYER_TRP2_PIERCING"),
+		VA = "",
+		IC = "inv_jewelry_ring_14"
+	},
+	{
+		NA = loc("REG_PLAYER_TRP2_TATTOO"),
+		VA = "",
+		IC = "INV_Inscription_inkblack01"
+	},
+	{
+		list = "|cff00ff00" .. loc("REG_PLAYER_ADD_NEW"),
 		NA = loc("CM_NAME"),
 		VA = loc("CM_VALUE"),
 		IC = "TEMP"

@@ -39,10 +39,6 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "Globals.build";
 	Globals.build();
 
-	-- Welcome \o/
-	MAIN_SEQUENCE_DETAIL = "Welcome message";
-	TRP3_API.utils.message.displayMessage(TRP3_API.locale.getText("GEN_WELCOME_MESSAGE"):format(Globals.version_display));
-
 	-- Adapt saved variables structures between versions
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.flyway.applyPatches";
 	TRP3_API.flyway.applyPatches();
@@ -57,6 +53,11 @@ local function loadingSequence()
 	-- Inits logic
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.locale.init";
 	TRP3_API.locale.init();
+	
+	-- Welcome \o/
+	MAIN_SEQUENCE_DETAIL = "Welcome message";
+	TRP3_API.utils.message.displayMessage(TRP3_API.locale.getText("GEN_WELCOME_MESSAGE"):format(Globals.version_display));
+	
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.init";
 	TRP3_API.communication.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.broadcast.init";

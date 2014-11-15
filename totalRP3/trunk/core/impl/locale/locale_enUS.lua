@@ -28,7 +28,7 @@ local LOCALE_EN = {
 		
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
-		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version : %s\n|c0000ff00New version %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
+		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version: %s\n|c0000ff00New version: %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
@@ -80,6 +80,9 @@ local LOCALE_EN = {
 		REG_PLAYER_MSP_MOTTO = "Motto",
 		REG_PLAYER_MSP_HOUSE = "House name",
 		REG_PLAYER_MSP_NICK = "Nickname",
+		REG_PLAYER_TRP2_TRAITS = "Physiognomy",
+		REG_PLAYER_TRP2_PIERCING = "Piercings",
+		REG_PLAYER_TRP2_TATTOO = "Tattoos",
 		REG_PLAYER_PSYCHO = "Personality traits",
 		REG_PLAYER_ADD_NEW = "Create new",
 		REG_PLAYER_HISTORY = "History",
@@ -668,11 +671,6 @@ This will works:|cff00ff00
 		UI_MUSIC_BROWSER = "Music browser",
 		UI_MUSIC_SELECT = "Select music",
 		UI_COLOR_BROWSER = "Color browser",
-		UI_COLOR_BROWSER_RED = "Red quantity",
-		UI_COLOR_BROWSER_GREEN = "Green quantity",
-		UI_COLOR_BROWSER_BLUE = "Blue quantity",
-		UI_COLOR_BROWSER_MAX = "Maximum",
-		UI_COLOR_BROWSER_MIN = "None",
 		UI_COLOR_BROWSER_SELECT = "Select color",
 		UI_IMAGE_BROWSER = "Image browser",
 		UI_IMAGE_SELECT = "Select image",
