@@ -337,6 +337,7 @@ The |cff00ff00realm only filter|r will show only profiles bounded to a WoW chara
 		REG_COMPANIONS = "Companions",
 		REG_COMPANION_PROFILES = "Companions profiles",
 		REG_COMPANION_TF_PROFILE = "Companion profile",
+		REG_COMPANION_TF_PROFILE_MOUNT = "Mount profile",
 		REG_COMPANION_TF_NO = "No profile",
 		REG_COMPANION_TF_CREATE = "Create new profile",
 		REG_COMPANION_TF_UNBOUND = "Unlink from profile",

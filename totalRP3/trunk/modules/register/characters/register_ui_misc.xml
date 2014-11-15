@@ -159,29 +159,68 @@
 
 					<!-- RP Style -->
 					<Frame name="TRP3_RegisterMiscViewCurrently" inherits="TRP3_FieldSetFrame">
-						<Size x="0" y="70"/>
+						<Size x="0" y="100"/>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscViewGlance" x="0" y="-10"/>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" x="-3" y="0"/>
 						</Anchors>
 						<Frames>
-							<EditBox name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_DashboardAnimatedEditbox">
-								<Size x="0" y="18"/>
+							<Frame name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_TextArea">
+								<Size x="235" y="0"/>
 								<Anchors>
-									<Anchor point="LEFT" x="30" y="0"/>
-									<Anchor point="RIGHT" x="-30" y="0"/>
-									<Anchor point="TOP" x="0" y="-15"/>
+									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+									<Anchor point="LEFT" x="10" y="0"/>
 								</Anchors>
-							</EditBox>
-							<EditBox name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_DashboardAnimatedEditbox">
-								<Size x="0" y="18"/>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterMiscViewCurrentlyICTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="15" y="10"/>
+												<Anchor point="TOPRIGHT" x="-15" y="10"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterMiscViewCurrentlyICHelp" inherits="TRP3_HelpButton">
+										<Size x="14" y="14"/>
+										<Anchors>
+											<Anchor point="TOPRIGHT" x="0" y="13"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
+
+							<Frame name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_TextArea">
+								<Size x="235" y="0"/>
 								<Anchors>
-									<Anchor point="LEFT" x="30" y="0"/>
-									<Anchor point="RIGHT" x="-30" y="0"/>
-									<Anchor point="TOP" relativeTo="TRP3_RegisterMiscViewCurrentlyIC" relativePoint="BOTTOM" x="0" y="-5"/>
+									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
-							</EditBox>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterMiscViewCurrentlyOOCTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="15" y="10"/>
+												<Anchor point="TOPRIGHT" x="-15" y="10"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterMiscViewCurrentlyOOCHelp" inherits="TRP3_HelpButton">
+										<Size x="14" y="14"/>
+										<Anchors>
+											<Anchor point="TOPRIGHT" x="0" y="13"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
 						</Frames>
 					</Frame>
 

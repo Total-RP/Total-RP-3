@@ -431,7 +431,7 @@
 	</Button>
 
 	<!-- Text area -->
-	<Frame name="TRP3_TextArea" virtual="true">
+	<Frame name="TRP3_TextArea" virtual="true" enableMouse="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border"
 				  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 			<EdgeSize>
@@ -480,10 +480,13 @@
 				</ScrollChild>
 			</ScrollFrame>
 			<Button name="$parentFocusDummy">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="5"/>
+					<Anchor point="BOTTOM" x="0" y="-5"/>
+					<Anchor point="LEFT" x="0" y="0"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
 				<Scripts>
-					<OnLoad>
-						self:SetAllPoints(self:GetParent():GetName() .. "Scroll");
-					</OnLoad>
 					<OnClick>
 						_G[self:GetParent():GetName() .. "ScrollText"]:SetFocus();
 					</OnClick>

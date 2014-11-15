@@ -417,7 +417,7 @@ end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
-		-- Target bar
+		-- Target bar button for pets
 		TRP3_API.target.registerButton({
 			id = "companion_profile",
 			configText = loc("REG_COMPANION_TF_PROFILE"),
@@ -458,5 +458,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 		});
+
+--		-- Target bar button for mounts
+--		TRP3_API.target.registerButton({
+--			id = "companion_profile_mount",
+--			configText = loc("REG_COMPANION_TF_PROFILE_MOUNT"),
+--			condition = function(targetType, unitID)
+--
+--				return true;
+--			end,
+--			onClick = companionProfileSelectionList,
+--			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+--			adapter = function(buttonStructure, unitID, targetType)
+--				buttonStructure.icon = "ability_mount_charger";
+--			end,
+--		});
 	end
 end);
