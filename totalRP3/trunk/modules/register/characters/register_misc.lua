@@ -23,7 +23,7 @@ local stEtN = Utils.str.emptyToNil;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local loc = TRP3_API.locale.getText;
 local get = TRP3_API.profile.getData;
-local tcopy = Utils.table.copy;
+local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local assert, table, wipe, _G = assert, table, wipe, _G;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local showIconBrowser = TRP3_API.popup.showIconBrowser;
@@ -378,11 +378,13 @@ local function displayCurrently(context)
 		TRP3_RegisterMiscViewCurrentlyOOC:Enable();
 		TRP3_RegisterMiscViewCurrentlyICHelp:Show();
 		TRP3_RegisterMiscViewCurrentlyOOCHelp:Show();
+		TRP3_RegisterMiscViewGlanceAction:Show();
 	else
 		TRP3_RegisterMiscViewCurrentlyIC:Disable();
 		TRP3_RegisterMiscViewCurrentlyOOC:Disable();
 		TRP3_RegisterMiscViewCurrentlyICHelp:Hide();
 		TRP3_RegisterMiscViewCurrentlyOOCHelp:Hide();
+		TRP3_RegisterMiscViewGlanceAction:Hide();
 	end
 
 	local dataTab = context.profile.character or Globals.empty;
@@ -599,6 +601,126 @@ local function savePreset()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Bar preset
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local PEEK_PRESETS_BAR;
+local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
+
+local function saveGlanceBarPreset(presetName)
+	if presetName == nil or presetName:len() == 0 then
+		toast(loc("REG_PLAYER_GLANCE_BAR_EMPTY"), 2);
+		return;
+	end
+	if PEEK_PRESETS_BAR[presetName] then
+		wipe(PEEK_PRESETS_BAR[presetName]);
+		PEEK_PRESETS_BAR[presetName] = nil;
+	end
+	local dataTab = get("player/misc/PE");
+	local preset = {};
+	if dataTab then
+		tcopy(preset, dataTab);
+	end
+	PEEK_PRESETS_BAR[presetName] = preset;
+	toast(loc("REG_PLAYER_GLANCE_BAR_SAVED"):format(presetName), 2);
+	if tsize(PEEK_PRESETS_BAR) == 1 then
+		-- Refresh display & target frame
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
+	end
+end
+
+local function loadBarPreset(presetName)
+	assert(PEEK_PRESETS_BAR[presetName], "Unknown bar preset: " .. tostring(presetName));
+	local preset = PEEK_PRESETS_BAR[presetName];
+	local dataTab = get("player/misc");
+	if not dataTab.PE then
+		dataTab.PE = {};
+	else
+		wipe(dataTab.PE);
+	end
+	tcopy(dataTab.PE, preset);
+	-- version increment
+	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
+	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
+	compressData();
+	-- Refresh display & target frame
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
+end
+
+local function removeBarPreset(presetName)
+	assert(PEEK_PRESETS_BAR[presetName], "Unknown bar preset: " .. tostring(presetName));
+	wipe(PEEK_PRESETS_BAR[presetName]);
+	PEEK_PRESETS_BAR[presetName] = nil;
+	toast(loc("REG_PLAYER_GLANCE_BAR_DELETED"):format(presetName), 2);
+	if tsize(PEEK_PRESETS_BAR) == 0 then
+		-- Refresh display & target frame
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
+	end
+end
+
+local function onBarActionSelected(value)
+	if value == nil then return end
+	if value == 1 then
+		showTextInputPopup(loc("REG_PLAYER_GLANCE_BAR_NAME"), function(text)
+			saveGlanceBarPreset(text);
+		end);
+	elseif type(value) == "string" then
+		local action = value:sub(1, 1);
+		if action == LOAD_PREFIX then
+			loadBarPreset(value:sub(2));
+		elseif action == REMOVE_PREFIX then
+			removeBarPreset(value:sub(2));
+		end
+	end
+end
+
+local BAR_PRESET_TAB = {};
+local function onBarActionClicked(button)
+	wipe(BAR_PRESET_TAB);
+	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE"), nil});
+	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE_BAR_SAVE"), 1});
+	if tsize(PEEK_PRESETS_BAR) > 0 then
+		local presets = {};
+		for presetName, preset in pairs(PEEK_PRESETS_BAR) do
+			tinsert(presets, {presetName, {
+				{loc("CM_LOAD"), LOAD_PREFIX .. presetName},
+				{loc("CM_REMOVE"), REMOVE_PREFIX .. presetName}
+			}});
+		end
+		tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE_BAR_LOAD"), presets});
+	end
+	displayDropDown(button, BAR_PRESET_TAB, onBarActionSelected, 0, true);
+end
+
+local function onTargetBarClick(button)
+	wipe(BAR_PRESET_TAB);
+	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE"), nil});
+	for presetName, preset in pairs(PEEK_PRESETS_BAR) do
+		tinsert(BAR_PRESET_TAB, {presetName, LOAD_PREFIX .. presetName});
+	end
+	displayDropDown(button, BAR_PRESET_TAB, onBarActionSelected, 0, true);
+end
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	if TRP3_API.target then
+		TRP3_API.target.registerButton({
+			id = "glance_presets",
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			configText = loc("REG_PLAYER_GLANCE_BAR_TARGET"),
+			condition = function(targetType, unitID)
+				return unitID == Globals.player_id and tsize(PEEK_PRESETS_BAR) > 0;
+			end,
+			onClick = function(unitID, _, _, button)
+				onTargetBarClick(button);
+			end,
+			tooltip = loc("REG_PLAYER_GLANCE_BAR_TARGET"),
+			icon = "racechange"
+		});
+	end
+end);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tool
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -666,12 +788,16 @@ function TRP3_API.register.inits.miscInit()
 	if not TRP3_Presets then
 		TRP3_Presets = {};
 	end
+	if not TRP3_Presets.peekBar then
+		TRP3_Presets.peekBar = {};
+	end
 	if not TRP3_Presets.peek then
 		TRP3_Presets.peek = {};
 	end
 	if not TRP3_Presets.peekCategory then
 		TRP3_Presets.peekCategory = {};
 	end
+	PEEK_PRESETS_BAR = TRP3_Presets.peekBar;
 	PEEK_PRESETS = TRP3_Presets.peek;
 	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
 
@@ -687,6 +813,9 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
 	TRP3_RegisterGlanceEditor_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
 	TRP3_RegisterGlanceEditor_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
+
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_RegisterMiscViewGlanceAction, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_BAR_LOAD_SAVE"));
+	TRP3_RegisterMiscViewGlanceAction:SetScript("OnClick", onBarActionClicked);
 
 	TRP3_RegisterMiscViewCurrentlyICTitle:SetText(loc("DB_STATUS_CURRENTLY"));
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 10, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));

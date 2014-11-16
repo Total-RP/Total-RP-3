@@ -154,6 +154,11 @@
 									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot4" x="45" y="0"/>
 								</Anchors>
 							</Button>
+							<Button name="TRP3_RegisterMiscViewGlanceAction" inherits="TRP3_ActionButton">
+								<Anchors>
+									<Anchor point="RIGHT" x="-10" y="0" />
+								</Anchors>
+							</Button>
 						</Frames>
 					</Frame>
 
