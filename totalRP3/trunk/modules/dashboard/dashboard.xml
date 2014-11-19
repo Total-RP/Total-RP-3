@@ -35,14 +35,14 @@
 				<FontString name="$parentText" inherits="GameFontNormalSmall" justifyH="LEFT" text="[Text]">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="10" y="6"/>
-						<Anchor point="BOTTOMRIGHT" x="-100" y="6"/>
+						<Anchor point="BOTTOMRIGHT" x="-110" y="6"/>
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
 				<FontString name="$parentTopText" inherits="GameFontNormalSmall" justifyH="LEFT" text="[TopText]">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="10" y="-6"/>
-						<Anchor point="TOPRIGHT" x="-100" y="-6"/>
+						<Anchor point="TOPRIGHT" x="-110" y="-6"/>
 					</Anchors>
 					<Color b="0" r="1.0" g="0.75"/>
 				</FontString>
@@ -233,7 +233,7 @@
 						</Anchors>
 				    </Frame>
 					<Button name="TRP3_DashboardNotificationsClear" inherits="UIPanelButtonTemplate">
-						<Size x="200" y="20"/>
+						<Size x="240" y="20"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-22" y="15"/>
 						</Anchors>

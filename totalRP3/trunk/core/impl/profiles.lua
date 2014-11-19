@@ -332,21 +332,28 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Tutorial
-local TUTORIAL_STRUCTURE = {
-	{
-		box = {
-			allPoints = TRP3_ProfileManagerList
-		},
-		button = {
-			x = 0, y = -110, anchor = "CENTER",
-			text = loc("PR_PROFILE_HELP"),
-			textWidth = 400,
-			arrow = "UP"
+local TUTORIAL_STRUCTURE;
+
+local function createTutorialStructure()
+	TUTORIAL_STRUCTURE = {
+		{
+			box = {
+				allPoints = TRP3_ProfileManagerList
+			},
+			button = {
+				x = 0, y = -110, anchor = "CENTER",
+				text = loc("PR_PROFILE_HELP"),
+				textWidth = 400,
+				arrow = "UP"
+			}
 		}
 	}
-}
+end
+
 
 function TRP3_API.profile.init()
+	createTutorialStructure();
+
 	-- Saved structures
 	if not TRP3_Profiles then
 		TRP3_Profiles = {};

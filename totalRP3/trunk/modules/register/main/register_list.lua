@@ -718,40 +718,44 @@ local function createTabBar()
 	tabGroup:SelectTab(1);
 end
 
-local TUTORIAL_CHARACTER = {
-	{
-		box = {
-			x = 20, y = -45, anchor = "TOPLEFT", width = 28, height = 340
+local TUTORIAL_CHARACTER;
+
+local function createTutorialStructure()
+	TUTORIAL_CHARACTER = {
+		{
+			box = {
+				x = 20, y = -45, anchor = "TOPLEFT", width = 28, height = 340
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("REG_LIST_CHAR_TUTO_ACTIONS"),
+				arrow = "LEFT"
+			}
 		},
-		button = {
-			x = 0, y = 0, anchor = "CENTER",
-			text = loc("REG_LIST_CHAR_TUTO_ACTIONS"),
-			arrow = "LEFT"
-		}
-	},
-	{
-		box = {
-			x = 50, y = -45, anchor = "TOPLEFT", width = 470, height = 340
+		{
+			box = {
+				x = 50, y = -45, anchor = "TOPLEFT", width = 470, height = 340
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("REG_LIST_CHAR_TUTO_LIST"),
+				textWidth = 400,
+				arrow = "DOWN"
+			}
 		},
-		button = {
-			x = 0, y = 0, anchor = "CENTER",
-			text = loc("REG_LIST_CHAR_TUTO_LIST"),
-			textWidth = 400,
-			arrow = "DOWN"
+		{
+			box = {
+				x = 20, y = -387, anchor = "TOPLEFT", width = 500, height = 60
+			},
+			button = {
+				x = 0, y = 10, anchor = "CENTER",
+				text = loc("REG_LIST_CHAR_TUTO_FILTER"),
+				textWidth = 400,
+				arrow = "UP"
+			}
 		}
-	},
-	{
-		box = {
-			x = 20, y = -387, anchor = "TOPLEFT", width = 500, height = 60
-		},
-		button = {
-			x = 0, y = 10, anchor = "CENTER",
-			text = loc("REG_LIST_CHAR_TUTO_FILTER"),
-			textWidth = 400,
-			arrow = "UP"
-		}
-	},
-}
+	}
+end
 
 local function tutorialProvider()
 	if currentMode == MODE_CHARACTER then
@@ -760,6 +764,7 @@ local function tutorialProvider()
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	createTutorialStructure();
 
 	-- Notification
 	TRP3_API.dashboard.registerNotificationType({

@@ -833,66 +833,71 @@ end
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TUTORIAL_EDIT_COMMON = {
-	box = {
-		width = 510,
-		height = 70,
-		anchor = "TOP",
-		x = 1,
-		y = -40
-	},
-	button = {
-		x = 125, y = 0, anchor = "CENTER",
-		text = loc("REG_PLAYER_TUTO_ABOUT_COMMON"),
-		textWidth = 450,
-		arrow = "DOWN"
+local TUTORIAL_EDIT_COMMON, TUTORIAL_EDIT_T1, TUTORIAL_EDIT_T2, TUTORIAL_EDIT_T3
+
+local function createTutorialStructures()
+	TUTORIAL_EDIT_COMMON = {
+		box = {
+			width = 510,
+			height = 70,
+			anchor = "TOP",
+			x = 1,
+			y = -40
+		},
+		button = {
+			x = 125, y = 0, anchor = "CENTER",
+			text = loc("REG_PLAYER_TUTO_ABOUT_COMMON"),
+			textWidth = 450,
+			arrow = "DOWN"
+		}
+	};
+
+	TUTORIAL_EDIT_T1 = {
+		{
+			box = {
+				allPoints = TRP3_RegisterAbout_Edit_Template1
+			},
+			button = {
+				x = 0, y = 20, anchor = "BOTTOM",
+				text = loc("REG_PLAYER_TUTO_ABOUT_T1"),
+				textWidth = 450,
+				arrow = "UP"
+			}
+		},
+		TUTORIAL_EDIT_COMMON
 	}
-};
 
--- Tutorial
-local TUTORIAL_EDIT_T1 = {
-	{
-		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template1
+	TUTORIAL_EDIT_T2 = {
+		{
+			box = {
+				allPoints = TRP3_RegisterAbout_Edit_Template1
+			},
+			button = {
+				x = 0, y = 20, anchor = "BOTTOM",
+				text = loc("REG_PLAYER_TUTO_ABOUT_T2"),
+				textWidth = 450,
+				arrow = "UP"
+			}
 		},
-		button = {
-			x = 0, y = 20, anchor = "BOTTOM",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T1"),
-			textWidth = 450,
-			arrow = "UP"
-		}
-	},
-	TUTORIAL_EDIT_COMMON
-}
+		TUTORIAL_EDIT_COMMON
+	}
 
-local TUTORIAL_EDIT_T2 = {
-	{
-		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template1
+	TUTORIAL_EDIT_T3 = {
+		{
+			box = {
+				allPoints = TRP3_RegisterAbout_Edit_Template3
+			},
+			button = {
+				x = 0, y = 20, anchor = "BOTTOM",
+				text = loc("REG_PLAYER_TUTO_ABOUT_T3"),
+				textWidth = 450,
+				arrow = "UP"
+			}
 		},
-		button = {
-			x = 0, y = 20, anchor = "BOTTOM",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T2"),
-			textWidth = 450,
-			arrow = "UP"
-		}
-	},
-	TUTORIAL_EDIT_COMMON
-}
-local TUTORIAL_EDIT_T3 = {
-	{
-		box = {
-			allPoints = TRP3_RegisterAbout_Edit_Template3
-		},
-		button = {
-			x = 0, y = 20, anchor = "BOTTOM",
-			text = loc("REG_PLAYER_TUTO_ABOUT_T3"),
-			textWidth = 450,
-			arrow = "UP"
-		}
-	},
-	TUTORIAL_EDIT_COMMON
-}
+		TUTORIAL_EDIT_COMMON
+	}
+end
+
 
 function TRP3_API.register.ui.aboutTutorialProvider()
 	local context = getCurrentContext();
@@ -940,6 +945,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 end);
 
 function TRP3_API.register.inits.aboutInit()
+	createTutorialStructures();
 
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
 	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);

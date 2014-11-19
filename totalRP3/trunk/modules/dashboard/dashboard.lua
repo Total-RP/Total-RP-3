@@ -215,7 +215,7 @@ local function buildNotificationConfig()
 	end
 	
 	-- Filter
-	setupListBox(TRP3_DashboardNotificationsFilter, notifList, refreshNotifications, nil, 170, true);
+	setupListBox(TRP3_DashboardNotificationsFilter, notifList, refreshNotifications, nil, 200, true);
 	TRP3_DashboardNotificationsFilter:SetSelectedValue(0);
 end
 
@@ -358,7 +358,7 @@ TRP3_API.dashboard.init = function()
 		{IC_ICON .. " " .. loc("DB_STATUS_RP_IC"), 1, loc("DB_STATUS_RP_IC_TT")},
 		{OOC_ICON .. " " .. loc("DB_STATUS_RP_OOC"), 2, loc("DB_STATUS_RP_OOC_TT")},
 	};
-	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 150, true);
+	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 170, true);
 
 	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
 	local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
@@ -368,7 +368,7 @@ TRP3_API.dashboard.init = function()
 		{loc("DB_STATUS_RP_EXP"), 2, loc("DB_STATUS_RP_EXP_TT")},
 		{VOLUNTEER_ICON .. " " .. loc("DB_STATUS_RP_VOLUNTEER"), 3, loc("DB_STATUS_RP_VOLUNTEER_TT")},
 	};
-	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 150, true);
+	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 170, true);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then

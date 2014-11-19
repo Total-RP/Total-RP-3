@@ -404,7 +404,7 @@
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterMiscEdit_Glance_Apply" inherits="TRP3_CommonButton">
-						<Size x="70" y="20"/>
+						<Size x="100" y="20"/>
 						<Anchors>
 							<Anchor point="TOPRIGHT" x="-15" y="-20"/>
 						</Anchors>

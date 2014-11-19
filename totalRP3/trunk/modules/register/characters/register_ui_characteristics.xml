@@ -502,10 +502,10 @@
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_MiscAdd" inherits="TRP3_CommonButton">
-										<Size x="180" y="20"/>
+										<Size x="220" y="20"/>
 									</Button>
 									<Button name="TRP3_RegisterCharact_Edit_PsychoAdd" inherits="TRP3_CommonButton">
-										<Size x="180" y="20"/>
+										<Size x="220" y="20"/>
 									</Button>
 								</Frames>
 							</Frame>

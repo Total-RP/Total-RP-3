@@ -28,7 +28,7 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="LEFT" text="[h1_title]">
-					<Size x="300" y="10"/>
+					<Size x="400" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="0" y="0"/>
 					</Anchors>

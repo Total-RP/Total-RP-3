@@ -735,41 +735,45 @@ end
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TUTORIAL_EDIT = {
-	{
-		box = {
-			allPoints = TRP3_RegisterMiscViewGlance
+local TUTORIAL_EDIT;
+
+local function createTutorialStructure()
+	TUTORIAL_EDIT = {
+		{
+			box = {
+				allPoints = TRP3_RegisterMiscViewGlance
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("REG_PLAYER_TUTO_ABOUT_MISC_1"),
+				textWidth = 400,
+				arrow = "DOWN"
+			}
 		},
-		button = {
-			x = 0, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_1"),
-			textWidth = 400,
-			arrow = "DOWN"
-		}
-	},
-	{
-		box = {
-			allPoints = TRP3_RegisterMiscViewCurrently
+		{
+			box = {
+				allPoints = TRP3_RegisterMiscViewCurrently
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("DB_STATUS_CURRENTLY_COMMON") .. "\n\n" .. "|cff00ff00" .. loc("DB_STATUS_CURRENTLY") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_TT") .. "\n\n|cff00ff00" .. loc("DB_STATUS_CURRENTLY_OOC") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_OOC_TT"),
+				textWidth = 400,
+				arrow = "RIGHT"
+			}
 		},
-		button = {
-			x = 0, y = 0, anchor = "CENTER",
-			text = loc("DB_STATUS_CURRENTLY_COMMON") .. "\n\n" .. "|cff00ff00" .. loc("DB_STATUS_CURRENTLY") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_TT") .. "\n\n|cff00ff00" .. loc("DB_STATUS_CURRENTLY_OOC") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_OOC_TT"),
-			textWidth = 400,
-			arrow = "RIGHT"
-		}
-	},
-	{
-		box = {
-			allPoints = TRP3_RegisterMiscViewRPStyle
-		},
-		button = {
-			x = 0, y = 0, anchor = "CENTER",
-			text = loc("REG_PLAYER_TUTO_ABOUT_MISC_3"),
-			textWidth = 300,
-			arrow = "RIGHT"
+		{
+			box = {
+				allPoints = TRP3_RegisterMiscViewRPStyle
+			},
+			button = {
+				x = 0, y = 0, anchor = "CENTER",
+				text = loc("REG_PLAYER_TUTO_ABOUT_MISC_3"),
+				textWidth = 300,
+				arrow = "RIGHT"
+			}
 		}
 	}
-}
+end
 
 function TRP3_API.register.ui.miscTutorialProvider()
 	local context = getCurrentContext();
@@ -784,6 +788,7 @@ end
 
 function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
+	createTutorialStructure();
 
 	if not TRP3_Presets then
 		TRP3_Presets = {};

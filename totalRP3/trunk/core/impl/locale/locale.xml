@@ -23,5 +23,6 @@
 	<Script file="locale_enUS.lua"/>
 	<Script file="locale_deDE.lua"/>
 	<Script file="locale_frFR.lua"/>
+	<Script file="locale_esES.lua"/>
 	
 </Ui>

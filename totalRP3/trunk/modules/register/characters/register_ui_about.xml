@@ -125,9 +125,10 @@
 		</Frames>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentTitle" inherits="GameFontNormal" justifyV="TOP">
+				<FontString name="$parentTitle" inherits="GameFontNormal" justifyV="TOP" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentIcon" x="10" y="0"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentText" x="-5" y="0"/>
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
