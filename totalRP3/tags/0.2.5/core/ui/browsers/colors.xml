@@ -1,0 +1,142 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+
+<!--
+	Total RP 3
+	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<!-- Color browser  -->
+    <Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="420" y="250"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_ColorBrowserTitle" text="[placeholder]" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+			
+		</Layers>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_API.popup.hidePopups();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame>
+				<Size x="0" y="60"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_ColorBrowserTitle" x="0" y="-10"/>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Frames>
+				
+					<ColorSelect name="TRP3_ColorBrowserColor" enableMouse="true" enableKeyboard="true">
+						<Size x="365" y="128"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-30"/>
+						</Anchors>
+						<ColorWheelTexture name="TRP3_ColorBrowserColorWheel">
+							<Size x="128" y="128"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="16" y="0"/>
+							</Anchors>
+						</ColorWheelTexture>
+						<ColorWheelThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+							<Size x="10" y="10"/>
+							<TexCoords left="0" right="0.15625" top="0" bottom="0.625"/>
+						</ColorWheelThumbTexture>
+						<ColorValueTexture>
+							<Size x="32" y="128"/>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserColorWheel" x="50" y="0"/>
+							</Anchors>
+						</ColorValueTexture>
+						<ColorValueThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+							<Size x="48" y="14"/>
+							<TexCoords left="0.25" right="1.0" top="0" bottom="0.875"/>
+						</ColorValueThumbTexture>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
+									<Size x="253" y="226"/>
+									<Anchors>
+										<Anchor x="-86" y="13"/>
+									</Anchors>
+									<TexCoords left="0" right="1" top="0.11" bottom="1" /> 
+								</Texture>
+								<Texture file="Interface\BUTTONS/UI-Quickslot2">
+									<Size x="60" y="60"/>
+									<Anchors>
+										<Anchor x="280" y="-35"/>
+									</Anchors> 
+								</Texture>
+							</Layer>
+						</Layers>
+					</ColorSelect>
+
+					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
+						<Size x="140" y="20"/>
+						<Anchors>	
+							<Anchor point="BOTTOM" x="0" y="15"/>
+						</Anchors>
+					</Button>
+					
+					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="6">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserSelect" x="20" y="0"/>
+						</Anchors>
+					</EditBox>
+					
+				</Frames>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture name="TRP3_ColorBrowserSwatch">
+							<Size><AbsDimension x="32" y="32"/></Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserColorWheel" x="150" y="0"/>
+							</Anchors>
+							<Color r="1.0" g="1.0" b="1.0" a="1.0"/>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+	</Frame>
+	
+</Ui>
