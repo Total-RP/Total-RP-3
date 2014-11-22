@@ -32,8 +32,8 @@ TRP3_API = {
 		addon_name_alt = "TotalRP3",
 		addon_id_length = 15,
 
-		version = 7,
-		version_display = "0.2.5-SNAPSHOT",
+		version = 8,
+		version_display = "0.2.5",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),

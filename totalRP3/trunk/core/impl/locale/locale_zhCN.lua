@@ -25,4 +25,4 @@ local LOCALE = {
 	},
 };
 
-TRP3_API.locale.registerLocale(LOCALE);
+--TRP3_API.locale.registerLocale(LOCALE);

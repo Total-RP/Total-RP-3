@@ -424,4 +424,4 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota persona
 	},
 };
 
-TRP3_API.locale.registerLocale(LOCALE);
+--TRP3_API.locale.registerLocale(LOCALE);

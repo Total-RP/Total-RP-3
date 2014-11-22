@@ -322,32 +322,37 @@ local function onPageShow(context)
 end
 
 -- Tutorial
-local TUTORIAL_STRUCTURE = {
-	{
-		box = {
-			allPoints = TRP3_CompanionsProfilesList
+local TUTORIAL_STRUCTURE;
+
+local function constructTutorialStructure()
+	TUTORIAL_STRUCTURE = {
+		{
+			box = {
+				allPoints = TRP3_CompanionsProfilesList
+			},
+			button = {
+				x = 0, y = -150, anchor = "CENTER",
+				text = loc("PR_CO_PROFILE_HELP"),
+				textWidth = 400,
+				arrow = "UP"
+			},
 		},
-		button = {
-			x = 0, y = -150, anchor = "CENTER",
-			text = loc("PR_CO_PROFILE_HELP"),
-			textWidth = 400,
-			arrow = "UP"
-		},
-	},
-	{
-		box = {
-			allPoints = TRP3_CompanionsProfilesAdd
-		},
-		button = {
-			x = 0, y = 15, anchor = "CENTER",
-			text = loc("PR_CO_PROFILE_HELP2"),
-			textWidth = 400,
-			arrow = "DOWN"
-		},
-	}
-}
+		{
+			box = {
+				allPoints = TRP3_CompanionsProfilesAdd
+			},
+			button = {
+				x = 0, y = 15, anchor = "CENTER",
+				text = loc("PR_CO_PROFILE_HELP2"),
+				textWidth = 400,
+				arrow = "DOWN"
+			},
+		}
+	};
+end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	constructTutorialStructure();
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
 		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then

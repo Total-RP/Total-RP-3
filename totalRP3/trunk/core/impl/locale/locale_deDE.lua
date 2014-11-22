@@ -568,7 +568,7 @@ Wie dem auch sei, versuche bitte Wiederholungen zu vermeinden falls es keine wei
 |cffffff00Links-Klick:|r Slot konfigurieren
 |cffffff00Rechts-Klick:|r Slot aktivierung umschalten
 |cffffff00Drag & drop:|r Slots neu anordnen]=],
-		REG_PLAYER_GLANCE_EDITOR = "Slot Editor",
+		REG_PLAYER_GLANCE_EDITOR = "Glance editor : Slot %s",
 		REG_PLAYER_GLANCE_PRESET = "Voreinstellung laden",
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Bitte eine Kategorie und einen Namen angeben",
 		REG_PLAYER_GLANCE_PRESET_ALERT2 = "Es gibt schon eine Voreinstellung Namens %s",

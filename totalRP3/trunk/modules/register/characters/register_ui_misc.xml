@@ -24,7 +24,7 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-					<Size x="220" y="10"/>
+					<Size x="240" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="0" y="0"/>
 					</Anchors>

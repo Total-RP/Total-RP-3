@@ -111,7 +111,7 @@
 					</ColorSelect>
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
-						<Size x="120" y="20"/>
+						<Size x="140" y="20"/>
 						<Anchors>	
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>

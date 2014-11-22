@@ -82,7 +82,7 @@ local function buildStyleStructure()
 			name = loc("REG_PLAYER_STYLE_DEATH"),
 			values = {
 				{YES, 1},
-				{"No", 2},
+				{NO, 2},
 				{loc("REG_PLAYER_STYLE_PERMI"), 3},
 				{loc("REG_PLAYER_STYLE_HIDE"), 0},
 			}
@@ -268,6 +268,7 @@ local function openGlanceEditor(button, callback)
 	TRP3_RegisterMiscEdit_Glance_Title:SetText(button.data.TI or "");
 	TRP3_RegisterGlanceEditor_PresetSaveCategory:SetText("");
 	TRP3_RegisterGlanceEditor_PresetSaveName:SetText("");
+	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(tostring(button.index)));
 	onIconSelected(button.data.IC);
 	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", function()
 		callback(
@@ -811,7 +812,6 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
 	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
-	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"));
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
 	TRP3_RegisterGlanceEditor_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
 	TRP3_RegisterGlanceEditor_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
