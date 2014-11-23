@@ -40,6 +40,66 @@ local ANIMATION_SEQUENCE_DURATION = {
 }
 local ANIMATION_EMPTY = {0};
 local animTab = {};
+local LINE_FEED_CODE = string.char(10);
+local CARRIAGE_RETURN_CODE = string.char(13);
+local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
+
+local EVENT_INFO = {
+	["QUEST_GREETING"] = {
+		text = GetGreetingText,
+		cancelMethod = CloseQuest,
+	},
+	["QUEST_DETAIL"] = {
+		text = GetQuestText,
+		finishMethod = AcceptQuest,
+		cancelMethod = DeclineQuest,
+		finishText = ACCEPT,
+	},
+	["QUEST_PROGRESS"] = {
+		text = GetProgressText,
+		finishMethod = function()
+			if IsQuestCompletable() then
+				CompleteQuest();
+			else
+				CloseQuest();
+			end
+		end,
+		finishText = function()
+			if IsQuestCompletable() then
+				return CONTINUE;
+			else
+				return GOODBYE;
+			end
+		end,
+		cancelMethod = CloseQuest,
+	},
+	["QUEST_COMPLETE"] = {
+		text = GetRewardText,
+		finishText = function()
+			if GetNumQuestChoices() > 0 then
+				return REWARDS;
+			else
+				return COMPLETE_QUEST;
+			end
+		end,
+		finishMethod = function()
+			if GetNumQuestChoices() > 0 then
+				message("Please choose a reward from the original quest interface.");
+			else
+				GetQuestReward();
+			end
+		end,
+		cancelMethod = CloseQuest,
+	},
+	["GOSSIP_SHOW"] = {
+		text = GetGossipText,
+		finishMethod = CloseGossip,
+		finishText = GOODBYE,
+		cancelMethod = CloseGossip,
+	},
+}
+
+local CHAT_MARGIN = 70;
 
 local function playText(textIndex)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
@@ -66,11 +126,18 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatText:SetText(text);
 	end
 
+	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN);
+
 	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
 	TRP3_NPCDialogFrameModelsYou.sequenceTab = animTab;
 	TRP3_NPCDialogFrameModelsYou.sequence = 1;
 	
 	TRP3_NPCDialogFrameChat.start = 0;
+
+	if textIndex > 1 then
+		TRP3_NPCDialogFrameChatPrevious:Show();
+	end
+
 end
 
 local function playNext()
@@ -78,25 +145,45 @@ local function playNext()
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		playText(TRP3_NPCDialogFrameChat.currentIndex);
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
-			TRP3_NPCDialogFrameChatNext:SetText("[[NEXT]]");
+			TRP3_NPCDialogFrameChatNext:SetText("Next");
 		else
-			TRP3_NPCDialogFrameChatNext:SetText("[[FINISH]]");
+			if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
+				TRP3_NPCDialogFrameChatNext:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText());
+			else
+				TRP3_NPCDialogFrameChatNext:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText or "Finish");
+			end
 		end
+	else
+		if TRP3_NPCDialogFrameChat.eventInfo.finishMethod then
+			TRP3_NPCDialogFrameChat.eventInfo.finishMethod();
+		else
+			TRP3_NPCDialogFrame:Hide();
+		end
+	end
+end
+
+local function closeDialog()
+	if TRP3_NPCDialogFrameChat.eventInfo and TRP3_NPCDialogFrameChat.eventInfo.cancelMethod then
+		TRP3_NPCDialogFrameChat.eventInfo.cancelMethod();
 	else
 		TRP3_NPCDialogFrame:Hide();
 	end
 end
 
-local function playPrevious()
-	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex - 1;
-	playText(TRP3_NPCDialogFrameChat.currentIndex);
+local function resetDialog()
+	TRP3_NPCDialogFrameChat.currentIndex = 0;
+	playNext();
 end
 
-local LINE_FEED_CODE = string.char(10);
-local CARRIAGE_RETURN_CODE = string.char(13);
-local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
+local function startDialog(targetType, fullText, event, eventInfo)
+	-- Ca marche pas, merci Blizzard d'ajouter des fonctions que tu n'implémentes pas toi même.
+--	local forced = ForceGossip();
+--	if not forced then
+--		return;
+--	end
 
-local function startDialog(targetType, fullText)
+--	TRP3_NPCDialogFrameDebug:SetText("[debug] " .. event);
+
 	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
 	TRP3_NPCDialogFrameModelsYou:SetFacing(-0.75);
 	TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
@@ -108,6 +195,9 @@ local function startDialog(targetType, fullText)
 	local texts = {strsplit("\n", fullText)};
 	TRP3_NPCDialogFrameChat.texts = texts;
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
+	TRP3_NPCDialogFrameChat.eventInfo = eventInfo;
+
+	TRP3_NPCDialogFrameChatPrevious:Hide();
 	
 	TRP3_NPCDialogFrame:Show();
 
@@ -153,32 +243,29 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function init()
+	ForceGossip = function() return true end
+
+	TRP3_NPCDialogFrameChatText:SetWidth(500);
 	TRP3_NPCDialogFrameModelsMe:SetCamera(1);
 	TRP3_NPCDialogFrameModelsMe:SetFacing(0.75);
 	TRP3_NPCDialogFrameModelsMe:SetUnit("player");
 	TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
+	TRP3_NPCDialogFrameChatPrevious:SetText("Reset");
+
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", playNext);
-	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", playPrevious);
+	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
 	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
-	
+	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
+
 	-- Showing
-	Utils.event.registerHandler("QUEST_PROGRESS", function()
-		startDialog("npc", GetProgressText());
-	end);
-	Utils.event.registerHandler("QUEST_GREETING", function()
-		startDialog("npc", GetGreetingText());
-	end);
-	Utils.event.registerHandler("GOSSIP_SHOW", function()
-		startDialog("npc", GetGossipText());
-	end);
-	Utils.event.registerHandler("QUEST_DETAIL", function()
-		startDialog("npc", GetQuestText());
-	end);
-	Utils.event.registerHandler("QUEST_COMPLETE", function()
-		startDialog("npc", GetRewardText());
-	end);
+	for event, info in pairs(EVENT_INFO) do
+		Utils.event.registerHandler(event, function()
+			startDialog("npc", info.text(), event, info);
+		end);
+	end
+
 	-- Closing
 	Utils.event.registerHandler("GOSSIP_CLOSED", function()
 		TRP3_NPCDialogFrame:Hide();
@@ -197,4 +284,4 @@ local MODULE_STRUCTURE = {
 	["minVersion"] = 0.1,
 };
 
---TRP3_API.module.registerModule(MODULE_STRUCTURE);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

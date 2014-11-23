@@ -133,6 +133,15 @@
 					</Anchors>
 					<TexCoords left="1" right="0" top="1" bottom="0"/>
 				</Texture>
+				<FontString name="TRP3_NPCDialogFrameDebug" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="LEFT" x="100" y="0"/>
+						<Anchor point="RIGHT" x="-100" y="0"/>
+						<Anchor point="TOP" x="0" y="-25"/>
+					</Anchors>
+					<Color r="1" g="1" b="0.4"/>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -150,12 +159,9 @@
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_NPCDialogFrameChatText" text="[text]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
-							<Size x="0" y="10"/>
 							<Anchors>
+								<Anchor point="TOPLEFT" x="100" y="-25"/>
 								<Anchor point="LEFT" x="100" y="0"/>
-								<Anchor point="RIGHT" x="-100" y="0"/>
-								<Anchor point="TOP" x="0" y="-25"/>
-								<Anchor point="BOTTOM" x="0" y="25"/>
 							</Anchors>
 							<Color r="1" g="1" b="0.4"/>
 						</FontString>
@@ -177,18 +183,16 @@
 						</Anchors>
 					</Frame>
 					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_CommonButton">
+						<Size x="130" y="20"/>
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="100" y="10"/>
 						</Anchors>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameChatPrevious">
-						<Size x="26" y="26"/>
+					<Button name="TRP3_NPCDialogFrameChatPrevious" inherits="TRP3_CommonButton">
+						<Size x="130" y="20"/>
 						<Anchors>
-							<Anchor point="BOTTOM" x="-30" y="10"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameChatNext" x="20" y="0"/>
 						</Anchors>
-						<NormalTexture file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Up"/>
-						<PushedTexture file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Down"/>
-						<HighlightTexture alphaMode="ADD" file="Interface\GLUES\COMMON\Glue-LeftArrow-Button-Highlight"/>
 					</Button>
 				</Frames>
 			</Frame>
@@ -219,15 +223,10 @@
 					</PlayerModel>
 				</Frames>
 			</Frame>
-			<Button inherits="UIPanelCloseButton">
+			<Button name="TRP3_NPCDialogClose" inherits="UIPanelCloseButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide();
-					</OnClick>
-				</Scripts>
 			</Button>
 		</Frames>
 	</Frame>
