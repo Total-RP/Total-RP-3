@@ -322,56 +322,6 @@
 		</Frames>
 	</Frame>
 	
-	<Button name="TRP3_MinimapButton" parent="Minimap" frameStrata="MEDIUM" toplevel="true" enableMouse="true" movable="true" hidden="false">
-		<Size>
-			<AbsDimension x="33" y="33"/>
-		</Size>
-		<Anchors>
-			<Anchor point="TOPLEFT"/>
-		</Anchors>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="TRP3_MinimapButton_Icon" file="Interface\AddOns\totalRP3\resources\trp3minimap.tga">
-					<Size>
-						<AbsDimension x="21" y="21"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="7" y="-6"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture file="Interface\Minimap\MiniMap-TrackingBorder">
-					<Size>
-						<AbsDimension x="56" y="56"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
-		<Scripts>
-			<OnLoad>
-				self:RegisterForClicks("LeftButtonUp","RightButtonUp")
-				self:RegisterForDrag("LeftButton","RightButton")
-			</OnLoad>
-			<OnDragStart>
-				self.isDraging = true;
-				self:LockHighlight();
-			</OnDragStart>
-			<OnDragStop>
-				self.isDraging = nil;
-				self:UnlockHighlight();
-			</OnDragStop>
-		</Scripts>
-	</Button>
-	
 	<ScrollFrame name="TRP3_DEBUG_CODE_FRAME" inherits="UIPanelScrollFrameTemplate" parent="UIParent" hidden="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>

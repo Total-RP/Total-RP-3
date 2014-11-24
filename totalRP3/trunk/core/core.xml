@@ -48,7 +48,6 @@
 	<Script file="impl\communication_protocol_broadcast.lua"/>
 	
 	<Script file="impl\ui_main.lua"/>
-	<Script file="impl\tmp.lua"/>
 	
 	<Include file="ui\browsers\icons.xml"/>
 	<Include file="ui\browsers\musics.xml"/>
