@@ -146,4 +146,6 @@
 	<Include file="toolbar\toolbar.xml"/>
 	
 	<Include file="importer\importer.xml"/>
+
+	<Script file="databroker\databroker.lua"/>
 </Ui>

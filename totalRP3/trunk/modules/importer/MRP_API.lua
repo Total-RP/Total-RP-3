@@ -76,7 +76,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		return profilesList[profileID];
 	end
 
-	-- TODO Format MSP profile into a TRP3 profile
 	MRP.getFormatedProfile = function(profileID)
 		assert(profilesList[profileID], "Given profileID does not exist.");
 

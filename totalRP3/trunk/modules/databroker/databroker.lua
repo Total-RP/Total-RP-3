@@ -27,7 +27,7 @@ local SendChatMessage = SendChatMessage;
 
 -- 	TRP3_API
 local get = TRP3_API.profile.getData;
-local icon, color = Utils.str.icon, Utils.str.color;
+local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local loc = TRP3_API.locale.getText;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
@@ -199,13 +199,10 @@ local function rp()
 
 	local function determineData(RP)
 
-		local get = TRP3_API.profile.getData;
-		local defaultIcon = TRP3_API.globals.player_icon;
-
 		local iconOn = "Interface\\ICONS\\spell_shadow_charm";
 		local iconOff = "Interface\\ICONS\\Inv_misc_grouplooking";
-		local RPTitleOn = icon(RP_ICON, 25) .. " ".. loc("TB_RPSTATUS_ON");
-		local RPTitleOff = icon(OOC_ICON, 25) .. " ".. loc("TB_RPSTATUS_OFF");
+		local RPTitleOn = icon("spell_shadow_charm", 25) .. " ".. loc("TB_RPSTATUS_ON");
+		local RPTitleOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 		local profilesText = "\n" .. color("y") .. loc("CM_R_CLICK") .. ": " .. color("w") .. loc("TB_SWITCH_PROFILE");
 		local RPTextOn = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_ON") .. profilesText;
 		local RPTextOff = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_OFF") .. profilesText;
@@ -258,11 +255,10 @@ end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Databroker plugins",
-	["description"] = "Add several handy actions as plugins from DataBroker add-ons (FuBar, Titan, Bazooka) !",
+	["description"] = "Add several handy actions as plugins for DataBroker add-ons (FuBar, Titan, Bazooka) !",
 	["version"] = 1.000,
 	["id"] = "trp3_databroker",
 	["onStart"] = onStart,
-	-- ["onInit"] = onInit,
 	["minVersion"] = 8,
 };
 
