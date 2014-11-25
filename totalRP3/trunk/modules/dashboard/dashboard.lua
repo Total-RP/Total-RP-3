@@ -3,6 +3,7 @@
 -- Dashboard
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -25,6 +26,7 @@ TRP3_API.dashboard = {
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo;
 local loc = TRP3_API.locale.getText;
 local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
+local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -255,6 +257,7 @@ local function switchStatus()
 		onStatusChange(1);
 	end
 end
+TRP3_API.dashboard.switchStatus = switchStatus;
 
 local function onStatusXPChange(status)
 	local character = get("player/character");
@@ -439,20 +442,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
 		local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
 
-		local helmetOnSound = {
-			Cloth = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav",
-			Leather = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav",
-			Mail = "Sound\\Interface\\Pickup\\Pickupsmallchain.wav",
-			Plate = "Sound\\Interface\\Pickup\\Pickupmetallarge.wav",
-			Miscellaneous = "Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav"
-		};
-		local helmetOffSound = {
-			Cloth = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav",
-			Leather = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav",
-			Mail = "Sound\\Interface\\Pickup\\Putdownsmallchain.wav",
-			Plate = "Sound\\Interface\\Pickup\\Putdownmetallarge.wav",
-			Miscellaneous = "Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav"
-		};
 		Button_Helmet = {
 			id = "aa_trp3_b",
 			icon = "INV_Helmet_13",
@@ -582,13 +571,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 				if button == "RightButton" then
 
-					local list = TRP3_API.profile.getProfiles();
+					local list = getProfiles();
 
 					local dropdownItems = {};
 					tinsert(dropdownItems,{loc("TB_SWITCH_PROFILE"), nil});
+					local currentProfileID = getPlayerCurrentProfileID()
 					for key, value in pairs(list) do
 						local icon = value.player.characteristics.IC or Globals.icons.profile_default;
-						if key == TRP3_API.profile.getPlayerCurrentProfileID() then
+						if key == currentProfileID then
 							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t|cff00ff00 "..value.profileName.."|r", nil});
 						else
 							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t "..value.profileName, key});

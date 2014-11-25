@@ -765,6 +765,15 @@ Total RP is not responsible for links leading to harmful content.]],
 		BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Databroker
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		DTBK_HELMET = "Total RP 3 - Helmet",
+		DTBK_CLOAK = "Total RP 3 - Cloak",
+		DTBK_AFK = "Total RP 3 - AFK/DND",
+		DTBK_RP = "Total RP 3 - IC/OOC",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Bindings
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
