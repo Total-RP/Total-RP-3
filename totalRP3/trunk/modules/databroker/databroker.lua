@@ -204,8 +204,8 @@ local function rp()
 		local RPTitleOn = icon("spell_shadow_charm", 25) .. " ".. loc("TB_RPSTATUS_ON");
 		local RPTitleOff = icon("Inv_misc_grouplooking", 25) .. " ".. loc("TB_RPSTATUS_OFF");
 		local profilesText = "\n" .. color("y") .. loc("CM_R_CLICK") .. ": " .. color("w") .. loc("TB_SWITCH_PROFILE");
-		local RPTextOn = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_ON") .. profilesText;
-		local RPTextOff = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_OFF") .. profilesText;
+		local RPTextOn = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_OFF") .. profilesText;
+		local RPTextOff = color("y") .. loc("CM_L_CLICK") .. ": " .. color("w") .. loc("TB_RPSTATUS_TO_ON") .. profilesText;
 
 		return 	RP and RPTitleOn or RPTitleOff,
 				RP and RPTextOn or RPTextOff,
