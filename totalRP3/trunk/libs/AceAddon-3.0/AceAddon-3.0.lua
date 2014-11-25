@@ -624,7 +624,7 @@ local function onEvent(this, event, arg1)
 		-- if a addon loads another addon, recursion could happen here, so we need to validate the table on every iteration
 		while(#AceAddon.initializequeue > 0) do
 			local addon = tremove(AceAddon.initializequeue, 1)
-			-- this might be an issue with recursion - TODO: validate
+			-- this might be an issue with recursion
 			if event == "ADDON_LOADED" then addon.baseName = arg1 end
 			AceAddon:InitializeAddon(addon)
 			tinsert(AceAddon.enablequeue, addon)
