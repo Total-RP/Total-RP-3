@@ -305,6 +305,7 @@ local function getFactionIcon(targetType)
 	elseif UnitFactionGroup(targetType) == "Horde" then
 		return HORDE_ICON;
 	end
+	return "";
 end
 
 local function getLevelIconOrText(targetType)
