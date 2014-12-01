@@ -44,6 +44,7 @@ local function onStart()
 	local CONFIG_ICON_SIZE = "toolbar_icon_size";
 	local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 	local CONFIG_CONTENT_PREFIX = "toolbar_content_";
+	local CONFIG_SHOW_ON_LOGIN = "toolbar_show_on_login";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -191,6 +192,7 @@ local function onStart()
 		setConfigValue(CONFIG_TOOLBAR_POS_A, "TOP");
 		setConfigValue(CONFIG_TOOLBAR_POS_X, 0);
 		setConfigValue(CONFIG_TOOLBAR_POS_Y, -30);
+		setConfigValue(CONFIG_SHOW_ON_LOGIN, true);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -202,6 +204,7 @@ local function onStart()
 
 		TRP3_ToolbarTopFrameText:SetText(Globals.addon_name);
 
+		registerConfigKey(CONFIG_SHOW_ON_LOGIN, true);
 		registerConfigKey(CONFIG_ICON_SIZE, 25);
 		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
 		registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
@@ -210,6 +213,12 @@ local function onStart()
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc("CO_TOOLBAR_CONTENT"),
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc("CO_TOOLBAR_SHOW_ON_LOGIN"),
+			help = loc("CO_TOOLBAR_SHOW_ON_LOGIN_HELP"),
+			configKey = CONFIG_SHOW_ON_LOGIN,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
@@ -253,6 +262,11 @@ local function onStart()
 		end
 
 		buildToolbar();
+
+		if not getConfigValue(CONFIG_SHOW_ON_LOGIN) then
+			toolbar:Hide();
+		end
+
 	end);
 
 	function TRP3_API.toolbar.switch()

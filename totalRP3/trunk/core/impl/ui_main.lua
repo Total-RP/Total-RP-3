@@ -52,11 +52,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MINIMAP_SHOW, true);
 	registerConfigKey(CONFIG_MINIMAP_POSITION, {});
 
-
+	-- Build configuration page
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_MINIMAP_BUTTON"),
+	});
 	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = "Show minimap button",
-		help = "If you are using an other add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.\n\n|cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r",
+		title = loc("CO_MINIMAP_BUTTON_SHOW_TITLE"),
+		help = loc("CO_MINIMAP_BUTTON_SHOW_HELP"),
 		configKey = CONFIG_MINIMAP_SHOW,
 	});
 
