@@ -31,17 +31,18 @@ local ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText = ChatTypeIn
 local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- LOGIC
+-- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_SEQUENCE_SPEED = 700;
+local ANIMATION_SEQUENCE_SPEED = 1000;
 local ANIMATION_TEXT_SPEED = 40;
 local ANIMATION_SEQUENCE_DURATION = {
-	["64"] = 2100,
-	["65"] = 2100,
-	["60"] = 2800,
-	["0"] = 1400,
+	["64"] = 3000,
+	["65"] = 3000,
+	["60"] = 4000,
+	["0"] = 2000,
 }
+local CHAT_TEXT_WIDTH = 550;
 local ANIMATION_EMPTY = {0};
 local animTab = {};
 local LINE_FEED_CODE = string.char(10);
@@ -56,9 +57,9 @@ local EVENT_INFO = {
 	},
 	["QUEST_DETAIL"] = {
 		text = GetQuestText,
-		finishMethod = AcceptQuest,
 		cancelMethod = DeclineQuest,
-		finishText = ACCEPT,
+		finishText = DECLINE,
+		finishMethod = DeclineQuest,
 		titleGetter = GetTitleText,
 	},
 	["QUEST_PROGRESS"] = {
@@ -116,7 +117,43 @@ local EVENT_INFO = {
 	}
 }
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SELECTION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tinsert = tinsert;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local GetNumGossipOptions, GetGossipOptions, SelectGossipOption = GetNumGossipOptions, GetGossipOptions, SelectGossipOption;
+local GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest = GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest;
+local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2;
+local multiGossipList = {};
+
+local function selectFirstGossip()
+	SelectGossipOption(1);
+end
+
+local function selectMultipleGossip()
+	wipe(multiGossipList);
+	local gossips = {GetGossipOptions()};
+	tinsert(multiGossipList, {"Select dialog option", nil}); -- TODO: locale
+	for i=1, GetNumGossipOptions() do
+		local gossip, gossipType = gossips[(i*2) - 1], gossips[(i*2)];
+		tinsert(multiGossipList, {"|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i});
+	end
+	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiGossipList, SelectGossipOption, 0, true);
+end
+
+local function selectFirstAvailable()
+	SelectGossipAvailableQuest(1);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- LOGIC
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local CHAT_MARGIN, CHAT_NAME = 70, 20;
+local gossipColor = "|cffffffff";
+local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 
 local function playText(textIndex)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
@@ -157,33 +194,99 @@ local function playText(textIndex)
 
 	-- Options
 	local optionsSize = 0;
+	TRP3_NPCDialogFrameChatOption1:Hide();
+	TRP3_NPCDialogFrameChatOption2:Hide();
 
-	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" then
+	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
+		local previous;
+
+		-- Available quests
+		if hasAvailable then
+			optionsSize = optionsSize + 20;
+			TRP3_NPCDialogFrameChatOption1:Show();
+			previous = TRP3_NPCDialogFrameChatOption1;
+			local availables = {GetGossipAvailableQuests()};
+			if GetNumGossipAvailableQuests() == 1 then
+				local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. title);
+				if ( isLegendary ) then
+					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableLegendaryQuestIcon");
+				elseif ( frequency == LE_QUEST_FREQUENCY_DAILY or frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
+					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\DailyQuestIcon");
+				elseif ( isRepeatable ) then
+					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\DailyActiveQuestIcon");
+				else
+					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon");
+				end
+				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
+			end
+
+		end
+
 		-- Gossip options
-		if GetNumGossipOptions() > 0 then
-			local gossips = {GetGossipOptions()};
-			for i=1, GetNumGossipOptions() do
+		if hasGossip then
+			TRP3_NPCDialogFrameChatOption2:Show();
+			TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
+			TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", 50, 0);
+			TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -50, 0);
+			if previous then
+				TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			else
+				TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", TRP3_NPCDialogFrameChatText, "BOTTOM", 0, -10);
+			end
+			previous = TRP3_NPCDialogFrameChatOption2;
 
---				print("Gossip " .. i .. ": " .. gossips[(i*2) - 1] .. " - " .. gossips[(i*2)]);
+			optionsSize = optionsSize + 20;
+			local gossips = {GetGossipOptions()};
+			if GetNumGossipOptions() == 1 then
+				local gossip, gossipType = gossips[1], gossips[2];
+				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. gossip);
+				TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\GossipFrame\\" .. gossipType .. "GossipIcon");
+				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectFirstGossip);
+			else
+				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\GossipFrame\\PetitionGossipIcon");
+				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectMultipleGossip);
 			end
 		end
+
+	elseif TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+		optionsSize = optionsSize + 40;
+		TRP3_NPCDialogFrameChatOption1:Show();
+		TRP3_NPCDialogFrameChatOption2:Show();
+		TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
+		TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", 50, 0);
+		TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -50, 0);
+		TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", TRP3_NPCDialogFrameChatOption1, "BOTTOM", 0, -5);
+
+		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\GossipGossipIcon");
+		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "Can you give me more information ?"); -- TODO: locale
+		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", nil);
+
+
+		TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
+		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "I accept !"); -- TODO: locale
+		TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", AcceptQuest);
 
 	end
 
 	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + CHAT_NAME + optionsSize);
 end
 
+local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
+
 local function playNext()
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		playText(TRP3_NPCDialogFrameChat.currentIndex);
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
-			TRP3_NPCDialogFrameChatNext:SetText("Next"); -- TODO: Locals
+			TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. "Next"); -- TODO: Locals
 		else
 			if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
-				TRP3_NPCDialogFrameChatNext:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText());
+				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. TRP3_NPCDialogFrameChat.eventInfo.finishText());
 			else
-				TRP3_NPCDialogFrameChatNext:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText or "Finish");
+				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. (TRP3_NPCDialogFrameChat.eventInfo.finishText or "Finish"));
 			end
 		end
 	else
@@ -300,7 +403,7 @@ end
 local function init()
 	ForceGossip = function() return true end
 
-	TRP3_NPCDialogFrameChatText:SetWidth(500);
+	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 	TRP3_NPCDialogFrameModelsMe:SetCamera(1);
 	TRP3_NPCDialogFrameModelsMe:SetFacing(0.75);
 	TRP3_NPCDialogFrameModelsMe:SetUnit("player");
