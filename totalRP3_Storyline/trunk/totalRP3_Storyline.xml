@@ -176,9 +176,17 @@
 					<Anchors>
 						<Anchor point="LEFT" x="100" y="0"/>
 						<Anchor point="RIGHT" x="-100" y="0"/>
-						<Anchor point="TOP" x="0" y="-25"/>
 					</Anchors>
 					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+				<FontString name="TRP3_NPCDialogFrameTitle" inherits="GameFontNormalHuge" justifyH="CENTER" justifyV="TOP">
+					<Size x="0" y="0"/>
+					<Anchors>
+						<Anchor point="LEFT" x="100" y="0"/>
+						<Anchor point="RIGHT" x="-100" y="0"/>
+						<Anchor point="TOP" x="0" y="-25"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -204,11 +212,15 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_NPCDialogFrameChatText" text="[text]" inherits="GameFontNormalLarge"
-									justifyH="LEFT" justifyV="TOP">
+						<FontString name="TRP3_NPCDialogFrameChatName" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 							<Anchors>
-								<Anchor point="TOPLEFT" x="100" y="-25"/>
-								<Anchor point="LEFT" x="100" y="0"/>
+								<Anchor point="TOPLEFT" x="100" y="-12"/>
+							</Anchors>
+							<Color r="1" g="0.75" b="0.0"/>
+						</FontString>
+						<FontString name="TRP3_NPCDialogFrameChatText" text="[NAME]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrameChatName" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
 							</Anchors>
 							<Color r="1" g="1" b="0.4"/>
 						</FontString>

@@ -19,6 +19,8 @@
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 
+local DEBUG = true;
+
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
@@ -32,13 +34,13 @@ local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 -- LOGIC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_SEQUENCE_SPEED = 1000;
+local ANIMATION_SEQUENCE_SPEED = 700;
 local ANIMATION_TEXT_SPEED = 40;
 local ANIMATION_SEQUENCE_DURATION = {
-	["64"] = 3000,
-	["65"] = 3000,
-	["60"] = 4000,
-	["0"] = 2000,
+	["64"] = 2100,
+	["65"] = 2100,
+	["60"] = 2800,
+	["0"] = 1400,
 }
 local ANIMATION_EMPTY = {0};
 local animTab = {};
@@ -50,12 +52,14 @@ local EVENT_INFO = {
 	["QUEST_GREETING"] = {
 		text = GetGreetingText,
 		cancelMethod = CloseQuest,
+		titleGetter = GetTitleText,
 	},
 	["QUEST_DETAIL"] = {
 		text = GetQuestText,
 		finishMethod = AcceptQuest,
 		cancelMethod = DeclineQuest,
 		finishText = ACCEPT,
+		titleGetter = GetTitleText,
 	},
 	["QUEST_PROGRESS"] = {
 		text = GetProgressText,
@@ -74,6 +78,7 @@ local EVENT_INFO = {
 			end
 		end,
 		cancelMethod = CloseQuest,
+		titleGetter = GetTitleText,
 	},
 	["QUEST_COMPLETE"] = {
 		text = GetRewardText,
@@ -92,6 +97,7 @@ local EVENT_INFO = {
 			end
 		end,
 		cancelMethod = CloseQuest,
+		titleGetter = GetTitleText,
 	},
 	["GOSSIP_SHOW"] = {
 		text = GetGossipText,
@@ -99,9 +105,18 @@ local EVENT_INFO = {
 		finishText = GOODBYE,
 		cancelMethod = CloseGossip,
 	},
+	["REPLAY"] = {
+		titleGetter = function()
+			local questTitle = GetQuestLogTitle(GetQuestLogSelection());
+			return questTitle;
+		end,
+		nameGetter = function()
+			return QUEST_LOG;
+		end
+	}
 }
 
-local CHAT_MARGIN = 70;
+local CHAT_MARGIN, CHAT_NAME = 70, 20;
 
 local function playText(textIndex)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
@@ -128,7 +143,7 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatText:SetText(text);
 	end
 
-	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN);
+
 
 	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
 	TRP3_NPCDialogFrameModelsYou.sequenceTab = animTab;
@@ -140,6 +155,22 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatPrevious:Show();
 	end
 
+	-- Options
+	local optionsSize = 0;
+
+	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" then
+		-- Gossip options
+		if GetNumGossipOptions() > 0 then
+			local gossips = {GetGossipOptions()};
+			for i=1, GetNumGossipOptions() do
+
+--				print("Gossip " .. i .. ": " .. gossips[(i*2) - 1] .. " - " .. gossips[(i*2)]);
+			end
+		end
+
+	end
+
+	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + CHAT_NAME + optionsSize);
 end
 
 local function playNext()
@@ -147,7 +178,7 @@ local function playNext()
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		playText(TRP3_NPCDialogFrameChat.currentIndex);
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
-			TRP3_NPCDialogFrameChatNext:SetText("Next");
+			TRP3_NPCDialogFrameChatNext:SetText("Next"); -- TODO: Locals
 		else
 			if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
 				TRP3_NPCDialogFrameChatNext:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText());
@@ -178,13 +209,34 @@ local function resetDialog()
 end
 
 local function startDialog(targetType, fullText, event, eventInfo)
-	-- Ca marche pas, merci Blizzard d'ajouter des fonctions que tu n'impl�mentes pas toi m�me.
+	-- Ca marche pas, merci Blizzard d'ajouter des fonctions que tu n'implementes pas toi meme.
 --	local forced = ForceGossip();
 --	if not forced then
 --		return;
 --	end
 
-	TRP3_NPCDialogFrameDebug:SetText("[debug] " .. event);
+	if DEBUG then
+		TRP3_NPCDialogFrameDebug:SetText("[debug] " .. event);
+	end
+
+	local targetName = UnitName(targetType);
+
+	if targetName and targetName:len() > 0 and targetName ~= UNKNOWN then
+		TRP3_NPCDialogFrameChatName:SetText(targetName);
+	else
+		if eventInfo.nameGetter and eventInfo.nameGetter() then
+			TRP3_NPCDialogFrameChatName:SetText(eventInfo.nameGetter());
+		else
+			TRP3_NPCDialogFrameChatName:SetText("");
+		end
+	end
+
+	if eventInfo.titleGetter and eventInfo.titleGetter() then
+		TRP3_NPCDialogFrameTitle:SetText(eventInfo.titleGetter());
+	else
+		TRP3_NPCDialogFrameTitle:SetText("");
+	end
+
 
 	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
 	TRP3_NPCDialogFrameModelsYou:SetFacing(-0.75);
@@ -198,6 +250,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameChat.texts = texts;
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
 	TRP3_NPCDialogFrameChat.eventInfo = eventInfo;
+	TRP3_NPCDialogFrameChat.event = event;
 
 	TRP3_NPCDialogFrameChatPrevious:Hide();
 	
@@ -274,6 +327,15 @@ local function init()
 	end);
 	Utils.event.registerHandler("QUEST_FINISHED", function()
 		TRP3_NPCDialogFrame:Hide();
+	end);
+
+	-- Replay buttons
+	local questButton = CreateFrame("Button", nil, QuestLogPopupDetailFrame, "TRP3_CommonButton");
+	questButton:SetText("Storyline"); -- TODO: Locals
+	questButton:SetPoint("TOP");
+	questButton:SetScript("OnClick", function()
+		local questDescription = GetQuestLogQuestText();
+		startDialog("none", questDescription, "REPLAY", EVENT_INFO["REPLAY"]);
 	end);
 end
 
