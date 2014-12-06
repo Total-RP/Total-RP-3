@@ -43,6 +43,7 @@ TRP3_API.navigation.minimapicon.show = showMinimapButton;
 
 -- Hide the minimap button and release LDBIcon from the memory
 local hideMinimapButton = function()
+	print("Hiding minimap button");
 	icon:Hide("Total RP 3");
 end
 TRP3_API.navigation.minimapicon.hide = hideMinimapButton;
@@ -96,11 +97,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	})
 
 	icon = LibStub("LibDBIcon-1.0");
-	icon:Register("Total RP 3", LDBObject, getConfigValue(CONFIG_MINIMAP_POSITION))
-
-	if getConfigValue(CONFIG_MINIMAP_SHOW) then
-		showMinimapButton();
-	end
+	local configKey = getConfigValue(CONFIG_MINIMAP_POSITION);
+	configKey.hide = not getConfigValue(CONFIG_MINIMAP_SHOW);
+	icon:Register("Total RP 3", LDBObject, getConfigValue(CONFIG_MINIMAP_POSITION));
 
 	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
