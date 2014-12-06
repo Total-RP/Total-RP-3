@@ -43,7 +43,6 @@ TRP3_API.navigation.minimapicon.show = showMinimapButton;
 
 -- Hide the minimap button and release LDBIcon from the memory
 local hideMinimapButton = function()
-	print("Hiding minimap button");
 	icon:Hide("Total RP 3");
 end
 TRP3_API.navigation.minimapicon.hide = hideMinimapButton;
