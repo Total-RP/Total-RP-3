@@ -483,6 +483,9 @@ Possible status:
 		CO_MINIMAP_BUTTON_SHOW_HELP = [[If you are using an other add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
 
 |cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r]],
+		CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
+		CO_MINIMAP_BUTTON_RESET = "Reset position",
+		CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
 		CO_ANCHOR_TOP = "Top",
 		CO_ANCHOR_TOP_LEFT = "Top left",
 		CO_ANCHOR_TOP_RIGHT = "Top right",
