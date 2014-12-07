@@ -338,7 +338,7 @@ end
 
 local function onMouseOverCompanion(companionFullID)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and CheckInteractDistance("mouseover", 4) then
+	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and CheckInteractDistance("mouseover", 4) and isUnitIDKnown(ownerID) then
 		sendQuery(ownerID);
 	end
 end
