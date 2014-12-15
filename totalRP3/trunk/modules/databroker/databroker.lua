@@ -259,7 +259,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1.000,
 	["id"] = "trp3_databroker",
 	["onStart"] = onStart,
-	["minVersion"] = 8,
+	["minVersion"] = 9,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
