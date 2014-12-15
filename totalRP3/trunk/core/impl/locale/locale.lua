@@ -57,6 +57,8 @@ function TRP3_API.locale.init()
 	-- Pick the right font
 	if current == "zhCN" then
 		localeFont = "Fonts\\ZYKai_T.TTF";
+	elseif current == "ruRU" then
+		localeFont = "Fonts\\FRIZQT___CYR.TTF";
 	else
 		localeFont = "Fonts\\FRIZQT__.TTF";
 	end

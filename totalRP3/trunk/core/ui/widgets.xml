@@ -164,10 +164,10 @@
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<FontString name="$parentLabel" inherits="GameFontNormalLeftBottom" wordwrap="false" justifyH="CENTER">
+				<FontString name="$parentLabel" inherits="GameFontNormal" wordwrap="false" justifyH="CENTER">
 					<Anchors>
-						<Anchor point="BOTTOMLEFT" x="24" y="4"/>
-						<Anchor point="TOPRIGHT" x="-16" y="-4"/>
+						<Anchor point="BOTTOMLEFT" x="24" y="2"/>
+						<Anchor point="TOPRIGHT" x="-16" y="-6"/>
 					</Anchors>
 				</FontString>
 			</Layer>
