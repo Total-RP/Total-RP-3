@@ -38,10 +38,8 @@
 					<Anchor point="LEFT" x="15" y="0" />
 				</Anchors>
 			</Frame>
-			<Button name="$parentSelect" inherits="UIPanelButtonTemplate" text="[SELECT]">
-				<Size>
-					<AbsDimension x="80" y="25" />
-				</Size>
+			<Button name="$parentBound" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="95" y="25" />
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-8" y="-8" />
 				</Anchors>
@@ -92,16 +90,18 @@
 					<Color r="0.0" g="0.95" b="0.0" />
 				</FontString>
 				<FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT" text="[PROFILE_NAME]">
-					<Size x="270" y="20" />
+					<Size x="0" y="20" />
 					<Anchors>
 						<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentIcon" x="5" y="0" />
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentBound" x="-5" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
 				<FontString name="$parentCount" inherits="GameFontNormalSmall" justifyH="LEFT" text="[PROFILE_COUNT]">
-					<Size x="230" y="10" />
+					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$parentIcon" x="25" y="5" />
+						<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentAction" x="-5" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.75" b="0.10" />
 				</FontString>

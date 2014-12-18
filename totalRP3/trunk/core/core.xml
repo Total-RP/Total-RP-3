@@ -50,6 +50,7 @@
 	<Script file="impl\ui_main.lua"/>
 	
 	<Include file="ui\browsers\icons.xml"/>
+	<Include file="ui\browsers\companions.xml"/>
 	<Include file="ui\browsers\musics.xml"/>
 	<Include file="ui\browsers\colors.xml"/>
 	<Include file="ui\browsers\images.xml"/>

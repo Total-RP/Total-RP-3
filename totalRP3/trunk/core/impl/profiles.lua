@@ -176,11 +176,9 @@ local function decorateProfileList(widget, id)
 
 		widget:SetBackdropBorderColor(0, 1, 0);
 		_G[widget:GetName().."Current"]:Show();
-		_G[widget:GetName().."Select"]:Disable();
 	else
 		widget:SetBackdropBorderColor(1, 1, 1);
 		_G[widget:GetName().."Current"]:Hide();
-		_G[widget:GetName().."Select"]:Enable();
 	end
 
 	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or Globals.icons.profile_default);
@@ -288,9 +286,9 @@ local function uiDuplicateProfile(profileID)
 end
 
 local function onProfileSelected(button)
-	local profileID = button:GetParent().profileID;
-	playAnimation(_G[button:GetParent():GetName() .. "HighlightAnimate"]);
-	playAnimation(_G[button:GetParent():GetName() .. "Animate"]);
+	local profileID = button.profileID;
+	playAnimation(_G[button:GetName() .. "HighlightAnimate"]);
+	playAnimation(_G[button:GetName() .. "Animate"]);
 	uiSelectProfile(profileID);
 end
 
@@ -392,14 +390,12 @@ function TRP3_API.profile.init()
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
 			if currentProfileId ~= self.profileID then
-				onProfileSelected(_G[self:GetName().."Select"]);
+				onProfileSelected(widget);
 				playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
 				playAnimation(_G[self:GetName() .. "Animate"]);
 				playUISound("gsCharacterSelection");
 			end
 		end);
-		_G[widget:GetName().."Select"]:SetScript("OnClick", onProfileSelected);
-		_G[widget:GetName().."Select"]:SetText(loc("CM_SELECT"));
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc("PR_PROFILEMANAGER_CURRENT"));
 		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));

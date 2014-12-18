@@ -176,8 +176,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local widgetTab = {};
 	for i = 1, 5 do
 		local widget = _G["TRP3_CharacterImporterListLine" .. i];
-		_G[widget:GetName() .. "Select"]:SetScript("OnClick", onImportButtonClicked);
-		_G[widget:GetName() .. "Select"]:SetText("Import");
+		_G[widget:GetName() .. "Bound"]:Show();
+		_G[widget:GetName() .. "Bound"]:SetScript("OnClick", onImportButtonClicked);
+		_G[widget:GetName() .. "Bound"]:SetText("Import");
 		_G[widget:GetName() .. "Action"]:Hide();
 		table.insert(widgetTab, widget);
 	end

@@ -44,6 +44,7 @@ local companionIDToInfo = Utils.str.companionIDToInfo;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
 local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
@@ -51,7 +52,7 @@ local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local uiInitProfileList;
+local uiInitProfileList, ui_boundPlayerCompanion;
 
 TRP3_API.navigation.menu.id.COMPANIONS_PAGE_PREFIX = "main_21_companions_";
 TRP3_API.navigation.page.id.COMPANIONS_PROFILES = "companions_profiles";
@@ -146,6 +147,12 @@ local function uiEditProfile(profileID)
 	);
 end
 
+local function uiBoundProfile(profileID, companionType)
+	TRP3_API.popup.showCompanionBrowser(function(companionInfo)
+		ui_boundPlayerCompanion(companionInfo[1], profileID, companionType);
+	end, nil, companionType);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -155,6 +162,8 @@ local function getCompanionTypeText(companionType)
 		return loc("PR_CO_PET");
 	elseif companionType == TYPE_BATTLE_PET then
 		return loc("PR_CO_BATTLE");
+	elseif companionType == TYPE_MOUNT then
+		return loc("PR_CO_MOUNT");
 	end
 	return "";
 end
@@ -208,7 +217,26 @@ local function onActionSelected(value, button)
 		uiEditProfile(profileID);
 	elseif value == 3 then
 		uiDuplicateProfile(profileID);
+	elseif value == 4 then
+		uiBoundProfile(profileID, TYPE_BATTLE_PET);
+	elseif value == 5 then
+		uiBoundProfile(profileID, TYPE_MOUNT);
 	end
+end
+
+local function onBoundClicked(button)
+	local profileID = button:GetParent().profileID;
+	local profile = getCompanionProfile(profileID);
+	local values = {};
+	tinsert(values, {loc("REG_COMPANION_BOUND_TO"),
+		{
+			{loc("PR_CO_BATTLE"), 4},
+			{loc("PR_CO_MOUNT"), 5},
+			{loc("REG_COMPANION_BOUND_TO_TARGET"), 6},
+		}
+	});
+
+	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
 local function onActionClicked(button)
@@ -221,7 +249,7 @@ local function onActionClicked(button)
 end
 
 local function onOpenProfile(button)
-	openProfile(button:GetParent().profileID);
+	openProfile(button.profileID);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -230,14 +258,21 @@ end
 
 local displayDropDown, UnitName = TRP3_API.ui.listbox.displayDropDown, UnitName;
 local getProfiles, boundPlayerCompanion, unboundPlayerCompanion = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.boundPlayerCompanion, TRP3_API.companions.player.unboundPlayerCompanion;
+local displayMessage = Utils.message.displayMessage;
+local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 
-local function ui_boundPlayerCompanion(companionID, profileID, targetType)
+ui_boundPlayerCompanion = function (companionID, profileID, targetType)
 	if targetType == TYPE_PET and UnitName("pet") == companionID and PetCanBeRenamed() then
 		showConfirmPopup(loc("PR_CO_WARNING_RENAME"), function()
 			boundPlayerCompanion(companionID, profileID, targetType);
 		end);
 	else
 		boundPlayerCompanion(companionID, profileID, targetType);
+	end
+	local profile = getProfiles()[profileID];
+	displayMessage(loc("REG_COMPANION_LINKED"):format("|cff00ff00" .. companionID .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
+	if getCurrentPageID() == TRP3_API.navigation.page.id.COMPANIONS_PROFILES then
+		uiInitProfileList();
 	end
 end
 
@@ -378,12 +413,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	for i=1,5 do
 		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
-			onOpenProfile(_G[self:GetName().."Select"]);
+			onOpenProfile(widget);
 			playUISound("gsCharacterSelection");
 		end);
-		_G[widget:GetName().."Select"]:SetScript("OnClick", onOpenProfile);
-		_G[widget:GetName().."Select"]:SetText(loc("CM_OPEN"));
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
+		_G[widget:GetName().."Bound"]:SetText(loc("REG_COMPANION_BOUNDS"));
+		_G[widget:GetName().."Bound"]:Show();
+		_G[widget:GetName().."Bound"]:SetScript("OnClick", onBoundClicked);
 		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
 		tinsert(widgetTab, widget);
 	end

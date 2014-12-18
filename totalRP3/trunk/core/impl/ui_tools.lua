@@ -439,6 +439,7 @@ local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.locale.findPetOwner,
 TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
 TRP3_API.ui.misc.TYPE_PET = "PET";
 TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";
+TRP3_API.ui.misc.TYPE_MOUNT = "MOUNT";
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
@@ -608,7 +609,7 @@ local function tabBar_onSelect(tabGroup, index)
 end
 
 local function tabBar_redraw(tabGroup)
-	local lastWidget = nil;
+	local lastWidget;
 	for _, tabWidget in pairs(tabGroup.tabs) do
 		if tabWidget:IsShown() then
 			tabWidget:ClearAllPoints();

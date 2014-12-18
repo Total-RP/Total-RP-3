@@ -22,7 +22,7 @@ TRP3_API.popup = {};
 
 -- imports
 local Utils = TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc, table = TRP3_API.locale.getText, table;
 local initList = TRP3_API.ui.list.initList;
 local tinsert, _G, pairs, wipe, math, assert = tinsert, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -367,6 +367,134 @@ function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Companion browser
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local TRP3_CompanionBrowser = TRP3_CompanionBrowser;
+local companionWidgetTab = {};
+local filteredCompanionList = {};
+local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
+local GetNumPets, GetPetInfoByIndex = C_PetJournal.GetNumPets, C_PetJournal.GetPetInfoByIndex;
+local GetNumMounts, GetMountInfo = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo;
+local currentCompanionType;
+
+local function onCompanionClick(button)
+	hidePopups();
+	if ui_CompanionBrowserContent.onSelectCallback then
+		ui_CompanionBrowserContent.onSelectCallback(filteredCompanionList[button.index], currentCompanionType, button);
+	end
+end
+
+local function onCompanionClose()
+	hidePopups();
+	if ui_CompanionBrowserContent.onCancelCallback then
+		ui_CompanionBrowserContent.onCancelCallback();
+	end
+end
+
+local function decorateCompanion(button, index)
+	local name, icon = filteredCompanionList[index][1], filteredCompanionList[index][2];
+	local description, speciesName = filteredCompanionList[index][3], filteredCompanionList[index][4];
+	button:SetNormalTexture(icon);
+	button:SetPushedTexture(icon);
+	local text = "|cffffff00" .. speciesName .. "|r";
+	if description and description:len() > 0 then
+		text = text .. "\n\"" .. description .. "\"";
+	end
+	setTooltipForFrame(button, TRP3_CompanionBrowser, "RIGHT", 0, -100,
+		"|T" .. icon .. ":40|t " .. name, text);
+	button.index = index;
+end
+
+local function nameComparator(elem1, elem2)
+	return elem1[1] < elem2[1];
+end
+
+local function getWoWCompanionFilteredList(filter)
+	local count = 0;
+	wipe(filteredCompanionList);
+
+	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+		-- Battle pets
+		local numPets, numOwned = GetNumPets();
+		for i = 1, numPets do
+			local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description = GetPetInfoByIndex(i);
+			-- Only renamed pets can be bound
+			if customName and (filter:len() == 0 or customName:find(filter)) then
+				tinsert(filteredCompanionList, {customName, icon, description, speciesName});
+				count = count + 1;
+			end
+		end
+	elseif currentCompanionType == TRP3_API.ui.misc.TYPE_MOUNT then
+		-- Mounts
+		local num, numOwned = GetNumMounts();
+		for i = 1, num do
+			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
+			if isCollected and creatureName and (filter:len() == 0 or creatureName:find(filter)) then
+				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT")});
+				count = count + 1;
+			end
+		end
+	end
+
+	table.sort(filteredCompanionList, nameComparator);
+
+	return count;
+end
+
+local function filteredCompanionBrowser()
+	local filter = TRP3_CompanionBrowserFilterBox:GetText();
+	local totalCompanionCount = getWoWCompanionFilteredList(filter);
+	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
+	initList(
+		{
+			widgetTab = companionWidgetTab,
+			decorate = decorateCompanion
+		},
+		filteredCompanionList,
+		TRP3_CompanionBrowserContentSlider
+	);
+end
+
+local function initCompanionBrowser()
+	handleMouseWheel(ui_CompanionBrowserContent, TRP3_CompanionBrowserContentSlider);
+	TRP3_CompanionBrowserContentSlider:SetValue(0);
+	-- Create icons
+	local row, column;
+
+	for row = 0, 5 do
+		for column = 0, 7 do
+			local button = CreateFrame("Button", "TRP3_CompanionBrowserButton_"..row.."_"..column, ui_CompanionBrowserContent, "TRP3_IconBrowserButton");
+			button:ClearAllPoints();
+			button:SetPoint("TOPLEFT", ui_CompanionBrowserContent, "TOPLEFT", 15 + (column * 45), -15 + (row * (-45)));
+			button:SetScript("OnClick", onCompanionClick);
+			tinsert(companionWidgetTab, button);
+		end
+	end
+
+	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
+	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
+
+
+	TRP3_CompanionBrowserFilterBoxText:SetText(loc("UI_FILTER"));
+end
+
+function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, companionType)
+	currentCompanionType = companionType or TRP3_API.ui.misc.TYPE_BATTLE_PET;
+	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_BATTLE"));
+	else
+		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_MOUNT"));
+	end
+	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
+	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
+	TRP3_CompanionBrowserFilterBox:SetText("");
+	filteredCompanionBrowser();
+	showPopup(TRP3_CompanionBrowser);
+	TRP3_CompanionBrowserFilterBox:SetFocus();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Color browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -486,6 +614,7 @@ function TRP3_API.popup.init()
 	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
 
 	initIconBrowser();
+	initCompanionBrowser();
 	initMusicBrowser();
 	initColorBrowser();
 	initImageBrowser();
