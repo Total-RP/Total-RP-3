@@ -100,7 +100,7 @@ local function cloak()
 				cloakShown and iconOn or iconOff;
 	end
 
-	local tooltipTitle, tooltipText, icon = determineData(ShowCloak());
+	local tooltipTitle, tooltipText, icon = determineData(ShowingCloak());
 
 	object = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject(loc("DTBK_CLOAK"), {
 		type = "launcher",
