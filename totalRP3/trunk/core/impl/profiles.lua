@@ -165,8 +165,10 @@ TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+local profileListID = {};
 
-local function decorateProfileList(widget, id)
+local function decorateProfileList(widget, index)
+	local id = profileListID[index];
 	widget.profileID = id;
 	local profile = profiles[id];
 	local dataTab = getData("player/characteristics", profile);
@@ -202,16 +204,21 @@ local function decorateProfileList(widget, id)
 		text = text..loc("PR_UNUSED_PROFILE");
 	end
 
-	setTooltipForSameFrame(
-	_G[widget:GetName().."Info"], "RIGHT", 0, 0,
-	loc("PR_PROFILE"),
-	text
-	)
+	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc("PR_PROFILE"), text);
+end
+
+local function profileSortingByProfileName(profileID1, profileID2)
+	return profiles[profileID1].profileName < profiles[profileID2].profileName;
 end
 
 -- Refresh list display
 local function uiInitProfileList()
-	initList(TRP3_ProfileManagerList, profiles, TRP3_ProfileManagerListSlider);
+	wipe(profileListID);
+	for profileID, _ in pairs(profiles) do
+		tinsert(profileListID, profileID);
+	end
+	table.sort(profileListID, profileSortingByProfileName);
+	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
@@ -234,7 +241,7 @@ local function uiCreateProfile()
 		end
 	end,
 	nil,
-	Globals.player
+	Globals.player_realm .. " - " .. Globals.player
 	);
 end
 
@@ -371,11 +378,11 @@ function TRP3_API.profile.init()
 	-- So we create a new profile named by his pseudo.
 	if not character.profileID or not profiles[character.profileID] then
 		-- Detect if a profile with name - realm already exists
-		local available, profileID = isProfileNameAvailable(Globals.player .. " - " .. Globals.player_realm);
+		local available, profileID = isProfileNameAvailable(Globals.player_realm .. " - " .. Globals.player);
 		if not available and profileID then
 			selectProfile(profileID);
 		else
-			selectProfile(createProfile(Globals.player .. " - " .. Globals.player_realm));
+			selectProfile(createProfile(Globals.player_realm .. " - " .. Globals.player));
 		end
 	else
 		selectProfile(character.profileID);

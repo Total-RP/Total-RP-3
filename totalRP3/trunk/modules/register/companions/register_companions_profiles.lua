@@ -39,6 +39,7 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty = TRP3_CompanionsProfilesList, TRP3_CompanionsProfilesListSlider, TRP3_CompanionsProfilesListEmpty;
 local EMPTY, PetCanBeRenamed = Globals.empty, PetCanBeRenamed;
 local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.player.getCompanionProfileID;
+local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
 local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
@@ -153,9 +154,32 @@ local function uiBoundProfile(profileID, companionType)
 	end, nil, companionType);
 end
 
+local function uiBoundTargetProfile(profileID)
+	local targetType, isMine = TRP3_API.ui.misc.getTargetType("target");
+	if (targetType == TYPE_BATTLE_PET or targetType == TYPE_PET) and isMine then
+		local companionFullID = TRP3_API.ui.misc.getCompanionFullID("target", targetType);
+		local companionID = UnitName("target");
+		if companionFullID then
+			ui_boundPlayerCompanion(companionID, profileID, targetType);
+			return;
+		end
+	end
+	TRP3_API.ui.tooltip.toast("|cffff0000" .. loc("REG_COMPANION_TARGET_NO"), 4);
+end
+
+local function uiUnboundTargetProfile(profileID, companionID)
+	TRP3_API.companions.player.unboundPlayerCompanion(companionID);
+	TRP3_API.ui.tooltip.toast(loc("REG_COMPANION_LINKED_NO"):format("|cff00ff00" .. companionID .. "|r",
+		"|cff00ff00" .. getCompanionProfiles()[profileID].profileName .. "|r"), 4);
+	uiInitProfileList();
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- List
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local profileListID = {};
+local wipe, table = wipe, table;
 
 local function getCompanionTypeText(companionType)
 	if companionType == TYPE_PET then
@@ -168,7 +192,8 @@ local function getCompanionTypeText(companionType)
 	return "";
 end
 
-local function decorateProfileList(widget, id)
+local function decorateProfileList(widget, index)
+	local id = profileListID[index];
 	widget.profileID = id;
 	local profile = getProfiles()[id];
 	local dataTab = profile.data or {};
@@ -199,6 +224,11 @@ local function decorateProfileList(widget, id)
 	)
 end
 
+local function profileSortingByProfileName(profileID1, profileID2)
+	local profiles = getProfiles();
+	return profiles[profileID1].profileName < profiles[profileID2].profileName;
+end
+
 -- Refresh list display
 function uiInitProfileList()
 	local size = tsize(getProfiles());
@@ -206,7 +236,14 @@ function uiInitProfileList()
 	if size == 0 then
 		TRP3_CompanionsProfilesListEmpty:Show();
 	end
-	initList(TRP3_CompanionsProfilesList, getProfiles(), TRP3_CompanionsProfilesListSlider);
+
+	wipe(profileListID);
+	for profileID, _ in pairs(getProfiles()) do
+		tinsert(profileListID, profileID);
+	end
+	table.sort(profileListID, profileSortingByProfileName);
+
+	initList(TRP3_CompanionsProfilesList, profileListID, TRP3_CompanionsProfilesListSlider);
 end
 
 local function onActionSelected(value, button)
@@ -221,20 +258,31 @@ local function onActionSelected(value, button)
 		uiBoundProfile(profileID, TYPE_BATTLE_PET);
 	elseif value == 5 then
 		uiBoundProfile(profileID, TYPE_MOUNT);
+	elseif value == 6 then
+		uiBoundTargetProfile(profileID);
+	elseif type(value) == "string" then
+		uiUnboundTargetProfile(profileID, value);
 	end
 end
 
 local function onBoundClicked(button)
 	local profileID = button:GetParent().profileID;
-	local profile = getCompanionProfile(profileID);
+	local profile = getCompanionProfiles()[profileID];
 	local values = {};
 	tinsert(values, {loc("REG_COMPANION_BOUND_TO"),
 		{
 			{loc("PR_CO_BATTLE"), 4},
-			{loc("PR_CO_MOUNT"), 5},
+--			{loc("PR_CO_MOUNT"), 5},
 			{loc("REG_COMPANION_BOUND_TO_TARGET"), 6},
 		}
 	});
+	if profile.links and tsize(profile.links) > 0 then
+		local linksTab = {};
+		for companionID, _ in pairs(profile.links) do
+			tinsert(linksTab, {companionID, companionID});
+		end
+		tinsert(values, {loc("REG_COMPANION_UNBOUND"), linksTab});
+	end
 
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
