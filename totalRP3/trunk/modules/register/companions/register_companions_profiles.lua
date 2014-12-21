@@ -19,7 +19,7 @@
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
-local tinsert, _G, pairs, type = tinsert, _G, pairs, type;
+local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
 local tsize = Utils.table.size;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
@@ -48,7 +48,9 @@ local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
-local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
+local getCompanionProfileID, getCompanionNameFromSpellID = TRP3_API.companions.player.getCompanionProfileID, TRP3_API.companions.getCompanionNameFromSpellID;
+local getCurrentMountSpellID, getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountSpellID, TRP3_API.companions.player.getCurrentMountProfile;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -150,7 +152,7 @@ end
 
 local function uiBoundProfile(profileID, companionType)
 	TRP3_API.popup.showCompanionBrowser(function(companionInfo)
-		ui_boundPlayerCompanion(companionInfo[1], profileID, companionType);
+		ui_boundPlayerCompanion(tostring(companionInfo[5]) or companionInfo[1], profileID, companionType);
 	end, nil, companionType);
 end
 
@@ -167,10 +169,11 @@ local function uiBoundTargetProfile(profileID)
 	TRP3_API.ui.tooltip.toast("|cffff0000" .. loc("REG_COMPANION_TARGET_NO"), 4);
 end
 
-local function uiUnboundTargetProfile(profileID, companionID)
-	TRP3_API.companions.player.unboundPlayerCompanion(companionID);
-	TRP3_API.ui.tooltip.toast(loc("REG_COMPANION_LINKED_NO"):format("|cff00ff00" .. companionID .. "|r",
-		"|cff00ff00" .. getCompanionProfiles()[profileID].profileName .. "|r"), 4);
+local unboundPlayerCompanion = TRP3_API.companions.player.unboundPlayerCompanion;
+local function uiUnboundTargetProfile(profileID, companionInfo)
+	local companionID, companionType = companionInfo:sub(1, companionInfo:find("|") - 1), companionInfo:sub(companionInfo:find("|") + 1);
+	unboundPlayerCompanion(companionID, companionType);
+	TRP3_API.ui.tooltip.toast(loc("REG_COMPANION_LINKED_NO"):format("|cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r"), 4);
 	uiInitProfileList();
 end
 
@@ -205,7 +208,8 @@ local function decorateProfileList(widget, index)
 	local listText = "";
 	local i = 0;
 	for companionID, companionType in pairs(profile.links or EMPTY) do
-		listText = listText .. "- |cff00ff00" .. companionID .. "|cffff9900 (" .. getCompanionTypeText(companionType) .. ")|r\n";
+		listText = listText .. "- |cff00ff00" .. getCompanionNameFromSpellID(companionID)
+				.. "|cffff9900 (" .. getCompanionTypeText(companionType) .. ")|r\n";
 		i = i + 1;
 	end
 	_G[widget:GetName().."Count"]:SetText(loc("PR_CO_COUNT"):format(i));
@@ -260,7 +264,7 @@ local function onActionSelected(value, button)
 		uiBoundProfile(profileID, TYPE_MOUNT);
 	elseif value == 6 then
 		uiBoundTargetProfile(profileID);
-	elseif type(value) == "string" then
+	elseif value then
 		uiUnboundTargetProfile(profileID, value);
 	end
 end
@@ -278,8 +282,8 @@ local function onBoundClicked(button)
 	});
 	if profile.links and tsize(profile.links) > 0 then
 		local linksTab = {};
-		for companionID, _ in pairs(profile.links) do
-			tinsert(linksTab, {companionID, companionID});
+		for companionID, companionType in pairs(profile.links) do
+			tinsert(linksTab, {getCompanionNameFromSpellID(companionID), companionID .. "|" .. companionType});
 		end
 		tinsert(values, {loc("REG_COMPANION_UNBOUND"), linksTab});
 	end
@@ -305,7 +309,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local displayDropDown, UnitName = TRP3_API.ui.listbox.displayDropDown, UnitName;
-local getProfiles, boundPlayerCompanion, unboundPlayerCompanion = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.boundPlayerCompanion, TRP3_API.companions.player.unboundPlayerCompanion;
+local getProfiles, boundPlayerCompanion = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.boundPlayerCompanion;
 local displayMessage = Utils.message.displayMessage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 
@@ -318,7 +322,8 @@ ui_boundPlayerCompanion = function (companionID, profileID, targetType)
 		boundPlayerCompanion(companionID, profileID, targetType);
 	end
 	local profile = getProfiles()[profileID];
-	displayMessage(loc("REG_COMPANION_LINKED"):format("|cff00ff00" .. companionID .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
+	local companionName = getCompanionNameFromSpellID(companionID);
+	displayMessage(loc("REG_COMPANION_LINKED"):format("|cff00ff00" .. companionName .. "|r", "|cff00ff00" .. profile.profileName .. "|r"));
 	if getCurrentPageID() == TRP3_API.navigation.page.id.COMPANIONS_PROFILES then
 		uiInitProfileList();
 	end
@@ -346,7 +351,8 @@ local function onCompanionProfileSelection(value, companionID, targetType)
 		openProfile(getCompanionProfileID(companionID));
 		openMainFrame();
 	elseif value == 1 then
-		unboundPlayerCompanion(companionID);
+		unboundPlayerCompanion(companionID, targetType);
+		displayMessage(loc("REG_COMPANION_LINKED_NO"):format("|cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r"));
 	elseif value == 2 then
 		createNewAndBound(companionID, targetType);
 	elseif type(value) == "string" then
@@ -377,8 +383,19 @@ local function getCompanionInfo(owner, companionID, companionFullID)
 	return profile;
 end
 
-local function companionProfileSelectionList(companionFullID, targetType, buttonStructure, button)
-	local ownerID, companionID = companionIDToInfo(companionFullID);
+local function companionProfileSelectionList(unitID, targetType, buttonStructure, button)
+	local ownerID, companionID, companionFullID;
+
+	if targetType == TYPE_CHARACTER then
+		ownerID = unitID;
+		if ownerID == Globals.player_id then
+			companionID = tostring(getCurrentMountSpellID());
+		end
+	else
+		companionFullID = unitID;
+		ownerID, companionID = companionIDToInfo(companionFullID);
+	end
+
 	if ownerID == Globals.player_id then
 		local list = {};
 		if getCompanionProfile(companionID) then
@@ -548,19 +565,36 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 		});
 
---		-- Target bar button for mounts
---		TRP3_API.target.registerButton({
---			id = "companion_profile_mount",
---			configText = loc("REG_COMPANION_TF_PROFILE_MOUNT"),
---			condition = function(targetType, unitID)
---
---				return true;
---			end,
---			onClick = companionProfileSelectionList,
---			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
---			adapter = function(buttonStructure, unitID, targetType)
---				buttonStructure.icon = "ability_mount_charger";
---			end,
---		});
+		-- Target bar button for mounts
+		TRP3_API.target.registerButton({
+			id = "companion_profile_mount",
+			configText = loc("REG_COMPANION_TF_PROFILE_MOUNT"),
+			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			condition = function(targetType, unitID)
+				if unitID == Globals.player_id then
+					return getCurrentMountSpellID() ~= nil;
+				end
+				return false;
+			end,
+			onClick = companionProfileSelectionList,
+			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
+			adapter = function(buttonStructure, unitID, targetType)
+				buttonStructure.tooltip = loc("TF_OPEN_COMPANION");
+				if unitID == Globals.player_id then
+					local profile, profileID = getCurrentMountProfile();
+					if profile then
+						buttonStructure.tooltip = loc("PR_CO_MOUNT") .. ": |cff00ff00" .. profile.profileName;
+						if profile.data and profile.data.IC then
+							buttonStructure.icon = profile.data.IC;
+						end
+					else
+						buttonStructure.icon = "ability_mount_charger";
+						buttonStructure.tooltip = loc("PR_CO_MOUNT");
+					end
+				else
+					buttonStructure.icon = "ability_mount_charger"; -- MOCKUP
+				end
+			end,
+		});
 	end
 end);

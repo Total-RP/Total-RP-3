@@ -431,7 +431,7 @@ local function getWoWCompanionFilteredList(filter)
 		for i = 1, num do
 			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
 			if isCollected and creatureName and (filter:len() == 0 or creatureName:find(filter)) then
-				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT")});
+				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT"), spellID});
 				count = count + 1;
 			end
 		end

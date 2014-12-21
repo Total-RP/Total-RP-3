@@ -200,12 +200,7 @@ local BUILDER_TYPE_LINE = 1;
 local BUILDER_TYPE_DOUBLELINE = 2;
 local BUILDER_TYPE_SPACE = 3;
 
-local tooltipBuilder = {
-	_content = {},
-	tooltip = ui_CharacterTT,
-};
-
-function tooltipBuilder:AddLine(text, red, green, blue, lineSize, lineWrap)
+local function AddLine(self, text, red, green, blue, lineSize, lineWrap)
 	local lineStructure = getTempTable();
 	lineStructure.type = BUILDER_TYPE_LINE;
 	lineStructure.text = text;
@@ -217,7 +212,7 @@ function tooltipBuilder:AddLine(text, red, green, blue, lineSize, lineWrap)
 	tinsert(self._content, lineStructure);
 end
 
-function tooltipBuilder:AddDoubleLine(textL, textR, redL, greenL, blueL, redR, greenR, blueR, lineSize)
+local function AddDoubleLine(self, textL, textR, redL, greenL, blueL, redR, greenR, blueR, lineSize)
 	local lineStructure = getTempTable();
 	lineStructure.type = BUILDER_TYPE_DOUBLELINE;
 	lineStructure.textL = textL;
@@ -232,7 +227,7 @@ function tooltipBuilder:AddDoubleLine(textL, textR, redL, greenL, blueL, redR, g
 	tinsert(self._content, lineStructure);
 end
 
-function tooltipBuilder:AddSpace()
+local function AddSpace(self)
 	if #self._content > 0 and self._content[#self._content].type == BUILDER_TYPE_SPACE then
 		return; -- Don't add two spaces in a row.
 	end
@@ -241,7 +236,7 @@ function tooltipBuilder:AddSpace()
 	tinsert(self._content, lineStructure);
 end
 
-function tooltipBuilder:Build()
+local function Build(self)
 	local size = #self._content;
 	local tooltipLineIndex = 1;
 	for lineIndex, line in pairs(self._content) do
@@ -266,9 +261,23 @@ function tooltipBuilder:Build()
 	end
 end
 
+local function createTooltipBuilder(tooltip)
+	local builder = {
+		_content = {},
+		tooltip = tooltip,
+	};
+	builder.AddLine = AddLine;
+	builder.AddDoubleLine = AddDoubleLine;
+	builder.AddSpace = AddSpace;
+	builder.Build = Build;
+	return builder;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tooltipBuilder = createTooltipBuilder(ui_CharacterTT);
 
 local function getUnitID(targetType)
 	local currentTargetType = originalGetTargetType(targetType);
@@ -604,7 +613,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	local leftIcons = "";
 
 	if showCompanionIcons() then
-		-- Player icon
+		-- Companion icon
 		if info.IC then
 			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
 		end
@@ -704,6 +713,90 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MOUNTS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tooltipCompanionBuilder = createTooltipBuilder(ui_CompanionTT);
+local getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountProfile;
+local getCurrentMountSpellID = TRP3_API.companions.player.getCurrentMountSpellID;
+local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
+
+local function getMountProfile(ownerID)
+	if ownerID == Globals.player_id then
+		local profile, profileID = getCurrentMountProfile();
+		return profile;
+	end
+end
+
+local function writeTooltipForMount(ownerID, mountSpellID, mountName)
+	if isIDIgnored(ownerID) then
+		return;
+	end
+
+	local profile = getMountProfile(ownerID);
+	local info = profile.data or EMPTY;
+	local PE = profile.PE or EMPTY;
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Icon and name
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	local leftIcons = "";
+
+	if showCompanionIcons() then
+		-- Companion icon
+		if info.IC then
+			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
+		end
+	end
+
+	tooltipCompanionBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or mountName), 1, 1, 1, getMainLineFontSize());
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- full title
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionFullTitle() then
+		local fullTitle = "";
+		if info.TI then
+			fullTitle = strconcat("< ", info.TI, " |r>");
+		end
+		if fullTitle:len() > 0 then
+			tooltipCompanionBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
+		end
+	end
+
+	tooltipCompanionBuilder:AddSpace();
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Wow info
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionWoWInfo() then
+		tooltipCompanionBuilder:AddLine(loc("PR_CO_MOUNT") .. " |cff" .. (info.NH or "ffffff") .. mountName, 1, 1, 1, getSubLineFontSize());
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Quick peek & new description notifications
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if showCompanionNotifications() then
+		local notifText = "";
+		if PE and checkGlanceActivation(PE) then
+			notifText = GLANCE_ICON;
+		end
+		if ownerID ~= Globals.player_id and info.read == false then
+			notifText = notifText .. " " .. NEW_ABOUT_ICON;
+		end
+		if notifText:len() > 0 then
+			tooltipCompanionBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
+		end
+	end
+
+	tooltipCompanionBuilder:Build();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MAIN
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -711,6 +804,7 @@ local GameTooltip_SetDefaultAnchor, UIParent = GameTooltip_SetDefaultAnchor, UIP
 
 local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
+	ui_CompanionTT:Hide();
 
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
@@ -719,6 +813,9 @@ local function show(targetType, targetID, targetMode)
 			ui_CharacterTT.target = targetID;
 			ui_CharacterTT.targetType = targetType;
 			ui_CharacterTT.targetMode = targetMode;
+			ui_CompanionTT.target = targetID;
+			ui_CompanionTT.targetType = targetType;
+			ui_CompanionTT.targetMode = targetMode;
 
 			-- Check if has a profile
 			if getConfigValue(CONFIG_PROFILE_ONLY) then
@@ -730,7 +827,7 @@ local function show(targetType, targetID, targetMode)
 				end
 			end
 
-			-- The target is a player
+			-- We have a target
 			if targetMode then
 
 				-- Stock all the current text from the GameTooltip
@@ -753,6 +850,13 @@ local function show(targetType, targetID, targetMode)
 					if shouldHideGameTooltip() and not isIDIgnored(targetID) then
 						GameTooltip:Hide();
 					end
+					-- Mounts
+					if targetID == Globals.player_id and getCurrentMountProfile() then
+						local mountSpellID = getCurrentMountSpellID();
+						local mountName = getCompanionNameFromSpellID(mountSpellID);
+						ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
+						writeTooltipForMount(targetID, mountSpellID, mountName);
+					end
 				elseif targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET then
 					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
 					if shouldHideGameTooltip() and not ownerIsIgnored(targetID) then
@@ -772,17 +876,34 @@ end
 
 local function onUpdate(self, elapsed)
 	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
+
+	if getAnchoredPosition() == "ANCHOR_CURSOR" then
+		local effScale, x, y = self:GetEffectiveScale(), GetCursorPosition();
+		self:ClearAllPoints();
+		self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
+	end
+
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
 			if self.target ~= getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
-				if getAnchoredPosition() == "ANCHOR_CURSOR" then
-					self:Hide();
-				else
-					self:FadeOut();
-				end
+				self:FadeOut();
+			end
+		end
+	end
+end
+
+local function onUpdateCompanion(self, elapsed)
+	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
+	if (self.TimeSinceLastUpdate > getFadeTime()) then
+		self.TimeSinceLastUpdate = 0;
+		if self.target and self.targetType and not self.isFading then
+			if self.target ~= getUnitID(self.targetType) then
+				self.isFading = true;
+				self.target = nil;
+				self:FadeOut();
 			end
 		end
 	end
@@ -817,6 +938,8 @@ local function onModuleInit()
 
 	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
+	ui_CompanionTT.TimeSinceLastUpdate = 0;
+	ui_CompanionTT:SetScript("OnUpdate", onUpdateCompanion);
 
 	IC_GUILD = " |cff00ff00(" .. loc("REG_TT_GUILD_IC") .. ")";
 	OOC_GUILD = " |cffff0000(" .. loc("REG_TT_GUILD_OOC") .. ")";

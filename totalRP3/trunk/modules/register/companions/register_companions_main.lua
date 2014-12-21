@@ -25,11 +25,12 @@ TRP3_API.companions = {
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
 local log = Utils.log.log;
-local pairs, assert, tostring, wipe, tinsert, type, strtrim = pairs, assert, tostring, wipe, tinsert, type, strtrim;
+local pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
+local GetSpellInfo = GetSpellInfo;
 local displayMessage = Utils.message.displayMessage;
 local companionIDToInfo = Utils.str.companionIDToInfo;
 local EMPTY = Globals.empty;
@@ -39,6 +40,11 @@ local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
+
+function TRP3_API.companions.getCompanionNameFromSpellID(spellID)
+	local name = GetSpellInfo(tonumber(spellID));
+	return name or spellID;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Player's companions : API
@@ -93,19 +99,27 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 		end
 	end
 	playerProfileAssociation[companionID] = profileID;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+	if targetType == TYPE_CHARACTER then
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
+	else
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+	end
 	log(("%s bounded to profile %s"):format(companionID, profileID));
 end
 TRP3_API.companions.player.boundPlayerCompanion = boundPlayerCompanion;
 
-local function unboundPlayerCompanion(companionID)
+local function unboundPlayerCompanion(companionID, targetType)
 	local profileID = playerProfileAssociation[companionID];
 	assert(profileID, "Cannot find any bound for companionID " .. tostring(companionID));
 	playerProfileAssociation[companionID] = nil;
 	if profileID and playerCompanions[profileID] and playerCompanions[profileID].links then
 		playerCompanions[profileID].links[companionID] = nil;
 	end
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+	if targetType == TYPE_CHARACTER then
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
+	else
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
+	end
 	log(("%s unbounded"):format(companionID));
 end
 TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
@@ -169,6 +183,29 @@ local registerCompanions;
 
 function TRP3_API.companions.player.getProfiles()
 	return playerCompanions;
+end
+
+local GetNumMounts, GetMountInfo, IsMounted = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo, IsMounted;
+local function getCurrentMountSpellID()
+	if IsMounted() then
+		for i = 1, GetNumMounts() do
+			local creatureName, spellID, icon, active = GetMountInfo(i);
+			if active then
+				return spellID;
+			end
+		end
+	end
+end
+TRP3_API.companions.player.getCurrentMountSpellID = getCurrentMountSpellID;
+
+function TRP3_API.companions.player.getCurrentMountProfile()
+	local currentMountSpellID = getCurrentMountSpellID();
+	if currentMountSpellID then
+		local currentMountID = tostring(currentMountSpellID);
+		if playerProfileAssociation[currentMountID] then
+			return playerCompanions[playerProfileAssociation[currentMountID]], playerProfileAssociation[currentMountID];
+		end
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
