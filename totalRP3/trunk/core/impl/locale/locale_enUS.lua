@@ -503,6 +503,7 @@ Possible status:
 		CO_ANCHOR_BOTTOM_RIGHT = "Bottom right",
 		CO_ANCHOR_LEFT = "Left",
 		CO_ANCHOR_RIGHT = "Right",
+		CO_ANCHOR_CURSOR = "Show on cursor",
 		CO_CHAT = "Chat settings",
 		CO_CHAT_MAIN = "Chat main settings",
 		CO_CHAT_MAIN_NAMING = "Naming method",

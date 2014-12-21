@@ -24,7 +24,7 @@ local colorCode, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.t
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
-local ui_CharacterTT = TRP3_CharacterTooltip;
+local ui_CharacterTT, ui_CompanionTT = TRP3_CharacterTooltip, TRP3_CompanionTooltip;
 local getCharacterUnitID = Utils.str.getUnitID;
 local get = TRP3_API.profile.getData;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -766,17 +766,19 @@ local function show(targetType, targetID, targetMode)
 	end
 end
 
+local function getFadeTime()
+	return getAnchoredPosition() == "ANCHOR_CURSOR" and 0 or 0.5;
+end
+
 local function onUpdate(self, elapsed)
 	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
-	if (self.TimeSinceLastUpdate > 0.5) then
+	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
 			if self.target ~= getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
-
-				-- TODO Really bad, check if we can use TipTac's fade out options
-				if TipTac then
+				if getAnchoredPosition() == "ANCHOR_CURSOR" then
 					self:Hide();
 				else
 					self:FadeOut();
@@ -856,6 +858,7 @@ local function onModuleInit()
 		{loc("CO_ANCHOR_BOTTOM"), "ANCHOR_BOTTOM"},
 		{loc("CO_ANCHOR_BOTTOM_LEFT"), "ANCHOR_BOTTOMLEFT"},
 		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"},
+		{loc("CO_ANCHOR_CURSOR"), "ANCHOR_CURSOR"},
 	};
 
 	-- Build configuration page

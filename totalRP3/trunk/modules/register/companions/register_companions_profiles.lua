@@ -272,7 +272,7 @@ local function onBoundClicked(button)
 	tinsert(values, {loc("REG_COMPANION_BOUND_TO"),
 		{
 			{loc("PR_CO_BATTLE"), 4},
---			{loc("PR_CO_MOUNT"), 5},
+			{loc("PR_CO_MOUNT"), 5},
 			{loc("REG_COMPANION_BOUND_TO_TARGET"), 6},
 		}
 	});

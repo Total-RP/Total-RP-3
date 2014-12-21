@@ -27,6 +27,15 @@
 			</OnHide>
 		</Scripts>
 	</GameTooltip>
+
+	<!-- Companion tooltip -->
+	<GameTooltip name="TRP3_CompanionTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
 	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
