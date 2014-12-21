@@ -774,7 +774,13 @@ local function onUpdate(self, elapsed)
 			if self.target ~= getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
-				self:FadeOut();
+
+				-- TODO Really bad, check if we can use TipTac's fade out options
+				if TipTac then
+					self:Hide();
+				else
+					self:FadeOut();
+				end
 			end
 		end
 	end
@@ -849,7 +855,7 @@ local function onModuleInit()
 		{loc("CO_ANCHOR_BOTTOM_RIGHT"), "ANCHOR_BOTTOMRIGHT"},
 		{loc("CO_ANCHOR_BOTTOM"), "ANCHOR_BOTTOM"},
 		{loc("CO_ANCHOR_BOTTOM_LEFT"), "ANCHOR_BOTTOMLEFT"},
-		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"}
+		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"},
 	};
 
 	-- Build configuration page
