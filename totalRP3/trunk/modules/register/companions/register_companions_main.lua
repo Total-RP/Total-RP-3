@@ -198,7 +198,7 @@ local function getCurrentMountSpellID()
 end
 TRP3_API.companions.player.getCurrentMountSpellID = getCurrentMountSpellID;
 
-function TRP3_API.companions.player.getCurrentMountProfile()
+local function getCurrentMountProfile()
 	local currentMountSpellID = getCurrentMountSpellID();
 	if currentMountSpellID then
 		local currentMountID = tostring(currentMountSpellID);
@@ -207,6 +207,7 @@ function TRP3_API.companions.player.getCurrentMountProfile()
 		end
 	end
 end
+TRP3_API.companions.player.getCurrentMountProfile = getCurrentMountProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Exchange
@@ -218,6 +219,18 @@ local function getCompanionVersionNumbers(profileID)
 	local profile = playerCompanions[profileID];
 	if profile and profile.data then
 		return profile.data.v, profile.PE.v;
+	end
+end
+
+function TRP3_API.companions.player.getCurrentMountQueryLine()
+	local currentMountSpellID = getCurrentMountSpellID();
+	if currentMountSpellID then
+		local queryLine = tostring(currentMountSpellID);
+		local summonedMountProfile, summonedMountProfileID = getCurrentMountProfile();
+		if summonedMountProfile then
+			return queryLine .. "_" .. summonedMountProfileID, getCompanionVersionNumbers(summonedMountProfileID);
+		end
+		return queryLine;
 	end
 end
 

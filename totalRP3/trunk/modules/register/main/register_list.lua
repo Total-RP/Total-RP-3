@@ -54,6 +54,8 @@ local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
+local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -477,7 +479,7 @@ local function decorateCompanionLine(line, index)
 
 	local companionList = "";
 	for companionID, _ in pairs(links) do
-		companionList = companionList .. "- |cff00ff00" .. companionID .. "|r\n";
+		companionList = companionList .. "- |cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r\n";
 	end
 	local masterList = "";
 	for ownerID, _ in pairs(masters) do

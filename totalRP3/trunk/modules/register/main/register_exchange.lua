@@ -39,6 +39,7 @@ local getAboutExchangeData = playerAPI.getAboutExchangeData;
 local getMiscExchangeData = playerAPI.getMiscExchangeData;
 local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
 local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
+local getCurrentMountQueryLine = TRP3_API.companions.player.getCurrentMountQueryLine;
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -135,6 +136,11 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_PET] = petLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_PET_V1] = petV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_PET_V2] = petV2 or 0;
+	local mountLine, mountV1, mountV2 = getCurrentMountQueryLine();
+	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT] = mountLine or "";
+	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
+	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
+
 
 	return query;
 end
@@ -152,6 +158,20 @@ local infoTypeTab = {
 };
 
 local COMPANION_PREFIX = "comp_";
+
+local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2)
+	if petLine and petV1 and petV2 then
+		local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
+		if queryV1 then
+			debug(("Should update v1 for companion profileID %s"):format(profileID));
+			queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
+		end
+		if queryV2 then
+			debug(("Should update v2 for companion profileID %s"):format(profileID));
+			queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
+		end
+	end
+end
 
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
@@ -205,33 +225,19 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
 		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
 		local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
-		if battlePetLine and battlePetV1 and battlePetV2 then
-			local profileID, queryV1, queryV2 = boundAndCheckCompanion(battlePetLine, senderID, senderProfileID,  battlePetV1, battlePetV2);
-			if queryV1 then
-				debug(("Should update v1 for companion profileID %s"):format(profileID));
-				queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
-			end
-			if queryV2 then
-				debug(("Should update v2 for companion profileID %s"):format(profileID));
-				queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
-			end
-		end
+		parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
 
 		-- Pet
 		local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
 		local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
 		local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
-		if petLine and petV1 and petV2 then
-			local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
-			if queryV1 then
-				debug(("Should update v1 for companion profileID %s"):format(profileID));
-				queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
-			end
-			if queryV2 then
-				debug(("Should update v2 for companion profileID %s"):format(profileID));
-				queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
-			end
-		end
+		parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
+
+		-- Mount
+		local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
+		local mountV1 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1];
+		local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
+		parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
 	end
 end
 
@@ -331,14 +337,14 @@ local function sendQuery(unitID)
 end
 
 local function onMouseOverCharacter(unitID)
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and CheckInteractDistance("mouseover", 4) and isUnitIDKnown(unitID) then
+	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") then
 		sendQuery(unitID);
 	end
 end
 
 local function onMouseOverCompanion(companionFullID)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and CheckInteractDistance("mouseover", 4) and isUnitIDKnown(ownerID) then
+	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and isUnitIDKnown(ownerID) then
 		sendQuery(ownerID);
 	end
 end

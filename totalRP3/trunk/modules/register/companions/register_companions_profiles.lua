@@ -342,7 +342,7 @@ local function createNewAndBound(companionID, targetType)
 		end
 	end,
 	nil,
-	companionID
+	getCompanionNameFromSpellID(companionID)
 	);
 end
 
