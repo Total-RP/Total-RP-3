@@ -44,7 +44,7 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = false;
+local showLog = true;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -635,8 +635,13 @@ end
 
 Utils.music.play = function(music)
 	assert(music, "Music can't be nil.")
-	Log.log("Playing music: " .. music);
-	PlayMusic("Sound\\Music\\" .. music .. ".mp3");
+	if type(music) == "number" then
+		Log.log("Playing sound: " .. music);
+		PlaySoundKitID(music);
+	else
+		Log.log("Playing music: " .. music);
+		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
+	end
 end
 
 Utils.music.stop = function()
@@ -644,7 +649,7 @@ Utils.music.stop = function()
 end
 
 Utils.music.getTitle = function(musicURL)
-	return musicURL:match("[%\\]?([^%\\]+)$");
+	return type(musicURL) == "number" and musicURL or musicURL:match("[%\\]?([^%\\]+)$");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
