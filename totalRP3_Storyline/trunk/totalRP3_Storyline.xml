@@ -42,7 +42,7 @@
 
 	<Frame name="StandardParchmentFrame" virtual="true">
 		<Layers>
-			<Layer level="BORDER">
+			<Layer level="OVERLAY">
 
 				<!-- CORNERS -->
 				<Texture parentKey="BorderTopLeft" file="Interface\QuestionFrame\Question-Main">
@@ -112,7 +112,7 @@
 					<TexCoords left="0.00000000" right="1.00000000" top="0.34375000" bottom="0.52148438"/>
 				</Texture>
 			</Layer>
-			<Layer level="BORDER" textureSubLevel="2">
+			<Layer level="OVERLAY" textureSubLevel="2">
 				<Texture parentKey="LeftHide" inherits="QuestChoiceLeftHide">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.BorderTopLeft" relativePoint="BOTTOMLEFT" x="10"
