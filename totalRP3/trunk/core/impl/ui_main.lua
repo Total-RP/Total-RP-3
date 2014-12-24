@@ -49,10 +49,6 @@ TRP3_API.navigation.minimapicon.hide = hideMinimapButton;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
-	if TipTac then
-		TipTac:AddModifiedTip(TRP3_CharacterTooltip);
-		TipTac:AddModifiedTip(TRP3_MainTooltip);
-	end
 
 	registerConfigKey(CONFIG_MINIMAP_SHOW, true);
 	registerConfigKey(CONFIG_MINIMAP_POSITION, {});

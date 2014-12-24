@@ -288,6 +288,8 @@ local function getUnitID(targetType)
 	end
 end
 
+TRP3_API.register.getUnitID = getUnitID;
+
 --- Returns a not nil table containing the character information.
 -- The returned table is not nil, but could be empty.
 local function getCharacterInfoTab(unitID)
