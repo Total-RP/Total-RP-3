@@ -38,6 +38,7 @@ local tcopy = Utils.table.copy;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
@@ -99,7 +100,7 @@ local function boundPlayerCompanion(companionID, profileID, targetType)
 		end
 	end
 	playerProfileAssociation[companionID] = profileID;
-	if targetType == TYPE_CHARACTER then
+	if targetType == TYPE_MOUNT then
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 	else
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
@@ -115,7 +116,7 @@ local function unboundPlayerCompanion(companionID, targetType)
 	if profileID and playerCompanions[profileID] and playerCompanions[profileID].links then
 		playerCompanions[profileID].links[companionID] = nil;
 	end
-	if targetType == TYPE_CHARACTER then
+	if targetType == TYPE_MOUNT then
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 	else
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id .. "_" .. companionID, profileID);
@@ -310,33 +311,44 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 	end
 
 	companionFullID = ownerID .. "_" .. companionID;
-
-	if profileID then
-		-- Check profile exists
-		if not registerCompanions[profileID] then
-			registerCreateProfile(profileID);
-		end
-		local profile = registerCompanions[profileID];
-
-		-- Check profile link
-		registerProfileAssociation[companionFullID] = profileID;
-		if not profile.links[companionFullID] then
-			-- Unbound from others
-			for id, profile in pairs(registerCompanions) do
-				profile.links[companionFullID] = nil;
+	local isMount = companionID:match("^%d+$");
+	if companionID and companionID:len() > 0 then
+		if profileID then
+			-- Check profile exists
+			if not registerCompanions[profileID] then
+				registerCreateProfile(profileID);
 			end
-			profile.links[companionFullID] = 1;
-			log(("Bound %s to profile %s"):format(companionFullID, profileID));
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID);
-		end
+			local profile = registerCompanions[profileID];
 
-		return profileID, profile.data.v ~= v1, profile.PE.v ~= v2;
-	else
-		local old = registerProfileAssociation[companionFullID];
-		registerProfileAssociation[companionFullID] = nil;
-		if old and registerCompanions[old] then
-			registerCompanions[old].links[companionFullID] = nil;
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, nil);
+			-- Check profile link
+			registerProfileAssociation[companionFullID] = profileID;
+			if not profile.links[companionFullID] then
+				-- Unbound from others
+				for id, profile in pairs(registerCompanions) do
+					profile.links[companionFullID] = nil;
+				end
+				profile.links[companionFullID] = 1;
+				log(("Bound %s to profile %s"):format(companionFullID, profileID));
+				if isMount then
+					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
+				else
+					Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID);
+				end
+			end
+
+			return profileID, profile.data.v ~= v1, profile.PE.v ~= v2;
+		else
+			local old = registerProfileAssociation[companionFullID];
+			registerProfileAssociation[companionFullID] = nil;
+			if old and registerCompanions[old] then
+				log(("Unbound %s"):format(companionFullID));
+				registerCompanions[old].links[companionFullID] = nil;
+				if isMount then
+					Events.fireEvent(Events.REGISTER_DATA_UPDATED, ownerID, nil);
+				else
+					Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, nil);
+				end
+			end
 		end
 	end
 end
@@ -392,6 +404,19 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 	end
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+end
+
+function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
+	local buffIndex = 1;
+	local spellBuffID = select(11, UnitAura(unitType, buffIndex));
+	while(spellBuffID) do
+		spellBuffID = select(11, UnitAura(unitType, buffIndex));
+		local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
+		if registerProfileAssociation[companionFullID] then
+			return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
+		end
+		buffIndex = buffIndex + 1;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

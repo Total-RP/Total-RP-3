@@ -706,7 +706,7 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
-			id = "glance_presets",
+			id = "aa_player_c_glance_presets",
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			configText = loc("REG_PLAYER_GLANCE_BAR_TARGET"),
 			condition = function(targetType, unitID)

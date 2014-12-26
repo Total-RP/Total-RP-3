@@ -882,7 +882,7 @@ end);
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
-			id = "aa_page_player",
+			id = "aa_player_a_page",
 			configText = loc("TF_OPEN_CHARACTER"),
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
@@ -893,13 +893,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				openPageByUnitID(unitID);
 			end,
 			adapter = function(buttonStructure, unitID, currentTargetType)
-				buttonStructure.tooltip = loc("TF_OPEN_CHARACTER");
-				buttonStructure.tooltipSub = nil;
+				buttonStructure.tooltip = loc("REG_PLAYER");
+				buttonStructure.tooltipSub =  "|cffffff00" .. loc("CM_CLICK") .. ": |r" .. loc("TF_OPEN_CHARACTER");
 				buttonStructure.alert = nil;
 				if unitID ~= Globals.player_id and hasProfile(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					if profile.about and not profile.about.read then
-						buttonStructure.tooltipSub = loc("REG_TT_NOTIF");
+						buttonStructure.tooltipSub =  "|cff00ff00" .. loc("REG_TT_NOTIF") .. "\n" .. buttonStructure.tooltipSub;
 						buttonStructure.alert = true;
 					end
 				end

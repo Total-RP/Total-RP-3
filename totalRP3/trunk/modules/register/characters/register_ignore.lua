@@ -208,7 +208,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		-- Ignore button on target frame
 		local player_id = TRP3_API.globals.player_id;
 		TRP3_API.target.registerButton({
-			id = "z_ignore",
+			id = "aa_player_z_ignore",
 			configText = loc("TF_IGNORE"),
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
@@ -223,7 +223,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		});
 
 		TRP3_API.target.registerButton({
-			id = "r_relation",
+			id = "aa_player_d_relation",
 			configText = loc("REG_RELATION"),
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)

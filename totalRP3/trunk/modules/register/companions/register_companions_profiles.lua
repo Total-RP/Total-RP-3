@@ -347,11 +347,17 @@ local function createNewAndBound(companionID, targetType)
 end
 
 local function onCompanionProfileSelection(value, companionID, targetType)
+	if targetType == TYPE_CHARACTER then
+		targetType = TYPE_MOUNT;
+	end
 	if value == 0 then
 		openProfile(getCompanionProfileID(companionID));
 		openMainFrame();
 	elseif value == 1 then
 		unboundPlayerCompanion(companionID, targetType);
+		if getCurrentPageID() == TRP3_API.navigation.page.id.COMPANIONS_PROFILES then
+			uiInitProfileList();
+		end
 		displayMessage(loc("REG_COMPANION_LINKED_NO"):format("|cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r"));
 	elseif value == 2 then
 		createNewAndBound(companionID, targetType);
@@ -390,6 +396,8 @@ local function companionProfileSelectionList(unitID, targetType, buttonStructure
 		ownerID = unitID;
 		if ownerID == Globals.player_id then
 			companionID = tostring(getCurrentMountSpellID());
+		else
+			companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 		end
 	else
 		companionFullID = unitID;
@@ -525,7 +533,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		-- Target bar button for pets
 		TRP3_API.target.registerButton({
-			id = "companion_profile",
+			id = "bb_companion_profile",
 			configText = loc("REG_COMPANION_TF_PROFILE"),
 			condition = function(targetType, unitID)
 				if isTargetTypeACompanion(targetType) then
@@ -567,32 +575,59 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		-- Target bar button for mounts
 		TRP3_API.target.registerButton({
-			id = "companion_profile_mount",
+			id = "bb_companion_profile_mount",
 			configText = loc("REG_COMPANION_TF_PROFILE_MOUNT"),
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
 				if unitID == Globals.player_id then
 					return getCurrentMountSpellID() ~= nil;
 				end
-				return false;
+				local companionFullID, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+				return profileID ~= nil;
 			end,
 			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
 			adapter = function(buttonStructure, unitID, targetType)
-				buttonStructure.tooltip = loc("TF_OPEN_COMPANION");
+				buttonStructure.tooltip = loc("TF_OPEN_MOUNT");
+				buttonStructure.alert = nil;
+				buttonStructure.tooltipSub = nil;
 				if unitID == Globals.player_id then
 					local profile, profileID = getCurrentMountProfile();
+					buttonStructure.tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. ": |r" .. loc("PR_PROFILEMANAGER_ACTIONS");
 					if profile then
-						buttonStructure.tooltip = loc("PR_CO_MOUNT") .. ": |cff00ff00" .. profile.profileName;
-						if profile.data and profile.data.IC then
+						if profile and profile.data and profile.data.NA then
+							buttonStructure.tooltip = loc("PR_CO_MOUNT") .. ": |cff00ff00" .. profile.data.NA;
+						else
+							buttonStructure.tooltip = loc("PR_CO_MOUNT") .. ": |cff00ff00" .. profile.profileName;
+						end
+						if profile and profile.data and profile.data.IC then
 							buttonStructure.icon = profile.data.IC;
+						else
+							buttonStructure.icon = Globals.icons.unknown;
 						end
 					else
 						buttonStructure.icon = "ability_mount_charger";
+						buttonStructure.tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. ": |r" .. loc("REG_COMPANION_TF_BOUND_TO");
 						buttonStructure.tooltip = loc("PR_CO_MOUNT");
 					end
 				else
-					buttonStructure.icon = "ability_mount_charger"; -- MOCKUP
+					local companionFullID, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+					local profile = getCompanionRegisterProfile(companionFullID);
+					buttonStructure.tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. ": |r" .. loc("TF_OPEN_MOUNT");
+					if profile and profile.data and profile.data.NA then
+						buttonStructure.tooltip = loc("PR_CO_MOUNT") .. ": |cff00ff00" .. profile.data.NA;
+					else
+						buttonStructure.tooltip = loc("PR_CO_MOUNT");
+					end
+					if profile and profile.data and profile.data.IC then
+						buttonStructure.icon = profile.data.IC;
+					else
+						buttonStructure.icon = Globals.icons.unknown;
+					end
+					if profile and profile.data and profile.data.read == false then
+						buttonStructure.tooltipSub = "|cff00ff00" .. loc("REG_TT_NOTIF") .. "\n" .. buttonStructure.tooltipSub;
+						buttonStructure.alert = true;
+					end
 				end
 			end,
 		});

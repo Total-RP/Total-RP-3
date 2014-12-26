@@ -572,6 +572,7 @@ Possible status:
 		TB_SWITCH_PROFILE = "Switch to another profile",
 		TF_OPEN_CHARACTER = "Show character page",
 		TF_OPEN_COMPANION = "Show companion page",
+		TF_OPEN_MOUNT = "Show mount page",
 		TF_PLAY_THEME = "Play character theme",
 		TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
 		TF_IGNORE = "Ignore player",

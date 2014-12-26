@@ -723,19 +723,22 @@ local getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountProfile
 local getCurrentMountSpellID = TRP3_API.companions.player.getCurrentMountSpellID;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 
-local function getMountProfile(ownerID)
+local function getMountProfile(ownerID, companionFullID)
 	if ownerID == Globals.player_id then
 		local profile, profileID = getCurrentMountProfile();
+		return profile;
+	elseif companionFullID then
+		local profile = getCompanionRegisterProfile(companionFullID);
 		return profile;
 	end
 end
 
-local function writeTooltipForMount(ownerID, mountSpellID, mountName)
+local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	if isIDIgnored(ownerID) then
 		return;
 	end
 
-	local profile = getMountProfile(ownerID);
+	local profile = getMountProfile(ownerID, companionFullID);
 	local info = profile.data or EMPTY;
 	local PE = profile.PE or EMPTY;
 
@@ -857,7 +860,14 @@ local function show(targetType, targetID, targetMode)
 						local mountSpellID = getCurrentMountSpellID();
 						local mountName = getCompanionNameFromSpellID(mountSpellID);
 						ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
-						writeTooltipForMount(targetID, mountSpellID, mountName);
+						writeTooltipForMount(Globals.player_id, nil, mountName);
+					else
+						local companionFullID, profileID, mountSpellID = TRP3_API.companions.register.getUnitMount(targetID, "mouseover");
+						if profileID then
+							local mountName = getCompanionNameFromSpellID(mountSpellID);
+							ui_CompanionTT:SetOwner(ui_CharacterTT, "ANCHOR_TOPLEFT");
+							writeTooltipForMount(targetID, companionFullID, mountName);
+						end
 					end
 				elseif targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET then
 					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
