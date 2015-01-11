@@ -387,7 +387,7 @@ Ces outils vous permettent aussi d'insérer |cffffff00 des images, des icônes o
 		REG_COMPANION_TF_CREATE = "Créer un nouveau profil",
 		REG_COMPANION_TF_NO = "Pas de profil",
 		REG_COMPANION_TF_OPEN = "Ouvrir la page",
-		REG_COMPANION_TF_OWNER = "%s de %s",
+		REG_COMPANION_TF_OWNER = "Maître: %s",
 		REG_COMPANION_TF_PROFILE = "Profil de compagnon",
 		REG_COMPANION_TF_PROFILE_MOUNT = "Profil de monture", -- Needs review
 		REG_COMPANION_TF_UNBOUND = "Délier le profil",

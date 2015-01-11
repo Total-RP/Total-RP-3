@@ -390,7 +390,7 @@ Diese Tools erlauben dir auch das Einfügen von |cffffff00Bildern, Icons oder Li
 		REG_COMPANION_TF_CREATE = "Neues Profil erstellen", -- Needs review
 		REG_COMPANION_TF_NO = "Kein Profil",
 		REG_COMPANION_TF_OPEN = "Seite öffnen",
-		REG_COMPANION_TF_OWNER = "%ss %s", -- Needs review
+		REG_COMPANION_TF_OWNER = "Owner: %s", -- Needs review
 		REG_COMPANION_TF_PROFILE = "Begleiterprofil", -- Needs review
 		REG_COMPANION_TF_PROFILE_MOUNT = "Reittierprofil", -- Needs review
 		REG_COMPANION_TF_UNBOUND = "Profil abwählen",

@@ -664,7 +664,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 		ownerFinalName = ownerColor .. ownerFinalName .. "|r";
 		if targetMode == TYPE_PET then
-			ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName, companionFamily);
+			ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 		elseif targetMode == TYPE_BATTLE_PET then
 			ownerFinalName = UNITNAME_TITLE_COMPANION:format(ownerFinalName);
 		end
@@ -680,11 +680,11 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		local text;
 		if targetMode == TYPE_PET then
 			local creatureType = UnitCreatureType(targetType);
-			text = TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:format(UnitLevel(targetType) or "??", creatureType);
+			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitLevel(targetType) or "??", creatureType);
 		elseif targetMode == TYPE_BATTLE_PET then
 			local type = UnitBattlePetType(targetType);
 			local type = _G["BATTLE_PET_DAMAGE_NAME_" .. type];
-			text = TOOLTIP_WILDBATTLEPET_LEVEL_CLASS:format(UnitBattlePetLevel(targetType) or "??", type);
+			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitBattlePetLevel(targetType) or "??", type);
 		end
 
 		tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
