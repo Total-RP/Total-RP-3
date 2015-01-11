@@ -18,7 +18,7 @@
 
 * Fixed an issue with the data broker module that was hiding the cloak at each interface load. _Thanks to [Elennoko] and [Arakara][Arakara cloak] for reporting this issue._
 * Fixed an issue where information transfers were not correctly initialized between two Total RP 3 users on mouseover.
-* Modified companions tooltip to fix an issue with several languages. *Thanks to [Arakara][Arakara pet] for reporting this issue*
+* Modified companions tooltip to fix an issue with several languages. *Thanks to [Arakara][Arakara pet] for reporting this issue.*
 * Fixed an issue with battle pet types using the wrong global string in the tooltip.
 * Fixed an issue with the Russian font (requires Total RP 3 to be set in Russian).
 
