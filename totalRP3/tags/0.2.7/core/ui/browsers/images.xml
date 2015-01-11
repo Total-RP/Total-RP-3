@@ -1,0 +1,147 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\..\..\UI.xsd">
+	
+<!--
+	Total RP 3
+	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+	
+	<!-- Images browser  -->
+    <Frame name="TRP3_ImageBrowser" parent="TRP3_PopupsFrame" hidden="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		</Backdrop>
+		<Size x="420" y="400"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_API.popup.hidePopups();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Frame name="TRP3_ImageBrowserContent">
+				<Size x="300" y="295"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-35"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture name="TRP3_ImageBrowserContentTexture">
+							<Size x="250" y="0"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color b="1" r="1" g="1"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_ImageBrowserContentURL" text="[URL]" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="LEFT" x="25" y="0"/>
+								<Anchor point="RIGHT" x="-25" y="0"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="TRP3_ImageBrowserSelect" inherits="TRP3_CommonButton">
+						<Size x="120" y="20"/>
+						<Anchors>	
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</Button>
+					<Slider name="TRP3_ImageBrowserContentSlider" inherits="OptionsSliderTemplate">
+						<Size x="15" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="RIGHT" x="5" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								TRP3_ImageBrowserContentSliderText:SetText("");
+								TRP3_ImageBrowserContentSliderHigh:SetText("");
+								TRP3_ImageBrowserContentSliderLow:SetText("");
+								self:SetMinMaxValues(0, 6);
+								self:SetValueStep(1);
+								self:SetOrientation("VERTICAL");
+							</OnLoad>
+						</Scripts>
+					</Slider>
+				</Frames>
+			</Frame>
+			<!-- Filter section -->
+			<Frame name="TRP3_ImageBrowserFilter">
+				<Size x="0" y="60"/>
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_ImageBrowserTotal" text="[placeholder total]" inherits="GameFontNormal">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-12"/>
+								<Anchor point="TOPRIGHT" x="0" y="-12"/>
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<EditBox name="TRP3_ImageBrowserFilterBox" inherits="TRP3_TitledEditBox">
+						<Anchors>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+					</EditBox>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_ImageBrowserTitle" text="[IMAGE BROWSER]" inherits="GameFontNormalLarge">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="-17"/>
+						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+					</Anchors>
+					<Color b="0.95" r="0.95" g="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+</Ui>
