@@ -6,6 +6,7 @@
 ## Bug fixes
 
 * Fixed an issue with the data broker module that was hiding the cloak at each interface load. _Thanks to [Elennoko] and [Arakara] for reporting this issue._
+* Fixed an issue where information transfers were not correctly initialized between two Total RP 3 users on mouseover.
 
 
 [Elennoko]: http://www.curse.com/addons/wow/total-rp-3#c128
