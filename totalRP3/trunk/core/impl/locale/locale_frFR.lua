@@ -76,6 +76,7 @@ local LOCALE = {
 		CO_ANCHOR_BOTTOM = "Bas",
 		CO_ANCHOR_BOTTOM_LEFT = "Bas-gauche",
 		CO_ANCHOR_BOTTOM_RIGHT = "Bas-droite",
+		CO_ANCHOR_CURSOR = "Afficher sur le curseur",
 		CO_ANCHOR_LEFT = "Gauche",
 		CO_ANCHOR_RIGHT = "Droite",
 		CO_ANCHOR_TOP = "Haut",
@@ -138,12 +139,10 @@ Cela provoquera une rechargement de l'interface.]=],
 		CO_GLANCE_TT_ANCHOR = "Point d'ancrage des infobulles",
 		CO_MINIMAP_BUTTON = "Bouton de la minicarte",
 		CO_MINIMAP_BUTTON_FRAME = "Cadre d'ancrage",
-		CO_MINIMAP_BUTTON_FRAME_TT = "|cff00ff00Pour déplacer le bouton relativement à ce cadre vous pouvez glisser et déposer le bouton.",
-		CO_MINIMAP_BUTTON_LOCK = "Verrouiller le bouton",
-		CO_MINIMAP_BUTTON_LOCK_TT = "Empêche le bouton d'être déplacé.",
 		CO_MINIMAP_BUTTON_RESET = "Réinitialiser la position",
 		CO_MINIMAP_BUTTON_RESET_BUTTON = "Réinitialiser",
-		CO_MINIMAP_BUTTON_RESET_TT = "Réinitialiser le bouton dans le coin inférieur gauche du cadre d'ancrage.",
+		CO_MINIMAP_BUTTON_SHOW_HELP = "Si vous utilisez un autre add-on pour afficher le bouton de la mini-carte de Total RP 3 (FuBar, Titan, Bazooka) vous pouvez cacher le bouton par défaut.",
+		CO_MINIMAP_BUTTON_SHOW_TITLE = "Afficher le bouton de la mini-carte",
 		COM_LIST = "Liste des commandes :",
 		CO_MODULES = "Statut des modules",
 		CO_MODULES_DISABLE = "Désactiver le module",
@@ -206,6 +205,8 @@ Statuts possibles:
 		CO_TOOLBAR_ICON_SIZE = "Taille des icônes",
 		CO_TOOLBAR_MAX = "Nombre maximum d'icônes par ligne",
 		CO_TOOLBAR_MAX_TT = "Réglez à 1 si vous désirez afficher la barre verticalement !",
+		CO_TOOLBAR_SHOW_ON_LOGIN = "Afficher la barre d'outils à la connexion",
+		CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "Si vous ne souhaitez plus que la barre d'outils de Total RP 3 s'affiche automatiquement à la connexion, vous pouvez décocher cette option.",
 		CO_TOOLTIP = "Infobulles",
 		CO_TOOLTIP_ANCHOR = "Point d'ancrage",
 		CO_TOOLTIP_ANCHORED = "Cadre ancré",
@@ -274,6 +275,10 @@ aux autres que vous débutez dans le roleplay.]=],
 		DB_TUTO_2 = [=[Certains événements produisent des notifications. C'est un moyen rapide de voir facilement ce qu'il se passe dans Total RP 3.
 
 Toutes les notifications sont configurables dans la |cffff9900page des paramètres généraux|r.]=],
+		DTBK_AFK = "Total RP 3 - ABS/NPD",
+		DTBK_CLOAK = "Total RP 3 - Cape",
+		DTBK_HELMET = "Total RP 3 - Casque",
+		DTBK_RP = "Total RP 3 - RP/HRP",
 		GEN_NEW_VERSION_AVAILABLE = [=[Une nouvelle version pour Total RP 3 est disponible.
 
 |cffff0000Votre version: %s
@@ -294,6 +299,7 @@ Ce message ne s'affichera qu'une seule fois par session et peut être désactiv�
 		PR_CO_COUNT = "%s familiers/montures liées à ce profil.",
 		PR_CO_EMPTY = "Pas de profil compagnon",
 		PR_CO_MASTERS = "Maîtres",
+		PR_CO_MOUNT = "Monture",
 		PR_CO_NEW_PROFILE = "Nouveau profil compagnon",
 		PR_CO_PET = "Familier",
 		PR_CO_PROFILE_DETAIL = "Ce profil est actuellement lié à",
@@ -367,7 +373,14 @@ Changer le nom ne changera aucun lien entre ce profil et vos personnages]=],
 		PR_PROFILES = "Profils",
 		PR_UNUSED_PROFILE = "Ce profil n'est actuellement lié à aucun personnage WoW.",
 		REG_COMPANION = "Compagnon",
+		REG_COMPANION_BOUNDS = "Liens",
+		REG_COMPANION_BOUND_TO = "Lier à ...",
+		REG_COMPANION_BOUND_TO_TARGET = "Cible",
+		REG_COMPANION_BROWSER_BATTLE = "Navigateur de mascottes",
+		REG_COMPANION_BROWSER_MOUNT = "Navigateur de montures",
 		REG_COMPANION_INFO = "Informations",
+		REG_COMPANION_LINKED = "Le compagnon %s est maintenant lié au profil %s.",
+		REG_COMPANION_LINKED_NO = "Le compagnon %s n'est plus lié à un profil.",
 		REG_COMPANION_NAME = "Nom",
 		REG_COMPANION_NAME_COLOR = "Couleur du nom",
 		REG_COMPANION_PAGE_TUTO_C_1 = "Consulter",
@@ -383,15 +396,17 @@ Vous pouvez choisir une |cffffff00texture d'arrière-plan|r pour la description.
 Ces outils vous permettent aussi d'insérer |cffffff00 des images, des icônes ou un lien vers un site web externe|r.]=],
 		REG_COMPANION_PROFILES = "Profils de compagnons",
 		REG_COMPANIONS = "Compagnons",
+		REG_COMPANION_TARGET_NO = "Votre cible n'est pas un familier, un démon, une goule, un élémentaire de mage ou une mascotte renommée.",
 		REG_COMPANION_TF_BOUND_TO = "Sélectionner un profil",
 		REG_COMPANION_TF_CREATE = "Créer un nouveau profil",
 		REG_COMPANION_TF_NO = "Pas de profil",
 		REG_COMPANION_TF_OPEN = "Ouvrir la page",
-		REG_COMPANION_TF_OWNER = "Maître: %s",
+		REG_COMPANION_TF_OWNER = "Maître : %s",
 		REG_COMPANION_TF_PROFILE = "Profil de compagnon",
-		REG_COMPANION_TF_PROFILE_MOUNT = "Profil de monture", -- Needs review
+		REG_COMPANION_TF_PROFILE_MOUNT = "Profil de monture",
 		REG_COMPANION_TF_UNBOUND = "Délier le profil",
 		REG_COMPANION_TITLE = "Titre",
+		REG_COMPANION_UNBOUND = "Délier ...",
 		REG_DELETE_WARNING = [=[Êtes-vous sûr de vouloir supprimer le profil de %s?
 ]=],
 		REG_IGNORE_TOAST = "Personnage ignoré",
@@ -564,16 +579,16 @@ Vous pouvez utiliser un |c0000ff00surnom |r!]=],
 
 Cependant, vous devriez éviter les répétitions, s'il n'y a aucune information supplémentaire à mentionner.]=],
 		REG_PLAYER_GLANCE = "Coup d'œil",
-		REG_PLAYER_GLANCE_BAR_DELETED = "Le groupe d'emplacements |cffff9900%s|r a été supprimé.", -- Needs review
-		REG_PLAYER_GLANCE_BAR_EMPTY = "Le nom du groupe ne peut être vide.", -- Needs review
-		REG_PLAYER_GLANCE_BAR_LOAD = "Groupe d'emplacements", -- Needs review
-		REG_PLAYER_GLANCE_BAR_LOAD_SAVE = "Groupe d'emplacements", -- Needs review
+		REG_PLAYER_GLANCE_BAR_DELETED = "Le groupe d'emplacements |cffff9900%s|r a été supprimé.",
+		REG_PLAYER_GLANCE_BAR_EMPTY = "Le nom du groupe ne peut pas être vide.",
+		REG_PLAYER_GLANCE_BAR_LOAD = "Groupe d'emplacements",
+		REG_PLAYER_GLANCE_BAR_LOAD_SAVE = "Groupe d'emplacements",
 		REG_PLAYER_GLANCE_BAR_NAME = [=[Merci d'entrer le nom du groupe.
 
-|cff00ff00Note: Si ce nom est déjà utilisé par un autre groupe, ce dernier sera remplacé.]=], -- Needs review
-		REG_PLAYER_GLANCE_BAR_SAVE = "Sauvegarder comme groupe", -- Needs review
-		REG_PLAYER_GLANCE_BAR_SAVED = "Le groupe d'emplacements |cff00ff00%s|r a été supprimé.", -- Needs review
-		REG_PLAYER_GLANCE_BAR_TARGET = "Groupe de \"Coup d’œil\"", -- Needs review
+|cff00ff00Note: Si ce nom est déjà utilisé par un autre groupe, ce dernier sera remplacé.]=],
+		REG_PLAYER_GLANCE_BAR_SAVE = "Sauvegarder comme groupe",
+		REG_PLAYER_GLANCE_BAR_SAVED = "Le groupe d'emplacements |cff00ff00%s|r a été supprimé.",
+		REG_PLAYER_GLANCE_BAR_TARGET = "Groupe de \"Coup d’œil\"",
 		REG_PLAYER_GLANCE_CONFIG = [=[|cffffff00Clic gauche:|r Configurer l'emplacement
 |cffffff00Clic droit:|r Activer/Désactiver l'emplacement
 |cffffff00Glisser-déposer:|r Réorganiser les emplacements]=],
@@ -706,9 +721,9 @@ Exemple de |c0000ff00titres appropriés |r:
 - Magus de la Tour de Hurlevent,
 - Diplomate pour le Gouvernement Draenei,
 - etc.]=],
-		REG_PLAYER_TRP2_PIERCING = "Piercings", -- Needs review
-		REG_PLAYER_TRP2_TATTOO = "Tatouages", -- Needs review
-		REG_PLAYER_TRP2_TRAITS = "Traits du visage", -- Needs review
+		REG_PLAYER_TRP2_PIERCING = "Piercings",
+		REG_PLAYER_TRP2_TATTOO = "Tatouages",
+		REG_PLAYER_TRP2_TRAITS = "Traits du visage",
 		REG_PLAYER_TUTO_ABOUT_COMMON = [=[|cff00ff00Thème de personnage:|r
 Vous pouvez choisir un |cffffff00thème|r pour votre personnage. Pensez-y comme une |cffffff00musique d'ambiance pour lire la description de votre personnage|r.
 
@@ -806,6 +821,7 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		TF_IGNORE_TT = "|cffffff00Clic gauche:|r Ignorer le joueur",
 		TF_OPEN_CHARACTER = "Afficher la fiche du personnage",
 		TF_OPEN_COMPANION = "Afficher la fiche du familier",
+		TF_OPEN_MOUNT = "Afficher la fiche de la monture",
 		TF_PLAY_THEME = "Jouer le thème du personnage",
 		TF_PLAY_THEME_TT = [=[|cffffff00Clic gauche:|r Jouer |cff00ff00%s
 |cffffff00Clic droit:|r Arrêter le thème]=],
@@ -813,6 +829,10 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		UI_CLOSE_ALL = "Fermer tout",
 		UI_COLOR_BROWSER = "Sélecteur de couleur",
 		UI_COLOR_BROWSER_SELECT = "Choisir une couleur",
+		UI_COMPANION_BROWSER_HELP = "Sélectionner une mascotte",
+		UI_COMPANION_BROWSER_HELP_TT = [=[|cffffff00Attention: |rSeules les mascottes renommées peuvent être associées à un profil.
+
+|cff00ff00Cette section ne liste que ces mascottes.]=],
 		UI_FILTER = "Filtre",
 		UI_ICON_BROWSER = "Navigateur d'icônes",
 		UI_ICON_BROWSER_HELP = "Copier l'icône",
@@ -836,7 +856,6 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
 	}
-
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

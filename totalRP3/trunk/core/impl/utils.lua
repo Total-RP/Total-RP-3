@@ -44,7 +44,7 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = true;
+local showLog = false;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
