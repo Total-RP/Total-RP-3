@@ -592,4 +592,82 @@
 			</PostClick>
 		</Scripts>
 	</Button>
+
+	<Frame name="TRP3_TutorialTooltip" inherits="GlowBoxTemplate" parent="UIParent" hidden="true" frameStrata="FULLSCREEN_DIALOG">
+		<Size x="220" y="100"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Text" inherits="GameFontHighlightLeft">
+					<Size x="190" y="0"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="15" y="-15"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="ArrowUP" inherits="HelpPlateArrowDOWN" hidden="true">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="3"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowDOWN" inherits="HelpPlateArrowUP" hidden="true">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="-3"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowRIGHT" inherits="HelpPlateArrowDOWN" hidden="true">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="3" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowLEFT" inherits="HelpPlateArrowDOWN" hidden="true">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="-3" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="ArrowGlowUP" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="3"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowGlowDOWN" inherits="HelpPlateArrow-GlowUP" hidden="true" alphaMode="ADD" alpha="0.5">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="-3"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowGlowRIGHT" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="3" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="ArrowGlowLEFT" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+					<Size x="53" y="21"/>
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="-3" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				self.Text:SetSpacing(4);
+				SetClampedTextureRotation(self.ArrowLEFT, 270);
+				SetClampedTextureRotation(self.ArrowRIGHT, 90);
+				SetClampedTextureRotation(self.ArrowGlowLEFT, 270);
+				SetClampedTextureRotation(self.ArrowGlowRIGHT, 90);
+			</OnLoad>
+			<OnShow>
+				self:SetHeight(self.Text:GetHeight()+30);
+			</OnShow>
+		</Scripts>
+	</Frame>
 </Ui>

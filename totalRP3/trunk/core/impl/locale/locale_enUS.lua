@@ -621,7 +621,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 |cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
 		PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
 
-|cff00ff00To link a profile to a pet, just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
+|cff00ff00To link a profile to a pet (hunter pet, warlock minion ...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
 		PR_CO_MASTERS = "Masters",
 		PR_CO_EMPTY = "No companion profile",
 		PR_CO_NEW_PROFILE = "New companion profile",
@@ -688,6 +688,8 @@ All notifications are configurable in the |cffff9900general settings page|r.]],
 This will works:|cff00ff00
 - On any item in your bags
 - On any icon in the spellbook|r]],
+		UI_COMPANION_BROWSER_HELP = "Select a battle pet",
+		UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be bound to a profile.\n\n|cff00ff00This section lists these battle pets only.",
 		UI_ICON_SELECT = "Select icon",
 		UI_MUSIC_BROWSER = "Music browser",
 		UI_MUSIC_SELECT = "Select music",

@@ -94,6 +94,38 @@
 							<Anchor point="BOTTOM" x="0" y="10"/>
 						</Anchors>
 					</EditBox>
+					<Button name="TRP3_CompanionBrowserFilterHelp" inherits="TRP3_HelpButton">
+						<Anchors>
+							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+
+								<Texture file="Interface\Calendar\EventNotificationGlow" name="$parentBlink" alpha="0.0" alphaMode="ADD">
+									<Animations>
+										<AnimationGroup name="$parentAnimate" looping="REPEAT">
+											<Alpha duration="0.4" change="0.3" smoothing="IN" order="1"/>
+											<Alpha duration="0.4" change="-0.3" smoothing="OUT" startDelay="0.4" order="1"/>
+										</AnimationGroup>
+									</Animations>
+									<Size x="25" y="25"/>
+									<Anchors>
+										<Anchor x="0" y="0" point="CENTER"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnEnter>
+								TRP3_CompanionBrowserFilterHelpBlinkAnimate:Stop();
+								self.animationShown = true;
+								TRP3_RefreshTooltipForFrame(self);
+							</OnEnter>
+							<OnLoad>
+								self.animationShown = false;
+							</OnLoad>
+						</Scripts>
+					</Button>
 				</Frames>
 			</Frame>
 		</Frames>

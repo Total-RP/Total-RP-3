@@ -782,7 +782,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Quick peek & new description notifications
+	-- Glance & new description notifications
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionNotifications() then

@@ -474,7 +474,8 @@ local function initCompanionBrowser()
 
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
-
+	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0,
+		"|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc("UI_COMPANION_BROWSER_HELP") ,loc("UI_COMPANION_BROWSER_HELP_TT"));
 
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 end
@@ -483,8 +484,11 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	currentCompanionType = companionType or TRP3_API.ui.misc.TYPE_BATTLE_PET;
 	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
 		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_BATTLE"));
+		TRP3_CompanionBrowserFilterHelp:Show();
+		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
 	else
 		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_MOUNT"));
+		TRP3_CompanionBrowserFilterHelp:Hide();
 	end
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
 	ui_CompanionBrowserContent.onCancelCallback = onCancelCallback;
@@ -492,6 +496,10 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	filteredCompanionBrowser();
 	showPopup(TRP3_CompanionBrowser);
 	TRP3_CompanionBrowserFilterBox:SetFocus();
+
+	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

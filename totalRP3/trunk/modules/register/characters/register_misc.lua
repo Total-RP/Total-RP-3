@@ -727,9 +727,22 @@ end);
 
 function TRP3_API.register.checkGlanceActivation(dataTab)
 	for i=1, 5, 1 do
-		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then return true end
+		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then
+			return true
+		end
 	end
 	return false;
+end
+
+function TRP3_API.register.getGlanceIconTextures(dataTab, size)
+	local text = "";
+	for i=1, 5, 1 do
+		local index = tostring(i);
+		if dataTab[index] and dataTab[index].AC then
+			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or GLANCE_NOT_USED_ICON) .. ":" .. size .. "|t "
+		end
+	end
+	return text;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

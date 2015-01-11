@@ -152,7 +152,7 @@ end
 
 local function uiBoundProfile(profileID, companionType)
 	TRP3_API.popup.showCompanionBrowser(function(companionInfo)
-		ui_boundPlayerCompanion(tostring(companionInfo[5]) or companionInfo[1], profileID, companionType);
+		ui_boundPlayerCompanion(companionInfo[5] and tostring(companionInfo[5]) or companionInfo[1], profileID, companionType);
 	end, nil, companionType);
 end
 
