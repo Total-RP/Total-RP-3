@@ -234,6 +234,7 @@ end
 TRP3_API.register.setupGlanceButton = setupGlanceButton;
 
 local function displayPeek(context)
+	TRP3_AtFirstGlanceEditor:Hide();
 	local dataTab = context.profile.misc or Globals.empty;
 	for i=1,5 do
 		local glanceData = (dataTab.PE or {})[tostring(i)] or {};
@@ -251,37 +252,9 @@ local draftData = {};
 
 local function onIconSelected(icon)
 	icon = icon or GLANCE_NOT_USED_ICON;
-	setupIconButton(TRP3_RegisterMiscEdit_Glance_Icon, icon);
-	TRP3_RegisterMiscEdit_Glance_Icon.icon = icon;
-	showPopup(TRP3_RegisterGlanceEditor);
+	setupIconButton(TRP3_AtFirstGlanceEditorIcon, icon);
+	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 end
-
-local function onIconClosed()
-	showPopup(TRP3_RegisterGlanceEditor);
-end
-
-local function openGlanceEditor(button, callback)
-	assert(button, "No button");
-	assert(button.data, "No data in button");
-	TRP3_RegisterMiscEdit_Glance_Active:SetChecked(button.data.AC);
-	TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(button.data.TX or "");
-	TRP3_RegisterMiscEdit_Glance_Title:SetText(button.data.TI or "");
-	TRP3_RegisterGlanceEditor_PresetSaveCategory:SetText("");
-	TRP3_RegisterGlanceEditor_PresetSaveName:SetText("");
-	TRP3_RegisterGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(tostring(button.index)));
-	onIconSelected(button.data.IC);
-	TRP3_RegisterMiscEdit_Glance_Apply:SetScript("OnClick", function()
-		callback(
-		button,
-		TRP3_RegisterMiscEdit_Glance_Icon.icon,
-		TRP3_RegisterMiscEdit_Glance_Active:GetChecked(),
-		stEtN(TRP3_RegisterMiscEdit_Glance_Title:GetText()),
-		stEtN(TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText())
-		);
-	end);
-	showPopup(TRP3_RegisterGlanceEditor);
-end
-TRP3_API.register.openGlanceEditor = openGlanceEditor;
 
 local function applyPeekSlot(slot, ic, ac, ti, tx)
 	assert(slot, "No selection ...");
@@ -323,9 +296,26 @@ local function swapGlanceSlot(from, to)
 end
 TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 
-local function peekEditorApply(button, ic, ac, ti, tx)
-	applyPeekSlot(button.index, ic, ac, ti, tx);
+local function editGlanceSlot(frame, slot, slotData, callback)
+	TRP3_AtFirstGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(tostring(slot)));
+	TRP3_AtFirstGlanceEditorActive:SetChecked(slotData.AC);
+	TRP3_AtFirstGlanceEditorTextScrollText:SetText(slotData.TX or "");
+	TRP3_AtFirstGlanceEditorName:SetText(slotData.TI or "");
+	onIconSelected(slotData.IC);
+	TRP3_AtFirstGlanceEditorApply:SetScript("OnClick", function()
+		callback(
+			slot,
+			TRP3_AtFirstGlanceEditorIcon.icon,
+			TRP3_AtFirstGlanceEditorActive:GetChecked(),
+			stEtN(TRP3_AtFirstGlanceEditorName:GetText()),
+			stEtN(TRP3_AtFirstGlanceEditorTextScrollText:GetText())
+		);
+	end);
+	TRP3_AtFirstGlanceEditorName:SetFocus();
+	TRP3_AtFirstGlanceEditorName:HighlightText();
 end
+
+TRP3_API.register.openGlanceEditor = editGlanceSlot;
 
 local function onSlotClick(button, mouseClick)
 	local context = getCurrentContext();
@@ -333,12 +323,18 @@ local function onSlotClick(button, mouseClick)
 	if context.isPlayer then
 		local dataTab = get("player/misc");
 		if mouseClick == "LeftButton" then
-			draftData = (dataTab.PE or {})[button.index] or {};
-			button.data = draftData;
-			openGlanceEditor(button, peekEditorApply);
+			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
+				TRP3_AtFirstGlanceEditor:Hide();
+			else
+				draftData = (dataTab.PE or {})[button.index] or {};
+				button.data = draftData;
+				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
+				TRP3_AtFirstGlanceEditor.current = button;
+				editGlanceSlot(TRP3_AtFirstGlanceEditor, button.index, draftData, applyPeekSlot);
+			end
 		else
 			if dataTab.PE[button.index] then
-				peekEditorApply(button, dataTab.PE[button.index]["IC"], not dataTab.PE[button.index]["AC"], dataTab.PE[button.index]["TI"], dataTab.PE[button.index]["TX"])	
+				applyPeekSlot(button.index, dataTab.PE[button.index]["IC"], not dataTab.PE[button.index]["AC"], dataTab.PE[button.index]["TI"], dataTab.PE[button.index]["TX"])
 				refreshTooltip(button);
 			end
 		end
@@ -822,9 +818,8 @@ function TRP3_API.register.inits.miscInit()
 
 	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
 	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc("REG_PLAYER_CURRENT"), 150);
-	TRP3_RegisterMiscEdit_Glance_ActiveText:SetText(loc("REG_PLAYER_GLANCE_USE"));
-	TRP3_RegisterMiscEdit_Glance_Apply:SetText(loc("CM_APPLY"));
-	TRP3_RegisterMiscEdit_Glance_TitleText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
+	TRP3_AtFirstGlanceEditorApply:SetText(loc("CM_APPLY"));
+	TRP3_AtFirstGlanceEditorNameText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
 	TRP3_RegisterGlanceEditor_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
 	TRP3_RegisterGlanceEditor_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
@@ -832,6 +827,7 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterGlanceEditor_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
 	TRP3_RegisterGlanceEditor_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
 
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_USE"));
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_RegisterMiscViewGlanceAction, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_BAR_LOAD_SAVE"));
 	TRP3_RegisterMiscViewGlanceAction:SetScript("OnClick", onBarActionClicked);
 
@@ -844,7 +840,7 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
 
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
-	TRP3_RegisterMiscEdit_Glance_Icon:SetScript("OnClick", function() showIconBrowser(onIconSelected, onIconClosed); end);
+	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function() showIconBrowser(onIconSelected); end);
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];

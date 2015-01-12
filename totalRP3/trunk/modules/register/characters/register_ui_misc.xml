@@ -254,48 +254,72 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_RegisterGlanceEditor" parent="TRP3_PopupsFrame" hidden="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="415"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
-		<Size x="420" y="300"/>
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
+	<Frame name="TRP3_AtFirstGlanceEditor" inherits="TRP3_HoveredFrame" parent="UIParent" hidden="true">
+		<Size x="325" y="150"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="TRP3_RegisterGlanceEditorTitle" text="[GLANCE_EDITOR]" inherits="GameFontNormalLarge">
+				<FontString name="$parentTitle" text="[GLANCE_EDITOR]" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="TOPLEFT" x="0" y="-17"/>
-						<Anchor point="TOPRIGHT" x="0" y="-17"/>
+						<Anchor point="TOPLEFT" x="35" y="-15"/>
+						<Anchor point="TOPRIGHT" x="-30" y="-15"/>
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
+			<CheckButton name="$parentActive" inherits="TRP3_CheckBox" checked="true">
+				<Anchors>
+					<Anchor point="RIGHT" x="-5" y="0" relativeTo="$parentTitle" relativePoint="LEFT"/>
+				</Anchors>
+			</CheckButton>
+			<EditBox name="$parentName" inherits="TRP3_TitledHelpEditBox">
+				<Size x="120" y="18"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="-10" y="-10" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT"/>
+					<Anchor point="RIGHT" x="-25" y="0"/>
+				</Anchors>
+			</EditBox>
+			<Button name="$parentIcon" inherits="TRP3_IconButton">
+				<Anchors>
+					<Anchor point="LEFT" x="24" y="-15"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentApply" inherits="TRP3_CommonButton">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Button>
+			<Frame name="$parentText" inherits="TRP3_TextArea">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="$parentName"/>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentApply" x="0" y="2"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="$parentIcon"/>
+				</Anchors>
+			</Frame>
+
 			<Button inherits="UIPanelCloseButton">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						TRP3_API.popup.hidePopups();
+						self:GetParent():Hide();
 					</OnClick>
 					<PostClick>
 						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 					</PostClick>
 				</Scripts>
 			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_RegisterGlanceEditor" parent="TRP3_PopupsFrame" hidden="true">
+		<Frames>
+
 			<Frame name="TRP3_RegisterGlanceEditor_Preset">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 					<EdgeSize>
@@ -366,57 +390,6 @@
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 					</Button>
-				</Frames>
-			</Frame>
-			<Frame name="TRP3_RegisterGlanceEditor_Edit">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize>
-						<AbsValue val="32"/>
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="200"/>
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
-				</Backdrop>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterGlanceEditorTitle"/>
-					<Anchor point="BOTTOM" x="0" y="2" relativePoint="TOP" relativeTo="TRP3_RegisterGlanceEditor_Preset"/>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-				</Anchors>
-				<Frames>
-					<CheckButton name="TRP3_RegisterMiscEdit_Glance_Active" inherits="TRP3_CheckBox" checked="true">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="15" y="-10"/>
-						</Anchors>
-					</CheckButton>
-					<EditBox name="TRP3_RegisterMiscEdit_Glance_Title" inherits="TRP3_TitledHelpEditBox">
-						<Size x="200" y="18"/>
-						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterMiscEdit_Glance_Active"/>
-						</Anchors>
-					</EditBox>
-					<Button name="TRP3_RegisterMiscEdit_Glance_Icon" inherits="TRP3_IconButton">
-						<Anchors>
-							<Anchor point="LEFT" x="24" y="-25"/>
-						</Anchors>
-					</Button>
-					<Button name="TRP3_RegisterMiscEdit_Glance_Apply" inherits="TRP3_CommonButton">
-						<Size x="100" y="20"/>
-						<Anchors>
-							<Anchor point="TOPRIGHT" x="-15" y="-20"/>
-						</Anchors>
-					</Button>
-					<Frame name="TRP3_RegisterMiscEdit_Glance_Text" inherits="TRP3_TextArea">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterMiscEdit_Glance_Title"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
-							<Anchor point="RIGHT" x="-10" y="0"/>
-							<Anchor point="LEFT" x="10" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscEdit_Glance_Icon"/>
-						</Anchors>
-					</Frame>
 				</Frames>
 			</Frame>
 		</Frames>

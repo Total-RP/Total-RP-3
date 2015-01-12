@@ -898,3 +898,43 @@ function TRP3_API.ui.misc.playAnimation(animationGroup)
 		animationGroup:Play();
 	end
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Hovered frames
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y)
+	x = x or 0;
+	y = y or 0;
+	frame:ClearAllPoints();
+	frame:SetParent(hoveredFrame:GetParent());
+	frame:SetFrameStrata("HIGH");
+	frame.ArrowRIGHT:Hide();
+	frame.ArrowGlowRIGHT:Hide();
+	frame.ArrowUP:Hide();
+	frame.ArrowGlowUP:Hide();
+	frame.ArrowDOWN:Hide();
+	frame.ArrowGlowDOWN:Hide();
+	frame.ArrowLEFT:Hide();
+	frame.ArrowGlowLEFT:Hide();
+
+	if arrowPosition == "RIGHT" then
+		frame:SetPoint("RIGHT", hoveredFrame, "LEFT", -10 + x, 0 + y);
+		frame.ArrowLEFT:Show();
+		frame.ArrowGlowLEFT:Show();
+	elseif arrowPosition == "LEFT" then
+		frame:SetPoint("LEFT", hoveredFrame, "RIGHT", 10 + x, 0 + y);
+		frame.ArrowRIGHT:Show();
+		frame.ArrowGlowRIGHT:Show();
+	elseif arrowPosition == "TOP" then
+		frame:SetPoint("TOP", hoveredFrame, "BOTTOM", 0 + x, -20 + y);
+		frame.ArrowDOWN:Show();
+		frame.ArrowGlowDOWN:Show();
+	else
+		frame:SetPoint("BOTTOM", hoveredFrame, "TOP", 0 + x, 20 + y);
+		frame.ArrowUP:Show();
+		frame.ArrowGlowUP:Show();
+	end
+
+	frame:Show();
+end
