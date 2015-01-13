@@ -255,7 +255,7 @@
 	</Frame>
 
 	<Frame name="TRP3_AtFirstGlanceEditor" inherits="TRP3_HoveredFrame" parent="UIParent" hidden="true">
-		<Size x="325" y="150"/>
+		<Size x="275" y="150"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" text="[GLANCE_EDITOR]" inherits="GameFontNormal" justifyH="LEFT">

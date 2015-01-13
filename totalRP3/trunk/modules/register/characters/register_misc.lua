@@ -256,7 +256,8 @@ local function onIconSelected(icon)
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 end
 
-local function applyPeekSlot(slot, ic, ac, ti, tx)
+local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
+	TRP3_AtFirstGlanceEditor:Hide();
 	assert(slot, "No selection ...");
 	local dataTab = get("player/misc");
 	if not dataTab.PE then
@@ -266,10 +267,14 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 		dataTab.PE[slot] = {};
 	end
 	local peekTab = dataTab.PE[slot];
-	peekTab.IC = ic;
-	peekTab.AC = ac;
-	peekTab.TI = ti;
-	peekTab.TX = tx;
+	if swap then
+		peekTab.AC = not peekTab.AC;
+	else
+		peekTab.IC = ic;
+		peekTab.AC = ac;
+		peekTab.TI = ti;
+		peekTab.TX = tx;
+	end
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
@@ -279,6 +284,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx)
 end
 
 local function swapGlanceSlot(from, to)
+	TRP3_AtFirstGlanceEditor:Hide();
 	local dataTab = get("player/misc");
 	if not dataTab.PE then
 		dataTab.PE = {};
@@ -314,7 +320,6 @@ local function editGlanceSlot(frame, slot, slotData, callback)
 	TRP3_AtFirstGlanceEditorName:SetFocus();
 	TRP3_AtFirstGlanceEditorName:HighlightText();
 end
-
 TRP3_API.register.openGlanceEditor = editGlanceSlot;
 
 local function onSlotClick(button, mouseClick)
@@ -333,10 +338,8 @@ local function onSlotClick(button, mouseClick)
 				editGlanceSlot(TRP3_AtFirstGlanceEditor, button.index, draftData, applyPeekSlot);
 			end
 		else
-			if dataTab.PE[button.index] then
-				applyPeekSlot(button.index, dataTab.PE[button.index]["IC"], not dataTab.PE[button.index]["AC"], dataTab.PE[button.index]["TI"], dataTab.PE[button.index]["TX"])
-				refreshTooltip(button);
-			end
+			applyPeekSlot(button.index, nil, nil, nil, nil, true);
+			refreshTooltip(button);
 		end
 	end
 end
@@ -486,7 +489,7 @@ end
 
 function TRP3_API.register.player.setGlanceSlotPreset(slot, presetID)
 	if presetID == -1 then
-		applyPeekSlot(slot, nil, nil, nil, nil);
+		applyPeekSlot(slot, nil, nil, nil, nil, true);
 	else
 		assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
 		local preset = PEEK_PRESETS[presetID];

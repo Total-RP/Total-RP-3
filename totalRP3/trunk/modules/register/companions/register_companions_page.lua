@@ -74,29 +74,37 @@ local function refreshIfNeeded()
 	end
 end
 
-local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx)
+local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap)
+	TRP3_AtFirstGlanceEditor:Hide();
 	assert(slot, "No selection ...");
-	if not dataTab[slot] then
-		dataTab[slot] = {};
+	if not dataTab.PE then
+		dataTab.PE = {};
 	end
-	local peekTab = dataTab[slot];
-	peekTab.IC = ic;
-	peekTab.AC = ac;
-	peekTab.TI = ti;
-	peekTab.TX = tx;
+	if not dataTab.PE[slot] then
+		dataTab.PE[slot] = {};
+	end
+	local peekTab = dataTab.PE[slot];
+	if swap then
+		peekTab.AC = not peekTab.AC;
+	else
+		peekTab.IC = ic;
+		peekTab.AC = ac;
+		peekTab.TI = ti;
+		peekTab.TX = tx;
+	end
 	-- version increment
 	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
 end
 
-local function applyPeekSlot(slot, companionID, ic, ac, ti, tx)
-	local dataTab = (getCompanionProfile(companionID) or {}).PE or {};
-	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx);
+local function applyPeekSlot(slot, companionID, ic, ac, ti, tx, swap)
+	local dataTab = getCompanionProfile(companionID) or {};
+	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap);
 end
 
 function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companionFullID)
 	local owner, companionID = companionIDToInfo(companionFullID);
 	if presetID == -1 then
-		applyPeekSlot(slot, companionID, nil, nil, nil, nil);
+		applyPeekSlot(slot, companionID, nil, nil, nil, nil, true);
 	else
 		assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
 		local preset = PEEK_PRESETS[presetID];
@@ -106,15 +114,16 @@ function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companio
 	refreshIfNeeded();
 end
 
-local function onGlanceEditorConfirm(button, ic, ac, ti, tx)
+local function onGlanceEditorConfirm(slot, ic, ac, ti, tx, swap)
 	local context = getCurrentContext();
 	assert(context and context.profile, "No profile in context !");
-	applyPeekSlotProfile(button.index, context.profile.PE, ic, ac, ti, tx);
+	applyPeekSlotProfile(slot, context.profile, ic, ac, ti, tx, swap);
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "misc");
 	refreshIfNeeded();
 end
 
 local function swapGlanceSlot(from, to)
+	TRP3_AtFirstGlanceEditor:Hide();
 	local context = getCurrentContext();
 	assert(context and context.profile, "No profile in context!");
 	assert(context.profile.PE and context.profile.PE.v, "Unversionned profile!");
@@ -129,16 +138,20 @@ local function swapGlanceSlot(from, to)
 	refreshIfNeeded();
 end
 
-local function onGlanceClick(button,mouseClick)
+local function onGlanceClick(button, mouseClick)
 	local context = getCurrentContext();
 	if context.isPlayer then
 		if mouseClick == "LeftButton" then
-			openGlanceEditor(button, onGlanceEditorConfirm);
-		else
-			if context.profile.PE[button.index] then
-				onGlanceEditorConfirm(button, context.profile.PE[button.index]["IC"], not context.profile.PE[button.index]["AC"], context.profile.PE[button.index]["TI"], context.profile.PE[button.index]["TX"]);
-				refreshTooltip(button);
+			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
+				TRP3_AtFirstGlanceEditor:Hide();
+			else
+				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
+				TRP3_AtFirstGlanceEditor.current = button;
+				TRP3_API.register.openGlanceEditor(TRP3_AtFirstGlanceEditor, button.index, context.profile.PE[button.index] or {}, onGlanceEditorConfirm);
 			end
+		else
+			onGlanceEditorConfirm(button.index, nil, nil, nil, nil, true);
+			refreshTooltip(button);
 		end
 	end
 end

@@ -77,6 +77,22 @@ local function onStart()
 		return profile;
 	end
 
+	local function getGlanceTab()
+		local peekTab = nil;
+		if currentTargetType == TYPE_CHARACTER then
+			if isIDIgnored(currentTargetID) then
+				return;
+			end
+			return getDataDefault("misc/PE", EMPTY, getCharacterInfo());
+		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+			local owner, companionID = companionIDToInfo(currentTargetID);
+			if isIDIgnored(owner) then
+				return;
+			end
+			return getCompanionInfo(owner, companionID, currentTargetID).PE;
+		end
+	end
+
 	local function atLeastOneactivePeek(tab)
 		for i, info in pairs(tab) do
 			if type(info) == "table" and info.AC then
@@ -100,8 +116,24 @@ local function onStart()
 		end
 	end
 
-	local function onPeekClickMine(button)
-		displayDropDown(button, getMiscPresetDropListData(), function(value) onPeekSelection(value, button) end, 0, true);
+	local function onPeekClickMine(button, clickType)
+		if clickType == "LeftButton" then
+			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
+				TRP3_AtFirstGlanceEditor:Hide();
+			else
+				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
+				TRP3_AtFirstGlanceEditor.current = button;
+				local glanceTab = getGlanceTab();
+				TRP3_API.register.openGlanceEditor(TRP3_AtFirstGlanceEditor, button.slot, glanceTab[button.slot] or {},
+					currentTargetType == TYPE_CHARACTER and onGlanceEditorConfirm or onGlanceEditorConfirm);
+			end
+		elseif clickType == "RightButton" then
+			if currentTargetType == TYPE_CHARACTER then
+				setGlanceSlotPreset(button.slot, -1);
+			else
+				setCompanionGlanceSlotPreset(button.slot, -1, currentTargetID);
+			end
+		end
 	end
 
 	local CONFIG_GLANCE_TT_ANCHOR = "CONFIG_GLANCE_TT_ANCHOR";
@@ -111,22 +143,9 @@ local function onStart()
 	end
 
 	local function displayPeekSlots()
-		local peekTab = nil;
+		local peekTab = getGlanceTab();
 
-		if currentTargetType == TYPE_CHARACTER then
-			if isIDIgnored(currentTargetID) then
-				return;
-			end
-			peekTab = getDataDefault("misc/PE", EMPTY, getCharacterInfo());
-		elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
-			local owner, companionID = companionIDToInfo(currentTargetID);
-			if isIDIgnored(owner) then
-				return;
-			end
-			peekTab = getCompanionInfo(owner, companionID, currentTargetID).PE;
-		end
-
-		if (isCurrentMine and peekTab ~= nil) or (not isCurrentMine and peekTab ~= nil and atLeastOneactivePeek(peekTab)) then
+		if peekTab ~= nil and (isCurrentMine or atLeastOneactivePeek(peekTab)) then
 			ui_GlanceBar:Show();
 			for i=1,5,1 do
 				local slot = _G["TRP3_GlanceBarSlot"..i];
@@ -179,6 +198,7 @@ local function onStart()
 
 	local function onTargetChanged()
 		ui_GlanceBar:Hide();
+		TRP3_AtFirstGlanceEditor:Hide();
 		currentTargetType, isCurrentMine = getTargetType();
 		currentTargetProfileID = nil;
 		currentTargetID = nil;
@@ -341,6 +361,7 @@ local function onStart()
 	for i=1,5,1 do
 		local slot = _G["TRP3_GlanceBarSlot"..i];
 		slot.slot = tostring(i);
+		slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		slot:RegisterForDrag("LeftButton");
 		slot:SetScript("OnDragStart", onGlanceDragStart);
 		slot:SetScript("OnDragStop", onGlanceDragStop);
