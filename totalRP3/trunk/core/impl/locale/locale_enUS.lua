@@ -579,6 +579,8 @@ Possible status:
 		TF_IGNORE_TT = "|cffffff00Click:|r Ignore player",
 		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this ID ?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",
 		TF_IGNORE_NO_REASON = "No reason",
+		TB_LANGUAGE = "Language",
+		TB_LANGUAGES_TT = "Switch languages",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
@@ -786,6 +788,7 @@ Total RP is not responsible for links leading to harmful content.]],
 		DTBK_CLOAK = "Total RP 3 - Cloak",
 		DTBK_AFK = "Total RP 3 - AFK/DND",
 		DTBK_RP = "Total RP 3 - IC/OOC",
+		DTBK_LANGUAGES = "Total RP 3 - Languages",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Bindings

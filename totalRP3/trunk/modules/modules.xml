@@ -147,5 +147,5 @@
 	
 	<Include file="importer\importer.xml"/>
 
-	<Script file="databroker\databroker.lua"/>
+	<Include file="databroker\databroker.xml"/>
 </Ui>

@@ -19,4 +19,5 @@
 -->
 
 	<Script file="chatframe.lua" />
+	<Script file="languages.lua" />
 </Ui>
