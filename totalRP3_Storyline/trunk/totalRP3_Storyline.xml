@@ -165,13 +165,45 @@
 		<TitleRegion setAllPoints="true"/>
 	</Frame>
 
+	<Button name="TRP3_StorylineChoiceButton" virtual="true" hidden="false">
+		<Size x="0" y="16"/>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentGossipIcon" file="Interface\QuestFrame\UI-Quest-BulletPoint">
+					<Size x="16" y="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="3" y="1"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+			<PostClick>
+				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+			</PostClick>
+		</Scripts>
+		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
+		<ButtonText>
+			<Anchors>
+				<Anchor point="LEFT" x="25" y="0"/>
+				<Anchor point="RIGHT" x="-20" y="0"/>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="QuestFontLeft"/>
+	</Button>
+
 	<Frame name="TRP3_NPCDialogFrame" inherits="StandardParchmentFrame" toplevel="true" parent="UIParent"
 		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<Size x="700" y="450"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="TRP3_NPCDialogFrameDebug" inherits="GameFontNormalLarge" justifyH="LEFT"
-							justifyV="TOP">
+				<FontString name="TRP3_NPCDialogFrameDebug" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Size x="0" y="0"/>
 					<Anchors>
 						<Anchor point="LEFT" x="100" y="0"/>
@@ -241,14 +273,14 @@
 						</Anchors>
 					</Frame>
 
-					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="GossipTitleButtonTemplate">
+					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="TRP3_StorylineChoiceButton">
 						<Anchors>
 							<Anchor point="LEFT" x="50" y="0"/>
 							<Anchor point="RIGHT" x="-50" y="0"/>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
 						</Anchors>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameChatOption2" inherits="GossipTitleButtonTemplate">
+					<Button name="TRP3_NPCDialogFrameChatOption2" inherits="TRP3_StorylineChoiceButton">
 						<Anchors>
 							<Anchor point="LEFT" x="50" y="0"/>
 							<Anchor point="RIGHT" x="-50" y="0"/>
@@ -256,7 +288,7 @@
 						</Anchors>
 					</Button>
 
-					<Button name="TRP3_NPCDialogFrameChatNext" inherits="GossipTitleButtonTemplate">
+					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_StorylineChoiceButton">
 						<Anchors>
 							<Anchor point="BOTTOMLEFT" x="50" y="15"/>
 							<Anchor point="BOTTOMRIGHT" x="-200" y="15"/>

@@ -154,6 +154,7 @@ end
 local CHAT_MARGIN, CHAT_NAME = 70, 20;
 local gossipColor = "|cffffffff";
 local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local function playText(textIndex)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
@@ -196,6 +197,8 @@ local function playText(textIndex)
 	local optionsSize = 0;
 	TRP3_NPCDialogFrameChatOption1:Hide();
 	TRP3_NPCDialogFrameChatOption2:Hide();
+	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
+	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
 
 	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -260,10 +263,10 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -50, 0);
 		TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", TRP3_NPCDialogFrameChatOption1, "BOTTOM", 0, -5);
 
-		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\GossipGossipIcon");
-		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "Can you give me more information ?"); -- TODO: locale
+		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\FriendsFrame\\InformationIcon");
+		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. QUEST_OBJECTIVES); -- TODO: locale
 		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", nil);
-
+		setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1, "TOP", 0, 5, QUEST_OBJECTIVES, GetObjectiveText());
 
 		TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
 		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "I accept !"); -- TODO: locale
@@ -360,6 +363,8 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrame:Show();
 
 	playNext();
+
+	print()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
