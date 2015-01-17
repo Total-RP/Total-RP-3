@@ -85,14 +85,19 @@ local EVENT_INFO = {
 	["QUEST_COMPLETE"] = {
 		text = GetRewardText,
 		finishText = function()
-			if GetNumQuestChoices() > 0 then
+			if GetNumQuestChoices() == 1 then
+				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
+				return "Reward: " .. name;
+			elseif GetNumQuestChoices() > 0 then
 				return REWARDS;
 			else
 				return COMPLETE_QUEST;
 			end
 		end,
 		finishMethod = function()
-			if GetNumQuestChoices() > 0 then
+			if GetNumQuestChoices() == 1 then
+				GetQuestReward(1);
+			elseif GetNumQuestChoices() > 0 then
 				message("Please choose a reward from the original quest interface.");
 			else
 				GetQuestReward();
@@ -127,6 +132,14 @@ local function getQuestIcon(frequency, isRepeatable, isLegendary)
 		return "Interface\\GossipFrame\\DailyActiveQuestIcon";
 	else
 		return "Interface\\GossipFrame\\AvailableQuestIcon";
+	end
+end
+
+local function getQuestActiveIcon(isComplete)
+	if ( isComplete ) then
+		return "Interface\\GossipFrame\\ActiveQuestIcon";
+	else
+		return "Interface\\GossipFrame\\IncompleteQuestIcon";
 	end
 end
 
@@ -170,14 +183,29 @@ end
 
 local function selectMultipleAvailable()
 	wipe(multiList);
-	local gossips = {GetGossipAvailableQuests()};
+	local data = {GetGossipAvailableQuests()};
 	tinsert(multiList, {"Select available quest", nil}); -- TODO: locale
 	for i=1, GetNumGossipAvailableQuests() do
 		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
-			gossips[(i*6) - 5], gossips[(i*6) - 4], gossips[(i*6) - 3], gossips[(i*6) - 2], gossips[(i*6) - 1], gossips[(i*6)];
+		data[(i*6) - 5], data[(i*6) - 4], data[(i*6) - 3], data[(i*6) - 2], data[(i*6) - 1], data[(i*6)];
 		tinsert(multiList, {"|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i});
 	end
 	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiList, SelectGossipAvailableQuest, 0, true);
+end
+
+local function selectFirstActive()
+	SelectGossipActiveQuest(1);
+end
+
+local function selectMultipleActive()
+	wipe(multiList);
+	local data = {GetGossipActiveQuests()};
+	tinsert(multiList, {"Select available quest", nil}); -- TODO: locale
+	for i=1, GetNumGossipActiveQuests() do
+		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i*5) - 4], data[(i*5) - 3], data[(i*5) - 2], data[(i*5) - 1], data[(i*5)];
+		tinsert(multiList, {"|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i});
+	end
+	displayDropDown(TRP3_NPCDialogFrameChatOption3, multiList, SelectGossipActiveQuest, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -204,9 +232,10 @@ local function playText(textIndex)
 	end);
 	animTab[#animTab+1] = 0;
 	
-	if text:byte() == 60 then -- Emote if begins with <
+	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
+		local finalText = text:byte() == 60 and text:sub(2, text:len() - 1) or text;
 		TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
-		TRP3_NPCDialogFrameChatText:SetText(text:sub(2, text:len() - 1));
+		TRP3_NPCDialogFrameChatText:SetText(finalText);
 		wipe(animTab);
 		animTab[1] = 0;
 	else
@@ -230,8 +259,10 @@ local function playText(textIndex)
 	local optionsSize = 0;
 	TRP3_NPCDialogFrameChatOption1:Hide();
 	TRP3_NPCDialogFrameChatOption2:Hide();
+	TRP3_NPCDialogFrameChatOption3:Hide();
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
+	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption3);
 
 	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -242,7 +273,6 @@ local function playText(textIndex)
 			optionsSize = optionsSize + 20;
 			TRP3_NPCDialogFrameChatOption1:Show();
 			previous = TRP3_NPCDialogFrameChatOption1;
-			local availables = {GetGossipAvailableQuests()};
 			if GetNumGossipAvailableQuests() == 1 then
 				local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
 				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. title .. getQuestTriviality(isTrivial));
@@ -254,6 +284,31 @@ local function playText(textIndex)
 				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
 			end
 
+		end
+
+		-- Gossip options
+		if hasActive then
+			TRP3_NPCDialogFrameChatOption3:Show();
+			TRP3_NPCDialogFrameChatOption3:ClearAllPoints();
+			TRP3_NPCDialogFrameChatOption3:SetPoint("LEFT", 50, 0);
+			TRP3_NPCDialogFrameChatOption3:SetPoint("RIGHT", -50, 0);
+			if previous then
+				TRP3_NPCDialogFrameChatOption3:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			else
+				TRP3_NPCDialogFrameChatOption3:SetPoint("TOP", TRP3_NPCDialogFrameChatText, "BOTTOM", 0, -10);
+			end
+			previous = TRP3_NPCDialogFrameChatOption3;
+			optionsSize = optionsSize + 20;
+			if GetNumGossipActiveQuests() == 1 then
+				local title, lvl, isTrivial, isComplete, isRepeatable = GetGossipActiveQuests();
+				TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. title .. getQuestTriviality(isTrivial));
+				TRP3_NPCDialogFrameChatOption3GossipIcon:SetTexture(getQuestActiveIcon(isComplete, isRepeatable));
+				TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectFirstActive);
+			else
+				TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption3GossipIcon:SetTexture("Interface\\GossipFrame\\ActiveQuestIcon");
+				TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectMultipleActive);
+			end
 		end
 
 		-- Gossip options
@@ -300,6 +355,8 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
 		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "I accept !"); -- TODO: locale
 		TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", AcceptQuest);
+
+	elseif TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 
 	end
 
@@ -377,7 +434,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameModelsMe:Hide();
 	TRP3_NPCDialogFrameModelsMeFull:Hide();
 
-	if UnitExists(targetType) then
+	if UnitExists(targetType) and not UnitIsUnit("player", "npc")  then
 		TRP3_NPCDialogFrameModelsYou:Show();
 		TRP3_NPCDialogFrameModelsMe:Show();
 		TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
@@ -472,6 +529,8 @@ local function init()
 	TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
 	TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
 --	TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
+
+	TRP3_NPCDialogFrameDebug:Hide();
 
 	-- Showing
 	for event, info in pairs(EVENT_INFO) do

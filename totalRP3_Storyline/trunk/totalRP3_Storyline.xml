@@ -287,6 +287,13 @@
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
 						</Anchors>
 					</Button>
+					<Button name="TRP3_NPCDialogFrameChatOption3" inherits="TRP3_StorylineChoiceButton">
+						<Anchors>
+							<Anchor point="LEFT" x="50" y="0"/>
+							<Anchor point="RIGHT" x="-50" y="0"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
+						</Anchors>
+					</Button>
 
 					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_StorylineChoiceButton">
 						<Anchors>
