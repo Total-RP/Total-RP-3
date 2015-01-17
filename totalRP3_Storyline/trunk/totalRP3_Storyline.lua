@@ -25,6 +25,7 @@ local DEBUG = true;
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
+local TRP3_NPCDialogFrameModelsMeFull = TRP3_NPCDialogFrameModelsMeFull;
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
 local tostring, strsplit, wipe = tostring, strsplit, wipe;
 local ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText = ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText;
@@ -117,6 +118,26 @@ local EVENT_INFO = {
 	}
 }
 
+local function getQuestIcon(frequency, isRepeatable, isLegendary)
+	if ( isLegendary ) then
+		return "Interface\\GossipFrame\\AvailableLegendaryQuestIcon";
+	elseif ( frequency == LE_QUEST_FREQUENCY_DAILY or frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
+		return "Interface\\GossipFrame\\DailyQuestIcon";
+	elseif ( isRepeatable ) then
+		return "Interface\\GossipFrame\\DailyActiveQuestIcon";
+	else
+		return "Interface\\GossipFrame\\AvailableQuestIcon";
+	end
+end
+
+local function getQuestTriviality(isTrivial)
+	if isTrivial then
+		return " |cff999999(low level)"; --TODO: locale
+	else
+		return "";
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SELECTION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -126,25 +147,37 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local GetNumGossipOptions, GetGossipOptions, SelectGossipOption = GetNumGossipOptions, GetGossipOptions, SelectGossipOption;
 local GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest = GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest;
 local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2;
-local multiGossipList = {};
+local multiList = {};
 
 local function selectFirstGossip()
 	SelectGossipOption(1);
 end
 
 local function selectMultipleGossip()
-	wipe(multiGossipList);
+	wipe(multiList);
 	local gossips = {GetGossipOptions()};
-	tinsert(multiGossipList, {"Select dialog option", nil}); -- TODO: locale
+	tinsert(multiList, {"Select dialog option", nil}); -- TODO: locale
 	for i=1, GetNumGossipOptions() do
 		local gossip, gossipType = gossips[(i*2) - 1], gossips[(i*2)];
-		tinsert(multiGossipList, {"|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i});
+		tinsert(multiList, {"|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i});
 	end
-	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiGossipList, SelectGossipOption, 0, true);
+	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiList, SelectGossipOption, 0, true);
 end
 
 local function selectFirstAvailable()
 	SelectGossipAvailableQuest(1);
+end
+
+local function selectMultipleAvailable()
+	wipe(multiList);
+	local gossips = {GetGossipAvailableQuests()};
+	tinsert(multiList, {"Select available quest", nil}); -- TODO: locale
+	for i=1, GetNumGossipAvailableQuests() do
+		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
+			gossips[(i*6) - 5], gossips[(i*6) - 4], gossips[(i*6) - 3], gossips[(i*6) - 2], gossips[(i*6) - 1], gossips[(i*6)];
+		tinsert(multiList, {"|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i});
+	end
+	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiList, SelectGossipAvailableQuest, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -212,17 +245,13 @@ local function playText(textIndex)
 			local availables = {GetGossipAvailableQuests()};
 			if GetNumGossipAvailableQuests() == 1 then
 				local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
-				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. title);
-				if ( isLegendary ) then
-					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableLegendaryQuestIcon");
-				elseif ( frequency == LE_QUEST_FREQUENCY_DAILY or frequency == LE_QUEST_FREQUENCY_WEEKLY ) then
-					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\DailyQuestIcon");
-				elseif ( isRepeatable ) then
-					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\DailyActiveQuestIcon");
-				else
-					TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon");
-				end
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. title .. getQuestTriviality(isTrivial));
+				TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture(getQuestIcon(frequency, isRepeatable, isLegendary));
 				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
+			else
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon");
+				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
 			end
 
 		end
@@ -343,11 +372,30 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		TRP3_NPCDialogFrameTitle:SetText("");
 	end
 
+	TRP3_NPCDialogFrame:Show();
+	TRP3_NPCDialogFrameModelsYou:Hide();
+	TRP3_NPCDialogFrameModelsMe:Hide();
+	TRP3_NPCDialogFrameModelsMeFull:Hide();
 
-	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
-	TRP3_NPCDialogFrameModelsYou:SetFacing(-0.75);
-	TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
-	TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+	if UnitExists(targetType) then
+		TRP3_NPCDialogFrameModelsYou:Show();
+		TRP3_NPCDialogFrameModelsMe:Show();
+		TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+		TRP3_NPCDialogFrameModelsMe:SetCamera(1);
+		TRP3_NPCDialogFrameModelsMe:SetFacing(.75);
+		TRP3_NPCDialogFrameModelsMe:SetUnit("player");
+		TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+		TRP3_NPCDialogFrameModelsYou:SetCamera(1);
+		TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
+		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
+	else
+		TRP3_NPCDialogFrameModelsMeFull:ClearModel();
+		TRP3_NPCDialogFrameModelsMeFull:Show();
+		TRP3_NPCDialogFrameModelsMeFull:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+		TRP3_NPCDialogFrameModelsMeFull:SetCamera(1);
+		TRP3_NPCDialogFrameModelsMeFull:SetFacing(0.5);
+		TRP3_NPCDialogFrameModelsMeFull:SetUnit("player");
+	end
 	
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
@@ -359,20 +407,23 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameChat.event = event;
 
 	TRP3_NPCDialogFrameChatPrevious:Hide();
-	
-	TRP3_NPCDialogFrame:Show();
 
 	playNext();
-
-	print()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- ANIMATIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function onUpdateModelDebug(self, elapsed)
+	if self:IsVisible() and self.seqtime and self.sequence then
+		self.seqtime = self.seqtime + (elapsed * ANIMATION_SEQUENCE_SPEED);
+		self:SetSequenceTime(self.sequence, self.seqtime);
+	end
+end
+
 local function onUpdateModel(self, elapsed)
-	if self.seqtime and self.sequence and self.sequenceTab then
+	if self:IsVisible() and self.seqtime and self.sequence and self.sequenceTab then
 		self.seqtime = self.seqtime + (elapsed * ANIMATION_SEQUENCE_SPEED);
 		if self.sequenceTab[self.sequence] ~= 0 then
 			self:SetSequenceTime(self.sequenceTab[self.sequence], self.seqtime);
@@ -409,10 +460,6 @@ local function init()
 	ForceGossip = function() return true end
 
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
-	TRP3_NPCDialogFrameModelsMe:SetCamera(1);
-	TRP3_NPCDialogFrameModelsMe:SetFacing(0.75);
-	TRP3_NPCDialogFrameModelsMe:SetUnit("player");
-	TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 
 	TRP3_NPCDialogFrameChatPrevious:SetText("Reset");
 
@@ -421,6 +468,10 @@ local function init()
 	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
+
+	TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
+	TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
+--	TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
 
 	-- Showing
 	for event, info in pairs(EVENT_INFO) do
