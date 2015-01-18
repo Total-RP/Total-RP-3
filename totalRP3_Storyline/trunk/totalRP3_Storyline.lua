@@ -37,12 +37,6 @@ local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 
 local ANIMATION_SEQUENCE_SPEED = 1000;
 local ANIMATION_TEXT_SPEED = 40;
-local ANIMATION_SEQUENCE_DURATION = {
-	["64"] = 3000,
-	["65"] = 3000,
-	["60"] = 4000,
-	["0"] = 2000,
-}
 local CHAT_TEXT_WIDTH = 550;
 local ANIMATION_EMPTY = {0};
 local animTab = {};
@@ -87,9 +81,12 @@ local EVENT_INFO = {
 		finishText = function()
 			if GetNumQuestChoices() == 1 then
 				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
-				return "Reward: " .. name;
+				return "Reward: " .. name; --TODO: locale
 			elseif GetNumQuestChoices() > 0 then
 				return REWARDS;
+			elseif GetNumQuestRewards() == 1 then
+				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", 1);
+				return "Reward: " .. name; --TODO: locale
 			else
 				return COMPLETE_QUEST;
 			end
@@ -122,6 +119,108 @@ local EVENT_INFO = {
 		end
 	}
 }
+
+-- 193 : levitate
+-- 195 : tchou
+-- 225 : aaaaaaaah !
+-- 520 : read
+local ANIMATION_SEQUENCE_DURATION = {
+	["64"] = 3000, -- huh !
+	["65"] = 3000, -- huh ?
+	["60"] = 4000, -- blabla
+	["185"] = 2000, -- Yep !
+	["186"] = 2000, -- Nope !
+	["0"] = 1000,
+}
+local ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
+	-- DWARF
+	["character\\dwarf\\male\\dwarfmale_hd.m2"] = {
+		["64"] = 1800, -- huh !
+		["65"] = 1800, -- huh ?
+		["60"] = 2000, -- blabla
+	},
+	["character\\dwarf\\female\\dwarffemale_hd.m2"] = {
+		["60"] = 1900,
+	},
+	-- WORGEN
+	["character\\worgen\\male\\worgenmale.m2"] = {
+		["65"] = 4000,
+	},
+	["character\\worgen\\female\\worgenfemale.m2"] = {
+		["64"] = 2700,
+		["65"] = 4500,
+	},
+	-- GNOMES
+	["character\\gnome\\male\\gnomemale_hd.m2"] = {
+		["64"] = 1800, -- huh !
+		["65"] = 2250, -- huh ?
+		["60"] = 3900, -- blabla
+	},
+	["character\\gnome\\female\\gnomefemale_hd.m2"] = {
+		["64"] = 1850, -- huh !
+		["65"] = 2250, -- huh ?
+		["60"] = 3900, -- blabla
+	},
+	-- HUMAN
+	["character\\human\\male\\humanmale_hd.m2"] = {
+		["64"] = 1800, -- huh !
+		["65"] = 1800, -- huh ?
+		["60"] = 2000, -- blabla
+	},
+	["character\\human\\female\\humanfemale_hd.m2"] = {
+		["64"] = 1800, -- huh !
+		["65"] = 1800, -- huh ?
+		["60"] = 2650, -- blabla
+	},
+	-- DRAENEI
+	["character\\draenei\\female\\draeneifemale_hd.m2"] = {
+		["60"] = 3000, -- blabla
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2"] = {
+		["60"] = 3200, -- blabla
+		["65"] = 1850, -- huh ?
+	},
+	-- PANDAREN
+	["character\\pandaren\\female\\pandarenfemale.m2"] = {
+		["60"] = 3000, -- blabla
+	},
+	-- NIGHT ELVES
+	["character\\nightelf\\female\\nightelffemale_hd.m2"] = {
+		["64"] = 2000, -- huh !
+		["65"] = 1600, -- huh ?
+		["60"] = 1900, -- blabla
+	},
+	["character\\nightelf\\male\\nightelfmale_hd.m2"] = {
+		["60"] = 1900, -- blabla
+	},
+	-- ARRAKOA
+	["creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
+		["60"] = 1700, -- blabla
+	},
+	["creature\\arakkoa2\\arakkoa2.m2"] = {
+		["60"] = 4300, -- blabla
+	},
+}
+local DEFAULT_ANIM_MAPPING = {
+	["!"] = 64,
+	["?"] = 65,
+	["."] = 60,
+	["\226"] = 60,
+}
+local ALL_TO_TALK = {
+	["!"] = 60,
+	["?"] = 60,
+}
+local ANIM_MAPPING = {
+	["character\\worgen\\male\\worgenmale.m2"] = {
+		["."] = 64,
+		["\226"] = 64,
+	},
+}
+ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
+ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;
+ANIM_MAPPING["creature\\draeneifemalekid\\draeneifemalekid.m2"] = ALL_TO_TALK;
+ANIM_MAPPING["creature\\golemdwarven\\golemdwarven.m2"] = ALL_TO_TALK;
 
 local function getQuestIcon(frequency, isRepeatable, isLegendary)
 	if ( isLegendary ) then
@@ -217,29 +316,37 @@ local gossipColor = "|cffffffff";
 local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
+local function getAnimationByModel(model, animationType)
+	if model and ANIM_MAPPING[model] and ANIM_MAPPING[model][animationType] then
+		return ANIM_MAPPING[model][animationType];
+	end
+	return DEFAULT_ANIM_MAPPING[animationType];
+end
+
 local function playText(textIndex)
+	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
+
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
 	local sound;
 	wipe(animTab);
-	text:gsub("[%.%?%!]+", function(finder)
-		if finder:sub(1, 1) == "!" then
-			animTab[#animTab+1] = 64;
-		elseif finder:sub(1, 1) == "?" then
-			animTab[#animTab+1] = 65;
-		else
-			animTab[#animTab+1] = 60;
-		end
+	text:gsub("[%.%?%!%\226]+", function(finder)
+		animTab[#animTab+1] = getAnimationByModel(TRP3_NPCDialogFrameModelsYou.model, finder:sub(1, 1));
+		animTab[#animTab+1] = 0;
 	end);
 	animTab[#animTab+1] = 0;
 	
 	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
-		local finalText = text:byte() == 60 and text:sub(2, text:len() - 1) or text;
-		TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
-		TRP3_NPCDialogFrameChatText:SetText(finalText);
+		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		local finalText = text:gsub("<", color .. "<");
+		finalText = finalText:gsub(">", ">|r");
+		if not UnitExists("npc") or UnitIsUnit("player", "npc") then
+			TRP3_NPCDialogFrameChatText:SetText(color .. finalText);
+		else
+			TRP3_NPCDialogFrameChatText:SetText(finalText);
+		end
 		wipe(animTab);
 		animTab[1] = 0;
 	else
-		TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
 		TRP3_NPCDialogFrameChatText:SetText(text);
 	end
 
@@ -433,6 +540,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameModelsYou:Hide();
 	TRP3_NPCDialogFrameModelsMe:Hide();
 	TRP3_NPCDialogFrameModelsMeFull:Hide();
+	TRP3_NPCDialogFrameModelsYou.model = nil;
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc")  then
 		TRP3_NPCDialogFrameModelsYou:Show();
@@ -445,6 +553,8 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		TRP3_NPCDialogFrameModelsYou:SetCamera(1);
 		TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
 		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
+		TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
+		ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
 	else
 		TRP3_NPCDialogFrameModelsMeFull:ClearModel();
 		TRP3_NPCDialogFrameModelsMeFull:Show();
@@ -487,7 +597,13 @@ local function onUpdateModel(self, elapsed)
 		end
 		local sequenceString = tostring(self.sequenceTab[self.sequence]);
 		-- Once the anim is finished, go to the next one.
-		if ANIMATION_SEQUENCE_DURATION[sequenceString] and self.seqtime > ANIMATION_SEQUENCE_DURATION[sequenceString] then
+		local duration = 0;
+		if self.model and ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model] and ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString] then
+			duration = ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString];
+		elseif ANIMATION_SEQUENCE_DURATION[sequenceString] then
+			duration = ANIMATION_SEQUENCE_DURATION[sequenceString];
+		end
+		if duration and self.seqtime > duration then
 			self.seqtime = 0;
 			if self.sequence < #self.sequenceTab then
 				self.sequence = self.sequence + 1;
@@ -526,8 +642,9 @@ local function init()
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
 
-	TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
-	TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
+--	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
+--	TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
+--	TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
 --	TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
 
 	TRP3_NPCDialogFrameDebug:Hide();
