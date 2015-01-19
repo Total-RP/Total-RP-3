@@ -382,43 +382,43 @@
 							<Anchor point="RIGHT" x="0" y="0"/>
 						</Anchors>
 						<Frames>
-							<EditBox inherits="TRP3_TitledEditBox" numeric="true">
-							<Anchors>
-							<Anchor point="TOP" x="0" y="0"/>
-							</Anchors>
-							<Frames>
-							<Button inherits="TRP3_CommonButton" text="+">
-							<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
-							</Anchors>
-							<Scripts>
-							<OnClick>
-							self:GetParent():SetText(self:GetParent():GetNumber() + 1);
-							TRP3_NPCDialogFrameModelsYou.sequence = self:GetParent():GetNumber();
-							TRP3_NPCDialogFrameModelsYou.seqtime = 0;
-							</OnClick>
-							</Scripts>
-							</Button>
-							<Button inherits="TRP3_CommonButton" text="-">
-							<Anchors>
-							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
-							</Anchors>
-							<Scripts>
-							<OnClick>
-							self:GetParent():SetText(self:GetParent():GetNumber() - 1);
-							TRP3_NPCDialogFrameModelsYou.sequence = self:GetParent():GetNumber();
-							TRP3_NPCDialogFrameModelsYou.seqtime = 0;
-							</OnClick>
-							</Scripts>
-							</Button>
-							</Frames>
-							<Scripts>
-							<OnEnterPressed>
-							TRP3_NPCDialogFrameModelsYou.sequence = self:GetNumber();
-							TRP3_NPCDialogFrameModelsYou.seqtime = 0;
-							</OnEnterPressed>
-							</Scripts>
-							</EditBox>
+							<!--<EditBox inherits="TRP3_TitledEditBox" numeric="true">-->
+							<!--<Anchors>-->
+							<!--<Anchor point="TOP" x="0" y="0"/>-->
+							<!--</Anchors>-->
+							<!--<Frames>-->
+							<!--<Button inherits="TRP3_CommonButton" text="+">-->
+							<!--<Anchors>-->
+							<!--<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>-->
+							<!--</Anchors>-->
+							<!--<Scripts>-->
+							<!--<OnClick>-->
+							<!--self:GetParent():SetText(self:GetParent():GetNumber() + 1);-->
+							<!--TRP3_NPCDialogFrameModelsYou.sequence = self:GetParent():GetNumber();-->
+							<!--TRP3_NPCDialogFrameModelsYou.seqtime = 0;-->
+							<!--</OnClick>-->
+							<!--</Scripts>-->
+							<!--</Button>-->
+							<!--<Button inherits="TRP3_CommonButton" text="-">-->
+							<!--<Anchors>-->
+							<!--<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>-->
+							<!--</Anchors>-->
+							<!--<Scripts>-->
+							<!--<OnClick>-->
+							<!--self:GetParent():SetText(self:GetParent():GetNumber() - 1);-->
+							<!--TRP3_NPCDialogFrameModelsYou.sequence = self:GetParent():GetNumber();-->
+							<!--TRP3_NPCDialogFrameModelsYou.seqtime = 0;-->
+							<!--</OnClick>-->
+							<!--</Scripts>-->
+							<!--</Button>-->
+							<!--</Frames>-->
+							<!--<Scripts>-->
+							<!--<OnEnterPressed>-->
+							<!--TRP3_NPCDialogFrameModelsYou.sequence = self:GetNumber();-->
+							<!--TRP3_NPCDialogFrameModelsYou.seqtime = 0;-->
+							<!--</OnEnterPressed>-->
+							<!--</Scripts>-->
+							<!--</EditBox>-->
 						</Frames>
 					</PlayerModel>
 				</Frames>

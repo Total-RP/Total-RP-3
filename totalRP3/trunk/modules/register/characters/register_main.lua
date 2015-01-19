@@ -264,6 +264,23 @@ function TRP3_API.register.getProfileList()
 	return profiles;
 end
 
+function TRP3_API.register.getUnitRPName(targetType)
+	local unitName = UnitName(targetType);
+	local unitID = getUnitID(targetType);
+	if unitID then
+		if unitID == Globals.player_id then
+			unitName = TRP3_API.register.getPlayerCompleteName(true);
+		elseif isUnitIDKnown(unitID) and profileExists(unitID) then
+			local profile = getUnitIDProfile(unitID);
+			if profile.characteristics then
+				unitName = TRP3_API.register.getCompleteName(profile.characteristics, unitName, true);
+			end
+		end
+	end
+	return unitName or UNKNOWN;
+end
+TRP3_API.r.name = TRP3_API.register.getUnitRPName;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

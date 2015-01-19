@@ -67,13 +67,6 @@ local function configShowVersionAlert()
 	return getConfigValue(CONFIG_NEW_VERSION);
 end
 
-local DEBUG = true;
-local function debug(text)
-	if DEBUG then
-		log(text);
-	end
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Vernum queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -163,11 +156,11 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	if petLine and petV1 and petV2 then
 		local profileID, queryV1, queryV2 = boundAndCheckCompanion(petLine, senderID, senderProfileID, petV1, petV2);
 		if queryV1 then
-			debug(("Should update v1 for companion profileID %s"):format(profileID));
+			log(("Should update v1 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "1" .. profileID);
 		end
 		if queryV2 then
-			debug(("Should update v2 for companion profileID %s"):format(profileID));
+			log(("Should update v2 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
 		end
 	end
@@ -184,7 +177,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	or type(structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY]) ~= "string"
 	or type(structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE]) ~= "string"
 	then
-		debug("Incoming vernum integrity check fails. Sender: " .. senderID);
+		log("Incoming vernum integrity check fails. Sender: " .. senderID);
 		return;
 	end
 
@@ -215,7 +208,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 		local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
 		for _, infoType in pairs(infoTypeTab) do
 			if shouldUpdateInformation(senderID, infoType, structure[index]) then
-				debug(("Should update: %s's %s"):format(senderID, infoType));
+				log(("Should update: %s's %s"):format(senderID, infoType));
 				queryInformationType(senderID, infoType);
 			end
 			index = index + 1;
@@ -285,7 +278,7 @@ local function incomingInformationType(informationType, senderID)
 		data = getCompanionData(profileID, v);
 	end
 	if data then
-		debug(("Send %s info to %s"):format(informationType, senderID));
+		log(("Send %s info to %s"):format(informationType, senderID));
 		Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
 	end
 end
@@ -302,7 +295,7 @@ local function incomingInformationTypeSent(structure, senderID)
 		return; -- We didn't ask for theses information ...
 	end
 
-	debug(("Received %s's %s info !"):format(senderID, informationType));
+	log(("Received %s's %s info !"):format(senderID, informationType));
 	CURRENT_QUERY_EXCHANGES[senderID][informationType] = nil;
 
 	local decodedData = data;
@@ -366,7 +359,7 @@ local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
-		debug(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
+		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 		if getConfigValue("heavy_profile_alert") then
 			TRP3_API.ui.tooltip.toast(loc("REG_PLAYER_ALERT_HEAVY_SMALL"), 5);
 		end
@@ -382,7 +375,6 @@ local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 
 function TRP3_API.register.inits.dataExchangeInit()
-
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end

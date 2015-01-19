@@ -44,7 +44,6 @@ local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
-local showLog = false;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -59,14 +58,6 @@ end
 -- LOGGING
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.utils.log.on()
-	showLog = true;
-end
-
-function TRP3_API.utils.log.off()
-	showLog = false;
-end
-
 -- The log level defines the prefix color and serves as filter
 Log.level = {
 	INFO = "-|cff00ffffINFO|r] ",
@@ -77,7 +68,7 @@ Log.level = {
 -- Print a log message to the chatFrame.
 local function log(message, level)
 	if not level then level = Log.level.INFO; end
-	if not showLog then
+	if not Globals.DEBUG_MODE then
 		return;
 	end
 	Utils.print( "[TRP3".. level ..tostring(message));

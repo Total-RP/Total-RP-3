@@ -24,7 +24,9 @@ local faction, faction_loc = UnitFactionGroup("player");
 
 -- Public accessor
 TRP3_API = {
+	r = {},
 	globals = {
+		DEBUG_MODE = false,
 		empty = {},
 
 		addon_name = "Total RP 3",

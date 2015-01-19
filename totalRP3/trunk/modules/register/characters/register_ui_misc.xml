@@ -73,22 +73,22 @@
 				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 			</PostClick>
 		</Scripts>
-	</Button>
-
-	<!-- Glance consult button : ButtonHilight-Square -->
-	<Button name="TRP3_RegisterMiscGlanceButtonEdit" inherits="TRP3_RegisterMiscGlanceButton" virtual="true">
-		<Size x="40" y="40"/>
-		<DisabledTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
-		<Layers>
-			<Layer level="OVERLAY">
-				<Texture alphaMode="BLEND" file="Interface\HELPFRAME\HelpIcon-CharacterStuck" name="$parentSelected">
-					<Size x="40" y="40"/>
-					<Anchors>
-						<Anchor point="CENTER" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
+		<Frames>
+			<Button name="$parentPresetButton" hidden="false">
+				<Size x="16" y="32"/>
+				<Anchors>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT"/>
+				</Anchors>
+				<NormalTexture file="Interface\PaperDollInfoFrame\UI-GearManager-FlyoutButton"/>
+				<HighlightTexture file="Interface\PaperDollInfoFrame\UI-GearManager-FlyoutButton"/>
+				<Scripts>
+					<OnLoad>
+						self:GetNormalTexture():SetTexCoord(0.15625, 0.5, 0.84375, 0.5, 0.15625, 0, 0.84375, 0);
+						self:GetHighlightTexture():SetTexCoord(0.15625, 1, 0.84375, 1, 0.15625, 0.5, 0.84375, 0.5);
+					</OnLoad>
+				</Scripts>
+			</Button>
+		</Frames>
 	</Button>
 
 	<!-- Register Peek panel -->

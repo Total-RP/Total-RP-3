@@ -45,7 +45,8 @@ local function onStart()
 	local getMiscPresetDropListData, setGlanceSlotPreset = TRP3_API.register.ui.getMiscPresetDropListData, TRP3_API.register.player.setGlanceSlotPreset;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local isIDIgnored = TRP3_API.register.isIDIgnored;
-	
+	local color = Utils.str.color;
+
 	-- CONSTANTS
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
@@ -121,11 +122,14 @@ local function onStart()
 			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
 				TRP3_AtFirstGlanceEditor:Hide();
 			else
-				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
+				local x, y = GetCursorPosition();
+				local scale = UIParent:GetEffectiveScale();
+				y = y / scale;
+				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
 				TRP3_AtFirstGlanceEditor.current = button;
 				local glanceTab = getGlanceTab();
 				TRP3_API.register.openGlanceEditor(TRP3_AtFirstGlanceEditor, button.slot, glanceTab[button.slot] or {},
-					currentTargetType == TYPE_CHARACTER and onGlanceEditorConfirm or onGlanceEditorConfirm);
+					currentTargetType == TYPE_CHARACTER and TRP3_API.register.applyPeekSlot or onGlanceEditorConfirm, true);
 			end
 		elseif clickType == "RightButton" then
 			if currentTargetType == TYPE_CHARACTER then
@@ -159,7 +163,11 @@ local function onStart()
 					if peek.IC and peek.IC:len() > 0 then
 						icon = peek.IC;
 					end
-					setTooltipForSameFrame(slot, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), peek.TX);
+					local TTText = "|cffff9900" .. (peek.TX or "...");
+					if isCurrentMine then
+						TTText = TTText .. "\n" .. loc("REG_PLAYER_GLANCE_CONFIG_GLANCE");
+					end
+					setTooltipForSameFrame(slot, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), TTText);
 				else
 					slot:SetAlpha(0.25);
 					setTooltipForSameFrame(slot);

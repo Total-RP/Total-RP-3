@@ -54,6 +54,11 @@
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
+		<Scripts>
+			<OnHide>
+				self:Hide();
+			</OnHide>
+		</Scripts>
 		<Frames>
 			<Button name="TRP3_IconBrowserClose" inherits="UIPanelCloseButton">
 				<Anchors>

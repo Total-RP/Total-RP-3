@@ -286,14 +286,14 @@ local function decorateIcon(icon, index)
 end
 
 local function onIconClick(icon)
-	hidePopups();
+	TRP3_API.popup.hideIconBrowser();
 	if ui_IconBrowserContent.onSelectCallback then
 		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index], icon);
 	end
 end
 
 local function onIconClose()
-	hidePopups();
+	TRP3_API.popup.hideIconBrowser();
 	if ui_IconBrowserContent.onCancelCallback then
 		ui_IconBrowserContent.onCancelCallback();
 	end
@@ -358,12 +358,31 @@ local function initIconBrowser()
 	end);
 end
 
-function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback)
+function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback, isExternal)
+	TRP3_IconBrowser.isExternal = isExternal;
 	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
 	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
-	showPopup(TRP3_IconBrowser);
+
+	TRP3_IconBrowser:ClearAllPoints();
+	if isExternal then
+		TRP3_IconBrowser:SetScale(0.75);
+		TRP3_IconBrowser:SetParent(TRP3_AtFirstGlanceEditor);
+		TRP3_IconBrowser:SetPoint("RIGHT", TRP3_AtFirstGlanceEditor, "LEFT", -5, 0);
+		TRP3_IconBrowser:Show();
+	else
+		TRP3_IconBrowser:SetScale(1);
+		TRP3_IconBrowser:SetParent(TRP3_PopupsFrame);
+		TRP3_IconBrowser:SetPoint("CENTER", 0, 0);
+		showPopup(TRP3_IconBrowser);
+	end
+
 	TRP3_IconBrowserFilterBox:SetFocus();
+end
+
+function TRP3_API.popup.hideIconBrowser()
+	hidePopups();
+	TRP3_IconBrowser:Hide();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

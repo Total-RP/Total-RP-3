@@ -195,6 +195,7 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_TITLE = "Attribute name",
 		REG_PLAYER_GLANCE_UNUSED = "Unused slot",
 		REG_PLAYER_GLANCE_CONFIG = "\n|cffffff00Click:|r configure slot\n|cffffff00Right-click:|r toggle slot activation\n|cffffff00Drag & drop:|r reorder slots",
+		REG_PLAYER_GLANCE_CONFIG_GLANCE = "\n|cffffff00Click:|r configure slot\n|cffffff00Right-click:|r toggle slot activation",
 		REG_PLAYER_GLANCE_EDITOR = "Glance editor : Slot %s",
 		REG_PLAYER_GLANCE_BAR_TARGET = "\"At first glance\" presets",
 		REG_PLAYER_GLANCE_BAR_LOAD_SAVE = "Group presets",

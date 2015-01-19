@@ -19,7 +19,7 @@
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 
-local DEBUG = true;
+local DEBUG = false;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
@@ -39,7 +39,7 @@ local ANIMATION_SEQUENCE_SPEED = 1000;
 local ANIMATION_TEXT_SPEED = 40;
 local CHAT_TEXT_WIDTH = 550;
 local ANIMATION_EMPTY = {0};
-local animTab = {};
+local animTab, animTabMe = {}, {};
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
@@ -174,7 +174,7 @@ local ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	-- DRAENEI
 	["character\\draenei\\female\\draeneifemale_hd.m2"] = {
-		["60"] = 3000, -- blabla
+		["60"] = 2850, -- blabla
 	},
 	["character\\draenei\\male\\draeneimale_hd.m2"] = {
 		["60"] = 3200, -- blabla
@@ -200,27 +200,45 @@ local ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	["creature\\arakkoa2\\arakkoa2.m2"] = {
 		["60"] = 4300, -- blabla
 	},
+	-- ORCS
+	["character\\orc\\female\\orcfemale_hd.m2"] = {
+		["64"] = 2000, -- huh !
+		["65"] = 1600, -- huh ?
+		["60"] = 1900, -- blabla
+	},
+	["character\\orc\\male\\orcmale_hd.m2"] = {
+		["64"] = 2000, -- huh !
+		["65"] = 1600, -- huh ?
+		["60"] = 1900, -- blabla
+	},
 }
 local DEFAULT_ANIM_MAPPING = {
 	["!"] = 64,
 	["?"] = 65,
 	["."] = 60,
-	["\226"] = 60,
 }
 local ALL_TO_TALK = {
 	["!"] = 60,
 	["?"] = 60,
 }
+local ALL_TO_NONE = {
+	["!"] = 0,
+	["?"] = 0,
+	["."] = 0,
+}
 local ANIM_MAPPING = {
 	["character\\worgen\\male\\worgenmale.m2"] = {
 		["."] = 64,
-		["\226"] = 64,
 	},
 }
 ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
 ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;
 ANIM_MAPPING["creature\\draeneifemalekid\\draeneifemalekid.m2"] = ALL_TO_TALK;
 ANIM_MAPPING["creature\\golemdwarven\\golemdwarven.m2"] = ALL_TO_TALK;
+ANIM_MAPPING["creature\\ridinghorse\\packmule.m2"] = ALL_TO_NONE;
+ANIM_MAPPING["creature\\rabbit\\rabbit.m2"] = ALL_TO_NONE;
+ANIM_MAPPING["creature\\naaru\\naaru.m2"] = ALL_TO_NONE;
+
 
 local function getQuestIcon(frequency, isRepeatable, isLegendary)
 	if ( isLegendary ) then
@@ -323,13 +341,21 @@ local function getAnimationByModel(model, animationType)
 	return DEFAULT_ANIM_MAPPING[animationType];
 end
 
+local function playMeAnimation(animation)
+	animTabMe[1] = animation;
+	animTabMe[2] = 0;
+	TRP3_NPCDialogFrameModelsMe.seqtime = 0;
+	TRP3_NPCDialogFrameModelsMe.sequenceTab = animTabMe;
+	TRP3_NPCDialogFrameModelsMe.sequence = 1;
+end
+
 local function playText(textIndex)
 	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
 
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
 	local sound;
 	wipe(animTab);
-	text:gsub("[%.%?%!%\226]+", function(finder)
+	text:gsub("[%.%?%!]+", function(finder)
 		animTab[#animTab+1] = getAnimationByModel(TRP3_NPCDialogFrameModelsYou.model, finder:sub(1, 1));
 		animTab[#animTab+1] = 0;
 	end);
@@ -349,8 +375,6 @@ local function playText(textIndex)
 	else
 		TRP3_NPCDialogFrameChatText:SetText(text);
 	end
-
-
 
 	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
 	TRP3_NPCDialogFrameModelsYou.sequenceTab = animTab;
@@ -549,12 +573,15 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		TRP3_NPCDialogFrameModelsMe:SetCamera(1);
 		TRP3_NPCDialogFrameModelsMe:SetFacing(.75);
 		TRP3_NPCDialogFrameModelsMe:SetUnit("player");
+		TRP3_NPCDialogFrameModelsMe.model = TRP3_NPCDialogFrameModelsMe:GetModel();
 		TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 		TRP3_NPCDialogFrameModelsYou:SetCamera(1);
 		TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
 		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
 		TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
-		ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+		if DEBUG then
+			ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+		end
 	else
 		TRP3_NPCDialogFrameModelsMeFull:ClearModel();
 		TRP3_NPCDialogFrameModelsMeFull:Show();
@@ -639,13 +666,16 @@ local function init()
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", playNext);
 	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
 	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
+	TRP3_NPCDialogFrameModelsMe:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
 
---	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
---	TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
---	TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
---	TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
+	if DEBUG then
+		TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
+		TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
+		TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
+		TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
+	end
 
 	TRP3_NPCDialogFrameDebug:Hide();
 

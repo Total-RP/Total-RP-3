@@ -282,6 +282,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 end
+TRP3_API.register.applyPeekSlot = applyPeekSlot;
 
 local function swapGlanceSlot(from, to)
 	TRP3_AtFirstGlanceEditor:Hide();
@@ -302,7 +303,9 @@ local function swapGlanceSlot(from, to)
 end
 TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 
-local function editGlanceSlot(frame, slot, slotData, callback)
+local function editGlanceSlot(frame, slot, slotData, callback, external)
+	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
+	TRP3_API.popup.hideIconBrowser();
 	TRP3_AtFirstGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(tostring(slot)));
 	TRP3_AtFirstGlanceEditorActive:SetChecked(slotData.AC);
 	TRP3_AtFirstGlanceEditorTextScrollText:SetText(slotData.TX or "");
@@ -843,7 +846,10 @@ function TRP3_API.register.inits.miscInit()
 	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
 
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
-	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function() showIconBrowser(onIconSelected); end);
+	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
+		TRP3_API.popup.hideIconBrowser();
+		showIconBrowser(onIconSelected, nil, self.isExternal);
+	end);
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
