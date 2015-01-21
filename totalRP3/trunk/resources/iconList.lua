@@ -14199,12 +14199,13 @@ local pairs, tinsert = pairs, tinsert;
 local iconListSize = #iconList;
 
 function TRP3_API.utils.resources.getIconList(filter)
+	-- No filter or bad filter
 	if filter == nil or filter:len() == 0 then
 		return iconList;
 	end
 	local newList = {};
 	for _, icon in pairs(iconList) do
-		if match(icon, filter) then
+		if TRP3_API.utils.str.safeMatch(icon, filter) then
 			tinsert(newList, icon);
 		end
 	end

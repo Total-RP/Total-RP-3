@@ -226,20 +226,21 @@ end
 
 local function filteredMusicBrowser()
 	local filter = TRP3_MusicBrowserFilterBox:GetText();
-	if filteredMusicList and filteredMusicList ~= getMusicList() then
+	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
+	if filteredMusicList and filteredMusicList ~= getMusicList() then  -- Remove previous filtering if is not full list
 		wipe(filteredMusicList);
 		filteredMusicList = nil;
 	end
-	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
+	filteredMusicList = getMusicList(isOk and filter or ""); -- Music tab is unfiltered
 
 	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
 	initList(
-	{
-		widgetTab = musicWidgetTab,
-		decorate = decorateMusic
-	},
-	filteredMusicList,
-	TRP3_MusicBrowserContentSlider
+		{
+			widgetTab = musicWidgetTab,
+			decorate = decorateMusic
+		},
+		filteredMusicList,
+		TRP3_MusicBrowserContentSlider
 	);
 end
 
@@ -275,7 +276,7 @@ end
 
 local TRP3_IconBrowser = TRP3_IconBrowser;
 local iconWidgetTab = {};
-local filteredIconList = {};
+local filteredIconList;
 local ui_IconBrowserContent = TRP3_IconBrowserContent;
 
 local function decorateIcon(icon, index)
@@ -301,15 +302,20 @@ end
 
 local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
-	filteredIconList = getIconList(filter);
+	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
+	if filteredIconList and filteredIconList ~= getIconList() then -- Remove previous filtering if is not full list
+		wipe(filteredIconList);
+		filteredIconList = nil;
+	end
+	filteredIconList = getIconList(isOk and filter or "");
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
 	initList(
-	{
-		widgetTab = iconWidgetTab,
-		decorate = decorateIcon
-	},
-	filteredIconList,
-	TRP3_IconBrowserContentSlider
+		{
+			widgetTab = iconWidgetTab,
+			decorate = decorateIcon
+		},
+		filteredIconList,
+		TRP3_IconBrowserContentSlider
 	);
 end
 
@@ -463,7 +469,8 @@ end
 
 local function filteredCompanionBrowser()
 	local filter = TRP3_CompanionBrowserFilterBox:GetText();
-	local totalCompanionCount = getWoWCompanionFilteredList(filter);
+	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
+	local totalCompanionCount = getWoWCompanionFilteredList(isOk and filter or "");
 	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
 	initList(
 		{
@@ -592,9 +599,9 @@ local function decorateImage(texture, index)
 end
 
 local function filteredImageBrowser()
-	--	TRP3_ImageBrowserContentTexture
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
-	filteredImageList = getImageList(filter);
+	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
+	filteredImageList = getImageList(isOk and filter or "");
 	local size = #filteredImageList;
 	TRP3_ImageBrowserTotal:SetText( size .. " / " .. getImageListSize() );
 	if size > 0 then
@@ -603,12 +610,12 @@ local function filteredImageBrowser()
 		TRP3_ImageBrowserSelect:Disable();
 	end
 	initList(
-	{
-		widgetTab = imageWidgetTab,
-		decorate = decorateImage
-	},
-	filteredImageList,
-	TRP3_ImageBrowserContentSlider
+		{
+			widgetTab = imageWidgetTab,
+			decorate = decorateImage
+		},
+		filteredImageList,
+		TRP3_ImageBrowserContentSlider
 	);
 end
 

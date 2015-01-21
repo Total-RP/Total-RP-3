@@ -46,6 +46,12 @@ local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 
+function Utils.pcall(func, ...)
+	if func then
+		return {pcall(func, ...)};
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Chat frame
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -324,11 +330,21 @@ Utils.str.nilToEmpty = function(text)
 end
 
 function Utils.str.buildZoneText()
-	local text = getZoneText(); -- assuming that there is ALWAYS a zone text. Don't know if it's true.
+	local text = getZoneText() or ""; -- assuming that there is ALWAYS a zone text. Don't know if it's true.
 	if getSubZoneText():len() > 0 then
 		text = strconcat(text, " - ", getSubZoneText());
 	end
 	return text;
+end
+
+-- Search if the string matches the pattern in error-safe way.
+-- Useful if the pattern his user writen.
+function Utils.str.safeMatch(text, pattern)
+	local trace = Utils.pcall(string.find, text, pattern);
+	if trace[1] then
+		return type(trace[2]) == "number";
+	end
+	return nil; -- Pattern error
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
