@@ -65,8 +65,7 @@ local tiledBackgrounds = {
 	"Interface\\Stationery\\StationeryTest1",
 	"Interface\\WorldMap\\UI-WorldMap-Middle1",
 	"Interface\\WorldMap\\UI-WorldMap-Middle2",
-	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground",
-	"Interface\\Destiny\\EndscreenBG"
+	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground"
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
