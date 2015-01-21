@@ -55,7 +55,7 @@ local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
-
+local safeMatch = TRP3_API.utils.str.safeMatch;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -291,19 +291,19 @@ local function getCharacterLines()
 		-- Defines if at least one character is conform to the search criteria
 		for unitID, _ in pairs(profile.link) do
 			local unitName, unitRealm = unitIDToInfo(unitID);
-			if unitName:lower():find(nameSearch) then
+			if safeMatch(unitName:lower(), nameSearch) then
 				nameIsConform = true;
 			end
 			if unitRealm == Globals.player_realm_id then
 				realmIsConform = true;
 			end
 			local character = getUnitIDCharacter(unitID);
-			if character.guild and character.guild:lower():find(guildSearch) then
+			if character.guild and safeMatch(character.guild:lower(), guildSearch) then
 				guildIsConform = true;
 			end
 		end
 		local completeName = getCompleteName(profile.characteristics or {}, "", true);
-		if not nameIsConform and (completeName:lower():find(nameSearch)) then
+		if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
 			nameIsConform = true;
 		end
 
@@ -532,10 +532,10 @@ local function getCompanionLines()
 		if typeSearch:len() > 0 or masterSearch:len() > 0 then
 			for companionFullID, _ in pairs(profile.links) do
 				local masterID, companionID = companionIDToInfo(companionFullID);
-				if companionID:lower():find(typeSearch) then
+				if safeMatch(companionID:lower(), typeSearch) then
 					typeIsConform = true;
 				end
-				if masterID:lower():find(masterSearch) then
+				if safeMatch(masterID:lower(), masterSearch) then
 					masterIsConform = true;
 				end
 			end
@@ -545,7 +545,7 @@ local function getCompanionLines()
 		if profile.data and profile.data.NA then
 			companionName = profile.data.NA;
 		end
-		if masterSearch:len() ~= 0 and profile.data and profile.data.NA and (profile.data.NA:lower():find(nameSearch)) then
+		if nameSearch:len() ~= 0 and profile.data and profile.data.NA and safeMatch(profile.data.NA:lower(), nameSearch) then
 			nameIsConform = true;
 		end
 

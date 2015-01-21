@@ -14193,9 +14193,8 @@ local iconList = {
 	"XPBonus_Icon"
 }
 
-local match = TRP3_API.utils.str.match;
 local pairs, tinsert = pairs, tinsert;
-
+local safeMatch = TRP3_API.utils.str.safeMatch;
 local iconListSize = #iconList;
 
 function TRP3_API.utils.resources.getIconList(filter)
@@ -14203,9 +14202,10 @@ function TRP3_API.utils.resources.getIconList(filter)
 	if filter == nil or filter:len() == 0 then
 		return iconList;
 	end
+	filter = filter:lower();
 	local newList = {};
 	for _, icon in pairs(iconList) do
-		if TRP3_API.utils.str.safeMatch(icon, filter) then
+		if safeMatch(icon:lower(), filter) then
 			tinsert(newList, icon);
 		end
 	end

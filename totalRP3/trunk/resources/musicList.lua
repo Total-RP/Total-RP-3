@@ -2339,9 +2339,8 @@ local musicList = {
 	"ZoneMusic\\ZulDrak\\ZD_Sseratus_Intro02"
 }
 
-local match = TRP3_API.utils.str.match;
 local pairs, tinsert = pairs, tinsert;
-
+local safeMatch = TRP3_API.utils.str.safeMatch;
 local musicListSize = #musicList;
 table.sort(musicList);
 
@@ -2349,9 +2348,10 @@ function TRP3_API.utils.resources.getMusicList(filter)
 	if filter == nil or filter:len() == 0 then
 		return musicList;
 	end
+	filter = filter:lower();
 	local newList = {};
 	for _, musicURL in pairs(musicList) do
-		if match(musicURL, filter) then
+		if safeMatch(musicURL:lower(), filter) then
 			tinsert(newList, musicURL);
 		end
 	end

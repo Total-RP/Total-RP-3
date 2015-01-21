@@ -31,6 +31,7 @@ local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIco
 local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
 local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.utils.color.numberToHexa;
 local strconcat = strconcat;
+local safeMatch = TRP3_API.utils.str.safeMatch;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -226,12 +227,11 @@ end
 
 local function filteredMusicBrowser()
 	local filter = TRP3_MusicBrowserFilterBox:GetText();
-	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
 	if filteredMusicList and filteredMusicList ~= getMusicList() then  -- Remove previous filtering if is not full list
 		wipe(filteredMusicList);
 		filteredMusicList = nil;
 	end
-	filteredMusicList = getMusicList(isOk and filter or ""); -- Music tab is unfiltered
+	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
 
 	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
 	initList(
@@ -302,12 +302,11 @@ end
 
 local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
-	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
 	if filteredIconList and filteredIconList ~= getIconList() then -- Remove previous filtering if is not full list
 		wipe(filteredIconList);
 		filteredIconList = nil;
 	end
-	filteredIconList = getIconList(isOk and filter or "");
+	filteredIconList = getIconList(filter);
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
 	initList(
 		{
@@ -349,6 +348,7 @@ local function initIconBrowser()
 	hooksecurefunc("HandleModifiedItemClick", function(link)
 		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() and link and GetItemIcon(link) then
 			local icon = GetItemIcon(link):match("([^\\]+)$");
+			icon = icon:gsub("%.blp", ""):gsub("%.BLP", "");
 			TRP3_IconBrowserFilterBox:SetText(icon);
 			TRP3_IconBrowserFilterBox:HighlightText();
 		end
@@ -445,7 +445,7 @@ local function getWoWCompanionFilteredList(filter)
 		for i = 1, numPets do
 			local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description = GetPetInfoByIndex(i);
 			-- Only renamed pets can be bound
-			if customName and (filter:len() == 0 or customName:find(filter)) then
+			if customName and (filter:len() == 0 or safeMatch(customName:lower(), filter)) then
 				tinsert(filteredCompanionList, {customName, icon, description, speciesName});
 				count = count + 1;
 			end
@@ -455,7 +455,7 @@ local function getWoWCompanionFilteredList(filter)
 		local num, numOwned = GetNumMounts();
 		for i = 1, num do
 			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
-			if isCollected and creatureName and (filter:len() == 0 or creatureName:find(filter)) then
+			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
 				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT"), spellID});
 				count = count + 1;
 			end
@@ -468,7 +468,7 @@ local function getWoWCompanionFilteredList(filter)
 end
 
 local function filteredCompanionBrowser()
-	local filter = TRP3_CompanionBrowserFilterBox:GetText();
+	local filter = TRP3_CompanionBrowserFilterBox:GetText():lower();
 	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
 	local totalCompanionCount = getWoWCompanionFilteredList(isOk and filter or "");
 	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
@@ -600,8 +600,7 @@ end
 
 local function filteredImageBrowser()
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
-	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
-	filteredImageList = getImageList(isOk and filter or "");
+	filteredImageList = getImageList(filter);
 	local size = #filteredImageList;
 	TRP3_ImageBrowserTotal:SetText( size .. " / " .. getImageListSize() );
 	if size > 0 then

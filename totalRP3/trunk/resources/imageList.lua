@@ -1326,9 +1326,8 @@ local IMAGES = {
 
 };
 
-local match = TRP3_API.utils.str.match;
 local pairs, tinsert = pairs, tinsert;
-
+local safeMatch = TRP3_API.utils.str.safeMatch;
 local size = #IMAGES;
 
 function TRP3_API.utils.resources.getImageListSize()
@@ -1339,9 +1338,10 @@ function TRP3_API.utils.resources.getImageList(filter)
 	if filter == nil or filter:len() == 0 then
 		return IMAGES;
 	end
+	filter = filter:lower();
 	local newList = {};
 	for _, image in pairs(IMAGES) do
-		if match(image.url, filter) then
+		if safeMatch(image.url:lower(), filter) then
 			tinsert(newList, image);
 		end
 	end

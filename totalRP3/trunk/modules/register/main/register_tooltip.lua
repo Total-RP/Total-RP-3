@@ -649,9 +649,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
 			local ownerInfo = getCharacterInfoTab(ownerID);
 			if ownerInfo.characteristics then
-				if ownerInfo.characteristics.FN then
-					ownerFinalName = ownerInfo.characteristics.FN;
-				end
+				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
 				if ownerInfo.characteristics.CH then
 					ownerColor = "|cff" .. ownerInfo.characteristics.CH;
 				end
