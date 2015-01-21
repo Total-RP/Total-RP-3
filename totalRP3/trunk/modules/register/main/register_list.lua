@@ -140,19 +140,19 @@ local function switchInfoSorting()
 end
 
 local function nameComparator(elem1, elem2)
-	return elem1[2] < elem2[2];
+	return elem1[2]:lower() < elem2[2]:lower();
 end
 
 local function nameComparatorInverted(elem1, elem2)
-	return elem1[2] > elem2[2];
+	return elem1[2]:lower() > elem2[2]:lower();
 end
 
 local function infoComparator(elem1, elem2)
-	return elem1[3] < elem2[3];
+	return elem1[3]:lower() < elem2[3]:lower();
 end
 
 local function infoComparatorInverted(elem1, elem2)
-	return elem1[3] > elem2[3];
+	return elem1[3]:lower() > elem2[3]:lower();
 end
 
 local comparators = {
