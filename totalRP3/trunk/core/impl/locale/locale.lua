@@ -104,6 +104,11 @@ function TRP3_API.locale.getCurrentLocale()
 	return current;
 end
 
+function TRP3_API.locale.getLocale(localeID)
+	assert(LOCALS[localeID], "Unknown locale: " .. localeID);
+	return LOCALS[localeID];
+end
+
 --	Return the localized text link to this key.
 --	If the key isn't present in the current Locals table, then return the default localization.
 --	If the key is totally unknown from TRP3, then an error will be lifted.

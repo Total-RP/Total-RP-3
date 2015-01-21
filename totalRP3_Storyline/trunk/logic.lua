@@ -23,13 +23,18 @@ local DEBUG = false;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local loc = TRP3_API.locale.getText;
 local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
 local TRP3_NPCDialogFrameModelsMeFull = TRP3_NPCDialogFrameModelsMeFull;
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
-local tostring, strsplit, wipe = tostring, strsplit, wipe;
+local tostring, strsplit, wipe, pairs = tostring, strsplit, wipe, pairs;
 local ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText = ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText;
 local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
+local TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING = TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING;
+local TRP3_ANIMATION_SEQUENCE_DURATION = TRP3_ANIMATION_SEQUENCE_DURATION;
+local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL;
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STRUCTURES & VARIABLES
@@ -43,202 +48,11 @@ local animTab, animTabMe = {}, {};
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
+local EVENT_INFO;
 
-local EVENT_INFO = {
-	["QUEST_GREETING"] = {
-		text = GetGreetingText,
-		cancelMethod = CloseQuest,
-		titleGetter = GetTitleText,
-	},
-	["QUEST_DETAIL"] = {
-		text = GetQuestText,
-		cancelMethod = DeclineQuest,
-		finishText = DECLINE,
-		finishMethod = DeclineQuest,
-		titleGetter = GetTitleText,
-	},
-	["QUEST_PROGRESS"] = {
-		text = GetProgressText,
-		finishMethod = function()
-			if IsQuestCompletable() then
-				CompleteQuest();
-			else
-				CloseQuest();
-			end
-		end,
-		finishText = function()
-			if IsQuestCompletable() then
-				return CONTINUE;
-			else
-				return GOODBYE;
-			end
-		end,
-		cancelMethod = CloseQuest,
-		titleGetter = GetTitleText,
-	},
-	["QUEST_COMPLETE"] = {
-		text = GetRewardText,
-		finishText = function()
-			if GetNumQuestChoices() == 1 then
-				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
-				return "Reward: " .. name; --TODO: locale
-			elseif GetNumQuestChoices() > 0 then
-				return REWARDS;
-			elseif GetNumQuestRewards() == 1 then
-				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", 1);
-				return "Reward: " .. name; --TODO: locale
-			else
-				return COMPLETE_QUEST;
-			end
-		end,
-		finishMethod = function()
-			if GetNumQuestChoices() == 1 then
-				GetQuestReward(1);
-			elseif GetNumQuestChoices() > 0 then
-				message("Please choose a reward from the original quest interface.");
-			else
-				GetQuestReward();
-			end
-		end,
-		cancelMethod = CloseQuest,
-		titleGetter = GetTitleText,
-	},
-	["GOSSIP_SHOW"] = {
-		text = GetGossipText,
-		finishMethod = CloseGossip,
-		finishText = GOODBYE,
-		cancelMethod = CloseGossip,
-	},
-	["REPLAY"] = {
-		titleGetter = function()
-			local questTitle = GetQuestLogTitle(GetQuestLogSelection());
-			return questTitle;
-		end,
-		nameGetter = function()
-			return QUEST_LOG;
-		end
-	}
-}
-
--- 193 : levitate
--- 195 : tchou
--- 225 : aaaaaaaah !
--- 520 : read
-local ANIMATION_SEQUENCE_DURATION = {
-	["64"] = 3000, -- huh !
-	["65"] = 3000, -- huh ?
-	["60"] = 4000, -- blabla
-	["185"] = 2000, -- Yep !
-	["186"] = 2000, -- Nope !
-	["0"] = 1000,
-}
-local ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
-	-- DWARF
-	["character\\dwarf\\male\\dwarfmale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2000, -- blabla
-	},
-	["character\\dwarf\\female\\dwarffemale_hd.m2"] = {
-		["60"] = 1900,
-	},
-	-- WORGEN
-	["character\\worgen\\male\\worgenmale.m2"] = {
-		["65"] = 4000,
-	},
-	["character\\worgen\\female\\worgenfemale.m2"] = {
-		["64"] = 2700,
-		["65"] = 4500,
-	},
-	-- GNOMES
-	["character\\gnome\\male\\gnomemale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 2250, -- huh ?
-		["60"] = 3900, -- blabla
-	},
-	["character\\gnome\\female\\gnomefemale_hd.m2"] = {
-		["64"] = 1850, -- huh !
-		["65"] = 2250, -- huh ?
-		["60"] = 3900, -- blabla
-	},
-	-- HUMAN
-	["character\\human\\male\\humanmale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2000, -- blabla
-	},
-	["character\\human\\female\\humanfemale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2650, -- blabla
-	},
-	-- DRAENEI
-	["character\\draenei\\female\\draeneifemale_hd.m2"] = {
-		["60"] = 2850, -- blabla
-	},
-	["character\\draenei\\male\\draeneimale_hd.m2"] = {
-		["60"] = 3200, -- blabla
-		["65"] = 1850, -- huh ?
-	},
-	-- PANDAREN
-	["character\\pandaren\\female\\pandarenfemale.m2"] = {
-		["60"] = 3000, -- blabla
-	},
-	-- NIGHT ELVES
-	["character\\nightelf\\female\\nightelffemale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
-	},
-	["character\\nightelf\\male\\nightelfmale_hd.m2"] = {
-		["60"] = 1900, -- blabla
-	},
-	-- ARRAKOA
-	["creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
-		["60"] = 1700, -- blabla
-	},
-	["creature\\arakkoa2\\arakkoa2.m2"] = {
-		["60"] = 4300, -- blabla
-	},
-	-- ORCS
-	["character\\orc\\female\\orcfemale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
-	},
-	["character\\orc\\male\\orcmale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
-	},
-}
-local DEFAULT_ANIM_MAPPING = {
-	["!"] = 64,
-	["?"] = 65,
-	["."] = 60,
-}
-local ALL_TO_TALK = {
-	["!"] = 60,
-	["?"] = 60,
-}
-local ALL_TO_NONE = {
-	["!"] = 0,
-	["?"] = 0,
-	["."] = 0,
-}
-local ANIM_MAPPING = {
-	["character\\worgen\\male\\worgenmale.m2"] = {
-		["."] = 64,
-	},
-}
-ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
-ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;
-ANIM_MAPPING["creature\\draeneifemalekid\\draeneifemalekid.m2"] = ALL_TO_TALK;
-ANIM_MAPPING["creature\\golemdwarven\\golemdwarven.m2"] = ALL_TO_TALK;
-ANIM_MAPPING["creature\\ridinghorse\\packmule.m2"] = ALL_TO_NONE;
-ANIM_MAPPING["creature\\rabbit\\rabbit.m2"] = ALL_TO_NONE;
-ANIM_MAPPING["creature\\naaru\\naaru.m2"] = ALL_TO_NONE;
-
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UTILS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getQuestIcon(frequency, isRepeatable, isLegendary)
 	if ( isLegendary ) then
@@ -262,7 +76,7 @@ end
 
 local function getQuestTriviality(isTrivial)
 	if isTrivial then
-		return " |cff999999(low level)"; --TODO: locale
+		return " |cff999999(low level)"; --TODO: Icone phoque, comme ca pas besoin de locale
 	else
 		return "";
 	end
@@ -286,7 +100,7 @@ end
 local function selectMultipleGossip()
 	wipe(multiList);
 	local gossips = {GetGossipOptions()};
-	tinsert(multiList, {"Select dialog option", nil}); -- TODO: locale
+	tinsert(multiList, {loc("SL_SELECT_DIALOG_OPTION"), nil});
 	for i=1, GetNumGossipOptions() do
 		local gossip, gossipType = gossips[(i*2) - 1], gossips[(i*2)];
 		tinsert(multiList, {"|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i});
@@ -301,7 +115,7 @@ end
 local function selectMultipleAvailable()
 	wipe(multiList);
 	local data = {GetGossipAvailableQuests()};
-	tinsert(multiList, {"Select available quest", nil}); -- TODO: locale
+	tinsert(multiList, {loc("SL_SELECT_AVAILABLE_QUEST"), nil});
 	for i=1, GetNumGossipAvailableQuests() do
 		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
 		data[(i*6) - 5], data[(i*6) - 4], data[(i*6) - 3], data[(i*6) - 2], data[(i*6) - 1], data[(i*6)];
@@ -317,7 +131,7 @@ end
 local function selectMultipleActive()
 	wipe(multiList);
 	local data = {GetGossipActiveQuests()};
-	tinsert(multiList, {"Select available quest", nil}); -- TODO: locale
+	tinsert(multiList, {loc("SL_SELECT_AVAILABLE_QUEST"), nil});
 	for i=1, GetNumGossipActiveQuests() do
 		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i*5) - 4], data[(i*5) - 3], data[(i*5) - 2], data[(i*5) - 1], data[(i*5)];
 		tinsert(multiList, {"|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i});
@@ -335,10 +149,10 @@ local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local function getAnimationByModel(model, animationType)
-	if model and ANIM_MAPPING[model] and ANIM_MAPPING[model][animationType] then
-		return ANIM_MAPPING[model][animationType];
+	if model and TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
+		return TRP3_ANIM_MAPPING[model][animationType];
 	end
-	return DEFAULT_ANIM_MAPPING[animationType];
+	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
 end
 
 local function playMeAnimation(animation)
@@ -410,7 +224,7 @@ local function playText(textIndex)
 				TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture(getQuestIcon(frequency, isRepeatable, isLegendary));
 				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
 			else
-				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. loc("SL_WELL"));
 				TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\GossipFrame\\AvailableQuestIcon");
 				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
 			end
@@ -436,7 +250,7 @@ local function playText(textIndex)
 				TRP3_NPCDialogFrameChatOption3GossipIcon:SetTexture(getQuestActiveIcon(isComplete, isRepeatable));
 				TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectFirstActive);
 			else
-				TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. loc("SL_WELL"));
 				TRP3_NPCDialogFrameChatOption3GossipIcon:SetTexture("Interface\\GossipFrame\\ActiveQuestIcon");
 				TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectMultipleActive);
 			end
@@ -463,7 +277,7 @@ local function playText(textIndex)
 				TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\GossipFrame\\" .. gossipType .. "GossipIcon");
 				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectFirstGossip);
 			else
-				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "Well ..."); -- TODO: locale
+				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. loc("SL_WELL"));
 				TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\GossipFrame\\PetitionGossipIcon");
 				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectMultipleGossip);
 			end
@@ -479,12 +293,12 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", TRP3_NPCDialogFrameChatOption1, "BOTTOM", 0, -5);
 
 		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\FriendsFrame\\InformationIcon");
-		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. QUEST_OBJECTIVES); -- TODO: locale
+		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. QUEST_OBJECTIVES);
 		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", nil);
 		setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1, "TOP", 0, 5, QUEST_OBJECTIVES, GetObjectiveText());
 
 		TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
-		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "I accept !"); -- TODO: locale
+		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. loc("SL_ACCEPTANCE"));
 		TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", AcceptQuest);
 
 	elseif TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
@@ -501,7 +315,7 @@ local function playNext()
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		playText(TRP3_NPCDialogFrameChat.currentIndex);
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
-			TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. "Next"); -- TODO: Locals
+			TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. loc("SL_NEXT"));
 		else
 			if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
 				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. TRP3_NPCDialogFrameChat.eventInfo.finishText());
@@ -625,10 +439,10 @@ local function onUpdateModel(self, elapsed)
 		local sequenceString = tostring(self.sequenceTab[self.sequence]);
 		-- Once the anim is finished, go to the next one.
 		local duration = 0;
-		if self.model and ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model] and ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString] then
-			duration = ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString];
-		elseif ANIMATION_SEQUENCE_DURATION[sequenceString] then
-			duration = ANIMATION_SEQUENCE_DURATION[sequenceString];
+		if self.model and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString] then
+			duration = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString];
+		elseif TRP3_ANIMATION_SEQUENCE_DURATION[sequenceString] then
+			duration = TRP3_ANIMATION_SEQUENCE_DURATION[sequenceString];
 		end
 		if duration and self.seqtime > duration then
 			self.seqtime = 0;
@@ -656,8 +470,94 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function registerEventStructure()
+	EVENT_INFO = {
+		["QUEST_GREETING"] = {
+			text = GetGreetingText,
+			cancelMethod = CloseQuest,
+			titleGetter = GetTitleText,
+		},
+		["QUEST_DETAIL"] = {
+			text = GetQuestText,
+			cancelMethod = DeclineQuest,
+			finishText = DECLINE,
+			finishMethod = DeclineQuest,
+			titleGetter = GetTitleText,
+		},
+		["QUEST_PROGRESS"] = {
+			text = GetProgressText,
+			finishMethod = function()
+				if IsQuestCompletable() then
+					CompleteQuest();
+				else
+					CloseQuest();
+				end
+			end,
+			finishText = function()
+				if IsQuestCompletable() then
+					return CONTINUE;
+				else
+					return GOODBYE;
+				end
+			end,
+			cancelMethod = CloseQuest,
+			titleGetter = GetTitleText,
+		},
+		["QUEST_COMPLETE"] = {
+			text = GetRewardText,
+			finishText = function()
+				if GetNumQuestChoices() == 1 then
+					local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
+					return "Reward: " .. name; -- TEMP
+				elseif GetNumQuestChoices() > 0 then
+					return REWARDS;
+				elseif GetNumQuestRewards() == 1 then
+					local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", 1);
+					return "Reward: " .. name; -- TEMP
+				else
+					return COMPLETE_QUEST;
+				end
+			end,
+			finishMethod = function()
+				if GetNumQuestChoices() == 1 then
+					GetQuestReward(1);
+				elseif GetNumQuestChoices() > 0 then
+					message("Please choose a reward from the original quest interface."); -- TEMP
+				else
+					GetQuestReward();
+				end
+			end,
+			cancelMethod = CloseQuest,
+			titleGetter = GetTitleText,
+		},
+		["GOSSIP_SHOW"] = {
+			text = GetGossipText,
+			finishMethod = CloseGossip,
+			finishText = GOODBYE,
+			cancelMethod = CloseGossip,
+		},
+		["REPLAY"] = {
+			titleGetter = function()
+				local questTitle = GetQuestLogTitle(GetQuestLogSelection());
+				return questTitle;
+			end,
+			nameGetter = function()
+				return QUEST_LOG;
+			end
+		}
+	}
+end
+
 local function init()
 	ForceGossip = function() return true end
+	
+	-- Register locales
+	for localeID, localeStructure in pairs(TRP3_StoryLine_LOCALE) do
+		local locale = TRP3_API.locale.getLocale(localeID);
+		for localeKey, text in pairs(localeStructure) do
+			locale[localeKey] = text;
+		end
+	end
 
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 
@@ -679,7 +579,8 @@ local function init()
 
 	TRP3_NPCDialogFrameDebug:Hide();
 
-	-- Showing
+	-- Showing events
+	registerEventStructure();
 	for event, info in pairs(EVENT_INFO) do
 		Utils.event.registerHandler(event, function()
 			startDialog("npc", info.text(), event, info);
@@ -696,7 +597,7 @@ local function init()
 
 	-- Replay buttons
 	local questButton = CreateFrame("Button", nil, QuestLogPopupDetailFrame, "TRP3_CommonButton");
-	questButton:SetText("Storyline"); -- TODO: Locals
+	questButton:SetText(loc("SL_STORYLINE"));
 	questButton:SetPoint("TOP");
 	questButton:SetScript("OnClick", function()
 		local questDescription = GetQuestLogQuestText();
@@ -706,11 +607,11 @@ end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Storyline",
-	["description"] = "Enhance the way questlines are told.",
-	["version"] = 1.000,
-	["id"] = "better_npc_chat",
+	["description"] = "Improve the way stories are told.",
+	["version"] = 1,
+	["id"] = "trp3_storyline",
 	["onStart"] = init,
-	["minVersion"] = 0.1,
+	["minVersion"] = 10,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);

@@ -430,6 +430,7 @@
 			</Button>
 		</Frames>
 	</Frame>
-
-	<Script file="totalRP3_Storyline.lua"/>
+	
+	<Script file="structures.lua"/>
+	<Script file="logic.lua"/>
 </Ui>
