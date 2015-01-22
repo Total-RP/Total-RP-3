@@ -66,6 +66,10 @@ end
 
 function onAddonMessageReceived(...)
 	local prefix, packet , distributionType, sender = ...;
+	if not sender or not sender:find('-') then
+		Log.log("Malformed senderID" .. tostring(sender), Log.level.WARNING);
+		return;
+	end
 	if prefix == wowCom_prefix then
 		-- TODO: check here ignore
 		handlePacketsIn(packet, sender);

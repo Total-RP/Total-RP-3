@@ -62,7 +62,7 @@ function TRP3_API.locale.init()
 	else
 		localeFont = "Fonts\\FRIZQT__.TTF";
 	end
-	TRP3_API.utils.table.copy(effectiveLocal, LOCALS[current].localeContent);
+	effectiveLocal = LOCALS[current].localeContent;
 	for _, bindingKey in pairs(BINDINGS_KEYS) do
 
 	end

@@ -430,7 +430,8 @@
 			</Button>
 		</Frames>
 	</Frame>
-	
+
+	<Script file="locales.lua"/>
 	<Script file="structures.lua"/>
 	<Script file="logic.lua"/>
 </Ui>

@@ -555,9 +555,11 @@ local function init()
 	for localeID, localeStructure in pairs(TRP3_StoryLine_LOCALE) do
 		local locale = TRP3_API.locale.getLocale(localeID);
 		for localeKey, text in pairs(localeStructure) do
-			locale[localeKey] = text;
+			locale.localeContent[localeKey] = text;
 		end
 	end
+
+	print(TRP3_API.locale.getLocale("enUS").SL_STORYLINE);
 
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 

@@ -26,7 +26,7 @@
 -- Animation duration
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_ANIMATION_SEQUENCE_DURATION = {
+TRP3_ANIMATION_SEQUENCE_DURATION = {
 	["64"] = 3000, -- huh !
 	["65"] = 3000, -- huh ?
 	["60"] = 4000, -- blabla
@@ -34,7 +34,7 @@ local TRP3_ANIMATION_SEQUENCE_DURATION = {
 	["186"] = 2000, -- Nope !
 	["0"] = 1000,
 }
-local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
+TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	-- DWARF
 	["character\\dwarf\\male\\dwarfmale_hd.m2"] = {
 		["64"] = 1800, -- huh !
@@ -119,7 +119,7 @@ local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 -- Animation mapping
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_DEFAULT_ANIM_MAPPING = {
+TRP3_DEFAULT_ANIM_MAPPING = {
 	["!"] = 64,
 	["?"] = 65,
 	["."] = 60,
@@ -133,7 +133,7 @@ local ALL_TO_NONE = {
 	["?"] = 0,
 	["."] = 0,
 }
-local TRP3_ANIM_MAPPING = {
+TRP3_ANIM_MAPPING = {
 	["character\\worgen\\male\\worgenmale.m2"] = {
 		["."] = 64,
 	},
