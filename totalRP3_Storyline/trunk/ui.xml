@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ /UI.xsd">
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
 	<!--
 		Total RP 3
@@ -43,7 +43,6 @@
 	<Frame name="StandardParchmentFrame" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
-
 				<!-- CORNERS -->
 				<Texture parentKey="BorderTopLeft" file="Interface\QuestionFrame\Question-Main">
 					<Size x="209" y="158"/>
