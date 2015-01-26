@@ -62,7 +62,7 @@
 			</EditBox>
 			<Button name="$parentDelete" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeto="$parentValueField" x="5" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentValueField" x="5" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -197,7 +197,7 @@
 			</Button>
 			<Button name="$parentDelete" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeto="$parentRightIcon" x="0" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRightIcon" x="0" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
