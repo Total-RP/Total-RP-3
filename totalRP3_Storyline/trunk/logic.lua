@@ -19,7 +19,7 @@
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 
-local DEBUG = false;
+local DEBUG = true;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
@@ -572,12 +572,12 @@ local function init()
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
 
-	if DEBUG then
-		TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
-		TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
-		TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
-		TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
-	end
+--	if DEBUG then
+--		TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
+--		TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
+--		TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
+--		TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
+--	end
 
 	TRP3_NPCDialogFrameDebug:Hide();
 

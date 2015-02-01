@@ -113,6 +113,13 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		["65"] = 1600, -- huh ?
 		["60"] = 1900, -- blabla
 	},
+	["creature\\rexxar\\rexxar.m2"] = {
+		["60"] = 2000, -- blabla
+		["65"] = 1600, -- huh ?
+	},
+	["creature\\khadgar2\\khadgar2.m2"] = {
+		["60"] = 2000, -- blabla
+	}
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -145,3 +152,5 @@ TRP3_ANIM_MAPPING["creature\\golemdwarven\\golemdwarven.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\ridinghorse\\packmule.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\rabbit\\rabbit.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\naaru\\naaru.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\rat\\rat.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\beholder\\beholder.m2"] = ALL_TO_NONE;
