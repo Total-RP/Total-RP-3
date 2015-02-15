@@ -70,13 +70,15 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		["60"] = 2000, -- blabla
 	},
 	["character\\human\\female\\humanfemale_hd.m2"] = {
-		["64"] = 1800, -- huh !
+		["64"] = 2500, -- huh !
 		["65"] = 1800, -- huh ?
 		["60"] = 2650, -- blabla
 	},
 	-- DRAENEI
 	["character\\draenei\\female\\draeneifemale_hd.m2"] = {
 		["60"] = 2850, -- blabla
+		["65"] = 1850, -- huh ?
+		["64"] = 2000, -- huh !
 	},
 	["character\\draenei\\male\\draeneimale_hd.m2"] = {
 		["60"] = 3200, -- blabla
@@ -154,3 +156,8 @@ TRP3_ANIM_MAPPING["creature\\rabbit\\rabbit.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\naaru\\naaru.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\rat\\rat.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\beholder\\beholder.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\draenorancient\\draenorancientgorgrond.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\arakkoa2\\arakkoa2.m2"] = ALL_TO_TALK;
+TRP3_ANIM_MAPPING["creature\\arakkoaoutland\\arakkoaoutland.m2"] = ALL_TO_TALK;
+TRP3_ANIM_MAPPING["character\\bloodelf\\female\\bloodelffemale.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\dreadravenwarbird\\dreadravenwarbirdwind.m2"] = ALL_TO_NONE;
