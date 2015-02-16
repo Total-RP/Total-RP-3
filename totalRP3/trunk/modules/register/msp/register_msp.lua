@@ -708,6 +708,15 @@ local function onStart()
 		end
 	end
 
+	TRP3_API.r.sendMSPQuery = function(name)
+		local request = {};
+		tinsert(request, "TT");
+		for _, field in pairs(REQUEST_TAB) do
+			tinsert(request, field);
+		end
+		msp:Request(name, request);
+	end
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -19,7 +19,7 @@
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 
-local DEBUG = true;
+local DEBUG = TRP3_DEBUG or false;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
