@@ -328,6 +328,7 @@ local function sendQuery(unitID)
 		queryMarySueProtocol(unitID);
 	end
 end
+TRP3_API.r.sendQuery = sendQuery;
 
 local function onMouseOverCharacter(unitID)
 	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") then

@@ -1,0 +1,10 @@
+## Interface: 60000
+## Title: Total RP 3 : Debug mode activator
+## Author: Ellypse
+## Version: 1.0
+## Notes: Activate debug mode for Total RP 3
+## URL: http://totalrp3.info
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+totalRP3_Debug.lua
