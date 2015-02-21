@@ -73,22 +73,6 @@
 				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 			</PostClick>
 		</Scripts>
-		<Frames>
-			<Button name="$parentPresetButton" hidden="false">
-				<Size x="16" y="32"/>
-				<Anchors>
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT"/>
-				</Anchors>
-				<NormalTexture file="Interface\PaperDollInfoFrame\UI-GearManager-FlyoutButton"/>
-				<HighlightTexture file="Interface\PaperDollInfoFrame\UI-GearManager-FlyoutButton"/>
-				<Scripts>
-					<OnLoad>
-						self:GetNormalTexture():SetTexCoord(0.15625, 0.5, 0.84375, 0.5, 0.15625, 0, 0.84375, 0);
-						self:GetHighlightTexture():SetTexCoord(0.15625, 1, 0.84375, 1, 0.15625, 0.5, 0.84375, 0.5);
-					</OnLoad>
-				</Scripts>
-			</Button>
-		</Frames>
 	</Button>
 
 	<!-- Register Peek panel -->
@@ -157,6 +141,12 @@
 							<Button name="TRP3_RegisterMiscViewGlanceAction" inherits="TRP3_ActionButton">
 								<Anchors>
 									<Anchor point="RIGHT" x="-10" y="0" />
+								</Anchors>
+							</Button>
+							<Button name="TRP3_RegisterMiscViewGlanceHelp" inherits="TRP3_HelpButton">
+								<Size x="14" y="14"/>
+								<Anchors>
+									<Anchor point="LEFT" x="25" y="0"/>
 								</Anchors>
 							</Button>
 						</Frames>

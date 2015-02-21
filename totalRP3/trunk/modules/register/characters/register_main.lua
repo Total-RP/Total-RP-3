@@ -79,7 +79,7 @@ local function getProfile(profileID)
 end
 TRP3_API.register.getProfile = getProfile;
 
-local function deleteProfile(profileID)
+local function deleteProfile(profileID, dontFireEvents)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
 	-- We shouldn't keep unbounded characters.
 	for character, _ in pairs(profiles[profileID].link) do
@@ -97,8 +97,10 @@ local function deleteProfile(profileID)
 	end
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
+	if not dontFireEvents then
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
+	end
 end
 TRP3_API.register.deleteProfile = deleteProfile;
 

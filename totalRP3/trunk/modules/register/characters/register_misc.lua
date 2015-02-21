@@ -220,14 +220,14 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		if not isMine then
 			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", text);
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "...") .. "\n" .. color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, title or "...", (text or "..."));
 		end
 	else
 		button:SetAlpha(0.1);
 		if not isMine then
 			button:Disable();
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"), color("y") .. loc("REG_PLAYER_GLANCE_CONFIG"));
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"));
 		end
 	end
 end
@@ -241,6 +241,11 @@ local function displayPeek(context)
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. i];
 		button.data = glanceData;
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
+	end
+	if context.isPlayer then
+		TRP3_RegisterMiscViewGlanceHelp:Show();
+	else
+		TRP3_RegisterMiscViewGlanceHelp:Hide();
 	end
 end
 
@@ -341,9 +346,17 @@ local function onSlotClick(button, mouseClick)
 				editGlanceSlot(TRP3_AtFirstGlanceEditor, button.index, draftData, applyPeekSlot);
 			end
 		else
-			applyPeekSlot(button.index, nil, nil, nil, nil, true);
-			refreshTooltip(button);
+			-- TODO: presets
 		end
+	end
+end
+
+local function onSlotDoubleClick(button, mouseClick)
+	if mouseClick == "LeftButton" then
+		local context = getCurrentContext();
+		assert(context, "No context for page player_main !");
+		applyPeekSlot(button.index, nil, nil, nil, nil, true);
+		refreshTooltip(button);
 	end
 end
 
@@ -845,6 +858,8 @@ function TRP3_API.register.inits.miscInit()
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOCHelp, "LEFT", 0, 10, loc("DB_STATUS_CURRENTLY_OOC"), loc("DB_STATUS_CURRENTLY_OOC_TT"));
 	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
 
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc("REG_PLAYER_GLANCE"), loc("REG_PLAYER_GLANCE_CONFIG"));
+
 	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
 	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
 		TRP3_API.popup.hideIconBrowser();
@@ -856,7 +871,8 @@ function TRP3_API.register.inits.miscInit()
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onSlotClick);
-		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
+		button:SetScript("OnDoubleClick", onSlotDoubleClick);
+		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button:RegisterForDrag("LeftButton");
 		button:SetScript("OnDragStart", onGlanceDragStart);
 		button:SetScript("OnDragStop", onGlanceDragStop);

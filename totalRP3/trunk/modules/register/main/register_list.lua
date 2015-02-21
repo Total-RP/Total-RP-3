@@ -356,8 +356,10 @@ local function onCharactersActionSelected(value, button)
 		else
 			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_TIME_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
-					deleteProfile(profileID);
+					deleteProfile(profileID, true);
 				end
+				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -374,8 +376,10 @@ local function onCharactersActionSelected(value, button)
 		else
 			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_UNLINKED_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
-					deleteProfile(profileID);
+					deleteProfile(profileID, true);
 				end
+				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -398,15 +402,19 @@ local function onCharactersActionSelected(value, button)
 		local list = getProfileList();
 		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_C"):format(tsize(list)), function()
 			for profileID, _ in pairs(list) do
-				deleteProfile(profileID);
+				deleteProfile(profileID, true);
 			end
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	-- Mass actions
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				deleteProfile(profileID);
+				deleteProfile(profileID, true);
 			end
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 			refreshList();
 		end);
 	elseif value == "actions_ignore" then
@@ -790,9 +798,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end);
 	
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
-		selectedIDs[profileID] = nil;
-		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
-			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+		if profileID then
+			selectedIDs[profileID] = nil;
+			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+				unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+			end
 		end
 		if getCurrentPageID() == REGISTER_LIST_PAGEID then
 			refreshList();

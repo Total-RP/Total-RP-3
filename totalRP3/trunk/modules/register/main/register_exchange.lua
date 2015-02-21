@@ -193,7 +193,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 
 	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
-		showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display,senderVersionText));
+		showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, senderVersionText));
 		has_seen_update_alert = true;
 	end
 
@@ -401,4 +401,13 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, incomingVernumResponseQuery);
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
+
+	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
+		if sender ~= Globals.player_id then
+			if configShowVersionAlert() and version > Globals.version and not has_seen_update_alert then
+				showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
+				has_seen_update_alert = true;
+			end
+		end
+	end);
 end

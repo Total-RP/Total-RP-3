@@ -108,6 +108,12 @@
 							<Button name="$parentSlot5" inherits="TRP3_RegisterMiscGlanceButton">
 								<Anchors><Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot4" x="45" y="0"/></Anchors>
 							</Button>
+							<Button name="$parentHelp" inherits="TRP3_HelpButton">
+								<Size x="14" y="14"/>
+								<Anchors>
+									<Anchor point="LEFT" x="25" y="0"/>
+								</Anchors>
+							</Button>
 						</Frames>
 					</Frame>
 					

@@ -132,6 +132,12 @@ local function onStart()
 					currentTargetType == TYPE_CHARACTER and TRP3_API.register.applyPeekSlot or onGlanceEditorConfirm, true);
 			end
 		elseif clickType == "RightButton" then
+			displayDropDown(button, getMiscPresetDropListData(), function(value) onPeekSelection(value, button) end, 0, true);
+		end
+	end
+
+	local function onPeekDoubleClickMine(button, clickType)
+		if clickType == "LeftButton" then
 			if currentTargetType == TYPE_CHARACTER then
 				setGlanceSlotPreset(button.slot, -1);
 			else
@@ -164,9 +170,6 @@ local function onStart()
 						icon = peek.IC;
 					end
 					local TTText = "|cffff9900" .. (peek.TX or "...");
-					if isCurrentMine then
-						TTText = TTText .. "\n" .. loc("REG_PLAYER_GLANCE_CONFIG_GLANCE");
-					end
 					setTooltipForSameFrame(slot, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. (peek.TI or "..."), TTText);
 				else
 					slot:SetAlpha(0.25);
@@ -177,8 +180,10 @@ local function onStart()
 
 				if isCurrentMine then
 					slot:SetScript("OnClick", onPeekClickMine);
+					slot:SetScript("OnDoubleClick", onPeekDoubleClickMine);
 				else
 					slot:SetScript("OnClick", nil);
+					slot:SetScript("OnDoubleClick", nil);
 				end
 			end
 		end

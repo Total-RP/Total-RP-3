@@ -463,7 +463,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	constructTutorialStructure();
 
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
-		if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+		if profileID and isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 			unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 		end
 	end);

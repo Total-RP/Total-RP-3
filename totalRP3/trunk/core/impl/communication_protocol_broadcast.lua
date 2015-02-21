@@ -23,12 +23,12 @@ local GetChannelDisplayInfo = GetChannelDisplayInfo;
 local GetChannelName = GetChannelName;
 local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
-local wipe, string = wipe, string;
+local wipe, string, pairs, strsplit, assert, tinsert, type = wipe, string, pairs, strsplit, assert, tinsert, type;
 local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm = TRP3_API.communication;
+local Comm, isIDIgnored = TRP3_API.communication;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
 
@@ -44,6 +44,68 @@ end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Communication protocol
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local helloWorlded = false;
+local PREFIX_REGISTRATION = {};
+local BROADCAST_PREFIX = "RP";
+local BROADCAST_VERSION = 1;
+local BROADCAST_SEPARATOR = "~";
+local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
+
+local function broadcast(command, ...)
+	if not config_UseBroadcast() or not command then
+		return;
+	end
+	local message = BROADCAST_HEADER .. BROADCAST_SEPARATOR .. command;
+	for _, arg in pairs({...}) do
+		arg = tostring(arg);
+		if arg:find(BROADCAST_SEPARATOR) then
+			Log.log("Trying a broadcast with a arg containing the separator character. Abord !", Log.level.WARNING);
+			return;
+		end
+		message = message .. BROADCAST_SEPARATOR .. arg;
+	end
+	if message:len() < 254 then
+		local channelName = GetChannelName(config_BroadcastChannel());
+		ChatThrottleLib:SendChatMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", select(2, GetDefaultLanguage("player")), channelName);
+	else
+		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
+	end
+end
+Comm.broadcast.broadcast = broadcast;
+
+local function receiveBroadcast(sender, command, ...)
+	if PREFIX_REGISTRATION[command] then
+		for _, callback in pairs(PREFIX_REGISTRATION[command]) do
+			callback(sender, ...);
+		end
+	else
+		Log.log("No registration for prefix: " .. command, Log.level.INFO);
+	end
+end
+
+local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
+	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
+		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+		if not header == BROADCAST_HEADER or not command then
+			return; -- If not RP protocol or don't have a command
+		end
+		receiveBroadcast(sender, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+	end
+end
+
+-- Register a function to callback when receiving args to a certain command
+function Comm.broadcast.registerCommand(command, callback)
+	assert(command and callback and type(callback) == "function", "Usage: command, callback");
+	if PREFIX_REGISTRATION[command] == nil then
+		PREFIX_REGISTRATION[command] = {};
+	end
+	tinsert(PREFIX_REGISTRATION[command], callback);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Players connexions listener
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local connectedPlayers = {};
@@ -95,14 +157,14 @@ end
 -- Init and helloWorld
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local helloWorlded = false;
+Comm.broadcast.HELLO_CMD = "TRP3HI";
+local HELLO_CMD = Comm.broadcast.HELLO_CMD;
 
 -- Send in a broadcast your main informations.
 -- [1] - TRP3 version
 local function helloWorld()
 	if not helloWorlded then
-		Log.log("helloWorld !");
-		helloWorlded = true;
+		broadcast(HELLO_CMD, Globals.version, Globals.version_display);
 	end
 end
 
@@ -124,8 +186,17 @@ local function onMouseOver()
 end
 
 Comm.broadcast.init = function()
+	isIDIgnored = TRP3_API.register.isIDIgnored;
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE", onChannelNotice);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_JOIN", onChannelJoin);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
+	Utils.event.registerHandler("CHAT_MSG_CHANNEL", parseBroadcast);
+
+	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, version, versionDisplay)
+		if sender == Globals.player_id then
+			Log.log("helloWorlded !");
+			helloWorlded = true;
+		end
+	end);
 end

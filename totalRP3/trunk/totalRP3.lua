@@ -29,7 +29,9 @@ local MAIN_SEQUENCE_ID, MAIN_SEQUENCE_DETAIL = "", "";
 
 -- Called when TRP3 is loaded.
 function Globals.addon:OnInitialize()
-
+	TRP3_API.utils.event.registerHandler("SAVED_VARIABLES_TOO_LARGE", function(...)
+		print(...);
+	end);
 end
 
 local function loadingSequence()

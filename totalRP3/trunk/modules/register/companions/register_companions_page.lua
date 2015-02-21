@@ -150,6 +150,15 @@ local function onGlanceClick(button, mouseClick)
 				TRP3_API.register.openGlanceEditor(TRP3_AtFirstGlanceEditor, button.index, context.profile.PE[button.index] or {}, onGlanceEditorConfirm);
 			end
 		else
+			-- TODO : presets
+		end
+	end
+end
+
+local function onGlanceDoubleClick(button, mouseClick)
+	if mouseClick == "LeftButton" then
+		local context = getCurrentContext();
+		if context.isPlayer then
 			onGlanceEditorConfirm(button.index, nil, nil, nil, nil, true);
 			refreshTooltip(button);
 		end
@@ -368,6 +377,11 @@ end
 local function showInformationTab()
 	getCurrentContext().isEditMode = false;
 	refresh();
+	if getCurrentContext().isPlayer then
+		TRP3_CompanionsPageInformationConsult_GlanceHelp:Show();
+	else
+		TRP3_CompanionsPageInformationConsult_GlanceHelp:Hide();
+	end
 end
 
 local function onSave()
@@ -502,6 +516,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupListBox(TRP3_CompanionsPageInformationEdit_About_BckField, bkgTab, function(value) setBkg(TRP3_CompanionsPageInformationEdit_About, value) end, nil, 120, true);
 	TRP3_API.ui.text.setupToolbar("TRP3_CompanionsPageInformationEdit_About_Toolbar", TRP3_CompanionsPageInformationEdit_About_TextScrollText);
 
+	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "LEFT", 0, 10, loc("REG_PLAYER_GLANCE"), loc("REG_PLAYER_GLANCE_CONFIG"));
+
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("p", GameFontNormal);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h1", GameFontNormalHuge3);
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetFontObject("h2", GameFontNormalHuge);
@@ -516,6 +532,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", onGlanceClick);
+		button:SetScript("OnDoubleClick", onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
 		button:RegisterForDrag("LeftButton");
 		button:SetScript("OnDragStart", onGlanceDragStart);

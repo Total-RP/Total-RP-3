@@ -18,7 +18,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
 	<!-- Please note that the loading order matters a lot -->
 	<Include file="libs\libs.xml"/>
 	<Include file="core\core.xml"/>
@@ -34,4 +34,5 @@
 			<OnEvent function="TRP3_EventDispatcher"/>
 		</Scripts>
 	</Frame>
+
 </Ui>
