@@ -66,7 +66,8 @@ end
 
 -- The log level defines the prefix color and serves as filter
 Log.level = {
-	INFO = "-|cff00ffffINFO|r] ",
+	DEBUG = "-|cff00ffffDEBUG|r] ",
+	INFO = "-|cff00ff00INFO|r] ",
 	WARNING = "-|cffffaa00WARNING|r] ",
 	SEVERE = "-|cffff0000SEVERE|r] "
 }

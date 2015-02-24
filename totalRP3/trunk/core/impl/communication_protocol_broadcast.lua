@@ -23,7 +23,8 @@ local GetChannelDisplayInfo = GetChannelDisplayInfo;
 local GetChannelName = GetChannelName;
 local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
-local wipe, string, pairs, strsplit, assert, tinsert, type = wipe, string, pairs, strsplit, assert, tinsert, type;
+local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, string, pairs, strsplit, assert, tinsert, type, tostring;
+local time = time;
 local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -47,10 +48,10 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local helloWorlded = false;
-local PREFIX_REGISTRATION = {};
-local BROADCAST_PREFIX = "RP";
+local PREFIX_REGISTRATION, PREFIX_P2P_REGISTRATION = {}, {};
+local BROADCAST_PREFIX = "TRP2.";
 local BROADCAST_VERSION = 1;
-local BROADCAST_SEPARATOR = "~";
+local BROADCAST_SEPARATOR = "\1";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
 
 local function broadcast(command, ...)
@@ -80,12 +81,12 @@ local function receiveBroadcast(sender, command, ...)
 		for _, callback in pairs(PREFIX_REGISTRATION[command]) do
 			callback(sender, ...);
 		end
-	else
-		Log.log("No registration for prefix: " .. command, Log.level.INFO);
 	end
 end
 
 local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
+	Log.log(tostring(sender) .. " : " .. tostring(message):gsub("\1", "\\1"), Log.level.DEBUG);
+
 	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
 		if not header == BROADCAST_HEADER or not command then
@@ -103,6 +104,58 @@ function Comm.broadcast.registerCommand(command, callback)
 	end
 	tinsert(PREFIX_REGISTRATION[command], callback);
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Peer to peer part
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function onP2PMessageReceived(...)
+	local prefix, message , distributionType, sender = ...;
+	if prefix == BROADCAST_HEADER then
+		if not sender then
+			Log.log("onP2PMessageReceived: Malformed senderID: " .. tostring(sender), Log.level.WARNING);
+			return;
+		end
+		if not sender:find('-') then
+			sender = Utils.str.unitInfoToID(sender);
+		end
+		if not isIDIgnored(sender) then
+			local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+			if PREFIX_P2P_REGISTRATION[command] then
+				for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
+					callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+				end
+			end
+		end
+	end
+end
+
+-- Register a function to callback when receiving args to a certain command
+function Comm.broadcast.registerP2PCommand(command, callback)
+	assert(command and callback and type(callback) == "function", "Usage: command, callback");
+	if PREFIX_P2P_REGISTRATION[command] == nil then
+		PREFIX_P2P_REGISTRATION[command] = {};
+	end
+	tinsert(PREFIX_P2P_REGISTRATION[command], callback);
+end
+
+local function sendP2PMessage(target, command, ...)
+	local message = command;
+	for _, arg in pairs({...}) do
+		arg = tostring(arg);
+		if arg:find(BROADCAST_SEPARATOR) then
+			Log.log("Trying a broadcast with a arg containing the separator character. Abord !", Log.level.WARNING);
+			return;
+		end
+		message = message .. BROADCAST_SEPARATOR .. arg;
+	end
+	if message:len() < 254 then
+		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "WHISPER", target);
+	else
+		Log.log(("Trying a P2P message with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
+	end
+end
+Comm.broadcast.sendP2PMessage = sendP2PMessage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Players connexions listener
@@ -159,11 +212,14 @@ end
 
 Comm.broadcast.HELLO_CMD = "TRP3HI";
 local HELLO_CMD = Comm.broadcast.HELLO_CMD;
+local HELLO_COOLDOWN = 3;
+local helloTimestamp;
 
 -- Send in a broadcast your main informations.
 -- [1] - TRP3 version
 local function helloWorld()
-	if not helloWorlded then
+	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp < HELLO_COOLDOWN) then
+		helloTimestamp = time();
 		broadcast(HELLO_CMD, Globals.version, Globals.version_display);
 	end
 end
@@ -187,13 +243,18 @@ end
 
 Comm.broadcast.init = function()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
+
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE", onChannelNotice);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_JOIN", onChannelJoin);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL", parseBroadcast);
+	Utils.event.registerHandler("CHAT_MSG_ADDON", onP2PMessageReceived);
+	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function()
+		RegisterAddonMessagePrefix(BROADCAST_HEADER);
+	end);
 
-	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, version, versionDisplay)
+	Comm.broadcast.registerCommand(HELLO_CMD, function(sender)
 		if sender == Globals.player_id then
 			Log.log("helloWorlded !");
 			helloWorlded = true;

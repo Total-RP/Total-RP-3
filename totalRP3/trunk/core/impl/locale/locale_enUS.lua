@@ -804,6 +804,13 @@ Total RP is not responsible for links leading to harmful content.]],
 		ABOUT_TITLE = "About",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- MAP
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		MAP_BUTTON_TITLE = "Scan for roleplay",
+		MAP_BUTTON_SUBTITLE = "Click to show available scans",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

@@ -143,9 +143,9 @@ local ALL_TO_NONE = {
 	["."] = 0,
 }
 TRP3_ANIM_MAPPING = {
-	["character\\worgen\\male\\worgenmale.m2"] = {
-		["."] = 64,
-	},
+--	["character\\worgen\\male\\worgenmale.m2"] = {
+--		["."] = 64,
+--	},
 }
 TRP3_ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;

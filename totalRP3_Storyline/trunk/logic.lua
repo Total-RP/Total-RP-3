@@ -171,9 +171,9 @@ local function playText(textIndex)
 	wipe(animTab);
 	text:gsub("[%.%?%!]+", function(finder)
 		animTab[#animTab+1] = getAnimationByModel(TRP3_NPCDialogFrameModelsYou.model, finder:sub(1, 1));
-		animTab[#animTab+1] = 0;
+--		animTab[#animTab+1] = 0;
 	end);
-	animTab[#animTab+1] = 0;
+--	animTab[#animTab+1] = 0;
 	
 	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
 		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
@@ -188,6 +188,20 @@ local function playText(textIndex)
 		animTab[1] = 0;
 	else
 		TRP3_NPCDialogFrameChatText:SetText(text);
+	end
+
+	if #animTab >= 1 then
+		TRP3_NPCDialogFrameModelsYou:SetAnimation(animTab[1]);
+	end
+	if #animTab > 1 then
+		for index, sequence in pairs(animTab) do
+			if index ~= 1 then
+				C_Timer.After(4 * (index - 1), function()
+					print("Playing: " .. sequence);
+					TRP3_NPCDialogFrameModelsYou:SetAnimation(sequence);
+				end)
+			end
+		end
 	end
 
 	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
@@ -445,6 +459,7 @@ local function onUpdateModel(self, elapsed)
 			duration = TRP3_ANIMATION_SEQUENCE_DURATION[sequenceString];
 		end
 		if duration and self.seqtime > duration then
+--			self:SetAnimation(self.sequenceTab[self.sequence]);
 			self.seqtime = 0;
 			if self.sequence < #self.sequenceTab then
 				self.sequence = self.sequence + 1;
@@ -559,15 +574,13 @@ local function init()
 		end
 	end
 
-	print(TRP3_API.locale.getLocale("enUS").SL_STORYLINE);
-
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 
 	TRP3_NPCDialogFrameChatPrevious:SetText("Reset");
 
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", playNext);
 	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
-	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
+--	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameModelsMe:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);

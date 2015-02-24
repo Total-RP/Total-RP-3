@@ -7,6 +7,8 @@
 assert(TRP3_API, "Unable to find TRP3.");
 local globals = TRP3_API.globals;
 
+globals.DEBUG_MODE = true;
+
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
 local Comm = TRP3_API.communication;
@@ -258,6 +260,33 @@ function TRP3_TRP2_TAG()
 	print(result);
 end
 
+function TRP3_MOUNT()
+	local monture="";
+	local GetNumMounts, GetMountInfo = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo;
+	local num = GetNumMounts();
+	local j=1;
+	while(monture) do
+		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellBuffID = UnitAura("player", j);
+		monture = name;
+		for i = 1, num do
+			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
+			if spellBuffID == spellID then
+				print(name, creatureName, spellID);
+			end
+		end
+		j = j + 1;
+	end
+end
+
+function TRP3_WWW()
+	local text = "Venez visiter le forum de ma guilde http://maguilde.superforum.com/read";
+	local replaced = text:gsub("", function(url)
+
+		return url;
+	end);
+	print(replaced);
+end
+
 local function onInit()
 	Log.log("onInit test module");
 end
@@ -309,6 +338,14 @@ local function onStart()
 --		["HE"] = "Really tall !!",
 --	}
 --	Comm.sendObject("SI", {TRP3_API.register.registerInfoTypes.CHARACTERISTICS, data}, "Telkostrasz-KirinTor", "BULK");
+end
+
+function TRP3_BREAK_ME()
+	for i=0, 10000, 1 do
+		local profile = {};
+		Utils.table.copy(profile, TRP3_API.profile.getPlayerCurrentProfile());
+		TRP3_Register.profiles[Utils.str.id()] = profile;
+	end
 end
 
 local MODULE_STRUCTURE = {

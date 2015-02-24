@@ -511,4 +511,38 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 
 	createTabBar();
+
+	local CHARACTER_SCAN_COMMAND = "SNCC";
+	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
+	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
+
+	TRP3_API.map.registerScan({
+		id = "playerScan",
+		buttonText = "Scan for characters",
+		scan = function()
+			local zoneID = GetCurrentMapAreaID();
+			broadcast.broadcast("GetLocalCoord", zoneID);
+		end,
+		scanTitle  = "Characters",
+		scanCommand = CHARACTER_SCAN_COMMAND,
+		scanResponder = function(sender, zoneID)
+			local currentMapID = GetCurrentMapAreaID();
+			SetMapToCurrentZone();
+			if GetCurrentMapAreaID() == tonumber(zoneID) then
+				local x, y = GetPlayerMapPosition("player");
+				broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
+			end
+			SetMapByID(currentMapID);
+		end,
+		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
+			saveStructure[sender] = {x = x, y = y, mapId = mapId, addon = addon};
+		end,
+		scanComplete = function(saveStructure)
+
+		end,
+		scanMarkerDecorator = function(key, entry, marker)
+			marker.scanLine = key;
+		end,
+		scanDuration = 3;
+	});
 end
