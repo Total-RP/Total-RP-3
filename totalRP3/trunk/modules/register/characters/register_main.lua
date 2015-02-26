@@ -512,7 +512,7 @@ function TRP3_API.register.init()
 
 	createTabBar();
 
-	local CHARACTER_SCAN_COMMAND = "SNCC";
+	local CHARACTER_SCAN_COMMAND = "CSCAN";
 	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
 	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
 
@@ -521,7 +521,7 @@ function TRP3_API.register.init()
 		buttonText = "Scan for characters",
 		scan = function()
 			local zoneID = GetCurrentMapAreaID();
-			broadcast.broadcast("GetLocalCoord", zoneID);
+			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);
 		end,
 		scanTitle  = "Characters",
 		scanCommand = CHARACTER_SCAN_COMMAND,

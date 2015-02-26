@@ -49,9 +49,9 @@ end
 
 local helloWorlded = false;
 local PREFIX_REGISTRATION, PREFIX_P2P_REGISTRATION = {}, {};
-local BROADCAST_PREFIX = "TRP2.";
+local BROADCAST_PREFIX = "RPB";
 local BROADCAST_VERSION = 1;
-local BROADCAST_SEPARATOR = "\1";
+local BROADCAST_SEPARATOR = "~";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
 
 local function broadcast(command, ...)

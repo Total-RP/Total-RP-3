@@ -47,7 +47,7 @@ local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
-local tinsert, time, type, pairs = tinsert, time, type, pairs;
+local tinsert, time, type, pairs, tonumber = tinsert, time, type, pairs, tonumber;
 
 -- Config keys
 local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
@@ -403,6 +403,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
+		version = tonumber(version);
 		if sender ~= Globals.player_id then
 			if configShowVersionAlert() and version > Globals.version and not has_seen_update_alert then
 				showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
