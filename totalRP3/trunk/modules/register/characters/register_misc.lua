@@ -214,6 +214,7 @@ local GLANCE_NOT_USED_ICON = "INV_Misc_QuestionMark";
 
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
+	button.isCurrentMine = isMine;
 	button:SetNormalTexture("Interface\\ICONS\\" .. (icon or GLANCE_NOT_USED_ICON));
 	if active then
 		button:SetAlpha(1);
@@ -249,17 +250,33 @@ local function displayPeek(context)
 	end
 end
 
+
+function TRP3_API.register.checkGlanceActivation(dataTab)
+	for i=1, 5, 1 do
+		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then
+			return true
+		end
+	end
+	return false;
+end
+
+function TRP3_API.register.getGlanceIconTextures(dataTab, size)
+	local text = "";
+	for i=1, 5, 1 do
+		local index = tostring(i);
+		if dataTab[index] and dataTab[index].AC then
+			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or Globals.icons.default) .. ":" .. size .. "|t "
+		end
+	end
+	return text;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local draftData = {};
-
-local function onIconSelected(icon)
-	icon = icon or GLANCE_NOT_USED_ICON;
-	setupIconButton(TRP3_AtFirstGlanceEditorIcon, icon);
-	TRP3_AtFirstGlanceEditorIcon.icon = icon;
-end
+local displayDropDown, setGlanceSlotPreset = TRP3_API.ui.listbox.displayDropDown;
 
 local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	TRP3_AtFirstGlanceEditor:Hide();
@@ -292,95 +309,12 @@ TRP3_API.register.applyPeekSlot = applyPeekSlot;
 local function swapGlanceSlot(from, to)
 	TRP3_AtFirstGlanceEditor:Hide();
 	local dataTab = get("player/misc");
-	if not dataTab.PE then
-		dataTab.PE = {};
-	end
-	local fromData = dataTab.PE[from];
-	local toData = dataTab.PE[to];
-	dataTab.PE[from] = toData;
-	dataTab.PE[to] = fromData;
-	-- version increment
-	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-	compressData();
+	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
+	compressData();
 end
 TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
-
-local function editGlanceSlot(frame, slot, slotData, callback, external)
-	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
-	TRP3_API.popup.hideIconBrowser();
-	TRP3_AtFirstGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(tostring(slot)));
-	TRP3_AtFirstGlanceEditorActive:SetChecked(slotData.AC);
-	TRP3_AtFirstGlanceEditorTextScrollText:SetText(slotData.TX or "");
-	TRP3_AtFirstGlanceEditorName:SetText(slotData.TI or "");
-	onIconSelected(slotData.IC);
-	TRP3_AtFirstGlanceEditorApply:SetScript("OnClick", function()
-		callback(
-			slot,
-			TRP3_AtFirstGlanceEditorIcon.icon,
-			TRP3_AtFirstGlanceEditorActive:GetChecked(),
-			stEtN(TRP3_AtFirstGlanceEditorName:GetText()),
-			stEtN(TRP3_AtFirstGlanceEditorTextScrollText:GetText())
-		);
-	end);
-	TRP3_AtFirstGlanceEditorName:SetFocus();
-	TRP3_AtFirstGlanceEditorName:HighlightText();
-end
-TRP3_API.register.openGlanceEditor = editGlanceSlot;
-
-local function onSlotClick(button, mouseClick)
-	local context = getCurrentContext();
-	assert(context, "No context for page player_main !");
-	if context.isPlayer then
-		local dataTab = get("player/misc");
-		if mouseClick == "LeftButton" then
-			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
-				TRP3_AtFirstGlanceEditor:Hide();
-			else
-				draftData = (dataTab.PE or {})[button.index] or {};
-				button.data = draftData;
-				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
-				TRP3_AtFirstGlanceEditor.current = button;
-				editGlanceSlot(TRP3_AtFirstGlanceEditor, button.index, draftData, applyPeekSlot);
-			end
-		else
-			-- TODO: presets
-		end
-	end
-end
-
-local function onSlotDoubleClick(button, mouseClick)
-	if mouseClick == "LeftButton" then
-		local context = getCurrentContext();
-		assert(context, "No context for page player_main !");
-		applyPeekSlot(button.index, nil, nil, nil, nil, true);
-		refreshTooltip(button);
-	end
-end
-
-local function onGlanceDragStart(button)
-	local context = getCurrentContext();
-	if context.isPlayer and button.data then
-		SetCursor("Interface\\ICONS\\" .. (button.data.IC or GLANCE_NOT_USED_ICON));
-	end
-end
-
-local function onGlanceDragStop(button)
-	ResetCursor();
-	local context = getCurrentContext();
-	if context.isPlayer and button and button.data then
-		local from, to = button.index;
-		local toButton = GetMouseFocus();
-		if toButton.index and toButton.data then
-			to = toButton.index;
-			if to ~= from then
-				swapGlanceSlot(from, to);
-			end
-		end
-	end
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Currently
@@ -394,13 +328,11 @@ local function displayCurrently(context)
 		TRP3_RegisterMiscViewCurrentlyOOC:Enable();
 		TRP3_RegisterMiscViewCurrentlyICHelp:Show();
 		TRP3_RegisterMiscViewCurrentlyOOCHelp:Show();
-		TRP3_RegisterMiscViewGlanceAction:Show();
 	else
 		TRP3_RegisterMiscViewCurrentlyIC:Disable();
 		TRP3_RegisterMiscViewCurrentlyOOC:Disable();
 		TRP3_RegisterMiscViewCurrentlyICHelp:Hide();
 		TRP3_RegisterMiscViewCurrentlyOOCHelp:Hide();
-		TRP3_RegisterMiscViewGlanceAction:Hide();
 	end
 
 	local dataTab = context.profile.character or Globals.empty;
@@ -489,278 +421,6 @@ function TRP3_API.register.player.getMiscExchangeData()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Presets
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local LOAD_PREFIX, REMOVE_PREFIX = "+", "-";
-local PEEK_PRESETS, PEEK_PRESETS_CATEGORY;
-local listData = {};
-local titleElement, noneElement;
-local rebuildPresetListBox;
-local presetStructureForTargetFrame = {};
-
-function TRP3_API.register.ui.getMiscPresetDropListData()
-	return presetStructureForTargetFrame;
-end
-
-function TRP3_API.register.player.setGlanceSlotPreset(slot, presetID)
-	if presetID == -1 then
-		applyPeekSlot(slot, nil, nil, nil, nil, true);
-	else
-		assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
-		local preset = PEEK_PRESETS[presetID];
-		applyPeekSlot(slot, preset.icon, true, preset.title, preset.text);
-	end
-end
-
-local function createPeekFinalElement(peek)
-	return {
-		{loc("CM_LOAD"), LOAD_PREFIX .. peek},
-		{loc("CM_REMOVE"), REMOVE_PREFIX .. peek}
-	};
-end
-
-local function buildPresetListData()
-	wipe(listData);
-	wipe(presetStructureForTargetFrame);
-	-- Title
-	tinsert(listData, titleElement);
-	tinsert(presetStructureForTargetFrame, titleElement);
-	tinsert(presetStructureForTargetFrame, noneElement);
-	-- Category sorting
-	local tmp = {};
-	for category, _ in pairs(PEEK_PRESETS_CATEGORY) do
-		tinsert(tmp, category);
-	end
-	table.sort(tmp);
-	for _, category in pairs(tmp) do
-		local categoryTab = PEEK_PRESETS_CATEGORY[category];
-		local categoryListElement = {category, {}};
-		local categoryListElementTarget = {category, {}};
-		-- Peek
-		for _, peek in pairs(categoryTab) do
-			local peekInfo = PEEK_PRESETS[peek];
-			tinsert(categoryListElement[2], {getIcon(peekInfo.icon, 20) .. " " .. peek, createPeekFinalElement(peek)});
-			tinsert(categoryListElementTarget[2], {getIcon(peekInfo.icon, 20) .. " " .. peek, peek});
-		end
-		tinsert(listData, categoryListElement);
-		tinsert(presetStructureForTargetFrame, categoryListElementTarget);
-	end
-
-	return listData;
-end
-
-local function loadPreset(presetID)
-	assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
-	TRP3_RegisterGlanceEditor_PresetList:SetSelectedIndex(1);
-	local preset = PEEK_PRESETS[presetID];
-	TRP3_RegisterMiscEdit_Glance_Active:SetChecked(true);
-	TRP3_RegisterMiscEdit_Glance_Title:SetText(preset.title or "");
-	TRP3_RegisterMiscEdit_Glance_TextScrollText:SetText(preset.text or "");
-	onIconSelected(preset.icon);
-end
-
-local function removePreset(presetID)
-	assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
-	wipe(PEEK_PRESETS[presetID]);
-	PEEK_PRESETS[presetID] = nil;
-	for category, categoryTab in pairs(PEEK_PRESETS_CATEGORY) do
-		local found = tableRemove(categoryTab, presetID);
-		if found and #categoryTab == 0 then
-			wipe(PEEK_PRESETS_CATEGORY[category]);
-			PEEK_PRESETS_CATEGORY[category] = nil;
-		end
-	end
-	rebuildPresetListBox();
-end
-
-local function onPresetSelected(presetAction)
-	if presetAction == nil then return end
-	local action = presetAction:sub(1, 1);
-	if action == LOAD_PREFIX then
-		loadPreset(presetAction:sub(2));
-	elseif action == REMOVE_PREFIX then
-		removePreset(presetAction:sub(2));
-	end
-end
-
-function rebuildPresetListBox()
-	setupListBox(TRP3_RegisterGlanceEditor_PresetList, buildPresetListData(), onPresetSelected, nil, 180, true);
-	TRP3_RegisterGlanceEditor_PresetList:SetSelectedIndex(1);
-end
-
-local function savePreset()
-	local presetTitle = TRP3_RegisterMiscEdit_Glance_Title:GetText();
-	local presetText = TRP3_RegisterMiscEdit_Glance_TextScrollText:GetText();
-	local presetIcon = TRP3_RegisterMiscEdit_Glance_Icon.icon;
-	local presetCategory = TRP3_RegisterGlanceEditor_PresetSaveCategory:GetText();
-	local presetID = TRP3_RegisterGlanceEditor_PresetSaveName:GetText();
-	if presetCategory:len() == 0 or presetID:len() == 0 then
-		toast(loc("REG_PLAYER_GLANCE_PRESET_ALERT1"), 2);
-		return;
-	end
-	if not PEEK_PRESETS[presetID] then
-		PEEK_PRESETS[presetID] = {};
-		PEEK_PRESETS[presetID].icon = presetIcon;
-		PEEK_PRESETS[presetID].title = presetTitle;
-		PEEK_PRESETS[presetID].text = presetText;
-		if not PEEK_PRESETS_CATEGORY[presetCategory] then
-			PEEK_PRESETS_CATEGORY[presetCategory] = {};
-		end
-		tinsert(PEEK_PRESETS_CATEGORY[presetCategory], presetID);
-		TRP3_RegisterGlanceEditor_PresetSaveCategory:SetText("");
-		TRP3_RegisterGlanceEditor_PresetSaveName:SetText("");
-		rebuildPresetListBox();
-	else
-		toast(loc("REG_PLAYER_GLANCE_PRESET_ALERT2"):format(presetID), 2);
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Bar preset
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local PEEK_PRESETS_BAR;
-local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-
-local function saveGlanceBarPreset(presetName)
-	if presetName == nil or presetName:len() == 0 then
-		toast(loc("REG_PLAYER_GLANCE_BAR_EMPTY"), 2);
-		return;
-	end
-	if PEEK_PRESETS_BAR[presetName] then
-		wipe(PEEK_PRESETS_BAR[presetName]);
-		PEEK_PRESETS_BAR[presetName] = nil;
-	end
-	local dataTab = get("player/misc/PE");
-	local preset = {};
-	if dataTab then
-		tcopy(preset, dataTab);
-	end
-	PEEK_PRESETS_BAR[presetName] = preset;
-	toast(loc("REG_PLAYER_GLANCE_BAR_SAVED"):format(presetName), 2);
-	if tsize(PEEK_PRESETS_BAR) == 1 then
-		-- Refresh display & target frame
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
-	end
-end
-
-local function loadBarPreset(presetName)
-	assert(PEEK_PRESETS_BAR[presetName], "Unknown bar preset: " .. tostring(presetName));
-	local preset = PEEK_PRESETS_BAR[presetName];
-	local dataTab = get("player/misc");
-	if not dataTab.PE then
-		dataTab.PE = {};
-	else
-		wipe(dataTab.PE);
-	end
-	tcopy(dataTab.PE, preset);
-	-- version increment
-	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
-	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-	compressData();
-	-- Refresh display & target frame
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
-end
-
-local function removeBarPreset(presetName)
-	assert(PEEK_PRESETS_BAR[presetName], "Unknown bar preset: " .. tostring(presetName));
-	wipe(PEEK_PRESETS_BAR[presetName]);
-	PEEK_PRESETS_BAR[presetName] = nil;
-	toast(loc("REG_PLAYER_GLANCE_BAR_DELETED"):format(presetName), 2);
-	if tsize(PEEK_PRESETS_BAR) == 0 then
-		-- Refresh display & target frame
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID());
-	end
-end
-
-local function onBarActionSelected(value)
-	if value == nil then return end
-	if value == 1 then
-		showTextInputPopup(loc("REG_PLAYER_GLANCE_BAR_NAME"), function(text)
-			saveGlanceBarPreset(text);
-		end);
-	elseif type(value) == "string" then
-		local action = value:sub(1, 1);
-		if action == LOAD_PREFIX then
-			loadBarPreset(value:sub(2));
-		elseif action == REMOVE_PREFIX then
-			removeBarPreset(value:sub(2));
-		end
-	end
-end
-
-local BAR_PRESET_TAB = {};
-local function onBarActionClicked(button)
-	wipe(BAR_PRESET_TAB);
-	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE"), nil});
-	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE_BAR_SAVE"), 1});
-	if tsize(PEEK_PRESETS_BAR) > 0 then
-		local presets = {};
-		for presetName, preset in pairs(PEEK_PRESETS_BAR) do
-			tinsert(presets, {presetName, {
-				{loc("CM_LOAD"), LOAD_PREFIX .. presetName},
-				{loc("CM_REMOVE"), REMOVE_PREFIX .. presetName}
-			}});
-		end
-		tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE_BAR_LOAD"), presets});
-	end
-	displayDropDown(button, BAR_PRESET_TAB, onBarActionSelected, 0, true);
-end
-
-local function onTargetBarClick(button)
-	wipe(BAR_PRESET_TAB);
-	tinsert(BAR_PRESET_TAB, {loc("REG_PLAYER_GLANCE"), nil});
-	for presetName, preset in pairs(PEEK_PRESETS_BAR) do
-		tinsert(BAR_PRESET_TAB, {presetName, LOAD_PREFIX .. presetName});
-	end
-	displayDropDown(button, BAR_PRESET_TAB, onBarActionSelected, 0, true);
-end
-
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	if TRP3_API.target then
-		TRP3_API.target.registerButton({
-			id = "aa_player_c_glance_presets",
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			configText = loc("REG_PLAYER_GLANCE_BAR_TARGET"),
-			condition = function(targetType, unitID)
-				return unitID == Globals.player_id and tsize(PEEK_PRESETS_BAR) > 0;
-			end,
-			onClick = function(unitID, _, _, button)
-				onTargetBarClick(button);
-			end,
-			tooltip = loc("REG_PLAYER_GLANCE_BAR_TARGET"),
-			icon = "racechange"
-		});
-	end
-end);
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Tool
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.register.checkGlanceActivation(dataTab)
-	for i=1, 5, 1 do
-		if dataTab[tostring(i)] and dataTab[tostring(i)].AC then
-			return true
-		end
-	end
-	return false;
-end
-
-function TRP3_API.register.getGlanceIconTextures(dataTab, size)
-	local text = "";
-	for i=1, 5, 1 do
-		local index = tostring(i);
-		if dataTab[index] and dataTab[index].AC then
-			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or GLANCE_NOT_USED_ICON) .. ":" .. size .. "|t "
-		end
-	end
-	return text;
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -819,36 +479,13 @@ function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
 	createTutorialStructure();
 
-	if not TRP3_Presets then
-		TRP3_Presets = {};
-	end
-	if not TRP3_Presets.peekBar then
-		TRP3_Presets.peekBar = {};
-	end
-	if not TRP3_Presets.peek then
-		TRP3_Presets.peek = {};
-	end
-	if not TRP3_Presets.peekCategory then
-		TRP3_Presets.peekCategory = {};
-	end
-	PEEK_PRESETS_BAR = TRP3_Presets.peekBar;
-	PEEK_PRESETS = TRP3_Presets.peek;
-	PEEK_PRESETS_CATEGORY = TRP3_Presets.peekCategory;
-
 	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
 	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc("REG_PLAYER_CURRENT"), 150);
 	TRP3_AtFirstGlanceEditorApply:SetText(loc("CM_APPLY"));
 	TRP3_AtFirstGlanceEditorNameText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
 	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
-	TRP3_RegisterGlanceEditor_PresetText:SetText(loc("REG_PLAYER_GLANCE_PRESET"));
-	TRP3_RegisterGlanceEditor_PresetSave:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE"));
-	TRP3_RegisterGlanceEditor_PresetSaveButton:SetText(loc("REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"));
-	TRP3_RegisterGlanceEditor_PresetSaveCategoryText:SetText(loc("REG_PLAYER_GLANCE_PRESET_CATEGORY"));
-	TRP3_RegisterGlanceEditor_PresetSaveNameText:SetText(loc("REG_PLAYER_GLANCE_PRESET_NAME"));
 
 	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_USE"));
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_RegisterMiscViewGlanceAction, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_BAR_LOAD_SAVE"));
-	TRP3_RegisterMiscViewGlanceAction:SetScript("OnClick", onBarActionClicked);
 
 	TRP3_RegisterMiscViewCurrentlyICTitle:SetText(loc("DB_STATUS_CURRENTLY"));
 	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 10, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
@@ -860,28 +497,20 @@ function TRP3_API.register.inits.miscInit()
 
 	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc("REG_PLAYER_GLANCE"), loc("REG_PLAYER_GLANCE_CONFIG"));
 
-	TRP3_RegisterGlanceEditor_PresetSaveButton:SetScript("OnClick", savePreset);
-	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
-		TRP3_API.popup.hideIconBrowser();
-		showIconBrowser(onIconSelected, nil, self.isExternal);
-	end);
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_RegisterMiscViewGlanceSlot" .. index];
 		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
 		button:GetDisabledTexture():SetDesaturated(1);
-		button:SetScript("OnClick", onSlotClick);
-		button:SetScript("OnDoubleClick", onSlotDoubleClick);
+		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
+		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
 		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button:RegisterForDrag("LeftButton");
-		button:SetScript("OnDragStart", onGlanceDragStart);
-		button:SetScript("OnDragStop", onGlanceDragStop);
-		button.index = tostring(index);
+		button:SetScript("OnDragStart", TRP3_API.register.glance.onGlanceDragStart);
+		button:SetScript("OnDragStop", TRP3_API.register.glance.onGlanceDragStop);
+		button.slot = tostring(index);
+		button.targetType = TRP3_API.ui.misc.TYPE_CHARACTER;
 	end
-
-	titleElement = {loc("REG_PLAYER_GLANCE_PRESET_SELECT"), nil};
-	noneElement = {loc("REG_PLAYER_GLANCE_PRESET_NONE"), -1};
-	rebuildPresetListBox();
 
 	-- RP style
 	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);

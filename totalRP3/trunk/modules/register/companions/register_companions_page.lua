@@ -59,9 +59,7 @@ local COMPANIONS_PAGE_ID = TRP3_API.navigation.page.id.COMPANIONS_PAGE;
 -- Peek management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local PEEK_PRESETS; -- Read only
-local GLANCE_NOT_USED_ICON = "INV_Misc_QuestionMark";
-local setupGlanceButton, openGlanceEditor = TRP3_API.register.setupGlanceButton, TRP3_API.register.openGlanceEditor;
+local setupGlanceButton = TRP3_API.register.setupGlanceButton;
 
 local function refreshIfNeeded()
 	if getCurrentPageID() == COMPANIONS_PAGE_ID then
@@ -96,96 +94,30 @@ local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap)
 	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
 end
 
-local function applyPeekSlot(slot, companionID, ic, ac, ti, tx, swap)
-	local dataTab = getCompanionProfile(companionID) or {};
+local function applyPeekSlot(slot, ic, ac, ti, tx, swap, companionFullID, profileID)
+	if not profileID then
+		local owner, companionID = companionIDToInfo(companionFullID);
+		profileID = getCompanionProfileID(companionID);
+	end
+	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
 	applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap);
-end
-
-function TRP3_API.companions.player.setGlanceSlotPreset(slot, presetID, companionFullID)
-	local owner, companionID = companionIDToInfo(companionFullID);
-	if presetID == -1 then
-		applyPeekSlot(slot, companionID, nil, nil, nil, nil, true);
-	else
-		assert(PEEK_PRESETS[presetID], "Unknown peek preset: " .. tostring(presetID));
-		local preset = PEEK_PRESETS[presetID];
-		applyPeekSlot(slot, companionID, preset.icon, true, preset.title, preset.text);
-	end
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, getCompanionProfileID(companionID), "misc");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, companionFullID, profileID, "misc");
 	refreshIfNeeded();
 end
+TRP3_API.companions.player.applyPeekSlot = applyPeekSlot;
 
-local function onGlanceEditorConfirm(slot, ic, ac, ti, tx, swap)
-	local context = getCurrentContext();
-	assert(context and context.profile, "No profile in context !");
-	applyPeekSlotProfile(slot, context.profile, ic, ac, ti, tx, swap);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "misc");
-	refreshIfNeeded();
-end
-
-local function swapGlanceSlot(from, to)
+local function swapGlanceSlot(from, to, companionFullID, profileID)
 	TRP3_AtFirstGlanceEditor:Hide();
-	local context = getCurrentContext();
-	assert(context and context.profile, "No profile in context!");
-	assert(context.profile.PE and context.profile.PE.v, "Unversionned profile!");
-	local dataTab = context.profile.PE;
-	local fromData = dataTab[from];
-	local toData = dataTab[to];
-	dataTab[from] = toData;
-	dataTab[to] = fromData;
-	-- version increment
-	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID, "misc");
+	if not profileID then
+		local owner, companionID = companionIDToInfo(companionFullID);
+		profileID = getCompanionProfileID(companionID);
+	end
+	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
+	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	refreshIfNeeded();
 end
-
-local function onGlanceClick(button, mouseClick)
-	local context = getCurrentContext();
-	if context.isPlayer then
-		if mouseClick == "LeftButton" then
-			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
-				TRP3_AtFirstGlanceEditor:Hide();
-			else
-				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, "TOP");
-				TRP3_AtFirstGlanceEditor.current = button;
-				TRP3_API.register.openGlanceEditor(TRP3_AtFirstGlanceEditor, button.index, context.profile.PE[button.index] or {}, onGlanceEditorConfirm);
-			end
-		else
-			-- TODO : presets
-		end
-	end
-end
-
-local function onGlanceDoubleClick(button, mouseClick)
-	if mouseClick == "LeftButton" then
-		local context = getCurrentContext();
-		if context.isPlayer then
-			onGlanceEditorConfirm(button.index, nil, nil, nil, nil, true);
-			refreshTooltip(button);
-		end
-	end
-end
-
-local function onGlanceDragStart(button)
-	local context = getCurrentContext();
-	if context.isPlayer and button.data then
-		SetCursor("Interface\\ICONS\\" .. (button.data.IC or GLANCE_NOT_USED_ICON));
-	end
-end
-
-local function onGlanceDragStop(button)
-	ResetCursor();
-	local context = getCurrentContext();
-	if context.isPlayer and button and button.data then
-		local from, to = button.index;
-		local toButton = GetMouseFocus();
-		if toButton.index and toButton.data then
-			to = toButton.index;
-			if to ~= from then
-				swapGlanceSlot(from, to);
-			end
-		end
-	end
-end
+TRP3_API.companions.player.swapGlanceSlot = swapGlanceSlot;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Edit Mode
@@ -278,6 +210,7 @@ function displayConsult(context)
 		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. i];
 		button.data = glanceData;
+		button.profileID = context.profileID;
 		setupGlanceButton(button, glanceData.AC, glanceData.IC, glanceData.TI, glanceData.TX, context.isPlayer);
 	end
 
@@ -467,7 +400,6 @@ local function createTutorialStructure()
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-	PEEK_PRESETS = TRP3_Presets.peek;
 	openPageByUnitID = TRP3_API.register.openPageByUnitID;
 
 	createTutorialStructure();
@@ -529,15 +461,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. GLANCE_NOT_USED_ICON);
+		button:SetDisabledTexture("Interface\\ICONS\\" .. Globals.icons.default);
 		button:GetDisabledTexture():SetDesaturated(1);
-		button:SetScript("OnClick", onGlanceClick);
-		button:SetScript("OnDoubleClick", onGlanceDoubleClick);
-		button:RegisterForClicks("LeftButtonUp","RightButtonUp");
+		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
+		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);
+		button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		button:RegisterForDrag("LeftButton");
-		button:SetScript("OnDragStart", onGlanceDragStart);
-		button:SetScript("OnDragStop", onGlanceDragStop);
-		button.index = tostring(index);
+		button:SetScript("OnDragStart", TRP3_API.register.glance.onGlanceDragStart);
+		button:SetScript("OnDragStop", TRP3_API.register.glance.onGlanceDragStop);
+		button.slot = tostring(index);
 	end
 
 	createTabBar();

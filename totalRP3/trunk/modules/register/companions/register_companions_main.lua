@@ -79,6 +79,13 @@ local function getCompanionProfile(companionID)
 end
 TRP3_API.companions.player.getCompanionProfile = getCompanionProfile;
 
+local function getCompanionProfileByID(profileID)
+	if playerCompanions[profileID] then
+		return playerCompanions[profileID];
+	end
+end
+TRP3_API.companions.player.getCompanionProfileByID = getCompanionProfileByID;
+
 local function parsePlayerProfiles(profiles)
 	for profileID, profile in pairs(profiles) do
 		for companionID, _ in pairs(profile.links or EMPTY) do

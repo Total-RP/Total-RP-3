@@ -210,9 +210,11 @@ local LOCALE_EN = {
 		REG_PLAYER_GLANCE_PRESET_SAVE_SMALL = "Save as a preset",
 		REG_PLAYER_GLANCE_PRESET_CATEGORY = "Preset category",
 		REG_PLAYER_GLANCE_PRESET_NAME = "Preset name",
-		REG_PLAYER_GLANCE_PRESET_NONE = "Clear slot",
-		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Please enter a category and a name",
-		REG_PLAYER_GLANCE_PRESET_ALERT2 = "There is already a preset called %s",
+		REG_PLAYER_GLANCE_PRESET_CREATE = "Create preset",
+		REG_PLAYER_GLANCE_PRESET_REMOVE = "Removed preset |cff00ff00%s|r.";
+		REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cff00ff00%s|r.";
+		REG_PLAYER_GLANCE_PRESET_ALERT1 = "You must enter a preset category.",
+		REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
 		REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 

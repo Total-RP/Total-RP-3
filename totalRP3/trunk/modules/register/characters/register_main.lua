@@ -505,6 +505,7 @@ function TRP3_API.register.init()
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
+	TRP3_API.register.inits.glanceInit();
 	TRP3_API.register.inits.miscInit();
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
