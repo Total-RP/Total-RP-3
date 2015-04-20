@@ -547,6 +547,14 @@ Possible status:
 		CO_NOTIF_TRIPLE = "Notification + chat message + raid alert",
 		CO_WIM = "|cffff9900Whisper channels are disabled.",
 		CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
+		CO_LOCATION = "Location settings",
+		CO_LOCATION_ACTIVATE = "Enable character location",
+		CO_LOCATION_ACTIVATE_TT = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
+		CO_LOCATION_DISABLE_OOC = "Disable location when OOC",
+		CO_LOCATION_DISABLE_OOC_TT = "You will not respond to location request from other players when you've set your RP status to Out Of Character.",
+		CO_LOCATION_DISABLE_PVP = "Disable location when flaged for PVP",
+		CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location request from other players when you are flaged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
+
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS

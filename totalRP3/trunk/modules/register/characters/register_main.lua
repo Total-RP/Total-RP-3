@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
 -- Directory : main API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+-- ---------------------------------------------------------------------------
+-- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
 --
---		http://www.apache.org/licenses/LICENSE-2.0
+-- http://www.apache.org/licenses/LICENSE-2.0
 --
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- Public accessor
@@ -43,6 +43,7 @@ local getDefaultProfile, get = TRP3_API.profile.getDefaultProfile, TRP3_API.prof
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
+local getConfigValue = Config.getValue;
 local Events = TRP3_API.events;
 local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
@@ -50,6 +51,8 @@ local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.na
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local notify = TRP3_API.dashboard.notify;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
+local get = TRP3_API.profile.getData;
+local UnitIsPVP = UnitIsPVP;
 
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
@@ -77,6 +80,7 @@ local function getProfile(profileID)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
 	return profiles[profileID];
 end
+
 TRP3_API.register.getProfile = getProfile;
 
 local function deleteProfile(profileID, dontFireEvents)
@@ -102,6 +106,7 @@ local function deleteProfile(profileID, dontFireEvents)
 		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID, mspOwners);
 	end
 end
+
 TRP3_API.register.deleteProfile = deleteProfile;
 
 local function deleteCharacter(unitID)
@@ -112,23 +117,27 @@ local function deleteCharacter(unitID)
 	wipe(characters[unitID]);
 	characters[unitID] = nil;
 end
+
 TRP3_API.register.deleteCharacter = deleteCharacter;
 
 local function isUnitIDKnown(unitID)
 	assert(unitID, "Nil unitID");
 	return characters[unitID] ~= nil;
 end
+
 TRP3_API.register.isUnitIDKnown = isUnitIDKnown;
 
 local function hasProfile(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID].profileID;
 end
+
 TRP3_API.register.hasProfile = hasProfile;
 
 local function profileExists(unitID)
 	return hasProfile(unitID) and profiles[characters[unitID].profileID];
 end
+
 TRP3_API.register.profileExists = profileExists;
 
 local function createUnitIDProfile(unitID)
@@ -138,18 +147,21 @@ local function createUnitIDProfile(unitID)
 	profiles[characters[unitID].profileID].link = {};
 	return profiles[characters[unitID].profileID];
 end
+
 TRP3_API.register.createUnitIDProfile = createUnitIDProfile;
 
 local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
 	return profiles[characters[unitID].profileID];
 end
+
 TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
 
 local function getUnitIDCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
 end
+
 TRP3_API.register.getUnitIDCharacter = getUnitIDCharacter;
 
 function TRP3_API.register.isUnitKnown(targetType)
@@ -211,6 +223,7 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 		profile.zone = zone;
 	end
 end
+
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
 --- Raises error if unknown unitID or unit hasn't profile ID
@@ -240,6 +253,7 @@ local function getUnitIDCurrentProfile(unitID)
 		return getUnitIDProfile(unitID);
 	end
 end
+
 TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
 --- Raises error if unknown unitID
@@ -281,6 +295,7 @@ function TRP3_API.register.getUnitRPName(targetType)
 	end
 	return unitName or UNKNOWN;
 end
+
 TRP3_API.r.name = TRP3_API.register.getUnitRPName;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -322,7 +337,7 @@ end
 local function tutorialProvider()
 	if tabGroup then
 		if tabGroup.current == 1 then
---			return TRP3_API.register.ui.characteristicsTutorialProvider();
+			--			return TRP3_API.register.ui.characteristicsTutorialProvider();
 		elseif tabGroup.current == 2 then
 			return TRP3_API.register.ui.aboutTutorialProvider();
 		elseif tabGroup.current == 3 then
@@ -337,38 +352,36 @@ local function createTabBar()
 	frame:SetPoint("TOPLEFT", 17, -5);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
-	{
-		{loc("REG_PLAYER_CARACT"), 1, 150},
-		{loc("REG_PLAYER_ABOUT"), 2, 110},
-		{loc("REG_PLAYER_PEEK"), 3, 130}
-	},
-	function(tabWidget, value)
+		{
+			{ loc("REG_PLAYER_CARACT"), 1, 150 },
+			{ loc("REG_PLAYER_ABOUT"), 2, 110 },
+			{ loc("REG_PLAYER_PEEK"), 3, 130 }
+		},
+		function(tabWidget, value)
 		-- Clear all
-		TRP3_RegisterCharact:Hide();
-		TRP3_RegisterAbout:Hide();
-		TRP3_RegisterMisc:Hide();
-		if value == 1 then
-			showCharacteristicsTab();
-		elseif value == 2 then
-			showAboutTab();
-		elseif value == 3 then
-			showMiscTab();
-		end
-		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
-	end,
-	-- Confirmation callback
-	function(callback)
-		if getCurrentContext() and getCurrentContext().isEditMode then
-			TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
-			function()
+			TRP3_RegisterCharact:Hide();
+			TRP3_RegisterAbout:Hide();
+			TRP3_RegisterMisc:Hide();
+			if value == 1 then
+				showCharacteristicsTab();
+			elseif value == 2 then
+				showAboutTab();
+			elseif value == 3 then
+				showMiscTab();
+			end
+			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+		end,
+		-- Confirmation callback
+		function(callback)
+			if getCurrentContext() and getCurrentContext().isEditMode then
+				TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
+					function()
+						callback();
+					end);
+			else
 				callback();
 			end
-			);
-		else
-			callback();
-		end
-	end
-	);
+		end);
 end
 
 local function showTabs(context)
@@ -383,8 +396,8 @@ end
 
 function TRP3_API.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
-	or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-	or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+			or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
+			or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -477,6 +490,14 @@ function TRP3_API.register.init()
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 
+	local CONFIG_DISABLE_MAP_LOCATION = "register_map_location";
+	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
+	local CONFIG_DISABLE_MAP_LOCATION_ON_PVP = "register_map_location_pvp";
+
+	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION, true);
+	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
+	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
+
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
 		id = "main_config_register",
@@ -495,12 +516,46 @@ function TRP3_API.register.init()
 				configKey = "register_auto_add",
 				help = loc("CO_REGISTER_AUTO_ADD_TT")
 			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_LOCATION"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_LOCATION_ACTIVATE"),
+				help = loc("CO_LOCATION_ACTIVATE_TT"),
+				configKey = CONFIG_DISABLE_MAP_LOCATION,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_LOCATION_DISABLE_OOC"),
+				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
+				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_LOCATION_DISABLE_PVP"),
+				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
+				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
+			}
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
-	
+
+	local function locationEnabled()
+		if getConfigValue(CONFIG_DISABLE_MAP_LOCATION) then
+			if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) and get("player/character/RP") == 2 then
+				return false;
+			elseif getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) and UnitIsPVP("player") then
+				return false;
+			else
+				return true;
+			end
+		end
+		return false;
+	end
 
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
@@ -524,22 +579,26 @@ function TRP3_API.register.init()
 			local zoneID = GetCurrentMapAreaID();
 			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);
 		end,
-		scanTitle  = "Characters",
+		scanTitle = "Characters",
 		scanCommand = CHARACTER_SCAN_COMMAND,
 		scanResponder = function(sender, zoneID)
-			local currentMapID = GetCurrentMapAreaID();
-			SetMapToCurrentZone();
-			if GetCurrentMapAreaID() == tonumber(zoneID) then
-				local x, y = GetPlayerMapPosition("player");
-				broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
-			end
-			SetMapByID(currentMapID);
+			if locationEnabled() then
+				local currentMapID = GetCurrentMapAreaID();
+				SetMapToCurrentZone();
+				if GetCurrentMapAreaID() == tonumber(zoneID) then
+					local x, y = GetPlayerMapPosition("player");
+					broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
+				end
+				SetMapByID(currentMapID);
+			end;
+		end,
+		canScan = function()
+			return getConfigValue(CONFIG_DISABLE_MAP_LOCATION);
 		end,
 		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
-			saveStructure[sender] = {x = x, y = y, mapId = mapId, addon = addon};
+			saveStructure[sender] = { x = x, y = y, mapId = mapId, addon = addon };
 		end,
 		scanComplete = function(saveStructure)
-
 		end,
 		scanMarkerDecorator = function(key, entry, marker)
 			marker.scanLine = key;
