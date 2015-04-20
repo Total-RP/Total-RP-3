@@ -1,27 +1,27 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
-<!--
-	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+	<!--
+		Total RP 3
+		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-		http://www.apache.org/licenses/LICENSE-2.0
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->
+			http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
 
 	<Button name="TRP3_WorldMapButton" parent="WorldMapButton" inherits="TRP3_IconButton">
 		<Anchors>
-			<Anchor point="TOPLEFT" x="10" y="-10"/>
+			<Anchor point="BOTTOMLEFT" x="10" y="10"/>
 		</Anchors>
 		<Scripts>
 			<OnEnter>
@@ -37,6 +37,48 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
+
+	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="32" />
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="418" />
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="200" y="200"/>
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture alphaMode="BLEND" file="Interface\Timer\Challenges-Logo">
+					<Size x="200" y="200"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+				<FontString name="TRP3_ScanLoaderFrameScanning" inherits="GameFontNormalLarge" justifyH="CENTER" text="Scanning">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="BOTTOM" x="0" y="20" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString name="TRP3_ScanLoaderFramePercent" inherits="GameFontNormalLarge" justifyH="CENTER">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-20" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
 
 	<Script file="map_markers.lua"/>
 </Ui>

@@ -28,6 +28,8 @@ local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pa
 local CreateFrame = CreateFrame;
 local after = C_Timer.After;
 
+local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -84,8 +86,9 @@ local function displayMarkers(structure)
 				WorldMapTooltip:AddLine(structure.scanTitle, 1, 1, 1, true);
 				local j = 1;
 				while(_G[MARKER_NAME_PREFIX .. j]) do
-					if _G[MARKER_NAME_PREFIX .. j]:IsVisible() and _G[MARKER_NAME_PREFIX .. j]:IsMouseOver() then
-						local scanLine = _G[MARKER_NAME_PREFIX .. j].scanLine;
+					local markerWidget = _G[MARKER_NAME_PREFIX .. j];
+					if markerWidget:IsVisible() and markerWidget:IsMouseOver() then
+						local scanLine = markerWidget.scanLine;
 						if scanLine then
 							WorldMapTooltip:AddLine(scanLine, 1, 1, 1, true);
 						end
@@ -127,7 +130,14 @@ local function onActionSelected(scanID)
 		structure.scan();
 		if structure.scanDuration and structure.scanComplete then
 			local mapID = GetCurrentMapAreaID();
+			TRP3_WorldMapButton:Disable();
+			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
+			TRP3_ScanLoaderFrame.time = structure.scanDuration;
+			TRP3_ScanLoaderFrame:Show();
 			after(structure.scanDuration, function()
+				TRP3_WorldMapButton:Enable();
+				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
+				TRP3_ScanLoaderFrame:Hide();
 				if mapID == GetCurrentMapAreaID() then
 					structure.scanComplete(structure.saveStructure);
 					displayMarkers(structure);
@@ -140,7 +150,12 @@ end
 local function onButtonClicked(self)
 	local structure = {};
 	for scanID, scanStructure in pairs(SCAN_STRUCTURES) do
-		tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 25) .. " " .. (scanStructure.buttonText or scanID), scanID});
+		if not scanStructure.canScan or scanStructure.canScan() == true then
+			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 25) .. " " .. (scanStructure.buttonText or scanID), scanID});
+		end
+	end
+	if #structure == 0 then
+		tinsert(structure, {loc("MAP_BUTTON_NO_SCAN"), nil});
 	end
 	displayDropDown(self, structure, onActionSelected, 0, true);
 end
@@ -160,6 +175,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_WorldMapButton.title = loc("MAP_BUTTON_TITLE");
 	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
 	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
+	TRP3_ScanLoaderFrameScanning:SetText(loc("MAP_BUTTON_SCANNING"));
+
+	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
+		self.refreshTimer = 0;
+	end);
+	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
+		self.refreshTimer = self.refreshTimer + elapsed;
+		local percent = math.ceil((self.refreshTimer / self.time) * 100);
+		TRP3_ScanLoaderFramePercent:SetText(percent .. "%");
+	end);
 
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);

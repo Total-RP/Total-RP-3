@@ -116,6 +116,9 @@ local miscCharFrame = {};
 local psychoCharFrame = {};
 
 local function getCompleteName(characteristicsTab, name, hideTitle)
+	if not characteristicsTab then
+		return name;
+	end
 	local text = "";
 	if not hideTitle and characteristicsTab.TI then
 		text = strconcat(characteristicsTab.TI, " ");
@@ -131,7 +134,7 @@ TRP3_API.register.getCompleteName = getCompleteName;
 
 local function getPlayerCompleteName(hideTitle)
 	local profile = getPlayerCurrentProfile();
-	return getCompleteName(profile.player.characteristics or Globals.empty, Globals.player, hideTitle);
+	return getCompleteName(profile.player.characteristics, Globals.player, hideTitle);
 end
 
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;

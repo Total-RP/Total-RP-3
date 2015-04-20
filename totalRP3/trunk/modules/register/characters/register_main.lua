@@ -550,9 +550,8 @@ function TRP3_API.register.init()
 				return false;
 			elseif getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) and UnitIsPVP("player") then
 				return false;
-			else
-				return true;
 			end
+			return true;
 		end
 		return false;
 	end
@@ -600,9 +599,17 @@ function TRP3_API.register.init()
 		end,
 		scanComplete = function(saveStructure)
 		end,
-		scanMarkerDecorator = function(key, entry, marker)
-			marker.scanLine = key;
+		scanMarkerDecorator = function(characterID, entry, marker)
+			local line = characterID;
+			if isUnitIDKnown(characterID) and getUnitIDCurrentProfile(characterID) then
+				local profile = getUnitIDCurrentProfile(characterID);
+				line = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
+				if profile.characteristics and profile.characteristics.CH then
+					line = "|cff" .. profile.characteristics.CH .. line;
+				end
+			end
+			marker.scanLine = line;
 		end,
-		scanDuration = 3;
+		scanDuration = 2.5;
 	});
 end

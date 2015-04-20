@@ -96,7 +96,7 @@ function TRP3_API.ui.frame.createRefreshOnFrame(frame, time, callback)
 		frame.refreshTimer = frame.refreshTimer + elapsed;
 		if frame.refreshTimer > time then
 			frame.refreshTimer = 0;
-			callback(frame);
+			callback(frame, frame.refreshTimer);
 		end
 	end);
 end
