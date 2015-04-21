@@ -2,8 +2,6 @@ local stop = false;
 local speed = 10;
 SLASH_EPH1 = '/eph';
 
-local sendMSPQuery = TRP3_API.r.sendMSPQuery;
-local sendQuery = TRP3_API.r.sendQuery;
 local print = print;
 local after = C_Timer.After;
 local UnitFullName = UnitFullName;
@@ -49,8 +47,8 @@ local function handler(msg)
 					return
 				end
 				print("Sending request to "..name.." ("..index.."/"..numberOfPeopleOnChan..")");
-				sendMSPQuery(name);
-				sendQuery(name);
+				TRP3_API.r.sendMSPQuery(name);
+				TRP3_API.r.sendQuery(name);
 			end);
 			i = i + 1;
 		end
