@@ -39,45 +39,72 @@
 	</Button>
 
 	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="32" />
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="418" />
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5" />
-			</BackgroundInsets>
-		</Backdrop>
+		<!--<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">-->
+			<!--<EdgeSize>-->
+				<!--<AbsValue val="32" />-->
+			<!--</EdgeSize>-->
+			<!--<TileSize>-->
+				<!--<AbsValue val="418" />-->
+			<!--</TileSize>-->
+			<!--<BackgroundInsets>-->
+				<!--<AbsInset left="5" right="5" top="5" bottom="5" />-->
+			<!--</BackgroundInsets>-->
+		<!--</Backdrop>-->
 		<Size x="200" y="200"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 		<Layers>
-			<Layer level="OVERLAY">
-				<Texture alphaMode="BLEND" file="Interface\Timer\Challenges-Logo">
-					<Size x="200" y="200"/>
+			<Layer level="ARTWORK">
+				<Texture alphaMode="BLEND" file="Interface\UNITPOWERBARALT\Mechanical_Circular_Frame">
+					<Size x="250" y="250"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
+					<Animations>
+						<AnimationGroup name="TRP3_ScanLoaderGlow">
+							<Rotation name="$parentRotation" degrees="360"/>
+						</AnimationGroup>
+					</Animations>
 				</Texture>
-				<FontString name="TRP3_ScanLoaderFrameScanning" inherits="GameFontNormalLarge" justifyH="CENTER" text="Scanning">
-					<Size x="0" y="10" />
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture alphaMode="BLEND" file="Interface\Timer\Challenges-Logo">
+					<Size x="150" y="150"/>
 					<Anchors>
-						<Anchor point="BOTTOM" x="0" y="20" />
+						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
-				</FontString>
-				<FontString name="TRP3_ScanLoaderFramePercent" inherits="GameFontNormalLarge" justifyH="CENTER">
-					<Size x="0" y="10" />
+					<Animations>
+						<AnimationGroup name="TRP3_ScanLoaderAnimation">
+							<Rotation name="$parentRotation" degrees="360"/>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="2">
+				<Texture parentKey="Banner" atlas="GarrMission_RewardsBanner-Desaturate" useAtlasSize="true">
 					<Anchors>
-						<Anchor point="TOP" x="0" y="-20" />
+						<Anchor point="CENTER" relativePoint="TOP" x="0" y="10"/>
 					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_ScanLoaderFrameScanning" inherits="QuestFont_Huge" text="Scanning">
+					<Anchors>
+						<Anchor point="CENTER" relativeKey="$parent.Banner" x="0" y="7"/>
+					</Anchors>
+					<Color r="0" g="0" b="0" />
 				</FontString>
 			</Layer>
 		</Layers>
+		<Animations>
+			<AnimationGroup name="TRP3_ScanFadeOut" setToFinalAlpha="true">
+				<Alpha duration="0.2" change="-1"/>
+			</AnimationGroup>
+			<AnimationGroup name="TRP3_ScanFadeIn" setToFinalAlpha="true">
+				<Alpha duration="0.2" change="1"/>
+			</AnimationGroup>
+		</Animations>
 	</Frame>
 
 	<Script file="map_markers.lua"/>

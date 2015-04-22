@@ -27,6 +27,7 @@ local loc = TRP3_API.locale.getText;
 local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pairs, _G, wipe;
 local CreateFrame = CreateFrame;
 local after = C_Timer.After;
+local playAnimation = TRP3_API.ui.misc.playAnimation;
 
 local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
 
@@ -134,14 +135,23 @@ local function onActionSelected(scanID)
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
+			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderGlowRotation:SetDuration(structure.scanDuration);
+			playAnimation(TRP3_ScanLoaderAnimation);
+			playAnimation(TRP3_ScanFadeIn);
+			playAnimation(TRP3_ScanLoaderGlow);
 			after(structure.scanDuration, function()
+				TRP3_ScanLoaderAnimation:Stop();
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-				TRP3_ScanLoaderFrame:Hide();
 				if mapID == GetCurrentMapAreaID() then
 					structure.scanComplete(structure.saveStructure);
 					displayMarkers(structure);
 				end
+				playAnimation(TRP3_ScanFadeOut);
+				after(0.2, function()
+					TRP3_ScanLoaderFrame:Hide();
+				end);
 			end);
 		end
 	end
@@ -164,7 +174,7 @@ local currentMapID;
 
 local function onWorldMapUpdate()
 	local mapID = GetCurrentMapAreaID();
-	if currentMapID ~= mapID then
+	if currentMapID ~= mapID and not TRP3_WorldMapButton.doNotHide then
 		currentMapID = mapID;
 		hideAllMarkers();
 	end
@@ -183,7 +193,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
 		self.refreshTimer = self.refreshTimer + elapsed;
 		local percent = math.ceil((self.refreshTimer / self.time) * 100);
-		TRP3_ScanLoaderFramePercent:SetText(percent .. "%");
+		-- TRP3_ScanLoaderFramePercent:SetText(percent .. "%");
 	end);
 
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);

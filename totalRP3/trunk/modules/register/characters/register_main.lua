@@ -583,12 +583,14 @@ function TRP3_API.register.init()
 		scanResponder = function(sender, zoneID)
 			if locationEnabled() then
 				local currentMapID = GetCurrentMapAreaID();
+				TRP3_WorldMapButton.doNotHide = true;
 				SetMapToCurrentZone();
 				if GetCurrentMapAreaID() == tonumber(zoneID) then
 					local x, y = GetPlayerMapPosition("player");
 					broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
 				end
 				SetMapByID(currentMapID);
+				TRP3_WorldMapButton.doNotHide = false;
 			end;
 		end,
 		canScan = function()
