@@ -398,7 +398,6 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_GENERAL_BROADCAST = "Use broadcast channel",
 		CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the feature like characters position on the map, playing local sounds, stashes and signposts access...",
 		CO_GENERAL_BROADCAST_C = "Broadcast channel name",
-		CO_GENERAL_NOTIF = "Notifications",
 		CO_GENERAL_MISC = "Miscellaneous",
 		CO_GENERAL_TT_SIZE = "Info tooltip text size",
 		CO_GENERAL_NEW_VERSION = "Update alert",
@@ -541,10 +540,6 @@ Possible status:
 		CO_MSP = "Mary Sue Protocol",
 		CO_MSP_T3 = "Use template 3 only",
 		CO_MSP_T3_TT = "Event if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
-		CO_NOTIF_NO = "No notification",
-		CO_NOTIF_SIMPLE = "Notification",
-		CO_NOTIF_DOUBLE = "Notification + chat message",
-		CO_NOTIF_TRIPLE = "Notification + chat message + raid alert",
 		CO_WIM = "|cffff9900Whisper channels are disabled.",
 		CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
 		CO_LOCATION = "Location settings",
@@ -675,19 +670,14 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		DB_STATUS_RP_EXP_TT = "Shows that you are an experienced roleplayer.\nIt will not show any specific icon on your tooltip.",
 		DB_STATUS_RP_VOLUNTEER = "Volunteer roleplayer",
 		DB_STATUS_RP_VOLUNTEER_TT = "This selection will show an icon on your tooltip, indicating\nto beginner roleplayers that you are willing to help them.",
-		DB_NOTIFICATIONS = "Dashboard notifications",
-		DB_NOTIFICATIONS_NO = "You haven't any notification",
-		DB_NOTIFICATIONS_CLEAR = "Clear all notifications",
-		DB_NOTIFICATIONS_ALL = "All notification types",
 		DB_TUTO_1 = [[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
 
 |cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
 
 |cff00ff00These information will be placed in your character's tooltip.]],
-		DB_TUTO_2 = [[Some events will produce notifications. It's a quick way to easily see what happened in Total RP 3.
-
-All notifications are configurable in the |cffff9900general settings page|r.]],
-		
+		DB_NEW = "What's new ?",
+		DB_ABOUT = "About Total RP 3",
+		DB_HTML_GOTO = "Click to open",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON UI TEXTS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

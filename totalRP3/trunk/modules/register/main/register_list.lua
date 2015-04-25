@@ -776,20 +776,6 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	createTutorialStructure();
 
-	-- Notification
-	TRP3_API.dashboard.registerNotificationType({
-		id = NOTIFICATION_ID_NEW_CHARACTER,
-		callback = function(profileID)
-			if getProfileList()[profileID] then
-				openPage(profileID);
-			else
-				toast(loc("REG_LIST_NOTIF_ADD_NOT"));
-			end
-		end,
-		removeOnShown = true,
-		configText = loc("REG_LIST_NOTIF_ADD_CONFIG"),
-	});
-
 	-- To try, but I'm afraid for performances ...
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then

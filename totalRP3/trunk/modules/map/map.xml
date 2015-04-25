@@ -55,28 +55,60 @@
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 		<Layers>
-			<Layer level="ARTWORK">
-				<Texture alphaMode="BLEND" file="Interface\UNITPOWERBARALT\Mechanical_Circular_Frame">
-					<Size x="250" y="250"/>
+			<Layer level="BACKGROUND">
+				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Fill" alpha="0.5">
+					<Size x="256" y="256"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
+					<Size x="300" y="300"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
 					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderGlow">
-							<Rotation name="$parentRotation" degrees="360"/>
+						<AnimationGroup name="TRP3_ScanLoaderBackAnimation1">
+							<Rotation name="$parentRotation" degrees="-90"/>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
+					<Size x="400" y="400"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<Animations>
+						<AnimationGroup name="TRP3_ScanLoaderBackAnimation2">
+							<Rotation name="$parentRotation" degrees="90"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
 				<Texture alphaMode="BLEND" file="Interface\Timer\Challenges-Logo">
-					<Size x="150" y="150"/>
+					<Size x="130" y="130"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
 					<Animations>
 						<AnimationGroup name="TRP3_ScanLoaderAnimation">
-							<Rotation name="$parentRotation" degrees="360"/>
+							<Rotation name="$parentRotation" degrees="-360"/>
+						</AnimationGroup>
+					</Animations>
+				</Texture>
+				<!--F:\Games\World of Warcraft\BlizzardInterfaceArt\Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame.blp-->
+				<!--Mechanical_Circular_Frame-->
+				<Texture alphaMode="BLEND" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
+					<Size x="256" y="256"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<Animations>
+						<AnimationGroup name="TRP3_ScanLoaderGlow">
+							<Rotation name="$parentRotation" degrees="-360"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>

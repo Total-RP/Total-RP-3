@@ -46,182 +46,6 @@ local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, 
 local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- NOTIFICATIONS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- No : no notification
--- Simple : notification
--- Double : notification + chat frame
--- Triple : notification + chat frame + raid alert
-local NOTIFICATION_METHOD = {
-	SIMPLE = 1,
-	DOUBLE = 2,
-	TRIPLE = 3
-};
-TRP3_API.dashboard.NOTIFICATION_METHOD = NOTIFICATION_METHOD;
-
-local loaded = false;
-local DATE_FORMAT = "%d/%m/%y %H:%M:%S";
-local NOTIFICATION_TYPES = {};
-local NOTIF_CONFIG_PREFIX = TRP3_API.dashboard.NOTIF_CONFIG_PREFIX;
-local NOTIF_INDEXES = {};
-
-function TRP3_API.dashboard.registerNotificationType(notificationType)
-	assert(not loaded, "Please register your notification type before WORKFLOW_ON_LOADED.");
-	assert(notificationType and notificationType.id, "Nil notificationType or no id");
-	assert(not NOTIFICATION_TYPES[notificationType.id], "Already registered notification type: " .. notificationType.id);
-	NOTIFICATION_TYPES[notificationType.id] = notificationType;
-	Utils.log.log("Registered notification: " .. notificationType.id);
-end
-
-function TRP3_API.dashboard.notify(notificationID, text, ...)
-	assert(NOTIFICATION_TYPES[notificationID], "Unknown notification type: " .. tostring(notificationID));
-	if not getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID) then
-		return
-	end
-	
-	local method = getConfigValue(NOTIF_CONFIG_PREFIX .. notificationID);
-	local notificationType = NOTIFICATION_TYPES[notificationID];
-	local character = getPlayerCharacter();
-	local notification = {};
-	if not character.notifications then
-		character.notifications = {};
-	end
-	notification.id = notificationID;
-	notification.text = text;
-	if ... then
-		notification.args = {...};
-	end
-	notification.time = time();
-	tinsert(character.notifications, notification);
-	
-	-- Chat message
-	if method == NOTIFICATION_METHOD.DOUBLE or method == NOTIFICATION_METHOD.TRIPLE then
-		displayMessage(notification.text);
-	end
-	
-	-- Raid alert
-	if method == NOTIFICATION_METHOD.TRIPLE then
-		RaidNotice_AddMessage(RaidWarningFrame, notification.text, ChatTypeInfo["RAID_WARNING"]);
-	end
-	
-	Events.fireEvent(Events.NOTIFICATION_CHANGED);
-end
-
-local function decorateNotificationList(widget, i)
-	local index = NOTIF_INDEXES[i];
-	local notifications = getPlayerCharacter().notifications;
-	widget.notification = notifications[index];
-	_G[widget:GetName().."Text"]:SetText(widget.notification.text);
-	_G[widget:GetName().."TopText"]:SetText(date(DATE_FORMAT, widget.notification.time));
-
-	local notificationType = NOTIFICATION_TYPES[widget.notification.id];
-	if notificationType and notificationType.callback then
-		_G[widget:GetName().."Show"]:Show();
-	else
-		_G[widget:GetName().."Show"]:Hide();
-	end
-end
-
-local function refreshNotifications(filter)
-	local character = getPlayerCharacter();
-	filter = filter or 0;
-	wipe(NOTIF_INDEXES);
-	if character.notifications then
-		for index, notif in pairs(character.notifications) do
-			if filter == 0 or notif.id == filter then
-				tinsert(NOTIF_INDEXES, index);
-			end
-		end
-	end
-	if #NOTIF_INDEXES == 0 then
-		TRP3_DashboardNotifications_No:Show();
-		TRP3_DashboardNotificationsClear:Hide();
-	else
-		TRP3_DashboardNotifications_No:Hide();
-		TRP3_DashboardNotificationsClear:Show();
-	end
-
-	initList(TRP3_DashboardNotifications, NOTIF_INDEXES, TRP3_DashboardNotificationsSlider);
-end
-
-local function onNotificationRemove(button)
-	local notification = button:GetParent().notification;
-	assert(notification, "No attached notification to the line.");
-	local notifications = getPlayerCharacter().notifications;
-	for index, n in pairs(notifications) do
-		if n.id == notification.id then
-			tremove(notifications, index);
-			--			wipe(notification);
-			break;
-		end
-	end
-	Events.fireEvent(Events.NOTIFICATION_CHANGED);
-end
-
-local function clearAllNotifications()
-	local notifications = getPlayerCharacter().notifications;
-	if notifications then
-		wipe(notifications);
-	end
-	Events.fireEvent(Events.NOTIFICATION_CHANGED);
-end
-
-local function onNotificationShow(button)
-	local notification = button:GetParent().notification;
-	assert(notification, "No attached notification to the line.");
-	local notificationType = NOTIFICATION_TYPES[notification.id];
-	if notificationType.callback then
-		notificationType.callback(unpack(notification.args or EMPTY));
-	end
-	if notificationType.removeOnShown ~= false then
-		onNotificationRemove(button);
-	end
-end
-
-local function buildNotificationConfig()
-	loaded = true;
-	-- Config
-	local sortedNotifs = Utils.table.keys(NOTIFICATION_TYPES);
-
-	table.sort(sortedNotifs);
-
-	tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc("CO_GENERAL_NOTIF"),
-	});
-
-	local NOTIFICATION_METHOD_TAB = {
-		{loc("CO_NOTIF_NO"), false},
-		{loc("CO_NOTIF_SIMPLE"), 1},
-		{loc("CO_NOTIF_DOUBLE"), 2},
-		{loc("CO_NOTIF_TRIPLE"), 3},
-	}
-	
-	local notifList = {
-		{loc("DB_NOTIFICATIONS_ALL"), 0},
-	};
-
-	for _, notificationID in pairs(sortedNotifs) do
-		local notification = NOTIFICATION_TYPES[notificationID];
-		registerConfigKey(NOTIF_CONFIG_PREFIX .. notificationID, notification.defaultMethod or NOTIFICATION_METHOD.SIMPLE);
-		tinsert(notifList, {notification.configText or notificationID, notificationID});
-		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, {
-			inherit = "TRP3_ConfigDropDown",
-			widgetName = "TRP3_ConfigurationTooltip_Notif_" .. notificationID,
-			title = notification.configText or notificationID,
-			configKey = NOTIF_CONFIG_PREFIX .. notificationID,
-			listContent = NOTIFICATION_METHOD_TAB,
-			listCancel = true,
-		});
-	end
-	
-	-- Filter
-	setupListBox(TRP3_DashboardNotificationsFilter, notifList, refreshNotifications, nil, 200, true);
-	TRP3_DashboardNotificationsFilter:SetSelectedValue(0);
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -272,7 +96,6 @@ local function onShow(context)
 	local character = get("player/character");
 	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
 	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
-	refreshNotifications();
 end
 
 function TRP3_API.dashboard.isPlayerIC()
@@ -306,17 +129,6 @@ TRP3_API.dashboard.init = function()
 				arrow = "UP"
 			}
 		},
-		{
-			box = {
-				allPoints = TRP3_DashboardNotifications
-			},
-			button = {
-				x = -30, y = 0, anchor = "RIGHT",
-				text = loc("DB_TUTO_2"),
-				textWidth = 375,
-				arrow = "LEFT"
-			}
-		}
 	}
 
 	registerMenu({
@@ -332,27 +144,6 @@ TRP3_API.dashboard.init = function()
 		onPagePostShow = onShow,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
-
-	TRP3_DashboardNotificationsSlider:SetValue(0);
-	handleMouseWheel(TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider);
-	local widgetTab = {};
-	for i=1, 4 do
-		local widget = _G["TRP3_DashboardNotifications"..i];
-		_G[widget:GetName().."Remove"]:SetScript("OnClick", onNotificationRemove);
-		_G[widget:GetName().."Show"]:SetText(loc("CM_SHOW"));
-		_G[widget:GetName().."Show"]:SetScript("OnClick", onNotificationShow);
-		tinsert(widgetTab, widget);
-	end
-	TRP3_DashboardNotifications.widgetTab = widgetTab;
-	TRP3_DashboardNotifications.decorate = decorateNotificationList;
-	TRP3_DashboardNotificationsClear:SetText(loc("DB_NOTIFICATIONS_CLEAR"));
-	TRP3_DashboardNotificationsClear:SetScript("OnClick", clearAllNotifications);
-
-	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
-	setupFieldSet(TRP3_DashboardNotifications, loc("DB_NOTIFICATIONS"), 200);
-	TRP3_DashboardNotifications_No:SetText(loc("DB_NOTIFICATIONS_NO"));
-
-	TRP3_MainFrameVersionText:SetText(TRP3_API.locale.getText("GEN_VERSION"):format(TRP3_API.globals.version_display, TRP3_API.globals.version));
 
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
 	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
@@ -383,6 +174,72 @@ TRP3_API.dashboard.init = function()
 			onShow(nil);
 		end
 	end);
+
+	-- Tab bar
+	local whatsNewText = [[{h3:c}New in version {col:6eff51}%s{/col}{/h3}
+{h3}1. Character location system{/h3}
+You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
+
+{h3}2. New UI for "At first glance" edition{/h3}
+We improved the way you can edit your "At first glance" slots information. Check it out!
+
+{h3}3. New "What's new" and "About" sections on the dashboard{/h3}
+No kiddin'. :)]]
+
+	local aboutText = [[{h1:c}Total RP 3{/h1}
+{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
+{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
+- Renaud "Ellypse" Parize
+- Sylvain "Telkostrasz" Cossement
+
+
+
+{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
+{col:ffffff}For helping us creating the Total RP guild on Kirin Tor EU:{/col}
+- Azane
+- Hellclaw
+- Leylou]]
+
+	whatsNewText = Utils.str.toHTML(whatsNewText:format(TRP3_API.globals.version_display));
+	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version));
+	TRP3_DashboardBottomContent:SetFontObject("p", GameFontNormal);
+	TRP3_DashboardBottomContent:SetFontObject("h1", GameFontNormalHuge3);
+	TRP3_DashboardBottomContent:SetFontObject("h2", GameFontNormalHuge);
+	TRP3_DashboardBottomContent:SetFontObject("h3", GameFontNormalLarge);
+	TRP3_DashboardBottomContent:SetTextColor("h1", 1, 1, 1);
+	TRP3_DashboardBottomContent:SetTextColor("h2", 1, 1, 1);
+	TRP3_DashboardBottomContent:SetTextColor("h3", 1, 1, 1);
+	TRP3_DashboardBottomContent:SetScript("OnHyperlinkClick", function(self, url)
+		if url == "map" then
+			WorldMapFrame:Show();
+		end
+	end);
+	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
+		TRP3_MainTooltip:Hide();
+		TRP3_MainTooltip:SetOwner(TRP3_DashboardBottomContent, "ANCHOR_CURSOR");
+		TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
+		TRP3_MainTooltip:AddLine(loc("DB_HTML_GOTO"), 1, 1, 1, true);
+		TRP3_MainTooltip:Show();
+	end);
+	TRP3_DashboardBottomContent:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);
+	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
+	frame:SetSize(400, 30);
+	frame:SetPoint("TOPLEFT", 17, 30);
+	frame:SetFrameLevel(1);
+	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+		{
+			{ loc("DB_NEW"), 1, 150 },
+			{ loc("DB_ABOUT"), 2, 150 },
+		},
+		function(tabWidget, value)
+			if value == 1 then
+				TRP3_DashboardBottomContent:SetText(whatsNewText);
+			elseif value == 2 then
+				TRP3_DashboardBottomContent:SetText(aboutText);
+			end
+		end
+	);
+	tabGroup:SelectTab(1);
 end
 
 local function profileSelected(profileID)
@@ -390,7 +247,7 @@ local function profileSelected(profileID)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	buildNotificationConfig();
+
 	if TRP3_API.toolbar then
 		-- Show/hide cape
 		local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");

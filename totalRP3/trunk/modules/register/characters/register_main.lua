@@ -49,7 +49,6 @@ local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local notify = TRP3_API.dashboard.notify;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 local get = TRP3_API.profile.getData;
 local UnitIsPVP = UnitIsPVP;
@@ -190,7 +189,6 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	end
 	if not profileExists(unitID) then
 		createUnitIDProfile(unitID);
-		notify(NOTIFICATION_ID_NEW_CHARACTER, loc("REG_LIST_NOTIF_ADD"):format(unitID), currentProfileID);
 	end
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound

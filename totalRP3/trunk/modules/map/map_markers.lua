@@ -137,11 +137,14 @@ local function onActionSelected(scanID)
 			TRP3_ScanLoaderFrame:Show();
 			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
 			TRP3_ScanLoaderGlowRotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderBackAnimation1Rotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderBackAnimation2Rotation:SetDuration(structure.scanDuration);
 			playAnimation(TRP3_ScanLoaderAnimation);
 			playAnimation(TRP3_ScanFadeIn);
 			playAnimation(TRP3_ScanLoaderGlow);
+			playAnimation(TRP3_ScanLoaderBackAnimation1);
+			playAnimation(TRP3_ScanLoaderBackAnimation2);
 			after(structure.scanDuration, function()
-				TRP3_ScanLoaderAnimation:Stop();
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 				if mapID == GetCurrentMapAreaID() then

@@ -37,7 +37,7 @@
 		</Scripts>
 	</GameTooltip>
 	
-	 <!-- Register characteristics panel -->
+	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
 	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
