@@ -69,7 +69,7 @@ local function broadcast(command, ...)
 	end
 	if message:len() < 254 then
 		local channelName = GetChannelName(config_BroadcastChannel());
-		ChatThrottleLib:SendChatMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", select(2, GetDefaultLanguage("player")), channelName);
+		ChatThrottleLib:SendChatMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", nil, channelName);
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
 	end
@@ -85,7 +85,7 @@ local function receiveBroadcast(sender, command, ...)
 end
 
 local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
-	Log.log(tostring(sender) .. " : " .. tostring(message):gsub("\1", "\\1"), Log.level.DEBUG);
+	Log.log(tostring(sender) .. " : " .. tostring(message), Log.level.DEBUG);
 
 	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);

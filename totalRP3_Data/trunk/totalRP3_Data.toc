@@ -1,0 +1,10 @@
+﻿## Interface: 60100
+## Title: Total RP 3 : Data
+## Author: Telkostrasz & Ellypse
+## Notes: Data storage
+## URL: http://totalrp3.info
+## RequiredDeps: totalRP3
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: TRP3_Register
+totalRP3_Data.lua
