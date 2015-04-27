@@ -29,6 +29,9 @@ local CreateFrame = CreateFrame;
 local after = C_Timer.After;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local tsize = Utils.table.size;
+local getConfigValue = TRP3_API.configuration.getValue;
+
+local CONFIG_UI_ANIMATIONS = "ui_animations";
 
 local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
 
@@ -62,6 +65,8 @@ TRP3_API.map.registerScan = registerScan;
 
 local WorldMapTooltip, WorldMapPOIFrame = WorldMapTooltip, WorldMapPOIFrame;
 local MARKER_NAME_PREFIX = "TRP3_WordMapMarker";
+
+local MAX_DISTANCE_MARKER = math.sqrt(0.5 * 0.5 + 0.5 * 0.5);
 
 local function hideAllMarkers()
 	local i = 1;
@@ -119,8 +124,31 @@ local function displayMarkers(structure)
 			structure.scanMarkerDecorator(key, entry, marker);
 		end
 
-		after((1 / count) * i, function() marker:Show(); end);
+		if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) then
+			local animationGroup = marker:CreateAnimationGroup();
+			local fadeInAnimation = animationGroup:CreateAnimation("Alpha");
+			fadeInAnimation:SetFromAlpha(0);
+			fadeInAnimation:SetToAlpha(1);
+			fadeInAnimation:SetDuration(0.2);
+			local scaleUp = animationGroup:CreateAnimation("Scale");
+			scaleUp:SetToScale(1.5, 1.5);
+			scaleUp:SetDuration(0.5);
+			local scaleDown = animationGroup:CreateAnimation("Scale");
+			scaleDown:SetScale(0.5, 0.5);
+			scaleDown:SetDuration(0.5);
+			scaleDown:SetStartDelay(0.5);
 
+			local distanceX = 0.5 - entry.x;
+			local distanceY = 0.5 - entry.y;
+			local distance = math.sqrt(distanceX * distanceX + distanceY * distanceY);
+			local factor = distance/MAX_DISTANCE_MARKER;
+
+			after(4 * factor, function() marker:Show(); playAnimation(animationGroup); end);
+
+		else
+			marker:Show();
+		end
+		
 		i = i + 1;
 	end
 end
@@ -147,6 +175,7 @@ local function launchScan(scanID)
 			playAnimation(TRP3_ScanLoaderGlow);
 			playAnimation(TRP3_ScanLoaderBackAnimation1);
 			playAnimation(TRP3_ScanLoaderBackAnimation2);
+			TRP3_API.ui.misc.playSoundKit(40216);
 			after(structure.scanDuration, function()
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
@@ -154,10 +183,17 @@ local function launchScan(scanID)
 					structure.scanComplete(structure.saveStructure);
 					displayMarkers(structure);
 				end
+				playAnimation(TRP3_ScanLoaderBackAnimationGrow1);
+				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
 				playAnimation(TRP3_ScanFadeOut);
-				after(1, function()
+				TRP3_API.ui.misc.playSoundKit(43493);
+				if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) then
+					after(1, function()
+						TRP3_ScanLoaderFrame:Hide();
+					end);
+				else
 					TRP3_ScanLoaderFrame:Hide();
-				end);
+				end
 			end);
 		end
 	end

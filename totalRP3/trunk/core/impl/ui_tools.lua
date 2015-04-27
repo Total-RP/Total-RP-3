@@ -888,6 +888,12 @@ function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	end
 end
 
+function TRP3_API.ui.misc.playSoundKit(soundID)
+	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
+		PlaySoundKitID(soundID)
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Animation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

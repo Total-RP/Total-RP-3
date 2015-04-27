@@ -38,7 +38,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true" alpha="0">
+	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
 		<!--<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">-->
 			<!--<EdgeSize>-->
 				<!--<AbsValue val="32" />-->
@@ -73,6 +73,9 @@
 						<AnimationGroup name="TRP3_ScanLoaderBackAnimation1">
 							<Rotation name="$parentRotation" degrees="-90"/>
 						</AnimationGroup>
+						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow1">
+							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
+						</AnimationGroup>
 					</Animations>
 				</Texture>
 				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
@@ -83,6 +86,9 @@
 					<Animations>
 						<AnimationGroup name="TRP3_ScanLoaderBackAnimation2">
 							<Rotation name="$parentRotation" degrees="90"/>
+						</AnimationGroup>
+						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow2" >
+							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>
@@ -123,7 +129,7 @@
 			<Layer level="OVERLAY">
 				<FontString name="TRP3_ScanLoaderFrameScanning" inherits="QuestFont_Huge" text="Scanning">
 					<Anchors>
-						<Anchor point="CENTER" relativeKey="$parent.Banner" x="0" y="7"/>
+						<Anchor point="CENTER" relativeKey="$parent.Banner" x="0" y="6"/>
 					</Anchors>
 					<Color r="0" g="0" b="0" />
 				</FontString>
@@ -134,6 +140,7 @@
 				<Alpha duration="1" change="-1"/>
 			</AnimationGroup>
 			<AnimationGroup name="TRP3_ScanFadeIn" setToFinalAlpha="true">
+				<Alpha duration="0" change="-1"/>
 				<Alpha duration="0.5" change="1"/>
 			</AnimationGroup>
 		</Animations>
