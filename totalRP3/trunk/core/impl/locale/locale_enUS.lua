@@ -675,7 +675,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 |cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
 
 |cff00ff00These information will be placed in your character's tooltip.]],
-		DB_NEW = "What's new ?",
+		DB_NEW = "What's new?",
 		DB_ABOUT = "About Total RP 3",
 		DB_HTML_GOTO = "Click to open",
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

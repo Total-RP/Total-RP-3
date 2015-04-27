@@ -380,6 +380,7 @@ local function createTabBar()
 				callback();
 			end
 		end);
+	TRP3_API.register.player.tabGroup = tabGroup;
 end
 
 local function showTabs(context)

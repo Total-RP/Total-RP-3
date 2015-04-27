@@ -145,6 +145,7 @@ TRP3_API.dashboard.init = function()
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
 
+	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
 	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
 	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
 	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
@@ -176,15 +177,15 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = [[{h3:c}New in version {col:6eff51}%s{/col}{/h3}
+	local whatsNewText = [[{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
 {h3}1. Character location system{/h3}
 You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
 
 {h3}2. New UI for "At first glance" edition{/h3}
-We improved the way you can edit your "At first glance" slots information. Check it out!
+We improved the way you can edit your "At first glance" slots information. {link*glance*Check it out!}
 
-{h3}3. New "What's new" and "About" sections on the dashboard{/h3}
-No kiddin'. :)]]
+{h3}3. New language switching button{/h3}
+A new button has been added to the toolbar for quickly switching between the languages known by your character. {link*language*Check it out!}]]
 
 	local aboutText = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
@@ -193,14 +194,20 @@ No kiddin'. :)]]
 - Sylvain "Telkostrasz" Cossement
 
 
-
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}For helping us creating the Total RP guild on Kirin Tor EU:{/col}
+Thanks to {col:00ff00}Saelora{/col} for all his help!
+Thanks to {col:00ff00}Kathryl{/col} for the forum hosting!
+
+{col:ffffff}Thanks to all our friends for their support all these years:{/col}
+- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- For Ellypse:
+
+{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
 - Leylou]]
 
-	whatsNewText = Utils.str.toHTML(whatsNewText:format(TRP3_API.globals.version_display));
+	whatsNewText = Utils.str.toHTML(whatsNewText);
 	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version));
 	TRP3_DashboardBottomContent:SetFontObject("p", GameFontNormal);
 	TRP3_DashboardBottomContent:SetFontObject("h1", GameFontNormalHuge3);
@@ -211,7 +218,12 @@ No kiddin'. :)]]
 	TRP3_DashboardBottomContent:SetTextColor("h3", 1, 1, 1);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkClick", function(self, url)
 		if url == "map" then
-			WorldMapFrame:Show();
+			MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
+			C_Timer.After(0.5, function() TRP3_API.map.launchScan("playerScan"); end);
+		elseif url == "glance" then
+			TRP3_API.navigation.menu.selectMenu("main_10_player");
+			TRP3_API.register.player.tabGroup:SelectTab(3);
+			TRP3_RegisterMiscViewGlanceSlot1:GetScript("OnClick")(TRP3_RegisterMiscViewGlanceSlot1, "LeftButton");
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)

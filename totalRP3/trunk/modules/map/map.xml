@@ -38,7 +38,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
+	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true" alpha="0">
 		<!--<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">-->
 			<!--<EdgeSize>-->
 				<!--<AbsValue val="32" />-->
@@ -131,10 +131,10 @@
 		</Layers>
 		<Animations>
 			<AnimationGroup name="TRP3_ScanFadeOut" setToFinalAlpha="true">
-				<Alpha duration="0.2" change="-1"/>
+				<Alpha duration="1" change="-1"/>
 			</AnimationGroup>
 			<AnimationGroup name="TRP3_ScanFadeIn" setToFinalAlpha="true">
-				<Alpha duration="0.2" change="1"/>
+				<Alpha duration="0.5" change="1"/>
 			</AnimationGroup>
 		</Animations>
 	</Frame>

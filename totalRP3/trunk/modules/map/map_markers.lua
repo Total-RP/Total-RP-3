@@ -28,6 +28,7 @@ local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pa
 local CreateFrame = CreateFrame;
 local after = C_Timer.After;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
+local tsize = Utils.table.size;
 
 local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
 
@@ -75,6 +76,7 @@ local function displayMarkers(structure)
 		return;
 	end
 
+	local count = tsize(structure.saveStructure);
 	local i = 1;
 	for key, entry in pairs(structure.saveStructure) do
 		local marker = _G[MARKER_NAME_PREFIX .. i];
@@ -117,12 +119,13 @@ local function displayMarkers(structure)
 			structure.scanMarkerDecorator(key, entry, marker);
 		end
 
-		marker:Show();
+		after((1 / count) * i, function() marker:Show(); end);
+
 		i = i + 1;
 	end
 end
 
-local function onActionSelected(scanID)
+local function launchScan(scanID)
 	assert(SCAN_STRUCTURES[scanID], ("Unknown scan id %s"):format(scanID));
 	local structure = SCAN_STRUCTURES[scanID];
 	if structure.scan then
@@ -152,13 +155,14 @@ local function onActionSelected(scanID)
 					displayMarkers(structure);
 				end
 				playAnimation(TRP3_ScanFadeOut);
-				after(0.2, function()
+				after(1, function()
 					TRP3_ScanLoaderFrame:Hide();
 				end);
 			end);
 		end
 	end
 end
+TRP3_API.map.launchScan = launchScan;
 
 local function onButtonClicked(self)
 	local structure = {};
@@ -170,7 +174,7 @@ local function onButtonClicked(self)
 	if #structure == 0 then
 		tinsert(structure, {loc("MAP_BUTTON_NO_SCAN"), nil});
 	end
-	displayDropDown(self, structure, onActionSelected, 0, true);
+	displayDropDown(self, structure, launchScan, 0, true);
 end
 
 local currentMapID;

@@ -218,7 +218,7 @@ local helloTimestamp;
 -- Send in a broadcast your main informations.
 -- [1] - TRP3 version
 local function helloWorld()
-	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp < HELLO_COOLDOWN) then
+	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp > HELLO_COOLDOWN) then
 		helloTimestamp = time();
 		broadcast(HELLO_CMD, Globals.version, Globals.version_display);
 	end

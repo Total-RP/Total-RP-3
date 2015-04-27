@@ -326,6 +326,20 @@ function TRP3_BREAK_ME()
 	end
 end
 
+function TRP3_STATS()
+	local map = {};
+	for characterID, character in pairs(TRP3_Register.character) do
+		local client = character.client;
+		if not map[client] then
+			map[client] = 0;
+		end
+		map[client] = map[client] + 1;
+	end
+	for client, total in pairs(map) do
+		print(("Addon %s with %s users"):format(client, total));
+	end
+end
+
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",
 	["description"] = "Telkos private module to test the world !",
