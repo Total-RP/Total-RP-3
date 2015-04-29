@@ -224,6 +224,22 @@ Thanks to {col:00ff00}Kathryl{/col} for the forum hosting!
 			TRP3_API.navigation.menu.selectMenu("main_10_player");
 			TRP3_API.register.player.tabGroup:SelectTab(3);
 			TRP3_RegisterMiscViewGlanceSlot1:GetScript("OnClick")(TRP3_RegisterMiscViewGlanceSlot1, "LeftButton");
+		elseif url == "language" then
+			if TRP3_API.toolbar then
+				if not TRP3_Toolbar:IsVisible() then
+					TRP3_API.toolbar.switch();
+				end
+				for i = 1, 1000 do
+					if not _G["TRP3_ToolbarButton" .. i] then
+						break;
+					elseif _G["TRP3_ToolbarButton" .. i].buttonId == "ww_trp3_languages" then
+						_G["TRP3_ToolbarButton" .. i]:GetScript("OnClick")(_G["TRP3_ToolbarButton" .. i], "LeftButton");
+						break;
+					end
+				end
+			else
+
+			end
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
