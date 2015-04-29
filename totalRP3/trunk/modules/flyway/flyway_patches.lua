@@ -19,8 +19,22 @@
 
 TRP3_API.flyway.patches = {};
 
+local pairs, wipe = pairs, wipe;
+
 -- Internal reinit du to TRP-45
 TRP3_API.flyway.patches["2"] = function()
 	TRP3_Profiles = nil;
 	TRP3_Characters = nil;
+end
+
+-- Delete notification system
+TRP3_API.flyway.patches["3"] = function()
+	if TRP3_Characters then
+		for _, character in pairs(TRP3_Characters) do
+			if 	character.notifications then
+				wipe(character.notifications);
+			end
+			character.notifications = nil;
+		end
+	end
 end
