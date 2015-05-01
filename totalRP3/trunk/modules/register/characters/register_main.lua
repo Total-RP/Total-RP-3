@@ -489,11 +489,11 @@ function TRP3_API.register.init()
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 
-	local CONFIG_DISABLE_MAP_LOCATION = "register_map_location";
+	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_PVP = "register_map_location_pvp";
 
-	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION, true);
+	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
 
@@ -523,7 +523,7 @@ function TRP3_API.register.init()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_ACTIVATE"),
 				help = loc("CO_LOCATION_ACTIVATE_TT"),
-				configKey = CONFIG_DISABLE_MAP_LOCATION,
+				configKey = CONFIG_ENABLE_MAP_LOCATION,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -544,15 +544,9 @@ function TRP3_API.register.init()
 	end);
 
 	local function locationEnabled()
-		if getConfigValue(CONFIG_DISABLE_MAP_LOCATION) then
-			if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) and get("player/character/RP") == 2 then
-				return false;
-			elseif getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) and UnitIsPVP("player") then
-				return false;
-			end
-			return true;
-		end
-		return false;
+		return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
+			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
+			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) or not UnitIsPVP("player"));
 	end
 
 	-- Initialization
@@ -569,6 +563,21 @@ function TRP3_API.register.init()
 	local CHARACTER_SCAN_COMMAND = "CSCAN";
 	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
 	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
+	local UnitInParty = UnitInParty;
+	local Ambiguate, tContains = Ambiguate, tContains;
+	local phasedZones = {
+		971, -- Alliance garrison
+		976  -- Horde garrison
+	};
+
+	local function playersCanSeeEachOthers(sender)
+		local currentMapID = GetCurrentMapAreaID();
+		if tContains(phasedZones, currentMapID) then
+			return UnitInParty(Ambiguate(sender, "none"));
+		else
+			return true;
+		end
+	end
 
 	TRP3_API.map.registerScan({
 		id = "playerScan",
@@ -580,7 +589,7 @@ function TRP3_API.register.init()
 		scanTitle = "Characters",
 		scanCommand = CHARACTER_SCAN_COMMAND,
 		scanResponder = function(sender, zoneID)
-			if locationEnabled() then
+			if locationEnabled() and playersCanSeeEachOthers(sender) then
 				local currentMapID = GetCurrentMapAreaID();
 				TRP3_WorldMapButton.doNotHide = true;
 				SetMapToCurrentZone();
@@ -593,10 +602,12 @@ function TRP3_API.register.init()
 			end;
 		end,
 		canScan = function()
-			return getConfigValue(CONFIG_DISABLE_MAP_LOCATION);
+			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION);
 		end,
 		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
-			saveStructure[sender] = { x = x, y = y, mapId = mapId, addon = addon };
+			if playersCanSeeEachOthers(sender) then
+				saveStructure[sender] = { x = x, y = y, mapId = mapId, addon = addon };
+			end
 		end,
 		scanComplete = function(saveStructure)
 		end,
