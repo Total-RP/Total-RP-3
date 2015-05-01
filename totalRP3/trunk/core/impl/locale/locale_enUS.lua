@@ -585,7 +585,7 @@ Possible status:
 		TF_IGNORE_CONFIRM = "Are you sure you want to ignore this ID ?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",
 		TF_IGNORE_NO_REASON = "No reason",
 		TB_LANGUAGE = "Language",
-		TB_LANGUAGES_TT = "Switch languages",
+		TB_LANGUAGES_TT = "Change language",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
@@ -820,6 +820,16 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
+
+		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
+{h3}1. Character location system{/h3}
+You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
+
+{h3}2. New UI for "At first glance" edition{/h3}
+We improved the way you can edit your "At first glance" slots information. {link*glance*Check it out!}
+
+{h3}3. New language switching button{/h3}
+A new button has been added to the toolbar for quickly switching between the languages known by your character. {link*language*Check it out!}]]
 	},
 };
 

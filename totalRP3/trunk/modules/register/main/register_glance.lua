@@ -106,9 +106,9 @@ end
 TRP3_API.register.glance.removeSlotPreset = removeSlotPreset;
 
 local function saveSlotPreset(glanceTab)
-	local presetTitle = glanceTab.TI;
-	local presetText = glanceTab.TX;
-	local presetIcon = glanceTab.IC;
+	local presetTitle = glanceTab.TI or UNKNOWN;
+	local presetText = glanceTab.TX or "";
+	local presetIcon = glanceTab.IC or Globals.icons.unknown;
 	local presetID = Utils.str.id();
 
 	local icon = Utils.str.icon(presetIcon, 25) .. "\n|cff00ff00" .. presetTitle .. "|r";

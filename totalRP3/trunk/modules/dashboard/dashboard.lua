@@ -177,15 +177,7 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = [[{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
-{h3}1. Character location system{/h3}
-You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
-
-{h3}2. New UI for "At first glance" edition{/h3}
-We improved the way you can edit your "At first glance" slots information. {link*glance*Check it out!}
-
-{h3}3. New language switching button{/h3}
-A new button has been added to the toolbar for quickly switching between the languages known by your character. {link*language*Check it out!}]]
+	local whatsNewText = loc("WHATS_NEW");
 
 	local aboutText = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
@@ -195,12 +187,17 @@ A new button has been added to the toolbar for quickly switching between the lan
 
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-Thanks to {col:00ff00}Saelora{/col} for all his help!
-Thanks to {col:00ff00}Kathryl{/col} for the forum hosting!
+{col:ffffff}Our pre-alpha QA team:{/col}
+- Saelora
+- Erzan
+- Calian
+- Kharess
+- Alnih
+- 611
 
 {col:ffffff}Thanks to all our friends for their support all these years:{/col}
 - For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse:
+- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
 
 {col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
 - Azane
@@ -257,7 +254,7 @@ Thanks to {col:00ff00}Kathryl{/col} for the forum hosting!
 	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{ loc("DB_NEW"), 1, 150 },
-			{ loc("DB_ABOUT"), 2, 150 },
+			{ loc("DB_ABOUT"), 2, 175 },
 		},
 		function(tabWidget, value)
 			if value == 1 then

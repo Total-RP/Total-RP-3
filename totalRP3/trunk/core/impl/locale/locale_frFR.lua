@@ -121,7 +121,6 @@ Cela provoquera une rechargement de l'interface.]=],
 		CO_GENERAL_MISC = "Divers",
 		CO_GENERAL_NEW_VERSION = "Alerte de mise-à-jour",
 		CO_GENERAL_NEW_VERSION_TT = "Afficher une alerte lorsqu'une nouvelle version est disponible.",
-		CO_GENERAL_NOTIF = "Notifications",
 		CO_GENERAL_TT_SIZE = "Taille du texte de l'infobulle",
 		CO_GENERAL_UI_ANIMATIONS = "Animations d'interface",
 		CO_GENERAL_UI_ANIMATIONS_TT = "Activer les animations d'interface",
@@ -137,6 +136,15 @@ Cela provoquera une rechargement de l'interface.]=],
 		CO_GLANCE_PRESET_TRP3_HELP = "Raccourci pour configurer la barre dans le style de TRP3 : en-dessous du portrait de la cible.",
 		CO_GLANCE_RESET_TT = "Réinitialiser la position de la barre en bas à gauche du cadre d'ancrage.",
 		CO_GLANCE_TT_ANCHOR = "Point d'ancrage des infobulles",
+		CO_LOCATION = "Paramètres de position", -- Needs review
+		CO_LOCATION_ACTIVATE = "Activer la position du personnage", -- Needs review
+		CO_LOCATION_ACTIVATE_TT = "Active la fonctionnalité de position du personnage, vous permettant de lancer un scan afin d'afficher sur la carte les autres utilisateurs de Total RP ayant activé cette fonctionnalité. Cela leur permet aussi de vous scanner.", -- Needs review
+		CO_LOCATION_DISABLE_OOC = "Désactiver le scan si HRP", -- Needs review
+		CO_LOCATION_DISABLE_OOC_TT = "Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en statut HRP.", -- Needs review
+		CO_LOCATION_DISABLE_PVP = "Désactiver le scan si PvP", -- Needs review
+		CO_LOCATION_DISABLE_PVP_TT = [=[Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en mode PvP.
+
+Cette option est particulièrement utile sur les royaume PvP où les utilisateurs de la faction opposée pourraient abuser du système pour vous traquer.]=], -- Needs review
 		CO_MINIMAP_BUTTON = "Bouton de la minicarte",
 		CO_MINIMAP_BUTTON_FRAME = "Cadre d'ancrage",
 		CO_MINIMAP_BUTTON_RESET = "Réinitialiser la position",
@@ -180,10 +188,6 @@ Statuts possibles:
 		CO_MSP_T3 = "Utiliser uniquement le modèle 3",
 		CO_MSP_T3_TT = "Même si vous choisissez un autre modèle \"À propos\", le modèle 3 sera toujours utilisé pour la compatibilité avec MSP.",
 		COM_SWITCH_USAGE = "Utilisation: |cff00ff00/trp3 switch main|r pour afficher ou masquer la fenêtre principale ou |cff00ff00/trp3 switch toolbar|r pour afficher ou masquer la barre d'outils.",
-		CO_NOTIF_DOUBLE = "Notification + message dans la fenêtre de discussion",
-		CO_NOTIF_NO = "Pas de notification",
-		CO_NOTIF_SIMPLE = "Notification",
-		CO_NOTIF_TRIPLE = "Notification + message dans la fenêtre de discussion + alerte de raid",
 		CO_REGISTER = "Registre",
 		CO_REGISTER_ABOUT_VOTE = "Utiliser le système de vote",
 		CO_REGISTER_ABOUT_VOTE_TT = "Active le système de vote, vous permettant de voter (\"j'aime\" ou \"je n'aime pas\") pour les descriptions des autres et leur permettant de faire de même pour vous.",
@@ -240,10 +244,9 @@ Statuts possibles:
 		CO_TOOLTIP_USE = "Utiliser les infobulles de personnages/compagnons",
 		CO_WIM = "|cffff9900Les canaux de chuchotement sont désactivés.",
 		CO_WIM_TT = "Vous utilisez |cff00ff00WIM|r, le support des canaux de chuchotement est désactivé pour des raisons de compatibilité.",
-		DB_NOTIFICATIONS = "Notifications",
-		DB_NOTIFICATIONS_ALL = "Tous les types de notifications",
-		DB_NOTIFICATIONS_CLEAR = "Nettoyer toutes les notifications",
-		DB_NOTIFICATIONS_NO = "Vous n'avez aucune notification",
+		DB_ABOUT = "A propos de Total RP 3", -- Needs review
+		DB_HTML_GOTO = "Cliquer pour ouvrir", -- Needs review
+		DB_NEW = "Quoi de neuf ?", -- Needs review
 		DB_STATUS = "Statut",
 		DB_STATUS_CURRENTLY = "Actuellement (RP)",
 		DB_STATUS_CURRENTLY_COMMON = "Ces statuts seront affichés dans l'infobulle de votre personnage. Restez clair et bref, |cffff9900par défaut les utilisateurs de Total RP 3 verront uniquement les 140 premiers caractères !",
@@ -272,12 +275,10 @@ aux autres que vous débutez dans le roleplay.]=],
 |cffffff00Le statut rolepay|r vous permet d'indiquer que vous êtes un débutant ou un vétéran désireux d'aider les novices !
 
 |cff00ff00Cette information sera placée dans la bulle d'aide de votre personnage.]=],
-		DB_TUTO_2 = [=[Certains événements produisent des notifications. C'est un moyen rapide de voir facilement ce qu'il se passe dans Total RP 3.
-
-Toutes les notifications sont configurables dans la |cffff9900page des paramètres généraux|r.]=],
 		DTBK_AFK = "Total RP 3 - ABS/NPD",
 		DTBK_CLOAK = "Total RP 3 - Cape",
 		DTBK_HELMET = "Total RP 3 - Casque",
+		DTBK_LANGUAGES = "Total RP - Langages", -- Needs review
 		DTBK_RP = "Total RP 3 - RP/HRP",
 		GEN_NEW_VERSION_AVAILABLE = [=[Une nouvelle version pour Total RP 3 est disponible.
 
@@ -289,6 +290,10 @@ Toutes les notifications sont configurables dans la |cffff9900page des paramètr
 Ce message ne s'affichera qu'une seule fois par session et peut être désactivé dans les paramètres.]=],
 		GEN_VERSION = "Version: %s (Build %s)",
 		GEN_WELCOME_MESSAGE = "Merci d'utiliser Total RP 3 (v %s) ! Amusez-vous bien !",
+		MAP_BUTTON_NO_SCAN = "Pas de scan disponible", -- Needs review
+		MAP_BUTTON_SCANNING = "Scan en cours", -- Needs review
+		MAP_BUTTON_SUBTITLE = "Clic pour afficher les scans disponibles", -- Needs review
+		MAP_BUTTON_TITLE = "Recherche de roleplay", -- Needs review
 		MM_SHOW_HIDE_MAIN = "Afficher/cacher la fenêtre principale",
 		MM_SHOW_HIDE_MOVE = "Déplacer le bouton",
 		MM_SHOW_HIDE_SHORTCUT = "Afficher/cacher la barre d'outils",
@@ -589,16 +594,18 @@ Cependant, vous devriez éviter les répétitions, s'il n'y a aucune information
 		REG_PLAYER_GLANCE_BAR_SAVE = "Sauvegarder comme groupe",
 		REG_PLAYER_GLANCE_BAR_SAVED = "Le groupe d'emplacements |cff00ff00%s|r a été supprimé.",
 		REG_PLAYER_GLANCE_BAR_TARGET = "Groupe de \"Coup d’œil\"",
-		REG_PLAYER_GLANCE_CONFIG = [=[|cffffff00Clic gauche:|r Configurer l'emplacement
-|cffffff00Clic droit:|r Activer/Désactiver l'emplacement
-|cffffff00Glisser-déposer:|r Réorganiser les emplacements]=],
+		REG_PLAYER_GLANCE_CONFIG = "Le |cff00ff00\"Coup d'oeil\"|r est un ensemble d'emplacements que vous pouvez utiliser pour définir des informations importantes à propos de votre personnage.\n\nVous pouvez:\n|cffffff00Clic:|r configurer l'emplacement\n|cffffff00Double-clic:|r basculer l'activation\n|cffffff00Clic-droit:|r modèles d'emplacement\n|cffffff00Clic-glisser:|r réorganiser les emplacements",
 		REG_PLAYER_GLANCE_EDITOR = "Coup d'œil : Emplacement %s",
 		REG_PLAYER_GLANCE_PRESET = "Charger depuis ...",
+		REG_PLAYER_GLANCE_PRESET_ADD = "Modèle |cff00ff00%s|r créé.", -- Needs review
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Veuillez entrer une catégorie et un nom",
-		REG_PLAYER_GLANCE_PRESET_ALERT2 = "Il y a déjà un coup d'œil appelée %s",
 		REG_PLAYER_GLANCE_PRESET_CATEGORY = "Catégorie",
+		REG_PLAYER_GLANCE_PRESET_CREATE = "Créer modèle", -- Needs review
+		REG_PLAYER_GLANCE_PRESET_GET_CAT = [=[%s
+
+Merci d'entrer le nom de la catégorie pour ce modèle]=], -- Needs review
 		REG_PLAYER_GLANCE_PRESET_NAME = "Coup d'œil",
-		REG_PLAYER_GLANCE_PRESET_NONE = "Effacer l'emplacement",
+		REG_PLAYER_GLANCE_PRESET_REMOVE = "Modèle |cff00ff00%s|r supprimé.", -- Needs review
 		REG_PLAYER_GLANCE_PRESET_SAVE = "Enregistrer le coup d'œil sous ...",
 		REG_PLAYER_GLANCE_PRESET_SAVE_SMALL = "Enregistrer",
 		REG_PLAYER_GLANCE_PRESET_SELECT = "Choisir un coup d'œil",
@@ -794,6 +801,8 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		TB_AFK_MODE = "Absent",
 		TB_DND_MODE = "Ne pas déranger",
 		TB_GO_TO_MODE = "Passer en mode %s",
+		TB_LANGUAGE = "Langage", -- Needs review
+		TB_LANGUAGES_TT = "Changer de langage", -- Needs review
 		TB_NORMAL_MODE = "Normal",
 		TB_RPSTATUS_OFF = "Personnage: |cffff0000Hors du personnage",
 		TB_RPSTATUS_ON = "Personnage: |cff00ff00Dans le personnage",
@@ -855,7 +864,18 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_MUSIC_SELECT = "Choisir une musique",
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
+
+		WHATS_NEW = [[{h3:c}Nouveau dans la version {col:6eff51}1.0{/col}{/h3}
+{h3}1. Système de position de personnages{/h3}
+Vous pouvez maintenant scanner la position des personnages sur votre carte. {link*map*Ouvrez votre carte} et utilisez le bouton en bas à droite pour lancer le scan !
+
+{h3}2. Nouvelle interface "Coups d'oeil"{/h3}
+Nous avons amélioré l'interface d'édition des Coups d'oeil. {link*glance*Jeter un oeil !}
+
+{h3}3. Nouveau bouton pour changer la langue{/h3}
+Un nouveau bouton a été ajouté à la barre d'outils pour changer de langage parmis ceux connus de votre personnage. {link*language*Jeter un oeil !}]]
 	}
+
 };
 
 TRP3_API.locale.registerLocale(LOCALE);
