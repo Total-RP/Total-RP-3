@@ -86,7 +86,7 @@ local function displayMarkers(structure)
 	for key, entry in pairs(structure.saveStructure) do
 		local marker = _G[MARKER_NAME_PREFIX .. i];
 		if not marker then
-			marker = CreateFrame("Frame", MARKER_NAME_PREFIX .. i, WorldMapButton, "WorldMapRaidUnitTemplate");
+			marker = CreateFrame("Frame", MARKER_NAME_PREFIX .. i, WorldMapButton, "TRP3_WorldMapUnit");
 			marker:SetScript("OnEnter", function(self)
 				WorldMapPOIFrame.allowBlobTooltip = false;
 				WorldMapTooltip:Hide();
@@ -124,26 +124,18 @@ local function displayMarkers(structure)
 			structure.scanMarkerDecorator(key, entry, marker);
 		end
 
-		if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) then
-			local animationGroup = marker:CreateAnimationGroup();
-			local fadeInAnimation = animationGroup:CreateAnimation("Alpha");
-			fadeInAnimation:SetFromAlpha(0);
-			fadeInAnimation:SetToAlpha(1);
-			fadeInAnimation:SetDuration(0.2);
-			local scaleUp = animationGroup:CreateAnimation("Scale");
-			scaleUp:SetToScale(1.5, 1.5);
-			scaleUp:SetDuration(0.5);
-			local scaleDown = animationGroup:CreateAnimation("Scale");
-			scaleDown:SetScale(0.5, 0.5);
-			scaleDown:SetDuration(0.5);
-			scaleDown:SetStartDelay(0.5);
+		if getConfigValue(CONFIG_UI_ANIMATIONS) then
 
 			local distanceX = 0.5 - entry.x;
 			local distanceY = 0.5 - entry.y;
 			local distance = math.sqrt(distanceX * distanceX + distanceY * distanceY);
 			local factor = distance/MAX_DISTANCE_MARKER;
 
-			after(4 * factor, function() marker:Show(); playAnimation(animationGroup); end);
+			after(4 * factor, function()
+				marker:Show();
+				marker:SetAlpha(0);
+				playAnimation(_G[marker:GetName() .. "Bounce"]);
+			end);
 
 		else
 			marker:Show();
@@ -187,9 +179,10 @@ local function launchScan(scanID)
 				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
 				playAnimation(TRP3_ScanFadeOut);
 				TRP3_API.ui.misc.playSoundKit(43493);
-				if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) then
+				if getConfigValue(CONFIG_UI_ANIMATIONS) then
 					after(1, function()
 						TRP3_ScanLoaderFrame:Hide();
+						TRP3_ScanLoaderFrame:SetAlpha(1);
 					end);
 				else
 					TRP3_ScanLoaderFrame:Hide();

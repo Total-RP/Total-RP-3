@@ -19,7 +19,7 @@
 		limitations under the License.
 	-->
 
-	<Button name="TRP3_WorldMapButton" parent="WorldMapButton" inherits="TRP3_IconButton">
+	<Button name="TRP3_WorldMapButton" parent="WorldMapScrollFrame" inherits="TRP3_IconButton" frameStrata="HIGH" toplevel="true">
 		<Anchors>
 			<Anchor point="BOTTOMLEFT" x="10" y="10"/>
 		</Anchors>
@@ -38,18 +38,17 @@
 		</Scripts>
 	</Button>
 
+	<Frame name="TRP3_WorldMapUnit" inherits="WorldMapRaidUnitTemplate" virtual="true">
+		<Animations>
+			<AnimationGroup name="$parentBounce" setToFinalAlpha="true">
+				<Alpha change="1" duration="0.2"/>
+				<Scale scaleX="1.5" scaleY="1.5" duration="0.2"/>
+				<Scale scaleX="0.5" scaleY="0.5" duration="0.2" startDelay="0.2"/>
+			</AnimationGroup>
+		</Animations>
+	</Frame>
+
 	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
-		<!--<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">-->
-			<!--<EdgeSize>-->
-				<!--<AbsValue val="32" />-->
-			<!--</EdgeSize>-->
-			<!--<TileSize>-->
-				<!--<AbsValue val="418" />-->
-			<!--</TileSize>-->
-			<!--<BackgroundInsets>-->
-				<!--<AbsInset left="5" right="5" top="5" bottom="5" />-->
-			<!--</BackgroundInsets>-->
-		<!--</Backdrop>-->
 		<Size x="200" y="200"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
