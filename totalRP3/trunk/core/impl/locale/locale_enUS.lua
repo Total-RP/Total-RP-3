@@ -824,6 +824,7 @@ Total RP is not responsible for links leading to harmful content.]],
 		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
 {h3}1. Character location system{/h3}
 You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
+|cffff9900Don't want to be visible? {link*scandisable*You can disable the scan}.
 
 {h3}2. New UI for "At first glance" edition{/h3}
 We improved the way you can edit your "At first glance" slots information. {link*glance*Check it out!}

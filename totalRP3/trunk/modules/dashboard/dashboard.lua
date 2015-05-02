@@ -234,9 +234,9 @@ TRP3_API.dashboard.init = function()
 						break;
 					end
 				end
-			else
-
 			end
+		elseif url == "scandisable" then
+			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)

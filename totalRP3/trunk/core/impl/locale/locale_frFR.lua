@@ -868,6 +868,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		WHATS_NEW = [[{h3:c}Nouveau dans la version {col:6eff51}1.0{/col}{/h3}
 {h3}1. Système de position de personnages{/h3}
 Vous pouvez maintenant scanner la position des personnages sur votre carte. {link*map*Ouvrez votre carte} et utilisez le bouton en bas à droite pour lancer le scan !
+|cffff9900Pas envie d'être visible? {link*scandisable*Désactiver la fonctionnalité}.
 
 {h3}2. Nouvelle interface "Coups d'oeil"{/h3}
 Nous avons amélioré l'interface d'édition des Coups d'oeil. {link*glance*Jeter un oeil !}
