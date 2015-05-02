@@ -181,6 +181,8 @@ TRP3_API.dashboard.init = function()
 
 	local aboutText = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
+{p:c}http://totalrp3.info{/p}
+
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "Ellypse" Parize
 - Sylvain "Telkostrasz" Cossement
