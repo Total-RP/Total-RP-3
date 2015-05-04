@@ -865,7 +865,13 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
 
-		WHATS_NEW = [[{h3:c}Nouveau dans la version {col:6eff51}1.0{/col}{/h3}
+		WHATS_NEW = [[{h3:c}Nouveau dans la version {col:6eff51}1.0.1{/col}{/h3}
+{h3}1. Purge automatique du registre{/h3}
+WoW n'est pas parfait, et un bug ennuyant provoque l'effacement de toutes les données d'un addon lorsqu'elle atteignent une certaine taille.
+Pour réduire les chances que cela arrive, nous avons ajouté un système de purge automatique effaçant les profils de personnages que vous n'avez pas croisé depuis plus de 5 jours et sur lesquels vous n'avez placé aucune relation.
+Vous pouvez changer ce comportement {link*scandisable*ici}.
+
+{h3:c}Nouveau dans la version {col:6eff51}1.0{/col}{/h3}
 {h3}1. Système de position de personnages{/h3}
 Vous pouvez maintenant scanner la position des personnages sur votre carte. {link*map*Ouvrez votre carte} et utilisez le bouton en bas à droite pour lancer le scan !
 |cffff9900Pas envie d'être visible? {link*scandisable*Désactiver la fonctionnalité}.

@@ -442,6 +442,10 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
 		CO_REGISTER_AUTO_ADD = "Auto add new players",
 		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
+		CO_REGISTER_AUTO_PURGE = "Auto purge directory",
+		CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of character you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reach a certain theshold. We strongly recommand to avoid disabling the purge system.",
+		CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
+		CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
 		CO_MODULES = "Modules status",
 		CO_MODULES_VERSION = "Version: %s",
 		CO_MODULES_ID = "Module ID: %s",
@@ -821,7 +825,13 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
+		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.1{/col}{/h3}
+{h3}1. Directory automatic purge{/h3}
+WoW il not without bugs, and an annoying one is that when all the saved data about an addon reach a certain size, it gets wiped out.
+To reduce the chances that you reach the data limit, we implemented an automatic directory purge removing profiles from characters you never crossed or crossed more than 5 days ago and didn't placed any relation on it.
+You can change this behaviour {link*scandisable*here}.
+
+{h3:c}New in version {col:6eff51}1.0{/col}{/h3}
 {h3}1. Character location system{/h3}
 You can now query for character location on your map. {link*map*Open your map} and use the bottom left button to launch the scan!
 |cffff9900Don't want to be visible? {link*scandisable*You can disable the scan}.

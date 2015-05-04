@@ -118,7 +118,7 @@
 					</Animations>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK" textureSubLevel="2">
+			<Layer level="ARTWORK">
 				<Texture parentKey="Banner" atlas="GarrMission_RewardsBanner-Desaturate" useAtlasSize="true">
 					<Anchors>
 						<Anchor point="CENTER" relativePoint="TOP" x="0" y="10"/>

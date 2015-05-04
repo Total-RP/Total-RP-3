@@ -143,7 +143,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 					info.hasArrow = true;
 					info.keepShownOnClick = true;
 					info.menuList = value;
-				elseif value then
+				elseif value ~= nil then
 					info.func = function()
 						if callback then
 							callback(value, anchoredFrame);

@@ -403,11 +403,37 @@ end
 -- CLEANUP
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local tsize = Utils.table.size;
+
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
 		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
 			character.profileID = nil;
 		end
+	end
+end
+
+local function cleanupProfiles()
+	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
+		return;
+	end
+	-- First, get a tab with all profileID with which we have a relation
+	local relatedProfileIDs = {};
+	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
+		for profileID, relation in pairs(profile.relation or {}) do
+			relatedProfileIDs[profileID] = true;
+		end
+	end
+	log("Protected profiles: " .. tsize(relatedProfileIDs));
+	local profilesToPurge = {};
+	for profileID, profile in pairs(profiles) do
+		if not profilesToPurge[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
+			tinsert(profilesToPurge, profileID);
+		end
+	end
+	log("Profiles to purge: " .. tsize(profilesToPurge));
+	for _, profileID in pairs(profilesToPurge) do
+		deleteProfile(profileID, true);
 	end
 end
 
@@ -420,6 +446,7 @@ function TRP3_API.register.init()
 	showAboutTab = TRP3_API.register.ui.showAboutTab;
 	showMiscTab = TRP3_API.register.ui.showMiscTab;
 
+	-- Init save variables
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
@@ -431,8 +458,6 @@ function TRP3_API.register.init()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
-
-	cleanupCharacters();
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
@@ -488,6 +513,7 @@ function TRP3_API.register.init()
 
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
+	registerConfigKey("register_auto_purge_mode", 432000);
 
 	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
@@ -496,6 +522,13 @@ function TRP3_API.register.init()
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
+
+	local AUTO_PURGE_VALUES = {
+		{loc("CO_REGISTER_AUTO_PURGE_0"), false},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(1), 86400},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(2), 172800},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(5), 432000},
+	}
 
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
@@ -514,6 +547,15 @@ function TRP3_API.register.init()
 				title = loc("CO_REGISTER_AUTO_ADD"),
 				configKey = "register_auto_add",
 				help = loc("CO_REGISTER_AUTO_ADD_TT")
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
+				title = loc("CO_REGISTER_AUTO_PURGE"),
+				help = loc("CO_REGISTER_AUTO_PURGE_TT"),
+				listContent = AUTO_PURGE_VALUES,
+				configKey = "register_auto_purge_mode",
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -540,6 +582,8 @@ function TRP3_API.register.init()
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		cleanupProfiles();
+		cleanupCharacters();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
