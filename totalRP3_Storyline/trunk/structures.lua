@@ -26,101 +26,108 @@
 -- Animation duration
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local EXCLAME_ID = "64";
+local QUESTION_ID = "65";
+local TALK_ID = "60";
+local YES_ID = "185";
+local NOPE_ID = "186";
+
 TRP3_ANIMATION_SEQUENCE_DURATION = {
-	["64"] = 3000, -- huh !
-	["65"] = 3000, -- huh ?
-	["60"] = 4000, -- blabla
-	["185"] = 2000, -- Yep !
-	["186"] = 2000, -- Nope !
-	["0"] = 1000,
+	[EXCLAME_ID] = 3.000,
+	[QUESTION_ID] = 3.000,
+	[TALK_ID] = 4.000,
+	[YES_ID] = 2.000,
+	[NOPE_ID] = 2.000,
+	["0"] = 1.500,
 }
+
 TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	-- DWARF
 	["character\\dwarf\\male\\dwarfmale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2000, -- blabla
+		[EXCLAME_ID] = 1.800,
+		[QUESTION_ID] = 1.800,
+		[TALK_ID] = 2.000,
 	},
 	["character\\dwarf\\female\\dwarffemale_hd.m2"] = {
-		["60"] = 1900,
+		[TALK_ID] = 1.900,
 	},
 	-- WORGEN
 	["character\\worgen\\male\\worgenmale.m2"] = {
-		["65"] = 4000,
+		[QUESTION_ID] = 4.000,
 	},
 	["character\\worgen\\female\\worgenfemale.m2"] = {
-		["64"] = 2700,
-		["65"] = 4500,
+		[EXCLAME_ID] = 2.700,
+		[QUESTION_ID] = 4.500,
 	},
 	-- GNOMES
 	["character\\gnome\\male\\gnomemale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 2250, -- huh ?
-		["60"] = 3900, -- blabla
+		[EXCLAME_ID] = 1.800,
+		[QUESTION_ID] = 2.250,
+		[TALK_ID] = 3.900,
 	},
 	["character\\gnome\\female\\gnomefemale_hd.m2"] = {
-		["64"] = 1850, -- huh !
-		["65"] = 2250, -- huh ?
-		["60"] = 3900, -- blabla
+		[EXCLAME_ID] = 1.850,
+		[QUESTION_ID] = 2.250,
+		[TALK_ID] = 3.900,
 	},
 	-- HUMAN
 	["character\\human\\male\\humanmale_hd.m2"] = {
-		["64"] = 1800, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2000, -- blabla
+		[EXCLAME_ID] = 1.800,
+		[QUESTION_ID] = 1.800,
+		[TALK_ID] = 2.000,
 	},
 	["character\\human\\female\\humanfemale_hd.m2"] = {
-		["64"] = 2500, -- huh !
-		["65"] = 1800, -- huh ?
-		["60"] = 2650, -- blabla
+		[EXCLAME_ID] = 2.500,
+		[QUESTION_ID] = 1.800,
+		[TALK_ID] = 2.650,
 	},
 	-- DRAENEI
 	["character\\draenei\\female\\draeneifemale_hd.m2"] = {
-		["60"] = 2850, -- blabla
-		["65"] = 1850, -- huh ?
-		["64"] = 2000, -- huh !
+		[TALK_ID] = 2.850,
+		[QUESTION_ID] = 1.850,
+		[EXCLAME_ID] = 2.000,
 	},
 	["character\\draenei\\male\\draeneimale_hd.m2"] = {
-		["60"] = 3200, -- blabla
-		["65"] = 1850, -- huh ?
+		[TALK_ID] = 3.200,
+		[QUESTION_ID] = 1.850,
 	},
 	-- PANDAREN
 	["character\\pandaren\\female\\pandarenfemale.m2"] = {
-		["60"] = 3000, -- blabla
+		[TALK_ID] = 3.000,
 	},
 	-- NIGHT ELVES
 	["character\\nightelf\\female\\nightelffemale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 1.600,
+		[TALK_ID] = 1.900,
 	},
 	["character\\nightelf\\male\\nightelfmale_hd.m2"] = {
-		["60"] = 1900, -- blabla
+		[TALK_ID] = 1.900,
 	},
 	-- ARRAKOA
 	["creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
-		["60"] = 1700, -- blabla
+		[TALK_ID] = 1.700,
 	},
 	["creature\\arakkoa2\\arakkoa2.m2"] = {
-		["60"] = 4300, -- blabla
+		[TALK_ID] = 4.300,
 	},
 	-- ORCS
 	["character\\orc\\female\\orcfemale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 1.600,
+		[TALK_ID] = 1.900,
 	},
 	["character\\orc\\male\\orcmale_hd.m2"] = {
-		["64"] = 2000, -- huh !
-		["65"] = 1600, -- huh ?
-		["60"] = 1900, -- blabla
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 1.600,
+		[TALK_ID] = 1.900,
 	},
 	["creature\\rexxar\\rexxar.m2"] = {
-		["60"] = 2000, -- blabla
-		["65"] = 1600, -- huh ?
+		[TALK_ID] = 2.000,
+		[QUESTION_ID] = 1.600,
 	},
 	["creature\\khadgar2\\khadgar2.m2"] = {
-		["60"] = 2000, -- blabla
+		[TALK_ID] = 2.000,
 	}
 }
 
@@ -142,11 +149,7 @@ local ALL_TO_NONE = {
 	["?"] = 0,
 	["."] = 0,
 }
-TRP3_ANIM_MAPPING = {
---	["character\\worgen\\male\\worgenmale.m2"] = {
---		["."] = 64,
---	},
-}
+TRP3_ANIM_MAPPING = {};
 TRP3_ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\draeneifemalekid\\draeneifemalekid.m2"] = ALL_TO_TALK;
@@ -159,5 +162,4 @@ TRP3_ANIM_MAPPING["creature\\beholder\\beholder.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\draenorancient\\draenorancientgorgrond.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\arakkoa2\\arakkoa2.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\arakkoaoutland\\arakkoaoutland.m2"] = ALL_TO_TALK;
-TRP3_ANIM_MAPPING["character\\bloodelf\\female\\bloodelffemale.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\dreadravenwarbird\\dreadravenwarbirdwind.m2"] = ALL_TO_NONE;

@@ -28,7 +28,7 @@ local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
 local TRP3_NPCDialogFrameModelsMeFull = TRP3_NPCDialogFrameModelsMeFull;
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
-local tostring, strsplit, wipe, pairs = tostring, strsplit, wipe, pairs;
+local tostring, strsplit, wipe, pairs, tinsert = tostring, strsplit, wipe, pairs, tinsert;
 local ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText = ChatTypeInfo, GetGossipText, GetGreetingText, GetProgressText;
 local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 local TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING = TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING;
@@ -40,11 +40,7 @@ local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATI
 -- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_SEQUENCE_SPEED = 1000;
-local ANIMATION_TEXT_SPEED = 40;
 local CHAT_TEXT_WIDTH = 550;
-local ANIMATION_EMPTY = {0};
-local animTab, animTabMe = {}, {};
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
@@ -76,17 +72,20 @@ end
 
 local function getQuestTriviality(isTrivial)
 	if isTrivial then
-		return " |cff999999(low level)"; --TODO: Icone phoque, comme ca pas besoin de locale
+		return " (|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t)";
 	else
 		return "";
 	end
+end
+
+local function getQuestLevelColor(questLevel)
+	return 0.9, 0.6, 0;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SELECTION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local tinsert = tinsert;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local GetNumGossipOptions, GetGossipOptions, SelectGossipOption = GetNumGossipOptions, GetGossipOptions, SelectGossipOption;
 local GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest = GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest;
@@ -155,26 +154,44 @@ local function getAnimationByModel(model, animationType)
 	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
 end
 
-local function playMeAnimation(animation)
-	animTabMe[1] = animation;
-	animTabMe[2] = 0;
-	TRP3_NPCDialogFrameModelsMe.seqtime = 0;
-	TRP3_NPCDialogFrameModelsMe.sequenceTab = animTabMe;
-	TRP3_NPCDialogFrameModelsMe.sequence = 1;
+local function playAnimationDelay(model, sequence, duration, delay, token)
+	if delay == 0 then
+		print("Playing: " .. sequence);
+		model:SetAnimation(sequence);
+	else
+		model.token = token;
+		C_Timer.After(delay, function()
+			if model.token == token then
+				print("Playing: " .. sequence .. " (" .. duration.."s)");
+				model:SetAnimation(sequence);
+			end
+		end)
+	end
+
+	return delay + duration;
+end
+
+local DEFAULT_SEQUENCE_TIME = 4;
+
+local function getDuration(model, sequence)
+	sequence = tostring(sequence);
+	if TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
+		return TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
+	end
+	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
 end
 
 local function playText(textIndex)
-	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
+	local animTab = TRP3_NPCDialogFrameModelsYou.animTab;
+	wipe(animTab);
 
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
 	local sound;
-	wipe(animTab);
-	text:gsub("[%.%?%!]+", function(finder)
-		animTab[#animTab+1] = getAnimationByModel(TRP3_NPCDialogFrameModelsYou.model, finder:sub(1, 1));
---		animTab[#animTab+1] = 0;
-	end);
---	animTab[#animTab+1] = 0;
-	
+	local delay = 0;
+	local textLineToken = Utils.str.id();
+
+	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
+
 	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
 		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		local finalText = text:gsub("<", color .. "<");
@@ -184,29 +201,22 @@ local function playText(textIndex)
 		else
 			TRP3_NPCDialogFrameChatText:SetText(finalText);
 		end
-		wipe(animTab);
-		animTab[1] = 0;
 	else
 		TRP3_NPCDialogFrameChatText:SetText(text);
+		text:gsub("[%.%?%!]+", function(finder)
+			animTab[#animTab+1] = getAnimationByModel(TRP3_NPCDialogFrameModelsYou.model, finder:sub(1, 1));
+			animTab[#animTab+1] = 0;
+		end);
 	end
 
-	if #animTab >= 1 then
-		TRP3_NPCDialogFrameModelsYou:SetAnimation(animTab[1]);
-	end
-	if #animTab > 1 then
-		for index, sequence in pairs(animTab) do
-			if index ~= 1 then
-				C_Timer.After(4 * (index - 1), function()
-					print("Playing: " .. sequence);
-					TRP3_NPCDialogFrameModelsYou:SetAnimation(sequence);
-				end)
-			end
-		end
+	if #animTab == 0 then
+		animTab[1] = 0;
 	end
 
-	TRP3_NPCDialogFrameModelsYou.seqtime = 0;
-	TRP3_NPCDialogFrameModelsYou.sequenceTab = animTab;
-	TRP3_NPCDialogFrameModelsYou.sequence = 1;
+	for index, sequence in pairs(animTab) do
+		delay = playAnimationDelay(TRP3_NPCDialogFrameModelsYou, animTab[index],
+			getDuration(TRP3_NPCDialogFrameModelsYou, animTab[index]), delay, textLineToken);
+	end
 	
 	TRP3_NPCDialogFrameChat.start = 0;
 
@@ -315,9 +325,28 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. loc("SL_ACCEPTANCE"));
 		TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", AcceptQuest);
 
-	elseif TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
-
 	end
+
+	-- Rewards
+	TRP3_NPCDialogFrameRewards:Hide();
+	if TRP3_NPCDialogFrameChat.event == "QUEST_COMPLETE" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+		TRP3_NPCDialogFrameRewards:Show();
+		local boutonText = COMPLETE_QUEST;
+		if GetNumQuestChoices() == 1 or GetNumQuestRewards() == 1 then
+			local type = GetNumQuestChoices() == 1 and "choice" or "reward";
+			local name, texture, numItems, quality, isUsable = GetQuestItemInfo(type, 1);
+			local link = GetQuestItemLink(type, 1);
+			TRP3_NPCDialogFrameRewards.itemLink = link;
+			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(texture);
+			boutonText = "Get your reward!"; -- TODO: locals
+		elseif GetNumQuestChoices() > 0 then
+			TRP3_NPCDialogFrameChatNext:Disable();
+			boutonText = "Select your reward!";
+		end
+
+		TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. boutonText);
+	end
+
 
 	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + CHAT_NAME + optionsSize);
 end
@@ -325,9 +354,9 @@ end
 local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 
 local function playNext()
+	TRP3_NPCDialogFrameChatNext:Enable();
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
-		playText(TRP3_NPCDialogFrameChat.currentIndex);
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
 			TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. loc("SL_NEXT"));
 		else
@@ -337,6 +366,7 @@ local function playNext()
 				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. (TRP3_NPCDialogFrameChat.eventInfo.finishText or "Finish"));
 			end
 		end
+		playText(TRP3_NPCDialogFrameChat.currentIndex);
 	else
 		if TRP3_NPCDialogFrameChat.eventInfo.finishMethod then
 			TRP3_NPCDialogFrameChat.eventInfo.finishMethod();
@@ -384,6 +414,11 @@ local function startDialog(targetType, fullText, event, eventInfo)
 
 	if eventInfo.titleGetter and eventInfo.titleGetter() then
 		TRP3_NPCDialogFrameTitle:SetText(eventInfo.titleGetter());
+		if eventInfo.getTitleColor and eventInfo.getTitleColor() then
+			TRP3_NPCDialogFrameTitle:SetTextColor(eventInfo.getTitleColor());
+		else
+			TRP3_NPCDialogFrameTitle:SetTextColor(0.95, 0.95, 0.95);
+		end
 	else
 		TRP3_NPCDialogFrameTitle:SetText("");
 	end
@@ -437,36 +472,7 @@ end
 -- ANIMATIONS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onUpdateModelDebug(self, elapsed)
-	if self:IsVisible() and self.seqtime and self.sequence then
-		self.seqtime = self.seqtime + (elapsed * ANIMATION_SEQUENCE_SPEED);
-		self:SetSequenceTime(self.sequence, self.seqtime);
-	end
-end
-
-local function onUpdateModel(self, elapsed)
-	if self:IsVisible() and self.seqtime and self.sequence and self.sequenceTab then
-		self.seqtime = self.seqtime + (elapsed * ANIMATION_SEQUENCE_SPEED);
-		if self.sequenceTab[self.sequence] ~= 0 then
-			self:SetSequenceTime(self.sequenceTab[self.sequence], self.seqtime);
-		end
-		local sequenceString = tostring(self.sequenceTab[self.sequence]);
-		-- Once the anim is finished, go to the next one.
-		local duration = 0;
-		if self.model and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString] then
-			duration = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[self.model][sequenceString];
-		elseif TRP3_ANIMATION_SEQUENCE_DURATION[sequenceString] then
-			duration = TRP3_ANIMATION_SEQUENCE_DURATION[sequenceString];
-		end
-		if duration and self.seqtime > duration then
---			self:SetAnimation(self.sequenceTab[self.sequence]);
-			self.seqtime = 0;
-			if self.sequence < #self.sequenceTab then
-				self.sequence = self.sequence + 1;
-			end
-		end
-	end
-end
+local ANIMATION_TEXT_SPEED = 40;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start then
@@ -520,24 +526,11 @@ local function registerEventStructure()
 		},
 		["QUEST_COMPLETE"] = {
 			text = GetRewardText,
-			finishText = function()
-				if GetNumQuestChoices() == 1 then
-					local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
-					return "Reward: " .. name; -- TEMP
-				elseif GetNumQuestChoices() > 0 then
-					return REWARDS;
-				elseif GetNumQuestRewards() == 1 then
-					local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", 1);
-					return "Reward: " .. name; -- TEMP
-				else
-					return COMPLETE_QUEST;
-				end
-			end,
 			finishMethod = function()
 				if GetNumQuestChoices() == 1 then
 					GetQuestReward(1);
 				elseif GetNumQuestChoices() > 0 then
-					message("Please choose a reward from the original quest interface."); -- TEMP
+					message("Please choose a reward from the original quest interface."); -- TODO: TEMP
 				else
 					GetQuestReward();
 				end
@@ -577,20 +570,16 @@ local function init()
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 
 	TRP3_NPCDialogFrameChatPrevious:SetText("Reset");
-
+	TRP3_NPCDialogFrameBG:SetDesaturated(true);
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", playNext);
 	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
---	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModel);
-	TRP3_NPCDialogFrameModelsMe:SetScript("OnUpdate", onUpdateModel);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
+	TRP3_NPCDialogFrameRewardsItem:SetScale(1.5);
 
---	if DEBUG then
---		TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", onUpdateModelDebug);
---		TRP3_NPCDialogFrameModelsMeFull:SetScript("OnUpdate", onUpdateModelDebug);
---		TRP3_NPCDialogFrameModelsMeFull.seqtime = 0;
---		TRP3_NPCDialogFrameModelsMeFull.sequence = 520;
---	end
+	TRP3_NPCDialogFrameModelsYou.animTab = {};
+	TRP3_NPCDialogFrameModelsMe.animTab = {};
+	TRP3_NPCDialogFrameModelsMeFull.animTab = {};
 
 	TRP3_NPCDialogFrameDebug:Hide();
 
