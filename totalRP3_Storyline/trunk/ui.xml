@@ -199,10 +199,10 @@
 						<Anchor point="TOP" x="0" y="0"/>
 					</Anchors>
 				</Texture>
-				<FontString name="TRP3_NPCDialogFrameTitle" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
-					<Size x="384" y="96"/>
+				<FontString name="TRP3_NPCDialogFrameTitle" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+					<Size x="230" y="50"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="-30" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
+						<Anchor point="CENTER" x="0" y="8s" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
 					</Anchors>
 				</FontString>
 				<FontString name="TRP3_NPCDialogFrameDebug" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
@@ -216,6 +216,49 @@
 			</Layer>
 		</Layers>
 		<Frames>
+			<Button name="TRP3_NPCDialogFrameObjectives">
+				<Size x="150" y="150"/>
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="100"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BORDER" textureSubLevel="1">
+						<Texture name="TRP3_NPCDialogFrameObjectiveHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
+							<Size x="175" y="175"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="2">
+						<Texture file="Interface\FriendsFrame\FriendsFrameScrollIcon">
+							<Size x="64" y="64"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="3">
+						<Texture file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
+							<Size x="150" y="150"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.75);
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						TRP3_MainTooltip:Hide();
+						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.5);
+					</OnLeave>
+				</Scripts>
+			</Button>
+
 			<Frame name="TRP3_NPCDialogFrameRewards" frameLevel="1" setAllPoints="true">
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
@@ -250,9 +293,11 @@
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 10);
-								GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
-								GameTooltip:Show();
+								if TRP3_NPCDialogFrameRewards.itemLink then
+									GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
+									GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
+									GameTooltip:Show();
+								end
 								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.75);
 								TRP3_RefreshTooltipForFrame(self);
 							</OnEnter>
@@ -268,6 +313,7 @@
 					</Button>
 				</Frames>
 			</Frame>
+
 			<Frame name="TRP3_NPCDialogFrameModels">
 				<Size x="0" y="0"/>
 				<Anchors>

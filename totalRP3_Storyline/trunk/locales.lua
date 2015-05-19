@@ -31,10 +31,11 @@ TRP3_StoryLine_LOCALE = {
 		SL_SELECT_AVAILABLE_QUEST = "Select available quest",
 		SL_WELL = "Well ...",
 		SL_ACCEPTANCE = "I accept!",
+		SL_ACCEPTANCE_TT = "|cffffff00Click:|r Accept the mission",
 		SL_NEXT = "Next",
 
 		SL_REWARD_MORE = "You will also get",
-		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s|r\n\n|cffffff00Click:|r Get your reward!",
+		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
 	},
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -307,24 +307,18 @@ local function playText(textIndex)
 			end
 		end
 
-	elseif TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
-		optionsSize = optionsSize + 40;
+	end
+
+	TRP3_NPCDialogFrameObjectives:Hide();
+	if TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+		optionsSize = optionsSize + 20;
 		TRP3_NPCDialogFrameChatOption1:Show();
-		TRP3_NPCDialogFrameChatOption2:Show();
-		TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", 50, 0);
-		TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -50, 0);
-		TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", TRP3_NPCDialogFrameChatOption1, "BOTTOM", 0, -5);
-
-		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\FriendsFrame\\InformationIcon");
-		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. QUEST_OBJECTIVES);
-		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", nil);
-		setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1, "TOP", 0, 5, QUEST_OBJECTIVES, GetObjectiveText());
-
-		TRP3_NPCDialogFrameChatOption2GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
-		TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. loc("SL_ACCEPTANCE"));
-		TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", AcceptQuest);
-
+		TRP3_NPCDialogFrameObjectives:Show();
+		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
+		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. loc("SL_ACCEPTANCE"));
+		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", AcceptQuest);
+		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 25, QUEST_OBJECTIVES, "|cff00ff00" .. GetObjectiveText() .. "\n\n" .. loc("SL_ACCEPTANCE_TT"));
+		TRP3_NPCDialogFrameObjectives:SetScript("OnClick", AcceptQuest);
 	end
 
 	-- Rewards
@@ -335,6 +329,10 @@ local function playText(textIndex)
 		local boutonText = COMPLETE_QUEST;
 		local xp = GetRewardXP();
 		local money = GetCoinText(GetRewardMoney(), "");
+		local TTReward = loc("SL_REWARD_MORE");
+		local subTTReward = loc("SL_REWARD_MORE_SUB"):format(money, xp);
+		TRP3_NPCDialogFrameRewards.itemLink = nil;
+		TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
 
 		if GetNumQuestChoices() == 1 or GetNumQuestRewards() == 1 then
 			local type = GetNumQuestChoices() == 1 and "choice" or "reward";
@@ -344,13 +342,16 @@ local function playText(textIndex)
 			TRP3_NPCDialogFrameRewards.itemLink = link;
 			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(texture);
 			boutonText = "Get your reward!"; -- TODO: locals
-			TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
-
-			setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -10, loc("SL_REWARD_MORE"), loc("SL_REWARD_MORE_SUB"):format(money, xp));
 		elseif GetNumQuestChoices() > 0 then
 			TRP3_NPCDialogFrameChatNext:Disable();
 			boutonText = "Select your reward!";
+		else
+			-- No item
+			TTReward = REWARDS;
+			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\xp_icon");
 		end
+
+		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -20, TTReward, subTTReward);
 
 		TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. boutonText);
 	end
@@ -421,6 +422,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	end
 
 	if eventInfo.titleGetter and eventInfo.titleGetter() then
+		TRP3_NPCDialogFrameBanner:Show();
 		TRP3_NPCDialogFrameTitle:SetText(eventInfo.titleGetter());
 		if eventInfo.getTitleColor and eventInfo.getTitleColor() then
 			TRP3_NPCDialogFrameTitle:SetTextColor(eventInfo.getTitleColor());
@@ -429,6 +431,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		end
 	else
 		TRP3_NPCDialogFrameTitle:SetText("");
+		TRP3_NPCDialogFrameBanner:Hide();
 	end
 
 	TRP3_NPCDialogFrame:Show();
