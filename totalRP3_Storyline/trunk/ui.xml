@@ -219,6 +219,14 @@
 			<Frame name="TRP3_NPCDialogFrameRewards" frameLevel="1" setAllPoints="true">
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
+						<Texture name="TRP3_NPCDialogFrameRewardsHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
+							<Size x="256" y="256"/>
+							<Anchors>
+								<Anchor point="CENTER" x="-3" y="100"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="BORDER" textureSubLevel="2">
 						<Texture file="Interface\ExtraButton\GarrZoneAbility-TradingPost">
 							<Size x="256" y="128"/>
 							<Anchors>
@@ -242,13 +250,20 @@
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+								GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 10);
 								GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
 								GameTooltip:Show();
+								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.75);
+								TRP3_RefreshTooltipForFrame(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
+								TRP3_MainTooltip:Hide();
+								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.5);
 							</OnLeave>
+							<PostClick>
+								TRP3_API.ui.misc.playUISound("LOOTWINDOWCOINSOUND");
+							</PostClick>
 						</Scripts>
 					</Button>
 				</Frames>

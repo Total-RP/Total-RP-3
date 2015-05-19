@@ -331,14 +331,22 @@ local function playText(textIndex)
 	TRP3_NPCDialogFrameRewards:Hide();
 	if TRP3_NPCDialogFrameChat.event == "QUEST_COMPLETE" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		TRP3_NPCDialogFrameRewards:Show();
+		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, 0);
 		local boutonText = COMPLETE_QUEST;
+		local xp = GetRewardXP();
+		local money = GetCoinText(GetRewardMoney(), "");
+
 		if GetNumQuestChoices() == 1 or GetNumQuestRewards() == 1 then
 			local type = GetNumQuestChoices() == 1 and "choice" or "reward";
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo(type, 1);
 			local link = GetQuestItemLink(type, 1);
+
 			TRP3_NPCDialogFrameRewards.itemLink = link;
 			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(texture);
 			boutonText = "Get your reward!"; -- TODO: locals
+			TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
+
+			setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -10, loc("SL_REWARD_MORE"), loc("SL_REWARD_MORE_SUB"):format(money, xp));
 		elseif GetNumQuestChoices() > 0 then
 			TRP3_NPCDialogFrameChatNext:Disable();
 			boutonText = "Select your reward!";
