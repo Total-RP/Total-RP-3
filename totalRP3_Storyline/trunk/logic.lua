@@ -83,13 +83,75 @@ local function getQuestLevelColor(questLevel)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SOME ANIMATION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function getAnimationByModel(model, animationType)
+	if model and TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
+		return TRP3_ANIM_MAPPING[model][animationType];
+	end
+	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
+end
+
+local function playAnimationDelay(model, sequence, duration, delay, token)
+	if delay == 0 then
+		print("Playing: " .. sequence);
+		model:SetAnimation(sequence);
+	else
+		model.token = token;
+		C_Timer.After(delay, function()
+			if model.token == token then
+				print("Playing: " .. sequence .. " (" .. duration.."s)");
+				model:SetAnimation(sequence);
+			end
+		end)
+	end
+
+	return delay + duration;
+end
+
+local DEFAULT_SEQUENCE_TIME = 4;
+
+local function getDuration(model, sequence)
+	sequence = tostring(sequence);
+	if TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
+		return TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
+	end
+	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
+end
+
+local function playAndStand(sequence, duration)
+	local token = Utils.str.id();
+	TRP3_NPCDialogFrameModelsMe.token = token
+	TRP3_NPCDialogFrameModelsMe:SetAnimation(sequence);
+	C_Timer.After(duration, function()
+		if TRP3_NPCDialogFrameModelsMe.token == token then
+			TRP3_NPCDialogFrameModelsMe:SetAnimation(0);
+		end
+	end);
+end
+
+local function acceptMission()
+	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", null);
+--	TRP3_NPCDialogFrameModelsMe:SetAnimation(185);
+	C_Timer.After(1, function()
+--		TRP3_NPCDialogFrameModelsMe:SetAnimation(0);
+		AcceptQuest();
+	end)
+end
+
+local function playSelfAnim(sequence)
+	playAndStand(sequence, getDuration(TRP3_NPCDialogFrameModelsMe:GetModel(), sequence));
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SELECTION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local GetNumGossipOptions, GetGossipOptions, SelectGossipOption = GetNumGossipOptions, GetGossipOptions, SelectGossipOption;
 local GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest = GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest;
-local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2;
+local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3;
 local multiList = {};
 
 local function selectFirstGossip()
@@ -145,41 +207,7 @@ end
 local CHAT_MARGIN, CHAT_NAME = 70, 20;
 local gossipColor = "|cffffffff";
 local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-
-local function getAnimationByModel(model, animationType)
-	if model and TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
-		return TRP3_ANIM_MAPPING[model][animationType];
-	end
-	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
-end
-
-local function playAnimationDelay(model, sequence, duration, delay, token)
-	if delay == 0 then
-		print("Playing: " .. sequence);
-		model:SetAnimation(sequence);
-	else
-		model.token = token;
-		C_Timer.After(delay, function()
-			if model.token == token then
-				print("Playing: " .. sequence .. " (" .. duration.."s)");
-				model:SetAnimation(sequence);
-			end
-		end)
-	end
-
-	return delay + duration;
-end
-
-local DEFAULT_SEQUENCE_TIME = 4;
-
-local function getDuration(model, sequence)
-	sequence = tostring(sequence);
-	if TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
-		return TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
-	end
-	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
-end
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 
 local function playText(textIndex)
 	local animTab = TRP3_NPCDialogFrameModelsYou.animTab;
@@ -215,12 +243,12 @@ local function playText(textIndex)
 
 	for index, sequence in pairs(animTab) do
 		delay = playAnimationDelay(TRP3_NPCDialogFrameModelsYou, animTab[index],
-			getDuration(TRP3_NPCDialogFrameModelsYou, animTab[index]), delay, textLineToken);
+			getDuration(TRP3_NPCDialogFrameModelsYou.model, animTab[index]), delay, textLineToken);
 	end
 	
 	TRP3_NPCDialogFrameChat.start = 0;
 
-	if textIndex > 1 then
+	if #TRP3_NPCDialogFrameChat.texts > 1 then
 		TRP3_NPCDialogFrameChatPrevious:Show();
 	end
 
@@ -232,6 +260,9 @@ local function playText(textIndex)
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption3);
+	TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", nil);
+	TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", nil);
+	TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", nil);
 
 	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -241,6 +272,7 @@ local function playText(textIndex)
 		if hasAvailable then
 			optionsSize = optionsSize + 20;
 			TRP3_NPCDialogFrameChatOption1:Show();
+			TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
 			previous = TRP3_NPCDialogFrameChatOption1;
 			if GetNumGossipAvailableQuests() == 1 then
 				local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
@@ -255,9 +287,10 @@ local function playText(textIndex)
 
 		end
 
-		-- Gossip options
+		-- Active options
 		if hasActive then
 			TRP3_NPCDialogFrameChatOption3:Show();
+			TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", function() playSelfAnim(60) end);
 			TRP3_NPCDialogFrameChatOption3:ClearAllPoints();
 			TRP3_NPCDialogFrameChatOption3:SetPoint("LEFT", 50, 0);
 			TRP3_NPCDialogFrameChatOption3:SetPoint("RIGHT", -50, 0);
@@ -283,6 +316,7 @@ local function playText(textIndex)
 		-- Gossip options
 		if hasGossip then
 			TRP3_NPCDialogFrameChatOption2:Show();
+			TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
 			TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
 			TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", 50, 0);
 			TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -50, 0);
@@ -311,14 +345,9 @@ local function playText(textIndex)
 
 	TRP3_NPCDialogFrameObjectives:Hide();
 	if TRP3_NPCDialogFrameChat.event == "QUEST_DETAIL" and textIndex == #TRP3_NPCDialogFrameChat.texts then
-		optionsSize = optionsSize + 20;
-		TRP3_NPCDialogFrameChatOption1:Show();
 		TRP3_NPCDialogFrameObjectives:Show();
-		TRP3_NPCDialogFrameChatOption1GossipIcon:SetTexture("Interface\\Scenarios\\ScenarioIcon-Check");
-		TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. loc("SL_ACCEPTANCE"));
-		TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", AcceptQuest);
+		TRP3_NPCDialogFrameObjectives:SetScript("OnClick", acceptMission);
 		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 25, QUEST_OBJECTIVES, "|cff00ff00" .. GetObjectiveText() .. "\n\n" .. loc("SL_ACCEPTANCE_TT"));
-		TRP3_NPCDialogFrameObjectives:SetScript("OnClick", AcceptQuest);
 	end
 
 	-- Rewards
@@ -364,6 +393,7 @@ local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 
 local function playNext()
 	TRP3_NPCDialogFrameChatNext:Enable();
+	TRP3_NPCDialogFrameChatNext:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		if TRP3_NPCDialogFrameChat.currentIndex < #TRP3_NPCDialogFrameChat.texts then
@@ -373,6 +403,9 @@ local function playNext()
 				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. TRP3_NPCDialogFrameChat.eventInfo.finishText());
 			else
 				TRP3_NPCDialogFrameChatNext:SetText(gossipColor .. (TRP3_NPCDialogFrameChat.eventInfo.finishText or "Finish"));
+			end
+			if TRP3_NPCDialogFrameChat.eventInfo.nextAnim then
+				TRP3_NPCDialogFrameChatNext:SetScript("OnEnter", function() playSelfAnim(TRP3_NPCDialogFrameChat.eventInfo.nextAnim) end);
 			end
 		end
 		playText(TRP3_NPCDialogFrameChat.currentIndex);
@@ -434,36 +467,28 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		TRP3_NPCDialogFrameBanner:Hide();
 	end
 
+	TRP3_NPCDialogFrame.targetType = targetType;
 	TRP3_NPCDialogFrame:Show();
-	TRP3_NPCDialogFrameModelsYou:Hide();
-	TRP3_NPCDialogFrameModelsMe:Hide();
-	TRP3_NPCDialogFrameModelsMeFull:Hide();
 	TRP3_NPCDialogFrameModelsYou.model = nil;
+	TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+	TRP3_NPCDialogFrameModelsMe:SetCamera(1);
+	TRP3_NPCDialogFrameModelsMe:SetFacing(.75);
+	TRP3_NPCDialogFrameModelsMe:SetUnit("player");
+	TRP3_NPCDialogFrameModelsMe.model = TRP3_NPCDialogFrameModelsMe:GetModel();
+	TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
+	TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc")  then
-		TRP3_NPCDialogFrameModelsYou:Show();
-		TRP3_NPCDialogFrameModelsMe:Show();
-		TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-		TRP3_NPCDialogFrameModelsMe:SetCamera(1);
-		TRP3_NPCDialogFrameModelsMe:SetFacing(.75);
-		TRP3_NPCDialogFrameModelsMe:SetUnit("player");
-		TRP3_NPCDialogFrameModelsMe.model = TRP3_NPCDialogFrameModelsMe:GetModel();
-		TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-		TRP3_NPCDialogFrameModelsYou:SetCamera(1);
-		TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
 		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
-		TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
 		if DEBUG then
 			ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
 		end
 	else
-		TRP3_NPCDialogFrameModelsMeFull:ClearModel();
-		TRP3_NPCDialogFrameModelsMeFull:Show();
-		TRP3_NPCDialogFrameModelsMeFull:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-		TRP3_NPCDialogFrameModelsMeFull:SetCamera(1);
-		TRP3_NPCDialogFrameModelsMeFull:SetFacing(0.5);
-		TRP3_NPCDialogFrameModelsMeFull:SetUnit("player");
+		TRP3_NPCDialogFrameModelsMe:SetAnimation(520);
+		TRP3_NPCDialogFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
 	end
+	TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
 	
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
@@ -515,6 +540,7 @@ local function registerEventStructure()
 			finishText = DECLINE,
 			finishMethod = DeclineQuest,
 			titleGetter = GetTitleText,
+			nextAnim = 186
 		},
 		["QUEST_PROGRESS"] = {
 			text = GetProgressText,
@@ -529,11 +555,12 @@ local function registerEventStructure()
 				if IsQuestCompletable() then
 					return CONTINUE;
 				else
-					return GOODBYE;
+					return loc("SL_NOT_YET");
 				end
 			end,
 			cancelMethod = CloseQuest,
 			titleGetter = GetTitleText,
+			nextAnim = 186
 		},
 		["QUEST_COMPLETE"] = {
 			text = GetRewardText,
@@ -554,6 +581,7 @@ local function registerEventStructure()
 			finishMethod = CloseGossip,
 			finishText = GOODBYE,
 			cancelMethod = CloseGossip,
+			nextAnim = 67
 		},
 		["REPLAY"] = {
 			titleGetter = function()
@@ -579,8 +607,8 @@ local function init()
 	end
 
 	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
+	setTooltipAll(TRP3_NPCDialogFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
 
-	TRP3_NPCDialogFrameChatPrevious:SetText("Reset");
 	TRP3_NPCDialogFrameBG:SetDesaturated(true);
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", playNext);
 	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
@@ -588,9 +616,22 @@ local function init()
 	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
 	TRP3_NPCDialogFrameRewardsItem:SetScale(1.5);
 
+	TRP3_NPCDialogFrameObjectives:SetScript("OnEnter", function(self)
+		TRP3_NPCDialogFrameObjectivesOk:Show();
+		TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.75);
+		TRP3_RefreshTooltipForFrame(self);
+		playSelfAnim(185)
+	end);
+
 	TRP3_NPCDialogFrameModelsYou.animTab = {};
 	TRP3_NPCDialogFrameModelsMe.animTab = {};
-	TRP3_NPCDialogFrameModelsMeFull.animTab = {};
+
+	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", function(self, elapsed)
+		if self.spin then
+			self.spinAngle = self.spinAngle - (elapsed / 2);
+			self:SetFacing(self.spinAngle);
+		end
+	end);
 
 	TRP3_NPCDialogFrameDebug:Hide();
 

@@ -18,9 +18,13 @@
 ----------------------------------------------------------------------------------
 
 -- 193 : levitate
--- 195 : tchou
--- 225 : aaaaaaaah !
+-- 195 : /train
+-- 225 : /fear
 -- 520 : read
+-- 66 : /bow
+-- 67 : /hi
+-- 113 : /salute
+-- 209 : /point
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Animation duration
@@ -36,8 +40,8 @@ TRP3_ANIMATION_SEQUENCE_DURATION = {
 	[EXCLAME_ID] = 3.000,
 	[QUESTION_ID] = 3.000,
 	[TALK_ID] = 4.000,
-	[YES_ID] = 2.000,
-	[NOPE_ID] = 2.000,
+	[YES_ID] = 3.000,
+	[NOPE_ID] = 3.000,
 	["0"] = 1.500,
 }
 
@@ -50,6 +54,8 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	["character\\dwarf\\female\\dwarffemale_hd.m2"] = {
 		[TALK_ID] = 1.900,
+		[EXCLAME_ID] = 2.00,
+		[QUESTION_ID] = 1.800,
 	},
 	-- WORGEN
 	["character\\worgen\\male\\worgenmale.m2"] = {

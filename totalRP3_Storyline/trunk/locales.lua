@@ -34,6 +34,9 @@ TRP3_StoryLine_LOCALE = {
 		SL_ACCEPTANCE_TT = "|cffffff00Click:|r Accept the mission",
 		SL_NEXT = "Next",
 
+		SL_NOT_YET = "Not yet ...",
+		SL_RESET = "Rewind",
+		SL_RESET_TT = "Rewind this dialogue.",
 		SL_REWARD_MORE = "You will also get",
 		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
 	},
