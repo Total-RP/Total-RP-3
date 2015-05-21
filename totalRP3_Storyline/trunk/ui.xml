@@ -149,16 +149,6 @@
 
 	<Button name="TRP3_StorylineChoiceButton" virtual="true" hidden="false">
 		<Size x="0" y="16"/>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture name="$parentGossipIcon" file="Interface\QuestFrame\UI-Quest-BulletPoint">
-					<Size x="16" y="16"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="3" y="1"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -171,7 +161,7 @@
 			</PostClick>
 		</Scripts>
 		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
-		<ButtonText>
+		<ButtonText justifyH="CENTER">
 			<Anchors>
 				<Anchor point="LEFT" x="25" y="0"/>
 				<Anchor point="RIGHT" x="-20" y="0"/>
@@ -216,23 +206,24 @@
 			</Layer>
 		</Layers>
 		<Frames>
+
 			<Button name="TRP3_NPCDialogFrameObjectives">
-				<Size x="150" y="150"/>
+				<Size x="70" y="70"/>
 				<Anchors>
 					<Anchor point="CENTER" x="0" y="100"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
 						<Texture name="TRP3_NPCDialogFrameObjectiveHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
-							<Size x="175" y="175"/>
+							<Size x="108" y="108"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
 							</Anchors>
 						</Texture>
 					</Layer>
 					<Layer level="BORDER" textureSubLevel="2">
-						<Texture file="Interface\FriendsFrame\FriendsFrameScrollIcon">
-							<Size x="64" y="64"/>
+						<Texture name="TRP3_NPCDialogFrameObjectivesImage" file="Interface\FriendsFrame\FriendsFrameScrollIcon">
+							<Size x="48" y="48"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
 							</Anchors>
@@ -240,13 +231,7 @@
 					</Layer>
 					<Layer level="BORDER" textureSubLevel="3">
 						<Texture file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
-							<Size x="150" y="150"/>
-							<Anchors>
-								<Anchor point="CENTER" x="0" y="0"/>
-							</Anchors>
-						</Texture>
-						<Texture name="TRP3_NPCDialogFrameObjectivesOk" file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Ready" hidden="true">
-							<Size x="50" y="50"/>
+							<Size x="100" y="100"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
 							</Anchors>
@@ -255,11 +240,48 @@
 				</Layers>
 				<Scripts>
 					<OnLeave>
-						TRP3_NPCDialogFrameObjectivesOk:Hide();
 						TRP3_MainTooltip:Hide();
 						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.5);
 					</OnLeave>
+					<OnEnter>
+						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.75);
+						TRP3_RefreshTooltipForFrame(self);
+					</OnEnter>
 				</Scripts>
+				<Frames>
+					<Button name="TRP3_NPCDialogFrameObjectivesYes" inherits="TRP3_InvisibleButton">
+						<Size x="50" y="50"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture name="TRP3_NPCDialogFrameObjectivesOk" file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Ready">
+									<Size x="30" y="30"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Button>
+					<Button name="TRP3_NPCDialogFrameObjectivesNo" inherits="TRP3_InvisibleButton">
+						<Size x="50" y="50"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture name="TRP3_NPCDialogFrameObjectivesOk" file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Not-Ready">
+									<Size x="30" y="30"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
+					</Button>
+				</Frames>
 			</Button>
 
 			<Frame name="TRP3_NPCDialogFrameRewards" frameLevel="1" setAllPoints="true">
@@ -297,9 +319,9 @@
 						<Scripts>
 							<OnEnter>
 								if TRP3_NPCDialogFrameRewards.itemLink then
-									GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
-									GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
-									GameTooltip:Show();
+								GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
+								GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
+								GameTooltip:Show();
 								end
 								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.75);
 								TRP3_RefreshTooltipForFrame(self);
@@ -343,41 +365,46 @@
 						</Anchors>
 						<Frames>
 							<EditBox inherits="TRP3_TitledEditBox" numeric="true">
-							<Anchors>
-							<Anchor point="TOP" x="0" y="0"/>
-							</Anchors>
-							<Frames>
-							<Button inherits="TRP3_CommonButton" text="+">
-							<Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
-							</Anchors>
-							<Scripts>
-							<OnClick>
-							self:GetParent():SetText(self:GetParent():GetNumber() + 1);
-							TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-							</OnClick>
-							</Scripts>
-							</Button>
-							<Button inherits="TRP3_CommonButton" text="-">
-							<Anchors>
-							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
-							</Anchors>
-							<Scripts>
-							<OnClick>
-							self:GetParent():SetText(self:GetParent():GetNumber() - 1);
-							TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-							</OnClick>
-							</Scripts>
-							</Button>
-							</Frames>
-							<Scripts>
-							<OnEnterPressed>
-							TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-							</OnEnterPressed>
-							</Scripts>
+								<Anchors>
+									<Anchor point="TOP" x="0" y="0"/>
+								</Anchors>
+								<Frames>
+									<Button inherits="TRP3_CommonButton" text="+">
+										<Anchors>
+											<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
+										</Anchors>
+										<Scripts>
+											<OnClick>
+												self:GetParent():SetText(self:GetParent():GetNumber() + 1);
+												TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+											</OnClick>
+										</Scripts>
+									</Button>
+									<Button inherits="TRP3_CommonButton" text="-">
+										<Anchors>
+											<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
+										</Anchors>
+										<Scripts>
+											<OnClick>
+												self:GetParent():SetText(self:GetParent():GetNumber() - 1);
+												TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+											</OnClick>
+										</Scripts>
+									</Button>
+								</Frames>
+								<Scripts>
+									<OnEnterPressed>
+										TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+									</OnEnterPressed>
+								</Scripts>
 							</EditBox>
 						</Frames>
 					</PlayerModel>
+
+					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="TRP3_StorylineChoiceButton"/>
+					<Button name="TRP3_NPCDialogFrameChatOption2" inherits="TRP3_StorylineChoiceButton"/>
+					<Button name="TRP3_NPCDialogFrameChatOption3" inherits="TRP3_StorylineChoiceButton"/>
+
 				</Frames>
 			</Frame>
 
@@ -423,52 +450,36 @@
 							</Anchors>
 							<Color r="1" g="1" b="0.4"/>
 						</FontString>
+						<FontString name="TRP3_NPCDialogFrameChatNextText" text="[POUIC]" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="BOTTOM">
+							<Anchors>
+								<Anchor point="BOTTOM" x="0" y="17"/>
+							</Anchors>
+							<Color r="1" g="1" b="0.4"/>
+						</FontString>
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture name="TRP3_NPCDialogFrameChatPortrait">
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
+					<Frame name="TRP3_NPCDialogFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
 						<Anchors>
-							<Anchor point="TOPLEFT" x="0" y="0"/>
+							<Anchor point="TOPLEFT" x="5" y="-2"/>
+							<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
 						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self:SetAlpha(0.35);
+							</OnLoad>
+						</Scripts>
 					</Frame>
-					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="TRP3_StorylineChoiceButton">
-						<Anchors>
-							<Anchor point="LEFT" x="50" y="0"/>
-							<Anchor point="RIGHT" x="-50" y="0"/>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
-						</Anchors>
+					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_InvisibleButton" setAllPoints="true">
+						<Scripts>
+							<OnEnter>
+								TRP3_NPCDialogFrameChatHighlight:Show();
+							</OnEnter>
+							<OnLeave>
+								TRP3_NPCDialogFrameChatHighlight:Hide();
+							</OnLeave>
+						</Scripts>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameChatOption2" inherits="TRP3_StorylineChoiceButton">
-						<Anchors>
-							<Anchor point="LEFT" x="50" y="0"/>
-							<Anchor point="RIGHT" x="-50" y="0"/>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
-						</Anchors>
-					</Button>
-					<Button name="TRP3_NPCDialogFrameChatOption3" inherits="TRP3_StorylineChoiceButton">
-						<Anchors>
-							<Anchor point="LEFT" x="50" y="0"/>
-							<Anchor point="RIGHT" x="-50" y="0"/>
-							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NPCDialogFrameChatText" x="0" y="-10"/>
-						</Anchors>
-					</Button>
-
-					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_StorylineChoiceButton">
-						<Anchors>
-							<Anchor point="BOTTOMLEFT" x="50" y="15"/>
-							<Anchor point="BOTTOMRIGHT" x="-200" y="15"/>
-						</Anchors>
-					</Button>
-
 					<Button name="TRP3_NPCDialogFrameChatPrevious">
 						<Size x="35" y="35"/>
 						<Anchors>
