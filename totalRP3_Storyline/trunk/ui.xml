@@ -250,36 +250,20 @@
 				</Scripts>
 				<Frames>
 					<Button name="TRP3_NPCDialogFrameObjectivesYes" inherits="TRP3_InvisibleButton">
-						<Size x="50" y="50"/>
+						<Size x="40" y="40"/>
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
 						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture name="TRP3_NPCDialogFrameObjectivesOk" file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Ready">
-									<Size x="30" y="30"/>
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
+						<NormalTexture file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Ready"/>
+						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
 					<Button name="TRP3_NPCDialogFrameObjectivesNo" inherits="TRP3_InvisibleButton">
-						<Size x="50" y="50"/>
+						<Size x="40" y="40"/>
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
 						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture name="TRP3_NPCDialogFrameObjectivesOk" file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Not-Ready">
-									<Size x="30" y="30"/>
-									<Anchors>
-										<Anchor point="CENTER" x="0" y="0"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
+						<NormalTexture file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-NotReady"/>
+						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
 				</Frames>
 			</Button>
@@ -466,7 +450,7 @@
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								self:SetAlpha(0.35);
+								self:SetAlpha(0.15);
 							</OnLoad>
 						</Scripts>
 					</Frame>

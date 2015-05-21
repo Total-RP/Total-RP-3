@@ -149,7 +149,7 @@ local function selectFirstGossip()
 	SelectGossipOption(1);
 end
 
-local function selectMultipleGossip()
+local function selectMultipleGossip(button)
 	wipe(multiList);
 	local gossips = { GetGossipOptions() };
 	tinsert(multiList, { loc("SL_SELECT_DIALOG_OPTION"), nil });
@@ -157,14 +157,14 @@ local function selectMultipleGossip()
 		local gossip, gossipType = gossips[(i * 2) - 1], gossips[(i * 2)];
 		tinsert(multiList, { "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i });
 	end
-	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiList, SelectGossipOption, 0, true);
+	displayDropDown(button, multiList, SelectGossipOption, 0, true);
 end
 
 local function selectFirstAvailable()
 	SelectGossipAvailableQuest(1);
 end
 
-local function selectMultipleAvailable()
+local function selectMultipleAvailable(button)
 	wipe(multiList);
 	local data = { GetGossipAvailableQuests() };
 	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
@@ -173,14 +173,14 @@ local function selectMultipleAvailable()
 		data[(i * 6) - 5], data[(i * 6) - 4], data[(i * 6) - 3], data[(i * 6) - 2], data[(i * 6) - 1], data[(i * 6)];
 		tinsert(multiList, { "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
 	end
-	displayDropDown(TRP3_NPCDialogFrameChatOption2, multiList, SelectGossipAvailableQuest, 0, true);
+	displayDropDown(button, multiList, SelectGossipAvailableQuest, 0, true);
 end
 
 local function selectFirstActive()
 	SelectGossipActiveQuest(1);
 end
 
-local function selectMultipleActive()
+local function selectMultipleActive(button)
 	wipe(multiList);
 	local data = { GetGossipActiveQuests() };
 	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
@@ -188,7 +188,7 @@ local function selectMultipleActive()
 		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i * 5) - 4], data[(i * 5) - 3], data[(i * 5) - 2], data[(i * 5) - 1], data[(i * 5)];
 		tinsert(multiList, { "|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
 	end
-	displayDropDown(TRP3_NPCDialogFrameChatOption3, multiList, SelectGossipActiveQuest, 0, true);
+	displayDropDown(button, multiList, SelectGossipActiveQuest, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -258,6 +258,7 @@ local function playText(textIndex)
 	TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", nil);
+	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", nil);
 
 	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -344,17 +345,32 @@ local function playText(textIndex)
 	if TRP3_NPCDialogFrameChat.event == "QUEST_PROGRESS" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		TRP3_NPCDialogFrameObjectives:Show();
 		TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
-		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 0, QUEST_OBJECTIVES, "|cff00ff00" .. GetObjectiveText());
+		local objectives = "";
+		if GetNumQuestItems() > 0 then
+			for i = 1, GetNumQuestItems() do
+				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
+				objectives = objectives .. numItems .. "x |T" .. texture .. ":25:25|t " .. name;
+				if i ~= GetNumQuestItems() then
+					objectives = objectives .. "\n\n";
+				end
+			end
+		end
+		if IsQuestCompletable() then
+			TRP3_NPCDialogFrameObjectives:SetScript("OnClick", CompleteQuest);
+			objectives = objectives .. "\n\n|cff00ff00" .. loc("SL_CONTINUE");
+		end
+		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 0, QUEST_OBJECTIVES, objectives);
 	end
 
 	-- Rewards
 	TRP3_NPCDialogFrameRewards:Hide();
 	if TRP3_NPCDialogFrameChat.event == "QUEST_COMPLETE" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+		playSelfAnim(68);
 		TRP3_NPCDialogFrameRewards:Show();
 		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, 0);
 		local boutonText = COMPLETE_QUEST;
 		local xp = GetRewardXP();
-		local money = GetCoinText(GetRewardMoney(), "");
+		local money = GetCoinText(GetRewardMoney(), " ");
 		local TTReward = loc("SL_REWARD_MORE");
 		local subTTReward = loc("SL_REWARD_MORE_SUB"):format(money, xp);
 		TRP3_NPCDialogFrameRewards.itemLink = nil;
@@ -541,7 +557,7 @@ local function registerEventStructure()
 			end,
 			finishText = function()
 				if IsQuestCompletable() then
-					return CONTINUE;
+					return loc("SL_CONTINUE");
 				else
 					return loc("SL_NOT_YET");
 				end

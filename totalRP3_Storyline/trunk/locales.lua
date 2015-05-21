@@ -33,6 +33,7 @@ TRP3_StoryLine_LOCALE = {
 		SL_ACCEPTANCE = "I accept.",
 		SL_DECLINE = "I refuse.",
 		SL_NEXT = "Continue ...",
+		SL_CONTINUE = "Complete quest",
 
 		SL_NOT_YET = "Not yet ...",
 		SL_RESET = "Rewind",

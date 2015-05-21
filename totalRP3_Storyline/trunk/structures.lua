@@ -25,6 +25,9 @@
 -- 67 : /hi
 -- 113 : /salute
 -- 209 : /point
+-- 61 : /eat
+-- 63 : /use
+-- 68 : /acclame
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Animation duration
@@ -35,6 +38,7 @@ local QUESTION_ID = "65";
 local TALK_ID = "60";
 local YES_ID = "185";
 local NOPE_ID = "186";
+local ACLAIM_ID = "68";
 
 TRP3_ANIMATION_SEQUENCE_DURATION = {
 	[EXCLAME_ID] = 3.000,
@@ -42,6 +46,7 @@ TRP3_ANIMATION_SEQUENCE_DURATION = {
 	[TALK_ID] = 4.000,
 	[YES_ID] = 3.000,
 	[NOPE_ID] = 3.000,
+	[ACLAIM_ID] = 2.400,
 	["0"] = 1.500,
 }
 
