@@ -78,6 +78,7 @@ local LOCALE_DE = {
 		CO_ANCHOR_BOTTOM = "Unten",
 		CO_ANCHOR_BOTTOM_LEFT = "Unten Links",
 		CO_ANCHOR_BOTTOM_RIGHT = "Unten Rechts",
+		CO_ANCHOR_CURSOR = "Zeige am Mauszeiger", -- Needs review
 		CO_ANCHOR_LEFT = "Links",
 		CO_ANCHOR_RIGHT = "Rechts",
 		CO_ANCHOR_TOP = "Oben",
@@ -123,7 +124,6 @@ Wenn nicht, wird die Sprache beim nächsten Login geändert.]=], -- Needs review
 		CO_GENERAL_MISC = "Verschiedenes",
 		CO_GENERAL_NEW_VERSION = "Aktualisierungshinweis", -- Needs review
 		CO_GENERAL_NEW_VERSION_TT = "Gibt dir einen Hinweis, sobald eine neue Version verfügbar ist.", -- Needs review
-		CO_GENERAL_NOTIF = "Benachrichtigungen",
 		CO_GENERAL_TT_SIZE = "Textgröße des Informationstooltips", -- Needs review
 		CO_GENERAL_UI_ANIMATIONS = "Interface-Animationen", -- Needs review
 		CO_GENERAL_UI_ANIMATIONS_TT = "Aktiviert die Interface-Animationen.", -- Needs review
@@ -141,14 +141,9 @@ Wenn nicht, wird die Sprache beim nächsten Login geändert.]=], -- Needs review
 		CO_GLANCE_TT_ANCHOR = "Ankerpunkt des Tooltips", -- Needs review
 		CO_MINIMAP_BUTTON = "Minimap Button",
 		CO_MINIMAP_BUTTON_FRAME = "Ankerfenster",
-		CO_MINIMAP_BUTTON_FRAME_TT = [=[Gibt an, welcher Rahmen dem Button übergeordnet ist.
-
-|cff00ff00To move the button relatively from this frame you can drag & drop the button.]=], -- Needs review
-		CO_MINIMAP_BUTTON_LOCK = "Position fixieren",
-		CO_MINIMAP_BUTTON_LOCK_TT = "Verhindert, dass der Button verschoben wird.", -- Needs review
 		CO_MINIMAP_BUTTON_RESET = "Position zurücksetzen",
 		CO_MINIMAP_BUTTON_RESET_BUTTON = "Zurücksetzen",
-		CO_MINIMAP_BUTTON_RESET_TT = "Setzt den Button an die untere linke Ecke des Ankerfenster zurück.",
+		CO_MINIMAP_BUTTON_SHOW_TITLE = "Zeige MInimap-Button", -- Needs review
 		COM_LIST = "Liste aller Befehle:", -- Needs review
 		CO_MODULES = "Modulstatus", -- Needs review
 		CO_MODULES_DISABLE = "Deaktiviere Modul",
@@ -186,10 +181,6 @@ Möglicher Status:
 		CO_MSP_T3 = "Benutze nur Template 3",
 		CO_MSP_T3_TT = "Selbst, wenn du ein anderes \"Über\"-Template auswählst, wird immer Template 3 genutzt, um MSP-Kompatibilität zu gewährleisten.", -- Needs review
 		COM_SWITCH_USAGE = "Hinweis: |cff00ff00/trp3 switch main|r, um das Hauptfenster umzuschalten oder |cff00ff00/trp3 switch toolbar|r, um die Werkzeugleiste umzuschalten.", -- Needs review
-		CO_NOTIF_DOUBLE = "Benachrichtigung + Chatnachricht",
-		CO_NOTIF_NO = "Keine Benachrichtigung",
-		CO_NOTIF_SIMPLE = "Benachrichtigung",
-		CO_NOTIF_TRIPLE = "Benachrichtigung + Chatnachricht + Raidalarm",
 		CO_REGISTER = "Einstellungen registrieren",
 		CO_REGISTER_ABOUT_VOTE = "Benutze Bewertungssystem", -- Needs review
 		CO_REGISTER_ABOUT_VOTE_TT = "Aktiviert das Bewertungssystem, welches dir erlaubt, die Beschreibung von Charakteren als positiv oder negativ zu bewerten. Hierdurch kannt auch dein Charakter bewertet werden!", -- Needs review
@@ -211,6 +202,8 @@ Möglicher Status:
 		CO_TOOLBAR_ICON_SIZE = "Icongröße",
 		CO_TOOLBAR_MAX = "Maximale Icons pro Zeile",
 		CO_TOOLBAR_MAX_TT = "Auf 1 stellen wenn du die Leiste vertikal angezeigt haben möchtest!",
+		CO_TOOLBAR_SHOW_ON_LOGIN = "Zeige Toolbar beim Login", -- Needs review
+		CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "Wenn du nicht möchtest, dass die Toolbar beim Login erscheint, deaktiviere diese Option.", -- Needs review
 		CO_TOOLTIP = "Tooltipeinstellungen", -- Needs review
 		CO_TOOLTIP_ANCHOR = "Ankerpunkt",
 		CO_TOOLTIP_ANCHORED = "Ankerfenster",
@@ -244,10 +237,6 @@ Möglicher Status:
 		CO_TOOLTIP_USE = "Benutze die Tooltips für Charaktere/Begleiter",
 		CO_WIM = "|cffff9900Flüsterkanäle deaktiviert.", -- Needs review
 		CO_WIM_TT = "Du nutzt |cff00ff00WIM|r, die Nutzung wurde aus Kompatibilitätsgründen deaktiviert",
-		DB_NOTIFICATIONS = "Benachrichtigunganzeige",
-		DB_NOTIFICATIONS_ALL = "Alle Benachrichtigungstypen",
-		DB_NOTIFICATIONS_CLEAR = "Alle Benachrichtigungen entfernen",
-		DB_NOTIFICATIONS_NO = "Du hast keine Benachrichtigungen",
 		DB_STATUS = "Status",
 		DB_STATUS_CURRENTLY = "Aktuelles (IC)",
 		DB_STATUS_CURRENTLY_COMMON = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cffff9900standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!",
@@ -274,9 +263,10 @@ Dein Handeln wird nicht mit dem Charakter in Verbindung gebracht.]=],
 |cffffff00Die Rollenspielerfahrung|r gibt an, ob du ein blutiger Anfänger oder ein erfahrener Rollenspieler bist, der gerne Neulingen hilft!
 
 |cff00ff00Diese Informationen werden im Tooltip deines Charakters angezeigt.]=], -- Needs review
-		DB_TUTO_2 = [=[Einige Ereignisse erzeugen Benachrichtigungen. Diese sind ein schneller Weg um zu sehen, was in Total RP 3 passiert.
-
-Alle Benachrichtigungen lassen sich unter |cffff9900Allgemeine Einstellungen|r einstellen.]=], -- Needs review
+		DTBK_AFK = "Total RP 3 - AFK/DND", -- Needs review
+		DTBK_CLOAK = "Total RP 3 - Rücken", -- Needs review
+		DTBK_HELMET = "Total RP 3 - Helm", -- Needs review
+		DTBK_RP = "Total RP 3 - IC/OOC", -- Needs review
 		GEN_NEW_VERSION_AVAILABLE = [=[Eine neue Version von Total RP 3 ist verfügbar.
 
 |cffff0000Deine Version : %s
@@ -297,6 +287,7 @@ Diese Meldung wird nur einmal pro Sitzung angezeigt und kann in den Einstellunge
 		PR_CO_COUNT = "%s Haustiere/Reittiere an dieses Profil gebunden.",
 		PR_CO_EMPTY = "Kein Begleiterprofil", -- Needs review
 		PR_CO_MASTERS = "Meister",
+		PR_CO_MOUNT = "Reittier", -- Needs review
 		PR_CO_NEW_PROFILE = "Neues Begleiterprofil", -- Needs review
 		PR_CO_PET = "Tier",
 		PR_CO_PROFILE_DETAIL = "Dieses Profil ist aktuell gebunden an", -- Needs review
@@ -370,7 +361,11 @@ Die änderung des Namens verändert nicht die Verbindung zwischen dem Profil und
 		PR_PROFILES = "Profile",
 		PR_UNUSED_PROFILE = "Dieses Profil ist aktuell an keinen WoW Charakter gebunden.",
 		REG_COMPANION = "Begleiter",
+		REG_COMPANION_BOUND_TO_TARGET = "Ziel", -- Needs review
+		REG_COMPANION_BROWSER_BATTLE = "Wildtierbrowser", -- Needs review
 		REG_COMPANION_INFO = "Information",
+		REG_COMPANION_LINKED = "Der Begleiter %s ist nun verbunden mit dem Profil %s", -- Needs review
+		REG_COMPANION_LINKED_NO = "Der Begleiter %s ist nun nicht mehr mit einem Profil verbunden.", -- Needs review
 		REG_COMPANION_NAME = "Name",
 		REG_COMPANION_NAME_COLOR = "Namensfarbe",
 		REG_COMPANION_PAGE_TUTO_C_1 = "Consult",
@@ -584,10 +579,8 @@ Wie dem auch sei, versuche bitte Wiederholungen zu vermeinden falls es keine wei
 		REG_PLAYER_GLANCE_EDITOR = "Slot Editor",
 		REG_PLAYER_GLANCE_PRESET = "Voreinstellung laden",
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Bitte eine Kategorie und einen Namen angeben",
-		REG_PLAYER_GLANCE_PRESET_ALERT2 = "Es gibt schon eine Voreinstellung Namens %s",
 		REG_PLAYER_GLANCE_PRESET_CATEGORY = "Voreinstellungskategorie",
 		REG_PLAYER_GLANCE_PRESET_NAME = "Voreinstellungsname",
-		REG_PLAYER_GLANCE_PRESET_NONE = "Slot leeren", -- Needs review
 		REG_PLAYER_GLANCE_PRESET_SAVE = "Informationen als Vorseinstellung speichern",
 		REG_PLAYER_GLANCE_PRESET_SAVE_SMALL = "Als Voreinstellung speichern",
 		REG_PLAYER_GLANCE_PRESET_SELECT = "Voreinstellung auswählen",
@@ -817,6 +810,10 @@ Zum Beispiel kann du folgendes angeben |c0000ff00schlank, dick or muskulös...|r
 		UI_CLOSE_ALL = "Alle schließen",
 		UI_COLOR_BROWSER = "Farbwähler", -- Needs review
 		UI_COLOR_BROWSER_SELECT = "Farbe auswählen",
+		UI_COMPANION_BROWSER_HELP = "Wähle ein Wildtier", -- Needs review
+		UI_COMPANION_BROWSER_HELP_TT = [=[|cffffff00Warnung: |rNur umbenannte Wildtiere dürfen mit einem Profil verbunden werden.
+
+|cff00ff00Dieser Bereich enthält nur diese Wildtiere.]=], -- Needs review
 		UI_FILTER = "Filter",
 		UI_ICON_BROWSER = "Iconbrowser", -- Needs review
 		UI_ICON_BROWSER_HELP = "Icon kopieren", -- Needs review

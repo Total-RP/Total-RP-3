@@ -413,6 +413,16 @@ local function cleanupCharacters()
 	end
 end
 
+local function cleanupPlayerRelations()
+	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
+		for profileID, relation in pairs(profile.relation or {}) do
+			if not profiles[profileID] then
+				profile.relation[profileID] = nil;
+			end
+		end
+	end
+end
+
 local function cleanupProfiles()
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
@@ -582,6 +592,7 @@ function TRP3_API.register.init()
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		cleanupPlayerRelations();
 		cleanupProfiles();
 		cleanupCharacters();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
