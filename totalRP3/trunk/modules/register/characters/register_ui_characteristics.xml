@@ -330,7 +330,7 @@
 									</Layer>
 								</Layers>
 								<Frames>
-									
+									<Button name="TRP3_RegisterCharact_CharactPanel_ResidenceButton" inherits="TRP3_MapHereButton"/>
 								</Frames>
 							</Frame>
 						</ScrollChild>

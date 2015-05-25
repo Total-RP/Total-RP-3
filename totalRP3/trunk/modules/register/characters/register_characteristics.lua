@@ -158,6 +158,8 @@ local function setBkg(backgroundIndex)
 	TRP3_RegisterCharact_CharactPanel:SetBackdrop(backdrop);
 end
 
+local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE" };
+
 local function setConsultDisplay(context)
 	local dataTab = context.profile.characteristics or Globals.empty;
 	local hasCharac, hasPsycho, hasMisc, margin;
@@ -176,6 +178,7 @@ local function setConsultDisplay(context)
 	end
 	TRP3_RegisterCharact_CharactPanel_PsychoTitle:Hide();
 	TRP3_RegisterCharact_CharactPanel_MiscTitle:Hide();
+	TRP3_RegisterCharact_CharactPanel_ResidenceButton:Hide();
 
 	-- Previous var helps for layout building
 	local previous = TRP3_RegisterCharact_CharactPanel_RegisterTitle;
@@ -184,7 +187,7 @@ local function setConsultDisplay(context)
 	-- Which directory chars must be shown ?
 	local shownCharacteristics = {};
 	local shownValues = {};
-	for _, attribute in pairs({ "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE" }) do
+	for _, attribute in pairs(CHAR_KEYS) do
 		if strtrim(dataTab[attribute] or ""):len() > 0 then
 			tinsert(shownCharacteristics, attribute);
 			shownValues[attribute] = dataTab[attribute];
@@ -217,6 +220,18 @@ local function setConsultDisplay(context)
 			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
 		else
 			_G[frame:GetName() .. "FieldValue"]:SetText(shownValues[charName]);
+		end
+		if charName == "RE" and dataTab.RC and # dataTab.RC >= 4 then
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
+				loc("REG_PLAYER_RESIDENCE_SHOW"), loc("REG_PLAYER_RESIDENCE_SHOW_TT"):format(dataTab.RC[4]));
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
+				MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
+				SetMapByID(dataTab.RC[1]);
+				TRP3_API.map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], completeName, TRP3_API.map.DECORATION_TYPES.HOUSE);
+			end);
 		end
 		frame:Show();
 		previous = frame;
@@ -474,6 +489,16 @@ local function onPsychoDelete(self)
 	setEditDisplay();
 end
 
+local function refreshDraftHouseCoordinates()
+	local houseTT = loc("REG_PLAYER_HERE_HOME_TT");
+	if draftData.RC and #draftData.RC == 4 then
+		houseTT = loc("REG_PLAYER_HERE_HOME_PRE_TT"):format(draftData.RC[4]) .. "\n\n" .. houseTT;
+	end
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), houseTT);
+	TRP3_RegisterCharact_Edit_ResidenceButton:Hide();
+	TRP3_RegisterCharact_Edit_ResidenceButton:Show(); -- Hax to refresh tooltip
+end
+
 function setEditDisplay()
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
@@ -502,7 +527,7 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
 
-
+	refreshDraftHouseCoordinates();
 
 	-- Misc
 	local previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
@@ -874,8 +899,17 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_Edit_SaveButton:SetScript("OnClick", onSave);
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
-	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function()
-		TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(self, button)
+		if button == "LeftButton" then
+			draftData.RC = {TRP3_API.map.getCurrentCoordinates()};
+			tinsert(draftData.RC, Utils.str.buildZoneText());
+			TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+		else
+			draftData.RC = nil;
+			TRP3_RegisterCharact_Edit_ResidenceField:SetText("");
+		end
+		refreshDraftHouseCoordinates();
 	end);
 	TRP3_RegisterCharact_Edit_BirthplaceButton:SetScript("OnClick", function()
 		TRP3_RegisterCharact_Edit_BirthplaceField:SetText(buildZoneText());
@@ -899,10 +933,10 @@ function TRP3_API.register.inits.characteristicsInit()
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_EYE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_HeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_HEIGHT"), loc("REG_PLAYER_HEIGHT_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_WeightFieldHelp, "RIGHT", 0, 5, loc("REG_PLAYER_WEIGHT"), loc("REG_PLAYER_WEIGHT_TT"));
-	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ResidenceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_BirthplaceButton, "RIGHT", 0, 5, loc("REG_PLAYER_HERE"), loc("REG_PLAYER_HERE_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_COLOR_TT"));
 	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_ClassButton, "RIGHT", 0, 5, loc("REG_PLAYER_COLOR_CLASS"), loc("REG_PLAYER_COLOR_CLASS_TT") .. loc("REG_PLAYER_COLOR_TT"));
+	setTooltipForSameFrame(TRP3_RegisterCharact_Edit_EyeButton, "RIGHT", 0, 5, loc("REG_PLAYER_EYE"), loc("REG_PLAYER_COLOR_TT"));
 
 	setupFieldSet(TRP3_RegisterCharact_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);
 	setupFieldSet(TRP3_RegisterCharact_Edit_NamePanel, loc("REG_PLAYER_NAMESTITLES"), 150);

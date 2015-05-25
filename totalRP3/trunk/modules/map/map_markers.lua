@@ -36,7 +36,150 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Logic
+-- Utils
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local GetCurrentMapAreaID, SetMapToCurrentZone, SetMapByID, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, SetMapByID, GetPlayerMapPosition;
+
+function TRP3_API.map.getCurrentCoordinates()
+	local currentMapID = GetCurrentMapAreaID();
+	SetMapToCurrentZone();
+	local mapID = GetCurrentMapAreaID();
+	local x, y = GetPlayerMapPosition("player");
+	SetMapByID(currentMapID);
+	return mapID, x, y;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Marker logic
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local WorldMapTooltip, WorldMapPOIFrame = WorldMapTooltip, WorldMapPOIFrame;
+local MARKER_NAME_PREFIX = "TRP3_WordMapMarker";
+
+local MAX_DISTANCE_MARKER = math.sqrt(0.5 * 0.5 + 0.5 * 0.5);
+
+local function hideAllMarkers()
+	local i = 1;
+	while(_G[MARKER_NAME_PREFIX .. i]) do
+		local marker = _G[MARKER_NAME_PREFIX .. i];
+		marker:Hide();
+		marker.scanLine = nil;
+		i = i + 1;
+	end
+end
+
+local function getMarker(i, tooltip)
+	local marker = _G[MARKER_NAME_PREFIX .. i];
+	if not marker then
+		marker = CreateFrame("Frame", MARKER_NAME_PREFIX .. i, WorldMapButton, "TRP3_WorldMapUnit");
+		marker:SetScript("OnEnter", function(self)
+			WorldMapPOIFrame.allowBlobTooltip = false;
+			WorldMapTooltip:Hide();
+			WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT", 0, 0);
+			WorldMapTooltip:AddLine(self.tooltip, 1, 1, 1, true);
+			local j = 1;
+			while(_G[MARKER_NAME_PREFIX .. j]) do
+				local markerWidget = _G[MARKER_NAME_PREFIX .. j];
+				if markerWidget:IsVisible() and markerWidget:IsMouseOver() then
+					local scanLine = markerWidget.scanLine;
+					if scanLine then
+						WorldMapTooltip:AddLine(scanLine, 1, 1, 1, true);
+					end
+				end
+				j = j + 1;
+			end
+			WorldMapTooltip:Show();
+		end);
+		marker:SetScript("OnLeave", function()
+			WorldMapPOIFrame.allowBlobTooltip = true;
+			WorldMapTooltip:Hide();
+		end);
+	end
+	marker.tooltip = tooltip;
+	return marker;
+end
+
+local function placeMarker(marker, x, y)
+	local x = (x or 0) * WorldMapDetailFrame:GetWidth();
+	local y = - (y or 0) * WorldMapDetailFrame:GetHeight();
+	marker:ClearAllPoints();
+	marker:SetPoint("CENTER", "WorldMapDetailFrame", "TOPLEFT", x, y);
+end
+
+local function animateMarker(marker, x, y, directAnimation)
+	if getConfigValue(CONFIG_UI_ANIMATIONS) then
+
+		local distanceX = 0.5 - x;
+		local distanceY = 0.5 - y;
+		local distance = math.sqrt(distanceX * distanceX + distanceY * distanceY);
+		local factor = distance/MAX_DISTANCE_MARKER;
+
+		if not directAnimation then
+			after(4 * factor, function()
+				marker:Show();
+				marker:SetAlpha(0);
+				playAnimation(_G[marker:GetName() .. "Bounce"]);
+			end);
+		else
+			marker:Show();
+			marker:SetAlpha(0);
+			playAnimation(_G[marker:GetName() .. "Bounce"]);
+		end
+	else
+		marker:Show();
+	end
+end
+
+local DECORATION_TYPES = {
+	HOUSE = "house",
+	CHARACTER = "character"
+}
+TRP3_API.map.DECORATION_TYPES = DECORATION_TYPES;
+
+local function decorateMarker(marker, decorationType)
+	if not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
+		_G[marker:GetName() .. "Icon"]:SetTexture("Interface\\Minimap\\OBJECTICONS");
+		_G[marker:GetName() .. "Icon"]:SetTexCoord(0, 0.125, 0, 0.125);
+	elseif decorationType == DECORATION_TYPES.HOUSE then
+		_G[marker:GetName() .. "Icon"]:SetTexture("Interface\\Minimap\\POIICONS");
+		_G[marker:GetName() .. "Icon"]:SetTexCoord(0.357143, 0.422, 0, 0.036);
+	end
+end
+
+local function displayMarkers(structure)
+	if not WorldMapFrame:IsVisible() then
+		return;
+	end
+
+	local count = tsize(structure.saveStructure);
+	local i = 1;
+	for key, entry in pairs(structure.saveStructure) do
+		local marker = getMarker(i, structure.scanTitle);
+		placeMarker(marker, entry.x, entry.y);
+
+		decorateMarker(marker, DECORATION_TYPES.CHARACTER);
+
+		-- Implementation can be adapted by decorator
+		if structure.scanMarkerDecorator then
+			structure.scanMarkerDecorator(key, entry, marker);
+		end
+
+		animateMarker(marker, entry.x, entry.y);
+		i = i + 1;
+	end
+end
+
+function TRP3_API.map.placeSingleMarker(x, y, tooltip, decorationType)
+	hideAllMarkers();
+	local marker = getMarker(1, tooltip);
+	placeMarker(marker, x, y);
+	animateMarker(marker, x, y, true);
+	decorateMarker(marker, decorationType);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Scan logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local SCAN_STRUCTURES = {};
@@ -58,92 +201,6 @@ local function registerScan(structure)
 
 end
 TRP3_API.map.registerScan = registerScan;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Display
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local WorldMapTooltip, WorldMapPOIFrame = WorldMapTooltip, WorldMapPOIFrame;
-local MARKER_NAME_PREFIX = "TRP3_WordMapMarker";
-
-local MAX_DISTANCE_MARKER = math.sqrt(0.5 * 0.5 + 0.5 * 0.5);
-
-local function hideAllMarkers()
-	local i = 1;
-	while(_G[MARKER_NAME_PREFIX .. i]) do
-		_G[MARKER_NAME_PREFIX .. i]:Hide();
-		i = i + 1;
-	end
-end
-
-local function displayMarkers(structure)
-	if not WorldMapFrame:IsVisible() then
-		return;
-	end
-
-	local count = tsize(structure.saveStructure);
-	local i = 1;
-	for key, entry in pairs(structure.saveStructure) do
-		local marker = _G[MARKER_NAME_PREFIX .. i];
-		if not marker then
-			marker = CreateFrame("Frame", MARKER_NAME_PREFIX .. i, WorldMapButton, "TRP3_WorldMapUnit");
-			marker:SetScript("OnEnter", function(self)
-				WorldMapPOIFrame.allowBlobTooltip = false;
-				WorldMapTooltip:Hide();
-				WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT", 0, 0);
-				WorldMapTooltip:AddLine(structure.scanTitle, 1, 1, 1, true);
-				local j = 1;
-				while(_G[MARKER_NAME_PREFIX .. j]) do
-					local markerWidget = _G[MARKER_NAME_PREFIX .. j];
-					if markerWidget:IsVisible() and markerWidget:IsMouseOver() then
-						local scanLine = markerWidget.scanLine;
-						if scanLine then
-							WorldMapTooltip:AddLine(scanLine, 1, 1, 1, true);
-						end
-					end
-					j = j + 1;
-				end
-				WorldMapTooltip:Show();
-			end);
-			marker:SetScript("OnLeave", function()
-				WorldMapPOIFrame.allowBlobTooltip = true;
-				WorldMapTooltip:Hide();
-			end);
-		end
-
-		-- Default implementation
-		local x = (entry.x or 0) * WorldMapDetailFrame:GetWidth();
-		local y = - (entry.y or 0) * WorldMapDetailFrame:GetHeight();
-		marker:ClearAllPoints();
-		marker:SetPoint("CENTER", "WorldMapDetailFrame", "TOPLEFT", x, y);
-		_G[marker:GetName() .. "Icon"]:SetTexture("Interface\\Minimap\\OBJECTICONS");
-		_G[marker:GetName() .. "Icon"]:SetTexCoord(0, 0.125, 0, 0.125);
-
-		-- Implementation can be adapted by decorator
-		if structure.scanMarkerDecorator then
-			structure.scanMarkerDecorator(key, entry, marker);
-		end
-
-		if getConfigValue(CONFIG_UI_ANIMATIONS) then
-
-			local distanceX = 0.5 - entry.x;
-			local distanceY = 0.5 - entry.y;
-			local distance = math.sqrt(distanceX * distanceX + distanceY * distanceY);
-			local factor = distance/MAX_DISTANCE_MARKER;
-
-			after(4 * factor, function()
-				marker:Show();
-				marker:SetAlpha(0);
-				playAnimation(_G[marker:GetName() .. "Bounce"]);
-			end);
-
-		else
-			marker:Show();
-		end
-		
-		i = i + 1;
-	end
-end
 
 local function launchScan(scanID)
 	assert(SCAN_STRUCTURES[scanID], ("Unknown scan id %s"):format(scanID));
