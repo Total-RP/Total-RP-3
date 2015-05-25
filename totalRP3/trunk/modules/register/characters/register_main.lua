@@ -427,7 +427,7 @@ local function cleanupProfiles()
 	log("Protected profiles: " .. tsize(relatedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
-		if not profilesToPurge[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
+		if not relatedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end
