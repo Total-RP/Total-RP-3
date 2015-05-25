@@ -42,12 +42,9 @@ local LOCALE_EN = {
 		REG_PLAYER_ICON = "Character's icon",
 		REG_PLAYER_ICON_TT = "Select a graphic representation for your character.",
 		REG_PLAYER_TITLE = "Title",
-		REG_PLAYER_TITLE_TT = "Your character's title is the title by which your character is usually called. Avoid long titles, as for those should you use the Full title attribute bellow.\n\n"
-								.."Example of |c0000ff00appropriate titles |r:\n|c0000ff00- Countess,\n- Marquis,\n- Magus,\n- Lord,\n- etc.\n|r"
-								.."Example of |cffff0000inappropriate titles|r:\n|cffff0000- Countess of the North Marshes,\n- Magus of the Stormwind Tower,\n- Diplomat for the Draenei Government,\n- etc.",
+		REG_PLAYER_TITLE_TT = "Your character's title is the title by which your character is usually called. Avoid long titles, as for those should you use the Full title attribute bellow.\n\nExample of |c0000ff00appropriate titles |r:\n|c0000ff00- Countess,\n- Marquis,\n- Magus,\n- Lord,\n- etc.\n|rExample of |cffff0000inappropriate titles|r:\n|cffff0000- Countess of the North Marshes,\n- Magus of the Stormwind Tower,\n- Diplomat for the Draenei Government,\n- etc.",
 		REG_PLAYER_FIRSTNAME = "First name",
-		REG_PLAYER_FIRSTNAME_TT = "This is your character's first name. This is a mandatory field, so if you don't specify a name, the default character's name (|cffffff00%s|r) will be used."
-								.."\n\nYou can use a |c0000ff00nickname |r!",
+		REG_PLAYER_FIRSTNAME_TT = "This is your character's first name. This is a mandatory field, so if you don't specify a name, the default character's name (|cffffff00%s|r) will be used.\n\nYou can use a |c0000ff00nickname |r!",
 		REG_PLAYER_LASTNAME = "Last name",
 		REG_PLAYER_LASTNAME_TT = "This is your character's family name.",
 		REG_PLAYER_HERE = "Set position",
@@ -76,11 +73,9 @@ local LOCALE_EN = {
 		REG_PLAYER_WEIGHT = "Body shape",
 		REG_PLAYER_WEIGHT_TT = "This is your character's body shape.\nFor instance they could be |c0000ff00slim, fat or muscular...|r Or they could simply be regular !",
 		REG_PLAYER_BIRTHPLACE = "Birthplace",
-		REG_PLAYER_BIRTHPLACE_TT = "Here you can indicate the birthplace of your character. This can either be a region, a zone, or even a continent. It's for you to decide how accurate you want to be.\n\n"
-									.."|c00ffff00You can use the button to the right to easily set your current location as Birthplace.",
+		REG_PLAYER_BIRTHPLACE_TT = "Here you can indicate the birthplace of your character. This can either be a region, a zone, or even a continent. It's for you to decide how accurate you want to be.\n\n|c00ffff00You can use the button to the right to easily set your current location as Birthplace.",
 		REG_PLAYER_RESIDENCE = "Residence",
-		REG_PLAYER_RESIDENCE_TT = "Here you can indicate where you character normally lives. This could be their personal address (their home) or a place they can crash."
-									.."\nNote that if your character is a wanderer or even homeless, you will need to change the information accordingly.\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
+		REG_PLAYER_RESIDENCE_TT = "Here you can indicate where you character normally lives. This could be their personal address (their home) or a place they can crash.\nNote that if your character is a wanderer or even homeless, you will need to change the information accordingly.\n\n|c00ffff00You can use the button to the right to easily set your current location as Residence.",
 		REG_PLAYER_MSP_MOTTO = "Motto",
 		REG_PLAYER_MSP_HOUSE = "House name",
 		REG_PLAYER_MSP_NICK = "Nickname",
