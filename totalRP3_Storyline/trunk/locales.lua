@@ -34,12 +34,12 @@ TRP3_StoryLine_LOCALE = {
 		SL_DECLINE = "I refuse.",
 		SL_NEXT = "Continue ...",
 		SL_CONTINUE = "Complete quest",
-
 		SL_NOT_YET = "Not yet ...",
 		SL_RESET = "Rewind",
 		SL_RESET_TT = "Rewind this dialogue.",
 		SL_REWARD_MORE = "You will also get",
 		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
+		SL_GET_REWARD = "Get your reward!"
 	},
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -48,11 +48,18 @@ TRP3_StoryLine_LOCALE = {
 	
 	["frFR"] = {
 		SL_STORYLINE = "Storyline",
-		SL_SELECT_DIALOG_OPTION = "Sélectionnez un dialogue",
+		SL_SELECT_DIALOG_OPTION = "Sélectionnez une option",
 		SL_SELECT_AVAILABLE_QUEST = "Sélectionnez une quête",
 		SL_WELL = "Et bien ...",
-		SL_ACCEPTANCE = "J'accepte !",
-		SL_NEXT = "Suivant",
-		
+		SL_ACCEPTANCE = "J'accepte.",
+		SL_DECLINE = "Je refuse.",
+		SL_NEXT = "Continuer ...",
+		SL_CONTINUE = "Terminer la quête",
+		SL_NOT_YET = "Pas encore ...",
+		SL_RESET = "Début",
+		SL_RESET_TT = "Revenir au début du dialogue",
+		SL_REWARD_MORE = "Vous recevrez aussi",
+		SL_REWARD_MORE_SUB = "\nArgent: |cffffffff%s|r\nExpérience: |cffffffff%s xp|r\n\n|cffffff00Clic:|r Prenez votre récompense !",
+		SL_GET_REWARD = "Prenez votre récompense !"
 	},
 }

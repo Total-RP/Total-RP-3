@@ -348,7 +348,7 @@
 							<Anchor point="RIGHT" x="0" y="0"/>
 						</Anchors>
 						<Frames>
-							<EditBox inherits="TRP3_TitledEditBox" numeric="true">
+							<EditBox name="TRP3_NPCDialogFrameDEBUG" inherits="TRP3_TitledEditBox" numeric="true" hidden="true">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="0"/>
 								</Anchors>

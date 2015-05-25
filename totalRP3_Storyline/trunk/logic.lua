@@ -19,7 +19,7 @@
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 
-local DEBUG = TRP3_DEBUG or false;
+local DEBUG = false;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
@@ -95,13 +95,13 @@ end
 
 local function playAnimationDelay(model, sequence, duration, delay, token)
 	if delay == 0 then
-		print("Playing: " .. sequence);
+--		print("Playing: " .. sequence);
 		model:SetAnimation(sequence);
 	else
 		model.token = token;
 		C_Timer.After(delay, function()
 			if model.token == token then
-				print("Playing: " .. sequence .. " (" .. duration .. "s)");
+--				print("Playing: " .. sequence .. " (" .. duration .. "s)");
 				model:SetAnimation(sequence);
 			end
 		end)
@@ -196,7 +196,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local CHAT_MARGIN = 70;
-local OPTIONS_MARGIN, OPTIONS_TOP = 150, -175;
+local OPTIONS_MARGIN, OPTIONS_TOP = 175, -175;
 local gossipColor = "|cffffffff";
 local TRP3_NPCDialogFrameChatNext = TRP3_NPCDialogFrameChatNext;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
@@ -255,10 +255,12 @@ local function playText(textIndex)
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption3);
+	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives);
 	TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", nil);
 	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", nil);
+	TRP3_NPCDialogFrameObjectivesImage:SetTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon");
 
 	if TRP3_NPCDialogFrameChat.event == "GOSSIP_SHOW" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -340,26 +342,38 @@ local function playText(textIndex)
 		TRP3_NPCDialogFrameObjectivesNo:Show();
 		TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(false);
 		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 0, QUEST_OBJECTIVES, "|cff00ff00" .. GetObjectiveText());
+		if GetNumQuestItems() > 0 then
+			local _, icon = GetQuestItemInfo("required", 1);
+			TRP3_NPCDialogFrameObjectivesImage:SetTexture(icon);
+		end
 	end
 
 	if TRP3_NPCDialogFrameChat.event == "QUEST_PROGRESS" and textIndex == #TRP3_NPCDialogFrameChat.texts then
 		TRP3_NPCDialogFrameObjectives:Show();
-		TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
 		local objectives = "";
 		if GetNumQuestItems() > 0 then
+			local _, icon = GetQuestItemInfo("required", 1);
+			TRP3_NPCDialogFrameObjectivesImage:SetTexture(icon);
 			for i = 1, GetNumQuestItems() do
 				local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
-				objectives = objectives .. numItems .. "x |T" .. texture .. ":25:25|t " .. name;
+				if GetNumQuestItems() > 1 then
+					objectives = objectives .. numItems .. "x " .. name;
+				else
+					objectives = objectives .. numItems .. "x |T".. texture .. ":25:25|t " .. name;
+				end
 				if i ~= GetNumQuestItems() then
-					objectives = objectives .. "\n\n";
+					objectives = objectives .. "\n";
 				end
 			end
 		end
+		TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
 		if IsQuestCompletable() then
 			TRP3_NPCDialogFrameObjectives:SetScript("OnClick", CompleteQuest);
 			objectives = objectives .. "\n\n|cff00ff00" .. loc("SL_CONTINUE");
 		end
-		setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 0, QUEST_OBJECTIVES, objectives);
+		if objectives ~= "" then
+			setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "BOTTOM", 0, 0, QUEST_OBJECTIVES, objectives);
+		end
 	end
 
 	-- Rewards
@@ -368,24 +382,22 @@ local function playText(textIndex)
 		playSelfAnim(68);
 		TRP3_NPCDialogFrameRewards:Show();
 		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, 0);
-		local boutonText = COMPLETE_QUEST;
 		local xp = GetRewardXP();
-		local money = GetCoinText(GetRewardMoney(), " ");
+		local money = GetCoinTextureString(GetRewardMoney());
 		local TTReward = loc("SL_REWARD_MORE");
 		local subTTReward = loc("SL_REWARD_MORE_SUB"):format(money, xp);
 		TRP3_NPCDialogFrameRewards.itemLink = nil;
 		TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
 
-		if GetNumQuestChoices() == 1 or GetNumQuestRewards() == 1 then
+		if GetNumQuestChoices() > 1 then
+
+		elseif GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
 			local type = GetNumQuestChoices() == 1 and "choice" or "reward";
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo(type, 1);
 			local link = GetQuestItemLink(type, 1);
 
 			TRP3_NPCDialogFrameRewards.itemLink = link;
 			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(texture);
-			boutonText = "Get your reward!"; -- TODO: locals
-		elseif GetNumQuestChoices() > 0 then
-			boutonText = "Select your reward!";
 		else
 			-- No item
 			TTReward = REWARDS;
@@ -404,7 +416,7 @@ local function playNext()
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
 		if TRP3_NPCDialogFrameChat.currentIndex == #TRP3_NPCDialogFrameChat.texts then
-			if TRP3_NPCDialogFrameChat.eventInfo.finishText then
+			if TRP3_NPCDialogFrameChat.eventInfo.finishText and (type(TRP3_NPCDialogFrameChat.eventInfo.finishText) ~= "function" or TRP3_NPCDialogFrameChat.eventInfo.finishText()) then
 				TRP3_NPCDialogFrameChatNext:Show();
 				if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
 					TRP3_NPCDialogFrameChatNextText:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText());
@@ -447,6 +459,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	--	end
 
 	if DEBUG then
+		TRP3_NPCDialogFrameDEBUG:Show();
 		TRP3_NPCDialogFrameDebug:SetText("[debug] " .. event);
 	end
 
@@ -489,14 +502,15 @@ local function startDialog(targetType, fullText, event, eventInfo)
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc") then
 		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
-		if DEBUG then
-			ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
-		end
 	else
 		TRP3_NPCDialogFrameModelsMe:SetAnimation(520);
 		TRP3_NPCDialogFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
 	end
 	TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
+
+	if DEBUG and TRP3_NPCDialogFrameModelsYou.model then
+		ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+	end
 
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
@@ -574,6 +588,13 @@ local function registerEventStructure()
 					message("Please choose a reward from the original quest interface."); -- TODO: TEMP
 				else
 					GetQuestReward();
+				end
+			end,
+			finishText = function()
+				if GetNumQuestChoices() > 1 then
+					return "Please choose a reward from the original quest interface."; -- TODO: TEMP
+				else
+					return loc("SL_GET_REWARD");
 				end
 			end,
 			cancelMethod = CloseQuest,
