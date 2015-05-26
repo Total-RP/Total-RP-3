@@ -96,7 +96,7 @@ local function getMarker(i, tooltip)
 			WorldMapTooltip:Hide();
 		end);
 	end
-	marker.tooltip = tooltip;
+	marker.tooltip = "|cffff9900" .. tooltip;
 	return marker;
 end
 

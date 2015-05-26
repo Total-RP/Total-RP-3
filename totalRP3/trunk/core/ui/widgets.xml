@@ -593,6 +593,7 @@
 		</Scripts>
 	</Button>
 
+	<!-- Tutorial style hovered frame -->
 	<Frame name="TRP3_HoveredFrame" inherits="GlowBoxTemplate" virtual="true">
 		<Size x="220" y="100"/>
 		<Layers>
@@ -658,4 +659,17 @@
 			</OnLoad>
 		</Scripts>
 	</Frame>
+
+	<!-- Resize button -->
+	<Button name="TRP3_ResizeButton" virtual="true">
+		<Size x="32" y="32"/>
+		<Scripts>
+			<OnLoad>
+				TRP3_API.ui.frame.initResize(self);
+			</OnLoad>
+		</Scripts>
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+	</Button>
 </Ui>

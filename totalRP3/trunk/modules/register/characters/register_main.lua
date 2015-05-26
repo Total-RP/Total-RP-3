@@ -523,7 +523,7 @@ function TRP3_API.register.init()
 
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
-	registerConfigKey("register_auto_purge_mode", 432000);
+	registerConfigKey("register_auto_purge_mode", 864000);
 
 	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
@@ -538,6 +538,7 @@ function TRP3_API.register.init()
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(1), 86400},
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(2), 172800},
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(5), 432000},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(10), 864000},
 	}
 
 	-- Build configuration page
@@ -636,12 +637,12 @@ function TRP3_API.register.init()
 
 	TRP3_API.map.registerScan({
 		id = "playerScan",
-		buttonText = "Scan for characters",
+		buttonText = loc("MAP_SCAN_CHAR"),
 		scan = function()
 			local zoneID = GetCurrentMapAreaID();
 			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);
 		end,
-		scanTitle = "Characters",
+		scanTitle = loc("MAP_SCAN_CHAR_TITLE"),
 		scanCommand = CHARACTER_SCAN_COMMAND,
 		scanResponder = function(sender, zoneID)
 			if locationEnabled() and playersCanSeeEachOthers(sender) then
@@ -667,13 +668,16 @@ function TRP3_API.register.init()
 		scanComplete = function(saveStructure)
 		end,
 		scanMarkerDecorator = function(characterID, entry, marker)
-			local line = characterID;
+			local line;
 			if isUnitIDKnown(characterID) and getUnitIDCurrentProfile(characterID) then
 				local profile = getUnitIDCurrentProfile(characterID);
 				line = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
 				if profile.characteristics and profile.characteristics.CH then
 					line = "|cff" .. profile.characteristics.CH .. line;
 				end
+			end
+			if not line then
+				line = 	characterID:gsub("%-.*$", "");
 			end
 			marker.scanLine = line;
 		end,

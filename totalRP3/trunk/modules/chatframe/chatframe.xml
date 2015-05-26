@@ -20,4 +20,6 @@
 
 	<Script file="chatframe.lua" />
 	<Script file="languages.lua" />
+	<Include file="npctalk.xml" />
+
 </Ui>

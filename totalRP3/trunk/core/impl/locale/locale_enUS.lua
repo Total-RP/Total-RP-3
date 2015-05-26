@@ -553,7 +553,6 @@ Possible status:
 		CO_LOCATION_DISABLE_PVP = "Disable location when flaged for PVP",
 		CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location request from other players when you are flaged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
 
-		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -589,6 +588,7 @@ Possible status:
 		TF_IGNORE_NO_REASON = "No reason",
 		TB_LANGUAGE = "Language",
 		TB_LANGUAGES_TT = "Change language",
+		TB_NPC_TALK = "NPC talks",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
@@ -766,6 +766,8 @@ Total RP is not responsible for links leading to harmful content.]],
 		CM_CLASS_MONK = "Monk",
 		CM_CLASS_DRUID = "Druid",
 		CM_CLASS_UNKNOWN = "Unknown",
+		CM_RESIZE = "Resize",
+		CM_RESIZE_TT = "Drag to resize the frame.",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Minimap button
@@ -814,6 +816,8 @@ Total RP is not responsible for links leading to harmful content.]],
 		MAP_BUTTON_SUBTITLE = "Click to show available scans",
 		MAP_BUTTON_NO_SCAN = "No scan available",
 		MAP_BUTTON_SCANNING = "Scanning",
+		MAP_SCAN_CHAR = "Scan for characters",
+		MAP_SCAN_CHAR_TITLE = "Characters",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
@@ -830,7 +834,7 @@ You can now place your character's residence on the map by using the "set positi
 Players will be able to see that mark on the map when reading your profile.
 
 {h3}2. Directory automatic purge{/h3}
-WoW il not without bugs, and an annoying one is that when all the saved data about an addon reach a certain size, it gets wiped out.
+WoW is not without bugs, and an annoying one is that when all the saved data about an addon reach a certain size, it gets wiped out.
 To reduce the chances that you reach the data limit, we implemented an automatic directory purge removing profiles from characters you never crossed or crossed more than 5 days ago and didn't placed any relation on it.
 You can change this behaviour {link*scandisable*here}.
 

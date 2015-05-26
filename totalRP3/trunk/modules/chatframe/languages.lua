@@ -22,6 +22,7 @@ local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setT
 local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local loc = TRP3_API.locale.getText;
+local tinsert, _G, strconcat = tinsert, _G, strconcat;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
@@ -60,7 +61,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local languagesButton = {
 		id = "ww_trp3_languages",
 		icon = "spell_holy_silence",
-		configText = "Langages",
+		configText = loc("TB_LANGUAGE"),
 		onEnter = function(Uibutton, buttonStructure)
 			refreshTooltip(Uibutton);
 		end,
@@ -81,7 +82,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
 			local dropdownItems = {};
-			tinsert(dropdownItems,{"Languages", nil}); -- TODO TRANSLATE
+			tinsert(dropdownItems,{loc("TB_LANGUAGE"), nil});
 			for i = 0, GetNumLanguages() do
 				if GetLanguageByIndex(i) then
 					local language, index = GetLanguageByIndex(i);

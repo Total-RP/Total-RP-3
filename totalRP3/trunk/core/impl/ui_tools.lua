@@ -944,3 +944,11 @@ function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPositio
 
 	frame:Show();
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Resize button
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.frame.initResize(resizeButton)
+	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
+end
