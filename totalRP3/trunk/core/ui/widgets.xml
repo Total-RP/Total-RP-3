@@ -509,8 +509,7 @@
 	<!-- Color picker button -->
 	<Button name="TRP3_ColorPickerButton" virtual="true">
 		<Size x="16" y="16"/>
-		<HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight"
-						  file="Interface\SpellActivationOverlay\IconAlert">
+		<HighlightTexture alphaMode="ADD" name="$parentSwatchBgHighlight" file="Interface\SpellActivationOverlay\IconAlert">
 			<Size x="71" y="68"/>
 			<Anchors>
 				<Anchor x="-11" y="11" point="TOPLEFT"/>

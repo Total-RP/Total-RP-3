@@ -324,7 +324,7 @@
 			</Button>
 
 			<!-- RESIZING BUTTON -->
-			<Button name="TRAP3_MainFrameResizeButton" inherits="TRP3_ResizeButton" hidden="true">
+			<Button name="TRAP3_MainFrameResizeButton" inherits="TRP3_ResizeButton" hidden="false">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="TRP3_MainFrame" type="global"/>
 					<KeyValue key="minWidth" value="768" type="number"/>

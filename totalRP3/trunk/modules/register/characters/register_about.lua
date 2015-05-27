@@ -111,9 +111,11 @@ local function showTemplate1(dataTab)
 	if shouldShowTemplate1(dataTab) then
 		local text = Utils.str.toHTML(templateData.TX or "");
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText(text);
+		TRP3_RegisterAbout_AboutPanel_Template1.html = text;
 	else
 		TRP3_RegisterAbout_AboutPanel_Empty:Show();
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText("");
+		TRP3_RegisterAbout_AboutPanel_Template1.html = "";
 	end
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
 end
@@ -1025,5 +1027,11 @@ function TRP3_API.register.inits.aboutInit()
 		if dataType == "about" and unitID and unitID ~= Globals.player_id then
 			onAboutReceived(profileID);
 		end
+	end);
+
+	-- Resizing
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 54, 5);
+		TRP3_RegisterAbout_AboutPanel_Template1:SetText(TRP3_RegisterAbout_AboutPanel_Template1.html);
 	end);
 end

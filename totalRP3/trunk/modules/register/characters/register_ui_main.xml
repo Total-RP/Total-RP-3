@@ -44,9 +44,6 @@
 			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 			<TileSize val="425"/>
 		</Backdrop>
-		<Layers>
-			
-		</Layers>
 		<Frames>
 			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" frameLevel="2">
 				<Anchors>

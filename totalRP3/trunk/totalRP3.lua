@@ -94,6 +94,8 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.configuration.constructConfigPage";
 	TRP3_API.configuration.constructConfigPage();
 
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+
 	Log.log("OnEnable() DONE");
 end
 

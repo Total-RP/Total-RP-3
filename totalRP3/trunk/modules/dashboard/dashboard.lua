@@ -266,7 +266,7 @@ TRP3_API.dashboard.init = function()
 		elseif url == "scandisable" then
 			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
 		elseif url == "modules" then
-			C_Timer.After(0.25, function()
+			C_Timer.After(0.1, function()
 				tabGroup:SelectTab(3);
 			end);
 		elseif url == "storyline" then

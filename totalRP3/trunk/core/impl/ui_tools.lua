@@ -30,6 +30,7 @@ TRP3_API.ui = {
 local globals = TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
+local math = math;
 local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
@@ -958,25 +959,47 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnDragStart", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
-			self.resizableFrame:SetResizable(true);
-			self.resizableFrame:StartSizing();
+			TRP3_ResizeShadowFrame.minWidth = self.minWidth;
+			TRP3_ResizeShadowFrame.minHeight = self.minHeight;
+			TRP3_ResizeShadowFrame:ClearAllPoints();
+			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
+			TRP3_ResizeShadowFrame:SetWidth(self.resizableFrame:GetWidth());
+			TRP3_ResizeShadowFrame:SetHeight(self.resizableFrame:GetHeight());
+			TRP3_ResizeShadowFrame:Show();
+			TRP3_ResizeShadowFrame:StartSizing();
 			self.resizableFrame.isSizing = true;
 		end
 	end);
 	resizeButton:SetScript("OnDragStop", function(self)
 		if self.resizableFrame.isSizing then
-			self.resizableFrame:StopMovingOrSizing();
-			self.resizableFrame:SetResizable(false);
+			TRP3_ResizeShadowFrame:StopMovingOrSizing();
 			self.resizableFrame.isSizing = false;
-			if self.resizableFrame:GetHeight() < self.minHeight then
-				self.resizableFrame:SetHeight(self.minHeight);
+			local height, width = TRP3_ResizeShadowFrame:GetHeight(), TRP3_ResizeShadowFrame:GetWidth()
+			TRP3_ResizeShadowFrame:Hide();
+			if height < self.minHeight then
+				height = self.minHeight;
 			end
-			if self.resizableFrame:GetWidth() < self.minWidth then
-				self.resizableFrame:SetWidth(self.minWidth);
+			if width < self.minWidth then
+				width = self.minWidth;
 			end
+			self.resizableFrame:SetSize(width, height);
 			if self.onResizeStop then
-				self.onResizeStop();
+				C_Timer.After(0.1, function()
+					self.onResizeStop();
+				end);
 			end
 		end
 	end);
 end
+
+TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
+	local height, width = self:GetHeight(), self:GetWidth();
+	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
+	if height < self.minHeight then
+		heightColor = "|cffff0000";
+	end
+	if width < self.minWidth then
+		widthColor = "|cffff0000";
+	end
+	TRP3_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
+end);

@@ -159,6 +159,11 @@ local function setBkg(backgroundIndex)
 end
 
 local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE" };
+local FIELD_TITLE_SCALE = 0.3;
+
+local function scaleField(field, containerSize, fieldName)
+	_G[field:GetName() .. (fieldName or "FieldName")]:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
+end
 
 local function setConsultDisplay(context)
 	local dataTab = context.profile.characteristics or Globals.empty;
@@ -206,6 +211,7 @@ local function setConsultDisplay(context)
 		local frame = registerCharFrame[frameIndex];
 		if frame == nil then
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_RegisterInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
+			scaleField(frame, TRP3_RegisterCharact_CharactPanel_Container:GetWidth());
 			tinsert(registerCharFrame, frame);
 		end
 		frame:ClearAllPoints();
@@ -249,6 +255,7 @@ local function setConsultDisplay(context)
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
+				scaleField(frame, TRP3_RegisterCharact_CharactPanel_Container:GetWidth());
 				tinsert(miscCharFrame, frame);
 			end
 			frame:ClearAllPoints();
@@ -308,7 +315,7 @@ end
 -- function def
 local setEditDisplay;
 
-local draftData = nil;
+local draftData;
 local psychoEditCharFrame = {};
 local miscEditCharFrame = {};
 
@@ -540,6 +547,7 @@ function setEditDisplay()
 			_G[frame:GetName() .. "ValueFieldText"]:SetText(loc("CM_VALUE"));
 			_G[frame:GetName() .. "Delete"]:SetScript("OnClick", onMiscDelete);
 			setTooltipForSameFrame(_G[frame:GetName() .. "Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
+			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
 			tinsert(miscEditCharFrame, frame);
 		end
 		_G[frame:GetName() .. "Icon"]:SetScript("OnClick", function()
@@ -555,8 +563,9 @@ function setEditDisplay()
 		_G[frame:GetName() .. "ValueField"]:SetText(miscStructure.VA or loc("CM_VALUE"));
 		refreshEditIcon(_G[frame:GetName() .. "Icon"]);
 		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
-		frame:SetPoint("RIGHT", 0, 0);
+		frame:SetPoint("TOP", previous, "BOTTOM", 0, 0);
+		frame:SetPoint("LEFT", 10, 0);
+		frame:SetPoint("RIGHT", -10, 0);
 		frame:Show();
 		previous = frame;
 	end
@@ -567,6 +576,8 @@ function setEditDisplay()
 	-- Psycho
 	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:ClearAllPoints();
 	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("LEFT", 10, 0);
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetPoint("RIGHT", -10, 0);
 	previous = TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle;
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.PS) do
@@ -988,4 +999,21 @@ function TRP3_API.register.inits.characteristicsInit()
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
+
+	-- Resizing
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		local finalContainerWidth = containerwidth - 70;
+		TRP3_RegisterCharact_CharactPanel_Container:SetSize(finalContainerWidth, 50);
+		TRP3_RegisterCharact_Edit_CharactPanel_Container:SetSize(finalContainerWidth, 50);
+		for _, frame in pairs(registerCharFrame) do
+			scaleField(frame, finalContainerWidth);
+		end
+		for _, frame in pairs(miscCharFrame) do
+			scaleField(frame, finalContainerWidth);
+		end
+		for _, frame in pairs(miscEditCharFrame) do
+			scaleField(frame, finalContainerWidth, "NameField");
+		end
+		TRP3_RegisterCharact_Edit_FirstField:SetSize((finalContainerWidth - 100) * 0.3, 18);
+	end);
 end

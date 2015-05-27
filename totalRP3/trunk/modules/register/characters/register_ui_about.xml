@@ -230,10 +230,6 @@
 			<EdgeSize><AbsValue val="32"/></EdgeSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Layers>
-			<Layer level="BACKGROUND">
-			</Layer>
-		</Layers>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit">
 				<Size x="510" y="0"/>
@@ -374,12 +370,7 @@
 				    </Frame>
 				</Frames>
 			</Frame>
-			<Frame name="TRP3_RegisterAbout_AboutPanel">
-				<Size x="510" y="0"/>
-				<Anchors>	
-					<Anchor point="TOP" x="0" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="0"/>
-				</Anchors>
+			<Frame name="TRP3_RegisterAbout_AboutPanel" setAllPoints="true">
 				<Layers>
 					<Layer level="OVERLAY">
 						 <FontString name="TRP3_RegisterAbout_AboutPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
@@ -402,16 +393,16 @@
 								<Size x="10" y="10"/>
 								<Frames>
 									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1">
-										<Size x="479" y="5"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
 										<FontString inherits="GameFontNormalSmall"/>
 									</SimpleHTML>
 									<Frame name="TRP3_RegisterAbout_AboutPanel_Template2">
-										<Size x="479" y="50"/>
+										<Size x="0" y="50"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
+											<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 										</Anchors>
 										<Layers>
 											<Layer level="OVERLAY">

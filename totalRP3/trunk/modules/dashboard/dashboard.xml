@@ -128,8 +128,7 @@
 
 			<!-- What's new / About / Thanks -->
 			<Frame name="TRP3_DashboardBottom">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-						  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="32"/>
 					</EdgeSize>
@@ -157,18 +156,12 @@
 								<Size x="10" y="10"/>
 								<Frames>
 									<SimpleHTML name="TRP3_DashboardBottomContent">
-										<Size x="479" y="5"/>
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>
 										<FontString inherits="GameFontNormalSmall"/>
 									</SimpleHTML>
 								</Frames>
-								<Scripts>
-									<OnLoad>
-
-									</OnLoad>
-								</Scripts>
 							</Frame>
 						</ScrollChild>
 					</ScrollFrame>
