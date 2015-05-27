@@ -83,7 +83,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		type = "launcher",
 		icon = "Interface\\AddOns\\totalRP3\\resources\\trp3minimap.tga",
 		tocname = "totalRP3",
-		OnClick = function(clickedframe, button)
+		OnClick = function(_, button)
 			if button == "RightButton" and TRP3_API.toolbar then
 				TRP3_API.toolbar.switch();
 			else
@@ -142,4 +142,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end
 	});
+
+	-- Resizing
+	TRAP3_MainFrameResizeButton.onResizeStop = function()
+		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+	end;
+
+	TRP3_MainFramePageContainer:SetScript("OnUpdate", function(self)
+		if TRP3_MainFrame.isSizing then
+			local width = self:GetWidth();
+			local height = self:GetHeight();
+			if width < 450 or height < 400 then
+				TRAP3_MainFrameResizeButton:GetScript("OnDragStop")(TRAP3_MainFrameResizeButton);
+			end
+		end
+	end);
+
 end);

@@ -26,14 +26,21 @@ local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local lastAnchor;
+
+local function refreshPosition()
+	local x, y = GetCursorPosition();
+	local scale = UIParent:GetEffectiveScale();
+	y = y / scale;
+	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCTalkFrame, lastAnchor, y <= 200 and "BOTTOM" or "TOP");
+end
+
 local function onButtonClicked(Uibutton, buttonStructure, button)
 	if TRP3_NPCTalkFrame:IsVisible() then
 		TRP3_NPCTalkFrame:Hide();
 	else
-		local x, y = GetCursorPosition();
-		local scale = UIParent:GetEffectiveScale();
-		y = y / scale;
-		TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCTalkFrame, Uibutton, y <= 200 and "BOTTOM" or "TOP");
+		lastAnchor = Uibutton;
+		refreshPosition();
 	end
 end
 
@@ -47,4 +54,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		onClick = onButtonClicked
 	};
 	TRP3_API.toolbar.toolbarAddButton(button);
+
+	TRP3_NPCTalkFrameResize.onResizeStop = refreshPosition;
 end);

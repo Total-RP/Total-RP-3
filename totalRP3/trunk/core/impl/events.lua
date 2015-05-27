@@ -30,6 +30,7 @@ TRP3_API.events = {
 	
 	-- Navigation
 	NAVIGATION_TUTORIAL_REFRESH = "NAVIGATION_TUTORIAL_REFRESH",
+	NAVIGATION_RESIZED = "NAVIGATION_RESIZED",
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Data changed

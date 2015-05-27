@@ -268,8 +268,7 @@ local function setPage(pageId, context)
 	
 	currentPage.frame:ClearAllPoints();
 	currentPage.frame:SetParent(TRP3_MainFramePageContainer);
-	currentPage.frame:SetPoint("TOPRIGHT", 0, 0);
-	currentPage.frame:SetPoint("BOTTOMLEFT", 0, 0);
+	currentPage.frame:SetAllPoints(TRP3_MainFramePageContainer);
 	currentPage.frame:Show();
 	
 	-- Show

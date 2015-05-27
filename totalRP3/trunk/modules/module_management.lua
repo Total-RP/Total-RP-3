@@ -260,11 +260,19 @@ function onModuleStarted()
 	end
 	table.sort(sortedID);
 
+	local previous;
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
 		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_"..i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
 		frame.module = module;
-		frame:SetPoint("TOPLEFT", 0, (i * -63) - 8);
+		frame:SetPoint("LEFT", 0, 0);
+		frame:SetPoint("RIGHT", 0, 0);
+		if previous then
+			frame:SetPoint("TOP", previous, "BOTTOM", 0, 0);
+		else
+			frame:SetPoint("TOP", 0, 0);
+		end
+		previous = frame;
 		_G[frame:GetName().."ModuleName"]:SetText(module.name);
 		_G[frame:GetName().."ModuleVersion"]:SetText(loc("CO_MODULES_VERSION"):format(module.version));
 		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
@@ -348,4 +356,9 @@ TRP3_API.module.init = function()
 	});
 	
 	moduleInit();
+
+	-- Resizing
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		TRP3_ConfigurationModuleContainer:SetSize(containerwidth - 70, 50);
+	end);
 end

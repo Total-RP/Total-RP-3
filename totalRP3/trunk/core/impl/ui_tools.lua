@@ -950,5 +950,33 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.ui.frame.initResize(resizeButton)
+	assert(resizeButton.resizableFrame, "resizableFrame key is not set.");
+	assert(resizeButton.minWidth, "minWidth key is not set.");
+	assert(resizeButton.minHeight, "minHeight key is not set.");
 	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
+	local parent = resizeButton.resizableFrame;
+	resizeButton:RegisterForDrag("LeftButton");
+	resizeButton:SetScript("OnDragStart", function(self)
+		if not self.onResizeStart or not self.onResizeStart() then
+			self.resizableFrame:SetResizable(true);
+			self.resizableFrame:StartSizing();
+			self.resizableFrame.isSizing = true;
+		end
+	end);
+	resizeButton:SetScript("OnDragStop", function(self)
+		if self.resizableFrame.isSizing then
+			self.resizableFrame:StopMovingOrSizing();
+			self.resizableFrame:SetResizable(false);
+			self.resizableFrame.isSizing = false;
+			if self.resizableFrame:GetHeight() < self.minHeight then
+				self.resizableFrame:SetHeight(self.minHeight);
+			end
+			if self.resizableFrame:GetWidth() < self.minWidth then
+				self.resizableFrame:SetWidth(self.minWidth);
+			end
+			if self.onResizeStop then
+				self.onResizeStop();
+			end
+		end
+	end);
 end

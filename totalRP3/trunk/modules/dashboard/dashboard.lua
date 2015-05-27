@@ -178,7 +178,7 @@ TRP3_API.dashboard.init = function()
 
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW");
-
+	local moreModuleText = loc("MORE_MODULES");
 	local aboutText = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}http://totalrp3.info{/p}
@@ -206,8 +206,34 @@ TRP3_API.dashboard.init = function()
 - Hellclaw
 - Leylou]]
 
+	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
 	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version));
+
+	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
+	frame:SetSize(400, 30);
+	frame:SetPoint("TOPLEFT", 17, 30);
+	frame:SetFrameLevel(1);
+	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
+		{
+			{ loc("DB_NEW"), 1, 150 },
+			{ loc("DB_ABOUT"), 2, 150 },
+			{ loc("DB_MORE"), 3, 150 },
+		},
+		function(tabWidget, value)
+			if value == 1 then
+				TRP3_DashboardBottomContent:SetText(whatsNewText);
+				TRP3_DashboardBottomContent.text = whatsNewText;
+			elseif value == 2 then
+				TRP3_DashboardBottomContent:SetText(aboutText);
+				TRP3_DashboardBottomContent.text = aboutText;
+			elseif value == 3 then
+				TRP3_DashboardBottomContent:SetText(moreModuleText);
+				TRP3_DashboardBottomContent.text = moreModuleText;
+			end
+		end
+	);
+
 	TRP3_DashboardBottomContent:SetFontObject("p", GameFontNormal);
 	TRP3_DashboardBottomContent:SetFontObject("h1", GameFontNormalHuge3);
 	TRP3_DashboardBottomContent:SetFontObject("h2", GameFontNormalHuge);
@@ -239,6 +265,12 @@ TRP3_API.dashboard.init = function()
 			end
 		elseif url == "scandisable" then
 			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
+		elseif url == "modules" then
+			C_Timer.After(0.25, function()
+				tabGroup:SelectTab(3);
+			end);
+		elseif url == "storyline" then
+			TRP3_API.popup.showTextInputPopup("Storyline", nil, nil, "http://storyline.totalrp3.info");
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
@@ -249,24 +281,13 @@ TRP3_API.dashboard.init = function()
 		TRP3_MainTooltip:Show();
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);
-	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
-	frame:SetSize(400, 30);
-	frame:SetPoint("TOPLEFT", 17, 30);
-	frame:SetFrameLevel(1);
-	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
-		{
-			{ loc("DB_NEW"), 1, 150 },
-			{ loc("DB_ABOUT"), 2, 175 },
-		},
-		function(tabWidget, value)
-			if value == 1 then
-				TRP3_DashboardBottomContent:SetText(whatsNewText);
-			elseif value == 2 then
-				TRP3_DashboardBottomContent:SetText(aboutText);
-			end
-		end
-	);
 	tabGroup:SelectTab(1);
+
+	-- Resizing
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		TRP3_DashboardBottomContent:SetSize(containerwidth - 54, 5);
+		TRP3_DashboardBottomContent:SetText(TRP3_DashboardBottomContent.text);
+	end);
 end
 
 local function profileSelected(profileID)
