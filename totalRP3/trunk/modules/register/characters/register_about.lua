@@ -142,11 +142,21 @@ local function shouldShowTemplate2(dataTab)
 	return atLeastOneFrame;
 end
 
+local function resizeTemplate2()
+	for _, frame in pairs(template2Frames) do
+		local text = _G[frame:GetName().."Text"];
+		local height = math.max(text:GetHeight(), 50) + TEMPLATE2_PADDING;
+		frame:SetHeight(height);
+	end
+end
+
 local function showTemplate2(dataTab)
 	local templateData = dataTab.T2 or {};
 
 	-- Hide all
 	for _, frame in pairs(template2Frames) do
+		local text = _G[frame:GetName().."Text"];
+		text:SetText("");
 		frame:Hide();
 	end
 
@@ -161,6 +171,7 @@ local function showTemplate2(dataTab)
 		end
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, -10);
+		frame:SetPoint("RIGHT", 0, 0);
 
 		local icon = _G[frame:GetName().."Icon"];
 		local text = _G[frame:GetName().."Text"];
@@ -181,9 +192,6 @@ local function showTemplate2(dataTab)
 			text:SetJustifyH("RIGHT")
 		end
 
-		local height = math.max(text:GetHeight(), icon:GetHeight()) + TEMPLATE2_PADDING;
-		frame:SetHeight(height);
-
 		if frameTab.TX and frameTab.TX:len() > 0 then
 			frame:Show();
 			previous = frame;
@@ -194,6 +202,7 @@ local function showTemplate2(dataTab)
 		frameIndex = frameIndex + 1;
 		bool = not bool;
 	end
+	resizeTemplate2();
 
 	if not shouldShowTemplate2(dataTab) then
 		TRP3_RegisterAbout_AboutPanel_Empty:Show();
@@ -267,7 +276,7 @@ function refreshTemplate2EditDisplay()
 	local templateData = draftData.T2;
 	assert(type(templateData) == "table", "Error: Nil template3 data or not a table.");
 
-	local previous = nil;
+	local previous;
 	for frameIndex, frameData in pairs(templateData) do
 		local frame = template2EditFrames[frameIndex];
 		if frame == nil then
@@ -275,6 +284,8 @@ function refreshTemplate2EditDisplay()
 		end
 		-- Position
 		frame:ClearAllPoints();
+		frame:SetPoint("LEFT", 0, 0);
+		frame:SetPoint("RIGHT", 0, 0);
 		if previous == nil then
 			frame:SetPoint("TOPLEFT", TRP3_RegisterAbout_Edit_Template2_Container, "TOPLEFT", -5, -5);
 		else
@@ -378,6 +389,19 @@ local function shouldShowTemplate3(dataTab)
 	return atLeastOneFrame;
 end
 
+local function resizeTemplate3()
+	for i=1, 3 do
+		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
+		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
+		if text:GetText() and text:GetText():len() > 0 then
+			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
+			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
+		else
+			frame:SetHeight(1);
+		end
+	end
+end
+
 local function showTemplate3(dataTab)
 	local templateData = dataTab.T3 or {};
 	local datas = {templateData.PH, templateData.PS, templateData.HI};
@@ -387,20 +411,21 @@ local function showTemplate3(dataTab)
 	for i=1, 3 do
 		local data = datas[i] or {};
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
+		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
+		text:SetText("");
 		if data.TX and data.TX:len() > 0 then
 			local icon = Utils.str.icon(data.IC or icons[i], 25);
 			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
-			local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
 			text:SetText(convertTextTags(data.TX));
 			setBkg(frame, data.BK);
-			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
 			frame:Show();
 		else
 			frame:Hide();
-			frame:SetHeight(1);
 		end
 	end
+	resizeTemplate3();
+
 	if not shouldShowTemplate3(dataTab) then
 		TRP3_RegisterAbout_AboutPanel_Empty:Show();
 	end
@@ -982,9 +1007,6 @@ function TRP3_API.register.inits.aboutInit()
 	end);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);
 
-	TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(450);
-	TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(450);
-	TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(450);
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc("REG_PLAYER_PHYSICAL"));
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc("REG_PLAYER_PSYCHO"));
 	TRP3_RegisterAbout_Edit_Template3_HistTitle:SetText(loc("REG_PLAYER_HISTORY"));
@@ -1031,7 +1053,28 @@ function TRP3_API.register.inits.aboutInit()
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 54, 5);
+		TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerwidth - 40, 5);
+		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 50, 5);
+		TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerwidth - 70);
+		TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerwidth - 70);
+		TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerwidth - 70);
+		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight(containerHeight * 0.25);
+		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight(containerHeight * 0.25);
+		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 75, 5);
+		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 70, 5);
+		resizeTemplate3();
 		TRP3_RegisterAbout_AboutPanel_Template1:SetText(TRP3_RegisterAbout_AboutPanel_Template1.html);
+		for _, frame in pairs(template2Frames) do
+			_G[frame:GetName().."Text"]:SetWidth(containerwidth - 150);
+		end
+		for _, frame in pairs(template2EditFrames) do
+			frame:SetHeight(containerHeight * 0.26);
+			_G[frame:GetName().."TextScrollText"]:SetWidth(containerwidth - 150);
+		end
+		resizeTemplate2();
+
+		TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText:SetWidth(containerwidth - 290);
+		TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerwidth - 290);
+		TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerwidth - 290);
 	end);
 end
