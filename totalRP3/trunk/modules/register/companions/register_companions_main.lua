@@ -442,10 +442,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	playerCompanions = TRP3_Companions.player;
 	parsePlayerProfiles(playerCompanions);
 
-	if not TRP3_Companions.register then
-		TRP3_Companions.register = {};
+	if not TRP3_Register.companion then
+		TRP3_Register.companion = {};
 	end
-	registerCompanions = TRP3_Companions.register;
+	registerCompanions = TRP3_Register.companion;
 	parseRegisterProfiles(registerCompanions);
 
 	registerMenu({

@@ -22,8 +22,9 @@
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title">
-					<Size x="0" y="20" />
 					<Anchors>
+						<Anchor point="TOP" x="0" y="-1" />
+						<Anchor point="BOTTOM" x="0" y="1" />
 						<Anchor point="LEFT" x="0" y="0" />
 						<Anchor point="RIGHT" x="0" y="0" />
 					</Anchors>
@@ -31,39 +32,36 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
-					<Size x="180" y="10" />
-					<Anchors>
-						<Anchor point="LEFT" x="30" y="0" />
-					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10" />
-				</FontString>
-				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
-					<Size x="110" y="10" />
-					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName" />
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95" />
-				</FontString>
 				<FontString name="$parentInfo2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
-					<Size x="0" y="10" />
+					<Size x="134" y="10" />
 					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo" />
 						<Anchor point="RIGHT" x="-15" y="0" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
+				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+					<Size x="110" y="10" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentInfo2" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="LEFT" x="30" y="0" />
+						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentInfo" />
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.10" />
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentClick">
-				<Size x="180" y="22" />
+			<Button name="$parentClickRight">
+				<Size x="134" y="22" />
 				<Anchors>
-					<Anchor point="LEFT" x="25" y="0" />
+					<Anchor point="RIGHT" x="-15" y="0" />
 				</Anchors>
-				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
-					<TexCoords bottom="0" left="0.25" top="1" right="1" />
-				</HighlightTexture>
 				<Scripts>
 					<OnEnter>
 						TRP3_RefreshTooltipForFrame(self);
@@ -76,7 +74,7 @@
 			<Button name="$parentClickMiddle">
 				<Size x="110" y="22" />
 				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentClick" />
+					<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentClickRight" />
 				</Anchors>
 				<Scripts>
 					<OnEnter>
@@ -87,12 +85,15 @@
 					</OnLeave>
 				</Scripts>
 			</Button>
-			<Button name="$parentClickRight">
+			<Button name="$parentClick">
 				<Size x="0" y="22" />
 				<Anchors>
-					<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentClickMiddle" />
-					<Anchor point="RIGHT" x="-15" y="0" />
+					<Anchor point="LEFT" x="25" y="0" />
+					<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentClickMiddle" />
 				</Anchors>
+				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+					<TexCoords bottom="0" left="0.25" top="1" right="1" />
+				</HighlightTexture>
 				<Scripts>
 					<OnEnter>
 						TRP3_RefreshTooltipForFrame(self);
@@ -121,11 +122,6 @@
 			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
 			<TileSize val="425" />
 		</Backdrop>
-		<Layers>
-			<Layer level="OVERLAY">
-
-			</Layer>
-		</Layers>
 		<Frames>
 			<Frame name="TRP3_RegisterListContainer">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
@@ -135,13 +131,7 @@
 				</Backdrop>
 				<Layers>
 					<Layer level="BACKGROUND">
-						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground">
-							<Size x="506" y="0" />
-							<Anchors>
-								<Anchor point="TOPRIGHT" x="-4" y="0" />
-								<Anchor point="BOTTOMRIGHT" x="-4" y="0" />
-							</Anchors>
-						</Texture>
+						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground" setAllPoints="true"/>
 					</Layer>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterListEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
@@ -162,9 +152,10 @@
 				</Anchors>
 				<Frames>
 					<Slider name="TRP3_RegisterListSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="310" />
+						<Size x="15" y="0" />
 						<Anchors>
 							<Anchor point="TOPRIGHT" x="-10" y="-40" />
+							<Anchor point="BOTTOMRIGHT" x="-10" y="70" />
 						</Anchors>
 						<Scripts>
 							<OnLoad>
@@ -195,25 +186,25 @@
 								</Texture>
 							</Layer>
 							<Layer level="OVERLAY">
-								<FontString name="TRP3_RegisterListHeaderName" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
-									<Size x="180" y="10" />
+								<FontString name="TRP3_RegisterListHeaderInfo2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
+									<Size x="134" y="10" />
 									<Anchors>
-										<Anchor point="LEFT" x="30" y="0" />
+										<Anchor point="RIGHT" x="-15" y="0" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
 								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
 									<Size x="110" y="10" />
 									<Anchors>
-										<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName" />
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderInfo2" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderInfo2" inherits="GameFontNormal" justifyH="CENTER" text="[Info ?]">
+								<FontString name="TRP3_RegisterListHeaderName" inherits="GameFontNormal" justifyH="LEFT" text="[Characters name]">
 									<Size x="0" y="10" />
 									<Anchors>
-										<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentInfo" />
-										<Anchor point="RIGHT" x="-15" y="0" />
+										<Anchor point="LEFT" x="30" y="0" />
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderInfo" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
