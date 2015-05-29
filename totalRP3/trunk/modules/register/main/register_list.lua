@@ -213,9 +213,13 @@ local function decorateCharacterLine(line, characterIndex)
 
 	local atLeastOneIgnored = false;
 	_G[line:GetName().."Info2"]:SetText("");
+	local firstLink;
 	if profile.link and tsize(profile.link) > 0 then
 		leftTooltipText = leftTooltipText .. loc("REG_LIST_CHAR_TT_CHAR");
 		for unitID, _ in pairs(profile.link) do
+			if not firstLink then
+				firstLink = unitID;
+			end
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if isIDIgnored(unitID) then
 				leftTooltipText = leftTooltipText .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_IGNORED");
@@ -270,6 +274,16 @@ local function decorateCharacterLine(line, characterIndex)
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
 	_G[line:GetName().."Info2"]:SetText(flags);
+
+	local addon = "Total RP 3";
+	if profile.msp then
+		addon = "Mary-Sue Protocol";
+		if firstLink and isUnitIDKnown(firstLink) then
+			local character = getUnitIDCharacter(firstLink);
+			addon = character.client or "Mary-Sue Protocol";
+		end
+	end
+	_G[line:GetName().."Addon"]:SetText(addon);
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
@@ -489,10 +503,18 @@ local function decorateCompanionLine(line, index)
 	for companionID, _ in pairs(links) do
 		companionList = companionList .. "- |cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r\n";
 	end
-	local masterList = "";
+	local masterList, firstMaster = "", "";
 	for ownerID, _ in pairs(masters) do
 		masterList = masterList .. "- |cff00ff00" .. ownerID .. "|r\n";
+		if firstMaster == "" then
+			firstMaster = ownerID;
+		end
 	end
+
+	if isUnitIDKnown(firstMaster) and  TRP3_API.register.profileExists(firstMaster) then
+		firstMaster = getCompleteName(getUnitIDProfile(firstMaster).characteristics or {}, "", true);
+	end
+	_G[line:GetName().."Addon"]:SetText(firstMaster);
 
 	secondLine = loc("REG_LIST_PETS_TOOLTIP") .. ":\n" .. companionList .. "\n" .. loc("REG_LIST_PETS_TOOLTIP2") .. ":\n" .. masterList;
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
@@ -628,6 +650,7 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
+	_G[line:GetName().."Addon"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(getIgnoredList()[unitID]));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
@@ -697,10 +720,13 @@ local function changeMode(tabWidget, value)
 	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
 	TRP3_RegisterListPetFilter:Hide();
+	TRP3_RegisterListHeaderAddon:SetText("");
 	if currentMode == MODE_CHARACTER then
 		TRP3_RegisterListCharactFilter:Show();
+		TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_ADDON"));
 	elseif currentMode == MODE_PETS then
 		TRP3_RegisterListPetFilter:Show();
+		TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_PET_MASTER"));
 	end
 	refreshList();
 	Events.fireEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
@@ -840,6 +866,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
+	TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_ADDON"));
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
@@ -878,6 +905,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
 		for _, line in pairs(widgetTab) do
 			line:SetHeight((containerHeight - 120) * 0.065);
+			if containerwidth < 690 then
+				_G[line:GetName() .. "Addon"]:SetWidth(2);
+			else
+				_G[line:GetName() .. "Addon"]:SetWidth(160);
+			end
+		end
+		if containerwidth < 690 then
+			TRP3_RegisterListHeaderAddon:SetWidth(2);
+		else
+			TRP3_RegisterListHeaderAddon:SetWidth(160);
 		end
 	end);
 end);

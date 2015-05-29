@@ -39,10 +39,17 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
-				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+				<FontString name="$parentAddon" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
 					<Size x="110" y="10" />
 					<Anchors>
 						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentInfo2" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+					<Size x="110" y="10" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentAddon" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -58,9 +65,10 @@
 		</Layers>
 		<Frames>
 			<Button name="$parentClickRight">
-				<Size x="134" y="22" />
+				<Size x="0" y="22" />
 				<Anchors>
-					<Anchor point="RIGHT" x="-15" y="0" />
+					<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentInfo2"/>
+					<Anchor point="LEFT" x="0" y="0" relativeTo="$parentInfo2"/>
 				</Anchors>
 				<Scripts>
 					<OnEnter>
@@ -72,9 +80,10 @@
 				</Scripts>
 			</Button>
 			<Button name="$parentClickMiddle">
-				<Size x="110" y="22" />
+				<Size x="0" y="22" />
 				<Anchors>
-					<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentClickRight" />
+					<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentInfo"/>
+					<Anchor point="LEFT" x="0" y="0" relativeTo="$parentInfo"/>
 				</Anchors>
 				<Scripts>
 					<OnEnter>
@@ -87,10 +96,10 @@
 			</Button>
 			<Button name="$parentClick">
 				<Anchors>
-					<Anchor point="TOP" x="0" y="0" />
-					<Anchor point="BOTTOM" x="0" y="0" />
-					<Anchor point="LEFT" x="25" y="0" />
-					<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentClickMiddle" />
+					<Anchor point="TOP" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="0"/>
+					<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentName"/>
+					<Anchor point="LEFT" x="0" y="0" relativeTo="$parentName"/>
 				</Anchors>
 				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
 					<TexCoords bottom="0" left="0.25" top="1" right="1" />
@@ -194,10 +203,17 @@
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+								<FontString name="TRP3_RegisterListHeaderAddon" inherits="GameFontNormal" justifyH="LEFT" text="[ADDON]">
 									<Size x="110" y="10" />
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderInfo2" />
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+									<Size x="110" y="10" />
+									<Anchors>
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderAddon" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
@@ -213,9 +229,10 @@
 						</Layers>
 						<Frames>
 							<Button name="TRP3_RegisterListHeaderNameTT" inherits="TRP3_InvisibleButton">
-								<Size x="180" y="20" />
+								<Size x="0" y="20" />
 								<Anchors>
-									<Anchor point="LEFT" x="30" y="0" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderName"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderName"/>
 								</Anchors>
 								<Scripts>
 									<OnEnter>
@@ -227,9 +244,10 @@
 								</Scripts>
 							</Button>
 							<Button name="TRP3_RegisterListHeaderInfoTT" inherits="TRP3_InvisibleButton">
-								<Size x="110" y="20" />
+								<Size x="0" y="20" />
 								<Anchors>
-									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentName" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderInfo"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderInfo"/>
 								</Anchors>
 								<Scripts>
 									<OnEnter>
