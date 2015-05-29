@@ -27,12 +27,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
-					<Size x="506" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-4" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
-					</Anchors>
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
 					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
 				</Texture>
 			</Layer>
@@ -43,9 +38,10 @@
 				
 					<!-- Names and titles -->
 					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
-						<Size x="414" y="70"/>
+						<Size x="0" y="70"/>
 						<Anchors>	
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
+							<Anchor point="RIGHT" x="-95" y="0"/>
 						</Anchors>
 						<Frames>
 							<Frame name="$parent_Icon" inherits="TRP3_SimpleIcon">
@@ -69,6 +65,7 @@
 						<Layers>
 							<Layer level="OVERLAY">
 								<FontString name="$parent_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
+									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="$parent_Icon"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
@@ -76,6 +73,7 @@
 									<Color b="0.95" r="0.95" g="0.95"/>	
 								</FontString>
 								<FontString name="$parent_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
+									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="$parent_Name"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
@@ -88,9 +86,10 @@
 					
 					<!-- At a glance -->
 					<Frame name="$parent_Glance" inherits="TRP3_FieldSetFrame">
-						<Size x="494" y="70"/>
-						<Anchors>	
+						<Size x="0" y="70"/>
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
+							<Anchor point="TOPRIGHT" x="-15" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="$parentSlot3" inherits="TRP3_RegisterMiscGlanceButton">
@@ -119,10 +118,10 @@
 					
 					<!-- Description -->
 					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
-						<Size x="494" y="0"/>
 						<Anchors>	
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_Glance"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="TOPRIGHT" x="-15" y="0"/>
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
@@ -165,9 +164,10 @@
 				
 					<!-- Names and titles -->
 					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
-						<Size x="414" y="70"/>
+						<Size x="0" y="70"/>
 						<Anchors>	
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
+							<Anchor point="RIGHT" x="-95" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="$parent_Icon" inherits="TRP3_IconButton">
@@ -188,9 +188,10 @@
 								</Anchors>
 							</Button>
 							<EditBox name="$parent_NameField" inherits="TRP3_TitledHelpEditBox">
-								<Size x="300" y="18"/>
+								<Size x="0" y="18"/>
 								<Anchors>	
 									<Anchor point="TOPLEFT" x="20" y="8" relativePoint="TOPRIGHT" relativeTo="$parent_Icon"/>
+									<Anchor point="RIGHT" x="-50" y="0"/>
 								</Anchors>
 							</EditBox>
 							<Button name="$parent_NameColor" inherits="TRP3_ColorPickerButton">
@@ -199,9 +200,10 @@
 								</Anchors>
 							</Button>
 							<EditBox name="$parent_TitleField" inherits="TRP3_TitledHelpEditBox">
-								<Size x="330" y="18"/>
+								<Size x="0" y="18"/>
 								<Anchors>	
 									<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="$parent_NameField"/>
+									<Anchor point="RIGHT" x="-20" y="0"/>
 								</Anchors>
 							</EditBox>
 						</Frames>
@@ -209,10 +211,10 @@
 					
 					<!-- Description -->
 					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
-						<Size x="494" y="0"/>
 						<Anchors>	
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
 							<Frame name="$parent_BckField" inherits="UIDropDownMenuTemplate" enableMouse="true">

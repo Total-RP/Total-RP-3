@@ -84,12 +84,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
-					<Size x="506" y="0"/>
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-4" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="-4" y="0"/>
-					</Anchors>
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
 					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
 				</Texture>
 			</Layer>

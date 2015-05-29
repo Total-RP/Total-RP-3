@@ -876,7 +876,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-
+		for _, line in pairs(widgetTab) do
+			line:SetHeight((containerHeight - 120) * 0.065);
+		end
 	end);
 end);
 

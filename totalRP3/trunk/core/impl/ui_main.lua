@@ -47,6 +47,12 @@ local hideMinimapButton = function()
 end
 TRP3_API.navigation.minimapicon.hide = hideMinimapButton;
 
+TRP3_API.navigation.delayedRefresh = function()
+	C_Timer.After(0.25, function()
+		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+	end);
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 
@@ -147,15 +153,5 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRAP3_MainFrameResizeButton.onResizeStop = function()
 		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 	end;
-
-	TRP3_MainFramePageContainer:SetScript("OnUpdate", function(self)
-		if TRP3_MainFrame.isSizing then
-			local width = self:GetWidth();
-			local height = self:GetHeight();
-			if width < 450 or height < 400 then
-				TRAP3_MainFrameResizeButton:GetScript("OnDragStop")(TRAP3_MainFrameResizeButton);
-			end
-		end
-	end);
 
 end);

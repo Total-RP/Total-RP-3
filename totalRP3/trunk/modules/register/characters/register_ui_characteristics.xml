@@ -269,6 +269,7 @@
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterCharact_NamePanel_Name" text="[Name and titles]" inherits="GameFontNormalLarge" justifyH="LEFT">
+							<Size x="0" y="15"/>
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="TRP3_RegisterCharact_NamePanel_Icon"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>
@@ -276,6 +277,7 @@
 							<Color b="0.95" r="0.95" g="0.95"/>	
 						</FontString>
 						<FontString name="TRP3_RegisterCharact_NamePanel_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
+							<Size x="0" y="15"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>

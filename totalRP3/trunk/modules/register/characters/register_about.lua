@@ -669,6 +669,7 @@ local function setEditTemplate(value)
 	_G["TRP3_RegisterAbout_Edit_Template"..value]:Show();
 	draftData.TE = value;
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+	TRP3_API.navigation.delayedRefresh();
 end
 
 local function save()

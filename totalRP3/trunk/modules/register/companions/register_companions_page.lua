@@ -191,7 +191,9 @@ local function displayEdit()
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
 	TRP3_CompanionsPageInformationEdit_About_BckField:SetSelectedIndex(draftData.BK or 1);
 	TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetText(draftData.TX or "");
-	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(hexaToNumber(draftData.NH))
+	TRP3_CompanionsPageInformationEdit_NamePanel_NameColor.setColor(hexaToNumber(draftData.NH));
+
+	TRP3_API.navigation.delayedRefresh();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -216,10 +218,12 @@ function displayConsult(context)
 
 	TRP3_CompanionsPageInformationConsult_About_Empty:Show();
 	TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText("");
+	TRP3_CompanionsPageInformationConsult_About_ScrollText.html = "";
 	if dataTab.TX and dataTab.TX:len() > 0 then
 		TRP3_CompanionsPageInformationConsult_About_Empty:Hide();
 		local text = Utils.str.toHTML(dataTab.TX);
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(text);
+		TRP3_CompanionsPageInformationConsult_About_ScrollText.html = text;
 	end
 	setBkg(TRP3_CompanionsPageInformationConsult_About, dataTab.BK);
 end
@@ -473,4 +477,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	createTabBar();
+
+	-- Resizing
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerwidth - 75, 5);
+		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html);
+		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerwidth - 85, 5);
+	end);
 end);
