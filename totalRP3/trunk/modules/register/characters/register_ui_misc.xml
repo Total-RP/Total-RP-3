@@ -246,7 +246,7 @@
 	</Frame>
 
 	<Frame name="TRP3_AtFirstGlanceEditor" inherits="TRP3_HoveredFrame" parent="UIParent" hidden="true">
-		<Size x="275" y="150"/>
+		<Size x="300" y="175"/>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" text="[GLANCE_EDITOR]" inherits="GameFontNormal" justifyH="LEFT">
@@ -304,6 +304,18 @@
 						TRP3_API.ui.misc.playUISound("gsCharacterSelection");
 					</PostClick>
 				</Scripts>
+			</Button>
+
+			<!-- RESIZING BUTTON -->
+			<Button name="TRP3_AtFirstGlanceEditorResizeButton" inherits="TRP3_ResizeButton" hidden="false">
+				<KeyValues>
+					<KeyValue key="resizableFrame" value="TRP3_AtFirstGlanceEditor" type="global"/>
+					<KeyValue key="minWidth" value="275" type="number"/>
+					<KeyValue key="minHeight" value="150" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+				</Anchors>
 			</Button>
 		</Frames>
 	</Frame>

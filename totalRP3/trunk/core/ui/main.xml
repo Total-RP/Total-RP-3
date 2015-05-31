@@ -319,19 +319,41 @@
 			<!-- CLOSE MAIN FRAME -->
 			<Button name="TRP3_MainFrameClose" inherits="UIPanelCloseButton">
 				<Anchors>
-					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="0" y="0"/>
+					<Anchor point="TOPRIGHT" x="4" y="4"/>
 				</Anchors>
 			</Button>
 
+			<!-- MaxiButton -->
+			<Button name="TRP3_MainFrameMaximizeButton" hidden="true">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+				</Anchors>
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>s
+
+			<!-- MiniButton -->
+			<Button name="TRP3_MainFrameMinimizeButton" hidden="true">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+				</Anchors>
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+
 			<!-- RESIZING BUTTON -->
-			<Button name="TRAP3_MainFrameResizeButton" inherits="TRP3_ResizeButton" hidden="false">
+			<Button name="TRP3_MainFrameResizeButton" inherits="TRP3_ResizeButton" hidden="true">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="TRP3_MainFrame" type="global"/>
 					<KeyValue key="minWidth" value="768" type="number"/>
 					<KeyValue key="minHeight" value="500" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
 				</Anchors>
 			</Button>
 		</Frames>

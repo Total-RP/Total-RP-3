@@ -526,4 +526,9 @@ function TRP3_API.register.inits.miscInit()
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
 	compressData();
+
+	-- Resizing
+	TRP3_AtFirstGlanceEditorResizeButton.onResizeStop = function()
+		TRP3_AtFirstGlanceEditorTextScrollText:SetSize(TRP3_AtFirstGlanceEditor:GetWidth() - 100, 10);
+	end;
 end

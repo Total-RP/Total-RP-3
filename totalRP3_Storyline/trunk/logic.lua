@@ -40,7 +40,6 @@ local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATI
 -- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CHAT_TEXT_WIDTH = 550;
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
@@ -630,7 +629,6 @@ local function init()
 		end
 	end
 
-	TRP3_NPCDialogFrameChatText:SetWidth(CHAT_TEXT_WIDTH);
 	setTooltipAll(TRP3_NPCDialogFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
 	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesYes, "BOTTOM", 0, 0,  loc("SL_ACCEPTANCE"));
 	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesNo, "BOTTOM", 0, 0, loc("SL_DECLINE"));
@@ -655,7 +653,7 @@ local function init()
 	end);
 	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
 	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
-	TRP3_NPCDialogClose:SetScript("OnClick", closeDialog);
+	TRP3_NPCDialogFrameClose:SetScript("OnClick", closeDialog);
 	TRP3_NPCDialogFrameRewardsItem:SetScale(1.5);
 
 	TRP3_NPCDialogFrameModelsYou.animTab = {};
@@ -694,6 +692,13 @@ local function init()
 		local questDescription = GetQuestLogQuestText();
 		startDialog("none", questDescription, "REPLAY", EVENT_INFO["REPLAY"]);
 	end);
+
+	-- Resizing
+	TRP3_NPCDialogFrameChatText:SetWidth(550);
+	TRP3_NPCDialogFrameResizeButton.onResizeStop = function()
+		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
+		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
+	end;
 end
 
 local MODULE_STRUCTURE = {
@@ -702,7 +707,7 @@ local MODULE_STRUCTURE = {
 	["version"] = 1,
 	["id"] = "trp3_storyline",
 	["onStart"] = init,
-	["minVersion"] = 10,
+	["minVersion"] = 11,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
