@@ -254,7 +254,7 @@
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
 						</Anchors>
-						<NormalTexture file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-Ready"/>
+						<NormalTexture file="Interface\RAIDFRAME\ReadyCheck-Ready"/>
 						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
 					<Button name="TRP3_NPCDialogFrameObjectivesNo" inherits="TRP3_InvisibleButton">
@@ -262,7 +262,7 @@
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
 						</Anchors>
-						<NormalTexture file="BlizzardInterfaceArt\Interface\RAIDFRAME\ReadyCheck-NotReady"/>
+						<NormalTexture file="Interface\RAIDFRAME\ReadyCheck-NotReady"/>
 						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
 				</Frames>
