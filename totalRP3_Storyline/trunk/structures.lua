@@ -115,6 +115,35 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	["character\\nightelf\\male\\nightelfmale_hd.m2"] = {
 		[TALK_ID] = 1.900,
 	},
+	-- Blood elves
+	["character\\bloodelf\\male\\bloodelfmale_hd.m2"] = {
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 2.00,
+		[TALK_ID] = 2.000,
+	},
+	["character\\bloodelf\\female\\bloodelffemale_hd.m2"] = {
+		[TALK_ID] = 3.700,
+	},
+	["creature\\bloodelfguard\\bloodelfmale_guard.m2"] = {
+		[TALK_ID] = 2.000,
+		[QUESTION_ID] = 2.00,
+	},
+	-- Taurene
+	["character\\tauren\\female\\taurenfemale_hd.m2"] = {
+		[TALK_ID] = 2.800,
+	},
+	-- Troll
+	["character\\troll\\female\\trollfemale_hd.m2"] = {
+		[TALK_ID] = 2.400,
+	},
+	["character\\troll\\male\\trollmale_hd.m2"] = {
+		[TALK_ID] = 2.400,
+	},
+	-- Scourge
+	["character\\scourge\\male\\scourgemale_hd.m2"] = {
+		[TALK_ID] = 2.400,
+		[QUESTION_ID] = 2.30,
+	},
 	-- ARRAKOA
 	["creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
 		[TALK_ID] = 1.700,

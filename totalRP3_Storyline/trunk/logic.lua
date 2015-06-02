@@ -32,7 +32,7 @@ end
 -- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DEBUG = false;
+local DEBUG = true;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
