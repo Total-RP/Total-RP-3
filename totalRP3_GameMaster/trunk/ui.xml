@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/"
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 	
@@ -18,5 +18,11 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
+	<!-- Please note that the loading order matters a lot -->
+	<Include file="tools\npctalk.xml"/>
+
+	<Script file="locales.lua"/>
+	<Script file="main.lua"/>
+
 </Ui>

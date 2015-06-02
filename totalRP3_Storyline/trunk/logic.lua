@@ -17,7 +17,20 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CHECK VERSION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
+if TRP3_API.globals.version < 11 then
+	local errorText = "Storyline module requires at least version 1.0.1 of Total RP 3.";
+	message(errorText); -- For those not showing lua error
+	error(errorText); -- Abord loading!
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- STRUCTURES & VARIABLES
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DEBUG = false;
 
@@ -34,11 +47,6 @@ local GetRewardText, GetQuestText = GetRewardText, GetQuestText;
 local TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING = TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING;
 local TRP3_ANIMATION_SEQUENCE_DURATION = TRP3_ANIMATION_SEQUENCE_DURATION;
 local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL;
-
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- STRUCTURES & VARIABLES
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
@@ -618,7 +626,7 @@ local function registerEventStructure()
 	}
 end
 
-local function init()
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	ForceGossip = function() return true end
 
 	-- Register locales
@@ -699,15 +707,4 @@ local function init()
 		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
 		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 	end;
-end
-
-local MODULE_STRUCTURE = {
-	["name"] = "Storyline",
-	["description"] = "Improve the way stories are told.",
-	["version"] = 1,
-	["id"] = "trp3_storyline",
-	["onStart"] = init,
-	["minVersion"] = 11,
-};
-
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+end);

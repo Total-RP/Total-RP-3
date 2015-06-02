@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
--- NPC talks
+-- NPC talks tools
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --
@@ -18,12 +18,10 @@
 ----------------------------------------------------------------------------------
 
 -- imports
-local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
-local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Init
+-- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local lastAnchor;
@@ -43,6 +41,10 @@ local function onButtonClicked(Uibutton, buttonStructure, button)
 		refreshPosition();
 	end
 end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Init
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
