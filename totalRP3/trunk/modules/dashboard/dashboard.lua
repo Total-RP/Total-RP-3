@@ -179,32 +179,7 @@ TRP3_API.dashboard.init = function()
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW");
 	local moreModuleText = loc("MORE_MODULES");
-	local aboutText = [[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}http://totalrp3.info{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
-- Renaud "Ellypse" Parize
-- Sylvain "Telkostrasz" Cossement
-
-
-{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Our pre-alpha QA team:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Thanks to all our friends for their support all these years:{/col}
-- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou]]
+	local aboutText = loc("THANK_YOU");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);

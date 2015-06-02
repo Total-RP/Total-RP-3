@@ -667,8 +667,12 @@
 				TRP3_API.ui.frame.initResize(self);
 			</OnLoad>
 		</Scripts>
-		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up">
+			<TexCoords left="1" right="0" top="0" bottom="1"/>
+		</NormalTexture>
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down">
+			<TexCoords left="1" right="0" top="0" bottom="1"/>
+		</PushedTexture>
 		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 	</Button>
 </Ui>

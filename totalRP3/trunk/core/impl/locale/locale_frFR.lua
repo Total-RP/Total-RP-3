@@ -883,25 +883,48 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
 		WHATS_NEW = [=[{h3:c}Nouveau dans la version {col:6eff51}1.0.1{/col}{/h3}
-{h3}1. Coordonnées de résidence{/h3}
+{h3}1. Onglet modules{/h3}
+Découvrez les nouveaux {link*modules*modules} optionnels !
+
+{h3}2. Coordonnées de résidence{/h3}
 Vous pouvez maintenant placer sur la carte la résidence de votre personnage en cliquant sur le bouton "Obtenir la position" pendant l'édition des caractéristiques.
 Les autres joueurs pourront voir ce marqueur sur leur carte lors de leur visite de votre profil.
 
-{h3}2. Purge automatique du registre{/h3}
+{h3}3. Purge automatique du registre{/h3}
 WoW n'est pas parfait, et un bug ennuyant provoque l'effacement de toutes les données d'un addon lorsqu'elle atteignent une certaine taille.
 Pour réduire les chances que cela arrive, nous avons ajouté un système de purge automatique effaçant les profils de personnages que vous n'avez pas croisé depuis plus de 5 jours et sur lesquels vous n'avez placé aucune relation.
-Vous pouvez changer ce comportement {link*scandisable*ici}.
+Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
+		MORE_MODULES = [[{h2:c}Modules optionnels{/h2}
+{h3}Storyline{/h3}
+|cff9999ffStoryline|r est un module améliorant la manière dont les quêtes de World of Warcraft vous seront contées.
+|cff9999ffVisitez vite: {link*storyline*http://storyline.totalrp3.info}]],
+		DB_MORE = "Modules additionnels",
+		THANK_YOU = [[{h1:c}Total RP 3{/h1}
+{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
+{p:c}http://totalrp3.info{/p}
 
-{h3:c}Nouveau dans la version {col:6eff51}1.0{/col}{/h3}
-{h3}1. Système de position de personnages{/h3}
-Vous pouvez maintenant scanner la position des personnages sur votre carte. {link*map*Ouvrez votre carte} et utilisez le bouton en bas à droite pour lancer le scan !
-|cffff9900Pas envie d'être visible? {link*scandisable*Désactiver la fonctionnalité}.
+{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
+- Renaud "Ellypse" Parize
+- Sylvain "Telkostrasz" Cossement
 
-{h3}2. Nouvelle interface "Coups d'oeil"{/h3}
-Nous avons amélioré l'interface d'édition des Coups d'oeil. {link*glance*Jeter un oeil !}
 
-{h3}3. Nouveau bouton pour changer la langue{/h3}
-Un nouveau bouton a été ajouté à la barre d'outils pour changer de langage parmis ceux connus de votre personnage. {link*language*Jeter un oeil !}]=],
+{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
+{col:ffffff}Our pre-alpha QA team:{/col}
+- Saelora
+- Erzan
+- Calian
+- Kharess
+- Alnih
+- 611
+
+{col:ffffff}Thanks to all our friends for their support all these years:{/col}
+- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
+
+{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
+- Azane
+- Hellclaw
+- Leylou]]
 	}
 
 

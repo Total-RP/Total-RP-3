@@ -832,7 +832,7 @@ Total RP is not responsible for links leading to harmful content.]],
 
 		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.1{/col}{/h3}
 {h3}1. Modules section{/h3}
-Learn about our optional modules {link*modules*here}!
+Learn about our {link*modules*optional modules}!
 
 {h3}2. Residence coordinates{/h3}
 You can now place your character's residence on the map by using the "set position" button while editing characteristics.
@@ -847,6 +847,33 @@ To reduce the chances that you reach the data limit, we implemented an automatic
 {h3}Storyline{/h3}
 |cff9999ffStoryline|r is a module enhancing the original WoW quest texts and improving immersion with animated dialogues and fancy effects.
 |cff9999ffPlease visit: {link*storyline*http://storyline.totalrp3.info}]],
+
+		THANK_YOU = [[{h1:c}Total RP 3{/h1}
+{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
+{p:c}http://totalrp3.info{/p}
+
+{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
+- Renaud "Ellypse" Parize
+- Sylvain "Telkostrasz" Cossement
+
+
+{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
+{col:ffffff}Our pre-alpha QA team:{/col}
+- Saelora
+- Erzan
+- Calian
+- Kharess
+- Alnih
+- 611
+
+{col:ffffff}Thanks to all our friends for their support all these years:{/col}
+- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
+
+{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
+- Azane
+- Hellclaw
+- Leylou]]
 	},
 };
 

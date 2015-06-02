@@ -22,7 +22,7 @@
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
-if TRP3_API.globals.version < 11 then
+if TRP3_API.globals.version < 12 then
 	local errorText = "Storyline module requires at least version 1.0.1 of Total RP 3.";
 	message(errorText); -- For those not showing lua error
 	error(errorText); -- Abord loading!
