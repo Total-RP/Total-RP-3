@@ -216,7 +216,7 @@ TRP3_API.dashboard.init = function()
 	TRP3_DashboardBottomContent:SetTextColor("h1", 1, 1, 1);
 	TRP3_DashboardBottomContent:SetTextColor("h2", 1, 1, 1);
 	TRP3_DashboardBottomContent:SetTextColor("h3", 1, 1, 1);
-	TRP3_DashboardBottomContent:SetScript("OnHyperlinkClick", function(self, url)
+	TRP3_DashboardBottomContent:SetScript("OnHyperlinkClick", function(self, url, text, button)
 		if url == "map" then
 			MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
 			C_Timer.After(0.5, function() TRP3_API.map.launchScan("playerScan"); end);
@@ -246,13 +246,25 @@ TRP3_API.dashboard.init = function()
 			end);
 		elseif url == "storyline" then
 			TRP3_API.popup.showTextInputPopup("Storyline", nil, nil, "http://storyline.totalrp3.info");
+		elseif url:find("twitter%.com") then
+			if button == "RightButton" then
+				
+			else
+				TRP3_API.popup.showTextInputPopup("|TInterface\\ICONS\\ability_garrison_orangebird:50|t\nTwitter profile", nil, nil, url);
+			end
+
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(TRP3_DashboardBottomContent, "ANCHOR_CURSOR");
 		TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
-		TRP3_MainTooltip:AddLine(loc("DB_HTML_GOTO"), 1, 1, 1, true);
+		if link:find("twitter%.com") then
+			TRP3_MainTooltip:AddLine("|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_TWEET_PROFILE"):format(text)
+				.. "|n|cffffff00" .. loc("CM_R_CLICK") .. ":|r " .. loc("CM_TWEET"):format(text), 1, 1, 1, true);
+		else
+			TRP3_MainTooltip:AddLine("|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_OPEN"), 1, 1, 1, true);
+		end
 		TRP3_MainTooltip:Show();
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);

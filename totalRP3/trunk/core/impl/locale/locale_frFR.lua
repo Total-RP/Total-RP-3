@@ -927,7 +927,7 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 - Leylou
 
 {col:ffffff}Pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}
-- {col:61AAEE}@Horionne{/col}]]
+- {twitter*http://twitter.com/Horionne*Horionne}]]
 	}
 
 
