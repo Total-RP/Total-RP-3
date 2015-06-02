@@ -246,9 +246,9 @@ TRP3_API.dashboard.init = function()
 			end);
 		elseif url == "storyline" then
 			TRP3_API.popup.showTextInputPopup("Storyline", nil, nil, "http://storyline.totalrp3.info");
-		elseif url:find("twitter%.com") then
-			if button == "RightButton" then
-				
+		elseif url:sub(1, 7) == "twitter" then
+			if Social_ToggleShow and button == "LeftButton" then
+				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
 			else
 				TRP3_API.popup.showTextInputPopup("|TInterface\\ICONS\\ability_garrison_orangebird:50|t\nTwitter profile", nil, nil, url);
 			end
@@ -258,11 +258,13 @@ TRP3_API.dashboard.init = function()
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(TRP3_DashboardBottomContent, "ANCHOR_CURSOR");
-		TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
-		if link:find("twitter%.com") then
-			TRP3_MainTooltip:AddLine("|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_TWEET_PROFILE"):format(text)
-				.. "|n|cffffff00" .. loc("CM_R_CLICK") .. ":|r " .. loc("CM_TWEET"):format(text), 1, 1, 1, true);
+
+		if Social_ToggleShow and link:sub(1, 7) == "twitter" then
+			TRP3_MainTooltip:AddLine(link:gsub("twitter", "|cff61AAEE@"), 1, 1, 1, true);
+			TRP3_MainTooltip:AddLine("|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_TWEET")
+				.. "|n|cffffff00" .. loc("CM_R_CLICK") .. ":|r " .. loc("CM_TWEET_PROFILE"), 1, 1, 1, true);
 		else
+			TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
 			TRP3_MainTooltip:AddLine("|cffffff00" .. loc("CM_CLICK") .. ":|r " .. loc("CM_OPEN"), 1, 1, 1, true);
 		end
 		TRP3_MainTooltip:Show();

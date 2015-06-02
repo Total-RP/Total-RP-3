@@ -770,8 +770,8 @@ Total RP is not responsible for links leading to harmful content.]],
 		CM_CLASS_UNKNOWN = "Unknown",
 		CM_RESIZE = "Resize",
 		CM_RESIZE_TT = "Drag to resize the frame.",
-		CM_TWEET_PROFILE = "Show %s|r profile url",
-		CM_TWEET = "Send a tweet to %s|r",
+		CM_TWEET_PROFILE = "Show profile url",
+		CM_TWEET = "Send a tweet",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Minimap button
@@ -855,8 +855,8 @@ To reduce the chances that you reach the data limit, we implemented an automatic
 {p:c}http://totalrp3.info{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
-- Renaud "Ellypse" Parize
-- Sylvain "Telkostrasz" Cossement
+- Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
+- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
@@ -878,7 +878,7 @@ To reduce the chances that you reach the data limit, we implemented an automatic
 - Leylou
 
 {col:ffffff}For sending use the magazine Gamer Culte Online #14 with an article about Total RP:{/col}
-- {col:61AAEE}{link*http://twitter.com/Horionne*@Horionne}{/col}]]
+- {twitter*Horionne*@Horionne}]]
 	},
 };
 

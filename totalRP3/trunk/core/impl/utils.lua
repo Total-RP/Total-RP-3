@@ -541,7 +541,7 @@ Utils.str.toHTML = function(text)
 		"<a href=\"%1\">|cff00ff00[%2]|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
-			"<a href=\"%1\">|cff61AAEE@%2|r</a>");
+			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
 		finalText = finalText..line;
 	end
