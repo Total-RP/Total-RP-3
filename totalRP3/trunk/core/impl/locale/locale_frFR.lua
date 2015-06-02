@@ -903,13 +903,13 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}http://totalrp3.info{/p}
 
-{h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
+{h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
 - Renaud "Ellypse" Parize
 - Sylvain "Telkostrasz" Cossement
 
 
-{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Our pre-alpha QA team:{/col}
+{h2}{icon:THUMBUP:20} Remerciements{/h2}
+{col:ffffff}Notre équipe de test pré-alpha:{/col}
 - Saelora
 - Erzan
 - Calian
@@ -917,14 +917,17 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 - Alnih
 - 611
 
-{col:ffffff}Thanks to all our friends for their support all these years:{/col}
-- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
+{col:ffffff}Merci à tous nos amis pour leur support au fil des années:{/col}
+- Pour Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- Pour Ellypse: Les guildes Maison Celwë'Belore, Mercenaires Atal'ai, et plus particulièrement Erzan, Elenna, Caleb, Siana et Adaeria.
 
-{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
+{col:ffffff}Pour nous avoir aidé à créer la guilde Total RP sur Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
-- Leylou]]
+- Leylou
+
+{col:ffffff}Pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}
+- {col:61AAEE}@Horionne{/col}]]
 	}
 
 

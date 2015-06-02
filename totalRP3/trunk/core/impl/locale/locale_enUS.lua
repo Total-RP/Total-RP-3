@@ -873,7 +873,10 @@ To reduce the chances that you reach the data limit, we implemented an automatic
 {col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
-- Leylou]]
+- Leylou
+
+{col:ffffff}For sending use the magazine Gamer Culte Online #14 with an article about Total RP:{/col}
+- {col:61AAEE}@Horionne{/col}]]
 	},
 };
 
