@@ -925,9 +925,7 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 - Azane
 - Hellclaw
 - Leylou
-
-{col:ffffff}Pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}
-- {twitter*Horionne*@Horionne}]]
+{col:ffffff}Merci à Horionne, pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}]]
 	}
 
 

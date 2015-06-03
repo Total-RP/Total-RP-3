@@ -877,8 +877,7 @@ To reduce the chances that you reach the data limit, we implemented an automatic
 - Hellclaw
 - Leylou
 
-{col:ffffff}For sending use the magazine Gamer Culte Online #14 with an article about Total RP:{/col}
-- {twitter*Horionne*@Horionne}]]
+{col:ffffff}Thanks to Horionne for sending use the magazine Gamer Culte Online #14 with an article about Total RP:{/col}]]
 	},
 };
 
