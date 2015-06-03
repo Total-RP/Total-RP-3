@@ -904,8 +904,8 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 {p:c}http://totalrp3.info{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
-- Renaud "Ellypse" Parize
-- Sylvain "Telkostrasz" Cossement
+- Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
+- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
 
 {h2}{icon:THUMBUP:20} Remerciements{/h2}
@@ -927,7 +927,7 @@ Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
 - Leylou
 
 {col:ffffff}Pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}
-- {twitter*http://twitter.com/Horionne*Horionne}]]
+- {twitter*Horionne*@Horionne}]]
 	}
 
 
