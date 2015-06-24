@@ -837,6 +837,7 @@ Total RP ist NICHT für Links verantwortlich, die auf schädlichen oder illegale
 		UI_TUTO_BUTTON = "Tutorialmodus", -- Needs review
 		UI_TUTO_BUTTON_TT = "Klicke, um den Tutorialmodus ein/aus zu schalten", -- Needs review
 	}
+
 };
 
 TRP3_API.locale.registerLocale(LOCALE_DE);

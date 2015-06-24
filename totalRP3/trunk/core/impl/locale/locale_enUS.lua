@@ -589,7 +589,6 @@ Possible status:
 		TF_IGNORE_NO_REASON = "No reason",
 		TB_LANGUAGE = "Language",
 		TB_LANGUAGES_TT = "Change language",
-		TB_NPC_TALK = "NPC talks",
 		
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
@@ -832,17 +831,12 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.1{/col}{/h3}
-{h3}1. Modules section{/h3}
-Learn about our {link*modules*optional modules}!
+		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.2{/col}{/h3}
+{h3}1. Resizable frame{/h3}
+The main frame of Total RP 3 is now resizable. This is a first pass on making TRP3 the first responsive roleplaying addon!
 
-{h3}2. Residence coordinates{/h3}
-You can now place your character's residence on the map by using the "set position" button while editing characteristics.
-Players will be able to see that mark on the map when reading your profile.
-
-{h3}2. Directory automatic purge{/h3}
-WoW is not without bugs, and an annoying one is that when all the saved data about an addon reach a certain size, it gets wiped out.
-To reduce the chances that you reach the data limit, we implemented an automatic directory purge removing profiles from characters you never crossed or crossed more than 5 days ago and didn't placed any relation on it. You can change this behaviour {link*scandisable*here}.
+{h3}2. Updated icon list{/h3}
+We added the new icons from patch 6.2.
 
 ]],
 		MORE_MODULES = [[{h2:c}Optional modules{/h2}

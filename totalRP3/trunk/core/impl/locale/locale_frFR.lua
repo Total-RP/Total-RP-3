@@ -65,12 +65,16 @@ local LOCALE = {
 		CM_PLAY = "Jouer",
 		CM_R_CLICK = "Clic-droit",
 		CM_REMOVE = "Supprimer",
+		CM_RESIZE = "Redimensionner", -- Needs review
+		CM_RESIZE_TT = "Tirer pour redimensionner la fenêtre", -- Needs review
 		CM_RIGHT = "Droite",
 		CM_SAVE = "Sauver",
 		CM_SELECT = "Choisir",
 		CM_SHIFT = "Maj",
 		CM_SHOW = "Afficher",
 		CM_STOP = "Arrêter",
+		CM_TWEET = "Envoyer un tweet", -- Needs review
+		CM_TWEET_PROFILE = "Afficher l'url du profil", -- Needs review
 		CM_UNKNOWN = "Inconnu",
 		CM_VALUE = "Valeur",
 		CO_ANCHOR_BOTTOM = "Bas",
@@ -254,6 +258,7 @@ Statuts possibles:
 		CO_WIM_TT = "Vous utilisez |cff00ff00WIM|r, le support des canaux de chuchotement est désactivé pour des raisons de compatibilité.",
 		DB_ABOUT = "A propos de Total RP 3",
 		DB_HTML_GOTO = "Cliquer pour ouvrir",
+		DB_MORE = "Plus de modules", -- Needs review
 		DB_NEW = "Quoi de neuf ?",
 		DB_STATUS = "Statut",
 		DB_STATUS_CURRENTLY = "Actuellement (RP)",
@@ -302,9 +307,15 @@ Ce message ne s'affichera qu'une seule fois par session et peut être désactiv�
 		MAP_BUTTON_SCANNING = "Scan en cours",
 		MAP_BUTTON_SUBTITLE = "Clic pour afficher les scans disponibles",
 		MAP_BUTTON_TITLE = "Recherche de roleplay",
+		MAP_SCAN_CHAR = "Scan de personnages", -- Needs review
+		MAP_SCAN_CHAR_TITLE = "Personnages", -- Needs review
 		MM_SHOW_HIDE_MAIN = "Afficher/cacher la fenêtre principale",
 		MM_SHOW_HIDE_MOVE = "Déplacer le bouton",
 		MM_SHOW_HIDE_SHORTCUT = "Afficher/cacher la barre d'outils",
+		MORE_MODULES = [=[{h2:c}Modules optionnels{/h2}
+{h3}Storyline{/h3}
+|cff9999ffStoryline|r est un module améliorant la manière dont les quêtes de World of Warcraft vous seront contées.
+|cff9999ffVisitez vite: {link*storyline*http://storyline.totalrp3.info}]=], -- Needs review
 		NPC_TALK_SAY_PATTERN = "dit :",
 		NPC_TALK_WHISPER_PATTERN = "chuchotte :",
 		NPC_TALK_YELL_PATTERN = "crie :",
@@ -452,6 +463,7 @@ Vous pouvez optionnellement entrer la raison ci-dessous. C'est une note personne
 		REG_LIST_ACTIONS_PURGE_UNLINKED_C = [=[Cette purge supprimera tous les profils qui ne sont pas liés à un personnage WoW.
 
 |cff00ff00%s]=],
+		REG_LIST_ADDON = "Type de profile", -- Needs review
 		REG_LIST_CHAR_EMPTY = "Aucun personnage",
 		REG_LIST_CHAR_EMPTY2 = "Aucun personnage ne correspond à votre sélection",
 		REG_LIST_CHAR_FILTER = "Personnages: %s / %s",
@@ -852,6 +864,35 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		TF_PLAY_THEME = "Jouer le thème du personnage",
 		TF_PLAY_THEME_TT = [=[|cffffff00Clic gauche:|r Jouer |cff00ff00%s
 |cffffff00Clic droit:|r Arrêter le thème]=],
+		THANK_YOU = [=[{h1:c}Total RP 3{/h1}
+{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
+{p:c}http://totalrp3.info{/p}
+
+{h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
+- Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
+- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
+
+
+{h2}{icon:THUMBUP:20} Remerciements{/h2}
+{col:ffffff}Notre équipe de test pré-alpha:{/col}
+- Saelora
+- Erzan
+- Calian
+- Kharess
+- Alnih
+- 611
+
+{col:ffffff}Merci à tous nos amis pour leur support au fil des années:{/col}
+- Pour Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- Pour Ellypse: Les guildes Maison Celwë'Belore, Mercenaires Atal'ai, et plus particulièrement Erzan, Elenna, Caleb, Siana et Adaeria.
+
+{col:ffffff}Pour nous avoir aidé à créer la guilde Total RP sur Kirin Tor (EU):{/col}
+- Azane
+- Hellclaw
+- Leylou
+
+{col:ffffff}Pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}
+- {twitter*http://twitter.com/Horionne*Horionne}]=], -- Needs review
 		UI_BKG = "Arrière-plan %s",
 		UI_CLOSE_ALL = "Fermer tout",
 		UI_COLOR_BROWSER = "Sélecteur de couleur",
@@ -882,52 +923,15 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_MUSIC_SELECT = "Choisir une musique",
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-		WHATS_NEW = [=[{h3:c}Nouveau dans la version {col:6eff51}1.0.1{/col}{/h3}
-{h3}1. Onglet modules{/h3}
-Découvrez les nouveaux {link*modules*modules} optionnels !
+		WHATS_NEW = [=[{h3:c}Nouveau dans la version {col:6eff51}1.0.2{/col}{/h3}
+{h3}1. Fenêtre redimensionnable{/h3}
+La fenêtre principale de Total RP 3 est maintenant redimensionnable, c'est un pas de plus vers une interface « responsive » !
 
-{h3}2. Coordonnées de résidence{/h3}
-Vous pouvez maintenant placer sur la carte la résidence de votre personnage en cliquant sur le bouton "Obtenir la position" pendant l'édition des caractéristiques.
-Les autres joueurs pourront voir ce marqueur sur leur carte lors de leur visite de votre profil.
+{h3}2. Mise-à-jour des icônes{/h3}
+Ajout des icônes du patch 6.2.
 
-{h3}3. Purge automatique du registre{/h3}
-WoW n'est pas parfait, et un bug ennuyant provoque l'effacement de toutes les données d'un addon lorsqu'elle atteignent une certaine taille.
-Pour réduire les chances que cela arrive, nous avons ajouté un système de purge automatique effaçant les profils de personnages que vous n'avez pas croisé depuis plus de 5 jours et sur lesquels vous n'avez placé aucune relation.
-Vous pouvez changer ce comportement {link*scandisable*ici}.]=],
-		MORE_MODULES = [[{h2:c}Modules optionnels{/h2}
-{h3}Storyline{/h3}
-|cff9999ffStoryline|r est un module améliorant la manière dont les quêtes de World of Warcraft vous seront contées.
-|cff9999ffVisitez vite: {link*storyline*http://storyline.totalrp3.info}]],
-		DB_MORE = "Modules additionnels",
-		THANK_YOU = [[{h1:c}Total RP 3{/h1}
-{p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}http://totalrp3.info{/p}
-
-{h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
-- Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
-
-
-{h2}{icon:THUMBUP:20} Remerciements{/h2}
-{col:ffffff}Notre équipe de test pré-alpha:{/col}
-- Saelora
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
-
-{col:ffffff}Merci à tous nos amis pour leur support au fil des années:{/col}
-- Pour Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Pour Ellypse: Les guildes Maison Celwë'Belore, Mercenaires Atal'ai, et plus particulièrement Erzan, Elenna, Caleb, Siana et Adaeria.
-
-{col:ffffff}Pour nous avoir aidé à créer la guilde Total RP sur Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou
-{col:ffffff}Merci à Horionne, pour nous avoir envoyé le magazine Gamer Culte Online numéro 14 avec l'article sur Total RP:{/col}]]
+]=],
 	}
-
 
 };
 

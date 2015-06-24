@@ -324,7 +324,7 @@
 			</Button>
 
 			<!-- MaxiButton -->
-			<Button name="TRP3_MainFrameMaximizeButton" hidden="true">
+			<Button name="TRP3_MainFrameMaximizeButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-16" y="4"/>
 				</Anchors>
@@ -346,7 +346,7 @@
 			</Button>
 
 			<!-- RESIZING BUTTON -->
-			<Button name="TRP3_MainFrameResizeButton" inherits="TRP3_ResizeButton" hidden="true">
+			<Button name="TRP3_MainFrameResizeButton" inherits="TRP3_ResizeButton">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="TRP3_MainFrame" type="global"/>
 					<KeyValue key="minWidth" value="768" type="number"/>

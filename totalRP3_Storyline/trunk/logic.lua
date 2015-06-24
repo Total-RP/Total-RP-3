@@ -18,17 +18,6 @@
 ----------------------------------------------------------------------------------
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- CHECK VERSION
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
-if TRP3_API.globals.version < 12 then
-	local errorText = "Storyline module requires at least version 1.0.1 of Total RP 3.";
-	message(errorText); -- For those not showing lua error
-	error(errorText); -- Abord loading!
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -626,7 +615,7 @@ local function registerEventStructure()
 	}
 end
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+local function onStart()
 	ForceGossip = function() return true end
 
 	-- Register locales
@@ -707,4 +696,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
 		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 	end;
-end);
+end;
+
+local MODULE_STRUCTURE = {
+	["name"] = "Storyline",
+	["description"] = "Enhanced quest storytelling",
+	["version"] = 1.000,
+	["id"] = "trp3_storyline",
+	["onStart"] = onStart,
+	["minVersion"] = 12,
+};
+
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

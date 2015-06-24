@@ -144,6 +144,9 @@ Si no es así, el idioma se cambiará en la próxima conexión.]=],
 		CO_MINIMAP_BUTTON_FRAME = "Marco de anclaje",
 		CO_MINIMAP_BUTTON_RESET = "Restablecer posición",
 		CO_MINIMAP_BUTTON_RESET_BUTTON = "Restablecer",
+		CO_MINIMAP_BUTTON_SHOW_HELP = [=[Si estás usando otro addon para mostrar el icono en el minimapa del Total RP 3 (FuBar, Titan, Bazooka) puedes quitar el botón del minimapa.
+
+|cff00ff00Recordatorio : Puedes abrir Total RP 3 usando /trp3 switch main|r]=],
 		CO_MINIMAP_BUTTON_SHOW_TITLE = "Mostrar botón de minimapa",
 		COM_LIST = "Lista de comandos:",
 		CO_MODULES = "Estado de los módulos",
@@ -186,6 +189,9 @@ Estados posibles:
 		CO_REGISTER_ABOUT_VOTE_TT = "Activar el sistema de votación, permitirá que votes (\"me gusta\" o \"no me gusta\") en las descripciones de los usuarios y que puedan votar en la tuya propia.",
 		CO_REGISTER_AUTO_ADD = "Autoañadir nuevos jugadores",
 		CO_REGISTER_AUTO_ADD_TT = "Añadir automáticamente en el registro los jugadores que te encuentres.",
+		CO_REGISTER_AUTO_PURGE = "Purga automática",
+		CO_REGISTER_AUTO_PURGE_0 = "Purga desactivada",
+		CO_REGISTER_AUTO_PURGE_1 = "Después de %s día(s)",
 		CO_TARGETFRAME = "Ajustes del marco de objetivo",
 		CO_TARGETFRAME_ICON_SIZE = "Tamaño del icono",
 		CO_TARGETFRAME_USE = "Condición de visualización",
@@ -203,6 +209,7 @@ Estados posibles:
 		CO_TOOLBAR_MAX = "Iconos por línea",
 		CO_TOOLBAR_MAX_TT = "¡Se establece en 1 si deseas la barra en posición vertical!",
 		CO_TOOLBAR_SHOW_ON_LOGIN = "Mostrar barra de herramientas al iniciar sesión",
+		CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "Si no quieres que la barra de herramientas se muestre al iniciar sesión, desactiva esta opción.",
 		CO_TOOLTIP = "Herramientas",
 		CO_TOOLTIP_ANCHOR = "Punto de anclaje",
 		CO_TOOLTIP_ANCHORED = "Marco anclado",
@@ -237,7 +244,7 @@ Estados posibles:
 		CO_WIM = "|cffff9900El canal susurro está desactivado.",
 		CO_WIM_TT = "Estás usando |cff00ff00WIM|r, el uso del canal susurro esta deshabilitado por motivos de compatibilidad.",
 		DB_ABOUT = "Acerca de Total RP 3",
-		DB_HTML_GOTO = "Haz click para abrir",
+		DB_HTML_GOTO = "Haz clic para abrir",
 		DB_NEW = "¿Qué hay nuevo?",
 		DB_STATUS = "Estado",
 		DB_STATUS_CURRENTLY = "Actualmente (ER)",
@@ -259,7 +266,7 @@ Todas tus acciones no se asociarán a tu personaje.]=],
 		DB_STATUS_RP_VOLUNTEER_TT = [=[Seleccionarlo mostrará un icono en la descripción, lo que indica
 a nuevos jugadores de rol que que estás dispuesto a ayudarlos]=],
 		DB_STATUS_XP = "Estado del jugador",
-		DB_STATUS_XP_BEGINNER = "Jugador novato",
+		DB_STATUS_XP_BEGINNER = "Jugador principiante",
 		DB_STATUS_XP_BEGINNER_TT = [=[Seleccionarlo mostrará un icono en la descripción, lo que indica
 a otros jugadores de rol que eres un principiante.]=],
 		DB_TUTO_1 = [=[|cffffff00Estado del personaje|r indica si actualmente estás interpretando a tu personaje.
@@ -274,7 +281,7 @@ a otros jugadores de rol que eres un principiante.]=],
 		DTBK_RP = "Total RP 3 - ER/FdR",
 		GEN_NEW_VERSION_AVAILABLE = [=[Una nueva versión del Total RP 3 está disponible.
 
-|cffff0000Actual versión: %s
+|cffff0000Versión actual: %s
 |c0000ff00Nueva versión: %s|r
 
 |cffff9900Se te recomienda para estar al día.|r
@@ -284,6 +291,8 @@ Este mensaje solo se mostrará una vez por sesión y se puede desactivar en los 
 		GEN_WELCOME_MESSAGE = "Gracias por usar Total RP 3 (v %s) ¡Diviértete!",
 		MAP_BUTTON_NO_SCAN = "Rastreo no disponible",
 		MAP_BUTTON_SCANNING = "Rastrear",
+		MAP_BUTTON_SUBTITLE = "Haz clic para mostrar las exploraciones disponibles",
+		MAP_BUTTON_TITLE = "Explorador de rol",
 		MM_SHOW_HIDE_MAIN = "Mostrar/ocultar marco principal",
 		MM_SHOW_HIDE_MOVE = "Mover botón",
 		MM_SHOW_HIDE_SHORTCUT = "Mostrar/ocultar barra de herramientas",
@@ -436,10 +445,10 @@ Opcionalmente, puede rellenar la razón de ser ignorado abajo. Esta nota es pers
 		REG_LIST_CHAR_SEL = "Personaje selecionado",
 		REG_LIST_CHAR_TITLE = "Lista de personajes",
 		REG_LIST_CHAR_TT = "Haz clic para visualizar la página",
-		REG_LIST_CHAR_TT_CHAR = "Personajes del WoW ligados:",
-		REG_LIST_CHAR_TT_CHAR_NO = "No ligado a ningún personaje",
-		REG_LIST_CHAR_TT_DATE = [=[Última fecha de visualizado: |cff00ff00%s|r
-Última localización visualizado: |cff00ff00%s|r
+		REG_LIST_CHAR_TT_CHAR = "Personajes del WoW ligado:",
+		REG_LIST_CHAR_TT_CHAR_NO = "No está ligado a ningún personaje",
+		REG_LIST_CHAR_TT_DATE = [=[Última vez que fue visto: |cff00ff00%s|r
+Último lugar donde fue visto: |cff00ff00%s|r
 ]=],
 		REG_LIST_CHAR_TT_GLANCE = "A primera vista",
 		REG_LIST_CHAR_TT_IGNORE = "Personaje ignorado",
@@ -459,12 +468,12 @@ El |cff00ff00filtro de sólo del este reino|r mostrará sólo los perfiles de lo
 La segunda columna muestra la relación entre esos personajes y el tuyo.
 
 La última columna es para varias señales. (ignorados, etc...)]=],
-		REG_LIST_FILTERS = "Filtros",
+		REG_LIST_FILTERS = "Filtro",
 		REG_LIST_FILTERS_TT = [=[|cffffff00Clic:|r Aplicar filtro
-|cffffff00Clic izquierdo:|r Limpiar filtro]=],
+|cffffff00Clic-derecho:|r Limpiar filtro]=],
 		REG_LIST_FLAGS = "Señales",
 		REG_LIST_GUILD = "Hermandad",
-		REG_LIST_IGNORE_EMPTY = "Ningún personaje ignorado",
+		REG_LIST_IGNORE_EMPTY = "No hay personajes ignorados",
 		REG_LIST_IGNORE_TITLE = "Lista de ignorados",
 		REG_LIST_IGNORE_TT = [=[Relación:
 |cff00ff00%s
@@ -476,7 +485,7 @@ La última columna es para varias señales. (ignorados, etc...)]=],
 		REG_LIST_NOTIF_ADD_NOT = "Este perfil ya no existe.",
 		REG_LIST_PET_MASTER = "Nombre del dueño",
 		REG_LIST_PET_NAME = "Nombre",
-		REG_LIST_PETS_EMPTY = "Sin compañero",
+		REG_LIST_PETS_EMPTY = "No hay compañeros",
 		REG_LIST_PETS_EMPTY2 = "Ningún personaje corresponde a tu selección",
 		REG_LIST_PETS_FILTER = "Compañeros: %s / %s",
 		REG_LIST_PETS_TITLE = "Lista de compañeros",
@@ -500,8 +509,8 @@ Si quieres el TRP3 con el complemento PMS y no quieres ver esta alerta de nuevo,
 		REG_PLAYER_ABOUT_HEADER = "Etiqueta del título",
 		REG_PLAYER_ABOUT_MUSIC = "Tema del personaje",
 		REG_PLAYER_ABOUT_MUSIC_LISTEN = "Tocar tema",
-		REG_PLAYER_ABOUT_MUSIC_REMOVE = "Deselecciona tema",
-		REG_PLAYER_ABOUT_MUSIC_SELECT = "Seleccionar tema del personaje",
+		REG_PLAYER_ABOUT_MUSIC_REMOVE = "Eliminar tema",
+		REG_PLAYER_ABOUT_MUSIC_SELECT = "Seleccionar tema",
 		REG_PLAYER_ABOUT_MUSIC_SELECT2 = "Seleccionar tema",
 		REG_PLAYER_ABOUT_MUSIC_STOP = "Parar tema",
 		REG_PLAYER_ABOUT_NOMUSIC = "|cffff9900Sin tema",
@@ -587,6 +596,9 @@ Sin embargo, es posible que quieras evitar repeticiones, en caso de que no haya 
 		REG_PLAYER_GLANCE_PRESET_ALERT1 = "Por favor introduce una categoría y un nombre",
 		REG_PLAYER_GLANCE_PRESET_CATEGORY = "Categoría",
 		REG_PLAYER_GLANCE_PRESET_CREATE = "Crear preestablecido",
+		REG_PLAYER_GLANCE_PRESET_GET_CAT = [=[%s
+
+Por favor introduce el nombre para este preestablecido.]=],
 		REG_PLAYER_GLANCE_PRESET_NAME = "Nombre",
 		REG_PLAYER_GLANCE_PRESET_REMOVE = "Eliminar preestablecido |cff00ff00%s|r.",
 		REG_PLAYER_GLANCE_PRESET_SAVE = "Guardar información como un predeterminado",
@@ -601,6 +613,10 @@ Hay varias maneras de hacer esto:|c0000ff00
 - Numérico: 1,70m, 6'5''...
 - Un calificativo: Alto, bajo...]=],
 		REG_PLAYER_HERE = "Obtener posición",
+		REG_PLAYER_HERE_HOME_PRE_TT = [=[Actual posición de la residencia:
+|cff00ff00%s|r.]=],
+		REG_PLAYER_HERE_HOME_TT = [=[|cffffff00Clic|r: Utilizas la posición actual como tu residencia.
+|cffffff00Clic-derecho|r: Elimina la posición de la residencia.]=],
 		REG_PLAYER_HERE_TT = "Haz clic para obtener la posición",
 		REG_PLAYER_HISTORY = "Trasfondo",
 		REG_PLAYER_ICON = "Icono del personaje",
@@ -660,6 +676,10 @@ Hay varias maneras de hacer esto:|c0000ff00
 		REG_PLAYER_RACE_TT = "Aquí va la raza de tu personaje. No está restringido a razas jugables. Hay muchas razas del Warcraft que pueden asumir forma común...",
 		REG_PLAYER_REGISTER = "Información del directorio",
 		REG_PLAYER_RESIDENCE = "Residencia",
+		REG_PLAYER_RESIDENCE_SHOW = "Posición de residencia",
+		REG_PLAYER_RESIDENCE_SHOW_TT = [=[|cff00ff00%s
+
+|rClic para mostrar en el mapa]=],
 		REG_PLAYER_RESIDENCE_TT = [=[Aquí puedes indicar donde vive el personaje normalmente. Esta podría ser su dirección personal (su casa)  o un lugar donde se hospeda.
 Ten en cuenta que si tu personaje es un vagabundo, tendrás que cambiar la información.
 
@@ -762,17 +782,17 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 |cffffff00Haz clic para mostrar las acciones posibles]=],
 		REG_RELATION_FAMILY = "Familiar",
 		REG_RELATION_FAMILY_TT = "%s tiene un lazo de sangre con %s.",
-		REG_RELATION_FRIEND = "Amistad",
+		REG_RELATION_FRIEND = "Amigo",
 		REG_RELATION_FRIEND_TT = "%s es amigo de %s.",
 		REG_RELATION_LOVE = "Amor",
-		REG_RELATION_LOVE_TT = "¡%s quiere a %s!",
-		REG_RELATION_NEUTRAL = "Neutral",
-		REG_RELATION_NEUTRAL_TT = "%s no siente nada especial por %s.",
+		REG_RELATION_LOVE_TT = "¡%s está enamorado de %s!",
+		REG_RELATION_NEUTRAL = "Conocido",
+		REG_RELATION_NEUTRAL_TT = "%s conoce a %s.",
 		REG_RELATION_NONE = "Ninguno",
 		REG_RELATION_NONE_TT = "%s no conoce a %s.",
 		REG_RELATION_TARGET = "|cffffff00Clic: |rcambiar relación",
 		REG_RELATION_UNFRIENDLY = "Enemigo",
-		REG_RELATION_UNFRIENDLY_TT = "%s odia a %s.",
+		REG_RELATION_UNFRIENDLY_TT = "%s está enemistado con %s.",
 		REG_TT_GUILD = "%s de |cffff9900%s",
 		REG_TT_GUILD_IC = "Miembro ER",
 		REG_TT_GUILD_OOC = "Miembro FdR",
@@ -783,9 +803,10 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 		REG_TT_REALM = "Reino: |cffff9900%s",
 		REG_TT_TARGET = "Objetivo: |cffff9900%s",
 		TB_AFK_MODE = "Ausente",
-		TB_DND_MODE = "No molestar",
+		TB_DND_MODE = "Ocupado",
 		TB_GO_TO_MODE = "Cambiar a modo %s",
 		TB_LANGUAGE = "Idioma",
+		TB_LANGUAGES_TT = "Cambiar idioma",
 		TB_NORMAL_MODE = "Normal",
 		TB_RPSTATUS_OFF = "Personaje: |cffff0000Fuera de Rol",
 		TB_RPSTATUS_ON = "Personaje: |cff00ff00En Rol",
@@ -800,7 +821,7 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 		TB_SWITCH_HELM_2 = "Ocultar yelmo",
 		TB_SWITCH_HELM_OFF = "Yelmo: |cffff0000Oculto",
 		TB_SWITCH_HELM_ON = "Yelmo: |cff00ff00Visible",
-		TB_SWITCH_PROFILE = "Cambiar a otro perfil",
+		TB_SWITCH_PROFILE = "Cambiar de perfil",
 		TB_SWITCH_TOOLBAR = "Cambiar barra de herramientas",
 		TB_TOOLBAR = "Barra de herramientas",
 		TF_IGNORE = "Ignorar jugador",
@@ -844,11 +865,12 @@ Puedes copiar/pegar desde tu navegador web.
 |cffff0000¡¡Atencion!!|r
 Total RP no es responsable de los enlaces que conducen a contenidos nocivos.
 ]=],
-		UI_MUSIC_BROWSER = "Buscador de música",
-		UI_MUSIC_SELECT = "Seleccionar música",
+		UI_MUSIC_BROWSER = "Buscador de tema",
+		UI_MUSIC_SELECT = "Seleccionar tema",
 		UI_TUTO_BUTTON = "Modo tutorial",
 		UI_TUTO_BUTTON_TT = "Haz clic para activar/desactivar el modo tutorial",
 	}
+
 };
 
 TRP3_API.locale.registerLocale(LOCALE);
