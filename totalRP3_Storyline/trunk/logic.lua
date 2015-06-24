@@ -397,7 +397,11 @@ local function playText(textIndex)
 		else
 			-- No item
 			TTReward = REWARDS;
-			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\xp_icon");
+			if xp > 0 then
+				TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\xp_icon");
+			else
+				TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\inv_misc_coin_03");
+			end
 		end
 
 		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -20, TTReward, subTTReward);
