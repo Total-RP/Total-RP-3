@@ -35,7 +35,7 @@ TRP3_API = {
 		addon_id_length = 15,
 
 		version = 13,
-		version_display = "1.0.2",
+		version_display = "1.0.3-dev",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),
@@ -62,6 +62,10 @@ TRP3_API = {
 	}
 }
 
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Globals build
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 TRP3_API.globals.build = function()
 	local fullName, realm = UnitFullName("player");
 	assert(realm, "Cannot have realm name information !");
@@ -80,3 +84,4 @@ TRP3_API.globals.build = function()
 end
 
 TRP3_API.globals.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_API.globals.addon_name);
+

@@ -195,14 +195,6 @@
 						<Anchor point="CENTER" x="0" y="8s" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
 					</Anchors>
 				</FontString>
-				<FontString name="TRP3_NPCDialogFrameDebug" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
-					<Size x="0" y="0"/>
-					<Anchors>
-						<Anchor point="LEFT" x="100" y="0"/>
-						<Anchor point="RIGHT" x="-100" y="0"/>
-					</Anchors>
-					<Color r="1" g="1" b="0.4"/>
-				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -353,42 +345,6 @@
 							<Anchor point="RIGHT" x="0" y="0"/>
 							<Anchor point="LEFT" relativeTo="TRP3_NPCDialogFrameModelsPoint" relativePoint="RIGHT" x="0" y="0"/>
 						</Anchors>
-						<Frames>
-							<EditBox name="TRP3_NPCDialogFrameDEBUG" inherits="TRP3_TitledEditBox" numeric="true" hidden="true">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="0"/>
-								</Anchors>
-								<Frames>
-									<Button inherits="TRP3_CommonButton" text="+">
-										<Anchors>
-											<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
-										</Anchors>
-										<Scripts>
-											<OnClick>
-												self:GetParent():SetText(self:GetParent():GetNumber() + 1);
-												TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-											</OnClick>
-										</Scripts>
-									</Button>
-									<Button inherits="TRP3_CommonButton" text="-">
-										<Anchors>
-											<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
-										</Anchors>
-										<Scripts>
-											<OnClick>
-												self:GetParent():SetText(self:GetParent():GetNumber() - 1);
-												TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-											</OnClick>
-										</Scripts>
-									</Button>
-								</Frames>
-								<Scripts>
-									<OnEnterPressed>
-										TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
-									</OnEnterPressed>
-								</Scripts>
-							</EditBox>
-						</Frames>
 					</PlayerModel>
 
 					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="TRP3_StorylineChoiceButton"/>
@@ -497,6 +453,151 @@
 				</KeyValues>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT" x="-5" y="10"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_NPCDialogFrameDebug" parent="TRP3_NPCDialogFrame" hidden="false">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="300"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="100"/>
+		<Anchors>
+			<Anchor point="TOPRIGHT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
+			<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
+		</Anchors>
+		<Layers>
+			<Layer>
+				<FontString name="TRP3_NPCDialogFrameDebugText" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-10"/>
+						<Anchor point="TOPRIGHT" x="-50" y="-10"/>
+					</Anchors>
+					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+
+			<EditBox name="TRP3_NPCDialogFrameDebugModelMe" inherits="TRP3_TitledEditBox">
+				<Size x="300" y="20"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugText" x="0" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						TRP3_NPCDialogFrameDebugModelMeText:SetText("Player model");
+					</OnLoad>
+				</Scripts>
+			</EditBox>
+
+			<EditBox name="TRP3_NPCDialogFrameDebugModelYou" inherits="TRP3_TitledEditBox">
+				<Size x="300" y="20"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugModelMe" x="0" y="-5"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						TRP3_NPCDialogFrameDebugModelYouText:SetText("Target model");
+					</OnLoad>
+				</Scripts>
+			</EditBox>
+
+			<EditBox name="TRP3_NPCDialogFrameDebugSequenceMe" inherits="TRP3_TitledEditBox" numeric="true">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugModelMe" x="40" y="0"/>
+				</Anchors>
+				<Frames>
+					<Button inherits="TRP3_CommonButton" text="+">
+						<Size x="20" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():SetText(self:GetParent():GetNumber() + 1);
+								TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="-">
+						<Size x="20" y="20"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():SetText(self:GetParent():GetNumber() - 1);
+								TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
+				<Scripts>
+					<OnEnterPressed>
+						TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+					</OnEnterPressed>
+					<OnLoad>
+						TRP3_NPCDialogFrameDebugSequenceMeText:SetText("Player animation");
+						TRP3_NPCDialogFrameModelsMe.debug = self;
+					</OnLoad>
+				</Scripts>
+			</EditBox>
+
+			<EditBox name="TRP3_NPCDialogFrameDebugSequenceYou" inherits="TRP3_TitledEditBox" numeric="true">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugModelYou" x="40" y="0"/>
+				</Anchors>
+				<Frames>
+					<Button inherits="TRP3_CommonButton" text="+">
+						<Size x="20" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():SetText(self:GetParent():GetNumber() + 1);
+								TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+							</OnClick>
+						</Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="-">
+						<Size x="20" y="20"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0"/>
+						</Anchors>
+						<Scripts>
+							<OnClick>
+								self:GetParent():SetText(self:GetParent():GetNumber() - 1);
+								TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+							</OnClick>
+						</Scripts>
+					</Button>
+				</Frames>
+				<Scripts>
+					<OnEnterPressed>
+						TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+					</OnEnterPressed>
+					<OnLoad>
+						TRP3_NPCDialogFrameDebugSequenceYouText:SetText("Target animation");
+						TRP3_NPCDialogFrameModelsYou.debug = self;
+					</OnLoad>
+				</Scripts>
+			</EditBox>
+
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
 		</Frames>

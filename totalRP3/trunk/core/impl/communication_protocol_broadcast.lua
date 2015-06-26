@@ -85,7 +85,7 @@ local function receiveBroadcast(sender, command, ...)
 end
 
 local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
-	Log.log(tostring(sender) .. " : " .. tostring(message), Log.level.DEBUG);
+--	Log.log(tostring(sender) .. " : " .. tostring(message), Log.level.DEBUG);
 
 	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);

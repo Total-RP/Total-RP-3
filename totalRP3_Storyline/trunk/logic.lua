@@ -21,7 +21,7 @@
 -- STRUCTURES & VARIABLES
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DEBUG = false;
+local DEBUG = true;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
@@ -89,16 +89,21 @@ local function getAnimationByModel(model, animationType)
 	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
 end
 
+local function playAnim(model, sequence)
+	model:SetAnimation(sequence);
+	if model.debug then
+		model.debug:SetText(sequence);
+	end
+end
+
 local function playAnimationDelay(model, sequence, duration, delay, token)
 	if delay == 0 then
---		print("Playing: " .. sequence);
-		model:SetAnimation(sequence);
+		playAnim(model, sequence)
 	else
 		model.token = token;
 		C_Timer.After(delay, function()
 			if model.token == token then
---				print("Playing: " .. sequence .. " (" .. duration .. "s)");
-				model:SetAnimation(sequence);
+				playAnim(model, sequence);
 			end
 		end)
 	end
@@ -119,10 +124,10 @@ end
 local function playAndStand(sequence, duration)
 	local token = Utils.str.id();
 	TRP3_NPCDialogFrameModelsMe.token = token
-	TRP3_NPCDialogFrameModelsMe:SetAnimation(sequence);
+	playAnim(TRP3_NPCDialogFrameModelsMe, sequence);
 	C_Timer.After(duration, function()
 		if TRP3_NPCDialogFrameModelsMe.token == token then
-			TRP3_NPCDialogFrameModelsMe:SetAnimation(0);
+			playAnim(TRP3_NPCDialogFrameModelsMe, 0);
 		end
 	end);
 end
@@ -458,10 +463,7 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	--		return;
 	--	end
 
-	if DEBUG then
-		TRP3_NPCDialogFrameDEBUG:Show();
-		TRP3_NPCDialogFrameDebug:SetText("[debug] " .. event);
-	end
+	TRP3_NPCDialogFrameDebugText:SetText(event);
 
 	local targetName = UnitName(targetType);
 
@@ -508,8 +510,11 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	end
 	TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
 
-	if DEBUG and TRP3_NPCDialogFrameModelsYou.model then
-		ChatFrame1EditBox:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+	if TRP3_NPCDialogFrameModelsYou.model then
+		TRP3_NPCDialogFrameDebugModelYou:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+	end
+	if TRP3_NPCDialogFrameModelsMe.model then
+		TRP3_NPCDialogFrameDebugModelMe:SetText(TRP3_NPCDialogFrameModelsMe.model:gsub("\\", "\\\\"));
 	end
 
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
@@ -666,8 +671,6 @@ local function onStart()
 			self:SetFacing(self.spinAngle);
 		end
 	end);
-
-	TRP3_NPCDialogFrameDebug:Hide();
 
 	-- Showing events
 	registerEventStructure();
