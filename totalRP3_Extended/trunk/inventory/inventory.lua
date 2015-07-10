@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- Total RP 3: Extended features
+-- Total RP 3: Inventory system
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
@@ -16,20 +16,21 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local pairs = pairs;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+local function onStart()
+	
+end
 
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
+local MODULE_STRUCTURE = {
+	["name"] = "Inventory",
+	["description"] = "Inventory system for characters and companions",
+	["version"] = 1.000,
+	["id"] = "trp3_inventory",
+	["onStart"] = onStart,
+	["minVersion"] = 12,
+};
 
-end);
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

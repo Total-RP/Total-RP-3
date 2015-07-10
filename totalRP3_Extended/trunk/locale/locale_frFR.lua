@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- Total RP 3: Extended features
+-- Total RP 3
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
@@ -16,20 +16,6 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local pairs = pairs;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
-
-end);
+TRP3_EXTENDED_LOCALE["frFR"] = {
+	GM_MODULE = "Module Maitre du Jeu",
+};

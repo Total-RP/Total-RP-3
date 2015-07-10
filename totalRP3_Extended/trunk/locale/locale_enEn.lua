@@ -1,8 +1,7 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
--- GM module
 --	---------------------------------------------------------------------------
---	Copyright 2015 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -17,21 +16,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-TRP3_GM_LOCALE = {
+TRP3_EXTENDED_LOCALE = {};
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- LOCALE_EN
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	["enUS"] = {
-		GM_MODULE = "Game Master Module",
-	},
-	
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- LOCALE_FR
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	
-	["frFR"] = {
-		GM_MODULE = "Module Maitre du Jeu",
-	},
-}
+TRP3_EXTENDED_LOCALE["enUS"] = {
+	GM_MODULE = "Game Master Module",
+	GM_TB_NPC_TALK = "Pouic",
+};

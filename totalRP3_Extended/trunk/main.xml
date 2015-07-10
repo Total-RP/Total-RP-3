@@ -4,7 +4,7 @@
 	
 <!--
 	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+	Copyright 2014 Sylvain Cossement (telkostrasz@totalrp3.info)
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -20,9 +20,16 @@
 -->
 
 	<!-- Please note that the loading order matters a lot -->
-	<Include file="tools\npctalk.xml"/>
+	
+	<!-- Locales -->
+	<Script file="locale\locale_enEN.lua"/>
+	<Script file="locale\locale_frFR.lua"/>
+	
+	<!-- Modules -->
+	<Include file="gameMaster\gameMaster.xml"/>
+	<Include file="inventory\inventory.xml"/>
 
-	<Script file="locales.lua"/>
+	<!-- Main -->
 	<Script file="main.lua"/>
 
 </Ui>

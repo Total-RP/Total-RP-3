@@ -2,7 +2,7 @@
 -- Total RP 3
 -- NPC talks tools
 --	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local button = {
 		id = "vv_trp3_npctalk",
 		icon = "spell_holy_silence",
-		configText = loc("TB_NPC_TALK"),
+		configText = loc("GM_TB_NPC_TALK"),
 		onClick = onButtonClicked
 	};
 	TRP3_API.toolbar.toolbarAddButton(button);
