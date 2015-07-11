@@ -121,20 +121,25 @@ local function getDuration(model, sequence)
 	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
 end
 
-local function playAndStand(sequence, duration)
+local function playAndStand(model, sequence, duration)
 	local token = Utils.str.id();
-	TRP3_NPCDialogFrameModelsMe.token = token
-	playAnim(TRP3_NPCDialogFrameModelsMe, sequence);
+	model.token = token
+	playAnim(model, sequence);
 	C_Timer.After(duration, function()
-		if TRP3_NPCDialogFrameModelsMe.token == token then
-			playAnim(TRP3_NPCDialogFrameModelsMe, 0);
+		if model.token == token then
+			playAnim(model, 0);
 		end
 	end);
 end
 
 local function playSelfAnim(sequence)
-	playAndStand(sequence, getDuration(TRP3_NPCDialogFrameModelsMe:GetModel(), sequence));
+	playAndStand(TRP3_NPCDialogFrameModelsMe, sequence, getDuration(TRP3_NPCDialogFrameModelsMe:GetModel(), sequence));
 end
+
+local function playTargetAnim(sequence)
+	playAndStand(TRP3_NPCDialogFrameModelsYou, sequence, getDuration(TRP3_NPCDialogFrameModelsYou:GetModel(), sequence));
+end
+TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim = playTargetAnim;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SELECTION
@@ -457,12 +462,6 @@ local function resetDialog()
 end
 
 local function startDialog(targetType, fullText, event, eventInfo)
-	-- Ca marche pas, merci Blizzard d'ajouter des fonctions que tu n'implementes pas toi meme.
-	--	local forced = ForceGossip();
-	--	if not forced then
-	--		return;
-	--	end
-
 	TRP3_NPCDialogFrameDebugText:SetText(event);
 
 	local targetName = UnitName(targetType);
@@ -517,6 +516,20 @@ local function startDialog(targetType, fullText, event, eventInfo)
 		TRP3_NPCDialogFrameDebugModelMe:SetText(TRP3_NPCDialogFrameModelsMe.model:gsub("\\", "\\\\"));
 	end
 
+	local scale = 0;
+	if TRP3_NPCDialogFrameModelsYou.model and TRP3_NPCDialogFrameModelsMe.model then
+		scale = TRP3_SCALE_MAPPING[TRP3_NPCDialogFrameModelsMe.model .. "~" .. TRP3_NPCDialogFrameModelsYou.model];
+		if not scale then
+			scale = TRP3_SCALE_MAPPING[TRP3_NPCDialogFrameModelsYou.model .. "~" .. TRP3_NPCDialogFrameModelsMe.model];
+			if scale then
+				scale = -scale;
+			else
+				scale = 0;
+			end
+		end
+	end
+	TRP3_NPCDialogFrameDebugScaleSlider:SetValue(scale);
+
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
 
@@ -532,15 +545,16 @@ local function startDialog(targetType, fullText, event, eventInfo)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- ANIMATIONS
+-- TEXT ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local ANIMATION_TEXT_SPEED = 40;
+local ANIMATION_TEXT_SPEED = 80;
+local textSpeedFactor = 0.5;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start then
-		self.start = self.start + (elapsed * ANIMATION_TEXT_SPEED);
-		if self.start >= TRP3_NPCDialogFrameChatText:GetText():len() then
+		self.start = self.start + (elapsed * (ANIMATION_TEXT_SPEED * textSpeedFactor));
+		if textSpeedFactor == 0 or self.start >= TRP3_NPCDialogFrameChatText:GetText():len() then
 			self.start = nil;
 			TRP3_NPCDialogFrameChatText:SetAlphaGradient(TRP3_NPCDialogFrameChatText:GetText():len(), 1);
 		else
@@ -562,7 +576,7 @@ local function registerEventStructure()
 		},
 		["QUEST_DETAIL"] = {
 			text = GetQuestText,
-			cancelMethod = DeclineQuest,
+			cancelMethod = CloseQuest,
 			titleGetter = GetTitleText,
 		},
 		["QUEST_PROGRESS"] = {
@@ -636,6 +650,7 @@ local function onStart()
 	end
 
 	setTooltipAll(TRP3_NPCDialogFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
+	setTooltipAll(TRP3_NPCDialogFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
 	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesYes, "BOTTOM", 0, 0,  loc("SL_ACCEPTANCE"));
 	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesNo, "BOTTOM", 0, 0, loc("SL_DECLINE"));
 	TRP3_NPCDialogFrameObjectivesYes:SetScript("OnClick", AcceptQuest);
@@ -703,6 +718,38 @@ local function onStart()
 		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
 		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 	end;
+
+	local resizeModels = function(scale)
+		local margin = scale < 0 and -scale or 0;
+		TRP3_NPCDialogFrameModelsMe:ClearAllPoints();
+		TRP3_NPCDialogFrameModelsMe:SetPoint("TOP", 0, -(margin * 2));
+		TRP3_NPCDialogFrameModelsMe:SetPoint("LEFT", margin, 0);
+		TRP3_NPCDialogFrameModelsMe:SetPoint("BOTTOM", 0, 0);
+		TRP3_NPCDialogFrameModelsMe:SetPoint("RIGHT", TRP3_NPCDialogFrameModelsPoint, "LEFT", -margin, 0);
+
+		margin = scale > 0 and scale or 0;
+		TRP3_NPCDialogFrameModelsYou:ClearAllPoints();
+		TRP3_NPCDialogFrameModelsYou:SetPoint("TOP", 0, -(margin * 2));
+		TRP3_NPCDialogFrameModelsYou:SetPoint("RIGHT", -margin, 0);
+		TRP3_NPCDialogFrameModelsYou:SetPoint("BOTTOM", 0, 0);
+		TRP3_NPCDialogFrameModelsYou:SetPoint("LEFT", TRP3_NPCDialogFrameModelsPoint, "RIGHT", margin, 0);
+	end
+
+	TRP3_NPCDialogFrameConfigSpeedSliderLow:SetText(loc("SL_CONFIG_TEXTSPEED_INSTANT"));
+	TRP3_NPCDialogFrameConfigSpeedSliderHigh:SetText(loc("SL_CONFIG_TEXTSPEED_HIGH"));
+	TRP3_NPCDialogFrameConfigText:SetText(loc("SL_CONFIG"));
+	TRP3_NPCDialogFrameConfigSpeedSlider:SetScript("OnValueChanged", function(self, scale)
+		TRP3_NPCDialogFrameConfigSpeedSliderValText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
+		textSpeedFactor = scale;
+	end);
+	TRP3_NPCDialogFrameConfigSpeedSlider:SetValue(textSpeedFactor);
+
+	-- Debug
+	TRP3_NPCDialogFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
+		TRP3_NPCDialogFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
+		resizeModels(scale);
+	end);
+
 end;
 
 local MODULE_STRUCTURE = {

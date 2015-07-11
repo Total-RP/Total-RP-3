@@ -39,7 +39,11 @@ TRP3_StoryLine_LOCALE = {
 		SL_RESET_TT = "Rewind this dialogue.",
 		SL_REWARD_MORE = "You will also get",
 		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
-		SL_GET_REWARD = "Get your reward!"
+		SL_GET_REWARD = "Get your reward!",
+		SL_CONFIG = "Parameters",
+		SL_CONFIG_TEXTSPEED = "Text speed: %.1fx",
+		SL_CONFIG_TEXTSPEED_INSTANT = "No anim",
+		SL_CONFIG_TEXTSPEED_HIGH = "High",
 	},
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

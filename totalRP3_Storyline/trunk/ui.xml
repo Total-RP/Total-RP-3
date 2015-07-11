@@ -455,6 +455,73 @@
 					<Anchor point="BOTTOMRIGHT" x="-5" y="10"/>
 				</Anchors>
 			</Button>
+
+			<Button name="TRP3_NPCDialogFrameConfigButton" inherits="BrowserButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" x="5" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK" textureSubLevel="5">
+						<Texture parentKey="Icon" file="Interface\Buttons\UI-OptionsButton">
+							<Size x="16" y="16"/>
+							<Anchors>
+								<Anchor point="CENTER" />
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnClick>
+						ToggleFrame(TRP3_NPCDialogFrameConfig);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_NPCDialogFrameConfig" parent="TRP3_NPCDialogFrame" hidden="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="300"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="0" y="75"/>
+		<Anchors>
+			<Anchor point="TOPRIGHT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
+			<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
+		</Anchors>
+		<Layers>
+			<Layer>
+				<FontString name="TRP3_NPCDialogFrameConfigText" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-10"/>
+						<Anchor point="TOPRIGHT" x="-50" y="-10"/>
+					</Anchors>
+					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Slider name="TRP3_NPCDialogFrameConfigSpeedSlider" inherits="TRP3_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameConfigText" x="0" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(0, 1.5);
+						self:SetValueStep(0.1);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
 		</Frames>
 	</Frame>
 
@@ -470,7 +537,7 @@
 				<AbsInset left="5" right="5" top="5" bottom="5"/>
 			</BackgroundInsets>
 		</Backdrop>
-		<Size x="0" y="100"/>
+		<Size x="0" y="140"/>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
 			<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
@@ -545,7 +612,7 @@
 				</Frames>
 				<Scripts>
 					<OnEnterPressed>
-						TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+						TRP3_NPCDialogFrameModelsMe:SetAnimation(TRP3_NPCDialogFrameDebugSequenceMe:GetNumber());
 					</OnEnterPressed>
 					<OnLoad>
 						TRP3_NPCDialogFrameDebugSequenceMeText:SetText("Player animation");
@@ -567,7 +634,7 @@
 						<Scripts>
 							<OnClick>
 								self:GetParent():SetText(self:GetParent():GetNumber() + 1);
-								TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+								self:GetParent().playTargetAnim(self:GetParent():GetNumber());
 							</OnClick>
 						</Scripts>
 					</Button>
@@ -579,14 +646,14 @@
 						<Scripts>
 							<OnClick>
 								self:GetParent():SetText(self:GetParent():GetNumber() - 1);
-								TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+								self:GetParent().playTargetAnim(self:GetParent():GetNumber());
 							</OnClick>
 						</Scripts>
 					</Button>
 				</Frames>
 				<Scripts>
 					<OnEnterPressed>
-						TRP3_NPCDialogFrameModelsYou:SetAnimation(self:GetParent():GetNumber());
+						self.playTargetAnim(self:GetNumber());
 					</OnEnterPressed>
 					<OnLoad>
 						TRP3_NPCDialogFrameDebugSequenceYouText:SetText("Target animation");
@@ -594,6 +661,23 @@
 					</OnLoad>
 				</Scripts>
 			</EditBox>
+
+			<Slider name="TRP3_NPCDialogFrameDebugScaleSlider" inherits="TRP3_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugModelYou" x="0" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(-100, 100);
+						TRP3_NPCDialogFrameDebugScaleSliderLow:SetText("Small");
+						TRP3_NPCDialogFrameDebugScaleSliderHigh:SetText("Huge");
+						self:SetValueStep(1);
+						self:SetObeyStepOnDrag(true);
+
+					</OnLoad>
+				</Scripts>
+			</Slider>
 
 			<Button inherits="UIPanelCloseButton">
 				<Anchors>

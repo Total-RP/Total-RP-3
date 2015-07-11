@@ -418,6 +418,11 @@ Utils.math.colorCode = function(delta, fromR, fromG, fromB, toR, toG, toB)
 	return colorCode(lerp(delta, fromR, toR), lerp(delta, fromG, toG), lerp(delta, fromB, toB));
 end
 
+function Utils.math.round(value, decimals)
+	local mult = 10 ^ (decimals or 0)
+	return math.floor(value * mult) / mult;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Text tags utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

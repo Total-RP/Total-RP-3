@@ -188,6 +188,30 @@
 		</Frames>
 	</Button>
 
+	<Slider name="TRP3_Slider" inherits="OptionsSliderTemplate" virtual="true">
+		<Size x="140" y="15"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentValText" inherits="GameFontNormal" justifyH="CENTER" text="[value]">
+					<Size x="0" y="10"/>
+					<Anchors>
+						<Anchor point="LEFT"/>
+						<Anchor point="RIGHT"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Slider>
+
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
