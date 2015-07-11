@@ -246,7 +246,6 @@ end
 --  If you encounter a collision, you really should playing lottery
 --	ID's have a id_length characters length
 local function generateID()
-	local i;
 	local ID = date("%m%d%H%M%S");
 	for i=1, 5 do
 		ID = ID..string.char(math.random(33,126));
@@ -254,6 +253,18 @@ local function generateID()
 	return ID;
 end
 Utils.str.id = generateID;
+
+--	Generate a pseudo-unique random ID.
+--  If you encounter a collision, you really should playing lottery
+--	ID's have a id_length characters length
+local function generateObjectID(db, type)
+	local ID = date("%m%d%H%M%S");
+	for i=1, 3 do
+		ID = ID..string.char(math.random(33,126));
+	end
+	return db .. type .. ID;
+end
+Utils.str.oId = generateObjectID;
 
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.

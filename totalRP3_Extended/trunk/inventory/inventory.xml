@@ -20,7 +20,74 @@
 -->
 
 	<!-- Please note that the loading order matters a lot -->
-	
+
+	<Script file="db.lua"/>
 	<Script file="inventory.lua"/>
+
+
+	<Frame name="TRP3_Bag4x5" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true">
+
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+
+		<TitleRegion setAllPoints="true"/>
+		<Size x="200" y="270" />
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Icon">
+					<Size x="40" y="40" />
+					<Anchors>
+						<Anchor  point="CENTER" relativePoint="TOPLEFT" x="27" y="-27"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="0">
+				<Texture name="$parentTop" file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+					<Size x="0" y="100" />
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.24" right="1" top="0" bottom="0.18"/>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="2">
+				<Texture name="$parentBottom" file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.24" right="1" top="0.33" bottom="0.348"/>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="1">
+				<Texture file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentTop" x="0" y="0"/>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentTop" x="0" y="0"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentBottom" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentBottom" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.24" right="1" top="0.43" bottom="0.735"/>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Scripts>
+			<OnLoad>
+				TRP3_API.utils.texture.applyRoundTexture(self.Icon, "Interface\\ICONS\\inv_misc_bag_12", "Interface\\ICONS\\Temp");
+			</OnLoad>
+		</Scripts>
+
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="0" y="-4"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
 
 </Ui>

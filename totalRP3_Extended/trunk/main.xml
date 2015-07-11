@@ -20,6 +20,9 @@
 -->
 
 	<!-- Please note that the loading order matters a lot -->
+
+	<!-- Main -->
+	<Script file="main.lua"/>
 	
 	<!-- Locales -->
 	<Script file="locale\locale_enEN.lua"/>
@@ -28,8 +31,5 @@
 	<!-- Modules -->
 	<Include file="gameMaster\gameMaster.xml"/>
 	<Include file="inventory\inventory.xml"/>
-
-	<!-- Main -->
-	<Script file="main.lua"/>
 
 </Ui>

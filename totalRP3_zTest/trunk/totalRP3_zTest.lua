@@ -340,6 +340,12 @@ function TRP3_STATS()
 	end
 end
 
+-- /run TRP3_ADD_ITEM()
+function TRP3_ADD_ITEM()
+	TRP3_API.inventory.addItem(nil, "01container1234", {containerSlot = "3"});
+	Utils.table.dump(TRP3_API.profile.getPlayerCurrentProfile().inventory);
+end
+
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",
 	["description"] = "Telkos private module to test the world !",

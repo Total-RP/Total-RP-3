@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- Total RP 3: Extended features
+-- Total RP 3: Item DB
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
@@ -16,23 +16,29 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local pairs = pairs;
+TRP3_DB.item = {
+	["01pouicpouic123"] = {
+		BA = {
+			IC = "inv_misc_toy_02",
+			NA = "Pouic",
+			DE = "Un joli pouic à vapeur",
+		},
+	},
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- INIT
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	["01container1234"] = {
+		BA = {
+			IC = "inv_misc_bag_11",
+			NA = "Simple bag",
+			DE = "Un sac à dos classique",
+		},
+		CO = {
 
-TRP3_DB = {};
-TRP3_API.inventory = {};
+		},
+	},
+};
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+local ITEM_DB = TRP3_DB.item;
 
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
-
-end);
+function TRP3_API.inventory.getItemClass(itemID)
+	return ITEM_DB[itemID];
+end
