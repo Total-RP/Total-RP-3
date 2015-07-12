@@ -50,7 +50,20 @@ TRP3_DB.item = {
 			UN = 5,
 		},
 		CO = {
-			SI = "5x4",
+			SI = 5,
+			DU = 25,
+			MW = 30,
+		},
+	},
+	["01container1235"] = {
+		BA = {
+			IC = "inv_misc_bag_02",
+			NA = "Pouic bag",
+			DE = "Un sac à dos classique",
+			UN = 5,
+		},
+		CO = {
+			SI = 2,
 			DU = 25,
 			MW = 30,
 		},

@@ -59,11 +59,7 @@
 	</Button>
 
 
-	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true">
-
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
+	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true">
 
 		<TitleRegion setAllPoints="true"/>
 		<Size x="200" y="270" />
@@ -159,6 +155,18 @@
 				</Anchors>
 			</Button>
 		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_Container2x4Template" inherits="TRP3_Container5x4Template" virtual="true" >
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Size x="200" y="144" />
+		<Scripts>
+			<OnLoad>
+				self.Middle:SetTexCoord(0.24, 1, 0.43, 0.4875);
+			</OnLoad>
+		</Scripts>
 	</Frame>
 
 </Ui>

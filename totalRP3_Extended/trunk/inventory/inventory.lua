@@ -269,7 +269,7 @@ local function containerSlotUpdate(self, elapsed)
 			showItemTooltip(self, self.info, self.class);
 		end
 
-		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info.instanceId) then
+		if isContainerByClass(self.class) and isContainerInstanceOpen(self.class, self.info.instanceId) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		else
 			self.Icon:SetVertexColor(1, 1, 1);
@@ -303,7 +303,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			end);
 			slot:SetScript("OnDoubleClick", function(self, button)
 				if self.info and self.class and isContainerByClass(self.class) then
-					switchContainerByRef(self.info);
+					switchContainerByRef(self.info, self:GetParent());
 				end
 			end);
 			colX = colX + COLUMN_SPACING;
@@ -358,43 +358,61 @@ local function decorateContainer(containerFrame, class, container)
 end
 
 local containerInstances5x4 = {};
-local CONTAINER_UPDATE_FREQUENCY = 0.5;
-local function getContainerInstance(size, instanceId)
-	if not size or size == "5x4" then
-		local count = 0;
-		local containerFrame, available;
-		for _, ref in pairs(containerInstances5x4) do
-			count = count + 1;
-			if not ref:IsVisible() then
-				available = ref;
-			end
-			if ref:IsVisible() and ref.instanceId == instanceId then
-				containerFrame = ref;
-				break;
-			end
-		end
-		if containerFrame then -- If a container is already visible for this instance
-			return containerFrame;
-		end
-		if available then -- If there is available frame in the pool
-			containerFrame = available;
-		else -- Else: we create a new one
-			containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
-			createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
-			initContainerSlots(containerFrame, 5, 4);
-			containerFrame:SetScript("OnShow", function(self)
-				decorateContainer(self, self.class, self.info);
-				loadContainerPage(self);
-			end);
-			tinsert(containerInstances5x4, containerFrame);
-		end
-		containerFrame.instanceId = instanceId;
-		return containerFrame;
+local containerInstances2x4 = {};
+local function getContainerPool(containerClass)
+	local size = containerClass.CO.SI;
+	size = size or 5;
+	if size == 5 then
+		return containerInstances5x4, size;
+	elseif size == 2 then
+		return containerInstances2x4, size;
 	end
+	error("Unknown container size: " .. size);
 end
 
-function isContainerInstanceOpen(instanceId)
-	for _, ref in pairs(containerInstances5x4) do
+local CONTAINER_UPDATE_FREQUENCY = 0.5;
+local function getContainerInstance(containerClass, instanceId)
+	local pool, size = getContainerPool(containerClass);
+	local count = 0;
+	local containerFrame, available;
+	for _, ref in pairs(pool) do
+		count = count + 1;
+		if not ref:IsVisible() then
+			available = ref;
+		end
+		if ref:IsVisible() and ref.instanceId == instanceId then
+			containerFrame = ref;
+			break;
+		end
+	end
+	if containerFrame then -- If a container is already visible for this instance
+		return containerFrame;
+	end
+	if available then -- If there is available frame in the pool
+		containerFrame = available;
+	else -- Else: we create a new one
+		containerFrame = CreateFrame("Frame", "TRP3_Container" .. size .. "x4_" .. (count + 1), nil, "TRP3_Container" .. size .. "x4Template");
+		createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
+		initContainerSlots(containerFrame, size, 4);
+		containerFrame:SetScript("OnShow", function(self)
+			decorateContainer(self, self.class, self.info);
+			loadContainerPage(self);
+			self:ClearAllPoints();
+			if self.originContainer then
+				self:SetPoint("TOPLEFT", self.originContainer, "TOPRIGHT", 0, 0);
+			else
+				self:SetPoint("CENTER", 0, 0);
+			end
+		end);
+		tinsert(pool, containerFrame);
+	end
+	containerFrame.instanceId = instanceId;
+	return containerFrame;
+
+end
+
+function isContainerInstanceOpen(containerClass, instanceId)
+	for _, ref in pairs(getContainerPool(containerClass)) do
 		if ref.instanceId == instanceId and ref:IsVisible() then
 			return true;
 		end
@@ -402,12 +420,13 @@ function isContainerInstanceOpen(instanceId)
 	return false;
 end
 
-function switchContainerByRef(container)
+function switchContainerByRef(container, originContainer)
 	local instanceId = container.instanceId;
 	local class = getItemClass(container.id);
-	local containerFrame = getContainerInstance(class.CO.SI, instanceId);
+	local containerFrame = getContainerInstance(class, instanceId);
 	containerFrame.info = container;
 	containerFrame.class = class;
+	containerFrame.originContainer = originContainer;
 	ToggleFrame(containerFrame);
 end
 
