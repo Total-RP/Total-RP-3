@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
-local assert, tostring, tinsert, wipe, pairs = assert, tostring, tinsert, wipe, pairs;
+local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local getItemClass = TRP3_API.inventory.getItemClass;
 local EMPTY = {};
 
@@ -106,11 +106,218 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 	return 0;
 end
 
+function TRP3_API.inventory.getItem(container, slotID)
+	-- Checking data
+	local container = container or playerInventory;
+	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
+	if not container.content then
+		container.content = {};
+	end
+
+	return container.content[slotID];
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI: BAGS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CreateFrame, ToggleFrame = CreateFrame, ToggleFrame;
+local CreateFrame, ToggleFrame, MouseIsOver = CreateFrame, ToggleFrame, MouseIsOver;
+local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
+local ITEM_QUALITY_COLORS = { -- TODO: calcul
+	{"|cff9d9d9d", 157/255, 157/255, 157/255},
+	{"|cffffffff", 1, 1, 1},
+	{"|cff1eff00", 30/255, 1, 0},
+	{"|cff0070dd", 0, 112/255, 221/255},
+	{"|cffa335ee", 163/255, 53/255, 238/255},
+	{"|cffff8000", 1, 128/255, 0},
+}
+
+local function getQualityColorTab(quality)
+	quality = quality or 1;
+	return ITEM_QUALITY_COLORS[quality];
+end
+
+local function getQualityColorText(quality)
+	return getQualityColorTab(quality)[1];
+end
+
+local function getQualityColorRGB(quality)
+	local tab = getQualityColorTab(quality);
+	return tab[2], tab[3], tab[4];
+end
+
+local function showHelp()
+	return IsAltKeyDown();
+end
+
+local function getItemTooltipLines(slotInfo, itemClass)
+	local title, text1, text2;
+	local icon, name = getBaseClassDateSafe(itemClass);
+	title = getQualityColorText(itemClass.BA.QA) .. name;
+
+	text1 = "";
+	if itemClass.QE then
+		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
+	end
+	if isContainerByClass(itemClass) then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. Utils.str.color("y") .. "Container"; -- TODO:
+	end
+	if itemClass.BA.SB then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
+	end
+	if itemClass.BA.UN and itemClass.BA.UN > 0 then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. itemClass.BA.UN .. ")";
+	end
+
+	if itemClass.BA.DE and itemClass.BA.DE:len() > 0 then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. Utils.str.color("o") .. "\"" .. itemClass.BA.DE .. "\"";
+	end
+
+	if itemClass.US and itemClass.US.AC then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. itemClass.US.AC;
+	end
+
+	if itemClass.BA.CO then
+		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
+	end
+
+	if showHelp() then
+		if itemClass.BA.WE and itemClass.BA.WE > 0 then
+			if text1:len() > 0 then text1 = text1 .. "\n"; end
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. itemClass.BA.WE .. "kg";
+		end
+
+		local first = true;
+		text2 = "";
+		if isContainerByClass(itemClass) then
+			if first then first = false; text2 = text2 .. "\n"; end
+			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. "Open container"; -- TODO:
+		end
+	end
+
+	return title, text1, text2;
+end
+
+local TRP3_ItemTooltip = TRP3_ItemTooltip;
+local function showItemTooltip(frame, slotInfo, itemClass)
+	TRP3_ItemTooltip:Hide();
+	TRP3_ItemTooltip:SetOwner(frame, "TOP_LEFT", 0, 0);
+
+	local title, text1, text2 = getItemTooltipLines(slotInfo, itemClass);
+
+	local i = 1;
+	if title and title:len() > 0 then
+		TRP3_ItemTooltip:AddLine(title, 1, 1, 1,true);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalLarge);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if text1 and text1:len() > 0 then
+		TRP3_ItemTooltip:AddLine(text1, 1, 1, 1,true);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormal);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	if text2 and text2:len() > 0 then
+		TRP3_ItemTooltip:AddLine(text2, 1, 1, 1,true);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetFontObject(GameFontNormalSmall);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetSpacing(2);
+		_G["TRP3_ItemTooltipTextLeft"..i]:SetNonSpaceWrap(true);
+		i = i + 1;
+	end
+
+	TRP3_ItemTooltip:Show();
+end
+
+local function containerSlotUpdate(self, elapsed)
+	if not self.info then
+		self:Disable();
+		self:SetAlpha(0);
+	else
+		self:Enable();
+		self:SetAlpha(1);
+		local class = self.class or EMPTY;
+		local icon, name = getBaseClassDateSafe(class);
+		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+		if class.QE and class.QE.QH then
+			self.Quest:Show();
+		else
+			self.Quest:Hide();
+		end
+		if class.BA and class.BA.QA and class.BA.QA ~= 1 then
+			self.IconBorder:Show();
+			local r, g, b = getQualityColorRGB(class.BA.QA);
+			self.IconBorder:SetVertexColor(r, g, b);
+		else
+			self.IconBorder:Hide();
+		end
+		if self.info.count and self.info.count > 1 then
+			self.Quantity:Show();
+			self.Quantity:SetText(self.info.count);
+		else
+			self.Quantity:Hide();
+		end
+
+		if self.class and MouseIsOver(self) then
+			showItemTooltip(self, self.info, self.class);
+		end
+	end
+end
+
+local COLUMN_SPACING = 43;
+local ROW_SPACING = 42;
+local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
+local function initContainerSlots(containerFrame, rowCount, colCount)
+	local slotNum = 1;
+	local rowY = -58;
+	containerFrame.slots = {};
+	for row = 1, rowCount do
+		local colX = 22;
+		for col = 1, colCount do
+			local slot = CreateFrame("Button", containerFrame:GetName() .. "Slot" .. slotNum, containerFrame, "TRP3_ContainerSlotTemplate");
+			tinsert(containerFrame.slots, slot);
+			createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
+			slot:SetPoint("TOPLEFT", colX, rowY);
+			slot:SetScript("OnEnter", function(self)
+				if self.info and self.class then
+					showItemTooltip(self, self.info, self.class);
+				end
+			end);
+			slot:SetScript("OnLeave", function(self)
+				TRP3_ItemTooltip:Hide();
+			end);
+			colX = colX + COLUMN_SPACING;
+			slotNum = slotNum + 1;
+		end
+		rowY = rowY - ROW_SPACING;
+	end
+end
+
+local function loadContainerPage(containerFrame)
+	if not containerFrame.info or not containerFrame.class then return end
+	local containerContent = containerFrame.info.content or EMPTY;
+	local slotCounter = 1;
+	for index, slot in pairs(containerFrame.slots) do
+		slot.slotID = tostring(slotCounter);
+		if containerContent[slot.slotID] then
+			slot.info = containerContent[slot.slotID];
+			slot.class = getItemClass(containerContent[slot.slotID].id);
+		else
+			slot.info = nil;
+			slot.class = nil;
+		end
+		slotCounter = slotCounter + 1;
+	end
+end
 
 local function containerFrameUpdate(self, elapsed)
 	if not self.info or not self.class then return end
@@ -134,27 +341,8 @@ end
 
 local function decorateContainer(containerFrame, class, container)
 	local icon, name = getBaseClassDateSafe(class);
-	containerFrame.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+	Utils.texture.applyRoundTexture(containerFrame.Icon, "Interface\\ICONS\\" .. icon, "Interface\\ICONS\\TEMP");
 	containerFrame.Title:SetText(name);
-end
-
-local COLUMN_SPACING = 43;
-local ROW_SPACING = 42;
-local function initContainerSlots(container, rowCount, colCount)
-	local slotNum = 1;
-	local rowY = -58;
-	for row = 1, rowCount do
-		local colX = 22;
-		for col = 1, colCount do
-			local slot = CreateFrame("Button", container:GetName() .. "Slot" .. slotNum, container, "TRP3_BagSlotTemplate");
-			container["Slot" .. slotNum] = slot;
-			slot:SetPoint("TOPLEFT", colX, rowY);
-			slot:Show();
-			colX = colX + COLUMN_SPACING;
-			slotNum = slotNum + 1;
-		end
-		rowY = rowY - ROW_SPACING;
-	end
 end
 
 local containerInstances5x4 = {};
@@ -180,8 +368,12 @@ local function getContainerInstance(size, instanceId)
 			containerFrame = available;
 		else -- Else: we create a new one
 			containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
-			TRP3_API.ui.frame.createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
+			createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
 			initContainerSlots(containerFrame, 5, 4);
+			containerFrame:SetScript("OnShow", function(self)
+				decorateContainer(self, self.class, self.info);
+				loadContainerPage(self);
+			end);
 			tinsert(containerInstances5x4, containerFrame);
 		end
 		containerFrame.instanceId = instanceId;
@@ -193,12 +385,9 @@ local function switchContainerByRef(container)
 	local instanceId = container.instanceId;
 	local class = getItemClass(container.id);
 	local containerFrame = getContainerInstance(class.CO.SI, instanceId);
+	containerFrame.info = container;
+	containerFrame.class = class;
 	ToggleFrame(containerFrame);
-	if containerFrame:IsVisible() then
-		decorateContainer(containerFrame, class, container);
-		containerFrame.info = container;
-		containerFrame.class = class;
-	end
 end
 
 local function switchContainerBySlotID(parentContainer, slotID)

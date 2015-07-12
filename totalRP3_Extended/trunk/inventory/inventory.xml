@@ -21,10 +21,12 @@
 
 	<!-- Please note that the loading order matters a lot -->
 
+	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
+
 	<Script file="db.lua"/>
 	<Script file="inventory.lua"/>
 
-	<Button name="TRP3_BagSlotTemplate" enableMouse="true" virtual="true">
+	<Button name="TRP3_ContainerSlotTemplate" enableMouse="true" virtual="true">
 		<Size x="36" y="36"/>
 		<Layers>
 			<Layer level="BORDER">
@@ -36,7 +38,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<Texture parentKey="Quest" file="Interface\ContainerFrame\UI-Icon-QuestBorder">
+				<Texture parentKey="Quest" file="Interface\ContainerFrame\UI-Icon-QuestBang">
 					<Size x="36" y="36"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
@@ -44,16 +46,12 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Quantity" inherits="NumberFontNormal" justifyH="RIGHT" text="x">
+				<FontString parentKey="Quantity" inherits="NumberFontNormal" justifyH="RIGHT" hidden="true">
 					<Anchors>
-						<Anchor point="RIGHT" x="-6" y="-6"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="Cooldown" inherits="GameFontNormalSmall" justifyH="CENTER" text="x">
-					<Anchors>
-						<Anchor point="CENTER" x="-2" y="14"/>
-					</Anchors>
-				</FontString>
+				<Texture parentKey="IconBorder" file="Interface\Common\WhiteIconFrame" hidden="false" setAllPoints="true"/>
 			</Layer>
 		</Layers>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>

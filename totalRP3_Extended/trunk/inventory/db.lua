@@ -22,6 +22,23 @@ TRP3_DB.item = {
 			IC = "inv_misc_toy_02",
 			NA = "Pouic",
 			DE = "Un joli pouic à vapeur",
+			QA = 3,
+			CO = true,
+		},
+		US = {
+			AC = "Pouiquer",
+		},
+	},
+	["01pouicpouic124"] = {
+		BA = {
+			IC = "inv_misc_toy_05",
+			NA = "Pouac",
+			DE = "Un joli pouac",
+			SB = true,
+			WE = 0.2,
+		},
+		QE = {
+			QH = true,
 		},
 	},
 
@@ -30,6 +47,7 @@ TRP3_DB.item = {
 			IC = "inv_misc_bag_11",
 			NA = "Simple bag",
 			DE = "Un sac à dos classique",
+			UN = 5,
 		},
 		CO = {
 			SI = "5x4",
