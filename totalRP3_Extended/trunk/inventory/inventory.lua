@@ -121,7 +121,9 @@ end
 -- UI: BAGS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CreateFrame, ToggleFrame, MouseIsOver = CreateFrame, ToggleFrame, MouseIsOver;
+local switchContainerByRef, isContainerInstanceOpen;
+
+local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local ITEM_QUALITY_COLORS = { -- TODO: calcul
 	{"|cff9d9d9d", 157/255, 157/255, 157/255},
@@ -144,10 +146,6 @@ end
 local function getQualityColorRGB(quality)
 	local tab = getQualityColorTab(quality);
 	return tab[2], tab[3], tab[4];
-end
-
-local function showHelp()
-	return IsAltKeyDown();
 end
 
 local function getItemTooltipLines(slotInfo, itemClass)
@@ -187,7 +185,7 @@ local function getItemTooltipLines(slotInfo, itemClass)
 		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
-	if showHelp() then
+	if IsAltKeyDown() then
 		if itemClass.BA.WE and itemClass.BA.WE > 0 then
 			if text1:len() > 0 then text1 = text1 .. "\n"; end
 			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. itemClass.BA.WE .. "kg";
@@ -267,8 +265,14 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Hide();
 		end
 
-		if self.class and MouseIsOver(self) then
+		if self.class and MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
 			showItemTooltip(self, self.info, self.class);
+		end
+
+		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info.instanceId) then
+			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
+		else
+			self.Icon:SetVertexColor(1, 1, 1);
 		end
 	end
 end
@@ -289,11 +293,18 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			slot:SetPoint("TOPLEFT", colX, rowY);
 			slot:SetScript("OnEnter", function(self)
 				if self.info and self.class then
+					TRP3_ItemTooltip.ref = self;
 					showItemTooltip(self, self.info, self.class);
 				end
 			end);
 			slot:SetScript("OnLeave", function(self)
+				TRP3_ItemTooltip.ref = nil;
 				TRP3_ItemTooltip:Hide();
+			end);
+			slot:SetScript("OnDoubleClick", function(self, button)
+				if self.info and self.class and isContainerByClass(self.class) then
+					switchContainerByRef(self.info);
+				end
 			end);
 			colX = colX + COLUMN_SPACING;
 			slotNum = slotNum + 1;
@@ -315,6 +326,7 @@ local function loadContainerPage(containerFrame)
 			slot.info = nil;
 			slot.class = nil;
 		end
+		containerSlotUpdate(slot);
 		slotCounter = slotCounter + 1;
 	end
 end
@@ -381,7 +393,16 @@ local function getContainerInstance(size, instanceId)
 	end
 end
 
-local function switchContainerByRef(container)
+function isContainerInstanceOpen(instanceId)
+	for _, ref in pairs(containerInstances5x4) do
+		if ref.instanceId == instanceId and ref:IsVisible() then
+			return true;
+		end
+	end
+	return false;
+end
+
+function switchContainerByRef(container)
 	local instanceId = container.instanceId;
 	local class = getItemClass(container.id);
 	local containerFrame = getContainerInstance(class.CO.SI, instanceId);
