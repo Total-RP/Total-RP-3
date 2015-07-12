@@ -1,4 +1,4 @@
-## Interface: 60000
+## Interface: 60200
 ## Title: Total RP 3 : Debug mode activator
 ## Author: Ellypse
 ## Version: 1.0
