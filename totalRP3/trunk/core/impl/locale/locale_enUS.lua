@@ -515,6 +515,7 @@ Possible status:
 		CO_CHAT_MAIN_NAMING_1 = "Keep original names",
 		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
 		CO_CHAT_MAIN_NAMING_3 = "First name + last name",
+		CO_CHAT_MAIN_NAMING_4 = "Short title + first name + last name",
 		CO_CHAT_MAIN_COLOR = "Use custom colors for names",
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",

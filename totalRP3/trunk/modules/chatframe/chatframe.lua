@@ -104,12 +104,13 @@ local function createConfigPage(useWIM)
 	registerConfigKey(CONFIG_OOC, true);
 	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
-	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
+	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
 		{loc("CO_CHAT_MAIN_NAMING_2"), 2},
 		{loc("CO_CHAT_MAIN_NAMING_3"), 3},
+		{loc("CO_CHAT_MAIN_NAMING_4"), 4},
 	}
 	
 	local EMOTE_PATTERNS = {
@@ -354,12 +355,18 @@ function handleCharacterMessage(chatFrame, event, ...)
 	end
 
 	local nameMethod = configNameMethod();
-	if nameMethod == 2 or nameMethod == 3 then -- TRP3 names
-		if info.characteristics and info.characteristics.FN then
-			characterName = info.characteristics.FN;
+	if nameMethod ~= 1 then -- TRP3 names
+		local characteristics = info.characteristics or {};
+		if characteristics.FN then
+			characterName = characteristics.FN;
 		end
-		if nameMethod == 3 and info.characteristics and info.characteristics.LN then -- With last name
-			characterName = characterName .. " " .. info.characteristics.LN;
+
+		if nameMethod == 4 and characteristics.TI then
+			characterName = characteristics.TI .. " " .. characterName;
+		end
+
+		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
+			characterName = characterName .. " " .. characteristics.LN;
 		end
 	end
 
@@ -428,6 +435,39 @@ function hooking()
 		end
 	end
 end
+
+hooksecurefunc("ChatEdit_InsertLink", function(name)
+	local activeChatFrame = ChatEdit_GetActiveWindow()
+	if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
+		local editBox = activeChatFrame.chatFrame.editBox;
+		local currentText = editBox:GetText();
+		local currentCursorPosition = editBox:GetCursorPosition();
+
+		local textBefore = currentText:sub(1, currentCursorPosition - name:len() - 1);
+		local textAfter = currentText:sub(currentCursorPosition+1 );
+
+		local info = getCharacterInfoTab(name);
+		local nameMethod = configNameMethod();
+		if nameMethod ~= 1 then -- TRP3 names
+			local characteristics = info.characteristics or {};
+			if characteristics.FN then
+				name = characteristics.FN;
+			end
+
+			if nameMethod == 4 and characteristics.TI then
+				name = characteristics.TI .. " " .. name;
+			end
+
+			if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
+				name = name .. " " .. characteristics.LN;
+			end
+		end
+
+		editBox:SetText(textBefore .. name .. textAfter);
+		editBox:SetCursorPosition(textBefore:len() + name:len());
+
+	end
+end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
