@@ -342,6 +342,7 @@ end
 
 -- /run TRP3_ADD_ITEM()
 function TRP3_ADD_ITEM()
+	wipe(TRP3_API.profile.getPlayerCurrentProfile().inventory.content);
 	TRP3_API.inventory.addItem(nil, "01container1234", {containerSlot = "3"});
 	Utils.table.dump(TRP3_API.profile.getPlayerCurrentProfile().inventory);
 end

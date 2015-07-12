@@ -18,7 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
-local assert, tostring, tinsert, wipe = assert, tostring, tinsert, wipe;
+local assert, tostring, tinsert, wipe, pairs = assert, tostring, tinsert, wipe, pairs;
 local getItemClass = TRP3_API.inventory.getItemClass;
 local EMPTY = {};
 
@@ -34,7 +34,7 @@ local function isContainerByClassID(itemID)
 	return itemID == "main" or isContainerByClass(getItemClass(itemID));
 end
 
-local function getItemTextLine(itemClass)
+local function getBaseClassDateSafe(itemClass)
 	local icon = "TEMP";
 	local name = UNKNOWN;
 	if itemClass and itemClass.BA then
@@ -45,6 +45,11 @@ local function getItemTextLine(itemClass)
 			name = itemClass.BA.NA;
 		end
 	end
+	return icon, name;
+end
+
+local function getItemTextLine(itemClass)
+	local icon, name = getBaseClassDateSafe(itemClass);
 	return Utils.str.icon(icon, 25) .. " " .. name;
 end
 
@@ -94,10 +99,113 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 		container.content[slot] = {
 			id = itemID,
 			count = itemData.count or 1,
+			instanceId = Utils.str.id(),
 		};
 	end
 
 	return 0;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- UI: BAGS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local CreateFrame, ToggleFrame = CreateFrame, ToggleFrame;
+
+local function containerFrameUpdate(self, elapsed)
+	if not self.info or not self.class then return end
+	-- Durability
+	local durability = "";
+	if self.class.CO.DU and self.class.CO.DU > 0 then
+		local max = self.class.CO.DU;
+		local current = self.info.durability or self.class.CO.DU;
+		durability = (Utils.str.texture("Interface\\GROUPFRAME\\UI-GROUP-MAINTANKICON", 15) .. "%s/%s"):format(current, max);
+	end
+	self.DurabilityText:SetText(durability);
+
+	-- Weight
+	local current = self.info.totalWeight or 0;
+	local weight = ("%s kg" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
+	if self.class.CO.MW and self.class.CO.MW > 0 then
+		-- TODO: color if too heavy
+	end
+	self.WeightText:SetText(weight);
+end
+
+local function decorateContainer(containerFrame, class, container)
+	local icon, name = getBaseClassDateSafe(class);
+	containerFrame.Icon:SetTexture("Interface\\ICONS\\" .. icon);
+	containerFrame.Title:SetText(name);
+end
+
+local COLUMN_SPACING = 43;
+local ROW_SPACING = 42;
+local function initContainerSlots(container, rowCount, colCount)
+	local slotNum = 1;
+	local rowY = -58;
+	for row = 1, rowCount do
+		local colX = 22;
+		for col = 1, colCount do
+			local slot = CreateFrame("Button", container:GetName() .. "Slot" .. slotNum, container, "TRP3_BagSlotTemplate");
+			container["Slot" .. slotNum] = slot;
+			slot:SetPoint("TOPLEFT", colX, rowY);
+			slot:Show();
+			colX = colX + COLUMN_SPACING;
+			slotNum = slotNum + 1;
+		end
+		rowY = rowY - ROW_SPACING;
+	end
+end
+
+local containerInstances5x4 = {};
+local CONTAINER_UPDATE_FREQUENCY = 0.5;
+local function getContainerInstance(size, instanceId)
+	if not size or size == "5x4" then
+		local count = 0;
+		local containerFrame, available;
+		for _, ref in pairs(containerInstances5x4) do
+			count = count + 1;
+			if not ref:IsVisible() then
+				available = ref;
+			end
+			if ref:IsVisible() and ref.instanceId == instanceId then
+				containerFrame = ref;
+				break;
+			end
+		end
+		if containerFrame then -- If a container is already visible for this instance
+			return containerFrame;
+		end
+		if available then -- If there is available frame in the pool
+			containerFrame = available;
+		else -- Else: we create a new one
+			containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
+			TRP3_API.ui.frame.createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
+			initContainerSlots(containerFrame, 5, 4);
+			tinsert(containerInstances5x4, containerFrame);
+		end
+		containerFrame.instanceId = instanceId;
+		return containerFrame;
+	end
+end
+
+local function switchContainerByRef(container)
+	local instanceId = container.instanceId;
+	local class = getItemClass(container.id);
+	local containerFrame = getContainerInstance(class.CO.SI, instanceId);
+	ToggleFrame(containerFrame);
+	if containerFrame:IsVisible() then
+		decorateContainer(containerFrame, class, container);
+		containerFrame.info = container;
+		containerFrame.class = class;
+	end
+end
+
+local function switchContainerBySlotID(parentContainer, slotID)
+	assert(parentContainer, "Nil parent container.");
+	assert(parentContainer.content[slotID], "Empty slot.");
+	assert(parentContainer.content[slotID].id, "Container without id for slot: " .. tostring(slotID));
+	switchContainerByRef(parentContainer.content[slotID]);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -116,7 +224,7 @@ local function playerInventoryButtonSelection(selectedSlot)
 		local classID = playerInventory.content[selectedSlot].id;
 		local class = getItemClass(classID);
 		if isContainerByClass(class) then
-			message("Opening container");
+			switchContainerBySlotID(playerInventory, selectedSlot);
 		else
 			message("Using item");
 		end
@@ -167,6 +275,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function initPlayerInventory()
+	-- Structures
 	local playerProfile = TRP3_API.profile.getPlayerCurrentProfile();
 	if not playerProfile.inventory then
 		playerProfile.inventory = {};
@@ -176,6 +285,8 @@ local function initPlayerInventory()
 	if not playerInventory.content then
 		playerInventory.content = {};
 	end
+
+	-- UI
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
 	end);

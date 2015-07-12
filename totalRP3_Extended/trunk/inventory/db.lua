@@ -32,7 +32,9 @@ TRP3_DB.item = {
 			DE = "Un sac à dos classique",
 		},
 		CO = {
-
+			SI = "5x4",
+			DU = 25,
+			MW = 30,
 		},
 	},
 };

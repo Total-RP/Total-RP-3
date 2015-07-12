@@ -24,8 +24,44 @@
 	<Script file="db.lua"/>
 	<Script file="inventory.lua"/>
 
+	<Button name="TRP3_BagSlotTemplate" enableMouse="true" virtual="true">
+		<Size x="36" y="36"/>
+		<Layers>
+			<Layer level="BORDER">
+				<Texture parentKey="Icon">
+					<Size x="36" y="36"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Quest" file="Interface\ContainerFrame\UI-Icon-QuestBorder">
+					<Size x="36" y="36"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Quantity" inherits="NumberFontNormal" justifyH="RIGHT" text="x">
+					<Anchors>
+						<Anchor point="RIGHT" x="-6" y="-6"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="Cooldown" inherits="GameFontNormalSmall" justifyH="CENTER" text="x">
+					<Anchors>
+						<Anchor point="CENTER" x="-2" y="14"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+	</Button>
 
-	<Frame name="TRP3_Bag4x5" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true">
+
+	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true">
 
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -43,7 +79,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="0">
-				<Texture name="$parentTop" file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+				<Texture parentKey="Top" file="Interface\ContainerFrame\UI-Bag-Components">
 					<Size x="0" y="100" />
 					<Anchors>
 						<Anchor point="TOPLEFT" x="0" y="0"/>
@@ -53,7 +89,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="2">
-				<Texture name="$parentBottom" file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+				<Texture parentKey="Bottom" file="Interface\ContainerFrame\UI-Bag-Components">
 					<Size x="0" y="10" />
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
@@ -63,15 +99,52 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="1">
-				<Texture file="Interface\ContainerFrame\UI-Bag-Components-Bank">
+				<Texture parentKey="Middle" file="Interface\ContainerFrame\UI-Bag-Components">
 					<Anchors>
-						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentTop" x="0" y="0"/>
-						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentTop" x="0" y="0"/>
-						<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentBottom" x="0" y="0"/>
-						<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentBottom" x="0" y="0"/>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Top" x="0" y="0"/>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Top" x="0" y="0"/>
+						<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeKey="$parent.Bottom" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeKey="$parent.Bottom" x="0" y="0"/>
 					</Anchors>
 					<TexCoords left="0.24" right="1" top="0.43" bottom="0.735"/>
 				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="3">
+				<Texture parentKey="Token" file="Interface\ContainerFrame\UI-Backpack-TokenFrame">
+					<Size x="0" y="35" />
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Bottom" x="11" y="8"/>
+						<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Bottom" x="-4" y="8"/>
+					</Anchors>
+					<TexCoords left="0" right="0.70" top="0" bottom="1"/>
+				</Texture>
+			</Layer>
+
+			<Layer level="OVERLAY">
+				<FontString parentKey="Title" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" text="[[BAG NAME]]">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="52" y="-9"/>
+						<Anchor point="TOPRIGHT" x="-35" y="-9"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="DurabilityText" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Token" x="13" y="1"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Token" x="-12" y="1"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="MIDDLE" text="[[x/x]]">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="LEFT" relativeKey="$parent.Token" x="13" y="1"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Token" x="-12" y="1"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
 			</Layer>
 		</Layers>
 
