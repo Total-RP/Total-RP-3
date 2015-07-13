@@ -650,6 +650,48 @@
 							</OnClick>
 						</Scripts>
 					</Button>
+					<Button inherits="TRP3_CommonButton" text="Talk">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="-25" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(60);</OnClick></Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="!">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="30" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(64);</OnClick></Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="?">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="85" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(65);</OnClick></Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="Yes">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="140" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(185);</OnClick></Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="No">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="195" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(186);</OnClick></Scripts>
+					</Button>
+					<Button inherits="TRP3_CommonButton" text="\o/">
+						<Size x="50" y="20"/>
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="250" y="-5"/>
+						</Anchors>
+						<Scripts><OnClick>self:GetParent().playTargetAnim(68);</OnClick></Scripts>
+					</Button>
 				</Frames>
 				<Scripts>
 					<OnEnterPressed>
@@ -658,6 +700,21 @@
 					<OnLoad>
 						TRP3_NPCDialogFrameDebugSequenceYouText:SetText("Target animation");
 						TRP3_NPCDialogFrameModelsYou.debug = self;
+					</OnLoad>
+				</Scripts>
+			</EditBox>
+			<EditBox name="TRP3_NPCDialogFrameDebugSequenceYouTime" inherits="TRP3_TitledEditBox">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugSequenceYou" x="40" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed>
+						local duration = tonumber(self:GetText());
+						TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")][TRP3_NPCDialogFrameDebugSequenceYou:GetText()] = duration;
+						TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim(TRP3_NPCDialogFrameDebugSequenceYou:GetNumber());
+					</OnEnterPressed>
+					<OnLoad>
+						TRP3_NPCDialogFrameDebugSequenceYouTimeText:SetText("Save duration");
 					</OnLoad>
 				</Scripts>
 			</EditBox>
