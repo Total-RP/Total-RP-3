@@ -164,6 +164,19 @@ local function selectMultipleGossip(button)
 		tinsert(multiList, { "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i });
 	end
 	displayDropDown(button, multiList, SelectGossipOption, 0, true);
+
+end
+
+local function selectMultipleRewards(button)
+	wipe(multiList);
+	tinsert(multiList, { "Select reward", nil });
+	local rewards = {};
+	for i = 1, GetNumQuestChoices() do
+		local rewardName, rewardIcon = GetQuestItemInfo("choice", i);
+			-- GetQuestItemLink("choice", i)
+		tinsert(multiList, { "|T" .. rewardIcon .. "GossipIcon:25:25|t" .. rewardName, i });
+	end
+	displayDropDown(button, multiList, GetQuestReward, 0, true);
 end
 
 local function selectFirstAvailable()
@@ -393,11 +406,16 @@ local function playText(textIndex)
 		local TTReward = loc("SL_REWARD_MORE");
 		local subTTReward = loc("SL_REWARD_MORE_SUB"):format(money, xp);
 		TRP3_NPCDialogFrameRewards.itemLink = nil;
-		TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
 
 		if GetNumQuestChoices() > 1 then
+			TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", function()
+				selectMultipleRewards(TRP3_NPCDialogFrameRewardsItem);
+			end);
+		else
+			TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", TRP3_NPCDialogFrameChat.eventInfo.finishMethod);
+		end
 
-		elseif GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
+		if GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
 			local type = GetNumQuestChoices() == 1 and "choice" or "reward";
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo(type, 1);
 			local link = GetQuestItemLink(type, 1);
