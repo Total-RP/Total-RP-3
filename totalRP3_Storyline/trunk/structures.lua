@@ -212,6 +212,9 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		[EXCLAME_ID] = 2.000,
 		[QUESTION_ID] = 2.00,
 		[TALK_ID] = 2.000,
+		["185"] = 1.3,
+		["68"] = 2.1,
+		["186"] = 1.3,
 	},
 	["character\\bloodelf\\female\\bloodelffemale_hd.m2"] = {
 		["185"] = 1.4,
@@ -226,17 +229,27 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	-- Taurene
 	["character\\tauren\\female\\taurenfemale_hd.m2"] = {
-		[TALK_ID] = 2.800,
+		["185"] = 1.5,
+		["186"] = 1.8,
+		["65"] = 1.7,
+		["64"] = 1.9,
+		["68"] = 1.8,
 	},
 	["character\\tauren\\male\\taurenmale_hd.m2"] = {
 		[TALK_ID] = 2.90,
 		[EXCLAME_ID] = 2.0,
 		[QUESTION_ID] = 1.8,
+		["185"] = 1.9,
+		["68"] = 1.9,
+		["186"] = 2,
 	},
 	-- Troll
 	["character\\troll\\female\\trollfemale_hd.m2"] = {
-		[TALK_ID] = 2.400,
-
+		["185"] = 1.4,
+		["186"] = 1.6,
+		["65"] = 1.4,
+		["64"] = 2,
+		["68"] = 2.1,
 	},
 	["character\\troll\\male\\trollmale_hd.m2"] = {
 		[TALK_ID] = 2.400,
@@ -248,8 +261,11 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	-- Scourge
 	["character\\scourge\\male\\scourgemale_hd.m2"] = {
-		[TALK_ID] = 2.400,
-		[QUESTION_ID] = 2.30,
+		["185"] = 1.8,
+		["186"] = 1.8,
+		["65"] = 2,
+		["64"] = 2.2,
+		["68"] = 2.1,
 	},
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -325,6 +341,7 @@ TRP3_ANIM_MAPPING["creature\\dreadravenwarbird\\dreadravenwarbirdwind.m2"] = ALL
 TRP3_ANIM_MAPPING["creature\\satyr\\satyr.m2"] = ALL_TO_NONE;
 
 TRP3_SCALE_MAPPING = {};
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Draenei male
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -358,3 +375,10 @@ TRP3_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakko
 TRP3_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\broken\\male\\brokenmale.m2"] = 30;
 TRP3_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoa2\\arakkoa2.m2"] = -45;
 TRP3_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoaoutland\\arakkoaoutland.m2"] = 20;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Blood elf male
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- Playable class
+TRP3_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\scourge\\male\\scourgemale_hd.m2"] = 15;
