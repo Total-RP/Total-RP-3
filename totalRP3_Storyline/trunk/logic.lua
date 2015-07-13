@@ -536,15 +536,8 @@ local function startDialog(targetType, fullText, event, eventInfo)
 
 	local scale = 0;
 	if TRP3_NPCDialogFrameModelsYou.model and TRP3_NPCDialogFrameModelsMe.model then
-		scale = TRP3_SCALE_MAPPING[TRP3_NPCDialogFrameModelsMe.model .. "~" .. TRP3_NPCDialogFrameModelsYou.model];
-		if not scale then
-			scale = TRP3_SCALE_MAPPING[TRP3_NPCDialogFrameModelsYou.model .. "~" .. TRP3_NPCDialogFrameModelsMe.model];
-			if scale then
-				scale = -scale;
-			else
-				scale = 0;
-			end
-		end
+		local key, invertKey = TRP3_NPCDialogFrameModelsMe.model .. "~" .. TRP3_NPCDialogFrameModelsYou.model, TRP3_NPCDialogFrameModelsYou.model .. "~" .. TRP3_NPCDialogFrameModelsMe.model;
+		scale = TRP3_Storyline.debug.scaling[key] or TRP3_SCALE_MAPPING[key] or -(TRP3_Storyline.debug.scaling[invertKey] or TRP3_SCALE_MAPPING[invertKey] or 0);
 	end
 	TRP3_NPCDialogFrameDebugScaleSlider:SetValue(scale);
 
@@ -766,8 +759,17 @@ local function onStart()
 	TRP3_NPCDialogFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
 		TRP3_NPCDialogFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
 		resizeModels(scale);
+		TRP3_Storyline.debug.scaling[TRP3_NPCDialogFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
 	end);
-
+	if not TRP3_Storyline then
+		TRP3_Storyline = {};
+	end
+	if not TRP3_Storyline.debug then
+		TRP3_Storyline.debug = {};
+	end
+	if not TRP3_Storyline.debug.scaling then
+		TRP3_Storyline.debug.scaling = {};
+	end
 end;
 
 local MODULE_STRUCTURE = {

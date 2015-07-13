@@ -175,22 +175,34 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		[EXCLAME_ID] = 2.000,
 		[QUESTION_ID] = 1.600,
 		[TALK_ID] = 1.900,
+		[YES_ID] = 1.2,
+		[NOPE_ID] = 1.3,
+		[ACLAIM_ID] = 1.4,
 	},
 	["character\\orc\\male\\orcmale_hd.m2"] = {
 		[EXCLAME_ID] = 2.000,
 		[QUESTION_ID] = 1.600,
 		[TALK_ID] = 1.900,
+		[YES_ID] = 1.8,
+		[NOPE_ID] = 1.8,
+		[ACLAIM_ID] = 2.7,
 	},
 	-- GOBLIN
 	["character\\goblin\\male\\goblinmale.m2"] = {
 		[TALK_ID] = 4.3,
 		[QUESTION_ID] = 3.7,
 		[EXCLAME_ID] = 2.600,
+		[YES_ID] = 2.5,
+		[NOPE_ID] = 2.8,
+		[ACLAIM_ID] = 3.2,
 	},
 	["character\\goblin\\female\\goblinfemale.m2"] = {
 		[TALK_ID] = 4.2,
 		[QUESTION_ID] = 4.2,
 		[EXCLAME_ID] = 3.5,
+		[YES_ID] = 2.6,
+		[NOPE_ID] = 2.5,
+		[ACLAIM_ID] = 1.8,
 	},
 	-- Blood elves
 	["character\\bloodelf\\male\\bloodelfmale_hd.m2"] = {
@@ -244,6 +256,13 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	["creature\\khadgar2\\khadgar2.m2"] = {
 		[TALK_ID] = 2.000,
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 1.7,
+	},
+	["creature\\kingvarianwrynn\\kingvarianwrynn.m2"] = {
+		[TALK_ID] = 2.000,
+		[EXCLAME_ID] = 2.000,
+		[QUESTION_ID] = 1.5,
 	},
 	-- ARRAKOA
 	["creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
@@ -251,6 +270,12 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	["creature\\arakkoa2\\arakkoa2.m2"] = {
 		[TALK_ID] = 4.300,
+	},
+	["creature\\ogredraenor\\ogredraenor.m2"] = {
+		[TALK_ID] = 1.9,
+	},
+	["creature\\agronn\\agronn.m2"] = {
+		[TALK_ID] = 3.2,
 	},
 }
 
@@ -274,6 +299,7 @@ local ALL_TO_NONE = {
 }
 TRP3_ANIM_MAPPING = {};
 TRP3_ANIM_MAPPING["creature\\humanfemalekid\\humanfemalekid.m2"] = ALL_TO_TALK;
+TRP3_ANIM_MAPPING["creature\\ogredraenor\\ogredraenor.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\humanmalekid\\humanmalekid.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\draeneifemalekid\\draeneifemalekid.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\golemdwarven\\golemdwarven.m2"] = ALL_TO_TALK;
@@ -286,6 +312,7 @@ TRP3_ANIM_MAPPING["creature\\draenorancient\\draenorancientgorgrond.m2"] = ALL_T
 TRP3_ANIM_MAPPING["creature\\arakkoa2\\arakkoa2.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\arakkoaoutland\\arakkoaoutland.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\dreadravenwarbird\\dreadravenwarbirdwind.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\satyr\\satyr.m2"] = ALL_TO_NONE;
 
 TRP3_SCALE_MAPPING = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
