@@ -83,8 +83,10 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getAnimationByModel(model, animationType)
-	if model and TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
-		return TRP3_ANIM_MAPPING[model][animationType];
+	if model then
+		if TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
+			return TRP3_ANIM_MAPPING[model][animationType];
+		end
 	end
 	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
 end
@@ -115,7 +117,9 @@ local DEFAULT_SEQUENCE_TIME = 4;
 
 local function getDuration(model, sequence)
 	sequence = tostring(sequence);
-	if TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
+	if TRP3_Storyline.debug.timing[model] and TRP3_Storyline.debug.timing[model][sequence] then
+		return TRP3_Storyline.debug.timing[model][sequence];
+	elseif TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
 		return TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
 	end
 	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
@@ -563,7 +567,7 @@ local ANIMATION_TEXT_SPEED = 80;
 local textSpeedFactor = 0.5;
 
 local function onUpdateChatText(self, elapsed)
-	if self.start then
+	if self.start and TRP3_NPCDialogFrameChatText:GetText() and TRP3_NPCDialogFrameChatText:GetText():len() > 0 then
 		self.start = self.start + (elapsed * (ANIMATION_TEXT_SPEED * textSpeedFactor));
 		if textSpeedFactor == 0 or self.start >= TRP3_NPCDialogFrameChatText:GetText():len() then
 			self.start = nil;
@@ -769,6 +773,9 @@ local function onStart()
 	end
 	if not TRP3_Storyline.debug.scaling then
 		TRP3_Storyline.debug.scaling = {};
+	end
+	if not TRP3_Storyline.debug.timing then
+		TRP3_Storyline.debug.timing = {};
 	end
 end;
 

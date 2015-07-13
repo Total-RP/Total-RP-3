@@ -712,6 +712,10 @@
 						local duration = tonumber(self:GetText());
 						TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")][TRP3_NPCDialogFrameDebugSequenceYou:GetText()] = duration;
 						TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim(TRP3_NPCDialogFrameDebugSequenceYou:GetNumber());
+						if not TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] then
+							TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = {};
+						end
+						TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")][TRP3_NPCDialogFrameDebugSequenceYou:GetText()] = duration;
 					</OnEnterPressed>
 					<OnLoad>
 						TRP3_NPCDialogFrameDebugSequenceYouTimeText:SetText("Save duration");

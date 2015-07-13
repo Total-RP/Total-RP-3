@@ -144,6 +144,9 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		[QUESTION_ID] = 3.7,
 		[TALK_ID] = 4.000,
 		[EXCLAME_ID] = 2.700,
+		[YES_ID] = 1.7,
+		[ACLAIM_ID] = 3.5,
+		[NOPE_ID] = 1.8,
 	},
 	["character\\worgen\\female\\worgenfemale.m2"] = {
 		[TALK_ID] = 4.000,
@@ -211,7 +214,11 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		[TALK_ID] = 2.000,
 	},
 	["character\\bloodelf\\female\\bloodelffemale_hd.m2"] = {
-		[TALK_ID] = 3.700, -- Multi anim ...
+		["185"] = 1.4,
+		["65"] = 1.4,
+		["68"] = 1.5,
+		["186"] = 2,
+		["64"] = 2.8,
 	},
 	["creature\\bloodelfguard\\bloodelfmale_guard.m2"] = {
 		[TALK_ID] = 2.000,
@@ -235,6 +242,9 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 		[TALK_ID] = 2.400,
 		[EXCLAME_ID] = 2.600,
 		[QUESTION_ID] = 1.9,
+		["185"] = 1.6,
+		["68"] = 3,
+		["186"] = 1.6,
 	},
 	-- Scourge
 	["character\\scourge\\male\\scourgemale_hd.m2"] = {
