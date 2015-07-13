@@ -549,6 +549,9 @@ local function startDialog(targetType, fullText, event, eventInfo)
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
 
 	local texts = { strsplit("\n", fullText) };
+	if texts[#texts]:len() == 0 then
+		texts[#texts] = nil;
+	end
 	TRP3_NPCDialogFrameChat.texts = texts;
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
 	TRP3_NPCDialogFrameChat.eventInfo = eventInfo;
