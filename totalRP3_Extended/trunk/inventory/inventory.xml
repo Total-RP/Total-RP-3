@@ -59,9 +59,7 @@
 	</Button>
 
 
-	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true">
-
-		<TitleRegion setAllPoints="true"/>
+	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />
 		<Layers>
 			<Layer level="BACKGROUND">

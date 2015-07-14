@@ -29,10 +29,22 @@ local EMPTY = {};
 local function isContainerByClass(item)
 	return item and item.CO;
 end
+TRP3_API.inventory.isContainerByClass = isContainerByClass;
 
 local function isContainerByClassID(itemID)
 	return itemID == "main" or isContainerByClass(getItemClass(itemID));
 end
+TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
+
+local function isUsableByClass(item)
+	return item and item.US;
+end
+TRP3_API.inventory.isContainerByClass = isContainerByClass;
+
+local function isUsableByClassID(itemID)
+	return isUsableByClass(getItemClass(itemID));
+end
+TRP3_API.inventory.isUsableByClassID = isUsableByClassID;
 
 local function getBaseClassDateSafe(itemClass)
 	local icon = "TEMP";
@@ -349,6 +361,18 @@ local function containerFrameUpdate(self, elapsed)
 		-- TODO: color if too heavy
 	end
 	self.WeightText:SetText(weight);
+
+
+	if self:GetNumPoints() == 1 then
+		local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
+		if point == "TOPLEFT" and relativePoint == "TOPRIGHT" then
+			-- TODO: show anchor icon
+
+		else
+			-- TODO: hide anchor icon
+
+		end
+	end
 end
 
 local function decorateContainer(containerFrame, class, container)
@@ -403,6 +427,19 @@ local function getContainerInstance(containerClass, instanceId)
 			else
 				self:SetPoint("CENTER", 0, 0);
 			end
+		end);
+		containerFrame:RegisterForDrag("LeftButton");
+		containerFrame:SetScript("OnDragStart", function(self)
+			self:StartMoving();
+		end);
+		containerFrame:SetScript("OnDragStop", function(self)
+			self:StopMovingOrSizing();
+			local anchor, _, _, x, y = self:GetPoint(1);
+			local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
+			self.info.point = point;
+			self.info.relativePoint = relativePoint;
+			self.info.xOfs = xOfs;
+			self.info.yOfs = yOfs;
 		end);
 		tinsert(pool, containerFrame);
 	end
