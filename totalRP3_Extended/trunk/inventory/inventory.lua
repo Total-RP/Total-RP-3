@@ -381,25 +381,40 @@ local function decorateContainer(containerFrame, class, container)
 	containerFrame.Title:SetText(name);
 end
 
-local containerInstances5x4 = {};
-local containerInstances2x4 = {};
-local function getContainerPool(containerClass)
-	local size = containerClass.CO.SI;
-	size = size or 5;
-	if size == 5 then
-		return containerInstances5x4, size;
-	elseif size == 2 then
-		return containerInstances2x4, size;
+local containerInstances = {};
+
+local function containerOnDragStop(self)
+	self:StopMovingOrSizing();
+	local anchor, _, _, x, y = self:GetPoint(1);
+	local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
+	self.info.point = point;
+	self.info.relativePoint = relativePoint;
+	self.info.xOfs = xOfs;
+	self.info.yOfs = yOfs;
+	for _, containerFrame in pairs(containerInstances) do
+		containerFrame.isMoving = nil;
 	end
-	error("Unknown container size: " .. size);
+	-- Check for anchor
+	for _, containerFrame in pairs(containerInstances) do
+		if containerFrame ~= self and MouseIsOver(containerFrame) then
+			self:ClearAllPoints();
+			self:SetPoint("TOPLEFT", containerFrame, "TOPRIGHT", 0, 0);
+		end
+	end
+end
+
+local function containerOnDragStart(self)
+	self:StartMoving();
+	for _, containerFrame in pairs(containerInstances) do
+		containerFrame.isMoving = self.info.instanceId;
+	end
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.5;
 local function getContainerInstance(containerClass, instanceId)
-	local pool, size = getContainerPool(containerClass);
 	local count = 0;
 	local containerFrame, available;
-	for _, ref in pairs(pool) do
+	for _, ref in pairs(containerInstances) do
 		count = count + 1;
 		if not ref:IsVisible() then
 			available = ref;
@@ -415,9 +430,9 @@ local function getContainerInstance(containerClass, instanceId)
 	if available then -- If there is available frame in the pool
 		containerFrame = available;
 	else -- Else: we create a new one
-		containerFrame = CreateFrame("Frame", "TRP3_Container" .. size .. "x4_" .. (count + 1), nil, "TRP3_Container" .. size .. "x4Template");
+		containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
 		createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
-		initContainerSlots(containerFrame, size, 4);
+		initContainerSlots(containerFrame, 5, 4);
 		containerFrame:SetScript("OnShow", function(self)
 			decorateContainer(self, self.class, self.info);
 			loadContainerPage(self);
@@ -429,19 +444,9 @@ local function getContainerInstance(containerClass, instanceId)
 			end
 		end);
 		containerFrame:RegisterForDrag("LeftButton");
-		containerFrame:SetScript("OnDragStart", function(self)
-			self:StartMoving();
-		end);
-		containerFrame:SetScript("OnDragStop", function(self)
-			self:StopMovingOrSizing();
-			local anchor, _, _, x, y = self:GetPoint(1);
-			local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
-			self.info.point = point;
-			self.info.relativePoint = relativePoint;
-			self.info.xOfs = xOfs;
-			self.info.yOfs = yOfs;
-		end);
-		tinsert(pool, containerFrame);
+		containerFrame:SetScript("OnDragStart", containerOnDragStart);
+		containerFrame:SetScript("OnDragStop", containerOnDragStop);
+		tinsert(containerInstances, containerFrame);
 	end
 	containerFrame.instanceId = instanceId;
 	return containerFrame;
@@ -449,7 +454,7 @@ local function getContainerInstance(containerClass, instanceId)
 end
 
 function isContainerInstanceOpen(containerClass, instanceId)
-	for _, ref in pairs(getContainerPool(containerClass)) do
+	for _, ref in pairs(containerInstances) do
 		if ref.instanceId == instanceId and ref:IsVisible() then
 			return true;
 		end
