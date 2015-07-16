@@ -79,6 +79,12 @@
 					</Anchors>
 					<TexCoords left="0.24" right="1" top="0" bottom="0.18"/>
 				</Texture>
+				<Texture parentKey="LockIcon" file="Interface\PETBATTLES\PetBattle-LockIcon">
+					<Size x="20" y="20" />
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="-5" y="0"/>
+					</Anchors>
+				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="2">
 				<Texture parentKey="Bottom" file="Interface\ContainerFrame\UI-Bag-Components">
@@ -142,6 +148,7 @@
 
 		<Scripts>
 			<OnLoad>
+				self.IconButton:SetAllPoints(self.Icon);
 				TRP3_API.utils.texture.applyRoundTexture(self.Icon, "Interface\\ICONS\\inv_misc_bag_12", "Interface\\ICONS\\Temp");
 			</OnLoad>
 		</Scripts>
@@ -152,6 +159,7 @@
 					<Anchor point="TOPRIGHT" x="0" y="-4"/>
 				</Anchors>
 			</Button>
+			<Button parentKey="IconButton" inherits="TRP3_InvisibleButton"/>
 		</Frames>
 	</Frame>
 

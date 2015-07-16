@@ -18,6 +18,7 @@
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
+local tsize = Utils.table.size;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local getItemClass = TRP3_API.inventory.getItemClass;
 local EMPTY = {};
@@ -289,6 +290,18 @@ local function containerSlotUpdate(self, elapsed)
 	end
 end
 
+local function slotOnEnter(self)
+	if self.info and self.class then
+		TRP3_ItemTooltip.ref = self;
+		showItemTooltip(self, self.info, self.class);
+	end
+end
+
+local function slotOnLeave(self)
+	TRP3_ItemTooltip.ref = nil;
+	TRP3_ItemTooltip:Hide();
+end
+
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
@@ -303,16 +316,8 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			tinsert(containerFrame.slots, slot);
 			createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
 			slot:SetPoint("TOPLEFT", colX, rowY);
-			slot:SetScript("OnEnter", function(self)
-				if self.info and self.class then
-					TRP3_ItemTooltip.ref = self;
-					showItemTooltip(self, self.info, self.class);
-				end
-			end);
-			slot:SetScript("OnLeave", function(self)
-				TRP3_ItemTooltip.ref = nil;
-				TRP3_ItemTooltip:Hide();
-			end);
+			slot:SetScript("OnEnter", slotOnEnter);
+			slot:SetScript("OnLeave", slotOnLeave);
 			slot:SetScript("OnDoubleClick", function(self, button)
 				if self.info and self.class and isContainerByClass(self.class) then
 					switchContainerByRef(self.info, self:GetParent());
@@ -362,16 +367,9 @@ local function containerFrameUpdate(self, elapsed)
 	end
 	self.WeightText:SetText(weight);
 
-
-	if self:GetNumPoints() == 1 then
-		local point, relativeTo, relativePoint, xOfs, yOfs = self:GetPoint(1);
-		if point == "TOPLEFT" and relativePoint == "TOPRIGHT" then
-			-- TODO: show anchor icon
-
-		else
-			-- TODO: hide anchor icon
-
-		end
+	self.LockIcon:Hide();
+	if self.lockedBy then
+		self.LockIcon:Show();
 	end
 end
 
@@ -382,6 +380,31 @@ local function decorateContainer(containerFrame, class, container)
 end
 
 local containerInstances = {};
+
+local function lockOnContainer(self, originContainer)
+	self:ClearAllPoints();
+	self.lockedOn = originContainer;
+	if originContainer and originContainer:IsVisible() then
+		if originContainer.lockedBy then
+			lockOnContainer(self, originContainer.lockedBy);
+			return;
+		end
+		originContainer.lockedBy = self;
+		self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", 0, 0);
+		containerFrameUpdate(originContainer);
+	elseif self.info.point and self.info.relativePoint then
+		self:SetPoint(self.info.point, nil, self.info.relativePoint, self.info.xOfs, self.info.yOfs);
+	else
+		self:SetPoint("CENTER", 0, 0);
+	end
+end
+
+local function unlockFromContainer(self)
+	if self.lockedOn then
+		self.lockedOn.lockedBy = nil;
+		containerFrameUpdate(self.lockedOn);
+	end
+end
 
 local function containerOnDragStop(self)
 	self:StopMovingOrSizing();
@@ -397,17 +420,35 @@ local function containerOnDragStop(self)
 	-- Check for anchor
 	for _, containerFrame in pairs(containerInstances) do
 		if containerFrame ~= self and MouseIsOver(containerFrame) then
-			self:ClearAllPoints();
-			self:SetPoint("TOPLEFT", containerFrame, "TOPRIGHT", 0, 0);
+			lockOnContainer(self, containerFrame);
+			self.info.point = nil;
+			self.info.relativePoint = nil;
+			self.info.xOfs = nil;
+			self.info.yOfs = nil;
 		end
 	end
+	containerFrameUpdate(self);
 end
 
 local function containerOnDragStart(self)
+	unlockFromContainer(self);
+	self.lockedOn = nil;
 	self:StartMoving();
 	for _, containerFrame in pairs(containerInstances) do
 		containerFrame.isMoving = self.info.instanceId;
 	end
+end
+
+local function onContainerShow(self)
+	self.IconButton.info = self.info;
+	self.IconButton.class = self.class;
+	lockOnContainer(self, self.originContainer);
+	decorateContainer(self, self.class, self.info);
+	loadContainerPage(self);
+end
+
+local function onContainerHide(self)
+	unlockFromContainer(self);
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.5;
@@ -433,24 +474,20 @@ local function getContainerInstance(containerClass, instanceId)
 		containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
 		createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
 		initContainerSlots(containerFrame, 5, 4);
-		containerFrame:SetScript("OnShow", function(self)
-			decorateContainer(self, self.class, self.info);
-			loadContainerPage(self);
-			self:ClearAllPoints();
-			if self.originContainer then
-				self:SetPoint("TOPLEFT", self.originContainer, "TOPRIGHT", 0, 0);
-			else
-				self:SetPoint("CENTER", 0, 0);
-			end
-		end);
+		containerFrame:SetScript("OnShow", onContainerShow);
+		containerFrame:SetScript("OnHide", onContainerHide);
 		containerFrame:RegisterForDrag("LeftButton");
 		containerFrame:SetScript("OnDragStart", containerOnDragStart);
 		containerFrame:SetScript("OnDragStop", containerOnDragStop);
+		containerFrame.IconButton:RegisterForDrag("LeftButton");
+		containerFrame.IconButton:SetScript("OnDragStart", function(self) containerOnDragStart(self:GetParent()) end);
+		containerFrame.IconButton:SetScript("OnDragStop", function(self) containerOnDragStop(self:GetParent()) end);
+		containerFrame.IconButton:SetScript("OnEnter", slotOnEnter);
+		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
 		tinsert(containerInstances, containerFrame);
 	end
 	containerFrame.instanceId = instanceId;
 	return containerFrame;
-
 end
 
 function isContainerInstanceOpen(containerClass, instanceId)
