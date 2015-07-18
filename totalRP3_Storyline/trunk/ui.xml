@@ -307,9 +307,6 @@
 								TRP3_MainTooltip:Hide();
 								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.5);
 							</OnLeave>
-							<PostClick>
-								TRP3_API.ui.misc.playUISound("LOOTWINDOWCOINSOUND");
-							</PostClick>
 						</Scripts>
 					</Button>
 				</Frames>
@@ -330,14 +327,14 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<PlayerModel name="TRP3_NPCDialogFrameModelsMe" frameLevel="2">
+					<DressUpModel name="TRP3_NPCDialogFrameModelsMe" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" relativeTo="TRP3_NPCDialogFrameModelsPoint" relativePoint="LEFT" x="0" y="0"/>
 						</Anchors>
-					</PlayerModel>
+					</DressUpModel>
 					<PlayerModel name="TRP3_NPCDialogFrameModelsYou" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>

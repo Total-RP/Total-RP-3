@@ -174,16 +174,42 @@ local function selectMultipleGossip(button)
 
 end
 
+local dropdownRewardsClick;
+
 local function selectMultipleRewards(button)
 	wipe(multiList);
 	tinsert(multiList, { "Select reward", nil });
 	local rewards = {};
 	for i = 1, GetNumQuestChoices() do
 		local rewardName, rewardIcon = GetQuestItemInfo("choice", i);
-			-- GetQuestItemLink("choice", i)
-		tinsert(multiList, { "|T" .. rewardIcon .. "GossipIcon:25:25|t" .. rewardName, i });
+		local itemLink = GetQuestItemLink("choice", i);
+		tinsert(multiList, { "|T" .. rewardIcon .. "GossipIcon:25:25|t " .. itemLink .. "|r", i });
 	end
-	displayDropDown(button, multiList, GetQuestReward, 0, true);
+	--displayDropDown(button, multiList, GetQuestReward, 0, true);
+	displayDropDown(button, multiList, dropdownRewardsClick, 0, true);
+end
+
+dropdownRewardsClick = function(index, button)
+	local itemLink = GetQuestItemLink("choice", index);
+
+	if IsControlKeyDown() and IsAltKeyDown() then
+		TRP3_NPCDialogFrameModelsMe:Dress();
+	elseif IsControlKeyDown() then
+		TRP3_NPCDialogFrameModelsMe:TryOn(itemLink);
+	elseif IsAltKeyDown() then
+		TRP3_NPCDialogFrameModelsMe:Undress();
+		TRP3_NPCDialogFrameModelsMe:TryOn(itemLink);
+	elseif IsShiftKeyDown() then
+		HandleModifiedItemClick(itemLink);
+
+		GameTooltip:SetOwner(button, "ANCHOR_RIGHT");
+		GameTooltip:SetQuestItem("choice", index);
+		GameTooltip_ShowCompareItem(GameTooltip);
+	else
+		GetQuestReward(index);
+		return;
+	end
+	selectMultipleRewards(button);
 end
 
 local function selectFirstAvailable()
@@ -230,7 +256,6 @@ local function selectMultipleActiveGreetings(button)
 	local numActiveQuests = GetNumActiveQuests();
 	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
 
-	-- Active quests (always first)
 	for i = 1, numActiveQuests do
 		local title, isComplete = GetActiveTitle(i);
 		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(i);
@@ -718,14 +743,14 @@ local function registerEventStructure()
 				if GetNumQuestChoices() == 1 then
 					GetQuestReward(1);
 				elseif GetNumQuestChoices() > 0 then
-					message("Please choose a reward from the original quest interface."); -- TODO: TEMP
+					message("Please choose a reward using the icon above."); -- TODO: TEMP
 				else
 					GetQuestReward();
 				end
 			end,
 			finishText = function()
 				if GetNumQuestChoices() > 1 then
-					return "Please choose a reward from the original quest interface."; -- TODO: TEMP
+					return "Please choose a reward using the icon above."; -- TODO: TEMP
 				else
 					return loc("SL_GET_REWARD");
 				end
