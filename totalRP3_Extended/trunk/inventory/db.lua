@@ -67,9 +67,3 @@ TRP3_DB.item = {
 		},
 	},
 };
-
-local ITEM_DB = TRP3_DB.item;
-
-function TRP3_API.inventory.getItemClass(itemID)
-	return ITEM_DB[itemID];
-end

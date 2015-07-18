@@ -347,7 +347,9 @@ function TRP3_RESET_INV()
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01container1234");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01pouicpouic124");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01pouicpouic124", {containerSlot = "2"});
+	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01container1234");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(TRP3_API.inventory.getItem(nil, "1"), "1"), "01pouicpouic123");
+	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(TRP3_API.inventory.getItem(nil, "1"), "1"), "01container1234");
 	Utils.table.dump(TRP3_API.profile.getPlayerCurrentProfile().inventory);
 end
 

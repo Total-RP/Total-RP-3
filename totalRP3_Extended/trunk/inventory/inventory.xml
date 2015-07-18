@@ -24,7 +24,9 @@
 	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
 
 	<Script file="db.lua"/>
+	<Script file="inventory_utils.lua"/>
 	<Script file="inventory.lua"/>
+	<Script file="container.lua"/>
 
 	<Button name="TRP3_ContainerSlotTemplate" enableMouse="true" virtual="true">
 		<Size x="36" y="36"/>
@@ -160,6 +162,24 @@
 				</Anchors>
 			</Button>
 			<Button parentKey="IconButton" inherits="TRP3_InvisibleButton"/>
+			<Frame parentKey="Glow" hidden="true" setAllPoints="true" alpha="0.5">
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture inherits="HelpPlateArrowDOWN">
+							<Size x="53" y="21"/>
+							<Anchors>
+								<Anchor point="BOTTOM" relativePoint="TOP" x="5" y="-15"/>
+							</Anchors>
+						</Texture>
+						<Texture inherits="HelpPlateArrowUP">
+							<Size x="53" y="21"/>
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" x="5" y="-15"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+			</Frame>
 		</Frames>
 	</Frame>
 

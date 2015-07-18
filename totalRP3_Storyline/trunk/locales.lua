@@ -17,9 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+TRP3_StorylineAPI = {};
 
-
-TRP3_StoryLine_LOCALE = {
+TRP3_StorylineAPI.LOCALE = {
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LOCALE_EN

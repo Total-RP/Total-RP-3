@@ -303,6 +303,9 @@ TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	["creature\\agronn\\agronn.m2"] = {
 		[TALK_ID] = 3.2,
 	},
+	["creature\\furbolg\\furbolg.m2"] = {
+		[TALK_ID] = 1.9,
+	},
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -339,6 +342,7 @@ TRP3_ANIM_MAPPING["creature\\arakkoa2\\arakkoa2.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\arakkoaoutland\\arakkoaoutland.m2"] = ALL_TO_TALK;
 TRP3_ANIM_MAPPING["creature\\dreadravenwarbird\\dreadravenwarbirdwind.m2"] = ALL_TO_NONE;
 TRP3_ANIM_MAPPING["creature\\satyr\\satyr.m2"] = ALL_TO_NONE;
+TRP3_ANIM_MAPPING["creature\\furbolg\\furbolg.m2"] = ALL_TO_TALK;
 
 TRP3_SCALE_MAPPING = {};
 

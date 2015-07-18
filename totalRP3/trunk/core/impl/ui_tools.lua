@@ -985,7 +985,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 			self.resizableFrame:SetSize(width, height);
 			if self.onResizeStop then
 				C_Timer.After(0.1, function()
-					self.onResizeStop();
+					self.onResizeStop(width, height);
 				end);
 			end
 		end
