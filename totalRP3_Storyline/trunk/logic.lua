@@ -152,6 +152,9 @@ TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim = playTargetAnim;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local GetNumGossipOptions, GetGossipOptions, SelectGossipOption = GetNumGossipOptions, GetGossipOptions, SelectGossipOption;
 local GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest = GetNumGossipAvailableQuests, GetGossipAvailableQuests, SelectGossipAvailableQuest;
+local GetNumGossipActiveQuests, GetNumActiveQuests, GetNumAvailableQuests = GetNumGossipActiveQuests, GetNumActiveQuests, GetNumAvailableQuests;
+local SelectAvailableQuest, SelectActiveQuest = SelectAvailableQuest, SelectActiveQuest;
+local GetAvailableTitle, GetActiveTitle, GetAvailableQuestInfo = GetAvailableTitle, GetActiveTitle, GetAvailableQuestInfo;
 local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3;
 local multiList = {};
 
@@ -187,6 +190,13 @@ local function selectFirstAvailable()
 	SelectGossipAvailableQuest(1);
 end
 
+local function selectFirstGreetingAvailable()
+	SelectAvailableQuest(1);
+end
+local function selectFirstGreetingActive()
+	SelectActiveQuest(1);
+end
+
 local function selectMultipleAvailable(button)
 	wipe(multiList);
 	local data = { GetGossipAvailableQuests() };
@@ -212,6 +222,40 @@ local function selectMultipleActive(button)
 		tinsert(multiList, { "|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
 	end
 	displayDropDown(button, multiList, SelectGossipActiveQuest, 0, true);
+end
+
+local function selectMultipleActiveGreetings(button)
+	wipe(multiList);
+
+	local numActiveQuests = GetNumActiveQuests();
+	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
+
+	-- Active quests (always first)
+	for i = 1, numActiveQuests do
+		local title, isComplete = GetActiveTitle(i);
+		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(i);
+		tinsert(multiList, { "|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
+	end
+
+	displayDropDown(button, multiList, SelectActiveQuest, 0, true);
+end
+
+local function selectMultipleAvailableGreetings(button)
+	wipe(multiList);
+
+	local numActiveQuests = GetNumActiveQuests();
+	local numAvailableQuests = GetNumAvailableQuests();
+	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
+
+
+	-- Available quests
+	for i = 1, numAvailableQuests do
+		local title, isComplete = GetAvailableTitle(i);
+		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + i);
+		tinsert(multiList, { "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i});
+	end
+
+	displayDropDown(button, multiList, SelectAvailableQuest, 0, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -437,6 +481,58 @@ local function playText(textIndex)
 		end
 
 		setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -20, TTReward, subTTReward);
+	end
+
+	if TRP3_NPCDialogFrameChat.event == "QUEST_GREETING" and textIndex == #TRP3_NPCDialogFrameChat.texts then
+
+		local numActiveQuests = GetNumActiveQuests();
+		local numAvailableQuests = GetNumAvailableQuests();
+
+		if numActiveQuests > 0 then
+			TRP3_NPCDialogFrameChatOption1:Show();
+			TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
+			TRP3_NPCDialogFrameChatOption1:ClearAllPoints();
+			TRP3_NPCDialogFrameChatOption1:ClearAllPoints();
+			TRP3_NPCDialogFrameChatOption1:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+			TRP3_NPCDialogFrameChatOption1:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+			TRP3_NPCDialogFrameChatOption1:SetPoint("TOP", 0, OPTIONS_TOP);
+
+			previous = TRP3_NPCDialogFrameChatOption1;
+			if numActiveQuests == 1 then
+				local title, isComplete = GetActiveTitle(1);
+				local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
+				local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
+				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstGreetingActive);
+			else
+				TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
+				TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleActiveGreetings);
+			end
+		end
+
+		if numAvailableQuests > 0 then
+			TRP3_NPCDialogFrameChatOption2:Show();
+			TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
+			TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
+			TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+			TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+			if previous then
+				TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			else
+				TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", 0, OPTIONS_TOP);
+			end
+			previous = TRP3_NPCDialogFrameChatOption2;
+			if numAvailableQuests == 1 then
+				local title, isComplete = GetAvailableTitle(1);
+				local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + 1);
+				local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
+				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
+				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectFirstAvailable);
+			else
+				TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
+				TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectMultipleAvailableGreetings);
+			end
+		end
 	end
 
 	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
