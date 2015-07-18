@@ -57,6 +57,7 @@ local function closeDialog()
 end
 
 local function resetDialog()
+	TRP3_NPCDialogFrameObjectivesContent:Hide();
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
 	playNext(TRP3_NPCDialogFrameModelsYou);
 end
@@ -134,7 +135,7 @@ function TRP3_StorylineAPI.startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameChat.currentIndex = 0;
 	TRP3_NPCDialogFrameChat.eventInfo = eventInfo;
 	TRP3_NPCDialogFrameChat.event = event;
-
+	TRP3_NPCDialogFrameObjectivesContent:Hide();
 	TRP3_NPCDialogFrameChatPrevious:Hide();
 
 	playNext(TRP3_NPCDialogFrameModelsYou);

@@ -192,7 +192,7 @@
 				<FontString name="TRP3_NPCDialogFrameTitle" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
 					<Size x="230" y="50"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="8s" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
+						<Anchor point="CENTER" x="0" y="8" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
 					</Anchors>
 				</FontString>
 			</Layer>
@@ -202,7 +202,7 @@
 			<Button name="TRP3_NPCDialogFrameObjectives">
 				<Size x="70" y="70"/>
 				<Anchors>
-					<Anchor point="CENTER" x="0" y="100"/>
+					<Anchor point="TOP" x="0" y="-100"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
@@ -224,6 +224,14 @@
 					<Layer level="BORDER" textureSubLevel="3">
 						<Texture file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
 							<Size x="100" y="100"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+					<Layer level="ARTWORK">
+						<Texture parentKey="OK" file="Interface\RAIDFRAME\ReadyCheck-Ready" hidden="true">
+							<Size x="40" y="40"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
 							</Anchors>
@@ -257,6 +265,40 @@
 						<NormalTexture file="Interface\RAIDFRAME\ReadyCheck-NotReady"/>
 						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
+
+					<Frame name="TRP3_NPCDialogFrameObjectivesContent" inherits="TRP3_HoveredFrame" hidden="true">
+						<Size x="325" y="150"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+								</FontString>
+								<FontString parentKey="Objectives" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="310" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Title" x="0" y="-5"/>
+										<!--<Anchor point="LEFT" x="10" y="0"/>-->
+										<!--<Anchor point="RIGHT" x="-10" y="0"/>-->
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="RequiredItemText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Objectives" x="0" y="-5"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.65" b="0"/>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
 				</Frames>
 			</Button>
 
@@ -295,9 +337,9 @@
 						<Scripts>
 							<OnEnter>
 								if TRP3_NPCDialogFrameRewards.itemLink then
-								GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
-								GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
-								GameTooltip:Show();
+									GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
+									GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
+									GameTooltip:Show();
 								end
 								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.75);
 								TRP3_RefreshTooltipForFrame(self);
