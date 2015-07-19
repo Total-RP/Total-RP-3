@@ -226,14 +226,18 @@ local function onStart()
 	end);
 
 	-- Resizing
-	TRP3_NPCDialogFrameChatText:SetWidth(550);
-	TRP3_NPCDialogFrameResizeButton.onResizeStop = function(width, height)
+	local resizeChat = function()
 		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
 		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
+	end
+	TRP3_NPCDialogFrameChatText:SetWidth(550);
+	TRP3_NPCDialogFrameResizeButton.onResizeStop = function(width, height)
+		resizeChat();
 		TRP3_Storyline.config.width = width;
 		TRP3_Storyline.config.height = height;
 	end;
 	TRP3_NPCDialogFrame:SetSize(TRP3_Storyline.config.width or 700, TRP3_Storyline.config.height or 450);
+	resizeChat();
 
 
 	local resizeModels = function(scale)

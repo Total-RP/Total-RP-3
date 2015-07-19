@@ -40,7 +40,8 @@ TRP3_StorylineAPI.LOCALE = {
 		SL_RESET_TT = "Rewind this dialogue.",
 		SL_REWARD_MORE = "You will also get",
 		SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
-		SL_GET_REWARD = "Get your reward!",
+		SL_GET_REWARD = "Get your reward",
+		SL_SELECT_REWARD = "Select your reward",
 		SL_CONFIG = "Parameters",
 		SL_CONFIG_TEXTSPEED = "Text speed: %.1fx",
 		SL_CONFIG_TEXTSPEED_INSTANT = "No anim",
@@ -66,6 +67,7 @@ TRP3_StorylineAPI.LOCALE = {
 		SL_RESET_TT = "Revenir au début du dialogue",
 		SL_REWARD_MORE = "Vous recevrez aussi",
 		SL_REWARD_MORE_SUB = "\nArgent: |cffffffff%s|r\nExpérience: |cffffffff%s xp|r\n\n|cffffff00Clic:|r Prenez votre récompense !",
-		SL_GET_REWARD = "Prenez votre récompense !"
+		SL_GET_REWARD = "Prenez votre récompense",
+		SL_SELECT_REWARD = "Choisissez votre récompense",
 	},
 }

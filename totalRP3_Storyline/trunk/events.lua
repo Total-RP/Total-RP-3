@@ -85,10 +85,10 @@ local function getQuestData(qTitle)
 end
 
 local itemButtons = {};
-local function placeItemButton(frame, placeOn, position)
+local function placeItemButton(frame, placeOn, position, first)
 	local available;
 	for _, button in pairs(itemButtons) do
-		if not button:IsVisible() then
+		if not button:IsShown() then
 			available = button;
 			break;
 		end
@@ -103,17 +103,35 @@ local function placeItemButton(frame, placeOn, position)
 		available:SetScript("OnLeave", function(self)
 			GameTooltip:Hide();
 		end);
+		available:SetScript("OnClick", function(self)
+			if not HandleModifiedItemClick(GetQuestItemLink(self.type, self.index)) and self.type == "choice" then
+				GetQuestReward(self.index);
+			end
+		end);
 		tinsert(itemButtons, available);
 	end
 	available:Show();
 	available:SetParent(frame);
 	available:ClearAllPoints();
 	if position == "TOPLEFT" then
-		available:SetPoint("TOPLEFT", placeOn, "BOTTOMLEFT", 0, -10);
+		available:SetPoint("TOPLEFT", placeOn, "BOTTOMLEFT", first and 0 or -157, -5);
 	else
-		available:SetPoint("LEFT", placeOn, "RIGHT", 0, -10);
+		available:SetPoint("TOPLEFT", placeOn, "TOPRIGHT", 10, 0);
 	end
 	return available;
+end
+
+local function decorateItemButton(button, index, type, texture, name, numItems, isUsable)
+	button.index = index;
+	button.type = type;
+	button.Icon:SetTexture(texture);
+	button.Name:SetText(name);
+	button.Count:SetText(numItems > 1 and numItems or "");
+	if isUsable then
+		button.Icon:SetVertexColor(1, 1, 1);
+	else
+		button.Icon:SetVertexColor(1, 0, 0);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -275,9 +293,6 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	TRP3_NPCDialogFrameObjectivesContent.Objectives:SetText(questObjectives);
 
 	local contentHeight = 0;
-	for _, button in pairs(itemButtons) do
-		button:Hide();
-	end
 	if GetNumQuestItems() > 0 then
 		TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:Show();
 		local previous = TRP3_NPCDialogFrameObjectivesContent.RequiredItemText;
@@ -286,19 +301,15 @@ eventHandlers["QUEST_PROGRESS"] = function()
 		TRP3_NPCDialogFrameObjectivesImage:SetTexture(icon);
 		for i = 1, GetNumQuestItems() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
-			local button = placeItemButton(TRP3_NPCDialogFrameObjectivesContent, previous, anchor);
-			button.index = i;
-			button.type = "required";
-			button.Icon:SetTexture(texture);
-			button.Name:SetText(name);
-			button.Count:SetText(numItems);
+			local button = placeItemButton(TRP3_NPCDialogFrameObjectivesContent, previous, anchor, i == 1);
+			decorateItemButton(button, i, "required", texture, name, numItems, isUsable);
 			previous = button;
 			if anchor == "TOPLEFT" then
 				anchor = "LEFT";
 			else
 				anchor = "TOPLEFT";
 			end
-			contentHeight = contentHeight + 46;
+			contentHeight = contentHeight + ((i%2) * 46);
 		end
 		contentHeight = contentHeight + TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
 	end
@@ -307,45 +318,106 @@ eventHandlers["QUEST_PROGRESS"] = function()
 end
 
 eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
-	playSelfAnim(68);
 	TRP3_NPCDialogFrameRewards:Show();
-	setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, 0);
-	local xp = GetRewardXP();
-	local money = GetCoinTextureString(GetRewardMoney());
-	local TTReward = loc("SL_REWARD_MORE");
-	local subTTReward = loc("SL_REWARD_MORE_SUB"):format(money, xp);
-	TRP3_NPCDialogFrameRewards.itemLink = nil;
+	setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "TOP", 0, 0, REWARDS, loc("SL_GET_REWARD"));
 
-	if GetNumQuestChoices() > 1 then
-		TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", function()
-			selectMultipleRewards(TRP3_NPCDialogFrameRewardsItem);
-		end);
-	else
-		TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", eventInfo.finishMethod);
+	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
+	local contentHeight = 20;
+
+	local reward1Text;
+	local xp = GetRewardXP();
+	if xp > 0 then
+		contentHeight = contentHeight + 18;
+		bestIcon = "Interface\\ICONS\\xp_icon";
+		if reward1Text then
+			reward1Text = reward1Text .. "\n";
+		end
+		reward1Text = (reward1Text or "") .. BONUS_OBJECTIVE_EXPERIENCE_FORMAT:format(xp);
 	end
+	local money = GetRewardMoney();
+	if money > 0 then
+		contentHeight = contentHeight + 18;
+		bestIcon = "Interface\\ICONS\\inv_misc_coin_03";
+		local moneyString = GetCoinTextureString(money);
+		if reward1Text then
+			reward1Text = reward1Text .. "\n";
+		end
+		reward1Text = (reward1Text or "") .. moneyString
+	end
+	TRP3_NPCDialogFrameRewards.Content.RewardText1Value:SetText(reward1Text);
+
+	local previousForChoice = TRP3_NPCDialogFrameRewards.Content.RewardText1Value;
 
 	if GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
-		local type = GetNumQuestChoices() == 1 and "choice" or "reward";
-		local name, texture, numItems, quality, isUsable = GetQuestItemInfo(type, 1);
-		local link = GetQuestItemLink(type, 1);
+		TRP3_NPCDialogFrameRewards.Content.RewardText2:Show();
+		contentHeight = contentHeight + 20;
+		local previous = TRP3_NPCDialogFrameRewards.Content.RewardText2;
+		local anchor = "TOPLEFT";
 
-		TRP3_NPCDialogFrameRewards.itemLink = link;
-		TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(texture);
-	else
-		-- No item
-		TTReward = REWARDS;
-		if xp > 0 then
-			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\xp_icon");
-		else
-			TRP3_NPCDialogFrameRewardsItemIcon:SetTexture("Interface\\ICONS\\inv_misc_coin_03");
+		if GetNumQuestChoices() == 1 then
+			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
+			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, true);
+			bestIcon = texture;
+			decorateItemButton(button, 1, "choice", texture, name, numItems, isUsable);
+			previous = button;
+			if anchor == "TOPLEFT" then
+				anchor = "LEFT";
+			else
+				anchor = "TOPLEFT";
+			end
+			contentHeight = contentHeight + 46;
+			previousForChoice = button;
+		end
+
+		for i = 1, GetNumQuestRewards() do
+			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", i);
+			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, i == 1);
+			bestIcon = texture;
+			decorateItemButton(button, i, "reward", texture, name, numItems, isUsable);
+			previous = button;
+			if anchor == "TOPLEFT" then
+				anchor = "LEFT";
+			else
+				anchor = "TOPLEFT";
+			end
+			contentHeight = contentHeight + ((i%2) * 46);
+			previousForChoice = button;
 		end
 	end
 
-	setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "BOTTOM", 0, -20, TTReward, subTTReward);
+	if GetNumQuestChoices() > 1 then
+		contentHeight = contentHeight + 18;
+		TRP3_NPCDialogFrameRewards.Content.RewardText3:Show();
+		TRP3_NPCDialogFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+
+		local previous = TRP3_NPCDialogFrameRewards.Content.RewardText3;
+		local anchor = "TOPLEFT";
+
+		for i = 1, GetNumQuestChoices() do
+			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", i);
+			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, i == 1);
+			bestIcon = texture;
+			decorateItemButton(button, i, "choice", texture, name, numItems, isUsable);
+			previous = button;
+			if anchor == "TOPLEFT" then
+				anchor = "LEFT";
+			else
+				anchor = "TOPLEFT";
+			end
+			contentHeight = contentHeight + ((i%2) * 46);
+		end
+	end
+
+	TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(bestIcon);
+	contentHeight = contentHeight + TRP3_NPCDialogFrameRewards.Content.Title:GetHeight() + 15;
+	TRP3_NPCDialogFrameRewards.Content:SetHeight(contentHeight);
 end
 
 local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	-- Options
+	for _, button in pairs(itemButtons) do
+		button:Hide();
+	end
 	TRP3_NPCDialogFrameRewards:Hide();
 	TRP3_NPCDialogFrameObjectives:Hide();
 	TRP3_NPCDialogFrameChatOption1:Hide();
@@ -355,6 +427,9 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	TRP3_NPCDialogFrameObjectivesNo:Hide();
 	TRP3_NPCDialogFrameObjectives.OK:Hide();
 	TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:Hide();
+	TRP3_NPCDialogFrameRewards.Content:Hide();
+	TRP3_NPCDialogFrameRewards.Content.RewardText2:Hide();
+	TRP3_NPCDialogFrameRewards.Content.RewardText3:Hide();
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
 	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption3);
@@ -417,6 +492,7 @@ local function playText(textIndex, targetModel)
 end
 
 function TRP3_StorylineAPI.playNext(targetModel)
+	TRP3_NPCDialogFrameChatNext:Enable();
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 
 	TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_NEXT"));
@@ -482,8 +558,10 @@ function TRP3_StorylineAPI.initEventsStructure()
 					if IsQuestCompletable() then
 						TRP3_NPCDialogFrameObjectives.OK:Show();
 						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_CONTINUE"));
+						playSelfAnim(68);
 					else
 						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_NOT_YET"));
+						playSelfAnim(186);
 					end
 				elseif IsQuestCompletable() then
 					CompleteQuest();
@@ -500,21 +578,23 @@ function TRP3_StorylineAPI.initEventsStructure()
 		["QUEST_COMPLETE"] = {
 			text = GetRewardText,
 			finishMethod = function()
-				if GetNumQuestChoices() == 1 then
+				if not TRP3_NPCDialogFrameRewards.Content:IsVisible() then
+					TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameRewards.Content, TRP3_NPCDialogFrameRewardsItem, "TOP");
+					setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "TOP", 0, 0);
+					TRP3_MainTooltip:Hide();
+					if GetNumQuestChoices() > 1 then
+						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_SELECT_REWARD"));
+						TRP3_NPCDialogFrameChatNext:Disable();
+					else
+						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_CONTINUE"));
+					end
+				elseif GetNumQuestChoices() == 1 then
 					GetQuestReward(1);
-				elseif GetNumQuestChoices() > 0 then
-					message("Please choose a reward using the icon above."); -- TODO: TEMP
-				else
+				elseif GetNumQuestChoices() == 0 then
 					GetQuestReward();
 				end
 			end,
-			finishText = function()
-				if GetNumQuestChoices() > 1 then
-					return "Please choose a reward using the icon above."; -- TODO: TEMP
-				else
-					return loc("SL_GET_REWARD");
-				end
-			end,
+			finishText = loc("SL_GET_REWARD"),
 			cancelMethod = CloseQuest,
 			titleGetter = GetTitleText,
 		},
@@ -569,4 +649,10 @@ function TRP3_StorylineAPI.initEventsStructure()
 	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", function() EVENT_INFO["QUEST_PROGRESS"].finishMethod(); end);
 	TRP3_NPCDialogFrameObjectivesContent.Title:SetText(QUEST_OBJECTIVES);
 	TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:SetText(TURN_IN_ITEMS);
+
+	TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", function() EVENT_INFO["QUEST_COMPLETE"].finishMethod(); end);
+	TRP3_NPCDialogFrameRewards.Content.RewardText1:SetText(REWARD_ITEMS_ONLY);
+	TRP3_NPCDialogFrameRewards.Content.Title:SetText(REWARDS);
+	TRP3_NPCDialogFrameRewards.Content.RewardText2:SetText(REWARD_ITEMS);
+	TRP3_NPCDialogFrameRewards.Content.RewardText3:SetText(REWARD_CHOOSE);
 end

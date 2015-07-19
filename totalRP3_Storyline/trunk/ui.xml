@@ -351,6 +351,58 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
+
+					<Frame parentKey="Content" inherits="TRP3_HoveredFrame" hidden="true">
+						<Size x="325" y="150"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+								</FontString>
+								<FontString parentKey="RewardText1" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Title" x="0" y="-5"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="RewardText1Value" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.RewardText1" x="0" y="-5"/>
+										<Anchor point="LEFT" x="20" y="0"/>
+										<Anchor point="RIGHT" x="-20" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="RewardText2" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.RewardText1Value" x="0" y="-5"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="RewardText3" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.RewardText2" x="0" y="-5"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
 				</Frames>
 			</Frame>
 
@@ -369,14 +421,14 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<DressUpModel name="TRP3_NPCDialogFrameModelsMe" frameLevel="2">
+					<PlayerModel name="TRP3_NPCDialogFrameModelsMe" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" relativeTo="TRP3_NPCDialogFrameModelsPoint" relativePoint="LEFT" x="0" y="0"/>
 						</Anchors>
-					</DressUpModel>
+					</PlayerModel>
 					<PlayerModel name="TRP3_NPCDialogFrameModelsYou" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
@@ -455,7 +507,7 @@
 							</OnLoad>
 						</Scripts>
 					</Frame>
-					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_InvisibleButton" setAllPoints="true">
+					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_InvisibleButton" setAllPoints="true" frameLevel="4">
 						<Scripts>
 							<OnEnter>
 								TRP3_NPCDialogFrameChatHighlight:Show();
@@ -465,7 +517,7 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameChatPrevious">
+					<Button name="TRP3_NPCDialogFrameChatPrevious" frameLevel="5">
 						<Size x="35" y="35"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
