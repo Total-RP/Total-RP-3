@@ -51,43 +51,6 @@ function TRP3_StorylineAPI.selectMultipleGossip(button)
 		tinsert(multiList, { "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip, i });
 	end
 	displayDropDown(button, multiList, SelectGossipOption, 0, true);
-
-end
-
-local function dropdownRewardsClick(index, button)
-	local itemLink = GetQuestItemLink("choice", index);
-
-	if IsControlKeyDown() and IsAltKeyDown() then
-		TRP3_NPCDialogFrameModelsMe:Dress();
-	elseif IsControlKeyDown() then
-		TRP3_NPCDialogFrameModelsMe:TryOn(itemLink);
-	elseif IsAltKeyDown() then
-		TRP3_NPCDialogFrameModelsMe:Undress();
-		TRP3_NPCDialogFrameModelsMe:TryOn(itemLink);
-	elseif IsShiftKeyDown() then
-		HandleModifiedItemClick(itemLink);
-
-		GameTooltip:SetOwner(button, "ANCHOR_RIGHT");
-		GameTooltip:SetQuestItem("choice", index);
-		GameTooltip_ShowCompareItem(GameTooltip);
-	else
-		GetQuestReward(index);
-		return;
-	end
-	TRP3_StorylineAPI.selectMultipleRewards(button);
-end
-
-function TRP3_StorylineAPI.selectMultipleRewards(button)
-	wipe(multiList);
-	tinsert(multiList, { "Select reward", nil });
-	local rewards = {};
-	for i = 1, GetNumQuestChoices() do
-		local rewardName, rewardIcon = GetQuestItemInfo("choice", i);
-		local itemLink = GetQuestItemLink("choice", i);
-		tinsert(multiList, { "|T" .. rewardIcon .. "GossipIcon:25:25|t " .. itemLink .. "|r", i });
-	end
-	--displayDropDown(button, multiList, GetQuestReward, 0, true);
-	displayDropDown(button, multiList, dropdownRewardsClick, 0, true);
 end
 
 function TRP3_StorylineAPI.selectFirstAvailable()
@@ -101,16 +64,48 @@ function TRP3_StorylineAPI.selectFirstGreetingActive()
 	SelectActiveQuest(1);
 end
 
+local selectionStrings = {};
+
+local function getSelectionFontString(placeOn)
+	local available;
+	for _, button in pairs(selectionStrings) do
+		if not button:IsShown() then
+			available = button;
+			break;
+		end
+	end
+	if not available then
+		available = CreateFrame("Button", "TRP3_StorylineChoiceString" .. #selectionStrings, TRP3_NPCDialogFrameGossipChoices, "TRP3_StorylineMultiChoiceButton");
+		tinsert(selectionStrings, available);
+	end
+	available:Show();
+	available:ClearAllPoints();
+	available:SetPoint("LEFT", 10, 0);
+	available:SetPoint("RIGHT", -10, 0);
+	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -5);
+	return available;
+end
+
 function TRP3_StorylineAPI.selectMultipleAvailable(button)
-	wipe(multiList);
+	for _, button in pairs(selectionStrings) do
+		button:Hide();
+	end
+	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
+	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
 	local data = { GetGossipAvailableQuests() };
-	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
+	local height = 40;
 	for i = 1, GetNumGossipAvailableQuests() do
 		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
 		data[(i * 6) - 5], data[(i * 6) - 4], data[(i * 6) - 3], data[(i * 6) - 2], data[(i * 6) - 1], data[(i * 6)];
-		tinsert(multiList, { "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
+		previous = getSelectionFontString(previous);
+		previous.Text:SetText("|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous:SetScript("OnClick", function(self)
+			SelectGossipAvailableQuest(i);
+		end);
+		height = height + 25;
 	end
-	displayDropDown(button, multiList, SelectGossipAvailableQuest, 0, true);
+	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
 end
 
 function TRP3_StorylineAPI.selectFirstActive()

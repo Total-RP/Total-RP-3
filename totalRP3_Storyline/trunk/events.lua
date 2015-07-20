@@ -64,6 +64,7 @@ local TRP3_NPCDialogFrame, TRP3_NPCDialogFrameChatNextText = TRP3_NPCDialogFrame
 local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
 local TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious = TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious;
 local TRP3_NPCDialogFrameConfigButton, TRP3_NPCDialogFrameObjectivesContent = TRP3_NPCDialogFrameConfigButton, TRP3_NPCDialogFrameObjectivesContent;
+local TRP3_NPCDialogFrameGossipChoices = TRP3_NPCDialogFrameGossipChoices;
 
 -- Constants
 local OPTIONS_MARGIN, OPTIONS_TOP = 175, -175;
@@ -143,7 +144,6 @@ local function autoEquip(itemLink)
 			if lootLevel > eqLevel then
 				shouldAutoEquip = true;
 				equipOn = firstSlot;
-
 			end
 		end
 	end
@@ -190,7 +190,7 @@ local function getQuestData(qTitle)
 		if questTitle == qTitle then
 			SelectQuestLogEntry(questIndex);
 			local questDescription, questObjectives = GetQuestLogQuestText();
-			return questObjectives;
+			return questObjectives or "";
 		end
 	end
 end
@@ -541,6 +541,7 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	for _, button in pairs(itemButtons) do
 		button:Hide();
 	end
+	TRP3_NPCDialogFrameGossipChoices:Hide();
 	TRP3_NPCDialogFrameRewards:Hide();
 	TRP3_NPCDialogFrameObjectives:Hide();
 	TRP3_NPCDialogFrameChatOption1:Hide();

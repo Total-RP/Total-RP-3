@@ -170,6 +170,28 @@
 		<NormalFont style="QuestFontLeft"/>
 	</Button>
 
+	<Button name="TRP3_StorylineMultiChoiceButton" inherits="TRP3_InvisibleButton" virtual="true">
+		<Size x="0" y="20"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+					<Color r="0.95" g="0.75" b="0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				self.Text:SetTextColor(0.95, 0.95, 0.95);
+			</OnEnter>
+			<OnLeave>
+				self.Text:SetTextColor(0.95, 0.75, 0);
+			</OnLeave>
+			<OnMouseDown>
+
+			</OnMouseDown>
+		</Scripts>
+	</Button>
+
 	<Frame name="TRP3_NPCDialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent"
 		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<Size x="700" y="450"/>
@@ -404,6 +426,23 @@
 						</Layers>
 					</Frame>
 				</Frames>
+			</Frame>
+
+			<Frame name="TRP3_NPCDialogFrameGossipChoices" inherits="TRP3_HoveredFrame" hidden="true">
+				<Size x="325" y="150"/>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Title" inherits="GameFontNormal" justifyH="CENTER" justifyV="TOP">
+							<Size x="0" y="20"/>
+							<Anchors>
+								<Anchor point="TOP" x="0" y="-10"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
 
 			<Frame name="TRP3_NPCDialogFrameModels">
