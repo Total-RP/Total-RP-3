@@ -447,7 +447,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		if reward1Text then
 			reward1Text = reward1Text .. "\n";
 		end
-		reward1Text = (reward1Text or "") .. BONUS_OBJECTIVE_EXPERIENCE_FORMAT:format(xp);
+		reward1Text = (reward1Text or "") .. BONUS_OBJECTIVE_EXPERIENCE_FORMAT:format( "|cff00ff00" .. xp .. "|r");
 	end
 	local money = GetRewardMoney();
 	if money > 0 then
@@ -728,7 +728,15 @@ function TRP3_StorylineAPI.initEventsStructure()
 		},
 		["GOSSIP_SHOW"] = {
 			text = GetGossipText,
-			finishMethod = CloseGossip,
+			finishMethod = function()
+				if GetNumGossipAvailableQuests() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
+					TRP3_NPCDialogFrameChatOption1:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption1);
+				elseif GetNumGossipActiveQuests() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
+					TRP3_NPCDialogFrameChatOption2:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption2);
+				else
+					CloseGossip();
+				end
+			end,
 			finishText = GOODBYE,
 			cancelMethod = CloseGossip,
 		},

@@ -175,6 +175,10 @@
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
+					</Anchors>
 					<Color r="0.95" g="0.75" b="0"/>
 				</FontString>
 			</Layer>
@@ -187,8 +191,13 @@
 				self.Text:SetTextColor(0.95, 0.75, 0);
 			</OnLeave>
 			<OnMouseDown>
-
+				self.Text:SetPoint("LEFT", 2, -2);
+				self.Text:SetPoint("RIGHT", 2, -2);
 			</OnMouseDown>
+			<OnMouseUp>
+				self.Text:SetPoint("LEFT", 0, 0);
+				self.Text:SetPoint("RIGHT", 0, 0);
+			</OnMouseUp>
 		</Scripts>
 	</Button>
 

@@ -37,6 +37,27 @@ local getQuestIcon, getQuestActiveIcon = TRP3_StorylineAPI.getQuestIcon, TRP3_St
 local getQuestTriviality = TRP3_StorylineAPI.getQuestTriviality;
 
 local multiList = {};
+local selectionStrings = {};
+
+local function getSelectionFontString(placeOn)
+	local available;
+	for _, button in pairs(selectionStrings) do
+		if not button:IsShown() then
+			available = button;
+			break;
+		end
+	end
+	if not available then
+		available = CreateFrame("Button", "TRP3_StorylineChoiceString" .. #selectionStrings, TRP3_NPCDialogFrameGossipChoices, "TRP3_StorylineMultiChoiceButton");
+		tinsert(selectionStrings, available);
+	end
+	available:Show();
+	available:ClearAllPoints();
+	available:SetPoint("LEFT", 10, 0);
+	available:SetPoint("RIGHT", -10, 0);
+	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -5);
+	return available;
+end
 
 function TRP3_StorylineAPI.selectFirstGossip()
 	SelectGossipOption(1);
@@ -62,28 +83,6 @@ function TRP3_StorylineAPI.selectFirstGreetingAvailable()
 end
 function TRP3_StorylineAPI.selectFirstGreetingActive()
 	SelectActiveQuest(1);
-end
-
-local selectionStrings = {};
-
-local function getSelectionFontString(placeOn)
-	local available;
-	for _, button in pairs(selectionStrings) do
-		if not button:IsShown() then
-			available = button;
-			break;
-		end
-	end
-	if not available then
-		available = CreateFrame("Button", "TRP3_StorylineChoiceString" .. #selectionStrings, TRP3_NPCDialogFrameGossipChoices, "TRP3_StorylineMultiChoiceButton");
-		tinsert(selectionStrings, available);
-	end
-	available:Show();
-	available:ClearAllPoints();
-	available:SetPoint("LEFT", 10, 0);
-	available:SetPoint("RIGHT", -10, 0);
-	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -5);
-	return available;
 end
 
 function TRP3_StorylineAPI.selectMultipleAvailable(button)
@@ -113,14 +112,24 @@ function TRP3_StorylineAPI.selectFirstActive()
 end
 
 function TRP3_StorylineAPI.selectMultipleActive(button)
-	wipe(multiList);
+	for _, button in pairs(selectionStrings) do
+		button:Hide();
+	end
+	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
+	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
 	local data = { GetGossipActiveQuests() };
-	tinsert(multiList, { loc("SL_SELECT_AVAILABLE_QUEST"), nil });
+	local height = 40;
 	for i = 1, GetNumGossipActiveQuests() do
 		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i * 5) - 4], data[(i * 5) - 3], data[(i * 5) - 2], data[(i * 5) - 1], data[(i * 5)];
-		tinsert(multiList, { "|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial), i });
+		previous = getSelectionFontString(previous);
+		previous.Text:SetText("|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous:SetScript("OnClick", function(self)
+			SelectGossipActiveQuest(i);
+		end);
+		height = height + 25;
 	end
-	displayDropDown(button, multiList, SelectGossipActiveQuest, 0, true);
+	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
 end
 
 function TRP3_StorylineAPI.selectMultipleActiveGreetings(button)
