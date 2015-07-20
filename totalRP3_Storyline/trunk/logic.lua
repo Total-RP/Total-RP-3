@@ -182,6 +182,9 @@ local function onStart()
 	if not TRP3_Storyline.config then
 		TRP3_Storyline.config = {};
 	end
+	if TRP3_Storyline.config.autoEquip == nil then
+		TRP3_Storyline.config.autoEquip = true;
+	end
 
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_StorylineAPI.LOCALE) do
@@ -257,11 +260,20 @@ local function onStart()
 	end
 
 	-- Debug
+	TRP3_NPCDialogFrameDebug:Hide();
 	TRP3_NPCDialogFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
 		TRP3_NPCDialogFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
 		resizeModels(scale);
 		TRP3_Storyline.debug.scaling[TRP3_NPCDialogFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
 	end);
+	-- Slash command to reset frames
+	TRP3_API.slash.registerCommand({
+		id = "storyline",
+		helpLine = " show debug frame",
+		handler = function()
+			ToggleFrame(TRP3_NPCDialogFrameDebug);
+		end
+	});
 
 	-- Config
 	setTooltipAll(TRP3_NPCDialogFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
@@ -275,6 +287,12 @@ local function onStart()
 	end);
 	textSpeedFactor = TRP3_Storyline.config.textSpeedFactor or textSpeedFactor;
 	TRP3_NPCDialogFrameConfigSpeedSlider:SetValue(textSpeedFactor);
+	TRP3_NPCDialogFrameConfig.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
+	setTooltipForSameFrame(TRP3_NPCDialogFrameConfig.AutoEquip, "RIGHT", 0, 0, loc("SL_CONFIG_AUTOEQUIP"), loc("SL_CONFIG_AUTOEQUIP_TT"));
+	TRP3_NPCDialogFrameConfig.AutoEquip:SetScript("OnClick", function(self)
+		TRP3_Storyline.config.autoEquip = self:GetChecked() == true;
+	end);
+	TRP3_NPCDialogFrameConfig.AutoEquip:SetChecked(TRP3_Storyline.config.autoEquip);
 end;
 
 local MODULE_STRUCTURE = {

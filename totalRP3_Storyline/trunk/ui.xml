@@ -613,6 +613,11 @@
 					</OnLoad>
 				</Scripts>
 			</Slider>
+			<CheckButton name="TRP3_NPCDialogFrameConfigAutoEquip" parentKey="AutoEquip" inherits="TRP3_CheckBox" checked="true">
+				<Anchors>
+					<Anchor point="LEFT" x="100" y="0" relativeTo="TRP3_NPCDialogFrameConfigSpeedSlider" relativePoint="RIGHT"/>
+				</Anchors>
+			</CheckButton>
 		</Frames>
 	</Frame>
 

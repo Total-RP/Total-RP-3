@@ -17,10 +17,11 @@
 ----------------------------------------------------------------------------------
 
 -- TRP3 API
-local Utils = TRP3_API.utils;
+local Utils, Globals = TRP3_API.utils, TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
 local TRP3_MainTooltip = TRP3_MainTooltip;
+local log = TRP3_API.utils.log.log;
 
 -- Storyline API
 local playSelfAnim, getDuration, playAnimationDelay = TRP3_StorylineAPI.playSelfAnim, TRP3_StorylineAPI.getDuration, TRP3_StorylineAPI.playAnimationDelay;
@@ -37,7 +38,7 @@ local selectMultipleRewards, selectFirstGreetingActive = TRP3_StorylineAPI.selec
 local getAnimationByModel = TRP3_StorylineAPI.getAnimationByModel;
 
 -- WOW API
-local pairs, CreateFrame, wipe, type, tinsert = pairs, CreateFrame, wipe, type, tinsert;
+local pairs, CreateFrame, wipe, type, tinsert, after, select, huge = pairs, CreateFrame, wipe, type, tinsert, C_Timer.After, select, math.huge;
 local ChatTypeInfo = ChatTypeInfo;
 local UnitIsUnit, UnitExists, DeclineQuest, AcceptQuest = UnitIsUnit, UnitExists, DeclineQuest, AcceptQuest;
 local IsQuestCompletable, CompleteQuest, CloseQuest, GetQuestLogTitle = IsQuestCompletable, CompleteQuest, CloseQuest, GetQuestLogTitle;
@@ -51,6 +52,8 @@ local GetAvailableQuestInfo, GetNumAvailableQuests, GetNumActiveQuests = GetAvai
 local GetAvailableTitle, GetActiveTitle, CloseGossip = GetAvailableTitle, GetActiveTitle, CloseGossip;
 local GetProgressText, GetTitleText, GetGreetingText = GetProgressText, GetTitleText, GetGreetingText;
 local GetGossipText, GetRewardText, GetQuestText = GetGossipText, GetRewardText, GetQuestText;
+local GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName = GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName;
+local InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink = InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink;
 
 -- UI
 local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3;
@@ -68,6 +71,114 @@ local CHAT_MARGIN = 70;
 local gossipColor = "|cffffffff";
 local EVENT_INFO;
 local eventHandlers = {};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Auto equip part, greatly inspired by AutoTurnIn by Alex Shubert (alex.shubert@gmail.com)
+-- Thanks to him !
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local SUPPORTED_SLOTS = {
+	["INVTYPE_AMMO"]={"AmmoSlot"},
+	["INVTYPE_HEAD"]={"HeadSlot"},
+	["INVTYPE_NECK"]={"NeckSlot"},
+	["INVTYPE_SHOULDER"]={"ShoulderSlot"},
+	["INVTYPE_CHEST"]={"ChestSlot"},
+	["INVTYPE_WAIST"]={"WaistSlot"},
+	["INVTYPE_LEGS"]={"LegsSlot"},
+	["INVTYPE_FEET"]={"FeetSlot"},
+	["INVTYPE_WRIST"]={"WristSlot"},
+	["INVTYPE_HAND"]={"HandsSlot"},
+	["INVTYPE_FINGER"]={"Finger0Slot", "Finger1Slot"},
+	["INVTYPE_TRINKET"]={"Trinket0Slot", "Trinket1Slot"},
+	["INVTYPE_CLOAK"]={"BackSlot"},
+	["INVTYPE_WEAPON"]={"MainHandSlot", "SecondaryHandSlot"},
+	["INVTYPE_2HWEAPON"]={"MainHandSlot"},
+	["INVTYPE_RANGED"]={"MainHandSlot"},
+	["INVTYPE_RANGEDRIGHT"]={"MainHandSlot"},
+	["INVTYPE_WEAPONMAINHAND"]={"MainHandSlot"},
+	["INVTYPE_SHIELD"]={"SecondaryHandSlot"},
+	["INVTYPE_WEAPONOFFHAND"]={"SecondaryHandSlot"},
+	["INVTYPE_HOLDABLE"]={"SecondaryHandSlot"}
+}
+
+local function getItemLevel(itemLink)
+	if (not itemLink) then
+		return 0
+	end
+	-- 7 for heirloom http://wowprogramming.com/docs/api_types#itemQuality
+	local invQuality, invLevel = select(3, GetItemInfo(itemLink));
+	return (invQuality == 7) and huge or invLevel;
+end
+
+local AUTO_EQUIP_DELAY = 2;
+local function autoEquip(itemLink)
+	local name, link, quality, lootLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice = GetItemInfo(itemLink);
+	log(("autoEquip %s on slot %s"):format(name, equipSlot));
+
+	-- First, determine if we should auto equip
+	local shouldAutoEquip = false;
+	local equipOn;
+	if TRP3_Storyline.config.autoEquip then
+		-- Compares reward and already equipped item levels. If reward level is greater than equipped item, auto equip reward
+		local slot = SUPPORTED_SLOTS[equipSlot]
+		if slot then
+			log(("Supported slot %s"):format(equipSlot));
+			local firstSlot = GetInventorySlotInfo(slot[1]);
+			local invLink = GetInventoryItemLink("player", firstSlot);
+			local eqLevel = getItemLevel(invLink);
+
+			-- If reward is a ring  trinket or one-handed weapons all slots must be checked in order to swap one with a lesser item-level
+			if #slot > 1 then
+				local secondSlot = GetInventorySlotInfo(slot[2]);
+				invLink = GetInventoryItemLink("player", secondSlot);
+				if invLink then
+					local eq2Level = getItemLevel(invLink);
+					firstSlot = (eqLevel > eq2Level) and secondSlot or firstSlot;
+					eqLevel = (eqLevel > eq2Level) and eq2Level or eqLevel;
+				end
+			end
+
+			-- comparing lowest equipped item level with reward's item level
+			log(("Comparing lvl: lootLevel %s vs eqLevel %s"):format(lootLevel, eqLevel));
+			if lootLevel > eqLevel then
+				shouldAutoEquip = true;
+				equipOn = firstSlot;
+
+			end
+		end
+	end
+
+	if shouldAutoEquip then
+		log(("Will auto equip %s on slot %s"):format(name, equipOn));
+		after(AUTO_EQUIP_DELAY, function()
+			if InCombatLockdown() then
+				return;
+			end
+			for container=0, NUM_BAG_SLOTS do
+				for slot=1, GetContainerNumSlots(container) do
+					local link = GetContainerItemLink (container, slot);
+					if link then
+						local itemName = GetItemInfo(link);
+						if itemName == name then
+							log(("Found and trying to auto equip %s"):format(itemName, equipOn));
+							EquipItemByName(name, equipOn);
+							return;
+						end
+					end
+				end
+			end
+		end);
+	end
+end
+
+local function autoEquipAllReward()
+	if GetNumQuestRewards() > 0 then
+		for i=1, GetNumQuestRewards() do
+			local link = GetQuestItemLink("reward", i);
+			autoEquip(link);
+		end
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -104,8 +215,11 @@ local function placeItemButton(frame, placeOn, position, first)
 			GameTooltip:Hide();
 		end);
 		available:SetScript("OnClick", function(self)
-			if not HandleModifiedItemClick(GetQuestItemLink(self.type, self.index)) and self.type == "choice" then
+			local itemLink = GetQuestItemLink(self.type, self.index);
+			if not HandleModifiedItemClick(itemLink) and self.type == "choice" then
 				GetQuestReward(self.index);
+				autoEquip(itemLink);
+				autoEquipAllReward();
 			end
 		end);
 		tinsert(itemButtons, available);
@@ -338,6 +452,11 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	if money > 0 then
 		contentHeight = contentHeight + 18;
 		bestIcon = "Interface\\ICONS\\inv_misc_coin_03";
+		if money < 100 then
+			bestIcon = "Interface\\ICONS\\inv_misc_coin_05";
+		elseif money > 9999 then
+			bestIcon = "Interface\\ICONS\\inv_misc_coin_01";
+		end
 		local moneyString = GetCoinTextureString(money);
 		if reward1Text then
 			reward1Text = reward1Text .. "\n";
@@ -386,6 +505,11 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	end
 
 	if GetNumQuestChoices() > 1 then
+		if Globals.player_character.faction and Globals.player_character.faction:len() > 0 then
+			bestIcon = "Interface\\ICONS\\battleground_strongbox_gold_" .. Globals.player_character.faction;
+		else
+			bestIcon = "Interface\\ICONS\\achievement_boss_spoils_of_pandaria";
+		end
 		contentHeight = contentHeight + 18;
 		TRP3_NPCDialogFrameRewards.Content.RewardText3:Show();
 		TRP3_NPCDialogFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
@@ -396,7 +520,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		for i = 1, GetNumQuestChoices() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", i);
 			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, i == 1);
-			bestIcon = texture;
 			decorateItemButton(button, i, "choice", texture, name, numItems, isUsable);
 			previous = button;
 			if anchor == "TOPLEFT" then
@@ -590,8 +713,11 @@ function TRP3_StorylineAPI.initEventsStructure()
 					end
 				elseif GetNumQuestChoices() == 1 then
 					GetQuestReward(1);
+					autoEquip(GetQuestItemLink("choice", 1));
+					autoEquipAllReward();
 				elseif GetNumQuestChoices() == 0 then
 					GetQuestReward();
+					autoEquipAllReward();
 				end
 			end,
 			finishText = loc("SL_GET_REWARD"),

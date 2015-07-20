@@ -46,6 +46,8 @@ TRP3_StorylineAPI.LOCALE = {
 		SL_CONFIG_TEXTSPEED = "Text speed: %.1fx",
 		SL_CONFIG_TEXTSPEED_INSTANT = "No anim",
 		SL_CONFIG_TEXTSPEED_HIGH = "High",
+		SL_CONFIG_AUTOEQUIP = "Auto equip reward (experimental)",
+		SL_CONFIG_AUTOEQUIP_TT = "Auto equip rewards if it has a better item lvl.",
 	},
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
