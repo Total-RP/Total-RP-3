@@ -193,6 +193,7 @@ local function getQuestData(qTitle)
 			return questObjectives or "";
 		end
 	end
+	return "";
 end
 
 local itemButtons = {};
