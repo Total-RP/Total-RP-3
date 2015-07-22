@@ -370,6 +370,7 @@
 		<Scripts>
 			<OnLoad>
 				getglobal(self:GetName().."Text"):SetFontObject(GameFontNormalSmall);
+				self.Text = getglobal(self:GetName().."Text");
 			</OnLoad>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
