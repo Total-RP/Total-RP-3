@@ -3,7 +3,7 @@
 ## Author: Telkostrasz
 ## Version: beta 3
 ## Notes: Enhanced quest storytelling
-## URL: http://forums.telkostrasz.be/index.php
+## URL: http://storyline.totalrp3.info/
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: Storyline_Data

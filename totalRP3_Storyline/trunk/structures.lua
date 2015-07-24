@@ -308,6 +308,8 @@ Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 }
 
+Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL["creature\\jinyu\\jinyu.m2"] = Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL["character\\nightelf\\male\\nightelfmale_hd.m2"];
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Animation mapping
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
