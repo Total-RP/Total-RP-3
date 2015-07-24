@@ -27,13 +27,13 @@ local strsplit, pairs = strsplit, pairs;
 local UnitIsUnit, UnitExists, UnitName = UnitIsUnit, UnitExists, UnitName;
 
 -- UI
-local TRP3_NPCDialogFrame = TRP3_NPCDialogFrame;
-local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
-local TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious = TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious;
-local TRP3_NPCDialogFrameModelsYou, TRP3_NPCDialogFrameModelsMe = TRP3_NPCDialogFrameModelsYou, TRP3_NPCDialogFrameModelsMe;
-local TRP3_NPCDialogFrameDebugText, TRP3_NPCDialogFrameChatName, TRP3_NPCDialogFrameBanner = TRP3_NPCDialogFrameDebugText, TRP3_NPCDialogFrameChatName, TRP3_NPCDialogFrameBanner;
-local TRP3_NPCDialogFrameTitle, TRP3_NPCDialogFrameDebugModelYou, TRP3_NPCDialogFrameDebugModelMe = TRP3_NPCDialogFrameTitle, TRP3_NPCDialogFrameDebugModelYou, TRP3_NPCDialogFrameDebugModelMe;
-local TRP3_NPCDialogFrameDebugScaleSlider = TRP3_NPCDialogFrameDebugScaleSlider;
+local Storyline_NPCFrame = Storyline_NPCFrame;
+local Storyline_NPCFrameChat, Storyline_NPCFrameChatText = Storyline_NPCFrameChat, Storyline_NPCFrameChatText;
+local Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious = Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious;
+local Storyline_NPCFrameModelsYou, Storyline_NPCFrameModelsMe = Storyline_NPCFrameModelsYou, Storyline_NPCFrameModelsMe;
+local Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner = Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner;
+local Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe = Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe;
+local Storyline_NPCFrameDebugScaleSlider = Storyline_NPCFrameDebugScaleSlider;
 
 -- Constants
 local DEBUG = true;
@@ -47,80 +47,80 @@ local CHAT_MARGIN = 70;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function closeDialog()
-	if TRP3_NPCDialogFrameChat.eventInfo and TRP3_NPCDialogFrameChat.eventInfo.cancelMethod then
-		TRP3_NPCDialogFrameChat.eventInfo.cancelMethod();
+	if Storyline_NPCFrameChat.eventInfo and Storyline_NPCFrameChat.eventInfo.cancelMethod then
+		Storyline_NPCFrameChat.eventInfo.cancelMethod();
 	else
-		TRP3_NPCDialogFrame:Hide();
+		Storyline_NPCFrame:Hide();
 	end
 end
 
 local function resetDialog()
-	TRP3_NPCDialogFrameObjectivesContent:Hide();
-	TRP3_NPCDialogFrameChat.currentIndex = 0;
-	playNext(TRP3_NPCDialogFrameModelsYou);
+	Storyline_NPCFrameObjectivesContent:Hide();
+	Storyline_NPCFrameChat.currentIndex = 0;
+	playNext(Storyline_NPCFrameModelsYou);
 end
 
 function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
-	TRP3_NPCDialogFrameDebugText:SetText(event);
+	Storyline_NPCFrameDebugText:SetText(event);
 
 	local targetName = UnitName(targetType);
 
 	if targetName and targetName:len() > 0 and targetName ~= UNKNOWN then
-		TRP3_NPCDialogFrameChatName:SetText(targetName);
+		Storyline_NPCFrameChatName:SetText(targetName);
 	else
 		if eventInfo.nameGetter and eventInfo.nameGetter() then
-			TRP3_NPCDialogFrameChatName:SetText(eventInfo.nameGetter());
+			Storyline_NPCFrameChatName:SetText(eventInfo.nameGetter());
 		else
-			TRP3_NPCDialogFrameChatName:SetText("");
+			Storyline_NPCFrameChatName:SetText("");
 		end
 	end
 
 	if eventInfo.titleGetter and eventInfo.titleGetter() and eventInfo.titleGetter():len() > 0 then
-		TRP3_NPCDialogFrameBanner:Show();
-		TRP3_NPCDialogFrameTitle:SetText(eventInfo.titleGetter());
+		Storyline_NPCFrameBanner:Show();
+		Storyline_NPCFrameTitle:SetText(eventInfo.titleGetter());
 		if eventInfo.getTitleColor and eventInfo.getTitleColor() then
-			TRP3_NPCDialogFrameTitle:SetTextColor(eventInfo.getTitleColor());
+			Storyline_NPCFrameTitle:SetTextColor(eventInfo.getTitleColor());
 		else
-			TRP3_NPCDialogFrameTitle:SetTextColor(0.95, 0.95, 0.95);
+			Storyline_NPCFrameTitle:SetTextColor(0.95, 0.95, 0.95);
 		end
 	else
-		TRP3_NPCDialogFrameTitle:SetText("");
-		TRP3_NPCDialogFrameBanner:Hide();
+		Storyline_NPCFrameTitle:SetText("");
+		Storyline_NPCFrameBanner:Hide();
 	end
 
-	TRP3_NPCDialogFrame.targetType = targetType;
-	TRP3_NPCDialogFrame:Show();
-	TRP3_NPCDialogFrameModelsYou.model = nil;
-	TRP3_NPCDialogFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-	TRP3_NPCDialogFrameModelsMe:SetCamera(1);
-	TRP3_NPCDialogFrameModelsMe:SetFacing(.75);
-	TRP3_NPCDialogFrameModelsMe:SetUnit("player");
-	TRP3_NPCDialogFrameModelsMe.model = TRP3_NPCDialogFrameModelsMe:GetModel();
-	TRP3_NPCDialogFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-	TRP3_NPCDialogFrameModelsYou:SetCamera(1);
-	TRP3_NPCDialogFrameModelsYou:SetFacing(-.75);
+	Storyline_NPCFrame.targetType = targetType;
+	Storyline_NPCFrame:Show();
+	Storyline_NPCFrameModelsYou.model = nil;
+	Storyline_NPCFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+	Storyline_NPCFrameModelsMe:SetCamera(1);
+	Storyline_NPCFrameModelsMe:SetFacing(.75);
+	Storyline_NPCFrameModelsMe:SetUnit("player");
+	Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
+	Storyline_NPCFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
+	Storyline_NPCFrameModelsYou:SetCamera(1);
+	Storyline_NPCFrameModelsYou:SetFacing(-.75);
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc") then
-		TRP3_NPCDialogFrameModelsYou:SetUnit(targetType);
+		Storyline_NPCFrameModelsYou:SetUnit(targetType);
 	else
-		TRP3_NPCDialogFrameModelsMe:SetAnimation(520);
-		TRP3_NPCDialogFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
+		Storyline_NPCFrameModelsMe:SetAnimation(520);
+		Storyline_NPCFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
 	end
-	TRP3_NPCDialogFrameModelsYou.model = TRP3_NPCDialogFrameModelsYou:GetModel();
+	Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
 
-	if TRP3_NPCDialogFrameModelsYou.model then
-		TRP3_NPCDialogFrameDebugModelYou:SetText(TRP3_NPCDialogFrameModelsYou.model:gsub("\\", "\\\\"));
+	if Storyline_NPCFrameModelsYou.model then
+		Storyline_NPCFrameDebugModelYou:SetText(Storyline_NPCFrameModelsYou.model:gsub("\\", "\\\\"));
 	end
-	if TRP3_NPCDialogFrameModelsMe.model then
-		TRP3_NPCDialogFrameDebugModelMe:SetText(TRP3_NPCDialogFrameModelsMe.model:gsub("\\", "\\\\"));
+	if Storyline_NPCFrameModelsMe.model then
+		Storyline_NPCFrameDebugModelMe:SetText(Storyline_NPCFrameModelsMe.model:gsub("\\", "\\\\"));
 	end
 
 	local scale = 0;
-	if TRP3_NPCDialogFrameModelsYou.model and TRP3_NPCDialogFrameModelsMe.model then
-		local key, invertKey = TRP3_NPCDialogFrameModelsMe.model .. "~" .. TRP3_NPCDialogFrameModelsYou.model, TRP3_NPCDialogFrameModelsYou.model .. "~" .. TRP3_NPCDialogFrameModelsMe.model;
-		scale = TRP3_Storyline.debug.scaling[key] or TRP3_SCALE_MAPPING[key] or -(TRP3_Storyline.debug.scaling[invertKey] or TRP3_SCALE_MAPPING[invertKey] or 0);
+	if Storyline_NPCFrameModelsYou.model and Storyline_NPCFrameModelsMe.model then
+		local key, invertKey = Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model, Storyline_NPCFrameModelsYou.model .. "~" .. Storyline_NPCFrameModelsMe.model;
+		scale = Storyline_Data.debug.scaling[key] or Storyline_SCALE_MAPPING[key] or -(Storyline_Data.debug.scaling[invertKey] or Storyline_SCALE_MAPPING[invertKey] or 0);
 	end
-	TRP3_NPCDialogFrameDebugScaleSlider:SetValue(scale);
+	Storyline_NPCFrameDebugScaleSlider:SetValue(scale);
 
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
@@ -129,14 +129,14 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	if texts[#texts]:len() == 0 then
 		texts[#texts] = nil;
 	end
-	TRP3_NPCDialogFrameChat.texts = texts;
-	TRP3_NPCDialogFrameChat.currentIndex = 0;
-	TRP3_NPCDialogFrameChat.eventInfo = eventInfo;
-	TRP3_NPCDialogFrameChat.event = event;
-	TRP3_NPCDialogFrameObjectivesContent:Hide();
-	TRP3_NPCDialogFrameChatPrevious:Hide();
+	Storyline_NPCFrameChat.texts = texts;
+	Storyline_NPCFrameChat.currentIndex = 0;
+	Storyline_NPCFrameChat.eventInfo = eventInfo;
+	Storyline_NPCFrameChat.event = event;
+	Storyline_NPCFrameObjectivesContent:Hide();
+	Storyline_NPCFrameChatPrevious:Hide();
 
-	playNext(TRP3_NPCDialogFrameModelsYou);
+	playNext(Storyline_NPCFrameModelsYou);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -147,13 +147,13 @@ local ANIMATION_TEXT_SPEED = 80;
 local textSpeedFactor = 0.5;
 
 local function onUpdateChatText(self, elapsed)
-	if self.start and TRP3_NPCDialogFrameChatText:GetText() and TRP3_NPCDialogFrameChatText:GetText():len() > 0 then
+	if self.start and Storyline_NPCFrameChatText:GetText() and Storyline_NPCFrameChatText:GetText():len() > 0 then
 		self.start = self.start + (elapsed * (ANIMATION_TEXT_SPEED * textSpeedFactor));
-		if textSpeedFactor == 0 or self.start >= TRP3_NPCDialogFrameChatText:GetText():len() then
+		if textSpeedFactor == 0 or self.start >= Storyline_NPCFrameChatText:GetText():len() then
 			self.start = nil;
-			TRP3_NPCDialogFrameChatText:SetAlphaGradient(TRP3_NPCDialogFrameChatText:GetText():len(), 1);
+			Storyline_NPCFrameChatText:SetAlphaGradient(Storyline_NPCFrameChatText:GetText():len(), 1);
 		else
-			TRP3_NPCDialogFrameChatText:SetAlphaGradient(self.start, 30);
+			Storyline_NPCFrameChatText:SetAlphaGradient(self.start, 30);
 		end
 	end
 end
@@ -167,44 +167,44 @@ Storyline_API.addon = LibStub("AceAddon-3.0"):NewAddon("Storyline", "AceConsole-
 function Storyline_API.addon:OnEnable()
 	ForceGossip = function() return true end
 
-	if not TRP3_Storyline then
-		TRP3_Storyline = {};
+	if not Storyline_Data then
+		Storyline_Data = {};
 	end
-	if not TRP3_Storyline.debug then
-		TRP3_Storyline.debug = {};
+	if not Storyline_Data.debug then
+		Storyline_Data.debug = {};
 	end
-	if not TRP3_Storyline.debug.scaling then
-		TRP3_Storyline.debug.scaling = {};
+	if not Storyline_Data.debug.scaling then
+		Storyline_Data.debug.scaling = {};
 	end
-	if not TRP3_Storyline.debug.timing then
-		TRP3_Storyline.debug.timing = {};
+	if not Storyline_Data.debug.timing then
+		Storyline_Data.debug.timing = {};
 	end
-	if not TRP3_Storyline.config then
-		TRP3_Storyline.config = {};
+	if not Storyline_Data.config then
+		Storyline_Data.config = {};
 	end
-	if TRP3_Storyline.config.autoEquip == nil then
-		TRP3_Storyline.config.autoEquip = true;
+	if Storyline_Data.config.autoEquip == nil then
+		Storyline_Data.config.autoEquip = true;
 	end
 
 	Storyline_API.locale.init();
 
-	TRP3_NPCDialogFrameBG:SetDesaturated(true);
-	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", function()
-		if TRP3_NPCDialogFrameChat.start and TRP3_NPCDialogFrameChat.start < TRP3_NPCDialogFrameChatText:GetText():len() then
-			TRP3_NPCDialogFrameChat.start = TRP3_NPCDialogFrameChatText:GetText():len();
+	Storyline_NPCFrameBG:SetDesaturated(true);
+	Storyline_NPCFrameChatNext:SetScript("OnClick", function()
+		if Storyline_NPCFrameChat.start and Storyline_NPCFrameChat.start < Storyline_NPCFrameChatText:GetText():len() then
+			Storyline_NPCFrameChat.start = Storyline_NPCFrameChatText:GetText():len();
 		else
-			playNext(TRP3_NPCDialogFrameModelsYou);
+			playNext(Storyline_NPCFrameModelsYou);
 		end
 	end);
-	TRP3_NPCDialogFrameChatPrevious:SetScript("OnClick", resetDialog);
-	TRP3_NPCDialogFrameChat:SetScript("OnUpdate", onUpdateChatText);
-	TRP3_NPCDialogFrameClose:SetScript("OnClick", closeDialog);
-	TRP3_NPCDialogFrameRewardsItem:SetScale(1.5);
+	Storyline_NPCFrameChatPrevious:SetScript("OnClick", resetDialog);
+	Storyline_NPCFrameChat:SetScript("OnUpdate", onUpdateChatText);
+	Storyline_NPCFrameClose:SetScript("OnClick", closeDialog);
+	Storyline_NPCFrameRewardsItem:SetScale(1.5);
 
-	TRP3_NPCDialogFrameModelsYou.animTab = {};
-	TRP3_NPCDialogFrameModelsMe.animTab = {};
+	Storyline_NPCFrameModelsYou.animTab = {};
+	Storyline_NPCFrameModelsMe.animTab = {};
 
-	TRP3_NPCDialogFrameModelsYou:SetScript("OnUpdate", function(self, elapsed)
+	Storyline_NPCFrameModelsYou:SetScript("OnUpdate", function(self, elapsed)
 		if self.spin then
 			self.spinAngle = self.spinAngle - (elapsed / 2);
 			self:SetFacing(self.spinAngle);
@@ -216,72 +216,72 @@ function Storyline_API.addon:OnEnable()
 
 	-- Closing
 	registerHandler("GOSSIP_CLOSED", function()
-		TRP3_NPCDialogFrame:Hide();
+		Storyline_NPCFrame:Hide();
 	end);
 	registerHandler("QUEST_FINISHED", function()
-		TRP3_NPCDialogFrame:Hide();
+		Storyline_NPCFrame:Hide();
 	end);
 
 	-- Resizing
 	local resizeChat = function()
-		TRP3_NPCDialogFrameChatText:SetWidth(TRP3_NPCDialogFrame:GetWidth() - 150);
-		TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
+		Storyline_NPCFrameChatText:SetWidth(Storyline_NPCFrame:GetWidth() - 150);
+		Storyline_NPCFrameChat:SetHeight(Storyline_NPCFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 	end
-	TRP3_NPCDialogFrameChatText:SetWidth(550);
-	TRP3_NPCDialogFrameResizeButton.onResizeStop = function(width, height)
+	Storyline_NPCFrameChatText:SetWidth(550);
+	Storyline_NPCFrameResizeButton.onResizeStop = function(width, height)
 		resizeChat();
-		TRP3_Storyline.config.width = width;
-		TRP3_Storyline.config.height = height;
+		Storyline_Data.config.width = width;
+		Storyline_Data.config.height = height;
 	end;
-	TRP3_NPCDialogFrame:SetSize(TRP3_Storyline.config.width or 700, TRP3_Storyline.config.height or 450);
+	Storyline_NPCFrame:SetSize(Storyline_Data.config.width or 700, Storyline_Data.config.height or 450);
 	resizeChat();
 
 
 	local resizeModels = function(scale)
 		local margin = scale < 0 and -scale or 0;
-		TRP3_NPCDialogFrameModelsMe:ClearAllPoints();
-		TRP3_NPCDialogFrameModelsMe:SetPoint("TOP", 0, -(margin * 2));
-		TRP3_NPCDialogFrameModelsMe:SetPoint("LEFT", margin, 0);
-		TRP3_NPCDialogFrameModelsMe:SetPoint("BOTTOM", 0, 0);
-		TRP3_NPCDialogFrameModelsMe:SetPoint("RIGHT", TRP3_NPCDialogFrameModelsPoint, "LEFT", -margin, 0);
+		Storyline_NPCFrameModelsMe:ClearAllPoints();
+		Storyline_NPCFrameModelsMe:SetPoint("TOP", 0, -(margin * 2));
+		Storyline_NPCFrameModelsMe:SetPoint("LEFT", margin, 0);
+		Storyline_NPCFrameModelsMe:SetPoint("BOTTOM", 0, 0);
+		Storyline_NPCFrameModelsMe:SetPoint("RIGHT", Storyline_NPCFrameModelsPoint, "LEFT", -margin, 0);
 
 		margin = scale > 0 and scale or 0;
-		TRP3_NPCDialogFrameModelsYou:ClearAllPoints();
-		TRP3_NPCDialogFrameModelsYou:SetPoint("TOP", 0, -(margin * 2));
-		TRP3_NPCDialogFrameModelsYou:SetPoint("RIGHT", -margin, 0);
-		TRP3_NPCDialogFrameModelsYou:SetPoint("BOTTOM", 0, 0);
-		TRP3_NPCDialogFrameModelsYou:SetPoint("LEFT", TRP3_NPCDialogFrameModelsPoint, "RIGHT", margin, 0);
+		Storyline_NPCFrameModelsYou:ClearAllPoints();
+		Storyline_NPCFrameModelsYou:SetPoint("TOP", 0, -(margin * 2));
+		Storyline_NPCFrameModelsYou:SetPoint("RIGHT", -margin, 0);
+		Storyline_NPCFrameModelsYou:SetPoint("BOTTOM", 0, 0);
+		Storyline_NPCFrameModelsYou:SetPoint("LEFT", Storyline_NPCFrameModelsPoint, "RIGHT", margin, 0);
 	end
 
 	-- Debug
-	TRP3_NPCDialogFrameDebug:Hide();
-	TRP3_NPCDialogFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
-		TRP3_NPCDialogFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
+	Storyline_NPCFrameDebug:Hide();
+	Storyline_NPCFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
 		resizeModels(scale);
-		TRP3_Storyline.debug.scaling[TRP3_NPCDialogFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
+		Storyline_Data.debug.scaling[Storyline_NPCFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
 	end);
 
 	-- Slash command to reset frames
 	Storyline_API.addon:RegisterChatCommand("storyline", function()
-		ToggleFrame(TRP3_NPCDialogFrameDebug);
+		ToggleFrame(Storyline_NPCFrameDebug);
 	end);
 
 	-- Config
-	setTooltipAll(TRP3_NPCDialogFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
-	TRP3_NPCDialogFrameConfigSpeedSliderLow:SetText(loc("SL_CONFIG_TEXTSPEED_INSTANT"));
-	TRP3_NPCDialogFrameConfigSpeedSliderHigh:SetText(loc("SL_CONFIG_TEXTSPEED_HIGH"));
-	TRP3_NPCDialogFrameConfigText:SetText(loc("SL_CONFIG"));
-	TRP3_NPCDialogFrameConfigSpeedSlider:SetScript("OnValueChanged", function(self, scale)
-		TRP3_NPCDialogFrameConfigSpeedSliderValText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
+	setTooltipAll(Storyline_NPCFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
+	Storyline_NPCFrameConfigSpeedSliderLow:SetText(loc("SL_CONFIG_TEXTSPEED_INSTANT"));
+	Storyline_NPCFrameConfigSpeedSliderHigh:SetText(loc("SL_CONFIG_TEXTSPEED_HIGH"));
+	Storyline_NPCFrameConfigText:SetText(loc("SL_CONFIG"));
+	Storyline_NPCFrameConfigSpeedSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameConfigSpeedSliderValText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
 		textSpeedFactor = scale;
-		TRP3_Storyline.config.textSpeedFactor = textSpeedFactor;
+		Storyline_Data.config.textSpeedFactor = textSpeedFactor;
 	end);
-	textSpeedFactor = TRP3_Storyline.config.textSpeedFactor or textSpeedFactor;
-	TRP3_NPCDialogFrameConfigSpeedSlider:SetValue(textSpeedFactor);
-	TRP3_NPCDialogFrameConfig.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
-	setTooltipForSameFrame(TRP3_NPCDialogFrameConfig.AutoEquip, "RIGHT", 0, 0, loc("SL_CONFIG_AUTOEQUIP"), loc("SL_CONFIG_AUTOEQUIP_TT"));
-	TRP3_NPCDialogFrameConfig.AutoEquip:SetScript("OnClick", function(self)
-		TRP3_Storyline.config.autoEquip = self:GetChecked() == true;
+	textSpeedFactor = Storyline_Data.config.textSpeedFactor or textSpeedFactor;
+	Storyline_NPCFrameConfigSpeedSlider:SetValue(textSpeedFactor);
+	Storyline_NPCFrameConfig.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
+	setTooltipForSameFrame(Storyline_NPCFrameConfig.AutoEquip, "RIGHT", 0, 0, loc("SL_CONFIG_AUTOEQUIP"), loc("SL_CONFIG_AUTOEQUIP_TT"));
+	Storyline_NPCFrameConfig.AutoEquip:SetScript("OnClick", function(self)
+		Storyline_Data.config.autoEquip = self:GetChecked() == true;
 	end);
-	TRP3_NPCDialogFrameConfig.AutoEquip:SetChecked(TRP3_Storyline.config.autoEquip);
+	Storyline_NPCFrameConfig.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
 end

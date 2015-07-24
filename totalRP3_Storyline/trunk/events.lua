@@ -59,15 +59,15 @@ local GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName =
 local InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink = InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink;
 
 -- UI
-local TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3 = TRP3_NPCDialogFrameChatOption1, TRP3_NPCDialogFrameChatOption2, TRP3_NPCDialogFrameChatOption3;
-local TRP3_NPCDialogFrameObjectives, TRP3_NPCDialogFrameObjectivesNo, TRP3_NPCDialogFrameObjectivesYes = TRP3_NPCDialogFrameObjectives, TRP3_NPCDialogFrameObjectivesNo, TRP3_NPCDialogFrameObjectivesYes;
-local TRP3_NPCDialogFrameObjectivesImage = TRP3_NPCDialogFrameObjectivesImage;
-local TRP3_NPCDialogFrameRewardsItemIcon, TRP3_NPCDialogFrameRewardsItem, TRP3_NPCDialogFrameRewards = TRP3_NPCDialogFrameRewardsItemIcon, TRP3_NPCDialogFrameRewardsItem, TRP3_NPCDialogFrameRewards;
-local TRP3_NPCDialogFrame, TRP3_NPCDialogFrameChatNextText = TRP3_NPCDialogFrame, TRP3_NPCDialogFrameChatNextText;
-local TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText = TRP3_NPCDialogFrameChat, TRP3_NPCDialogFrameChatText;
-local TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious = TRP3_NPCDialogFrameChatNext, TRP3_NPCDialogFrameChatPrevious;
-local TRP3_NPCDialogFrameConfigButton, TRP3_NPCDialogFrameObjectivesContent = TRP3_NPCDialogFrameConfigButton, TRP3_NPCDialogFrameObjectivesContent;
-local TRP3_NPCDialogFrameGossipChoices = TRP3_NPCDialogFrameGossipChoices;
+local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
+local Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes = Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes;
+local Storyline_NPCFrameObjectivesImage = Storyline_NPCFrameObjectivesImage;
+local Storyline_NPCFrameRewardsItemIcon, Storyline_NPCFrameRewardsItem, Storyline_NPCFrameRewards = Storyline_NPCFrameRewardsItemIcon, Storyline_NPCFrameRewardsItem, Storyline_NPCFrameRewards;
+local Storyline_NPCFrame, Storyline_NPCFrameChatNextText = Storyline_NPCFrame, Storyline_NPCFrameChatNextText;
+local Storyline_NPCFrameChat, Storyline_NPCFrameChatText = Storyline_NPCFrameChat, Storyline_NPCFrameChatText;
+local Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious = Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious;
+local Storyline_NPCFrameConfigButton, Storyline_NPCFrameObjectivesContent = Storyline_NPCFrameConfigButton, Storyline_NPCFrameObjectivesContent;
+local Storyline_NPCFrameGossipChoices = Storyline_NPCFrameGossipChoices;
 
 -- Constants
 local OPTIONS_MARGIN, OPTIONS_TOP = 175, -175;
@@ -122,7 +122,7 @@ local function autoEquip(itemLink)
 	-- First, determine if we should auto equip
 	local shouldAutoEquip = false;
 	local equipOn;
-	if TRP3_Storyline.config.autoEquip then
+	if Storyline_Data.config.autoEquip then
 		-- Compares reward and already equipped item levels. If reward level is greater than equipped item, auto equip reward
 		local slot = SUPPORTED_SLOTS[equipSlot]
 		if slot then
@@ -209,7 +209,7 @@ local function placeItemButton(frame, placeOn, position, first)
 		end
 	end
 	if not available then
-		available = CreateFrame("Button", "TRP3_StorylineItemButton" .. #itemButtons, nil, "LargeItemButtonTemplate");
+		available = CreateFrame("Button", "Storyline_ItemButton" .. #itemButtons, nil, "LargeItemButtonTemplate");
 		available:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 			GameTooltip:SetQuestItem(self.type, self.index);
@@ -262,70 +262,70 @@ eventHandlers["GOSSIP_SHOW"] = function()
 
 	-- Available quests
 	if hasAvailable then
-		TRP3_NPCDialogFrameChatOption1:Show();
-		TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
-		TRP3_NPCDialogFrameChatOption1:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption1:SetPoint("LEFT", OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption1:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption1:SetPoint("TOP", 0, OPTIONS_TOP);
+		Storyline_NPCFrameChatOption1:Show();
+		Storyline_NPCFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
+		Storyline_NPCFrameChatOption1:ClearAllPoints();
+		Storyline_NPCFrameChatOption1:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption1:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption1:SetPoint("TOP", 0, OPTIONS_TOP);
 
-		previous = TRP3_NPCDialogFrameChatOption1;
+		previous = Storyline_NPCFrameChatOption1;
 		if GetNumGossipAvailableQuests() == 1 then
 			local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
 			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
-			TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
 		else
-			TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
-			TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
 		end
 	end
 
 	-- Active options
 	if hasActive then
-		TRP3_NPCDialogFrameChatOption2:Show();
-		TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
-		TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption2:Show();
+		Storyline_NPCFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
+		Storyline_NPCFrameChatOption2:ClearAllPoints();
+		Storyline_NPCFrameChatOption2:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption2:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
 		if previous then
-			TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			Storyline_NPCFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 		else
-			TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", 0, OPTIONS_TOP);
+			Storyline_NPCFrameChatOption2:SetPoint("TOP", 0, OPTIONS_TOP);
 		end
-		previous = TRP3_NPCDialogFrameChatOption2;
+		previous = Storyline_NPCFrameChatOption2;
 		if GetNumGossipActiveQuests() == 1 then
 			local title, lvl, isTrivial, isComplete, isRepeatable = GetGossipActiveQuests();
-			TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
-			TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectFirstActive);
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstActive);
 		else
-			TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
-			TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectMultipleActive);
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectMultipleActive);
 		end
 	end
 
 	-- Gossip options
 	if hasGossip then
-		TRP3_NPCDialogFrameChatOption3:Show();
-		TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", function() playSelfAnim(60) end);
-		TRP3_NPCDialogFrameChatOption3:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption3:SetPoint("LEFT", OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption3:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption3:Show();
+		Storyline_NPCFrameChatOption3:SetScript("OnEnter", function() playSelfAnim(60) end);
+		Storyline_NPCFrameChatOption3:ClearAllPoints();
+		Storyline_NPCFrameChatOption3:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption3:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
 		if previous then
-			TRP3_NPCDialogFrameChatOption3:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			Storyline_NPCFrameChatOption3:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 		else
-			TRP3_NPCDialogFrameChatOption3:SetPoint("TOP", 0, OPTIONS_TOP);
+			Storyline_NPCFrameChatOption3:SetPoint("TOP", 0, OPTIONS_TOP);
 		end
-		previous = TRP3_NPCDialogFrameChatOption3;
+		previous = Storyline_NPCFrameChatOption3;
 
 		local gossips = { GetGossipOptions() };
 		if GetNumGossipOptions() == 1 then
 			local gossip, gossipType = gossips[1], gossips[2];
-			TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:20:20|t " .. gossip);
-			TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectFirstGossip);
+			Storyline_NPCFrameChatOption3:SetText(gossipColor .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:20:20|t " .. gossip);
+			Storyline_NPCFrameChatOption3:SetScript("OnClick", selectFirstGossip);
 		else
-			TRP3_NPCDialogFrameChatOption3:SetText(gossipColor .. "|TInterface\\GossipFrame\\PetitionGossipIcon:20:20|t " .. loc("SL_WELL"));
-			TRP3_NPCDialogFrameChatOption3:SetScript("OnClick", selectMultipleGossip);
+			Storyline_NPCFrameChatOption3:SetText(gossipColor .. "|TInterface\\GossipFrame\\PetitionGossipIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption3:SetScript("OnClick", selectMultipleGossip);
 		end
 	end
 
@@ -337,70 +337,70 @@ eventHandlers["QUEST_GREETING"] = function()
 	local previous;
 
 	if numActiveQuests > 0 then
-		TRP3_NPCDialogFrameChatOption1:Show();
-		TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
-		TRP3_NPCDialogFrameChatOption1:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption1:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption1:SetPoint("LEFT", OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption1:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption1:SetPoint("TOP", 0, OPTIONS_TOP);
+		Storyline_NPCFrameChatOption1:Show();
+		Storyline_NPCFrameChatOption1:SetScript("OnEnter", function() playSelfAnim(65) end);
+		Storyline_NPCFrameChatOption1:ClearAllPoints();
+		Storyline_NPCFrameChatOption1:ClearAllPoints();
+		Storyline_NPCFrameChatOption1:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption1:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption1:SetPoint("TOP", 0, OPTIONS_TOP);
 
-		previous = TRP3_NPCDialogFrameChatOption1;
+		previous = Storyline_NPCFrameChatOption1;
 		if numActiveQuests == 1 then
 			local title, isComplete = GetActiveTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
 			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
-			TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectFirstGreetingActive);
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstGreetingActive);
 		else
-			TRP3_NPCDialogFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
-			TRP3_NPCDialogFrameChatOption1:SetScript("OnClick", selectMultipleActiveGreetings);
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectMultipleActiveGreetings);
 		end
 	end
 
 	if numAvailableQuests > 0 then
-		TRP3_NPCDialogFrameChatOption2:Show();
-		TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
-		TRP3_NPCDialogFrameChatOption2:ClearAllPoints();
-		TRP3_NPCDialogFrameChatOption2:SetPoint("LEFT", OPTIONS_MARGIN, 0);
-		TRP3_NPCDialogFrameChatOption2:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption2:Show();
+		Storyline_NPCFrameChatOption2:SetScript("OnEnter", function() playSelfAnim(60) end);
+		Storyline_NPCFrameChatOption2:ClearAllPoints();
+		Storyline_NPCFrameChatOption2:SetPoint("LEFT", OPTIONS_MARGIN, 0);
+		Storyline_NPCFrameChatOption2:SetPoint("RIGHT", -OPTIONS_MARGIN, 0);
 		if previous then
-			TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
+			Storyline_NPCFrameChatOption2:SetPoint("TOP", previous, "BOTTOM", 0, -5);
 		else
-			TRP3_NPCDialogFrameChatOption2:SetPoint("TOP", 0, OPTIONS_TOP);
+			Storyline_NPCFrameChatOption2:SetPoint("TOP", 0, OPTIONS_TOP);
 		end
-		previous = TRP3_NPCDialogFrameChatOption2;
+		previous = Storyline_NPCFrameChatOption2;
 		if numAvailableQuests == 1 then
 			local title, isComplete = GetAvailableTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + 1);
 			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
-			TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectFirstAvailable);
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstAvailable);
 		else
-			TRP3_NPCDialogFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
-			TRP3_NPCDialogFrameChatOption2:SetScript("OnClick", selectMultipleAvailableGreetings);
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectMultipleAvailableGreetings);
 		end
 	end
 end
 
 eventHandlers["QUEST_DETAIL"] = function()
-	TRP3_NPCDialogFrameObjectives:Show();
-	TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(false);
-	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
-	TRP3_NPCDialogFrameObjectivesContent.Objectives:SetText(GetObjectiveText());
+	Storyline_NPCFrameObjectives:Show();
+	Storyline_NPCFrameObjectivesImage:SetDesaturated(false);
+	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
+	Storyline_NPCFrameObjectivesContent.Objectives:SetText(GetObjectiveText());
 
-	TRP3_NPCDialogFrameObjectivesContent:SetHeight(TRP3_NPCDialogFrameObjectivesContent.Objectives:GetHeight() + TRP3_NPCDialogFrameObjectivesContent.Title:GetHeight() + 25);
+	Storyline_NPCFrameObjectivesContent:SetHeight(Storyline_NPCFrameObjectivesContent.Objectives:GetHeight() + Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 25);
 
 	if GetNumQuestItems() > 0 then
 		local _, icon = GetQuestItemInfo("required", 1);
-		TRP3_NPCDialogFrameObjectivesImage:SetTexture(icon);
+		Storyline_NPCFrameObjectivesImage:SetTexture(icon);
 	end
 end
 
 eventHandlers["QUEST_PROGRESS"] = function()
-	TRP3_NPCDialogFrameObjectives:Show();
-	TRP3_NPCDialogFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
-	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
+	Storyline_NPCFrameObjectives:Show();
+	Storyline_NPCFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
+	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
 
 	local questObjectives = getQuestData(GetTitleText());
 	if IsQuestCompletable() then
@@ -408,18 +408,18 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	else
 		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-NotReady", 15) .. " |cffff0000" .. questObjectives;
 	end
-	TRP3_NPCDialogFrameObjectivesContent.Objectives:SetText(questObjectives);
+	Storyline_NPCFrameObjectivesContent.Objectives:SetText(questObjectives);
 
 	local contentHeight = 0;
 	if GetNumQuestItems() > 0 then
-		TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:Show();
-		local previous = TRP3_NPCDialogFrameObjectivesContent.RequiredItemText;
+		Storyline_NPCFrameObjectivesContent.RequiredItemText:Show();
+		local previous = Storyline_NPCFrameObjectivesContent.RequiredItemText;
 		local anchor = "TOPLEFT";
 		local _, icon = GetQuestItemInfo("required", 1);
-		TRP3_NPCDialogFrameObjectivesImage:SetTexture(icon);
+		Storyline_NPCFrameObjectivesImage:SetTexture(icon);
 		for i = 1, GetNumQuestItems() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
-			local button = placeItemButton(TRP3_NPCDialogFrameObjectivesContent, previous, anchor, i == 1);
+			local button = placeItemButton(Storyline_NPCFrameObjectivesContent, previous, anchor, i == 1);
 			decorateItemButton(button, i, "required", texture, name, numItems, isUsable);
 			previous = button;
 			if anchor == "TOPLEFT" then
@@ -429,15 +429,15 @@ eventHandlers["QUEST_PROGRESS"] = function()
 			end
 			contentHeight = contentHeight + ((i%2) * 46);
 		end
-		contentHeight = contentHeight + TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
+		contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
 	end
-	contentHeight = contentHeight + TRP3_NPCDialogFrameObjectivesContent.Objectives:GetHeight() + TRP3_NPCDialogFrameObjectivesContent.Title:GetHeight() + 25;
-	TRP3_NPCDialogFrameObjectivesContent:SetHeight(contentHeight);
+	contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight() + Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 25;
+	Storyline_NPCFrameObjectivesContent:SetHeight(contentHeight);
 end
 
 eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
-	TRP3_NPCDialogFrameRewards:Show();
-	setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "TOP", 0, 0, REWARDS, loc("SL_GET_REWARD"));
+	Storyline_NPCFrameRewards:Show();
+	setTooltipForSameFrame(Storyline_NPCFrameRewardsItem, "TOP", 0, 0, REWARDS, loc("SL_GET_REWARD"));
 
 	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
 	local contentHeight = 20;
@@ -467,19 +467,19 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		end
 		reward1Text = (reward1Text or "") .. moneyString
 	end
-	TRP3_NPCDialogFrameRewards.Content.RewardText1Value:SetText(reward1Text);
+	Storyline_NPCFrameRewards.Content.RewardText1Value:SetText(reward1Text);
 
-	local previousForChoice = TRP3_NPCDialogFrameRewards.Content.RewardText1Value;
+	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1Value;
 
 	if GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
-		TRP3_NPCDialogFrameRewards.Content.RewardText2:Show();
+		Storyline_NPCFrameRewards.Content.RewardText2:Show();
 		contentHeight = contentHeight + 20;
-		local previous = TRP3_NPCDialogFrameRewards.Content.RewardText2;
+		local previous = Storyline_NPCFrameRewards.Content.RewardText2;
 		local anchor = "TOPLEFT";
 
 		if GetNumQuestChoices() == 1 then
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
-			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, true);
+			local button = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, true);
 			bestIcon = texture;
 			decorateItemButton(button, 1, "choice", texture, name, numItems, isUsable);
 			previous = button;
@@ -494,7 +494,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 
 		for i = 1, GetNumQuestRewards() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", i);
-			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, i == 1);
+			local button = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, i == 1);
 			bestIcon = texture;
 			decorateItemButton(button, i, "reward", texture, name, numItems, isUsable);
 			previous = button;
@@ -515,15 +515,15 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 			bestIcon = "Interface\\ICONS\\achievement_boss_spoils_of_pandaria";
 		end
 		contentHeight = contentHeight + 18;
-		TRP3_NPCDialogFrameRewards.Content.RewardText3:Show();
-		TRP3_NPCDialogFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+		Storyline_NPCFrameRewards.Content.RewardText3:Show();
+		Storyline_NPCFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
 
-		local previous = TRP3_NPCDialogFrameRewards.Content.RewardText3;
+		local previous = Storyline_NPCFrameRewards.Content.RewardText3;
 		local anchor = "TOPLEFT";
 
 		for i = 1, GetNumQuestChoices() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", i);
-			local button = placeItemButton(TRP3_NPCDialogFrameRewards.Content, previous, anchor, i == 1);
+			local button = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, i == 1);
 			decorateItemButton(button, i, "choice", texture, name, numItems, isUsable);
 			previous = button;
 			if anchor == "TOPLEFT" then
@@ -535,9 +535,9 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		end
 	end
 
-	TRP3_NPCDialogFrameRewardsItemIcon:SetTexture(bestIcon);
-	contentHeight = contentHeight + TRP3_NPCDialogFrameRewards.Content.Title:GetHeight() + 15;
-	TRP3_NPCDialogFrameRewards.Content:SetHeight(contentHeight);
+	Storyline_NPCFrameRewardsItemIcon:SetTexture(bestIcon);
+	contentHeight = contentHeight + Storyline_NPCFrameRewards.Content.Title:GetHeight() + 15;
+	Storyline_NPCFrameRewards.Content:SetHeight(contentHeight);
 end
 
 local function handleEventSpecifics(event, texts, textIndex, eventInfo)
@@ -545,27 +545,27 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	for _, button in pairs(itemButtons) do
 		button:Hide();
 	end
-	TRP3_NPCDialogFrameGossipChoices:Hide();
-	TRP3_NPCDialogFrameRewards:Hide();
-	TRP3_NPCDialogFrameObjectives:Hide();
-	TRP3_NPCDialogFrameChatOption1:Hide();
-	TRP3_NPCDialogFrameChatOption2:Hide();
-	TRP3_NPCDialogFrameChatOption3:Hide();
-	TRP3_NPCDialogFrameObjectivesYes:Hide();
-	TRP3_NPCDialogFrameObjectivesNo:Hide();
-	TRP3_NPCDialogFrameObjectives.OK:Hide();
-	TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:Hide();
-	TRP3_NPCDialogFrameRewards.Content:Hide();
-	TRP3_NPCDialogFrameRewards.Content.RewardText2:Hide();
-	TRP3_NPCDialogFrameRewards.Content.RewardText3:Hide();
-	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption1);
-	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption2);
-	setTooltipForSameFrame(TRP3_NPCDialogFrameChatOption3);
-	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives);
-	TRP3_NPCDialogFrameChatOption1:SetScript("OnEnter", nil);
-	TRP3_NPCDialogFrameChatOption2:SetScript("OnEnter", nil);
-	TRP3_NPCDialogFrameChatOption3:SetScript("OnEnter", nil);
-	TRP3_NPCDialogFrameObjectivesImage:SetTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon");
+	Storyline_NPCFrameGossipChoices:Hide();
+	Storyline_NPCFrameRewards:Hide();
+	Storyline_NPCFrameObjectives:Hide();
+	Storyline_NPCFrameChatOption1:Hide();
+	Storyline_NPCFrameChatOption2:Hide();
+	Storyline_NPCFrameChatOption3:Hide();
+	Storyline_NPCFrameObjectivesYes:Hide();
+	Storyline_NPCFrameObjectivesNo:Hide();
+	Storyline_NPCFrameObjectives.OK:Hide();
+	Storyline_NPCFrameObjectivesContent.RequiredItemText:Hide();
+	Storyline_NPCFrameRewards.Content:Hide();
+	Storyline_NPCFrameRewards.Content.RewardText2:Hide();
+	Storyline_NPCFrameRewards.Content.RewardText3:Hide();
+	setTooltipForSameFrame(Storyline_NPCFrameChatOption1);
+	setTooltipForSameFrame(Storyline_NPCFrameChatOption2);
+	setTooltipForSameFrame(Storyline_NPCFrameChatOption3);
+	setTooltipForSameFrame(Storyline_NPCFrameObjectives);
+	Storyline_NPCFrameChatOption1:SetScript("OnEnter", nil);
+	Storyline_NPCFrameChatOption2:SetScript("OnEnter", nil);
+	Storyline_NPCFrameChatOption3:SetScript("OnEnter", nil);
+	Storyline_NPCFrameObjectivesImage:SetTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon");
 
 	if textIndex == #texts and eventHandlers[event] then
 		eventHandlers[event](eventInfo);
@@ -576,24 +576,24 @@ local function playText(textIndex, targetModel)
 	local animTab = targetModel.animTab;
 	wipe(animTab);
 
-	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
+	local text = Storyline_NPCFrameChat.texts[textIndex];
 	local sound;
 	local delay = 0;
 	local textLineToken = getId();
 
-	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
+	Storyline_NPCFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
 
 	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
 		local color = colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		local finalText = text:gsub("<", color .. "<");
 		finalText = finalText:gsub(">", ">|r");
 		if not UnitExists("npc") or UnitIsUnit("player", "npc") then
-			TRP3_NPCDialogFrameChatText:SetText(color .. finalText);
+			Storyline_NPCFrameChatText:SetText(color .. finalText);
 		else
-			TRP3_NPCDialogFrameChatText:SetText(finalText);
+			Storyline_NPCFrameChatText:SetText(finalText);
 		end
 	else
-		TRP3_NPCDialogFrameChatText:SetText(text);
+		Storyline_NPCFrameChatText:SetText(text);
 		text:gsub("[%.%?%!]+", function(finder)
 			animTab[#animTab + 1] = getAnimationByModel(targetModel.model, finder:sub(1, 1));
 			animTab[#animTab + 1] = 0;
@@ -608,39 +608,39 @@ local function playText(textIndex, targetModel)
 		delay = playAnimationDelay(targetModel, sequence, getDuration(targetModel.model, sequence), delay, textLineToken);
 	end
 
-	TRP3_NPCDialogFrameChat.start = 0;
+	Storyline_NPCFrameChat.start = 0;
 
-	if #TRP3_NPCDialogFrameChat.texts > 1 then
-		TRP3_NPCDialogFrameChatPrevious:Show();
+	if #Storyline_NPCFrameChat.texts > 1 then
+		Storyline_NPCFrameChatPrevious:Show();
 	end
 
-	handleEventSpecifics(TRP3_NPCDialogFrameChat.event, TRP3_NPCDialogFrameChat.texts, textIndex, TRP3_NPCDialogFrameChat.eventInfo);
+	handleEventSpecifics(Storyline_NPCFrameChat.event, Storyline_NPCFrameChat.texts, textIndex, Storyline_NPCFrameChat.eventInfo);
 
-	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
+	Storyline_NPCFrameChat:SetHeight(Storyline_NPCFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 end
 
 function Storyline_API.playNext(targetModel)
-	TRP3_NPCDialogFrameChatNext:Enable();
-	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
+	Storyline_NPCFrameChatNext:Enable();
+	Storyline_NPCFrameChat.currentIndex = Storyline_NPCFrameChat.currentIndex + 1;
 
-	TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_NEXT"));
-	if TRP3_NPCDialogFrameChat.currentIndex >= #TRP3_NPCDialogFrameChat.texts then
-		if TRP3_NPCDialogFrameChat.eventInfo.finishText and (type(TRP3_NPCDialogFrameChat.eventInfo.finishText) ~= "function" or TRP3_NPCDialogFrameChat.eventInfo.finishText()) then
-			if type(TRP3_NPCDialogFrameChat.eventInfo.finishText) == "function" then
-				TRP3_NPCDialogFrameChatNextText:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText());
+	Storyline_NPCFrameChatNextText:SetText(loc("SL_NEXT"));
+	if Storyline_NPCFrameChat.currentIndex >= #Storyline_NPCFrameChat.texts then
+		if Storyline_NPCFrameChat.eventInfo.finishText and (type(Storyline_NPCFrameChat.eventInfo.finishText) ~= "function" or Storyline_NPCFrameChat.eventInfo.finishText()) then
+			if type(Storyline_NPCFrameChat.eventInfo.finishText) == "function" then
+				Storyline_NPCFrameChatNextText:SetText(Storyline_NPCFrameChat.eventInfo.finishText());
 			else
-				TRP3_NPCDialogFrameChatNextText:SetText(TRP3_NPCDialogFrameChat.eventInfo.finishText);
+				Storyline_NPCFrameChatNextText:SetText(Storyline_NPCFrameChat.eventInfo.finishText);
 			end
 		end
 	end
 
-	if TRP3_NPCDialogFrameChat.currentIndex <= #TRP3_NPCDialogFrameChat.texts then
-		playText(TRP3_NPCDialogFrameChat.currentIndex, targetModel);
+	if Storyline_NPCFrameChat.currentIndex <= #Storyline_NPCFrameChat.texts then
+		playText(Storyline_NPCFrameChat.currentIndex, targetModel);
 	else
-		if TRP3_NPCDialogFrameChat.eventInfo.finishMethod then
-			TRP3_NPCDialogFrameChat.eventInfo.finishMethod();
+		if Storyline_NPCFrameChat.eventInfo.finishMethod then
+			Storyline_NPCFrameChat.eventInfo.finishMethod();
 		else
-			TRP3_NPCDialogFrame:Hide();
+			Storyline_NPCFrame:Hide();
 		end
 	end
 end
@@ -664,13 +664,13 @@ function Storyline_API.initEventsStructure()
 			titleGetter = GetTitleText,
 			finishText = loc("SL_CHECK_OBJ"),
 			finishMethod = function()
-				if not TRP3_NPCDialogFrameObjectivesContent:IsVisible() then
-					configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
-					setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, nil, nil);
+				if not Storyline_NPCFrameObjectivesContent:IsVisible() then
+					configureHoverFrame(Storyline_NPCFrameObjectivesContent, Storyline_NPCFrameObjectives, "TOP");
+					setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, nil, nil);
 					Storyline_MainTooltip:Hide();
-					TRP3_NPCDialogFrameObjectivesYes:Show();
-					TRP3_NPCDialogFrameObjectivesNo:Show();
-					TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_ACCEPTANCE"));
+					Storyline_NPCFrameObjectivesYes:Show();
+					Storyline_NPCFrameObjectivesNo:Show();
+					Storyline_NPCFrameChatNextText:SetText(loc("SL_ACCEPTANCE"));
 				else
 					AcceptQuest();
 				end
@@ -679,16 +679,16 @@ function Storyline_API.initEventsStructure()
 		["QUEST_PROGRESS"] = {
 			text = GetProgressText,
 			finishMethod = function()
-				if not TRP3_NPCDialogFrameObjectivesContent:IsVisible() then
-					configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
-					setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, nil, nil);
+				if not Storyline_NPCFrameObjectivesContent:IsVisible() then
+					configureHoverFrame(Storyline_NPCFrameObjectivesContent, Storyline_NPCFrameObjectives, "TOP");
+					setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, nil, nil);
 					Storyline_MainTooltip:Hide();
 					if IsQuestCompletable() then
-						TRP3_NPCDialogFrameObjectives.OK:Show();
-						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_CONTINUE"));
+						Storyline_NPCFrameObjectives.OK:Show();
+						Storyline_NPCFrameChatNextText:SetText(loc("SL_CONTINUE"));
 						playSelfAnim(68);
 					else
-						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_NOT_YET"));
+						Storyline_NPCFrameChatNextText:SetText(loc("SL_NOT_YET"));
 						playSelfAnim(186);
 					end
 				elseif IsQuestCompletable() then
@@ -706,15 +706,15 @@ function Storyline_API.initEventsStructure()
 		["QUEST_COMPLETE"] = {
 			text = GetRewardText,
 			finishMethod = function()
-				if not TRP3_NPCDialogFrameRewards.Content:IsVisible() then
-					configureHoverFrame(TRP3_NPCDialogFrameRewards.Content, TRP3_NPCDialogFrameRewardsItem, "TOP");
-					setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "TOP", 0, 0);
+				if not Storyline_NPCFrameRewards.Content:IsVisible() then
+					configureHoverFrame(Storyline_NPCFrameRewards.Content, Storyline_NPCFrameRewardsItem, "TOP");
+					setTooltipForSameFrame(Storyline_NPCFrameRewardsItem, "TOP", 0, 0);
 					Storyline_MainTooltip:Hide();
 					if GetNumQuestChoices() > 1 then
-						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_SELECT_REWARD"));
-						TRP3_NPCDialogFrameChatNext:Disable();
+						Storyline_NPCFrameChatNextText:SetText(loc("SL_SELECT_REWARD"));
+						Storyline_NPCFrameChatNext:Disable();
 					else
-						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_CONTINUE"));
+						Storyline_NPCFrameChatNextText:SetText(loc("SL_CONTINUE"));
 					end
 				elseif GetNumQuestChoices() == 1 then
 					GetQuestReward(1);
@@ -732,12 +732,12 @@ function Storyline_API.initEventsStructure()
 		["GOSSIP_SHOW"] = {
 			text = GetGossipText,
 			finishMethod = function()
-				if GetNumGossipAvailableQuests() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
-					TRP3_NPCDialogFrameChatOption1:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption1);
-				elseif GetNumGossipActiveQuests() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
-					TRP3_NPCDialogFrameChatOption2:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption2);
-				elseif GetNumGossipOptions() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
-					TRP3_NPCDialogFrameChatOption3:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption3);
+				if GetNumGossipAvailableQuests() > 1 and not Storyline_NPCFrameGossipChoices:IsVisible() then
+					Storyline_NPCFrameChatOption1:GetScript("OnClick")(Storyline_NPCFrameChatOption1);
+				elseif GetNumGossipActiveQuests() > 1 and not Storyline_NPCFrameGossipChoices:IsVisible() then
+					Storyline_NPCFrameChatOption2:GetScript("OnClick")(Storyline_NPCFrameChatOption2);
+				elseif GetNumGossipOptions() > 1 and not Storyline_NPCFrameGossipChoices:IsVisible() then
+					Storyline_NPCFrameChatOption3:GetScript("OnClick")(Storyline_NPCFrameChatOption3);
 				else
 					CloseGossip();
 				end
@@ -764,7 +764,7 @@ function Storyline_API.initEventsStructure()
 	end
 
 	-- Replay buttons
-	local questButton = CreateFrame("Button", nil, QuestLogPopupDetailFrame, "TRP3_CommonButton");
+	local questButton = CreateFrame("Button", nil, QuestLogPopupDetailFrame, "Storyline_CommonButton");
 	questButton:SetText(loc("SL_STORYLINE"));
 	questButton:SetPoint("TOP");
 	questButton:SetScript("OnClick", function()
@@ -773,27 +773,27 @@ function Storyline_API.initEventsStructure()
 	end);
 
 	-- UI
-	setTooltipAll(TRP3_NPCDialogFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
-	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesYes, "TOP", 0, 0,  loc("SL_ACCEPTANCE"));
-	setTooltipForSameFrame(TRP3_NPCDialogFrameObjectivesNo, "TOP", 0, 0, loc("SL_DECLINE"));
-	TRP3_NPCDialogFrameObjectivesYes:SetScript("OnClick", AcceptQuest);
-	TRP3_NPCDialogFrameObjectivesYes:SetScript("OnEnter", function(self)
+	setTooltipAll(Storyline_NPCFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
+	setTooltipForSameFrame(Storyline_NPCFrameObjectivesYes, "TOP", 0, 0,  loc("SL_ACCEPTANCE"));
+	setTooltipForSameFrame(Storyline_NPCFrameObjectivesNo, "TOP", 0, 0, loc("SL_DECLINE"));
+	Storyline_NPCFrameObjectivesYes:SetScript("OnClick", AcceptQuest);
+	Storyline_NPCFrameObjectivesYes:SetScript("OnEnter", function(self)
 		playSelfAnim(185);
 		refreshTooltipForFrame(self);
 	end);
-	TRP3_NPCDialogFrameObjectivesNo:SetScript("OnClick", DeclineQuest);
-	TRP3_NPCDialogFrameObjectivesNo:SetScript("OnEnter", function(self)
+	Storyline_NPCFrameObjectivesNo:SetScript("OnClick", DeclineQuest);
+	Storyline_NPCFrameObjectivesNo:SetScript("OnEnter", function(self)
 		playSelfAnim(186);
 		refreshTooltipForFrame(self);
 	end);
 
-	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", function() EVENT_INFO["QUEST_PROGRESS"].finishMethod(); end);
-	TRP3_NPCDialogFrameObjectivesContent.Title:SetText(QUEST_OBJECTIVES);
-	TRP3_NPCDialogFrameObjectivesContent.RequiredItemText:SetText(TURN_IN_ITEMS);
+	Storyline_NPCFrameObjectives:SetScript("OnClick", function() EVENT_INFO["QUEST_PROGRESS"].finishMethod(); end);
+	Storyline_NPCFrameObjectivesContent.Title:SetText(QUEST_OBJECTIVES);
+	Storyline_NPCFrameObjectivesContent.RequiredItemText:SetText(TURN_IN_ITEMS);
 
-	TRP3_NPCDialogFrameRewardsItem:SetScript("OnClick", function() EVENT_INFO["QUEST_COMPLETE"].finishMethod(); end);
-	TRP3_NPCDialogFrameRewards.Content.RewardText1:SetText(REWARD_ITEMS_ONLY);
-	TRP3_NPCDialogFrameRewards.Content.Title:SetText(REWARDS);
-	TRP3_NPCDialogFrameRewards.Content.RewardText2:SetText(REWARD_ITEMS);
-	TRP3_NPCDialogFrameRewards.Content.RewardText3:SetText(REWARD_CHOOSE);
+	Storyline_NPCFrameRewardsItem:SetScript("OnClick", function() EVENT_INFO["QUEST_COMPLETE"].finishMethod(); end);
+	Storyline_NPCFrameRewards.Content.RewardText1:SetText(REWARD_ITEMS_ONLY);
+	Storyline_NPCFrameRewards.Content.Title:SetText(REWARDS);
+	Storyline_NPCFrameRewards.Content.RewardText2:SetText(REWARD_ITEMS);
+	Storyline_NPCFrameRewards.Content.RewardText3:SetText(REWARD_CHOOSE);
 end

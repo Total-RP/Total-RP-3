@@ -18,7 +18,7 @@
 		See the License for the specific language governing permissions and
 		limitations under the License.
 	-->
-	<Frame name="TRP3_NPCDialogFrameDebug" parent="TRP3_NPCDialogFrame" hidden="false">
+	<Frame name="Storyline_NPCFrameDebug" parent="Storyline_NPCFrame" hidden="false">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 			<EdgeSize>
 				<AbsValue val="32"/>
@@ -32,12 +32,12 @@
 		</Backdrop>
 		<Size x="0" y="140"/>
 		<Anchors>
-			<Anchor point="TOPRIGHT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
-			<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
+			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
+			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
 		</Anchors>
 		<Layers>
 			<Layer>
-				<FontString name="TRP3_NPCDialogFrameDebugText" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+				<FontString name="Storyline_NPCFrameDebugText" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 					<Size x="0" y="20"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-10"/>
@@ -49,36 +49,36 @@
 		</Layers>
 		<Frames>
 
-			<EditBox name="TRP3_NPCDialogFrameDebugModelMe" inherits="TRP3_TitledEditBox">
+			<EditBox name="Storyline_NPCFrameDebugModelMe" inherits="Storyline_TitledEditBox">
 				<Size x="300" y="20"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugText" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugText" x="0" y="-10"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						TRP3_NPCDialogFrameDebugModelMeText:SetText("Player model");
+						Storyline_NPCFrameDebugModelMeText:SetText("Player model");
 					</OnLoad>
 				</Scripts>
 			</EditBox>
 
-			<EditBox name="TRP3_NPCDialogFrameDebugModelYou" inherits="TRP3_TitledEditBox">
+			<EditBox name="Storyline_NPCFrameDebugModelYou" inherits="Storyline_TitledEditBox">
 				<Size x="300" y="20"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugModelMe" x="0" y="-5"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugModelMe" x="0" y="-5"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						TRP3_NPCDialogFrameDebugModelYouText:SetText("Target model");
+						Storyline_NPCFrameDebugModelYouText:SetText("Target model");
 					</OnLoad>
 				</Scripts>
 			</EditBox>
 
-			<EditBox name="TRP3_NPCDialogFrameDebugSequenceMe" inherits="TRP3_TitledEditBox" numeric="true">
+			<EditBox name="Storyline_NPCFrameDebugSequenceMe" inherits="Storyline_TitledEditBox" numeric="true">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugModelMe" x="40" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="Storyline_NPCFrameDebugModelMe" x="40" y="0"/>
 				</Anchors>
 				<Frames>
-					<Button inherits="TRP3_CommonButton" text="+">
+					<Button inherits="Storyline_CommonButton" text="+">
 						<Size x="20" y="20"/>
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
@@ -86,11 +86,11 @@
 						<Scripts>
 							<OnClick>
 								self:GetParent():SetText(self:GetParent():GetNumber() + 1);
-								TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+								Storyline_NPCFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="-">
+					<Button inherits="Storyline_CommonButton" text="-">
 						<Size x="20" y="20"/>
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0"/>
@@ -98,28 +98,28 @@
 						<Scripts>
 							<OnClick>
 								self:GetParent():SetText(self:GetParent():GetNumber() - 1);
-								TRP3_NPCDialogFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
+								Storyline_NPCFrameModelsMe:SetAnimation(self:GetParent():GetNumber());
 							</OnClick>
 						</Scripts>
 					</Button>
 				</Frames>
 				<Scripts>
 					<OnEnterPressed>
-						TRP3_NPCDialogFrameModelsMe:SetAnimation(TRP3_NPCDialogFrameDebugSequenceMe:GetNumber());
+						Storyline_NPCFrameModelsMe:SetAnimation(Storyline_NPCFrameDebugSequenceMe:GetNumber());
 					</OnEnterPressed>
 					<OnLoad>
-						TRP3_NPCDialogFrameDebugSequenceMeText:SetText("Player animation");
-						TRP3_NPCDialogFrameModelsMe.debug = self;
+						Storyline_NPCFrameDebugSequenceMeText:SetText("Player animation");
+						Storyline_NPCFrameModelsMe.debug = self;
 					</OnLoad>
 				</Scripts>
 			</EditBox>
 
-			<EditBox name="TRP3_NPCDialogFrameDebugSequenceYou" inherits="TRP3_TitledEditBox" numeric="true">
+			<EditBox name="Storyline_NPCFrameDebugSequenceYou" inherits="Storyline_TitledEditBox" numeric="true">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugModelYou" x="40" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="Storyline_NPCFrameDebugModelYou" x="40" y="0"/>
 				</Anchors>
 				<Frames>
-					<Button inherits="TRP3_CommonButton" text="+">
+					<Button inherits="Storyline_CommonButton" text="+">
 						<Size x="20" y="20"/>
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0"/>
@@ -131,7 +131,7 @@
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="-">
+					<Button inherits="Storyline_CommonButton" text="-">
 						<Size x="20" y="20"/>
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0"/>
@@ -143,42 +143,42 @@
 							</OnClick>
 						</Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="Talk">
+					<Button inherits="Storyline_CommonButton" text="Talk">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="-25" y="-5"/>
 						</Anchors>
 						<Scripts><OnClick>self:GetParent().playTargetAnim(60);</OnClick></Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="!">
+					<Button inherits="Storyline_CommonButton" text="!">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="30" y="-5"/>
 						</Anchors>
 						<Scripts><OnClick>self:GetParent().playTargetAnim(64);</OnClick></Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="?">
+					<Button inherits="Storyline_CommonButton" text="?">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="85" y="-5"/>
 						</Anchors>
 						<Scripts><OnClick>self:GetParent().playTargetAnim(65);</OnClick></Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="Yes">
+					<Button inherits="Storyline_CommonButton" text="Yes">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="140" y="-5"/>
 						</Anchors>
 						<Scripts><OnClick>self:GetParent().playTargetAnim(185);</OnClick></Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="No">
+					<Button inherits="Storyline_CommonButton" text="No">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="195" y="-5"/>
 						</Anchors>
 						<Scripts><OnClick>self:GetParent().playTargetAnim(186);</OnClick></Scripts>
 					</Button>
-					<Button inherits="TRP3_CommonButton" text="\o/">
+					<Button inherits="Storyline_CommonButton" text="\o/">
 						<Size x="50" y="20"/>
 						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="250" y="-5"/>
@@ -191,41 +191,41 @@
 						self.playTargetAnim(self:GetNumber());
 					</OnEnterPressed>
 					<OnLoad>
-						TRP3_NPCDialogFrameDebugSequenceYouText:SetText("Target animation");
-						TRP3_NPCDialogFrameModelsYou.debug = self;
+						Storyline_NPCFrameDebugSequenceYouText:SetText("Target animation");
+						Storyline_NPCFrameModelsYou.debug = self;
 					</OnLoad>
 				</Scripts>
 			</EditBox>
-			<EditBox name="TRP3_NPCDialogFrameDebugSequenceYouTime" inherits="TRP3_TitledEditBox">
+			<EditBox name="Storyline_NPCFrameDebugSequenceYouTime" inherits="Storyline_TitledEditBox">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_NPCDialogFrameDebugSequenceYou" x="40" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="Storyline_NPCFrameDebugSequenceYou" x="40" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnEnterPressed>
 						local duration = tonumber(self:GetText());
-						TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")][TRP3_NPCDialogFrameDebugSequenceYou:GetText()] = duration;
-						TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim(TRP3_NPCDialogFrameDebugSequenceYou:GetNumber());
-						if not TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] then
-						TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = {};
+						Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")][Storyline_NPCFrameDebugSequenceYou:GetText()] = duration;
+						Storyline_NPCFrameDebugSequenceYou.playTargetAnim(Storyline_NPCFrameDebugSequenceYou:GetNumber());
+						if not Storyline_Data.debug.timing[Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")] then
+						Storyline_Data.debug.timing[Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = {};
 						end
-						TRP3_Storyline.debug.timing[TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")][TRP3_NPCDialogFrameDebugSequenceYou:GetText()] = duration;
+						Storyline_Data.debug.timing[Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")][Storyline_NPCFrameDebugSequenceYou:GetText()] = duration;
 					</OnEnterPressed>
 					<OnLoad>
-						TRP3_NPCDialogFrameDebugSequenceYouTimeText:SetText("Save duration");
+						Storyline_NPCFrameDebugSequenceYouTimeText:SetText("Save duration");
 					</OnLoad>
 				</Scripts>
 			</EditBox>
 
-			<Slider name="TRP3_NPCDialogFrameDebugScaleSlider" inherits="TRP3_Slider">
+			<Slider name="Storyline_NPCFrameDebugScaleSlider" inherits="Storyline_Slider">
 				<Size x="300" y="15"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameDebugModelYou" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugModelYou" x="0" y="-10"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
 						self:SetMinMaxValues(-100, 100);
-						TRP3_NPCDialogFrameDebugScaleSliderLow:SetText("Small");
-						TRP3_NPCDialogFrameDebugScaleSliderHigh:SetText("Huge");
+						Storyline_NPCFrameDebugScaleSliderLow:SetText("Small");
+						Storyline_NPCFrameDebugScaleSliderHigh:SetText("Huge");
 						self:SetValueStep(1);
 						self:SetObeyStepOnDrag(true);
 					</OnLoad>

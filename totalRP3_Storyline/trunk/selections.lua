@@ -17,6 +17,7 @@
 ----------------------------------------------------------------------------------
 
 -- WOW API
+local configureHoverFrame = Storyline_API.lib.configureHoverFrame;
 local loc = Storyline_API.locale.getText;
 local pairs, tinsert = pairs, tinsert;
 local CreateFrame = CreateFrame;
@@ -45,7 +46,7 @@ local function getSelectionFontString(placeOn)
 		end
 	end
 	if not available then
-		available = CreateFrame("Button", "TRP3_StorylineChoiceString" .. #selectionStrings, TRP3_NPCDialogFrameGossipChoices, "TRP3_StorylineMultiChoiceButton");
+		available = CreateFrame("Button", "Storyline_ChoiceString" .. #selectionStrings, Storyline_NPCFrameGossipChoices, "Storyline_MultiChoiceButton");
 		tinsert(selectionStrings, available);
 	end
 	available:Show();
@@ -64,9 +65,9 @@ function Storyline_API.selectMultipleGossip(button)
 	for _, button in pairs(selectionStrings) do
 		button:Hide();
 	end
-	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
-	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_DIALOG_OPTION"));
-	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
+	configureHoverFrame(Storyline_NPCFrameGossipChoices, button, "TOP");
+	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_DIALOG_OPTION"));
+	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipOptions() };
 	local height = 40;
 	for i = 1, GetNumGossipOptions() do
@@ -78,7 +79,7 @@ function Storyline_API.selectMultipleGossip(button)
 		end);
 		height = height + 25;
 	end
-	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
+	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
 
 function Storyline_API.selectFirstAvailable()
@@ -96,9 +97,9 @@ function Storyline_API.selectMultipleAvailable(button)
 	for _, button in pairs(selectionStrings) do
 		button:Hide();
 	end
-	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
-	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
-	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
+	configureHoverFrame(Storyline_NPCFrameGossipChoices, button, "TOP");
+	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipAvailableQuests() };
 	local height = 40;
 	for i = 1, GetNumGossipAvailableQuests() do
@@ -111,7 +112,7 @@ function Storyline_API.selectMultipleAvailable(button)
 		end);
 		height = height + 25;
 	end
-	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
+	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
 
 function Storyline_API.selectFirstActive()
@@ -122,9 +123,9 @@ function Storyline_API.selectMultipleActive(button)
 	for _, button in pairs(selectionStrings) do
 		button:Hide();
 	end
-	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
-	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
-	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
+	configureHoverFrame(Storyline_NPCFrameGossipChoices, button, "TOP");
+	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipActiveQuests() };
 	local height = 40;
 	for i = 1, GetNumGossipActiveQuests() do
@@ -136,16 +137,16 @@ function Storyline_API.selectMultipleActive(button)
 		end);
 		height = height + 25;
 	end
-	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
+	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
 
 function Storyline_API.selectMultipleActiveGreetings(button)
 	for _, button in pairs(selectionStrings) do
 		button:Hide();
 	end
-	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
-	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
-	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
+	configureHoverFrame(Storyline_NPCFrameGossipChoices, button, "TOP");
+	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local height = 40;
 	for i = 1, GetNumActiveQuests() do
 		local title, isComplete = GetActiveTitle(i);
@@ -157,7 +158,7 @@ function Storyline_API.selectMultipleActiveGreetings(button)
 		end);
 		height = height + 25;
 	end
-	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
+	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
 
 function Storyline_API.selectMultipleAvailableGreetings(button)
@@ -167,9 +168,9 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 	for _, button in pairs(selectionStrings) do
 		button:Hide();
 	end
-	TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameGossipChoices, button, "TOP");
-	TRP3_NPCDialogFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
-	local previous = TRP3_NPCDialogFrameGossipChoices.Title;
+	configureHoverFrame(Storyline_NPCFrameGossipChoices, button, "TOP");
+	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
+	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local height = 40;
 	for i = 1, numAvailableQuests do
 		local title, isComplete = GetAvailableTitle(i);
@@ -181,5 +182,5 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 		end);
 		height = height + 25;
 	end
-	TRP3_NPCDialogFrameGossipChoices:SetHeight(height);
+	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end

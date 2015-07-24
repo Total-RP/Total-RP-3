@@ -16,11 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local date, math, string, assert, strconcat = date, math, string, assert, strconcat;
-
-Storyline_API = {
-	lib = {},
-};
+local date, math, string, assert, strconcat, tostring = date, math, string, assert, strconcat, tostring;
 
 local function generateID()
 	local ID = date("%m%d%H%M%S");
@@ -39,7 +35,7 @@ end
 Storyline_API.lib.getTextureString = getTextureString;
 
 local function log(message)
-	print(message);
+	print("[StoryLog] " .. tostring(message));
 end
 Storyline_API.lib.log = log;
 
@@ -263,7 +259,7 @@ function Storyline_API.lib.initResize(resizeButton)
 	assert(resizeButton.resizableFrame, "resizableFrame key is not set.");
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
-	setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
+	setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, Storyline_API.locale.getText("SL_RESIZE"), Storyline_API.locale.getText("SL_RESIZE_TT"));
 	local parent = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnDragStart", function(self)
@@ -301,14 +297,14 @@ function Storyline_API.lib.initResize(resizeButton)
 	end);
 end
 
---Storyline_ResizeShadowFrame:SetScript("OnUpdate", function(self)
---	local height, width = self:GetHeight(), self:GetWidth();
---	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
---	if height < self.minHeight then
---		heightColor = "|cffff0000";
---	end
---	if width < self.minWidth then
---		widthColor = "|cffff0000";
---	end
---	Storyline_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
---end);
+Storyline_ResizeShadowFrame:SetScript("OnUpdate", function(self)
+	local height, width = self:GetHeight(), self:GetWidth();
+	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
+	if height < self.minHeight then
+		heightColor = "|cffff0000";
+	end
+	if width < self.minWidth then
+		widthColor = "|cffff0000";
+	end
+	Storyline_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
+end);

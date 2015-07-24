@@ -17,6 +17,10 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+Storyline_API = {
+	lib = {},
+};
+
 Storyline_API.locale = {
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -47,6 +51,8 @@ Storyline_API.locale = {
 			SL_CONFIG_TEXTSPEED_HIGH = "High",
 			SL_CONFIG_AUTOEQUIP = "Auto equip reward (experimental)",
 			SL_CONFIG_AUTOEQUIP_TT = "Auto equip rewards if it has a better item lvl.",
+			SL_RESIZE = "Resize",
+			SL_RESIZE_TT = "Drag and drop to resize",
 		}
 	},
 	
@@ -87,7 +93,7 @@ local current;
 -- Initialize a locale for the addon.
 function Storyline_API.locale.init()
 	-- Register config
-	current = TRP3_Storyline.config.locale or DEFAULT_LOCALE;
+	current = Storyline_Data.config.locale or DEFAULT_LOCALE;
 	if not LOCALS[current] then
 		current = DEFAULT_LOCALE;
 	end

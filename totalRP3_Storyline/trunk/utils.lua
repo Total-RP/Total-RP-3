@@ -66,18 +66,18 @@ Storyline_API.getQuestLevelColor = getQuestLevelColor;
 -- SOME ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING = TRP3_ANIM_MAPPING, TRP3_DEFAULT_ANIM_MAPPING;
-local TRP3_ANIMATION_SEQUENCE_DURATION = TRP3_ANIMATION_SEQUENCE_DURATION;
-local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL;
-local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
+local Storyline_ANIM_MAPPING, Storyline_DEFAULT_ANIM_MAPPING = Storyline_ANIM_MAPPING, Storyline_DEFAULT_ANIM_MAPPING;
+local Storyline_ANIMATION_SEQUENCE_DURATION = Storyline_ANIMATION_SEQUENCE_DURATION;
+local Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL;
+local Storyline_NPCFrameModelsMe, Storyline_NPCFrameModelsYou = Storyline_NPCFrameModelsMe, Storyline_NPCFrameModelsYou;
 
 function Storyline_API.getAnimationByModel(model, animationType)
 	if model then
-		if TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
-			return TRP3_ANIM_MAPPING[model][animationType];
+		if Storyline_ANIM_MAPPING[model] and Storyline_ANIM_MAPPING[model][animationType] then
+			return Storyline_ANIM_MAPPING[model][animationType];
 		end
 	end
-	return TRP3_DEFAULT_ANIM_MAPPING[animationType];
+	return Storyline_DEFAULT_ANIM_MAPPING[animationType];
 end
 
 local function playAnim(model, sequence)
@@ -106,12 +106,12 @@ local DEFAULT_SEQUENCE_TIME = 4;
 
 local function getDuration(model, sequence)
 	sequence = tostring(sequence);
-	if TRP3_Storyline.debug.timing[model] and TRP3_Storyline.debug.timing[model][sequence] then
-		return TRP3_Storyline.debug.timing[model][sequence];
-	elseif TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
-		return TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
+	if Storyline_Data.debug.timing[model] and Storyline_Data.debug.timing[model][sequence] then
+		return Storyline_Data.debug.timing[model][sequence];
+	elseif Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model] and Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence] then
+		return Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model][sequence];
 	end
-	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
+	return Storyline_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
 end
 Storyline_API.getDuration = getDuration;
 
@@ -127,10 +127,10 @@ local function playAndStand(model, sequence, duration)
 end
 
 function Storyline_API.playSelfAnim(sequence)
-	playAndStand(TRP3_NPCDialogFrameModelsMe, sequence, getDuration(TRP3_NPCDialogFrameModelsMe:GetModel(), sequence));
+	playAndStand(Storyline_NPCFrameModelsMe, sequence, getDuration(Storyline_NPCFrameModelsMe:GetModel(), sequence));
 end
 
 local function playTargetAnim(sequence)
-	playAndStand(TRP3_NPCDialogFrameModelsYou, sequence, getDuration(TRP3_NPCDialogFrameModelsYou:GetModel(), sequence));
+	playAndStand(Storyline_NPCFrameModelsYou, sequence, getDuration(Storyline_NPCFrameModelsYou:GetModel(), sequence));
 end
-TRP3_NPCDialogFrameDebugSequenceYou.playTargetAnim = playTargetAnim;
+Storyline_NPCFrameDebugSequenceYou.playTargetAnim = playTargetAnim;

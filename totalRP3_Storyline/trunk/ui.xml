@@ -19,12 +19,14 @@
 		limitations under the License.
 	-->
 
+	<Script file="locales.lua"/>
+
 	<Include file="lib\lib.xml"/>
 
 	<!-- Art pieces to hide border seams
 	 	(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
 	 -->
-	<Frame name="TRP3_StandardParchmentFrame" virtual="true">
+	<Frame name="Storyline_StandardParchmentFrame" virtual="true">
 		<Layers>
 			<Layer level="OVERLAY">
 				<!-- CORNERS -->
@@ -148,17 +150,17 @@
 		<TitleRegion setAllPoints="true"/>
 	</Frame>
 
-	<Button name="TRP3_StorylineChoiceButton" virtual="true" hidden="false">
+	<Button name="Storyline_ChoiceButton" virtual="true" hidden="false">
 		<Size x="0" y="16"/>
 		<Scripts>
 			<OnEnter>
-				TRP3_RefreshTooltipForFrame(self);
+				Storyline_RefreshTooltipForFrame(self);
 			</OnEnter>
 			<OnLeave>
-				TRP3_MainTooltip:Hide();
+				Storyline_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				PlaySound("gsCharacterSelection","SFX");
 			</PostClick>
 		</Scripts>
 		<HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD"/>
@@ -171,7 +173,7 @@
 		<NormalFont style="QuestFontLeft"/>
 	</Button>
 
-	<Button name="TRP3_StorylineMultiChoiceButton" inherits="TRP3_InvisibleButton" virtual="true">
+	<Button name="Storyline_MultiChoiceButton" inherits="Storyline_InvisibleButton" virtual="true">
 		<Size x="0" y="20"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -202,12 +204,12 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_NPCDialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent"
+	<Frame name="Storyline_NPCFrame" inherits="Storyline_StandardParchmentFrame" toplevel="true" parent="UIParent"
 		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<Size x="700" y="450"/>
 		<Layers>
 			<Layer level="BORDER">
-				<Texture name="TRP3_NPCDialogFrameBG" file="Interface\DRESSUPFRAME\DressUpBackground-NightElf1" alpha="0.5">
+				<Texture name="Storyline_NPCFrameBG" file="Interface\DRESSUPFRAME\DressUpBackground-NightElf1" alpha="0.5">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="-20"/>
 						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
@@ -215,30 +217,30 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY" textureSubLevel="3">
-				<Texture name="TRP3_NPCDialogFrameBanner" atlas="GarrMission_RewardsBanner-Desaturate" useAtlasSize="false">
+				<Texture name="Storyline_NPCFrameBanner" atlas="GarrMission_RewardsBanner-Desaturate" useAtlasSize="false">
 					<Size x="384" y="96"/>
 					<Anchors>
 						<Anchor point="TOP" x="0" y="0"/>
 					</Anchors>
 				</Texture>
-				<FontString name="TRP3_NPCDialogFrameTitle" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
+				<FontString name="Storyline_NPCFrameTitle" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE">
 					<Size x="230" y="50"/>
 					<Anchors>
-						<Anchor point="CENTER" x="0" y="8" relativeTo="TRP3_NPCDialogFrameBanner" relativePoint="CENTER"/>
+						<Anchor point="CENTER" x="0" y="8" relativeTo="Storyline_NPCFrameBanner" relativePoint="CENTER"/>
 					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
 
-			<Button name="TRP3_NPCDialogFrameObjectives">
+			<Button name="Storyline_NPCFrameObjectives">
 				<Size x="70" y="70"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-100"/>
 				</Anchors>
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
-						<Texture name="TRP3_NPCDialogFrameObjectiveHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
+						<Texture name="Storyline_NPCFrameObjectiveHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
 							<Size x="108" y="108"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
@@ -246,7 +248,7 @@
 						</Texture>
 					</Layer>
 					<Layer level="BORDER" textureSubLevel="2">
-						<Texture name="TRP3_NPCDialogFrameObjectivesImage" file="Interface\FriendsFrame\FriendsFrameScrollIcon">
+						<Texture name="Storyline_NPCFrameObjectivesImage" file="Interface\FriendsFrame\FriendsFrameScrollIcon">
 							<Size x="48" y="48"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
@@ -272,16 +274,16 @@
 				</Layers>
 				<Scripts>
 					<OnLeave>
-						TRP3_MainTooltip:Hide();
-						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.5);
+						Storyline_MainTooltip:Hide();
+						Storyline_NPCFrameObjectiveHolo:SetAlpha(0.5);
 					</OnLeave>
 					<OnEnter>
-						TRP3_NPCDialogFrameObjectiveHolo:SetAlpha(0.75);
-						TRP3_RefreshTooltipForFrame(self);
+						Storyline_NPCFrameObjectiveHolo:SetAlpha(0.75);
+						Storyline_RefreshTooltipForFrame(self);
 					</OnEnter>
 				</Scripts>
 				<Frames>
-					<Button name="TRP3_NPCDialogFrameObjectivesYes" inherits="TRP3_InvisibleButton">
+					<Button name="Storyline_NPCFrameObjectivesYes" inherits="Storyline_InvisibleButton">
 						<Size x="40" y="40"/>
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
@@ -289,7 +291,7 @@
 						<NormalTexture file="Interface\RAIDFRAME\ReadyCheck-Ready"/>
 						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameObjectivesNo" inherits="TRP3_InvisibleButton">
+					<Button name="Storyline_NPCFrameObjectivesNo" inherits="Storyline_InvisibleButton">
 						<Size x="40" y="40"/>
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0"/>
@@ -298,7 +300,7 @@
 						<HighlightTexture file="Interface\PETBATTLES\PetBattle-SelectedPetGlow"/>
 					</Button>
 
-					<Frame name="TRP3_NPCDialogFrameObjectivesContent" inherits="TRP3_HoveredFrame" hidden="true">
+					<Frame name="Storyline_NPCFrameObjectivesContent" inherits="Storyline_HoveredFrame" hidden="true">
 						<Size x="325" y="150"/>
 						<Layers>
 							<Layer level="OVERLAY">
@@ -334,10 +336,10 @@
 				</Frames>
 			</Button>
 
-			<Frame name="TRP3_NPCDialogFrameRewards" frameLevel="1" setAllPoints="true">
+			<Frame name="Storyline_NPCFrameRewards" frameLevel="1" setAllPoints="true">
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
-						<Texture name="TRP3_NPCDialogFrameRewardsHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
+						<Texture name="Storyline_NPCFrameRewardsHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
 							<Size x="256" y="256"/>
 							<Anchors>
 								<Anchor point="CENTER" x="-3" y="100"/>
@@ -353,7 +355,7 @@
 						</Texture>
 					</Layer>
 					<Layer level="ARTWORK">
-						<Texture name="TRP3_NPCDialogFrameRewardsChest" atlas="GarrMission-AllianceChest" useAtlasSize="false">
+						<Texture name="Storyline_NPCFrameRewardsChest" atlas="GarrMission-AllianceChest" useAtlasSize="false">
 							<Size x="165" y="110"/>
 							<Anchors>
 								<Anchor point="BOTTOMRIGHT" x="-135" y="85"/>
@@ -362,29 +364,29 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Button name="TRP3_NPCDialogFrameRewardsItem" inherits="TRP3_IconButton">
+					<Button name="Storyline_NPCFrameRewardsItem" inherits="Storyline_IconButton">
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="66"/>
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								if TRP3_NPCDialogFrameRewards.itemLink then
+								if Storyline_NPCFrameRewards.itemLink then
 									GameTooltip:SetOwner(self, "ANCHOR_TOP", 0, 20);
-									GameTooltip:SetHyperlink(TRP3_NPCDialogFrameRewards.itemLink);
+									GameTooltip:SetHyperlink(Storyline_NPCFrameRewards.itemLink);
 									GameTooltip:Show();
 								end
-								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.75);
-								TRP3_RefreshTooltipForFrame(self);
+								Storyline_NPCFrameRewardsHolo:SetAlpha(0.75);
+								Storyline_RefreshTooltipForFrame(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
-								TRP3_MainTooltip:Hide();
-								TRP3_NPCDialogFrameRewardsHolo:SetAlpha(0.5);
+								Storyline_MainTooltip:Hide();
+								Storyline_NPCFrameRewardsHolo:SetAlpha(0.5);
 							</OnLeave>
 						</Scripts>
 					</Button>
 
-					<Frame parentKey="Content" inherits="TRP3_HoveredFrame" hidden="true">
+					<Frame parentKey="Content" inherits="Storyline_HoveredFrame" hidden="true">
 						<Size x="325" y="150"/>
 						<Layers>
 							<Layer level="OVERLAY">
@@ -438,7 +440,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame name="TRP3_NPCDialogFrameGossipChoices" inherits="TRP3_HoveredFrame" hidden="true">
+			<Frame name="Storyline_NPCFrameGossipChoices" inherits="Storyline_HoveredFrame" hidden="true">
 				<Size x="325" y="150"/>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -455,7 +457,7 @@
 				</Layers>
 			</Frame>
 
-			<Frame name="TRP3_NPCDialogFrameModels">
+			<Frame name="Storyline_NPCFrameModels">
 				<Size x="0" y="0"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
@@ -464,37 +466,37 @@
 					<Anchor point="RIGHT" x="-20" y="0"/>
 				</Anchors>
 				<Frames>
-					<Frame name="TRP3_NPCDialogFrameModelsPoint">
+					<Frame name="Storyline_NPCFrameModelsPoint">
 						<Size x="10" y="10"/>
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<PlayerModel name="TRP3_NPCDialogFrameModelsMe" frameLevel="2">
+					<PlayerModel name="Storyline_NPCFrameModelsMe" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
-							<Anchor point="RIGHT" relativeTo="TRP3_NPCDialogFrameModelsPoint" relativePoint="LEFT" x="0" y="0"/>
+							<Anchor point="RIGHT" relativeTo="Storyline_NPCFrameModelsPoint" relativePoint="LEFT" x="0" y="0"/>
 						</Anchors>
 					</PlayerModel>
-					<PlayerModel name="TRP3_NPCDialogFrameModelsYou" frameLevel="2">
+					<PlayerModel name="Storyline_NPCFrameModelsYou" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="RIGHT" x="0" y="0"/>
-							<Anchor point="LEFT" relativeTo="TRP3_NPCDialogFrameModelsPoint" relativePoint="RIGHT" x="0" y="0"/>
+							<Anchor point="LEFT" relativeTo="Storyline_NPCFrameModelsPoint" relativePoint="RIGHT" x="0" y="0"/>
 						</Anchors>
 					</PlayerModel>
 
-					<Button name="TRP3_NPCDialogFrameChatOption1" inherits="TRP3_StorylineChoiceButton"/>
-					<Button name="TRP3_NPCDialogFrameChatOption2" inherits="TRP3_StorylineChoiceButton"/>
-					<Button name="TRP3_NPCDialogFrameChatOption3" inherits="TRP3_StorylineChoiceButton"/>
+					<Button name="Storyline_NPCFrameChatOption1" inherits="Storyline_ChoiceButton"/>
+					<Button name="Storyline_NPCFrameChatOption2" inherits="Storyline_ChoiceButton"/>
+					<Button name="Storyline_NPCFrameChatOption3" inherits="Storyline_ChoiceButton"/>
 
 				</Frames>
 			</Frame>
 
-			<Frame name="TRP3_NPCDialogFrameChat" frameLevel="3">
+			<Frame name="Storyline_NPCFrameChat" frameLevel="3">
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 					<EdgeSize>
 						<AbsValue val="32"/>
@@ -523,20 +525,20 @@
 						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
-						<FontString name="TRP3_NPCDialogFrameChatName" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="TOP">
+						<FontString name="Storyline_NPCFrameChatName" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="TOP">
 							<Anchors>
 								<Anchor point="TOPLEFT" x="50" y="-12"/>
 								<Anchor point="TOPRIGHT" x="-50" y="-12"/>
 							</Anchors>
 							<Color r="1" g="0.75" b="0.0"/>
 						</FontString>
-						<FontString name="TRP3_NPCDialogFrameChatText" text="[NAME]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+						<FontString name="Storyline_NPCFrameChatText" text="[NAME]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 							<Anchors>
-								<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrameChatName" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+								<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrameChatName" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
 							</Anchors>
 							<Color r="1" g="1" b="0.4"/>
 						</FontString>
-						<FontString name="TRP3_NPCDialogFrameChatNextText" text="[POUIC]" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="BOTTOM">
+						<FontString name="Storyline_NPCFrameChatNextText" text="[POUIC]" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="BOTTOM">
 							<Anchors>
 								<Anchor point="BOTTOM" x="0" y="17"/>
 							</Anchors>
@@ -545,7 +547,7 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="TRP3_NPCDialogFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
+					<Frame name="Storyline_NPCFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="5" y="-2"/>
 							<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
@@ -556,17 +558,17 @@
 							</OnLoad>
 						</Scripts>
 					</Frame>
-					<Button name="TRP3_NPCDialogFrameChatNext" inherits="TRP3_InvisibleButton" setAllPoints="true" frameLevel="4">
+					<Button name="Storyline_NPCFrameChatNext" inherits="Storyline_InvisibleButton" setAllPoints="true" frameLevel="4">
 						<Scripts>
 							<OnEnter>
-								TRP3_NPCDialogFrameChatHighlight:Show();
+								Storyline_NPCFrameChatHighlight:Show();
 							</OnEnter>
 							<OnLeave>
-								TRP3_NPCDialogFrameChatHighlight:Hide();
+								Storyline_NPCFrameChatHighlight:Hide();
 							</OnLeave>
 						</Scripts>
 					</Button>
-					<Button name="TRP3_NPCDialogFrameChatPrevious" frameLevel="5">
+					<Button name="Storyline_NPCFrameChatPrevious" frameLevel="5">
 						<Size x="35" y="35"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
@@ -578,16 +580,16 @@
 				</Frames>
 			</Frame>
 
-			<Button name="TRP3_NPCDialogFrameClose" inherits="UIPanelCloseButton">
+			<Button name="Storyline_NPCFrameClose" inherits="UIPanelCloseButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
 
 			<!-- RESIZING BUTTON -->
-			<Button name="TRP3_NPCDialogFrameResizeButton" inherits="TRP3_ResizeButton" hidden="false">
+			<Button name="Storyline_NPCFrameResizeButton" inherits="Storyline_ResizeButton" hidden="false">
 				<KeyValues>
-					<KeyValue key="resizableFrame" value="TRP3_NPCDialogFrame" type="global"/>
+					<KeyValue key="resizableFrame" value="Storyline_NPCFrame" type="global"/>
 					<KeyValue key="minWidth" value="700" type="number"/>
 					<KeyValue key="minHeight" value="450" type="number"/>
 				</KeyValues>
@@ -596,7 +598,7 @@
 				</Anchors>
 			</Button>
 
-			<Button name="TRP3_NPCDialogFrameConfigButton" inherits="BrowserButtonTemplate">
+			<Button name="Storyline_NPCFrameConfigButton" inherits="BrowserButtonTemplate">
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="5" y="10"/>
 				</Anchors>
@@ -612,14 +614,14 @@
 				</Layers>
 				<Scripts>
 					<OnClick>
-						ToggleFrame(TRP3_NPCDialogFrameConfig);
+						ToggleFrame(Storyline_NPCFrameConfig);
 					</OnClick>
 				</Scripts>
 			</Button>
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_NPCDialogFrameConfig" parent="TRP3_NPCDialogFrame" hidden="true">
+	<Frame name="Storyline_NPCFrameConfig" parent="Storyline_NPCFrame" hidden="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 			<EdgeSize>
 				<AbsValue val="32"/>
@@ -633,12 +635,12 @@
 		</Backdrop>
 		<Size x="0" y="75"/>
 		<Anchors>
-			<Anchor point="TOPRIGHT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
-			<Anchor point="TOPLEFT" relativeTo="TRP3_NPCDialogFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
+			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
+			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
 		</Anchors>
 		<Layers>
 			<Layer>
-				<FontString name="TRP3_NPCDialogFrameConfigText" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
+				<FontString name="Storyline_NPCFrameConfigText" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
 					<Size x="0" y="20"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-10"/>
@@ -649,10 +651,10 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Slider name="TRP3_NPCDialogFrameConfigSpeedSlider" inherits="TRP3_Slider">
+			<Slider name="Storyline_NPCFrameConfigSpeedSlider" inherits="Storyline_Slider">
 				<Size x="300" y="15"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="TRP3_NPCDialogFrameConfigText" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameConfigText" x="0" y="-10"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
@@ -662,9 +664,9 @@
 					</OnLoad>
 				</Scripts>
 			</Slider>
-			<CheckButton name="TRP3_NPCDialogFrameConfigAutoEquip" parentKey="AutoEquip" inherits="TRP3_CheckBox" checked="true">
+			<CheckButton name="Storyline_NPCFrameConfigAutoEquip" parentKey="AutoEquip" inherits="Storyline_CheckBox" checked="true">
 				<Anchors>
-					<Anchor point="LEFT" x="100" y="0" relativeTo="TRP3_NPCDialogFrameConfigSpeedSlider" relativePoint="RIGHT"/>
+					<Anchor point="LEFT" x="100" y="0" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
 				</Anchors>
 			</CheckButton>
 		</Frames>
@@ -672,7 +674,6 @@
 
 	<Include file="debug.xml"/>
 
-	<Script file="locales.lua"/>
 	<Script file="structures.lua"/>
 	<Script file="utils.lua"/>
 	<Script file="selections.lua"/>

@@ -1,10 +1,10 @@
 ## Interface: 60200
-## Title: Total RP 3: Storyline
+## Title: Storyline
 ## Author: Telkostrasz
 ## Version: beta 3
 ## Notes: Enhanced quest storytelling
 ## URL: http://forums.telkostrasz.be/index.php
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: TRP3_Storyline
+## SavedVariables: Storyline_Data
 ui.xml
