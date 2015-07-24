@@ -4,7 +4,6 @@
 ## Version: beta 3
 ## Notes: Enhanced quest storytelling
 ## URL: http://forums.telkostrasz.be/index.php
-## RequiredDeps: totalRP3
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: TRP3_Storyline

@@ -16,7 +16,10 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+-- Storyline API
+local getId = Storyline_API.lib.generateID;
+
+-- WOW API
 local after, tostring = C_Timer.After, tostring;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -34,7 +37,7 @@ local function getQuestIcon(frequency, isRepeatable, isLegendary)
 		return "Interface\\GossipFrame\\AvailableQuestIcon";
 	end
 end
-TRP3_StorylineAPI.getQuestIcon = getQuestIcon;
+Storyline_API.getQuestIcon = getQuestIcon;
 
 local function getQuestActiveIcon(isComplete)
 	if (isComplete) then
@@ -43,7 +46,7 @@ local function getQuestActiveIcon(isComplete)
 		return "Interface\\GossipFrame\\IncompleteQuestIcon";
 	end
 end
-TRP3_StorylineAPI.getQuestActiveIcon = getQuestActiveIcon;
+Storyline_API.getQuestActiveIcon = getQuestActiveIcon;
 
 local function getQuestTriviality(isTrivial)
 	if isTrivial then
@@ -52,12 +55,12 @@ local function getQuestTriviality(isTrivial)
 		return "";
 	end
 end
-TRP3_StorylineAPI.getQuestTriviality = getQuestTriviality;
+Storyline_API.getQuestTriviality = getQuestTriviality;
 
 local function getQuestLevelColor(questLevel)
 	return 0.9, 0.6, 0;
 end
-TRP3_StorylineAPI.getQuestLevelColor = getQuestLevelColor;
+Storyline_API.getQuestLevelColor = getQuestLevelColor;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SOME ANIMATION
@@ -68,7 +71,7 @@ local TRP3_ANIMATION_SEQUENCE_DURATION = TRP3_ANIMATION_SEQUENCE_DURATION;
 local TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL = TRP3_ANIMATION_SEQUENCE_DURATION_BY_MODEL;
 local TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou = TRP3_NPCDialogFrameModelsMe, TRP3_NPCDialogFrameModelsYou;
 
-function TRP3_StorylineAPI.getAnimationByModel(model, animationType)
+function Storyline_API.getAnimationByModel(model, animationType)
 	if model then
 		if TRP3_ANIM_MAPPING[model] and TRP3_ANIM_MAPPING[model][animationType] then
 			return TRP3_ANIM_MAPPING[model][animationType];
@@ -84,7 +87,7 @@ local function playAnim(model, sequence)
 	end
 end
 
-function TRP3_StorylineAPI.playAnimationDelay(model, sequence, duration, delay, token)
+function Storyline_API.playAnimationDelay(model, sequence, duration, delay, token)
 	if delay == 0 then
 		playAnim(model, sequence)
 	else
@@ -110,10 +113,10 @@ local function getDuration(model, sequence)
 	end
 	return TRP3_ANIMATION_SEQUENCE_DURATION[sequence] or DEFAULT_SEQUENCE_TIME;
 end
-TRP3_StorylineAPI.getDuration = getDuration;
+Storyline_API.getDuration = getDuration;
 
 local function playAndStand(model, sequence, duration)
-	local token = Utils.str.id();
+	local token = getId();
 	model.token = token
 	playAnim(model, sequence);
 	after(duration, function()
@@ -123,7 +126,7 @@ local function playAndStand(model, sequence, duration)
 	end);
 end
 
-function TRP3_StorylineAPI.playSelfAnim(sequence)
+function Storyline_API.playSelfAnim(sequence)
 	playAndStand(TRP3_NPCDialogFrameModelsMe, sequence, getDuration(TRP3_NPCDialogFrameModelsMe:GetModel(), sequence));
 end
 

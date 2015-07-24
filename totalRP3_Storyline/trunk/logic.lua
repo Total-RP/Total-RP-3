@@ -16,13 +16,11 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
--- TRP3 API
-local Utils = TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
-local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-
 -- Storyline API
-local playNext = TRP3_StorylineAPI.playNext;
+local setTooltipForSameFrame, setTooltipAll = Storyline_API.lib.setTooltipForSameFrame, Storyline_API.lib.setTooltipAll;
+local registerHandler = Storyline_API.lib.registerHandler;
+local loc = Storyline_API.locale.getText;
+local playNext = Storyline_API.playNext;
 
 -- WOW API
 local strsplit, pairs = strsplit, pairs;
@@ -62,7 +60,7 @@ local function resetDialog()
 	playNext(TRP3_NPCDialogFrameModelsYou);
 end
 
-function TRP3_StorylineAPI.startDialog(targetType, fullText, event, eventInfo)
+function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	TRP3_NPCDialogFrameDebugText:SetText(event);
 
 	local targetName = UnitName(targetType);
@@ -164,7 +162,9 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onStart()
+Storyline_API.addon = LibStub("AceAddon-3.0"):NewAddon("Storyline", "AceConsole-3.0");
+
+function Storyline_API.addon:OnEnable()
 	ForceGossip = function() return true end
 
 	if not TRP3_Storyline then
@@ -186,13 +186,7 @@ local function onStart()
 		TRP3_Storyline.config.autoEquip = true;
 	end
 
-	-- Register locales
-	for localeID, localeStructure in pairs(TRP3_StorylineAPI.LOCALE) do
-		local locale = TRP3_API.locale.getLocale(localeID);
-		for localeKey, text in pairs(localeStructure) do
-			locale.localeContent[localeKey] = text;
-		end
-	end
+	Storyline_API.locale.init();
 
 	TRP3_NPCDialogFrameBG:SetDesaturated(true);
 	TRP3_NPCDialogFrameChatNext:SetScript("OnClick", function()
@@ -218,13 +212,13 @@ local function onStart()
 	end);
 
 	-- Register events
-	TRP3_StorylineAPI.initEventsStructure();
+	Storyline_API.initEventsStructure();
 
 	-- Closing
-	Utils.event.registerHandler("GOSSIP_CLOSED", function()
+	registerHandler("GOSSIP_CLOSED", function()
 		TRP3_NPCDialogFrame:Hide();
 	end);
-	Utils.event.registerHandler("QUEST_FINISHED", function()
+	registerHandler("QUEST_FINISHED", function()
 		TRP3_NPCDialogFrame:Hide();
 	end);
 
@@ -266,14 +260,11 @@ local function onStart()
 		resizeModels(scale);
 		TRP3_Storyline.debug.scaling[TRP3_NPCDialogFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. TRP3_NPCDialogFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
 	end);
+
 	-- Slash command to reset frames
-	TRP3_API.slash.registerCommand({
-		id = "storyline",
-		helpLine = " show debug frame",
-		handler = function()
-			ToggleFrame(TRP3_NPCDialogFrameDebug);
-		end
-	});
+	Storyline_API.addon:RegisterChatCommand("storyline", function()
+		ToggleFrame(TRP3_NPCDialogFrameDebug);
+	end);
 
 	-- Config
 	setTooltipAll(TRP3_NPCDialogFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
@@ -293,15 +284,4 @@ local function onStart()
 		TRP3_Storyline.config.autoEquip = self:GetChecked() == true;
 	end);
 	TRP3_NPCDialogFrameConfig.AutoEquip:SetChecked(TRP3_Storyline.config.autoEquip);
-end;
-
-local MODULE_STRUCTURE = {
-	["name"] = "Storyline",
-	["description"] = "Enhanced quest storytelling",
-	["version"] = 1.000,
-	["id"] = "trp3_storyline",
-	["onStart"] = onStart,
-	["minVersion"] = 12,
-};
-
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+end

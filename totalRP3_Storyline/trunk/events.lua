@@ -16,28 +16,31 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
--- TRP3 API
-local Utils, Globals = TRP3_API.utils, TRP3_API.globals;
-local loc = TRP3_API.locale.getText;
-local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local TRP3_MainTooltip = TRP3_MainTooltip;
-local log = TRP3_API.utils.log.log;
-
 -- Storyline API
-local playSelfAnim, getDuration, playAnimationDelay = TRP3_StorylineAPI.playSelfAnim, TRP3_StorylineAPI.getDuration, TRP3_StorylineAPI.playAnimationDelay;
-local getQuestIcon, getQuestActiveIcon = TRP3_StorylineAPI.getQuestIcon, TRP3_StorylineAPI.getQuestActiveIcon;
-local getQuestTriviality = TRP3_StorylineAPI.getQuestTriviality;
-local selectMultipleAvailableGreetings = TRP3_StorylineAPI.selectMultipleAvailableGreetings;
-local selectMultipleActiveGreetings = TRP3_StorylineAPI.selectMultipleActiveGreetings;
-local selectMultipleActive = TRP3_StorylineAPI.selectMultipleActive;
-local selectFirstActive = TRP3_StorylineAPI.selectFirstActive;
-local selectMultipleAvailable = TRP3_StorylineAPI.selectMultipleAvailable;
-local selectFirstAvailable = TRP3_StorylineAPI.selectFirstAvailable;
-local selectFirstGossip, selectMultipleGossip = TRP3_StorylineAPI.selectFirstGossip, TRP3_StorylineAPI.selectMultipleGossip;
-local selectMultipleRewards, selectFirstGreetingActive = TRP3_StorylineAPI.selectMultipleRewards, TRP3_StorylineAPI.selectFirstGreetingActive;
-local getAnimationByModel = TRP3_StorylineAPI.getAnimationByModel;
+local configureHoverFrame = Storyline_API.lib.configureHoverFrame;
+local setTooltipForSameFrame, setTooltipAll = Storyline_API.lib.setTooltipForSameFrame, Storyline_API.lib.setTooltipAll;
+local refreshTooltipForFrame = Storyline_RefreshTooltipForFrame;
+local Storyline_MainTooltip = Storyline_MainTooltip;
+local log = Storyline_API.lib.log;
+local registerHandler = Storyline_API.lib.registerHandler;
+local getTextureString, colorCodeFloat = Storyline_API.lib.getTextureString, Storyline_API.lib.colorCodeFloat;
+local getId = Storyline_API.lib.generateID;
+local loc = Storyline_API.locale.getText;
+local playSelfAnim, getDuration, playAnimationDelay = Storyline_API.playSelfAnim, Storyline_API.getDuration, Storyline_API.playAnimationDelay;
+local getQuestIcon, getQuestActiveIcon = Storyline_API.getQuestIcon, Storyline_API.getQuestActiveIcon;
+local getQuestTriviality = Storyline_API.getQuestTriviality;
+local selectMultipleAvailableGreetings = Storyline_API.selectMultipleAvailableGreetings;
+local selectMultipleActiveGreetings = Storyline_API.selectMultipleActiveGreetings;
+local selectMultipleActive = Storyline_API.selectMultipleActive;
+local selectFirstActive = Storyline_API.selectFirstActive;
+local selectMultipleAvailable = Storyline_API.selectMultipleAvailable;
+local selectFirstAvailable = Storyline_API.selectFirstAvailable;
+local selectFirstGossip, selectMultipleGossip = Storyline_API.selectFirstGossip, Storyline_API.selectMultipleGossip;
+local selectMultipleRewards, selectFirstGreetingActive = Storyline_API.selectMultipleRewards, Storyline_API.selectFirstGreetingActive;
+local getAnimationByModel = Storyline_API.getAnimationByModel;
 
 -- WOW API
+local faction, faction_loc = UnitFactionGroup("player");
 local pairs, CreateFrame, wipe, type, tinsert, after, select, huge = pairs, CreateFrame, wipe, type, tinsert, C_Timer.After, select, math.huge;
 local ChatTypeInfo = ChatTypeInfo;
 local UnitIsUnit, UnitExists, DeclineQuest, AcceptQuest = UnitIsUnit, UnitExists, DeclineQuest, AcceptQuest;
@@ -401,9 +404,9 @@ eventHandlers["QUEST_PROGRESS"] = function()
 
 	local questObjectives = getQuestData(GetTitleText());
 	if IsQuestCompletable() then
-		questObjectives = Utils.str.texture("Interface\\RAIDFRAME\\ReadyCheck-Ready", 15) .. " |cff00ff00" .. questObjectives;
+		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-Ready", 15) .. " |cff00ff00" .. questObjectives;
 	else
-		questObjectives = Utils.str.texture("Interface\\RAIDFRAME\\ReadyCheck-NotReady", 15) .. " |cffff0000" .. questObjectives;
+		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-NotReady", 15) .. " |cffff0000" .. questObjectives;
 	end
 	TRP3_NPCDialogFrameObjectivesContent.Objectives:SetText(questObjectives);
 
@@ -506,8 +509,8 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	end
 
 	if GetNumQuestChoices() > 1 then
-		if Globals.player_character.faction and Globals.player_character.faction:len() > 0 then
-			bestIcon = "Interface\\ICONS\\battleground_strongbox_gold_" .. Globals.player_character.faction;
+		if faction and faction:len() > 0 then
+			bestIcon = "Interface\\ICONS\\battleground_strongbox_gold_" .. faction;
 		else
 			bestIcon = "Interface\\ICONS\\achievement_boss_spoils_of_pandaria";
 		end
@@ -576,12 +579,12 @@ local function playText(textIndex, targetModel)
 	local text = TRP3_NPCDialogFrameChat.texts[textIndex];
 	local sound;
 	local delay = 0;
-	local textLineToken = Utils.str.id();
+	local textLineToken = getId();
 
 	TRP3_NPCDialogFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
 
 	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
-		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		local color = colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		local finalText = text:gsub("<", color .. "<");
 		finalText = finalText:gsub(">", ">|r");
 		if not UnitExists("npc") or UnitIsUnit("player", "npc") then
@@ -616,7 +619,7 @@ local function playText(textIndex, targetModel)
 	TRP3_NPCDialogFrameChat:SetHeight(TRP3_NPCDialogFrameChatText:GetHeight() + CHAT_MARGIN + 5);
 end
 
-function TRP3_StorylineAPI.playNext(targetModel)
+function Storyline_API.playNext(targetModel)
 	TRP3_NPCDialogFrameChatNext:Enable();
 	TRP3_NPCDialogFrameChat.currentIndex = TRP3_NPCDialogFrameChat.currentIndex + 1;
 
@@ -646,8 +649,8 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_StorylineAPI.initEventsStructure()
-	local startDialog = TRP3_StorylineAPI.startDialog;
+function Storyline_API.initEventsStructure()
+	local startDialog = Storyline_API.startDialog;
 
 	EVENT_INFO = {
 		["QUEST_GREETING"] = {
@@ -662,9 +665,9 @@ function TRP3_StorylineAPI.initEventsStructure()
 			finishText = loc("SL_CHECK_OBJ"),
 			finishMethod = function()
 				if not TRP3_NPCDialogFrameObjectivesContent:IsVisible() then
-					TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
+					configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
 					setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, nil, nil);
-					TRP3_MainTooltip:Hide();
+					Storyline_MainTooltip:Hide();
 					TRP3_NPCDialogFrameObjectivesYes:Show();
 					TRP3_NPCDialogFrameObjectivesNo:Show();
 					TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_ACCEPTANCE"));
@@ -677,9 +680,9 @@ function TRP3_StorylineAPI.initEventsStructure()
 			text = GetProgressText,
 			finishMethod = function()
 				if not TRP3_NPCDialogFrameObjectivesContent:IsVisible() then
-					TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
+					configureHoverFrame(TRP3_NPCDialogFrameObjectivesContent, TRP3_NPCDialogFrameObjectives, "TOP");
 					setTooltipForSameFrame(TRP3_NPCDialogFrameObjectives, "TOP", 0, 0, nil, nil);
-					TRP3_MainTooltip:Hide();
+					Storyline_MainTooltip:Hide();
 					if IsQuestCompletable() then
 						TRP3_NPCDialogFrameObjectives.OK:Show();
 						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_CONTINUE"));
@@ -704,9 +707,9 @@ function TRP3_StorylineAPI.initEventsStructure()
 			text = GetRewardText,
 			finishMethod = function()
 				if not TRP3_NPCDialogFrameRewards.Content:IsVisible() then
-					TRP3_API.ui.frame.configureHoverFrame(TRP3_NPCDialogFrameRewards.Content, TRP3_NPCDialogFrameRewardsItem, "TOP");
+					configureHoverFrame(TRP3_NPCDialogFrameRewards.Content, TRP3_NPCDialogFrameRewardsItem, "TOP");
 					setTooltipForSameFrame(TRP3_NPCDialogFrameRewardsItem, "TOP", 0, 0);
-					TRP3_MainTooltip:Hide();
+					Storyline_MainTooltip:Hide();
 					if GetNumQuestChoices() > 1 then
 						TRP3_NPCDialogFrameChatNextText:SetText(loc("SL_SELECT_REWARD"));
 						TRP3_NPCDialogFrameChatNext:Disable();
@@ -733,6 +736,8 @@ function TRP3_StorylineAPI.initEventsStructure()
 					TRP3_NPCDialogFrameChatOption1:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption1);
 				elseif GetNumGossipActiveQuests() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
 					TRP3_NPCDialogFrameChatOption2:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption2);
+				elseif GetNumGossipOptions() > 1 and not TRP3_NPCDialogFrameGossipChoices:IsVisible() then
+					TRP3_NPCDialogFrameChatOption3:GetScript("OnClick")(TRP3_NPCDialogFrameChatOption3);
 				else
 					CloseGossip();
 				end
@@ -753,7 +758,7 @@ function TRP3_StorylineAPI.initEventsStructure()
 	};
 
 	for event, info in pairs(EVENT_INFO) do
-		Utils.event.registerHandler(event, function()
+		registerHandler(event, function()
 			startDialog("npc", info.text(), event, info);
 		end);
 	end
@@ -774,12 +779,12 @@ function TRP3_StorylineAPI.initEventsStructure()
 	TRP3_NPCDialogFrameObjectivesYes:SetScript("OnClick", AcceptQuest);
 	TRP3_NPCDialogFrameObjectivesYes:SetScript("OnEnter", function(self)
 		playSelfAnim(185);
-		TRP3_RefreshTooltipForFrame(self);
+		refreshTooltipForFrame(self);
 	end);
 	TRP3_NPCDialogFrameObjectivesNo:SetScript("OnClick", DeclineQuest);
 	TRP3_NPCDialogFrameObjectivesNo:SetScript("OnEnter", function(self)
 		playSelfAnim(186);
-		TRP3_RefreshTooltipForFrame(self);
+		refreshTooltipForFrame(self);
 	end);
 
 	TRP3_NPCDialogFrameObjectives:SetScript("OnClick", function() EVENT_INFO["QUEST_PROGRESS"].finishMethod(); end);

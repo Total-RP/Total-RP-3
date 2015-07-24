@@ -19,6 +19,7 @@
 		limitations under the License.
 	-->
 
+	<Include file="lib\lib.xml"/>
 
 	<!-- Art pieces to hide border seams
 	 	(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
