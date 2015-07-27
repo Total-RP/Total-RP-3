@@ -1,7 +1,7 @@
 ## Interface: 60200
 ## Title: Storyline
 ## Author: Telkostrasz
-## Version: beta 3
+## Version: 1.0
 ## Notes: Enhanced quest storytelling
 ## URL: http://storyline.totalrp3.info/
 ## DefaultState: Enabled

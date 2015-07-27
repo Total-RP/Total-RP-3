@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- Storyline
+--  Storyline
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
@@ -34,8 +34,11 @@ local function getTextureString(iconPath, iconSize)
 end
 Storyline_API.lib.getTextureString = getTextureString;
 
+local debug = false;
 local function log(message)
-	print("[StoryLog] " .. tostring(message));
+	if debug then
+		print("[StoryLog] " .. tostring(message));
+	end
 end
 Storyline_API.lib.log = log;
 

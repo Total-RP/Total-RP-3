@@ -1,8 +1,7 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Storyline module
+--  Storyline
 --	---------------------------------------------------------------------------
---	Copyright 2015 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -388,3 +387,31 @@ Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\a
 
 -- Playable class
 Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\scourge\\male\\scourgemale_hd.m2"] = 15;
+Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\troll\\female\\trollfemale_hd.m2"] = -25;
+Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\tauren\\female\\taurenfemale_hd.m2"] = -35;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Human male
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- Playable class
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\human\\female\\humanfemale_hd.m2"] = 8;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = 40;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = 15;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = -23;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = -54;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = -27;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = 80;
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = -36;
+
+-- NPC
+Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~creature\\jinyu\\jinyu.m2"] = -18;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Goblin female
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- Playable class
+Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\hobgoblin\\hobgoblin.m2"] = -49;
+Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~character\\goblin\\male\\goblinmale.m2"] = -20;
+Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\raptor\\raptorpet.m2"] = 71;
