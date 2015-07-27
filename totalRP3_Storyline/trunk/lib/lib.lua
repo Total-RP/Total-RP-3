@@ -16,7 +16,7 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local date, math, string, assert, strconcat, tostring = date, math, string, assert, strconcat, tostring;
+local date, math, string, assert, strconcat, tostring, _G = date, math, string, assert, strconcat, tostring, _G;
 
 local function generateID()
 	local ID = date("%m%d%H%M%S");
@@ -311,3 +311,146 @@ Storyline_ResizeShadowFrame:SetScript("OnUpdate", function(self)
 	end
 	Storyline_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
 end);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Listbox
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
+local DROPDOWN_FRAME, DropDownList1, CloseDropDownMenus = "Storyline_UIDD", DropDownList1, CloseDropDownMenus;
+local CreateFrame, ToggleDropDownMenu = CreateFrame, ToggleDropDownMenu;
+local dropDownFrame, currentlyOpenedDrop;
+
+local function openDropDown(anchoredFrame, values, callback, space, addCancel)
+	if not dropDownFrame then
+		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
+	end
+
+	if DropDownList1:IsVisible() then
+		CloseDropDownMenus();
+		return;
+	end
+
+	UIDropDownMenu_Initialize(dropDownFrame,
+		function(uiFrame, level, menuList)
+			local levelValues = menuList or values;
+			level = level or 1;
+			for index, tab in pairs(levelValues) do
+				assert(type(tab) == "table", "Level value is not a table !");
+				local text = tab[1];
+				local value = tab[2];
+				local tooltipText = tab[3];
+				local info = UIDropDownMenu_CreateInfo();
+				info.notCheckable = "true";
+				info.text = text;
+				info.isTitle = false;
+				info.tooltipOnButton = tooltipText ~= nil;
+				info.tooltipTitle = text;
+				info.tooltipText = tooltipText;
+				if tab[3] then
+					info.tooltipTitle = tab[1];
+					info.tooltipText = tab[3];
+					info.tooltipOnButton = true;
+				end
+				if type(value) == "table" then
+					info.hasArrow = true;
+					info.keepShownOnClick = true;
+					info.menuList = value;
+				elseif value ~= nil then
+					info.func = function()
+						if callback then
+							callback(value, anchoredFrame);
+						end
+						anchoredFrame:GetParent().selectedValue = value;
+						if level > 1 then
+							ToggleDropDownMenu(nil, nil, dropDownFrame);
+						end
+						currentlyOpenedDrop = nil;
+					end;
+				else
+					info.func = function() end;
+					info.isTitle = true;
+				end
+				UIDropDownMenu_AddButton(info, level);
+			end
+			if menuList == nil and addCancel then
+				local info = UIDropDownMenu_CreateInfo();
+				info.notCheckable = "true";
+				info.text = CANCEL;
+				UIDropDownMenu_AddButton(info, level);
+			end
+
+		end,
+		"MENU"
+	);
+	dropDownFrame:SetParent(anchoredFrame);
+	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
+	PlaySound("igMainMenuOptionCheckBoxOn","SFX");
+	currentlyOpenedDrop = anchoredFrame;
+end
+
+--- Setup a drop down menu for a clickable (Button ...)
+local function setupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
+	hasClickFrame:SetScript("OnClick", function(self, button)
+		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
+		openDropDown(hasClickFrame, values, callback, space, addCancel);
+	end);
+end
+
+local function listBoxSetSelected(self, index)
+	assert(self and self.values, "Badly initialized listbox");
+	assert(self.values[index], "Array index out of bound");
+	_G[self:GetName().."Text"]:SetText(self.values[index][1]);
+	self.selectedValue = self.values[index][2];
+	if self.callback then
+		self.callback(self.values[index][2], self);
+	end
+end
+
+local function listBoxSetSelectedValue(self, value)
+	assert(self and self.values, "Badly initialized listbox");
+	for index, tab in pairs(self.values) do
+		local val = tab[2];
+		if val == value then
+			listBoxSetSelected(self, index);
+			break;
+		end
+	end
+end
+
+local function listBoxGetValue(self)
+	return self.selectedValue;
+end
+
+-- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
+function Storyline_API.lib.setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel)
+	assert(listBox and values, "Invalid arguments");
+	assert(_G[listBox:GetName().."Button"], "Invalid arguments: listbox doesn't have a button");
+	boxWidth = boxWidth or 115;
+	listBox.values = values;
+	listBox.callback = callback;
+	local listCallback = function(value)
+		for index, tab in pairs(values) do
+			local text = tab[1];
+			local val = tab[2];
+			if val == value then
+				_G[listBox:GetName().."Text"]:SetText(text);
+			end
+		end
+		if callback then
+			callback(value, listBox);
+		end
+	end;
+
+	setupDropDownMenu(_G[listBox:GetName().."Button"], values, listCallback, boxWidth, addCancel, false);
+
+	listBox.SetSelectedIndex = listBoxSetSelected;
+	listBox.GetSelectedValue = listBoxGetValue;
+	listBox.SetSelectedValue = listBoxSetSelectedValue;
+
+	if defaultText then
+		_G[listBox:GetName().."Text"]:SetText(defaultText);
+	end
+	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
+	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
+end

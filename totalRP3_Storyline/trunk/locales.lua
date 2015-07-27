@@ -45,7 +45,7 @@ Storyline_API.locale = {
 			SL_GET_REWARD = "Get your reward",
 			SL_SELECT_REWARD = "Select your reward",
 			SL_CONFIG = "Parameters",
-			SL_CONFIG_TEXTSPEED = "Text speed: %.1fx",
+			SL_CONFIG_TEXTSPEED = "Text anim speed: %.1fx",
 			SL_CONFIG_TEXTSPEED_INSTANT = "No anim",
 			SL_CONFIG_TEXTSPEED_HIGH = "High",
 			SL_CONFIG_AUTOEQUIP = "Auto equip reward (experimental)",
@@ -77,6 +77,14 @@ Storyline_API.locale = {
 			SL_REWARD_MORE_SUB = "\nArgent: |cffffffff%s|r\nExpérience: |cffffffff%s xp|r\n\n|cffffff00Clic:|r Prenez votre récompense !",
 			SL_GET_REWARD = "Prenez votre récompense",
 			SL_SELECT_REWARD = "Choisissez votre récompense",
+			SL_CONFIG = "Configuration",
+			SL_CONFIG_TEXTSPEED = "Vitesse de défilement du texte: %.1fx",
+			SL_CONFIG_TEXTSPEED_INSTANT = "Pas de défilement",
+			SL_CONFIG_TEXTSPEED_HIGH = "Rapide",
+			SL_CONFIG_AUTOEQUIP = "Équipement automatique (expérimental)",
+			SL_CONFIG_AUTOEQUIP_TT = "Équipe automatiquement les récompense si elles ont un meilleur niveau d'équipement.",
+			SL_RESIZE = "Redimensionner",
+			SL_RESIZE_TT = "Cliquer-glisser pour redimensionner",
 		}
 	},
 }

@@ -652,7 +652,7 @@
 		</Layers>
 		<Frames>
 			<Slider name="Storyline_NPCFrameConfigSpeedSlider" inherits="Storyline_Slider">
-				<Size x="300" y="15"/>
+				<Size x="250" y="15"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameConfigText" x="0" y="-10"/>
 				</Anchors>
@@ -669,6 +669,19 @@
 					<Anchor point="LEFT" x="100" y="0" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
 				</Anchors>
 			</CheckButton>
+			<Frame name="Storyline_NPCFrameConfigLocale" inherits="UIDropDownMenuTemplate" enableMouse="true">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="Storyline_NPCFrameConfigAutoEquip" x="300" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter>
+						Storyline_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						Storyline_MainTooltip:Hide();
+					</OnLeave>
+				</Scripts>
+			</Frame>
 		</Frames>
 	</Frame>
 

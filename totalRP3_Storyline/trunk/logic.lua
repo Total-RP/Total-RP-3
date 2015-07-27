@@ -281,4 +281,13 @@ function Storyline_API.addon:OnEnable()
 		Storyline_Data.config.autoEquip = self:GetChecked() == true;
 	end);
 	Storyline_NPCFrameConfig.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
+	local localeTab = {
+		{"English", "enUS"},
+		{"Français", "frFR"},
+	};
+	Storyline_API.lib.setupListBox(Storyline_NPCFrameConfigLocale, localeTab, function(locale)
+		Storyline_Data.config.locale = locale;
+		ReloadUI();
+	end, nil, 100, true);
+	Storyline_NPCFrameConfigLocale:SetSelectedValue(Storyline_Data.config.locale or "enUS");
 end
