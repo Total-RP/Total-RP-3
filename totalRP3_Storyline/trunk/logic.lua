@@ -285,9 +285,13 @@ function Storyline_API.addon:OnEnable()
 		{"English", "enUS"},
 		{"Français", "frFR"},
 	};
+	local init = true;
 	Storyline_API.lib.setupListBox(Storyline_NPCFrameConfigLocale, localeTab, function(locale)
 		Storyline_Data.config.locale = locale;
-		ReloadUI();
+		if not init then
+			ReloadUI();
+		end
 	end, nil, 100, true);
 	Storyline_NPCFrameConfigLocale:SetSelectedValue(Storyline_Data.config.locale or "enUS");
+	init = false;
 end
