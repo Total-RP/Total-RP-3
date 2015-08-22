@@ -769,6 +769,7 @@ function Storyline_API.initEventsStructure()
 	questButton:SetPoint("TOP");
 	questButton:SetScript("OnClick", function()
 		local questDescription = GetQuestLogQuestText();
+		startDialog("none", questDescription, "REPLAY", EVENT_INFO["REPLAY"]);
 	end);
 
 	-- UI
