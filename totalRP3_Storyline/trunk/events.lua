@@ -72,6 +72,7 @@ local Storyline_NPCFrameGossipChoices = Storyline_NPCFrameGossipChoices;
 -- Constants
 local OPTIONS_MARGIN, OPTIONS_TOP = 175, -175;
 local CHAT_MARGIN = 70;
+local GOSSIP_DELAY = 0.2;
 local gossipColor = "|cffffffff";
 local EVENT_INFO;
 local eventHandlers = {};
@@ -759,7 +760,18 @@ function Storyline_API.initEventsStructure()
 
 	for event, info in pairs(EVENT_INFO) do
 		registerHandler(event, function()
-			startDialog("npc", info.text(), event, info);
+			if not Storyline_Data.config.forceGossip and event == "GOSSIP_SHOW" then
+				if Storyline_Data.config.hideOriginalFrames then
+					Storyline_API.hideOriginalFrames();
+				end
+				after(GOSSIP_DELAY, function()
+					if GossipFrame:IsVisible() then
+						startDialog("npc", info.text(), event, info);
+					end
+				end);
+			else
+				startDialog("npc", info.text(), event, info);
+			end
 		end);
 	end
 

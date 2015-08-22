@@ -36,6 +36,7 @@ local getQuestIcon, getQuestActiveIcon = Storyline_API.getQuestIcon, Storyline_A
 local getQuestTriviality = Storyline_API.getQuestTriviality;
 
 local selectionStrings = {};
+local LINE_SPACING = 30;
 
 local function getSelectionFontString(placeOn)
 	local available;
@@ -53,7 +54,7 @@ local function getSelectionFontString(placeOn)
 	available:ClearAllPoints();
 	available:SetPoint("LEFT", 10, 0);
 	available:SetPoint("RIGHT", -10, 0);
-	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -5);
+	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -10);
 	return available;
 end
 
@@ -77,7 +78,7 @@ function Storyline_API.selectMultipleGossip(button)
 		previous:SetScript("OnClick", function(self)
 			SelectGossipOption(i);
 		end);
-		height = height + 25;
+		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
@@ -89,6 +90,7 @@ end
 function Storyline_API.selectFirstGreetingAvailable()
 	SelectAvailableQuest(1);
 end
+
 function Storyline_API.selectFirstGreetingActive()
 	SelectActiveQuest(1);
 end
@@ -110,7 +112,7 @@ function Storyline_API.selectMultipleAvailable(button)
 		previous:SetScript("OnClick", function(self)
 			SelectGossipAvailableQuest(i);
 		end);
-		height = height + 25;
+		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
@@ -135,7 +137,7 @@ function Storyline_API.selectMultipleActive(button)
 		previous:SetScript("OnClick", function(self)
 			SelectGossipActiveQuest(i);
 		end);
-		height = height + 25;
+		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
@@ -156,7 +158,7 @@ function Storyline_API.selectMultipleActiveGreetings(button)
 		previous:SetScript("OnClick", function(self)
 			SelectActiveQuest(i);
 		end);
-		height = height + 25;
+		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
@@ -180,7 +182,7 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 		previous:SetScript("OnClick", function(self)
 			SelectAvailableQuest(i);
 		end);
-		height = height + 25;
+		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
 end
