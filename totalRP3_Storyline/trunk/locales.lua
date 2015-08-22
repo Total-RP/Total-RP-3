@@ -50,6 +50,10 @@ Storyline_API.locale = {
 			SL_CONFIG_TEXTSPEED_HIGH = "High",
 			SL_CONFIG_AUTOEQUIP = "Auto equip reward (experimental)",
 			SL_CONFIG_AUTOEQUIP_TT = "Auto equip rewards if it has a better item lvl.",
+			SL_CONFIG_FORCEGOSSIP = "Force gossip text",
+			SL_CONFIG_FORCEGOSSIP_TT = "Force flavor gossip text on NPCs like merchants or fly masters.",
+			SL_CONFIG_HIDEORIGINALFRAMES = "Hide original frames",
+			SL_CONFIG_HIDEORIGINALFRAMES_TT = "Hide the original frames (quest and NPC dialogs) so that only Storyline is visible on the screen.",
 			SL_RESIZE = "Resize",
 			SL_RESIZE_TT = "Drag and drop to resize",
 		}
@@ -83,6 +87,10 @@ Storyline_API.locale = {
 			SL_CONFIG_TEXTSPEED_HIGH = "Rapide",
 			SL_CONFIG_AUTOEQUIP = "Équipement automatique (expérimental)",
 			SL_CONFIG_AUTOEQUIP_TT = "Équipe automatiquement les récompense si elles ont un meilleur niveau d'équipement.",
+			SL_CONFIG_FORCEGOSSIP = "Forcer les textes des PNJs",
+			SL_CONFIG_FORCEGOSSIP_TT = "Forcer l'affichage des textes des PNJs normalement masqués, comme les marchands ou les maîtres de vol.",
+			SL_CONFIG_HIDEORIGINALFRAMES = "Cacher les fenêtres originales",
+			SL_CONFIG_HIDEORIGINALFRAMES_TT = "Cacher les fenêtres originales du jeu (quêtes et dialogues de PNJs) pour qu'il n'y ait que Storyline de visible à l'écran.",
 			SL_RESIZE = "Redimensionner",
 			SL_RESIZE_TT = "Cliquer-glisser pour redimensionner",
 		}

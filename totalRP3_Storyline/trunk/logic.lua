@@ -60,8 +60,27 @@ local function resetDialog()
 	playNext(Storyline_NPCFrameModelsYou);
 end
 
+local _, _, screenWidth, screenHeight = WorldFrame:GetBoundsRect();
+
+local function hideOriginalFrames()
+	GossipFrame:ClearAllPoints();
+	GossipFrame:SetPoint("TOPLEFT", screenWidth, screenHeight);
+	QuestFrame:ClearAllPoints();
+	QuestFrame:SetPoint("TOPLEFT", screenWidth, screenHeight);
+end
+
+local function showOriginalFrames()
+	GossipFrame:ClearAllPoints();
+	GossipFrame:SetPoint("TOPLEFT", 16, -116);
+	QuestFrame:ClearAllPoints();
+	QuestFrame:SetPoint("TOPLEFT", 16, -116);
+end
+
 function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameDebugText:SetText(event);
+	if Storyline_Data.config.hideOriginalFrames then
+		hideOriginalFrames();
+	end
 
 	local targetName = UnitName(targetType);
 
@@ -165,7 +184,6 @@ end
 Storyline_API.addon = LibStub("AceAddon-3.0"):NewAddon("Storyline", "AceConsole-3.0");
 
 function Storyline_API.addon:OnEnable()
-	ForceGossip = function() return true end
 
 	if not Storyline_Data then
 		Storyline_Data = {};
@@ -182,6 +200,8 @@ function Storyline_API.addon:OnEnable()
 	if not Storyline_Data.config then
 		Storyline_Data.config = {};
 	end
+
+	ForceGossip = function() return Storyline_Data.config.forceGossip == true end
 
 	Storyline_API.locale.init();
 
@@ -281,6 +301,26 @@ function Storyline_API.addon:OnEnable()
 		Storyline_Data.config.autoEquip = self:GetChecked() == true;
 	end);
 	Storyline_NPCFrameConfig.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
+
+	Storyline_NPCFrameConfig.ForceGossip.Text:SetText(loc("SL_CONFIG_FORCEGOSSIP"));
+	setTooltipForSameFrame(Storyline_NPCFrameConfig.ForceGossip, "RIGHT", 0, 0, loc("SL_CONFIG_FORCEGOSSIP"), loc("SL_CONFIG_FORCEGOSSIP_TT"));
+	Storyline_NPCFrameConfig.ForceGossip:SetScript("OnClick", function(self)
+		Storyline_Data.config.forceGossip = self:GetChecked() == true;
+	end);
+	Storyline_NPCFrameConfig.ForceGossip:SetChecked(Storyline_Data.config.forceGossip);
+
+	Storyline_NPCFrameConfig.HideOriginalFrames.Text:SetText(loc("SL_CONFIG_HIDEORIGINALFRAMES"));
+	setTooltipForSameFrame(Storyline_NPCFrameConfig.HideOriginalFrames, "RIGHT", 0, 0, loc("SL_CONFIG_HIDEORIGINALFRAMES"), loc("SL_CONFIG_HIDEORIGINALFRAMES_TT"));
+	Storyline_NPCFrameConfig.HideOriginalFrames:SetScript("OnClick", function(self)
+		Storyline_Data.config.hideOriginalFrames = self:GetChecked() == true;
+		if Storyline_Data.config.hideOriginalFrames then
+			hideOriginalFrames()
+		else
+			showOriginalFrames()
+		end
+	end);
+	Storyline_NPCFrameConfig.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
+
 	local localeTab = {
 		{"English", "enUS"},
 		{"Français", "frFR"},

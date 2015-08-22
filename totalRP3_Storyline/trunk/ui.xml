@@ -472,6 +472,9 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
+					<!--
+					 TODO Use cinematicModels instead of PlayerModels
+					 -->
 					<PlayerModel name="Storyline_NPCFrameModelsMe" frameLevel="2">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="0"/>
@@ -633,7 +636,7 @@
 				<AbsInset left="5" right="5" top="5" bottom="5"/>
 			</BackgroundInsets>
 		</Backdrop>
-		<Size x="0" y="75"/>
+		<Size x="0" y="150"/>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
 			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
@@ -669,9 +672,19 @@
 					<Anchor point="LEFT" x="100" y="0" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
 				</Anchors>
 			</CheckButton>
+			<CheckButton name="Storyline_NPCFrameConfigForceGossip" parentKey="ForceGossip" inherits="Storyline_CheckBox" checked="true">
+				<Anchors>
+					<Anchor point="LEFT" x="100" y="-30" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="Storyline_NPCFrameConfigHideOriginalFrames" parentKey="HideOriginalFrames" inherits="Storyline_CheckBox" checked="true">
+				<Anchors>
+					<Anchor point="LEFT" x="100" y="-60" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
+				</Anchors>
+			</CheckButton>
 			<Frame name="Storyline_NPCFrameConfigLocale" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="Storyline_NPCFrameConfigAutoEquip" x="250" y="0"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameConfigSpeedSlider" x="-20" y="-20"/>
 				</Anchors>
 				<Scripts>
 					<OnEnter>
