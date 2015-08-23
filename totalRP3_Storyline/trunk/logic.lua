@@ -83,6 +83,15 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 		hideOriginalFrames();
 	end
 
+
+	local guid = UnitGUID(targetType);
+	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-",guid);
+	-- Dirty if to fix the flavor text appearing on naval mission table because Blizzard…
+	if npc_id == "94399" then
+		SelectGossipOption(1);
+		return;
+	end
+
 	local targetName = UnitName(targetType);
 
 	if targetName and targetName:len() > 0 and targetName ~= UNKNOWN then

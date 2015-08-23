@@ -54,6 +54,8 @@ Storyline_API.locale = {
 			SL_CONFIG_FORCEGOSSIP_TT = "Show flavor texts on NPCs like merchants or fly masters.",
 			SL_CONFIG_HIDEORIGINALFRAMES = "Hide original frames",
 			SL_CONFIG_HIDEORIGINALFRAMES_TT = "Hide the original quest frame and NPC dialogs frame.",
+			SL_CONFIG_LOCKFRAME = "Lock frame",
+			SL_CONFIG_LOCKFRAME_TT = "Lock Storyline frame so it cannot be move by mistake.",
 			SL_RESIZE = "Resize",
 			SL_RESIZE_TT = "Drag and drop to resize",
 		}
