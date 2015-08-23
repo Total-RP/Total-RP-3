@@ -705,6 +705,11 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		end
 		previousForChoice = button;
 	end
+	if #displayBuilder == 0 then
+		Storyline_NPCFrameRewards.Content.RewardText1:Hide();
+	else
+		Storyline_NPCFrameRewards.Content.RewardText1:Show();
+	end
 	contentHeight = contentHeight + gridHeight;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
