@@ -26,6 +26,7 @@ local registerHandler = Storyline_API.lib.registerHandler;
 local getTextureString, colorCodeFloat = Storyline_API.lib.getTextureString, Storyline_API.lib.colorCodeFloat;
 local getId = Storyline_API.lib.generateID;
 local loc = Storyline_API.locale.getText;
+local format = format;
 local playSelfAnim, getDuration, playAnimationDelay = Storyline_API.playSelfAnim, Storyline_API.getDuration, Storyline_API.playAnimationDelay;
 local getQuestIcon, getQuestActiveIcon = Storyline_API.getQuestIcon, Storyline_API.getQuestActiveIcon;
 local getQuestTriviality = Storyline_API.getQuestTriviality;
@@ -50,13 +51,15 @@ local GetQuestLogQuestText, GetGossipAvailableQuests, GetGossipActiveQuests = Ge
 local GetNumGossipOptions, GetNumGossipAvailableQuests, GetNumGossipActiveQuests = GetNumGossipOptions, GetNumGossipAvailableQuests, GetNumGossipActiveQuests;
 local GetQuestItemInfo, GetNumQuestItems, GetGossipOptions = GetQuestItemInfo, GetNumQuestItems, GetGossipOptions;
 local GetObjectiveText, GetCoinTextureString, GetRewardXP = GetObjectiveText, GetCoinTextureString, GetRewardXP;
-local GetQuestItemLink, GetNumQuestRewards, GetRewardMoney = GetQuestItemLink, GetNumQuestRewards, GetRewardMoney;
+local GetQuestItemLink, GetNumQuestRewards, GetRewardMoney, GetNumRewardCurrencies = GetQuestItemLink, GetNumQuestRewards, GetRewardMoney, GetNumQuestLogRewardCurrencies;
+local GetRewardSkillPoints = GetQuestLogRewardSkillPoints;
 local GetAvailableQuestInfo, GetNumAvailableQuests, GetNumActiveQuests = GetAvailableQuestInfo, GetNumAvailableQuests, GetNumActiveQuests;
 local GetAvailableTitle, GetActiveTitle, CloseGossip = GetAvailableTitle, GetActiveTitle, CloseGossip;
 local GetProgressText, GetTitleText, GetGreetingText = GetProgressText, GetTitleText, GetGreetingText;
 local GetGossipText, GetRewardText, GetQuestText = GetGossipText, GetRewardText, GetQuestText;
 local GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName = GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName;
 local InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink = InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink;
+local GetQuestLogRewardCurrencyInfo, GetMaxRewardCurrencies, GetQuestLogRewardTitle = GetQuestLogRewardCurrencyInfo, GetMaxRewardCurrencies, GetQuestLogRewardTitle;
 
 -- UI
 local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
@@ -76,6 +79,7 @@ local GOSSIP_DELAY = 0.2;
 local gossipColor = "|cffffffff";
 local EVENT_INFO;
 local eventHandlers = {};
+local BONUS_SKILLPOINTS = BONUS_SKILLPOINTS;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Auto equip part, greatly inspired by AutoTurnIn by Alex Shubert (alex.shubert@gmail.com)
@@ -468,6 +472,36 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		end
 		reward1Text = (reward1Text or "") .. moneyString
 	end
+	local currency = GetNumRewardCurrencies();
+	if currency > 0 then
+		for i = 1, GetMaxRewardCurrencies(), 1 do -- Some quest reward several currencies
+			local name, texture, numItems = GetQuestLogRewardCurrencyInfo(i);
+			if (name and texture and numItems) then
+				contentHeight = contentHeight + 18;
+				if reward1Text then
+					reward1Text = reward1Text .. "\n";
+				end
+				reward1Text = (reward1Text or "") .. numItems .. " " .. "|T" .. texture .. ":15:15|t " .. name;
+			end
+		end
+	end
+	local skillName, skillIcon, skillPoints = GetRewardSkillPoints();
+	if skillPoints then
+		contentHeight = contentHeight + 18;
+		if reward1Text then
+			reward1Text = reward1Text .. "\n";
+		end
+		reward1Text = (reward1Text or "") .. "+" .. skillPoints .. " " .. "|T" .. skillIcon .. ":15:15|t " .. format(BONUS_SKILLPOINTS, skillName);
+	end
+	local playerTitle = GetQuestLogRewardTitle();
+	if playerTitle then
+		contentHeight = contentHeight + 18;
+		if reward1Text then
+			reward1Text = reward1Text .. "\n";
+		end
+		reward1Text = (reward1Text or "") .. playerTitle;
+	end
+
 	Storyline_NPCFrameRewards.Content.RewardText1Value:SetText(reward1Text);
 
 	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1Value;
