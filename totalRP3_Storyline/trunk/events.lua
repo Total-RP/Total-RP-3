@@ -61,6 +61,7 @@ local GetItemInfo, GetContainerNumSlots, GetContainerItemLink, EquipItemByName =
 local InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink = InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink;
 local GetQuestCurrencyInfo, GetMaxRewardCurrencies, GetRewardTitle = GetQuestCurrencyInfo, GetMaxRewardCurrencies, GetRewardTitle;
 local GarrisonFollowerPortrait_Set, GetFollowerInfo = GarrisonFollowerPortrait_Set, C_Garrison.GetFollowerInfo;
+local GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies = GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies;
 
 -- UI
 local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
@@ -82,6 +83,7 @@ local EVENT_INFO;
 local eventHandlers = {};
 local BONUS_SKILLPOINTS = BONUS_SKILLPOINTS;
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS;
+local REQUIRED_MONEY = REQUIRED_MONEY;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Auto equip part, greatly inspired by AutoTurnIn by Alex Shubert (alex.shubert@gmail.com)
@@ -321,6 +323,7 @@ local function decorateCurrencyButton(button, index, type, texture, name, numIte
 	button.index = index;
 	button.type = type;
 	button.Icon:SetTexture(texture);
+	button.Icon:SetVertexColor(1, 1, 1);
 	button.Name:SetText(name);
 	button.Count:SetText(numItems > 1 and numItems or "");
 	button:SetScript("OnEnter", function(self)
@@ -330,10 +333,15 @@ local function decorateCurrencyButton(button, index, type, texture, name, numIte
 	button:SetScript("OnClick", nil);
 end
 
-local function decorateStandardButton(button, texture, name, tt, ttsub)
+local function decorateStandardButton(button, texture, name, tt, ttsub, isNotUsable)
 	button.Icon:SetTexture(texture);
 	button.Name:SetText(name);
 	button.Count:SetText("");
+	if isNotUsable then
+		button.Icon:SetVertexColor(1, 0, 0);
+	else
+		button.Icon:SetVertexColor(1, 1, 1);
+	end
 	button:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 		GameTooltip:AddLine("|cffffffff" .. tt);
@@ -347,6 +355,7 @@ end
 
 local function decorateSkillPointButton(button, texture, name, count, tt, ttsub)
 	button.Icon:SetTexture(texture);
+	button.Icon:SetVertexColor(1, 1, 1);
 	button.Name:SetText(name);
 	button.Count:SetText(count > 1 and count or "");
 	button:SetScript("OnEnter", function(self)
@@ -510,9 +519,9 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
 
 	local questObjectives = getQuestData(GetTitleText());
-	if IsQuestCompletable() then
+	if IsQuestCompletable() and questObjectives:len() > 0 then
 		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-Ready", 15) .. " |cff00ff00" .. questObjectives;
-	else
+	elseif questObjectives:len() > 0 then
 		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-NotReady", 15) .. " |cffff0000" .. questObjectives;
 	end
 	Storyline_NPCFrameObjectivesContent.Objectives:SetText(questObjectives);
@@ -521,18 +530,36 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	-- Item reward
 	local contentHeight = 0;
 
-	if GetNumQuestItems() > 0 then
+	if GetNumQuestItems() > 0 or GetNumQuestCurrencies() > 0 or GetQuestMoneyToGet() > 0 then
 		Storyline_NPCFrameObjectivesContent.RequiredItemText:Show();
-		local _, icon = GetQuestItemInfo("required", 1);
-		Storyline_NPCFrameObjectivesImage:SetTexture(icon);
+		local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Prepare display structure
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		wipe(displayBuilder);
+
+		local money = GetQuestMoneyToGet();
+		if money > 0 then
+			bestIcon = "Interface\\ICONS\\inv_misc_coin_03";
+			if money < 100 then
+				bestIcon = "Interface\\ICONS\\inv_misc_coin_05";
+			elseif money > 9999 then
+				bestIcon = "Interface\\ICONS\\inv_misc_coin_01";
+			end
+			local moneyString = GetCoinTextureString(money);
+			tinsert(displayBuilder, {
+				text = moneyString,
+				icon = bestIcon,
+				tooltipTitle = REQUIRED_MONEY .. " " ..moneyString,
+				isNotUsable = money > GetMoney()
+			});
+		end
+
 		for i = 1, GetNumQuestItems() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
+			bestIcon = texture;
 			tinsert(displayBuilder, {
 				text = name,
 				icon = texture,
@@ -544,6 +571,21 @@ eventHandlers["QUEST_PROGRESS"] = function()
 			});
 		end
 
+		for i = 1, GetNumQuestCurrencies() do
+			local name, texture, numItems = GetQuestCurrencyInfo("required", i);
+			bestIcon = texture;
+			tinsert(displayBuilder, {
+				text = name,
+				icon = texture,
+				count = numItems,
+				index = i,
+				type = "currency",
+				rewardType = "required",
+			});
+		end
+
+		Storyline_NPCFrameObjectivesImage:SetTexture(bestIcon);
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Displays structure content
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -552,7 +594,13 @@ eventHandlers["QUEST_PROGRESS"] = function()
 		for index, buttonInfo in pairs(displayBuilder) do
 			local button = getQuestButton(Storyline_NPCFrameObjectivesContent);
 			placeOnGrid(button, Storyline_NPCFrameObjectivesContent.RequiredItemText);
-			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+			if buttonInfo.type == "currency" then
+				decorateCurrencyButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count);
+			elseif buttonInfo.type == "item" then
+				decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+			else
+				decorateStandardButton(button, buttonInfo.icon, buttonInfo.text, buttonInfo.tooltipTitle, buttonInfo.tooltipSub, buttonInfo.isNotUsable);
+			end
 		end
 		contentHeight = contentHeight + gridHeight;
 		contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
