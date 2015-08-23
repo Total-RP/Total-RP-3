@@ -196,6 +196,22 @@ end
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local function getQuestData(qTitle)
+	for questIndex=1, GetNumQuestLogEntries() do
+		local questTitle, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questIndex);
+		if questTitle == qTitle then
+			SelectQuestLogEntry(questIndex);
+			local questDescription, questObjectives = GetQuestLogQuestText();
+			return questObjectives or "";
+		end
+	end
+	return "";
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Grid system
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 local placeItemOnTheLeft = true;
 local gridHeight, gridCount;
 local previousElementOnTheLeft;
@@ -222,18 +238,6 @@ local function resetGrid()
 	gridCount = 0;
 end
 
-local function getQuestData(qTitle)
-	for questIndex=1, GetNumQuestLogEntries() do
-		local questTitle, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questIndex);
-		if questTitle == qTitle then
-			SelectQuestLogEntry(questIndex);
-			local questDescription, questObjectives = GetQuestLogQuestText();
-			return questObjectives or "";
-		end
-	end
-	return "";
-end
-
 local itemButtons = {};
 local function getQuestButton(parentFrame)
 	local available;
@@ -255,42 +259,6 @@ local function getQuestButton(parentFrame)
 	return available;
 end
 
-local function placeItemButton(frame, placeOn, position, first)
-	local available;
-	for _, button in pairs(itemButtons) do
-		if not button:IsShown() then
-			available = button;
-			break;
-		end
-	end
-	if not available then
-		available = CreateFrame("Button", "Storyline_ItemButton" .. #itemButtons, nil, "LargeItemButtonTemplate");
-		available:SetScript("OnLeave", function(self)
-			GameTooltip:Hide();
-		end);
-		available:SetScript("OnClick", function(self)
-			local itemLink = GetQuestItemLink(self.type, self.index);
-			if not HandleModifiedItemClick(itemLink) and self.type == "choice" then
-				GetQuestReward(self.index);
-				autoEquip(itemLink);
-				autoEquipAllReward();
-			end
-		end);
-		tinsert(itemButtons, available);
-	end
-	available:Show();
-	available:SetParent(frame);
-	available:ClearAllPoints();
-	if position == "TOPLEFT" then
-		available:SetPoint("TOPLEFT", placeOn, "BOTTOMLEFT", first and 0 or -157, -5);
-	else
-		available:SetPoint("TOPLEFT", placeOn, "TOPRIGHT", 10, 0);
-	end
---	local heightToAdd = placeOnGrid(available, placeOn);
-
-	return available, 0;
-end
-
 local function decorateItemButton(button, index, type, texture, name, numItems, isUsable)
 	numItems = numItems or 0;
 	button.index = index;
@@ -298,9 +266,7 @@ local function decorateItemButton(button, index, type, texture, name, numItems, 
 	button.Icon:SetTexture(texture);
 	button.Name:SetText(name);
 	button.Count:SetText(numItems > 1 and numItems or "");
-	if isUsable then
-		button.Icon:SetVertexColor(1, 1, 1);
-	else
+	if not isUsable then
 		button.Icon:SetVertexColor(1, 0, 0);
 	end
 	button:SetScript("OnEnter", function(self)
@@ -323,7 +289,6 @@ local function decorateCurrencyButton(button, index, type, texture, name, numIte
 	button.index = index;
 	button.type = type;
 	button.Icon:SetTexture(texture);
-	button.Icon:SetVertexColor(1, 1, 1);
 	button.Name:SetText(name);
 	button.Count:SetText(numItems > 1 and numItems or "");
 	button:SetScript("OnEnter", function(self)
@@ -339,8 +304,6 @@ local function decorateStandardButton(button, texture, name, tt, ttsub, isNotUsa
 	button.Count:SetText("");
 	if isNotUsable then
 		button.Icon:SetVertexColor(1, 0, 0);
-	else
-		button.Icon:SetVertexColor(1, 1, 1);
 	end
 	button:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -355,7 +318,6 @@ end
 
 local function decorateSkillPointButton(button, texture, name, count, tt, ttsub)
 	button.Icon:SetTexture(texture);
-	button.Icon:SetVertexColor(1, 1, 1);
 	button.Name:SetText(name);
 	button.Count:SetText(count > 1 and count or "");
 	button:SetScript("OnEnter", function(self)
@@ -782,16 +744,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 
 	end
 
---	local reward1Text;
---	local texture, name, isTradeskillSpell, isSpellLearned, hideSpellLearnText, isBoostSpell, garrFollowerID = GetRewardSpell();
---	local spellReward = texture and (not isBoostSpell or IsCharacterNewlyBoosted()) and (not garrFollowerID or not C_Garrison.IsFollowerCollected(garrFollowerID));
---
---	Storyline_NPCFrameRewards.Content.RewardText1:SetPoint("TOP", Storyline_NPCFrameRewards.Content.Title, "BOTTOM", 0, -5);
---	Storyline_NPCFrameRewards.Content.RewardText1Value:SetText(reward1Text);
---	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1Value;
-
---	local anchor = "TOPLEFT";
---
 --	if skillPoints then
 --		Storyline_NPCFrameRewards.Content.SkillPointFrame.Icon:SetTexture(skillIcon);
 --		if skillName then
@@ -860,6 +812,7 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	-- Options
 	for _, button in pairs(itemButtons) do
 		button:Hide();
+		button.Icon:SetVertexColor(1, 1, 1);
 	end
 	Storyline_NPCFrameGossipChoices:Hide();
 	Storyline_NPCFrameRewards:Hide();
