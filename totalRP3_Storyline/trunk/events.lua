@@ -325,6 +325,8 @@ local function decorateSkillPointButton(button, texture, name, count, tt, ttsub)
 		GameTooltip:AddLine("|cffffffff" .. tt);
 		GameTooltip:Show();
 	end);
+	-- TODO skill point nice circle
+	-- Storyline_NPCFrameRewards.Content.SkillPointFrame.ValueText:SetText(skillPoints);
 	button:SetScript("OnClick", nil);
 end
 
@@ -688,7 +690,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local contentHeight = 20;
-	local previousForChoice;
+	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1;
 
 	resetGrid();
 	for index, buttonInfo in pairs(displayBuilder) do
@@ -745,68 +747,57 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		for index, buttonInfo in pairs(displayBuilder) do
 			local button = getQuestButton(Storyline_NPCFrameRewards.Content);
 			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+			previousForChoice = button;
 		end
 
 	end
 
---	if skillPoints then
---		Storyline_NPCFrameRewards.Content.SkillPointFrame.Icon:SetTexture(skillIcon);
---		if skillName then
---			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetFormattedText(BONUS_SKILLPOINTS, skillName);
---			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = format(BONUS_SKILLPOINTS_TOOLTIP, skillPoints, skillName);
---		else
---			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = nil;
---			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetText("");
---		end
---		Storyline_NPCFrameRewards.Content.SkillPointFrame.ValueText:SetText(skillPoints);
---		local heightToAdd = placeOnGrid(Storyline_NPCFrameRewards.Content.SkillPointFrame, previousForChoice);
---		previousForChoice = Storyline_NPCFrameRewards.Content.SkillPointFrame;
---		contentHeight = contentHeight + heightToAdd;
---	end
---
---	if spellReward then
---
---		if isTradeskillSpell then
---			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_TRADESKILL_SPELL);
---		elseif isBoostSpell then
---			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_ABILITY);
---		elseif garrFollowerID then
---			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_FOLLOWER);
---		elseif not isSpellLearned then
---			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_AURA);
---		else
---			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_SPELL);
---		end
---
---		Storyline_NPCFrameRewards.Content.RewardTextSpell:Show();
---		Storyline_NPCFrameRewards.Content.RewardTextSpell:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
---		contentHeight = contentHeight + 18;
---		previousForChoice = Storyline_NPCFrameRewards.Content.RewardTextSpell;
---
---		if garrFollowerID then
---			local questItem = Storyline_NPCFrameRewards.Content.FollowerFrame;
---			questItem:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
---			questItem:Show();
---			questItem.ID = garrFollowerID;
---			local followerInfo = GetFollowerInfo(garrFollowerID);
---			questItem.Name:SetText(followerInfo.name);
---			questItem.PortraitFrame.Level:SetText(followerInfo.level);
---			questItem.Class:SetAtlas(followerInfo.classAtlas);
---			local color = ITEM_QUALITY_COLORS[followerInfo.quality];
---			questItem.PortraitFrame.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b);
---			questItem.PortraitFrame.LevelBorder:SetVertexColor(color.r, color.g, color.b);
---			GarrisonFollowerPortrait_Set(questItem.PortraitFrame.Portrait, followerInfo.portraitIconID);
---			contentHeight = contentHeight + 70;
---			previousForChoice = questItem;
---		else
---			local questItem = Storyline_NPCFrameRewards.Content.SpellFrame;
---			questItem:Show();
---			questItem.Icon:SetTexture(texture);
---			questItem.Name:SetText(name);
---			contentHeight = contentHeight + 40;
---			previousForChoice = questItem;
---		end
---	end
+	local texture, name, isTradeskillSpell, isSpellLearned, hideSpellLearnText, isBoostSpell, garrFollowerID = GetRewardSpell();
+	local spellReward = texture and (not isBoostSpell or IsCharacterNewlyBoosted()) and (not garrFollowerID or not C_Garrison.IsFollowerCollected(garrFollowerID));
+
+	if spellReward then
+
+		if isTradeskillSpell then
+			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_TRADESKILL_SPELL);
+		elseif isBoostSpell then
+			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_ABILITY);
+		elseif garrFollowerID then
+			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_FOLLOWER);
+		elseif not isSpellLearned then
+			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_AURA);
+		else
+			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_SPELL);
+		end
+
+		Storyline_NPCFrameRewards.Content.RewardTextSpell:Show();
+		Storyline_NPCFrameRewards.Content.RewardTextSpell:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+		contentHeight = contentHeight + 18;
+		previousForChoice = Storyline_NPCFrameRewards.Content.RewardTextSpell;
+
+		if garrFollowerID then
+			local questItem = Storyline_NPCFrameRewards.Content.FollowerFrame;
+			questItem:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+			questItem:Show();
+			questItem.ID = garrFollowerID;
+			local followerInfo = GetFollowerInfo(garrFollowerID);
+			questItem.Name:SetText(followerInfo.name);
+			questItem.PortraitFrame.Level:SetText(followerInfo.level);
+			questItem.Class:SetAtlas(followerInfo.classAtlas);
+			local color = ITEM_QUALITY_COLORS[followerInfo.quality];
+			questItem.PortraitFrame.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b);
+			questItem.PortraitFrame.LevelBorder:SetVertexColor(color.r, color.g, color.b);
+			GarrisonFollowerPortrait_Set(questItem.PortraitFrame.Portrait, followerInfo.portraitIconID);
+			contentHeight = contentHeight + 70;
+			previousForChoice = questItem;
+		else
+			local questItem = Storyline_NPCFrameRewards.Content.SpellFrame;
+			questItem:Show();
+			questItem.Icon:SetTexture(texture);
+			questItem.Name:SetText(name);
+			contentHeight = contentHeight + 40;
+			previousForChoice = questItem;
+		end
+	end
 
 	Storyline_NPCFrameRewardsItemIcon:SetTexture(bestIcon);
 	contentHeight = contentHeight + Storyline_NPCFrameRewards.Content.Title:GetHeight() + 15;

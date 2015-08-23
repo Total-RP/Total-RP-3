@@ -458,46 +458,6 @@
 									<Anchor point="LEFT" x="10" y="0"/>
 								</Anchors>
 							</Button>
-							<Button parentKey="SkillPointFrame" inherits="LargeItemButtonTemplate">
-								<Layers>
-									<Layer level="OVERLAY">
-										<Texture parentKey="CircleBackground" file="Interface\QuestFrame\SkillUp-BG">
-											<Size x="32" y="32"/>
-											<Anchors>
-												<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon" x="12" y="-6"/>
-											</Anchors>
-										</Texture>
-										<Texture parentKey="CircleBackgroundGlow" file="Interface\QuestFrame\SkillUp-Glow" alphaMode="ADD" alpha="0.3">
-											<Size x="64" y="64"/>
-											<Anchors>
-												<Anchor point="CENTER" relativeKey="$parent.CircleBackground"/>
-											</Anchors>
-										</Texture>
-										<FontString parentKey="ValueText" inherits="GameFontNormalLarge" justifyH="LEFT">
-											<Anchors>
-												<Anchor point="CENTER" relativeKey="$parent.CircleBackground" relativePoint="CENTER" x="3"/>
-											</Anchors>
-										</FontString>
-									</Layer>
-								</Layers>
-								<Scripts>
-									<OnLoad>
-										-- Hacks to get this to display a little more nicely
-										self.NameFrame:SetPoint("LEFT", self.Icon, "RIGHT", -10, 0);
-										self.Name:SetPoint("LEFT", self.NameFrame, 24, 0);
-										self.Name:SetWidth(81);
-									</OnLoad>
-									<OnEnter>
-										if (self.tooltip) then
-											GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-											GameTooltip:SetText(self.tooltip, HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b);
-										end
-									</OnEnter>
-									<OnLeave>
-										GameTooltip:Hide();
-									</OnLeave>
-								</Scripts>
-							</Button>
 						</Frames>
 					</Frame>
 				</Frames>
