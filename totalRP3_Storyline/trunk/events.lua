@@ -195,23 +195,29 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local placeItemOnTheLeft = true;
+local gridHeight, gridCount;
 local previousElementOnTheLeft;
 
-local function placeOnGrid(button, placeOn)
-	if placeItemOnTheLeft or not previousElementOnTheLeft then
-		button:SetPoint("TOPLEFT", previousElementOnTheLeft or placeOn, "BOTTOMLEFT", 0, -5);
-		previousElementOnTheLeft = button;
-		placeItemOnTheLeft = false;
-	else
-		button:SetPoint("TOPLEFT", placeOn, "TOPRIGHT", 10, 0);
-		placeItemOnTheLeft = true;
-	end
+local function placeOnGrid(button, initialPlacement)
+	previousElementOnTheLeft = previousElementOnTheLeft or initialPlacement;
 
-	return placeItemOnTheLeft and 0 or 50;
+	if placeItemOnTheLeft then
+		button:SetPoint("TOPLEFT", previousElementOnTheLeft, "BOTTOMLEFT", gridCount == 0 and 0 or -157, -5);
+	else
+		button:SetPoint("TOPLEFT", previousElementOnTheLeft, "TOPRIGHT", 10, 0);
+	end
+	previousElementOnTheLeft = button;
+
+	placeItemOnTheLeft = not placeItemOnTheLeft;
+	gridHeight = gridHeight + (placeItemOnTheLeft and 0 or 50);
+	gridCount = gridCount + 1;
 end
 
 local function resetGrid()
-	placeItemOnTheLeft = true
+	previousElementOnTheLeft = nil;
+	placeItemOnTheLeft = true;
+	gridHeight = 0;
+	gridCount = 0;
 end
 
 local function getQuestData(qTitle)
@@ -227,6 +233,26 @@ local function getQuestData(qTitle)
 end
 
 local itemButtons = {};
+local function getQuestButton(parentFrame)
+	local available;
+	for _, button in pairs(itemButtons) do
+		if not button:IsShown() then
+			available = button;
+			break;
+		end
+	end
+	if not available then
+		available = CreateFrame("Button", "Storyline_ItemButton" .. #itemButtons, nil, "LargeItemButtonTemplate");
+		available:SetScript("OnLeave", function(self)
+			GameTooltip:Hide();
+		end);
+		tinsert(itemButtons, available);
+	end
+	available:SetParent(parentFrame);
+	available:Show();
+	return available;
+end
+
 local function placeItemButton(frame, placeOn, position, first)
 	local available;
 	for _, button in pairs(itemButtons) do
@@ -253,17 +279,18 @@ local function placeItemButton(frame, placeOn, position, first)
 	available:Show();
 	available:SetParent(frame);
 	available:ClearAllPoints();
-	--[[if position == "TOPLEFT" then
+	if position == "TOPLEFT" then
 		available:SetPoint("TOPLEFT", placeOn, "BOTTOMLEFT", first and 0 or -157, -5);
 	else
 		available:SetPoint("TOPLEFT", placeOn, "TOPRIGHT", 10, 0);
-	end]]
-	--if first then placeItemOnTheLeft = true end
-	local heightToAdd = placeOnGrid(available, placeOn);
-	return available, heightToAdd;
+	end
+--	local heightToAdd = placeOnGrid(available, placeOn);
+
+	return available, 0;
 end
 
 local function decorateItemButton(button, index, type, texture, name, numItems, isUsable)
+	numItems = numItems or 0;
 	button.index = index;
 	button.type = type;
 	button.Icon:SetTexture(texture);
@@ -279,9 +306,18 @@ local function decorateItemButton(button, index, type, texture, name, numItems, 
 		GameTooltip:SetQuestItem(self.type, self.index);
 		GameTooltip_ShowCompareItem(GameTooltip);
 	end);
+	button:SetScript("OnClick", function(self)
+		local itemLink = GetQuestItemLink(self.type, self.index);
+		if not HandleModifiedItemClick(itemLink) and self.type == "choice" then
+			GetQuestReward(self.index);
+			autoEquip(itemLink);
+			autoEquipAllReward();
+		end
+	end);
 end
 
 local function decorateCurrencyButton(button, index, type, texture, name, numItems)
+	numItems = numItems or 0;
 	button.index = index;
 	button.type = type;
 	button.Icon:SetTexture(texture);
@@ -291,11 +327,41 @@ local function decorateCurrencyButton(button, index, type, texture, name, numIte
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 		GameTooltip:SetQuestCurrency(self.type, self.index);
 	end);
+	button:SetScript("OnClick", nil);
+end
+
+local function decorateStandardButton(button, texture, name, tt, ttsub)
+	button.Icon:SetTexture(texture);
+	button.Name:SetText(name);
+	button.Count:SetText("");
+	button:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+		GameTooltip:AddLine("|cffffffff" .. tt);
+		if ttsub then
+			GameTooltip:AddLine("|cffffffff" .. ttsub);
+		end
+		GameTooltip:Show();
+	end);
+	button:SetScript("OnClick", nil);
+end
+
+local function decorateSkillPointButton(button, texture, name, count, tt, ttsub)
+	button.Icon:SetTexture(texture);
+	button.Name:SetText(name);
+	button.Count:SetText(count > 1 and count or "");
+	button:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+		GameTooltip:AddLine("|cffffffff" .. tt);
+		GameTooltip:Show();
+	end);
+	button:SetScript("OnClick", nil);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- EVENT PART
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local displayBuilder = {};
 
 eventHandlers["GOSSIP_SHOW"] = function()
 	local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
@@ -451,22 +517,47 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	end
 	Storyline_NPCFrameObjectivesContent.Objectives:SetText(questObjectives);
 
+
+	-- Item reward
 	local contentHeight = 0;
+
 	if GetNumQuestItems() > 0 then
 		Storyline_NPCFrameObjectivesContent.RequiredItemText:Show();
-		local previous = Storyline_NPCFrameObjectivesContent.RequiredItemText;
-		local anchor = "TOPLEFT";
 		local _, icon = GetQuestItemInfo("required", 1);
 		Storyline_NPCFrameObjectivesImage:SetTexture(icon);
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Prepare display structure
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		wipe(displayBuilder);
 		for i = 1, GetNumQuestItems() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("required", i);
-			local button, heightToAdd = placeItemButton(Storyline_NPCFrameObjectivesContent, previous, anchor, i == 1);
-			decorateItemButton(button, i, "required", texture, name, numItems, isUsable);
-			previous = button;
-			contentHeight = contentHeight + heightToAdd;
+			tinsert(displayBuilder, {
+				text = name,
+				icon = texture,
+				count = numItems,
+				index = i,
+				type = "item",
+				rewardType = "required",
+				isUsable = isUsable,
+			});
 		end
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Displays structure content
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		resetGrid();
+		for index, buttonInfo in pairs(displayBuilder) do
+			local button = getQuestButton(Storyline_NPCFrameObjectivesContent);
+			placeOnGrid(button, Storyline_NPCFrameObjectivesContent.RequiredItemText);
+			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+		end
+		contentHeight = contentHeight + gridHeight;
 		contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
 	end
+
 	contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight() + Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 25;
 	Storyline_NPCFrameObjectivesContent:SetHeight(contentHeight);
 end
@@ -475,22 +566,27 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	Storyline_NPCFrameRewards:Show();
 	setTooltipForSameFrame(Storyline_NPCFrameRewardsItem, "TOP", 0, 0, REWARDS, loc("SL_GET_REWARD"));
 
-	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
-	local contentHeight = 20;
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Rewards structure
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local reward1Text;
+	wipe(displayBuilder);
+	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
+
+	-- XP
 	local xp = GetRewardXP();
 	if xp > 0 then
-		contentHeight = contentHeight + 18;
 		bestIcon = "Interface\\ICONS\\xp_icon";
-		if reward1Text then
-			reward1Text = reward1Text .. "\n";
-		end
-		reward1Text = (reward1Text or "") .. BONUS_OBJECTIVE_EXPERIENCE_FORMAT:format( "|cff00ff00" .. xp .. "|r");
+		tinsert(displayBuilder, {
+			text = xp,
+			icon = bestIcon,
+			tooltipTitle = ERR_QUEST_REWARD_EXP_I:format(xp)
+		});
 	end
+
+	-- Money
 	local money = GetRewardMoney();
 	if money > 0 then
-		contentHeight = contentHeight + 18;
 		bestIcon = "Interface\\ICONS\\inv_misc_coin_03";
 		if money < 100 then
 			bestIcon = "Interface\\ICONS\\inv_misc_coin_05";
@@ -498,53 +594,115 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 			bestIcon = "Interface\\ICONS\\inv_misc_coin_01";
 		end
 		local moneyString = GetCoinTextureString(money);
-		if reward1Text then
-			reward1Text = reward1Text .. "\n";
-		end
-		reward1Text = (reward1Text or "") .. moneyString
+		tinsert(displayBuilder, {
+			text = moneyString,
+			icon = bestIcon,
+			tooltipTitle = ERR_QUEST_REWARD_MONEY_S:format(moneyString),
+		});
 	end
+
+	-- Title
 	local playerTitle = GetRewardTitle();
 	if playerTitle then
-		contentHeight = contentHeight + 18;
-		if reward1Text then
-			reward1Text = reward1Text .. "\n";
-		end
-		reward1Text = (reward1Text or "") .. playerTitle;
+		tinsert(displayBuilder, {
+			text = playerTitle,
+			icon = "Interface\\ICONS\\inv_scroll_11",
+			tooltipTitle = playerTitle,
+			tooltipSub = playerTitle
+		});
 	end
-	local currency = GetNumRewardCurrencies();
+
+	-- Skill points
 	local skillName, skillIcon, skillPoints = GetRewardSkillPoints();
-	local texture, name, isTradeskillSpell, isSpellLearned, hideSpellLearnText, isBoostSpell, garrFollowerID = GetRewardSpell();
-	local spellReward = texture and (not isBoostSpell or IsCharacterNewlyBoosted()) and (not garrFollowerID or not C_Garrison.IsFollowerCollected(garrFollowerID));
+	if skillPoints then
+		skillName = skillName or "?";
+		tinsert(displayBuilder, {
+			text = BONUS_SKILLPOINTS:format(skillName),
+			icon = skillIcon,
+			count = skillPoints,
+			type = "skillpoint",
+			tooltipTitle = format(BONUS_SKILLPOINTS_TOOLTIP, skillPoints, skillName),
+		});
+	end
 
-	Storyline_NPCFrameRewards.Content.RewardText1:SetPoint("TOP", Storyline_NPCFrameRewards.Content.Title, "BOTTOM", 0, -5);
-	Storyline_NPCFrameRewards.Content.RewardText1Value:SetText(reward1Text);
-	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1Value;
+	-- Currencies
+	local currencyCount = GetNumRewardCurrencies();
+	if currencyCount > 0 then
+		for i = 1, currencyCount, 1 do -- Some quest reward several currencies
+			local name, texture, numItems = GetQuestCurrencyInfo("reward", i);
+			if name and texture and numItems then
+				tinsert(displayBuilder, {
+					text = name,
+					icon = texture,
+					count = numItems,
+					index = i,
+					type = "currency"
+				});
+			end
+		end
+	end
 
+	-- Item reward
 	if GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
-		local anchor = "TOPLEFT";
-		local previous = previousForChoice;
-
 		if GetNumQuestChoices() == 1 then
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", 1);
-			local button, heightToAdd = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, true);
 			bestIcon = texture;
-			decorateItemButton(button, 1, "choice", texture, name, numItems, isUsable);
-			contentHeight = contentHeight + heightToAdd;
-			previousForChoice = button;
+			tinsert(displayBuilder, {
+				text = name,
+				icon = texture,
+				count = numItems,
+				index = 1,
+				type = "item",
+				rewardType = "choice",
+				isUsable = isUsable,
+			});
 		end
 
 		for i = 1, GetNumQuestRewards() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("reward", i);
-			local button, heightToAdd = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, i == 1);
 			bestIcon = texture;
-			decorateItemButton(button, i, "reward", texture, name, numItems, isUsable);
-			previous = button;
-			contentHeight = contentHeight + heightToAdd;
-			previousForChoice = button;
+			tinsert(displayBuilder, {
+				text = name,
+				icon = texture,
+				count = numItems,
+				index = i,
+				type = "item",
+				rewardType = "reward",
+				isUsable = isUsable,
+			});
 		end
 	end
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Displays rewards
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	local contentHeight = 20;
+	local previousForChoice;
+
+	resetGrid();
+	for index, buttonInfo in pairs(displayBuilder) do
+		local button = getQuestButton(Storyline_NPCFrameRewards.Content);
+		placeOnGrid(button, Storyline_NPCFrameRewards.Content.RewardText1);
+		if buttonInfo.type == "currency" then
+			decorateCurrencyButton(button, buttonInfo.index, "reward", buttonInfo.icon, buttonInfo.text, buttonInfo.count);
+		elseif buttonInfo.type == "item" then
+			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+		elseif buttonInfo.type == "skillpoint" then
+			decorateSkillPointButton(button, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.tooltipTitle);
+		else
+			decorateStandardButton(button, buttonInfo.icon, buttonInfo.text, buttonInfo.tooltipTitle, buttonInfo.tooltipSub);
+		end
+		previousForChoice = button;
+	end
+	contentHeight = contentHeight + gridHeight;
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Reward choice
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 	if GetNumQuestChoices() > 1 then
+
 		if faction and faction:len() > 0 then
 			bestIcon = "Interface\\ICONS\\battleground_strongbox_gold_" .. faction;
 		else
@@ -554,91 +712,96 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		Storyline_NPCFrameRewards.Content.RewardText3:Show();
 		Storyline_NPCFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
 
-		local previous = Storyline_NPCFrameRewards.Content.RewardText3;
-		local anchor = "TOPLEFT";
-
+		wipe(displayBuilder);
 		for i = 1, GetNumQuestChoices() do
 			local name, texture, numItems, quality, isUsable = GetQuestItemInfo("choice", i);
-			local button, heightToAdd = placeItemButton(Storyline_NPCFrameRewards.Content, previous, anchor, i == 1);
-			decorateItemButton(button, i, "choice", texture, name, numItems, isUsable);
-			previous = button;
-			contentHeight = contentHeight + heightToAdd;
-			previousForChoice = button;
+			bestIcon = texture;
+			tinsert(displayBuilder, {
+				text = name,
+				icon = texture,
+				count = numItems,
+				index = i,
+				rewardType = "choice",
+				isUsable = isUsable,
+			});
 		end
+
+		resetGrid();
+		for index, buttonInfo in pairs(displayBuilder) do
+			local button = getQuestButton(Storyline_NPCFrameRewards.Content);
+			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+		end
+
 	end
 
-	local anchor = "TOPLEFT";
+--	local reward1Text;
+--	local texture, name, isTradeskillSpell, isSpellLearned, hideSpellLearnText, isBoostSpell, garrFollowerID = GetRewardSpell();
+--	local spellReward = texture and (not isBoostSpell or IsCharacterNewlyBoosted()) and (not garrFollowerID or not C_Garrison.IsFollowerCollected(garrFollowerID));
+--
+--	Storyline_NPCFrameRewards.Content.RewardText1:SetPoint("TOP", Storyline_NPCFrameRewards.Content.Title, "BOTTOM", 0, -5);
+--	Storyline_NPCFrameRewards.Content.RewardText1Value:SetText(reward1Text);
+--	local previousForChoice = Storyline_NPCFrameRewards.Content.RewardText1Value;
 
-	if currency > 0 then
-		for i = 1, GetMaxRewardCurrencies(), 1 do -- Some quest reward several currencies
-			local name, texture, numItems = GetQuestCurrencyInfo("reward", i);
-			if (name and texture and numItems) then
-				local button, heightToAdd = placeItemButton(Storyline_NPCFrameRewards.Content, previousForChoice, anchor, i == 1);
-				decorateCurrencyButton(button, i, "reward", texture, name, numItems, true);
-				contentHeight = contentHeight + heightToAdd;
-				previousForChoice = button;
-			end
-		end
-	end
-
-	if skillPoints then
-		Storyline_NPCFrameRewards.Content.SkillPointFrame.Icon:SetTexture(skillIcon);
-		if skillName then
-			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetFormattedText(BONUS_SKILLPOINTS, skillName);
-			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = format(BONUS_SKILLPOINTS_TOOLTIP, skillPoints, skillName);
-		else
-			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = nil;
-			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetText("");
-		end
-		Storyline_NPCFrameRewards.Content.SkillPointFrame.ValueText:SetText(skillPoints);
-		local heightToAdd = placeOnGrid(Storyline_NPCFrameRewards.Content.SkillPointFrame, previousForChoice);
-		previousForChoice = Storyline_NPCFrameRewards.Content.SkillPointFrame;
-		contentHeight = contentHeight + heightToAdd;
-	end
-
-	if spellReward then
-
-		if isTradeskillSpell then
-			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_TRADESKILL_SPELL);
-		elseif isBoostSpell then
-			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_ABILITY);
-		elseif garrFollowerID then
-			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_FOLLOWER);
-		elseif not isSpellLearned then
-			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_AURA);
-		else
-			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_SPELL);
-		end
-
-		Storyline_NPCFrameRewards.Content.RewardTextSpell:Show();
-		Storyline_NPCFrameRewards.Content.RewardTextSpell:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
-		contentHeight = contentHeight + 18;
-		previousForChoice = Storyline_NPCFrameRewards.Content.RewardTextSpell;
-
-		if garrFollowerID then
-			local questItem = Storyline_NPCFrameRewards.Content.FollowerFrame;
-			questItem:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
-			questItem:Show();
-			questItem.ID = garrFollowerID;
-			local followerInfo = GetFollowerInfo(garrFollowerID);
-			questItem.Name:SetText(followerInfo.name);
-			questItem.PortraitFrame.Level:SetText(followerInfo.level);
-			questItem.Class:SetAtlas(followerInfo.classAtlas);
-			local color = ITEM_QUALITY_COLORS[followerInfo.quality];
-			questItem.PortraitFrame.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b);
-			questItem.PortraitFrame.LevelBorder:SetVertexColor(color.r, color.g, color.b);
-			GarrisonFollowerPortrait_Set(questItem.PortraitFrame.Portrait, followerInfo.portraitIconID);
-			contentHeight = contentHeight + 70;
-			previousForChoice = questItem;
-		else
-			local questItem = Storyline_NPCFrameRewards.Content.SpellFrame;
-			questItem:Show();
-			questItem.Icon:SetTexture(texture);
-			questItem.Name:SetText(name);
-			contentHeight = contentHeight + 40;
-			previousForChoice = questItem;
-		end
-	end
+--	local anchor = "TOPLEFT";
+--
+--	if skillPoints then
+--		Storyline_NPCFrameRewards.Content.SkillPointFrame.Icon:SetTexture(skillIcon);
+--		if skillName then
+--			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetFormattedText(BONUS_SKILLPOINTS, skillName);
+--			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = format(BONUS_SKILLPOINTS_TOOLTIP, skillPoints, skillName);
+--		else
+--			Storyline_NPCFrameRewards.Content.SkillPointFrame.tooltip = nil;
+--			Storyline_NPCFrameRewards.Content.SkillPointFrame.Name:SetText("");
+--		end
+--		Storyline_NPCFrameRewards.Content.SkillPointFrame.ValueText:SetText(skillPoints);
+--		local heightToAdd = placeOnGrid(Storyline_NPCFrameRewards.Content.SkillPointFrame, previousForChoice);
+--		previousForChoice = Storyline_NPCFrameRewards.Content.SkillPointFrame;
+--		contentHeight = contentHeight + heightToAdd;
+--	end
+--
+--	if spellReward then
+--
+--		if isTradeskillSpell then
+--			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_TRADESKILL_SPELL);
+--		elseif isBoostSpell then
+--			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_ABILITY);
+--		elseif garrFollowerID then
+--			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_FOLLOWER);
+--		elseif not isSpellLearned then
+--			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_AURA);
+--		else
+--			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_SPELL);
+--		end
+--
+--		Storyline_NPCFrameRewards.Content.RewardTextSpell:Show();
+--		Storyline_NPCFrameRewards.Content.RewardTextSpell:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+--		contentHeight = contentHeight + 18;
+--		previousForChoice = Storyline_NPCFrameRewards.Content.RewardTextSpell;
+--
+--		if garrFollowerID then
+--			local questItem = Storyline_NPCFrameRewards.Content.FollowerFrame;
+--			questItem:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+--			questItem:Show();
+--			questItem.ID = garrFollowerID;
+--			local followerInfo = GetFollowerInfo(garrFollowerID);
+--			questItem.Name:SetText(followerInfo.name);
+--			questItem.PortraitFrame.Level:SetText(followerInfo.level);
+--			questItem.Class:SetAtlas(followerInfo.classAtlas);
+--			local color = ITEM_QUALITY_COLORS[followerInfo.quality];
+--			questItem.PortraitFrame.PortraitRingQuality:SetVertexColor(color.r, color.g, color.b);
+--			questItem.PortraitFrame.LevelBorder:SetVertexColor(color.r, color.g, color.b);
+--			GarrisonFollowerPortrait_Set(questItem.PortraitFrame.Portrait, followerInfo.portraitIconID);
+--			contentHeight = contentHeight + 70;
+--			previousForChoice = questItem;
+--		else
+--			local questItem = Storyline_NPCFrameRewards.Content.SpellFrame;
+--			questItem:Show();
+--			questItem.Icon:SetTexture(texture);
+--			questItem.Name:SetText(name);
+--			contentHeight = contentHeight + 40;
+--			previousForChoice = questItem;
+--		end
+--	end
 
 	Storyline_NPCFrameRewardsItemIcon:SetTexture(bestIcon);
 	contentHeight = contentHeight + Storyline_NPCFrameRewards.Content.Title:GetHeight() + 15;
