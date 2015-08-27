@@ -357,6 +357,6 @@ function Storyline_API.addon:OnEnable()
 			ReloadUI();
 		end
 	end, nil, 100, true);
-	Storyline_NPCFrameConfigLocale:SetSelectedValue(Storyline_Data.config.locale or "enUS");
+	Storyline_NPCFrameConfigLocale:SetSelectedValue(Storyline_Data.config.locale or Storyline_API.locale.DEFAULT_LOCALE);
 	init = false;
 end
