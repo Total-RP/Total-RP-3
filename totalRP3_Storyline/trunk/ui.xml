@@ -336,7 +336,7 @@
 				</Frames>
 			</Button>
 
-			<Frame name="Storyline_NPCFrameRewards" frameLevel="1" setAllPoints="true">
+			<Frame name="Storyline_NPCFrameRewards" frameLevel="3" setAllPoints="true">
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
 						<Texture name="Storyline_NPCFrameRewardsHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
@@ -351,14 +351,6 @@
 							<Size x="256" y="128"/>
 							<Anchors>
 								<Anchor point="CENTER" x="-3" y="100"/>
-							</Anchors>
-						</Texture>
-					</Layer>
-					<Layer level="ARTWORK">
-						<Texture name="Storyline_NPCFrameRewardsChest" atlas="GarrMission-AllianceChest" useAtlasSize="false">
-							<Size x="165" y="110"/>
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT" x="-135" y="85"/>
 							</Anchors>
 						</Texture>
 					</Layer>
@@ -522,7 +514,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame name="Storyline_NPCFrameChat" frameLevel="3">
+			<Frame name="Storyline_NPCFrameChat" frameLevel="4">
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
 					<EdgeSize>
 						<AbsValue val="32"/>

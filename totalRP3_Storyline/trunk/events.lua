@@ -281,6 +281,14 @@ local function decorateItemButton(button, index, type, texture, name, numItems, 
 			autoEquip(itemLink);
 			autoEquipAllReward();
 		end
+		
+		if IsModifiedClick("DRESSUP") and DressUpFrame:IsVisible() then
+			if Storyline_Data.config.hideOriginalFrames then
+				Storyline_API.hideOriginalFrames();
+			end
+			DressUpFrame:ClearAllPoints();
+			DressUpFrame:SetPoint("TOPLEFT", Storyline_NPCFrame, "TOPRIGHT", 10, 0);
+		end
 	end);
 end
 
@@ -728,6 +736,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		contentHeight = contentHeight + 18;
 		Storyline_NPCFrameRewards.Content.RewardText3:Show();
 		Storyline_NPCFrameRewards.Content.RewardText3:SetPoint("TOP", previousForChoice, "BOTTOM", 0, -5);
+		previousForChoice = Storyline_NPCFrameRewards.Content.RewardText3;
 
 		wipe(displayBuilder);
 		for i = 1, GetNumQuestChoices() do
@@ -746,10 +755,12 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		resetGrid();
 		for index, buttonInfo in pairs(displayBuilder) do
 			local button = getQuestButton(Storyline_NPCFrameRewards.Content);
+			placeOnGrid(button, Storyline_NPCFrameRewards.Content.RewardText3);
 			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
 			previousForChoice = button;
 		end
 
+		contentHeight = contentHeight + gridHeight;
 	end
 
 	local texture, name, isTradeskillSpell, isSpellLearned, hideSpellLearnText, isBoostSpell, garrFollowerID = GetRewardSpell();

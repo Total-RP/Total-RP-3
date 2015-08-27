@@ -249,6 +249,13 @@ function Storyline_API.addon:OnEnable()
 		Storyline_NPCFrame:Hide();
 	end);
 
+	-- DressUpFrame
+	DressUpFrameCloseButton:HookScript("OnClick", function()
+		if Storyline_Data.config.hideOriginalFrames and Storyline_NPCFrame:IsVisible() then
+			hideOriginalFrames();
+		end
+	end)
+
 	-- Resizing
 	local resizeChat = function()
 		Storyline_NPCFrameChatText:SetWidth(Storyline_NPCFrame:GetWidth() - 150);
