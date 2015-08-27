@@ -472,12 +472,27 @@ eventHandlers["QUEST_GREETING"] = function()
 end
 
 eventHandlers["QUEST_DETAIL"] = function()
+
+	local contentHeight = 15; -- 15 is the title
 	Storyline_NPCFrameObjectives:Show();
 	Storyline_NPCFrameObjectivesImage:SetDesaturated(false);
 	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
-	Storyline_NPCFrameObjectivesContent.Objectives:SetText(GetObjectiveText());
 
-	Storyline_NPCFrameObjectivesContent:SetHeight(Storyline_NPCFrameObjectivesContent.Objectives:GetHeight() + Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 25);
+	local objectives = GetObjectiveText();
+	if objectives:len() > 0 then
+		Storyline_NPCFrameObjectivesContent.Objectives:SetText(objectives);
+		Storyline_NPCFrameObjectivesContent.Objectives:Show();
+		contentHeight = contentHeight + 10 + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight();
+	end
+
+	local groupNum = GetSuggestedGroupNum();
+	if groupNum > 0 then
+		Storyline_NPCFrameObjectivesContent.GroupSuggestion:SetText(format(QUEST_SUGGESTED_GROUP_NUM, groupNum));
+		Storyline_NPCFrameObjectivesContent.GroupSuggestion:Show();
+		contentHeight = contentHeight + 10 + Storyline_NPCFrameObjectivesContent.GroupSuggestion:GetHeight();
+	end
+
+	Storyline_NPCFrameObjectivesContent:SetHeight(Storyline_NPCFrameObjectivesContent.Title:GetHeight() + contentHeight);
 
 	if GetNumQuestItems() > 0 then
 		local _, icon = GetQuestItemInfo("required", 1);
@@ -831,6 +846,8 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	Storyline_NPCFrameObjectivesNo:Hide();
 	Storyline_NPCFrameObjectives.OK:Hide();
 	Storyline_NPCFrameObjectivesContent.RequiredItemText:Hide();
+	Storyline_NPCFrameObjectivesContent.GroupSuggestion:Hide();
+	Storyline_NPCFrameObjectivesContent.Objectives:Hide();
 	Storyline_NPCFrameRewards.Content:Hide();
 	Storyline_NPCFrameRewards.Content.RewardText2:Hide();
 	Storyline_NPCFrameRewards.Content.RewardText3:Hide();

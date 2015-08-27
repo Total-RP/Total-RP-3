@@ -321,6 +321,17 @@
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
+								<FontString parentKey="GroupSuggestion" inherits="GameFontNormal" justifyH="LEFT"
+											justifyV="TOP">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM"
+												relativeKey="$parent.Objectives" x="0" y="-5"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.65" b="0"/>
+								</FontString>
 								<FontString parentKey="RequiredItemText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 									<Size x="0" y="0"/>
 									<Anchors>
