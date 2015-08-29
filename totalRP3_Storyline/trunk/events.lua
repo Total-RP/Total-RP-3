@@ -62,6 +62,7 @@ local InCombatLockdown, GetInventorySlotInfo, GetInventoryItemLink = InCombatLoc
 local GetQuestCurrencyInfo, GetMaxRewardCurrencies, GetRewardTitle = GetQuestCurrencyInfo, GetMaxRewardCurrencies, GetRewardTitle;
 local GarrisonFollowerPortrait_Set, GetFollowerInfo = GarrisonFollowerPortrait_Set, C_Garrison.GetFollowerInfo;
 local GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies = GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies;
+local GetSuggestedGroupNum = GetSuggestedGroupNum;
 
 -- UI
 local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
@@ -84,6 +85,7 @@ local eventHandlers = {};
 local BONUS_SKILLPOINTS = BONUS_SKILLPOINTS;
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS;
 local REQUIRED_MONEY = REQUIRED_MONEY;
+local QUEST_SUGGESTED_GROUP_NUM, QUEST_OBJECTIVES = QUEST_SUGGESTED_GROUP_NUM, QUEST_OBJECTIVES;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Auto equip part, greatly inspired by AutoTurnIn by Alex Shubert (alex.shubert@gmail.com)
@@ -473,7 +475,8 @@ end
 
 eventHandlers["QUEST_DETAIL"] = function()
 
-	local contentHeight = 15; -- 15 is the title
+	local contentHeight = Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 15;
+
 	Storyline_NPCFrameObjectives:Show();
 	Storyline_NPCFrameObjectivesImage:SetDesaturated(false);
 	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
@@ -492,7 +495,7 @@ eventHandlers["QUEST_DETAIL"] = function()
 		contentHeight = contentHeight + 10 + Storyline_NPCFrameObjectivesContent.GroupSuggestion:GetHeight();
 	end
 
-	Storyline_NPCFrameObjectivesContent:SetHeight(Storyline_NPCFrameObjectivesContent.Title:GetHeight() + contentHeight);
+	Storyline_NPCFrameObjectivesContent:SetHeight(contentHeight);
 
 	if GetNumQuestItems() > 0 then
 		local _, icon = GetQuestItemInfo("required", 1);
@@ -505,17 +508,20 @@ eventHandlers["QUEST_PROGRESS"] = function()
 	Storyline_NPCFrameObjectivesImage:SetDesaturated(not IsQuestCompletable());
 	setTooltipForSameFrame(Storyline_NPCFrameObjectives, "TOP", 0, 0, QUEST_OBJECTIVES, loc("SL_CHECK_OBJ"));
 
+	local contentHeight = Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 15;
+
 	local questObjectives = getQuestData(GetTitleText());
 	if IsQuestCompletable() and questObjectives:len() > 0 then
 		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-Ready", 15) .. " |cff00ff00" .. questObjectives;
 	elseif questObjectives:len() > 0 then
 		questObjectives = getTextureString("Interface\\RAIDFRAME\\ReadyCheck-NotReady", 15) .. " |cffff0000" .. questObjectives;
 	end
-	Storyline_NPCFrameObjectivesContent.Objectives:SetText(questObjectives);
 
-
-	-- Item reward
-	local contentHeight = 0;
+	if questObjectives:len() > 0 then
+		Storyline_NPCFrameObjectivesContent.Objectives:SetText(questObjectives);
+		Storyline_NPCFrameObjectivesContent.Objectives:Show();
+		contentHeight = contentHeight + 10 + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight()
+	end
 
 	if GetNumQuestItems() > 0 or GetNumQuestCurrencies() > 0 or GetQuestMoneyToGet() > 0 then
 		Storyline_NPCFrameObjectivesContent.RequiredItemText:Show();
@@ -593,7 +599,6 @@ eventHandlers["QUEST_PROGRESS"] = function()
 		contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.RequiredItemText:GetHeight() + 10;
 	end
 
-	contentHeight = contentHeight + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight() + Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 25;
 	Storyline_NPCFrameObjectivesContent:SetHeight(contentHeight);
 end
 
@@ -847,6 +852,7 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	Storyline_NPCFrameObjectives.OK:Hide();
 	Storyline_NPCFrameObjectivesContent.RequiredItemText:Hide();
 	Storyline_NPCFrameObjectivesContent.GroupSuggestion:Hide();
+	Storyline_NPCFrameObjectivesContent.Objectives:SetText('');
 	Storyline_NPCFrameObjectivesContent.Objectives:Hide();
 	Storyline_NPCFrameRewards.Content:Hide();
 	Storyline_NPCFrameRewards.Content.RewardText2:Hide();
