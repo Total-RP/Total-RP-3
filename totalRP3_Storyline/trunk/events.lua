@@ -210,6 +210,30 @@ local function getQuestData(qTitle)
 	return "";
 end
 
+local function showQuestPortraitFrame()
+	if not Storyline_Data.config.hideOriginalFrames then
+		return;
+	end
+	local questPortrait, questPortraitText, questPortraitName = GetQuestPortraitGiver();
+	if (questPortrait ~= 0) then
+		QuestFrame_ShowQuestPortrait(Storyline_NPCFrame, questPortrait, questPortraitText, questPortraitName, -3, -42);
+	else
+		QuestFrame_HideQuestPortrait();
+	end
+end
+
+local function acceptQuest()
+	if QuestFlagsPVP() then
+		QuestFrame.dialog = StaticPopup_Show("CONFIRM_ACCEPT_PVP_QUEST");
+	else
+		if QuestFrame.autoQuest then
+			AcknowledgeAutoAcceptQuest();
+		else
+			AcceptQuest();
+		end
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Grid system
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -618,7 +642,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	if xp > 0 then
 		bestIcon = "Interface\\ICONS\\xp_icon";
 		tinsert(displayBuilder, {
-			text = xp,
+			text = xp .. " " .. XP,
 			icon = bestIcon,
 			tooltipTitle = ERR_QUEST_REWARD_EXP_I:format(xp)
 		});
@@ -830,6 +854,8 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		end
 	end
 
+	showQuestPortraitFrame();
+
 	Storyline_NPCFrameRewardsItemIcon:SetTexture(bestIcon);
 	contentHeight = contentHeight + Storyline_NPCFrameRewards.Content.Title:GetHeight() + 15;
 	Storyline_NPCFrameRewards.Content:SetHeight(contentHeight);
@@ -868,6 +894,7 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	Storyline_NPCFrameChatOption2:SetScript("OnEnter", nil);
 	Storyline_NPCFrameChatOption3:SetScript("OnEnter", nil);
 	Storyline_NPCFrameObjectivesImage:SetTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon");
+	QuestFrame_HideQuestPortrait();
 
 	if textIndex == #texts and eventHandlers[event] then
 		eventHandlers[event](eventInfo);
@@ -973,8 +1000,9 @@ function Storyline_API.initEventsStructure()
 					Storyline_NPCFrameObjectivesYes:Show();
 					Storyline_NPCFrameObjectivesNo:Show();
 					Storyline_NPCFrameChatNextText:SetText(loc("SL_ACCEPTANCE"));
+					showQuestPortraitFrame();
 				else
-					AcceptQuest();
+					acceptQuest();
 				end
 			end,
 		},
@@ -993,6 +1021,7 @@ function Storyline_API.initEventsStructure()
 						Storyline_NPCFrameChatNextText:SetText(loc("SL_NOT_YET"));
 						playSelfAnim(186);
 					end
+					showQuestPortraitFrame();
 				elseif IsQuestCompletable() then
 					CompleteQuest();
 				else
@@ -1089,7 +1118,7 @@ function Storyline_API.initEventsStructure()
 	setTooltipAll(Storyline_NPCFrameChatPrevious, "BOTTOM", 0, 0, loc("SL_RESET"), loc("SL_RESET_TT"));
 	setTooltipForSameFrame(Storyline_NPCFrameObjectivesYes, "TOP", 0, 0,  loc("SL_ACCEPTANCE"));
 	setTooltipForSameFrame(Storyline_NPCFrameObjectivesNo, "TOP", 0, 0, loc("SL_DECLINE"));
-	Storyline_NPCFrameObjectivesYes:SetScript("OnClick", AcceptQuest);
+	Storyline_NPCFrameObjectivesYes:SetScript("OnClick", acceptQuest);
 	Storyline_NPCFrameObjectivesYes:SetScript("OnEnter", function(self)
 		playSelfAnim(185);
 		refreshTooltipForFrame(self);
