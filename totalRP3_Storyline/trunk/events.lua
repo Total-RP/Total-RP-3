@@ -2,6 +2,7 @@
 --  Storyline
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2015 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -63,7 +64,7 @@ local GetQuestCurrencyInfo, GetMaxRewardCurrencies, GetRewardTitle = GetQuestCur
 local GarrisonFollowerPortrait_Set, GetFollowerInfo = GarrisonFollowerPortrait_Set, C_Garrison.GetFollowerInfo;
 local GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies = GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies;
 local GetSuggestedGroupNum = GetSuggestedGroupNum;
-
+local UnitIsDead = UnitIsDead;
 -- UI
 local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
 local Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes = Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes;
@@ -498,7 +499,6 @@ eventHandlers["QUEST_GREETING"] = function()
 end
 
 eventHandlers["QUEST_DETAIL"] = function()
-
 	local contentHeight = Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 15;
 
 	Storyline_NPCFrameObjectives:Show();
@@ -912,11 +912,11 @@ local function playText(textIndex, targetModel)
 
 	Storyline_NPCFrameChatText:SetTextColor(ChatTypeInfo["MONSTER_SAY"].r, ChatTypeInfo["MONSTER_SAY"].g, ChatTypeInfo["MONSTER_SAY"].b);
 
-	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") then -- Emote if begins with <
+	if text:byte() == 60 or not UnitExists("npc") or UnitIsUnit("player", "npc") or UnitIsDead("npc") then -- Emote if begins with <
 		local color = colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
 		local finalText = text:gsub("<", color .. "<");
 		finalText = finalText:gsub(">", ">|r");
-		if not UnitExists("npc") or UnitIsUnit("player", "npc") then
+		if not UnitExists("npc") or UnitIsUnit("player", "npc") or UnitIsDead("npc") then
 			Storyline_NPCFrameChatText:SetText(color .. finalText);
 		else
 			Storyline_NPCFrameChatText:SetText(finalText);
@@ -931,6 +931,11 @@ local function playText(textIndex, targetModel)
 
 	if #animTab == 0 then
 		animTab[1] = 0;
+	end
+
+	if UnitIsDead("npc") then
+		wipe(animTab)
+		animTab[1] = 6;
 	end
 
 	for _, sequence in pairs(animTab) do
