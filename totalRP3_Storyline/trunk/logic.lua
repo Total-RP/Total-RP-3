@@ -123,14 +123,14 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 	Storyline_NPCFrameModelsMe:SetCamera(1);
 	Storyline_NPCFrameModelsMe:SetFacing(.75);
-	Storyline_NPCFrameModelsMe:SetUnit("player");
+	Storyline_NPCFrameModelsMe:SetUnit("player", true);
 	Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
 	Storyline_NPCFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
 	Storyline_NPCFrameModelsYou:SetCamera(1);
 	Storyline_NPCFrameModelsYou:SetFacing(-.75);
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc") then
-		Storyline_NPCFrameModelsYou:SetUnit(targetType);
+		Storyline_NPCFrameModelsYou:SetUnit(targetType, true);
 	else
 		Storyline_NPCFrameModelsMe:SetAnimation(520);
 		Storyline_NPCFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
