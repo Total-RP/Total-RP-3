@@ -2,6 +2,7 @@
 --  Storyline
 --	---------------------------------------------------------------------------
 --	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+--	Copyright 2015 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -350,7 +351,7 @@ Storyline_SCALE_MAPPING = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Draenei male
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+--[[
 -- Playable class
 Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = 10;
 Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\dwarf\\female\\dwarffemale_hd.m2"] = 35;
@@ -414,4 +415,9 @@ Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~creature\\jinyu
 -- Playable class
 Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\hobgoblin\\hobgoblin.m2"] = -49;
 Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~character\\goblin\\male\\goblinmale.m2"] = -20;
-Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\raptor\\raptorpet.m2"] = 71;
+Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\raptor\\raptorpet.m2"] = 71; ]]
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC Blacklisting
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+Storyline_NPC_BLACKLIST = {"94399"}

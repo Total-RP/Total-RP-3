@@ -31,7 +31,7 @@
 				<AbsInset left="5" right="5" top="5" bottom="5"/>
 			</BackgroundInsets>
 		</Backdrop>
-		<Size x="0" y="140"/>
+		<Size x="0" y="280"/>
 		<Anchors>
 			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
 			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
@@ -43,6 +43,22 @@
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-10"/>
 						<Anchor point="TOPRIGHT" x="-50" y="-10"/>
+					</Anchors>
+					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+				<FontString name="Storyline_NPCFrameDebugMyModelText" text="My model" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="TOP" y="-10" relativeTo="Storyline_NPCFrameDebugModelYou"/>
+						<Anchor point="LEFT" x="20"/>
+					</Anchors>
+					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+				<FontString name="Storyline_NPCFrameDebugYouModelText" text="Target model" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Size x="0" y="20"/>
+					<Anchors>
+						<Anchor point="TOP" relativeTo="Storyline_NPCFrameDebugMyModelText"/>
+						<Anchor point="RIGHT" x="-20"/>
 					</Anchors>
 					<Color r="1" g="1" b="0.4"/>
 				</FontString>
@@ -217,21 +233,157 @@
 				</Scripts>
 			</EditBox>
 
-			<Slider name="Storyline_NPCFrameDebugScaleSlider" inherits="Storyline_Slider">
+			<Slider name="Storyline_NPCFrameDebugMeHeightSlider" inherits="Storyline_Slider">
 				<Size x="300" y="15"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugModelYou" x="0" y="-10"/>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugMyModelText" y="-10"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self:SetMinMaxValues(-100, 100);
-						Storyline_NPCFrameDebugScaleSliderLow:SetText("Small");
-						Storyline_NPCFrameDebugScaleSliderHigh:SetText("Huge");
-						self:SetValueStep(1);
+						self:SetMinMaxValues(0, 2);
+						Storyline_NPCFrameDebugMeHeightSliderLow:SetText(0);
+						Storyline_NPCFrameDebugMeHeightSliderHigh:SetText(2);
+						self:SetValueStep(0.01);
 						self:SetObeyStepOnDrag(true);
 					</OnLoad>
 				</Scripts>
 			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugMeFeetSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugMeHeightSlider" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(0, 2);
+						Storyline_NPCFrameDebugMeFeetSliderLow:SetText(0);
+						Storyline_NPCFrameDebugMeFeetSliderHigh:SetText(2);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugMeOffsetSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugMeFeetSlider" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(-1, 1);
+						Storyline_NPCFrameDebugMeOffsetSliderLow:SetText(-1);
+						Storyline_NPCFrameDebugMeOffsetSliderHigh:SetText(1);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugMeFacingSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugMeOffsetSlider" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(-1, 1);
+						Storyline_NPCFrameDebugMeFacingSliderLow:SetText(-1);
+						Storyline_NPCFrameDebugMeFacingSliderHigh:SetText(1);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugYouHeightSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="Storyline_NPCFrameDebugYouModelText"
+							y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(0, 2);
+						Storyline_NPCFrameDebugYouHeightSliderLow:SetText(0);
+						Storyline_NPCFrameDebugYouHeightSliderHigh:SetText(2);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugYouFeetSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"
+							relativeTo="Storyline_NPCFrameDebugYouHeightSlider" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(0, 2);
+						Storyline_NPCFrameDebugYouFeetSliderLow:SetText(0);
+						Storyline_NPCFrameDebugYouFeetSliderHigh:SetText(2);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugYouOffsetSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameDebugYouFeetSlider"
+							y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(-1, 1);
+						Storyline_NPCFrameDebugYouOffsetSliderLow:SetText(-1);
+						Storyline_NPCFrameDebugYouOffsetSliderHigh:SetText(1);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Slider name="Storyline_NPCFrameDebugYouFacingSlider" inherits="Storyline_Slider">
+				<Size x="300" y="15"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT"
+							relativeTo="Storyline_NPCFrameDebugYouOffsetSlider" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(-1, 1);
+						Storyline_NPCFrameDebugYouFacingSliderLow:SetText(-1);
+						Storyline_NPCFrameDebugYouFacingSliderHigh:SetText(1);
+						self:SetValueStep(0.01);
+						self:SetObeyStepOnDrag(true);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+
+			<Button name="Storyline_NPCFrameDebugMeResetButton">
+				<Size x="35" y="35"/>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT" relativePoint="TOPRIGHT" relativeTo="Storyline_NPCFrameDebugMeHeightSlider"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+				<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+			</Button>
+
+			<Button name="Storyline_NPCFrameDebugYouResetButton">
+				<Size x="35" y="35"/>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT" relativeTo="Storyline_NPCFrameDebugYouHeightSlider"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+				<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+			</Button>
 
 			<Button inherits="UIPanelCloseButton">
 				<Anchors>

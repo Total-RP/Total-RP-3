@@ -1,19 +1,20 @@
 ----------------------------------------------------------------------------------
---  Storyline
---	---------------------------------------------------------------------------
---	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+-- Storyline
+-- ---------------------------------------------------------------------------
+-- Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+-- Copyright 2015 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
 --
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
 --
---		http://www.apache.org/licenses/LICENSE-2.0
+-- http://www.apache.org/licenses/LICENSE-2.0
 --
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- Storyline API
@@ -33,7 +34,11 @@ local Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious = Storyline_NPC
 local Storyline_NPCFrameModelsYou, Storyline_NPCFrameModelsMe = Storyline_NPCFrameModelsYou, Storyline_NPCFrameModelsMe;
 local Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner = Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner;
 local Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe = Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe;
-local Storyline_NPCFrameDebugScaleSlider = Storyline_NPCFrameDebugScaleSlider;
+
+local Storyline_NPCFrameDebugMeHeightSlider, Storyline_NPCFrameDebugYouHeightSlider = Storyline_NPCFrameDebugMeHeightSlider, Storyline_NPCFrameDebugYouHeightSlider;
+local Storyline_NPCFrameDebugMeFeetSlider, Storyline_NPCFrameDebugYouFeetSlider = Storyline_NPCFrameDebugMeFeetSlider, Storyline_NPCFrameDebugYouFeetSlider;
+local Storyline_NPCFrameDebugMeOffsetSlider, Storyline_NPCFrameDebugYouOffsetSlider = Storyline_NPCFrameDebugMeOffsetSlider, Storyline_NPCFrameDebugYouOffsetSlider;
+local Storyline_NPCFrameDebugMeFacingSlider, Storyline_NPCFrameDebugYouFacingSlider = Storyline_NPCFrameDebugMeFacingSlider, Storyline_NPCFrameDebugYouFacingSlider;
 
 -- Constants
 local DEBUG = true;
@@ -41,6 +46,20 @@ local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
 local CHAT_MARGIN = 70;
+local DEFAULT_MODEL_SCALE = {
+	me = {
+		height = 1.3,
+		feet = 0.4,
+		offset = 0.2,
+		facing = 0.75
+	},
+	you = {
+		height = 1.3,
+		feet = 0.4,
+		offset = -0.2,
+		facing = -0.75
+	}
+}
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOGIC
@@ -68,6 +87,7 @@ local function hideOriginalFrames()
 	QuestFrame:ClearAllPoints();
 	QuestFrame:SetPoint("TOPLEFT", screenWidth, screenHeight);
 end
+
 Storyline_API.hideOriginalFrames = hideOriginalFrames;
 
 local function showOriginalFrames()
@@ -75,6 +95,75 @@ local function showOriginalFrames()
 	GossipFrame:SetPoint("TOPLEFT", 16, -116);
 	QuestFrame:ClearAllPoints();
 	QuestFrame:SetPoint("TOPLEFT", 16, -116);
+end
+
+local function modelsLoaded()
+	if Storyline_NPCFrameModelsYou.modelLoaded and Storyline_NPCFrameModelsMe.modelLoaded then
+
+		local scale = {
+			me = {
+				height = 1.3,
+				feet = 0.4,
+				offset = 0.2,
+				facing = 0.75
+			},
+			you = {
+				height = 1.3,
+				feet = 0.4,
+				offset = -0.2,
+				facing = -0.75
+			}
+		};
+		Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
+		Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
+
+		if Storyline_NPCFrameModelsYou.model:len() > 0 then
+			local key, invertedKey = Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model, Storyline_NPCFrameModelsYou.model .. "~" .. Storyline_NPCFrameModelsMe.model;
+			if Storyline_SCALE_MAPPING[key] then
+				scale = Storyline_SCALE_MAPPING[key];
+			elseif Storyline_SCALE_MAPPING[invertedKey] then
+				scale.me = Storyline_SCALE_MAPPING[invertedKey].you;
+				scale.you = Storyline_SCALE_MAPPING[invertedKey].me;
+				scale.me.offset = -scale.me.offset;
+				scale.me.facing = -scale.me.facing;
+				scale.you.offset = -scale.you.offset;
+				scale.you.facing = -scale.you.facing;
+			end
+			if Storyline_Data.debug.scaling[key] then
+				scale = Storyline_Data.debug.scaling[key];
+			elseif Storyline_Data.debug.scaling[invertedKey] then
+				scale.me = Storyline_Data.debug.scaling[invertedKey].you;
+				scale.you = Storyline_Data.debug.scaling[invertedKey].me;
+				scale.me.offset = -scale.me.offset;
+				scale.me.facing = -scale.me.facing;
+				scale.you.offset = -scale.you.offset;
+				scale.you.facing = -scale.you.facing;
+			end
+
+			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(scale.me.offset);
+			Storyline_NPCFrameDebugMeFacingSlider:SetValue(scale.me.facing);
+			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scale.me.feet);
+			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scale.me.height);
+
+			Storyline_NPCFrameDebugYouOffsetSlider:SetValue(scale.you.offset);
+			Storyline_NPCFrameDebugYouFacingSlider:SetValue(scale.you.facing);
+			Storyline_NPCFrameDebugYouFeetSlider:SetValue(scale.you.feet);
+			Storyline_NPCFrameDebugYouHeightSlider:SetValue(scale.you.height);
+		else
+			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(0);
+			Storyline_NPCFrameDebugMeFacingSlider:SetValue(0);
+			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scale.me.feet);
+			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scale.me.height);
+			Storyline_NPCFrameModelsMe:SetAnimation(520);
+		end
+
+		if Storyline_NPCFrameModelsYou.model then
+			Storyline_NPCFrameDebugModelYou:SetText(Storyline_NPCFrameModelsYou.model:gsub("\\", "\\\\"));
+		end
+		if Storyline_NPCFrameModelsMe.model then
+			Storyline_NPCFrameDebugModelMe:SetText(Storyline_NPCFrameModelsMe.model:gsub("\\", "\\\\"));
+		end
+	end
 end
 
 function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
@@ -85,9 +174,9 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 
 
 	local guid = UnitGUID(targetType);
-	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-",guid);
+	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid);
 	-- Dirty if to fix the flavor text appearing on naval mission table because Blizzard…
-	if npc_id == "94399" then
+	if tContains(Storyline_NPC_BLACKLIST, npc_id) then
 		SelectGossipOption(1);
 		return;
 	end
@@ -117,39 +206,18 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 		Storyline_NPCFrameBanner:Hide();
 	end
 
-	Storyline_NPCFrame.targetType = targetType;
-	Storyline_NPCFrame:Show();
-	Storyline_NPCFrameModelsYou.model = nil;
-	Storyline_NPCFrameModelsMe:SetLight(1, 0, 0, -1, -1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-	Storyline_NPCFrameModelsMe:SetCamera(1);
-	Storyline_NPCFrameModelsMe:SetFacing(.75);
-	Storyline_NPCFrameModelsMe:SetUnit("player", true);
-	Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
-	Storyline_NPCFrameModelsYou:SetLight(1, 0, 0, 1, 1, 1, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0);
-	Storyline_NPCFrameModelsYou:SetCamera(1);
-	Storyline_NPCFrameModelsYou:SetFacing(-.75);
+	Storyline_NPCFrameModelsMe.modelLoaded = false;
+	Storyline_NPCFrameModelsYou.modelLoaded = false;
+	Storyline_NPCFrameModelsYou.model = "";
+	Storyline_NPCFrameModelsMe.model = "";
+	Storyline_NPCFrameModelsMe:SetUnit("player", false);
 
 	if UnitExists(targetType) and not UnitIsUnit("player", "npc") then
-		Storyline_NPCFrameModelsYou:SetUnit(targetType, true);
+		Storyline_NPCFrameModelsYou:SetUnit(targetType, false);
 	else
-		Storyline_NPCFrameModelsMe:SetAnimation(520);
-		Storyline_NPCFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
+		Storyline_NPCFrameModelsYou:SetUnit("none");
+		Storyline_NPCFrameModelsYou.modelLoaded = true;
 	end
-	Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
-
-	if Storyline_NPCFrameModelsYou.model then
-		Storyline_NPCFrameDebugModelYou:SetText(Storyline_NPCFrameModelsYou.model:gsub("\\", "\\\\"));
-	end
-	if Storyline_NPCFrameModelsMe.model then
-		Storyline_NPCFrameDebugModelMe:SetText(Storyline_NPCFrameModelsMe.model:gsub("\\", "\\\\"));
-	end
-
-	local scale = 0;
-	if Storyline_NPCFrameModelsYou.model and Storyline_NPCFrameModelsMe.model then
-		local key, invertKey = Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model, Storyline_NPCFrameModelsYou.model .. "~" .. Storyline_NPCFrameModelsMe.model;
-		scale = Storyline_Data.debug.scaling[key] or Storyline_SCALE_MAPPING[key] or -(Storyline_Data.debug.scaling[invertKey] or Storyline_SCALE_MAPPING[invertKey] or 0);
-	end
-	Storyline_NPCFrameDebugScaleSlider:SetValue(scale);
 
 	fullText = fullText:gsub(LINE_FEED_CODE .. "+", "\n");
 	fullText = fullText:gsub(WEIRD_LINE_BREAK, "\n");
@@ -164,6 +232,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameChat.event = event;
 	Storyline_NPCFrameObjectivesContent:Hide();
 	Storyline_NPCFrameChatPrevious:Hide();
+	Storyline_NPCFrame:Show();
 
 	playNext(Storyline_NPCFrameModelsYou);
 end
@@ -241,6 +310,17 @@ function Storyline_API.addon:OnEnable()
 	-- Register events
 	Storyline_API.initEventsStructure();
 
+	-- 3D models loaded
+	Storyline_NPCFrameModelsMe:SetScript("OnModelLoaded", function()
+		Storyline_NPCFrameModelsMe.modelLoaded = true;
+		modelsLoaded();
+	end);
+
+	Storyline_NPCFrameModelsYou:SetScript("OnModelLoaded", function()
+		Storyline_NPCFrameModelsYou.modelLoaded = true;
+		modelsLoaded();
+	end);
+
 	-- Closing
 	registerHandler("GOSSIP_CLOSED", function()
 		Storyline_NPCFrame:Hide();
@@ -271,30 +351,90 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrame:SetSize(Storyline_Data.config.width or 700, Storyline_Data.config.height or 450);
 	resizeChat();
 
-
-	local resizeModels = function(scale)
-		local margin = scale < 0 and -scale or 0;
-		Storyline_NPCFrameModelsMe:ClearAllPoints();
-		Storyline_NPCFrameModelsMe:SetPoint("TOP", 0, -(margin * 2));
-		Storyline_NPCFrameModelsMe:SetPoint("LEFT", margin, 0);
-		Storyline_NPCFrameModelsMe:SetPoint("BOTTOM", 0, 0);
-		Storyline_NPCFrameModelsMe:SetPoint("RIGHT", Storyline_NPCFrameModelsPoint, "LEFT", -margin, 0);
-
-		margin = scale > 0 and scale or 0;
-		Storyline_NPCFrameModelsYou:ClearAllPoints();
-		Storyline_NPCFrameModelsYou:SetPoint("TOP", 0, -(margin * 2));
-		Storyline_NPCFrameModelsYou:SetPoint("RIGHT", -margin, 0);
-		Storyline_NPCFrameModelsYou:SetPoint("BOTTOM", 0, 0);
-		Storyline_NPCFrameModelsYou:SetPoint("LEFT", Storyline_NPCFrameModelsPoint, "RIGHT", margin, 0);
+	local function saveResizedModels()
+		if Storyline_NPCFrameModelsMe.model and Storyline_NPCFrameModelsYou.model then
+			Storyline_Data.debug.scaling[Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model] = {
+				me = {
+					height = Storyline_NPCFrameDebugMeHeightSlider:GetValue(),
+					feet = Storyline_NPCFrameDebugMeFeetSlider:GetValue(),
+					offset = Storyline_NPCFrameDebugMeOffsetSlider:GetValue(),
+					facing = Storyline_NPCFrameDebugMeFacingSlider:GetValue()
+				},
+				you = {
+					height = Storyline_NPCFrameDebugYouHeightSlider:GetValue(),
+					feet = Storyline_NPCFrameDebugYouFeetSlider:GetValue(),
+					offset = Storyline_NPCFrameDebugYouOffsetSlider:GetValue(),
+					facing = Storyline_NPCFrameDebugYouFacingSlider:GetValue()
+				}
+			};
+		end
 	end
 
 	-- Debug
 	Storyline_NPCFrameDebug:Hide();
-	Storyline_NPCFrameDebugScaleSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugScaleSliderValText:SetText("Scale: " .. scale);
-		resizeModels(scale);
-		Storyline_Data.debug.scaling[Storyline_NPCFrameDebugModelMe:GetText():gsub("\\\\", "\\") .. "~" .. Storyline_NPCFrameDebugModelYou:GetText():gsub("\\\\", "\\")] = scale;
+	Storyline_NPCFrameDebugMeHeightSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugMeHeightSliderValText:SetText("Height: " .. scale);
+		Storyline_NPCFrameModelsMe:InitializeCamera(scale);
+		saveResizedModels();
 	end);
+	Storyline_NPCFrameDebugYouHeightSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugYouHeightSliderValText:SetText("Height: " .. scale);
+		Storyline_NPCFrameModelsYou:InitializeCamera(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugMeFeetSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugMeFeetSliderValText:SetText("Feet: " .. scale);
+		Storyline_NPCFrameModelsMe:SetHeightFactor(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugYouFeetSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugYouFeetSliderValText:SetText("Feet: " .. scale);
+		Storyline_NPCFrameModelsYou:SetHeightFactor(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugMeOffsetSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugMeOffsetSliderValText:SetText("Offset: " .. scale);
+		Storyline_NPCFrameModelsMe:SetTargetDistance(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugYouOffsetSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugYouOffsetSliderValText:SetText("Offset: " .. scale);
+		Storyline_NPCFrameModelsYou:SetTargetDistance(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugMeFacingSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugMeFacingSliderValText:SetText("Facing: " .. scale);
+		Storyline_NPCFrameModelsMe:SetFacing(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugYouFacingSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameDebugYouFacingSliderValText:SetText("Facing: " .. scale);
+		Storyline_NPCFrameModelsYou:SetFacing(scale);
+		saveResizedModels();
+	end);
+	Storyline_NPCFrameDebugMeResetButton:SetScript("OnClick", function(self)
+		Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_MODEL_SCALE.me.height);
+		Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_MODEL_SCALE.me.feet);
+		Storyline_NPCFrameDebugMeOffsetSlider:SetValue(DEFAULT_MODEL_SCALE.me.offset);
+		Storyline_NPCFrameDebugMeFacingSlider:SetValue(DEFAULT_MODEL_SCALE.me.facing);
+	end);
+	Storyline_NPCFrameDebugYouResetButton:SetScript("OnClick", function(self)
+		Storyline_NPCFrameDebugYouHeightSlider:SetValue(DEFAULT_MODEL_SCALE.you.height);
+		Storyline_NPCFrameDebugYouFeetSlider:SetValue(DEFAULT_MODEL_SCALE.you.feet);
+		Storyline_NPCFrameDebugYouOffsetSlider:SetValue(DEFAULT_MODEL_SCALE.you.offset);
+		Storyline_NPCFrameDebugYouFacingSlider:SetValue(DEFAULT_MODEL_SCALE.you.facing);
+	end);
+
+	Storyline_NPCFrameModelsMe:EnableMouseWheel(true);
+	Storyline_NPCFrameModelsMe:SetScript("OnMouseWheel", function(self, delta)
+		if Storyline_NPCFrameDebug:IsVisible() or (IsAltKeyDown() and IsControlKeyDown()) then
+			if IsShiftKeyDown() then
+				Storyline_NPCFrameDebugYouHeightSlider:SetValue(Storyline_NPCFrameDebugYouHeightSlider:GetValue() - 0.01 * delta);
+			else
+				Storyline_NPCFrameDebugMeHeightSlider:SetValue(Storyline_NPCFrameDebugMeHeightSlider:GetValue() - 0.01 * delta);
+			end
+		end
+	end)
 
 	-- Slash command to reset frames
 	Storyline_API.addon:RegisterChatCommand("storyline", function()
@@ -313,7 +453,7 @@ function Storyline_API.addon:OnEnable()
 	end);
 	textSpeedFactor = Storyline_Data.config.textSpeedFactor or textSpeedFactor;
 	Storyline_NPCFrameConfigSpeedSlider:SetValue(textSpeedFactor);
-	
+
 	-- Auto equip option
 	Storyline_NPCFrameConfig.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
 	setTooltipForSameFrame(Storyline_NPCFrameConfig.AutoEquip, "RIGHT", 0, 0, loc("SL_CONFIG_AUTOEQUIP"), loc("SL_CONFIG_AUTOEQUIP_TT"));
@@ -347,8 +487,8 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrameConfig.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
 
 	local localeTab = {
-		{"English", "enUS"},
-		{"Français", "frFR"},
+		{ "English", "enUS" },
+		{ "Français", "frFR" },
 	};
 	local init = true;
 	Storyline_API.lib.setupListBox(Storyline_NPCFrameConfigLocale, localeTab, function(locale)
