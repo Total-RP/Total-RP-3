@@ -175,8 +175,9 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 
 	local guid = UnitGUID(targetType);
 	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid);
+	Storyline_NPCFrameModelsYou.npc_id = npc_id;
 	-- Dirty if to fix the flavor text appearing on naval mission table because Blizzard…
-	if tContains(Storyline_NPC_BLACKLIST, npc_id) then
+	if tContains(Storyline_NPC_BLACKLIST, npc_id) or tContains(Storyline_Data.npc_blacklist, npc_id)then
 		SelectGossipOption(1);
 		return;
 	end
@@ -278,6 +279,9 @@ function Storyline_API.addon:OnEnable()
 	end
 	if not Storyline_Data.config then
 		Storyline_Data.config = {};
+	end
+	if not Storyline_Data.npc_blacklist then
+		Storyline_Data.npc_blacklist = {};
 	end
 
 	ForceGossip = function() return Storyline_Data.config.forceGossip == true end
@@ -438,42 +442,96 @@ function Storyline_API.addon:OnEnable()
 
 	-- Slash command to reset frames
 	Storyline_API.addon:RegisterChatCommand("storyline", function()
-		ToggleFrame(Storyline_NPCFrameDebug);
+		InterfaceOptionsFrame_OpenToCategory(StorylineOptionsPanel);
 	end);
 
 	-- Config
 	setTooltipAll(Storyline_NPCFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
+	StorylineOptionsPanelTitle:SetText(loc("SL_CONFIG"));
+
+	-- Text speed slider
+	StorylineTextOptionsPanelSpeedSliderTitle:SetText(loc("SL_CONFIG_TEXTSPEED_TITLE"));
 	Storyline_NPCFrameConfigSpeedSliderLow:SetText(loc("SL_CONFIG_TEXTSPEED_INSTANT"));
 	Storyline_NPCFrameConfigSpeedSliderHigh:SetText(loc("SL_CONFIG_TEXTSPEED_HIGH"));
-	Storyline_NPCFrameConfigText:SetText(loc("SL_CONFIG"));
 	Storyline_NPCFrameConfigSpeedSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameConfigSpeedSliderValText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
+		Storyline_NPCFrameConfigSpeedSliderText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
 		textSpeedFactor = scale;
 		Storyline_Data.config.textSpeedFactor = textSpeedFactor;
 	end);
 	textSpeedFactor = Storyline_Data.config.textSpeedFactor or textSpeedFactor;
 	Storyline_NPCFrameConfigSpeedSlider:SetValue(textSpeedFactor);
 
+	-- Text speed slider
+	StorylineTextOptionsPanelQuestTitleSizeSliderTitle:SetText("Quest title");
+	StorylineTextOptionsPanelQuestTitleSizeSliderTitle:SetPoint("TOPLEFT", Storyline_NPCFrameConfigSpeedSlider, "BOTTOMLEFT", 0, -15);
+	Storyline_NPCFrameConfigQuestTitleTextSizeSliderLow:SetText(9);
+	Storyline_NPCFrameConfigQuestTitleTextSizeSliderHigh:SetText(25);
+	Storyline_NPCFrameConfigQuestTitleTextSizeSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameConfigQuestTitleTextSizeSliderText:SetText(scale);
+		local font, _, outline = Storyline_NPCFrameChatText:GetFont();
+		Storyline_NPCFrameTitle:SetFont(font, scale, outline);
+		Storyline_Data.config.questTitleSize = scale;
+	end);
+	Storyline_NPCFrameConfigQuestTitleTextSizeSlider:SetValue(Storyline_Data.config.questTitleTextSize or select(2,Storyline_NPCFrameTitle:GetFont()));
+
+	-- Text speed slider
+	StorylineTextOptionsPanelTextSizeSliderTitle:SetText("Dialog text");
+	StorylineTextOptionsPanelTextSizeSliderTitle:SetPoint("TOPLEFT", Storyline_NPCFrameConfigQuestTitleTextSizeSlider, "BOTTOMLEFT", 0, -15);
+	Storyline_NPCFrameConfigChatTextSizeSliderLow:SetText(9);
+	Storyline_NPCFrameConfigChatTextSizeSliderHigh:SetText(25);
+	Storyline_NPCFrameConfigChatTextSizeSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameConfigChatTextSizeSliderText:SetText(scale);
+		local font, _, outline = Storyline_NPCFrameChatText:GetFont();
+		Storyline_NPCFrameChatText:SetFont(font, scale, outline);
+		Storyline_Data.config.chatTextSize = scale;
+	end);
+	Storyline_NPCFrameConfigChatTextSizeSlider:SetValue(Storyline_Data.config.chatTextSize or 16);
+	-- Text speed slider
+	StorylineTextOptionsPanelNameSizeSliderTitle:SetText("NPC name");
+	StorylineTextOptionsPanelNameSizeSliderTitle:SetPoint("TOPLEFT", Storyline_NPCFrameConfigChatTextSizeSlider, "BOTTOMLEFT", 0, -15);
+	Storyline_NPCFrameConfigChatNameSizeSliderLow:SetText(9);
+	Storyline_NPCFrameConfigChatNameSizeSliderHigh:SetText(25);
+	Storyline_NPCFrameConfigChatNameSizeSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameConfigChatNameSizeSliderText:SetText(scale);
+		local font, _, outline = Storyline_NPCFrameChatName:GetFont();
+		Storyline_NPCFrameChatName:SetFont(font, scale, outline);
+		Storyline_Data.config.chatNameSize = scale;
+	end);
+	Storyline_NPCFrameConfigChatNameSizeSlider:SetValue(Storyline_Data.config.chatNameSize or 16);
+
+	local Storyline_NPCFrameChatNextText = Storyline_NPCFrameChatNextText;
+	StorylineTextOptionsPanelNextSizeSliderTitle:SetText("Next action text");
+	StorylineTextOptionsPanelNextSizeSliderTitle:SetPoint("TOPLEFT", Storyline_NPCFrameConfigChatNameSizeSlider, "BOTTOMLEFT", 0, -15);
+	Storyline_NPCFrameConfigChatNextSizeSliderLow:SetText(9);
+	Storyline_NPCFrameConfigChatNextSizeSliderHigh:SetText(25);
+	Storyline_NPCFrameConfigChatNextSizeSlider:SetScript("OnValueChanged", function(self, scale)
+		Storyline_NPCFrameConfigChatNextSizeSliderText:SetText(scale);
+		local font, _, outline = Storyline_NPCFrameChatNextText:GetFont();
+		Storyline_NPCFrameChatNextText:SetFont(font, scale, outline);
+		Storyline_Data.config.chatNextTextSize = scale;
+	end);
+	Storyline_NPCFrameConfigChatNextSizeSlider:SetValue(Storyline_Data.config.chatNextTextSize or 10);
+
 	-- Auto equip option
-	Storyline_NPCFrameConfig.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
-	setTooltipForSameFrame(Storyline_NPCFrameConfig.AutoEquip, "RIGHT", 0, 0, loc("SL_CONFIG_AUTOEQUIP"), loc("SL_CONFIG_AUTOEQUIP_TT"));
-	Storyline_NPCFrameConfig.AutoEquip:SetScript("OnClick", function(self)
+	StorylineMiscellaneousOptionsPanel.AutoEquip.Text:SetText(loc("SL_CONFIG_AUTOEQUIP"));
+	StorylineMiscellaneousOptionsPanel.AutoEquip.tooltip = loc("SL_CONFIG_AUTOEQUIP_TT");
+	StorylineMiscellaneousOptionsPanel.AutoEquip:SetScript("OnClick", function(self)
 		Storyline_Data.config.autoEquip = self:GetChecked() == true;
 	end);
-	Storyline_NPCFrameConfig.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
+	StorylineMiscellaneousOptionsPanel.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
 
 	-- Force gossip option
-	Storyline_NPCFrameConfig.ForceGossip.Text:SetText(loc("SL_CONFIG_FORCEGOSSIP"));
-	setTooltipForSameFrame(Storyline_NPCFrameConfig.ForceGossip, "RIGHT", 0, 0, loc("SL_CONFIG_FORCEGOSSIP"), loc("SL_CONFIG_FORCEGOSSIP_TT"));
-	Storyline_NPCFrameConfig.ForceGossip:SetScript("OnClick", function(self)
+	StorylineMiscellaneousOptionsPanel.ForceGossip.Text:SetText(loc("SL_CONFIG_FORCEGOSSIP"));
+	StorylineMiscellaneousOptionsPanel.ForceGossip.tooltip = loc("SL_CONFIG_FORCEGOSSIP_TT");
+	StorylineMiscellaneousOptionsPanel.ForceGossip:SetScript("OnClick", function(self)
 		Storyline_Data.config.forceGossip = self:GetChecked() == true;
 	end);
-	Storyline_NPCFrameConfig.ForceGossip:SetChecked(Storyline_Data.config.forceGossip);
+	StorylineMiscellaneousOptionsPanel.ForceGossip:SetChecked(Storyline_Data.config.forceGossip);
 
 	-- Hide original frames option
-	Storyline_NPCFrameConfig.HideOriginalFrames.Text:SetText(loc("SL_CONFIG_HIDEORIGINALFRAMES"));
-	setTooltipForSameFrame(Storyline_NPCFrameConfig.HideOriginalFrames, "RIGHT", 0, 0, loc("SL_CONFIG_HIDEORIGINALFRAMES"), loc("SL_CONFIG_HIDEORIGINALFRAMES_TT"));
-	Storyline_NPCFrameConfig.HideOriginalFrames:SetScript("OnClick", function(self)
+	StorylineMiscellaneousOptionsPanel.HideOriginalFrames.Text:SetText(loc("SL_CONFIG_HIDEORIGINALFRAMES"));
+	StorylineMiscellaneousOptionsPanel.HideOriginalFrames.tooltip = loc("SL_CONFIG_HIDEORIGINALFRAMES_TT");
+	StorylineMiscellaneousOptionsPanel.HideOriginalFrames:SetScript("OnClick", function(self)
 		Storyline_Data.config.hideOriginalFrames = self:GetChecked() == true;
 		if Storyline_Data.config.hideOriginalFrames then
 			hideOriginalFrames();
@@ -484,7 +542,7 @@ function Storyline_API.addon:OnEnable()
 	if Storyline_Data.config.hideOriginalFrames == nil then
 		Storyline_Data.config.hideOriginalFrames = true;
 	end
-	Storyline_NPCFrameConfig.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
+	StorylineMiscellaneousOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
 
 	local localeTab = {
 		{ "English", "enUS" },

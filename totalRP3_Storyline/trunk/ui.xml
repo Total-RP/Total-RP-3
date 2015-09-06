@@ -625,7 +625,7 @@
 				</Layers>
 				<Scripts>
 					<OnClick>
-						ToggleFrame(Storyline_NPCFrameConfig);
+						InterfaceOptionsFrame_OpenToCategory(StorylineOptionsPanel);
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -649,50 +649,67 @@
 			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
 			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
 		</Anchors>
+		<Frames>
+
+		</Frames>
+	</Frame>
+
+	<CheckButton name="StorylineOptionsCheckboxWithTooltip" inherits="InterfaceOptionsCheckButtonTemplate" virtual="true">
+		<Scripts>
+			<OnEnter>
+				if self.tooltip then
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip:SetText(self.tooltip, nil, nil, nil, nil, true);
+				end
+			</OnEnter>
+		</Scripts>
+	</CheckButton>
+
+	<Frame name="StorylineOptionsPanel">
+		<KeyValues>
+			<KeyValue key="name" value="Storyline"/>
+		</KeyValues>
 		<Layers>
 			<Layer>
-				<FontString name="Storyline_NPCFrameConfigText" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="TOP">
-					<Size x="0" y="20"/>
+				<FontString name="$parentTitle" text="Text options" inherits="GameFontNormalLarge" justifyH="LEFT"
+							justifyV="TOP">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="50" y="-10"/>
-						<Anchor point="TOPRIGHT" x="-50" y="-10"/>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
 					</Anchors>
-					<Color r="1" g="1" b="0.4"/>
+				</FontString>
+				<FontString name="$parentSubText" text="Thank you for using Storyline"
+							inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT"
+							justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT" y="-8" />
+						<Anchor point="RIGHT" x="-32" />
+					</Anchors>
+				</FontString>
+				<FontString name="$parentLocale" text="Language" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT" y="0" />
+					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad function="InterfaceOptions_AddCategory"/>
+		</Scripts>
 		<Frames>
-			<Slider name="Storyline_NPCFrameConfigSpeedSlider" inherits="Storyline_Slider">
-				<Size x="250" y="15"/>
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameConfigText" x="0" y="-10"/>
-				</Anchors>
-				<Scripts>
-					<OnLoad>
-						self:SetMinMaxValues(0, 1.5);
-						self:SetValueStep(0.1);
-						self:SetObeyStepOnDrag(true);
-					</OnLoad>
-				</Scripts>
-			</Slider>
-			<CheckButton name="Storyline_NPCFrameConfigAutoEquip" parentKey="AutoEquip" inherits="Storyline_CheckBox" checked="true">
-				<Anchors>
-					<Anchor point="LEFT" x="100" y="0" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
-				</Anchors>
-			</CheckButton>
-			<CheckButton name="Storyline_NPCFrameConfigForceGossip" parentKey="ForceGossip" inherits="Storyline_CheckBox" checked="true">
-				<Anchors>
-					<Anchor point="LEFT" x="100" y="-30" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
-				</Anchors>
-			</CheckButton>
-			<CheckButton name="Storyline_NPCFrameConfigHideOriginalFrames" parentKey="HideOriginalFrames" inherits="Storyline_CheckBox" checked="true">
-				<Anchors>
-					<Anchor point="LEFT" x="100" y="-60" relativeTo="Storyline_NPCFrameConfigSpeedSlider" relativePoint="RIGHT"/>
-				</Anchors>
-			</CheckButton>
 			<Frame name="Storyline_NPCFrameConfigLocale" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="Storyline_NPCFrameConfigSpeedSlider" x="-20" y="-20"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLocale"/>
+					<Anchor point="LEFT" x="0" />
 				</Anchors>
 				<Scripts>
 					<OnEnter>
@@ -704,6 +721,195 @@
 				</Scripts>
 			</Frame>
 		</Frames>
+	</Frame>
+
+	<Frame name="StorylineTextOptionsPanel">
+		<KeyValues>
+			<KeyValue key="name" value="Text options"/>
+			<KeyValue key="parent" value="Storyline"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" text="Text options" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" text="Here you can change the text settings" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT" justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSpeedSliderTitle" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT" y="0"/>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentQuestTitleSizeSliderTitle" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+				</FontString>
+				<FontString name="$parentTextSizeSliderTitle" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+				</FontString>
+				<FontString name="$parentNameSizeSliderTitle" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+				</FontString>
+				<FontString name="$parentNextSizeSliderTitle" inherits="GameFontNormal">
+					<Size>
+						<AbsDimension y="15" x="0"/>
+					</Size>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Slider name="Storyline_NPCFrameConfigSpeedSlider" inherits="OptionsSliderTemplate" obeyStepOnDrag="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSpeedSliderTitle" relativePoint="BOTTOMLEFT" y="-15" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(0, 1.5);
+						self:SetValueStep(0.1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+			<Slider name="Storyline_NPCFrameConfigQuestTitleTextSizeSlider" inherits="OptionsSliderTemplate"
+					obeyStepOnDrag="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentQuestTitleSizeSliderTitle" relativePoint="BOTTOMLEFT" y="-15"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(9, 25);
+						self:SetValueStep(1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+			<Slider name="Storyline_NPCFrameConfigChatTextSizeSlider" inherits="OptionsSliderTemplate" obeyStepOnDrag="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentTextSizeSliderTitle" relativePoint="BOTTOMLEFT" y="-15" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(9, 25);
+						self:SetValueStep(1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+			<Slider name="Storyline_NPCFrameConfigChatNameSizeSlider" inherits="OptionsSliderTemplate"
+					obeyStepOnDrag="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentNameSizeSliderTitle" relativePoint="BOTTOMLEFT" y="-15"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(9, 25);
+						self:SetValueStep(1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+			<Slider name="Storyline_NPCFrameConfigChatNextSizeSlider" inherits="OptionsSliderTemplate" obeyStepOnDrag="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentNextSizeSliderTitle" relativePoint="BOTTOMLEFT" y="-15" />
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetMinMaxValues(9, 25);
+						self:SetValueStep(1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+		</Frames>
+		<Scripts>
+			<OnLoad function="InterfaceOptions_AddCategory"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="StorylineMiscellaneousOptionsPanel">
+		<KeyValues>
+			<KeyValue key="name" value="Miscellaneous options"/>
+			<KeyValue key="parent" value="Storyline"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parentTitle" text="Miscellaneous options" inherits="GameFontNormalLarge" justifyH="LEFT"
+							justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="16" y="-16"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSubText" text="Here you can change the Miscellaneous settings"
+							inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT"
+							justifyV="TOP">
+					<Size>
+						<AbsDimension y="32" x="0"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTitle" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="0" y="-8"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="RIGHT">
+							<Offset>
+								<AbsDimension x="-32" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<CheckButton name="Storyline_NPCFrameConfigAutoEquip" parentKey="AutoEquip" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentSubText" relativePoint="BOTTOMLEFT" />
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="Storyline_NPCFrameConfigForceGossip" parentKey="ForceGossip"
+						 inherits="StorylineOptionsCheckboxWithTooltip" checked="false">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrameConfigAutoEquip" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</CheckButton>
+			<CheckButton name="Storyline_NPCFrameConfigHideOriginalFrames" parentKey="HideOriginalFrames"
+						 inherits="StorylineOptionsCheckboxWithTooltip" checked="false">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrameConfigForceGossip" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+		<Scripts>
+			<OnLoad function="InterfaceOptions_AddCategory"/>
+		</Scripts>
 	</Frame>
 
 	<Include file="debug.xml"/>
