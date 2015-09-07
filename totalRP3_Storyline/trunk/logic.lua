@@ -174,7 +174,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 
 
 	local guid = UnitGUID(targetType);
-	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid);
+	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid or "");
 	Storyline_NPCFrameModelsYou.npc_id = npc_id;
 	-- Dirty if to fix the flavor text appearing on naval mission table because Blizzard…
 	if tContains(Storyline_NPC_BLACKLIST, npc_id) or tContains(Storyline_Data.npc_blacklist, npc_id)then
