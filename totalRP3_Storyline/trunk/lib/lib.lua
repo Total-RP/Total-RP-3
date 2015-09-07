@@ -290,6 +290,14 @@ function Storyline_API.lib.initResize(resizeButton)
 			if width < self.minWidth then
 				width = self.minWidth;
 			end
+			local screenWidth = GetScreenWidth();
+			local screenHeight = GetScreenHeight();
+			if width > screenWidth then
+				width = screenWidth;
+			end
+			if height > screenHeight then
+				height = screenHeight;
+			end
 			self.resizableFrame:SetSize(width, height);
 			if self.onResizeStop then
 				C_Timer.After(0.1, function()
