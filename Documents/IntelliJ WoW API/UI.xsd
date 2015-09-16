@@ -463,12 +463,14 @@
 				</xs:sequence>
 				<xs:attribute name="file" type="xs:string"/>
 				<xs:attribute name="mask" type="xs:string"/>
+				<xs:attribute name="atlas" type="xs:string"/>
 				<xs:attribute name="alphaMode" type="ALPHAMODE" default="BLEND"/>
 				<xs:attribute name="alpha" type="xs:float" default="1.0"/>
 				<xs:attribute name="forceAlpha" type="xs:boolean" default="false"/>
 				<xs:attribute name="nonBlocking" type="xs:boolean" default="false"/>
 				<xs:attribute name="horizTile" type="xs:boolean" default="false"/>
 				<xs:attribute name="vertTile" type="xs:boolean" default="false"/>
+				<xs:attribute name="useAtlasSize" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -532,6 +534,7 @@
 								</xs:sequence>
 							</xs:complexType>
 						</xs:element>
+						<xs:element name="Size" type="Dimension"/>
 						<xs:element name="Layers">
 							<xs:complexType>
 								<xs:sequence>
@@ -627,6 +630,13 @@
 						<xs:element name="HighlightColor" type="ColorType"/>
 						<xs:element name="DisabledColor" type="ColorType"/>
 						<xs:element name="PushedTextOffset" type="Dimension"/>
+						<xs:element name="Frames">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="Frame" maxOccurs="unbounded"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
 						<xs:element name="Scripts" type="ScriptsType"/>
 						<xs:element name="Layers">
 							<xs:complexType>
@@ -713,6 +723,7 @@
 				<xs:attribute name="defaultValue" type="xs:float"/>
 				<xs:attribute name="valueStep" type="xs:float"/>
 				<xs:attribute name="orientation" type="ui:ORIENTATION" default="VERTICAL"/>
+				<xs:attribute name="obeyStepOnDrag" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
