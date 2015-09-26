@@ -60,6 +60,7 @@ Storyline_API.locale = {
 			SL_CONFIG_LOCKFRAME = "Lock frame",
 			SL_CONFIG_LOCKFRAME_TT = "Lock Storyline frame so it cannot be move by mistake.",
 			SL_CONFIG_SAMPLE_TEXT = "Grumpy wizards make toxic brew for the evil queen and jack",
+			SL_CONFIG_BIG_SAMPLE_TEXT = [[Here’s to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently. They’re not fond of rules. And they have no respect for the status quo. You can quote them, disagree with them, glorify or vilify them. About the only thing you can’t do is ignore them.]],
 			SL_CONFIG_QUEST_TITLE = "Quest title",
 			SL_CONFIG_DIALOG_TEXT = "Dialog text",
 			SL_CONFIG_NPC_NAME = "NPC name",

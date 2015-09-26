@@ -462,3 +462,27 @@ function Storyline_API.lib.setupListBox(listBox, values, callback, defaultText, 
 	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
 	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
 end
+
+-- LibSharedMedia stuff
+
+local LSM3 = LibStub("LibSharedMedia-3.0")
+
+-- Register OpenDyslexic as a shared font
+LSM3:Register(LSM3.MediaType.FONT, "OpenDyslexic", [[Interface\AddOns\Storyline\assets\fonts\OpenDyslexic-Regular.ttf]]);
+
+function Storyline_API.lib.getFonts()
+	local fonts = LSM3:List(LSM3.MediaType.FONT);
+	local fontsTable = {};
+	for index, font in pairs(fonts) do
+		tinsert(fontsTable, {font, font })
+	end
+	return fontsTable;
+end
+
+function Storyline_API.lib.getDefaultFont()
+	return LSM3:GetDefault(LSM3.MediaType.FONT)
+end
+
+function Storyline_API.lib.getFontPath(font)
+	return LSM3:Fetch(LSM3.MediaType.FONT, font);
+end

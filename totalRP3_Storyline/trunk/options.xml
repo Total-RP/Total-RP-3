@@ -100,7 +100,7 @@
 					</OnLoad>
 				</Scripts>
 			</Slider>
-			<Frame parentKey="FontDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentFontDropDown" parentKey="FontDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.SizeSlider" y="5" />
 				</Anchors>
@@ -144,21 +144,31 @@
 			<KeyValue key="name" value="Storyline" />
 		</KeyValues>
 		<Frames>
+			<CheckButton parentKey="ForceGossip" inherits="StorylineOptionsCheckboxWithTooltip" checked="false">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-10"/>
+					<Anchor point="LEFT" x="10"/>
+				</Anchors>
+			</CheckButton>
+			<CheckButton parentKey="HideOriginalFrames" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.ForceGossip" relativePoint="BOTTOMLEFT" y="-10"/>
+				</Anchors>
+			</CheckButton>
 			<Frame name="$parentTextSpeed" parentKey="TextSpeed" inherits="StorylineOptionsTitledFrameTemplate">
 				<Layers>
 					<Layer>
 						<FontString parentKey="TextSample" inherits="StorylineTextOptionsSample" />
 					</Layer>
 				</Layers>
-				<Size y="80" />
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-10" />
+					<Anchor point="TOPLEFT" relativeKey="$parent.HideOriginalFrames" relativePoint="BOTTOMLEFT" y="-20" />
 					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
 				<Frames>
 					<Slider name="$parentSlider" parentKey="Slider" inherits="OptionsSliderTemplate" obeyStepOnDrag="true">
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" y="5" x="5" />
+							<Anchor point="TOPLEFT" relativeKey="$parent.TextSample" relativePoint="BOTTOMLEFT" y="-20" />
 						</Anchors>
 						<Scripts>
 							<OnLoad>
@@ -169,16 +179,6 @@
 					</Slider>
 				</Frames>
 			</Frame>
-			<CheckButton parentKey="ForceGossip" inherits="StorylineOptionsCheckboxWithTooltip" checked="false">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.TextSpeed" relativePoint="BOTTOMLEFT" y="-10" />
-				</Anchors>
-			</CheckButton>
-			<CheckButton parentKey="HideOriginalFrames" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.ForceGossip" relativePoint="BOTTOMLEFT" y="-10" />
-				</Anchors>
-			</CheckButton>
 			<Frame parentKey="Locale">
 				<Layers>
 					<Layer>
@@ -186,7 +186,8 @@
 					</Layer>
 				</Layers>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.HideOriginalFrames" />
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.TextSpeed.Slider"/>
+					<Anchor point="LEFT" x="15" />
 					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
 				<Frames>

@@ -69,6 +69,27 @@ local function decorateTextOptions(title, optionKey, affectedText)
 		Storyline_Data.config[optionKey].Size = scale;
 	end);
 	StorylineTextOptionsPanel[optionKey].SizeSlider:SetValue(Storyline_Data.config[optionKey].Size or select(2, affectedText:GetFont()));
+
+	local fonts = Storyline_API.lib.getFonts();
+
+	print(Storyline_Data.config[optionKey].Font);
+	if not Storyline_Data.config[optionKey].Font then
+		Storyline_Data.config[optionKey].Font = Storyline_API.lib.getDefaultFont();
+	end
+
+	local font = Storyline_API.lib.getFontPath(Storyline_Data.config[optionKey].Font);
+	local _, scale, outline = affectedText:GetFont();
+	affectedText:SetFont(font, scale, outline);
+	StorylineTextOptionsPanel[optionKey].TextSample:SetFont(font, scale, outline);
+
+	setupListBox(StorylineTextOptionsPanel[optionKey].FontDropDown, fonts, function(fontIndex)
+		local font = Storyline_API.lib.getFontPath(fontIndex);
+		local _, scale, outline = affectedText:GetFont();
+		affectedText:SetFont(font, scale, outline);
+		StorylineTextOptionsPanel[optionKey].TextSample:SetFont(font, scale, outline);
+		Storyline_Data.config[optionKey].Font = fontIndex;
+	end, nil, 100, true);
+	StorylineTextOptionsPanel[optionKey].FontDropDown:SetSelectedValue(Storyline_Data.config[optionKey].Font);
 end
 
 Storyline_API.options.init = function()
@@ -96,17 +117,32 @@ Storyline_API.options.init = function()
 
 	-- Text speed slider
 	local textSpeedFactor = Storyline_Data.config.textSpeedFactor or 0.5;
+	local textSpeedTextSampleAnimation = 0;
 	StorylineOptionsPanel.TextSpeed.Title:SetText(loc("SL_CONFIG_TEXTSPEED_TITLE"));
-	StorylineOptionsPanel.TextSpeed.TextSample:SetText(loc("SL_CONFIG_SAMPLE_TEXT"));
+	StorylineOptionsPanel.TextSpeed.TextSample:SetText(loc("SL_CONFIG_BIG_SAMPLE_TEXT"));
 	StorylineOptionsPanelTextSpeedSliderLow:SetText(loc("SL_CONFIG_TEXTSPEED_INSTANT"));
 	StorylineOptionsPanelTextSpeedSliderHigh:SetText(loc("SL_CONFIG_TEXTSPEED_HIGH"));
-	StorylineOptionsPanel.TextSpeed.Slider:SetScript("OnValueChanged", function(self, scale)
-		StorylineOptionsPanelTextSpeedSliderText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(scale));
-		textSpeedFactor = scale;
-		-- StorylineOptionsPanel.TextSpeed.TextSample
+	StorylineOptionsPanel.TextSpeed.Slider:SetScript("OnValueChanged", function(self, speed)
+		StorylineOptionsPanelTextSpeedSliderText:SetText(loc("SL_CONFIG_TEXTSPEED"):format(speed));
+		textSpeedFactor = speed;
 		Storyline_Data.config.textSpeedFactor = textSpeedFactor;
+		textSpeedTextSampleAnimation = 0;
 	end);
 	StorylineOptionsPanel.TextSpeed.Slider:SetValue(textSpeedFactor);
+
+	local ANIMATION_TEXT_SPEED = 80;
+	local function onUpdateTextSpeedSample(self, elapsed)
+		if textSpeedTextSampleAnimation == nil then return end
+		textSpeedTextSampleAnimation = textSpeedTextSampleAnimation + (elapsed * (ANIMATION_TEXT_SPEED * Storyline_Data.config.textSpeedFactor));
+		if textSpeedFactor == 0 or textSpeedTextSampleAnimation >= StorylineOptionsPanel.TextSpeed.TextSample:GetText():len() then
+			textSpeedTextSampleAnimation = nil;
+			StorylineOptionsPanel.TextSpeed.TextSample:SetAlphaGradient(StorylineOptionsPanel.TextSpeed.TextSample:GetText():len(), 1);
+		else
+			StorylineOptionsPanel.TextSpeed.TextSample:SetAlphaGradient(textSpeedTextSampleAnimation, 30);
+		end
+	end
+
+	StorylineOptionsPanel:SetScript("OnUpdate", onUpdateTextSpeedSample);
 
 	-- Force gossip option
 	StorylineOptionsPanel.ForceGossip.Text:SetText(loc("SL_CONFIG_FORCEGOSSIP"));
