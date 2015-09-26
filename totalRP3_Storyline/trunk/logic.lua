@@ -83,7 +83,6 @@ end
 
 local function modelsLoaded()
 	if Storyline_NPCFrameModelsYou.modelLoaded and Storyline_NPCFrameModelsMe.modelLoaded then
-
 		local scale = {
 			me = {
 				height = 1.3,
@@ -153,7 +152,7 @@ end
 function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameDebugText:SetText(event);
 	if Storyline_Data.config.hideOriginalFrames then
-		hideOriginalFrames();
+		Storyline_API.options.hideOriginalFrames();
 	end
 
 
@@ -320,7 +319,7 @@ function Storyline_API.addon:OnEnable()
 	-- DressUpFrame
 	DressUpFrameCloseButton:HookScript("OnClick", function()
 		if Storyline_Data.config.hideOriginalFrames and Storyline_NPCFrame:IsVisible() then
-			hideOriginalFrames();
+			Storyline_API.options.hideOriginalFrames();
 		end
 	end)
 

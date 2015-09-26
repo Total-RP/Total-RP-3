@@ -80,7 +80,11 @@
 	<Frame name="StorylineTextOptionsTemplate" inherits="StorylineOptionsTitledFrameTemplate" virtual="true">
 		<Layers>
 			<Layer>
-				<FontString parentKey="TextSample" inherits="StorylineTextOptionsSample" />
+				<FontString parentKey="TextSample" inherits="StorylineTextOptionsSample" maxLines="1">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" y="40" />
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Size y="80" />
@@ -139,15 +143,6 @@
 		<KeyValues>
 			<KeyValue key="name" value="Storyline" />
 		</KeyValues>
-		<Layers>
-			<Layer level="ARTWORK">
-				<FontString parentKey="LocaleLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-10" />
-					</Anchors>
-				</FontString>
-			</Layer>
-		</Layers>
 		<Frames>
 			<Frame name="$parentTextSpeed" parentKey="TextSpeed" inherits="StorylineOptionsTitledFrameTemplate">
 				<Layers>
@@ -184,19 +179,31 @@
 					<Anchor point="TOPLEFT" relativeKey="$parent.ForceGossip" relativePoint="BOTTOMLEFT" y="-10" />
 				</Anchors>
 			</CheckButton>
-			<Frame name="StorylineOptionsLocaleDropDown" parentKey="LocaleDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
+			<Frame parentKey="Locale">
+				<Layers>
+					<Layer>
+						<FontString parentKey="Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP" />
+					</Layer>
+				</Layers>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.HideOriginalFrames" />
-					<Anchor point="LEFT" x="0" />
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.HideOriginalFrames" />
+					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
-				<Scripts>
-					<OnEnter>
-						Storyline_RefreshTooltipForFrame(self);
-					</OnEnter>
-					<OnLeave>
-						Storyline_MainTooltip:Hide();
-					</OnLeave>
-				</Scripts>
+				<Frames>
+					<Frame name="StorylineOptionsLocaleDropDown" parentKey="DropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.Label" y="-10" x="-10"/>
+						</Anchors>
+						<Scripts>
+							<OnEnter>
+								Storyline_RefreshTooltipForFrame(self);
+							</OnEnter>
+							<OnLeave>
+								Storyline_MainTooltip:Hide();
+							</OnLeave>
+						</Scripts>
+					</Frame>
+				</Frames>
 			</Frame>
 		</Frames>
 		<Scripts>
@@ -213,7 +220,7 @@
 		<Frames>
 			<Frame name="$parentQuestTitle" parentKey="QuestTitle" inherits="StorylineTextOptionsTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.TextSpeed" relativePoint="BOTTOMLEFT" y="-10" />
+					<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-10" />
 					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
 			</Frame>
@@ -250,7 +257,7 @@
 			</CheckButton>
 			<CheckButton parentKey="DebugMode" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" relativeKey="$parent" relativePoint="BOTTOMRIGHT" x="10" y="10" />
+					<Anchor point="BOTTOMLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" x="5" y="5" />
 				</Anchors>
 			</CheckButton>
 		</Frames>

@@ -118,7 +118,7 @@ Storyline_API.locale = {
 local error, tostring = error, tostring;
 
 local LOCALS = Storyline_API.locale;
-local DEFAULT_LOCALE = GetLocale() == "frFR" and "frFR" or "enUS";
+local DEFAULT_LOCALE = "enUS";
 Storyline_API.locale.DEFAULT_LOCALE = DEFAULT_LOCALE;
 local effectiveLocal = {};
 local localeFont;

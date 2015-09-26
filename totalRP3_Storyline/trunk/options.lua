@@ -30,9 +30,11 @@ Storyline_API.options = {}
 
 local function hideOriginalFrames()
 	GossipFrame:ClearAllPoints();
-	GossipFrame:SetPoint("TOPRIGHT", 0, -116);
+	local frameWidth = GossipFrame:GetWidth();
+	GossipFrame:SetPoint("TOPLEFT", frameWidth * -1, 0);
 	QuestFrame:ClearAllPoints();
-	QuestFrame:SetPoint("TOPRIGHT", 0, -116);
+	frameWidth = QuestFrame:GetWidth();
+	QuestFrame:SetPoint("TOPLEFT", frameWidth * -1, 0);
 end
 
 Storyline_API.options.hideOriginalFrames = hideOriginalFrames;
@@ -66,7 +68,7 @@ local function decorateTextOptions(title, optionKey, affectedText)
 		StorylineTextOptionsPanel[optionKey].TextSample:SetFont(font, scale, outline);
 		Storyline_Data.config[optionKey].Size = scale;
 	end);
-	StorylineTextOptionsPanel[optionKey].SizeSlider:SetValue(Storyline_Data.config.Storyline_Data.config[optionKey].Size or select(2, affectedText:GetFont()));
+	StorylineTextOptionsPanel[optionKey].SizeSlider:SetValue(Storyline_Data.config[optionKey].Size or select(2, affectedText:GetFont()));
 end
 
 Storyline_API.options.init = function()
@@ -82,14 +84,14 @@ Storyline_API.options.init = function()
 	};
 
 	local init = true;
-	StorylineOptionsPanel.LocaleLabel:SetText("Locale") -- TODO Localization
-	setupListBox(StorylineOptionsPanel.LocaleDropDown, localeTab, function(locale)
+	StorylineOptionsPanel.Locale.Label:SetText("Locale") -- TODO Localization
+	setupListBox(StorylineOptionsPanel.Locale.DropDown, localeTab, function(locale)
 		Storyline_Data.config.locale = locale;
 		if not init then
 			ReloadUI();
 		end
 	end, nil, 100, true);
-	StorylineOptionsPanel.LocaleDropDown:SetSelectedValue(Storyline_Data.config.locale or Storyline_API.locale.DEFAULT_LOCALE);
+	StorylineOptionsPanel.Locale.DropDown:SetSelectedValue(Storyline_Data.config.locale or Storyline_API.locale.DEFAULT_LOCALE);
 	init = false;
 
 	-- Text speed slider
