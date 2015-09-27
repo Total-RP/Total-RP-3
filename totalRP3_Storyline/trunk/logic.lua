@@ -226,12 +226,11 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ANIMATION_TEXT_SPEED = 80;
-local textSpeedFactor = 0.5;
 
 local function onUpdateChatText(self, elapsed)
 	if self.start and Storyline_NPCFrameChatText:GetText() and Storyline_NPCFrameChatText:GetText():len() > 0 then
-		self.start = self.start + (elapsed * (ANIMATION_TEXT_SPEED * textSpeedFactor));
-		if textSpeedFactor == 0 or self.start >= Storyline_NPCFrameChatText:GetText():len() then
+		self.start = self.start + (elapsed * (ANIMATION_TEXT_SPEED * Storyline_Data.config.textSpeedFactor or 0.5));
+		if Storyline_Data.config.textSpeedFactor == 0 or self.start >= Storyline_NPCFrameChatText:GetText():len() then
 			self.start = nil;
 			Storyline_NPCFrameChatText:SetAlphaGradient(Storyline_NPCFrameChatText:GetText():len(), 1);
 		else

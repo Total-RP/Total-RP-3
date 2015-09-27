@@ -72,7 +72,6 @@ local function decorateTextOptions(title, optionKey, affectedText)
 
 	local fonts = Storyline_API.lib.getFonts();
 
-	print(Storyline_Data.config[optionKey].Font);
 	if not Storyline_Data.config[optionKey].Font then
 		Storyline_Data.config[optionKey].Font = Storyline_API.lib.getDefaultFont();
 	end
