@@ -32,6 +32,7 @@ local playSelfAnim, getDuration, playAnimationDelay = Storyline_API.playSelfAnim
 local getQuestIcon, getQuestActiveIcon = Storyline_API.getQuestIcon, Storyline_API.getQuestActiveIcon;
 local getQuestTriviality = Storyline_API.getQuestTriviality;
 local selectMultipleAvailableGreetings = Storyline_API.selectMultipleAvailableGreetings;
+local selectFirstGreetingAvailable = Storyline_API.selectFirstGreetingAvailable;
 local selectMultipleActiveGreetings = Storyline_API.selectMultipleActiveGreetings;
 local selectMultipleActive = Storyline_API.selectMultipleActive;
 local selectFirstActive = Storyline_API.selectFirstActive;
@@ -487,10 +488,10 @@ eventHandlers["QUEST_GREETING"] = function()
 		previous = Storyline_NPCFrameChatOption2;
 		if numAvailableQuests == 1 then
 			local title, isComplete = GetAvailableTitle(1);
-			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + 1);
+			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
 			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
 			Storyline_NPCFrameChatOption2:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
-			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstAvailable);
+			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstGreetingAvailable);
 		else
 			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectMultipleAvailableGreetings);
