@@ -246,7 +246,7 @@
 			<Button name="Storyline_NPCFrameDebugYouResetButton">
 				<Size x="35" y="35"/>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT" relativeTo="Storyline_NPCFrameDebugMyModelText" x="100" y="0"/>
+					<Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT" relativeTo="Storyline_NPCFrameDebugMyModelText" x="200" y="0"/>
 				</Anchors>
 				<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
 				<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>

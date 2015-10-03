@@ -48,7 +48,7 @@ local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_COD
 local CHAT_MARGIN = 70;
 local DEFAULT_SCALE = {
 	me = {
-		height = 1.45,
+		scale = 1.45,
 		feet = 0.4,
 		offset = 0.225,
 		facing = 0.75
@@ -74,30 +74,49 @@ local function resetDialog()
 	playNext(Storyline_NPCFrameModelsYou);
 end
 
-local function getScalingStuctures(modelMeName, modelYouName)
+local function getDataStuctures(modelMeName, modelYouName)
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
+	local savedDataMe, savedDataYou, dataMe, dataYou;
 
-	for _, var in pairs({Storyline_Data.debug.scaling, Storyline_SCALE_MAPPING}) do
-		if var[key] then
-			return var[key].me, var[key].you;
-		end
-
-		if var[invertedKey] then
-			return var[invertedKey].you, var[invertedKey].me;
-		end
+	if Storyline_Data.debug.scaling[key] then
+		savedDataMe = Storyline_Data.debug.scaling[key].me;
+		savedDataYou = Storyline_Data.debug.scaling[key].you;
+	elseif Storyline_Data.debug.scaling[invertedKey] then
+		savedDataMe = Storyline_Data.debug.scaling[invertedKey].you;
+		savedDataYou = Storyline_Data.debug.scaling[invertedKey].me;
+	end
+	if Storyline_SCALE_MAPPING[key] then
+		dataMe = Storyline_SCALE_MAPPING[key].me;
+		dataYou = Storyline_SCALE_MAPPING[key].you;
+	elseif Storyline_SCALE_MAPPING[invertedKey] then
+		dataMe = Storyline_SCALE_MAPPING[invertedKey].you;
+		dataYou = Storyline_SCALE_MAPPING[invertedKey].me;
 	end
 
-	return DEFAULT_SCALE.me, DEFAULT_SCALE.you, 1;
+	return savedDataMe, savedDataYou, dataMe, dataYou;
 end
 
 local function getSavedStructure()
 	local modelMeName, modelYouName = Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model;
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
-	return Storyline_Data.debug.scaling[key] or Storyline_Data.debug.scaling[invertedKey];
+	if not Storyline_Data.debug.scaling[key] and not Storyline_Data.debug.scaling[invertedKey] then
+		Storyline_Data.debug.scaling[key] = {};
+	end
+	return Storyline_Data.debug.scaling[key] or Storyline_Data.debug.scaling[invertedKey], Storyline_Data.debug.scaling[key] == nil;
 end
 
 local function saveStructureData(dataName, isMe, value)
-
+	local structure, isInverted = getSavedStructure();
+	local meYou;
+	if (isMe and not isInverted) or (not isMe and isInverted) then
+		meYou = "me";
+	elseif (isMe and isInverted) or (not isMe and not isInverted) then
+		meYou = "you";
+	end
+	if not structure[meYou] then
+		structure[meYou] = {};
+	end
+	structure[meYou][dataName] = value;
 end
 
 local function setModelHeight(scale, isMe, save)
@@ -136,24 +155,30 @@ local function setModelOffset(offset, isMe, save)
 	end
 end
 
+local function getBestValue(dataName, savedData, data, default)
+	if savedData and savedData[dataName] then return savedData[dataName] end
+	if data and data[dataName] then return data[dataName] end
+	return default[dataName];
+end
+
 local function modelsLoaded()
 	if Storyline_NPCFrameModelsYou.modelLoaded and Storyline_NPCFrameModelsMe.modelLoaded then
 
 		Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
 		Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
 
-		local scaleMe, scaleYou = getScalingStuctures(Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model);
+		local savedDataMe, savedDataYou, dataMe, dataYou = getDataStuctures(Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model);
 
-		setModelHeight(scaleMe.height, true, false);
-		setModelFeet(scaleMe.feet, true, false);
+		setModelHeight(getBestValue("scale", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
+		setModelFeet(getBestValue("feet", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
 
 		if Storyline_NPCFrameModelsYou.model:len() > 0 then
-			setModelOffset(scaleMe.offset, true, false);
-			setModelFacing(scaleMe.facing, true, false);
-			setModelOffset(scaleYou.offset, false, false);
-			setModelFacing(scaleYou.facing, false, false);
-			setModelFeet(scaleYou.feet, false, false);
-			setModelHeight(scaleYou.height, false, false);
+			setModelOffset(getBestValue("offset", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
+			setModelFacing(getBestValue("facing", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
+			setModelOffset(getBestValue("offset", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
+			setModelFacing(getBestValue("facing", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
+			setModelFeet(getBestValue("feet", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
+			setModelHeight(getBestValue("scale", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
 		else
 			setModelOffset(0, true, false);
 			setModelFacing(0, true, false);
@@ -378,9 +403,9 @@ function Storyline_API.addon:OnEnable()
 			end
 		elseif IsControlKeyDown() then
 			if IsShiftKeyDown() then -- If shift key down adjust my model
-				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.01 * delta, true, true);
+				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.02 * delta, true, true);
 			else
-				setModelFacing(Storyline_NPCFrameModelsYou.facing - 0.01 * delta, false, true);
+				setModelFacing(Storyline_NPCFrameModelsYou.facing - 0.02 * delta, false, true);
 			end
 		end
 	end)
