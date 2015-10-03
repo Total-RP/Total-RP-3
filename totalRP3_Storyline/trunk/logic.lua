@@ -48,20 +48,20 @@ local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
 local WEIRD_LINE_BREAK = LINE_FEED_CODE .. CARRIAGE_RETURN_CODE .. LINE_FEED_CODE;
 local CHAT_MARGIN = 70;
-local DEFAULT_MODEL_SCALE = {
+local DEFAULT_SCALE = {
 	me = {
-		height = 1.5,
+		height = 1.45,
 		feet = 0.4,
-		offset = 0.2,
+		offset = 0.225,
 		facing = 0.75
 	},
 	you = {
-		height = 1.5,
+		height = 1.45,
 		feet = 0.4,
-		offset = -0.2,
+		offset = -0.225,
 		facing = -0.75
 	}
-}
+};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOGIC
@@ -80,21 +80,6 @@ local function resetDialog()
 	Storyline_NPCFrameChat.currentIndex = 0;
 	playNext(Storyline_NPCFrameModelsYou);
 end
-
-local DEFAULT_SCALE = {
-	me = {
-		height = 1.3,
-		feet = 0.4,
-		offset = 0.2,
-		facing = 0.75
-	},
-	you = {
-		height = 1.3,
-		feet = 0.4,
-		offset = -0.2,
-		facing = -0.75
-	}
-};
 
 local function getScalingStuctures(modelMeName, modelYouName)
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
@@ -133,8 +118,8 @@ local function modelsLoaded()
 		else
 			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(0);
 			Storyline_NPCFrameDebugMeFacingSlider:SetValue(0);
-			Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_SCALE.me.feet);
-			Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_SCALE.me.height);
+			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scaleMe.feet);
+			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scaleMe.height);
 			Storyline_NPCFrameModelsMe:SetAnimation(520);
 		end
 
@@ -399,16 +384,16 @@ function Storyline_API.addon:OnEnable()
 		saveResizedModels();
 	end);
 	Storyline_NPCFrameDebugMeResetButton:SetScript("OnClick", function(self)
-		Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_MODEL_SCALE.me.height);
-		Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_MODEL_SCALE.me.feet);
-		Storyline_NPCFrameDebugMeOffsetSlider:SetValue(DEFAULT_MODEL_SCALE.me.offset);
-		Storyline_NPCFrameDebugMeFacingSlider:SetValue(DEFAULT_MODEL_SCALE.me.facing);
+		Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_SCALE.me.height);
+		Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_SCALE.me.feet);
+		Storyline_NPCFrameDebugMeOffsetSlider:SetValue(DEFAULT_SCALE.me.offset);
+		Storyline_NPCFrameDebugMeFacingSlider:SetValue(DEFAULT_SCALE.me.facing);
 	end);
 	Storyline_NPCFrameDebugYouResetButton:SetScript("OnClick", function(self)
-		Storyline_NPCFrameDebugYouHeightSlider:SetValue(DEFAULT_MODEL_SCALE.you.height);
-		Storyline_NPCFrameDebugYouFeetSlider:SetValue(DEFAULT_MODEL_SCALE.you.feet);
-		Storyline_NPCFrameDebugYouOffsetSlider:SetValue(DEFAULT_MODEL_SCALE.you.offset);
-		Storyline_NPCFrameDebugYouFacingSlider:SetValue(DEFAULT_MODEL_SCALE.you.facing);
+		Storyline_NPCFrameDebugYouHeightSlider:SetValue(DEFAULT_SCALE.you.height);
+		Storyline_NPCFrameDebugYouFeetSlider:SetValue(DEFAULT_SCALE.you.feet);
+		Storyline_NPCFrameDebugYouOffsetSlider:SetValue(DEFAULT_SCALE.you.offset);
+		Storyline_NPCFrameDebugYouFacingSlider:SetValue(DEFAULT_SCALE.you.facing);
 	end);
 
 	-- Scrolling on the 3D model frame to adjust the size of the models

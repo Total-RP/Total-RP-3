@@ -222,7 +222,7 @@
 	</EditBox>
 
 	<!-- Tutorial style hovered frame -->
-	<Frame name="Storyline_HoveredFrame" inherits="GlowBoxTemplate" virtual="true">
+	<Frame name="Storyline_HoveredFrame" inherits="GlowBoxTemplate" enableMouse="true" virtual="true">
 		<Size x="220" y="100"/>
 		<Layers>
 			<Layer level="ARTWORK">

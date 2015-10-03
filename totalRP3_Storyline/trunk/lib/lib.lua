@@ -221,7 +221,7 @@ function Storyline_API.lib.configureHoverFrame(frame, hoveredFrame, arrowPositio
 	y = y or 0;
 	frame:ClearAllPoints();
 	frame:SetParent(hoveredFrame:GetParent());
-	frame:SetFrameStrata("HIGH");
+	frame:SetFrameStrata("DIALOG");
 	frame.ArrowRIGHT:Hide();
 	frame.ArrowGlowRIGHT:Hide();
 	frame.ArrowUP:Hide();

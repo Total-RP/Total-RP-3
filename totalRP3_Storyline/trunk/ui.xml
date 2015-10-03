@@ -233,7 +233,130 @@
 		</Layers>
 		<Frames>
 
-			<Button name="Storyline_NPCFrameObjectives">
+			<Frame name="Storyline_NPCFrameModels" frameStrata="MEDIUM">
+				<Size x="0" y="0"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+				<Frames>
+					<Frame name="Storyline_NPCFrameModelsPoint">
+						<Size x="10" y="10"/>
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+					</Frame>
+					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true" />
+					<CinematicModel name="Storyline_NPCFrameModelsMe" setAllPoints="true" />
+					<Button name="Storyline_NPCFrameChatOption1" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
+					<Button name="Storyline_NPCFrameChatOption2" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
+					<Button name="Storyline_NPCFrameChatOption3" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
+					<Frame name="Storyline_NPCFrameGossipChoices" inherits="Storyline_HoveredFrame" hidden="true">
+						<Size x="325" y="150"/>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontNormal" justifyH="CENTER" justifyV="TOP">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="TOP" x="0" y="-10"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<Frame name="Storyline_NPCFrameChat" frameStrata="HIGH">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+					<EdgeSize>
+						<AbsValue val="32"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="300"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="5" right="5" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>
+				<Size x="0" y="150"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="25"/>
+					<Anchor point="LEFT" x="30" y="0"/>
+					<Anchor point="RIGHT" x="-30" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\Tooltips\CHATBUBBLE-TAIL">
+							<Size x="32" y="32"/>
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="-40" y="-3"/>
+							</Anchors>
+							<TexCoords left="1" right="0" top="1" bottom="0"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="Storyline_NPCFrameChatName" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="TOP">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="50" y="-12"/>
+								<Anchor point="TOPRIGHT" x="-50" y="-12"/>
+							</Anchors>
+							<Color r="1" g="0.75" b="0.0"/>
+						</FontString>
+						<FontString name="Storyline_NPCFrameChatText" text="[NAME]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
+							<Anchors>
+								<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrameChatName" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+							</Anchors>
+							<Color r="1" g="1" b="0.4"/>
+						</FontString>
+						<FontString name="Storyline_NPCFrameChatNextText" text="[POUIC]" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="BOTTOM">
+							<Anchors>
+								<Anchor point="BOTTOM" x="0" y="17"/>
+							</Anchors>
+							<Color r="1" g="1" b="0.4"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="Storyline_NPCFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="5" y="-2"/>
+							<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								self:SetAlpha(0.15);
+							</OnLoad>
+						</Scripts>
+					</Frame>
+					<Button name="Storyline_NPCFrameChatNext" inherits="Storyline_InvisibleButton" setAllPoints="true" frameLevel="4">
+						<Scripts>
+							<OnEnter>
+								Storyline_NPCFrameChatHighlight:Show();
+							</OnEnter>
+							<OnLeave>
+								Storyline_NPCFrameChatHighlight:Hide();
+							</OnLeave>
+						</Scripts>
+					</Button>
+					<Button name="Storyline_NPCFrameChatPrevious" frameLevel="5">
+						<Size x="35" y="35"/>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						</Anchors>
+						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up" />
+						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+					</Button>
+				</Frames>
+			</Frame>
+
+			<Button name="Storyline_NPCFrameObjectives" frameStrata="HIGH">
 				<Size x="70" y="70"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-100"/>
@@ -347,7 +470,7 @@
 				</Frames>
 			</Button>
 
-			<Frame name="Storyline_NPCFrameRewards" frameLevel="3" setAllPoints="true">
+			<Frame name="Storyline_NPCFrameRewards" setAllPoints="true" frameStrata="HIGH">
 				<Layers>
 					<Layer level="BORDER" textureSubLevel="1">
 						<Texture name="Storyline_NPCFrameRewardsHolo" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alphaMode="ADD" alpha="0.5">
@@ -466,130 +589,9 @@
 				</Frames>
 			</Frame>
 
-			<Frame name="Storyline_NPCFrameGossipChoices" inherits="Storyline_HoveredFrame" hidden="true">
-				<Size x="325" y="150"/>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="Title" inherits="GameFontNormal" justifyH="CENTER" justifyV="TOP">
-							<Size x="0" y="20"/>
-							<Anchors>
-								<Anchor point="TOP" x="0" y="-10"/>
-								<Anchor point="LEFT" x="10" y="0"/>
-								<Anchor point="RIGHT" x="-10" y="0"/>
-							</Anchors>
-							<Color r="0.95" g="0.95" b="0.95"/>
-						</FontString>
-					</Layer>
-				</Layers>
-			</Frame>
-
-			<Frame name="Storyline_NPCFrameModels">
-				<Size x="0" y="0"/>
-				<Anchors>
-					<Anchor point="TOP" x="0" y="-20"/>
-					<Anchor point="BOTTOM" x="0" y="20"/>
-					<Anchor point="LEFT" x="20" y="0"/>
-					<Anchor point="RIGHT" x="-20" y="0"/>
-				</Anchors>
-				<Frames>
-					<Frame name="Storyline_NPCFrameModelsPoint">
-						<Size x="10" y="10"/>
-						<Anchors>
-							<Anchor point="CENTER" x="0" y="0"/>
-						</Anchors>
-					</Frame>
-					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true" />
-					<CinematicModel name="Storyline_NPCFrameModelsMe" setAllPoints="true" />
-					<Button name="Storyline_NPCFrameChatOption1" inherits="Storyline_ChoiceButton"/>
-					<Button name="Storyline_NPCFrameChatOption2" inherits="Storyline_ChoiceButton"/>
-					<Button name="Storyline_NPCFrameChatOption3" inherits="Storyline_ChoiceButton"/>
-
-				</Frames>
-			</Frame>
-
-			<Frame name="Storyline_NPCFrameChat" frameLevel="4">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
-					<EdgeSize>
-						<AbsValue val="32"/>
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="300"/>
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
-				</Backdrop>
-				<Size x="0" y="150"/>
-				<Anchors>
-					<Anchor point="BOTTOM" x="0" y="25"/>
-					<Anchor point="LEFT" x="30" y="0"/>
-					<Anchor point="RIGHT" x="-30" y="0"/>
-				</Anchors>
-				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\Tooltips\CHATBUBBLE-TAIL">
-							<Size x="32" y="32"/>
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="-40" y="-3"/>
-							</Anchors>
-							<TexCoords left="1" right="0" top="1" bottom="0"/>
-						</Texture>
-					</Layer>
-					<Layer level="OVERLAY">
-						<FontString name="Storyline_NPCFrameChatName" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="TOP">
-							<Anchors>
-								<Anchor point="TOPLEFT" x="50" y="-12"/>
-								<Anchor point="TOPRIGHT" x="-50" y="-12"/>
-							</Anchors>
-							<Color r="1" g="0.75" b="0.0"/>
-						</FontString>
-						<FontString name="Storyline_NPCFrameChatText" text="[NAME]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
-							<Anchors>
-								<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrameChatName" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
-							</Anchors>
-							<Color r="1" g="1" b="0.4"/>
-						</FontString>
-						<FontString name="Storyline_NPCFrameChatNextText" text="[POUIC]" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="BOTTOM">
-							<Anchors>
-								<Anchor point="BOTTOM" x="0" y="17"/>
-							</Anchors>
-							<Color r="1" g="1" b="0.4"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<Frame name="Storyline_NPCFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="5" y="-2"/>
-							<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								self:SetAlpha(0.15);
-							</OnLoad>
-						</Scripts>
-					</Frame>
-					<Button name="Storyline_NPCFrameChatNext" inherits="Storyline_InvisibleButton" setAllPoints="true" frameLevel="4">
-						<Scripts>
-							<OnEnter>
-								Storyline_NPCFrameChatHighlight:Show();
-							</OnEnter>
-							<OnLeave>
-								Storyline_NPCFrameChatHighlight:Hide();
-							</OnLeave>
-						</Scripts>
-					</Button>
-					<Button name="Storyline_NPCFrameChatPrevious" frameLevel="5">
-						<Size x="35" y="35"/>
-						<Anchors>
-							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
-						</Anchors>
-						<NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up" />
-						<PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
-						<HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
-					</Button>
-				</Frames>
-			</Frame>
+			<!--         -->
+			<!-- BUTTONS -->
+			<!--         -->
 
 			<Button name="Storyline_NPCFrameClose" inherits="UIPanelCloseButton">
 				<Anchors>
@@ -597,7 +599,6 @@
 				</Anchors>
 			</Button>
 
-			<!-- RESIZING BUTTON -->
 			<Button name="Storyline_NPCFrameResizeButton" inherits="Storyline_ResizeButton" hidden="false">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="Storyline_NPCFrame" type="global"/>
@@ -633,6 +634,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
+
 		</Frames>
 	</Frame>
 

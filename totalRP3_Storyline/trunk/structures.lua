@@ -349,75 +349,15 @@ Storyline_ANIM_MAPPING["creature\\furbolg\\furbolg.m2"] = ALL_TO_TALK;
 Storyline_SCALE_MAPPING = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Draenei male
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
---[[
--- Playable class
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = 10;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\dwarf\\female\\dwarffemale_hd.m2"] = 35;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = 20;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\gnome\\female\\gnomefemale_hd.m2"] = 70;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = 75;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\human\\male\\humanmale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\human\\female\\humanfemale_hd.m2"] = 35;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\goblin\\female\\goblinfemale.m2"] = 60;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = 60;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\nightelf\\female\\nightelffemale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = -4;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\worgen\\female\\worgenfemale.m2"] = -29;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\worgen\\male\\worgenmale.m2"] = -7;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = 19;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = -7;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\orc\\female\\orcfemale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\orc\\male\\orcmale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\bloodelf\\female\\bloodelffemale_hd.m2"] = 35;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\troll\\male\\trollmale_hd.m2"] = -15;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\tauren\\male\\taurenmale_hd.m2"] = -38;
-
--- NPC
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\agronn\\agronn.m2"] = -75;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\ogredraenor\\ogredraenor.m2"] = -63;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoagolem\\arakkoagolem.m2"] = -60;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~character\\broken\\male\\brokenmale.m2"] = 30;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoa2\\arakkoa2.m2"] = -45;
-Storyline_SCALE_MAPPING["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoaoutland\\arakkoaoutland.m2"] = 20;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Blood elf male
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Playable class
-Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\scourge\\male\\scourgemale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\troll\\female\\trollfemale_hd.m2"] = -25;
-Storyline_SCALE_MAPPING["character\\bloodelf\\male\\bloodelfmale_hd.m2~character\\tauren\\female\\taurenfemale_hd.m2"] = -35;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Human male
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Playable class
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\human\\female\\humanfemale_hd.m2"] = 8;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = 40;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = 15;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = -23;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = -54;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = -27;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = 80;
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = -36;
-
--- NPC
-Storyline_SCALE_MAPPING["character\\human\\male\\humanmale_hd.m2~creature\\jinyu\\jinyu.m2"] = -18;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Goblin female
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Playable class
-Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\hobgoblin\\hobgoblin.m2"] = -49;
-Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~character\\goblin\\male\\goblinmale.m2"] = -20;
-Storyline_SCALE_MAPPING["character\\goblin\\female\\goblinfemale.m2~creature\\raptor\\raptorpet.m2"] = 71; ]]
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC Blacklisting
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 Storyline_NPC_BLACKLIST = {"94399"}
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Scaling
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+Storyline_SCALE_MAPPING = {
+
+}
