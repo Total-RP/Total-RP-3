@@ -81,62 +81,60 @@ local function resetDialog()
 	playNext(Storyline_NPCFrameModelsYou);
 end
 
+local DEFAULT_SCALE = {
+	me = {
+		height = 1.3,
+		feet = 0.4,
+		offset = 0.2,
+		facing = 0.75
+	},
+	you = {
+		height = 1.3,
+		feet = 0.4,
+		offset = -0.2,
+		facing = -0.75
+	}
+};
+
+local function getScalingStuctures(modelMeName, modelYouName)
+	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
+
+	for _, var in pairs({Storyline_Data.debug.scaling, Storyline_SCALE_MAPPING}) do
+		if var[key] then
+			return var[key].me, var[key].you, 1;
+		end
+
+		if var[invertedKey] then
+			return var[invertedKey].you, var[invertedKey].me, -1;
+		end
+	end
+
+	return DEFAULT_SCALE.me, DEFAULT_SCALE.you, 1;
+end
+
 local function modelsLoaded()
 	if Storyline_NPCFrameModelsYou.modelLoaded and Storyline_NPCFrameModelsMe.modelLoaded then
-		local scale = {
-			me = {
-				height = 1.3,
-				feet = 0.4,
-				offset = 0.2,
-				facing = 0.75
-			},
-			you = {
-				height = 1.3,
-				feet = 0.4,
-				offset = -0.2,
-				facing = -0.75
-			}
-		};
+
 		Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
 		Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
 
+		local scaleMe, scaleYou, invertedFactor = getScalingStuctures(Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model);
+
 		if Storyline_NPCFrameModelsYou.model:len() > 0 then
-			local key, invertedKey = Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model, Storyline_NPCFrameModelsYou.model .. "~" .. Storyline_NPCFrameModelsMe.model;
-			if Storyline_SCALE_MAPPING[key] then
-				scale = Storyline_SCALE_MAPPING[key];
-			elseif Storyline_SCALE_MAPPING[invertedKey] then
-				scale.me = Storyline_SCALE_MAPPING[invertedKey].you;
-				scale.you = Storyline_SCALE_MAPPING[invertedKey].me;
-				scale.me.offset = -scale.me.offset;
-				scale.me.facing = -scale.me.facing;
-				scale.you.offset = -scale.you.offset;
-				scale.you.facing = -scale.you.facing;
-			end
-			if Storyline_Data.debug.scaling[key] then
-				scale = Storyline_Data.debug.scaling[key];
-			elseif Storyline_Data.debug.scaling[invertedKey] then
-				scale.me = Storyline_Data.debug.scaling[invertedKey].you;
-				scale.you = Storyline_Data.debug.scaling[invertedKey].me;
-				scale.me.offset = -scale.me.offset;
-				scale.me.facing = -scale.me.facing;
-				scale.you.offset = -scale.you.offset;
-				scale.you.facing = -scale.you.facing;
-			end
+			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(scaleMe.offset * invertedFactor);
+			Storyline_NPCFrameDebugMeFacingSlider:SetValue(scaleMe.facing * invertedFactor);
+			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scaleMe.feet);
+			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scaleMe.height);
 
-			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(scale.me.offset);
-			Storyline_NPCFrameDebugMeFacingSlider:SetValue(scale.me.facing);
-			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scale.me.feet);
-			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scale.me.height);
-
-			Storyline_NPCFrameDebugYouOffsetSlider:SetValue(scale.you.offset);
-			Storyline_NPCFrameDebugYouFacingSlider:SetValue(scale.you.facing);
-			Storyline_NPCFrameDebugYouFeetSlider:SetValue(scale.you.feet);
-			Storyline_NPCFrameDebugYouHeightSlider:SetValue(scale.you.height);
+			Storyline_NPCFrameDebugYouOffsetSlider:SetValue(scaleYou.offset * invertedFactor);
+			Storyline_NPCFrameDebugYouFacingSlider:SetValue(scaleYou.facing * invertedFactor);
+			Storyline_NPCFrameDebugYouFeetSlider:SetValue(scaleYou.feet);
+			Storyline_NPCFrameDebugYouHeightSlider:SetValue(scaleYou.height);
 		else
 			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(0);
 			Storyline_NPCFrameDebugMeFacingSlider:SetValue(0);
-			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scale.me.feet);
-			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scale.me.height);
+			Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_SCALE.me.feet);
+			Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_SCALE.me.height);
 			Storyline_NPCFrameModelsMe:SetAnimation(520);
 		end
 
