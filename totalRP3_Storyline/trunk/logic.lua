@@ -37,10 +37,8 @@ local Storyline_NPCFrameModelsYou, Storyline_NPCFrameModelsMe = Storyline_NPCFra
 local Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner = Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFrameBanner;
 local Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe = Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe;
 
-local Storyline_NPCFrameDebugMeHeightSlider, Storyline_NPCFrameDebugYouHeightSlider = Storyline_NPCFrameDebugMeHeightSlider, Storyline_NPCFrameDebugYouHeightSlider;
 local Storyline_NPCFrameDebugMeFeetSlider, Storyline_NPCFrameDebugYouFeetSlider = Storyline_NPCFrameDebugMeFeetSlider, Storyline_NPCFrameDebugYouFeetSlider;
 local Storyline_NPCFrameDebugMeOffsetSlider, Storyline_NPCFrameDebugYouOffsetSlider = Storyline_NPCFrameDebugMeOffsetSlider, Storyline_NPCFrameDebugYouOffsetSlider;
-local Storyline_NPCFrameDebugMeFacingSlider, Storyline_NPCFrameDebugYouFacingSlider = Storyline_NPCFrameDebugMeFacingSlider, Storyline_NPCFrameDebugYouFacingSlider;
 
 -- Constants
 local DEBUG = true;
@@ -54,14 +52,9 @@ local DEFAULT_SCALE = {
 		feet = 0.4,
 		offset = 0.225,
 		facing = 0.75
-	},
-	you = {
-		height = 1.45,
-		feet = 0.4,
-		offset = -0.225,
-		facing = -0.75
 	}
 };
+DEFAULT_SCALE.you = DEFAULT_SCALE.me;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOGIC
@@ -86,15 +79,61 @@ local function getScalingStuctures(modelMeName, modelYouName)
 
 	for _, var in pairs({Storyline_Data.debug.scaling, Storyline_SCALE_MAPPING}) do
 		if var[key] then
-			return var[key].me, var[key].you, 1;
+			return var[key].me, var[key].you;
 		end
 
 		if var[invertedKey] then
-			return var[invertedKey].you, var[invertedKey].me, -1;
+			return var[invertedKey].you, var[invertedKey].me;
 		end
 	end
 
 	return DEFAULT_SCALE.me, DEFAULT_SCALE.you, 1;
+end
+
+local function getSavedStructure()
+	local modelMeName, modelYouName = Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model;
+	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
+	return Storyline_Data.debug.scaling[key] or Storyline_Data.debug.scaling[invertedKey];
+end
+
+local function saveStructureData(dataName, isMe, value)
+
+end
+
+local function setModelHeight(scale, isMe, save)
+	local frame = (isMe and Storyline_NPCFrameModelsMe or Storyline_NPCFrameModelsYou);
+	frame.scale = scale;
+	frame:InitializeCamera(scale);
+	if save then
+		saveStructureData("scale", isMe, scale);
+	end
+end
+
+local function setModelFacing(facing, isMe, save)
+	local frame = (isMe and Storyline_NPCFrameModelsMe or Storyline_NPCFrameModelsYou);
+	frame.facing = facing;
+	frame:SetFacing(facing * (isMe and 1 or -1));
+	if save then
+		saveStructureData("facing", isMe, facing);
+	end
+end
+
+local function setModelFeet(feet, isMe, save)
+	local frame = (isMe and Storyline_NPCFrameModelsMe or Storyline_NPCFrameModelsYou);
+	frame.feet = feet;
+	frame:SetHeightFactor(feet);
+	if save then
+		saveStructureData("feet", isMe, feet);
+	end
+end
+
+local function setModelOffset(offset, isMe, save)
+	local frame = (isMe and Storyline_NPCFrameModelsMe or Storyline_NPCFrameModelsYou);
+	frame.offset = offset;
+	frame:SetTargetDistance(offset * (isMe and 1 or -1));
+	if save then
+		saveStructureData("offset", isMe, offset);
+	end
 end
 
 local function modelsLoaded()
@@ -103,23 +142,21 @@ local function modelsLoaded()
 		Storyline_NPCFrameModelsYou.model = Storyline_NPCFrameModelsYou:GetModel();
 		Storyline_NPCFrameModelsMe.model = Storyline_NPCFrameModelsMe:GetModel();
 
-		local scaleMe, scaleYou, invertedFactor = getScalingStuctures(Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model);
+		local scaleMe, scaleYou = getScalingStuctures(Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model);
+
+		setModelHeight(scaleMe.height, true, false);
+		setModelFeet(scaleMe.feet, true, false);
 
 		if Storyline_NPCFrameModelsYou.model:len() > 0 then
-			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(scaleMe.offset * invertedFactor);
-			Storyline_NPCFrameDebugMeFacingSlider:SetValue(scaleMe.facing * invertedFactor);
-			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scaleMe.feet);
-			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scaleMe.height);
-
-			Storyline_NPCFrameDebugYouOffsetSlider:SetValue(scaleYou.offset * invertedFactor);
-			Storyline_NPCFrameDebugYouFacingSlider:SetValue(scaleYou.facing * invertedFactor);
-			Storyline_NPCFrameDebugYouFeetSlider:SetValue(scaleYou.feet);
-			Storyline_NPCFrameDebugYouHeightSlider:SetValue(scaleYou.height);
+			setModelOffset(scaleMe.offset, true, false);
+			setModelFacing(scaleMe.facing, true, false);
+			setModelOffset(scaleYou.offset, false, false);
+			setModelFacing(scaleYou.facing, false, false);
+			setModelFeet(scaleYou.feet, false, false);
+			setModelHeight(scaleYou.height, false, false);
 		else
-			Storyline_NPCFrameDebugMeOffsetSlider:SetValue(0);
-			Storyline_NPCFrameDebugMeFacingSlider:SetValue(0);
-			Storyline_NPCFrameDebugMeFeetSlider:SetValue(scaleMe.feet);
-			Storyline_NPCFrameDebugMeHeightSlider:SetValue(scaleMe.height);
+			setModelOffset(0, true, false);
+			setModelFacing(0, true, false);
 			Storyline_NPCFrameModelsMe:SetAnimation(520);
 		end
 
@@ -137,7 +174,6 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	if Storyline_Data.config.hideOriginalFrames then
 		Storyline_API.options.hideOriginalFrames();
 	end
-
 
 	local guid = UnitGUID(targetType);
 	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid or "");
@@ -320,90 +356,31 @@ function Storyline_API.addon:OnEnable()
 		Storyline_NPCFrame:SetSize(Storyline_Data.config.width or 700, Storyline_Data.config.height or 450);
 	resizeChat();
 
-	local function saveResizedModels()
-		if Storyline_NPCFrameModelsMe.model and Storyline_NPCFrameModelsYou.model then
-			Storyline_Data.debug.scaling[Storyline_NPCFrameModelsMe.model .. "~" .. Storyline_NPCFrameModelsYou.model] = {
-				me = {
-					height = Storyline_NPCFrameDebugMeHeightSlider:GetValue(),
-					feet = Storyline_NPCFrameDebugMeFeetSlider:GetValue(),
-					offset = Storyline_NPCFrameDebugMeOffsetSlider:GetValue(),
-					facing = Storyline_NPCFrameDebugMeFacingSlider:GetValue()
-				},
-				you = {
-					height = Storyline_NPCFrameDebugYouHeightSlider:GetValue(),
-					feet = Storyline_NPCFrameDebugYouFeetSlider:GetValue(),
-					offset = Storyline_NPCFrameDebugYouOffsetSlider:GetValue(),
-					facing = Storyline_NPCFrameDebugYouFacingSlider:GetValue()
-				}
-			};
-		end
-	end
-
 	-- Debug
 	if not Storyline_Data.config.debug then
 		Storyline_NPCFrameDebug:Hide();
 	end
-	Storyline_NPCFrameDebugMeHeightSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugMeHeightSliderValText:SetText("Height: " .. scale);
-		Storyline_NPCFrameModelsMe:InitializeCamera(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugYouHeightSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugYouHeightSliderValText:SetText("Height: " .. scale);
-		Storyline_NPCFrameModelsYou:InitializeCamera(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugMeFeetSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugMeFeetSliderValText:SetText("Feet: " .. scale);
-		Storyline_NPCFrameModelsMe:SetHeightFactor(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugYouFeetSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugYouFeetSliderValText:SetText("Feet: " .. scale);
-		Storyline_NPCFrameModelsYou:SetHeightFactor(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugMeOffsetSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugMeOffsetSliderValText:SetText("Offset: " .. scale);
-		Storyline_NPCFrameModelsMe:SetTargetDistance(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugYouOffsetSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugYouOffsetSliderValText:SetText("Offset: " .. scale);
-		Storyline_NPCFrameModelsYou:SetTargetDistance(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugMeFacingSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugMeFacingSliderValText:SetText("Facing: " .. scale);
-		Storyline_NPCFrameModelsMe:SetFacing(scale);
-		saveResizedModels();
-	end);
-	Storyline_NPCFrameDebugYouFacingSlider:SetScript("OnValueChanged", function(self, scale)
-		Storyline_NPCFrameDebugYouFacingSliderValText:SetText("Facing: " .. scale);
-		Storyline_NPCFrameModelsYou:SetFacing(scale);
-		saveResizedModels();
-	end);
 	Storyline_NPCFrameDebugMeResetButton:SetScript("OnClick", function(self)
-		Storyline_NPCFrameDebugMeHeightSlider:SetValue(DEFAULT_SCALE.me.height);
-		Storyline_NPCFrameDebugMeFeetSlider:SetValue(DEFAULT_SCALE.me.feet);
-		Storyline_NPCFrameDebugMeOffsetSlider:SetValue(DEFAULT_SCALE.me.offset);
-		Storyline_NPCFrameDebugMeFacingSlider:SetValue(DEFAULT_SCALE.me.facing);
+		-- TODO: erase and reshow
 	end);
 	Storyline_NPCFrameDebugYouResetButton:SetScript("OnClick", function(self)
-		Storyline_NPCFrameDebugYouHeightSlider:SetValue(DEFAULT_SCALE.you.height);
-		Storyline_NPCFrameDebugYouFeetSlider:SetValue(DEFAULT_SCALE.you.feet);
-		Storyline_NPCFrameDebugYouOffsetSlider:SetValue(DEFAULT_SCALE.you.offset);
-		Storyline_NPCFrameDebugYouFacingSlider:SetValue(DEFAULT_SCALE.you.facing);
+		-- TODO: erase and reshow
 	end);
 
 	-- Scrolling on the 3D model frame to adjust the size of the models
 	Storyline_NPCFrameModelsMe:EnableMouseWheel(true);
 	Storyline_NPCFrameModelsMe:SetScript("OnMouseWheel", function(self, delta)
-		if Storyline_NPCFrameDebug:IsVisible() or IsAltKeyDown() then
+		if IsAltKeyDown() then
 			if IsShiftKeyDown() then -- If shift key down adjust my model
-				Storyline_NPCFrameDebugMeHeightSlider:SetValue(Storyline_NPCFrameDebugMeHeightSlider:GetValue() - 0.01 * delta);
+				setModelHeight(Storyline_NPCFrameModelsMe.scale - 0.01 * delta, true, true);
 			else
-				Storyline_NPCFrameDebugYouHeightSlider:SetValue(Storyline_NPCFrameDebugYouHeightSlider:GetValue() - 0.01 * delta);
+				setModelHeight(Storyline_NPCFrameModelsYou.scale - 0.01 * delta, false, true);
+			end
+		elseif IsControlKeyDown() then
+			if IsShiftKeyDown() then -- If shift key down adjust my model
+				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.01 * delta, true, true);
+			else
+				setModelFacing(Storyline_NPCFrameModelsYou.facing - 0.01 * delta, false, true);
 			end
 		end
 	end)
