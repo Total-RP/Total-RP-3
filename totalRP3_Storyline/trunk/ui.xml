@@ -248,28 +248,28 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true">
-						<Frames>
-							<Frame name="Storyline_NPCFrameModelsYouScrollZone" enableMouse="true">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="0"/>
-									<Anchor point="LEFT" x="0" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="0"/>
-									<Anchor point="RIGHT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint"  x="0" y="0"/>
-								</Anchors>
-							</Frame>
-						</Frames>
-					</CinematicModel>
 					<CinematicModel name="Storyline_NPCFrameModelsMe" setAllPoints="true">
 						<Frames>
-							<Frame name="Storyline_NPCFrameModelsMeScrollZone" enableMouse="true">
+							<Button name="Storyline_NPCFrameModelsMeScrollZone" enableMouse="true">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="0"/>
-									<Anchor point="RIGHT" x="0" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="0"/>
-									<Anchor point="LEFT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint"  x="0" y="0"/>
+									<Anchor point="TOP" x="0" y="-50"/>
+									<Anchor point="LEFT" x="75" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="50"/>
+									<Anchor point="RIGHT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint" x="-75" y="0"/>
 								</Anchors>
-							</Frame>
+							</Button>
+						</Frames>
+					</CinematicModel>
+					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true">
+						<Frames>
+							<Button name="Storyline_NPCFrameModelsYouScrollZone" enableMouse="true">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-50"/>
+									<Anchor point="RIGHT" x="-75" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="50"/>
+									<Anchor point="LEFT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint" x="75" y="0"/>
+								</Anchors>
+							</Button>
 						</Frames>
 					</CinematicModel>
 					<Button name="Storyline_NPCFrameChatOption1" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
@@ -615,13 +615,13 @@
 			<!-- BUTTONS -->
 			<!--         -->
 
-			<Button name="Storyline_NPCFrameClose" inherits="UIPanelCloseButton">
+			<Button name="Storyline_NPCFrameClose" inherits="UIPanelCloseButton" frameStrata="HIGH">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
 
-			<Button name="Storyline_NPCFrameResizeButton" inherits="Storyline_ResizeButton" hidden="false">
+			<Button name="Storyline_NPCFrameResizeButton" inherits="Storyline_ResizeButton" frameStrata="HIGH" hidden="false">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="Storyline_NPCFrame" type="global"/>
 					<KeyValue key="minWidth" value="700" type="number"/>
@@ -632,7 +632,7 @@
 				</Anchors>
 			</Button>
 
-			<Button name="Storyline_NPCFrameConfigButton" inherits="BrowserButtonTemplate">
+			<Button name="Storyline_NPCFrameConfigButton" inherits="BrowserButtonTemplate" frameStrata="HIGH">
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="5" y="10"/>
 				</Anchors>

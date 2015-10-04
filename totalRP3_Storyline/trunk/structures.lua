@@ -360,4 +360,557 @@ Storyline_NPC_BLACKLIST = {"94399"}
 
 Storyline_SCALE_MAPPING = {
 
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Humùan female
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	-- VS player models
+	["character\\human\\female\\humanfemale_hd.m2~character\\human\\male\\humanmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.56,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\gnome\\female\\gnomefemale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 2.2,
+			["offset"] = 0.195,
+			["feet"] = 0.42,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 1.27,
+			["feet"] = 0.41,
+		},
+		["me"] = {
+			["scale"] = 1.63,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\draenei\\male\\draeneimale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.81,
+		},
+		["you"] = {
+			["scale"] = 1.31,
+			["offset"] = 0.205,
+			["feet"] = 0.43,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = {
+		["me"] = {
+			["scale"] = 1.58,
+		},
+		["you"] = {
+			["offset"] = 0.205,
+			["scale"] = 1.13,
+			["feet"] = 0.43,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = {
+		["me"] = {
+			["scale"] = 1.58,
+		},
+		["you"] = {
+			["scale"] = 1.38,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\nightelf\\female\\nightelffemale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.61,
+			["facing"] = 0.75,
+		},
+		["you"] = {
+			["offset"] = 0.215,
+			["scale"] = 1.32,
+			["feet"] = 0.42,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.61,
+		},
+		["you"] = {
+			["scale"] = 1.27,
+			["offset"] = 0.215,
+			["facing"] = 0.75,
+			["feet"] = 0.41,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 2,
+			["facing"] = 0.79,
+			["offset"] = 0.185,
+			["feet"] = 0.41,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\dwarf\\female\\dwarffemale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 1.61,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 1.34,
+			["facing"] = 0.75,
+			["offset"] = 0.175,
+			["feet"] = 0.42,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\worgen\\female\\worgenfemale.m2"] = {
+		["you"] = {
+			["offset"] = 0.215,
+			["scale"] = 1.05,
+			["feet"] = 0.42,
+		},
+		["me"] = {
+			["scale"] = 1.66,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\worgen\\male\\worgenmale.m2"] = {
+		["me"] = {
+			["scale"] = 1.74,
+		},
+		["you"] = {
+			["scale"] = 1.27,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = {
+		["you"] = {
+			["offset"] = 0.195,
+			["scale"] = 1.91,
+			["feet"] = 0.41,
+		},
+		["me"] = {
+			["scale"] = 1.4,
+		},
+	},
+	-- VS NPC
+	["character\\human\\female\\humanfemale_hd.m2~creature\\dragondeepholm\\dragondeepholmmount.m2"] = {
+		["you"] = {
+			["offset"] = 0.325,
+			["scale"] = 0.75,
+			["feet"] = 0.4,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~creature\\humanmalekid\\humanmalekid.m2"] = {
+		["you"] = {
+			["scale"] = 1.02,
+			["offset"] = 0.115,
+			["feet"] = 0.45,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~creature\\kingvarianwrynn\\kingvarianwrynn.m2"] = {
+		["me"] = {
+			["scale"] = 1.52,
+		},
+		["you"] = {
+			["scale"] = 1.29,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~character\\broken\\male\\brokenmale.m2"] = {
+		["you"] = {
+			["scale"] = 1.3,
+		},
+	},
+	["character\\human\\female\\humanfemale_hd.m2~creature\\humanfemalekid\\humanfemalekid.m2"] = {
+		["you"] = {
+			["offset"] = 0.185,
+			["feet"] = 0.43,
+			["scale"] = 2.25,
+			["facing"] = 0.75,
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Draenei male
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	-- VS player models
+
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\worgen\\female\\worgenfemale.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 1.23,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\dwarf\\female\\dwarffemale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.185,
+		},
+		["you"] = {
+			["scale"] = 2.1,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 2.52000000000001,
+			["feet"] = 0.43,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = {
+		["me"] = {
+			["offset"] = 0.185,
+		},
+		["you"] = {
+			["scale"] = 1.82,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 1.31,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\bloodelf\\female\\bloodelffemale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.7,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\nightelf\\female\\nightelffemale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 1.57,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\gnome\\female\\gnomefemale_hd.m2"] = {
+		["you"] = {
+			["offset"] = 0.225,
+			["scale"] = 2.75999999999998,
+			["feet"] = 0.42,
+		},
+		["me"] = {
+			["scale"] = 1.44,
+			["offset"] = 0.195,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = {
+		["you"] = {
+			["offset"] = 0.195,
+			["scale"] = 1.9,
+			["feet"] = 0.41,
+		},
+		["me"] = {
+			["offset"] = 0.205,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\goblin\\female\\goblinfemale.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["offset"] = 0.195,
+			["scale"] = 2.25,
+			["feet"] = 0.42,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.42,
+			["offset"] = 0.225,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 1.44,
+		},
+		["me"] = {
+			["offset"] = 0.195,
+			["scale"] = 1.44,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\human\\male\\humanmale_hd.m2"] = {
+		["you"] = {
+			["scale"] = 1.61,
+		},
+		["me"] = {
+			["offset"] = 0.195,
+			["scale"] = 1.38,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = {
+		["me"] = {
+			["offset"] = 0.185,
+		},
+		["you"] = {
+			["offset"] = 0.215,
+			["scale"] = 2.39999999999999,
+			["feet"] = 0.41,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\worgen\\male\\worgenmale.m2"] = {
+		["me"] = {
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.38,
+			["offset"] = 0.235,
+		},
+	},
+	-- VS NPC
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\broken\\male\\brokenmale.m2"] = {
+		["me"] = {
+			["offset"] = 0.215,
+		},
+		["you"] = {
+			["scale"] = 1.66,
+			["offset"] = 0.225,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\humanfemalekid\\humanfemalekid.m2"] = {
+		["you"] = {
+			["scale"] = 3.38,
+			["feet"] = 0.43,
+			["offset"] = 0.215,
+			["facing"] = 0.73,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\humanmalekid\\humanmalekid.m2"] = {
+		["you"] = {
+			["scale"] = 1.4,
+			["facing"] = 0.79,
+			["offset"] = 0.125,
+			["feet"] = 0.45,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\kingvarianwrynn\\kingvarianwrynn.m2"] = {
+		["me"] = {
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.37,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\arakkoaoutland\\arakkoaoutland.m2"] = {
+		["me"] = {
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 1.6,
+			["offset"] = 0.215,
+		},
+	},
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Gnome male
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- VS player models
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\dwarf\\male\\dwarfmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.58,
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.08,
+			["offset"] = 0.185,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\human\\male\\humanmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 2.06,
+			["offset"] = 0.185,
+			["feet"] = 0.42,
+		},
+		["you"] = {
+			["scale"] = 1.3,
+			["offset"] = 0.225,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\gnome\\male\\gnomemale_hd.m2"] = {
+		["me"] = {
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["offset"] = 0.205,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\worgen\\male\\worgenmale.m2"] = {
+		["me"] = {
+			["scale"] = 2.50999999999999,
+			["offset"] = 0.205,
+			["feet"] = 0.42,
+		},
+		["you"] = {
+			["scale"] = 1.3,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\draenei\\female\\draeneifemale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 2.77999999999998,
+			["offset"] = 0.195,
+			["feet"] = 0.42,
+		},
+		["you"] = {
+			["scale"] = 1.38,
+			["offset"] = 0.245,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\nightelf\\female\\nightelffemale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 2.51999999999999,
+			["offset"] = 0.205,
+		},
+		["you"] = {
+			["scale"] = 1.35,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\pandaren\\female\\pandarenfemale.m2"] = {
+		["you"] = {
+			["offset"] = 0.235,
+			["scale"] = 1.37,
+		},
+		["me"] = {
+			["offset"] = 0.175,
+			["scale"] = 2.24,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\pandaren\\male\\pandarenmale.m2"] = {
+		["me"] = {
+			["scale"] = 2.59999999999999,
+			["offset"] = 0.195,
+		},
+		["you"] = {
+			["scale"] = 1.12,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\nightelf\\male\\nightelfmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 2.38999999999999,
+			["facing"] = 0.77,
+			["offset"] = 0.185,
+			["feet"] = 0.42,
+		},
+		["you"] = {
+			["scale"] = 1.26,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\goblin\\male\\goblinmale.m2"] = {
+		["you"] = {
+			["offset"] = 0.195,
+			["scale"] = 1.34,
+		},
+		["me"] = {
+			["offset"] = 0.165,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\dwarf\\female\\dwarffemale_hd.m2"] = {
+		["you"] = {
+			["offset"] = 0.265,
+			["scale"] = 1.21,
+		},
+		["me"] = {
+			["offset"] = 0.175,
+			["scale"] = 1.6,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\goblin\\female\\goblinfemale.m2"] = {
+		["you"] = {
+			["offset"] = 0.185,
+			["scale"] = 1.41,
+		},
+		["me"] = {
+			["offset"] = 0.175,
+		},
+	},
+	-- VS NPC
+	["character\\gnome\\male\\gnomemale_hd.m2~creature\\draenorancient\\draenorancientgorgrond.m2"] = {
+		["me"] = {
+			["scale"] = 7.54999999999999,
+			["feet"] = 0.42,
+		},
+		["you"] = {
+			["scale"] = 0.75,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~creature\\kingvarianwrynn\\kingvarianwrynn.m2"] = {
+		["me"] = {
+			["scale"] = 2.69999999999999,
+			["offset"] = 0.215,
+		},
+		["you"] = {
+			["scale"] = 1.37,
+			["offset"] = 0.235,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~character\\broken\\male\\brokenmale.m2"] = {
+		["you"] = {
+			["scale"] = 1.37,
+			["feet"] = 0.38,
+			["facing"] = 0.79,
+		},
+		["me"] = {
+			["offset"] = 0.175,
+			["scale"] = 2.1,
+		},
+	},
+	["character\\gnome\\male\\gnomemale_hd.m2~creature\\humanfemalekid\\humanfemalekid.m2"] = {
+		["me"] = {
+			["scale"] = 1.31,
+			["offset"] = 0.175,
+		},
+		["you"] = {
+			["scale"] = 1.59,
+		},
+	},
 }
+
+local debugPlayerModelList = {
+	-- Alliance
+	"character\\human\\female\\humanfemale_hd.m2",
+	"character\\human\\male\\humanmale_hd.m2",
+	"character\\gnome\\female\\gnomefemale_hd.m2",
+	"character\\gnome\\male\\gnomemale_hd.m2",
+	"character\\dwarf\\female\\dwarffemale_hd.m2",
+	"character\\dwarf\\male\\dwarfmale_hd.m2",
+	"character\\draenei\\female\\draeneifemale_hd.m2",
+	"character\\draenei\\male\\draeneimale_hd.m2",
+	"character\\pandaren\\male\\pandarenmale.m2",
+	"character\\pandaren\\female\\pandarenfemale.m2",
+	"character\\nightelf\\female\\nightelffemale_hd.m2",
+	"character\\nightelf\\male\\nightelfmale_hd.m2",
+	"character\\worgen\\female\\worgenfemale.m2",
+	"character\\worgen\\male\\worgenmale.m2",
+
+	-- Horde
+	"character\\goblin\\male\\goblinmale.m2",
+	"character\\goblin\\female\\goblinfemale.m2",
+}
+
+function Storyline_API.debugMissingScaling()
+	local alreadyTreated = {};
+	local count = 0;
+	for _, firstModel in pairs(debugPlayerModelList) do
+		for _, secondModel in pairs(debugPlayerModelList) do
+			if firstModel ~= secondModel then
+				local key, invertedKey = firstModel .. "~" .. secondModel, secondModel .. "~" .. firstModel;
+				if not Storyline_SCALE_MAPPING[key] and not Storyline_SCALE_MAPPING[invertedKey] and not alreadyTreated[key] and not alreadyTreated[invertedKey] then
+					alreadyTreated[key] = true;
+					alreadyTreated[invertedKey] = true;
+					count = count + 1;
+					print(("Missing scaling for %s + %s"):format(firstModel, secondModel));
+				end
+			end
+		end
+	end
+	print(("Total %s"):format(count));
+end

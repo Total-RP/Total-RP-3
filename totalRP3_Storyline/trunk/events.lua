@@ -988,6 +988,11 @@ function Storyline_API.initEventsStructure()
 	local startDialog = Storyline_API.startDialog;
 
 	EVENT_INFO = {
+		["SCALING_DEBUG"] = {
+			text = function() return "DEBUG TEXT" end,
+			cancelMethod = function() end,
+			titleGetter = function() return "DEBUG TITLE" end,
+		},
 		["QUEST_GREETING"] = {
 			text = GetGreetingText,
 			cancelMethod = CloseQuest,
@@ -1093,6 +1098,7 @@ function Storyline_API.initEventsStructure()
 			finishText = CLOSE,
 		}
 	};
+	Storyline_API.EVENT_INFO = EVENT_INFO;
 
 	for event, info in pairs(EVENT_INFO) do
 		registerHandler(event, function()
