@@ -393,22 +393,43 @@ function Storyline_API.addon:OnEnable()
 	end);
 
 	-- Scrolling on the 3D model frame to adjust the size of the models
-	Storyline_NPCFrameModelsMe:EnableMouseWheel(true);
-	Storyline_NPCFrameModelsMe:SetScript("OnMouseWheel", function(self, delta)
+	Storyline_NPCFrameModelsMeScrollZone:EnableMouseWheel(true);
+	Storyline_NPCFrameModelsMeScrollZone:SetScript("OnMouseWheel", function(self, delta)
 		if IsAltKeyDown() then
 			if IsShiftKeyDown() then -- If shift key down adjust my model
+				setModelHeight(Storyline_NPCFrameModelsMe.scale - 0.1 * delta, true, true);
+			else
 				setModelHeight(Storyline_NPCFrameModelsMe.scale - 0.01 * delta, true, true);
+			end
+		elseif IsControlKeyDown() then
+			if IsShiftKeyDown() then -- If shift key down adjust my model
+				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.2 * delta, true, true);
+			else
+				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.02 * delta, true, true);
+			end
+		end
+	end);
+	Storyline_NPCFrameModelsMeScrollZone:RegisterForDrag("LeftButton");
+	Storyline_NPCFrameModelsMeScrollZone:SetScript("OnDragStart", function()
+
+	end);
+
+	Storyline_NPCFrameModelsYouScrollZone:EnableMouseWheel(true);
+	Storyline_NPCFrameModelsYouScrollZone:SetScript("OnMouseWheel", function(self, delta)
+		if IsAltKeyDown() then
+			if IsShiftKeyDown() then -- If shift key down adjust my model
+				setModelHeight(Storyline_NPCFrameModelsYou.scale - 0.1 * delta, false, true);
 			else
 				setModelHeight(Storyline_NPCFrameModelsYou.scale - 0.01 * delta, false, true);
 			end
 		elseif IsControlKeyDown() then
 			if IsShiftKeyDown() then -- If shift key down adjust my model
-				setModelFacing(Storyline_NPCFrameModelsMe.facing - 0.02 * delta, true, true);
+				setModelFacing(Storyline_NPCFrameModelsYou.facing - 0.2 * delta, false, true);
 			else
 				setModelFacing(Storyline_NPCFrameModelsYou.facing - 0.02 * delta, false, true);
 			end
 		end
-	end)
+	end);
 
 	-- Slash command to show settings frames
 	Storyline_API.addon:RegisterChatCommand("storyline", function()

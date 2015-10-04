@@ -248,8 +248,30 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true" />
-					<CinematicModel name="Storyline_NPCFrameModelsMe" setAllPoints="true" />
+					<CinematicModel name="Storyline_NPCFrameModelsYou" setAllPoints="true">
+						<Frames>
+							<Frame name="Storyline_NPCFrameModelsYouScrollZone" enableMouse="true">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="0"/>
+									<Anchor point="LEFT" x="0" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="0"/>
+									<Anchor point="RIGHT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint"  x="0" y="0"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</CinematicModel>
+					<CinematicModel name="Storyline_NPCFrameModelsMe" setAllPoints="true">
+						<Frames>
+							<Frame name="Storyline_NPCFrameModelsMeScrollZone" enableMouse="true">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="0"/>
+									<Anchor point="RIGHT" x="0" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="0"/>
+									<Anchor point="LEFT" relativePoint="CENTER" relativeTo="Storyline_NPCFrameModelsPoint"  x="0" y="0"/>
+								</Anchors>
+							</Frame>
+						</Frames>
+					</CinematicModel>
 					<Button name="Storyline_NPCFrameChatOption1" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
 					<Button name="Storyline_NPCFrameChatOption2" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
 					<Button name="Storyline_NPCFrameChatOption3" inherits="Storyline_ChoiceButton" frameStrata="HIGH"/>
