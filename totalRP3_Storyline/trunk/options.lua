@@ -149,6 +149,9 @@ Storyline_API.options.init = function()
 	StorylineOptionsPanel.ForceGossip:SetScript("OnClick", function(self)
 		Storyline_Data.config.forceGossip = self:GetChecked() == true;
 	end);
+	if Storyline_Data.config.forceGossip == nil then
+		Storyline_Data.config.forceGossip = false;
+	end
 	StorylineOptionsPanel.ForceGossip:SetChecked(Storyline_Data.config.forceGossip);
 
 	-- Hide original frames option
@@ -162,7 +165,10 @@ Storyline_API.options.init = function()
 			showOriginalFrames();
 		end
 	end);
-	StorylineOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames or true);
+	if Storyline_Data.config.hideOriginalFrames == nil then
+		Storyline_Data.config.hideOriginalFrames = true;
+	end
+	StorylineOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
 
 	-- Text options panel
 	StorylineTextOptionsPanel.Title:SetText(loc("SL_CONFIG_STYLING_OPTIONS"));
@@ -183,6 +189,9 @@ Storyline_API.options.init = function()
 	StorylineMiscellaneousOptionsPanel.AutoEquip:SetScript("OnClick", function(self)
 		Storyline_Data.config.autoEquip = self:GetChecked() == true;
 	end);
+	if Storyline_Data.config.autoEquip == nil then
+		Storyline_Data.config.autoEquip = false;
+	end
 	StorylineMiscellaneousOptionsPanel.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
 
 	-- Debug mode option
@@ -194,6 +203,9 @@ Storyline_API.options.init = function()
 			Storyline_NPCFrameDebug:Show();
 		end
 	end);
+	if Storyline_Data.config.debug == nil then
+		Storyline_Data.config.debug = false;
+	end
 	StorylineMiscellaneousOptionsPanel.DebugMode:SetChecked(Storyline_Data.config.debug);
 
 end
