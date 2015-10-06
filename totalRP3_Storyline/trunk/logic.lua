@@ -450,13 +450,15 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrameClose:SetScript("OnClick", closeDialog);
 	Storyline_NPCFrameRewardsItem:SetScale(1.5);
 
-	Storyline_NPCFrame:SetScript("OnKeyDown", function(key)
+	Storyline_NPCFrame:SetScript("OnKeyDown", function(self, key)
 		if key == "SPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatNext:Click();
 		elseif key == "BACKSPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatPrevious:Click();
+		elseif key == "ESCAPE" then
+			closeDialog();
 		end
 	end);
 
