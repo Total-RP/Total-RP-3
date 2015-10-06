@@ -205,7 +205,7 @@
 	</Button>
 
 	<Frame name="Storyline_NPCFrame" inherits="Storyline_StandardParchmentFrame" toplevel="true" parent="UIParent"
-		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
+		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true">
 		<Size x="700" y="450"/>
 		<Layers>
 			<Layer level="BORDER">

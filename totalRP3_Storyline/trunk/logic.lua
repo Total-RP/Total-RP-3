@@ -451,10 +451,10 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrameRewardsItem:SetScale(1.5);
 
 	Storyline_NPCFrame:SetScript("OnKeyDown", function(key)
-		if (key == "SPACE") then
+		if key == "SPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatNext:Click();
-		else if (key == "BACKSPACE") then
+		elseif key == "BACKSPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatPrevious:Click();
 		end

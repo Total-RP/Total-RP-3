@@ -170,6 +170,18 @@ Storyline_API.options.init = function()
 	end
 	StorylineOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
 
+	-- Lock Storyline frame option
+	StorylineOptionsPanel.LockFrame.Text:SetText(loc("SL_CONFIG_LOCKFRAME"));
+	StorylineOptionsPanel.LockFrame.tooltip = loc("SL_CONFIG_LOCKFRAME_TT");
+	StorylineOptionsPanel.LockFrame:SetScript("OnClick", function(self)
+		Storyline_Data.config.lockFrame = self:GetChecked() == true;
+		Storyline_NPCFrame:SetMovable(not Storyline_Data.config.lockFrame);
+	end);
+	if Storyline_Data.config.lockFrame == nil then
+		Storyline_Data.config.lockFrame = false;
+	end
+	StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+
 	-- Text options panel
 	StorylineTextOptionsPanel.Title:SetText(loc("SL_CONFIG_STYLING_OPTIONS"));
 	StorylineTextOptionsPanel.SubText:SetText(loc("SL_CONFIG_STYLING_OPTIONS_SUBTEXT"));
