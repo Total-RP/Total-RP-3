@@ -27,31 +27,37 @@ local after, tostring = C_Timer.After, tostring;
 -- UTILS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getQuestIcon(frequency, isRepeatable, isLegendary)
+local function getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial)
+	local questIcon = "|T";
 	if (isLegendary) then
-		return "Interface\\GossipFrame\\AvailableLegendaryQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\AvailableLegendaryQuestIcon:20:20";
 	elseif (frequency == LE_QUEST_FREQUENCY_DAILY or frequency == LE_QUEST_FREQUENCY_WEEKLY) then
-		return "Interface\\GossipFrame\\DailyQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\DailyQuestIcon:20:20";
 	elseif (isRepeatable) then
-		return "Interface\\GossipFrame\\DailyActiveQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\DailyActiveQuestIcon:20:20";
+	elseif isTrivial then
+		questIcon = questIcon .. "Interface\\MINIMAP\\ObjectIcons:17:20:2:0:256:256:132:159:97:126|t";
 	else
-		return "Interface\\GossipFrame\\AvailableQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\AvailableQuestIcon:20:20";
 	end
+	return questIcon .. "|t";
 end
 Storyline_API.getQuestIcon = getQuestIcon;
 
 local function getQuestActiveIcon(isComplete)
+	local questIcon = "|T";
 	if (isComplete) then
-		return "Interface\\GossipFrame\\ActiveQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\ActiveQuestIcon:20:20";
 	else
-		return "Interface\\GossipFrame\\IncompleteQuestIcon";
+		questIcon = questIcon .. "Interface\\GossipFrame\\IncompleteQuestIcon:20:20";
 	end
+	return questIcon .. "|t";
 end
 Storyline_API.getQuestActiveIcon = getQuestActiveIcon;
 
 local function getQuestTriviality(isTrivial)
 	if isTrivial then
-		return " (|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t)";
+		return " (|TInterface\\MINIMAP\\ObjectIcons:18:9:0:0:256:256:137:151:97:126|t)";
 	else
 		return "";
 	end

@@ -109,7 +109,7 @@ function Storyline_API.selectMultipleAvailable(button)
 		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
 		data[(i * 6) - 5], data[(i * 6) - 4], data[(i * 6) - 3], data[(i * 6) - 2], data[(i * 6) - 1], data[(i * 6)];
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText("|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous.Text:SetText(getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectGossipAvailableQuest(i);
 		end);
@@ -179,7 +179,7 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 		local title, isComplete = GetAvailableTitle(i);
 		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + i);
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText("|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous.Text:SetText(getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectAvailableQuest(i);
 		end);

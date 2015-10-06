@@ -388,8 +388,8 @@ eventHandlers["GOSSIP_SHOW"] = function()
 		previous = Storyline_NPCFrameChatOption1;
 		if GetNumGossipAvailableQuests() == 1 then
 			local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
-			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			Storyline_NPCFrameChatOption1:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
+			local icon = getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial);
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. icon .. " " .. title);
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
 		else
 			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
@@ -412,7 +412,7 @@ eventHandlers["GOSSIP_SHOW"] = function()
 		previous = Storyline_NPCFrameChatOption2;
 		if GetNumGossipActiveQuests() == 1 then
 			local title, lvl, isTrivial, isComplete, isRepeatable = GetGossipActiveQuests();
-			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstActive);
 		else
 			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
@@ -465,8 +465,7 @@ eventHandlers["QUEST_GREETING"] = function()
 		if numActiveQuests == 1 then
 			local title, isComplete = GetActiveTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
-			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|T" .. getQuestActiveIcon(isComplete, isRepeatable) .. ":20:20|t " .. title .. getQuestTriviality(isTrivial));
+			Storyline_NPCFrameChatOption1:SetText(gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstGreetingActive);
 		else
 			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
@@ -489,8 +488,8 @@ eventHandlers["QUEST_GREETING"] = function()
 		if numAvailableQuests == 1 then
 			local title, isComplete = GetAvailableTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
-			local icon = "|T" .. getQuestIcon(frequency, isRepeatable, isLegendary) .. ":20:20|t ";
-			Storyline_NPCFrameChatOption2:SetText(gossipColor .. icon .. title .. getQuestTriviality(isTrivial));
+			local icon = getQuestIcon(frequency, isRepeatable, isLegendary);
+			Storyline_NPCFrameChatOption2:SetText(gossipColor .. icon .. " " .. title);
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstGreetingAvailable);
 		else
 			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
