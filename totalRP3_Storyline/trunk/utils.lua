@@ -36,7 +36,7 @@ local function getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial)
 	elseif (isRepeatable) then
 		questIcon = questIcon .. "Interface\\GossipFrame\\DailyActiveQuestIcon:20:20";
 	elseif isTrivial then
-		questIcon = questIcon .. "Interface\\MINIMAP\\ObjectIcons:17:20:2:0:256:256:132:159:97:126|t";
+		questIcon = questIcon .. "Interface\\MINIMAP\\ObjectIcons:17:20:2:0:256:256:132:159:97:126";
 	else
 		questIcon = questIcon .. "Interface\\GossipFrame\\AvailableQuestIcon:20:20";
 	end
@@ -54,6 +54,22 @@ local function getQuestActiveIcon(isComplete)
 	return questIcon .. "|t";
 end
 Storyline_API.getQuestActiveIcon = getQuestActiveIcon;
+
+local function getBindingIcon(number)
+	if not Storyline_Data.config.useKeyboard then
+		return "";
+	end
+
+	local rowMapping = math.floor(number / 9);
+	local iconSize = 32;
+	local xStart = iconSize * (number - (8 * rowMapping) - 1);
+	local xEnd = iconSize * (number - (8 * rowMapping));
+	local yStart = 128 + iconSize * rowMapping;
+	local yEnd = 162 + iconSize * rowMapping;
+
+	return "|TInterface\\Worldmap\\UI-QuestPoi-NumberIcons:" .. iconSize .. ": " .. iconSize .. ":0:0:256:256:" .. xStart .. ":" .. xEnd .. ":" .. yStart .. ":" .. yEnd .. "|t";
+end
+Storyline_API.getBindingIcon = getBindingIcon;
 
 local function getQuestTriviality(isTrivial)
 	if isTrivial then

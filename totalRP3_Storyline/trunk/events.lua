@@ -41,6 +41,7 @@ local selectFirstAvailable = Storyline_API.selectFirstAvailable;
 local selectFirstGossip, selectMultipleGossip = Storyline_API.selectFirstGossip, Storyline_API.selectMultipleGossip;
 local selectMultipleRewards, selectFirstGreetingActive = Storyline_API.selectMultipleRewards, Storyline_API.selectFirstGreetingActive;
 local getAnimationByModel = Storyline_API.getAnimationByModel;
+local getBindingIcon = Storyline_API.getBindingIcon;
 
 -- WOW API
 local faction, faction_loc = UnitFactionGroup("player");
@@ -82,7 +83,6 @@ local OPTIONS_MARGIN, OPTIONS_TOP = 175, -175;
 local CHAT_MARGIN = 70;
 local GOSSIP_DELAY = 0.2;
 local gossipColor = "|cffffffff";
-local keybindingColor = "|cffffbf00";
 local EVENT_INFO;
 local eventHandlers = {};
 local BONUS_SKILLPOINTS = BONUS_SKILLPOINTS;
@@ -376,7 +376,7 @@ local displayBuilder = {};
 eventHandlers["GOSSIP_SHOW"] = function()
 	local hasGossip, hasAvailable, hasActive = GetNumGossipOptions() > 0, GetNumGossipAvailableQuests() > 0, GetNumGossipActiveQuests() > 0;
 	local previous;
-	local keyBinding = Storyline_Data.config.useKeyboard and 1 or "";
+	local keyBinding = 1;
 
 	-- Available quests
 	if hasAvailable then
@@ -391,13 +391,13 @@ eventHandlers["GOSSIP_SHOW"] = function()
 		if GetNumGossipAvailableQuests() == 1 then
 			local title, lvl, isTrivial, frequency, isRepeatable, isLegendary = GetGossipAvailableQuests();
 			local icon = getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial);
-			Storyline_NPCFrameChatOption1:SetText(keybindingColor .. keyBinding .. gossipColor .. icon .. " " .. title);
+			Storyline_NPCFrameChatOption1:SetText(getBindingIcon(keyBinding) .. gossipColor .. icon .. " " .. title);
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstAvailable);
 		else
-			Storyline_NPCFrameChatOption1:SetText(keybindingColor .. keyBinding .. gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption1:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectMultipleAvailable);
 		end
-		keyBinding = Storyline_Data.config.useKeyboard and keyBinding + 1 or "";
+		keyBinding = keyBinding + 1;
 	end
 
 	-- Active options
@@ -415,13 +415,13 @@ eventHandlers["GOSSIP_SHOW"] = function()
 		previous = Storyline_NPCFrameChatOption2;
 		if GetNumGossipActiveQuests() == 1 then
 			local title, lvl, isTrivial, isComplete, isRepeatable = GetGossipActiveQuests();
-			Storyline_NPCFrameChatOption2:SetText(keybindingColor .. keyBinding .. gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
+			Storyline_NPCFrameChatOption2:SetText(getBindingIcon(keyBinding) .. gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstActive);
 		else
-			Storyline_NPCFrameChatOption2:SetText(keybindingColor .. keyBinding .. gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption2:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectMultipleActive);
 		end
-		keyBinding = Storyline_Data.config.useKeyboard and keyBinding + 1 or "";
+		keyBinding = keyBinding + 1;
 	end
 
 	-- Gossip options
@@ -441,13 +441,13 @@ eventHandlers["GOSSIP_SHOW"] = function()
 		local gossips = { GetGossipOptions() };
 		if GetNumGossipOptions() == 1 then
 			local gossip, gossipType = gossips[1], gossips[2];
-			Storyline_NPCFrameChatOption3:SetText(keybindingColor .. keyBinding .. gossipColor .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:20:20|t " .. gossip);
+			Storyline_NPCFrameChatOption3:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:20:20|t " .. gossip);
 			Storyline_NPCFrameChatOption3:SetScript("OnClick", selectFirstGossip);
 		else
-			Storyline_NPCFrameChatOption3:SetText(keybindingColor .. keyBinding .. gossipColor .. "|TInterface\\GossipFrame\\PetitionGossipIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption3:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\PetitionGossipIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption3:SetScript("OnClick", selectMultipleGossip);
 		end
-		keyBinding = Storyline_Data.config.useKeyboard and keyBinding + 1 or "";
+		keyBinding = keyBinding + 1;
 	end
 
 end
@@ -456,6 +456,7 @@ eventHandlers["QUEST_GREETING"] = function()
 	local numActiveQuests = GetNumActiveQuests();
 	local numAvailableQuests = GetNumAvailableQuests();
 	local previous;
+	local keyBinding = 1;
 
 	if numActiveQuests > 0 then
 		Storyline_NPCFrameChatOption1:Show();
@@ -470,12 +471,13 @@ eventHandlers["QUEST_GREETING"] = function()
 		if numActiveQuests == 1 then
 			local title, isComplete = GetActiveTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
-			Storyline_NPCFrameChatOption1:SetText(gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
+			Storyline_NPCFrameChatOption1:SetText(getBindingIcon(keyBinding) .. gossipColor .. getQuestActiveIcon(isComplete, isRepeatable) .. " " .. title);
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectFirstGreetingActive);
 		else
-			Storyline_NPCFrameChatOption1:SetText(gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption1:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\ActiveQuestIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption1:SetScript("OnClick", selectMultipleActiveGreetings);
 		end
+		keyBinding = keyBinding + 1;
 	end
 
 	if numAvailableQuests > 0 then
@@ -494,12 +496,13 @@ eventHandlers["QUEST_GREETING"] = function()
 			local title, isComplete = GetAvailableTitle(1);
 			local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(1);
 			local icon = getQuestIcon(frequency, isRepeatable, isLegendary);
-			Storyline_NPCFrameChatOption2:SetText(gossipColor .. icon .. " " .. title);
+			Storyline_NPCFrameChatOption2:SetText(getBindingIcon(keyBinding) .. gossipColor .. icon .. " " .. title);
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectFirstGreetingAvailable);
 		else
-			Storyline_NPCFrameChatOption2:SetText(gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
+			Storyline_NPCFrameChatOption2:SetText(getBindingIcon(keyBinding) .. gossipColor .. "|TInterface\\GossipFrame\\AvailableQuestIcon:20:20|t " .. loc("SL_WELL"));
 			Storyline_NPCFrameChatOption2:SetScript("OnClick", selectMultipleAvailableGreetings);
 		end
+		keyBinding = keyBinding + 1;
 	end
 end
 

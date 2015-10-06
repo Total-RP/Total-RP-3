@@ -35,10 +35,10 @@ local GetAvailableTitle, GetActiveTitle, GetAvailableQuestInfo, GetGossipActiveQ
 
 local getQuestIcon, getQuestActiveIcon = Storyline_API.getQuestIcon, Storyline_API.getQuestActiveIcon;
 local getQuestTriviality = Storyline_API.getQuestTriviality;
+local getBindingIcon = Storyline_API.getBindingIcon;
 
 local selectionStrings = {};
 local LINE_SPACING = 30;
-local keybindingColor = "|cffffbf00";
 
 local function getSelectionFontString(placeOn)
 	local available;
@@ -75,9 +75,8 @@ function Storyline_API.selectMultipleGossip(button)
 	local height = 40;
 	for i = 1, GetNumGossipOptions() do
 		local gossip, gossipType = data[(i * 2) - 1], data[(i * 2)];
-		local keybinding = Storyline_Data.config.useKeyboard and ((i < 10 and keybindingColor .. i) or (i == 10 and keybindingColor .. "0")) or "";
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText(keybinding .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip);
+		previous.Text:SetText(getBindingIcon(i) .. "|TInterface\\GossipFrame\\" .. gossipType .. "GossipIcon:25:25|t" .. gossip);
 		previous:SetScript("OnClick", function(self)
 			SelectGossipOption(i);
 		end);
