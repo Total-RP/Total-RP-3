@@ -459,6 +459,8 @@ function Storyline_API.addon:OnEnable()
 			Storyline_NPCFrameChatPrevious:Click();
 		elseif key == "ESCAPE" then
 			closeDialog();
+		else
+			self:SetPropagateKeyboardInput(true);
 		end
 	end);
 
