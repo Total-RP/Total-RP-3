@@ -460,8 +460,45 @@ function Storyline_API.addon:OnEnable()
 		elseif key == "ESCAPE" then
 			closeDialog();
 		else
-			self:SetPropagateKeyboardInput(true);
+			local keyNumber = tonumber(key);
+			if not keyNumber then
+				self:SetPropagateKeyboardInput(true);
+				return;
+			end
+
+			local foundFrames = 0;
+			for i = 1, 9 do
+				if _G["Storyline_NPCFrameChatOption" .. i] and _G["Storyline_NPCFrameChatOption" .. i].IsVisible and _G["Storyline_NPCFrameChatOption" .. i]:IsVisible() then
+					foundFrames = foundFrames + 1;
+					if foundFrames == keyNumber then
+						_G["Storyline_NPCFrameChatOption" .. i]:Click();
+						self:SetPropagateKeyboardInput(false);
+						return;
+					end
+				end
+			end
 		end
+	end);
+
+	Storyline_NPCFrameGossipChoices:SetScript("OnKeyDown", function(self, key)
+		local keyNumber = tonumber(key);
+		if not keyNumber then
+			self:SetPropagateKeyboardInput(true);
+			return;
+		end
+
+		local foundFrames = 0;
+		for i = 0, 9 do
+			if _G["Storyline_ChoiceString" .. i] and _G["Storyline_ChoiceString" .. i].IsVisible and _G["Storyline_ChoiceString" .. i]:IsVisible() then
+				foundFrames = foundFrames + 1;
+				if foundFrames == keyNumber then
+					_G["Storyline_ChoiceString" .. i]:Click();
+					self:SetPropagateKeyboardInput(false);
+					return;
+				end
+			end
+		end
+
 	end);
 
 	Storyline_NPCFrameModelsYou.animTab = {};
