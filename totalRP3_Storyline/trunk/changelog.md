@@ -6,7 +6,7 @@
  _In the future, we will create an online form for people who are willing to share their scaling data with us to upload them, so we can combine everyone's data into a crowd sourced scaling table that will be included with the add-on. We will inform you when that's ready._  
 ![Velen can now be correctly sized against your character][path_to_image]
 
-- **Use keyboard keys to advance in the dialog**: you can now use the **space key to** get the same result as if you've clicked on the text with your mouse. You can **advance in the dialog, accept quests or complete quests** that does not require you to pick a reward. You can also use the **backspace key** to go **back to the beginning** of the dialog.
+- **Use keyboard keys to navigate inside the dialog**: you can now use the **space key to** get the same result as if you've clicked on the text with your mouse. You can **advance in the dialog, accept quests or complete quests** that does not require you to pick a reward. You can use the **numeric keys**, from 1 to 0, to select one of the available choices. A small number icon indicates what numeric key correspond to which choice. You can also use the **backspace key** to go **back to the beginning** of the dialog.
 
 - **The options have been moved to the Interface menu**. As we are adding more and more options (and as we are planning on a fullscreen mode), we have decided to move our options to the Interface menu. The little cog icon at the bottom left of the Storyline frame is still here and will open the Interface menu directly into Storyline's options.
 
