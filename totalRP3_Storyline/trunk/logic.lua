@@ -500,6 +500,10 @@ function Storyline_API.addon:OnEnable()
 			return;
 		end
 
+		if keyNumber == 0 then
+			keyNumber = 10;
+		end
+
 		local foundFrames = 0;
 		for i = 0, 9 do
 			if _G["Storyline_ChoiceString" .. i] and _G["Storyline_ChoiceString" .. i].IsVisible and _G["Storyline_ChoiceString" .. i]:IsVisible() then
