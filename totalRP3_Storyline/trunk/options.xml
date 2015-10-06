@@ -144,18 +144,18 @@
 			<KeyValue key="name" value="Storyline" />
 		</KeyValues>
 		<Frames>
-			<CheckButton parentKey="ForceGossip" inherits="StorylineOptionsCheckboxWithTooltip" checked="false">
+			<CheckButton parentKey="ForceGossip" inherits="StorylineOptionsCheckboxWithTooltip">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-10"/>
 					<Anchor point="LEFT" x="10"/>
 				</Anchors>
 			</CheckButton>
-			<CheckButton parentKey="HideOriginalFrames" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+			<CheckButton parentKey="HideOriginalFrames" inherits="StorylineOptionsCheckboxWithTooltip">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.ForceGossip" relativePoint="BOTTOMLEFT" y="-10"/>
 				</Anchors>
 			</CheckButton>
-			<CheckButton parentKey="LockFrame" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+			<CheckButton parentKey="LockFrame" inherits="StorylineOptionsCheckboxWithTooltip">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.HideOriginalFrames" relativePoint="BOTTOMLEFT" y="-10"/>
 				</Anchors>
@@ -256,12 +256,17 @@
 			<KeyValue key="name" value="Miscellaneous options" />
 		</KeyValues>
 		<Frames>
-			<CheckButton parentKey="AutoEquip" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+			<CheckButton parentKey="AutoEquip" inherits="StorylineOptionsCheckboxWithTooltip">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeKey="$parent.SubText" relativePoint="BOTTOMLEFT" y="-15"/>
 				</Anchors>
 			</CheckButton>
-			<CheckButton parentKey="DebugMode" inherits="StorylineOptionsCheckboxWithTooltip" checked="true">
+			<CheckButton parentKey="UseKeyboard" inherits="StorylineOptionsCheckboxWithTooltip">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.AutoEquip" relativePoint="BOTTOMLEFT" y="-15"/>
+				</Anchors>
+			</CheckButton>
+			<CheckButton parentKey="DebugMode" inherits="StorylineOptionsCheckboxWithTooltip">
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" relativeKey="$parent" relativePoint="BOTTOMLEFT" x="5" y="5" />
 				</Anchors>

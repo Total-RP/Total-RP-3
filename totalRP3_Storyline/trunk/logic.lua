@@ -451,6 +451,11 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrameRewardsItem:SetScale(1.5);
 
 	Storyline_NPCFrame:SetScript("OnKeyDown", function(self, key)
+		if not Storyline_Data.config.useKeyboard then
+			self:SetPropagateKeyboardInput(true);
+			return;
+		end
+
 		if key == "SPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatNext:Click();
@@ -477,10 +482,18 @@ function Storyline_API.addon:OnEnable()
 					end
 				end
 			end
+
+			self:SetPropagateKeyboardInput(true);
+			return;
 		end
 	end);
 
 	Storyline_NPCFrameGossipChoices:SetScript("OnKeyDown", function(self, key)
+		if not Storyline_Data.config.useKeyboard then
+			self:SetPropagateKeyboardInput(true);
+			return;
+		end
+
 		local keyNumber = tonumber(key);
 		if not keyNumber then
 			self:SetPropagateKeyboardInput(true);
@@ -498,6 +511,9 @@ function Storyline_API.addon:OnEnable()
 				end
 			end
 		end
+
+		self:SetPropagateKeyboardInput(true);
+		return;
 
 	end);
 

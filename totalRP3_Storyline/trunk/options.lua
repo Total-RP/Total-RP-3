@@ -206,6 +206,18 @@ Storyline_API.options.init = function()
 	end
 	StorylineMiscellaneousOptionsPanel.AutoEquip:SetChecked(Storyline_Data.config.autoEquip);
 
+
+	-- Use keyboard (on by default)
+	StorylineMiscellaneousOptionsPanel.UseKeyboard.Text:SetText(loc("SL_CONFIG_USE_KEYBOARD"));
+	StorylineMiscellaneousOptionsPanel.UseKeyboard.tooltip = loc("SL_CONFIG_USE_KEYBOARD_TT");
+	StorylineMiscellaneousOptionsPanel.UseKeyboard:SetScript("OnClick", function(self)
+		Storyline_Data.config.useKeyboard = self:GetChecked() == true;
+	end);
+	if Storyline_Data.config.useKeyboard == nil then
+		Storyline_Data.config.useKeyboard = true;
+	end
+	StorylineMiscellaneousOptionsPanel.UseKeyboard:SetChecked(Storyline_Data.config.useKeyboard);
+
 	-- Debug mode option
 	StorylineMiscellaneousOptionsPanel.DebugMode.Text:SetText(loc("SL_CONFIG_DEBUG"));
 	StorylineMiscellaneousOptionsPanel.DebugMode.tooltip = loc("SL_CONFIG_DEBUG_TT");
