@@ -494,6 +494,12 @@ function Storyline_API.addon:OnEnable()
 			return;
 		end
 
+		if key == "ESCAPE" then
+			Storyline_NPCFrameGossipChoices:Hide();
+			self:SetPropagateKeyboardInput(false);
+			return;
+		end
+
 		local keyNumber = tonumber(key);
 		if not keyNumber then
 			self:SetPropagateKeyboardInput(true);
