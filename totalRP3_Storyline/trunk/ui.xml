@@ -660,28 +660,6 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="Storyline_NPCFrameConfig" parent="Storyline_NPCFrame" hidden="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
-			<EdgeSize>
-				<AbsValue val="32"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="300"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
-		<Size x="0" y="150"/>
-		<Anchors>
-			<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMRIGHT" x="0" y="10"/>
-			<Anchor point="TOPLEFT" relativeTo="Storyline_NPCFrame" relativePoint="BOTTOMLEFT" x="0" y="10"/>
-		</Anchors>
-		<Frames>
-
-		</Frames>
-	</Frame>
-
 	<Include file="options.xml"/>
 	<Include file="debug.xml"/>
 
