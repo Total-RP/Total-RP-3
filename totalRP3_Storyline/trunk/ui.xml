@@ -295,15 +295,15 @@
 			</Frame>
 
 			<Frame name="Storyline_NPCFrameChat" frameStrata="HIGH">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="false">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize>
-						<AbsValue val="32"/>
+						<AbsValue val="16"/>
 					</EdgeSize>
 					<TileSize>
-						<AbsValue val="300"/>
+						<AbsValue val="16"/>
 					</TileSize>
 					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
+						<AbsInset left="3" right="3" top="3" bottom="3"/>
 					</BackgroundInsets>
 				</Backdrop>
 				<Size x="0" y="150"/>
@@ -348,7 +348,7 @@
 					<Frame name="Storyline_NPCFrameChatHighlight" inherits="GlowBorderTemplate" hidden="true">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="5" y="-2"/>
-							<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
 						</Anchors>
 						<Scripts>
 							<OnLoad>
