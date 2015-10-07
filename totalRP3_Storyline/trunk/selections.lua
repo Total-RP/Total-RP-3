@@ -110,7 +110,7 @@ function Storyline_API.selectMultipleAvailable(button)
 		local title, lvl, isTrivial, frequency, isRepeatable, isLegendary =
 		data[(i * 6) - 5], data[(i * 6) - 4], data[(i * 6) - 3], data[(i * 6) - 2], data[(i * 6) - 1], data[(i * 6)];
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText(getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
+		previous.Text:SetText(getBindingIcon(i) .. getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectGossipAvailableQuest(i);
 		end);
@@ -135,7 +135,7 @@ function Storyline_API.selectMultipleActive(button)
 	for i = 1, GetNumGossipActiveQuests() do
 		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i * 5) - 4], data[(i * 5) - 3], data[(i * 5) - 2], data[(i * 5) - 1], data[(i * 5)];
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText("|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous.Text:SetText(getBindingIcon(i) .. getQuestActiveIcon(isComplete) .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectGossipActiveQuest(i);
 		end);
@@ -154,9 +154,8 @@ function Storyline_API.selectMultipleActiveGreetings(button)
 	local height = 40;
 	for i = 1, GetNumActiveQuests() do
 		local title, isComplete = GetActiveTitle(i);
-		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(i);
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText("|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
+		previous.Text:SetText(getBindingIcon(i) .. getQuestActiveIcon(isComplete) .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectActiveQuest(i);
 		end);
@@ -180,7 +179,7 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 		local title, isComplete = GetAvailableTitle(i);
 		local isTrivial, frequency, isRepeatable, isLegendary = GetAvailableQuestInfo(numActiveQuests + i);
 		previous = getSelectionFontString(previous);
-		previous.Text:SetText(getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
+		previous.Text:SetText(getBindingIcon(i) .. getQuestIcon(frequency, isRepeatable, isLegendary, isTrivial) .. " " .. title);
 		previous:SetScript("OnClick", function(self)
 			SelectAvailableQuest(i);
 		end);
