@@ -67,6 +67,7 @@ local GarrisonFollowerPortrait_Set, GetFollowerInfo = GarrisonFollowerPortrait_S
 local GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies = GetQuestMoneyToGet, GetMoney, GetNumQuestCurrencies;
 local GetSuggestedGroupNum = GetSuggestedGroupNum;
 local UnitIsDead = UnitIsDead;
+local QuestIsFromAreaTrigger, QuestGetAutoAccept = QuestIsFromAreaTrigger, QuestGetAutoAccept;
 -- UI
 local Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3 = Storyline_NPCFrameChatOption1, Storyline_NPCFrameChatOption2, Storyline_NPCFrameChatOption3;
 local Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes = Storyline_NPCFrameObjectives, Storyline_NPCFrameObjectivesNo, Storyline_NPCFrameObjectivesYes;
@@ -507,6 +508,12 @@ eventHandlers["QUEST_GREETING"] = function()
 end
 
 eventHandlers["QUEST_DETAIL"] = function()
+
+	-- Quest that pops up and are auto-accepted (like the one for learning to mount or for new expansions)
+	if (QuestGetAutoAccept() and QuestIsFromAreaTrigger()) then
+		Storyline_NPCFrame:Hide();
+	end
+
 	local contentHeight = Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 15;
 
 	Storyline_NPCFrameObjectives:Show();
