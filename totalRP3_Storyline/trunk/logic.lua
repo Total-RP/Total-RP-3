@@ -200,16 +200,15 @@ local function modelsLoaded()
 		setModelHeight(getBestValue("scale", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
 		setModelFeet(getBestValue("feet", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
 
+		setModelOffset(getBestValue("offset", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
+		setModelFacing(getBestValue("facing", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
+
 		if Storyline_NPCFrameModelsYou.model:len() > 0 then
-			setModelOffset(getBestValue("offset", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
-			setModelFacing(getBestValue("facing", savedDataMe, dataMe, DEFAULT_SCALE.me), true, false);
 			setModelOffset(getBestValue("offset", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
 			setModelFacing(getBestValue("facing", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
 			setModelFeet(getBestValue("feet", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
 			setModelHeight(getBestValue("scale", savedDataYou, dataYou, DEFAULT_SCALE.you), false, false);
 		else
-			setModelOffset(0, true, false);
-			setModelFacing(0, true, false);
 			Storyline_NPCFrameModelsMe:SetAnimation(520);
 		end
 
