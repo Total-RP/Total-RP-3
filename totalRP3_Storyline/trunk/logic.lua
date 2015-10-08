@@ -77,12 +77,12 @@ local function getDataStuctures(modelMeName, modelYouName)
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
 	local savedDataMe, savedDataYou, dataMe, dataYou;
 
-	if Storyline_Data.debug.scaling[key] then
-		savedDataMe = Storyline_Data.debug.scaling[key].me;
-		savedDataYou = Storyline_Data.debug.scaling[key].you;
-	elseif Storyline_Data.debug.scaling[invertedKey] then
-		savedDataMe = Storyline_Data.debug.scaling[invertedKey].you;
-		savedDataYou = Storyline_Data.debug.scaling[invertedKey].me;
+	if Storyline_Data.scaling[key] then
+		savedDataMe = Storyline_Data.scaling[key].me;
+		savedDataYou = Storyline_Data.scaling[key].you;
+	elseif Storyline_Data.scaling[invertedKey] then
+		savedDataMe = Storyline_Data.scaling[invertedKey].you;
+		savedDataYou = Storyline_Data.scaling[invertedKey].me;
 	end
 	if Storyline_SCALE_MAPPING[key] then
 		dataMe = Storyline_SCALE_MAPPING[key].me;
@@ -98,28 +98,28 @@ end
 local function resetStructure(resetMe)
 	local modelMeName, modelYouName = Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model;
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
-	if Storyline_Data.debug.scaling[key] then
-		if resetMe and Storyline_Data.debug.scaling[key].me then
-			wipe(Storyline_Data.debug.scaling[key].me);
-			Storyline_Data.debug.scaling[key].me = nil;
-		elseif not resetMe and Storyline_Data.debug.scaling[key].you then
-			wipe(Storyline_Data.debug.scaling[key].you);
-			Storyline_Data.debug.scaling[key].you = nil;
+	if Storyline_Data.scaling[key] then
+		if resetMe and Storyline_Data.scaling[key].me then
+			wipe(Storyline_Data.scaling[key].me);
+			Storyline_Data.scaling[key].me = nil;
+		elseif not resetMe and Storyline_Data.scaling[key].you then
+			wipe(Storyline_Data.scaling[key].you);
+			Storyline_Data.scaling[key].you = nil;
 		end
-		if not Storyline_Data.debug.scaling[key].me and not Storyline_Data.debug.scaling[key].you then
-			Storyline_Data.debug.scaling[key] = nil;
+		if not Storyline_Data.scaling[key].me and not Storyline_Data.scaling[key].you then
+			Storyline_Data.scaling[key] = nil;
 		end
 	end
-	if Storyline_Data.debug.scaling[invertedKey] then
-		if not resetMe and Storyline_Data.debug.scaling[invertedKey].me then
-			wipe(Storyline_Data.debug.scaling[invertedKey].me);
-			Storyline_Data.debug.scaling[invertedKey].me = nil;
-		elseif resetMe and Storyline_Data.debug.scaling[invertedKey].you then
-			wipe(Storyline_Data.debug.scaling[invertedKey].you);
-			Storyline_Data.debug.scaling[invertedKey].you = nil;
+	if Storyline_Data.scaling[invertedKey] then
+		if not resetMe and Storyline_Data.scaling[invertedKey].me then
+			wipe(Storyline_Data.scaling[invertedKey].me);
+			Storyline_Data.scaling[invertedKey].me = nil;
+		elseif resetMe and Storyline_Data.scaling[invertedKey].you then
+			wipe(Storyline_Data.scaling[invertedKey].you);
+			Storyline_Data.scaling[invertedKey].you = nil;
 		end
-		if not Storyline_Data.debug.scaling[invertedKey].me and not Storyline_Data.debug.scaling[invertedKey].you then
-			Storyline_Data.debug.scaling[invertedKey] = nil;
+		if not Storyline_Data.scaling[invertedKey].me and not Storyline_Data.scaling[invertedKey].you then
+			Storyline_Data.scaling[invertedKey] = nil;
 		end
 	end
 end
@@ -127,10 +127,10 @@ end
 local function getSavedStructure()
 	local modelMeName, modelYouName = Storyline_NPCFrameModelsMe.model, Storyline_NPCFrameModelsYou.model;
 	local key, invertedKey = modelMeName .. "~" .. modelYouName, modelYouName .. "~" .. modelMeName;
-	if not Storyline_Data.debug.scaling[key] and not Storyline_Data.debug.scaling[invertedKey] then
-		Storyline_Data.debug.scaling[key] = {};
+	if not Storyline_Data.scaling[key] and not Storyline_Data.scaling[invertedKey] then
+		Storyline_Data.scaling[key] = {};
 	end
-	return Storyline_Data.debug.scaling[key] or Storyline_Data.debug.scaling[invertedKey], Storyline_Data.debug.scaling[key] == nil;
+	return Storyline_Data.scaling[key] or Storyline_Data.scaling[invertedKey], Storyline_Data.debug.scaling[key] == nil;
 end
 
 local function saveStructureData(dataName, isMe, value)
@@ -419,8 +419,8 @@ function Storyline_API.addon:OnEnable()
 	if not Storyline_Data.debug then
 		Storyline_Data.debug = {};
 	end
-	if not Storyline_Data.debug.scaling then
-		Storyline_Data.debug.scaling = {};
+	if not Storyline_Data.scaling then
+		Storyline_Data.scaling = {};
 	end
 	if not Storyline_Data.debug.timing then
 		Storyline_Data.debug.timing = {};
