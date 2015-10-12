@@ -45,6 +45,9 @@ local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
+local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
+
+local currentlyPlayingHandler;
 
 function Utils.pcall(func, ...)
 	if func then
@@ -660,19 +663,25 @@ end
 -- MUSIC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+
+Utils.music.stop = function()
+	if currentlyPlayingHandler then
+		StopSound(currentlyPlayingHandler);
+		currentlyPlayingHandler = nil;
+	end
+	StopMusic();
+end
+
 Utils.music.play = function(music)
 	assert(music, "Music can't be nil.")
+	Utils.music.stop();
 	if type(music) == "number" then
 		Log.log("Playing sound: " .. music);
-		PlaySoundKitID(music);
+		currentlyPlayingHandler = select(2, PlaySoundKitID(music, "Music"));
 	else
 		Log.log("Playing music: " .. music);
 		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
 	end
-end
-
-Utils.music.stop = function()
-	StopMusic();
 end
 
 Utils.music.getTitle = function(musicURL)
