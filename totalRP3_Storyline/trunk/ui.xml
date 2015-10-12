@@ -147,7 +147,6 @@
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
-		<TitleRegion setAllPoints="true"/>
 	</Frame>
 
 	<Button name="Storyline_ChoiceButton" virtual="true" hidden="false">
@@ -204,8 +203,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="Storyline_NPCFrame" inherits="Storyline_StandardParchmentFrame" toplevel="true" parent="UIParent"
-		   frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true">
+	<Frame name="Storyline_NPCFrame" inherits="Storyline_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<Size x="700" y="450"/>
 		<Layers>
 			<Layer level="BORDER">
@@ -620,6 +618,22 @@
 					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
+			<CheckButton name="Storyline_NPCFrameLock" inherits="RematchTooltipScripts">
+				<Size x="32" y="32" />
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrameClose" relativePoint="TOPLEFT" x="12"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\LockButton-Unlocked-Up" />
+				<PushedTexture file="Interface\Buttons\LockButton-Unlocked-Down" />
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD" />
+				<CheckedTexture file="Interface\Buttons\LockButton-Locked-Up" />
+				<Scripts>
+					<OnClick>
+						Storyline_Data.config.lockFrame = self:GetChecked() == true;
+						StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+					</OnClick>
+				</Scripts>
+			</CheckButton>
 
 			<Button name="Storyline_NPCFrameResizeButton" inherits="Storyline_ResizeButton" frameStrata="HIGH" hidden="false">
 				<KeyValues>

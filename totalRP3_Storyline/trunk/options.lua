@@ -176,11 +176,13 @@ Storyline_API.options.init = function()
 	StorylineOptionsPanel.LockFrame:SetScript("OnClick", function(self)
 		Storyline_Data.config.lockFrame = self:GetChecked() == true;
 		Storyline_NPCFrame:SetMovable(not Storyline_Data.config.lockFrame);
+		Storyline_NPCFrameLock:SetChecked(Storyline_Data.config.lockFrame);
 	end);
 	if Storyline_Data.config.lockFrame == nil then
 		Storyline_Data.config.lockFrame = false;
 	end
 	StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+	Storyline_NPCFrameLock:SetChecked(Storyline_Data.config.lockFrame);
 
 	-- Text options panel
 	StorylineTextOptionsPanel.Title:SetText(loc("SL_CONFIG_STYLING_OPTIONS"));

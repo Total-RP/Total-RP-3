@@ -594,5 +594,18 @@ function Storyline_API.addon:OnEnable()
 
 	setTooltipAll(Storyline_NPCFrameConfigButton, "TOP", 0, 0, loc("SL_CONFIG"));
 
+
+	Storyline_NPCFrame:RegisterForDrag("LeftButton");
+
+	Storyline_NPCFrame:SetScript("OnDragStart", function(self)
+		if not Storyline_Data.config.lockFrame then
+			self:StartMoving();
+		end
+	end);
+
+	Storyline_NPCFrame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing();
+	end);
+
 	Storyline_API.options.init();
 end
