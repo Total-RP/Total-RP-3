@@ -45,18 +45,21 @@ Storyline_API.locale = {
 			SL_REWARD_MORE_SUB = "\nMoney: |cffffffff%s|r\nExperience: |cffffffff%s xp|r\n\n|cffffff00Click:|r Get your reward!",
 			SL_GET_REWARD = "Get your reward",
 			SL_SELECT_REWARD = "Select your reward",
-			SL_CONFIG = "Parameters",
-			SL_CONFIG_WELCOME = "Thank you for using Storyline!",
-			SL_CONFIG_TEXTSPEED_TITLE = "Text anim speed",
+			SL_CONFIG = "Settings",
+			SL_CONFIG_WELCOME = [[Thank you for using Storyline!
+
+You can follow Storyline developers on Twitter |cff55acee@EllypseCelwe|r and |cff55acee@Telokstrasz|r to get news about the add-on and sneek peaks of its development.
+]],
+			SL_CONFIG_TEXTSPEED_TITLE = "Text animation speed",
 			SL_CONFIG_TEXTSPEED = "%.1fx",
-			SL_CONFIG_TEXTSPEED_INSTANT = "No anim",
-			SL_CONFIG_TEXTSPEED_HIGH = "High",
+			SL_CONFIG_TEXTSPEED_INSTANT = "No animation",
+			SL_CONFIG_TEXTSPEED_HIGH = "Fast",
 			SL_CONFIG_AUTOEQUIP = "Auto equip reward (experimental)",
 			SL_CONFIG_AUTOEQUIP_TT = "Auto equip rewards if it has a better item lvl.",
 			SL_CONFIG_FORCEGOSSIP = "Show flavor texts",
 			SL_CONFIG_FORCEGOSSIP_TT = "Show flavor texts on NPCs like merchants or fly masters.",
 			SL_CONFIG_USE_KEYBOARD = "Use keyboard shortcuts",
-			SL_CONFIG_USE_KEYBOARD_TT = "Use keyboard shortcuts to navigate inside dialogs (space bar to advance, backspace to go back, keys 1 to 9 to select a dialog choice)",
+			SL_CONFIG_USE_KEYBOARD_TT = "Use keyboard shortcuts to navigate inside dialogs (space bar to advance, backspace to go back, keys 1 to 0 to select a dialog choice)",
 			SL_CONFIG_HIDEORIGINALFRAMES = "Hide original frames",
 			SL_CONFIG_HIDEORIGINALFRAMES_TT = "Hide the original quest frame and NPC dialogs frame.",
 			SL_CONFIG_LOCKFRAME = "Lock frame",
@@ -68,8 +71,8 @@ Storyline_API.locale = {
 			SL_CONFIG_NPC_NAME = "NPC name",
 			SL_CONFIG_NEXT_ACTION = "Next action";
 			SL_CONFIG_STYLING_OPTIONS = "Styling options",
-			SL_CONFIG_STYLING_OPTIONS_SUBTEXT = "Styling options",
-			SL_CONFIG_MISCELLANEOUS_SUBTEXT = "Miscellaneous options",
+			SL_CONFIG_STYLING_OPTIONS_SUBTEXT = "", -- Nothing for now, maybe later
+			SL_CONFIG_MISCELLANEOUS_SUBTEXT = "", -- Nothing for now, maybe later
 			SL_CONFIG_MISCELLANEOUS = "Miscellaneous options",
 			SL_CONFIG_DEBUG = "Debug mode",
 			SL_CONFIG_DEBUG_TT = "Enable the debug frame showing development data under Storyline frame",
@@ -130,7 +133,8 @@ local current;
 -- Initialize a locale for the addon.
 function Storyline_API.locale.init()
 	-- Register config
-	current = Storyline_Data.config.locale or DEFAULT_LOCALE;
+
+	current = Storyline_Data.config.locale or GetLocale();
 	if not LOCALS[current] then
 		current = DEFAULT_LOCALE;
 	end
@@ -144,6 +148,7 @@ function Storyline_API.locale.init()
 	end
 	effectiveLocal = LOCALS[current].localeContent;
 
+	Storyline_Data.config.locale = current;
 	Storyline_API.locale.localeFont = localeFont;
 end
 

@@ -35,7 +35,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString parentKey="SubText" inherits="GameFontHighlightSmall" nonspacewrap="true" maxLines="3" justifyH="LEFT">
+				<FontString parentKey="SubText" inherits="GameFontHighlightSmall" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeKey="$parent.Title" relativePoint="BOTTOMLEFT" y="-8" />
 						<Anchor point="RIGHT" x="-32" />
