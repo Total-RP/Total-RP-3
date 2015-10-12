@@ -48,7 +48,7 @@ Storyline_API.locale = {
 			SL_CONFIG = "Settings",
 			SL_CONFIG_WELCOME = [[Thank you for using Storyline!
 
-You can follow Storyline developers on Twitter |cff55acee@EllypseCelwe|r and |cff55acee@Telokstrasz|r to get news about the add-on and sneek peaks of its development.
+You can follow Storyline developers on Twitter |cff55acee@EllypseCelwe|r and |cff55acee@Telkostrasz|r to get news about the add-on and sneek peaks of its development.
 ]],
 			SL_CONFIG_TEXTSPEED_TITLE = "Text animation speed",
 			SL_CONFIG_TEXTSPEED = "%.1fx",
