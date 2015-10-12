@@ -130,7 +130,7 @@ local function getSavedStructure()
 	if not Storyline_Data.scaling[key] and not Storyline_Data.scaling[invertedKey] then
 		Storyline_Data.scaling[key] = {};
 	end
-	return Storyline_Data.scaling[key] or Storyline_Data.scaling[invertedKey], Storyline_Data.debug.scaling[key] == nil;
+	return Storyline_Data.scaling[key] or Storyline_Data.scaling[invertedKey], Storyline_Data.scaling[key] == nil;
 end
 
 local function saveStructureData(dataName, isMe, value)
