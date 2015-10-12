@@ -20,6 +20,7 @@
 -- Storyline API
 local loc = Storyline_API.locale.getText;
 local setupListBox = Storyline_API.lib.setupListBox;
+local setTooltipForSameFrame = Storyline_API.lib.setTooltipForSameFrame;
 
 local StorylineOptionsPanel = StorylineOptionsPanel;
 local StorylineTextOptionsPanel = StorylineTextOptionsPanel;
@@ -182,6 +183,8 @@ Storyline_API.options.init = function()
 	end
 	StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
 	Storyline_NPCFrameLock:SetChecked(Storyline_Data.config.lockFrame);
+
+	setTooltipForSameFrame(Storyline_NPCFrameLock, "BOTTOMRIGHT", 0, 0, loc("SL_CONFIG_LOCKFRAME"), loc("SL_CONFIG_LOCKFRAME_TT"));
 
 	-- Text options panel
 	StorylineTextOptionsPanel.Title:SetText(loc("SL_CONFIG_STYLING_OPTIONS"));

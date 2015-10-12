@@ -618,7 +618,7 @@
 					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
-			<CheckButton name="Storyline_NPCFrameLock" inherits="RematchTooltipScripts">
+			<CheckButton name="Storyline_NPCFrameLock">
 				<Size x="32" y="32" />
 				<Anchors>
 					<Anchor point="TOPRIGHT" relativeTo="Storyline_NPCFrameClose" relativePoint="TOPLEFT" x="12"/>
@@ -631,7 +631,14 @@
 					<OnClick>
 						Storyline_Data.config.lockFrame = self:GetChecked() == true;
 						StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+						PlaySound("gsCharacterSelection","SFX");
 					</OnClick>
+					<OnEnter>
+						Storyline_RefreshTooltipForFrame(self);
+					</OnEnter>
+					<OnLeave>
+						Storyline_MainTooltip:Hide();
+					</OnLeave>
 				</Scripts>
 			</CheckButton>
 
