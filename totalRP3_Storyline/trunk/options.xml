@@ -191,10 +191,11 @@
 					</Layer>
 				</Layers>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.TextSpeed.Slider"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentTextSpeedSlider"/>
 					<Anchor point="LEFT" x="15" />
 					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
+				<Size y="60"/>
 				<Frames>
 					<Frame name="StorylineOptionsLocaleDropDown" parentKey="DropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
 						<Anchors>
