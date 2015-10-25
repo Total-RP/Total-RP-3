@@ -99,10 +99,10 @@ Storyline_API.options.init = function()
 	StorylineOptionsPanel.SubText:SetText(loc("SL_CONFIG_WELCOME"));
 
 
-	local localeTab = {
-		{ "English", "enUS" },
-		{ "Français", "frFR" },
-	};
+	local localeTab = {};
+	for locale, localeInfo in pairs(Storyline_API.locale.getLocales()) do
+		tinsert(localeTab, {locale, locale});
+	end
 
 	local init = true;
 	StorylineOptionsPanel.Locale.Label:SetText("Locale") -- TODO Localization

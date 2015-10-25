@@ -1009,6 +1009,7 @@ function Storyline_API.initEventsStructure()
 		},
 		["QUEST_GREETING"] = {
 			text = GetGreetingText,
+			finishMethod = CloseQuest,
 			cancelMethod = CloseQuest,
 			titleGetter = GetTitleText,
 		},
