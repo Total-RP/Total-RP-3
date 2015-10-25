@@ -1,6 +1,6 @@
 # Change-log version 1.2
 
-# New features
+## New features
 
 - **New scaling system**: the 3D model scale has to be manually defined for each model against each other. That's a huge task. We added a quick and easy way for **you** to re-scale models while questing. You can now resize the 3D models (yours or your target) by maintaining the ALT key down and scrolling the model you wish to resize (hold SHIFT to go faster). The resizing will be saved between session for the combination of models, which means that you will only have to scale once your character against a specific model to see them scaled forever.  
  _In the future, we will create an online form for people who are willing to share their scaling data with us to upload them, so we can combine everyone's data into a crowd sourced scaling table that will be included with the add-on. We will inform you when that's ready._  
@@ -14,6 +14,16 @@
 ![OpenDyslexic font in Storyline][path_to_image]
 
 - **Lock the frame**: you can now lock the Storyline frame in place by checking the option to lock the frame.
+
+## Localization
+
+We have added the following localization:
+
+- German (thanks to Flairon	and pas06)
+- Italian (thanks to crashriderwarcraft)
+- Russian (thanks to far2ke, pankopriest and Sincerity7009)
+- Spanish (thanks to NeoSaro)
+- Traditional Chinese (thanks to gaspy10)
 
 ## Minor tweaks
 
