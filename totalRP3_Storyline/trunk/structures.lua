@@ -245,6 +245,7 @@ Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	-- Troll
 	["character\\troll\\female\\trollfemale_hd.m2"] = {
+		[TALK_ID] = 2.45,
 		["185"] = 1.4,
 		["186"] = 1.6,
 		["65"] = 1.4,
