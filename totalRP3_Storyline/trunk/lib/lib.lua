@@ -431,7 +431,7 @@ local function listBoxGetValue(self)
 end
 
 -- Setup a ListBox. When the player choose a value, it triggers the function passing the value of the selected element
-function Storyline_API.lib.setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel)
+function Storyline_API.lib.setupListBox(listBox, values, callback, defaultText, boxWidth, addCancel, isFontDropdown)
 	assert(listBox and values, "Invalid arguments");
 	assert(_G[listBox:GetName().."Button"], "Invalid arguments: listbox doesn't have a button");
 	boxWidth = boxWidth or 115;
@@ -443,6 +443,11 @@ function Storyline_API.lib.setupListBox(listBox, values, callback, defaultText, 
 			local val = tab[2];
 			if val == value then
 				_G[listBox:GetName().."Text"]:SetText(text);
+				if isFontDropdown then
+					local font = Storyline_API.lib.getFontPath(text);
+					local _, scale, outline = _G[listBox:GetName().."Text"]:GetFont();
+					_G[listBox:GetName().."Text"]:SetFont(font, scale, outline);
+				end
 			end
 		end
 		if callback then

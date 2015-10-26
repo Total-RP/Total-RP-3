@@ -88,7 +88,7 @@ local function decorateTextOptions(title, optionKey, affectedText)
 		affectedText:SetFont(font, scale, outline);
 		StorylineTextOptionsPanel[optionKey].TextSample:SetFont(font, scale, outline);
 		Storyline_Data.config[optionKey].Font = fontIndex;
-	end, nil, 100, true);
+	end, nil, 100, true, true);
 	StorylineTextOptionsPanel[optionKey].FontDropDown:SetSelectedValue(Storyline_Data.config[optionKey].Font);
 end
 
@@ -105,7 +105,7 @@ Storyline_API.options.init = function()
 	end
 
 	local init = true;
-	StorylineOptionsPanel.Locale.Label:SetText("SL_CONFIG_LANGUAGE");
+	StorylineOptionsPanel.Locale.Label:SetText(loc("SL_CONFIG_LANGUAGE"));
 	setupListBox(StorylineOptionsPanel.Locale.DropDown, localeTab, function(locale)
 		Storyline_Data.config.locale = locale;
 		if not init then
