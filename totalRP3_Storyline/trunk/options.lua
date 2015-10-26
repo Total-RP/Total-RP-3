@@ -101,11 +101,11 @@ Storyline_API.options.init = function()
 
 	local localeTab = {};
 	for locale, localeInfo in pairs(Storyline_API.locale.getLocales()) do
-		tinsert(localeTab, {locale, locale});
+		tinsert(localeTab, {localeInfo.localeText, locale});
 	end
 
 	local init = true;
-	StorylineOptionsPanel.Locale.Label:SetText("Locale") -- TODO Localization
+	StorylineOptionsPanel.Locale.Label:SetText("SL_CONFIG_LANGUAGE");
 	setupListBox(StorylineOptionsPanel.Locale.DropDown, localeTab, function(locale)
 		Storyline_Data.config.locale = locale;
 		if not init then
