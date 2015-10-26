@@ -24,9 +24,9 @@ We have added the following localization:
 
 - German (thanks to Flairon	and pas06)
 - Italian (thanks to crashriderwarcraft)
-- Russian (thanks to far2ke, pankopriest and Sincerity7009)
 - Spanish (thanks to NeoSaro)
-- Traditional Chinese (thanks to gaspy10)
+
+**Small note: we will add Russian and Traditional Chinese in a future update. We need to check some font issues first.**
 
 ## Minor tweaks
 
