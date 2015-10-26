@@ -29,6 +29,7 @@ Storyline_API.locale.info = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	
 	["enUS"] = {
+		localeText = "English",
 		localeContent = {
 			SL_STORYLINE = "Storyline",
 			SL_SELECT_DIALOG_OPTION = "Select dialog option",
@@ -51,6 +52,7 @@ Storyline_API.locale.info = {
 
 You can follow Storyline developers on Twitter |cff55acee@EllypseCelwe|r and |cff55acee@Telkostrasz|r to get news about the add-on and sneek peaks of its development.
 ]],
+			SL_CONFIG_LANGUAGE = "Language",
 			SL_CONFIG_TEXTSPEED_TITLE = "Text animation speed",
 			SL_CONFIG_TEXTSPEED = "%.1fx",
 			SL_CONFIG_TEXTSPEED_INSTANT = "No animation",
@@ -87,6 +89,7 @@ You can follow Storyline developers on Twitter |cff55acee@EllypseCelwe|r and |cf
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	
 	["frFR"] = {
+		localeText = "Français",
 		localeContent = {
 			SL_ACCEPTANCE = "J'accepte.", -- Needs review
 			SL_CHECK_OBJ = "Vérifier objectifs", -- Needs review
@@ -150,6 +153,7 @@ Expérience: |cffffffff%s xp|r
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	["esES"] = {
+		localeText = "Español",
 		localeContent = {
 			SL_ACCEPTANCE = "Acepto", -- Needs review
 			SL_CHECK_OBJ = "Comprueba los objetivos", -- Needs review
@@ -207,6 +211,7 @@ Experiencia: |cffffffff%s exp|r
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	["deDE"] = {
+		localeText = "Deutsch",
 		localeContent = {
 			SL_ACCEPTANCE = "Ich akzeptiere.", -- Needs review
 			SL_CHECK_OBJ = "Questziele überprüfen", -- Needs review
@@ -250,6 +255,7 @@ Erfahrung: |cffffffff%s EP|r
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	["itIT"] = {
+		localeText = "Italiano",
 		localeContent = {
 			SL_ACCEPTANCE = "Accetto.", -- Needs review
 			SL_CHECK_OBJ = "Controlla gli obiettivi", -- Needs review
@@ -292,6 +298,7 @@ Esperienza: |cffffffff%s xp|r
 	-- LOCALE_RU
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	--[[
 	["ruRU"] = {
 		localeContent = {
 			SL_ACCEPTANCE = "Соглашаюсь", -- Needs review
@@ -327,12 +334,13 @@ Esperienza: |cffffffff%s xp|r
 			SL_STORYLINE = "Storyline", -- Needs review
 			SL_WELL = "Ну так что?", -- Needs review
 		}
-	},
+	},]]
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LOCALE_ZHTW
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	--[[
 	["zhTW"] = {
 		localeContent = {
 			SL_ACCEPTANCE = "我接受。",
@@ -384,7 +392,7 @@ Esperienza: |cffffffff%s xp|r
 			SL_STORYLINE = "任務故事情節",
 			SL_WELL = "嗯哼...",
 		}
-	},
+	},]]
 
 }
 
