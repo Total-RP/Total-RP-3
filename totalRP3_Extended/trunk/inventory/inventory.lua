@@ -19,6 +19,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local getItemClass, isContainerByClassID = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
+local checkContainerInstance = TRP3_API.inventory.checkContainerInstance;
 
 local EMPTY = {};
 
@@ -40,9 +41,7 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	local itemClass = getItemClass(itemID);
 	assert(itemClass, "Unknown item class: " .. tostring(itemID));
-	if not container.content then
-		container.content = {};
-	end
+	checkContainerInstance(container)
 	itemData = itemData or EMPTY;
 
 	-- Finding an empty slot
@@ -79,15 +78,25 @@ function TRP3_API.inventory.getItem(container, slotID)
 	-- Checking data
 	local container = container or playerInventory;
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
-	if not container.content then
-		container.content = {};
-	end
-
+	checkContainerInstance(container);
 	return container.content[slotID];
 end
 
 local function swapContainersSlots(container1, slot1, container2, slot2)
+	assert(container1, slot1, "Missing 'from' container/slot");
+	assert(container2, slot2, "Missing 'to' container/slot");
+	checkContainerInstance(container2);
 
+	local slot1Data = container1.content[slot1];
+	local slot2Data = container2.content[slot2];
+
+	--TODO: check: cannot place a bag in himself or in own descendance.
+	if slot1Data and isContainerByClassID(slot1Data.id) then
+
+	end
+
+	container1.content[slot1] = slot2Data;
+	container2.content[slot2] = slot1Data;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

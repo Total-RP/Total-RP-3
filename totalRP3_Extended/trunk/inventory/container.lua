@@ -30,6 +30,7 @@ local EMPTY = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local containerInstances = {};
+local loadContainerPageSlots;
 local switchContainerByRef, isContainerInstanceOpen, highlightContainerInstance;
 
 local function getItemTooltipLines(slotInfo, itemClass)
@@ -177,9 +178,24 @@ local function slotOnDragStart(self)
 	end
 end
 
-local function slotOnDragStop(self)
-	self.Icon:SetDesaturated(false);
+local function slotOnDragStop(slotFrom)
+	slotFrom.Icon:SetDesaturated(false);
 	ResetCursor();
+	if slotFrom.info and slotFrom.class then
+		local slotTo = GetMouseFocus();
+		if slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
+			local container1, slot1, container2, slot2;
+			slot1 = slotFrom.slotID;
+			slot2 = slotTo.slotID;
+			container1 = slotFrom:GetParent().info;
+			container2 = slotTo:GetParent().info;
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
+			loadContainerPageSlots(slotFrom:GetParent());
+			if slotFrom:GetParent() ~= slotTo:GetParent() then
+				loadContainerPageSlots(slotTo:GetParent());
+			end
+		end
+	end
 end
 
 local function slotOnDragReceive(self)
@@ -223,7 +239,7 @@ end
 -- Container
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function loadContainerPageSlots(containerFrame)
+function loadContainerPageSlots(containerFrame)
 	if not containerFrame.info or not containerFrame.class then return end
 	local containerContent = containerFrame.info.content or EMPTY;
 	local slotCounter = 1;

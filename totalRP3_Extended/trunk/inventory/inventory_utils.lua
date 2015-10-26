@@ -66,6 +66,13 @@ local function getBaseClassDataSafe(itemClass)
 end
 TRP3_API.inventory.getBaseClassDataSafe = getBaseClassDataSafe;
 
+local function checkContainerInstance(container)
+	if not container.content then
+		container.content = {};
+	end
+end
+TRP3_API.inventory.checkContainerInstance = checkContainerInstance;
+
 function TRP3_API.inventory.getItemTextLine(itemClass)
 	local icon, name = getBaseClassDataSafe(itemClass);
 	return Utils.str.icon(icon, 25) .. " " .. name;
