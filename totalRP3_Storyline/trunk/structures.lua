@@ -58,7 +58,7 @@ Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	["character\\nightelf\\female\\nightelffemale_hd.m2"] = {
 		[EXCLAME_ID] = 2.000,
 		[QUESTION_ID] = 1.600,
-		[TALK_ID] = 1.900,
+		[TALK_ID] = 2.1,
 		[YES_ID] = 1.9,
 		[NOPE_ID] = 1.5,
 		[ACLAIM_ID] = 2.4,
@@ -177,7 +177,7 @@ Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	["character\\orc\\female\\orcfemale_hd.m2"] = {
 		[EXCLAME_ID] = 2.000,
 		[QUESTION_ID] = 1.600,
-		[TALK_ID] = 1.900,
+		[TALK_ID] = 2.1,
 		[YES_ID] = 1.2,
 		[NOPE_ID] = 1.3,
 		[ACLAIM_ID] = 1.4,
@@ -201,7 +201,7 @@ Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL = {
 	},
 	["character\\goblin\\female\\goblinfemale.m2"] = {
 		[TALK_ID] = 4.2,
-		[QUESTION_ID] = 4.2,
+		[QUESTION_ID] = 4.5,
 		[EXCLAME_ID] = 3.5,
 		[YES_ID] = 2.6,
 		[NOPE_ID] = 2.5,
@@ -701,7 +701,6 @@ Storyline_SCALE_MAPPING = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	-- VS player models
-
 	["character\\draenei\\male\\draeneimale_hd.m2~character\\worgen\\female\\worgenfemale.m2"] = {
 		["me"] = {
 			["offset"] = 0.205,
@@ -848,7 +847,32 @@ Storyline_SCALE_MAPPING = {
 			["offset"] = 0.195,
 		},
 	},
+	["character\\draenei\\male\\draeneimale_hd.m2~character\\tauren\\male\\taurenmale_hd.m2"] = {
+		["me"] = {
+			["scale"] = 1.56,
+		},
+		["you"] = {
+			["scale"] = 1.05,
+		},
+	},
+
 	-- VS NPC
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\agronn\\agronn.m2"] = {
+		["me"] = {
+			["scale"] = 3.44999999999999,
+		},
+		["you"] = {
+			["scale"] = 1.2,
+		},
+	},
+	["character\\draenei\\male\\draeneimale_hd.m2~creature\\ogredraenor\\ogredraenor.m2"] = {
+		["me"] = {
+			["scale"] = 2.15,
+		},
+		["you"] = {
+			["scale"] = 1.45,
+		},
+	},
 	["character\\draenei\\male\\draeneimale_hd.m2~character\\broken\\male\\brokenmale.m2"] = {
 		["me"] = {
 			["offset"] = 0.215,
