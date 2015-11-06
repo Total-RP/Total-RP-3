@@ -17,9 +17,10 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
-local getItemClass, isContainerByClassID = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID;
+local getItemClass, isContainerByClassID, isUsableByClass = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance = TRP3_API.inventory.checkContainerInstance;
+local loc = TRP3_API.locale.getText;
 
 local EMPTY = {};
 
@@ -90,13 +91,19 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	local slot1Data = container1.content[slot1];
 	local slot2Data = container2.content[slot2];
 
-	--TODO: check: cannot place a bag in himself or in own descendance.
-	if slot1Data and isContainerByClassID(slot1Data.id) then
-
+	if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
+		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.RAID_ALERT);
+		return;
 	end
 
 	container1.content[slot1] = slot2Data;
 	container2.content[slot2] = slot1Data;
+end
+
+local function useContainerSlot(slotButton, container)
+	if slotButton.info and slotButton.class and isUsableByClass(slotButton.class) then
+		local retCode = TRP3_API.script.executeClassScript(slotButton.class.US, {slotInfo = slotButton.info, containerInfo = container.info});
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -126,7 +133,7 @@ local dropdownItems = {};
 local function playerInventoryButtonClick(button)
 	wipe(dropdownItems);
 	tinsert(dropdownItems,{playerInvText, nil});
-	tinsert(dropdownItems,{"Show all inventory", 0}); -- TODO: locals
+	tinsert(dropdownItems,{loc("IT_INV_SHOW_ALL"), 0});
 	local i = 1;
 	local found = 0;
 	while i <= CONTAINER_SLOT_MAX and found <= PLAYER_INV_BUTTON_MAX_ENTRIES do
@@ -148,14 +155,14 @@ local function initPlayerInventoryButton()
 			id = "aa_player_d_inventory",
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			configText = playerInvText,
-			condition = function(targetType, unitID)
+			condition = function(_, unitID)
 				return unitID == Globals.player_id;
 			end,
-			onClick = function(unitID, _, _, button)
+			onClick = function(_, _, _, button)
 				playerInventoryButtonClick(button);
 			end,
 			tooltip = playerInvText,
-			tooltipSub = "Click: Show content", -- TODO: locals
+			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
 			icon = "inv_misc_bag_16"
 		});
 	end
@@ -182,6 +189,7 @@ local function initPlayerInventory()
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
 
 	-- UI
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

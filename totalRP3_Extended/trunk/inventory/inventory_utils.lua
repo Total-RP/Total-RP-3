@@ -36,6 +36,11 @@ local function isContainerByClass(item)
 end
 TRP3_API.inventory.isContainerByClass = isContainerByClass;
 
+local function isUsableByClass(item)
+	return item and item.US;
+end
+TRP3_API.inventory.isUsableByClass = isUsableByClass;
+
 local function isContainerByClassID(itemID)
 	return itemID == "main" or isContainerByClass(getItemClass(itemID));
 end
@@ -103,3 +108,23 @@ local function getQualityColorRGB(quality)
 	return tab[2], tab[3], tab[4];
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CONTAINER func
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function isItemInContainer(item, container)
+	if not container or not container.content or not isContainerByClassID(container.id) then
+		return false;
+	end
+	if item.instanceId == container.instanceId then
+		return true;
+	end
+
+	local contains = false;
+	for _, slot in pairs(container.content) do
+		contains = isItemInContainer(item, slot);
+	end
+	return contains;
+end
+TRP3_API.inventory.isItemInContainer = isItemInContainer;

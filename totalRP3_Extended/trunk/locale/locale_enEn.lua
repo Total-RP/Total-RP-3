@@ -21,4 +21,11 @@ TRP3_EXTENDED_LOCALE = {};
 TRP3_EXTENDED_LOCALE["enUS"] = {
 	GM_MODULE = "Game Master Module",
 	GM_TB_NPC_TALK = "Pouic",
+
+	-- CONTAINER
+	IT_CON = "Container",
+	IT_CO_OPEN = "Open/Close container",
+	IT_CON_CAN_INNER = "Can't place a container in himself!",
+	IT_INV_SHOW_ALL = "Show all inventory",
+	IT_INV_SHOW_CONTENT = "Click: Show content",
 };

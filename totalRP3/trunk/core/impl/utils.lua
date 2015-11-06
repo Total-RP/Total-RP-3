@@ -101,7 +101,8 @@ end
 Utils.message.type = {
 	CHAT_FRAME = 1,
 	ALERT_POPUP = 2,
-	RAID_ALERT = 3
+	RAID_ALERT = 3,
+	ALERT_MESSAGE = 4
 };
 local messageTypes = Utils.message.type;
 
@@ -118,6 +119,8 @@ Utils.message.displayMessage = function(message, messageType, noPrefix, chatFram
 		TRP3_API.popup.showAlertPopup(tostring(message));
 	elseif messageType == messageTypes.RAID_ALERT then
 		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
+	elseif messageType == messageTypes.ALERT_MESSAGE then
+		UIErrorsFrame:AddMessage(message);
 	end
 end
 

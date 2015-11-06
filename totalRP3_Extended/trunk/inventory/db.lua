@@ -29,6 +29,7 @@ TRP3_DB.item = {
 			AC = "Pouiquer",
 		},
 	},
+
 	["01pouicpouic124"] = {
 		BA = {
 			IC = "inv_misc_toy_05",
@@ -54,6 +55,7 @@ TRP3_DB.item = {
 			MW = 30,
 		},
 	},
+
 	["01container1235"] = {
 		BA = {
 			IC = "inv_misc_bag_02",
@@ -64,6 +66,83 @@ TRP3_DB.item = {
 		CO = {
 			DU = 25,
 			MW = 30,
+		},
+		US = {
+			AC = "Secouer",
+			SC = {
+				["1"] = {
+					t = "list",
+					e = {
+						{
+							id = "sheath",
+						},
+						{
+							id = "durability",
+							args = {"self", -1}
+						},
+					}
+				},
+			},
+		},
+	},
+
+	["coin1"] = {
+		BA = {
+			IC = "INV_Misc_Coin_19",
+			NA = "Copper coin",
+			DE = "A simple copper coin",
+			QA = 2,
+			WE = 0.02,
+		},
+	},
+
+	["fixcontainer"] = {
+		BA = {
+			IC = "inv_misc_armorkit_17",
+			NA = "Bag patch",
+			DE = "Fix one durability point for the bag where it stands.",
+			QA = 3,
+		},
+		US = {
+			AC = "Fix bag",
+			SC = {
+				["1"] = {
+					t = "list",
+					e = {
+						{
+							id = "durability",
+							args = {"con", 1}
+						},
+						{
+							id = "consumme",
+							args = {1}
+						},
+					}
+				},
+			},
+		},
+	},
+
+	["dammagecontainer"] = {
+		BA = {
+			IC = "trade_archaeology_rustedsteakknife",
+			NA = "Old rusty knife",
+			DE = "Damage for one durability point for the bag where it stands.",
+			QA = 3,
+		},
+		US = {
+			AC = "Damage bag",
+			SC = {
+				["1"] = {
+					t = "list",
+					e = {
+						{
+							id = "durability",
+							args = {"con", -1}
+						},
+					}
+				},
+			},
 		},
 	},
 };

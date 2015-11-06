@@ -20,7 +20,7 @@ local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.locale.getText;
-local getBaseClassDataSafe, isContainerByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass;
+local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
 local getItemClass, isContainerByClassID = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = {};
@@ -33,6 +33,21 @@ local containerInstances = {};
 local loadContainerPageSlots;
 local switchContainerByRef, isContainerInstanceOpen, highlightContainerInstance;
 
+local function incrementLine(line)
+	if line:len() > 0 then
+		line = line .. "\n";
+	end
+	return line;
+end
+
+local function incrementLineIfFirst(first, line)
+	if first then
+		first = false;
+		line = line .. "\n";
+	end
+	return first, line;
+end
+
 local function getItemTooltipLines(slotInfo, itemClass)
 	local title, text1, text2;
 	local icon, name = getBaseClassDataSafe(itemClass);
@@ -43,44 +58,49 @@ local function getItemTooltipLines(slotInfo, itemClass)
 		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
 	end
 	if isContainerByClass(itemClass) then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
-		text1 = text1 .. Utils.str.color("y") .. "Container"; -- TODO:
+		text1 = incrementLine(text1);
+		text1 = text1 .. Utils.str.color("y") .. loc("IT_CON");
 	end
 	if itemClass.BA.SB then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
 	end
 	if itemClass.BA.UN and itemClass.BA.UN > 0 then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. itemClass.BA.UN .. ")";
 	end
 
 	if itemClass.BA.DE and itemClass.BA.DE:len() > 0 then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("o") .. "\"" .. itemClass.BA.DE .. "\"";
 	end
 
 	if itemClass.US and itemClass.US.AC then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. itemClass.US.AC;
 	end
 
 	if itemClass.BA.CO then
-		if text1:len() > 0 then text1 = text1 .. "\n"; end
+		text1 = incrementLine(text1);
 		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
 	if IsAltKeyDown() then
 		if itemClass.BA.WE and itemClass.BA.WE > 0 then
-			if text1:len() > 0 then text1 = text1 .. "\n"; end
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. itemClass.BA.WE .. "kg";
+			text1 = incrementLine(text1);
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. ((slotInfo.count or 1) * itemClass.BA.WE) .. "kg";
 		end
 
-		local first = true;
 		text2 = "";
+
+		if itemClass.US then
+			text2 = text2 .. "\n";
+			text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
+		end
+
 		if isContainerByClass(itemClass) then
-			if first then first = false; text2 = text2 .. "\n"; end
-			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. "Open container"; -- TODO:
+			text2 = text2 .. "\n";
+			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CO_OPEN");
 		end
 	end
 
@@ -216,14 +236,20 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			tinsert(containerFrame.slots, slot);
 			createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
 			slot:SetPoint("TOPLEFT", colX, rowY);
+			slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			slot:RegisterForDrag("LeftButton");
 			slot:SetScript("OnDragStart", slotOnDragStart);
 			slot:SetScript("OnDragStop", slotOnDragStop);
 			slot:SetScript("OnReceiveDrag", slotOnDragReceive);
 			slot:SetScript("OnEnter", slotOnEnter);
 			slot:SetScript("OnLeave", slotOnLeave);
+			slot:SetScript("OnClick", function(self, button)
+				if button == "RightButton" and self.info and self.class then
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+				end
+			end);
 			slot:SetScript("OnDoubleClick", function(self, button)
-				if self.info and self.class and isContainerByClass(self.class) then
+				if button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
 					switchContainerByRef(self.info, self:GetParent());
 					slotOnEnter(self);
 				end
@@ -254,6 +280,12 @@ function loadContainerPageSlots(containerFrame)
 		end
 		containerSlotUpdate(slot);
 		slotCounter = slotCounter + 1;
+	end
+end
+
+local function refreshContainers()
+	for _, containerFrame in pairs(containerInstances) do
+		loadContainerPageSlots(containerFrame);
 	end
 end
 
@@ -313,6 +345,35 @@ local function lockOnContainer(self, originContainer)
 	else
 		self:SetPoint("CENTER", 0, 0);
 	end
+end
+
+function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityChange)
+	if containerInfo and containerInfo.id and isContainerByClassID(containerInfo.id) then
+		local class = getItemClass(containerInfo.id);
+		if class.CO.DU and class.CO.DU > 0 then
+			durabilityChange = durabilityChange or 0;
+			if not containerInfo.durability then -- init from class info
+			containerInfo.durability = class.CO.DU;
+			end
+			containerInfo.durability = containerInfo.durability + durabilityChange;
+			containerInfo.durability = math.min(math.max(containerInfo.durability, 0), class.CO.DU);
+		end
+	end
+end
+
+function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et grominet :D
+if slotInfo and slotInfo.count and containerInfo then
+	slotInfo.count = math.max(slotInfo.count - quantity, 0);
+	if slotInfo.count == 0 then
+		for slotIndex, slot in pairs(containerInfo.content) do
+			if slot == slotInfo then
+				wipe(containerInfo.content[slotIndex]);
+				containerInfo.content[slotIndex] = nil;
+				refreshContainers();
+			end
+		end
+	end
+end
 end
 
 local function unlockFromContainer(self)

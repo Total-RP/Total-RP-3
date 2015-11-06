@@ -21,6 +21,7 @@ TRP3_API.script = {};
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local tableCopy = TRP3_API.utils.table.copy;
+local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
 
 local DEBUG = true;
@@ -31,6 +32,7 @@ local DEBUG = true;
 
 -- Escape " in string argument, to avoid script injection
 local function escapeArguments(args)
+	if not args then return end
 	local escaped = {};
 	for index, arg in pairs(args) do
 		if type(arg) == "string" then
@@ -41,10 +43,11 @@ local function escapeArguments(args)
 	end
 	return escaped;
 end
+TRP3_API.script.escapeArguments = escapeArguments;
 
 TRP3_API.script.eval = function(conditionValue, conditionID, conditionStorage)
-	if conditionID and conditionValue then
-		conditionStorage[conditionID] = true;
+	if conditionID then
+		conditionStorage[conditionID] = conditionValue;
 	end
 	return conditionValue;
 end
@@ -220,8 +223,10 @@ end
 -- LEVEL 3 : Effect
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local EFFECT_MISSING_ID = "MISSING";
+
 local function getEffectInfo(id)
-	return TRP3_API.script.getEffect(id);
+	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
 end
 
 local function writeEffect(effectStructure)
@@ -237,12 +242,7 @@ local function writeEffect(effectStructure)
 		end
 	end
 
-	local effectCode = effectInfo.codeReplacement;
-	if (effectInfo.args or 0) > 0 then
-		assert(effectStructure.args, "Missing args for effect: " .. effectStructure.id);
-		assert(#effectStructure.args == effectInfo.args, ("Incomplete arguments for %s: %s / %s"):format(effectStructure.id, #effectStructure.args, effectInfo.args));
-		effectCode = effectCode:format(unpack(escapeArguments(effectStructure.args)));
-	end
+	local effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args), effectStructure.id);
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		startIf(writeCondition(effectStructure.cond, effectStructure.condID));
@@ -350,7 +350,7 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BASE_ENV = {delayed = "TRP3_API.script.delayed", eval = "TRP3_API.script.eval"};
+local BASE_ENV = {delayed = "TRP3_API.script.delayed", eval = "TRP3_API.script.eval", EMPTY = "{}"};
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
@@ -374,15 +374,12 @@ local function generateCode(effectStructure)
 	
 	CURRENT_STRUCTURE = effectStructure;
 
-	writeLine("local func = function(...)");
+	writeLine("local func = function(args)");
 	addIndent();
+	writeLine("args = args or EMPTY;");
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
 	writeElement("1"); -- 1 is always the first element
-	if DEBUG then
-		writeLine("return 0, conditionStorage;");
-	else
-		writeLine("return 0;");
-	end
+	writeLine("return 0, conditionStorage;");
 	closeBlock();
 	writeImports();
 	writeLine("setfenv(func, {});");
@@ -392,6 +389,7 @@ local function generateCode(effectStructure)
 end
 
 local function generate(effectStructure)
+	log("Generate FX", logLevel.DEBUG);
 	local code = generateCode(effectStructure);
 	
 	-- Generating factory
@@ -438,18 +436,41 @@ local MOCK_STRUCTURE = {
 	},
 }
 
-function TRP3_Generate()
-	local functionFactory, code = generate(MOCK_STRUCTURE);
-	TRP3_DEBUG_CODE_FRAME:Show();
-	TRP3_DEBUG_CODE_FRAME_TEXT:SetText(code);
-	
-	if functionFactory then
-		local func = functionFactory();
-		local status, ret, conditions = pcall(func);
-		if status then
-			TRP3_API.utils.table.dump(conditions);
-		else
-			print(ret);
-		end
+local function getFunction(structure)
+	local functionFactory, code = generate(structure);
+
+	if DEBUG then
+		TRP3_DEBUG_CODE_FRAME:Show();
+		TRP3_DEBUG_CODE_FRAME_TEXT:SetText(code);
 	end
+
+	if functionFactory then
+		return functionFactory();
+	end
+end
+TRP3_API.script.getFunction = getFunction;
+
+local function executeFunction(func, args)
+	local status, ret, conditions = pcall(func, args);
+	if status then
+--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
+		return ret;
+	else
+		if DEBUG then log(tostring(ret), logLevel.WARN) end
+	end
+end
+TRP3_API.script.executeFunction = executeFunction;
+
+local function executeClassScript(class, args)
+	if class and class.SC then
+		if not class.SCc then -- Not compiled yet
+			class.SCc = getFunction(class.SC);
+		end
+		return executeFunction(class.SCc, args);
+	end
+end
+TRP3_API.script.executeClassScript = executeClassScript;
+
+function TRP3_Generate()
+	print(tostring(executeFunction(getFunction(MOCK_STRUCTURE))));
 end

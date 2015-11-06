@@ -18,16 +18,125 @@
 ----------------------------------------------------------------------------------
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
+local escape = TRP3_API.script.escapeArguments;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Effetc structure
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local EFFECTS = {
+
+	["MISSING"] = {
+		codeReplacementFunc = function (_, id)
+			return ("message(\"|cffff0000Script error, unknown FX: %s\", 1);"):format(id); -- TODO: local
+		end,
+		env = {
+			message = "TRP3_API.utils.message.displayMessage",
+		}
+	},
+
+	-- Graphic
 	["text"] = {
-		codeReplacement= "print(\"%s\");",
+		codeReplacementFunc = function (args)
+			local text = args[1] or "";
+			local type = args[2] or 1;
+			return ("message(\"%s\", %s);"):format(text, type);
+		end,
 		args = 1,
 		env = {
-			print = "print",
+			message = "TRP3_API.utils.message.displayMessage",
+		}
+	},
+
+	-- Sounds
+
+	-- Inventory
+
+	["durability"] = {
+		codeReplacementFunc = function (args)
+			local target = "containerInfo";
+			if args[1] == "self" then
+				target = "slotInfo";
+			end
+			return ("changeContainerDurability(args.%s, %s);"):format(target, args[2]);
+		end,
+		env = {
+			changeContainerDurability = "TRP3_API.inventory.changeContainerDurability",
+		}
+	},
+
+	["sheath"] = {
+		codeReplacementFunc = function ()
+			return "ToggleSheath();"
+		end,
+		env = {
+			ToggleSheath = "ToggleSheath",
+		}
+	},
+
+	["consumme"] = {
+		codeReplacementFunc = function (args)
+			return ("consumeItem(args.slotInfo, args.containerInfo, %s);"):format(args[1]);
+		end,
+		env = {
+			consumeItem = "TRP3_API.inventory.consumeItem",
+		}
+	},
+
+	-- Companions
+
+	["dismissMount"] = {
+		codeReplacementFunc = function ()
+			return "DismissCompanion(\"MOUNT\");"
+		end,
+		env = {
+			DismissCompanion = "DismissCompanion",
+		}
+	},
+
+	["dismissCritter"] = {
+		codeReplacementFunc = function ()
+			return "DismissCompanion(\"CRITTER\");"
+		end,
+		env = {
+			DismissCompanion = "DismissCompanion",
+		}
+	},
+
+	-- DEBUG EFFECTs
+	["debugText"] = {
+		codeReplacementFunc = function (args)
+			return ("debug(\"%s\", DEBUG);"):format(unpack(args));
+		end,
+		args = 1,
+		env = {
+			debug = "TRP3_API.utils.log.log",
+			DEBUG = "TRP3_API.utils.log.level.DEBUG",
+		}
+	},
+
+	["debugDumpArg"] = {
+		codeReplacementFunc = function (args)
+			local value = tostring(args[1]);
+			return ("debug(\"Dumping arg %s\", DEBUG); dump(args.%s);"):format(value, value);
+		end,
+		env = {
+			dump = "TRP3_API.utils.table.dump",
+			debug = "TRP3_API.utils.log.log",
+			DEBUG = "TRP3_API.utils.log.level.DEBUG",
+		}
+	},
+
+	["debugDumpArgs"] = {
+		codeReplacementFunc = function ()
+			return "dump(args);";
+		end,
+		env = {
+			dump = "TRP3_API.utils.table.dump",
 		}
 	},
 }
+
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
