@@ -44,15 +44,15 @@ TRP3_DB.item = {
 		},
 	},
 
---	["coin1"] = {
---		BA = {
---			IC = "INV_Misc_Coin_19",
---			NA = "Copper coin",
---			DE = "A simple copper coin",
---			QA = 2,
---			WE = 0.02,
---		},
---	},
+	["coin1"] = {
+		BA = {
+			IC = "INV_Misc_Coin_19",
+			NA = "Copper coin",
+			DE = "A simple copper coin",
+			QA = 2,
+			WE = 0.02,
+		},
+	},
 
 	["fixcontainer"] = {
 		BA = {
@@ -146,6 +146,11 @@ TRP3_DB.item = {
 								id = "text",
 								args = {"You murder your target.", 3}
 							},
+							{
+								id = "addItem",
+								args = {"coin1"}
+							},
+
 						}
 					},
 				},

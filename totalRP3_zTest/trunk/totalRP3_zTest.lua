@@ -340,7 +340,7 @@ function TRP3_STATS()
 	end
 end
 
--- /run TRP3_RESET_INV()
+-- /run TRP3_RESET_INV(); ReloadUI();
 function TRP3_RESET_INV()
 	wipe(TRP3_API.profile.getPlayerCurrentProfile().inventory.content);
 	TRP3_API.inventory.addItem(nil, "01container1234");

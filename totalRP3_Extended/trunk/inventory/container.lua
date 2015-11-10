@@ -171,14 +171,14 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Show();
 			self.Quantity:SetText(self.info.count);
 		end
-		if MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
+		if MouseIsOver(self) then
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		end
 	else
-		if MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
+		if TRP3_ItemTooltip.ref == self and MouseIsOver(self) then
 			TRP3_ItemTooltip:Hide();
 		end
 	end
@@ -261,6 +261,14 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 				if button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
 					switchContainerByRef(self.info, self:GetParent());
 					slotOnEnter(self);
+				end
+			end);
+			-- Listen to refresh event
+			TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
+				if slot.info == slotInfo then
+					slot.info = nil;
+					slot.class = nil;
+					containerSlotUpdate(slot);
 				end
 			end);
 			colX = colX + COLUMN_SPACING;
@@ -374,22 +382,6 @@ function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityC
 	end
 end
 
--- TODO à refaire
-function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et grominet :D
-if slotInfo and slotInfo.count and containerInfo then
-	slotInfo.count = math.max(slotInfo.count - quantity, 0);
-	if slotInfo.count == 0 then
-		for slotIndex, slot in pairs(containerInfo.content) do
-			if slot == slotInfo then
-				wipe(containerInfo.content[slotIndex]);
-				containerInfo.content[slotIndex] = nil;
-				refreshContainers(); -- TODO find a way to refresh only the slot
-			end
-		end
-	end
-end
-end
-
 local function unlockFromContainer(self)
 	if self.lockedOn then
 		self.lockedOn.lockedBy = nil;
@@ -483,6 +475,12 @@ local function getContainerInstance(container)
 		containerFrame.IconButton:SetScript("OnDragStop", function(self) containerOnDragStop(self:GetParent()) end);
 		containerFrame.IconButton:SetScript("OnEnter", slotOnEnter);
 		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
+		-- Listen to refresh event
+		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
+			if containerFrame.info == containerInfo then
+				loadContainerPageSlots(containerFrame);
+			end
+		end);
 		tinsert(containerInstances, containerFrame);
 	end
 	containerFrame.info = container;

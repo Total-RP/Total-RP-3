@@ -83,6 +83,16 @@ local EFFECTS = {
 		}
 	},
 
+	["addItem"] = {
+		codeReplacementFunc = function (args)
+			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
+			return ("addItem(%s, \"%s\");"):format(targetContainer, args[1]);
+		end,
+		env = {
+			addItem = "TRP3_API.inventory.addItem",
+		}
+	},
+
 	-- Companions
 
 	["dismissMount"] = {
