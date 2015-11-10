@@ -24,13 +24,12 @@ local OPERANDS = {
 		codeReplacement= "tostring(name(\"target\"))",
 		env = {
 			["name"] = "UnitName",
-			["tostring"] = "tostring",
 		},
 	},
 	
 	["cond"] = {
-		codeReplacement= "conditionStorage[\"%s\"]",
-		args = 1
+		codeReplacement= "tostring(conditionStorage[\"%s\"])",
+		args = 1,
 	},
 };
 

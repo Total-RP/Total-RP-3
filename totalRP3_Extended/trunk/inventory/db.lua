@@ -127,18 +127,61 @@ TRP3_DB.item = {
 		BA = {
 			IC = "trade_archaeology_rustedsteakknife",
 			NA = "Old rusty knife",
-			DE = "Damage for one durability point for the bag where it stands.",
+			DE = "Damage for one durability point for the bag where it stands.\nBut you can also use it to kill someone.",
 			QA = 3,
 		},
 		US = {
-			AC = "Damage bag",
+			AC = "Damage bag or kill target",
 			SC = {
 				["1"] = {
 					t = "list",
 					e = {
 						{
+							id = "text",
+							args = {"You are thinking of what to do ...", 4}
+						},
+					},
+					n = "2"
+				},
+
+				["2"] = {
+					t = "delay",
+					d = 2,
+					n = "3"
+				},
+
+				["3"] = {
+					t = "branch",
+					b = {
+						{
+							cond = { { { i = "tar_name" }, "==", {v = "nil"} } },
+							condID = "hasTarget",
+							n = "4"
+						},
+						{
+							cond = { { { i = "cond", a = {"hasTarget"} }, "~=", {v = "true"} } },
+							n = "5"
+						}
+					},
+					n = "3"
+				},
+
+				["4"] = {
+					t = "list",
+					e = {
+						{
 							id = "durability",
 							args = {"con", -1}
+						},
+					}
+				},
+
+				["5"] = {
+					t = "list",
+					e = {
+						{
+							id = "text",
+							args = {"You murder your target.", 3}
 						},
 					}
 				},

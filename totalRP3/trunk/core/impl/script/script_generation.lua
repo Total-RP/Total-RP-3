@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
 -- Scripts : Code generation
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+-- ---------------------------------------------------------------------------
+-- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
 --
---		http://www.apache.org/licenses/LICENSE-2.0
+-- http://www.apache.org/licenses/LICENSE-2.0
 --
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 ----------------------------------------------------------------------------------
 
 TRP3_API.script = {};
@@ -43,6 +43,7 @@ local function escapeArguments(args)
 	end
 	return escaped;
 end
+
 TRP3_API.script.escapeArguments = escapeArguments;
 
 TRP3_API.script.eval = function(conditionValue, conditionID, conditionStorage)
@@ -52,8 +53,11 @@ TRP3_API.script.eval = function(conditionValue, conditionID, conditionStorage)
 	return conditionValue;
 end
 
+local after = C_Timer.After;
 TRP3_API.script.delayed = function(delay, func)
-	-- TODO
+	if func and delay then
+		after(delay, func);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -65,7 +69,7 @@ local INDENT_CHAR = "\t";
 
 local function writeLine(code, onTop)
 	if onTop then
-		CURRENT_CODE =  CURRENT_INDENT .. code .. "\n" .. CURRENT_CODE;
+		CURRENT_CODE = CURRENT_INDENT .. code .. "\n" .. CURRENT_CODE;
 	else
 		CURRENT_CODE = CURRENT_CODE .. CURRENT_INDENT .. code .. "\n";
 	end
@@ -103,6 +107,7 @@ end
 
 local function writeOperand(testStructure, comparatorType)
 	local code;
+	assert(type(testStructure) == "table", "testStructure is not a table");
 	assert(testStructure.v or testStructure.i, "No operand info");
 	if testStructure.v then
 		if comparatorType == "number" then
@@ -122,15 +127,15 @@ local function writeOperand(testStructure, comparatorType)
 		local operandInfo = getTestOperande(testStructure.i);
 		assert(operandInfo, "Unknown operand ID: " .. testStructure.i);
 		assert(comparatorType ~= "number" or operandInfo.numeric, "Operand ID is not numeric: " .. testStructure.i);
-		
-		local codeReplacement =  operandInfo.codeReplacement;
+
+		local codeReplacement = operandInfo.codeReplacement;
 		if operandInfo.args then -- has arguments
 			assert(args, "Missing arguments for operand: " .. testStructure.i);
 			assert(#args == operandInfo.args, ("Incomplete arguments for %s: %s / %s"):format(testStructure.i, #args, operandInfo.args));
 			codeReplacement = codeReplacement:format(unpack(escapeArguments(args)));
 		end
 		code = codeReplacement;
-		
+
 		-- Register operand environment
 		if operandInfo.env then
 			for map, g in pairs(operandInfo.env) do
@@ -143,11 +148,12 @@ end
 
 local function writeTest(testStructure)
 	assert(testStructure, "testStructure is nil");
+	assert(#testStructure == 3, "testStructure should have three components");
 	local comparator, comparatorType;
 
 	-- Comparator
-	assert(testStructure.c, "Comparator is nil");
-	local comparator = tostring(testStructure.c);
+	assert(type(testStructure[2]) == "string", "testStructure comparator is not a string");
+	local comparator = tostring(testStructure[2]);
 	if comparator == "<" or comparator == ">" or comparator == "<=" or comparator == ">=" then
 		comparatorType = "number";
 	elseif comparator == "==" or comparator == "~=" then
@@ -157,12 +163,10 @@ local function writeTest(testStructure)
 	end
 
 	-- Left operande
-	assert(testStructure.l, "No left operand");
-	local left = writeOperand(testStructure.l, comparatorType);
-	
+	local left = writeOperand(testStructure[1], comparatorType);
+
 	-- Right operand
-	assert(testStructure.r, "No Right operand");
-	local right = writeOperand(testStructure.r, comparatorType)
+	local right = writeOperand(testStructure[3], comparatorType)
 
 	-- Write code
 	return ("%s %s %s"):format(left, comparator, right);
@@ -211,7 +215,7 @@ local function writeCondition(conditionStructure, conditionID)
 		end
 		previousType = type(element);
 	end
-	
+
 	if conditionID then
 		code = ("eval(%s, \"%s\", conditionStorage)"):format(code, conditionID);
 	end
@@ -234,7 +238,7 @@ local function writeEffect(effectStructure)
 	assert(effectStructure.id, "Effect don't have ID");
 	local effectInfo = getEffectInfo(effectStructure.id);
 	assert(effectInfo, "Unknown effect ID: " .. effectStructure.id);
-	
+
 	-- Register operand environment
 	if effectInfo.env then
 		for map, g in pairs(effectInfo.env) do
@@ -259,11 +263,11 @@ end
 
 local function writeEffectList(listStructure)
 	assert(type(listStructure.e) == "table", "listStructure.e is not a table");
-	
+
 	for index, effect in pairs(listStructure.e) do
 		writeEffect(effect);
 	end
-	
+
 	if listStructure.n then
 		writeElement(listStructure.n);
 	end
@@ -278,7 +282,7 @@ local BRANCHING_COND = "if %s then";
 local function writeBranching(branchStructure)
 	assert(type(branchStructure.b) == "table", "branchStructure.b is not a table");
 	if #branchStructure.b == 0 then return; end
-	
+
 	for index, branch in pairs(branchStructure.b) do
 		if DEBUG then
 			writeLine("-- branch " .. index);
@@ -305,7 +309,7 @@ end
 
 local function writeDelay(delayStructure)
 	assert(type(delayStructure.d) == "number", "listStructure duration is not a number");
-	
+
 	writeLine(("delayed(%s, function() "):format(delayStructure.d));
 	addIndent();
 	if delayStructure.n then
@@ -329,12 +333,12 @@ writeElement = function(elementID)
 	assert(elementID, "elementID is nil");
 	local element = CURRENT_STRUCTURE[elementID];
 	assert(element, "Unknown element ID: " .. elementID);
-	
+
 	if DEBUG then
 		writeLine("");
 		writeLine("-- Element " .. elementID);
 	end
-	
+
 	if element.t == "list" then
 		writeEffectList(element);
 	elseif element.t == "branch" then
@@ -350,7 +354,7 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BASE_ENV = {delayed = "TRP3_API.script.delayed", eval = "TRP3_API.script.eval", EMPTY = "{}"};
+local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, {}, TRP3_API.script.delayed, TRP3_API.script.eval" };
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()
@@ -365,13 +369,13 @@ end
 local function generateCode(effectStructure)
 	CURRENT_CODE = "";
 	CURRENT_INDENT = "";
-	
+
 	if not CURRENT_ENVIRONMENT then
 		CURRENT_ENVIRONMENT = {};
 	end
 	wipe(CURRENT_ENVIRONMENT);
 	tableCopy(CURRENT_ENVIRONMENT, BASE_ENV);
-	
+
 	CURRENT_STRUCTURE = effectStructure;
 
 	writeLine("local func = function(args)");
@@ -384,21 +388,21 @@ local function generateCode(effectStructure)
 	writeImports();
 	writeLine("setfenv(func, {});");
 	writeLine("return func;");
-	
+
 	return CURRENT_CODE;
 end
 
 local function generate(effectStructure)
 	log("Generate FX", logLevel.DEBUG);
 	local code = generateCode(effectStructure);
-	
+
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
 	if not func then
 		print(errorMessage);
 		return nil, code;
 	end
-	
+
 	return func, code;
 end
 
@@ -416,7 +420,7 @@ local MOCK_STRUCTURE = {
 				id = "text",
 				condID = 1,
 				cond = {
-					{l = {v = "Telkostrasz",},c = "==",r = {i = "tar_name",}},
+					{ l = { v = "Telkostrasz", }, c = "==", r = { i = "tar_name", } },
 				},
 				args = {
 					"La cible est Telkostrasz",
@@ -426,7 +430,7 @@ local MOCK_STRUCTURE = {
 			{
 				id = "text",
 				cond = {
-					{l = {v = true,},c = "~=",r = {i = "cond", a = {1}}},
+					{ l = { v = true, }, c = "~=", r = { i = "cond", a = { 1 } } },
 				},
 				args = {
 					"La cible\");print(\"you just got hacked\");print(\"",
@@ -448,17 +452,19 @@ local function getFunction(structure)
 		return functionFactory();
 	end
 end
+
 TRP3_API.script.getFunction = getFunction;
 
 local function executeFunction(func, args)
 	local status, ret, conditions = pcall(func, args);
 	if status then
---		if DEBUG then TRP3_API.utils.table.dump(conditions); end
+		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
 		if DEBUG then log(tostring(ret), logLevel.WARN) end
 	end
 end
+
 TRP3_API.script.executeFunction = executeFunction;
 
 local function executeClassScript(class, args)
@@ -469,6 +475,7 @@ local function executeClassScript(class, args)
 		return executeFunction(class.SCc, args);
 	end
 end
+
 TRP3_API.script.executeClassScript = executeClassScript;
 
 function TRP3_Generate()
