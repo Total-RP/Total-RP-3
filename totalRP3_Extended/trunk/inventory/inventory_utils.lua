@@ -117,7 +117,7 @@ local function isItemInContainer(item, container)
 	if not container or not container.content or not isContainerByClassID(container.id) then
 		return false;
 	end
-	if item.instanceId == container.instanceId then
+	if item == container then -- Check by ref
 		return true;
 	end
 

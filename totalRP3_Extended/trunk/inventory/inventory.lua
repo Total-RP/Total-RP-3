@@ -65,7 +65,7 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 
 			-- Container is full
 			if not slot then
-				Utils.message.displayMessage("This container is full.", 4); -- TODO: locals
+				Utils.message.displayMessage("This container is full.", Utils.message.type.ALERT_MESSAGE); -- TODO: locals
 				return 1;
 			end
 
@@ -73,7 +73,6 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 			container.content[slot] = {
 				id = itemID,
 				count = 1,
-				instanceId = Utils.str.id(),
 			};
 
 		end
@@ -101,7 +100,7 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	local slot2Data = container2.content[slot2];
 
 	if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
-		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.RAID_ALERT);
+		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
 		return;
 	end
 

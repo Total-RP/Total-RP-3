@@ -169,7 +169,7 @@ local function containerSlotUpdate(self, elapsed)
 		if self.class and MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
 			showItemTooltip(self, self.info, self.class);
 		end
-		if isContainerByClass(self.class) and isContainerInstanceOpen(self.class, self.info.instanceId) then
+		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		end
 	end
@@ -179,8 +179,8 @@ local function slotOnEnter(self)
 	if self.info and self.class then
 		TRP3_ItemTooltip.ref = self;
 		showItemTooltip(self, self.info, self.class);
-		if isContainerByClass(self.class) and isContainerInstanceOpen(self.class, self.info.instanceId) then
-			highlightContainerInstance(self.info.instanceId);
+		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
+			highlightContainerInstance(self.info);
 		end
 	end
 end
@@ -290,7 +290,11 @@ local function refreshContainers()
 end
 
 local function containerFrameUpdate(self, elapsed)
-	if not self.info or not self.class then return end
+	if not self.info or not self.class then
+		self:Hide();
+		return
+	end
+
 	-- Durability
 	local durability = "";
 	if self.class.CO.DU and self.class.CO.DU > 0 then
@@ -320,10 +324,10 @@ local function decorateContainer(containerFrame, class, container)
 	containerFrame.Title:SetText(name);
 end
 
-function highlightContainerInstance(instanceId, except)
+function highlightContainerInstance(container, except)
 	for _, ref in pairs(containerInstances) do
 		ref.Glow:Hide();
-		if ref.instanceId == instanceId and ref:IsVisible() then
+		if ref.info == container and ref:IsVisible() then
 			ref.Glow:Show();
 		end
 	end
@@ -361,6 +365,7 @@ function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityC
 	end
 end
 
+-- TODO à refaire
 function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et grominet :D
 if slotInfo and slotInfo.count and containerInfo then
 	slotInfo.count = math.max(slotInfo.count - quantity, 0);
@@ -369,7 +374,7 @@ if slotInfo and slotInfo.count and containerInfo then
 			if slot == slotInfo then
 				wipe(containerInfo.content[slotIndex]);
 				containerInfo.content[slotIndex] = nil;
-				refreshContainers();
+				refreshContainers(); -- TODO find a way to refresh only the slot
 			end
 		end
 	end
@@ -412,11 +417,12 @@ local function containerOnDragStart(self)
 	self.lockedOn = nil;
 	self:StartMoving();
 	for _, containerFrame in pairs(containerInstances) do
-		containerFrame.isMoving = self.info.instanceId;
+		containerFrame.isMoving = self.info;
 	end
 end
 
 local function onContainerShow(self)
+	assert(self.info, "No info on container " .. self:GetName());
 	self.IconButton.info = self.info;
 	self.IconButton.class = self.class;
 	lockOnContainer(self, self.originContainer);
@@ -426,10 +432,17 @@ end
 
 local function onContainerHide(self)
 	unlockFromContainer(self);
+	-- Free resources for garbage collection.
+	self.info = nil;
+	self.class = nil;
+	for index, slot in pairs(self.slots) do
+		slot.info = nil;
+		slot.class = nil;
+	end
 end
 
-local CONTAINER_UPDATE_FREQUENCY = 0.5;
-local function getContainerInstance(containerClass, instanceId)
+local CONTAINER_UPDATE_FREQUENCY = 0.15;
+local function getContainerInstance(container)
 	local count = 0;
 	local containerFrame, available;
 	for _, ref in pairs(containerInstances) do
@@ -437,7 +450,7 @@ local function getContainerInstance(containerClass, instanceId)
 		if not ref:IsVisible() then
 			available = ref;
 		end
-		if ref:IsVisible() and ref.instanceId == instanceId then
+		if ref:IsVisible() and ref.info == container then
 			containerFrame = ref;
 			break;
 		end
@@ -463,13 +476,13 @@ local function getContainerInstance(containerClass, instanceId)
 		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
 		tinsert(containerInstances, containerFrame);
 	end
-	containerFrame.instanceId = instanceId;
+	containerFrame.info = container;
 	return containerFrame;
 end
 
-function isContainerInstanceOpen(containerClass, instanceId)
+function isContainerInstanceOpen(container)
 	for _, ref in pairs(containerInstances) do
-		if ref.instanceId == instanceId and ref:IsVisible() then
+		if ref.info == container and ref:IsVisible() then
 			return true;
 		end
 	end
@@ -477,11 +490,8 @@ function isContainerInstanceOpen(containerClass, instanceId)
 end
 
 function switchContainerByRef(container, originContainer)
-	local instanceId = container.instanceId;
-	local class = getItemClass(container.id);
-	local containerFrame = getContainerInstance(class, instanceId);
-	containerFrame.info = container;
-	containerFrame.class = class;
+	local containerFrame = getContainerInstance(container);
+	containerFrame.class = getItemClass(container.id);
 	containerFrame.originContainer = originContainer;
 	ToggleFrame(containerFrame);
 end

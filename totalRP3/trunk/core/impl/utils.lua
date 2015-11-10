@@ -120,7 +120,7 @@ Utils.message.displayMessage = function(message, messageType, noPrefix, chatFram
 	elseif messageType == messageTypes.RAID_ALERT then
 		RaidNotice_AddMessage(RaidWarningFrame, tostring(message), ChatTypeInfo["RAID_WARNING"]);
 	elseif messageType == messageTypes.ALERT_MESSAGE then
-		UIErrorsFrame:AddMessage(message);
+		UIErrorsFrame:AddMessage(message, 1.0, 0.0, 0.0);
 	end
 end
 
