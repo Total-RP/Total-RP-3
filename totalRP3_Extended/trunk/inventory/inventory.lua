@@ -36,12 +36,12 @@ local CONTAINER_SLOT_MAX = 1000;
 -- 0 if OK
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
-function TRP3_API.inventory.addItem(container, itemID, itemData)
+function TRP3_API.inventory.addItem(container, classID, itemData)
 	-- Checking data
 	local container = container or playerInventory;
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
-	local itemClass = getItemClass(itemID);
-	assert(itemClass, "Unknown item class: " .. tostring(itemID));
+	local itemClass = getItemClass(classID);
+
 	checkContainerInstance(container)
 	itemData = itemData or EMPTY;
 
@@ -49,7 +49,7 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 	local slot = itemData.containerSlot;
 
 	if slot and container.content[slot] then -- Can only happend if we force the slot number (in DEBUG)
-		assert(container.content[slot].id == itemID, ("Mismatch itemID in slot %s: %s vs %s"):format(slot, container.content[slot].id, itemID));
+		assert(container.content[slot].id == classID, ("Mismatch itemID in slot %s: %s vs %s"):format(slot, container.content[slot].id, classID));
 		container.content[slot].count = container.content[slot].count + (itemData.count or 1);
 	else
 
@@ -71,7 +71,7 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 
 			-- Adding item
 			container.content[slot] = {
-				id = itemID,
+				id = classID,
 				count = 1,
 			};
 
@@ -108,9 +108,17 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	container2.content[slot2] = slot1Data;
 end
 
-local function useContainerSlot(slotButton, container)
-	if slotButton.info and slotButton.class and isUsableByClass(slotButton.class) then
-		local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {slotInfo = slotButton.info, containerInfo = container.info});
+local function useContainerSlot(slotButton, containerFrame)
+	if slotButton.info then
+		if not slotButton.class then -- If using a missing item : remove it
+			slotButton.info = nil;
+			if containerFrame.info.content[slotButton.slotID] then
+				wipe(containerFrame.info.content[slotButton.slotID]);
+			end
+			containerFrame.info.content[slotButton.slotID] = nil;
+		elseif slotButton.class and isUsableByClass(slotButton.class) then
+			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {slotInfo = slotButton.info, containerInfo = containerFrame.info});
+		end
 	end
 end
 

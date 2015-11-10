@@ -157,3 +157,14 @@ TRP3_DB.item = {
 		},
 	},
 };
+
+TRP3_DB.item.MISSING_ITEM = {
+	BA = {
+		IC = "inv_misc_questionmark",
+		NA = "|cffff0000MISSING ITEM CLASS",
+		DE = "The information relative to this item are missing. It's possible the class was deleted or that it relies on a missing module.",
+	},
+	US = {
+		AC = "Remove item from container",
+	}
+}

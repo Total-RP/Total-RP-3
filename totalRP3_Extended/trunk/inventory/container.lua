@@ -49,59 +49,66 @@ local function incrementLineIfFirst(first, line)
 end
 
 local function getItemTooltipLines(slotInfo, itemClass)
+	local class = itemClass or TRP3_DB.item.MISSING_ITEM;
 	local title, text1, text2;
-	local icon, name = getBaseClassDataSafe(itemClass);
-	title = getQualityColorText(itemClass.BA.QA) .. name;
+	local icon, name = getBaseClassDataSafe(class);
+	title = getQualityColorText(class.BA.QA) .. name;
 
 	text1 = "";
-	if itemClass.QE then
+	if class.QE then
 		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
 	end
-	if isContainerByClass(itemClass) then
+	if isContainerByClass(class) then
 		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("y") .. loc("IT_CON");
 	end
-	if itemClass.BA.SB then
+	if class.BA.SB then
 		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
 	end
-	if itemClass.BA.UN and itemClass.BA.UN > 0 then
+	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. itemClass.BA.UN .. ")";
+		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
 	end
 
-	if itemClass.BA.DE and itemClass.BA.DE:len() > 0 then
+	if class.BA.DE and class.BA.DE:len() > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("o") .. "\"" .. itemClass.BA.DE .. "\"";
+		text1 = text1 .. Utils.str.color("o") .. "\"" .. class.BA.DE .. "\"";
 	end
 
-	if itemClass.US and itemClass.US.AC then
+	if class.US and class.US.AC then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. itemClass.US.AC;
+		text1 = text1 .. Utils.str.color("g") .. USE .. ": " .. class.US.AC;
 	end
 
-	if itemClass.BA.CO then
+	if class.BA.CO then
 		text1 = incrementLine(text1);
 		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
 	if IsAltKeyDown() then
-		if itemClass.BA.WE and itemClass.BA.WE > 0 then
+		if class.BA.WE and class.BA.WE > 0 then
 			text1 = incrementLine(text1);
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. ((slotInfo.count or 1) * itemClass.BA.WE) .. "kg";
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. ((slotInfo.count or 1) * class.BA.WE) .. "kg";
 		end
 
 		text2 = "";
 
-		if itemClass.US then
+		if itemClass and class.US then
 			text2 = text2 .. "\n";
 			text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
 		end
 
-		if isContainerByClass(itemClass) then
+		if isContainerByClass(class) then
 			text2 = text2 .. "\n";
 			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CO_OPEN");
 		end
+
+		if not itemClass then
+			text2 = text2 .. "\n";
+			text2 = text2 .. Utils.str.color("y") .. "Missing item class ID" .. ": " .. Utils.str.color("o") .. slotInfo.id; -- TODO: locals
+		end
+
 	end
 
 	return title, text1, text2;
@@ -147,10 +154,8 @@ local function containerSlotUpdate(self, elapsed)
 	self.IconBorder:Hide();
 	self.Quantity:Hide();
 	self.Icon:SetVertexColor(1, 1, 1);
-	if not self.info then
-
-	else
-		local class = self.class or EMPTY;
+	if self.info then
+		local class = self.class or TRP3_DB.item.MISSING_ITEM;
 		local icon, name = getBaseClassDataSafe(class);
 		self.Icon:Show();
 		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);
@@ -166,17 +171,21 @@ local function containerSlotUpdate(self, elapsed)
 			self.Quantity:Show();
 			self.Quantity:SetText(self.info.count);
 		end
-		if self.class and MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
+		if MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
 			showItemTooltip(self, self.info, self.class);
 		end
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		end
+	else
+		if MouseIsOver(self) and TRP3_ItemTooltip.ref == self then
+			TRP3_ItemTooltip:Hide();
+		end
 	end
 end
 
 local function slotOnEnter(self)
-	if self.info and self.class then
+	if self.info then
 		TRP3_ItemTooltip.ref = self;
 		showItemTooltip(self, self.info, self.class);
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
@@ -192,16 +201,16 @@ local function slotOnLeave(self)
 end
 
 local function slotOnDragStart(self)
-	if self.info and self.class then
+	if self.info then
 		self.Icon:SetDesaturated(true);
-		SetCursor("Interface\\ICONS\\" .. (self.class.BA.IC or "Temp")) ;
+		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
 	end
 end
 
 local function slotOnDragStop(slotFrom)
 	slotFrom.Icon:SetDesaturated(false);
 	ResetCursor();
-	if slotFrom.info and slotFrom.class then
+	if slotFrom.info then
 		local slotTo = GetMouseFocus();
 		if slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
 			local container1, slot1, container2, slot2;
@@ -244,7 +253,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			slot:SetScript("OnEnter", slotOnEnter);
 			slot:SetScript("OnLeave", slotOnLeave);
 			slot:SetScript("OnClick", function(self, button)
-				if button == "RightButton" and self.info and self.class then
+				if button == "RightButton" and self.info then
 					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
 				end
 			end);
