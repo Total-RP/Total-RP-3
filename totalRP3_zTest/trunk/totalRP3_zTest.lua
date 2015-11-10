@@ -343,11 +343,10 @@ end
 -- /run TRP3_RESET_INV()
 function TRP3_RESET_INV()
 	wipe(TRP3_API.profile.getPlayerCurrentProfile().inventory.content);
-	TRP3_API.inventory.addItem(nil, "01container1235", {containerSlot = "1"});
+	TRP3_API.inventory.addItem(nil, "01container1234");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01container1234");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01pouicpouic124");
-	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01container1235");
-	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "coin1", {count = 100});
+	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "coin1", {count = 2});
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "fixcontainer", {count = 2});
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "dammagecontainer");
 

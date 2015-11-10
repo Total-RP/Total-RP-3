@@ -467,12 +467,14 @@ end
 
 TRP3_API.script.executeFunction = executeFunction;
 
-local function executeClassScript(class, args)
-	if class and class.SC then
-		if not class.SCc then -- Not compiled yet
-			class.SCc = getFunction(class.SC);
+local function executeClassScript(scriptID, classScripts, args)
+	if scriptID and classScripts then
+		assert(classScripts[scriptID], "Unknown script: " .. tostring(scriptID));
+		local class = classScripts[scriptID];
+		if not class.c then -- Not compiled yet
+			class.c = getFunction(class.ST);
 		end
-		return executeFunction(class.SCc, args);
+		return executeFunction(class.c, args);
 	end
 end
 

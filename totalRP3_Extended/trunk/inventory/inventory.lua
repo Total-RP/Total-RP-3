@@ -45,34 +45,43 @@ function TRP3_API.inventory.addItem(container, itemID, itemData)
 	checkContainerInstance(container)
 	itemData = itemData or EMPTY;
 
-	-- Finding an empty slot
-	local slot = itemData.containerSlot;
-	if not slot then
-		for i = 1, CONTAINER_SLOT_MAX do
-			if not container.content[tostring(i)] then
-				slot = tostring(i);
-				break;
-			end
-		end
-	end
-	if not slot then
-		-- Container is full
-		return 1;
-	end
 
-	-- Adding item instance
-	if container.content[slot] then
+	local slot = itemData.containerSlot;
+
+	if slot and container.content[slot] then -- Can only happend if we force the slot number (in DEBUG)
 		assert(container.content[slot].id == itemID, ("Mismatch itemID in slot %s: %s vs %s"):format(slot, container.content[slot].id, itemID));
 		container.content[slot].count = container.content[slot].count + (itemData.count or 1);
 	else
-		container.content[slot] = {
-			id = itemID,
-			count = itemData.count or 1,
-			instanceId = Utils.str.id(),
-		};
+
+		for cnt = 1, itemData.count or 1 do
+
+			-- Finding an empty slot
+			for i = 1, CONTAINER_SLOT_MAX do
+				if not container.content[tostring(i)] then
+					slot = tostring(i);
+					break;
+				end
+			end
+
+			-- Container is full
+			if not slot then
+				Utils.message.displayMessage("This container is full.", 4); -- TODO: locals
+				return 1;
+			end
+
+			-- Adding item
+			container.content[slot] = {
+				id = itemID,
+				count = 1,
+				instanceId = Utils.str.id(),
+			};
+
+		end
+
+		return 0;
+
 	end
 
-	return 0;
 end
 
 function TRP3_API.inventory.getItem(container, slotID)
@@ -102,7 +111,7 @@ end
 
 local function useContainerSlot(slotButton, container)
 	if slotButton.info and slotButton.class and isUsableByClass(slotButton.class) then
-		local retCode = TRP3_API.script.executeClassScript(slotButton.class.US, {slotInfo = slotButton.info, containerInfo = container.info});
+		local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {slotInfo = slotButton.info, containerInfo = container.info});
 	end
 end
 

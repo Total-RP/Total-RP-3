@@ -17,18 +17,6 @@
 ----------------------------------------------------------------------------------
 
 TRP3_DB.item = {
-	["01pouicpouic123"] = {
-		BA = {
-			IC = "inv_misc_toy_02",
-			NA = "Pouic",
-			DE = "Un joli pouic à vapeur",
-			QA = 3,
-			CO = true,
-		},
-		US = {
-			AC = "Pouiquer",
-		},
-	},
 
 	["01pouicpouic124"] = {
 		BA = {
@@ -56,36 +44,6 @@ TRP3_DB.item = {
 		},
 	},
 
-	["01container1235"] = {
-		BA = {
-			IC = "inv_misc_bag_02",
-			NA = "Pouic bag",
-			DE = "Un sac à dos classique",
-			UN = 5,
-		},
-		CO = {
-			DU = 25,
-			MW = 30,
-		},
-		US = {
-			AC = "Secouer",
-			SC = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "sheath",
-						},
-						{
-							id = "durability",
-							args = {"self", -1}
-						},
-					}
-				},
-			},
-		},
-	},
-
 	["coin1"] = {
 		BA = {
 			IC = "INV_Misc_Coin_19",
@@ -105,21 +63,26 @@ TRP3_DB.item = {
 		},
 		US = {
 			AC = "Fix bag",
-			SC = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "durability",
-							args = {"con", 1}
-						},
-						{
-							id = "consumme",
-							args = {1}
-						},
-					}
-				},
-			},
+			SC = "onUse",
+		},
+		SC = {
+			["onUse"] = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "durability",
+								args = {"con", 1}
+							},
+							{
+								id = "consumme",
+								args = {1}
+							},
+						}
+					},
+				}
+			}
 		},
 	},
 
@@ -130,62 +93,67 @@ TRP3_DB.item = {
 			DE = "Damage for one durability point for the bag where it stands.\nBut you can also use it to kill someone.",
 			QA = 3,
 		},
-		US = {
-			AC = "Damage bag or kill target",
-			SC = {
-				["1"] = {
-					t = "list",
-					e = {
-						{
-							id = "text",
-							args = {"You are thinking of what to do ...", 4}
+		SC = {
+			["onUse"] = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "text",
+								args = {"You are thinking of what to do ...", 4}
+							},
 						},
+						n = "2"
 					},
-					n = "2"
-				},
 
-				["2"] = {
-					t = "delay",
-					d = 2,
-					n = "3"
-				},
+					["2"] = {
+						t = "delay",
+						d = 2,
+						n = "3"
+					},
 
-				["3"] = {
-					t = "branch",
-					b = {
-						{
-							cond = { { { i = "tar_name" }, "==", {v = "nil"} } },
-							condID = "hasTarget",
-							n = "4"
+					["3"] = {
+						t = "branch",
+						b = {
+							{
+								cond = { { { i = "tar_name" }, "==", {v = "nil"} } },
+								condID = "hasTarget",
+								n = "4"
+							},
+							{
+								cond = { { { i = "cond", a = {"hasTarget"} }, "~=", {v = "true"} } },
+								n = "5"
+							}
 						},
-						{
-							cond = { { { i = "cond", a = {"hasTarget"} }, "~=", {v = "true"} } },
-							n = "5"
+						n = "3"
+					},
+
+					["4"] = {
+						t = "list",
+						e = {
+							{
+								id = "durability",
+								args = {"con", -1}
+							},
 						}
 					},
-					n = "3"
-				},
 
-				["4"] = {
-					t = "list",
-					e = {
-						{
-							id = "durability",
-							args = {"con", -1}
-						},
-					}
+					["5"] = {
+						t = "list",
+						e = {
+							{
+								id = "text",
+								args = {"You murder your target.", 3}
+							},
+						}
+					},
 				},
-
-				["5"] = {
-					t = "list",
-					e = {
-						{
-							id = "text",
-							args = {"You murder your target.", 3}
-						},
-					}
-				},
-			},
+			}
+		},
+		US = {
+			AC = "Damage bag or kill target",
+			SC = "onUse",
 		},
 	},
 };
