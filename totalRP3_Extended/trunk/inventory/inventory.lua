@@ -40,7 +40,7 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 	-- Checking data
 	local container = container or playerInventory;
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
-	local itemClass = getItemClass(classID);
+	local itemClass = getItemClass(classID) or EMPTY;
 
 	checkContainerInstance(container)
 	itemData = itemData or EMPTY;
@@ -50,14 +50,23 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 	local ret;
 
 	for cnt = 1, itemData.count or 1 do
+		local freeSlot, stackSlot;
 
 		-- Finding an empty slot
 		for i = 1, CONTAINER_SLOT_MAX do
-			if not container.content[tostring(i)] then
-				slot = tostring(i);
-				break;
+			local slotID = tostring(i);
+			if not freeSlot and not container.content[slotID] then
+				freeSlot = slotID;
+			elseif container.content[slotID] and itemClass.ST and classID == container.content[slotID].id then
+				local expectedCount = (container.content[slotID].count or 1) + 1;
+				if expectedCount <= (itemClass.ST.MA or 1) then
+					stackSlot = slotID;
+					break;
+				end
 			end
 		end
+
+		slot = stackSlot or freeSlot;
 
 		-- Container is full
 		if not slot then
@@ -67,9 +76,14 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 		end
 
 		-- Adding item
-		container.content[slot] = {
-			id = classID,
-		};
+		if not container.content[slot] then
+			container.content[slot] = {
+				id = classID,
+			};
+		end
+		if stackSlot then
+			container.content[slot].count = (container.content[slot].count or 1) + 1;
+		end
 
 	end
 
@@ -94,14 +108,37 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 
 	local slot1Data = container1.content[slot1];
 	local slot2Data = container2.content[slot2];
+	local done;
 
-	if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
-		Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
-		return;
+	if slot2Data and slot1Data.id == slot2Data.id and (getItemClass(slot1Data.id) or EMPTY).ST then
+		local stackMax = getItemClass(slot1Data.id).ST.MA or 1;
+		local availableOnTarget = stackMax - (slot2Data.count or 1);
+		if availableOnTarget > 0 then
+			local canBeMoved = math.min(availableOnTarget, slot1Data.count or 1);
+			slot1Data.count = (slot1Data.count or 1) - canBeMoved;
+			slot2Data.count = (slot2Data.count or 1) + canBeMoved;
+			if slot1Data.count == 0 then
+				wipe(container1.content[slot1]);
+				container1.content[slot1] = nil;
+			end
+			done = true;
+		end
 	end
 
-	container1.content[slot1] = slot2Data;
-	container2.content[slot2] = slot1Data;
+	if not done then
+		if TRP3_API.inventory.isItemInContainer(container2, slot1Data) or TRP3_API.inventory.isItemInContainer(container1, slot2Data) then
+			Utils.message.displayMessage(loc("IT_CON_CAN_INNER"), Utils.message.type.ALERT_MESSAGE);
+			return;
+		end
+
+		container1.content[slot1] = slot2Data;
+		container2.content[slot2] = slot1Data;
+	end
+
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container1);
+	if container1 ~= container2 then
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container2);
+	end
 end
 
 local function useContainerSlot(slotButton, containerFrame)

@@ -224,10 +224,6 @@ local function slotOnDragStop(slotFrom)
 			slot2 = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
-			loadContainerPageSlots(slotFrom:GetParent());
-			if slotFrom:GetParent() ~= slotTo:GetParent() then
-				loadContainerPageSlots(slotTo:GetParent());
-			end
 		end
 	end
 end

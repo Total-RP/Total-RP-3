@@ -52,6 +52,9 @@ TRP3_DB.item = {
 			QA = 2,
 			WE = 0.02,
 		},
+		ST = {
+			MA = 5,
+		},
 	},
 
 	["fixcontainer"] = {
