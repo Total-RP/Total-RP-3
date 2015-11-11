@@ -46,39 +46,33 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 	itemData = itemData or EMPTY;
 
 
-	local slot = itemData.containerSlot;
+	local slot;
 	local ret;
 
-	if slot and container.content[slot] then -- Can only happend if we force the slot number (in DEBUG)
-		assert(container.content[slot].id == classID, ("Mismatch itemID in slot %s: %s vs %s"):format(slot, container.content[slot].id, classID));
-		container.content[slot].count = container.content[slot].count + (itemData.count or 1);
-	else
+	for cnt = 1, itemData.count or 1 do
 
-		for cnt = 1, itemData.count or 1 do
-
-			-- Finding an empty slot
-			for i = 1, CONTAINER_SLOT_MAX do
-				if not container.content[tostring(i)] then
-					slot = tostring(i);
-					break;
-				end
+		-- Finding an empty slot
+		for i = 1, CONTAINER_SLOT_MAX do
+			if not container.content[tostring(i)] then
+				slot = tostring(i);
+				break;
 			end
-
-			-- Container is full
-			if not slot then
-				Utils.message.displayMessage("This container is full.", Utils.message.type.ALERT_MESSAGE); -- TODO: locals
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-				return 1;
-			end
-
-			-- Adding item
-			container.content[slot] = {
-				id = classID,
-			};
-
 		end
 
+		-- Container is full
+		if not slot then
+			Utils.message.displayMessage("This container is full.", Utils.message.type.ALERT_MESSAGE); -- TODO: locals
+			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+			return 1;
+		end
+
+		-- Adding item
+		container.content[slot] = {
+			id = classID,
+		};
+
 	end
+
 
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	return 0;
@@ -130,12 +124,21 @@ function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et
 		if slotInfo.count == 0 then
 			for slotIndex, slot in pairs(containerInfo.content) do
 				if slot == slotInfo then
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, slotInfo);
 					wipe(containerInfo.content[slotIndex]);
 					containerInfo.content[slotIndex] = nil;
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 				end
 			end
 		end
+	end
+end
+
+local function removeSlotContent(container, slotID, slotInfo)
+	-- Check that nothing has changed
+	if container.content[slotID] == slotInfo then
+		wipe(container.content[slotID]);
+		container.content[slotID] = nil;
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	end
 end
 
@@ -221,12 +224,15 @@ local function initPlayerInventory()
 	TRP3_API.inventory.EVENT_ON_SLOT_SWAP = "EVENT_ON_SLOT_SWAP";
 	TRP3_API.inventory.EVENT_DETACH_SLOT = "EVENT_DETACH_SLOT";
 	TRP3_API.inventory.EVENT_REFRESH_BAG = "EVENT_REFRESH_BAG";
+	TRP3_API.inventory.EVENT_ON_SLOT_REMOVE = "EVENT_ON_SLOT_REMOVE";
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_DETACH_SLOT);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
+	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
 
 	-- UI
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

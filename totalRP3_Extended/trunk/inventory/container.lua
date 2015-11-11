@@ -212,11 +212,16 @@ local function slotOnDragStop(slotFrom)
 	ResetCursor();
 	if slotFrom.info then
 		local slotTo = GetMouseFocus();
-		if slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
-			local container1, slot1, container2, slot2;
-			slot1 = slotFrom.slotID;
+		local container1, slot1;
+		slot1 = slotFrom.slotID;
+		container1 = slotFrom:GetParent().info;
+		if slotTo:GetName() == "WorldFrame" then
+			TRP3_API.popup.showConfirmPopup("Delete the item ?", function()
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+			end);
+		elseif slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
+			local container2, slot2;
 			slot2 = slotTo.slotID;
-			container1 = slotFrom:GetParent().info;
 			container2 = slotTo:GetParent().info;
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
 			loadContainerPageSlots(slotFrom:GetParent());
