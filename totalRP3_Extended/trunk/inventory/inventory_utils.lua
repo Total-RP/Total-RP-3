@@ -59,6 +59,7 @@ TRP3_API.inventory.isUsableByClassID = isUsableByClassID;
 local function getBaseClassDataSafe(itemClass)
 	local icon = "TEMP";
 	local name = UNKNOWN;
+	local qa = 1;
 	if itemClass and itemClass.BA then
 		if itemClass.BA.IC then
 			icon = itemClass.BA.IC;
@@ -66,8 +67,11 @@ local function getBaseClassDataSafe(itemClass)
 		if itemClass.BA.NA then
 			name = itemClass.BA.NA;
 		end
+		if itemClass.BA.QA then
+			qa = itemClass.BA.QA;
+		end
 	end
-	return icon, name;
+	return icon, name, qa;
 end
 TRP3_API.inventory.getBaseClassDataSafe = getBaseClassDataSafe;
 
@@ -108,6 +112,12 @@ local function getQualityColorRGB(quality)
 	return tab[2], tab[3], tab[4];
 end
 TRP3_API.inventory.getQualityColorRGB = getQualityColorRGB;
+
+local function getItemLink(itemClass)
+	local icon, name, qa = getBaseClassDataSafe(itemClass);
+	return getQualityColorText(qa) .. "[" .. name .. "]|r";
+end
+TRP3_API.inventory.getItemLink = getItemLink;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CONTAINER func

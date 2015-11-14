@@ -61,6 +61,9 @@
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
 	</Button>
 
+	<Frame name="TRP3_ItemDragButton" inherits="TRP3_ContainerSlotTemplate" parent="UIParent" frameStrata="DIALOG" hidden="true" movable="true" enableMouse="false">
+
+	</Frame>
 
 	<Frame name="TRP3_Container5x4Template" frameStrata="PARENT" toplevel="true" parent="UIParent" enableMouse="true" virtual="true" hidden="true" clampedToScreen="true" movable="true">
 		<Size x="200" y="270" />

@@ -203,6 +203,34 @@ local function removeSlotContent(container, slotID, slotInfo)
 	end
 end
 
+local function splitSlot(slot, container, quantity)
+	local containerClass = getItemClass(container.id);
+
+	local emptySlotID;
+	-- Finding an empty slot
+	for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
+		local slotID = tostring(i);
+		if not container.content[slotID] then
+			emptySlotID = slotID;
+			break;
+		end
+	end
+
+	if not emptySlotID then
+		Utils.message.displayMessage(ERR_BAG_FULL, Utils.message.type.ALERT_MESSAGE);
+		return;
+	end
+
+	container.content[emptySlotID] = {
+		count = quantity,
+		id = slot.id
+	};
+
+	slot.count = slot.count - quantity;
+
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Target bar button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -286,14 +314,17 @@ local function initPlayerInventory()
 	TRP3_API.inventory.EVENT_DETACH_SLOT = "EVENT_DETACH_SLOT";
 	TRP3_API.inventory.EVENT_REFRESH_BAG = "EVENT_REFRESH_BAG";
 	TRP3_API.inventory.EVENT_ON_SLOT_REMOVE = "EVENT_ON_SLOT_REMOVE";
+	TRP3_API.inventory.EVENT_SPLIT_SLOT = "EVENT_SPLIT_SLOT";
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_DETACH_SLOT);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_REFRESH_BAG);
 	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE);
+	TRP3_API.events.registerEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, swapContainersSlots);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT, splitSlot);
 
 	-- Effect and operands
 	TRP3_API.script.registerEffects(TRP3_API.inventory.EFFECTS);
@@ -301,6 +332,13 @@ local function initPlayerInventory()
 	-- UI
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
+	end);
+	StackSplitFrame:SetScript("OnMouseWheel",function(self,delta)
+		if delta == -1 then
+			StackSplitFrameLeft_Click();
+		elseif delta == 1 then
+			StackSplitFrameRight_Click();
+		end
 	end);
 end
 

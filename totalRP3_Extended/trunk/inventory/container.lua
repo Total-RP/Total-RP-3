@@ -202,6 +202,7 @@ end
 
 local function slotOnDragStart(self)
 	if self.info then
+		StackSplitFrame:Hide();
 		self.Icon:SetDesaturated(true);
 		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
 	end
@@ -216,7 +217,8 @@ local function slotOnDragStop(slotFrom)
 		slot1 = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
 		if slotTo:GetName() == "WorldFrame" then
-			TRP3_API.popup.showConfirmPopup("Delete the item ?", function()
+			local itemClass = getItemClass(slotFrom.info.id);
+			TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function() -- TODO: locals
 				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
 			end);
 		elseif slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
@@ -230,6 +232,12 @@ end
 
 local function slotOnDragReceive(self)
 
+end
+
+local function splitStack(slot, quantity)
+	if slot and slot.info and slot:GetParent().info then
+		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_SPLIT_SLOT, slot.info, slot:GetParent().info, quantity);
+	end
 end
 
 local COLUMN_SPACING = 43;
@@ -254,8 +262,12 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 			slot:SetScript("OnEnter", slotOnEnter);
 			slot:SetScript("OnLeave", slotOnLeave);
 			slot:SetScript("OnClick", function(self, button)
-				if button == "RightButton" and self.info then
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+				if self.info then
+					if button == "LeftButton" and IsShiftKeyDown() and (self.info.count or 1) > 1 then
+						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+					elseif button == "RightButton" then
+						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+					end
 				end
 			end);
 			slot:SetScript("OnDoubleClick", function(self, button)
@@ -264,6 +276,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 					slotOnEnter(self);
 				end
 			end);
+			slot.SplitStack = splitStack;
 			-- Listen to refresh event
 			TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
 				if slot.info == slotInfo then
