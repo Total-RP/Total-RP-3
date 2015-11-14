@@ -36,9 +36,10 @@ local CONTAINER_SLOT_MAX = 20;
 -- 0 if OK
 -- 1 if container full
 -- 2 if too many item already possessed (unique)
-function TRP3_API.inventory.addItem(container, classID, itemData)
+function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	-- Checking data
-	local container = container or playerInventory;
+	local container = givenContainer or playerInventory;
+	local containerClass = getItemClass(container.id);
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	local itemClass = getItemClass(classID) or EMPTY;
 
@@ -53,7 +54,7 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 		local freeSlot, stackSlot;
 
 		-- Finding an empty slot
-		for i = 1, CONTAINER_SLOT_MAX do
+		for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do
 			local slotID = tostring(i);
 			if not freeSlot and not container.content[slotID] then
 				freeSlot = slotID;
@@ -70,7 +71,11 @@ function TRP3_API.inventory.addItem(container, classID, itemData)
 
 		-- Container is full
 		if not slot then
-			Utils.message.displayMessage("This container is full.", Utils.message.type.ALERT_MESSAGE); -- TODO: locals
+			if givenContainer then
+				Utils.message.displayMessage(ERR_BAG_FULL, Utils.message.type.ALERT_MESSAGE);
+			else
+				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
+			end
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 			return 1;
 		end
@@ -163,9 +168,28 @@ function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et
 				if slot == slotInfo then
 					wipe(containerInfo.content[slotIndex]);
 					containerInfo.content[slotIndex] = nil;
-					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerInfo);
 				end
 			end
+		end
+	end
+end
+
+function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityChange)
+	if containerInfo and containerInfo.id and isContainerByClassID(containerInfo.id) then
+		local class = getItemClass(containerInfo.id);
+		if class.CO.DU and class.CO.DU > 0 then
+			durabilityChange = durabilityChange or 0;
+			if not containerInfo.durability then -- init from class info
+				containerInfo.durability = class.CO.DU;
+			end
+			local old = containerInfo.durability;
+			containerInfo.durability = containerInfo.durability + durabilityChange;
+			containerInfo.durability = math.min(math.max(containerInfo.durability, 0), class.CO.DU);
+			if old == containerInfo.durability then
+				return 1;
+			end
+			return 0;
 		end
 	end
 end

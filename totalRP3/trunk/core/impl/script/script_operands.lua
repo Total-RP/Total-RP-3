@@ -26,10 +26,18 @@ local OPERANDS = {
 			["name"] = "UnitName",
 		},
 	},
-	
+
+	-- Workflow operands
+
+	-- Let you test a previous test results
 	["cond"] = {
 		codeReplacement= "tostring(conditionStorage[\"%s\"])",
 		args = 1,
+	},
+
+	-- Let you test the return value from the last effect
+	["lastReturn"] = {
+		codeReplacement= "tostring(lastEffectReturn)",
 	},
 };
 

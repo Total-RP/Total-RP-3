@@ -28,7 +28,7 @@ local EFFECTS = {
 
 	["MISSING"] = {
 		codeReplacementFunc = function (_, id)
-			return ("message(\"|cffff0000Script error, unknown FX: %s\", 1);"):format(id); -- TODO: local
+			return ("message(\"|cffff0000Script error, unknown FX: %s\", 1); lastEffectReturn = nil;"):format(id); -- TODO: local
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
@@ -40,7 +40,7 @@ local EFFECTS = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
 			local type = args[2] or 1;
-			return ("message(\"%s\", %s);"):format(text, type);
+			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, type);
 		end,
 		args = 1,
 		env = {
@@ -58,7 +58,7 @@ local EFFECTS = {
 			if args[1] == "self" then
 				target = "slotInfo";
 			end
-			return ("changeContainerDurability(args.%s, %s);"):format(target, args[2]);
+			return ("lastEffectReturn = changeContainerDurability(args.%s, %s);"):format(target, args[2]);
 		end,
 		env = {
 			changeContainerDurability = "TRP3_API.inventory.changeContainerDurability",
@@ -67,7 +67,7 @@ local EFFECTS = {
 
 	["sheath"] = {
 		codeReplacementFunc = function ()
-			return "ToggleSheath();"
+			return "ToggleSheath(); lastEffectReturn = 0;"
 		end,
 		env = {
 			ToggleSheath = "ToggleSheath",
@@ -76,7 +76,7 @@ local EFFECTS = {
 
 	["consumme"] = {
 		codeReplacementFunc = function (args)
-			return ("consumeItem(args.slotInfo, args.containerInfo, %s);"):format(args[1]);
+			return ("lastEffectReturn = consumeItem(args.slotInfo, args.containerInfo, %s);"):format(args[1]);
 		end,
 		env = {
 			consumeItem = "TRP3_API.inventory.consumeItem",
@@ -86,7 +86,7 @@ local EFFECTS = {
 	["addItem"] = {
 		codeReplacementFunc = function (args)
 			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
-			return ("addItem(%s, \"%s\");"):format(targetContainer, args[1]);
+			return ("lastEffectReturn = addItem(%s, \"%s\");"):format(targetContainer, args[1]);
 		end,
 		env = {
 			addItem = "TRP3_API.inventory.addItem",
@@ -97,7 +97,7 @@ local EFFECTS = {
 
 	["dismissMount"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"MOUNT\");"
+			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
@@ -106,7 +106,7 @@ local EFFECTS = {
 
 	["dismissCritter"] = {
 		codeReplacementFunc = function ()
-			return "DismissCompanion(\"CRITTER\");"
+			return "DismissCompanion(\"CRITTER\"); lastEffectReturn = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",

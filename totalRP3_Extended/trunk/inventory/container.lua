@@ -371,20 +371,6 @@ local function lockOnContainer(self, originContainer)
 	end
 end
 
-function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityChange)
-	if containerInfo and containerInfo.id and isContainerByClassID(containerInfo.id) then
-		local class = getItemClass(containerInfo.id);
-		if class.CO.DU and class.CO.DU > 0 then
-			durabilityChange = durabilityChange or 0;
-			if not containerInfo.durability then -- init from class info
-			containerInfo.durability = class.CO.DU;
-			end
-			containerInfo.durability = containerInfo.durability + durabilityChange;
-			containerInfo.durability = math.min(math.max(containerInfo.durability, 0), class.CO.DU);
-		end
-	end
-end
-
 local function unlockFromContainer(self)
 	if self.lockedOn then
 		self.lockedOn.lockedBy = nil;

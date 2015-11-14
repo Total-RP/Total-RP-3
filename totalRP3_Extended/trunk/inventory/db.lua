@@ -101,11 +101,40 @@ TRP3_DB.item = {
 								id = "durability",
 								args = {"con", 1}
 							},
+						},
+						n = "2"
+					},
+					["2"] = {
+						t = "branch",
+						b = {
+							{
+								cond = { { { i = "lastReturn" }, "==", {v = "0"} } },
+								condID = "couldHeal",
+								n = "3"
+							},
+							{
+								cond = { { { i = "cond", a = {"couldHeal"} }, "~=", {v = "true"} } },
+								n = "4"
+							}
+						}
+					},
+					["3"] = {
+						t = "list",
+						e = {
 							{
 								id = "consumme",
 								args = {1}
 							},
-						}
+						},
+					},
+					["4"] = {
+						t = "list",
+						e = {
+							{
+								id = "text",
+								args = {"Your bag is already at full health.", 3}
+							},
+						},
 					},
 				}
 			}

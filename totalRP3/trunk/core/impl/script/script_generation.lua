@@ -382,6 +382,7 @@ local function generateCode(effectStructure)
 	addIndent();
 	writeLine("args = args or EMPTY;");
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
+	writeLine("local lastEffectReturn;"); -- Store last return value from effect, to be able to test it in further conditions.
 	writeElement("1"); -- 1 is always the first element
 	writeLine("return 0, conditionStorage;");
 	closeBlock();
