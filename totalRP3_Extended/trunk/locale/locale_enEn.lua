@@ -25,7 +25,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	-- CONTAINER
 	IT_CON = "Container",
 	IT_CO_OPEN = "Open/Close container",
-	IT_CON_CAN_INNER = "Can't place a container in himself!",
+	IT_CON_CAN_INNER = "Can't place a container inside itself!",
 	IT_INV_SHOW_ALL = "Show all inventory",
 	IT_INV_SHOW_CONTENT = "Click: Show content",
 };

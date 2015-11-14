@@ -58,13 +58,13 @@ local function getItemTooltipLines(slotInfo, itemClass)
 	if class.QE then
 		text1 = Utils.str.color("w") .. ITEM_BIND_QUEST;
 	end
-	if isContainerByClass(class) then
-		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("y") .. loc("IT_CON");
-	end
 	if class.BA.SB then
 		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. ITEM_SOULBOUND;
+	end
+	if isContainerByClass(class) then
+		text1 = incrementLine(text1);
+		text1 = text1 .. Utils.str.color("w") .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT);
 	end
 	if class.BA.UN and class.BA.UN > 0 then
 		text1 = incrementLine(text1);
@@ -283,6 +283,8 @@ end
 -- Container
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local DEFAULT_CONTAINER_SIZE = "5x4";
+
 function loadContainerPageSlots(containerFrame)
 	if not containerFrame.info or not containerFrame.class then return end
 	local containerContent = containerFrame.info.content or EMPTY;
@@ -444,12 +446,17 @@ local function onContainerHide(self)
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.15;
-local function getContainerInstance(container)
+local function getContainerInstance(container, class)
+	if not class or not isContainerByClass(class) then
+		return nil;
+	end
+
+	local size = class.CO.SI or DEFAULT_CONTAINER_SIZE;
 	local count = 0;
 	local containerFrame, available;
 	for _, ref in pairs(containerInstances) do
 		count = count + 1;
-		if not ref:IsVisible() then
+		if not ref:IsVisible() and ref.containerSize == size then
 			available = ref;
 		end
 		if ref:IsVisible() and ref.info == container then
@@ -463,9 +470,9 @@ local function getContainerInstance(container)
 	if available then -- If there is available frame in the pool
 		containerFrame = available;
 	else -- Else: we create a new one
-		containerFrame = CreateFrame("Frame", "TRP3_Container5x4_" .. (count + 1), nil, "TRP3_Container5x4Template");
+		containerFrame = CreateFrame("Frame", "TRP3_Container" .. size .. "_" .. (count + 1), nil, "TRP3_Container" .. size .. "Template");
 		createRefreshOnFrame(containerFrame, CONTAINER_UPDATE_FREQUENCY, containerFrameUpdate);
-		initContainerSlots(containerFrame, 5, 4);
+		initContainerSlots(containerFrame, class.CO.SR or 5, class.CO.SC or 4);
 		containerFrame:SetScript("OnShow", onContainerShow);
 		containerFrame:SetScript("OnHide", onContainerHide);
 		containerFrame:RegisterForDrag("LeftButton");
@@ -476,6 +483,7 @@ local function getContainerInstance(container)
 		containerFrame.IconButton:SetScript("OnDragStop", function(self) containerOnDragStop(self:GetParent()) end);
 		containerFrame.IconButton:SetScript("OnEnter", slotOnEnter);
 		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
+		containerFrame.containerSize = size;
 		-- Listen to refresh event
 		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
 			if containerFrame.info == containerInfo then
@@ -498,8 +506,11 @@ function isContainerInstanceOpen(container)
 end
 
 function switchContainerByRef(container, originContainer)
-	local containerFrame = getContainerInstance(container);
-	containerFrame.class = getItemClass(container.id);
+	local class = getItemClass(container.id);
+	local containerFrame = getContainerInstance(container, class);
+	assert(containerFrame, "No frame available for container: " .. tostring(container.id));
+
+	containerFrame.class = class;
 	containerFrame.originContainer = originContainer;
 	ToggleFrame(containerFrame);
 end

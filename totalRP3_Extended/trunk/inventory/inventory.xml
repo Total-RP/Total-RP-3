@@ -190,6 +190,20 @@
 		<Scripts>
 			<OnLoad>
 				self.Middle:SetTexCoord(0.24, 1, 0.43, 0.4875);
+				self.IconButton:SetAllPoints(self.Icon);
+			</OnLoad>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_Container1x4Template" inherits="TRP3_Container5x4Template" virtual="true" >
+		<Anchors>
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Size x="200" y="103" />
+		<Scripts>
+			<OnLoad>
+				self.Middle:SetTexCoord(0.24, 1, 0.43, 0.4);
+				self.IconButton:SetAllPoints(self.Icon);
 			</OnLoad>
 		</Scripts>
 	</Frame>

@@ -41,6 +41,29 @@ TRP3_DB.item = {
 		CO = {
 			DU = 25,
 			MW = 30,
+			SI = "5x4",
+		},
+	},
+
+	["smallbag"] = {
+		BA = {
+			IC = "inv_misc_bag_10",
+			NA = "Small bag",
+		},
+		CO = {
+			SI = "2x4",
+			SR = 2,
+		},
+	},
+
+	["tinybag"] = {
+		BA = {
+			IC = "inv_misc_bag_09",
+			NA = "Tiny bag",
+		},
+		CO = {
+			SI = "1x4",
+			SR = 1,
 		},
 	},
 
