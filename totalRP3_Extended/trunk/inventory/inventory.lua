@@ -295,6 +295,9 @@ local function initPlayerInventory()
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, useContainerSlot);
 	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, removeSlotContent);
 
+	-- Effect and operands
+	TRP3_API.script.registerEffects(TRP3_API.inventory.EFFECTS);
+
 	-- UI
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();

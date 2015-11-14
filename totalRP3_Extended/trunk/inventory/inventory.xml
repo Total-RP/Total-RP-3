@@ -24,6 +24,7 @@
 	<GameTooltip name="TRP3_ItemTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
 
 	<Script file="db.lua"/>
+	<Script file="inventory_effects.lua"/>
 	<Script file="inventory_utils.lua"/>
 	<Script file="inventory.lua"/>
 	<Script file="container.lua"/>
