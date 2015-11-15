@@ -278,9 +278,8 @@ function TRP3_API.register.getProfileList()
 	return profiles;
 end
 
-function TRP3_API.register.getUnitRPName(targetType)
-	local unitName = UnitName(targetType);
-	local unitID = getUnitID(targetType);
+local function getUnitRPNameWithID(unitID, unitName)
+	unitName = unitName or unitID;
 	if unitID then
 		if unitID == Globals.player_id then
 			unitName = TRP3_API.register.getPlayerCompleteName(true);
@@ -291,7 +290,14 @@ function TRP3_API.register.getUnitRPName(targetType)
 			end
 		end
 	end
-	return unitName or UNKNOWN;
+	return unitName;
+end
+TRP3_API.register.getUnitRPNameWithID = getUnitRPNameWithID;
+
+function TRP3_API.register.getUnitRPName(targetType)
+	local unitName = UnitName(targetType);
+	local unitID = getUnitID(targetType);
+	return getUnitRPNameWithID(unitID, unitName);
 end
 
 TRP3_API.r.name = TRP3_API.register.getUnitRPName;

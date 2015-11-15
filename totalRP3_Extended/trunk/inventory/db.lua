@@ -75,6 +75,23 @@ TRP3_DB.item = {
 		},
 	},
 
+	["boubourse"] = {
+		BA = {
+			IC = "inv_misc_bag_soulbag",
+			NA = "Gold pouch",
+		},
+		CO = {
+			SI = "1x4",
+			SR = 1,
+			IT = {
+				["1"] = {
+					id = "coin1",
+					count = 5,
+				},
+			}
+		},
+	},
+
 	["coin1"] = {
 		BA = {
 			IC = "INV_Misc_Coin_19",
@@ -212,7 +229,7 @@ TRP3_DB.item = {
 							},
 							{
 								id = "addItem",
-								args = {"coin1"}
+								args = {"boubourse"}
 							},
 
 						}
@@ -227,7 +244,8 @@ TRP3_DB.item = {
 	},
 };
 
-TRP3_DB.item.MISSING_ITEM = {
+local missing = {
+	missing = true,
 	BA = {
 		IC = "inv_misc_questionmark",
 		NA = "|cffff0000MISSING ITEM CLASS",
@@ -237,3 +255,10 @@ TRP3_DB.item.MISSING_ITEM = {
 		AC = "Remove item from container",
 	}
 }
+
+setmetatable(TRP3_DB.item, {
+	__index = function(table, key)
+		local value = rawget(table, key);
+		return value or missing;
+	end
+});

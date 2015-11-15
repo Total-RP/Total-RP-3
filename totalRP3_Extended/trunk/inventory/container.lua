@@ -48,8 +48,7 @@ local function incrementLineIfFirst(first, line)
 	return first, line;
 end
 
-local function getItemTooltipLines(slotInfo, itemClass)
-	local class = itemClass or TRP3_DB.item.MISSING_ITEM;
+local function getItemTooltipLines(slotInfo, class)
 	local title, text1, text2;
 	local icon, name = getBaseClassDataSafe(class);
 	title = getQualityColorText(class.BA.QA) .. name;
@@ -86,6 +85,11 @@ local function getItemTooltipLines(slotInfo, itemClass)
 		text1 = text1 .. "|cff66BBFF" .. PROFESSIONS_USED_IN_COOKING;
 	end
 
+	if slotInfo.madeBy then
+		text1 = incrementLine(text1);
+		text1 = text1 .. ITEM_CREATED_BY:format(TRP3_API.register.getUnitRPNameWithID(slotInfo.madeBy));
+	end
+
 	if IsAltKeyDown() then
 		if class.BA.WE and class.BA.WE > 0 then
 			text1 = incrementLine(text1);
@@ -94,17 +98,17 @@ local function getItemTooltipLines(slotInfo, itemClass)
 
 		text2 = "";
 
-		if itemClass and class.US then
+		if class.US then
 			text2 = text2 .. "\n";
 			text2 = text2 .. Utils.str.color("y") .. loc("CM_R_CLICK") .. ": " .. Utils.str.color("o") .. USE;
 		end
 
 		if isContainerByClass(class) then
 			text2 = text2 .. "\n";
-			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CO_OPEN");
+			text2 = text2 .. Utils.str.color("y") .. loc("CM_DOUBLECLICK") .. ": " .. Utils.str.color("o") .. loc("IT_CON_OPEN");
 		end
 
-		if not itemClass then
+		if class.missing then
 			text2 = text2 .. "\n";
 			text2 = text2 .. Utils.str.color("y") .. "Missing item class ID" .. ": " .. Utils.str.color("o") .. slotInfo.id; -- TODO: locals
 		end
@@ -155,7 +159,7 @@ local function containerSlotUpdate(self, elapsed)
 	self.Quantity:Hide();
 	self.Icon:SetVertexColor(1, 1, 1);
 	if self.info then
-		local class = self.class or TRP3_DB.item.MISSING_ITEM;
+		local class = self.class;
 		local icon, name = getBaseClassDataSafe(class);
 		self.Icon:Show();
 		self.Icon:SetTexture("Interface\\ICONS\\" .. icon);

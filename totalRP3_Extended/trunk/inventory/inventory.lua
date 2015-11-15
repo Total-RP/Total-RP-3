@@ -41,7 +41,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	local container = givenContainer or playerInventory;
 	local containerClass = getItemClass(container.id);
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
-	local itemClass = getItemClass(classID) or EMPTY;
+	local itemClass = getItemClass(classID);
 
 	checkContainerInstance(container);
 	itemData = itemData or EMPTY;
@@ -94,6 +94,13 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			container.content[slot] = {
 				id = classID,
 			};
+			if itemClass.CO and itemClass.CO.IT then
+				container.content[slot].content = {};
+				Utils.table.copy(container.content[slot].content, itemClass.CO.IT);
+			end
+			if itemData.madeBy then
+				container.content[slot].madeBy = Globals.player_id;
+			end
 		end
 		if stackSlot then
 			container.content[slot].count = (container.content[slot].count or 1) + 1;
@@ -157,7 +164,7 @@ end
 
 local function useContainerSlot(slotButton, containerFrame)
 	if slotButton.info then
-		if not slotButton.class then -- If using a missing item : remove it
+		if slotButton.class.missing then -- If using a missing item : remove it
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, slotButton.info);
 			if containerFrame.info.content[slotButton.slotID] then
 				wipe(containerFrame.info.content[slotButton.slotID]);
