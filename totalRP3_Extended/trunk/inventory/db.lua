@@ -37,6 +37,40 @@ TRP3_DB.item = {
 		QE = {
 			QH = true,
 		},
+		US = {
+			AC = "Finish the quest",
+			SC = "quest"
+		},
+		SC = {
+			quest = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "loot",
+								args = {"questLoot"}
+							},
+						}
+					}
+				}
+			}
+		},
+		LO = {
+			questLoot = {
+				IC = "inv_box_01",
+				NA = "Captain's safe",
+				IT = {
+					["1"] = {
+						id = "boubourse"
+					},
+					["3"] = {
+						id = "coin1",
+						count = 10,
+					}
+				}
+			}
+		}
 	},
 
 	["01container1234"] = {
@@ -229,9 +263,8 @@ TRP3_DB.item = {
 							},
 							{
 								id = "addItem",
-								args = {"boubourse"}
+								args = {"boubourse", 1, true}
 							},
-
 						}
 					},
 				},

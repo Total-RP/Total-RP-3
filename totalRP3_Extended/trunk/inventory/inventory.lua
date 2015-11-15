@@ -123,15 +123,15 @@ function TRP3_API.inventory.getItem(container, slotID)
 end
 
 local function swapContainersSlots(container1, slot1, container2, slot2)
-	assert(container1, slot1, "Missing 'from' container/slot");
-	assert(container2, slot2, "Missing 'to' container/slot");
+	assert(container1 and slot1, "Missing 'from' container/slot");
+	assert(container2 and slot2, "Missing 'to' container/slot");
 	checkContainerInstance(container2);
 
 	local slot1Data = container1.content[slot1];
 	local slot2Data = container2.content[slot2];
 	local done;
 
-	if slot2Data and slot1Data.id == slot2Data.id and (getItemClass(slot1Data.id) or EMPTY).ST then
+	if slot2Data and slot1Data.id == slot2Data.id and getItemClass(slot1Data.id).ST then
 		local stackMax = getItemClass(slot1Data.id).ST.MA or 1;
 		local availableOnTarget = stackMax - (slot2Data.count or 1);
 		if availableOnTarget > 0 then
@@ -152,8 +152,8 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 			return;
 		end
 
-		container1.content[slot1] = slot2Data;
 		container2.content[slot2] = slot1Data;
+		container1.content[slot1] = slot2Data;
 	end
 
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container1);
@@ -171,7 +171,7 @@ local function useContainerSlot(slotButton, containerFrame)
 			end
 			containerFrame.info.content[slotButton.slotID] = nil;
 		elseif slotButton.class and isUsableByClass(slotButton.class) then
-			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {slotInfo = slotButton.info, containerInfo = containerFrame.info});
+			local retCode = TRP3_API.script.executeClassScript(slotButton.class.US.SC, slotButton.class.SC, {class = slotButton.class, slotInfo = slotButton.info, containerInfo = containerFrame.info});
 		end
 	end
 end
@@ -346,6 +346,7 @@ local function initPlayerInventory()
 	TRP3_API.script.registerEffects(TRP3_API.inventory.EFFECTS);
 
 	-- UI
+	TRP3_API.inventory.initLootFrame();
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
 	end);

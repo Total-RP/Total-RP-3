@@ -462,6 +462,7 @@ local function executeFunction(func, args)
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
+		TRP3_API.utils.message.displayMessage("Error in script."); -- TODO: more info
 		if DEBUG then log(tostring(ret), logLevel.WARN) end
 	end
 end

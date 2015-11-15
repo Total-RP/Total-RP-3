@@ -21,6 +21,8 @@
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local tostring = tostring;
+
 TRP3_API.inventory.EFFECTS = {
 
 	["durability"] = {
@@ -57,10 +59,22 @@ TRP3_API.inventory.EFFECTS = {
 	["addItem"] = {
 		codeReplacementFunc = function (args)
 			local targetContainer = "args.containerInfo"; -- TODO: selectable or new effect for "add in" ?
-			return ("lastEffectReturn = addItem(%s, \"%s\");"):format(targetContainer, args[1]);
+			local count = args[2] or 1;
+			local madeBy = args[3] or false;
+			return ("lastEffectReturn = addItem(%s, \"%s\", {count = %d, madeBy = %s});"):format(targetContainer, args[1], count, tostring(madeBy));
 		end,
 		env = {
 			addItem = "TRP3_API.inventory.addItem",
+		}
+	},
+
+	["loot"] = {
+		codeReplacementFunc = function (args)
+			local lootID = args[1];
+			return ("presentLoot(args.class, \"%s\"); lastEffectReturn = 0;"):format(lootID);
+		end,
+		env = {
+			presentLoot = "TRP3_API.inventory.presentLoot",
 		}
 	},
 

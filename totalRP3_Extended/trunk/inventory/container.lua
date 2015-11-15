@@ -221,15 +221,23 @@ local function slotOnDragStop(slotFrom)
 		slot1 = slotFrom.slotID;
 		container1 = slotFrom:GetParent().info;
 		if slotTo:GetName() == "WorldFrame" then
-			local itemClass = getItemClass(slotFrom.info.id);
-			TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function() -- TODO: locals
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
-			end);
-		elseif slotTo.slotID then -- TODO: for now we assume it's good enough, but should check the name or any precise data
+			if not slotFrom.loot then
+				local itemClass = getItemClass(slotFrom.info.id);
+				TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
+					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
+				end);
+			else
+				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
+			end
+		elseif slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			local container2, slot2;
 			slot2 = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
+			if not container1.loot then
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
+			end
+		else
+			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
 		end
 	end
 end
@@ -247,7 +255,7 @@ end
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
-local function initContainerSlots(containerFrame, rowCount, colCount)
+local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 	local slotNum = 1;
 	local rowY = -58;
 	containerFrame.slots = {};
@@ -281,6 +289,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount)
 				end
 			end);
 			slot.SplitStack = splitStack;
+			slot.loot = loot;
 			-- Listen to refresh event
 			TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
 				if slot.info == slotInfo then
@@ -523,4 +532,67 @@ function TRP3_API.inventory.switchContainerBySlotID(parentContainer, slotID)
 	assert(parentContainer.content[slotID], "Empty slot.");
 	assert(parentContainer.content[slotID].id, "Container without id for slot: " .. tostring(slotID));
 	switchContainerByRef(parentContainer.content[slotID]);
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Loot
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local lootFrame;
+
+local function presentLoot(class, lootID)
+	if class and class.LO and class.LO[lootID] and class.LO[lootID].IT then
+		local loot = class.LO[lootID];
+
+		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
+		lootFrame.Title:SetText((loot.NA or "Loot")); --TODO: locals
+
+		local slotCounter = 1;
+		lootFrame.info.content = loot.IT;
+		for index, slot in pairs(lootFrame.slots) do
+			slot.slotID = tostring(slotCounter);
+			if loot.IT[slot.slotID] then
+				slot.info = loot.IT[slot.slotID];
+				slot.class = getItemClass(loot.IT[slot.slotID].id);
+			else
+				slot.info = nil;
+				slot.class = nil;
+			end
+			containerSlotUpdate(slot);
+			slotCounter = slotCounter + 1;
+		end
+
+		lootFrame:Show();
+		lootFrame:ClearAllPoints();
+		lootFrame:SetPoint("CENTER");
+	end
+end
+TRP3_API.inventory.presentLoot = presentLoot;
+
+function TRP3_API.inventory.initLootFrame()
+	lootFrame = CreateFrame("Frame", "TRP3_LootFrame", UIParent, "TRP3_Container5x4Template");
+
+	lootFrame.LockIcon:Hide();
+
+	local lootDragStart = function(self)
+		self:StartMoving();
+	end
+	local lootDragStop = function(self)
+		self:StopMovingOrSizing();
+	end
+
+	lootFrame.info = {loot = true};
+	lootFrame.DurabilityText:SetText("Loot container"); -- TODO: locals
+	lootFrame.WeightText:SetText("");
+	lootFrame:RegisterForDrag("LeftButton");
+	lootFrame:SetScript("OnDragStart", lootDragStart);
+	lootFrame:SetScript("OnDragStop", lootDragStop);
+	lootFrame.IconButton:SetScript("OnDragStart", function(self)
+		lootDragStart(self:GetParent())
+	end);
+	lootFrame.IconButton:SetScript("OnDragStop", function(self)
+		lootDragStop(self:GetParent())
+	end);
+
+	initContainerSlots(lootFrame, 5, 4, true);
 end
