@@ -20,6 +20,7 @@ local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert
 local getItemClass, isContainerByClassID, isUsableByClass = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
+local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.locale.getText;
 
 local EMPTY = {};
@@ -57,7 +58,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 		if itemClass.UN then
 			local currentCount = countItemInstances(container, classID);
 			if currentCount + 1 > itemClass.UN then
-				Utils.message.displayMessage(ERR_ITEM_MAX_COUNT, Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
 				return 2;
 			end
 		end
@@ -81,7 +82,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 		-- Container is full
 		if not slot then
 			if givenContainer then
-				Utils.message.displayMessage(ERR_BAG_FULL, Utils.message.type.ALERT_MESSAGE);
+				Utils.message.displayMessage(loc("IT_INV_ERROR_FULL"):format(getItemLink(containerClass)), Utils.message.type.ALERT_MESSAGE);
 			else
 				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
 			end
