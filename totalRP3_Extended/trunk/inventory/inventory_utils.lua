@@ -17,6 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local ITEM_DB = TRP3_DB.item;
+local EMPTY = {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DB func
@@ -138,3 +139,19 @@ local function isItemInContainer(item, container)
 	return contains;
 end
 TRP3_API.inventory.isItemInContainer = isItemInContainer;
+
+local function countItemInstances(container, itemID)
+	local count = 0;
+
+	for _, slot in pairs(container.content or EMPTY) do
+		if slot.id == itemID then
+			count = count + (slot.count or 1);
+		end
+		if isContainerByClassID(slot.id) then
+			count = count + countItemInstances(slot, itemID);
+		end
+	end
+
+	return count;
+end
+TRP3_API.inventory.countItemInstances = countItemInstances;

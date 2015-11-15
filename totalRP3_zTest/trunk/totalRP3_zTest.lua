@@ -354,6 +354,11 @@ function TRP3_RESET_INV()
 	Utils.table.dump(TRP3_API.profile.getPlayerCurrentProfile().inventory);
 end
 
+-- /run TEST_COUNT();
+function TEST_COUNT()
+	print(TRP3_API.inventory.countItemInstances(TRP3_API.inventory.getItem(nil, "1"), "coin1"));
+end
+
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",
 	["description"] = "Telkos private module to test the world !",

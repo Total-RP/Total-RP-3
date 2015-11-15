@@ -19,7 +19,7 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
 local getItemClass, isContainerByClassID, isUsableByClass = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
-local checkContainerInstance = TRP3_API.inventory.checkContainerInstance;
+local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local loc = TRP3_API.locale.getText;
 
 local EMPTY = {};
@@ -43,15 +43,24 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
 	local itemClass = getItemClass(classID) or EMPTY;
 
-	checkContainerInstance(container)
+	checkContainerInstance(container);
 	itemData = itemData or EMPTY;
-
 
 	local slot;
 	local ret;
+	local toAdd = itemData.count or 1;
 
-	for cnt = 1, itemData.count or 1 do
+	for cnt = 1, toAdd do
 		local freeSlot, stackSlot;
+
+		-- Check unicity
+		if itemClass.UN then
+			local currentCount = countItemInstances(container, classID);
+			if currentCount + 1 > itemClass.UN then
+				Utils.message.displayMessage(ERR_ITEM_MAX_COUNT, Utils.message.type.ALERT_MESSAGE);
+				return 2;
+			end
+		end
 
 		-- Finding an empty slot
 		for i = 1, ((containerClass.CO.SR or 5) * (containerClass.CO.SC or 4)) do

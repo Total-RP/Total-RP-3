@@ -18,6 +18,14 @@
 
 TRP3_DB.item = {
 
+	["main"] = {
+		BA = {
+			NA = "Main inventory",
+		},
+		CO = {
+		},
+	},
+
 	["01pouicpouic124"] = {
 		BA = {
 			IC = "inv_misc_toy_05",
@@ -75,6 +83,7 @@ TRP3_DB.item = {
 			QA = 2,
 			WE = 0.02,
 		},
+		UN = 10,
 		ST = {
 			MA = 5,
 		},

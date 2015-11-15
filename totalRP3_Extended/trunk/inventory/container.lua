@@ -66,9 +66,9 @@ local function getItemTooltipLines(slotInfo, itemClass)
 		text1 = incrementLine(text1);
 		text1 = text1 .. Utils.str.color("w") .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT);
 	end
-	if class.BA.UN and class.BA.UN > 0 then
+	if class.UN and class.UN > 0 then
 		text1 = incrementLine(text1);
-		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.BA.UN .. ")";
+		text1 = text1 .. Utils.str.color("w") .. ITEM_UNIQUE .. " (" .. class.UN .. ")";
 	end
 
 	if class.BA.DE and class.BA.DE:len() > 0 then
