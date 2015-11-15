@@ -356,7 +356,10 @@ end
 
 -- /run TEST_COUNT();
 function TEST_COUNT()
-	print(TRP3_API.inventory.countItemInstances(TRP3_API.inventory.getItem(nil, "1"), "coin1"));
+	local emptyMeta = {
+		__newindex = function(_, _, _) end
+	};
+	local EMPTY = setmetatable({}, emptyMeta);
 end
 
 local MODULE_STRUCTURE = {

@@ -62,6 +62,11 @@ TRP3_API = {
 	}
 }
 
+local emptyMeta = {
+	__newindex = function(_, _, _) end
+};
+setmetatable(TRP3_API.globals.empty, emptyMeta);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Globals build
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

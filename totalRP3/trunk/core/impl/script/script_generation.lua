@@ -354,7 +354,7 @@ end
 -- Main
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, {}, TRP3_API.script.delayed, TRP3_API.script.eval" };
+local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval" };
 local IMPORT_PATTERN = "local %s = %s;";
 
 local function writeImports()

@@ -22,8 +22,7 @@ local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClas
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local getItemLink = TRP3_API.inventory.getItemLink;
 local loc = TRP3_API.locale.getText;
-
-local EMPTY = {};
+local EMPTY = TRP3_API.globals.empty;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INVENTORY MANAGEMENT API
@@ -51,7 +50,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	local ret;
 	local toAdd = itemData.count or 1;
 
-	for cnt = 1, toAdd do
+	for _ = 1, toAdd do
 		local freeSlot, stackSlot;
 
 		-- Check unicity
@@ -343,7 +342,7 @@ local function initPlayerInventory()
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
 	end);
-	StackSplitFrame:SetScript("OnMouseWheel",function(self,delta)
+	StackSplitFrame:SetScript("OnMouseWheel",function(_, delta)
 		if delta == -1 then
 			StackSplitFrameLeft_Click();
 		elseif delta == 1 then
