@@ -212,6 +212,22 @@ local function slotOnDragStart(self)
 	end
 end
 
+local function pickUpLoot(slotFrom, container, slotID)
+	assert(slotFrom.info, "No info from origin loot");
+	assert(slotFrom:GetParent().info.loot, "Origin container is not a loot");
+	local lootInfo = slotFrom.info;
+	local itemID = lootInfo.id;
+	local count = lootInfo.count;
+
+	local returnCode, count = TRP3_API.inventory.addItem(container, itemID, {count = count});
+	if returnCode == 0 then
+		slotFrom.info = nil;
+		slotFrom.class = nil;
+	else
+		slotFrom.info.count = (slotFrom.info.count or 1) - count;
+	end
+end
+
 local function slotOnDragStop(slotFrom)
 	slotFrom.Icon:SetDesaturated(false);
 	ResetCursor();
@@ -235,6 +251,8 @@ local function slotOnDragStop(slotFrom)
 			container2 = slotTo:GetParent().info;
 			if not container1.loot then
 				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_SWAP, container1, slot1, container2, slot2);
+			else
+				pickUpLoot(slotFrom, container2, slot2);
 			end
 		else
 			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
@@ -274,7 +292,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 			slot:SetScript("OnEnter", slotOnEnter);
 			slot:SetScript("OnLeave", slotOnLeave);
 			slot:SetScript("OnClick", function(self, button)
-				if self.info then
+				if not self.loot and self.info then
 					if button == "LeftButton" and IsShiftKeyDown() and (self.info.count or 1) > 1 then
 						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
 					elseif button == "RightButton" then
@@ -283,7 +301,7 @@ local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 				end
 			end);
 			slot:SetScript("OnDoubleClick", function(self, button)
-				if button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
+				if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
 					switchContainerByRef(self.info, self:GetParent());
 					slotOnEnter(self);
 				end

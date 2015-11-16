@@ -50,15 +50,16 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	local ret;
 	local toAdd = itemData.count or 1;
 
-	for _ = 1, toAdd do
+	for count = 0, toAdd - 1 do
 		local freeSlot, stackSlot;
 
 		-- Check unicity
 		if itemClass.UN then
-			local currentCount = countItemInstances(container, classID);
+			local currentCount = countItemInstances(playerInventory, classID);
 			if currentCount + 1 > itemClass.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
-				return 2;
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+				return 2, count;
 			end
 		end
 
@@ -86,7 +87,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
 			end
 			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-			return 1;
+			return 1, count;
 		end
 
 		-- Adding item
@@ -110,7 +111,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-	return 0;
+	return 0, toAdd;
 
 end
 
