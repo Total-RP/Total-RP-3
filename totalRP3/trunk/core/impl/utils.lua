@@ -586,10 +586,20 @@ Utils.serial.serialize = serialize;
 
 local function deserialize(structure)
 	local status, data = libSerializer:Deserialize(structure);
-	assert(status, "Deserialization error:\n" .. tostring(structure));
+	assert(status, "Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data));
 	return data;
 end
 Utils.serial.deserialize = deserialize;
+
+local function safeDeserialize(structure, default)
+	local status, data = libSerializer:Deserialize(structure);
+	if not status then
+		Log.log("Deserialization error:\n" .. tostring(structure) .. "\n" .. tostring(data), Log.level.WARNING);
+		return default;
+	end
+	return data;
+end
+Utils.serial.safeDeserialize = safeDeserialize;
 
 local function encodeCompressMessage(message)
 	return libCompressEncoder:Encode(libCompress:Compress(message));
@@ -600,8 +610,24 @@ Utils.serial.decompressCodedMessage = function(message)
 	return libCompress:Decompress(libCompressEncoder:Decode(message));
 end
 
+Utils.serial.safeEncodeCompressMessage = function(serial)
+	local encoded = encodeCompressMessage(serial);
+	-- Rollback test
+	local decoded = Utils.serial.decompressCodedMessage(encoded);
+	if decoded == serial then
+		return encoded;
+	else
+		Log.log("safeEncodeCompressStructure error:\n" .. tostring(serial), Log.level.WARNING);
+		return nil;
+	end
+end
+
 Utils.serial.decompressCodedStructure = function(message)
 	return deserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
+end
+
+Utils.serial.safeDecompressCodedStructure = function(message)
+	return safeDeserialize(libCompress:Decompress(libCompressEncoder:Decode(message)));
 end
 
 Utils.serial.encodeCompressStructure = function(structure)

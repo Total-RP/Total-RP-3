@@ -5,3 +5,4 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 totalRP3_zTest.lua
+commuTest.lua

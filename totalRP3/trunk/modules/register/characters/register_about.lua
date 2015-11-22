@@ -578,10 +578,9 @@ end
 local function compressData()
 	local dataTab = getOptimizedData();
 	local serial = Utils.serial.serialize(dataTab);
-	local compressed = Utils.serial.encodeCompressMessage(serial);
+	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
 
-	--	log(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
-	if compressed:len() < serial:len() then
+	if compressed and compressed:len() < serial:len() then
 		currentCompressed = compressed;
 	else
 		currentCompressed = nil;

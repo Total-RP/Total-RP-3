@@ -166,6 +166,20 @@ local function testSerial()
 	print("testSerial all tests OK ! Well done Telkos !");
 end
 
+function TRP3_SERIAL()
+	local base = {
+		TE = 1,
+	};
+	Utils.table.dump(Utils.serial.serialize(base));
+
+	local reproduce = {
+		TE = 1,
+	}
+	local string = "^STE^N^1^S^1^T^SXT^{img:Interface\PETBATTLES\Weather-Sunlight:512:128}~J}~J}~J`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`~`SOON^tT^BK^N^1^v^N2";
+	local varFinal = Utils.serial.deserialize("^1^T^STE^N^1^t^^");
+	Utils.table.dump(varFinal);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- DEBUG
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

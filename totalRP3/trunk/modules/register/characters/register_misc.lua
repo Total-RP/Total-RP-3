@@ -406,10 +406,9 @@ function compressData()
 	end
 
 	local serial = Utils.serial.serialize(dataToSend);
-	local compressed = Utils.serial.encodeCompressMessage(serial);
+	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
 
-	--	print(("Compressed data : %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
-	if compressed:len() < serial:len() then
+	if compressed and compressed:len() < serial:len() then
 		currentCompressed = compressed;
 	else
 		currentCompressed = dataToSend;

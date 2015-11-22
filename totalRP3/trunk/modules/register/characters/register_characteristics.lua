@@ -80,10 +80,10 @@ local currentCompressed;
 local function compressData()
 	local dataTab = get("player/characteristics");
 	local serial = Utils.serial.serialize(dataTab);
-	local compressed = Utils.serial.encodeCompressMessage(serial);
-	if compressed:len() < serial:len() then
+	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
+
+	if compressed and compressed:len() < serial:len() then
 		currentCompressed = compressed;
-		--		Utils.log.log(("Compressed data is better: %s / %s (%i%%)"):format(compressed:len(), serial:len(), compressed:len() / serial:len() * 100));
 	else
 		currentCompressed = nil;
 	end

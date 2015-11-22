@@ -301,7 +301,7 @@ local function incomingInformationTypeSent(structure, senderID)
 	local decodedData = data;
 	-- If the data is a string, we assume that it was compressed.
 	if type(data) == "string" then
-		decodedData = Utils.serial.decompressCodedStructure(decodedData);
+		decodedData = Utils.serial.safeDecompressCodedStructure(decodedData, {});
 	end
 
 	if informationType == registerInfoTypes.CHARACTERISTICS or informationType == registerInfoTypes.ABOUT
