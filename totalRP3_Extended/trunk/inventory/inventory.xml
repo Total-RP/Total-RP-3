@@ -28,6 +28,11 @@
 	<Script file="inventory_utils.lua"/>
 	<Script file="inventory.lua"/>
 	<Script file="container.lua"/>
+	<Script file="inventory_page.lua"/>
+
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      Containers      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<Button name="TRP3_ContainerSlotTemplate" enableMouse="true" virtual="true">
 		<Size x="36" y="36"/>
@@ -212,12 +217,18 @@
 		</Scripts>
 	</Frame>
 
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--    Inventory page    -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
 	<Button name="TRP3_InventoryMainRightSlotTemplate" inherits="SpellButtonTemplate" virtual="true">
 
 		<Scripts>
 			<OnLoad>
 				_G[self:GetName() .. "SpellName"]:Show();
+				_G[self:GetName() .. "SpellName"]:SetWidth(125);
 				_G[self:GetName() .. "SubSpellName"]:Show();
+				_G[self:GetName() .. "SubSpellName"]:SetWidth(125);
 				_G[self:GetName() .. "SpellName"]:SetPoint("LEFT", self, "RIGHT", 8, 3);
 			</OnLoad>
 			<OnEvent function=""/>
@@ -227,8 +238,6 @@
 			<OnHide function=""/>
 			<OnDragStart function=""/>
 			<OnReceiveDrag function=""/>
-			<OnEnter function=""/>
-			<OnLeave function=""/>
 		</Scripts>
 
 	</Button>

@@ -151,6 +151,7 @@ local function showItemTooltip(frame, slotInfo, itemClass)
 
 	TRP3_ItemTooltip:Show();
 end
+TRP3_API.inventory.showItemTooltip = showItemTooltip;
 
 local function containerSlotUpdate(self, elapsed)
 	self.Quest:Hide();
@@ -273,6 +274,7 @@ end
 local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
+TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQUENCY;
 local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 	local slotNum = 1;
 	local rowY = -58;
@@ -543,7 +545,11 @@ function switchContainerByRef(container, originContainer)
 	containerFrame.class = class;
 	containerFrame.originContainer = originContainer;
 	ToggleFrame(containerFrame);
+	if containerFrame:IsVisible() then
+		containerFrame:Raise();
+	end
 end
+TRP3_API.inventory.switchContainerByRef = switchContainerByRef;
 
 function TRP3_API.inventory.switchContainerBySlotID(parentContainer, slotID)
 	assert(parentContainer, "Nil parent container.");

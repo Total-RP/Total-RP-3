@@ -358,6 +358,7 @@ end
 function TRP3_RESET_INV()
 	wipe(TRP3_API.profile.getPlayerCurrentProfile().inventory.content);
 	TRP3_API.inventory.addItem(nil, "01container1234");
+	TRP3_API.inventory.addItem(nil, "froc");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "smallbag");
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "tinybag", {madeBy = true});
 	TRP3_API.inventory.addItem(TRP3_API.inventory.getItem(nil, "1"), "01pouicpouic124");

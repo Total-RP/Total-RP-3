@@ -33,10 +33,10 @@ local function onStart()
 	local loc, CreateFrame, EMPTY = TRP3_API.locale.getText, CreateFrame, Globals.empty;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local assert, pairs, tinsert, table, math, _G, type = assert, pairs, tinsert, table, math, _G, type;
+	local assert, pairs, tinsert, table, math, _G = assert, pairs, tinsert, table, math, _G;
 	local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
 	local setTooltipForSameFrame, mainTooltip, refreshTooltip = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_MainTooltip, TRP3_RefreshTooltipForFrame;
-	local get, displayDropDown = TRP3_API.profile.getData, TRP3_API.ui.listbox.displayDropDown;
+	local get = TRP3_API.profile.getData;
 	local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 	local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile;
@@ -48,7 +48,7 @@ local function onStart()
 	local CONFIG_TARGET_ICON_SIZE = "target_icon_size";
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
-	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID = nil, nil, nil, nil;
+	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic
