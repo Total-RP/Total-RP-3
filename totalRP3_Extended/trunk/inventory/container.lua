@@ -365,7 +365,7 @@ end
 local function containerFrameUpdate(self, elapsed)
 	if not self.info or not self.class then
 		self:Hide();
-		return
+		return;
 	end
 
 	-- Durability
@@ -415,8 +415,12 @@ local function lockOnContainer(self, originContainer)
 			return;
 		end
 		originContainer.lockedBy = self;
-		self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", 0, 0);
-		containerFrameUpdate(originContainer);
+		if originContainer.info.id ~= "main" then
+			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", 0, 0);
+			containerFrameUpdate(originContainer);
+		else
+			self:SetPoint("TOPLEFT", originContainer, "TOPRIGHT", 20, 0);
+		end
 	elseif self.info.point and self.info.relativePoint then
 		self:SetPoint(self.info.point, nil, self.info.relativePoint, self.info.xOfs, self.info.yOfs);
 	else
@@ -427,7 +431,9 @@ end
 local function unlockFromContainer(self)
 	if self.lockedOn then
 		self.lockedOn.lockedBy = nil;
-		containerFrameUpdate(self.lockedOn);
+		if not self.lockedOn.info or self.lockedOn.info.id ~= "main" then
+			containerFrameUpdate(self.lockedOn);
+		end
 	end
 end
 
@@ -556,7 +562,7 @@ function switchContainerByRef(container, originContainer)
 	assert(containerFrame, "No frame available for container: " .. tostring(container.id));
 
 	containerFrame.class = class;
-	if originContainer and originContainer.info and originContainer.info.id ~= "main" then
+	if originContainer and originContainer.info then
 		containerFrame.originContainer = originContainer;
 	end
 	ToggleFrame(containerFrame);
@@ -603,7 +609,13 @@ local function presentLoot(class, lootID)
 
 		lootFrame:Show();
 		lootFrame:ClearAllPoints();
-		lootFrame:SetPoint("CENTER");
+		if TRP3_MainFrame:IsVisible() then
+			lootFrame:SetPoint("TOPLEFT", TRP3_MainFrame, "TOPRIGHT", 0, 0);
+		else
+			lootFrame:SetPoint("CENTER");
+		end
+
+		lootFrame:Raise();
 	end
 end
 TRP3_API.inventory.presentLoot = presentLoot;
