@@ -212,6 +212,83 @@
 		</Scripts>
 	</Frame>
 
+	<Button name="TRP3_InventoryMainRightSlotTemplate" inherits="SpellButtonTemplate" virtual="true">
 
+		<Scripts>
+			<OnLoad>
+				_G[self:GetName() .. "SpellName"]:Show();
+				_G[self:GetName() .. "SubSpellName"]:Show();
+				_G[self:GetName() .. "SpellName"]:SetPoint("LEFT", self, "RIGHT", 8, 3);
+			</OnLoad>
+			<OnEvent function=""/>
+			<PreClick function=""/>
+			<OnClick function=""/>
+			<OnShow function=""/>
+			<OnHide function=""/>
+			<OnDragStart function=""/>
+			<OnReceiveDrag function=""/>
+			<OnEnter function=""/>
+			<OnLeave function=""/>
+		</Scripts>
+
+	</Button>
+
+	<!-- Inventory -->
+	<Frame name="TRP3_InventoryMain" hidden="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="false">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+		</Backdrop>
+		<Frames>
+			<Frame name="TRP3_InventoryMainRight" inherits="TRP3_FieldSetFrame">
+				<Size x="200" y="0" />
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="LEFT" x="17" y="0"/>
+							<Anchor point="RIGHT" x="-17" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<Frame name="$parentContainer">
+								<Size x="200" y="50"/>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+
+			<Frame name="TRP3_InventoryMainLeft">
+				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
+					<EdgeSize><AbsValue val="24"/></EdgeSize>
+					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+				</Backdrop>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="RIGHT" relativeTo="TRP3_InventoryMainRight" relativePoint="LEFT" x="-5" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<PlayerModel name="TRP3_InventoryMainLeftModel" setAllPoints="true">
+						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="false">
+							<EdgeSize><AbsValue val="24"/></EdgeSize>
+							<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+						</Backdrop>
+						<Size x="200" y="400" />
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+					</PlayerModel>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
 
 </Ui>

@@ -362,6 +362,89 @@ end
 
 local function onStart()
 	initPlayerInventory();
+
+	-- TEMP
+
+	local inventorySlots = {};
+	local onInventoryShow = function(context)
+		TRP3_InventoryMainLeftModel:SetUnit("player");
+
+		for index, button in pairs(inventorySlots) do
+			button:Hide();
+		end
+
+		local i = 1;
+		local found = 0;
+		while i <= CONTAINER_SLOT_MAX do
+			local slot = tostring(i);
+			if playerInventory.content[slot] then
+				local classID = playerInventory.content[slot].id;
+				local class = getItemClass(classID);
+				found = found + 1;
+
+				-- Get slot UI
+				local slotButton = inventorySlots[found];
+				if not slotButton then
+					slotButton = CreateFrame("Button", "TRP3_InventoryMainRightSlot" .. found, TRP3_InventoryMainRightScrollContainer, "TRP3_InventoryMainRightSlotTemplate");
+					slotButton:SetPoint("TOPLEFT", 5, -10 + ((found - 1) * 40));
+				end
+				slotButton:Show();
+
+				slotButton:SetNormalTexture("Interface\\ICONS\\Temp");
+				slotButton:SetPushedTexture("Interface\\ICONS\\Temp");
+				_G[slotButton:GetName() .. "SpellName"]:SetText(UNKNOWN);
+				_G[slotButton:GetName() .. "SubSpellName"]:SetText("");
+				if class then
+					if class.BA then
+						if class.BA.IC then
+							slotButton:SetNormalTexture("Interface\\ICONS\\" .. class.BA.IC);
+							slotButton:SetPushedTexture("Interface\\ICONS\\" .. class.BA.IC);
+						end
+						if class.BA.NA then
+							_G[slotButton:GetName() .. "SpellName"]:SetText(class.BA.NA);
+						end
+					end
+					if class.CO then
+						_G[slotButton:GetName() .. "SubSpellName"]:SetText("|cffffffff" .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT));
+					end
+				end
+
+			end
+			i = i + 1;
+		end
+	end
+
+	TRP3_API.navigation.menu.registerMenu({
+		id = "main_13_player_inventory",
+		text = INVENTORY_TOOLTIP,
+		onSelected = function()
+			TRP3_API.navigation.page.setPage("player_inventory", {});
+		end,
+		isChildOf = "main_10_player",
+	});
+
+	TRP3_API.navigation.page.registerPage({
+		id = "player_inventory",
+		templateName = "TRP3_InventoryMain",
+		frameName = "TRP3_InventoryMain",
+		frame = TRP3_InventoryMain,
+		onPagePostShow = onInventoryShow
+	});
+	TRP3_API.ui.frame.setupFieldPanel(TRP3_InventoryMainRight, INVENTORY_TOOLTIP, 150);
+
+	-- Create model slots
+	for i=1, 16 do
+		local button = CreateFrame("Button", "TRP3_InventoryMainLeftModelSlot" .. i, TRP3_InventoryMainLeft, "TRP3_IconButton");
+		button:SetSize(40, 40);
+		_G[button:GetName() .. "Icon"]:SetTexture("Interface\\PaperDoll\\UI-Backpack-EmptySlot");
+		if i == 1 then
+			button:SetPoint("TOPRIGHT", TRP3_InventoryMainLeftModel, "TOPLEFT", -2, 0);
+		elseif i == 9 then
+				button:SetPoint("TOPLEFT", TRP3_InventoryMainLeftModel, "TOPRIGHT", 4, 0);
+		else
+			button:SetPoint("TOP", _G["TRP3_InventoryMainLeftModelSlot" .. (i - 1)], "BOTTOM", 0, -11);
+		end
+	end
 end
 
 local MODULE_STRUCTURE = {
