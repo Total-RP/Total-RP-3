@@ -27,126 +27,14 @@ local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 
 local onInventoryShow;
-local inventorySlots, equipedSlots = {}, {};
-
-local function slotOnEnter(self)
-	if self.info then
-		TRP3_ItemTooltip.ref = self;
-		TRP3_API.inventory.showItemTooltip(self, self.info, self.class);
-	end
-end
-
-local function slotOnLeave(self)
-	TRP3_ItemTooltip.ref = nil;
-	TRP3_ItemTooltip:Hide();
-end
-
-local function slotOnDragStart(self)
-	if self.info then
-		self:GetNormalTexture():SetDesaturated(true);
-		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
-		for index, button in pairs(equipedSlots) do
-			button:LockHighlight();
-		end
-	end
-end
-
-local function slotOnDragStop(slotFrom)
-	for index, button in pairs(equipedSlots) do
-		button:UnlockHighlight();
-	end
-	slotFrom:GetNormalTexture():SetDesaturated(false);
-	ResetCursor();
-	if slotFrom.info then
-		local slotTo = GetMouseFocus();
-		local slot = slotFrom.slotID;
-		local container = slotFrom:GetParent().info;
-
-		if slotTo:GetName() == "WorldFrame" then
-			local itemClass = getItemClass(slotFrom.info.id);
-			TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container, slot, slotFrom.info);
-				onInventoryShow();
-			end);
-		elseif slotTo:GetName():sub(1, 31) == "TRP3_InventoryMainLeftModelSlot" and slotTo.slotID then
-
-		else
-			Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_HERE"), Utils.message.type.ALERT_MESSAGE);
-		end
-	end
-end
-
-
-local function containerSlotUpdate(self, elapsed)
-	if self.info then
-		local class = self.class;
-		local icon, name = getBaseClassDataSafe(class);
-		self:SetNormalTexture("Interface\\ICONS\\" .. icon);
-		self:SetPushedTexture("Interface\\ICONS\\" .. icon);
-		_G[self:GetName() .. "SpellName"]:SetText(name);
-		_G[self:GetName() .. "SubSpellName"]:SetText("");
-		if isContainerByClass(class) then
-			_G[self:GetName() .. "SubSpellName"]:SetText("|cffffffff" .. CONTAINER_SLOTS:format((class.CO.SR or 5) * (class.CO.SC or 4), BAGSLOT));
-		end
-
-		if MouseIsOver(self) then
-			TRP3_API.inventory.showItemTooltip(self, self.info, self.class);
-		end
-	else
-		if TRP3_ItemTooltip.ref == self and MouseIsOver(self) then
-			TRP3_ItemTooltip:Hide();
-		end
-	end
-end
 
 function onInventoryShow(context)
 	local playerInventory = TRP3_API.inventory.getInventory();
-	TRP3_InventoryMainRightScrollContainer.info = playerInventory;
-
+	TRP3_InventoryMainLeft.info = playerInventory;
 	TRP3_InventoryMainLeftModel:SetUnit("player");
 
-	for index, button in pairs(inventorySlots) do
-		button:Hide();
-	end
+	TRP3_API.inventory.loadContainerPageSlots(TRP3_InventoryMainLeft);
 
-	local i = 1;
-	local found = 0;
-	while i <= TRP3_API.inventory.CONTAINER_SLOT_MAX do
-		local slotID = tostring(i);
-		local slot = playerInventory.content[slotID];
-		if slot then
-			local classID = slot.id;
-			local class = getItemClass(classID);
-			found = found + 1;
-
-			-- Get slot UI
-			local slotButton = inventorySlots[found];
-			if not slotButton then
-				slotButton = CreateFrame("Button", "TRP3_InventoryMainRightSlot" .. found, TRP3_InventoryMainRightScrollContainer, "TRP3_InventoryMainRightSlotTemplate");
-				slotButton:SetPoint("TOPLEFT", 5, -10 + ((found - 1) * -55));
-				slotButton:RegisterForDrag("LeftButton");
-				createRefreshOnFrame(slotButton, TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
-				slotButton:SetScript("OnEnter", slotOnEnter);
-				slotButton:SetScript("OnLeave", slotOnLeave);
-				slotButton:SetScript("OnDragStart", slotOnDragStart);
-				slotButton:SetScript("OnDragStop", slotOnDragStop);
-				slotButton:SetScript("OnDoubleClick", function(self, button)
-					if button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
-						TRP3_API.inventory.switchContainerByRef(self.info);
-						slotOnEnter(self);
-					end
-				end);
-				tinsert(inventorySlots, slotButton);
-			end
-
-			slotButton.slotID = slotID;
-			slotButton.class = class;
-			slotButton.info = slot;
-
-			slotButton:Show();
-		end
-		i = i + 1;
-	end
 end
 
 local playerInvText = ("%s's inventory"):format(Globals.player);
@@ -198,18 +86,19 @@ function TRP3_API.inventory.initInventoryPage()
 	end);
 
 	-- Create model slots
+	TRP3_InventoryMainLeft.slots = {};
 	for i=1, 16 do
-		local button = CreateFrame("Button", "TRP3_InventoryMainLeftModelSlot" .. i, TRP3_InventoryMainLeft, "TRP3_IconButton");
-		button:SetSize(40, 40);
-		_G[button:GetName() .. "Icon"]:SetTexture("Interface\\PaperDoll\\UI-Backpack-EmptySlot");
+		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, TRP3_InventoryMainLeft, "TRP3_InventoryMainSlotTemplate");
 		if i == 1 then
 			button:SetPoint("TOPRIGHT", TRP3_InventoryMainLeftModel, "TOPLEFT", -2, 0);
 		elseif i == 9 then
-				button:SetPoint("TOPLEFT", TRP3_InventoryMainLeftModel, "TOPRIGHT", 4, 0);
+			button:SetPoint("TOPLEFT", TRP3_InventoryMainLeftModel, "TOPRIGHT", 4, 0);
 		else
-			button:SetPoint("TOP", _G["TRP3_InventoryMainLeftModelSlot" .. (i - 1)], "BOTTOM", 0, -11);
+			button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
 		end
-		tinsert(equipedSlots, button);
+		tinsert(TRP3_InventoryMainLeft.slots, button);
 		button.slotID = tostring(i);
+		TRP3_API.inventory.initContainerSlot(button);
 	end
+	TRP3_API.inventory.initContainerInstance(TRP3_InventoryMainLeft, 16);
 end

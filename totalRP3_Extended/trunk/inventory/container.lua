@@ -275,6 +275,43 @@ local COLUMN_SPACING = 43;
 local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
 TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQUENCY;
+
+local function initContainerSlot(slot)
+	createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
+	slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	slot:RegisterForDrag("LeftButton");
+	slot:SetScript("OnDragStart", slotOnDragStart);
+	slot:SetScript("OnDragStop", slotOnDragStop);
+	slot:SetScript("OnReceiveDrag", slotOnDragReceive);
+	slot:SetScript("OnEnter", slotOnEnter);
+	slot:SetScript("OnLeave", slotOnLeave);
+	slot:SetScript("OnClick", function(self, button)
+		if not self.loot and self.info then
+			if button == "LeftButton" and IsShiftKeyDown() and (self.info.count or 1) > 1 then
+				OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+			elseif button == "RightButton" then
+				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
+			end
+		end
+	end);
+	slot:SetScript("OnDoubleClick", function(self, button)
+		if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
+			switchContainerByRef(self.info, self:GetParent());
+			slotOnEnter(self);
+		end
+	end);
+	slot.SplitStack = splitStack;
+	-- Listen to refresh event
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
+		if slot.info == slotInfo then
+			slot.info = nil;
+			slot.class = nil;
+			containerSlotUpdate(slot);
+		end
+	end);
+end
+TRP3_API.inventory.initContainerSlot = initContainerSlot;
+
 local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 	local slotNum = 1;
 	local rowY = -58;
@@ -284,40 +321,9 @@ local function initContainerSlots(containerFrame, rowCount, colCount, loot)
 		for col = 1, colCount do
 			local slot = CreateFrame("Button", containerFrame:GetName() .. "Slot" .. slotNum, containerFrame, "TRP3_ContainerSlotTemplate");
 			tinsert(containerFrame.slots, slot);
-			createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
+			initContainerSlot(slot);
 			slot:SetPoint("TOPLEFT", colX, rowY);
-			slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-			slot:RegisterForDrag("LeftButton");
-			slot:SetScript("OnDragStart", slotOnDragStart);
-			slot:SetScript("OnDragStop", slotOnDragStop);
-			slot:SetScript("OnReceiveDrag", slotOnDragReceive);
-			slot:SetScript("OnEnter", slotOnEnter);
-			slot:SetScript("OnLeave", slotOnLeave);
-			slot:SetScript("OnClick", function(self, button)
-				if not self.loot and self.info then
-					if button == "LeftButton" and IsShiftKeyDown() and (self.info.count or 1) > 1 then
-						OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
-					elseif button == "RightButton" then
-						TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
-					end
-				end
-			end);
-			slot:SetScript("OnDoubleClick", function(self, button)
-				if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
-					switchContainerByRef(self.info, self:GetParent());
-					slotOnEnter(self);
-				end
-			end);
-			slot.SplitStack = splitStack;
 			slot.loot = loot;
-			-- Listen to refresh event
-			TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_DETACH_SLOT, function(slotInfo)
-				if slot.info == slotInfo then
-					slot.info = nil;
-					slot.class = nil;
-					containerSlotUpdate(slot);
-				end
-			end);
 			colX = colX + COLUMN_SPACING;
 			slotNum = slotNum + 1;
 		end
@@ -332,7 +338,7 @@ end
 local DEFAULT_CONTAINER_SIZE = "5x4";
 
 function loadContainerPageSlots(containerFrame)
-	if not containerFrame.info or not containerFrame.class then return end
+	assert(containerFrame.info, "Missing container info");
 	local containerContent = containerFrame.info.content or EMPTY;
 	local slotCounter = 1;
 	for index, slot in pairs(containerFrame.slots) do
@@ -348,6 +354,7 @@ function loadContainerPageSlots(containerFrame)
 		slotCounter = slotCounter + 1;
 	end
 end
+TRP3_API.inventory.loadContainerPageSlots = loadContainerPageSlots;
 
 local function refreshContainers()
 	for _, containerFrame in pairs(containerInstances) do
@@ -478,6 +485,18 @@ local function onContainerHide(self)
 end
 
 local CONTAINER_UPDATE_FREQUENCY = 0.15;
+
+local function initContainerInstance(containerFrame, size)
+	containerFrame.containerSize = size;
+	-- Listen to refresh event
+	TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
+		if containerFrame:IsVisible() and containerFrame.info == containerInfo then
+			loadContainerPageSlots(containerFrame);
+		end
+	end);
+end
+TRP3_API.inventory.initContainerInstance = initContainerInstance;
+
 local function getContainerInstance(container, class)
 	if not class or not isContainerByClass(class) then
 		return nil;
@@ -515,13 +534,7 @@ local function getContainerInstance(container, class)
 		containerFrame.IconButton:SetScript("OnDragStop", function(self) containerOnDragStop(self:GetParent()) end);
 		containerFrame.IconButton:SetScript("OnEnter", slotOnEnter);
 		containerFrame.IconButton:SetScript("OnLeave", slotOnLeave);
-		containerFrame.containerSize = size;
-		-- Listen to refresh event
-		TRP3_API.events.listenToEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, function(containerInfo)
-			if containerFrame.info == containerInfo then
-				loadContainerPageSlots(containerFrame);
-			end
-		end);
+		initContainerInstance(containerFrame, size)
 		tinsert(containerInstances, containerFrame);
 	end
 	containerFrame.info = container;
@@ -543,7 +556,9 @@ function switchContainerByRef(container, originContainer)
 	assert(containerFrame, "No frame available for container: " .. tostring(container.id));
 
 	containerFrame.class = class;
-	containerFrame.originContainer = originContainer;
+	if originContainer and originContainer.info and originContainer.info.id ~= "main" then
+		containerFrame.originContainer = originContainer;
+	end
 	ToggleFrame(containerFrame);
 	if containerFrame:IsVisible() then
 		containerFrame:Raise();
