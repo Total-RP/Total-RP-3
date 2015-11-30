@@ -29,6 +29,7 @@ local EMPTY = TRP3_API.globals.empty;
 -- Slot management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local lootFrame;
 local containerInstances = {};
 local loadContainerPageSlots;
 local switchContainerByRef, isContainerInstanceOpen, highlightContainerInstance;
@@ -229,6 +230,15 @@ local function pickUpLoot(slotFrom, container, slotID)
 	else
 		slotFrom.info.count = (slotFrom.info.count or 1) - count;
 	end
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+	TRP3_API.inventory.recomputeAllInventory();
+
+	for index, slot in pairs(lootFrame.slots) do
+		if slot.info then
+			return;
+		end
+	end
+	lootFrame:Hide();
 end
 
 local function slotOnDragStop(slotFrom)
@@ -591,8 +601,6 @@ end
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local lootFrame;
-
 local function presentLoot(class, lootID)
 	if class and class.LO and class.LO[lootID] and class.LO[lootID].IT then
 		local loot = class.LO[lootID];
@@ -647,11 +655,15 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame:SetScript("OnDragStart", lootDragStart);
 	lootFrame:SetScript("OnDragStop", lootDragStop);
 	lootFrame.IconButton:SetScript("OnDragStart", function(self)
-		lootDragStart(self:GetParent())
+		lootDragStart(self:GetParent());
 	end);
 	lootFrame.IconButton:SetScript("OnDragStop", function(self)
-		lootDragStop(self:GetParent())
+		lootDragStop(self:GetParent());
 	end);
+
+	lootFrame.Bottom:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
+	lootFrame.Middle:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
+	lootFrame.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 
 	initContainerSlots(lootFrame, 5, 4, true);
 end

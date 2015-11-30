@@ -32,6 +32,12 @@ local playerInventory;
 local CONTAINER_SLOT_MAX = 20;
 TRP3_API.inventory.CONTAINER_SLOT_MAX = CONTAINER_SLOT_MAX;
 
+local function onItemAddEnd(...)
+	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
+	TRP3_API.inventory.recomputeAllInventory();
+	return ...;
+end
+
 --- Add an item to a container.
 -- Returns:
 -- 0 if OK
@@ -59,8 +65,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			local currentCount = countItemInstances(playerInventory, classID);
 			if currentCount + 1 > itemClass.UN then
 				Utils.message.displayMessage(loc("IT_INV_ERROR_MAX"):format(getItemLink(itemClass)), Utils.message.type.ALERT_MESSAGE);
-				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-				return 2, count;
+				return onItemAddEnd(2, count);
 			end
 		end
 
@@ -87,8 +92,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 			else
 				Utils.message.displayMessage(ERR_INV_FULL, Utils.message.type.ALERT_MESSAGE);
 			end
-			TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-			return 1, count;
+			return onItemAddEnd(1, count);
 		end
 
 		-- Adding item
@@ -110,9 +114,7 @@ function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 
 	end
 
-
-	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-	return 0, toAdd;
+	return onItemAddEnd(0, toAdd);
 
 end
 
@@ -158,6 +160,7 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 		container1.content[slot1] = slot2Data;
 	end
 
+	TRP3_API.inventory.recomputeAllInventory();
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container1);
 	if container1 ~= container2 then
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container2);
@@ -186,6 +189,7 @@ function TRP3_API.inventory.consumeItem(slotInfo, containerInfo, quantity) -- Et
 				if slot == slotInfo then
 					wipe(containerInfo.content[slotIndex]);
 					containerInfo.content[slotIndex] = nil;
+					TRP3_API.inventory.recomputeAllInventory();
 					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, containerInfo);
 				end
 			end
@@ -217,6 +221,7 @@ local function removeSlotContent(container, slotID, slotInfo)
 	if container.content[slotID] == slotInfo then
 		wipe(container.content[slotID]);
 		container.content[slotID] = nil;
+		TRP3_API.inventory.recomputeAllInventory();
 		TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
 	end
 end
@@ -286,6 +291,10 @@ local function recomputeContainerWeight(container)
 	end
 	container.totalWeight = weight;
 	return weight;
+end
+
+function TRP3_API.inventory.recomputeAllInventory()
+	recomputeContainerWeight(playerInventory);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
