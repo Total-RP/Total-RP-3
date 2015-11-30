@@ -556,6 +556,12 @@ function isContainerInstanceOpen(container)
 	return false;
 end
 
+function TRP3_API.inventory.closeBags()
+	for _, ref in pairs(containerInstances) do
+		ref:Hide();
+	end
+end
+
 function switchContainerByRef(container, originContainer)
 	local class = getItemClass(container.id);
 	local containerFrame = getContainerInstance(container, class);

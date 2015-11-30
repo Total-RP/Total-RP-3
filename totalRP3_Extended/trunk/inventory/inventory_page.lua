@@ -28,13 +28,12 @@ local EMPTY = TRP3_API.globals.empty;
 
 local onInventoryShow;
 
-function onInventoryShow(context)
+function onInventoryShow()
 	local playerInventory = TRP3_API.inventory.getInventory();
 	TRP3_InventoryMainLeft.info = playerInventory;
 	TRP3_InventoryMainLeftModel:SetUnit("player");
 
 	TRP3_API.inventory.loadContainerPageSlots(TRP3_InventoryMainLeft);
-
 end
 
 local playerInvText = ("%s's inventory"):format(Globals.player);
@@ -67,7 +66,7 @@ function TRP3_API.inventory.initInventoryPage()
 		id = "main_13_player_inventory",
 		text = INVENTORY_TOOLTIP,
 		onSelected = function()
-			TRP3_API.navigation.page.setPage("player_inventory", {});
+			TRP3_API.navigation.page.setPage("player_inventory");
 		end,
 		isChildOf = "main_10_player",
 	});
@@ -101,4 +100,12 @@ function TRP3_API.inventory.initInventoryPage()
 		TRP3_API.inventory.initContainerSlot(button);
 	end
 	TRP3_API.inventory.initContainerInstance(TRP3_InventoryMainLeft, 16);
+
+	-- On profile changed
+	local refreshInventory = function()
+		if TRP3_API.navigation.page.getCurrentPageID() == "player_inventory" then
+			onInventoryShow();
+		end
+	end
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 end

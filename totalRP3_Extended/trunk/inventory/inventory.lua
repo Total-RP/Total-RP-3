@@ -268,8 +268,13 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function initPlayerInventory()
-	playerInventory = TRP3_API.inventory.getInventory();
+local function onStart()
+	local refreshInventory = function()
+		playerInventory = TRP3_API.inventory.getInventory();
+		TRP3_API.inventory.closeBags();
+	end
+	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
+	refreshInventory();
 
 	TRP3_API.inventory.EVENT_ON_SLOT_USE = "EVENT_ON_SLOT_USE";
 	TRP3_API.inventory.EVENT_ON_SLOT_SWAP = "EVENT_ON_SLOT_SWAP";
@@ -303,11 +308,6 @@ local function initPlayerInventory()
 			StackSplitFrameRight_Click();
 		end
 	end);
-end
-
-local function onStart()
-	initPlayerInventory();
-
 end
 
 local MODULE_STRUCTURE = {
