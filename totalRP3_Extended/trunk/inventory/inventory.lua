@@ -263,6 +263,30 @@ function TRP3_API.inventory.getInventory()
 	return playerInventory;
 end
 
+local function recomputeContainerWeight(container)
+	assert(container, "Nil container");
+	local weight = 0;
+
+	-- Add container own weight
+	local containerClass = getItemClass(container.id);
+	if containerClass and containerClass.BA then
+		weight = weight + (containerClass.BA.WE or 0);
+	end
+
+	-- Add content weight
+	for slotID, slotInfo in pairs(container.content or EMPTY) do
+		if isContainerByClassID(slotInfo.id) then
+			weight = weight + recomputeContainerWeight(slotInfo);
+		else
+			local class = getItemClass(slotInfo.id);
+			if class and class.BA then
+				weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
+			end
+		end
+	end
+	container.totalWeight = weight;
+	return weight;
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -272,6 +296,8 @@ local function onStart()
 	local refreshInventory = function()
 		playerInventory = TRP3_API.inventory.getInventory();
 		TRP3_API.inventory.closeBags();
+		-- Recompute weight
+		recomputeContainerWeight(playerInventory);
 	end
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, refreshInventory);
 	refreshInventory();

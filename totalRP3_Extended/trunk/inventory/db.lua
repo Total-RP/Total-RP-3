@@ -79,6 +79,7 @@ TRP3_DB.item = {
 			NA = "Simple bag",
 			DE = "Un sac à dos classique",
 			UN = 5,
+			WE = 0.6,
 		},
 		CO = {
 			DU = 25,
@@ -91,6 +92,7 @@ TRP3_DB.item = {
 		BA = {
 			IC = "inv_misc_bag_10",
 			NA = "Small bag",
+			WE = 0.4,
 		},
 		CO = {
 			SI = "2x4",
@@ -102,6 +104,7 @@ TRP3_DB.item = {
 		BA = {
 			IC = "inv_misc_bag_09",
 			NA = "Tiny bag",
+			WE = 0.2,
 		},
 		CO = {
 			SI = "1x4",
@@ -113,6 +116,7 @@ TRP3_DB.item = {
 		BA = {
 			IC = "inv_misc_bag_soulbag",
 			NA = "Gold pouch",
+			WE = 0.1,
 		},
 		CO = {
 			SI = "1x4",
@@ -146,6 +150,7 @@ TRP3_DB.item = {
 			NA = "Bag patch",
 			DE = "Fix one durability point for the bag where it stands.",
 			QA = 3,
+			WE = 0.3,
 		},
 		US = {
 			AC = "Fix bag",
@@ -207,6 +212,7 @@ TRP3_DB.item = {
 			NA = "Old rusty knife",
 			DE = "Damage for one durability point for the bag where it stands.\nBut you can also use it to kill someone.",
 			QA = 3,
+			WE = 1.25,
 		},
 		SC = {
 			["onUse"] = {

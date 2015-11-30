@@ -91,9 +91,11 @@ local function getItemTooltipLines(slotInfo, class)
 	end
 
 	if IsAltKeyDown() then
-		if class.BA.WE and class.BA.WE > 0 then
+		if slotInfo.totalWeight or (class.BA.WE and class.BA.WE > 0) then
 			text1 = incrementLine(text1);
-			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. ((slotInfo.count or 1) * class.BA.WE) .. "kg";
+
+			local weight = slotInfo.totalWeight or ((slotInfo.count or 1) * class.BA.WE);
+			text1 = text1 .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15) .. Utils.str.color("w") .. " " .. weight .. "kg";
 		end
 
 		text2 = "";

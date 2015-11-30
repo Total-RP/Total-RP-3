@@ -249,6 +249,18 @@
 						<Anchors>
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="WeightText" inherits="GameFontNormalSmall" justifyH="RIGHT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="20"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" x="13" y="10"/>
+										<Anchor point="BOTTOMRIGHT" x="-12" y="10"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
 					</PlayerModel>
 				</Frames>
 			</Frame>

@@ -36,6 +36,13 @@ function onInventoryShow()
 	TRP3_API.inventory.loadContainerPageSlots(TRP3_InventoryMainLeft);
 end
 
+local function containerFrameUpdate(self, elapsed)
+	-- Weight
+	local current = self.info.totalWeight or 0;
+	local weight = ("%s kg" .. Utils.str.texture("Interface\\GROUPFRAME\\UI-Group-MasterLooter", 15)):format(current);
+	TRP3_InventoryMainLeftModel.WeightText:SetText(weight);
+end
+
 local playerInvText = ("%s's inventory"):format(Globals.player);
 
 local function initPlayerInventoryButton()
@@ -83,6 +90,8 @@ function TRP3_API.inventory.initInventoryPage()
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		initPlayerInventoryButton();
 	end);
+
+	createRefreshOnFrame(TRP3_InventoryMainLeft, 0.15, containerFrameUpdate);
 
 	-- Create model slots
 	TRP3_InventoryMainLeft.slots = {};
