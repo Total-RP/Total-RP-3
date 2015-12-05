@@ -681,6 +681,7 @@
 						<xs:element name="CheckedTexture" type="TextureType"/>
 						<xs:element name="DisabledCheckedTexture" type="TextureType"/>
 					</xs:choice>
+					<xs:element name="Scripts" type="ScriptsType"/>
 				</xs:sequence>
 				<xs:attribute name="checked" type="xs:boolean" default="false"/>
 			</xs:extension>
