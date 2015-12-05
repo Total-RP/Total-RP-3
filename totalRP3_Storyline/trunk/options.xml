@@ -160,6 +160,11 @@
 					<Anchor point="TOPLEFT" relativeKey="$parent.HideOriginalFrames" relativePoint="BOTTOMLEFT" y="-10"/>
 				</Anchors>
 			</CheckButton>
+			<CheckButton parentKey="UseLayoutEngine" inherits="StorylineOptionsCheckboxWithTooltip">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeKey="$parent.LockFrame" relativePoint="BOTTOMLEFT" y="-10"/>
+				</Anchors>
+			</CheckButton>
 			<Frame name="$parentTextSpeed" parentKey="TextSpeed" inherits="StorylineOptionsTitledFrameTemplate">
 				<Layers>
 					<Layer>
@@ -167,7 +172,7 @@
 					</Layer>
 				</Layers>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeKey="$parent.LockFrame" relativePoint="BOTTOMLEFT" y="-20" />
+					<Anchor point="TOPLEFT" relativeKey="$parent.UseLayoutEngine" relativePoint="BOTTOMLEFT" y="-20" />
 					<Anchor point="RIGHT" x="-32" />
 				</Anchors>
 				<Frames>

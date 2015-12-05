@@ -158,18 +158,17 @@ Storyline_API.options.init = function()
 	-- Hide original frames option
 	StorylineOptionsPanel.HideOriginalFrames.Text:SetText(loc("SL_CONFIG_HIDEORIGINALFRAMES"));
 	StorylineOptionsPanel.HideOriginalFrames.tooltip = loc("SL_CONFIG_HIDEORIGINALFRAMES_TT");
+	StorylineOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
 	StorylineOptionsPanel.HideOriginalFrames:SetScript("OnClick", function(self)
 		Storyline_Data.config.hideOriginalFrames = self:GetChecked() == true;
-		if Storyline_Data.config.hideOriginalFrames then
-			hideOriginalFrames();
-		else
-			showOriginalFrames();
-		end
+		ReloadUI();
 	end);
 	if Storyline_Data.config.hideOriginalFrames == nil then
 		Storyline_Data.config.hideOriginalFrames = true;
 	end
-	StorylineOptionsPanel.HideOriginalFrames:SetChecked(Storyline_Data.config.hideOriginalFrames);
+	if Storyline_Data.config.hideOriginalFrames then
+		Storyline_API.layout.hideDefaultFrames();
+	end
 
 	-- Lock Storyline frame option
 	StorylineOptionsPanel.LockFrame.Text:SetText(loc("SL_CONFIG_LOCKFRAME"));
@@ -184,7 +183,41 @@ Storyline_API.options.init = function()
 	StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
 	Storyline_NPCFrameLock:SetChecked(Storyline_Data.config.lockFrame);
 
-	setTooltipForSameFrame(Storyline_NPCFrameLock, "BOTTOMRIGHT", 0, 0, loc("SL_CONFIG_LOCKFRAME"), loc("SL_CONFIG_LOCKFRAME_TT"));
+	setTooltipForSameFrame(Storyline_NPCFrameLock, "BOTTOMRIGHT", 0, 0, loc("SL_CONFIG_LOCKFRAME"), loc("SL_CONFIG_LOCKFRAME_TT"))
+
+	-- Use layout engine option
+	if Storyline_Data.config.useLayoutEngine == nil then
+		Storyline_Data.config.useLayoutEngine = false; -- By default, this option is disabled
+	end
+	StorylineOptionsPanel.UseLayoutEngine.Text:SetText("Use layout engine"); -- TODO localization
+	StorylineOptionsPanel.UseLayoutEngine.tooltip = "Use layout engine. (Force frame lock, requires a ReloadUI())"; -- TODO localization
+	StorylineOptionsPanel.UseLayoutEngine:SetChecked(Storyline_Data.config.useLayoutEngine);
+
+	if Storyline_Data.config.useLayoutEngine then
+		-- If we are using the default engine, the frame is locked. Set the option's checkbox accordingly and disable it
+		Storyline_Data.config.lockFrame = true;
+		StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+		Storyline_NPCFrameLock:SetChecked(Storyline_Data.config.lockFrame);
+		StorylineOptionsPanel.LockFrame:Disable();
+
+		-- Register the frame to the UI layout engine
+		Storyline_API.layout.registerToUILayoutEngine();
+	end
+
+	StorylineOptionsPanel.UseLayoutEngine:SetScript("OnClick", function(self)
+		-- Set config variable to status of checkbox
+		Storyline_Data.config.useLayoutEngine = self:GetChecked() == true;
+		if Storyline_Data.config.useLayoutEngine then
+			-- This option require a ReloadUI() to be effective
+			ReloadUI();
+		else
+			-- We don't need to reload the UI when disabling the option, just call unregisterFromUILayoutEngine()
+			Storyline_API.layout.unregisterFromUILayoutEngine();
+
+			-- Re-enable the lock frame option
+			StorylineOptionsPanel.LockFrame:Enable();
+		end
+	end);
 
 	-- Text options panel
 	StorylineTextOptionsPanel.Title:SetText(loc("SL_CONFIG_STYLING_OPTIONS"));

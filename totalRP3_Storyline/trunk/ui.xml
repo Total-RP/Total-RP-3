@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/ http://wowprogramming.com/utils/xmlbrowser/live/FrameXML/UI.xsd">
 
 	<!--
 		Storyline
@@ -629,8 +629,8 @@
 				<CheckedTexture file="Interface\Buttons\LockButton-Locked-Up" />
 				<Scripts>
 					<OnClick>
-						Storyline_Data.config.lockFrame = self:GetChecked() == true;
-						StorylineOptionsPanel.LockFrame:SetChecked(Storyline_Data.config.lockFrame);
+						Storyline_API.layout.lockFrame(self:GetChecked());
+						StorylineOptionsPanel.LockFrame:SetChecked(self:GetChecked());
 						PlaySound("gsCharacterSelection","SFX");
 					</OnClick>
 					<OnEnter>
@@ -684,6 +684,7 @@
 	<Include file="options.xml"/>
 	<Include file="debug.xml"/>
 
+	<Script file="layout.lua"/>
 	<Script file="structures.lua"/>
 	<Script file="utils.lua"/>
 	<Script file="selections.lua"/>

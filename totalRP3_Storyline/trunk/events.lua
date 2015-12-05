@@ -42,6 +42,7 @@ local selectFirstGossip, selectMultipleGossip = Storyline_API.selectFirstGossip,
 local selectMultipleRewards, selectFirstGreetingActive = Storyline_API.selectMultipleRewards, Storyline_API.selectFirstGreetingActive;
 local getAnimationByModel = Storyline_API.getAnimationByModel;
 local getBindingIcon = Storyline_API.getBindingIcon;
+local hideStorylineFrame = Storyline_API.layout.hideStorylineFrame;
 
 -- WOW API
 local faction, faction_loc = UnitFactionGroup("player");
@@ -511,7 +512,7 @@ eventHandlers["QUEST_DETAIL"] = function()
 
 	-- Quest that pops up and are auto-accepted (like the one for learning to mount or for new expansions)
 	if (QuestGetAutoAccept() and QuestIsFromAreaTrigger()) then
-		Storyline_NPCFrame:Hide();
+		hideStorylineFrame();
 	end
 
 	local contentHeight = Storyline_NPCFrameObjectivesContent.Title:GetHeight() + 15;
@@ -989,7 +990,7 @@ function Storyline_API.playNext(targetModel)
 		if Storyline_NPCFrameChat.eventInfo.finishMethod then
 			Storyline_NPCFrameChat.eventInfo.finishMethod();
 		else
-			Storyline_NPCFrame:Hide();
+			hideStorylineFrame();
 		end
 	end
 end

@@ -22,6 +22,8 @@ local setTooltipForSameFrame, setTooltipAll = Storyline_API.lib.setTooltipForSam
 local registerHandler = Storyline_API.lib.registerHandler;
 local loc = Storyline_API.locale.getText;
 local playNext = Storyline_API.playNext;
+local showStorylineFame = Storyline_API.layout.showStorylineFame;
+local hideStorylineFrame = Storyline_API.layout.hideStorylineFrame;
 
 -- WOW API
 local strsplit, pairs = strsplit, pairs;
@@ -64,7 +66,7 @@ local function closeDialog()
 	if Storyline_NPCFrameChat.eventInfo and Storyline_NPCFrameChat.eventInfo.cancelMethod then
 		Storyline_NPCFrameChat.eventInfo.cancelMethod();
 	end
-	Storyline_NPCFrame:Hide();
+	hideStorylineFrame();
 end
 
 local function resetDialog()
@@ -287,7 +289,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameChat.event = event;
 	Storyline_NPCFrameObjectivesContent:Hide();
 	Storyline_NPCFrameChatPrevious:Hide();
-	Storyline_NPCFrame:Show();
+	showStorylineFame();
 
 	playNext(Storyline_NPCFrameModelsYou);
 end
@@ -552,10 +554,10 @@ function Storyline_API.addon:OnEnable()
 
 	-- Closing
 	registerHandler("GOSSIP_CLOSED", function()
-		Storyline_NPCFrame:Hide();
+		hideStorylineFrame();
 	end);
 	registerHandler("QUEST_FINISHED", function()
-		Storyline_NPCFrame:Hide();
+		hideStorylineFrame();
 	end);
 
 	-- DressUpFrame
@@ -598,7 +600,7 @@ function Storyline_API.addon:OnEnable()
 	Storyline_NPCFrame:RegisterForDrag("LeftButton");
 
 	Storyline_NPCFrame:SetScript("OnDragStart", function(self)
-		if not Storyline_Data.config.lockFrame then
+		if not Storyline_API.layout.isFrameLocked() then
 			self:StartMoving();
 		end
 	end);
