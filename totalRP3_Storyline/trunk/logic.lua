@@ -225,9 +225,6 @@ end
 
 function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	Storyline_NPCFrameDebugText:SetText(event);
-	if Storyline_Data.config.hideOriginalFrames then
-		Storyline_API.options.hideOriginalFrames();
-	end
 
 	local guid = UnitGUID(targetType);
 	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid or "");
@@ -559,13 +556,6 @@ function Storyline_API.addon:OnEnable()
 	registerHandler("QUEST_FINISHED", function()
 		hideStorylineFrame();
 	end);
-
-	-- DressUpFrame
-	DressUpFrameCloseButton:HookScript("OnClick", function()
-		if Storyline_Data.config.hideOriginalFrames and Storyline_NPCFrame:IsVisible() then
-			Storyline_API.options.hideOriginalFrames();
-		end
-	end)
 
 	-- Resizing
 	local resizeChat = function()

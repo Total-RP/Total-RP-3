@@ -166,5 +166,6 @@ Storyline_API.layout.toggleStorylineFrame = toggleStorylineFrame;
 Storyline_NPCFrame:SetScript("OnHide", function()
 	if Storyline_NPCFrameChat.eventInfo and Storyline_NPCFrameChat.eventInfo.cancelMethod then
 		Storyline_NPCFrameChat.eventInfo.cancelMethod();
+		Storyline_NPCFrameChat.eventInfo = nil;
 	end
 end)

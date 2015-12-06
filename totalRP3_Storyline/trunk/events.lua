@@ -314,9 +314,6 @@ local function decorateItemButton(button, index, type, texture, name, numItems, 
 		end
 		
 		if IsModifiedClick("DRESSUP") and DressUpFrame:IsVisible() then
-			if Storyline_Data.config.hideOriginalFrames then
-				Storyline_API.options.hideOriginalFrames();
-			end
 			DressUpFrame:ClearAllPoints();
 			DressUpFrame:SetPoint("TOPLEFT", Storyline_NPCFrame, "TOPRIGHT", 10, 0);
 		end
@@ -1119,9 +1116,6 @@ function Storyline_API.initEventsStructure()
 	for event, info in pairs(EVENT_INFO) do
 		registerHandler(event, function()
 			if not Storyline_Data.config.forceGossip and event == "GOSSIP_SHOW" then
-				if Storyline_Data.config.hideOriginalFrames then
-					Storyline_API.options.hideOriginalFrames();
-				end
 				after(GOSSIP_DELAY, function()
 					if GossipFrame:IsVisible() then
 						startDialog("npc", info.text(), event, info);
