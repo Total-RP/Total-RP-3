@@ -222,32 +222,64 @@
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	<!-- Inventory -->
-	<Frame name="TRP3_InventoryMain" hidden="true">
+	<Frame name="TRP3_InventoryPage" hidden="true">
 		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="false">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 		</Backdrop>
 		<Frames>
-			<Frame name="TRP3_InventoryMainLeft">
+			<Frame parentKey="Main">
 				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="false">
 					<EdgeSize><AbsValue val="24"/></EdgeSize>
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 				</Backdrop>
+				<Size x="350" y="410" />
 				<Anchors>
-					<Anchor point="TOP" x="0" y="-20"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
+					<Anchor point="CENTER" x="0" y="0"/>
 				</Anchors>
 				<Frames>
-					<PlayerModel name="TRP3_InventoryMainLeftModel" setAllPoints="true">
-						<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="false">
-							<EdgeSize><AbsValue val="24"/></EdgeSize>
-							<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-						</Backdrop>
-						<Size x="300" y="400" />
+					<Frame parentKey="Equip" inherits="TRP3_HoveredFrame" hidden="true">
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Title" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="13" y="-10"/>
+										<Anchor point="TOPRIGHT" x="-12" y="-10"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="Camera" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Title" x="0" y="-5"/>
+										<Anchor point="LEFT" x="13" y="0"/>
+										<Anchor point="RIGHT" x="-12" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+								<FontString parentKey="Marker" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="[[x/x]]">
+									<Size x="0" y="0"/>
+									<Anchors>
+										<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Camera" x="0" y="-5"/>
+										<Anchor point="LEFT" x="13" y="0"/>
+										<Anchor point="RIGHT" x="-12" y="0"/>
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+
+						</Frames>
+					</Frame>
+
+					<PlayerModel parentKey="Model" setAllPoints="true" inherits="ModelWithControlsTemplate">
 						<Anchors>
-							<Anchor point="CENTER" x="0" y="0"/>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="5"/>
+							<Anchor point="LEFT" x="7" y="0"/>
+							<Anchor point="RIGHT" x="-7" y="0"/>
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
@@ -259,15 +291,24 @@
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95"/>
 								</FontString>
+								<Texture parentKey="Marker" file="Interface\MINIMAP\TempleofKotmogu_ball_green" hidden="true">
+									<Size x="16" y="16"/>
+									<Anchors>
+										<Anchor point="CENTER" x="0" y="0"/>
+									</Anchors>
+								</Texture>
 							</Layer>
 						</Layers>
+						<Frames>
+							<Button parentKey="Blocker" inherits="TRP3_InvisibleButton" setAllPoints="true"/>
+						</Frames>
 					</PlayerModel>
 				</Frames>
 			</Frame>
 		</Frames>
 	</Frame>
 
-	<Button name="TRP3_InventoryMainSlotTemplate" inherits="TRP3_ContainerSlotTemplate" virtual="true">
+	<Button name="TRP3_InventoryPageSlotTemplate" inherits="TRP3_ContainerSlotTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\PaperDoll\UI-Backpack-EmptySlot">
@@ -276,6 +317,12 @@
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
 				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="First" inherits="GameFontNormalSmall" justifyV="MIDDLE" text="[[first oih oh ho hiohi ohi]]">
+					<Size x="0" y="15"/>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
 			</Layer>
 		</Layers>
 	</Button>

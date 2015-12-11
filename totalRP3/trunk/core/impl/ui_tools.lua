@@ -910,7 +910,7 @@ end
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y)
+function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noParenting)
 	x = x or 0;
 	y = y or 0;
 	frame:ClearAllPoints();

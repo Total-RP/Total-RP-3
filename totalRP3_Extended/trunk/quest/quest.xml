@@ -4,7 +4,7 @@
 	
 <!--
 	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@totalrp3.info)
+	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -19,19 +19,15 @@
 	limitations under the License.
 -->
 
-	<!-- Please note that the loading order matters a lot -->
+	
+	<Script file="db.lua"/>
+	<Script file="quest.lua"/>
+	<Script file="campaign.lua"/>
 
-	<!-- Main -->
-	<Script file="main.lua"/>
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+	<!--      QUEST      -->
+	<!-- *_*_*_*_*_*_*_*_*_*  -->
+
 	
-	<!-- Locales -->
-	<Script file="locale\locale_enEN.lua"/>
-	<Script file="locale\locale_frFR.lua"/>
-	
-	<!-- Modules -->
-	<Include file="inventory\inventory.xml"/>
-	<Include file="quest\quest.xml"/>
-	<Include file="document\document.xml"/>
-	<Include file="gameMaster\gameMaster.xml"/>
 
 </Ui>

@@ -114,20 +114,26 @@ TRP3_DB.item = {
 
 	["boubourse"] = {
 		BA = {
-			IC = "inv_misc_bag_soulbag",
-			NA = "Gold pouch",
+--			IC = "inv_misc_bag_soulbag",
+--			NA = "Gold pouch",
+			IC = "INV_Shield_DraenorCrafted_D_01_A_Alliance",
+			NA = "Rusty fire shield",
+			DE = "Crafted from the ashes of an old fire elemental. Still burning!",
+			QA = 6,
 			WE = 0.1,
+			SB = true,
 		},
-		CO = {
-			SI = "1x4",
-			SR = 1,
-			IT = {
-				["1"] = {
-					id = "coin1",
-					count = 5,
-				},
-			}
-		},
+		UN = 1,
+--		CO = {
+--			SI = "1x4",
+--			SR = 1,
+--			IT = {
+--				["1"] = {
+--					id = "coin1",
+--					count = 5,
+--				},
+--			}
+--		},
 	},
 
 	["coin1"] = {

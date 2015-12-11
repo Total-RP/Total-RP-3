@@ -124,7 +124,7 @@ end
 local TRP3_ItemTooltip = TRP3_ItemTooltip;
 local function showItemTooltip(frame, slotInfo, itemClass)
 	TRP3_ItemTooltip:Hide();
-	TRP3_ItemTooltip:SetOwner(frame, "TOP_LEFT", 0, 0);
+	TRP3_ItemTooltip:SetOwner(frame, frame.tooltipRight and "ANCHOR_RIGHT" or "ANCHOR_LEFT", 0, 0);
 
 	local title, text1, text2 = getItemTooltipLines(slotInfo, itemClass);
 
@@ -152,6 +152,7 @@ local function showItemTooltip(frame, slotInfo, itemClass)
 		i = i + 1;
 	end
 
+	TRP3_ItemTooltip.ref = frame;
 	TRP3_ItemTooltip:Show();
 end
 TRP3_API.inventory.showItemTooltip = showItemTooltip;
@@ -185,10 +186,6 @@ local function containerSlotUpdate(self, elapsed)
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		end
-	else
-		if TRP3_ItemTooltip.ref == self and MouseIsOver(self) then
-			TRP3_ItemTooltip:Hide();
-		end
 	end
 end
 
@@ -199,6 +196,9 @@ local function slotOnEnter(self)
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			highlightContainerInstance(self.info);
 		end
+		if self.additionalOnEnterHandler then
+			self.additionalOnEnterHandler(self);
+		end
 	end
 end
 
@@ -206,6 +206,9 @@ local function slotOnLeave(self)
 	TRP3_ItemTooltip.ref = nil;
 	TRP3_ItemTooltip:Hide();
 	highlightContainerInstance(nil);
+	if self.additionalOnLeaveHandler then
+		self.additionalOnLeaveHandler(self);
+	end
 end
 
 local function slotOnDragStart(self)
@@ -213,6 +216,9 @@ local function slotOnDragStart(self)
 		StackSplitFrame:Hide();
 		self.Icon:SetDesaturated(true);
 		SetCursor("Interface\\ICONS\\" .. ((self.class and self.class.BA.IC) or "inv_misc_questionmark")) ;
+		if self.additionalOnDragHandler then
+			self.additionalOnDragHandler(self);
+		end
 	end
 end
 
@@ -230,8 +236,8 @@ local function pickUpLoot(slotFrom, container, slotID)
 	else
 		slotFrom.info.count = (slotFrom.info.count or 1) - count;
 	end
+
 	TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_REFRESH_BAG, container);
-	TRP3_API.inventory.recomputeAllInventory();
 
 	for index, slot in pairs(lootFrame.slots) do
 		if slot.info then
@@ -288,7 +294,7 @@ local ROW_SPACING = 42;
 local CONTAINER_SLOT_UPDATE_FREQUENCY = 0.15;
 TRP3_API.inventory.CONTAINER_SLOT_UPDATE_FREQUENCY = CONTAINER_SLOT_UPDATE_FREQUENCY;
 
-local function initContainerSlot(slot)
+local function initContainerSlot(slot, simpleLeftClick)
 	createRefreshOnFrame(slot, CONTAINER_SLOT_UPDATE_FREQUENCY, containerSlotUpdate);
 	slot:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	slot:RegisterForDrag("LeftButton");
@@ -299,8 +305,12 @@ local function initContainerSlot(slot)
 	slot:SetScript("OnLeave", slotOnLeave);
 	slot:SetScript("OnClick", function(self, button)
 		if not self.loot and self.info then
-			if button == "LeftButton" and IsShiftKeyDown() and (self.info.count or 1) > 1 then
-				OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+			if button == "LeftButton" then
+				if IsShiftKeyDown() and (self.info.count or 1) > 1 then
+					OpenStackSplitFrame(self.info.count, self, "BOTTOMRIGHT", "TOPRIGHT");
+				elseif simpleLeftClick then
+					simpleLeftClick(self);
+				end
 			elseif button == "RightButton" then
 				TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_USE, self, self:GetParent());
 			end
@@ -310,6 +320,9 @@ local function initContainerSlot(slot)
 		if not self.loot and button == "LeftButton" and self.info and self.class and isContainerByClass(self.class) then
 			switchContainerByRef(self.info, self:GetParent());
 			slotOnEnter(self);
+		end
+		if self.additionalDoubleClickHandler then
+			self.additionalDoubleClickHandler(self, button);
 		end
 	end);
 	slot.SplitStack = splitStack;
@@ -666,4 +679,15 @@ function TRP3_API.inventory.initLootFrame()
 	lootFrame.Top:SetTexture("Interface\\ContainerFrame\\UI-Bag-Components-Bank");
 
 	initContainerSlots(lootFrame, 5, 4, true);
+
+	-- Tooltip
+	createRefreshOnFrame(TRP3_ItemTooltip, CONTAINER_UPDATE_FREQUENCY, function(self)
+		if not self.ref or not MouseIsOver(self.ref) then
+			self:Hide();
+		end
+	end);
+	TRP3_ItemTooltip:SetScript("OnHide", function(self)
+		self.ref = nil;
+	end);
+
 end
