@@ -685,6 +685,8 @@ function TRP3_EventDispatcher(self, event, ...)
 		for _, callback in pairs(REGISTERED_EVENTS[event]) do
 			callback(...);
 		end
+	else
+		self:UnregisterEvent(event);
 	end
 end
 

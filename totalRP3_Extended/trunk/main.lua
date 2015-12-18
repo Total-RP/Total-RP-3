@@ -24,6 +24,7 @@ local pairs = pairs;
 
 TRP3_DB = {};
 TRP3_API.inventory = {};
+TRP3_API.quest = {};
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 

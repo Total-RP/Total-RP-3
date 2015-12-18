@@ -32,4 +32,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_INV_ERROR_FULL = "%s is full.",
 	IT_INV_ERROR_CANT_HERE = "You can't place items here.",
 	IT_INV_ERROR_CANT_DESTROY_LOOT = "You can't destroy loot items.",
+
+	-- Campaign
+	QE_CAMPAIGN_START = "Starting campaign %s.",
+	QE_CAMPAIGN_RESUME = "Resuming campaign %s.",
 };
