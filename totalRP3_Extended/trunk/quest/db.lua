@@ -51,7 +51,7 @@ TRP3_DB.campaign = {
 
 		-- Base information, common to the whole campaign
 		BA = {
-			IC = "temp",
+			IC = "achievement_reputation_05",
 			NA = "A dangerous friendship",
 			DE = "I'm looking for a job, and this farmer in Elwynn ask for help. I hope he's richer than me.",
 		},
@@ -233,8 +233,37 @@ TRP3_DB.campaign = {
 				-- Scripts for quest
 				SC = {
 					["QUEST_START"] = {
-						-- 1: go to step 1
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "text",
+										args = {"Quest start !", 3}
+									},
+								}
+							},
+						},
 					},
+
+					["H1"] = {
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "text",
+										args = {"Stop moving !", 3}
+									},
+								}
+							},
+						},
+					},
+				},
+
+				-- Handler for quest
+				HA = {
+					PLAYER_STOPPED_MOVING = "H1",
 				},
 
 				-- OnStart inner handler
@@ -244,13 +273,41 @@ TRP3_DB.campaign = {
 
 		-- Handler for campaign
 		HA = {
-			{"TRP3_QuestFinish", "CAVERN_ENTER" }
+			PLAYER_STARTED_MOVING = "H1",
 		},
 
 		-- Scripts for campaign
 		SC = {
 			["CAMPAIGN_START"] = {
-				-- 1: Start quest quest1
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "text",
+								args = {"Starting campaign.", 3}
+							},
+							{
+								id = "startQuest",
+								args = {"quest1"}
+							},
+						}
+					},
+				},
+			},
+
+			["H1"] = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "text",
+								args = {"You move !", 3}
+							},
+						}
+					},
+				},
 			},
 		},
 

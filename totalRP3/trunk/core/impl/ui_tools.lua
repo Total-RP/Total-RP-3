@@ -526,8 +526,8 @@ end
 
 function TRP3_API.ui.frame.setupIconButton(self, icon)
 	assert(self, "Frame is nil");
-	assert(_G[self:GetName().."Icon"], "Frame must have a Icon");
-	_G[self:GetName().."Icon"]:SetTexture("Interface\\ICONS\\"..icon);
+	assert(self.Icon or (self:GetName() and _G[self:GetName() .. "Icon"]), "Frame must have a Icon");
+	(self.Icon or _G[self:GetName() .. "Icon"]):SetTexture("Interface\\ICONS\\" .. icon);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -35,5 +35,10 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 
 	-- Campaign
 	QE_CAMPAIGN_START = "Starting campaign %s.",
+	QE_CAMPAIGN_START_BUTTON = "Start or resume campaign",
 	QE_CAMPAIGN_RESUME = "Resuming campaign %s.",
+	QE_CAMPAIGN_PAUSE = "Pausing current campaign.",
+	QE_CAMPAIGN_CURRENT = "Current campaign",
+	QE_CAMPAIGN_CURRENT_NO = "No active campaign.",
+	QE_QUEST_START = "Starting quest %s.",
 };

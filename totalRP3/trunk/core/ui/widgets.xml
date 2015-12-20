@@ -55,7 +55,7 @@
 		<Size x="26" y="26"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark" setAllPoints="true"/>
+				<Texture name="$parentIcon" parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" setAllPoints="true"/>
 			</Layer>
 		</Layers>
 		<NormalTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">

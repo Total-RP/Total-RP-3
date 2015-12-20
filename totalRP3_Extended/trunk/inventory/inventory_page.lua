@@ -73,6 +73,10 @@ local function onSlotDoubleClick()
 	TRP3_InventoryPage.Main.Equip:Hide();
 end
 
+local function onSlotUpdate(self, elapsed)
+
+end
+
 local function onSlotClick(button)
 
 	if TRP3_InventoryPage.Main.Equip:IsVisible() and TRP3_InventoryPage.Main.Equip.isOn == button then
@@ -135,7 +139,7 @@ local function containerFrameUpdate(self, elapsed)
 	TRP3_InventoryPage.Main.Model.WeightText:SetText(weight);
 end
 
-local playerInvText = ("%s's inventory"):format(Globals.player);
+local playerInvText = ("%s's inventory"):format(Globals.player); -- TODO locals
 
 local function initPlayerInventoryButton()
 	if TRP3_API.target then
@@ -172,8 +176,6 @@ function TRP3_API.inventory.initInventoryPage()
 
 	TRP3_API.navigation.page.registerPage({
 		id = "player_inventory",
-		templateName = "TRP3_InventoryMain",
-		frameName = "TRP3_InventoryMain",
 		frame = TRP3_InventoryPage,
 		onPagePostShow = onInventoryShow
 	});
@@ -203,6 +205,7 @@ function TRP3_API.inventory.initInventoryPage()
 		button.additionalOnLeaveHandler = onSlotLeave;
 		button.additionalOnDragHandler = onSlotDrag;
 		button.additionalDoubleClickHandler = onSlotDoubleClick;
+		button.additionalOnUpdateHandler = onSlotUpdate;
 		button.First:ClearAllPoints();
 		if i > 8 then
 			button.tooltipRight = true;

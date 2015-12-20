@@ -21,13 +21,134 @@
 
 	
 	<Script file="db.lua"/>
-	<Script file="quest.lua"/>
+	<Script file="quest_effects.lua"/>
 	<Script file="campaign.lua"/>
+	<Script file="quest.lua"/>
 
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--      QUEST      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	
+	<!-- Inventory -->
+	<Frame name="TRP3_QuestLogPage" hidden="true">
+		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
+			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+			<TileSize val="425"/>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+						<Anchor point="LEFT" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.96"/>
+				</Texture>
+			</Layer>
+		</Layers>
+
+		<Frames>
+			<!-- Current campaign -->
+			<Frame parentKey="Campaign" name="$parentCampaign" inherits="TRP3_FieldSetFrame">
+				<Size x="0" y="90"/>
+				<Anchors>
+					<Anchor point="TOP" x="0" y="-20"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+				</Anchors>
+				<Frames>
+
+					<Button parentKey="No" inherits="TRP3_CommonButton">
+						<Size x="200" y="20"/>
+						<Anchors>
+							<Anchor point="CENTER" x="0" y="0"/>
+						</Anchors>
+					</Button>
+
+					<!-- Current campaign button -->
+					<Frame parentKey="Current" virtual="true">
+						<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize>
+								<AbsValue val="24" />
+							</EdgeSize>
+							<TileSize>
+								<AbsValue val="418" />
+							</TileSize>
+							<BackgroundInsets>
+								<AbsInset left="5" right="5" top="5" bottom="5" />
+							</BackgroundInsets>
+						</Backdrop>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+						<Frames>
+							<Frame parentKey="Icon" inherits="TRP3_SimpleIcon" name="TRP3_QuestLogPageCampaignCurrentIcon">
+								<Size x="40" y="40" />
+								<Anchors>
+									<Anchor point="LEFT" x="15" y="0" />
+								</Anchors>
+							</Frame>
+							<Frame parentKey="Highlight" inherits="GlowBorderTemplate" hidden="true">
+								<Anchors>
+									<Anchor point="TOPLEFT" x="5" y="-2"/>
+									<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:SetAlpha(0.55);
+									</OnLoad>
+								</Scripts>
+							</Frame>
+						</Frames>
+						<Scripts>
+							<OnEnter>
+								TRP3_RefreshTooltipForFrame(self);
+								self.Highlight:Show();
+							</OnEnter>
+							<OnLeave>
+								TRP3_MainTooltip:Hide();
+								self.Highlight:Hide();
+							</OnLeave>
+						</Scripts>
+						<Layers>
+							<Layer level="BORDER">
+								<FontString parentKey="Name" inherits="GameFontNormalLarge" justifyH="LEFT" text="[CAMPAIGN]">
+									<Size x="0" y="20" />
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.Icon" x="5" y="0" />
+										<Anchor point="RIGHT" x="-5" y="0" />
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+								<FontString parentKey="Info" inherits="GameFontNormalSmall" justifyH="LEFT" text="[INFO]">
+									<Size x="0" y="10" />
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeKey="$parent.Icon" x="5" y="5" />
+										<Anchor point="RIGHT" x="-5" y="0" />
+									</Anchors>
+									<Color r="0.95" g="0.75" b="0.10" />
+								</FontString>
+							</Layer>
+						</Layers>
+					</Frame>
+				</Frames>
+			</Frame>
+
+			<!-- Quest list -->
+			<Frame parentKey="QuestList" name="$parentQuestList" inherits="TRP3_FieldSetFrame">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.Campaign" x="0" y="-20"/>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
 
 </Ui>

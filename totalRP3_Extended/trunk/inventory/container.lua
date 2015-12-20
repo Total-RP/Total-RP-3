@@ -186,6 +186,9 @@ local function containerSlotUpdate(self, elapsed)
 		if isContainerByClass(self.class) and isContainerInstanceOpen(self.info) then
 			self.Icon:SetVertexColor(0.5, 0.5, 0.5);
 		end
+		if self.additionalOnUpdateHandler then
+			self.additionalOnUpdateHandler(self, elapsed);
+		end
 	end
 end
 

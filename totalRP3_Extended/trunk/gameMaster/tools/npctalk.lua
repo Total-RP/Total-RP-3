@@ -55,7 +55,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		configText = loc("GM_TB_NPC_TALK"),
 		onClick = onButtonClicked
 	};
-	TRP3_API.toolbar.toolbarAddButton(button);
+--	TRP3_API.toolbar.toolbarAddButton(button);
 
 	TRP3_NPCTalkFrameResize.onResizeStop = refreshPosition;
 end);
