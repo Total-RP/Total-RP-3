@@ -104,11 +104,15 @@ end
 -- Called upon PLAYER_LOGIN after all addons are loaded.
 function Globals.addon:OnEnable()
 	MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
-	local ok, errorMessage = pcall(loadingSequence);
-	if not ok then
-		MAIN_SEQUENCE_ERROR = errorMessage;
-		TRP3_ShowErrorMessage();
-		error("Error during TRP3 loading sequence: " .. errorMessage);
+	if not Globals.DEBUG_MODE then
+		local ok, errorMessage = pcall(loadingSequence);
+		if not ok then
+			MAIN_SEQUENCE_ERROR = errorMessage;
+			TRP3_ShowErrorMessage();
+			error("Error during TRP3 loading sequence: " .. errorMessage);
+		end
+	else
+		loadingSequence();
 	end
 end
 

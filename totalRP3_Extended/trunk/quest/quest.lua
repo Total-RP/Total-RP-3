@@ -119,6 +119,7 @@ TRP3_API.quest.startQuest = startQuest;
 
 local function onStart()
 	TRP3_API.quest.campaignInit();
+	TRP3_API.quest.questLogInit();
 end
 
 local MODULE_STRUCTURE = {

@@ -34,6 +34,9 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	IT_INV_ERROR_CANT_DESTROY_LOOT = "You can't destroy loot items.",
 
 	-- Campaign
+	QE_CAMPAIGN = "Campaign",
+	QE_CAMPAIGNS = "Campaigns",
+	QE_CAMPAIGN_LIST = "Available campaigns",
 	QE_CAMPAIGN_START = "Starting campaign %s.",
 	QE_CAMPAIGN_START_BUTTON = "Start or resume campaign",
 	QE_CAMPAIGN_RESUME = "Resuming campaign %s.",
@@ -41,4 +44,8 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_CAMPAIGN_CURRENT = "Current campaign",
 	QE_CAMPAIGN_CURRENT_NO = "No active campaign.",
 	QE_QUEST_START = "Starting quest %s.",
+	QE_QUEST = "Quest",
+	QE_QUEST_LIST = "Quests for this campaign",
+	QE_STEP = "Step",
+	QE_STEP_LIST = "Steps for this quest",
 };

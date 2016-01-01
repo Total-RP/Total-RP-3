@@ -91,13 +91,17 @@ end
 TRP3_API.module.initModules = function()
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
 		if module.status == MODULE_STATUS.OK and module.onInit and type(module.onInit) == "function" then
-			local ok, mess = pcall(module.onInit);
-			if not ok then
-				module.status = MODULE_STATUS.ERROR_ON_INIT;
-				module.error = mess;
-				if DEFAULT_CHAT_FRAME then
-					DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while init module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+			if not Globals.DEBUG_MODE then
+				local ok, mess = pcall(module.onInit);
+				if not ok then
+					module.status = MODULE_STATUS.ERROR_ON_INIT;
+					module.error = mess;
+					if DEFAULT_CHAT_FRAME then
+						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while init module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+					end
 				end
+			else
+				module.onInit();
 			end
 		end
 	end
@@ -110,13 +114,17 @@ end
 TRP3_API.module.startModules = function()
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
 		if module.status == MODULE_STATUS.OK and module.onStart and type(module.onStart) == "function" then
-			local ok, mess = pcall(module.onStart);
-			if not ok then
-				module.status = MODULE_STATUS.ERROR_ON_LOAD;
-				module.error = mess;
-				if DEFAULT_CHAT_FRAME then
-					DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+			if not Globals.DEBUG_MODE then
+				local ok, mess = pcall(module.onStart);
+				if not ok then
+					module.status = MODULE_STATUS.ERROR_ON_LOAD;
+					module.error = mess;
+					if DEFAULT_CHAT_FRAME then
+						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
+					end
 				end
+			else
+				module.onStart();
 			end
 		end
 	end

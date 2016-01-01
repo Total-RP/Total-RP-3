@@ -47,6 +47,18 @@ local questlog = {
 
 TRP3_DB.campaign = {
 
+	["mySecondCampaign"] = {
+
+		-- Base information, common to the whole campaign
+		BA = {
+			IM = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DEADMINES",
+			NA = "A glamourous friendship",
+			DE = "I'm looking for a boyfriend, and this farmer in Elwynn ask for help. I hope he's hotter than me.\nEver since I lost my husband, my life changed. I'm poor, I don't eat anymore.\nAll I need is love.",
+			RA = {50, 80},
+		},
+
+	},
+
 	["myFirstCampaign"] = {
 
 		-- Base information, common to the whole campaign
@@ -65,7 +77,7 @@ TRP3_DB.campaign = {
 
 				-- Base information, common to the whole quest
 				BA = {
-					IC = "temp",
+					IC = "INV_jewelcrafting_Empyreansapphire_02",
 					NA = "A dark omen",
 					DE = "Help the farmer found his missing jewels.",
 				},

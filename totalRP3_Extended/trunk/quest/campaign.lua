@@ -19,9 +19,13 @@
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local CAMPAIGN_DB = TRP3_DB.campaign;
 local EMPTY = TRP3_API.globals.empty;
-local tostring, assert, pairs, wipe = tostring, assert, pairs, wipe;
+local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
 local loc = TRP3_API.locale.getText;
+local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
+local initList = TRP3_API.ui.list.initList;
 local Log = Utils.log;
+
+local TRP3_QuestLogPage = TRP3_QuestLogPage;
 
 local playerQuestLog;
 
@@ -111,10 +115,16 @@ local function deactivateCurrentCampaign(skipMessage)
 end
 TRP3_API.quest.deactivateCurrentCampaign = deactivateCurrentCampaign;
 
-local function activateCampaign(campaignID, skipMessage)
+local function activateCampaign(campaignID, force)
+
+	local oldCurrent = playerQuestLog.currentCampaign;
 
 	-- First, deactivate current campaign
-	deactivateCurrentCampaign(skipMessage);
+	deactivateCurrentCampaign(force);
+
+	if not force and oldCurrent == campaignID then
+		return;
+	end
 
 	local campaignClass = getCampaignClass(campaignID);
 	local _, campaignName = getClassDataSafe(campaignClass);
@@ -157,79 +167,6 @@ end
 TRP3_API.quest.resetCampaign = resetCampaign;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- QUEST LOG PAGE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function refreshCurrentCampaignButton()
-	TRP3_QuestLogPage.Campaign.No:Hide();
-	TRP3_QuestLogPage.Campaign.Current:Hide();
-	if playerQuestLog.currentCampaign then
-		TRP3_QuestLogPage.Campaign.Current:Show();
-
-		local campaignClass = getCampaignClass(playerQuestLog.currentCampaign);
-		local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
-
-		TRP3_API.ui.frame.setupIconButton(TRP3_QuestLogPage.Campaign.Current.Icon, campaignIcon);
-		TRP3_QuestLogPage.Campaign.Current.Name:SetText(campaignName);
-		TRP3_QuestLogPage.Campaign.Current.Info:SetText(campaignDescription);
-	else
-		TRP3_QuestLogPage.Campaign.No:Show();
-	end
-end
-
-local function onQuestLogShown()
-	refreshCurrentCampaignButton();
-end
-
-local function initPlayerQuestButton()
-	if TRP3_API.target then
-		TRP3_API.target.registerButton({
-			id = "aa_player_e_quest",
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			configText = QUEST_LOG,
-			condition = function(_, unitID)
-				return unitID == Globals.player_id;
-			end,
-			onClick = function(_, _, button, _)
-				if button == "LeftButton" then
-					TRP3_API.navigation.openMainFrame();
-					TRP3_API.navigation.menu.selectMenu("main_14_player_quest");
-				end
-			end,
-			tooltip = QUEST_LOG,
-			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
-			icon = "achievement_quests_completed_06"
-		});
-	end
-end
-
-local function initQuestLogPage()
-	TRP3_API.navigation.menu.registerMenu({
-		id = "main_14_player_quest",
-		text = QUEST_LOG,
-		onSelected = function()
-			TRP3_API.navigation.page.setPage("player_quest");
-		end,
-		isChildOf = "main_10_player",
-	});
-
-	TRP3_API.navigation.page.registerPage({
-		id = "player_quest",
-		frame = TRP3_QuestLogPage,
-		onPagePostShow = onQuestLogShown
-	});
-
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-		initPlayerQuestButton();
-	end);
-
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Campaign, TRACKER_HEADER_SCENARIO, 200);
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.QuestList, TRACKER_HEADER_QUESTS, 200);
-	TRP3_QuestLogPage.Campaign.No:SetText(loc("QE_CAMPAIGN_START_BUTTON"));
-
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -239,8 +176,6 @@ end
 -- /run TRP3_API.utils.table.dump(TRP3_API.quest.getQuestLog());
 
 local function init()
-	initQuestLogPage();
-
 	local refreshQuestLog = function()
 		playerQuestLog = TRP3_API.quest.getQuestLog();
 	end
@@ -252,7 +187,7 @@ local function init()
 
 	-- Resuming last campaign
 	if playerQuestLog.currentCampaign then
-		activateCampaign(playerQuestLog.currentCampaign, true);
+		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
 end
 TRP3_API.quest.campaignInit = init;

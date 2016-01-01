@@ -230,14 +230,14 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-								local name = self:GetName();
-								_G[name .. "Text"]:SetText("");
-								_G[name .. "High"]:SetText("");
-								_G[name .. "Low"]:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
+										local name = self:GetName();
+										_G[name .. "Text"]:SetText("");
+										_G[name .. "High"]:SetText("");
+										_G[name .. "Low"]:SetText("");
+										self:SetMinMaxValues(0, 6);
+										self:SetValueStep(1);
+										self:SetOrientation("VERTICAL");
+									</OnLoad>
 								</Scripts>
 							</Slider>
 						</Frames>
