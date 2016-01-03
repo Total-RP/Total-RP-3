@@ -24,19 +24,21 @@ local questlog = {
 
 	["myFirstCampaign"] = {
 		["quest1"] = {
+			PS = { -- Previous step
+				 ["1"] = true,
+			},
 			CS = "2", -- Current step
 			OB = {
-				["1"] = {
-					VA = true,
+				["1"] = true,
+				["2"] = false,
+				["3"] = {
+					VA = 5,
 				},
-
-				["2"] = {
-					VA = 14,
-				},
-
-				["3"] = {},
 			}
-		}
+		},
+		["test"] = {
+			DO = true
+		},
 	}
 
 }
@@ -65,7 +67,7 @@ TRP3_DB.campaign = {
 		BA = {
 			IC = "achievement_reputation_05",
 			NA = "A dangerous friendship",
-			DE = "I'm looking for a job, and this farmer in Elwynn ask for help. I hope he's richer than me.",
+			DE = "Always be cautionous with your friendship...",
 		},
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -73,13 +75,46 @@ TRP3_DB.campaign = {
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 		QE = {
+
+			["test"] = {
+
+				-- Base information, common to the whole quest
+				BA = {
+					IC = "Temp",
+					NA = "Test",
+					DE = "Just to test the frame placement",
+				},
+
+				-- Handler for campaign
+				HA = {
+					PLAYER_STARTED_MOVING = "H1",
+				},
+
+				-- Scripts
+				SC = {
+					["H1"] = {
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "text",
+										args = {"Start moving quest 2 !", 3}
+									},
+								}
+							},
+						},
+					},
+				}
+			},
+
 			["quest1"] = {
 
 				-- Base information, common to the whole quest
 				BA = {
 					IC = "INV_jewelcrafting_Empyreansapphire_02",
-					NA = "A dark omen",
-					DE = "Help the farmer found his missing jewels.",
+					NA = "The first job",
+					DE = "An Night Elf in Stormwind asks for help. I'm poor, so it's quite the good time to work.",
 				},
 
 				-- Different objective from all steps
@@ -87,15 +122,13 @@ TRP3_DB.campaign = {
 				OB = {
 					-- Boolean objective: simple activation
 					["1"] = {
-						TX = "Go to the dark cavern.",
+						TX = "Find Kyle Radue.",
 					},
 
 					-- Count objective: do something a certain amount of time
 					["2"] = {
 						TX = "{val} / {obj} kobold killed",
 						CT = 25,
-						OP = true, -- Optional
-						HI = true, -- Hidden
 					},
 
 					-- Component objective: must possess a certain amount of a component
@@ -103,9 +136,51 @@ TRP3_DB.campaign = {
 						TX = "My seconde objective: {cur} / {obj}",
 						CO = "quest1	2	jewel", -- tabs separate the id domains
 						CT = 5,
-						HI = true, -- Hidden
 					},
 				},
+
+				-- Scripts for quest
+				SC = {
+					["QUEST_START"] = {
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "text",
+										args = {"Quest start !", 3}
+									},
+									{
+										id = "quest_goToStep",
+										args = {"quest1", "1"}
+									},
+								}
+							},
+						},
+					},
+
+					["H1"] = {
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "text",
+										args = {"Stop moving quest 1 !", 3}
+									},
+								}
+							},
+						},
+					},
+				},
+
+				-- Handler for quest
+				HA = {
+					PLAYER_STOPPED_MOVING = "H1",
+				},
+
+				-- OnStart inner handler
+				OS = "QUEST_START",
 
 				-- Quest steps
 				ST = {
@@ -117,32 +192,50 @@ TRP3_DB.campaign = {
 					["1"] = {
 
 						-- Quest step log information ONCE IN STEP
-						LO = {
-							TI = "Found the cavern",
-							DE = "Should be north of Elwynn forest.",
-						},
+						TX = "I should find the Night Elf. He's name is Kyle Radue. He should be in the Canals in Stormwind.",
 
 						-- Scripts for this step
 						SC = {
 
 							["STEP_START"] = {
-								-- 1: Show dialog
+								-- 1: add objective 1
+								ST = {
+									["1"] = {
+										t = "list",
+										e = {
+											{
+												id = "text",
+												args = {"Starting step 1.", 3}
+											},
+											{
+												id = "quest_revealObjective",
+												args = {"quest1", "1"}
+											},
+										}
+									},
+								},
 							},
 
-							["CAVERN_ENTER"] = {
-								-- 1: check zone
-								-- 2: complete obj 1
-								-- 3: Go to step 2
+							["ELF_TALK"] = {
+								-- 1:
 							}
 						},
+
+						-- OnStart inner handler
+						OS = "STEP_START",
+
+					},
+
+					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+					-- Quest step 1 bis: Found the place
+					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+					["1b"] = {
 
 						-- Wow/TRP3 Handlers for this step
 						HA = {
 							{"ZoneEntered", "CAVERN_ENTER" }
 						},
-
-						-- OnStart inner handler
-						OS = "STEP_START",
 
 					},
 
@@ -242,50 +335,7 @@ TRP3_DB.campaign = {
 					},
 				},
 
-				-- Scripts for quest
-				SC = {
-					["QUEST_START"] = {
-						ST = {
-							["1"] = {
-								t = "list",
-								e = {
-									{
-										id = "text",
-										args = {"Quest start !", 3}
-									},
-								}
-							},
-						},
-					},
-
-					["H1"] = {
-						ST = {
-							["1"] = {
-								t = "list",
-								e = {
-									{
-										id = "text",
-										args = {"Stop moving !", 3}
-									},
-								}
-							},
-						},
-					},
-				},
-
-				-- Handler for quest
-				HA = {
-					PLAYER_STOPPED_MOVING = "H1",
-				},
-
-				-- OnStart inner handler
-				OS = "QUEST_START",
 			}
-		},
-
-		-- Handler for campaign
-		HA = {
-			PLAYER_STARTED_MOVING = "H1",
 		},
 
 		-- Scripts for campaign
@@ -300,22 +350,12 @@ TRP3_DB.campaign = {
 								args = {"Starting campaign.", 3}
 							},
 							{
-								id = "startQuest",
+								id = "quest_start",
 								args = {"quest1"}
 							},
-						}
-					},
-				},
-			},
-
-			["H1"] = {
-				ST = {
-					["1"] = {
-						t = "list",
-						e = {
 							{
-								id = "text",
-								args = {"You move !", 3}
+								id = "quest_start",
+								args = {"test"}
 							},
 						}
 					},

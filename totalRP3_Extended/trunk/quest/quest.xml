@@ -76,6 +76,14 @@
 			<Size x="174" y="96"/>
 			<TexCoords left="0.34570313" right="0.68554688" top="0.33300781" bottom="0.42675781"/>
 		</HighlightTexture>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
 	</Button>
 
 	<Frame name="TRP3_CampaignPageTemplate" inherits="TRP3_FieldSetFrame" virtual="true">
@@ -169,6 +177,14 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD" parentKey="highlightTexture"/>
 	</Button>
@@ -266,6 +282,16 @@
 					<Anchor point="LEFT" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="0"/>
 				</Anchors>
+				<Layers>
+					<Layer>
+						<FontString parentKey="Empty" inherits="SystemFont_Med1" justifyH="CENTER" justifyV="MIDDLE" text="[EMPTY]" setAllPoints="true">
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
 					<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
 						<Anchors>

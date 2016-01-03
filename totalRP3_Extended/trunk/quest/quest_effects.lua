@@ -25,13 +25,35 @@ local tostring = tostring;
 
 TRP3_API.quest.EFFECTS = {
 
-	["startQuest"] = {
+	["quest_start"] = {
 		codeReplacementFunc = function (args)
 			local questID = args[1];
 			return ("lastEffectReturn = startQuest(args.campaignID, \"%s\");"):format(questID);
 		end,
 		env = {
 			startQuest = "TRP3_API.quest.startQuest",
+		}
+	},
+
+	["quest_goToStep"] = {
+		codeReplacementFunc = function (args)
+			local questID = args[1];
+			local stepID = args[2];
+			return ("lastEffectReturn = goToStep(args.campaignID, \"%s\", \"%s\");"):format(questID, stepID);
+		end,
+		env = {
+			goToStep = "TRP3_API.quest.goToStep",
+		}
+	},
+
+	["quest_revealObjective"] = {
+		codeReplacementFunc = function (args)
+			local questID = args[1];
+			local objectiveID = args[2];
+			return ("lastEffectReturn = revealObjective(args.campaignID, \"%s\", \"%s\");"):format(questID, objectiveID);
+		end,
+		env = {
+			revealObjective = "TRP3_API.quest.revealObjective",
 		}
 	},
 

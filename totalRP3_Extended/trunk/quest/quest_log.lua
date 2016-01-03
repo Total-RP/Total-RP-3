@@ -35,15 +35,32 @@ local TAB_STEPS = "steps";
 -- CAMPAIGN
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onCampaignOpen(button)
+local function onCampaignActionSelected(value, button)
+	assert(button.campaignID, "No campaign ID in button");
+	if value == 1 then
+		TRP3_API.quest.resetCampaign(button.campaignID);
+	elseif value == 2 then
+		TRP3_API.quest.activateCampaign(button.campaignID);
+	end
+end
+
+local function onCampaignButtonClick(button, mouseButton)
+	assert(button.campaignID, "No campaign ID in button");
 	local campaignID = button.campaignID;
 	local _, campaignName = getClassDataSafe(getCampaignClass(campaignID));
-	goToPage(TAB_QUESTS, campaignID, campaignName);
+	if mouseButton == "LeftButton" then
+		goToPage(TAB_QUESTS, campaignID, campaignName);
+	else
+		local values = {};
+		tinsert(values, {loc("QE_CAMPAIGN_RESET"), 1});
+		tinsert(values, {loc("QE_CAMPAIGN_START_BUTTON"), 2});
+		TRP3_API.ui.listbox.displayDropDown(button, values, onCampaignActionSelected, 0, true);
+	end
 end
 
 local BASE_BKG = "Interface\\Garrison\\GarrisonUIBackground";
 
-local function decorateCampaignButton(button, campaignID, campaignClass, onCampaignOpen)
+local function decorateCampaignButton(button, campaignID, campaignClass, onCampaignClick)
 	local campaignIcon, campaignName, campaignDescription = getClassDataSafe(campaignClass);
 	local image = (campaignClass.BA or EMPTY).IM;
 	local range = (campaignClass.BA or EMPTY).RA;
@@ -75,7 +92,8 @@ local function decorateCampaignButton(button, campaignID, campaignClass, onCampa
 	end
 
 	button.campaignID = campaignID;
-	button:SetScript("OnClick", onCampaignOpen);
+	button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	button:SetScript("OnClick", onCampaignClick);
 	button.Icon:SetVertexColor(0.7, 0.7, 0.7);
 	button.current:SetText(loc("QE_CAMPAIGN_CURRENT"));
 end
@@ -104,7 +122,7 @@ local function refreshCampaignList()
 			tinsert(TRP3_QuestLogPage.Campaign.slots, button);
 		end
 
-		decorateCampaignButton(button, campaignID, campaign, onCampaignOpen);
+		decorateCampaignButton(button, campaignID, campaign, onCampaignButtonClick);
 		index = index + 1;
 	end
 
@@ -124,6 +142,46 @@ end
 -- QUEST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+
+local function onQuestButtonEnter(button)
+	local questClass = TRP3_API.quest.getQuestClass(button.campaignID, button.questID) or EMPTY;
+	local questIcon, questName, questDescription = getClassDataSafe(questClass);
+	local currentStep = button.questInfo.CS;
+	local objectives = button.questInfo.OB;
+	local stepText, objectivesText;
+
+	if currentStep then
+		if questClass.ST and questClass.ST[currentStep] then
+			stepText = questClass.ST[currentStep].TX;
+		else
+			stepText = "|cffff0000Missing step information.|r" -- TODO: locals
+		end
+		stepText = loc("QE_QUEST_TT_STEP"):format(stepText);
+	end
+
+	if objectives then
+		for objectiveID, state in pairs(objectives) do
+			local objectiveClass = questClass.OB[objectiveID];
+			if objectiveClass  and state == false then
+				if not objectivesText then
+					objectivesText = "|cff00ff00- " .. objectiveClass.TX;
+				else
+					objectivesText = objectivesText .. "\n- " .. objectiveClass.TX;
+				end
+			end
+		end
+	end
+
+	local finalText;
+	if stepText and not objectivesText then finalText = stepText; end
+	if objectivesText and not stepText then finalText = objectivesText; end
+	if objectivesText and stepText then finalText = stepText .. "\n\n" .. objectivesText; end
+
+	setTooltipForSameFrame(button, "RIGHT", 0, 5, questName, finalText);
+	TRP3_RefreshTooltipForFrame(button);
+end
+
 local function decorateQuestButton(questFrame, campaignID, questID, questInfo)
 	local questClass = TRP3_API.quest.getQuestClass(campaignID, questID);
 	local questIcon, questName, questDescription = getClassDataSafe(questClass);
@@ -134,12 +192,16 @@ local function decorateQuestButton(questFrame, campaignID, questID, questInfo)
 	questFrame:SetScript("OnClick", function(self)
 
 	end);
+	questFrame:SetScript("OnEnter", onQuestButtonEnter);
+	questFrame.campaignID = campaignID;
+	questFrame.questID = questID;
+	questFrame.questInfo = questInfo;
 end
 
 local function refreshQuestList(campaignID)
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:SetText("Available quests");
-	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:SetText("Finished quests");
-
+	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:Hide();
+	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:Hide();
+	TRP3_QuestLogPage.Quest.List.Empty:Show();
 	local questFrames = TRP3_QuestLogPage.Quest.List.scroll.child.Content.frames;
 
 	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:Hide();
@@ -166,8 +228,17 @@ local function refreshQuestList(campaignID)
 			questFrame:Show();
 
 			index = index + 1;
-			y = y - 50;
+			y = y - 60;
 		end
+
+		if index > 1 then
+			TRP3_QuestLogPage.Quest.List.Empty:Hide();
+			TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:Show();
+		else
+			TRP3_QuestLogPage.Quest.List.Empty:SetText(loc("QE_CAMPAIGN_NOQUEST"));
+		end
+	else
+		TRP3_QuestLogPage.Quest.List.Empty:SetText(loc("QE_CAMPAIGN_UNSTARTED"));
 	end
 end
 
@@ -176,6 +247,7 @@ local function refreshQuestVignette(campaignID)
 	decorateCampaignButton(TRP3_QuestLogPage.Quest.Campaign.Vignette, campaignID, campaignClass, function()
 		swapCampaignActivation(campaignID);
 		refreshQuestVignette(campaignID);
+		refreshQuestList(campaignID);
 	end);
 	TRP3_QuestLogPage.Quest.Campaign.Text.scroll.child.Desc.Text:SetText((campaignClass.BA or EMPTY).DE or "");
 end
@@ -279,6 +351,8 @@ local function init()
 	-- Quest page init
 	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Quest.Campaign, loc("QE_CAMPAIGN"), 150);
 	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Quest.List, loc("QE_QUEST_LIST"), 200);
+	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Current:SetText(loc("QE_STEP_LIST_CURRENT"));
+	TRP3_QuestLogPage.Quest.List.scroll.child.Content.Finished:SetText(loc("QE_STEP_LIST_FINISHED"));
 	TRP3_QuestLogPage.Quest.List.scroll.child.Content.frames = {};
 end
 TRP3_API.quest.questLogInit = init;

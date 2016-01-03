@@ -82,7 +82,8 @@ local function clearCampaignHandlers()
 	for handlerID, _ in pairs(campaignHandlers) do
 		Utils.event.unregisterHandler(handlerID);
 	end
-	TRP3_API.quest.clearQuestHandlers();
+	wipe(campaignHandlers);
+	TRP3_API.quest.clearAllQuestHandlers();
 end
 
 local function activateCampaignHandlers(campaignID, campaignClass)
@@ -92,9 +93,9 @@ local function activateCampaignHandlers(campaignID, campaignClass)
 		end);
 		campaignHandlers[handlerID] = eventID;
 	end
-	-- Active handlers for kown quests
+	-- Active handlers for known quests
 	for questID, questClass in pairs(campaignClass.QE or EMPTY) do
-		if playerQuestLog[campaignID][questID] then
+		if playerQuestLog[campaignID][questID] and not playerQuestLog[campaignID][questID].DO then
 			TRP3_API.quest.activateQuestHandlers(campaignID, campaignClass, questID, questClass);
 		end
 	end
