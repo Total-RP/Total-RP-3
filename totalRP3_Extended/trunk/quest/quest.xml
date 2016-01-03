@@ -131,7 +131,7 @@
 	<!--      QUESTS TAB      -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
-	<Button name="TRP3_QuestButtonTemplate" inherits="SecureFrameTemplate" virtual="true">
+	<Button name="TRP3_QuestButtonTemplate" virtual="true">
 		<Size x="37" y="37"/>
 
 		<Layers>
@@ -207,7 +207,6 @@
 					</Button>
 
 					<Frame parentKey="Text" name="$parentText" virtual="true">
-						<Size x="344" y="161"/>
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.Vignette" x="5" y="0"/>
 							<Anchor point="TOP" x="0" y="-10"/>
@@ -357,6 +356,80 @@
 	<!--      STEPS TAB       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
+	<Frame name="TRP3_StepPageTemplate" virtual="true">
+		<Frames>
+
+			<Button name="$parentTitle" parentKey="Title" inherits="TRP3_QuestButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="50" y="5"/>
+				</Anchors>
+			</Button>
+
+			<Frame name="$parentObjectives" parentKey="Objectives" inherits="TRP3_FieldSetFrame">
+				<Anchors>
+					<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-30"/>
+					<Anchor point="RIGHT" x="0" y="0"/>
+					<Anchor point="LEFT" x="0" y="0"/>
+					<Anchor point="BOTTOM" x="0" y="0"/>
+				</Anchors>
+				<Frames>
+					<Frame parentKey="Text" name="$parentText" virtual="true">
+						<Anchors>
+							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="TOP" x="0" y="-10"/>
+							<Anchor point="RIGHT" x="-40" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture parentKey="bg" atlas="adventureguide-pane-small"/>
+							</Layer>
+						</Layers>
+						<Frames>
+							<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="RIGHT" x="25" y="0"/>
+									<Anchor point="LEFT" x="30" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="20"/>
+								</Anchors>
+								<Frames>
+									<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">
+										<Anchors>
+											<Anchor point="TOPRIGHT" x="0" y="-17"/>
+											<Anchor point="BOTTOMRIGHT" x="0" y="17"/>
+										</Anchors>
+										<Scripts>
+											<OnLoad>
+												self.trackBG:SetVertexColor(0.2, 0.13, 0.08, 0.25);
+											</OnLoad>
+										</Scripts>
+									</Slider>
+								</Frames>
+								<ScrollChild>
+									<Frame name="$parentScrollChild" parentKey="child">
+										<Size x="10" y="10"/>
+										<Anchors>
+											<Anchor point="TOPLEFT" x="0" y="0"/>
+										</Anchors>
+										<Frames>
+											<SimpleHTML name="$parentHTML" parentKey="HTML">
+												<Anchors>
+													<Anchor point="TOPLEFT" x="5" y="-5"/>
+												</Anchors>
+												<FontString inherits="GameFontNormalSmall"/>
+											</SimpleHTML>
+										</Frames>
+									</Frame>
+								</ScrollChild>
+							</ScrollFrame>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--       QUESTLOG       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -369,7 +442,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="0" y="0"/>
 						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
@@ -440,7 +513,7 @@
 				</Anchors>
 			</Frame>
 
-			<Frame parentKey="Step" name="$parentStep" inherits="TRP3_FieldSetFrame">
+			<Frame parentKey="Step" name="$parentStep" inherits="TRP3_StepPageTemplate">
 				<Anchors>
 					<Anchor point="TOP" relativeKey="$parent.navBar" relativePoint="BOTTOM" x="0" y="-18"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>

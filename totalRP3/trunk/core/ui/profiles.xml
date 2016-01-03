@@ -153,7 +153,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
-						<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
+						<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft" setAllPoints="true">
 							<TexCoords left="0.07" right="1" top="0" bottom="0.98" />
 						</Texture>
 					</Layer>

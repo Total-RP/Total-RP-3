@@ -48,6 +48,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_CAMPAIGN_NOQUEST = "No quest revealed yet for this campaign.\nTake a look at the campaign description to unlock your first quest.",
 	QE_QUEST_START = "Starting quest |cff00ff00[%s]|r.",
 	QE_QUEST_TT_STEP = "|cffffff00Currently:|r\n\"%s\"",
+	QE_QUEST_OBJ_AND_HIST = "Objectives and history",
 	QE_QUEST = "Quest",
 	QE_QUEST_OBJ_REVEALED = "New objective revealed: |cff00ff00%s",
 	QE_QUEST_LIST = "Quests for this campaign",
