@@ -16,15 +16,67 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
-local pairs = pairs;
+local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
+local pairs, strjoin = pairs, strjoin;
+local EMPTY = TRP3_API.globals.empty;
+local Log = Utils.log;
+
+TRP3_DB = {
+	global = {},
+};
+TRP3_API.extended = {};
+TRP3_API.inventory = {};
+TRP3_API.quest = {};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- GLOBAL DB
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local missing = {
+	missing = true,
+	BA = {
+		IC = "inv_misc_questionmark",
+		NA = "|cffff0000MISSING CLASS",
+		DE = "The information relative to this object are missing. It's possible the class was deleted or that it relies on a missing module.",
+	}
+}
+
+local DB = TRP3_DB.global;
+local ID_SEPARATOR = " ";
+
+local function getFullID(...)
+	return strjoin(ID_SEPARATOR, ...);
+end
+
+local function getClass(...)
+	local id = getFullID(...);
+	local class = DB[id];
+	return class or missing;
+end
+TRP3_API.extended.getClass = getClass;
+
+local function getClassDataSafe(class)
+	local icon = "TEMP";
+	local name = UNKNOWN;
+	local description = "";
+	if class and class.BA then
+		if class.BA.IC then
+			icon = class.BA.IC;
+		end
+		if class.BA.NA then
+			name = class.BA.NA;
+		end
+		if class.BA.DE then
+			description = class.BA.DE;
+		end
+	end
+	return icon, name, description;
+end
+TRP3_API.extended.getClassDataSafe = getClassDataSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-TRP3_DB = {};
-TRP3_API.inventory = {};
-TRP3_API.quest = {};
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
@@ -35,5 +87,76 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			locale.localeContent[localeKey] = text;
 		end
 	end
+
+	-- Calculate global environement with all ids
+	local count = 0;
+
+	-- Register items
+	for id, item in pairs(TRP3_DB.item or EMPTY) do
+		TRP3_DB.global[id] = item;
+
+		-- Inner object
+		for objectID, class in pairs(item.IN or EMPTY) do
+			TRP3_DB.global[getFullID(id, objectID)] = class;
+			count = count + 1;
+		end
+
+		count = count + 1;
+	end
+
+	-- Register documents
+	for id, document in pairs(TRP3_DB.document or EMPTY) do
+		TRP3_DB.global[id] = document;
+
+		-- Inner object
+		for objectID, class in pairs(document.IN or EMPTY) do
+			TRP3_DB.global[getFullID(id, objectID)] = class;
+			count = count + 1;
+		end
+
+		count = count + 1;
+	end
+
+	-- Register campaign
+	for campaignID, campaign in pairs(TRP3_DB.campaign or EMPTY) do
+		TRP3_DB.global[campaignID] = campaign;
+
+		-- Inner object
+		for objectID, class in pairs(campaign.IN or EMPTY) do
+			TRP3_DB.global[getFullID(campaignID, objectID)] = class;
+			count = count + 1;
+		end
+
+		-- Quests
+		for questID, quest in pairs(campaign.QE or EMPTY) do
+			TRP3_DB.global[getFullID(campaignID, questID)] = quest;
+
+			-- Inner object
+			for objectID, class in pairs(quest.IN or EMPTY) do
+				TRP3_DB.global[getFullID(campaignID, questID, objectID)] = class;
+				count = count + 1;
+			end
+
+			-- Steps
+			for stepID, step in pairs(quest.ST or EMPTY) do
+				TRP3_DB.global[getFullID(campaignID, questID, stepID)] = step;
+
+				-- Inner object
+				for objectID, class in pairs(step.IN or EMPTY) do
+					TRP3_DB.global[getFullID(campaignID, questID, stepID, objectID)] = class;
+					count = count + 1;
+				end
+
+
+				count = count + 1;
+			end
+
+			count = count + 1;
+		end
+
+		count = count + 1;
+	end
+
+	Log.log(("Registred %s creations"):format(count));
 
 end);

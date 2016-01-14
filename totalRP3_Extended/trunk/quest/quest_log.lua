@@ -21,7 +21,7 @@ local CreateFrame = CreateFrame;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
-local getCampaignClass, getClassDataSafe = TRP3_API.quest.getCampaignClass, TRP3_API.quest.getClassDataSafe;
+local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 local getQuestLog = TRP3_API.quest.getQuestLog;
 
 local TRP3_QuestLogPage = TRP3_QuestLogPage;
@@ -47,9 +47,9 @@ end
 local function onCampaignButtonClick(button, mouseButton)
 	assert(button.campaignID, "No campaign ID in button");
 	local campaignID = button.campaignID;
-	local _, campaignName = getClassDataSafe(getCampaignClass(campaignID));
+	local _, campaignName = getClassDataSafe(getClass(campaignID));
 	if mouseButton == "LeftButton" then
-		goToPage(TAB_QUESTS, campaignID, campaignName, true);
+		goToPage(false, TAB_QUESTS, campaignID, campaignName);
 	else
 		local values = {};
 		tinsert(values, {loc("QE_CAMPAIGN_RESET"), 1});
@@ -133,8 +133,10 @@ local function swapCampaignActivation(campaignID)
 	TRP3_API.quest.activateCampaign(campaignID);
 end
 
-local function goToCampaignPage()
-	NavBar_Reset(TRP3_QuestLogPage.navBar);
+local function goToCampaignPage(skipButton)
+	if not skipButton then
+		NavBar_Reset(TRP3_QuestLogPage.navBar);
+	end
 	refreshCampaignList();
 end
 
@@ -146,7 +148,7 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local onQuestTabClick;
 
 local function onQuestButtonEnter(button)
-	local questClass = TRP3_API.quest.getQuestClass(button.campaignID, button.questID) or EMPTY;
+	local questClass = getClass(button.campaignID, button.questID) or EMPTY;
 	local questIcon, questName, questDescription = getClassDataSafe(questClass);
 	local currentStep = button.questInfo.CS;
 	local objectives = button.questInfo.OB;
@@ -184,7 +186,7 @@ local function onQuestButtonEnter(button)
 end
 
 local function decorateQuestButton(questFrame, campaignID, questID, questInfo, questClick)
-	local questClass = TRP3_API.quest.getQuestClass(campaignID, questID);
+	local questClass = getClass(campaignID, questID);
 	local questIcon, questName, questDescription = getClassDataSafe(questClass);
 
 	TRP3_API.ui.frame.setupIconButton(questFrame, questIcon);
@@ -222,9 +224,9 @@ local function refreshQuestList(campaignID)
 				tinsert(questFrames, questFrame);
 			end
 
-			local _, questName, _ = getClassDataSafe(TRP3_API.quest.getQuestClass(campaignID, questID));
+			local _, questName, _ = getClassDataSafe(getClass(campaignID, questID));
 			decorateQuestButton(questFrame, campaignID, questID, questInfo, function()
-				goToPage(TAB_STEPS, campaignID, questID, questName);
+				goToPage(false, TAB_STEPS, campaignID, questID, questName);
 			end);
 			questFrame:SetPoint("TOPLEFT", 50, y);
 			questFrame:Show();
@@ -245,7 +247,7 @@ local function refreshQuestList(campaignID)
 end
 
 local function refreshQuestVignette(campaignID)
-	local campaignClass = getCampaignClass(campaignID);
+	local campaignClass = getClass(campaignID);
 	decorateCampaignButton(TRP3_QuestLogPage.Quest.Campaign.Vignette, campaignID, campaignClass, function()
 		swapCampaignActivation(campaignID);
 		refreshQuestVignette(campaignID);
@@ -254,8 +256,8 @@ local function refreshQuestVignette(campaignID)
 	TRP3_QuestLogPage.Quest.Campaign.Text.scroll.child.Desc.Text:SetText((campaignClass.BA or EMPTY).DE or "");
 end
 
-local function goToQuestPage(campaignID, campaignName, createTab)
-	if createTab then
+local function goToQuestPage(skipButton, campaignID, campaignName)
+	if not skipButton then
 		NavBar_AddButton(TRP3_QuestLogPage.navBar, {id = campaignID, name = campaignName, OnClick = onQuestTabClick});
 	end
 	refreshQuestList(campaignID);
@@ -263,7 +265,7 @@ local function goToQuestPage(campaignID, campaignName, createTab)
 end
 
 function onQuestTabClick(button)
-	goToPage(TAB_QUESTS, button.id, button.name, false);
+	goToPage(true, TAB_QUESTS, button.id, button.name);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -276,51 +278,124 @@ local function refreshStepVignette(campaignID, questID, questInfo)
 	decorateQuestButton(TRP3_QuestLogPage.Step.Title, campaignID, questID, questInfo);
 end
 
-local function refreshStepContent()
+local function refreshStepContent(campaignID, questID, questInfo)
+	local questClass = getClass(campaignID, questID);
+	local questIcon, questName, questDescription = getClassDataSafe(questClass);
+	local currentStep = questInfo.CS;
+	local objectives = questInfo.OB;
 	local html = "";
 
-	html = html .. "{h1}Overview{/h1}";
+	if currentStep then
+		local currentStepText;
+		if questClass.ST and questClass.ST[currentStep] then
+			currentStepText = questClass.ST[currentStep].TX;
+		else
+			currentStepText = "|cffff0000Missing step information.|r" -- TODO: locals
+		end
+		html = html .. ("{h2}%s{/h2}"):format(OVERVIEW);
+		html = html .. ("\n%s\n\n"):format(currentStepText);
+	end
 
-	html = html .. "{h1}Objectives{/h1}";
+	if objectives and Utils.table.size(objectives) > 0 then
+		local objectivesText = "";
+		for objectiveID, state in pairs(objectives) do
+			local objectiveClass = questClass.OB[objectiveID];
+			local objText = UNKNOWN;
+			if objectiveClass then
+				if state == true then
+					objText = "|TInterface\\Scenarios\\ScenarioIcon-Check:12:12|t " .. objectiveClass.TX;
+				else
+					objText = "|TInterface\\GossipFrame\\IncompleteQuestIcon:12:12|t " .. objectiveClass.TX;
+				end
+			end
+			objectivesText = objectivesText .. "{p}" .. objText .. "{/p}";
+		end
+		html = html .. ("{h2}%s{/h2}"):format(QUEST_OBJECTIVES);
+		html = html .. ("\n%s"):format(objectivesText);
+	end
 
-	html = html .. "{h1}Previous steps{/h1}";
+	if questInfo.PS and Utils.table.size(questInfo.PS) > 0 then
+		html = html .. ("\n{img:%s:256:32}\n"):format("Interface\\QUESTFRAME\\UI-HorizontalBreak");
 
+		local previousStepText = "";
+		for _, stepID in pairs(questInfo.PS) do
+			local stepClass = getClass(campaignID, questID, stepID);
+			if stepClass and stepClass.DX then
+				previousStepText = previousStepText .. stepClass.DX;
+			end
+		end
+
+		html = html .. ("{h2}%s{/h2}"):format("Previous steps");
+		html = html .. ("\n%s\n"):format(previousStepText);
+	end
 
 	stepHTML.html = Utils.str.toHTML(html);
 	stepHTML:SetText(stepHTML.html);
 end
 
-local function goToStepPage(campaignID, questID, questName)
-	NavBar_AddButton(TRP3_QuestLogPage.navBar, {id = questID, name = questName});
+local function goToStepPage(skipButton, campaignID, questID, questName)
+	if not skipButton then
+		NavBar_AddButton(TRP3_QuestLogPage.navBar, {id = questID, name = questName});
+	end
 
 	local questLog = TRP3_API.quest.getQuestLog();
-	assert(questLog[campaignID] and questLog[campaignID][questID], "Trying to goToStepPage from an unstarted campaign or quest");
+	assert(questLog[campaignID] and questLog[campaignID][questID], "Trying to goToStepPage from an unstarted campaign or quest: " .. tostring(questID));
 
 	refreshStepVignette(campaignID, questID, questLog[campaignID][questID]);
 	refreshStepContent(campaignID, questID, questLog[campaignID][questID]);
+end
+
+local function initStepFrame()
+	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
+	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
+	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Step.Objectives, loc("QE_QUEST_OBJ_AND_HIST"), 200);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+		stepHTML:SetSize(containerwidth - 150, 5);
+		stepHTML:SetText(stepHTML.html);
+	end);
+
+	stepHTML:SetFontObject("p", GameTooltipHeader);
+	stepHTML:SetTextColor("p", 0.2824, 0.0157, 0.0157);
+	stepHTML:SetShadowOffset("p", 0, 0)
+
+	stepHTML:SetFontObject("h1", DestinyFontHuge);
+	stepHTML:SetTextColor("h1", 0, 0, 0);
+
+	stepHTML:SetFontObject("h2", QuestFont_Huge);
+	stepHTML:SetTextColor("h2", 0, 0, 0);
+
+	stepHTML:SetFontObject("h3", GameFontNormalLarge);
+	stepHTML:SetTextColor("h3", 1, 1, 1);
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NAVIGATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentPage;
-
-function goToPage(page, ...)
-	currentPage = page;
+function goToPage(skipButton, page,  ...)
+	TRP3_QuestLogPage.currentPage = page;
+	TRP3_QuestLogPage.args = {...};
 	TRP3_QuestLogPage.Campaign:Hide();
 	TRP3_QuestLogPage.Quest:Hide();
 	TRP3_QuestLogPage.Step:Hide();
 
 	if page == TAB_CAMPAIGNS then
 		TRP3_QuestLogPage.Campaign:Show();
-		goToCampaignPage(...)
+		goToCampaignPage(skipButton, ...)
 	elseif page == TAB_QUESTS then
 		TRP3_QuestLogPage.Quest:Show();
-		goToQuestPage(...)
+		goToQuestPage(skipButton, ...)
 	elseif page == TAB_STEPS then
 		TRP3_QuestLogPage.Step:Show();
-		goToStepPage(...)
+		goToStepPage(skipButton, ...)
+	end
+end
+
+local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
+local function refreshLog()
+	if getCurrentPageID() == "player_quest" then
+		goToPage(true, TRP3_QuestLogPage.currentPage, unpack(TRP3_QuestLogPage.args));
 	end
 end
 
@@ -329,6 +404,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function init()
+
+	Events.listenToEvent(Events.CAMPAIGN_REFRESH_LOG, refreshLog);
 
 	-- Quest log page and menu
 	TRP3_API.navigation.menu.registerMenu({
@@ -344,7 +421,7 @@ local function init()
 		id = "player_quest",
 		frame = TRP3_QuestLogPage,
 		onPagePostShow = function()
-			goToPage(TAB_CAMPAIGNS);
+			goToPage(false, TAB_CAMPAIGNS);
 		end
 	});
 
@@ -375,7 +452,7 @@ local function init()
 	local homeData = {
 		name = loc("QE_CAMPAIGNS"),
 		OnClick = function()
-			goToPage(TAB_CAMPAIGNS);
+			goToPage(false, TAB_CAMPAIGNS);
 		end,
 	}
 	TRP3_QuestLogPage.navBar.home:SetWidth(110);
@@ -394,12 +471,6 @@ local function init()
 	TRP3_QuestLogPage.Quest.List.scroll.child.Content.frames = {};
 
 	-- Step page init
-	TRP3_QuestLogPage.Step.Title.Name:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_QuestLogPage.Step.Title.InfoText:SetTextColor(0.1, 0.1, 0.1);
-	TRP3_API.ui.frame.setupFieldPanel(TRP3_QuestLogPage.Step.Objectives, loc("QE_QUEST_OBJ_AND_HIST"), 200);
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		stepHTML:SetSize(containerwidth - 150, 5);
-		stepHTML:SetText(stepHTML.html);
-	end);
+	initStepFrame();
 end
 TRP3_API.quest.questLogInit = init;

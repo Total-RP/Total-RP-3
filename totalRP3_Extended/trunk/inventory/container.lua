@@ -20,8 +20,9 @@ local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local loc = TRP3_API.locale.getText;
+local Log = Utils.log;
 local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
-local getItemClass, isContainerByClassID = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID;
+local getClass, isContainerByClassID = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID;
 local getQualityColorRGB, getQualityColorText = TRP3_API.inventory.getQualityColorRGB, TRP3_API.inventory.getQualityColorText;
 local EMPTY = TRP3_API.globals.empty;
 
@@ -260,14 +261,14 @@ local function slotOnDragStop(slotFrom)
 		container1 = slotFrom:GetParent().info;
 		if slotTo:GetName() == "WorldFrame" then
 			if not slotFrom.loot then
-				local itemClass = getItemClass(slotFrom.info.id);
+				local itemClass = getClass(slotFrom.info.id);
 				TRP3_API.popup.showConfirmPopup(DELETE_ITEM:format(TRP3_API.inventory.getItemLink(itemClass)), function()
 					TRP3_API.events.fireEvent(TRP3_API.inventory.EVENT_ON_SLOT_REMOVE, container1, slot1, slotFrom.info);
 				end);
 			else
 				Utils.message.displayMessage(loc("IT_INV_ERROR_CANT_DESTROY_LOOT"), Utils.message.type.ALERT_MESSAGE);
 			end
-		elseif slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
+		elseif slotTo:GetName() and slotTo:GetName():sub(1, 14) == "TRP3_Container" and slotTo.slotID then
 			local container2, slot2;
 			slot2 = slotTo.slotID;
 			container2 = slotTo:GetParent().info;
@@ -373,7 +374,7 @@ function loadContainerPageSlots(containerFrame)
 		slot.slotID = tostring(slotCounter);
 		if containerContent[slot.slotID] then
 			slot.info = containerContent[slot.slotID];
-			slot.class = getItemClass(containerContent[slot.slotID].id);
+			slot.class = getClass(containerContent[slot.slotID].id);
 		else
 			slot.info = nil;
 			slot.class = nil;
@@ -591,7 +592,7 @@ function TRP3_API.inventory.closeBags()
 end
 
 function switchContainerByRef(container, originContainer)
-	local class = getItemClass(container.id);
+	local class = getClass(container.id);
 	local containerFrame = getContainerInstance(container, class);
 	assert(containerFrame, "No frame available for container: " .. tostring(container.id));
 
@@ -617,10 +618,9 @@ end
 -- Loot
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function presentLoot(class, lootID)
-	if class and class.LO and class.LO[lootID] and class.LO[lootID].IT then
-		local loot = class.LO[lootID];
-
+local function presentLoot(lootID)
+	local loot = getClass(lootID);
+	if loot and loot.IT then
 		Utils.texture.applyRoundTexture(lootFrame.Icon, "Interface\\ICONS\\" .. (loot.IC or "Garrison_silverchest"), "Interface\\ICONS\\TEMP");
 		lootFrame.Title:SetText((loot.NA or "Loot")); --TODO: locals
 
@@ -630,7 +630,7 @@ local function presentLoot(class, lootID)
 			slot.slotID = tostring(slotCounter);
 			if loot.IT[slot.slotID] then
 				slot.info = loot.IT[slot.slotID];
-				slot.class = getItemClass(loot.IT[slot.slotID].id);
+				slot.class = getClass(loot.IT[slot.slotID].id);
 			else
 				slot.info = nil;
 				slot.class = nil;
@@ -648,6 +648,9 @@ local function presentLoot(class, lootID)
 		end
 
 		lootFrame:Raise();
+		return 0;
+	else
+		Log.log("Cannot find lootID: " .. tostring(lootID));
 	end
 end
 TRP3_API.inventory.presentLoot = presentLoot;

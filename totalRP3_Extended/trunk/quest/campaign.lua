@@ -21,11 +21,8 @@ local CAMPAIGN_DB = TRP3_DB.campaign;
 local EMPTY = TRP3_API.globals.empty;
 local tostring, assert, pairs, wipe, tinsert = tostring, assert, pairs, wipe, tinsert;
 local loc = TRP3_API.locale.getText;
-local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local initList = TRP3_API.ui.list.initList;
 local Log = Utils.log;
-
-local TRP3_QuestLogPage = TRP3_QuestLogPage;
+local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
 
 local playerQuestLog;
 
@@ -41,30 +38,6 @@ function TRP3_API.quest.getQuestLog()
 	end
 	return playerProfile.questlog;
 end
-
-local function getCampaignClass(campaignID)
-	return CAMPAIGN_DB[campaignID];
-end
-TRP3_API.quest.getCampaignClass = getCampaignClass;
-
-local function getClassDataSafe(class)
-	local icon = "TEMP";
-	local name = UNKNOWN;
-	local description = "";
-	if class and class.BA then
-		if class.BA.IC then
-			icon = class.BA.IC;
-		end
-		if class.BA.NA then
-			name = class.BA.NA;
-		end
-		if class.BA.DE then
-			description = class.BA.DE;
-		end
-	end
-	return icon, name, description;
-end
-TRP3_API.quest.getClassDataSafe = getClassDataSafe;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- HANDLERS
@@ -127,7 +100,7 @@ local function activateCampaign(campaignID, force)
 		return;
 	end
 
-	local campaignClass = getCampaignClass(campaignID);
+	local campaignClass = getClass(campaignID);
 	local _, campaignName = getClassDataSafe(campaignClass);
 
 	local init;

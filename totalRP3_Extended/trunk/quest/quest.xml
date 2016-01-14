@@ -388,10 +388,10 @@
 						<Frames>
 							<ScrollFrame name="$parentScrollFrame" parentKey="scroll" inherits="UIPanelScrollFrameCodeTemplate">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="TOP" x="0" y="-35"/>
 									<Anchor point="RIGHT" x="25" y="0"/>
-									<Anchor point="LEFT" x="30" y="0"/>
-									<Anchor point="BOTTOM" x="0" y="20"/>
+									<Anchor point="LEFT" x="40" y="0"/>
+									<Anchor point="BOTTOM" x="0" y="35"/>
 								</Anchors>
 								<Frames>
 									<Slider name="$parentScrollBar" inherits="MinimalScrollBarTemplate" parentKey="ScrollBar">

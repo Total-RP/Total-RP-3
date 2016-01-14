@@ -17,9 +17,6 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
-local getItemClass, isContainerByClassID, isUsableByClass = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
-local getBaseClassDataSafe, isContainerByClass, isUsableByClass = TRP3_API.inventory.getBaseClassDataSafe, TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.isUsableByClass;
-local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
 local CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown = CreateFrame, ToggleFrame, MouseIsOver, IsAltKeyDown;
 local TRP3_ItemTooltip = TRP3_ItemTooltip;

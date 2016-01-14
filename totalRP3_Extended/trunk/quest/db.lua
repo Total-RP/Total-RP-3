@@ -25,7 +25,7 @@ local questlog = {
 	["myFirstCampaign"] = {
 		["quest1"] = {
 			PS = { -- Previous step
-				 ["1"] = true,
+				"1"
 			},
 			CS = "2", -- Current step
 			OB = {
@@ -67,7 +67,7 @@ TRP3_DB.campaign = {
 		BA = {
 			IC = "achievement_reputation_05",
 			NA = "A dangerous friendship",
-			DE = "Always be cautionous with your friendship...",
+			DE = "Looking for some easy money?\Be careful, some friendship can became dangerous...",
 		},
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -76,45 +76,13 @@ TRP3_DB.campaign = {
 
 		QE = {
 
-			["test"] = {
-
-				-- Base information, common to the whole quest
-				BA = {
-					IC = "Temp",
-					NA = "Test",
-					DE = "Just to test the frame placement",
-				},
-
-				-- Handler for campaign
-				HA = {
-					PLAYER_STARTED_MOVING = "H1",
-				},
-
-				-- Scripts
-				SC = {
-					["H1"] = {
-						ST = {
-							["1"] = {
-								t = "list",
-								e = {
-									{
-										id = "text",
-										args = {"Start moving quest 2 !", 3}
-									},
-								}
-							},
-						},
-					},
-				}
-			},
-
 			["quest1"] = {
 
 				-- Base information, common to the whole quest
 				BA = {
 					IC = "INV_jewelcrafting_Empyreansapphire_02",
 					NA = "The first job",
-					DE = "An Night Elf in Stormwind asks for help. I'm poor, so it's quite the good time to work.",
+					DE = "An Night Elf in Stormwind asks for help, so it's the good time to work.",
 				},
 
 				-- Different objective from all steps
@@ -125,14 +93,18 @@ TRP3_DB.campaign = {
 						TX = "Find Kyle Radue.",
 					},
 
-					-- Count objective: do something a certain amount of time
 					["2"] = {
+						TX = "Find a beverage for Kyle.",
+					},
+
+					-- Count objective: do something a certain amount of time
+					["x"] = {
 						TX = "{val} / {obj} kobold killed",
 						CT = 25,
 					},
 
 					-- Component objective: must possess a certain amount of a component
-					["3"] = {
+					["xx"] = {
 						TX = "My seconde objective: {cur} / {obj}",
 						CO = "quest1	2	jewel", -- tabs separate the id domains
 						CT = 5,
@@ -147,36 +119,13 @@ TRP3_DB.campaign = {
 								t = "list",
 								e = {
 									{
-										id = "text",
-										args = {"Quest start !", 3}
-									},
-									{
 										id = "quest_goToStep",
-										args = {"quest1", "1"}
+										args = {"myFirstCampaign", "quest1", "1"}
 									},
 								}
 							},
 						},
 					},
-
-					["H1"] = {
-						ST = {
-							["1"] = {
-								t = "list",
-								e = {
-									{
-										id = "text",
-										args = {"Stop moving quest 1 !", 3}
-									},
-								}
-							},
-						},
-					},
-				},
-
-				-- Handler for quest
-				HA = {
-					PLAYER_STOPPED_MOVING = "H1",
 				},
 
 				-- OnStart inner handler
@@ -186,7 +135,7 @@ TRP3_DB.campaign = {
 				ST = {
 
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-					-- Quest step 1: Found the cavern
+					-- Quest step 1: Found the elf
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 					["1"] = {
@@ -194,30 +143,76 @@ TRP3_DB.campaign = {
 						-- Quest step log information ONCE IN STEP
 						TX = "I should find the Night Elf. He's name is Kyle Radue. He should be in the Canals in Stormwind.",
 
+						-- Quest step log information ONCE FINISHED
+						DX = "I found the Elf in the Storwind Canals.",
+
+						AC = {
+							TALK = {"FOUND_KYLE"},
+						},
+
 						-- Scripts for this step
 						SC = {
 
 							["STEP_START"] = {
-								-- 1: add objective 1
 								ST = {
+									-- 1: add objective 1
 									["1"] = {
 										t = "list",
 										e = {
 											{
-												id = "text",
-												args = {"Starting step 1.", 3}
-											},
-											{
 												id = "quest_revealObjective",
-												args = {"quest1", "1"}
+												args = {"myFirstCampaign", "quest1", "1"}
 											},
 										}
 									},
 								},
 							},
 
-							["ELF_TALK"] = {
-								-- 1:
+							["FOUND_KYLE"] = {
+								ST = {
+									-- 1: add objective 1
+									["1"] = {
+										t = "branch",
+										b = {
+											{
+												cond = { { { i = "tar_name" }, "==", {v = "Kyle Radue"} } },
+												n = "2"
+											}
+										},
+									},
+
+									["2"] = {
+										t = "list",
+										e = {
+											{
+												id = "item_loot",
+												args = {"myFirstCampaign quest1 1 firstPay"}
+											},
+											{
+												id = "quest_markObjDone",
+												args = {"myFirstCampaign", "quest1", "1"}
+											},
+											{
+												id = "quest_goToStep",
+												args = {"myFirstCampaign", "quest1", "2"}
+											},
+										}
+									},
+								},
+							}
+						},
+
+						-- Inner object
+						IN = {
+							firstPay = {
+								IC = "inv_box_01",
+								NA = "A first pay",
+								IT = {
+									["1"] = {
+										id = "coin1",
+										count = 10,
+									}
+								}
 							}
 						},
 
@@ -227,58 +222,39 @@ TRP3_DB.campaign = {
 					},
 
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-					-- Quest step 1 bis: Found the place
-					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-					["1b"] = {
-
-						-- Wow/TRP3 Handlers for this step
-						HA = {
-							{"ZoneEntered", "CAVERN_ENTER" }
-						},
-
-					},
-
-					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-					-- Quest step 2: Found the missing jewels
+					-- Quest step 2: Find a beer
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 					["2"] = {
 
 						-- Quest step log information ONCE IN STEP
-						LO = {
-							TI = "Find the missing jewels",
-							DE = "I should kill some kibild and loot them.",
-						},
+						TX = "Kyle asks me to find him a beverage. I know that this elf prefers a beer so I should look in some tavern.",
 
 						-- Scripts for this step
 						SC = {
 							["STEP_START"] = {
-								-- 1: show obj 2
-							},
-
-							["KOBOLD_KILLED"] = {
-								-- 1: test que l'enemy est bien un kobold
-								-- 2: increment objective 2
-							},
-
-							["KOBOLD_LOOT"] = {
-								-- 1: test que l'enemy est bien un kobold et est mort et n'est pas marqué comme looté
-								-- 2: loot item jewel x[1-3]
-							},
-
-							["GIVE_JEWEL"] = {
-								-- 1: test qu'on a les 5 jewels, si non => dialogue nous disant qu'on a pas fini
-								-- 2: remove 5 jewel du sac (deposit system ?)
-								-- 3: Go to step 3
+								ST = {
+									-- 1: add objective 1
+									["1"] = {
+										t = "list",
+										e = {
+											{
+												id = "text",
+												args = {"Kyle says: Hello, I'm thirsty, go find me a beer.", 1}
+											},
+											{
+												id = "quest_revealObjective",
+												args = {"myFirstCampaign", "quest1", "2"}
+											},
+										}
+									},
+								},
 							},
 						},
 
 						-- Handlers for this step
 						HA = {
-							{"OnEnemyKilled", "Activate script KOBOLD_KILLED"},
-							{"TRP3_OnTargetLoot", "Activate script KOBOLD_LOOT"},
-							{"TRP3_OnActionInterractTarget", "Activate script GIVE_JEWEL"},
+
 						},
 
 						-- OnStart inner handler
@@ -286,9 +262,9 @@ TRP3_DB.campaign = {
 
 						-- Items specific for this step
 						IT = {
-							["jewel"] = {
+							["beer"] = {
 								BA = {
-									NA = "Jewel"
+									NA = "Beer"
 								}
 							}
 						},
@@ -338,6 +314,10 @@ TRP3_DB.campaign = {
 			}
 		},
 
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Actions & script
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
 		-- Scripts for campaign
 		SC = {
 			["CAMPAIGN_START"] = {
@@ -346,16 +326,8 @@ TRP3_DB.campaign = {
 						t = "list",
 						e = {
 							{
-								id = "text",
-								args = {"Starting campaign.", 3}
-							},
-							{
 								id = "quest_start",
-								args = {"quest1"}
-							},
-							{
-								id = "quest_start",
-								args = {"test"}
+								args = {"myFirstCampaign", "quest1"}
 							},
 						}
 					},

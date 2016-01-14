@@ -27,8 +27,9 @@ TRP3_API.quest.EFFECTS = {
 
 	["quest_start"] = {
 		codeReplacementFunc = function (args)
-			local questID = args[1];
-			return ("lastEffectReturn = startQuest(args.campaignID, \"%s\");"):format(questID);
+			local campaignID = args[1];
+			local questID = args[2];
+			return ("lastEffectReturn = startQuest(\"%s\", \"%s\");"):format(campaignID, questID);
 		end,
 		env = {
 			startQuest = "TRP3_API.quest.startQuest",
@@ -37,9 +38,10 @@ TRP3_API.quest.EFFECTS = {
 
 	["quest_goToStep"] = {
 		codeReplacementFunc = function (args)
-			local questID = args[1];
-			local stepID = args[2];
-			return ("lastEffectReturn = goToStep(args.campaignID, \"%s\", \"%s\");"):format(questID, stepID);
+			local campaignID = args[1];
+			local questID = args[2];
+			local stepID = args[3];
+			return ("lastEffectReturn = goToStep(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, stepID);
 		end,
 		env = {
 			goToStep = "TRP3_API.quest.goToStep",
@@ -48,12 +50,25 @@ TRP3_API.quest.EFFECTS = {
 
 	["quest_revealObjective"] = {
 		codeReplacementFunc = function (args)
-			local questID = args[1];
-			local objectiveID = args[2];
-			return ("lastEffectReturn = revealObjective(args.campaignID, \"%s\", \"%s\");"):format(questID, objectiveID);
+			local campaignID = args[1];
+			local questID = args[2];
+			local objectiveID = args[3];
+			return ("lastEffectReturn = revealObjective(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
 		end,
 		env = {
 			revealObjective = "TRP3_API.quest.revealObjective",
+		}
+	},
+
+	["quest_markObjDone"] = {
+		codeReplacementFunc = function (args)
+			local campaignID = args[1];
+			local questID = args[2];
+			local objectiveID = args[3];
+			return ("lastEffectReturn = markObjectiveDone(\"%s\", \"%s\", \"%s\");"):format(campaignID, questID, objectiveID);
+		end,
+		env = {
+			markObjectiveDone = "TRP3_API.quest.markObjectiveDone",
 		}
 	},
 

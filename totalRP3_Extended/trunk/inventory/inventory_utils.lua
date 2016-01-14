@@ -16,17 +16,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local ITEM_DB = TRP3_DB.item;
 local EMPTY = TRP3_API.globals.empty;
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DB func
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function getItemClass(itemID)
-	return ITEM_DB[itemID];
-end
-TRP3_API.inventory.getItemClass = getItemClass;
+local getClass = TRP3_API.extended.getClass;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTILS func
@@ -43,7 +34,7 @@ end
 TRP3_API.inventory.isUsableByClass = isUsableByClass;
 
 local function isContainerByClassID(itemID)
-	return itemID == "main" or isContainerByClass(getItemClass(itemID));
+	return itemID == "main" or isContainerByClass(getClass(itemID));
 end
 TRP3_API.inventory.isContainerByClassID = isContainerByClassID;
 
@@ -53,7 +44,7 @@ end
 TRP3_API.inventory.isContainerByClass = isContainerByClass;
 
 local function isUsableByClassID(itemID)
-	return isUsableByClass(getItemClass(itemID));
+	return isUsableByClass(getClass(itemID));
 end
 TRP3_API.inventory.isUsableByClassID = isUsableByClassID;
 

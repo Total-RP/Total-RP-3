@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert, wipe, pairs;
-local getItemClass, isContainerByClassID, isUsableByClass = TRP3_API.inventory.getItemClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
+local getClass, isContainerByClassID, isUsableByClass = TRP3_API.extended.getClass, TRP3_API.inventory.isContainerByClassID, TRP3_API.inventory.isUsableByClass;
 local isContainerByClass, getItemTextLine = TRP3_API.inventory.isContainerByClass, TRP3_API.inventory.getItemTextLine;
 local checkContainerInstance, countItemInstances = TRP3_API.inventory.checkContainerInstance, TRP3_API.inventory.countItemInstances;
 local getItemLink = TRP3_API.inventory.getItemLink;
@@ -46,9 +46,9 @@ end
 function TRP3_API.inventory.addItem(givenContainer, classID, itemData)
 	-- Checking data
 	local container = givenContainer or playerInventory;
-	local containerClass = getItemClass(container.id);
+	local containerClass = getClass(container.id);
 	assert(isContainerByClassID(container.id), "Is not a container ! ID: " .. tostring(container.id));
-	local itemClass = getItemClass(classID);
+	local itemClass = getClass(classID);
 
 	checkContainerInstance(container);
 	itemData = itemData or EMPTY;
@@ -135,8 +135,8 @@ local function swapContainersSlots(container1, slot1, container2, slot2)
 	local slot2Data = container2.content[slot2];
 	local done;
 
-	if slot2Data and slot1Data.id == slot2Data.id and getItemClass(slot1Data.id).ST then
-		local stackMax = getItemClass(slot1Data.id).ST.MA or 1;
+	if slot2Data and slot1Data.id == slot2Data.id and getClass(slot1Data.id).ST then
+		local stackMax = getClass(slot1Data.id).ST.MA or 1;
 		local availableOnTarget = stackMax - (slot2Data.count or 1);
 		if availableOnTarget > 0 then
 			local canBeMoved = math.min(availableOnTarget, slot1Data.count or 1);
@@ -199,7 +199,7 @@ end
 
 function TRP3_API.inventory.changeContainerDurability(containerInfo, durabilityChange)
 	if containerInfo and containerInfo.id and isContainerByClassID(containerInfo.id) then
-		local class = getItemClass(containerInfo.id);
+		local class = getClass(containerInfo.id);
 		if class.CO.DU and class.CO.DU > 0 then
 			durabilityChange = durabilityChange or 0;
 			if not containerInfo.durability then -- init from class info
@@ -227,7 +227,7 @@ local function removeSlotContent(container, slotID, slotInfo)
 end
 
 local function splitSlot(slot, container, quantity)
-	local containerClass = getItemClass(container.id);
+	local containerClass = getClass(container.id);
 
 	local emptySlotID;
 	-- Finding an empty slot
@@ -273,7 +273,7 @@ local function recomputeContainerWeight(container)
 	local weight = 0;
 
 	-- Add container own weight
-	local containerClass = getItemClass(container.id);
+	local containerClass = getClass(container.id);
 	if containerClass and containerClass.BA then
 		weight = weight + (containerClass.BA.WE or 0);
 	end
@@ -283,7 +283,7 @@ local function recomputeContainerWeight(container)
 		if isContainerByClassID(slotInfo.id) then
 			weight = weight + recomputeContainerWeight(slotInfo);
 		else
-			local class = getItemClass(slotInfo.id);
+			local class = getClass(slotInfo.id);
 			if class and class.BA then
 				weight = weight + ((class.BA.WE or 0) * (slotInfo.count or 1));
 			end

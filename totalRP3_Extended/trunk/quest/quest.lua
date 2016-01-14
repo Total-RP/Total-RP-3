@@ -20,7 +20,7 @@ local _G, assert, tostring, tinsert, wipe, pairs = _G, assert, tostring, tinsert
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
-local getCampaignClass = TRP3_API.quest.getCampaignClass;
+local getClass = TRP3_API.extended.getClass;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- HANDLERS
@@ -77,22 +77,6 @@ TRP3_API.quest.activateQuestHandlers = activateQuestHandlers;
 -- QUEST API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CAMPAIGN_DB = TRP3_DB.campaign;
-
-local function getQuestClass(campaignID, questID)
-	if CAMPAIGN_DB[campaignID] and CAMPAIGN_DB[campaignID].QE[questID] then
-		return CAMPAIGN_DB[campaignID].QE[questID];
-	end
-end
-TRP3_API.quest.getQuestClass = getQuestClass;
-
-local function getStepClass(campaignID, questID, stepID)
-	if CAMPAIGN_DB[campaignID] and CAMPAIGN_DB[campaignID].QE[questID] and CAMPAIGN_DB[campaignID].QE[questID].ST[stepID] then
-		return CAMPAIGN_DB[campaignID].QE[questID].ST[stepID];
-	end
-end
-TRP3_API.quest.getStepClass = getStepClass;
-
 local function startQuest(campaignID, questID)
 	-- Checks
 	assert(campaignID and questID, "Illegal args");
@@ -104,8 +88,8 @@ local function startQuest(campaignID, questID)
 	if not campaignLog[questID] then
 		Log.log("Starting quest " .. campaignID .. " " .. questID);
 
-		local campaignClass = getCampaignClass(campaignID);
-		local questClass = getQuestClass(campaignID, questID);
+		local campaignClass = getClass(campaignID);
+		local questClass = getClass(campaignID, questID);
 
 		if not campaignClass or not questClass then
 			print("CAN'T FIND CAMPAIGN OR QUEST"); -- TODO: locale / message
@@ -130,6 +114,7 @@ local function startQuest(campaignID, questID)
 
 		activateQuestHandlers(campaignID, campaignClass, questID, questClass);
 
+		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 		return 1;
 	else
 		Log.log("Can't start quest because already starterd " .. campaignID .. " " .. questID);
@@ -150,12 +135,17 @@ local function goToStep(campaignID, questID, stepID)
 	assert(questLog, "Trying to goToStep from an unstarted quest.");
 
 	-- Change the current step
+	if questLog.CS then
+		if not questLog.PS then questLog.PS = {}; end
+		tinsert(questLog.PS, questLog.CS);
+	end
 	questLog.CS = stepID;
+	Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	-- Only then, check if the step exists.
-	local campaignClass = getCampaignClass(campaignID);
-	local questClass = getQuestClass(campaignID, questID);
-	local stepClass = getStepClass(campaignID, questID, stepID);
+	local campaignClass = getClass(campaignID);
+	local questClass = getClass(campaignID, questID);
+	local stepClass = getClass(campaignID, questID, stepID);
 
 	if stepClass then
 
@@ -186,7 +176,7 @@ local function revealObjective(campaignID, questID, objectiveID)
 	local questLog = campaignLog[questID];
 	assert(questLog, "Trying to showObjective from an unstarted quest.");
 
-	local questClass = getQuestClass(campaignID, questID);
+	local questClass = getClass(campaignID, questID);
 	local objectiveClass = (questClass or EMPTY).OB[objectiveID];
 	if objectiveClass then
 		if not questLog.OB then questLog.OB = {} end
@@ -203,6 +193,7 @@ local function revealObjective(campaignID, questID, objectiveID)
 
 		-- Message
 		Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
+		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 		return 1;
 	else
@@ -212,11 +203,116 @@ local function revealObjective(campaignID, questID, objectiveID)
 end
 TRP3_API.quest.revealObjective = revealObjective;
 
+local function markObjectiveDone(campaignID, questID, objectiveID)
+	-- Checks
+	assert(campaignID and questID and objectiveID, "Illegal args");
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	assert(playerQuestLog.currentCampaign == campaignID, "Can't showObjective because current campaign is not " .. campaignID);
+	local campaignLog = playerQuestLog[campaignID];
+	assert(campaignLog, "Trying to showObjective from an unstarted campaign.");
+	local questLog = campaignLog[questID];
+	assert(questLog, "Trying to showObjective from an unstarted quest.");
+
+	local questClass = getClass(campaignID, questID);
+	local objectiveClass = (questClass or EMPTY).OB[objectiveID];
+	if objectiveClass then
+		if questLog.OB and questLog.OB[objectiveID] ~= nil then
+			-- Message
+			Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
+			questLog.OB[objectiveID] = true;
+			Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+			return 1;
+		else
+			Log.log("Objective not revealed yet (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
+			return 0;
+		end
+	else
+		Log.log("Unknown objectiveID (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
+		return 0;
+	end
+end
+TRP3_API.quest.markObjectiveDone = markObjectiveDone;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- PLAYER ACTIONS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local ACTION_TYPES = {
+	LOOK = "LOOK",
+	LISTEN = "LISTEN",
+	TALK = "TALK",
+	ACTION = "ACTION",
+};
+
+local function performAction(actionType)
+	local playerQuestLog = TRP3_API.quest.getQuestLog();
+	if playerQuestLog.currentCampaign and playerQuestLog[playerQuestLog.currentCampaign] then
+
+		local campaignID = playerQuestLog.currentCampaign;
+		local campaignLog = playerQuestLog[campaignID];
+		local campaignClass = getClass(campaignID);
+
+		-- Campaign level
+		if campaignClass then
+
+			-- First check all the available quests
+			for questID, questLog in pairs(campaignLog) do
+				if not questLog.DO then
+					local questClass = getClass(campaignID, questID);
+
+					-- Quest level
+					if questClass then
+
+						-- First check step
+						local stepID = questLog.CS;
+						if stepID then
+							local stepClass = getClass(campaignID, questID, stepID);
+							if stepClass and stepClass.AC and stepClass.AC[actionType] then
+								for _, scriptID in pairs(stepClass.AC[actionType]) do
+									local retCode = TRP3_API.script.executeClassScript(scriptID, stepClass.SC,
+										{
+											campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+											questID = questID, questClass = questClass, questLog = questLog,
+											stepID = stepID, stepClass = stepClass,
+										});
+								end
+							end
+						end
+
+						-- Then check quest
+						if questClass.AC and questClass.AC[actionType] then
+							for _, scriptID in pairs(questClass.AC[actionType]) do
+								local retCode = TRP3_API.script.executeClassScript(scriptID, questClass.SC,
+									{
+										campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog,
+										questID = questID, questClass = questClass, questLog = questLog,
+									});
+							end
+						end
+					end
+				end
+			end
+
+			-- Then check the campaign
+			if campaignClass.AC and campaignClass.AC[actionType] then
+				for _, scriptID in pairs(campaignClass.AC[actionType]) do
+					local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC,
+						{campaignID = campaignID, campaignClass = campaignClass, campaignLog = campaignLog});
+				end
+			end
+		end
+	end
+end
+TRP3_API.quest.performAction = performAction;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onStart()
+	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
+	Events.registerEvent(Events.CAMPAIGN_REFRESH_LOG);
+
 	TRP3_API.quest.campaignInit();
 	TRP3_API.quest.questLogInit();
 end

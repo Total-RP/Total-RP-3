@@ -21,18 +21,3 @@ TRP3_DB.document = {
 	
 };
 
-local missing = {
-	missing = true,
-	BA = {
-		IC = "inv_misc_questionmark",
-		NA = "|cffff0000MISSING ITEM CLASS",
-		DE = "The information relative to this document are missing. It's possible the class was deleted or that it relies on a missing module.",
-	}
-}
-
-setmetatable(TRP3_DB.document, {
-	__index = function(table, key)
-		local value = rawget(table, key);
-		return value or missing;
-	end
-});

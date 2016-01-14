@@ -71,7 +71,7 @@ TRP3_API.inventory.EFFECTS = {
 	["item_loot"] = {
 		codeReplacementFunc = function (args)
 			local lootID = args[1];
-			return ("presentLoot(args.class, \"%s\"); lastEffectReturn = 0;"):format(lootID);
+			return ("lastEffectReturn = presentLoot(\"%s\");"):format(lootID);
 		end,
 		env = {
 			presentLoot = "TRP3_API.inventory.presentLoot",

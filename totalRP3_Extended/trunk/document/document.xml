@@ -19,14 +19,13 @@
 	limitations under the License.
 -->
 
-	
-	<Script file="db.lua"/>
-	<Script file="document.lua"/>
-
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--       DOCUMENT       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
 	
+
+	<Script file="db.lua"/>
+	<Script file="document.lua"/>
 
 </Ui>
