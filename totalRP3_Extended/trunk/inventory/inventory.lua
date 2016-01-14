@@ -301,7 +301,7 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onStart()
+function TRP3_API.inventory.onStart()
 	local refreshInventory = function()
 		playerInventory = TRP3_API.inventory.getInventory();
 		TRP3_API.inventory.closeBags();
@@ -344,14 +344,3 @@ local function onStart()
 		end
 	end);
 end
-
-local MODULE_STRUCTURE = {
-	["name"] = "Inventory",
-	["description"] = "Inventory system for characters and companions",
-	["version"] = 1.000,
-	["id"] = "trp3_inventory",
-	["onStart"] = onStart,
-	["minVersion"] = 12,
-};
-
-TRP3_API.module.registerModule(MODULE_STRUCTURE);

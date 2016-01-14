@@ -508,7 +508,7 @@ Utils.str.toHTML = function(text)
 
 	local tab = {};
 	local i=1;
-	while text:find("<") and i<200 do
+	while text:find("<") and i<500 do
 
 		local before;
 		before = text:sub(1, text:find("<") - 1);

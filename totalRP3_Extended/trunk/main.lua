@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin = pairs, strjoin;
+local pairs, strjoin, tostring = pairs, strjoin, tostring;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 
@@ -51,6 +51,9 @@ end
 local function getClass(...)
 	local id = getFullID(...);
 	local class = DB[id];
+	if not class then
+		Log.log("Unknown classID: " .. tostring(id));
+	end
 	return class or missing;
 end
 TRP3_API.extended.getClass = getClass;
@@ -78,7 +81,7 @@ TRP3_API.extended.getClassDataSafe = getClassDataSafe;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+local function onStart()
 
 	-- Register locales
 	for localeID, localeStructure in pairs(TRP3_EXTENDED_LOCALE) do
@@ -159,4 +162,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	Log.log(("Registred %s creations"):format(count));
 
-end);
+	-- Start other systems
+	TRP3_API.inventory.onStart();
+	TRP3_API.quest.onStart();
+	TRP3_API.extended.document.onStart()
+
+end
+
+local MODULE_STRUCTURE = {
+	["name"] = "Extended",
+	["description"] = "Total RP¨3 extended tools: inventory, quest log, document and more !",
+	["version"] = 1.000,
+	["id"] = "trp3_extended",
+	["onStart"] = onStart,
+	["minVersion"] = 12,
+};
+
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

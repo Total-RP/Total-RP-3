@@ -181,19 +181,22 @@ local function revealObjective(campaignID, questID, objectiveID)
 	if objectiveClass then
 		if not questLog.OB then questLog.OB = {} end
 
-		if not objectiveClass.CT then
-			-- Boolean objective
-			questLog.OB[objectiveID] = false;
-		else
-			-- Counter objective
-			questLog.OB[objectiveID] = {
-				VA = 0
-			};
-		end
+		if questLog.OB[objectiveID] == nil then
 
-		-- Message
-		Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
-		Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+			if not objectiveClass.CT then
+				-- Boolean objective
+				questLog.OB[objectiveID] = false;
+			else
+				-- Counter objective
+				questLog.OB[objectiveID] = {
+					VA = 0
+				};
+			end
+
+			-- Message
+			Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
+			Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+		end
 
 		return 1;
 	else
@@ -217,10 +220,13 @@ local function markObjectiveDone(campaignID, questID, objectiveID)
 	local objectiveClass = (questClass or EMPTY).OB[objectiveID];
 	if objectiveClass then
 		if questLog.OB and questLog.OB[objectiveID] ~= nil then
-			-- Message
-			Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
-			questLog.OB[objectiveID] = true;
-			Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+
+			if questLog.OB[objectiveID] ~= true then
+				-- Message
+				Utils.message.displayMessage(loc("QE_QUEST_OBJ_FINISHED"):format(objectiveClass.TX), Utils.message.type.ALERT_MESSAGE);
+				questLog.OB[objectiveID] = true;
+				Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
+			end
 			return 1;
 		else
 			Log.log("Objective not revealed yet (" .. campaignID .. ") (" .. questID .. ") (" .. objectiveID .. ")");
@@ -309,21 +315,10 @@ TRP3_API.quest.performAction = performAction;
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onStart()
+function TRP3_API.quest.onStart()
 	Events.CAMPAIGN_REFRESH_LOG = "CAMPAIGN_REFRESH_LOG";
 	Events.registerEvent(Events.CAMPAIGN_REFRESH_LOG);
 
 	TRP3_API.quest.campaignInit();
 	TRP3_API.quest.questLogInit();
 end
-
-local MODULE_STRUCTURE = {
-	["name"] = "Quest",
-	["description"] = "Quest system",
-	["version"] = 1.000,
-	["id"] = "trp3_quest",
-	["onStart"] = onStart,
-	["minVersion"] = 12,
-};
-
-TRP3_API.module.registerModule(MODULE_STRUCTURE);

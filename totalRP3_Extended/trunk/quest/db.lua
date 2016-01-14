@@ -16,6 +16,19 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local DB_TEXTS = {
+	doc1 = [[{h1}Contract for job{/h1}
+This contract aims to enumerate all conditions that must be respected by the signatory.
+
+Conditions:
+1) Obey any order from Kyle Radue
+2) You will be pay. When is not important.
+
+Your signature:
+
+{link*sign*Sign here}]]
+}
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- PLAYER QUEST LOG STRUCTURE
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -94,7 +107,7 @@ TRP3_DB.campaign = {
 					},
 
 					["2"] = {
-						TX = "Find a beverage for Kyle.",
+						TX = "Read and sign the contract.",
 					},
 
 					-- Count objective: do something a certain amount of time
@@ -185,10 +198,6 @@ TRP3_DB.campaign = {
 										t = "list",
 										e = {
 											{
-												id = "item_loot",
-												args = {"myFirstCampaign quest1 1 firstPay"}
-											},
-											{
 												id = "quest_markObjDone",
 												args = {"myFirstCampaign", "quest1", "1"}
 											},
@@ -222,13 +231,16 @@ TRP3_DB.campaign = {
 					},
 
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-					-- Quest step 2: Find a beer
+					-- Quest step 2: Read the contract and sign it
 					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 					["2"] = {
 
 						-- Quest step log information ONCE IN STEP
-						TX = "Kyle asks me to find him a beverage. I know that this elf prefers a beer so I should look in some tavern.",
+						TX = "Kyle gave me a contract that I should read carefully and sign.",
+
+						-- Quest step log information ONCE FINISHED
+						DX = "I signed the contract.",
 
 						-- Scripts for this step
 						SC = {
@@ -240,11 +252,15 @@ TRP3_DB.campaign = {
 										e = {
 											{
 												id = "text",
-												args = {"Kyle says: Hello, I'm thirsty, go find me a beer.", 1}
+												args = {"Kyle says: Hello, take this contract and sign it.", 1}
 											},
 											{
 												id = "quest_revealObjective",
 												args = {"myFirstCampaign", "quest1", "2"}
+											},
+											{
+												id = "item_loot",
+												args = {"myFirstCampaign quest1 2 contractLoot"}
 											},
 										}
 									},
@@ -252,19 +268,95 @@ TRP3_DB.campaign = {
 							},
 						},
 
-						-- Handlers for this step
-						HA = {
-
+						AC = {
+							TALK = {"STEP_START"},
 						},
 
 						-- OnStart inner handler
 						OS = "STEP_START",
 
-						-- Items specific for this step
-						IT = {
-							["beer"] = {
+						-- Inner objects
+						IN = {
+
+							contractLoot = {
+								IC = "inv_box_01",
+								NA = "Quickloot",
+								IT = {
+									["1"] = {
+										id = "myFirstCampaign quest1 2 contractItem",
+										count = 1,
+									}
+								}
+							},
+
+							-- Document item
+							contractItem = {
 								BA = {
-									NA = "Beer"
+									IC = "inv_misc_toy_05",
+									NA = "Contract",
+									DE = "A simple contract, written on paper.",
+									UN = 1,
+									WE = 0.1,
+								},
+								US = {
+									AC = "Read the contract",
+									SC = "quest"
+								},
+								SC = {
+									quest = {
+										ST = {
+											["1"] = {
+												t = "list",
+												e = {
+													{
+														id = "document_show",
+														args = {"myFirstCampaign quest1 2 contractDoc"}
+													},
+												}
+											}
+										}
+									}
+								}
+							},
+
+							-- Document
+							contractDoc = {
+								BA = {
+									NA = "Contract"
+								},
+
+								PA = {
+									{
+										TX = DB_TEXTS.doc1,
+									}
+								},
+
+								AC = {
+									sign = "sign",
+								},
+
+								SC = {
+									["sign"] = {
+										ST = {
+											["1"] = {
+												t = "list",
+												e = {
+													{
+														id = "document_close",
+														args = {"myFirstCampaign quest1 2 contractDoc"}
+													},
+													{
+														id = "quest_markObjDone",
+														args = {"myFirstCampaign", "quest1", "2"}
+													},
+													{
+														id = "quest_goToStep",
+														args = {"myFirstCampaign", "quest1", "3"}
+													},
+												}
+											},
+										},
+									},
 								}
 							}
 						},
@@ -283,30 +375,10 @@ TRP3_DB.campaign = {
 							["STEP_START"] = {
 								-- 1: Show dialog REWARD
 							},
-
-							["CAVERN_ENTER"] = {
-								-- 1: check zone
-								-- 2: complete obj 1
-								-- 3: Go to step 2
-							}
-						},
-
-						-- Wow/TRP3 Handlers for this step
-						HA = {
-							{"ZoneEntered", "CAVERN_ENTER" }
-						},
-
-						-- Dialog for this step
-						DI = {
-							["REWARD"] = {
-								-- 1: Propose reward
-								-- 2: Si obj 2 remplit, and reward
-								-- 3: Quest finish
-							}
 						},
 
 						-- OnStart inner handler
-						OS = "STEP_START",
+--						OS = "STEP_START",
 
 					},
 				},

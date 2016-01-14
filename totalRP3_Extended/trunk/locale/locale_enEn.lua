@@ -51,6 +51,7 @@ TRP3_EXTENDED_LOCALE["enUS"] = {
 	QE_QUEST_OBJ_AND_HIST = "Objectives and history",
 	QE_QUEST = "Quest",
 	QE_QUEST_OBJ_REVEALED = "New objective revealed: |cff00ff00%s",
+	QE_QUEST_OBJ_FINISHED = "|cffffff00Objective done: |cff00ff00%s",
 	QE_QUEST_LIST = "Quests for this campaign",
 	QE_STEP = "Step",
 	QE_STEP_LIST = "Steps for this quest",
