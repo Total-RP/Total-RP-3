@@ -43,10 +43,15 @@ local function setModelPosition(self, rotation, zoom, y, z)
 end
 
 local function setButtonModelPosition(self)
-	if self.info then
-		local pos = self.info.pos or EMPTY;
-		setModelPosition(TRP3_InventoryPage.Main.Model, pos.rotation or 0, pos.zoom or 0, pos.y or 0, pos.z or 0);
-		TRP3_InventoryPage.Main.Model.Marker:Show();
+	if self.info and self.class then
+		local isWearable = self.class.BA and self.class.BA.WA;
+		if isWearable then
+			local pos = self.info.pos or EMPTY;
+			setModelPosition(TRP3_InventoryPage.Main.Model, pos.rotation or 0, pos.zoom or 0, pos.y or 0, pos.z or 0);
+			TRP3_InventoryPage.Main.Model.Marker:Show();
+		else
+			resetEquip();
+		end
 	end
 end
 
@@ -79,6 +84,13 @@ local function onSlotClick(button)
 	if TRP3_InventoryPage.Main.Equip:IsVisible() and TRP3_InventoryPage.Main.Equip.isOn == button then
 		TRP3_InventoryPage.Main.Equip:Hide();
 		return;
+	end
+
+	if button.info and button.class then
+		if not button.class.BA or not button.class.BA.WA then
+			TRP3_InventoryPage.Main.Equip:Hide();
+			return;
+		end
 	end
 
 	local position, x, y = "RIGHT", -10, 0;
@@ -126,7 +138,6 @@ function onInventoryShow()
 	resetEquip();
 
 	TRP3_API.inventory.loadContainerPageSlots(TRP3_InventoryPage.Main);
-
 end
 
 local function containerFrameUpdate(self, elapsed)
@@ -138,6 +149,19 @@ end
 
 local playerInvText = ("%s's inventory"):format(Globals.player); -- TODO locals
 
+local function onToolbarButtonClicked(buttonType)
+	if buttonType == "LeftButton" then
+		local playerInventory = TRP3_API.inventory.getInventory();
+		local quickSlot = playerInventory.content["17"];
+		if quickSlot and quickSlot.id and TRP3_API.inventory.isContainerByClassID(quickSlot.id) then
+			TRP3_API.inventory.switchContainerBySlotID(playerInventory, "17");
+			return;
+		end
+	end
+	TRP3_API.navigation.openMainFrame();
+	TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
+end
+
 local function initPlayerInventoryButton()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
@@ -147,11 +171,8 @@ local function initPlayerInventoryButton()
 			condition = function(_, unitID)
 				return unitID == Globals.player_id;
 			end,
-			onClick = function(_, _, button, _)
-				if button == "LeftButton" then
-					TRP3_API.navigation.openMainFrame();
-					TRP3_API.navigation.menu.selectMenu("main_13_player_inventory");
-				end
+			onClick = function(_, _, buttonType, _)
+				onToolbarButtonClicked(buttonType);
 			end,
 			tooltip = playerInvText,
 			tooltipSub = loc("IT_INV_SHOW_CONTENT"),
@@ -185,12 +206,16 @@ function TRP3_API.inventory.initInventoryPage()
 
 	-- Create model slots
 	TRP3_InventoryPage.Main.slots = {};
-	for i=1, 16 do
+	for i=1, 17 do
 		local button = CreateFrame("Button", "TRP3_ContainerInvPageSlot" .. i, TRP3_InventoryPage.Main, "TRP3_InventoryPageSlotTemplate");
 		if i == 1 then
-			button:SetPoint("TOPRIGHT", TRP3_InventoryPage.Main.Model, "TOPLEFT", -10, 0);
+			button:SetPoint("TOPRIGHT", TRP3_InventoryPage.Main.Model, "TOPLEFT", -10, 4);
 		elseif i == 9 then
-			button:SetPoint("TOPLEFT", TRP3_InventoryPage.Main.Model, "TOPRIGHT", 12, 0);
+			button:SetPoint("TOPLEFT", TRP3_InventoryPage.Main.Model, "TOPRIGHT", 12, 4);
+		elseif i == 17 then
+			button:SetPoint("TOPLEFT", TRP3_InventoryPage.Main.Model, "BOTTOMLEFT", 5, -10);
+			button.First:SetText("Quick slot"); -- TODO: loc
+			button.Second:SetText("This slot will be used as primary container."); -- TODO: loc
 		else
 			button:SetPoint("TOP", _G["TRP3_ContainerInvPageSlot" .. (i - 1)], "BOTTOM", 0, -11);
 		end
@@ -210,11 +235,19 @@ function TRP3_API.inventory.initInventoryPage()
 			button.First:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, 15);
 			button.First:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
 			button.First:SetJustifyH("LEFT");
+			button.Second:SetPoint("TOPLEFT", button, "TOPRIGHT", 5, -10);
+			button.Second:SetPoint("BOTTOMLEFT", button, "BOTTOMRIGHT", 5, -10);
+			button.Second:SetPoint("RIGHT", TRP3_InventoryPage, "RIGHT", -15, 0);
+			button.Second:SetJustifyH("LEFT");
 		else
 			button.First:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -5);
 			button.First:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, 15);
 			button.First:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
 			button.First:SetJustifyH("RIGHT");
+			button.Second:SetPoint("TOPRIGHT", button, "TOPLEFT", -5, -10);
+			button.Second:SetPoint("BOTTOMRIGHT", button, "BOTTOMLEFT", -5, -10);
+			button.Second:SetPoint("LEFT", TRP3_InventoryPage, "LEFT", 15, 0);
+			button.Second:SetJustifyH("RIGHT");
 		end
 	end
 	TRP3_API.inventory.initContainerInstance(TRP3_InventoryPage.Main, 16);
@@ -233,4 +266,6 @@ function TRP3_API.inventory.initInventoryPage()
 	createRefreshOnFrame(TRP3_InventoryPage.Main.Equip, 0.15, onEquipRefresh);
 	TRP3_InventoryPage.Main.Equip:SetScript("OnShow", function() TRP3_InventoryPage.Main.Model.Blocker:Hide() end);
 	TRP3_InventoryPage.Main.Equip:SetScript("OnHide", function() TRP3_InventoryPage.Main.Model.Blocker:Show() end);
+	TRP3_InventoryPage.Main.Model.Blocker:EnableMouseWheel(true);
+	TRP3_InventoryPage.Main.Model.Blocker:SetScript("OnMouseWheel", function() end); -- Block behind scroll
 end

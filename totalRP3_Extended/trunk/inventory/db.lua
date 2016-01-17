@@ -26,60 +26,14 @@ TRP3_DB.item = {
 		},
 	},
 
-	["01pouicpouic124"] = {
-		BA = {
-			IC = "inv_misc_toy_05",
-			NA = "Pouac",
-			DE = "Un joli pouac",
-			SB = true,
-			WE = 0.2,
-		},
-		QE = {
-			QH = true,
-		},
-		US = {
-			AC = "Finish the quest",
-			SC = "quest"
-		},
-		SC = {
-			quest = {
-				ST = {
-					["1"] = {
-						t = "list",
-						e = {
-							{
-								id = "loot",
-								args = {"questLoot"}
-							},
-						}
-					}
-				}
-			}
-		},
-		LO = {
-			questLoot = {
-				IC = "inv_box_01",
-				NA = "Captain's safe",
-				IT = {
-					["1"] = {
-						id = "boubourse"
-					},
-					["3"] = {
-						id = "coin1",
-						count = 10,
-					}
-				}
-			}
-		}
-	},
-
-	["01container1234"] = {
+	["bag"] = {
 		BA = {
 			IC = "inv_misc_bag_11",
 			NA = "Simple bag",
 			DE = "Un sac à dos classique",
 			UN = 5,
 			WE = 0.6,
+			WA = true,
 		},
 		CO = {
 			DU = 25,
@@ -93,6 +47,7 @@ TRP3_DB.item = {
 			IC = "inv_misc_bag_10",
 			NA = "Small bag",
 			WE = 0.4,
+			WA = true,
 		},
 		CO = {
 			SI = "2x4",
@@ -105,35 +60,12 @@ TRP3_DB.item = {
 			IC = "inv_misc_bag_09",
 			NA = "Tiny bag",
 			WE = 0.2,
+			WA = true,
 		},
 		CO = {
 			SI = "1x4",
 			SR = 1,
 		},
-	},
-
-	["boubourse"] = {
-		BA = {
---			IC = "inv_misc_bag_soulbag",
---			NA = "Gold pouch",
-			IC = "INV_Shield_DraenorCrafted_D_01_A_Alliance",
-			NA = "Rusty fire shield",
-			DE = "Crafted from the ashes of an old fire elemental. Still burning!",
-			QA = 6,
-			WE = 0.1,
-			SB = true,
-		},
-		UN = 1,
---		CO = {
---			SI = "1x4",
---			SR = 1,
---			IT = {
---				["1"] = {
---					id = "coin1",
---					count = 5,
---				},
---			}
---		},
 	},
 
 	["coin1"] = {

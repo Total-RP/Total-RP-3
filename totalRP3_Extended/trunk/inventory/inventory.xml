@@ -233,9 +233,9 @@
 					<EdgeSize><AbsValue val="24"/></EdgeSize>
 					<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 				</Backdrop>
-				<Size x="350" y="410" />
+				<Size x="350" y="375" />
 				<Anchors>
-					<Anchor point="CENTER" x="0" y="0"/>
+					<Anchor point="TOP" x="0" y="-25"/>
 				</Anchors>
 				<Frames>
 					<Frame parentKey="Equip" inherits="TRP3_HoveredFrame" hidden="true">
@@ -311,7 +311,7 @@
 	<Button name="TRP3_InventoryPageSlotTemplate" inherits="TRP3_ContainerSlotTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\PaperDoll\UI-Backpack-EmptySlot">
+				<Texture parentKey="bkg" file="Interface\PaperDoll\UI-Backpack-EmptySlot">
 					<Size x="36" y="36"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
@@ -319,7 +319,11 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString parentKey="First" inherits="GameFontNormalSmall" justifyV="MIDDLE" text="[[first oih oh ho hiohi ohi]]">
+				<FontString parentKey="First" inherits="GameFontNormalSmall" justifyV="MIDDLE">
+					<Size x="0" y="15"/>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="Second" inherits="GameFontNormalSmall" justifyV="MIDDLE">
 					<Size x="0" y="15"/>
 					<Color r="0.95" g="0.95" b="0.95"/>
 				</FontString>

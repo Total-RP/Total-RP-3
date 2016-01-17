@@ -81,7 +81,7 @@ local function startQuest(campaignID, questID)
 	-- Checks
 	assert(campaignID and questID, "Illegal args");
 	local playerQuestLog = TRP3_API.quest.getQuestLog();
-	assert(playerQuestLog.currentCampaign == campaignID, "Can't start quest because current campaign is not " .. campaignID);
+	assert(playerQuestLog.currentCampaign == campaignID, ("Can't start quest because current campaign (%s) is not %s."):format(tostring(playerQuestLog.currentCampaign), campaignID));
 	local campaignLog = playerQuestLog[campaignID];
 	assert(campaignLog, "Trying to start quest from an unstarted campaign.");
 
@@ -194,7 +194,7 @@ local function revealObjective(campaignID, questID, objectiveID)
 			end
 
 			-- Message
-			Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.CHAT_FRAME);
+			Utils.message.displayMessage(loc("QE_QUEST_OBJ_REVEALED"):format(objectiveClass.TX), Utils.message.type.ALERT_MESSAGE);
 			Events.fireEvent(Events.CAMPAIGN_REFRESH_LOG);
 		end
 

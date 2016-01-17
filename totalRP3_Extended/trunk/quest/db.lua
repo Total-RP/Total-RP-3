@@ -18,42 +18,19 @@
 
 local DB_TEXTS = {
 	doc1 = [[{h1}Contract for job{/h1}
-This contract aims to enumerate all conditions that must be respected by the signatory.
+The Valley of Northsire is under the attack of an armed group of orcs and gobelins.
+The King is offering rewards to any brave soldiers willing to take the arms
 
-Conditions:
-1) Obey any order from Kyle Radue
-2) You will be pay. When is not important.
+If you want to help protecting your lands, please talk to an Army Registrar in front on the abbey.
 
-Your signature:
+For the King,
+Marshal McBride
 
-{link*sign*Sign here}]]
-}
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- PLAYER QUEST LOG STRUCTURE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local questlog = {
 
-	["myFirstCampaign"] = {
-		["quest1"] = {
-			PS = { -- Previous step
-				"1"
-			},
-			CS = "2", -- Current step
-			OB = {
-				["1"] = true,
-				["2"] = false,
-				["3"] = {
-					VA = 5,
-				},
-			}
-		},
-		["test"] = {
-			DO = true
-		},
-	}
 
+{img:Interface\PvPRankBadges\PvPRankAlliance.blp:128:128}]]
 }
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -62,15 +39,191 @@ local questlog = {
 
 TRP3_DB.campaign = {
 
-	["mySecondCampaign"] = {
+	["demoCampaign"] = {
 
 		-- Base information, common to the whole campaign
 		BA = {
-			IM = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DEADMINES",
-			NA = "A glamourous friendship",
-			DE = "I'm looking for a boyfriend, and this farmer in Elwynn ask for help. I hope he's hotter than me.\nEver since I lost my husband, my life changed. I'm poor, I don't eat anymore.\nAll I need is love.",
-			RA = {50, 80},
+			IC = "achievement_zone_elwynnForest",
+			NA = "Save Northshire Valley",
+			DE = "Take the arms and defend the abbey.",
+			RA = {1, 5},
 		},
+
+		QE = {
+			["quest1"] = {
+
+				-- Base information, common to the whole quest
+				BA = {
+					IC = "ability_warrior_strengthofarms",
+					NA = "To arms!",
+					DE = "Succeed the registration test.",
+				},
+
+				-- Objectives
+				OB = {
+					["1"] = {
+						TX = "Talk to a Stormwind Army Registrar",
+					},
+				},
+
+				-- Inner objects
+				IN = {
+					recruitementDoc = {
+						BA = {
+							NA = "Recruitement missive"
+						},
+
+						PA = {
+							{
+								TX = DB_TEXTS.doc1,
+							}
+						},
+					}
+				},
+
+				-- Scripts for quest
+				SC = {
+					["QUEST_START"] = {
+						ST = {
+							["1"] = {
+								t = "list",
+								e = {
+									{
+										id = "document_show",
+										args = {"demoCampaign quest1 recruitementDoc" }
+									},
+									{
+										id = "quest_goToStep",
+										args = {"demoCampaign", "quest1", "1"}
+									},
+								}
+							},
+						},
+					},
+				},
+
+				-- OnStart inner handler
+				OS = "QUEST_START",
+
+				-- Quest steps
+				ST = {
+
+					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+					-- Quest step 1: Talk to a registrar
+					--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+					["1"] = {
+
+						-- Quest step log information ONCE IN STEP
+						TX = "I should talk to a |cffffff00[Stormwind Army Registrar]|r in front of the Northshire Abbey.",
+
+						-- Quest step log information ONCE FINISHED
+						DX = "I talked to an Army Registrar.",
+
+						AC = {
+							TALK = {"REGISTRAR_TALK"},
+						},
+
+						-- Scripts for quest
+						SC = {
+							["STEP_START"] = {
+								ST = {
+									["1"] = {
+										t = "list",
+										e = {
+											{
+												id = "quest_revealObjective",
+												args = {"demoCampaign", "quest1", "1"}
+											},
+										}
+									},
+								},
+							},
+
+							["REGISTRAR_TALK"] = {
+								ST = {
+									["1"] = {
+										t = "list",
+										e = {
+											{
+												id = "dialog_start",
+												args = {"demoCampaign quest1 1 dialog"}
+											},
+										}
+									},
+								},
+							},
+						},
+
+						IN = {
+							dialog = {
+								ST = {
+									["1"] = {
+										IN = "Hello there. What can I do for you?\nI'm quite busy, so please be quick.",
+										CH = {
+											{
+												TX = "I would like to apply for the job.",
+												N = "3",
+											},
+											{
+												TX = "What happens here?",
+												N = "2",
+											}
+										},
+									},
+
+									["2"] = {
+										TX = "Well as you can see, the orcs have invaded us.\nThey burn our fields, they rape our women.\n"
+												.. "We don't have the strengh to fight them alone, so we seek for any volunteer to help us.",
+									},
+
+									["3"] = {
+										TX = "Excellent! But first we have to evaluate your case. We don't want to send anybody to the field.\nSo I have a small list of questions here.",
+										CH = {
+											{
+												TX = "Okay, I'm ready.",
+											},
+										},
+									},
+
+
+								}
+							}
+						},
+
+						-- OnStart inner handler
+						OS = "STEP_START",
+
+					},
+
+				},
+
+			},
+		},
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Actions & script
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		-- Scripts for campaign
+		SC = {
+			["CAMPAIGN_START"] = {
+				ST = {
+					["1"] = {
+						t = "list",
+						e = {
+							{
+								id = "quest_start",
+								args = {"demoCampaign", "quest1"}
+							},
+						}
+					},
+				},
+			},
+		},
+
+		-- OnStart inner handler
+		OS = "CAMPAIGN_START",
 
 	},
 

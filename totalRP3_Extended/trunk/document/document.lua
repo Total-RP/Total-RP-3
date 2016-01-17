@@ -25,8 +25,6 @@ local getClass = TRP3_API.extended.getClass;
 local documentFrame = TRP3_DocumentFrame;
 local HTMLFrame = documentFrame.scroll.child.HTML;
 
-TRP3_API.extended.document = {};
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTILS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

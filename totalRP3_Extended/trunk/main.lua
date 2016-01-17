@@ -24,7 +24,10 @@ local Log = Utils.log;
 TRP3_DB = {
 	global = {},
 };
-TRP3_API.extended = {};
+TRP3_API.extended = {
+	document = {},
+	dialog = {},
+};
 TRP3_API.inventory = {};
 TRP3_API.quest = {};
 
@@ -165,8 +168,8 @@ local function onStart()
 	-- Start other systems
 	TRP3_API.inventory.onStart();
 	TRP3_API.quest.onStart();
-	TRP3_API.extended.document.onStart()
-
+	TRP3_API.extended.document.onStart();
+	TRP3_API.extended.dialog.onStart();
 end
 
 local MODULE_STRUCTURE = {

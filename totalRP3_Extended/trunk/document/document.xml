@@ -67,6 +67,17 @@
 					</Frame>
 				</ScrollChild>
 			</ScrollFrame>
+
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
 		</Frames>
 	</Frame>
 

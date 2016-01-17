@@ -28,10 +28,10 @@
 	<Script file="locale\locale_enEN.lua"/>
 	<Script file="locale\locale_frFR.lua"/>
 	
-	<!-- Modules -->
+	<!-- Sub-Modules -->
 	<Include file="inventory\inventory.xml"/>
 	<Include file="quest\quest.xml"/>
 	<Include file="document\document.xml"/>
-	<Include file="gameMaster\gameMaster.xml"/>
+	<Include file="dialogues\dialogues.xml"/>
 
 </Ui>
