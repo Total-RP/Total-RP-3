@@ -156,6 +156,42 @@ TRP3_DB.campaign = {
 						},
 
 						IN = {
+							history = {
+								BG = "Interface\\ARCHEOLOGY\\Arch-BookCompletedLeft",
+								NM = "The Elder's Voice",
+								ST = {
+									{
+										TX = "<And when the child put his hand on the stone, it glowed like a thousand fire ...>\n<But he knew he would be curse if he'd had taken the scepter.>",
+										IM = {
+											UR = "Interface\\ARCHEOLOGY\\ArchRare-TheInnKeepersDaughter",
+											WI = 1024,
+											HE = 512
+										},
+										ND = "LEFT",
+									},
+
+									{
+										TX = "<As the Scepter is filled with black magic.>",
+										IM = {
+											UR = "Interface\\ARCHEOLOGY\\ArchRare-StaffofSorcererThanThaurissan",
+											WI = 512,
+											HE = 256
+										},
+										ND = "LEFT",
+									},
+
+									{
+										TX = "<Only queen Azshara did succeed in handling such terrible power.>\n<And everobody knows how it ended...>",
+										IM = {
+											UR = "Interface\\ARCHEOLOGY\\ArchRare-QueenAzsharaGown",
+											WI = 1024,
+											HE = 512
+										},
+										ND = "LEFT",
+									},
+								},
+							},
+
 							dialog = {
 								ST = {
 									{ -- 1

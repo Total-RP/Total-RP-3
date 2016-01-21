@@ -37,7 +37,7 @@ local animationLib = LibStub:GetLibrary("TRP-Dialog-Animation-DB");
 -- Models and animations
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local modelMe, modelYou = dialogFrame.Models.Me, dialogFrame.Models.You;
+local modelMe, modelYou, image = dialogFrame.Models.Me, dialogFrame.Models.You, dialogFrame.Image;
 local generateID = Utils.str.id;
 
 local function modelsLoaded()
@@ -117,6 +117,8 @@ end
 
 local UnitName = UnitName;
 local processDialogStep;
+local DEFAULT_BG = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1";
+local after = C_Timer.After;
 
 local function finishDialog()
 	dialogFrame:Hide();
@@ -158,24 +160,60 @@ local function playDialogStep()
 	end
 
 	-- Texts
-	dialogFrame.Chat.Text:SetText(data.text);
-
-	-- Animation cut
-	wipe(modelYou.animTab);
-	wipe(modelMe.animTab);
-	local targetModel = data.nameDirection == "RIGHT" and modelYou or modelMe;
-	local animTab = targetModel.animTab;
-	data.text:gsub("[%.%?%!]+", function(finder)
-		animTab[#animTab + 1] = animationLib:GetDialogAnimation(targetModel.model, finder:sub(1, 1));
-		animTab[#animTab + 1] = 0;
-	end);
-	if #animTab == 0 then
-		animTab[1] = 0;
+	local text = data.text;
+	if text:byte() == 60 then
+		local color = Utils.color.colorCodeFloat(ChatTypeInfo["MONSTER_EMOTE"].r, ChatTypeInfo["MONSTER_EMOTE"].g, ChatTypeInfo["MONSTER_EMOTE"].b);
+		text = text:gsub("<", color):gsub(">", "|r");
 	end
+	dialogFrame.Chat.Text:SetText(text);
 
-	-- Load models
-	loadModel(modelMe, data.meUnit);
-	loadModel(modelYou, data.youUnit);
+	-- Background
+	dialogFrame.BG:SetTexture(data.BG);
+
+	-- Display
+	modelYou:Hide();
+	modelMe:Hide();
+	image:Hide();
+	if data.image then
+		image:Show();
+
+		if not image.previous then
+			image:SetTexture(data.image.UR);
+			image:SetSize(data.image.WI, data.image.HE);
+			image:SetAlpha(0);
+			TRP3_API.ui.misc.playAnimation(image.FadeIn);
+		elseif image.previous and image.previous ~= data.image.UR then
+			image:SetAlpha(1);
+			TRP3_API.ui.misc.playAnimation(image.FadeOut);
+			after(1, function()
+				image:SetTexture(data.image.UR);
+				image:SetSize(data.image.WI, data.image.HE);
+				image:SetAlpha(0);
+				TRP3_API.ui.misc.playAnimation(image.FadeIn);
+			end)
+		end
+		image.previous = data.image.UR;
+	else
+		image.previous = nil;
+		modelYou:Show();
+		modelMe:Show();
+		-- Animation cut
+		wipe(modelYou.animTab);
+		wipe(modelMe.animTab);
+		local targetModel = data.nameDirection == "RIGHT" and modelYou or modelMe;
+		local animTab = targetModel.animTab;
+		data.text:gsub("[%.%?%!]+", function(finder)
+			animTab[#animTab + 1] = animationLib:GetDialogAnimation(targetModel.model, finder:sub(1, 1));
+			animTab[#animTab + 1] = 0;
+		end);
+		if #animTab == 0 then
+			animTab[1] = 0;
+		end
+
+		-- Load models
+		loadModel(modelMe, data.meUnit);
+		loadModel(modelYou, data.youUnit);
+	end
 
 	-- Play text
 	dialogFrame.Chat.start = 0;
@@ -217,6 +255,7 @@ function processDialogStep()
 	local youUnitStep = dialogStepClass.MY or dialogClass.MY or "target";
 	local meNameStep = dialogStepClass.NM or dialogClass.NM or "player";
 	local youNameStep = dialogStepClass.NY or dialogClass.NY or "target";
+	local BG = dialogStepClass.BG or dialogClass.BG or DEFAULT_BG;
 	if youNameStep == "player" or youNameStep == "target" then
 		youNameStep = UnitName(youNameStep);
 	end
@@ -248,7 +287,9 @@ function processDialogStep()
 					nameDirection = nameDirectionStep,
 					text = text,
 					next = dialogStepClass.N,
-					choices = dialogStepClass.CH
+					choices = dialogStepClass.CH,
+					image = dialogStepClass.IM,
+					BG = BG,
 				});
 			end
 
@@ -265,6 +306,7 @@ end
 local function startDialog(dialogID)
 	local dialogClass = getClass(dialogID);
 	-- By default, launch the step 1
+	image.previous = nil;
 	dialogFrame.class = dialogClass;
 	dialogFrame.stepIndex = dialogClass.FS or 1;
 	processDialogStep(dialogClass);
