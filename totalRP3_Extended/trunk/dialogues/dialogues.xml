@@ -23,6 +23,44 @@
 	<!--      DIALOGUES       -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 
+	<Frame name="TRP3_DialogFrameChoiceButtonTemplate" virtual="true">
+		<Size x="400" y="18" />
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture alphaMode="BLEND" file="Interface\ACHIEVEMENTFRAME\UI-Achievement-Title" setAllPoints="true">
+					<TexCoords top="0.40625" bottom="0.60125" left="0" right="1" />
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" text="[CHOICE]">
+					<Size x="0" y="10" />
+					<Anchors>
+						<Anchor point="LEFT" x="20" y="0" />
+						<Anchor point="RIGHT" x="-15" y="0" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="Click" setAllPoints="true">
+				<HighlightTexture alphaMode="ADD" file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar">
+					<TexCoords bottom="0" left="0.25" top="1" right="1" />
+				</HighlightTexture>
+			</Button>
+			<Button parentKey="Num" inherits="QuestPOINumericTemplate" hidden="false" frameLevel="5">
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="LEFT" x="0" y="0" />
+				</Anchors>
+				<Scripts>
+					<OnMouseDown function="nil"/>
+					<OnMouseUp function="nil"/>
+					<OnClick function="nil"/>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+
 	<Frame name="TRP3_DialogFrame" inherits="TRP3_StandardParchmentFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true" movable="true">
 		<TitleRegion setAllPoints="true"/>
 
@@ -39,7 +77,7 @@
 
 		<Frames>
 
-			<Frame parentKey="Models" frameStrata="MEDIUM">
+			<Frame parentKey="Models" frameLevel="1">
 				<Size x="0" y="0"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-20"/>
@@ -54,9 +92,9 @@
 							<Anchor point="CENTER" x="0" y="0"/>
 						</Anchors>
 					</Frame>
-					<CinematicModel parentKey="Me" setAllPoints="true">
+					<CinematicModel parentKey="Me" setAllPoints="true" frameLevel="2">
 						<Frames>
-							<Button parentKey="ScrollZone" enableMouse="true">
+							<Button parentKey="ScrollZone" enableMouse="true" frameLevel="3">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-50"/>
 									<Anchor point="LEFT" x="75" y="0"/>
@@ -64,9 +102,36 @@
 									<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent.Point" x="-75" y="0"/>
 								</Anchors>
 							</Button>
+
+							<Button parentKey="Choice1" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="50"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="Choice2" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="25"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="Choice3" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="0"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="Choice4" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="-25"/>
+								</Anchors>
+							</Button>
+							<Button parentKey="Choice5" inherits="TRP3_DialogFrameChoiceButtonTemplate" frameLevel="4">
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="-50"/>
+								</Anchors>
+							</Button>
+
 						</Frames>
 					</CinematicModel>
-					<CinematicModel parentKey="You" setAllPoints="true">
+					<CinematicModel parentKey="You" setAllPoints="true" frameLevel="3">
 						<Frames>
 							<Button parentKey="ScrollZone" enableMouse="true">
 								<Anchors>
@@ -81,7 +146,7 @@
 				</Frames>
 			</Frame>
 
-			<Frame parentKey="Chat" frameStrata="HIGH">
+			<Frame parentKey="Chat" frameLevel="4">
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="16"/>
@@ -100,26 +165,10 @@
 					<Anchor point="RIGHT" x="-30" y="0"/>
 				</Anchors>
 				<Layers>
-					<Layer level="BACKGROUND">
-						<Texture file="Interface\Tooltips\CHATBUBBLE-TAIL">
-							<Size x="32" y="32"/>
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="-40" y="-3"/>
-							</Anchors>
-							<TexCoords left="1" right="0" top="1" bottom="0"/>
-						</Texture>
-					</Layer>
 					<Layer level="OVERLAY">
-						<FontString parentKey="Name" text="[NAME]" inherits="GameFontNormalLarge" justifyH="RIGHT" justifyV="TOP">
-							<Anchors>
-								<Anchor point="TOPLEFT" x="50" y="-12"/>
-								<Anchor point="TOPRIGHT" x="-50" y="-12"/>
-							</Anchors>
-							<Color r="1" g="0.75" b="0.0"/>
-						</FontString>
 						<FontString parentKey="Text" text="[TEXT]" inherits="GameFontNormalLarge" justifyH="LEFT" justifyV="TOP">
 							<Anchors>
-								<Anchor point="TOPLEFT" relativeKey="$parent.Name" relativePoint="BOTTOMLEFT" x="0" y="-10"/>
+								<Anchor point="TOPLEFT" x="20" y="-20"/>
 							</Anchors>
 							<Color r="1" g="1" b="0.4"/>
 						</FontString>
@@ -132,7 +181,69 @@
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="$parentHighLight" parentKey="HighLight" inherits="GlowBorderTemplate" hidden="true">
+					<Frame parentKey="Left" frameLevel="5">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize><AbsValue val="16"/></EdgeSize>
+							<TileSize><AbsValue val="100"/></TileSize>
+							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
+						</Backdrop>
+						<Size x="150" y="35"/>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture file="Interface\Tooltips\CHATBUBBLE-TAIL">
+									<Size x="32" y="32"/>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="40" y="-3"/>
+									</Anchors>
+									<TexCoords left="0" right="1" top="1" bottom="0"/>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Name" text="" inherits="GameFontNormalLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="RIGHT" x="-10" y="2"/>
+									</Anchors>
+									<Color r="1" g="0.75" b="0.0"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" x="10" y="-5"/>
+						</Anchors>
+					</Frame>
+
+					<Frame parentKey="Right" frameLevel="5">
+						<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+							<EdgeSize><AbsValue val="16"/></EdgeSize>
+							<TileSize><AbsValue val="100"/></TileSize>
+							<BackgroundInsets><AbsInset left="4" right="2" top="2" bottom="2"/></BackgroundInsets>
+						</Backdrop>
+						<Size x="150" y="35"/>
+						<Layers>
+							<Layer level="BACKGROUND">
+								<Texture file="Interface\Tooltips\CHATBUBBLE-TAIL">
+									<Size x="32" y="32"/>
+									<Anchors>
+										<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="-40" y="-3"/>
+									</Anchors>
+									<TexCoords left="1" right="0" top="1" bottom="0"/>
+								</Texture>
+							</Layer>
+							<Layer level="OVERLAY">
+								<FontString parentKey="Name" text="" inherits="GameFontNormalLarge" wordwrap="false">
+									<Anchors>
+										<Anchor point="RIGHT" x="-10" y="2"/>
+									</Anchors>
+									<Color r="1" g="0.75" b="0.0"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" x="-10" y="-5"/>
+						</Anchors>
+					</Frame>
+
+					<Frame name="$parentHighLight" parentKey="HighLight" inherits="GlowBorderTemplate" hidden="true" frameLevel="6">
 						<Anchors>
 							<Anchor point="TOPLEFT" x="5" y="-2"/>
 							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
@@ -143,7 +254,7 @@
 							</OnLoad>
 						</Scripts>
 					</Frame>
-					<Button parentKey="NextButton" inherits="TRP3_InvisibleButton" setAllPoints="true" frameLevel="4">
+					<Button parentKey="NextButton" inherits="TRP3_InvisibleButton" setAllPoints="true" frameLevel="7">
 						<Scripts>
 							<OnEnter>
 								TRP3_DialogFrame.Chat.HighLight:Show();
@@ -153,7 +264,7 @@
 							</OnLeave>
 						</Scripts>
 					</Button>
-					<Button parentKey="PreviousButton" frameLevel="5">
+					<Button parentKey="PreviousButton" frameLevel="8">
 						<Size x="35" y="35"/>
 						<Anchors>
 							<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
@@ -169,13 +280,13 @@
 			<!-- BUTTONS -->
 			<!--         -->
 
-			<Button parentKey="Close" inherits="UIPanelCloseButton" frameStrata="HIGH">
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="-5" y="-10"/>
 				</Anchors>
 			</Button>
 
-			<Button parentKey="Resize" inherits="TRP3_ResizeButton" frameStrata="HIGH" hidden="false">
+			<Button parentKey="Resize" inherits="TRP3_ResizeButton" hidden="false">
 				<KeyValues>
 					<KeyValue key="resizableFrame" value="TRP3_DialogFrame" type="global"/>
 					<KeyValue key="minWidth" value="700" type="number"/>
@@ -190,8 +301,6 @@
 
 	</Frame>
 
-
-	<Script file="animations.lua"/>
 	<Script file="dialogues.lua"/>
 
 </Ui>

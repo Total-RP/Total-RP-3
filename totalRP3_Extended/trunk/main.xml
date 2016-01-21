@@ -20,6 +20,8 @@
 -->
 
 	<!-- Please note that the loading order matters a lot -->
+	
+	<Include file="libs\libs.xml"/>
 
 	<!-- Main -->
 	<Script file="main.lua"/>

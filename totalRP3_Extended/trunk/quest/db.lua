@@ -158,35 +158,63 @@ TRP3_DB.campaign = {
 						IN = {
 							dialog = {
 								ST = {
-									["1"] = {
-										IN = "Hello there. What can I do for you?\nI'm quite busy, so please be quick.",
-										CH = {
-											{
-												TX = "I would like to apply for the job.",
-												N = "3",
-											},
-											{
-												TX = "What happens here?",
-												N = "2",
-											}
-										},
+									{ -- 1
+										TX = "Hello, I'm here for the job.",
+										ND = "LEFT"
 									},
 
-									["2"] = {
+									{ -- 2
+										TX = "Ah yes, the job about the orcs. We need to kill them all and free Northshire.\nBut it won't be an easy task.",
+									},
+
+									{ -- 3
+										TX = "So, what do you say?",
+										CH = {
+											{
+												TX = "Okay, I'll do it.",
+												N = 4,
+											},
+											{
+												TX = "Gimme more info.",
+												N = 6,
+											},
+											{
+												TX = "No thanks ...",
+												N = 8,
+											}
+										}
+									},
+
+									{ -- 4
+										TX = "Okay, I'm in!",
+										ND = "LEFT"
+									},
+
+									{ -- 5
+										TX = "Excellent! But first we have to evaluate your case. We don't want to send anybody to the field.\nSo I have a small list of questions here.",
+										N = 999, -- Force end
+									},
+
+									{ -- 6
+										TX = "Could you explain a little more what is going on?",
+										ND = "LEFT"
+									},
+
+									{ -- 7
 										TX = "Well as you can see, the orcs have invaded us.\nThey burn our fields, they rape our women.\n"
 												.. "We don't have the strengh to fight them alone, so we seek for any volunteer to help us.",
+										N = 3,
 									},
 
-									["3"] = {
-										TX = "Excellent! But first we have to evaluate your case. We don't want to send anybody to the field.\nSo I have a small list of questions here.",
-										CH = {
-											{
-												TX = "Okay, I'm ready.",
-											},
-										},
+									{ -- 8
+										TX = "Well I'm not in the mood, actually.",
+										ND = "LEFT"
 									},
 
-
+									{ -- 9
+										TX = "Well thank you for wasting my time then... Now move on, citizen.",
+										N = 999, -- Force end
+									},
 								}
 							}
 						},
