@@ -64,7 +64,8 @@ end
 -- Writer
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local CURRENT_CODE, CURRENT_INDENT, CURRENT_STRUCTURE, CURRENT_ENVIRONMENT;
+local CURRENT_CODE, CURRENT_INDENT, CURRENT_STRUCTURE, CURRENT_SECURITY_CONTEXT;
+local CURRENT_ENVIRONMENT = {};
 local INDENT_CHAR = "\t";
 
 local function writeLine(code, onTop)
@@ -233,25 +234,38 @@ local function getEffectInfo(id)
 	return TRP3_API.script.getEffect(id) or TRP3_API.script.getEffect(EFFECT_MISSING_ID);
 end
 
+function TRP3_API.script.protected()
+	print("Protected !");
+	return -1;
+end
+
 local function writeEffect(effectStructure)
 	assert(type(effectStructure) == "table", "effectStructure is not a table");
 	assert(effectStructure.id, "Effect don't have ID");
 	local effectInfo = getEffectInfo(effectStructure.id);
 	assert(effectInfo, "Unknown effect ID: " .. effectStructure.id);
 
-	-- Register operand environment
-	if effectInfo.env then
-		for map, g in pairs(effectInfo.env) do
-			CURRENT_ENVIRONMENT[map] = g;
-		end
-	end
+	local effectCode;
 
-	local effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args), effectStructure.id);
+	if effectInfo.protected then
+		effectCode = "lastEffectReturn = protected();";
+		CURRENT_ENVIRONMENT["protected"] = "TRP3_API.script.protected";
+	else
+		-- Register operand environment
+		if effectInfo.env then
+			for map, g in pairs(effectInfo.env) do
+				CURRENT_ENVIRONMENT[map] = g;
+			end
+		end
+		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args), effectStructure.id);
+	end
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		startIf(writeCondition(effectStructure.cond, effectStructure.condID));
 	end
+
 	writeLine(effectCode);
+
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		closeBlock();
 	end
@@ -356,6 +370,7 @@ end
 
 local BASE_ENV = { ["tostring, EMPTY, delayed, eval"] = "tostring, TRP3_API.globals.empty, TRP3_API.script.delayed, TRP3_API.script.eval" };
 local IMPORT_PATTERN = "local %s = %s;";
+local EMPTY = TRP3_API.globals.empty;
 
 local function writeImports()
 	for alias, global in pairs(CURRENT_ENVIRONMENT) do
@@ -366,17 +381,15 @@ local function writeImports()
 	end
 end
 
-local function generateCode(effectStructure)
+local function generateCode(effectStructure, securityContext)
 	CURRENT_CODE = "";
 	CURRENT_INDENT = "";
 
-	if not CURRENT_ENVIRONMENT then
-		CURRENT_ENVIRONMENT = {};
-	end
 	wipe(CURRENT_ENVIRONMENT);
 	tableCopy(CURRENT_ENVIRONMENT, BASE_ENV);
 
 	CURRENT_STRUCTURE = effectStructure;
+	CURRENT_SECURITY_CONTEXT = securityContext or EMPTY;
 
 	writeLine("local func = function(args)");
 	addIndent();
@@ -393,9 +406,9 @@ local function generateCode(effectStructure)
 	return CURRENT_CODE;
 end
 
-local function generate(effectStructure)
+local function generate(effectStructure, securityContext)
 	log("Generate FX", logLevel.DEBUG);
-	local code = generateCode(effectStructure);
+	local code = generateCode(effectStructure, securityContext);
 
 	-- Generating factory
 	local func, errorMessage = loadstring(code, "Generated code");
@@ -441,8 +454,8 @@ local MOCK_STRUCTURE = {
 	},
 }
 
-local function getFunction(structure)
-	local functionFactory, code = generate(structure);
+local function getFunction(structure, securityContext)
+	local functionFactory, code = generate(structure, securityContext);
 
 	if DEBUG then
 		TRP3_DEBUG_CODE_FRAME:Show();

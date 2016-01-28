@@ -111,13 +111,10 @@
 			</OnShow>
 		</Scripts>
 	</Frame>
-	
-    <Frame name="TRP3_MainFrame" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" hidden="true">
+
+	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
 		<TitleRegion setAllPoints="true"/>
 		<Size x="768" y="500"/>
-		<Anchors>	
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
 		<Backdrop edgeFile="Interface\AchievementFrame\UI-Achievement-WoodBorder" tile="true">
 			<EdgeSize>
 				<AbsValue val="64"/>
@@ -129,20 +126,7 @@
 				<AbsInset left="5" right="5" top="5" bottom="5"/>
 			</BackgroundInsets>
 		</Backdrop>
-		<Scripts>
-			<OnLoad>
-				tinsert(UISpecialFrames, self:GetName());
-			</OnLoad>
-		</Scripts>
 		<Layers>
-			<Layer level="BACKGROUND">
-			    <Texture file="Interface\TutorialFrame\TutorialFrameBackground">
-					<Anchors>
-						<Anchor point="TOPLEFT" x="16" y="-16"/>
-						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
-					</Anchors>
-				</Texture>
-			</Layer>
 			<Layer level="ARTWORK">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
 					<Size x="16" y="0"/>
@@ -176,14 +160,6 @@
 					</Anchors>
 					<TexCoords left=".87" right="0" top="0" bottom="1"/>
 				</Texture>
-				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
-					<Size x="195" y="0"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" x="22" y="-20"/>
-						<Anchor point="BOTTOMLEFT" x="20" y="23"/>
-					</Anchors>
-					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
-				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
@@ -205,14 +181,14 @@
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
 					</Anchors>
-					<TexCoords left="1" right="0" top="0" bottom="1"/>				
+					<TexCoords left="1" right="0" top="0" bottom="1"/>
 				</Texture>
 				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
 					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
 					</Anchors>
-					<TexCoords left="0" right="1" top="0" bottom="1"/>				
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
 				</Texture>
 				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
 					<Size x="64" y="64"/>
@@ -227,20 +203,92 @@
 						<Anchor point="TOPRIGHT" x="-4" y="-2"/>
 					</Anchors>
 					<TexCoords left="1" right="0" top="0" bottom="1"/>
-				</Texture>		
+				</Texture>
 				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
 					<Size x="64" y="64"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="4" y="3"/>
 					</Anchors>
 					<TexCoords left="0" right="1" top="1" bottom="0"/>
-				</Texture>		
+				</Texture>
 				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
 					<Size x="64" y="64"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="-4" y="3"/>
 					</Anchors>
 					<TexCoords left="1" right="0" top="1" bottom="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<!-- CLOSE MAIN FRAME -->
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="4" y="4"/>
+				</Anchors>
+			</Button>
+
+			<!-- MaxiButton -->
+			<Button parentKey="Maximize">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+				</Anchors>
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>s
+
+			<!-- MiniButton -->
+			<Button parentKey="Minimize" hidden="true">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+				</Anchors>
+				<Size x="32" y="32"/>
+				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+
+			<!-- RESIZING BUTTON -->
+			<Button parentKey="Resize" inherits="TRP3_ResizeButton">
+				<KeyValues>
+					<KeyValue key="minWidth" value="768" type="number"/>
+					<KeyValue key="minHeight" value="500" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+	
+    <Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
+		<Anchors>	
+			<Anchor point="CENTER" x="0" y="0"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad>
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\TutorialFrame\TutorialFrameBackground">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="16" y="-16"/>
+						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\AchievementFrame\UI-Achievement-Parchment">
+					<Size x="195" y="0"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="22" y="-20"/>
+						<Anchor point="BOTTOMLEFT" x="20" y="23"/>
+					</Anchors>
+					<TexCoords left="0" right="0.5" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
@@ -316,46 +364,6 @@
 				</Anchors>
 			</Frame>
 
-			<!-- CLOSE MAIN FRAME -->
-			<Button name="TRP3_MainFrameClose" inherits="UIPanelCloseButton">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="4" y="4"/>
-				</Anchors>
-			</Button>
-
-			<!-- MaxiButton -->
-			<Button name="TRP3_MainFrameMaximizeButton">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
-				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>s
-
-			<!-- MiniButton -->
-			<Button name="TRP3_MainFrameMinimizeButton" hidden="true">
-				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
-				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>
-
-			<!-- RESIZING BUTTON -->
-			<Button name="TRP3_MainFrameResizeButton" inherits="TRP3_ResizeButton">
-				<KeyValues>
-					<KeyValue key="resizableFrame" value="TRP3_MainFrame" type="global"/>
-					<KeyValue key="minWidth" value="768" type="number"/>
-					<KeyValue key="minHeight" value="500" type="number"/>
-				</KeyValues>
-				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
-				</Anchors>
-			</Button>
 		</Frames>
 	</Frame>
 	

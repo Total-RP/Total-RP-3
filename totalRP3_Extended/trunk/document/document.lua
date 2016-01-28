@@ -114,7 +114,7 @@ function TRP3_API.extended.document.onStart()
 			end,
 			env = {
 				showDocument = "TRP3_API.extended.document.showDocument",
-			}
+			},
 		},
 
 		document_close = {

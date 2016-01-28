@@ -6,5 +6,5 @@
 ## RequiredDeps: totalRP3
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: TRP3_GM
+## SavedVariables: TRP3_Exchange_DB
 main.xml

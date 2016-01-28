@@ -19,20 +19,20 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="false">
+	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
+				<Texture parentKey="BkgMain" file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
 					<TexCoords left="0" right="0.973" top="0.1" bottom="1"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-66"/>
 						<Anchor point="BOTTOMRIGHT" x="-40" y="16"/>
 					</Anchors>
 				</Texture>
-				<Texture file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
+				<Texture parentKey="BkgScroll" file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
 					<Size x="24" y="0"/>
 					<TexCoords left="0.973" right="1" top="0.1" bottom="1"/>
 					<Anchors>
@@ -40,7 +40,7 @@
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
 					</Anchors>
 				</Texture>
-				<Texture file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
+				<Texture parentKey="BkgHeader" file="Interface\ENCOUNTERJOURNAL\UI-EJ-MistsofPandaria">
 					<Size x="0" y="50"/>
 					<TexCoords left="0" right="1" top="0" bottom="0.1"/>
 					<Anchors>

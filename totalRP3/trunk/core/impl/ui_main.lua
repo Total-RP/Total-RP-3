@@ -150,25 +150,27 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	});
 
 	-- Resizing
-	TRP3_MainFrameResizeButton.onResizeStop = function()
-		TRP3_MainFrameMinimizeButton:Hide();
-		TRP3_MainFrameMaximizeButton:Show();
+
+	TRP3_MainFrame.Resize.resizableFrame = TRP3_MainFrame;
+	TRP3_MainFrame.Resize.onResizeStop = function()
+		TRP3_MainFrame.Minimize:Hide();
+		TRP3_MainFrame.Maximize:Show();
 		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 	end;
 
-	TRP3_MainFrameMaximizeButton:SetScript("OnClick", function()
-		TRP3_MainFrameMaximizeButton:Hide();
-		TRP3_MainFrameMinimizeButton:Show();
+	TRP3_MainFrame.Maximize:SetScript("OnClick", function()
+		TRP3_MainFrame.Maximize:Hide();
+		TRP3_MainFrame.Minimize:Show();
 		TRP3_MainFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
 		C_Timer.After(0.1, function()
 			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 		end);
 	end);
 
-	TRP3_MainFrameMinimizeButton:SetScript("OnClick", function()
+	TRP3_MainFrame.Minimize:SetScript("OnClick", function()
 		TRP3_MainFrame:SetSize(768, 500);
 		C_Timer.After(0.1, function()
-			TRP3_MainFrameResizeButton.onResizeStop();
+			TRP3_MainFrame.Resize.onResizeStop();
 		end);
 	end);
 

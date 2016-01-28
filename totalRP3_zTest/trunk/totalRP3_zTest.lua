@@ -377,6 +377,14 @@ function TEST_COUNT()
 	local EMPTY = setmetatable({}, emptyMeta);
 end
 
+function TRP3_NAV()
+	local id = Utils.str.id();
+	NavBar_AddButton(TRP3_ToolFrame.navBar, {id = id, name = id, OnClick = function(self)
+		print(self)
+		TRP3_API.extended.tools.setBackground(math.random(1, 6));
+	end});
+end
+
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",
 	["description"] = "Telkos private module to test the world !",

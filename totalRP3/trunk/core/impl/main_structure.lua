@@ -427,7 +427,7 @@ end
 
 TRP3_API.navigation.init = function()
 	TRP3_MainFrame:SetScript("OnShow", function() checkPageSelection() end);
-	TRP3_MainFrameClose:SetScript("OnClick", function() switchMainFrame() end);
+	TRP3_MainFrame.Close:SetScript("OnClick", function() switchMainFrame() end);
 	
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
 		if TRP3_TutorialFrame:IsShown() then

@@ -17,7 +17,7 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin, tostring = pairs, strjoin, tostring;
+local pairs, assert, tostring = pairs, assert, tostring;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 local fireEvent = TRP3_API.events.fireEvent;
@@ -25,9 +25,51 @@ local after  = C_Timer.After;
 
 local ToolFrame = TRP3_ToolFrame;
 
+TRP3_API.extended.tools = {};
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- API
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local BACKGROUNDS = {
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-Classic",
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-BurningCrusade",
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-WrathoftheLichKing",
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-CATACLYSM",
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-MistsofPandaria",
+	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-WarlordsofDraenor",
+}
+
+function TRP3_API.extended.tools.setBackground(backgroundIndex)
+	assert(BACKGROUNDS[backgroundIndex], "Unknown background index:" .. tostring(backgroundIndex));
+	local texture = BACKGROUNDS[backgroundIndex];
+	ToolFrame.BkgMain:SetTexture(texture);
+	ToolFrame.BkgHeader:SetTexture(texture);
+	ToolFrame.BkgScroll:SetTexture(texture);
+end
+local setBackground = TRP3_API.extended.tools.setBackground;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- List management
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function goToListPage(skipButton)
+	if not skipButton then
+		NavBar_Reset(ToolFrame.navBar);
+	end
+	setBackground(1);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.extended.tools.showFrame(reset)
+	ToolFrame:Show();
+	if reset then
+		goToListPage();
+	end
+end
 
 local function onStart()
 	ToolFrame.Close:SetScript("OnClick", function(self) self:GetParent():Hide(); end);
@@ -36,7 +78,7 @@ local function onStart()
 	TRP3_API.events.registerEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED);
 
 	ToolFrame.Resize.minWidth = 1150;
-	ToolFrame.Resize.minHeight = 650;
+	ToolFrame.Resize.minHeight = 730;
 	ToolFrame:SetSize(ToolFrame.Resize.minWidth, ToolFrame.Resize.minHeight);
 	ToolFrame.Resize.resizableFrame = ToolFrame;
 	ToolFrame.Resize.onResizeStop = function()
@@ -60,6 +102,18 @@ local function onStart()
 			ToolFrame.Resize.onResizeStop();
 		end);
 	end);
+
+	-- Tab bar init
+	local homeData = {
+		name = "Creation list",
+		OnClick = function()
+			goToListPage();
+		end
+	}
+	ToolFrame.navBar.home:SetWidth(110);
+	NavBar_Initialize(ToolFrame.navBar, "NavButtonTemplate", homeData, ToolFrame.navBar.home, ToolFrame.navBar.overflow);
+
+	goToListPage();
 end
 
 local MODULE_STRUCTURE = {

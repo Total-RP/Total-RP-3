@@ -147,7 +147,7 @@ TRP3_DB.campaign = {
 										e = {
 											{
 												id = "dialog_start",
-												args = {"demoCampaign quest1 1 dialog"}
+												args = {"demoCampaign quest1 1 history"}
 											},
 										}
 									},
