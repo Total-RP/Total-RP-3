@@ -17,13 +17,10 @@
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local pairs, strjoin, tostring = pairs, strjoin, tostring;
+local pairs, strjoin, tostring, strtrim = pairs, strjoin, tostring, strtrim;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
 
-TRP3_DB = {
-	global = {},
-};
 TRP3_API.extended = {
 	document = {},
 	dialog = {},
@@ -34,6 +31,20 @@ TRP3_API.quest = {};
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- GLOBAL DB
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+TRP3_DB = {
+	global = {},
+	inner = {},
+	types = {
+		CAMPAIGN = "CA",
+		QUEST = "QU",
+		QUEST_STEP = "ST",
+		ITEM = "IT",
+		DOCUMENT = "DO",
+		DIALOG = "DI",
+		LOOT = "LO",
+	}
+};
 
 local missing = {
 	missing = true,
@@ -46,10 +57,12 @@ local missing = {
 
 local DB = TRP3_DB.global;
 local ID_SEPARATOR = " ";
+TRP3_API.extended.ID_SEPARATOR = ID_SEPARATOR;
 
 local function getFullID(...)
-	return strjoin(ID_SEPARATOR, ...);
+	return strtrim(strjoin(ID_SEPARATOR, ...));
 end
+TRP3_API.extended.getFullID = getFullID;
 
 local function getClass(...)
 	local id = getFullID(...);
@@ -80,6 +93,17 @@ local function getClassDataSafe(class)
 end
 TRP3_API.extended.getClassDataSafe = getClassDataSafe;
 
+local function registerObject(objectFullID, object, count)
+	TRP3_DB.global[objectFullID] = object;
+
+	-- Inner object
+	for childID, childClass in pairs(object.IN or EMPTY) do
+		count = registerObject(getFullID(objectFullID, childID), childClass, count);
+	end
+
+	return count + 1;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -97,70 +121,17 @@ local function onStart()
 	-- Calculate global environement with all ids
 	local count = 0;
 
-	-- Register items
-	for id, item in pairs(TRP3_DB.item or EMPTY) do
-		TRP3_DB.global[id] = item;
-
-		-- Inner object
-		for objectID, class in pairs(item.IN or EMPTY) do
-			TRP3_DB.global[getFullID(id, objectID)] = class;
-			count = count + 1;
-		end
-
-		count = count + 1;
-	end
-
-	-- Register documents
-	for id, document in pairs(TRP3_DB.document or EMPTY) do
-		TRP3_DB.global[id] = document;
-
-		-- Inner object
-		for objectID, class in pairs(document.IN or EMPTY) do
-			TRP3_DB.global[getFullID(id, objectID)] = class;
-			count = count + 1;
-		end
-
-		count = count + 1;
-	end
-
-	-- Register campaign
-	for campaignID, campaign in pairs(TRP3_DB.campaign or EMPTY) do
-		TRP3_DB.global[campaignID] = campaign;
-
-		-- Inner object
-		for objectID, class in pairs(campaign.IN or EMPTY) do
-			TRP3_DB.global[getFullID(campaignID, objectID)] = class;
-			count = count + 1;
-		end
-
+	-- Register object
+	for id, object in pairs(TRP3_DB.inner or EMPTY) do
+		count = registerObject(id, object, count);
 		-- Quests
-		for questID, quest in pairs(campaign.QE or EMPTY) do
-			TRP3_DB.global[getFullID(campaignID, questID)] = quest;
-
-			-- Inner object
-			for objectID, class in pairs(quest.IN or EMPTY) do
-				TRP3_DB.global[getFullID(campaignID, questID, objectID)] = class;
-				count = count + 1;
-			end
-
+		for questID, quest in pairs(object.QE or EMPTY) do
+			count = registerObject(getFullID(id, questID), quest, count);
 			-- Steps
 			for stepID, step in pairs(quest.ST or EMPTY) do
-				TRP3_DB.global[getFullID(campaignID, questID, stepID)] = step;
-
-				-- Inner object
-				for objectID, class in pairs(step.IN or EMPTY) do
-					TRP3_DB.global[getFullID(campaignID, questID, stepID, objectID)] = class;
-					count = count + 1;
-				end
-
-
-				count = count + 1;
+				count = registerObject(getFullID(id, questID, stepID), step, count);
 			end
-
-			count = count + 1;
 		end
-
-		count = count + 1;
 	end
 
 	Log.log(("Registred %s creations"):format(count));

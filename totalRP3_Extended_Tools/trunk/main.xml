@@ -19,6 +19,8 @@
 	limitations under the License.
 -->
 
+	<Include file="pages/list.xml"/>
+
 	<Frame name="TRP3_ToolFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -90,16 +92,21 @@
 					</Layer>
 				</Layers>
 			</Frame>
+
+			<Frame name="$parentList" inherits="TRP3_Tools_ListTemplate" parentKey="list">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentNavBar" relativePoint="BOTTOM" x="0" y="-25"/>
+					<Anchor point="LEFT" x="24" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="-45" y="24"/>
+				</Anchors>
+			</Frame>
+
 		</Frames>
 	</Frame>
 
-	<!-- Please note that the loading order matters a lot -->
-	<!-- Main -->
 	<Script file="main.lua"/>
-	
-	<!-- Locales -->
-	<Script file="locale\locale_enEN.lua"/>
-	<Script file="locale\locale_frFR.lua"/>
-
+	<Script file="pages/list.lua"/>
+	<Script file="locale/locale_enEN.lua"/>
+	<Script file="locale/locale_frFR.lua"/>
 
 </Ui>

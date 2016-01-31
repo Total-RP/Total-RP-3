@@ -25,11 +25,11 @@ local after  = C_Timer.After;
 
 local ToolFrame = TRP3_ToolFrame;
 
-TRP3_API.extended.tools = {};
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- API
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+TRP3_API.extended.tools = {};
 
 local BACKGROUNDS = {
 	"Interface\\ENCOUNTERJOURNAL\\UI-EJ-Classic",
@@ -49,16 +49,137 @@ function TRP3_API.extended.tools.setBackground(backgroundIndex)
 end
 local setBackground = TRP3_API.extended.tools.setBackground;
 
+local TYPE_LOCALE = { -- TODO: locals
+	[TRP3_DB.types.CAMPAIGN] = "Campaign",
+	[TRP3_DB.types.QUEST] = "Quest",
+	[TRP3_DB.types.QUEST_STEP] = "Quest step",
+	[TRP3_DB.types.ITEM] = "Item",
+	[TRP3_DB.types.LOOT] = "Loot",
+	[TRP3_DB.types.DOCUMENT] = "Document",
+	[TRP3_DB.types.DIALOG] = "Dialog",
+}
+local function getTypeLocale(type)
+	if TYPE_LOCALE[type] then
+		return TYPE_LOCALE[type];
+	end
+	return UNKOWN;
+end
+TRP3_API.extended.tools.getTypeLocale = getTypeLocale;
+
+local function getClassDataSafeByType(class)
+	if class.TY == TRP3_DB.types.CAMPAIGN or class.TY == TRP3_DB.types.QUEST or class.TY == TRP3_DB.types.ITEM or class.TY == TRP3_DB.types.DOCUMENT then
+		return TRP3_API.extended.getClassDataSafe(class);
+	end
+	if class.TY == TRP3_DB.types.QUEST_STEP then
+		return "inv_inscription_scroll", (class.TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+	end
+	if class.TY == TRP3_DB.types.DIALOG then
+		return "ability_warrior_rallyingcry", (class.ST[1].TX or ""):gsub("\n", ""):sub(1, 70) .. "...";
+	end
+	if class.TY == TRP3_DB.types.LOOT then
+		return "inv_misc_coinbag_special", class.NA or "";
+	end
+end
+TRP3_API.extended.tools.getClassDataSafeByType = getClassDataSafeByType;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- List management
+-- Pages
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local getFullID, getClass = TRP3_API.extended.getFullID, TRP3_API.extended.getClass;
 
 local function goToListPage(skipButton)
 	if not skipButton then
 		NavBar_Reset(ToolFrame.navBar);
 	end
 	setBackground(1);
+	TRP3_API.extended.tools.toList();
 end
+
+local PAGE_BY_TYPE = {
+	[TRP3_DB.types.CAMPAIGN] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Campaign: " .. id; -- TODO: locals
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.QUEST] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Quest: " .. id; -- TODO: locals
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.QUEST_STEP] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Quest step: " .. id; -- TODO: locals
+		end,
+		background = 2,
+	},
+	[TRP3_DB.types.ITEM] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Item: " .. id; -- TODO: locals
+		end,
+		background = 3,
+	},
+	[TRP3_DB.types.DOCUMENT] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Document: " .. id; -- TODO: locals
+		end,
+		background = 4,
+	},
+	[TRP3_DB.types.DIALOG] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Dialog: " .. id; -- TODO: locals
+		end,
+		background = 5,
+	},
+	[TRP3_DB.types.LOOT] = {
+		frame = nil,
+		tabTextGetter = function(id)
+			return "Loot: " .. id; -- TODO: locals
+		end,
+		background = 6,
+	},
+}
+
+local function goToPage(classID)
+	-- Ensure buttons up to the target
+	NavBar_Reset(ToolFrame.navBar);
+	local parts = {strsplit(TRP3_API.extended.ID_SEPARATOR, classID)};
+	local fullId = "";
+	for _, part in pairs(parts) do
+		fullId = getFullID(fullId, part);
+		local reconstruct = fullId;
+		local class = getClass(reconstruct);
+		local text = PAGE_BY_TYPE[class.TY].tabTextGetter(part);
+		NavBar_AddButton(ToolFrame.navBar, {id = reconstruct, name = text, OnClick = function(self)
+			goToPage(reconstruct);
+		end});
+	end
+
+	-- Go to page
+	ToolFrame.list:Hide();
+	local class = getClass(classID);
+	for classType, pageData in pairs(PAGE_BY_TYPE) do
+		if class.TY ~= classType then
+			if pageData.frame then
+				pageData.frame:Hide();
+			end
+		else
+			if pageData.frame then
+				pageData.frame:Show();
+			end
+			setBackground(pageData.background or 1);
+		end
+	end
+end
+TRP3_API.extended.tools.goToPage = goToPage;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -105,7 +226,7 @@ local function onStart()
 
 	-- Tab bar init
 	local homeData = {
-		name = "Creation list",
+		name = "Database", -- TODO: locale
 		OnClick = function()
 			goToListPage();
 		end
@@ -113,7 +234,12 @@ local function onStart()
 	ToolFrame.navBar.home:SetWidth(110);
 	NavBar_Initialize(ToolFrame.navBar, "NavButtonTemplate", homeData, ToolFrame.navBar.home, ToolFrame.navBar.overflow);
 
+	-- Init tabs
+	TRP3_API.extended.tools.initList();
+
 	goToListPage();
+
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_EXTENDED_RESIZED, ToolFrame:GetWidth(), ToolFrame:GetHeight());
 end
 
 local MODULE_STRUCTURE = {
