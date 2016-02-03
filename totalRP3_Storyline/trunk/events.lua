@@ -646,7 +646,8 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Rewards structure
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+	-- Clean our variable used for remember the first reward choice available
+	Storyline_NPCFrameRewards.Content.firstChoice = nil;
 	wipe(displayBuilder);
 	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
 
@@ -814,6 +815,10 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 			local button = getQuestButton(Storyline_NPCFrameRewards.Content);
 			placeOnGrid(button, Storyline_NPCFrameRewards.Content.RewardText3);
 			decorateItemButton(button, buttonInfo.index, buttonInfo.rewardType, buttonInfo.icon, buttonInfo.text, buttonInfo.count, buttonInfo.isUsable);
+			if index == 1 then
+				-- We remember the first choice reward so we can use it later (in our ConsolePort support)
+				Storyline_NPCFrameRewards.Content.firstChoice = button;
+			end
 			previousForChoice = button;
 		end
 
@@ -1065,6 +1070,8 @@ function Storyline_API.initEventsStructure()
 					configureHoverFrame(Storyline_NPCFrameRewards.Content, Storyline_NPCFrameRewardsItem, "TOP");
 					setTooltipForSameFrame(Storyline_NPCFrameRewardsItem, "TOP", 0, 0);
 					Storyline_MainTooltip:Hide();
+					-- Call upon our ConsolePort support to move its custom cursor to the first reward available if it exists
+					Storyline_API.consolePort.moveCursorToFirstAvailableReward()
 					if GetNumQuestChoices() > 1 then
 						Storyline_NPCFrameChatNextText:SetText(loc("SL_SELECT_REWARD"));
 						Storyline_NPCFrameChatNext:Disable();

@@ -434,13 +434,27 @@ function Storyline_API.addon:OnEnable()
 	ForceGossip = function() return Storyline_Data.config.forceGossip == true end
 
 	Storyline_API.locale.init();
+	Storyline_API.consolePort.init();
 
 	Storyline_NPCFrameBG:SetDesaturated(true);
-	Storyline_NPCFrameChatNext:SetScript("OnClick", function()
-		if Storyline_NPCFrameChat.start and Storyline_NPCFrameChat.start < Storyline_NPCFrameChatText:GetText():len() then
-			Storyline_NPCFrameChat.start = Storyline_NPCFrameChatText:GetText():len();
+	Storyline_NPCFrameChatNext:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	Storyline_NPCFrameChatNext:SetScript("OnClick", function(self, button)
+		if button == "RightButton" then
+			if Storyline_NPCFrameChat.start and Storyline_NPCFrameChat.start < Storyline_NPCFrameChatText:GetText():len() then
+				Storyline_NPCFrameChat.start = Storyline_NPCFrameChatText:GetText():len();  -- Stop current text animation
+			end
+			Storyline_NPCFrameChat.currentIndex = #Storyline_NPCFrameChat.texts - 1; -- Set current text index to the one before the last one
+			playNext(Storyline_NPCFrameModelsYou); -- Play the next text (the last one)
+			if Storyline_NPCFrameChat.start and Storyline_NPCFrameChat.start < Storyline_NPCFrameChatText:GetText():len() then
+				Storyline_NPCFrameChat.start = Storyline_NPCFrameChatText:GetText():len();  -- Stop current text animation
+			end
+			playNext(Storyline_NPCFrameModelsYou); -- Execute next action (display gossip options, quest objectives, quest rewards or close dialog)
 		else
-			playNext(Storyline_NPCFrameModelsYou);
+			if Storyline_NPCFrameChat.start and Storyline_NPCFrameChat.start < Storyline_NPCFrameChatText:GetText():len() then
+				Storyline_NPCFrameChat.start = Storyline_NPCFrameChatText:GetText():len();
+			else
+				playNext(Storyline_NPCFrameModelsYou);
+			end
 		end
 	end);
 	Storyline_NPCFrameChatPrevious:SetScript("OnClick", resetDialog);
@@ -456,7 +470,7 @@ function Storyline_API.addon:OnEnable()
 
 		if key == "SPACE" then
 			self:SetPropagateKeyboardInput(false);
-			Storyline_NPCFrameChatNext:Click();
+			Storyline_NPCFrameChatNext:Click(IsShiftKeyDown() and "RightButton" or "LeftButton");
 		elseif key == "BACKSPACE" then
 			self:SetPropagateKeyboardInput(false);
 			Storyline_NPCFrameChatPrevious:Click();

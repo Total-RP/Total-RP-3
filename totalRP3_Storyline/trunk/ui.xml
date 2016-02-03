@@ -684,6 +684,7 @@
 	<Include file="options.xml"/>
 	<Include file="debug.xml"/>
 
+	<Script file="consolePort.lua"/>
 	<Script file="layout.lua"/>
 	<Script file="structures.lua"/>
 	<Script file="utils.lua"/>
