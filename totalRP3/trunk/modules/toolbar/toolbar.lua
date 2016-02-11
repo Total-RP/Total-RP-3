@@ -97,14 +97,18 @@ local function onStart()
 						buttonStructure.onClick(uiButton, buttonStructure, button);
 					end
 				end);
-				uiButton:SetScript("OnEnter", function()
+				uiButton:SetScript("OnEnter", function(self)
 					if buttonStructure.onEnter then
-						buttonStructure.onEnter(uiButton, buttonStructure);
+						buttonStructure.onEnter(self, buttonStructure);
+					else
+						refreshTooltip(self);
 					end
 				end);
-				uiButton:SetScript("OnLeave", function()
+				uiButton:SetScript("OnLeave", function(self)
 					if buttonStructure.onLeave then
-						buttonStructure.onLeave(uiButton, buttonStructure);
+						buttonStructure.onLeave(self, buttonStructure);
+					else
+						mainTooltip:Hide();
 					end
 				end);
 				uiButton.TimeSinceLastUpdate = 10;
@@ -113,10 +117,13 @@ local function onStart()
 					if (self.TimeSinceLastUpdate > 0.2) then
 						self.TimeSinceLastUpdate = 0;
 						if buttonStructure.onUpdate then
-							buttonStructure.onUpdate(uiButton, buttonStructure);
+							buttonStructure.onUpdate(self, buttonStructure);
 						end
 					end
 				end);
+				if buttonStructure.tooltip then
+					setTooltipForFrame(uiButton, uiButton, "BOTTOM", 0, 0, buttonStructure.tooltip, buttonStructure.tooltipSub);
+				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
 				uiButton:Show();

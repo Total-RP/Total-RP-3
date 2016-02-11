@@ -19,6 +19,15 @@
 	limitations under the License.
 -->
 
+	<!-- NPC tooltip -->
+	<GameTooltip name="TRP3_NPCTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+		<Scripts>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
 	<!--     CAMPAIGNS TAB    -->
 	<!-- *_*_*_*_*_*_*_*_*_*  -->
@@ -527,6 +536,7 @@
 
 	<Script file="db.lua"/>
 	<Script file="quest_effects.lua"/>
+	<Script file="campaign_npc.lua"/>
 	<Script file="campaign.lua"/>
 	<Script file="quest.lua"/>
 	<Script file="quest_log.lua"/>

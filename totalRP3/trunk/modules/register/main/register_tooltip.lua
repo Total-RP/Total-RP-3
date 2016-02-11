@@ -108,18 +108,22 @@ end
 local function shouldHideGameTooltip()
 	return getConfigValue(CONFIG_CHARACT_HIDE_ORIGINAL);
 end
+TRP3_API.ui.tooltip.shouldHideGameTooltip = shouldHideGameTooltip;
 
 local function getMainLineFontSize()
 	return getConfigValue(CONFIG_CHARACT_MAIN_SIZE);
 end
+TRP3_API.ui.tooltip.getMainLineFontSize = getMainLineFontSize;
 
 local function getSubLineFontSize()
 	return getConfigValue(CONFIG_CHARACT_SUB_SIZE);
 end
+TRP3_API.ui.tooltip.getSubLineFontSize = getSubLineFontSize;
 
 local function getSmallLineFontSize()
 	return getConfigValue(CONFIG_CHARACT_TER_SIZE);
 end
+TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
 local function showIcons()
 	return getConfigValue(CONFIG_CHARACT_ICONS);
@@ -175,13 +179,14 @@ end
 
 local localeFont;
 
-local function getGameTooltipTexts()
+local function getGameTooltipTexts(tooltip)
 	local tab = {};
-	for j = 1, GameTooltip:NumLines() do
-		tab[j] = _G["GameTooltipTextLeft" ..  j]:GetText();
+	for j = 1, tooltip:NumLines() do
+		tab[j] = _G[tooltip:GetName() .. "TextLeft" ..  j]:GetText();
 	end
 	return tab;
 end
+TRP3_API.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
 
 local function setLineFont(tooltip, lineIndex, fontSize)
 	_G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)]:SetFont(localeFont, fontSize);
@@ -272,6 +277,7 @@ local function createTooltipBuilder(tooltip)
 	builder.Build = Build;
 	return builder;
 end
+TRP3_API.ui.tooltip.createTooltipBuilder = createTooltipBuilder;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTER TOOLTIP
@@ -830,7 +836,7 @@ local function show(targetType, targetID, targetMode)
 			if targetMode then
 
 				-- Stock all the current text from the GameTooltip
-				local originalTexts = getGameTooltipTexts();
+				local originalTexts = getGameTooltipTexts(GameTooltip);
 
 				if (targetMode == TYPE_CHARACTER and isIDIgnored(targetID)) or ((targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and ownerIsIgnored(targetID)) then
 					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");

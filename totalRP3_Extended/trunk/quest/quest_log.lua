@@ -21,7 +21,7 @@ local CreateFrame = CreateFrame;
 local loc = TRP3_API.locale.getText;
 local EMPTY = TRP3_API.globals.empty;
 local Log = Utils.log;
-local getClass, getClassDataSafe = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe;
+local getClass, getClassDataSafe, getClassesByType = TRP3_API.extended.getClass, TRP3_API.extended.getClassDataSafe, TRP3_API.extended.getClassesByType;
 local getQuestLog = TRP3_API.quest.getQuestLog;
 
 local TRP3_QuestLogPage = TRP3_QuestLogPage;
@@ -115,7 +115,7 @@ local function refreshCampaignList()
 	end
 
 	local index = 1;
-	for campaignID, campaign in pairs(TRP3_DB.campaign or EMPTY) do
+	for campaignID, campaign in pairs(getClassesByType(TRP3_DB.types.CAMPAIGN) or EMPTY) do
 		local button = TRP3_QuestLogPage.Campaign.slots[index];
 		if not button then
 			button = CreateFrame("Button", TRP3_QuestLogPage.Campaign:GetName() .. "Slot" .. index, TRP3_QuestLogPage.Campaign, "TRP3_CampaignButtonTemplate");
@@ -211,12 +211,12 @@ local function refreshQuestList(campaignID)
 		questFrame:ClearAllPoints();
 	end
 
-	local questLog = TRP3_API.quest.getQuestLog();
+	local campaignLog = getQuestLog()[campaignID];
 	local y = -50;
-	if questLog[campaignID] then
+	if campaignLog then
 
 		local index = 1;
-		for questID, questInfo in pairs(questLog[campaignID]) do
+		for questID, questInfo in pairs(campaignLog.QUEST) do
 			local questFrame = questFrames[index];
 			if not questFrame then
 				questFrame = CreateFrame("Button", TRP3_QuestLogPage.Quest.List:GetName() .. "Slot" .. index,
@@ -338,11 +338,11 @@ local function goToStepPage(skipButton, campaignID, questID, questName)
 		NavBar_AddButton(TRP3_QuestLogPage.navBar, {id = questID, name = questName});
 	end
 
-	local questLog = TRP3_API.quest.getQuestLog();
-	assert(questLog[campaignID] and questLog[campaignID][questID], "Trying to goToStepPage from an unstarted campaign or quest: " .. tostring(questID));
+	local campaignLog = getQuestLog()[campaignID];
+	assert(campaignLog and campaignLog.QUEST[questID], "Trying to goToStepPage from an unstarted campaign or quest: " .. tostring(questID));
 
-	refreshStepVignette(campaignID, questID, questLog[campaignID][questID]);
-	refreshStepContent(campaignID, questID, questLog[campaignID][questID]);
+	refreshStepVignette(campaignID, questID, campaignLog.QUEST[questID]);
+	refreshStepContent(campaignID, questID, campaignLog.QUEST[questID]);
 end
 
 local function initStepFrame()

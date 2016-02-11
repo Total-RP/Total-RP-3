@@ -74,6 +74,17 @@ local function getClass(...)
 end
 TRP3_API.extended.getClass = getClass;
 
+local function getClassesByType(classType)
+	local classes = {};
+	for objectID, objectClass in pairs(DB) do
+		if objectClass.TY == classType then
+			classes[objectID] = objectClass;
+		end
+	end
+	return classes;
+end
+TRP3_API.extended.getClassesByType = getClassesByType;
+
 local function getClassDataSafe(class)
 	local icon = "TEMP";
 	local name = UNKNOWN;

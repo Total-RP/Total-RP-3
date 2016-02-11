@@ -1,19 +1,19 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3: Campaign system
---	---------------------------------------------------------------------------
---	Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
+-- ---------------------------------------------------------------------------
+-- Copyright 2015 Sylvain Cossement (telkostrasz@totalrp3.info)
 --
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
 --
---		http://www.apache.org/licenses/LICENSE-2.0
+-- http://www.apache.org/licenses/LICENSE-2.0
 --
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 ----------------------------------------------------------------------------------
 
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
@@ -47,7 +47,7 @@ local campaignHandlers = {};
 
 local function onCampaignCallback(campaignID, campaignClass, scriptID, ...)
 	if campaignClass and campaignClass.SC and campaignClass.SC[scriptID] then
-		local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC, {campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID]});
+		local retCode = TRP3_API.script.executeClassScript(scriptID, campaignClass.SC, { campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
 	end
 end
 
@@ -87,6 +87,7 @@ local function deactivateCurrentCampaign(skipMessage)
 	end
 	clearCampaignHandlers();
 end
+
 TRP3_API.quest.deactivateCurrentCampaign = deactivateCurrentCampaign;
 
 local function activateCampaign(campaignID, force)
@@ -108,7 +109,10 @@ local function activateCampaign(campaignID, force)
 		init = true;
 
 		-- If not already started
-		playerQuestLog[campaignID] = {};
+		playerQuestLog[campaignID] = {
+			NPC = {},
+			QUEST = {}
+		};
 		Utils.message.displayMessage(loc("QE_CAMPAIGN_START"):format(campaignName), Utils.message.type.CHAT_FRAME);
 	else
 		-- If already started, just resuming
@@ -120,13 +124,21 @@ local function activateCampaign(campaignID, force)
 	playerQuestLog.currentCampaign = campaignID;
 
 	if init then
+
+		-- Register NPC
+		if campaignClass.ND then
+			TRP3_API.quest.registerNPCs(campaignClass.ND);
+		end
+
 		-- Initial script
 		if campaignClass.OS then
 			local retCode = TRP3_API.script.executeClassScript(campaignClass.OS, campaignClass.SC,
-				{campaignID = campaignID, campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID]});
+				{ campaignID = campaignID, campaignClass = campaignClass, campaignLog = playerQuestLog[campaignID] });
 		end
+
 	end
 end
+
 TRP3_API.quest.activateCampaign = activateCampaign;
 
 local function resetCampaign(campaignID)
@@ -138,6 +150,7 @@ local function resetCampaign(campaignID)
 		activateCampaign(campaignID, true);
 	end
 end
+
 TRP3_API.quest.resetCampaign = resetCampaign;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -164,4 +177,5 @@ local function init()
 		activateCampaign(playerQuestLog.currentCampaign, true); -- Force reloading the current campaign
 	end
 end
+
 TRP3_API.quest.campaignInit = init;

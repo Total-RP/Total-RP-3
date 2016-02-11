@@ -47,6 +47,7 @@ TRP3_DB.inner.demoCampaign = {
 		DE = "Take the arms and defend the abbey.",
 		RA = { 1, 5 },
 	},
+
 	QE = {
 		["quest1"] = {
 			TY = TRP3_DB.types.QUEST,
@@ -56,6 +57,15 @@ TRP3_DB.inner.demoCampaign = {
 				IC = "ability_warrior_strengthofarms",
 				NA = "To arms!",
 				DE = "Succeed the registration test.",
+			},
+
+			-- Initial campaign NPC declaration
+			ND = {
+				["196"] = {
+					IC = "inv_misc_1h_lumberaxe_a_01",
+					NA = "Mysterious lumberjack",
+					DE = "Who could be this guy ?"
+				}
 			},
 
 			-- Objectives
@@ -115,9 +125,9 @@ TRP3_DB.inner.demoCampaign = {
 
 					-- Quest step log information ONCE IN STEP
 					TX = "I should talk to a |cffffff00[Stormwind Army Registrar]|r in front of the Northshire Abbey.",
-
 					-- Quest step log information ONCE FINISHED
 					DX = "I talked to an Army Registrar.",
+
 					AC = {
 						TALK = { "REGISTRAR_TALK" },
 					},
@@ -144,7 +154,11 @@ TRP3_DB.inner.demoCampaign = {
 									e = {
 										{
 											id = "dialog_start",
-											args = { "demoCampaign quest1 1 history" }
+											args = { "demoCampaign quest1 1 dialog" }
+										},
+										{
+											id = "quest_goToStep",
+											args = { "demoCampaign", "quest1", "2" }
 										},
 									}
 								},
@@ -199,63 +213,7 @@ TRP3_DB.inner.demoCampaign = {
 
 								{
 									-- 2
-									TX = "Ah yes, the job about the orcs. We need to kill them all and free Northshire.\nBut it won't be an easy task.",
-								},
-
-								{
-									-- 3
-									TX = "So, what do you say?",
-									CH = {
-										{
-											TX = "Okay, I'll do it.",
-											N = 4,
-										},
-										{
-											TX = "Gimme more info.",
-											N = 6,
-										},
-										{
-											TX = "No thanks ...",
-											N = 8,
-										}
-									}
-								},
-
-								{
-									-- 4
-									TX = "Okay, I'm in!",
-									ND = "LEFT"
-								},
-
-								{
-									-- 5
-									TX = "Excellent! But first we have to evaluate your case. We don't want to send anybody to the field.\nSo I have a small list of questions here.",
-									N = 999, -- Force end
-								},
-
-								{
-									-- 6
-									TX = "Could you explain a little more what is going on?",
-									ND = "LEFT"
-								},
-
-								{
-									-- 7
-									TX = "Well as you can see, the orcs have invaded us.\nThey burn our fields, they rape our women.\n"
-											.. "We don't have the strengh to fight them alone, so we seek for any volunteer to help us.",
-									N = 3,
-								},
-
-								{
-									-- 8
-									TX = "Well I'm not in the mood, actually.",
-									ND = "LEFT"
-								},
-
-								{
-									-- 9
-									TX = "Well thank you for wasting my time then... Now move on, citizen.",
-									N = 999, -- Force end
+									TX = "Ah yes, the job about the orcs. We need to kill them all and free Northshire.\nBut it won't be an easy task.\nFirst we need wood to be able to craft some weapons. Could you talk to John ? He's a lumberjack here in Northshire.",
 								},
 							}
 						}
@@ -264,6 +222,22 @@ TRP3_DB.inner.demoCampaign = {
 					-- OnStart inner handler
 					OS = "STEP_START",
 				},
+
+				["2"] = {
+					TY = TRP3_DB.types.QUEST_STEP,
+
+					-- Quest step log information ONCE IN STEP
+					TX = "I should talk to the |cffffff00[Lumber jack]|r in front of the Northshire Abbey.",
+
+					-- Initial campaign NPC declaration
+					ND = {
+						["196"] = {
+							IC = "inv_misc_1h_lumberaxe_a_01",
+							NA = "Jack",
+							DE = "It's Jack the lumberjack!\n(pun intended)"
+						}
+					},
+				}
 			},
 		},
 	},
