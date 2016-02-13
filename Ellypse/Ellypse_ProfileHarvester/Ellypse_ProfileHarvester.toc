@@ -1,8 +1,0 @@
-## Interface: 60000
-## Title: Ellypse_ProfileHarvester
-## Version: 1.0
-## Notes: Harvest RP profiles from connected players
-## Author: Ellypse
-## RequiredDeps: totalRP3
-
-Ellypse_ProfileHarvester.lua
