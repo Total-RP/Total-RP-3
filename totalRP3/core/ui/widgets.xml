@@ -275,31 +275,31 @@
 		<Size x="100" y="18"/>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+				<Texture parentKey="Left" file="Interface\Common\Common-Input-Border">
 					<Size x="12" y="28"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-5" y="0"/>
 					</Anchors>
 					<TexCoords left="0" right="0.09375" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+				<Texture parentKey="Right" file="Interface\Common\Common-Input-Border">
 					<Size x="12" y="28"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="5" y="0"/>
 					</Anchors>
 					<TexCoords left="0.90625" right="1.0" top="0" bottom="1.0"/>
 				</Texture>
-				<Texture name="$parentCenter" file="Interface\Common\Common-Input-Border">
+				<Texture parentKey="Center" file="Interface\Common\Common-Input-Border">
 					<Size x="0" y="28"/>
 					<Anchors>
-						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
-						<Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Right" relativePoint="LEFT"/>
 					</Anchors>
 					<TexCoords left="0.09375" right="0.90625" top="0" bottom="1.0"/>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentText" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+				<FontString name="$parentText" parentKey="title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="5" y="5"/>
 						<Anchor point="TOPRIGHT" x="0" y="5"/>
@@ -315,9 +315,9 @@
 			</OnEscapePressed>
 			<OnEditFocusGained>
 				if self.disabled then
-				self:ClearFocus();
+					self:ClearFocus();
 				else
-				self:HighlightText();
+					self:HighlightText();
 				end
 			</OnEditFocusGained>
 			<OnEditFocusLost>
@@ -335,7 +335,7 @@
 	<!-- Titled edit box, TRP2 style, with help TT button -->
 	<EditBox name="TRP3_TitledHelpEditBox" inherits="TRP3_TitledEditBox" virtual="true">
 		<Frames>
-			<Button name="$parentHelp" inherits="TRP3_HelpButton" hidden="true">
+			<Button name="$parentHelp" parentKey="help" inherits="TRP3_HelpButton" hidden="true">
 				<Size x="14" y="14"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="2" y="0"/>
@@ -345,17 +345,17 @@
 		<Scripts>
 			<OnEditFocusGained>
 				if self.disabled then
-				self:ClearFocus();
+					self:ClearFocus();
 				else
-				self:HighlightText();
+					self:HighlightText();
 				end
-				if _G[self:GetName().."Help"].titleText then
-				_G[self:GetName().."Help"]:Show();
+				if self.help.titleText then
+					self.help:Show();
 				end
 			</OnEditFocusGained>
 			<OnEditFocusLost>
 				self:HighlightText(0,0);
-				_G[self:GetName().."Help"]:Hide();
+				self.help:Hide();
 			</OnEditFocusLost>
 		</Scripts>
 	</EditBox>

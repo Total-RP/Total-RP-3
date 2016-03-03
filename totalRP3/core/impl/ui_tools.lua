@@ -910,12 +910,16 @@ end
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noParenting)
+function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange)
 	x = x or 0;
 	y = y or 0;
 	frame:ClearAllPoints();
-	frame:SetParent(hoveredFrame:GetParent());
-	frame:SetFrameStrata("HIGH");
+	if not noStrataChange then
+		frame:SetParent(hoveredFrame:GetParent());
+		frame:SetFrameStrata("HIGH");
+	else
+		frame:SetParent(hoveredFrame);
+	end
 	frame.ArrowRIGHT:Hide();
 	frame.ArrowGlowRIGHT:Hide();
 	frame.ArrowUP:Hide();

@@ -383,6 +383,7 @@ function TRP3_NAV()
 		print(self)
 		TRP3_API.extended.tools.setBackground(math.random(1, 6));
 	end});
+	-- Puic
 end
 
 local MODULE_STRUCTURE = {
