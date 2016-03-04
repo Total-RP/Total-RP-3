@@ -224,12 +224,45 @@ end
 
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
+local matureWords = {
+	"dominant",
+	"submissive",
+	"slave",
+	"futa",
+	"cum",
+	"vaginal",
+	"ass",
+	"cunt"
+}
+
+local function filterOutMatureContent(table)
+	local data = tcopy(table);
+	for key, value in pairs(data) do
+		if type(value) == "string" then
+			for _, matureWord in pairs(matureWords) do
+				if value:find(matureWord) then
+					print("|cffff0000" .. value .. "|r" .. " contains |cff00ff00" .. matureWord .. "|r")
+					data[key] = "|cffff0000<MATURE CONTENT>|r"
+					break
+				end
+			end
+		elseif type(value) == "table" then
+			data[key] = filterOutMatureContent(value)
+		end
+	end
+
+	return data
+end
+
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
 	local profile = getUnitIDProfile(unitID);
 	if profile[informationType] then
 		wipe(profile[informationType]);
 	end
+
+	-- data = filterOutMatureContent(data);
+
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
