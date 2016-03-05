@@ -405,6 +405,11 @@ Utils.color.colorCodeFloat = function(red, green, blue)
 	return colorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
 end
 
+--- From r, g, b tab
+Utils.color.colorCodeFloatTab = function(tab)
+	return colorCode(math.ceil(tab.r*255), math.ceil(tab.g*255), math.ceil(tab.b*255));
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Math
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -522,11 +527,11 @@ Utils.str.toHTML = function(text)
 		if tag then
 			tagText = text:sub( text:find("<"), text:find("</") + #tag + 2);
 			if #tagText == #tag + 3 then
-				return "Error in pattern"; -- TODO locals
+				return loc("PATTERN_ERROR");
 			end
 			tinsert(tab, tagText);
 		else
-			return "Error in pattern : tag not closed"; -- TODO locals
+			return loc("PATTERN_ERROR");
 		end
 
 		local after;

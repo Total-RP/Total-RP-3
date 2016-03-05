@@ -825,6 +825,15 @@ Total RP is not responsible for links leading to harmful content.]],
 		MAP_SCAN_CHAR_TITLE = "Characters",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- MISC
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		PATTERN_ERROR = "Error in pattern.",
+		PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
+		SCRIPT_UNKNOWN_EFFECT = "Script error, unknown FX",
+		SCRIPT_ERROR = "Error in script.",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

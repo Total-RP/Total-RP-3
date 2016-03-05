@@ -18,6 +18,7 @@
 ----------------------------------------------------------------------------------
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
+local loc = TRP3_API.locale.getText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
@@ -27,7 +28,7 @@ local EFFECTS = {
 
 	["MISSING"] = {
 		codeReplacementFunc = function (_, id)
-			return ("message(\"|cffff0000Script error, unknown FX: %s\", 1); lastEffectReturn = nil;"):format(id); -- TODO: local
+			return ("message(\"|cffff0000" .. loc("SCRIPT_UNKNOWN_EFFECT") .. ": %s\", 1); lastEffectReturn = nil;"):format(id);
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",

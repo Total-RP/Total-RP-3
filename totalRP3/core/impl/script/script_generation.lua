@@ -23,6 +23,7 @@ local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, typ
 local tableCopy = TRP3_API.utils.table.copy;
 local log, logLevel = TRP3_API.utils.log.log, TRP3_API.utils.log.level;
 local writeElement;
+local loc = TRP3_API.locale.getText;
 
 local DEBUG = true;
 
@@ -475,7 +476,7 @@ local function executeFunction(func, args)
 		--		if DEBUG then TRP3_API.utils.table.dump(conditions); end
 		return ret;
 	else
-		TRP3_API.utils.message.displayMessage("Error in script."); -- TODO: more info
+		TRP3_API.utils.message.displayMessage(loc("SCRIPT_ERROR"));
 		if DEBUG then log(tostring(ret), logLevel.WARN) end
 	end
 end

@@ -21,12 +21,9 @@
 local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local loc = TRP3_API.locale.getText;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-
--- WoW functions
-local ShowingCloak, ShowCloak = ShowingCloak, ShowCloak;
-
-local iconOn = "Interface\\ICONS\\INV_Misc_Cape_18";
-local iconOff = "Interface\\ICONS\\item_icecrowncape";
+local tinsert, strconcat, _G = tinsert, strconcat, _G;
+local GetNumLanguages, GetLanguageByIndex = GetNumLanguages, GetLanguageByIndex;
+local ChatFrame1EditBox = ChatFrame1EditBox;
 
 local languagesIcon = {
 
@@ -71,7 +68,7 @@ end
 
 local function onClick(clickedframe)
 	local dropdownItems = {};
-	tinsert(dropdownItems,{"Languages", nil}); -- TODO TRANSLATE
+	tinsert(dropdownItems,{loc("TB_LANGUAGE"), nil});
 	for i = 0, GetNumLanguages() do
 		if GetLanguageByIndex(i) then
 			local language, index = GetLanguageByIndex(i);

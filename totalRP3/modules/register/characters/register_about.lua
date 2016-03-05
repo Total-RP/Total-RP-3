@@ -471,7 +471,6 @@ local function showVotingOption(voteValue)
 		for unitID, _ in pairs(profile.link) do
 			local isOnline = true;
 			if isOnline then
-				-- TODO: check if is online
 				sendVote(voteValue, unitID, profile);
 				sent = true;
 				break;
