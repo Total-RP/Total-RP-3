@@ -919,32 +919,25 @@ function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPositio
 		frame:SetFrameStrata("HIGH");
 	else
 		frame:SetParent(hoveredFrame);
+		frame:Raise();
 	end
 	frame.ArrowRIGHT:Hide();
-	frame.ArrowGlowRIGHT:Hide();
 	frame.ArrowUP:Hide();
-	frame.ArrowGlowUP:Hide();
 	frame.ArrowDOWN:Hide();
-	frame.ArrowGlowDOWN:Hide();
 	frame.ArrowLEFT:Hide();
-	frame.ArrowGlowLEFT:Hide();
 
 	if arrowPosition == "RIGHT" then
 		frame:SetPoint("RIGHT", hoveredFrame, "LEFT", -10 + x, 0 + y);
 		frame.ArrowLEFT:Show();
-		frame.ArrowGlowLEFT:Show();
 	elseif arrowPosition == "LEFT" then
 		frame:SetPoint("LEFT", hoveredFrame, "RIGHT", 10 + x, 0 + y);
 		frame.ArrowRIGHT:Show();
-		frame.ArrowGlowRIGHT:Show();
 	elseif arrowPosition == "TOP" then
 		frame:SetPoint("TOP", hoveredFrame, "BOTTOM", 0 + x, -20 + y);
 		frame.ArrowDOWN:Show();
-		frame.ArrowGlowDOWN:Show();
 	else
 		frame:SetPoint("BOTTOM", hoveredFrame, "TOP", 0 + x, 20 + y);
 		frame.ArrowUP:Show();
-		frame.ArrowGlowUP:Show();
 	end
 
 	frame:Show();

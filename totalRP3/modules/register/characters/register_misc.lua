@@ -26,7 +26,6 @@ local get = TRP3_API.profile.getData;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local assert, table, wipe, _G = assert, table, wipe, _G;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local tinsert, pairs, type, tostring = tinsert, pairs, type, tostring;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;

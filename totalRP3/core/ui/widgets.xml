@@ -209,8 +209,7 @@
 
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-				  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="32"/>
 			</EdgeSize>
@@ -364,8 +363,8 @@
 	<CheckButton name="TRP3_CheckBox" inherits="OptionsCheckButtonTemplate" virtual="true" checked="false">
 		<Scripts>
 			<OnLoad>
-				getglobal(self:GetName().."Text"):SetFontObject(GameFontNormalSmall);
-				self.Text = getglobal(self:GetName().."Text");
+				self.Text = _G[self:GetName() .. "Text"];
+				self.Text:SetFontObject(GameFontNormalSmall);
 			</OnLoad>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -642,41 +641,78 @@
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="BORDER">
-				<Texture parentKey="ArrowGlowUP" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+		</Layers>
+	</Frame>
+
+	<!-- More classic style hovered frame -->
+	<Frame name="TRP3_AltHoveredFrame" virtual="true">
+		<Backdrop bgFile="Interface\Collections\CollectionsBackgroundTile" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="26"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="380"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="4" right="4" top="4" bottom="4"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="220" y="100"/>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture parentKey="ArrowUP" inherits="HelpPlateArrowDOWN" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="TOP" relativePoint="BOTTOM" x="0" y="3"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowGlowDOWN" inherits="HelpPlateArrow-GlowUP" hidden="true" alphaMode="ADD" alpha="0.5">
+				<Texture parentKey="ArrowDOWN" inherits="HelpPlateArrowUP" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="BOTTOM" relativePoint="TOP" x="0" y="-3"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowGlowRIGHT" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+				<Texture parentKey="ArrowRIGHT" inherits="HelpPlateArrowDOWN" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativePoint="LEFT" x="3" y="0"/>
 					</Anchors>
 				</Texture>
-				<Texture parentKey="ArrowGlowLEFT" inherits="HelpPlateArrow-GlowDOWN" hidden="true" alphaMode="ADD" alpha="0.5">
+				<Texture parentKey="ArrowLEFT" inherits="HelpPlateArrowDOWN" hidden="true">
 					<Size x="53" y="21"/>
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT" x="-3" y="0"/>
 					</Anchors>
 				</Texture>
+
+				<Texture parentKey="BGCornerTopLeft" atlas="collections-background-corner" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="9" y="-8"/>
+					</Anchors>
+				</Texture>
+
+				<Texture parentKey="BGCornerTopRight" atlas="collections-background-corner" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-9" y="-8"/>
+					</Anchors>
+					<TexCoords left="1.0" right="0.0" top="0.0" bottom="1.0"/>
+				</Texture>
+
+				<Texture parentKey="BGCornerBottomLeft" atlas="collections-background-corner" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
+					</Anchors>
+					<TexCoords left="0.0" right="1.0" top="1.0" bottom="0.0"/>
+				</Texture>
+
+				<Texture parentKey="BGCornerBottomRight" atlas="collections-background-corner" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-9" y="8"/>
+					</Anchors>
+					<TexCoords left="1.0" right="0.0" top="1.0" bottom="0.0"/>
+				</Texture>
 			</Layer>
 		</Layers>
-		<Scripts>
-			<OnLoad>
-				SetClampedTextureRotation(self.ArrowLEFT, 270);
-				SetClampedTextureRotation(self.ArrowRIGHT, 90);
-				SetClampedTextureRotation(self.ArrowGlowLEFT, 270);
-				SetClampedTextureRotation(self.ArrowGlowRIGHT, 90);
-			</OnLoad>
-		</Scripts>
 	</Frame>
 
 	<!-- Resize button -->

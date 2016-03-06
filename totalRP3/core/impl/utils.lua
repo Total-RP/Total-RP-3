@@ -296,7 +296,7 @@ end
 
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
-Utils.str.getUnitID = function(unit)
+function Utils.str.getUnitID(unit)
 	local playerName, realm = UnitFullName(unit);
 	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
 		return nil;
@@ -308,20 +308,20 @@ Utils.str.getUnitID = function(unit)
 end
 
 -- Return an texture text tag based on the given image url and size.
-Utils.str.texture = function(iconPath, iconSize)
+function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
 	iconSize = iconSize or 15;
 	return strconcat("|T", iconPath, ":", iconSize, ":", iconSize, "|t");
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
-Utils.str.icon = function(iconPath, iconSize)
+function Utils.str.icon(iconPath, iconSize)
 	iconPath = iconPath or Globals.icons.default;
 	return Utils.str.texture("Interface\\ICONS\\" .. iconPath, iconSize);
 end
 
 -- Return a color tag based on a letter
-Utils.str.color = function(color)
+function Utils.str.color(color)
 	color = color or "w"; -- default color if bad argument
 	if color == "r" then return "|cffff0000" end -- red
 	if color == "g" then return "|cff00ff00" end -- green
@@ -335,7 +335,7 @@ Utils.str.color = function(color)
 end
 
 -- If the given string is empty, return nil
-Utils.str.emptyToNil = function(text)
+function Utils.str.emptyToNil(text)
 	if text and #text > 0 then
 		return text;
 	end
@@ -343,7 +343,7 @@ Utils.str.emptyToNil = function(text)
 end
 
 -- Assure that the given string will not be nil
-Utils.str.nilToEmpty = function(text)
+function Utils.str.nilToEmpty(text)
 	return text or "";
 end
 

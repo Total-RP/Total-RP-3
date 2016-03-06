@@ -314,7 +314,7 @@ local function onGlanceSlotClick(button, clickType)
 				y = y / scale;
 				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
 				TRP3_AtFirstGlanceEditor.current = button;
-				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), true, button.targetID, button.profileID);
+				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), TRP3_AtFirstGlanceEditor, button.targetID, button.profileID);
 			end
 		elseif clickType == "RightButton" then
 			displayDropDown(button, getSlotPresetDataForList(), function(value) onGlanceSelection(value, button) end, 0, true);

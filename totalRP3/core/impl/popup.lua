@@ -364,17 +364,17 @@ local function initIconBrowser()
 	end);
 end
 
-function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback, isExternal)
-	TRP3_IconBrowser.isExternal = isExternal;
+function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback, externalFrame, scale)
+	TRP3_IconBrowser.isExternal = externalFrame;
 	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
 	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
 
 	TRP3_IconBrowser:ClearAllPoints();
-	if isExternal then
-		TRP3_IconBrowser:SetScale(0.75);
-		TRP3_IconBrowser:SetParent(TRP3_AtFirstGlanceEditor);
-		TRP3_IconBrowser:SetPoint("RIGHT", TRP3_AtFirstGlanceEditor, "LEFT", -5, 0);
+	if externalFrame then
+		TRP3_IconBrowser:SetScale(scale or 0.75);
+		TRP3_IconBrowser:SetParent(externalFrame);
+		TRP3_IconBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
 		TRP3_IconBrowser:Show();
 	else
 		TRP3_IconBrowser:SetScale(1);
