@@ -685,27 +685,31 @@
 					</Anchors>
 				</Texture>
 
-				<Texture parentKey="BGCornerTopLeft" atlas="collections-background-corner" useAtlasSize="true">
+				<Texture parentKey="BGCornerTopLeft" atlas="collections-background-corner" useAtlasSize="false">
+					<Size x="50" y="50"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="9" y="-8"/>
 					</Anchors>
 				</Texture>
 
-				<Texture parentKey="BGCornerTopRight" atlas="collections-background-corner" useAtlasSize="true">
+				<Texture parentKey="BGCornerTopRight" atlas="collections-background-corner" useAtlasSize="false">
+					<Size x="50" y="50"/>
 					<Anchors>
 						<Anchor point="TOPRIGHT" x="-9" y="-8"/>
 					</Anchors>
 					<TexCoords left="1.0" right="0.0" top="0.0" bottom="1.0"/>
 				</Texture>
 
-				<Texture parentKey="BGCornerBottomLeft" atlas="collections-background-corner" useAtlasSize="true">
+				<Texture parentKey="BGCornerBottomLeft" atlas="collections-background-corner" useAtlasSize="false">
+					<Size x="50" y="50"/>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="9" y="8"/>
 					</Anchors>
 					<TexCoords left="0.0" right="1.0" top="1.0" bottom="0.0"/>
 				</Texture>
 
-				<Texture parentKey="BGCornerBottomRight" atlas="collections-background-corner" useAtlasSize="true">
+				<Texture parentKey="BGCornerBottomRight" atlas="collections-background-corner" useAtlasSize="false">
+					<Size x="50" y="50"/>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="-9" y="8"/>
 					</Anchors>
