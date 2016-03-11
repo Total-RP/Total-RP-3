@@ -935,9 +935,11 @@ function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPositio
 	elseif arrowPosition == "TOP" then
 		frame:SetPoint("TOP", hoveredFrame, "BOTTOM", 0 + x, -20 + y);
 		frame.ArrowDOWN:Show();
-	else
+	elseif arrowPosition == "BOTTOM" then
 		frame:SetPoint("BOTTOM", hoveredFrame, "TOP", 0 + x, 20 + y);
 		frame.ArrowUP:Show();
+	else
+		frame:SetPoint("CENTER", hoveredFrame, "CENTER", 0 + x, 0 + y);
 	end
 
 	frame:Show();
