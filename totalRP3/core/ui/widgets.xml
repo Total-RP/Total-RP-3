@@ -464,7 +464,7 @@
 			</BackgroundInsets>
 		</Backdrop>
 		<Frames>
-			<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
@@ -472,14 +472,14 @@
 					<Anchor point="RIGHT" x="-18" y="0"/>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="$parentText" letters="5000" multiLine="true" enableMouse="false" autoFocus="false">
+					<EditBox name="$parentText" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">
 						<Scripts>
 							<OnShow>
 								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
 							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+									self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
 								end
 							</OnTextChanged>
 							<OnEscapePressed>
@@ -487,18 +487,18 @@
 							</OnEscapePressed>
 							<OnEditFocusGained>
 								self:HighlightText();
-								_G[self:GetParent():GetParent():GetName() .. "FocusDummy"]:Hide();
+								self:GetParent():GetParent().dummy:Hide();
 							</OnEditFocusGained>
 							<OnEditFocusLost>
 								self:HighlightText(0,0);
-								_G[self:GetParent():GetParent():GetName() .. "FocusDummy"]:Show();
+								self:GetParent():GetParent().dummy:Show();
 							</OnEditFocusLost>
 						</Scripts>
 						<FontString inherits="ChatFontNormal"/>
 					</EditBox>
 				</ScrollChild>
 			</ScrollFrame>
-			<Button name="$parentFocusDummy">
+			<Button name="$parentFocusDummy" parentKey="dummy">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="5"/>
 					<Anchor point="BOTTOM" x="0" y="-5"/>
@@ -507,7 +507,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						_G[self:GetParent():GetName() .. "ScrollText"]:SetFocus();
+						self:GetParent().scroll.text:SetFocus();
 					</OnClick>
 				</Scripts>
 			</Button>
