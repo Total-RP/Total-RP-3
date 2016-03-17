@@ -110,6 +110,8 @@ local DROPDOWN_FRAME, DropDownList1, CloseDropDownMenus = "TRP3_UIDD", DropDownL
 local dropDownFrame, currentlyOpenedDrop;
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
+	assert(anchoredFrame, "No anchoredFrame");
+
 	if not dropDownFrame then
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
@@ -172,7 +174,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		"MENU"
 	);
 	dropDownFrame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
+	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
 	currentlyOpenedDrop = anchoredFrame;
 end
@@ -910,15 +912,15 @@ end
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange)
+function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange, parent)
 	x = x or 0;
 	y = y or 0;
 	frame:ClearAllPoints();
 	if not noStrataChange then
-		frame:SetParent(hoveredFrame:GetParent());
+		frame:SetParent(parent or hoveredFrame:GetParent());
 		frame:SetFrameStrata("HIGH");
 	else
-		frame:SetParent(hoveredFrame);
+		frame:SetParent(parent or hoveredFrame);
 		frame:Raise();
 	end
 	frame.ArrowRIGHT:Hide();

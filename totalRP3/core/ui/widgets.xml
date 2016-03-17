@@ -642,6 +642,12 @@
 				</Texture>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad>
+				SetClampedTextureRotation(self.ArrowLEFT, 270);
+				SetClampedTextureRotation(self.ArrowRIGHT, 90);
+			</OnLoad>
+		</Scripts>
 	</Frame>
 
 	<!-- More classic style hovered frame -->
@@ -717,6 +723,12 @@
 				</Texture>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnLoad>
+				SetClampedTextureRotation(self.ArrowLEFT, 270);
+				SetClampedTextureRotation(self.ArrowRIGHT, 90);
+			</OnLoad>
+		</Scripts>
 	</Frame>
 
 	<!-- Resize button -->

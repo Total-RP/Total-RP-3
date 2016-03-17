@@ -24,6 +24,13 @@ local loc = TRP3_API.locale.getText;
 -- Effetc structure
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local security = {
+	LOW = 1,
+	MEDIUM = 2,
+	HIGH = 3,
+};
+TRP3_API.script.security = security;
+
 local EFFECTS = {
 
 	["MISSING"] = {
@@ -32,7 +39,8 @@ local EFFECTS = {
 		end,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	-- Graphic
@@ -42,10 +50,10 @@ local EFFECTS = {
 			local type = args[2] or 1;
 			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, type);
 		end,
-		args = 1,
 		env = {
 			message = "TRP3_API.utils.message.displayMessage",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	-- Sounds
@@ -58,7 +66,8 @@ local EFFECTS = {
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	["dismissCritter"] = {
@@ -67,7 +76,8 @@ local EFFECTS = {
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	-- DEBUG EFFECTs
@@ -79,7 +89,8 @@ local EFFECTS = {
 		env = {
 			debug = "TRP3_API.utils.log.log",
 			DEBUG = "TRP3_API.utils.log.level.DEBUG",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	["debugDumpArg"] = {
@@ -91,7 +102,8 @@ local EFFECTS = {
 			dump = "TRP3_API.utils.table.dump",
 			debug = "TRP3_API.utils.log.log",
 			DEBUG = "TRP3_API.utils.log.level.DEBUG",
-		}
+		},
+		secured = security.HIGH,
 	},
 
 	["debugDumpArgs"] = {
@@ -100,7 +112,8 @@ local EFFECTS = {
 		end,
 		env = {
 			dump = "TRP3_API.utils.table.dump",
-		}
+		},
+		secured = security.HIGH,
 	},
 }
 

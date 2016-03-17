@@ -248,7 +248,8 @@ local function writeEffect(effectStructure)
 
 	local effectCode;
 
-	if effectInfo.protected then
+	if effectInfo.secured and effectInfo.secured ~= TRP3_API.script.security.HIGH then
+		-- TODO: security system
 		effectCode = "lastEffectReturn = protected();";
 		CURRENT_ENVIRONMENT["protected"] = "TRP3_API.script.protected";
 	else
