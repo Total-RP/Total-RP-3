@@ -25,6 +25,9 @@ local faction, faction_loc = UnitFactionGroup("player");
 -- Public accessor
 TRP3_API = {
 	r = {},
+	formats = {
+		dropDownElements = "%s: |cff00ff00%s"
+	},
 	globals = {
 		DEBUG_MODE = TRP3_DEBUG or false,
 		empty = {},
