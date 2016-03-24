@@ -71,7 +71,7 @@ local EFFECTS = {
 
 	-- Companions
 
-	["dismiss_mount"] = {
+	["companion_dismiss_mount"] = {
 		codeReplacementFunc = function ()
 			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"
 		end,
@@ -81,12 +81,22 @@ local EFFECTS = {
 		secured = security.MEDIUM,
 	},
 
-	["dismiss_critter"] = {
+	["companion_dismiss_critter"] = {
 		codeReplacementFunc = function ()
 			return "DismissCompanion(\"CRITTER\"); lastEffectReturn = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
+		},
+		secured = security.HIGH,
+	},
+
+	["companion_random_critter"] = {
+		codeReplacementFunc = function ()
+			return "SummonRandomPet(); lastEffectReturn = 0;"
+		end,
+		env = {
+			SummonRandomPet = "C_PetJournal.SummonRandomPet",
 		},
 		secured = security.HIGH,
 	},
