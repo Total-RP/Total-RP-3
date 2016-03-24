@@ -385,6 +385,10 @@ function TRP3_NAV()
 	end});
 	-- Puic
 end
+-- /run displaydraft();
+function displaydraft()
+	Utils.table.dump(TRP3_ToolFrame.rootDraft);
+end
 
 local MODULE_STRUCTURE = {
 	["name"] = "Unit testing",

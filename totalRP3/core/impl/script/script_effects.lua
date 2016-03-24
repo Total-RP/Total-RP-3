@@ -56,21 +56,32 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
+	-- Programmic
+	["var_set_execenv"] = {
+		codeReplacementFunc = function (args)
+			local varName = args[1] or "var";
+			local varValue = args[2] or "";
+			return ("args.custom[\"%s\"] = \"%s\"; lastEffectReturn = 0;"):format(varName, varValue);
+		end,
+		env = {},
+		secured = security.HIGH,
+	},
+
 	-- Sounds
 
 	-- Companions
 
-	["dismissMount"] = {
+	["dismiss_mount"] = {
 		codeReplacementFunc = function ()
 			return "DismissCompanion(\"MOUNT\"); lastEffectReturn = 0;"
 		end,
 		env = {
 			DismissCompanion = "DismissCompanion",
 		},
-		secured = security.HIGH,
+		secured = security.MEDIUM,
 	},
 
-	["dismissCritter"] = {
+	["dismiss_critter"] = {
 		codeReplacementFunc = function ()
 			return "DismissCompanion(\"CRITTER\"); lastEffectReturn = 0;"
 		end,
@@ -81,11 +92,11 @@ local EFFECTS = {
 	},
 
 	-- DEBUG EFFECTs
-	["debugText"] = {
+	["debug_dump_text"] = {
 		codeReplacementFunc = function (args)
-			return ("debug(\"%s\", DEBUG);"):format(unpack(args));
+			local value = tostring(args[1]);
+			return ("debug(\"%s\", DEBUG);"):format(value);
 		end,
-		args = 1,
 		env = {
 			debug = "TRP3_API.utils.log.log",
 			DEBUG = "TRP3_API.utils.log.level.DEBUG",
@@ -93,10 +104,10 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
-	["debugDumpArg"] = {
+	["debug_dump_arg"] = {
 		codeReplacementFunc = function (args)
 			local value = tostring(args[1]);
-			return ("debug(\"Dumping arg %s\", DEBUG); dump(args.%s);"):format(value, value);
+			return ("debug(\"Dumping args.custom['%s']\", DEBUG); dump(args.custom[\"%s\"]);"):format(value, value);
 		end,
 		env = {
 			dump = "TRP3_API.utils.table.dump",
@@ -106,7 +117,7 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
-	["debugDumpArgs"] = {
+	["debug_dump_args"] = {
 		codeReplacementFunc = function ()
 			return "dump(args);";
 		end,

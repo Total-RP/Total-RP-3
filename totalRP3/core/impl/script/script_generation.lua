@@ -396,6 +396,7 @@ local function generateCode(effectStructure, securityContext)
 	writeLine("local func = function(args)");
 	addIndent();
 	writeLine("args = args or EMPTY;");
+	writeLine("if not args.custom then args.custom = {}; end");
 	writeLine("local conditionStorage = {};"); -- Store conditions evaluation
 	writeLine("local lastEffectReturn;"); -- Store last return value from effect, to be able to test it in further conditions.
 	writeElement("1"); -- 1 is always the first element

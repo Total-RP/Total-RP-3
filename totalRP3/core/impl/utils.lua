@@ -143,25 +143,25 @@ local function tableDump(table, level, withCount)
 	if type(table) == "table" then
 		for key, value in pairs(table) do
 			if type(value) == "table" then
-				print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{", Log.level.DEBUG);
 				tableDump(value, level + 1);
-				print(dumpIndent .. dumpColor3 .. "}");
+				log(dumpIndent .. dumpColor3 .. "}", Log.level.DEBUG);
 			elseif type(value) == "function" then
-				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
 			else
-				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
 			end
 			i = i + 1;
 		end
 	end
 	
 	if withCount then
-		print(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i));
+		log(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i), Log.level.DEBUG);
 	end
 end
 
 Utils.table.dump = function(table, withCount)
-	print(dumpColor1 .. "Dump table ".. tostring(table));
+	log(dumpColor1 .. "Dump: ".. tostring(table), Log.level.DEBUG);
 	if table then
 		tableDump(table, 1, withCount);
 	end
