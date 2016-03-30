@@ -485,6 +485,7 @@ local function onStart()
 		RA = "RA",
 		RC = "CL",
 		AG = "AG",
+		AE = "AE",
 		AH = "HE",
 		AW = "WE",
 		HH = "RE",
