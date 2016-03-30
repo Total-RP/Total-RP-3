@@ -437,7 +437,7 @@ function hooking()
 end
 
 hooksecurefunc("ChatEdit_InsertLink", function(name)
-	local activeChatFrame = ChatEdit_GetActiveWindow()
+	local activeChatFrame = ChatEdit_GetActiveWindow();
 	if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 		local editBox = activeChatFrame.chatFrame.editBox;
 		local currentText = editBox:GetText();
@@ -448,8 +448,8 @@ hooksecurefunc("ChatEdit_InsertLink", function(name)
 
 		local info = getCharacterInfoTab(name);
 		local nameMethod = configNameMethod();
-		if nameMethod ~= 1 then -- TRP3 names
-			local characteristics = info.characteristics or {};
+		if info and info.characteristics and nameMethod ~= 1 then -- TRP3 names
+			local characteristics = info.characteristics;
 			if characteristics.FN then
 				name = characteristics.FN;
 			end
