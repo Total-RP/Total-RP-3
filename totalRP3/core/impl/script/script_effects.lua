@@ -56,6 +56,30 @@ local EFFECTS = {
 		secured = security.HIGH,
 	},
 
+	-- Speech
+	["speech_env"] = {
+		codeReplacementFunc = function (args)
+			local text = args[1] or "";
+			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(text);
+		end,
+		env = {
+			SendChatMessage = "SendChatMessage",
+		},
+		secured = security.LOW,
+	},
+	["speech_npc"] = {
+		codeReplacementFunc = function (args)
+			local name = args[1] or "";
+			local type = args[2] or " says:"; -- TODO: locals
+			local text = args[3] or "";
+			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(name .. type .. text);
+		end,
+		env = {
+			SendChatMessage = "SendChatMessage",
+		},
+		secured = security.LOW,
+	},
+
 	-- Programmic
 	["var_set_execenv"] = {
 		codeReplacementFunc = function (args)

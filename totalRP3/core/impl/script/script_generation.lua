@@ -248,11 +248,11 @@ local function writeEffect(effectStructure)
 
 	local effectCode;
 
-	if effectInfo.secured and effectInfo.secured ~= TRP3_API.script.security.HIGH then
+--	if effectInfo.secured and effectInfo.secured ~= TRP3_API.script.security.HIGH then
 		-- TODO: security system
-		effectCode = "lastEffectReturn = protected();";
-		CURRENT_ENVIRONMENT["protected"] = "TRP3_API.script.protected";
-	else
+--		effectCode = "lastEffectReturn = protected();";
+--		CURRENT_ENVIRONMENT["protected"] = "TRP3_API.script.protected";
+--	else
 		-- Register operand environment
 		if effectInfo.env then
 			for map, g in pairs(effectInfo.env) do
@@ -260,7 +260,7 @@ local function writeEffect(effectStructure)
 			end
 		end
 		effectCode = effectInfo.codeReplacementFunc(escapeArguments(effectStructure.args), effectStructure.id);
-	end
+--	end
 
 	if effectStructure.cond and #effectStructure.cond > 0 then
 		startIf(writeCondition(effectStructure.cond, effectStructure.condID));
