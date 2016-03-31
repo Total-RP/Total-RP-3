@@ -421,6 +421,7 @@ local function onStart()
 		end
 		msp.my['IC'] = dataTab.IC or Globals.icons.profile_default;
 		msp.my['NT'] = dataTab.FT;
+		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
 		if dataTab.CL and dataTab.CH and dataTab.CH:len() > 0 then
 			msp.my['RC'] = "|cff"..dataTab.CH..dataTab.CL.."|r";
@@ -484,6 +485,7 @@ local function onStart()
 		RA = "RA",
 		RC = "CL",
 		AG = "AG",
+		AE = "AE",
 		AH = "HE",
 		AW = "WE",
 		HH = "RE",

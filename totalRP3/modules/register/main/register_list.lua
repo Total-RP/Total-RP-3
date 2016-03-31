@@ -303,7 +303,7 @@ local function getCharacterLines()
 		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
 
 		-- Defines if at least one character is conform to the search criteria
-		for unitID, _ in pairs(profile.link) do
+		for unitID, _ in pairs(profile.link or Globals.empty) do
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if safeMatch(unitName:lower(), nameSearch) then
 				nameIsConform = true;

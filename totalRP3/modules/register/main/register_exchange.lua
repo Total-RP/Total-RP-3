@@ -263,7 +263,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function incomingInformationType(informationType, senderID)
-	local data = nil;
+	local data;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
 		data = getCharExchangeData();
 	elseif informationType == registerInfoTypes.ABOUT then
