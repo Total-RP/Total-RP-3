@@ -348,11 +348,17 @@ end
 writeElement = function(elementID)
 	assert(elementID, "elementID is nil");
 	local element = CURRENT_STRUCTURE[elementID];
-	assert(element, "Unknown element ID: " .. elementID);
 
 	if DEBUG then
 		writeLine("");
 		writeLine("-- Element " .. elementID);
+	end
+
+	if not element then
+		if DEBUG then
+			writeLine("-- WARNING: Unknown element ID: " .. elementID);
+		end
+		return;
 	end
 
 	if element.t == "list" then
