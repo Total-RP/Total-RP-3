@@ -1016,11 +1016,10 @@ local SPEECH_PREFIX = {
 TRP3_API.ui.misc.SPEECH_PREFIX = SPEECH_PREFIX;
 
 function TRP3_API.ui.misc.getSpeechPrefixText(speechPrefix, npcName, text)
-
 	if speechPrefix == SPEECH_PREFIX.SAYS then
-		return ("%s %s: %s"):format(npcName, "says", text);
+		return ("%s %s: %s"):format(npcName, loc("NPC_SAYS"), text);
 	elseif speechPrefix == SPEECH_PREFIX.YELLS then
-		return ("%s %s: %s"):format(npcName, "yells", text);
+		return ("%s %s: %s"):format(npcName, loc("NPC_YELLS"), text);
 	end
 	return "...";
 end
