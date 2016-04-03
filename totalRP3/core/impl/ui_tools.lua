@@ -1004,3 +1004,23 @@ TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
 	end
 	TRP3_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
 end);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC speech
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local SPEECH_PREFIX = {
+	SAYS = "/s",
+	YELLS = "/y",
+}
+TRP3_API.ui.misc.SPEECH_PREFIX = SPEECH_PREFIX;
+
+function TRP3_API.ui.misc.getSpeechPrefixText(speechPrefix, npcName, text)
+
+	if speechPrefix == SPEECH_PREFIX.SAYS then
+		return ("%s %s: %s"):format(npcName, "says", text);
+	elseif speechPrefix == SPEECH_PREFIX.YELLS then
+		return ("%s %s: %s"):format(npcName, "yells", text);
+	end
+	return "...";
+end

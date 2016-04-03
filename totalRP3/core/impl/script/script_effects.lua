@@ -19,6 +19,7 @@
 
 local assert, type, tostring, error, tonumber, pairs, unpack, wipe = assert, type, tostring, error, tonumber, pairs, unpack, wipe;
 local loc = TRP3_API.locale.getText;
+local getSpeechPrefixText = TRP3_API.ui.misc.getSpeechPrefixText;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Effetc structure
@@ -70,9 +71,9 @@ local EFFECTS = {
 	["speech_npc"] = {
 		codeReplacementFunc = function (args)
 			local name = args[1] or "";
-			local type = args[2] or " says:"; -- TODO: locals
+			local type = args[2] or TRP3_API.ui.misc.SPEECH_PREFIX.SAYS;
 			local text = args[3] or "";
-			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(name .. type .. text);
+			return ("SendChatMessage(\"|| %s\", 'EMOTE'); lastEffectReturn = 0;"):format(getSpeechPrefixText(type, name, text));
 		end,
 		env = {
 			SendChatMessage = "SendChatMessage",
