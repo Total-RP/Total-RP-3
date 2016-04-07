@@ -47,8 +47,6 @@ local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
 
-local currentlyPlayingHandler;
-
 function Utils.pcall(func, ...)
 	if func then
 		return {pcall(func, ...)};
@@ -696,31 +694,65 @@ function TRP3_EventDispatcher(self, event, ...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MUSIC
+-- MUSIC / SOUNDS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local soundHandlers = {};
 
-Utils.music.stop = function()
-	if currentlyPlayingHandler then
-		StopSound(currentlyPlayingHandler);
-		currentlyPlayingHandler = nil;
-	end
-	StopMusic();
+function Utils.music.getHandlers()
+	return soundHandlers;
 end
 
-Utils.music.play = function(music)
+function Utils.music.clearHandlers()
+	return wipe(soundHandlers);
+end
+
+function Utils.music.playSoundID(soundID, channel, source)
+	assert(soundID, "soundID can't be nil.")
+	local willPlay, handlerID = PlaySoundKitID(soundID, channel, false);
+	if willPlay then
+		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S")});
+		if TRP3_SoundsHistoryFrame then
+			TRP3_SoundsHistoryFrame.onSoundPlayed();
+		end
+	end
+	return willPlay;
+end
+
+function Utils.music.stopSound(handlerID)
+	StopSound(handlerID);
+end
+
+function Utils.music.stopChannel(channel)
+	for index, handler in pairs(soundHandlers) do
+		if not channel or handler.channel == channel then
+			Utils.music.stopSound(handler.handlerID);
+		end
+	end
+end
+
+function Utils.music.stopMusic()
+	StopMusic();
+	Utils.music.stopChannel("Music");
+end
+
+function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
-	Utils.music.stop();
+	Utils.music.stopMusic();
 	if type(music) == "number" then
 		Log.log("Playing sound: " .. music);
-		currentlyPlayingHandler = select(2, PlaySoundKitID(music, "Music"));
+		Utils.music.playSoundID(music, "Music");
 	else
 		Log.log("Playing music: " .. music);
 		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
+		tinsert(soundHandlers, {channel = "Music", id = music, handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S")});
+		if TRP3_SoundsHistoryFrame then
+			TRP3_SoundsHistoryFrame.onSoundPlayed();
+		end
 	end
 end
 
-Utils.music.getTitle = function(musicURL)
+function Utils.music.getTitle(musicURL)
 	return type(musicURL) == "number" and musicURL or musicURL:match("[%\\]?([^%\\]+)$");
 end
 

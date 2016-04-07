@@ -793,9 +793,9 @@ local function onMusicEditSelected(value, button)
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
 	elseif value == 3 and draftData.MU then
-		Utils.music.play(draftData.MU);
+		Utils.music.playMusic(draftData.MU);
 	elseif value == 4 and draftData.MU then
-		Utils.music.stop();
+		Utils.music.stopMusic();
 	end
 end
 
@@ -953,9 +953,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 			onClick = function(unitID, _, button)
 				if button == "LeftButton" then
-					Utils.music.play(getUnitIDTheme(unitID));
+					Utils.music.playMusic(getUnitIDTheme(unitID));
 				else
-					Utils.music.stop();
+					Utils.music.stopMusic();
 				end
 			end,
 			adapter = function(buttonStructure, unitID)
@@ -1035,10 +1035,10 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() showVotingOption(-1) end);
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
-		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);
+		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetScript("OnClick", function()
-		Utils.music.stop();
+		Utils.music.stopMusic();
 	end);
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data

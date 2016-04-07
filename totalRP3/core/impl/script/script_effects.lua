@@ -48,7 +48,7 @@ local EFFECTS = {
 	["text"] = {
 		codeReplacementFunc = function (args)
 			local text = args[1] or "";
-			local type = args[2] or 1;
+			local type = tonumber(args[2]) or 1;
 			return ("message(\"%s\", %s); lastEffectReturn = 0;"):format(text, type);
 		end,
 		env = {
@@ -93,6 +93,29 @@ local EFFECTS = {
 	},
 
 	-- Sounds
+	["sound_id_self"] = {
+		codeReplacementFunc = function (args)
+			local soundID = tonumber(args[2] or 0);
+			local channel = args[1] or "SFX";
+			local source = "Script"; -- TODO: get source
+			return ("lastEffectReturn = playSoundID(%s, \"%s\", \"%s\");"):format(soundID, channel, source);
+		end,
+		env = {
+			playSoundID = "TRP3_API.utils.music.playSoundID",
+		},
+		secured = security.HIGH,
+	},
+
+	["sound_music_self"] = {
+		codeReplacementFunc = function (args)
+			local path = (args[1] or ""):gsub("\\", "\\\\");
+			return ("lastEffectReturn = playMusic(\"%s\");"):format(path);
+		end,
+		env = {
+			playMusic = "TRP3_API.utils.music.playMusic",
+		},
+		secured = security.HIGH,
+	},
 
 	-- Companions
 

@@ -94,7 +94,7 @@ local function onStart()
 				uiButton:SetPoint("TOPLEFT", x, y);
 				uiButton:SetScript("OnClick", function(self, button)
 					if buttonStructure.onClick then
-						buttonStructure.onClick(uiButton, buttonStructure, button);
+						buttonStructure.onClick(self, buttonStructure, button);
 					end
 				end);
 				uiButton:SetScript("OnEnter", function(self)

@@ -402,6 +402,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
+	-- When receiving HELLO from someone else (from the other side ?)
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
 		version = tonumber(version);
 		if sender ~= Globals.player_id then

@@ -485,7 +485,7 @@ local function executeFunction(func, args)
 		return ret;
 	else
 		TRP3_API.utils.message.displayMessage(loc("SCRIPT_ERROR"));
-		if DEBUG then log(tostring(ret), logLevel.WARN) end
+		log(tostring(ret), logLevel.WARN);
 	end
 end
 
