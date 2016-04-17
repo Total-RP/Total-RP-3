@@ -562,16 +562,28 @@ local function initColorBrowser()
 
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
 		hidePopups();
+		TRP3_ColorBrowser:Hide();
 		if TRP3_ColorBrowser.callback ~= nil then
 			TRP3_ColorBrowser.callback(TRP3_ColorBrowser.red * 255, TRP3_ColorBrowser.green * 255, TRP3_ColorBrowser.blue * 255);
 		end
 	end);
 end
 
-function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
+function TRP3_API.popup.showColorBrowser(callback, red, green, blue, externalFrame)
 	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
 	TRP3_ColorBrowser.callback = callback;
-	showPopup(TRP3_ColorBrowser);
+
+	TRP3_ColorBrowser:ClearAllPoints();
+	if externalFrame then
+		TRP3_ColorBrowser:SetParent(externalFrame);
+		TRP3_ColorBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
+		TRP3_ColorBrowser:Show();
+	else
+		TRP3_ColorBrowser:SetParent(TRP3_PopupsFrame);
+		TRP3_ColorBrowser:SetPoint("CENTER", 0, 0);
+		showPopup(TRP3_ColorBrowser);
+	end
+
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -580,10 +592,12 @@ end
 
 local imageWidgetTab = {};
 local filteredImageList = {};
+local TRP3_ImageBrowser = TRP3_ImageBrowser;
 
 local function onImageSelect()
 	assert(TRP3_ImageBrowserContent.currentImage, "No current image ...");
 	hidePopups();
+	TRP3_ImageBrowser:Hide();
 	if TRP3_ImageBrowser.callback then
 		TRP3_ImageBrowser.callback(filteredImageList[TRP3_ImageBrowserContent.currentImage]);
 	end
@@ -632,9 +646,19 @@ local function initImageBrowser()
 	filteredImageBrowser();
 end
 
-function TRP3_API.popup.showImageBrowser(callback)
+function TRP3_API.popup.showImageBrowser(callback, externalFrame)
 	TRP3_ImageBrowser.callback = callback;
-	showPopup(TRP3_ImageBrowser);
+
+	TRP3_ImageBrowser:ClearAllPoints();
+	if externalFrame then
+		TRP3_ImageBrowser:SetParent(externalFrame);
+		TRP3_ImageBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
+		TRP3_ImageBrowser:Show();
+	else
+		TRP3_ImageBrowser:SetParent(TRP3_PopupsFrame);
+		TRP3_ImageBrowser:SetPoint("CENTER", 0, 0);
+		showPopup(TRP3_ImageBrowser);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -857,24 +857,24 @@ local function onContainerTagClicked(button, frame, isP)
 	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
 end
 
-function TRP3_API.ui.text.setupToolbar(toolbar, textFrame)
-	_G[toolbar .. "_Title"]:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
-	_G[toolbar .. "_Image"]:SetText(loc("CM_IMAGE"));
-	_G[toolbar .. "_Icon"]:SetText(loc("CM_ICON"));
-	_G[toolbar .. "_Color"]:SetText(loc("CM_COLOR"));
-	_G[toolbar .. "_Link"]:SetText(loc("CM_LINK"));
-	_G[toolbar .. "_H1"].tagIndex = 1;
-	_G[toolbar .. "_H2"].tagIndex = 2;
-	_G[toolbar .. "_H3"].tagIndex = 3;
-	_G[toolbar .. "_P"].tagIndex = 4;
-	_G[toolbar .. "_H1"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_H2"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_H3"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_P"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
-	_G[toolbar .. "_Icon"]:SetScript("OnClick", function() TRP3_API.popup.showIconBrowser(function(icon) onIconTagSelected(icon, textFrame) end) end);
-	_G[toolbar .. "_Color"]:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end) end);
-	_G[toolbar .. "_Image"]:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(function(image) onImageTagSelected(image, textFrame) end) end);
-	_G[toolbar .. "_Link"]:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
+function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame)
+	toolbar.title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
+	toolbar.image:SetText(loc("CM_IMAGE"));
+	toolbar.icon:SetText(loc("CM_ICON"));
+	toolbar.color:SetText(loc("CM_COLOR"));
+	toolbar.link:SetText(loc("CM_LINK"));
+	toolbar.h1.tagIndex = 1;
+	toolbar.h2.tagIndex = 2;
+	toolbar.h3.tagIndex = 3;
+	toolbar.p.tagIndex = 4;
+	toolbar.h1:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.h2:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.h3:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.p:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
+	toolbar.icon:SetScript("OnClick", function() TRP3_API.popup.showIconBrowser(function(icon) onIconTagSelected(icon, textFrame) end, nil, parentFrame, 1) end);
+	toolbar.color:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end, nil, nil, nil, parentFrame) end);
+	toolbar.image:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(function(image) onImageTagSelected(image, textFrame) end, parentFrame) end);
+	toolbar.link:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

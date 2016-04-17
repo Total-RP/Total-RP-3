@@ -28,7 +28,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parent_Title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
+				<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
 					<Anchors>
 						<Anchor point="TOP" x="0" y="13"/>
 					</Anchors>
@@ -37,52 +37,52 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parent_H1" inherits="TRP3_CommonButton" text="H1">
+			<Button parentKey="h1" inherits="TRP3_CommonButton" text="H1">
 				<Size x="50" y="20"/>
 				<Anchors>	
 					<Anchor point="LEFT" x="10" y="2"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_H2" inherits="TRP3_CommonButton" text="H2">
+			<Button parentKey="h2" inherits="TRP3_CommonButton" text="H2">
 				<Size x="50" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H1"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h1"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_H3" inherits="TRP3_CommonButton" text="H3">
+			<Button parentKey="h3" inherits="TRP3_CommonButton" text="H3">
 				<Size x="50" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H2"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h2"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_P" inherits="TRP3_CommonButton" text="P">
+			<Button parentKey="p" inherits="TRP3_CommonButton" text="P">
 				<Size x="40" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_H3"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.h3"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_Image" inherits="TRP3_CommonButton" text="[Image]">
+			<Button parentKey="image" inherits="TRP3_CommonButton" text="[Image]">
 				<Size x="70" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_P"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.p"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_Icon" inherits="TRP3_CommonButton" text="[Icon]">
+			<Button parentKey="icon" inherits="TRP3_CommonButton" text="[Icon]">
 				<Size x="70" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Image"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.image"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_Color" inherits="TRP3_CommonButton" text="[Color]">
+			<Button parentKey="color" inherits="TRP3_CommonButton" text="[Color]">
 				<Size x="70" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Icon"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.icon"/>
 				</Anchors>
 			</Button>
-			<Button name="$parent_Link" inherits="TRP3_CommonButton" text="[Link]">
+			<Button parentKey="link" inherits="TRP3_CommonButton" text="[Link]">
 				<Size x="0" y="20"/>
 				<Anchors>	
-					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeTo="$parent_Color"/>
+					<Anchor point="LEFT" x="0" y="0" relativePoint="RIGHT" relativeKey="$parent.color"/>
 					<Anchor point="RIGHT" x="-5" y="0"/>
 				</Anchors>
 			</Button>
