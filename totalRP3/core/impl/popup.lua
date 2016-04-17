@@ -646,19 +646,8 @@ local function initImageBrowser()
 	filteredImageBrowser();
 end
 
-function TRP3_API.popup.showImageBrowser(callback, externalFrame)
+local function showImageBrowser(callback, externalFrame)
 	TRP3_ImageBrowser.callback = callback;
-
-	TRP3_ImageBrowser:ClearAllPoints();
-	if externalFrame then
-		TRP3_ImageBrowser:SetParent(externalFrame);
-		TRP3_ImageBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
-		TRP3_ImageBrowser:Show();
-	else
-		TRP3_ImageBrowser:SetParent(TRP3_PopupsFrame);
-		TRP3_ImageBrowser:SetPoint("CENTER", 0, 0);
-		showPopup(TRP3_ImageBrowser);
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -675,4 +664,51 @@ function TRP3_API.popup.init()
 	initMusicBrowser();
 	initColorBrowser();
 	initImageBrowser();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- POPUP REFACTOR
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tostring, type, unpack = tostring, type, unpack;
+
+TRP3_API.popup.IMAGES = "images";
+TRP3_API.popup.ICONS = "icons";
+TRP3_API.popup.COLORS = "colors";
+TRP3_API.popup.MUSICS = "musics";
+
+local POPUP_STRUCTURE = {
+	[TRP3_API.popup.IMAGES] = {
+		frame = TRP3_ImageBrowser,
+		showMethod = showImageBrowser,
+	}
+}
+
+function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
+	assert(popupID and POPUP_STRUCTURE[popupID], "Unknown popupID: " .. tostring(popupID));
+	assert(popupPosition == nil or type(popupPosition) == "table", "PopupPosition must be a table or be nil");
+	assert(popupArgs == nil or type(popupArgs) == "table", "PopupArgs must be a table or be nil");
+
+	local popup = POPUP_STRUCTURE[popupID];
+
+	popup.frame:ClearAllPoints();
+
+	if popupPosition.parent then
+		popup.frame:SetParent(popupPosition.parent);
+		popup.frame:SetPoint(popupPosition.point, popupPosition.parent, popupPosition.parentPoint, 0, 0);
+		popup.frame:Show();
+	else
+		popup.frame:SetParent(TRP3_PopupsFrame);
+		popup.frame:SetPoint("CENTER", 0, 0);
+		for _, frame in pairs({TRP3_PopupsFrame:GetChildren()}) do
+			frame:Hide();
+		end
+		TRP3_PopupsFrame:Show();
+		popup.frame:Show();
+	end
+
+	if popup.showMethod then
+		popup.showMethod(unpack(popupArgs));
+	end
+
 end

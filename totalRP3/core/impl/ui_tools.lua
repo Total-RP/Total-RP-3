@@ -857,7 +857,7 @@ local function onContainerTagClicked(button, frame, isP)
 	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
 end
 
-function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame)
+function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
 	toolbar.title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
 	toolbar.image:SetText(loc("CM_IMAGE"));
 	toolbar.icon:SetText(loc("CM_ICON"));
@@ -873,7 +873,12 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame)
 	toolbar.p:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
 	toolbar.icon:SetScript("OnClick", function() TRP3_API.popup.showIconBrowser(function(icon) onIconTagSelected(icon, textFrame) end, nil, parentFrame, 1) end);
 	toolbar.color:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end, nil, nil, nil, parentFrame) end);
-	toolbar.image:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(function(image) onImageTagSelected(image, textFrame) end, parentFrame) end);
+	toolbar.image:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(
+			TRP3_API.popup.IMAGES,
+			{parent = parentFrame, point = point, parentPoint = parentPoint},
+			{function(image) onImageTagSelected(image, textFrame) end})
+	end);
 	toolbar.link:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
 end
 
