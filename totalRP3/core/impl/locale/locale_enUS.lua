@@ -836,6 +836,10 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
+        COM_STASH_DATA = [[|cffff0000Are you sure you want to stash away your Total RP 3 data?|r
+
+Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
+|cff00ff00Use the same command again (|cff999999/trp3 stash|r) to restore your data.|r]],
 
 		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.2{/col}{/h3}
 {h3}1. Resizable frame{/h3}
