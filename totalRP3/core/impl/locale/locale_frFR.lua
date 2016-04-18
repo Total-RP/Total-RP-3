@@ -3,7 +3,7 @@
 -- French locale
 -- ---------------------------------------------------------------------------
 -- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
--- Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
+-- Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 -- Thanks to Solanya Stormbreaker ( http://www.curseforge.com/profiles/SolanyaStormbreaker/ )
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
