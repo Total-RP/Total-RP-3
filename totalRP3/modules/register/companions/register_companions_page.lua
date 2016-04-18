@@ -371,7 +371,9 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
+local showIconBrowser = function(callback)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+end;
 
 -- Tutorial
 local TUTORIAL_STRUCTURE_EDIT;

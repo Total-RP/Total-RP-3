@@ -594,9 +594,9 @@
 			</OnLoad>
 			<OnClick>
 				if button == "LeftButton" then
-				TRP3_API.popup.showColorBrowser(self.setColor, self.red, self.green, self.blue);
+					TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil ,{self.setColor, self.red, self.green, self.blue});
 				elseif button == "RightButton" then
-				self.setColor(nil, nil, nil);
+					self.setColor(nil, nil, nil);
 				end
 			</OnClick>
 			<OnEnter>

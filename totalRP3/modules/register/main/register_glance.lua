@@ -181,7 +181,11 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
 	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
 		TRP3_API.popup.hideIconBrowser();
-		TRP3_API.popup.showIconBrowser(onIconSelected, nil, self.isExternal);
+		if self.isExternal then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, 0.75});
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected});
+		end
 	end);
 	onIconSelected(slotData.IC);
 	TRP3_API.popup.hideIconBrowser();

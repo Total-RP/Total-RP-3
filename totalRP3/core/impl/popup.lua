@@ -198,7 +198,7 @@ TRP3_API.popup.hidePopups = hidePopups;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Music browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+local TRP3_MusicBrowser = TRP3_MusicBrowser;
 local musicWidgetTab = {};
 local filteredMusicList;
 
@@ -263,10 +263,9 @@ local function initMusicBrowser()
 	filteredMusicBrowser();
 end
 
-function TRP3_API.popup.showMusicBrowser(callback)
+local function showMusicBrowser(callback)
 	TRP3_MusicBrowserContent.callback = callback;
 	TRP3_MusicBrowserFilterBox:SetText("");
-	showPopup(TRP3_MusicBrowser);
 	TRP3_MusicBrowserFilterBox:SetFocus();
 end
 
@@ -364,26 +363,12 @@ local function initIconBrowser()
 	end);
 end
 
-function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback, externalFrame, scale)
-	TRP3_IconBrowser.isExternal = externalFrame;
+local function showIconBrowser(onSelectCallback, onCancelCallback, scale)
 	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
 	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
-
-	TRP3_IconBrowser:ClearAllPoints();
-	if externalFrame then
-		TRP3_IconBrowser:SetScale(scale or 0.75);
-		TRP3_IconBrowser:SetParent(externalFrame);
-		TRP3_IconBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
-		TRP3_IconBrowser:Show();
-	else
-		TRP3_IconBrowser:SetScale(1);
-		TRP3_IconBrowser:SetParent(TRP3_PopupsFrame);
-		TRP3_IconBrowser:SetPoint("CENTER", 0, 0);
-		showPopup(TRP3_IconBrowser);
-	end
-
 	TRP3_IconBrowserFilterBox:SetFocus();
+	TRP3_IconBrowser:SetScale(scale or 1);
 end
 
 function TRP3_API.popup.hideIconBrowser()
@@ -569,21 +554,9 @@ local function initColorBrowser()
 	end);
 end
 
-function TRP3_API.popup.showColorBrowser(callback, red, green, blue, externalFrame)
+local function showColorBrowser(callback, red, green, blue)
 	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
 	TRP3_ColorBrowser.callback = callback;
-
-	TRP3_ColorBrowser:ClearAllPoints();
-	if externalFrame then
-		TRP3_ColorBrowser:SetParent(externalFrame);
-		TRP3_ColorBrowser:SetPoint("RIGHT", externalFrame, "LEFT", -5, 0);
-		TRP3_ColorBrowser:Show();
-	else
-		TRP3_ColorBrowser:SetParent(TRP3_PopupsFrame);
-		TRP3_ColorBrowser:SetPoint("CENTER", 0, 0);
-		showPopup(TRP3_ColorBrowser);
-	end
-
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -681,6 +654,18 @@ local POPUP_STRUCTURE = {
 	[TRP3_API.popup.IMAGES] = {
 		frame = TRP3_ImageBrowser,
 		showMethod = showImageBrowser,
+	},
+	[TRP3_API.popup.COLORS] = {
+		frame = TRP3_ColorBrowser,
+		showMethod = showColorBrowser,
+	},
+	[TRP3_API.popup.ICONS] = {
+		frame = TRP3_IconBrowser,
+		showMethod = showIconBrowser,
+	},
+	[TRP3_API.popup.MUSICS] = {
+		frame = TRP3_MusicBrowser,
+		showMethod = showMusicBrowser,
 	}
 }
 
@@ -693,9 +678,9 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 
 	popup.frame:ClearAllPoints();
 
-	if popupPosition.parent then
+	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);
-		popup.frame:SetPoint(popupPosition.point, popupPosition.parent, popupPosition.parentPoint, 0, 0);
+		popup.frame:SetPoint(popupPosition.point or "CENTER", popupPosition.parent, popupPosition.parentPoint or "CENTER", 0, 0);
 		popup.frame:Show();
 	else
 		popup.frame:SetParent(TRP3_PopupsFrame);

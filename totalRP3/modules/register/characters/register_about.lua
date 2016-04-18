@@ -25,7 +25,6 @@ local safeGet = TRP3_API.profile.getDataDefault;
 local loc = TRP3_API.locale.getText;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log, convertTextTags = Utils.log, Utils.str.convertTextTags;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -50,6 +49,10 @@ local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.g
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
+
+local showIconBrowser = function(callback)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+end;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -788,7 +791,7 @@ end
 
 local function onMusicEditSelected(value, button)
 	if value == 1 then
-		TRP3_API.popup.showMusicBrowser(onMusicSelected);
+		TRP3_API.popup.showPopup(TRP3_API.popup.MUSICS, nil, {onMusicSelected});
 	elseif value == 2 and draftData.MU then
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
