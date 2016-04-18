@@ -516,6 +516,10 @@ Possible status:
 		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
 		CO_CHAT_MAIN_NAMING_3 = "First name + last name",
 		CO_CHAT_MAIN_NAMING_4 = "Short title + first name + last name",
+        CO_CHAT_INSERT_FULL_RP_NAME = "Insert RP names on shift-click",
+        CO_CHAT_INSERT_FULL_RP_NAME_TT = [[Insert the complete RP name of a player when SHIFT-Clicking their name in the chat frame.
+
+(When this option is enabled, you can ALT-SHIFT-Click on a name when you want the default behavior and insert the character name instead of the full RP name.)]],
 		CO_CHAT_MAIN_COLOR = "Use custom colors for names",
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",
