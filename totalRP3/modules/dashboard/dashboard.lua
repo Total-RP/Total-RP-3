@@ -303,8 +303,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
 				else
-					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))));
-					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))));
+					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
+					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
 				end
@@ -348,8 +348,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
 				else
-					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))));
-					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))));
+					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
+					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
 				end

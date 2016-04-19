@@ -38,7 +38,7 @@ local tooltipText = "";
 
 local function onUpdate(LDBObject)
 	if ShowingCloak() then
-		LDBObject.icon = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")));
+		LDBObject.icon = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")) or iconOn);
 		tooltipTitle = cloakTitleOn;
 		tooltipText = cloakTextOn;
 	else
