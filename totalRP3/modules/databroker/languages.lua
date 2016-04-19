@@ -21,12 +21,11 @@
 local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local loc = TRP3_API.locale.getText;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local strconcat, tinsert = strconcat, tinsert;
 
 -- WoW functions
-local ShowingCloak, ShowCloak = ShowingCloak, ShowCloak;
-
-local iconOn = "Interface\\ICONS\\INV_Misc_Cape_18";
-local iconOff = "Interface\\ICONS\\item_icecrowncape";
+local GetLanguageByIndex = GetLanguageByIndex;
+local GetNumLanguages = GetNumLanguages;
 
 local languagesIcon = {
 
