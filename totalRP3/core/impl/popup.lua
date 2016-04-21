@@ -216,13 +216,13 @@ end
 local function onMusicClick(lineFrame, mousebutton)
 	if mousebutton == "LeftButton" then
 		hidePopups();
+		TRP3_MusicBrowser:Hide();
 		if TRP3_MusicBrowserContent.callback then
 			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
 		end
 	elseif lineFrame.musicURL then
 		Utils.music.playMusic(lineFrame.musicURL);
 	end
-
 end
 
 local function filteredMusicBrowser()

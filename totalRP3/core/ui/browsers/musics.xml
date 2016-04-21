@@ -144,7 +144,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								TRP3_API.utils.music.stop();
+								TRP3_API.utils.music.stopMusic();
 							</OnClick>
 						</Scripts>
 					</Button>
