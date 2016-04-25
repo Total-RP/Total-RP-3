@@ -48,6 +48,7 @@ local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local isPlayerIC;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -65,6 +66,7 @@ local PEEK_ICON_SIZE = 20;
 
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
+local CONFIG_IN_CHARACTER_ONLY = "tooltip_in_character_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
@@ -811,6 +813,9 @@ local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
 	ui_CompanionTT:Hide();
 
+    -- If option is to only show tooltips when player is in character and player is out of character, stop here
+    if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
+
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
 		-- If we have a target
@@ -937,6 +942,7 @@ local function onModuleInit()
 	localeFont = TRP3_API.locale.getLocaleFont();
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
+    isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
 		show("mouseover", targetID, targetMode);
@@ -958,6 +964,7 @@ local function onModuleInit()
 
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
+	registerConfigKey(CONFIG_IN_CHARACTER_ONLY, false);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
@@ -1010,6 +1017,11 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_PROFILE_ONLY"),
 				configKey = CONFIG_PROFILE_ONLY,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_IN_CHARACTER_ONLY"),
+				configKey = CONFIG_IN_CHARACTER_ONLY,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

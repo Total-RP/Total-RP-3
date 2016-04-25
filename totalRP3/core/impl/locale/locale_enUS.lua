@@ -437,6 +437,7 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_TOOLTIP_CURRENT = "Show \"current\" information",
 		CO_TOOLTIP_CURRENT_SIZE = "Max \"current\" information length",
 		CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
+		CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
 		CO_REGISTER = "Register settings",
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
