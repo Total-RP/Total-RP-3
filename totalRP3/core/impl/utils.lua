@@ -405,6 +405,32 @@ Utils.color.colorCodeFloat = function(red, green, blue)
 	return colorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
 end
 
+---
+-- Function to test if a color is correctly readable on a specified.
+-- We will calculate the luminance of the text color and the background color
+-- using known values that take into account how the human eye perceive color
+-- and then compute the contrast ratio between the two colors
+-- The contrast ratio should be higher than 50%
+-- @external [](http://www.whydomath.org/node/wavlets/imagebasics.html)
+--
+-- @param textColor Color of the text {r, g, b}, must be 256 based
+-- @param backgroundColor Color of the backgound {r, g, b}, must be 256 based
+-- @return True if the text will be readable
+--
+local textColorIsReadableOnBackground = function(textColor, backgroundColor)
+    local textColorContrastIndex = ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b) / 255);
+
+    if not backgroundColor then -- If we did not provide a background, the ratio is against a black color, 0, so we can just use the text color ratio
+        return textColorContrastIndex >= 0.5
+    end
+
+    local backgroundColorContrastIndex = ((0.299 * backgroundColor.r + 0.587 * backgroundColor.g + 0.114 * backgroundColor.b) / 255);
+    local contrastRatio = maths.abs(textColorContrastIndex - backgroundColorContrastIndex);
+    return contrastRatio >= 0.5
+end
+
+Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Math
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

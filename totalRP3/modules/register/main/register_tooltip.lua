@@ -20,7 +20,7 @@
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local colorCode, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.table.getTempTable, Utils.table.releaseTempTable;
+local colorCode, hexaToNumber, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.color.hexaToNumber, Utils.table.getTempTable, Utils.table.releaseTempTable;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -358,10 +358,30 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local classColor = RAID_CLASS_COLORS[englishClass];
 	local rightIcons = "";
 	local leftIcons = "";
-	local characterColorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
+
+    -- TODO Option to completely prevent using custom colors in the tooltips
+    -- If we want to use custom colors and we have one, use that instead of the game class color
 	if info.characteristics and info.characteristics.CH then
-		characterColorCode = "|cff" .. info.characteristics.CH;
-	end
+		classColor = hexaToNumber(info.characteristics.CH);
+    end
+
+    -- TODO Move that somewhere more appropriate
+    -- What we believe is the minimal amount of color needed in each field for the text to be visible on a dark background
+    local MINIMUM_AMOUNT_OF_COLOR = 0.4; -- 40% or 102
+
+    local bgR, bgG, bgB = ui_CharacterTT:GetBackdropColor();
+
+    -- TODO Create an option to disable this so people ar ento upset
+    -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
+    while Utils.color.textColorIsReadableOnBackground(classColor, {r = bgR, g = bgG, b = bgB }) do
+        classColor.r = classColor.r * 1.15;
+        classColor.g = classColor.g * 1.15;
+        classColor.b = classColor.b * 1.15;
+    end
+
+    -- Generate a color code string (|cffrrggbb) that we will use in the name and the class
+    local characterColorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
+
 	local completeName = characterColorCode .. getCompleteName(info.characteristics or {}, targetName, not showTitle());
 
 	if showIcons() then
