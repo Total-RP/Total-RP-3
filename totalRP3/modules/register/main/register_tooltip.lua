@@ -358,27 +358,33 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
+    local r, g, b = classColor.r, classColor.g, classColor.b;
 	local rightIcons = "";
 	local leftIcons = "";
 
+    local count = 0;
+
     -- Only use custom colors if the option is enabled and if we have one
     if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
-        classColor = hexaToNumber(info.characteristics.CH);
+        r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
 
-        -- Fetching the backdrop color of the tooltip (just ot be sure, as it could be modified by some other add-on)
-        local bgR, bgG, bgB = ui_CharacterTT:GetBackdropColor();
+        if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+            -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
+            while not Utils.color.textColorIsReadableOnBackground({ r = r, g = g, b = b }) do
+                r = r + 0.01;
+                g = g + 0.01;
+                b = b + 0.01;
+                count = count + 1;
+            end
 
-        -- TODO Create an option to disable this so people ar ento upset
-        -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
-        while Utils.color.textColorIsReadableOnBackground(classColor, {r = bgR, g = bgG, b = bgB }) do
-            classColor.r = classColor.r * 1.15;
-            classColor.g = classColor.g * 1.15;
-            classColor.b = classColor.b * 1.15;
+            if r > 1 then r = 1 end
+            if g > 1 then g = 1 end
+            if b > 1 then b = 1 end
         end
     end
 
     -- Generate a color code string (|cffrrggbb) that we will use in the name and the class
-    local characterColorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
+    local characterColorCode = colorCode(r * 255, g * 255, b * 255);
 
 	local completeName = characterColorCode .. getCompleteName(info.characteristics or {}, targetName, not showTitle());
 

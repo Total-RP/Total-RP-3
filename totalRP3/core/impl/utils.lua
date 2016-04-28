@@ -391,6 +391,11 @@ local function hexaToNumber(hexa)
 end
 Utils.color.hexaToNumber = hexaToNumber;
 
+Utils.color.hexaToFloat = function(hexa)
+    local r, g, b = hexaToNumber(hexa);
+    return r / 255, g / 255, b / 255;
+end
+
 --- Values must be 256 based
 local function colorCode(red, green, blue)
 	local redH = numberToHexa(red);
@@ -407,26 +412,17 @@ end
 
 ---
 -- Function to test if a color is correctly readable on a specified.
--- We will calculate the luminance of the text color and the background color
+-- We will calculate the luminance of the text color
 -- using known values that take into account how the human eye perceive color
--- and then compute the contrast ratio between the two colors
--- The contrast ratio should be higher than 50%
+-- and then compute the contrast ratio.
+-- The contrast ratio should be higher than 50%.
 -- @external [](http://www.whydomath.org/node/wavlets/imagebasics.html)
 --
 -- @param textColor Color of the text {r, g, b}, must be 256 based
--- @param backgroundColor Color of the backgound {r, g, b}, must be 256 based
 -- @return True if the text will be readable
 --
-local textColorIsReadableOnBackground = function(textColor, backgroundColor)
-    local textColorContrastIndex = ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b) / 255);
-
-    if not backgroundColor then -- If we did not provide a background, the ratio is against a black color, 0, so we can just use the text color ratio
-        return textColorContrastIndex >= 0.5
-    end
-
-    local backgroundColorContrastIndex = ((0.299 * backgroundColor.r + 0.587 * backgroundColor.g + 0.114 * backgroundColor.b) / 255);
-    local contrastRatio = math.abs(textColorContrastIndex - backgroundColorContrastIndex);
-    return contrastRatio >= 0.5
+local textColorIsReadableOnBackground = function(textColor)
+    return ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b)) >= 0.5;
 end
 
 Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;
