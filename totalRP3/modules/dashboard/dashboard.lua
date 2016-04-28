@@ -244,8 +244,12 @@ TRP3_API.dashboard.init = function()
 			C_Timer.After(0.1, function()
 				tabGroup:SelectTab(3);
 			end);
-		elseif url == "storyline" then
-			TRP3_API.popup.showTextInputPopup("Storyline", nil, nil, "http://storyline.totalrp3.info");
+		elseif url == "tiptac" then
+			TRP3_API.popup.showTextInputPopup("TipTac Module", nil, nil, "http://mods.curse.com/addons/wow/total-rp-3-tiptac-module");
+		elseif url == "TRP3E" then
+			TRP3_API.popup.showTextInputPopup("Total RP 3: Extended", nil, nil, "https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon");
+        elseif url == "chat_settings" then
+            TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_chatframe");
 		elseif url:sub(1, 7) == "twitter" then
 			if Social_ToggleShow and button == "LeftButton" then
 				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
