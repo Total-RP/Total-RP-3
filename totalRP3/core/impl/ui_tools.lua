@@ -48,25 +48,25 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tiledBackgrounds = {
-	"Interface\\DialogFrame\\UI-DialogBox-Background",
-	"Interface\\BankFrame\\Bank-Background",
-	"Interface\\FrameGeneral\\UI-Background-Marble",
-	"Interface\\FrameGeneral\\UI-Background-Rock",
-	"Interface\\GuildBankFrame\\GuildVaultBG",
-	"Interface\\HELPFRAME\\DarkSandstone-Tile",
-	"Interface\\HELPFRAME\\Tileable-Parchment",
-	"Interface\\QuestionFrame\\question-background",
-	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg",
-	"Interface\\Destiny\\EndscreenBG",
-	"Interface\\Stationery\\AuctionStationery1",
-	"Interface\\Stationery\\Stationery_ill1",
-	"Interface\\Stationery\\Stationery_OG1",
-	"Interface\\Stationery\\Stationery_TB1",
-	"Interface\\Stationery\\Stationery_UC1",
-	"Interface\\Stationery\\StationeryTest1",
-	"Interface\\WorldMap\\UI-WorldMap-Middle1",
-	"Interface\\WorldMap\\UI-WorldMap-Middle2",
-	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground"
+	"Interface\\DialogFrame\\UI-DialogBox-Background", -- 1
+	"Interface\\BankFrame\\Bank-Background", -- 2
+	"Interface\\FrameGeneral\\UI-Background-Marble", -- 3
+	"Interface\\FrameGeneral\\UI-Background-Rock", -- 4
+	"Interface\\GuildBankFrame\\GuildVaultBG", -- 5
+	"Interface\\HELPFRAME\\DarkSandstone-Tile", -- 6
+	"Interface\\HELPFRAME\\Tileable-Parchment", -- 7
+	"Interface\\QuestionFrame\\question-background", -- 8
+	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", -- 9
+	"Interface\\Destiny\\EndscreenBG", -- 10
+	"Interface\\Stationery\\AuctionStationery1", -- 11
+	"Interface\\Stationery\\Stationery_ill1", -- 12
+	"Interface\\Stationery\\Stationery_OG1", -- 13
+	"Interface\\Stationery\\Stationery_TB1", -- 14
+	"Interface\\Stationery\\Stationery_UC1", -- 15
+	"Interface\\Stationery\\StationeryTest1", -- 16
+	"Interface\\WorldMap\\UI-WorldMap-Middle1", -- 17
+	"Interface\\WorldMap\\UI-WorldMap-Middle2", -- 18
+	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground" -- 19
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)

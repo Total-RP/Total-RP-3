@@ -861,7 +861,13 @@
 				</Texture>
 			</Layer>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\QuestionFrame\question-background" vertTile="true" horizTile="true">
+				<Texture parentKey="bTile" file="Interface\QuestionFrame\question-background" vertTile="true" horizTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="20" y="-20"/>
+						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey="bNotTile" file="Interface\QuestionFrame\question-background" hidden="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="20" y="-20"/>
 						<Anchor point="BOTTOMRIGHT" x="-20" y="20"/>
