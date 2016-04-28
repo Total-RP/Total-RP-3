@@ -840,18 +840,18 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.2{/col}{/h3}
-{h3}1. Resizable frame{/h3}
-The main frame of Total RP 3 is now resizable. This is a first pass on making TRP3 the first responsive roleplaying addon!
+		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.3{/col}{/h3}
+This release contains mainly bug fixes and optimizations. We are working hard on {link*TRP3E*Total RP 3: Extended} to bring you the best creation tools for World of Warcraft, so stay tuned.
 
-{h3}2. Updated icon list{/h3}
-We added the new icons from patch 6.2.
+{h3}Insert full RP name in the chat frame{/h3}
+When shift-clicking someone's name in the chat frame, Total RP 3 will now insert that person's full RP name as shown in the chat frame. If you want to insert the username instead you can alt-shift-click on the name. You can also disable this feature in the {link*chat_settings*chat settings}.
 
+We also added a new option in the {link*chat_settings*chat settings} for how names are displayed to now show titles before people's names.
 ]],
 		MORE_MODULES = [[{h2:c}Optional modules{/h2}
-{h3}Storyline{/h3}
-|cff9999ffStoryline|r is a module enhancing the original WoW quest texts and improving immersion with animated dialogues and fancy effects.
-|cff9999ffPlease visit: {link*storyline*http://storyline.totalrp3.info}]],
+{h3}TipTac module{/h3}
+The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
+|cff9999ffPlease visit: {link*storyline*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module}]],
 
 		THANK_YOU = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
@@ -880,7 +880,7 @@ We added the new icons from patch 6.2.
 - Hellclaw
 - Leylou
 
-{col:ffffff}Thanks to Horionne for sending use the magazine Gamer Culte Online #14 with an article about Total RP:{/col}]]
+{col:ffffff}Thanks to Horionne for sending use the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]]
 	},
 };
 
