@@ -20,7 +20,7 @@
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local colorCode, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.table.getTempTable, Utils.table.releaseTempTable;
+local colorCode, hexaToNumber, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.color.hexaToNumber, Utils.table.getTempTable, Utils.table.releaseTempTable;
 local loc = TRP3_API.locale.getText;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -66,6 +66,8 @@ local PEEK_ICON_SIZE = 20;
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
+local CONFIG_CHARACT_COLOR = "tooltip_char_color";
+local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -356,12 +358,34 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local localizedClass, englishClass = UnitClass(targetType);
 	local classColor = RAID_CLASS_COLORS[englishClass];
+    local r, g, b = classColor.r, classColor.g, classColor.b;
 	local rightIcons = "";
 	local leftIcons = "";
-	local characterColorCode = colorCode(classColor.r * 255, classColor.g * 255, classColor.b * 255);
-	if info.characteristics and info.characteristics.CH then
-		characterColorCode = "|cff" .. info.characteristics.CH;
-	end
+
+    local count = 0;
+
+    -- Only use custom colors if the option is enabled and if we have one
+    if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
+        r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
+
+        if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+            -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
+            while not Utils.color.textColorIsReadableOnBackground({ r = r, g = g, b = b }) do
+                r = r + 0.01;
+                g = g + 0.01;
+                b = b + 0.01;
+                count = count + 1;
+            end
+
+            if r > 1 then r = 1 end
+            if g > 1 then g = 1 end
+            if b > 1 then b = 1 end
+        end
+    end
+
+    -- Generate a color code string (|cffrrggbb) that we will use in the name and the class
+    local characterColorCode = colorCode(r * 255, g * 255, b * 255);
+
 	local completeName = characterColorCode .. getCompleteName(info.characteristics or {}, targetName, not showTitle());
 
 	if showIcons() then
@@ -959,6 +983,8 @@ local function onModuleInit()
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
+	registerConfigKey(CONFIG_CHARACT_COLOR, true);
+	registerConfigKey(CONFIG_CHARACT_CONTRAST, false);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, true);
@@ -1015,6 +1041,17 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_COMBAT"),
 				configKey = CONFIG_CHARACT_COMBAT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_COLOR"),
+				configKey = CONFIG_CHARACT_COLOR,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_CONTRAST"),
+				configKey = CONFIG_CHARACT_CONTRAST,
+                help = loc("CO_TOOLTIP_CONTRAST_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
