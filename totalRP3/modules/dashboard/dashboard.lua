@@ -3,7 +3,7 @@
 -- Dashboard
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
+--	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -244,8 +244,12 @@ TRP3_API.dashboard.init = function()
 			C_Timer.After(0.1, function()
 				tabGroup:SelectTab(3);
 			end);
-		elseif url == "storyline" then
-			TRP3_API.popup.showTextInputPopup("Storyline", nil, nil, "http://storyline.totalrp3.info");
+		elseif url == "tiptac" then
+			TRP3_API.popup.showTextInputPopup("TipTac Module", nil, nil, "http://mods.curse.com/addons/wow/total-rp-3-tiptac-module");
+		elseif url == "TRP3E" then
+			TRP3_API.popup.showTextInputPopup("Total RP 3: Extended", nil, nil, "https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon");
+        elseif url == "chat_settings" then
+            TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_chatframe");
 		elseif url:sub(1, 7) == "twitter" then
 			if Social_ToggleShow and button == "LeftButton" then
 				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
@@ -303,8 +307,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
 				else
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Misc_Cape_18");
+					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
+					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
 				end
@@ -348,8 +352,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
 				else
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\INV_Helmet_13");
+					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
+					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
 					Uibutton:GetPushedTexture():SetDesaturated(1);
 					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
 				end

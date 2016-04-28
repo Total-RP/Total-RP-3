@@ -28,6 +28,7 @@ local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen
 local GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound = GetPlayerInfoByGUID, RemoveExtraSpaces, GetTime, PlaySound;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
+local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
 
@@ -48,6 +49,7 @@ local CONFIG_OOC = "chat_ooc";
 local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
+local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -93,6 +95,10 @@ local function configOOCDetectionColor()
 	return getConfigValue(CONFIG_OOC_COLOR);
 end
 
+local function configInsertFullRPName()
+    return getConfigValue(CONFIG_INSERT_FULL_RP_NAME);
+end
+
 local function createConfigPage(useWIM)
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 3);
@@ -104,7 +110,8 @@ local function createConfigPage(useWIM)
 	registerConfigKey(CONFIG_OOC, true);
 	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
-	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
+	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
+    registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -143,6 +150,12 @@ local function createConfigPage(useWIM)
 				configKey = CONFIG_NAME_METHOD,
 				listCancel = true,
 			},
+            {
+                inherit = "TRP3_ConfigCheck",
+                title = loc("CO_CHAT_INSERT_FULL_RP_NAME"),
+                configKey = CONFIG_INSERT_FULL_RP_NAME,
+                help = loc("CO_CHAT_INSERT_FULL_RP_NAME_TT")
+            },
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_CHAT_MAIN_COLOR"),
@@ -436,36 +449,50 @@ function hooking()
 	end
 end
 
+-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
+-- in the chat frame to insert it into a text field.
+-- We can replace the name inserted by the complete RP name of the player if we have it.
 hooksecurefunc("ChatEdit_InsertLink", function(name)
+
+    -- Do not modify the name inserted if the option is not enabled or if the ALT key is down.
+    if not configInsertFullRPName() or IsAltKeyDown() then return end;
+
 	local activeChatFrame = ChatEdit_GetActiveWindow();
 	if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 		local editBox = activeChatFrame.chatFrame.editBox;
 		local currentText = editBox:GetText();
 		local currentCursorPosition = editBox:GetCursorPosition();
 
+        -- Save the text that is before and after the name inserted
 		local textBefore = currentText:sub(1, currentCursorPosition - name:len() - 1);
 		local textAfter = currentText:sub(currentCursorPosition+1 );
 
+        -- Retreive the info for the character and the naming method to use
 		local info = getCharacterInfoTab(name);
 		local nameMethod = configNameMethod();
+
 		if info and info.characteristics and nameMethod ~= 1 then -- TRP3 names
 			local characteristics = info.characteristics;
+            -- Replace the name by the RP name
 			if characteristics.FN then
 				name = characteristics.FN;
 			end
 
+            -- If the naming method is to use titles, add the short title before the name
 			if nameMethod == 4 and characteristics.TI then
 				name = characteristics.TI .. " " .. name;
 			end
 
+            -- If the naming method is to use lastnames, add the lastname behind the name
 			if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
 				name = name .. " " .. characteristics.LN;
-			end
+            end
+
+            -- Replace the text of the edit box
+            editBox:SetText(textBefore .. name .. textAfter);
+            -- Move the cursor to the end of the insertion
+            editBox:SetCursorPosition(textBefore:len() + name:len());
 		end
-
-		editBox:SetText(textBefore .. name .. textAfter);
-		editBox:SetCursorPosition(textBefore:len() + name:len());
-
 	end
 end);
 

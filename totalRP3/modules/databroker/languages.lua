@@ -2,7 +2,7 @@
 -- Total RP 3
 -- Languages databroker plugin
 --	---------------------------------------------------------------------------
---	Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
+--	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@ local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local loc = TRP3_API.locale.getText;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local tinsert, strconcat, _G = tinsert, strconcat, _G;
+
+-- WoW functions
 local GetNumLanguages, GetLanguageByIndex = GetNumLanguages, GetLanguageByIndex;
 local ChatFrame1EditBox = ChatFrame1EditBox;
 
