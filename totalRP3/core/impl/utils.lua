@@ -425,7 +425,7 @@ local textColorIsReadableOnBackground = function(textColor, backgroundColor)
     end
 
     local backgroundColorContrastIndex = ((0.299 * backgroundColor.r + 0.587 * backgroundColor.g + 0.114 * backgroundColor.b) / 255);
-    local contrastRatio = maths.abs(textColorContrastIndex - backgroundColorContrastIndex);
+    local contrastRatio = math.abs(textColorContrastIndex - backgroundColorContrastIndex);
     return contrastRatio >= 0.5
 end
 

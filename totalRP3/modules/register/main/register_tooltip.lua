@@ -66,6 +66,8 @@ local PEEK_ICON_SIZE = 20;
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
+local CONFIG_CHARACT_COLOR = "tooltip_char_color";
+local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -359,24 +361,20 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local rightIcons = "";
 	local leftIcons = "";
 
-    -- TODO Option to completely prevent using custom colors in the tooltips
-    -- If we want to use custom colors and we have one, use that instead of the game class color
-	if info.characteristics and info.characteristics.CH then
-		classColor = hexaToNumber(info.characteristics.CH);
-    end
+    -- Only use custom colors if the option is enabled and if we have one
+    if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
+        classColor = hexaToNumber(info.characteristics.CH);
 
-    -- TODO Move that somewhere more appropriate
-    -- What we believe is the minimal amount of color needed in each field for the text to be visible on a dark background
-    local MINIMUM_AMOUNT_OF_COLOR = 0.4; -- 40% or 102
+        -- Fetching the backdrop color of the tooltip (just ot be sure, as it could be modified by some other add-on)
+        local bgR, bgG, bgB = ui_CharacterTT:GetBackdropColor();
 
-    local bgR, bgG, bgB = ui_CharacterTT:GetBackdropColor();
-
-    -- TODO Create an option to disable this so people ar ento upset
-    -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
-    while Utils.color.textColorIsReadableOnBackground(classColor, {r = bgR, g = bgG, b = bgB }) do
-        classColor.r = classColor.r * 1.15;
-        classColor.g = classColor.g * 1.15;
-        classColor.b = classColor.b * 1.15;
+        -- TODO Create an option to disable this so people ar ento upset
+        -- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
+        while Utils.color.textColorIsReadableOnBackground(classColor, {r = bgR, g = bgG, b = bgB }) do
+            classColor.r = classColor.r * 1.15;
+            classColor.g = classColor.g * 1.15;
+            classColor.b = classColor.b * 1.15;
+        end
     end
 
     -- Generate a color code string (|cffrrggbb) that we will use in the name and the class
@@ -979,6 +977,8 @@ local function onModuleInit()
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
+	registerConfigKey(CONFIG_CHARACT_COLOR, true);
+	registerConfigKey(CONFIG_CHARACT_CONTRAST, false);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, true);
@@ -1035,6 +1035,17 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_COMBAT"),
 				configKey = CONFIG_CHARACT_COMBAT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_COLOR"),
+				configKey = CONFIG_CHARACT_COLOR,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_CONTRAST"),
+				configKey = CONFIG_CHARACT_CONTRAST,
+                help = loc("CO_TOOLTIP_CONTRAST_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
