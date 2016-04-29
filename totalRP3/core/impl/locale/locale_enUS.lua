@@ -440,6 +440,8 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_REGISTER = "Register settings",
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
+		CO_REGISTER_MATURE_FILTER = "Mature profile filter",
+		CO_REGISTER_MATURE_FILTER_TT = "Check this option to enable mature profile filtering. Total RP 3 will scan profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word. A mature profile will have a muted tooltip and you will have to confirm you want to view that profile the first time you open it.",
 		CO_REGISTER_AUTO_ADD = "Auto add new players",
 		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
 		CO_REGISTER_AUTO_PURGE = "Auto purge directory",

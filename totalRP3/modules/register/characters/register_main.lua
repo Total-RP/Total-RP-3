@@ -52,6 +52,8 @@ local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentC
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 local get = TRP3_API.profile.getData;
 local UnitIsPVP = UnitIsPVP;
+local tcopy = tcopy;
+local type = type;
 
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
@@ -224,6 +226,8 @@ end
 
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
+-- (ಥ﹏ಥ) Oh god…
+-- TODO Move that thing somewhere else
 local matureWords = {
 	"dominant",
 	"submissive",
@@ -232,20 +236,45 @@ local matureWords = {
 	"cum",
 	"vaginal",
 	"ass",
-	"cunt"
+	"cunt",
+    "dick",
+    "tits"
 }
 
+---
+-- Filter out mature content
+-- @param table
+--
 local function filterOutMatureContent(table)
 	local data = tcopy(table);
+    -- Iterate over each field of the data table
 	for key, value in pairs(data) do
+        -- If the value of the field is a string, we treat it
 		if type(value) == "string" then
+            local words = {}
+            -- Break string into a table
+            for word in value:gmatch("%w+") do
+                -- We will use the lower case version of the words because our keywords are lowercased
+                word = word:lower()
+                -- If we already found this word in the string, increment the count for this word
+                if words[word] then
+                    words[word] = words[word] + 1;
+                else
+                    -- If it is a new word, insert it into the words table
+                    tinsert(words, {word = 1});
+                end
+            end
+            -- Iterate through the matureWords dictionnary
 			for _, matureWord in pairs(matureWords) do
-				if value:find(matureWord) then
-					print("|cffff0000" .. value .. "|r" .. " contains |cff00ff00" .. matureWord .. "|r")
+                -- If the word is found, flag the profile as unsafe
+				if words[matureWord] then
+					log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
+                    -- TODO Flag profile as mature instead of replacing content
 					data[key] = "|cffff0000<MATURE CONTENT>|r"
 					break
 				end
-			end
+            end
+        -- If the value of the field is a table, we recursively call filterOutMatureContent() on the table content
 		elseif type(value) == "table" then
 			data[key] = filterOutMatureContent(value)
 		end
@@ -261,7 +290,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 
-	-- data = filterOutMatureContent(data);
+	data = filterOutMatureContent(data);
 
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
@@ -560,6 +589,11 @@ function TRP3_API.register.init()
 		tutorialProvider = tutorialProvider
 	});
 
+    -- Mature profiles filtering should be enabled by default if the chat mature languge filter is on or parental control is on
+    -- That variable name is dedicated to Telkostrasz and Saelora (◕‿◕)
+    local matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings = BNGetMatureLanguageFilter() or C_StorePublic.IsDisabledByParentalControls() or false;
+
+	registerConfigKey("register_mature_filter", matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings);
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
@@ -586,6 +620,12 @@ function TRP3_API.register.init()
 		menuText = loc("CO_REGISTER"),
 		pageText = loc("CO_REGISTER"),
 		elements = {
+            {
+                inherit = "TRP3_ConfigCheck",
+                title = loc("CO_REGISTER_MATURE_FILTER"),
+                configKey = "register_mature_filter",
+                help = loc("CO_REGISTER_MATURE_FILTER_TT")
+            },
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_REGISTER_ABOUT_VOTE"),
