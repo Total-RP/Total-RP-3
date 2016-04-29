@@ -336,7 +336,12 @@ end
 
 -- /run TRP3_testcoord();
 function TRP3_testcoord()
-	print(UnitPosition("player"));
+	-- 97 à 122
+	-- 65 à 90
+	-- 48 à 57
+	for i=50, 126 do
+		print(i .. ": " .. string.char(i));
+	end
 end
 
 local MODULE_STRUCTURE = {

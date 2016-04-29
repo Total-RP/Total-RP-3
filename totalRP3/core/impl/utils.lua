@@ -246,13 +246,25 @@ Utils.str.match = function(stringToCheck, pattern)
 	return string.find(tostring(result), "%d");
 end
 
+local ID_CHARS = {};
+for i=48, 57 do
+	tinsert(ID_CHARS, string.char(i));
+end
+for i=65, 90 do
+	tinsert(ID_CHARS, string.char(i));
+end
+for i=97, 122 do
+	tinsert(ID_CHARS, string.char(i));
+end
+local sID_CHARS = #ID_CHARS;
+
 --	Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
 --	ID's have a id_length characters length
 local function generateID()
 	local ID = date("%m%d%H%M%S");
 	for i=1, 5 do
-		ID = ID..string.char(math.random(75,126));
+		ID = ID .. ID_CHARS[math.random(1, sID_CHARS)];
 	end
 	return ID;
 end
@@ -366,6 +378,7 @@ end
 Utils.color.numberToHexa = numberToHexa;
 
 --- Value must be a string with hexa decimal representation
+-- Return 256 based
 local function hexaToNumber(hexa)
 	if not hexa then
 		return nil, nil, nil;
