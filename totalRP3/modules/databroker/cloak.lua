@@ -2,7 +2,7 @@
 -- Total RP 3
 -- Cloak databroker plugin
 --	---------------------------------------------------------------------------
---	Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
+--	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ local tooltipText = "";
 
 local function onUpdate(LDBObject)
 	if ShowingCloak() then
-		LDBObject.icon = iconOn;
+		LDBObject.icon = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")) or iconOn);
 		tooltipTitle = cloakTitleOn;
 		tooltipText = cloakTextOn;
 	else

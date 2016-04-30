@@ -3,7 +3,7 @@
 -- Global variables
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2014 Renaud Parize (renaud@parize.me)
+--	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ TRP3_API = {
 		addon_name_alt = "TotalRP3",
 		addon_id_length = 15,
 
-		version = 13,
-		version_display = "1.0.3-dev",
+		version = 14,
+		version_display = "1.0.4-dev",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),

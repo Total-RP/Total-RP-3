@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
--- Storyline module
+-- TipTac plugin
 --	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--	Copyright 2016 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -20,28 +20,8 @@
 assert(TRP3_API ~= nil, "Can't find Total RP 3 API.");
 assert(TipTac ~= nil, "Can't find TipTac API.");
 
-local TipTacConfig = TipTac_Config;
 
 local lastUpdate;
-
-local TT_MirrorAnchorsSmart = {
-	TOPLEFT = "BOTTOMRIGHT",
-	TOPRIGHT = "BOTTOMLEFT",
-	BOTTOMLEFT = "TOPRIGHT",
-	BOTTOMRIGHT = "TOPLEFT",
-};
-
-local TT_MirrorAnchors = {
-	TOP = "BOTTOM",
-	TOPLEFT = "TOPRIGHT",
-	TOPRIGHT = "TOPLEFT",
-	BOTTOM = "TOP",
-	BOTTOMLEFT = "BOTTOMRIGHT",
-	BOTTOMRIGHT = "BOTTOMLEFT",
-	LEFT = "RIGHT",
-	RIGHT = "LEFT",
-	CENTER = "CENTER",
-};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
@@ -49,19 +29,24 @@ local TT_MirrorAnchors = {
 
 local function anchorTooltip(frame, anchorType, anchorPoint)
 
-	if (anchorType == "mouse") then
-		TipTac:AnchorFrameToMouse(frame);
-	elseif (anchorType == "parent") then
-		frame:SetPoint(anchorPoint,UIParent);
+	if anchorType == "mouse" then
+        -- ¯\_(ツ)_/¯
+		pcall(function()
+            TipTac:AnchorFrameToMouse(frame);
+        end);
+	elseif anchorType == "parent" then
+		frame:SetPoint(anchorPoint, UIParent);
 	else
-		frame:SetPoint(anchorPoint,TipTac);
+		frame:SetPoint(anchorPoint, TipTac);
 	end
 end
 
 local function hideTooltip(frame, elapsed)
 
-	local preFadeTime = TipTacConfig["preFadeTime"];
-	local fadeTime = TipTacConfig["fadeTime"];
+    if not TipTac_Config then return end;
+
+	local preFadeTime = TipTac_Config["preFadeTime"];
+	local fadeTime = TipTac_Config["fadeTime"];
 
 	if frame.fading then
 		lastUpdate = lastUpdate + elapsed;
@@ -77,17 +62,18 @@ local function hideTooltip(frame, elapsed)
 	end
 end
 
-local function onUnitTooltipUpdate(self, elapsed)
+local function onTooltipUpdate(self, elapsed, tooltipType)
+    if not TipTac_Config or not tooltipType then return end;
 
-	local anchorType = TipTacConfig["anchorWorldUnitType"];
-	local anchorPoint = TipTacConfig["anchorWorldUnitPoint"];
+    local anchorType = TipTac_Config["anchor" .. tooltipType .. "Type"];
+    local anchorPoint = TipTac_Config["anchor" .. tooltipType .. "Point"];
 
-	anchorTooltip(self, anchorType, anchorPoint);
-	if self.target and self.targetType and not self.isFading then
-		if self.target ~= TRP3_API.register.getUnitID(self.targetType) then
-			hideTooltip(self, elapsed);
-		end
-	end
+    anchorTooltip(self, anchorType, anchorPoint);
+    if self.target and self.targetType and not self.isFading then
+        if self.target ~= TRP3_API.register.getUnitID(self.targetType) then
+            hideTooltip(self, elapsed);
+        end
+    end
 
 end
 
@@ -97,15 +83,21 @@ local function init()
 
 		if TRP3_MainTooltip then
 			TipTac:AddModifiedTip(TRP3_MainTooltip);
-			--TRP3_MainTooltip:SetScript("OnUpdate", onFrameTooltipUpdate);
+			TRP3_MainTooltip:HookScript("OnUpdate", function(self, elapsed)
+                onTooltipUpdate(self, elapsed, "FrameTip");
+            end);
 		end
 		if TRP3_CharacterTooltip then
 			TipTac:AddModifiedTip(TRP3_CharacterTooltip);
-			TRP3_CharacterTooltip:SetScript("OnUpdate", onUnitTooltipUpdate);
+			TRP3_CharacterTooltip:HookScript("OnUpdate", function(self, elapsed)
+                onTooltipUpdate(self, elapsed, "WorldUnit");
+            end);
 		end
 		if TRP3_CompanionTooltip then
 			TipTac:AddModifiedTip(TRP3_CompanionTooltip);
-			TRP3_CompanionTooltip:SetScript("OnUpdate", onUnitTooltipUpdate);
+			TRP3_CompanionTooltip:HookScript("OnUpdate", function(self, elapsed)
+                onTooltipUpdate(self, elapsed, "WorldUnit");
+            end);
 		end
 
 	end);

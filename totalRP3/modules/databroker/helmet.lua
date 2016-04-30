@@ -2,7 +2,7 @@
 -- Total RP 3
 -- Helmet databroker plugin
 --	---------------------------------------------------------------------------
---	Copyright 2014 Renaud Parize (Ellypse) (renaud@parize.me)
+--	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
 --
 --	Licensed under the Apache License, Version 2.0 (the "License");
 --	you may not use this file except in compliance with the License.
@@ -36,36 +36,30 @@ local helmTextOff = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITC
 local tooltipTitle = "";
 local tooltipText = "";
 
-local function onUpdate(LDBObject)
-	if ShowingHelm() then
-		LDBObject.icon = iconOn;
-		tooltipTitle = helmTitleOn;
-		tooltipText = helmTextOn;
-	else
-		LDBObject.icon = iconOff;
-		tooltipTitle = helmTitleOff;
-		tooltipText = helmTextOff;
-	end
-end
-
-local function onClick()
-	if ShowingHelm() then
-		ShowHelm(false);
-		playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
-	else
-		ShowHelm(true);
-		playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
-	end
-end
-
-local function onTooltipShow(tooltip)
-	tooltip:AddLine(tooltipTitle);
-	tooltip:AddLine(tooltipText);
-end
-
 TRP3_API.databroker.registerButton(loc("DTBK_HELMET"), {
 	icon = "TEMP",
-	OnClick = onClick,
-	OnTooltipShow = onTooltipShow,
-	OnUpdate = onUpdate
+	OnClick = function()
+        if ShowingHelm() then
+            ShowHelm(false);
+            playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
+        else
+            ShowHelm(true);
+            playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
+        end
+    end,
+	OnTooltipShow = function (tooltip)
+        tooltip:AddLine(tooltipTitle);
+        tooltip:AddLine(tooltipText);
+    end,
+	OnUpdate = function (LDBObject)
+        if ShowingHelm() then
+            LDBObject.icon = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or iconOn;
+            tooltipTitle = helmTitleOn;
+            tooltipText = helmTextOn;
+        else
+            LDBObject.icon = iconOff;
+            tooltipTitle = helmTitleOff;
+            tooltipText = helmTextOff;
+        end
+    end
 });
