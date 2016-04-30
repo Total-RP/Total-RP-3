@@ -238,7 +238,8 @@ local matureWords = {
 	"ass",
 	"cunt",
     "dick",
-    "tits"
+    "tits",
+    "bulge"
 }
 
 ---
@@ -246,24 +247,20 @@ local matureWords = {
 -- @param table
 --
 local function filterOutMatureContent(table)
-	local data = tcopy(table);
+	local data = table;
     -- Iterate over each field of the data table
 	for key, value in pairs(data) do
         -- If the value of the field is a string, we treat it
 		if type(value) == "string" then
             local words = {}
             -- Break string into a table
-            for word in value:gmatch("%w+") do
+            for word in value:gmatch("[^%s%p]+") do
                 -- We will use the lower case version of the words because our keywords are lowercased
                 word = word:lower()
                 -- If we already found this word in the string, increment the count for this word
-                if words[word] then
-                    words[word] = words[word] + 1;
-                else
-                    -- If it is a new word, insert it into the words table
-                    tinsert(words, {word = 1});
-                end
+                words[word] = (words[word] or 0) + 1;
             end
+            Utils.table.dump(words);
             -- Iterate through the matureWords dictionnary
 			for _, matureWord in pairs(matureWords) do
                 -- If the word is found, flag the profile as unsafe
@@ -591,7 +588,7 @@ function TRP3_API.register.init()
 
     -- Mature profiles filtering should be enabled by default if the chat mature languge filter is on or parental control is on
     -- That variable name is dedicated to Telkostrasz and Saelora (◕‿◕)
-    local matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings = BNGetMatureLanguageFilter() or C_StorePublic.IsDisabledByParentalControls() or false;
+    local matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings = true;
 
 	registerConfigKey("register_mature_filter", matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings);
 	registerConfigKey("register_about_use_vote", true);
