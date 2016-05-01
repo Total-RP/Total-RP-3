@@ -36,8 +36,8 @@ local function onStart()
     -- (ಥ﹏ಥ) Oh god…
     -- TODO Move that thing somewhere else
     TRP3_DirtyDictionnary = TRP3_DirtyDictionnary or {
-        "dominant",
-        "submissive",
+        "gore",
+        "scat",
         "slave",
         "futa",
         "cum",
@@ -68,7 +68,6 @@ local function onStart()
 
     local function pinklistUnitID(unitID)
         TRP3_Pinklist[unitID] = true;
-        local profile = getUnitIDProfile(unitID);
     end
     TRP3_API.register.mature_filter.pinklistUnitID = pinklistUnitID;
 
@@ -80,18 +79,18 @@ local function onStart()
 
     local function flagUnitProfileHasHavingMatureContentConfirm(unitID)
         showTextInputPopup(loc("MATURE_FILTER_FLAG_PLAYER_TEXT"):format(unitID), function(text)
-            -- TODO Split text with whitespaces
-            tinsert(TRP3_DirtyDictionnary, text);
+			for word in text:gmatch("[^%s%p]+") do
+				tinsert(TRP3_DirtyDictionnary, word);
+			end
             flagUnitProfileHasHavingMatureContent(unitID);
-            Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
         end);
     end
 
     local function pinklistUnitIDConfirm(unitID)
-        --:format(unitID)
-        TRP3_API.popup.showConfirmPopup("Confirm adding that person to the pink list", function() -- TODO Locale
+        TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_ADD_TO_PINKLIST_TEXT"):format(unitID), function()
             pinklistUnitID(unitID);
-            Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
         end);
     end
 
@@ -173,9 +172,8 @@ local function onStart()
         configText = loc("MATURE_FILTER_ADD_TO_PINKLIST_OPTION"),
         onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
         condition = function(targetType, unitID)
-            if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-                local profile = getUnitIDProfile(unitID);
-                return profile.hasMatureContent and not TRP3_Pinklist[unitID]
+            if UnitIsPlayer("target") and not TRP3_API.register.isIDIgnored(unitID) then
+                return TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
             else
                 return false;
             end
@@ -192,9 +190,8 @@ local function onStart()
         configText = loc("MATURE_FILTER_FLAG_PLAYER_OPTION"),
         onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
         condition = function(targetType, unitID)
-            if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-                local profile = getUnitIDProfile(unitID);
-                return not profile.hasMatureContent and not TRP3_Pinklist[unitID]
+            if UnitIsPlayer("target") and not TRP3_API.register.isIDIgnored(unitID) then
+                return not TRP3_API.register.unitIDIsFilteredForMatureContent(unitID);
             else
                 return false;
             end

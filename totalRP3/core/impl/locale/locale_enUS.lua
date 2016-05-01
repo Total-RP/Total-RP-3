@@ -845,6 +845,9 @@ A mature profile will have a muted tooltip and you will have to confirm that you
 		MATURE_FILTER_ADD_TO_PINKLIST = "Add this profile to the |cffffc0dbpink list|r",
 		MATURE_FILTER_ADD_TO_PINKLIST_TT = "Add this player to the |cffffc0dbpink list|r and reveal the mature content found inside their profile.",
 		MATURE_FILTER_ADD_TO_PINKLIST_OPTION = "Add to the |cffffc0dbpink list|r",
+		MATURE_FILTER_ADD_TO_PINKLIST_TEXT = [[Confirm that you want to add %s to the |cffffc0dbpink list|r.
+
+The content of their profiles will no longer be hidden.]],
 		MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
 		MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
 		MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",
