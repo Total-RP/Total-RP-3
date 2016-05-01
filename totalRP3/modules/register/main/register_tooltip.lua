@@ -352,7 +352,12 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
-	end
+    elseif info.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist and TRP3_Pinklist[targetID])then
+        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize()); -- TODO Locale
+        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"), 1, 0.75, 0, getSmallLineFontSize(), true); -- TODO Locale
+        tooltipBuilder:Build();
+        return;
+    end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status

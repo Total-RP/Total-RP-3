@@ -21,15 +21,15 @@ local LOCALE_EN = {
 	locale = "enUS",
 	localeText = "English",
 	localeContent = {
-	
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- GENERAL
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
 		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version: %s\n|c0000ff00New version: %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -389,7 +389,7 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
 		CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
@@ -444,8 +444,6 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_REGISTER = "Register settings",
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
-		CO_REGISTER_MATURE_FILTER = "Mature profile filter",
-		CO_REGISTER_MATURE_FILTER_TT = "Check this option to enable mature profile filtering. Total RP 3 will scan profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word. A mature profile will have a muted tooltip and you will have to confirm you want to view that profile the first time you open it.",
 		CO_REGISTER_AUTO_ADD = "Auto add new players",
 		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
 		CO_REGISTER_AUTO_PURGE = "Auto purge directory",
@@ -568,7 +566,7 @@ Possible status:
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		TB_TOOLBAR = "Toolbar",
 		TB_SWITCH_TOOLBAR = "Switch toolbar",
 		TB_SWITCH_CAPE_ON = "Cloak: |cff00ff00Shown",
@@ -600,11 +598,11 @@ Possible status:
 		TF_IGNORE_NO_REASON = "No reason",
 		TB_LANGUAGE = "Language",
 		TB_LANGUAGES_TT = "Change language",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		PR_PROFILEMANAGER_TITLE = "Characters profiles",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
@@ -725,15 +723,15 @@ Total RP is not responsible for links leading to harmful content.]],
 		UI_TUTO_BUTTON = "Tutorial mode",
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
 		UI_CLOSE_ALL = "Close all",
-		
+
 		NPC_TALK_SAY_PATTERN = "says: ",
 		NPC_TALK_YELL_PATTERN = "yells: ",
 		NPC_TALK_WHISPER_PATTERN = "whispers: ",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		CM_SHOW = "Show",
 		CM_ACTIONS = "Actions",
 		CM_IC = "IC",
@@ -783,19 +781,19 @@ Total RP is not responsible for links leading to harmful content.]],
 		CM_RESIZE_TT = "Drag to resize the frame.",
 		CM_TWEET_PROFILE = "Show profile url",
 		CM_TWEET = "Send a tweet",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Minimap button
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		MM_SHOW_HIDE_MAIN = "Show/hide the main frame",
 		MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar",
 		MM_SHOW_HIDE_MOVE = "Move button",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Browsers
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		BW_COLOR_CODE = "Color code",
 		BW_COLOR_CODE_TT = "You can paste an 6 figures hexadecimal color code here and press Enter.",
 		BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
@@ -833,6 +831,26 @@ Total RP is not responsible for links leading to harmful content.]],
 		MAP_BUTTON_SCANNING = "Scanning",
 		MAP_SCAN_CHAR = "Scan for characters",
 		MAP_SCAN_CHAR_TITLE = "Characters",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- MATURE FILTER
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		MATURE_FILTER_TITLE = "Mature profiles filter",
+		MATURE_FILTER_TOOLTIP_WARNING = "Mature content",
+		MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
+		MATURE_FILTER_OPTION = "Filter mature profiles",
+		MATURE_FILTER_OPTION_TT = [[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word.
+
+A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]],
+		MATURE_FILTER_ADD_TO_PINKLIST = "Add this profile to the |cffffc0dbpink list|r",
+		MATURE_FILTER_ADD_TO_PINKLIST_TT = "Add this player to the |cffffc0dbpink list|r and reveal the mature content found inside their profile.",
+		MATURE_FILTER_ADD_TO_PINKLIST_OPTION = "Add to the |cffffc0dbpink list|r",
+		MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
+		MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
+		MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",
+		MATURE_FILTER_FLAG_PLAYER_TEXT = [[Confirm that you want to flag %s's profile as containing mature content. This profile content will be hidden.
+
+|cffffff00Optional:|r Indicate the offensive words you found in this profile (separated by a space character) to add them to the filter.]],
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS

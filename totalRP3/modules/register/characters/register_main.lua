@@ -287,8 +287,6 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 
-	data = filterOutMatureContent(data);
-
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
@@ -586,11 +584,6 @@ function TRP3_API.register.init()
 		tutorialProvider = tutorialProvider
 	});
 
-    -- Mature profiles filtering should be enabled by default if the chat mature languge filter is on or parental control is on
-    -- That variable name is dedicated to Telkostrasz and Saelora (◕‿◕)
-    local matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings = true;
-
-	registerConfigKey("register_mature_filter", matureProfileFilteringShoudBeEnabledByDefaultAfterWhatIBelieveIsTheBestSettings);
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
@@ -617,12 +610,6 @@ function TRP3_API.register.init()
 		menuText = loc("CO_REGISTER"),
 		pageText = loc("CO_REGISTER"),
 		elements = {
-            {
-                inherit = "TRP3_ConfigCheck",
-                title = loc("CO_REGISTER_MATURE_FILTER"),
-                configKey = "register_mature_filter",
-                help = loc("CO_REGISTER_MATURE_FILTER_TT")
-            },
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_REGISTER_ABOUT_VOTE"),

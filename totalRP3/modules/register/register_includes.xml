@@ -41,4 +41,6 @@
 	
 	<Script file="msp\register_msp.lua" />
 
+	<Script file="main\register_mature_filter.lua" />
+
 </Ui>
