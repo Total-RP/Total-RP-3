@@ -49,6 +49,7 @@ local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local isPlayerIC;
+local unitIDIsFilteredForMatureContent;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -337,6 +338,9 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
+
+
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -352,9 +356,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
-    elseif info.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist and TRP3_Pinklist[targetID])then
-        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize()); -- TODO Locale
-        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"), 1, 0.75, 0, getSmallLineFontSize(), true); -- TODO Locale
+    elseif unitIDIsFilteredForMatureContent(targetID) then
+        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize());
+        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"), 1, 0.75, 0, getSmallLineFontSize(), true);
         tooltipBuilder:Build();
         return;
     end
@@ -886,7 +890,7 @@ local function show(targetType, targetID, targetMode)
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
 						ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
 					end
-					if shouldHideGameTooltip() and not isIDIgnored(targetID) then
+					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
 					end
 					-- Mounts
@@ -905,7 +909,7 @@ local function show(targetType, targetID, targetMode)
 					end
 				elseif targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET then
 					writeCompanionTooltip(targetID, originalTexts, targetType, targetMode);
-					if shouldHideGameTooltip() and not ownerIsIgnored(targetID) then
+					if shouldHideGameTooltip() and not (ownerIsIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
 					end
 				end
@@ -972,6 +976,7 @@ local function onModuleInit()
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
     isPlayerIC = TRP3_API.dashboard.isPlayerIC;
+	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
 		show("mouseover", targetID, targetMode);

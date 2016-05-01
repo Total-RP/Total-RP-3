@@ -169,6 +169,20 @@ function TRP3_API.register.isUnitKnown(targetType)
 	return isUnitIDKnown(getUnitID(targetType));
 end
 
+---
+-- Check if the content of a unit ID should be filtered because it contains mature content
+-- @param unitID Unit ID of the player to test
+--
+local function unitIDIsFilteredForMatureContent(unitID)
+	if not profileExists(unitID) then return end;
+	local profile = getUnitIDProfile(unitID);
+	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
+	-- and that the profile is not in the pink list.
+	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist and TRP3_Pinklist[unitID])
+end
+
+TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main data management
 -- For decoupling reasons, the saved variable TRP3_Register shouln'd be used outside this file !

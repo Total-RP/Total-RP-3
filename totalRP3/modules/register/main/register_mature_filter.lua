@@ -87,7 +87,7 @@ local function onStart()
 
     local function pinklistUnitIDConfirm(unitID)
         --:format(unitID)
-        TRP3_API.popup.showConfirmPopup("Confirm adding that person to the pink list", function()
+        TRP3_API.popup.showConfirmPopup("Confirm adding that person to the pink list", function() -- TODO Locale
             pinklistUnitID(unitID);
             Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
         end);

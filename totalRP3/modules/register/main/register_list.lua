@@ -56,6 +56,7 @@ local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local safeMatch = TRP3_API.utils.str.safeMatch;
+local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -118,6 +119,11 @@ local function openPageByUnitID(unitID)
 		selectMenu(playerMenu);
 	elseif isUnitIDKnown(unitID) and hasProfile(unitID) then
 		openPage(hasProfile(unitID));
+		if unitIDIsFilteredForMatureContent(unitID) then
+			-- TODO Modale alert that hide content underneath, with check box to add profile to pink list
+			TRP3_API.popup.showConfirmPopup("This profile contains mature content. Confirm that you want to open that profile", function() -- TODO Locale
+			end);
+		end
 	end
 end
 TRP3_API.register.openPageByUnitID = openPageByUnitID;
