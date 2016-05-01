@@ -23,6 +23,8 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local matureFilterPopup;
+
 local function onStart()
 
     -- API
@@ -243,7 +245,7 @@ local function onStart()
 end
 
 local onInit = function ()
-
+    matureFilterPopup = CreateFrame("Frame", "TRP3_MatureFilterPopup", TRP3_PopupsFrame, "TRP3_MatureFilterPopupTemplate");
 end
 
 local MODULE_STRUCTURE = {

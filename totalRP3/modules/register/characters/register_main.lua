@@ -174,11 +174,11 @@ end
 -- @param unitID Unit ID of the player to test
 --
 local function unitIDIsFilteredForMatureContent(unitID)
-	if not profileExists(unitID) then return end;
+	if not TRP3_API.register.mature_filter or not profileExists(unitID) then return false; end;
 	local profile = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
-	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist and TRP3_Pinklist[unitID])
+	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist[unitID])
 end
 
 TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;

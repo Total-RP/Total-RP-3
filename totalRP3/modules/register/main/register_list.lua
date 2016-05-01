@@ -67,7 +67,7 @@ local playerMenu = "main_10_player";
 local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
 local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
 
-local function openPage(profileID)
+local function openPage(profileID, unitID)
 	local profile = getProfile(profileID);
 	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 		-- If the character already has his "tab", simply open it
@@ -87,6 +87,10 @@ local function openPage(profileID)
 			icon = "Interface\\ICONS\\pet_type_humanoid",
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+
+		if unitID and unitIDIsFilteredForMatureContent(unitID) then
+			TRP3_API.popup.showPopup(TRP3_MatureFilterPopup);
+		end
 	end
 end
 
@@ -118,12 +122,7 @@ local function openPageByUnitID(unitID)
 	if unitID == Globals.player_id then
 		selectMenu(playerMenu);
 	elseif isUnitIDKnown(unitID) and hasProfile(unitID) then
-		openPage(hasProfile(unitID));
-		if unitIDIsFilteredForMatureContent(unitID) then
-			-- TODO Modale alert that hide content underneath, with check box to add profile to pink list
-			TRP3_API.popup.showConfirmPopup("This profile contains mature content. Confirm that you want to open that profile", function() -- TODO Locale
-			end);
-		end
+		openPage(hasProfile(unitID), unitID);
 	end
 end
 TRP3_API.register.openPageByUnitID = openPageByUnitID;
