@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- For debug
-local VERBOSE = true;
+local VERBOSE = false;
 
 -- Public accessor
 TRP3_API.communication = {};
@@ -159,11 +159,17 @@ local function savePacket(sender, messageID, packet, total)
 	end
 
 	-- Triggers packet handlers
-	if PACKET_MESSAGE_HANDLERS[messageID] then
-		for _, handler in pairs(PACKET_MESSAGE_HANDLERS[messageID]) do
+	if PACKET_MESSAGE_HANDLERS[sender] and PACKET_MESSAGE_HANDLERS[sender][messageID] then
+		for _, handler in pairs(PACKET_MESSAGE_HANDLERS[sender][messageID]) do
 			handler(messageID, total, #PACKETS_RECEPTOR[sender][messageID]);
 		end
 	end
+end
+
+function Comm.addMessageIDHandler(target, messageID, callback)
+	if not PACKET_MESSAGE_HANDLERS[target] then PACKET_MESSAGE_HANDLERS[target] = {} end
+	if not PACKET_MESSAGE_HANDLERS[target][messageID] then PACKET_MESSAGE_HANDLERS[target][messageID] = {} end
+	tinsert(PACKET_MESSAGE_HANDLERS[target][messageID], callback);
 end
 
 local function getPackets(sender, messageID)
@@ -175,6 +181,10 @@ local function endPacket(sender, messageID)
 	assert(PACKETS_RECEPTOR[sender] and PACKETS_RECEPTOR[sender][messageID], "No stored packets from "..sender.." for structure "..messageID);
 	wipe(PACKETS_RECEPTOR[sender][messageID]);
 	PACKETS_RECEPTOR[sender][messageID] = nil;
+	if PACKET_MESSAGE_HANDLERS[sender] and PACKET_MESSAGE_HANDLERS[sender][messageID] then
+		wipe(PACKET_MESSAGE_HANDLERS[sender][messageID]);
+		PACKET_MESSAGE_HANDLERS[sender][messageID] = nil;
+	end
 end
 
 local function decode(code)
