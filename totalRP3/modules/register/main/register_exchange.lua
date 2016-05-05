@@ -169,7 +169,7 @@ end
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
 -- His main query is to receive your vernum tab. But you can already read his tab to query information.
-local function incomingVernumQuery(structure, senderID, bResponse)
+local function incomingVernumQuery(structure, senderID)
 	-- First: Integrity check
 	if type(structure) ~= "table"
 	or #structure <= 0
@@ -182,7 +182,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	end
 
 	-- First send back or own vernum
-	if not bResponse and (not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION) then
+	if not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION then
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 	end

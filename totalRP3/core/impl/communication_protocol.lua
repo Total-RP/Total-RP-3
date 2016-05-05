@@ -17,6 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- For debug
+local VERBOSE = true;
+
 -- Public accessor
 TRP3_API.communication = {};
 
@@ -41,7 +44,7 @@ local onAddonMessageReceived;
 -- Makes connection with Wow communication functions, or debug functions
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local wowCom_prefix = "TRP3";
+local wowCom_prefix = "TRP3.1";
 local interface_id = {
 	WOW = 1,
 	DIRECT_RELAY = 2,
@@ -79,7 +82,7 @@ end
 -- Note that the messages are not really sent.
 local function directPrint(packet, target, priority)
 	Log.log("Message to: "..tostring(target).." - Priority: "..tostring(priority)..(" - Message(%s):"):format(packet:len()));
-	Log.log(packet:sub(4));
+	Log.log(packet);
 end
 
 -- A "direct relay" (like localhost) communication interface, used for development purpose.
@@ -108,27 +111,41 @@ end
 -- Handles packet sequences
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- 254 - TRP3(4) - MESSAGE_ID(2) - control character(1)
-local AVAILABLE_CHARACTERS = 246;
-local NEXT_PACKET_PREFIX = "\001";
-local LAST_PACKET_PREFIX = "\002";
+-- 254 - TRP3.1(6) - MESSAGE_ID(2) - control character(1) - total256(2) - index256(2)
+local AVAILABLE_CHARACTERS = 240;
+local NEXT_PACKET_PREFIX = "F";
+local LAST_PACKET_PREFIX = "L";
 local PACKETS_RECEPTOR = {};
+local ID_MOD = 74;
+local ID_MOD_START = 48;
+local ID_MAX_VALUE = ID_MOD*ID_MOD;
+
+local function code(code)
+	assert(type(code) == "number" and code < ID_MAX_VALUE, "Bad code: " .. code);
+	local div = math.floor(code / ID_MOD);
+	local remainder = math.fmod (code, ID_MOD);
+	return string.char(ID_MOD_START + div) .. string.char(ID_MOD_START + remainder);
+end
 
 -- Send each packet to the current communication interface.
 local function handlePacketsOut(messageID, packets, target, priority)
-	if #packets ~= 0 then
+	local totalPackets = #packets;
+	if totalPackets ~= 0 then
+		local total256 = code(totalPackets);
 		for index, packet in pairs(packets) do
 			assert(packet:len() <= AVAILABLE_CHARACTERS, "Too long packet: " .. packet:len());
 			local control = NEXT_PACKET_PREFIX;
 			if index == #packets then
 				control = LAST_PACKET_PREFIX;
 			end
-			getCommunicationInterface()(messageID..control..packet, target, priority);
+			getCommunicationInterface()(messageID .. control .. total256 .. packet, target, priority);
 		end
 	end
 end
 
-local function savePacket(sender, messageID, packet)
+local PACKET_MESSAGE_HANDLERS = {};
+
+local function savePacket(sender, messageID, packet, total)
 	if not PACKETS_RECEPTOR[sender] then
 		PACKETS_RECEPTOR[sender] = {};
 	end
@@ -136,6 +153,17 @@ local function savePacket(sender, messageID, packet)
 		PACKETS_RECEPTOR[sender][messageID] = {};
 	end
 	tinsert(PACKETS_RECEPTOR[sender][messageID], packet);
+
+	if VERBOSE then
+		Log.log(("savePacket(%s, %s, packet, %s / %s)"):format(sender, messageID, #PACKETS_RECEPTOR[sender][messageID], total));
+	end
+
+	-- Triggers packet handlers
+	if PACKET_MESSAGE_HANDLERS[messageID] then
+		for _, handler in pairs(PACKET_MESSAGE_HANDLERS[messageID]) do
+			handler(messageID, total, #PACKETS_RECEPTOR[sender][messageID]);
+		end
+	end
 end
 
 local function getPackets(sender, messageID)
@@ -149,13 +177,20 @@ local function endPacket(sender, messageID)
 	PACKETS_RECEPTOR[sender][messageID] = nil;
 end
 
+local function decode(code)
+	assert(type(code) == "string" and #code == 2, "Bad code: '" .. code .. "'");
+	local value = (string.byte(code:sub(2, 2)) - ID_MOD_START) + (((string.byte(code:sub(1, 1)) - ID_MOD_START) * ID_MOD));
+	return value;
+end
+
 function handlePacketsIn(packet, sender)
 	if not isIDIgnored(sender) then
 		local messageID = packet:sub(1, 2);
 		local control = packet:sub(3, 3);
-		savePacket(sender, messageID, packet:sub(4));
+		local total10 = decode(packet:sub(4, 5));
+		savePacket(sender, messageID, packet:sub(6), total10);
 		if control == LAST_PACKET_PREFIX then
-			handleStructureIn(getPackets(sender, messageID), sender);
+			handleStructureIn(getPackets(sender, messageID), sender, messageID);
 			endPacket(sender, messageID);
 		end
 	end
@@ -167,29 +202,23 @@ end
 -- Message cutting in packets / Message reconstitution
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local MESSAGE_ID_1 = 1;
-local MESSAGE_ID_2 = 1;
-local MESSAGE_ID = string.char(MESSAGE_ID_1, MESSAGE_ID_2);
+local MESSAGE_ID = 1;
 
--- Message IDs are 256 base number encoded on 2 chars (256*256 = 65536 available Message IDs)
+-- Message IDs are 74 base number encoded on 2 chars (74*74 = 5476 available Message IDs)
 local function getMessageIDAndIncrement()
-	local toReturn = MESSAGE_ID;
-	MESSAGE_ID_2 = MESSAGE_ID_2 + 1;
-	if MESSAGE_ID_2 > 255 then
-		MESSAGE_ID_2 = 1;
-		MESSAGE_ID_1 = MESSAGE_ID_1 + 1;
-		if MESSAGE_ID_1 > 255 then
-			MESSAGE_ID_1 = 1;
-		end
+	local toReturn = code(MESSAGE_ID);
+	MESSAGE_ID = MESSAGE_ID + 1;
+	if MESSAGE_ID > ID_MAX_VALUE then
+		MESSAGE_ID = 1;
 	end
-	MESSAGE_ID = string.char(MESSAGE_ID_1, MESSAGE_ID_2);
 	return toReturn;
 end
+Comm.getMessageIDAndIncrement = getMessageIDAndIncrement;
 
 -- Convert structure to message, cut message in packets.
-local function handleStructureOut(structure, target, priority)
+local function handleStructureOut(structure, target, priority, messageID)
 	local message = libSerializer:Serialize(structure);
-	local messageID = getMessageIDAndIncrement();
+	local messageID = messageID or getMessageIDAndIncrement();
 	local messageSize = message:len();
 	local packetTab = {};
 	local index = 1;
@@ -201,11 +230,11 @@ local function handleStructureOut(structure, target, priority)
 end
 
 -- Reassemble the message based on the packets, and deserialize it.
-function handleStructureIn(packets, sender)
+function handleStructureIn(packets, sender, messageID)
 	local message = tconcat(packets);
 	local status, structure = libSerializer:Deserialize(message);
 	if status then
-		receiveObject(structure, sender);
+		receiveObject(structure, sender, messageID);
 	else
 		Log.log(("Deserialization error. Message:\n%s"):format(message), Log.level.SEVERE);
 	end
@@ -219,7 +248,7 @@ end
 local PREFIX_REGISTRATION = {};
 
 -- Register a function to callback when receiving a object attached to the given prefix
- function Comm.registerProtocolPrefix(prefix, callback)
+function Comm.registerProtocolPrefix(prefix, callback)
 	assert(prefix and callback and type(callback) == "function", "Usage: prefix, callback");
 	if PREFIX_REGISTRATION[prefix] == nil then
 		PREFIX_REGISTRATION[prefix] = {};
@@ -231,7 +260,7 @@ end
 -- Prefix must have been registered before use this function
 -- The object can be any lua type (numbers, strings, tables, but NOT functions or userdatas)
 -- Priority is optional ("Bulk" by default)
-function Comm.sendObject(prefix, object, target, priority)
+function Comm.sendObject(prefix, object, target, priority, messageID)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	if not isIDIgnored(target) then
 		if not target:match("[^%-]+%-[^%-]+") then
@@ -239,19 +268,19 @@ function Comm.sendObject(prefix, object, target, priority)
 			return; -- Avoid display "The player "Pouic-" doesn't seemed to be online".
 		end
 		local structure = {prefix, object};
-		handleStructureOut(structure, target, priority);
+		handleStructureOut(structure, target, priority, messageID);
 	end
 end
 
 -- Receive a structure from a player (sender)
 -- Call any callback registered for this prefix.
 -- Structure[1] contains the prefix, structure[2] contains the object
-function receiveObject(structure, sender)
+function receiveObject(structure, sender, messageID)
 	if type(structure) == "table" and #structure == 2 then
 		local prefix = structure[1];
 		if PREFIX_REGISTRATION[prefix] then
 			for _, callback in pairs(PREFIX_REGISTRATION[prefix]) do
-				callback(structure[2], sender);
+				callback(structure[2], sender, messageID);
 			end
 		else
 			Log.log("No registration for prefix: " .. prefix, Log.level.INFO);
