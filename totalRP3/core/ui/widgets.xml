@@ -652,19 +652,24 @@
 
 	<!-- More classic style hovered frame -->
 	<Frame name="TRP3_AltHoveredFrame" virtual="true">
-		<Backdrop bgFile="Interface\Collections\CollectionsBackgroundTile" edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border" tile="true">
+		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border">
 			<EdgeSize>
 				<AbsValue val="26"/>
 			</EdgeSize>
-			<TileSize>
-				<AbsValue val="380"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="4" right="4" top="4" bottom="4"/>
-			</BackgroundInsets>
 		</Backdrop>
 		<Size x="220" y="100"/>
 		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" file="Interface\Collections\CollectionsBackgroundTile" horizTile="true" vertTile="true">
+					<Size x="256" y="256"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-5"/>
+						<Anchor point="BOTTOM" x="0" y="5"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+						<Anchor point="RIGHT" x="-5" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 			<Layer level="ARTWORK">
 				<Texture parentKey="ArrowUP" inherits="HelpPlateArrowDOWN" hidden="true">
 					<Size x="53" y="21"/>
