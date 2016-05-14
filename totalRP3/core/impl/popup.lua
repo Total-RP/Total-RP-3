@@ -126,7 +126,8 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 -- Static popups methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
+-- local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
+local POPUP_HEAD = "Total RP 3\n \n";
 
 -- Show a simple alert with a OK button.
 function TRP3_API.popup.showAlertPopup(text)
