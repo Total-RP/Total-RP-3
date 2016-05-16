@@ -669,6 +669,7 @@ local POPUP_STRUCTURE = {
 		showMethod = showMusicBrowser,
 	}
 }
+TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
 
 function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 	assert(popupID and POPUP_STRUCTURE[popupID], "Unknown popupID: " .. tostring(popupID));

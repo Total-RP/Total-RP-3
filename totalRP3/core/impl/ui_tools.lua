@@ -249,6 +249,7 @@ local function setupListBox(listBox, values, callback, defaultText, boxWidth, ad
 	end
 	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
 	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
+	listBox:SetWidth(boxWidth+50);
 end
 TRP3_API.ui.listbox.setupListBox = setupListBox;
 
