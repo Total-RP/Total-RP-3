@@ -305,6 +305,18 @@ function Utils.str.getUnitID(unit)
 	return playerName .. "-" .. realm;
 end
 
+local strsplit, UnitGUID = strsplit, UnitGUID;
+
+function Utils.str.getUnitDataFromGUID(unitID)
+	local unitType, _, _, _, _, npcID = strsplit("-", UnitGUID(unitID) or "");
+	return unitType, npcID;
+end
+
+function Utils.str.getUnitNPCID(unitID)
+	local unitType, npcID = Utils.str.getUnitDataFromGUID(unitID);
+	return npcID;
+end
+
 -- Return an texture text tag based on the given image url and size.
 function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
