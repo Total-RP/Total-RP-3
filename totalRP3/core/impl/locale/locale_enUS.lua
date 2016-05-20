@@ -21,15 +21,15 @@ local LOCALE_EN = {
 	locale = "enUS",
 	localeText = "English",
 	localeContent = {
-	
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- GENERAL
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
 		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version: %s\n|c0000ff00New version: %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -389,7 +389,7 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- CONFIGURATION
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		CO_CONFIGURATION = "Settings",
 		CO_GENERAL = "General settings",
 		CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
@@ -566,7 +566,7 @@ Possible status:
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		TB_TOOLBAR = "Toolbar",
 		TB_SWITCH_TOOLBAR = "Switch toolbar",
 		TB_SWITCH_CAPE_ON = "Cloak: |cff00ff00Shown",
@@ -598,11 +598,11 @@ Possible status:
 		TF_IGNORE_NO_REASON = "No reason",
 		TB_LANGUAGE = "Language",
 		TB_LANGUAGES_TT = "Change language",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- PROFILES
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		PR_PROFILEMANAGER_TITLE = "Characters profiles",
 		PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
 		PR_PROFILE = "Profile",
@@ -723,15 +723,15 @@ Total RP is not responsible for links leading to harmful content.]],
 		UI_TUTO_BUTTON = "Tutorial mode",
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
 		UI_CLOSE_ALL = "Close all",
-		
+
 		NPC_TALK_SAY_PATTERN = "says: ",
 		NPC_TALK_YELL_PATTERN = "yells: ",
 		NPC_TALK_WHISPER_PATTERN = "whispers: ",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		CM_SHOW = "Show",
 		CM_ACTIONS = "Actions",
 		CM_IC = "IC",
@@ -781,19 +781,19 @@ Total RP is not responsible for links leading to harmful content.]],
 		CM_RESIZE_TT = "Drag to resize the frame.",
 		CM_TWEET_PROFILE = "Show profile url",
 		CM_TWEET = "Send a tweet",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Minimap button
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		MM_SHOW_HIDE_MAIN = "Show/hide the main frame",
 		MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar",
 		MM_SHOW_HIDE_MOVE = "Move button",
-		
+
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- Browsers
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		
+
 		BW_COLOR_CODE = "Color code",
 		BW_COLOR_CODE_TT = "You can paste an 6 figures hexadecimal color code here and press Enter.",
 		BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
@@ -840,6 +840,10 @@ Total RP is not responsible for links leading to harmful content.]],
 		COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
+        COM_STASH_DATA = [[|cffff0000Are you sure you want to stash away your Total RP 3 data?|r
+
+Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
+|cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
 		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.3{/col}{/h3}
 This release contains mainly bug fixes and optimizations. We are working hard on {link*TRP3E*Total RP 3: Extended} to bring you the best creation tools for World of Warcraft, so stay tuned.
