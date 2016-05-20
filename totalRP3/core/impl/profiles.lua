@@ -477,23 +477,27 @@ function TRP3_API.profile.init()
             -- If we already have data stashed, restore the data
             if TRP3_StashedData then
                 for _, variable in pairs(globalVariables) do
-                    _G[variable] = tcopy(TRP3_StashedData[variable] or _G[variable]);
+					-- Copy stashed data into the global variable
+                    tcopy(_G[variable], TRP3_StashedData[variable] or _G[variable]);
                 end
                 -- Empty the stash so we know we can use it again
                 TRP3_StashedData = nil;
+				ReloadUI();
             else
                 -- Ask for confirmation before stashing user data!
                 showConfirmPopup(loc("COM_STASH_DATA"), function()
                     TRP3_StashedData = {};
-                    -- Copy each variable inside the stash
+                    -- Loop through each global variable we want to stash
                     for _, variable in pairs(globalVariables) do
-                        TRP3_StashedData[variable] = tcopy(_G[variable]);
+						TRP3_StashedData[variable] = {}
+						-- Store the globale variable data into the stash
+                        tcopy(TRP3_StashedData[variable], _G[variable]);
                         -- And empty the variable
                         _G[variable] = nil;
                     end
+					ReloadUI();
                 end);
             end
-            ReloadUI();
         end
     });
 end
