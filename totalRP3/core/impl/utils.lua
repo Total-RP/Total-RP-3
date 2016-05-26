@@ -317,6 +317,31 @@ function Utils.str.getUnitNPCID(unitID)
 	return npcID;
 end
 
+function Utils.str.GetGuildName(unitID)
+	local guildName = GetGuildInfo(unitID);
+	return guildName;
+end
+
+function Utils.str.GetGuildRank(unitID)
+	local _, rank = GetGuildInfo(unitID);
+	return rank;
+end
+
+function Utils.str.GetRace(unitID)
+	local _, race = UnitRace(unitID);
+	return race;
+end
+
+function Utils.str.GetClass(unitID)
+	local _, class = UnitClass(unitID);
+	return class;
+end
+
+function Utils.str.GetFaction(unitID)
+	local faction = UnitFactionGroup(unitID);
+	return faction;
+end
+
 -- Return an texture text tag based on the given image url and size.
 function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
