@@ -383,6 +383,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 		end
 	end
 
+    -- TODO Do dark color vuhdo here too
 	-- Custom character name color first
 	if configShowNameCustomColors() and info.characteristics and info.characteristics.CH then
 		characterColor = "|cff" .. info.characteristics.CH;

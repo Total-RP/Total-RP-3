@@ -427,6 +427,11 @@ local function hexaToNumber(hexa)
 end
 Utils.color.hexaToNumber = hexaToNumber;
 
+Utils.color.hexaToFloat = function(hexa)
+    local r, g, b = hexaToNumber(hexa);
+    return r / 255, g / 255, b / 255;
+end
+
 --- Values must be 256 based
 local function colorCode(red, green, blue)
 	local redH = numberToHexa(red);
@@ -445,6 +450,23 @@ end
 Utils.color.colorCodeFloatTab = function(tab)
 	return colorCode(math.ceil(tab.r*255), math.ceil(tab.g*255), math.ceil(tab.b*255));
 end
+
+---
+-- Function to test if a color is correctly readable on a specified.
+-- We will calculate the luminance of the text color
+-- using known values that take into account how the human eye perceive color
+-- and then compute the contrast ratio.
+-- The contrast ratio should be higher than 50%.
+-- @external [](http://www.whydomath.org/node/wavlets/imagebasics.html)
+--
+-- @param textColor Color of the text {r, g, b}, must be 256 based
+-- @return True if the text will be readable
+--
+local textColorIsReadableOnBackground = function(textColor)
+    return ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b)) >= 0.5;
+end
+
+Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Math
