@@ -842,13 +842,6 @@ Total RP is not responsible for links leading to harmful content.]],
 		SCRIPT_ERROR = "Error in script.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- SPEECH
-		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-		NPC_SAYS = "says",
-		NPC_YELLS = "yells",
-
-		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
