@@ -348,7 +348,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				listContent = localeTab,
 				listCallback = changeLocale,
 				listDefault = getLocaleText(getCurrentLocale()),
-				listWidth = nil,
 				listCancel = true,
 			},
 			{

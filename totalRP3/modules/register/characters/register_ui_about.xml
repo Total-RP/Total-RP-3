@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 	
 <!--
@@ -117,7 +117,7 @@
 		    <Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentBkg" x="170" y="0"/>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentBkg" x="0" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
@@ -270,7 +270,7 @@
 				    </Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				        <Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" x="130" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
+							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
 				    </Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template1">

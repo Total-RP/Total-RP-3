@@ -96,7 +96,7 @@
 				<Layers>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_DashboardStatus_XPStatus" inherits="GameFontNormal" justifyH="LEFT" text="[XP_STATUS]">
-							<Size x="150" y="18"/>
+							<Size x="200" y="18"/>
 							<Anchors>
 								<Anchor point="LEFT" x="30" y="0"/>
 								<Anchor point="BOTTOM" x="0" y="20"/>
@@ -104,7 +104,7 @@
 							<Color b="1.0" r="1.0" g="1.0"/>
 						</FontString>
 						<FontString name="TRP3_DashboardStatus_CharactStatus" inherits="GameFontNormal" justifyH="LEFT"  text="[CHARACTER_STATUS]">
-							<Size x="150" y="18"/>
+							<Size x="200" y="18"/>
 							<Anchors>
 								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="TRP3_DashboardStatus_XPStatus" x="0" y="13"/>
 							</Anchors>

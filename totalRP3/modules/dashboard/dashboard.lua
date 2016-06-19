@@ -192,7 +192,7 @@ TRP3_API.dashboard.init = function()
 	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{ loc("DB_NEW"), 1, 150 },
-			{ loc("DB_ABOUT"), 2, 150 },
+			{ loc("DB_ABOUT"), 2, 175 },
 			{ loc("DB_MORE"), 3, 150 },
 		},
 		function(tabWidget, value)
