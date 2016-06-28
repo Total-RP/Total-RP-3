@@ -567,10 +567,15 @@ Utils.str.toHTML = function(text)
 	end
 
 	-- 3) Replace Markdown
-	text = text:gsub("(#+)(.-)\n", function(titleChars, title)
+	local titleFunction = function(titleChars, title)
 		local titleLevel = #titleChars;
-		return "<h" .. titleLevel .. ">" .. strtrim(title) .. "</h" .. titleLevel .. ">";
-	end);
+		return "\n<h" .. titleLevel .. ">" .. strtrim(title) .. "</h" .. titleLevel .. ">";
+	end;
+
+	text = text:gsub("^(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)$", titleFunction);
+	text = text:gsub("^(#+)(.-)$", titleFunction);
 
 	-- 4) Replacement : text tags
 	for pattern, replacement in pairs(structureTags) do
