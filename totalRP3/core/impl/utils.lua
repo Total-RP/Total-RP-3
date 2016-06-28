@@ -624,33 +624,44 @@ Utils.str.toHTML = function(text)
 	for _, line in pairs(tab) do
 
 		if not line:find("<") then
-			line = "<P>"..line.."</P>";
+			line = "<P>" .. line .. "</P>";
 		end
 		line = line:gsub("\n","<br/>");
 
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
 			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
 
-		print(line)
+		line = line:gsub("%!%[(.-)%]%((.-)%)", function(icon, size)
+			if icon:find("\\") then
+				local width, height;
+				if size:find("%,") then
+					width, height = strsplit(",", size);
+				else
+					width = tonumber(size) or 128;
+					height = width;
+				end
+				return "</P><img src=\"".. icon .. "\" align=\"center\" width=\"".. width .. "\" height=\"" .. height .. "\"/><P>";
+			end
+			return Utils.str.icon(icon, tonumber(size) or 25);
+		end);
+
 		line = line:gsub("%[(.-)%]%((.-)%)",
 			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
 
-		print(line)
 		line = line:gsub("{link%*(.-)%*(.-)}",
 			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
 
-		print(line)
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
-		finalText = finalText..line;
+		finalText = finalText .. line;
 	end
 
 	finalText = convertTextTags(finalText);
 
 	print(finalText)
 
-	return "<HTML><BODY>"..finalText.."</BODY></HTML>";
+	return "<HTML><BODY>" .. finalText .. "</BODY></HTML>";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
