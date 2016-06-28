@@ -553,6 +553,8 @@ local structureTags = {
 	["{/p}"] = "</P>",
 };
 
+local strtrim = strtrim;
+
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text)
 
@@ -564,7 +566,13 @@ Utils.str.toHTML = function(text)
 		text = text:gsub(pattern, replacement);
 	end
 
-	-- 3) Replacement : text tags
+	-- 3) Replace Markdown
+	text = text:gsub("(#+)(.-)\n", function(titleChars, title)
+		local titleLevel = #titleChars;
+		return "<h" .. titleLevel .. ">" .. strtrim(title) .. "</h" .. titleLevel .. ">";
+	end);
+
+	-- 4) Replacement : text tags
 	for pattern, replacement in pairs(structureTags) do
 		text = text:gsub(pattern, replacement);
 	end
@@ -614,24 +622,35 @@ Utils.str.toHTML = function(text)
 
 	local finalText = "";
 	for _, line in pairs(tab) do
+
 		if not line:find("<") then
 			line = "<P>"..line.."</P>";
 		end
 		line = line:gsub("\n","<br/>");
 
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
-		"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
 
+		print(line)
+		line = line:gsub("%[(.-)%]%((.-)%)",
+			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
+
+		print(line)
 		line = line:gsub("{link%*(.-)%*(.-)}",
-		"<a href=\"%1\">|cff00ff00[%2]|r</a>");
+			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
 
+		print(line)
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
 		finalText = finalText..line;
 	end
 
-	return "<HTML><BODY>"..convertTextTags(finalText).."</BODY></HTML>";
+	finalText = convertTextTags(finalText);
+
+	print(finalText)
+
+	return "<HTML><BODY>"..finalText.."</BODY></HTML>";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
