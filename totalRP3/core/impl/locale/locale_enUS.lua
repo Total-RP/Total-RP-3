@@ -854,22 +854,35 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.3{/col}{/h3}
-This release contains mainly bug fixes and optimizations. We are working hard on {link*TRP3E*Total RP 3: Extended} to bring you the best creation tools for World of Warcraft, so stay tuned.
+		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
 
-{h3}Insert full RP name in the chat frame{/h3}
-When shift-clicking someone's name in the chat frame, Total RP 3 will now insert that person's full RP name as shown in the chat frame. If you want to insert the username instead you can alt-shift-click on the name. You can also disable this feature in the {link*chat_settings*chat settings}.
+{h3}New communication system{/h3}
+This version brings a new TRP3 to TRP3 communication system needed for {link*https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon*Total RP 3: Extended} and Legion that is more powerful and will improve the exchange of large amount of data.
 
-We also added a new option in the {link*chat_settings*chat settings} for how names are displayed to now show titles before people's names.
+|cffff0000This communication system is not compatible with previous versions of Total RP 3|r, so don't panic if you don't receive any profile from previous version, just tell other people to update. If they stay with an older version they will be isolated from the rest of the Total RP community.
+
+|cff9999ffNote: Our Mary Sue Protocol implementation is not affected by this.|r
+
+{h3}Improvements{/h3}
+We have added a bunch of new options to the {link*tooltip_settings*tooltips settings} (all of them are off by default, you will have to turn them on (like those Goldshire campers do, if you know what I mean…)).
+
+You can now:
+• Hide custom RP tooltips when you are out of character.
+• Disable custom colors in the tooltips, if you find them distracting.
+• Dynamically increase the color contrast ratio for the text in the tooltips. Enable this option to allow Total RP 3 to modify the custom colors defined by other players to make the text more readable if the color is too dark.
+
+{h3}|cffff0000Features removed|r{/h3}
+We had to remove the toolbar buttons for showing and hiding your helmet and your cloak as Blizzard removed this feature in Legion. The API functions used by Total RP 3 are no longer present in the game, you will now have to go to a transmog NPC to hide your helmet or your cloak.
 ]],
 		MORE_MODULES = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
-|cff9999ffPlease visit: {link*storyline*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module}]],
+|cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
+]],
 
 		THANK_YOU = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}http://totalrp3.info{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
