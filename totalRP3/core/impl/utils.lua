@@ -664,8 +664,6 @@ Utils.str.toHTML = function(text)
 
 	finalText = convertTextTags(finalText);
 
-	print(finalText)
-
 	return "<HTML><BODY>" .. finalText .. "</BODY></HTML>";
 end
 

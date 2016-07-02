@@ -854,7 +854,7 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
+		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
 
 {h3}New communication system{/h3}
 This version brings a new TRP3 to TRP3 communication system needed for {link*https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon*Total RP 3: Extended} and Legion that is more powerful and will improve the exchange of large amount of data.
@@ -874,13 +874,13 @@ You can now:
 {h3}|cffff0000Features removed|r{/h3}
 We had to remove the toolbar buttons for showing and hiding your helmet and your cloak as Blizzard removed this feature in Legion. The API functions used by Total RP 3 are no longer present in the game, you will now have to go to a transmog NPC to hide your helmet or your cloak.
 ]],
-		MORE_MODULES = [[{h2:c}Optional modules{/h2}
+		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
 |cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
 ]],
 
-		THANK_YOU = [[{h1:c}Total RP 3{/h1}
+		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
 
