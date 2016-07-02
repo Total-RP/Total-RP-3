@@ -553,6 +553,8 @@ local structureTags = {
 	["{/p}"] = "</P>",
 };
 
+local strtrim = strtrim;
+
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text)
 
@@ -564,7 +566,18 @@ Utils.str.toHTML = function(text)
 		text = text:gsub(pattern, replacement);
 	end
 
-	-- 3) Replacement : text tags
+	-- 3) Replace Markdown
+	local titleFunction = function(titleChars, title)
+		local titleLevel = #titleChars;
+		return "\n<h" .. titleLevel .. ">" .. strtrim(title) .. "</h" .. titleLevel .. ">";
+	end;
+
+	text = text:gsub("^(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)$", titleFunction);
+	text = text:gsub("^(#+)(.-)$", titleFunction);
+
+	-- 4) Replacement : text tags
 	for pattern, replacement in pairs(structureTags) do
 		text = text:gsub(pattern, replacement);
 	end
@@ -614,24 +627,46 @@ Utils.str.toHTML = function(text)
 
 	local finalText = "";
 	for _, line in pairs(tab) do
+
 		if not line:find("<") then
-			line = "<P>"..line.."</P>";
+			line = "<P>" .. line .. "</P>";
 		end
 		line = line:gsub("\n","<br/>");
 
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
-		"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+
+		line = line:gsub("%!%[(.-)%]%((.-)%)", function(icon, size)
+			if icon:find("\\") then
+				local width, height;
+				if size:find("%,") then
+					width, height = strsplit(",", size);
+				else
+					width = tonumber(size) or 128;
+					height = width;
+				end
+				return "</P><img src=\"".. icon .. "\" align=\"center\" width=\"".. width .. "\" height=\"" .. height .. "\"/><P>";
+			end
+			return Utils.str.icon(icon, tonumber(size) or 25);
+		end);
+
+		line = line:gsub("%[(.-)%]%((.-)%)",
+			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
 
 		line = line:gsub("{link%*(.-)%*(.-)}",
-		"<a href=\"%1\">|cff00ff00[%2]|r</a>");
+			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
-		finalText = finalText..line;
+		finalText = finalText .. line;
 	end
 
-	return "<HTML><BODY>"..convertTextTags(finalText).."</BODY></HTML>";
+	finalText = convertTextTags(finalText);
+
+	print(finalText)
+
+	return "<HTML><BODY>" .. finalText .. "</BODY></HTML>";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
