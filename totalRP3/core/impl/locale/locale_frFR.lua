@@ -958,7 +958,7 @@ On peut maintenant:
 • Désactiver les couleurs personnalisées dans les infobulles, si elles vous gênent.
 • Améliorer dynamiquement le contraste du text dans les infobulles. Activez cette option pour que Total RP 3 modifie la couleur choisie par les joueurs pour que le text soit lisible sur un fond noir.
 
-{h3}|Fonctionnaltiés supprimées|r{/h3}
+{h3}|cffff0000Fonctionnaltiés supprimées|r{/h3}
 Nous avons dû supprimer les boutons de la barre d'outils permettant d'afficher et cacher le casque et la cape car Blizzard à supprimé cette fonctionnalité dans Legion. Les méthodes de l'API du jeu utilisées par Total RP 3 n'existent plus, vous devrez maintenant aller parler à un PNJ de transmogrffication pour cacher votre casque ou votre cape.]=],
     }
 
