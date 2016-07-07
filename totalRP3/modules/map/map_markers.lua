@@ -299,3 +299,39 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);
+
+local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
+local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
+
+local function placeMapButton(position)
+	position = position or "BOTTOMLEFT";
+	TRP3_WorldMapButton:ClearAllPoints();
+	TRP3_WorldMapButton:SetPoint(position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
+end
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
+
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_MAP_BUTTON"),
+	});
+
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigDropDown",
+		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
+		title = loc("CO_MAP_BUTTON_POS"),
+		listContent = {
+			{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
+			{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
+			{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
+			{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"}
+		},
+		listCallback = placeMapButton,
+		listCancel = true,
+		configKey = CONFIG_MAP_BUTTON_POSITION,
+	});
+
+	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
+
+end);
