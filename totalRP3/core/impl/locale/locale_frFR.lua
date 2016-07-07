@@ -941,7 +941,12 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
             UI_MUSIC_SELECT = "Choisir une musique",
             UI_TUTO_BUTTON = "Mode tutoriel",
             UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-            WHATS_NEW_1 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.0{/col}{/h3}
+            WHATS_NEW_1 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.1{/col}{/h3}
+{h3}Améliorations{/h3}
+• Correction d'un bug du nouveau système de communication.
+• Nouvelle option pour changer la position du bouton de scan de la carte.
+
+{h3:c}Nouveautés de la version {col:6eff51}1.1.0{/col}{/h3}
 
 {h3}Nouveau protocol de communication{/h3}
 Cette version implémente un nouveau protocol de communication entre utilisateur de Total RP 3 requis pour {link*https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon*Total RP 3: Extended} et Legion, qui est bien plus puissant et optimisé pour les échanges de beaucoup de données.

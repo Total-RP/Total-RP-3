@@ -856,7 +856,12 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
+		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.1{/col}{/h3}
+{h3}Improvements{/h3}
+• Fixed a bug with the new communication system.
+• New option to change the scan button position on the map.
+
+{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
 
 {h3}New communication system{/h3}
 This version brings a new TRP3 to TRP3 communication system needed for {link*https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon*Total RP 3: Extended} and Legion that is more powerful and will improve the exchange of large amount of data.
