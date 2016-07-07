@@ -218,7 +218,7 @@ local MESSAGE_ID = 1;
 local function getMessageIDAndIncrement()
 	local toReturn = code(MESSAGE_ID);
 	MESSAGE_ID = MESSAGE_ID + 1;
-	if MESSAGE_ID > ID_MAX_VALUE then
+	if MESSAGE_ID >= ID_MAX_VALUE then
 		MESSAGE_ID = 1;
 	end
 	return toReturn;
