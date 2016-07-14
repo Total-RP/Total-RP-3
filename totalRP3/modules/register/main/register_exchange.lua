@@ -143,6 +143,9 @@ end
 -- Check version numbers and perform information queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- We will store new versions alerts to remember how many people notified us of a new version.
+local newVersionAlerts = {};
+
 local infoTypeTab = {
 	registerInfoTypes.CHARACTERISTICS,
 	registerInfoTypes.ABOUT,
@@ -162,6 +165,21 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 		if queryV2 then
 			log(("Should update v2 for companion profileID %s"):format(profileID));
 			queryInformationType(senderID, COMPANION_PREFIX .. "2" .. profileID);
+		end
+	end
+end
+
+local function checkVersion(sender, senderVersion, senderVersionText)
+	-- Record all versions for statistics purpose.
+	newVersionAlerts[senderVersionText] = newVersionAlerts[senderVersionText] or {};
+	newVersionAlerts[senderVersionText][sender] = senderVersion;
+
+	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
+
+		if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
+			TRP3_UpdateFrame.popup.text:SetText(loc("NEW_VERSION"):format(senderVersionText:sub(1, 15)));
+			TRP3_UpdateFrame:Show();
+			has_seen_update_alert = true;
 		end
 	end
 end
@@ -192,10 +210,7 @@ local function incomingVernumQuery(structure, senderID)
 	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 
-	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
-		showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, senderVersionText));
-		has_seen_update_alert = true;
-	end
+	checkVersion(senderID, senderVersion, senderVersionText);
 
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
@@ -402,33 +417,12 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
-	-- These people are blacklisted from the HELLO_CMD on the broadcast channel
-	-- Because they have done stupid things to other people...
-	-- I am well aware this can easily be circumvented, simply by using other characters
-	-- But still, it feels good to have a shaming board here.
-	-- “Shame, shame, shame.” *Ding*
-	local blackListedPeople = {
-		"Summerclaw-MoonGuard", -- Changed his version number to have his name appear on everyone's screen... What a dick!
-	}
-
-	-- We will store new versions alerts to remember how many people notified us of a new version.
-	local newVersions = {};
-
 	-- When receiving HELLO from someone else (from the other side ?)
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
 		version = tonumber(version);
-		-- Only treat the message if it does not come from us or one of the annoying fucks we have blaclisted
-		if sender ~= Globals.player_id and not blackListedPeople[sender] then
-			if configShowVersionAlert() and version > Globals.version and not has_seen_update_alert then
-				-- Increment the number of time we have seen this new version
-				newVersions[version] = (newVersions[version] or 0 ) + 1;
-
-				-- If we have seen this new version more than 5 times we show the alert message
-				if newVersions[version] > 5 then
-					showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
-					has_seen_update_alert = true;
-				end
-			end
+		-- Only treat the message if it does not come from us
+		if sender ~= Globals.player_id then
+			checkVersion(sender, version, versionDisplay);
 		end
 	end);
 end

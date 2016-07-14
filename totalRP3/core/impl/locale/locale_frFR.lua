@@ -941,9 +941,11 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
             UI_MUSIC_SELECT = "Choisir une musique",
             UI_TUTO_BUTTON = "Mode tutoriel",
             UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-            WHATS_NEW_1 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.2{/col}{/h3}
-{h3}Sécurité{/h3}
-Correction d'un problème de sécurité permettant à des joueurs d'envoyer des alertes de nouvelle version avec du texte personnalisé en modifiant le code de l'add-on sur leur machine.
+            WHATS_NEW_2 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.2{/col}{/h3}
+{h3}Notifications de mise à jour{/h3}
+Quand une mise à jour est disponible:
+• L'add-on attendra de recevoir une notification de la part d'au moins 15 joueurs différents avant de l'afficher.
+• L'alerte est affichée dans la fenêtre principale et non plus en tant que popup.
 
 {h3:c}Nouveautés de la version {col:6eff51}1.1.1{/col}{/h3}
 {h3}Améliorations{/h3}
@@ -969,6 +971,13 @@ On peut maintenant:
 
 {h3}|cffff0000Fonctionnaltiés supprimées|r{/h3}
 Nous avons dû supprimer les boutons de la barre d'outils permettant d'afficher et cacher le casque et la cape car Blizzard à supprimé cette fonctionnalité dans Legion. Les méthodes de l'API du jeu utilisées par Total RP 3 n'existent plus, vous devrez maintenant aller parler à un PNJ de transmogrffication pour cacher votre casque ou votre cape.]=],
+
+        NEW_VERSION_TITLE = "Nouvelle version disponible",
+        NEW_VERSION = [[|cff00ff00Une nouvelle version de Total RP 3 (v %s) est disponible.
+
+|cffffff00Nous vous conseillons fortement de rester à jour.|r
+
+Ce message n'apparaitra qu'une seule fois par session et peut être désactivé via les paramètres (Général => Divers).]],
     }
 
 };

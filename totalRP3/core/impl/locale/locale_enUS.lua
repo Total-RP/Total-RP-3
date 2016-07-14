@@ -28,7 +28,6 @@ local LOCALE_EN = {
 
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
-		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version: %s\n|c0000ff00New version: %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
@@ -842,6 +841,8 @@ Total RP is not responsible for links leading to harmful content.]],
 		PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
 		SCRIPT_UNKNOWN_EFFECT = "Script error, unknown FX",
 		SCRIPT_ERROR = "Error in script.",
+		NEW_VERSION_TITLE = "New update available",
+		NEW_VERSION = "|cff00ff00A new version of Total RP 3 (v %s) is available.\n\n|cffffff00We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings (General settings => Miscellaneous).",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
@@ -856,9 +857,11 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.2{/col}{/h3}
-{h3}Security issue{/h3}
-Fixed a security issue that allowed players that would modify the add-on's code on their machine to send new version alerts to other players with custom text. Thanks (not really) Summerclaw-MoonGuard for pointing out this issue (vividly).
+		WHATS_NEW_2 = [[{h3:c}New in version {col:6eff51}1.1.2{/col}{/h3}
+{h3}Update alert exploit fix{/h3}
+When a new update for TRP3 is available:
+• Your add-on will wait to receive a notification from at least 15 different players before alerting you.
+• The alert is now displayed in the TRP3 main frame, and not in the form of a modal popup anymore.
 
 {h3:c}New in version {col:6eff51}1.1.1{/col}{/h3}
 {h3}Improvements{/h3}

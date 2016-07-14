@@ -174,4 +174,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end);
 	end);
 
+	-- Update frame
+	TRP3_UpdateFrame.popup.title:SetText(loc("NEW_VERSION_TITLE"));
+
 end);
