@@ -856,7 +856,11 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.1{/col}{/h3}
+		WHATS_NEW_1 = [[{h3:c}New in version {col:6eff51}1.1.2{/col}{/h3}
+{h3}Security issue{/h3}
+Fixed a security issue that allowed players that would modify the add-on's code on their machine to send new version alerts to other players with custom text. Thanks (not really) Summerclaw-MoonGuard for pointing out this issue (vividly).
+
+{h3:c}New in version {col:6eff51}1.1.1{/col}{/h3}
 {h3}Improvements{/h3}
 • Fixed a bug with the new communication system.
 • New option to change the scan button position on the map.

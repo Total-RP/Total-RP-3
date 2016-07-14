@@ -941,7 +941,11 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
             UI_MUSIC_SELECT = "Choisir une musique",
             UI_TUTO_BUTTON = "Mode tutoriel",
             UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-            WHATS_NEW_1 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.1{/col}{/h3}
+            WHATS_NEW_1 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.2{/col}{/h3}
+{h3}Sécurité{/h3}
+Correction d'un problème de sécurité permettant à des joueurs d'envoyer des alertes de nouvelle version avec du texte personnalisé en modifiant le code de l'add-on sur leur machine.
+
+{h3:c}Nouveautés de la version {col:6eff51}1.1.1{/col}{/h3}
 {h3}Améliorations{/h3}
 • Correction d'un bug du nouveau système de communication.
 • Nouvelle option pour changer la position du bouton de scan de la carte.

@@ -402,13 +402,32 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
+	-- These people are blacklisted from the HELLO_CMD on the broadcast channel
+	-- Because they have done stupid things to other people...
+	-- I am well aware this can easily be circumvented, simply by using other characters
+	-- But still, it feels good to have a shaming board here.
+	-- “Shame, shame, shame.” *Ding*
+	local blackListedPeople = {
+		"Summerclaw-MoonGuard", -- Changed his version number to have his name appear on everyone's screen... What a dick!
+	}
+
+	-- We will store new versions alerts to remember how many people notified us of a new version.
+	local newVersions = {};
+
 	-- When receiving HELLO from someone else (from the other side ?)
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
 		version = tonumber(version);
-		if sender ~= Globals.player_id then
+		-- Only treat the message if it does not come from us or one of the annoying fucks we have blaclisted
+		if sender ~= Globals.player_id and not blackListedPeople[sender] then
 			if configShowVersionAlert() and version > Globals.version and not has_seen_update_alert then
-				showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
-				has_seen_update_alert = true;
+				-- Increment the number of time we have seen this new version
+				newVersions[version] = (newVersions[version] or 0 ) + 1;
+
+				-- If we have seen this new version more than 5 times we show the alert message
+				if newVersions[version] > 5 then
+					showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
+					has_seen_update_alert = true;
+				end
 			end
 		end
 	end);
