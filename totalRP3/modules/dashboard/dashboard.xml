@@ -17,44 +17,7 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
--->	
-
-	<!-- Animated editbox -->
-	<EditBox name="TRP3_DashboardAnimatedEditbox" inherits="TRP3_TitledHelpEditBox" virtual="true">
-		<Size x="0" y="18"/>
-		<Scripts>
-			<OnEnterPressed>
-				_G[self:GetName() .. "HighlightAnimate"]:Play();
-				_G[self:GetName() .. "Animate"]:Play();
-				self:ClearFocus();
-				self:HighlightText(0, 0);
-			</OnEnterPressed>
-		</Scripts>
-		<Layers>
-			<Layer level="OVERLAY">
-				<Texture alphaMode="ADD" alpha="0" name="$parentHighlight" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
-					<Size x="70" y="16"/>
-					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22" />
-					<Anchors>
-						<Anchor point="LEFT" x="-20" y="0"/>
-					</Anchors>
-					<Animations>
-						<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
-							<Alpha duration="0.6" change="1" smoothing="IN" order="1"/>
-							<Translation duration="1.2" offsetX="400" smoothing="IN_OUT" order="1"/>
-							<Alpha duration="0.3" change="-1" smoothing="OUT" order="1" startDelay="0.7"/>
-						</AnimationGroup>
-					</Animations>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Animations>
-			<AnimationGroup name="$parentAnimate" looping="NONE">
-				<Alpha duration="0.25" change="-0.4"  order="1"/>
-				<Alpha duration="0.25" change="0.4"  order="2"/>
-			</AnimationGroup>
-		</Animations>
-	</EditBox>
+-->
 	
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true">

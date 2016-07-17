@@ -556,9 +556,9 @@
 				<Texture file="Interface\Cooldown\star4" name="$parentBlink" alpha="0.0" alphaMode="ADD">
 					<Animations>
 						<AnimationGroup name="$parentAnimate" looping="NONE">
-							<Alpha duration="0.4" change="1" smoothing="IN" order="1"/>
+							<Alpha duration="0.4" toAlpha="1" fromAlpha="0" smoothing="IN" order="1"/>
 							<Rotation degrees="-45" duration="0.4" smoothing="IN" order="1"/>
-							<Alpha duration="0.4" change="-1" smoothing="OUT" startDelay="0.4" order="1"/>
+							<Alpha duration="0.4" toAlpha="0" fromAlpha="1" smoothing="OUT" startDelay="0.4" order="1"/>
 							<Rotation degrees="-45" duration="0.4" smoothing="OUT" startDelay="0.4" order="1"/>
 
 						</AnimationGroup>

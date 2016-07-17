@@ -115,9 +115,9 @@
 					</Anchors>
 					<Animations>
 						<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
-							<Alpha duration="0.4" change="1" smoothing="IN" order="1"/>
+							<Alpha duration="0.4" toAlpha="1" fromAlpha="0" smoothing="IN" order="1"/>
 							<Translation duration="0.8" offsetX="400" smoothing="IN_OUT" order="1"/>
-							<Alpha duration="0.2" change="-1" smoothing="OUT" order="1" startDelay="0.5"/>
+							<Alpha duration="0.2" toAlpha="0" fromAlpha="1" smoothing="OUT" order="1" startDelay="0.5"/>
 						</AnimationGroup>
 					</Animations>
 				</Texture>
@@ -125,8 +125,8 @@
 		</Layers>
 		<Animations>
 			<AnimationGroup name="$parentAnimate" looping="NONE">
-				<Alpha duration="0.25" change="-0.4"  order="1"/>
-				<Alpha duration="0.25" change="0.4"  order="2"/>
+				<Alpha duration="0.25" toAlpha="0.6" fromAlpha="1" order="1"/>
+				<Alpha duration="0.25" toAlpha="1" fromAlpha="0.6"  order="2"/>
 			</AnimationGroup>
 		</Animations>
 	</Frame>

@@ -139,8 +139,8 @@
 								<Texture file="Interface\Calendar\EventNotificationGlow" name="$parentBlink" alpha="0.0" alphaMode="ADD">
 									<Animations>
 										<AnimationGroup name="$parentAnimate" looping="REPEAT">
-											<Alpha duration="0.4" change="0.3" smoothing="IN" order="1"/>
-											<Alpha duration="0.4" change="-0.3" smoothing="OUT" startDelay="0.4" order="1"/>
+											<Alpha duration="0.4" toAlpha="0.3" fromAlpha="0" smoothing="IN" order="1"/>
+											<Alpha duration="0.4" toAlpha="0" fromAlpha="0.3" smoothing="OUT" startDelay="0.4" order="1"/>
 										</AnimationGroup>
 									</Animations>
 									<Size x="25" y="25"/>
