@@ -305,8 +305,10 @@ local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_
 
 local function placeMapButton(position)
 	position = position or "BOTTOMLEFT";
+	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
 	TRP3_WorldMapButton:ClearAllPoints();
-	TRP3_WorldMapButton:SetPoint(position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
+	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame, position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

@@ -113,7 +113,6 @@
 	</Frame>
 
 	<Frame name="TRP3_MainFrameTemplate" toplevel="true" parent="UIParent" frameStrata="MEDIUM" enableMouse="true" clampedToScreen="true" virtual="true">
-		<TitleRegion setAllPoints="true"/>
 		<Size x="768" y="500"/>
 		<Backdrop edgeFile="Interface\AchievementFrame\UI-Achievement-WoodBorder" tile="true">
 			<EdgeSize>
@@ -264,6 +263,7 @@
 	</Frame>
 	
     <Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
+		<TitleRegion setAllPoints="true"/>
 		<Anchors>	
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>

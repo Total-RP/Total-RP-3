@@ -36,7 +36,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="TRP3_ResizeShadowFrameText" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" text="[XP_STATUS]" setAllPoints="true">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
 			</Layer>

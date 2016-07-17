@@ -967,39 +967,41 @@ end
 -- Resize button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local resizeShadowFrame = TRP3_ResizeShadowFrame;
+
 function TRP3_API.ui.frame.initResize(resizeButton)
 	resizeButton.resizableFrame = resizeButton.resizableFrame or resizeButton:GetParent();
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
 	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
-	local parent = resizeButton.resizableFrame;
+	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnDragStart", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
-			TRP3_ResizeShadowFrame.minWidth = self.minWidth;
-			TRP3_ResizeShadowFrame.minHeight = self.minHeight;
-			TRP3_ResizeShadowFrame:ClearAllPoints();
-			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
-			TRP3_ResizeShadowFrame:SetWidth(self.resizableFrame:GetWidth());
-			TRP3_ResizeShadowFrame:SetHeight(self.resizableFrame:GetHeight());
-			TRP3_ResizeShadowFrame:Show();
-			TRP3_ResizeShadowFrame:StartSizing();
-			self.resizableFrame.isSizing = true;
+			resizeShadowFrame.minWidth = self.minWidth;
+			resizeShadowFrame.minHeight = self.minHeight;
+			resizeShadowFrame:ClearAllPoints();
+			resizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
+			resizeShadowFrame:SetWidth(parentFrame:GetWidth());
+			resizeShadowFrame:SetHeight(parentFrame:GetHeight());
+			resizeShadowFrame:Show();
+			resizeShadowFrame:StartSizing();
+			parentFrame.isSizing = true;
 		end
 	end);
 	resizeButton:SetScript("OnDragStop", function(self)
-		if self.resizableFrame.isSizing then
-			TRP3_ResizeShadowFrame:StopMovingOrSizing();
-			self.resizableFrame.isSizing = false;
-			local height, width = TRP3_ResizeShadowFrame:GetHeight(), TRP3_ResizeShadowFrame:GetWidth()
-			TRP3_ResizeShadowFrame:Hide();
+		if parentFrame.isSizing then
+			resizeShadowFrame:StopMovingOrSizing();
+			parentFrame.isSizing = false;
+			local height, width = resizeShadowFrame:GetHeight(), resizeShadowFrame:GetWidth()
+			resizeShadowFrame:Hide();
 			if height < self.minHeight then
 				height = self.minHeight;
 			end
 			if width < self.minWidth then
 				width = self.minWidth;
 			end
-			self.resizableFrame:SetSize(width, height);
+			parentFrame:SetSize(width, height);
 			if self.onResizeStop then
 				C_Timer.After(0.1, function()
 					self.onResizeStop(width, height);
@@ -1009,7 +1011,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 end
 
-TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
+resizeShadowFrame:SetScript("OnUpdate", function(self)
 	local height, width = self:GetHeight(), self:GetWidth();
 	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
 	if height < self.minHeight then
@@ -1018,5 +1020,5 @@ TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
 	if width < self.minWidth then
 		widthColor = "|cffff0000";
 	end
-	TRP3_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
+	resizeShadowFrame.text:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
 end);

@@ -386,6 +386,8 @@ local function showTutorial(tutorialStructure)
 			box:SetSize(frameInfo.box.width, frameInfo.box.height);
 			box:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
 		end
+		box:SetScript("OnEnter", nil);
+		box:SetScript("OnLeave", nil);
 		
 		box:Show();
 		

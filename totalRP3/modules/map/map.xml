@@ -19,9 +19,9 @@
 		limitations under the License.
 	-->
 
-	<Button name="TRP3_WorldMapButton" parent="WorldMapScrollFrame" inherits="TRP3_IconButton" frameStrata="HIGH" toplevel="true">
+	<Button name="TRP3_WorldMapButton" parent="UIParent" inherits="TRP3_IconButton" frameStrata="FULLSCREEN" toplevel="true">
 		<Anchors>
-			<Anchor point="BOTTOMLEFT" x="10" y="10"/>
+			<Anchor point="BOTTOMLEFT" relativeTo="WorldMapScrollFrame" x="10" y="10"/>
 		</Anchors>
 		<Scripts>
 			<OnEnter>
