@@ -337,31 +337,9 @@ local function initIconBrowser()
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
 
-	setTooltipForSameFrame(TRP3_IconBrowserFilterHelp, "BOTTOMLEFT", 0, 0,
-		"|TInterface\\TUTORIALFRAME\\UI-TutorialFrame-GloveCursor:40|t " .. loc("UI_ICON_BROWSER_HELP") ,loc("UI_ICON_BROWSER_HELP_TT"));
-
 	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
 	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	filteredIconBrowser();
-
-	-- Icon from item
-	hooksecurefunc("HandleModifiedItemClick", function(link)
-		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() and link and GetItemIcon(link) then
-			local icon = GetItemIcon(link):match("([^\\]+)$");
-			icon = icon:gsub("%.blp", ""):gsub("%.BLP", "");
-			TRP3_IconBrowserFilterBox:SetText(icon);
-			TRP3_IconBrowserFilterBox:HighlightText();
-		end
-	end);
-	-- Icon from spellbook
-	local GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame = GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame;
-	hooksecurefunc("SpellButton_OnModifiedClick", function(self)
-		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() then
-			local icon = GetSpellBookItemTexture(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType):match("([^\\]+)$");
-			TRP3_IconBrowserFilterBox:SetText(icon);
-			TRP3_IconBrowserFilterBox:HighlightText();
-		end
-	end);
 end
 
 local function showIconBrowser(onSelectCallback, onCancelCallback, scale)

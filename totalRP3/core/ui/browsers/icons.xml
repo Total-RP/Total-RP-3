@@ -91,11 +91,6 @@
 								self:SetValueStep(1);
 								self:SetOrientation("VERTICAL");
 							</OnLoad>
-							<OnShow>
-								if not TRP3_IconBrowserFilterHelp.animationShown then
-									TRP3_API.ui.misc.playAnimation(TRP3_IconBrowserFilterHelpBlinkAnimate);
-								end
-							</OnShow>
 						</Scripts>
 					</Slider>
 				</Frames>
@@ -129,38 +124,6 @@
 							<Anchor point="BOTTOM" x="0" y="10"/>
 						</Anchors>
 					</EditBox>
-					<Button name="TRP3_IconBrowserFilterHelp" inherits="TRP3_HelpButton">
-						<Anchors>
-							<Anchor point="TOPRIGHT" x="-10" y="-10"/>
-						</Anchors>
-						<Layers>
-							<Layer level="OVERLAY">
-
-								<Texture file="Interface\Calendar\EventNotificationGlow" name="$parentBlink" alpha="0.0" alphaMode="ADD">
-									<Animations>
-										<AnimationGroup name="$parentAnimate" looping="REPEAT">
-											<Alpha duration="0.4" toAlpha="0.3" fromAlpha="0" smoothing="IN" order="1"/>
-											<Alpha duration="0.4" toAlpha="0" fromAlpha="0.3" smoothing="OUT" startDelay="0.4" order="1"/>
-										</AnimationGroup>
-									</Animations>
-									<Size x="25" y="25"/>
-									<Anchors>
-										<Anchor x="0" y="0" point="CENTER"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
-						<Scripts>
-							<OnEnter>
-								TRP3_IconBrowserFilterHelpBlinkAnimate:Stop();
-								self.animationShown = true;
-								TRP3_RefreshTooltipForFrame(self);
-							</OnEnter>
-							<OnLoad>
-								self.animationShown = false;
-							</OnLoad>
-						</Scripts>
-					</Button>
 				</Frames>
 			</Frame>
 		</Frames>
