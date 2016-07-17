@@ -539,7 +539,7 @@ local function initColorBrowser()
 	end);
 	
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
-		TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
+		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
@@ -558,6 +558,28 @@ end
 local function showColorBrowser(callback, red, green, blue)
 	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
 	TRP3_ColorBrowser.callback = callback;
+end
+
+function TRP3_ColorButtonLoad(self)
+	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	self.setColor = function(red, green, blue)
+		self.red = red;
+		self.green = green;
+		self.blue = blue;
+		if red and green and blue then
+			_G[self:GetName() .. "SwatchBg"]:SetColorTexture(red / 255, green / 255, blue / 255);
+			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
+		else
+			_G[self:GetName() .. "SwatchBg"]:SetTexture("Interface\\ICONS\\icon_petfamily_mechanical");
+			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
+		end
+		if self.onSelection then
+			self.onSelection(red, green, blue);
+		end
+		_G[self:GetName() .. "BlinkAnimate"]:Play();
+		_G[self:GetName() .. "BlinkAnimate"]:Finish();
+	end
+	self.setColor();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
