@@ -193,11 +193,11 @@ function TRP3_API.companions.player.getProfiles()
 	return playerCompanions;
 end
 
-local GetNumMounts, GetMountInfo, IsMounted = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo, IsMounted;
+local GetMountIDs, GetMountInfoByID, IsMounted = C_MountJournal.GetMountIDs, C_MountJournal.GetMountInfoByID, IsMounted;
 local function getCurrentMountSpellID()
 	if IsMounted() then
-		for i = 1, GetNumMounts() do
-			local creatureName, spellID, icon, active = GetMountInfo(i);
+		for i, id in pairs(GetMountIDs()) do
+			local creatureName, spellID, icon, active = GetMountInfoByID(id);
 			if active then
 				return spellID;
 			end

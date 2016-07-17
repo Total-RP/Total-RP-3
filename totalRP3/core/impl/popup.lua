@@ -386,7 +386,7 @@ local companionWidgetTab = {};
 local filteredCompanionList = {};
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local GetNumPets, GetPetInfoByIndex = C_PetJournal.GetNumPets, C_PetJournal.GetPetInfoByIndex;
-local GetNumMounts, GetMountInfo = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo;
+local GetMountIDs, GetMountInfoByID = C_MountJournal.GetMountIDs, C_MountJournal.GetMountInfoByID;
 local currentCompanionType;
 
 local function onCompanionClick(button)
@@ -438,11 +438,11 @@ local function getWoWCompanionFilteredList(filter)
 		end
 	elseif currentCompanionType == TRP3_API.ui.misc.TYPE_MOUNT then
 		-- Mounts
-		local num, numOwned = GetNumMounts();
-		for i = 1, num do
-			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
+		for i, id in pairs(GetMountIDs()) do
+			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
 			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
-				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT"), spellID});
+				local _, description = C_MountJournal.GetMountInfoExtraByID(id);
+				tinsert(filteredCompanionList, {creatureName, icon, description, loc("PR_CO_MOUNT"), spellID});
 				count = count + 1;
 			end
 		end
