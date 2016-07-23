@@ -189,7 +189,6 @@ local function showPopup(popup)
 	TRP3_PopupsFrame:Show();
 	popup:Show();
 end
-TRP3_API.popup.showPopup = showPopup;
 
 local function hidePopups()
 	TRP3_PopupsFrame:Hide();
@@ -683,6 +682,7 @@ function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
 	if popupPosition and popupPosition.parent then
 		popup.frame:SetParent(popupPosition.parent);
 		popup.frame:SetPoint(popupPosition.point or "CENTER", popupPosition.parent, popupPosition.parentPoint or "CENTER", 0, 0);
+		popup.frame:SetFrameLevel(popupPosition.parent:GetFrameLevel() + 20);
 		popup.frame:Show();
 	else
 		popup.frame:SetParent(TRP3_PopupsFrame);
