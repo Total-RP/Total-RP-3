@@ -861,8 +861,8 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 {h3}Updated in-game resources{/h3}
 
 • We have updated our list of musics with 461 new musics (including Invincible, finally!).
-- We have updated our list of icons with 1956 new icons.
-- We have updated our list of images you can insert in your description to include 135 new images.]],
+• We have updated our list of icons with 1956 new icons.
+• We have updated our list of images you can insert in your description to include 135 new images.]],
 		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
