@@ -857,37 +857,12 @@ Total RP is not responsible for links leading to harmful content.]],
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-		WHATS_NEW_2 = [[{h3:c}New in version {col:6eff51}1.1.2{/col}{/h3}
-{h3}Update alert exploit fix{/h3}
-When a new update for TRP3 is available:
-• Your add-on will wait to receive a notification from at least 15 different players before alerting you.
-• The alert is now displayed in the TRP3 main frame, and not in the form of a modal popup anymore.
+		WHATS_NEW_3 = [[{h3:c}New in version {col:6eff51}1.1.4{/col}{/h3}
+{h3}Updated in-game resources{/h3}
 
-{h3:c}New in version {col:6eff51}1.1.1{/col}{/h3}
-{h3}Improvements{/h3}
-• Fixed a bug with the new communication system.
-• New option to change the scan button position on the map.
-
-{h3:c}New in version {col:6eff51}1.1.0{/col}{/h3}
-
-{h3}New communication system{/h3}
-This version brings a new TRP3 to TRP3 communication system needed for {link*https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon*Total RP 3: Extended} and Legion that is more powerful and will improve the exchange of large amount of data.
-
-|cffff0000This communication system is not compatible with previous versions of Total RP 3|r, so don't panic if you don't receive any profile from previous version, just tell other people to update. If they stay with an older version they will be isolated from the rest of the Total RP community.
-
-|cff9999ffNote: Our Mary Sue Protocol implementation is not affected by this.|r
-
-{h3}Improvements{/h3}
-We have added a bunch of new options to the {link*tooltip_settings*tooltips settings} (all of them are off by default, you will have to turn them on (like those Goldshire campers do, if you know what I mean…)).
-
-You can now:
-• Hide custom RP tooltips when you are out of character.
-• Disable custom colors in the tooltips, if you find them distracting.
-• Dynamically increase the color contrast ratio for the text in the tooltips. Enable this option to allow Total RP 3 to modify the custom colors defined by other players to make the text more readable if the color is too dark.
-
-{h3}|cffff0000Features removed|r{/h3}
-We had to remove the toolbar buttons for showing and hiding your helmet and your cloak as Blizzard removed this feature in Legion. The API functions used by Total RP 3 are no longer present in the game, you will now have to go to a transmog NPC to hide your helmet or your cloak.
-]],
+• We have updated our list of musics with 461 new musics (including Invincible, finally!).
+- We have updated our list of icons with 1956 new icons.
+- We have updated our list of images you can insert in your description to include 135 new images.]],
 		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
