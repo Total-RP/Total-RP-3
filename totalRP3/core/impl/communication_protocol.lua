@@ -246,7 +246,7 @@ function handleStructureIn(packets, sender, messageID)
 	if status then
 		receiveObject(structure, sender, messageID);
 	else
-		Log.log(("Deserialization error. Message:\n%s"):format(message), Log.level.SEVERE);
+		Log.log(("Deserialization error from %s. Message:\n%s"):format(sender, message), Log.level.SEVERE);
 	end
 end
 
