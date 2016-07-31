@@ -25,33 +25,22 @@
 
 local matureFilterPopup;
 
+-- WoW imports
+local UnitIsPlayer = UnitIsPlayer;
+
 local function onStart()
 
     -- API
     TRP3_API.register.mature_filter = {};
 
-    -- The pink list is like a whitelist used for profiles that were flagged as mature
-    -- But the player decided to trust them.
-    TRP3_Pinklist = TRP3_Pinklist or {};
-    -- (ಥ﹏ಥ) Oh god…
-    -- TODO Move that thing somewhere else
-    TRP3_DirtyDictionnary = TRP3_DirtyDictionnary or {
-        "gore",
-        "scat",
-        "slave",
-        "futa",
-        "cum",
-        "vaginal",
-        "anal",
-        "rape",
-        "incest",
-        "ass",
-        "cunt",
-        "dick",
-        "tits",
-        "bulge",
-        "cock"
+    -- Saved variables
+    TRP3_MatureFilter = TRP3_MatureFilter or {
+        whitelist = {},
+        dictionnary = {}
     }
+
+
+    local dictionnaryOfDirtyWords = {};
 
     -- Imports
     local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -66,36 +55,101 @@ local function onStart()
     local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
     local player_id = TRP3_API.globals.player_id;
 
-    local function pinklistUnitID(unitID)
-        TRP3_Pinklist[unitID] = true;
+    local function refreshDictionnaryOfDirtyWords()
+        dictionnaryOfDirtyWords = {};
+        for _, word in pairs(TRP3_API.utils.resources.getMatureFilterDictionnary()) do
+            tinsert(dictionnaryOfDirtyWords, word);
+        end
+        for _, word in pairs(TRP3_MatureFilter.dictionnary) do
+            tinsert(dictionnaryOfDirtyWords, word);
+        end
     end
-    TRP3_API.register.mature_filter.pinklistUnitID = pinklistUnitID;
 
+    refreshDictionnaryOfDirtyWords();
+
+    ---
+    -- Add a profile ID to the whitelist
+    -- @param profileID
+    --
+    local function whitelistProfileID(profileID)
+        TRP3_MatureFilter.whitelist[profileID] = true;
+    end
+    TRP3_API.register.mature_filter.whitelistUProfileID = whitelistProfileID;
+
+    local function removeProfileIDFromWhiteList(profileID)
+        TRP3_MatureFilter.whitelist[profileID] = nil;
+    end
+
+    local function isProfileWhitelisted(profileID)
+        return TRP3_MatureFilter.whitelist[profileID] or false;
+    end
+
+    TRP3_API.register.mature_filter.isProfileWhitelisted = isProfileWhitelisted;
+
+    local function isProfileWhitelistedUnitID(unitID)
+        local profile, profileID = getUnitIDProfile(unitID);
+        return isProfileWhitelisted(profileID);
+    end
+
+    ---
+    -- Flag the profile of a give unit ID has having mature content
+    -- @param unitID Unit ID to use to retreive the profile (Player-RealmName)
+    --
     local function flagUnitProfileHasHavingMatureContent(unitID)
         local profile = getUnitIDProfile(unitID); -- TODO Check exists because it raise error
         profile.hasMatureContent = true;
     end
     TRP3_API.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
 
+    ---
+    -- Open a confirm popup to flag the profile of a give unit ID has having mature content.
+    -- The popup also optionally asks for new words to put inside the dictionnary.
+    -- Will call flagUnitProfileHasHavingMatureContent(unitID) if the user confirm.
+    -- @param unitID Unit ID to use to retreive the profile (Player-RealmName)
+    --
     local function flagUnitProfileHasHavingMatureContentConfirm(unitID)
         showTextInputPopup(loc("MATURE_FILTER_FLAG_PLAYER_TEXT"):format(unitID), function(text)
+            -- If the user inserted words to add to the dicitonnary, we add them
 			for word in text:gmatch("[^%s%p]+") do
-				tinsert(TRP3_DirtyDictionnary, word);
-			end
+				tinsert(TRP3_MatureFilter.dictionnary, word);
+            end
+            if text and #text > 0 then
+                -- Refresh the dictionnary if needed
+                refreshDictionnaryOfDirtyWords()
+            end
+            -- Flag the profile of the unit has having mature content
             flagUnitProfileHasHavingMatureContent(unitID);
+            -- Fire the event that the register has been updated so the UI stuff get refreshed
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
         end);
     end
 
-    local function pinklistUnitIDConfirm(unitID)
-        TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_ADD_TO_PINKLIST_TEXT"):format(unitID), function()
-            pinklistUnitID(unitID);
+    local function removeUnitProfileFromWhitelistConfirm(unitID)
+        TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"):format(unitID), function()
+            local profile, profileID = getUnitIDProfile(unitID);
+            -- Flag the profile of the unit has having mature content
+            removeProfileIDFromWhiteList(profileID);
+            -- Fire the event that the register has been updated so the UI stuff get refreshed
+            Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+        end);
+    end
+
+    ---
+    -- Open a confirm popup to add the profile of a given unit ID to the whitelist
+    -- @param unitID
+    --
+    local function whitelistProfileByUnitIDConfirm(unitID)
+        local profile, profileID = getUnitIDProfile(unitID); -- TODO Check exists because it raise error
+
+        TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_ADD_TO_WHITELIST_TEXT"):format(unitID), function()
+            whitelistProfileID(profileID);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
         end);
     end
 
-    TRP3_API.register.ignoreIDConfirm = pinklistUnitIDConfirm;
+    TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm = whitelistProfileByUnitIDConfirm;
 
+    -- This structure list the fields we will filter
     local filteredFields = {
         character = {
             CU = "string",
@@ -136,7 +190,8 @@ local function onStart()
             words[word] = (words[word] or 0) + 1;
         end
         -- Iterate through the matureWords dictionnary
-        for _, matureWord in pairs(TRP3_DirtyDictionnary) do
+        TRP3_API.utils.table.dump(dictionnaryOfDirtyWords);
+        for _, matureWord in pairs(dictionnaryOfDirtyWords) do
             -- If the word is found, flag the profile as unsafe
             if words[matureWord] then
                 log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!", Utils.log.WARNING);
@@ -167,9 +222,10 @@ local function onStart()
         });
     end);
 
+    -- Add to white list button
     TRP3_API.target.registerButton({
-        id = "aa_player_w_mature",
-        configText = loc("MATURE_FILTER_ADD_TO_PINKLIST_OPTION"),
+        id = "aa_player_w_mature_white_list",
+        configText = loc("MATURE_FILTER_ADD_TO_WHITELIST_OPTION"),
         onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
         condition = function(targetType, unitID)
             if UnitIsPlayer("target") and not TRP3_API.register.isIDIgnored(unitID) then
@@ -178,20 +234,39 @@ local function onStart()
                 return false;
             end
         end,
-        onClick = function(unitID)
-            pinklistUnitIDConfirm(unitID);
-        end,
-        tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. "|r: " .. loc("MATURE_FILTER_ADD_TO_PINKLIST_TT"),
-        tooltip = loc("MATURE_FILTER_ADD_TO_PINKLIST"),
+        onClick = whitelistProfileByUnitIDConfirm,
+        tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. "|r: " .. loc("MATURE_FILTER_ADD_TO_WHITELIST_TT"),
+        tooltip = loc("MATURE_FILTER_ADD_TO_WHITELIST"),
         icon = "INV_ValentinesCard02"
     });
+    -- Remove from white list button
     TRP3_API.target.registerButton({
-        id = "aa_player_w_flag_mature",
+        id = "aa_player_w_mature_remove_white_list",
+        configText = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"),
+        onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+        condition = function(targetType, unitID)
+            if UnitIsPlayer("target") and not TRP3_API.register.isIDIgnored(unitID) then
+                return TRP3_API.register.unitIDIsFlaggedForMatureContent(unitID) and isProfileWhitelistedUnitID(unitID);
+            else
+                return false;
+            end
+        end,
+        onClick = function(unitID)
+            removeUnitProfileFromWhitelistConfirm(unitID);
+        end,
+        tooltipSub = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"),
+        tooltip = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST"),
+        icon = "INV_Inscription_ParchmentVar03"
+    });
+
+    -- Manually flag player button
+    TRP3_API.target.registerButton({
+        id = "aa_player_w_mature_flag",
         configText = loc("MATURE_FILTER_FLAG_PLAYER_OPTION"),
         onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
         condition = function(targetType, unitID)
             if UnitIsPlayer("target") and not TRP3_API.register.isIDIgnored(unitID) then
-                return not TRP3_API.register.unitIDIsFilteredForMatureContent(unitID);
+                return not TRP3_API.register.unitIDIsFlaggedForMatureContent(unitID);
             else
                 return false;
             end
@@ -201,7 +276,7 @@ local function onStart()
         end,
         tooltipSub = loc("MATURE_FILTER_FLAG_PLAYER_TT"),
         tooltip = loc("MATURE_FILTER_FLAG_PLAYER"),
-        icon = "Ability_Hunter_MarkedForDeath"
+        icon = "Ability_Hunter_MasterMarksman"
     });
 
     local function filterData(dataType, data, unitID)
@@ -232,8 +307,8 @@ local function onStart()
     end
 
     Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-        if getConfigValue("register_mature_filter") and unitID and unitID ~= player_id and not TRP3_Pinklist[unitID]then
-            if TRP3_API.register.profileExists(unitID) then
+        if getConfigValue("register_mature_filter") and unitID and unitID ~= player_id and not isProfileWhitelisted(profileID) then
+            if TRP3_API.register.isUnitIDKnown(unitID) and TRP3_API.register.profileExists(unitID) then
                 local profile = getUnitIDProfile(unitID);
                 filterData(dataType, profile, unitID);
             end

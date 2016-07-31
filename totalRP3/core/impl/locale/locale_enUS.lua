@@ -843,12 +843,18 @@ Total RP is not responsible for links leading to harmful content.]],
 		MATURE_FILTER_OPTION_TT = [[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word.
 
 A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]],
-		MATURE_FILTER_ADD_TO_PINKLIST = "Add this profile to the |cffffc0dbpink list|r",
-		MATURE_FILTER_ADD_TO_PINKLIST_TT = "Add this player to the |cffffc0dbpink list|r and reveal the mature content found inside their profile.",
-		MATURE_FILTER_ADD_TO_PINKLIST_OPTION = "Add to the |cffffc0dbpink list|r",
-		MATURE_FILTER_ADD_TO_PINKLIST_TEXT = [[Confirm that you want to add %s to the |cffffc0dbpink list|r.
+		MATURE_FILTER_ADD_TO_WHITELIST = "Add this profile to the |cffffffffmature white list|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_TT = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
+		MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Add to the |cffffffffmature white list|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature white list|r.
 
 The content of their profiles will no longer be hidden.]],
+		MATURE_FILTER_REMOVE_FROM_WHITELIST = "Remove this profile from the |cffffffffmature white list|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TT = "Remove this profile from the |cffffffffmature white list|r and hide again the mature content found inside.",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION = "Remove from the |cffffffffmature white list|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature white list|r.
+
+The content of their profiles will be hidden again.]],
 		MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
 		MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
 		MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",

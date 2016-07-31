@@ -153,7 +153,7 @@ TRP3_API.register.createUnitIDProfile = createUnitIDProfile;
 
 local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
-	return profiles[characters[unitID].profileID];
+	return profiles[characters[unitID].profileID], characters[unitID].profileID;
 end
 
 TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
@@ -175,13 +175,26 @@ end
 --
 local function unitIDIsFilteredForMatureContent(unitID)
 	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
-	local profile = getUnitIDProfile(unitID);
+	local profile, profileID = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
-	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_Pinklist[unitID])
+	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_API.register.mature_filter.isProfileWhitelisted(profileID))
 end
 
 TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
+---
+-- Check if the content of the profile of the unit ID is flagged as containing mature content
+-- @param unitID Unit ID of the player to test
+--
+local function unitIDIsFlaggedForMatureContent(unitID)
+	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
+	local profile, profileID = getUnitIDProfile(unitID);
+	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
+	-- and that the profile is not in the pink list.
+	return profile.hasMatureContent
+end
+
+TRP3_API.register.unitIDIsFlaggedForMatureContent = unitIDIsFlaggedForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main data management
