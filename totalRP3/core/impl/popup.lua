@@ -126,7 +126,8 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 -- Static popups methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
+-- local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
+local POPUP_HEAD = "Total RP 3\n \n";
 
 -- Show a simple alert with a OK button.
 function TRP3_API.popup.showAlertPopup(text)
@@ -188,7 +189,6 @@ local function showPopup(popup)
 	TRP3_PopupsFrame:Show();
 	popup:Show();
 end
-TRP3_API.popup.showPopup = showPopup;
 
 local function hidePopups()
 	TRP3_PopupsFrame:Hide();
@@ -198,7 +198,7 @@ TRP3_API.popup.hidePopups = hidePopups;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Music browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+local TRP3_MusicBrowser = TRP3_MusicBrowser;
 local musicWidgetTab = {};
 local filteredMusicList;
 
@@ -216,13 +216,13 @@ end
 local function onMusicClick(lineFrame, mousebutton)
 	if mousebutton == "LeftButton" then
 		hidePopups();
+		TRP3_MusicBrowser:Hide();
 		if TRP3_MusicBrowserContent.callback then
 			TRP3_MusicBrowserContent.callback(lineFrame.musicURL);
 		end
 	elseif lineFrame.musicURL then
-		Utils.music.play(lineFrame.musicURL);
+		Utils.music.playMusic(lineFrame.musicURL);
 	end
-
 end
 
 local function filteredMusicBrowser()
@@ -263,10 +263,9 @@ local function initMusicBrowser()
 	filteredMusicBrowser();
 end
 
-function TRP3_API.popup.showMusicBrowser(callback)
+local function showMusicBrowser(callback)
 	TRP3_MusicBrowserContent.callback = callback;
 	TRP3_MusicBrowserFilterBox:SetText("");
-	showPopup(TRP3_MusicBrowser);
 	TRP3_MusicBrowserFilterBox:SetFocus();
 end
 
@@ -337,53 +336,17 @@ local function initIconBrowser()
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
 
-	setTooltipForSameFrame(TRP3_IconBrowserFilterHelp, "BOTTOMLEFT", 0, 0,
-		"|TInterface\\TUTORIALFRAME\\UI-TutorialFrame-GloveCursor:40|t " .. loc("UI_ICON_BROWSER_HELP") ,loc("UI_ICON_BROWSER_HELP_TT"));
-
 	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
 	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 	filteredIconBrowser();
-
-	-- Icon from item
-	hooksecurefunc("HandleModifiedItemClick", function(link)
-		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() and link and GetItemIcon(link) then
-			local icon = GetItemIcon(link):match("([^\\]+)$");
-			icon = icon:gsub("%.blp", ""):gsub("%.BLP", "");
-			TRP3_IconBrowserFilterBox:SetText(icon);
-			TRP3_IconBrowserFilterBox:HighlightText();
-		end
-	end);
-	-- Icon from spellbook
-	local GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame = GetSpellBookItemTexture, SpellBook_GetSpellBookSlot, SpellBookFrame;
-	hooksecurefunc("SpellButton_OnModifiedClick", function(self)
-		if TRP3_IconBrowser:IsVisible() and IsControlKeyDown() then
-			local icon = GetSpellBookItemTexture(SpellBook_GetSpellBookSlot(self), SpellBookFrame.bookType):match("([^\\]+)$");
-			TRP3_IconBrowserFilterBox:SetText(icon);
-			TRP3_IconBrowserFilterBox:HighlightText();
-		end
-	end);
 end
 
-function TRP3_API.popup.showIconBrowser(onSelectCallback, onCancelCallback, isExternal)
-	TRP3_IconBrowser.isExternal = isExternal;
+local function showIconBrowser(onSelectCallback, onCancelCallback, scale)
 	ui_IconBrowserContent.onSelectCallback = onSelectCallback;
 	ui_IconBrowserContent.onCancelCallback = onCancelCallback;
 	TRP3_IconBrowserFilterBox:SetText("");
-
-	TRP3_IconBrowser:ClearAllPoints();
-	if isExternal then
-		TRP3_IconBrowser:SetScale(0.75);
-		TRP3_IconBrowser:SetParent(TRP3_AtFirstGlanceEditor);
-		TRP3_IconBrowser:SetPoint("RIGHT", TRP3_AtFirstGlanceEditor, "LEFT", -5, 0);
-		TRP3_IconBrowser:Show();
-	else
-		TRP3_IconBrowser:SetScale(1);
-		TRP3_IconBrowser:SetParent(TRP3_PopupsFrame);
-		TRP3_IconBrowser:SetPoint("CENTER", 0, 0);
-		showPopup(TRP3_IconBrowser);
-	end
-
 	TRP3_IconBrowserFilterBox:SetFocus();
+	TRP3_IconBrowser:SetScale(scale or 1);
 end
 
 function TRP3_API.popup.hideIconBrowser()
@@ -400,7 +363,7 @@ local companionWidgetTab = {};
 local filteredCompanionList = {};
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local GetNumPets, GetPetInfoByIndex = C_PetJournal.GetNumPets, C_PetJournal.GetPetInfoByIndex;
-local GetNumMounts, GetMountInfo = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo;
+local GetMountIDs, GetMountInfoByID = C_MountJournal.GetMountIDs, C_MountJournal.GetMountInfoByID;
 local currentCompanionType;
 
 local function onCompanionClick(button)
@@ -452,11 +415,11 @@ local function getWoWCompanionFilteredList(filter)
 		end
 	elseif currentCompanionType == TRP3_API.ui.misc.TYPE_MOUNT then
 		-- Mounts
-		local num, numOwned = GetNumMounts();
-		for i = 1, num do
-			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
+		for i, id in pairs(GetMountIDs()) do
+			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
 			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
-				tinsert(filteredCompanionList, {creatureName, icon, "", loc("PR_CO_MOUNT"), spellID});
+				local _, description = C_MountJournal.GetMountInfoExtraByID(id);
+				tinsert(filteredCompanionList, {creatureName, icon, description, loc("PR_CO_MOUNT"), spellID});
 				count = count + 1;
 			end
 		end
@@ -553,7 +516,7 @@ local function initColorBrowser()
 	end);
 	
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
-		TRP3_ColorBrowserSwatch:SetTexture(r, g, b);
+		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
@@ -562,16 +525,38 @@ local function initColorBrowser()
 
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
 		hidePopups();
+		TRP3_ColorBrowser:Hide();
 		if TRP3_ColorBrowser.callback ~= nil then
 			TRP3_ColorBrowser.callback(TRP3_ColorBrowser.red * 255, TRP3_ColorBrowser.green * 255, TRP3_ColorBrowser.blue * 255);
 		end
 	end);
 end
 
-function TRP3_API.popup.showColorBrowser(callback, red, green, blue)
+local function showColorBrowser(callback, red, green, blue)
 	TRP3_ColorBrowserColor:SetColorRGB((red or 255) / 255, (green or 255) / 255, (blue or 255) / 255);
 	TRP3_ColorBrowser.callback = callback;
-	showPopup(TRP3_ColorBrowser);
+end
+
+function TRP3_ColorButtonLoad(self)
+	self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	self.setColor = function(red, green, blue)
+		self.red = red;
+		self.green = green;
+		self.blue = blue;
+		if red and green and blue then
+			_G[self:GetName() .. "SwatchBg"]:SetColorTexture(red / 255, green / 255, blue / 255);
+			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
+		else
+			_G[self:GetName() .. "SwatchBg"]:SetTexture("Interface\\ICONS\\icon_petfamily_mechanical");
+			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
+		end
+		if self.onSelection then
+			self.onSelection(red, green, blue);
+		end
+		_G[self:GetName() .. "BlinkAnimate"]:Play();
+		_G[self:GetName() .. "BlinkAnimate"]:Finish();
+	end
+	self.setColor();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -580,10 +565,12 @@ end
 
 local imageWidgetTab = {};
 local filteredImageList = {};
+local TRP3_ImageBrowser = TRP3_ImageBrowser;
 
 local function onImageSelect()
 	assert(TRP3_ImageBrowserContent.currentImage, "No current image ...");
 	hidePopups();
+	TRP3_ImageBrowser:Hide();
 	if TRP3_ImageBrowser.callback then
 		TRP3_ImageBrowser.callback(filteredImageList[TRP3_ImageBrowserContent.currentImage]);
 	end
@@ -632,9 +619,8 @@ local function initImageBrowser()
 	filteredImageBrowser();
 end
 
-function TRP3_API.popup.showImageBrowser(callback)
+local function showImageBrowser(callback, externalFrame)
 	TRP3_ImageBrowser.callback = callback;
-	showPopup(TRP3_ImageBrowser);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -651,4 +637,65 @@ function TRP3_API.popup.init()
 	initMusicBrowser();
 	initColorBrowser();
 	initImageBrowser();
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- POPUP REFACTOR
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local tostring, type, unpack = tostring, type, unpack;
+
+TRP3_API.popup.IMAGES = "images";
+TRP3_API.popup.ICONS = "icons";
+TRP3_API.popup.COLORS = "colors";
+TRP3_API.popup.MUSICS = "musics";
+
+local POPUP_STRUCTURE = {
+	[TRP3_API.popup.IMAGES] = {
+		frame = TRP3_ImageBrowser,
+		showMethod = showImageBrowser,
+	},
+	[TRP3_API.popup.COLORS] = {
+		frame = TRP3_ColorBrowser,
+		showMethod = showColorBrowser,
+	},
+	[TRP3_API.popup.ICONS] = {
+		frame = TRP3_IconBrowser,
+		showMethod = showIconBrowser,
+	},
+	[TRP3_API.popup.MUSICS] = {
+		frame = TRP3_MusicBrowser,
+		showMethod = showMusicBrowser,
+	}
+}
+TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
+
+function TRP3_API.popup.showPopup(popupID, popupPosition, popupArgs)
+	assert(popupID and POPUP_STRUCTURE[popupID], "Unknown popupID: " .. tostring(popupID));
+	assert(popupPosition == nil or type(popupPosition) == "table", "PopupPosition must be a table or be nil");
+	assert(popupArgs == nil or type(popupArgs) == "table", "PopupArgs must be a table or be nil");
+
+	local popup = POPUP_STRUCTURE[popupID];
+
+	popup.frame:ClearAllPoints();
+
+	if popupPosition and popupPosition.parent then
+		popup.frame:SetParent(popupPosition.parent);
+		popup.frame:SetPoint(popupPosition.point or "CENTER", popupPosition.parent, popupPosition.parentPoint or "CENTER", 0, 0);
+		popup.frame:SetFrameLevel(popupPosition.parent:GetFrameLevel() + 20);
+		popup.frame:Show();
+	else
+		popup.frame:SetParent(TRP3_PopupsFrame);
+		popup.frame:SetPoint("CENTER", 0, 0);
+		for _, frame in pairs({TRP3_PopupsFrame:GetChildren()}) do
+			frame:Hide();
+		end
+		TRP3_PopupsFrame:Show();
+		popup.frame:Show();
+	end
+
+	if popup.showMethod then
+		popup.showMethod(unpack(popupArgs));
+	end
+
 end

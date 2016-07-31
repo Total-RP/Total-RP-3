@@ -28,6 +28,7 @@ local CONFIG_MINIMAP_SHOW = "minimap_show";
 local CONFIG_MINIMAP_POSITION = "minimap_icon_position";
 local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
 local color, loc, strconcat = TRP3_API.utils.str.color, TRP3_API.locale.getText, strconcat;
+local tinsert = tinsert;
 
 -- Minimap button API initialization
 TRP3_API.navigation.minimapicon = {};
@@ -150,8 +151,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	});
 
 	-- Resizing
-
-	TRP3_MainFrame.Resize.resizableFrame = TRP3_MainFrame;
 	TRP3_MainFrame.Resize.onResizeStop = function()
 		TRP3_MainFrame.Minimize:Hide();
 		TRP3_MainFrame.Maximize:Show();
@@ -162,16 +161,19 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_MainFrame.Maximize:Hide();
 		TRP3_MainFrame.Minimize:Show();
 		TRP3_MainFrame:SetSize(UIParent:GetWidth(), UIParent:GetHeight());
-		C_Timer.After(0.1, function()
+		C_Timer.After(0.25, function()
 			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 		end);
 	end);
 
 	TRP3_MainFrame.Minimize:SetScript("OnClick", function()
 		TRP3_MainFrame:SetSize(768, 500);
-		C_Timer.After(0.1, function()
+		C_Timer.After(0.25, function()
 			TRP3_MainFrame.Resize.onResizeStop();
 		end);
 	end);
+
+	-- Update frame
+	TRP3_UpdateFrame.popup.title:SetText(loc("NEW_VERSION_TITLE"));
 
 end);

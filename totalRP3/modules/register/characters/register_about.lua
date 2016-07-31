@@ -25,7 +25,6 @@ local safeGet = TRP3_API.profile.getDataDefault;
 local loc = TRP3_API.locale.getText;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local Log, convertTextTags = Utils.log, Utils.str.convertTextTags;
 local getConfigValue = TRP3_API.configuration.getValue;
@@ -50,6 +49,10 @@ local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.g
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
+
+local showIconBrowser = function(callback)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+end;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -471,7 +474,6 @@ local function showVotingOption(voteValue)
 		for unitID, _ in pairs(profile.link) do
 			local isOnline = true;
 			if isOnline then
-				-- TODO: check if is online
 				sendVote(voteValue, unitID, profile);
 				sent = true;
 				break;
@@ -789,14 +791,14 @@ end
 
 local function onMusicEditSelected(value, button)
 	if value == 1 then
-		TRP3_API.popup.showMusicBrowser(onMusicSelected);
+		TRP3_API.popup.showPopup(TRP3_API.popup.MUSICS, nil, {onMusicSelected});
 	elseif value == 2 and draftData.MU then
 		draftData.MU = nil;
 		selectMusic(draftData.MU);
 	elseif value == 3 and draftData.MU then
-		Utils.music.play(draftData.MU);
+		Utils.music.playMusic(draftData.MU);
 	elseif value == 4 and draftData.MU then
-		Utils.music.stop();
+		Utils.music.stopMusic();
 	end
 end
 
@@ -954,9 +956,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 			onClick = function(unitID, _, button)
 				if button == "LeftButton" then
-					Utils.music.play(getUnitIDTheme(unitID));
+					Utils.music.playMusic(getUnitIDTheme(unitID));
 				else
-					Utils.music.stop();
+					Utils.music.stopMusic();
 				end
 			end,
 			adapter = function(buttonStructure, unitID)
@@ -980,11 +982,11 @@ function TRP3_API.register.inits.aboutInit()
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
 	local bkgTab = getTiledBackgroundList();
-	setupListBox(TRP3_RegisterAbout_Edit_BckField, bkgTab, setEditBkg, nil, 120, true);
-	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 120, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 120, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 120, true);
-	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 120, true);
+	setupListBox(TRP3_RegisterAbout_Edit_BckField, bkgTab, setEditBkg, nil, 150, true);
+	setupListBox(TRP3_RegisterAbout_Edit_TemplateField, {{"Template 1", 1}, {"Template 2", 2}, {"Template 3", 3}}, setEditTemplate, nil, 150, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_PhysBkg, bkgTab, setTemplate3PhysBkg, nil, 150, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_PsyBkg, bkgTab, setTemplate3PsyBkg, nil, 150, true);
+	setupListBox(TRP3_RegisterAbout_Edit_Template3_HistBkg, bkgTab, setTemplate3HistBkg, nil, 150, true);
 	TRP3_RegisterAbout_Edit_Template3_PhysIcon:SetScript("OnClick", function() showIconBrowser(onPhisIconSelected) end );
 	TRP3_RegisterAbout_Edit_Template3_PsyIcon:SetScript("OnClick", function() showIconBrowser(onPsychoIconSelected) end );
 	TRP3_RegisterAbout_Edit_Template3_HistIcon:SetScript("OnClick", function() showIconBrowser(onHistoIconSelected) end );
@@ -995,7 +997,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
-	TRP3_API.ui.text.setupToolbar("TRP3_RegisterAbout_Edit_Template1_Toolbar", TRP3_RegisterAbout_Edit_Template1ScrollText);
+	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Template1_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
 
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
@@ -1036,10 +1038,10 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() showVotingOption(-1) end);
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
-		Utils.music.play(TRP3_RegisterAbout_AboutPanel.musicURL);
+		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetScript("OnClick", function()
-		Utils.music.stop();
+		Utils.music.stopMusic();
 	end);
 
 	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data

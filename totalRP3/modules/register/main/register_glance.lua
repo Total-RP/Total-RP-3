@@ -182,7 +182,11 @@ local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	TRP3_AtFirstGlanceEditorIcon.isExternal = external;
 	TRP3_AtFirstGlanceEditorIcon:SetScript("OnClick", function(self)
 		TRP3_API.popup.hideIconBrowser();
-		TRP3_API.popup.showIconBrowser(onIconSelected, nil, self.isExternal);
+		if self.isExternal then
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, {parent = TRP3_AtFirstGlanceEditor, point = "RIGHT", parentPoint = "LEFT"}, {onIconSelected, nil, 0.75});
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {onIconSelected});
+		end
 	end);
 	onIconSelected(slotData.IC);
 	TRP3_API.popup.hideIconBrowser();
@@ -315,7 +319,7 @@ local function onGlanceSlotClick(button, clickType)
 				y = y / scale;
 				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
 				TRP3_AtFirstGlanceEditor.current = button;
-				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), true, button.targetID, button.profileID);
+				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), TRP3_AtFirstGlanceEditor, button.targetID, button.profileID);
 			end
 		elseif clickType == "RightButton" then
 			displayDropDown(button, getSlotPresetDataForList(), function(value) onGlanceSelection(value, button) end, 0, true);

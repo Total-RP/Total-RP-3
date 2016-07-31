@@ -48,25 +48,25 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tiledBackgrounds = {
-	"Interface\\DialogFrame\\UI-DialogBox-Background",
-	"Interface\\BankFrame\\Bank-Background",
-	"Interface\\FrameGeneral\\UI-Background-Marble",
-	"Interface\\FrameGeneral\\UI-Background-Rock",
-	"Interface\\GuildBankFrame\\GuildVaultBG",
-	"Interface\\HELPFRAME\\DarkSandstone-Tile",
-	"Interface\\HELPFRAME\\Tileable-Parchment",
-	"Interface\\QuestionFrame\\question-background",
-	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg",
-	"Interface\\Destiny\\EndscreenBG",
-	"Interface\\Stationery\\AuctionStationery1",
-	"Interface\\Stationery\\Stationery_ill1",
-	"Interface\\Stationery\\Stationery_OG1",
-	"Interface\\Stationery\\Stationery_TB1",
-	"Interface\\Stationery\\Stationery_UC1",
-	"Interface\\Stationery\\StationeryTest1",
-	"Interface\\WorldMap\\UI-WorldMap-Middle1",
-	"Interface\\WorldMap\\UI-WorldMap-Middle2",
-	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground"
+	"Interface\\DialogFrame\\UI-DialogBox-Background", -- 1
+	"Interface\\BankFrame\\Bank-Background", -- 2
+	"Interface\\FrameGeneral\\UI-Background-Marble", -- 3
+	"Interface\\FrameGeneral\\UI-Background-Rock", -- 4
+	"Interface\\GuildBankFrame\\GuildVaultBG", -- 5
+	"Interface\\HELPFRAME\\DarkSandstone-Tile", -- 6
+	"Interface\\HELPFRAME\\Tileable-Parchment", -- 7
+	"Interface\\QuestionFrame\\question-background", -- 8
+	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", -- 9
+	"Interface\\Destiny\\EndscreenBG", -- 10
+	"Interface\\Stationery\\AuctionStationery1", -- 11
+	"Interface\\Stationery\\Stationery_ill1", -- 12
+	"Interface\\Stationery\\Stationery_OG1", -- 13
+	"Interface\\Stationery\\Stationery_TB1", -- 14
+	"Interface\\Stationery\\Stationery_UC1", -- 15
+	"Interface\\Stationery\\StationeryTest1", -- 16
+	"Interface\\WorldMap\\UI-WorldMap-Middle1", -- 17
+	"Interface\\WorldMap\\UI-WorldMap-Middle2", -- 18
+	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground" -- 19
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
@@ -110,6 +110,8 @@ local DROPDOWN_FRAME, DropDownList1, CloseDropDownMenus = "TRP3_UIDD", DropDownL
 local dropDownFrame, currentlyOpenedDrop;
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
+	assert(anchoredFrame, "No anchoredFrame");
+
 	if not dropDownFrame then
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
@@ -172,7 +174,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		"MENU"
 	);
 	dropDownFrame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName(), -((space or -10)), 0);
+	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
 	currentlyOpenedDrop = anchoredFrame;
 end
@@ -247,6 +249,7 @@ local function setupListBox(listBox, values, callback, defaultText, boxWidth, ad
 	end
 	_G[listBox:GetName().."Middle"]:SetWidth(boxWidth);
 	_G[listBox:GetName().."Text"]:SetWidth(boxWidth-20);
+	listBox:SetWidth(boxWidth+50);
 end
 TRP3_API.ui.listbox.setupListBox = setupListBox;
 
@@ -855,24 +858,39 @@ local function onContainerTagClicked(button, frame, isP)
 	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
 end
 
-function TRP3_API.ui.text.setupToolbar(toolbar, textFrame)
-	_G[toolbar .. "_Title"]:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
-	_G[toolbar .. "_Image"]:SetText(loc("CM_IMAGE"));
-	_G[toolbar .. "_Icon"]:SetText(loc("CM_ICON"));
-	_G[toolbar .. "_Color"]:SetText(loc("CM_COLOR"));
-	_G[toolbar .. "_Link"]:SetText(loc("CM_LINK"));
-	_G[toolbar .. "_H1"].tagIndex = 1;
-	_G[toolbar .. "_H2"].tagIndex = 2;
-	_G[toolbar .. "_H3"].tagIndex = 3;
-	_G[toolbar .. "_P"].tagIndex = 4;
-	_G[toolbar .. "_H1"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_H2"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_H3"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
-	_G[toolbar .. "_P"]:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
-	_G[toolbar .. "_Icon"]:SetScript("OnClick", function() TRP3_API.popup.showIconBrowser(function(icon) onIconTagSelected(icon, textFrame) end) end);
-	_G[toolbar .. "_Color"]:SetScript("OnClick", function() TRP3_API.popup.showColorBrowser(function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end) end);
-	_G[toolbar .. "_Image"]:SetScript("OnClick", function() TRP3_API.popup.showImageBrowser(function(image) onImageTagSelected(image, textFrame) end) end);
-	_G[toolbar .. "_Link"]:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
+function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
+	toolbar.title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
+	toolbar.image:SetText(loc("CM_IMAGE"));
+	toolbar.icon:SetText(loc("CM_ICON"));
+	toolbar.color:SetText(loc("CM_COLOR"));
+	toolbar.link:SetText(loc("CM_LINK"));
+	toolbar.h1.tagIndex = 1;
+	toolbar.h2.tagIndex = 2;
+	toolbar.h3.tagIndex = 3;
+	toolbar.p.tagIndex = 4;
+	toolbar.h1:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.h2:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.h3:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame) end);
+	toolbar.p:SetScript("OnClick", function(button) onContainerTagClicked(button, textFrame, true) end);
+	toolbar.icon:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(
+			TRP3_API.popup.ICONS,
+			{parent = parentFrame, point = point, parentPoint = parentPoint},
+			{function(icon) onIconTagSelected(icon, textFrame) end});
+	end);
+	toolbar.color:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(
+			TRP3_API.popup.COLORS,
+			{parent = parentFrame, point = point, parentPoint = parentPoint},
+			{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+	end);
+	toolbar.image:SetScript("OnClick", function()
+		TRP3_API.popup.showPopup(
+			TRP3_API.popup.IMAGES,
+			{parent = parentFrame, point = point, parentPoint = parentPoint},
+			{function(image) onImageTagSelected(image, textFrame) end});
+	end);
+	toolbar.link:SetScript("OnClick", function() onLinkTagClicked(textFrame) end);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -910,37 +928,36 @@ end
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noParenting)
+function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPosition, x, y, noStrataChange, parent)
 	x = x or 0;
 	y = y or 0;
 	frame:ClearAllPoints();
-	frame:SetParent(hoveredFrame:GetParent());
-	frame:SetFrameStrata("HIGH");
+	if not noStrataChange then
+		frame:SetParent(parent or hoveredFrame:GetParent());
+		frame:SetFrameStrata("HIGH");
+	else
+		frame:SetParent(parent or hoveredFrame);
+		frame:Raise();
+	end
 	frame.ArrowRIGHT:Hide();
-	frame.ArrowGlowRIGHT:Hide();
 	frame.ArrowUP:Hide();
-	frame.ArrowGlowUP:Hide();
 	frame.ArrowDOWN:Hide();
-	frame.ArrowGlowDOWN:Hide();
 	frame.ArrowLEFT:Hide();
-	frame.ArrowGlowLEFT:Hide();
 
 	if arrowPosition == "RIGHT" then
 		frame:SetPoint("RIGHT", hoveredFrame, "LEFT", -10 + x, 0 + y);
 		frame.ArrowLEFT:Show();
-		frame.ArrowGlowLEFT:Show();
 	elseif arrowPosition == "LEFT" then
 		frame:SetPoint("LEFT", hoveredFrame, "RIGHT", 10 + x, 0 + y);
 		frame.ArrowRIGHT:Show();
-		frame.ArrowGlowRIGHT:Show();
 	elseif arrowPosition == "TOP" then
 		frame:SetPoint("TOP", hoveredFrame, "BOTTOM", 0 + x, -20 + y);
 		frame.ArrowDOWN:Show();
-		frame.ArrowGlowDOWN:Show();
-	else
+	elseif arrowPosition == "BOTTOM" then
 		frame:SetPoint("BOTTOM", hoveredFrame, "TOP", 0 + x, 20 + y);
 		frame.ArrowUP:Show();
-		frame.ArrowGlowUP:Show();
+	else
+		frame:SetPoint("CENTER", hoveredFrame, "CENTER", 0 + x, 0 + y);
 	end
 
 	frame:Show();
@@ -950,39 +967,41 @@ end
 -- Resize button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local resizeShadowFrame = TRP3_ResizeShadowFrame;
+
 function TRP3_API.ui.frame.initResize(resizeButton)
 	resizeButton.resizableFrame = resizeButton.resizableFrame or resizeButton:GetParent();
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
 	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
-	local parent = resizeButton.resizableFrame;
+	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnDragStart", function(self)
 		if not self.onResizeStart or not self.onResizeStart() then
-			TRP3_ResizeShadowFrame.minWidth = self.minWidth;
-			TRP3_ResizeShadowFrame.minHeight = self.minHeight;
-			TRP3_ResizeShadowFrame:ClearAllPoints();
-			TRP3_ResizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
-			TRP3_ResizeShadowFrame:SetWidth(self.resizableFrame:GetWidth());
-			TRP3_ResizeShadowFrame:SetHeight(self.resizableFrame:GetHeight());
-			TRP3_ResizeShadowFrame:Show();
-			TRP3_ResizeShadowFrame:StartSizing();
-			self.resizableFrame.isSizing = true;
+			resizeShadowFrame.minWidth = self.minWidth;
+			resizeShadowFrame.minHeight = self.minHeight;
+			resizeShadowFrame:ClearAllPoints();
+			resizeShadowFrame:SetPoint("CENTER", self.resizableFrame, "CENTER", 0, 0);
+			resizeShadowFrame:SetWidth(parentFrame:GetWidth());
+			resizeShadowFrame:SetHeight(parentFrame:GetHeight());
+			resizeShadowFrame:Show();
+			resizeShadowFrame:StartSizing();
+			parentFrame.isSizing = true;
 		end
 	end);
 	resizeButton:SetScript("OnDragStop", function(self)
-		if self.resizableFrame.isSizing then
-			TRP3_ResizeShadowFrame:StopMovingOrSizing();
-			self.resizableFrame.isSizing = false;
-			local height, width = TRP3_ResizeShadowFrame:GetHeight(), TRP3_ResizeShadowFrame:GetWidth()
-			TRP3_ResizeShadowFrame:Hide();
+		if parentFrame.isSizing then
+			resizeShadowFrame:StopMovingOrSizing();
+			parentFrame.isSizing = false;
+			local height, width = resizeShadowFrame:GetHeight(), resizeShadowFrame:GetWidth()
+			resizeShadowFrame:Hide();
 			if height < self.minHeight then
 				height = self.minHeight;
 			end
 			if width < self.minWidth then
 				width = self.minWidth;
 			end
-			self.resizableFrame:SetSize(width, height);
+			parentFrame:SetSize(width, height);
 			if self.onResizeStop then
 				C_Timer.After(0.1, function()
 					self.onResizeStop(width, height);
@@ -992,7 +1011,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 end
 
-TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
+resizeShadowFrame:SetScript("OnUpdate", function(self)
 	local height, width = self:GetHeight(), self:GetWidth();
 	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
 	if height < self.minHeight then
@@ -1001,5 +1020,5 @@ TRP3_ResizeShadowFrame:SetScript("OnUpdate", function(self)
 	if width < self.minWidth then
 		widthColor = "|cffff0000";
 	end
-	TRP3_ResizeShadowFrameText:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
+	resizeShadowFrame.text:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
 end);

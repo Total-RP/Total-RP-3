@@ -224,12 +224,6 @@ local pageStructures = {};
 local currentPageId;
 local currentContext;
 
-local function checkPageSelection()
-	if currentPageId == nil then
-		-- TODO: what to do ?
-	end
-end
-
 local function registerPage(pageStructure)
 	assert(pageStructure and pageStructure.id, "pageStructure must have an id field.");
 	assert(pageStructure.frame or (pageStructure.templateName and pageStructure.frameName), "pageStructure must have a frame or a templateName and a frameName field.");
@@ -392,6 +386,8 @@ local function showTutorial(tutorialStructure)
 			box:SetSize(frameInfo.box.width, frameInfo.box.height);
 			box:SetPoint( frameInfo.box.anchor, TRP3_TutorialFrame, frameInfo.box.anchor, frameInfo.box.x, frameInfo.box.y );
 		end
+		box:SetScript("OnEnter", nil);
+		box:SetScript("OnLeave", nil);
 		
 		box:Show();
 		
@@ -426,7 +422,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.navigation.init = function()
-	TRP3_MainFrame:SetScript("OnShow", function() checkPageSelection() end);
 	TRP3_MainFrame.Close:SetScript("OnClick", function() switchMainFrame() end);
 	
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)

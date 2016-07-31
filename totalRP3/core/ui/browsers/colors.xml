@@ -49,6 +49,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
+						TRP3_ColorBrowser:Hide();
 						TRP3_API.popup.hidePopups();
 					</OnClick>
 				</Scripts>

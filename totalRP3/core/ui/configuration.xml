@@ -88,7 +88,7 @@
 		<Frames>
 			<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
 				<Anchors>
-					<Anchor point="RIGHT" x="-130" y="0"/>
+					<Anchor point="RIGHT" x="5" y="0"/>
 				</Anchors>
 			</Frame>
 		</Frames>

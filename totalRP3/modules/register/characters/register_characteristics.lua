@@ -27,7 +27,6 @@ local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
 local strjoin, unpack, getKeys = strjoin, unpack, Utils.table.keys;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
@@ -52,6 +51,10 @@ local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
+
+local showIconBrowser = function(callback)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+end;
 
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;

@@ -21,11 +21,11 @@
 local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local loc = TRP3_API.locale.getText;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local strconcat, tinsert = strconcat, tinsert;
+local tinsert, strconcat, _G = tinsert, strconcat, _G;
 
 -- WoW functions
-local GetLanguageByIndex = GetLanguageByIndex;
-local GetNumLanguages = GetNumLanguages;
+local GetNumLanguages, GetLanguageByIndex = GetNumLanguages, GetLanguageByIndex;
+local ChatFrame1EditBox = ChatFrame1EditBox;
 
 local languagesIcon = {
 
@@ -70,7 +70,7 @@ end
 
 local function onClick(clickedframe)
 	local dropdownItems = {};
-	tinsert(dropdownItems,{"Languages", nil}); -- TODO TRANSLATE
+	tinsert(dropdownItems,{loc("TB_LANGUAGE"), nil});
 	for i = 0, GetNumLanguages() do
 		if GetLanguageByIndex(i) then
 			local language, index = GetLanguageByIndex(i);

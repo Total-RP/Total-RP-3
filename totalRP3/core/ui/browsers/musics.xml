@@ -73,6 +73,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
+						TRP3_MusicBrowser:Hide();
 						TRP3_API.popup.hidePopups();
 					</OnClick>
 				</Scripts>
@@ -143,7 +144,7 @@
 						</Anchors>
 						<Scripts>
 							<OnClick>
-								TRP3_API.utils.music.stop();
+								TRP3_API.utils.music.stopMusic();
 							</OnClick>
 						</Scripts>
 					</Button>

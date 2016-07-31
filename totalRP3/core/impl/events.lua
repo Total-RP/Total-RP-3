@@ -76,7 +76,7 @@ local assert, tostring, type, tinsert, pairs = assert, tostring, type, tinsert, 
 local REGISTERED_EVENTS = {};
 
 local function registerEvent(event)
-	assert(event, "Event must be set.");
+	assert(event, "Event can't be nil.");
 	assert(not REGISTERED_EVENTS[event], "Event already registered.");
 	REGISTERED_EVENTS[event] = {};
 end

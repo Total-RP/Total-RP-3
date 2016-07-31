@@ -143,6 +143,9 @@ end
 -- Check version numbers and perform information queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- We will store new versions alerts to remember how many people notified us of a new version.
+local newVersionAlerts = {};
+
 local infoTypeTab = {
 	registerInfoTypes.CHARACTERISTICS,
 	registerInfoTypes.ABOUT,
@@ -166,10 +169,25 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	end
 end
 
+local function checkVersion(sender, senderVersion, senderVersionText)
+	-- Record all versions for statistics purpose.
+	newVersionAlerts[senderVersionText] = newVersionAlerts[senderVersionText] or {};
+	newVersionAlerts[senderVersionText][sender] = senderVersion;
+
+	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
+
+		if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
+			TRP3_UpdateFrame.popup.text:SetText(loc("NEW_VERSION"):format(senderVersionText:sub(1, 15)));
+			TRP3_UpdateFrame:Show();
+			has_seen_update_alert = true;
+		end
+	end
+end
+
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
 -- His main query is to receive your vernum tab. But you can already read his tab to query information.
-local function incomingVernumQuery(structure, senderID, bResponse)
+local function incomingVernumQuery(structure, senderID)
 	-- First: Integrity check
 	if type(structure) ~= "table"
 	or #structure <= 0
@@ -182,7 +200,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	end
 
 	-- First send back or own vernum
-	if not bResponse and (not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION) then
+	if not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION then
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 	end
@@ -192,10 +210,7 @@ local function incomingVernumQuery(structure, senderID, bResponse)
 	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 
-	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
-		showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, senderVersionText));
-		has_seen_update_alert = true;
-	end
+	checkVersion(senderID, senderVersion, senderVersionText);
 
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
@@ -402,13 +417,12 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
+	-- When receiving HELLO from someone else (from the other side ?)
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
 		version = tonumber(version);
+		-- Only treat the message if it does not come from us
 		if sender ~= Globals.player_id then
-			if configShowVersionAlert() and version > Globals.version and not has_seen_update_alert then
-				showAlertPopup(loc("GEN_NEW_VERSION_AVAILABLE"):format(Globals.version_display, versionDisplay));
-				has_seen_update_alert = true;
-			end
+			checkVersion(sender, version, versionDisplay);
 		end
 	end);
 end

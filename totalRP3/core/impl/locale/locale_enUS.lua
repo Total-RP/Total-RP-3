@@ -28,7 +28,6 @@ local LOCALE_EN = {
 
 		GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 		GEN_VERSION = "Version: %s (Build %s)",
-		GEN_NEW_VERSION_AVAILABLE = "A new version for Total RP 3 is available.\n\n|cffff0000Your version: %s\n|c0000ff00New version: %s|r\n\n|cffff9900We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- REGISTER
@@ -504,6 +503,8 @@ Possible status:
 		CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 		CO_MINIMAP_BUTTON_RESET = "Reset position",
 		CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
+		CO_MAP_BUTTON = "Map scan button",
+		CO_MAP_BUTTON_POS = "Scan button anchor on map",
 		CO_ANCHOR_TOP = "Top",
 		CO_ANCHOR_TOP_LEFT = "Top left",
 		CO_ANCHOR_TOP_RIGHT = "Top right",
@@ -856,6 +857,17 @@ The content of their profiles will no longer be hidden.]],
 |cffffff00Optional:|r Indicate the offensive words you found in this profile (separated by a space character) to add them to the filter.]],
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- MISC
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		PATTERN_ERROR = "Error in pattern.",
+		PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
+		SCRIPT_UNKNOWN_EFFECT = "Script error, unknown FX",
+		SCRIPT_ERROR = "Error in script.",
+		NEW_VERSION_TITLE = "New update available",
+		NEW_VERSION = "|cff00ff00A new version of Total RP 3 (v %s) is available.\n\n|cffffff00We strongly encourage you to stay up-to-date.|r\n\nThis message will only appear once per session and can be disabled in the settings (General settings => Miscellaneous).",
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -863,23 +875,26 @@ The content of their profiles will no longer be hidden.]],
 		COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
 		COM_RESET_USAGE = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
 		COM_RESET_RESET = "The frames positions have been reset!",
+        COM_STASH_DATA = [[|cffff0000Are you sure you want to stash away your Total RP 3 data?|r
 
-		WHATS_NEW = [[{h3:c}New in version {col:6eff51}1.0.3{/col}{/h3}
-This release contains mainly bug fixes and optimizations. We are working hard on {link*TRP3E*Total RP 3: Extended} to bring you the best creation tools for World of Warcraft, so stay tuned.
+Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
+|cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 
-{h3}Insert full RP name in the chat frame{/h3}
-When shift-clicking someone's name in the chat frame, Total RP 3 will now insert that person's full RP name as shown in the chat frame. If you want to insert the username instead you can alt-shift-click on the name. You can also disable this feature in the {link*chat_settings*chat settings}.
+		WHATS_NEW_3 = [[{h3:c}New in version {col:6eff51}1.1.4{/col}{/h3}
+{h3}Updated in-game resources{/h3}
 
-We also added a new option in the {link*chat_settings*chat settings} for how names are displayed to now show titles before people's names.
-]],
-		MORE_MODULES = [[{h2:c}Optional modules{/h2}
+• We have updated our list of musics with 461 new musics (including Invincible, finally!).
+• We have updated our list of icons with 1956 new icons.
+• We have updated our list of images you can insert in your description to include 135 new images.]],
+		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
-|cff9999ffPlease visit: {link*storyline*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module}]],
+|cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
+]],
 
-		THANK_YOU = [[{h1:c}Total RP 3{/h1}
+		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}http://totalrp3.info{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize

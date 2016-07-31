@@ -96,7 +96,7 @@ local function getMarker(i, tooltip)
 			WorldMapTooltip:Hide();
 		end);
 	end
-	marker.tooltip = "|cffff9900" .. tooltip;
+	marker.tooltip = "|cffff9900" .. (tooltip or "");
 	return marker;
 end
 
@@ -190,10 +190,10 @@ local function registerScan(structure)
 	if structure.scanResponder and structure.scanCommand then
 		Comm.broadcast.registerCommand(structure.scanCommand, structure.scanResponder);
 	end
+	if not structure.saveStructure then
+		structure.saveStructure = {};
+	end
 	if structure.scanAssembler and structure.scanCommand then
-		if not structure.saveStructure then
-			structure.saveStructure = {};
-		end
 		Comm.broadcast.registerP2PCommand(structure.scanCommand, function(...)
 			structure.scanAssembler(structure.saveStructure, ...);
 		end)
@@ -208,8 +208,8 @@ local function launchScan(scanID)
 	if structure.scan then
 		hideAllMarkers();
 		wipe(structure.saveStructure);
-		structure.scan();
-		if structure.scanDuration and structure.scanComplete then
+		structure.scan(structure.saveStructure);
+		if structure.scanDuration then
 			local mapID = GetCurrentMapAreaID();
 			TRP3_WorldMapButton:Disable();
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
@@ -229,13 +229,15 @@ local function launchScan(scanID)
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 				if mapID == GetCurrentMapAreaID() then
-					structure.scanComplete(structure.saveStructure);
+					if structure.scanComplete then
+						structure.scanComplete(structure.saveStructure);
+					end
 					displayMarkers(structure);
+					TRP3_API.ui.misc.playSoundKit(43493);
 				end
 				playAnimation(TRP3_ScanLoaderBackAnimationGrow1);
 				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
 				playAnimation(TRP3_ScanFadeOut);
-				TRP3_API.ui.misc.playSoundKit(43493);
 				if getConfigValue(CONFIG_UI_ANIMATIONS) then
 					after(1, function()
 						TRP3_ScanLoaderFrame:Hide();
@@ -245,6 +247,12 @@ local function launchScan(scanID)
 					TRP3_ScanLoaderFrame:Hide();
 				end
 			end);
+		else
+			if structure.scanComplete then
+				structure.scanComplete(structure.saveStructure);
+			end
+			displayMarkers(structure);
+			TRP3_API.ui.misc.playSoundKit(43493);
 		end
 	end
 end
@@ -290,4 +298,42 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end);
 
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
+end);
+
+local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
+local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
+
+local function placeMapButton(position)
+	position = position or "BOTTOMLEFT";
+	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_WorldMapButton:ClearAllPoints();
+	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame, position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
+end
+
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
+
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_MAP_BUTTON"),
+	});
+
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigDropDown",
+		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
+		title = loc("CO_MAP_BUTTON_POS"),
+		listContent = {
+			{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
+			{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
+			{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
+			{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"}
+		},
+		listCallback = placeMapButton,
+		listCancel = true,
+		configKey = CONFIG_MAP_BUTTON_POSITION,
+	});
+
+	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
+
 end);

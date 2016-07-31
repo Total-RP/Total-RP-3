@@ -47,8 +47,6 @@ local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
 
-local currentlyPlayingHandler;
-
 function Utils.pcall(func, ...)
 	if func then
 		return {pcall(func, ...)};
@@ -143,25 +141,25 @@ local function tableDump(table, level, withCount)
 	if type(table) == "table" then
 		for key, value in pairs(table) do
 			if type(value) == "table" then
-				print(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{", Log.level.DEBUG);
 				tableDump(value, level + 1);
-				print(dumpIndent .. dumpColor3 .. "}");
+				log(dumpIndent .. dumpColor3 .. "}", Log.level.DEBUG);
 			elseif type(value) == "function" then
-				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
 			else
-				print(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">");
+				log(dumpIndent .. dumpColor2 .. key .. "|r=" .. dumpColor3 .. tostring(value) .. dumpColor4 .. " <" .. type(value) ..">", Log.level.DEBUG);
 			end
 			i = i + 1;
 		end
 	end
 	
 	if withCount then
-		print(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i));
+		log(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i), Log.level.DEBUG);
 	end
 end
 
 Utils.table.dump = function(table, withCount)
-	print(dumpColor1 .. "Dump table ".. tostring(table));
+	log(dumpColor1 .. "Dump: ".. tostring(table), Log.level.DEBUG);
 	if table then
 		tableDump(table, 1, withCount);
 	end
@@ -248,29 +246,29 @@ Utils.str.match = function(stringToCheck, pattern)
 	return string.find(tostring(result), "%d");
 end
 
+local ID_CHARS = {};
+for i=48, 57 do
+	tinsert(ID_CHARS, string.char(i));
+end
+for i=65, 90 do
+	tinsert(ID_CHARS, string.char(i));
+end
+for i=97, 122 do
+	tinsert(ID_CHARS, string.char(i));
+end
+local sID_CHARS = #ID_CHARS;
+
 --	Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
 --	ID's have a id_length characters length
 local function generateID()
 	local ID = date("%m%d%H%M%S");
 	for i=1, 5 do
-		ID = ID..string.char(math.random(33,126));
+		ID = ID .. ID_CHARS[math.random(1, sID_CHARS)];
 	end
 	return ID;
 end
 Utils.str.id = generateID;
-
---	Generate a pseudo-unique random ID.
---  If you encounter a collision, you really should playing lottery
---	ID's have a id_length characters length
-local function generateObjectID(db, type)
-	local ID = date("%m%d%H%M%S");
-	for i=1, 3 do
-		ID = ID..string.char(math.random(33,126));
-	end
-	return db .. type .. ID;
-end
-Utils.str.oId = generateObjectID;
 
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.
@@ -296,7 +294,7 @@ end
 
 -- Create a unit ID based on a targetType (target, player, mouseover ...)
 -- The returned id can be nil.
-Utils.str.getUnitID = function(unit)
+function Utils.str.getUnitID(unit)
 	local playerName, realm = UnitFullName(unit);
 	if not playerName or playerName:len() == 0 or playerName == UNKNOWNOBJECT then
 		return nil;
@@ -307,21 +305,58 @@ Utils.str.getUnitID = function(unit)
 	return playerName .. "-" .. realm;
 end
 
+local strsplit, UnitGUID = strsplit, UnitGUID;
+
+function Utils.str.getUnitDataFromGUID(unitID)
+	local unitType, _, _, _, _, npcID = strsplit("-", UnitGUID(unitID) or "");
+	return unitType, npcID;
+end
+
+function Utils.str.getUnitNPCID(unitID)
+	local unitType, npcID = Utils.str.getUnitDataFromGUID(unitID);
+	return npcID;
+end
+
+function Utils.str.GetGuildName(unitID)
+	local guildName = GetGuildInfo(unitID);
+	return guildName;
+end
+
+function Utils.str.GetGuildRank(unitID)
+	local _, rank = GetGuildInfo(unitID);
+	return rank;
+end
+
+function Utils.str.GetRace(unitID)
+	local _, race = UnitRace(unitID);
+	return race;
+end
+
+function Utils.str.GetClass(unitID)
+	local _, class = UnitClass(unitID);
+	return class;
+end
+
+function Utils.str.GetFaction(unitID)
+	local faction = UnitFactionGroup(unitID);
+	return faction;
+end
+
 -- Return an texture text tag based on the given image url and size.
-Utils.str.texture = function(iconPath, iconSize)
+function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
 	iconSize = iconSize or 15;
 	return strconcat("|T", iconPath, ":", iconSize, ":", iconSize, "|t");
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
-Utils.str.icon = function(iconPath, iconSize)
+function Utils.str.icon(iconPath, iconSize)
 	iconPath = iconPath or Globals.icons.default;
 	return Utils.str.texture("Interface\\ICONS\\" .. iconPath, iconSize);
 end
 
 -- Return a color tag based on a letter
-Utils.str.color = function(color)
+function Utils.str.color(color)
 	color = color or "w"; -- default color if bad argument
 	if color == "r" then return "|cffff0000" end -- red
 	if color == "g" then return "|cff00ff00" end -- green
@@ -335,7 +370,7 @@ Utils.str.color = function(color)
 end
 
 -- If the given string is empty, return nil
-Utils.str.emptyToNil = function(text)
+function Utils.str.emptyToNil(text)
 	if text and #text > 0 then
 		return text;
 	end
@@ -343,7 +378,7 @@ Utils.str.emptyToNil = function(text)
 end
 
 -- Assure that the given string will not be nil
-Utils.str.nilToEmpty = function(text)
+function Utils.str.nilToEmpty(text)
 	return text or "";
 end
 
@@ -380,6 +415,7 @@ end
 Utils.color.numberToHexa = numberToHexa;
 
 --- Value must be a string with hexa decimal representation
+-- Return 256 based
 local function hexaToNumber(hexa)
 	if not hexa then
 		return nil, nil, nil;
@@ -408,6 +444,11 @@ Utils.color.colorCode = colorCode;
 --- Values must be 0..1 based
 Utils.color.colorCodeFloat = function(red, green, blue)
 	return colorCode(math.ceil(red*255), math.ceil(green*255), math.ceil(blue*255));
+end
+
+--- From r, g, b tab
+Utils.color.colorCodeFloatTab = function(tab)
+	return colorCode(math.ceil(tab.r*255), math.ceil(tab.g*255), math.ceil(tab.b*255));
 end
 
 ---
@@ -512,6 +553,8 @@ local structureTags = {
 	["{/p}"] = "</P>",
 };
 
+local strtrim = strtrim;
+
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text)
 
@@ -523,7 +566,18 @@ Utils.str.toHTML = function(text)
 		text = text:gsub(pattern, replacement);
 	end
 
-	-- 3) Replacement : text tags
+	-- 3) Replace Markdown
+	local titleFunction = function(titleChars, title)
+		local titleLevel = #titleChars;
+		return "\n<h" .. titleLevel .. ">" .. strtrim(title) .. "</h" .. titleLevel .. ">";
+	end;
+
+	text = text:gsub("^(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)\n", titleFunction);
+	text = text:gsub("\n(#+)(.-)$", titleFunction);
+	text = text:gsub("^(#+)(.-)$", titleFunction);
+
+	-- 4) Replacement : text tags
 	for pattern, replacement in pairs(structureTags) do
 		text = text:gsub(pattern, replacement);
 	end
@@ -544,11 +598,11 @@ Utils.str.toHTML = function(text)
 		if tag then
 			tagText = text:sub( text:find("<"), text:find("</") + #tag + 2);
 			if #tagText == #tag + 3 then
-				return "Error in pattern"; -- TODO locals
+				return loc("PATTERN_ERROR");
 			end
 			tinsert(tab, tagText);
 		else
-			return "Error in pattern : tag not closed"; -- TODO locals
+			return loc("PATTERN_ERROR");
 		end
 
 		local after;
@@ -573,24 +627,44 @@ Utils.str.toHTML = function(text)
 
 	local finalText = "";
 	for _, line in pairs(tab) do
+
 		if not line:find("<") then
-			line = "<P>"..line.."</P>";
+			line = "<P>" .. line .. "</P>";
 		end
 		line = line:gsub("\n","<br/>");
 
 		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
-		"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+
+		line = line:gsub("%!%[(.-)%]%((.-)%)", function(icon, size)
+			if icon:find("\\") then
+				local width, height;
+				if size:find("%,") then
+					width, height = strsplit(",", size);
+				else
+					width = tonumber(size) or 128;
+					height = width;
+				end
+				return "</P><img src=\"".. icon .. "\" align=\"center\" width=\"".. width .. "\" height=\"" .. height .. "\"/><P>";
+			end
+			return Utils.str.icon(icon, tonumber(size) or 25);
+		end);
+
+		line = line:gsub("%[(.-)%]%((.-)%)",
+			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
 
 		line = line:gsub("{link%*(.-)%*(.-)}",
-		"<a href=\"%1\">|cff00ff00[%2]|r</a>");
+			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
-		finalText = finalText..line;
+		finalText = finalText .. line;
 	end
 
-	return "<HTML><BODY>"..convertTextTags(finalText).."</BODY></HTML>";
+	finalText = convertTextTags(finalText);
+
+	return "<HTML><BODY>" .. finalText .. "</BODY></HTML>";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -713,31 +787,65 @@ function TRP3_EventDispatcher(self, event, ...)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MUSIC
+-- MUSIC / SOUNDS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local soundHandlers = {};
 
-Utils.music.stop = function()
-	if currentlyPlayingHandler then
-		StopSound(currentlyPlayingHandler);
-		currentlyPlayingHandler = nil;
-	end
-	StopMusic();
+function Utils.music.getHandlers()
+	return soundHandlers;
 end
 
-Utils.music.play = function(music)
+function Utils.music.clearHandlers()
+	return wipe(soundHandlers);
+end
+
+function Utils.music.playSoundID(soundID, channel, source)
+	assert(soundID, "soundID can't be nil.")
+	local willPlay, handlerID = PlaySoundKitID(soundID, channel, false);
+	if willPlay then
+		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S")});
+		if TRP3_SoundsHistoryFrame then
+			TRP3_SoundsHistoryFrame.onSoundPlayed();
+		end
+	end
+	return willPlay;
+end
+
+function Utils.music.stopSound(handlerID)
+	StopSound(handlerID);
+end
+
+function Utils.music.stopChannel(channel)
+	for index, handler in pairs(soundHandlers) do
+		if not channel or handler.channel == channel then
+			Utils.music.stopSound(handler.handlerID);
+		end
+	end
+end
+
+function Utils.music.stopMusic()
+	StopMusic();
+	Utils.music.stopChannel("Music");
+end
+
+function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
-	Utils.music.stop();
+	Utils.music.stopMusic();
 	if type(music) == "number" then
 		Log.log("Playing sound: " .. music);
-		currentlyPlayingHandler = select(2, PlaySoundKitID(music, "Music"));
+		Utils.music.playSoundID(music, "Music");
 	else
 		Log.log("Playing music: " .. music);
 		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
+		tinsert(soundHandlers, {channel = "Music", id = music, handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S")});
+		if TRP3_SoundsHistoryFrame then
+			TRP3_SoundsHistoryFrame.onSoundPlayed();
+		end
 	end
 end
 
-Utils.music.getTitle = function(musicURL)
+function Utils.music.getTitle(musicURL)
 	return type(musicURL) == "number" and musicURL or musicURL:match("[%\\]?([^%\\]+)$");
 end
 

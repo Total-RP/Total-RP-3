@@ -219,19 +219,6 @@ function TRP3_DEBUG_CLEAR()
 	ReloadUI();
 end
 
-function TRP3_TERTIARY()
-	local bool = true;
-	print(bool and "ok" or "not");
-	print(not bool and "ok" or "not");
-
-	local string;
-	print(string and string:gsub("pouic", "pouic") or "pouic");
-end
-
-function TRP3_ITEMTYPE()
-	Utils.table.dump({GetAuctionItemSubClasses(2)})
-end
-
 function TRP3_TRP2_TAG()
 	local test = "Coucou {r} ! Ca va {icone:Temp:25} ? {ff5577} Couleur ! Rand {randtext:text1+text2}! Lien: {link:www.google.be:Google}";
 
@@ -272,33 +259,6 @@ function TRP3_TRP2_TAG()
 		return ""; -- If we don't know the tag, return empty string to clear the tag.
 	end)
 	print(result);
-end
-
-function TRP3_MOUNT()
-	local monture="";
-	local GetNumMounts, GetMountInfo = C_MountJournal.GetNumMounts, C_MountJournal.GetMountInfo;
-	local num = GetNumMounts();
-	local j=1;
-	while(monture) do
-		local name, rank, icon, count, dispelType, duration, expires, caster, isStealable, shouldConsolidate, spellBuffID = UnitAura("player", j);
-		monture = name;
-		for i = 1, num do
-			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfo(i);
-			if spellBuffID == spellID then
-				print(name, creatureName, spellID);
-			end
-		end
-		j = j + 1;
-	end
-end
-
-function TRP3_WWW()
-	local text = "Venez visiter le forum de ma guilde http://maguilde.superforum.com/read";
-	local replaced = text:gsub("", function(url)
-
-		return url;
-	end);
-	print(replaced);
 end
 
 local function onInit()
@@ -369,20 +329,19 @@ function TRP3_RESET_INV()
 	Utils.table.dump(TRP3_API.profile.getPlayerCurrentProfile().inventory);
 end
 
--- /run TEST_COUNT();
-function TEST_COUNT()
-	local emptyMeta = {
-		__newindex = function(_, _, _) end
-	};
-	local EMPTY = setmetatable({}, emptyMeta);
+-- /run displaydraft();
+function TRP3_displaydraft()
+	Utils.table.dump(TRP3_ToolFrame.rootDraft);
 end
 
-function TRP3_NAV()
-	local id = Utils.str.id();
-	NavBar_AddButton(TRP3_ToolFrame.navBar, {id = id, name = id, OnClick = function(self)
-		print(self)
-		TRP3_API.extended.tools.setBackground(math.random(1, 6));
-	end});
+-- /run TRP3_testcoord();
+function TRP3_testcoord()
+	-- 97 à 122
+	-- 65 à 90
+	-- 48 à 57
+	for i=50, 126 do
+		print(i .. ": " .. string.char(i));
+	end
 end
 
 local MODULE_STRUCTURE = {

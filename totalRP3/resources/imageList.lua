@@ -68,6 +68,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\ARCHEOLOGY\\ArchRare-Demons",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\ARCHEOLOGY\\ArchRare-DinosaurSkeleton",
 		width = 512,
 		height = 256
@@ -93,7 +98,17 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\ARCHEOLOGY\\ArchRare-HighborneNightElves",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\ARCHEOLOGY\\ArchRare-HighborneSoulMirror",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\ArchRare-HighmountainTauren",
 		width = 512,
 		height = 256
 	},
@@ -319,11 +334,13 @@ local IMAGES = {
 		url = "Interface\\FlavorImages\\ScarletCrusadeLogo",
 		width = 256,
 		height = 256
-	}, {
+	},
+	{
 		url = "Interface\\LFGFRAME\\LFGICON-AQRUINS",
 		width = 256,
 		height = 256
-	}, {
+	},
+	{
 		url = "Interface\\LFGFRAME\\LFGICON-AQTEMPLE",
 		width = 256,
 		height = 256
@@ -1323,7 +1340,661 @@ local IMAGES = {
 		width = 512,
 		height = 256
 	},
-
+	{
+		url = "Interface\\QuestionFrame\\answer-Altruis",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ArtifactNYI",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ArtifactTEMP",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DHHavoc",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DHVengeance",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DeathKnightBlood",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DeathKnightFrost",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DeathKnightUnholy",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DemonHunterHavoc",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DemonHunterVengeance",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DruidBalance",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DruidFeral",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DruidGuardian",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-DruidRestoration",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-HunterBeastmaster",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-HunterMarksman",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-HunterSurvival",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-KaynSunfury",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MageArcane",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MageFire",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MageFrost",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MonkBrewmaster",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MonkMistweaver",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-MonkWindwalker",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PaladinHoly",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PaladinProt",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PaladinRet",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PriestDiscipline",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PriestHoly",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PriestShadow",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RogueAssassination",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RogueCombat",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-RogueSubtlety",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ShamanElemental",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ShamanEnhancement",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-ShamanRestoration",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-FelForge",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-IronFront",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-IronholdHarbor",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-RuinsofKranak",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-TempleofShanaar",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-ThroneofKiljaeden",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Tanaan-ZethGol",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarlockAffliction",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarlockDemonology",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarlockDestruction",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarriorArms",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarriorFury",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-WarriorProtection",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-apocalypse",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-bladesofthefallenprince",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-mawofthedamned",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-thealdrachiwarblades",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-twinbladesofthedeceiver",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-ghanirthemothertree",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-scytheofelune",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-theclawsofursoc",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-thefangsofashamane",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-talonclaw",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-thasdorah",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-titanstrike",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-aluneth",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-ebonchill",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-felomelorn",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-fists",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-fuzan",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-sheilun",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-ashbringer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-silverhand",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-truthguard",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-lightswrath",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-tuure",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-xalatath",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-dreadblades",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-fangsofthedevourer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-kingslayers",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-doomhammer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-fistofraden",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-sharasdal",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-scepterofsargeras",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-skullofthemanari",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-ulthalesh",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-scaleoftheearthwarder",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-stromkar",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-warswordsofthevalarjar",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-deathknight-blood",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-deathknight-frost",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-deathknight-unholy",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-druid-balance",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-druid-bear",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-druid-cat",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-druid-restoration",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-hunter-beastmaster",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-hunter-marksman",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-hunter-survival",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-mage-arcane",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-mage-fire",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-mage-frost",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-monk-battledancer",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-monk-brewmaster",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-monk-mistweaver",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-paladin-holy",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-paladin-protection",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-paladin-retribution",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-priest-discipline",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-priest-holy",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-priest-shadow",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-rogue-assassination",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-rogue-combat",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-rogue-subtlety",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-shaman-elemental",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-shaman-enhancement",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-shaman-restoration",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warlock-affliction",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warlock-demonology",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warlock-destruction",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warrior-arms",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warrior-fury",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TALENTFRAME\\bg-warrior-protection",
+		width = 512,
+		height = 512
+	},
 };
 
 local pairs, tinsert = pairs, tinsert;

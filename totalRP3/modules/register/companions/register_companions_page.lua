@@ -371,7 +371,9 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local showIconBrowser = TRP3_API.popup.showIconBrowser;
+local showIconBrowser = function(callback)
+	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
+end;
 
 -- Tutorial
 local TUTORIAL_STRUCTURE_EDIT;
@@ -450,7 +452,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_CompanionsPageInformationEdit_NamePanel_SaveButton:SetText(loc("CM_SAVE"));
 	local bkgTab = getTiledBackgroundList();
 	setupListBox(TRP3_CompanionsPageInformationEdit_About_BckField, bkgTab, function(value) setBkg(TRP3_CompanionsPageInformationEdit_About, value) end, nil, 120, true);
-	TRP3_API.ui.text.setupToolbar("TRP3_CompanionsPageInformationEdit_About_Toolbar", TRP3_CompanionsPageInformationEdit_About_TextScrollText);
+	TRP3_API.ui.text.setupToolbar(TRP3_CompanionsPageInformationEdit_About_Toolbar, TRP3_CompanionsPageInformationEdit_About_TextScrollText);
 
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_GlanceHelp, "LEFT", 0, 10, loc("REG_PLAYER_GLANCE"), loc("REG_PLAYER_GLANCE_CONFIG"));
 

@@ -47,6 +47,7 @@ local LOCALE = {
         CM_CLICK = "Clic",
         CM_COLOR = "Color",
         CM_CTRL = "Ctrl",
+        CM_DOUBLECLICK = "Doble clic.",
         CM_DRAGDROP = "Arrastrar y soltar",
         CM_EDIT = "Editar",
         CM_IC = "ER",
@@ -86,6 +87,8 @@ local LOCALE = {
         CO_ANCHOR_TOP_LEFT = "Parte superior izquierda",
         CO_ANCHOR_TOP_RIGHT = "Parte superior derecha",
         CO_CHAT = "Chat",
+        CO_CHAT_INSERT_FULL_RP_NAME = "Insertar nombres de rol con shift+clic",
+        CO_CHAT_INSERT_FULL_RP_NAME_TT = "Insertar el nombre completo de rol de un jugador cuando se haga shift+clic en su nombre en la ventana de chat.",
         CO_CHAT_MAIN = "Ajustes del chat principal",
         CO_CHAT_MAIN_COLOR = "Usar colores para los nombres",
         CO_CHAT_MAIN_EMOTE = "Detección de emociones",
@@ -97,6 +100,7 @@ local LOCALE = {
         CO_CHAT_MAIN_NAMING_1 = "Mantener nombre original",
         CO_CHAT_MAIN_NAMING_2 = "Usar nombre personalizado",
         CO_CHAT_MAIN_NAMING_3 = "Nombre + apellido",
+        CO_CHAT_MAIN_NAMING_4 = "Título corto + nombre + apellidos",
         CO_CHAT_MAIN_NPC = "Detección de diálogo de PNJ",
         CO_CHAT_MAIN_NPC_PREFIX = "Patrón detección de diálogo PNJ",
         CO_CHAT_MAIN_NPC_PREFIX_TT = [=[Si un mensaje enviado por el canal empieza con los prefijos /decir, /emote, /grupo o /banda, se interpreta como un diálogo de PNJ.
@@ -192,6 +196,10 @@ Estados posibles:
         CO_MSP = "Protocolo Mary Sue",
         CO_MSP_T3 = "Usar sólo la plantilla 3",
         CO_MSP_T3_TT = "Incluso si usted elige una diferente plantilla para \"acerca de\", la plantilla 3 siempre se utilizará para la compatibilidad con PMS.",
+        COM_STASH_DATA = [=[|cffff0000¿Estás seguro de que quieres ir acumulando tu información del Total RP 3?|r
+
+Tus perfiles, los de tus compañeros y configuración se acumulará temporalmente y tu interfaz se cargará sin información, como si hubieras instalado Total RP 3 de nuevo.
+|cff00ff00Utiliza el mismo comando de nuevo (|cff999999/trp3 stash|cff00ff00) para restaurar la información.|r]=],
         COM_SWITCH_USAGE = "Uso: |cff00ff00/trp3 switch main|r para mostrar u ocultar la ventana principal o |cff00ff00/trp3 switch toolbar|r para mostrar u ocultar la barra de herramientas.",
         CO_REGISTER = "Registro",
         CO_REGISTER_ABOUT_VOTE = "Usar sistema de votación",
@@ -229,14 +237,18 @@ Estados posibles:
         CO_TOOLTIP_ANCHORED = "Marco anclado",
         CO_TOOLTIP_CHARACTER = "Herramientas del personaje",
         CO_TOOLTIP_CLIENT = "Mostrar cliente",
+        CO_TOOLTIP_COLOR = "Mostrar colores personalizados",
         CO_TOOLTIP_COMBAT = "Ocultar durante el combate",
         CO_TOOLTIP_COMMON = "Ajustes comunes",
+        CO_TOOLTIP_CONTRAST = "Aumentar el contraste de color",
+        CO_TOOLTIP_CONTRAST_TT = "Habilitar esta opción permitirá a Total RP 3 modificar los colores personalizados para hacer el texto más legible si el color es demasiado oscuro.",
         CO_TOOLTIP_CURRENT = "Mostrar información actual",
         CO_TOOLTIP_CURRENT_SIZE = "Longitud máxima de información actual",
         CO_TOOLTIP_FT = "Mostrar título completo",
         CO_TOOLTIP_GUILD = "Mostrar hermandad",
         CO_TOOLTIP_HIDE_ORIGINAL = "Ocultar marco original",
         CO_TOOLTIP_ICONS = "Mostrar iconos",
+        CO_TOOLTIP_IN_CHARACTER_ONLY = "Ocultar cuando estés Fuera de Personaje",
         CO_TOOLTIP_MAINSIZE = "Tamaño del texto principal",
         CO_TOOLTIP_NOTIF = "Mostrar notificaciones",
         CO_TOOLTIP_NOTIF_TT = "La línea de notificaciones es la línea que contiene la versión del cliente, el marcador de descripción no leída y el marcador de \"a primera vista\".",
@@ -294,14 +306,6 @@ a otros jugadores de rol que eres un principiante.]=],
         DTBK_HELMET = "Total RP 3 - Yelmo",
         DTBK_LANGUAGES = "Total RP 3 - Idiomas",
         DTBK_RP = "Total RP 3 - ER/FdR",
-        GEN_NEW_VERSION_AVAILABLE = [=[Hay disponible una nueva versión del Total RP 3.
-
-|cffff0000Versión actual: %s
-|c0000ff00Nueva versión: %s|r
-
-|cffff9900Se te recomienda para estar al día.|r
-
-Este mensaje sólo se mostrará una vez por sesión y se puede desactivar en los ajustes.]=],
         GEN_VERSION = "Versión: %s (Build %s)",
         GEN_WELCOME_MESSAGE = "Gracias por usar Total RP 3 (v %s). ¡Diviértete!",
         MAP_BUTTON_NO_SCAN = "Rastreo no disponible",
@@ -313,13 +317,15 @@ Este mensaje sólo se mostrará una vez por sesión y se puede desactivar en los
         MM_SHOW_HIDE_MAIN = "Mostrar/ocultar marco principal",
         MM_SHOW_HIDE_MOVE = "Mover botón",
         MM_SHOW_HIDE_SHORTCUT = "Mostrar/ocultar barra de herramientas",
-        MORE_MODULES = [=[{h2:c}Módulos opcionales{/h2}
-{h3}Historia{/h3}
-|cff9999ffHistoria|r es un módulo que mejora los textos de misión originales de WoW y mejora la inmersión con diálogos animados y efectos.
-|cff9999ffPor favor, visita: {link*historia*http://storyline.totalrp3.info}]=], -- Needs review
+        MORE_MODULES_1 = [=[{h2:c}Módulos opcionales{/h2}
+{h3}Módulo TipTac{/h3}
+El |cff9999ffMódulo TipTac|r añadirá compatibilidad con el add-on TipTac a Total RP 3, para que las herramientas de Total RP 3 usen la skin de tu TipTac y estén anclados de la forma que pusiste en TipTac.
+|cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Descargar en Curse.com}.]=],
         NPC_TALK_SAY_PATTERN = "dice:",
         NPC_TALK_WHISPER_PATTERN = "susurra:",
         NPC_TALK_YELL_PATTERN = "grita:",
+        PATTERN_ERROR = "Error en el patrón",
+        PATTERN_ERROR_TAG = "Error en patrón : etiqueta de texto sin cerrar.",
         PR_CO_BATTLE = "Compañero",
         PR_CO_COUNT = "%s mascota/montura ligada a este perfil.",
         PR_CO_EMPTY = "Sin compañeros",
@@ -831,6 +837,8 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
         REG_TT_NOTIF = "Descripción no leida",
         REG_TT_REALM = "Reino: |cffff9900%s",
         REG_TT_TARGET = "Objetivo: |cffff9900%s",
+        SCRIPT_ERROR = "Error en el script.",
+        SCRIPT_UNKNOWN_EFFECT = "Error de script, FX desconocido",
         TB_AFK_MODE = "Ausente",
         TB_DND_MODE = "Ocupado",
         TB_GO_TO_MODE = "Cambiar a modo %s",
@@ -867,16 +875,17 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
         TF_PLAY_THEME = "Reproducir el tema del personaje",
         TF_PLAY_THEME_TT = [=[|cffffff00Clic:|r Tocar |cff00ff00%s
 |cffffff00Clic-derecho:|r Parar tema]=],
-        THANK_YOU = [=[{h1:c}Total RP 3{/h1}
+        THANK_YOU_1 = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Versión %s (build %s){/col}{/p}
-{p:c}http://totalrp3.info{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Creado por{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
 - Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
-{h2}{icon:THUMUP:20} Reconocimientos{/h2}
-{col:ffffff}Nuestro equipo de PYR pre-alfa:{/col}
+
+{h2}{icon:THUMBUP:20} Reconocimientos{/h2}
+{col:ffffff}Nuestro equpo PR pre-alpha:{/col}
 - Saelora
 - Erzan
 - Calian
@@ -886,15 +895,13 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 
 {col:ffffff}Gracias a todos nuestros amigos por su apoyo todos estos años:{/col}
 - Para Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- Para Ellypse: Las hermandades Maison Celwë'Belore, Mercenaires Atal'ai, y más particularmente Erzan, Elenna, Caleb, Siana y Adaeria.
+- Para Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, y más particularmente Erzan, Elenna, Caleb, Siana and Adaeria
 
 {col:ffffff}Por ayudarnos a crear la hermandad Total RP en Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
 - Leylou
-
-{col:ffffff}Por enviarnos la revista Gamer Culte Online #14 con un artículo acerca de Total RP:{/col}
-- {twitter*Horionne*@Horionne}]=],
+]=],
         UI_BKG = "Fondo %s",
         UI_CLOSE_ALL = "Cerrar todo",
         UI_COLOR_BROWSER = "Buscador de color",
@@ -925,14 +932,6 @@ Total RP no es responsable de los enlaces que conducen a contenidos nocivos.]=],
         UI_MUSIC_SELECT = "Seleccionar tema",
         UI_TUTO_BUTTON = "Modo tutorial",
         UI_TUTO_BUTTON_TT = "Haz clic para activar/desactivar el modo tutorial",
-        WHATS_NEW = [=[{h3:c}New in version {col:6eff51}1.0.3{/col}{/h3}
-This release contains mainly bug fixes and optimizations. We are working hard on {link*TRP3E*Total RP 3: Extended} to bring you the best creation tools for World of Warcraft, so stay tuned.
-
-{h3}Insert full RP name in the chat frame{/h3}
-When shift-clicking someone's name in the chat frame, Total RP 3 will now insert that person's full RP name as shown in the chat frame. If you want to insert the username instead you can alt-shift-click on the name. You can also disable this feature in the {link*chat_settings*chat settings}.
-
-We also added a new option in the {link*chat_settings*chat settings} for how names are displayed to now show titles before people's names.
-]=], -- Needs review
     }
 };
 

@@ -25,6 +25,9 @@ local faction, faction_loc = UnitFactionGroup("player");
 -- Public accessor
 TRP3_API = {
 	r = {},
+	formats = {
+		dropDownElements = "%s: |cff00ff00%s"
+	},
 	globals = {
 		DEBUG_MODE = TRP3_DEBUG or false,
 		empty = {},
@@ -34,8 +37,8 @@ TRP3_API = {
 		addon_name_alt = "TotalRP3",
 		addon_id_length = 15,
 
-		version = 14,
-		version_display = "1.0.4-dev",
+		version = 19,
+		version_display = "1.1.4",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),

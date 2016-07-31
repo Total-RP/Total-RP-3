@@ -177,9 +177,9 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW");
-	local moreModuleText = loc("MORE_MODULES");
-	local aboutText = loc("THANK_YOU");
+	local whatsNewText = loc("WHATS_NEW_3");
+	local moreModuleText = loc("MORE_MODULES_1");
+	local aboutText = loc("THANK_YOU_1");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
@@ -192,7 +192,7 @@ TRP3_API.dashboard.init = function()
 	local tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{ loc("DB_NEW"), 1, 150 },
-			{ loc("DB_ABOUT"), 2, 150 },
+			{ loc("DB_ABOUT"), 2, 175 },
 			{ loc("DB_MORE"), 3, 150 },
 		},
 		function(tabWidget, value)
@@ -217,46 +217,27 @@ TRP3_API.dashboard.init = function()
 	TRP3_DashboardBottomContent:SetTextColor("h2", 1, 1, 1);
 	TRP3_DashboardBottomContent:SetTextColor("h3", 1, 1, 1);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkClick", function(self, url, text, button)
-		if url == "map" then
-			MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
-			C_Timer.After(0.5, function() TRP3_API.map.launchScan("playerScan"); end);
-		elseif url == "glance" then
-			TRP3_API.navigation.menu.selectMenu("main_10_player");
-			TRP3_API.register.player.tabGroup:SelectTab(3);
-			TRP3_RegisterMiscViewGlanceSlot1:GetScript("OnClick")(TRP3_RegisterMiscViewGlanceSlot1, "LeftButton");
-		elseif url == "language" then
-			if TRP3_API.toolbar then
-				if not TRP3_Toolbar:IsVisible() then
-					TRP3_API.toolbar.switch();
-				end
-				for i = 1, 1000 do
-					if not _G["TRP3_ToolbarButton" .. i] then
-						break;
-					elseif _G["TRP3_ToolbarButton" .. i].buttonId == "ww_trp3_languages" then
-						_G["TRP3_ToolbarButton" .. i]:GetScript("OnClick")(_G["TRP3_ToolbarButton" .. i], "LeftButton");
-						break;
-					end
-				end
-			end
-		elseif url == "scandisable" then
-			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
-		elseif url == "modules" then
-			C_Timer.After(0.1, function()
-				tabGroup:SelectTab(3);
-			end);
-		elseif url == "tiptac" then
-			TRP3_API.popup.showTextInputPopup("TipTac Module", nil, nil, "http://mods.curse.com/addons/wow/total-rp-3-tiptac-module");
-		elseif url == "TRP3E" then
-			TRP3_API.popup.showTextInputPopup("Total RP 3: Extended", nil, nil, "https://www.kickstarter.com/projects/119053864/total-rp-3-extended-world-of-warcraft-addon");
-        elseif url == "chat_settings" then
-            TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_chatframe");
-		elseif url:sub(1, 7) == "twitter" then
+		--[[
+		-- Twitter links
+		 ]]
+		if url:sub(1, 7) == "twitter" then
 			if Social_ToggleShow and button == "LeftButton" then
 				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
 			else
-				TRP3_API.popup.showTextInputPopup("|TInterface\\ICONS\\ability_garrison_orangebird:50|t\nTwitter profile", nil, nil, url);
+				url = url:gsub("twitter", "http://twitter.com/");
+				TRP3_API.popup.showTextInputPopup("|cff55aceeTwitter profile|r\n" .. loc("UI_LINK_WARNING"), nil, nil, url);
 			end
-
+		--[[
+		-- Links relative to the What's new section (valid for version 1.1.0)
+		 ]]
+        elseif url == "tooltip_settings" then
+			-- Open tooltip config
+            TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_tooltip");
+		--[[
+	 	-- Fallback, open URL in a popup
+		 ]]
+		else
+			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
@@ -290,96 +271,6 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	if TRP3_API.toolbar then
-		-- Show/hide cape
-		local capeTextOn = icon("INV_Misc_Cape_18", 25) .. " ".. loc("TB_SWITCH_CAPE_ON");
-		local capeTextOff = icon("item_icecrowncape", 25) .. " ".. loc("TB_SWITCH_CAPE_OFF");
-		local capeText2 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_1"));
-		local capeText3 = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_SWITCH_CAPE_2"));
-		Button_Cape = {
-			id = "aa_trp3_a",
-			icon = "INV_Misc_Cape_18",
-			configText = loc("CO_TOOLBAR_CONTENT_CAPE"),
-			onEnter = function(Uibutton, buttonStructure) end,
-			onUpdate = function(Uibutton, buttonStructure)
-				if not ShowingCloak() then
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\item_icecrowncape");
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\item_icecrowncape");
-					Uibutton:GetPushedTexture():SetDesaturated(1);
-					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOff, capeText2);
-				else
-					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
-					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot"))) or "Interface\\ICONS\\INV_Misc_Cape_18");
-					Uibutton:GetPushedTexture():SetDesaturated(1);
-					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, capeTextOn, capeText3);
-				end
-				if GetMouseFocus() == Uibutton then
-					refreshTooltip(Uibutton);
-				end
-			end,
-			onClick = function(Uibutton, buttonStructure, button)
-
-				if(ShowingCloak()) then
-					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
-					ShowCloak(false);
-				else
-					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
-					ShowCloak(true);
-				end
-
-
-			end,
-			onLeave = function()
-				mainTooltip:Hide();
-			end,
-		};
-		TRP3_API.toolbar.toolbarAddButton(Button_Cape);
-
-		-- Show / hide helmet
-		local helmTextOn = icon("INV_Helmet_13", 25) .. " ".. loc("TB_SWITCH_HELM_ON");
-		local helmTextOff = icon("Spell_Arcane_MindMastery", 25) .. " ".. loc("TB_SWITCH_HELM_OFF");
-		local helmText2 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_1");
-		local helmText3 = color("y")..loc("CM_CLICK")..": "..color("w")..loc("TB_SWITCH_HELM_2");
-
-		Button_Helmet = {
-			id = "aa_trp3_b",
-			icon = "INV_Helmet_13",
-			configText = loc("CO_TOOLBAR_CONTENT_HELMET"),
-			onEnter = function(Uibutton, buttonStructure) end,
-			onUpdate = function(Uibutton, buttonStructure)
-				if not ShowingHelm() then
-					Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
-					Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\Spell_Arcane_MindMastery");
-					Uibutton:GetPushedTexture():SetDesaturated(1);
-					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOff, helmText2);
-				else
-					Uibutton:GetNormalTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
-					Uibutton:GetPushedTexture():SetTexture(GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot"))) or "Interface\\ICONS\\INV_Helmet_13");
-					Uibutton:GetPushedTexture():SetDesaturated(1);
-					setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, helmTextOn, helmText3);
-				end
-				if GetMouseFocus() == Uibutton then
-					refreshTooltip(Uibutton);
-				end
-			end,
-			onClick = function(Uibutton, buttonStructure, button)
-
-				if ShowingHelm() then
-					ShowHelm(false);
-					playUISound("Sound\\Interface\\Pickup\\Putdowncloth_Leather01.wav", true);
-
-				else
-					ShowHelm(true);
-					playUISound("Sound\\Interface\\Pickup\\Pickupcloth_Leather01.wav", true);
-				end
-
-
-			end,
-			onLeave = function()
-				mainTooltip:Hide();
-			end,
-		};
-		TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
-
 		-- away/dnd
 		local status1Text = icon("Ability_Mage_IncantersAbsorbtion", 25).." "..color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
 		local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));

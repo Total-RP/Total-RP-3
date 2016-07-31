@@ -210,17 +210,21 @@ end
 -- Init and helloWorld
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local MAX_HELLO_ATTEMPT = 5;
+
 Comm.broadcast.HELLO_CMD = "TRP3HI";
 local HELLO_CMD = Comm.broadcast.HELLO_CMD;
 local HELLO_COOLDOWN = 3;
 local helloTimestamp;
+local helloAttemptCount = 0;
 
 -- Send in a broadcast your main informations.
 -- [1] - TRP3 version
 local function helloWorld()
-	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp > HELLO_COOLDOWN) then
+	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp > HELLO_COOLDOWN) and helloAttemptCount < MAX_HELLO_ATTEMPT then
 		helloTimestamp = time();
 		broadcast(HELLO_CMD, Globals.version, Globals.version_display);
+		helloAttemptCount = helloAttemptCount + 1;
 	end
 end
 

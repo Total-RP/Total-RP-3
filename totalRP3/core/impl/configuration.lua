@@ -92,6 +92,12 @@ local function registerConfigKey(key, defaultValue)
 end
 Config.registerConfigKey = registerConfigKey;
 
+local function resetValue(key)
+	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
+	setValue(key, defaultValues[key]);
+end
+Config.resetValue = resetValue;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Configuration builder
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -143,12 +149,12 @@ local function buildConfigurationPage(structure)
 				end
 			end
 			setupListBox(
-			dropDown,
-			element.listContent or {},
-			element.listCallback,
-			element.listDefault or "",
-			element.listWidth or 134,
-			element.listCancel
+				dropDown,
+				element.listContent or {},
+				element.listCallback,
+				element.listDefault or "",
+				element.listWidth or 134,
+				element.listCancel
 			);
 			if element.configKey and not element.listDefault then
 				dropDown:SetSelectedValue(getValue(element.configKey));
@@ -348,7 +354,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				listContent = localeTab,
 				listCallback = changeLocale,
 				listDefault = getLocaleText(getCurrentLocale()),
-				listWidth = nil,
 				listCancel = true,
 			},
 			{
