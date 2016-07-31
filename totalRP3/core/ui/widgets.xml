@@ -714,6 +714,28 @@
 				SetClampedTextureRotation(self.ArrowRIGHT, 90);
 			</OnLoad>
 		</Scripts>
+		<Animations>
+			<AnimationGroup parentKey="showAnimationFromRight">
+				<Translation offsetX="-10"  duration="0"/>
+				<Translation offsetX="10" duration="0.2" smoothing="OUT"/>
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.3" smoothing="OUT"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="showAnimationFromLeft">
+				<Translation offsetX="10"  duration="0"/>
+				<Translation offsetX="-10" duration="0.2" smoothing="OUT"/>
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.3" smoothing="OUT"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="showAnimationFromTop">
+				<Translation offsetY="10"  duration="0"/>
+				<Translation offsetY="-10" duration="0.2" smoothing="OUT"/>
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.3" smoothing="OUT"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="showAnimationFromBottom">
+				<Translation offsetY="-10"  duration="0"/>
+				<Translation offsetY="10" duration="0.2" smoothing="OUT"/>
+				<Alpha fromAlpha="0" toAlpha="1" duration="0.3" smoothing="OUT"/>
+			</AnimationGroup>
+		</Animations>
 	</Frame>
 
 	<!-- Resize button -->
@@ -962,4 +984,58 @@
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 	</Frame>
+
+	<Slider name="TRP3_Scrollbar" virtual="true">
+		<Size>
+			<AbsDimension x="18" y="0"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="trackBackground">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="10"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="-10"/>
+					</Anchors>
+					<Color r="0" g="0" b="0" a="0.5"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="upButton" inherits="UIPanelScrollUpButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" x="0" y="12"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local slider = self:GetParent();
+						slider:SetValue(slider:GetValue() - 1);
+						PlaySound("UChatScrollButton");
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button parentKey="downButton" inherits="UIPanelScrollDownButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="-12"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local slider = self:GetParent();
+						slider:SetValue(slider:GetValue() + 1);
+						PlaySound("UChatScrollButton");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<ThumbTexture parentKey="thumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
+			<Size x="18" y="24"/>
+			<TexCoords left="0.20" right="0.80" top="0.125" bottom="0.875"/>
+		</ThumbTexture>
+		<Scripts>
+			<OnLoad>
+				self:SetMinMaxValues(0, 6);
+				self:SetValueStep(1);
+				self:SetOrientation("VERTICAL");
+			</OnLoad>
+		</Scripts>
+	</Slider>
 </Ui>

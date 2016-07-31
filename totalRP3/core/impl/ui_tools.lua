@@ -339,6 +339,20 @@ TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 	slider:SetScript("OnValueChanged",function(self)
 		if self:IsVisible() then
 			listShowPage(infoTab, floor(self:GetValue()));
+			local minValue, maxValue = self:GetMinMaxValues();
+			local value = self:GetValue();
+			if self.downButton then
+				self.downButton:Enable();
+				if value >= maxValue then
+					self.downButton:Disable();
+				end
+			end
+			if self.upButton then
+				self.upButton:Enable();
+				if value <= minValue then
+					self.upButton:Disable();
+				end
+			end
 		end
 	end);
 	listShowPage(infoTab, slider:GetValue());
@@ -917,12 +931,18 @@ end
 -- Animation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function TRP3_API.ui.misc.playAnimation(animationGroup)
+local function playAnimation(animationGroup, callback)
 	if getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS) and animationGroup then
 		animationGroup:Stop();
 		animationGroup:Play();
+		if callback then
+			animationGroup:SetScript("OnFinished", callback)
+		end
+	elseif callback then
+		callback();
 	end
 end
+TRP3_API.ui.misc.playAnimation = playAnimation;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Hovered frames
@@ -944,23 +964,30 @@ function TRP3_API.ui.frame.configureHoverFrame(frame, hoveredFrame, arrowPositio
 	frame.ArrowDOWN:Hide();
 	frame.ArrowLEFT:Hide();
 
+	local animation;
+
 	if arrowPosition == "RIGHT" then
 		frame:SetPoint("RIGHT", hoveredFrame, "LEFT", -10 + x, 0 + y);
 		frame.ArrowLEFT:Show();
+		animation = "showAnimationFromRight";
 	elseif arrowPosition == "LEFT" then
 		frame:SetPoint("LEFT", hoveredFrame, "RIGHT", 10 + x, 0 + y);
 		frame.ArrowRIGHT:Show();
+		animation = "showAnimationFromLeft";
 	elseif arrowPosition == "TOP" then
 		frame:SetPoint("TOP", hoveredFrame, "BOTTOM", 0 + x, -20 + y);
 		frame.ArrowDOWN:Show();
+		animation = "showAnimationFromTop";
 	elseif arrowPosition == "BOTTOM" then
 		frame:SetPoint("BOTTOM", hoveredFrame, "TOP", 0 + x, 20 + y);
 		frame.ArrowUP:Show();
+		animation = "showAnimationFromBottom";
 	else
 		frame:SetPoint("CENTER", hoveredFrame, "CENTER", 0 + x, 0 + y);
 	end
 
 	frame:Show();
+	playAnimation(frame[animation]);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

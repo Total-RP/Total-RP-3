@@ -861,6 +861,20 @@ The content of their profiles will be hidden again.]],
 		MATURE_FILTER_FLAG_PLAYER_TEXT = [[Confirm that you want to flag %s's profile as containing mature content. This profile content will be hidden.
 
 |cffffff00Optional:|r Indicate the offensive words you found in this profile (separated by a space character) to add them to the filter.]],
+		MATURE_FILTER_EDIT_DICTIONARY = "Edit custom dictionary",
+		MATURE_FILTER_EDIT_DICTIONARY_TT = "Edit the custom dictionary used to filter mature profiles.",
+		MATURE_FILTER_EDIT_DICTIONARY_BUTTON = "Edit",
+		MATURE_FILTER_EDIT_DICTIONARY_TITLE = "Custom dictionary editor",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON = "Add",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT = "Add a new word to the dictionary",
+		MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD = [[Edit this word]],
+		MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD = [[Delete the word from the custom dictionary]],
+		MATURE_FILTER_WARNING_TITLE = "Mature content",
+		MATURE_FILTER_WARNING_TEXT = [[You have Total RP 3's mature content filtering system enabled.
+
+This profile has been flagged as containing mature content.
+
+Are you sure you want to view this profile?]],
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- MISC

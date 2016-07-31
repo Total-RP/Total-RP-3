@@ -89,7 +89,9 @@ local function openPage(profileID, unitID)
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 
 		if unitID and unitIDIsFilteredForMatureContent(unitID) then
-			TRP3_API.popup.showPopup(TRP3_MatureFilterPopup);
+			TRP3_API.popup.showPopup("mature_filtered");
+			TRP3_MatureFilterPopup.profileID = profileID;
+			TRP3_MatureFilterPopup.unitID = unitID;
 		end
 	end
 end

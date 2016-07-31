@@ -16,9 +16,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local dictionnary = {}
+local dictionary = {}
 
-dictionnary["enUS"] = {
+dictionary["enUS"] = {
 	"f%-list",
 	"gore",
 	"scat",
@@ -38,7 +38,7 @@ dictionnary["enUS"] = {
 }
 
 -- Provided by the great guys from Wiki Errantes <3
-dictionnary["esES"] = {
+dictionary["esES"] = {
 	"puta",
 	"maricón",
 	"joder",
@@ -66,7 +66,7 @@ dictionnary["esES"] = {
 	"imbécil",
 }
 
-dictionnary["frFR"] = {
+dictionary["frFR"] = {
 	"salope",
 	"chibre",
 	"soumise"
@@ -75,12 +75,12 @@ dictionnary["frFR"] = {
 local DEFAULT_LOCALE = "enUS";
 local currentLocale = DEFAULT_LOCALE;
 
-function TRP3_API.utils.resources.getMatureFilterDictionnary()
+function TRP3_API.utils.resources.getMatureFilterDictionary()
 
 	currentLocale = TRP3_API.configuration.getValue("AddonLocale");
-	if not dictionnary[currentLocale] then
+	if not dictionary[currentLocale] then
 		currentLocale = DEFAULT_LOCALE;
 	end
 
-	return dictionnary[currentLocale]
+	return dictionary[currentLocale]
 end
