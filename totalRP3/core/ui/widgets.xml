@@ -298,7 +298,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentText" parentKey="title" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+				<FontString name="$parentText" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="5" y="5"/>
 						<Anchor point="TOPRIGHT" x="0" y="5"/>
