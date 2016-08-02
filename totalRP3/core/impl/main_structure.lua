@@ -287,6 +287,8 @@ TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
 
 TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
+	TRP3_MainFrame:Raise();
+	TRP3_API.ui.misc.playUISound("AchievementMenuOpen");
 end
 
 local function switchMainFrame()
@@ -294,8 +296,7 @@ local function switchMainFrame()
 		TRP3_MainFrame:Hide();
 		TRP3_API.ui.misc.playUISound("AchievementMenuClose");
 	else
-		TRP3_MainFrame:Show();
-		TRP3_API.ui.misc.playUISound("AchievementMenuOpen");
+		TRP3_API.navigation.openMainFrame();
 	end
 end
 TRP3_API.navigation.switchMainFrame = switchMainFrame;
