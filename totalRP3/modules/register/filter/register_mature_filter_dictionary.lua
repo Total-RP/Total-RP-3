@@ -69,6 +69,8 @@ dictionary["esES"] = {
 dictionary["frFR"] = {
 	"salope",
 	"chibre",
+	"membrée",
+	"membrées",
 	"soumise"
 }
 

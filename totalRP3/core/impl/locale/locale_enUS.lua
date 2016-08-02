@@ -870,6 +870,8 @@ The content of their profiles will be hidden again.]],
 		MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD = [[Edit this word]],
 		MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD = [[Delete the word from the custom dictionary]],
 		MATURE_FILTER_WARNING_TITLE = "Mature content",
+		MATURE_FILTER_WARNING_CONTINUE = "Continue",
+		MATURE_FILTER_WARNING_GO_BACK = "Go back",
 		MATURE_FILTER_WARNING_TEXT = [[You have Total RP 3's mature content filtering system enabled.
 
 This profile has been flagged as containing mature content.

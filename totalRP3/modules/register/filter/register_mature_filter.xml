@@ -125,7 +125,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString name="$parentText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT">
+				<FontString parentKey="text" name="$parentText" text="[placeholder_line]" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="0" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0"/>
@@ -325,5 +325,9 @@
 			</Layer>
 		</Layers>
 	</Frame>
+
+
+	<Script file="register_mature_filter_dictionary.lua"/>
+	<Script file="register_mature_filter.lua"/>
 
 </Ui>
