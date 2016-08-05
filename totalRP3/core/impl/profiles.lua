@@ -309,6 +309,20 @@ local function onActionSelected(value, button)
 		uiEditProfile(profileID);
 	elseif value == 3 then
 		uiDuplicateProfile(profileID);
+	elseif value == 4 then
+		local profile = profiles[profileID];
+		local serial = Utils.serial.serialize({profileID, profile });
+		if serial:len() < 20000 then
+			TRP3_ProfileExport.content.scroll.text:SetText(serial);
+			TRP3_ProfileExport.content.title:SetText(loc("PR_EXPORT_NAME"):format(profile.profileName, serial:len() / 1024));
+			TRP3_ProfileExport:Show();
+		else
+			Utils.message.displayMessage(loc("PR_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
+		end
+	elseif value == 5 then
+		TRP3_ProfileImport.profileID = profileID;
+		TRP3_ProfileImport:Show();
+		TRP3_ProfileExport.content.scroll.text:SetText("");
 	end
 end
 
@@ -319,9 +333,13 @@ local function onActionClicked(button)
 	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
 	if currentProfileId ~= profileID then
 		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
+		tinsert(values, {loc("PR_IMPORT_PROFILE"), 5});
 	else
 		tinsert(values, {"|cff999999" .. loc("PR_DELETE_PROFILE"), nil});
+		tinsert(values, {"|cff999999" .. loc("PR_IMPORT_PROFILE"), nil});
 	end
+	tinsert(values, {loc("PR_EXPORT_PROFILE"), 4});
+
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
@@ -500,4 +518,29 @@ function TRP3_API.profile.init()
             end
         end
     });
+
+	-- Export/Import
+	TRP3_ProfileExport.title:SetText(loc("PR_EXPORT_PROFILE"));
+	TRP3_ProfileImport.title:SetText(loc("PR_IMPORT_PROFILE"));
+	TRP3_ProfileImport.content.title:SetText(loc("PR_IMPORT_PROFILE_TT"));
+	TRP3_ProfileImport.save:SetText(loc("PR_IMPORT"));
+	TRP3_ProfileImport.save:SetScript("OnClick", function()
+		local profileID = TRP3_ProfileImport.profileID;
+		local code = TRP3_ProfileImport.content.scroll.text:GetText();
+		local object = Utils.serial.safeDeserialize(code);
+		if object and type(object) == "table" and #object == 2 then
+			showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+			function()
+				local ID = object[1];
+				local data = object[2];
+				data.profileName = profiles[profileID].profileName;
+				wipe(profiles[profileID]);
+				profiles[profileID] = data;
+				TRP3_ProfileImport:Hide();
+				uiInitProfileList();
+			end);
+		else
+			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
+		end
+	end);
 end

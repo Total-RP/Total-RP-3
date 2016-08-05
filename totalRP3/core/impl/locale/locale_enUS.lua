@@ -660,6 +660,13 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		PR_IMPORT_IMPORT_ALL = "Import all",
 		PR_IMPORT_WILL_BE_IMPORTED = "Will be imported",
 		PR_IMPORT_EMPTY = "No importable profile",
+		PR_EXPORT_PROFILE = "Export profile",
+		PR_IMPORT_PROFILE = "Import profile",
+		PR_EXPORT_NAME = "Serial for profile %s (size %0.2f kB)",
+		PR_EXPORT_TOO_LARGE = "This profile is too large and can't be exported.\n\nSize of profile: %0.2f kB\nMax: 20 kB",
+		PR_IMPORT_PROFILE_TT = "Paste here a profile serial",
+		PR_IMPORT = "Import",
+		PR_PROFILEMANAGER_IMPORT_WARNING = "Replacing all the content of profile %s with this imported data?",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD
