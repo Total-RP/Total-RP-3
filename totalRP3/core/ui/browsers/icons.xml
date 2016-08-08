@@ -45,7 +45,7 @@
 	</Button>
 	
 	<!-- Icon browser  -->
-    <Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true">
+    <Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
 			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
