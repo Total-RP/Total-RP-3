@@ -29,7 +29,7 @@ local ChatThrottleLib = ChatThrottleLib;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm, isIDIgnored = TRP3_API.communication;
+local Comm, isIDIgnored = TRP3_API.communication, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
 
@@ -69,7 +69,7 @@ local function broadcast(command, ...)
 	end
 	if message:len() < 254 then
 		local channelName = GetChannelName(config_BroadcastChannel());
-		ChatThrottleLib:SendChatMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", nil, channelName);
+		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", channelName);
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
 	end
@@ -84,9 +84,7 @@ local function receiveBroadcast(sender, command, ...)
 	end
 end
 
-local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
---	Log.log(tostring(sender) .. " : " .. tostring(message), Log.level.DEBUG);
-
+local function onBroadcastReceived(message, sender, channel)
 	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
 		if not header == BROADCAST_HEADER or not command then
@@ -109,22 +107,19 @@ end
 -- Peer to peer part
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onP2PMessageReceived(...)
-	local prefix, message , distributionType, sender = ...;
-	if prefix == BROADCAST_HEADER then
-		if not sender then
-			Log.log("onP2PMessageReceived: Malformed senderID: " .. tostring(sender), Log.level.WARNING);
-			return;
-		end
-		if not sender:find('-') then
-			sender = Utils.str.unitInfoToID(sender);
-		end
-		if not isIDIgnored(sender) then
-			local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-			if PREFIX_P2P_REGISTRATION[command] then
-				for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
-					callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-				end
+local function onP2PMessageReceived(message, sender)
+	if not sender then
+		Log.log("onP2PMessageReceived: Malformed senderID: " .. tostring(sender), Log.level.WARNING);
+		return;
+	end
+	if not sender:find('-') then
+		sender = Utils.str.unitInfoToID(sender);
+	end
+	if not isIDIgnored(sender) then
+		local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+		if PREFIX_P2P_REGISTRATION[command] then
+			for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
+				callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 			end
 		end
 	end
@@ -245,6 +240,17 @@ local function onMouseOver()
 	end
 end
 
+local function onMessageReceived(...)
+	local prefix, message , distributionType, sender, _, _, _, channel = ...;
+	if prefix == BROADCAST_HEADER then
+		if distributionType == "CHANNEL" then
+			onBroadcastReceived(message, sender, channel);
+		else
+			onP2PMessageReceived(message, sender);
+		end
+	end
+end
+
 Comm.broadcast.init = function()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 
@@ -252,8 +258,7 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE", onChannelNotice);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_JOIN", onChannelJoin);
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
-	Utils.event.registerHandler("CHAT_MSG_CHANNEL", parseBroadcast);
-	Utils.event.registerHandler("CHAT_MSG_ADDON", onP2PMessageReceived);
+	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
 	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function()
 		RegisterAddonMessagePrefix(BROADCAST_HEADER);
 	end);
