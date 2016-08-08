@@ -667,6 +667,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		PR_IMPORT_PROFILE_TT = "Paste here a profile serial",
 		PR_IMPORT = "Import",
 		PR_PROFILEMANAGER_IMPORT_WARNING = "Replacing all the content of profile %s with this imported data?",
+		PR_PROFILEMANAGER_IMPORT_WARNING_2 = "Warning: this profile serial has been made from an older version of TRP3.\nThis can bring incompatibilities.\n\nReplacing all the content of profile %s with this imported data?",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD

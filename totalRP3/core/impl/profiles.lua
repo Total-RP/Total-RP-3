@@ -311,7 +311,7 @@ local function onActionSelected(value, button)
 		uiDuplicateProfile(profileID);
 	elseif value == 4 then
 		local profile = profiles[profileID];
-		local serial = Utils.serial.serialize({profileID, profile });
+		local serial = Utils.serial.serialize({Globals.version, profileID, profile });
 		if serial:len() < 20000 then
 			TRP3_ProfileExport.content.scroll.text:SetText(serial);
 			TRP3_ProfileExport.content.title:SetText(loc("PR_EXPORT_NAME"):format(profile.profileName, serial:len() / 1024));
@@ -528,17 +528,25 @@ function TRP3_API.profile.init()
 		local profileID = TRP3_ProfileImport.profileID;
 		local code = TRP3_ProfileImport.content.scroll.text:GetText();
 		local object = Utils.serial.safeDeserialize(code);
-		if object and type(object) == "table" and #object == 2 then
-			showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
-			function()
-				local ID = object[1];
-				local data = object[2];
+
+		if object and type(object) == "table" and #object == 3 then
+			local version = object[1];
+			local ID = object[2];
+			local data = object[3];
+
+			local import = function()
 				data.profileName = profiles[profileID].profileName;
 				wipe(profiles[profileID]);
 				profiles[profileID] = data;
 				TRP3_ProfileImport:Hide();
 				uiInitProfileList();
-			end);
+			end
+
+			if version ~= Globals.version then
+				showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING_2"):format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+			else
+				showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING"):format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+			end
 		else
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
 		end
