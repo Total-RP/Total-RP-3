@@ -308,8 +308,12 @@ TRP3_API.navigation.switchMainFrame = switchMainFrame;
 local BUTTONS = {};
 
 local function buttonOnLeave(button)
-	button.box:Show();
-	button.boxHighlight:Hide();
+	if button.box then
+		button.box:Show();
+	end
+	if button.boxHighlight then
+		button.boxHighlight:Hide();
+	end
 	TRP3_TutorialTooltip:ClearAllPoints();
 	TRP3_TutorialTooltip.ArrowRIGHT:Hide();
 	TRP3_TutorialTooltip.ArrowGlowRIGHT:Hide();
@@ -321,11 +325,16 @@ local function buttonOnLeave(button)
 	TRP3_TutorialTooltip.ArrowGlowLEFT:Hide();
 	TRP3_TutorialTooltip:Hide();
 end
+TRP3_API.navigation.hideTutorialTooltip = buttonOnLeave;
 
 local function buttonOnEnter(button)
-	button.box:Hide();
-	button.boxHighlight:Show();
-	
+	if button.box then
+		button.box:Hide();
+	end
+	if button.boxHighlight then
+		button.boxHighlight:Show();
+	end
+
 	if button.arrow == "RIGHT" then
 		TRP3_TutorialTooltip:SetPoint("LEFT", button, "RIGHT", 10, 0);
 		TRP3_TutorialTooltip.ArrowRIGHT:Show();
@@ -349,6 +358,7 @@ local function buttonOnEnter(button)
 	TRP3_TutorialTooltip.Text:SetText(button.text);
 	TRP3_TutorialTooltip:Show();
 end
+TRP3_API.navigation.showTutorialTooltip = buttonOnEnter;
 
 local function configureButton(button)
 	button:SetSize(46, 46);
