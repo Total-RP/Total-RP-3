@@ -39,14 +39,12 @@ local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePe
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GetCurrentMapAreaID, SetMapToCurrentZone, SetMapByID, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, SetMapByID, GetPlayerMapPosition;
+local GetPlayerMapPosition = GetPlayerMapPosition;
+local GetPlayerMapAreaID = GetPlayerMapAreaID;
 
 function TRP3_API.map.getCurrentCoordinates()
-	local currentMapID = GetCurrentMapAreaID();
-	SetMapToCurrentZone();
-	local mapID = GetCurrentMapAreaID();
+	local mapID = GetPlayerMapAreaID("player");
 	local x, y = GetPlayerMapPosition("player");
-	SetMapByID(currentMapID);
 	return mapID, x, y;
 end
 
@@ -210,7 +208,7 @@ local function launchScan(scanID)
 		wipe(structure.saveStructure);
 		structure.scan(structure.saveStructure);
 		if structure.scanDuration then
-			local mapID = GetCurrentMapAreaID();
+			local mapID = GetPlayerMapAreaID("player");
 			TRP3_WorldMapButton:Disable();
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
@@ -228,7 +226,7 @@ local function launchScan(scanID)
 			after(structure.scanDuration, function()
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-				if mapID == GetCurrentMapAreaID() then
+				if mapID == GetPlayerMapAreaID("player") then
 					if structure.scanComplete then
 						structure.scanComplete(structure.saveStructure);
 					end
@@ -274,7 +272,7 @@ end
 local currentMapID;
 
 local function onWorldMapUpdate()
-	local mapID = GetCurrentMapAreaID();
+	local mapID = GetPlayerMapAreaID("player");
 	if currentMapID ~= mapID and not TRP3_WorldMapButton.doNotHide then
 		currentMapID = mapID;
 		hideAllMarkers();
