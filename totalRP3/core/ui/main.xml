@@ -274,7 +274,12 @@
 		</Scripts>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\TutorialFrame\TutorialFrameBackground">
+				<!--Interface\BlackMarket\BlackMarketBackground-Tile-->
+				<!--Interface\BankFrame\Bank-Background-->
+				<!--Interface\Collections\CollectionsBackgroundTile-->
+				<!--Interface\GuildBankFrame\GuildVaultBG-->
+
+				<Texture file="Interface\GuildBankFrame\GuildVaultBG" horizTile="true" vertTile="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
