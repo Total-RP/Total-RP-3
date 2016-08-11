@@ -77,9 +77,9 @@
 
 	<!-- Register Peek panel -->
 	<Frame name="TRP3_RegisterMiscTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize>
-				<AbsValue val="32"/>
+				<AbsValue val="24"/>
 			</EdgeSize>
 		</Backdrop>
 		<Layers>

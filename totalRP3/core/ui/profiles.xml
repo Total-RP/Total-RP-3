@@ -19,7 +19,7 @@
 
 	<!-- Profile manager : Line -->
 	<Frame name="TRP3_ProfileManagerLine" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="24" />
 			</EdgeSize>
@@ -133,7 +133,7 @@
 
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
 			<EdgeSize>
 				<AbsValue val="24" />
 			</EdgeSize>
@@ -142,9 +142,9 @@
 		</Backdrop>
 		<Frames>
 			<Frame frameLevel="2">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 					<EdgeSize>
-						<AbsValue val="32" />
+						<AbsValue val="24" />
 					</EdgeSize>
 				</Backdrop>
 				<Anchors>
@@ -160,9 +160,9 @@
 				</Layers>
 				<Frames>
 					<Frame name="$parentList">
-						<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+						<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize>
-								<AbsValue val="32" />
+								<AbsValue val="24" />
 							</EdgeSize>
 							<TileSize>
 								<AbsValue val="418" />

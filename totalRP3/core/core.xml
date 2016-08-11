@@ -30,8 +30,8 @@
 	</GameTooltip>
 
 	<Frame name="TRP3_ResizeShadowFrame" parent="UIParent" frameStrata="FULLSCREEN" hidden="true" resizable="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Layers>

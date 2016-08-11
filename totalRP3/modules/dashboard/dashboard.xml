@@ -21,7 +21,7 @@
 	
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 			<TileSize val="425"/>
@@ -91,9 +91,9 @@
 
 			<!-- What's new / About / Thanks -->
 			<Frame name="TRP3_DashboardBottom">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
-						<AbsValue val="32"/>
+						<AbsValue val="24"/>
 					</EdgeSize>
 					<TileSize>
 						<AbsValue val="380"/>

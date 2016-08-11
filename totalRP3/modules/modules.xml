@@ -20,8 +20,8 @@
 -->
 	 
 	 <Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="0" y="60"/>
@@ -72,8 +72,8 @@
 	</Frame>
     
     <Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
-        <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
+        <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
         <Layers>
@@ -93,8 +93,8 @@
 		</Layers>
 		<Frames>
 		    <Frame name="TRP3_ConfigurationModuleFrame">
-		        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
+		        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
 				<Anchors>

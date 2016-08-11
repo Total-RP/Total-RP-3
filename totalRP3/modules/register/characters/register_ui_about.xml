@@ -22,7 +22,7 @@
 	<!-- Toolbar -->
 	<Frame name="TRP3_TextToolbar" virtual="true">
 		<Size x="0" y="30"/>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -90,8 +90,8 @@
 	</Frame>
 	
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="0" y="105"/>
@@ -138,8 +138,8 @@
 	
 	<!-- Register about template 2 frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Frames>
@@ -159,8 +159,8 @@
 	
 	<!-- Register about template 2 edit frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="0" y="120"/>
@@ -220,8 +220,8 @@
 	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Frames>
@@ -300,7 +300,7 @@
 						</Frames>
 				    </Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template2">
-				    	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				    	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
@@ -420,8 +420,8 @@
 										</Anchors>
 										<Frames>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 												</Backdrop>
 												<Anchors>
@@ -446,8 +446,8 @@
 												</Layers>
 											</Frame>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 												</Backdrop>
 												<Anchors>
@@ -472,8 +472,8 @@
 												</Layers>
 											</Frame>
 											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-													<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 												</Backdrop>
 												<Anchors>
@@ -505,13 +505,13 @@
 						<Frames>
 							<Button name="TRP3_RegisterAbout_AboutPanel_EditButton" inherits="TRP3_CommonButton">
 								<Size x="70" y="20"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 								</Anchors>
 							</Button>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Thumb">
-								<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-									<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+								<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+									<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 								</Backdrop>
 								<Size x="90" y="50"/>
@@ -539,8 +539,8 @@
 							<!-- Music player -->
 							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer">
 								<Size x="200" y="65"/>
-								<Backdrop bgFile="Interface\FrameGeneral\UI-Background-Marble" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-									<EdgeSize><AbsValue val="36"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
+								<Backdrop bgFile="Interface\FrameGeneral\UI-Background-Marble" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+									<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 								</Backdrop>
 								<Anchors>

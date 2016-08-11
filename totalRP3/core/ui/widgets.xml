@@ -209,9 +209,9 @@
 
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
-				<AbsValue val="26"/>
+				<AbsValue val="24"/>
 			</EdgeSize>
 			<TileSize>
 				<AbsValue val="380"/>
@@ -222,8 +222,7 @@
 		</Backdrop>
 		<Frames>
 			<Frame name="$parentCaptionPanel">
-				<Backdrop bgFile="Interface\BankFrame\Bank-Background"
-						  edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize>
 						<AbsValue val="16"/>
 					</EdgeSize>
@@ -234,14 +233,13 @@
 						<AbsInset left="4" right="2" top="2" bottom="2"/>
 					</BackgroundInsets>
 				</Backdrop>
-				<Size x="150" y="20"/>
+				<Size x="150" y="23"/>
 				<Layers>
 					<Layer level="OVERLAY">
-						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal"
-									wordwrap="false">
+						<FontString name="$parentCaption" text="[Caption text]" inherits="GameFontNormal" wordwrap="false">
 							<Anchors>
-								<Anchor point="LEFT" x="10" y="2"/>
-								<Anchor point="RIGHT" x="-10" y="2"/>
+								<Anchor point="LEFT" x="10" y="0"/>
+								<Anchor point="RIGHT" x="-10" y="0"/>
 							</Anchors>
 							<Color r="0.95" g="0.95" b="0.95"/>
 						</FontString>
@@ -451,10 +449,10 @@
 
 	<!-- Text area -->
 	<Frame name="TRP3_TextArea" virtual="true" enableMouse="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border"
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border"
 				  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 			<EdgeSize>
-				<AbsValue val="32"/>
+				<AbsValue val="24"/>
 			</EdgeSize>
 			<TileSize>
 				<AbsValue val="200"/>

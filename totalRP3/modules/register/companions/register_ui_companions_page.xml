@@ -21,8 +21,8 @@
 	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Layers>
@@ -252,7 +252,7 @@
 	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPage" hidden="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
+	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
 			<TileSize val="425"/>

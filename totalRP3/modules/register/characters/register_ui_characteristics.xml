@@ -71,7 +71,7 @@
 	
 	<!-- Register characteristics psycho line jauge -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-Parchment" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-Parchment" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -233,8 +233,8 @@
     
     <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-			<EdgeSize><AbsValue val="32"/></EdgeSize>
+	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize><AbsValue val="24"/></EdgeSize>
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
