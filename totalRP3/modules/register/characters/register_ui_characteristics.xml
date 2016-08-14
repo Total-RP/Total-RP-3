@@ -238,8 +238,13 @@
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
 				</Texture>
 			</Layer>
 		</Layers>

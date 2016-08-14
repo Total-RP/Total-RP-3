@@ -211,12 +211,8 @@
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize val="16"/>
-			<TileSize>
-				<AbsValue val="380"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
+			<TileSize val="380" />
+			<BackgroundInsets left="3" right="3" top="3" bottom="3" />
 		</Backdrop>
 		<Frames>
 			<Frame name="$parentCaptionPanel">

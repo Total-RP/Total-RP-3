@@ -28,11 +28,11 @@
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\Artifacts\ArtifactUIWarlock">
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="0"/>
+						<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 						<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
 						<Anchor point="LEFT" x="5" y="0"/>
 					</Anchors>
-					<TexCoords left="0" right="0.7" top="0.61252" bottom="0"/>
+					<TexCoords left="0" right="0.7" top="0.60" bottom="0"/>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
