@@ -379,30 +379,30 @@
 		</Size>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture name="$parentLeft" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+				<Texture name="$parentLeft" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGLeft">
 					<Size>
-						<AbsDimension x="10" y="32"/>
+						<AbsDimension x="25" y="32"/>
 					</Size>
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="0" y="0"/>
 					</Anchors>
-					<TexCoords left="0.08" right="0.15625" top="1.0" bottom="0"/>
+					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
 				</Texture>
-				<Texture name="$parentRight" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+				<Texture name="$parentRight" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGRight">
 					<Size>
-						<AbsDimension x="10" y="32"/>
+						<AbsDimension x="25" y="32"/>
 					</Size>
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
 					</Anchors>
-					<TexCoords left="0.84375" right="0.92" top="1.0" bottom="0"/>
+					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
 				</Texture>
-				<Texture name="$parentMiddle" file="Interface\PaperDollInfoFrame\UI-Character-InActiveTab">
+				<Texture name="$parentMiddle" file="Interface\CHATFRAME\ChatFrameTabUnsel-BGMid">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentLeft" relativePoint="TOPRIGHT"/>
 						<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight" relativePoint="BOTTOMLEFT"/>
 					</Anchors>
-					<TexCoords left="0.15625" right="0.84375" top="1.0" bottom="0"/>
+					<TexCoords left="0" right="1" top="0.3" bottom="1"/>
 				</Texture>
 			</Layer>
 		</Layers>
