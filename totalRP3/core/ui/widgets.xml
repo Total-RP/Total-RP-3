@@ -210,9 +210,7 @@
 	<!-- A bordered frame with a title -->
 	<Frame name="TRP3_FieldSetFrame" virtual="true">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="24"/>
-			</EdgeSize>
+			<EdgeSize val="16"/>
 			<TileSize>
 				<AbsValue val="380"/>
 			</TileSize>
@@ -223,9 +221,7 @@
 		<Frames>
 			<Frame name="$parentCaptionPanel">
 				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="16"/>
-					</EdgeSize>
+					<EdgeSize val="16"/>
 					<TileSize>
 						<AbsValue val="100"/>
 					</TileSize>
@@ -451,9 +447,7 @@
 	<Frame name="TRP3_TextArea" virtual="true" enableMouse="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border"
 				  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize>
-				<AbsValue val="24"/>
-			</EdgeSize>
+			<EdgeSize val="16"/>
 			<TileSize>
 				<AbsValue val="200"/>
 			</TileSize>
