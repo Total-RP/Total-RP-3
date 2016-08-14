@@ -233,8 +233,8 @@
     
     <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize><AbsValue val="24"/></EdgeSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize val="24"/>
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -379,12 +379,12 @@
 					</Button>
 					<EditBox name="TRP3_RegisterCharact_Edit_FirstField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>
-							<Anchor point="TOP" x="20" y="-14"/>
+							<Anchor point="TOP" x="20" y="-18"/>
 						</Anchors>
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_TitleField" inherits="TRP3_TitledHelpEditBox">
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-14"/>
+							<Anchor point="TOP" x="0" y="-18"/>
 							<Anchor point="LEFT" x="20" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel_Icon"/>
 							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_Edit_FirstField" x="-14" y="0"/>
 						</Anchors>

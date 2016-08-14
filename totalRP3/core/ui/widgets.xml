@@ -439,18 +439,7 @@
 		</Scripts>
 	</Button>
 
-	<!-- Text area -->
-	<Frame name="TRP3_TextArea" virtual="true" enableMouse="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border"
-				  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize val="16"/>
-			<TileSize>
-				<AbsValue val="200"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_TextAreaBase" virtual="true" enableMouse="true">
 		<Frames>
 			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
 				<Anchors>
@@ -467,7 +456,7 @@
 							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-									self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
 								end
 							</OnTextChanged>
 							<OnEscapePressed>
@@ -500,6 +489,57 @@
 				</Scripts>
 			</Button>
 		</Frames>
+	</Frame>
+
+	<!-- Text area -->
+	<Frame name="TRP3_TextArea" inherits="TRP3_TextAreaBase" virtual="true" enableMouse="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\DialogFrame\UI-DialogBox-Background" horizTile="true" vertTile="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="3" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-5" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture name="$parentInsetBotLeftCorner" inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="2" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentInsetBotRightCorner" inherits="UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentInsetBottomBorder" inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+
+				<Texture name="$parentInsetLeftBorder" inherits="!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-3"/>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentInsetBotLeftCorner" relativePoint="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentInsetRightBorder" inherits="!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentInsetBotRightCorner" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentInsetTopBorder" inherits="_UI-Frame-InnerTopTile" parentKey="InsetBorderBottom">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentInsetLeftBorder" relativePoint="TOPLEFT"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentInsetRightBorder" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
 	</Frame>
 
 	<!-- Color picker button -->

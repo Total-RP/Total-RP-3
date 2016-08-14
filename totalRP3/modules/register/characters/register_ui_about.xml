@@ -220,9 +220,8 @@
 	
 	 <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize><AbsValue val="24"/></EdgeSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize val="24"/>
 		</Backdrop>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">

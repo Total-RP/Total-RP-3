@@ -127,23 +127,14 @@
 
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
-			<TileSize val="425" />
-		</Backdrop>
 		<Frames>
 			<Frame frameLevel="2">
 				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-					<EdgeSize>
-						<AbsValue val="24" />
-					</EdgeSize>
+					<EdgeSize val="24"/>
 				</Backdrop>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-33" />
-					<Anchor point="BOTTOMLEFT" x="8" y="8" />
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
@@ -212,9 +203,9 @@
 								</Anchors>
 							</Frame>
 							<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="340" />
+								<Size x="15" y="356" />
 								<Anchors>
-									<Anchor point="RIGHT" x="22" y="0" />
+									<Anchor point="RIGHT" x="23" y="-1" />
 								</Anchors>
 								<Scripts>
 									<OnLoad>

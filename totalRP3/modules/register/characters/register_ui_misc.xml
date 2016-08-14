@@ -78,14 +78,17 @@
 	<!-- Register Peek panel -->
 	<Frame name="TRP3_RegisterMiscTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize>
-				<AbsValue val="24"/>
-			</EdgeSize>
+			<EdgeSize val="24"/>
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
 				</Texture>
 			</Layer>
 		</Layers>
@@ -130,11 +133,6 @@
 									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewGlanceSlot4" x="45" y="0"/>
 								</Anchors>
 							</Button>
-							<!--<Button name="TRP3_RegisterMiscViewGlanceAction" inherits="TRP3_ActionButton">-->
-								<!--<Anchors>-->
-									<!--<Anchor point="RIGHT" x="-10" y="0" />-->
-								<!--</Anchors>-->
-							<!--</Button>-->
 							<Button name="TRP3_RegisterMiscViewGlanceHelp" inherits="TRP3_HelpButton">
 								<Size x="14" y="14"/>
 								<Anchors>
@@ -183,7 +181,7 @@
 							</Frame>
 							<Frame name="TRP3_RegisterMiscViewCurrentlyIC" inherits="TRP3_TextArea">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="TOP" x="0" y="-25"/>
 									<Anchor point="BOTTOM" x="0" y="10"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_RegisterMiscViewCurrentlyPoint" x="-5" y="0"/>
@@ -212,7 +210,7 @@
 							<Frame name="TRP3_RegisterMiscViewCurrentlyOOC" inherits="TRP3_TextArea">
 								<Size x="235" y="0"/>
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-20"/>
+									<Anchor point="TOP" x="0" y="-25"/>
 									<Anchor point="BOTTOM" x="0" y="10"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
 									<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_RegisterMiscViewCurrentlyPoint" x="5" y="0"/>
