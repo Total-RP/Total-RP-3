@@ -144,22 +144,9 @@
 
 	<Frame name="TRP3_ConfigurationPage" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="24"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="418"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5"/>
-			</BackgroundInsets>
+			<EdgeSize val="24" />
 		</Backdrop>
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-StatsBackground" setAllPoints="true">
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
-				</Texture>
-			</Layer>
 			<Layer level="OVERLAY">
 				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[settings_title]">
 					<Anchors>
@@ -170,18 +157,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="$parentInner">
-				<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="24"/>
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="418"/>
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5"/>
-					</BackgroundInsets>
-				</Backdrop>
+			<Frame name="$parentInner" inherits="TRP3_InnerFrame">
 				<Anchors>
 					<Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM" x="0" y="-20"/>
 					<Anchor point="BOTTOM" x="0" y="20"/>
@@ -191,10 +167,10 @@
 				<Frames>
 					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="3"/>
 							<Anchor point="LEFT" x="17" y="0"/>
-							<Anchor point="RIGHT" x="-17" y="0"/>
+							<Anchor point="RIGHT" x="-13" y="0"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="$parentContainer">
