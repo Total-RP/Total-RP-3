@@ -32,6 +32,7 @@ local function onStart()
 	local tinsert = tinsert;
 	local assert = assert;
 	local type = type;
+	local strtrim = strtrim;
 
 	-- WoW imports
 	local UnitIsPlayer = UnitIsPlayer;
@@ -116,22 +117,11 @@ local function onStart()
 	-- DICTIONARY MANAGEMENT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local dictionaryOfDirtyWords = {};
-
-	---
-	-- Will refresh the local table that will have both the default built-in dictionary
-	-- and the custom user dictionary values.
-	local function refreshDictionaryOfDirtyWords()
-		dictionaryOfDirtyWords = {};
-
+	if not TRP3_MatureFilter.dictionary then
+		TRP3_MatureFilter.dictionary = {};
 		-- Insert every word of the default dictionnary
 		for _, word in pairs(TRP3_API.utils.resources.getMatureFilterDictionary()) do
-			tinsert(dictionaryOfDirtyWords, word);
-		end
-
-		-- Insert every word of the user custom dictionary
-		for word, _ in pairs(TRP3_MatureFilter.dictionary) do
-			tinsert(dictionaryOfDirtyWords, word);
+			TRP3_MatureFilter.dictionary[word] = 1;
 		end
 	end
 
@@ -171,9 +161,6 @@ local function onStart()
 		TRP3_MatureFilter.dictionary[word] = nil;
 	end
 
-	-- Always generate the dictionary on launch
-	refreshDictionaryOfDirtyWords();
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- FLAGGING MANAGEMENT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -207,10 +194,6 @@ local function onStart()
 				addWordToCustomDictionary(word);
 			end
 
-			if text and #text > 0 then
-				-- Refresh the dictionary if needed
-				refreshDictionaryOfDirtyWords()
-			end
 			-- Flag the profile of the unit has having mature content
 			flagUnitProfileHasHavingMatureContent(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
@@ -258,7 +241,7 @@ local function onStart()
 			words[word] = (words[word] or 0) + 1;
 		end
 		-- Iterate through the matureWords dictionary
-		for _, matureWord in pairs(dictionaryOfDirtyWords) do
+		for _, matureWord in pairs(TRP3_MatureFilter.dictionary) do
 			-- If the word is found, return true
 			if words[matureWord] then
 				log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!", Utils.log.WARNING);
@@ -373,11 +356,14 @@ local function onStart()
 	---
 	-- Function executed when a new word is entered in entered in the dictionary editor
 	local function saveNewWordToDictionnary()
+		local text = dictionaryEditor.addNewWord.input:GetText();
+		if strtrim(text) == "" then return end;
+
 		-- Play a little animation as a visual feedback that the user action as been registered
 		playAnimation(dictionaryEditor.addNewWord.input.animation);
 
 		-- Take each word inside the text input and add them to the dictionary
-		addWordsToCustomDictionary(dictionaryEditor.addNewWord.input:GetText());
+		addWordsToCustomDictionary(text);
 
 		-- Refresh the list
 		refreshDictionaryList();
