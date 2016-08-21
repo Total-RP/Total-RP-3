@@ -40,11 +40,10 @@ local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePe
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local GetPlayerMapPosition = GetPlayerMapPosition;
-local GetPlayerMapAreaID = GetPlayerMapAreaID;
 local GetCurrentMapAreaID = GetCurrentMapAreaID;
 
 function TRP3_API.map.getCurrentCoordinates()
-	local mapID = GetPlayerMapAreaID("player");
+	local mapID = GetCurrentMapAreaID();
 	local x, y = GetPlayerMapPosition("player");
 	return mapID, x, y;
 end
