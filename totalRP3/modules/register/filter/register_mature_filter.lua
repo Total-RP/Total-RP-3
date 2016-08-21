@@ -306,7 +306,6 @@ local function onStart()
 	---
 	-- Ask the scrolling list handler to (re)build the list
 	local function refreshDictionaryList()
-		log("Refreshing dictionnary list")
 		initList(dictionaryEditor, TRP3_MatureFilter.dictionary, dictionaryEditor.content.slider);
 	end
 
@@ -378,7 +377,7 @@ local function onStart()
 		playAnimation(dictionaryEditor.addNewWord.input.animation);
 
 		-- Take each word inside the text input and add them to the dictionary
-		addWordToCustomDictionary(dictionaryEditor.addNewWord.input:GetText());
+		addWordsToCustomDictionary(dictionaryEditor.addNewWord.input:GetText());
 
 		-- Refresh the list
 		refreshDictionaryList();
