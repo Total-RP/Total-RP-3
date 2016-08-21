@@ -92,6 +92,7 @@ local function openPage(profileID, unitID)
 			TRP3_API.popup.showPopup("mature_filtered");
 			TRP3_MatureFilterPopup.profileID = profileID;
 			TRP3_MatureFilterPopup.unitID = unitID;
+			TRP3_MatureFilterPopup.menuID = currentlyOpenedProfilePrefix .. profileID;
 		end
 	end
 end

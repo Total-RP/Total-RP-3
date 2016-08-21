@@ -42,7 +42,7 @@ local function onStart()
 	local getUnitIDProfile = Register.getUnitIDProfile;
 	local hasProfile = Register.hasProfile;
 	local isUnitIDKnown = Register.isUnitIDKnown;
-	local getUnitRPName = Register.getUnitRPName;
+	local getUnitRPName = Register.getUnitRPNameWithID;
 	local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 	local handleMouseWheel = UI.list.handleMouseWheel;
 	local initList = UI.list.initList;
@@ -50,15 +50,20 @@ local function onStart()
 	local playAnimation = UI.misc.playAnimation;
 	local configureHoverFrame = UI.frame.configureHoverFrame;
 	local getConfigValue = Config.getValue;
+	local setConfigValue = Config.setValue;
 	local registerConfigKey = Config.registerConfigKey;
+	local registerConfigHandler = Config.registerHandler;
 	local hidePopups = TRP3_API.popup.hidePopups;
 	local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 	local log = Utils.log.log;
+	local getUnitID = Utils.str.getUnitID;
 	local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
 	local player_id = TRP3_API.globals.player_id;
 
 	-- API
 	TRP3_API.register.mature_filter = {};
+
+	local MATURE_FILTER_CONFIG = "register_mature_filter";
 
 	-- Saved variables
 	TRP3_MatureFilter = TRP3_MatureFilter or {
@@ -174,13 +179,14 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	---
-	-- Flag the profile of a give unit ID has having mature content
-	-- @param unitID Unit ID to use to retreive the profile (Player-RealmName)
+	-- Flag a profile has having mature content
+	-- @param profileID The profile ID of the profile to flag
 	--
 	local function flagUnitProfileHasHavingMatureContent(profileID)
 		assert(profileID, ("Trying to call flagUnitProfileHasHavingMatureContent with a nil profileID."));
 		local profile = getProfileByID(profileID);
 		profile.hasMatureContent = true;
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	end
 	TRP3_API.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
 
@@ -191,7 +197,7 @@ local function onStart()
 	-- @param unitID Unit ID to use to retreive the profile (Player-RealmName)
 	--
 	local function flagUnitProfileHasHavingMatureContentConfirm(unitID)
-		assert(profileID, ("Trying to call flagUnitProfileHasHavingMatureContentConfirm with a nil unitID."));
+		assert(unitID, ("Trying to call flagUnitProfileHasHavingMatureContentConfirm with a nil unitID."));
 		local profile, profileID = getUnitIDProfile(unitID);
 		local unitName = getUnitRPName(unitID);
 
@@ -300,6 +306,7 @@ local function onStart()
 	---
 	-- Ask the scrolling list handler to (re)build the list
 	local function refreshDictionaryList()
+		log("Refreshing dictionnary list")
 		initList(dictionaryEditor, TRP3_MatureFilter.dictionary, dictionaryEditor.content.slider);
 	end
 
@@ -437,25 +444,42 @@ local function onStart()
 	TRP3_MatureFilterPopup.title:SetText(loc("MATURE_FILTER_WARNING_TITLE"));
 	TRP3_MatureFilterPopup.text:SetText(loc("MATURE_FILTER_WARNING_TEXT"));
 
+	-- Go back
 	TRP3_MatureFilterPopup.cancel:SetText(loc("MATURE_FILTER_WARNING_GO_BACK"));
+	TRP3_MatureFilterPopup.cancel:SetScript("OnClick", function()
+		-- Remove the current profile from the menu list
+		TRP3_API.navigation.menu.unregisterMenu(TRP3_MatureFilterPopup.menuID);
+		-- Go to dashboard
+		TRP3_API.navigation.menu.selectMenu("main_00_dashboard");
+	end);
 
+	-- Continue
 	TRP3_MatureFilterPopup.accept:SetText(loc("MATURE_FILTER_WARNING_CONTINUE"));
 	TRP3_MatureFilterPopup.accept:SetScript("OnClick", hidePopups)
 
+	-- Remember for this profile
 	TRP3_MatureFilterPopup.remember:SetText("Remember for this profile");
 	TRP3_MatureFilterPopup.remember:SetScript("OnClick", function()
+		-- Ask to confirm then hide the popup
 		whitelistProfileByUnitIDConfirm(TRP3_MatureFilterPopup.unitID, function()
 			hidePopups();
 		end);
 	end)
 
+	-- Disable mature filter
 	TRP3_MatureFilterPopup.disable:SetText("Disable mature filter");
+	TRP3_MatureFilterPopup.disable:SetScript("OnClick", function()
+		-- Hide the popup and go the the regi
+		hidePopups();
+		-- Disable mature profile
+		setConfigValue(MATURE_FILTER_CONFIG, false);
+		-- TODO Refresh settings UI?
+	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CONFIGURATION
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local MATURE_FILTER_CONFIG = "register_mature_filter";
 	local matureFilterShouldBeEnabledByDefault = false;
 
 	-- Mature filter should be enabled by default if profanity filter is enabled
@@ -465,6 +489,14 @@ local function onStart()
 	matureFilterShouldBeEnabledByDefault = C_StorePublic.IsDisabledByParentalControls() or matureFilterShouldBeEnabledByDefault;
 
 	registerConfigKey(MATURE_FILTER_CONFIG, matureFilterShouldBeEnabledByDefault);
+
+	registerConfigHandler(MATURE_FILTER_CONFIG, function()
+		local unitID = getUnitID("target");
+		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
+			local profile, profileID = getUnitIDProfile(unitID);
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
+		end
+	end);
 
 	---
 	-- Returns true if the mature filter is enabled
@@ -484,7 +516,7 @@ local function onStart()
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc("MATURE_FILTER_OPTION"),
-			configKey = "register_mature_filter",
+			configKey = MATURE_FILTER_CONFIG,
 			help = loc("MATURE_FILTER_OPTION_TT")
 		});
 		-- Edit dictionary button
@@ -495,6 +527,7 @@ local function onStart()
 			text = loc("MATURE_FILTER_EDIT_DICTIONARY_BUTTON"),
 			callback = function()
 				TRP3_API.popup.showPopup("mature_dictionary");
+				refreshDictionaryList();
 			end,
 		});
 
@@ -538,7 +571,8 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				return unitIDIsFilteredForMatureContent(unitID) and isProfileWhitelisted(unitID);
+				local profile, profileID = getUnitIDProfile(unitID);
+				return profile.hasMatureContent and isProfileWhitelisted(profileID);
 			else
 				return false;
 			end
@@ -558,7 +592,8 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				return not unitIDIsFilteredForMatureContent(unitID);
+				local profile, profileID = getUnitIDProfile(unitID);
+				return not profile.hasMatureContent and not isProfileWhitelisted(profileID);
 			else
 				return false;
 			end
@@ -578,8 +613,11 @@ local function onStart()
 	-- We listen to data updates in the register and apply the filter if enabled
 	-- and the profile is not already whitelisted
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, _)
-		if isMatureFilterEnabled() and not isProfileWhitelisted(profileID) then
-			filterData(getProfileByID(profileID), profileID);
+		if isMatureFilterEnabled() and profileID and not isProfileWhitelisted(profileID) then
+			local profile = getProfileByID(profileID);
+			if not profile.hasMatureContent then
+				filterData(getProfileByID(profileID), profileID);
+			end
 		end
 	end);
 end
