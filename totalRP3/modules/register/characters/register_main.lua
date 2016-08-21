@@ -52,6 +52,8 @@ local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentC
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 local get = TRP3_API.profile.getData;
 local UnitIsPVP = UnitIsPVP;
+local tcopy = tcopy;
+local type = type;
 
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
@@ -151,7 +153,7 @@ TRP3_API.register.createUnitIDProfile = createUnitIDProfile;
 
 local function getUnitIDProfile(unitID)
 	assert(profileExists(unitID), "No profile for character: " .. tostring(unitID));
-	return profiles[characters[unitID].profileID];
+	return profiles[characters[unitID].profileID], characters[unitID].profileID;
 end
 
 TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
@@ -166,6 +168,33 @@ TRP3_API.register.getUnitIDCharacter = getUnitIDCharacter;
 function TRP3_API.register.isUnitKnown(targetType)
 	return isUnitIDKnown(getUnitID(targetType));
 end
+
+---
+-- Check if the content of a unit ID should be filtered because it contains mature content
+-- @param unitID Unit ID of the player to test
+--
+local function unitIDIsFilteredForMatureContent(unitID)
+	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
+	local profile, profileID = getUnitIDProfile(unitID);
+	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
+	-- and that the profile is not in the pink list.
+	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_API.register.mature_filter.isProfileWhitelisted(profileID))
+end
+
+TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
+---
+-- Check if the content of the profile of the unit ID is flagged as containing mature content
+-- @param unitID Unit ID of the player to test
+--
+local function unitIDIsFlaggedForMatureContent(unitID)
+	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
+	local profile, profileID = getUnitIDProfile(unitID);
+	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
+	-- and that the profile is not in the pink list.
+	return profile.hasMatureContent
+end
+
+TRP3_API.register.unitIDIsFlaggedForMatureContent = unitIDIsFlaggedForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Main data management
@@ -224,12 +253,67 @@ end
 
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
+-- (ಥ﹏ಥ) Oh god…
+-- TODO Move that thing somewhere else
+local matureWords = {
+	"dominant",
+	"submissive",
+	"slave",
+	"futa",
+	"cum",
+	"vaginal",
+	"ass",
+	"cunt",
+    "dick",
+    "tits",
+    "bulge"
+}
+
+---
+-- Filter out mature content
+-- @param table
+--
+local function filterOutMatureContent(table)
+	local data = table;
+    -- Iterate over each field of the data table
+	for key, value in pairs(data) do
+        -- If the value of the field is a string, we treat it
+		if type(value) == "string" then
+            local words = {}
+            -- Break string into a table
+            for word in value:gmatch("[^%s%p]+") do
+                -- We will use the lower case version of the words because our keywords are lowercased
+                word = word:lower()
+                -- If we already found this word in the string, increment the count for this word
+                words[word] = (words[word] or 0) + 1;
+            end
+            Utils.table.dump(words);
+            -- Iterate through the matureWords dictionnary
+			for _, matureWord in pairs(matureWords) do
+                -- If the word is found, flag the profile as unsafe
+				if words[matureWord] then
+					log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
+                    -- TODO Flag profile as mature instead of replacing content
+					data[key] = "|cffff0000<MATURE CONTENT>|r"
+					break
+				end
+            end
+        -- If the value of the field is a table, we recursively call filterOutMatureContent() on the table content
+		elseif type(value) == "table" then
+			data[key] = filterOutMatureContent(value)
+		end
+	end
+
+	return data
+end
+
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
 	local profile = getUnitIDProfile(unitID);
 	if profile[informationType] then
 		wipe(profile[informationType]);
 	end
+
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end

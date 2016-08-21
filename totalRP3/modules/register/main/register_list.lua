@@ -56,6 +56,7 @@ local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local safeMatch = TRP3_API.utils.str.safeMatch;
+local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -66,7 +67,7 @@ local playerMenu = "main_10_player";
 local currentlyOpenedProfilePrefix = TRP3_API.register.MENU_LIST_ID_TAB;
 local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
 
-local function openPage(profileID)
+local function openPage(profileID, unitID)
 	local profile = getProfile(profileID);
 	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 		-- If the character already has his "tab", simply open it
@@ -86,6 +87,13 @@ local function openPage(profileID)
 			icon = "Interface\\ICONS\\pet_type_humanoid",
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+
+		if unitID and unitIDIsFilteredForMatureContent(unitID) then
+			TRP3_API.popup.showPopup("mature_filtered");
+			TRP3_MatureFilterPopup.profileID = profileID;
+			TRP3_MatureFilterPopup.unitID = unitID;
+			TRP3_MatureFilterPopup.menuID = currentlyOpenedProfilePrefix .. profileID;
+		end
 	end
 end
 
@@ -117,7 +125,7 @@ local function openPageByUnitID(unitID)
 	if unitID == Globals.player_id then
 		selectMenu(playerMenu);
 	elseif isUnitIDKnown(unitID) and hasProfile(unitID) then
-		openPage(hasProfile(unitID));
+		openPage(hasProfile(unitID), unitID);
 	end
 end
 TRP3_API.register.openPageByUnitID = openPageByUnitID;

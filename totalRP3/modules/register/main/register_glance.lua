@@ -24,6 +24,7 @@ local tostring, _G, pairs, type, tinsert, assert, wipe = tostring, _G, pairs, ty
 local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
+local unitIDIsFilteredForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance utils
@@ -251,13 +252,13 @@ end
 local function getGlanceTab()
 	local glanceTab;
 	if currentTargetType == TYPE_CHARACTER then
-		if isIDIgnored(currentTargetID) then
+		if isIDIgnored(currentTargetID) or unitIDIsFilteredForMatureContent(currentTargetID) then
 			return;
 		end
 		return getDataDefault("misc/PE", EMPTY, getCharacterInfo());
 	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
 		local owner, companionID = companionIDToInfo(currentTargetID);
-		if isIDIgnored(owner) then
+		if isIDIgnored(owner) or unitIDIsFilteredForMatureContent(currentTargetID) then
 			return;
 		end
 		return getCompanionInfo(owner, companionID, currentTargetID).PE;
@@ -425,6 +426,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local UIParent, GetCursorPosition, TargetFrame = UIParent, GetCursorPosition, TargetFrame;
+	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 	local CONFIG_GLANCE_PARENT = "CONFIG_GLANCE_PARENT";
 	local CONFIG_GLANCE_LOCK = "CONFIG_GLANCE_LOCK";

@@ -849,6 +849,51 @@ Total RP is not responsible for links leading to harmful content.]],
 		MAP_SCAN_CHAR_TITLE = "Characters",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- MATURE FILTER
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		MATURE_FILTER_TITLE = "Mature profiles filter",
+		MATURE_FILTER_TOOLTIP_WARNING = "Mature content",
+		MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
+		MATURE_FILTER_OPTION = "Filter mature profiles",
+		MATURE_FILTER_OPTION_TT = [[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word.
+
+A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]],
+		MATURE_FILTER_ADD_TO_WHITELIST = "Add this profile to the |cffffffffmature white list|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_TT = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
+		MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Add to the |cffffffffmature white list|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature white list|r.
+
+The content of their profiles will no longer be hidden.]],
+		MATURE_FILTER_REMOVE_FROM_WHITELIST = "Remove this profile from the |cffffffffmature white list|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TT = "Remove this profile from the |cffffffffmature white list|r and hide again the mature content found inside.",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION = "Remove from the |cffffffffmature white list|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature white list|r.
+
+The content of their profiles will be hidden again.]],
+		MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
+		MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
+		MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",
+		MATURE_FILTER_FLAG_PLAYER_TEXT = [[Confirm that you want to flag %s's profile as containing mature content. This profile content will be hidden.
+
+|cffffff00Optional:|r Indicate the offensive words you found in this profile (separated by a space character) to add them to the filter.]],
+		MATURE_FILTER_EDIT_DICTIONARY = "Edit custom dictionary",
+		MATURE_FILTER_EDIT_DICTIONARY_TT = "Edit the custom dictionary used to filter mature profiles.",
+		MATURE_FILTER_EDIT_DICTIONARY_BUTTON = "Edit",
+		MATURE_FILTER_EDIT_DICTIONARY_TITLE = "Custom dictionary editor",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON = "Add",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT = "Add a new word to the dictionary",
+		MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD = [[Edit this word]],
+		MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD = [[Delete the word from the custom dictionary]],
+		MATURE_FILTER_WARNING_TITLE = "Mature content",
+		MATURE_FILTER_WARNING_CONTINUE = "Continue",
+		MATURE_FILTER_WARNING_GO_BACK = "Go back",
+		MATURE_FILTER_WARNING_TEXT = [[You have Total RP 3's mature content filtering system enabled.
+
+This profile has been flagged as containing mature content.
+
+Are you sure you want to view this profile?]],
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- MISC
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
