@@ -248,6 +248,12 @@
 							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5" />
 						</Anchors>
 					</Button>
+					<Button name="$parentInfo" inherits="TRP3_HelpButton" hidden="true">
+						<Size x="15" y="15" />
+						<Anchors>
+							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="15" y="8" />
+						</Anchors>
+					</Button>
 				</Frames>
 			</Frame>
 		</Frames>

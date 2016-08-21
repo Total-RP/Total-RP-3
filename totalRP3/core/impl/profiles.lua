@@ -316,6 +316,7 @@ local function onActionSelected(value, button)
 			TRP3_ProfileExport.content.scroll.text:SetText(serial);
 			TRP3_ProfileExport.content.title:SetText(loc("PR_EXPORT_NAME"):format(profile.profileName, serial:len() / 1024));
 			TRP3_ProfileExport:Show();
+			TRP3_ProfileExport.content.scroll.text:SetFocus();
 		else
 			Utils.message.displayMessage(loc("PR_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
 		end
@@ -329,13 +330,21 @@ end
 local function onActionClicked(button)
 	local profileID = button:GetParent().profileID;
 	local values = {};
+
+	tinsert(values, {loc("PR_PROFILE_MANAGEMENT_TITLE")});
 	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
 	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
 	if currentProfileId ~= profileID then
 		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
-		tinsert(values, {loc("PR_IMPORT_PROFILE"), 5});
 	else
 		tinsert(values, {"|cff999999" .. loc("PR_DELETE_PROFILE"), nil});
+	end
+
+	tinsert(values, {""});
+	tinsert(values, {loc("PR_EXPORT_IMPORT_TITLE")});
+	if currentProfileId ~= profileID then
+		tinsert(values, {loc("PR_IMPORT_PROFILE"), 5});
+	else
 		tinsert(values, {"|cff999999" .. loc("PR_IMPORT_PROFILE"), nil});
 	end
 	tinsert(values, {loc("PR_EXPORT_PROFILE"), 4});
@@ -434,6 +443,9 @@ function TRP3_API.profile.init()
 
 	--Localization
 	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
+
+	TRP3_ProfileManagerInfo:Show();
+	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc("PR_EXPORT_IMPORT_TITLE"), loc("PR_EXPORT_IMPORT_HELP"));
 
 	registerPage({
 		id = "player_profiles",
