@@ -222,6 +222,7 @@
 	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize val="24"/>
+			<BackgroundInsets bottom="5" left="5" right="5" top="5"/>
 		</Backdrop>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">

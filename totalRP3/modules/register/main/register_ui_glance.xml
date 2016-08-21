@@ -42,16 +42,10 @@
 	</Button>
 
 	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="300" />
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5" />
-			</BackgroundInsets>
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize val="16" />
+			<TileSize val="418" />
+			<BackgroundInsets left="3" right="3" top="5" bottom="3"/>
 		</Backdrop>
 		<Size x="140" y="32" />
 		<Anchors>
