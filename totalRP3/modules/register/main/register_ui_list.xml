@@ -125,23 +125,26 @@
 	</Frame>
 
 	<Frame name="TRP3_RegisterList" hidden="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
-			<TileSize val="425" />
-		</Backdrop>
 		<Frames>
 			<Frame name="TRP3_RegisterListContainer">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-					<EdgeSize>
-						<AbsValue val="32" />
-					</EdgeSize>
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+					<EdgeSize val="24"/>
 				</Backdrop>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="-30" />
+					<Anchor point="TOPRIGHT" x="2" y="-30" />
+					<Anchor point="BOTTOMLEFT" x="0" y="2" />
+					<Anchor point="BOTTOMRIGHT" x="2" y="2" />
+				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
-						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground" setAllPoints="true"/>
+						<Texture file="Interface\ACHIEVEMENTFRAME\UI-Achievement-StatsBackground">
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-5" y="0"/>
+								<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
+								<Anchor point="LEFT" x="5" y="0"/>
+							</Anchors>
+						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterListEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
@@ -154,12 +157,6 @@
 					</Layer>
 				</Layers>
 				<Size x="0" y="0" />
-				<Anchors>
-					<Anchor point="TOPLEFT" x="5" y="-35" />
-					<Anchor point="TOPRIGHT" x="-5" y="-35" />
-					<Anchor point="BOTTOMLEFT" x="5" y="8" />
-					<Anchor point="BOTTOMRIGHT" x="-5" y="8" />
-				</Anchors>
 				<Frames>
 					<Slider name="TRP3_RegisterListSlider" inherits="OptionsSliderTemplate">
 						<Size x="15" y="0" />

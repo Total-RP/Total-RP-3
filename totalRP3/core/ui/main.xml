@@ -274,7 +274,12 @@
 		</Scripts>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture file="Interface\TutorialFrame\TutorialFrameBackground">
+				<!--Interface\BlackMarket\BlackMarketBackground-Tile-->
+				<!--Interface\BankFrame\Bank-Background-->
+				<!--Interface\Collections\CollectionsBackgroundTile-->
+				<!--Interface\GuildBankFrame\GuildVaultBG-->
+
+				<Texture file="Interface\GuildBankFrame\GuildVaultBG" horizTile="true" vertTile="true">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="16" y="-16"/>
 						<Anchor point="BOTTOMRIGHT" x="-16" y="16"/>
@@ -344,7 +349,7 @@
 			
 			<!-- RIGHT PART : STATIC POPUP : blocking access to content behind it -->
 			<Frame name="TRP3_PopupsFrame" frameStrata="DIALOG" enableMouse="true" hidden="true">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
@@ -358,7 +363,7 @@
 			<!-- Update alert popup -->
 			<Frame name="TRP3_UpdateFrame" frameStrata="DIALOG" enableMouse="true" hidden="true">
 
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 				</Backdrop>
@@ -426,8 +431,8 @@
 	</Frame>
 	
 	<ScrollFrame name="TRP3_DEBUG_CODE_FRAME" inherits="UIPanelScrollFrameTemplate" parent="UIParent" hidden="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="200" y="200"/>

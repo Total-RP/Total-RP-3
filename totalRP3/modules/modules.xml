@@ -20,8 +20,8 @@
 -->
 	 
 	 <Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
 		<Size x="0" y="60"/>
@@ -72,16 +72,10 @@
 	</Frame>
     
     <Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
-        <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+        <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize val="24"/>
 		</Backdrop>
         <Layers>
-        	<Layer level="BACKGROUND">
-				<Texture file="Interface\AchievementFrame\UI-Achievement-StatsBackground" setAllPoints="true">
-					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
-				</Texture>
-			</Layer>
 			<Layer level="OVERLAY">
 			    <FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">
 					<Anchors>
@@ -92,11 +86,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-		    <Frame name="TRP3_ConfigurationModuleFrame">
-		        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-					<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="418"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+		    <Frame name="TRP3_ConfigurationModuleFrame" inherits="TRP3_InnerFrame">
 				<Anchors>
 					<Anchor point="TOP" relativeTo="TRP3_ConfigurationModuleTitle" relativePoint="BOTTOM" x="0" y="-20"/>
 					<Anchor point="BOTTOM" x="0" y="20"/>
@@ -106,10 +96,10 @@
 				<Frames>
 				    <ScrollFrame name="TRP3_ConfigurationModuleScroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
-							<Anchor point="TOP" x="0" y="-10"/>
-							<Anchor point="BOTTOM" x="0" y="10"/>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="3"/>
 							<Anchor point="LEFT" x="17" y="0"/>
-							<Anchor point="RIGHT" x="-17" y="0"/>
+							<Anchor point="RIGHT" x="-13" y="0"/>
 						</Anchors>
 						<ScrollChild>
 							<Frame name="TRP3_ConfigurationModuleContainer">

@@ -39,28 +39,23 @@
 	
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterMain" hidden="true">
-	    <Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5"/>
-			<TileSize val="425"/>
-		</Backdrop>
 		<Frames>
 			<Frame name="TRP3_RegisterCharact" inherits="TRP3_RegisterCharactTemplate" frameLevel="2">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-33"/>
-					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
 			<Frame name="TRP3_RegisterAbout" inherits="TRP3_RegisterAboutTemplate" frameLevel="2">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-33"/>
-					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
 			<Frame name="TRP3_RegisterMisc" inherits="TRP3_RegisterMiscTemplate" frameLevel="2">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-33"/>
-					<Anchor point="BOTTOMLEFT" x="8" y="8"/>
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
 		</Frames>

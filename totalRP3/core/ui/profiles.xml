@@ -19,16 +19,10 @@
 
 	<!-- Profile manager : Line -->
 	<Frame name="TRP3_ProfileManagerLine" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="418" />
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="5" right="5" top="5" bottom="5" />
-			</BackgroundInsets>
+		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize val="16" />
+			<TileSize val="418" />
+			<BackgroundInsets left="5" right="3" top="5" bottom="3"/>
 		</Backdrop>
 		<Size x="0" y="65" />
 		<Frames>
@@ -83,9 +77,9 @@
 		</Scripts>
 		<Layers>
 			<Layer level="BORDER">
-				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="LEFT" text="[current_profile]" hidden="true">
+				<FontString name="$parentCurrent" inherits="GameFontNormalSmall" justifyH="RIGHT" text="[current_profile]" hidden="true">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="20" y="3" />
+						<Anchor point="TOPRIGHT" x="-10" y="-10" />
 					</Anchors>
 					<Color r="0.0" g="0.95" b="0.0" />
 				</FontString>
@@ -133,44 +127,29 @@
 
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border" bgFile="Interface\ACHIEVEMENTFRAME\UI-GuildAchievement-Parchment-Horizontal-Desaturated" tile="true">
-			<EdgeSize>
-				<AbsValue val="24" />
-			</EdgeSize>
-			<BackgroundInsets left="5" right="5" top="5" bottom="5" />
-			<TileSize val="425" />
-		</Backdrop>
 		<Frames>
 			<Frame frameLevel="2">
-				<Backdrop edgeFile="Interface\GLUES\COMMON\TextPanel-Border">
-					<EdgeSize>
-						<AbsValue val="32" />
-					</EdgeSize>
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+					<EdgeSize val="24"/>
 				</Backdrop>
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-8" y="-33" />
-					<Anchor point="BOTTOMLEFT" x="8" y="8" />
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 				<Layers>
 					<Layer level="BACKGROUND">
-						<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft" setAllPoints="true">
-							<TexCoords left="0.07" right="1" top="0" bottom="0.98" />
+						<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-5" y="0"/>
+								<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
+								<Anchor point="LEFT" x="5" y="0"/>
+							</Anchors>
+							<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
 						</Texture>
 					</Layer>
 				</Layers>
 				<Frames>
-					<Frame name="$parentList">
-						<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
-							<EdgeSize>
-								<AbsValue val="32" />
-							</EdgeSize>
-							<TileSize>
-								<AbsValue val="418" />
-							</TileSize>
-							<BackgroundInsets>
-								<AbsInset left="5" right="5" top="5" bottom="5" />
-							</BackgroundInsets>
-						</Backdrop>
+					<Frame name="$parentList" inherits="TRP3_InnerFrame">
 						<Size x="0" y="350" />
 						<Anchors>
 							<Anchor point="LEFT" x="33" y="0" />
@@ -190,43 +169,43 @@
 						<Frames>
 							<Frame name="$parentLine1" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
-									<Anchor point="TOP" x="0" y="-10" />
-									<Anchor point="LEFT" x="12" y="0" />
-									<Anchor point="RIGHT" x="-12" y="0" />
+									<Anchor point="TOP" x="0" y="-12" />
+									<Anchor point="LEFT" x="8" y="0" />
+									<Anchor point="RIGHT" x="-8" y="0" />
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1" />
-									<Anchor point="LEFT" x="12" y="0" />
-									<Anchor point="RIGHT" x="-12" y="0" />
+									<Anchor point="LEFT" x="8" y="0" />
+									<Anchor point="RIGHT" x="-8" y="0" />
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1" />
-									<Anchor point="LEFT" x="12" y="0" />
-									<Anchor point="RIGHT" x="-12" y="0" />
+									<Anchor point="LEFT" x="8" y="0" />
+									<Anchor point="RIGHT" x="-8" y="0" />
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1" />
-									<Anchor point="LEFT" x="12" y="0" />
-									<Anchor point="RIGHT" x="-12" y="0" />
+									<Anchor point="LEFT" x="8" y="0" />
+									<Anchor point="RIGHT" x="-8" y="0" />
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1" />
-									<Anchor point="LEFT" x="12" y="0" />
-									<Anchor point="RIGHT" x="-12" y="0" />
+									<Anchor point="LEFT" x="8" y="0" />
+									<Anchor point="RIGHT" x="-8" y="0" />
 								</Anchors>
 							</Frame>
 							<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="340" />
+								<Size x="15" y="356" />
 								<Anchors>
-									<Anchor point="RIGHT" x="4" y="2" />
+									<Anchor point="RIGHT" x="23" y="-1" />
 								</Anchors>
 								<Scripts>
 									<OnLoad>
