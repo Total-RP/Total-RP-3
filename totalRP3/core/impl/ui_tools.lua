@@ -39,6 +39,7 @@ local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPl
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
+local tcopy = TRP3_API.utils.table.copy;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
@@ -132,34 +133,51 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				local tooltipText = tab[3];
 				local info = UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
-				info.text = text;
-				info.isTitle = false;
-				info.tooltipOnButton = tooltipText ~= nil;
-				info.tooltipTitle = text;
-				info.tooltipText = tooltipText;
-				if tab[3] then
-					info.tooltipTitle = tab[1];
-					info.tooltipText = tab[3];
-					info.tooltipOnButton = true;
-				end
-				if type(value) == "table" then
-					info.hasArrow = true;
-					info.keepShownOnClick = true;
-					info.menuList = value;
-				elseif value ~= nil then
-					info.func = function()
-						if callback then
-							callback(value, anchoredFrame);
-						end
-						anchoredFrame:GetParent().selectedValue = value;
-						if level > 1 then
-							ToggleDropDownMenu(nil, nil, dropDownFrame);
-						end
-						currentlyOpenedDrop = nil;
-					end;
-				else
-					info.func = function() end;
+				if text == "" then
+					info.dist = 0;
 					info.isTitle = true;
+					info.isUninteractable = true;
+					info.iconOnly = 1;
+					info.icon = "Interface\\Common\\UI-TooltipDivider-Transparent";
+					info.iconInfo = {
+						tCoordLeft = 0,
+						tCoordRight = 1,
+						tCoordTop = 0,
+						tCoordBottom = 1,
+						tSizeX = 0,
+						tSizeY = 8,
+						tFitDropDownSizeX = true
+					};
+				else
+					info.text = text;
+					info.isTitle = false;
+					info.tooltipOnButton = tooltipText ~= nil;
+					info.tooltipTitle = text;
+					info.tooltipText = tooltipText;
+					if tab[3] then
+						info.tooltipTitle = tab[1];
+						info.tooltipText = tab[3];
+						info.tooltipOnButton = true;
+					end
+					if type(value) == "table" then
+						info.hasArrow = true;
+						info.keepShownOnClick = true;
+						info.menuList = value;
+					elseif value ~= nil then
+						info.func = function()
+							if callback then
+								callback(value, anchoredFrame);
+							end
+							anchoredFrame:GetParent().selectedValue = value;
+							if level > 1 then
+								ToggleDropDownMenu(nil, nil, dropDownFrame);
+							end
+							currentlyOpenedDrop = nil;
+						end;
+					else
+						info.func = function() end;
+						info.isTitle = true;
+					end
 				end
 				UIDropDownMenu_AddButton(info, level);
 			end

@@ -660,6 +660,21 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 		PR_IMPORT_IMPORT_ALL = "Import all",
 		PR_IMPORT_WILL_BE_IMPORTED = "Will be imported",
 		PR_IMPORT_EMPTY = "No importable profile",
+		PR_PROFILE_MANAGEMENT_TITLE = "Profile management",
+		PR_EXPORT_IMPORT_TITLE = "Export/import profile",
+		PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
+
+Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special caracters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
+
+Use the |cffffff00Import profile|r option to paste data from a previous export inside an existing profile. The existing data in this profile will be replaced by the ones you have pasted. You cannot import data directly into your currently selected profile.]],
+		PR_EXPORT_PROFILE = "Export profile",
+		PR_IMPORT_PROFILE = "Import profile",
+		PR_EXPORT_NAME = "Serial for profile %s (size %0.2f kB)",
+		PR_EXPORT_TOO_LARGE = "This profile is too large and can't be exported.\n\nSize of profile: %0.2f kB\nMax: 20 kB",
+		PR_IMPORT_PROFILE_TT = "Paste here a profile serial",
+		PR_IMPORT = "Import",
+		PR_PROFILEMANAGER_IMPORT_WARNING = "Replacing all the content of profile %s with this imported data?",
+		PR_PROFILEMANAGER_IMPORT_WARNING_2 = "Warning: this profile serial has been made from an older version of TRP3.\nThis can bring incompatibilities.\n\nReplacing all the content of profile %s with this imported data?",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DASHBOARD
