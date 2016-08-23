@@ -77,11 +77,15 @@ local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function getProfile(profileID)
-	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
+local function getProfileOrNil(profileID)
 	return profiles[profileID];
 end
+TRP3_API.register.getProfileOrNil = getProfileOrNil;
 
+local function getProfile(profileID)
+	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
+	return getProfileOrNil(profileID);
+end
 TRP3_API.register.getProfile = getProfile;
 
 local function deleteProfile(profileID, dontFireEvents)

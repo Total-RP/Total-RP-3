@@ -42,6 +42,7 @@ local function onStart()
 	local getProfileByID = Register.getProfile;
 	local getUnitIDProfile = Register.getUnitIDProfile;
 	local hasProfile = Register.hasProfile;
+	local getProfileOrNil = TRP3_API.register.getProfileOrNil;
 	local isUnitIDKnown = Register.isUnitIDKnown;
 	local getUnitRPName = Register.getUnitRPNameWithID;
 	local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
@@ -598,7 +599,7 @@ local function onStart()
 	-- We listen to data updates in the register and apply the filter if enabled
 	-- and the profile is not already whitelisted
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, _)
-		if isMatureFilterEnabled() and profileID and not isProfileWhitelisted(profileID) then
+		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileWhitelisted(profileID) then
 			local profile = getProfileByID(profileID);
 			if not profile.hasMatureContent then
 				filterData(getProfileByID(profileID), profileID);
