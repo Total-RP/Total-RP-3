@@ -916,13 +916,35 @@ Are you sure you want to view this profile?]],
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
+		WHATS_NEW_4 = [[
+# New in version 1.2.0
 
-		WHATS_NEW_3 = [[{h3:c}New in version {col:6eff51}1.1.4{/col}{/h3}
-{h3}Updated in-game resources{/h3}
+This version introduces a couple of new neat features and improvements.
 
-• We have updated our list of musics with 461 new musics (including Invincible, finally!).
-• We have updated our list of icons with 1956 new icons.
-• We have updated our list of images you can insert in your description to include 135 new images.]],
+## Mature profiles filter system
+
+We have added a new mature profiles filter system to Total RP 3. This feature is enabled by default if the profanity filter option is enabled or if parental control is enabled. You can always enable or disable this option in the Register settings.
+
+When the mature filter is enabled, Total RP 3 will check the content of the profiles you receive to see if it contains specifics mature words. Profiles flagged as containing mature content have their tooltips muted, their at-first-glance bar is not shown and you will see an alert when trying to open the profile.
+
+You can choose to ignore the alert and consult the profile or add the profile to the white-list if you don't want it to be ever filtered again.
+
+You can also manually mark a profile as mature. When doing so, you will be able to provide the words that was not filtered by Total RP 3 so it is added to the filter, so it gets smarter at flagging profiles.
+
+The mature filter dictionary is pre-populated with a couple of words for the English, Spanish and French locale. You can edit the dictionary in the settings to remove or add words.
+
+## Export and import profiles
+
+You can now export profiles data to text that you can copy and paste somewhere else. You will then be able to paste back the data inside a profile. The data exported contains all your profile information, your relations, and will contain your inventory and quest-log in the future.
+
+## Improvements
+
+* We have refined the UI on various places.
+* The map location system has been tweaked to prevent an issue when the map is opened.
+* Fixed an issue with the companion system when color blind mode is enabled.
+* Minor Text Fixes™
+
+]],
 		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
