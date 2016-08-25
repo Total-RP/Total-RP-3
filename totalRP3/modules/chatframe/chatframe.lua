@@ -448,54 +448,54 @@ function hooking()
 			ChatFrame_AddMessageEventFilter(channel, handleCharacterMessage);
 		end
 	end
-end
 
--- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
--- in the chat frame to insert it into a text field.
--- We can replace the name inserted by the complete RP name of the player if we have it.
-hooksecurefunc("ChatEdit_InsertLink", function(name)
+	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
+	-- in the chat frame to insert it into a text field.
+	-- We can replace the name inserted by the complete RP name of the player if we have it.
+	hooksecurefunc("ChatEdit_InsertLink", function(name)
 
-    -- Do not modify the name inserted if the option is not enabled or if the ALT key is down.
-    if not configInsertFullRPName() or IsAltKeyDown() then return end;
+		-- Do not modify the name inserted if the option is not enabled or if the ALT key is down.
+		if not configInsertFullRPName() or IsAltKeyDown() then return end;
 
-	local activeChatFrame = ChatEdit_GetActiveWindow();
-	if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
-		local editBox = activeChatFrame.chatFrame.editBox;
-		local currentText = editBox:GetText();
-		local currentCursorPosition = editBox:GetCursorPosition();
+		local activeChatFrame = ChatEdit_GetActiveWindow();
+		if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
+			local editBox = activeChatFrame.chatFrame.editBox;
+			local currentText = editBox:GetText();
+			local currentCursorPosition = editBox:GetCursorPosition();
 
-        -- Save the text that is before and after the name inserted
-		local textBefore = currentText:sub(1, currentCursorPosition - name:len() - 1);
-		local textAfter = currentText:sub(currentCursorPosition+1 );
+			-- Save the text that is before and after the name inserted
+			local textBefore = currentText:sub(1, currentCursorPosition - name:len() - 1);
+			local textAfter = currentText:sub(currentCursorPosition+1 );
 
-        -- Retreive the info for the character and the naming method to use
-		local info = getCharacterInfoTab(name);
-		local nameMethod = configNameMethod();
+			-- Retreive the info for the character and the naming method to use
+			local info = getCharacterInfoTab(name);
+			local nameMethod = configNameMethod();
 
-		if info and info.characteristics and nameMethod ~= 1 then -- TRP3 names
+			if info and info.characteristics and nameMethod ~= 1 then -- TRP3 names
 			local characteristics = info.characteristics;
-            -- Replace the name by the RP name
+			-- Replace the name by the RP name
 			if characteristics.FN then
 				name = characteristics.FN;
 			end
 
-            -- If the naming method is to use titles, add the short title before the name
+			-- If the naming method is to use titles, add the short title before the name
 			if nameMethod == 4 and characteristics.TI then
 				name = characteristics.TI .. " " .. name;
 			end
 
-            -- If the naming method is to use lastnames, add the lastname behind the name
+			-- If the naming method is to use lastnames, add the lastname behind the name
 			if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
-				name = name .. " " .. characteristics.LN;
-            end
+			name = name .. " " .. characteristics.LN;
+			end
 
-            -- Replace the text of the edit box
-            editBox:SetText(textBefore .. name .. textAfter);
-            -- Move the cursor to the end of the insertion
-            editBox:SetCursorPosition(textBefore:len() + name:len());
+			-- Replace the text of the edit box
+			editBox:SetText(textBefore .. name .. textAfter);
+			-- Move the cursor to the end of the insertion
+			editBox:SetCursorPosition(textBefore:len() + name:len());
+			end
 		end
-	end
-end);
+	end);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init
