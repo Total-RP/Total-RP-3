@@ -124,16 +124,18 @@ if GetLocale() == "frFR" then
 	-- Thank you French language to be such a pain in the ass.
 	-- It will be less effective on French client. Do I look like I care ? Fuck no. :D
 	function TRP3_API.locale.findPetOwner(lines)
-		if lines[2] then
-			return lines[2]:match("Familier de ([%S%-%P]+)") or lines[2]:match("Familier d'([%S%-%P]+)") or
-			lines[2]:match("Serviteur de ([%S%-%P]+)") or lines[2]:match("Serviteur d'([%S%-%P]+)");
+		local masterLine = ENABLE_COLORBLIND_MODE == "1" and lines[3] or lines[2];
+		if masterLine then
+			return masterLine:match("Familier de ([%S%-%P]+)") or masterLine:match("Familier d'([%S%-%P]+)") or
+			masterLine:match("Serviteur de ([%S%-%P]+)") or masterLine:match("Serviteur d'([%S%-%P]+)");
 		end
 	end
 	
 	function TRP3_API.locale.findBattlePetOwner(lines)
-		if lines[3] then
-			local master = lines[3]:match("Mascotte de ([%S%-%P]+)") or lines[3]:match("Mascotte d'([%S%-%P]+)");
-			if master:find("%s") then -- Hack for "Mascotte de niveau xxx" ...
+		local masterLine = ENABLE_COLORBLIND_MODE == "1" and lines[4] or lines[3];
+		if masterLine then
+			local master = masterLine:match("Mascotte de ([%S%-%P]+)") or masterLine:match("Mascotte d'([%S%-%P]+)");
+			if not master or master:find("%s") then -- Hack for "Mascotte de niveau xxx" ...
 				return nil;
 			end
 			return master;
@@ -145,16 +147,18 @@ else
 	local COMPANION_DEMON_PATTERN = UNITNAME_TITLE_MINION:gsub(REPLACE_PATTERN, NAME_PATTERN);
 
 	function TRP3_API.locale.findPetOwner(lines)
-		if lines[2] then
-			return lines[2]:match(COMPANION_PET_PATTERN) or lines[2]:match(COMPANION_DEMON_PATTERN);
+		local masterLine = ENABLE_COLORBLIND_MODE == "1" and lines[3] or lines[2];
+		if masterLine then
+			return masterLine:match(COMPANION_PET_PATTERN) or masterLine:match(COMPANION_DEMON_PATTERN);
 		end
 	end
 
 	local COMPANION_BATTLE_PET_PATTERN = UNITNAME_TITLE_COMPANION:gsub(REPLACE_PATTERN, NAME_PATTERN);
 
 	function TRP3_API.locale.findBattlePetOwner(lines)
-		if lines[3] then
-			return lines[3]:match(COMPANION_BATTLE_PET_PATTERN);
+		local masterLine = ENABLE_COLORBLIND_MODE == "1" and lines[4] or lines[3];
+		if masterLine then
+			return masterLine:match(COMPANION_BATTLE_PET_PATTERN);
 		end
 	end
 end
