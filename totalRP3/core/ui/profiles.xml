@@ -214,7 +214,7 @@
 					<Button name="$parentInfo" inherits="TRP3_HelpButton" hidden="true">
 						<Size x="15" y="15" />
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="15" y="8" />
+							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="3" y="8" />
 						</Anchors>
 					</Button>
 				</Frames>
