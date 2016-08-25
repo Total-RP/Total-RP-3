@@ -131,15 +131,15 @@
 					<Size x="16" y="0"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="14" y="0"/>
-						<Anchor point="BOTTOMLEFT" x="14" y="0"/>
+						<Anchor point="BOTTOMLEFT" x="14" y="10"/>
 					</Anchors>
 					<TexCoords left="0" right="1" top="0" bottom=".87"/>
 				</Texture>
 				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Left">
 					<Size x="16" y="0"/>
 					<Anchors>
-						<Anchor point="TOPRIGHT" x="-13" y="0"/>
-						<Anchor point="BOTTOMRIGHT" x="-13" y="0"/>
+						<Anchor point="TOPRIGHT" x="-13" y="-10"/>
+						<Anchor point="BOTTOMRIGHT" x="-13" y="10"/>
 					</Anchors>
 					<TexCoords left="1" right="0" top=".87" bottom="0"/>
 				</Texture>
@@ -160,7 +160,7 @@
 					<TexCoords left=".87" right="0" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
-			<Layer level="OVERLAY">
+			<Layer level="OVERLAY" textureSubLevel="1">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-MetalBorder-Joint">
 					<Size x="32" y="32"/>
 					<Anchors>
@@ -189,6 +189,8 @@
 					</Anchors>
 					<TexCoords left="0" right="1" top="0" bottom="1"/>
 				</Texture>
+			</Layer>
+			<Layer level="OVERLAY" textureSubLevel="2">
 				<Texture file="Interface\AchievementFrame\UI-Achievement-WoodBorder-Corner">
 					<Size x="64" y="64"/>
 					<Anchors>
