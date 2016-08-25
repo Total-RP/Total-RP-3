@@ -55,8 +55,8 @@
 			</Button>
 			<Frame name="$parentHighlight" inherits="GlowBorderTemplate" hidden="true">
 				<Anchors>
-					<Anchor point="TOPLEFT" x="5" y="-2"/>
-					<Anchor point="BOTTOMRIGHT" x="-3" y="5"/>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>
@@ -153,7 +153,7 @@
 						<Size x="0" y="350" />
 						<Anchors>
 							<Anchor point="LEFT" x="33" y="0" />
-							<Anchor point="RIGHT" x="-33" y="0" />
+							<Anchor point="RIGHT" x="-20" y="0" />
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
@@ -171,54 +171,38 @@
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-12" />
 									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-8" y="0" />
+									<Anchor point="RIGHT" x="-22" y="0" />
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine2" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1" />
-									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-8" y="0" />
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine3" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1" />
-									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-8" y="0" />
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine4" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1" />
-									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-8" y="0" />
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
 							<Frame name="$parentLine5" inherits="TRP3_ProfileManagerLine">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1" />
-									<Anchor point="LEFT" x="8" y="0" />
-									<Anchor point="RIGHT" x="-8" y="0" />
+									<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
 								</Anchors>
 							</Frame>
-							<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
-								<Size x="15" y="356" />
-								<Anchors>
-									<Anchor point="RIGHT" x="23" y="-1" />
-								</Anchors>
-								<Scripts>
-									<OnLoad>
-										local name = self:GetName();
-										_G[name .. "Text"]:SetText("");
-										_G[name .. "High"]:SetText("");
-										_G[name .. "Low"]:SetText("");
-										self:SetMinMaxValues(0, 6);
-										self:SetValueStep(1);
-										self:SetOrientation("VERTICAL");
-									</OnLoad>
-								</Scripts>
-							</Slider>
+							<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
 						</Frames>
 					</Frame>
 					<Button name="$parentAdd" inherits="UIPanelButtonTemplate">

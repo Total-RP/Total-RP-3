@@ -21,13 +21,21 @@
 	
 	<!-- Music browser line  -->
 	<Button name="TRP3_MusicBrowserLine" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="415"/>
+			</TileSize>
+			<Color r="0.4" g="0.4" b="0.4"/>
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="3" bottom="3"/>
+			</BackgroundInsets>
 		</Backdrop>
 		<Size x="0" y="28"/>
 		<Anchors>
-			<Anchor point="LEFT" x="15" y="0"/>
+			<Anchor point="LEFT" x="8" y="0"/>
 			<Anchor point="RIGHT" x="-25" y="0"/>
 		</Anchors>
 		<Layers>
@@ -42,16 +50,30 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<Frames>
+			<Frame name="$parentHighlight" inherits="GlowBorderTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:SetAlpha(0.35);
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
 		<Scripts>
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			</OnLoad>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
+				_G[self:GetName().."Highlight"]:Show();
 			</OnEnter>
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
+				_G[self:GetName().."Highlight"]:Hide();
 			</OnLeave>
 		</Scripts>
 	</Button>
@@ -59,8 +81,15 @@
 	<!-- Music browser  -->
     <Frame name="TRP3_MusicBrowser" parent="TRP3_PopupsFrame" hidden="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="415"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="3" bottom="3"/>
+			</BackgroundInsets>
 		</Backdrop>
 		<Size x="420" y="400"/>
 		<Anchors>
@@ -78,42 +107,28 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame name="TRP3_MusicBrowserContent">
-				<Size x="390" y="295"/>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+			<Frame name="TRP3_MusicBrowserContent" inherits="TRP3_InnerFrame">
+				<Size x="390" y="290"/>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
 				</Anchors>
 				<Frames>
-					<Slider name="TRP3_MusicBrowserContentSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="0"/>
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-5"/>
-							<Anchor point="RIGHT" x="0" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="5"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								TRP3_MusicBrowserContentSliderText:SetText("");
-								TRP3_MusicBrowserContentSliderHigh:SetText("");
-								TRP3_MusicBrowserContentSliderLow:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
-						</Scripts>
-					</Slider>
+					<Slider name="TRP3_MusicBrowserContentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
 			<!-- Filter section -->
 			<Frame name="TRP3_MusicBrowserFilter">
 				<Size x="0" y="60"/>
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="415"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="3" right="3" top="3" bottom="3"/>
+					</BackgroundInsets>
 				</Backdrop>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="10" y="10"/>

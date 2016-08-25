@@ -47,10 +47,17 @@
 	<!-- Icon browser  -->
     <Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="415"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="3" bottom="3"/>
+			</BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="400"/>
+		<Size x="425" y="400"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -65,42 +72,29 @@
 					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
 				</Anchors>
 			</Button>
-			<Frame name="TRP3_IconBrowserContent">
-				<Size x="390" y="295"/>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-				</Backdrop>
+			<Frame name="TRP3_IconBrowserContent" inherits="TRP3_InnerFrame">
+				<Size x="395" y="290"/>
+
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
 				</Anchors>
 				<Frames>
-					<Slider name="TRP3_IconBrowserContentSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="0"/>
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-5"/>
-							<Anchor point="RIGHT" x="0" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="5"/>
-						</Anchors>
-						<Scripts>
-							<OnLoad>
-								TRP3_IconBrowserContentSliderText:SetText("");
-								TRP3_IconBrowserContentSliderHigh:SetText("");
-								TRP3_IconBrowserContentSliderLow:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
-						</Scripts>
-					</Slider>
+					<Slider name="TRP3_IconBrowserContentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
 			<!-- Filter section -->
 			<Frame name="TRP3_IconBrowserFilter">
 				<Size x="0" y="60"/>
 				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-					<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+					<EdgeSize>
+						<AbsValue val="16"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="415"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="3" right="3" top="3" bottom="3"/>
+					</BackgroundInsets>
 				</Backdrop>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="10" y="10"/>

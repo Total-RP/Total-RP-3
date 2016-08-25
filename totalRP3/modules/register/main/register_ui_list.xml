@@ -158,22 +158,12 @@
 				</Layers>
 				<Size x="0" y="0" />
 				<Frames>
-					<Slider name="TRP3_RegisterListSlider" inherits="OptionsSliderTemplate">
-						<Size x="15" y="0" />
+					<Slider name="TRP3_RegisterListSlider" parentKey="slider" inherits="TRP3_Scrollbar">
 						<Anchors>
-							<Anchor point="TOPRIGHT" x="-10" y="-40" />
-							<Anchor point="BOTTOMRIGHT" x="-10" y="70" />
+							<Anchor point="TOP" x="0" y="-48"/>
+							<Anchor point="RIGHT" x="-6" y="0"/>
+							<Anchor point="BOTTOM" x="0" y="90"/>
 						</Anchors>
-						<Scripts>
-							<OnLoad>
-								TRP3_RegisterListSliderText:SetText("");
-								TRP3_RegisterListSliderHigh:SetText("");
-								TRP3_RegisterListSliderLow:SetText("");
-								self:SetMinMaxValues(0, 6);
-								self:SetValueStep(1);
-								self:SetOrientation("VERTICAL");
-							</OnLoad>
-						</Scripts>
 					</Slider>
 					<Frame name="TRP3_RegisterListHeader">
 						<Size x="0" y="22" />

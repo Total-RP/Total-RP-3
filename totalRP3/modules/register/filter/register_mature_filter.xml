@@ -120,7 +120,7 @@
 		</Backdrop>
 		<Size x="0" y="28"/>
 		<Anchors>
-			<Anchor point="LEFT" x="15" y="0"/>
+			<Anchor point="LEFT" x="8" y="0"/>
 			<Anchor point="RIGHT" x="-25" y="0"/>
 		</Anchors>
 		<Layers>
@@ -179,7 +179,7 @@
 				<AbsInset left="3" right="3" top="3" bottom="3"/>
 			</BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="400"/>
+		<Size x="420" y="410"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -195,24 +195,13 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame parentKey="content">
+			<Frame parentKey="content" inherits="TRP3_InnerFrame">
 				<Size x="390" y="295"/>
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="16"/>
-					</EdgeSize>
-				</Backdrop>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-35"/>
 				</Anchors>
 				<Frames>
-					<Slider parentKey="slider" inherits="TRP3_Scrollbar">
-						<Anchors>
-							<Anchor point="TOP" x="0" y="-18"/>
-							<Anchor point="RIGHT" x="-4" y="0"/>
-							<Anchor point="BOTTOM" x="0" y="17"/>
-						</Anchors>
-					</Slider>
+					<Slider parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
 			<Frame parentKey="addNewWord">
