@@ -142,7 +142,7 @@ local function onStart()
 			x = x + buttonSize + 2;
 		end
 
-		ui_TargetFrame:SetWidth(math.max(20 + index * buttonSize, 200));
+		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
 		ui_TargetFrame:SetHeight(buttonSize + 25);
 	end
 
