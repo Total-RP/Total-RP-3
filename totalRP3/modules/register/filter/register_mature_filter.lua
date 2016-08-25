@@ -70,7 +70,7 @@ local function onStart()
 	-- Saved variables
 	TRP3_MatureFilter = TRP3_MatureFilter or {
 		whitelist = {},
-		dictionary = {}
+		dictionary = nil
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
