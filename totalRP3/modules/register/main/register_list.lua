@@ -57,6 +57,7 @@ local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
+local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -88,7 +89,7 @@ local function openPage(profileID, unitID)
 		});
 		selectMenu(currentlyOpenedProfilePrefix .. profileID);
 
-		if unitID and unitIDIsFilteredForMatureContent(unitID) then
+		if (unitID and unitIDIsFilteredForMatureContent(unitID)) or (profileID and profileIDISFilteredForMatureContent(profileID)) then
 			TRP3_API.popup.showPopup("mature_filtered");
 			TRP3_MatureFilterPopup.profileID = profileID;
 			TRP3_MatureFilterPopup.unitID = unitID;
@@ -197,6 +198,7 @@ local DATE_FORMAT = "%d/%m/%y %H:%M";
 local IGNORED_ICON = Utils.str.texture("Interface\\Buttons\\UI-GroupLoot-Pass-Down", 15);
 local GLANCE_ICON = Utils.str.texture("Interface\\MINIMAP\\TRACKING\\None", 15);
 local NEW_ABOUT_ICON = Utils.str.texture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up", 15);
+local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\MINIMAP\\Vehicle-HordeMagePortal", 15);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI : CHARACTERS
@@ -275,6 +277,12 @@ local function decorateCharacterLine(line, characterIndex)
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. NEW_ABOUT_ICON;
 		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
+	end
+	if profile.hasMatureContent then
+		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
+		if not flags then flags = "" else flags = flags .. " " end
+		flags = flags .. MATURE_CONTENT_ICON;
+		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc("REG_LIST_CHAR_TT_MATURE_CONTENT");
 	end
 	if rightTooltipText then
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
