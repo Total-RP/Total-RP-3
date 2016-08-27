@@ -242,7 +242,7 @@ local function onStart()
 			words[word] = (words[word] or 0) + 1;
 		end
 		-- Iterate through the matureWords dictionary
-		for _, matureWord in pairs(TRP3_MatureFilter.dictionary) do
+		for matureWord, _ in pairs(TRP3_MatureFilter.dictionary) do
 			-- If the word is found, return true
 			if words[matureWord] then
 				log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!", Utils.log.WARNING);
