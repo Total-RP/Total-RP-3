@@ -47,8 +47,8 @@
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<Texture parentKey="warning" file="Interface\DialogFrame\UI-Dialog-Icon-AlertNew">
-					<Size x="50" y="50"/>
+				<Texture parentKey="warning" file="Interface\AddOns\totalRP3\resources\18_emoji.tga">
+					<Size x="40" y="40"/>
 					<Anchors>
 						<Anchor point="TOP" y="-15" />
 					</Anchors>
@@ -56,7 +56,7 @@
 				<FontString parentKey="title" text="[placeholder]" inherits="GameFontNormalHuge3" outline="THICK">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="TOP" relativeKey="$parent.warning" relativePoint="BOTTOM" y="-15"/>
+						<Anchor point="TOP" relativeKey="$parent.warning" relativePoint="BOTTOM" y="-25"/>
 					</Anchors>
 					<Color r="1" g="0" b="0"/>
 				</FontString>

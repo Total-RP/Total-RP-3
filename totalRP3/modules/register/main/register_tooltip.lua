@@ -93,6 +93,8 @@ local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 
 local ANCHOR_TAB;
 
+local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -357,7 +359,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:Build();
 		return;
     elseif unitIDIsFilteredForMatureContent(targetID) then
-        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize());
+        tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize());
         tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"), 1, 0.75, 0, getSmallLineFontSize(), true);
         tooltipBuilder:Build();
         return;

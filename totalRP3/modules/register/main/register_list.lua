@@ -198,7 +198,7 @@ local DATE_FORMAT = "%d/%m/%y %H:%M";
 local IGNORED_ICON = Utils.str.texture("Interface\\Buttons\\UI-GroupLoot-Pass-Down", 15);
 local GLANCE_ICON = Utils.str.texture("Interface\\MINIMAP\\TRACKING\\None", 15);
 local NEW_ABOUT_ICON = Utils.str.texture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up", 15);
-local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\MINIMAP\\Vehicle-HordeMagePortal", 15);
+local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 15);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI : CHARACTERS
