@@ -282,7 +282,7 @@ local function decorateCharacterLine(line, characterIndex)
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. MATURE_CONTENT_ICON;
-		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc("REG_LIST_CHAR_TT_MATURE_CONTENT");
+		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc("MATURE_FILTER_TOOLTIP_WARNING");
 	end
 	if rightTooltipText then
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
