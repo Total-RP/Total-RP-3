@@ -778,9 +778,18 @@ end
 function TRP3_EventDispatcher(self, event, ...)
 	-- Callbacks
 	if REGISTERED_EVENTS[event] then
+		local temp = Utils.table.getTempTable();
+
 		for _, callback in pairs(REGISTERED_EVENTS[event]) do
+			tinsert(temp, callback);
+		end
+
+		-- We use a separate structure as the callback could change REGISTERED_EVENTS[event]
+		for _, callback in pairs(temp) do
 			callback(...);
 		end
+
+		Utils.table.releaseTempTable(temp);
 	else
 		self:UnregisterEvent(event);
 	end

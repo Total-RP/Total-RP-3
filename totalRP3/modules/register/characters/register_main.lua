@@ -577,9 +577,7 @@ function TRP3_API.register.init()
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-		onInformationUpdated(profileID, dataType);
-	end);
+
 
 
 	registerMenu({
@@ -609,6 +607,7 @@ function TRP3_API.register.init()
 	registerMenu(currentPlayerMenu);
 	local refreshMenu = TRP3_API.navigation.menu.rebuildMenu;
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+		onInformationUpdated(profileID, dataType);
 		if unitID == Globals.player_id and (not dataType or dataType == "characteristics") then
 			currentPlayerMenu.text = get("player/characteristics/FN") or Globals.player;
 			refreshMenu();

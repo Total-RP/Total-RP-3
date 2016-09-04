@@ -292,6 +292,44 @@ local function onStart()
 --	Comm.sendObject("SI", {TRP3_API.register.registerInfoTypes.CHARACTERISTICS, data}, "Telkostrasz-KirinTor", "BULK");
 end
 
+function BULLSHIT()
+	local tbl = {
+		["1"] = "hi",
+		["2"] = "ho",
+		["3"] = "hu",
+		["4"] = "ha",
+		["5"] = "he",
+		["6"] = "hy",
+	};
+
+	for index, value in pairs(tbl) do
+		print(value);
+		if index == "2" then
+			tbl[index] = nil;
+		end
+	end
+	print("Le problème n'est pas la suppression");
+
+	for index, value in pairs(tbl) do
+		print(value);
+		if index == "2" then
+			tbl[index] = "prout";
+		end
+	end
+	print("Le problème n'est pas la modification");
+
+	for index, value in pairs(tbl) do
+		print(value);
+		if index == "2" then
+			tbl["7"] = "prouty";
+		end
+	end
+	print("Le problème n'est pas l'ajout");
+
+
+	print(Utils.table.dump(tbl));
+end
+
 function TRP3_BREAK_ME()
 	for i=0, 10000, 1 do
 		local profile = {};
