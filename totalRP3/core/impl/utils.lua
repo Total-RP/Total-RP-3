@@ -795,6 +795,10 @@ function TRP3_EventDispatcher(self, event, ...)
 	end
 end
 
+function Utils.event.fireEvent(event, ...)
+	TRP3_EventDispatcher(TRP3_EventFrame, event, ...)
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
