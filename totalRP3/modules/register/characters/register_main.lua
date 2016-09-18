@@ -244,11 +244,12 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 end
 
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp)
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended)
 	local character = getUnitIDCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
 	character.msp = msp;
+	character.extended = extended;
 end
 
 --- Raises error if unknown unitName
@@ -265,62 +266,7 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 		profile.zone = zone;
 	end
 end
-
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
-
--- (ಥ﹏ಥ) Oh god…
--- TODO Move that thing somewhere else
-local matureWords = {
-	"dominant",
-	"submissive",
-	"slave",
-	"futa",
-	"cum",
-	"vaginal",
-	"ass",
-	"cunt",
-    "dick",
-    "tits",
-    "bulge"
-}
-
----
--- Filter out mature content
--- @param table
---
-local function filterOutMatureContent(table)
-	local data = table;
-    -- Iterate over each field of the data table
-	for key, value in pairs(data) do
-        -- If the value of the field is a string, we treat it
-		if type(value) == "string" then
-            local words = {}
-            -- Break string into a table
-            for word in value:gmatch("[^%s%p]+") do
-                -- We will use the lower case version of the words because our keywords are lowercased
-                word = word:lower()
-                -- If we already found this word in the string, increment the count for this word
-                words[word] = (words[word] or 0) + 1;
-            end
-            Utils.table.dump(words);
-            -- Iterate through the matureWords dictionnary
-			for _, matureWord in pairs(matureWords) do
-                -- If the word is found, flag the profile as unsafe
-				if words[matureWord] then
-					log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!");
-                    -- TODO Flag profile as mature instead of replacing content
-					data[key] = "|cffff0000<MATURE CONTENT>|r"
-					break
-				end
-            end
-        -- If the value of the field is a table, we recursively call filterOutMatureContent() on the table content
-		elseif type(value) == "table" then
-			data[key] = filterOutMatureContent(value)
-		end
-	end
-
-	return data
-end
 
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)

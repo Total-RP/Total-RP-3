@@ -42,7 +42,7 @@ local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = Un
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local IC_GUILD, OOC_GUILD;
-local originalGetTargetType, getCompanionFullID, getCompanionProfile = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
+local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
@@ -562,7 +562,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 		local clientText = "";
 		if targetID == Globals.player_id then
-			clientText = strconcat("|cffffffff", Globals.addon_name_alt, " v", Globals.version_display);
+			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);

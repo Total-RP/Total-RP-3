@@ -33,8 +33,9 @@ TRP3_API = {
 		empty = {},
 
 		addon_name = "Total RP 3",
+		addon_name_extended = "TRP3: Extended",
 		addon_name_short = "TRP3",
-		addon_name_alt = "TotalRP3",
+		addon_name_me = "Total RP 3",
 		addon_id_length = 15,
 
 		version = 19,

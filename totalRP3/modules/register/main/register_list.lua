@@ -291,7 +291,7 @@ local function decorateCharacterLine(line, characterIndex)
 	end
 	_G[line:GetName().."Info2"]:SetText(flags);
 
-	local addon = "Total RP 3";
+	local addon = Globals.addon_name;
 	if profile.msp then
 		addon = "Mary-Sue Protocol";
 		if firstLink and isUnitIDKnown(firstLink) then

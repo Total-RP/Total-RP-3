@@ -97,6 +97,7 @@ local VERNUM_QUERY_INDEX_COMPANION_PET_V2 = 13;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT = 14;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
+local VERNUM_QUERY_INDEX_EXTENDED = 17;
 
 local queryInformationType, createVernumQuery;
 
@@ -134,6 +135,10 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
 
+	-- Extended
+	if Globals.extended_version then
+		query[VERNUM_QUERY_INDEX_EXTENDED] = Globals.extended_version;
+	end
 
 	return query;
 end
@@ -209,6 +214,12 @@ local function incomingVernumQuery(structure, senderID)
 	local senderVersion = structure[VERNUM_QUERY_INDEX_VERSION];
 	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
+	local senderExtendedVersion = structure[VERNUM_QUERY_INDEX_EXTENDED];
+
+	local clientName = Globals.addon_name;
+	if senderExtendedVersion then
+		clientName = Globals.addon_name_extended;
+	end
 
 	checkVersion(senderID, senderVersion, senderVersionText);
 
@@ -216,7 +227,7 @@ local function incomingVernumQuery(structure, senderID)
 		if not isUnitIDKnown(senderID) then
 			addCharacter(senderID);
 		end
-		saveClientInformation(senderID, Globals.addon_name, senderVersionText, false);
+		saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion);
 		saveCurrentProfileID(senderID, senderProfileID);
 
 		-- Query specific data, depending on version number.
