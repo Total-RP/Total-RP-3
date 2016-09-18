@@ -469,7 +469,7 @@ local function onStart()
 	local matureFilterShouldBeEnabledByDefault = false;
 
 	-- Mature filter should be enabled by default if profanity filter is enabled
-	matureFilterShouldBeEnabledByDefault = GetCVar("profanityFilter") or matureFilterShouldBeEnabledByDefault;
+	matureFilterShouldBeEnabledByDefault = GetCVar("profanityFilter") == "1" or matureFilterShouldBeEnabledByDefault;
 	-- Mature filter should be enabled by default if parental control is enabled
 	-- (As far as I know, there is not other way to know if parental control is enabled other that checking the store API…)
 	matureFilterShouldBeEnabledByDefault = C_StorePublic.IsDisabledByParentalControls() or matureFilterShouldBeEnabledByDefault;

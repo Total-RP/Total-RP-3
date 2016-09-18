@@ -22,7 +22,6 @@ dictionary["enUS"] = {
 	"f%-list",
 	"gore",
 	"scat",
-	"slave",
 	"futa",
 	"cum",
 	"vaginal",
@@ -34,7 +33,8 @@ dictionary["enUS"] = {
 	"dick",
 	"tits",
 	"bulge",
-	"cock"
+	"cock",
+	"penis"
 }
 
 -- Provided by the great guys from Wiki Errantes <3
@@ -71,6 +71,7 @@ dictionary["frFR"] = {
 	"chibre",
 	"membrée",
 	"membrées",
+	"pénis",
 	"soumise"
 }
 

@@ -1,5 +1,5 @@
 ## Interface: 70000
-## Title: Total RP 3 : Debug mode activator
+## Title: Total RP 3: Debug mode activator
 ## Author: Ellypse
 ## Version: 1.0
 ## Notes: Activate debug mode for Total RP 3

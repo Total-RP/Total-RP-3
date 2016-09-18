@@ -32,3 +32,9 @@ TRP3_API.flyway.patches["3"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["4"] = function()
+	if TRP3_Configuration and TRP3_Configuration["register_mature_filter"] and TRP3_Configuration["register_mature_filter"] == "0" then
+		TRP3_Configuration["register_mature_filter"] = false;
+	end
+end
