@@ -1995,6 +1995,11 @@ local IMAGES = {
 		width = 512,
 		height = 512
 	},
+	{
+		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
+		width = 256,
+		height = 32
+	},
 };
 
 local pairs, tinsert = pairs, tinsert;
