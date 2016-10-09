@@ -57,7 +57,7 @@ local CONFIG_NEW_VERSION = "new_version_alert";
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local has_seen_update_alert = false;
+local has_seen_update_alert, has_seen_extended_update_alert = false, false;
 
 local function configIsAutoAdd()
 	return getConfigValue(CONFIG_REGISTRE_AUTO_ADD);
@@ -149,7 +149,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- We will store new versions alerts to remember how many people notified us of a new version.
-local newVersionAlerts = {};
+local newVersionAlerts, extendedNewVersionAlerts = {}, {};
 
 local infoTypeTab = {
 	registerInfoTypes.CHARACTERISTICS,
@@ -174,17 +174,31 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	end
 end
 
-local function checkVersion(sender, senderVersion, senderVersionText)
+local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion)
 	-- Record all versions for statistics purpose.
 	newVersionAlerts[senderVersionText] = newVersionAlerts[senderVersionText] or {};
 	newVersionAlerts[senderVersionText][sender] = senderVersion;
+	if extendedVersion then
+		extendedNewVersionAlerts[extendedVersion] = extendedNewVersionAlerts[extendedVersion] or {};
+		extendedNewVersionAlerts[extendedVersion][sender] = true;
+	end
 
-	if configShowVersionAlert() and senderVersion > Globals.version and not has_seen_update_alert then
+	if configShowVersionAlert() then
+		-- Test for TRP3
+		if  senderVersion > Globals.version and not has_seen_update_alert then
+			if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
+				TRP3_UpdateFrame.popup.text:SetText(loc("NEW_VERSION"):format(senderVersionText:sub(1, 15)));
+				TRP3_UpdateFrame:Show();
+				has_seen_update_alert = true;
+			end
+		end
 
-		if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
-			TRP3_UpdateFrame.popup.text:SetText(loc("NEW_VERSION"):format(senderVersionText:sub(1, 15)));
-			TRP3_UpdateFrame:Show();
-			has_seen_update_alert = true;
+		-- Test for Extended
+		if extendedVersion and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
+			if Utils.table.size(extendedNewVersionAlerts[extendedVersion]) >= 3 then
+				Utils.message.displayMessage(loc("NEW_EXTENDED_VERSION"):format(extendedVersion));
+				has_seen_extended_update_alert = true;
+			end
 		end
 	end
 end
@@ -221,7 +235,7 @@ local function incomingVernumQuery(structure, senderID)
 		clientName = Globals.addon_name_extended;
 	end
 
-	checkVersion(senderID, senderVersion, senderVersionText);
+	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion);
 
 	if isUnitIDKnown(senderID) or configIsAutoAdd() then
 		if not isUnitIDKnown(senderID) then
@@ -429,11 +443,11 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	-- When receiving HELLO from someone else (from the other side ?)
-	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay)
+	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
 		version = tonumber(version);
 		-- Only treat the message if it does not come from us
 		if sender ~= Globals.player_id then
-			checkVersion(sender, version, versionDisplay);
+			checkVersion(sender, version, versionDisplay, extendedVersion);
 		end
 	end);
 end

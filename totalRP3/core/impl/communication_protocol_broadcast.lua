@@ -223,7 +223,7 @@ local helloAttemptCount = 0;
 local function helloWorld()
 	if not helloWorlded and (not helloTimestamp or time() - helloTimestamp > HELLO_COOLDOWN) and helloAttemptCount < MAX_HELLO_ATTEMPT then
 		helloTimestamp = time();
-		broadcast(HELLO_CMD, Globals.version, Globals.version_display);
+		broadcast(HELLO_CMD, Globals.version, Globals.version_display, Globals.extended_version or 0);
 		helloAttemptCount = helloAttemptCount + 1;
 	end
 end
