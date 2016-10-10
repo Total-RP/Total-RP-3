@@ -367,6 +367,7 @@ local GetMountIDs, GetMountInfoByID = C_MountJournal.GetMountIDs, C_MountJournal
 local currentCompanionType;
 
 local function onCompanionClick(button)
+	TRP3_CompanionBrowser:Hide();
 	hidePopups();
 	if ui_CompanionBrowserContent.onSelectCallback then
 		ui_CompanionBrowserContent.onSelectCallback(filteredCompanionList[button.index], currentCompanionType, button);
@@ -374,6 +375,7 @@ local function onCompanionClick(button)
 end
 
 local function onCompanionClose()
+	TRP3_CompanionBrowser:Hide();
 	hidePopups();
 	if ui_CompanionBrowserContent.onCancelCallback then
 		ui_CompanionBrowserContent.onCancelCallback();
@@ -419,7 +421,7 @@ local function getWoWCompanionFilteredList(filter)
 			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
 			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
 				local _, description = C_MountJournal.GetMountInfoExtraByID(id);
-				tinsert(filteredCompanionList, {creatureName, icon, description, loc("PR_CO_MOUNT"), spellID});
+				tinsert(filteredCompanionList, {creatureName, icon, description, loc("PR_CO_MOUNT"), spellID, id});
 				count = count + 1;
 			end
 		end
@@ -649,6 +651,7 @@ TRP3_API.popup.IMAGES = "images";
 TRP3_API.popup.ICONS = "icons";
 TRP3_API.popup.COLORS = "colors";
 TRP3_API.popup.MUSICS = "musics";
+TRP3_API.popup.COMPANIONS = "companions";
 
 local POPUP_STRUCTURE = {
 	[TRP3_API.popup.IMAGES] = {
@@ -666,6 +669,10 @@ local POPUP_STRUCTURE = {
 	[TRP3_API.popup.MUSICS] = {
 		frame = TRP3_MusicBrowser,
 		showMethod = showMusicBrowser,
+	},
+	[TRP3_API.popup.COMPANIONS] = {
+		frame = TRP3_CompanionBrowser,
+		showMethod = TRP3_API.popup.showCompanionBrowser,
 	}
 }
 TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
