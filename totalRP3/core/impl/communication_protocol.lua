@@ -61,10 +61,18 @@ function Comm.init()
 	end);
 end
 
+local function isSpecialTarget(target)
+	return target == "PARTY" or target == "RAID";
+end
+
 -- This is the main communication interface, using ChatThrottleLib to
 -- avoid being kicked by the server when sending a lot of data.
 local function wowCommunicationInterface(packet, target, priority)
-	ChatThrottleLib:SendAddonMessage(priority or "BULK", wowCom_prefix, packet, "WHISPER", target);
+	if isSpecialTarget(target) then
+		ChatThrottleLib:SendAddonMessage(priority or "BULK", wowCom_prefix, packet, target);
+	else
+		ChatThrottleLib:SendAddonMessage(priority or "BULK", wowCom_prefix, packet, "WHISPER", target);
+	end
 end
 
 function onAddonMessageReceived(...)
@@ -273,12 +281,13 @@ end
 function Comm.sendObject(prefix, object, target, priority, messageID)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	if not isIDIgnored(target) then
-		if not target:match("[^%-]+%-[^%-]+") then
+		if isSpecialTarget(target) or target:match("[^%-]+%-[^%-]+") then
+			local structure = {prefix, object};
+			handleStructureOut(structure, target, priority, messageID);
+		else
 			Log.log("Trying to send data to bad formed target: " .. target, Log.level.WARNING);
 			return; -- Avoid display "The player "Pouic-" doesn't seemed to be online".
 		end
-		local structure = {prefix, object};
-		handleStructureOut(structure, target, priority, messageID);
 	end
 end
 
