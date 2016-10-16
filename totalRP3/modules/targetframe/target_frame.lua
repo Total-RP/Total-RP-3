@@ -43,12 +43,13 @@ local function onStart()
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+	local TYPE_NPC = TRP3_API.ui.misc.TYPE_NPC;
 
 	local CONFIG_TARGET_USE = "target_use";
 	local CONFIG_TARGET_ICON_SIZE = "target_icon_size";
 	local CONFIG_CONTENT_PREFIX = "target_content_";
 
-	local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID;
+	local currentTargetID, currentTargetType, currentTargetProfileID;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Buttons logic
@@ -143,7 +144,7 @@ local function onStart()
 		end
 
 		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
-		ui_TargetFrame:SetHeight(buttonSize + 25);
+		ui_TargetFrame:SetHeight(buttonSize + 23);
 	end
 
 	local function registerButton(targetButton)
@@ -192,6 +193,8 @@ local function onStart()
 			local owner, companionID = companionIDToInfo(currentTargetID);
 			local info = getCompanionInfo(owner, companionID, currentTargetID).data or EMPTY;
 			setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
+		elseif currentTargetType == TYPE_NPC then
+			setupFieldSet(ui_TargetFrame, UnitName("target"), TARGET_NAME_WIDTH);
 		end
 	end
 
@@ -213,15 +216,19 @@ local function onStart()
 			return true;
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
-			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
+			return not isIDIgnored(owner) and companionHasProfile(currentTargetID);
+		elseif currentTargetType == TYPE_NPC then
+			return TRP3_API.quest and TRP3_API.quest.getActiveCampaignLog();
 		end
 	end
 
 	local function onTargetChanged(...)
 		ui_TargetFrame:Hide();
-		currentTargetType, isCurrentMine = getTargetType();
+		currentTargetType = getTargetType();
 		if currentTargetType == TYPE_CHARACTER then
 			currentTargetID = getUnitID("target");
+		elseif currentTargetType == TYPE_NPC then
+			currentTargetID = TRP3_API.utils.str.getUnitNPCID("target");
 		else
 			currentTargetID = getCompanionFullID("target", currentTargetType);
 		end
@@ -265,6 +272,16 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_A, anchor);
 		setConfigValue(CONFIG_TARGET_POS_X, x);
 		setConfigValue(CONFIG_TARGET_POS_Y, y);
+	end);
+
+	ui_TargetFrame.caption:SetPoint("TOPLEFT", 16, 15);
+	ui_TargetFrame.caption:EnableMouse(true);
+	ui_TargetFrame.caption:RegisterForDrag("LeftButton");
+	ui_TargetFrame.caption:SetScript("OnDragStart", function(self)
+		ui_TargetFrame:GetScript("OnDragStart")(ui_TargetFrame);
+	end);
+	ui_TargetFrame.caption:SetScript("OnDragStop", function(self)
+		ui_TargetFrame:GetScript("OnDragStop")(ui_TargetFrame);
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

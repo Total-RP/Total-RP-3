@@ -215,7 +215,7 @@
 			<BackgroundInsets left="3" right="3" top="3" bottom="3" />
 		</Backdrop>
 		<Frames>
-			<Frame name="$parentCaptionPanel">
+			<Frame name="$parentCaptionPanel" parentKey="caption">
 				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 					<EdgeSize val="16"/>
 					<TileSize>

@@ -476,9 +476,11 @@ TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
 TRP3_API.ui.misc.TYPE_PET = "PET";
 TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";
 TRP3_API.ui.misc.TYPE_MOUNT = "MOUNT";
+TRP3_API.ui.misc.TYPE_NPC = "NPC";
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+local TYPE_NPC = TRP3_API.ui.misc.TYPE_NPC;
 
 function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TYPE_BATTLE_PET or unitType == TYPE_PET;
@@ -493,6 +495,9 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 		return TYPE_BATTLE_PET, not UnitIsOtherPlayersBattlePet(unitType);
 	elseif UnitIsUnit(unitType, "pet") or UnitIsOtherPlayersPet(unitType) then
 		return TYPE_PET, UnitIsUnit(unitType, "pet");
+	end
+	if TRP3_API.utils.str.getUnitNPCID(unitType) then
+		return TYPE_NPC, false;
 	end
 end
 
@@ -939,9 +944,10 @@ function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	end
 end
 
-function TRP3_API.ui.misc.playSoundKit(soundID)
+function TRP3_API.ui.misc.playSoundKit(soundID, channel)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
-		PlaySoundKitID(soundID)
+		local willPlay, handlerID = PlaySoundKitID(soundID, channel or "SFX");
+		return handlerID;
 	end
 end
 

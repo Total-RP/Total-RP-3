@@ -822,7 +822,7 @@ function Utils.music.playSoundID(soundID, channel, source)
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
 	end
-	return willPlay;
+	return willPlay, handlerID;
 end
 
 function Utils.music.stopSound(handlerID)

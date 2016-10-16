@@ -133,6 +133,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				sendDiceRoll({t = total});
 			end
 			Utils.message.displayMessage(totalMessage, 3);
+			TRP3_API.ui.misc.playSoundKit(36629, "SFX");
 		end
 	});
 
@@ -145,6 +146,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					local totalMessage = loc("DICE_TOTAL_T"):format(Utils.str.icon("inv_misc_dice_01", 20), sender, arg.t);
 					Utils.message.displayMessage(totalMessage);
 				end
+				Utils.music.playSoundID(36629, "SFX", sender);
 			end
 		end
 	end);
