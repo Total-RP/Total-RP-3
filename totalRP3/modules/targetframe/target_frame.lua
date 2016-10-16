@@ -39,7 +39,7 @@ local function onStart()
 	local get = TRP3_API.profile.getData;
 	local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 	local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
-	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile;
+	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile, isCurrentMine;
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
@@ -216,7 +216,7 @@ local function onStart()
 			return true;
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
-			return not isIDIgnored(owner) and companionHasProfile(currentTargetID);
+			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
 		elseif currentTargetType == TYPE_NPC then
 			return TRP3_API.quest and TRP3_API.quest.getActiveCampaignLog();
 		end
@@ -224,7 +224,7 @@ local function onStart()
 
 	local function onTargetChanged(...)
 		ui_TargetFrame:Hide();
-		currentTargetType = getTargetType();
+		currentTargetType, isCurrentMine = getTargetType();
 		if currentTargetType == TYPE_CHARACTER then
 			currentTargetID = getUnitID("target");
 		elseif currentTargetType == TYPE_NPC then
