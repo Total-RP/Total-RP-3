@@ -928,7 +928,16 @@ Are you sure you want to view this profile?]],
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_4 = [[
+		WHATS_NEW_4 = [[# New in version 1.2.1
+
+## Dice rolls
+
+The dice rolls from TRP2 are back! Use the command |cff00ff00/trp3 roll|r to roll a 1d100 dice. You can also roll several dices at once by indicating the count and type of dices. Any roll you make is shared with your party/raid/target if they have TRP3 1.2.1.
+
+Examples:
+|cff00ff00/trp3 roll 1d6
+/trp3 roll 2d20 1d12
+
 # New in version 1.2.0
 
 This version introduces a couple of new neat features and improvements.

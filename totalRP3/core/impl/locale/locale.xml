@@ -24,6 +24,7 @@
 	<Script file="locale_deDE.lua"/>
 	<Script file="locale_frFR.lua"/>
 	<Script file="locale_esES.lua"/>
+	<Script file="locale_esMX.lua"/>
 	<Script file="locale_zhCN.lua"/>
 	<Script file="locale_ruRU.lua"/>
 	<Script file="locale_ptBR.lua"/>

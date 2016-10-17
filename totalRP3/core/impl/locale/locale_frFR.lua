@@ -30,6 +30,7 @@ local LOCALE = {
 		BW_COLOR_CODE_ALERT = "Mauvais code hexadécimal !",
 		BW_COLOR_CODE_TT = "Vous pouvez coller ici un code couleur hexadecimal à 6 caractères et appuyer sur Entrée pour valider.",
 		CM_ACTIONS = "Actions",
+		CM_ALT = "Alt",
 		CM_APPLY = "Appliquer",
 		CM_CANCEL = "Annuler",
 		CM_CENTER = "Centre",
@@ -58,6 +59,7 @@ local LOCALE = {
 		CM_LEFT = "Gauche",
 		CM_LINK = "Lien",
 		CM_LOAD = "Charger",
+		CM_M_CLICK = "Clic-milieu",
 		CM_MOVE_DOWN = "Déplacer vers le bas",
 		CM_MOVE_UP = "Déplacer vers le haut",
 		CM_NAME = "Nom",
@@ -303,6 +305,11 @@ aux autres que vous débutez dans le roleplay.]=],
 |cffffff00Le statut rolepay|r vous permet d'indiquer que vous êtes un débutant ou un vétéran désireux d'aider les novices !
 
 |cff00ff00Cette information sera placée dans la bulle d'aide de votre personnage.]=],
+		DICE_HELP = "Un ou des jets de dés, séparés par des espaces. Examples: 1d6, 2d12 3d20 ...",
+		DICE_ROLL = "%s Lancer de |cffff9900%sx d%s|r et obtenu |cff00ff00%s|r.",
+		DICE_ROLL_T = "%s %s a lancé |cffff9900%sx d%s|r et a obtenu |cff00ff00%s|r.",
+		DICE_TOTAL = "%s Total de |cff00ff00%s|r pour le jet.",
+		DICE_TOTAL_T = "%s %s a eu un total de |cff00ff00%s|r pour le jet.",
 		DTBK_AFK = "Total RP 3 - ABS/NPD",
 		DTBK_CLOAK = "Total RP 3 - Cape",
 		DTBK_HELMET = "Total RP 3 - Casque",
@@ -316,6 +323,47 @@ aux autres que vous débutez dans le roleplay.]=],
 		MAP_BUTTON_TITLE = "Recherche de roleplay",
 		MAP_SCAN_CHAR = "Scan de personnages",
 		MAP_SCAN_CHAR_TITLE = "Personnages",
+		MATURE_FILTER_ADD_TO_WHITELIST = "Ajouter ce profil à la |cffffffffliste blanche mature|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Ajouter à la |cffffffffliste blanche mature|r",
+		MATURE_FILTER_ADD_TO_WHITELIST_TEXT = [=[Confirmez que vous souhaitez ajouter %s à la |cffffffffliste blanche mature|r.
+
+Le contenu de son profil ne sera plus caché.]=],
+		MATURE_FILTER_ADD_TO_WHITELIST_TT = "Ajouter ce profil à la |cffffffffliste blanche mature|r et afficher le contenu mature.",
+		MATURE_FILTER_EDIT_DICTIONARY = "Éditer le dictionnaire",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON = "Ajouter",
+		MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT = "Ajouter un nouveau mot au dictionnaire",
+		MATURE_FILTER_EDIT_DICTIONARY_BUTTON = "Éditer",
+		MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD = "Supprimer le mot du dictionnaire",
+		MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD = "Éditer ce mot",
+		MATURE_FILTER_EDIT_DICTIONARY_TITLE = "Éditeur de dictionnaire",
+		MATURE_FILTER_EDIT_DICTIONARY_TT = "Éditer le dictionnaire utiliser par le filtre de profils matures.",
+		MATURE_FILTER_FLAG_PLAYER = "Marquer comme mature",
+		MATURE_FILTER_FLAG_PLAYER_OPTION = "Marquer comme mature",
+		MATURE_FILTER_FLAG_PLAYER_TEXT = [=[Confirmez que vous souhaitez marquer le profile de %s comme contenant du contenu mature. Le contenu de ce profil sera masqué.
+
+|cffffff00Optionnel:|r Indiquez ici les mots inappropriés (séparés par un espace) pour les ajouter au dictionnaire utilisé par le filtre de profils matures.]=],
+		MATURE_FILTER_FLAG_PLAYER_TT = "Marquer ce profil comme contenant du contenu mature. Le contenu sera masqué.",
+		MATURE_FILTER_OPTION = "Filtrer le contenu mature",
+		MATURE_FILTER_OPTION_TT = [=[Cochez cette option pour activer le filtre de contenu mature. Total RP 3 analysera les profils reçu à la réception à la recherche de mots clés considérés comme étant inappropriés et marquera les profils comme mature.
+
+Un profil marqué comme contenant du contenu mature aura son infobulle censurée et vous devrez confirmer à l'ouverture du profil.]=],
+		MATURE_FILTER_REMOVE_FROM_WHITELIST = "Retirer ce profil de la |cffffffffliste blanche mature|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION = "Retirer ce profile de la |cffffffffliste blanche mature|r",
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT = [=[Confirmez que vous souhaitez retirer %s de la |cffffffffliste blanche mature|r.
+
+Le contenu de son profile sera à nouveau masqué.]=],
+		MATURE_FILTER_REMOVE_FROM_WHITELIST_TT = "Retirer ce profil de la |cffffffffliste blanche mature|r et masquer à nouveau le contenu.",
+		MATURE_FILTER_TITLE = "Filtre de contenu mature",
+		MATURE_FILTER_TOOLTIP_WARNING = "Contenu mature",
+		MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "Le profil de ce personnage contient du contenu inapproprié. Utilisez les boutons de la barre de cible pour afficher son profil si vous le souhaitez vraiment…",
+		MATURE_FILTER_WARNING_CONTINUE = "Continuer",
+		MATURE_FILTER_WARNING_GO_BACK = "Revenir en arrière",
+		MATURE_FILTER_WARNING_TEXT = [=[Vous avez activé le filtre de contenu mature de Total RP 3
+
+Ce profil a été marqué comme contenu du contenu mature.
+
+Êtes-vous certain de vouloir consulter ce profil ?]=],
+		MATURE_FILTER_WARNING_TITLE = "Contenu mature",
 		MM_SHOW_HIDE_MAIN = "Afficher/cacher la fenêtre principale",
 		MM_SHOW_HIDE_MOVE = "Déplacer le bouton",
 		MM_SHOW_HIDE_SHORTCUT = "Afficher/cacher la barre d'outils",
@@ -376,10 +424,25 @@ Le lier quand même ?]=],
 		PR_CREATE_PROFILE = "Créer un profil",
 		PR_DELETE_PROFILE = "Supprimer le profil",
 		PR_DUPLICATE_PROFILE = "Dupliquer le profil",
+		PR_EXPORT_IMPORT_HELP = [=[Vous pouvez exporter et importer vos profils en utilisant les options du menu.
+
+Utilisez l'option |cffffff00Exporter le profil|r pour générer une version sérialisée de votre profil sous forme de texte. Vous pouvez copier le texte en utilisant Contrôle-C (ou Commande-C sur Mac) pour le copier autre part comme sauvegarde. (|cffff0000Veuillez noter que les éditeurs de texte avancées comme Microsoft Word reformattent les caractères comme les guillemets, modifiant ainsi le contenu. Il est recommandé d'utiliser un logiciel d'édition de text plus simple, comme le Bloc Note.|r)
+
+Utilisez l'option |cffffff00Importer un profil|r pour coller le texte d'un export précédent dans le profil. Les données du profil choisi seront écrasées par les données collées. Vous ne pouvez pas importer un profil directement dans celui actuellement utilisé.]=],
+		PR_EXPORT_IMPORT_TITLE = "Exporter/importer un profil",
+		PR_EXPORT_NAME = "Serial du profil %s (taille %0.2f Ko)",
+		PR_EXPORT_PROFILE = "Exporter le profil",
+		PR_EXPORT_TOO_LARGE = [=[Ce profil est trop gros et ne peut pas être exporté.
+
+Taille du profil : %0.2f Ko
+Taille maximale : 20 Ko]=],
+		PR_IMPORT = "Importer",
 		PR_IMPORT_CHAR_TAB = "Importateur de personnages",
 		PR_IMPORT_EMPTY = "Aucun profil disponible",
 		PR_IMPORT_IMPORT_ALL = "Tout importer",
 		PR_IMPORT_PETS_TAB = "Importateur de compagnons",
+		PR_IMPORT_PROFILE = "Importer le profile",
+		PR_IMPORT_PROFILE_TT = "Veuillez coller le serial d'un profil dans la boîte de text",
 		PR_IMPORT_WILL_BE_IMPORTED = "Sera importé",
 		PR_PROFILE = "Profil",
 		PR_PROFILE_CREATED = "Profil %s créé.",
@@ -391,6 +454,7 @@ Un |cffffff00"personnage WoW"|r réel ne peut être lié qu'à un seul profil à
 
 Vous pouvez aussi lier plusieurs |cffffff00"personnages WoW"|r au même |cff00ff00profil|r !]=],
 		PR_PROFILE_LOADED = "Le profil %s est chargé.",
+		PR_PROFILE_MANAGEMENT_TITLE = "Gestion du profil",
 		PR_PROFILEMANAGER_ACTIONS = "Actions",
 		PR_PROFILEMANAGER_ALREADY_IN_USE = "Le nom de profil %s n'est pas disponible.",
 		PR_PROFILEMANAGER_COUNT = "%s personnage(s) WoW lié(s) à ce profil.",
@@ -407,6 +471,11 @@ Cette duplication ne changera pas les liens du personnage à %s.]=],
 Ce nom ne peut pas être vide.
 
 Changer le nom ne changera aucun lien entre ce profil et vos personnages]=],
+		PR_PROFILEMANAGER_IMPORT_WARNING = "Remplacer le contenu du profil %s avec les données importées ?",
+		PR_PROFILEMANAGER_IMPORT_WARNING_2 = [=[Attention : le profil que vous voulez importé a été exporté avec une version plus ancienne de Total RP 3.
+Des soucis de compatibilité pourraient se présenter.
+
+Remplacer le contenu du profil %s avec les données importées ?]=],
 		PR_PROFILEMANAGER_RENAME = "Renommer le profil",
 		PR_PROFILEMANAGER_SWITCH = "Choisir le profil",
 		PR_PROFILEMANAGER_TITLE = "Profils de personnages",
@@ -740,7 +809,7 @@ Si vous ne voulez pas indiquer la personnalité de votre personnage ainsi, laiss
 		REG_PLAYER_STYLE_ASSIST = "Aide au jeu de rôle",
 		REG_PLAYER_STYLE_BATTLE = "Résolution de combats RP",
 		REG_PLAYER_STYLE_BATTLE_1 = "JcJ World of Warcraft",
-		REG_PLAYER_STYLE_BATTLE_2 = "Bataille de jets de dés TRP (Indisponible pour le moment)",
+		REG_PLAYER_STYLE_BATTLE_2 = "Bataille de jets de dés TRP",
 		REG_PLAYER_STYLE_BATTLE_3 = "Bataille de /rand",
 		REG_PLAYER_STYLE_BATTLE_4 = "Bataille d'émotes",
 		REG_PLAYER_STYLE_DEATH = "Accepte la mort",
@@ -941,12 +1010,43 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_MUSIC_SELECT = "Choisir une musique",
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-		WHATS_NEW_3 = [=[{h3:c}Nouveautés de la version {col:6eff51}1.1.4{/col}{/h3}
-{h3}Mise-à-jour des ressouces du jeu{/h3}
+		WHATS_NEW_4 = [=[# Nouveauté de la version 1.2.1
 
-• Nous avons ajouté 461 nouvelles musiques à la liste des musiques du jeu (y compris Invincible, enfin!).
-• Nous avons ajouté 1956 nouvelles icônes à la liste des icônes du jeu.
-• Nous avons ajouté 135 nouvelles images à insérer dans votre description.]=], -- Needs review
+## Jets de dés
+
+Les jets de dés de TRP2 sont de retour ! Utilisez la commande |cff00ff00/trp3 roll|r pour jeter 1d100. Vous pouvez aussi faire plusieurs jets d'un coup en indiquant le nombre et le type de dés à jeter. Chaque jet est partagé en groupe/raid ou avec votre cible s'ils possèdent TRP3 1.2.1.
+
+Exemples:
+|cff00ff00/trp3 roll 1d6
+/trp3 roll 2d20 1d12
+
+# Nouveauté de la version 1.2.0
+
+Cette version ajoute quelques fonctionnalités sympathiques et des améliorations
+
+## Filtre de contenu mature
+
+Nous avons ajouter un filtre de contenu mature à Total RP 3. Cette fonctionnalité sera activée par défaut si vous avez le filtre d'obscénité activé ou si le contrôle parental est activé. Vous pouvez à tout moment activer ou désactiver cette option dans les réglages du registre.
+
+Quand le filtre de contenu mature est activé, Total RP 3 analysera le contenu des profils reçus pour rechercher des mots considérés comme inappropriés. Un profile marqué comme contenant du contenu mature aura son infobulle censuré, sa barre de clin-d'œil sera masquée et une alerte sera affichée quand vous ouvrirez le profil.
+
+Vous pouvez choisir d'ignorer l'alerte et consulter le profile ou encore ajouter le profile à la liste blanche si vous souhaitez que Total RP 3 ne masque plus ce profil.
+
+Vous pouvez également marqué un profil comme contenant du contenu mature manuellement. Il vous sera proposer d'indiquer les mots inappropriés pour qu'ils soient ajoutés au filtre de Total RP 3, qui deviendra de plus en plus intelligent.
+
+Le dictionnaire utilisé par le filtre de contenu mature est pré-rempli avec quelques mots inappropriés pour le français, l'anglais et l'espagnol. Vous pouvez éditer le dictionnaire dans les réglages pour ajouter ou supprimer des mots.
+
+## Exporter et importer des profils
+
+Il est mantenant possible d'exporter un profil sous forme de texte à copier-coller autre part pour en faire une sauvegarde. Vous pourrez ensuite coller les données dans un profil pour les restaurées. Les données exportées comprennent vos informations de profil, vos relations, et contiendront également votre inventaire et votre journal de quêtes dans le future.
+
+## Améliorations
+
+* Nous avons peaufiné l'interface un peu partout.
+* Nous avons modifié le système de localisation sur la carte pour éviter un problème lorsque la carte est ouverte.
+* Nous avons corrigé un problème avec le système de compagnons lorsque le mode daltonien est activé.
+* Corrections de Texte Mineures™
+]=],
 	}
 };
 
