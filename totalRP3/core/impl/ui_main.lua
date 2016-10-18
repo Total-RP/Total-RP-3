@@ -179,4 +179,101 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	BINDING_NAME_TRP3_TOGGLE = loc("BINDING_NAME_TRP3_TOGGLE");
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = loc("BINDING_NAME_TRP3_TOOLBAR_TOGGLE");
 
+	-- CTL debug frame
+	hooksecurefunc("SendAddonMessage", function(pref, tx)
+--		print(pref, tx)
+	end)
+
+	local ctl = ChatThrottleLib;
+	local ctlFrame = TRP3_CTLDebug;
+	ctlFrame:SetScript("OnShow", function(self)
+		self:GetTitleRegion():SetAllPoints(self);
+	end)
+	local ctlHTML = ctlFrame.scroll.child.HTML;
+	TRP3_API.ui.frame.createRefreshOnFrame(ctlFrame, 1, function()
+		local html = [[
+## ChatThrottleLib debugs
+
+### Config
+
+MAX_CPS = %s
+MSG_OVERHEAD = %s
+BURST = %s
+MIN_FPS = %s
+
+### Current state
+
+securelyHooked = %s
+
+|cffff9900Available bytes|r
+avail = %0.2f bytes
+LastAvailUpdate = %0.2f seconds ago
+
+|cffff9900Queuing or choking info|r
+bChoking = %s
+bQueueing = %s
+HardThrottlingBeginTime = %0.2f seconds ago
+OnUpdateDelay = %0.3f seconds
+
+|cffff9900External traffic (not with CTL)|r
+- nTotalSent = %s bytes
+- nBypass = %s bytes
+
+### Queues
+
+ALERT:
+-- nTotalSent = %s bytes
+-- %s
+
+NORMAL:
+-- nTotalSent = %s bytes
+-- %s
+
+BULK:
+-- nTotalSent = %s bytes
+-- %s
+]];
+
+		local formatRing = function(ring)
+			if ring.pos then
+				local str = "Pipes in ring:\n"
+				local size = 0;
+				for index, msg in pairs(ring.pos) do
+					if type(index) == "number" then
+						size = size + (msg.nSize or 0);
+					end
+				end
+				str = str .. ("----- #%s bytes\n"):format(size);
+				return str;
+			else
+				return "No pipe in ring";
+			end
+		end
+
+		html = html:format(
+			tostring(ctl.MAX_CPS or "nil"),
+			tostring(ctl.MSG_OVERHEAD or "nil"),
+			tostring(ctl.BURST or "nil"),
+			tostring(ctl.MIN_FPS or "nil"),
+			tostring(ctl.securelyHooked or "nil"),
+			tostring(ctl.avail or "nil"),
+			ctl.LastAvailUpdate and (GetTime() - ctl.LastAvailUpdate) or 'nil',
+			tostring(ctl.bChoking or "nil"),
+			tostring(ctl.bQueueing or "nil"),
+			ctl.HardThrottlingBeginTime and (GetTime() - ctl.HardThrottlingBeginTime) or 'nil',
+			tostring(ctl.OnUpdateDelay or "nil"),
+			tostring(ctl.nTotalSent or "nil"),
+			tostring(ctl.nBypass or "nil"),
+			-- Queues
+			tostring(ctl.Prio.ALERT.nTotalSent or "nil"),
+			tostring(formatRing(ctl.Prio.ALERT.Ring)),
+
+			tostring(ctl.Prio.NORMAL.nTotalSent or "nil"),
+			tostring(formatRing(ctl.Prio.NORMAL.Ring)),
+
+			tostring(ctl.Prio.BULK.nTotalSent or "nil"),
+			tostring(formatRing(ctl.Prio.BULK.Ring))
+		);
+		ctlHTML:SetText(TRP3_API.utils.str.toHTML(html));
+	end);
 end);

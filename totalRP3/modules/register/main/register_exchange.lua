@@ -47,7 +47,7 @@ local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
-local tinsert, time, type, pairs, tonumber = tinsert, time, type, pairs, tonumber;
+local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
 
 -- Config keys
 local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
@@ -72,7 +72,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LAST_QUERY = {};
-local COOLDOWN_DURATION = 4; -- Should be integer
+local COOLDOWN_DURATION = 10; -- Should be integer
 local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
 local INFO_TYPE_QUERY_PREFIX = "GI";
@@ -100,15 +100,6 @@ local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
 local VERNUM_QUERY_INDEX_EXTENDED = 17;
 
 local queryInformationType, createVernumQuery;
-
-local function queryVernum(unitName)
-	local query = createVernumQuery();
-	Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitName, VERNUM_QUERY_PRIORITY);
-end
-
-local function queryMarySueProtocol(unitName)
-
-end
 
 --- Vernum query builder
 function createVernumQuery()
@@ -141,6 +132,10 @@ function createVernumQuery()
 	end
 
 	return query;
+end
+
+local function checkCooldown(unitID)
+	return not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -203,10 +198,20 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 	end
 end
 
+--- Send vernum request to the player
+local function sendQuery(unitID)
+	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID) then
+		LAST_QUERY[unitID] = time();
+		local query = createVernumQuery();
+		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
+	end
+end
+TRP3_API.r.sendQuery = sendQuery;
+
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
 -- His main query is to receive your vernum tab. But you can already read his tab to query information.
-local function incomingVernumQuery(structure, senderID)
+local function incomingVernumQuery(structure, senderID, sendBack)
 	-- First: Integrity check
 	if type(structure) ~= "table"
 	or #structure <= 0
@@ -219,7 +224,8 @@ local function incomingVernumQuery(structure, senderID)
 	end
 
 	-- First send back or own vernum
-	if not LAST_QUERY[senderID] or time() - LAST_QUERY[senderID] > COOLDOWN_DURATION then
+	if sendBack and checkCooldown(senderID) then
+		LAST_QUERY[senderID] = time();
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 	end
@@ -275,13 +281,6 @@ local function incomingVernumQuery(structure, senderID)
 		local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
 		parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
 	end
-end
-
---- Incoming vernum response
--- This is received when you asked a player for his vernum tab and he responses.
--- In that case we shouldn't query him anymore as it would bring an infinite loop.
-local function incomingVernumResponseQuery(structure, senderID)
-	incomingVernumQuery(structure, senderID, true);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -363,16 +362,6 @@ end
 
 local companionIDToInfo = Utils.str.companionIDToInfo;
 
---- Send vernum request to the player
-local function sendQuery(unitID)
-	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and (not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION) then
-		LAST_QUERY[unitID] = time();
-		queryVernum(unitID);
-		queryMarySueProtocol(unitID);
-	end
-end
-TRP3_API.r.sendQuery = sendQuery;
-
 local function onMouseOverCharacter(unitID)
 	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") then
 		sendQuery(unitID);
@@ -440,8 +429,12 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange
-	Comm.registerProtocolPrefix(VERNUM_QUERY_PREFIX, incomingVernumQuery);
-	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, incomingVernumResponseQuery);
+	Comm.registerProtocolPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
+		incomingVernumQuery(structure, senderID, true);
+	end);
+	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
+		incomingVernumQuery(structure, senderID, false);
+	end);
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
 	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
