@@ -53,6 +53,10 @@ local BROADCAST_PREFIX = "RPB";
 local BROADCAST_VERSION = 1;
 local BROADCAST_SEPARATOR = "~";
 local BROADCAST_HEADER = BROADCAST_PREFIX .. BROADCAST_VERSION;
+Comm.totalBroadcast = 0;
+Comm.totalBroadcastP2P = 0;
+Comm.totalBroadcastR = 0;
+Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
 	if not config_UseBroadcast() or not command then
@@ -70,6 +74,7 @@ local function broadcast(command, ...)
 	if message:len() < 254 then
 		local channelName = GetChannelName(config_BroadcastChannel());
 		ChatThrottleLib:SendChatMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", nil, channelName);
+		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
 	end
@@ -92,6 +97,7 @@ local function parseBroadcast(message, sender, _, _, _, _, _, _, channel)
 		if not header == BROADCAST_HEADER or not command then
 			return; -- If not RP protocol or don't have a command
 		end
+		Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
 		receiveBroadcast(sender, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	end
 end
@@ -119,6 +125,7 @@ local function onP2PMessageReceived(...)
 		if not sender:find('-') then
 			sender = Utils.str.unitInfoToID(sender);
 		end
+		Comm.totalBroadcastP2PR = Comm.totalBroadcastP2PR + BROADCAST_HEADER:len() + message:len();
 		if not isIDIgnored(sender) then
 			local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
 			if PREFIX_P2P_REGISTRATION[command] then
@@ -151,6 +158,7 @@ local function sendP2PMessage(target, command, ...)
 	end
 	if message:len() < 254 then
 		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "WHISPER", target);
+		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a P2P message with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
 	end

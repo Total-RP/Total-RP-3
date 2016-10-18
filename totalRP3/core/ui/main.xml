@@ -467,7 +467,7 @@
 
 	<Frame name="TRP3_CTLDebug" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="false" movable="true">
 		<TitleRegion setAllPoints="true"/>
-		<Size x="400" y="600"/>
+		<Size x="650" y="600"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -503,6 +503,18 @@
 								<Size x="300" y="10"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="5" y="-5"/>
+								</Anchors>
+								<FontStringHeader1 inherits="GameFontNormalHuge3"/>
+								<FontStringHeader2 inherits="GameFontNormalHuge"/>
+								<FontStringHeader3 inherits="GameFontNormalLarge"/>
+								<FontString inherits="GameFontNormal">
+									<Color r="0.95" g="0.95" b="0.95"/>
+								</FontString>
+							</SimpleHTML>
+							<SimpleHTML name="$parentHTML2" parentKey="HTML2">
+								<Size x="300" y="10"/>
+								<Anchors>
+									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeKey="$parent.HTML" x="0" y="0"/>
 								</Anchors>
 								<FontStringHeader1 inherits="GameFontNormalHuge3"/>
 								<FontStringHeader2 inherits="GameFontNormalHuge"/>

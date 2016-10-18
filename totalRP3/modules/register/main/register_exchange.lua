@@ -71,7 +71,7 @@ end
 -- Vernum queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local LAST_QUERY = {};
+local LAST_QUERY, HAS_NOT_YET_RESPONDED = {}, {};
 local COOLDOWN_DURATION = 10; -- Should be integer
 local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
@@ -202,6 +202,7 @@ end
 local function sendQuery(unitID)
 	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID) then
 		LAST_QUERY[unitID] = time();
+		HAS_NOT_YET_RESPONDED[unitID] = LAST_QUERY[unitID];
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
 	end
@@ -329,6 +330,21 @@ end
 -- Received information
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+Comm.min = 100000;
+Comm.max = 0;
+Comm.totalDuration = 0;
+Comm.numStat = 0;
+local function closeStat(senderID)
+	if HAS_NOT_YET_RESPONDED[senderID] then
+		local duration = GetTime() - HAS_NOT_YET_RESPONDED[senderID];
+		Comm.min = math.min(Comm.min, duration);
+		Comm.max = math.max(Comm.max, duration);
+		Comm.totalDuration = Comm.totalDuration + duration;
+		Comm.numStat = Comm.numStat + 1;
+		HAS_NOT_YET_RESPONDED[senderID] = nil;
+	end
+end
+
 local function incomingInformationTypeSent(structure, senderID)
 	local informationType = structure[1];
 	local data = structure[2];
@@ -406,6 +422,7 @@ end
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
+TRP3_API.register.HAS_NOT_YET_RESPONDED = HAS_NOT_YET_RESPONDED;
 
 function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
@@ -433,6 +450,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 		incomingVernumQuery(structure, senderID, true);
 	end);
 	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
+		closeStat(senderID);
 		incomingVernumQuery(structure, senderID, false);
 	end);
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);

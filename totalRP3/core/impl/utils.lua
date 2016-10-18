@@ -687,6 +687,7 @@ local function deserialize(structure)
 end
 Utils.serial.deserialize = deserialize;
 
+Utils.serial.errorCount = 0;
 local function safeDeserialize(structure, default)
 	local status, data = libSerializer:Deserialize(structure);
 	if not status then

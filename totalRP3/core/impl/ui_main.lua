@@ -180,19 +180,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = loc("BINDING_NAME_TRP3_TOOLBAR_TOGGLE");
 
 	-- CTL debug frame
-	hooksecurefunc("SendAddonMessage", function(pref, tx)
---		print(pref, tx)
-	end)
-
+	local tostring, GetTime, pairs, type = tostring, GetTime, pairs, type;
+	local toHTML =TRP3_API.utils.str.toHTML;
 	local ctl = ChatThrottleLib;
 	local ctlFrame = TRP3_CTLDebug;
 	ctlFrame:SetScript("OnShow", function(self)
 		self:GetTitleRegion():SetAllPoints(self);
 	end)
 	local ctlHTML = ctlFrame.scroll.child.HTML;
-	TRP3_API.ui.frame.createRefreshOnFrame(ctlFrame, 1, function()
+	local ctlHTML2 = ctlFrame.scroll.child.HTML2;
+	TRP3_API.ui.frame.createRefreshOnFrame(ctlFrame, 0.2, function()
 		local html = [[
-## ChatThrottleLib debugs
+## CTL Network
 
 ### Config
 
@@ -264,6 +263,7 @@ BULK:
 			tostring(ctl.OnUpdateDelay or "nil"),
 			tostring(ctl.nTotalSent or "nil"),
 			tostring(ctl.nBypass or "nil"),
+
 			-- Queues
 			tostring(ctl.Prio.ALERT.nTotalSent or "nil"),
 			tostring(formatRing(ctl.Prio.ALERT.Ring)),
@@ -273,7 +273,55 @@ BULK:
 
 			tostring(ctl.Prio.BULK.nTotalSent or "nil"),
 			tostring(formatRing(ctl.Prio.BULK.Ring))
+
+
 		);
-		ctlHTML:SetText(TRP3_API.utils.str.toHTML(html));
+		ctlHTML:SetText(toHTML(html));
+
+		local hasNYR = "";
+		for id, s in pairs(TRP3_API.register.HAS_NOT_YET_RESPONDED) do
+			local duration = GetTime() - s;
+			if duration > 300 then
+				TRP3_API.register.HAS_NOT_YET_RESPONDED[id] = nil;
+			else
+				hasNYR = hasNYR .. "\n- " .. id .. (" since %0.2f sec"):format(GetTime() - s);
+			end
+		end
+
+		html = [[
+## TRP Network
+
+Total sent: %s bytes
+Total received: %s bytes
+
+Total sent (broadcast): %s bytes
+Total received (broadcast): %s bytes
+Total sent (broadcast P2P): %s bytes
+Total received (broadcast P2P): %s bytes
+
+Deserialisation errors: %s
+
+|cffff9900Response times|r
+Min: %0.2f secondes
+Max: %0.2f seconds
+Average: %0.2f seconds
+
+Not yet responded: %s
+]]
+		html = html:format(
+			tostring(TRP3_API.communication.total),
+			tostring(TRP3_API.communication.totalReceived),
+			tostring(TRP3_API.communication.totalBroadcast),
+			tostring(TRP3_API.communication.totalBroadcastR),
+			tostring(TRP3_API.communication.totalBroadcastP2P),
+			tostring(TRP3_API.communication.totalBroadcastP2PR),
+			tostring(TRP3_API.utils.serial.errorCount),
+			TRP3_API.communication.min,
+			TRP3_API.communication.max,
+			TRP3_API.communication.totalDuration / TRP3_API.communication.numStat,
+			hasNYR
+		);
+		ctlHTML2:SetText(toHTML(html));
+
 	end);
 end);

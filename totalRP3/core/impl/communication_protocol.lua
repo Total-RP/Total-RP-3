@@ -50,6 +50,8 @@ local interface_id = {
 	DIRECT_RELAY = 2,
 	DIRECT_PRINT = 3
 };
+Comm.total = 0;
+Comm.totalReceived = 0;
 Comm.interface_id = interface_id;
 local selected_interface_id = interface_id.WOW;
 
@@ -82,6 +84,7 @@ function onAddonMessageReceived(...)
 			Log.log("Malformed senderID: " .. tostring(sender), Log.level.WARNING);
 			return;
 		end
+		Comm.totalReceived = Comm.totalReceived + prefix:len() + packet:len();
 		handlePacketsIn(packet, sender);
 	end
 end
@@ -146,7 +149,11 @@ local function handlePacketsOut(messageID, packets, target, priority)
 			if index == #packets then
 				control = LAST_PACKET_PREFIX;
 			end
-			getCommunicationInterface()(messageID .. control .. total256 .. packet, target, priority);
+			local str = messageID .. control .. total256 .. packet;
+			local size = str:len() + wowCom_prefix:len();
+			Comm.total = Comm.total + size;
+			getCommunicationInterface()(str, target, priority);
+
 		end
 	end
 end
@@ -254,6 +261,7 @@ function handleStructureIn(packets, sender, messageID)
 	if status then
 		receiveObject(structure, sender, messageID);
 	else
+		Utils.serial.errorCount = Utils.serial.errorCount + 1;
 		Log.log(("Deserialization error from %s. Message:\n%s"):format(sender, message), Log.level.SEVERE);
 	end
 end
