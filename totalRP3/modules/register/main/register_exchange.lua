@@ -230,6 +230,9 @@ local function incomingVernumQuery(structure, senderID)
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 	local senderExtendedVersion = structure[VERNUM_QUERY_INDEX_EXTENDED];
 
+	senderVersion = tonumber(senderVersion) or 0;
+	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
+
 	local clientName = Globals.addon_name;
 	if senderExtendedVersion then
 		clientName = Globals.addon_name_extended;
@@ -444,7 +447,8 @@ function TRP3_API.register.inits.dataExchangeInit()
 
 	-- When receiving HELLO from someone else (from the other side ?)
 	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
-		version = tonumber(version);
+		version = tonumber(version) or 0;
+		extendedVersion = tonumber(extendedVersion) or 0;
 		-- Only treat the message if it does not come from us
 		if sender ~= Globals.player_id then
 			checkVersion(sender, version, versionDisplay, extendedVersion);
