@@ -290,7 +290,9 @@ function Comm.sendObject(prefix, object, target, priority, messageID)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	if not isIDIgnored(target) then
 		if isSpecialTarget(target) or target:match("[^%-]+%-[^%-]+") then
-			Log.log(("Send to %s with prefix %s"):format(target, prefix));
+			if VERBOSE then
+				Log.log(("Send to %s with prefix %s"):format(target, prefix));
+			end
 			local structure = {prefix, object};
 			handleStructureOut(structure, target, priority, messageID);
 		else
@@ -306,7 +308,9 @@ end
 function receiveObject(structure, sender, messageID)
 	if type(structure) == "table" and #structure == 2 then
 		local prefix = structure[1];
-		Log.log(("Received from %s with prefix %s"):format(sender, prefix));
+		if VERBOSE then
+			Log.log(("Received from %s with prefix %s"):format(sender, prefix));
+		end
 		if PREFIX_REGISTRATION[prefix] then
 			for _, callback in pairs(PREFIX_REGISTRATION[prefix]) do
 				callback(structure[2], sender, messageID);

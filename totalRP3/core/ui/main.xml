@@ -465,9 +465,9 @@
 		</ScrollChild>
 	</ScrollFrame>
 
-	<Frame name="TRP3_CTLDebug" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="false" movable="true">
+	<Frame name="TRP3_CTLDebug" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true">
 		<TitleRegion setAllPoints="true"/>
-		<Size x="650" y="600"/>
+		<Size x="900" y="600"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -537,6 +537,16 @@
 						self:GetParent():Hide();
 					</OnClick>
 				</Scripts>
+			</Button>
+
+			<Button parentKey="Resize" inherits="TRP3_ResizeButton">
+				<KeyValues>
+					<KeyValue key="minWidth" value="500" type="number"/>
+					<KeyValue key="minHeight" value="500" type="number"/>
+				</KeyValues>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+				</Anchors>
 			</Button>
 		</Frames>
 	</Frame>

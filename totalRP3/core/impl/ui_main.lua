@@ -211,8 +211,6 @@ LastAvailUpdate = %0.2f seconds ago
 |cffff9900Queuing or choking info|r
 bChoking = %s
 bQueueing = %s
-HardThrottlingBeginTime = %0.2f seconds ago
-OnUpdateDelay = %0.3f seconds
 
 |cffff9900External traffic (not with CTL)|r
 - nTotalSent = %s bytes
@@ -259,8 +257,6 @@ BULK:
 			ctl.LastAvailUpdate and (GetTime() - ctl.LastAvailUpdate) or 'nil',
 			tostring(ctl.bChoking or "nil"),
 			tostring(ctl.bQueueing or "nil"),
-			ctl.HardThrottlingBeginTime and (GetTime() - ctl.HardThrottlingBeginTime) or 'nil',
-			tostring(ctl.OnUpdateDelay or "nil"),
 			tostring(ctl.nTotalSent or "nil"),
 			tostring(ctl.nBypass or "nil"),
 
@@ -281,11 +277,37 @@ BULK:
 		local hasNYR = "";
 		for id, s in pairs(TRP3_API.register.HAS_NOT_YET_RESPONDED) do
 			local duration = GetTime() - s;
+			local character;
+			if TRP3_API.register.isUnitIDKnown(id) then
+				character = TRP3_API.register.getUnitIDCharacter(id);
+			end
 			if duration > 300 then
+				-- Consider he has not TRP or MRP
 				TRP3_API.register.HAS_NOT_YET_RESPONDED[id] = nil;
 			else
-				hasNYR = hasNYR .. "\n- " .. id .. (" since %0.2f sec"):format(GetTime() - s);
+				local text = ("\n- |cffff9900%s |cff00ff00(%s - %s)|r since %0.2f sec"):format(id,
+					character and character.client or "?",
+					character and character.clientVersion or "?",
+					GetTime() - s);
+				hasNYR = hasNYR .. text;
 			end
+		end
+		if hasNYR:len() == 0 then
+			hasNYR = "No current request";
+		end
+
+		local incoming = "";
+		for unit, infos in pairs(TRP3_API.register.CURRENT_QUERY_EXCHANGES) do
+			local infoString = "";
+			for type, _ in pairs(infos) do
+				infoString = infoString .. type .. " ";
+			end
+			if infoString:len() > 0 then
+				incoming = incoming .. ("\n- |cffff9900%s|r: %s"):format(unit, infoString);
+			end
+		end
+		if incoming:len() == 0 then
+			incoming = "No incoming data";
 		end
 
 		html = [[
@@ -306,7 +328,9 @@ Min: %0.2f secondes
 Max: %0.2f seconds
 Average: %0.2f seconds
 
-Not yet responded: %s
+|cffff9900Not yet responded:|r %s
+
+|cffff9900Incoming TRP3 data:|r %s
 ]]
 		html = html:format(
 			tostring(TRP3_API.communication.total),
@@ -319,9 +343,24 @@ Not yet responded: %s
 			TRP3_API.communication.min,
 			TRP3_API.communication.max,
 			TRP3_API.communication.totalDuration / TRP3_API.communication.numStat,
-			hasNYR
+			hasNYR,
+			incoming
 		);
 		ctlHTML2:SetText(toHTML(html));
 
 	end);
+
+	ctlFrame.Resize.onResizeStop = function()
+		local available = ctlFrame:GetWidth() - 100;
+		ctlHTML2:SetWidth(available - ctlHTML:GetWidth());
+	end;
+	ctlFrame.Resize.onResizeStop();
+
+	TRP3_API.slash.registerCommand({
+		id = "debug",
+		helpLine = "Debug network",
+		handler = function()
+			ctlFrame:Show();
+		end
+	});
 end);

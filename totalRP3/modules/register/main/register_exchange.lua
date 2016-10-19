@@ -71,7 +71,7 @@ end
 -- Vernum queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local LAST_QUERY, HAS_NOT_YET_RESPONDED = {}, {};
+local LAST_QUERY, LAST_QUERY_R, LAST_QUERY_STAT = {}, {}, {};
 local COOLDOWN_DURATION = 10; -- Should be integer
 local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
@@ -134,8 +134,8 @@ function createVernumQuery()
 	return query;
 end
 
-local function checkCooldown(unitID)
-	return not LAST_QUERY[unitID] or time() - LAST_QUERY[unitID] > COOLDOWN_DURATION;
+local function checkCooldown(unitID, structure)
+	return not structure[unitID] or time() - structure[unitID] > COOLDOWN_DURATION;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -198,11 +198,26 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 	end
 end
 
+Comm.min = 100000;
+Comm.max = 0;
+Comm.totalDuration = 0;
+Comm.numStat = 0;
+local function closeStat(senderID, structure)
+	if structure[senderID] then
+		local duration = GetTime() - structure[senderID];
+		Comm.min = math.min(Comm.min, duration);
+		Comm.max = math.max(Comm.max, duration);
+		Comm.totalDuration = Comm.totalDuration + duration;
+		Comm.numStat = Comm.numStat + 1;
+		structure[senderID] = nil;
+	end
+end
+
 --- Send vernum request to the player
 local function sendQuery(unitID)
-	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID) then
+	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID, LAST_QUERY) then
 		LAST_QUERY[unitID] = time();
-		HAS_NOT_YET_RESPONDED[unitID] = LAST_QUERY[unitID];
+		LAST_QUERY_STAT[unitID] = LAST_QUERY[unitID];
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
 	end
@@ -225,10 +240,14 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	end
 
 	-- First send back or own vernum
-	if sendBack and checkCooldown(senderID) then
-		LAST_QUERY[senderID] = time();
-		local query = createVernumQuery();
-		Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
+	if sendBack then
+		if checkCooldown(senderID, LAST_QUERY_R) then
+			LAST_QUERY_R[senderID] = time();
+			local query = createVernumQuery();
+			Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
+		end
+	else
+		closeStat(senderID, LAST_QUERY_STAT);
 	end
 
 	-- Data processing
@@ -289,6 +308,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local CURRENT_QUERY_EXCHANGES = {};
+TRP3_API.register.CURRENT_QUERY_EXCHANGES = CURRENT_QUERY_EXCHANGES;
 
 function queryInformationType(unitName, informationType)
 	if CURRENT_QUERY_EXCHANGES[unitName] and CURRENT_QUERY_EXCHANGES[unitName][informationType] then
@@ -329,21 +349,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Received information
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-Comm.min = 100000;
-Comm.max = 0;
-Comm.totalDuration = 0;
-Comm.numStat = 0;
-local function closeStat(senderID)
-	if HAS_NOT_YET_RESPONDED[senderID] then
-		local duration = GetTime() - HAS_NOT_YET_RESPONDED[senderID];
-		Comm.min = math.min(Comm.min, duration);
-		Comm.max = math.max(Comm.max, duration);
-		Comm.totalDuration = Comm.totalDuration + duration;
-		Comm.numStat = Comm.numStat + 1;
-		HAS_NOT_YET_RESPONDED[senderID] = nil;
-	end
-end
 
 local function incomingInformationTypeSent(structure, senderID)
 	local informationType = structure[1];
@@ -422,7 +427,7 @@ end
 local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
-TRP3_API.register.HAS_NOT_YET_RESPONDED = HAS_NOT_YET_RESPONDED;
+TRP3_API.register.HAS_NOT_YET_RESPONDED = LAST_QUERY_STAT;
 
 function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
@@ -450,7 +455,6 @@ function TRP3_API.register.inits.dataExchangeInit()
 		incomingVernumQuery(structure, senderID, true);
 	end);
 	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
-		closeStat(senderID);
 		incomingVernumQuery(structure, senderID, false);
 	end);
 	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
