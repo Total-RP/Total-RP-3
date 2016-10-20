@@ -1010,7 +1010,11 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_MUSIC_SELECT = "Choisir une musique",
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-		WHATS_NEW_4 = [=[# Nouveauté de la version 1.2.1
+		WHATS_NEW_4 = [=[# Nouveauté de la version 1.2.2
+
+Cette version règle un énorme souci de performance dans l'envoi et la réception de données. |cff00ff00Il sera d'autant plus efficace lorsque beaucoup d'utilisateurs utiliseront cette version, donc faites passer le mot !
+
+# Nouveauté de la version 1.2.1
 
 ## Jets de dés
 

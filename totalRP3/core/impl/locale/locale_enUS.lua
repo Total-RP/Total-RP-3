@@ -928,7 +928,11 @@ Are you sure you want to view this profile?]],
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_4 = [[# New in version 1.2.1
+		WHATS_NEW_4 = [[# New in version 1.2.2
+
+This version fixes a massive performance issue with data transfer that impact TRP since 1.1.0. |cff00ff00It should be growing faster the more people update their TRP3 to this version. So spread the word!
+
+# New in version 1.2.1
 
 ## Dice rolls
 
