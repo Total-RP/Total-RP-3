@@ -276,13 +276,15 @@ TRP3_API.ui.listbox.setupListBox = setupListBox;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Handle the mouse wheel for the frame in order to slide the slider
-TRP3_API.ui.list.handleMouseWheel = function(frame,slider)
-	frame:SetScript("OnMouseWheel",function(self,delta)
-		local mini,maxi = slider:GetMinMaxValues();
-		if delta == 1 and slider:GetValue() > mini then
-			slider:SetValue(slider:GetValue()-1);
-		elseif delta == -1 and slider:GetValue() < maxi then
-			slider:SetValue(slider:GetValue()+1);
+TRP3_API.ui.list.handleMouseWheel = function(frame, slider)
+	frame:SetScript("OnMouseWheel",function(self, delta)
+		if slider:IsEnabled() then
+			local mini,maxi = slider:GetMinMaxValues();
+			if delta == 1 and slider:GetValue() > mini then
+				slider:SetValue(slider:GetValue()-1);
+			elseif delta == -1 and slider:GetValue() < maxi then
+				slider:SetValue(slider:GetValue()+1);
+			end
 		end
 	end);
 	frame:EnableMouseWheel(1);
@@ -328,7 +330,7 @@ TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 		infoTab.uiTab = {};
 	end
 
-	slider:Hide();
+	slider:Disable();
 	slider:SetValueStep(1);
 	slider:SetObeyStepOnDrag(true);
 	wipe(infoTab.uiTab);
@@ -346,31 +348,37 @@ TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 
 	table.sort(infoTab.uiTab);
 
+	local checkUpDown = function(self)
+		local minValue, maxValue = self:GetMinMaxValues();
+		local value = self:GetValue();
+		if self.downButton then
+			self.downButton:Disable();
+			if value < maxValue then
+				self.downButton:Enable();
+			end
+		end
+		if self.upButton then
+			self.upButton:Disable();
+			if value > minValue then
+				self.upButton:Enable();
+			end
+		end
+	end
+
 	slider:SetScript("OnValueChanged", nil);
 	if count > maxPerPage then
-		slider:Show();
+		slider:Enable();
 		local total = floor((count-1)/maxPerPage);
 		slider:SetMinMaxValues(0, total);
 	else
+		slider:SetMinMaxValues(0, 0);
 		slider:SetValue(0);
 	end
+	checkUpDown(slider);
 	slider:SetScript("OnValueChanged",function(self)
 		if self:IsVisible() then
 			listShowPage(infoTab, floor(self:GetValue()));
-			local minValue, maxValue = self:GetMinMaxValues();
-			local value = self:GetValue();
-			if self.downButton then
-				self.downButton:Enable();
-				if value >= maxValue then
-					self.downButton:Disable();
-				end
-			end
-			if self.upButton then
-				self.upButton:Enable();
-				if value <= minValue then
-					self.upButton:Disable();
-				end
-			end
+			checkUpDown(self);
 		end
 	end);
 	listShowPage(infoTab, slider:GetValue());

@@ -358,7 +358,7 @@ Average: %0.2f seconds
 
 	TRP3_API.slash.registerCommand({
 		id = "debug",
-		helpLine = "Debug network",
+		helpLine = " Debug network",
 		handler = function()
 			ctlFrame:Show();
 		end
