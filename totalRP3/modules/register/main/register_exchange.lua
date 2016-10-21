@@ -260,7 +260,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
 
 	local clientName = Globals.addon_name;
-	if senderExtendedVersion then
+	if senderExtendedVersion > 0 then
 		clientName = Globals.addon_name_extended;
 	end
 
