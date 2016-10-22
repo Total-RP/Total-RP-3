@@ -111,6 +111,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return 0;
 	end
 
+	local strjoin, unpack = strjoin, unpack;
+
 	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
 		id = "roll",
@@ -134,6 +136,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 			Utils.message.displayMessage(totalMessage, 3);
 			TRP3_API.ui.misc.playSoundKit(36629, "SFX");
+			Utils.event.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
 		end
 	});
 
