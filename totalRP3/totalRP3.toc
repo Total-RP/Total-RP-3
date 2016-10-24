@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## Title: Total RP 3
 ## Author: Telkostrasz & Ellypse
-## Version: 1.2.1.1
+## Version: 1.2.2
 ## Notes: Main addon
 ## URL: http://totalrp3.info
 ## RequiredDeps:
