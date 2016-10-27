@@ -96,7 +96,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			C_Timer.After((0.1 * (i - 1)), function()
 				playAnimation(_G[widget:GetName() .. "Animate"]);
 				playAnimation(_G[widget:GetName() .. "HighlightAnimate"]);
-
 			end
 			);
 		end
@@ -178,6 +177,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		_G[widget:GetName() .. "Bound"]:SetScript("OnClick", onImportButtonClicked);
 		_G[widget:GetName() .. "Bound"]:SetText("Import");
 		_G[widget:GetName() .. "Action"]:Hide();
+		tinsert(widgetTab, widget);
 	end
 	TRP3_CharacterImporterList.widgetTab = widgetTab;
 	TRP3_CharacterImporterList.decorate = decorateProfileList;
