@@ -928,47 +928,26 @@ Are you sure you want to view this profile?]],
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_4 = [[# New in version 1.2.2
+		WHATS_NEW_5 = [[# New in version 1.2.3
+
+## Improved map scanning feature
+
+We have fixed the issues brought by patch 7.1 with the map markers. In order to improve compatibility with other add-ons that might display additionnal informations on the map, the map button for starting scans has been removed and you can now find the scanning options inside the default filters button in the top right corner of the map.
+
+## Improved broadcast protocol
+
+We have updated our broadcast protocol to use methods that consume less bandwidth. The other advantage is that these methods are available to trial accounts, meaning now users playing on a trial account will be able to query people for their location on the map and receive sounds from Total RP 3: Extended items!
+
+We have also added additionnal protections and monitoring against people trying to prevent you from joining the broadcast channel `xtensionxtooltip2` by adding a password to the channel.
+
+## Other improvements
+
+- Fixed a bug introduced in version 1.2 that was making the profiles importer tab not being displayed correctly. Thanks to Gordon8 and Gelaga for reporting this issue!
+- Total RP 3: Extended has been added to the list of optional modules in the More modules tab of the dashboard.
+
+# New in version 1.2.2
 
 This version fixes a massive performance issue with data transfer that impact TRP since 1.1.0. |cff00ff00It should be growing faster the more people update their TRP3 to this version. So spread the word!
-
-# New in version 1.2.1
-
-## Dice rolls
-
-The dice rolls from TRP2 are back! Use the command |cff00ff00/trp3 roll|r to roll a 1d100 dice. You can also roll several dices at once by indicating the count and type of dices. Any roll you make is shared with your party/raid/target if they have TRP3 1.2.1.
-
-Examples:
-|cff00ff00/trp3 roll 1d6
-/trp3 roll 2d20 1d12
-
-# New in version 1.2.0
-
-This version introduces a couple of new neat features and improvements.
-
-## Mature profiles filter system
-
-We have added a new mature profiles filter system to Total RP 3. This feature is enabled by default if the profanity filter option is enabled or if parental control is enabled. You can always enable or disable this option in the Register settings.
-
-When the mature filter is enabled, Total RP 3 will check the content of the profiles you receive to see if it contains specifics mature words. Profiles flagged as containing mature content have their tooltips muted, their at-first-glance bar is not shown and you will see an alert when trying to open the profile.
-
-You can choose to ignore the alert and consult the profile or add the profile to the white-list if you don't want it to be ever filtered again.
-
-You can also manually mark a profile as mature. When doing so, you will be able to provide the words that was not filtered by Total RP 3 so it is added to the filter, so it gets smarter at flagging profiles.
-
-The mature filter dictionary is pre-populated with a couple of words for the English, Spanish and French locale. You can edit the dictionary in the settings to remove or add words.
-
-## Export and import profiles
-
-You can now export profiles data to text that you can copy and paste somewhere else. You will then be able to paste back the data inside a profile. The data exported contains all your profile information, your relations, and will contain your inventory and quest-log in the future.
-
-## Improvements
-
-* We have refined the UI on various places.
-* The map location system has been tweaked to prevent an issue when the map is opened.
-* Fixed an issue with the companion system when color blind mode is enabled.
-* Minor Text Fixes™
-
 ]],
 		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
