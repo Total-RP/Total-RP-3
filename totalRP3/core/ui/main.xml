@@ -264,9 +264,8 @@
 		</Frames>
 	</Frame>
 	
-    <Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" hidden="true">
-		<TitleRegion setAllPoints="true"/>
-		<Anchors>	
+    <Frame name="TRP3_MainFrame" inherits="TRP3_MainFrameTemplate" hidden="true" movable="true">
+		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
 		<Scripts>
@@ -466,7 +465,6 @@
 	</ScrollFrame>
 
 	<Frame name="TRP3_CTLDebug" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true">
-		<TitleRegion setAllPoints="true"/>
 		<Size x="900" y="600"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>

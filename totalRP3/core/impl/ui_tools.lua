@@ -1081,3 +1081,17 @@ resizeShadowFrame:SetScript("OnUpdate", function(self)
 	end
 	resizeShadowFrame.text:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
 end);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Move frame
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.ui.frame.setupMove(frame)
+	frame:RegisterForDrag("LeftButton");
+	frame:SetScript("OnDragStart", function(self)
+		self:StartMoving();
+	end);
+	frame:SetScript("OnDragStop", function(self)
+		self:StopMovingOrSizing();
+	end)
+end

@@ -173,6 +173,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end);
 	end);
 
+	TRP3_API.ui.frame.setupMove(TRP3_MainFrame);
+
 	-- Update frame
 	TRP3_UpdateFrame.popup.title:SetText(loc("NEW_VERSION_TITLE"));
 
@@ -363,4 +365,5 @@ Average: %0.2f seconds
 			ctlFrame:Show();
 		end
 	});
+	TRP3_API.ui.frame.setupMove(ctlFrame);
 end);
