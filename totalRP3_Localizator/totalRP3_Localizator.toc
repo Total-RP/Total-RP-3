@@ -1,4 +1,4 @@
-﻿## Interface: 60200
+﻿## Interface: 70100
 ## Title: Total RP 3 : Localizator
 ## Author: Telkostrasz
 ## Notes: Dynamic custom localization
