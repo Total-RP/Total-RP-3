@@ -971,14 +971,18 @@ You can now export profiles data to text that you can copy and paste somewhere e
 
 ]],
 		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
+{h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
+|cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
+{link*http://extended.totalrp3.info*Download on Curse.com}
+
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
-|cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
+{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
 ]],
 
 		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
