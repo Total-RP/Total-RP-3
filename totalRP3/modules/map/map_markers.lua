@@ -117,12 +117,12 @@ local function animateMarker(marker, x, y, directAnimation)
 			after(4 * factor, function()
 				marker:Show();
 				marker:SetAlpha(0);
-				playAnimation(_G[marker:GetName() .. "Bounce"]);
+				playAnimation(marker.Bounce);
 			end);
 		else
 			marker:Show();
 			marker:SetAlpha(0);
-			playAnimation(_G[marker:GetName() .. "Bounce"]);
+			playAnimation(marker.Bounce);
 		end
 	else
 		marker:Show();
@@ -137,11 +137,11 @@ TRP3_API.map.DECORATION_TYPES = DECORATION_TYPES;
 
 local function decorateMarker(marker, decorationType)
 	if not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
-		_G[marker:GetName() .. "Icon"]:SetTexture("Interface\\Minimap\\OBJECTICONS");
-		_G[marker:GetName() .. "Icon"]:SetTexCoord(0, 0.125, 0, 0.125);
+		marker.Icon:SetTexture("Interface\\Minimap\\OBJECTICONS");
+		marker.Icon:SetTexCoord(0, 0.125, 0, 0.125);
 	elseif decorationType == DECORATION_TYPES.HOUSE then
-		_G[marker:GetName() .. "Icon"]:SetTexture("Interface\\Minimap\\POIICONS");
-		_G[marker:GetName() .. "Icon"]:SetTexCoord(0.357143, 0.422, 0, 0.036);
+		marker.Icon:SetTexture("Interface\\Minimap\\POIICONS");
+		marker.Icon:SetTexCoord(0.357143, 0.422, 0, 0.036);
 	end
 end
 
@@ -182,6 +182,37 @@ end
 
 local SCAN_STRUCTURES = {};
 local currentMapID;
+local launchScan;
+local currentlyScanning = false;
+local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize = UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize;
+
+local function insertScansInDropdown(_, level)
+	if level==1 then
+		local info = UIDropDownMenu_CreateInfo();
+
+		info.isTitle = true;
+		info.notCheckable = true;
+		info.text = TRP3_API.globals.addon_name;
+		UIDropDownMenu_AddButton(info);
+
+		info.isTitle = nil;
+
+		info.func = launchScan;
+
+		if Utils.table.size(SCAN_STRUCTURES) < 1 then
+			info.text = loc("MAP_BUTTON_NO_SCAN");
+			info.disabled = true;
+			UIDropDownMenu_AddButton(info);
+		else
+			for _, scanStructure in pairs(SCAN_STRUCTURES) do
+				info.text = scanStructure.buttonText;
+				info.disabled = scanStructure.canScan and scanStructure.canScan(currentlyScanning) ~= true;
+				info.value = scanStructure.id;
+				UIDropDownMenu_AddButton(info);
+			end
+		end
+	end
+end
 
 local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
@@ -197,11 +228,11 @@ local function registerScan(structure)
 			structure.scanAssembler(structure.saveStructure, ...);
 		end)
 	end
-
 end
 TRP3_API.map.registerScan = registerScan;
 
-local function launchScan(scanID)
+function launchScan(info)
+	local scanID = info.value;
 	assert(SCAN_STRUCTURES[scanID], ("Unknown scan id %s"):format(scanID));
 	local structure = SCAN_STRUCTURES[scanID];
 	if structure.scan then
@@ -211,8 +242,6 @@ local function launchScan(scanID)
 		if structure.scanDuration then
 			local mapID = GetCurrentMapAreaID();
 			currentMapID = mapID;
-			TRP3_WorldMapButton:Disable();
-			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
 			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
@@ -225,9 +254,9 @@ local function launchScan(scanID)
 			playAnimation(TRP3_ScanLoaderBackAnimation1);
 			playAnimation(TRP3_ScanLoaderBackAnimation2);
 			TRP3_API.ui.misc.playSoundKit(40216);
+			currentlyScanning = true;
 			after(structure.scanDuration, function()
-				TRP3_WorldMapButton:Enable();
-				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
+				currentlyScanning = false;
 				if mapID == GetCurrentMapAreaID() then
 					if structure.scanComplete then
 						structure.scanComplete(structure.saveStructure);
@@ -258,32 +287,15 @@ local function launchScan(scanID)
 end
 TRP3_API.map.launchScan = launchScan;
 
-local function onButtonClicked(self)
-	local structure = {};
-	for scanID, scanStructure in pairs(SCAN_STRUCTURES) do
-		if not scanStructure.canScan or scanStructure.canScan() == true then
-			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 25) .. " " .. (scanStructure.buttonText or scanID), scanID});
-		end
-	end
-	if #structure == 0 then
-		tinsert(structure, {loc("MAP_BUTTON_NO_SCAN"), nil});
-	end
-	displayDropDown(self, structure, launchScan, 0, true);
-end
-
 local function onWorldMapUpdate()
 	local mapID = GetCurrentMapAreaID();
-	if currentMapID ~= mapID and not TRP3_WorldMapButton.doNotHide then
+	if currentMapID ~= mapID then
 		currentMapID = mapID;
 		hideAllMarkers();
 	end
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-	TRP3_WorldMapButton.title = loc("MAP_BUTTON_TITLE");
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
-	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
 	TRP3_ScanLoaderFrameScanning:SetText(loc("MAP_BUTTON_SCANNING"));
 
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
@@ -301,37 +313,7 @@ end);
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
 local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
 
-local function placeMapButton(position)
-	position = position or "BOTTOMLEFT";
-	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_WorldMapButton:ClearAllPoints();
-	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame, position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
-end
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
-
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc("CO_MAP_BUTTON"),
-	});
-
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigDropDown",
-		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
-		title = loc("CO_MAP_BUTTON_POS"),
-		listContent = {
-			{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
-			{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
-			{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
-			{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"}
-		},
-		listCallback = placeMapButton,
-		listCancel = true,
-		configKey = CONFIG_MAP_BUTTON_POSITION,
-	});
-
-	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
-
+	hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", insertScansInDropdown);
+	UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU");
 end);

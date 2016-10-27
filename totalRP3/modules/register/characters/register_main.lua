@@ -702,8 +702,8 @@ function TRP3_API.register.init()
 				end
 			end;
 		end,
-		canScan = function()
-			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION);
+		canScan = function(currentlyScanning)
+			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION) and not currentlyScanning;
 		end,
 		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
 			if playersCanSeeEachOthers(sender) then
