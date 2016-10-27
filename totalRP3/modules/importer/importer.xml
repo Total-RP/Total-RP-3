@@ -123,7 +123,7 @@
 	<Frame name="TRP3_ProfileImporterLine" inherits="TRP3_ProfileManagerLine" virtual="true">
 	</Frame>
 
-	<Frame name="TRP3_CharacterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2"
+	<Frame name="TRP3_CharacterImporter" parentKey="characterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2"
 		   hidden="true">
 		<Anchors>
 			<Anchor point="TOPRIGHT" x="-8" y="-33"/>

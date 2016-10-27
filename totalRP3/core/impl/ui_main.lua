@@ -186,9 +186,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local toHTML =TRP3_API.utils.str.toHTML;
 	local ctl = ChatThrottleLib;
 	local ctlFrame = TRP3_CTLDebug;
-	ctlFrame:SetScript("OnShow", function(self)
-		self:GetTitleRegion():SetAllPoints(self);
-	end)
 	local ctlHTML = ctlFrame.scroll.child.HTML;
 	local ctlHTML2 = ctlFrame.scroll.child.HTML2;
 	TRP3_API.ui.frame.createRefreshOnFrame(ctlFrame, 0.2, function()

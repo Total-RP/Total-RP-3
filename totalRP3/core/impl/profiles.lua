@@ -461,6 +461,10 @@ function TRP3_API.profile.init()
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end,
 	});
 
+	TRP3_ProfileManager.list.onTab = function()
+		uiInitProfileList();
+	end
+
 	local frame = CreateFrame("Frame", "TRP3_ProfileManagerTabBar", TRP3_ProfileManager);
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
@@ -468,18 +472,20 @@ function TRP3_API.profile.init()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{loc("PR_PROFILEMANAGER_TITLE"), 1, 175},
-			{loc("PR_IMPORT_CHAR_TAB"), 2, 175},
+			{loc("PR_PROFILEMANAGER_TITLE"), "list", 175},
+			{loc("PR_IMPORT_CHAR_TAB"), "characterImport", 175},
 		},
 		function(tabWidget, value)
-			local list, importer = TRP3_ProfileManager:GetChildren();
-			importer:Hide();
-			list:Hide();
-			if value == 1 then
-				list:Show();
-				uiInitProfileList();
-			elseif value == 2 then
-				importer:Show();
+			for _, child in pairs({TRP3_ProfileManager:GetChildren()}) do
+				if frame ~= child then
+					child:Hide();
+				end
+			end
+			if value and TRP3_ProfileManager[value] then
+				TRP3_ProfileManager[value]:Show();
+				if TRP3_ProfileManager[value].onTab then
+					TRP3_ProfileManager[value].onTab();
+				end
 			end
 		end
 	);

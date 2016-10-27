@@ -128,7 +128,7 @@
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
 		<Frames>
-			<Frame frameLevel="2">
+			<Frame frameLevel="2" parentKey="list">
 				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 					<EdgeSize val="24"/>
 				</Backdrop>
@@ -224,7 +224,7 @@
 
 	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true" />
 
-	<Frame name="TRP3_ProfileExport" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+	<Frame name="TRP3_ProfileExport" parentKey="export" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 		<Size x="400" y="300"/>
 
 		<Anchors>
@@ -279,7 +279,7 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ProfileImport" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
+	<Frame parentKey="import" name="TRP3_ProfileImport" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 		<Size x="400" y="300"/>
 
 		<Anchors>
