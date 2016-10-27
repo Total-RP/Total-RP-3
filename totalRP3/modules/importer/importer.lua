@@ -134,7 +134,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	local function decorateProfileList(widget, id)
-		assert(addOns[profiles[id]], "The addon associated to this profile is not registered in the improter");
+		assert(addOns[profiles[id]], "The addon associated to this profile is not registered in the importer");
 		local profile = addOns[profiles[id]].getProfile(id);
 		local importableData = addOns[profiles[id]].getImportableData();
 		widget.profileID = id;
@@ -147,17 +147,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 		-- If the given profile has a value for the index of the importable data,
 		-- it will be displayed as "will be imported". If not, it will be greyed out.
-		for k, v in pairs(importableData) do
-			if profile.info[k] then
-				tooltip = tooltip .. "|cff00ff00" .. v .. "|r\n";
+		for key, value in pairs(importableData) do
+			if profile.info[key] then
+				tooltip = tooltip .. "|cff00ff00" .. value .. "|r\n";
 			else
-				tooltip = tooltip .. "|cffcccccc" .. v .. "|r\n";
+				tooltip = tooltip .. "|cffcccccc" .. value .. "|r\n";
 			end
 		end
 
-		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 0,
-			loc("PR_IMPORT_WILL_BE_IMPORTED") .. " :",
-			tooltip);
+		setTooltipForSameFrame(_G[widget:GetName() .. "Info"], "RIGHT", 0, 0, loc("PR_IMPORT_WILL_BE_IMPORTED") .. " :", tooltip);
 	end
 
 	local function refreshDisplay()
@@ -180,7 +178,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		_G[widget:GetName() .. "Bound"]:SetScript("OnClick", onImportButtonClicked);
 		_G[widget:GetName() .. "Bound"]:SetText("Import");
 		_G[widget:GetName() .. "Action"]:Hide();
-		table.insert(widgetTab, widget);
 	end
 	TRP3_CharacterImporterList.widgetTab = widgetTab;
 	TRP3_CharacterImporterList.decorate = decorateProfileList;

@@ -473,7 +473,7 @@ function TRP3_API.profile.init()
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{loc("PR_PROFILEMANAGER_TITLE"), "list", 175},
-			{loc("PR_IMPORT_CHAR_TAB"), "characterImport", 175},
+			{loc("PR_IMPORT_CHAR_TAB"), "characterImporter", 175},
 		},
 		function(tabWidget, value)
 			for _, child in pairs({TRP3_ProfileManager:GetChildren()}) do
