@@ -26,6 +26,13 @@ local LOCALE = {
 		ABOUT_TITLE = "À propos",
 		BINDING_NAME_TRP3_TOGGLE = "Afficher/cacher la fenêtre principale",
 		BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Afficher/cacher la barre d'outils",
+		BROADCAST_10 = "|cffff9900Vous avez déjà rejoint 10 canaux de discussion. Total RP 3 n'essaiera plus de se connecter au canal de diffusion mais vous ne serrez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.",
+		BROADCAST_PASSWORD = [=[|cffff0000Un mot de passe a été défini pour le canal de diffusion (%s).
+|cffff9900Total RP 3 n'essaiera plus de se connecter mais vous ne serrez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
+|cff00ff00Vous pouvez désactiver ou modifier le canal de diffusion dans les réglages de Total RP 3.]=],
+		BROADCAST_PASSWORDED = [=[|cffff0000L'utilisateur |r%s|cffff0000 vient de mettre un mot de passe sur le canal de diffusion (%s).
+|cffff9900Si vous ne connaissiez pas ce mot de passe vous ne serez pas en mesure d'utiliser certaines fonctionnalités, comme l'emplacement des autres utilisateurs sur la carte.
+]=],
 		BW_COLOR_CODE = "Code couleur",
 		BW_COLOR_CODE_ALERT = "Mauvais code hexadécimal !",
 		BW_COLOR_CODE_TT = "Vous pouvez coller ici un code couleur hexadecimal à 6 caractères et appuyer sur Entrée pour valider.",
@@ -157,8 +164,6 @@ Cela provoquera une rechargement de l'interface.]=],
 		CO_LOCATION_DISABLE_PVP_TT = [=[Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en mode PvP.
 
 Cette option est particulièrement utile sur les royaume PvP où les utilisateurs de la faction opposée pourraient abuser du système pour vous traquer.]=],
-		CO_MAP_BUTTON = "Bouton de scan de la carte",
-		CO_MAP_BUTTON_POS = "Ancre du bouton de scan sur la carte",
 		CO_MINIMAP_BUTTON = "Bouton de la minicarte",
 		CO_MINIMAP_BUTTON_FRAME = "Cadre d'ancrage",
 		CO_MINIMAP_BUTTON_RESET = "Réinitialiser la position",
@@ -320,7 +325,6 @@ aux autres que vous débutez dans le roleplay.]=],
 		MAP_BUTTON_NO_SCAN = "Pas de scan disponible",
 		MAP_BUTTON_SCANNING = "Scan en cours",
 		MAP_BUTTON_SUBTITLE = "Clic pour afficher les scans disponibles",
-		MAP_BUTTON_TITLE = "Recherche de roleplay",
 		MAP_SCAN_CHAR = "Scan de personnages",
 		MAP_SCAN_CHAR_TITLE = "Personnages",
 		MATURE_FILTER_ADD_TO_WHITELIST = "Ajouter ce profil à la |cffffffffliste blanche mature|r",
@@ -368,6 +372,10 @@ Ce profil a été marqué comme contenu du contenu mature.
 		MM_SHOW_HIDE_MOVE = "Déplacer le bouton",
 		MM_SHOW_HIDE_SHORTCUT = "Afficher/cacher la barre d'outils",
 		MORE_MODULES_1 = [=[{h2:c}Modules optionnels{/h2}
+{h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
+|cff9999ffTotal RP 3: Extended|r ajoute la possibilitée de créer votre propre contenu: des campagnes avec des quêtes et des dialogues de PNJ, des objets, des documents (livres, affiches, contrats) et bien plus!
+{link*http://extended.totalrp3.info*Télécharger sur Curse.com}
+
 {h3}Module TipTac{/h3}
 Le |cff9999ffModule TipTac|r ajoute la compatibilité avec l'add-on TipTac pour que l'infobulle de Total RP 3 utilisent l'apparence et l'ancrage de TipTac.
 |cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Télécharger sur Curse.com}.
@@ -954,7 +962,7 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 |cffffff00Clic droit:|r Arrêter le thème]=],
 		THANK_YOU_1 = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
@@ -1010,46 +1018,26 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		UI_MUSIC_SELECT = "Choisir une musique",
 		UI_TUTO_BUTTON = "Mode tutoriel",
 		UI_TUTO_BUTTON_TT = "Cliquer pour afficher ou masquer le mode tutoriel",
-		WHATS_NEW_4 = [=[# Nouveauté de la version 1.2.2
+		WHATS_NEW_5 = [=[# Nouveautés de la version 1.2.3
 
-Cette version règle un énorme souci de performance dans l'envoi et la réception de données. |cff00ff00Il sera d'autant plus efficace lorsque beaucoup d'utilisateurs utiliseront cette version, donc faites passer le mot !
+## Amélioration de la fonction de scan sur la carte
 
-# Nouveauté de la version 1.2.1
+Nous avons corrigé un problème avec les marqueurs sur la carte introduit avec le patch 7.1. Également, afin d'être plus compatible avec d'autres add-ons ajoutant des informations sur la carte dans l'avenir, nous avons enlever le bouton de Total RP 3 et vous devez maintenant passer par le bouton de filtres (la loupe) en haut à droite pour lancer un scan.
 
-## Jets de dés
+## Amélioration du protocole de diffusion
 
-Les jets de dés de TRP2 sont de retour ! Utilisez la commande |cff00ff00/trp3 roll|r pour jeter 1d100. Vous pouvez aussi faire plusieurs jets d'un coup en indiquant le nombre et le type de dés à jeter. Chaque jet est partagé en groupe/raid ou avec votre cible s'ils possèdent TRP3 1.2.1.
+Nous avons mis-à-jour le protocole de diffusion pour utiliser des méthodes utilisant moins de bande passante. Autre avantage, ces méthode sont disponibles pour les comptes d'essai, ce qui veut dire que les utilisateurs jouant sur un compte d'essai pourront maintenant afficher les joueurs sur la carte et recevoir/envoyer des sons d'objets Total RP 3: Extended!
 
-Exemples:
-|cff00ff00/trp3 roll 1d6
-/trp3 roll 2d20 1d12
+Nous avons également ajouter des protections et une surveillance du canal de diffusion contre les gens qui essaieraient de vous empêcher de rejoindre le canal de diffusion `xtensionxtooltip2` en paramétrant un mot de passe.
 
-# Nouveauté de la version 1.2.0
+## Autres améliorations
 
-Cette version ajoute quelques fonctionnalités sympathiques et des améliorations
+- Nous avons corrigé un bug introduit dans la version 1.2 qui empêchait la page d'importation de profils depuis un autre add-on de s'afficher correctement. Merci à Gordon8 et Gelaga d'avoir rapporté ce problème!
+- Total RP 3: Extended a été rajouté à la liste des modules optionnels sur l'écran d'accueil.
 
-## Filtre de contenu mature
+# Nouveautés de la version 1.2.2
 
-Nous avons ajouter un filtre de contenu mature à Total RP 3. Cette fonctionnalité sera activée par défaut si vous avez le filtre d'obscénité activé ou si le contrôle parental est activé. Vous pouvez à tout moment activer ou désactiver cette option dans les réglages du registre.
-
-Quand le filtre de contenu mature est activé, Total RP 3 analysera le contenu des profils reçus pour rechercher des mots considérés comme inappropriés. Un profile marqué comme contenant du contenu mature aura son infobulle censuré, sa barre de clin-d'œil sera masquée et une alerte sera affichée quand vous ouvrirez le profil.
-
-Vous pouvez choisir d'ignorer l'alerte et consulter le profile ou encore ajouter le profile à la liste blanche si vous souhaitez que Total RP 3 ne masque plus ce profil.
-
-Vous pouvez également marqué un profil comme contenant du contenu mature manuellement. Il vous sera proposer d'indiquer les mots inappropriés pour qu'ils soient ajoutés au filtre de Total RP 3, qui deviendra de plus en plus intelligent.
-
-Le dictionnaire utilisé par le filtre de contenu mature est pré-rempli avec quelques mots inappropriés pour le français, l'anglais et l'espagnol. Vous pouvez éditer le dictionnaire dans les réglages pour ajouter ou supprimer des mots.
-
-## Exporter et importer des profils
-
-Il est mantenant possible d'exporter un profil sous forme de texte à copier-coller autre part pour en faire une sauvegarde. Vous pourrez ensuite coller les données dans un profil pour les restaurées. Les données exportées comprennent vos informations de profil, vos relations, et contiendront également votre inventaire et votre journal de quêtes dans le future.
-
-## Améliorations
-
-* Nous avons peaufiné l'interface un peu partout.
-* Nous avons modifié le système de localisation sur la carte pour éviter un problème lorsque la carte est ouverte.
-* Nous avons corrigé un problème avec le système de compagnons lorsque le mode daltonien est activé.
-* Corrections de Texte Mineures™
+Cette version corrige un soucis de performances majeur avec le transfert de données qui impactait Total RP 3 depuis la version 1.1.0. |cff00ff00Le transfert de données sera de plus en plus rapide à mesure que tout le monde passe à la version 1.2.2 ou supérieur. Donc faites passer le mot !
 ]=],
 	}
 };
