@@ -184,11 +184,15 @@ local SCAN_STRUCTURES = {};
 local currentMapID;
 local launchScan;
 local currentlyScanning = false;
-local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize = UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize;
+local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator = UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator;
 
 local function insertScansInDropdown(_, level)
 	if level==1 then
 		local info = UIDropDownMenu_CreateInfo();
+
+		UIDropDownMenu_AddSeparator(info);
+
+		info = UIDropDownMenu_CreateInfo();
 
 		info.isTitle = true;
 		info.notCheckable = true;

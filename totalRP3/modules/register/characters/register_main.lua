@@ -697,13 +697,16 @@ function TRP3_API.register.init()
 		scanResponder = function(sender, zoneID)
 			if locationEnabled() and playersCanSeeEachOthers(sender) then
 				local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
+				x = x or 0;
+				y = y or 0;
 				if tonumber(mapID) == tonumber(zoneID) and not (x == 0 and y == 0) then
 					broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
 				end
 			end;
 		end,
 		canScan = function(currentlyScanning)
-			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION) and not currentlyScanning;
+			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
+			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION) and not currentlyScanning and x ~= nil and y ~= nil;
 		end,
 		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
 			if playersCanSeeEachOthers(sender) then
