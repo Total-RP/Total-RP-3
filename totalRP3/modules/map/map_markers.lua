@@ -163,7 +163,8 @@ local function displayMarkers(structure)
 			structure.scanMarkerDecorator(key, entry, marker);
 		end
 
-		animateMarker(marker, entry.x, entry.y);
+		animateMarker(marker, entry.x, entry.y, structure.noAnim);
+
 		i = i + 1;
 	end
 end

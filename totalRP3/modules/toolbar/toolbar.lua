@@ -122,7 +122,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "BOTTOM", 0, 0, buttonStructure.tooltip, buttonStructure.tooltipSub);
+					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, buttonStructure.tooltip, buttonStructure.tooltipSub);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);

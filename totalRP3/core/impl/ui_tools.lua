@@ -154,11 +154,6 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 					info.tooltipOnButton = tooltipText ~= nil;
 					info.tooltipTitle = text;
 					info.tooltipText = tooltipText;
-					if tab[3] then
-						info.tooltipTitle = tab[1];
-						info.tooltipText = tab[3];
-						info.tooltipOnButton = true;
-					end
 					if type(value) == "table" then
 						info.hasArrow = true;
 						info.keepShownOnClick = true;
@@ -175,8 +170,8 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 							currentlyOpenedDrop = nil;
 						end;
 					else
-						info.func = function() end;
-						info.isTitle = true;
+						info.disabled = true;
+						info.isTitle = tooltipText == nil;
 					end
 				end
 				UIDropDownMenu_AddButton(info, level);
