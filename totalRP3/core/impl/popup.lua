@@ -510,7 +510,14 @@ local function initColorBrowser()
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
 		if self:GetText():match("^%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number
 			local r, g, b = hexaToNumber(self:GetText());
-			TRP3_ColorBrowserColor:SetColorRGB(r / 255, g / 255, b / 255);
+			r = r / 255;
+			g = g / 255;
+			b = b / 255;
+			TRP3_ColorBrowser.red = r;
+			TRP3_ColorBrowser.green = g;
+			TRP3_ColorBrowser.blue = b;
+			TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
+			TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 			self:ClearFocus();
 		else
 			toast(loc("BW_COLOR_CODE_ALERT"), 1);
