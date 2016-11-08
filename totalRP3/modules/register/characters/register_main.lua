@@ -677,6 +677,9 @@ function TRP3_API.register.init()
 	};
 
 	local function playersCanSeeEachOthers(sender)
+		if sender == Globals.player_id then
+			return false;
+		end
 		local currentMapID = GetCurrentMapAreaID();
 		if tContains(phasedZones, currentMapID) then
 			return UnitInParty(Ambiguate(sender, "none"));
