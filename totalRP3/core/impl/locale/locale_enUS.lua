@@ -420,6 +420,7 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_TOOLTIP_TERSIZE = "Tertiary font size",
 		CO_TOOLTIP_SPACING = "Show spacing",
 		CO_TOOLTIP_SPACING_TT = "Places spaces to lighten the tooltip, in the style of MyRoleplay tooltip.",
+		CO_TOOLTIP_NO_FADE_OUT = "Hide immediately instead of fading",
 		CO_TOOLTIP_PETS = "Companions tooltip",
 		CO_TOOLTIP_OWNER = "Show owner",
 		CO_TOOLTIP_PETS_INFO = "Show companion info",
