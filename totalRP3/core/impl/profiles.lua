@@ -569,4 +569,29 @@ function TRP3_API.profile.init()
 			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
 		end
 	end);
+
+	TRP3_API.slash.registerCommand({
+		id = "profile",
+		helpLine = " " .. loc("PR_SLASH_SWITCH_HELP"),
+		handler = function(...)
+			local args = {...};
+
+			if #args < 1 then
+				TRP3_API.utils.message.displayMessage(loc("PR_SLASH_EXAMPLE"));
+				return
+			end
+
+			local profileName = table.concat(args, " ");
+			local profiles = getProfiles();
+
+			for profileID, profile in pairs(profiles) do
+				if profile.profileName == profileName then
+					TRP3_API.profile.selectProfile(profileID);
+					return;
+				end
+			end
+
+			TRP3_API.utils.message.displayMessage(loc("PR_SLASH_NOT_FOUND"):format(profileName));
+		end
+	});
 end
