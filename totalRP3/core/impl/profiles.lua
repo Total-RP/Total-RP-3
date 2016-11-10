@@ -37,6 +37,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local tcopy = TRP3_API.utils.table.copy;
+local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
 
 -- Saved variables references
@@ -577,7 +578,7 @@ function TRP3_API.profile.init()
 			local args = {...};
 
 			if #args < 1 then
-				TRP3_API.utils.message.displayMessage(loc("PR_SLASH_EXAMPLE"));
+				displayMessage(loc("PR_SLASH_EXAMPLE"));
 				return
 			end
 
@@ -586,12 +587,12 @@ function TRP3_API.profile.init()
 
 			for profileID, profile in pairs(profiles) do
 				if profile.profileName == profileName then
-					TRP3_API.profile.selectProfile(profileID);
+					selectProfile(profileID);
 					return;
 				end
 			end
 
-			TRP3_API.utils.message.displayMessage(loc("PR_SLASH_NOT_FOUND"):format(profileName));
+			displayMessage(loc("PR_SLASH_NOT_FOUND"):format(profileName));
 		end
 	});
 end
