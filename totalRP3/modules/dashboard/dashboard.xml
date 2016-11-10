@@ -135,8 +135,8 @@
         </Frames>
     </Frame>
 
-    <Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true">
-        <Size x="350" y="250"/>
+    <Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+        <Size x="350" y="215"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -151,29 +151,13 @@
                     </Anchors>
                     <Color r="0.95" g="0.95" b="0.95"/>
                 </FontString>
-                <FontString parentKey="nameLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-                    <Size x="150" y="30"/>
-                    <Anchors>
-                        <Anchor point="LEFT" x="20"/>
-                        <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
-                    </Anchors>
-                    <Color r="0.95" g="0.95" b="0.95"/>
-                </FontString>
-                <FontString parentKey="channelLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
-                    <Size x="150" y="30"/>
-                    <Anchors>
-                        <Anchor point="LEFT" x="20"/>
-                        <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.nameLabel" y="-5"/>
-                    </Anchors>
-                    <Color r="0.95" g="0.95" b="0.95"/>
-                </FontString>
                 <FontString parentKey="messageLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
                     <Size x="150" y="30"/>
                     <Anchors>
-                        <Anchor point="LEFT" x="20"/>
-                        <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.channelLabel"/>
+                        <Anchor point="LEFT" x="25"/>
+                        <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-30"/>
                     </Anchors>
-                    <Color r="0.95" g="0.95" b="0.95"/>
+                    <Color r="0.95" g="0.75" b="0.1"/>
                 </FontString>
             </Layer>
         </Layers>
@@ -183,30 +167,32 @@
                     <Anchor point="TOPRIGHT" x="-5" y="-5"/>
                 </Anchors>
             </Button>
-            <EditBox parentKey="nameText" inherits="TRP3_TitledHelpEditBox">
+            <EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
                 <Size y="18"/>
                 <Anchors>
-                    <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.nameLabel"/>
-                    <Anchor point="RIGHT" x="-28" />
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-10"/>
+                    <Anchor point="LEFT" relativePoint="LEFT" x="25"/>
+                    <Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent" x="-20"/>
                 </Anchors>
             </EditBox>
             <Frame parentKey="channelDropdown" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
                 <Anchors>
-                    <Anchor point="LEFT" relativePoint="RIGHT" relativeKey="$parent.channelLabel" x="-22"/>
-                    <Anchor point="RIGHT" x="-20" />
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
+                    <Anchor point="RIGHT" relativePoint="RIGHT" x="-25"/>
+                    <Anchor point="LEFT" relativePoint="CENTER" relativeKey="$parent" x="0"/>
                 </Anchors>
             </Frame>
             <Frame parentKey="messageText" inherits="TRP3_TextArea">
                 <Size y="70"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.messageLabel" x="-2"/>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.messageLabel" x="-5" y="8"/>
                     <Anchor point="RIGHT" x="-20" />
                 </Anchors>
             </Frame>
             <Button parentKey="send" inherits="TRP3_CommonButton">
                 <Anchors>
                     <Anchor point="CENTER"/>
-                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.messageText" y="-5"/>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.messageText" y="-10"/>
                 </Anchors>
             </Button>
         </Frames>
