@@ -27,6 +27,8 @@ local tinsert, _G, strconcat = tinsert, _G, strconcat;
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
 
+	local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
+
 	local languagesIcon = {
 
 		-- Alliance
@@ -70,15 +72,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			local currentLanguage = ChatFrame1EditBox.language
 			
 			if languagesIcon[currentLanguageID] then
-				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\"..languagesIcon[currentLanguageID]);
-				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\"..languagesIcon[currentLanguageID]);
-				Uibutton:GetPushedTexture():SetDesaturated(1);
-				setTooltipForFrame(Uibutton, Uibutton, "BOTTOM", 0, 0, icon(languagesIcon[currentLanguageID], 25) .." "..loc("TB_LANGUAGE")..": "..currentLanguage, strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_LANGUAGES_TT")));
+				buttonStructure.tooltip  = loc("TB_LANGUAGE")..": "..currentLanguage;
+				buttonStructure.tooltipSub  = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_LANGUAGES_TT"));
+				buttonStructure.icon = languagesIcon[currentLanguageID];
 			else
-				Uibutton:GetNormalTexture():SetTexture("Interface\\ICONS\\spell_holy_silence");
-				Uibutton:GetPushedTexture():SetTexture("Interface\\ICONS\\spell_holy_silence");
-				Uibutton:GetPushedTexture():SetDesaturated(1);
+				buttonStructure.icon = "spell_holy_silence";
 			end
+
+			updateToolbarButton(Uibutton, buttonStructure);
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
 			local dropdownItems = {};

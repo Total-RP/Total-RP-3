@@ -29,6 +29,8 @@ local function onStart()
 	-- Public accessor
 	TRP3_API.toolbar = {};
 
+	local LDBObjects = {};
+
 	-- imports
 	local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 	local loc = TRP3_API.locale.getText;
@@ -122,7 +124,8 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, buttonStructure.tooltip, buttonStructure.tooltipSub);
+					local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. buttonStructure.tooltip;
+					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, tooltipTitleWithIcon, buttonStructure.tooltipSub);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -153,6 +156,39 @@ local function onStart()
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Databroker integration
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	local LDB = LibStub:GetLibrary("LibDataBroker-1.1");
+
+	---
+	-- Register a Databroker plugin using a button structure
+	-- @param buttonStructure
+	--
+	local function registerDatabrokerButton(buttonStructure)
+		local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+		local LDBObject = LDB:NewDataObject(
+			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
+			{
+				type= "data source",
+				icon = "Interface\\ICONS\\"..buttonStructure.icon,
+				OnClick = function(Uibutton, button)
+					if buttonStructure.onClick then
+						buttonStructure.onClick(Uibutton, buttonStructure, button);
+					end
+				end,
+				tooltipTitle = tooltipTitleWithIcon,
+				tooltipSub = buttonStructure.tooltipSub,
+				OnTooltipShow = function(tooltip)
+					local LDBButton = LDBObjects[buttonStructure.id];
+					tooltip:AddLine(color("w") .. LDBButton.tooltipTitle);
+					tooltip:AddLine(LDBButton.tooltipSub, nil, nil, nil, true);
+				end
+			});
+		LDBObjects[buttonStructure.id] = LDBObject;
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar API
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -165,8 +201,26 @@ local function onStart()
 		assert(buttonStructure and buttonStructure.id, "Usage: button structure containing 'id' field");
 		assert(not buttonStructures[buttonStructure.id], "The toolbar button with id "..buttonStructure.id.." already exists.");
 		buttonStructures[buttonStructure.id] = buttonStructure;
+		registerDatabrokerButton(buttonStructure);
 	end
 	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
+
+	local function updateToolbarButton(toolbarButton, buttonStructure)
+
+		toolbarButton:SetNormalTexture("Interface\\ICONS\\" .. buttonStructure.icon);
+		toolbarButton:SetPushedTexture("Interface\\ICONS\\" .. buttonStructure.icon);
+		toolbarButton:GetPushedTexture():SetDesaturated(1);
+
+		local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. buttonStructure.tooltip;
+
+		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, tooltipTitleWithIcon, buttonStructure.tooltipSub);
+
+		local LDBButton = LDBObjects[buttonStructure.id];
+		LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
+		LDBButton.tooltipTitle = tooltipTitleWithIcon;
+		LDBButton.tooltipSub = buttonStructure.tooltipSub;
+	end
+	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
 	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position

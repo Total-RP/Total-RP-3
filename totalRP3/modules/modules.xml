@@ -129,7 +129,5 @@
 	
 	<Include file="importer\importer.xml"/>
 
-	<Include file="databroker\databroker.xml"/>
-
 	<Include file="map\map.xml"/>
 </Ui>
