@@ -130,7 +130,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- We also register a slash command, so people who disable the toolbar button
 	-- or the toolbar module entirely can still access the feature
 	TRP3_API.slash.registerCommand({
-		id = "npc_talk",
+		id = "npc_speeches",
 		helpLine = " " .. loc("NPC_TALK_COMMAND_HELP"),
 		handler = showNPCTalkFrame
 	});

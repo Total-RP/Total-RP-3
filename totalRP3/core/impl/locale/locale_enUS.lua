@@ -903,10 +903,10 @@ Are you sure you want to view this profile?]],
 		DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-		-- NPC TALKS
+		-- NPC Speeches
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-		NPC_TALK_TITLE = "NPC talk",
+		NPC_TALK_TITLE = "NPC speeches",
 		NPC_TALK_NAME = "NPC name",
 		NPC_TALK_NAME_TT = [[You can use standard chat tags like %t to insert your target's name or %f to insert your focus' name.
 
@@ -916,8 +916,8 @@ You can also leave this field empty to create emotes without an NPC name at the 
 		NPC_TALK_CHANNEL = "Channel: ",
 		NPC_TALK_SEND = "Send",
 		NPC_TALK_ERROR_EMPTY_MESSAGE = "The message cannot be empty.",
-		NPC_TALK_COMMAND_HELP = "Open the NPC talk frame.",
-		NPC_TALK_BUTTON_TT = "Open the NPC talk frame allowing you to do NPC speeches or emotes.",
+		NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
+		NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- MISC
