@@ -1,131 +1,203 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
-<!--
-	Total RP 3
-	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+    <!--
+        Total RP 3
+        Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 
-		http://www.apache.org/licenses/LICENSE-2.0
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
--->
-	
-	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true">
-	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="24"/>
-		</Backdrop>
-		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture file="Interface\Artifacts\ArtifactUIWarlock">
-					<Anchors>
-						<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-						<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
-						<Anchor point="LEFT" x="5" y="0"/>
-					</Anchors>
-					<TexCoords left="0" right="0.7" top="0.60" bottom="0"/>
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
-			        <Size x="256" y="128"/>
-					<Anchors>
-						<Anchor point="TOP" x="0" y="0"/>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
+            http://www.apache.org/licenses/LICENSE-2.0
 
-			<!-- Status -->
-			<Frame name="TRP3_DashboardStatus" inherits="TRP3_FieldSetFrame">
-				<Size x="0" y="90"/>
-				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="0"/>
-				</Anchors>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString name="TRP3_DashboardStatus_XPStatus" inherits="GameFontNormal" justifyH="LEFT" text="[XP_STATUS]">
-							<Size x="200" y="18"/>
-							<Anchors>
-								<Anchor point="LEFT" x="30" y="0"/>
-								<Anchor point="BOTTOM" x="0" y="20"/>
-							</Anchors>
-							<Color b="1.0" r="1.0" g="1.0"/>
-						</FontString>
-						<FontString name="TRP3_DashboardStatus_CharactStatus" inherits="GameFontNormal" justifyH="LEFT"  text="[CHARACTER_STATUS]">
-							<Size x="200" y="18"/>
-							<Anchors>
-								<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="TRP3_DashboardStatus_XPStatus" x="0" y="13"/>
-							</Anchors>
-							<Color b="1.0" r="1.0" g="1.0"/>
-						</FontString>
-					</Layer>
-				</Layers>
-				<Frames>
-					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
-				        <Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_CharactStatus" x="10" y="-2"/>
-						</Anchors>
-				    </Frame>
-				    <Frame name="TRP3_DashboardStatus_XPStatusList" inherits="UIDropDownMenuTemplate" enableMouse="true">
-				        <Anchors>
-							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_XPStatus" x="10" y="-2"/>
-						</Anchors>
-				    </Frame>
-				</Frames>
-			</Frame>
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    -->
 
-			<!-- What's new / About / Thanks -->
-			<Frame name="TRP3_DashboardBottom">
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize val="16"/>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="3"/>
-					</BackgroundInsets>
-				</Backdrop>
-				<Anchors>
-					<Anchor point="RIGHT" x="-10" y="0"/>
-					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="0" y="-35"/>
-					<Anchor point="BOTTOM" x="0" y="10"/>
-				</Anchors>
-				<Frames>
-					<ScrollFrame name="TRP3_DashboardBottomScroll" inherits="UIPanelScrollFrameTemplate">
-						<Anchors>
-							<Anchor point="TOPLEFT" x="10" y="-11"/>
-							<Anchor point="BOTTOMRIGHT" x="-20" y="9"/>
-						</Anchors>
-						<ScrollChild>
-							<Frame>
-								<Size x="10" y="10"/>
-								<Frames>
-									<SimpleHTML name="TRP3_DashboardBottomContent">
-										<Anchors>
-											<Anchor point="TOPLEFT" x="5" y="-5"/>
-										</Anchors>
-										<FontString inherits="GameFontNormalSmall"/>
-									</SimpleHTML>
-								</Frames>
-							</Frame>
-						</ScrollChild>
-					</ScrollFrame>
-				</Frames>
-			</Frame>
+    <!-- Dashboard -->
+    <Frame name="TRP3_Dashboard" hidden="true">
+        <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+            <EdgeSize val="24"/>
+        </Backdrop>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture file="Interface\Artifacts\ArtifactUIWarlock">
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" x="-5" y="-5"/>
+                        <Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+                        <Anchor point="LEFT" x="5" y="0"/>
+                    </Anchors>
+                    <TexCoords left="0" right="0.7" top="0.60" bottom="0"/>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
+                    <Size x="256" y="128"/>
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
 
-		</Frames>
-	</Frame>
-	
-	<Script file="dashboard.lua"/>
+            <!-- Status -->
+            <Frame name="TRP3_DashboardStatus" inherits="TRP3_FieldSetFrame">
+                <Size x="0" y="90"/>
+                <Anchors>
+                    <Anchor point="RIGHT" x="-10" y="0"/>
+                    <Anchor point="LEFT" x="10" y="0"/>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="0"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <FontString name="TRP3_DashboardStatus_XPStatus" inherits="GameFontNormal" justifyH="LEFT"
+                                    text="[XP_STATUS]">
+                            <Size x="200" y="18"/>
+                            <Anchors>
+                                <Anchor point="LEFT" x="30" y="0"/>
+                                <Anchor point="BOTTOM" x="0" y="20"/>
+                            </Anchors>
+                            <Color b="1.0" r="1.0" g="1.0"/>
+                        </FontString>
+                        <FontString name="TRP3_DashboardStatus_CharactStatus" inherits="GameFontNormal" justifyH="LEFT"
+                                    text="[CHARACTER_STATUS]">
+                            <Size x="200" y="18"/>
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT"
+                                        relativeTo="TRP3_DashboardStatus_XPStatus" x="0" y="13"/>
+                            </Anchors>
+                            <Color b="1.0" r="1.0" g="1.0"/>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Frames>
+                    <Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate"
+                           enableMouse="true">
+                        <Anchors>
+                            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_CharactStatus"
+                                    x="10" y="-2"/>
+                        </Anchors>
+                    </Frame>
+                    <Frame name="TRP3_DashboardStatus_XPStatusList" inherits="UIDropDownMenuTemplate"
+                           enableMouse="true">
+                        <Anchors>
+                            <Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_XPStatus" x="10"
+                                    y="-2"/>
+                        </Anchors>
+                    </Frame>
+                </Frames>
+            </Frame>
+
+            <!-- What's new / About / Thanks -->
+            <Frame name="TRP3_DashboardBottom">
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                          edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="16"/>
+                    <BackgroundInsets>
+                        <AbsInset left="5" right="5" top="5" bottom="3"/>
+                    </BackgroundInsets>
+                </Backdrop>
+                <Anchors>
+                    <Anchor point="RIGHT" x="-10" y="0"/>
+                    <Anchor point="LEFT" x="10" y="0"/>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="0" y="-35"/>
+                    <Anchor point="BOTTOM" x="0" y="10"/>
+                </Anchors>
+                <Frames>
+                    <ScrollFrame name="TRP3_DashboardBottomScroll" inherits="UIPanelScrollFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="10" y="-11"/>
+                            <Anchor point="BOTTOMRIGHT" x="-20" y="9"/>
+                        </Anchors>
+                        <ScrollChild>
+                            <Frame>
+                                <Size x="10" y="10"/>
+                                <Frames>
+                                    <SimpleHTML name="TRP3_DashboardBottomContent">
+                                        <Anchors>
+                                            <Anchor point="TOPLEFT" x="5" y="-5"/>
+                                        </Anchors>
+                                        <FontString inherits="GameFontNormalSmall"/>
+                                    </SimpleHTML>
+                                </Frames>
+                            </Frame>
+                        </ScrollChild>
+                    </ScrollFrame>
+                </Frames>
+            </Frame>
+
+        </Frames>
+    </Frame>
+
+    <Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+        <Size x="350" y="215"/>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Layers>
+            <Layer level="OVERLAY">
+                <FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+                    <Size x="0" y="30"/>
+                    <Anchors>
+                        <Anchor point="TOP" x="0" y="-10"/>
+                        <Anchor point="RIGHT" x="-10" y="0"/>
+                        <Anchor point="LEFT" x="10" y="0"/>
+                    </Anchors>
+                    <Color r="0.95" g="0.95" b="0.95"/>
+                </FontString>
+                <FontString parentKey="messageLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+                    <Size x="150" y="30"/>
+                    <Anchors>
+                        <Anchor point="LEFT" x="25"/>
+                        <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-30"/>
+                    </Anchors>
+                    <Color r="0.95" g="0.75" b="0.1"/>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button parentKey="Close" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="-5" y="-5"/>
+                </Anchors>
+            </Button>
+            <EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+                <Size y="18"/>
+                <Anchors>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-10"/>
+                    <Anchor point="LEFT" relativePoint="LEFT" x="25"/>
+                    <Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent" x="-20"/>
+                </Anchors>
+            </EditBox>
+            <Frame parentKey="channelDropdown" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
+                <Anchors>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
+                    <Anchor point="RIGHT" relativePoint="RIGHT" x="-25"/>
+                    <Anchor point="LEFT" relativePoint="CENTER" relativeKey="$parent" x="0"/>
+                </Anchors>
+            </Frame>
+            <Frame parentKey="messageText" inherits="TRP3_TextArea">
+                <Size y="70"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.messageLabel" x="-5" y="8"/>
+                    <Anchor point="RIGHT" x="-20" />
+                </Anchors>
+            </Frame>
+            <Button parentKey="send" inherits="TRP3_CommonButton">
+                <Anchors>
+                    <Anchor point="CENTER"/>
+                    <Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.messageText" y="-10"/>
+                </Anchors>
+            </Button>
+        </Frames>
+    </Frame>
+
+    <Script file="npc_talk.lua"/>
+    <Script file="dashboard.lua"/>
 </Ui>
