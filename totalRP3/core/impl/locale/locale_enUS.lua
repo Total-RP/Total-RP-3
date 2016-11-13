@@ -949,11 +949,33 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_5 = [[# New in version 1.2.3
+		WHATS_NEW_6 = [[# New in version 1.2.4
+
+## NPC speeches GUI
+
+We have added a proper graphical user interface for {link*npc_speeches*NPC speeches and emotes}. You can access it via the new toolbar button. Send messages as an NPC and make them say, yell, whisper or emote whatever you want! You can user the Enter key to send a message, and quickly send multiple messages that way.
+
+## Languages
+
+- Fixed the missing icons for the new cross-faction pandaren language and the new demonic language.
+- Total RP 3 will now remember the language you had selected previously upon login.
+
+## Other improvements
+
+- New command to switch to a profile. Use |cffcccccc/trp3 profile Profile name|r to switch to a profile named |cffccccccProfile name|r. The profile name is case sensitive and support spaces.
+- {link*tooltip_settings*New tooltip option} to make the tooltip hide instantly instead of fading out slowly.
+- The tooltip should also no longer appear in wrong places (when pressing the Alt key on a spell or on some healing add-ons).
+- You will no longer see your own point on the map when looking for other players.
+- The map scans will now be disabled when they are not available (in dungeons, raids, battlegrounds, etc.)
+- Implemented a workaround for an issue with the color picker introduced in patch 7.1 so you can once again paste hexadecimal color codes in the field. Unfortunately, the game color picker widget has been broken by Blizzard and the parts of the UI will not reflect the color accordingly when pasted, but the value will be correctly used.
+- New buttons added to the toolbar are now automatically registered as DataBroker plugins so you can use them with DataBroker add-ons like Titan Panel or Bazooka.
+- Added new Total RP 3: KuiNameplates module to the list of optional modules in the More modules tab of the dashboard.
+
+# New in version 1.2.3
 
 ## Improved map scanning feature
 
-We have fixed the issues brought by patch 7.1 with the map markers. In order to improve compatibility with other add-ons that might display additionnal informations on the map, the map button for starting scans has been removed and you can now find the scanning options inside the default filters button in the top right corner of the map.
+We have fixed the issues brought by patch 7.1 with the map markers. In order to improve compatibility with other add-ons that might display additionnal informations on the map, the map button for starting scans has been removed and you can now find the scanning options {link*open_map_filters_dropdown*inside the default filters button} in the top right corner of the map.
 
 ## Improved broadcast protocol
 
@@ -966,18 +988,25 @@ We have also added additionnal protections and monitoring against people trying 
 - Fixed a bug introduced in version 1.2 that was making the profiles importer tab not being displayed correctly. Thanks to Gordon8 and Gelaga for reporting this issue!
 - Total RP 3: Extended has been added to the list of optional modules in the More modules tab of the dashboard.
 
-# New in version 1.2.2
-
-This version fixes a massive performance issue with data transfer that impact TRP since 1.1.0. |cff00ff00It should be growing faster the more people update their TRP3 to this version. So spread the word!
 ]],
-		MORE_MODULES_1 = [[{h2:c}Optional modules{/h2}
+		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
 {link*http://extended.totalrp3.info*Download on Curse.com}
 
+{h3}Kui |cff9966ffNameplates|r module{/h3}
+The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to the KuiNameplates add-on:
+• See the full RP name of a character on their nameplate, instead of their default name, colored like in their tooltip.
+• See customized pets names.
+• Hide the names of players without an RP profile!
+{link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
+
+
 {h3}TipTac module{/h3}
 The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
 {link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
+
+
 ]],
 
 		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}

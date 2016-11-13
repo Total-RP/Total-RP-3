@@ -177,8 +177,8 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_5");
-	local moreModuleText = loc("MORE_MODULES_1");
+	local whatsNewText = loc("WHATS_NEW_6");
+	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
@@ -233,6 +233,12 @@ TRP3_API.dashboard.init = function()
         elseif url == "tooltip_settings" then
 			-- Open tooltip config
             TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_tooltip");
+        elseif url == "npc_speeches" then
+			-- Open NPC speeches UI
+			TRP3_API.r.showNPCTalkFrame();
+        elseif url == "open_map_filters_dropdown" then
+			ToggleWorldMap();
+			WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:Click();
 		--[[
 	 	-- Fallback, open URL in a popup
 		 ]]

@@ -93,6 +93,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		buildChannelDropdown();
 		frame:Show();
 	end
+	TRP3_API.r.showNPCTalkFrame = showNPCTalkFrame;
 
 	frame.send:SetScript("OnClick", sendNPCTalk);
 	frame.messageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
