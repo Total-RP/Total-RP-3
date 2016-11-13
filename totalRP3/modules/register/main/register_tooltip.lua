@@ -90,6 +90,7 @@ local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
+local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
 
 local ANCHOR_TAB;
 
@@ -178,6 +179,10 @@ end
 
 local function showSpacing()
 	return getConfigValue(CONFIG_CHARACT_SPACING);
+end
+
+local function fadeOutEnabled()
+	return not getConfigValue(CONFIG_NO_FADE_OUT);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -923,7 +928,7 @@ local function show(targetType, targetID, targetMode)
 end
 
 local function getFadeTime()
-	return getAnchoredPosition() == "ANCHOR_CURSOR" and 0 or 0.5;
+	return (getAnchoredPosition() == "ANCHOR_CURSOR" or not fadeOutEnabled()) and 0 or 0.5;
 end
 
 local function onUpdate(self, elapsed)
@@ -941,7 +946,11 @@ local function onUpdate(self, elapsed)
 			if self.target ~= getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
-				self:FadeOut();
+				if fadeOutEnabled() then
+					self:FadeOut();
+				else
+					self:Hide();
+				end
 			end
 		end
 	end
@@ -955,7 +964,11 @@ local function onUpdateCompanion(self, elapsed)
 			if self.target ~= getUnitID(self.targetType) then
 				self.isFading = true;
 				self.target = nil;
-				self:FadeOut();
+				if fadeOutEnabled() then
+					self:FadeOut();
+				else
+					self:Hide();
+				end
 			end
 		end
 	end
@@ -967,9 +980,14 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
-		local targetID, targetMode = getUnitID("mouseover");
-		Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function(...)
+		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
+		-- But there is a target on mouseover (maintaining ALT on spell buttons)
+		-- So we need to check that we have indeed a unit before displaying our tooltip.
+		if GameTooltip:GetUnit() then
+			local targetID, targetMode = getUnitID("mouseover");
+			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
+		end
 	end);
 end);
 
@@ -1023,6 +1041,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
+	registerConfigKey(CONFIG_NO_FADE_OUT, false);
 	registerConfigKey(CONFIG_PETS_ICON, true);
 	registerConfigKey(CONFIG_PETS_TITLE, true);
 	registerConfigKey(CONFIG_PETS_OWNER, true);
@@ -1128,6 +1147,11 @@ local function onModuleInit()
 				title = loc("CO_TOOLTIP_SPACING"),
 				help = loc("CO_TOOLTIP_SPACING_TT"),
 				configKey = CONFIG_CHARACT_SPACING,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_NO_FADE_OUT"),
+				configKey = CONFIG_NO_FADE_OUT,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
