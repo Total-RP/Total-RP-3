@@ -127,9 +127,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			refreshTooltip(Uibutton);
 		end,
 		onUpdate = function(Uibutton, buttonStructure)
+			updateToolbarButton(Uibutton, buttonStructure);
+		end,
+		onModelUpdate = function(buttonStructure)
 			local currentLanguageID = ChatFrame1EditBox.languageID;
 			local currentLanguage = ChatFrame1EditBox.language
-			
+
 			if languagesIcon[currentLanguageID] then
 				buttonStructure.tooltip  = loc("TB_LANGUAGE")..": "..currentLanguage;
 				buttonStructure.tooltipSub  = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_LANGUAGES_TT"));
@@ -137,8 +140,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			else
 				buttonStructure.icon = "spell_holy_silence";
 			end
-
-			updateToolbarButton(Uibutton, buttonStructure);
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
 			local dropdownItems = {};

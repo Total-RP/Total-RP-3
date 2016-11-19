@@ -291,6 +291,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			icon = "Ability_Rogue_MasterOfSubtlety",
 			configText = loc("CO_TOOLBAR_CONTENT_STATUS"),
 			onUpdate = function(Uibutton, buttonStructure)
+				updateToolbarButton(Uibutton, buttonStructure);
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onModelUpdate = function(buttonStructure)
 				if UnitIsDND("player") then
 					buttonStructure.tooltip  = status1Text;
 					buttonStructure.tooltipSub  = status1SubText;
@@ -303,11 +309,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					buttonStructure.tooltip  = status3Text;
 					buttonStructure.tooltipSub  = status3SubText;
 					buttonStructure.icon = "Ability_Rogue_MasterOfSubtlety";
-				end
-				updateToolbarButton(Uibutton, buttonStructure);
-
-				if GetMouseFocus() == Uibutton then
-					refreshTooltip(Uibutton);
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)
@@ -344,6 +345,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
+				updateToolbarButton(Uibutton, buttonStructure);
+				if GetMouseFocus() == Uibutton then
+					refreshTooltip(Uibutton);
+				end
+			end,
+			onModelUpdate = function(buttonStructure)
 				if get("player/character/RP") == 1 then
 					buttonStructure.tooltip  = rpTextOn;
 					buttonStructure.tooltipSub = rpText3;
@@ -352,10 +359,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					buttonStructure.tooltip  = rpTextOff;
 					buttonStructure.tooltipSub  = rpText2;
 					buttonStructure.icon = OOC_ICON;
-				end
-				updateToolbarButton(Uibutton, buttonStructure);
-				if GetMouseFocus() == Uibutton then
-					refreshTooltip(Uibutton);
 				end
 			end,
 			onClick = function(Uibutton, buttonStructure, button)

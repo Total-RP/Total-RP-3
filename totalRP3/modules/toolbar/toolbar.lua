@@ -155,6 +155,13 @@ local function onStart()
 		end
 	end
 
+	--- Small tool function to create a title string with the icon of the button in front of it, for the tooltip
+	-- @param buttonStructure
+	--
+	local function getTooltipTitleWithIcon(buttonStructure)
+		return icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+	end
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker integration
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -166,7 +173,6 @@ local function onStart()
 	-- @param buttonStructure
 	--
 	local function registerDatabrokerButton(buttonStructure)
-		local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
 		local LDBObject = LDB:NewDataObject(
 			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
 			{
@@ -177,7 +183,7 @@ local function onStart()
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
 					end
 				end,
-				tooltipTitle = tooltipTitleWithIcon,
+				tooltipTitle = getTooltipTitleWithIcon(buttonStructure),
 				tooltipSub = buttonStructure.tooltipSub,
 				OnTooltipShow = function(tooltip)
 					local LDBButton = LDBObjects[buttonStructure.id];
@@ -186,6 +192,21 @@ local function onStart()
 				end
 			});
 		LDBObjects[buttonStructure.id] = LDBObject;
+
+	end
+
+	--- Refresh the UI of an databroker object corresponding to the given buttonStructure
+	-- @param buttonStructure
+	--
+	local function refreshLDBPLugin(buttonStructure)
+		assert(buttonStructure.id, "The buttonStructure given to refreshLDBPLugin does not have an id.")
+		local LDBButton = LDBObjects[buttonStructure.id];
+		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
+
+		LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
+		LDBButton.tooltipTitle = getTooltipTitleWithIcon(buttonStructure);
+		LDBButton.tooltipSub = buttonStructure.tooltipSub;
+
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -205,23 +226,35 @@ local function onStart()
 	end
 	TRP3_API.toolbar.toolbarAddButton = toolbarAddButton;
 
+	--- Will refresh the UI of a given button (icon, tooltip) using the data provided in the buttonStructure
+	-- @param toolbarButton UI button to refresh
+	-- @param buttonStructure Button structure containing the icon and tooltip text
+	--
 	local function updateToolbarButton(toolbarButton, buttonStructure)
-
+		-- Setting the textures
 		toolbarButton:SetNormalTexture("Interface\\ICONS\\" .. buttonStructure.icon);
 		toolbarButton:SetPushedTexture("Interface\\ICONS\\" .. buttonStructure.icon);
 		toolbarButton:GetPushedTexture():SetDesaturated(1);
-
-		local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. buttonStructure.tooltip;
-
-		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, tooltipTitleWithIcon, buttonStructure.tooltipSub);
-
-		local LDBButton = LDBObjects[buttonStructure.id];
-		LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
-		LDBButton.tooltipTitle = tooltipTitleWithIcon;
-		LDBButton.tooltipSub = buttonStructure.tooltipSub;
+		-- Refreshing the tooltip
+		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 	end
 	TRP3_API.toolbar.updateToolbarButton = updateToolbarButton;
-	
+
+
+	local toolbarModelRefreshFrame = CreateFrame("Frame");
+
+	-- We create a frame that will take care of refreshing the model of the buttons every half second
+	-- It will also refresh the databroker plugin
+	TRP3_API.ui.frame.createRefreshOnFrame(toolbarModelRefreshFrame, 0.5, function()
+		for _, buttonStructure in pairs(buttonStructures) do
+			if buttonStructure.onModelUpdate then
+				buttonStructure.onModelUpdate(buttonStructure)
+				refreshLDBPLugin(buttonStructure);
+			end
+		end
+	end)
+
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Position
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
