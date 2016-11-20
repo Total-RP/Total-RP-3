@@ -91,16 +91,14 @@ local function broadcast(command, ...)
 end
 Comm.broadcast.broadcast = broadcast;
 
-local function onBroadcastReceived(message, sender, channel)
-	if not isIDIgnored(sender) and string.lower(channel) == string.lower(config_BroadcastChannel()) then
-		local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-		if not header == BROADCAST_HEADER or not command then
-			return; -- If not RP protocol or don't have a command
-		end
-		Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
-		for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
-			callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-		end
+local function onBroadcastReceived(message, sender)
+	local header, command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+	if not header == BROADCAST_HEADER or not command then
+		return; -- If not RP protocol or don't have a command
+	end
+	Comm.totalBroadcastR = Comm.totalBroadcastR + BROADCAST_HEADER:len() + message:len();
+	for _, callback in pairs(PREFIX_REGISTRATION[command] or Globals.empty) do
+		callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	end
 end
 
@@ -118,20 +116,11 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onP2PMessageReceived(message, sender)
-	if not sender then
-		Log.log("onP2PMessageReceived: Malformed senderID: " .. tostring(sender), Log.level.WARNING);
-		return;
-	end
-	if not sender:find('-') then
-		sender = Utils.str.unitInfoToID(sender);
-	end
 	Comm.totalBroadcastP2PR = Comm.totalBroadcastP2PR + BROADCAST_HEADER:len() + message:len();
-	if not isIDIgnored(sender) then
-		local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
-		if PREFIX_P2P_REGISTRATION[command] then
-			for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
-				callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-			end
+	local command, arg1, arg2, arg3, arg4, arg5, arg6, arg7 = strsplit(BROADCAST_SEPARATOR, message);
+	if PREFIX_P2P_REGISTRATION[command] then
+		for _, callback in pairs(PREFIX_P2P_REGISTRATION[command]) do
+			callback(sender, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 		end
 	end
 end
@@ -215,12 +204,25 @@ end
 
 local function onMessageReceived(...)
 	local prefix, message , distributionType, sender, _, _, _, channel = ...;
+
+	if not sender then
+		return;
+	end
+
 	if prefix == BROADCAST_HEADER then
-		if distributionType == "CHANNEL" then
-			onBroadcastReceived(message, sender, channel);
-		else
-			onP2PMessageReceived(message, sender);
+
+		if not sender:find('-') then
+			sender = Utils.str.unitInfoToID(sender);
 		end
+
+		if not isIDIgnored(sender) then
+			if distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
+				onBroadcastReceived(message, sender, channel);
+			else
+				onP2PMessageReceived(message, sender);
+			end
+		end
+
 	end
 end
 
