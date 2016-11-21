@@ -32,6 +32,8 @@ local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKe
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
 
+TRP3_API.chat = {};
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -50,6 +52,7 @@ local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
+local CONFIG_INCREASE_CONTRAST = "chat_color_contrast";
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -99,10 +102,11 @@ local function configInsertFullRPName()
     return getConfigValue(CONFIG_INSERT_FULL_RP_NAME);
 end
 
-local function createConfigPage(useWIM)
+local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 3);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
+	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
 	registerConfigKey(CONFIG_NPC_TALK, true);
 	registerConfigKey(CONFIG_NPC_TALK_PREFIX, "|| ");
 	registerConfigKey(CONFIG_EMOTE, true);
@@ -160,6 +164,11 @@ local function createConfigPage(useWIM)
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_CHAT_MAIN_COLOR"),
 				configKey = CONFIG_NAME_COLOR,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "Increase color contrast",
+				configKey = CONFIG_INCREASE_CONTRAST,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -227,13 +236,6 @@ local function createConfigPage(useWIM)
 			},
 		}
 	};
-	if useWIM then
-		tinsert(CONFIG_STRUCTURE.elements, {
-			inherit = "TRP3_ConfigNote",
-			help = loc("CO_WIM_TT"),
-			title = loc("CO_WIM"),
-		});
-	end
 
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
 		registerConfigKey(CONFIG_USAGE .. channel, true);
@@ -301,20 +303,29 @@ local NPC_TALK_CHANNELS = {
 };
 local NPC_TALK_PATTERNS;
 
-local function handleNPCTalk(chatFrame, message, characterID, messageID)
-	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
+local function handleNPCEmote(message)
 	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
 		if message:find(TALK_TYPE) then
 			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
 			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
-			local content = message:sub(name:len() + 4);
-			playerLink = playerLink .. name;
-			chatFrame:AddMessage("|cffff9900" .. playerLink .. "|h|r" .. content, chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id);
-			return;
+			local content = message:sub(name:len() + 5);
+			return "|cffff9900" ..name.."|r", string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, content);
 		end
 	end
 	local chatInfo = ChatTypeInfo["MONSTER_EMOTE"];
-	chatFrame:AddMessage(playerLink .. message:sub(4) .. "|h", chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id);
+	return string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, message:sub(4)), " ";
+end
+
+local function handleNPCTalk(message)
+	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
+		if message:find(TALK_TYPE) then
+			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
+			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
+			local content = message:sub(name:len()+ TALK_TYPE:len() + 5);
+			return "|cffff9900" ..name.."|r]"..string.format("|cff%02x%02x%02x", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255).."\0", content.."|r";
+			-- the null character prevents the returning ov the closing ] so we can manually add it and place content after it, due to the way player links deal with strings. - Lora
+		end
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -325,48 +336,43 @@ end
 -- Ignored to another chatframe (config)
 -- Limit name length (config)
 
+local npcMessageId, npcMessageName, ownershipNameId;
+
 function handleCharacterMessage(chatFrame, event, ...)
-	local characterName, characterColor;
+
 	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
-	local languageHeader = "";
-	local character, realm = unitIDToInfo(characterID);
-	if not realm then -- Thanks Blizzard to not always send a full character ID
-		realm = Globals.player_realm_id;
-		characterID = unitInfoToID(character, realm);
-	end
-	local info = getCharacterInfoTab(characterID);
-	
-	-- Get chat type and configuration
+
 	local type = strsub(event, 10);
-	local chatInfo = ChatTypeInfo[type];
-	
 	-- Detect NPC talk pattern on authorized channels
-	if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
-		handleNPCTalk(chatFrame, message, characterID, messageID);
-		return true;
-	end
-
-	-- WHISPER and WHISPER_INFORM have the same chat info
-	if ( strsub(type, 1, 7) == "WHISPER" ) then
-		chatInfo = ChatTypeInfo["WHISPER"];
-	end
-
-	-- WHISPER respond
-	if type == "WHISPER" then
-		ChatEdit_SetLastTellTarget(characterID, type);
-		if ( chatFrame.tellTimer and (GetTime() > chatFrame.tellTimer) ) then
-			PlaySound("TellMessage");
+	if event == "CHAT_MSG_EMOTE" then
+		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
+			npcMessageId = messageID; -- pass the messageID to the name altering functionality. - Lora
+			npcMessageName, message = handleNPCEmote(message);
+			return false, message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
+		elseif message:sub(1, 3) == "'s " then
+			-- collapse annoying space between name and apostrophy in owned emotes. -Lora
+			ownershipNameId = messageID; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
+			return false, message:sub(4), characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
 		end
-		chatFrame.tellTimer = GetTime() + CHAT_TELL_ALERT_TIME;
+	elseif message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
+		npcMessageId = messageID;
+		npcMessageName, message = handleNPCTalk(message, event);
 	end
 
-	-- Character name
-	if realm == Globals.player_realm_id then
-		characterName = character;
-	else
-		characterName = characterID;
+	-- No yelled emote ?
+	if event == "CHAT_MSG_YELL" and configNoYelledEmote() then
+		message = message:gsub("%*.-%*", "");
+		message = message:gsub("%<.-%>", "");
 	end
 
+	-- Colorize emote and OOC
+	message = detectEmoteAndOOC(type, message);
+
+
+	return false, message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
+end
+
+local function getFullnameUsingChatMethod(info, characterName)
 	local nameMethod = configNameMethod();
 	if nameMethod ~= 1 then -- TRP3 names
 		local characteristics = info.characteristics or {};
@@ -382,63 +388,82 @@ function handleCharacterMessage(chatFrame, event, ...)
 			characterName = characterName .. " " .. characteristics.LN;
 		end
 	end
+	return characterName;
+end
+TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
 
-    -- TODO Do dark color vuhdo here too
-	-- Custom character name color first
+local function getColoredName(info)
+	local characterColor;
 	if configShowNameCustomColors() and info.characteristics and info.characteristics.CH then
-		characterColor = "|cff" .. info.characteristics.CH;
-	end
-	-- Then class color
-	if not characterColor then
-		characterColor = getCharacterClassColor(chatInfo, event, ...);
-	end
-	if characterColor then
-		characterName = characterColor .. characterName .. "|r";
-	end
-
-	-- Language
-	if ( (strlen(language) > 0) and (language ~= chatFrame.defaultLanguage) ) then
-		languageHeader = "[" .. language .. "] ";
-	end
-
-	-- Show
-	message = RemoveExtraSpaces(message);
-	
-	-- No yelled emote ?
-	if event == "CHAT_MSG_YELL" and configNoYelledEmote() then
-		message = message:gsub("%*.-%*", "");
-		message = message:gsub("%<.-%>", "");
-	end
-	
-	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(type, message);
-	
-	-- Is there still something to show ?
-	if strtrim(message):len() == 0 then
-		return true;
-	end
-	
-	local playerLink = "|Hplayer:".. characterID .. ":" .. messageID .. "|h";
-	local body;
-	if type == "EMOTE" then
-		body = format(_G["CHAT_"..type.."_GET"], playerLink .. characterName .. "|h") .. message;
-	elseif type == "TEXT_EMOTE" then
-		body = message;
-		if characterID ~= Globals.player_id and body:sub(1, character:len()) == character then
-			body = body:gsub("^([^%s]+)", playerLink .. characterName .. "|h");
+		local color = info.characteristics.CH;
+		if getConfigValue(CONFIG_INCREASE_CONTRAST) then
+			local r, g, b = Utils.color.hexaToFloat(color);
+			local ligthenColor = Utils.color.lightenColorUntilItIsReadable({r = r, g = g, b = b});
+			color = Utils.color.numberToHexa(ligthenColor.r * 255) .. Utils.color.numberToHexa(ligthenColor.g * 255) .. Utils.color.numberToHexa(ligthenColor.b * 255);
 		end
+		characterColor = color;
+	end
+	return characterColor;
+end
+TRP3_API.chat.getColoredName = getColoredName;
+
+local tempGetColoredName = GetColoredName;
+function Utils.customGetColoredName(event, ...)
+	local characterName, characterColor;
+	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
+	local character, realm = unitIDToInfo(characterID);
+	if not realm then -- Thanks Blizzard to not always send a full character ID
+		realm = Globals.player_realm_id;
+		if realm == nil then
+			-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
+			return tempGetColoredName(event, ...);
+		end
+	end
+	characterID = unitInfoToID(character, realm);
+	local info = getCharacterInfoTab(characterID);
+
+	-- Get chat type and configuration
+	local type = strsub(event, 10);
+	local chatInfo = ChatTypeInfo[type];
+
+	-- NPC talk pattern is detected in filter before being passed over here.
+	if npcMessageId == messageID then
+		return npcMessageName;
+	end
+
+	-- WHISPER and WHISPER_INFORM have the same chat info
+	if ( strsub(type, 1, 7) == "WHISPER" ) then
+		chatInfo = ChatTypeInfo["WHISPER"];
+	end
+
+	-- Character name
+	if realm == Globals.player_realm_id then
+		characterName = character;
 	else
-		body = format(_G["CHAT_"..type.."_GET"], playerLink .. "[" .. characterName .. "]" .. "|h")  .. languageHeader .. message;
+		characterName = characterID;
 	end
 
-	--Add Timestamps
-	if ( CHAT_TIMESTAMP_FORMAT ) then
-		body = BetterDate(CHAT_TIMESTAMP_FORMAT, time()) .. body;
+	characterName = getFullnameUsingChatMethod(info, character);
+
+	if ownershipNameId == messageID then
+		characterName = characterName.."'s";
 	end
 
-	chatFrame:AddMessage(body, chatInfo.r, chatInfo.g, chatInfo.b, chatInfo.id, false);
-
-	return true;
+	if characterName ~= character and characterName ~= characterID then
+		characterColor = getColoredName(info);
+		-- Then class color
+		if not characterColor then
+			characterColor = getCharacterClassColor(chatInfo, event, ...);
+		else
+			characterColor =  "|cff" .. characterColor;
+		end
+		if characterColor then
+			characterName = characterColor .. characterName .. "|r";
+		end
+		return characterName;
+	else
+		return tempGetColoredName(event, ...);
+	end
 end
 
 function hooking()
@@ -448,6 +473,8 @@ function hooking()
 			ChatFrame_AddMessageEventFilter(channel, handleCharacterMessage);
 		end
 	end
+
+	GetColoredName = Utils.customGetColoredName;
 
 	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
 	-- in the chat frame to insert it into a text field.
@@ -502,21 +529,12 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function onStart()
-	local useWIM = WIM ~= nil;
 
-	if useWIM then
-		POSSIBLE_CHANNELS = {
-			"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
-			"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
-			"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER"
-		};
-	else
-		POSSIBLE_CHANNELS = {
-			"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
-			"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
-			"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
-		};
-	end
+	POSSIBLE_CHANNELS = {
+		"CHAT_MSG_SAY", "CHAT_MSG_YELL", "CHAT_MSG_EMOTE", "CHAT_MSG_TEXT_EMOTE",
+		"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
+		"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
+	};
 
 
 	NPC_TALK_PATTERNS = {
@@ -524,7 +542,7 @@ local function onStart()
 		[loc("NPC_TALK_YELL_PATTERN")] = "MONSTER_YELL",
 		[loc("NPC_TALK_WHISPER_PATTERN")] = "MONSTER_WHISPER",
 	};
-	createConfigPage(useWIM);
+	createConfigPage();
 	hooking();
 end
 

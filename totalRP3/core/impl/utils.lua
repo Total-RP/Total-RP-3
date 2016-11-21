@@ -468,6 +468,21 @@ end
 
 Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;
 
+Utils.color.lightenColorUntilItIsReadable = function(textColor)
+	-- If the color is too dark to be displayed in the tooltip, we will ligthen it up a notch
+	while not textColorIsReadableOnBackground(textColor) do
+		textColor.r = textColor.r + 0.01;
+		textColor.g = textColor.g + 0.01;
+		textColor.b = textColor.b + 0.01;
+	end
+
+	if textColor.r > 1 then textColor.r = 1 end
+	if textColor.g > 1 then textColor.g = 1 end
+	if textColor.b > 1 then textColor.b = 1 end
+
+	return textColor;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Math
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

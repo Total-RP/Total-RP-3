@@ -19,6 +19,7 @@
 -->
 
 	<Script file="chatframe.lua" />
+	<Script file="WIM.lua" />
 	<Script file="languages.lua" />
 
 </Ui>
