@@ -20,6 +20,7 @@
 
 	<Script file="chatframe.lua" />
 	<Script file="WIM.lua" />
+	<Script file="prat.lua" />
 	<Script file="languages.lua" />
 
 </Ui>
