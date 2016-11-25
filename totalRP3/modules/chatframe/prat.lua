@@ -2,13 +2,10 @@ if Prat then
 	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 	local pratModule = Prat:NewModule(PRAT_MODULE);
 
-	local TRP3GetColoredName = TRP3_API.utils.customGetColoredName;
 	local Globals = TRP3_API.globals;
 	local unitInfoToID = TRP3_API.utils.str.unitInfoToID;
 	local get = TRP3_API.profile.getData;
 	local getColoredName = TRP3_API.chat.getColoredName;
-	local getFullName = TRP3_API.chat.getFullnameUsingChatMethod;
-	local numberToHexa = TRP3_API.utils.color.numberToHexa;
 	local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 	local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 	local getFullnameUsingChatMethod = TRP3_API.chat.getFullnameUsingChatMethod;
@@ -26,7 +23,8 @@ if Prat then
 		profile = {
 			on = true,
 		},
-	})
+	});
+
 	Prat:SetModuleOptions(pratModule, {
 		name = "Total RP 3",
 		desc = "Total RP 3 customizations for Prat",
@@ -40,6 +38,7 @@ if Prat then
 	});
 
 	function pratModule:Prat_PreAddMessage(arg, message, frame, event)
+		if not message.GUID then return end;
 		local class, classFilename, race, raceFilename, sex, name, realm = GetPlayerInfoByGUID(message.GUID);
 		if not realm or realm == "" then -- Thanks Blizzard to not always send a full character ID
 			realm = Globals.player_realm_id;
