@@ -1,0 +1,11 @@
+## Interface: 70100
+## Title: Total RP 3: Dev flag
+## Author: Ellypse
+## Version: 1.0
+## Notes: Adds a "-developer" flag to the tooltip, for showing off
+## URL: http://totalrp3.info
+## DefaultState: Enabled
+## RequiredDeps: totalRP3
+## LoadOnDemand: 0
+
+totalRP3_Dev.lua
