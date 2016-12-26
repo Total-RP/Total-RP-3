@@ -241,7 +241,9 @@ Comm.broadcast.init = function()
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if config_UseBroadcast() then
+			local firstTime = true;
 			ticker = C_Timer.NewTicker(5, function(self)
+				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
 					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
 					JoinChannelByName(string.lower(config_BroadcastChannel()));
