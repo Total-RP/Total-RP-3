@@ -106,10 +106,11 @@ local function onModuleStart()
 						nameplate.GuildText:Show();
 					end
 					return
+
+				-- If it is a pet but we don't have a profile, hide its name if the setting is enabled
+				elseif getConfigValue(HIDE_NON_ROLEPLAY) then
+					mod:HideNonRoleplayNameplate(nameplate);
 				end
-			end
-			if getConfigValue(HIDE_NON_ROLEPLAY) then
-				mod:HideNonRoleplayNameplate(nameplate);
 			end
 			return;
 		end
@@ -272,7 +273,7 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Kui|cff9966ffNameplates|r module",
 	["description"] = "Add Total RP 3 customizations to Kui|cff9966ffNameplates|r.",
-	["version"] = 1.100,
+	["version"] = 1.200,
 	["id"] = "trp3_kuinameplates",
 	["onStart"] = onModuleStart,
 	["minVersion"] = 24,
