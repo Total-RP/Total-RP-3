@@ -219,6 +219,19 @@ local function insertScansInDropdown(_, level)
 	end
 end
 
+-- Dirty bug fix for Blizzard's own code...
+-- Currently (7.1) the world map filter dropdown is randomly hidden by WORLD_MAP_UPDATE events (constantly fired on the Broken Isles)
+-- WorldMapLevelDropDown_Update is being called supposedly to show/hide the dungeon levels dropdown frame,
+-- yet when it initializes the dungeon levels dropdown it hides any currently visible dropdown.
+-- To workaround that we check if a dropdown is visible before initializing the dungeon level dropdown.
+-- Yes, that's dirty, but it's better than what we have now.
+local oldWorldMapLevelDropDown_Update = WorldMapLevelDropDown_Update
+function WorldMapLevelDropDown_Update()
+	if not DropDownList1:IsVisible() then
+		oldWorldMapLevelDropDown_Update();
+	end
+end
+
 local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
 	SCAN_STRUCTURES[structure.id] = structure;
