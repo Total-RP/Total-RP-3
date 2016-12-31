@@ -127,7 +127,11 @@ TRP3_API.module.startModules = function()
 					module.error = message;
 				end
 			else
-				module.onStart();
+				local ok, message = module.onStart();
+				if ok == false then
+					module.status = MODULE_STATUS.ERROR_ON_LOAD;
+					module.error = message;
+				end
 			end
 		end
 	end

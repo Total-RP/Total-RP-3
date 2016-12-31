@@ -949,45 +949,22 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_6 = [[# New in version 1.2.4
+		WHATS_NEW_7 = [[# New in version 1.2.5
 
-## NPC speeches GUI
+## Chat customization revamp
 
-We have added a proper graphical user interface for {link*npc_speeches*NPC speeches and emotes}. You can access it via the new toolbar button. Send messages as an NPC and make them say, yell, whisper or emote whatever you want! You can user the Enter key to send a message, and quickly send multiple messages that way.
+We have completely changed our chat customizations to be more compatible with other add-ons like Prat, WIM or even Tongues!
 
-## Languages
+We have also built custom modules for both Prat and WIM to have the full RP names correctly displayed when using these add-ons.
 
-- Fixed the missing icons for the new cross-faction pandaren language and the new demonic language.
-- Total RP 3 will now remember the language you had selected previously upon login.
+Additionally, this new system fixes a long standing issue where whispers were displayed in evert chat tabs when the option to have incoming whispers routed to their own tab was enabled.
 
-## Other improvements
+|cffccccccA big special thank you to Saelora from Argent Dawn (EU) for helping us making this system <3|r
 
-- New command to switch to a profile. Use |cffcccccc/trp3 profile Profile name|r to switch to a profile named |cffccccccProfile name|r. The profile name is case sensitive and support spaces.
-- {link*tooltip_settings*New tooltip option} to make the tooltip hide instantly instead of fading out slowly.
-- The tooltip should also no longer appear in wrong places (when pressing the Alt key on a spell or on some healing add-ons).
-- You will no longer see your own point on the map when looking for other players.
-- The map scans will now be disabled when they are not available (in dungeons, raids, battlegrounds, etc.)
-- Implemented a workaround for an issue with the color picker introduced in patch 7.1 so you can once again paste hexadecimal color codes in the field. Unfortunately, the game color picker widget has been broken by Blizzard and the parts of the UI will not reflect the color accordingly when pasted, but the value will be correctly used.
-- New buttons added to the toolbar are now automatically registered as DataBroker plugins so you can use them with DataBroker add-ons like Titan Panel or Bazooka.
-- Added new Total RP 3: KuiNameplates module to the list of optional modules in the More modules tab of the dashboard.
+## Bug fixes
 
-# New in version 1.2.3
-
-## Improved map scanning feature
-
-We have fixed the issues brought by patch 7.1 with the map markers. In order to improve compatibility with other add-ons that might display additionnal informations on the map, the map button for starting scans has been removed and you can now find the scanning options {link*open_map_filters_dropdown*inside the default filters button} in the top right corner of the map.
-
-## Improved broadcast protocol
-
-We have updated our broadcast protocol to use methods that consume less bandwidth. The other advantage is that these methods are available to trial accounts, meaning now users playing on a trial account will be able to query people for their location on the map and receive sounds from Total RP 3: Extended items!
-
-We have also added additionnal protections and monitoring against people trying to prevent you from joining the broadcast channel `xtensionxtooltip2` by adding a password to the channel.
-
-## Other improvements
-
-- Fixed a bug introduced in version 1.2 that was making the profiles importer tab not being displayed correctly. Thanks to Gordon8 and Gelaga for reporting this issue!
-- Total RP 3: Extended has been added to the list of optional modules in the More modules tab of the dashboard.
-
+- We have implemented a custom bug fix for an issue in Blizzard's own code that is making any opened dropdown menu close themselves randomly when the map is opened, so it is easier for you to use Total RP 3's scanning features ({link*open_map_filters_dropdown*Reminder: now located inside the filter menu in the top right corner of the map}).
+- The extensionxtooltip2 channel should now be joined a little bit later so it is assigned the number 1 channel less often.
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
