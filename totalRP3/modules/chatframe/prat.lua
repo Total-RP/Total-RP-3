@@ -1,4 +1,7 @@
-if Prat then
+local function onStart()
+	-- Stop right here if Prat is not installed
+	if not Prat then return false, "Prat not found." end;
+
 	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 	local pratModule = Prat:NewModule(PRAT_MODULE);
 
@@ -50,6 +53,7 @@ if Prat then
 		local info = getCharacterInfoTab(characterID);
 		local characterName = getFullnameUsingChatMethod(info, name);
 		local color = getColoredName(info);
+		if characterName == name and not color then return end;
 		if color then
 			characterName = ("|cff%s%s|r"):format(color, characterName);
 		end
@@ -67,3 +71,14 @@ if Prat then
 		Prat.UnregisterChatEvent(pratModule, "Prat_PreAddMessage");
 	end
 end
+
+local MODULE_STRUCTURE = {
+	["name"] = "Prat support",
+	["description"] = "Add support for the Prat add-on.",
+	["version"] = 1.000,
+	["id"] = "trp3_prat",
+	["onStart"] = onStart,
+	["minVersion"] = 25,
+};
+
+TRP3_API.module.registerModule(MODULE_STRUCTURE);

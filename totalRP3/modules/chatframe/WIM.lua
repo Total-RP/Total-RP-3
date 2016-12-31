@@ -1,6 +1,6 @@
-local WIM = WIM;
-
-if WIM then
+local function onStart()
+	-- Stop right here if Prat is not installed
+	if not WIM then return false, "WIM not found." end
 
 	local TRP3GetColoredName = TRP3_API.utils.customGetColoredName;
 	local get = TRP3_API.profile.getData;
@@ -27,5 +27,15 @@ if WIM then
 		end
 		return ("|cff%s%s|r"):format(color, name);
 	end
-
 end
+
+local MODULE_STRUCTURE = {
+	["name"] = "WIM support",
+	["description"] = "Add support for the WoW Instant Messenger (WIM) add-on.",
+	["version"] = 1.000,
+	["id"] = "trp3_wim",
+	["onStart"] = onStart,
+	["minVersion"] = 25,
+};
+
+TRP3_API.module.registerModule(MODULE_STRUCTURE);
