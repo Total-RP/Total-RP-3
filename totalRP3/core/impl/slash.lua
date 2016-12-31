@@ -19,7 +19,8 @@
 
 local loc = TRP3_API.locale.getText;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort, strconcat = _G, tonumber, math, tinsert, type, assert, tostring, pairs, table.sort, strconcat;
+local tonumber, math, tinsert, type, assert, tostring, pairs, sort = tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
+local IsInGroup, IsInRaid = IsInGroup, IsInRaid;
 
 TRP3_API.slash = {}
 
