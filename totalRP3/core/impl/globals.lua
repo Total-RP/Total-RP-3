@@ -39,7 +39,7 @@ TRP3_API = {
 		addon_id_length = 15,
 
 		version = 25,
-		version_display = "1.2.5-beta1",
+		version_display = "1.2.5-beta2",
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),
@@ -93,4 +93,3 @@ TRP3_API.globals.build = function()
 end
 
 TRP3_API.globals.addon = LibStub("AceAddon-3.0"):NewAddon(TRP3_API.globals.addon_name);
-
