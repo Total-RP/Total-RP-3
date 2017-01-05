@@ -965,6 +965,7 @@ Additionally, this new system fixes a long standing issue where whispers were di
 
 - We have implemented a custom bug fix for an issue in Blizzard's own code that is making any opened dropdown menu close themselves randomly when the map is opened, so it is easier for you to use Total RP 3's scanning features ({link*open_map_filters_dropdown*Reminder: now located inside the filter menu in the top right corner of the map}).
 - The extensionxtooltip2 channel should now be joined a little bit later so it is assigned the number 1 channel less often.
+- Skinning add-ons that modify the tooltips font should now work with Total RP 3's tooltips.
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
@@ -989,6 +990,7 @@ The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to T
 		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
+{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize

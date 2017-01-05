@@ -28,11 +28,6 @@ local LOCALS = {};
 local DEFAULT_LOCALE = "enUS";
 local effectiveLocal = {};
 local current;
-local localeFont;
-
-function TRP3_API.locale.getLocaleFont()
-	return localeFont;
-end
 
 function TRP3_API.locale.registerLocale(localeStructure)
 	assert(localeStructure and localeStructure.locale and localeStructure.localeText and localeStructure.localeContent, "Usage: localeStructure with locale, localeText and localeContent.");
@@ -48,14 +43,6 @@ function TRP3_API.locale.init()
 	current = TRP3_API.configuration.getValue("AddonLocale");
 	if not LOCALS[current] then
 		current = DEFAULT_LOCALE;
-	end
-	-- Pick the right font
-	if current == "zhCN" then
-		localeFont = "Fonts\\ZYKai_T.TTF";
-	elseif current == "ruRU" then
-		localeFont = "Fonts\\FRIZQT___CYR.TTF";
-	else
-		localeFont = "Fonts\\FRIZQT__.TTF";
 	end
 	effectiveLocal = LOCALS[current].localeContent;
 end
@@ -124,7 +111,7 @@ if GetLocale() == "frFR" then
 			masterLine:match("Serviteur de ([%S%-%P]+)") or masterLine:match("Serviteur d'([%S%-%P]+)");
 		end
 	end
-	
+
 	function TRP3_API.locale.findBattlePetOwner(lines)
 		local masterLine = ENABLE_COLORBLIND_MODE == "1" and lines[4] or lines[3];
 		if masterLine then
@@ -156,4 +143,3 @@ else
 		end
 	end
 end
-

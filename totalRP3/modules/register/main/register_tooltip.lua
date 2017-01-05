@@ -190,8 +190,6 @@ end
 -- UTIL METHOD
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local localeFont;
-
 local function getGameTooltipTexts(tooltip)
 	local tab = {};
 	for j = 1, tooltip:NumLines() do
@@ -202,12 +200,16 @@ end
 TRP3_API.ui.tooltip.getGameTooltipTexts = getGameTooltipTexts;
 
 local function setLineFont(tooltip, lineIndex, fontSize)
-	_G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)]:SetFont(localeFont, fontSize);
+	local line = _G[strconcat(tooltip:GetName(), "TextLeft", lineIndex)];
+	local font, _ , flag = line:GetFont();
+	line:SetFont(font, fontSize, flag);
 end
 
 local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	setLineFont(tooltip, lineIndex, fontSize);
-	_G[strconcat(tooltip:GetName(), "TextRight", lineIndex)]:SetFont(localeFont, fontSize);
+	local line = _G[strconcat(tooltip:GetName(), "TextRight", lineIndex)];
+	local font, _ , flag = line:GetFont();
+	line:SetFont(font, fontSize, flag);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -981,7 +983,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 end);
 
 local function onModuleInit()
-	localeFont = TRP3_API.locale.getLocaleFont();
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
     isPlayerIC = TRP3_API.dashboard.isPlayerIC;

@@ -997,6 +997,7 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
+{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize

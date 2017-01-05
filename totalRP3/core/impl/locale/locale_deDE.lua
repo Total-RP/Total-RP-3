@@ -960,7 +960,8 @@ Zum Beispiel kann du folgendes angeben |c0000ff00schlank, dick or muskulös...|r
 |cffffff00Rechtsklick:|r Stop]=],
         ["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
+{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize

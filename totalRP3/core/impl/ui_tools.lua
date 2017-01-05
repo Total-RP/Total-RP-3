@@ -399,7 +399,6 @@ end
 -- Show the tooltip for this Frame (the frame must have been set up with setTooltipForFrame).
 -- If already shown, the tooltip text will be refreshed.
 local function refreshTooltip(Frame)
-	local localeFont = TRP3_API.locale.getLocaleFont();
 	if Frame.titleText and Frame.GenFrame and Frame.GenFrameX and Frame.GenFrameY and Frame.GenFrameAnch then
 		TRP3_MainTooltip:Hide();
 		TRP3_MainTooltip:SetOwner(Frame.GenFrame, Frame.GenFrameAnch,Frame.GenFrameX,Frame.GenFrameY);
@@ -407,16 +406,19 @@ local function refreshTooltip(Frame)
 			TRP3_MainTooltip:AddLine(Frame.titleText, 1, 1, 1, true);
 		else
 			TRP3_MainTooltip:AddDoubleLine(Frame.titleText, Frame.rightText);
-			TRP3_MainTooltipTextRight1:SetFont(localeFont, getTooltipSize() + 4);
+			local font, _, flag = TRP3_MainTooltipTextRight1:GetFont();
+			TRP3_MainTooltipTextRight1:SetFont(font, getTooltipSize() + 4, flag);
 			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
 		end
-		TRP3_MainTooltipTextLeft1:SetFont(localeFont, getTooltipSize() + 4);
+		local font, _, flag = TRP3_MainTooltipTextLeft1:GetFont();
+		TRP3_MainTooltipTextLeft1:SetFont(font, getTooltipSize() + 4, flag);
 		TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
 		TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
 		if Frame.bodyText then
 			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
-			TRP3_MainTooltipTextLeft2:SetFont(localeFont, getTooltipSize());
+			local font, _, flag = TRP3_MainTooltipTextLeft2:GetFont();
+			TRP3_MainTooltipTextLeft2:SetFont(font, getTooltipSize(), flag);
 			TRP3_MainTooltipTextLeft2:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextLeft2:SetTextColor(1, 0.75, 0);
 		end
@@ -556,7 +558,8 @@ function TRP3_API.ui.tooltip.toast(text, duration)
 	TRP3_Toast:Hide();
 	TRP3_Toast:SetOwner(TRP3_MainFramePageContainer, "ANCHOR_BOTTOM", 0, 60);
 	TRP3_Toast:AddLine(text, 1, 1, 1, true);
-	TRP3_ToastTextLeft1:SetFont("Fonts\\FRIZQT__.TTF", getTooltipSize());
+	local font, _, outline = TRP3_ToastTextLeft1:GetFont();
+	TRP3_ToastTextLeft1:SetFont(font, getTooltipSize(), outline);
 	TRP3_ToastTextLeft1:SetNonSpaceWrap(true);
 	TRP3_ToastTextLeft1:SetTextColor(1, 1, 1);
 	TRP3_Toast:Show();
