@@ -422,9 +422,8 @@ local defaultGetColoredNameFunction = GetColoredName;
 function Utils.customGetColoredName(event, ...)
 
 	-- TODO: Retrieve channel to check
-	print(event, ...);
 	-- Do not change stuff if the is disabled for this channel, use the default function
-	-- if not configIsChannelUsed(chatType) then return defaultGetColoredNameFunction(event, ...) end;
+	if not tContains(POSSIBLE_CHANNELS, event) or not configIsChannelUsed(event) then return defaultGetColoredNameFunction(event, ...) end;
 
 	local characterName, characterColor;
 	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
