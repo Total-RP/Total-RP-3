@@ -332,11 +332,8 @@ end
 -- Chatframe management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- Ideas:
--- Ignored to another chatframe (config)
--- Limit name length (config)
-
-local npcMessageId, npcMessageName, ownershipNameId;
+local NPCMessageBucket = {};
+local possessiveMarkBucket = {};
 
 function handleCharacterMessage(chatFrame, event, ...)
 
@@ -346,17 +343,26 @@ function handleCharacterMessage(chatFrame, event, ...)
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
-			npcMessageId = messageID; -- pass the messageID to the name altering functionality. - Lora
-			npcMessageName, message = handleNPCEmote(message);
+			local npcName, message = handleNPCEmote(message);
+			NPCMessageBucket[messageID] = npcName;
+
 			return false, message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
+
+		-- This is one of Saelora's neat modification
+		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
+		-- the game would insert a space between the player's name and the 's (like "Kristoff 's reindeer eats Olaf's nose.").
+		-- We store the message ID in the possessiveMarkBucket table as it will be checked in the function to colore player names.
+		-- The 's is removed from the original message, it will be inserted in the name of the player
+		--
+		-- I actually really like this.
+		-- — Ellypse
 		elseif message:sub(1, 3) == "'s " then
-			-- collapse annoying space between name and apostrophy in owned emotes. -Lora
-			ownershipNameId = messageID; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
+			possessiveMarkBucket[messageID] = true; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
 			return false, message:sub(4), characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
 		end
 	elseif message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
-		npcMessageId = messageID;
-		npcMessageName, message = handleNPCTalk(message, event);
+		local npcName, message = handleNPCEmote(message);
+		NPCMessageBucket[messageID] = npcName;
 	end
 
 	-- No yelled emote ?
@@ -407,8 +413,18 @@ local function getColoredName(info)
 end
 TRP3_API.chat.getColoredName = getColoredName;
 
-local tempGetColoredName = GetColoredName;
+-- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
+local defaultGetColoredNameFunction = GetColoredName;
+
+-- This is our custom GetColoredName function that will replace player's names with their full RP names
+-- and use their custom colors.
+-- (It is stored in Utils as we need it in other modules like Prat or WIM)
 function Utils.customGetColoredName(event, ...)
+
+	-- TODO: Retrieve channel to check
+	-- Do not change stuff if the is disabled for this channel, use the default function
+	if not tContains(POSSIBLE_CHANNELS, event) or not configIsChannelUsed(event) then return defaultGetColoredNameFunction(event, ...) end;
+
 	local characterName, characterColor;
 	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
 	local character, realm = unitIDToInfo(characterID);
@@ -416,7 +432,7 @@ function Utils.customGetColoredName(event, ...)
 		realm = Globals.player_realm_id;
 		if realm == nil then
 			-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-			return tempGetColoredName(event, ...);
+			return defaultGetColoredNameFunction(event, ...);
 		end
 	end
 	characterID = unitInfoToID(character, realm);
@@ -426,9 +442,12 @@ function Utils.customGetColoredName(event, ...)
 	local type = strsub(event, 10);
 	local chatInfo = ChatTypeInfo[type];
 
-	-- NPC talk pattern is detected in filter before being passed over here.
-	if npcMessageId == messageID then
-		return npcMessageName;
+	-- Check if this message ID was flagged as containing NPC chat
+	-- If it does we use the NPC name that was saved before.
+	if NPCMessageBucket[messageID] then
+		local NPCName = NPCMessageBucket[messageID];
+		NPCMessageBucket[messageID] = nil;
+		return NPCName or UNKNOWN;
 	end
 
 	-- WHISPER and WHISPER_INFORM have the same chat info
@@ -445,8 +464,12 @@ function Utils.customGetColoredName(event, ...)
 
 	characterName = getFullnameUsingChatMethod(info, character);
 
-	if ownershipNameId == messageID then
-		characterName = characterName.."'s";
+	-- Check if this message was flagged as containing a 's at the beggning.
+	-- To avoid having a space between the name of the player and the 's we previously removed the 's
+	-- from the message. We now need to insert it after the player's name, without a space.
+	if possessiveMarkBucket[messageID] then
+		possessiveMarkBucket[messageID] = nil;
+		characterName = characterName .. "'s";
 	end
 
 	if characterName ~= character and characterName ~= characterID then
@@ -462,7 +485,7 @@ function Utils.customGetColoredName(event, ...)
 		end
 		return characterName;
 	else
-		return tempGetColoredName(event, ...);
+		return defaultGetColoredNameFunction(event, ...);
 	end
 end
 
@@ -474,6 +497,8 @@ function hooking()
 		end
 	end
 
+	-- We hard replace the game GetColoredName function by ours so we can display our own custom colors
+	-- And the full RP name of the players
 	GetColoredName = Utils.customGetColoredName;
 
 	-- Hook the ChatEdit_InsertLink() function that is called when the user SHIFT-Click a player name
