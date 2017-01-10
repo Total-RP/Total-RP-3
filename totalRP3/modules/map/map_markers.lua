@@ -262,15 +262,8 @@ function launchScan(info)
 			currentMapID = mapID;
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
-			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
-			TRP3_ScanLoaderGlowRotation:SetDuration(structure.scanDuration);
-			TRP3_ScanLoaderBackAnimation1Rotation:SetDuration(structure.scanDuration);
-			TRP3_ScanLoaderBackAnimation2Rotation:SetDuration(structure.scanDuration);
-			playAnimation(TRP3_ScanLoaderAnimation);
-			playAnimation(TRP3_ScanFadeIn);
-			playAnimation(TRP3_ScanLoaderGlow);
-			playAnimation(TRP3_ScanLoaderBackAnimation1);
-			playAnimation(TRP3_ScanLoaderBackAnimation2);
+			TRP3_ScanLoaderFrame.scanningAnimation:SetDuration(structure.scanDuration)
+			playAnimation(TRP3_ScanLoaderFrame.scanningAnimation);
 			TRP3_API.ui.misc.playSoundKit(40216);
 			currentlyScanning = true;
 			after(structure.scanDuration, function()
@@ -282,9 +275,7 @@ function launchScan(info)
 					displayMarkers(structure);
 					TRP3_API.ui.misc.playSoundKit(43493);
 				end
-				playAnimation(TRP3_ScanLoaderBackAnimationGrow1);
-				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
-				playAnimation(TRP3_ScanFadeOut);
+				playAnimation(TRP3_ScanLoaderFrame.fadeOutAnimation);
 				if getConfigValue(CONFIG_UI_ANIMATIONS) then
 					after(1, function()
 						TRP3_ScanLoaderFrame:Hide();
@@ -321,17 +312,65 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end);
 	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
 		self.refreshTimer = self.refreshTimer + elapsed;
-		local percent = math.ceil((self.refreshTimer / self.time) * 100);
-		-- TRP3_ScanLoaderFramePercent:SetText(percent .. "%");
 	end);
 
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);
 
-local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
-local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+
+	-- Hook the WorldMapTrackingOptionsDropDown_Initialize to add our own options inside the dropdown menu securely
 	hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", insertScansInDropdown);
 	UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU");
+
+	-- If the PetTracker add-on is installed it will mess with the world map filter dropdown by overriding it
+	-- removing all the options added by other add-ons... (╯°□°）╯︵ ┻━┻
+	-- Bad PetTracker, no cookie for you ☜(`o´)
+	-- So let's fix that shit, shall we? ٩(^ᴗ^)۶
+	if PetTracker then
+
+		-- First we restore the OnClick script of the filter button ┬─┬ノ( º _ ºノ)
+		WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:SetScript('OnClick', function(self)
+			local parent = self:GetParent();
+			ToggleDropDownMenu(1, nil, parent.DropDown, parent, 0, -5);
+			PlaySound("igMainMenuOptionCheckBoxOn");
+		end)
+
+		-- Now, because we are nice (sort of),
+		-- we will insert PetTracker's options inside the dropdown the right way (✿°◡°)
+		hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", function(self, level, ...)
+			if level==1 then
+				local info = UIDropDownMenu_CreateInfo()
+
+				UIDropDownMenu_AddSeparator(info);
+
+				info = UIDropDownMenu_CreateInfo();
+
+				-- Insert a nice header for PetTracker
+				info.isTitle = true;
+				info.notCheckable = true;
+				info.text = "PetTracker";
+				UIDropDownMenu_AddButton(info);
+
+				info = UIDropDownMenu_CreateInfo();
+
+				-- Toggle pets blips
+				info.text = PETS
+				info.func = function() PetTracker.Map:Toggle('Species') end
+				info.checked = PetTracker.Map:Active('Species')
+				info.isNotRadio = true
+				info.keepShownOnClick = true
+				UIDropDownMenu_AddButton(info)
+
+				-- Toggle stable blips
+				info.text = STABLES
+				info.func = function() PetTracker.Map:Toggle('Stables') end
+				info.checked = PetTracker.Map:Active('Stables')
+				info.isNotRadio = true
+				info.keepShownOnClick = true
+				UIDropDownMenu_AddButton(info)
+			end
+		end)
+		UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU")
+	end
 end);

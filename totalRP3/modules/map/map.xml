@@ -44,7 +44,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
-				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Fill" alpha="0.5">
+				<Texture parentKey="ring" alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Fill" alpha="0.5">
 					<Size x="256" y="256"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
@@ -57,28 +57,12 @@
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimation1">
-							<Rotation name="$parentRotation" degrees="-90"/>
-						</AnimationGroup>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow1">
-							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
-				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
+				<Texture parentKey="glow" alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
 					<Size x="400" y="400"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimation2">
-							<Rotation name="$parentRotation" degrees="90"/>
-						</AnimationGroup>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow2" >
-							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
@@ -87,24 +71,12 @@
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderAnimation">
-							<Rotation name="$parentRotation" degrees="-360"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
-				<!--F:\Games\World of Warcraft\BlizzardInterfaceArt\Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame.blp-->
-				<!--Mechanical_Circular_Frame-->
-				<Texture alphaMode="BLEND" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
+				<Texture parentKey="secondGlow" alphaMode="BLEND" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
 					<Size x="256" y="256"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderGlow">
-							<Rotation name="$parentRotation" degrees="-360"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
@@ -124,12 +96,23 @@
 			</Layer>
 		</Layers>
 		<Animations>
-			<AnimationGroup name="TRP3_ScanFadeOut" setToFinalAlpha="true">
+			<AnimationGroup parentKey="scanningAnimation" setToFinalAlpha="true">
+				<!-- Frame itself -->
 				<Alpha duration="1" toAlpha="0" fromAlpha="1"/>
+
+				<!-- Ring -->
+				<Rotation childKey="ring" degrees="-360"/>
+
+				<!-- Glow -->
+				<Rotation childKey="glow" degrees="-90"/>
+
+				<!-- Second glow -->
+				<Rotation childKey="secondGlow" degrees="-360"/>
 			</AnimationGroup>
-			<AnimationGroup name="TRP3_ScanFadeIn" setToFinalAlpha="true">
-				<Alpha duration="0" fromAlpha="1" toAlpha="0"/>
+
+			<AnimationGroup parentKey="fadeOutAnimation" setToFinalAlpha="true">
 				<Alpha duration="0.5" fromAlpha="0" toAlpha="1"/>
+				<Scale childKey="glow" duration="1" scaleX="2.5" scaleY="2.5"/>
 			</AnimationGroup>
 		</Animations>
 	</Frame>
