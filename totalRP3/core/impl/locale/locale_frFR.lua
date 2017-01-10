@@ -418,7 +418,7 @@ Vous pouvez également laisser le champ vide pour faire une émote sans nom de P
 		["NPC_TALK_SAY_PATTERN"] = "dit :",
 		["NPC_TALK_SEND"] = "Envoyer",
 		["NPC_TALK_TITLE"] = "Dialogues de PNJ",
-		["NPC_TALK_WHISPER_PATTERN"] = "chuchotte :",
+		["NPC_TALK_WHISPER_PATTERN"] = "chuchote :",
 		["NPC_TALK_YELL_PATTERN"] = "crie :",
 		["PATTERN_ERROR"] = "Erreur dans le pattern",
 		["PATTERN_ERROR_TAG"] = "Erreur dans le pattern: tag non fermé",

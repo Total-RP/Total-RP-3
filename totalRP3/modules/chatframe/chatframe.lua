@@ -31,6 +31,7 @@ local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = Chat
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
+local tContains = tContains;
 
 TRP3_API.chat = {};
 
@@ -38,7 +39,12 @@ TRP3_API.chat = {};
 -- Config
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local POSSIBLE_CHANNELS
+local POSSIBLE_CHANNELS;
+
+-- Used by other modules like our own Prat or WIM modules to get the list of channels we handle
+function TRP3_API.chat.getPossibleChannels()
+	return POSSIBLE_CHANNELS;
+end;
 
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
@@ -303,50 +309,44 @@ local NPC_TALK_CHANNELS = {
 };
 local NPC_TALK_PATTERNS;
 
+local stringInColorCode = "|cff%02x%02x%02x%s|r";
+local bracketedColoredStringCode = "|cff%02x%02x%02x[%s]|r"
+
 local function handleNPCEmote(message)
+
+	-- Go through all talk types
 	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
 		if message:find(TALK_TYPE) then
 			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
 			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
 			local content = message:sub(name:len() + 5);
-			return "|cffff9900" ..name.."|r", string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, content);
+
+			return string.format(bracketedColoredStringCode, chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, name), string.format(stringInColorCode, chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, content);
 		end
 	end
+
+	-- If none was found, we default to emote
 	local chatInfo = ChatTypeInfo["MONSTER_EMOTE"];
 	return string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, message:sub(4)), " ";
-end
-
-local function handleNPCTalk(message)
-	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
-		if message:find(TALK_TYPE) then
-			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
-			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
-			local content = message:sub(name:len()+ TALK_TYPE:len() + 5);
-			return "|cffff9900" ..name.."|r]"..string.format("|cff%02x%02x%02x", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255).."\0", content.."|r";
-			-- the null character prevents the returning ov the closing ] so we can manually add it and place content after it, due to the way player links deal with strings. - Lora
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Chatframe management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local NPCMessageBucket = {};
-local possessiveMarkBucket = {};
+-- These variables will hold data between the handleCharacterMessage message filter and our custom GetColoredName
+-- So we are able to flag messages as needing their player name's to be modified
+local npcMessageId, npcMessageName, ownershipNameId;
 
 function handleCharacterMessage(chatFrame, event, ...)
 
 	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
 
-	local type = strsub(event, 10);
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
-			local npcName, message = handleNPCEmote(message);
-			NPCMessageBucket[messageID] = npcName;
-
-			return false, message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
+			npcMessageId = messageID;
+			npcMessageName, message = handleNPCEmote(message);
 
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
@@ -357,12 +357,9 @@ function handleCharacterMessage(chatFrame, event, ...)
 		-- I actually really like this.
 		-- — Ellypse
 		elseif message:sub(1, 3) == "'s " then
-			possessiveMarkBucket[messageID] = true; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
-			return false, message:sub(4), characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
+			ownershipNameId = true; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
+			message = message:sub(4);
 		end
-	elseif message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
-		local npcName, message = handleNPCEmote(message);
-		NPCMessageBucket[messageID] = npcName;
 	end
 
 	-- No yelled emote ?
@@ -373,7 +370,6 @@ function handleCharacterMessage(chatFrame, event, ...)
 
 	-- Colorize emote and OOC
 	message = detectEmoteAndOOC(type, message);
-
 
 	return false, message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16;
 end
@@ -444,10 +440,8 @@ function Utils.customGetColoredName(event, ...)
 
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
-	if NPCMessageBucket[messageID] then
-		local NPCName = NPCMessageBucket[messageID];
-		NPCMessageBucket[messageID] = nil;
-		return NPCName or UNKNOWN;
+	if npcMessageId == messageID then
+		return npcMessageName or UNKNOWN;
 	end
 
 	-- WHISPER and WHISPER_INFORM have the same chat info
@@ -467,8 +461,7 @@ function Utils.customGetColoredName(event, ...)
 	-- Check if this message was flagged as containing a 's at the beggning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's
 	-- from the message. We now need to insert it after the player's name, without a space.
-	if possessiveMarkBucket[messageID] then
-		possessiveMarkBucket[messageID] = nil;
+	if ownershipNameId then
 		characterName = characterName .. "'s";
 	end
 

@@ -55,11 +55,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		if NPCName and NPCName ~= "" then
 			if channel == CHANNEL_TYPES.SAY then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_SAY_PATTERN");
+				NPCName = NPCName .. " " .. loc("NPC_TALK_SAY_PATTERN") .. " ";
 			elseif channel == CHANNEL_TYPES.YELL then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_YELL_PATTERN");
+				NPCName = NPCName .. " " .. loc("NPC_TALK_YELL_PATTERN") .. " ";
 			elseif channel == CHANNEL_TYPES.WHISPER then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_WHISPER_PATTERN");
+				NPCName = NPCName .. " " .. loc("NPC_TALK_WHISPER_PATTERN") .. " ";
 			elseif channel == CHANNEL_TYPES.EMOTE then
 				NPCName = NPCName .. " ";
 			end
