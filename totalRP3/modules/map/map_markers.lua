@@ -323,54 +323,57 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", insertScansInDropdown);
 	UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU");
 
-	-- If the PetTracker add-on is installed it will mess with the world map filter dropdown by overriding it
-	-- removing all the options added by other add-ons... (╯°□°）╯︵ ┻━┻
-	-- Bad PetTracker, no cookie for you ☜(`o´)
-	-- So let's fix that shit, shall we? ٩(^ᴗ^)۶
-	if PetTracker then
+	after(5, function()
 
-		-- First we restore the OnClick script of the filter button ┬─┬ノ( º _ ºノ)
-		WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:SetScript('OnClick', function(self)
-			local parent = self:GetParent();
-			ToggleDropDownMenu(1, nil, parent.DropDown, parent, 0, -5);
-			PlaySound("igMainMenuOptionCheckBoxOn");
-		end)
+		-- If the PetTracker add-on is installed it will mess with the world map filter dropdown by overriding it
+		-- removing all the options added by other add-ons... (╯°□°）╯︵ ┻━┻
+		-- Bad PetTracker, no cookie for you ☜(`o´)
+		-- So let's fix that shit, shall we? ٩(^ᴗ^)۶
+		if PetTracker then
 
-		-- Now, because we are nice (sort of),
-		-- we will insert PetTracker's options inside the dropdown the right way (✿°◡°)
-		hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", function(self, level, ...)
-			if level==1 then
-				local info = UIDropDownMenu_CreateInfo()
+			-- First we restore the OnClick script of the filter button ┬─┬ノ( º _ ºノ)
+			WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:SetScript('OnClick', function(self)
+				local parent = self:GetParent();
+				ToggleDropDownMenu(1, nil, parent.DropDown, parent, 0, -5);
+				PlaySound("igMainMenuOptionCheckBoxOn");
+			end)
 
-				UIDropDownMenu_AddSeparator(info);
+			-- Now, because we are nice (sort of),
+			-- we will insert PetTracker's options inside the dropdown the right way (✿°◡°)
+			hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", function(self, level, ...)
+				if level==1 then
+					local info = UIDropDownMenu_CreateInfo()
 
-				info = UIDropDownMenu_CreateInfo();
+					UIDropDownMenu_AddSeparator(info);
 
-				-- Insert a nice header for PetTracker
-				info.isTitle = true;
-				info.notCheckable = true;
-				info.text = "PetTracker";
-				UIDropDownMenu_AddButton(info);
+					info = UIDropDownMenu_CreateInfo();
 
-				info = UIDropDownMenu_CreateInfo();
+					-- Insert a nice header for PetTracker
+					info.isTitle = true;
+					info.notCheckable = true;
+					info.text = "PetTracker";
+					UIDropDownMenu_AddButton(info);
 
-				-- Toggle pets blips
-				info.text = PETS
-				info.func = function() PetTracker.Map:Toggle('Species') end
-				info.checked = PetTracker.Map:Active('Species')
-				info.isNotRadio = true
-				info.keepShownOnClick = true
-				UIDropDownMenu_AddButton(info)
+					info = UIDropDownMenu_CreateInfo();
 
-				-- Toggle stable blips
-				info.text = STABLES
-				info.func = function() PetTracker.Map:Toggle('Stables') end
-				info.checked = PetTracker.Map:Active('Stables')
-				info.isNotRadio = true
-				info.keepShownOnClick = true
-				UIDropDownMenu_AddButton(info)
-			end
-		end)
-		UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU")
-	end
+					-- Toggle pets blips
+					info.text = PETS
+					info.func = function() PetTracker.WorldMap:Toggle('Species') end
+					info.checked = PetTracker.WorldMap:Active('Species')
+					info.isNotRadio = true
+					info.keepShownOnClick = true
+					UIDropDownMenu_AddButton(info)
+
+					-- Toggle stable blips
+					info.text = STABLES
+					info.func = function() PetTracker.WorldMap:Toggle('Stables') end
+					info.checked = PetTracker.WorldMap:Active('Stables')
+					info.isNotRadio = true
+					info.keepShownOnClick = true
+					UIDropDownMenu_AddButton(info)
+				end
+			end)
+			UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU")
+		end
+	end)
 end);
