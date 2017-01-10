@@ -262,8 +262,15 @@ function launchScan(info)
 			currentMapID = mapID;
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
-			TRP3_ScanLoaderFrame.scanningAnimation:SetDuration(structure.scanDuration)
-			playAnimation(TRP3_ScanLoaderFrame.scanningAnimation);
+			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderGlowRotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderBackAnimation1Rotation:SetDuration(structure.scanDuration);
+			TRP3_ScanLoaderBackAnimation2Rotation:SetDuration(structure.scanDuration);
+			playAnimation(TRP3_ScanLoaderAnimation);
+			playAnimation(TRP3_ScanFadeIn);
+			playAnimation(TRP3_ScanLoaderGlow);
+			playAnimation(TRP3_ScanLoaderBackAnimation1);
+			playAnimation(TRP3_ScanLoaderBackAnimation2);
 			TRP3_API.ui.misc.playSoundKit(40216);
 			currentlyScanning = true;
 			after(structure.scanDuration, function()
@@ -275,7 +282,9 @@ function launchScan(info)
 					displayMarkers(structure);
 					TRP3_API.ui.misc.playSoundKit(43493);
 				end
-				playAnimation(TRP3_ScanLoaderFrame.fadeOutAnimation);
+				playAnimation(TRP3_ScanLoaderBackAnimationGrow1);
+				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
+				playAnimation(TRP3_ScanFadeOut);
 				if getConfigValue(CONFIG_UI_ANIMATIONS) then
 					after(1, function()
 						TRP3_ScanLoaderFrame:Hide();
