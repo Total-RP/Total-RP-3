@@ -31,6 +31,7 @@ local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = Chat
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
+local tContains = tContains;
 
 TRP3_API.chat = {};
 
@@ -38,7 +39,12 @@ TRP3_API.chat = {};
 -- Config
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local POSSIBLE_CHANNELS
+local POSSIBLE_CHANNELS;
+
+-- Used by other modules like our own Prat or WIM modules to get the list of channels we handle
+function TRP3_API.chat.getPossibleChannels()
+	return POSSIBLE_CHANNELS;
+end;
 
 local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_NAME_COLOR = "chat_color";
@@ -303,15 +309,23 @@ local NPC_TALK_CHANNELS = {
 };
 local NPC_TALK_PATTERNS;
 
+local stringInColorCode = "|cff%02x%02x%02x%s|r";
+local bracketedColoredStringCode = "|cff%02x%02x%02x[%s]|r"
+
 local function handleNPCEmote(message)
+
+	-- Go through all talk types
 	for TALK_TYPE, TALK_CHANNEL in pairs(NPC_TALK_PATTERNS) do
 		if message:find(TALK_TYPE) then
 			local chatInfo = ChatTypeInfo[TALK_CHANNEL];
 			local name = message:sub(4, message:find(TALK_TYPE) - 2); -- Isolate the name
-			local content = message:sub(name:len() + TALK_TYPE:len() + 5);
-			return "|cffff9900" ..name.."|r", string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, content);
+			local content = message:sub(name:len() + 5);
+
+			return string.format(bracketedColoredStringCode, chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, name), string.format(stringInColorCode, chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, content);
 		end
 	end
+
+	-- If none was found, we default to emote
 	local chatInfo = ChatTypeInfo["MONSTER_EMOTE"];
 	return string.format("|cff%02x%02x%02x%s|r", chatInfo.r*255, chatInfo.g*255, chatInfo.b*255, message:sub(4)), " ";
 end
@@ -346,10 +360,6 @@ function handleCharacterMessage(chatFrame, event, ...)
 			ownershipNameId = true; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
 			message = message:sub(4);
 		end
-
-	elseif message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() and NPC_TALK_CHANNELS[event] then
-		npcMessageId = messageID;
-		npcMessageName, message = handleNPCEmote(message);
 	end
 
 	-- No yelled emote ?

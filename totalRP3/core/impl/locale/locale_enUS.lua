@@ -742,9 +742,9 @@ Total RP is not responsible for links leading to harmful content.]],
 		UI_TUTO_BUTTON_TT = "Click to toggle on/off the tutorial mode",
 		UI_CLOSE_ALL = "Close all",
 
-		NPC_TALK_SAY_PATTERN = "says: ",
-		NPC_TALK_YELL_PATTERN = "yells: ",
-		NPC_TALK_WHISPER_PATTERN = "whispers: ",
+		NPC_TALK_SAY_PATTERN = "says:",
+		NPC_TALK_YELL_PATTERN = "yells:",
+		NPC_TALK_WHISPER_PATTERN = "whispers:",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMON TEXTS

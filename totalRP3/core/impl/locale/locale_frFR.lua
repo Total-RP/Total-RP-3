@@ -387,7 +387,7 @@ Le |cff9999ffModule TipTac|r ajoute la compatibilité avec l'add-on TipTac pour 
 Ce message n'apparaîtra qu'une seule fois par session et peut être désactivé dans les réglages (Général => Divers).]=],
 		NEW_VERSION_TITLE = "Nouvelle mise-à-jour disponible",
 		NPC_TALK_SAY_PATTERN = "dit :",
-		NPC_TALK_WHISPER_PATTERN = "chuchotte :",
+		NPC_TALK_WHISPER_PATTERN = "chuchote :",
 		NPC_TALK_YELL_PATTERN = "crie :",
 		PATTERN_ERROR = "Erreur dans le pattern",
 		PATTERN_ERROR_TAG = "Erreur dans le pattern: tag non fermé",
