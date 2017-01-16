@@ -32,6 +32,7 @@ local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKe
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
 local tContains = tContains;
+local assert = assert;
 
 TRP3_API.chat = {};
 
@@ -357,7 +358,7 @@ function handleCharacterMessage(chatFrame, event, ...)
 		-- I actually really like this.
 		-- — Ellypse
 		elseif message:sub(1, 3) == "'s " then
-			ownershipNameId = true; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
+			ownershipNameId = messageID; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
 			message = message:sub(4);
 		end
 	end
@@ -415,11 +416,13 @@ local defaultGetColoredNameFunction = GetColoredName;
 -- This is our custom GetColoredName function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
-function Utils.customGetColoredName(event, ...)
+-- It must receive a fallback function as first parameter. It is the function it will use if we don't handle name customizations ourselves
+function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...)
 
-	-- TODO: Retrieve channel to check
+	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
+
 	-- Do not change stuff if the is disabled for this channel, use the default function
-	if not tContains(POSSIBLE_CHANNELS, event) or not configIsChannelUsed(event) then return defaultGetColoredNameFunction(event, ...) end;
+	if not tContains(POSSIBLE_CHANNELS, event) or not configIsChannelUsed(event) then return fallback(event, ...) end;
 
 	local characterName, characterColor;
 	local message, characterID, language, arg4, arg5, arg6, arg7, arg8, arg9, arg10, messageID, arg12, arg13, arg14, arg15, arg16 = ...;
@@ -428,7 +431,7 @@ function Utils.customGetColoredName(event, ...)
 		realm = Globals.player_realm_id;
 		if realm == nil then
 			-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-			return defaultGetColoredNameFunction(event, ...);
+			return fallback(event, ...);
 		end
 	end
 	characterID = unitInfoToID(character, realm);
@@ -461,7 +464,7 @@ function Utils.customGetColoredName(event, ...)
 	-- Check if this message was flagged as containing a 's at the beggning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's
 	-- from the message. We now need to insert it after the player's name, without a space.
-	if ownershipNameId then
+	if ownershipNameId == messageID then
 		characterName = characterName .. "'s";
 	end
 
@@ -478,8 +481,14 @@ function Utils.customGetColoredName(event, ...)
 		end
 		return characterName;
 	else
-		return defaultGetColoredNameFunction(event, ...);
+		return fallback(event, ...);
 	end
+end
+
+-- This is the actual GetColoredName replacement function.
+-- It calls our custom GetColoredName function with the default Blizzard function as a fallback.
+function Utils.customGetColoredName(...)
+	return Utils.customGetColoredNameWithCustomFallbackFunction(defaultGetColoredNameFunction, ...);
 end
 
 function hooking()

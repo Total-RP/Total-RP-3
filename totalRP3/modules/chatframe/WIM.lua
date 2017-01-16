@@ -1,8 +1,8 @@
 local function onStart()
-	-- Stop right here if Prat is not installed
+	-- Stop right here if WIM is not installed
 	if not WIM then return false, "WIM not found." end
 
-	local TRP3GetColoredName = TRP3_API.utils.customGetColoredName;
+	local TRP3CustomGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
 	local get = TRP3_API.profile.getData;
 	local getColoredName = TRP3_API.chat.getColoredName;
 	local getFullName = TRP3_API.chat.getFullnameUsingChatMethod;
@@ -13,8 +13,16 @@ local function onStart()
 
 	local classes = constants.classes;
 
-	classes.GetColoredNameByChatEvent = TRP3GetColoredName;
+	-- We store WIM's custom GetColoredName function as we will send it as a fallback to TRP3's GetColoredName function
+	local WIMsGetColoredNameFunction = classes.GetColoredNameByChatEvent;
 
+	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
+	-- if we couldn't handle the name ourselves.
+	classes.GetColoredNameByChatEvent = function(...)
+		return TRP3CustomGetColoredNameWithCustomFallbackFunction(WIMsGetColoredNameFunction, ...);
+	end;
+
+	-- Replace WIM's GetMyColoredName to display our full RP name
 	classes.GetMyColoredName = function()
 		local name = _G.UnitName("player");
 		local info = get("player");

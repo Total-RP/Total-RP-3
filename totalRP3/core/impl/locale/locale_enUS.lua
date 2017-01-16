@@ -957,7 +957,7 @@ We have completely changed our chat customizations to be more compatible with ot
 
 We have also built custom modules for both Prat and WIM to have the full RP names correctly displayed when using these add-ons.
 
-Additionally, this new system fixes a long standing issue where whispers were displayed in evert chat tabs when the option to have incoming whispers routed to their own tab was enabled.
+Additionally, this new system fixes a long standing issue where whispers were displayed in every chat tabs when the option to have incoming whispers routed to their own tab was enabled.
 
 |cffccccccA big special thank you to Saelora from Argent Dawn (EU) for helping us making this system <3|r
 
