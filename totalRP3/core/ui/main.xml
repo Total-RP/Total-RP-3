@@ -430,39 +430,13 @@
 
 		</Frames>
 	</Frame>
-	
-	<ScrollFrame name="TRP3_DEBUG_CODE_FRAME" inherits="UIPanelScrollFrameTemplate" parent="UIParent" hidden="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
-		<Size x="200" y="200"/>
+
+	<Frame name="TRP3_DEBUG_CODE_FRAME" inherits="TRP3_TextArea" parent="UIParent" hidden="true">
+		<Size x="500" y="500"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
-		<ScrollChild>
-			<EditBox name="TRP3_DEBUG_CODE_FRAME_TEXT" multiLine="true" enableMouse="false" autoFocus="false">
-				<Size x="200" y="200"/>
-				<Scripts>
-					<OnTextChanged>
-						if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-							self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-						end
-					</OnTextChanged>
-					<OnEscapePressed>
-						self:ClearFocus();
-					</OnEscapePressed>
-					<OnEditFocusGained>
-						self:HighlightText();
-					</OnEditFocusGained>
-					<OnEditFocusLost>
-						self:HighlightText(0,0);
-					</OnEditFocusLost>
-				</Scripts>
-				<FontString inherits="GameFontNormalSmall"/>
-			</EditBox>
-		</ScrollChild>
-	</ScrollFrame>
+	</Frame>
 
 	<Frame name="TRP3_CTLDebug" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true">
 		<Size x="900" y="600"/>
