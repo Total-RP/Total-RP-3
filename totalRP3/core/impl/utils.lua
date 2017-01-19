@@ -307,9 +307,13 @@ end
 
 local strsplit, UnitGUID = strsplit, UnitGUID;
 
-function Utils.str.getUnitDataFromGUID(unitID)
-	local unitType, _, _, _, _, npcID = strsplit("-", UnitGUID(unitID) or "");
+function Utils.str.getUnitDataFromGUIDDirect(GUID)
+	local unitType, _, _, _, _, npcID = strsplit("-", GUID or "");
 	return unitType, npcID;
+end
+
+function Utils.str.getUnitDataFromGUID(unitID)
+	return Utils.str.getUnitDataFromGUIDDirect(UnitGUID(unitID));
 end
 
 function Utils.str.getUnitNPCID(unitID)
