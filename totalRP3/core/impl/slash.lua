@@ -110,7 +110,10 @@ local function rollDice(diceString, noSend)
 	return 0;
 end
 
-function TRP3_API.slash.rollDices(args)
+local strjoin, unpack = strjoin, unpack;
+
+function TRP3_API.slash.rollDices(...)
+	local args = {...};
 	local total = 0;
 	local i = 0;
 
@@ -121,28 +124,29 @@ function TRP3_API.slash.rollDices(args)
 		total = total + rollDice(roll);
 		i = index;
 	end
+
+	local totalMessage = loc("DICE_TOTAL"):format(Utils.str.icon("inv_misc_dice_01", 20), total);
+	if i > 1 then
+		Utils.message.displayMessage(totalMessage);
+		sendDiceRoll({t = total});
+	end
+	Utils.message.displayMessage(totalMessage, 3);
+	TRP3_API.ui.misc.playSoundKit(36629, "SFX");
+	Utils.event.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
+
 	return total, i;
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
-	local strjoin, unpack = strjoin, unpack;
+
 
 	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
 		id = "roll",
 		helpLine = " " .. loc("DICE_HELP"),
 		handler = function(...)
-			local args = {...};
-			local total, i = TRP3_API.slash.rollDices(args);
-			local totalMessage = loc("DICE_TOTAL"):format(Utils.str.icon("inv_misc_dice_01", 20), total);
-			if i > 1 then
-				Utils.message.displayMessage(totalMessage);
-				sendDiceRoll({t = total});
-			end
-			Utils.message.displayMessage(totalMessage, 3);
-			TRP3_API.ui.misc.playSoundKit(36629, "SFX");
-			Utils.event.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
+			TRP3_API.slash.rollDices(...);
 		end
 	});
 
