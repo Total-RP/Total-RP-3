@@ -576,7 +576,7 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Chat frames",
 	["description"] = "Global enhancement for chat frames. Use roleplay information, detect emotes and OOC sentences and use colors.",
-	["version"] = 1.000,
+	["version"] = 1.100,
 	["id"] = "trp3_chatframes",
 	["onStart"] = onStart,
 	["minVersion"] = 3,

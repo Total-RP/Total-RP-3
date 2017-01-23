@@ -101,6 +101,9 @@ local MODULE_STRUCTURE = {
 	["id"] = "trp3_prat",
 	["onStart"] = onStart,
 	["minVersion"] = 25,
+	["requiredDeps"] = {
+		{"trp3_chatframes",  1.100},
+	}
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
