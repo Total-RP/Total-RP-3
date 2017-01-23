@@ -80,37 +80,51 @@ end
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local UnitExists, UnitInParty, UnitInRaid = UnitExists, UnitInParty, UnitInRaid;
 
+local DICE_SIGNAL = "DISN";
+
+local function sendDiceRoll(args)
+	if UnitExists("target") and not (UnitInParty("target") or UnitInRaid("target")) then
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
+	end
+	if IsInRaid() then
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "RAID");
+	elseif IsInGroup() then
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "PARTY");
+	end
+end
+
+local function rollDice(diceString, noSend)
+	local _, _, num, diceCount = diceString:find("(%d+)d(%d+)");
+	num = tonumber(num) or 0;
+	diceCount = tonumber(diceCount) or 0;
+	if num > 0 and diceCount > 0 then
+		local total = 0;
+		for i = 1, num do
+			local value = math.random(1, diceCount);
+			total = total + value;
+		end
+		Utils.message.displayMessage(loc("DICE_ROLL"):format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
+		sendDiceRoll({c = num, d = diceCount, t = total});
+		return total;
+	end
+	return 0;
+end
+
+function TRP3_API.slash.rollDices(args)
+	local total = 0;
+	local i = 0;
+
+	if #args == 0 then
+		tinsert(args, "1d100");
+	end
+	for index, roll in pairs(args) do
+		total = total + rollDice(roll);
+		i = index;
+	end
+	return total, i;
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-
-	local DICE_SIGNAL = "DISN";
-
-	local function sendDiceRoll(args)
-		if UnitExists("target") and not (UnitInParty("target") or UnitInRaid("target")) then
-			TRP3_API.communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
-		end
-		if IsInRaid() then
-			TRP3_API.communication.sendObject(DICE_SIGNAL, args, "RAID");
-		elseif IsInGroup() then
-			TRP3_API.communication.sendObject(DICE_SIGNAL, args, "PARTY");
-		end
-	end
-
-	local function rollDice(diceString)
-		local _, _, num, diceCount = diceString:find("(%d+)d(%d+)");
-		if num and diceCount then
-			num = tonumber(num) or 0;
-			diceCount = tonumber(diceCount) or 0;
-			local total = 0;
-			for i = 1, num do
-				local value = math.random(1, diceCount);
-				total = total + value;
-			end
-			Utils.message.displayMessage(loc("DICE_ROLL"):format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
-			sendDiceRoll({c = num, d = diceCount, t = total});
-			return total;
-		end
-		return 0;
-	end
 
 	local strjoin, unpack = strjoin, unpack;
 
@@ -119,17 +133,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		id = "roll",
 		helpLine = " " .. loc("DICE_HELP"),
 		handler = function(...)
-			local total = 0;
-			local i = 0;
 			local args = {...};
-			if #args == 0 then
-				tinsert(args, "1d100");
-			end
-			for index, roll in pairs(args) do
-				total = total + rollDice(roll);
-				i = index;
-			end
-
+			local total, i = TRP3_API.slash.rollDices(args);
 			local totalMessage = loc("DICE_TOTAL"):format(Utils.str.icon("inv_misc_dice_01", 20), total);
 			if i > 1 then
 				Utils.message.displayMessage(totalMessage);
