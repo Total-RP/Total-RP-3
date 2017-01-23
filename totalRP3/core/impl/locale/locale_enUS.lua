@@ -953,22 +953,27 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 
 ## Chat customization revamp
 
-We have completely changed our chat customizations to be more compatible with other add-ons like Prat, WIM or even Tongues!
+We have completely changed our chat customizations to increase compatibility with other add-ons like Prat, WIM, or even Tongues!
 
 We have also built custom modules for both Prat and WIM to have the full RP names correctly displayed when using these add-ons.
 
-Additionally, this new system fixes a long standing issue where whispers were displayed in every chat tabs when the option to have incoming whispers routed to their own tab was enabled.
+Additionally, this new system fixes a long standing issue where whispers were displayed in every chat tab when the option to have incoming whispers routed to their own tab was enabled.
 
-|cffccccccA big special thank you to Saelora from Argent Dawn (EU) for helping us making this system <3|r
+|cffccccccA big special thank you to |r{twitter*Saelorable*Saelora}|cffcccccc from Argent Dawn (EU) for helping us making this system <3|r
 
 ## Bug fixes
 
 - We have implemented a custom bug fix for an issue in Blizzard's own code that is making any opened dropdown menu close themselves randomly when the map is opened, so it is easier for you to use Total RP 3's scanning features ({link*open_map_filters_dropdown*Reminder: now located inside the filter menu in the top right corner of the map}).
-- The extensionxtooltip2 channel should now be joined a little bit later so it is assigned the number 1 channel less often.
+- The |cffccccccextensionxtooltip2|r channel should now be joined a little bit later so it is assigned the number 1 channel less often.
+
+## Other improvements
+
 - Skinning add-ons that modify the tooltips font should now work with Total RP 3's tooltips.
+- Added link to our Discord server in the About tab of the Dashboard.
+- Implemented a workaround against the PetTracker add-on as it is removing other add-ons options in the world map filters dropdown menu. The default dropdown menu is restored by Total RP 3 and PetTracker's options are properly added to the menu after Total RP 3's. ([ticket #45](https://wow.curseforge.com/projects/total-rp-3/issues/45))
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
+{h3}Total RP 3: Extended |cffF87431|r{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
 {link*http://extended.totalrp3.info*Download on Curse.com}
 

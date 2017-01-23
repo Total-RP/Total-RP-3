@@ -396,7 +396,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 		["UI_IMAGE_SELECT"] = "Seleziona immagine",
 		["UI_LINK_TEXT"] = "Il tuo testo quì",
 		["UI_LINK_URL"] = "http://ilTuo.url.quì",
-		["UI_MUSIC_SELECT"] = "Seleziona musica",
+		["UI_MUSIC_SELECT"] = "Seleziona musica"
 	}
 
 };

@@ -326,7 +326,7 @@ aux autres que vous débutez dans le roleplay.]=],
 		["MAP_BUTTON_NO_SCAN"] = "Pas de scan disponible",
 		["MAP_BUTTON_SCANNING"] = "Scan en cours",
 		["MAP_BUTTON_SUBTITLE"] = "Clic pour afficher les scans disponibles",
-		["MAP_SCAN_CHAR"] = "Scan de personnages",
+		["MAP_SCAN_CHAR"] = "Afficher les personnages",
 		["MAP_SCAN_CHAR_TITLE"] = "Personnages",
 		["MATURE_FILTER_ADD_TO_WHITELIST"] = "Ajouter ce profil à la |cffffffffliste blanche mature|r",
 		["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Ajouter à la |cffffffffliste blanche mature|r",
@@ -372,17 +372,8 @@ Ce profil a été marqué comme contenu du contenu mature.
 		["MM_SHOW_HIDE_MAIN"] = "Afficher/cacher la fenêtre principale",
 		["MM_SHOW_HIDE_MOVE"] = "Déplacer le bouton",
 		["MM_SHOW_HIDE_SHORTCUT"] = "Afficher/cacher la barre d'outils",
-		["MORE_MODULES_1"] = [=[{h2:c}Modules optionnels{/h2}
-{h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
-|cff9999ffTotal RP 3: Extended|r ajoute la possibilitée de créer votre propre contenu: des campagnes avec des quêtes et des dialogues de PNJ, des objets, des documents (livres, affiches, contrats) et bien plus!
-{link*http://extended.totalrp3.info*Télécharger sur Curse.com}
-
-{h3}Module TipTac{/h3}
-Le |cff9999ffModule TipTac|r ajoute la compatibilité avec l'add-on TipTac pour que l'infobulle de Total RP 3 utilisent l'apparence et l'ancrage de TipTac.
-|cff9999ff{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Télécharger sur Curse.com}.
-]=],
 		["MORE_MODULES_2"] = [=[{h2:c}Modules complémentaires{/h2}
-{h3}Total RP 3: Extended |cffF87431(beta)|r{/h3}
+{h3}Total RP 3: Extended |cffF87431|r{/h3}
 |cff9999ffTotal RP 3: Extended|r ajoute la création de campagnes avec des quêtes et des dialogues, des objets, des documents (livres, affiches, contrats) et encore bien plus!
 {link*http://extended.totalrp3.info*Télécharger sur Curse.com}
 
@@ -997,7 +988,6 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 		["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Créé par{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
@@ -1053,66 +1043,28 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 		["UI_MUSIC_SELECT"] = "Choisir une musique",
 		["UI_TUTO_BUTTON"] = "Mode tutoriel",
 		["UI_TUTO_BUTTON_TT"] = "Cliquer pour afficher ou masquer le mode tutoriel",
-		["WHATS_NEW_5"] = [=[# Nouveautés de la version 1.2.3
+		["WHATS_NEW_7"] = [=[# Nouveauté de la version 1.2.5
 
-## Amélioration de la fonction de scan sur la carte
+## Nouveau système de discussion
 
-Nous avons corrigé un problème avec les marqueurs sur la carte introduit avec le patch 7.1. Également, afin d'être plus compatible avec d'autres add-ons ajoutant des informations sur la carte dans l'avenir, nous avons enlever le bouton de Total RP 3 et vous devez maintenant passer par le bouton de filtres (la loupe) en haut à droite pour lancer un scan.
+Nous avons complètement modifié notre système de modification des fenêtres de discussion pour être beaucoup plus compatible avec les autres add-ons de discussion comme Prat ou WIM.
 
-## Amélioration du protocole de diffusion
+Nous avons également implémenté des modules spécifiques à Prat et WIM pour afficher les noms roleplay complets et colorés avec ces add-ons.
 
-Nous avons mis-à-jour le protocole de diffusion pour utiliser des méthodes utilisant moins de bande passante. Autre avantage, ces méthode sont disponibles pour les comptes d'essai, ce qui veut dire que les utilisateurs jouant sur un compte d'essai pourront maintenant afficher les joueurs sur la carte et recevoir/envoyer des sons d'objets Total RP 3: Extended!
+De plus, ce nouveau système de discussion corrige un très vieux bug qui faisait que les chuchotements étaient affichés dans tous les onglets des fenêtres de discussions au lieu d'être affiché uniquement dans l'onglet correspondant à la discussion lorsque l'option était activée dans les réglages.
 
-Nous avons également ajouter des protections et une surveillance du canal de diffusion contre les gens qui essaieraient de vous empêcher de rejoindre le canal de diffusion `xtensionxtooltip2` en paramétrant un mot de passe.
+|cffccccccUn très grand merci à |r{twitter*Saelorable*Saelora}|cffcccccc du serveur Argent Dawn (EU) pour nous avoir aidé à mettre en place ce nouveau système <3|r
 
-## Autres améliorations
+## Correction de bugs
 
-- Nous avons corrigé un bug introduit dans la version 1.2 qui empêchait la page d'importation de profils depuis un autre add-on de s'afficher correctement. Merci à Gordon8 et Gelaga d'avoir rapporté ce problème!
-- Total RP 3: Extended a été rajouté à la liste des modules optionnels sur l'écran d'accueil.
-
-# Nouveautés de la version 1.2.2
-
-Cette version corrige un soucis de performances majeur avec le transfert de données qui impactait Total RP 3 depuis la version 1.1.0. |cff00ff00Le transfert de données sera de plus en plus rapide à mesure que tout le monde passe à la version 1.2.2 ou supérieur. Donc faites passer le mot !
-]=],
-		["WHATS_NEW_6"] = [=[# Nouveautés de la version 1.2.4
-
-## Interface de dialogues de PNJ
-
-Nous avons rajouté une interface pour les {link*npc_speeches*dialogues de PNJ}. Ouvrez-là via le nouveau bouton de la barre d’outils. Envoyez des messages en tant que PNJ et faites lui dire, crier, chuchoter ou réaliser l’action que vous souhaitez ! Vous pouvez utiliser la touche Entrée pour envoyer le message et ainsi envoyer plusieurs messages d’affilée.
-
-## Langages
-
-- Nous avons corrigé les icônes manquantes pour la nouvelle langue pandaren commune aux deux factions et ajouté l’icône pour le démoniaque.
-- Total RP 3 se souviendra de la dernière langue que vous avez sélectionnée avant de vous déconnecter.
+- Nous avons implémenté notre propre correction pour un bug présent dans le code de Blizzard forçant les menus à se fermer automatique par intermittence lorsque la carte du monde est ouverte, pour que ce soit plus facile d'utiliser les fonctions de recherche sur la carte de Total RP 3 ({link*open_map_filters_dropdown*Rappel: qui se trouvent maintenant dans le bouton des filtres en haut à droite}).
+- Total RP 3 rejoindra le canal |cffccccccextensionxtooltip2|r un peu plus tard après l'entrée en jeu, pour essayer d'éviter d'être le canal numéro 1.
 
 ## Autres améliorations
 
-- Nouvelle commande pour passer à un autre profil. Utilisez |cffcccccc/trp3 profile Nom du profil|r pour passer à un profil nommé |cffccccccNom du profil|r. Le nom du profile est sensible à la casse et accepte les caractères espace.
-- {link*tooltip_settings*Nouvelle option d’infobulle} pour cacher les infobulles instantanément au lieu de les faire disparaître lentement.
-- L’infobulle ne devrait plus appraître à des endroits incorrects (lorsque la touche Alt est enfoncée sur le sort ou sur certains add-ons de soins).
-- Votre propre point n’apparaîtra plus sur la carte lorsque vous lancez une recherche de personnages sur la carte.
-- Les recherches sur la carte seront maintenant désactivées lorsqu’elles ne sont pas disponibles (en donjon, raid, champ de batailles, etc.)
-- L’interface de sélection de couleur n’acceptait plus les codes couleurs hexadécimaux copiés-collés suite à un bug introduit dans la 7.1. Nous avons fait en sorte que les codes soient bien pris en compte, mais le bug dans le code du jeu empêche actuellement l’interface de refléter correctement la couleur collée.
-- Les boutons qui sont ajoutés à la barre d’outils auront maintenant automatiquement un plugin DataBroker de créé pour être utilisés avec des add-ons de DataBroker comme Titan Panel ou Bazooka.
-- Nous avons ajouté le nouveau Total RP 3: KuiNameplates module à la liste des modules complémentaires sur l’écran d’accueil.
-
-# Nouveauté de la version 1.2.3
-
-## Améliorations du système de recherches sur la carte
-
-Nous avons corrigé l’erreur introduite par le patch 7.1 avec les marqueurs sur la carte. Aussi, afin d’améliorer la compatibilité avec les add-ons ajoutant des éléments d'interface sur la carte, les options de recherche de Total RP 3 ont été déplacées dans le {link*open_map_filters_dropdown*bouton de filtres} dans le coin en haut à droite.
-
-## Amélioration du protocol de diffusion
-
-Nous avons mis à jour notre protocol de diffusion afin d’utiliser des méthodes plus modernes utilisants moins de bande passante. Autre avantages de ces méthodes, elles sont accessibles aux comptes d’essai, ce qui veut dire que les utilisateurs jouant sur un compte d’essai ont maintenant accès aux recherches de joueurs sur la carte et à la réception de sons d’objets Total RP 3: Extended!
-
-Nous avons également ajouté des protections et surveillances supplémentaire pour empêcher les joueurs mal intentionné de mettre un mot de passe au canal de diffusion `xtensionxtooltip2` pour bloquer son utilisation.
-
-## Autres améliorations
-
-- Nous avons corrigé un bug introduit avec la 1.2 qui empêchait l’interface d’importation de profils depuis un autre add-on RP de s'afficher correctement.
-- Nous avons ajouté le nouveau module Total RP 3: Extended à la liste des modules complémentaires sur l’écran d’accueil.
-]=],
+- Les add-ons modifiant l'infobulle du jeu peuvent maintenant modifier la police des infobulles de Total RP 3.
+- Nous avons ajouté un lien vers notre serveur Discord dans l'onglet A propos de Total RP 3 sur l'écran d'accueil.
+- Nous avons implémenter une solution contre l'add-on PetTracker qui enlève les options ajoutées par d'autres add-ons au menu du bouton de filtres de la carte du monde. Le vrai menu est remis à sa place et Total RP 3 va même ajouter les options de PetTracker correctement! ([ticket #45](https://wow.curseforge.com/projects/total-rp-3/issues/45))]=]
 	}
 };
 
