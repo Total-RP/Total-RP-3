@@ -508,8 +508,14 @@ function hooking()
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
 	hooksecurefunc("ChatEdit_InsertLink", function(name)
 
+		-- If we didn't get a name at all then we have nothing to do here
+		if not name then return end;
+
 		-- Do not modify the name inserted if the option is not enabled or if the ALT key is down.
 		if not configInsertFullRPName() or IsAltKeyDown() then return end;
+
+		-- Do not modify the name if we don't know that character
+		if not (IsUnitIDKnown(name) or name == Globals.player_id) then return end;
 
 		local activeChatFrame = ChatEdit_GetActiveWindow();
 		if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
@@ -521,6 +527,7 @@ function hooking()
 			local textBefore = currentText:sub(1, currentCursorPosition - name:len() - 1);
 			local textAfter = currentText:sub(currentCursorPosition+1 );
 
+			-- TODO There's a new function in our API to easily get the full RP name using name method on some branch, use it once it's merged
 			-- Retreive the info for the character and the naming method to use
 			local info = getCharacterInfoTab(name);
 			local nameMethod = configNameMethod();
