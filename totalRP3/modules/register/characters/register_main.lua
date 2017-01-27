@@ -299,6 +299,16 @@ end
 
 TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
+local function getCharacterInfoTab(unitID)
+	if unitID == Globals.player_id then
+		return get("player");
+	elseif isUnitIDKnown(unitID) then
+		return getUnitIDCurrentProfile(unitID) or {};
+	end
+	return {};
+end
+TRP3_API.register.getCharacterInfoTab = getCharacterInfoTab;
+
 --- Raises error if unknown unitID
 function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
 	--- Raises error if unit hasn't profile ID or no profile exists
@@ -475,9 +485,13 @@ local function cleanupPlayerRelations()
 end
 
 local function cleanupProfiles()
+	local getAssociatedCompanions = TRP3_API.companions.register.getAssociationsForProfile;
+	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
+	
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
+	log("Purging profiles older than %s day(s)", getConfigValue("register_auto_purge_mode") / 86400);
 	-- First, get a tab with all profileID with which we have a relation
 	local relatedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
@@ -494,6 +508,13 @@ local function cleanupProfiles()
 	end
 	log("Profiles to purge: " .. tsize(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
+		-- We also need to purge the companions associated to that profile, so we retrieve them
+		local associatedCompanions = getAssociatedCompanions(profileID);
+		log("Purging " .. tsize(associatedCompanions) .. " companions associated to profile " .. profileID);
+		-- Delete every companion profiles
+		for _, companionProfileID in pairs(associatedCompanions) do
+			deleteCompanionProfile(companionProfileID, true);
+		end
 		deleteProfile(profileID, true);
 	end
 end
