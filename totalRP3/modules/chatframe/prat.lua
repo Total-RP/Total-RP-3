@@ -4,31 +4,20 @@ local function onStart()
 
 	Prat:AddModuleToLoad(function()
 
+		-- Create Prat module
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 		local pratModule = Prat:NewModule(PRAT_MODULE);
-
-		local tContains = tContains;
-
-		local Globals = TRP3_API.globals;
-		local unitInfoToID = TRP3_API.utils.str.unitInfoToID;
-		local get = TRP3_API.profile.getData;
-		local getColoredName = TRP3_API.chat.getColoredName;
-		local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-		local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
-		local getFullnameUsingChatMethod = TRP3_API.chat.getFullnameUsingChatMethod;
-
-		local getConfigValue = TRP3_API.configuration.getValue;
-		local getHandledChannels = TRP3_API.chat.getPossibleChannels;
-		local CONFIG_USAGE = "chat_use_";
-
-		local function getCharacterInfoTab(unitID)
-			if unitID == Globals.player_id then
-				return get("player");
-			elseif isUnitIDKnown(unitID) then
-				return getUnitIDCurrentProfile(unitID) or {};
-			end
-			return {};
-		end
+	
+		-- Import Total RP 3 functions
+		local unitInfoToID                      = TRP3_API.utils.str.unitInfoToID; -- Get "Player-Realm" unit ID
+		local getUnitColor                      = TRP3_API.utils.color.getUnitColor; -- Get unit color (custom or default)
+		local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
+		local isChannelHandled                  = TRP3_API.chat.isChannelHandled; -- Check if Total RP 3 handles this channel
+		local configIsChannelUsed               = TRP3_API.chat.configIsChannelUsed; -- Check if a channel is enable in settings
+	
+		-- WoW imports
+		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
+	
 
 		Prat:SetModuleOptions(pratModule, {
 			name = "Total RP 3",
@@ -42,12 +31,14 @@ local function onStart()
 			}
 		});
 
+		-- Enable Total RP 3's module by default
 		Prat:SetModuleDefaults(pratModule.name, {
 			profile = {
 				on = true,
 			},
 		});
 
+		-- Runs before Prat add the message to the chat frames
 		function pratModule:Prat_PreAddMessage(arg, message, frame, event)
 
 			-- If the message has no GUID (system?) we don't have anything to do with this
@@ -55,30 +46,20 @@ local function onStart()
 
 			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 			-- for that channel in the settings
-			if not tContains(getHandledChannels(), event) or not getConfigValue(CONFIG_USAGE .. event) then return end;
+			if not isChannelHandled(event) or not configIsChannelUsed(event) then return end;
 
 			-- Retrieve all the player info from the message GUID
-			local class, classFilename, race, raceFilename, sex, name, realm = GetPlayerInfoByGUID(message.GUID);
+			local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
+		
+			-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
+			local unitID = unitInfoToID(name, realm);
+			
+			-- Get the unit color and name
+			local color = getUnitColor(unitID);
+			local characterName = getFullnameForUnitUsingChatMethod(unitID, name);
 
-			if not realm or realm == "" then -- Thanks Blizzard for not always sending a full character ID
-				realm = Globals.player_realm_id;
-				if realm == nil then
-					return
-				end
-			end
-
-			local characterID = unitInfoToID(name, realm);
-			local info = getCharacterInfoTab(characterID);
-			local characterName = getFullnameUsingChatMethod(info, name);
-			local color = getColoredName(info);
-
-			if characterName == name and not color then return end;
-
-			if color then
-				characterName = ("|cff%s%s|r"):format(color, characterName);
-			end
-
-			message.PLAYER = characterName;
+			-- Replace the message player name with the colored character name
+			message.PLAYER = color:WrapTextInColorCode(characterName);
 			message.sS = nil
 			message.SERVER = nil
 			message.Ss = nil
@@ -94,16 +75,15 @@ local function onStart()
 	end);
 end
 
-local MODULE_STRUCTURE = {
+-- Register a Total RP 3 module that can be disabled in the settings
+TRP3_API.module.registerModule({
 	["name"] = "Prat support",
 	["description"] = "Add support for the Prat add-on.",
-	["version"] = 1.000,
+	["version"] = 1.1,
 	["id"] = "trp3_prat",
 	["onStart"] = onStart,
 	["minVersion"] = 25,
 	["requiredDeps"] = {
 		{"trp3_chatframes",  1.100},
 	}
-};
-
-TRP3_API.module.registerModule(MODULE_STRUCTURE);
+});

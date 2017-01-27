@@ -46,6 +46,7 @@ local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
+local CreateColor = CreateColor;
 
 function Utils.pcall(func, ...)
 	if func then
@@ -485,6 +486,69 @@ Utils.color.lightenColorUntilItIsReadable = function(textColor)
 	if textColor.b > 1 then textColor.b = 1 end
 
 	return textColor;
+end
+
+--- Returns a Color using Blizzard's ColorMixin for a given hexadecimal color code
+-- @see ColorMixin
+function Utils.color.getColorFromHexadecimalCode(hexadecimalCode)
+	local r, g, b = Utils.color.hexaToFloat(hexadecimalCode);
+	return CreateColor(r, g, b, 1);
+end
+
+--- Returns a Color using Blizzard's ColorMixin for a given class (english, not localized)
+-- @see ColorMixin
+function Utils.color.getClassColor(englishClass)
+	assert(englishClass, "No class given to TRP3_API.utils.getClassColor(englishClass).")
+	assert(RAID_CLASS_COLORS[englishClass], string.format("Unknown class %s", englishClass));
+
+	local classColorTable = RAID_CLASS_COLORS[englishClass];
+	return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
+end
+
+function Utils.color.getUnitClassColor(unitID)
+	local unitClass = Utils.str.GetClass(unitID);
+	return Utils.color.getClassColor(unitClass);
+end
+
+local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
+
+--- Returns the custom color defined in the unitID's profile as a Color using Blizzard's ColorMixing.
+-- @param unitID
+-- @return Color
+-- @see ColorMixin
+function Utils.color.getUnitCustomColor(unitID)
+	local info = TRP3_API.register.getCharacterInfoTab(unitID);
+
+	if info.characteristics and info.characteristics.CH then
+		-- If we do have a custom color code (in hexa) defined, get the RGB float values
+		local r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
+		local characterColors = {r = r, g = g, b = b};
+		
+		if TRP3_API.configuration.getValue(CONFIG_CHARACT_CONTRAST) then
+			-- If we have enabled the option to increase contrast we light up the color
+			characterColors = Utils.color.lightenColorUntilItIsReadable({
+				r = characterColors.r,
+				g = characterColors.g,
+				b = characterColors.b
+			});
+		end
+		
+		return CreateColor(characterColors.r, characterColors.g, characterColors.b, 1);
+	end
+end
+
+function Utils.color.getChatColorForChannel(channel)
+	local chatInfo = ChatTypeInfo[channel];
+	return CreateColor(chatInfo.r, chatInfo.g, chatInfo.b, 1);
+end
+
+--- Returns a Color using Blizzard's ColorMixin for a given unit ID.
+-- It will use the custom color if one is know, ligth it up if the setting is enabled, or default to class color
+-- @param unitID
+-- @see ColorMixin
+--
+function Utils.color.getUnitColor(unitID)
+	return Utils.color.getUnitCustomColor(unitID) or Utils.color.getUnitClassColor(unitID);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
