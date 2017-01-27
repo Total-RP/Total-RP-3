@@ -25,5 +25,9 @@
 	<Include file="CallbackHandler-1.0\CallbackHandler-1.0.xml" />
 	<Include file="LibDataBroker-1.1\LibDataBroker-1.1.lua" />
 	<Include file="LibDBIcon-1.0\LibDBIcon-1.0.lua" />
+
+	<!-- NoTaint UIDropDownMenu -->
+	<Include file="DropDownMenu/UIDropDownMenuTemplates.xml" />
+	<Include file="DropDownMenu/UIDropDownMenu.lua" />
 	
 </Ui>

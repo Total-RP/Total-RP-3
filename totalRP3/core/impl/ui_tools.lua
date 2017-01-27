@@ -107,22 +107,22 @@ end
 -- Drop down
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DROPDOWN_FRAME, DropDownList1, CloseDropDownMenus = "TRP3_UIDD", DropDownList1, CloseDropDownMenus;
+local DROPDOWN_FRAME = "TRP3_UIDD";
 local dropDownFrame, currentlyOpenedDrop;
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
 
 	if not dropDownFrame then
-		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
+		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "Lib_UIDropDownMenuTemplate");
 	end
 
-	if DropDownList1:IsVisible() then
-		CloseDropDownMenus();
+	if _G["Lib_DropDownList1"]:IsVisible() then
+		Lib_CloseDropDownMenus();
 		return;
 	end
 	
-	UIDropDownMenu_Initialize(dropDownFrame,
+	Lib_UIDropDownMenu_Initialize(dropDownFrame,
 		function(uiFrame, level, menuList)
 			local levelValues = menuList or values;
 			level = level or 1;
@@ -131,7 +131,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				local text = tab[1];
 				local value = tab[2];
 				local tooltipText = tab[3];
-				local info = UIDropDownMenu_CreateInfo();
+				local info = Lib_UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				if text == "" then
 					info.dist = 0;
@@ -174,20 +174,20 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 						info.isTitle = tooltipText == nil;
 					end
 				end
-				UIDropDownMenu_AddButton(info, level);
+				Lib_UIDropDownMenu_AddButton(info, level);
 			end
 			if menuList == nil and addCancel then
-				local info = UIDropDownMenu_CreateInfo();
+				local info = Lib_UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				info.text = CANCEL;
-				UIDropDownMenu_AddButton(info, level);
+				Lib_UIDropDownMenu_AddButton(info, level);
 			end
 
 		end,
 		"MENU"
 	);
 	dropDownFrame:SetParent(anchoredFrame);
-	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
+	Lib_ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
 	currentlyOpenedDrop = anchoredFrame;
 end
