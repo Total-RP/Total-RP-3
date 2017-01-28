@@ -90,18 +90,19 @@ TRP3_API.register.getProfile = getProfile;
 
 local function deleteProfile(profileID, dontFireEvents)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
-	-- We shouldn't keep unbounded characters.
-	for character, _ in pairs(profiles[profileID].link) do
-		if characters[character].profileID == profileID then
-			wipe(characters[character]);
-			characters[character] = nil;
+	-- Unbound characters from this profile
+	for characterID, _ in pairs(profiles[profileID].link) do
+		if characters[characterID].profileID == profileID then
+			characters[characterID].profileID = nil;
 		end
 	end
-	local mspOwners = nil;
-	if profiles[profileID].msp then
-		mspOwners = {};
-		for ownerID, _ in pairs(profiles[profileID].link) do
-			tinsert(mspOwners, ownerID);
+	local mspOwners;
+	if not dontFireEvents then
+		if profiles[profileID].msp then
+			mspOwners = {};
+			for ownerID, _ in pairs(profiles[profileID].link) do
+				tinsert(mspOwners, ownerID);
+			end
 		end
 	end
 	wipe(profiles[profileID]);
@@ -466,6 +467,7 @@ end
 
 local tsize = Utils.table.size;
 
+-- Unbound character from missing profiles
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
 		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
@@ -496,10 +498,10 @@ local function cleanupCompanions()
 end
 
 local function cleanupPlayerRelations()
-	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
-		for profileID, relation in pairs(profile.relation or {}) do
+	for _, myProfile in pairs(TRP3_API.profile.getProfiles()) do
+		for profileID, relation in pairs(myProfile.relation or {}) do
 			if not profiles[profileID] then
-				profile.relation[profileID] = nil;
+				myProfile.relation[profileID] = nil;
 			end
 		end
 	end
