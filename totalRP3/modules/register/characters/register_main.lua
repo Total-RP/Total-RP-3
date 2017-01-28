@@ -474,6 +474,29 @@ local function cleanupCharacters()
 	end
 end
 
+local function cleanupCompanions()
+	local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
+	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
+
+	local companionProfiles = TRP3_API.companions.register.getProfiles();
+	local characterProfiles = TRP3_API.profile.getProfiles();
+
+	for companionProfileID, companionProfile in pairs(companionProfiles) do
+		for companionFullID, _ in pairs(companionProfile.links) do
+			local ownerID, companionID = companionIDToInfo(companionFullID);
+			print(companionProfileID .. " is associated to " .. ownerID);
+			if not isUnitIDKnown(ownerID) or not profileExists(ownerID) then
+				print("Delete companion " .. companionFullID .." link to " .. ownerID .. " as character is not known or no profile for it".);
+				-- companionProfile.links[companionFullID] = nil;
+			end
+		end
+		if tsize(companionProfile.links) < 1 then
+			print("No more links to " .. companionProfileID .. ", delete companion profile!");
+			-- deleteCompanionProfile(companionProfileID, true);
+		end
+	end
+end
+
 local function cleanupPlayerRelations()
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
 		for profileID, relation in pairs(profile.relation or {}) do
@@ -485,9 +508,7 @@ local function cleanupPlayerRelations()
 end
 
 local function cleanupProfiles()
-	local getAssociatedCompanions = TRP3_API.companions.register.getAssociationsForProfile;
-	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
-	
+	if true then return end;
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
@@ -508,14 +529,7 @@ local function cleanupProfiles()
 	end
 	log("Profiles to purge: " .. tsize(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
-		-- We also need to purge the companions associated to that profile, so we retrieve them
-		local associatedCompanions = getAssociatedCompanions(profileID);
-		log("Purging " .. tsize(associatedCompanions) .. " companions associated to profile " .. profileID);
-		-- Delete every companion profiles
-		for _, companionProfileID in pairs(associatedCompanions) do
-			deleteCompanionProfile(companionProfileID, true);
-		end
-		deleteProfile(profileID, true);
+		-- deleteProfile(profileID, true);
 	end
 end
 
@@ -667,6 +681,7 @@ function TRP3_API.register.init()
 		cleanupPlayerRelations();
 		cleanupProfiles();
 		cleanupCharacters();
+		cleanupCompanions();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
