@@ -484,15 +484,13 @@ local function cleanupCompanions()
 	for companionProfileID, companionProfile in pairs(companionProfiles) do
 		for companionFullID, _ in pairs(companionProfile.links) do
 			local ownerID, companionID = companionIDToInfo(companionFullID);
-			print(companionProfileID .. " is associated to " .. ownerID);
 			if not isUnitIDKnown(ownerID) or not profileExists(ownerID) then
-				print("Delete companion " .. companionFullID .." link to " .. ownerID .. " as character is not known or no profile for it".);
-				-- companionProfile.links[companionFullID] = nil;
+				companionProfile.links[companionFullID] = nil;
 			end
 		end
 		if tsize(companionProfile.links) < 1 then
-			print("No more links to " .. companionProfileID .. ", delete companion profile!");
-			-- deleteCompanionProfile(companionProfileID, true);
+			log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
+			deleteCompanionProfile(companionProfileID, true);
 		end
 	end
 end
@@ -508,7 +506,6 @@ local function cleanupPlayerRelations()
 end
 
 local function cleanupProfiles()
-	if true then return end;
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
@@ -529,7 +526,7 @@ local function cleanupProfiles()
 	end
 	log("Profiles to purge: " .. tsize(profilesToPurge));
 	for _, profileID in pairs(profilesToPurge) do
-		-- deleteProfile(profileID, true);
+		deleteProfile(profileID, true);
 	end
 end
 
