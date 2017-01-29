@@ -804,6 +804,23 @@ local function onSave()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local FIELDS_TO_SANITIZE = {
+	"RA", "CL", "FN", "LN", "FT", "TI"
+}
+function TRP3_API.register.ui.sanitizeCharacteristics(structure)
+	if structure then
+		for _, field in pairs(FIELDS_TO_SANITIZE) do
+			if structure[field] then
+				structure[field] = Utils.str.sanitize(structure[field]);
+			end
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTERISTICS - INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

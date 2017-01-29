@@ -268,6 +268,22 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 end
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
+function TRP3_API.register.sanitizeFullProfile(data)
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.characteristics);
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.character);
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.misc);
+end
+
+function TRP3_API.register.sanitizeProfile(informationType, data)
+	if informationType == registerInfoTypes.CHARACTERISTICS then
+		TRP3_API.register.ui.sanitizeCharacteristics(data);
+	elseif informationType == registerInfoTypes.CHARACTER then
+		TRP3_API.dashboard.sanitizeCharacter(data);
+	elseif informationType == registerInfoTypes.MISC then
+		TRP3_API.register.ui.sanitizeMisc(data);
+	end
+end
+
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
 	local profile = getUnitIDProfile(unitID);
@@ -275,6 +291,9 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 
+	if getConfigValue("register_sanitization") == true then
+		TRP3_API.register.sanitizeProfile(informationType, data);
+	end
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
@@ -574,6 +593,7 @@ function TRP3_API.register.init()
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
+	registerConfigKey("register_sanitization", true);
 
 	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
@@ -639,6 +659,12 @@ function TRP3_API.register.init()
 				title = loc("CO_LOCATION_DISABLE_PVP"),
 				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_SANITIZER"),
+				configKey = "register_sanitization",
+				help = loc("CO_SANITIZER_TT")
 			}
 		}
 	};
