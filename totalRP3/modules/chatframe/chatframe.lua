@@ -26,13 +26,14 @@ local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local setConfigValue = TRP3_API.configuration.setValue;
 local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
 local tContains = tContains;
 local assert = assert;
-local getUnitColor = Utils.color.getUnitColor;
+local getUnitColorByGUID = Utils.color.getUnitColorByGUID;
 local getChatColorForChannel = Utils.color.getChatColorForChannel;
 local getColorFromHexadecimalCode = Utils.color.getColorFromHexadecimalCode;
 local select = select;
@@ -75,6 +76,10 @@ end
 
 local function configShowNameCustomColors()
 	return getConfigValue(CONFIG_NAME_COLOR);
+end
+
+local function configIncreaseNameColorContrast()
+	return getConfigValue(CONFIG_INCREASE_CONTRAST);
 end
 
 local function configIsChannelUsed(channel)
@@ -403,19 +408,24 @@ local defaultGetColoredNameFunction = GetColoredName;
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
 -- It must receive a fallback function as first parameter. It is the function it will use if we don't handle name customizations ourselves
-function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...)
+function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
 
+	local GUID = arg12;
+	local unitID = arg2;
+	local messageID = arg11;
+
 	-- Do not change stuff if the is disabled for this channel, use the default function
-	if not isChannelHandled(event) or not configIsChannelUsed(event) then return fallback(event, ...) end;
+	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID then
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+	end;
 
 	local characterName, characterColor;
-	local _, unitID, _, _, _, _, _, _, _, _, messageID = ...;
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then return fallback(event, ...) end;
+	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) end;
 	
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
@@ -427,7 +437,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, .
 	local character, realm = unitIDToInfo(unitID);
 	if not realm then
 		-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-		return fallback(event, ...);
+		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
 	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
@@ -441,19 +451,23 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, .
 
 	-- Retrieve the character full name and their color
 	characterName = getFullnameForUnitUsingChatMethod(unitID, character);
-	local color = getUnitColor(unitID);
+	local color = getUnitColorByGUID(GUID, configShowNameCustomColors(), configIncreaseNameColorContrast());
 
-	-- And wrap the name inside the color's code
-	local coloredName = color:WrapTextInColorCode(characterName);
+	-- If we did get a color wrap the name inside the color code
+	if color then
+		-- And wrap the name inside the color's code
+		characterName = color:WrapTextInColorCode(characterName);
+	end
+	
 
 	-- Check if this message was flagged as containing a 's at the beggning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's
 	-- from the message. We now need to insert it after the player's name, without a space.
 	if ownershipNameId == messageID then
-		coloredName = coloredName .. "'s";
+		characterName = characterName .. "'s";
 	end
 
-	return coloredName;
+	return characterName;
 end
 
 -- This is the actual GetColoredName replacement function.

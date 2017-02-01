@@ -299,6 +299,16 @@ end
 
 TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
 
+
+function TRP3_API.register.getUnitIDCurrentProfileSafe(unitID)
+	if unitID == Globals.player_id then
+		return get("player");
+	elseif isUnitIDKnown(unitID) then
+		return getUnitIDCurrentProfile(unitID) or {};
+	end
+	return {};
+end
+
 --- Raises error if unknown unitID
 function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
 	--- Raises error if unit hasn't profile ID or no profile exists

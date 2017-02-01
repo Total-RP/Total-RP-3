@@ -46,7 +46,6 @@ local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
 local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
-local CreateColor = CreateColor;
 
 function Utils.pcall(func, ...)
 	if func then
@@ -274,7 +273,12 @@ Utils.str.id = generateID;
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.
 Utils.str.unitInfoToID = function(unitName, unitRealmID)
-	return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
+	-- Some functions (like GetPlayerInfoByGUID(GUID)) will return an empty string for the realm instead of null…
+	-- Thanks Blizz…
+	if not unitRealmID or unitRealmID == "" then
+		unitRealmID = Globals.player_realm_id
+	end
+	return strconcat(unitName or "_", '-', unitRealmID);
 end
 
 -- Separates the unit name and realm from an unit ID
@@ -488,6 +492,15 @@ Utils.color.lightenColorUntilItIsReadable = function(textColor)
 	return textColor;
 end
 
+-- I quite like Blizzard's Color mixins, it has some nice functions like :WrapTextInColorCode(text)
+-- But I will extend them with my own functions like :LightenColorUntilItIsReadable();
+local BlizzardCreateColor = CreateColor;
+local function CreateColor(r, g, b, a)
+	local color = BlizzardCreateColor(r, g, b, a);
+	color.LightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
+	return color;
+end
+
 --- Returns a Color using Blizzard's ColorMixin for a given hexadecimal color code
 -- @see ColorMixin
 function Utils.color.getColorFromHexadecimalCode(hexadecimalCode)
@@ -505,11 +518,6 @@ function Utils.color.getClassColor(englishClass)
 	return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
 end
 
-function Utils.color.getUnitClassColor(unitID)
-	local unitClass = Utils.str.GetClass(unitID);
-	return Utils.color.getClassColor(unitClass);
-end
-
 local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 
 --- Returns the custom color defined in the unitID's profile as a Color using Blizzard's ColorMixing.
@@ -517,23 +525,12 @@ local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 -- @return Color
 -- @see ColorMixin
 function Utils.color.getUnitCustomColor(unitID)
-	local info = TRP3_API.register.getCharacterInfoTab(unitID);
+	local info = TRP3_API.register.getUnitIDCurrentProfileSafe(unitID);
 
 	if info.characteristics and info.characteristics.CH then
 		-- If we do have a custom color code (in hexa) defined, get the RGB float values
 		local r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
-		local characterColors = {r = r, g = g, b = b};
-		
-		if TRP3_API.configuration.getValue(CONFIG_CHARACT_CONTRAST) then
-			-- If we have enabled the option to increase contrast we light up the color
-			characterColors = Utils.color.lightenColorUntilItIsReadable({
-				r = characterColors.r,
-				g = characterColors.g,
-				b = characterColors.b
-			});
-		end
-		
-		return CreateColor(characterColors.r, characterColors.g, characterColors.b, 1);
+		return CreateColor(r, g, b, 1);
 	end
 end
 
@@ -542,13 +539,28 @@ function Utils.color.getChatColorForChannel(channel)
 	return CreateColor(chatInfo.r, chatInfo.g, chatInfo.b, 1);
 end
 
---- Returns a Color using Blizzard's ColorMixin for a given unit ID.
--- It will use the custom color if one is know, ligth it up if the setting is enabled, or default to class color
--- @param unitID
--- @see ColorMixin
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
+---
+-- Returns the color for the unit corresponding to the given GUID.
+-- @param GUID The GUID to use to retrieve player information
+-- @param useCustomColors If we should use custom color or not (usually defined in settings)
+-- @param lightenColorUntilItIsReadable If we should increase the color so it is readable on dark background (usually defined in settings)
 --
-function Utils.color.getUnitColor(unitID)
-	return Utils.color.getUnitCustomColor(unitID) or Utils.color.getUnitClassColor(unitID);
+function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntilItIsReadable)
+	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
+	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local color = Utils.color.getClassColor(englishClass);
+
+	if useCustomColors then
+		local unitID = Utils.str.unitInfoToID(name, realm);
+		color = Utils.color.getUnitCustomColor(unitID) or color;
+	
+		if lightenColorUntilItIsReadable then
+			color:LightenColorUntilItIsReadable();
+		end
+	end
+
+	return color ;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
