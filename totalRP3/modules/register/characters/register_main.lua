@@ -627,18 +627,21 @@ function TRP3_API.register.init()
 				title = loc("CO_LOCATION_ACTIVATE"),
 				help = loc("CO_LOCATION_ACTIVATE_TT"),
 				configKey = CONFIG_ENABLE_MAP_LOCATION,
+				dependentOnOptions = {"comm_broad_use"}
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_OOC"),
 				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
+				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_PVP"),
 				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
+				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
 			}
 		}
 	};

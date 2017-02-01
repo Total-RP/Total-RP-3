@@ -103,8 +103,10 @@ Config.resetValue = resetValue;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local GENERATED_WIDGET_INDEX = 0;
+local optionsDependentOnOtherOptions = {};
 
 local function buildConfigurationPage(structure)
+	local optionsDependency = {};
 	local lastWidget;
 	local marginLeft = structure.marginLeft or 5;
 	for index, element in pairs(structure.elements) do
@@ -117,6 +119,7 @@ local function buildConfigurationPage(structure)
 		else
 			widget:SetPoint("TOP", structure.parent, "TOP", 0, element.marginTop or 0);
 		end
+		element.widget = widget;
 
 		-- Titles
 		if element.title then
@@ -141,6 +144,7 @@ local function buildConfigurationPage(structure)
 		-- Specific for Dropdown
 		if _G[widget:GetName().."DropDown"] then
 			local dropDown = _G[widget:GetName().."DropDown"];
+			element.controller = _G[widget:GetName().."DropDownButton"];
 			if element.configKey then
 				if not element.listCallback then
 					element.listCallback = function(value)
@@ -165,6 +169,7 @@ local function buildConfigurationPage(structure)
 		if _G[widget:GetName().."Picker"] then
 			if element.configKey then
 				local button = _G[widget:GetName().."Picker"];
+				element.controller = button;
 				button.setColor(hexaToNumber(getValue(element.configKey)));
 				button.onSelection = function(red, green, blue)
 					if red and green and blue then
@@ -180,6 +185,7 @@ local function buildConfigurationPage(structure)
 		-- Specific for Button
 		if _G[widget:GetName().."Button"] then
 			local button = _G[widget:GetName().."Button"];
+			element.controller = button;
 			if element.callback then
 				button:SetScript("OnClick", element.callback);
 			end
@@ -189,6 +195,7 @@ local function buildConfigurationPage(structure)
 		-- Specific for EditBox
 		if _G[widget:GetName().."Box"] then
 			local box = _G[widget:GetName().."Box"];
+			element.controller = box;
 			if element.configKey then
 				box:SetScript("OnTextChanged", function(self)
 					local value = self:GetText();
@@ -207,9 +214,26 @@ local function buildConfigurationPage(structure)
 		-- Specific for Check
 		if _G[widget:GetName().."Check"] then
 			local box = _G[widget:GetName().."Check"];
+			element.controller = box;
 			if element.configKey then
 				box:SetScript("OnClick", function(self)
-					setValue(element.configKey, self:GetChecked());
+					local optionIsEnabled = self:GetChecked();
+					setValue(element.configKey, optionIsEnabled);
+					
+					if optionsDependentOnOtherOptions[element.configKey] then
+						for _, dependentOption in pairs(optionsDependentOnOtherOptions[element.configKey]) do
+							
+							dependentOption.widget:SetAlpha(optionIsEnabled and 1 or 0.5);
+						
+							if dependentOption.controller then
+								if optionIsEnabled then
+									dependentOption.controller:Enable();
+								else
+									dependentOption.controller:Disable();
+								end
+							end
+						end
+					end
 				end);
 				box:SetChecked(getValue(element.configKey));
 			end
@@ -247,9 +271,44 @@ local function buildConfigurationPage(structure)
 
 			onChange(slider, slider:GetValue());
 		end
+		
+		if element.dependentOnOptions then
+			for _, dependence in pairs(element.dependentOnOptions) do
+				if not optionsDependency[dependence] then
+					optionsDependency[dependence] = {};
+				end
+				tinsert(optionsDependency[dependence], element);
+			end
+		end
 
 		lastWidget = widget;
 		GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
+	end
+	
+	-- Now that we have built all our widget we can go through the dependencies table
+	-- and disable the elements that need to be disabled if the option they are dependent on
+	-- is disabled.
+	for dependence, dependentElements in pairs(optionsDependency) do
+		
+		-- Go through each element of the dependence
+		for _, element in pairs(dependentElements) do
+			
+			-- If the option is disable we render the element as being disable
+			if not getValue(dependence) then
+				element.widget:SetAlpha(0.5);
+				
+				if element.controller then
+					element.controller:Disable();
+				end
+			end
+			
+			-- Insert the dependent element in our optionsDependentOnOtherOptions table
+			-- used for cross option page dependencies (like the location feature needing the broadcast protocol)
+			if not optionsDependentOnOtherOptions[dependence] then
+				optionsDependentOnOtherOptions[dependence] = {};
+			end
+			tinsert(optionsDependentOnOtherOptions[dependence], element)
+		end
 	end
 end
 
@@ -370,6 +429,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				inherit = "TRP3_ConfigEditBox",
 				title = loc("CO_GENERAL_BROADCAST_C"),
 				configKey = "comm_broad_chan",
+				dependentOnOptions = {"comm_broad_use"},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
