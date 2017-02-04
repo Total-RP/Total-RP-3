@@ -514,6 +514,7 @@ local function CreateColor(r, g, b, a)
 	color.LightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
 	return color;
 end
+Utils.color.CreateColor = CreateColor;
 
 --- Returns a Color using Blizzard's ColorMixin for a given hexadecimal color code
 -- @see ColorMixin
