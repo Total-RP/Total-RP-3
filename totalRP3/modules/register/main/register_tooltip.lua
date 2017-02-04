@@ -385,7 +385,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 
     -- Only use custom colors if the option is enabled and if we have one
-    if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
+    if getConfigValue(CONFIG_CHARACT_CONTRAST) and info.characteristics and info.characteristics.CH then
         r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
 
 		local lighten = lightenColorUntilItIsReadable({ r = r, g = g, b = b });

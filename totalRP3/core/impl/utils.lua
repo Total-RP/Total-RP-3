@@ -404,6 +404,19 @@ function Utils.str.safeMatch(text, pattern)
 	return nil; -- Pattern error
 end
 
+local escapes = {
+	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+	["|r"] = "", -- color end
+	["|H.-|h(.-)|h"] = "%1", -- links
+	["|T.-|t"] = "", -- textures
+}
+function Utils.str.sanitize(text)
+	for k, v in pairs(escapes) do
+		text = text:gsub(k, v);
+	end
+	return text;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Colors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -575,7 +588,12 @@ local structureTags = {
 local strtrim = strtrim;
 
 -- Convert the given text by his HTML representation
-Utils.str.toHTML = function(text)
+Utils.str.toHTML = function(text, noColor)
+
+	local linkColor = "|cff00ff00";
+	if noColor then
+		linkColor = "";
+	end
 
 	-- 1) Replacement : & character
 	text = text:gsub("&", "&amp;");
@@ -670,10 +688,10 @@ Utils.str.toHTML = function(text)
 		end);
 
 		line = line:gsub("%[(.-)%]%((.-)%)",
-			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
+			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
 
 		line = line:gsub("{link%*(.-)%*(.-)}",
-			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
+			"<a href=\"%1\">" .. linkColor .. "[%2]|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
