@@ -189,6 +189,7 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = "Increase color contrast",
 				configKey = CONFIG_INCREASE_CONTRAST,
+				dependentOnOptions = {CONFIG_NAME_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -203,7 +204,8 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigEditBox",
 				title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
 				configKey = CONFIG_NPC_TALK_PREFIX,
-				help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT")
+				help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT"),
+				dependentOnOptions = {CONFIG_NPC_TALK},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -227,6 +229,7 @@ local function createConfigPage()
 				listContent = EMOTE_PATTERNS,
 				configKey = CONFIG_EMOTE_PATTERN,
 				listCancel = true,
+				dependentOnOptions = {CONFIG_EMOTE},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -244,11 +247,13 @@ local function createConfigPage()
 				listContent = OOC_PATTERNS,
 				configKey = CONFIG_OOC_PATTERN,
 				listCancel = true,
+				dependentOnOptions = {CONFIG_OOC},
 			},
 			{
 				inherit = "TRP3_ConfigColorPicker",
 				title = loc("CO_CHAT_MAIN_OOC_COLOR"),
 				configKey = CONFIG_OOC_COLOR,
+				dependentOnOptions = {CONFIG_OOC},
 			},
 			{
 				inherit = "TRP3_ConfigH1",

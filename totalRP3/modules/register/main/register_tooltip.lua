@@ -1085,6 +1085,7 @@ local function onModuleInit()
 				title = loc("CO_TOOLTIP_CONTRAST"),
 				configKey = CONFIG_CHARACT_CONTRAST,
                 help = loc("CO_TOOLTIP_CONTRAST_TT"),
+				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
