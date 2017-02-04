@@ -321,7 +321,7 @@ local function handleNPCEmote(message)
 			local name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			local content = message:sub(name:len() + 5);
 
-			return chatColor:WrapTextInColorCodecontent(name), chatColor:WrapTextInColorCodecontent(content);
+			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content);
 		end
 	end
 
