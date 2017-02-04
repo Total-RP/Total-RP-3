@@ -5,8 +5,12 @@ local function onStart()
 	-- Import Total RP 3 functions
 	local customGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
 	local playerID                                       = TRP3_API.globals.player_id;
-	local getUnitColor                                   = TRP3_API.utils.color.getUnitColor; -- Get unit color (custom or default)
 	local getFullnameForUnitUsingChatMethod              = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
+	local UnitClass 									 = UnitClass;
+	local getClassColor 								 = TRP3_API.utils.color.getClassColor;
+	local getUnitCustomColor							 = TRP3_API.utils.color.getUnitCustomColor;
+	local increaseColorContrast							 = TRP3_API.chat.configIncreaseNameColorContrast;
+	local configShowNameCustomColors					 = TRP3_API.chat.configShowNameCustomColors
 
 	local classes = WIM.constants.classes;
 
@@ -22,7 +26,13 @@ local function onStart()
 	-- Replace WIM's GetMyColoredName to display our full RP name
 	classes.GetMyColoredName = function()
 		local name = getFullnameForUnitUsingChatMethod(playerID);
-		local color = getUnitColor(playerID);
+		local _, playerClass = UnitClass("Player");
+		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
+	
+		if increaseColorContrast() then
+			color:LightenColorUntilItIsReadable();
+		end
+		
 		return color:WrapTextInColorCode(name);
 	end
 end

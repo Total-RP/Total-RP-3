@@ -10,10 +10,14 @@ local function onStart()
 	
 		-- Import Total RP 3 functions
 		local unitInfoToID                      = TRP3_API.utils.str.unitInfoToID; -- Get "Player-Realm" unit ID
-		local getUnitColor                      = TRP3_API.utils.color.getUnitColor; -- Get unit color (custom or default)
+		local getUnitColorByGUID 				= TRP3_API.utils.color.getUnitColorByGUID; -- Get unit color (custom or default)
 		local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
 		local isChannelHandled                  = TRP3_API.chat.isChannelHandled; -- Check if Total RP 3 handles this channel
 		local configIsChannelUsed               = TRP3_API.chat.configIsChannelUsed; -- Check if a channel is enable in settings
+		local configIncreaseNameColorContrast   = TRP3_API.chat.configIncreaseNameColorContrast;
+		local configShowNameCustomColors        = TRP3_API.chat.configShowNameCustomColors;
+		local getUnitCustomColor = TRP3_API.utils.color.getUnitCustomColor;
+		local extractColorFromText = TRP3_API.utils.color.extractColorFromText;
 	
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
@@ -40,6 +44,8 @@ local function onStart()
 
 		-- Runs before Prat add the message to the chat frames
 		function pratModule:Prat_PreAddMessage(arg, message, frame, event)
+			
+			local color = extractColorFromText(message.PLAYER);
 
 			-- If the message has no GUID (system?) we don't have anything to do with this
 			if not message.GUID then return end;
@@ -55,8 +61,17 @@ local function onStart()
 			local unitID = unitInfoToID(name, realm);
 			
 			-- Get the unit color and name
-			local color = getUnitColor(unitID);
 			local characterName = getFullnameForUnitUsingChatMethod(unitID, name);
+		
+			if configShowNameCustomColors() then
+				local customColor = getUnitCustomColor(unitID);
+				
+				if configIncreaseNameColorContrast() then
+					customColor:LightenColorUntilItIsReadable();
+				end
+				
+				color = customColor or color;
+			end
 
 			-- Replace the message player name with the colored character name
 			message.PLAYER = color:WrapTextInColorCode(characterName);

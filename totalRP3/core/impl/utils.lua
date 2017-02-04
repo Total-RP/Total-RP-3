@@ -436,10 +436,11 @@ local function hexaToNumber(hexa)
 end
 Utils.color.hexaToNumber = hexaToNumber;
 
-Utils.color.hexaToFloat = function(hexa)
-    local r, g, b = hexaToNumber(hexa);
-    return r / 255, g / 255, b / 255;
+local function hexaToFloat(hexa)
+	local r, g, b = hexaToNumber(hexa);
+	return r / 255, g / 255, b / 255;
 end
+Utils.color.hexaToFloat = hexaToFloat;
 
 --- Values must be 256 based
 local function colorCode(red, green, blue)
@@ -561,6 +562,13 @@ function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntil
 	end
 
 	return color ;
+end
+
+function Utils.color.extractColorFromText(text)
+	local rgb = text:match("|c%x%x(%x%x%x%x%x%x)");
+	local r, g, b = hexaToFloat(rgb);
+	local color = CreateColor(r or 1, g or 2, b or 3, 1);
+	return color;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

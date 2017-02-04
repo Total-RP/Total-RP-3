@@ -77,10 +77,12 @@ end
 local function configShowNameCustomColors()
 	return getConfigValue(CONFIG_NAME_COLOR);
 end
+TRP3_API.chat.configShowNameCustomColors = configShowNameCustomColors;
 
 local function configIncreaseNameColorContrast()
 	return getConfigValue(CONFIG_INCREASE_CONTRAST);
 end
+TRP3_API.chat.configIncreaseNameColorContrast = configIncreaseNameColorContrast;
 
 local function configIsChannelUsed(channel)
 	return getConfigValue(CONFIG_USAGE .. channel);
