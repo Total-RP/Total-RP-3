@@ -419,6 +419,22 @@ function TRP3_API.register.player.getMiscExchangeData()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function TRP3_API.register.ui.sanitizeMisc(structure)
+	if structure and structure.PE then
+		for i=1, 5 do
+			local index = tostring(i);
+			if structure.PE[index] then
+				structure.PE[index].TI = Utils.str.sanitize(structure.PE[index].TI);
+				structure.PE[index].TX = Utils.str.sanitize(structure.PE[index].TX);
+			end
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 

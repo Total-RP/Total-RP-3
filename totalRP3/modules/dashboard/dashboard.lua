@@ -107,6 +107,23 @@ function TRP3_API.dashboard.getCharacterExchangeData()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local FIELDS_TO_SANITIZE = {
+	"CO", "CU"
+}
+function TRP3_API.dashboard.sanitizeCharacter(structure)
+	if structure then
+		for _, field in pairs(FIELDS_TO_SANITIZE) do
+			if structure[field] then
+				structure[field] = Utils.str.sanitize(structure[field]);
+			end
+		end
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
