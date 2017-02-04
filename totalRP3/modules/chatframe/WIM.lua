@@ -6,11 +6,11 @@ local function onStart()
 	local customGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
 	local playerID                                       = TRP3_API.globals.player_id;
 	local getFullnameForUnitUsingChatMethod              = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
-	local UnitClass 									 = UnitClass;
 	local getClassColor 								 = TRP3_API.utils.color.getClassColor;
 	local getUnitCustomColor							 = TRP3_API.utils.color.getUnitCustomColor;
 	local increaseColorContrast							 = TRP3_API.chat.configIncreaseNameColorContrast;
 	local configShowNameCustomColors					 = TRP3_API.chat.configShowNameCustomColors
+	local UnitClass 									 = UnitClass;
 
 	local classes = WIM.constants.classes;
 

@@ -338,9 +338,21 @@ end
 -- So we are able to flag messages as needing their player name's to be modified
 local npcMessageId, npcMessageName, ownershipNameId;
 
-function handleCharacterMessage(_, event, message, ...)
+function TRP3_API.chat.getNPCMessageID()
+	return npcMessageId;
+end
 
-	local messageID = select(11, ...);
+function TRP3_API.chat.getNPCMessageName()
+	return npcMessageName;
+end
+
+function TRP3_API.chat.getOwnershipNameID()
+	return ownershipNameId;
+end
+
+function handleCharacterMessage(_, event, message, ...)
+	
+	local messageID = select(10, ...);
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
