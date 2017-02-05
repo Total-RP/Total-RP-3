@@ -416,6 +416,7 @@ local escapes = {
 	["|T.-|t"] = "", -- textures
 }
 function Utils.str.sanitize(text)
+	if not text then return end
 	for k, v in pairs(escapes) do
 		text = text:gsub(k, v);
 	end
