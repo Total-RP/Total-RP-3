@@ -672,6 +672,11 @@ function TRP3_API.register.init()
 				listContent = AUTO_PURGE_VALUES,
 				configKey = "register_auto_purge_mode",
 				listCancel = true,
+			},			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_SANITIZER"),
+				configKey = "register_sanitization",
+				help = loc("CO_SANITIZER_TT")
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -698,12 +703,6 @@ function TRP3_API.register.init()
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
 				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
 			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_SANITIZER"),
-				configKey = "register_sanitization",
-				help = loc("CO_SANITIZER_TT")
-			}
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()

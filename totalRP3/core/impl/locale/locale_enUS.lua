@@ -445,7 +445,9 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
 		CO_REGISTER_AUTO_ADD = "Auto add new players",
-		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
+		CO_REGISTER_AUTO_ADD_TT = [[Automatically add new players you encounter to the register.
+
+|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]],
 		CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 		CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of character you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reach a certain theshold. We strongly recommand to avoid disabling the purge system.",
 		CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
