@@ -953,28 +953,16 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_7 = [[# New in version 1.2.5
+		WHATS_NEW_8 = [[# New in version 1.2.6
 
-## Chat customization revamp
-
-We have completely changed our chat customizations to increase compatibility with other add-ons like Prat, WIM, or even Tongues!
-
-We have also built custom modules for both Prat and WIM to have the full RP names correctly displayed when using these add-ons.
-
-Additionally, this new system fixes a long standing issue where whispers were displayed in every chat tab when the option to have incoming whispers routed to their own tab was enabled.
-
-|cffccccccA big special thank you to |r{twitter*Saelorable*Saelora}|cffcccccc from Argent Dawn (EU) for helping us making this system <3|r
-
-## Bug fixes
-
-- We have implemented a custom bug fix for an issue in Blizzard's own code that is making any opened dropdown menu close themselves randomly when the map is opened, so it is easier for you to use Total RP 3's scanning features ({link*open_map_filters_dropdown*Reminder: now located inside the filter menu in the top right corner of the map}).
-- The |cffccccccextensionxtooltip2|r channel should now be joined a little bit later so it is assigned the number 1 channel less often.
-
-## Other improvements
-
-- Skinning add-ons that modify the tooltips font should now work with Total RP 3's tooltips.
-- Added link to our Discord server in the About tab of the Dashboard.
-- Implemented a workaround against the PetTracker add-on as it is removing other add-ons options in the world map filters dropdown menu. The default dropdown menu is restored by Total RP 3 and PetTracker's options are properly added to the menu after Total RP 3's. ([ticket #45](https://wow.curseforge.com/projects/total-rp-3/issues/45))
+- Fixed several issues with the new chat system introduced in version 1.2.5 that would prevent player names form being colored correctly ([ticket #50](https://wow.curseforge.com/projects/total-rp-3/issues/50)).
+- Fixed a Lua error in the new WIM module ([ticket #55](https://wow.curseforge.com/projects/total-rp-3/issues/55)).
+- Fixed an issue where the option to increase color contrast on player names in the tooltip was always enabled ([ticket #51](https://wow.curseforge.com/projects/total-rp-3/issues/51))
+- Fixed a Lua error when shift-clicking a spell name in the adventure journal ([ticket #61](https://wow.curseforge.com/projects/total-rp-3/issues/61))
+- Fixed an issue making the game freeze and possibly crash when trying to delete too many companion profiles from the directory. Additionally, companion profiles are now included in the automatic purge ([ticket #56](https://wow.curseforge.com/projects/total-rp-3/issues/56)).
+- Fixed a long standing issue allowing advanced users to inject custom icons and color codes in places that were not meant for that, as this behaviour led to game crashes, as well as compatibility issues with other RP add-ons and stability issues in Total RP 3 itself ([ticket #63](https://wow.curseforge.com/projects/total-rp-3/issues/63)).
+- The option to increase contrast on color names in the tooltip is now applied on the other colored fields, not just the name field.
+- Added notice on the Auto add new players option of the directory to indicate that disabling this option will prevent you from receiving any new profile.
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431|r{/h3}
