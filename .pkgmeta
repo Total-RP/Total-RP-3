@@ -1,0 +1,31 @@
+package-as: totalRP3
+enable-nolib-creation: no
+
+externals:
+  # Ace libs
+  totalRP3/libs/AceAddon-3.0:
+      url: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
+  totalRP3/libs/AceSerializer-3.0:
+      url: https://repos.wowace.com/wow/ace3/trunk/AceSerializer-3.0
+  totalRP3/libs/CallbackHandler-1.0:
+      url: https://repos.wowace.com/wow/ace3/trunk/CallbackHandler-1.0
+  totalRP3/libs/LibStub:
+      url: https://repos.wowace.com/wow/ace3/trunk/LibStub
+  totalRP3/libs/LibCompress:
+      url: https://repos.wowace.com/wow/libcompress/trunk
+
+  # LibDBIcon create a minimap icon for a databroker launcher
+  totalRP3/libs/LibDBIcon-1.0:
+      url: https://repos.wowace.com/wow/libdbicon-1-0/trunk
+
+ignore:
+  - README.md
+  - Documents
+  - totalRP3_zTest
+  - totalRP3_Debug # Should be moved to something inside the code using Curse's debug tags
+  - totalRP3_Dev # Should be removed as the version number will be replaced when run from the repo
+  - totalRP3_Localization
+  - totalRP3_KuiNameplates # Will be moved as a bundled module
+  - totalRP3_TipTac # Will be moved as a bundled module
+
+manual-changelog: CHANGELOG.md
