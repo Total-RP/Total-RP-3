@@ -28,3 +28,8 @@ ignore:
   - totalRP3_KuiNameplates # Will be moved as a bundled module
 
 manual-changelog: CHANGELOG.md
+
+
+move-folders:
+  totalRP3/totalRP3: totalRP3
+  totalRP3/totalRP3_Data: totalRP3_Data
