@@ -23,7 +23,7 @@ local LOCALE = {
 	locale = "frFR",
 	localeText = "Français",
 
-	localeContent = --@localization(locale="enFR", format="lua_table", handle-unlocalized="ignore")@
+	localeContent = --@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
 
 	--@do-not-package@
 	{

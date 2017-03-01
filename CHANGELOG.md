@@ -1,5 +1,3 @@
-# Change-log for version @project-version@ of Total RP 3
-
 ## Bug fixes
 
 - Fixed several issues with the new chat system introduced in version 1.2.5 that would prevent player names form being colored correctly ([ticket #50](https://wow.curseforge.com/projects/total-rp-3/issues/50)).
