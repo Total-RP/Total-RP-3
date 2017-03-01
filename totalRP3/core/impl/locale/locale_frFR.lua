@@ -23,8 +23,8 @@ local LOCALE = {
 	locale = "frFR",
 	localeText = "Français",
 
-	localeContent = --@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
-
+	localeContent =
+	--@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
 	--@do-not-package@
 	{
 		["ABOUT_TITLE"] = "À propos",

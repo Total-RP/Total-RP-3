@@ -28,6 +28,7 @@ ignore:
   - totalRP3_KuiNameplates # Will be moved as a bundled module
 
 manual-changelog: CHANGELOG.md
+changelog-type: markdown
 
 
 move-folders:
