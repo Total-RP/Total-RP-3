@@ -39,7 +39,15 @@ TRP3_API = {
 		addon_id_length = 15,
 
 		version = 26,
-		version_display = "1.2.6-beta1",
+
+		--@debug@
+		version_display = "dev",
+		--@end-debug@
+
+		--[===[@non-debug@
+		version_display = "@project-version@",
+	  	--@end-non-debug@]===]
+
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),
