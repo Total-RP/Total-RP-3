@@ -430,8 +430,8 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	local unitID = arg2;
 	local messageID = arg11;
 
-	-- Do not change stuff if the is disabled for this channel, use the default function
-	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID then
+	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
+	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
 		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
 	end;
 
