@@ -530,7 +530,7 @@ local function cleanupProfiles()
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
-	log("Purging profiles older than %s day(s)", getConfigValue("register_auto_purge_mode") / 86400);
+	log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation
 	local relatedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do

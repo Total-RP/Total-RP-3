@@ -550,7 +550,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				color = customColor or color;
 			end
 			
-			name = getCompleteName(targetInfo.characteristics or {}, targetName, true);
+			name = getCompleteName(targetInfo.characteristics or {}, name, true);
 			name = color:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
