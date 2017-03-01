@@ -41,7 +41,7 @@ TRP3_API = {
 		version = 26,
 
 		--@debug@
-		version_display = "dev",
+		version_display = "-dev",
 		--@end-debug@
 
 		--[===[@non-debug@

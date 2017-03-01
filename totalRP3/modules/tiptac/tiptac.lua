@@ -19,7 +19,7 @@
 
 TRP3_API.module.registerModule({
 	["name"] = "TipTac",
-	["id"] = "tiptac",
+	["id"] = "trp3_tiptac",
 	["description"] = "TipTac compatibility",
 	["version"] = 1.200,
 	["minVersion"] = 25,

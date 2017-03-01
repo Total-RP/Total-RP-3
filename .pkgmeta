@@ -26,6 +26,5 @@ ignore:
   - totalRP3_Dev # Should be removed as the version number will be replaced when run from the repo
   - totalRP3_Localization
   - totalRP3_KuiNameplates # Will be moved as a bundled module
-  - totalRP3_TipTac # Will be moved as a bundled module
 
 manual-changelog: CHANGELOG.md
