@@ -424,6 +424,45 @@ function Utils.str.sanitize(text)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- GUID
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--[[
+http://wow.gamepedia.com/API_UnitGUID
+GUID formats (since 6.0.2):
+
+For players: Player-[server ID]-[player UID] (Example: "Player-976-0002FD64")
+For creatures, pets, objects, and vehicles: [Unit type]-0-[server ID]-[instance ID]-[zone UID]-[ID]-[Spawn UID] (Example: "Creature-0-976-0-11-31146-000136DF91")
+Unit Type Names: "Creature", "Pet", "GameObject", and "Vehicle"
+For vignettes: Vignette-0-[server ID]-[instance ID]-[zone UID]-0-[spawn UID] (Example: "Vignette-0-970-1116-7-0-0017CAE465" for rare mob Sulfurious)
+ ]]
+Utils.guid = {};
+
+local GUID_TYPES = {
+	PLAYER = "Player",
+	CREATURE = "Creature",
+	PET = "Pet",
+	GAME_OBJECT = "GameObject",
+	VEHICLE = "Vehicle",
+	VIGNETTE = "Vignette"
+}
+
+--- Check that the given GUID is correctly formatted to be a player GUID
+-- @param GUID
+--
+function Utils.guid.getUnitType(GUID)
+	return GUID:match("%a+");
+end
+
+--- Check that the given GUID is correctly formatted to be a player GUID
+-- I made this because WIM sends invalid GUID at us so I have to check that…
+-- @param GUID
+--
+function Utils.guid.isAPlayerGUID(GUID)
+	return Utils.guid.getUnitType(GUID) == GUID_TYPES.PLAYER;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Colors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
