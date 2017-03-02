@@ -22,8 +22,6 @@ ignore:
   - README.md
   - Documents
   - totalRP3_zTest
-  - totalRP3_Debug # Should be moved to something inside the code using Curse's debug tags
-  - totalRP3_Dev # Should be removed as the version number will be replaced when run from the repo
   - totalRP3_Localization
   - totalRP3_KuiNameplates # Will be moved as a bundled module
 

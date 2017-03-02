@@ -29,7 +29,14 @@ TRP3_API = {
 		dropDownElements = "%s: |cff00ff00%s"
 	},
 	globals = {
-		DEBUG_MODE = TRP3_DEBUG or false,
+		--@debug@
+		DEBUG_MODE = true,
+		--@end-debug@
+
+		--[===[@non-debug@
+		DEBUG_MODE = false,
+	  	--@end-non-debug@]===]
+
 		empty = {},
 
 		addon_name = "Total RP 3",
