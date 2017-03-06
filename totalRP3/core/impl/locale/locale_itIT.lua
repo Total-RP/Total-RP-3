@@ -20,7 +20,10 @@
 local LOCALE = {
 	locale = "itIT",
 	localeText = "Italian",
-	localeContent = {
+	localeContent =
+	--@localization(locale="itIT", format="lua_table", handle-unlocalized="ignore")@
+	--@do-not-package@
+	{
 		["ABOUT_TITLE"] = "Di",
 		["BW_COLOR_CODE"] = "Codice colore",
 		["CM_ACTIONS"] = "Azioni",
@@ -398,7 +401,7 @@ Ci sono diverse maniere per farlo:|c0000ff00
 		["UI_LINK_URL"] = "http://ilTuo.url.quì",
 		["UI_MUSIC_SELECT"] = "Seleziona musica"
 	}
-
+	--@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

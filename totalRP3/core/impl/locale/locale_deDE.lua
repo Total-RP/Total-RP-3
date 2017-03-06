@@ -24,7 +24,10 @@
 local LOCALE_DE = {
 	locale = "deDE",
 	localeText = "Deutsch",
-	localeContent = {
+	localeContent =
+	--@localization(locale="deDE", format="lua_table", handle-unlocalized="ignore")@
+	--@do-not-package@
+	{
 		["ABOUT_TITLE"] = "Über",
 		["BINDING_NAME_TRP3_TOGGLE"] = "Hauptfenster umschalten",
 		["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Werkzeugleiste umschalten",
@@ -1012,6 +1015,7 @@ Total RP ist NICHT für Links verantwortlich, die auf schädlichen oder illegale
 		["UI_TUTO_BUTTON"] = "Tutorialmodus",
 		["UI_TUTO_BUTTON_TT"] = "Klicke, um den Tutorialmodus ein/aus zu schalten"
 	}
+	--@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE_DE);

@@ -20,7 +20,10 @@
 local LOCALE = {
 	locale = "ptBR",
 	localeText = "Brazilian Portuguese",
-    localeContent = {
+    localeContent =
+    --@localization(locale="ptBR", format="lua_table", handle-unlocalized="ignore")@
+    --@do-not-package@
+    {
         ["ABOUT_TITLE"] = "Sobre",
         ["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar tela principal",
         ["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Mostrar/ocultar barra de ferramentas",
@@ -912,7 +915,7 @@ O Total RP não é responsável por links que levem a conteúdo nocivo.
         ["UI_TUTO_BUTTON"] = "Modo tutorial",
         ["UI_TUTO_BUTTON_TT"] = "Clique para ativar/desativar o modo tutorial"
     }
-
+    --@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

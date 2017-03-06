@@ -20,7 +20,10 @@
 local LOCALE = {
 	locale = "ruRU",
 	localeText = "Russian",
-    localeContent = {
+    localeContent =
+    --@localization(locale="ruRU", format="lua_table", handle-unlocalized="ignore")@
+    --@do-not-package@
+    {
         ["ABOUT_TITLE"] = [=[О персонаже]=],
         ["BINDING_NAME_TRP3_TOGGLE"] = "Показать/спрятать главное окно",
         ["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Отображение панели инструментов",
@@ -636,6 +639,7 @@ Link it anyway ?]=],
         ["UI_TUTO_BUTTON"] = "Обучающий режим",
         ["UI_TUTO_BUTTON_TT"] = "Нажмите, чтобы включить/выключить режим обучения"
     }
+    --@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);
