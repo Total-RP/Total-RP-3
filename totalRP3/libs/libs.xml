@@ -17,7 +17,7 @@
 	limitations under the License.
 -->
 
-	<Script file="ChatThrottleLib.lua" />
+	<Script file="ChatThrottleLib\ChatThrottleLib.lua" />
 	<Script file="LibStub\LibStub.lua" />
 	<Include file="AceAddon-3.0\AceAddon-3.0.xml" />
 	<Include file="AceSerializer-3.0\AceSerializer-3.0.xml" />

@@ -29,7 +29,14 @@ TRP3_API = {
 		dropDownElements = "%s: |cff00ff00%s"
 	},
 	globals = {
-		DEBUG_MODE = TRP3_DEBUG or false,
+		--@debug@
+		DEBUG_MODE = true,
+		--@end-debug@
+
+		--[===[@non-debug@
+		DEBUG_MODE = false,
+	  	--@end-non-debug@]===]
+
 		empty = {},
 
 		addon_name = "Total RP 3",
@@ -39,7 +46,15 @@ TRP3_API = {
 		addon_id_length = 15,
 
 		version = 26,
-		version_display = "1.2.5",
+
+		--@debug@
+		version_display = "-dev",
+		--@end-debug@
+
+		--[===[@non-debug@
+		version_display = "@project-version@",
+	  	--@end-non-debug@]===]
+
 
 		player = UnitName("player"),
 		player_realm = GetRealmName(),

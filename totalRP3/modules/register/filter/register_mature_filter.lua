@@ -515,6 +515,7 @@ local function onStart()
 				TRP3_API.popup.showPopup("mature_dictionary");
 				refreshDictionaryList();
 			end,
+			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
 
 		-- Register our popups to the popup manager

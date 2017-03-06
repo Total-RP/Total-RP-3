@@ -90,18 +90,19 @@ TRP3_API.register.getProfile = getProfile;
 
 local function deleteProfile(profileID, dontFireEvents)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
-	-- We shouldn't keep unbounded characters.
-	for character, _ in pairs(profiles[profileID].link) do
-		if characters[character].profileID == profileID then
-			wipe(characters[character]);
-			characters[character] = nil;
+	-- Unbound characters from this profile
+	for characterID, _ in pairs(profiles[profileID].link) do
+		if characters[characterID].profileID == profileID then
+			characters[characterID].profileID = nil;
 		end
 	end
-	local mspOwners = nil;
-	if profiles[profileID].msp then
-		mspOwners = {};
-		for ownerID, _ in pairs(profiles[profileID].link) do
-			tinsert(mspOwners, ownerID);
+	local mspOwners;
+	if not dontFireEvents then
+		if profiles[profileID].msp then
+			mspOwners = {};
+			for ownerID, _ in pairs(profiles[profileID].link) do
+				tinsert(mspOwners, ownerID);
+			end
 		end
 	end
 	wipe(profiles[profileID]);
@@ -268,6 +269,22 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 end
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
+function TRP3_API.register.sanitizeFullProfile(data)
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.characteristics);
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.character);
+	TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.misc);
+end
+
+function TRP3_API.register.sanitizeProfile(informationType, data)
+	if informationType == registerInfoTypes.CHARACTERISTICS then
+		TRP3_API.register.ui.sanitizeCharacteristics(data);
+	elseif informationType == registerInfoTypes.CHARACTER then
+		TRP3_API.dashboard.sanitizeCharacter(data);
+	elseif informationType == registerInfoTypes.MISC then
+		TRP3_API.register.ui.sanitizeMisc(data);
+	end
+end
+
 --- Raises error if unknown unitID or unit hasn't profile ID
 function TRP3_API.register.saveInformation(unitID, informationType, data)
 	local profile = getUnitIDProfile(unitID);
@@ -275,6 +292,9 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 
+	if getConfigValue("register_sanitization") == true then
+		TRP3_API.register.sanitizeProfile(informationType, data);
+	end
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end
@@ -298,6 +318,16 @@ local function getUnitIDCurrentProfile(unitID)
 end
 
 TRP3_API.register.getUnitIDCurrentProfile = getUnitIDCurrentProfile;
+
+local function getCharacterInfoTab(unitID)
+	if unitID == Globals.player_id then
+		return get("player");
+	elseif isUnitIDKnown(unitID) then
+		return getUnitIDCurrentProfile(unitID) or {};
+	end
+	return {};
+end
+TRP3_API.register.getUnitIDCurrentProfileSafe = getCharacterInfoTab;
 
 --- Raises error if unknown unitID
 function TRP3_API.register.shouldUpdateInformation(unitID, infoType, version)
@@ -456,6 +486,7 @@ end
 
 local tsize = Utils.table.size;
 
+-- Unbound character from missing profiles
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
 		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
@@ -464,11 +495,32 @@ local function cleanupCharacters()
 	end
 end
 
+local function cleanupCompanions()
+	local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
+	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
+
+	local companionProfiles = TRP3_API.companions.register.getProfiles();
+	local characterProfiles = TRP3_API.profile.getProfiles();
+
+	for companionProfileID, companionProfile in pairs(companionProfiles) do
+		for companionFullID, _ in pairs(companionProfile.links) do
+			local ownerID, companionID = companionIDToInfo(companionFullID);
+			if not isUnitIDKnown(ownerID) or not profileExists(ownerID) then
+				companionProfile.links[companionFullID] = nil;
+			end
+		end
+		if tsize(companionProfile.links) < 1 then
+			log("Purging companion " .. companionProfileID .. ", no more characters linked to it.");
+			deleteCompanionProfile(companionProfileID, true);
+		end
+	end
+end
+
 local function cleanupPlayerRelations()
-	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
-		for profileID, relation in pairs(profile.relation or {}) do
+	for _, myProfile in pairs(TRP3_API.profile.getProfiles()) do
+		for profileID, relation in pairs(myProfile.relation or {}) do
 			if not profiles[profileID] then
-				profile.relation[profileID] = nil;
+				myProfile.relation[profileID] = nil;
 			end
 		end
 	end
@@ -478,6 +530,7 @@ local function cleanupProfiles()
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
+	log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation
 	local relatedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
@@ -574,6 +627,7 @@ function TRP3_API.register.init()
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
+	registerConfigKey("register_sanitization", true);
 
 	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
@@ -586,9 +640,10 @@ function TRP3_API.register.init()
 	local AUTO_PURGE_VALUES = {
 		{loc("CO_REGISTER_AUTO_PURGE_0"), false},
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(1), 86400},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(2), 172800},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(5), 432000},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(10), 864000},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(2), 86400*2},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(5), 86400*5},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(10), 86400*10},
+		{loc("CO_REGISTER_AUTO_PURGE_1"):format(30), 86400*30},
 	}
 
 	-- Build configuration page
@@ -617,6 +672,11 @@ function TRP3_API.register.init()
 				listContent = AUTO_PURGE_VALUES,
 				configKey = "register_auto_purge_mode",
 				listCancel = true,
+			},			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_SANITIZER"),
+				configKey = "register_sanitization",
+				help = loc("CO_SANITIZER_TT")
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -627,25 +687,29 @@ function TRP3_API.register.init()
 				title = loc("CO_LOCATION_ACTIVATE"),
 				help = loc("CO_LOCATION_ACTIVATE_TT"),
 				configKey = CONFIG_ENABLE_MAP_LOCATION,
+				dependentOnOptions = {"comm_broad_use"}
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_OOC"),
 				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
+				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_PVP"),
 				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
-			}
+				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
+			},
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
 		cleanupPlayerRelations();
 		cleanupProfiles();
 		cleanupCharacters();
+		cleanupCompanions();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
