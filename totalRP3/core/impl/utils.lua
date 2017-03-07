@@ -604,7 +604,13 @@ local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
 function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntilItIsReadable)
 	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
 	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
-	local color = Utils.color.getClassColor(englishClass);
+	local color;
+	if englishClass then
+		Utils.color.getClassColor(englishClass);
+	else
+		-- TODO Log message about WHY THE FUCK didn't we get a color
+		CreateColor(1, 1, 1, 1);
+	end
 
 	if useCustomColors then
 		local unitID = Utils.str.unitInfoToID(name, realm);
