@@ -977,11 +977,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 {link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
 
 
-{h3}TipTac module{/h3}
-The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
-{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
-
-
 ]],
 
 		THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
