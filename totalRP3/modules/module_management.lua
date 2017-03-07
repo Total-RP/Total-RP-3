@@ -236,7 +236,7 @@ local function getModuleTooltip(module)
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
 
 	if module.error ~= nil then
-		message = message .. (loc("CO_MODULES_TT_ERROR"):format(module.error));
+		message = message .. "\n\n" .. (loc("CO_MODULES_TT_ERROR"):format(module.error));
 	end
 
 	return message;
