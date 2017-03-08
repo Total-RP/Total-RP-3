@@ -368,7 +368,7 @@ function handleCharacterMessage(_, event, message, ...)
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
 		-- the game would insert a space between the player's name and the 's (like "Kristoff 's reindeer eats Olaf's nose.").
-		-- We store the message ID in the possessiveMarkBucket table as it will be checked in the function to colore player names.
+		-- We store the message ID in the ownershipNameId variable that will be checked in the function to colore player names.
 		-- The 's is removed from the original message, it will be inserted in the name of the player
 		--
 		-- I actually really like this.
