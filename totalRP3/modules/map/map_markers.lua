@@ -185,7 +185,7 @@ local SCAN_STRUCTURES = {};
 local currentMapID;
 local launchScan;
 local currentlyScanning = false;
-local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator = UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator;
+local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator = Lib_UIDropDownMenu_AddButton, Lib_UIDropDownMenu_CreateInfo, Lib_UIDropDownMenu_Initialize, Lib_UIDropDownMenu_AddSeparator;
 
 local function insertScansInDropdown(_, level)
 	if level==1 then
@@ -219,19 +219,6 @@ local function insertScansInDropdown(_, level)
 	end
 end
 
--- Dirty bug fix for Blizzard's own code...
--- Currently (7.1) the world map filter dropdown is randomly hidden by WORLD_MAP_UPDATE events (constantly fired on the Broken Isles)
--- WorldMapLevelDropDown_Update is being called supposedly to show/hide the dungeon levels dropdown frame,
--- yet when it initializes the dungeon levels dropdown it hides any currently visible dropdown.
--- To workaround that we check if a dropdown is visible before initializing the dungeon level dropdown.
--- Yes, that's dirty, but it's better than what we have now.
-local oldWorldMapLevelDropDown_Update = WorldMapLevelDropDown_Update
-function WorldMapLevelDropDown_Update()
-	if not DropDownList1:IsVisible() then
-		oldWorldMapLevelDropDown_Update();
-	end
-end
-
 local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
 	SCAN_STRUCTURES[structure.id] = structure;
@@ -249,8 +236,7 @@ local function registerScan(structure)
 end
 TRP3_API.map.registerScan = registerScan;
 
-function launchScan(info)
-	local scanID = info.value;
+function launchScan(scanID)
 	assert(SCAN_STRUCTURES[scanID], ("Unknown scan id %s"):format(scanID));
 	local structure = SCAN_STRUCTURES[scanID];
 	if structure.scan then
@@ -260,6 +246,9 @@ function launchScan(info)
 		if structure.scanDuration then
 			local mapID = GetCurrentMapAreaID();
 			currentMapID = mapID;
+			TRP3_WorldMapButton:Disable();
+			-- TODO Animate the shit out of this transition!
+			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
 			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
@@ -272,9 +261,9 @@ function launchScan(info)
 			playAnimation(TRP3_ScanLoaderBackAnimation1);
 			playAnimation(TRP3_ScanLoaderBackAnimation2);
 			TRP3_API.ui.misc.playSoundKit(40216);
-			currentlyScanning = true;
 			after(structure.scanDuration, function()
-				currentlyScanning = false;
+				TRP3_WorldMapButton:Enable();
+				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 				if mapID == GetCurrentMapAreaID() then
 					if structure.scanComplete then
 						structure.scanComplete(structure.saveStructure);
@@ -305,6 +294,19 @@ function launchScan(info)
 end
 TRP3_API.map.launchScan = launchScan;
 
+local function onButtonClicked(self)
+	local structure = {};
+	for scanID, scanStructure in pairs(SCAN_STRUCTURES) do
+		if not scanStructure.canScan or scanStructure.canScan() == true then
+			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 25) .. " " .. (scanStructure.buttonText or scanID), scanID});
+		end
+	end
+	if #structure == 0 then
+		tinsert(structure, {loc("MAP_BUTTON_NO_SCAN"), nil});
+	end
+	displayDropDown(self, structure, launchScan, 0, true);
+end
+
 local function onWorldMapUpdate()
 	local mapID = GetCurrentMapAreaID();
 	if currentMapID ~= mapID then
@@ -314,6 +316,10 @@ local function onWorldMapUpdate()
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
+	TRP3_WorldMapButton.title = loc("MAP_BUTTON_TITLE");
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
+	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
 	TRP3_ScanLoaderFrameScanning:SetText(loc("MAP_BUTTON_SCANNING"));
 
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
@@ -326,63 +332,40 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);
 
+local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
+local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
+
+local function placeMapButton(position)
+	position = position or "BOTTOMLEFT";
+	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_WorldMapButton:ClearAllPoints();
+	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame, position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
 
-	-- Hook the WorldMapTrackingOptionsDropDown_Initialize to add our own options inside the dropdown menu securely
-	hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", insertScansInDropdown);
-	UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU");
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc("CO_MAP_BUTTON"),
+	});
 
-	after(5, function()
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigDropDown",
+		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
+		title = loc("CO_MAP_BUTTON_POS"),
+		listContent = {
+			{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
+			{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
+			{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
+			{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"}
+		},
+		listCallback = placeMapButton,
+		listCancel = true,
+		configKey = CONFIG_MAP_BUTTON_POSITION,
+	});
 
-		-- If the PetTracker add-on is installed it will mess with the world map filter dropdown by overriding it
-		-- removing all the options added by other add-ons... (╯°□°）╯︵ ┻━┻
-		-- Bad PetTracker, no cookie for you ☜(`o´)
-		-- So let's fix that shit, shall we? ٩(^ᴗ^)۶
-		if PetTracker then
+	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
 
-			-- First we restore the OnClick script of the filter button ┬─┬ノ( º _ ºノ)
-			WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:SetScript('OnClick', function(self)
-				local parent = self:GetParent();
-				ToggleDropDownMenu(1, nil, parent.DropDown, parent, 0, -5);
-				PlaySound("igMainMenuOptionCheckBoxOn");
-			end)
-
-			-- Now, because we are nice (sort of),
-			-- we will insert PetTracker's options inside the dropdown the right way (✿°◡°)
-			hooksecurefunc("WorldMapTrackingOptionsDropDown_Initialize", function(self, level, ...)
-				if level==1 then
-					local info = UIDropDownMenu_CreateInfo()
-
-					UIDropDownMenu_AddSeparator(info);
-
-					info = UIDropDownMenu_CreateInfo();
-
-					-- Insert a nice header for PetTracker
-					info.isTitle = true;
-					info.notCheckable = true;
-					info.text = "PetTracker";
-					UIDropDownMenu_AddButton(info);
-
-					info = UIDropDownMenu_CreateInfo();
-
-					-- Toggle pets blips
-					info.text = PETS
-					info.func = function() PetTracker.WorldMap:Toggle('Species') end
-					info.checked = PetTracker.WorldMap:Active('Species')
-					info.isNotRadio = true
-					info.keepShownOnClick = true
-					UIDropDownMenu_AddButton(info)
-
-					-- Toggle stable blips
-					info.text = STABLES
-					info.func = function() PetTracker.WorldMap:Toggle('Stables') end
-					info.checked = PetTracker.WorldMap:Active('Stables')
-					info.isNotRadio = true
-					info.keepShownOnClick = true
-					UIDropDownMenu_AddButton(info)
-				end
-			end)
-			UIDropDownMenu_Initialize(WorldMapFrameDropDown, WorldMapTrackingOptionsDropDown_Initialize, "MENU")
-		end
-	end)
 end);

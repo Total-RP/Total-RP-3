@@ -19,6 +19,25 @@
 		limitations under the License.
 	-->
 
+	<Button name="TRP3_WorldMapButton" parent="UIParent" inherits="TRP3_IconButton" frameStrata="FULLSCREEN" toplevel="true">
+		<Anchors>
+			<Anchor point="BOTTOMLEFT" relativeTo="WorldMapScrollFrame" x="10" y="10"/>
+		</Anchors>
+		<Scripts>
+			<OnEnter>
+					WorldMapPOIFrame.allowBlobTooltip = false;
+					WorldMapTooltip:Hide();
+					WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT",0,0);
+					WorldMapTooltip:AddLine(self.title, 1, 1, 1,true);
+					WorldMapTooltip:AddLine(self.subtitle, 1, 1, 1,true);
+					WorldMapTooltip:Show();
+			</OnEnter>
+			<OnLeave>
+					WorldMapTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
 	<Frame name="TRP3_WorldMapUnit" virtual="true" alpha="0">
 		<Size>
 			<AbsDimension x="16" y="16"/>

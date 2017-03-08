@@ -31,8 +31,9 @@ local globals = TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
-local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, ToggleDropDownMenu;
-local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
+local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, Lib_ToggleDropDownMenu;
+local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = Lib_UIDropDownMenu_Initialize, Lib_UIDropDownMenu_CreateInfo, Lib_UIDropDownMenu_AddButton;
+local CloseDropDownMenus = Lib_CloseDropDownMenus;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
 local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
@@ -114,15 +115,15 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
 
 	if not dropDownFrame then
-		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "Lib_UIDropDownMenuTemplate");
+		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
 
 	if _G["Lib_DropDownList1"]:IsVisible() then
-		Lib_CloseDropDownMenus();
+		CloseDropDownMenus();
 		return;
 	end
-	
-	Lib_UIDropDownMenu_Initialize(dropDownFrame,
+
+	UIDropDownMenu_Initialize(dropDownFrame,
 		function(uiFrame, level, menuList)
 			local levelValues = menuList or values;
 			level = level or 1;
@@ -131,7 +132,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				local text = tab[1];
 				local value = tab[2];
 				local tooltipText = tab[3];
-				local info = Lib_UIDropDownMenu_CreateInfo();
+				local info = UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				if text == "" then
 					info.dist = 0;
@@ -174,20 +175,20 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 						info.isTitle = tooltipText == nil;
 					end
 				end
-				Lib_UIDropDownMenu_AddButton(info, level);
+				UIDropDownMenu_AddButton(info, level);
 			end
 			if menuList == nil and addCancel then
-				local info = Lib_UIDropDownMenu_CreateInfo();
+				local info = UIDropDownMenu_CreateInfo();
 				info.notCheckable = "true";
 				info.text = CANCEL;
-				Lib_UIDropDownMenu_AddButton(info, level);
+				UIDropDownMenu_AddButton(info, level);
 			end
 
 		end,
 		"MENU"
 	);
 	dropDownFrame:SetParent(anchoredFrame);
-	Lib_ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
+	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
 	currentlyOpenedDrop = anchoredFrame;
 end

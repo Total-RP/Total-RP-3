@@ -506,6 +506,8 @@ Possible status:
 		CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 		CO_MINIMAP_BUTTON_RESET = "Reset position",
 		CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
+		CO_MAP_BUTTON = "Map scan button",
+		CO_MAP_BUTTON_POS = "Scan button anchor on map",
 		CO_ANCHOR_TOP = "Top",
 		CO_ANCHOR_TOP_LEFT = "Top left",
 		CO_ANCHOR_TOP_RIGHT = "Top right",
@@ -849,6 +851,7 @@ Total RP is not responsible for links leading to harmful content.]],
 		-- MAP
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+		MAP_BUTTON_TITLE = "Scan for roleplay",
 		MAP_BUTTON_SUBTITLE = "Click to show available scans",
 		MAP_BUTTON_NO_SCAN = "No scan available",
 		MAP_BUTTON_SCANNING = "Scanning",
