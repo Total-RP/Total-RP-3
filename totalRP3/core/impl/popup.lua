@@ -536,7 +536,7 @@ local function initColorBrowser()
 		hidePopups();
 		TRP3_ColorBrowser:Hide();
 		if TRP3_ColorBrowser.callback ~= nil then
-			TRP3_ColorBrowser.callback(TRP3_ColorBrowser.red * 255, TRP3_ColorBrowser.green * 255, TRP3_ColorBrowser.blue * 255);
+			TRP3_ColorBrowser.callback((TRP3_ColorBrowser.red or 1) * 255, (TRP3_ColorBrowser.green or 1) * 255, (TRP3_ColorBrowser.blue or 1) * 255);
 		end
 	end);
 end

@@ -174,7 +174,7 @@ TRP3_API.companions.player.editProfile = editProfile;
 
 -- Delete a profile
 -- If the deleted profile is the currently selected one, assign the default profile
-local function deleteProfile(profileID)
+local function deleteProfile(profileID, silently)
 	assert(playerCompanions[profileID], "Unknown profile: "..tostring(profileID));
 	local profileName = playerCompanions[profileID]["profileName"];
 	for companionID, _ in pairs(playerCompanions[profileID].links or EMPTY) do
@@ -182,8 +182,10 @@ local function deleteProfile(profileID)
 	end
 	wipe(playerCompanions[profileID]);
 	playerCompanions[profileID] = nil;
-	displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
-	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	if not silently then
+		displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
+		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	end
 end
 TRP3_API.companions.player.deleteProfile = deleteProfile;
 
@@ -400,7 +402,7 @@ function TRP3_API.companions.register.getAssociationsForProfile(profileID)
 	return list;
 end
 
-function TRP3_API.companions.register.deleteProfile(profileID)
+function TRP3_API.companions.register.deleteProfile(profileID, silently)
 	assert(registerCompanions[profileID], "Unknown profile ID: " .. tostring(profileID));
 	wipe(registerCompanions[profileID]);
 	registerCompanions[profileID] = nil;
@@ -409,8 +411,10 @@ function TRP3_API.companions.register.deleteProfile(profileID)
 			registerProfileAssociation[key] = nil;
 		end
 	end
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-	Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	if not silently then
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
+	end
 end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)

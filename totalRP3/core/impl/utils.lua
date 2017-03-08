@@ -273,7 +273,12 @@ Utils.str.id = generateID;
 -- Create a unit ID from a unit name and unit realm. If realm = nil then we use current realm.
 -- This method ALWAYS return a nil free UnitName-RealmShortName string.
 Utils.str.unitInfoToID = function(unitName, unitRealmID)
-	return strconcat(unitName or "_", '-', unitRealmID or Globals.player_realm_id);
+	-- Some functions (like GetPlayerInfoByGUID(GUID)) will return an empty string for the realm instead of null…
+	-- Thanks Blizz…
+	if not unitRealmID or unitRealmID == "" then
+		unitRealmID = Globals.player_realm_id
+	end
+	return strconcat(unitName or "_", '-', unitRealmID);
 end
 
 -- Separates the unit name and realm from an unit ID
@@ -404,6 +409,59 @@ function Utils.str.safeMatch(text, pattern)
 	return nil; -- Pattern error
 end
 
+local escapes = {
+	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+	["|r"] = "", -- color end
+	["|H.-|h(.-)|h"] = "%1", -- links
+	["|T.-|t"] = "", -- textures
+}
+function Utils.str.sanitize(text)
+	if not text then return end
+	for k, v in pairs(escapes) do
+		text = text:gsub(k, v);
+	end
+	return text;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- GUID
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--[[
+http://wow.gamepedia.com/API_UnitGUID
+GUID formats (since 6.0.2):
+
+For players: Player-[server ID]-[player UID] (Example: "Player-976-0002FD64")
+For creatures, pets, objects, and vehicles: [Unit type]-0-[server ID]-[instance ID]-[zone UID]-[ID]-[Spawn UID] (Example: "Creature-0-976-0-11-31146-000136DF91")
+Unit Type Names: "Creature", "Pet", "GameObject", and "Vehicle"
+For vignettes: Vignette-0-[server ID]-[instance ID]-[zone UID]-0-[spawn UID] (Example: "Vignette-0-970-1116-7-0-0017CAE465" for rare mob Sulfurious)
+ ]]
+Utils.guid = {};
+
+local GUID_TYPES = {
+	PLAYER = "Player",
+	CREATURE = "Creature",
+	PET = "Pet",
+	GAME_OBJECT = "GameObject",
+	VEHICLE = "Vehicle",
+	VIGNETTE = "Vignette"
+}
+
+--- Check that the given GUID is correctly formatted to be a player GUID
+-- @param GUID
+--
+function Utils.guid.getUnitType(GUID)
+	return GUID:match("%a+");
+end
+
+--- Check that the given GUID is correctly formatted to be a player GUID
+-- I made this because WIM sends invalid GUID at us so I have to check that…
+-- @param GUID
+--
+function Utils.guid.isAPlayerGUID(GUID)
+	return Utils.guid.getUnitType(GUID) == GUID_TYPES.PLAYER;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Colors
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -431,10 +489,11 @@ local function hexaToNumber(hexa)
 end
 Utils.color.hexaToNumber = hexaToNumber;
 
-Utils.color.hexaToFloat = function(hexa)
-    local r, g, b = hexaToNumber(hexa);
-    return r / 255, g / 255, b / 255;
+local function hexaToFloat(hexa)
+	local r, g, b = hexaToNumber(hexa);
+	return r / 255, g / 255, b / 255;
 end
+Utils.color.hexaToFloat = hexaToFloat;
 
 --- Values must be 256 based
 local function colorCode(red, green, blue)
@@ -485,6 +544,91 @@ Utils.color.lightenColorUntilItIsReadable = function(textColor)
 	if textColor.b > 1 then textColor.b = 1 end
 
 	return textColor;
+end
+
+-- I quite like Blizzard's Color mixins, it has some nice functions like :WrapTextInColorCode(text)
+-- But I will extend them with my own functions like :LightenColorUntilItIsReadable();
+local BlizzardCreateColor = CreateColor;
+local function CreateColor(r, g, b, a)
+	local color = BlizzardCreateColor(r, g, b, a);
+	color.LightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
+	return color;
+end
+Utils.color.CreateColor = CreateColor;
+
+--- Returns a Color using Blizzard's ColorMixin for a given hexadecimal color code
+-- @see ColorMixin
+function Utils.color.getColorFromHexadecimalCode(hexadecimalCode)
+	local r, g, b = Utils.color.hexaToFloat(hexadecimalCode);
+	return CreateColor(r, g, b, 1);
+end
+
+--- Returns a Color using Blizzard's ColorMixin for a given class (english, not localized)
+-- @see ColorMixin
+function Utils.color.getClassColor(englishClass)
+	assert(englishClass, "No class given to TRP3_API.utils.getClassColor(englishClass).")
+	assert(RAID_CLASS_COLORS[englishClass], string.format("Unknown class %s", englishClass));
+
+	local classColorTable = RAID_CLASS_COLORS[englishClass];
+	return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
+end
+
+local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
+
+--- Returns the custom color defined in the unitID's profile as a Color using Blizzard's ColorMixing.
+-- @param unitID
+-- @return Color
+-- @see ColorMixin
+function Utils.color.getUnitCustomColor(unitID)
+	local info = TRP3_API.register.getUnitIDCurrentProfileSafe(unitID);
+
+	if info.characteristics and info.characteristics.CH then
+		-- If we do have a custom color code (in hexa) defined, get the RGB float values
+		local r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
+		return CreateColor(r, g, b, 1);
+	end
+end
+
+function Utils.color.getChatColorForChannel(channel)
+	local chatInfo = ChatTypeInfo[channel];
+	return CreateColor(chatInfo.r, chatInfo.g, chatInfo.b, 1);
+end
+
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
+---
+-- Returns the color for the unit corresponding to the given GUID.
+-- @param GUID The GUID to use to retrieve player information
+-- @param useCustomColors If we should use custom color or not (usually defined in settings)
+-- @param lightenColorUntilItIsReadable If we should increase the color so it is readable on dark background (usually defined in settings)
+--
+function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntilItIsReadable)
+	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
+	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local color;
+	if englishClass then
+		Utils.color.getClassColor(englishClass);
+	else
+		-- TODO Log message about WHY THE FUCK didn't we get a color
+		CreateColor(1, 1, 1, 1);
+	end
+
+	if useCustomColors then
+		local unitID = Utils.str.unitInfoToID(name, realm);
+		color = Utils.color.getUnitCustomColor(unitID) or color;
+	
+		if lightenColorUntilItIsReadable then
+			color:LightenColorUntilItIsReadable();
+		end
+	end
+
+	return color ;
+end
+
+function Utils.color.extractColorFromText(text)
+	local rgb = text:match("|c%x%x(%x%x%x%x%x%x)");
+	local r, g, b = hexaToFloat(rgb);
+	local color = CreateColor(r or 1, g or 2, b or 3, 1);
+	return color;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -575,7 +719,12 @@ local structureTags = {
 local strtrim = strtrim;
 
 -- Convert the given text by his HTML representation
-Utils.str.toHTML = function(text)
+Utils.str.toHTML = function(text, noColor)
+
+	local linkColor = "|cff00ff00";
+	if noColor then
+		linkColor = "";
+	end
 
 	-- 1) Replacement : & character
 	text = text:gsub("&", "&amp;");
@@ -670,10 +819,10 @@ Utils.str.toHTML = function(text)
 		end);
 
 		line = line:gsub("%[(.-)%]%((.-)%)",
-			"<a href=\"%2\">|cff00ff00[%1]|r</a>");
+			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
 
 		line = line:gsub("{link%*(.-)%*(.-)}",
-			"<a href=\"%1\">|cff00ff00[%2]|r</a>");
+			"<a href=\"%1\">" .. linkColor .. "[%2]|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");

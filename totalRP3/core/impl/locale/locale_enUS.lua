@@ -349,7 +349,7 @@ The |cff00ff00realm only filter|r will show only profiles bounded to a WoW chara
 		REG_COMPANION_TARGET_NO = "Your target is not a valid pet, minion, ghoul, mage elemental or a renamed battle pet.",
 		REG_COMPANION_BOUND_TO = "Bound to ...",
 		REG_COMPANION_UNBOUND = "Unbound from ...",
-		REG_COMPANION_LINKED_NO = "The companion %s is no more linked to any profile.",
+		REG_COMPANION_LINKED_NO = "The companion %s is no longer linked to any profile.",
 		REG_COMPANION_BOUND_TO_TARGET = "Target",
 		REG_COMPANION_BROWSER_BATTLE = "Battle pet browser",
 		REG_COMPANION_BROWSER_MOUNT = "Mount browser",
@@ -445,7 +445,9 @@ These tools also allow you to insert |cffffff00images, icons or link to external
 		CO_REGISTER_ABOUT_VOTE = "Use voting system",
 		CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
 		CO_REGISTER_AUTO_ADD = "Auto add new players",
-		CO_REGISTER_AUTO_ADD_TT = "Automatically add new players you encounter to the register.",
+		CO_REGISTER_AUTO_ADD_TT = [[Automatically add new players you encounter to the register.
+
+|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]],
 		CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 		CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of character you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reach a certain theshold. We strongly recommand to avoid disabling the purge system.",
 		CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -562,6 +564,8 @@ Possible status:
 		CO_LOCATION_DISABLE_OOC_TT = "You will not respond to location request from other players when you've set your RP status to Out Of Character.",
 		CO_LOCATION_DISABLE_PVP = "Disable location when flaged for PVP",
 		CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location request from other players when you are flaged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
+		CO_SANITIZER = "Sanitize incoming profiles",
+		CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
@@ -949,28 +953,16 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_7 = [[# New in version 1.2.5
+		WHATS_NEW_8 = [[# New in version 1.2.6
 
-## Chat customization revamp
-
-We have completely changed our chat customizations to increase compatibility with other add-ons like Prat, WIM, or even Tongues!
-
-We have also built custom modules for both Prat and WIM to have the full RP names correctly displayed when using these add-ons.
-
-Additionally, this new system fixes a long standing issue where whispers were displayed in every chat tab when the option to have incoming whispers routed to their own tab was enabled.
-
-|cffccccccA big special thank you to |r{twitter*Saelorable*Saelora}|cffcccccc from Argent Dawn (EU) for helping us making this system <3|r
-
-## Bug fixes
-
-- We have implemented a custom bug fix for an issue in Blizzard's own code that is making any opened dropdown menu close themselves randomly when the map is opened, so it is easier for you to use Total RP 3's scanning features ({link*open_map_filters_dropdown*Reminder: now located inside the filter menu in the top right corner of the map}).
-- The |cffccccccextensionxtooltip2|r channel should now be joined a little bit later so it is assigned the number 1 channel less often.
-
-## Other improvements
-
-- Skinning add-ons that modify the tooltips font should now work with Total RP 3's tooltips.
-- Added link to our Discord server in the About tab of the Dashboard.
-- Implemented a workaround against the PetTracker add-on as it is removing other add-ons options in the world map filters dropdown menu. The default dropdown menu is restored by Total RP 3 and PetTracker's options are properly added to the menu after Total RP 3's. ([ticket #45](https://wow.curseforge.com/projects/total-rp-3/issues/45))
+- Fixed several issues with the new chat system introduced in version 1.2.5 that would prevent player names form being colored correctly ([ticket #50](https://wow.curseforge.com/projects/total-rp-3/issues/50)).
+- Fixed a Lua error in the new WIM module ([ticket #55](https://wow.curseforge.com/projects/total-rp-3/issues/55)).
+- Fixed an issue where the option to increase color contrast on player names in the tooltip was always enabled ([ticket #51](https://wow.curseforge.com/projects/total-rp-3/issues/51))
+- Fixed a Lua error when shift-clicking a spell name in the adventure journal ([ticket #61](https://wow.curseforge.com/projects/total-rp-3/issues/61))
+- Fixed an issue making the game freeze and possibly crash when trying to delete too many companion profiles from the directory. Additionally, companion profiles are now included in the automatic purge ([ticket #56](https://wow.curseforge.com/projects/total-rp-3/issues/56)).
+- Fixed a long standing issue allowing advanced users to inject custom icons and color codes in places that were not meant for that, as this behaviour led to game crashes, as well as compatibility issues with other RP add-ons and stability issues in Total RP 3 itself ([ticket #63](https://wow.curseforge.com/projects/total-rp-3/issues/63)).
+- The option to increase contrast on color names in the tooltip is now applied on the other colored fields, not just the name field.
+- Added notice on the Auto add new players option of the directory to indicate that disabling this option will prevent you from receiving any new profile.
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431|r{/h3}
@@ -983,11 +975,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 • See customized pets names.
 • Hide the names of players without an RP profile!
 {link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
-
-
-{h3}TipTac module{/h3}
-The |cff9999ffTipTac module|r will add compatibility with the TipTac add-on to Total RP 3 so the Total RP 3 tooltips are using your TipTac skin and are anchored the way you set them in TipTac.
-{link*http://mods.curse.com/addons/wow/total-rp-3-tiptac-module*Download on Curse.com}.
 
 
 ]],

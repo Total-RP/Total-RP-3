@@ -130,4 +130,6 @@
 	<Include file="importer\importer.xml"/>
 
 	<Include file="map\map.xml"/>
+
+	<Script file="tiptac\tiptac.lua"/>
 </Ui>

@@ -21,7 +21,10 @@
 local LOCALE = {
 	locale = "esMX",
 	localeText = "Español (Latin American)",
-    localeContent = {
+    localeContent =
+    --@localization(locale="esMX", format="lua_table", handle-unlocalized="ignore")@
+    --@do-not-package@
+    {
         ["ABOUT_TITLE"] = "Acerca de",
         ["BINDING_NAME_TRP3_TOGGLE"] = "Mostrar/ocultar la ventana principal",
         ["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Mostrar/ocultar barra de herramientas",
@@ -998,7 +1001,7 @@ Total RP no es responsable de los enlaces que conducen a contenidos nocivos.]=],
         ["UI_TUTO_BUTTON"] = "Modo tutorial",
         ["UI_TUTO_BUTTON_TT"] = "Haz clic para activar/desactivar el modo tutorial"
     }
-
+    --@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

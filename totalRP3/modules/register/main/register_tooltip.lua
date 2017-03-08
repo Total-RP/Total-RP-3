@@ -378,24 +378,25 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	local localizedClass, englishClass = UnitClass(targetType);
-	local classColor = RAID_CLASS_COLORS[englishClass];
-    local r, g, b = classColor.r, classColor.g, classColor.b;
+	local color = Utils.color.getClassColor(englishClass);
 	local rightIcons = "";
 	local leftIcons = "";
 
 
     -- Only use custom colors if the option is enabled and if we have one
     if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
-        r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
-
-		local lighten = lightenColorUntilItIsReadable({ r = r, g = g, b = b });
-		r, g, b = lighten.r, lighten.g, lighten.b;
+        local customColor = Utils.color.getColorFromHexadecimalCode(info.characteristics.CH);
+	
+		if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+			customColor:LightenColorUntilItIsReadable();
+		end
+		
+		color = customColor or color;
     end
 
-    -- Generate a color code string (|cffrrggbb) that we will use in the name and the class
-    local characterColorCode = colorCode(r * 255, g * 255, b * 255);
 
-	local completeName = characterColorCode .. getCompleteName(info.characteristics or {}, targetName, not showTitle());
+	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
+	completeName = color:WrapTextInColorCode(completeName);
 
 	if showIcons() then
 		-- Player icon
@@ -459,7 +460,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if info.characteristics and info.characteristics.CL and info.characteristics.CL:len() > 0 then
 			class = info.characteristics.CL;
 		end
-		lineLeft = strconcat("|cffffffff", race, " ", characterColorCode, class);
+		lineLeft = strconcat("|cffffffff", race, " ", color:WrapTextInColorCode(class));
 		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
 		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
@@ -534,12 +535,23 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
+			local localizedClass, englishClass = UnitClass(targetType .. "target");
 			local targetInfo = getCharacterInfoTab(targetTargetID);
-			local characterColorCode = "";
-			if targetInfo.characteristics and targetInfo.characteristics.CH then
-				characterColorCode = "|cff" .. targetInfo.characteristics.CH;
+			local color = englishClass and Utils.color.getClassColor(englishClass) or Utils.color.CreateColor(1, 1, 1, 1);
+			
+			-- Only use custom colors if the option is enabled and if we have one
+			if getConfigValue(CONFIG_CHARACT_COLOR) and targetInfo.characteristics and targetInfo.characteristics.CH then
+				local customColor = Utils.color.getColorFromHexadecimalCode(targetInfo.characteristics.CH);
+				
+				if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+					customColor:LightenColorUntilItIsReadable();
+				end
+				
+				color = customColor or color;
 			end
-			name = characterColorCode .. getCompleteName(targetInfo.characteristics or {}, targetName, true);
+			
+			name = getCompleteName(targetInfo.characteristics or {}, name, true);
+			name = color:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -684,13 +696,19 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 	if showCompanionOwner() then
 		local ownerName, ownerRealm = unitIDToInfo(ownerID);
-		local ownerFinalName, ownerColor = ownerName, "";
+		local ownerFinalName, ownerColor = ownerName, Utils.color.CreateColor(1, 1, 1, 1);
 		if ownerID == Globals.player_id or (IsUnitIDKnown(ownerID) and hasProfile(ownerID)) then
 			local ownerInfo = getCharacterInfoTab(ownerID);
 			if ownerInfo.characteristics then
 				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
-				if ownerInfo.characteristics.CH then
-					ownerColor = "|cff" .. ownerInfo.characteristics.CH;
+				if getConfigValue(CONFIG_CHARACT_COLOR) and ownerInfo.characteristics.CH then
+					local customColor = Utils.color.getColorFromHexadecimalCode(ownerInfo.characteristics.CH);
+						
+						if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+							customColor:LightenColorUntilItIsReadable();
+						end
+					
+					ownerColor = customColor or ownerColor;
 				end
 			end
 		else
@@ -699,7 +717,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			end
 		end
 
-		ownerFinalName = ownerColor .. ownerFinalName .. "|r";
+		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -1085,6 +1103,7 @@ local function onModuleInit()
 				title = loc("CO_TOOLTIP_CONTRAST"),
 				configKey = CONFIG_CHARACT_CONTRAST,
                 help = loc("CO_TOOLTIP_CONTRAST_TT"),
+				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",

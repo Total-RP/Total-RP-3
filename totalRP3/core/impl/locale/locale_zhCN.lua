@@ -20,7 +20,10 @@
 local LOCALE = {
 	locale = "zhCN",
 	localeText = "Chinese",
-    localeContent = {
+    localeContent =
+    --@localization(locale="zhCN", format="lua_table", handle-unlocalized="ignore")@
+    --@do-not-package@
+    {
         ["ABOUT_TITLE"] = "关于",
         ["BINDING_NAME_TRP3_TOGGLE"] = "Toggle主界面",
         ["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Toggle工具栏",
@@ -141,6 +144,7 @@ local LOCALE = {
         ["UI_CLOSE_ALL"] = "关闭所有",
         ["UI_COLOR_BROWSER_SELECT"] = "选择颜色"
     }
+    --@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

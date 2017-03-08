@@ -22,7 +22,11 @@
 local LOCALE = {
 	locale = "frFR",
 	localeText = "Français",
-	localeContent = {
+
+	localeContent =
+	--@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
+	--@do-not-package@
+	{
 		["ABOUT_TITLE"] = "À propos",
 		["BINDING_NAME_TRP3_TOGGLE"] = "Afficher/cacher la fenêtre principale",
 		["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Afficher/cacher la barre d'outils",
@@ -1066,6 +1070,7 @@ De plus, ce nouveau système de discussion corrige un très vieux bug qui faisai
 - Nous avons ajouté un lien vers notre serveur Discord dans l'onglet A propos de Total RP 3 sur l'écran d'accueil.
 - Nous avons implémenter une solution contre l'add-on PetTracker qui enlève les options ajoutées par d'autres add-ons au menu du bouton de filtres de la carte du monde. Le vrai menu est remis à sa place et Total RP 3 va même ajouter les options de PetTracker correctement! ([ticket #45](https://wow.curseforge.com/projects/total-rp-3/issues/45))]=]
 	}
+	--@end-do-not-package@
 };
 
 TRP3_API.locale.registerLocale(LOCALE);

@@ -420,7 +420,7 @@ local function onCharactersActionSelected(value, button)
 		else
 			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_IGNORE_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge + #characterToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
-					deleteProfile(profileID);
+					deleteProfile(profileID, true);
 				end
 				for _, unitID in pairs(characterToPurge) do
 					deleteCharacter(unitID);
@@ -627,19 +627,26 @@ local function getCompanionLines()
 	return companionLines;
 end
 
+local DO_NOT_FIRE_EVENTS = true;
 local function onCompanionActionSelected(value, button)
 	if value == "purge_all" then
 		local list = getCompanionProfiles();
 		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_COMP_C"):format(tsize(list)), function()
 			for profileID, _ in pairs(list) do
-				deleteCompanionProfile(profileID);
+				-- We delete the companion profile without fire events to prevent UI freeze
+				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
 			end
+			-- We then fire the event once every profile we needed to delete has been deleted
+			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				deleteCompanionProfile(profileID);
+				-- We delete the companion profile without fire events to prevent UI freeze
+				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
 			end
+			-- We then fire the event once every profile we needed to delete has been deleted
+			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	end
 end

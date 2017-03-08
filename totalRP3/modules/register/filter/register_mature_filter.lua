@@ -40,7 +40,7 @@ local function onStart()
 	-- TRP3 API imports
 	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_API.events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
 	local getProfileByID = Register.getProfile;
-	local getUnitIDProfile = Register.getUnitIDProfile;
+	local getUnitIDProfile = Register.getUnitIDCurrentProfileSafe;
 	local hasProfile = Register.hasProfile;
 	local getProfileOrNil = TRP3_API.register.getProfileOrNil;
 	local isUnitIDKnown = Register.isUnitIDKnown;
@@ -107,8 +107,6 @@ local function onStart()
 	-- @param profileID ID of the profile to check
 	--
 	local function isProfileWhitelisted(profileID)
-		assert(profileID, ("Trying to call isProfileWhitelisted with a nil profileID."));
-
 		return whiteList[profileID] or false;
 	end
 
@@ -515,6 +513,7 @@ local function onStart()
 				TRP3_API.popup.showPopup("mature_dictionary");
 				refreshDictionaryList();
 			end,
+			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
 
 		-- Register our popups to the popup manager
