@@ -14,6 +14,10 @@ externals:
   totalRP3/libs/LibStub:
       url: https://repos.wowace.com/wow/ace3/trunk/LibStub
 
+  # NoTaint UIDropDownMenu, because dealing with Blizzard's dropdowns is hard
+  totalRP3/libs/DropDownMenu:
+      url: https://svn.wowinterface.com/NoTaint_UIDropDownMenu_Update-1134/trunk/
+
   # Chat Throttle Lib
   totalRP3/libs/ChatThrottleLib:
       https://repos.wowace.com/wow/chatthrottlelib/trunk

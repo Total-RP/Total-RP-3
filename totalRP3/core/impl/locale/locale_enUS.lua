@@ -956,16 +956,26 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_8 = [[# New in version 1.2.6
+		WHATS_NEW_9 = [[## The Total RP 3 world map button is back
 
-- Fixed several issues with the new chat system introduced in version 1.2.5 that would prevent player names form being colored correctly ([ticket #50](https://wow.curseforge.com/projects/total-rp-3/issues/50)).
-- Fixed a Lua error in the new WIM module ([ticket #55](https://wow.curseforge.com/projects/total-rp-3/issues/55)).
-- Fixed an issue where the option to increase color contrast on player names in the tooltip was always enabled ([ticket #51](https://wow.curseforge.com/projects/total-rp-3/issues/51))
-- Fixed a Lua error when shift-clicking a spell name in the adventure journal ([ticket #61](https://wow.curseforge.com/projects/total-rp-3/issues/61))
-- Fixed an issue making the game freeze and possibly crash when trying to delete too many companion profiles from the directory. Additionally, companion profiles are now included in the automatic purge ([ticket #56](https://wow.curseforge.com/projects/total-rp-3/issues/56)).
-- Fixed a long standing issue allowing advanced users to inject custom icons and color codes in places that were not meant for that, as this behaviour led to game crashes, as well as compatibility issues with other RP add-ons and stability issues in Total RP 3 itself ([ticket #63](https://wow.curseforge.com/projects/total-rp-3/issues/63)).
-- The option to increase contrast on color names in the tooltip is now applied on the other colored fields, not just the name field.
-- Added notice on the Auto add new players option of the directory to indicate that disabling this option will prevent you from receiving any new profile.
+After trying to put our scanning options in the world map filters dropdown (as it made a lot of sense for them to be there), we found out it was causing so many issues that it wasn't worth it. We have restored our Total RP 3 world map button to access the scanning options (quick reminder that you can move it around in the settings).
+
+![Interface\AddOns\totalRP3\resources\map_button](256,128)
+
+## Bug fixes
+
+- Fixed a Lua error when trying to get class color and there is no english class available ([ticket #78](https://wow.curseforge.com/projects/total-rp-3/issues/78)).
+- Fixed a Lua error for unknown profiles when the mature filter is enabled ([ticket #76](https://wow.curseforge.com/projects/total-rp-3/issues/76)).
+- Fixed a taint issue causing a message about an action blocked to be displayed in the chat frame when opening the world map during combat, by restoring the good old world map button. ([ticket #58](https://wow.curseforge.com/projects/total-rp-3/issues/58)).
+- Fixed a taint issue preventing from queuing for battlegrounds by switching to a dedicated dropdown library ([ticket #59](https://wow.curseforge.com/projects/total-rp-3/issues/59))
+- Fixed an issue where the world map button anchoring position setting was not saved.
+- Fixed the anchoring of the world map button so it is nicely placed in a good spot in all four corners.
+
+## Other improvements
+
+- Added cooldown effect on the world map button while scanning.
+
+
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended |cffF87431|r{/h3}
