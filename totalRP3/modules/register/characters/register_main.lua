@@ -755,6 +755,7 @@ function TRP3_API.register.init()
 	TRP3_API.map.registerScan({
 		id = "playerScan",
 		buttonText = loc("MAP_SCAN_CHAR"),
+		buttonIcon = "Achievement_GuildPerk_EverybodysFriend",
 		scan = function()
 			local zoneID = GetCurrentMapAreaID();
 			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);

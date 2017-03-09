@@ -184,40 +184,6 @@ end
 local SCAN_STRUCTURES = {};
 local currentMapID;
 local launchScan;
-local currentlyScanning = false;
-local UIDropDownMenu_AddButton, UIDropDownMenu_CreateInfo, UIDropDownMenu_Initialize, UIDropDownMenu_AddSeparator = Lib_UIDropDownMenu_AddButton, Lib_UIDropDownMenu_CreateInfo, Lib_UIDropDownMenu_Initialize, Lib_UIDropDownMenu_AddSeparator;
-
-local function insertScansInDropdown(_, level)
-	if level==1 then
-		local info = UIDropDownMenu_CreateInfo();
-
-		UIDropDownMenu_AddSeparator(info);
-
-		info = UIDropDownMenu_CreateInfo();
-
-		info.isTitle = true;
-		info.notCheckable = true;
-		info.text = TRP3_API.globals.addon_name;
-		UIDropDownMenu_AddButton(info);
-
-		info.isTitle = nil;
-
-		info.func = launchScan;
-
-		if Utils.table.size(SCAN_STRUCTURES) < 1 then
-			info.text = loc("MAP_BUTTON_NO_SCAN");
-			info.disabled = true;
-			UIDropDownMenu_AddButton(info);
-		else
-			for _, scanStructure in pairs(SCAN_STRUCTURES) do
-				info.text = scanStructure.buttonText;
-				info.disabled = scanStructure.canScan and scanStructure.canScan(currentlyScanning) ~= true;
-				info.value = scanStructure.id;
-				UIDropDownMenu_AddButton(info);
-			end
-		end
-	end
-end
 
 local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
@@ -298,7 +264,7 @@ local function onButtonClicked(self)
 	local structure = {};
 	for scanID, scanStructure in pairs(SCAN_STRUCTURES) do
 		if not scanStructure.canScan or scanStructure.canScan() == true then
-			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 25) .. " " .. (scanStructure.buttonText or scanID), scanID});
+			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 20) .. " " .. (scanStructure.buttonText or scanID), scanID});
 		end
 	end
 	if #structure == 0 then
@@ -333,14 +299,36 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 end);
 
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
-local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
+local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
 
 local function placeMapButton(position)
 	position = position or "BOTTOMLEFT";
 	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
 	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
 	TRP3_WorldMapButton:ClearAllPoints();
-	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame, position, position:find("LEFT") and 10 or -10, position:find("BOTTOM") and 10 or -10);
+	local xPadding = 10;
+	local yPadding = 10;
+
+	if position:find("TOP") then
+		if position:find("RIGHT") then
+			yPadding = -45;
+		else
+			yPadding = -30;
+		end
+	end
+
+	if position:find("RIGHT") then
+		if position:find("BOTTOM") then
+			xPadding = -10;
+			yPadding = 40;
+		else
+			xPadding = -10;
+		end
+	end
+
+	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
+
+	setConfigValue(CONFIG_MAP_BUTTON_POSITION, position);
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
