@@ -20,9 +20,9 @@
 	-->
 
 	<Button name="TRP3_WorldMapButton" parent="UIParent" inherits="TRP3_IconButton" frameStrata="FULLSCREEN" toplevel="true">
-		<Anchors>
-			<Anchor point="BOTTOMLEFT" relativeTo="WorldMapScrollFrame" x="10" y="10"/>
-		</Anchors>
+		<Frames>
+			<Cooldown parentKey="Cooldown" setAllPoints="true" inherits="CooldownFrameTemplate" />
+		</Frames>
 		<Scripts>
 			<OnEnter>
 					WorldMapPOIFrame.allowBlobTooltip = false;

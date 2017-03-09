@@ -215,6 +215,7 @@ function launchScan(scanID)
 			TRP3_WorldMapButton:Disable();
 			-- TODO Animate the shit out of this transition!
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
+			TRP3_WorldMapButton.Cooldown:SetCooldown(GetTime(), structure.scanDuration)
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
 			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
