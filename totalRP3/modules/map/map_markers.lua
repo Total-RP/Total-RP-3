@@ -310,21 +310,14 @@ local function placeMapButton(position)
 	local xPadding = 10;
 	local yPadding = 10;
 
-	if position:find("TOP") then
-		if position:find("RIGHT") then
-			yPadding = -45;
-		else
-			yPadding = -30;
-		end
-	end
-
-	if position:find("RIGHT") then
-		if position:find("BOTTOM") then
-			xPadding = -10;
-			yPadding = 40;
-		else
-			xPadding = -10;
-		end
+	if position == "TOPRIGHT" then
+		xPadding = -10;
+		yPadding = -45;
+	elseif position == "TOPLEFT" then
+		yPadding = -30;
+	elseif position == "BOTTOMRIGHT" then
+		xPadding = -10;
+		yPadding = 40;
 	end
 
 	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
