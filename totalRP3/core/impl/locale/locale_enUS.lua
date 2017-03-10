@@ -975,6 +975,8 @@ After trying to put our scanning options in the world map filters dropdown (as i
 ## Other improvements
 
 - Added cooldown effect on the world map button while scanning.
+- Total RP 3 will now honor the chat settings for coloring class names in the chat frame, so that it won't force class colors if you have disabled them. Note that the custom Total RP 3 colors are independent and will always be shown if you have the settings to show custom colors in chat enabled. Remember you can disable Total RP 3's customizations for individual channels in the settings ([ticket #79](https://wow.curseforge.com/projects/total-rp-3/issues/79)).
+- Total RP 3 was always removing the realm info from player names, now you have an option disable that behavior in the chat settings ([ticket #80](https://wow.curseforge.com/projects/total-rp-3/issues/80)).
 
 
 ]],
