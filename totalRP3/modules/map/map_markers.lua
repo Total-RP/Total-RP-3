@@ -28,12 +28,12 @@ local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pa
 local CreateFrame = CreateFrame;
 local after = C_Timer.After;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
-local tsize = Utils.table.size;
 local getConfigValue = TRP3_API.configuration.getValue;
 
 local CONFIG_UI_ANIMATIONS = "ui_animations";
 
-local TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame = TRP3_ScanLoaderFramePercent, TRP3_ScanLoaderFrame;
+---@type Frame
+local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -51,8 +51,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Marker logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local WorldMapTooltip, WorldMapPOIFrame = WorldMapTooltip, WorldMapPOIFrame;
+---@type GameTooltip
+local WorldMapTooltip = WorldMapTooltip
+local WorldMapPOIFrame = WorldMapPOIFrame;
 local MARKER_NAME_PREFIX = "TRP3_WordMapMarker";
 
 local MAX_DISTANCE_MARKER = math.sqrt(0.5 * 0.5 + 0.5 * 0.5);
@@ -68,14 +69,18 @@ local function hideAllMarkers()
 end
 
 local function getMarker(i, tooltip)
+	---@type Frame
 	local marker = _G[MARKER_NAME_PREFIX .. i];
+
 	if not marker then
 		marker = CreateFrame("Frame", MARKER_NAME_PREFIX .. i, WorldMapButton, "TRP3_WorldMapUnit");
 		marker:SetScript("OnEnter", function(self)
 			WorldMapPOIFrame.allowBlobTooltip = false;
+
 			WorldMapTooltip:Hide();
 			WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT", 0, 0);
 			WorldMapTooltip:AddLine(self.tooltip, 1, 1, 1, true);
+
 			local j = 1;
 			while(_G[MARKER_NAME_PREFIX .. j]) do
 				local markerWidget = _G[MARKER_NAME_PREFIX .. j];
@@ -98,9 +103,12 @@ local function getMarker(i, tooltip)
 	return marker;
 end
 
+---@param marker Frame
+---@param x nubmer
+---@param y number
 local function placeMarker(marker, x, y)
-	local x = (x or 0) * WorldMapDetailFrame:GetWidth();
-	local y = - (y or 0) * WorldMapDetailFrame:GetHeight();
+	x = (x or 0) * WorldMapDetailFrame:GetWidth();
+	y = - (y or 0) * WorldMapDetailFrame:GetHeight();
 	marker:ClearAllPoints();
 	marker:SetPoint("CENTER", "WorldMapDetailFrame", "TOPLEFT", x, y);
 end
@@ -145,12 +153,12 @@ local function decorateMarker(marker, decorationType)
 	end
 end
 
+---@param structure table
 local function displayMarkers(structure)
 	if not WorldMapFrame:IsVisible() then
 		return;
 	end
 
-	local count = tsize(structure.saveStructure);
 	local i = 1;
 	for key, entry in pairs(structure.saveStructure) do
 		local marker = getMarker(i, structure.scanTitle);
@@ -213,7 +221,6 @@ function launchScan(scanID)
 			local mapID = GetCurrentMapAreaID();
 			currentMapID = mapID;
 			TRP3_WorldMapButton:Disable();
-			-- TODO Animate the shit out of this transition!
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
 			TRP3_WorldMapButton.Cooldown:SetCooldown(GetTime(), structure.scanDuration)
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
@@ -302,11 +309,17 @@ end);
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
 local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
 
+---@param position string
 local function placeMapButton(position)
 	position = position or "BOTTOMLEFT";
-	TRP3_WorldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_WorldMapButton:ClearAllPoints();
+
+	---@type Frame
+	local worldMapButton = TRP3_WorldMapButton;
+
+	worldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame)
+	worldMapButton:ClearAllPoints();
+
 	local xPadding = 10;
 	local yPadding = 10;
 
@@ -320,7 +333,7 @@ local function placeMapButton(position)
 		yPadding = 40;
 	end
 
-	TRP3_WorldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
+	worldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
 
 	setConfigValue(CONFIG_MAP_BUTTON_POSITION, position);
 end
