@@ -26,10 +26,8 @@ local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
-local setConfigValue = TRP3_API.configuration.setValue;
 local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
-local oldChatFrameOnEvent;
 local handleCharacterMessage, hooking;
 local tContains = tContains;
 local assert = assert;
@@ -53,6 +51,7 @@ end
 TRP3_API.chat.isChannelHandled = isChannelHandled;
 
 local CONFIG_NAME_METHOD = "chat_name";
+local CONFIG_REMOVE_REALM = "remove_realm";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
 local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
@@ -124,6 +123,7 @@ end
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 3);
+	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
 	registerConfigKey(CONFIG_NPC_TALK, true);
@@ -174,6 +174,11 @@ local function createConfigPage()
 				configKey = CONFIG_NAME_METHOD,
 				listCancel = true,
 			},
+            {
+                inherit = "TRP3_ConfigCheck",
+                title = loc("CO_CHAT_REMOVE_REALM"),
+                configKey = CONFIG_REMOVE_REALM
+            },
             {
                 inherit = "TRP3_ConfigCheck",
                 title = loc("CO_CHAT_INSERT_FULL_RP_NAME"),
@@ -391,7 +396,8 @@ function handleCharacterMessage(_, event, message, ...)
 	return false, message, ...;
 end
 
-local function getFullnameUsingChatMethod(info, characterName)
+local function getFullnameUsingChatMethod(info)
+	local characterName;
 	local nameMethod = configNameMethod();
 
 	if nameMethod ~= 1 then -- TRP3 names
@@ -414,20 +420,42 @@ local function getFullnameUsingChatMethod(info, characterName)
 end
 TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
 
-local function getFullnameForUnitUsingChatMethod(unitID, characterName)
+local function getFullnameForUnitUsingChatMethod(unitID)
 	local info = getCharacterInfoTab(unitID);
-	return getFullnameUsingChatMethod(info, characterName);
+	return getFullnameUsingChatMethod(info);
 end
 TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
 
+local function getChatTypeForEvent(event, channelNumber)
+	local chatType = strsub(event, 10);
+	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
+		chatType = "WHISPER";
+	end
+	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
+		chatType = "CHANNEL".. channelNumber;
+	end
+	return chatType
+end
+
+--- Check if class color is enabled for names for a specified chat type
+---	@param chatType string
+---	@return boolean
+local function classColorNameIsEnableOnChatType(chatType)
+	local info = ChatTypeInfo[chatType];
+	return info and info.colorNameByClass;
+end
+
 -- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
 local defaultGetColoredNameFunction = GetColoredName;
+
+local GetClassColorByGUID = TRP3_API.utils.color.GetClassColorByGUID;
+local GetCustomColorByGUID = TRP3_API.utils.color.GetCustomColorByGUID;
 
 -- This is our custom GetColoredName function that will replace player's names with their full RP names
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
 -- It must receive a fallback function as first parameter. It is the function it will use if we don't handle name customizations ourselves
-function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
 
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
 
@@ -437,15 +465,17 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 
 	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
 	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
 	end;
 
-	local characterName, characterColor;
+	local characterName = unitID;
+	--@type ColorMixin
+	local characterColor;
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) end;
-	
+	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end;
+
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
 	if npcMessageId == messageID then
@@ -456,28 +486,46 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	local character, realm = unitIDToInfo(unitID);
 	if not realm then
 		-- if realm is nil (i.e. globals haven't been set yet) just run the vanilla version of the code to prevent errors.
-		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12);
+		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
 	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
 
-	-- Character name is without the server name is they are from the same realm, or with the realm attached if they aren't
-	if realm == Globals.player_realm_id then
+	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
+	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
 		characterName = character;
-	else
-		characterName = unitID;
 	end
 
-	-- Retrieve the character full name and their color
-	characterName = getFullnameForUnitUsingChatMethod(unitID, character);
-	local color = getUnitColorByGUID(GUID, configShowNameCustomColors(), configIncreaseNameColorContrast());
+	-- Retrieve the character full RP name
+	local customizedName = getFullnameForUnitUsingChatMethod(unitID);
+
+	if customizedName then
+		characterName = customizedName;
+	end
+
+
+	if classColorNameIsEnableOnChatType(getChatTypeForEvent(event, channelNumber)) then
+		characterColor = GetClassColorByGUID(GUID);
+	end
+
+	if configShowNameCustomColors() then
+		local customColor = GetCustomColorByGUID(GUID);
+
+		if customColor then
+			if configIncreaseNameColorContrast() then
+				customColor:LightenColorUntilItIsReadable();
+			end
+
+			characterColor = customColor;
+		end
+	end
 
 	-- If we did get a color wrap the name inside the color code
-	if color then
+	if characterColor then
 		-- And wrap the name inside the color's code
-		characterName = color:WrapTextInColorCode(characterName);
+		characterName = characterColor:WrapTextInColorCode(characterName);
 	end
-	
+
 
 	-- Check if this message was flagged as containing a 's at the beggning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's
@@ -522,7 +570,7 @@ function hooking()
 		if not (IsUnitIDKnown(unitID) or unitID == Globals.player_id) then return end;
 
 		local activeChatFrame = ChatEdit_GetActiveWindow();
-	
+
 		if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
 			local editBox = activeChatFrame.chatFrame.editBox;
 			local currentText = editBox:GetText();
@@ -531,14 +579,14 @@ function hooking()
 			-- Save the text that is before and after the name inserted
 			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len() - 1);
 			local textAfter = currentText:sub(currentCursorPosition+1 );
-			
+
 			local name = getFullnameForUnitUsingChatMethod(unitID, unitID);
 
 			-- Replace the text of the edit box
 			editBox:SetText(textBefore .. name .. textAfter);
 			-- Move the cursor to the end of the insertion
 			editBox:SetCursorPosition(textBefore:len() + name:len());
-		
+
 		end
 	end);
 end

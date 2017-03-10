@@ -524,6 +524,7 @@ Possible status:
 		CO_CHAT_MAIN_NAMING_2 = "Use custom names",
 		CO_CHAT_MAIN_NAMING_3 = "First name + last name",
 		CO_CHAT_MAIN_NAMING_4 = "Short title + first name + last name",
+		CO_CHAT_REMOVE_REALM = "Remove realm from player names",
         CO_CHAT_INSERT_FULL_RP_NAME = "Insert RP names on shift-click",
         CO_CHAT_INSERT_FULL_RP_NAME_TT = [[Insert the complete RP name of a player when SHIFT-Clicking their name in the chat frame.
 

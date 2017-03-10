@@ -549,6 +549,8 @@ end
 -- I quite like Blizzard's Color mixins, it has some nice functions like :WrapTextInColorCode(text)
 -- But I will extend them with my own functions like :LightenColorUntilItIsReadable();
 local BlizzardCreateColor = CreateColor;
+
+---@return ColorMixin
 local function CreateColor(r, g, b, a)
 	local color = BlizzardCreateColor(r, g, b, a);
 	color.LightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
@@ -566,9 +568,7 @@ end
 --- Returns a Color using Blizzard's ColorMixin for a given class (english, not localized)
 -- @see ColorMixin
 function Utils.color.getClassColor(englishClass)
-	assert(englishClass, "No class given to TRP3_API.utils.getClassColor(englishClass).")
-	assert(RAID_CLASS_COLORS[englishClass], string.format("Unknown class %s", englishClass));
-
+	if not RAID_CLASS_COLORS[englishClass] then return end
 	local classColorTable = RAID_CLASS_COLORS[englishClass];
 	return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
 end
@@ -585,7 +585,8 @@ function Utils.color.getUnitCustomColor(unitID)
 	if info.characteristics and info.characteristics.CH then
 		-- If we do have a custom color code (in hexa) defined, get the RGB float values
 		local r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
-		return CreateColor(r, g, b, 1);
+		local color = CreateColor(r, g, b, 1);
+		return color;
 	end
 end
 
@@ -595,6 +596,28 @@ function Utils.color.getChatColorForChannel(channel)
 end
 
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
+
+---GetClassColorByGUID
+---@param GUID string
+---@return ColorMixin
+function TRP3_API.utils.color.GetClassColorByGUID(GUID)
+	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local classColorTable = RAID_CLASS_COLORS[englishClass];
+	if classColorTable then
+		return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
+	end
+end
+
+---GetCustomColorByGUID
+---@param GUID string
+---@return ColorMixin
+function TRP3_API.utils.color.GetCustomColorByGUID(GUID)
+	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+
+	local unitID = Utils.str.unitInfoToID(name, realm);
+	return Utils.color.getUnitCustomColor(unitID)
+end
+	
 ---
 -- Returns the color for the unit corresponding to the given GUID.
 -- @param GUID The GUID to use to retrieve player information
@@ -605,17 +628,15 @@ function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntil
 	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
 	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
 	local color;
-	if englishClass then
-		Utils.color.getClassColor(englishClass);
-	else
-		-- TODO Log message about WHY THE FUCK didn't we get a color
-		CreateColor(1, 1, 1, 1);
-	end
+
+	if not englishClass then return end
+
+	color = Utils.color.getClassColor(englishClass);
 
 	if useCustomColors then
 		local unitID = Utils.str.unitInfoToID(name, realm);
 		color = Utils.color.getUnitCustomColor(unitID) or color;
-	
+
 		if lightenColorUntilItIsReadable then
 			color:LightenColorUntilItIsReadable();
 		end
