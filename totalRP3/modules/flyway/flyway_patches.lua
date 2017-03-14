@@ -38,3 +38,13 @@ TRP3_API.flyway.patches["4"] = function()
 		TRP3_Configuration["register_mature_filter"] = false;
 	end
 end
+
+TRP3_API.flyway.patches["5"] = function()
+	-- Sanitize existing profiles
+	if TRP3_API.configuration.getValue("register_sanitization") then
+		local sanitizeFullProfile = TRP3_API.register.sanitizeFullProfile;
+		for _, profile in pairs(TRP3_Register.profiles) do
+			sanitizeFullProfile(profile);
+		end
+	end
+end
