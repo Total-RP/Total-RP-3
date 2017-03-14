@@ -495,6 +495,13 @@ local function cleanupCharacters()
 	end
 end
 
+local function sanitizeOwnProfiles()
+	local sanitizeFullProfile = TRP3_API.register.sanitizeFullProfile;
+	for _, profile in pairs(TRP3_Profiles) do
+		sanitizeFullProfile(profile.player);
+	end
+end
+
 local function cleanupCompanions()
 	local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
 	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
@@ -710,6 +717,9 @@ function TRP3_API.register.init()
 		cleanupProfiles();
 		cleanupCharacters();
 		cleanupCompanions();
+		if getConfigValue("register_sanitization") then
+			sanitizeOwnProfiles();
+		end
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
