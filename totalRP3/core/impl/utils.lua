@@ -646,10 +646,14 @@ function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntil
 end
 
 function Utils.color.extractColorFromText(text)
+	local r, g, b = 1, 1, 1;
 	local rgb = text:match("|c%x%x(%x%x%x%x%x%x)");
-	local r, g, b = hexaToFloat(rgb);
-	local color = CreateColor(r or 1, g or 2, b or 3, 1);
-	return color;
+
+	if rgb then
+		r, g, b = hexaToFloat(rgb);
+	end
+
+	return CreateColor(r, g, b, 1);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

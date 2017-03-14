@@ -84,8 +84,12 @@ local function onStart()
 				characterName = characterName .. "'s";
 			end
 
+			if color then
+				characterName = color:WrapTextInColorCode(characterName);
+			end
+
 			-- Replace the message player name with the colored character name
-			message.PLAYER = color:WrapTextInColorCode(characterName);
+			message.PLAYER = characterName
 			message.sS = nil
 			message.SERVER = nil
 			message.Ss = nil
