@@ -81,6 +81,21 @@ TRP3_API = {
 	}
 }
 
+-- Why are we checking the month and the day ? ಠಿ_ಠ
+local currentDate = date("*t");
+
+-- And why should it be equals to 04/01? 「(°ヘ°)
+if currentDate.month == 4 and currentDate.day == 1 then
+
+	-- And what's this april_fools variable? ヽ(ﾟДﾟ)ﾉ
+	TRP3_API.april_fools = true;
+
+	-- Why so many questions, why? ヾ(｀ε´)ﾉ
+	TRP3_API.globals.addon_name = "flagRSP 3";
+	TRP3_API.globals.addon_name_extended = "flagRSP 3: GHI";
+	TRP3_API.globals.addon_name_me = "flagRSP 3";
+end
+
 local emptyMeta = {
 	__newindex = function(_, _, _) end
 };

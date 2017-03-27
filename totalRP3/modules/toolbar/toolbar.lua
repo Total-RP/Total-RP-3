@@ -174,23 +174,23 @@ local function onStart()
 	--
 	local function registerDatabrokerButton(buttonStructure)
 		local LDBObject = LDB:NewDataObject(
-			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
-			{
-				type= "data source",
-				icon = "Interface\\ICONS\\"..buttonStructure.icon,
-				OnClick = function(Uibutton, button)
-					if buttonStructure.onClick then
-						buttonStructure.onClick(Uibutton, buttonStructure, button);
-					end
-				end,
-				tooltipTitle = getTooltipTitleWithIcon(buttonStructure),
-				tooltipSub = buttonStructure.tooltipSub,
-				OnTooltipShow = function(tooltip)
-					local LDBButton = LDBObjects[buttonStructure.id];
-					tooltip:AddLine(color("w") .. LDBButton.tooltipTitle);
-					tooltip:AddLine(LDBButton.tooltipSub, nil, nil, nil, true);
+		TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
+		{
+			type= "data source",
+			icon = "Interface\\ICONS\\"..buttonStructure.icon,
+			OnClick = function(Uibutton, button)
+				if buttonStructure.onClick then
+					buttonStructure.onClick(Uibutton, buttonStructure, button);
 				end
-			});
+			end,
+			tooltipTitle = getTooltipTitleWithIcon(buttonStructure),
+			tooltipSub = buttonStructure.tooltipSub,
+			OnTooltipShow = function(tooltip)
+				local LDBButton = LDBObjects[buttonStructure.id];
+				tooltip:AddLine(color("w") .. LDBButton.tooltipTitle);
+				tooltip:AddLine(LDBButton.tooltipSub, nil, nil, nil, true);
+			end
+		});
 		LDBObjects[buttonStructure.id] = LDBObject;
 
 	end
@@ -267,7 +267,7 @@ local function onStart()
 	registerConfigKey(CONFIG_TOOLBAR_POS_X, 0);
 	registerConfigKey(CONFIG_TOOLBAR_POS_Y, -30);
 	toolbar:SetPoint(getConfigValue("CONFIG_TOOLBAR_POS_A"), UIParent, getConfigValue("CONFIG_TOOLBAR_POS_A"),
-	getConfigValue("CONFIG_TOOLBAR_POS_X"), getConfigValue("CONFIG_TOOLBAR_POS_Y"));
+					 getConfigValue("CONFIG_TOOLBAR_POS_X"), getConfigValue("CONFIG_TOOLBAR_POS_Y"));
 
 	toolbar:RegisterForDrag("LeftButton");
 	toolbar:SetMovable(true);

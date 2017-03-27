@@ -360,6 +360,23 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+	
+	
+	if TRP3_API.april_fools then
+		registerConfigKey("april_fools", false);
+		
+		if not getValue("april_fools") then
+			TRP3_API.popup.showAlertPopup([[
+Total RP 3 is now flagRSP 3!
+
+We had a good run, but Total RP 3 is now retiring in favor of flagRSP, the original best roleplaying add-on!
+
+Enjoy the best roleplaying add-on from 2008!
+]])
+			
+			setValue("april_fools", true);
+		end
+	end
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)

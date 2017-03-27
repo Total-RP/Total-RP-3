@@ -195,6 +195,18 @@ TRP3_API.dashboard.init = function()
 
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW_9");
+	if TRP3_API.april_fools then
+		whatsNewText = [[
+# Total RP 3 is now flagRSP 3!
+
+We had a good run, but Total RP 3 is now retiring in favor of flagRSP, the original best roleplaying add-on!
+
+We know that many tooltip still references Total RP 3, but they will be updated in the upcoming weeks to reflect this change.
+
+We have also decided to keep the |cffffffff/trp3|r command for now to avoid confusion.
+]];
+		TRP3_DashboardLogo:SetTexture([[Interface\AddOns\totalRP3\resources\flagrsp3]]);
+	end
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 

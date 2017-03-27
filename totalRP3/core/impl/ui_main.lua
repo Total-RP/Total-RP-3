@@ -98,7 +98,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end,
 		OnTooltipShow = function(tooltip)
-			tooltip:AddLine("Total RP 3");
+			if TRP3_API.april_fools then
+				tooltip:AddLine("flagRSP 3");
+			else
+				tooltip:AddLine("Total RP 3");
+			end
 			tooltip:AddLine(minimapTooltip);
 		end,
 	})

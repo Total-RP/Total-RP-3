@@ -128,6 +128,9 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 
 -- local POPUP_HEAD = "|TInterface\\AddOns\\totalRP3\\resources\\trp3logo:113:263|t\n \n";
 local POPUP_HEAD = "Total RP 3\n \n";
+if TRP3_API.april_fools then
+	POPUP_HEAD = "flagRSP 3\n \n"
+end
 
 -- Show a simple alert with a OK button.
 function TRP3_API.popup.showAlertPopup(text)
@@ -208,7 +211,7 @@ local function decorateMusic(lineFrame, musicURL)
 	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
+					   ("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 	lineFrame.musicURL = musicURL;
 end
@@ -308,12 +311,12 @@ local function filteredIconBrowser()
 	filteredIconList = getIconList(filter);
 	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
 	initList(
-		{
-			widgetTab = iconWidgetTab,
-			decorate = decorateIcon
-		},
-		filteredIconList,
-		TRP3_IconBrowserContentSlider
+	{
+		widgetTab = iconWidgetTab,
+		decorate = decorateIcon
+	},
+	filteredIconList,
+	TRP3_IconBrowserContentSlider
 	);
 end
 
@@ -392,7 +395,7 @@ local function decorateCompanion(button, index)
 		text = text .. "\n\"" .. description .. "\"";
 	end
 	setTooltipForFrame(button, TRP3_CompanionBrowser, "RIGHT", 0, -100,
-		"|T" .. icon .. ":40|t " .. name, text);
+					   "|T" .. icon .. ":40|t " .. name, text);
 	button.index = index;
 end
 
@@ -438,12 +441,12 @@ local function filteredCompanionBrowser()
 	local totalCompanionCount = getWoWCompanionFilteredList(isOk and filter or "");
 	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
 	initList(
-		{
-			widgetTab = companionWidgetTab,
-			decorate = decorateCompanion
-		},
-		filteredCompanionList,
-		TRP3_CompanionBrowserContentSlider
+	{
+		widgetTab = companionWidgetTab,
+		decorate = decorateCompanion
+	},
+	filteredCompanionList,
+	TRP3_CompanionBrowserContentSlider
 	);
 end
 
@@ -466,7 +469,7 @@ local function initCompanionBrowser()
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
 	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0,
-		"|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc("UI_COMPANION_BROWSER_HELP") ,loc("UI_COMPANION_BROWSER_HELP_TT"));
+						   "|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc("UI_COMPANION_BROWSER_HELP") ,loc("UI_COMPANION_BROWSER_HELP_TT"));
 
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc("UI_FILTER"));
 end
@@ -506,7 +509,7 @@ local function initColorBrowser()
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
-	
+
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
 		if self:GetText():match("^%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number
 			local r, g, b = hexaToNumber(self:GetText());
@@ -523,7 +526,7 @@ local function initColorBrowser()
 			toast(loc("BW_COLOR_CODE_ALERT"), 1);
 		end
 	end);
-	
+
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
 		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
@@ -605,12 +608,12 @@ local function filteredImageBrowser()
 		TRP3_ImageBrowserSelect:Disable();
 	end
 	initList(
-		{
-			widgetTab = imageWidgetTab,
-			decorate = decorateImage
-		},
-		filteredImageList,
-		TRP3_ImageBrowserContentSlider
+	{
+		widgetTab = imageWidgetTab,
+		decorate = decorateImage
+	},
+	filteredImageList,
+	TRP3_ImageBrowserContentSlider
 	);
 end
 
