@@ -39,6 +39,7 @@ local loc = TRP3_API.locale.getText;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
+local strtrim = strtrim;
 local tinsert, assert, _G, tremove, next = tinsert, assert, _G, tremove, next;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
@@ -421,6 +422,14 @@ function Utils.str.sanitize(text)
 		text = text:gsub(k, v);
 	end
 	return text;
+end
+
+function Utils.str.crop(text, size)
+	text = strtrim(text);
+	if text:len() > size then
+		text = text:sub(1, size) .. "…";
+	end
+	return text
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
