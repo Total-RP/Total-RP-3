@@ -194,7 +194,7 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_9");
+	local whatsNewText = loc("WHATS_NEW_10");
 	if TRP3_API.april_fools then
 		whatsNewText = [[
 # Total RP 3 is now flagRSP 3!
