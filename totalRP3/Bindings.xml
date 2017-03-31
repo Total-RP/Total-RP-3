@@ -1,6 +1,6 @@
 <!--
 	Total RP 3
-	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
+	Copyright 2014 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
     <Binding name="TRP3_TOGGLE" header="TRP3">
         TRP3_API.navigation.switchMainFrame();
     </Binding>
-    <Binding name="TRP3_TOOLBAR_TOGGLE" header="TRP3">
+    <Binding name="TRP3_TOOLBAR_TOGGLE">
         if TRP3_API.toolbar then
             TRP3_API.toolbar.switch();
         end
