@@ -957,7 +957,13 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_10 = [[## Bug fixes
+		WHATS_NEW_10 = [[## Added patch 7.2 resources
+
+- Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
+- Added 19 new images from patch 7.2 to insert in your profiles.
+- Notes: We could not update the music list because we still don't have a reliable way of getting them.
+
+## Bug fixes
 
 - Fixed an error with the keyboard bindings. ([ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89))
 
@@ -965,6 +971,8 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 
 - Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC). ([ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88))
 - The profile sanitization option will now also crop unreasonably long texts. ([ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92))
+- Removed code related to our April fools' day joke.
+
 
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
