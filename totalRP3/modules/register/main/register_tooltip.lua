@@ -538,18 +538,18 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			local localizedClass, englishClass = UnitClass(targetType .. "target");
 			local targetInfo = getCharacterInfoTab(targetTargetID);
 			local color = englishClass and Utils.color.getClassColor(englishClass) or Utils.color.CreateColor(1, 1, 1, 1);
-
+			
 			-- Only use custom colors if the option is enabled and if we have one
 			if getConfigValue(CONFIG_CHARACT_COLOR) and targetInfo.characteristics and targetInfo.characteristics.CH then
 				local customColor = Utils.color.getColorFromHexadecimalCode(targetInfo.characteristics.CH);
-
+				
 				if getConfigValue(CONFIG_CHARACT_CONTRAST) then
 					customColor:LightenColorUntilItIsReadable();
 				end
-
+				
 				color = customColor or color;
 			end
-
+			
 			name = getCompleteName(targetInfo.characteristics or {}, name, true);
 			name = color:WrapTextInColorCode(name);
 		end
@@ -579,10 +579,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		if notifText:len() > 0 or clientText:len() > 0 then
 			if notifText:len() == 0 then
 				notifText = " "; -- Prevent bad right line height
-			end
-			if TRP3_API.april_fools then
-				-- You get to have flagRSP 3! And you too! And you! And you! ٩(๑❛ᴗ❛๑)۶
-				clientText = strconcat("|cffffffff", "flagRSP 3", " v", "0.0.1");
 			end
 			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
 		end
@@ -707,11 +703,11 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
 				if getConfigValue(CONFIG_CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = Utils.color.getColorFromHexadecimalCode(ownerInfo.characteristics.CH);
-
-					if getConfigValue(CONFIG_CHARACT_CONTRAST) then
-						customColor:LightenColorUntilItIsReadable();
-					end
-
+						
+						if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+							customColor:LightenColorUntilItIsReadable();
+						end
+					
 					ownerColor = customColor or ownerColor;
 				end
 			end
@@ -866,8 +862,8 @@ local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
 	ui_CompanionTT:Hide();
 
-	-- If option is to only show tooltips when player is in character and player is out of character, stop here
-	if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
+    -- If option is to only show tooltips when player is in character and player is out of character, stop here
+    if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
@@ -1007,13 +1003,13 @@ end);
 local function onModuleInit()
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
-	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
+    isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
 		show("mouseover", targetID, targetMode);
 	end);
-
+	
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if not unitID or (ui_CharacterTT.target == unitID) then
 			show("mouseover", getUnitID("mouseover"));
@@ -1106,7 +1102,7 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_CONTRAST"),
 				configKey = CONFIG_CHARACT_CONTRAST,
-				help = loc("CO_TOOLTIP_CONTRAST_TT"),
+                help = loc("CO_TOOLTIP_CONTRAST_TT"),
 				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{

@@ -47,9 +47,6 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	do
 		_G.msp_RPAddOn = "Total RP 3";
-		if TRP3_API.april_fools then
-			_G.msp_RPAddOn = "flagRSP 3";
-		end
 
 		msp = {};
 		msp.protocolversion = 1;
@@ -398,7 +395,7 @@ local function onStart()
 		local dataTab = get("player/about");
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
-
+		
 		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
 			msp.my['HI'] = dataTab.T3.HI.TX;
 			msp.my['DE'] = dataTab.T3.PH.TX;
@@ -750,7 +747,7 @@ local function onStart()
 			end
 		end
 	end
-
+	
 	-- Build configuration page
 	registerConfigKey(CONFIG_T3_ONLY, false);
 	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
