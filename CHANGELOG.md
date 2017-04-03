@@ -1,3 +1,9 @@
+## Added 7.2 resources
+
+- Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
+- Added 19 new images from patch 7.2 to insert in your profiles.
+- Notes: We could not update the music list because we still don't have a reliable way of getting them.
+
 ## Bug fixes
 
 - Fixed an error with the keyboard bindings. ([ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89))

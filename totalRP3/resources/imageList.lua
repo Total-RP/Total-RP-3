@@ -1146,6 +1146,106 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-1",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-1",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2-1",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2-2",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2-3",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2-4",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2-5",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-2",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3-1",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3-2",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3-3",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3-4",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-3-5",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4-1",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4-2",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4-3",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4-4",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\prestige-icon-4-5",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
 		height = 256

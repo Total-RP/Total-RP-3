@@ -12,6 +12,9 @@ end_of_line = crlf
 charset = utf-8
 indent_style = tab
 
+[*.sh]
+end_of_line = lf
+
 # CurseForge's .pkgmeta file has to be indented with spaces
 [.pkgmeta]
 indent_style = space

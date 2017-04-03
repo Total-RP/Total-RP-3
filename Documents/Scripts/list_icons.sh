@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # List of icons to ignore
 listIgnore=(6IH_IronHorde_Stone_Base_StonewallEdge \
 6OR_Garrison_BlackIron \
@@ -31,6 +30,5 @@ IFS="|";
 keys="${listIgnore[*]}";
 keys="${keys//|/\\|}";
 
-fileList=$(ls $1 | grep -v "${keys}" | sed s/\.[^\.]*$//)
-fileList=$(awk '{ print "\""$0"\","}' fileList)
+fileList=$(ls $1 | grep -v "${keys}" | sed s/\.[^\.]*$// | sed -e "s/\(.*\)/\"\1\",/")
 echo "local iconList = {${fileList}}" > ./listfile.txt
