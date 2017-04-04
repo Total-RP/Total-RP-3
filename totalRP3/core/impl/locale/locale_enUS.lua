@@ -966,6 +966,7 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 ## Bug fixes
 
 - Fixed an error with the keyboard bindings. ([ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89))
+- Fixed an error in the Prat module with non-customized names. ([ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95))
 
 ## Other improvements
 

@@ -9,6 +9,7 @@ local function onStart()
 		local pratModule = Prat:NewModule(PRAT_MODULE);
 	
 		-- Import Total RP 3 functions
+		local Globals 							= TRP3_API.globals;
 		local unitInfoToID                      = TRP3_API.utils.str.unitInfoToID; -- Get "Player-Realm" unit ID
 		local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
 		local isChannelHandled                  = TRP3_API.chat.isChannelHandled; -- Check if Total RP 3 handles this channel
@@ -18,6 +19,7 @@ local function onStart()
 		local getUnitCustomColor                = TRP3_API.utils.color.getUnitCustomColor; -- Get the custom color of a unit using its Unit ID
 		local extractColorFromText              = TRP3_API.utils.color.extractColorFromText; -- Get a Color object from a colored text
 		local getOwnershipNameID                = TRP3_API.chat.getOwnershipNameID; -- Get the latest message ID associated to an ownership mark ('s)
+		local getConfigValue 					= TRP3_API.configuration.getValue;
 	
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
@@ -51,30 +53,46 @@ local function onStart()
 			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 			-- for that channel in the settings
 			if not isChannelHandled(event) or not configIsChannelUsed(event) then return end;
-			
-			-- Extract the color used by Prat so we use it by default
-			local color = extractColorFromText(message.PLAYER);
+
 
 			-- Retrieve all the player info from the message GUID
 			local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
 		
 			-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
 			local unitID = unitInfoToID(name, realm);
-			
+			local characterName = unitID;
+
+			--- Extract the color used by Prat so we use it by default
+			---@type ColorMixin
+			local characterColor = extractColorFromText(message.PLAYER);
+
+			-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
+			if realm == Globals.player_realm_id or getConfigValue("remove_realm") then
+				characterName = name;
+			end
+
 			-- Get the unit color and name
-			local characterName = getFullnameForUnitUsingChatMethod(unitID, name);
-		
-			-- Check if we use custom color and retrieve the color custom color associated to the unit ID
+			local customizedName = getFullnameForUnitUsingChatMethod(unitID);
+
+			if customizedName then
+				characterName = customizedName;
+			end
+
+			-- We retrieve the custom color if the option for custom colored names in chat is enabled
 			if configShowNameCustomColors() then
 				local customColor = getUnitCustomColor(unitID);
-				
-				-- If we did receive a color and the option to increase contrast is enabled, lighten up the color until it is readable on dark backgrounds
-				if customColor and configIncreaseNameColorContrast() then
-					customColor:LightenColorUntilItIsReadable();
+
+				-- If we do have a custom
+				if customColor then
+					-- Check if the option to increase the color contrast is enabled
+					if configIncreaseNameColorContrast() then
+						-- And lighten the color if it is
+						customColor:LightenColorUntilItIsReadable();
+					end
+
+					-- And finally, use the color
+					characterColor = customColor;
 				end
-				
-				-- Use the custom color if it exists.
-				color = customColor or color;
 			end
 			
 			-- Check if this message was flagged as containing a 's at the beggning.
@@ -84,8 +102,9 @@ local function onStart()
 				characterName = characterName .. "'s";
 			end
 
-			if color then
-				characterName = color:WrapTextInColorCode(characterName);
+			if characterColor then
+				-- If we have a valid color in the end, wrap the name around the color's code
+				characterName = characterColor:WrapTextInColorCode(characterName);
 			end
 
 			-- Replace the message player name with the colored character name
