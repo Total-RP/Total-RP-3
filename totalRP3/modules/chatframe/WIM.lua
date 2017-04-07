@@ -10,7 +10,10 @@ local function onStart()
 	local getUnitCustomColor							 = TRP3_API.utils.color.getUnitCustomColor;
 	local increaseColorContrast							 = TRP3_API.chat.configIncreaseNameColorContrast;
 	local configShowNameCustomColors					 = TRP3_API.chat.configShowNameCustomColors
+	local getData 										 = TRP3_API.profile.getData;
 	local UnitClass 									 = UnitClass;
+	local getConfigValue 								 = TRP3_API.configuration.getValue;
+	local icon 											 = TRP3_API.utils.str.icon;
 
 	local classes = WIM.constants.classes;
 
@@ -32,8 +35,17 @@ local function onStart()
 		if increaseColorContrast() then
 			color:LightenColorUntilItIsReadable();
 		end
+
+		name = color:WrapTextInColorCode(name);
+
+		if getConfigValue("chat_show_icon") then
+			local info = getData("player");
+			if info and info.characteristics and info.characteristics.IC then
+				name = icon(info.characteristics.IC, 15) .. " " .. name;
+			end
+		end
 		
-		return color:WrapTextInColorCode(name);
+		return name;
 	end
 end
 

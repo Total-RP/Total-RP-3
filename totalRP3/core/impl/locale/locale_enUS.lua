@@ -530,6 +530,8 @@ Possible status:
 
 (When this option is enabled, you can ALT-SHIFT-Click on a name when you want the default behavior and insert the character name instead of the full RP name.)]],
 		CO_CHAT_MAIN_COLOR = "Use custom colors for names",
+		CO_CHAT_INCREASE_CONTRAST = "Increase color contrast",
+		CO_CHAT_USE_ICONS = "Show player icons",
 		CO_CHAT_USE = "Used chat channels",
 		CO_CHAT_USE_SAY = "Say channel",
 		CO_CHAT_MAIN_NPC = "NPC talk detection",
@@ -957,7 +959,15 @@ You can also leave this field empty to create emotes without an NPC name at the 
 
 Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
-		WHATS_NEW_10 = [[## Added patch 7.2 resources
+		OPTION_ENABLED_TOAST = "Option enabled",
+		OPTION_DISABLED_TOAST = "Option disabled",
+		WHATS_NEW_10 = [[## New features
+
+- Added a new option to show custom player icons in names in the chat {link*chat_settings*Enable} — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
+
+![Interface\AddOns\totalRP3\resources\1_2_8_icons](512,128)
+
+## Added patch 7.2 resources
 
 - Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
 - Added 19 new images from patch 7.2 to insert in your profiles (for a total of 449 images available).
@@ -965,13 +975,13 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 
 ## Bug fixes
 
-- Fixed an error with the keyboard bindings. ([ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89))
-- Fixed an error in the Prat module with non-customized names. ([ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95))
+- Fixed an error with the keyboard bindings — [Ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89)
+- Fixed an error in the Prat module with non-customized names — [Ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95)
 
 ## Other improvements
 
-- Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC). ([ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88))
-- The profile sanitization option will now also crop unreasonably long texts. ([ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92))
+- Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC) — [Ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88)
+- The profile sanitization option will now also crop unreasonably long texts — [Ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92)
 - Removed code related to our April fools' day joke.
 
 

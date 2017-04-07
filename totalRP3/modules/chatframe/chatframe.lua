@@ -64,6 +64,7 @@ local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
 local CONFIG_INCREASE_CONTRAST = "chat_color_contrast";
+local CONFIG_SHOW_ICON = "chat_show_icon";
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -135,6 +136,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
+    registerConfigKey(CONFIG_SHOW_ICON, false);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -192,9 +194,14 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = "Increase color contrast",
+				title = loc("CO_CHAT_INCREASE_CONTRAST"),
 				configKey = CONFIG_INCREASE_CONTRAST,
 				dependentOnOptions = {CONFIG_NAME_COLOR},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_USE_ICONS"),
+				configKey = CONFIG_SHOW_ICON,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -292,6 +299,7 @@ local function getCharacterInfoTab(unitID)
 	end
 	return {};
 end
+TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Emote and OOC detection
@@ -526,6 +534,12 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = characterColor:WrapTextInColorCode(characterName);
 	end
 
+	if getConfigValue(CONFIG_SHOW_ICON) then
+		local info = getCharacterInfoTab(unitID);
+		if info and info.characteristics and info.characteristics.IC then
+			characterName = Utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
+		end
+	end
 
 	-- Check if this message was flagged as containing a 's at the beggning.
 	-- To avoid having a space between the name of the player and the 's we previously removed the 's

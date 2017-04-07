@@ -20,7 +20,8 @@ local function onStart()
 		local extractColorFromText              = TRP3_API.utils.color.extractColorFromText; -- Get a Color object from a colored text
 		local getOwnershipNameID                = TRP3_API.chat.getOwnershipNameID; -- Get the latest message ID associated to an ownership mark ('s)
 		local getConfigValue 					= TRP3_API.configuration.getValue;
-	
+		local getCharacterInfoTab 				= TRP3_API.utils.getCharacterInfoTab;
+		local icon 								= TRP3_API.utils.str.icon;
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
 	
@@ -94,17 +95,24 @@ local function onStart()
 					characterColor = customColor;
 				end
 			end
-			
+
+			if characterColor then
+				-- If we have a valid color in the end, wrap the name around the color's code
+				characterName = characterColor:WrapTextInColorCode(characterName);
+			end
+
+			if getConfigValue("chat_show_icon") then
+				local info = getCharacterInfoTab(unitID);
+				if info and info.characteristics and info.characteristics.IC then
+					characterName = icon(info.characteristics.IC, 15) .. " " .. characterName;
+				end
+			end
+
 			-- Check if this message was flagged as containing a 's at the beggning.
 			-- To avoid having a space between the name of the player and the 's we previously removed the 's
 			-- from the message. We now need to insert it after the player's name, without a space.
 			if getOwnershipNameID() == message.GUID then
 				characterName = characterName .. "'s";
-			end
-
-			if characterColor then
-				-- If we have a valid color in the end, wrap the name around the color's code
-				characterName = characterColor:WrapTextInColorCode(characterName);
 			end
 
 			-- Replace the message player name with the colored character name

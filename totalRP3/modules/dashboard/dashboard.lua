@@ -247,15 +247,14 @@ TRP3_API.dashboard.init = function()
 		--[[
 		-- Links relative to the What's new section (valid for version 1.1.0)
 		 ]]
-        elseif url == "tooltip_settings" then
-			-- Open tooltip config
-            TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_tooltip");
-        elseif url == "npc_speeches" then
-			-- Open NPC speeches UI
-			TRP3_API.r.showNPCTalkFrame();
-        elseif url == "open_map_filters_dropdown" then
-			ToggleWorldMap();
-			WorldMapFrame.UIElementsFrame.TrackingOptionsButton.Button:Click();
+        elseif url == "chat_settings" then
+			if TRP3_API.configuration.getValue("chat_show_icon") then
+				TRP3_API.configuration.setValue("chat_show_icon", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("chat_show_icon", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
 		--[[
 	 	-- Fallback, open URL in a popup
 		 ]]
