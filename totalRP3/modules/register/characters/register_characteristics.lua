@@ -812,7 +812,7 @@ local FIELDS_TO_SANITIZE = {
 }
 
 local FIELDS_TO_CROP = {
-	["TI"] = 75, -- Long title
+	["TI"] = 150, -- Long title
 	["RA"] = 50, -- Race
 	["CL"] = 50, -- Class
 	["FT"] = 50, -- Short title
