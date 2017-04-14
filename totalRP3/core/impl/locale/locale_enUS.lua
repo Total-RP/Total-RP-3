@@ -1024,12 +1024,15 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
 - For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
 
+{col:ffffff}Special thanks to:{/col}
+- Solanya, for helping so many other Total RP 3 users on our Discord server <3
+
 {col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
 - Leylou
 
-{col:ffffff}Thanks to Horionne for sending use the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]]
+{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]]
 	},
 };
 
