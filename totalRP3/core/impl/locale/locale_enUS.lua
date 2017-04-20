@@ -411,6 +411,14 @@ These tools also allow you to insert |cffffff00images, icons or link to external
         CO_TOOLTIP_COLOR = "Show custom colors",
         CO_TOOLTIP_CONTRAST = "Increase color contrast",
         CO_TOOLTIP_CONTRAST_TT = "Enable this option to allow Total RP 3 to modify the custom colors to make the text more readable if the color is too dark.",
+        CO_TOOLTIP_CROP_TEXT = "Crop unreasonably long texts",
+        CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
+
+|cfffff569Limit details:|r
+Name: 100 characters
+Title: 150 characters
+Race: 50 characters
+Class: 50 characters]],
 		CO_TOOLTIP_CHARACTER = "Characters tooltip",
 		CO_TOOLTIP_ANCHORED = "Anchored frame",
 		CO_TOOLTIP_ANCHOR = "Anchor point",
@@ -570,7 +578,7 @@ Possible status:
 		CO_LOCATION_DISABLE_PVP = "Disable location when flaged for PVP",
 		CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location request from other players when you are flaged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
 		CO_SANITIZER = "Sanitize incoming profiles",
-		CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...) and crop unreasonably long texts.",
+		CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
