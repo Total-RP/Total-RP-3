@@ -414,11 +414,11 @@ These tools also allow you to insert |cffffff00images, icons or link to external
         CO_TOOLTIP_CROP_TEXT = "Crop unreasonably long texts",
         CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
 
-|cfffff569Limit details:|r
+|cfffff569Limit details:
 Name: 100 characters
 Title: 150 characters
 Race: 50 characters
-Class: 50 characters]],
+Class: 50 characters|r]],
 		CO_TOOLTIP_CHARACTER = "Characters tooltip",
 		CO_TOOLTIP_ANCHORED = "Anchored frame",
 		CO_TOOLTIP_ANCHOR = "Anchor point",

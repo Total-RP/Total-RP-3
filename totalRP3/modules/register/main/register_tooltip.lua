@@ -1136,9 +1136,9 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTI_CROP_TEXT"),
+				title = loc("CO_TOOLTIP_CROP_TEXT"),
 				configKey = CONFIG_CROP_TEXT,
-				help = loc("CO_TOOLTI_CROP_TEXT_TT")
+				help = loc("CO_TOOLTIP_CROP_TEXT_TT")
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
