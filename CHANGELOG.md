@@ -1,7 +1,7 @@
 ## Improvements
 
 - The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings. If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
-- Emotes starting with a comma `,` are now handled like emotes starting with a `'s`, removing the space inserted by the game after the player's name.
+- Emotes starting with a comma `,` are now handled like emotes starting with a `'s`, removing the space inserted by the game after the player's name. — [Ticket #100](https://wow.curseforge.com/projects/total-rp-3/issues/100)
 
 
 ## Previous change-log, for version 1.2.8
