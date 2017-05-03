@@ -969,7 +969,15 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_10 = [[## New features
+		WHATS_NEW_11 = [[## Improvements
+
+- The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings (or {link*tooltip_cropping*click here}). If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
+- Emotes starting with a comma |cffD3D3D3,|r are now handled like emotes starting with a |cffD3D3D3's|r, removing the space inserted by the game after the player's name.
+
+
+## Previous change-log, for version 1.2.8
+
+## New features
 
 - Added a new option to show custom player icons in names in the chat {link*chat_settings*Enable} — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
 

@@ -194,7 +194,7 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_10");
+	local whatsNewText = loc("WHATS_NEW_11");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
@@ -253,6 +253,14 @@ TRP3_API.dashboard.init = function()
 				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
 			else
 				TRP3_API.configuration.setValue("chat_show_icon", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
+		elseif url == "tooltip_cropping" then
+			if TRP3_API.configuration.getValue("tooltip_crop_text") then
+				TRP3_API.configuration.setValue("tooltip_crop_text", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("tooltip_crop_text", true);
 				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
 			end
 		--[[
