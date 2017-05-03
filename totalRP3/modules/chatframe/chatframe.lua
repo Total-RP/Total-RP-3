@@ -354,7 +354,7 @@ end
 
 -- These variables will hold data between the handleCharacterMessage message filter and our custom GetColoredName
 -- So we are able to flag messages as needing their player name's to be modified
-local npcMessageId, npcMessageName, ownershipNameId;
+local npcMessageId, npcMessageName, ownershipNameId, emoteStartingWithACommaID;
 
 function TRP3_API.chat.getNPCMessageID()
 	return npcMessageId;
@@ -389,6 +389,9 @@ function handleCharacterMessage(_, event, message, ...)
 		elseif message:sub(1, 3) == "'s " then
 			ownershipNameId = messageID; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
 			message = message:sub(4);
+		elseif message:sub(1, 2) == ", " then -- Added support for , at the start of an emote
+			emoteStartingWithACommaID = messageID;
+			message = message:sub(3);
 		end
 	end
 
@@ -546,6 +549,11 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	-- from the message. We now need to insert it after the player's name, without a space.
 	if ownershipNameId == messageID then
 		characterName = characterName .. "'s";
+	end
+	-- Support for emotes starting with a ,
+	-- We remove the space so the comma is placed right after the name
+	if emoteStartingWithACommaID == messageID then
+		characterName = characterName .. ",";
 	end
 
 	return characterName;
