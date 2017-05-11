@@ -1,9 +1,12 @@
-----------------------------------------------------------------------------------
+﻿----------------------------------------------------------------------------------
 -- Total RP 3
--- Deutsch locale
+-- German locale
 -- ---------------------------------------------------------------------------
--- Copyright 2017 Sylvain "Telkostrasz" Cossement <telkostrasz@totalrp3.info> @Telkostrasz
--- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+-- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+-- Translation into German:
+-- Benjamin Strecker - Týberîás @Die Aldor-EU (zerogravityspider@gmx.net)
+-- Enduni ( http://www.curseforge.com/profiles/Enduni/ )
+-- ded88 ( http://www.curseforge.com/profiles/ded88/ )
 --
 -- Licensed under the Apache License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -18,1012 +21,952 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local LOCALE = {
+local LOCALE_DE = {
 	locale = "deDE",
 	localeText = "Deutsch",
+	localeContent =
+	--@localization(locale="deDE", format="lua_table", handle-unlocalized="ignore")@
+	--@do-not-package@
+	{
+		["ABOUT_TITLE"] = "Über",
+		["BINDING_NAME_TRP3_TOGGLE"] = "Hauptfenster umschalten",
+		["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Werkzeugleiste umschalten",
+		["BROADCAST_10"] = "|cffff9900Du bist bereits in zehn Channels. TRP3 wird nicht mehr versuchen sich mit dem Broadcast-Kanal zu verbinden, aber du wirst nicht in der LAge sein einige Funktionen, wie die Spielersuche auf der Karte, zu verwenden.",
+		["BW_COLOR_CODE"] = "Farbcode",
+		["BW_COLOR_CODE_ALERT"] = "Falscher hexadezimaler Farbcode!",
+		["BW_COLOR_CODE_TT"] = "Hier kannst du 6 Zeichen hexadezimalen Farbcode eintragen und mit ENTER bestätigen.",
+		["CM_ACTIONS"] = "Aktionen",
+		["CM_APPLY"] = "Übernehmen",
+		["CM_CANCEL"] = "Abbrechen",
+		["CM_CENTER"] = "Zentriert",
+		["CM_CLASS_DEATHKNIGHT"] = "Todesritter",
+		["CM_CLASS_DRUID"] = "Druide",
+		["CM_CLASS_HUNTER"] = "Jäger",
+		["CM_CLASS_MAGE"] = "Magier",
+		["CM_CLASS_MONK"] = "Mönch",
+		["CM_CLASS_PALADIN"] = "Paladin",
+		["CM_CLASS_PRIEST"] = "Priester",
+		["CM_CLASS_ROGUE"] = "Schurke",
+		["CM_CLASS_SHAMAN"] = "Schamane",
+		["CM_CLASS_UNKNOWN"] = "Unbekannt",
+		["CM_CLASS_WARLOCK"] = "Hexenmeister",
+		["CM_CLASS_WARRIOR"] = "Krieger",
+		["CM_CLICK"] = "Klicken",
+		["CM_COLOR"] = "Farbe",
+		["CM_CTRL"] = "Strg",
+		["CM_DOUBLECLICK"] = "Doppelklick",
+		["CM_DRAGDROP"] = "Drag & Drop",
+		["CM_EDIT"] = "Bearbeiten",
+		["CM_IC"] = "IC",
+		["CM_ICON"] = "Icon",
+		["CM_IMAGE"] = "Bild",
+		["CM_L_CLICK"] = "Links-Klick",
+		["CM_LEFT"] = "Links",
+		["CM_LINK"] = "Link",
+		["CM_LOAD"] = "Laden",
+		["CM_M_CLICK"] = "Mittel-Klick",
+		["CM_MOVE_DOWN"] = "Nach unten",
+		["CM_MOVE_UP"] = "Nach oben",
+		["CM_NAME"] = "Name",
+		["CM_OOC"] = "OOC",
+		["CM_OPEN"] = "Öffnen",
+		["CM_PLAY"] = "Abspielen",
+		["CM_R_CLICK"] = "Rechts-Klick",
+		["CM_REMOVE"] = "Entfernen",
+		["CM_RESIZE"] = "Größe ändern",
+		["CM_RESIZE_TT"] = "Ziehen um die Rahmengröße zu ändern.",
+		["CM_RIGHT"] = "Rechts",
+		["CM_SAVE"] = "Speichern",
+		["CM_SELECT"] = "Auswählen",
+		["CM_SHIFT"] = "Umschalttaste",
+		["CM_SHOW"] = "Anzeigen",
+		["CM_STOP"] = "Anhalten",
+		["CM_TWEET"] = "Einen Tweet senden",
+		["CM_TWEET_PROFILE"] = "Profil-URL zeigen",
+		["CM_UNKNOWN"] = "Unbekannt",
+		["CM_VALUE"] = "Wert",
+		["CO_ANCHOR_BOTTOM"] = "Unten",
+		["CO_ANCHOR_BOTTOM_LEFT"] = "Unten Links",
+		["CO_ANCHOR_BOTTOM_RIGHT"] = "Unten Rechts",
+		["CO_ANCHOR_CURSOR"] = "Zeige am Mauszeiger",
+		["CO_ANCHOR_LEFT"] = "Links",
+		["CO_ANCHOR_RIGHT"] = "Rechts",
+		["CO_ANCHOR_TOP"] = "Oben",
+		["CO_ANCHOR_TOP_LEFT"] = "Oben Links",
+		["CO_ANCHOR_TOP_RIGHT"] = "Oben Rechts",
+		["CO_CHAT"] = "Chateinstellungen",
+		["CO_CHAT_INSERT_FULL_RP_NAME"] = "RP-Namen bei Shift-Klick einfügen",
+		["CO_CHAT_INSERT_FULL_RP_NAME_TT"] = [=[Füge den kompletten RP namen eines Spielers in den Chat ein, wenn auf seinen Namen Shift-geklickt wird.
 
-	localeContent = {}
-};
+(Wenn diese Option eingeschaltet ist, kannst du mit Alt-Shift auf einen Namen klicken wenn du das ursprüngliche Verhalten verwenden möchtest und den Charakternamen statt den vollständigen RP-Namen einfügen möchtest.)]=],
+		["CO_CHAT_MAIN"] = "Chathaupteinstellungen",
+		["CO_CHAT_MAIN_COLOR"] = "Benutze eigene Farben für Namen",
+		["CO_CHAT_MAIN_EMOTE"] = "Emoteerkennung",
+		["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Muster zur Emoteerkennung",
+		["CO_CHAT_MAIN_EMOTE_USE"] = "Nutze Emoteerkennung",
+		["CO_CHAT_MAIN_EMOTE_YELL"] = "Keine geschrienen Emotes",
+		["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Beim Schreien *emote* oder <emote> nicht zeigen.",
+		["CO_CHAT_MAIN_NAMING"] = "Benennungsmethode",
+		["CO_CHAT_MAIN_NAMING_1"] = "Originale Namen beibehalten",
+		["CO_CHAT_MAIN_NAMING_2"] = "Angepasste Namen verwenden",
+		["CO_CHAT_MAIN_NAMING_3"] = "Vorname + Nachname",
+		["CO_CHAT_MAIN_NAMING_4"] = "Kurztitel + Vorname + Nachname",
+		["CO_CHAT_MAIN_NPC"] = "NSC-Spracherkennung",
+		["CO_CHAT_MAIN_NPC_PREFIX"] = "Muster für NSC-Spracherkennung",
+		["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[Wenn eine Chatnachricht im Sagen-, Emote- oder Schlachtzugskanal mit diesem Zeichen startet, wird sie als NSC-Nachricht interpretiert.
 
-local L = {
-	["ABOUT_TITLE"] = "About",
-	["BINDING_NAME_TRP3_TOGGLE"] = "Toogle main frame",
-	["BINDING_NAME_TRP3_TOOLBAR_TOGGLE"] = "Toogle toolbar",
-	["BROADCAST_10"] = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
-	["BROADCAST_PASSWORD"] = [=[|cffff0000There is a password placed on the broadcast channel (%s).
-|cffff9900TRP3 won't try again to connect to it but you won't be able to use some features like players location on map.
-|cff00ff00You can disable or change the broadcast channel in the TRP3 general settings.]=],
-	["BROADCAST_PASSWORDED"] = [=[|cffff0000The user |r%s|cffff0000 just placed a password on the broadcast channel (%s).
-|cffff9900If you don't know that password, you won't be able to use features like players location on the map.]=],
-	["BW_COLOR_CODE"] = "Color code",
-	["BW_COLOR_CODE_ALERT"] = "Wrong hexadecimal code !",
-	["BW_COLOR_CODE_TT"] = "You can paste an 6 figures hexadecimal color code here and press Enter.",
-	["CM_ACTIONS"] = "Actions",
-	["CM_ALT"] = "Alt",
-	["CM_APPLY"] = "Apply",
-	["CM_CANCEL"] = "Cancel",
-	["CM_CENTER"] = "Center",
-	["CM_CLASS_DEATHKNIGHT"] = "Death Knight",
-	["CM_CLASS_DRUID"] = "Druid",
-	["CM_CLASS_HUNTER"] = "Hunter",
-	["CM_CLASS_MAGE"] = "Mage",
-	["CM_CLASS_MONK"] = "Monk",
-	["CM_CLASS_PALADIN"] = "Paladin",
-	["CM_CLASS_PRIEST"] = "Priest",
-	["CM_CLASS_ROGUE"] = "Rogue",
-	["CM_CLASS_SHAMAN"] = "Shaman",
-	["CM_CLASS_UNKNOWN"] = "Unknown",
-	["CM_CLASS_WARLOCK"] = "Warlock",
-	["CM_CLASS_WARRIOR"] = "Warrior",
-	["CM_CLICK"] = "Click",
-	["CM_COLOR"] = "Color",
-	["CM_CTRL"] = "Ctrl",
-	["CM_DOUBLECLICK"] = "Double-click",
-	["CM_DRAGDROP"] = "Drag & drop",
-	["CM_EDIT"] = "Edit",
-	["CM_IC"] = "IC",
-	["CM_ICON"] = "Icon",
-	["CM_IMAGE"] = "Image",
-	["CM_L_CLICK"] = "Left-click",
-	["CM_LEFT"] = "Left",
-	["CM_LINK"] = "Link",
-	["CM_LOAD"] = "Load",
-	["CM_M_CLICK"] = "Middle-click",
-	["CM_MOVE_DOWN"] = "Move down",
-	["CM_MOVE_UP"] = "Move up",
-	["CM_NAME"] = "Name",
-	["CM_OOC"] = "OOC",
-	["CM_OPEN"] = "Open",
-	["CM_PLAY"] = "Play",
-	["CM_R_CLICK"] = "Right-click",
-	["CM_REMOVE"] = "Remove",
-	["CM_RESIZE"] = "Resize",
-	["CM_RESIZE_TT"] = "Drag to resize the frame.",
-	["CM_RIGHT"] = "Right",
-	["CM_SAVE"] = "Save",
-	["CM_SELECT"] = "Select",
-	["CM_SHIFT"] = "Shift",
-	["CM_SHOW"] = "Show",
-	["CM_STOP"] = "Stop",
-	["CM_TWEET"] = "Send a tweet",
-	["CM_TWEET_PROFILE"] = "Show profile url",
-	["CM_UNKNOWN"] = "Unknown",
-	["CM_VALUE"] = "Value",
-	["CO_ANCHOR_BOTTOM"] = "Bottom",
-	["CO_ANCHOR_BOTTOM_LEFT"] = "Bottom left",
-	["CO_ANCHOR_BOTTOM_RIGHT"] = "Bottom right",
-	["CO_ANCHOR_CURSOR"] = "Show on cursor",
-	["CO_ANCHOR_LEFT"] = "Left",
-	["CO_ANCHOR_RIGHT"] = "Right",
-	["CO_ANCHOR_TOP"] = "Top",
-	["CO_ANCHOR_TOP_LEFT"] = "Top left",
-	["CO_ANCHOR_TOP_RIGHT"] = "Top right",
-	["CO_CHAT"] = "Chat settings",
-	["CO_CHAT_INCREASE_CONTRAST"] = "Increase color contrast",
-	["CO_CHAT_INSERT_FULL_RP_NAME"] = "Insert RP names on shift-click",
-	["CO_CHAT_INSERT_FULL_RP_NAME_TT"] = [=[Insert the complete RP name of a player when SHIFT-Clicking their name in the chat frame.
+|cff00ff00Voreingestellt : "|| "
+(ohne die " und mit einem Leerzeichen nach dem Strich)]=],
+		["CO_CHAT_MAIN_NPC_USE"] = "Nutze NSC-Spracherkennung",
+		["CO_CHAT_MAIN_OOC"] = "OOC-Erkennung",
+		["CO_CHAT_MAIN_OOC_COLOR"] = "OOC-Farbe",
+		["CO_CHAT_MAIN_OOC_PATTERN"] = "Muster für OOC-Erkennung",
+		["CO_CHAT_MAIN_OOC_USE"] = "Nutze OOC-Erkennung",
+		["CO_CHAT_USE"] = "Benutze Chatkanäle",
+		["CO_CHAT_USE_SAY"] = "Sagen-Kanal",
+		["CO_CONFIGURATION"] = "Einstellungen",
+		["CO_GENERAL"] = "Allgemeine Einstellungen",
+		["CO_GENERAL_BROADCAST"] = "Broadcast-Kanal nutzen",
+		["CO_GENERAL_BROADCAST_C"] = "Names des Broadcast-Kanals",
+		["CO_GENERAL_BROADCAST_TT"] = "Der Broadcast-Kanal wird für viele Funktionen genutzt. Durch das Deaktivieren werden Funktionen wie die Charakterposition auf der Karte, Abspielen lokaler Klänge usw. deaktivert.",
+		["CO_GENERAL_CHANGELOCALE_ALERT"] = [=[Interface neu laden, um die Sprache jetzt auf %s zu ändern?
 
-(When this option is enabled, you can ALT-SHIFT-Click on a name when you want the default behavior and insert the character name instead of the full RP name.)]=],
-	["CO_CHAT_MAIN"] = "Chat main settings",
-	["CO_CHAT_MAIN_COLOR"] = "Use custom colors for names",
-	["CO_CHAT_MAIN_EMOTE"] = "Emote detection",
-	["CO_CHAT_MAIN_EMOTE_PATTERN"] = "Emote detection pattern",
-	["CO_CHAT_MAIN_EMOTE_USE"] = "Use emote detection",
-	["CO_CHAT_MAIN_EMOTE_YELL"] = "No yelled emote",
-	["CO_CHAT_MAIN_EMOTE_YELL_TT"] = "Do not show *emote* or <emote> in yelling.",
-	["CO_CHAT_MAIN_NAMING"] = "Naming method",
-	["CO_CHAT_MAIN_NAMING_1"] = "Keep original names",
-	["CO_CHAT_MAIN_NAMING_2"] = "Use custom names",
-	["CO_CHAT_MAIN_NAMING_3"] = "First name + last name",
-	["CO_CHAT_MAIN_NAMING_4"] = "Short title + first name + last name",
-	["CO_CHAT_MAIN_NPC"] = "NPC talk detection",
-	["CO_CHAT_MAIN_NPC_PREFIX"] = "NPC talk detection pattern",
-	["CO_CHAT_MAIN_NPC_PREFIX_TT"] = [=[If a chat line said in SAY, EMOTE, GROUP or RAID channel begins with this prefix, it will be interpreted as a NPC chat.
+Wenn nicht, wird die Sprache beim nächsten Login geändert.]=],
+		["CO_GENERAL_COM"] = "Kommunikation",
+		["CO_GENERAL_HEAVY"] = "Warnung bei überlangem Profil",
+		["CO_GENERAL_HEAVY_TT"] = "Gibt dir einen Warnhinweis, wenn dein Profil eine verträgliche Größe überschreitet.",
+		["CO_GENERAL_LOCALE"] = "Sprache des Addons",
+		["CO_GENERAL_MISC"] = "Verschiedenes",
+		["CO_GENERAL_NEW_VERSION"] = "Aktualisierungshinweis",
+		["CO_GENERAL_NEW_VERSION_TT"] = "Gibt dir einen Hinweis, sobald eine neue Version verfügbar ist.",
+		["CO_GENERAL_TT_SIZE"] = "Textgröße des Informationstooltips",
+		["CO_GENERAL_UI_ANIMATIONS"] = "Interface-Animationen",
+		["CO_GENERAL_UI_ANIMATIONS_TT"] = "Aktiviert die Interface-Animationen.",
+		["CO_GENERAL_UI_SOUNDS"] = "Interface-Klänge",
+		["CO_GENERAL_UI_SOUNDS_TT"] = "Aktivert die Interface-Klänge (beim Öffnen von Fenstern, Wechseln zwischen Reitern und Klicken auf Schaltflächen).",
+		["CO_GLANCE_LOCK"] = "Leiste fixieren",
+		["CO_GLANCE_LOCK_TT"] = "Verhindert, dass die Leiste verschoben wird.",
+		["CO_GLANCE_MAIN"] = "\"Auf den ersten Blick\"-Leiste",
+		["CO_GLANCE_PRESET_TRP2"] = "Benutze Positionen im Total RP 2 Stil",
+		["CO_GLANCE_PRESET_TRP2_BUTTON"] = "Benutzen",
+		["CO_GLANCE_PRESET_TRP2_HELP"] = "Verknüpfung, um die Leiste im TRP2-Stil zu konfigurieren – am rechten Rand des WoW-Zielfensters.",
+		["CO_GLANCE_PRESET_TRP3"] = "Benutze Positionen im Total RP 3 Stil",
+		["CO_GLANCE_PRESET_TRP3_HELP"] = "Verknüpfung um die Zeile im TRP3 Stil aufzusetzen - Am unteren Rand des TRP3 Zielfensters.",
+		["CO_GLANCE_RESET_TT"] = "Setze die Leiste auf die untere linke Position des Ankerfensters zurück.",
+		["CO_GLANCE_TT_ANCHOR"] = "Ankerpunkt des Tooltips",
+		["CO_LOCATION"] = "Standorteinstellungen",
+		["CO_LOCATION_ACTIVATE"] = "Charakterstandort aktivieren",
+		["CO_LOCATION_ACTIVATE_TT"] = "Aktivieren das Charakterstandortsystem, welches erlaubt auf der Weltkarte nach anderen Total RP-Nutzern zu suchen und ihnen erlaubt dich zu finden.",
+		["CO_LOCATION_DISABLE_OOC"] = "Standort deaktivieren wenn OOC",
+		["CO_LOCATION_DISABLE_OOC_TT"] = "Du wirst keine Antworten auf Standortanfragen anderer Spieler senden wenn dein RP Status auf Out Of Charakter gesetzt ist.",
+		["CO_LOCATION_DISABLE_PVP"] = "Standort deaktivieren wenn für PVP geflaggt",
+		["CO_LOCATION_DISABLE_PVP_TT"] = [=[Du wirst keine Antworten auf Standortanfragen anderer Spieler senden, wenn du für PvP geflaggt bist.
 
-|cff00ff00By default : "|| "
-(without the " and with a space after the pipe)]=],
-	["CO_CHAT_MAIN_NPC_USE"] = "Use NPC talk detection",
-	["CO_CHAT_MAIN_OOC"] = "OOC detection",
-	["CO_CHAT_MAIN_OOC_COLOR"] = "OOC color",
-	["CO_CHAT_MAIN_OOC_PATTERN"] = "OOC detection pattern",
-	["CO_CHAT_MAIN_OOC_USE"] = "Use OOC detection",
-	["CO_CHAT_REMOVE_REALM"] = "Remove realm from player names",
-	["CO_CHAT_USE"] = "Used chat channels",
-	["CO_CHAT_USE_ICONS"] = "Show player icons",
-	["CO_CHAT_USE_SAY"] = "Say channel",
-	["CO_CONFIGURATION"] = "Settings",
-	["CO_GENERAL"] = "General settings",
-	["CO_GENERAL_BROADCAST"] = "Use broadcast channel",
-	["CO_GENERAL_BROADCAST_C"] = "Broadcast channel name",
-	["CO_GENERAL_BROADCAST_TT"] = "The broadcast channel is used by a lot of features. Disabling it will disable all the feature like characters position on the map, playing local sounds, stashes and signposts access...",
-	["CO_GENERAL_CHANGELOCALE_ALERT"] = [=[Reload the interface in order to change the language to %s now ?
-
-If not, the language will be changed on the next connection.]=],
-	["CO_GENERAL_COM"] = "Communication",
-	["CO_GENERAL_HEAVY"] = "Heavy profile alert",
-	["CO_GENERAL_HEAVY_TT"] = "Get an alert when your profile total size exceed a reasonable value.",
-	["CO_GENERAL_LOCALE"] = "Addon locale",
-	["CO_GENERAL_MISC"] = "Miscellaneous",
-	["CO_GENERAL_NEW_VERSION"] = "Update alert",
-	["CO_GENERAL_NEW_VERSION_TT"] = "Get an alert when a new version is available.",
-	["CO_GENERAL_TT_SIZE"] = "Info tooltip text size",
-	["CO_GENERAL_UI_ANIMATIONS"] = "UI animations",
-	["CO_GENERAL_UI_ANIMATIONS_TT"] = "Activate the UI animations.",
-	["CO_GENERAL_UI_SOUNDS"] = "UI sounds",
-	["CO_GENERAL_UI_SOUNDS_TT"] = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
-	["CO_GLANCE_LOCK"] = "Lock bar",
-	["CO_GLANCE_LOCK_TT"] = "Prevent the bar for being dragged",
-	["CO_GLANCE_MAIN"] = "\"At first glance\" bar",
-	["CO_GLANCE_PRESET_TRP2"] = "Use Total RP 2 style positions",
-	["CO_GLANCE_PRESET_TRP2_BUTTON"] = "Use",
-	["CO_GLANCE_PRESET_TRP2_HELP"] = "Shortcut to setup the bar in a TRP2 style : to the right of WoW target frame.",
-	["CO_GLANCE_PRESET_TRP3"] = "Use Total RP 3 style positions",
-	["CO_GLANCE_PRESET_TRP3_HELP"] = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
-	["CO_GLANCE_RESET_TT"] = "Reset the bar position to the bottom left of the anchored frame.",
-	["CO_GLANCE_TT_ANCHOR"] = "Tooltips anchor point",
-	["CO_LOCATION"] = "Location settings",
-	["CO_LOCATION_ACTIVATE"] = "Enable character location",
-	["CO_LOCATION_ACTIVATE_TT"] = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
-	["CO_LOCATION_DISABLE_OOC"] = "Disable location when OOC",
-	["CO_LOCATION_DISABLE_OOC_TT"] = "You will not respond to location request from other players when you've set your RP status to Out Of Character.",
-	["CO_LOCATION_DISABLE_PVP"] = "Disable location when flaged for PVP",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[You will not respond to location request from other players when you are flaged for PvP.
-
-This option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.]=],
-	["CO_MAP_BUTTON"] = "Map scan button",
-	["CO_MAP_BUTTON_POS"] = "Scan button anchor on map",
-	["CO_MINIMAP_BUTTON"] = "Minimap button",
-	["CO_MINIMAP_BUTTON_FRAME"] = "Frame to anchor",
-	["CO_MINIMAP_BUTTON_RESET"] = "Reset position",
-	["CO_MINIMAP_BUTTON_RESET_BUTTON"] = "Reset",
-	["CO_MINIMAP_BUTTON_SHOW_HELP"] = [=[If you are using an other add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
-
-|cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r]=],
-	["CO_MINIMAP_BUTTON_SHOW_TITLE"] = "Show minimap button",
-	["CO_MODULES"] = "Modules status",
-	["CO_MODULES_DISABLE"] = "Disable module",
-	["CO_MODULES_ENABLE"] = "Enable module",
-	["CO_MODULES_ID"] = "Module ID: %s",
-	["CO_MODULES_SHOWERROR"] = "Show error",
-	["CO_MODULES_STATUS"] = "Status: %s",
-	["CO_MODULES_STATUS_0"] = "Missing dependencies",
-	["CO_MODULES_STATUS_1"] = "Loaded",
-	["CO_MODULES_STATUS_2"] = "Disabled",
-	["CO_MODULES_STATUS_3"] = "Total RP 3 update required",
-	["CO_MODULES_STATUS_4"] = "Error on initialization",
-	["CO_MODULES_STATUS_5"] = "Error on startup",
-	["CO_MODULES_TT_DEP"] = [=[
-%s- %s (version %s)|r]=],
-	["CO_MODULES_TT_DEPS"] = "Dependencies",
-	["CO_MODULES_TT_ERROR"] = [=[
-
-|cffff0000Error:|r
+Diese Option is besonders auf PvP Realms nützlich, auf denen Spieler der anderen Fraktion das System ausnutzen können um dich zu verfolgen.]=],
+		["CO_MINIMAP_BUTTON"] = "Minimap Button",
+		["CO_MINIMAP_BUTTON_FRAME"] = "Ankerfenster",
+		["CO_MINIMAP_BUTTON_RESET"] = "Position zurücksetzen",
+		["CO_MINIMAP_BUTTON_RESET_BUTTON"] = "Zurücksetzen",
+		["CO_MINIMAP_BUTTON_SHOW_HELP"] = "Wenn du ein anderes Add-On verwendest um Total RP 3's Minimap-Schaltfläche anzuzeigen (FuBar, Titan, Bazooka) kannst du die Schaltfläche von der Minimap entfernen.",
+		["CO_MINIMAP_BUTTON_SHOW_TITLE"] = "Zeige MInimap-Button",
+		["CO_MODULES"] = "Modulstatus",
+		["CO_MODULES_DISABLE"] = "Deaktiviere Modul",
+		["CO_MODULES_ENABLE"] = "Aktiviere Modul",
+		["CO_MODULES_ID"] = "Modul ID: %s",
+		["CO_MODULES_SHOWERROR"] = "Zeige Fehler",
+		["CO_MODULES_STATUS"] = "Status: %s",
+		["CO_MODULES_STATUS_0"] = "Fehlende Abhängigkeiten",
+		["CO_MODULES_STATUS_1"] = "Geladen",
+		["CO_MODULES_STATUS_2"] = "Deaktivert",
+		["CO_MODULES_STATUS_3"] = "Total RP 3 Aktualisierung benötigt",
+		["CO_MODULES_STATUS_4"] = "Fehler bei der Initialisierung",
+		["CO_MODULES_STATUS_5"] = "Fehler beim Start",
+		["CO_MODULES_TT_DEP"] = "%s- %s (version %s)|r",
+		["CO_MODULES_TT_DEPS"] = "Abhängigkeiten",
+		["CO_MODULES_TT_ERROR"] = [=[
+|cffff0000Fehler:|r
 %s]=],
-	["CO_MODULES_TT_NONE"] = "No dependencies",
-	["CO_MODULES_TT_TRP"] = "%sFor Total RP 3 build %s minimum.|r",
-	["CO_MODULES_TUTO"] = [=[A module is a independent feature that can be enable or disable.
+		["CO_MODULES_TT_NONE"] = "Keine Abhängigkeiten",
+		["CO_MODULES_TT_TRP"] = "%sFür Total RP 3 build %s minimum.|r",
+		["CO_MODULES_TUTO"] = [=[Ein Modul ist eine unabhängige Funktion, die aktiviert oder deaktiviert werden kann.
 
-Possible status:
-|cff00ff00Loaded:|r The module is enabled and loaded.
-|cff999999Disabled:|r The module is disabled.
-|cffff9900Missing dependencies:|r Some dependencies are not loaded.
-|cffff9900TRP update required:|r The module required a more recent version of TRP3.
-|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !
+Möglicher Status:
+|cff00ff00Geladen:|r Modul aktiviert und geladen.
+|cff999999Deaktiviert:|r Modul deaktiviert.
+|cffff9900Fehlende Abhängigkeiten:|r Einige Abhängigkeiten sind nicht geladen/verfügbar.
+|cffff9900TRP Update benötigt:|r Diese Modul benötigt eine aktueller Version von TRP3.
+|cffff0000Fehler beim Inizialisieren oder Starten:|r Der Start des Moduls hat nicht funktioniert. Das Modul würde sicher Fehler verursachen!
 
-|cffff9900When disabling a module, a UI reload is necessary.]=],
-	["CO_MODULES_VERSION"] = "Version: %s",
-	["CO_MSP"] = "Mary Sue Protocol",
-	["CO_MSP_T3"] = "Use template 3 only",
-	["CO_MSP_T3_TT"] = "Event if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
-	["CO_REGISTER"] = "Register settings",
-	["CO_REGISTER_ABOUT_VOTE"] = "Use voting system",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "Enables the voting system, allowing you to vote ('like' or 'unlike') for other's descriptions and allowing them to do the same for you.",
-	["CO_REGISTER_AUTO_ADD"] = "Auto add new players",
-	["CO_REGISTER_AUTO_ADD_TT"] = [=[Automatically add new players you encounter to the register.
-
-|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]=],
-	["CO_REGISTER_AUTO_PURGE"] = "Auto purge directory",
-	["CO_REGISTER_AUTO_PURGE_0"] = "Disable purge",
-	["CO_REGISTER_AUTO_PURGE_1"] = "After %s day(s)",
-	["CO_REGISTER_AUTO_PURGE_TT"] = [=[Automatically remove from directory the profiles of character you haven't crossed for a certain time. You can choose the delay before deletion.
-
-|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.
-
-|cffff9900There is a bug in WoW losing all the saved data when it reach a certain theshold. We strongly recommand to avoid disabling the purge system.]=],
-	["CO_SANITIZER"] = "Sanitize incoming profiles",
-	["CO_SANITIZER_TT"] = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
-	["CO_TARGETFRAME"] = "Target frame settings",
-	["CO_TARGETFRAME_ICON_SIZE"] = "Icons size",
-	["CO_TARGETFRAME_USE"] = "Display conditions",
-	["CO_TARGETFRAME_USE_1"] = "Always",
-	["CO_TARGETFRAME_USE_2"] = "Only when IC",
-	["CO_TARGETFRAME_USE_3"] = "Never (Disabled)",
-	["CO_TARGETFRAME_USE_TT"] = "Determines in which conditions the target frame should be shown on target selection.",
-	["CO_TOOLBAR"] = "Frames settings",
-	["CO_TOOLBAR_CONTENT"] = "Toolbar settings",
-	["CO_TOOLBAR_CONTENT_CAPE"] = "Cape switch",
-	["CO_TOOLBAR_CONTENT_HELMET"] = "Helmet switch",
-	["CO_TOOLBAR_CONTENT_RPSTATUS"] = "Character status (IC/OOC)",
-	["CO_TOOLBAR_CONTENT_STATUS"] = "Player status (AFK/DND)",
-	["CO_TOOLBAR_ICON_SIZE"] = "Icons size",
-	["CO_TOOLBAR_MAX"] = "Max icons per line",
-	["CO_TOOLBAR_MAX_TT"] = "Set to 1 if you want to display the bar vertically !",
-	["CO_TOOLBAR_SHOW_ON_LOGIN"] = "Show toolbar on login",
-	["CO_TOOLBAR_SHOW_ON_LOGIN_HELP"] = "If you don't want the toolbar to be displayed on login, you can disable this option.",
-	["CO_TOOLTIP"] = "Tooltip settings",
-	["CO_TOOLTIP_ANCHOR"] = "Anchor point",
-	["CO_TOOLTIP_ANCHORED"] = "Anchored frame",
-	["CO_TOOLTIP_CHARACTER"] = "Characters tooltip",
-	["CO_TOOLTIP_CLIENT"] = "Show client",
-	["CO_TOOLTIP_COLOR"] = "Show custom colors",
-	["CO_TOOLTIP_COMBAT"] = "Hide during combat",
-	["CO_TOOLTIP_COMMON"] = "Common settings",
-	["CO_TOOLTIP_CONTRAST"] = "Increase color contrast",
-	["CO_TOOLTIP_CONTRAST_TT"] = "Enable this option to allow Total RP 3 to modify the custom colors to make the text more readable if the color is too dark.",
-	["CO_TOOLTIP_CROP_TEXT"] = "Crop unreasonably long texts",
-	["CO_TOOLTIP_CROP_TEXT_TT"] = [=[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
-
-|cfffff569Limit details:
-Name: 100 characters
-Title: 150 characters
-Race: 50 characters
-Class: 50 characters|r]=],
-	["CO_TOOLTIP_CURRENT"] = "Show \"current\" information",
-	["CO_TOOLTIP_CURRENT_SIZE"] = "Max \"current\" information length",
-	["CO_TOOLTIP_FT"] = "Show full title",
-	["CO_TOOLTIP_GUILD"] = "Show guild info",
-	["CO_TOOLTIP_HIDE_ORIGINAL"] = "Hide original tooltip",
-	["CO_TOOLTIP_ICONS"] = "Show icons",
-	["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "Hide when out of character",
-	["CO_TOOLTIP_MAINSIZE"] = "Main font size",
-	["CO_TOOLTIP_NO_FADE_OUT"] = "Hide immediately instead of fading",
-	["CO_TOOLTIP_NOTIF"] = "Show notifications",
-	["CO_TOOLTIP_NOTIF_TT"] = "The notifications line is the line containing the client version, the unread description marker and the 'At first glance' marker.",
-	["CO_TOOLTIP_OWNER"] = "Show owner",
-	["CO_TOOLTIP_PETS"] = "Companions tooltip",
-	["CO_TOOLTIP_PETS_INFO"] = "Show companion info",
-	["CO_TOOLTIP_PROFILE_ONLY"] = "Use only if target has a profile",
-	["CO_TOOLTIP_RACE"] = "Show race, class and level",
-	["CO_TOOLTIP_REALM"] = "Show realm",
-	["CO_TOOLTIP_RELATION"] = "Show relationship color",
-	["CO_TOOLTIP_RELATION_TT"] = "Set the character tooltip border to a color representing the relation.",
-	["CO_TOOLTIP_SPACING"] = "Show spacing",
-	["CO_TOOLTIP_SPACING_TT"] = "Places spaces to lighten the tooltip, in the style of MyRoleplay tooltip.",
-	["CO_TOOLTIP_SUBSIZE"] = "Secondary font size",
-	["CO_TOOLTIP_TARGET"] = "Show target",
-	["CO_TOOLTIP_TERSIZE"] = "Tertiary font size",
-	["CO_TOOLTIP_TITLE"] = "Show title",
-	["CO_TOOLTIP_USE"] = "Use characters/companions tooltip",
-	["CO_WIM"] = "|cffff9900Whisper channels are disabled.",
-	["CO_WIM_TT"] = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purpose",
-	["COM_LIST"] = "List of commands:",
-	["COM_RESET_RESET"] = "The frames positions have been reset!",
-	["COM_RESET_USAGE"] = "Usage: |cff00ff00/trp3 reset frames|r to reset all frames positions.",
-	["COM_STASH_DATA"] = [=[|cffff0000Are you sure you want to stash away your Total RP 3 data?|r
-
-Your profiles, companions profiles and settings will be temporarily stashed away and your UI will reload with empty data, like your installation of Total RP 3 was brand new.
-|cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]=],
-	["COM_SWITCH_USAGE"] = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
-	["DB_ABOUT"] = "About Total RP 3",
-	["DB_HTML_GOTO"] = "Click to open",
-	["DB_MORE"] = "More modules",
-	["DB_NEW"] = "What's new?",
-	["DB_STATUS"] = "Status",
-	["DB_STATUS_CURRENTLY"] = "Currently (IC)",
-	["DB_STATUS_CURRENTLY_COMMON"] = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
-	["DB_STATUS_CURRENTLY_OOC"] = "Other information (OOC)",
-	["DB_STATUS_CURRENTLY_OOC_TT"] = "Here you can indicate something important about you, as a player, or anything out of your character.",
-	["DB_STATUS_CURRENTLY_TT"] = "Here you can indicate something important about your character.",
-	["DB_STATUS_RP"] = "Character status",
-	["DB_STATUS_RP_EXP"] = "Experienced roleplayer",
-	["DB_STATUS_RP_EXP_TT"] = [=[Shows that you are an experienced roleplayer.
-It will not show any specific icon on your tooltip.]=],
-	["DB_STATUS_RP_IC"] = "In character",
-	["DB_STATUS_RP_IC_TT"] = [=[That means you are currently playing your character.
-All your actions will be interpreted as if it's your character doing them.]=],
-	["DB_STATUS_RP_OOC"] = "Out of character",
-	["DB_STATUS_RP_OOC_TT"] = [=[You are out of your character.
-Your actions can't be associated to him/her.]=],
-	["DB_STATUS_RP_VOLUNTEER"] = "Volunteer roleplayer",
-	["DB_STATUS_RP_VOLUNTEER_TT"] = [=[This selection will show an icon on your tooltip, indicating
-to beginner roleplayers that you are willing to help them.]=],
-	["DB_STATUS_XP"] = "Roleplayer status",
-	["DB_STATUS_XP_BEGINNER"] = "Rookie roleplayer",
-	["DB_STATUS_XP_BEGINNER_TT"] = [=[This selection will show an icon on your tooltip, indicating
-to others that you are a beginner roleplayer.]=],
-	["DB_TUTO_1"] = [=[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
-
-|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
-
-|cff00ff00These information will be placed in your character's tooltip.]=],
-	["DICE_HELP"] = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
-	["DICE_ROLL"] = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
-	["DICE_ROLL_T"] = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
-	["DICE_TOTAL"] = "%s Total of |cff00ff00%s|r for the roll.",
-	["DICE_TOTAL_T"] = "%s %s got a total of |cff00ff00%s|r for the roll.",
-	["DTBK_AFK"] = "Total RP 3 - AFK/DND",
-	["DTBK_CLOAK"] = "Total RP 3 - Cloak",
-	["DTBK_HELMET"] = "Total RP 3 - Helmet",
-	["DTBK_LANGUAGES"] = "Total RP 3 - Languages",
-	["DTBK_RP"] = "Total RP 3 - IC/OOC",
-	["GEN_VERSION"] = "Version: %s (Build %s)",
-	["GEN_WELCOME_MESSAGE"] = "Thank you for using Total RP 3 (v %s) ! Have fun !",
-	["MAP_BUTTON_NO_SCAN"] = "No scan available",
-	["MAP_BUTTON_SCANNING"] = "Scanning",
-	["MAP_BUTTON_SUBTITLE"] = "Click to show available scans",
-	["MAP_BUTTON_TITLE"] = "Scan for roleplay",
-	["MAP_SCAN_CHAR"] = "Scan for characters",
-	["MAP_SCAN_CHAR_TITLE"] = "Characters",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "Add this profile to the |cffffffffmature white list|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Add to the |cffffffffmature white list|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Confirm that you want to add %s to the |cffffffffmature white list|r.
-
-The content of their profiles will no longer be hidden.]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
-	["MATURE_FILTER_EDIT_DICTIONARY"] = "Edit custom dictionary",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Add",
-	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Add a new word to the dictionary",
-	["MATURE_FILTER_EDIT_DICTIONARY_BUTTON"] = "Edit",
-	["MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD"] = "Delete the word from the custom dictionary",
-	["MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"] = "Edit this word",
-	["MATURE_FILTER_EDIT_DICTIONARY_TITLE"] = "Custom dictionary editor",
-	["MATURE_FILTER_EDIT_DICTIONARY_TT"] = "Edit the custom dictionary used to filter mature profiles.",
-	["MATURE_FILTER_FLAG_PLAYER"] = "Flag as mature",
-	["MATURE_FILTER_FLAG_PLAYER_OPTION"] = "Flag as mature",
-	["MATURE_FILTER_FLAG_PLAYER_TEXT"] = [=[Confirm that you want to flag %s's profile as containing mature content. This profile content will be hidden.
-
-|cffffff00Optional:|r Indicate the offensive words you found in this profile (separated by a space character) to add them to the filter.]=],
-	["MATURE_FILTER_FLAG_PLAYER_TT"] = "Flag this profile has containing mature content. The profile content will be hidden.",
-	["MATURE_FILTER_OPTION"] = "Filter mature profiles",
-	["MATURE_FILTER_OPTION_TT"] = [=[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it find such word.
-
-A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Remove this profile from the |cffffffffmature white list|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Remove from the |cffffffffmature white list|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Confirm that you want to remove %s from the |cffffffffmature white list|r.
-
-The content of their profiles will be hidden again.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Remove this profile from the |cffffffffmature white list|r and hide again the mature content found inside.",
-	["MATURE_FILTER_TITLE"] = "Mature profiles filter",
-	["MATURE_FILTER_TOOLTIP_WARNING"] = "Mature content",
-	["MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"] = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
-	["MATURE_FILTER_WARNING_CONTINUE"] = "Continue",
-	["MATURE_FILTER_WARNING_GO_BACK"] = "Go back",
-	["MATURE_FILTER_WARNING_TEXT"] = [=[You have Total RP 3's mature content filtering system enabled.
-
-This profile has been flagged as containing mature content.
-
-Are you sure you want to view this profile?]=],
-	["MATURE_FILTER_WARNING_TITLE"] = "Mature content",
-	["MM_SHOW_HIDE_MAIN"] = "Show/hide the main frame",
-	["MM_SHOW_HIDE_MOVE"] = "Move button",
-	["MM_SHOW_HIDE_SHORTCUT"] = "Show/hide the toolbar",
-	["MORE_MODULES_2"] = [=[{h2:c}Optional modules{/h2}
-{h3}Total RP 3: Extended{/h3}
-|cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
-{link*http://extended.totalrp3.info*Download on Curse.com}
-
-{h3}Kui |cff9966ffNameplates|r module{/h3}
-The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to the KuiNameplates add-on:
-• See the full RP name of a character on their nameplate, instead of their default name, colored like in their tooltip.
-• See customized pets names.
-• Hide the names of players without an RP profile!
-{link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
-
+|cffff9900Wenn ein Modul deaktivert wird muss das UI neu geladen werden!]=],
+		["CO_MODULES_VERSION"] = "Version: %s",
+		["CO_MSP"] = "Mary Sue Protocol",
+		["CO_MSP_T3"] = "Benutze nur Template 3",
+		["CO_MSP_T3_TT"] = "Selbst, wenn du ein anderes \"Über\"-Template auswählst, wird immer Template 3 genutzt, um MSP-Kompatibilität zu gewährleisten.",
+		["CO_REGISTER"] = "Einstellungen registrieren",
+		["CO_REGISTER_ABOUT_VOTE"] = "Benutze Bewertungssystem",
+		["CO_REGISTER_ABOUT_VOTE_TT"] = "Aktiviert das Bewertungssystem, welches dir erlaubt, die Beschreibung von Charakteren als positiv oder negativ zu bewerten. Hierdurch kannt auch dein Charakter bewertet werden!",
+		["CO_REGISTER_AUTO_ADD"] = "Neue Spieler automatisch hinzufügen",
+		["CO_REGISTER_AUTO_ADD_TT"] = "Automatisch neue Spieler, denen du begegnest, zum Register hinzufügen.",
+		["CO_REGISTER_AUTO_PURGE"] = "Verzeichnis automatisch bereinigen",
+		["CO_REGISTER_AUTO_PURGE_0"] = "Bereinigung abschalten",
+		["CO_REGISTER_AUTO_PURGE_1"] = "Nach %s Tag(en)",
+		["CO_REGISTER_AUTO_PURGE_TT"] = [=[Entferne automatisch die Profile von Charakteren aus dem Verzeichnis, denen du seit einer bestimmten Zeit nicht mehr begegnet bist. Du eine Verzögerung vor der Löschung auswählen.
+|cff00ff00Beachte dass Profile mit einem Verhältnis zu einem deiner Charaktere niemals bereinigt werden.
+|cffff9900 Es gibt einen Bug in WoW bei dem alle gespeicherten Daten verloren gehen, wenn ein bestimmtes Limit überschritten wird. Wir raten eindringlich davon ab das Bereinigungssystem abzuschalten.
 
 ]=],
-	["NEW_VERSION"] = [=[|cff00ff00A new version of Total RP 3 (v %s) is available.
+		["CO_TARGETFRAME"] = "Zielfentereinstellungen",
+		["CO_TARGETFRAME_ICON_SIZE"] = "Icongröße",
+		["CO_TARGETFRAME_USE"] = "Anzeigebedingungen",
+		["CO_TARGETFRAME_USE_1"] = "Immer",
+		["CO_TARGETFRAME_USE_2"] = "Nur wenn IC",
+		["CO_TARGETFRAME_USE_3"] = "Niemals (Deaktiviert)",
+		["CO_TARGETFRAME_USE_TT"] = "Gibt an, unter welchen Bedingungen das Zielfenster am gewählten Ziel gezeigt werden soll.",
+		["CO_TOOLBAR"] = "Fenstereinstellungen",
+		["CO_TOOLBAR_CONTENT"] = "Toolbareinstellungen",
+		["CO_TOOLBAR_CONTENT_CAPE"] = "Umhang an/aus",
+		["CO_TOOLBAR_CONTENT_HELMET"] = "Helm an/aus",
+		["CO_TOOLBAR_CONTENT_RPSTATUS"] = "Charakterstatus (IC/OOC)",
+		["CO_TOOLBAR_CONTENT_STATUS"] = "Spielerstatus (AFK/DND)",
+		["CO_TOOLBAR_ICON_SIZE"] = "Icongröße",
+		["CO_TOOLBAR_MAX"] = "Maximale Icons pro Zeile",
+		["CO_TOOLBAR_MAX_TT"] = "Auf 1 stellen wenn du die Leiste vertikal angezeigt haben möchtest!",
+		["CO_TOOLBAR_SHOW_ON_LOGIN"] = "Zeige Toolbar beim Login",
+		["CO_TOOLBAR_SHOW_ON_LOGIN_HELP"] = "Wenn du nicht möchtest, dass die Toolbar beim Login erscheint, deaktiviere diese Option.",
+		["CO_TOOLTIP"] = "Tooltipeinstellungen",
+		["CO_TOOLTIP_ANCHOR"] = "Ankerpunkt",
+		["CO_TOOLTIP_ANCHORED"] = "Ankerfenster",
+		["CO_TOOLTIP_CHARACTER"] = "Charaktertooltip",
+		["CO_TOOLTIP_CLIENT"] = "Zeige Client",
+		["CO_TOOLTIP_COLOR"] = "Benutzerdefinierte Farben anzeigen",
+		["CO_TOOLTIP_COMBAT"] = "Während des Kampfs verbergen",
+		["CO_TOOLTIP_COMMON"] = "Standardeinstellungen",
+		["CO_TOOLTIP_CONTRAST"] = "Farbkontraste erhöhen",
+		["CO_TOOLTIP_CONTRAST_TT"] = "Schalte diese Option ein um Total RP 3 zu erlauben die benutzerdefinierten Farben zu verändern, so dass Text in zu dunklen Farben leichter lesbar ist.",
+		["CO_TOOLTIP_CURRENT"] = "Zeige \"aktuelle\" Informationen",
+		["CO_TOOLTIP_CURRENT_SIZE"] = "Maximale Länge von \"aktuellen\" Informationen",
+		["CO_TOOLTIP_FT"] = "Zeige vollen Titel",
+		["CO_TOOLTIP_GUILD"] = "Zeige Gildeninformationen",
+		["CO_TOOLTIP_HIDE_ORIGINAL"] = "Verstecke Originaltooltip",
+		["CO_TOOLTIP_ICONS"] = "Zeige Icons",
+		["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "Verbergen wenn Out Of Character",
+		["CO_TOOLTIP_MAINSIZE"] = "Hauptschriftgröße",
+		["CO_TOOLTIP_NOTIF"] = "Zeige Benachrichtigungen",
+		["CO_TOOLTIP_NOTIF_TT"] = "Die Benachrichtigungszeile enthält die Clientversion, den Marker für ungelesene Beschreibungen und die \"Auf den Ersten Blick\" Leiste.",
+		["CO_TOOLTIP_OWNER"] = "Zeige Besitzer",
+		["CO_TOOLTIP_PETS"] = "Begleitertooltip",
+		["CO_TOOLTIP_PETS_INFO"] = "Zeige Begleiterinformationen",
+		["CO_TOOLTIP_PROFILE_ONLY"] = "Nur benutzen, wenn das Ziel ein Profil hat",
+		["CO_TOOLTIP_RACE"] = "Zeige Rasse, Klasse und Level",
+		["CO_TOOLTIP_REALM"] = "Zeige Server",
+		["CO_TOOLTIP_RELATION"] = "Zeige Beziehungsfarbe",
+		["CO_TOOLTIP_RELATION_TT"] = "Fügt dem Rand des Charaktertooltips eine Farbe hinzu, um die Beziehung zu repräsentieren.",
+		["CO_TOOLTIP_SPACING"] = "Zeige Leerzeile",
+		["CO_TOOLTIP_SPACING_TT"] = "Zeigt Leerzeilen, um den Tooltip dem Tooltip von MyRoleplay ähnlich zu sehen.",
+		["CO_TOOLTIP_SUBSIZE"] = "Sekundäre Schriftgöße",
+		["CO_TOOLTIP_TARGET"] = "Zeige Ziel",
+		["CO_TOOLTIP_TERSIZE"] = "Tertiäre Schriftgröße",
+		["CO_TOOLTIP_TITLE"] = "Zeige Titel",
+		["CO_TOOLTIP_USE"] = "Benutze die Tooltips für Charaktere/Begleiter",
+		["CO_WIM"] = "|cffff9900Flüsterkanäle deaktiviert.",
+		["CO_WIM_TT"] = "Du nutzt |cff00ff00WIM|r, die Nutzung wurde aus Kompatibilitätsgründen deaktiviert",
+		["COM_LIST"] = "Liste aller Befehle:",
+		["COM_RESET_RESET"] = "Die Position des Fensters wurde zurückgesetzt.",
+		["COM_RESET_USAGE"] = "Hinweis: |cff00ff00/trp3 reset frames|r, um alle Fensterpositionen zurückzusetzen.",
+		["COM_STASH_DATA"] = [=[|cffff0000Bist du sicher, dass du deine Total RP 3 Daten auslagern möchtest?|r
 
-|cffffff00We strongly encourage you to stay up-to-date.|r
+Deine Profile, Begleiterprofile und Einstellungen werden temporär ausgelagert und dein UI wird mit leeren Daten neu geladen, als wäre es eine brandneue Installation von Total RP 3.
+|cff00ff00Nutze den selben Befehl nochmal (|cff999999/trp3 stash|cff00ff00) um die Daten wiederherzustellen.|r]=],
+		["COM_SWITCH_USAGE"] = "Hinweis: |cff00ff00/trp3 switch main|r, um das Hauptfenster umzuschalten oder |cff00ff00/trp3 switch toolbar|r, um die Werkzeugleiste umzuschalten.",
+		["DB_ABOUT"] = "Über Total RP 3",
+		["DB_HTML_GOTO"] = "Zum Öffnen klicken",
+		["DB_MORE"] = "Mehr Module",
+		["DB_NEW"] = "Was ist neu?",
+		["DB_STATUS"] = "Status",
+		["DB_STATUS_CURRENTLY"] = "Aktuelles (IC)",
+		["DB_STATUS_CURRENTLY_COMMON"] = "Der Status wird im Tooltip deines Charakters angezeigt. Halte dich hier kurz, knapp und eindeutig, da |cffff9900standartmäßig alle TRP3 Nutzer nur die ersten 140 Zeichen sehen können!",
+		["DB_STATUS_CURRENTLY_OOC"] = "Andere Informationen (OOC)",
+		["DB_STATUS_CURRENTLY_OOC_TT"] = "Hier kannst du Wichtiges über dich als Spieler oder andere OOC Informationen eintragen.",
+		["DB_STATUS_CURRENTLY_TT"] = "Hier kannst du Wichtiges über deinen Charakter angeben.",
+		["DB_STATUS_RP"] = "Charakterstatus",
+		["DB_STATUS_RP_EXP"] = "Erfahrener Rollenspieler",
+		["DB_STATUS_RP_EXP_TT"] = [=[Zeigt an, dass du ein erfahrener Rollenspieler bist.
+Zeigt kein spezielles Icon auf deinem Tooltip an.]=],
+		["DB_STATUS_RP_IC"] = "In Character (IC)",
+		["DB_STATUS_RP_IC_TT"] = [=[Die spielst diesen Charakter aktuell aus.
+Dein gesamtes Handeln wird bewertet, als ob dein Charakter diese Aktionen ausführt.]=],
+		["DB_STATUS_RP_OOC"] = "Out of Character (OOC)",
+		["DB_STATUS_RP_OOC_TT"] = [=[Du spielst diesen Charakter aktuell nicht aus.
+Dein Handeln wird nicht mit dem Charakter in Verbindung gebracht.]=],
+		["DB_STATUS_RP_VOLUNTEER"] = "Rollenspiellehrer",
+		["DB_STATUS_RP_VOLUNTEER_TT"] = "Diese Auswahl zeigt mithilfe eines Icons auf deinem Tooltip an, dass du Rollenspielanfängern Hilfestellung gibst.",
+		["DB_STATUS_XP"] = "Rollenspielerfahrung",
+		["DB_STATUS_XP_BEGINNER"] = "Rollenspielanfänger",
+		["DB_STATUS_XP_BEGINNER_TT"] = "Diese Auswahl zeigt mithilfe eines Icons auf deinem Tooltip an, dass du noch Rollenspielanfänger bist.",
+		["DB_TUTO_1"] = [=[|cffffff00Der Charakter Status|r zeigt an, ob du deinen Charakter momentan ausspielst oder nicht.
 
-This message will only appear once per session and can be disabled in the settings (General settings => Miscellaneous).]=],
-	["NEW_VERSION_TITLE"] = "New update available",
-	["NPC_TALK_BUTTON_TT"] = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
-	["NPC_TALK_CHANNEL"] = "Channel: ",
-	["NPC_TALK_COMMAND_HELP"] = "Open the NPC speeches frame.",
-	["NPC_TALK_ERROR_EMPTY_MESSAGE"] = "The message cannot be empty.",
-	["NPC_TALK_MESSAGE"] = "Message",
-	["NPC_TALK_NAME"] = "NPC name",
-	["NPC_TALK_NAME_TT"] = [=[You can use standard chat tags like %t to insert your target's name or %f to insert your focus' name.
+|cffffff00Die Rollenspielerfahrung|r gibt an, ob du ein blutiger Anfänger oder ein erfahrener Rollenspieler bist, der gerne Neulingen hilft!
 
-You can also leave this field empty to create emotes without an NPC name at the start.
-]=],
-	["NPC_TALK_SAY_PATTERN"] = "says:",
-	["NPC_TALK_SEND"] = "Send",
-	["NPC_TALK_TITLE"] = "NPC speeches",
-	["NPC_TALK_WHISPER_PATTERN"] = "whispers:",
-	["NPC_TALK_YELL_PATTERN"] = "yells:",
-	["OPTION_DISABLED_TOAST"] = "Option disabled",
-	["OPTION_ENABLED_TOAST"] = "Option enabled",
-	["PATTERN_ERROR"] = "Error in pattern.",
-	["PATTERN_ERROR_TAG"] = "Error in pattern : unclosed text tag.",
-	["PR_CO_BATTLE"] = "Battle pet",
-	["PR_CO_COUNT"] = "%s pets/mounts bounded to this profile.",
-	["PR_CO_EMPTY"] = "No companion profile",
-	["PR_CO_MASTERS"] = "Masters",
-	["PR_CO_MOUNT"] = "Mount",
-	["PR_CO_NEW_PROFILE"] = "New companion profile",
-	["PR_CO_PET"] = "Pet",
-	["PR_CO_PROFILE_DETAIL"] = "This profile is currently bounded to",
-	["PR_CO_PROFILE_HELP"] = [=[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
+|cff00ff00Diese Informationen werden im Tooltip deines Charakters angezeigt.]=],
+		["DTBK_AFK"] = "Total RP 3 - AFK/DND",
+		["DTBK_CLOAK"] = "Total RP 3 - Rücken",
+		["DTBK_HELMET"] = "Total RP 3 - Helm",
+		["DTBK_LANGUAGES"] = "Total RP 3 - Sprachen",
+		["DTBK_RP"] = "Total RP 3 - IC/OOC",
+		["GEN_VERSION"] = "Version: %s (Build %s)",
+		["GEN_WELCOME_MESSAGE"] = "Danke, dass du Total RP 3 (v %s) verwendest! Viel Spaß!",
+		["MAP_BUTTON_NO_SCAN"] = "Kein Scan verfügbar",
+		["MAP_BUTTON_SCANNING"] = "Scanne",
+		["MAP_BUTTON_SUBTITLE"] = "Klicken um verfügbare Scans anzuzeigen",
+		["MAP_SCAN_CHAR"] = "Nach Charakteren scannen",
+		["MAP_SCAN_CHAR_TITLE"] = "Charaktere",
+		["MATURE_FILTER_ADD_TO_WHITELIST"] = "Dieses Profil der cffffffffErwachseneninhalte Whitelist|r hinzufügen",
+		["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Der |cffffffffErwachseneninhalte Whitelist|r hinzufügen",
+		["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Bestätige, dass du %s der |cffffffffErwachseneninhalte Whitelist|r hinzufügen willst.
 
-A companion profile can be linked to:
-- A battle pet |cffff9900(only if it has been renamed)|r
-- A hunter pet
-- A warlock minion
-- A mage elemental
-- A death knight ghoul |cffff9900(see below)|r
+Der Inhalt des Profils wird nicht länger versteckt sein.]=],
+		["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Dieses Profil der |cffffffffErwachseneninhalte Whitelist|r hinzufügen und die darin enthaltenen Inhalte für Erwachsene anzeigen.",
+		["MATURE_FILTER_EDIT_DICTIONARY"] = "Benutzerdefiniertes Wörterbuch bearbeiten",
+		["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Hinzufügen",
+		["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Dem Wörterbuch ein neues Wort hinzufügen",
+		["MATURE_FILTER_EDIT_DICTIONARY_BUTTON"] = "Editieren",
+		["MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD"] = "Das Wort aus dem benutzerdefinierten Wörterbuch entfernen",
+		["MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"] = "Dieses wort editieren",
+		["MATURE_FILTER_EDIT_DICTIONARY_TITLE"] = "Benutzerdefiniertes Wörterbuch-Editor",
+		["MATURE_FILTER_EDIT_DICTIONARY_TT"] = "Das benutzerdefinierte Wörterbuch editieren, welches zur Filterung von Profilen mit Erwachseneninhalten verwendet wird.",
+		["MATURE_FILTER_FLAG_PLAYER"] = "Als Inhalt für Erwachsene markieren",
+		["MATURE_FILTER_FLAG_PLAYER_OPTION"] = "Als Inhalt für Erwachsene markieren",
+		["MATURE_FILTER_FLAG_PLAYER_TEXT"] = [=[Bestätige, dass du markieren willst, dass das Profil von %s Erwachseneninhalte enthält. Das Profil wird versteckt werden.
 
-Just like characters profiles, a |cff00ff00companion profile|r can be linked to |cffffff00several pets|r, and a |cffffff00pet|r can switch easily from one profile to another.
+|cffffff00Optional:|r Gib das anstößige Wort an welches du im Profil gefunden hast (trenne mehrere Wörter mit Leerzeichen), um es dem Filter hinzuzufügen.]=],
+		["MATURE_FILTER_FLAG_PLAYER_TT"] = "Markiere, dass dieses Profil Erwachseneninhalte enthält. Der Inhalt des Profils wird versteckt werden.",
+		["MATURE_FILTER_OPTION"] = "Profile mit Erwachseneninhalten filtern",
+		["MATURE_FILTER_OPTION_TT"] = [=[Wähle diese Option aus um die Filterung von Erwachseneninhalten zu aktivieren. Total RP 3 wird eintreffende Profile nach bestimmten Schlüsselworten durchsuchen die als Erwachseneninhalte festgelegt wurden und das Profil entsprechend markieren wenn ein solches Wort gefunden wird.
 
-|cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]=],
-	["PR_CO_PROFILE_HELP2"] = [=[Click here to create a new companion profile.
+Ein Profil mit Erwachseneninhalten wird einen stummgeschalteten Tooltip haben und du wirst bestätigen müssen, dass du es dir ansehen willst, wenn du es zum ersten Mal aufrufst.]=],
+		["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Dieses Profil aus der |cffffffffErwachseneninhalte Whitelist|r entfernen",
+		["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Aus der |cffffffffErwachseneninhalte Whitelist|r entfernen",
+		["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Bestätige, dass du das Profil von %s aus der |cffffffffErwachseneninhalte Whitelist|r entfernen willst
 
-|cff00ff00To link a profile to a pet (hunter pet, warlock minion ...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]=],
-	["PR_CO_PROFILEMANAGER_DELETE_WARNING"] = [=[Are you sure you want to delete the companion profile %s?
-This action cannot be undone and all TRP3 information linked to this profile will be destroyed !]=],
-	["PR_CO_PROFILEMANAGER_DUPP_POPUP"] = [=[Please enter a name for the new profile.
-The name cannot be empty.
+Der Inhalt des Profils wird wieder versteckt werden.]=],
+		["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Dieses Profil aus der |cffffffffErwachseneninhalte Whitelist|r entfernen und den Erwachseneninhalt darin wieder verstecken.",
+		["MATURE_FILTER_TITLE"] = "Filter für Profile mit Erwachseneninhalten",
+		["MATURE_FILTER_TOOLTIP_WARNING"] = "Erwachseneninhalt",
+		["MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"] = "Das Profil dieses Charakters enthält Inhalte für Erwachsene. Verwende die ",
+		["MATURE_FILTER_WARNING_CONTINUE"] = "Weiter",
+		["MATURE_FILTER_WARNING_GO_BACK"] = "Zurück",
+		["MATURE_FILTER_WARNING_TEXT"] = [=[Du hast Total RP 3's Erwachseneninhalt Filtersystem angeschaltet.
 
-This duplication will not change your pets/mounts bounds to %s.]=],
-	["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Please enter a new name for this profile %s.
-The name cannot be empty.
+Dieses Profil wurde als Profil mit Inhalt für Erwachsene markiert.
 
-Changing the name will not change any link between this profile and your pets/mounts.]=],
-	["PR_CO_PROFILEMANAGER_TITLE"] = "Companions profiles",
-	["PR_CO_UNUSED_PROFILE"] = "This profile is currently not bounded to any pet or mount.",
-	["PR_CO_WARNING_RENAME"] = [=[|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.
+Bist du sicher, dass du dir das Profil ansehen willst?]=],
+		["MATURE_FILTER_WARNING_TITLE"] = "Erwachseneninhalt",
+		["MM_SHOW_HIDE_MAIN"] = "Zeige/verstecke das Hauptfenster",
+		["MM_SHOW_HIDE_MOVE"] = "Icon bewegen",
+		["MM_SHOW_HIDE_SHORTCUT"] = "Zeig/verstecke die Toolbar",
+		["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
 
-Link it anyway ?]=],
-	["PR_CREATE_PROFILE"] = "Create profile",
-	["PR_DELETE_PROFILE"] = "Delete profile",
-	["PR_DUPLICATE_PROFILE"] = "Duplicate profile",
-	["PR_EXPORT_IMPORT_HELP"] = [=[You can export and import profiles using the options in the dropdown menu.
+|cffffff00Wir empfehlen dringendst auf dem aktuellen Stand zu bleiben.|r
 
-Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special caracters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
+Diese Nachricht wird nur einmal pro Sitzung angezeigt und kann in den Einstellungen (Allgemeine Einstellungen => Verschiedenes) abgeschaltet werden.]=],
+		["NEW_VERSION_TITLE"] = "Neues Update verfügbar",
+		["NPC_TALK_CHANNEL"] = "Kanal:",
+		["NPC_TALK_ERROR_EMPTY_MESSAGE"] = "Die Nachricht darf nicht leer sein.",
+		["NPC_TALK_MESSAGE"] = "Nachricht",
+		["NPC_TALK_NAME"] = "NPC Name",
+		["NPC_TALK_NAME_TT"] = [=[Du kannst Standard-Chat-Tags wie %t um den Namen deines Ziels zu verwenden oder %f um den Namen Ihres Fokus einzufügen.
 
-Use the |cffffff00Import profile|r option to paste data from a previous export inside an existing profile. The existing data in this profile will be replaced by the ones you have pasted. You cannot import data directly into your currently selected profile.]=],
-	["PR_EXPORT_IMPORT_TITLE"] = "Export/import profile",
-	["PR_EXPORT_NAME"] = "Serial for profile %s (size %0.2f kB)",
-	["PR_EXPORT_PROFILE"] = "Export profile",
-	["PR_EXPORT_TOO_LARGE"] = [=[This profile is too large and can't be exported.
+Du kannst dieses Feld auch leer lassen, um Emotes ohne einen NPC-Namen am Anfang zu erstellen.
 
-Size of profile: %0.2f kB
+Sie können auch dieses Feld leer lassen, um Emotes ohne einen NPC-Namen am Anfang zu erstellen.]=],
+		["NPC_TALK_SAY_PATTERN"] = "sagt: ",
+		["NPC_TALK_SEND"] = "senden",
+		["NPC_TALK_WHISPER_PATTERN"] = "flüstert: ",
+		["NPC_TALK_YELL_PATTERN"] = "schreit: ",
+		["PATTERN_ERROR"] = "Fehler im Eingabemuster",
+		["PATTERN_ERROR_TAG"] = "Fehler im Eingabemuster: Nicht-geschlossener Text-Tag",
+		["PR_CO_BATTLE"] = "Begleiter",
+		["PR_CO_COUNT"] = "%s Haustiere/Reittiere an dieses Profil gebunden.",
+		["PR_CO_EMPTY"] = "Kein Begleiterprofil",
+		["PR_CO_MASTERS"] = "Meister",
+		["PR_CO_MOUNT"] = "Reittier",
+		["PR_CO_NEW_PROFILE"] = "Neues Begleiterprofil",
+		["PR_CO_PET"] = "Tier",
+		["PR_CO_PROFILE_DETAIL"] = "Dieses Profil ist aktuell gebunden an",
+		["PR_CO_PROFILE_HELP"] = [=[Ein Profil enthält alle Informationen über ein |cffffff00"Haustier/Begleiter"|r als |cff00ff00Rollenspiel Charakter|r.
+
+Ein Begleiterprofil kann an folgende Begleiterarten gebunden werden:
+- Ein Kampfhaustier |cffff9900(nur wenn es umbennant wurde)|r
+- Einen Jägerbegleiter
+- Einen Diener eines Hexenmeisters
+- Einen Magierelementar
+- Einen Ghul eines Todesritters |cffff9900(siehe unten)|r
+
+Genau wie bei einem Charakterprofil kann ein |cff00ff00Begleiterproful|r mit |cffffff00verschiedenen Haustieren|r verbunden werden. Genauso kannst du für dein |cffffff00Haustier|r einfach durch die verschiedenen Profile schalten.
+
+|cffff9900Ghule:|r Für einen Ghul musst du das Profil bei jeder Beschwörung neu auswählen, da dessen Spielname zufällig vergeben wird!]=],
+		["PR_CO_PROFILE_HELP2"] = [=[Hier klicken um eine neues Begleiterprofil anzulegen.
+
+|cff00ff00Um ein Profil einem Haustier zu zuweisen, beschwöre einfach dein Haustier/Begleiter, wähle es aus und benutze das Zielfenster um es einem Profil zu zuweisen (oder ein neues Profil zu erstellen).|r]=],
+		["PR_CO_PROFILEMANAGER_DELETE_WARNING"] = [=[Bist du sicher, dass du dieses Begleiterprofil %s löschen willst?
+Diese Aktion kann nicht rückgängig gemacht werden und alle TRP3 Informationen, die damit zusammenhängen, werden unwiderruflich zerstört!]=],
+		["PR_CO_PROFILEMANAGER_DUPP_POPUP"] = [=[Bitte gibt einen Namen für das neue Profil ein.
+Der Name darf nicht leer sein.
+
+Diese Kopie ändert nicht die Bindung deines Haustieres/Reittieres zu %s.]=],
+		["PR_CO_PROFILEMANAGER_EDIT_POPUP"] = [=[Bitte gib einen Namen für das Profil %s ein.
+Der Name darf nicht leer sein.
+
+Das Ändern des Namens ändert nicht die Verbindung des Profils mit deinem Haustier/Reittier.]=],
+		["PR_CO_PROFILEMANAGER_TITLE"] = "Begleiterprofile",
+		["PR_CO_UNUSED_PROFILE"] = "Dieses Profil ist aktuell nicht an ein Haustier oder Reittier gebunden.",
+		["PR_CO_WARNING_RENAME"] = [=[|cffff0000Warnung:|r Es wird dringend empfohlen, dein Haustier umzubenennen, bevor du es mit einem Profil verbindest.
+
+Trotzdem verbinden?]=],
+		["PR_CREATE_PROFILE"] = "Profil erstellen",
+		["PR_DELETE_PROFILE"] = "Profil löschen",
+		["PR_DUPLICATE_PROFILE"] = "Profil kopieren",
+		["PR_EXPORT_IMPORT_HELP"] = [=[Du kannst Profile über die Option im Dropdownmenü exportieren und importieren.
+
+Benutze die |cffffff00Profil exportieren|r Option um eine Textserie zu generieren der die Profildaten enthält. Du kannst den Text über Strg+C (Command+C auf einem Mac) kopieren und es woanders als Sicherung einfügen. (|cffff0000Bitte beachte, dass einige fortgeschrittene Textverarbeitungswerkzeuge wie Microsoft Word Sonderzeichen als Zitate ansehen und die Daten verändern. Verwende daher einfachere Werkzeuge wie Notepad.|r)
+
+Benutze die |cffffff00Profil importieren|r Option um Daten aus einem früheren Export in ein existierendes Profil einzufügen. Die existierenden Daten des Profils werden durch das die neu eingefügten ersetzt. Du kannst die Daten nicht direkt in das derzeit ausgewählte Profil importieren.]=],
+		["PR_EXPORT_IMPORT_TITLE"] = "Profil exportieren/importieren",
+		["PR_EXPORT_NAME"] = "Text für Profil %s (Größe %0.2f kB)",
+		["PR_EXPORT_PROFILE"] = "Profil exportieren",
+		["PR_EXPORT_TOO_LARGE"] = [=[Dieses Profil ist zu groß und kann nicht exportiert werden.
+
+Profilgröße: %0.2f kB
 Max: 20 kB]=],
-	["PR_IMPORT"] = "Import",
-	["PR_IMPORT_CHAR_TAB"] = "Characters importer",
-	["PR_IMPORT_EMPTY"] = "No importable profile",
-	["PR_IMPORT_IMPORT_ALL"] = "Import all",
-	["PR_IMPORT_PETS_TAB"] = "Companions importer",
-	["PR_IMPORT_PROFILE"] = "Import profile",
-	["PR_IMPORT_PROFILE_TT"] = "Paste here a profile serial",
-	["PR_IMPORT_WILL_BE_IMPORTED"] = "Will be imported",
-	["PR_PROFILE"] = "Profile",
-	["PR_PROFILE_CREATED"] = "Profile %s created.",
-	["PR_PROFILE_DELETED"] = "Profile %s deleted.",
-	["PR_PROFILE_DETAIL"] = "This profile is currently bounded to these WoW characters",
-	["PR_PROFILE_HELP"] = [=[A profile contains all information about a |cffffff00"character"|r as a |cff00ff00roleplay character|r.
+		["PR_IMPORT"] = "Importieren",
+		["PR_IMPORT_CHAR_TAB"] = "Charakterimporteur",
+		["PR_IMPORT_EMPTY"] = "Kein importierbares Profil",
+		["PR_IMPORT_IMPORT_ALL"] = "Alles importieren",
+		["PR_IMPORT_PETS_TAB"] = "Begleiterimporteur",
+		["PR_IMPORT_PROFILE"] = "Profil importieren",
+		["PR_IMPORT_PROFILE_TT"] = "Hier einen Profiltext einfügen",
+		["PR_IMPORT_WILL_BE_IMPORTED"] = "Wird importiert",
+		["PR_PROFILE"] = "Profil",
+		["PR_PROFILE_CREATED"] = "Profile %s erstellt.",
+		["PR_PROFILE_DELETED"] = "Profile %s gelöscht.",
+		["PR_PROFILE_DETAIL"] = "Dieses Profil ist aktuell an diese WoW Charaktere gebunden",
+		["PR_PROFILE_HELP"] = [=[Ein Profil enthält alle Informationen über einen |cffffff00"Charakter"|r als |cff00ff00Rollenspielcharakter|r.
 
-A real |cffffff00"WoW character"|r can be bounded to only one profile at a time, but can switch from one to another whenever you want.
+Ein realer |cffffff00"WoW Charakter"|r kann nur an ein Profil gleichzeitig gebunden sein, kann aber zwischen verschiedenen Profilen hin und her schalten.
 
-You can also bound several |cffffff00"WoW characters"|r to the same |cff00ff00profile|r !]=],
-	["PR_PROFILE_LOADED"] = "The profile %s is loaded.",
-	["PR_PROFILE_MANAGEMENT_TITLE"] = "Profile management",
-	["PR_PROFILEMANAGER_ACTIONS"] = "Actions",
-	["PR_PROFILEMANAGER_ALREADY_IN_USE"] = "The profile name %s is not available.",
-	["PR_PROFILEMANAGER_COUNT"] = "%s WoW character(s) bounded to this profile.",
-	["PR_PROFILEMANAGER_CREATE_POPUP"] = [=[Please enter a name for the new profile.
-The name cannot be empty.]=],
-	["PR_PROFILEMANAGER_CURRENT"] = "Current profile",
-	["PR_PROFILEMANAGER_DELETE_WARNING"] = [=[Are you sure you want to delete the profile %s?
-This action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !]=],
-	["PR_PROFILEMANAGER_DUPP_POPUP"] = [=[Please enter a name for the new profile.
-The name cannot be empty.
+Du kannst auch mehrere |cffffff00"WoW Charaktere"|r an dasselbe |cff00ff00Profil|r binden!]=],
+		["PR_PROFILE_LOADED"] = "Das Profil %s ist geladen.",
+		["PR_PROFILE_MANAGEMENT_TITLE"] = "Profilverwaltung",
+		["PR_PROFILEMANAGER_ACTIONS"] = "Aktionen",
+		["PR_PROFILEMANAGER_ALREADY_IN_USE"] = "Der Profilname %s ist nicht verfügbar.",
+		["PR_PROFILEMANAGER_COUNT"] = "%s WoW Charakter/e an dieses Profil gebunden.",
+		["PR_PROFILEMANAGER_CREATE_POPUP"] = [=[Gib bitte einen Namen für das neue Profil ein.
+Die Namenszeile darf nicht leer sein.]=],
+		["PR_PROFILEMANAGER_CURRENT"] = "Aktuelles Profil",
+		["PR_PROFILEMANAGER_DELETE_WARNING"] = [=[Bist du sicher, dass du das Profil %s? löschen willst
+Diese Aktion kann nicht rückgängig gemacht werden und alle TRP3 Informationen, die damit verbunden sind, werden unwiderruflich gelöscht!]=],
+		["PR_PROFILEMANAGER_DUPP_POPUP"] = [=[Gib bitte einen Namen für das neue Profil ein.
+Die Namenszeile darf nicht leer sein.
 
-This duplication will not change the character's bounds to %s.]=],
-	["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Please enter a new name for this profile %s.
-The name cannot be empty.
+Diese Kopie ändert nicht die Bindung zu %s.]=],
+		["PR_PROFILEMANAGER_EDIT_POPUP"] = [=[Gib bitte einen neuen Namen für das Profil %s ein.
+Die Namenszeile darf nicht leer sein.
 
-Changing the name will not change any link between this profile and your characters.]=],
-	["PR_PROFILEMANAGER_IMPORT_WARNING"] = "Replacing all the content of profile %s with this imported data?",
-	["PR_PROFILEMANAGER_IMPORT_WARNING_2"] = [=[Warning: this profile serial has been made from an older version of TRP3.
-This can bring incompatibilities.
+Die änderung des Namens verändert nicht die Verbindung zwischen dem Profil und den Charakteren.]=],
+		["PR_PROFILEMANAGER_IMPORT_WARNING"] = "Den gesamten Inhalt des Profils %s mit den importierten Daten überschreiben?",
+		["PR_PROFILEMANAGER_IMPORT_WARNING_2"] = [=[Warnung: dieser Profiltext wurde mit einer älteren Version von TRP3 erstellt.
+Dies kann zu Inkompatibilitäten führen.
 
-Replacing all the content of profile %s with this imported data?]=],
-	["PR_PROFILEMANAGER_RENAME"] = "Rename profile",
-	["PR_PROFILEMANAGER_SWITCH"] = "Select profile",
-	["PR_PROFILEMANAGER_TITLE"] = "Characters profiles",
-	["PR_PROFILES"] = "Profiles",
-	["PR_SLASH_EXAMPLE"] = "|cffffff00Command usage:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00to switch to Millidan Foamrage's profile.|r",
-	["PR_SLASH_NOT_FOUND"] = "|cffff0000Could not find a profile named|r |cffffff00%s|r|cffff0000.|r",
-	["PR_SLASH_SWITCH_HELP"] = "Switch to another profile using its name.",
-	["PR_UNUSED_PROFILE"] = "This profile is currently not bounded to any WoW character.",
-	["REG_COMPANION"] = "Companion",
-	["REG_COMPANION_BOUND_TO"] = "Bound to ...",
-	["REG_COMPANION_BOUND_TO_TARGET"] = "Target",
-	["REG_COMPANION_BOUNDS"] = "Bounds",
-	["REG_COMPANION_BROWSER_BATTLE"] = "Battle pet browser",
-	["REG_COMPANION_BROWSER_MOUNT"] = "Mount browser",
-	["REG_COMPANION_INFO"] = "Information",
-	["REG_COMPANION_LINKED"] = "The companion %s is now linked to the profile %s.",
-	["REG_COMPANION_LINKED_NO"] = "The companion %s is no longer linked to any profile.",
-	["REG_COMPANION_NAME"] = "Name",
-	["REG_COMPANION_NAME_COLOR"] = "Name color",
-	["REG_COMPANION_PAGE_TUTO_C_1"] = "Consult",
-	["REG_COMPANION_PAGE_TUTO_E_1"] = [=[This is |cff00ff00your companion main information|r.
+Den gesamten Inhalt des Profils %s mit den importierten Daten überschreiben?]=],
+		["PR_PROFILEMANAGER_RENAME"] = "Profil umbenennen",
+		["PR_PROFILEMANAGER_SWITCH"] = "Profil auswählen",
+		["PR_PROFILEMANAGER_TITLE"] = "Charakterprofile",
+		["PR_PROFILES"] = "Profile",
+		["PR_SLASH_SWITCH_HELP"] = [=[
+Wechsel zu einem anderen Profil mit seinem Namen.]=],
+		["PR_UNUSED_PROFILE"] = "Dieses Profil ist aktuell an keinen WoW Charakter gebunden.",
+		["REG_COMPANION"] = "Begleiter",
+		["REG_COMPANION_BOUND_TO"] = "Gebunden an ...",
+		["REG_COMPANION_BOUND_TO_TARGET"] = "Ziel",
+		["REG_COMPANION_BOUNDS"] = "Bindungen",
+		["REG_COMPANION_BROWSER_BATTLE"] = "Wildtierbrowser",
+		["REG_COMPANION_BROWSER_MOUNT"] = "Reittierbrowser",
+		["REG_COMPANION_INFO"] = "Information",
+		["REG_COMPANION_LINKED"] = "Der Begleiter %s ist nun verbunden mit dem Profil %s",
+		["REG_COMPANION_LINKED_NO"] = "Der Begleiter %s ist nun nicht mehr mit einem Profil verbunden.",
+		["REG_COMPANION_NAME"] = "Name",
+		["REG_COMPANION_NAME_COLOR"] = "Namensfarbe",
+		["REG_COMPANION_PAGE_TUTO_C_1"] = "Consult",
+		["REG_COMPANION_PAGE_TUTO_E_1"] = [=[Das ist die|cff00ff00 Hauptinformation deines Begleiters|r.
 
-All these information will appear on |cffff9900your companion's tooltip|r.]=],
-	["REG_COMPANION_PAGE_TUTO_E_2"] = [=[This is |cff00ff00your companion description|r.
+All diese Informationen werden |cffff9900im Tooltip deines Begleiters angezeigt|r.]=],
+		["REG_COMPANION_PAGE_TUTO_E_2"] = [=[Das ist die|cff00ff00 Beschreibung deines Charakters|r.
 
-It isn't limited to |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+Es ist nicht auf eine |cffff9900Physische Beschreibung|r limitiert. Deute hier ruhig Teile seiner |cffff9900Hintergrundgeschichte|r oder Details über seine |cffff9900Persönlichkeit|r an.
 
-There are a lot of ways to customize the description.
-You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
-These tools also allow you to insert |cffffff00images, icons or link to external web site|r.]=],
-	["REG_COMPANION_PROFILES"] = "Companions profiles",
-	["REG_COMPANION_TARGET_NO"] = "Your target is not a valid pet, minion, ghoul, mage elemental or a renamed battle pet.",
-	["REG_COMPANION_TF_BOUND_TO"] = "Select a profile",
-	["REG_COMPANION_TF_CREATE"] = "Create new profile",
-	["REG_COMPANION_TF_NO"] = "No profile",
-	["REG_COMPANION_TF_OPEN"] = "Open page",
-	["REG_COMPANION_TF_OWNER"] = "Owner: %s",
-	["REG_COMPANION_TF_PROFILE"] = "Companion profile",
-	["REG_COMPANION_TF_PROFILE_MOUNT"] = "Mount profile",
-	["REG_COMPANION_TF_UNBOUND"] = "Unlink from profile",
-	["REG_COMPANION_TITLE"] = "Title",
-	["REG_COMPANION_UNBOUND"] = "Unbound from ...",
-	["REG_COMPANIONS"] = "Companions",
-	["REG_DELETE_WARNING"] = [=[Are you sure you want to delete %s's profile?
+Es gibt unzählige Wege, die Beschreibung zu personalisieren.
+Du kannst eine |cffffff00Hintergrundtextur|r für die Beschreibung aussuchen. Du kannst ebenfalls die Formatierungstools verwenden, um Dinge wie |cffffff00Schriftgröße, Farbe und Textausrichtung|r anzupassen.
+Diese Tools erlauben dir auch das Einfügen von |cffffff00Bildern, Icons oder Links zu externen Internetseiten|r.]=],
+		["REG_COMPANION_PROFILES"] = "Begleiterprofile",
+		["REG_COMPANION_TARGET_NO"] = "Dein Ziel ist kein gültiges Haustier, Minion, Ghul, Magierlementar oder umbenanntes Kampfhaustier.",
+		["REG_COMPANION_TF_BOUND_TO"] = "Profil auswählen",
+		["REG_COMPANION_TF_CREATE"] = "Neues Profil erstellen",
+		["REG_COMPANION_TF_NO"] = "Kein Profil",
+		["REG_COMPANION_TF_OPEN"] = "Seite öffnen",
+		["REG_COMPANION_TF_OWNER"] = "Owner: %s",
+		["REG_COMPANION_TF_PROFILE"] = "Begleiterprofil",
+		["REG_COMPANION_TF_PROFILE_MOUNT"] = "Reittierprofil",
+		["REG_COMPANION_TF_UNBOUND"] = "Profil abwählen",
+		["REG_COMPANION_TITLE"] = "Titel",
+		["REG_COMPANION_UNBOUND"] = "Entbinden von ...",
+		["REG_COMPANIONS"] = "Begleiter",
+		["REG_DELETE_WARNING"] = [=[Bist du sicher, dass du %s's Profil löschen möchtest?
 ]=],
-	["REG_IGNORE_TOAST"] = "Character ignored",
-	["REG_LIST_ACTIONS_MASS"] = "Action on %s selected profiles",
-	["REG_LIST_ACTIONS_MASS_IGNORE"] = "Ignore profiles",
-	["REG_LIST_ACTIONS_MASS_IGNORE_C"] = [=[This action will add |cff00ff00%s character(s)|r to the ignore list.
+		["REG_IGNORE_TOAST"] = "Charakter wird ignoriert",
+		["REG_LIST_ACTIONS_MASS"] = "Aktion auf %s ausgewählte Profile",
+		["REG_LIST_ACTIONS_MASS_IGNORE"] = "Profile ignorieren",
+		["REG_LIST_ACTIONS_MASS_IGNORE_C"] = [=[Diese Aktion wird |cff00ff00%s Charaktere der Ignorieren Liste hinzufügen.
 
-You can optionally enter the reason below. This is a personal note, it will serves as a reminder.]=],
-	["REG_LIST_ACTIONS_MASS_REMOVE"] = "Remove profiles",
-	["REG_LIST_ACTIONS_MASS_REMOVE_C"] = "This action will remove |cff00ff00%s selected profile(s)|r.",
-	["REG_LIST_ACTIONS_PURGE"] = "Purge register",
-	["REG_LIST_ACTIONS_PURGE_ALL"] = "Remove all profiles",
-	["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[This purge will remove all profiles and linked characters from the directory.
+Optional kann hier ein Grund angegeben werden. Es handelt sich um eine persönliche Notiz, die nur zur Erinnerung dient.]=],
+		["REG_LIST_ACTIONS_MASS_REMOVE"] = "Profile entfernen",
+		["REG_LIST_ACTIONS_MASS_REMOVE_C"] = "Diese Aktion wird |cff00ff00%s ausgewählte/s Profil/e löschen|r.",
+		["REG_LIST_ACTIONS_PURGE"] = "Register entfernen",
+		["REG_LIST_ACTIONS_PURGE_ALL"] = "Alle Profile löschen",
+		["REG_LIST_ACTIONS_PURGE_ALL_C"] = [=[Dies wird alle Profile und verlinkten Charaktere löschen.
 
-|cff00ff00%s characters.]=],
-	["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[This purge will remove all companions from the directory.
+|cff00ff00%s Charaktere.]=],
+		["REG_LIST_ACTIONS_PURGE_ALL_COMP_C"] = [=[Dies wird alle deine Begleiter löschen.
 
-|cff00ff00%s companions.]=],
-	["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s profiles will be removed.",
-	["REG_LIST_ACTIONS_PURGE_EMPTY"] = "No profile to purge.",
-	["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Profiles from ignored characters",
-	["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[This purge will remove all profiles linked to a ignored WoW character.
-
-|cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_TIME"] = "Profiles not seen for 1 month",
-	["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[This purge will remove all profiles whose has not been seen for a month.
+|cff00ff00%s Begleiter.]=],
+		["REG_LIST_ACTIONS_PURGE_COUNT"] = "%s Profile werden gelöscht.",
+		["REG_LIST_ACTIONS_PURGE_EMPTY"] = "Keine Profile zum Löschen.",
+		["REG_LIST_ACTIONS_PURGE_IGNORE"] = "Profile von ignorierten Charakteren",
+		["REG_LIST_ACTIONS_PURGE_IGNORE_C"] = [=[Dies wird alle Profile, die mit ignorierten Charakteren verbunden sind, löschen.
 
 |cff00ff00%s]=],
-	["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Profiles not bounded to a character",
-	["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[This purge will remove all profiles whose are not bounded to a WoW character.
+		["REG_LIST_ACTIONS_PURGE_TIME"] = "Seit 1 Monat nicht mehr gesehene Profile",
+		["REG_LIST_ACTIONS_PURGE_TIME_C"] = [=[Dies wird alle Profile löschen, die seit einem Monat nicht gesehen wurden.
 
 |cff00ff00%s]=],
-	["REG_LIST_ADDON"] = "Profile type",
-	["REG_LIST_CHAR_EMPTY"] = "No character",
-	["REG_LIST_CHAR_EMPTY2"] = "No character matches your selection",
-	["REG_LIST_CHAR_FILTER"] = "Characters: %s / %s",
-	["REG_LIST_CHAR_IGNORED"] = "Ignored",
-	["REG_LIST_CHAR_SEL"] = "Selected character",
-	["REG_LIST_CHAR_TITLE"] = "Character list",
-	["REG_LIST_CHAR_TT"] = "Click to show page",
-	["REG_LIST_CHAR_TT_CHAR"] = "Bounded WoW character(s):",
-	["REG_LIST_CHAR_TT_CHAR_NO"] = "Not bounded to any character",
-	["REG_LIST_CHAR_TT_DATE"] = [=[Last seen date: |cff00ff00%s|r
-Last seen location: |cff00ff00%s|r]=],
-	["REG_LIST_CHAR_TT_GLANCE"] = "At first glance",
-	["REG_LIST_CHAR_TT_IGNORE"] = "Ignored character(s)",
-	["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Unread description",
-	["REG_LIST_CHAR_TT_RELATION"] = [=[Relation:
+		["REG_LIST_ACTIONS_PURGE_UNLINKED"] = "Profile ohne Charakter",
+		["REG_LIST_ACTIONS_PURGE_UNLINKED_C"] = [=[Dies wird alle Profile, die nicht an einen WoW Charakter gebunden sind, löschen.
+
 |cff00ff00%s]=],
-	["REG_LIST_CHAR_TUTO_ACTIONS"] = "This column allows you to select multiple characters and perform an action on all of them.",
-	["REG_LIST_CHAR_TUTO_FILTER"] = [=[You can filter the character list.
+		["REG_LIST_ADDON"] = "Profiltyp",
+		["REG_LIST_CHAR_EMPTY"] = "Kein Charakter",
+		["REG_LIST_CHAR_EMPTY2"] = "Kein Charakter passt zu deiner Auswahl",
+		["REG_LIST_CHAR_FILTER"] = "Charaktere: %s / %s",
+		["REG_LIST_CHAR_IGNORED"] = "Ignoriert",
+		["REG_LIST_CHAR_SEL"] = "Charakter wählen",
+		["REG_LIST_CHAR_TITLE"] = "Charakterliste",
+		["REG_LIST_CHAR_TT"] = "Zum Anzeigen klicken",
+		["REG_LIST_CHAR_TT_CHAR"] = "Gebundene WoW Charakter/e:",
+		["REG_LIST_CHAR_TT_CHAR_NO"] = "Nicht an einen Charakter gebunden",
+		["REG_LIST_CHAR_TT_DATE"] = [=[Zuletzt gesehen: |cff00ff00%s|r
+Wo zuletzt gesehen: |cff00ff00%s|r]=],
+		["REG_LIST_CHAR_TT_GLANCE"] = "Auf den ersten Blick",
+		["REG_LIST_CHAR_TT_IGNORE"] = "Ignorierte Charakter/e",
+		["REG_LIST_CHAR_TT_NEW_ABOUT"] = "Ungelesene Beschreibung",
+		["REG_LIST_CHAR_TT_RELATION"] = [=[Beziehung:
+|cff00ff00%s]=],
+		["REG_LIST_CHAR_TUTO_ACTIONS"] = "Diese Spalte erlabt es dir, mehrere Charaktere auszuwählen, um die selbe Aktion auf diese auszuführen.",
+		["REG_LIST_CHAR_TUTO_FILTER"] = [=[Du kannst nach verschiedenen Kriterien filtern.
 
-The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any bounded WoW characters.
+Der |cff00ff00Namensfilter|r wird nach bestimmten Profilnamen suchen (Vorname + Nachname) sowie nach WoW Charakteren.
 
-The |cff00ff00guild filter|r will search on guild name from bounded WoW characters.
+Der |cff00ff00Gildenfilter|r wird nach Charakteren einer bestimmten Gilde suchen.
 
-The |cff00ff00realm only filter|r will show only profiles bounded to a WoW character of your current realm.]=],
-	["REG_LIST_CHAR_TUTO_LIST"] = [=[The first column shows the character's name.
+Der |cff00ff00Realm Only Filter|r wird nur nach Charakteren auf dem aktuellen Realm suchen.]=],
+		["REG_LIST_CHAR_TUTO_LIST"] = [=[Die erste Spalte zeigt den Charakternamen.
 
-The second column shows the relation between these characters and your current character.
+Die zweite Spalte zeigt die Beziehung zwischen den Charakteren und deinem Charakter.
 
-The last column is for various flags. (ignored ..etc.)]=],
-	["REG_LIST_FILTERS"] = "Filters",
-	["REG_LIST_FILTERS_TT"] = [=[|cffffff00Click:|r Apply filters
-|cffffff00Right-Click:|r Clear filters]=],
-	["REG_LIST_FLAGS"] = "Flags",
-	["REG_LIST_GUILD"] = "Character's guild",
-	["REG_LIST_IGNORE_EMPTY"] = "No ignored character",
-	["REG_LIST_IGNORE_TITLE"] = "Ignored list",
-	["REG_LIST_IGNORE_TT"] = [=[Reason:
+Die letzte Spalte ist für diverse Angaben. (ignoriert ..etc.)]=],
+		["REG_LIST_FILTERS"] = "Filter",
+		["REG_LIST_FILTERS_TT"] = [=[|cffffff00Links-Klick:|r Filter anwenden
+|cffffff00Rechts-Klicken:|r Filter zurücksetzen]=],
+		["REG_LIST_FLAGS"] = "Flags",
+		["REG_LIST_GUILD"] = "Gilde des Charakters",
+		["REG_LIST_IGNORE_EMPTY"] = "Keine ignorierter Charaktere",
+		["REG_LIST_IGNORE_TITLE"] = "Liste ignorierter Charaktere",
+		["REG_LIST_IGNORE_TT"] = [=[Grund:
 |cff00ff00%s
 
-|cffffff00Click to remove from ignore list]=],
-	["REG_LIST_NAME"] = "Character's name",
-	["REG_LIST_NOTIF_ADD"] = "New profile discovered for |cff00ff00%s",
-	["REG_LIST_NOTIF_ADD_CONFIG"] = "New profile discovered",
-	["REG_LIST_NOTIF_ADD_NOT"] = "This profile doesn't exist anymore.",
-	["REG_LIST_PET_MASTER"] = "Master's name",
-	["REG_LIST_PET_NAME"] = "Companion's name",
-	["REG_LIST_PET_TYPE"] = "Companion's type",
-	["REG_LIST_PETS_EMPTY"] = "No companion",
-	["REG_LIST_PETS_EMPTY2"] = "No companion matches your selection",
-	["REG_LIST_PETS_FILTER"] = "Companions: %s / %s",
-	["REG_LIST_PETS_TITLE"] = "Companion list",
-	["REG_LIST_PETS_TOOLTIP"] = "Has been seen on",
-	["REG_LIST_PETS_TOOLTIP2"] = "Has been seen with",
-	["REG_LIST_REALMONLY"] = "This realm only",
-	["REG_MSP_ALERT"] = [=[|cffff0000WARNING
+|cffffff00Klicken, um von der Liste zu streichen]=],
+		["REG_LIST_NAME"] = "Name das Charakters",
+		["REG_LIST_NOTIF_ADD"] = "Neues Profil gefunden für |cff00ff00%s",
+		["REG_LIST_NOTIF_ADD_CONFIG"] = "Neues Profil gefunden",
+		["REG_LIST_NOTIF_ADD_NOT"] = "Dieses Profil existiert nicht mehr.",
+		["REG_LIST_PET_MASTER"] = "Name des Herren",
+		["REG_LIST_PET_NAME"] = "Name des Begleiters",
+		["REG_LIST_PET_TYPE"] = "Typ des Begleiters",
+		["REG_LIST_PETS_EMPTY"] = "Kein/e Begleiter",
+		["REG_LIST_PETS_EMPTY2"] = "Kein Begleiter passt zu deiner Auswahl",
+		["REG_LIST_PETS_FILTER"] = "Begleiter: %s / %s",
+		["REG_LIST_PETS_TITLE"] = "Begleiterliste",
+		["REG_LIST_PETS_TOOLTIP"] = "Wurde gesehen bei",
+		["REG_LIST_PETS_TOOLTIP2"] = "Wurde gesehen mit",
+		["REG_LIST_REALMONLY"] = "Nur dieser Realm",
+		["REG_MSP_ALERT"] = [=[|cffff0000WARNUNG
 
-You can't have simultaneously more than one addon using the Mary Sue Protocol, as they would be in conflict.|r
+Du kannst nicht mehrere Addons nutzen, die das Mary Sue Protocol (MSP) nutzen, da das zu Fehlern führen kann!|r
 
-Currently loaded: |cff00ff00%s
+Aktuell geladen: |cff00ff00%s
 
-|cffff9900Therefore the MSP support for Total RP3 will be disabled.|r
+|cffff9900Deshalb wir der MSP Support für Total RP3 deaktiviert.|r
 
-If you don't want TRP3 to be your MSP addon and don't want to see this alert again, you can disable the Mary Sue Protocol module in the TRP3 Settings -> Module status.]=],
-	["REG_PLAYER"] = "Character",
-	["REG_PLAYER_ABOUT"] = "About",
-	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Add a frame",
-	["REG_PLAYER_ABOUT_EMPTY"] = "No description",
-	["REG_PLAYER_ABOUT_HEADER"] = "Title tag",
-	["REG_PLAYER_ABOUT_MUSIC"] = "Character theme",
-	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Play theme",
-	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Unselect theme",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Select character theme",
-	["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Select theme",
-	["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Stop theme",
-	["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900No theme",
-	["REG_PLAYER_ABOUT_P"] = "Paragraph tag",
-	["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Remove this frame",
-	["REG_PLAYER_ABOUT_SOME"] = "Some text ...",
-	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Your text here",
-	["REG_PLAYER_ABOUT_TAGS"] = "Formatting tools",
-	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unknown theme",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "I don't like this content",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[No characters linked to this profile seem to be online.
-Do you want to force Total RP 3 to send your vote anyway ?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Sending your vote to %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "Your vote has been sent to %s !",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "Your vote is totally anonymous and can only be seen by this player.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "You can vote only if the player is online.",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "I like this content",
-	["REG_PLAYER_ABOUT_VOTES"] = "Statistics",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s like this content
-|cffff0000%s dislike this content]=],
-	["REG_PLAYER_ABOUTS"] = "About %s",
-	["REG_PLAYER_ADD_NEW"] = "Create new",
-	["REG_PLAYER_AGE"] = "Age",
-	["REG_PLAYER_AGE_TT"] = [=[Here you can indicate how old your character is.
+Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal sehen willst, kannst du das Mary Sue Protocol Modul in den TRP3 Einstellungen unter Modul Status deaktivieren.]=],
+		["REG_PLAYER"] = "Charakter",
+		["REG_PLAYER_ABOUT"] = "Über",
+		["REG_PLAYER_ABOUT_ADD_FRAME"] = "Fenster hinzufügen",
+		["REG_PLAYER_ABOUT_EMPTY"] = "Keine Beschreibung",
+		["REG_PLAYER_ABOUT_HEADER"] = "Titeltag",
+		["REG_PLAYER_ABOUT_MUSIC"] = "Charaktersoundtrack",
+		["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Soundtrack abspielen",
+		["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Soundtrack abwählen",
+		["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Charakter Soundtrack wählen",
+		["REG_PLAYER_ABOUT_MUSIC_SELECT2"] = "Soundtrack wählen",
+		["REG_PLAYER_ABOUT_MUSIC_STOP"] = "Soundtrack stoppen",
+		["REG_PLAYER_ABOUT_NOMUSIC"] = "|cffff9900Kein Soundtrack",
+		["REG_PLAYER_ABOUT_P"] = "Paragraph tag",
+		["REG_PLAYER_ABOUT_REMOVE_FRAME"] = "Diese Fenster entfernen",
+		["REG_PLAYER_ABOUT_SOME"] = "Irgendein Text ...",
+		["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Dein Text hier",
+		["REG_PLAYER_ABOUT_TAGS"] = "Formatierungstools",
+		["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unbekannter Soundtrack",
+		["REG_PLAYER_ABOUT_VOTE_DOWN"] = "Ich mag diesen Inhalt nicht.",
+		["REG_PLAYER_ABOUT_VOTE_NO"] = [=[Kein Charakter der mit diesem Profil verbunden ist, scheint online zu sein.
+Möchtest du Total RP 3 trotzdem bewerten lassen?]=],
+		["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Sende deine Bewertung an %s ...",
+		["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "Deine Bewertung wurde an %s gesendet!",
+		["REG_PLAYER_ABOUT_VOTE_TT"] = "Diese Bewertung ist komplett anonym und kann nur vom bewerteten Spieler gesehen werden.",
+		["REG_PLAYER_ABOUT_VOTE_TT2"] = "Du kannst nur bewerten, wenn der Charakter online ist .",
+		["REG_PLAYER_ABOUT_VOTE_UP"] = "Ich mag den Inhalt",
+		["REG_PLAYER_ABOUT_VOTES"] = "Statistiken",
+		["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s Inhalt positiv bewerten
+|cffff0000%s Inhalt negativ bewerten]=],
+		["REG_PLAYER_ABOUTS"] = "Über %s",
+		["REG_PLAYER_ADD_NEW"] = "Neu erstellen",
+		["REG_PLAYER_AGE"] = "Alter",
+		["REG_PLAYER_AGE_TT"] = [=[Hier kannst du angeben, wie alt dein Charakter ist.
 
-There are several way to do this:|c0000ff00
-- Either use years,
-- Or an adjective (Young, Mature, Adult, Venerable, etc.).]=],
-	["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000The total size of your profile is quite big.
-|cffff9900You should reduce it.]=],
-	["REG_PLAYER_BIRTHPLACE"] = "Birthplace",
-	["REG_PLAYER_BIRTHPLACE_TT"] = [=[Here you can indicate the birthplace of your character. This can either be a region, a zone, or even a continent. It's for you to decide how accurate you want to be.
+Hierfür gibt es mehrere Möglichkeiten:|c0000ff00
+- Du kannst Jahre angeben,
+- Oder ein Adjektiv (jung, ausgewachsen, erwachsen, steinalt, etc.).]=],
+		["REG_PLAYER_ALERT_HEAVY_SMALL"] = [=[|cffff0000Dein Profil ist sehr lang.
+|cffff9900Du solltest versuchen, die Länge reduzieren.]=],
+		["REG_PLAYER_BIRTHPLACE"] = "Geburtsort",
+		["REG_PLAYER_BIRTHPLACE_TT"] = [=[Hier kannst du den Geburtsort deines Charakters angeben. Das kann entweder ein Ort, eine Zone oder ein Kontinent sein. Es liegt ganz an dir, wie akkurat du es angeben möchtest.
 
-|c00ffff00You can use the button to the right to easily set your current location as Birthplace.]=],
-	["REG_PLAYER_BKG"] = "Background layout",
-	["REG_PLAYER_BKG_TT"] = "This represents the graphical background to use for your Characteristics layout.",
-	["REG_PLAYER_CARACT"] = "Characteristics",
-	["REG_PLAYER_CHANGE_CONFIRM"] = [=[You may have unsaved data changes.
-Do you want to change page anyway ?
-|cffff9900Any changes will be lost.]=],
-	["REG_PLAYER_CHARACTERISTICS"] = "Characteristics",
-	["REG_PLAYER_CLASS"] = "Class",
-	["REG_PLAYER_CLASS_TT"] = [=[This is your character's custom class.
+|c00ffff00Du kannst den Button rechts verwenden, um ganz einfach den aktuellen Ort als deinen Geburtsort festzulegen.]=],
+		["REG_PLAYER_BKG"] = "Hintergrundlayout",
+		["REG_PLAYER_BKG_TT"] = "Dies repräsentiert den grafischen Hintergrund für dein Charakteristikfenster.",
+		["REG_PLAYER_CARACT"] = "Charakteristiken",
+		["REG_PLAYER_CHANGE_CONFIRM"] = [=[Du hast ungespeicherte Daten.
+Möchtest du die Seite dennoch wechseln?
+|cffff9900Alle änderungen gehen verloren.]=],
+		["REG_PLAYER_CHARACTERISTICS"] = "Charakteristiken",
+		["REG_PLAYER_CLASS"] = "Klasse",
+		["REG_PLAYER_CLASS_TT"] = [=[Die Klasse deines Charakters.
 
-|cff00ff00For instance :|r
-Knight, Pyrotechnist, Necromancer, Elite shooter, Arcanist ...]=],
-	["REG_PLAYER_COLOR_CLASS"] = "Class color",
-	["REG_PLAYER_COLOR_CLASS_TT"] = [=[This will also determines the name color.
+|cff00ff00Zum Beispiel :|r
+Ritter, Pyromane, Nekromant, Eliteschütze, Arkanwirker, Magd ...]=],
+		["REG_PLAYER_COLOR_CLASS"] = "Klassenfarbe",
+		["REG_PLAYER_COLOR_CLASS_TT"] = [=[Dies bestimmt ebenfalls die Farbe des Charakternamens.
 
 ]=],
-	["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Click:|r Select a color
-|cffffff00Right-click:|r Discard color]=],
-	["REG_PLAYER_CURRENT"] = "Currently",
-	["REG_PLAYER_CURRENT_OOC"] = "This is a OOC information",
-	["REG_PLAYER_CURRENTOOC"] = "Currently (OOC)",
-	["REG_PLAYER_EYE"] = "Eye color",
-	["REG_PLAYER_EYE_TT"] = [=[Here your can indicate the color of your character's eyes.
+		["REG_PLAYER_COLOR_TT"] = [=[|cffffff00Linksklick:|r Wähle eine Farbe
+|cffffff00Rechtsklick:|r Farbe abwählen]=],
+		["REG_PLAYER_CURRENT"] = "Aktuelles",
+		["REG_PLAYER_CURRENT_OOC"] = "Dies ist eine OOC Information.",
+		["REG_PLAYER_CURRENTOOC"] = "Aktuelles (OOC)",
+		["REG_PLAYER_EYE"] = "Augenfarbe",
+		["REG_PLAYER_EYE_TT"] = [=[Hier kannst du die Augenfarbe eintragen.
 
-Keep in mind that, even if your character's face is constantly hidden, that might still be worth mentioning, just in case.]=],
-	["REG_PLAYER_FIRSTNAME"] = "First name",
-	["REG_PLAYER_FIRSTNAME_TT"] = [=[This is your character's first name. This is a mandatory field, so if you don't specify a name, the default character's name (|cffffff00%s|r) will be used.
+Bedenke bitte das, auch wenn dein Charakter ein komplett verhülltes Gesicht hat, es trotzdem sinvoll sein kann die Augenfarbe hier zu erwähnen.]=],
+		["REG_PLAYER_FIRSTNAME"] = "Vorname",
+		["REG_PLAYER_FIRSTNAME_TT"] = [=[Das ist der Vorname deines Charakters. Dies ist ein Freies Feld, wenn du nichts einträgst wird der Spielname (|cffffff00%s|r) deines Charakters benutzt.
 
-You can use a |c0000ff00nickname |r!]=],
-	["REG_PLAYER_FULLTITLE"] = "Full title",
-	["REG_PLAYER_FULLTITLE_TT"] = [=[Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.
+Du kannst einen |c0000ff00Spitznamen|r verwenden!]=],
+		["REG_PLAYER_FULLTITLE"] = "Voller Titel",
+		["REG_PLAYER_FULLTITLE_TT"] = [=[Hier kannst du den Vollen Titel deines Charakter eintragen. Dies kann der komplette volle Titel deines Charakters oder weiter Titel sein.
 
-However, you may want to avoid repetitions, in case there's no additional info to mention.]=],
-	["REG_PLAYER_GLANCE"] = "At first glance",
-	["REG_PLAYER_GLANCE_BAR_DELETED"] = "Group preset |cffff9900%s|r deleted.",
-	["REG_PLAYER_GLANCE_BAR_EMPTY"] = "The preset name can't be empty.",
-	["REG_PLAYER_GLANCE_BAR_LOAD"] = "Group preset",
-	["REG_PLAYER_GLANCE_BAR_LOAD_SAVE"] = "Group presets",
-	["REG_PLAYER_GLANCE_BAR_NAME"] = [=[Please enter the preset name.
+Wie dem auch sei, versuche bitte Wiederholungen zu vermeinden falls es keine weiteren Informationen zu deinem Titel mehr gibt.]=],
+		["REG_PLAYER_GLANCE"] = "Auf den ersten Blick",
+		["REG_PLAYER_GLANCE_BAR_DELETED"] = "Gruppenvoreinstellung |cffff9900%s|r wurde gelöscht.",
+		["REG_PLAYER_GLANCE_BAR_EMPTY"] = "Der Name einer Voreinstellung darf nicht leer sein.",
+		["REG_PLAYER_GLANCE_BAR_LOAD"] = "Gruppenvoreinstellung",
+		["REG_PLAYER_GLANCE_BAR_LOAD_SAVE"] = "Gruppenvoreinstellungen",
+		["REG_PLAYER_GLANCE_BAR_NAME"] = [=[Bitte gibt einen Voreinstellungsnamen ein
 
-|cff00ff00Note: If the name is already used by another group preset, this another group will be replaced.]=],
-	["REG_PLAYER_GLANCE_BAR_SAVE"] = "Save group as a preset",
-	["REG_PLAYER_GLANCE_BAR_SAVED"] = "Group preset |cff00ff00%s|r has been created.",
-	["REG_PLAYER_GLANCE_BAR_TARGET"] = "\"At first glance\" presets",
-	["REG_PLAYER_GLANCE_CONFIG"] = [=[|cff00ff00"At first glance"|r is a set of slots you can use to define important information about this character.
+|cff00ff00Hinweis: Wenn der Name bereits von einer anderen Voreinstellung genutzt wird, wird diese ersetzt.]=],
+		["REG_PLAYER_GLANCE_BAR_SAVE"] = "Speichere diese Gruppe als Voreinstellung.",
+		["REG_PLAYER_GLANCE_BAR_SAVED"] = "Gruppenvoreinstellung |cff00ff00%s|r wurde erstellt.",
+		["REG_PLAYER_GLANCE_BAR_TARGET"] = "\"Auf den ersten Blick\" Voreinstellungen",
+		["REG_PLAYER_GLANCE_CONFIG"] = [=[
+|cffffff00Links-Klick:|r Slot konfigurieren
+|cffffff00Rechts-Klick:|r Slot aktivierung umschalten
+|cffffff00Drag & drop:|r Slots neu anordnen]=],
+		["REG_PLAYER_GLANCE_EDITOR"] = "Slot Editor",
+		["REG_PLAYER_GLANCE_PRESET"] = "Voreinstellung laden",
+		["REG_PLAYER_GLANCE_PRESET_ADD"] = "Vorlage |cff00ff00%s|r erstellt.",
+		["REG_PLAYER_GLANCE_PRESET_ALERT1"] = "Bitte eine Kategorie und einen Namen angeben",
+		["REG_PLAYER_GLANCE_PRESET_CATEGORY"] = "Voreinstellungskategorie",
+		["REG_PLAYER_GLANCE_PRESET_CREATE"] = "Vorlage erstellen",
+		["REG_PLAYER_GLANCE_PRESET_GET_CAT"] = [=[%s
 
-You can use these actions on the slots:
-|cffffff00Click:|r configure slot
-|cffffff00Double-click:|r toggle slot activation
-|cffffff00Right-click:|r slot presets
-|cffffff00Drag & drop:|r reorder slots]=],
-	["REG_PLAYER_GLANCE_EDITOR"] = "Glance editor : Slot %s",
-	["REG_PLAYER_GLANCE_PRESET"] = "Load a preset",
-	["REG_PLAYER_GLANCE_PRESET_ADD"] = "Created preset |cff00ff00%s|r.",
-	["REG_PLAYER_GLANCE_PRESET_ALERT1"] = "You must enter a preset category.",
-	["REG_PLAYER_GLANCE_PRESET_CATEGORY"] = "Preset category",
-	["REG_PLAYER_GLANCE_PRESET_CREATE"] = "Create preset",
-	["REG_PLAYER_GLANCE_PRESET_GET_CAT"] = [=[%s
-
-Please enter the category name for this preset.]=],
-	["REG_PLAYER_GLANCE_PRESET_NAME"] = "Preset name",
-	["REG_PLAYER_GLANCE_PRESET_REMOVE"] = "Removed preset |cff00ff00%s|r.",
-	["REG_PLAYER_GLANCE_PRESET_SAVE"] = "Save information as a preset",
-	["REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"] = "Save as a preset",
-	["REG_PLAYER_GLANCE_PRESET_SELECT"] = "Select a preset",
-	["REG_PLAYER_GLANCE_TITLE"] = "Attribute name",
-	["REG_PLAYER_GLANCE_UNUSED"] = "Unused slot",
-	["REG_PLAYER_GLANCE_USE"] = "Activate this slot",
-	["REG_PLAYER_HEIGHT"] = "Height",
-	["REG_PLAYER_HEIGHT_TT"] = [=[This is your character's height.
-There are several way to do this:|c0000ff00
-- A precise number: 170 cm, 6'5" ...
-- A qualificative: Tall, short ...]=],
-	["REG_PLAYER_HERE"] = "Set position",
-	["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[Current house map coordinates:
+Bitte gib einen Kategoriennamen für diese Vorlage ein.]=],
+		["REG_PLAYER_GLANCE_PRESET_NAME"] = "Voreinstellungsname",
+		["REG_PLAYER_GLANCE_PRESET_REMOVE"] = "Vorlage |cff00ff00%s|r entfernt",
+		["REG_PLAYER_GLANCE_PRESET_SAVE"] = "Informationen als Vorseinstellung speichern",
+		["REG_PLAYER_GLANCE_PRESET_SAVE_SMALL"] = "Als Voreinstellung speichern",
+		["REG_PLAYER_GLANCE_PRESET_SELECT"] = "Voreinstellung auswählen",
+		["REG_PLAYER_GLANCE_TITLE"] = "Attributsname",
+		["REG_PLAYER_GLANCE_UNUSED"] = "Unbenutzer Slot",
+		["REG_PLAYER_GLANCE_USE"] = "Diesen Slot aktivieren",
+		["REG_PLAYER_HEIGHT"] = "Größe",
+		["REG_PLAYER_HEIGHT_TT"] = [=[Die Größe deines Charakters.
+Hierfür gibt es mehrere Möglichkeiten:|c0000ff00
+- Eine komplette Zahl: 170 cm, 1,45 m ...
+- Eine Beschreibung: großgewachsen, klein ...]=],
+		["REG_PLAYER_HERE"] = "Position abfragen",
+		["REG_PLAYER_HERE_HOME_PRE_TT"] = [=[Aktuelle Heimatort-Kartenkoordinaten:
 |cff00ff00%s|r.]=],
-	["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Click|r: Use your current coordinates as your house position.
-|cffffff00Right-click|r: Discard your house position.]=],
-	["REG_PLAYER_HERE_TT"] = "|cffffff00Click|r: Set to your current position",
-	["REG_PLAYER_HISTORY"] = "History",
-	["REG_PLAYER_ICON"] = "Character's icon",
-	["REG_PLAYER_ICON_TT"] = "Select a graphic representation for your character.",
-	["REG_PLAYER_IGNORE"] = "Ignore linked characters (%s)",
-	["REG_PLAYER_IGNORE_WARNING"] = [=[Do you want to ignore those characters ?
+		["REG_PLAYER_HERE_HOME_TT"] = [=[|cffffff00Klick|r: Verwende deine aktuellen Koordinaten als Heimatort-Position.
+|cffffff00Rechtsklick|r: Discard your house position.]=],
+		["REG_PLAYER_HERE_TT"] = "Klicke hier, um deine aktuelle Position abzufragen",
+		["REG_PLAYER_HISTORY"] = "Hintergrund",
+		["REG_PLAYER_ICON"] = "Charaktericon",
+		["REG_PLAYER_ICON_TT"] = "Wähle eine Grafik, die deinen Charakter symbolisiert.",
+		["REG_PLAYER_IGNORE"] = "Ignoriere verlinkte Charaktere (%s)",
+		["REG_PLAYER_IGNORE_WARNING"] = [=[Möchtest du diese Charaktere ignorieren?
 
 |cffff9900%s
 
-|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.]=],
-	["REG_PLAYER_LASTNAME"] = "Last name",
-	["REG_PLAYER_LASTNAME_TT"] = "This is your character's family name.",
-	["REG_PLAYER_LEFTTRAIT"] = "Left attribute",
-	["REG_PLAYER_MISC_ADD"] = "Add an additional field",
-	["REG_PLAYER_MORE_INFO"] = "Additional information",
-	["REG_PLAYER_MSP_HOUSE"] = "House name",
-	["REG_PLAYER_MSP_MOTTO"] = "Motto",
-	["REG_PLAYER_MSP_NICK"] = "Nickname",
-	["REG_PLAYER_NAMESTITLES"] = "Names and titles",
-	["REG_PLAYER_NO_CHAR"] = "No characteristics",
-	["REG_PLAYER_PEEK"] = "Miscellaneous",
-	["REG_PLAYER_PHYSICAL"] = "Physical Description",
-	["REG_PLAYER_PSYCHO"] = "Personality traits",
-	["REG_PLAYER_PSYCHO_Acete"] = "Ascetic",
-	["REG_PLAYER_PSYCHO_ADD"] = "Add a personality trait",
-	["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Attribute name",
-	["REG_PLAYER_PSYCHO_Bonvivant"] = "Bon vivant",
-	["REG_PLAYER_PSYCHO_CHAOTIC"] = "Chaotic",
-	["REG_PLAYER_PSYCHO_Chaste"] = "Chaste",
-	["REG_PLAYER_PSYCHO_Conciliant"] = "Paragon",
-	["REG_PLAYER_PSYCHO_Couard"] = "Spineless",
-	["REG_PLAYER_PSYCHO_CREATENEW"] = "Create a trait",
-	["REG_PLAYER_PSYCHO_Cruel"] = "Brutal",
-	["REG_PLAYER_PSYCHO_CUSTOM"] = "Custom trait",
-	["REG_PLAYER_PSYCHO_Egoiste"] = "Selfish",
-	["REG_PLAYER_PSYCHO_Genereux"] = "Altruistic",
-	["REG_PLAYER_PSYCHO_Impulsif"] = "Impulsive",
-	["REG_PLAYER_PSYCHO_Indulgent"] = "Forgiving",
-	["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "Set the left attribute icon.",
-	["REG_PLAYER_PSYCHO_Loyal"] = "Lawful",
-	["REG_PLAYER_PSYCHO_Luxurieux"] = "Lustful",
-	["REG_PLAYER_PSYCHO_Misericordieux"] = "Gentle ",
-	["REG_PLAYER_PSYCHO_MORE"] = "Add a point to \"%s\"",
-	["REG_PLAYER_PSYCHO_PERSONAL"] = "Personal traits",
-	["REG_PLAYER_PSYCHO_Pieux"] = "Superstitious",
-	["REG_PLAYER_PSYCHO_POINT"] = "Add a point",
-	["REG_PLAYER_PSYCHO_Pragmatique"] = "Renegade",
-	["REG_PLAYER_PSYCHO_Rationnel"] = "Rational",
-	["REG_PLAYER_PSYCHO_Reflechi"] = "Cautious",
-	["REG_PLAYER_PSYCHO_Rencunier"] = "Vindictive",
-	["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "Set the right attribute icon.",
-	["REG_PLAYER_PSYCHO_Sincere"] = "Truthful",
-	["REG_PLAYER_PSYCHO_SOCIAL"] = "Social traits",
-	["REG_PLAYER_PSYCHO_Trompeur"] = "Deceitful",
-	["REG_PLAYER_PSYCHO_Valeureux"] = "Valorous",
-	["REG_PLAYER_RACE"] = "Race",
-	["REG_PLAYER_RACE_TT"] = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes ...",
-	["REG_PLAYER_REGISTER"] = "Directory information",
-	["REG_PLAYER_RESIDENCE"] = "Residence",
-	["REG_PLAYER_RESIDENCE_SHOW"] = "Residence coordinates",
-	["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
+|rOptional kannst du einen Grund angeben. Dies ist eine persönliche Notiz und kann nur von dir eingesehen werden.]=],
+		["REG_PLAYER_LASTNAME"] = "Nachname",
+		["REG_PLAYER_LASTNAME_TT"] = "Dies ist der Familienname deines Charakters.",
+		["REG_PLAYER_LEFTTRAIT"] = "Linkes Attribut",
+		["REG_PLAYER_MISC_ADD"] = "Füge ein weiteres Feld hinzu",
+		["REG_PLAYER_MORE_INFO"] = "Zusätzliche Informationen",
+		["REG_PLAYER_MSP_HOUSE"] = "Hausname",
+		["REG_PLAYER_MSP_MOTTO"] = "Motto",
+		["REG_PLAYER_MSP_NICK"] = "Spitzname",
+		["REG_PLAYER_NAMESTITLES"] = "Namen und Titel",
+		["REG_PLAYER_NO_CHAR"] = "Keine Charakterstik",
+		["REG_PLAYER_PEEK"] = "Verschiedenes",
+		["REG_PLAYER_PHYSICAL"] = "Aussehen",
+		["REG_PLAYER_PSYCHO"] = "Persönliche Merkmale",
+		["REG_PLAYER_PSYCHO_Acete"] = "Asketisch",
+		["REG_PLAYER_PSYCHO_ADD"] = "Personliches Merkmal hinzufügen",
+		["REG_PLAYER_PSYCHO_ATTIBUTENAME_TT"] = "Attributsname",
+		["REG_PLAYER_PSYCHO_Bonvivant"] = "Lebemann",
+		["REG_PLAYER_PSYCHO_CHAOTIC"] = "Chaotisch",
+		["REG_PLAYER_PSYCHO_Chaste"] = "Keusch",
+		["REG_PLAYER_PSYCHO_Conciliant"] = "Vorbildlich",
+		["REG_PLAYER_PSYCHO_Couard"] = "Rückgratlos",
+		["REG_PLAYER_PSYCHO_CREATENEW"] = "Erstelle einen Wert",
+		["REG_PLAYER_PSYCHO_Cruel"] = "Brutal",
+		["REG_PLAYER_PSYCHO_CUSTOM"] = "Benutzerdefinierter Wert",
+		["REG_PLAYER_PSYCHO_Egoiste"] = "Egoistisch",
+		["REG_PLAYER_PSYCHO_Genereux"] = "Altruistisch",
+		["REG_PLAYER_PSYCHO_Impulsif"] = "Impulsiv",
+		["REG_PLAYER_PSYCHO_Indulgent"] = "Vergebend",
+		["REG_PLAYER_PSYCHO_LEFTICON_TT"] = "Linkes Attributsicon auswählen.",
+		["REG_PLAYER_PSYCHO_Loyal"] = "Rechtschaffen",
+		["REG_PLAYER_PSYCHO_Luxurieux"] = "Lüstern",
+		["REG_PLAYER_PSYCHO_Misericordieux"] = "Sanft",
+		["REG_PLAYER_PSYCHO_MORE"] = "Punkt zu \"%s\" hinzufügen",
+		["REG_PLAYER_PSYCHO_PERSONAL"] = "Persönliche Werte",
+		["REG_PLAYER_PSYCHO_Pieux"] = "Abergläubisch",
+		["REG_PLAYER_PSYCHO_POINT"] = "Punkt hinzufügen",
+		["REG_PLAYER_PSYCHO_Pragmatique"] = "Abtrünnig",
+		["REG_PLAYER_PSYCHO_Rationnel"] = "Rational",
+		["REG_PLAYER_PSYCHO_Reflechi"] = "Vorsichtig",
+		["REG_PLAYER_PSYCHO_Rencunier"] = "Rachsüchtig",
+		["REG_PLAYER_PSYCHO_RIGHTICON_TT"] = "Rechtes Attributsicon auswählen.",
+		["REG_PLAYER_PSYCHO_Sincere"] = "Ehrlich",
+		["REG_PLAYER_PSYCHO_SOCIAL"] = "Soziale Werte",
+		["REG_PLAYER_PSYCHO_Trompeur"] = "Unehrlich",
+		["REG_PLAYER_PSYCHO_Valeureux"] = "Tapfer",
+		["REG_PLAYER_RACE"] = "Rasse",
+		["REG_PLAYER_RACE_TT"] = "Hier gehört die Rasse des Charakters rein. Die Rasse muss nicht der Spielrasse entsprechen. Es gibt im Warcraft-Universum genügend Kreaturen, die sich ähnlich sehen.",
+		["REG_PLAYER_REGISTER"] = "Registerinformationen",
+		["REG_PLAYER_RESIDENCE"] = "Heimat",
+		["REG_PLAYER_RESIDENCE_SHOW"] = "Wohnort Koordinaten",
+		["REG_PLAYER_RESIDENCE_SHOW_TT"] = [=[|cff00ff00%s
 
-|rClick to show on map]=],
-	["REG_PLAYER_RESIDENCE_TT"] = [=[Here you can indicate where you character normally lives. This could be their personal address (their home) or a place they can crash.
-Note that if your character is a wanderer or even homeless, you will need to change the information accordingly.
+|rZum Anzeigen auf Karte klicken]=],
+		["REG_PLAYER_RESIDENCE_TT"] = [=[Hier kannst du angeben, wo dein Charakter normalerweise lebt. Das kann eine genaue Adresse sein (dein Heim) oder einfach der Ort oder die Region, in der dein Charakter lebt.
+Wenn dein Charakter obdachlos ist oder durch die Welt streift, dann denke daran, die Informationen anzupassen.
 
-|c00ffff00You can use the button to the right to easily set your current location as Residence.]=],
-	["REG_PLAYER_RIGHTTRAIT"] = "Right attribute",
-	["REG_PLAYER_SHOWMISC"] = "Show miscellaneous frame",
-	["REG_PLAYER_SHOWMISC_TT"] = [=[Check if you want to show custom fields for your character.
+|c00ffff00Du kannst den rechten Button verwenden, um ganz einfach den aktuellen Ort als deinen Geburtsort festzulegen.]=],
+		["REG_PLAYER_RIGHTTRAIT"] = "Rechtes Attribut",
+		["REG_PLAYER_SHOWMISC"] = "Zeige Sonstiges Frame",
+		["REG_PLAYER_SHOWMISC_TT"] = [=[Anwählen, wenn du benutzerdefinierte Felder auf deinem Charakter anzeigen möchtest.
 
-If you don't want to show custom fields, keep this box unchecked and the miscellaneous frame will remain totally hidden.]=],
-	["REG_PLAYER_SHOWPSYCHO"] = "Show personality frame",
-	["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Check if you want to use the personality description.
+Wenn du die benutzerdefinierten Felder nicht angezeigt haben willst lasse das Häkchen weg und das Sonstiges Frame wird komplett deaktiviert.]=],
+		["REG_PLAYER_SHOWPSYCHO"] = "Zeige Persönlichkeitsfenster",
+		["REG_PLAYER_SHOWPSYCHO_TT"] = [=[Anwählen, wenn du die Persönlichkeitsbeschreibung nutzen möchtest.
 
-If you don't want to indicate your character's personality this way, keep this box unchecked and the personality frame will remain totally hidden.]=],
-	["REG_PLAYER_STYLE_ASSIST"] = "Roleplay assistance",
-	["REG_PLAYER_STYLE_BATTLE"] = "Roleplay battle resolution",
-	["REG_PLAYER_STYLE_BATTLE_1"] = "World of warcraft PVP",
-	["REG_PLAYER_STYLE_BATTLE_2"] = "TRP roll battle",
-	["REG_PLAYER_STYLE_BATTLE_3"] = "/roll battle",
-	["REG_PLAYER_STYLE_BATTLE_4"] = "Emote battle",
-	["REG_PLAYER_STYLE_DEATH"] = "Accept character death",
-	["REG_PLAYER_STYLE_EMPTY"] = "No roleplay attribute shared",
-	["REG_PLAYER_STYLE_FREQ"] = "In-character frequence",
-	["REG_PLAYER_STYLE_FREQ_1"] = "Full-time, no OOC",
-	["REG_PLAYER_STYLE_FREQ_2"] = "Most of the time",
-	["REG_PLAYER_STYLE_FREQ_3"] = "Mid-time",
-	["REG_PLAYER_STYLE_FREQ_4"] = "Casual",
-	["REG_PLAYER_STYLE_FREQ_5"] = "Full-time OOC, not a RP character",
-	["REG_PLAYER_STYLE_GUILD"] = "Guild membership",
-	["REG_PLAYER_STYLE_GUILD_IC"] = "IC membership",
-	["REG_PLAYER_STYLE_GUILD_OOC"] = "OOC membership",
-	["REG_PLAYER_STYLE_HIDE"] = "Do not show",
-	["REG_PLAYER_STYLE_INJURY"] = "Accept character injury",
-	["REG_PLAYER_STYLE_PERMI"] = "With player permission",
-	["REG_PLAYER_STYLE_ROMANCE"] = "Accept character romance",
-	["REG_PLAYER_STYLE_RPSTYLE"] = "Roleplay style",
-	["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP style",
-	["REG_PLAYER_STYLE_WOWXP"] = "World of Warcraft experience",
-	["REG_PLAYER_TITLE"] = "Title",
-	["REG_PLAYER_TITLE_TT"] = [=[Your character's title is the title by which your character is usually called. Avoid long titles, as for those should you use the Full title attribute bellow.
+Wenn du die Persönlichkeit deines Charakter auf diese Art nicht angeben möchtest, dann wähle die Option nicht aus und das Persönlichkeitsfenster wird nicht angezeigt werden.]=],
+		["REG_PLAYER_STYLE_ASSIST"] = "Rollenspielassistenz",
+		["REG_PLAYER_STYLE_BATTLE"] = "RP-Kampfstil",
+		["REG_PLAYER_STYLE_BATTLE_1"] = "World of Warcraft PVP",
+		["REG_PLAYER_STYLE_BATTLE_2"] = "TRP Würfelkampf",
+		["REG_PLAYER_STYLE_BATTLE_3"] = "/würfeln Kampf",
+		["REG_PLAYER_STYLE_BATTLE_4"] = "Emotekampf",
+		["REG_PLAYER_STYLE_DEATH"] = "Akzeptiere Charaktertod",
+		["REG_PLAYER_STYLE_EMPTY"] = "Kein Rollenspielattribut geteilt",
+		["REG_PLAYER_STYLE_FREQ"] = "In-Character Häufigkeit",
+		["REG_PLAYER_STYLE_FREQ_1"] = "Vollzeit, kein OOC",
+		["REG_PLAYER_STYLE_FREQ_2"] = "Die meiste Zeit",
+		["REG_PLAYER_STYLE_FREQ_3"] = "Gelegentlich",
+		["REG_PLAYER_STYLE_FREQ_4"] = "Gewöhnlich",
+		["REG_PLAYER_STYLE_FREQ_5"] = "Vollzeit OOC, kein RP Charakter",
+		["REG_PLAYER_STYLE_GUILD"] = "Gildenmitgliedschaft",
+		["REG_PLAYER_STYLE_GUILD_IC"] = "IC Mitglied",
+		["REG_PLAYER_STYLE_GUILD_OOC"] = "OOC Mitglied",
+		["REG_PLAYER_STYLE_HIDE"] = "Nicht anzeigen",
+		["REG_PLAYER_STYLE_INJURY"] = "Akzeptiere Charakterverletzungen",
+		["REG_PLAYER_STYLE_PERMI"] = "Mit Spielererlaubnis",
+		["REG_PLAYER_STYLE_ROMANCE"] = "Akzeptiere Charakterromanze",
+		["REG_PLAYER_STYLE_RPSTYLE"] = "Rollenspielstil",
+		["REG_PLAYER_STYLE_RPSTYLE_SHORT"] = "RP Stil",
+		["REG_PLAYER_STYLE_WOWXP"] = "World of Warcraft Erfahrung",
+		["REG_PLAYER_TITLE"] = "Titel",
+		["REG_PLAYER_TITLE_TT"] = [=[Der Titel deines Charakters ist der Titel, mit dem er angesprochen wird. Vermeide bitte lange Titel, für diesen Zweck kannst du das Feld "Kompletter Titel" verwenden.
 
-Example of |c0000ff00appropriate titles |r:
-|c0000ff00- Countess,
-- Marquis,
-- Magus,
+Beispiele |c0000ff00passender Titel |r:
+|c0000ff00- Graf,
+- Vogt,
+- Magier,
 - Lord,
 - etc.
-|rExample of |cffff0000inappropriate titles|r:
-|cffff0000- Countess of the North Marshes,
-- Magus of the Stormwind Tower,
-- Diplomat for the Draenei Government,
+|rBeispiele |cffff0000unpassender Titel|r:
+|cffff0000- Graf der Nordmarschen,
+- Erzmagier des Zirkels von Sturmwind,
+- Diplomat der Draenei,
 - etc.]=],
-	["REG_PLAYER_TRP2_PIERCING"] = "Piercings",
-	["REG_PLAYER_TRP2_TATTOO"] = "Tattoos",
-	["REG_PLAYER_TRP2_TRAITS"] = "Physiognomy",
-	["REG_PLAYER_TUTO_ABOUT_COMMON"] = [=[|cff00ff00Character theme:|r
-You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
+		["REG_PLAYER_TRP2_PIERCING"] = "Piercings",
+		["REG_PLAYER_TRP2_TATTOO"] = "Tattoos",
+		["REG_PLAYER_TRP2_TRAITS"] = "Gesichtzüge",
+		["REG_PLAYER_TUTO_ABOUT_COMMON"] = [=[|cff00ff00Charaktersoundtrack:|r
+Du kannst einen |cffffff00Soundtrack|r für deinen Charakter aussuchen. Stell es dir als |cffffff00Hintergundmusik beim Lesen deiner Charakterbeschreibung vor|r.
 
-|cff00ff00Background:|r
-This is a |cffffff00background texture|r for your character description.
+|cff00ff00Hintergund:|r
+Dies ist eine |cffffff00Hintergrundtextur|r für deine Charakterbeschreibung.
 
 |cff00ff00Template:|r
-The chosen template defines |cffffff00the general layout and writing possibilities|r for your description.
-|cffff9900Only the selected template is visible by others, so you don't have to fill them all.|r
-Once a template is selected, you can open this tutorial again to have more help about each template.]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[This section provides you |cffffff005 slots|r with which you can describe |cff00ff00the most important pieces of information about your character|r.
+Das gewählte Template gibt Auskunft über |cffffff00das generelle Aussehen und die Schriftmöglichkeiten|r deiner Beschreibung.
+|cffff9900Nur das ausgewählte Template ist für andere sichtbar. Du musst also nicht alle ausfüllen.|r
+Sobald ein Template ausgewählt ist, kannst du das Tutorial nochmals öffnen, um dir Hilfe zu jedem Template anzeigen zu lassen.]=],
+		["REG_PLAYER_TUTO_ABOUT_MISC_1"] = [=[Dieser Teil stellt dir|cffffff005 Slots|r zur Verfügung, in denen du die |cff00ff00wichtigsten Informationen zu deinem Charakter|r beschreiben kannst.
 
-These slots will be visible on the |cffffff00"At first glance bar"|r when someone selects your character.
+Die Slots sind in |cffffff00"Auf den ersten Blick"|r ersichtlich wenn jemand deinen Charakter anwählt.
 
-|cff00ff00Hint: You can drag & drop slots to reorder them.|r
-It also works on the |cffffff00"At first glance bar"|r!]=],
-	["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "This section contains |cffffff00a list of flags|r to answer a lot of |cffffff00common questions people could ask about you, your character and the way you want to play him/her|r.",
-	["REG_PLAYER_TUTO_ABOUT_T1"] = [=[This template allows you to |cff00ff00freely structure your description|r.
+|cff00ff00Hinweis: Du kannst die Slots per Drag&Drop neu anordnen.|r
+Das funktioniert auch in der Sektion |cffffff00"Auf den ersten Blick"|r!]=],
+		["REG_PLAYER_TUTO_ABOUT_MISC_3"] = "Dieser Teil enthält |cffffff00eine Liste von Informationen|r, die eine Menge |cffffff00einfache Fragen zu der Art, wie du deinen Charakter spielst, beantwortet|r.",
+		["REG_PLAYER_TUTO_ABOUT_T1"] = [=[Dieses Template erlaubt dir deine |cff00ff00Beschreibung frei zu gestalten|r.
 
-The description doesn't have to be limited to your character |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+Die Beschreibung muss nicht auf die |cffff9900physische Beschreibung|r deines Charakters beschränkt sein. Gibt ruhig Teile seines |cffff9900Hintergrundes|r oder Details zu seiner |cffff9900Persönlichkeit|r an.
 
-With this template you can use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
-These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]=],
-	["REG_PLAYER_TUTO_ABOUT_T2"] = [=[This template is more structured and consist of |cff00ff00a list of independant frames|r.
+Mit diesem Template hast du Zugriff auf die Formatierungstools, um beispielsweise |cffffff00Schriftgröße, Farben und Ausrichtung|r zu beeinflussen.
+Diese Tools erlauben auch das Einfügen von |cffffff00Bildern, Icons oder Links zu externen Internetseiten|r.]=],
+		["REG_PLAYER_TUTO_ABOUT_T2"] = [=[Dieses Template ist ein wenig strukturierter und besteht aus |cff00ff00einer Reihe unabhängiger Fenster|r.
 
-Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.
+Jedes Fenster wird von einem eigenen |cffffff00Icon, einem Hintergrund und eineem Text|r repräsentiert. Beachte das du hier Texttags in diesen Fenstern nutzen kannst, genauso kannst du auch Farb- oder Icon-Tags verwenden.
 
-The description doesn't have to be limited to your character |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.]=],
-	["REG_PLAYER_TUTO_ABOUT_T3"] = [=[This template is cut in 3 sections: |cff00ff00Physical description, personality and history|r.
+Die Beschreibung muss nicht auf die |cffff9900physische Beschreibung|r deines Charakters beschränkt sein. Gibt ruhig Teile seines |cffff9900Hintergrundes|r oder Details zu seiner |cffff9900Persönlichkeit|r an.]=],
+		["REG_PLAYER_TUTO_ABOUT_T3"] = [=[Dieses Template ist in 3 Teile unterteilt: |cff00ff00Die Physische Beschreibung, Persönlichkeit und Hintergrundgeschichte|r.
 
-You don't have to fill all the frames, |cffff9900if you leave an empty frame it won't be shown on your description|r.
+Du musst nicht alle Fenster ausfüllen, |cffff9900wenn du eines frei läßt wird es in deiner Beschreibung einfach nicht angezeigt|r.
 
-Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.]=],
-	["REG_PLAYER_WEIGHT"] = "Body shape",
-	["REG_PLAYER_WEIGHT_TT"] = [=[This is your character's body shape.
-For instance they could be |c0000ff00slim, fat or muscular...|r Or they could simply be regular !]=],
-	["REG_REGISTER"] = "Directory",
-	["REG_REGISTER_CHAR_LIST"] = "Characters list",
-	["REG_RELATION"] = "Relationship",
-	["REG_RELATION_BUSINESS"] = "Business",
-	["REG_RELATION_BUSINESS_TT"] = "%s and %s are in a business relationship.",
-	["REG_RELATION_BUTTON_TT"] = [=[Relation: %s
+Jedes Fenster wird von einem eigenen |cffffff00Icon, einem Hintergrund und einem Text|r repräsentiert. Beachte das du hier Texttags in diesen Fenstern nutzen kannst, genauso kannst du auch Farb- oder Icon-Tags verwenden.]=],
+		["REG_PLAYER_WEIGHT"] = "Körperform",
+		["REG_PLAYER_WEIGHT_TT"] = [=[Dies ist die Körperform deines Charakters.
+Zum Beispiel kann du folgendes angeben |c0000ff00schlank, dick or muskulös...|r oder einfach durchschnittlich!]=],
+		["REG_REGISTER"] = "Register",
+		["REG_REGISTER_CHAR_LIST"] = "Charakterliste",
+		["REG_RELATION"] = "Beziehung",
+		["REG_RELATION_BUSINESS"] = "Geschäftlich",
+		["REG_RELATION_BUSINESS_TT"] = "%s und %s haben eine Geschäftsbeziehung.",
+		["REG_RELATION_BUTTON_TT"] = [=[Beziehung: %s
 |cff00ff00%s
 
-|cffffff00Click to display possible actions]=],
-	["REG_RELATION_FAMILY"] = "Family",
-	["REG_RELATION_FAMILY_TT"] = "%s shares blood bound with %s.",
-	["REG_RELATION_FRIEND"] = "Friendly",
-	["REG_RELATION_FRIEND_TT"] = "%s considers %s a friend.",
-	["REG_RELATION_LOVE"] = "Love",
-	["REG_RELATION_LOVE_TT"] = "%s is in love with %s !",
-	["REG_RELATION_NEUTRAL"] = "Neutral",
-	["REG_RELATION_NEUTRAL_TT"] = "%s doesn't feel anything particular toward %s.",
-	["REG_RELATION_NONE"] = "None",
-	["REG_RELATION_NONE_TT"] = "%s doesn't know %s.",
-	["REG_RELATION_TARGET"] = "|cffffff00Click: |rChange relation",
-	["REG_RELATION_UNFRIENDLY"] = "Unfriendly",
-	["REG_RELATION_UNFRIENDLY_TT"] = "%s clearly doesn't like %s.",
-	["REG_TT_GUILD"] = "%s of |cffff9900%s",
-	["REG_TT_GUILD_IC"] = "IC member",
-	["REG_TT_GUILD_OOC"] = "OOC member",
-	["REG_TT_IGNORED"] = "< Character is ignored >",
-	["REG_TT_IGNORED_OWNER"] = "< Owner is ignored >",
-	["REG_TT_LEVEL"] = "Level %s %s",
-	["REG_TT_NOTIF"] = "Unread description",
-	["REG_TT_REALM"] = "Realm: |cffff9900%s",
-	["REG_TT_TARGET"] = "Target: |cffff9900%s",
-	["SCRIPT_ERROR"] = "Error in script.",
-	["SCRIPT_UNKNOWN_EFFECT"] = "Script error, unknown FX",
-	["TB_AFK_MODE"] = "Away",
-	["TB_DND_MODE"] = "Do not disturb",
-	["TB_GO_TO_MODE"] = "Switch to %s mode",
-	["TB_LANGUAGE"] = "Language",
-	["TB_LANGUAGES_TT"] = "Change language",
-	["TB_NORMAL_MODE"] = "Normal",
-	["TB_RPSTATUS_OFF"] = "Character: |cffff0000Out of character",
-	["TB_RPSTATUS_ON"] = "Character: |cff00ff00In character",
-	["TB_RPSTATUS_TO_OFF"] = "Go |cffff0000out of character",
-	["TB_RPSTATUS_TO_ON"] = "Go |cff00ff00in character",
-	["TB_STATUS"] = "Player",
-	["TB_SWITCH_CAPE_1"] = "Show cloak",
-	["TB_SWITCH_CAPE_2"] = "Hide cloak",
-	["TB_SWITCH_CAPE_OFF"] = "Cloak: |cffff0000Hidden",
-	["TB_SWITCH_CAPE_ON"] = "Cloak: |cff00ff00Shown",
-	["TB_SWITCH_HELM_1"] = "Show helmet",
-	["TB_SWITCH_HELM_2"] = "Hide helmet",
-	["TB_SWITCH_HELM_OFF"] = "Helm: |cffff0000Hidden",
-	["TB_SWITCH_HELM_ON"] = "Helm: |cff00ff00Shown",
-	["TB_SWITCH_PROFILE"] = "Switch to another profile",
-	["TB_SWITCH_TOOLBAR"] = "Switch toolbar",
-	["TB_TOOLBAR"] = "Toolbar",
-	["TF_IGNORE"] = "Ignore player",
-	["TF_IGNORE_CONFIRM"] = [=[Are you sure you want to ignore this ID ?
+|cffffff00Klicke, um mögliche Aktionen zu wählen]=],
+		["REG_RELATION_FAMILY"] = "Familie",
+		["REG_RELATION_FAMILY_TT"] = "%s hat Blutsbande mit %s.",
+		["REG_RELATION_FRIEND"] = "Freundlich",
+		["REG_RELATION_FRIEND_TT"] = "%s nennt %s einen Freund.",
+		["REG_RELATION_LOVE"] = "Liebe",
+		["REG_RELATION_LOVE_TT"] = "%s ist in %s verliebt!",
+		["REG_RELATION_NEUTRAL"] = "Neutral",
+		["REG_RELATION_NEUTRAL_TT"] = "%s hat keine spezielle Beziehung zu %s.",
+		["REG_RELATION_NONE"] = "Keine",
+		["REG_RELATION_NONE_TT"] = "%s kennt %s nicht.",
+		["REG_RELATION_TARGET"] = "|cffffff00Klick: |rBeziehung ändern",
+		["REG_RELATION_UNFRIENDLY"] = "Unfreundlich",
+		["REG_RELATION_UNFRIENDLY_TT"] = "%s mag %s offensichtlich nicht.",
+		["REG_TT_GUILD"] = "%s von |cffff9900%s",
+		["REG_TT_GUILD_IC"] = "IC Mitglied",
+		["REG_TT_GUILD_OOC"] = "OOC Mitglied",
+		["REG_TT_IGNORED"] = "< Charakter ist ignoriert >",
+		["REG_TT_IGNORED_OWNER"] = "< Besitzer ist ignoriert >",
+		["REG_TT_LEVEL"] = "Level %s %s",
+		["REG_TT_NOTIF"] = "Ungelesene Beschreibung",
+		["REG_TT_REALM"] = "Realm: |cffff9900%s",
+		["REG_TT_TARGET"] = "Ziel: |cffff9900%s",
+		["SCRIPT_ERROR"] = "Fehler im Script.",
+		["SCRIPT_UNKNOWN_EFFECT"] = "Scriptfehler, unbekannte FX",
+		["TB_AFK_MODE"] = "AFK",
+		["TB_DND_MODE"] = "Nicht stören (DnD)",
+		["TB_GO_TO_MODE"] = "Zu %s Modus wechseln",
+		["TB_LANGUAGE"] = "Sprache",
+		["TB_LANGUAGES_TT"] = "Sprache wechseln",
+		["TB_NORMAL_MODE"] = "Normal",
+		["TB_RPSTATUS_OFF"] = "Charakter: |cffff0000Out of Character (OOC)",
+		["TB_RPSTATUS_ON"] = "Charakter: |cff00ff00In Character (IC)",
+		["TB_RPSTATUS_TO_OFF"] = "Zu |cffff0000Out of Character|r wechseln",
+		["TB_RPSTATUS_TO_ON"] = "Zu |cff00ff00In Character|r wechseln",
+		["TB_STATUS"] = "Spieler",
+		["TB_SWITCH_CAPE_1"] = "Zeige Umhang",
+		["TB_SWITCH_CAPE_2"] = "Verstecke Umhang",
+		["TB_SWITCH_CAPE_OFF"] = "Umhang: |cffff0000Versteckt",
+		["TB_SWITCH_CAPE_ON"] = "Umhang: |cff00ff00Angezeigt",
+		["TB_SWITCH_HELM_1"] = "Zeige Helm",
+		["TB_SWITCH_HELM_2"] = "Verstecke Helm",
+		["TB_SWITCH_HELM_OFF"] = "Helm: |cffff0000Versteckt",
+		["TB_SWITCH_HELM_ON"] = "Helm: |cff00ff00Angezeigt",
+		["TB_SWITCH_PROFILE"] = "Zu einem anderen Profil wechseln",
+		["TB_SWITCH_TOOLBAR"] = "Toolbar umschalten",
+		["TB_TOOLBAR"] = "Toolbar",
+		["TF_IGNORE"] = "Spieler ignorieren",
+		["TF_IGNORE_CONFIRM"] = [=[Bist du sicher das du die ID ignorieren willst?
 
 |cffffff00%s|r
 
-|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.]=],
-	["TF_IGNORE_NO_REASON"] = "No reason",
-	["TF_IGNORE_TT"] = "|cffffff00Click:|r Ignore player",
-	["TF_OPEN_CHARACTER"] = "Show character page",
-	["TF_OPEN_COMPANION"] = "Show companion page",
-	["TF_OPEN_MOUNT"] = "Show mount page",
-	["TF_PLAY_THEME"] = "Play character theme",
-	["TF_PLAY_THEME_TT"] = [=[|cffffff00Click:|r Play |cff00ff00%s
-|cffffff00Right-click:|r Stop theme]=],
-	["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
+|cffff7700Du kannst optional angeben, warum die diesen Spieler ignorierst. Dies ist eine persönliche Notiz und kann nicht von anderen Spielern eingesehen werden.]=],
+		["TF_IGNORE_NO_REASON"] = "Kein Grund",
+		["TF_IGNORE_TT"] = "|cffffff00Klicken:|r Spieler ignorieren",
+		["TF_OPEN_CHARACTER"] = "Charakterseite anzeigen",
+		["TF_OPEN_COMPANION"] = "Begleiterseite anzeigen",
+		["TF_OPEN_MOUNT"] = "Reittierseite anzeigen",
+		["TF_PLAY_THEME"] = "Charaktersoundtrack abspielen",
+		["TF_PLAY_THEME_TT"] = [=[|cffffff00Linksklick:|r Abspielen |cff00ff00%s
+|cffffff00Rechtsklick:|r Stop]=],
+		["THANK_YOU_1"] = [=[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
-{p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
-{p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
+{p:c}{link*http://totalrp3.info*TotalRP3.info}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
 - Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
 
-{h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Our pre-alpha QA team:{/col}
+{h2}{icon:THUMBUP:20} Danksagungen{/h2}
+{col:ffffff}Unser Pre-Alpha QA Team:{/col}
 - Saelora
 - Erzan
 - Calian
@@ -1031,85 +974,48 @@ For instance they could be |c0000ff00slim, fat or muscular...|r Or they could si
 - Alnih
 - 611
 
-{col:ffffff}Thanks to all our friends for their support all these years:{/col}
-- For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
+{col:ffffff}Danke an alle unsere Freunde für Ihre Unterstützung in all diesen Jahren:{/col}
+- Für Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
+- Für Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, und ganz besonders Erzan, Elenna, Caleb, Siana and Adaeria
 
-{col:ffffff}Special thanks to:{/col}
-- Solanya, for helping so many other Total RP 3 users on our Discord server <3
-
-{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
+{col:ffffff}Für die Hilfe die Total RP Gilde auf Kirin Tor (EU) zu erstellen:{/col}
 - Azane
 - Hellclaw
 - Leylou
 
-{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]=],
-	["UI_BKG"] = "Background %s",
-	["UI_CLOSE_ALL"] = "Close all",
-	["UI_COLOR_BROWSER"] = "Color browser",
-	["UI_COLOR_BROWSER_SELECT"] = "Select color",
-	["UI_COMPANION_BROWSER_HELP"] = "Select a battle pet",
-	["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Warning: |rOnly renamed battle pets can be bound to a profile.
+{col:ffffff}Dank an Horionne dafür uns das Magazin Gamer Culte Online #14 mit einem Artikel über Total RP zugesendet zu haben.{/col}]=],
+		["UI_BKG"] = "Hintergrund %s",
+		["UI_CLOSE_ALL"] = "Alle schließen",
+		["UI_COLOR_BROWSER"] = "Farbwähler",
+		["UI_COLOR_BROWSER_SELECT"] = "Farbe auswählen",
+		["UI_COMPANION_BROWSER_HELP"] = "Wähle ein Wildtier",
+		["UI_COMPANION_BROWSER_HELP_TT"] = [=[|cffffff00Warnung: |rNur umbenannte Wildtiere dürfen mit einem Profil verbunden werden.
 
-|cff00ff00This section lists these battle pets only.]=],
-	["UI_FILTER"] = "Filter",
-	["UI_ICON_BROWSER"] = "Icon browser",
-	["UI_ICON_BROWSER_HELP"] = "Copy icon",
-	["UI_ICON_BROWSER_HELP_TT"] = [=[While this frame is open you can |cffffff00ctrl + click|r on a icon to copy its name.
+|cff00ff00Dieser Bereich enthält nur diese Wildtiere.]=],
+		["UI_FILTER"] = "Filter",
+		["UI_ICON_BROWSER"] = "Iconbrowser",
+		["UI_ICON_BROWSER_HELP"] = "Icon kopieren",
+		["UI_ICON_BROWSER_HELP_TT"] = [=[Während dieses Fenter geöffnet ist, kannst du mit |cffffff00ctrl + Klick|r auf ein Icon anwenden, um dessen Namen zu kopieren.
 
-This will works:|cff00ff00
-- On any item in your bags
-- On any icon in the spellbook|r]=],
-	["UI_ICON_SELECT"] = "Select icon",
-	["UI_IMAGE_BROWSER"] = "Image browser",
-	["UI_IMAGE_SELECT"] = "Select image",
-	["UI_LINK_TEXT"] = "Your text here",
-	["UI_LINK_URL"] = "http://your.url.here",
-	["UI_LINK_WARNING"] = [=[Here's the link URL.
-You can copy/paste it in your web browser.
+Das funktioniert:|cff00ff00
+- Mit jedem Item in deinem Inventar
+- Mit jeder Fähigkeit in deinem Zauberbuch|r]=],
+		["UI_ICON_SELECT"] = "Icon auswählen",
+		["UI_IMAGE_BROWSER"] = "Bildbrowser",
+		["UI_IMAGE_SELECT"] = "Bild auswählen",
+		["UI_LINK_TEXT"] = "Dein Text",
+		["UI_LINK_URL"] = "http://deine.url.hier.de",
+		["UI_LINK_WARNING"] = [=[Hier ist die Link URL.
+Du kannst sie per Copy/Paste in deinen Browser kopieren.
 
 |cffff0000!! Disclaimer !!|r
-Total RP is not responsible for links leading to harmful content.]=],
-	["UI_MUSIC_BROWSER"] = "Music browser",
-	["UI_MUSIC_SELECT"] = "Select music",
-	["UI_TUTO_BUTTON"] = "Tutorial mode",
-	["UI_TUTO_BUTTON_TT"] = "Click to toggle on/off the tutorial mode",
-	["WHATS_NEW_11"] = [=[## Improvements
+Total RP ist NICHT für Links verantwortlich, die auf schädlichen oder illegalen Inhalt verweisen!]=],
+		["UI_MUSIC_BROWSER"] = "Musikbrowser",
+		["UI_MUSIC_SELECT"] = "Musik auswählen",
+		["UI_TUTO_BUTTON"] = "Tutorialmodus",
+		["UI_TUTO_BUTTON_TT"] = "Klicke, um den Tutorialmodus ein/aus zu schalten"
+	}
+	--@end-do-not-package@
+};
 
-- The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings (or {link*tooltip_cropping*click here}). If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
-- Emotes starting with a comma |cffD3D3D3,|r are now handled like emotes starting with a |cffD3D3D3's|r, removing the space inserted by the game after the player's name. — [Ticket #100](https://wow.curseforge.com/projects/total-rp-3/issues/100)
-
-
-## Previous change-log, for version 1.2.8
-
-## New features
-
-- Added a new option to show custom player icons in names in the chat {link*chat_settings*Enable} — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
-
-![Interface\AddOns\totalRP3\resources\1_2_8_icons](512,128)
-
-## Added patch 7.2 resources
-
-- Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
-- Added 19 new images from patch 7.2 to insert in your profiles (for a total of 449 images available).
-- Added 124 new musics from patches 7.1 and 7.2 (for a total of 2,868 musics available. Note that the previous music list contained many duplicates that have been cleaned up).
-
-## Bug fixes
-
-- Fixed an error with the keyboard bindings — [Ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89)
-- Fixed an error in the Prat module with non-customized names — [Ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95)
-
-## Other improvements
-
-- Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC) — [Ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88)
-- The profile sanitization option will now also crop unreasonably long texts — [Ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92)
-- Removed code related to our April fools' day joke.
-
-
-]=]
-}
--- CurseForge gives us an output that explicitly declares a table L,
--- so we no longer can insert the output inside our table declaration…
-LOCALE.localeContent = L;
-TRP3_API.locale.registerLocale(LOCALE);
-
+TRP3_API.locale.registerLocale(LOCALE_DE);
