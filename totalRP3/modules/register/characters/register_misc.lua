@@ -272,6 +272,33 @@ function TRP3_API.register.getGlanceIconTextures(dataTab, size)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function sanitizeMisc(structure)
+	local somethingWasSanitized = false;
+	if structure and structure.PE then
+		for i=1, 5 do
+			local index = tostring(i);
+			if structure.PE[index] then
+				local sanitizedTIValue = Utils.str.sanitize(structure.PE[index].TI);
+				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX);
+				if sanitizedTIValue ~= structure.PE[index].TI then
+					structure.PE[index].TI = sanitizedTIValue;
+					somethingWasSanitized = true;
+				end
+				if sanitizedTXValue ~= structure.PE[index].TX then
+					structure.PE[index].TX = sanitizedTXValue;
+					somethingWasSanitized = true;
+				end
+			end
+		end
+	end
+	return somethingWasSanitized;
+end
+TRP3_API.register.ui.sanitizeMisc = sanitizeMisc;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -298,23 +325,9 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 		peekTab.TX = tx;
 	end
 
-	local foundBadCodeInsideProfile = false;
-	if dataTab and dataTab.PE then
-		for i=1, 5 do
-			local index = tostring(i);
-			if dataTab.PE[index] then
-				local sanitizedTIValue = Utils.str.sanitize(dataTab.PE[index].TI);
-				local sanitizedTXValue = Utils.str.sanitize(dataTab.PE[index].TX);
-				if sanitizedTIValue ~= dataTab.PE[index].TI then
-					dataTab.PE[index].TI = sanitizedTIValue;
-					foundBadCodeInsideProfile = true;
-				end
-				if sanitizedTXValue ~= dataTab.PE[index].TX then
-					dataTab.PE[index].TX = sanitizedTXValue;
-					foundBadCodeInsideProfile = true;
-				end
-			end
-		end
+	if sanitizeMisc(dataTab) then
+		-- Yell at the user about their mischieves
+		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
 	end
 
 	-- version increment
@@ -323,11 +336,6 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	compressData();
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
-
-	if foundBadCodeInsideProfile then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
-	end
 
 end
 TRP3_API.register.applyPeekSlot = applyPeekSlot;
@@ -459,22 +467,6 @@ end
 
 function TRP3_API.register.player.getMiscExchangeData()
 	return currentCompressed;
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- SANITIZE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.register.ui.sanitizeMisc(structure)
-	if structure and structure.PE then
-		for i=1, 5 do
-			local index = tostring(i);
-			if structure.PE[index] then
-				structure.PE[index].TI = Utils.str.sanitize(structure.PE[index].TI);
-				structure.PE[index].TX = Utils.str.sanitize(structure.PE[index].TX);
-			end
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -54,6 +54,7 @@ local get = TRP3_API.profile.getData;
 local UnitIsPVP = UnitIsPVP;
 local tcopy = tcopy;
 local type = type;
+local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
@@ -269,20 +270,37 @@ local function saveCharacterInformation(unitID, race, class, gender, faction, ti
 end
 TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
-function TRP3_API.register.sanitizeFullProfile(data)
-	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.characteristics);
-	TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.character);
-	TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.misc);
+local function sanitizeFullProfile(data)
+	local somethingWasSanitizedInsideProfile = false;
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.characteristics) then
+		somethingWasSanitizedInsideProfile = true;
+	end
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.character) then
+		somethingWasSanitizedInsideProfile = true;
+	end
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.misc) then
+		somethingWasSanitizedInsideProfile = true;
+	end
+	return somethingWasSanitizedInsideProfile;
 end
+TRP3_API.register.sanitizeFullProfile = sanitizeFullProfile;
 
 function TRP3_API.register.sanitizeProfile(informationType, data)
+	local somethingWasSanitizedInsideProfile = false;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
-		TRP3_API.register.ui.sanitizeCharacteristics(data);
+		if TRP3_API.register.ui.sanitizeCharacteristics(data) then
+			somethingWasSanitizedInsideProfile = true;
+		end
 	elseif informationType == registerInfoTypes.CHARACTER then
-		TRP3_API.dashboard.sanitizeCharacter(data);
+		if TRP3_API.dashboard.sanitizeCharacter(data) then
+			somethingWasSanitizedInsideProfile = true;
+		end
 	elseif informationType == registerInfoTypes.MISC then
-		TRP3_API.register.ui.sanitizeMisc(data);
+		if TRP3_API.register.ui.sanitizeMisc(data) then
+			somethingWasSanitizedInsideProfile = true;
+		end
 	end
+	return somethingWasSanitizedInsideProfile;
 end
 
 --- Raises error if unknown unitID or unit hasn't profile ID
@@ -551,6 +569,20 @@ local function cleanupProfiles()
 	end
 end
 
+local function cleanupMyProfiles()
+	local atLeastOneProfileWasSanitized = false;
+	-- Get the player's profiles and sanitize them, removing all invalid codes manually inserted
+	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
+		if sanitizeFullProfile(profile) then
+			atLeastOneProfileWasSanitized = true;
+		end
+	end
+	if atLeastOneProfileWasSanitized then
+		-- Yell at the user about their mischieves
+		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -710,6 +742,7 @@ function TRP3_API.register.init()
 		cleanupProfiles();
 		cleanupCharacters();
 		cleanupCompanions();
+		cleanupMyProfiles();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 

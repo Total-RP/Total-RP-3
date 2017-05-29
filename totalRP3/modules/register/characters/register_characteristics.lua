@@ -83,15 +83,26 @@ local FIELDS_TO_SANITIZE = {
 	"RA", "CL", "FN", "LN", "FT", "TI"
 }
 
-function TRP3_API.register.ui.sanitizeCharacteristics(structure)
+---@param structure table
+---@return boolean
+local function sanitizeCharacteristics(structure)
+	local somethingWasSanitized = false;
+
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then
-				structure[field] = Utils.str.sanitize(structure[field]);
+				local sanitizedValue = Utils.str.sanitize(structure[field]);
+				if sanitizedValue ~= structure[field] then
+					structure[field] = sanitizedValue;
+					somethingWasSanitized = true;
+				end
 			end
 		end
 	end
+
+	return somethingWasSanitized
 end
+TRP3_API.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
@@ -357,15 +368,9 @@ local function saveInDraft()
 	draftData.RE = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
 	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
 
-	local foundBadCodeInsideProfile = false;
-	for _, field in pairs(FIELDS_TO_SANITIZE) do
-		if draftData[field] then
-			local sanitizedField = Utils.str.sanitize(draftData[field]);
-			if sanitizedField ~= draftData[field] then
-				draftData[field] = sanitizedField;
-				foundBadCodeInsideProfile = true;
-			end
-		end
+	if sanitizeCharacteristics(draftData) then
+		-- Yell at the user about their mischieves
+		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
 	end
 
 	-- Save psycho values
@@ -387,11 +392,6 @@ local function saveInDraft()
 	for index, miscStructure in pairs(draftData.MI) do
 		miscStructure.VA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "ValueField"]:GetText()) or loc("CM_VALUE");
 		miscStructure.NA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "NameField"]:GetText()) or loc("CM_NAME");
-	end
-
-	if foundBadCodeInsideProfile then
-		-- Yell at the user about their mischieves
-		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
 	end
 
 end
