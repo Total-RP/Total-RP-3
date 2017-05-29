@@ -162,7 +162,7 @@
                 <FontString parentKey="charactersCounter" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
                     <Size x="150" y="30"/>
                     <Anchors>
-                        <Anchor point="RIGHT" x="15"/>
+                        <Anchor point="RIGHT" x="-40"/>
                         <Anchor point="BOTTOM" y="15"/>
                     </Anchors>
                 </FontString>

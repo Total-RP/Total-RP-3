@@ -90,7 +90,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	local MAX_CHARACTERS_PER_MESSAGES = 254;
-	local WARNING_NUMBER_OF_CHARACTERS = 230;
+	local WARNING_NUMBER_OF_CHARACTERS = 239;
 	local NORMAL_COLOR = CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
 	local WARNING_COLOR = CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
 	local ERROR_COLOR = CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
@@ -101,11 +101,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local channel = frame.channelDropdown:GetSelectedValue();
 		local message = frame.messageText.scroll.text:GetText();
 
-		-- The effective number of characters available takes into account the NPC talk prefix characters
-		-- and the channel action message (says:, etc.)
-		local systemCharacters = strconcat(getConfigValue(CONFIG_NPC_TALK_PREFIX), getChannelActionString(channel));
-		local EFFECTIVE_MAX_CHARACTERS = MAX_CHARACTERS_PER_MESSAGES - strlen(systemCharacters);
-
 		local fullMessage = constructMessage(NPCName, channel, message)
 		local numberOfCharactersInMessage = strlen(fullMessage);
 
@@ -115,19 +110,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local color = NORMAL_COLOR;
 		if numberOfCharactersInMessage >= WARNING_NUMBER_OF_CHARACTERS then
 			color = WARNING_COLOR;
-		elseif numberOfCharactersInMessage > WARNING_NUMBER_OF_CHARACTERS then
+		end
+		if numberOfCharactersInMessage > MAX_CHARACTERS_PER_MESSAGES then
 			color = ERROR_COLOR;
-			-- Too many characters, disable send button
+			-- Too many characters, disable send butto
 			SendButton:Disable();
 		end
 
 		-- Always disable send button if the message text is empty
-		if strlen(message) then
+		if strlen(message) == 0 then
 			SendButton:Disable();
 		end
 
 		frame.charactersCounter:SetTextColor(color:GetRGBA())
-		frame.charactersCounter:SetText(strconcat(EFFECTIVE_MAX_CHARACTERS - numberOfCharactersInMessage));
+		frame.charactersCounter:SetText(strconcat(MAX_CHARACTERS_PER_MESSAGES - numberOfCharactersInMessage));
 	end
 
 	local function buildChannelDropdown()
