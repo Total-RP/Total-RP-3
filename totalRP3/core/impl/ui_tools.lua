@@ -31,9 +31,9 @@ local globals = TRP3_API.globals;
 local loc = TRP3_API.locale.getText;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
-local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, Lib_ToggleDropDownMenu;
-local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = Lib_UIDropDownMenu_Initialize, Lib_UIDropDownMenu_CreateInfo, Lib_UIDropDownMenu_AddButton;
-local CloseDropDownMenus = Lib_CloseDropDownMenus;
+local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, L_ToggleDropDownMenu;
+local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = L_UIDropDownMenu_Initialize, L_UIDropDownMenu_CreateInfo, L_UIDropDownMenu_AddButton;
+local CloseDropDownMenus = L_CloseDropDownMenus;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
 local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
@@ -118,7 +118,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
 	end
 
-	if _G["Lib_DropDownList1"]:IsVisible() then
+	if _G["L_DropDownList1"]:IsVisible() then
 		CloseDropDownMenus();
 		return;
 	end

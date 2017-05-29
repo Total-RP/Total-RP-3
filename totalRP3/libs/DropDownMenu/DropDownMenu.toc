@@ -1,4 +1,0 @@
-## Interface: 50400
-## Title: DropDownMenu
-## Author: another
-## Version: 1.1
