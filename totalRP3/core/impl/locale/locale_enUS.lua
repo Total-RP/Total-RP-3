@@ -125,6 +125,7 @@ local LOCALE_EN = {
 		REG_PLAYER_RIGHTTRAIT = "Right attribute",
 		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
 		REG_IGNORE_TOAST = "Character ignored",
+		REG_CODE_INSERTION_WARNING = "We found that you have manually inserted invalid codes inside your Total RP 3 profile. This behavior is not supported and we strongly discourage doing it. It can lead to instabilities in the add-on, data corruption/loss and creates incompatibility issues with other add-ons. The codes you have inserted in your profile have been removed and any cookies we were planning on giving you have been thrown away!",
 		REG_PLAYER_IGNORE = "Ignore linked characters (%s)",
 		REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters ?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
 		REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
