@@ -27,7 +27,6 @@
 	<Include file="LibDBIcon-1.0\LibDBIcon-1.0.lua" />
 
 	<!-- NoTaint UIDropDownMenu -->
-	<Include file="DropDownMenu/UIDropDownMenuTemplates.xml" />
-	<Include file="DropDownMenu/UIDropDownMenu.lua" />
+	<Include file="LibUIDropDownMenu\LibUIDropDownMenu.xml" />
 	
 </Ui>
