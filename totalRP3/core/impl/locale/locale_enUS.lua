@@ -1051,7 +1051,8 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 {col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
 
 		MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
-		MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatilibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips."
+		MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatilibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
+		MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat message and player names are modified by Total RP 3 in that add-on."
 	},
 };
 
