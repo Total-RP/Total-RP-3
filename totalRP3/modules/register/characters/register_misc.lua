@@ -35,6 +35,7 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local showPopup = TRP3_API.popup.showPopup;
 local hasProfile = TRP3_API.register.hasProfile;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
+local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local compressData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -271,6 +272,33 @@ function TRP3_API.register.getGlanceIconTextures(dataTab, size)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function sanitizeMisc(structure)
+	local somethingWasSanitized = false;
+	if structure and structure.PE then
+		for i=1, 5 do
+			local index = tostring(i);
+			if structure.PE[index] then
+				local sanitizedTIValue = Utils.str.sanitize(structure.PE[index].TI);
+				local sanitizedTXValue = Utils.str.sanitize(structure.PE[index].TX);
+				if sanitizedTIValue ~= structure.PE[index].TI then
+					structure.PE[index].TI = sanitizedTIValue;
+					somethingWasSanitized = true;
+				end
+				if sanitizedTXValue ~= structure.PE[index].TX then
+					structure.PE[index].TX = sanitizedTXValue;
+					somethingWasSanitized = true;
+				end
+			end
+		end
+	end
+	return somethingWasSanitized;
+end
+TRP3_API.register.ui.sanitizeMisc = sanitizeMisc;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -296,12 +324,19 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 		peekTab.TI = ti;
 		peekTab.TX = tx;
 	end
+
+	if sanitizeMisc(dataTab) then
+		-- Yell at the user about their mischieves
+		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+	end
+
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 	compressData();
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
+
 end
 TRP3_API.register.applyPeekSlot = applyPeekSlot;
 
@@ -354,6 +389,14 @@ local function onCurrentlyChanged()
 		local character = get("player/character");
 		local old = character.CU;
 		character.CU = TRP3_RegisterMiscViewCurrentlyIC:GetText();
+
+		local sanitizedCU = Utils.str.sanitize(character.CU);
+		if sanitizedCU ~= character.CU then
+			character.CU = sanitizedCU;
+			-- Yell at the user about their mischieves
+			showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+		end
+
 		if old ~= character.CU then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
@@ -366,6 +409,14 @@ local function onOOCInfoChanged()
 		local character = get("player/character");
 		local old = character.CO;
 		character.CO = TRP3_RegisterMiscViewCurrentlyOOC:GetText();
+
+		local sanitizedCO = Utils.str.sanitize(character.CO);
+		if sanitizedCO ~= character.CO then
+			character.CO = sanitizedCO;
+			-- Yell at the user about their mischieves
+			showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+		end
+
 		if old ~= character.CO then
 			character.v = Utils.math.incrementNumber(character.v or 1, 2);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "character");
@@ -416,22 +467,6 @@ end
 
 function TRP3_API.register.player.getMiscExchangeData()
 	return currentCompressed;
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- SANITIZE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.register.ui.sanitizeMisc(structure)
-	if structure and structure.PE then
-		for i=1, 5 do
-			local index = tostring(i);
-			if structure.PE[index] then
-				structure.PE[index].TI = Utils.str.sanitize(structure.PE[index].TI);
-				structure.PE[index].TX = Utils.str.sanitize(structure.PE[index].TX);
-			end
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

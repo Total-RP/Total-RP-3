@@ -45,6 +45,7 @@ local TRP3_RegisterCharact_CharactPanel_Empty = TRP3_RegisterCharact_CharactPane
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
+local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
 local selectMenu = TRP3_API.navigation.menu.selectMenu;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
@@ -73,6 +74,35 @@ getDefaultProfile().player.characteristics = {
 	MI = {},
 	PS = {}
 };
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- SANITIZE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local FIELDS_TO_SANITIZE = {
+	"RA", "CL", "FN", "LN", "FT", "TI"
+}
+
+---@param structure table
+---@return boolean
+local function sanitizeCharacteristics(structure)
+	local somethingWasSanitized = false;
+
+	if structure then
+		for _, field in pairs(FIELDS_TO_SANITIZE) do
+			if structure[field] then
+				local sanitizedValue = Utils.str.sanitize(structure[field]);
+				if sanitizedValue ~= structure[field] then
+					structure[field] = sanitizedValue;
+					somethingWasSanitized = true;
+				end
+			end
+		end
+	end
+
+	return somethingWasSanitized
+end
+TRP3_API.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
@@ -337,6 +367,12 @@ local function saveInDraft()
 	draftData.WE = stEtN(strtrim(TRP3_RegisterCharact_Edit_WeightField:GetText()));
 	draftData.RE = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
 	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
+
+	if sanitizeCharacteristics(draftData) then
+		-- Yell at the user about their mischieves
+		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+	end
+
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do
 		psychoStructure.VA = psychoEditCharFrame[index].VA;
@@ -357,6 +393,7 @@ local function saveInDraft()
 		miscStructure.VA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "ValueField"]:GetText()) or loc("CM_VALUE");
 		miscStructure.NA = stEtN(_G[miscEditCharFrame[index]:GetName() .. "NameField"]:GetText()) or loc("CM_NAME");
 	end
+
 end
 
 local function onPlayerIconSelected(icon)
@@ -801,24 +838,6 @@ end
 local function onSave()
 	saveCharacteristics();
 	showCharacteristicsTab();
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- SANITIZE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local FIELDS_TO_SANITIZE = {
-	"RA", "CL", "FN", "LN", "FT", "TI"
-}
-
-function TRP3_API.register.ui.sanitizeCharacteristics(structure)
-	if structure then
-		for _, field in pairs(FIELDS_TO_SANITIZE) do
-			if structure[field] then
-				structure[field] = Utils.str.sanitize(structure[field]);
-			end
-		end
-	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
