@@ -1048,7 +1048,10 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - Hellclaw
 - Leylou
 
-{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]]
+{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
+
+		MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
+		MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatilibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips."
 	},
 };
 
