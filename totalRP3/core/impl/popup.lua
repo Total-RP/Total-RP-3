@@ -68,6 +68,8 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button2 = CANCEL,
 	OnShow = function(self)
 		_G[self:GetName().."EditBox"]:SetNumeric(false);
+		-- Remove letters limit that other add-ons might have added but not cleaned
+		_G[self:GetName().."EditBox"]:SetMaxLetters(0);
 	end,
 	OnAccept = function(self)
 		if StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept then
