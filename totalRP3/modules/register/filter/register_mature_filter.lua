@@ -116,12 +116,16 @@ local function onStart()
 	-- DICTIONARY MANAGEMENT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if not TRP3_MatureFilter.dictionary then
+	local function resetDictionnary()
 		TRP3_MatureFilter.dictionary = {};
 		-- Insert every word of the default dictionnary
 		for _, word in pairs(TRP3_API.utils.resources.getMatureFilterDictionary()) do
 			TRP3_MatureFilter.dictionary[word] = 1;
 		end
+	end
+
+	if not TRP3_MatureFilter.dictionary then
+		resetDictionnary();
 	end
 
 	---
@@ -299,14 +303,14 @@ local function onStart()
 	--
 	function dictionaryEditor.decorate(lineFrame, word)
 		setTooltipForFrame(
-			lineFrame, lineFrame, "RIGHT", 0, -30, -- Tooltip position
-			word, -- Tooltip title
-			("\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffff0000%s"):format( -- Tooltip content
-				loc("CM_L_CLICK"),
-				loc("MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"),
-				loc("CM_R_CLICK"),
-				loc("MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD")
-			)
+		lineFrame, lineFrame, "RIGHT", 0, -30, -- Tooltip position
+		word, -- Tooltip title
+		("\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffff0000%s"):format( -- Tooltip content
+		loc("CM_L_CLICK"),
+		loc("MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"),
+		loc("CM_R_CLICK"),
+		loc("MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD")
+		)
 		);
 		lineFrame.text:SetText(word);
 		lineFrame.value = word;
@@ -345,7 +349,7 @@ local function onStart()
 			else
 				showWordEditorPopup(lineFrame);
 			end
-		-- RightButton -> Delete the word
+			-- RightButton -> Delete the word
 		elseif mousebutton == "RightButton" then
 			removeWordFromCustomDictionary(lineFrame.value)
 			refreshDictionaryList();
@@ -457,7 +461,6 @@ local function onStart()
 		hidePopups();
 		-- Disable mature profile
 		setConfigValue(MATURE_FILTER_CONFIG, false);
-		-- TODO Refresh settings UI?
 	end);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -515,6 +518,18 @@ local function onStart()
 			end,
 			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
+		-- Reset dictionnary button
+		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigButton",
+			title = loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE"),
+			text = loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON"),
+			callback = function()
+				TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING"), function()
+					resetDictionnary();
+				end);
+			end,
+			dependentOnOptions = {MATURE_FILTER_CONFIG},
+		})
 
 		-- Register our popups to the popup manager
 		TRP3_API.popup.POPUPS["mature_dictionary"] = {
