@@ -676,6 +676,13 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	local targetName = UnitName(targetType);
 	local companionFamily = UnitCreatureType(targetType);
 
+
+	local FIELDS_TO_CROP = {
+		TITLE = 150,
+		NAME  = 100
+	}
+
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -700,7 +707,14 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		end
 	end
 
-	tooltipBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or companionID), 1, 1, 1, getMainLineFontSize());
+	local petName = info.NA
+
+	if getConfigValue(CONFIG_CROP_TEXT) then
+		petName = crop(petName, FIELDS_TO_CROP.NAME);
+	end
+
+
+	tooltipBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (petName or companionID), 1, 1, 1, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -712,6 +726,10 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			fullTitle = strconcat("< ", info.TI, " |r>");
 		end
 		if fullTitle:len() > 0 then
+
+			if getConfigValue(CONFIG_CROP_TEXT) then
+				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+			end
 			tooltipBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
 		end
 	end
@@ -729,6 +747,11 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			local ownerInfo = getCharacterInfoTab(ownerID);
 			if ownerInfo.characteristics then
 				ownerFinalName = getCompleteName(ownerInfo.characteristics, ownerFinalName, true);
+
+				if getConfigValue(CONFIG_CROP_TEXT) then
+					ownerFinalName = crop(ownerFinalName, FIELDS_TO_CROP.NAME);
+				end
+
 				if getConfigValue(CONFIG_CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = Utils.color.getColorFromHexadecimalCode(ownerInfo.characteristics.CH);
 						
@@ -821,6 +844,12 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	local info = profile.data or EMPTY;
 	local PE = profile.PE or EMPTY;
 
+
+	local FIELDS_TO_CROP = {
+		TITLE = 150,
+		NAME  = 100
+	}
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Icon and name
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -833,8 +862,14 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			leftIcons = strconcat(Utils.str.icon(info.IC, 25), leftIcons, " ");
 		end
 	end
+	local mountCustomName = info.NA
 
-	tooltipCompanionBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (info.NA or mountName), 1, 1, 1, getMainLineFontSize());
+	if getConfigValue(CONFIG_CROP_TEXT) then
+		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
+	end
+
+
+	tooltipCompanionBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (mountCustomName or mountName), 1, 1, 1, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -846,6 +881,9 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			fullTitle = strconcat("< ", info.TI, " |r>");
 		end
 		if fullTitle:len() > 0 then
+			if getConfigValue(CONFIG_CROP_TEXT) then
+				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+			end
 			tooltipCompanionBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
 		end
 	end
