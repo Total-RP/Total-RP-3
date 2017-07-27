@@ -33,7 +33,7 @@ local profiles, characters, blackList, whiteList;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
+--[[
 local RELATIONS = {
 	UNFRIENDLY = "UNFRIENDLY",
 	NONE = "NONE",
@@ -42,31 +42,62 @@ local RELATIONS = {
 	FRIEND = "FRIEND",
 	LOVE = "LOVE",
 	FAMILY = "FAMILY"
-}
-TRP3_API.register.relation = RELATIONS;
+} --]] -- todo: add to config
+TRP3_API.register.relation = {};
 
-local RELATIONS_TEXTURES = {
-	[RELATIONS.UNFRIENDLY] = "Ability_DualWield",
-	[RELATIONS.NONE] = "Ability_rogue_disguise",
-	[RELATIONS.NEUTRAL] = "Achievement_Reputation_05",
-	[RELATIONS.BUSINESS] = "Achievement_Reputation_08",
-	[RELATIONS.FRIEND] = "Achievement_Reputation_06",
-	[RELATIONS.LOVE] = "INV_ValentinesCandy",
-	[RELATIONS.FAMILY] = "Achievement_Reputation_07"
+local RELATIONS = {
+	UNFRIENDLY = {
+		name = "UNFRIENDLY",
+		texture = "Ability_DualWield",
+		color = {1, 0, 0;}
+	},
+	NONE = {
+		name = "NONE",
+		texture = "Ability_rogue_disguise",
+		color = {1, 1, 1}
+	},
+	NEUTRAL = {
+		name = "NEUTRAL",
+		texture = "Achievement_Reputation_05",
+		color = {0.5, 0.5, 1}
+	},
+	BUSINESS = {
+		name = "BUSINESS",
+		texture = "Achievement_Reputation_08",
+		color = {1, 1, 0}
+	},
+	FRIEND = {
+		name = "FRIEND",
+		texture = "Achievement_Reputation_06",
+		color = {0, 1, 0}
+	},
+	LOVE = {
+		name = "LOVE",
+		texture = "INV_ValentinesCandy",
+		color = {1, 0.5, 1}
+	},
+	FAMILY = {
+		name = "FAMILY",
+		texture = "Achievement_Reputation_07",
+		color = {1, 0.75, 0}
+	}
 }
+TRP3_API.register.relation.relations = RELATIONS;
+
 
 local function setRelation(profileID, relation)
 	local profile = getPlayerCurrentProfile();
 	if not profile.relation then
 		profile.relation = {};
 	end
-	profile.relation[profileID] = relation;
+	profile.relation[profileID] = relation.name;
 end
 TRP3_API.register.relation.setRelation = setRelation;
 
 local function getRelation(profileID)
 	local relationTab = get("relation") or EMPTY;
-	return relationTab[profileID] or RELATIONS.NONE;
+	local relation = relationTab[profileID] or "NONE";
+	return RELATIONS[relation]
 end
 TRP3_API.register.relation.getRelation = getRelation;
 
@@ -75,37 +106,23 @@ local function getRelationText(profileID)
 	if relation == RELATIONS.NONE then
 		return "";
 	end
-	return loc("REG_RELATION_" .. relation);
+	print(relation);
+	return loc("REG_RELATION_" .. relation.name);
 end
 TRP3_API.register.relation.getRelationText = getRelationText;
 
 local function getRelationTooltipText(profileID, profile)
-	return loc("REG_RELATION_" .. getRelation(profileID) .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
+	return loc("REG_RELATION_" .. getRelation(profileID).name .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
 local function getRelationTexture(profileID)
-	return RELATIONS_TEXTURES[getRelation(profileID)];
+	return getRelation(profileID).texture;
 end
 TRP3_API.register.relation.getRelationTexture = getRelationTexture;
 
 local function getRelationColors(profileID)
-	local relation = getRelation(profileID);
-	if relation == RELATIONS.NONE then
-		return 1, 1, 1;
-	elseif relation == RELATIONS.UNFRIENDLY then
-		return 1, 0, 0;
-	elseif relation == RELATIONS.NEUTRAL then
-		return 0.5, 0.5, 1;
-	elseif relation == RELATIONS.BUSINESS then
-		return 1, 1, 0;
-	elseif relation == RELATIONS.FRIEND then
-		return 0, 1, 0;
-	elseif relation == RELATIONS.LOVE then
-		return 1, 0.5, 1;
-	elseif relation == RELATIONS.FAMILY then
-		return 1, 0.75, 0;
-	end
+	return unpack(getRelation(profileID).color);
 end
 TRP3_API.register.relation.getRelationColors = getRelationColors;
 
@@ -178,13 +195,20 @@ local function onTargetButtonClicked(unitID, _, _, button)
 	local profileID = hasProfile(unitID);
 	local values = {};
 	tinsert(values, {loc("REG_RELATION"), nil});
-	tinsert(values, {loc("REG_RELATION_NONE"), RELATIONS.NONE});
-	tinsert(values, {loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY});
-	tinsert(values, {loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL});
-	tinsert(values, {loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS});
-	tinsert(values, {loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND});
-	tinsert(values, {loc("REG_RELATION_LOVE"), RELATIONS.LOVE});
-	tinsert(values, {loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY});
+	for id, relation in pairs(RELATIONS) do
+		tinsert(values, {relation.humanReadable or loc("REG_RELATION_"..id), id});
+	end
+
+	--[[
+        tinsert(values, {loc("REG_RELATION_NONE"), RELATIONS.NONE});
+        tinsert(values, {loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY});
+        tinsert(values, {loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL});
+        tinsert(values, {loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS});
+        tinsert(values, {loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND});
+        tinsert(values, {loc("REG_RELATION_LOVE"), RELATIONS.LOVE});
+        tinsert(values, {loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY});
+        --]]
+	TRP3_API.utils.table.dump(values);
 	displayDropDown(button, values, onRelationSelected, 0, true);
 end
 
