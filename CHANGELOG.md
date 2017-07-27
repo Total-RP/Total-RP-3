@@ -12,5 +12,5 @@
 - Fixed an issue with the custom WIM integration — [Issue #108](https://wow.curseforge.com/projects/total-rp-3/issues/108)
 - The option to crop unreasonably long text in the tooltips is now also effective on companion tooltips. — [Issue #104](https://wow.curseforge.com/projects/total-rp-3/issues/104)
 - Links are no longer removed from your description when it is sent to other RP add-ons via the Mary Sue Protocol.
-- Updated the libraries used by the add-on the their latest version, including the drop-downs library, in order to fix some issues with the drop-downs.
+- Updated the libraries used by the add-on to their latest versions, including the dropdown library, in order to fix some issues with some dropdowns.
 
