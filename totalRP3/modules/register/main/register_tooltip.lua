@@ -707,7 +707,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		end
 	end
 
-	local petName = info.NA
+	local petName = info.NA or targetName or UNKNOWN;
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
