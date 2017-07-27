@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
 -- Directory : Ignore API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--    ---------------------------------------------------------------------------
+--    Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
+--    Licensed under the Apache License, Version 2.0 (the "License");
+--    you may not use this file except in compliance with the License.
+--    You may obtain a copy of the License at
 --
---		http://www.apache.org/licenses/LICENSE-2.0
+--        http://www.apache.org/licenses/LICENSE-2.0
 --
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--    Unless required by applicable law or agreed to in writing, software
+--    distributed under the License is distributed on an "AS IS" BASIS,
+--    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--    See the License for the specific language governing permissions and
+--    limitations under the License.
 ----------------------------------------------------------------------------------
 
 local Events = TRP3_API.events;
@@ -33,23 +33,16 @@ local profiles, characters, blackList, whiteList;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
---[[
-local RELATIONS = {
-	UNFRIENDLY = "UNFRIENDLY",
-	NONE = "NONE",
-	NEUTRAL = "NEUTRAL",
-	BUSINESS = "BUSINESS",
-	FRIEND = "FRIEND",
-	LOVE = "LOVE",
-	FAMILY = "FAMILY"
-} --]] -- todo: add to config
+
 TRP3_API.register.relation = {};
 
 local RELATIONS = {
 	UNFRIENDLY = {
 		name = "UNFRIENDLY",
 		texture = "Ability_DualWield",
-		color = {1, 0, 0;}
+		color = {1, 0, 0; },
+		humanReadable = false,
+		tooltip = false --set to false to use localization (temporary fix)
 	},
 	NONE = {
 		name = "NONE",
@@ -90,7 +83,10 @@ local function setRelation(profileID, relation)
 	if not profile.relation then
 		profile.relation = {};
 	end
-	profile.relation[profileID] = relation.name;
+	if relation.name then
+		relation = relation.name;
+	end
+	profile.relation[profileID] = relation;
 end
 TRP3_API.register.relation.setRelation = setRelation;
 
@@ -106,13 +102,18 @@ local function getRelationText(profileID)
 	if relation == RELATIONS.NONE then
 		return "";
 	end
-	print(relation);
 	return loc("REG_RELATION_" .. relation.name);
 end
 TRP3_API.register.relation.getRelationText = getRelationText;
 
 local function getRelationTooltipText(profileID, profile)
-	return loc("REG_RELATION_" .. getRelation(profileID).name .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
+	local relation = getRelation(profileID)
+	if relation.tooltip then
+		return relation.tooltip:gsub("%{player%}", getPlayerCompleteName(true)):gsub("%{target%}", getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true))
+	else
+		return loc("REG_RELATION_" .. getRelation(profileID).name .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
+
+	end
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
@@ -196,19 +197,9 @@ local function onTargetButtonClicked(unitID, _, _, button)
 	local values = {};
 	tinsert(values, {loc("REG_RELATION"), nil});
 	for id, relation in pairs(RELATIONS) do
-		tinsert(values, {relation.humanReadable or loc("REG_RELATION_"..id), id});
+		tinsert(values, {relation.humanReadable or loc("REG_RELATION_" .. id), id});
 	end
 
-	--[[
-        tinsert(values, {loc("REG_RELATION_NONE"), RELATIONS.NONE});
-        tinsert(values, {loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY});
-        tinsert(values, {loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL});
-        tinsert(values, {loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS});
-        tinsert(values, {loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND});
-        tinsert(values, {loc("REG_RELATION_LOVE"), RELATIONS.LOVE});
-        tinsert(values, {loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY});
-        --]]
-	TRP3_API.utils.table.dump(values);
 	displayDropDown(button, values, onRelationSelected, 0, true);
 end
 
