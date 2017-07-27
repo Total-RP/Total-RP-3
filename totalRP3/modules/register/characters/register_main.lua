@@ -272,13 +272,13 @@ TRP3_API.register.saveCharacterInformation = saveCharacterInformation;
 
 local function sanitizeFullProfile(data)
 	local somethingWasSanitizedInsideProfile = false;
-	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.characteristics) then
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTERISTICS, data.player.characteristics) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.character) then
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.CHARACTER, data.player.character) then
 		somethingWasSanitizedInsideProfile = true;
 	end
-	if TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.misc) then
+	if TRP3_API.register.sanitizeProfile(registerInfoTypes.MISC, data.player.misc) then
 		somethingWasSanitizedInsideProfile = true;
 	end
 	return somethingWasSanitizedInsideProfile;

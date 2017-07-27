@@ -125,7 +125,9 @@ local LOCALE_EN = {
 		REG_PLAYER_RIGHTTRAIT = "Right attribute",
 		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
 		REG_IGNORE_TOAST = "Character ignored",
-		REG_CODE_INSERTION_WARNING = [[Wait a minute!
+		REG_CODE_INSERTION_WARNING = [[
+|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t
+Wait a minute!
 
 We found that you have manually inserted invalid codes inside your Total RP 3 profile.
 This behavior is not supported at all and we strongly discourage anyone from doing it.
