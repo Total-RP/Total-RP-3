@@ -131,5 +131,5 @@
 
 	<Include file="map\map.xml"/>
 
-	<Include file="tooltip_skins\tooltip_skins.xml"/>
+	<Include file="tooltip_skins\tooltips_skins.xml"/>
 </Ui>
