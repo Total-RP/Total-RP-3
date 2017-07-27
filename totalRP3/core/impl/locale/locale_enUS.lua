@@ -411,6 +411,14 @@ These tools also allow you to insert |cffffff00images, icons or link to external
         CO_TOOLTIP_COLOR = "Show custom colors",
         CO_TOOLTIP_CONTRAST = "Increase color contrast",
         CO_TOOLTIP_CONTRAST_TT = "Enable this option to allow Total RP 3 to modify the custom colors to make the text more readable if the color is too dark.",
+        CO_TOOLTIP_CROP_TEXT = "Crop unreasonably long texts",
+        CO_TOOLTIP_CROP_TEXT_TT = [[Limit the number of characters that can be displayed by each field in the tooltip to prevent unreasonably long texts and possible layout issues.
+
+|cfffff569Limit details:
+Name: 100 characters
+Title: 150 characters
+Race: 50 characters
+Class: 50 characters|r]],
 		CO_TOOLTIP_CHARACTER = "Characters tooltip",
 		CO_TOOLTIP_ANCHORED = "Anchored frame",
 		CO_TOOLTIP_ANCHOR = "Anchor point",
@@ -570,7 +578,7 @@ Possible status:
 		CO_LOCATION_DISABLE_PVP = "Disable location when flaged for PVP",
 		CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location request from other players when you are flaged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
 		CO_SANITIZER = "Sanitize incoming profiles",
-		CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...) and crop unreasonably long texts.",
+		CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- TOOLBAR AND UI BUTTONS
@@ -961,7 +969,15 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_10 = [[## New features
+		WHATS_NEW_11 = [[## Improvements
+
+- The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings (or {link*tooltip_cropping*click here}). If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
+- Emotes starting with a comma |cffD3D3D3,|r are now handled like emotes starting with a |cffD3D3D3's|r, removing the space inserted by the game after the player's name. — [Ticket #100](https://wow.curseforge.com/projects/total-rp-3/issues/100)
+
+
+## Previous change-log, for version 1.2.8
+
+## New features
 
 - Added a new option to show custom player icons in names in the chat {link*chat_settings*Enable} — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
 

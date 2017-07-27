@@ -811,25 +811,11 @@ local FIELDS_TO_SANITIZE = {
 	"RA", "CL", "FN", "LN", "FT", "TI"
 }
 
-local FIELDS_TO_CROP = {
-	["TI"] = 150, -- Long title
-	["RA"] = 50, -- Race
-	["CL"] = 50, -- Class
-	["FT"] = 50, -- Short title
-	["FN"] = 50, -- First name
-	["LN"] = 50  -- Last name
-}
-
 function TRP3_API.register.ui.sanitizeCharacteristics(structure)
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then
 				structure[field] = Utils.str.sanitize(structure[field]);
-			end
-		end
-		for field, size in pairs(FIELDS_TO_CROP) do
-			if structure[field] then
-				structure[field] = Utils.str.crop(structure[field], size);
 			end
 		end
 	end

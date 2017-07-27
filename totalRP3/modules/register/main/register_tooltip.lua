@@ -51,6 +51,7 @@ local unitIDToInfo = Utils.str.unitIDToInfo;
 local lightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
+local crop = Utils.str.crop;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -71,6 +72,7 @@ local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
 local CONFIG_IN_CHARACTER_ONLY = "tooltip_in_character_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
 local CONFIG_CHARACT_COLOR = "tooltip_char_color";
+local CONFIG_CROP_TEXT = "tooltip_crop_text";
 local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
@@ -357,6 +359,13 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
 
+	local FIELDS_TO_CROP = {
+		TITLE = 150,
+		NAME  = 100,
+		RACE  = 50,
+		CLASS = 50,
+	}
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -396,6 +405,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 
 	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
+
+	if getConfigValue(CONFIG_CROP_TEXT) then
+		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
+	end
+
 	completeName = color:WrapTextInColorCode(completeName);
 
 	if showIcons() then
@@ -439,6 +453,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			fullTitle = UnitPVPName(targetType);
 		end
 		if fullTitle:len() > 0 then
+
+			if getConfigValue(CONFIG_CROP_TEXT) then
+				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
+			end
+
 			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " |r>"), 1, 0.50, 0, getSubLineFontSize(), true);
 		end
 	end
@@ -459,6 +478,10 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 		if info.characteristics and info.characteristics.CL and info.characteristics.CL:len() > 0 then
 			class = info.characteristics.CL;
+		end
+		if getConfigValue(CONFIG_CROP_TEXT) then
+			race = crop(race, FIELDS_TO_CROP.RACE);
+			class = crop(class, FIELDS_TO_CROP.CLASS);
 		end
 		lineLeft = strconcat("|cffffffff", race, " ", color:WrapTextInColorCode(class));
 		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
@@ -551,6 +574,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			end
 			
 			name = getCompleteName(targetInfo.characteristics or {}, name, true);
+
+			if getConfigValue(CONFIG_CROP_TEXT) then
+				name = crop(name, FIELDS_TO_CROP.NAME);
+			end
+
 			name = color:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
@@ -862,8 +890,8 @@ local function show(targetType, targetID, targetMode)
 	ui_CharacterTT:Hide();
 	ui_CompanionTT:Hide();
 
-    -- If option is to only show tooltips when player is in character and player is out of character, stop here
-    if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
+	-- If option is to only show tooltips when player is in character and player is out of character, stop here
+	if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
 
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
@@ -1009,7 +1037,7 @@ local function onModuleInit()
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
 		show("mouseover", targetID, targetMode);
 	end);
-	
+
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if not unitID or (ui_CharacterTT.target == unitID) then
 			show("mouseover", getUnitID("mouseover"));
@@ -1030,6 +1058,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_COLOR, true);
 	registerConfigKey(CONFIG_CHARACT_CONTRAST, false);
+	registerConfigKey(CONFIG_CROP_TEXT, true);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
 	registerConfigKey(CONFIG_CHARACT_HIDE_ORIGINAL, true);
@@ -1102,8 +1131,14 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_TOOLTIP_CONTRAST"),
 				configKey = CONFIG_CHARACT_CONTRAST,
-                help = loc("CO_TOOLTIP_CONTRAST_TT"),
+				help = loc("CO_TOOLTIP_CONTRAST_TT"),
 				dependentOnOptions = {CONFIG_CHARACT_COLOR},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_TOOLTIP_CROP_TEXT"),
+				configKey = CONFIG_CROP_TEXT,
+				help = loc("CO_TOOLTIP_CROP_TEXT_TT")
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
