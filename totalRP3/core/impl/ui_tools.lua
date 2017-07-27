@@ -161,10 +161,10 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 						info.menuList = value;
 					elseif value ~= nil then
 						info.func = function()
+							anchoredFrame:GetParent().selectedValue = value;
 							if callback then
 								callback(value, anchoredFrame);
 							end
-							anchoredFrame:GetParent().selectedValue = value;
 							if level > 1 then
 								ToggleDropDownMenu(nil, nil, dropDownFrame);
 							end
