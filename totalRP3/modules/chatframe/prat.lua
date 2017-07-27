@@ -1,6 +1,29 @@
+----------------------------------------------------------------------------------
+--- Total RP 3
+--- Prat plugin
+--- ---------------------------------------------------------------------------
+--- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
+----------------------------------------------------------------------------------
+
+local loc = TRP3_API.locale.getText;
+
 local function onStart()
 	-- Stop right here if Prat is not installed
-	if not Prat then return false, "Prat not found." end;
+	if not Prat then
+		return false, loc("MO_ADDON_NOT_INSTALLED"):format("Prat");
+	end;
 
 	Prat:AddModuleToLoad(function()
 
@@ -134,8 +157,8 @@ end
 
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
-	["name"] = "Prat support",
-	["description"] = "Add support for the Prat add-on.",
+	["name"] = "Prat",
+	["description"] = loc("MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"):format("TinyTooltip"),
 	["version"] = 1.1,
 	["id"] = "trp3_prat",
 	["onStart"] = onStart,

@@ -1,30 +1,15 @@
+This is a small "improvements and bug fixes" update while I'm working on bigger projects (profile changes automation) for version 1.3 :)
+
 ## Improvements
 
-- The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings. If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
-- Emotes starting with a comma `,` are now handled like emotes starting with a `'s`, removing the space inserted by the game after the player's name. — [Ticket #100](https://wow.curseforge.com/projects/total-rp-3/issues/100)
+- Since we kept seeing invalid bug reports from users who are inserting non-supported codes inside their profiles, Total RP 3 will now clean the user profile from these invalid codes on launch and try to prevent advanced editing on runtime. From now on, any bug report involving profiles that have non supported codes injected in them will be systematically ignored.
+- Added custom module for the [TinyTooltip](https://mods.curse.com/addons/wow/268266-tinytooltip) add-on to apply its tooltip modifications to Total RP 3's tooltips.
+- Added character limitation on the NPC speeches window and a character count to indicate how many characters are remaining for your message — [Issue #101](https://wow.curseforge.com/projects/total-rp-3/issues/101)
+- Added a button to reset the mature filter dictionary to its default values — [Issue #97](https://wow.curseforge.com/projects/total-rp-3/issues/97)
 
+## Bug fixes
 
-## Previous change-log, for version 1.2.8
-
-### New features
-
-- Added option to show custom player icons in names in the chat — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
-
-![Custom player icons in chat](https://totalrp3.info/documentation/changelogs/1_2_8_icons.png)
-
-### Added patch 7.2 resources
-
-- Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
-- Added 19 new images from patch 7.2 to insert in your profiles (for a total of 449 images available).
-- Added 124 new musics from patches 7.1 and 7.2 (for a total of 2,868 musics available. Note that the previous music list contained many duplicates that have been cleaned up).
-
-### Bug fixes
-
-- Fixed an error with the keyboard bindings. — [Ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89)
-- Fixed an error in the Prat module with non-customized names. — [Ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95)
-
-### Other improvements
-
-- Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC). — [Ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88)
-- The profile sanitization option will now also crop unreasonably long texts. — [Ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92)
-- Removed code related to our April fools' day joke.
+- Fixed alignment of the text field labels for personality traits.
+- Fixed an issue where the text popup for copying the URL of a link clicked in a profile had truncated text if another add-on added a limit on the text input before Total RP 3 opened the pop-up — [Issue #113](https://wow.curseforge.com/projects/total-rp-3/issues/113)
+- Fixed an issue with the custom WIM integration — [Issue #108](https://wow.curseforge.com/projects/total-rp-3/issues/108)
+- Updated the libraries used by the add-on the their latest version, including the drop-downs library, in order to fix some issues with the drop-downs.
