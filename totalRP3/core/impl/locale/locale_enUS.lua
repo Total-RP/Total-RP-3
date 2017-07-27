@@ -1038,6 +1038,9 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
 - Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
+{h2}{icon:QUEST_KHADGAR:20} The Rest of the Team{/h2}
+- Connor "{twitter*Saelorable*Sælorable}" Macleod (Contributor)
+- {twitter*Solanya_*Solanya} (Community Manager)
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
 {col:ffffff}Our pre-alpha QA team:{/col}
