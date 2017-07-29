@@ -408,7 +408,7 @@ function handleCharacterMessage(_, event, message, ...)
 end
 
 local function getFullnameUsingChatMethod(info)
-	local characterName = Globals.player;
+	local characterName;
 	local nameMethod = configNameMethod();
 
 	if nameMethod ~= 1 then -- TRP3 names

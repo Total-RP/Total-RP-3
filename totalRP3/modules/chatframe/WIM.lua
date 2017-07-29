@@ -37,6 +37,7 @@ local function onStart()
 	local UnitClass 									 = UnitClass;
 	local getConfigValue 								 = TRP3_API.configuration.getValue;
 	local icon 											 = TRP3_API.utils.str.icon;
+	local playerName									 = TRP3_API.globals.player;
 
 	local classes = WIM.constants.classes;
 
@@ -51,7 +52,7 @@ local function onStart()
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
 	classes.GetMyColoredName = function()
-		local name = getFullnameForUnitUsingChatMethod(playerID);
+		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
 		local _, playerClass = UnitClass("Player");
 		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
 	
