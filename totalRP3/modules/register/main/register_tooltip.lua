@@ -52,6 +52,7 @@ local lightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
+local IsAltKeyDown = IsAltKeyDown;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -609,6 +610,14 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				notifText = " "; -- Prevent bad right line height
 			end
 			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
+		end
+	end
+
+	if info.mspIncomingChunks then
+		if IsAltKeyDown() then
+			tooltipBuilder:AddLine(("Downloading %s/%s"):format(info.mspAlreadyReceivedChunks, info.mspIncomingChunks), 1, 1, 1, getSmallLineFontSize());
+		else
+			tooltipBuilder:AddLine(("Downloading %s%%"):format(math.floor((info.mspAlreadyReceivedChunks / info.mspIncomingChunks) * 100)), 1, 1, 1, getSmallLineFontSize());
 		end
 	end
 

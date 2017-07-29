@@ -40,7 +40,7 @@ local function onStart()
 	local isIgnored = TRP3_API.register.isIDIgnored;
 	local msp, onInformationReceived;
 	local CONFIG_T3_ONLY = "msp_t3";
-
+	local updateIncomingStatus;
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP4TRP3
 	-- This is a huge modification of Etarna's LibMSP
@@ -119,6 +119,13 @@ local function onStart()
 		end
 
 		function msp_incomingfirst( sender, body )
+			local totalChunks = tonumber(body:match("^XC=(%d+)\001"))
+			if totalChunks then
+				msp.char[sender].totalChunks = totalChunks;
+				msp.char[sender].amountOfChucksAlreadyReceived = 1;
+				body = body:gsub("^XC=%d+\001", "")
+				updateIncomingStatus(sender);
+			end
 			msp.char[ sender ].buffer = body
 		end
 
@@ -132,6 +139,11 @@ local function onStart()
 					temp[ 1 ] = buf
 					temp[ 2 ] = body
 					msp.char[ sender ].buffer = temp
+				end
+
+				if msp.char[sender].totalChunks then
+					msp.char[sender].amountOfChucksAlreadyReceived = msp.char[sender].amountOfChucksAlreadyReceived + 1;
+					updateIncomingStatus(sender);
 				end
 			end
 		end
@@ -211,6 +223,12 @@ local function onStart()
 					garbage[ buf ] = true
 				else
 					msp_incoming( sender, buf .. body )
+				end
+
+				if msp.char[sender].totalChunks then
+										msp.char[sender].amountOfChucksAlreadyReceived = nil;
+					msp.char[sender].totalChunks = nil;
+					updateIncomingStatus(sender);
 				end
 			end
 		end
@@ -333,6 +351,8 @@ local function onStart()
 					ChatThrottleLib:SendAddonMessage( "BULK", "MSP", payload, "WHISPER", player, queue )
 					return 1
 				else
+					-- Guess six added characters from metadata.
+					payload = ("XC=%d\001%s"):format(((#payload + 6) / 255) + 1, payload);
 					local chunk = strsub( payload, 1, 255 )
 					ChatThrottleLib:SendAddonMessage( "BULK", "MSP\1", chunk, "WHISPER", player, queue )
 					local pos = 256
@@ -505,31 +525,37 @@ local function onStart()
 		DE = "PH"
 	}
 
+	local function getProfileForSender(senderID)
+		-- If sender is not known
+		if not isUnitIDKnown(senderID) then
+			-- We add him
+			if getConfigValue("register_auto_add") then
+				addCharacter(senderID);
+			else
+				return; -- The user choose not to add automatically new characters
+			end
+		end
+
+		-- Check that the character has a profileID.
+		local character = getUnitIDCharacter(senderID);
+		character.msp = true;
+		character.profileID = "[MSP]" .. senderID;
+		if not profileExists(senderID) then
+			-- Generate profile
+			saveCurrentProfileID(senderID, character.profileID, true);
+		end
+
+		-- Init profile if not already done
+		local profile = getUnitIDProfile(senderID);
+		character.msp = true;
+		character.profileID = "[MSP]" .. senderID;
+		return profile, character;
+	end
+
 	function onInformationReceived(senderID, data)
 
 		if not isIgnored(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
-			-- If sender is not known
-			if not isUnitIDKnown(senderID) then
-				-- We add him
-				if getConfigValue("register_auto_add") then
-					addCharacter(senderID);
-				else
-					return; -- The user choose not to add automatically new characters
-				end
-			end
-
-			-- Check that the character has a profileID.
-			local character = getUnitIDCharacter(senderID);
-			character.msp = true;
-			character.profileID = "[MSP]" .. senderID;
-			if not profileExists(senderID) then
-				-- Generate profile
-				saveCurrentProfileID(senderID, character.profileID, true);
-			end
-
-			-- Init profile if not already done
-			local profile = getUnitIDProfile(senderID);
-			profile.msp = true;
+			local profile, character = getProfileForSender(senderID);
 			if not profile.characteristics then
 				profile.characteristics = {};
 			end
@@ -678,6 +704,17 @@ local function onStart()
 			if updatedCharacter or updatedCharacteristics or updatedAbout then
 				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 			end
+		end
+	end
+
+	updateIncomingStatus = function(senderID)
+		if not isIgnored(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
+
+			local profile = getProfileForSender(senderID);
+
+			profile.mspIncomingChunks = msp.char[senderID].totalChunks;
+			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChucksAlreadyReceived;
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end
 
