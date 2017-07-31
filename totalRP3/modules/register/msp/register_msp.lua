@@ -122,7 +122,7 @@ local function onStart()
 			local totalChunks = tonumber(body:match("^XC=(%d+)\001"))
 			if totalChunks then
 				msp.char[sender].totalChunks = totalChunks;
-				msp.char[sender].amountOfChucksAlreadyReceived = 1;
+				msp.char[sender].amountOfChunksAlreadyReceived = 1;
 				body = body:gsub("^XC=%d+\001", "")
 				updateIncomingStatus(sender);
 			end
@@ -142,7 +142,7 @@ local function onStart()
 				end
 
 				if msp.char[sender].totalChunks then
-					msp.char[sender].amountOfChucksAlreadyReceived = msp.char[sender].amountOfChucksAlreadyReceived + 1;
+					msp.char[sender].amountOfChunksAlreadyReceived = msp.char[sender].amountOfChunksAlreadyReceived + 1;
 					updateIncomingStatus(sender);
 				end
 			end
@@ -226,7 +226,7 @@ local function onStart()
 				end
 
 				if msp.char[sender].totalChunks then
-										msp.char[sender].amountOfChucksAlreadyReceived = nil;
+										msp.char[sender].amountOfChunksAlreadyReceived = nil;
 					msp.char[sender].totalChunks = nil;
 					updateIncomingStatus(sender);
 				end
@@ -713,7 +713,7 @@ local function onStart()
 			local profile = getProfileForSender(senderID);
 
 			profile.mspIncomingChunks = msp.char[senderID].totalChunks;
-			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChucksAlreadyReceived;
+			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end
