@@ -1,4 +1,4 @@
-This is a small "improvements and bug fixes" update while I'm working on bigger projects (profile changes automation) for version 1.3 :)
+This is a small "improvements and bug fixes" update while I'm working on bigger projects for version 1.3 :)
 
 ## Improvements
 
