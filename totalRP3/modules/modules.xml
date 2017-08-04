@@ -132,4 +132,7 @@
 	<Include file="map\map.xml"/>
 
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
+
+
+	<Script file="nameplates\nameplates.lua"/>
 </Ui>
