@@ -968,6 +968,27 @@ You can also leave this field empty to create emotes without an NPC name at the 
 		BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- NAMEPLATES
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		NAMEPLATE_CONFIG_MENU = "Nameplates",
+		NAMEPLATE_CONFIG_TITLE = "Nameplate settings",
+		NAMEPLATE_ENABLE_CUSTOMIZATIONS = "Enable nameplate customizations",
+		NAMEPLATE_CUSTOMIZATIONS_TT = [[Total RP 3 can modify the game's nameplates to display the RP name of players instead of their character name.
+
+|cffccccccNote:|r To see friendly player nameplates you have to enable them in the game's settings. You will also need to check the option to show nameplates when out of combat.]],
+		NAMEPLATE_CUSTOM_COLORS = "Use custom name colors",
+		NAMEPLATE_CUSTOM_COLORS_TT = "The names will be colored using the custom color defined in the profile or the class color.",
+		NAMEPLATE_HIDE_HEALTHBARS = "Hide health bars",
+		NAMEPLATE_HIDE_HEALTHBARS_TT = "Removes the healthbar underneath the name",
+		NAMEPLATE_ONLY_IN_CHARACTER = "Only in character",
+		NAMEPLATE_ONLY_IN_CHARACTER_TT = "If this option is checked, Total RP 3 will stop customizing the nameplates when you set your roleplay status to Out Of Character.",
+		NAMEPLATE_HIDE_NON_RP = "Hide non RP players",
+		NAMEPLATE_HIDE_NON_RP_TT = [[The names of players who do not have an RP profile will be hidden.
+
+|cffccccccNote:|r Players that you haven't met yet don't have an RP profile until their informations has been donwloaded. As a result, their name may appear later, once their profiles has been discovered and downloaded.]],
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- COMMANDS
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
