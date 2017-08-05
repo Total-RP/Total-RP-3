@@ -21,6 +21,7 @@
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
+	local strconcat = strconcat;
 	local loc = TRP3_API.locale.getText;
 	local getConfigValue = TRP3_API.configuration.getValue;
 	local displayMessage = TRP3_API.utils.message.displayMessage;
@@ -31,9 +32,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local strtrim, pairs, tinsert = strtrim, pairs, tinsert;
 	local ChatTypeInfo = ChatTypeInfo;
 	local messageTypes = TRP3_API.utils.message.type;
+	local CreateColor = CreateColor;
 	local colorTool = CreateColor();
+	local strlen = strlen;
 
 	local frame = TRP3_NPCTalk;
+	---@type Button
+	local SendButton = frame.send;
 	local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
 
 	local CHANNEL_TYPES = {
@@ -43,34 +48,82 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		WHISPER = "MONSTER_WHISPER"
 	}
 
+	local CHANNEL_TYPES_TO_PATTERNS = {
+		[CHANNEL_TYPES.SAY] = loc("NPC_TALK_SAY_PATTERN"),
+		[CHANNEL_TYPES.YELL] = loc("NPC_TALK_YELL_PATTERN"),
+		[CHANNEL_TYPES.WHISPER] = loc("NPC_TALK_WHISPER_PATTERN"),
+	}
+
+	--- Returns the channel action string (says:, yells:, etc.) corresponding to the given CHANNEL_TYPE
+	---@param channelType string
+	---@return string
+	local function getChannelActionString(channelType)
+		local channelActionString = ""; -- Unknown types will be ignored (shown as simple emotes)
+
+		if CHANNEL_TYPES_TO_PATTERNS[channelType] then -- Use the action string if it exists
+			channelActionString = CHANNEL_TYPES_TO_PATTERNS[channelType] .. " ";
+		end
+
+		return channelActionString;
+	end
+
+	--- Build the full message using the given NPC name, channel type and message
+	--- @param NPCName string
+	--- @param channel string
+	--- @param message string
+	--- @return string
+	local function constructMessage(NPCName, channel, message)
+		return strconcat(getConfigValue(CONFIG_NPC_TALK_PREFIX), NPCName or "", " ", getChannelActionString(channel), message or "");
+	end
+
 	local function sendNPCTalk()
 
 		local NPCName = strtrim(frame.name:GetText());
 		local channel = frame.channelDropdown:GetSelectedValue();
 		local message = frame.messageText.scroll.text:GetText();
 
-		if not message or message == "" then
-			return displayMessage(loc("NPC_TALK_ERROR_EMPTY_MESSAGE"), messageTypes.ALERT_MESSAGE);
-		end
-
-		if NPCName and NPCName ~= "" then
-			if channel == CHANNEL_TYPES.SAY then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_SAY_PATTERN") .. " ";
-			elseif channel == CHANNEL_TYPES.YELL then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_YELL_PATTERN") .. " ";
-			elseif channel == CHANNEL_TYPES.WHISPER then
-				NPCName = NPCName .. " " .. loc("NPC_TALK_WHISPER_PATTERN") .. " ";
-			elseif channel == CHANNEL_TYPES.EMOTE then
-				NPCName = NPCName .. " ";
-			end
-			message = NPCName .. message;
-		end
-
-		message = getConfigValue(CONFIG_NPC_TALK_PREFIX) .. message;
-
-		SendChatMessage(message, "EMOTE");
+		-- Send a chat message via the EMOTE channel
+		SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
+		-- Empty the message field (we leave the NPC name field as is in case the user wants to send multiple messages with the same NPC)
 		frame.messageText.scroll.text:SetText("");
 
+	end
+
+	local MAX_CHARACTERS_PER_MESSAGES = 254;
+	local WARNING_NUMBER_OF_CHARACTERS = 239;
+	local NORMAL_COLOR = CreateColor(1.0000, 1.0000, 1.0000, 1.0000);
+	local WARNING_COLOR = CreateColor(1.0000, 0.4902, 0.0392, 1.0000);
+	local ERROR_COLOR = CreateColor(0.7686, 0.1216, 0.2314, 1.0000);
+
+	local function checkCharactersLimit()
+
+		local NPCName = strtrim(frame.name:GetText());
+		local channel = frame.channelDropdown:GetSelectedValue();
+		local message = frame.messageText.scroll.text:GetText();
+
+		local fullMessage = constructMessage(NPCName, channel, message)
+		local numberOfCharactersInMessage = strlen(fullMessage);
+
+		-- Always re-enabled the button, we will then check if we need to disable it
+		SendButton:Enable();
+		---@type ColorMixin
+		local color = NORMAL_COLOR;
+		if numberOfCharactersInMessage >= WARNING_NUMBER_OF_CHARACTERS then
+			color = WARNING_COLOR;
+		end
+		if numberOfCharactersInMessage > MAX_CHARACTERS_PER_MESSAGES then
+			color = ERROR_COLOR;
+			-- Too many characters, disable send butto
+			SendButton:Disable();
+		end
+
+		-- Always disable send button if the message text is empty
+		if strlen(message) == 0 then
+			SendButton:Disable();
+		end
+
+		frame.charactersCounter:SetTextColor(color:GetRGBA())
+		frame.charactersCounter:SetText(strconcat(MAX_CHARACTERS_PER_MESSAGES - numberOfCharactersInMessage));
 	end
 
 	local function buildChannelDropdown()
@@ -82,7 +135,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			tinsert(channelTypes, {"|cfff2bf03Channel:|r " .. colorTool:WrapTextInColorCode(_G[channelLabel]), channelName});
 		end
 
-		setupListBox(frame.channelDropdown, channelTypes, nil, nil, 120, false);
+		-- Set the dropdown for the channels
+		-- The checkCharactersLimit() function will be called when a new channel is selected
+		-- as we switching channels changes the string use for the channel (says:, etc.) and so the message length too
+		setupListBox(frame.channelDropdown, channelTypes, checkCharactersLimit, nil, 120, false);
+
+		-- Select the SAY channel by default
 		frame.channelDropdown:SetSelectedValue(CHANNEL_TYPES.SAY);
 	end
 
@@ -95,12 +153,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 	TRP3_API.r.showNPCTalkFrame = showNPCTalkFrame;
 
-	frame.send:SetScript("OnClick", sendNPCTalk);
+	SendButton:SetScript("OnClick", sendNPCTalk);
 	frame.messageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
 	frame.title:SetText(loc("NPC_TALK_TITLE"));
 	frame.name.title:SetText(loc("NPC_TALK_NAME"));
 	frame.messageLabel:SetText(loc("NPC_TALK_MESSAGE"));
 	frame.send:SetText(loc("NPC_TALK_SEND"));
+
+	-- Add hooks to check for the length of the message and make sure we don't try to send a message to big
+	frame.messageText.scroll.text:HookScript("OnTextChanged", checkCharactersLimit);
+	frame.messageText.scroll.text:HookScript("OnEditFocusGained", checkCharactersLimit);
+	frame.name:HookScript("OnTextChanged", checkCharactersLimit);
+	frame.name:HookScript("OnEditFocusGained", checkCharactersLimit);
 
 	setTooltipForSameFrame(frame.name.help, "RIGHT", 0, 5, loc("NPC_TALK_NAME"), loc("NPC_TALK_NAME_TT"));
 
@@ -110,7 +174,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.toolbar then
 
 		-- Create a button for the toolbar to show/hide the NPC Talk frame
-		local button = {
+		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_npctalk",
 			icon = "Ability_Warrior_CommandingShout",
 			configText = loc("NPC_TALK_TITLE"),
@@ -123,9 +187,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					showNPCTalkFrame();
 				end
 			end,
-		};
-
-		TRP3_API.toolbar.toolbarAddButton(button);
+		});
 	end
 
 	-- We also register a slash command, so people who disable the toolbar button

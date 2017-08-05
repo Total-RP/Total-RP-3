@@ -159,6 +159,13 @@
                     </Anchors>
                     <Color r="0.95" g="0.75" b="0.1"/>
                 </FontString>
+                <FontString parentKey="charactersCounter" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
+                    <Size x="150" y="30"/>
+                    <Anchors>
+                        <Anchor point="RIGHT" x="-40"/>
+                        <Anchor point="BOTTOM" y="15"/>
+                    </Anchors>
+                </FontString>
             </Layer>
         </Layers>
         <Frames>

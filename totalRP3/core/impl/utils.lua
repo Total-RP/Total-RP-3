@@ -425,7 +425,7 @@ function Utils.str.sanitize(text)
 end
 
 function Utils.str.crop(text, size)
-	text = strtrim(text);
+	text = strtrim(text or "");
 	if text:len() > size then
 		text = text:sub(1, size) .. "…";
 	end

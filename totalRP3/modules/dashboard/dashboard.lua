@@ -113,14 +113,22 @@ end
 local FIELDS_TO_SANITIZE = {
 	"CO", "CU"
 }
+---@param structure table
+---@return boolean
 function TRP3_API.dashboard.sanitizeCharacter(structure)
+	local somethingWasSanitized = false;
 	if structure then
 		for _, field in pairs(FIELDS_TO_SANITIZE) do
 			if structure[field] then
-				structure[field] = Utils.str.sanitize(structure[field]);
+				local sanitizedValue = Utils.str.sanitize(structure[field]);
+				if sanitizedValue ~= structure[field] then
+					structure[field] = sanitizedValue;
+					somethingWasSanitized = true;
+				end
 			end
 		end
 	end
+	return somethingWasSanitized;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -194,7 +202,7 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_11");
+	local whatsNewText = loc("WHATS_NEW_12");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 

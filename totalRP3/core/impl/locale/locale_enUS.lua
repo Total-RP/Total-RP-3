@@ -125,6 +125,15 @@ local LOCALE_EN = {
 		REG_PLAYER_RIGHTTRAIT = "Right attribute",
 		REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
 		REG_IGNORE_TOAST = "Character ignored",
+		REG_CODE_INSERTION_WARNING = [[
+|TInterface\AddOns\totalRP3\resources\policegar.tga:50:50|t
+Wait a minute!
+
+We found that you have manually inserted invalid codes inside your Total RP 3 profile.
+This behavior is not supported at all and we strongly discourage anyone from doing it.
+It can lead to instabilities and bugs inside the add-on, data corruption/loss of profiles and it also creates incompatibility issues with other add-ons (such as MRP).
+
+The codes you have inserted in your profile have been removed to prevent you from breaking the add-on.]],
 		REG_PLAYER_IGNORE = "Ignore linked characters (%s)",
 		REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters ?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
 		REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
@@ -905,6 +914,9 @@ The content of their profiles will be hidden again.]],
 		MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT = "Add a new word to the dictionary",
 		MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD = [[Edit this word]],
 		MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD = [[Delete the word from the custom dictionary]],
+		MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE = "Reset dictionary",
+		MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON = "Reset",
+		MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING = "Are you sure you want to reset the dictionary? This will empty the dictionary and fill it with the default words provided for your current language (if available).",
 		MATURE_FILTER_WARNING_TITLE = "Mature content",
 		MATURE_FILTER_WARNING_CONTINUE = "Continue",
 		MATURE_FILTER_WARNING_GO_BACK = "Go back",
@@ -969,36 +981,21 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_11 = [[## Improvements
+		WHATS_NEW_12 = [[This is a small "improvements and bug fixes" update while I'm working on bigger projects for version 1.3 :)
 
-- The option to crop unreasonably long texts in the tooltip has been moved from the profile sanitization to the tooltip options. The text is no longer cropped when a profile is received but when the text is being displayed. The option is still enabled by default and can be disabled in the settings (or {link*tooltip_cropping*click here}). If you still see cropped text after disabling the option it means the profile was cropped with the previous system. Delete the profile from the directory to download it again.
-- Emotes starting with a comma |cffD3D3D3,|r are now handled like emotes starting with a |cffD3D3D3's|r, removing the space inserted by the game after the player's name. — [Ticket #100](https://wow.curseforge.com/projects/total-rp-3/issues/100)
+## Improvements
 
-
-## Previous change-log, for version 1.2.8
-
-## New features
-
-- Added a new option to show custom player icons in names in the chat {link*chat_settings*Enable} — [Ticket #91](https://wow.curseforge.com/projects/total-rp-3/issues/91)
-
-![Interface\AddOns\totalRP3\resources\1_2_8_icons](512,128)
-
-## Added patch 7.2 resources
-
-- Added 996 new icons from patch 7.2 (for a total of 17,671 icons available.)
-- Added 19 new images from patch 7.2 to insert in your profiles (for a total of 449 images available).
-- Added 124 new musics from patches 7.1 and 7.2 (for a total of 2,868 musics available. Note that the previous music list contained many duplicates that have been cleaned up).
+- Since we kept seeing invalid bug reports from users who are inserting non-supported codes inside their profiles, Total RP 3 will now clean the user profile from these invalid codes on launch and try to prevent advanced editing on runtime. From now on, any bug report involving profiles that have non supported codes injected in them will be systematically ignored.
+- Added custom module for the [TinyTooltip](https://mods.curse.com/addons/wow/268266-tinytooltip) add-on to apply its tooltip modifications to Total RP 3's tooltips.
+- Added character limitation on the NPC speeches window and a character count to indicate how many characters are remaining for your message — [Issue #101](https://wow.curseforge.com/projects/total-rp-3/issues/101)
+- Added a button to reset the mature filter dictionary to its default values — [Issue #97](https://wow.curseforge.com/projects/total-rp-3/issues/97)
 
 ## Bug fixes
 
-- Fixed an error with the keyboard bindings — [Ticket #89](https://wow.curseforge.com/projects/total-rp-3/issues/89)
-- Fixed an error in the Prat module with non-customized names — [Ticket #95](https://wow.curseforge.com/projects/total-rp-3/issues/95)
-
-## Other improvements
-
-- Removed the quotes surrounding the "currently" text in the tooltip (IC and OOC) — [Ticket #88](https://wow.curseforge.com/projects/total-rp-3/issues/88)
-- The profile sanitization option will now also crop unreasonably long texts — [Ticket #92](https://wow.curseforge.com/projects/total-rp-3/issues/92)
-- Removed code related to our April fools' day joke.
+- Fixed alignment of the text field labels for personality traits.
+- Fixed an issue where the text popup for copying the URL of a link clicked in a profile had truncated text if another add-on added a limit on the text input before Total RP 3 opened the pop-up — [Issue #113](https://wow.curseforge.com/projects/total-rp-3/issues/113)
+- Fixed an issue with the custom WIM integration — [Issue #108](https://wow.curseforge.com/projects/total-rp-3/issues/108)
+- Updated the libraries used by the add-on the their latest version, including the drop-downs library, in order to fix some issues with the drop-downs.
 
 
 ]],
@@ -1026,10 +1023,12 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
 - Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
 
+{h2}{icon:QUEST_KHADGAR:20} The Rest of the Team{/h2}
+- Connor "{twitter*Saelorable*Sælorable}" Macleod (Contributor)
+- {twitter*Solanya_*Solanya} (Community Manager)
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
 {col:ffffff}Our pre-alpha QA team:{/col}
-- Saelora
 - Erzan
 - Calian
 - Kharess
@@ -1038,17 +1037,18 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 
 {col:ffffff}Thanks to all our friends for their support all these years:{/col}
 - For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
-- For Ellypse: The guilds Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
-
-{col:ffffff}Special thanks to:{/col}
-- Solanya, for helping so many other Total RP 3 users on our Discord server <3
+- For Ellypse: The guilds Eglise du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
 
 {col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
 - Azane
 - Hellclaw
 - Leylou
 
-{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]]
+{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
+
+		MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
+		MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatilibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
+		MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat message and player names are modified by Total RP 3 in that add-on."
 	},
 };
 

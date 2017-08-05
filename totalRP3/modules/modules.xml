@@ -131,5 +131,5 @@
 
 	<Include file="map\map.xml"/>
 
-	<Script file="tiptac\tiptac.lua"/>
+	<Include file="tooltip_skins\tooltips_skins.xml"/>
 </Ui>
