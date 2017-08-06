@@ -26,8 +26,10 @@
 	<Script file="locale_esES.lua"/>
 	<Script file="locale_esMX.lua"/>
 	<Script file="locale_zhCN.lua"/>
+	<Script file="locale_zhTW.lua"/>
 	<Script file="locale_ruRU.lua"/>
 	<Script file="locale_ptBR.lua"/>
 	<Script file="locale_itIT.lua"/>
+	<Script file="locale_koKR.lua"/>
 
 </Ui>
