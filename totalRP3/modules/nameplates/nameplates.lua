@@ -25,20 +25,29 @@ TRP3_API.module.registerModule({
 	["minVersion"] = 30,
 	["onStart"] = function()
 
-		local GetUnitName = GetUnitName;
 		local UnitIsPlayer = UnitIsPlayer;
 		local UnitIsFriend = UnitIsFriend;
+		local UnitIsUnit = UnitIsUnit;
 		local UnitSelectionColor = UnitSelectionColor;
 
+		local CompactUnitFrame_UpdateName = CompactUnitFrame_UpdateName;
+		local GetNamePlates = C_NamePlate.GetNamePlates;
+
+		local pairs = pairs;
 		local Utils = TRP3_API.utils;
 		local Events = TRP3_API.events;
 		local Config = TRP3_API.configuration;
 		local loc = TRP3_API.locale.getText;
-
+		local getUnitCustomColor = Utils.color.getUnitCustomColor
+		local name = TRP3_API.r.name
+		local getUnitID = Utils.str.getUnitID
+		local GetClass = Utils.str.GetClass;
+		local getClassColor = Utils.color.getClassColor;
 		local registerConfigKey = Config.registerConfigKey;
 		local getConfigValue = Config.getValue;
 		local registerHandler = Config.registerHandler;
 		local isPlayerIC = TRP3_API.dashboard.isPlayerIC;
+		local isUnitIDKnown= TRP3_API.register.isUnitIDKnown;
 
 		local ENABLE_NAMEPLATES_CUSTOMIZATION = "nameplates_enable";
 		local DISPLAY_NAMEPLATES_ONLY_IN_CHARACTER = "nameplates_only_in_character";
@@ -49,54 +58,39 @@ TRP3_API.module.registerModule({
 		local PET_NAMES = "nameplates_pet_names";
 
 		local function restoreNameplate(nameplate)
-			local name = GetUnitName(nameplate.UnitFrame.unit, true);
-			nameplate.UnitFrame.name:SetText(name);
-			nameplate.UnitFrame.name:SetVertexColor(UnitSelectionColor(nameplate.UnitFrame.unit, nameplate.UnitFrame.optionTable.colorNameWithExtendedColors));
-			nameplate.UnitFrame.name:SetAlpha(1);
-			nameplate.UnitFrame.healthBar:SetAlpha(1);
+			CompactUnitFrame_UpdateName(nameplate.UnitFrame);
+			nameplate.UnitFrame.healthBar:Show();
 		end
 
 		local function customizeNameplate(nameplate)
 
 			local namePlateUnitToken = nameplate.namePlateUnitToken;
-			if not namePlateUnitToken or not UnitIsFriend("player", namePlateUnitToken) or not UnitIsPlayer(namePlateUnitToken) then
-				return
-			end
 
-			if not getConfigValue(ENABLE_NAMEPLATES_CUSTOMIZATION) then
+			-- Stop right here and do not do any customizations to the nameplates if:
+			if not namePlateUnitToken or -- Nameplate token is nil (¯\_(ツ)_/¯)
+			not getConfigValue(ENABLE_NAMEPLATES_CUSTOMIZATION) or 							-- Nameplates customizations are disabled
+			(getConfigValue(DISPLAY_NAMEPLATES_ONLY_IN_CHARACTER) and not isPlayerIC()) or	-- Nameplates are disable when OOC
+			UnitIsUnit(namePlateUnitToken, "player") or 								-- Nameplate is player self naemplate
+			not UnitIsFriend("player", namePlateUnitToken) or 							-- Nameplate is not friendly nameplate
+			not UnitIsPlayer(namePlateUnitToken) then 										-- Nameplate is not player nameplate
 				return restoreNameplate(nameplate);
-			end
-
-			if getConfigValue(DISPLAY_NAMEPLATES_ONLY_IN_CHARACTER) and not isPlayerIC() then
-				return restoreNameplate(nameplate);
-			end
-
-			if getConfigValue(HIDE_NON_ROLEPLAY) then
-				nameplate.UnitFrame.name:SetAlpha(0);
-			else
-				nameplate.UnitFrame.name:SetAlpha(1);
 			end
 
 			if getConfigValue(HIDE_HEALTH_BARS) then
-				nameplate.UnitFrame.healthBar:SetAlpha(0);
-			else
-				nameplate.UnitFrame.healthBar:SetAlpha(1);
+				nameplate.UnitFrame.healthBar:Hide();
 			end
 
-			local unitID = Utils.str.getUnitID(namePlateUnitToken);
+			local unitID = getUnitID(namePlateUnitToken);
 
-			if unitID and TRP3_API.register.isUnitIDKnown(unitID) then
+			if unitID and isUnitIDKnown(unitID) then
 
-				nameplate.UnitFrame.name:SetAlpha(1);
-
-				local name = TRP3_API.r.name(namePlateUnitToken);
+				local name = name(namePlateUnitToken);
 
 				nameplate.UnitFrame.name:SetText(name);
 
-				--nameplate.UnitFrame.healthBar:SetWidth(nameplate.UnitFrame.name:GetStringWidth());
 				if getConfigValue(USE_CUSTOM_COLOR) then
 					---@type ColorMixin
-					local color = Utils.color.getUnitCustomColor(unitID) or Utils.color.getClassColor(Utils.str.GetClass(namePlateUnitToken));
+					local color = getUnitCustomColor(unitID) or getClassColor(GetClass(namePlateUnitToken));
 					if color then
 						nameplate.UnitFrame.name:SetVertexColor(color:GetRGBA());
 					end
@@ -104,11 +98,13 @@ TRP3_API.module.registerModule({
 					nameplate.UnitFrame.name:SetVertexColor(UnitSelectionColor(nameplate.UnitFrame.unit, nameplate.UnitFrame.optionTable.colorNameWithExtendedColors));
 				end
 
+			elseif getConfigValue(HIDE_NON_ROLEPLAY) then
+				nameplate.UnitFrame.name:Hide();
 			end
 		end
 
 		local function refreshAllNameplates()
-			for _, nameplate in pairs(C_NamePlate.GetNamePlates(true)) do
+			for _, nameplate in pairs(GetNamePlates()) do
 				customizeNameplate(nameplate);
 			end
 		end
