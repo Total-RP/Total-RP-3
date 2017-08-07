@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- "Chinese" to "Simplified Chinese" - Paul Corlay
+
 local LOCALE = {
 	locale = "zhCN",
 	localeText = "Simplified Chinese",

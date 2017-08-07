@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Added Traditional Chinese locale - Paul Corlay
+
 local LOCALE = {
 	locale = "zhTW",
 	localeText = "Traditional Chinese",

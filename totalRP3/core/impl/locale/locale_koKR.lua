@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Added Korean locale - Paul Corlay
+
 local LOCALE = {
 	locale = "koKR",
 	localeText = "Korean",
