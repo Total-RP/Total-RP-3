@@ -53,6 +53,7 @@ TRP3_API.module.registerModule({
 		local DISPLAY_NAMEPLATES_ONLY_IN_CHARACTER = "nameplates_only_in_character";
 		local HIDE_HEALTH_BARS = "nameplates_hide_healthbars";
 		local USE_CUSTOM_COLOR = "nameplates_use_custom_color";
+		local INCREASE_COLOR_CONTRAST = "nameplates_increase_color_contrast";
 		local SHOW_TITLES = "nameplates_show_titles";
 		local HIDE_NON_ROLEPLAY = "nameplates_hide_non_roleplay";
 		local PET_NAMES = "nameplates_pet_names";
@@ -92,6 +93,9 @@ TRP3_API.module.registerModule({
 					---@type ColorMixin
 					local color = getUnitCustomColor(unitID) or getClassColor(GetClass(namePlateUnitToken));
 					if color then
+						if getConfigValue(INCREASE_COLOR_CONTRAST) then
+							color:LightenColorUntilItIsReadable();
+						end
 						nameplate.UnitFrame.name:SetVertexColor(color:GetRGBA());
 					end
 				else
@@ -125,6 +129,7 @@ TRP3_API.module.registerModule({
 		registerConfigKey(HIDE_HEALTH_BARS, true);
 		registerConfigKey(HIDE_NON_ROLEPLAY, false);
 		registerConfigKey(USE_CUSTOM_COLOR, true);
+		registerConfigKey(INCREASE_COLOR_CONTRAST, false);
 		registerConfigKey(PET_NAMES, true);
 		registerConfigKey(SHOW_TITLES, false);
 
@@ -133,6 +138,7 @@ TRP3_API.module.registerModule({
 		registerHandler(HIDE_HEALTH_BARS, refreshAllNameplates);
 		registerHandler(HIDE_NON_ROLEPLAY, refreshAllNameplates);
 		registerHandler(USE_CUSTOM_COLOR, refreshAllNameplates);
+		registerHandler(INCREASE_COLOR_CONTRAST, refreshAllNameplates);
 		registerHandler(SHOW_TITLES, refreshAllNameplates);
 		registerHandler(PET_NAMES, refreshAllNameplates);
 
@@ -155,6 +161,13 @@ TRP3_API.module.registerModule({
 					help = loc("NAMEPLATE_CUSTOM_COLORS_TT"),
 					configKey = USE_CUSTOM_COLOR,
 					dependentOnOptions = {ENABLE_NAMEPLATES_CUSTOMIZATION},
+				},
+				{
+					inherit = "TRP3_ConfigCheck",
+					title = loc("NAMEPLATE_INCREASE_COLOR_CONTRAST"),
+					help = loc("NAMEPLATE_INCREASE_COLOR_CONTRAST_TT"),
+					configKey = USE_CUSTOM_COLOR,
+					dependentOnOptions = {ENABLE_NAMEPLATES_CUSTOMIZATION, USE_CUSTOM_COLOR},
 				},
 				{
 					inherit = "TRP3_ConfigCheck",

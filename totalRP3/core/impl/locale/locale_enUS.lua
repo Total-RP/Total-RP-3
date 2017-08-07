@@ -979,6 +979,8 @@ You can also leave this field empty to create emotes without an NPC name at the 
 |cffccccccNote:|r To see friendly player nameplates you have to enable them in the game's settings. You will also need to check the option to show nameplates when out of combat.]],
 		NAMEPLATE_CUSTOM_COLORS = "Use custom name colors",
 		NAMEPLATE_CUSTOM_COLORS_TT = "The names will be colored using the custom color defined in the profile or the class color.",
+		NAMEPLATE_INCREASE_COLOR_CONTRAST = "Increase color contrast",
+		NAMEPLATE_INCREASE_COLOR_CONTRAST_TT = "Modify colors to make them easier to read on darker background.",
 		NAMEPLATE_HIDE_HEALTHBARS = "Hide health bars",
 		NAMEPLATE_HIDE_HEALTHBARS_TT = "Removes the healthbar underneath the name",
 		NAMEPLATE_ONLY_IN_CHARACTER = "Only in character",
