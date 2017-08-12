@@ -59,7 +59,9 @@ TRP3_API.module.registerModule({
 		local PET_NAMES = "nameplates_pet_names";
 
 		local function restoreNameplate(nameplate)
-			CompactUnitFrame_UpdateName(nameplate.UnitFrame);
+			if nameplate.unit then
+				CompactUnitFrame_UpdateName(nameplate.UnitFrame);
+			end
 			nameplate.UnitFrame.healthBar:Show();
 		end
 

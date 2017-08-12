@@ -1,3 +1,7 @@
+# Fixes from alpha 1 to alpha 2
+
+Fixed issue with the nameplates health bar where they would be hidden for enemies or for the self nameplate.
+
 ## Improvements
 
 - Since we kept seeing invalid bug reports from users who are inserting non-supported codes inside their profiles, Total RP 3 will now clean the user profile from these invalid codes on launch and try to prevent advanced editing on runtime. From now on, any bug report involving profiles that have non supported codes injected in them will be systematically ignored.
