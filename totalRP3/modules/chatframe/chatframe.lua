@@ -25,7 +25,7 @@ local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
-local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
+local getConfigValue, registerConfigKey, registerHandler, resetValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.resetValue;
 local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local handleCharacterMessage, hooking;
@@ -137,6 +137,9 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
     registerConfigKey(CONFIG_SHOW_ICON, false);
+	
+	-- Need to reset the NPC talk prefix in case someone changed it.
+	resetValue(CONFIG_NPC_TALK_PREFIX);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), TRP3_API.register.NAMING_METHODS.DONT_CHANGE_NAME },
@@ -212,13 +215,15 @@ local function createConfigPage()
 				title = loc("CO_CHAT_MAIN_NPC_USE"),
 				configKey = CONFIG_NPC_TALK,
 			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
-				configKey = CONFIG_NPC_TALK_PREFIX,
-				help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT"),
-				dependentOnOptions = {CONFIG_NPC_TALK},
-			},
+			-- Removing NPC talk prefix option (goodbye sweet prince 2014 - 2017)
+			--
+			--{
+			--	inherit = "TRP3_ConfigEditBox",
+			--	title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
+			--	configKey = CONFIG_NPC_TALK_PREFIX,
+			--	help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT"),
+			--	dependentOnOptions = {CONFIG_NPC_TALK},
+			--},
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN_EMOTE"),
