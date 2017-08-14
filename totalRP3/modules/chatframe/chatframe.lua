@@ -17,6 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- Removed NPC talk prefix option and changed prefix to a hardcoded one (Paul Corlay) [RIP NPC talk prefix option 2014 - 2017]
+
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local loc = TRP3_API.locale.getText;
@@ -54,7 +56,6 @@ local CONFIG_NAME_METHOD = "chat_name";
 local CONFIG_REMOVE_REALM = "remove_realm";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
-local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
 local CONFIG_EMOTE = "chat_emote";
 local CONFIG_EMOTE_PATTERN = "chat_emote_pattern";
 local CONFIG_USAGE = "chat_use_";
@@ -128,7 +129,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
 	registerConfigKey(CONFIG_NPC_TALK, true);
-	registerConfigKey(CONFIG_NPC_TALK_PREFIX, "|| ");
 	registerConfigKey(CONFIG_EMOTE, true);
 	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
@@ -137,9 +137,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
     registerConfigKey(CONFIG_SHOW_ICON, false);
-	
-	-- Need to reset the NPC talk prefix in case someone changed it.
-	resetValue(CONFIG_NPC_TALK_PREFIX);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), TRP3_API.register.NAMING_METHODS.DONT_CHANGE_NAME },
@@ -215,15 +212,6 @@ local function createConfigPage()
 				title = loc("CO_CHAT_MAIN_NPC_USE"),
 				configKey = CONFIG_NPC_TALK,
 			},
-			-- Removing NPC talk prefix option (goodbye sweet prince 2014 - 2017)
-			--
-			--{
-			--	inherit = "TRP3_ConfigEditBox",
-			--	title = loc("CO_CHAT_MAIN_NPC_PREFIX"),
-			--	configKey = CONFIG_NPC_TALK_PREFIX,
-			--	help = loc("CO_CHAT_MAIN_NPC_PREFIX_TT"),
-			--	dependentOnOptions = {CONFIG_NPC_TALK},
-			--},
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN_EMOTE"),
@@ -379,7 +367,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
-		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
+		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
 			npcMessageName, message = handleNPCEmote(message);
 
