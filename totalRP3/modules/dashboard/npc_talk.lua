@@ -18,6 +18,7 @@
 --	limitations under the License.
 ---------------------------------------------------------------------------------
 
+-- Changed NPC talk prefix to a hardcoded one following option removal (Paul Corlay)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
@@ -39,7 +40,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local frame = TRP3_NPCTalk;
 	---@type Button
 	local SendButton = frame.send;
-	local CONFIG_NPC_TALK_PREFIX = "chat_npc_talk_p";
 
 	local CHANNEL_TYPES = {
 		SAY = "MONSTER_SAY",
@@ -73,7 +73,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	--- @param message string
 	--- @return string
 	local function constructMessage(NPCName, channel, message)
-		return strconcat(getConfigValue(CONFIG_NPC_TALK_PREFIX), NPCName or "", " ", getChannelActionString(channel), message or "");
+		return strconcat("|| ", NPCName or "", " ", getChannelActionString(channel), message or "");
 	end
 
 	local function sendNPCTalk()
