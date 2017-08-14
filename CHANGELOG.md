@@ -1,6 +1,10 @@
-# Version 1.3.0 ALPHA 1
+# Version 1.3.0 ALPHA 2
 
 This is the first alpha for version 1.3.0. This version will be packed with exciting new features!
+
+# Fixes from alpha 1 to alpha 2
+
+Fixed issue with the nameplates health bar where they would be hidden for enemies or for the self nameplate.
 
 ## New nameplate customizations
 
