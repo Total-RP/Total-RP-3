@@ -46,7 +46,7 @@ local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
-local PlaySoundKitID, select, StopSound = PlaySoundKitID, select, StopSound;
+local PlaySound, select, StopSound = PlaySound, select, StopSound;
 
 function Utils.pcall(func, ...)
 	if func then
@@ -1018,7 +1018,7 @@ end
 
 function Utils.music.playSoundID(soundID, channel, source)
 	assert(soundID, "soundID can't be nil.")
-	local willPlay, handlerID = PlaySoundKitID(soundID, channel, false);
+	local willPlay, handlerID = PlaySound(soundID, channel, false);
 	if willPlay then
 		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S")});
 		if TRP3_SoundsHistoryFrame then
