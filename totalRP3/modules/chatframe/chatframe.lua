@@ -139,10 +139,10 @@ local function createConfigPage()
     registerConfigKey(CONFIG_SHOW_ICON, false);
 
 	local NAMING_METHOD_TAB = {
-		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
-		{loc("CO_CHAT_MAIN_NAMING_2"), 2},
-		{loc("CO_CHAT_MAIN_NAMING_3"), 3},
-		{loc("CO_CHAT_MAIN_NAMING_4"), 4},
+		{loc("CO_CHAT_MAIN_NAMING_1"), TRP3_API.register.NAMING_METHODS.DONT_CHANGE_NAME },
+		{loc("CO_CHAT_MAIN_NAMING_2"), TRP3_API.register.NAMING_METHODS.FIRST_NAME },
+		{loc("CO_CHAT_MAIN_NAMING_3"), TRP3_API.register.NAMING_METHODS.FIRST_NAME_AND_LAST_NAME },
+		{loc("CO_CHAT_MAIN_NAMING_4"), TRP3_API.register.NAMING_METHODS.SHORT_TITLE_AND_FIRST_NAME_AND_LAST_NAME },
 	}
 	
 	local EMOTE_PATTERNS = {
@@ -407,33 +407,14 @@ function handleCharacterMessage(_, event, message, ...)
 	return false, message, ...;
 end
 
-local function getFullnameUsingChatMethod(info)
-	local characterName;
-	local nameMethod = configNameMethod();
-
-	if nameMethod ~= 1 then -- TRP3 names
-		local characteristics = info.characteristics or {};
-	
-		if characteristics.FN then -- Use custom name if defined
-			characterName = characteristics.FN;
-		end
-
-		if nameMethod == 4 and characteristics.TI then -- With short title in front of the name
-			characterName = characteristics.TI .. " " .. characterName;
-		end
-
-		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
-			characterName = characterName .. " " .. characteristics.LN;
-		end
-	end
-	
-	return characterName;
+local function getFullnameUsingChatMethod(profile, name)
+	return TRP3_API.register.getNameFromProfileUsingNamingMethod(profile, configNameMethod(), name)
 end
 TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
 
-local function getFullnameForUnitUsingChatMethod(unitID)
+local function getFullnameForUnitUsingChatMethod(unitID, name)
 	local info = getCharacterInfoTab(unitID);
-	return getFullnameUsingChatMethod(info);
+	return getFullnameUsingChatMethod(info, name);
 end
 TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
 
@@ -508,12 +489,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	end
 
 	-- Retrieve the character full RP name
-	local customizedName = getFullnameForUnitUsingChatMethod(unitID);
-
-	if customizedName then
-		characterName = customizedName;
-	end
-
+	characterName = getFullnameForUnitUsingChatMethod(unitID, characterName);
 
 	if classColorNameIsEnableOnChatType(getChatTypeForEvent(event, channelNumber)) then
 		characterColor = GetClassColorByGUID(GUID);

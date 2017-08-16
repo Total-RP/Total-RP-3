@@ -96,11 +96,7 @@ local function onStart()
 			end
 
 			-- Get the unit color and name
-			local customizedName = getFullnameForUnitUsingChatMethod(unitID);
-
-			if customizedName then
-				characterName = customizedName;
-			end
+			characterName = getFullnameForUnitUsingChatMethod(unitID, characterName);
 
 			-- We retrieve the custom color if the option for custom colored names in chat is enabled
 			if configShowNameCustomColors() then

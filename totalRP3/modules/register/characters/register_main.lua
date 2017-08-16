@@ -395,6 +395,46 @@ end
 
 TRP3_API.r.name = TRP3_API.register.getUnitRPName;
 
+TRP3_API.register.NAMING_METHODS = {
+	DONT_CHANGE_NAME = 1,
+	FIRST_NAME = 2,
+	FIRST_NAME_AND_LAST_NAME = 3,
+	SHORT_TITLE_AND_FIRST_NAME_AND_LAST_NAME = 4
+}
+
+---Returns the RP name of a player following a naming method
+---(as defined in TRP3_API.register.NAMING_METHODS)
+---@param profile Font
+---@param namingMethod number
+---@param name string
+function TRP3_API.register.getNameFromProfileUsingNamingMethod(profile, namingMethod, name)
+	
+	-- If naming method is DONT_CHANGE_NAME, directly return the name
+	if namingMethod == TRP3_API.register.NAMING_METHODS.DONT_CHANGE_NAME then
+		return name
+	end
+	
+	local characteristics = profile.characteristics or {};
+	
+	if characteristics.FN then -- Use custom name if defined
+		name = characteristics.FN;
+	end
+	
+	-- With short title in front of the name
+	if namingMethod == TRP3_API.register.NAMING_METHODS.SHORT_TITLE_AND_FIRST_NAME_AND_LAST_NAME
+	and characteristics.TI then
+		name = characteristics.TI .. " " .. name;
+	end
+	
+	-- With last name
+	if (namingMethod == TRP3_API.register.NAMING_METHODS.FIRST_NAME_AND_LAST_NAME
+	or namingMethod == TRP3_API.register.NAMING_METHODS.SHORT_TITLE_AND_FIRST_NAME_AND_LAST_NAME)
+	and characteristics.LN then
+		name = name .. " " .. characteristics.LN;
+	end
+	
+	return name
+end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -449,36 +489,36 @@ local function createTabBar()
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
-		{
-			{ loc("REG_PLAYER_CARACT"), 1, 150 },
-			{ loc("REG_PLAYER_ABOUT"), 2, 110 },
-			{ loc("REG_PLAYER_PEEK"), 3, 130 }
-		},
-		function(tabWidget, value)
+	{
+		{ loc("REG_PLAYER_CARACT"), 1, 150 },
+		{ loc("REG_PLAYER_ABOUT"), 2, 110 },
+		{ loc("REG_PLAYER_PEEK"), 3, 130 }
+	},
+	function(tabWidget, value)
 		-- Clear all
-			TRP3_RegisterCharact:Hide();
-			TRP3_RegisterAbout:Hide();
-			TRP3_RegisterMisc:Hide();
-			if value == 1 then
-				showCharacteristicsTab();
-			elseif value == 2 then
-				showAboutTab();
-			elseif value == 3 then
-				showMiscTab();
-			end
-			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
-		end,
-		-- Confirmation callback
-		function(callback)
-			if getCurrentContext() and getCurrentContext().isEditMode then
-				TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
-					function()
-						callback();
-					end);
-			else
+		TRP3_RegisterCharact:Hide();
+		TRP3_RegisterAbout:Hide();
+		TRP3_RegisterMisc:Hide();
+		if value == 1 then
+			showCharacteristicsTab();
+		elseif value == 2 then
+			showAboutTab();
+		elseif value == 3 then
+			showMiscTab();
+		end
+		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+	end,
+	-- Confirmation callback
+	function(callback)
+		if getCurrentContext() and getCurrentContext().isEditMode then
+			TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
+			function()
 				callback();
-			end
-		end);
+			end);
+		else
+			callback();
+		end
+	end);
 	TRP3_API.register.player.tabGroup = tabGroup;
 end
 
@@ -494,8 +534,8 @@ end
 
 function TRP3_API.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
-			or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-			or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+	or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
+	or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -516,10 +556,10 @@ end
 local function cleanupCompanions()
 	local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
 	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
-
+	
 	local companionProfiles = TRP3_API.companions.register.getProfiles();
 	local characterProfiles = TRP3_API.profile.getProfiles();
-
+	
 	for companionProfileID, companionProfile in pairs(companionProfiles) do
 		for companionFullID, _ in pairs(companionProfile.links) do
 			local ownerID, companionID = companionIDToInfo(companionFullID);
@@ -591,7 +631,7 @@ function TRP3_API.register.init()
 	showCharacteristicsTab = TRP3_API.register.ui.showCharacteristicsTab;
 	showAboutTab = TRP3_API.register.ui.showAboutTab;
 	showMiscTab = TRP3_API.register.ui.showMiscTab;
-
+	
 	-- Init save variables
 	if not TRP3_Register then
 		TRP3_Register = {};
@@ -604,26 +644,26 @@ function TRP3_API.register.init()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
-
+	
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-
-
-
-
+	
+	
+	
+	
 	registerMenu({
 		id = "main_10_player",
 		text = loc("REG_PLAYER"),
 		onSelected = function() selectMenu("main_12_player_character") end,
 	});
-
+	
 	registerMenu({
 		id = "main_11_profiles",
 		text = loc("PR_PROFILES"),
 		onSelected = function() setPage("player_profiles"); end,
 		isChildOf = "main_10_player",
 	});
-
+	
 	local currentPlayerMenu = {
 		id = "main_12_player_character",
 		text = get("player/characteristics/FN") or Globals.player,
@@ -644,7 +684,7 @@ function TRP3_API.register.init()
 			refreshMenu();
 		end
 	end);
-
+	
 	registerPage({
 		id = "player_main",
 		templateName = "TRP3_RegisterMain",
@@ -655,20 +695,20 @@ function TRP3_API.register.init()
 		end,
 		tutorialProvider = tutorialProvider
 	});
-
+	
 	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
 	registerConfigKey("register_sanitization", true);
-
+	
 	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
 	local CONFIG_DISABLE_MAP_LOCATION_ON_PVP = "register_map_location_pvp";
-
+	
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
-
+	
 	local AUTO_PURGE_VALUES = {
 		{loc("CO_REGISTER_AUTO_PURGE_0"), false},
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(1), 86400},
@@ -677,7 +717,7 @@ function TRP3_API.register.init()
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(10), 86400*10},
 		{loc("CO_REGISTER_AUTO_PURGE_1"):format(30), 86400*30},
 	}
-
+	
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
 		id = "main_config_register",
@@ -745,13 +785,13 @@ function TRP3_API.register.init()
 		cleanupMyProfiles();
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
-
+	
 	local function locationEnabled()
 		return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
-			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
-			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) or not UnitIsPVP("player"));
+		and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
+		and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) or not UnitIsPVP("player"));
 	end
-
+	
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
@@ -760,9 +800,9 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
-
+	
 	createTabBar();
-
+	
 	local CHARACTER_SCAN_COMMAND = "CSCAN";
 	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
 	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
@@ -772,7 +812,7 @@ function TRP3_API.register.init()
 		971, -- Alliance garrison
 		976  -- Horde garrison
 	};
-
+	
 	local function playersCanSeeEachOthers(sender)
 		if sender == Globals.player_id then
 			return false;
@@ -784,7 +824,7 @@ function TRP3_API.register.init()
 			return true;
 		end
 	end
-
+	
 	TRP3_API.map.registerScan({
 		id = "playerScan",
 		buttonText = loc("MAP_SCAN_CHAR"),
