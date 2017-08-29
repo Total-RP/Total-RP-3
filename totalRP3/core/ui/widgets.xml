@@ -1043,7 +1043,7 @@
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() - 1);
-							PlaySound("UChatScrollButton");
+							TRP3_API.ui.misc.playUISound("UChatScrollButton");
 						else
 							self:Disable();
 						end
@@ -1059,7 +1059,7 @@
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() + 1);
-							PlaySound("UChatScrollButton");
+							TRP3_API.ui.misc.playUISound("UChatScrollButton");
 						else
 							self:Disable();
 						end

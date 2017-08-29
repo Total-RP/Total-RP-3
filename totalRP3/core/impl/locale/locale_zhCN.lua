@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Total RP 3
--- Chinese locale
+-- Simplified Chinese locale
 --	---------------------------------------------------------------------------
 --	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --
@@ -17,9 +17,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+-- "Chinese" to "Simplified Chinese" - Paul Corlay
+
 local LOCALE = {
 	locale = "zhCN",
-	localeText = "Chinese",
+	localeText = "Simplified Chinese",
     localeContent =
     --@localization(locale="zhCN", format="lua_table", handle-unlocalized="ignore")@
     --@do-not-package@
