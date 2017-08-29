@@ -9,6 +9,7 @@
 ### Changed
 
 - Renamed Chinese localization to Simplified Chinese.
+- Fixed many typos in the English localization (thanks to Solanya).
 
 ### Removed
 - Removed the option to change the detection pattern for NPC speeches, as it created many issues and there really wasn't a need for it.
