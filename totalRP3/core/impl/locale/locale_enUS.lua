@@ -981,16 +981,34 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_12 = [[This is a small "improvements and bug fixes" update while I'm working on bigger projects for version 1.3 :)
+		WHATS_NEW_13 = [[
+## [1.2.9.1](https://github.com/Ellypse/Total-RP-3/compare/1.2.9...1.2.9.1) - 2017-08-29
 
-## Improvements
+### Added
+
+- Added Traditional Chinese and Korean localizations.
+
+### Changed
+
+- Renamed Chinese localization to Simplified Chinese.
+
+### Removed
+- Removed the option to change the detection pattern for NPC speeches, as it created many issues and there really wasn't a need for it.
+
+### Fixed
+
+- Fixed issues with patch 7.3.
+
+## Changes for version 1.2.9
+
+### Improvements
 
 - Since we kept seeing invalid bug reports from users who are inserting non-supported codes inside their profiles, Total RP 3 will now clean the user profile from these invalid codes on launch and try to prevent advanced editing on runtime. From now on, any bug report involving profiles that have non supported codes injected in them will be systematically ignored.
 - Added custom module for the [TinyTooltip](https://mods.curse.com/addons/wow/268266-tinytooltip) add-on to apply its tooltip modifications to Total RP 3's tooltips.
 - Added character limitation on the NPC speeches window and a character count to indicate how many characters are remaining for your message — [Issue #101](https://wow.curseforge.com/projects/total-rp-3/issues/101)
 - Added a button to reset the mature filter dictionary to its default values — [Issue #97](https://wow.curseforge.com/projects/total-rp-3/issues/97)
 
-## Bug fixes
+### Bug fixes
 
 - Fixed alignment of the text field labels for personality traits.
 - Fixed an issue where the text popup for copying the URL of a link clicked in a profile had truncated text if another add-on added a limit on the text input before Total RP 3 opened the pop-up — [Issue #113](https://wow.curseforge.com/projects/total-rp-3/issues/113)
