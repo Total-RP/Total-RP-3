@@ -29,7 +29,7 @@
 				</Texture>
 			</Layer>
 		</Layers>
-		<NormalTexture name="$parentImage" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
+		<NormalTexture parentKey="icon" name="$parentImage" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
 		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
 		<Scripts>
 			<OnEnter>

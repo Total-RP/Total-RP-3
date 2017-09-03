@@ -8,6 +8,9 @@
 	- The nameplates will now display the RP name of players instead of their character names
 	- The names are colored using the custom colors defined in the profile or the class color as a fallback.
 	- The health bars are removed from the nameplate so you only see names.
+	- The custom player icon is visible next to the name of the player.
+	- The custom title is visible bellow the name of the player.
+	- The at-first-glance slots are visible above the name of the player.
 	- You can enable the option to hide the names of players without an RP profile. You will only see the names of people with an RP profile, making it ridiculously easy to spot them in a crowd.
 	- All the customizations mentioned above are automatically disabled when you set your roleplay status to Out Of Character
 	- All the points listed above have settings for you to toggle individual features on or off in the new Nameplates settings.

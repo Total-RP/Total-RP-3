@@ -1,0 +1,82 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<!--
+        Total RP 3
+        Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    -->
+
+	<Frame name="TRP3_CustomNameplate" virtual="true">
+		<Size x="250" y="20" />
+		<Frames>
+			<Frame parentKey="icon" inherits="TRP3_SimpleIcon">
+				<Size x="20" y="20"/>
+			</Frame>
+			<Frame parentKey="glances">
+				<Size x="140" y="32" />
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeKey="name" y="5"/>
+				</Anchors>
+				<Frames>
+					<Button parentKey="slot1" name="$parentSlot1" inherits="TRP3_GlanceBarSlotTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="LEFT" x="0" y="0" />
+						</Anchors>
+					</Button>
+
+					<Button parentKey="slot2" name="$parentSlot2" inherits="TRP3_GlanceBarSlotTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="LEFT" x="25" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="slot3" name="$parentSlot3" inherits="TRP3_GlanceBarSlotTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="LEFT" x="50" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="slot4" name="$parentSlot4" inherits="TRP3_GlanceBarSlotTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="LEFT" x="75" y="0" />
+						</Anchors>
+					</Button>
+					<Button parentKey="slot5" name="$parentSlot5" inherits="TRP3_GlanceBarSlotTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="LEFT" x="100" y="0" />
+						</Anchors>
+					</Button>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer>
+				<FontString parentKey="name" inherits="SystemFont_NamePlate" wordwrap="false" justifyH="CENTER" ignoreParentScale="true">
+					<Color r="1" g="0.6" b="0" />
+				</FontString>
+			</Layer>
+			<Layer>
+				<FontString parentKey="title" inherits="SystemFont_NamePlate" wordwrap="false" justifyH="CENTER" ignoreParentScale="true">
+					<Color r="1" g="0.6" b="0" />
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Script file="nameplates.lua"/>
+	<Script file="nameplates_config.lua"/>
+	<Script file="nameplates_events.lua"/>
+	<Script file="nameplate_decorator.lua"/>
+	<Script file="nameplates_unit_data.lua"/>
+</Ui>

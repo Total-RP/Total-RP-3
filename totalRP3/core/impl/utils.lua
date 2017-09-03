@@ -1075,8 +1075,10 @@ Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTextur
 		Log.log("Fail to round texture: " .. tostring(errorMess));
 		if failTexture then
 			SetPortraitToTexture(textureFrame, failTexture);
-		elseif _G[textureFrame] then
+		elseif type(textureFrame) == string and _G[textureFrame] then
 			_G[textureFrame]:SetTexture(texturePath);
+		elseif textureFrame.SetTexture then
+			textureFrame:SetTexture(texturePath);
 		end
 	end
 end

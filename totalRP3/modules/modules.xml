@@ -133,6 +133,5 @@
 
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
 
-
-	<Script file="nameplates\nameplates.lua"/>
+	<Include file="nameplates\nameplates.xml"/>
 </Ui>
