@@ -941,6 +941,31 @@ end
 -- Sounds
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local PlaySoundFile = PlaySoundFile;
+--- Patch 7.3 compatibility preparation
+local PlaySound = PlaySound;
+
+if select(4, GetBuildInfo()) == 70300 then
+	-- 7.3 uses IDs instead of sound strings. This table is mapping the IDs we need to use instead
+	local FILE_IDS_TO_OLD_PATHS = {
+		["QUESTLOGOPEN"] = 844, -- SOUNDKIT.IG_QUEST_LOG_OPEN
+		["QUESTLOGCLOSE"] = 845, -- SOUNDKIT.IG_QUEST_LOG_CLOSE
+		["igMainMenuOptionCheckBoxOn"] = 856, -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
+		["gsCharacterSelection"] = 856, -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON (this one no longer exists)
+		["igCharacterInfoTab"] = 841, -- SOUNDKIT.IG_CHARACTER_INFO_TAB (this one no longer exists)
+		["UChatScrollButton"] = 1115, -- SOUNDKIT.U_CHAT_SCROLL_BUTTON
+		["AchievementMenuClose"] = 13833, -- SOUNDKIT.ACHIEVEMENT_MENU_CLOSE
+		["AchievementMenuOpen"] = 13832, -- SOUNDKIT.ACHIEVEMENT_MENU_OPEN
+		["GAMEDIALOGCLOSE"] = 850, -- SOUNDKIT.IG_MAINMENU_OPEN
+		["GAMEDIALOGOPEN"] = 851, -- SOUNDKIT.IG_MAINMENU_CLOSE
+	}
+
+	local oldPlaySound = PlaySound;
+	PlaySound = function(sound)
+		oldPlaySound(FILE_IDS_TO_OLD_PATHS[sound] or sound);
+	end
+end
+
 function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
 		if url then
@@ -953,7 +978,7 @@ end
 
 function TRP3_API.ui.misc.playSoundKit(soundID, channel)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
-		local willPlay, handlerID = PlaySoundKitID(soundID, channel or "SFX");
+		local willPlay, handlerID = PlaySound(soundID, channel or "SFX");
 		return handlerID;
 	end
 end

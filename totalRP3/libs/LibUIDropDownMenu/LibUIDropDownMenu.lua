@@ -817,7 +817,7 @@ function L_UIDropDownMenuButton_OnClick(self)
 	end
 
 	if ( playSound ) then
-		PlaySound("UChatScrollButton");
+		TRP3_API.ui.misc.playUISound("UChatScrollButton");
 	end
 end
 

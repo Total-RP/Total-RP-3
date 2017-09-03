@@ -32,10 +32,10 @@ externals:
 
 ignore:
   - README.md
+  - CONTRIBUTING.md
   - Documents
   - totalRP3_zTest
-  - totalRP3_Localization
-  - totalRP3_KuiNameplates # Will be moved as a bundled module
+  - totalRP3_Localizator
 
 manual-changelog:
   filename: CHANGELOG.md
