@@ -452,11 +452,18 @@
 					<EditBox name="$parentText" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false" ignoreParentScale="true">
 						<Scripts>
 							<OnShow>
+								-- Cursor misalignment workaround:
+								-- ignore parent scale
+								-- and manually set the font size using the effective scale.
 								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
+								local fontPath, fontSize, fontFlag = self:GetFont();
+								self:SetFont(fontPath, 11 * self:GetEffectiveScale(), fontFlag);
 							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+									-- Patch 7.3: Do not scroll to end of text, because the cursor misalignment bug
+									-- is making the thing scroll way passed the text...
+									-- self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
 								end
 							</OnTextChanged>
 							<OnEscapePressed>
