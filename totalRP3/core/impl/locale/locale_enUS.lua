@@ -983,41 +983,12 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_13 = [[
-## [1.2.9.1](https://github.com/Ellypse/Total-RP-3/compare/1.2.9...1.2.9.1) - 2017-08-29
-
-### Added
-
-- Added Traditional Chinese and Korean localizations.
-
-### Changed
-
-- Renamed Chinese localization to Simplified Chinese.
-- Fixed many typos in the English localization (thanks to Solanya).
-
-### Removed
-- Removed the option to change the detection pattern for NPC speeches, as it created many issues and there really wasn't a need for it.
+		WHATS_NEW_14 = [[
+## 1.2.9.2 - 2017-09-14
 
 ### Fixed
 
-- Fixed issues with patch 7.3.
-
-## Changes for version 1.2.9
-
-### Improvements
-
-- Since we kept seeing invalid bug reports from users who are inserting non-supported codes inside their profiles, Total RP 3 will now clean the user profile from these invalid codes on launch and try to prevent advanced editing on runtime. From now on, any bug report involving profiles that have non supported codes injected in them will be systematically ignored.
-- Added custom module for the [TinyTooltip](https://mods.curse.com/addons/wow/268266-tinytooltip) add-on to apply its tooltip modifications to Total RP 3's tooltips.
-- Added character limitation on the NPC speeches window and a character count to indicate how many characters are remaining for your message — [Issue #101](https://wow.curseforge.com/projects/total-rp-3/issues/101)
-- Added a button to reset the mature filter dictionary to its default values — [Issue #97](https://wow.curseforge.com/projects/total-rp-3/issues/97)
-
-### Bug fixes
-
-- Fixed alignment of the text field labels for personality traits.
-- Fixed an issue where the text popup for copying the URL of a link clicked in a profile had truncated text if another add-on added a limit on the text input before Total RP 3 opened the pop-up — [Issue #113](https://wow.curseforge.com/projects/total-rp-3/issues/113)
-- Fixed an issue with the custom WIM integration — [Issue #108](https://wow.curseforge.com/projects/total-rp-3/issues/108)
-- Updated the libraries used by the add-on the their latest version, including the drop-downs library, in order to fix some issues with the drop-downs.
-
+- Implemented a temporary workaround for the issue introduced by patch 7.3 in the game's code that cause the misalignment of the text cursor in multi lines text fields. Note that this workaround is not perfect, and result in empty lines visible at the bottom of the text, but at least the cursor is actually on the right line. But Blizzard is aware of the issue and is working on fixing it properly on their end.
 
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}

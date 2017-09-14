@@ -1,21 +1,10 @@
 # Changelog
 
-## [1.2.9.1] - 2017-08-29
+## [1.2.9.2] - 2017-09-14
 
-### Added
-
-- Added Traditional Chinese and Korean localizations.
-
-### Changed
-
-- Renamed Chinese localization to Simplified Chinese.
-- Fixed many typos in the English localization (thanks to Solanya).
-
-### Removed
-- Removed the option to change the detection pattern for NPC speeches, as it created many issues and there really wasn't a need for it.
 
 ### Fixed
 
-- Fixed issues with patch 7.3.
+- Implemented a temporary workaround for the issue introduced by patch 7.3 in the game's code that cause the misalignment of the text cursor in multi lines text fields. Note that this workaround is not perfect, and result in empty lines visible at the bottom of the text, but at least the cursor is actually on the right line. But Blizzard is aware of the issue and is working on fixing it properly on their end.
 
-[1.2.9.1]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9...1.2.9.1
+[1.2.9.2]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9.1...1.2.9.2
