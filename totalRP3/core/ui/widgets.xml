@@ -502,7 +502,7 @@
 					</Anchors>
 				</Texture>
 			</Layer>
-			<Layer level="BORDER">
+			<Layer level="BORDER" textureSubLevel="1">
 				<Texture name="$parentInsetBotLeftCorner" inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" x="2" y="0"/>
@@ -513,6 +513,18 @@
 						<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
 					</Anchors>
 				</Texture>
+				<Texture name="$parentInsetTopLeftCorner" inherits="UI-Frame-InnerTopLeft" parentKey="InsetBorderTopLeft">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-3"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentInsetTopRightCorner" inherits="UI-Frame-InnerTopRight" parentKey="InsetBorderTopmRight">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-3" y="-3"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
 				<Texture name="$parentInsetBottomBorder" inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeKey="$parent.InsetBorderBottomLeft" relativePoint="BOTTOMRIGHT"/>
