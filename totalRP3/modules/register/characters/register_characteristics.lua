@@ -801,17 +801,13 @@ local function onActionClicked(button)
 	if context.profile.link and tsize(context.profile.link) > 0 then
 		tinsert(values, { loc("REG_PLAYER_IGNORE"):format(tsize(context.profile.link)), 2 });
 	end
+	local relationRows = {}
+	for id, relation in pairs(RELATIONS.relations) do
+		tinsert(relationRows, {relation.humanReadable or loc("REG_RELATION_" .. id), id});
+	end
 	tinsert(values, {
 		loc("REG_RELATION"),
-		{
-			{ loc("REG_RELATION_NONE"), RELATIONS.NONE },
-			{ loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY },
-			{ loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL },
-			{ loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS },
-			{ loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND },
-			{ loc("REG_RELATION_LOVE"), RELATIONS.LOVE },
-			{ loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY },
-		},
+		relationRows
 	});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
