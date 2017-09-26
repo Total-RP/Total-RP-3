@@ -455,9 +455,8 @@
 								-- Cursor misalignment workaround:
 								-- ignore parent scale
 								-- and manually set the font size using the effective scale.
-								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
-								local fontPath, fontSize, fontFlag = self:GetFont();
-								self:SetFont(fontPath, 11 * self:GetEffectiveScale(), fontFlag);
+								TRP3_API.ui.frame.workaround7_SetFontScale(self);
+								TRP3_API.ui.frame.workaround7_3SetWidth(self);
 							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
