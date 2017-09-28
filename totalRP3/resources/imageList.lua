@@ -283,42 +283,37 @@ local IMAGES = {
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_Brawl",
+		url = "Interface\\Calendar\\Holidays\\Calendar_Brawl",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_DanceDay",
+		url = "Interface\\Calendar\\Holidays\\Calendar_DanceDay",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_MoonkinFestival",
+		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_RunningoftheGnomesEnd",
+		url = "Interface\\Calendar\\Holidays\\Calendar_RunningoftheGnomesEnd",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_RunningoftheGnomesStart",
+		url = "Interface\\Calendar\\Holidays\\Calendar_TombofSargerasStart",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_TombofSargerasStart",
+		url = "Interface\\Calendar\\Holidays\\Calendar_TransmogPopularityContestStart",
 		width = 128,
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Calendar_TransmogPopularityContestStart",
-		width = 128,
-		height = 128
-	},
-	{
-		url = "Interface\\Calendar\\Calendar_WeekendBlackTempleStart",
+		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendBlackTempleStart",
 		width = 128,
 		height = 128
 	},
