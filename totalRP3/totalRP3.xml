@@ -21,6 +21,7 @@
 
 	<!-- Please note that the loading order matters a lot -->
 	<Include file="libs\libs.xml"/>
+	<Include file="tools\tools.xml"/>
 	<Include file="core\core.xml"/>
 	<Include file="resources\resources.xml"/>
 	<Script file="totalRP3.lua"/>
