@@ -449,15 +449,10 @@
 					<Anchor point="RIGHT" x="-18" y="0"/>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="$parentText" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false" ignoreParentScale="true">
+					<EditBox name="$parentText" parentKey="text" multiLine="true" autoFocus="false" mixin="TRP3_EditBoxMixin">
 						<Scripts>
-							<OnShow>
-								-- Cursor misalignment workaround:
-								-- ignore parent scale
-								-- and manually set the font size using the effective scale.
-								TRP3_API.ui.frame.workaround7_SetFontScale(self);
-								TRP3_API.ui.frame.workaround7_3SetWidth(self);
-							</OnShow>
+							<OnLoad method="OnLoad" intrinsicOrder="postcall"/>
+							<OnShow method="OnShow" intrinsicOrder="postcall"/>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
 									-- Patch 7.3: Do not scroll to end of text, because the cursor misalignment bug

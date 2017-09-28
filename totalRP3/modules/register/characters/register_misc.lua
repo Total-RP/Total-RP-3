@@ -578,6 +578,6 @@ function TRP3_API.register.inits.miscInit()
 
 	-- Resizing
 	TRP3_AtFirstGlanceEditorResizeButton.onResizeStop = function()
-		TRP3_API.ui.frame.workaround7_3SetWidth(TRP3_AtFirstGlanceEditorTextScrollText);
+		TRP3_AtFirstGlanceEditorTextScrollText:RefreshAutomaticWidth();
 	end;
 end
