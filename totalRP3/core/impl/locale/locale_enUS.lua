@@ -983,12 +983,18 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 |cff00ff00Use the same command again (|cff999999/trp3 stash|cff00ff00) to restore your data.|r]],
 		OPTION_ENABLED_TOAST = "Option enabled",
 		OPTION_DISABLED_TOAST = "Option disabled",
-		WHATS_NEW_14 = [[
-## 1.2.9.2 - 2017-09-14
+		WHATS_NEW_15 = [[
+## 1.2.10 - 2017-09-28
+
+### Added
+
+- Added 494 icons to our icon browser, from the latest patches.
+- Added 185 musics to our music browser. We were finally able to find the musics for patch 7.1, 7.2 and 7.3, including Karazhan, Winter Veil, Diablo Anniversary, Tomb of Sargeras, Argus and more!
+- Added 142 images to our image browser, including the new prestige icons, PvP emblems, the new dressing room backgrounds, and even the calendar icon for the [Running of the Gnomes event](http://bit.ly/GnomeRun2k17)!
 
 ### Fixed
 
-- Implemented a temporary workaround for the issue introduced by patch 7.3 in the game's code that cause the misalignment of the text cursor in multi lines text fields. Note that this workaround is not perfect, and result in empty lines visible at the bottom of the text, but at least the cursor is actually on the right line. But Blizzard is aware of the issue and is working on fixing it properly on their end.
+- Improved the workaround for the text cursor misalignment issue brought by patch 7.3 in the EditBox. The text no longer go beyond the limits of the EditBox.
 
 ]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
