@@ -991,6 +991,7 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 - Added 494 icons to our icon browser, from the latest patches.
 - Added 185 musics to our music browser. We were finally able to find the musics for patch 7.1, 7.2 and 7.3, including Karazhan, Winter Veil, Diablo Anniversary, Tomb of Sargeras, Argus and more!
 - Added 142 images to our image browser, including the new prestige icons, PvP emblems, the new dressing room backgrounds, and even the calendar icon for the [Running of the Gnomes event](http://bit.ly/GnomeRun2k17)!
+- Added thank you message for Ellypse's Patreon supporters.
 
 ### Fixed
 
@@ -1026,6 +1027,11 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - {twitter*Solanya_*Solanya} (Community Manager)
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
+{col:ffffff}Ellypse's Patreon supporters:{/col}
+- Connor "{twitter*Saelorable*Sælorable}" Macleod
+- Nikradical
+- Ilsyra
+
 {col:ffffff}Our pre-alpha QA team:{/col}
 - Erzan
 - Calian
