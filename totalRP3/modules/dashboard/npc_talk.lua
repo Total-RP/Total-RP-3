@@ -36,6 +36,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local CreateColor = CreateColor;
 	local colorTool = CreateColor();
 	local strlen = strlen;
+	local strtrim = strtrim;
 
 	local frame = TRP3_NPCTalk;
 	---@type Button
@@ -81,6 +82,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local NPCName = strtrim(frame.name:GetText());
 		local channel = frame.channelDropdown:GetSelectedValue();
 		local message = frame.messageText.scroll.text:GetText();
+
+		-- Always check that the message is not empty before trying to send it
+		if not message or strlen(strtrim(message)) < 1 then return end 
 
 		-- Send a chat message via the EMOTE channel
 		SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
