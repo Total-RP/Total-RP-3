@@ -554,7 +554,8 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				return TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
+				local profile, profileID = getUnitIDProfile(unitID);
+				return profileID and TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
 			else
 				return false;
 			end
@@ -572,7 +573,7 @@ local function onStart()
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 				local profile, profileID = getUnitIDProfile(unitID);
-				return profile.hasMatureContent and isProfileWhitelisted(profileID);
+				return profileID and profile.hasMatureContent and isProfileWhitelisted(profileID);
 			else
 				return false;
 			end
@@ -593,7 +594,7 @@ local function onStart()
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 				local profile, profileID = getUnitIDProfile(unitID);
-				return not profile.hasMatureContent and not isProfileWhitelisted(profileID);
+				return profileID and not profile.hasMatureContent and not isProfileWhitelisted(profileID);
 			else
 				return false;
 			end
