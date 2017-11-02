@@ -449,15 +449,14 @@
 					<Anchor point="RIGHT" x="-18" y="0"/>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="$parentText" parentKey="text" multiLine="true" autoFocus="false" mixin="TRP3_EditBoxMixin">
+					<EditBox name="$parentText" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">
 						<Scripts>
-							<OnLoad method="OnLoad" intrinsicOrder="postcall"/>
-							<OnShow method="OnShow" intrinsicOrder="postcall"/>
+							<OnShow>
+								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
+							</OnShow>
 							<OnTextChanged>
 								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-									-- Patch 7.3: Do not scroll to end of text, because the cursor misalignment bug
-									-- is making the thing scroll way passed the text...
-									-- self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
+								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
 								end
 							</OnTextChanged>
 							<OnEscapePressed>
