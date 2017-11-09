@@ -600,9 +600,9 @@ local function onStart()
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then
-						profile.character.RP = 2;
-						if value == "2" then
-							profile.character.RP = 1;
+						profile.character.RP = 1;
+						if value == "1" then
+							profile.character.RP = 2;
 						end
 					elseif field == "CU" then
 						profile.character.CU = value;
