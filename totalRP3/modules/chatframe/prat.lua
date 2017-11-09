@@ -45,6 +45,7 @@ local function onStart()
 		local getConfigValue 					= TRP3_API.configuration.getValue;
 		local getCharacterInfoTab 				= TRP3_API.utils.getCharacterInfoTab;
 		local icon 								= TRP3_API.utils.str.icon;
+		local disabledByOOC = TRP3_API.chat.disabledByOOC;
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
 	
@@ -70,6 +71,8 @@ local function onStart()
 
 		-- Runs before Prat add the message to the chat frames
 		function pratModule:Prat_PreAddMessage(arg, message, frame, event)
+
+			if disabledByOOC() then return end;
 
 			-- If the message has no GUID (system?) we don't have anything to do with this
 			if not message.GUID then return end;

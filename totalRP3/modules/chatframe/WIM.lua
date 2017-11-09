@@ -38,6 +38,7 @@ local function onStart()
 	local getConfigValue 								 = TRP3_API.configuration.getValue;
 	local icon 											 = TRP3_API.utils.str.icon;
 	local playerName									 = TRP3_API.globals.player;
+	local disabledByOOC = TRP3_API.chat.disabledByOOC;
 
 	local classes = WIM.constants.classes;
 
@@ -47,11 +48,20 @@ local function onStart()
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
 	classes.GetColoredNameByChatEvent = function(...)
+		if disabledByOOC() then
+			return WIMsGetColoredNameFunction();
+		end
 		return customGetColoredNameWithCustomFallbackFunction(WIMsGetColoredNameFunction, ...);
 	end;
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
+	local oldWIMGetMyColoredName = classes.GetMyColoredName;
 	classes.GetMyColoredName = function()
+
+		if disabledByOOC() then
+			return oldWIMGetMyColoredName();
+		end
+
 		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
 		local _, playerClass = UnitClass("Player");
 		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
