@@ -567,7 +567,12 @@ local function onStart()
 						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
 						profile.characteristics["CH"] = color;
 					end
-					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(strtrim(value));
+					-- We do not want to trim the class field
+					-- Some users are using a space to indicate they don't have a class
+					if not CHARACTERISTICS_FIELDS[field] == "CL" then
+						value = strtrim(value);
+					end
+					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(field);
 					-- Hack for spaced name tolerated in MRP
 					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
