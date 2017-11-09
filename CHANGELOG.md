@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.11] - 2017-11-09
+
+### Fixed
+
+- Fixed an error when trying to whitelist a profile that has been flagged as containing mature content when the profile hasn't been entirely downloaded yet ([ticket #133](https://wow.curseforge.com/projects/total-rp-3/issues/133)).
+- Fixed an issue allowing the user to send empty NPC messages when using the Enter key ([ticket #124](https://wow.curseforge.com/projects/total-rp-3/issues/124)).
+- Fixed an error when targeting battle pets that are participating in a pet battle ([ticket #96](https://wow.curseforge.com/projects/total-rp-3/issues/96)).
+- Fixed an issue where if you used a single space character for your class (like to indicate you have none) it would be considered as empty and your character's real class would be used instead ([ticket #103](https://wow.curseforge.com/projects/total-rp-3/issues/103)).
+
+### Removed
+
+- Removed workaround for the text box issue introduced in patch 7.3 as this issue has been fixed in patch 7.3.2.
+
 ## [1.2.10] - 2017-09-28
 
 ### Added
@@ -36,6 +49,7 @@
 
 - Fixed issues with patch 7.3.
 
+[1.2.11]: https://github.com/Ellypse/Total-RP-3/compare/1.2.10...1.2.11
 [1.2.10]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9.2...1.2.10
 [1.2.9.2]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9.1...1.2.9.2
 [1.2.9.1]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9...1.2.9.1
