@@ -41,6 +41,7 @@ local function onStart()
 	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_API.events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
 	local getProfileByID = Register.getProfile;
 	local getUnitIDProfile = Register.getUnitIDCurrentProfileSafe;
+	local getUnitIDProfileID = Register.getUnitIDProfileID;
 	local hasProfile = Register.hasProfile;
 	local getProfileOrNil = TRP3_API.register.getProfileOrNil;
 	local isUnitIDKnown = Register.isUnitIDKnown;
@@ -188,7 +189,7 @@ local function onStart()
 	--
 	local function flagUnitProfileHasHavingMatureContentConfirm(unitID)
 		assert(unitID, ("Trying to call flagUnitProfileHasHavingMatureContentConfirm with a nil unitID."));
-		local profile, profileID = getUnitIDProfile(unitID);
+		local profileID = getUnitIDProfileID(unitID);
 		local unitName = getUnitRPName(unitID);
 
 		showTextInputPopup(loc("MATURE_FILTER_FLAG_PLAYER_TEXT"):format(unitName), function(text)
@@ -206,7 +207,7 @@ local function onStart()
 
 	local function removeUnitProfileFromWhitelistConfirm(unitID)
 		TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"):format(unitID), function()
-			local profile, profileID = getUnitIDProfile(unitID);
+			local profileID = getUnitIDProfileID(unitID);
 			-- Flag the profile of the unit has having mature content
 			removeProfileIDFromWhiteList(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
@@ -219,7 +220,7 @@ local function onStart()
 	-- @param unitID
 	--
 	local function whitelistProfileByUnitIDConfirm(unitID, callback)
-		local profile, profileID = getUnitIDProfile(unitID); -- TODO Check exists because it raise error
+		local profileID = getUnitIDProfileID(unitID);
 
 		TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_ADD_TO_WHITELIST_TEXT"):format(unitID), function()
 			whitelistProfileID(profileID);
@@ -554,7 +555,7 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				local profile, profileID = getUnitIDProfile(unitID);
+				local profileID = getUnitIDProfileID(unitID);
 				return profileID and TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
 			else
 				return false;
@@ -572,7 +573,8 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				local profile, profileID = getUnitIDProfile(unitID);
+				local profile = getUnitIDProfile(unitID);
+				local profileID = getUnitIDProfileID(unitID);
 				return profileID and profile.hasMatureContent and isProfileWhitelisted(profileID);
 			else
 				return false;
@@ -593,7 +595,8 @@ local function onStart()
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-				local profile, profileID = getUnitIDProfile(unitID);
+				local profile = getUnitIDProfile(unitID);
+				local profileID = getUnitIDProfileID(unitID);
 				return profileID and not profile.hasMatureContent and not isProfileWhitelisted(profileID);
 			else
 				return false;
