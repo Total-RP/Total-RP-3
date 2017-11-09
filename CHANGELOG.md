@@ -2,12 +2,17 @@
 
 ## [1.2.11] - 2017-11-09
 
+### Added
+
+- Added support for the profile downloading indicator from and to the XRP add-on.
+
 ### Fixed
 
 - Fixed an error when trying to whitelist a profile that has been flagged as containing mature content when the profile hasn't been entirely downloaded yet ([ticket #133](https://wow.curseforge.com/projects/total-rp-3/issues/133)).
 - Fixed an issue allowing the user to send empty NPC messages when using the Enter key ([ticket #124](https://wow.curseforge.com/projects/total-rp-3/issues/124)).
 - Fixed an error when targeting battle pets that are participating in a pet battle ([ticket #96](https://wow.curseforge.com/projects/total-rp-3/issues/96)).
 - Fixed an issue where if you used a single space character for your class (like to indicate you have none) it would be considered as empty and your character's real class would be used instead ([ticket #103](https://wow.curseforge.com/projects/total-rp-3/issues/103)).
+- Fixed an issue where players with custom RP status from other add-ons sent via the Mary Sue Protocol would be shown as Out Of Character.
 
 ### Removed
 
