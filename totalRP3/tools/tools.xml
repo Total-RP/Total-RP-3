@@ -22,5 +22,7 @@
     -->
 
 	<Script file="workarounds.lua"/>
+	<Script file="debug.lua"/>
+	<Script file="colors.lua"/>
 
 </Ui>
