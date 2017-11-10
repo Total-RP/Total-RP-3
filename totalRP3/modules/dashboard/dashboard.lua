@@ -44,6 +44,7 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
+local tconcat = table.concat;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -201,10 +202,23 @@ TRP3_API.dashboard.init = function()
 		end
 	end);
 
+	local PATREON_SUPPORTERS = {
+		"Connor Macleod",
+		"Ilsyra",
+		"Nikradical",
+		"Vlad",
+	}
+	table.sort(PATREON_SUPPORTERS);
+
+	local patreonMessage = "";
+	for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
+		patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
+	end
+
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW_16");
 	local moreModuleText = loc("MORE_MODULES_2");
-	local aboutText = loc("THANK_YOU_1");
+	local aboutText = loc("THANK_YOU_1"):format(patreonMessage);
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);

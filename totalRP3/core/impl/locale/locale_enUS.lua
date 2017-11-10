@@ -1032,10 +1032,8 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 - {twitter*Solanya_*Solanya} (Community Manager)
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Ellypse's Patreon supporters:{/col}
-- Connor "{twitter*Saelorable*Sælorable}" Macleod
-- Nikradical
-- Ilsyra
+{col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon} {col:ffffff}supporters:{/col}
+%s
 
 {col:ffffff}Our pre-alpha QA team:{/col}
 - Erzan
