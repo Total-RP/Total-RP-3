@@ -598,7 +598,7 @@ local function onStart()
 					if not CHARACTERISTICS_FIELDS[field] == "CL" then
 						value = strtrim(value);
 					end
-					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(field);
+					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(value);
 					-- Hack for spaced name tolerated in MRP
 					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
