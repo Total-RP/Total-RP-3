@@ -17,6 +17,9 @@
 ---	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type AddOn
+local _, AddOn = ...;
+
 ---@class TRP3_ChatLinks
 --- # Chat links API
 ---
@@ -26,11 +29,11 @@
 --- - requesting the original sender of the link for the tooltip data that should be displayed.
 --- - keeping a list of links send and their data.
 local ChatLinks = {};
-TRP3_API.ChatLinks = ChatLinks;
+AddOn.ChatLinks = ChatLinks;
 
 --- Total RP 3 imports
-local Debug = TRP3_API.Debug;
-local Colors = TRP3_API.Colors;
+local Debug = AddOn.Debug;
+local Colors = AddOn.Colors;
 
 --- Wow Imports
 local pairs = pairs;
@@ -47,7 +50,11 @@ local CONFIG_CHARACT_SUB_SIZE = "tooltip_char_subSize";
 local CONFIG_CHARACT_TER_SIZE = "tooltip_char_terSize";
 local getConfigValue = TRP3_API.configuration.getValue;
 
+local itemName;
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	
+	TRP3_API.ChatLinks = ChatLinks;
 
 	local LINK_COLOR = Colors.COLORS.YELLOW;
 	local sentLinks = {};
@@ -59,7 +66,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			SMALL = "SMALL",
 		},
 		COLORS = {
-			YELLOW = CreateColor(1, 1, 0, 1),
+			YELLOW = AddOn.Colors.COLORS.YELLOW,
 			WHITE = CreateColor(1, 1, 1, 1),
 		}
 	}
@@ -77,8 +84,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- The link pattern is [TRP3:ITEM_NAME], for example [TRP3:Epic sword] or [TRP3:My campaign]
-	ChatLinks.LINK_PATTERN = "%[TRP3:%s%]";
-	ChatLinks.FIND_LINK_PATTERN = format(ChatLinks.LINK_PATTERN, "([^%]]+)");
+	ChatLinks.LINK_PATTERN = "[TRP3:%s]";
+	ChatLinks.FIND_LINK_PATTERN = "%[TRP3:([^%]]+)%]";
 
 	---Generate the correct text link format to send to other players
 	---@param name string @ The name of the thing to send, will be visible by other people
@@ -88,10 +95,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		Debug.assertNotNil(name, "name")
 		Debug.assertNotNil(linkData, "linkData")
 		if not sentLinks[name] then
-			sentLinks[sentLinks] = linkData;
+			sentLinks[name] = linkData;
 		elseif sentLinks[name] ~= linkData then
 			-- TODO handle duplicate names
 		end
+		itemName = name;
 		return format(ChatLinks.LINK_PATTERN, name);
 	end
 
@@ -104,9 +112,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	};
 
 	local FORMATTED_LINK_FORMAT = "|Htotalrp3|h%s|h|r";
-	local function generateFormattedLink(linkType, name)
+	local function generateFormattedLink(name)
 		Debug.assertNotNil(name, "name");
-		Debug.assertNotNil(linkType, "linkType");
 		return format(FORMATTED_LINK_FORMAT, LINK_COLOR:WrapTextInColorCode(strconcat("[", name, "]")));
 	end
 
@@ -124,7 +131,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param text string @ Text for the line
 	---@param optional color ColorMixin @ Color for the text (default white)
 	---@param optional size number @ Size of the text (default 12)
-	function ChatLinks.generateSingleLineTooltipData(text, color, size)
+	function ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)
 		Debug.assertNotNil(text, "text");
 		if not color then
 			color = ChatLinks.FORMAT.COLORS.WHITE;
@@ -139,6 +146,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			g = color.g,
 			b = color.b,
 			size = size,
+			wrap = wrap,
 		}
 	end
 
@@ -148,7 +156,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param optional colorLeft ColorMixin @ Color for the left text (default white)
 	---@param optional colorRight ColorMixin @ Color for the right text (default white)
 	---@param optional size number @ Size of the text (default 12)
-	function ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size)
+	function ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)
 		Debug.assertNotNil(textLeft, "textLeft");
 		Debug.assertNotNil(textRight, "textRight");
 		if not colorLeft then
@@ -168,6 +176,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			colorLeft = colorLeft,
 			colorRight = colorRight,
 			size = size,
+			wrap = wrap,
 		}
 	end
 
@@ -184,9 +193,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			if line.double then
 				local colorLeft = line.colorLeft or {};
 				local colorRight = line.colorRight or {};
-				ItemRefTooltip:AddDoubleLine(line.textLeft, line.textRight, colorLeft.r, colorLeft.g, colorLeft.b, colorRight.r, colorRight.g, colorRight.b, size);
+				ItemRefTooltip:AddDoubleLine(line.textLeft, line.textRight, colorLeft.r, colorLeft.g, colorLeft.b, colorRight.r, colorRight.g, colorRight.b, line.wrap);
 			else
-				ItemRefTooltip:AddLine(line.text, line.r, line.g, line.b, size);
+				ItemRefTooltip:AddLine(line.text, line.r, line.g, line.b, line.wrap);
 			end
 		end
 
@@ -194,14 +203,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- |Htotalrp3:CharacterName-RealName|h|cffaabbcc[My item name]|r|h
-	local FIND_HYPERLINK_PATTERN = "|Htotalrp3:([^s]-)|h|c" .. LINK_COLOR:GenerateHexColor() .. "%[([^%]]+)|r|h";
+	local FIND_HYPERLINK_PATTERN = "|Htotalrp3|h|c........%[([^%]]+)%]|h";
 	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
 		if link:find("totalrp3") then
-			local _, _, itemName = text:find(FIND_HYPERLINK_PATTERN);
+			-- local itemName = TRP3_API.utils.str.sanitize(text);
 
 			-- TODO We would show that we are requesting the data and then replace the text asynchronously
 			showTooltip({
-				ChatLinks.generateSingleLineTooltipData(itemName, nil, ChatLinks.FORMAT.SIZES.TITLE),
+				ChatLinks.generateSingleLineTooltipData(text, nil, ChatLinks.FORMAT.SIZES.TITLE),
 				ChatLinks.generateSingleLineTooltipData("Requesting data", ChatLinks.FORMAT.COLORS.YELLOW),
 			});
 
@@ -211,4 +220,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end);
 		end
 	end)
+	
+	local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
+	function ItemRefTooltip:SetHyperlink(link, ...)
+		if(link and link:sub(0, 8) == "totalrp3") then
+			return;
+		end
+		return OriginalSetHyperlink(self, link, ...);
+	end
 end)

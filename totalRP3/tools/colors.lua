@@ -17,13 +17,16 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type AddOn
+local _, AddOn = ...;
+
 ---@class TRP3_Colors
 --- # Total RP 3 Colors
 ---
 --- Custom Colors API, piggy backing on WoW's ColorMixin
 --- @see ColorMixin
 local Colors = {};
-TRP3_API.Colors = Colors;
+AddOn.Colors = Colors;
 
 --- WoW imports
 local CreateFromMixins = CreateFromMixins;
@@ -32,7 +35,7 @@ local strlength = string.len;
 local tonumber = tonumber;
 
 --- Total RP 3 imports
-local Debug = TRP3_API.Debug;
+local Debug = AddOn.Debug;
 
 ---@class TRP3_ColorMixin : ColorMixin
 local TRP3_ColorMixin = {};
@@ -69,7 +72,7 @@ function Colors.CreateColor(red, green, blue, alpha)
 	Debug.assertType(blue, "blue", "number");
 
 	-- Check if we were given numbers based on a 0 to 255 scale
-	if red > 1 or green > 1 or blue > 1 or alpha > 1 then
+	if red > 1 or green > 1 or blue > 1 or (alpha and alpha > 1) then
 		-- If that's the case, we will convert the numbers into the 0 to 1 scale
 		red, green, blue, alpha = convertColorBytesToBits(red, green, blue, alpha);
 	end
@@ -130,7 +133,7 @@ end
 Colors.COLORS = {
 	ORANGE = Colors.CreateColor(255, 153, 0),
 	WHITE = Colors.CreateColor(1, 1, 1),
-	YELLOW = Colors.CreateColor(1, 1, 0),
+	YELLOW = Colors.CreateColor(1, 0.75, 0),
 
 	HUNTER = Colors.CreateColorFromTable(RAID_CLASS_COLORS.HUNTER),
 	WARLOCK = Colors.CreateColorFromTable(RAID_CLASS_COLORS.WARLOCK),
