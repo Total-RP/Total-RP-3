@@ -17,14 +17,14 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn
-local _, AddOn = ...;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 ---@class TRP3_Debug
 --- # Total RP 3 Debug
 ---
 local Debug = {};
-AddOn.Debug = Debug;
+TRP3_API.Debug = Debug;
 
 --- WoW imports
 local error = error;

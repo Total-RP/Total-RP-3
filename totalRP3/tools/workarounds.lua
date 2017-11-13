@@ -17,12 +17,12 @@
 ---	limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn
-local _, AddOn = ...;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 ---@class TRP3_Workarounds
 local Workarounds = {};
-AddOn.Workarounds = Workarounds ;
+TRP3_API.Workarounds = Workarounds ;
 
 local workaroundsToApply = {};
 

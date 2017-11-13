@@ -17,8 +17,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn
-local _, AddOn = ...;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 -- Public accessor
 TRP3_API.profile = {};
@@ -435,26 +435,26 @@ function TRP3_API.profile.init()
 				if editbox then
 					local customColor;
 					if info.CH then
-						customColor = AddOn.Colors.CreateColorFromHexadecimalCode(info.characteristics.CH);
+						customColor = TRP3_API.Colors.CreateColorFromHexadecimalCode(info.characteristics.CH);
 					end
 					local yellow = {r=1, g=0.75, b=0};
 					local linkData = {
-						AddOn.ChatLinks.generateSingleLineTooltipData("Profile: " .. profile.profileName, yellow, AddOn.ChatLinks.FORMAT.SIZES.TITLE),
-						AddOn.ChatLinks.generateSingleLineTooltipData(" "),
-						AddOn.ChatLinks.generateSingleLineTooltipData(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor),
-						AddOn.ChatLinks.generateSingleLineTooltipData(info.characteristics.FT),
-						AddOn.ChatLinks.generateSingleLineTooltipData(" "),
-						AddOn.ChatLinks.generateSingleLineTooltipData(loc("REG_PLAYER_CURRENT") .. ": "),
-						AddOn.ChatLinks.generateSingleLineTooltipData(info.character.CU, yellow),
-						AddOn.ChatLinks.generateSingleLineTooltipData(" "),
-						AddOn.ChatLinks.generateSingleLineTooltipData(loc("DB_STATUS_CURRENTLY_OOC") .. ": "),
-						AddOn.ChatLinks.generateSingleLineTooltipData(info.character.CO, yellow),
-						AddOn.ChatLinks.generateSingleLineTooltipData(" "),
-						AddOn.ChatLinks.generateSingleLineTooltipData("Total RP 3 Profile", nil, AddOn.ChatLinks.FORMAT.SIZES.SMALL),
-						AddOn.ChatLinks.generateSingleLineTooltipData(" "),
-						AddOn.ChatLinks.generateSingleLineTooltipData("[IMPORT BUTTON GOES HERE]", nil),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData("Profile: " .. profile.profileName, yellow, TRP3_API.ChatLinks.FORMAT.SIZES.TITLE),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(" "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(info.characteristics.FT),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(" "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(loc("REG_PLAYER_CURRENT") .. ": "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(info.character.CU, yellow),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(" "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(loc("DB_STATUS_CURRENTLY_OOC") .. ": "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(info.character.CO, yellow),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(" "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData("Total RP 3 Profile", nil, TRP3_API.ChatLinks.FORMAT.SIZES.SMALL),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData(" "),
+						TRP3_API.ChatLinks.generateSingleLineTooltipData("[IMPORT BUTTON GOES HERE]", nil),
 					};
-					editbox:Insert(AddOn.ChatLinks.generateLink(profile.profileName, linkData));
+					editbox:Insert(TRP3_API.ChatLinks.generateLink(profile.profileName, linkData));
 				end
 			else
 				if currentProfileId ~= self.profileID then

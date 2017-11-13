@@ -17,8 +17,8 @@
 ---	limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn
-local _, AddOn = ...;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 ---@class TRP3_ChatLinks
 --- # Chat links API
@@ -29,11 +29,11 @@ local _, AddOn = ...;
 --- - requesting the original sender of the link for the tooltip data that should be displayed.
 --- - keeping a list of links send and their data.
 local ChatLinks = {};
-AddOn.ChatLinks = ChatLinks;
+TRP3_API.ChatLinks = ChatLinks;
 
 --- Total RP 3 imports
-local Debug = AddOn.Debug;
-local Colors = AddOn.Colors;
+local Debug = TRP3_API.Debug;
+local Colors = TRP3_API.Colors;
 
 --- Wow Imports
 local pairs = pairs;
@@ -50,8 +50,6 @@ local CONFIG_CHARACT_SUB_SIZE = "tooltip_char_subSize";
 local CONFIG_CHARACT_TER_SIZE = "tooltip_char_terSize";
 local getConfigValue = TRP3_API.configuration.getValue;
 
-local itemName;
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	
 	TRP3_API.ChatLinks = ChatLinks;
@@ -66,7 +64,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			SMALL = "SMALL",
 		},
 		COLORS = {
-			YELLOW = AddOn.Colors.COLORS.YELLOW,
+			YELLOW = TRP3_API.Colors.COLORS.YELLOW,
 			WHITE = CreateColor(1, 1, 1, 1),
 		}
 	}
@@ -99,7 +97,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		elseif sentLinks[name] ~= linkData then
 			-- TODO handle duplicate names
 		end
-		itemName = name;
 		return format(ChatLinks.LINK_PATTERN, name);
 	end
 
@@ -111,16 +108,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		"CHAT_MSG_CHANNEL"
 	};
 
-	local FORMATTED_LINK_FORMAT = "|Htotalrp3|h%s|h|r";
-	local function generateFormattedLink(name)
+	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%1$s:%2$s|h%3$s|h|r";
+	local function generateFormattedLink(name, playerName)
 		Debug.assertNotNil(name, "name");
-		return format(FORMATTED_LINK_FORMAT, LINK_COLOR:WrapTextInColorCode(strconcat("[", name, "]")));
+		Debug.assertNotNil(playerName, "playerName");
+		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", name, "]"));
+		return format(FORMATTED_LINK_FORMAT, name, playerName, formattedName);
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
-	local function lookForChatLinks(_, event, message, ...)
-		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, generateFormattedLink)
-		return false, message, ...;
+	local function lookForChatLinks(_, event, message, playerName, ...)
+		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
+			generateFormattedLink(name, playerName)
+		end)
+		return false, message, playerName, ...;
 	end
 
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
@@ -203,14 +204,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- |Htotalrp3:CharacterName-RealName|h|cffaabbcc[My item name]|r|h
-	local FIND_HYPERLINK_PATTERN = "|Htotalrp3|h|c........%[([^%]]+)%]|h";
+	local FIND_HYPERLINK_PATTERN = "|Htotalrp3:([^%s]+):([^%]]+)|h";
 	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
 		if link:find("totalrp3") then
-			-- local itemName = TRP3_API.utils.str.sanitize(text);
+			local _, _, characterName, itemName = text:find(FIND_HYPERLINK_PATTERN);
 
 			-- TODO We would show that we are requesting the data and then replace the text asynchronously
 			showTooltip({
-				ChatLinks.generateSingleLineTooltipData(text, nil, ChatLinks.FORMAT.SIZES.TITLE),
+				ChatLinks.generateSingleLineTooltipData(text),
 				ChatLinks.generateSingleLineTooltipData("Requesting data", ChatLinks.FORMAT.COLORS.YELLOW),
 			});
 

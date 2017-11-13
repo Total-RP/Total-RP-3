@@ -17,8 +17,8 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn
-local _, AddOn = ...;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 ---@class TRP3_Colors
 --- # Total RP 3 Colors
@@ -26,7 +26,7 @@ local _, AddOn = ...;
 --- Custom Colors API, piggy backing on WoW's ColorMixin
 --- @see ColorMixin
 local Colors = {};
-AddOn.Colors = Colors;
+TRP3_API.Colors = Colors;
 
 --- WoW imports
 local CreateFromMixins = CreateFromMixins;
@@ -35,7 +35,7 @@ local strlength = string.len;
 local tonumber = tonumber;
 
 --- Total RP 3 imports
-local Debug = AddOn.Debug;
+local Debug = TRP3_API.Debug;
 
 ---@class TRP3_ColorMixin : ColorMixin
 local TRP3_ColorMixin = {};
