@@ -36,6 +36,7 @@ local Debug = TRP3_API.Debug;
 local Colors = TRP3_API.Colors;
 
 --- Wow Imports
+local assert = assert;
 local pairs = pairs;
 local gsub = string.gsub;
 local strconcat = strconcat;
@@ -53,9 +54,13 @@ local getConfigValue = TRP3_API.configuration.getValue;
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	
 	TRP3_API.ChatLinks = ChatLinks;
-
+	
+	local locf = TRP3_API.locale.getTextf;
 	local LINK_COLOR = Colors.COLORS.YELLOW;
 	local sentLinks = {};
+	
+	local LINK_CODE = "totalrp3";
+	local LINK_LENGTHS = LINK_CODE:len();
 
 	ChatLinks.FORMAT = {
 		SIZES = {
@@ -90,8 +95,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param linkData table @ The data that will be displayed in the tooltip for this link
 	---@return string
 	function ChatLinks.generateLink(name, linkData)
-		Debug.assertNotNil(name, "name")
-		Debug.assertNotNil(linkData, "linkData")
+		assert(name, locf("DEBUG_NIL_PARAMETER", "name", "ChatLinks.generateLink(name, linkData)"));
+		assert(linkData, locf("DEBUG_NIL_PARAMETER", "linkData", "ChatLinks.generateLink(name, linkData)"));
 		if not sentLinks[name] then
 			sentLinks[name] = linkData;
 		elseif sentLinks[name] ~= linkData then
@@ -108,18 +113,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		"CHAT_MSG_CHANNEL"
 	};
 
-	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%1$s:%2$s|h%3$s|h|r";
+	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h|r";
 	local function generateFormattedLink(name, playerName)
-		Debug.assertNotNil(name, "name");
-		Debug.assertNotNil(playerName, "playerName");
+		assert(name, locf("DEBUG_NIL_PARAMETER", "name", "generateFormattedLink(name, playerName)"));
+		assert(playerName, locf("DEBUG_NIL_PARAMETER", "playerName", "generateFormattedLink(name, playerName)"));
 		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", name, "]"));
-		return format(FORMATTED_LINK_FORMAT, name, playerName, formattedName);
+		return format(FORMATTED_LINK_FORMAT, playerName, name, formattedName);
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
 	local function lookForChatLinks(_, event, message, playerName, ...)
 		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
-			generateFormattedLink(name, playerName)
+			return generateFormattedLink(name, playerName)
 		end)
 		return false, message, playerName, ...;
 	end
@@ -133,7 +138,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param optional color ColorMixin @ Color for the text (default white)
 	---@param optional size number @ Size of the text (default 12)
 	function ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)
-		Debug.assertNotNil(text, "text");
+		assert(text, locf("DEBUG_NIL_PARAMETER", "text", "ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)"));
 		if not color then
 			color = ChatLinks.FORMAT.COLORS.WHITE;
 		end
@@ -158,8 +163,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param optional colorRight ColorMixin @ Color for the right text (default white)
 	---@param optional size number @ Size of the text (default 12)
 	function ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)
-		Debug.assertNotNil(textLeft, "textLeft");
-		Debug.assertNotNil(textRight, "textRight");
+		assert(textLeft, locf("DEBUG_NIL_PARAMETER", "textLeft", "ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)"));
+		assert(textRight, locf("DEBUG_NIL_PARAMETER", "textRight", "ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)"));
 		if not colorLeft then
 			colorLeft = ChatLinks.FORMAT.COLORS.WHITE;
 		end
@@ -203,20 +208,22 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		ItemRefTooltip:Show();
 	end
 
-	-- |Htotalrp3:CharacterName-RealName|h|cffaabbcc[My item name]|r|h
-	local FIND_HYPERLINK_PATTERN = "|Htotalrp3:([^%s]+):([^%]]+)|h";
+	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
 	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
-		if link:find("totalrp3") then
-			local _, _, characterName, itemName = text:find(FIND_HYPERLINK_PATTERN);
-
+		local linkType = link:sub(1, LINK_LENGTHS);
+		if linkType == LINK_CODE then
+			local linkContent = link:sub(LINK_LENGTHS + 2);
+			local separatorIndex = linkContent:find(":");
+			local playerName = linkContent:sub(1, separatorIndex - 1);
+			local itemName = linkContent:sub(separatorIndex + 1);
+			
 			-- TODO We would show that we are requesting the data and then replace the text asynchronously
 			showTooltip({
-				ChatLinks.generateSingleLineTooltipData(text),
-				ChatLinks.generateSingleLineTooltipData("Requesting data", ChatLinks.FORMAT.COLORS.YELLOW),
+				ChatLinks.generateSingleLineTooltipData("Requesting data from " .. playerName, ChatLinks.FORMAT.COLORS.YELLOW),
 			});
-
+			
 			-- We are emulating the asynchronousness here with a timer function while working on the feature
-			C_Timer.After(2, function()
+			C_Timer.After(1, function()
 				showTooltip(sentLinks[itemName])
 			end);
 		end

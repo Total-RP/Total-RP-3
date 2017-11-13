@@ -23,6 +23,7 @@ TRP3_API.locale = {}
 BINDING_HEADER_TRP3 = "Total RP 3";
 
 local error, pairs, tinsert, assert, table, tostring, GetLocale = error, pairs, tinsert, assert, table, tostring, GetLocale;
+local format = string.format;
 
 local LOCALS = {};
 local DEFAULT_LOCALE = "enUS";
@@ -96,6 +97,10 @@ local function getText(key)
 	error("Unknown localization key: ".. tostring(key));
 end
 TRP3_API.locale.getText = getText;
+
+function TRP3_API.locale.getTextf(key, ...)
+	return format(getText(key), ...)
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Companion utils
