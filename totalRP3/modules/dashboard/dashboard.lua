@@ -218,11 +218,11 @@ TRP3_API.dashboard.init = function()
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW_16");
 	local moreModuleText = loc("MORE_MODULES_2");
-	local aboutText = loc("THANK_YOU_1"):format(patreonMessage);
+	local aboutText = loc("THANK_YOU_1");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
-	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version));
+	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, patreonMessage));
 
 	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
 	frame:SetSize(400, 30);
