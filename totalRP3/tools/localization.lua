@@ -1066,7 +1066,7 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on."
 };
 
-TRP3_API.loc = setmetatable(TRP3_API.loc, {
+TRP3_API.loc = setmetatable({}, {
 
 	-- When accessing a locale value via its key we call our locale function to get the localized text
 	__index = function(_, localeKey)
