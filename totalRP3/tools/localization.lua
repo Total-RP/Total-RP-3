@@ -1111,9 +1111,15 @@ TRP3_API.loc = setmetatable({}, {
 	--
 	-- We can even add more arguments to automatically apply a format (ie. TRP3_API.loc(TRP3_API.loc.GEN_VERSION, genVersion, genNumber))
 	__call = function(table, localeKey, ...)
+		local localeText;
+
 		-- If a locale value for the key exists in our locale content we get its localized value
-		-- If it doesn't exist, we assume we want the actual text that was given as is
-		local localeText = table[localeKey] or localeKey;
+		if TRP3_API.DEFAULT_LOCALE[localeKey] then
+			localeText = table[localeKey];
+
+		else -- If it doesn't exist, we assume we want the actual text that was given as is
+			localeText = localeKey;
+		end
 
 		-- If we were given more arguments, we want to format the value
 		if #{...} > 0 then
