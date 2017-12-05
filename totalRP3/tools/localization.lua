@@ -1066,6 +1066,11 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on."
 };
 
+TRP3_API.DEFAULT_LOCALE = {};
+-- Save the raw locale content to be used as default
+for k, v in pairs(TRP3_API.loc) do
+	TRP3_API.DEFAULT_LOCALE[k] = v;
+end
 
 --- @type fun(localeKey:string):string
 ---

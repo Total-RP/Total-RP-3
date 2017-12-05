@@ -17,12 +17,30 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local _, TRP3_API = ...;
+
 -- Fixed some typos in the English localization - Paul Corlay
 
 local LOCALE_EN = {
 	locale = "enUS",
 	localeText = "English",
-	localeContent = TRP3_API.loc,
+	localeContent =
+	--@localization(locale="enUS", format="lua_table")@
+	--@do-not-package@
+
+	-- This table is now empty!
+	-- The default locale is now stored in totalRP3/tools/localization.lua
+	{},
+
+	--@end-do-not-package@
 };
+
+-- We will insert the missing locale values from what has been packaged by Curse from the DEFAULT_LOCALE
+-- This will be especially useful during development
+for k, v in pairs(TRP3_API.DEFAULT_LOCALE) do
+	if not LOCALE_EN.localeContent[k] then
+		LOCALE_EN.localeContent[k] = v;
+	end
+end
 
 TRP3_API.locale.registerLocale(LOCALE_EN);
