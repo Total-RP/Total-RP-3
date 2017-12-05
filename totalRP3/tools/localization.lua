@@ -1066,6 +1066,32 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on."
 };
 
+
+--- @type fun(localeKey:string):string
+---
+---	# Total RP 3's New Localization System, TRP3_API.loc
+---
+---	## Description
+---
+---	We are using a meta table here to make it easier for us to access the locale content thanks to IDE code completion.
+---	The IDE is reading the TRP3_API.loc field as a table and offer all the localization keys when typing TRP3_API.loc.
+---
+--- Yet, the metatable applied here (using an empty table) will instead use our TRP3_API.locale.getText(localeKey) function
+--- to fetch the localized version of the text.
+---
+--- For backward compatibility and convinience, the TRP3_API.loc meta table is also made callable.
+--- This means we can get the localization by calling the table with a locale key string TRP3_API.loc("LOCALE_KEY").
+--- The table call accepts more arguments. In that case, a string.format will be applied to the localized value,
+--- so it become a quick shortcut to string.format(TRP3_API.loc.LOCALE_KEY, arg1, arg2, arg3)
+---
+--- ## Usage
+---
+---		local loc = TRP3_API.local; -- local import for a shorter access
+---
+---		button:SetText(loc.LOCALE_KEY) 		-- Get the localized value for LOCALE_KEY
+---		button:SetText(loc("LOCALE_KEY")) 	-- Backward compatible way to get the localized value for LOCALE_KEY
+---		button:SetText(loc(loc.LOCALE_KEY)) -- This will work but is inneficient and should be avoided
+---		button:SetText(loc(loc.LOCALE_KEY, arg1, arg2, arg3)) -- A string.format will be applied to the value of LOCALE_KEY using the given arguments
 TRP3_API.loc = setmetatable({}, {
 
 	-- When accessing a locale value via its key we call our locale function to get the localized text
@@ -1080,12 +1106,9 @@ TRP3_API.loc = setmetatable({}, {
 	--
 	-- We can even add more arguments to automatically apply a format (ie. TRP3_API.loc(TRP3_API.loc.GEN_VERSION, genVersion, genNumber))
 	__call = function(table, localeKey, ...)
-		local localeText = localeKey;
-
-		-- If the key exists in our locale content we get its localized value
-		if table[localeKey] then
-			localeText = TRP3_API.locale.getText(localeKey);
-		end
+		-- If a locale value for the key exists in our locale content we get its localized value
+		-- If it doesn't exist, we assume we want the actual text that was given as is
+		local localeText = table[localeKey] or localeKey;
 
 		-- If we were given more arguments, we want to format the value
 		if #{...} > 0 then
