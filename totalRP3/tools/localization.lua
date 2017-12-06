@@ -28,6 +28,20 @@ local _, TRP3_API = ...;
 
 -- WoW imports
 local format = string.format;
+local assert = assert;
+local type = type;
+local sort = table.sort;
+local pairs = pairs;
+local tinsert = table.insert;
+local tostring = tostring;
+local error = error;
+local sub = string.sub;
+local lower = string.lower;
+
+local IS_FRENCH_LOCALE = GetLocale() == "frFR";
+
+-- Bindings locale
+BINDING_HEADER_TRP3 = "Total RP 3";
 
 -- Complete locale declaration
 TRP3_API.loc = {
@@ -1063,14 +1077,18 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
-	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on."
+	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DEBUG
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	DEBUG_NIL_PARAMETER = [[Unexpected nil parameter "%1$s".]],
+	-- Parameters order: parameterName, actualParameterType, expectedParameterType
+	DEBUG_WRONG_PARAM_TYPE = [[Invalid parameter type "%2$s" for parameter "%1$s", expected "%3$s".]],
 };
 
-TRP3_API.DEFAULT_LOCALE = {};
 -- Save the raw locale content to be used as default
-for k, v in pairs(TRP3_API.loc) do
-	TRP3_API.DEFAULT_LOCALE[k] = v;
-end
+local DEFAULT_LOCALE = CopyTable(TRP3_API.loc);
 
 --- @type fun(localeKey:string):string
 ---
@@ -1081,7 +1099,7 @@ end
 ---	We are using a meta table here to make it easier for us to access the locale content thanks to IDE code completion.
 ---	The IDE is reading the TRP3_API.loc field as a table and offer all the localization keys when typing TRP3_API.loc.
 ---
---- Yet, the metatable applied here (using an empty table) will instead use our TRP3_API.locale.getText(localeKey) function
+--- Yet, the metatable applied here (using an empty table) will instead use our TRP3_API.Locale.getText(localeKey) function
 --- to fetch the localized version of the text.
 ---
 --- For backward compatibility and convinience, the TRP3_API.loc meta table is also made callable.
@@ -1091,17 +1109,17 @@ end
 ---
 --- ## Usage
 ---
----		local loc = TRP3_API.local; -- local import for a shorter access
+---		local loc = TRP3_API.loc; -- local import for a shorter access
 ---
 ---		button:SetText(loc.LOCALE_KEY) 		-- Get the localized value for LOCALE_KEY
----		button:SetText(loc("LOCALE_KEY")) 	-- Backward compatible way to get the localized value for LOCALE_KEY
+---		button:SetText(loc("LOCALE_KEY")) 	-- Backward compatible way to get the localized value for LOCALE_KEY (less efficient)
 ---		button:SetText(loc(loc.LOCALE_KEY)) -- This will work but is inneficient and should be avoided
 ---		button:SetText(loc(loc.LOCALE_KEY, arg1, arg2, arg3)) -- A string.format will be applied to the value of LOCALE_KEY using the given arguments
 TRP3_API.loc = setmetatable({}, {
 
 	-- When accessing a locale value via its key we call our locale function to get the localized text
 	__index = function(_, localeKey)
-		return TRP3_API.locale.getText(localeKey);
+		return TRP3_API.Locale.getText(localeKey);
 	end,
 
 	-- We can also "call" the table itself with either the key as a string (.ie TRP3_API.loc("GEN_VERSION")
@@ -1114,8 +1132,8 @@ TRP3_API.loc = setmetatable({}, {
 		local localeText;
 
 		-- If a locale value for the key exists in our locale content we get its localized value
-		if TRP3_API.DEFAULT_LOCALE[localeKey] then
-			localeText = table[localeKey];
+		if TRP3_API.Locale.keyExists(localeKey) then
+			localeText = TRP3_API.Locale.getText(localeKey);
 
 		else -- If it doesn't exist, we assume we want the actual text that was given as is
 			localeText = localeKey;
@@ -1129,3 +1147,267 @@ TRP3_API.loc = setmetatable({}, {
 		return localeText;
 	end
 })
+
+local Locale = {};
+TRP3_API.Locale = Locale;
+
+local localizations = {};
+local effectiveLocal = {};
+local current;
+
+---Register a new localization
+---@param localeStructure table
+function Locale.registerLocale(localeStructure)
+	assert(type(localeStructure) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure", type(localeStructure), "table"));
+	assert(type(localeStructure.locale) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.locale", type(localeStructure.locale), "string"));
+	assert(type(localeStructure.localeText) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeText", type(localeStructure.localeText), "string"));
+	assert(type(localeStructure.localeContent) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeContent", type(localeStructure.localeContent), "table"));
+
+	assert(localizations[localeStructure.locale] == nil, format("A localization for %s has already been registered.", localeStructure.locale));
+
+	if not localizations[localeStructure.locale] then
+		localizations[localeStructure.locale] = localeStructure;
+	end
+end
+
+---@return table locales @ A sorted list of registered locales ID ("frFR", "enUS" ...).
+function Locale.getLocales()
+	local locales = {};
+	for locale, _ in pairs(localizations) do
+		tinsert(locales, locale);
+	end
+	sort(locales);
+	return locales;
+end
+
+---@param localeID string @ The ID of the locale (`"frFR"`, `"enUS"`)
+---@return string localeText @ The display name of a locale (`"Français"`, `"English"` ...)
+function Locale.getLocaleText(localeID)
+	if localizations[localeID] then
+		return localizations[localeID].localeText
+	end
+	return UNKNOWN;
+end
+
+---@return table locale @ The locale structure currently active
+function Locale.getEffectiveLocale()
+	return effectiveLocal;
+end
+
+---@return table locale @ The default locale structure
+function Locale.getDefaultLocaleStructure()
+	return {
+		locale = "enUS",
+		localeText = "English",
+		localeContent = DEFAULT_LOCALE
+	};
+end
+
+---@return string localeID @ The locale key currently active
+function Locale.getCurrentLocale()
+	return current;
+end
+
+---@param localeID string @ The ID of the locale to get (`"frFR"`, `"enUS"`)
+---@return table locale @ The locale structure associated with the given locale ID
+function Locale.getLocale(localeID)
+	assert(localizations[localeID], "Unknown locale: " .. localeID);
+	return localizations[localeID];
+end
+
+---Check if a specified localization key exists in the current locale
+---@param localeKey string @ A localization key
+---@return boolean exists @ True if the key exists.
+function Locale.keyExists(localeKey)
+	return effectiveLocal[localeKey] ~= nil or DEFAULT_LOCALE[localeKey] ~= nil;
+end
+
+---Return the localized text link to this key.
+---If the key isn't present in the current `localizations` table, then it returns the default localization.
+---If the key is totally unknown from Total RP 3, then an error will be raised.
+---@param key string @ A locale key to get a localized text
+---@return string text @ The localized text corresponding to the given key
+function Locale.getText(key)
+	if effectiveLocal[key] or DEFAULT_LOCALE[key] then
+		return effectiveLocal[key] or DEFAULT_LOCALE[key];
+	end
+	error("Unknown localization key: ".. tostring(key));
+end
+
+--- Initialize a locale for the addon.
+function Locale.init()
+	-- Register config
+	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
+	current = TRP3_API.configuration.getValue("AddonLocale");
+	if not localizations[current] then
+		current = DEFAULT_LOCALE;
+	end
+	effectiveLocal = localizations[current].localeContent;
+end
+
+-- Only used for French related stuff, it's okay if non-latin characters are not here
+-- Note: We have a list of lowercase and uppercase letters here, because string.lower doesn't
+-- like accentuated uppercase letters at all, so we can't have just lowercase letters and apply a string.lower.
+local VOWELS = {
+	"a",
+	"e",
+	"i",
+	"o",
+	"u",
+	"y",
+	"A";
+	"E",
+	"I",
+	"O",
+	"U",
+	"Y"
+	"À",
+	"Â",
+	"Ä",
+	"Æ",
+	"È",
+	"É",
+	"Ê",
+	"Ë",
+	"Î",
+	"Ï",
+	"Ô",
+	"Œ",
+	"Ù",
+	"Û",
+	"Ü",
+	"Ÿ",
+	"à",
+	"â",
+	"ä",
+	"æ",
+	"è",
+	"é",
+	"ê",
+	"ë",
+	"î",
+	"ï",
+	"ô",
+	"œ",
+	"ù",
+	"û",
+	"ü",
+	"ÿ",
+};
+VOWELS = tInvert(VOWELS);
+
+---@param letter string @ A single letter as a string (can be uppercase or lowercase)
+---@return boolean isAVowel @ True if the letter is a vowel
+function Locale.isAVowel(letter)
+	return VOWELS[letter] == true;
+end
+
+---generateFrenchDeterminerForText
+---@param text string @ The text containing the |2 tag to replace with the appropriate determiner
+---@param followingText string @ The text that immediately follows the determiner, used to know which determiner to use
+---@return string generatedText @ Text where the |2 tag is replaced by the correct determiner for what's following
+function Locale.generateFrenchDeterminerForText(text, followingText)
+	-- This function only applies to the French locale. If we were to call it on a different locale, do nothing
+	if not IS_FRENCH_LOCALE then return text end
+
+	local firstLetterFollowing = sub(followingText, 1, 1);
+	if Locale.isAVowel(firstLetterFollowing) then
+		text = text:gsub("|2 ", "de");
+	else
+		text = text:gsub("|2", "'d'");
+	end
+
+	return text;
+end
+
+---Generate two string with the two possible French determiners "de" and "d'" using a string that contains the |2 tag
+---used by Blizzard for this purpose.
+---@param text string @ A text with a |2 tag inside it
+---@return string, string textWithDe, textWidthD @ Two string, one with "de" and one with "d'"
+function Locale.generateFrenchDeterminersVersions(text)
+	return Locale.generateFrenchDeterminerForText(text, "a"), Locale.generateFrenchDeterminerForText(text, "b");
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Companion utils
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local function isColorBlindModeEnabled()
+	return ENABLE_COLORBLIND_MODE == "1";
+end
+
+local REPLACE_PATTERN, NAME_PATTERN = "%%s", "([%%S%%-%%P]+)";
+local PET_OWNER_MATCHING_LINES = {
+	UNITNAME_TITLE_CHARM,
+	UNITNAME_TITLE_CREATION,
+	UNITNAME_TITLE_GUARDIAN,
+	UNITNAME_TITLE_MINION,
+	UNITNAME_TITLE_PET,
+}
+local BATTLE_PET_OWNER_MATCHING_LINES = {
+	UNITNAME_TITLE_COMPANION,
+}
+
+-- Insert the search pattern inside the strings
+for key, pattern in pairs(PET_OWNER_MATCHING_LINES) do
+	PET_OWNER_MATCHING_LINES[key] = pattern:gsub(REPLACE_PATTERN, NAME_PATTERN);
+end
+for key, pattern in pairs(BATTLE_PET_OWNER_MATCHING_LINES) do
+	BATTLE_PET_OWNER_MATCHING_LINES[key] = pattern:gsub(REPLACE_PATTERN, NAME_PATTERN);
+end
+
+-- French is a funny language.
+-- The possessive attribute "de" changes to "d'" if the owner's name starts with a vowel.
+-- Blizzard is using the |2 tag in the global strings (like UNITNAME_TITLE_PET) for this special replacement.
+-- We need to replace that tag in the strings with the two versions possible if the user is using the French client.
+if IS_FRENCH_LOCALE then
+	local newPetOwnerMatchingLines = {};
+	for _, pattern in pairs(PET_OWNER_MATCHING_LINES) do
+		local textWithDe, textWithD = Locale.generateFrenchDeterminersVersions(pattern);
+		tinsert(newPetOwnerMatchingLines, textWithDe);
+		tinsert(newPetOwnerMatchingLines, textWithD);
+	end
+	PET_OWNER_MATCHING_LINES = newPetOwnerMatchingLines;
+	local newBattlePetOwnerMatchingLines = {};
+	for _, pattern in pairs(BATTLE_PET_OWNER_MATCHING_LINES) do
+		local textWithDe, textWithD = Locale.generateFrenchDeterminersVersions(pattern);
+		tinsert(newBattlePetOwnerMatchingLines, textWithDe);
+		tinsert(newBattlePetOwnerMatchingLines, textWithD);
+	end
+	BATTLE_PET_OWNER_MATCHING_LINES = newBattlePetOwnerMatchingLines;
+end
+
+---@param tooltipLines string[] @ A table corresponding to the tooltip lines in which we should search for a pet owner
+---@return string|void owner @ The name of the owner, if found
+function Locale.findPetOwner(tooltipLines)
+	local masterLine = isColorBlindModeEnabled() and tooltipLines[3] or tooltipLines[2];
+	if masterLine then
+		local master;
+		for _, matchingPattern in pairs(PET_OWNER_MATCHING_LINES) do
+			master = masterLine:match(matchingPattern);
+			if master then break end
+		end
+		return master;
+	end
+end
+
+function Locale.findBattlePetOwner(lines)
+	local masterLine = isColorBlindModeEnabled() and lines[4] or lines[3];
+	if masterLine then
+		local master;
+		for _, matchingPattern in pairs(BATTLE_PET_OWNER_MATCHING_LINES) do
+			master = masterLine:match(matchingPattern);
+			if master then
+				-- Hack for "Mascotte de niveau xxx" in French ...
+				if IS_FRENCH_LOCALE and master:find("%s") then
+					master = nil;
+				else
+					break
+				end
+			end
+		end
+		return master;
+	end
+end
+
+TRP3_API.locale = TRP3_API.Locale;

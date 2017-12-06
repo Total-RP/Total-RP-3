@@ -35,12 +35,4 @@ local LOCALE_EN = {
 	--@end-do-not-package@
 };
 
--- We will insert the missing locale values from what has been packaged by Curse from the DEFAULT_LOCALE
--- This will be especially useful during development
-for k, v in pairs(TRP3_API.DEFAULT_LOCALE) do
-	if not LOCALE_EN.localeContent[k] then
-		LOCALE_EN.localeContent[k] = v;
-	end
-end
-
 TRP3_API.locale.registerLocale(LOCALE_EN);
