@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.11.1] - 2017-12-08
+
+### Fixed
+
+- Fixed an issue where the Mary Sue Protocol downloading indicator would get stuck for Total RP 3 profiles.
+
 ## [1.2.11] - 2017-11-09
 
 ### Added

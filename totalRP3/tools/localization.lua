@@ -1025,6 +1025,14 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 - Removed workaround for the text box issue introduced in patch 7.3 as this issue has been fixed in patch 7.3.2.
 
 ]],
+	WHATS_NEW_16_1 = [[
+## 1.2.11.1 - 2017-12-08
+
+### Fixed
+
+- Fixed an issue where the Mary Sue Protocol downloading indicator would get stuck for Total RP 3 profiles.
+
+]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
