@@ -714,9 +714,11 @@ local function onStart()
 
 	updateIncomingStatus = function(senderID)
 		local profile = getProfileForSender(senderID);
-		profile.mspIncomingChunks = msp.char[senderID].totalChunks;
-		profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
+		if profile then
+			profile.mspIncomingChunks = msp.char[senderID].totalChunks;
+			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
+		end
 	end
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
