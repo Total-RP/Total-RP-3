@@ -224,12 +224,12 @@ local function onStart()
 				else
 					msp_incoming( sender, buf .. body )
 				end
-
-				if msp.char[sender].totalChunks then
-										msp.char[sender].amountOfChunksAlreadyReceived = nil;
-					msp.char[sender].totalChunks = nil;
-					updateIncomingStatus(sender);
-				end
+			end
+			-- If this MSP profile supported incoming chunks, empty the fields since we are at the end
+			if msp.char[sender].totalChunks then
+				msp.char[sender].amountOfChunksAlreadyReceived = nil;
+				msp.char[sender].totalChunks = nil;
+				updateIncomingStatus(sender);
 			end
 		end
 
@@ -713,14 +713,10 @@ local function onStart()
 	end
 
 	updateIncomingStatus = function(senderID)
-		if not isIgnored(senderID) and msp.char[senderID].VA:sub(1, 8) ~= "TotalRP3" then
-
-			local profile = getProfileForSender(senderID);
-
-			profile.mspIncomingChunks = msp.char[senderID].totalChunks;
-			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
-		end
+		local profile = getProfileForSender(senderID);
+		profile.mspIncomingChunks = msp.char[senderID].totalChunks;
+		profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 	end
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
