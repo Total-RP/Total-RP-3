@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.11.2] - 2017-12-26
+
+### Fixed
+
+- Fixed a Lua overflow error with the ChatThrottleLib that could occur in rare cases.
+- Fixed an issue that would cause the tooltip to reload all the data too frequently.
+- Fixed an issue that could cause a larger than usual amount of Unknown profiles to be listed in the Directory.
+
+### Removed
+
+- Removed the downloading progression indicator in the tooltip for now as it was the cause of some of these issues. It will be brought back later with a better implementation.
+
 ## [1.2.11.1] - 2017-12-08
 
 ### Fixed
@@ -60,6 +72,8 @@
 
 - Fixed issues with patch 7.3.
 
+[1.2.11.2]: https://github.com/Ellypse/Total-RP-3/compare/1.2.11.1...1.2.11.2
+[1.2.11.1]: https://github.com/Ellypse/Total-RP-3/compare/1.2.11...1.2.11.1
 [1.2.11]: https://github.com/Ellypse/Total-RP-3/compare/1.2.10...1.2.11
 [1.2.10]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9.2...1.2.10
 [1.2.9.2]: https://github.com/Ellypse/Total-RP-3/compare/1.2.9.1...1.2.9.2

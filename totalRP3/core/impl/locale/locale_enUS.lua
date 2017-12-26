@@ -1011,6 +1011,20 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 - Fixed an issue where the Mary Sue Protocol downloading indicator would get stuck for Total RP 3 profiles.
 
 ]],
+		WHATS_NEW_16_2 = [[
+## 1.2.11.2 - 2017-12-26
+
+### Fixed
+
+- Fixed a Lua overflow error with the ChatThrottleLib that could occur in rare cases.
+- Fixed an issue that would cause the tooltip to reload all the data too frequently.
+- Fixed an issue that could cause a larger than usual amount of Unknown profiles to be listed in the Directory.
+
+### Removed
+
+- Removed the downloading progression indicator in the tooltip for now as it was the cause of some of these issues. It will be brought back later with a better implementation.
+
+]],
 		MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
