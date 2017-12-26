@@ -613,14 +613,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		end
 	end
 
-	if info.mspIncomingChunks then
-		if IsAltKeyDown() then
-			tooltipBuilder:AddLine(("Downloading %s/%s"):format(info.mspAlreadyReceivedChunks, info.mspIncomingChunks), 1, 1, 1, getSmallLineFontSize());
-		else
-			tooltipBuilder:AddLine(("Downloading %s%%"):format(math.floor((info.mspAlreadyReceivedChunks / info.mspIncomingChunks) * 100)), 1, 1, 1, getSmallLineFontSize());
-		end
-	end
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Build tooltip
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

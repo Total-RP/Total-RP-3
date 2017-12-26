@@ -40,7 +40,6 @@ local function onStart()
 	local isIgnored = TRP3_API.register.isIDIgnored;
 	local msp, onInformationReceived;
 	local CONFIG_T3_ONLY = "msp_t3";
-	local updateIncomingStatus;
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP4TRP3
 	-- This is a huge modification of Etarna's LibMSP
@@ -124,7 +123,6 @@ local function onStart()
 				msp.char[sender].totalChunks = totalChunks;
 				msp.char[sender].amountOfChunksAlreadyReceived = 1;
 				body = body:gsub("^XC=%d+\001", "")
-				updateIncomingStatus(sender);
 			end
 			msp.char[ sender ].buffer = body
 		end
@@ -143,7 +141,6 @@ local function onStart()
 
 				if msp.char[sender].totalChunks then
 					msp.char[sender].amountOfChunksAlreadyReceived = msp.char[sender].amountOfChunksAlreadyReceived + 1;
-					updateIncomingStatus(sender);
 				end
 			end
 		end
@@ -229,7 +226,6 @@ local function onStart()
 			if msp.char[sender].totalChunks then
 				msp.char[sender].amountOfChunksAlreadyReceived = nil;
 				msp.char[sender].totalChunks = nil;
-				updateIncomingStatus(sender);
 			end
 		end
 
@@ -709,15 +705,6 @@ local function onStart()
 			if updatedCharacter or updatedCharacteristics or updatedAbout then
 				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 			end
-		end
-	end
-
-	updateIncomingStatus = function(senderID)
-		local profile = getProfileForSender(senderID);
-		if profile then
-			profile.mspIncomingChunks = msp.char[senderID].totalChunks;
-			profile.mspAlreadyReceivedChunks = msp.char[senderID].amountOfChunksAlreadyReceived;
-			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end
 
