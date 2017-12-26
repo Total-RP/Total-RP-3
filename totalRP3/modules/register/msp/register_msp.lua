@@ -348,7 +348,9 @@ local function onStart()
 					return 1
 				else
 					-- Guess six added characters from metadata.
-					payload = ("XC=%d\001%s"):format(((#payload + 6) / 255) + 1, payload);
+					payload = ("XC=%d\001%s"):format(((len + 6) / 255) + 1, payload);
+					-- Do not forget to update the length of the data…
+					len = #payload;
 					local chunk = strsub( payload, 1, 255 )
 					ChatThrottleLib:SendAddonMessage( "BULK", "MSP\1", chunk, "WHISPER", player, queue )
 					local pos = 256
