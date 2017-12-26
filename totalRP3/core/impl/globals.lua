@@ -68,6 +68,7 @@ TRP3_API = {
 			faction = faction
 		},
 
+		is_trial_account = IsVeteranTrialAccount(),
 		clients = {
 			TRP3 = "trp3",
 			MSP = "msp",

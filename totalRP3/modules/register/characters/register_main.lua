@@ -252,12 +252,13 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 end
 
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended)
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount)
 	local character = getUnitIDCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
 	character.msp = msp;
 	character.extended = extended;
+	character.isTrial = trialAccount;
 end
 
 --- Raises error if unknown unitName
