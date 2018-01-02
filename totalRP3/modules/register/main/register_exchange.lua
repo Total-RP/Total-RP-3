@@ -508,6 +508,8 @@ TRP3_API.slash.registerCommand({
 			TRP3_API.navigation.openMainFrame();
 			TRP3_API.register.openPageByUnitID(characterToOpen);
 			characterToOpen = "";
+		else
+			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
 		end
 	end
 })
