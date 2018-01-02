@@ -490,32 +490,24 @@ TRP3_API.slash.registerCommand({
 
 			-- If no realm has been entered, we use the player's realm automatically
 			if not characterToOpen:find("-") then
-				_, realmName = UnitFullName("player");
-				characterToOpen = characterToOpen .. "-" .. realmName;
+				characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
 			end
 		else
 			-- If no name is provided, we use the target ID
 			if UnitIsPlayer("target") then
-				local playerName;
-				playerName, realmName = UnitFullName("target");
-				if not realmName then
-					_, realmName = UnitFullName("player");
-				end
-				characterToOpen = playerName .. "-" .. realmName;
+				characterToOpen = Utils.str.getUnitID("target");
 			else
 				displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
 				return
 			end
 		end
 
-		-- If we already have a profile for that user in the registry, we open it before making the request and reset the name (so it doesn't try to open again afterwards)
+		sendQuery(characterToOpen);
+		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 		if isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen) then
 			TRP3_API.navigation.openMainFrame();
 			TRP3_API.register.openPageByUnitID(characterToOpen);
-			sendQuery(characterToOpen);
 			characterToOpen = "";
-		else
-			sendQuery(characterToOpen);
 		end
 	end
 })
