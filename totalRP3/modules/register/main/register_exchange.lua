@@ -32,7 +32,7 @@ local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3
 local addCharacter = TRP3_API.register.addCharacter;
 local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local isUnitIDKnown, hasProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile;
 local playerAPI = TRP3_API.register.player;
 local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
@@ -44,14 +44,18 @@ local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
+local displayMessage = TRP3_API.utils.message.displayMessage;
 
 -- WoW imports
-local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
+local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
 
 -- Config keys
 local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
 local CONFIG_NEW_VERSION = "new_version_alert";
+
+-- Character name for profile opening command
+local characterToOpen = "";
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -470,3 +474,57 @@ function TRP3_API.register.inits.dataExchangeInit()
 		end
 	end);
 end
+
+TRP3_API.slash.registerCommand({
+	id = "open",
+	helpLine = " " .. loc("PR_SLASH_OPEN_HELP"),
+	handler = function(...)
+		local args = {...};
+		local realmName;
+
+		if #args > 1 then
+			displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+			return
+		elseif #args == 1 then
+			characterToOpen = table.concat(args, " ");
+
+			-- If no realm has been entered, we use the player's realm automatically
+			if not characterToOpen:find("-") then
+				_, realmName = UnitFullName("player");
+				characterToOpen = characterToOpen .. "-" .. realmName;
+			end
+		else
+			-- If no name is provided, we use the target ID
+			if UnitIsPlayer("target") then
+				local playerName;
+				playerName, realmName = UnitFullName("target");
+				if not realmName then
+					_, realmName = UnitFullName("player");
+				end
+				characterToOpen = playerName .. "-" .. realmName;
+			else
+				displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+				return
+			end
+		end
+
+		-- If we already have a profile for that user in the registry, we open it before making the request and reset the name (so it doesn't try to open again afterwards)
+		if isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen) then
+			TRP3_API.navigation.openMainFrame();
+			TRP3_API.register.openPageByUnitID(characterToOpen);
+			sendQuery(characterToOpen);
+			characterToOpen = "";
+		else
+			sendQuery(characterToOpen);
+		end
+	end
+})
+
+-- Event for the "/trp3 open" command
+Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	if unitID == characterToOpen and dataType == "character" then
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.register.openPageByUnitID(characterToOpen);
+		characterToOpen = "";
+	end
+end);
