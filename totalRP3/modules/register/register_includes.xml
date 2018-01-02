@@ -30,6 +30,7 @@
 	<Script file="characters\register_characteristics.lua" />
 	<Script file="characters\register_about.lua" />
 	<Script file="characters\register_misc.lua" />
+	<Script file="characters\register_cursor.lua" />
 	
 	<Include file="companions\register_ui_companions_main.xml" />
 	
