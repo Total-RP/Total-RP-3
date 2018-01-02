@@ -30,7 +30,6 @@
 	<Script file="characters\register_characteristics.lua" />
 	<Script file="characters\register_about.lua" />
 	<Script file="characters\register_misc.lua" />
-	<Script file="characters\register_cursor.lua" />
 	
 	<Include file="companions\register_ui_companions_main.xml" />
 	
@@ -41,6 +40,25 @@
 	<Script file="main\register_glance.lua" />
 	
 	<Script file="msp\register_msp.lua" />
+
+	<Frame name="TRP3_CursorFrame" parent="UIParent" hidden="true">
+		<Size x="30" y="30" />
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture file="Interface\Cursor\WorkOrders">
+					<Size x="30" y="30" />
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Script file="main\register_cursor.lua" />
 
 	<Include file="filter\register_mature_filter.xml" />
 
