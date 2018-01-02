@@ -21,6 +21,7 @@
         limitations under the License.
     -->
 
+	<Include file="HTML.xml" />
 	<Script file="workarounds.lua"/>
 
 </Ui>
