@@ -204,8 +204,7 @@ TRP3_API.dashboard.init = function()
 
 	local PATREON_SUPPORTERS = {
 		"Connor Macleod",
-		"Ilsyra",
-		"Nikradical",
+		"Bas (AstaLawl)",
 		"Vlad",
 	}
 	table.sort(PATREON_SUPPORTERS);
@@ -216,7 +215,7 @@ TRP3_API.dashboard.init = function()
 	end
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
+	local whatsNewText = loc("WHATS_NEW_16_3") .. loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 

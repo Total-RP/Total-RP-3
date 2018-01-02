@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.11.3]  - 2018-01-02
+
+Happy new year! The Total RP 3 team wishes you the best for 2018.
+
+### Updated
+
+- Updated list of Patreon supporters inside the add-on for the month of December.
+
 ## [1.2.11.2] - 2017-12-26
 
 ### Fixed
@@ -72,6 +80,7 @@
 
 - Fixed issues with patch 7.3.
 
+[1.2.11.3]: https://github.com/Ellypse/Total-RP-3/compare/1.2.11.2...1.2.11.3
 [1.2.11.2]: https://github.com/Ellypse/Total-RP-3/compare/1.2.11.1...1.2.11.2
 [1.2.11.1]: https://github.com/Ellypse/Total-RP-3/compare/1.2.11...1.2.11.1
 [1.2.11]: https://github.com/Ellypse/Total-RP-3/compare/1.2.10...1.2.11
