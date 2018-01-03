@@ -1,21 +1,35 @@
---- Total RP 3 Register cursor
+----------------------------------------------------------------------------------
+--- Total RP 3
+--- Register cursor
+---
 --- Implements right-click on a player in the 3D world to open their profile
+---
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
+----------------------------------------------------------------------------------
 
-local TRP3_API = TRP3_API;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 -- Lua API imports
 local insert = table.insert;
 
 -- WoW API imports
 local InCombatLockdown = InCombatLockdown;
-local UnitIsPlayer = UnitIsPlayer;
-local UnitCanAttack = UnitCanAttack;
-local UnitExists = UnitExists;
-local UnitVehicleSeatCount = UnitVehicleSeatCount;
 local GetCursorPosition = GetCursorPosition;
 local UIParent = UIParent;
-local UnitInParty = UnitInParty;
-local UnitInRaid = UnitInRaid;
 local IsShiftKeyDown = IsShiftKeyDown;
 local IsControlKeyDown = IsControlKeyDown;
 local IsAltKeyDown = IsAltKeyDown;
@@ -29,27 +43,25 @@ local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
 
--- TODO Move to new utils
-local function UnitHasSeatsAvailable(unit)
-	return UnitVehicleSeatCount(unit) and UnitVehicleSeatCount(unit) > 0 and (UnitInParty(unit) or UnitInRaid(unit))
-end
+--- Create a new Ellyb Unit for the mouseover unit
+---@type Unit
+local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
 
 ---Check if we can view the unit profile by using the cursor
 ---@param unitID string @ A valid unit ID (probably mouseover here)
 local function canInteractWithUnit(unit)
 
 	if
-	not unit
-	or not UnitExists(unit)
+	not Mouseover:Exists()
 	or InCombatLockdown() -- We don't want to open stuff in combat
-	or not UnitIsPlayer(unit) -- Unit has to be a player
-	or UnitHasSeatsAvailable(unit) -- Avoid unit on multi seats mounts
-	or UnitCanAttack("player", unit) -- Unit must not be attackable
+	or not Mouseover:IsPlayer() -- Unit has to be a player
+	or Mouseover:IsMountable() -- Avoid unit on multi seats mounts
+	or Mouseover:IsAttackable() -- Unit must not be attackable
 	then
 		return false;
 	end
 
-	local unitID = TRP3_API.utils.str.getUnitID(unit);
+	local unitID = Mouseover:GetUnitID();
 	if
 	unitID == TRP3_API.globals.player_id -- Unit is not the player
 	or not isUnitIDKnown(unitID) -- Unit is known by TRP3
@@ -72,8 +84,8 @@ local function placeCursorFrameOnMouse()
 end
 
 local function onMouseOverUnit()
-	if canInteractWithUnit("mouseover") then
-		local unitID = TRP3_API.utils.str.getUnitID("mouseover");
+	if canInteractWithUnit() then
+		local unitID = Mouseover:GetUnitID();
 		CursorFrame.unitID = unitID;
 		placeCursorFrameOnMouse();
 		CursorFrame:Show();
@@ -83,7 +95,7 @@ local function onMouseOverUnit()
 end
 
 CursorFrame:SetScript("OnUpdate", function(self)
-	if not UnitExists("mouseover") then
+	if not Mouseover:Exists() then
 		self:Hide();
 	else
 		placeCursorFrameOnMouse()
