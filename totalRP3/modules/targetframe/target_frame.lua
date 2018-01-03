@@ -169,7 +169,7 @@ local function onStart()
 	end
 
 	local function getCompanionInfo(owner, companionID, currentTargetID)
-		local profile;
+		local profile = EMPTY;
 		if owner == Globals.player_id then
 			profile = getCompanionProfile(companionID) or EMPTY;
 		else

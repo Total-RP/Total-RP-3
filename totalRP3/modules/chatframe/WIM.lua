@@ -17,12 +17,15 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+---@type TRP3_API
+local _, TRP3_API = ...;
+
+local loc = TRP3_API.loc;
 
 local function onStart()
 	-- Stop right here if WIM is not installed
 	if not WIM then
-		return false, loc("MO_ADDON_NOT_INSTALLED"):format("WIM");
+		return false, loc(loc.MO_ADDON_NOT_INSTALLED, "WIM");
 	end
 	
 	-- Import Total RP 3 functions
@@ -86,7 +89,7 @@ end
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
 	["name"] = "WIM",
-	["description"] = loc("MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"):format("WIM (WoW Instant Messenger"),
+	["description"] = loc(loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION, "WIM (WoW Instant Messenger"),
 	["version"] = 1.000,
 	["id"] = "trp3_wim",
 	["onStart"] = onStart,
