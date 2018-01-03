@@ -44,6 +44,9 @@ local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
 
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
+
 --- Create a new Ellyb Unit for the mouseover unit
 ---@type Unit
 local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
@@ -86,9 +89,8 @@ local function placeCursorFrameOnMouse()
 	CursorFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x * scale + 33, y * scale - 30);
 end
 
-local PINK = TRP3_API.Ellyb.Color("#FFC0CB"):Freeze();
 local function onMouseOverUnit()
-	if canInteractWithUnit() then
+	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
 		local unitID = Mouseover:GetUnitID();
 		CursorFrame.unitID = unitID;
 		placeCursorFrameOnMouse();
@@ -112,9 +114,6 @@ CursorFrame:SetScript("OnUpdate", function(self)
 end)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-
-	local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
-	local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, false);
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY, 1);
