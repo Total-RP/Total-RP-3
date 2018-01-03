@@ -164,6 +164,11 @@ end
 
 TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
 
+local function getUnitIDProfileID(unitID)
+	return characters[unitID] and characters[unitID].profileID;
+end
+TRP3_API.register.getUnitIDProfileID = getUnitIDProfileID;
+
 local function getUnitIDCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
@@ -181,7 +186,8 @@ end
 --
 local function unitIDIsFilteredForMatureContent(unitID)
 	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
-	local profile, profileID = getUnitIDProfile(unitID);
+	local profile = getUnitIDProfile(unitID);
+	local profileID = getUnitIDProfileID(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
 	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_API.register.mature_filter.isProfileWhitelisted(profileID))
@@ -205,7 +211,7 @@ TRP3_API.register.profileIDISFilteredForMatureContent = profileIDISFilteredForMa
 --
 local function unitIDIsFlaggedForMatureContent(unitID)
 	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
-	local profile, profileID = getUnitIDProfile(unitID);
+	local profile = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
 	return profile.hasMatureContent

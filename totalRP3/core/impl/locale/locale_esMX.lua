@@ -953,6 +953,11 @@ Por ejemplo podría ser |c0000ff00delgado, gordo o musculoso...|r ¡O simplement
 
 
 {h2}{icon:THUMBUP:20} Reconocimientos{/h2}
+{col:ffffff}Ellypse's Patreon supporters:{/col}
+- Connor "{twitter*Saelorable*Sælorable}" Macleod
+- Nikradical
+- Ilsyra
+
 {col:ffffff}Nuestro equpo PR pre-alpha:{/col}
 - Saelora
 - Erzan

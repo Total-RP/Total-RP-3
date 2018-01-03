@@ -999,6 +999,11 @@ Il pourrait par exemple être |c0000ff00mince, gros ou musclé...|r Ou tout simp
 
 
 {h2}{icon:THUMBUP:20} Remerciements{/h2}
+{col:ffffff}Ellypse's Patreon supporters:{/col}
+- Connor "{twitter*Saelorable*Sælorable}" Macleod
+- Nikradical
+- Ilsyra
+
 {col:ffffff}Notre équipe de testt:{/col}
 - Saelora
 - Erzan
