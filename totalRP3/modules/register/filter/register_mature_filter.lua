@@ -179,6 +179,7 @@ local function onStart()
 		assert(profileID, ("Trying to call flagUnitProfileHasHavingMatureContent with a nil profileID."));
 		local profile = getProfileByID(profileID);
 		profile.hasMatureContent = true;
+		profile.lastMatureContentEvaluation = time();
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 	end
 	TRP3_API.register.mature_filter.flagUnitProfileHasHavingMatureContent = flagUnitProfileHasHavingMatureContent
@@ -634,12 +635,19 @@ local function onStart()
 	-- EVENT LISTENER
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	local EXPIRATION = 86400; -- 24 hours
+	local function shouldReEvaluateContent(lastMatureContentEvaluation)
+		if not lastMatureContentEvaluation then return true end;
+		local now = time();
+		return now - lastMatureContentEvaluation > EXPIRATION
+	end
+
 	-- We listen to data updates in the register and apply the filter if enabled
 	-- and the profile is not already whitelisted
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, _)
 		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileWhitelisted(profileID) then
 			local profile = getProfileByID(profileID);
-			if not profile.hasMatureContent then
+			if not profile.hasMatureContent or shouldReEvaluateContent(profile.lastMatureContentEvaluation) then
 				filterData(getProfileByID(profileID), profileID);
 			end
 		end
