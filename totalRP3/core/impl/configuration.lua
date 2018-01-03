@@ -389,12 +389,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
 
-	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
-	registerConfigKey("comm_broad_chan", "xtensionxtooltip2");
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -418,18 +416,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_GENERAL_COM"),
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_GENERAL_BROADCAST"),
-				configKey = "comm_broad_use",
-				help = loc("CO_GENERAL_BROADCAST_TT"),
-			},
-			{
-				inherit = "TRP3_ConfigEditBox",
-				title = loc("CO_GENERAL_BROADCAST_C"),
-				configKey = "comm_broad_chan",
-				dependentOnOptions = {"comm_broad_use"},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
