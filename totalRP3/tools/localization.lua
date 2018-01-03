@@ -29,13 +29,14 @@ local _, TRP3_API = ...;
 -- WoW imports
 local format = string.format;
 local assert = assert;
-local type = type;
 local sort = table.sort;
 local pairs = pairs;
 local tinsert = table.insert;
 local tostring = tostring;
 local error = error;
 local sub = string.sub;
+
+local isType = TRP3_API.Ellyb.Assertions.isType;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
@@ -1116,13 +1117,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DEBUG
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	DEBUG_NIL_PARAMETER = [[Unexpected nil parameter "%1$s".]],
-	-- Parameters order: parameterName, actualParameterType, expectedParameterType
-	DEBUG_WRONG_PARAM_TYPE = [[Invalid parameter type "%2$s" for parameter "%1$s", expected "%3$s".]],
 };
 
 -- Save the raw locale content to be used as default
@@ -1196,10 +1190,10 @@ local current;
 ---Register a new localization
 ---@param localeStructure table
 function Locale.registerLocale(localeStructure)
-	assert(type(localeStructure) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure", type(localeStructure), "table"));
-	assert(type(localeStructure.locale) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.locale", type(localeStructure.locale), "string"));
-	assert(type(localeStructure.localeText) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeText", type(localeStructure.localeText), "string"));
-	assert(type(localeStructure.localeContent) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeContent", type(localeStructure.localeContent), "table"));
+	assert(isType(localeStructure, "table", "localeStructure"));
+	assert(isType(localeStructure.locale, "string", "localeStructure.locale"));
+	assert(isType(localeStructure.localeText, "string", "localeStructure.localeText"));
+	assert(isType(localeStructure.localeContent, "table", "localeStructure.localeContent"));
 
 	assert(localizations[localeStructure.locale] == nil, format("A localization for %s has already been registered.", localeStructure.locale));
 
