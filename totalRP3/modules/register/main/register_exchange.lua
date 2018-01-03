@@ -49,6 +49,7 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
+local after = C_Timer.After;
 
 -- Config keys
 local CONFIG_NEW_VERSION = "new_version_alert";
@@ -504,6 +505,15 @@ TRP3_API.slash.registerCommand({
 		else
 			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
 		end
+
+		-- Save the name of the player we just requested
+		local currentCharacterToOpen = characterToOpen;
+		-- If after 1 minute they didn't reply, abort
+		after(60, function()
+			if characterToOpen == currentCharacterToOpen then
+				characterToOpen = "";
+			end
+		end)
 	end
 })
 
