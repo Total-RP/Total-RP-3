@@ -46,6 +46,16 @@ TRP3_API.r = {};
 -- To ensure backward compatibility, we will keep an reference to the old utils table
 TRP3_API.utils = {};
 
+-- Get a new instance of the Ellyb library
+TRP3_API.Ellyb = Ellyb("Total RP 3");
+
+--[===[@non-debug@
+
+-- Debug mode is disabled when the add-on has been packaged by Curse
+TRP3_API.Ellyb.DEBUG_MODE = false;
+
+--@end-non-debug@]===]
+
 
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;
