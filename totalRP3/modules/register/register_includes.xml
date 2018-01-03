@@ -48,7 +48,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture file="Interface\Cursor\WorkOrders">
+				<Texture parentKey="Icon" file="Interface\Cursor\WorkOrders">
 					<Size x="30" y="30" />
 					<Anchors>
 						<Anchor point="CENTER"/>

@@ -35,6 +35,7 @@ local IsControlKeyDown = IsControlKeyDown;
 local IsAltKeyDown = IsAltKeyDown;
 
 -- Total RP 3 imports
+local loc = TRP3_API.loc;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
@@ -76,6 +77,8 @@ end
 
 ---@type Frame
 local CursorFrame = TRP3_CursorFrame;
+---@type Texture
+local Icon = CursorFrame.Icon;
 
 local function placeCursorFrameOnMouse()
 	local scale = 1 / UIParent:GetEffectiveScale();
@@ -83,11 +86,17 @@ local function placeCursorFrameOnMouse()
 	CursorFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x * scale + 33, y * scale - 30);
 end
 
+local PINK = TRP3_API.Ellyb.Color("#FFC0CB"):Freeze();
 local function onMouseOverUnit()
 	if canInteractWithUnit() then
 		local unitID = Mouseover:GetUnitID();
 		CursorFrame.unitID = unitID;
 		placeCursorFrameOnMouse();
+		if TRP3_API.register.unitIDIsFilteredForMatureContent(unitID) then
+			Icon:SetTexture("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
+		else
+			Icon:SetTexture("Interface\\CURSOR\\WorkOrders");
+		end
 		CursorFrame:Show();
 	else
 		CursorFrame:Hide();
@@ -104,12 +113,10 @@ end)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
-	local loc = TRP3_API.locale.getText;
-
 	local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
 	local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
-	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, true);
+	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, false);
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY, 1);
 
 	local function isModifierKeyPressed()
@@ -141,24 +148,24 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Configuration header
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
-		title = loc("CO_CURSOR_TITLE"),
+		title = loc.CO_CURSOR_TITLE,
 	});
 
 	-- Main checkbox to toggle this feature
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = loc("CO_CURSOR_RIGHT_CLICK"),
-		help = loc("CO_CURSOR_RIGHT_CLICK_TT"),
+		title = loc.CO_CURSOR_RIGHT_CLICK,
+		help = loc.CO_CURSOR_RIGHT_CLICK_TT,
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE,
 		dependentOnOptions = { "register_auto_add" },
 	});
 
 	-- Modifier key dropdown option
-	insert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigCursor_ModifierKey",
-		title = loc("CO_CURSOR_MODIFIER_KEY"),
-		help = loc("CO_CURSOR_MODIFIER_KEY_TT"),
+		title = loc.CO_CURSOR_MODIFIER_KEY,
+		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
 			{ SHIFT_KEY_TEXT, 2 },
@@ -166,8 +173,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			{ ALT_KEY_TEXT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
-		listWidth = nil,
-		listCancel = true,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE, "register_auto_add" },
 	});
 
