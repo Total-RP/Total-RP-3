@@ -471,6 +471,13 @@ Class: 50 characters|r]],
 		CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommand to avoid disabling the purge system.",
 		CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 		CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
+		CO_CURSOR_TITLE = "Cursor",
+		CO_CURSOR_RIGHT_CLICK = "Right click interaction",
+		CO_CURSOR_RIGHT_CLICK_TT = [[Right click a player in the game to open their profile if they have one.
+
+|cffccccccNote: This feature is disabled during combat.|r]],
+		CO_CURSOR_MODIFIER_KEY = "Modifier key",
+		CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player to open their profile, to prevent accidental clicks.",
 		CO_MODULES = "Modules status",
 		CO_MODULES_VERSION = "Version: %s",
 		CO_MODULES_ID = "Module ID: %s",
