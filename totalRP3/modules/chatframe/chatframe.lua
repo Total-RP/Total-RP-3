@@ -1,27 +1,31 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Chat management
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Chat management
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- Removed NPC talk prefix option and changed prefix to a hardcoded one (Paul Corlay) [RIP NPC talk prefix option 2014 - 2017]
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -73,7 +77,7 @@ local function configNoYelledEmote()
 end
 
 local function disabledByOOC()
-	return getConfigValue(CONFIG_YELL_NO_EMOTE) and get("player/character/RP") ~= 2
+	return getConfigValue(CONFIG_DISABLE_OOC) and get("player/character/RP") == 2
 end
 TRP3_API.chat.disabledByOOC = disabledByOOC;
 
@@ -177,8 +181,8 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_DISABLE_OOC"),
-				help = loc("CO_CHAT_DISABLE_OOC_TT"),
+				title = loc.CO_CHAT_DISABLE_OOC,
+				help = loc.CO_CHAT_DISABLE_OOC_TT,
 				configKey = CONFIG_DISABLE_OOC
 			},
 			{
@@ -385,7 +389,7 @@ end
 function handleCharacterMessage(_, event, message, ...)
 
 	if disabledByOOC() then
-		return true, message, ...;
+		return false, message, ...;
 	end
 	
 	local messageID = select(10, ...);

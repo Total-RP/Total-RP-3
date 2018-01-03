@@ -569,7 +569,7 @@ Possible status:
 	CO_ANCHOR_CURSOR = "Show on cursor",
 	CO_CHAT = "Chat settings",
 	CO_CHAT_DISABLE_OOC = "Disable customizations when OOC",
-	CO_CHAT_DISABLE_OOC_TT = "All chat customizations will be disable when your character is set as Out Of Character.",
+	CO_CHAT_DISABLE_OOC_TT = "Disable all of Total RP 3's chat customizations (custom names, emote detection, NPC speeches, etc.) when your character is set as Out Of Character.",
 	CO_CHAT_MAIN = "Chat main settings",
 	CO_CHAT_MAIN_NAMING = "Naming method",
 	CO_CHAT_MAIN_NAMING_1 = "Keep original names",
