@@ -36,7 +36,6 @@ local tinsert = table.insert;
 local tostring = tostring;
 local error = error;
 local sub = string.sub;
-local lower = string.lower;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
