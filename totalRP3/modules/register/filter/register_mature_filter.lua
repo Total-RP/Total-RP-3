@@ -1,28 +1,30 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Mature profile filtering module
---
--- The mature profile filtering module will flag profiles containing specific
--- keywords related to mature content.
--- Flagged profiles will have a hasMatureContent boolean attached on them
--- so we can check in the code if a profile has mature content by doing
--- if profile.hasMatureContent then
--- ---------------------------------------------------------------------------
--- Copyright 2016 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.apache.org/licenses/LICENSE-2.0
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
+--- Total RP 3
+--- Mature profile filtering module
+---
+--- The mature profile filtering module will flag profiles containing specific
+--- keywords related to mature content.
+--- Flagged profiles will have a hasMatureContent boolean attached on them
+--- so we can check in the code if a profile has mature content by doing
+--- if profile.hasMatureContent then
+--- ---------------------------------------------------------------------------
+--- Copyright 2018 Renaud "Ellypse" Parize (ellypse@totalrp3.info)
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
 local matureFilterPopup;
 
 local function onStart()
@@ -33,6 +35,7 @@ local function onStart()
 	local assert = assert;
 	local type = type;
 	local strtrim = strtrim;
+	local time = time;
 
 	-- WoW imports
 	local UnitIsPlayer = UnitIsPlayer;
@@ -44,9 +47,7 @@ local function onStart()
 	local getUnitIDProfileID = Register.getUnitIDProfileID;
 	local hasProfile = Register.hasProfile;
 	local getProfileOrNil = TRP3_API.register.getProfileOrNil;
-	local isUnitIDKnown = Register.isUnitIDKnown;
 	local getUnitRPName = Register.getUnitRPNameWithID;
-	local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 	local handleMouseWheel = UI.list.handleMouseWheel;
 	local initList = UI.list.initList;
 	local setTooltipForFrame = UI.tooltip.setTooltipForFrame;
@@ -60,13 +61,14 @@ local function onStart()
 	local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 	local log = Utils.log.log;
 	local getUnitID = Utils.str.getUnitID;
-	local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
+	local loc = TRP3_API.loc;
 	local player_id = TRP3_API.globals.player_id;
 
 	-- API
 	TRP3_API.register.mature_filter = {};
 
 	local MATURE_FILTER_CONFIG = "register_mature_filter";
+	local MATURE_FILTER_CONFIG_STRENGTH = "register_mature_filter_strength";
 
 	-- Saved variables
 	TRP3_MatureFilter = TRP3_MatureFilter or {
@@ -267,6 +269,8 @@ local function onStart()
 	-- @param profileID Profile ID that will be flagged as having mature content
 	--
 	local function filterData(data, profileID)
+		local numberOfBadWordsFound = 0;
+		local threshold = getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
 		-- Iterate over each field of the data table
 		for key, value in pairs(data) do
 			-- Ommit fields we do not want to filter
@@ -275,12 +279,16 @@ local function onStart()
 				if type(value) == "string" then
 					-- If the text contains mature content, flag the profile has having mature content
 					if textContainsMatureContent(value) then
-						flagUnitProfileHasHavingMatureContent(profileID);
+						numberOfBadWordsFound = numberOfBadWordsFound + 1;
 					end
 				elseif type(value) == "table" then
 					filterData(value, profileID);
 				end
 			end
+		end
+
+		if numberOfBadWordsFound >= threshold then
+			flagUnitProfileHasHavingMatureContent(profileID);
 		end
 	end
 
@@ -477,6 +485,7 @@ local function onStart()
 	matureFilterShouldBeEnabledByDefault = C_StorePublic.IsDisabledByParentalControls() or matureFilterShouldBeEnabledByDefault;
 
 	registerConfigKey(MATURE_FILTER_CONFIG, matureFilterShouldBeEnabledByDefault);
+	registerConfigKey(MATURE_FILTER_CONFIG_STRENGTH, 3);
 
 	registerConfigHandler(MATURE_FILTER_CONFIG, function()
 		local unitID = getUnitID("target");
@@ -506,6 +515,17 @@ local function onStart()
 			title = loc("MATURE_FILTER_OPTION"),
 			configKey = MATURE_FILTER_CONFIG,
 			help = loc("MATURE_FILTER_OPTION_TT")
+		});
+		-- Enable mature filter checkbox
+		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigSlider",
+			title = loc.MATURE_FILTER_STRENGTH,
+			help = loc.MATURE_FILTER_STRENGTH_TT,
+			configKey = MATURE_FILTER_CONFIG_STRENGTH,
+			min = 1,
+			max = 10,
+			step = 1,
+			integer = true,
 		});
 		-- Edit dictionary button
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
@@ -629,10 +649,10 @@ end
 local MODULE_STRUCTURE = {
 	["name"] = "Mature profile filtering",
 	["description"] = "Analyse incoming profiles for keywords and flag profiles if they contain mature content",
-	["version"] = 1.000,
+	["version"] = 1.100,
 	["id"] = "trp3_mature_filter",
 	["onStart"] = onStart,
-	["minVersion"] = 19,
+	["minVersion"] = 38,
 };
 
 TRP3_API.module.registerModule(MODULE_STRUCTURE);
