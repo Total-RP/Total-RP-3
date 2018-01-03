@@ -271,7 +271,7 @@ local function onStart()
 	--
 	local function filterData(data, profileID)
 		local numberOfBadWordsFound = 0;
-		local threshold = getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
+		local threshold = 11 - getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
 		-- Iterate over each field of the data table
 		for key, value in pairs(data) do
 			-- Ommit fields we do not want to filter
@@ -486,7 +486,7 @@ local function onStart()
 	matureFilterShouldBeEnabledByDefault = C_StorePublic.IsDisabledByParentalControls() or matureFilterShouldBeEnabledByDefault;
 
 	registerConfigKey(MATURE_FILTER_CONFIG, matureFilterShouldBeEnabledByDefault);
-	registerConfigKey(MATURE_FILTER_CONFIG_STRENGTH, 3);
+	registerConfigKey(MATURE_FILTER_CONFIG_STRENGTH, 7);
 
 	registerConfigHandler(MATURE_FILTER_CONFIG, function()
 		local unitID = getUnitID("target");

@@ -913,11 +913,13 @@ Total RP is not responsible for links leading to harmful content.]],
 	MATURE_FILTER_OPTION = "Filter mature profiles",
 	MATURE_FILTER_OPTION_TT = [[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it finds such word.
 
-A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]],
-	MATURE_FILTER_STRENGTH = "Mature filter strength",
-	MATURE_FILTER_STRENGTH_TT = [[Set the strength of the mature filter by defining how many bad words have to be found in a profile for it to be flagged.
+A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.
 
-|cffcccccc1 is strong, 10 is weak.|r]],
+|cffccccccNote: The mature filter dictionary is pre-populated with a list of words from a crowd sourced repository. You can edit the words using the option below.|r]],
+	MATURE_FILTER_STRENGTH = "Mature filter strength",
+	MATURE_FILTER_STRENGTH_TT = [[Set the strength of the mature filter.
+
+|cffcccccc1 is weak (10 bad words required to flag), 10 is strong (only 1 bad word required to flag).|r]],
 	MATURE_FILTER_ADD_TO_WHITELIST = "Add this profile to the |cffffffffmature white list|r",
 	MATURE_FILTER_ADD_TO_WHITELIST_TT = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
 	MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Add to the |cffffffffmature white list|r",
