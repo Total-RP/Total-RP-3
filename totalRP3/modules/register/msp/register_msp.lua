@@ -527,11 +527,7 @@ local function onStart()
 		-- If sender is not known
 		if not isUnitIDKnown(senderID) then
 			-- We add him
-			if getConfigValue("register_auto_add") then
-				addCharacter(senderID);
-			else
-				return; -- The user choose not to add automatically new characters
-			end
+			addCharacter(senderID);
 		end
 
 		-- Check that the character has a profileID.

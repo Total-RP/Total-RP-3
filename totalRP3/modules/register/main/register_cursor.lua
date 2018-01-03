@@ -157,7 +157,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		title = loc.CO_CURSOR_RIGHT_CLICK,
 		help = loc.CO_CURSOR_RIGHT_CLICK_TT,
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE,
-		dependentOnOptions = { "register_auto_add" },
 	});
 
 	-- Modifier key dropdown option
@@ -173,7 +172,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			{ ALT_KEY_TEXT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
-		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE, "register_auto_add" },
+		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
 	});
 
 end)
