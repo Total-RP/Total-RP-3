@@ -415,10 +415,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_GENERAL_COM"),
-			},
-			{
-				inherit = "TRP3_ConfigH1",
 				title = loc("CO_GENERAL_MISC"),
 			},
 			{
