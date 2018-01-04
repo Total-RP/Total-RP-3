@@ -25,6 +25,7 @@ local _, TRP3_API = ...;
 
 -- Lua API imports
 local insert = table.insert;
+local time = time;
 
 -- WoW API imports
 local InCombatLockdown = InCombatLockdown;
@@ -131,13 +132,34 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end
 
-	-- Hook function called on right-click on player
+	local clickedUnitID;
+	local clickTimestamp;
+
+	-- Hook function called on right-click start on player
 	hooksecurefunc("TurnOrActionStart", function()
 		if not getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) or not isModifierKeyPressed() then return end
 		if CursorFrame:IsVisible() then
-			openMainFrame()
-			openPageByUnitID(CursorFrame.unitID);
+			clickedUnitID = CursorFrame.unitID;
+			clickTimestamp = time();
 		end
+	end)
+
+	-- Hook function called when right-click is released
+	hooksecurefunc("TurnOrActionStop", function()
+		if not clickedUnitID or not clickTimestamp then return end
+
+		-- If the right-click is maintained longer than 1 second, consider it a drag and not a click, ignore it
+		if time() - clickTimestamp < 1 then
+			-- Check that the user wasn't actually moving (very fast) the camera and the cursor still is on the targeted unit
+			if Mouseover:Exists() and clickedUnitID == Mouseover:GetUnitID() then
+				openMainFrame()
+				openPageByUnitID(CursorFrame.unitID);
+			end
+		end
+
+		-- Reset values for next right-click event
+		clickedUnitID = nil;
+		clickTimestamp = nil;
 	end)
 
 	-- Listen to the mouse over event and register data update to event to show the cursor icon
