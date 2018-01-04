@@ -5,7 +5,7 @@
 --- Implements right-click on a player in the 3D world to open their profile
 ---
 ---	---------------------------------------------------------------------------
----	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 ---	Licensed under the Apache License, Version 2.0 (the "License");
 ---	you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ local insert = table.insert;
 
 -- WoW API imports
 local InCombatLockdown = InCombatLockdown;
-local GetCursorPosition = GetCursorPosition;
-local UIParent = UIParent;
 local IsShiftKeyDown = IsShiftKeyDown;
 local IsControlKeyDown = IsControlKeyDown;
 local IsAltKeyDown = IsAltKeyDown;
@@ -44,12 +42,14 @@ local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
 
-local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
-local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
-
+-- Ellyb imports
+local Cursor = TRP3_API.Ellyb.Cursor;
 --- Create a new Ellyb Unit for the mouseover unit
 ---@type Unit
 local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
+
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
 ---Check if we can view the unit profile by using the cursor
 ---@param unitID string @ A valid unit ID (probably mouseover here)
@@ -78,40 +78,18 @@ local function canInteractWithUnit(unit)
 	return true;
 end
 
----@type Frame
-local CursorFrame = TRP3_CursorFrame;
----@type Texture
-local Icon = CursorFrame.Icon;
-
-local function placeCursorFrameOnMouse()
-	local scale = 1 / UIParent:GetEffectiveScale();
-	local x, y = GetCursorPosition();
-	CursorFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x * scale + 33, y * scale - 30);
-end
-
+local ICON_X = 30;
+local ICON_Y = -3;
 local function onMouseOverUnit()
 	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
-		local unitID = Mouseover:GetUnitID();
-		CursorFrame.unitID = unitID;
-		placeCursorFrameOnMouse();
-		if TRP3_API.register.unitIDIsFilteredForMatureContent(unitID) then
-			Icon:SetTexture("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
+		if TRP3_API.register.unitIDIsFilteredForMatureContent(Mouseover:GetUnitID()) then
+			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga", ICON_X, ICON_Y);
 		else
-			Icon:SetTexture("Interface\\CURSOR\\WorkOrders");
+			Cursor:SetIcon("Interface\\CURSOR\\WorkOrders", ICON_X, ICON_Y);
 		end
-		CursorFrame:Show();
-	else
-		CursorFrame:Hide();
+		Cursor:HideOnUnitChanged();
 	end
 end
-
-CursorFrame:SetScript("OnUpdate", function(self)
-	if not Mouseover:Exists() then
-		self:Hide();
-	else
-		placeCursorFrameOnMouse()
-	end
-end)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
@@ -131,12 +109,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end
 
-	-- Hook function called on right-click on player
-	hooksecurefunc("TurnOrActionStart", function()
-		if not getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) or not isModifierKeyPressed() then return end
-		if CursorFrame:IsVisible() then
+	Cursor:OnUnitRightClicked(function(unitID)
+		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() and not isUnitIDIgnored(unitID) then
 			openMainFrame()
-			openPageByUnitID(CursorFrame.unitID);
+			openPageByUnitID(unitID);
 		end
 	end)
 
@@ -166,9 +142,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
-			{ SHIFT_KEY_TEXT, 2 },
-			{ CTRL_KEY_TEXT, 3 },
-			{ ALT_KEY_TEXT, 4 }
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.SHIFT, 2 },
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.CTRL, 3 },
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.ALT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
