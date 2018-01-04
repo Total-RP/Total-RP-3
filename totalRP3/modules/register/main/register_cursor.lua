@@ -25,12 +25,9 @@ local _, TRP3_API = ...;
 
 -- Lua API imports
 local insert = table.insert;
-local time = time;
 
 -- WoW API imports
 local InCombatLockdown = InCombatLockdown;
-local GetCursorPosition = GetCursorPosition;
-local UIParent = UIParent;
 local IsShiftKeyDown = IsShiftKeyDown;
 local IsControlKeyDown = IsControlKeyDown;
 local IsAltKeyDown = IsAltKeyDown;
@@ -45,12 +42,14 @@ local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
 
-local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
-local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
-
+-- Ellyb imports
+local Cursor = TRP3_API.Ellyb.Cursor;
 --- Create a new Ellyb Unit for the mouseover unit
 ---@type Unit
 local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
+
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
 ---Check if we can view the unit profile by using the cursor
 ---@param unitID string @ A valid unit ID (probably mouseover here)
@@ -79,40 +78,16 @@ local function canInteractWithUnit(unit)
 	return true;
 end
 
----@type Frame
-local CursorFrame = TRP3_CursorFrame;
----@type Texture
-local Icon = CursorFrame.Icon;
-
-local function placeCursorFrameOnMouse()
-	local scale = 1 / UIParent:GetEffectiveScale();
-	local x, y = GetCursorPosition();
-	CursorFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x * scale + 33, y * scale - 30);
-end
-
 local function onMouseOverUnit()
 	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
-		local unitID = Mouseover:GetUnitID();
-		CursorFrame.unitID = unitID;
-		placeCursorFrameOnMouse();
-		if TRP3_API.register.unitIDIsFilteredForMatureContent(unitID) then
-			Icon:SetTexture("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
+		if TRP3_API.register.unitIDIsFilteredForMatureContent(Mouseover:GetUnitID()) then
+			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
 		else
-			Icon:SetTexture("Interface\\CURSOR\\WorkOrders");
+			Cursor:SetIcon("Interface\\CURSOR\\WorkOrders");
 		end
-		CursorFrame:Show();
-	else
-		CursorFrame:Hide();
+		Cursor:HideOnUnitChanged();
 	end
 end
-
-CursorFrame:SetScript("OnUpdate", function(self)
-	if not Mouseover:Exists() then
-		self:Hide();
-	else
-		placeCursorFrameOnMouse()
-	end
-end)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
@@ -132,34 +107,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end
 
-	local clickedUnitID;
-	local clickTimestamp;
-
-	-- Hook function called on right-click start on player
-	hooksecurefunc("TurnOrActionStart", function()
-		if not getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) or not isModifierKeyPressed() then return end
-		if CursorFrame:IsVisible() then
-			clickedUnitID = CursorFrame.unitID;
-			clickTimestamp = time();
+	Cursor:OnUnitRightClicked(function()
+		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() then
+			openMainFrame()
+			openPageByUnitID(Mouseover:GetUnitID());
 		end
-	end)
-
-	-- Hook function called when right-click is released
-	hooksecurefunc("TurnOrActionStop", function()
-		if not clickedUnitID or not clickTimestamp then return end
-
-		-- If the right-click is maintained longer than 1 second, consider it a drag and not a click, ignore it
-		if time() - clickTimestamp < 1 then
-			-- Check that the user wasn't actually moving (very fast) the camera and the cursor still is on the targeted unit
-			if Mouseover:Exists() and clickedUnitID == Mouseover:GetUnitID() then
-				openMainFrame()
-				openPageByUnitID(CursorFrame.unitID);
-			end
-		end
-
-		-- Reset values for next right-click event
-		clickedUnitID = nil;
-		clickTimestamp = nil;
 	end)
 
 	-- Listen to the mouse over event and register data update to event to show the cursor icon
