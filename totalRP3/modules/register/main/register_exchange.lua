@@ -49,7 +49,7 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
-local after = C_Timer.NewTimer;
+local newTimer = C_Timer.NewTimer;
 
 -- Config keys
 local CONFIG_NEW_VERSION = "new_version_alert";
@@ -475,7 +475,6 @@ TRP3_API.slash.registerCommand({
 	helpLine = " " .. loc("PR_SLASH_OPEN_HELP"),
 	handler = function(...)
 		local args = {...};
-		local realmName;
 
 		if commandOpeningTimerHandle then
 			commandOpeningTimerHandle:Cancel();
@@ -486,6 +485,10 @@ TRP3_API.slash.registerCommand({
 			return
 		elseif #args == 1 then
 			characterToOpen = table.concat(args, " ");
+
+			-- Capitalizing first letter of the name, just in case someone is lazy.
+			-- We don't have a solution for "I'm lazy but need someone from another realm" yet.
+			characterToOpen = characterToOpen:gsub("^%l", string.upper);
 
 			-- If no realm has been entered, we use the player's realm automatically
 			if not characterToOpen:find("-") then
@@ -511,7 +514,7 @@ TRP3_API.slash.registerCommand({
 			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
 
 			-- If after 1 minute they didn't reply, abort
-			commandOpeningTimerHandle = after(60, function()
+			commandOpeningTimerHandle = newTimer(60, function()
 				displayMessage(loc("PR_SLASH_OPEN_ABORTING"));
 				characterToOpen = "";
 			end)
