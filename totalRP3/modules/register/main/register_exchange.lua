@@ -49,13 +49,14 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
-local after = C_Timer.After;
+local after = C_Timer.NewTimer;
 
 -- Config keys
 local CONFIG_NEW_VERSION = "new_version_alert";
 
 -- Character name for profile opening command
 local characterToOpen = "";
+local commandOpeningTimerHandle;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -476,6 +477,10 @@ TRP3_API.slash.registerCommand({
 		local args = {...};
 		local realmName;
 
+		if commandOpeningTimerHandle then
+			commandOpeningTimerHandle:Cancel();
+		end
+
 		if #args > 1 then
 			displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
 			return
@@ -504,16 +509,13 @@ TRP3_API.slash.registerCommand({
 			characterToOpen = "";
 		else
 			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
-		end
 
-		-- Save the name of the player we just requested
-		local currentCharacterToOpen = characterToOpen;
-		-- If after 1 minute they didn't reply, abort
-		after(60, function()
-			if characterToOpen == currentCharacterToOpen then
+			-- If after 1 minute they didn't reply, abort
+			commandOpeningTimerHandle = after(60, function()
+				displayMessage(loc("PR_SLASH_OPEN_ABORTING"));
 				characterToOpen = "";
-			end
-		end)
+			end)
+		end
 	end
 })
 
@@ -522,6 +524,9 @@ Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, d
 	if unitID == characterToOpen and dataType == "character" then
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.register.openPageByUnitID(characterToOpen);
+		if commandOpeningTimerHandle then
+			commandOpeningTimerHandle:Cancel();
+		end
 		characterToOpen = "";
 	end
 end);
