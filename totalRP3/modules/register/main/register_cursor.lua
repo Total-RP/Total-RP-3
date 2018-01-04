@@ -5,7 +5,7 @@
 --- Implements right-click on a player in the 3D world to open their profile
 ---
 ---	---------------------------------------------------------------------------
----	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 ---	Licensed under the Apache License, Version 2.0 (the "License");
 ---	you may not use this file except in compliance with the License.
@@ -78,12 +78,14 @@ local function canInteractWithUnit(unit)
 	return true;
 end
 
+local ICON_X = 30;
+local ICON_Y = -3;
 local function onMouseOverUnit()
 	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
 		if TRP3_API.register.unitIDIsFilteredForMatureContent(Mouseover:GetUnitID()) then
-			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
+			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga", ICON_X, ICON_Y);
 		else
-			Cursor:SetIcon("Interface\\CURSOR\\WorkOrders");
+			Cursor:SetIcon("Interface\\CURSOR\\WorkOrders", ICON_X, ICON_Y);
 		end
 		Cursor:HideOnUnitChanged();
 	end
@@ -107,10 +109,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end
 
-	Cursor:OnUnitRightClicked(function()
-		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() then
+	Cursor:OnUnitRightClicked(function(unitID)
+		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() and not isUnitIDIgnored(unitID) then
 			openMainFrame()
-			openPageByUnitID(Mouseover:GetUnitID());
+			openPageByUnitID(unitID);
 		end
 	end)
 
@@ -141,9 +143,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
-			{ SHIFT_KEY_TEXT, 2 },
-			{ CTRL_KEY_TEXT, 3 },
-			{ ALT_KEY_TEXT, 4 }
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.SHIFT, 2 },
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.CTRL, 3 },
+			{ TRP3_API.Ellyb.Strings.KEYBOARD_SHORTCUTS.ALT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE, "register_auto_add" },
