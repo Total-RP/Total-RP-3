@@ -52,7 +52,6 @@ local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonu
 local after = C_Timer.After;
 
 -- Config keys
-local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
 local CONFIG_NEW_VERSION = "new_version_alert";
 
 -- Character name for profile opening command
@@ -63,10 +62,6 @@ local characterToOpen = "";
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local has_seen_update_alert, has_seen_extended_update_alert = false, false;
-
-local function configIsAutoAdd()
-	return getConfigValue(CONFIG_REGISTRE_AUTO_ADD);
-end
 
 local function configShowVersionAlert()
 	return getConfigValue(CONFIG_NEW_VERSION);
@@ -271,41 +266,39 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 
 	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion);
 
-	if isUnitIDKnown(senderID) or configIsAutoAdd() then
-		if not isUnitIDKnown(senderID) then
-			addCharacter(senderID);
-		end
-		saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion);
-		saveCurrentProfileID(senderID, senderProfileID);
-
-		-- Query specific data, depending on version number.
-		local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
-		for _, infoType in pairs(infoTypeTab) do
-			if shouldUpdateInformation(senderID, infoType, structure[index]) then
-				log(("Should update: %s's %s"):format(senderID, infoType));
-				queryInformationType(senderID, infoType);
-			end
-			index = index + 1;
-		end
-
-		-- Battle pet
-		local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
-		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
-		local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
-		parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
-
-		-- Pet
-		local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
-		local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
-		local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
-		parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
-
-		-- Mount
-		local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
-		local mountV1 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1];
-		local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
-		parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
+	if not isUnitIDKnown(senderID) then
+		addCharacter(senderID);
 	end
+	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion);
+	saveCurrentProfileID(senderID, senderProfileID);
+
+	-- Query specific data, depending on version number.
+	local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
+	for _, infoType in pairs(infoTypeTab) do
+		if shouldUpdateInformation(senderID, infoType, structure[index]) then
+			log(("Should update: %s's %s"):format(senderID, infoType));
+			queryInformationType(senderID, infoType);
+		end
+		index = index + 1;
+	end
+
+	-- Battle pet
+	local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
+	local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
+	local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
+	parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
+
+	-- Pet
+	local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
+	local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
+	local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
+	parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
+
+	-- Mount
+	local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
+	local mountV1 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1];
+	local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
+	parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

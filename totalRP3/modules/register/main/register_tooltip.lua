@@ -137,6 +137,10 @@ local function getSmallLineFontSize()
 end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
+function TRP3_API.ui.tooltip.shouldCropTexts()
+	return getConfigValue(CONFIG_CROP_TEXT);
+end
+
 local function showIcons()
 	return getConfigValue(CONFIG_CHARACT_ICONS);
 end
@@ -610,14 +614,6 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				notifText = " "; -- Prevent bad right line height
 			end
 			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
-		end
-	end
-
-	if info.mspIncomingChunks then
-		if IsAltKeyDown() then
-			tooltipBuilder:AddLine(("Downloading %s/%s"):format(info.mspAlreadyReceivedChunks, info.mspIncomingChunks), 1, 1, 1, getSmallLineFontSize());
-		else
-			tooltipBuilder:AddLine(("Downloading %s%%"):format(math.floor((info.mspAlreadyReceivedChunks / info.mspIncomingChunks) * 100)), 1, 1, 1, getSmallLineFontSize());
 		end
 	end
 

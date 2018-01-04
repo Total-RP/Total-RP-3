@@ -17,6 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- Public accessor
 TRP3_API.utils = {
 	log = {},
@@ -944,63 +947,11 @@ end
 -- Handles WOW events
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local REGISTERED_EVENTS = {};
+Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerHandler;
 
-Utils.event.registerHandler = function(event, callback)
-	assert(event, "Event must be set.");
-	assert(callback and type(callback) == "function", "Callback must be a function");
-	if not REGISTERED_EVENTS[event] then
-		REGISTERED_EVENTS[event] = {};
-		TRP3_EventFrame:RegisterEvent(event);
-	end
-	local handlerID = generateID();
-	while REGISTERED_EVENTS[event][handlerID] do -- Avoiding collision
-		handlerID = generateID();
-	end
-	REGISTERED_EVENTS[event][handlerID] = callback;
-	Log.log(("Registered event %s with id %s"):format(tostring(event), handlerID));
-	return handlerID;
-end
+Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterHandler;
 
-Utils.event.unregisterHandler = function(handlerID)
-	assert(handlerID, "handlerID must be set.");
-	for event, eventTab in pairs(REGISTERED_EVENTS) do
-		if eventTab[handlerID] then
-			eventTab[handlerID] = nil;
-			if tableSize(eventTab) == 0 then
-				REGISTERED_EVENTS[event] = nil;
-				TRP3_EventFrame:UnregisterEvent(event);
-			end
-			Log.log(("Unregistered event %s with id %s"):format(tostring(event), handlerID));
-			return;
-		end
-	end
-	Log.log(("handlerID not found %s"):format(handlerID));
-end
-
-function TRP3_EventDispatcher(self, event, ...)
-	-- Callbacks
-	if REGISTERED_EVENTS[event] then
-		local temp = Utils.table.getTempTable();
-
-		for _, callback in pairs(REGISTERED_EVENTS[event]) do
-			tinsert(temp, callback);
-		end
-
-		-- We use a separate structure as the callback could change REGISTERED_EVENTS[event]
-		for _, callback in pairs(temp) do
-			callback(...);
-		end
-
-		Utils.table.releaseTempTable(temp);
-	else
-		self:UnregisterEvent(event);
-	end
-end
-
-function Utils.event.fireEvent(event, ...)
-	TRP3_EventDispatcher(TRP3_EventFrame, event, ...)
-end
+Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.fireEvent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS

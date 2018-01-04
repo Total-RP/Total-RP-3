@@ -29,14 +29,14 @@ local _, TRP3_API = ...;
 -- WoW imports
 local format = string.format;
 local assert = assert;
-local type = type;
 local sort = table.sort;
 local pairs = pairs;
 local tinsert = table.insert;
 local tostring = tostring;
 local error = error;
 local sub = string.sub;
-local lower = string.lower;
+
+local isType = TRP3_API.Ellyb.Assertions.isType;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
@@ -427,9 +427,6 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
 	CO_GENERAL_LOCALE = "Addon locale",
 	CO_GENERAL_COM = "Communication",
-	CO_GENERAL_BROADCAST = "Use broadcast channel",
-	CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the features like characters position on the map, playing local sounds, stashes and signposts access...",
-	CO_GENERAL_BROADCAST_C = "Broadcast channel name",
 	CO_GENERAL_MISC = "Miscellaneous",
 	CO_GENERAL_TT_SIZE = "Info tooltip text size",
 	CO_GENERAL_NEW_VERSION = "Update alert",
@@ -485,14 +482,19 @@ Class: 50 characters|r]],
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_VOTE = "Use voting system",
 	CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
-	CO_REGISTER_AUTO_ADD = "Auto add new players",
-	CO_REGISTER_AUTO_ADD_TT = [[Automatically add new players you encounter to the register.
-
-|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]],
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommand to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 	CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
+	CO_CURSOR_TITLE = "Cursor interactions",
+	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
+	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
+
+|TInterface\Cursor\WorkOrders:25|t This icon will be attached to the cursor when a player has a profile and you can right-click them.
+
+|cffccccccNote: This feature is disabled during combat.|r]],
+	CO_CURSOR_MODIFIER_KEY = "Modifier key",
+	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
 	CO_MODULES_VERSION = "Version: %s",
 	CO_MODULES_ID = "Module ID: %s",
@@ -1036,6 +1038,30 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 - Fixed an issue where the Mary Sue Protocol downloading indicator would get stuck for Total RP 3 profiles.
 
 ]],
+	WHATS_NEW_16_2 = [[
+## 1.2.11.2 - 2017-12-26
+
+### Fixed
+
+- Fixed a Lua overflow error with the ChatThrottleLib that could occur in rare cases.
+- Fixed an issue that would cause the tooltip to reload all the data too frequently.
+- Fixed an issue that could cause a larger than usual amount of Unknown profiles to be listed in the Directory.
+
+### Removed
+
+- Removed the downloading progression indicator in the tooltip for now as it was the cause of some of these issues. It will be brought back later with a better implementation.
+
+]],
+	WHATS_NEW_16_3 = [[
+## 1.2.11.3 - 2018-01-02
+
+Happy new year! The Total RP 3 team wishes you the best for 2018.
+
+### Updated
+
+- Updated list of Patreon supporters inside the add-on for the month of December.
+
+]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
@@ -1089,13 +1115,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DEBUG
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	DEBUG_NIL_PARAMETER = [[Unexpected nil parameter "%1$s".]],
-	-- Parameters order: parameterName, actualParameterType, expectedParameterType
-	DEBUG_WRONG_PARAM_TYPE = [[Invalid parameter type "%2$s" for parameter "%1$s", expected "%3$s".]],
 };
 
 -- Save the raw locale content to be used as default
@@ -1169,10 +1188,10 @@ local current;
 ---Register a new localization
 ---@param localeStructure table
 function Locale.registerLocale(localeStructure)
-	assert(type(localeStructure) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure", type(localeStructure), "table"));
-	assert(type(localeStructure.locale) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.locale", type(localeStructure.locale), "string"));
-	assert(type(localeStructure.localeText) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeText", type(localeStructure.localeText), "string"));
-	assert(type(localeStructure.localeContent) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeContent", type(localeStructure.localeContent), "table"));
+	assert(isType(localeStructure, "table", "localeStructure"));
+	assert(isType(localeStructure.locale, "string", "localeStructure.locale"));
+	assert(isType(localeStructure.localeText, "string", "localeStructure.localeText"));
+	assert(isType(localeStructure.localeContent, "table", "localeStructure.localeContent"));
 
 	assert(localizations[localeStructure.locale] == nil, format("A localization for %s has already been registered.", localeStructure.locale));
 
@@ -1271,7 +1290,7 @@ local VOWELS = {
 	"I",
 	"O",
 	"U",
-	"Y"
+	"Y",
 	"À",
 	"Â",
 	"Ä",
