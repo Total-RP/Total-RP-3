@@ -298,24 +298,29 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function detectEmoteAndOOC(message)
-	
+local function detectEmoteAndOOC(message, NPCEmoteChatColor)
+
+	local NPCEmoteChatString = "";
+	if NPCEmoteChatColor then
+		NPCEmoteChatString = format("|c%s", NPCEmoteChatColor:GenerateHexColor());
+	end
+
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
 		local chatColor = getChatColorForChannel("EMOTE");
 		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return chatColor:WrapTextInColorCode(content);
+			return chatColor:WrapTextInColorCode(content) .. NPCEmoteChatString;
 		end);
 	end
-	
+
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
-			return OOCColor:WrapTextInColorCode(content);
+			return OOCColor:WrapTextInColorCode(content) .. NPCEmoteChatString;
 		end);
 	end
-	
+
 	return message;
-end
+	end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC talk detection
@@ -332,13 +337,13 @@ local function handleNPCEmote(message)
 			local name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			local content = message:sub(name:len() + 5);
 
-			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content);
+			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content), chatColor;
 		end
 	end
 
 	-- If none was found, we default to emote
 	local chatColor = getChatColorForChannel("MONSTER_EMOTE");
-	return chatColor:WrapTextInColorCode(message:sub(4)), " ";
+	return chatColor:WrapTextInColorCode(message:sub(4)), " ", chatColor;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -364,12 +369,13 @@ end
 function handleCharacterMessage(_, event, message, ...)
 	
 	local messageID = select(10, ...);
+	local NPCEmoteChatColor;
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
-			npcMessageName, message = handleNPCEmote(message);
+			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message);
 
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
@@ -395,7 +401,7 @@ function handleCharacterMessage(_, event, message, ...)
 	end
 
 	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(message);
+	message = detectEmoteAndOOC(message, NPCEmoteChatColor);
 
 	return false, message, ...;
 end
