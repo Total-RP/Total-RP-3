@@ -320,7 +320,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor)
 	end
 
 	return message;
-	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC talk detection
