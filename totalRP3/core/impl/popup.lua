@@ -685,12 +685,16 @@ function TRP3_API.popup.showDefaultColorPicker(popupArgs)
 	ColorPickerFrame.hasOpacity = false;
 	ColorPickerFrame.opacity = 1;
 
+	-- func is called every time the color is changed, whereas opacityFunc is only called when changing opacity or pressing OKAY
+	-- Since we don't have opacity, I put the callback on opacityFunc to have the same behaviour as TRP3 color picker.
 	ColorPickerFrame.func = function()
+	end
+
+	ColorPickerFrame.opacityFunc = function()
 		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
 		setColor(newR * 255, newG * 255, newB * 255);
 	end
 
-	ColorPickerFrame.opacityFunc = ColorPickerFrame.func;
 	ColorPickerFrame.cancelFunc = function()
 		setColor(r, g, b);
 	end

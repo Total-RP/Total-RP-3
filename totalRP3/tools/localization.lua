@@ -436,6 +436,8 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_UI_SOUNDS_TT = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
 	CO_GENERAL_UI_ANIMATIONS = "UI animations",
 	CO_GENERAL_UI_ANIMATIONS_TT = "Activate the UI animations.",
+	CO_GENERAL_DEFAULT_COLOR_PICKER = "Default color picker",
+	CO_GENERAL_DEFAULT_COLOR_PICKER_TT = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
