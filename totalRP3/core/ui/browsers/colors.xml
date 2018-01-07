@@ -117,6 +117,13 @@
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
 					</Button>
+
+					<Button name="TRP3_ColorBrowserPresets" inherits="TRP3_CommonButton" text="[PRESETS]">
+						<Size x="100" y="20"/>
+						<Anchors>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_ColorBrowserSelect" x="-10" y="0"/>
+						</Anchors>
+					</Button>
 					
 					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="6">
 						<Anchors>

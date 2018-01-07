@@ -32,6 +32,7 @@ local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList
 local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.utils.color.numberToHexa;
 local strconcat = strconcat;
 local safeMatch = TRP3_API.utils.str.safeMatch;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -501,10 +502,112 @@ end
 
 local TRP3_ColorBrowser, TRP3_ColorBrowserColor = TRP3_ColorBrowser, TRP3_ColorBrowserColor;
 local toast = TRP3_API.ui.tooltip.toast;
+local ColorManager = TRP3_API.Ellyb.ColorManager;
+
+local COLOR_PRESETS_BASIC = {
+	{ CO = ColorManager.ORANGE, TX = loc("CM_ORANGE")},
+	{ CO = ColorManager.WHITE, TX = loc("CM_WHITE")},
+	{ CO = ColorManager.YELLOW, TX = loc("CM_YELLOW")},
+	{ CO = ColorManager.CYAN, TX = loc("CM_CYAN")},
+	{ CO = ColorManager.BLUE, TX = loc("CM_BLUE")},
+	{ CO = ColorManager.GREEN, TX = loc("CM_GREEN")},
+	{ CO = ColorManager.RED, TX = loc("CM_RED")},
+	{ CO = ColorManager.PURPLE, TX = loc("CM_PINK")},
+	{ CO = TRP3_API.Ellyb.Color(0.5, 0, 1), TX = loc("CM_PURPLE")},
+	{ CO = ColorManager.GREY, TX = loc("CM_GREY")},
+}
+
+local COLOR_PRESETS_CLASS = {
+	{ CO = ColorManager.HUNTER, TX = ({GetClassInfo(3)})[1]},
+	{ CO = ColorManager.WARLOCK, TX = ({GetClassInfo(9)})[1]},
+	{ CO = ColorManager.PRIEST, TX = ({GetClassInfo(5)})[1]},
+	{ CO = ColorManager.PALADIN, TX = ({GetClassInfo(2)})[1]},
+	{ CO = ColorManager.MAGE, TX = ({GetClassInfo(8)})[1]},
+	{ CO = ColorManager.ROGUE, TX = ({GetClassInfo(4)})[1]},
+	{ CO = ColorManager.DRUID, TX = ({GetClassInfo(11)})[1]},
+	{ CO = ColorManager.SHAMAN, TX = ({GetClassInfo(7)})[1]},
+	{ CO = ColorManager.WARRIOR, TX = ({GetClassInfo(1)})[1]},
+	{ CO = ColorManager.DEATHKNIGHT, TX = ({GetClassInfo(6)})[1]},
+	{ CO = ColorManager.MONK, TX = ({GetClassInfo(10)})[1]},
+	{ CO = ColorManager.DEMONHUNTER, TX = ({GetClassInfo(12)})[1]},
+}
+
+local COLOR_PRESETS_RESOURCES = {
+	{ CO = ColorManager.POWER_MANA, TX = MANA},
+	{ CO = ColorManager.POWER_RAGE, TX = RAGE},
+	{ CO = ColorManager.POWER_FOCUS, TX = FOCUS},
+	{ CO = ColorManager.POWER_ENERGY, TX = ENERGY},
+	{ CO = ColorManager.POWER_COMBO_POINTS, TX = COMBO_POINTS},
+	{ CO = ColorManager.POWER_RUNES, TX = RUNES},
+	{ CO = ColorManager.POWER_RUNIC_POWER, TX = RUNIC_POWER},
+	{ CO = ColorManager.POWER_SOUL_SHARDS, TX = SOUL_SHARDS},
+	{ CO = ColorManager.POWER_LUNAR_POWER, TX = LUNAR_POWER},
+	{ CO = ColorManager.POWER_HOLY_POWER, TX = HOLY_POWER},
+	{ CO = ColorManager.POWER_MAELSTROM, TX = MAELSTROM},
+	{ CO = ColorManager.POWER_INSANITY, TX = INSANITY},
+	{ CO = ColorManager.POWER_CHI, TX = CHI},
+	{ CO = ColorManager.POWER_ARCANE_CHARGES, TX = ARCANE_CHARGES},
+	{ CO = ColorManager.POWER_FURY, TX = FURY},
+	{ CO = ColorManager.POWER_PAIN, TX = PAIN},
+	{ CO = ColorManager.POWER_AMMOSLOT, TX = AMMOSLOT},
+	{ CO = ColorManager.POWER_FUEL, TX = FUEL},
+}
+
+local COLOR_PRESETS_ITEMS = {
+	{ CO = ColorManager.ITEM_POOR, TX = ITEM_QUALITY0_DESC},
+	{ CO = ColorManager.ITEM_COMMON, TX = ITEM_QUALITY1_DESC},
+	{ CO = ColorManager.ITEM_UNCOMMON, TX = ITEM_QUALITY2_DESC},
+	{ CO = ColorManager.ITEM_RARE, TX = ITEM_QUALITY3_DESC},
+	{ CO = ColorManager.ITEM_EPIC, TX = ITEM_QUALITY4_DESC},
+	{ CO = ColorManager.ITEM_LEGENDARY, TX = ITEM_QUALITY5_DESC},
+	{ CO = ColorManager.ITEM_ARTIFACT, TX = ITEM_QUALITY6_DESC},
+	{ CO = ColorManager.ITEM_HEIRLOOM, TX = ITEM_QUALITY7_DESC},
+	{ CO = ColorManager.ITEM_WOW_TOKEN, TX = ITEM_QUALITY8_DESC},
+}
+
+local function colorPresetsDropDownSelection(hexValue)
+	local r, g, b = ColorManager.hexaToNumber(hexValue);
+	TRP3_ColorBrowser.red = r;
+	TRP3_ColorBrowser.green = g;
+	TRP3_ColorBrowser.blue = b;
+	TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
+	TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
+end
+
+local function colorPresetsDropDown()
+	local values = {};
+
+	local values_basic = {};
+	for index, preset in pairs(COLOR_PRESETS_BASIC) do
+		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_BASIC"), values_basic});
+
+	local values_classes = {};
+	for index, preset in pairs(COLOR_PRESETS_CLASS) do
+		tinsert(values_classes, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CLASSES"), values_classes});
+
+	local values_resources = {};
+	for index, preset in pairs(COLOR_PRESETS_RESOURCES) do
+		tinsert(values_resources, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_RESOURCES"), values_resources});
+
+	local values_items = {};
+	for index, preset in pairs(COLOR_PRESETS_ITEMS) do
+		tinsert(values_items, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_ITEMS"), values_items});
+
+	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
+end
 
 local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
+	TRP3_ColorBrowserPresets:SetText(loc("UI_COLOR_BROWSER_PRESETS"));
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
@@ -541,6 +644,8 @@ local function initColorBrowser()
 			TRP3_ColorBrowser.callback((TRP3_ColorBrowser.red or 1) * 255, (TRP3_ColorBrowser.green or 1) * 255, (TRP3_ColorBrowser.blue or 1) * 255);
 		end
 	end);
+
+	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
 end
 
 local function showColorBrowser(callback, red, green, blue)
