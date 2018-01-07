@@ -570,6 +570,26 @@ function TRP3_ColorButtonLoad(self)
 	self.setColor();
 end
 
+function TRP3_API.popup.showDefaultColorPicker(popupArgs)
+	local setColor, r, g, b = unpack(popupArgs);
+
+	ColorPickerFrame:SetColorRGB((r or 255) / 255, (g or 255) / 255, (b or 255) / 255);
+	ColorPickerFrame.hasOpacity = false;
+	ColorPickerFrame.opacity = 1;
+
+	ColorPickerFrame.func = function()
+		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
+		setColor(newR * 255, newG * 255, newB * 255);
+	end
+
+	ColorPickerFrame.opacityFunc = ColorPickerFrame.func;
+	ColorPickerFrame.cancelFunc = function()
+		setColor(r, g, b);
+	end
+
+	ShowUIPanel(ColorPickerFrame);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Image browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
