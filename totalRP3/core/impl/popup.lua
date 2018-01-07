@@ -505,16 +505,17 @@ local toast = TRP3_API.ui.tooltip.toast;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
 local COLOR_PRESETS_BASIC = {
+	{ CO = ColorManager.RED, TX = loc("CM_RED")},
 	{ CO = ColorManager.ORANGE, TX = loc("CM_ORANGE")},
-	{ CO = ColorManager.WHITE, TX = loc("CM_WHITE")},
 	{ CO = ColorManager.YELLOW, TX = loc("CM_YELLOW")},
+	{ CO = ColorManager.GREEN, TX = loc("CM_GREEN")},
 	{ CO = ColorManager.CYAN, TX = loc("CM_CYAN")},
 	{ CO = ColorManager.BLUE, TX = loc("CM_BLUE")},
-	{ CO = ColorManager.GREEN, TX = loc("CM_GREEN")},
-	{ CO = ColorManager.RED, TX = loc("CM_RED")},
-	{ CO = ColorManager.PURPLE, TX = loc("CM_PINK")},
-	{ CO = TRP3_API.Ellyb.Color(0.5, 0, 1), TX = loc("CM_PURPLE")},
+	{ CO = ColorManager.PURPLE, TX = loc("CM_PURPLE")},
+	{ CO = ColorManager.PINK, TX = loc("CM_PINK")},
+	{ CO = ColorManager.WHITE, TX = loc("CM_WHITE")},
 	{ CO = ColorManager.GREY, TX = loc("CM_GREY")},
+	{ CO = ColorManager.BLACK, TX = loc("CM_BLACK")},
 }
 
 local COLOR_PRESETS_CLASS = {
@@ -531,6 +532,7 @@ local COLOR_PRESETS_CLASS = {
 	{ CO = ColorManager.MONK, TX = ({GetClassInfo(10)})[1]},
 	{ CO = ColorManager.DEMONHUNTER, TX = ({GetClassInfo(12)})[1]},
 }
+table.sort(COLOR_PRESETS_CLASS, function(a,b) return a.TX<b.TX end)
 
 local COLOR_PRESETS_RESOURCES = {
 	{ CO = ColorManager.POWER_MANA, TX = MANA},
@@ -552,6 +554,7 @@ local COLOR_PRESETS_RESOURCES = {
 	{ CO = ColorManager.POWER_AMMOSLOT, TX = AMMOSLOT},
 	{ CO = ColorManager.POWER_FUEL, TX = FUEL},
 }
+table.sort(COLOR_PRESETS_RESOURCES, function(a,b) return a.TX<b.TX end)
 
 local COLOR_PRESETS_ITEMS = {
 	{ CO = ColorManager.ITEM_POOR, TX = ITEM_QUALITY0_DESC},
