@@ -789,6 +789,7 @@ This will works:|cff00ff00
 	UI_FILTER = "Filter",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
+	UI_LINK_SAFE = [[Here's the link URL.]],
 	UI_LINK_WARNING = [[Here's the link URL.
 You can copy/paste it in your web browser.
 
