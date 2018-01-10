@@ -19,7 +19,7 @@
 
 -- First file loaded. It will do the import stuff that needs to be run first
 ---@class TRP3_API
-local _, TRP3_API = ...;
+local addOnName, TRP3_API = ...;
 
 -- Global informations
 -- Note: This table will be overwritten in totalRP3/core/impl/globals.lua
@@ -47,7 +47,7 @@ TRP3_API.r = {};
 TRP3_API.utils = {};
 
 -- Get a new instance of the Ellyb library
-TRP3_API.Ellyb = Ellyb("Total RP 3");
+TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);
 
 --[===[@non-debug@
 
