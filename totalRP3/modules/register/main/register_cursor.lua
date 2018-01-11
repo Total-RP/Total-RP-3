@@ -52,8 +52,7 @@ local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
 local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
 ---Check if we can view the unit profile by using the cursor
----@param unitID string @ A valid unit ID (probably mouseover here)
-local function canInteractWithUnit(unit)
+local function canInteractWithUnit()
 
 	if
 	not Mouseover:Exists()
@@ -67,7 +66,8 @@ local function canInteractWithUnit(unit)
 
 	local unitID = Mouseover:GetUnitID();
 	if
-	unitID == TRP3_API.globals.player_id -- Unit is not the player
+	not unitID
+	or unitID == TRP3_API.globals.player_id -- Unit is not the player
 	or not isUnitIDKnown(unitID) -- Unit is known by TRP3
 	or hasProfile(unitID) == nil -- Unit has a RP profile available
 	or isUnitIDIgnored(unitID) -- Unit has been ignored
