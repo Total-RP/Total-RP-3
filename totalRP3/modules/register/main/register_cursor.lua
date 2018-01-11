@@ -99,6 +99,7 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, false);
+	registerConfigKey(CONFIG_RIGHT_CLICK_DISABLE_OOC, false);
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY, 1);
 
 	local function isModifierKeyPressed()
