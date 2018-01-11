@@ -41,6 +41,7 @@ local openPageByUnitID = TRP3_API.register.openPageByUnitID;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
+local isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 
 -- Ellyb imports
 local Cursor = TRP3_API.Ellyb.Cursor;
@@ -49,6 +50,7 @@ local Cursor = TRP3_API.Ellyb.Cursor;
 local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
 
 local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
+local CONFIG_RIGHT_CLICK_DISABLE_OOC = "CONFIG_RIGHT_CLICK_DISABLE_OOC";
 local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
 
 ---Check if we can view the unit profile by using the cursor
@@ -81,6 +83,9 @@ end
 local ICON_X = 30;
 local ICON_Y = -3;
 local function onMouseOverUnit()
+	if getConfigValue(CONFIG_RIGHT_CLICK_DISABLE_OOC) and not isPlayerIC() then
+		return
+	end
 	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
 		if TRP3_API.register.unitIDIsFilteredForMatureContent(Mouseover:GetUnitID()) then
 			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga", ICON_X, ICON_Y);
@@ -110,6 +115,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	Cursor:OnUnitRightClicked(function(unitID)
+		if getConfigValue(CONFIG_RIGHT_CLICK_DISABLE_OOC) and not isPlayerIC() then
+			return
+		end
 		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() and not isUnitIDIgnored(unitID) then
 			openMainFrame()
 			openPageByUnitID(unitID);
@@ -132,6 +140,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		title = loc.CO_CURSOR_RIGHT_CLICK,
 		help = loc.CO_CURSOR_RIGHT_CLICK_TT,
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE,
+	});
+
+	-- Main checkbox to toggle this feature
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_CURSOR_DISABLE_OOC,
+		help = loc.CO_CURSOR_DISABLE_OOC_TT,
+		configKey = CONFIG_RIGHT_CLICK_DISABLE_OOC,
 	});
 
 	-- Modifier key dropdown option
