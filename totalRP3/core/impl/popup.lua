@@ -24,7 +24,7 @@ TRP3_API.popup = {};
 local Utils = TRP3_API.utils;
 local loc, table = TRP3_API.locale.getText, table;
 local initList = TRP3_API.ui.list.initList;
-local tinsert, _G, pairs, wipe, math, assert = tinsert, _G, pairs, wipe, math, assert;
+local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
@@ -502,7 +502,7 @@ end
 
 local TRP3_ColorBrowser, TRP3_ColorBrowserColor = TRP3_ColorBrowser, TRP3_ColorBrowserColor;
 local toast = TRP3_API.ui.tooltip.toast;
-local ColorManager = TRP3_API.Ellyb.ColorManager;
+local Color, ColorManager = TRP3_API.Ellyb.Color, TRP3_API.Ellyb.ColorManager;
 
 local COLOR_PRESETS_BASIC = {
 	{ CO = ColorManager.RED, TX = loc("CM_RED")},
@@ -568,6 +568,10 @@ local COLOR_PRESETS_ITEMS = {
 	{ CO = ColorManager.ITEM_WOW_TOKEN, TX = ITEM_QUALITY8_DESC},
 }
 
+local COLOR_PRESETS_CUSTOM = {
+
+}
+
 local function colorPresetsDropDownSelection(hexValue)
 	local r, g, b = ColorManager.hexaToNumber(hexValue);
 	TRP3_ColorBrowser.red = r;
@@ -604,23 +608,45 @@ local function colorPresetsDropDown()
 	end
 	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_ITEMS"), values_items});
 
+	local values_custom = {};
+	for index, preset in pairs(COLOR_PRESETS_CUSTOM) do
+		tinsert(values_custom, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CUSTOM"), values_custom});
+
 	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
+end
+
+local function saveCustomColor(hexaColorCode)
+	tinsert(COLOR_PRESETS_CUSTOM, { CO = Color(hexaColorCode), TX = hexaColorCode });
+	table.sort(COLOR_PRESETS_CUSTOM, function(a,b) return ColorManager.compareHSL(a.CO,b.CO) end)
+end
+
+local function deleteCustomColor(hexaColorCode)
+	local indexToDelete;
+	for index, preset in pairs(COLOR_PRESETS_CUSTOM) do
+		if (preset.CO:IsEqualTo(Color(hexaColorCode))) then
+			indexToDelete = index;
+			break
+		end
+	end
+	if (indexToDelete) then
+		tremove(COLOR_PRESETS_CUSTOM, indexToDelete);
+	end
 end
 
 local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
 	TRP3_ColorBrowserPresets:SetText(loc("UI_COLOR_BROWSER_PRESETS"));
+	TRP3_ColorBrowserSave:SetText(loc("CM_SAVE"));
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
-	
+
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
-		if self:GetText():match("^%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number
-			local r, g, b = hexaToNumber(self:GetText());
-			r = r / 255;
-			g = g / 255;
-			b = b / 255;
+		if self:GetText():match("^%x%x%x%x%x%x$") or self:GetText():match("^#%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number (with or without a #)
+			local r, g, b = ColorManager.hexaToNumber(self:GetText());
 			TRP3_ColorBrowser.red = r;
 			TRP3_ColorBrowser.green = g;
 			TRP3_ColorBrowser.blue = b;
@@ -631,13 +657,23 @@ local function initColorBrowser()
 			toast(loc("BW_COLOR_CODE_ALERT"), 1);
 		end
 	end);
-	
+
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
 		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
-		TRP3_ColorBrowserEditBox:SetText(("%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255));
+		TRP3_ColorBrowserEditBox:SetText(("#%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255):upper());
+
+		TRP3_ColorBrowserSave:SetText(loc("CM_SAVE"));
+		TRP3_ColorBrowserSave.mode = "save"
+		for index, preset in pairs(COLOR_PRESETS_CUSTOM) do
+			if (preset.CO:IsEqualTo(Color(r, g, b))) then
+				TRP3_ColorBrowserSave:SetText(loc("CM_DELETE"));
+				TRP3_ColorBrowserSave.mode = "delete"
+				break
+			end
+		end
 	end);
 
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
@@ -649,6 +685,18 @@ local function initColorBrowser()
 	end);
 
 	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
+
+	TRP3_ColorBrowserSave:SetScript("OnClick", function()
+		if TRP3_ColorBrowserSave.mode == "save" then
+			saveCustomColor(TRP3_ColorBrowserEditBox:GetText());
+			TRP3_ColorBrowserSave:SetText(loc("CM_DELETE"));
+			TRP3_ColorBrowserSave.mode = "delete";
+		elseif TRP3_ColorBrowserSave.mode == "delete" then
+			deleteCustomColor(TRP3_ColorBrowserEditBox:GetText());
+			TRP3_ColorBrowserSave:SetText(loc("CM_SAVE"));
+			TRP3_ColorBrowserSave.mode = "save";
+		end
+	end);
 end
 
 local function showColorBrowser(callback, red, green, blue)

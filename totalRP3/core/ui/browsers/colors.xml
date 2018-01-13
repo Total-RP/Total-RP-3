@@ -25,7 +25,7 @@
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="250"/>
+		<Size x="420" y="275"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -125,11 +125,18 @@
 						</Anchors>
 					</Button>
 					
-					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="6">
+					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="7">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserSelect" x="20" y="0"/>
 						</Anchors>
 					</EditBox>
+
+					<Button name="TRP3_ColorBrowserSave" inherits="TRP3_CommonButton" text="[SAVE]" mode="save">
+						<Size x="100" y="20"/>
+						<Anchors>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ColorBrowserEditBox" x="0" y="10"/>
+						</Anchors>
+					</Button>
 					
 				</Frames>
 				<Layers>
