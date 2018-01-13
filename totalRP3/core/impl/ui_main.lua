@@ -18,6 +18,8 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local Ellyb = Ellyb:GetInstance(...);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Minimap button widget
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -80,12 +82,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end);
 
-	local minimapTooltip = strconcat(color("y"), loc("CM_L_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_MAIN"));
-	if TRP3_API.toolbar then
-		minimapTooltip = strconcat(minimapTooltip, "\n", color("y"), loc("CM_R_CLICK"), ": ", color("w"), loc("MM_SHOW_HIDE_SHORTCUT"));
-	end
-	minimapTooltip = strconcat(minimapTooltip, "\n", color("y"), loc("CM_DRAGDROP"), ": ", color("w"), loc("MM_SHOW_HIDE_MOVE"));
-
 	LDBObject = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Total RP 3", {
 		type = "launcher",
 		icon = "Interface\\AddOns\\totalRP3\\resources\\trp3minimap.tga",
@@ -99,7 +95,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end,
 		OnTooltipShow = function(tooltip)
 			tooltip:AddLine("Total RP 3");
-			tooltip:AddLine(minimapTooltip);
+			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_L_CLICK"), loc("MM_SHOW_HIDE_MAIN")));
+			if TRP3_API.toolbar then
+				tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_R_CLICK"), loc("MM_SHOW_HIDE_SHORTCUT")));
+			end
+			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_DRAGDROP"), loc("MM_SHOW_HIDE_MOVE")));
 		end,
 	})
 
