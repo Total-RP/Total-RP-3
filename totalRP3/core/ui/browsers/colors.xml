@@ -25,7 +25,7 @@
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
-		<Size x="420" y="275"/>
+		<Size x="440" y="285"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
 		</Anchors>
@@ -112,7 +112,7 @@
 					</ColorSelect>
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
-						<Size x="140" y="20"/>
+						<Size x="145" y="20"/>
 						<Anchors>	
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
@@ -121,7 +121,7 @@
 					<Button name="TRP3_ColorBrowserPresets" inherits="TRP3_CommonButton" text="[PRESETS]">
 						<Size x="100" y="20"/>
 						<Anchors>
-							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_ColorBrowserSelect" x="-10" y="0"/>
+							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_ColorBrowserSelect" x="-20" y="0"/>
 						</Anchors>
 					</Button>
 					
@@ -131,10 +131,24 @@
 						</Anchors>
 					</EditBox>
 
-					<Button name="TRP3_ColorBrowserSave" inherits="TRP3_CommonButton" text="[SAVE]" mode="save">
+					<EditBox name="TRP3_ColorBrowserNameEditBox" inherits="TRP3_TitledHelpEditBox">
 						<Size x="100" y="20"/>
 						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ColorBrowserEditBox" x="0" y="10"/>
+							<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_ColorBrowserPresets" x="0" y="5"/>
+						</Anchors>
+					</EditBox>
+
+					<Button name="TRP3_ColorBrowserSave" inherits="TRP3_CommonButton" text="[SAVE]">
+						<Size x="70" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserNameEditBox" x="20" y="0"/>
+						</Anchors>
+					</Button>
+
+					<Button name="TRP3_ColorBrowserDelete" inherits="TRP3_CommonButton" text="[DELETE]">
+						<Size x="70" y="20"/>
+						<Anchors>
+							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_ColorBrowserSave" x="5" y="0"/>
 						</Anchors>
 					</Button>
 					
