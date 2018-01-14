@@ -896,6 +896,7 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
 	BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
 	BW_CUSTOM_NAME = "Custom color name",
+	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

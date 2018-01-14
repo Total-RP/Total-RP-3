@@ -669,7 +669,7 @@ local function initColorBrowser()
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
 
-	TRP3_ColorBrowserNameEditBoxText:SetText(loc("CM_NAME"));
+	TRP3_ColorBrowserNameEditBoxText:SetText(loc("BW_CUSTOM_NAME_TITLE"));
 	setTooltipForSameFrame(TRP3_ColorBrowserNameEditBoxHelp, "RIGHT", 0, 5, loc("BW_CUSTOM_NAME"), loc("BW_CUSTOM_NAME_TT"));
 
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
