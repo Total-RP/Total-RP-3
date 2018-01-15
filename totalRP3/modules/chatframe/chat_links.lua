@@ -2,7 +2,7 @@
 --- Total RP 3
 --- Chat links
 ---	---------------------------------------------------------------------------
----	Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 ---	Licensed under the Apache License, Version 2.0 (the "License");
 ---	you may not use this file except in compliance with the License.
@@ -31,9 +31,8 @@ local _, TRP3_API = ...;
 local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
---- Total RP 3 imports
-local Debug = TRP3_API.Debug;
-local Colors = TRP3_API.Colors;
+--- Ellyb imports
+local ColorManager = TRP3_API.Ellyb.ColorManager;
 
 --- Wow Imports
 local assert = assert;
@@ -45,6 +44,7 @@ local format = string.format;
 local ChatFrame_AddMessageEventFilter = ChatFrame_AddMessageEventFilter;
 local UIParent = UIParent;
 local ShowUIPanel = ShowUIPanel;
+local after = C_Timer.After;
 
 local CONFIG_CHARACT_MAIN_SIZE = "tooltip_char_mainSize";
 local CONFIG_CHARACT_SUB_SIZE = "tooltip_char_subSize";
@@ -56,7 +56,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.ChatLinks = ChatLinks;
 	
 	local locf = TRP3_API.locale.getTextf;
-	local LINK_COLOR = Colors.COLORS.YELLOW;
+	local LINK_COLOR = ColorManager.YELLOW;
 	local sentLinks = {};
 	
 	local LINK_CODE = "totalrp3";
@@ -69,7 +69,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			SMALL = "SMALL",
 		},
 		COLORS = {
-			YELLOW = TRP3_API.Colors.COLORS.YELLOW,
+			YELLOW = ColorManager.YELLOW,
 			WHITE = CreateColor(1, 1, 1, 1),
 		}
 	}
@@ -223,7 +223,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			});
 			
 			-- We are emulating the asynchronousness here with a timer function while working on the feature
-			C_Timer.After(1, function()
+			after(1, function()
 				showTooltip(sentLinks[itemName])
 			end);
 		end
