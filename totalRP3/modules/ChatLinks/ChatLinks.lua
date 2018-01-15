@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
 --- Chat links
----	---------------------------------------------------------------------------
----	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---    ---------------------------------------------------------------------------
+---    Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+---    Licensed under the Apache License, Version 2.0 (the "License");
+---    you may not use this file except in compliance with the License.
+---    You may obtain a copy of the License at
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
+---        http://www.apache.org/licenses/LICENSE-2.0
 ---
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+---    Unless required by applicable law or agreed to in writing, software
+---    distributed under the License is distributed on an "AS IS" BASIS,
+---    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---    See the License for the specific language governing permissions and
+---    limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -33,6 +33,7 @@ TRP3_API.ChatLinks = ChatLinks;
 
 --- Ellyb imports
 local ColorManager = TRP3_API.Ellyb.ColorManager;
+local isType = TRP3_API.Ellyb.Assertions;
 
 --- Wow Imports
 local assert = assert;
@@ -44,65 +45,66 @@ local format = string.format;
 local ChatFrame_AddMessageEventFilter = ChatFrame_AddMessageEventFilter;
 local UIParent = UIParent;
 local ShowUIPanel = ShowUIPanel;
-local after = C_Timer.After;
 
-local CONFIG_CHARACT_MAIN_SIZE = "tooltip_char_mainSize";
-local CONFIG_CHARACT_SUB_SIZE = "tooltip_char_subSize";
-local CONFIG_CHARACT_TER_SIZE = "tooltip_char_terSize";
-local getConfigValue = TRP3_API.configuration.getValue;
+--- Total RP 3 imports
+local ChatLinkModule = TRP3_API.ChatLinkModule;
+
+local LINK_CODE = "totalrp3";
+local LINK_LENGTHS = LINK_CODE:len();
+
+local LINK_COLOR = ColorManager.YELLOW;
+local CHAT_LINKS_PROTOCOL_REQUEST_PREFIX = "CTLK_R"; -- Request data about a link clicked
+local CHAT_LINKS_PROTOCOL_DATA_PREFIX = "CTLK_D"; -- Send data bout a link sent
+local CHAT_LINKS_PROTOCOL_ACTION_PREFIX = "CTLK_A"; -- Send action on link
+
+-- The link pattern is [TRP3:ITEM_NAME], for example [TRP3:Epic sword] or [TRP3:My campaign]
+ChatLinks.LINK_PATTERN = "[TRP3:%s]";
+ChatLinks.FIND_LINK_PATTERN = "%[TRP3:([^%]]+)%]";
+
+ChatLinks.FORMAT = {
+	SIZES = {
+		TITLE = "TITLE",
+		NORMAL = "NORMAL",
+		SMALL = "SMALL",
+	},
+	COLORS = {
+		YELLOW = ColorManager.YELLOW,
+		WHITE = ColorManager.WHITE,
+	}
+}
+
+---@type ChatLink[]
+local sentLinks = {};
+
+---@type ChatLinkModule[]
+local chatLinksModules = {};
+
+--- Instantiate a new ChatLinkModule with the ChatLinks module
+---@param moduleName string @ The name of the module (
+---@param moduleID string @ A unique (but identifiable) ID for the new chat link module. Will be used to relate links back to the module
+function ChatLinks:InstantiateModule(moduleName, moduleID)
+	assert(not chatLinksModules[moduleID], "Trying to register a ChatLinkModule with an existing ID " .. moduleID);
+
+	local module = ChatLinkModule(moduleName, moduleID);
+	chatLinksModules[moduleID] = module;
+	return module;
+end
+
+---@return ChatLinkModule
+function ChatLinks:GetModuleByID(moduleID)
+	return chatLinksModules[moduleID];
+end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	
-	TRP3_API.ChatLinks = ChatLinks;
-	
-	local locf = TRP3_API.locale.getTextf;
-	local LINK_COLOR = ColorManager.YELLOW;
-	local sentLinks = {};
-	
-	local LINK_CODE = "totalrp3";
-	local LINK_LENGTHS = LINK_CODE:len();
 
-	ChatLinks.FORMAT = {
-		SIZES = {
-			TITLE = "TITLE",
-			NORMAL = "NORMAL",
-			SMALL = "SMALL",
-		},
-		COLORS = {
-			YELLOW = ColorManager.YELLOW,
-			WHITE = CreateColor(1, 1, 1, 1),
-		}
-	}
-
-	local function getUserDefinedTextSize(sizeCategory)
-		if sizeCategory == ChatLinks.FORMAT.SIZES.TITLE then
-			return getConfigValue(CONFIG_CHARACT_MAIN_SIZE);
-		elseif sizeCategory == ChatLinks.FORMAT.SIZES.NORMAL then
-			return getConfigValue(CONFIG_CHARACT_SUB_SIZE);
-		elseif sizeCategory == ChatLinks.FORMAT.SIZES.SMALL then
-			return getConfigValue(CONFIG_CHARACT_TER_SIZE);
-		else
-			return getConfigValue(CONFIG_CHARACT_SUB_SIZE);
+	---@param link ChatLink
+	function ChatLinks.storeLink(link)
+		local tries = 1;
+		while sentLinks[link:GetIdentifier()] do
+			link:SetIdentifier(link:GetIdentifier() .. tries);
+			tries = tries + 1;
 		end
-	end
-
-	-- The link pattern is [TRP3:ITEM_NAME], for example [TRP3:Epic sword] or [TRP3:My campaign]
-	ChatLinks.LINK_PATTERN = "[TRP3:%s]";
-	ChatLinks.FIND_LINK_PATTERN = "%[TRP3:([^%]]+)%]";
-
-	---Generate the correct text link format to send to other players
-	---@param name string @ The name of the thing to send, will be visible by other people
-	---@param linkData table @ The data that will be displayed in the tooltip for this link
-	---@return string
-	function ChatLinks.generateLink(name, linkData)
-		assert(name, locf("DEBUG_NIL_PARAMETER", "name", "ChatLinks.generateLink(name, linkData)"));
-		assert(linkData, locf("DEBUG_NIL_PARAMETER", "linkData", "ChatLinks.generateLink(name, linkData)"));
-		if not sentLinks[name] then
-			sentLinks[name] = linkData;
-		elseif sentLinks[name] ~= linkData then
-			-- TODO handle duplicate names
-		end
-		return format(ChatLinks.LINK_PATTERN, name);
+		sentLinks[link:GetIdentifier()] = link;
 	end
 
 	-- List of channels we will support for our links
@@ -114,11 +116,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	};
 
 	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h|r";
-	local function generateFormattedLink(name, playerName)
-		assert(name, locf("DEBUG_NIL_PARAMETER", "name", "generateFormattedLink(name, playerName)"));
-		assert(playerName, locf("DEBUG_NIL_PARAMETER", "playerName", "generateFormattedLink(name, playerName)"));
-		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", name, "]"));
-		return format(FORMATTED_LINK_FORMAT, playerName, name, formattedName);
+	local function generateFormattedLink(text, playerName)
+		assert(isType(text, "string", "text"));
+		assert(isType(playerName, "string", "playerName"));
+
+		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", text, "]"));
+		return format(FORMATTED_LINK_FORMAT, playerName, text, formattedName);
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
@@ -138,7 +141,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param optional color ColorMixin @ Color for the text (default white)
 	---@param optional size number @ Size of the text (default 12)
 	function ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)
-		assert(text, locf("DEBUG_NIL_PARAMETER", "text", "ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)"));
+		assert(isType(text, "string", "text"));
 		if not color then
 			color = ChatLinks.FORMAT.COLORS.WHITE;
 		end
@@ -163,8 +166,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	---@param optional colorRight ColorMixin @ Color for the right text (default white)
 	---@param optional size number @ Size of the text (default 12)
 	function ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)
-		assert(textLeft, locf("DEBUG_NIL_PARAMETER", "textLeft", "ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)"));
-		assert(textRight, locf("DEBUG_NIL_PARAMETER", "textRight", "ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)"));
+		assert(isType(textLeft, "string", "textLeft"));
+		assert(isType(textRight, "string", "textRight"));
+
 		if not colorLeft then
 			colorLeft = ChatLinks.FORMAT.COLORS.WHITE;
 		end
@@ -195,7 +199,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		ItemRefTooltip:ClearLines();
 
 		for _, line in pairs(tooltipContent) do
-			local size = getUserDefinedTextSize(line.size);
 			if line.double then
 				local colorLeft = line.colorLeft or {};
 				local colorRight = line.colorRight or {};
@@ -216,24 +219,47 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			local separatorIndex = linkContent:find(":");
 			local playerName = linkContent:sub(1, separatorIndex - 1);
 			local itemName = linkContent:sub(separatorIndex + 1);
-			
-			-- TODO We would show that we are requesting the data and then replace the text asynchronously
+
+			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+
+			ItemRefTooltip.itemName = itemName;
+			-- TODO Localization and better UI feedback
 			showTooltip({
 				ChatLinks.generateSingleLineTooltipData("Requesting data from " .. playerName, ChatLinks.FORMAT.COLORS.YELLOW),
 			});
-			
-			-- We are emulating the asynchronousness here with a timer function while working on the feature
-			after(1, function()
-				showTooltip(sentLinks[itemName])
-			end);
 		end
 	end)
-	
+
 	local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
 	function ItemRefTooltip:SetHyperlink(link, ...)
-		if(link and link:sub(0, 8) == "totalrp3") then
+		if (link and link:sub(0, 8) == "totalrp3") then
 			return;
 		end
 		return OriginalSetHyperlink(self, link, ...);
 	end
+
+	-- Register command prefix when requested for tooltip data for an item
+	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
+		if not link then
+			-- TODO Send error that we no longer have the data
+			return
+		end
+
+		TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
+			itemName = link:GetIdentifier(), -- Item name is sent back so the recipient knows what we are answering to
+			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
+			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
+			moduleID = link:GetModuleID(), -- Module ID is sent so recipient know what it is and use the right functions if they have the module
+			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
+		}, sender);
+	end);
+
+	-- Register command prefix when received tooltip data
+	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+		local itemName, tooltipLines = itemData.itemName, itemData.tooltipLines;
+		if ItemRefTooltip.itemName == itemName then
+			showTooltip(tooltipLines);
+		end
+	end);
 end)

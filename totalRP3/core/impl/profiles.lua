@@ -420,6 +420,65 @@ function TRP3_API.profile.init()
 		selectProfile(character.profileID);
 	end
 
+	local ProfilesChatLinkModule = TRP3_API.ChatLinks.InstantiateModule("Player profile");
+	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
+
+	local ImportProfileButton = TRP3_API.ChatLinkActionButton("IMPORT__PLAYER_PROFILE", "Import profile");
+
+	function ImportProfileButton:OnClick(linkData, sender)
+		-- TODO Send import request
+	end
+
+	local OpenProfileButton = TRP3_API.ChatLinkActionButton("OPEN_PLAYER_PROFILE", "Open profile");
+
+	function OpenProfileButton:OnClick(linkData, sender)
+		-- TODO Send specific profile request
+	end
+
+	function ProfilesChatLinkModule:GetLinkData(profileID)
+		local profile = profiles[profileID];
+		local tooltipData = tcopy(profile);
+
+		return profile.profileName, tooltipData;
+	end
+
+	function ProfilesChatLinkModule:GetTooltipLines(tooltipData)
+
+		local profile = tooltipData;
+		local info = getData("player", profile);
+
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+
+		local customColor = YELLOW;
+		if info.CH then
+			customColor = TRP3_API.Ellyb.Color(info.characteristics.CH);
+		end
+
+		tooltipLines:SetTitle("Profile: " .. profile.profileName);
+
+		tooltipLines:AddLine(" ");
+		tooltipLines:AddLine(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor);
+
+		if info.characteristics.FT then
+			tooltipLines:AddLine(info.characteristics.FT);
+		end
+		tooltipLines:AddLine(" ");
+		tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
+		tooltipLines:AddLine(info.character.CU, YELLOW);
+		tooltipLines:AddLine(" ");
+		tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
+		tooltipLines:AddLine(info.character.CO, YELLOW);
+
+		return tooltipLines;
+	end
+
+	function ProfilesChatLinkModule:GetActionButtons(linkData)
+		return {
+			"Open profile",
+			"Import profile",
+		}
+	end
+
 	-- UI
 	local tabGroup; -- Reference to the tab panel tabs group
 	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerListSlider);

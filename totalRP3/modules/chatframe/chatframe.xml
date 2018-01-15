@@ -22,6 +22,5 @@
 	<Script file="WIM.lua" />
 	<Script file="prat.lua" />
 	<Script file="languages.lua" />
-	<Script file="chat_links.lua" />
 
 </Ui>
