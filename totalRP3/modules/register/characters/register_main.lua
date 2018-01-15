@@ -164,6 +164,11 @@ end
 
 TRP3_API.register.getUnitIDProfile = getUnitIDProfile;
 
+local function getUnitIDProfileID(unitID)
+	return characters[unitID] and characters[unitID].profileID;
+end
+TRP3_API.register.getUnitIDProfileID = getUnitIDProfileID;
+
 local function getUnitIDCharacter(unitID)
 	assert(isUnitIDKnown(unitID), "Unknown character: " .. tostring(unitID));
 	return characters[unitID];
@@ -181,7 +186,8 @@ end
 --
 local function unitIDIsFilteredForMatureContent(unitID)
 	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
-	local profile, profileID = getUnitIDProfile(unitID);
+	local profile = getUnitIDProfile(unitID);
+	local profileID = getUnitIDProfileID(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
 	return profile.hasMatureContent and getConfigValue("register_mature_filter") and not (TRP3_API.register.mature_filter.isProfileWhitelisted(profileID))
@@ -205,7 +211,7 @@ TRP3_API.register.profileIDISFilteredForMatureContent = profileIDISFilteredForMa
 --
 local function unitIDIsFlaggedForMatureContent(unitID)
 	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
-	local profile, profileID = getUnitIDProfile(unitID);
+	local profile = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
 	return profile.hasMatureContent
@@ -657,7 +663,6 @@ function TRP3_API.register.init()
 	});
 
 	registerConfigKey("register_about_use_vote", true);
-	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
 	registerConfigKey("register_sanitization", true);
 
@@ -691,12 +696,6 @@ function TRP3_API.register.init()
 				help = loc("CO_REGISTER_ABOUT_VOTE_TT")
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_REGISTER_AUTO_ADD"),
-				configKey = "register_auto_add",
-				help = loc("CO_REGISTER_AUTO_ADD_TT")
-			},
-			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
 				title = loc("CO_REGISTER_AUTO_PURGE"),
@@ -719,21 +718,20 @@ function TRP3_API.register.init()
 				title = loc("CO_LOCATION_ACTIVATE"),
 				help = loc("CO_LOCATION_ACTIVATE_TT"),
 				configKey = CONFIG_ENABLE_MAP_LOCATION,
-				dependentOnOptions = {"comm_broad_use"}
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_OOC"),
 				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
-				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
+				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_PVP"),
 				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
-				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
+				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
 		}
 	};

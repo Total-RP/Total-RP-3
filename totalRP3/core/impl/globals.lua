@@ -18,22 +18,19 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
--- Retrieve the add-on private table
-local _, AddOn = ...;
-
--- We export the add-on table as a public API
-TRP3_API = AddOn;
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
 
 -- Public accessor
-AddOn.r = {};
-AddOn.formats = {
+TRP3_API.r = {};
+TRP3_API.formats = {
 	dropDownElements = "%s: |cff00ff00%s"
 };
-AddOn.globals = {
+TRP3_API.globals = {
 	--@debug@
 	DEBUG_MODE = true,
 	--@end-debug@
@@ -50,7 +47,7 @@ AddOn.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 34,
+	version = 38,
 
 	--@debug@
 	version_display = "-dev",
@@ -84,8 +81,6 @@ AddOn.globals = {
 		profile_default = "INV_Misc_GroupLooking",
 	},
 }
-
-local TRP3_API = AddOn;
 
 local emptyMeta = {
 	__newindex = function(_, _, _) end

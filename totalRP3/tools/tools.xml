@@ -21,6 +21,7 @@
         limitations under the License.
     -->
 
+	<Script file="localization.lua"/>
 	<Script file="workarounds.lua"/>
 	<Script file="debug.lua"/>
 	<Script file="colors.lua"/>

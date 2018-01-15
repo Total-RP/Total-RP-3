@@ -1119,27 +1119,3 @@ function TRP3_API.ui.frame.setupMove(frame)
 		self:StopMovingOrSizing();
 	end)
 end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Workarounds
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(frame)
-	local parentFrame = frame:GetParent():GetParent();
-	return parentFrame and parentFrame:GetEffectiveScale() or 1;
-end
-
-function TRP3_API.ui.frame.workaround7_SetFontScale(editboxFrame)
-	local effectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local fontPath, fontSize, fontFlag = editboxFrame:GetFont();
-	editboxFrame:SetFont(fontPath, 11 * effectiveScale, fontFlag);
-end
-
-function TRP3_API.ui.frame.workaround7_3SetWidth(editboxFrame)
-	local parentFrame = editboxFrame:GetParent():GetParent();
-	local parentFrameEffectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local parentEffectiveWidth = parentFrame:GetWidth() * parentFrameEffectiveScale;
-	local effectiveMargin = 40 * parentFrameEffectiveScale;
-	editboxFrame:SetWidth(parentEffectiveWidth - effectiveMargin);
-	editboxFrame:SetHeight(editboxFrame:GetHeight() * parentFrameEffectiveScale);
-end

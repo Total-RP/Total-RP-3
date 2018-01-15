@@ -1969,11 +1969,6 @@ local IMAGES = {
 		height = 64
 	},
 	{
-		url = "Interface\\PVPFrame\\Icons\\PVP-Banner-Emblem-103",
-		width = 64,
-		height = 64
-	},
-	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
 		height = 256

@@ -52,6 +52,7 @@ local lightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
+local IsAltKeyDown = IsAltKeyDown;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -135,6 +136,10 @@ local function getSmallLineFontSize()
 	return getConfigValue(CONFIG_CHARACT_TER_SIZE);
 end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
+
+function TRP3_API.ui.tooltip.shouldCropTexts()
+	return getConfigValue(CONFIG_CROP_TEXT);
+end
 
 local function showIcons()
 	return getConfigValue(CONFIG_CHARACT_ICONS);
