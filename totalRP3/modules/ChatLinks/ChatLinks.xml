@@ -18,9 +18,96 @@
         limitations under the License.
     -->
 
+	<GameTooltip name="TRP3_RefTooltip" inherits="GameTooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true">
+		<Size>
+			<AbsDimension x="128" y="64"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM">
+				<Offset>
+					<AbsDimension x="0" y="80"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<Button>
+				<Size>
+					<AbsDimension x="32" y="32"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="1" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						HideUIPanel(TRP3_RefTooltip);
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+
+			<Button parentKey="Button1" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" y="5"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Button2" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.Button1" point="BOTTOM" y="20"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Button3" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.Button2" relativePoint="TOP" point="BOTTOM" y="8"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Button4" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.Button3" relativePoint="TOP" point="BOTTOM" y="8"/>
+				</Anchors>
+			</Button>
+			<Button parentKey="Button5" inherits="UIPanelButtonTemplate" hidden="true">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor relativeKey="$parent.Button4" relativePoint="TOP" point="BOTTOM" y="8"/>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad>
+				GameTooltip_OnLoad(self);
+				self:SetPadding(16, 0);
+				self:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnDragStart>
+				self:StartMoving();
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+				ValidateFramePosition(self);
+			</OnDragStop>
+			<OnHide>
+				GameTooltip_OnHide(self);
+				--While it is true that OnUpdate won't fire while the frame is hidden, we don't want to have to check-and-unregister when we show it
+				self:SetScript("OnUpdate", nil);
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+
 	<Script file="ChatLink.lua"/>
 	<Script file="ChatLinkActionButton.lua"/>
 	<Script file="ChatLinkModule.lua"/>
 	<Script file="ChatLinks.lua"/>
+	<Script file="ChatLinkTooltipLines.lua"/>
+	<Script file="ChatLinksManager.lua"/>
 
 </Ui>

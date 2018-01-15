@@ -38,6 +38,8 @@ function ChatLinkModule:initialize(moduleName, moduleID)
 	_private[self] = {}
 	_private[self].moduleName = moduleName;
 	_private[self].moduleID = moduleID;
+
+	_private[self].actionButtons = {};
 end
 
 ---@return string moduleName
@@ -71,12 +73,25 @@ function ChatLinkModule:GetActionButtons(linkData)
 	return {};
 end
 
+function ChatLinkModule:GetCustomData(linkData)
+
+end
+
 --- [RECIPIENT SIDE] Function called when one of the action button displayed in the tooltip is clicked.
 ---@param actionID number @ The ID of the action that was clicked
----@param itemName string @ The item name as shown in the chat link
----@param tooltipData table @ The tooltip data as sent by the sender
-function ChatLinkModule:OnActionButtonClicked(actionID, itemName, tooltipData)
+---@param customData table @ Custom data as sent by the sender, they will use it to understand the command
+function ChatLinkModule:OnActionButtonClicked(actionID, customData)
+	---@type ChatLinkActionButton
+	local actionButton = _private[self].actionButtons[actionID];
+	if actionButton then
+		actionButton:OnClick(customData)
+	end
+end
 
+function ChatLinkModule:NewActionButton(actionID, buttonText)
+	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText);
+	_private[self].actionButtons[actionID] = actionButton;
+	return actionButton;
 end
 
 --- Insert a link inside the currently focused editbox.
@@ -85,7 +100,8 @@ end
 function ChatLinkModule:InsertLink(...)
 	local editbox = GetCurrentKeyBoardFocus();
 	if editbox then
-		local link = ChatLink(self:GetLinkData(...), self);
+		local name, data = self:GetLinkData(...);
+		local link = ChatLink(name, data, self:GetID());
 		editbox:Insert(link:GetText());
 	end
 end

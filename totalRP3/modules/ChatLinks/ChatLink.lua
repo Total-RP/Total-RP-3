@@ -70,8 +70,13 @@ end
 ---@return ChatLinkTooltipLines
 function ChatLink:GetTooltipLines()
 	local tooltipLines =  self:GetModule():GetTooltipLines(self:GetData());
-	tooltipLines:AddLine("");
-	tooltipLines:AddLine(self:GetModuleName(), TRP3_API.Ellyb.ColorManager.ORANGE, TRP3_API.ChatLinks.FORMAT.SIZES.SMALL);
+	tooltipLines:AddLine(" ");
+	tooltipLines:AddDoubleLine(
+		"Total RP 3 " .. self:GetModuleName(),
+		TRP3_API.globals.player_id,
+		TRP3_API.Ellyb.ColorManager.ORANGE,
+		TRP3_API.Ellyb.ColorManager.ORANGE
+	);
 	return tooltipLines;
 end
 
@@ -80,4 +85,7 @@ function ChatLink:GetActionButtons()
 	return self:GetModule():GetActionButtons(self:GetData());
 end
 
+function ChatLink:GetCustomData()
+	return self:GetModule():GetCustomData(self:GetData());
+end
 TRP3_API.ChatLink = ChatLink;

@@ -420,26 +420,54 @@ function TRP3_API.profile.init()
 		selectProfile(character.profileID);
 	end
 
-	local ProfilesChatLinkModule = TRP3_API.ChatLinks.InstantiateModule("Player profile");
+	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Player profile", "PLAYER_PROFILE");
 	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
-	local ImportProfileButton = TRP3_API.ChatLinkActionButton("IMPORT__PLAYER_PROFILE", "Import profile");
+	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", "Import profile");
+	local REGISTER_SPECIFIC_PROFILE_COMMAND_Q = "PROF_O_Q";
+	local REGISTER_SPECIFIC_PROFILE_COMMAND_A = "PROF_O_A";
 
-	function ImportProfileButton:OnClick(linkData, sender)
-		-- TODO Send import request
+	function ImportProfileButton:OnClick(profileData)
+		local profileID, sender = profileData.profileID, profileData.sender;
+		TRP3_API.communication.sendObject(REGISTER_SPECIFIC_PROFILE_COMMAND_Q, profileID, sender);
 	end
 
-	local OpenProfileButton = TRP3_API.ChatLinkActionButton("OPEN_PLAYER_PROFILE", "Open profile");
+	-- Register command prefix when requested for tooltip data for an item
+	TRP3_API.communication.registerProtocolPrefix(REGISTER_SPECIFIC_PROFILE_COMMAND_Q, function(profileID, sender)
+		local profile = profiles[profileID];
+		TRP3_API.communication.sendObject(REGISTER_SPECIFIC_PROFILE_COMMAND_A, {
+			profileData = profile,
+			profileID = profileID,
+		}, sender);
+	end);
 
-	function OpenProfileButton:OnClick(linkData, sender)
-		-- TODO Send specific profile request
+	TRP3_API.communication.registerProtocolPrefix(REGISTER_SPECIFIC_PROFILE_COMMAND_A, function(profileData, sender)
+		profiles[profileData.profileID] = profileData.profileData;
+		if TRP3_ProfileManagerList:IsVisible() then
+			uiInitProfileList();
+		end
+	end);
+
+	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", "Open profile");
+
+	function OpenProfileButton:OnClick(profileData)
+
 	end
 
 	function ProfilesChatLinkModule:GetLinkData(profileID)
 		local profile = profiles[profileID];
-		local tooltipData = tcopy(profile);
+		local tooltipData = {};
+		tcopy(tooltipData, profile);
+		tooltipData.profileID = profileID;
 
 		return profile.profileName, tooltipData;
+	end
+
+	function ProfilesChatLinkModule:GetCustomData(profile)
+		return {
+			profileID = profile.profileID,
+			sender = TRP3_API.globals.player_id;
+		};
 	end
 
 	function ProfilesChatLinkModule:GetTooltipLines(tooltipData)
@@ -450,7 +478,7 @@ function TRP3_API.profile.init()
 		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
 
 		local customColor = YELLOW;
-		if info.CH then
+		if info.characteristics.CH then
 			customColor = TRP3_API.Ellyb.Color(info.characteristics.CH);
 		end
 
@@ -460,22 +488,32 @@ function TRP3_API.profile.init()
 		tooltipLines:AddLine(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor);
 
 		if info.characteristics.FT then
-			tooltipLines:AddLine(info.characteristics.FT);
+			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
 		end
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
-		tooltipLines:AddLine(info.character.CU, YELLOW);
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
-		tooltipLines:AddLine(info.character.CO, YELLOW);
+		if info.character.CU then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
+			tooltipLines:AddLine(info.character.CU, YELLOW);
+		end
+		if info.character.CO then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
+			tooltipLines:AddLine(info.character.CO, YELLOW);
+		end
 
 		return tooltipLines;
 	end
 
 	function ProfilesChatLinkModule:GetActionButtons(linkData)
 		return {
-			"Open profile",
-			"Import profile",
+			{
+				command = OpenProfileButton:GetID(),
+				text = "Open profile"
+			},
+			{
+				command = ImportProfileButton:GetID(),
+				text = "Import profile"
+			}
 		}
 	end
 
@@ -488,36 +526,7 @@ function TRP3_API.profile.init()
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
 			if IsShiftKeyDown() then
-				local profile = profiles[self.profileID];
-				local info = getData("player", profile);
-				local editbox = GetCurrentKeyBoardFocus();
-				if editbox then
-					local customColor;
-					if info.CH then
-						customColor = TRP3_API.Colors.CreateColorFromHexadecimalCode(info.characteristics.CH);
-					end
-					local yellow = {r=1, g=0.75, b=0};
-					
-					local linkData = {};
-					
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData("Profile: " .. profile.profileName, yellow, TRP3_API.ChatLinks.FORMAT.SIZES.TITLE));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(" "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor));
-					if info.characteristics.FT then
-						tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(info.characteristics.FT))
-					end
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(" "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(loc("REG_PLAYER_CURRENT") .. ": "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(info.character.CU, yellow));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(" "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(loc("DB_STATUS_CURRENTLY_OOC") .. ": "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(info.character.CO, yellow));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(" "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData("Total RP 3 Profile", nil, TRP3_API.ChatLinks.FORMAT.SIZES.SMALL));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData(" "));
-					tinsert(linkData, TRP3_API.ChatLinks.generateSingleLineTooltipData("[IMPORT BUTTON GOES HERE]", nil));
-					editbox:Insert(TRP3_API.ChatLinks.generateLink(profile.profileName, linkData));
-				end
+				ProfilesChatLinkModule:InsertLink(self.profileID);
 			else
 				if currentProfileId ~= self.profileID then
 					onProfileSelected(widget);

@@ -33,7 +33,7 @@ TRP3_API.ChatLinks = ChatLinks;
 
 --- Ellyb imports
 local ColorManager = TRP3_API.Ellyb.ColorManager;
-local isType = TRP3_API.Ellyb.Assertions;
+local isType = TRP3_API.Ellyb.Assertions.isType;
 
 --- Wow Imports
 local assert = assert;
@@ -190,25 +190,50 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		}
 	end
 
-	local ItemRefTooltip = ItemRefTooltip;
-	local function showTooltip(tooltipContent)
-		ShowUIPanel(ItemRefTooltip);
-		if not ItemRefTooltip:IsVisible() then
-			ItemRefTooltip:SetOwner(UIParent, "ANCHOR_PRESERVE");
-		end
-		ItemRefTooltip:ClearLines();
+	local TRP3_RefTooltip = TRP3_RefTooltip;
 
-		for _, line in pairs(tooltipContent) do
-			if line.double then
-				local colorLeft = line.colorLeft or {};
-				local colorRight = line.colorRight or {};
-				ItemRefTooltip:AddDoubleLine(line.textLeft, line.textRight, colorLeft.r, colorLeft.g, colorLeft.b, colorRight.r, colorRight.g, colorRight.b, line.wrap);
-			else
-				ItemRefTooltip:AddLine(line.text, line.r, line.g, line.b, line.wrap);
+	local function onActionButtonClicked(button)
+		local module = ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
+		module:OnActionButtonClicked(button.command, TRP3_RefTooltip.itemData.customData);
+	end
+	for i = 1, 5 do
+		TRP3_RefTooltip["Button" .. i]:SetScript("OnClick", onActionButtonClicked);
+	end
+
+
+	local function showTooltip(itemData)
+		local tooltipContent, actionButtons = itemData.tooltipLines, itemData.actionButtons;
+		ShowUIPanel(TRP3_RefTooltip);
+		if not TRP3_RefTooltip:IsVisible() then
+			TRP3_RefTooltip:SetOwner(UIParent, "ANCHOR_PRESERVE");
+		end
+		TRP3_RefTooltip:ClearLines();
+
+		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB());
+
+		if tooltipContent.lines then
+			for _, line in pairs(tooltipContent.lines) do
+				if line.double then
+					TRP3_RefTooltip:AddDoubleLine(line.textLeft, line.textRight, line.rLeft, line.gLeft, line.bLeft,
+						line.rRight, line.gRight, line.bRight, line.wrap);
+				else
+					TRP3_RefTooltip:AddLine(line.text, line.r, line.g, line.b, line.wrap);
+				end
 			end
 		end
 
-		ItemRefTooltip:Show();
+		if actionButtons then
+			for i, button in pairs(actionButtons) do
+				TRP3_RefTooltip:AddLine(" ");
+				TRP3_RefTooltip:AddLine(" ");
+				TRP3_RefTooltip["Button" .. i]:SetText(button.text);
+				TRP3_RefTooltip["Button" .. i]:Show();
+				TRP3_RefTooltip["Button" .. i].command = button.command;
+			end
+		end
+
+		TRP3_RefTooltip.itemData = itemData;
+		TRP3_RefTooltip:Show();
 	end
 
 	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
@@ -222,10 +247,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
-			ItemRefTooltip.itemName = itemName;
+			TRP3_RefTooltip.itemName = itemName;
 			-- TODO Localization and better UI feedback
 			showTooltip({
-				ChatLinks.generateSingleLineTooltipData("Requesting data from " .. playerName, ChatLinks.FORMAT.COLORS.YELLOW),
+				tooltipLines = {
+					title = "Requesting data from " .. playerName,
+				},
 			});
 		end
 	end)
@@ -251,15 +278,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
 			moduleID = link:GetModuleID(), -- Module ID is sent so recipient know what it is and use the right functions if they have the module
+			customData = link:GetCustomData(),
 			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
 		}, sender);
 	end);
 
 	-- Register command prefix when received tooltip data
 	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
-		local itemName, tooltipLines = itemData.itemName, itemData.tooltipLines;
-		if ItemRefTooltip.itemName == itemName then
-			showTooltip(tooltipLines);
+		local itemName = itemData.itemName;
+		if TRP3_RefTooltip.itemName == itemName then
+			showTooltip(itemData);
 		end
 	end);
 end)

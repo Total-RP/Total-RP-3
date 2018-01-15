@@ -60,7 +60,7 @@ end
 ---@param text string
 ---@param color Color
 ---@param size number
-function ChatLinkTooltipLines:AddDoubleLine(textRight, textLeft, colorRight, colorLeft, size)
+function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorRight, colorLeft, size)
 
 	if not colorLeft then
 		colorLeft = TRP3_API.Ellyb.ColorManager.WHITE;
