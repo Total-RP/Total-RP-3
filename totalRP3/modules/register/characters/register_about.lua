@@ -130,7 +130,7 @@ local function showTemplate1(dataTab)
 end
 
 local function onLinkClicked(self, url)
-	TRP3_API.Ellyb.Popups.OpenURL(url, loc.UI_LINK_WARNING);
+	TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_WARNING);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

@@ -293,7 +293,7 @@ TRP3_API.dashboard.init = function()
 	 	-- Fallback, open URL in a popup
 		 ]]
 		else
-			TRP3_API.Ellyb.Popups.OpenURL(url, loc.UI_LINK_SAFE);
+			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_SAFE);
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)
