@@ -134,66 +134,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		ChatFrame_AddMessageEventFilter(channel, lookForChatLinks);
 	end
 
-	---Generate the table of data to display a single line in the tooltip
-	---@param text string @ Text for the line
-	---@param optional color ColorMixin @ Color for the text (default white)
-	---@param optional size number @ Size of the text (default 12)
-	function ChatLinks.generateSingleLineTooltipData(text, color, size, wrap)
-		assert(isType(text, "string", "text"));
-		if not color then
-			color = ChatLinks.FORMAT.COLORS.WHITE;
-		end
-		if not size then
-			size = ChatLinks.FORMAT.SIZES.NORMAL;
-		end
-
-		return {
-			text = text,
-			r = color.r,
-			g = color.g,
-			b = color.b,
-			size = size,
-			wrap = wrap,
-		}
-	end
-
-	---Generate the table of data to display a double line in the tooltip (one text on the left and one text on the right
-	---@param textLeft string @ Text to be shown on the left of the line
-	---@param textRight string @ Text to be shown on the right of the line
-	---@param optional colorLeft ColorMixin @ Color for the left text (default white)
-	---@param optional colorRight ColorMixin @ Color for the right text (default white)
-	---@param optional size number @ Size of the text (default 12)
-	function ChatLinks.generateDoubleLineTooltipData(textLeft, textRight, colorLeft, colorRight, size, wrap)
-		assert(isType(textLeft, "string", "textLeft"));
-		assert(isType(textRight, "string", "textRight"));
-
-		if not colorLeft then
-			colorLeft = ChatLinks.FORMAT.COLORS.WHITE;
-		end
-		if not colorRight then
-			colorRight = ChatLinks.FORMAT.COLORS.WHITE;
-		end
-		if not size then
-			size = ChatLinks.FORMAT.SIZES.NORMAL;
-		end
-
-		return {
-			double = true,
-			textLeft = textLeft,
-			textRight = textRight,
-			colorLeft = colorLeft,
-			colorRight = colorRight,
-			size = size,
-			wrap = wrap,
-		}
-	end
-
 	local TRP3_RefTooltip = TRP3_RefTooltip;
 
 	local function onActionButtonClicked(button)
 		local module = ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
 		module:OnActionButtonClicked(button.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
 	end
+
+	-- TODO Create a mixin with all the behavior we needs
 	for i = 1, 5 do
 		TRP3_RefTooltip["Button" .. i]:SetScript("OnClick", onActionButtonClicked);
 	end
@@ -256,6 +204,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end)
 
+	-- Sadly we need this so that Blizzard's code doesn't raise an error because we clicked on a link it doesn't understand
 	local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
 	function ItemRefTooltip:SetHyperlink(link, ...)
 		if (link and link:sub(0, 8) == "totalrp3") then

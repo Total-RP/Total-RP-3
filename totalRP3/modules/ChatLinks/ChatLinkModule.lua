@@ -86,8 +86,10 @@ function ChatLinkModule:GetActionButtons(linkData)
 	return actionButtons;
 end
 
+--- [SENDER SIDE] Get whatever custom data that will be used to execute actions upon the link (like an ID)
+--- MODULES SHOULD OVERRIDE THIS FUNCTION
 function ChatLinkModule:GetCustomData(linkData)
-
+	return {};
 end
 
 --- [RECIPIENT SIDE] Function called when one of the action button displayed in the tooltip is clicked.
@@ -101,6 +103,10 @@ function ChatLinkModule:OnActionButtonClicked(actionID, customData, sender)
 	end
 end
 
+--- Instantiate a new action button for this module
+---@param actionID string @ Unique ID for this action
+---@param buttonText string @ The text that will be shown on the button
+---@return ChatLinkActionButton actionButton @ A new ChatLinkActionButton
 function ChatLinkModule:NewActionButton(actionID, buttonText)
 	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText);
 	_private[self].actionButtons[actionID] = actionButton;
