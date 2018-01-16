@@ -25,6 +25,10 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
+-- Lua imports
+local insert = table.insert;
+local pairs = pairs;
+
 -- WoW imports
 local GetCurrentKeyBoardFocus = GetCurrentKeyBoardFocus;
 
@@ -70,7 +74,14 @@ end
 --- Action buttons are only visible if the module that generated the link is available on the recipient's end
 ---@param linkData table @ A table of action buttons that should be shown inside the tooltip for this link data (can be empty)
 function ChatLinkModule:GetActionButtons(linkData)
-	return {};
+	local actionButtons = {};
+	for _, actionButton in pairs(_private[self].actionButtons) do
+		insert(actionButtons, {
+			command = actionButton:GetID(),
+			text = actionButton:GetText(),
+		})
+	end
+	return actionButtons;
 end
 
 function ChatLinkModule:GetCustomData(linkData)

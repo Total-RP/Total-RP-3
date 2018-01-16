@@ -423,7 +423,7 @@ function TRP3_API.profile.init()
 	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Player profile", "PLAYER_PROFILE");
 	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
-	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", "Import profile");
+	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", loc.CL_IMPORT_PROFILE);
 	local LINK_COMMAND_IMPORT_PROFILE_Q = "PROF_I_Q";
 	local LINK_COMMAND_IMPORT_PROFILE_A = "PROF_I_A";
 
@@ -450,7 +450,7 @@ function TRP3_API.profile.init()
 		TRP3_API.navigation.menu.selectMenu("player_profiles");
 	end);
 
-	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", "Open profile");
+	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE);
 	local LINK_COMMAND_OPEN_PROFILE_Q = "PROF_O_Q";
 	local LINK_COMMAND_OPEN_PROFILE_A = "PROF_O_A";
 
@@ -543,19 +543,6 @@ function TRP3_API.profile.init()
 		end
 
 		return tooltipLines;
-	end
-
-	function ProfilesChatLinkModule:GetActionButtons(linkData)
-		return {
-			{
-				command = OpenProfileButton:GetID(),
-				text = loc.CL_OPEN_PROFILE,
-			},
-			{
-				command = ImportProfileButton:GetID(),
-				text = loc.CL_IMPORT_PROFILE,
-			}
-		}
 	end
 
 	-- UI
