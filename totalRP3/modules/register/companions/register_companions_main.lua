@@ -379,6 +379,12 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 	
 end
 
+function TRP3_API.companions.register.setProfileData(profileID, profile)
+	registerCompanions[profileID] = profile;
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
+end
+
 function TRP3_API.companions.register.getCompanionProfile(companionFullID)
 	if registerProfileAssociation[companionFullID] and registerCompanions[registerProfileAssociation[companionFullID]] then
 		return registerCompanions[registerProfileAssociation[companionFullID]];

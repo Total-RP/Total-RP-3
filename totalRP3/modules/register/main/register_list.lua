@@ -97,6 +97,7 @@ local function openPage(profileID, unitID)
 		end
 	end
 end
+TRP3_API.register.openPageByProfileID = openPage;
 
 local function openCompanionPage(profileID)
 	local profile = getCompanionProfiles()[profileID];

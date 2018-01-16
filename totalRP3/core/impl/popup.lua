@@ -67,13 +67,13 @@ StaticPopupDialogs["TRP3_YES_NO"] = {
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function(self)
-		if SStaticPopupDialogs["TRP3_YES_NO"].trp3onAccept then
-			SStaticPopupDialogs["TRP3_YES_NO"].trp3onAccept();
+		if StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept then
+			StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept();
 		end
 	end,
 	OnCancel = function(self)
-		if SStaticPopupDialogs["TRP3_YES_NO"].trp3onCancel then
-			SStaticPopupDialogs["TRP3_YES_NO"].trp3onCancel();
+		if StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel then
+			StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel();
 		end
 	end,
 	timeout = false,

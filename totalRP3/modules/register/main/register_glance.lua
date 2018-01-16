@@ -32,6 +32,7 @@ local unitIDIsFilteredForMatureContent;
 local crop = TRP3_API.Ellyb.Strings.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
+local AtFirstGlanceChatLinkModule;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -317,67 +318,17 @@ local function onGlanceSelection(presetAction, button)
 	end
 end
 
-local AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
-
-function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex, canBeImported)
-	local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
-	local tooltipData = {};
-	TRP3_API.Ellyb.Tables.copy(glanceTab[glanceIndex]);
-	tooltipData.index = glanceIndex;
-	tooltipData.canBeImported = canBeImported;
-	return tooltipData.TI or "...", tooltipData;
-end
-
-function AtFirstGlanceChatLinkModule:GetCustomData(tooltipData)
-	return tooltipData.glanceIndex;
-end
-
-function AtFirstGlanceChatLinkModule:GetTooltipLines(glance)
-	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
-	local icon = Globals.icons.default;
-	if glance.IC and glance.IC:len() > 0 then
-		icon = glance.IC;
-	end
-	local TTText = glance.TX or "...";
-	local glanceTitle = glance.TI or "...";
-	if shouldCropTexts() then
-		TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
-		glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
-	end
-
-	tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Ellyb.ColorManager.WHITE);
-	tooltipLines:AddLine(TTText, TRP3_API.Ellyb.ColorManager.ORANGE);
-	return tooltipLines;
-end
-
-local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", loc.CL_IMPORT_GLANCE);
-local LINK_COMMAND_IMPORT_GLANCE_Q = "GLNC_I_Q";
-local LINK_COMMAND_IMPORT_GLANCE_A = "GLNC_I_A";
-
-function ImportGlanceButton:IsVisible(tooltipData)
-	return tooltipData.canBeImported;
-end
-
-function ImportGlanceButton:OnClick(glanceIndex, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_Q, function(glanceIndex, sender)
-	local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_A, glanceTab[glanceIndex], sender);
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_A, function(glance, senderID)
-	saveSlotPreset(glance);
-end);
-
 local function onGlanceSlotClick(button, clickType)
 	if button.isCurrentMine then
 		if clickType == "LeftButton" then
 			if IsShiftKeyDown() then
-				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
-					AtFirstGlanceChatLinkModule:InsertLink(button.slot, canBeImported);
-				end);
+				local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+				local glance = glanceTab[button.slot];
+				if glance and glance.AC then
+					TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
+						AtFirstGlanceChatLinkModule:InsertLink(button.slot, canBeImported);
+					end);
+				end
 			else
 
 				if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
@@ -654,6 +605,60 @@ local function onStart()
 		slot:SetScript("OnClick", onGlanceSlotClick);
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
 	end
+
+	AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
+
+	function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex, canBeImported)
+		local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+		local tooltipData = {};
+		TRP3_API.Ellyb.Tables.copy(tooltipData, glanceTab[glanceIndex]);
+		tooltipData.index = glanceIndex;
+		tooltipData.canBeImported = canBeImported;
+		return tooltipData.TI or "...", tooltipData;
+	end
+
+	function AtFirstGlanceChatLinkModule:GetCustomData(tooltipData)
+		return tooltipData.index;
+	end
+
+	function AtFirstGlanceChatLinkModule:GetTooltipLines(glance)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local icon = Globals.icons.default;
+		if glance.IC and glance.IC:len() > 0 then
+			icon = glance.IC;
+		end
+		local TTText = glance.TX or "...";
+		local glanceTitle = glance.TI or "...";
+		if shouldCropTexts() then
+			TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
+			glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
+		end
+
+		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Ellyb.ColorManager.WHITE);
+		tooltipLines:AddLine(TTText, TRP3_API.Ellyb.ColorManager.ORANGE);
+		return tooltipLines;
+	end
+
+	local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", loc.CL_IMPORT_GLANCE);
+	local LINK_COMMAND_IMPORT_GLANCE_Q = "GLNC_I_Q";
+	local LINK_COMMAND_IMPORT_GLANCE_A = "GLNC_I_A";
+
+	function ImportGlanceButton:IsVisible(tooltipData)
+		return tooltipData.canBeImported;
+	end
+
+	function ImportGlanceButton:OnClick(glanceIndex, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_Q, function(glanceIndex, sender)
+		local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_A, glanceTab[glanceIndex], sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_A, function(glance, senderID)
+		saveSlotPreset(glance);
+	end);
 end
 
 local MODULE_STRUCTURE = {

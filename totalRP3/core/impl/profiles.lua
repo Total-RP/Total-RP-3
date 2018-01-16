@@ -450,7 +450,8 @@ function TRP3_API.profile.init()
 		end
 		duplicateProfile(profile, profileName);
 		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.menu.selectMenu("player_profiles");
+		TRP3_API.navigation.page.setPage("player_profiles", {});
+		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
 	end);
 
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE);
@@ -464,37 +465,20 @@ function TRP3_API.profile.init()
 	-- Register command prefix when requested for tooltip data for an item
 	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_Q, function(profileID, sender)
 		local profile = profiles[profileID];
-		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_A, profile, sender);
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_A, {
+			profile = profile.player,
+			profileID = profileID,
+		}, sender);
 	end);
 
-	local infoTypeTab = {
-		TRP3_API.register.registerInfoTypes.CHARACTERISTICS,
-		TRP3_API.register.registerInfoTypes.ABOUT,
-		TRP3_API.register.registerInfoTypes.MISC,
-		TRP3_API.register.registerInfoTypes.CHARACTER
-	};
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_A, function(profileData, senderID)
+		local profile, profileID = profileData.profile, profileData.profileID;
+		profile.link = {};
+		TRP3_API.register.insertProfile(profileID, profile)
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_A, function(profile, senderID)
-		-- If senderID is not known
-		if not TRP3_API.register.isUnitIDKnown(senderID) then
-			-- We add him
-			TRP3_API.register.addCharacter(senderID);
-		end
-
-		-- Check that the character has a profileID.
-		local senderCharacter = TRP3_API.register.getUnitIDCharacter(senderID);
-
-		if not TRP3_API.register.profileExists(senderID) then
-			-- Generate profile
-			TRP3_API.register.saveCurrentProfileID(senderID, senderCharacter.profileID, true);
-		end
-
-		for _, infoType in pairs(infoTypeTab) do
-			TRP3_API.register.saveInformation(senderID, infoType, profile[infoType]);
-		end
-
+		TRP3_API.register.openPageByProfileID(profileID);
 		TRP3_API.navigation.openMainFrame();
-		TRP3_API.register.openPageByUnitID(senderID);
 	end);
 
 	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
