@@ -25,7 +25,7 @@ TRP3_API.profile = {};
 
 -- imports
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayMessage = Utils.message.displayMessage;
@@ -549,11 +549,11 @@ function TRP3_API.profile.init()
 		return {
 			{
 				command = OpenProfileButton:GetID(),
-				text = "Open profile"
+				text = loc.CL_OPEN_PROFILE,
 			},
 			{
 				command = ImportProfileButton:GetID(),
-				text = "Import profile"
+				text = loc.CL_IMPORT_PROFILE,
 			}
 		}
 	end

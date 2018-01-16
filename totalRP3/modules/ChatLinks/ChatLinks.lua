@@ -40,7 +40,6 @@ local assert = assert;
 local pairs = pairs;
 local gsub = string.gsub;
 local strconcat = strconcat;
-local CreateColor = CreateColor;
 local format = string.format;
 local ChatFrame_AddMessageEventFilter = ChatFrame_AddMessageEventFilter;
 local UIParent = UIParent;
@@ -55,7 +54,6 @@ local LINK_LENGTHS = LINK_CODE:len();
 local LINK_COLOR = ColorManager.YELLOW;
 local CHAT_LINKS_PROTOCOL_REQUEST_PREFIX = "CTLK_R"; -- Request data about a link clicked
 local CHAT_LINKS_PROTOCOL_DATA_PREFIX = "CTLK_D"; -- Send data bout a link sent
-local CHAT_LINKS_PROTOCOL_ACTION_PREFIX = "CTLK_A"; -- Send action on link
 
 -- The link pattern is [TRP3:ITEM_NAME], for example [TRP3:Epic sword] or [TRP3:My campaign]
 ChatLinks.LINK_PATTERN = "[TRP3:%s]";
