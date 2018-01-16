@@ -1001,8 +1001,14 @@ You can also leave this field empty to create emotes without an NPC name at the 
 	-- CHAT LINKS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	CL_PLAYER_PROFILE = "Player profile",
 	CL_OPEN_PROFILE = "Open profile",
 	CL_IMPORT_PROFILE = "Import profile",
+	CL_GLANCE = "At-first-glance",
+	CL_IMPORT_GLANCE = "Import at-first-glance",
+	CL_COMPANION_PROFILE = "Companion profile",
+	CL_IMPORT_COMPANION = "Import companion profile",
+	CL_OPEN_COMPANION = "Open companion profile",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- COMMANDS

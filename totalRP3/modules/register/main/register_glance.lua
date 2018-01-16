@@ -25,7 +25,7 @@ local _, TRP3_API = ...;
 TRP3_API.register.glance = {};
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local tostring, _G, pairs, type, tinsert, assert, wipe = tostring, _G, pairs, type, tinsert, assert, wipe;
-local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
+local tsize, loc = Utils.table.size, TRP3_API.loc;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
@@ -317,7 +317,7 @@ local function onGlanceSelection(presetAction, button)
 	end
 end
 
-local AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks.InstantiateModule("At-first-glance", "AT_FIRST_GLANCE");
+local AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
 
 function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex)
 	local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
@@ -349,7 +349,7 @@ function AtFirstGlanceChatLinkModule:GetTooltipLines(glance)
 	return tooltipLines;
 end
 
-local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", "Import glance");
+local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", loc.CL_IMPORT_GLANCE);
 local LINK_COMMAND_IMPORT_GLANCE_Q = "GLNC_I_Q";
 local LINK_COMMAND_IMPORT_GLANCE_A = "GLNC_I_A";
 

@@ -21,7 +21,7 @@
 local _, TRP3_API = ...;
 
 -- imports
-local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
+local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;
 local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
 local tsize = Utils.table.size;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
@@ -462,7 +462,7 @@ local function constructTutorialStructure()
 	};
 end
 
-local CompanionProfileChatLinksModule = TRP3_API.ChatLinks:InstantiateModule("Companion profile", "COMPANION_PROFILE");
+local CompanionProfileChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_COMPANION_PROFILE, "COMPANION_PROFILE");
 
 function CompanionProfileChatLinksModule:GetLinkData(profileID)
 	local profile = getProfiles()[profileID];
@@ -490,7 +490,7 @@ function CompanionProfileChatLinksModule:GetTooltipLines(profileData)
 	return tooltipLines;
 end
 
-local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", "Import companion");
+local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", loc.CL_IMPORT_COMPANION);
 local LINK_COMMAND_IMPORT_COMPANION_Q = "CMPN_I_Q";
 local LINK_COMMAND_IMPORT_COMPANION_A = "CMPN_I_A";
 
@@ -514,7 +514,7 @@ TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_A, f
 	openProfile(profileID);
 end);
 
-local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", "Open companion profile");
+local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", loc.CL_OPEN_COMPANION);
 local LINK_COMMAND_OPEN_COMPANION_Q = "CMPN_O_Q";
 local LINK_COMMAND_OPEN_COMPANION_A = "CMPN_O_A";
 

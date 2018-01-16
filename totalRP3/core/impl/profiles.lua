@@ -420,7 +420,7 @@ function TRP3_API.profile.init()
 		selectProfile(character.profileID);
 	end
 
-	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Player profile", "PLAYER_PROFILE");
+	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
 	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
 	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", loc.CL_IMPORT_PROFILE);
