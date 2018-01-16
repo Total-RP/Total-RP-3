@@ -451,10 +451,49 @@ function TRP3_API.profile.init()
 	end);
 
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", "Open profile");
+	local LINK_COMMAND_OPEN_PROFILE_Q = "PROF_O_Q";
+	local LINK_COMMAND_OPEN_PROFILE_A = "PROF_O_A";
 
 	function OpenProfileButton:OnClick(profileData)
-
+		local profileID, sender = profileData.profileID, profileData.sender;
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_Q, profileID, sender);
 	end
+
+	-- Register command prefix when requested for tooltip data for an item
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_Q, function(profileID, sender)
+		local profile = profiles[profileID];
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_A, profile, sender);
+	end);
+
+	local infoTypeTab = {
+		TRP3_API.register.registerInfoTypes.CHARACTERISTICS,
+		TRP3_API.register.registerInfoTypes.ABOUT,
+		TRP3_API.register.registerInfoTypes.MISC,
+		TRP3_API.register.registerInfoTypes.CHARACTER
+	};
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_A, function(profile, senderID)
+		-- If senderID is not known
+		if not TRP3_API.register.isUnitIDKnown(senderID) then
+			-- We add him
+			TRP3_API.register.addCharacter(senderID);
+		end
+
+		-- Check that the character has a profileID.
+		local senderCharacter = TRP3_API.register.getUnitIDCharacter(senderID);
+
+		if not TRP3_API.register.profileExists(senderID) then
+			-- Generate profile
+			TRP3_API.register.saveCurrentProfileID(senderID, senderCharacter.profileID, true);
+		end
+
+		for _, infoType in pairs(infoTypeTab) do
+			TRP3_API.register.saveInformation(senderID, infoType, profile[infoType]);
+		end
+
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.register.openPageByUnitID(senderID);
+	end);
 
 	function ProfilesChatLinkModule:GetLinkData(profileID)
 		local profile = profiles[profileID];
