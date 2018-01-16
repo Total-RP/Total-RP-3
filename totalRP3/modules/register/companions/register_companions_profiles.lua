@@ -17,6 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
 local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
@@ -459,6 +462,88 @@ local function constructTutorialStructure()
 	};
 end
 
+local CompanionProfileChatLinksModule = TRP3_API.ChatLinks:InstantiateModule("Companion profile", "COMPANION_PROFILE");
+
+function CompanionProfileChatLinksModule:GetLinkData(profileID)
+	local profile = getProfiles()[profileID];
+	local profileData = {};
+	TRP3_API.Ellyb.Tables.copy(profileData, profile);
+	profileData.profileID = profileID;
+	return profile.profileName, profileData;
+end
+
+function CompanionProfileChatLinksModule:GetCustomData(profileData)
+	return profileData.profileID;
+end
+
+function CompanionProfileChatLinksModule:GetTooltipLines(profileData)
+	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+	local dataTab = profileData.data;
+	local name = dataTab.NA;
+	if dataTab.IC then
+		name = Utils.str.icon(dataTab.IC, 30) .. name;
+	end
+	tooltipLines:SetTitle(name, TRP3_API.Ellyb.ColorManager.WHITE);
+	if dataTab.TI then
+		tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+	end
+	return tooltipLines;
+end
+
+local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", "Import companion");
+local LINK_COMMAND_IMPORT_COMPANION_Q = "CMPN_I_Q";
+local LINK_COMMAND_IMPORT_COMPANION_A = "CMPN_I_A";
+
+function ImportCompanionProfileButton:OnClick(companionProfileID, sender)
+	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_Q, companionProfileID, sender);
+end
+
+TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_Q, function(companionProfileID, sender)
+	local profile = getProfiles()[companionProfileID];
+	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_A, profile, sender);
+end);
+
+TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_A, function(profile, senderID)
+	local newName = profile.profileName;
+	local i = 1;
+	while not isProfileNameAvailable(newName) and i < 500 do
+		i = i + 1;
+		newName = newName .. " " .. i;
+	end
+	local profileID = duplicateProfile(profile, newName);
+	openProfile(profileID);
+end);
+
+local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", "Open companion profile");
+local LINK_COMMAND_OPEN_COMPANION_Q = "CMPN_O_Q";
+local LINK_COMMAND_OPEN_COMPANION_A = "CMPN_O_A";
+
+function OpenCompanionProfileButton:OnClick(profileID, sender)
+	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_Q, profileID, sender);
+end
+
+-- Register command prefix when requested for tooltip data for an item
+TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_Q, function(profileID, sender)
+	local profile = getProfiles()[profileID];
+	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_A, {
+		profile = profile,
+		profileID = profileID,
+	}, sender);
+end);
+
+TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_A, function(profileData, senderID)
+	local profileID, profile = profileData.profileID, profileData.profile;
+	-- Check profile exists
+	if not TRP3_API.companions.register.getProfiles()[profileData.profileID] then
+		TRP3_API.companions.register.registerCreateProfile(profileData.profileID);
+	end
+	TRP3_API.companions.register.saveInformation(profileID, 1, profile.data);
+	TRP3_API.companions.register.saveInformation(profileID, 2, profile.PE);
+
+	TRP3_API.companions.register.openPage(profileID);
+	openMainFrame();
+end);
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	constructTutorialStructure();
 
@@ -486,8 +571,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	for i=1,5 do
 		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
-			onOpenProfile(widget);
-			playUISound("gsCharacterSelection");
+			if IsShiftKeyDown() then
+				CompanionProfileChatLinksModule:InsertLink(widget.profileID)
+			else
+				onOpenProfile(widget);
+				playUISound("gsCharacterSelection");
+			end
 		end);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Bound"]:SetText(loc("REG_COMPANION_BOUNDS"));

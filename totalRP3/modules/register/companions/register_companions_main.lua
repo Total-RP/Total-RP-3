@@ -309,6 +309,7 @@ local function registerCreateProfile(profileID)
 	};
 	log(("Create companion register profile %s"):format(profileID));
 end
+TRP3_API.companions.register.registerCreateProfile = registerCreateProfile;
 
 function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, masterProfileID, v1, v2)
 	local companionID, profileID, companionFullID;
