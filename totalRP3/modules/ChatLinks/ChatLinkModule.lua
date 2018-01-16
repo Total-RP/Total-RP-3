@@ -91,11 +91,11 @@ end
 --- [RECIPIENT SIDE] Function called when one of the action button displayed in the tooltip is clicked.
 ---@param actionID number @ The ID of the action that was clicked
 ---@param customData table @ Custom data as sent by the sender, they will use it to understand the command
-function ChatLinkModule:OnActionButtonClicked(actionID, customData)
+function ChatLinkModule:OnActionButtonClicked(actionID, customData, sender)
 	---@type ChatLinkActionButton
 	local actionButton = _private[self].actionButtons[actionID];
 	if actionButton then
-		actionButton:OnClick(customData)
+		actionButton:OnClick(customData, sender)
 	end
 end
 

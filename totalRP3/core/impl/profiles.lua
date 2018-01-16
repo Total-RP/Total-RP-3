@@ -427,8 +427,7 @@ function TRP3_API.profile.init()
 	local LINK_COMMAND_IMPORT_PROFILE_Q = "PROF_I_Q";
 	local LINK_COMMAND_IMPORT_PROFILE_A = "PROF_I_A";
 
-	function ImportProfileButton:OnClick(profileData)
-		local profileID, sender = profileData.profileID, profileData.sender;
+	function ImportProfileButton:OnClick(profileID, sender)
 		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
 	end
 
@@ -454,8 +453,7 @@ function TRP3_API.profile.init()
 	local LINK_COMMAND_OPEN_PROFILE_Q = "PROF_O_Q";
 	local LINK_COMMAND_OPEN_PROFILE_A = "PROF_O_A";
 
-	function OpenProfileButton:OnClick(profileData)
-		local profileID, sender = profileData.profileID, profileData.sender;
+	function OpenProfileButton:OnClick(profileID, sender)
 		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_Q, profileID, sender);
 	end
 
@@ -505,10 +503,7 @@ function TRP3_API.profile.init()
 	end
 
 	function ProfilesChatLinkModule:GetCustomData(profile)
-		return {
-			profileID = profile.profileID,
-			sender = TRP3_API.globals.player_id;
-		};
+		return profile.profileID;
 	end
 
 	function ProfilesChatLinkModule:GetTooltipLines(tooltipData)

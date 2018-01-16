@@ -192,14 +192,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local function onActionButtonClicked(button)
 		local module = ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
-		module:OnActionButtonClicked(button.command, TRP3_RefTooltip.itemData.customData);
+		module:OnActionButtonClicked(button.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
 	end
 	for i = 1, 5 do
 		TRP3_RefTooltip["Button" .. i]:SetScript("OnClick", onActionButtonClicked);
 	end
 
 
-	local function showTooltip(itemData)
+	local function showTooltip(itemData, sender)
 		local tooltipContent, actionButtons = itemData.tooltipLines, itemData.actionButtons;
 		ShowUIPanel(TRP3_RefTooltip);
 		if not TRP3_RefTooltip:IsVisible() then
@@ -207,6 +207,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 		TRP3_RefTooltip:ClearLines();
 
+		TRP3_RefTooltip.sender = sender;
 		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB());
 
 		if tooltipContent.lines then
@@ -285,7 +286,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
 		local itemName = itemData.itemName;
 		if TRP3_RefTooltip.itemName == itemName then
-			showTooltip(itemData);
+			showTooltip(itemData, sender);
 		end
 	end);
 end)
