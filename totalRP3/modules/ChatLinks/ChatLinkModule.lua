@@ -78,10 +78,12 @@ end
 function ChatLinkModule:GetActionButtons(linkData)
 	local actionButtons = {};
 	for _, actionButton in pairs(_private[self].actionButtons) do
-		insert(actionButtons, {
-			command = actionButton:GetID(),
-			text = actionButton:GetText(),
-		})
+		if actionButton:IsVisible(linkData) then
+			insert(actionButtons, {
+				command = actionButton:GetID(),
+				text = actionButton:GetText(),
+			})
+		end
 	end
 	return actionButtons;
 end

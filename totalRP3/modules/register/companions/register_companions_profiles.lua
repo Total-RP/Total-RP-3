@@ -464,11 +464,12 @@ end
 
 local CompanionProfileChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_COMPANION_PROFILE, "COMPANION_PROFILE");
 
-function CompanionProfileChatLinksModule:GetLinkData(profileID)
+function CompanionProfileChatLinksModule:GetLinkData(profileID, canBeImported)
 	local profile = getProfiles()[profileID];
 	local profileData = {};
 	TRP3_API.Ellyb.Tables.copy(profileData, profile);
 	profileData.profileID = profileID;
+	profileData.canBeImported = canBeImported;
 	return profile.profileName, profileData;
 end
 
@@ -493,6 +494,10 @@ end
 local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", loc.CL_IMPORT_COMPANION);
 local LINK_COMMAND_IMPORT_COMPANION_Q = "CMPN_I_Q";
 local LINK_COMMAND_IMPORT_COMPANION_A = "CMPN_I_A";
+
+function ImportCompanionProfileButton:IsVisible(profileData)
+	return profileData.canBeImported;
+end
 
 function ImportCompanionProfileButton:OnClick(companionProfileID, sender)
 	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_Q, companionProfileID, sender);
@@ -572,7 +577,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
 			if IsShiftKeyDown() then
-				CompanionProfileChatLinksModule:InsertLink(widget.profileID)
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+					CompanionProfileChatLinksModule:InsertLink(widget.profileID, canBeImported)
+				end);
 			else
 				onOpenProfile(widget);
 				playUISound("gsCharacterSelection");

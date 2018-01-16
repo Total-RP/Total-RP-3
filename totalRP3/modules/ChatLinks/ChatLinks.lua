@@ -47,6 +47,7 @@ local ShowUIPanel = ShowUIPanel;
 
 --- Total RP 3 imports
 local ChatLinkModule = TRP3_API.ChatLinkModule;
+local loc = TRP3_API.loc;
 
 local LINK_CODE = "totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
@@ -146,6 +147,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_RefTooltip["Button" .. i]:SetScript("OnClick", onActionButtonClicked);
 	end
 
+	local function hideActionButtons()
+		for i = 1, 5 do
+			TRP3_RefTooltip["Button" .. i]:Hide();
+			TRP3_RefTooltip["Button" .. i].command = nil;
+		end
+	end
 
 	local function showTooltip(itemData, sender)
 		local tooltipContent, actionButtons = itemData.tooltipLines, itemData.actionButtons;
@@ -154,6 +161,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			TRP3_RefTooltip:SetOwner(UIParent, "ANCHOR_PRESERVE");
 		end
 		TRP3_RefTooltip:ClearLines();
+		hideActionButtons();
 
 		TRP3_RefTooltip.sender = sender;
 		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB());
@@ -238,4 +246,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			showTooltip(itemData, sender);
 		end
 	end);
+
+	function ChatLinks:OpenMakeImportablePrompt(linkType, callback)
+		TRP3_API.popup.showYesNoPopup(loc(loc.CL_MAKE_IMPORTABLE, TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
+			function()
+				callback(true);
+			end,
+			function()
+				callback(false);
+			end)
+	end
 end)

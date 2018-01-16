@@ -431,6 +431,10 @@ function TRP3_API.profile.init()
 		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
 	end
 
+	function ImportProfileButton:IsVisible(tooltipData)
+		return tooltipData.canBeImported;
+	end
+
 	-- Register command prefix when requested for tooltip data for an item
 	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PROFILE_Q, function(profileID, sender)
 		local profile = profiles[profileID];
@@ -493,11 +497,12 @@ function TRP3_API.profile.init()
 		TRP3_API.register.openPageByUnitID(senderID);
 	end);
 
-	function ProfilesChatLinkModule:GetLinkData(profileID)
+	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
 		local profile = profiles[profileID];
 		local tooltipData = {};
 		tcopy(tooltipData, profile);
 		tooltipData.profileID = profileID;
+		tooltipData.canBeImported = canBeImported;
 
 		return profile.profileName, tooltipData;
 	end
@@ -549,7 +554,9 @@ function TRP3_API.profile.init()
 		local widget = _G["TRP3_ProfileManagerListLine"..i];
 		widget:SetScript("OnMouseUp",function (self)
 			if IsShiftKeyDown() then
-				ProfilesChatLinkModule:InsertLink(self.profileID);
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
+					ProfilesChatLinkModule:InsertLink(self.profileID, canBeImported);
+				end);
 			else
 				if currentProfileId ~= self.profileID then
 					onProfileSelected(widget);

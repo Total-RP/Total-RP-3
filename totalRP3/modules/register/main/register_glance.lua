@@ -319,11 +319,12 @@ end
 
 local AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
 
-function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex)
+function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex, canBeImported)
 	local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
 	local tooltipData = {};
 	TRP3_API.Ellyb.Tables.copy(glanceTab[glanceIndex]);
 	tooltipData.index = glanceIndex;
+	tooltipData.canBeImported = canBeImported;
 	return tooltipData.TI or "...", tooltipData;
 end
 
@@ -353,6 +354,10 @@ local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_G
 local LINK_COMMAND_IMPORT_GLANCE_Q = "GLNC_I_Q";
 local LINK_COMMAND_IMPORT_GLANCE_A = "GLNC_I_A";
 
+function ImportGlanceButton:IsVisible(tooltipData)
+	return tooltipData.canBeImported;
+end
+
 function ImportGlanceButton:OnClick(glanceIndex, sender)
 	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
 end
@@ -370,7 +375,9 @@ local function onGlanceSlotClick(button, clickType)
 	if button.isCurrentMine then
 		if clickType == "LeftButton" then
 			if IsShiftKeyDown() then
-				AtFirstGlanceChatLinkModule:InsertLink(button.slot);
+				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
+					AtFirstGlanceChatLinkModule:InsertLink(button.slot, canBeImported);
+				end);
 			else
 
 				if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
