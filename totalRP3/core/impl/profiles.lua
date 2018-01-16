@@ -424,28 +424,30 @@ function TRP3_API.profile.init()
 	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
 	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", "Import profile");
-	local REGISTER_SPECIFIC_PROFILE_COMMAND_Q = "PROF_O_Q";
-	local REGISTER_SPECIFIC_PROFILE_COMMAND_A = "PROF_O_A";
+	local LINK_COMMAND_IMPORT_PROFILE_Q = "PROF_I_Q";
+	local LINK_COMMAND_IMPORT_PROFILE_A = "PROF_I_A";
 
 	function ImportProfileButton:OnClick(profileData)
 		local profileID, sender = profileData.profileID, profileData.sender;
-		TRP3_API.communication.sendObject(REGISTER_SPECIFIC_PROFILE_COMMAND_Q, profileID, sender);
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
 	end
 
 	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.communication.registerProtocolPrefix(REGISTER_SPECIFIC_PROFILE_COMMAND_Q, function(profileID, sender)
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PROFILE_Q, function(profileID, sender)
 		local profile = profiles[profileID];
-		TRP3_API.communication.sendObject(REGISTER_SPECIFIC_PROFILE_COMMAND_A, {
-			profileData = profile,
-			profileID = profileID,
-		}, sender);
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_A, profile, sender);
 	end);
 
-	TRP3_API.communication.registerProtocolPrefix(REGISTER_SPECIFIC_PROFILE_COMMAND_A, function(profileData, sender)
-		profiles[profileData.profileID] = profileData.profileData;
-		if TRP3_ProfileManagerList:IsVisible() then
-			uiInitProfileList();
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PROFILE_A, function(profile, sender)
+		local profileName = profile.profileName;
+		local i = 1;
+		while not isProfileNameAvailable(profileName) and i < 500 do
+			i = i + 1;
+			profileName = profileName .. " " .. i;
 		end
+		duplicateProfile(profile, profileName);
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.menu.selectMenu("player_profiles");
 	end);
 
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", "Open profile");
