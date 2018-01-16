@@ -346,6 +346,7 @@ function AtFirstGlanceChatLinkModule:GetTooltipLines(glance)
 
 	tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Ellyb.ColorManager.WHITE);
 	tooltipLines:AddLine(TTText, TRP3_API.Ellyb.ColorManager.ORANGE);
+	return tooltipLines;
 end
 
 local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", "Import glance");
