@@ -31,6 +31,8 @@ local pairs = pairs;
 
 -- WoW imports
 local GetCurrentKeyBoardFocus = GetCurrentKeyBoardFocus;
+local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow;
+local ChatEdit_GetActiveWindow = ChatEdit_GetActiveWindow;
 
 -- Total RP 3 imports
 local ChatLink = TRP3_API.ChatLink;
@@ -109,8 +111,9 @@ end
 --- The arguments passed to this function will be passed to
 ---@param ... any @ You can pass any arguments that ChatLinkModule:GetLinkData(...) needs
 function ChatLinkModule:InsertLink(...)
-	local editbox = GetCurrentKeyBoardFocus();
+	local editbox = ChatEdit_GetActiveWindow();
 	if editbox then
+		ChatEdit_FocusActiveWindow();
 		local name, data = self:GetLinkData(...);
 		local link = ChatLink(name, data, self:GetID());
 		editbox:Insert(link:GetText());
