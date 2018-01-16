@@ -18,6 +18,16 @@
         limitations under the License.
     -->
 
+	<Script file="ChatLinkActionButton.lua"/>
+
+	<Button name="TRP3_ChatLinkActionButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="true" mixin="TRP3_ChatLinkActionButtonMixin">
+		<Size x="100" y="20"/>
+		<Scripts>
+			<OnLoad method="OnLoad" />
+			<OnClick method="OnClick" />
+		</Scripts>
+	</Button>
+
 	<GameTooltip name="TRP3_RefTooltip" inherits="GameTooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true">
 		<Size>
 			<AbsDimension x="128" y="64"/>
@@ -51,32 +61,27 @@
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
-			<Button parentKey="Button1" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="100" y="20"/>
+			<Button parentKey="Button1" inherits="TRP3_ChatLinkActionButton">
 				<Anchors>
 					<Anchor point="BOTTOM" y="5"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Button2" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="100" y="20"/>
+			<Button parentKey="Button2" inherits="TRP3_ChatLinkActionButton">
 				<Anchors>
 					<Anchor relativeKey="$parent.Button1" point="BOTTOM" y="20"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Button3" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="100" y="20"/>
+			<Button parentKey="Button3" inherits="TRP3_ChatLinkActionButton">
 				<Anchors>
 					<Anchor relativeKey="$parent.Button2" relativePoint="TOP" point="BOTTOM" y="8"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Button4" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="100" y="20"/>
+			<Button parentKey="Button4" inherits="TRP3_ChatLinkActionButton">
 				<Anchors>
 					<Anchor relativeKey="$parent.Button3" relativePoint="TOP" point="BOTTOM" y="8"/>
 				</Anchors>
 			</Button>
-			<Button parentKey="Button5" inherits="UIPanelButtonTemplate" hidden="true">
-				<Size x="100" y="20"/>
+			<Button parentKey="Button5" inherits="TRP3_ChatLinkActionButton">
 				<Anchors>
 					<Anchor relativeKey="$parent.Button4" relativePoint="TOP" point="BOTTOM" y="8"/>
 				</Anchors>
@@ -104,7 +109,6 @@
 	</GameTooltip>
 
 	<Script file="ChatLink.lua"/>
-	<Script file="ChatLinkActionButton.lua"/>
 	<Script file="ChatLinkModule.lua"/>
 	<Script file="ChatLinks.lua"/>
 	<Script file="ChatLinkTooltipLines.lua"/>

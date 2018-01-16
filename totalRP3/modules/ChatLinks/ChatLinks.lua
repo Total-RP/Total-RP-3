@@ -135,22 +135,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		ChatFrame_AddMessageEventFilter(channel, lookForChatLinks);
 	end
 
+	---@type GameTooltip
 	local TRP3_RefTooltip = TRP3_RefTooltip;
-
-	local function onActionButtonClicked(button)
-		local module = ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
-		module:OnActionButtonClicked(button.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
-	end
-
-	-- TODO Create a mixin with all the behavior we needs
-	for i = 1, 5 do
-		TRP3_RefTooltip["Button" .. i]:SetScript("OnClick", onActionButtonClicked);
-	end
+	---@type TRP3_ChatLinkActionButtonMixin[]
+	local ActionButtons = {
+		TRP3_RefTooltip.Button1,
+		TRP3_RefTooltip.Button2,
+		TRP3_RefTooltip.Button3,
+		TRP3_RefTooltip.Button4,
+		TRP3_RefTooltip.Button5,
+	}
 
 	local function hideActionButtons()
-		for i = 1, 5 do
-			TRP3_RefTooltip["Button" .. i]:Hide();
-			TRP3_RefTooltip["Button" .. i].command = nil;
+		for _, button in pairs(ActionButtons) do
+			button:Reset();
 		end
 	end
 
@@ -164,7 +162,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		hideActionButtons();
 
 		TRP3_RefTooltip.sender = sender;
-		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.YELLOW:GetRGB());
+		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.WHITE:GetRGB());
 
 		if tooltipContent.lines then
 			for _, line in pairs(tooltipContent.lines) do
@@ -179,11 +177,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		if actionButtons then
 			for i, button in pairs(actionButtons) do
-				TRP3_RefTooltip:AddLine(" ");
-				TRP3_RefTooltip:AddLine(" ");
-				TRP3_RefTooltip["Button" .. i]:SetText(button.text);
-				TRP3_RefTooltip["Button" .. i]:Show();
-				TRP3_RefTooltip["Button" .. i].command = button.command;
+				ActionButtons[i]:Set(button);
 			end
 		end
 

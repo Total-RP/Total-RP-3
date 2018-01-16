@@ -539,8 +539,8 @@ end);
 TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_A, function(profileData, senderID)
 	local profileID, profile = profileData.profileID, profileData.profile;
 	-- Check profile exists
-	if not TRP3_API.companions.register.getProfiles()[profileData.profileID] then
-		TRP3_API.companions.register.registerCreateProfile(profileData.profileID);
+	if not TRP3_API.companions.register.getProfiles()[profileID] then
+		TRP3_API.companions.register.registerCreateProfile(profileID);
 	end
 	TRP3_API.companions.register.saveInformation(profileID, 1, profile.data);
 	TRP3_API.companions.register.saveInformation(profileID, 2, profile.PE);

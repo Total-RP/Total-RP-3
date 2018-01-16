@@ -57,4 +57,36 @@ end
 ---@param sender string @ The name of the sender of the link
 function ChatLinkActionButton:OnClick(linkData, sender) end
 
+---@class TRP3_ChatLinkActionButtonMixin : Button
+TRP3_ChatLinkActionButtonMixin = {};
+
+function TRP3_ChatLinkActionButtonMixin:OnLoad()
+	hooksecurefunc(self, "SetText", self.OnSetText);
+end
+
+function TRP3_ChatLinkActionButtonMixin:OnSetText()
+	self:SetWidth(self:GetTextWidth() + 40)
+end
+
+function TRP3_ChatLinkActionButtonMixin:OnClick()
+	local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
+	module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
+end
+
+function TRP3_ChatLinkActionButtonMixin:Set(button)
+	-- TODO find a more elegant solution than adding blank lines to make room for the button
+	TRP3_RefTooltip:AddLine(" ");
+	TRP3_RefTooltip:AddLine(" ");
+
+	self:SetText(button.text);
+	self.command = button.command;
+	self:Show();
+end
+
+function TRP3_ChatLinkActionButtonMixin:Reset()
+	self:SetText("");
+	self.command = nil;
+	self:Hide();
+end
+
 TRP3_API.ChatLinkActionButton = ChatLinkActionButton;
