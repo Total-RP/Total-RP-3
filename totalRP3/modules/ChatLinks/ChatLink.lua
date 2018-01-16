@@ -35,6 +35,16 @@ function ChatLink:initialize(identifier, data, moduleID)
 	_private[self].moduleID = moduleID;
 
 	TRP3_API.ChatLinksManager:StoreSentLink(self);
+
+	local tooltipLines = self:GetModule():GetTooltipLines(self:GetData());
+	tooltipLines:AddLine(" ");
+	tooltipLines:AddDoubleLine(
+		"Total RP 3 " .. self:GetModuleName(),
+		TRP3_API.globals.player_id,
+		TRP3_API.Ellyb.ColorManager.ORANGE,
+		TRP3_API.Ellyb.ColorManager.ORANGE
+	);
+	_private[self].tooltipLines = tooltipLines;
 end
 
 function ChatLink:GetIdentifier()
@@ -69,15 +79,7 @@ end
 
 ---@return ChatLinkTooltipLines
 function ChatLink:GetTooltipLines()
-	local tooltipLines =  self:GetModule():GetTooltipLines(self:GetData());
-	tooltipLines:AddLine(" ");
-	tooltipLines:AddDoubleLine(
-		"Total RP 3 " .. self:GetModuleName(),
-		TRP3_API.globals.player_id,
-		TRP3_API.Ellyb.ColorManager.ORANGE,
-		TRP3_API.Ellyb.ColorManager.ORANGE
-	);
-	return tooltipLines;
+	return _private[self].tooltipLines;
 end
 
 ---@return ChatLinkActionButton[]
