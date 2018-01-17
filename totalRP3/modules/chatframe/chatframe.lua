@@ -310,23 +310,65 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 ---@param NPCEmoteChatColor Color
 local function detectEmoteAndOOC(message, NPCEmoteChatColor)
 
+	-- For NPC speech color reset
 	local NPCEmoteChatString = "";
 	if NPCEmoteChatColor then
 		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
 	end
 
+	-- For links exception
+	local EmoteTempPatternStart = "TRP3BTMPEMOTE"
+	local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
+	local OOCTempPatternStart = "TRP3BTEMPOOC"
+	local OOCTempPatternEnd = "TRP3ETEMPOOC"
+
+	local LinkDetectionPattern = "(%|H.-%|h.-|h)"
+	local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
+	local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
+
+	-- Emote/OOC replacement
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
 		local chatColor = ColorManager.getChatColorForChannel("EMOTE");
 		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return chatColor:WrapTextInColorCode(content) .. NPCEmoteChatString;
+			return EmoteTempPatternStart .. content .. EmoteTempPatternEnd;
 		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(EmoteTempDetectionPattern)) then
+			message = message:gsub(EmoteTempDetectionPattern, function(content)
+				return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
 	end
 
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
-			return OOCColor:WrapTextInColorCode(content) .. NPCEmoteChatString;
+			return OOCTempPatternStart .. content .. OOCTempPatternEnd;
 		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(OOCTempDetectionPattern)) then
+			message = message:gsub(OOCTempDetectionPattern, function(content)
+				return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
 	end
 
 	return message;
