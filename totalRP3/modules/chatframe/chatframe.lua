@@ -380,22 +380,115 @@ end
 
 local NPC_TALK_PATTERNS;
 
-local function handleNPCEmote(message)
+-- Checking if it's a pet profile and customizing appropriately
+local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
+
+	local nameColor;
+	local petProfile;
+
+	if (senderID == Globals.player_id) then
+		for profileID, profile in pairs(TRP3_API.companions.player.getProfiles()) do
+			if (profile.data and profile.data.NA == name) then
+				petProfile = profile;
+				break
+			end
+		end
+	else
+		for profileID, profile in pairs(TRP3_API.companions.register.getProfiles()) do
+			local isMaster = false;
+			for companionFullID, _ in pairs(profile.links) do
+				if (TRP3_API.utils.str.companionIDToInfo(companionFullID) == senderID) then
+					isMaster = true;
+					break
+				end
+			end
+
+			if (isMaster and profile.data and profile.data.NA == name) then
+				petProfile = profile;
+				break
+			end
+		end
+	end
+
+	if configShowNameCustomColors() and petProfile and petProfile.data then
+		local customColor = petProfile.data.NH;
+
+		if customColor then
+			customColor = Color(petProfile.data.NH);
+
+			if configIncreaseNameColorContrast() then
+				customColor:LightenColorUntilItIsReadable();
+			end
+
+			nameColor = customColor;
+		end
+	end
+
+	-- If we did get a color wrap the name inside the color code
+	if nameColor then
+		-- And wrap the name inside the color's code
+		name = nameColor:WrapTextInColorCode(name);
+	else
+		name = chatColor:WrapTextInColorCode(name);
+	end
+
+	if getConfigValue(CONFIG_SHOW_ICON) then
+		if petProfile and petProfile.data and petProfile.data.IC then
+			name = Utils.str.icon(petProfile.data.IC, 15) .. " " .. name;
+		end
+	end
+
+	return name;
+end
+
+local function handleNPCEmote(message, senderID)
+
+	local chatColor;
+	local name;
+	local content;
 
 	-- Go through all talk types
 	for talkType, talkChannel in pairs(NPC_TALK_PATTERNS) do
 		if message:find(talkType) then
-			local chatColor = ColorManager.getChatColorForChannel(talkChannel);
-			local name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
-			local content = message:sub(name:len() + 5);
+			chatColor = ColorManager.getChatColorForChannel(talkChannel);
+			name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
+			content = message:sub(name:len() + 5);
 
-			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content), chatColor;
+			name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
+
+			return name, chatColor:WrapTextInColorCode(content), chatColor;
 		end
 	end
 
 	-- If none was found, we default to emote
-	local chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
-	return chatColor:WrapTextInColorCode(message:sub(4)), " ", chatColor;
+	chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
+	if message:find("* ") then
+		name = message:sub(4, message:find("* ") - 1);
+		content = message:sub(name:len() + 6);
+
+		name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
+
+		-- Check if this message was flagged as containing a 's at the beggning.
+		-- To avoid having a space between the name of the player and the 's we previously removed the 's
+		-- from the message. We now need to insert it after the player's name, without a space.
+		if content:sub(1, 3) == "'s " then
+			name = name .. "'s";
+			content = content:sub(4);
+		end
+		-- Support for emotes starting with a ,
+		-- We remove the space so the comma is placed right after the name
+		if content:sub(1, 2) == ", " then
+			name = name .. ",";
+			content = content:sub(3);
+		end
+
+		content = chatColor:WrapTextInColorCode(content);
+	else
+		name = chatColor:WrapTextInColorCode(message:sub(4));
+		content = " ";
+	end
+
+	return name, content, chatColor;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -419,7 +512,8 @@ function TRP3_API.chat.getOwnershipNameID()
 end
 
 function handleCharacterMessage(_, event, message, ...)
-	
+
+	local messageSender = ...;
 	local messageID = select(10, ...);
 	local NPCEmoteChatColor;
 
@@ -427,7 +521,7 @@ function handleCharacterMessage(_, event, message, ...)
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
-			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message);
+			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
