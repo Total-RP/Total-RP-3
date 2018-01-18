@@ -69,8 +69,15 @@ function TRP3_ChatLinkActionButtonMixin:OnSetText()
 end
 
 function TRP3_ChatLinkActionButtonMixin:OnClick()
-	local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
-	module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
+	if TRP3_RefTooltip.itemData.v ~= TRP3_API.globals.version then
+		TRP3_API.popup.showConfirmPopup(TRP3_API.loc.CL_VERSIONS_DIFFER, function()
+			local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
+			module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
+		end)
+	else
+		local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
+		module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
+	end
 end
 
 function TRP3_ChatLinkActionButtonMixin:Set(button)

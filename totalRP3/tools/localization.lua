@@ -1009,7 +1009,14 @@ You can also leave this field empty to create emotes without an NPC name at the 
 	CL_COMPANION_PROFILE = "Companion profile",
 	CL_IMPORT_COMPANION = "Import companion profile",
 	CL_OPEN_COMPANION = "Open companion profile",
-	CL_MAKE_IMPORTABLE = "You are about to create a link to a %s. Do you want to make this link importable by other players? They will be able to copy and use the content of the link. If you answer no, they will only be able to consult the content of the link.",
+	CL_MAKE_IMPORTABLE = [[You are about to create a link to a %s.
+
+Do you want to make this link importable by other players? They will be able to copy and use the content of the link.
+
+If you answer no, they will only be able to consult the content of the link.]],
+	CL_VERSIONS_DIFFER = [[This link has been generated using a different version of Total RP 3.
+
+Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- COMMANDS
