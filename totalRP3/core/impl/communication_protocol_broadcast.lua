@@ -31,10 +31,15 @@ local Utils = TRP3_API.utils;
 local Log = Utils.log;
 local Comm, isIDIgnored = TRP3_API.communication, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.locale.getText;
 
 Comm.broadcast = {};
 local ticker;
+
+local function config_UseBroadcast()
+	return getConfigValue("comm_broad_use");
+end
 
 local function config_BroadcastChannel()
 	return "xtensionxtooltip2";
@@ -59,7 +64,7 @@ Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
-	if not command then
+	if not config_UseBroadcast() or not command then
 		Log.log("Bad params");
 		return;
 	end
@@ -163,6 +168,9 @@ Comm.broadcast.getPlayers = function()
 end
 
 Comm.broadcast.resetPlayers = function()
+	if not config_UseBroadcast() then
+		return nil;
+	end
 	local channelName;
 	wipe(connectedPlayers);
 	for i=1, MAX_CHANNEL_BUTTONS, 1 do
@@ -181,14 +189,14 @@ Comm.broadcast.resetPlayers = function()
 end
 
 local function onChannelJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-	if arg2 and arg9 == config_BroadcastChannel() then
+	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = 1;
 	end
 end
 
 local function onChannelLeave(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-	if arg2 and arg9 == config_BroadcastChannel() then
+	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = nil;
 	end
@@ -232,19 +240,21 @@ Comm.broadcast.init = function()
 
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-		local firstTime = true;
-		ticker = C_Timer.NewTicker(5, function(self)
-			if firstTime then firstTime = false; return; end
-			if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
-				Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
-				JoinChannelByName(string.lower(config_BroadcastChannel()));
-			else
-				Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
-				if not helloWorlded then
-					broadcast(HELLO_CMD, Globals.version, Globals.version_display);
+		if config_UseBroadcast() then
+			local firstTime = true;
+			ticker = C_Timer.NewTicker(5, function(self)
+				if firstTime then firstTime = false; return; end
+				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
+					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
+					JoinChannelByName(string.lower(config_BroadcastChannel()));
+				else
+					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
+					if not helloWorlded then
+						broadcast(HELLO_CMD, Globals.version, Globals.version_display);
+					end
 				end
-			end
-		end, 9);
+			end, 9);
+		end
 	end);
 
 	-- When we receive a broadcast or a P2P response
@@ -268,7 +278,7 @@ Comm.broadcast.init = function()
 
 	-- When you are already in 10 channel
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
-		if message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
+		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
 			Utils.message.displayMessage(loc("BROADCAST_10"));
 			ticker:Cancel();
 		end

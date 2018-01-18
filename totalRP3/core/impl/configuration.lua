@@ -389,6 +389,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
 
+	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
@@ -412,6 +413,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				listCallback = changeLocale,
 				listDefault = getLocaleText(getCurrentLocale()),
 				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_COM"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_BROADCAST"),
+				configKey = "comm_broad_use",
+				help = loc("CO_GENERAL_BROADCAST_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigH1",
