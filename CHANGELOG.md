@@ -12,22 +12,22 @@ When clicking a link you can see a quick preview of what was shared in a tooltip
 
 ### New feature: right-click a player to open their profile
 
-We have added a new feature that allows you to right-click on a player in the game to open their profile in Total RP 3. An icon will appear next to the cursor when the player has a RP profile that can be opened. This feature is disabled by default and can be enabled in the Directory settings, and is always disabled when you are in combat. You can also choose to automatically disable it when you go Out of character, or apply a modifier like Shift or Control when clicking.
+We have added a new feature that allows you to right-click on a player in the game to open their profile in Total RP 3. An icon will appear next to the cursor when the player has a RP profile that can be opened. This feature is disabled by default and can be enabled in the Directory settings, and is always disabled when you are in combat. You can also choose to automatically disable it when you go out of character, or apply a modifier like Shift or Control when clicking.
 
 ### Added
 
-- Added new slash command to open someone's profile. Using `/trp3 open CharacterName-RealmName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
+- Added new slash command to open someone's profile. Using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
 - Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.
 - Added an option to use the default color picker instead of Total RP 3's color picker in the Frames settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
 - Added option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
-- Added option to crop long text in the at-first-glance tooltip, enabled by default, only applies to other people's at-first-glances.
+- Added option to crop long text in the at-first-glance tooltip when shown on the target frame, enabled by default, only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
 - Updated list of icons for the icon browser, added 177 icons from patch 7.3.5.
 - Updated list of images for the image browser, added 97 images of the game's zones from the new warboard UI from patch 7.3.5.
 - Added tooltip flag to indicate when a player is on a trial account.
 
 ### Fixed
 
-- Fixed an issue causing incorrect colors in NPC chat messages when using text emotes (`* *` or `< >`) or Out of character texts (`( )` or `(( ))`).
+- Fixed an issue causing incorrect colors in NPC chat messages when using text emotes (`* *` or `< >`) or out of character texts (`( )` or `(( ))`).
 - Text emotes and out of character texts patterns are no longer parsed in links (like item links or achievement links).
 - Fixed issue preventing from clicking on links in companion profiles.
 - Fixed an issue that prevent at-first-glance information from companion profiles to be updated.
@@ -85,7 +85,7 @@ Happy new year! The Total RP 3 team wishes you the best for 2018.
 - Fixed an issue allowing the user to send empty NPC messages when using the Enter key ([ticket #124](https://wow.curseforge.com/projects/total-rp-3/issues/124)).
 - Fixed an error when targeting battle pets that are participating in a pet battle ([ticket #96](https://wow.curseforge.com/projects/total-rp-3/issues/96)).
 - Fixed an issue where if you used a single space character for your class (like to indicate you have none) it would be considered as empty and your character's real class would be used instead ([ticket #103](https://wow.curseforge.com/projects/total-rp-3/issues/103)).
-- Fixed an issue where players with custom RP status from other add-ons sent via the Mary Sue Protocol would be shown as Out Of Character.
+- Fixed an issue where players with custom RP status from other add-ons sent via the Mary Sue Protocol would be shown as out Of Character.
 
 ### Removed
 
