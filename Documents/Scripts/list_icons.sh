@@ -30,5 +30,7 @@ IFS="|";
 keys="${listIgnore[*]}";
 keys="${keys//|/\\|}";
 
-fileList=$(ls $1 | grep -v "${keys}" | sed s/\.[^\.]*$// | sed -e "s/\(.*\)/\"\1\",/")
-echo "local iconList = {${fileList}}" > ./listfile.txt
+fileList=$(ls $1 | grep -v "${keys}" | sed s/\.[^\.]*$// | sed -e "s/\(.*\)/	\"\1\",/")
+echo "local iconList = {" > ./listfile.txt
+echo ${fileList} >> ./listfile.txt
+echo "}" >> ./listfile.txt
