@@ -18,7 +18,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 
 - Added new slash command to open someone's profile. Using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
 - Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.
-- Added an option to use the default color picker instead of Total RP 3's color picker in the Frames settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
+- Added an option to use the default color picker instead of Total RP 3's color picker in the General settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
 - Added option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
 - Added option to crop long text in the at-first-glance tooltip when shown on the target frame, enabled by default, only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
 - Updated list of icons for the icon browser, added 177 icons from patch 7.3.5.
