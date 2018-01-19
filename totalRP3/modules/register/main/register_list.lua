@@ -148,6 +148,11 @@ local function switchInfoSorting()
 	refreshList();
 end
 
+local function switchTimeSorting()
+	sortingType = sortingType == 6 and 5 or 6;
+	refreshList();
+end
+
 local function nameComparator(elem1, elem2)
 	return elem1[2]:lower() < elem2[2]:lower();
 end
@@ -164,8 +169,16 @@ local function infoComparatorInverted(elem1, elem2)
 	return elem1[3]:lower() > elem2[3]:lower();
 end
 
+local function timeComparator(elem1, elem2)
+	return elem1[4]:lower() < elem2[4]:lower();
+end
+
+local function timeComparatorInverted(elem1, elem2)
+	return elem1[4]:lower() > elem2[4]:lower();
+end
+
 local comparators = {
-	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted
+	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted, timeComparator, timeComparatorInverted
 }
 
 local function getCurrentComparator()
@@ -177,7 +190,7 @@ local ARROW_UP = "Interface\\Buttons\\Arrow-Up-Up";
 local ARROW_SIZE = 15;
 
 local function getComparatorArrows()
-	local nameArrow, relationArrow = "", "";
+	local nameArrow, relationArrow, timeArrow = "", "", "";
 	if sortingType == 1 then
 		nameArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
 	elseif sortingType == 2 then
@@ -186,8 +199,12 @@ local function getComparatorArrows()
 		relationArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
 	elseif sortingType == 4 then
 		relationArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 5 then
+		timeArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 6 then
+		timeArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
 	end
-	return nameArrow, relationArrow;
+	return nameArrow, relationArrow, timeArrow;
 end
 
 local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
@@ -257,6 +274,12 @@ local function decorateCharacterLine(line, characterIndex)
 		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 	end
 	_G[line:GetName().."Info"]:SetText(color .. relation);
+
+	local timeStr = "";
+	if profile.time then
+		timeStr = date(DATE_FORMAT, profile.time);
+	end
+	_G[line:GetName().."Time"]:SetText(timeStr);
 
 	-- Third column : flags
 	local rightTooltipTitle, rightTooltipText, flags;
@@ -337,12 +360,14 @@ local function getCharacterLines()
 			nameIsConform = true;
 		end
 
+		local formatDate = date(DATE_FORMAT, profile.time);
+
 		nameIsConform = nameIsConform or nameSearch:len() == 0;
 		guildIsConform = guildIsConform or guildSearch:len() == 0;
 		realmIsConform = realmIsConform or not realmOnly;
 
 		if nameIsConform and guildIsConform and realmIsConform then
-			tinsert(characterLines, {profileID, completeName, getRelationText(profileID)});
+			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), formatDate});
 		end
 	end
 
@@ -358,9 +383,11 @@ local function getCharacterLines()
 	end
 	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
 
-	local nameArrow, relationArrow = getComparatorArrows();
+	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION") .. relationArrow);
+	TRP3_RegisterListHeaderTime:SetText(loc("REG_TIME") .. timeArrow);
+	TRP3_RegisterListHeaderTimeTT:Enable();
 	TRP3_RegisterListHeaderInfoTT:Enable();
 	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
@@ -561,6 +588,7 @@ local function decorateCompanionLine(line, index)
 	_G[line:GetName().."Select"]:Show();
 
 	_G[line:GetName().."Info"]:SetText("");
+	_G[line:GetName().."Time"]:SetText("");
 end
 
 local function getCompanionLines()
@@ -600,7 +628,7 @@ local function getCompanionLines()
 		masterIsConform = masterIsConform or masterSearch:len() == 0;
 
 		if nameIsConform and typeIsConform and masterIsConform then
-			tinsert(companionLines, {profileID, companionName, companionName});
+			tinsert(companionLines, {profileID, companionName, companionName, companionName});
 		end
 	end
 
@@ -616,9 +644,11 @@ local function getCompanionLines()
 	end
 	setupFieldSet(TRP3_RegisterListPetFilter, loc("REG_LIST_PETS_FILTER"):format(lineSize, fullSize), 200);
 
-	local nameArrow, relationArrow = getComparatorArrows();
+	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderTime:SetText("");
+	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderInfoTT:Disable();
 	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
@@ -672,6 +702,7 @@ local function decorateIgnoredLine(line, unitID)
 	line.id = unitID;
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
+	_G[line:GetName().."Time"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
 	_G[line:GetName().."Addon"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
@@ -686,6 +717,8 @@ local function getIgnoredLines()
 	end
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderTime:SetText("");
+	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderInfoTT:Disable();
 	TRP3_RegisterListHeaderNameTT:Disable();
 	TRP3_RegisterListHeaderInfo2:SetText("");
@@ -911,6 +944,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", switchNameSorting);
 	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
+	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
 	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)
@@ -929,12 +963,22 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		for _, line in pairs(widgetTab) do
 			line:SetHeight((containerHeight - 120) * 0.065);
 			if containerwidth < 690 then
+				_G[line:GetName() .. "Time"]:SetWidth(2);
+			else
+				_G[line:GetName() .. "Time"]:SetWidth(160);
+			end
+			if containerwidth < 850 then
 				_G[line:GetName() .. "Addon"]:SetWidth(2);
 			else
 				_G[line:GetName() .. "Addon"]:SetWidth(160);
 			end
 		end
 		if containerwidth < 690 then
+			TRP3_RegisterListHeaderTime:SetWidth(2);
+		else
+			TRP3_RegisterListHeaderTime:SetWidth(160);
+		end
+		if containerwidth < 850 then
 			TRP3_RegisterListHeaderAddon:SetWidth(2);
 		else
 			TRP3_RegisterListHeaderAddon:SetWidth(160);
