@@ -36,7 +36,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 ### Modified
 
 - The mature profile filter now lets you set a strength when filtering profiles, which affects how many bad words must be found before a profile is considered as mature.
-- Profiles that have been flagged as mature are now re-evaluated after a day.
+- Profiles that have been flagged as mature are now re-evaluated after 24 hours.
 - The previous custom dictionaries of mature language words that we manually made have been replaced by dictionaries from a crowd sourced source, and are now available for German, Italian, Mexican Spanish, and Russian.
 - Various under the hood fixes and improvements in various places, using new libraries and cleaned up some code.
 - Improvements to the localization system. More pets should be recognized as companions, especially when using non-English clients.

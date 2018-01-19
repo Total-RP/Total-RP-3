@@ -234,12 +234,17 @@ local function onStart()
 
 	TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm = whitelistProfileByUnitIDConfirm;
 
+	local function getBadWordsThreshold()
+		return 11 - getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
+	end
 	---
 	-- Returns true if the given text contains a word from our dictionnary
 	-- @param text Text to search
 	--
 	local function textContainsMatureContent(text)
-		local words = {}
+		local words = {};
+		local badWordsFound = 0;
+		local threshold = getBadWordsThreshold();
 		-- Break string into a table
 		for word in text:gmatch("[^%s%p]+") do
 			-- We will use the lower case version of the words because our keywords are lowercased
@@ -252,10 +257,13 @@ local function onStart()
 			-- If the word is found, return true
 			if words[matureWord] then
 				log("Found |cff00ff00" .. matureWord .. "|r " .. words[matureWord] .. " times!", Utils.log.WARNING);
-				return true
+				badWordsFound = badWordsFound + 1;
+				if badWordsFound >= threshold then
+					return badWordsFound;
+				end
 			end
 		end
-		return false
+		return badWordsFound;
 	end
 
 	-- This structure list the fields that must not be filtered
@@ -271,16 +279,16 @@ local function onStart()
 	--
 	local function filterData(data, profileID)
 		local numberOfBadWordsFound = 0;
-		local threshold = 11 - getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
+		local threshold = getBadWordsThreshold();
 		-- Iterate over each field of the data table
 		for key, value in pairs(data) do
 			-- Ommit fields we do not want to filter
 			if not unfilteredFields[key] then
 				-- If the value of the field is a string, we treat it
 				if type(value) == "string" then
-					-- If the text contains mature content, flag the profile has having mature content
-					if textContainsMatureContent(value) then
-						numberOfBadWordsFound = numberOfBadWordsFound + 1;
+					numberOfBadWordsFound = numberOfBadWordsFound + textContainsMatureContent(value);
+					if numberOfBadWordsFound >= threshold then
+						break;
 					end
 				elseif type(value) == "table" then
 					filterData(value, profileID);
@@ -639,7 +647,7 @@ local function onStart()
 	local function shouldReEvaluateContent(lastMatureContentEvaluation)
 		if not lastMatureContentEvaluation then return true end;
 		local now = time();
-		return now - lastMatureContentEvaluation > EXPIRATION
+		return now - lastMatureContentEvaluation > EXPIRATION;
 	end
 
 	-- We listen to data updates in the register and apply the filter if enabled
