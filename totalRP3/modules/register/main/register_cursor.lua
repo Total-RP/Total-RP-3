@@ -5,7 +5,7 @@
 --- Implements right-click on a player in the 3D world to open their profile
 ---
 ---	---------------------------------------------------------------------------
----	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 ---	Licensed under the Apache License, Version 2.0 (the "License");
 ---	you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ local insert = table.insert;
 
 -- WoW API imports
 local InCombatLockdown = InCombatLockdown;
-local GetCursorPosition = GetCursorPosition;
-local UIParent = UIParent;
 local IsShiftKeyDown = IsShiftKeyDown;
 local IsControlKeyDown = IsControlKeyDown;
 local IsAltKeyDown = IsAltKeyDown;
@@ -43,14 +41,20 @@ local openPageByUnitID = TRP3_API.register.openPageByUnitID;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local isUnitIDIgnored = TRP3_API.register.isIDIgnored;
+local isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 
+-- Ellyb imports
+local Cursor = TRP3_API.Ellyb.Cursor;
 --- Create a new Ellyb Unit for the mouseover unit
 ---@type Unit
 local Mouseover = TRP3_API.Ellyb.Unit("mouseover");
 
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
+local CONFIG_RIGHT_CLICK_DISABLE_OOC = "CONFIG_RIGHT_CLICK_DISABLE_OOC";
+local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
+
 ---Check if we can view the unit profile by using the cursor
----@param unitID string @ A valid unit ID (probably mouseover here)
-local function canInteractWithUnit(unit)
+local function canInteractWithUnit()
 
 	if
 	not Mouseover:Exists()
@@ -64,7 +68,8 @@ local function canInteractWithUnit(unit)
 
 	local unitID = Mouseover:GetUnitID();
 	if
-	unitID == TRP3_API.globals.player_id -- Unit is not the player
+	not unitID
+	or unitID == TRP3_API.globals.player_id -- Unit is not the player
 	or not isUnitIDKnown(unitID) -- Unit is known by TRP3
 	or hasProfile(unitID) == nil -- Unit has a RP profile available
 	or isUnitIDIgnored(unitID) -- Unit has been ignored
@@ -75,48 +80,26 @@ local function canInteractWithUnit(unit)
 	return true;
 end
 
----@type Frame
-local CursorFrame = TRP3_CursorFrame;
----@type Texture
-local Icon = CursorFrame.Icon;
-
-local function placeCursorFrameOnMouse()
-	local scale = 1 / UIParent:GetEffectiveScale();
-	local x, y = GetCursorPosition();
-	CursorFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x * scale + 33, y * scale - 30);
-end
-
-local PINK = TRP3_API.Ellyb.Color("#FFC0CB"):Freeze();
+local ICON_X = 30;
+local ICON_Y = -3;
 local function onMouseOverUnit()
-	if canInteractWithUnit() then
-		local unitID = Mouseover:GetUnitID();
-		CursorFrame.unitID = unitID;
-		placeCursorFrameOnMouse();
-		if TRP3_API.register.unitIDIsFilteredForMatureContent(unitID) then
-			Icon:SetTexture("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga");
+	if getConfigValue(CONFIG_RIGHT_CLICK_DISABLE_OOC) and not isPlayerIC() then
+		return
+	end
+	if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and canInteractWithUnit() then
+		if TRP3_API.register.unitIDIsFilteredForMatureContent(Mouseover:GetUnitID()) then
+			Cursor:SetIcon("Interface\\AddOns\\totalRP3\\resources\\WorkOrders_Pink.tga", ICON_X, ICON_Y);
 		else
-			Icon:SetTexture("Interface\\CURSOR\\WorkOrders");
+			Cursor:SetIcon("Interface\\CURSOR\\WorkOrders", ICON_X, ICON_Y);
 		end
-		CursorFrame:Show();
-	else
-		CursorFrame:Hide();
+		Cursor:HideOnUnitChanged();
 	end
 end
-
-CursorFrame:SetScript("OnUpdate", function(self)
-	if not Mouseover:Exists() then
-		self:Hide();
-	else
-		placeCursorFrameOnMouse()
-	end
-end)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
-	local CONFIG_RIGHT_CLICK_OPEN_PROFILE = "CONFIG_RIGHT_CLICK_OPEN_PROFILE";
-	local CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY = "CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY";
-
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE, false);
+	registerConfigKey(CONFIG_RIGHT_CLICK_DISABLE_OOC, false);
 	registerConfigKey(CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY, 1);
 
 	local function isModifierKeyPressed()
@@ -132,12 +115,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	end
 
-	-- Hook function called on right-click on player
-	hooksecurefunc("TurnOrActionStart", function()
-		if not getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) or not isModifierKeyPressed() then return end
-		if CursorFrame:IsVisible() then
+	Cursor:OnUnitRightClicked(function(unitID)
+		if getConfigValue(CONFIG_RIGHT_CLICK_DISABLE_OOC) and not isPlayerIC() then
+			return
+		end
+		if getConfigValue(CONFIG_RIGHT_CLICK_OPEN_PROFILE) and isModifierKeyPressed() and not isUnitIDIgnored(unitID) then
 			openMainFrame()
-			openPageByUnitID(CursorFrame.unitID);
+			openPageByUnitID(unitID);
 		end
 	end)
 
@@ -159,6 +143,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE,
 	});
 
+	-- Main checkbox to toggle this feature
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_CURSOR_DISABLE_OOC,
+		help = loc.CO_CURSOR_DISABLE_OOC_TT,
+		configKey = CONFIG_RIGHT_CLICK_DISABLE_OOC,
+	});
+
 	-- Modifier key dropdown option
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
@@ -167,9 +159,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
-			{ SHIFT_KEY_TEXT, 2 },
-			{ CTRL_KEY_TEXT, 3 },
-			{ ALT_KEY_TEXT, 4 }
+			{ TRP3_API.Ellyb.System.SHORTCUTS.SHIFT, 2 },
+			{ TRP3_API.Ellyb.System.SHORTCUTS.CTRL, 3 },
+			{ TRP3_API.Ellyb.System.SHORTCUTS.ALT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
