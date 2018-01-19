@@ -24,7 +24,7 @@ local _, TRP3_API = ...;
 local Globals, Events = TRP3_API.globals, TRP3_API.events;
 local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local assert, table, _G, date, pairs, error, tinsert, wipe, time = assert, table, _G, date, pairs, error, tinsert, wipe, time;
 local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
@@ -62,6 +62,8 @@ local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 
+local RegisterPlayerChatLinkModule;
+local RegisterCompanionChatLinkModule;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -701,207 +703,6 @@ end
 -- UI : LIST
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local RegisterPlayerChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Player Profile", "DIR_PLAYER_PROFILE");
-
-function RegisterPlayerChatLinkModule:GetLinkData(profileID)
-	local profile = {};
-	TRP3_API.Ellyb.Tables.copy(profile, getProfile(profileID));
-	-- Else, create a new menu entry and open it.
-	local linkText = UNKNOWN;
-	if profile.characteristics and profile.characteristics.FN then
-		linkText = profile.characteristics.FN;
-	end
-	profile.profileID = profileID;
-
-	return linkText, profile;
-end
-
-function RegisterPlayerChatLinkModule:GetCustomData(profile)
-	return profile.profileID;
-end
-
-function RegisterPlayerChatLinkModule:GetTooltipLines(profile)
-	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
-
-	local customColor = YELLOW;
-	if profile.characteristics.CH then
-		customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
-	end
-
-	tooltipLines:SetTitle("Profile: " .. profile.profileName);
-
-	tooltipLines:AddLine(" ");
-	tooltipLines:AddLine(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true), customColor);
-
-	if profile.characteristics.FT then
-		tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
-	end
-	if profile.character.CU then
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
-		tooltipLines:AddLine(profile.character.CU, YELLOW);
-	end
-	if profile.character.CO then
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
-		tooltipLines:AddLine(profile.character.CO, YELLOW);
-	end
-
-	return tooltipLines;
-end
-
-local OpenRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("OPEN_REG_PROFILE", "Open 
-in directory");
-local LINK_COMMAND_OPEN_PLAYER_PROFILE_Q = "REG_P_O_Q";
-local LINK_COMMAND_OPEN_PLAYER_PROFILE_A = "REG_P_O_A";
-
-function OpenRegisterPlayerProfileButton:OnClick(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, profileID, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, function(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, {
-		profileData = getProfile(profileID),
-		profileID = profileID,
-	}, sender);
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, function(profileData, sender)
-	local profile, profileID = profileData.profile, profileData.profileID;
-	profile.link = {};
-	TRP3_API.register.insertProfile(profileID, profile)
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-
-	TRP3_API.register.openPageByProfileID(profileID);
-	TRP3_API.navigation.openMainFrame();
-end)
-
-local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("IMPORT_REG_PROFILE","Import profile");
-local LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q = "REG_P_I_Q";
-local LINK_COMMAND_IMPORT_PLAYER_PROFILE_A = "REG_P_I_A";
-
-function ImportRegisterPlayerProfileButton:OnClick(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, profileID, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, function(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_A, {
-		profileData = getProfile(profileID),
-		profileID = profileID,
-	}, sender);
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, function(profileData, sender)
-	local profile, profileID = profileData.profile, profileData.profileID;
-	-- Else, create a new menu entry and open it.
-	local profileName = UNKNOWN;
-	if profile.characteristics and profile.characteristics.FN then
-		profileName = profile.characteristics.FN;
-	end
-	local i = 1;
-	while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
-		i = i + 1;
-		profileName = profileName .. " " .. i;
-	end
-	TRP3_API.profile.duplicateProfile(profile, profileName);
-	TRP3_API.navigation.openMainFrame();
-	TRP3_API.navigation.page.setPage("player_profiles", {});
-	Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
-end)
-
-local RegisterCompanionChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Companion Profile",
-		"DIR_COMPANION_PROFILE");
-
-function RegisterCompanionChatLinkModule:GetLinkData(profileID)
-	local profile = {};
-	TRP3_API.Ellyb.Tables.copy(profile, getCompanionProfiles()[profileID]);
-	-- Else, create a new menu entry and open it.
-	local linkText = UNKNOWN;
-	if profile.data and profile.data.NA then
-		linkText = profile.data.NA;
-	end
-	profile.profileID = profileID;
-
-	return linkText, profile;
-end
-
-function RegisterCompanionChatLinkModule:GetCustomData(profile)
-	return profile.profileID;
-end
-
-function RegisterCompanionChatLinkModule:GetTooltipLines(profile)
-	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
-	local dataTab = profile.data;
-	local name = dataTab.NA;
-	if dataTab.IC then
-		name = Utils.str.icon(dataTab.IC, 30) .. " " .. name;
-	end
-	tooltipLines:SetTitle(name, TRP3_API.Ellyb.ColorManager.WHITE);
-	if dataTab.TI then
-		tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
-	end
-	return tooltipLines;
-end
-
-local OpenRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("OPEN_REG_COMPANION", "Open
-in directory");
-local LINK_COMMAND_OPEN_COMPANION_PROFILE_Q = "REG_C_O_Q";
-local LINK_COMMAND_OPEN_COMPANION_PROFILE_A = "REG_C_O_A";
-
-function OpenRegisterCompanionProfileButton:OnClick(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, profileID, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, function(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, {
-		profileData = getProfile(profileID),
-		profileID = profileID,
-	}, sender);
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, function(profileData, sender)
-	local profileID, profile = profileData.profileID, profileData.profile;
-	-- Check profile exists
-	if not TRP3_API.companions.register.getProfiles()[profileID] then
-		TRP3_API.companions.register.registerCreateProfile(profileID);
-	end
-	TRP3_API.companions.register.setProfileData(profileID, profile);
-
-	TRP3_API.companions.register.openPage(profileID);
-	openMainFrame();
-end)
-
-local ImportRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("IMPORT_REG_COMPANION",
-		"Import profile");
-local LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q = "REG_C_I_Q";
-local LINK_COMMAND_IMPORT_COMPANION_PROFILE_A = "REG_C_I_A";
-
-function ImportRegisterCompanionProfileButton:OnClick(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, profileID, sender);
-end
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, function(profileID, sender)
-	TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_A, {
-		profileData = getProfile(profileID),
-		profileID = profileID,
-	}, sender);
-end);
-
-TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, function(profileData, sender)
-	local profile = profileData.profile;
-	local newName = UNKNOWN;
-	if profile.data and profile.data.NA then
-		newName = profile.data.NA;
-	end
-	local i = 1;
-	while not TRP3_API.companions.player.isProfileNameAvailable(newName) and i < 500 do
-		i = i + 1;
-		newName = newName .. " " .. i;
-	end
-	local profileID = TRP3_API.companions.player.duplicateProfile(profile, newName);
-	TRP3_API.companions.openPage(profileID);
-end)
-
 function refreshList()
 	local lines;
 	TRP3_RegisterListEmpty:Hide();
@@ -928,14 +729,18 @@ local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
 		if IsShiftKeyDown() then
-			RegisterPlayerChatLinkModule:InsertLink(self:GetParent().id);
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
+				RegisterPlayerChatLinkModule:InsertLink(self:GetParent().id, canBeImported);
+			end);
 		else
 			openPage(self:GetParent().id);
 		end
 	elseif currentMode == MODE_PETS then
 		assert(self:GetParent().id, "No profileID on line.");
 		if IsShiftKeyDown() then
-			RegisterCompanionChatLinkModule:InsertLink(self:GetParent().id);
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+				RegisterCompanionChatLinkModule:InsertLink(self:GetParent().id, canBeImported);
+			end);
 		else
 			openCompanionPage(self:GetParent().id);
 		end
@@ -1153,6 +958,216 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			TRP3_RegisterListHeaderAddon:SetWidth(160);
 		end
 	end);
+
+
+	RegisterPlayerChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Player Profile", "DIR_PLAYER_PROFILE");
+
+	function RegisterPlayerChatLinkModule:GetLinkData(profileID, canBeImported)
+		local profile = {};
+		TRP3_API.Ellyb.Tables.copy(profile, getProfile(profileID));
+		-- Else, create a new menu entry and open it.
+		local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
+		profile.profileID = profileID;
+		profile.canBeImported = canBeImported;
+
+		return linkText, profile;
+	end
+
+	function RegisterPlayerChatLinkModule:GetCustomData(profile)
+		return profile.profileID;
+	end
+
+	function RegisterPlayerChatLinkModule:GetTooltipLines(profile)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+
+		local customColor = TRP3_API.Ellyb.ColorManager.YELLOW;
+		if profile.characteristics.CH then
+			customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
+		end
+
+		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+
+		if profile.characteristics.FT then
+			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		end
+		if profile.character.CU then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
+			tooltipLines:AddLine(profile.character.CU, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+		if profile.character.CO then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
+			tooltipLines:AddLine(profile.character.CO, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+
+		return tooltipLines;
+	end
+
+	local OpenRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("OPEN_REG_PROFILE", "Open in directory");
+	local LINK_COMMAND_OPEN_PLAYER_PROFILE_Q = "REG_P_O_Q";
+	local LINK_COMMAND_OPEN_PLAYER_PROFILE_A = "REG_P_O_A";
+
+	function OpenRegisterPlayerProfileButton:OnClick(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, profileID, sender);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, {
+			profileData = getProfile(profileID),
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, function(profileData, sender)
+		local profile, profileID = profileData.profileData, profileData.profileID;
+		profile.link = {};
+		TRP3_API.register.insertProfile(profileID, profile)
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+
+		TRP3_API.register.openPageByProfileID(profileID);
+		TRP3_API.navigation.openMainFrame();
+	end)
+
+	local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("IMPORT_REG_PROFILE", "Import profile");
+	local LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q = "REG_P_I_Q";
+	local LINK_COMMAND_IMPORT_PLAYER_PROFILE_A = "REG_P_I_A";
+
+	function ImportRegisterPlayerProfileButton:IsVisible(profile)
+		return profile.canBeImported;
+	end
+
+	function ImportRegisterPlayerProfileButton:OnClick(profileID, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, profileID, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_A, {
+			profileData = getProfile(profileID),
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PLAYER_PROFILE_A, function(profileData, sender)
+		local profile, profileID = profileData.profileData, profileData.profileID;
+		-- Else, create a new menu entry and open it.
+		local profileName = UNKNOWN;
+		if profile.characteristics and profile.characteristics.FN then
+			profileName = profile.characteristics.FN;
+		end
+		local i = 1;
+		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
+			i = i + 1;
+			profileName = profileName .. " " .. i;
+		end
+		TRP3_API.profile.duplicateProfile({
+			player = profile
+		}, profileName);
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.page.setPage("player_profiles", {});
+		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
+	end)
+
+	RegisterCompanionChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Companion Profile", "DIR_COMPANION_PROFILE");
+
+	function RegisterCompanionChatLinkModule:GetLinkData(profileID, canBeImported)
+		local profile = {};
+		TRP3_API.Ellyb.Tables.copy(profile, getCompanionProfiles()[profileID]);
+		-- Else, create a new menu entry and open it.
+		local linkText = UNKNOWN;
+		if profile.data and profile.data.NA then
+			linkText = profile.data.NA;
+		end
+		profile.profileID = profileID;
+		profile.canBeImported = canBeImported;
+
+		return linkText, profile;
+	end
+
+	function RegisterCompanionChatLinkModule:GetCustomData(profile)
+		return profile.profileID;
+	end
+
+	function RegisterCompanionChatLinkModule:GetTooltipLines(profile)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local dataTab = profile.data;
+		local name = dataTab.NA;
+		if dataTab.IC then
+			name = Utils.str.icon(dataTab.IC, 30) .. " " .. name;
+		end
+		tooltipLines:SetTitle(name, TRP3_API.Ellyb.ColorManager.WHITE);
+		if dataTab.TI then
+			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		end
+		return tooltipLines;
+	end
+
+	local OpenRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("OPEN_REG_COMPANION", "Open in directory");
+	local LINK_COMMAND_OPEN_COMPANION_PROFILE_Q = "REG_C_O_Q";
+	local LINK_COMMAND_OPEN_COMPANION_PROFILE_A = "REG_C_O_A";
+
+	function OpenRegisterCompanionProfileButton:OnClick(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, profileID, sender);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, {
+			profileData = getCompanionProfiles()[profileID],
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, function(profileData, sender)
+		local profileID, profile = profileData.profileID, profileData.profileData;
+		-- Check profile exists
+		if not TRP3_API.companions.register.getProfiles()[profileID] then
+			TRP3_API.companions.register.registerCreateProfile(profileID);
+		end
+		TRP3_API.companions.register.setProfileData(profileID, profile);
+
+		TRP3_API.companions.register.openPage(profileID);
+		openMainFrame();
+	end)
+
+	local ImportRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("IMPORT_REG_COMPANION",
+			"Import profile");
+	local LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q = "REG_C_I_Q";
+	local LINK_COMMAND_IMPORT_COMPANION_PROFILE_A = "REG_C_I_A";
+
+	function ImportRegisterPlayerProfileButton:IsVisible(profile)
+		return profile.canBeImported;
+	end
+
+	function ImportRegisterCompanionProfileButton:OnClick(profileID, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, profileID, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_A, {
+			profileData = getCompanionProfiles()[profileID],
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_PROFILE_A, function(profileData, sender)
+		local profile = profileData.profileData;
+		local newName = UNKNOWN;
+		if profile.data and profile.data.NA then
+			newName = profile.data.NA;
+		end
+		local i = 1;
+		while not TRP3_API.companions.player.isProfileNameAvailable(newName) and i < 500 do
+			i = i + 1;
+			newName = newName .. " " .. i;
+		end
+		local profileID = TRP3_API.companions.player.duplicateProfile(profile, newName);
+		TRP3_API.companions.openPage(profileID);
+		openMainFrame();
+	end)
 end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

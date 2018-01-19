@@ -53,7 +53,8 @@ function ChatLinkTooltipLines:AddLine(text, color, size)
 		r = r,
 		g = g,
 		b = b,
-		size = size
+		size = size,
+		wrap = true,
 	});
 end
 

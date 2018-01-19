@@ -423,12 +423,14 @@ function TRP3_API.profile.init()
 	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
 	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
-	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT__PLAYER_PROFILE", loc.CL_IMPORT_PROFILE);
+	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT_PLAYER_PROFILE", loc.CL_IMPORT_PROFILE);
 	local LINK_COMMAND_IMPORT_PROFILE_Q = "PROF_I_Q";
 	local LINK_COMMAND_IMPORT_PROFILE_A = "PROF_I_A";
 
 	function ImportProfileButton:OnClick(profileID, sender)
-		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
+		end);
 	end
 
 	function ImportProfileButton:IsVisible(tooltipData)
@@ -507,10 +509,7 @@ function TRP3_API.profile.init()
 			customColor = TRP3_API.Ellyb.Color(info.characteristics.CH);
 		end
 
-		tooltipLines:SetTitle("Profile: " .. profile.profileName);
-
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true), customColor);
+		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
 
 		if info.characteristics.FT then
 			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);

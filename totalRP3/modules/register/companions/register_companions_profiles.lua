@@ -570,34 +570,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipLines;
 	end
 
-	local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", loc.CL_IMPORT_COMPANION);
-	local LINK_COMMAND_IMPORT_COMPANION_Q = "CMPN_I_Q";
-	local LINK_COMMAND_IMPORT_COMPANION_A = "CMPN_I_A";
-
-	function ImportCompanionProfileButton:IsVisible(profileData)
-		return profileData.canBeImported;
-	end
-
-	function ImportCompanionProfileButton:OnClick(companionProfileID, sender)
-		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_Q, companionProfileID, sender);
-	end
-
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_Q, function(companionProfileID, sender)
-		local profile = getProfiles()[companionProfileID];
-		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_A, profile, sender);
-	end);
-
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_A, function(profile, senderID)
-		local newName = profile.profileName;
-		local i = 1;
-		while not isProfileNameAvailable(newName) and i < 500 do
-			i = i + 1;
-			newName = newName .. " " .. i;
-		end
-		local profileID = duplicateProfile(profile, newName);
-		openProfile(profileID);
-	end);
-
 	local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", loc.CL_OPEN_COMPANION);
 	local LINK_COMMAND_OPEN_COMPANION_Q = "CMPN_O_Q";
 	local LINK_COMMAND_OPEN_COMPANION_A = "CMPN_O_A";
@@ -627,6 +599,38 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		openMainFrame();
 	end);
 
+	local ImportCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("IMPORT_COMPANION", loc.CL_IMPORT_COMPANION);
+	local LINK_COMMAND_IMPORT_COMPANION_Q = "CMPN_I_Q";
+	local LINK_COMMAND_IMPORT_COMPANION_A = "CMPN_I_A";
+
+	function ImportCompanionProfileButton:IsVisible(profileData)
+		return profileData.canBeImported;
+	end
+
+	function ImportCompanionProfileButton:OnClick(companionProfileID, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_Q, companionProfileID, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_Q, function(companionProfileID, sender)
+		local profile = {};
+		TRP3_API.Ellyb.Tables.copy(profile, getProfiles()[companionProfileID]);
+		profile.links = nil;
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_A, profile, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_A, function(profile, senderID)
+		local newName = profile.profileName;
+		local i = 1;
+		while not isProfileNameAvailable(newName) and i < 500 do
+			i = i + 1;
+			newName = newName .. " " .. i;
+		end
+		local profileID = duplicateProfile(profile, newName);
+		openProfile(profileID);
+		openMainFrame();
+	end);
 
 	if TRP3_API.target then
 		-- Target bar button for pets

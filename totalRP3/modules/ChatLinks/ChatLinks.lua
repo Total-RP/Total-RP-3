@@ -250,4 +250,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				callback(false);
 			end)
 	end
+
+	function ChatLinks:CheckVersions(callback)
+		if TRP3_RefTooltip.itemData.v ~= TRP3_API.globals.version then
+			TRP3_API.popup.showConfirmPopup(TRP3_API.loc.CL_VERSIONS_DIFFER, callback);
+		else
+			callback();
+		end
+	end
 end)

@@ -648,7 +648,9 @@ local function onStart()
 	end
 
 	function ImportGlanceButton:OnClick(glanceIndex, sender)
-		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
+		end);
 	end
 
 	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_Q, function(glanceIndex, sender)
