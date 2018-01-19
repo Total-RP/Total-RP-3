@@ -923,10 +923,14 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 			{function(icon) onIconTagSelected(icon, textFrame) end});
 	end);
 	toolbar.color:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(
-			TRP3_API.popup.COLORS,
-			{parent = parentFrame, point = point, parentPoint = parentPoint},
-			{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+			TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		else
+			TRP3_API.popup.showPopup(
+				TRP3_API.popup.COLORS,
+				{parent = parentFrame, point = point, parentPoint = parentPoint},
+				{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		end
 	end);
 	toolbar.image:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(
@@ -1118,28 +1122,4 @@ function TRP3_API.ui.frame.setupMove(frame)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing();
 	end)
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Workarounds
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(frame)
-	local parentFrame = frame:GetParent():GetParent();
-	return parentFrame and parentFrame:GetEffectiveScale() or 1;
-end
-
-function TRP3_API.ui.frame.workaround7_SetFontScale(editboxFrame)
-	local effectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local fontPath, fontSize, fontFlag = editboxFrame:GetFont();
-	editboxFrame:SetFont(fontPath, 11 * effectiveScale, fontFlag);
-end
-
-function TRP3_API.ui.frame.workaround7_3SetWidth(editboxFrame)
-	local parentFrame = editboxFrame:GetParent():GetParent();
-	local parentFrameEffectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local parentEffectiveWidth = parentFrame:GetWidth() * parentFrameEffectiveScale;
-	local effectiveMargin = 40 * parentFrameEffectiveScale;
-	editboxFrame:SetWidth(parentEffectiveWidth - effectiveMargin);
-	editboxFrame:SetHeight(editboxFrame:GetHeight() * parentFrameEffectiveScale);
 end

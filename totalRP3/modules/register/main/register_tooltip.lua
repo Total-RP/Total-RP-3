@@ -137,6 +137,10 @@ local function getSmallLineFontSize()
 end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
+function TRP3_API.ui.tooltip.shouldCropTexts()
+	return getConfigValue(CONFIG_CROP_TEXT);
+end
+
 local function showIcons()
 	return getConfigValue(CONFIG_CHARACT_ICONS);
 end

@@ -1,22 +1,25 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Dashboard
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Dashboard
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 TRP3_API.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
@@ -24,7 +27,6 @@ TRP3_API.dashboard = {
 
 -- imports
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo;
-local loc = TRP3_API.locale.getText;
 local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -45,6 +47,9 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
 local tconcat = table.concat;
+
+-- Total RP 3 imports
+local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -204,8 +209,7 @@ TRP3_API.dashboard.init = function()
 
 	local PATREON_SUPPORTERS = {
 		"Connor Macleod",
-		"Ilsyra",
-		"Nikradical",
+		"Bas (AstaLawl)",
 		"Vlad",
 	}
 	table.sort(PATREON_SUPPORTERS);
@@ -216,7 +220,7 @@ TRP3_API.dashboard.init = function()
 	end
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
+	local whatsNewText = loc("WHATS_NEW_16_3") .. loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
@@ -289,7 +293,7 @@ TRP3_API.dashboard.init = function()
 	 	-- Fallback, open URL in a popup
 		 ]]
 		else
-			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_SAFE);
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)

@@ -18,8 +18,6 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
-	<Script file="locale.lua"/>
 	<Script file="locale_enUS.lua"/>
 	<Script file="locale_deDE.lua"/>
 	<Script file="locale_frFR.lua"/>
