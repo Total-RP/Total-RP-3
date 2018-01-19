@@ -133,9 +133,7 @@ function createVernumQuery()
 		query[VERNUM_QUERY_INDEX_EXTENDED] = Globals.extended_version;
 	end
 	-- Trial accounts
-	if Globals.is_trial_account then
-		query[VERNUM_QUERY_INDEX_TRIALS] = true;
-	end
+	query[VERNUM_QUERY_INDEX_TRIALS] = Globals.is_trial_account;
 
 	return query;
 end
@@ -272,11 +270,11 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	end
 
 	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion);
-	
+
 	if not isUnitIDKnown(senderID) then
 		addCharacter(senderID);
 	end
-	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion);
+	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial);
 	saveCurrentProfileID(senderID, senderProfileID);
 
 	-- Query specific data, depending on version number.
