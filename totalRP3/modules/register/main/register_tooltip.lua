@@ -17,11 +17,14 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local colorCode, hexaToNumber, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.color.hexaToNumber, Utils.table.getTempTable, Utils.table.releaseTempTable;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
 local ui_CharacterTT, ui_CompanionTT = TRP3_CharacterTooltip, TRP3_CompanionTooltip;
@@ -607,6 +610,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
+			end
+			if character.isTrial then
+				clientText = strconcat(clientText, " ", Utils.str.color("o"), "(", loc.REG_TRIAL_ACCOUNT, ")");
 			end
 		end
 		if notifText:len() > 0 or clientText:len() > 0 then

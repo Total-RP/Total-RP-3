@@ -744,7 +744,7 @@ function hooking()
 			local currentCursorPosition = editBox:GetCursorPosition();
 
 			-- Save the text that is before and after the name inserted
-			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len() - 1);
+			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len());
 			local textAfter = currentText:sub(currentCursorPosition+1 );
 
 			local name = getFullnameForUnitUsingChatMethod(unitID, unitID);

@@ -614,7 +614,11 @@
 			<OnLoad function="TRP3_ColorButtonLoad"/>
 			<OnClick>
 				if button == "LeftButton" then
-					TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil ,{self.setColor, self.red, self.green, self.blue});
+					if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+						TRP3_API.popup.showDefaultColorPicker({self.setColor, self.red, self.green, self.blue});
+					else
+						TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, {self.setColor, self.red, self.green, self.blue});
+					end
 				elseif button == "RightButton" then
 					self.setColor(nil, nil, nil);
 				end

@@ -69,7 +69,7 @@ TRP3_API.globals = {
 		class = class,
 		faction = faction
 	},
-
+	is_trial_account = IsTrialAccount() or IsVeteranTrialAccount(),
 	clients = {
 		TRP3 = "trp3",
 		MSP = "msp",

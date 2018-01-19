@@ -1,28 +1,31 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Character page : About
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Character page : About
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 -- imports
 local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local safeGet = TRP3_API.profile.getDataDefault;
-local loc = TRP3_API.locale.getText;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local unitIDToInfo = Utils.str.unitIDToInfo;
@@ -47,6 +50,9 @@ local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
+
+-- Total RP 3 imports
+local loc = TRP3_API.loc;
 
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
 
@@ -121,10 +127,6 @@ local function showTemplate1(dataTab)
 		TRP3_RegisterAbout_AboutPanel_Template1.html = "";
 	end
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
-end
-
-local function onLinkClicked(self, url)
-	TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -998,16 +1000,6 @@ function TRP3_API.register.inits.aboutInit()
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Template1_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
-
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
-		TRP3_MainTooltip:Hide();
-		TRP3_MainTooltip:SetOwner(TRP3_RegisterAbout_AboutPanel, "ANCHOR_CURSOR");
-		TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
-		TRP3_MainTooltip:AddLine(link, 1, 1, 1, true);
-		TRP3_MainTooltip:Show();
-	end);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);
 
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc("REG_PLAYER_PHYSICAL"));
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc("REG_PLAYER_PSYCHO"));

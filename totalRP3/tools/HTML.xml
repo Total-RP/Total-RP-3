@@ -1,0 +1,12 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<Script file="HTML.lua" />
+
+	<Frame name="TRP3_HyperLinkedScripts" virtual="true" mixin="TRP3_HyperLinkedMixin">
+		<Scripts>
+			<OnHyperlinkLeave method="OnHyperlinkLeave" />
+			<OnHyperlinkEnter method="OnHyperlinkEnter" />
+			<OnHyperlinkClick method="OnHyperlinkClick" />
+		</Scripts>
+	</Frame>
+</Ui>

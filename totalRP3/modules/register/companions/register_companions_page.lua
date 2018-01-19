@@ -91,7 +91,7 @@ local function applyPeekSlotProfile(slot, dataTab, ic, ac, ti, tx, swap)
 		peekTab.TX = tx;
 	end
 	-- version increment
-	dataTab.v = Utils.math.incrementNumber(dataTab.v or 1, 2);
+	dataTab.PE.v = Utils.math.incrementNumber(dataTab.PE.v or 1, 2);
 end
 
 local function applyPeekSlot(slot, ic, ac, ti, tx, swap, companionFullID, profileID)
@@ -113,7 +113,15 @@ local function swapGlanceSlot(from, to, companionFullID, profileID)
 		profileID = getCompanionProfileID(companionID);
 	end
 	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
-	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
+	if not dataTab.PE then
+		return;
+	end
+	local fromData = dataTab.PE[from];
+	local toData = dataTab.PE[to];
+	dataTab.PE[from] = toData;
+	dataTab.PE[to] = fromData;
+	-- version increment
+	dataTab.PE.v = Utils.math.incrementNumber(dataTab.PE.v or 1, 2);
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	refreshIfNeeded();
 end
