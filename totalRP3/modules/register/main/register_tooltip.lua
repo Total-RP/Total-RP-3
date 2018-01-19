@@ -420,14 +420,15 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	completeName = color:WrapTextInColorCode(completeName);
 
+	-- OOC
+	if info.character and info.character.RP ~= 1 then
+		completeName = strconcat(TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
+	end
+
 	if showIcons() then
 		-- Player icon
 		if info.characteristics and info.characteristics.IC then
 			leftIcons = strconcat(Utils.str.icon(info.characteristics.IC, 25), leftIcons, " ");
-		end
-		-- OOC
-		if info.character and info.character.RP ~= 1 then
-			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
 		-- AFK / DND status
 		if UnitIsAFK(targetType) then
