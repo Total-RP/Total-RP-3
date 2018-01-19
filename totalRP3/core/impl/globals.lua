@@ -18,68 +18,68 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
 
 -- Public accessor
-TRP3_API = {
-	r = {},
-	formats = {
-		dropDownElements = "%s: |cff00ff00%s"
+TRP3_API.r = {};
+TRP3_API.formats = {
+	dropDownElements = "%s: |cff00ff00%s"
+};
+TRP3_API.globals = {
+	--@debug@
+	DEBUG_MODE = true,
+	--@end-debug@
+
+	--[===[@non-debug@
+	DEBUG_MODE = false,
+	--@end-non-debug@]===]
+
+	empty = {},
+
+	addon_name = "Total RP 3",
+	addon_name_extended = "TRP3: Extended",
+	addon_name_short = "TRP3",
+	addon_name_me = "Total RP 3",
+	addon_id_length = 15,
+
+	version = 38,
+
+	--@debug@
+	version_display = "-dev",
+	--@end-debug@
+
+	--[===[@non-debug@
+	version_display = "@project-version@",
+	--@end-non-debug@]===]
+
+
+	player = UnitName("player"),
+	player_realm = GetRealmName(),
+	player_race_loc = race_loc,
+	player_class_loc = class_loc,
+	player_faction_loc = faction_loc,
+	player_class_index = class_index,
+	player_character = {
+		race = race,
+		class = class,
+		faction = faction
 	},
-	globals = {
-		--@debug@
-		DEBUG_MODE = true,
-		--@end-debug@
 
-		--[===[@non-debug@
-		DEBUG_MODE = false,
-	  	--@end-non-debug@]===]
+	clients = {
+		TRP3 = "trp3",
+		MSP = "msp",
+	},
 
-		empty = {},
-
-		addon_name = "Total RP 3",
-		addon_name_extended = "TRP3: Extended",
-		addon_name_short = "TRP3",
-		addon_name_me = "Total RP 3",
-		addon_id_length = 15,
-
-		version = 36,
-
-		--@debug@
-		version_display = "-dev",
-		--@end-debug@
-
-		--[===[@non-debug@
-		version_display = "@project-version@",
-	  	--@end-non-debug@]===]
-
-
-		player = UnitName("player"),
-		player_realm = GetRealmName(),
-		player_race_loc = race_loc,
-		player_class_loc = class_loc,
-		player_faction_loc = faction_loc,
-		player_class_index = class_index,
-		player_character = {
-			race = race,
-			class = class,
-			faction = faction
-		},
-
-		is_trial_account = IsVeteranTrialAccount(),
-		clients = {
-			TRP3 = "trp3",
-			MSP = "msp",
-		},
-
-		icons = {
-			default = "TEMP",
-			unknown = "INV_Misc_QuestionMark",
-			profile_default = "INV_Misc_GroupLooking",
-		},
-	}
+	icons = {
+		default = "TEMP",
+		unknown = "INV_Misc_QuestionMark",
+		profile_default = "INV_Misc_GroupLooking",
+	},
 }
 
 local emptyMeta = {

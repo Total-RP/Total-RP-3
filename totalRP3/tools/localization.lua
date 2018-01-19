@@ -29,14 +29,14 @@ local _, TRP3_API = ...;
 -- WoW imports
 local format = string.format;
 local assert = assert;
-local type = type;
 local sort = table.sort;
 local pairs = pairs;
 local tinsert = table.insert;
 local tostring = tostring;
 local error = error;
 local sub = string.sub;
-local lower = string.lower;
+
+local isType = TRP3_API.Ellyb.Assertions.isType;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
@@ -78,7 +78,8 @@ TRP3_API.loc = {
 	REG_PLAYER_RESIDENCE_SHOW_TT = "|cff00ff00%s\n\n|rClick to show on map",
 	REG_PLAYER_COLOR_CLASS = "Class color",
 	REG_PLAYER_COLOR_CLASS_TT = "This will also determine the name color.\n\n",
-	REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
+	REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
+	REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
 	REG_PLAYER_FULLTITLE = "Full title",
 	REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
 	REG_PLAYER_RACE = "Race",
@@ -428,9 +429,6 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
 	CO_GENERAL_LOCALE = "Addon locale",
 	CO_GENERAL_COM = "Communication",
-	CO_GENERAL_BROADCAST = "Use broadcast channel",
-	CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the features like characters position on the map, playing local sounds, stashes and signposts access...",
-	CO_GENERAL_BROADCAST_C = "Broadcast channel name",
 	CO_GENERAL_MISC = "Miscellaneous",
 	CO_GENERAL_TT_SIZE = "Info tooltip text size",
 	CO_GENERAL_NEW_VERSION = "Update alert",
@@ -439,6 +437,13 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_UI_SOUNDS_TT = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
 	CO_GENERAL_UI_ANIMATIONS = "UI animations",
 	CO_GENERAL_UI_ANIMATIONS_TT = "Activate the UI animations.",
+	CO_GENERAL_BROADCAST = "Use broadcast channel",
+	CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the features like characters position on the map, playing local sounds, stashes and signposts access...",
+	CO_GENERAL_DEFAULT_COLOR_PICKER = "Default color picker",
+	CO_GENERAL_DEFAULT_COLOR_PICKER_TT = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
+	CO_GENERAL_RESET_CUSTOM_COLORS = "Reset custom colors",
+	CO_GENERAL_RESET_CUSTOM_COLORS_TT = "Removes all custom colors saved in the color picker.",
+	CO_GENERAL_RESET_CUSTOM_COLORS_WARNING = "Are you sure you want to remove all custom colors saved in the color picker ?",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -486,14 +491,21 @@ Class: 50 characters|r]],
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_VOTE = "Use voting system",
 	CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
-	CO_REGISTER_AUTO_ADD = "Auto add new players",
-	CO_REGISTER_AUTO_ADD_TT = [[Automatically add new players you encounter to the register.
-
-|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]],
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommand to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 	CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
+	CO_CURSOR_TITLE = "Cursor interactions",
+	CO_CURSOR_RIGHT_CLICK = "Right-click to open profile",
+	CO_CURSOR_RIGHT_CLICK_TT = [[Right-click on a player in the 3D world to open their profile, if they have one.
+
+|TInterface\Cursor\WorkOrders:25|t This icon will be attached to the cursor when a player has a profile and you can right-click them.
+
+|cffccccccNote: This feature is disabled during combat.|r]],
+	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|f.",
+	CO_CURSOR_MODIFIER_KEY = "Modifier key",
+	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
 	CO_MODULES_VERSION = "Version: %s",
 	CO_MODULES_ID = "Module ID: %s",
@@ -728,6 +740,10 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_SWITCH_HELP = "Switch to another profile using its name.",
 	PR_SLASH_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00to switch to Millidan Foamrage's profile.|r",
 	PR_SLASH_NOT_FOUND = "|cffff0000Could not find a profile named|r |cffffff00%s|r|cffff0000.|r",
+	PR_SLASH_OPEN_HELP = "Open a character's profile using its in-game name, or your target's profile if no name is provided.",
+	PR_SLASH_OPEN_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 open|r |cffffff00to open your target's profile or |cffcccccc/trp3 open CharacterName-RealmName|r |cffffff00to open that character's profile.|r",
+	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
+	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DASHBOARD
@@ -779,11 +795,18 @@ This will works:|cff00ff00
 	UI_MUSIC_SELECT = "Select music",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
+	UI_COLOR_BROWSER_PRESETS = "Presets",
+	UI_COLOR_BROWSER_PRESETS_BASIC = "Basic",
+	UI_COLOR_BROWSER_PRESETS_CLASSES = "Class",
+	UI_COLOR_BROWSER_PRESETS_RESOURCES = "Resource",
+	UI_COLOR_BROWSER_PRESETS_ITEMS = "Item quality",
+	UI_COLOR_BROWSER_PRESETS_CUSTOM = "Custom",
 	UI_IMAGE_BROWSER = "Image browser",
 	UI_IMAGE_SELECT = "Select image",
 	UI_FILTER = "Filter",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
+	UI_LINK_SAFE = [[Here's the link URL.]],
 	UI_LINK_WARNING = [[Here's the link URL.
 You can copy/paste it in your web browser.
 
@@ -817,6 +840,8 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_LINK = "Link",
 	CM_SAVE = "Save",
 	CM_CANCEL = "Cancel",
+	CM_DELETE = "Delete",
+	CM_RESET = "Reset",
 	CM_NAME = "Name",
 	CM_VALUE = "Value",
 	CM_UNKNOWN = "Unknown",
@@ -853,6 +878,18 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_TWEET_PROFILE = "Show profile url",
 	CM_TWEET = "Send a tweet",
 
+	CM_ORANGE = "Orange",
+	CM_WHITE = "White",
+	CM_YELLOW = "Yellow",
+	CM_CYAN = "Cyan",
+	CM_BLUE = "Blue",
+	CM_GREEN = "Green",
+	CM_RED = "Red",
+	CM_PURPLE = "Purple",
+	CM_PINK = "Pink",
+	CM_BLACK = "Black",
+	CM_GREY = "Grey",
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Minimap button
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -868,6 +905,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
 	BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
+	BW_CUSTOM_NAME = "Custom color name",
+	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
+	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker
@@ -1034,6 +1074,30 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 - Fixed an issue where the Mary Sue Protocol downloading indicator would get stuck for Total RP 3 profiles.
 
 ]],
+	WHATS_NEW_16_2 = [[
+## 1.2.11.2 - 2017-12-26
+
+### Fixed
+
+- Fixed a Lua overflow error with the ChatThrottleLib that could occur in rare cases.
+- Fixed an issue that would cause the tooltip to reload all the data too frequently.
+- Fixed an issue that could cause a larger than usual amount of Unknown profiles to be listed in the Directory.
+
+### Removed
+
+- Removed the downloading progression indicator in the tooltip for now as it was the cause of some of these issues. It will be brought back later with a better implementation.
+
+]],
+	WHATS_NEW_16_3 = [[
+## 1.2.11.3 - 2018-01-02
+
+Happy new year! The Total RP 3 team wishes you the best for 2018.
+
+### Updated
+
+- Updated list of Patreon supporters inside the add-on for the month of December.
+
+]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
@@ -1087,13 +1151,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DEBUG
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	DEBUG_NIL_PARAMETER = [[Unexpected nil parameter "%1$s".]],
-	-- Parameters order: parameterName, actualParameterType, expectedParameterType
-	DEBUG_WRONG_PARAM_TYPE = [[Invalid parameter type "%2$s" for parameter "%1$s", expected "%3$s".]],
 };
 
 -- Save the raw locale content to be used as default
@@ -1167,10 +1224,10 @@ local current;
 ---Register a new localization
 ---@param localeStructure table
 function Locale.registerLocale(localeStructure)
-	assert(type(localeStructure) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure", type(localeStructure), "table"));
-	assert(type(localeStructure.locale) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.locale", type(localeStructure.locale), "string"));
-	assert(type(localeStructure.localeText) == "string", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeText", type(localeStructure.localeText), "string"));
-	assert(type(localeStructure.localeContent) == "table", TRP3_API.loc(TRP3_API.loc.DEBUG_WRONG_PARAM_TYPE, "localeStructure.localeContent", type(localeStructure.localeContent), "table"));
+	assert(isType(localeStructure, "table", "localeStructure"));
+	assert(isType(localeStructure.locale, "string", "localeStructure.locale"));
+	assert(isType(localeStructure.localeText, "string", "localeStructure.localeText"));
+	assert(isType(localeStructure.localeContent, "table", "localeStructure.localeContent"));
 
 	assert(localizations[localeStructure.locale] == nil, format("A localization for %s has already been registered.", localeStructure.locale));
 
@@ -1269,7 +1326,7 @@ local VOWELS = {
 	"I",
 	"O",
 	"U",
-	"Y"
+	"Y",
 	"À",
 	"Â",
 	"Ä",

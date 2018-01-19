@@ -1,21 +1,25 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- "At first glance" bar module
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- "At first glance" bar module
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 -- API
 TRP3_API.register.glance = {};
@@ -25,6 +29,8 @@ local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
+local crop = TRP3_API.Ellyb.Strings.crop;
+local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance utils
@@ -341,6 +347,8 @@ local function configTooltipAnchor()
 	return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
 end
 
+local GLANCE_TOOLTIP_CROP = 400;
+local GLANCE_TITLE_CROP = 150;
 local function displayGlanceSlots()
 	local glanceTab = getGlanceTab();
 
@@ -359,8 +367,14 @@ local function displayGlanceSlots()
 				if glance.IC and glance.IC:len() > 0 then
 					icon = glance.IC;
 				end
-				local TTText = "|cffff9900" .. (glance.TX or "...");
-				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. (glance.TI or "..."), TTText);
+				local TTText = glance.TX or "...";
+				local glanceTitle = glance.TI or "...";
+				if not isCurrentMine and shouldCropTexts() then
+					TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
+					glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
+				end
+				TTText = "|cffff9900" .. TTText;
+				setTooltipForSameFrame(button, configTooltipAnchor(), 0, 0, Utils.str.icon(icon, 30) .. " " .. glanceTitle, TTText);
 			else
 				button:SetAlpha(0.25);
 				setTooltipForSameFrame(button);
