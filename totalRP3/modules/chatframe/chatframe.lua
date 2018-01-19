@@ -1,23 +1,31 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Chat management
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Chat management
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- Removed NPC talk prefix option and changed prefix to a hardcoded one (Paul Corlay) [RIP NPC talk prefix option 2014 - 2017]
+
+-- Ellyb imports
+local ColorManager = TRP3_API.Ellyb.ColorManager;
+local Color = TRP3_API.Ellyb.Color;
 
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
@@ -115,7 +123,7 @@ local function configOOCDetectionPattern()
 end
 
 local function configOOCDetectionColor()
-	return getColorFromHexadecimalCode(getConfigValue(CONFIG_OOC_COLOR));
+	return Color(getConfigValue(CONFIG_OOC_COLOR));
 end
 
 local function configInsertFullRPName()
@@ -298,22 +306,71 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function detectEmoteAndOOC(message)
-	
-	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
-		local chatColor = getChatColorForChannel("EMOTE");
-		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return chatColor:WrapTextInColorCode(content);
-		end);
+---@param message string
+---@param NPCEmoteChatColor Color
+local function detectEmoteAndOOC(message, NPCEmoteChatColor)
+
+	-- For NPC speech color reset
+	local NPCEmoteChatString = "";
+	if NPCEmoteChatColor then
+		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
 	end
-	
+
+	-- For links exception
+	local EmoteTempPatternStart = "TRP3BTMPEMOTE"
+	local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
+	local OOCTempPatternStart = "TRP3BTEMPOOC"
+	local OOCTempPatternEnd = "TRP3ETEMPOOC"
+
+	local LinkDetectionPattern = "(%|H.-%|h.-|h)"
+	local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
+	local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
+
+	-- Emote/OOC replacement
+	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
+		local chatColor = ColorManager.getChatColorForChannel("EMOTE");
+		message = message:gsub(configEmoteDetectionPattern(), function(content)
+			return EmoteTempPatternStart .. content .. EmoteTempPatternEnd;
+		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(EmoteTempDetectionPattern)) then
+			message = message:gsub(EmoteTempDetectionPattern, function(content)
+				return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
+	end
+
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
-			return OOCColor:WrapTextInColorCode(content);
+			return OOCTempPatternStart .. content .. OOCTempPatternEnd;
 		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(OOCTempDetectionPattern)) then
+			message = message:gsub(OOCTempDetectionPattern, function(content)
+				return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
 	end
-	
+
 	return message;
 end
 
@@ -328,17 +385,17 @@ local function handleNPCEmote(message)
 	-- Go through all talk types
 	for talkType, talkChannel in pairs(NPC_TALK_PATTERNS) do
 		if message:find(talkType) then
-			local chatColor = getChatColorForChannel(talkChannel);
+			local chatColor = ColorManager.getChatColorForChannel(talkChannel);
 			local name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			local content = message:sub(name:len() + 5);
 
-			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content);
+			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content), chatColor;
 		end
 	end
 
 	-- If none was found, we default to emote
-	local chatColor = getChatColorForChannel("MONSTER_EMOTE");
-	return chatColor:WrapTextInColorCode(message:sub(4)), " ";
+	local chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
+	return chatColor:WrapTextInColorCode(message:sub(4)), " ", chatColor;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -364,12 +421,13 @@ end
 function handleCharacterMessage(_, event, message, ...)
 	
 	local messageID = select(10, ...);
+	local NPCEmoteChatColor;
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
-			npcMessageName, message = handleNPCEmote(message);
+			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message);
 
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
@@ -395,7 +453,7 @@ function handleCharacterMessage(_, event, message, ...)
 	end
 
 	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(message);
+	message = detectEmoteAndOOC(message, NPCEmoteChatColor);
 
 	return false, message, ...;
 end
