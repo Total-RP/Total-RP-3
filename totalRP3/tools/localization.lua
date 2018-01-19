@@ -435,6 +435,8 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_UI_SOUNDS_TT = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
 	CO_GENERAL_UI_ANIMATIONS = "UI animations",
 	CO_GENERAL_UI_ANIMATIONS_TT = "Activate the UI animations.",
+	CO_GENERAL_BROADCAST = "Use broadcast channel",
+	CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the features like characters position on the map, playing local sounds, stashes and signposts access...",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",

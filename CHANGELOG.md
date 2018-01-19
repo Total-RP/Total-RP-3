@@ -31,6 +31,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 - Text emotes and out of character texts patterns are no longer parsed in links (like item links or achievement links).
 - Fixed issue preventing from clicking on links in companion profiles.
 - Fixed an issue that prevent at-first-glance information from companion profiles to be updated.
+- Fixed an issue with name formatting when Shift + Clicking player names in chat
 
 ### Modified
 
