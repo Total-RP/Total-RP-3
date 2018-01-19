@@ -629,7 +629,7 @@ function TRP3_API.profile.init()
         id = "stash",
         handler = function()
             -- The list of our global variables that will be stashed away.
-            local globalVariables = {"TRP3_Profiles", "TRP3_Characters", "TRP3_Configuration", "TRP3_Flyway", "TRP3_Presets", "TRP3_Companions"};
+            local globalVariables = {"TRP3_Profiles", "TRP3_Characters", "TRP3_Configuration", "TRP3_Flyway", "TRP3_Presets", "TRP3_Companions", "TRP3_Colors"};
             -- If we already have data stashed, restore the data
             if TRP3_StashedData then
                 for _, variable in pairs(globalVariables) do

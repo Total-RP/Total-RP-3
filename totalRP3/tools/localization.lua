@@ -78,7 +78,8 @@ TRP3_API.loc = {
 	REG_PLAYER_RESIDENCE_SHOW_TT = "|cff00ff00%s\n\n|rClick to show on map",
 	REG_PLAYER_COLOR_CLASS = "Class color",
 	REG_PLAYER_COLOR_CLASS_TT = "This will also determine the name color.\n\n",
-	REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
+	REG_PLAYER_COLOR_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
+	REG_PLAYER_COLOR_ALWAYS_DEFAULT_TT = "|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color",
 	REG_PLAYER_FULLTITLE = "Full title",
 	REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
 	REG_PLAYER_RACE = "Race",
@@ -298,6 +299,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_RELATION_TARGET = "|cffffff00Click: |rChange relation",
 	REG_REGISTER = "Directory",
 	REG_REGISTER_CHAR_LIST = "Characters list",
+	REG_TRIAL_ACCOUNT = "Trial Account",
 	REG_TT_GUILD_IC = "IC member",
 	REG_TT_GUILD_OOC = "OOC member",
 	REG_TT_LEVEL = "Level %s %s",
@@ -435,6 +437,13 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_UI_SOUNDS_TT = "Activate the UI sounds (when opening windows, switching tabs, clicking buttons).",
 	CO_GENERAL_UI_ANIMATIONS = "UI animations",
 	CO_GENERAL_UI_ANIMATIONS_TT = "Activate the UI animations.",
+	CO_GENERAL_BROADCAST = "Use broadcast channel",
+	CO_GENERAL_BROADCAST_TT = "The broadcast channel is used by a lot of features. Disabling it will disable all the features like characters position on the map, playing local sounds, stashes and signposts access...",
+	CO_GENERAL_DEFAULT_COLOR_PICKER = "Default color picker",
+	CO_GENERAL_DEFAULT_COLOR_PICKER_TT = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
+	CO_GENERAL_RESET_CUSTOM_COLORS = "Reset custom colors",
+	CO_GENERAL_RESET_CUSTOM_COLORS_TT = "Removes all custom colors saved in the color picker.",
+	CO_GENERAL_RESET_CUSTOM_COLORS_WARNING = "Are you sure you want to remove all custom colors saved in the color picker ?",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -493,6 +502,8 @@ Class: 50 characters|r]],
 |TInterface\Cursor\WorkOrders:25|t This icon will be attached to the cursor when a player has a profile and you can right-click them.
 
 |cffccccccNote: This feature is disabled during combat.|r]],
+	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|f.",
 	CO_CURSOR_MODIFIER_KEY = "Modifier key",
 	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
@@ -784,11 +795,18 @@ This will works:|cff00ff00
 	UI_MUSIC_SELECT = "Select music",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
+	UI_COLOR_BROWSER_PRESETS = "Presets",
+	UI_COLOR_BROWSER_PRESETS_BASIC = "Basic",
+	UI_COLOR_BROWSER_PRESETS_CLASSES = "Class",
+	UI_COLOR_BROWSER_PRESETS_RESOURCES = "Resource",
+	UI_COLOR_BROWSER_PRESETS_ITEMS = "Item quality",
+	UI_COLOR_BROWSER_PRESETS_CUSTOM = "Custom",
 	UI_IMAGE_BROWSER = "Image browser",
 	UI_IMAGE_SELECT = "Select image",
 	UI_FILTER = "Filter",
 	UI_LINK_URL = "http://your.url.here",
 	UI_LINK_TEXT = "Your text here",
+	UI_LINK_SAFE = [[Here's the link URL.]],
 	UI_LINK_WARNING = [[Here's the link URL.
 You can copy/paste it in your web browser.
 
@@ -822,6 +840,8 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_LINK = "Link",
 	CM_SAVE = "Save",
 	CM_CANCEL = "Cancel",
+	CM_DELETE = "Delete",
+	CM_RESET = "Reset",
 	CM_NAME = "Name",
 	CM_VALUE = "Value",
 	CM_UNKNOWN = "Unknown",
@@ -858,6 +878,18 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_TWEET_PROFILE = "Show profile url",
 	CM_TWEET = "Send a tweet",
 
+	CM_ORANGE = "Orange",
+	CM_WHITE = "White",
+	CM_YELLOW = "Yellow",
+	CM_CYAN = "Cyan",
+	CM_BLUE = "Blue",
+	CM_GREEN = "Green",
+	CM_RED = "Red",
+	CM_PURPLE = "Purple",
+	CM_PINK = "Pink",
+	CM_BLACK = "Black",
+	CM_GREY = "Grey",
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Minimap button
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -873,6 +905,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
 	BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
+	BW_CUSTOM_NAME = "Custom color name",
+	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
+	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker
@@ -917,7 +952,13 @@ Total RP is not responsible for links leading to harmful content.]],
 	MATURE_FILTER_OPTION = "Filter mature profiles",
 	MATURE_FILTER_OPTION_TT = [[Check this option to enable mature profile filtering. Total RP 3 will scan incoming profiles when they are received for specific keywords reported as being for a mature audience and flag the profile as mature if it finds such word.
 
-A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.]],
+A mature profile will have a muted tooltip and you will have to confirm that you want to view the profile the first time you open it.
+
+|cffccccccNote: The mature filter dictionary is pre-populated with a list of words from a crowd sourced repository. You can edit the words using the option below.|r]],
+	MATURE_FILTER_STRENGTH = "Mature filter strength",
+	MATURE_FILTER_STRENGTH_TT = [[Set the strength of the mature filter.
+
+|cffcccccc1 is weak (10 bad words required to flag), 10 is strong (only 1 bad word required to flag).|r]],
 	MATURE_FILTER_ADD_TO_WHITELIST = "Add this profile to the |cffffffffmature white list|r",
 	MATURE_FILTER_ADD_TO_WHITELIST_TT = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
 	MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Add to the |cffffffffmature white list|r",

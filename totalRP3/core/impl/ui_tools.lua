@@ -923,10 +923,14 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 			{function(icon) onIconTagSelected(icon, textFrame) end});
 	end);
 	toolbar.color:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(
-			TRP3_API.popup.COLORS,
-			{parent = parentFrame, point = point, parentPoint = parentPoint},
-			{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+			TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		else
+			TRP3_API.popup.showPopup(
+				TRP3_API.popup.COLORS,
+				{parent = parentFrame, point = point, parentPoint = parentPoint},
+				{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		end
 	end);
 	toolbar.image:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(

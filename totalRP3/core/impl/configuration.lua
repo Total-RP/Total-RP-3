@@ -389,10 +389,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, {getLocaleText(locale), locale});
 	end
 
+	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
+	registerConfigKey("default_color_picker", false);
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -412,6 +414,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				listCallback = changeLocale,
 				listDefault = getLocaleText(getCurrentLocale()),
 				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc("CO_GENERAL_COM"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_BROADCAST"),
+				configKey = "comm_broad_use",
+				help = loc("CO_GENERAL_BROADCAST_TT"),
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -449,6 +461,23 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				title = loc("CO_GENERAL_UI_ANIMATIONS"),
 				configKey = "ui_animations",
 				help = loc("CO_GENERAL_UI_ANIMATIONS_TT"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_GENERAL_DEFAULT_COLOR_PICKER"),
+				configKey = "default_color_picker",
+				help = loc("CO_GENERAL_DEFAULT_COLOR_PICKER_TT"),
+			},
+			{
+				inherit = "TRP3_ConfigButton",
+				title = loc("CO_GENERAL_RESET_CUSTOM_COLORS"),
+				help = loc("CO_GENERAL_RESET_CUSTOM_COLORS_TT"),
+				text = loc("CM_RESET"),
+				callback = function()
+					TRP3_API.popup.showConfirmPopup(loc("CO_GENERAL_RESET_CUSTOM_COLORS_WARNING"), function()
+						TRP3_Colors = {};
+					end);
+				end,
 			},
 		}
 	}
