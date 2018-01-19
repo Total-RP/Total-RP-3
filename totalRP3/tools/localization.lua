@@ -1371,7 +1371,7 @@ VOWELS = tInvert(VOWELS);
 ---@param letter string @ A single letter as a string (can be uppercase or lowercase)
 ---@return boolean isAVowel @ True if the letter is a vowel
 function Locale.isAVowel(letter)
-	return VOWELS[letter] == true;
+	return VOWELS[letter] ~= nil;
 end
 
 ---generateFrenchDeterminerForText
@@ -1384,9 +1384,9 @@ function Locale.generateFrenchDeterminerForText(text, followingText)
 
 	local firstLetterFollowing = sub(followingText, 1, 1);
 	if Locale.isAVowel(firstLetterFollowing) then
-		text = text:gsub("|2 ", "de");
+		text = text:gsub("|2", "de");
 	else
-		text = text:gsub("|2", "'d'");
+		text = text:gsub("|2 ", "d'");
 	end
 
 	return text;
