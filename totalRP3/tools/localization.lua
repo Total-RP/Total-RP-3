@@ -601,6 +601,8 @@ Possible status:
 	CO_CHAT_MAIN_OOC_COLOR = "OOC color",
 	CO_CHAT_MAIN_EMOTE_YELL = "No yelled emote",
 	CO_CHAT_MAIN_EMOTE_YELL_TT = "Do not show *emote* or <emote> in yelling.",
+	CO_CHAT_NPCSPEECH_REPLACEMENT = "Customize companion names in NPC speeches",
+	CO_CHAT_NPCSPEECH_REPLACEMENT_TT = "If a companion name is in brackets in an NPC speech, it will be colored and its icon will be shown depending on your settings above.",
 	CO_GLANCE_MAIN = "\"At first glance\" bar",
 	CO_GLANCE_RESET_TT = "Reset the bar position to the bottom left of the anchored frame.",
 	CO_GLANCE_LOCK = "Lock bar",
@@ -1016,6 +1018,8 @@ Are you sure you want to view this profile?]],
 	NPC_TALK_NAME_TT = [[You can use standard chat tags like %t to insert your target's name or %f to insert your focus' name.
 
 You can also leave this field empty to create emotes without an NPC name at the start.
+
+Putting your companion name in [brackets] will allow color and icon customization.
 ]],
 	NPC_TALK_MESSAGE = "Message",
 	NPC_TALK_CHANNEL = "Channel: ",

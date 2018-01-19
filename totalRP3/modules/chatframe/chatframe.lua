@@ -74,6 +74,7 @@ local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
 local CONFIG_INCREASE_CONTRAST = "chat_color_contrast";
 local CONFIG_SHOW_ICON = "chat_show_icon";
+local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -145,6 +146,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
     registerConfigKey(CONFIG_SHOW_ICON, false);
+	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, false);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -210,6 +212,12 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_CHAT_USE_ICONS"),
 				configKey = CONFIG_SHOW_ICON,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_NPCSPEECH_REPLACEMENT"),
+				help = loc("CO_CHAT_NPCSPEECH_REPLACEMENT_TT"),
+				configKey = CONFIG_NPCSPEECH_REPLACEMENT,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -388,6 +396,12 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 
 	local innerName = name:sub(2, name:len() - 1);
 
+	-- If option disabled, just return the colored name.
+	if not getConfigValue(CONFIG_NPCSPEECH_REPLACEMENT) then
+		return chatColor:WrapTextInColorCode(innerName);
+	end
+
+	-- If it's the player's emote, look in his own pet profiles
 	if (senderID == Globals.player_id) then
 		for profileID, profile in pairs(TRP3_API.companions.player.getProfiles()) do
 			if (profile.data and profile.data.NA == innerName) then
@@ -396,6 +410,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 				break
 			end
 		end
+	-- If it's another player's emote, look in the register for a matching pet profile from that player
 	else
 		for profileID, profile in pairs(TRP3_API.companions.register.getProfiles()) do
 			local isMaster = false;
@@ -414,6 +429,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		end
 	end
 
+	-- Get the pet custom color
 	if configShowNameCustomColors() and petProfile and petProfile.data then
 		local customColor = petProfile.data.NH;
 
@@ -437,6 +453,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		name = chatColor:WrapTextInColorCode(name);
 	end
 
+	-- Add the icon
 	if getConfigValue(CONFIG_SHOW_ICON) then
 		if petProfile and petProfile.data and petProfile.data.IC then
 			name = Utils.str.icon(petProfile.data.IC, 15) .. " " .. name;
