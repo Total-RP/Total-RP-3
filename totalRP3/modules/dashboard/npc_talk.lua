@@ -172,6 +172,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	setTooltipForSameFrame(frame.name.help, "RIGHT", 0, 5, loc("NPC_TALK_NAME"), loc("NPC_TALK_NAME_TT"));
 
+	TRP3_API.Ellyb.EditBoxes.setupTabKeyNavigation(frame.name, frame.messageText.scroll.text);
+
 	setupMovableFrame(frame);
 
 
