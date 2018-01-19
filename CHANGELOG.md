@@ -42,6 +42,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 - Improvements to the localization system. More pets should be recognized as companions, especially when using non-English clients.
 - We are now using a custom popup dialog when clicking on a link to offer to copy-paste the URL, to avoid issues when other add-ons are messing with the game's default dialog.
 - Minor changes to the way some tooltips are displayed (color picker buttons, the minimap button).
+- The Out of character indicator in the tooltip is now more obvious. Instead of the red icon in the top right corner of the tooltip, an [OOC] text in red is displayed in front of the player's name.
 
 ### Removed
 
