@@ -386,10 +386,13 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 	local nameColor;
 	local petProfile;
 
+	local innerName = name:sub(2, name:len() - 1);
+
 	if (senderID == Globals.player_id) then
 		for profileID, profile in pairs(TRP3_API.companions.player.getProfiles()) do
-			if (profile.data and profile.data.NA == name) then
+			if (profile.data and profile.data.NA == innerName) then
 				petProfile = profile;
+				name = innerName;
 				break
 			end
 		end
@@ -403,8 +406,9 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 				end
 			end
 
-			if (isMaster and profile.data and profile.data.NA == name) then
+			if (isMaster and profile.data and profile.data.NA == innerName) then
 				petProfile = profile;
+				name = innerName;
 				break
 			end
 		end
@@ -427,7 +431,8 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 	-- If we did get a color wrap the name inside the color code
 	if nameColor then
 		-- And wrap the name inside the color's code
-		name = nameColor:WrapTextInColorCode(name);
+		name = nameColor:WrapTextInColorCode(name) .. chatColor:GetColorCodeStartSequence();
+		-- We need the start sequence at the end because emotes replace names in the whole message. Might be redundant for other speech types.
 	else
 		name = chatColor:WrapTextInColorCode(name);
 	end
@@ -444,17 +449,23 @@ end
 local function handleNPCEmote(message, senderID)
 
 	local chatColor;
-	local name;
-	local content;
 
 	-- Go through all talk types
 	for talkType, talkChannel in pairs(NPC_TALK_PATTERNS) do
+
+		local name;
+		local content;
+
 		if message:find(talkType) then
 			chatColor = ColorManager.getChatColorForChannel(talkChannel);
 			name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
 			content = message:sub(name:len() + 5);
 
-			name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
+			if (name:match("^%[.-%]$")) then
+				name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
+			else
+				name = chatColor:WrapTextInColorCode(name);
+			end
 
 			return name, chatColor:WrapTextInColorCode(content), chatColor;
 		end
@@ -462,33 +473,10 @@ local function handleNPCEmote(message, senderID)
 
 	-- If none was found, we default to emote
 	chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
-	if message:find("* ") then
-		name = message:sub(4, message:find("* ") - 1);
-		content = message:sub(name:len() + 6);
+	message = chatColor:WrapTextInColorCode(message:sub(4));
+	message = message:gsub("%[.-%]", function(name) return wrapNameInColorForNPCEmote(name, senderID, chatColor); end);
 
-		name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
-
-		-- Check if this message was flagged as containing a 's at the beggning.
-		-- To avoid having a space between the name of the player and the 's we previously removed the 's
-		-- from the message. We now need to insert it after the player's name, without a space.
-		if content:sub(1, 3) == "'s " then
-			name = name .. "'s";
-			content = content:sub(4);
-		end
-		-- Support for emotes starting with a ,
-		-- We remove the space so the comma is placed right after the name
-		if content:sub(1, 2) == ", " then
-			name = name .. ",";
-			content = content:sub(3);
-		end
-
-		content = chatColor:WrapTextInColorCode(content);
-	else
-		name = chatColor:WrapTextInColorCode(message:sub(4));
-		content = " ";
-	end
-
-	return name, content, chatColor;
+	return message, " ", chatColor;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
