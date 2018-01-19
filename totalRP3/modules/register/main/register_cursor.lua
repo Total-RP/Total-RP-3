@@ -159,9 +159,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		help = loc.CO_CURSOR_MODIFIER_KEY_TT,
 		listContent = {
 			{ NONE, 1 },
-			{ TRP3_API.Ellyb.System.SHORTCUTS.SHIFT, 2 },
-			{ TRP3_API.Ellyb.System.SHORTCUTS.CTRL, 3 },
-			{ TRP3_API.Ellyb.System.SHORTCUTS.ALT, 4 }
+			{ TRP3_API.Ellyb.System.MODIFIERS.SHIFT, 2 },
+			{ TRP3_API.Ellyb.System.MODIFIERS.CTRL, 3 },
+			{ TRP3_API.Ellyb.System.MODIFIERS.ALT, 4 }
 		},
 		configKey = CONFIG_RIGHT_CLICK_OPEN_PROFILE_MODIFIER_KEY,
 		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
