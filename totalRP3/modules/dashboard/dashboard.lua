@@ -268,7 +268,7 @@ TRP3_API.dashboard.init = function()
 				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
 			else
 				url = url:gsub("twitter", "http://twitter.com/");
-				TRP3_API.popup.showTextInputPopup("|cff55aceeTwitter profile|r\n" .. loc("UI_LINK_WARNING"), nil, nil, url);
+				TRP3_API.Ellyb.Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n");
 			end
 		--[[
 		-- Links relative to the What's new section (valid for version 1.1.0)

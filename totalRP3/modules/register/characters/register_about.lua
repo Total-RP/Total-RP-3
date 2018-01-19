@@ -129,10 +129,6 @@ local function showTemplate1(dataTab)
 	TRP3_RegisterAbout_AboutPanel_Template1:Show();
 end
 
-local function onLinkClicked(self, url)
-	TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_WARNING);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TEMPLATE 2
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1004,16 +1000,6 @@ function TRP3_API.register.inits.aboutInit()
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc("REG_PLAYER_ABOUT_EMPTY"));
 	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Template1_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
-
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkClick", onLinkClicked);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkEnter", function(self, link, text)
-		TRP3_MainTooltip:Hide();
-		TRP3_MainTooltip:SetOwner(TRP3_RegisterAbout_AboutPanel, "ANCHOR_CURSOR");
-		TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
-		TRP3_MainTooltip:AddLine(link, 1, 1, 1, true);
-		TRP3_MainTooltip:Show();
-	end);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetScript("OnHyperlinkLeave", function() TRP3_MainTooltip:Hide(); end);
 
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc("REG_PLAYER_PHYSICAL"));
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc("REG_PLAYER_PSYCHO"));

@@ -387,7 +387,7 @@
 						<ScrollChild>
 							<Frame name="TRP3_RegisterAbout_AboutPanel_Container">
 								<Frames>
-									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1">
+									<SimpleHTML name="TRP3_RegisterAbout_AboutPanel_Template1" inherits="TRP3_HyperLinkedScripts">
 										<Anchors>
 											<Anchor point="TOPLEFT" x="5" y="-5"/>
 										</Anchors>

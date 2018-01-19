@@ -4,9 +4,9 @@
 
 	<Frame name="TRP3_HyperLinkedScripts" virtual="true" mixin="TRP3_HyperLinkedMixin">
 		<Scripts>
-			<OnHyperlinkLeave method="OnHyperlinkLeave" intrinsicOrder="postcall" />
-			<OnHyperlinkEnter method="OnHyperlinkEnter" intrinsicOrder="postcall" />
-			<OnHyperlinkClick method="OnHyperlinkClick" intrinsicOrder="postcall" />
+			<OnHyperlinkLeave method="OnHyperlinkLeave" />
+			<OnHyperlinkEnter method="OnHyperlinkEnter" />
+			<OnHyperlinkClick method="OnHyperlinkClick" />
 		</Scripts>
 	</Frame>
 </Ui>
