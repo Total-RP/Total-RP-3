@@ -4,11 +4,11 @@
 
 ### New feature: chat links
 
-We have added a new chat links framework to Total RP 3, allowing you send links for many features of Total RP 3 to other Total RP 3 users. With this update, you can send people links of your profile, companions profiles, at-first-glances and other players profiles from your directory.
+We have added a new chat links framework to Total RP 3, allowing you to send links for many features of Total RP 3 to other Total RP 3 users. With this update, you can send people links to your profile, companions profiles, at-first-glance presets and other players' profiles from your directory.
 
 ![Inserting a profile link shows a tooltip when clicking, with options to open or import the profile](http://via.placeholder.com/350x150)
 
-When clicking a link you can see a quick preview of what was shared in a tooltip, with action buttons available to open or even import the content. When you create a link, you will be asked if you want to let other people import what you are sharing, so you can send a link of your profile but only let people consult it.
+When clicking a link, you can see a quick preview of what was shared in a tooltip, with action buttons available to open or even import the content. When you create a link, you will be asked if you want to let other people import what you are sharing, so you can send a link to your profile but only let people read it.
 
 ![You can create a player profile link, a companion profile link, a directory profile link and an at-first-glance preset link](http://via.placeholder.com/350x150)
 
@@ -16,20 +16,20 @@ When clicking a link you can see a quick preview of what was shared in a tooltip
 
 ### New feature: right-click a player to open their profile
 
-We have added a new feature that allows you to right-click on a player in the game to open their profile in Total RP 3. An icon will appear next to the cursor when the player has a RP profile that can be opened. This feature is disabled by default and can be enabled in the Directory settings, and is always disabled when you are in combat. You can also choose to automatically disable it when you go out of character, or apply a modifier like Shift or Control when clicking.
+We have added a new feature that allows you to right-click on a player in the game to open their profile in Total RP 3. An icon will appear next to the cursor when the player has a RP profile that can be opened. This feature is disabled by default and can be enabled in the Directory settings. It is always disabled when you are in combat, and you can choose to automatically disable it when you go out of character, or apply a modifier like Shift or Control when clicking.
 
 ![When the cursor is over a player with a profile an icon is shown](http://via.placeholder.com/350x150)
 
 ### Added
 
-- Added new slash command to open someone's profile. Using `/trp3 open` will open your target's profile and using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
-- Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default. This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors. For example in `/e | [Cat] says: Meow` or `|e [Cat] meowls.`, `[Cat]` wil be formatted using the Cat companion profile, with colors and icons if enabled in the chat settings.  
+- Added new slash command to open someone's profile. Using `/trp3 open` will open your target's profile, while using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
+- Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default. This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors. For example in `/e | [Cat] says: Meow` or `/e | [Cat] meowls.`, `[Cat]` will be formatted using the Cat companion profile, with colors and icons if enabled in the chat settings.  
 ![You can have companion names formatted inside NPC speeches and emotes](http://via.placeholder.com/350x150)
 - Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.  
 ![The color palette provides a few basic colors and allows your to save your own to use later](http://via.placeholder.com/350x150)
 - Added an option to use the default color picker instead of Total RP 3's color picker in the General settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
-- Added option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
-- The option to crop long texts in the tooltips now also crop long text in the at-first-glance tooltip when shown on the target frame. Only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
+- Added an option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
+- The option to crop long texts in the tooltips now also crop long text in the at-first-glance tooltip when shown on the target frame. Only applies to other people's at-first-glance presets. The tooltips inside the profile page are not cropped.
 - Updated list of icons for the icon browser, added 177 icons from patch 7.3.5.
 - Updated list of images for the image browser, added 97 images of the game's zones from the new warboard UI from patch 7.3.5.
 - Updated list of musics for the music browser, added 23 musics from patch 7.3 (Argus).
@@ -41,8 +41,8 @@ We have added a new feature that allows you to right-click on a player in the ga
 - Fixed an issue causing incorrect colors in NPC chat messages when using text emotes (`* *` or `< >`) or out of character texts (`( )` or `(( ))`).
 - Text emotes and out of character texts patterns are no longer parsed in links (like item links or achievement links).
 - Fixed issue preventing from clicking on links in companion profiles.
-- Fixed an issue that prevent at-first-glance information from companion profiles to be updated.
-- Fixed an issue with name formatting when Shift + Clicking player names in chat
+- Fixed an issue that prevent at-first-glance information from companion profiles from being updated.
+- Fixed an issue with name formatting when Shift + Clicking player names in chat.
 
 ### Modified
 
@@ -55,11 +55,11 @@ We have added a new feature that allows you to right-click on a player in the ga
 - We are now using a custom popup dialog when clicking on a link to offer to copy-paste the URL, to avoid issues when other add-ons are messing with the game's default dialog.
 - Minor changes to the way some tooltips are displayed (color picker buttons, the minimap button).
 - The Out of character indicator in the tooltip is now more obvious. Instead of the red icon in the top right corner of the tooltip, an [OOC] text in red is displayed in front of the player's name.  
-![A more obvious Out Of Character indicator makes it virtually impossible it miss when people are not currently In Character](http://via.placeholder.com/350x150)
+![A more obvious Out Of Character indicator makes it virtually impossible to miss when people are not currently In Character](http://via.placeholder.com/350x150)
 
 ### Removed
 
-- Removed various advanced option that was causing confusion and would often result in the add-on not working when the user would change the default configuration (automatically adding people to the directory, the broadcast channel name)
+- Removed various advanced options that were causing confusion and would often result in the add-on not working when the user changed the default configuration (automatically adding people to the directory, the broadcast channel name).
 
 
 ## [1.2.11.3]  - 2018-01-02
