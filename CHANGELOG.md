@@ -6,7 +6,11 @@
 
 We have added a new chat links framework to Total RP 3, allowing you send links for many features of Total RP 3 to other Total RP 3 users. With this update, you can send people links of your profile, companions profiles, at-first-glances and other players profiles from your directory.
 
+![Inserting a profile link shows a tooltip when clicking, with options to open or import the profile](http://via.placeholder.com/350x150)
+
 When clicking a link you can see a quick preview of what was shared in a tooltip, with action buttons available to open or even import the content. When you create a link, you will be asked if you want to let other people import what you are sharing, so you can send a link of your profile but only let people consult it.
+
+![You can create a player profile link, a companion profile link, a directory profile link and an at-first-glance preset link](http://via.placeholder.com/350x150)
 
 [Total RP 3: Extended] will be updated in the upcoming weeks to use this new framework to share items, campaigns and more.
 
@@ -14,16 +18,23 @@ When clicking a link you can see a quick preview of what was shared in a tooltip
 
 We have added a new feature that allows you to right-click on a player in the game to open their profile in Total RP 3. An icon will appear next to the cursor when the player has a RP profile that can be opened. This feature is disabled by default and can be enabled in the Directory settings, and is always disabled when you are in combat. You can also choose to automatically disable it when you go out of character, or apply a modifier like Shift or Control when clicking.
 
+![When the cursor is over a player with a profile an icon is shown](http://via.placeholder.com/350x150)
+
 ### Added
 
 - Added new slash command to open someone's profile. Using `/trp3 open` will open your target's profile and using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
-- Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.
+- Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default. This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors. For example in `/e | [Cat] says: Meow` or `|e [Cat] meowls.`, `[Cat]` wil be formatted using the Cat companion profile, with colors and icons if enabled in the chat settings.  
+![You can have companion names formatted inside NPC speeches and emotes](http://via.placeholder.com/350x150)
+- Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.  
+![The color palette provides a few basic colors and allows your to save your own to use later](http://via.placeholder.com/350x150)
 - Added an option to use the default color picker instead of Total RP 3's color picker in the General settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
 - Added option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
 - Added option to crop long text in the at-first-glance tooltip when shown on the target frame, enabled by default, only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
 - Updated list of icons for the icon browser, added 177 icons from patch 7.3.5.
 - Updated list of images for the image browser, added 97 images of the game's zones from the new warboard UI from patch 7.3.5.
-- Added tooltip flag to indicate when a player is on a trial account.
+- Updated list of musics for the music browser, added 23 musics from patch 7.3 (Argus).
+- Added tooltip flag to indicate when a player is on a trial account.  
+![It's easy to see when a character is on a Trial Account and is limited in their interactions](http://via.placeholder.com/350x150)
 
 ### Fixed
 
@@ -35,14 +46,16 @@ We have added a new feature that allows you to right-click on a player in the ga
 
 ### Modified
 
-- The mature profile filter now lets you set a strength when filtering profiles, which affects how many bad words must be found before a profile is considered as mature.
+- The mature profile filter now lets you set a strength when filtering profiles, which affects how many bad words must be found before a profile is considered as mature.  
+![The slider lets you define the strength of the mature filter](http://via.placeholder.com/350x150)
 - Profiles that have been flagged as mature are now re-evaluated after 24 hours.
 - The previous custom dictionaries of mature language words that we manually made have been replaced by dictionaries from a crowd sourced source, and are now available for German, Italian, Mexican Spanish, and Russian.
 - Various under the hood fixes and improvements in various places, using new libraries and cleaned up some code.
 - Improvements to the localization system. More pets should be recognized as companions, especially when using non-English clients.
 - We are now using a custom popup dialog when clicking on a link to offer to copy-paste the URL, to avoid issues when other add-ons are messing with the game's default dialog.
 - Minor changes to the way some tooltips are displayed (color picker buttons, the minimap button).
-- The Out of character indicator in the tooltip is now more obvious. Instead of the red icon in the top right corner of the tooltip, an [OOC] text in red is displayed in front of the player's name.
+- The Out of character indicator in the tooltip is now more obvious. Instead of the red icon in the top right corner of the tooltip, an [OOC] text in red is displayed in front of the player's name.  
+![A more obvious Out Of Character indicator makes it virtually impossible it miss when people are not currently In Character](http://via.placeholder.com/350x150)
 
 ### Removed
 
