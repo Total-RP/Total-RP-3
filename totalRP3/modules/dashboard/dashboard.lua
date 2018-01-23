@@ -289,6 +289,47 @@ TRP3_API.dashboard.init = function()
 				TRP3_API.configuration.setValue("tooltip_crop_text", true);
 				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
 			end
+		-- Toggle the option to right click in a player in the world to open their profile
+		elseif url == "right_click_profile" then
+			if TRP3_API.configuration.getValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE") then
+				TRP3_API.configuration.setValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
+		-- Toggle the option to replace companion name in NPC speeches
+		elseif url == "companion_speeches" then
+			if TRP3_API.configuration.getValue("chat_npcspeech_replacement") then
+				TRP3_API.configuration.setValue("chat_npcspeech_replacement", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("chat_npcspeech_replacement", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
+		-- Toggle the option to use the default color picker
+		elseif url == "default_color_picker" then
+			if TRP3_API.configuration.getValue("default_color_picker") then
+				TRP3_API.configuration.setValue("default_color_picker", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("default_color_picker", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
+		-- Toggle the option to disable chat while OOC
+		-- TODO
+		elseif url == "disable_chat_ooc" then
+			if TRP3_API.configuration.getValue("default_color_picker") then
+				TRP3_API.configuration.setValue("default_color_picker", false);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+			else
+				TRP3_API.configuration.setValue("default_color_picker", true);
+				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+			end
+		-- Toggle the option to disable chat while OOC
+		-- TODO
+		elseif url == "open_mature_filter_settings" then
+			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
 		--[[
 	 	-- Fallback, open URL in a popup
 		 ]]

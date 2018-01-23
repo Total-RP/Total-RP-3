@@ -29,7 +29,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 ![The color palette provides a few basic colors and allows your to save your own to use later](http://via.placeholder.com/350x150)
 - Added an option to use the default color picker instead of Total RP 3's color picker in the General settings. When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
 - Added option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character.
-- Added option to crop long text in the at-first-glance tooltip when shown on the target frame, enabled by default, only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
+- The option to crop long texts in the tooltips now also crop long text in the at-first-glance tooltip when shown on the target frame. Only applies to other people's at-first-glances. The tooltips inside the profile page are not cropped.
 - Updated list of icons for the icon browser, added 177 icons from patch 7.3.5.
 - Updated list of images for the image browser, added 97 images of the game's zones from the new warboard UI from patch 7.3.5.
 - Updated list of musics for the music browser, added 23 musics from patch 7.3 (Argus).
