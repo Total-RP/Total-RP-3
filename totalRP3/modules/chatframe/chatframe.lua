@@ -146,7 +146,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
     registerConfigKey(CONFIG_SHOW_ICON, false);
-	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, false);
+	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
