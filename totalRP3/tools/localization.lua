@@ -1042,6 +1042,8 @@ You can also leave this field empty to create emotes without an NPC name at the 
 	-- CHAT LINKS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	CL_REQUESTING_DATA = "Requesting link data from %s.",
+	CL_EXPIRED = "This link has expired.",
 	CL_PLAYER_PROFILE = "Player profile",
 	CL_OPEN_PROFILE = "Open profile",
 	CL_IMPORT_PROFILE = "Import profile",

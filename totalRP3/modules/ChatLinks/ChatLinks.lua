@@ -56,6 +56,8 @@ local LINK_COLOR = ColorManager.YELLOW;
 local CHAT_LINKS_PROTOCOL_REQUEST_PREFIX = "CTLK_R"; -- Request data about a link clicked
 local CHAT_LINKS_PROTOCOL_DATA_PREFIX = "CTLK_D"; -- Send data bout a link sent
 
+local UNKNOWN_LINK = "UNKNOWN_LINK";
+
 -- The link pattern is [TRP3:ITEM_NAME], for example [TRP3:Epic sword] or [TRP3:My campaign]
 ChatLinks.LINK_PATTERN = "[TRP3:%s]";
 ChatLinks.FIND_LINK_PATTERN = "%[TRP3:([^%]]+)%]";
@@ -200,7 +202,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- TODO Localization and better UI feedback
 			showTooltip({
 				tooltipLines = {
-					title = "Requesting data from " .. playerName,
+					title = loc(loc.CL_REQUESTING_DATA, playerName),
 				},
 			});
 		end
@@ -219,7 +221,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
-			-- TODO Send error that we no longer have the data
+			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
 		end
 
@@ -235,6 +237,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	-- Register command prefix when received tooltip data
 	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+		if itemData == UNKNOWN_LINK then
+			showTooltip({
+				tooltipLines = {
+					title = loc.CL_EXPIRED,
+				},
+			});
+			return
+		end
 		local itemName = itemData.itemName;
 		if TRP3_RefTooltip.itemName == itemName then
 			showTooltip(itemData, sender);
