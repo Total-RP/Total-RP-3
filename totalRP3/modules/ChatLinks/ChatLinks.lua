@@ -177,7 +177,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end
 
-		if actionButtons then
+		if actionButtons and ChatLinks:HasModule(itemData.moduleID) then
 			for i, button in pairs(actionButtons) do
 				ActionButtons[i]:Set(button);
 			end
@@ -267,5 +267,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		else
 			callback();
 		end
+	end
+
+	function ChatLinks:HasModule(moduleID)
+		return chatLinksModules[moduleID] ~= nil;
 	end
 end)
