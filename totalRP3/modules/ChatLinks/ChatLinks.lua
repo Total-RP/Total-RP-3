@@ -100,12 +100,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	---@param link ChatLink
 	function ChatLinks.storeLink(link)
-		local tries = 1;
-		while sentLinks[link:GetIdentifier()] do
-			link:SetIdentifier(link:GetIdentifier() .. tries);
-			tries = tries + 1;
-		end
-		sentLinks[link:GetIdentifier()] = link;
+		local linkIdentifier = TRP3_API.Ellyb.Strings.generateUniqueName(sentLinks, link:GetIdentifier());
+		link:SetIdentifier(linkIdentifier);
+		sentLinks[linkIdentifier] = link;
 	end
 
 	-- List of channels we will support for our links
