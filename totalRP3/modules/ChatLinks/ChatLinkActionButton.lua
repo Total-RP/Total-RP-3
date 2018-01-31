@@ -22,13 +22,23 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
+
+-- Lua imports
+local assert = assert;
+
+-- Ellyb imports
+local isType = Ellyb.Assertions.isType;
 
 ---@class ChatLinkActionButton : Object
-local ChatLinkActionButton, _private = TRP3_API.Ellyb.Class("ChatLinkActionButton");
+local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
 
 ---@param actionID string @ The ID of the action
 ---@param buttonText string @ The text to be displayed on the button
 function ChatLinkActionButton:initialize(actionID, buttonText)
+	assert(isType(actionID, "string", actionID));
+	assert(isType(buttonText, "string", buttonText));
+
 	_private[self] = {}
 	_private[self].actionID = actionID;
 	_private[self].buttonText = buttonText;
@@ -74,6 +84,10 @@ function TRP3_ChatLinkActionButtonMixin:OnClick()
 end
 
 function TRP3_ChatLinkActionButtonMixin:Set(button)
+	assert(isType(button, "table", button));
+	assert(isType(button.text, "string", button.text));
+	assert(isType(button.command, "string", button.command));
+
 	-- TODO find a more elegant solution than adding blank lines to make room for the button
 	TRP3_RefTooltip:AddLine(" ");
 	TRP3_RefTooltip:AddLine(" ");

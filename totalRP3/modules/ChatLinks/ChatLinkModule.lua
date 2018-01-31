@@ -24,23 +24,30 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- Lua imports
 local insert = table.insert;
 local pairs = pairs;
+local assert = assert;
 
 -- WoW imports
-local GetCurrentKeyBoardFocus = GetCurrentKeyBoardFocus;
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow;
 local ChatEdit_GetActiveWindow = ChatEdit_GetActiveWindow;
+
+-- Ellyb imports
+local isType = Ellyb.Assertions.isType;
 
 -- Total RP 3 imports
 local ChatLink = TRP3_API.ChatLink;
 
 ---@class ChatLinkModule : Object
-local ChatLinkModule, _private = TRP3_API.Ellyb.Class("ChatLinkModule");
+local ChatLinkModule, _private = Ellyb.Class("ChatLinkModule");
 
 function ChatLinkModule:initialize(moduleName, moduleID)
+	assert(isType(moduleName, "string", "moduleName"));
+	assert(isType(moduleID, "string", "moduleID"));
+
 	_private[self] = {}
 	_private[self].moduleName = moduleName;
 	_private[self].moduleID = moduleID;
@@ -98,6 +105,9 @@ end
 ---@param actionID number @ The ID of the action that was clicked
 ---@param customData table @ Custom data as sent by the sender, they will use it to understand the command
 function ChatLinkModule:OnActionButtonClicked(actionID, customData, sender)
+	assert(isType(actionID, "string", "actionID"));
+	assert(isType(sender, "string", "sender"));
+
 	---@type ChatLinkActionButton
 	local actionButton = _private[self].actionButtons[actionID];
 	if actionButton then
@@ -110,6 +120,9 @@ end
 ---@param buttonText string @ The text that will be shown on the button
 ---@return ChatLinkActionButton actionButton @ A new ChatLinkActionButton
 function ChatLinkModule:NewActionButton(actionID, buttonText)
+	assert(isType(actionID, "string", "actionID"));
+	assert(isType(buttonText, "string", "buttonText"));
+
 	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText);
 	_private[self].actionButtons[actionID] = actionButton;
 	return actionButton;

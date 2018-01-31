@@ -19,6 +19,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 ---@class TRP3_ChatLinks
 --- # Chat links API
@@ -32,8 +33,9 @@ local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
 --- Ellyb imports
-local ColorManager = TRP3_API.Ellyb.ColorManager;
-local isType = TRP3_API.Ellyb.Assertions.isType;
+local ColorManager = Ellyb.ColorManager;
+local isType = Ellyb.Assertions.isType;
+local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 
 --- Wow Imports
 local assert = assert;
@@ -93,6 +95,7 @@ end
 
 ---@return ChatLinkModule
 function ChatLinks:GetModuleByID(moduleID)
+	assert(isType(moduleID, "string", "moduleID"));
 	return chatLinksModules[moduleID];
 end
 
@@ -100,6 +103,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	---@param link ChatLink
 	function ChatLinks.storeLink(link)
+		assert(isInstanceOf(link, "ChatLink", "link"));
 		local linkIdentifier = TRP3_API.Ellyb.Strings.generateUniqueName(sentLinks, link:GetIdentifier());
 		link:SetIdentifier(linkIdentifier);
 		sentLinks[linkIdentifier] = link;
@@ -249,6 +253,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end);
 
 	function ChatLinks:OpenMakeImportablePrompt(linkType, callback)
+		assert(isType(linkType, "string", "linkType"));
+		assert(isType(callback, "function", "callback"));
+
 		TRP3_API.popup.showYesNoPopup(loc(loc.CL_MAKE_IMPORTABLE, TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
 			function()
 				callback(true);
@@ -259,6 +266,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	function ChatLinks:CheckVersions(callback)
+		assert(isType(callback, "function", "callback"));
+
 		if TRP3_RefTooltip.itemData.v ~= TRP3_API.globals.version then
 			TRP3_API.popup.showConfirmPopup(TRP3_API.loc.CL_VERSIONS_DIFFER, callback);
 		else
@@ -267,6 +276,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	function ChatLinks:HasModule(moduleID)
+		assert(isType(moduleID, "string", "moduleID"));
 		return chatLinksModules[moduleID] ~= nil;
 	end
 end)

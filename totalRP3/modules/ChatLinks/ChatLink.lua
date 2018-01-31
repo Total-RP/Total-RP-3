@@ -21,14 +21,24 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- Lua imports
 local format = string.format;
+local assert = assert;
+
+-- Ellyb imports
+local isType = Ellyb.Assertions.isType;
+local isNotEmpty = Ellyb.Assertions.isNotEmpty;
 
 ---@class ChatLink
-local ChatLink, _private = TRP3_API.Ellyb.Class("ChatLink");
+local ChatLink, _private = Ellyb.Class("ChatLink");
 
 function ChatLink:initialize(identifier, data, moduleID)
+	assert(isType(identifier, "string", "identifier"));
+	assert(isNotEmpty(data, "data"));
+	assert(isType(moduleID, "string", "moduleID"));
+
 	_private[self] = {};
 	_private[self].identifier = identifier;
 	_private[self].data = data;
@@ -53,6 +63,8 @@ end
 
 ---@param identifier string
 function ChatLink:SetIdentifier(identifier)
+	assert(isType(identifier, "string", "identifier"));
+
 	_private[self].identifier = identifier;
 end
 
