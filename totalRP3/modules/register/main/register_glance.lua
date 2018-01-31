@@ -25,13 +25,14 @@ local _, TRP3_API = ...;
 TRP3_API.register.glance = {};
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local tostring, _G, pairs, type, tinsert, assert, wipe = tostring, _G, pairs, type, tinsert, assert, wipe;
-local tsize, loc = Utils.table.size, TRP3_API.locale.getText;
+local tsize, loc = Utils.table.size, TRP3_API.loc;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
 local crop = TRP3_API.Ellyb.Strings.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
+local AtFirstGlanceChatLinkModule;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Glance utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -234,6 +235,9 @@ local EMPTY = Globals.empty;
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+local GLANCE_TOOLTIP_CROP = 400;
+local GLANCE_TITLE_CROP = 150;
+
 local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID;
 
 local function getCharacterInfo()
@@ -317,23 +321,34 @@ end
 local function onGlanceSlotClick(button, clickType)
 	if button.isCurrentMine then
 		if clickType == "LeftButton" then
-			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
-				TRP3_AtFirstGlanceEditor:Hide();
+			if IsShiftKeyDown() then
+				local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+				local glance = glanceTab[button.slot];
+				if glance and glance.AC then
+					TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
+						AtFirstGlanceChatLinkModule:InsertLink(button.slot, canBeImported);
+					end);
+				end
 			else
-				local x, y = GetCursorPosition();
-				local scale = UIParent:GetEffectiveScale();
-				y = y / scale;
-				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
-				TRP3_AtFirstGlanceEditor.current = button;
-				openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), TRP3_AtFirstGlanceEditor, button.targetID, button.profileID);
+
+				if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
+					TRP3_AtFirstGlanceEditor:Hide();
+				else
+					local x, y = GetCursorPosition();
+					local scale = UIParent:GetEffectiveScale();
+					y = y / scale;
+					TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
+					TRP3_AtFirstGlanceEditor.current = button;
+					openGlanceEditor(button.slot, button.data or button.glanceTab[button.slot] or {}, getOnGlanceEditorConfirmFunction(button), TRP3_AtFirstGlanceEditor, button.targetID, button.profileID);
+				end
 			end
 		elseif clickType == "RightButton" then
 			displayDropDown(button, getSlotPresetDataForList(), function(value) onGlanceSelection(value, button) end, 0, true);
 		end
+
 	end
 end
 TRP3_API.register.glance.onGlanceSlotClick = onGlanceSlotClick;
-
 local function onGlanceDoubleClick(button, clickType)
 	if button.isCurrentMine and clickType == "LeftButton" then
 		getOnGlanceEditorConfirmFunction(button)(button.slot, nil, nil, nil, nil, true, button.targetID, button.profileID);
@@ -347,8 +362,6 @@ local function configTooltipAnchor()
 	return getConfigValue(CONFIG_GLANCE_TT_ANCHOR);
 end
 
-local GLANCE_TOOLTIP_CROP = 400;
-local GLANCE_TITLE_CROP = 150;
 local function displayGlanceSlots()
 	local glanceTab = getGlanceTab();
 
@@ -592,6 +605,62 @@ local function onStart()
 		slot:SetScript("OnClick", onGlanceSlotClick);
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
 	end
+
+	AtFirstGlanceChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
+
+	function AtFirstGlanceChatLinkModule:GetLinkData(glanceIndex, canBeImported)
+		local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+		local tooltipData = {};
+		TRP3_API.Ellyb.Tables.copy(tooltipData, glanceTab[glanceIndex]);
+		tooltipData.index = glanceIndex;
+		tooltipData.canBeImported = canBeImported;
+		return tooltipData.TI or "...", tooltipData;
+	end
+
+	function AtFirstGlanceChatLinkModule:GetCustomData(tooltipData)
+		return tooltipData.index;
+	end
+
+	function AtFirstGlanceChatLinkModule:GetTooltipLines(glance)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local icon = Globals.icons.default;
+		if glance.IC and glance.IC:len() > 0 then
+			icon = glance.IC;
+		end
+		local TTText = glance.TX or "...";
+		local glanceTitle = glance.TI or "...";
+		if shouldCropTexts() then
+			TTText = crop(TTText, GLANCE_TOOLTIP_CROP);
+			glanceTitle = crop(glanceTitle, GLANCE_TITLE_CROP);
+		end
+
+		tooltipLines:SetTitle(Utils.str.icon(icon, 30) .. " " .. glanceTitle, TRP3_API.Ellyb.ColorManager.WHITE);
+		tooltipLines:AddLine(TTText, TRP3_API.Ellyb.ColorManager.ORANGE);
+		return tooltipLines;
+	end
+
+	local ImportGlanceButton = AtFirstGlanceChatLinkModule:NewActionButton("IMPORT_GLANCE", loc.CL_IMPORT_GLANCE);
+	local LINK_COMMAND_IMPORT_GLANCE_Q = "GLNC_I_Q";
+	local LINK_COMMAND_IMPORT_GLANCE_A = "GLNC_I_A";
+
+	function ImportGlanceButton:IsVisible(tooltipData)
+		return tooltipData.canBeImported;
+	end
+
+	function ImportGlanceButton:OnClick(glanceIndex, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_Q, glanceIndex, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_Q, function(glanceIndex, sender)
+		local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_GLANCE_A, glanceTab[glanceIndex], sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_GLANCE_A, function(glance, senderID)
+		saveSlotPreset(glance);
+	end);
 end
 
 local MODULE_STRUCTURE = {

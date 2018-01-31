@@ -378,6 +378,10 @@ function TRP3_API.register.getProfileList()
 	return profiles;
 end
 
+function TRP3_API.register.insertProfile(profileID, profileData)
+	profiles[profileID] = profileData;
+end
+
 local function getUnitRPNameWithID(unitID, unitName)
 	unitName = unitName or unitID;
 	if unitID then

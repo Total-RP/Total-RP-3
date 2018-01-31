@@ -1043,6 +1043,29 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CHAT LINKS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	CL_REQUESTING_DATA = "Requesting link data from %s.",
+	CL_EXPIRED = "This link has expired.",
+	CL_PLAYER_PROFILE = "Player profile",
+	CL_OPEN_PROFILE = "Open profile",
+	CL_IMPORT_PROFILE = "Import profile",
+	CL_GLANCE = "At-first-glance",
+	CL_IMPORT_GLANCE = "Import at-first-glance",
+	CL_COMPANION_PROFILE = "Companion profile",
+	CL_IMPORT_COMPANION = "Import companion profile",
+	CL_OPEN_COMPANION = "Open companion profile",
+	CL_MAKE_IMPORTABLE = [[You are about to create a link to a %s.
+
+Do you want to make this link importable by other players? They will be able to copy and use the content of the link.
+
+If you answer no, they will only be able to consult the content of the link.]],
+	CL_VERSIONS_DIFFER = [[This link has been generated using a different version of Total RP 3.
+
+Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- COMMANDS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
