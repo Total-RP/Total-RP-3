@@ -252,6 +252,16 @@ TRP3_API.dashboard.init = function()
 		end
 	);
 
+	local function toggleSettingWithToast(settingName)
+		if TRP3_API.configuration.getValue(settingName) then
+			TRP3_API.configuration.setValue(settingName, false);
+			TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+		else
+			TRP3_API.configuration.setValue(settingName, true);
+			TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+		end
+	end
+
 	TRP3_DashboardBottomContent:SetFontObject("p", GameFontNormal);
 	TRP3_DashboardBottomContent:SetFontObject("h1", GameFontNormalHuge3);
 	TRP3_DashboardBottomContent:SetFontObject("h2", GameFontNormalHuge);
@@ -271,60 +281,19 @@ TRP3_API.dashboard.init = function()
 				TRP3_API.Ellyb.Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n");
 			end
 		--[[
-		-- Links relative to the What's new section (valid for version 1.1.0)
+		-- Links relative to the What's new section (valid for version 1.3.0)
 		 ]]
-        elseif url == "chat_settings" then
-			if TRP3_API.configuration.getValue("chat_show_icon") then
-				TRP3_API.configuration.setValue("chat_show_icon", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("chat_show_icon", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
-		elseif url == "tooltip_cropping" then
-			if TRP3_API.configuration.getValue("tooltip_crop_text") then
-				TRP3_API.configuration.setValue("tooltip_crop_text", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("tooltip_crop_text", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
-		-- Toggle the option to right click in a player in the world to open their profile
-		elseif url == "right_click_profile" then
-			if TRP3_API.configuration.getValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE") then
-				TRP3_API.configuration.setValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("CONFIG_RIGHT_CLICK_OPEN_PROFILE", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
+       elseif url == "right_click_profile" then
+			toggleSettingWithToast("CONFIG_RIGHT_CLICK_OPEN_PROFILE")
 		-- Toggle the option to replace companion name in NPC speeches
 		elseif url == "companion_speeches" then
-			if TRP3_API.configuration.getValue("chat_npcspeech_replacement") then
-				TRP3_API.configuration.setValue("chat_npcspeech_replacement", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("chat_npcspeech_replacement", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
+			toggleSettingWithToast("chat_npcspeech_replacement")
 		-- Toggle the option to use the default color picker
 		elseif url == "default_color_picker" then
-			if TRP3_API.configuration.getValue("default_color_picker") then
-				TRP3_API.configuration.setValue("default_color_picker", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("default_color_picker", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
+			toggleSettingWithToast("default_color_picker")
 		-- Toggle the option to disable chat while OOC
 		elseif url == "disable_chat_ooc" then
-			if TRP3_API.configuration.getValue("chat_disable_ooc") then
-				TRP3_API.configuration.setValue("chat_disable_ooc", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("chat_disable_ooc", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
+			toggleSettingWithToast("chat_disable_ooc")
 		-- Mature filter settings slider
 		elseif url == "open_mature_filter_settings" then
 			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
