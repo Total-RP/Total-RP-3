@@ -220,7 +220,7 @@ TRP3_API.dashboard.init = function()
 	end
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_16_3") .. loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
+	local whatsNewText = loc("WHATS_NEW_17");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
@@ -326,8 +326,7 @@ TRP3_API.dashboard.init = function()
 				TRP3_API.configuration.setValue("default_color_picker", true);
 				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
 			end
-		-- Toggle the option to disable chat while OOC
-		-- TODO
+		-- Mature filter settings slider
 		elseif url == "open_mature_filter_settings" then
 			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
 		--[[
