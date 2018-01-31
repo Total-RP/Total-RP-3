@@ -29,7 +29,7 @@ local Color = TRP3_API.Ellyb.Color;
 
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -61,6 +61,7 @@ end
 TRP3_API.chat.isChannelHandled = isChannelHandled;
 
 local CONFIG_NAME_METHOD = "chat_name";
+local CONFIG_DISABLE_OOC = "chat_disable_ooc";
 local CONFIG_REMOVE_REALM = "remove_realm";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
@@ -79,6 +80,11 @@ local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
 end
+
+local function disabledByOOC()
+	return getConfigValue(CONFIG_DISABLE_OOC) and get("player/character/RP") == 2
+end
+TRP3_API.chat.disabledByOOC = disabledByOOC;
 
 local function configNameMethod()
 	return getConfigValue(CONFIG_NAME_METHOD);
@@ -134,6 +140,7 @@ end
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 3);
+	registerConfigKey(CONFIG_DISABLE_OOC, false);
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
@@ -177,6 +184,12 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_DISABLE_OOC,
+				help = loc.CO_CHAT_DISABLE_OOC_TT,
+				configKey = CONFIG_DISABLE_OOC
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -317,6 +330,9 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 ---@param message string
 ---@param NPCEmoteChatColor Color
 local function detectEmoteAndOOC(message, NPCEmoteChatColor)
+	if disabledByOOC() then
+		return message;
+	end
 
 	-- For NPC speech color reset
 	local NPCEmoteChatString = "";
@@ -390,6 +406,10 @@ local NPC_TALK_PATTERNS;
 
 -- Checking if it's a pet profile and customizing appropriately
 local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
+	-- If option disabled, just return the colored name.
+	if disabledByOOC() then
+		return message;
+	end
 
 	local nameColor;
 	local petProfile;
@@ -518,6 +538,10 @@ end
 
 function handleCharacterMessage(_, event, message, ...)
 
+	if disabledByOOC() then
+		return false, message, ...;
+	end
+
 	local messageSender = ...;
 	local messageID = select(10, ...);
 	local NPCEmoteChatColor;
@@ -619,6 +643,10 @@ local GetCustomColorByGUID = TRP3_API.utils.color.GetCustomColorByGUID;
 function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
 
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
+
+	if disabledByOOC() then
+		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+	end
 
 	local GUID = arg12;
 	local unitID = arg2;
@@ -731,6 +759,8 @@ function hooking()
 	-- in the chat frame to insert it into a text field.
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
 	hooksecurefunc("ChatEdit_InsertLink", function(unitID)
+
+		if disabledByOOC() then return end;
 
 		-- If we didn't get a name at all then we have nothing to do here
 		if not unitID then return end;
