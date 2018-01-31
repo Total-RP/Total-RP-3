@@ -1109,10 +1109,14 @@ We have added a new feature that allows you to right-click on a player in the ga
 
 - Added support for the new allied races (default profile icons and languages).
 - Added new slash command to open someone's profile. Using `/trp3 open` will open your target's profile, while using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
-- Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default [Toggle feature](companion_speeches). This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors. For example in `/e | [Cat] says: Meow` or `/e | [Cat] meowls.`, `[Cat]` will be formatted using the Cat companion profile, with colors and icons if enabled in the chat settings.
+- Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default [Toggle feature](companion_speeches). This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors.
+
 ![You can have companion names formatted inside NPC speeches and emotes](http://via.placeholder.com/350x150)
+
 - Added color palettes to the color picker, with basic colors, class colors, item quality colors, resources colors, and a custom palette where you can save custom colors you might want to re-use later.
+
 ![The color palette provides a few basic colors and allows your to save your own to use later](http://via.placeholder.com/350x150)
+
 - Added an option to use the default color picker instead of Total RP 3's color picker in the General settings [Toggle setting](default_color_picker). When this option is enabled, the default color picker or any replacement add-on will be used instead when setting a color. When the option is disabled, you can Shift + Click to open the default color picker instead of Total RP 3's.
 - Added an option to disable chat modifications (custom names, text emotes detection, etc.) while set as out of character [Toggle setting](disable_chat_ooc).
 - The option to crop long texts in the tooltips now also crop long text in the at-first-glance tooltip when shown on the target frame. Only applies to other people's at-first-glance presets. The tooltips inside the profile page are not cropped.
@@ -1120,6 +1124,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 - Updated list of images for the image browser, added 97 images of the game's zones from the new warboard UI from patch 7.3.5.
 - Updated list of musics for the music browser, added 23 musics from patch 7.3 (Argus).
 - Added tooltip flag to indicate when a player is on a trial account.
+
 ![It's easy to see when a character is on a Trial Account and is limited in their interactions](http://via.placeholder.com/350x150)
 
 ### Fixed
