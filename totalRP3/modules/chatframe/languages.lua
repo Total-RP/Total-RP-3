@@ -81,7 +81,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		[8] = "artifactability_havocdemonhunter_anguishofthedeceiver",
 
 		-- Allied races
-		[182] = "Achievement_AlliedRace_VoidElf", -- Void elf Thalassian (different from Blood Elf Thalassian)
 		[181] = "Achievement_AlliedRace_Nightborne", -- Shalassian
 
 	}
