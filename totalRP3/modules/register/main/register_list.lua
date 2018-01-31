@@ -31,7 +31,6 @@ local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_AP
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
-local getClassTexture = TRP3_API.ui.misc.getClassTexture;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;

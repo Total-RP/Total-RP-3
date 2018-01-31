@@ -804,29 +804,11 @@ local unitTexture = {
 	},
 };
 
-local classTexture = {
-	ROGUE = "Ability_Rogue_DualWeild",
-	WARLOCK = "Ability_Warlock_Eradication",
-	PALADIN = "Spell_Paladin_Clarityofpurpose",
-	MONK = "Monk_Ability_Transcendence",
-	MAGE = "spell_Mage_NetherTempest",
-	HUNTER = "Ability_Hunter_MasterMarksman",
-	WARRIOR = "Ability_Warrior_OffensiveStance",
-	DEATHKNIGHT = "Spell_Deathknight_FrostPresence",
-	DRUID = "Spell_druid_tirelesspursuit",
-	SHAMAN = "Ability_Shaman_WindwalkTotem",
-	PRIEST = "Priest_icon_Chakra",
-}
-
 TRP3_API.ui.misc.getUnitTexture = function(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
 	return globals.icons.default;
-end
-
-TRP3_API.ui.misc.getClassTexture = function (class)
-	return classTexture[class] or globals.icons.default;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
