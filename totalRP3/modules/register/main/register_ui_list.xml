@@ -46,10 +46,17 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
-				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+				<FontString name="$parentTime" inherits="GameFontNormal" justifyH="LEFT" text="[Time ?]">
 					<Size x="110" y="10" />
 					<Anchors>
 						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentAddon" />
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
+				<FontString name="$parentInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+					<Size x="110" y="10" />
+					<Anchors>
+						<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="$parentTime" />
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
@@ -197,10 +204,17 @@
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
-								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+								<FontString name="TRP3_RegisterListHeaderTime" inherits="GameFontNormal" justifyH="LEFT" text="[Time ?]">
 									<Size x="110" y="10" />
 									<Anchors>
 										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderAddon" />
+									</Anchors>
+									<Color r="0.95" g="0.95" b="0.95" />
+								</FontString>
+								<FontString name="TRP3_RegisterListHeaderInfo" inherits="GameFontNormal" justifyH="LEFT" text="[Info ?]">
+									<Size x="110" y="10" />
+									<Anchors>
+										<Anchor point="RIGHT" x="-15" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterListHeaderTime" />
 									</Anchors>
 									<Color r="0.95" g="0.95" b="0.95" />
 								</FontString>
@@ -242,6 +256,21 @@
 									</OnEnter>
 									<OnLeave>
 										TRP3_RegisterListHeaderInfo:SetTextColor(0.95, 0.95, 0.95);
+									</OnLeave>
+								</Scripts>
+							</Button>
+							<Button name="TRP3_RegisterListHeaderTimeTT" inherits="TRP3_InvisibleButton">
+								<Size x="0" y="20" />
+								<Anchors>
+									<Anchor point="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderTime"/>
+									<Anchor point="LEFT" x="0" y="0" relativeTo="TRP3_RegisterListHeaderTime"/>
+								</Anchors>
+								<Scripts>
+									<OnEnter>
+										TRP3_RegisterListHeaderTime:SetTextColor(0.95, 0.75, 0);
+									</OnEnter>
+									<OnLeave>
+										TRP3_RegisterListHeaderTime:SetTextColor(0.95, 0.95, 0.95);
 									</OnLeave>
 								</Scripts>
 							</Button>
