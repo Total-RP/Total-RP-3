@@ -317,13 +317,12 @@ TRP3_API.dashboard.init = function()
 				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
 			end
 		-- Toggle the option to disable chat while OOC
-		-- TODO
 		elseif url == "disable_chat_ooc" then
-			if TRP3_API.configuration.getValue("default_color_picker") then
-				TRP3_API.configuration.setValue("default_color_picker", false);
+			if TRP3_API.configuration.getValue("chat_disable_ooc") then
+				TRP3_API.configuration.setValue("chat_disable_ooc", false);
 				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
 			else
-				TRP3_API.configuration.setValue("default_color_picker", true);
+				TRP3_API.configuration.setValue("chat_disable_ooc", true);
 				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
 			end
 		-- Mature filter settings slider
