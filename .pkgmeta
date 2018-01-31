@@ -30,6 +30,10 @@ externals:
   totalRP3/libs/LibDBIcon-1.0:
       url: https://repos.wowace.com/wow/libdbicon-1-0/trunk
 
+   # Our own scaling and animation lib
+  totalRP3/libs/Ellyb:
+      url: git://github.com/Ellypse/Ellyb.git
+
 ignore:
   - README.md
   - CONTRIBUTING.md
