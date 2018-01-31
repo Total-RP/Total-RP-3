@@ -786,6 +786,22 @@ local unitTexture = {
 		"Achievement_Guild_ClassyPanda",
 		"Achievement_Character_Pandaren_Female",
 	},
+	Nightborne = {
+		"Ability_Racial_DispelIllusions",
+		"Ability_Racial_Masquerade",
+	},
+	LightforgedDraenei = {
+		"Ability_Racial_FinalVerdict",
+		"Achievement_AlliedRace_LightforgedDraenei",
+	},
+	VoidElf = {
+		"Ability_Racial_EntropicEmbrace",
+		"Ability_Racial_PreturnaturalCalm",
+	},
+	HighmountainTauren = {
+		"Ability_Racial_BullRush",
+		"Achievement_AlliedRace_HighmountainTauren",
+	},
 };
 
 local classTexture = {

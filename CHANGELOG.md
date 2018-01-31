@@ -22,6 +22,7 @@ We have added a new feature that allows you to right-click on a player in the ga
 
 ### Added
 
+- Added support for the new allied races (default profile icons and languages).
 - Added new slash command to open someone's profile. Using `/trp3 open` will open your target's profile, while using `/trp3 open CharacterName` (or `/trp3 open CharacterName-RealmName` for connected servers) will request that player for their profile and open it inside Total RP 3 when fully downloaded.
 - Added option to automatically infer a companion name in an emote when the name is placed inside brackets, enabled by default. This means you can now create NPC speeches or emotes where a companion name is used, fully formatted with colors. For example in `/e | [Cat] says: Meow` or `/e | [Cat] meowls.`, `[Cat]` will be formatted using the Cat companion profile, with colors and icons if enabled in the chat settings.  
 ![You can have companion names formatted inside NPC speeches and emotes](http://via.placeholder.com/350x150)
