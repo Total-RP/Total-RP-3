@@ -1087,11 +1087,16 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 	---@language Markdown
 	WHATS_NEW_17 = [[
 
-## Unreleased
+## 1.3.0
+
+### Changes beta 2 and beta 3
+
+- Fixed an issue with the new localization system that would completely break Total RP 3: Extended.
+- Fixed an issue where using the option to disable the chat feature while Out of character would completely break the chat.
 
 ### New feature: chat links
 
-We have added a new chat links framework to Total RP 3, allowing you to send links for many features of Total RP 3 to other Total RP 3 users. With this update, you can send people links to your profile, companions profiles, at-first-glance presets and other players' profiles from your directory.
+We have added a new chat links framework to Total RP 3, allowing you to send links for many features of Total RP 3 to other Total RP 3 users. With this update, you can send people links to your profile, companions profiles, at-first-glance presets and other players' profiles from your directory, simply by Shift-Clicking on a profile in the list or on an at-first-glance slot.
 
 {img:Interface\AddOns\totalRP3\resources\1_3_0_link_insert.tga:368:248}
 
