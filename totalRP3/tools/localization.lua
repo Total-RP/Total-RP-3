@@ -35,6 +35,8 @@ local tinsert = table.insert;
 local tostring = tostring;
 local error = error;
 local sub = string.sub;
+local setmetatable = setmetatable;
+local rawset = rawset;
 
 local isType = TRP3_API.Ellyb.Assertions.isType;
 
@@ -1280,6 +1282,13 @@ local localizations = {};
 local effectiveLocal = {};
 local current;
 
+local addNewKeyToDefaultLocaleMetatable = {
+	__newindex = function(self, key, value)
+		rawset(self, key, value);
+		DEFAULT_LOCALE[key] = value;
+	end
+};
+
 ---Register a new localization
 ---@param localeStructure table
 function Locale.registerLocale(localeStructure)
@@ -1292,6 +1301,9 @@ function Locale.registerLocale(localeStructure)
 
 	if not localizations[localeStructure.locale] then
 		localizations[localeStructure.locale] = localeStructure;
+		if localeStructure.locale == "enUS" then
+			setmetatable(localizations[localeStructure.locale].localeContent, addNewKeyToDefaultLocaleMetatable);
+		end
 	end
 end
 
@@ -1356,6 +1368,9 @@ function Locale.getText(key)
 	if effectiveLocal[key] or DEFAULT_LOCALE[key] then
 		return effectiveLocal[key] or DEFAULT_LOCALE[key];
 	end
+	print(key);
+	TRP3_API.Ellyb.Tables.inspect(effectiveLocal);
+	TRP3_API.Ellyb.Tables.inspect(localizations[current].localeContent);
 	error("Unknown localization key: ".. tostring(key));
 end
 
