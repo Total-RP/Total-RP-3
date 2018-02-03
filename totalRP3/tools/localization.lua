@@ -1289,6 +1289,32 @@ local addNewKeyToDefaultLocaleMetatable = {
 	end
 };
 
+---Add a locale key with its value inside a specific locale via its code
+---@param localeCode string @ The locale code (enUS, frFR, esES)
+---@param key string @ The locale key
+---@param value string @ The value of the locale
+function Locale.insertKeyValueInLocale(localeCode, key, value)
+	assert(isType(localeCode, "string", "localeCode"));
+	assert(isType(key, "string", "key"));
+	assert(isType(value, "string", "value"));
+	assert(localizations[localeCode], format("Tried to insert localization values into an unknown language %s", localeCode));
+	assert(not localizations[localeCode].localeContent[key], format("A locale value for the key %s has already been provided for the language %s.\nValue: %s\nTried to insert: %s", key, localeCode, localizations[localeCode].localeContent[key], value))
+
+	localizations[localeCode].localeContent[key] = value;
+	if localeCode == "enUS" then
+		DEFAULT_LOCALE[key] = value;
+	end
+end
+
+---Insert a table of locale values into a specific locale via its code
+---@param localeCode string @ The locale code (enUS, frFR, esES)
+---@param keysValuesTable table @ A table where the indexes are the locale keys and the values are the locale value
+function Locale.insertKeysInLocale(localeCode, keysValuesTable)
+	for key, value in pairs(keysValuesTable) do
+		Locale.insertKeyValueInLocale(localeCode, key, value);
+	end
+end
+
 ---Register a new localization
 ---@param localeStructure table
 function Locale.registerLocale(localeStructure)
