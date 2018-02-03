@@ -408,7 +408,7 @@ local NPC_TALK_PATTERNS;
 local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 	-- If option disabled, just return the colored name.
 	if disabledByOOC() then
-		return message;
+		return name;
 	end
 
 	local nameColor;
@@ -645,7 +645,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
 
 	if disabledByOOC() then
-		return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
 	end
 
 	local GUID = arg12;
