@@ -226,6 +226,7 @@ Möglicher Status:
 		["CO_TOOLBAR_CONTENT"] = "Toolbareinstellungen",
 		["CO_TOOLBAR_CONTENT_CAPE"] = "Umhang an/aus",
 		["CO_TOOLBAR_CONTENT_HELMET"] = "Helm an/aus",
+		["CO_TOOLBAR_CONTENT_NOTEPAD"] = "Notepad öffnen/weglegen",
 		["CO_TOOLBAR_CONTENT_RPSTATUS"] = "Charakterstatus (IC/OOC)",
 		["CO_TOOLBAR_CONTENT_STATUS"] = "Spielerstatus (AFK/DND)",
 		["CO_TOOLBAR_ICON_SIZE"] = "Icongröße",
@@ -312,6 +313,7 @@ Dein Handeln wird nicht mit dem Charakter in Verbindung gebracht.]=],
 		["DTBK_CLOAK"] = "Total RP 3 - Rücken",
 		["DTBK_HELMET"] = "Total RP 3 - Helm",
 		["DTBK_LANGUAGES"] = "Total RP 3 - Sprachen",
+		["DTBK_NOTEPAD"] = "Total RP 3 - Notepad",
 		["DTBK_RP"] = "Total RP 3 - IC/OOC",
 		["GEN_VERSION"] = "Version: %s (Build %s)",
 		["GEN_WELCOME_MESSAGE"] = "Danke, dass du Total RP 3 (v %s) verwendest! Viel Spaß!",
@@ -364,6 +366,22 @@ Bist du sicher, dass du dir das Profil ansehen willst?]=],
 		["MM_SHOW_HIDE_MAIN"] = "Zeige/verstecke das Hauptfenster",
 		["MM_SHOW_HIDE_MOVE"] = "Icon bewegen",
 		["MM_SHOW_HIDE_SHORTCUT"] = "Zeig/verstecke die Toolbar",
+		["MODULE_NOTEPAD_TITLE"] = "Notizblock",
+		["MODULE_NOTEPAD_ACC_TEXT"] = "|cffa9a9a9Accountweiter|r Notizblock",
+		["MODULE_NOTEPAD_CHAR_TEXT"] = "Notizblock von %s",
+		["MODULE_NOTEPAD_HELP_TITLE"] = "Der Notizblock",
+		["MODULE_NOTEPAD_HELP_TEXT"] = [=[Der Notizblock ist als Hilfsmittel gedacht. Im linken Bereich kann eine Notiz für den derzeitigen Charakter, im rechten Bereich für den gesamten Account verfasst werden.
+
+Es können 10000 Zeichen nicht überschritten werden. In einen Bereich mit der Maus zu gehen wählt diesen Bereich automatisch aus, ausser, es gibt bereits eine Markierung.
+
+Tasten:
+Mit [TAB] kann zwischen beiden Textfeldern gewechselt werden.
+
+|cffff0000ACHTUNG!|r Wenn ihr NICHT speichert, gehen eure Änderungen verloren!]=],
+		["MODULE_NOTEPAD_WARNING_ACC_SAVE_TEXT"] = [=[|cffff0000FEHLER!|r Im accountweiten Notizblock wurden 10000 Zeichen gespeichert. Jede weitere Eingabe ersetzt das letzte Symbol. |cffff0000Es werden nicht mehr als 10000 Zeichen unterstützt.|r]=],
+		["MODULE_NOTEPAD_WARNING_CHAR_SAVE_TEXT"] = [=[|cffff0000FEHLER!|r Im Notizblock von %s wurden 10000 Zeichen gespeichert. Jede weitere Eingabe ersetzt das letzte Symbol. |cffff0000Es werden nicht mehr als 10000 Zeichen unterstützt.|r]=],
+		["MODULE_NOTEPAD_WARNING_ACC_LOAD_TEXT"] = [=[|cffff0000FEHLER!|r Im accountweiten Notizblock wurden 10000 Zeichen geladen. Jede weitere Eingabe ersetzt das letzte Symbol. |cffff0000Es werden nicht mehr als 10000 Zeichen unterstützt.|r]=],
+		["MODULE_NOTEPAD_WARNING_CHAR_LOAD_TEXT"] = [=[|cffff0000FEHLER!|r Im Notizblock von %s wurden 10000 Zeichen geladen. Jede weitere Eingabe ersetzt das letzte Symbol. |cffff0000Es werden nicht mehr als 10000 Zeichen unterstützt.|r]=],
 		["NEW_VERSION"] = [=[|cff00ff00Eine neue Version von Total RP 3 (v %s) ist verfügbar.
 
 |cffffff00Wir empfehlen dringendst auf dem aktuellen Stand zu bleiben.|r
@@ -939,6 +957,10 @@ Zum Beispiel kann du folgendes angeben |c0000ff00schlank, dick or muskulös...|r
 		["TB_SWITCH_HELM_2"] = "Verstecke Helm",
 		["TB_SWITCH_HELM_OFF"] = "Helm: |cffff0000Versteckt",
 		["TB_SWITCH_HELM_ON"] = "Helm: |cff00ff00Angezeigt",
+		["TB_SWITCH_NOTEPAD_1"] = "Notizblock öffnen",
+		["TB_SWITCH_NOTEPAD_2"] = "Notizblock weglegen",
+		["TB_SWITCH_NOTEPAD_OFF"] = "Notizblock: |cffff0000Weglegen",
+		["TB_SWITCH_NOTEPAD_ON"] = "Notizblock: |cff00ff00Öffnen",
 		["TB_SWITCH_PROFILE"] = "Zu einem anderen Profil wechseln",
 		["TB_SWITCH_TOOLBAR"] = "Toolbar umschalten",
 		["TB_TOOLBAR"] = "Toolbar",

@@ -506,6 +506,7 @@ Possible status:
 		CO_TOOLBAR_MAX_TT = "Set to 1 if you want to display the bar vertically !",
 		CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
 		CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
+		CO_TOOLBAR_CONTENT_NOTEPAD = "Notepad Switch",
 		CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
 		CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
 		CO_TOOLBAR_SHOW_ON_LOGIN = "Show toolbar on login",
@@ -605,6 +606,10 @@ Possible status:
 		TB_SWITCH_HELM_OFF = "Helm: |cffff0000Hidden",
 		TB_SWITCH_HELM_1 = "Show helmet",
 		TB_SWITCH_HELM_2 = "Hide helmet",
+		TB_SWITCH_NOTEPAD_ON = "Notepad: |cff00ff00Shown",
+		TB_SWITCH_NOTEPAD_OFF = "Notepad: |cffff0000Hidden",
+		TB_SWITCH_NOTEPAD_1 = "Open notepad",
+		TB_SWITCH_NOTEPAD_2 = "Close notepad",
 		TB_GO_TO_MODE = "Switch to %s mode",
 		TB_NORMAL_MODE = "Normal",
 		TB_DND_MODE = "Do not disturb",
@@ -852,6 +857,7 @@ Total RP is not responsible for links leading to harmful content.]],
 
 		DTBK_HELMET = "Total RP 3 - Helmet",
 		DTBK_CLOAK = "Total RP 3 - Cloak",
+		DTBK_NOTEPAD = "Total RP 3 - Notepad",
 		DTBK_AFK = "Total RP 3 - AFK/DND",
 		DTBK_RP = "Total RP 3 - IC/OOC",
 		DTBK_LANGUAGES = "Total RP 3 - Languages",
@@ -927,6 +933,28 @@ The content of their profiles will be hidden again.]],
 This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
+
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+		-- Modules
+		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+		MODULE_NOTEPAD_TITLE = "The Notepad",
+		MODULE_NOTEPAD_CHAR_TEXT = "%s's Notepad",
+		MODULE_NOTEPAD_ACC_TEXT = "|cffa9a9a9Accountwide|r Notepad",
+		MODULE_NOTEPAD_WARNING_ACC_SAVE_TEXT = [=[|cffff0000ERROR!|r Reached 10000 letters in Accountwide Notepad. Each new letter replaces the last symbol at the end of the note. |cffff0000No more than 10000 letters are supported.|r]=],
+		MODULE_NOTEPAD_WARNING_CHAR_SAVE_TEXT = [=[|cffff0000ERROR!|r Reached 10000 letters in %s's Notepad. Each new letter replaces the last symbol at the end of the note. |cffff0000No more than 10000 letters are supported.|r]=],
+		MODULE_NOTEPAD_WARNING_ACC_LOAD_TEXT = [=[|cffff0000ERROR!|r Loaded 10000 letters in Accountwide Notepad. Each new letter replaces the last symbol at the end of the note. |cffff0000No more than 10000 letters are supported.|r]=],
+		MODULE_NOTEPAD_WARNING_CHAR_LOAD_TEXT = [=[|cffff0000ERROR!|r Loaded 10000 letters in %s's Notepad. Each new letter replaces the last symbol at the end of the note. |cffff0000No more than 10000 letters are supported.|r]=],
+		MODULE_NOTEPAD_HELP_TITLE = "The Notepad",
+		MODULE_NOTEPAD_HELP_TEXT = [=[The Notepad is supposed to be an useful addition to your daily roleplaying. The text field on the left saves a note for the current character, the right side saves a note across your account.
+
+You can enter up to 10000 letters.
+
+Hovering either side with your cursor automatically enters it, except if one field is entered already.
+
+Using your [TABULATOR] key switches between either text fields.
+
+|cffff0000CAUTION!|r If you do not save your changes, they'll be lost on closing the window!!]=],
 
 		--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 		-- DICE ROLL

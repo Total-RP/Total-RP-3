@@ -9,5 +9,6 @@
 ## RequiredDeps: totalRP3_Data
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_StashedData
+## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_StashedData, TRP3_Module_Notepad_Acc_Note
+## SavedVariablesPerCharacter: TRP3_Module_Notepad_Char_Note
 totalRP3.xml

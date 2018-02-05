@@ -1,0 +1,260 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<!--
+		Total RP 3
+		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+		Total RP 3 - Module: Notepad
+		Copyright 2017 Enno Ritz (Rien) (Ascathor@web.de)
+		Original Code: Total RP 2
+		All Rights reserved.
+	
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
+	
+			http://www.apache.org/licenses/LICENSE-2.0
+	
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
+
+	<Frame name="TRP3_Notepad" movable="true" frameStrata="HIGH" toplevel="true" parent="UIParent" enableMouse="true" enableMouseWheel="true" hidden="true">
+		<TitleRegion setAllPoints="true"/>
+		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\GLUES\COMMON\TextPanel-Border" tile="true">
+			<EdgeSize><AbsValue val="32"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Size x="525" y="410"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Frames>
+			<Button inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-2" y="0"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="TRP3_Notepad_Info" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-33" y="-7"/>
+				</Anchors>
+			</Button>
+			<Frame>
+			<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+				<EdgeSize>
+					<AbsValue val="16"/>
+				</EdgeSize>
+				<TileSize>
+					<AbsValue val="32"/>
+				</TileSize>
+				<BackgroundInsets>
+					<AbsInset left="5" right="5" top="5" bottom="5"/>
+				</BackgroundInsets>
+			</Backdrop>
+			<Anchors>
+				<Anchor point="TOP" relativepoint="TOP" x="-125" y="-22"/>
+			</Anchors>
+			<Layers>
+				<Layer level="OVERLAY">
+					<FontString name="TRP3_MODULE_NOTEPAD_CHAR_TEXT" inherits="GameFontNormalSmall" justifyH="CENTER" Text="">
+						<Size x="500" y="0"/>
+						<Anchors>
+							<Anchor point="TOP" x="0" y="12"/>
+						</Anchors>
+						<Color r="0.95" g="0.95" b="0.95"/>
+					</FontString>
+				</Layer>
+			</Layers>
+			<Size x="190" y="350"/>
+			<Frames>
+			<ScrollFrame name="TRP3_MODULE_NOTEPAD_CHAR_SCROLL" inherits="UIPanelScrollFrameTemplate">
+				<Size x="175" y="340"/>
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+				<ScrollChild>
+					<EditBox name="TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX" letters="10000" multiLine="true" enableMouse="false" autoFocus="false">
+						<Size x="175" y="50"/>
+						<Scripts>
+							<OnTextChanged>
+								if self:GetText() ~= TRP3_API.module.notepad.ValidateNote(TRP3_MODULE_NOTEPAD_CHAR_NOTE) then
+									TRP3_MODULE_NOTEPAD_CHAR_SAVE_BUTTON:Enable();
+								else
+									TRP3_MODULE_NOTEPAD_CHAR_SAVE_BUTTON:Disable();
+								end
+								if self:GetText():len() == 10000 then
+									TRP3_API.utils.message.displayMessage(TRP3_API.locale.getText("MODULE_NOTEPAD_WARNING_CHAR_LOAD_TEXT"):format(Notepad.coloredCharName));
+								end
+							</OnTextChanged>
+							<OnEscapePressed>
+								self:ClearFocus();
+							</OnEscapePressed>
+							<OnEditFocusGained>
+								if self.disabled then
+									self:ClearFocus();
+								end
+							</OnEditFocusGained>
+							<OnEditFocusLost>
+								if self.default and (not TRP3_API.module.notepad.ValidateNote(self:GetText()) or self:GetText() == "0") then
+									self:SetText(self.default);
+								end
+							</OnEditFocusLost>
+							<OnTabPressed>
+								self:ClearFocus();
+								TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX:SetFocus();
+							</OnTabPressed>
+							<OnLeave>
+								TRP3_MainTooltip:Hide();
+							</OnLeave>
+						</Scripts>
+						<FontString inherits="GameFontNormal"/>
+					</EditBox>
+				</ScrollChild>
+				<Scripts>
+					<OnEnter>
+						if not _G[self:GetName() .. "_EDITBOX"].disabled then
+							if not TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX:HasFocus() then
+								_G[self:GetName() .. "_EDITBOX"]:SetFocus();
+							end
+						end
+					</OnEnter>
+					<OnTabPressed>
+						self:ClearFocus();
+						TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX:SetFocus();
+					</OnTabPressed>
+				</Scripts>
+			</ScrollFrame>
+			<Button name="TRP3_MODULE_NOTEPAD_CHAR_SAVE_BUTTON" inherits="TRP3_CommonButton" text="SAVE">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="-20"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_API.module.notepad.ValidateCharNoteOnSave(TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX:GetText());
+						self:Disable();
+					</OnClick>
+					<OnShow>
+						TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX:SetText(TRP3_API.module.notepad.ValidateNote(TRP3_MODULE_NOTEPAD_CHAR_NOTE));
+						self:Disable();
+					</OnShow>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+	<Frame>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5"/>
+			</BackgroundInsets>
+		</Backdrop>
+		<Anchors>
+			<Anchor point="TOP" relativepoint="TOP" x="125" y="-22"/>
+		</Anchors>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_MODULE_NOTEPAD_ACC_TEXT" inherits="GameFontNormalSmall" justifyH="CENTER" Text="">
+					<Size x="500" y="0"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="12"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Size x="190" y="350"/>
+		<Frames>
+			<ScrollFrame name="TRP3_MODULE_NOTEPAD_ACC_SCROLL" inherits="UIPanelScrollFrameTemplate">
+				<Size x="175" y="340"/>
+				<Anchors>
+					<Anchor point="CENTER" x="0" y="0"/>
+				</Anchors>
+				<ScrollChild>
+					<EditBox name="TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX" letters="10000" multiLine="true" enableMouse="false" autoFocus="false">
+						<Size x="175" y="50"/>
+						<Scripts>
+							<OnTextChanged>
+								if self:GetText() ~= TRP3_API.module.notepad.ValidateNote(TRP3_MODULE_NOTEPAD_ACC_NOTE) then
+									TRP3_MODULE_NOTEPAD_ACC_SAVE_BUTTON:Enable();
+								else
+									TRP3_MODULE_NOTEPAD_ACC_SAVE_BUTTON:Disable();
+								end
+								if self:GetText():len() == 10000 then
+									TRP3_API.utils.message.displayMessage(TRP3_API.locale.getText("MODULE_NOTEPAD_WARNING_ACC_LOAD_TEXT"));
+								end
+							</OnTextChanged>
+							<OnEscapePressed>
+								self:ClearFocus();
+							</OnEscapePressed>
+							<OnEditFocusGained>
+								if self.disabled then
+									self:ClearFocus();
+								end
+							</OnEditFocusGained>
+							<OnEditFocusLost>
+								if self.default and (not TRP3_API.module.notepad.ValidateNote(self:GetText()) or self:GetText() == "0") then
+									self:SetText(self.default);
+								end
+							</OnEditFocusLost>
+							<OnTabPressed>
+								self:ClearFocus();
+								TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX:SetFocus();
+							</OnTabPressed>
+						</Scripts>
+						<FontString inherits="GameFontNormal"/>
+					</EditBox>
+				</ScrollChild>
+				<Scripts>
+					<OnEnter>
+						if not _G[self:GetName() .. "_EDITBOX"].disabled then
+							if not TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX:HasFocus() then
+								_G[self:GetName() .. "_EDITBOX"]:SetFocus();
+							end
+						end
+					</OnEnter>
+					<OnTabPressed>
+						self:ClearFocus();
+						TRP3_MODULE_NOTEPAD_CHAR_SCROLL_EDITBOX:SetFocus();
+					</OnTabPressed>
+				</Scripts>
+			</ScrollFrame>
+			<Button name="TRP3_MODULE_NOTEPAD_ACC_SAVE_BUTTON" inherits="TRP3_CommonButton" text="SAVE">
+				<Size x="100" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" x="0" y="-20"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						TRP3_API.module.notepad.ValidateAccNoteOnSave(TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX:GetText());
+						self:Disable();
+					</OnClick>
+					<OnShow>
+						TRP3_MODULE_NOTEPAD_ACC_SCROLL_EDITBOX:SetText(TRP3_API.module.notepad.ValidateNote(TRP3_MODULE_NOTEPAD_ACC_NOTE));
+						self:Disable();
+					</OnShow>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+		</Frames>
+	</Frame>
+	<Script file="notepad.lua"/>
+</Ui>

@@ -132,4 +132,6 @@
 	<Include file="map\map.xml"/>
 
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
+
+	<Include file="notepad\notepad.xml"/>
 </Ui>
