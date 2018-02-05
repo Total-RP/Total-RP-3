@@ -207,18 +207,6 @@ TRP3_API.dashboard.init = function()
 		end
 	end);
 
-	local PATREON_SUPPORTERS = {
-		"Connor Macleod",
-		"Bas (AstaLawl)",
-		"Vlad",
-	}
-	table.sort(PATREON_SUPPORTERS);
-
-	local patreonMessage = "";
-	for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
-		patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
-	end
-
 	-- Tab bar
 	local whatsNewText = loc("WHATS_NEW_17");
 	local moreModuleText = loc("MORE_MODULES_2");
@@ -226,7 +214,7 @@ TRP3_API.dashboard.init = function()
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
-	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, patreonMessage));
+	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, ELLYPSE_PATREON_SUPPORTERS));
 
 	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
 	frame:SetSize(400, 30);
