@@ -1399,9 +1399,6 @@ function Locale.getText(key)
 	if effectiveLocal[key] or DEFAULT_LOCALE[key] then
 		return effectiveLocal[key] or DEFAULT_LOCALE[key];
 	end
-	print(key);
-	TRP3_API.Ellyb.Tables.inspect(effectiveLocal);
-	TRP3_API.Ellyb.Tables.inspect(localizations[current].localeContent);
 	error("Unknown localization key: ".. tostring(key));
 end
 
