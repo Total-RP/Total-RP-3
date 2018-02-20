@@ -17,11 +17,14 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API;
+local _, TRP3_API = ...;
+
 -- Imports
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
 local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
 local tinsert, _G, strconcat = tinsert, _G, strconcat;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
@@ -77,6 +80,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		-- Demon hunters
 		[8] = "artifactability_havocdemonhunter_anguishofthedeceiver",
 
+		-- Allied races
+		[181] = "Achievement_AlliedRace_Nightborne", -- Shalassian
+
 	}
 
 	---
@@ -122,7 +128,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local languagesButton = {
 		id = "ww_trp3_languages",
 		icon = "spell_holy_silence",
-		configText = loc("TB_LANGUAGE"),
+		configText = loc.TB_LANGUAGE,
 		onEnter = function(Uibutton, buttonStructure)
 			refreshTooltip(Uibutton);
 		end,
@@ -134,8 +140,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			local currentLanguage = ChatFrame1EditBox.language
 
 			if languagesIcon[currentLanguageID] then
-				buttonStructure.tooltip  = loc("TB_LANGUAGE")..": "..currentLanguage;
-				buttonStructure.tooltipSub  = strconcat(color("y"), loc("CM_CLICK"), ": ", color("w"), loc("TB_LANGUAGES_TT"));
+				buttonStructure.tooltip  = loc.TB_LANGUAGE .. ": " .. currentLanguage;
+				buttonStructure.tooltipSub  = strconcat(color("y"), loc.CM_CLICK, ": ", color("w"), loc.TB_LANGUAGES_TT);
 				buttonStructure.icon = languagesIcon[currentLanguageID];
 			else
 				buttonStructure.icon = "spell_holy_silence";
@@ -143,7 +149,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
 			local dropdownItems = {};
-			tinsert(dropdownItems,{loc("TB_LANGUAGE"), nil});
+			tinsert(dropdownItems,{loc.TB_LANGUAGE, nil});
 			for i = 1, GetNumLanguages() do
 				local language, index = GetLanguageByIndex(i);
 				if index == ChatFrame1EditBox.languageID then

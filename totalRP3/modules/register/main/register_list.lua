@@ -17,18 +17,20 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 -- imports
 local Globals, Events = TRP3_API.globals, TRP3_API.events;
 local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local assert, table, _G, date, pairs, error, tinsert, wipe, time = assert, table, _G, date, pairs, error, tinsert, wipe, time;
 local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
-local getClassTexture = TRP3_API.ui.misc.getClassTexture;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local isMenuRegistered = TRP3_API.navigation.menu.isMenuRegistered;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -59,6 +61,8 @@ local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 
+local RegisterPlayerChatLinkModule;
+local RegisterCompanionChatLinkModule;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -97,6 +101,7 @@ local function openPage(profileID, unitID)
 		end
 	end
 end
+TRP3_API.register.openPageByProfileID = openPage;
 
 local function openCompanionPage(profileID)
 	local profile = getCompanionProfiles()[profileID];
@@ -148,6 +153,11 @@ local function switchInfoSorting()
 	refreshList();
 end
 
+local function switchTimeSorting()
+	sortingType = sortingType == 6 and 5 or 6;
+	refreshList();
+end
+
 local function nameComparator(elem1, elem2)
 	return elem1[2]:lower() < elem2[2]:lower();
 end
@@ -164,8 +174,16 @@ local function infoComparatorInverted(elem1, elem2)
 	return elem1[3]:lower() > elem2[3]:lower();
 end
 
+local function timeComparator(elem1, elem2)
+	return elem1[4]:lower() < elem2[4]:lower();
+end
+
+local function timeComparatorInverted(elem1, elem2)
+	return elem1[4]:lower() > elem2[4]:lower();
+end
+
 local comparators = {
-	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted
+	nameComparator, nameComparatorInverted, infoComparator, infoComparatorInverted, timeComparator, timeComparatorInverted
 }
 
 local function getCurrentComparator()
@@ -177,7 +195,7 @@ local ARROW_UP = "Interface\\Buttons\\Arrow-Up-Up";
 local ARROW_SIZE = 15;
 
 local function getComparatorArrows()
-	local nameArrow, relationArrow = "", "";
+	local nameArrow, relationArrow, timeArrow = "", "", "";
 	if sortingType == 1 then
 		nameArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
 	elseif sortingType == 2 then
@@ -186,8 +204,12 @@ local function getComparatorArrows()
 		relationArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
 	elseif sortingType == 4 then
 		relationArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 5 then
+		timeArrow = " |T" .. ARROW_DOWN .. ":" .. ARROW_SIZE .. "|t";
+	elseif sortingType == 6 then
+		timeArrow = " |T" .. ARROW_UP .. ":" .. ARROW_SIZE .. "|t";
 	end
-	return nameArrow, relationArrow;
+	return nameArrow, relationArrow, timeArrow;
 end
 
 local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
@@ -257,6 +279,12 @@ local function decorateCharacterLine(line, characterIndex)
 		setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 	end
 	_G[line:GetName().."Info"]:SetText(color .. relation);
+
+	local timeStr = "";
+	if profile.time then
+		timeStr = date(DATE_FORMAT, profile.time);
+	end
+	_G[line:GetName().."Time"]:SetText(timeStr);
 
 	-- Third column : flags
 	local rightTooltipTitle, rightTooltipText, flags;
@@ -337,12 +365,14 @@ local function getCharacterLines()
 			nameIsConform = true;
 		end
 
+		local formatDate = date(DATE_FORMAT, profile.time);
+
 		nameIsConform = nameIsConform or nameSearch:len() == 0;
 		guildIsConform = guildIsConform or guildSearch:len() == 0;
 		realmIsConform = realmIsConform or not realmOnly;
 
 		if nameIsConform and guildIsConform and realmIsConform then
-			tinsert(characterLines, {profileID, completeName, getRelationText(profileID)});
+			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), formatDate});
 		end
 	end
 
@@ -358,9 +388,11 @@ local function getCharacterLines()
 	end
 	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
 
-	local nameArrow, relationArrow = getComparatorArrows();
+	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION") .. relationArrow);
+	TRP3_RegisterListHeaderTime:SetText(loc("REG_TIME") .. timeArrow);
+	TRP3_RegisterListHeaderTimeTT:Enable();
 	TRP3_RegisterListHeaderInfoTT:Enable();
 	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
@@ -561,6 +593,7 @@ local function decorateCompanionLine(line, index)
 	_G[line:GetName().."Select"]:Show();
 
 	_G[line:GetName().."Info"]:SetText("");
+	_G[line:GetName().."Time"]:SetText("");
 end
 
 local function getCompanionLines()
@@ -600,7 +633,7 @@ local function getCompanionLines()
 		masterIsConform = masterIsConform or masterSearch:len() == 0;
 
 		if nameIsConform and typeIsConform and masterIsConform then
-			tinsert(companionLines, {profileID, companionName, companionName});
+			tinsert(companionLines, {profileID, companionName, companionName, companionName});
 		end
 	end
 
@@ -616,9 +649,11 @@ local function getCompanionLines()
 	end
 	setupFieldSet(TRP3_RegisterListPetFilter, loc("REG_LIST_PETS_FILTER"):format(lineSize, fullSize), 200);
 
-	local nameArrow, relationArrow = getComparatorArrows();
+	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION") .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderTime:SetText("");
+	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderInfoTT:Disable();
 	TRP3_RegisterListHeaderNameTT:Enable();
 	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
@@ -672,6 +707,7 @@ local function decorateIgnoredLine(line, unitID)
 	line.id = unitID;
 	_G[line:GetName().."Name"]:SetText(unitID);
 	_G[line:GetName().."Info"]:SetText("");
+	_G[line:GetName().."Time"]:SetText("");
 	_G[line:GetName().."Info2"]:SetText("");
 	_G[line:GetName().."Addon"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
@@ -686,6 +722,8 @@ local function getIgnoredLines()
 	end
 	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
 	TRP3_RegisterListHeaderInfo:SetText("");
+	TRP3_RegisterListHeaderTime:SetText("");
+	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderInfoTT:Disable();
 	TRP3_RegisterListHeaderNameTT:Disable();
 	TRP3_RegisterListHeaderInfo2:SetText("");
@@ -722,10 +760,22 @@ end
 local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
-		openPage(self:GetParent().id);
+		if IsShiftKeyDown() then
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
+				RegisterPlayerChatLinkModule:InsertLink(self:GetParent().id, canBeImported);
+			end);
+		else
+			openPage(self:GetParent().id);
+		end
 	elseif currentMode == MODE_PETS then
 		assert(self:GetParent().id, "No profileID on line.");
-		openCompanionPage(self:GetParent().id);
+		if IsShiftKeyDown() then
+			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
+				RegisterCompanionChatLinkModule:InsertLink(self:GetParent().id, canBeImported);
+			end);
+		else
+			openCompanionPage(self:GetParent().id);
+		end
 	elseif currentMode == MODE_IGNORE then
 		assert(self:GetParent().id, "No unitID on line.");
 		unignoreID(self:GetParent().id);
@@ -911,6 +961,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", switchNameSorting);
 	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
+	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
 	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
 	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)
@@ -929,17 +980,237 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		for _, line in pairs(widgetTab) do
 			line:SetHeight((containerHeight - 120) * 0.065);
 			if containerwidth < 690 then
+				_G[line:GetName() .. "Time"]:SetWidth(2);
+			else
+				_G[line:GetName() .. "Time"]:SetWidth(160);
+			end
+			if containerwidth < 850 then
 				_G[line:GetName() .. "Addon"]:SetWidth(2);
 			else
 				_G[line:GetName() .. "Addon"]:SetWidth(160);
 			end
 		end
 		if containerwidth < 690 then
+			TRP3_RegisterListHeaderTime:SetWidth(2);
+		else
+			TRP3_RegisterListHeaderTime:SetWidth(160);
+		end
+		if containerwidth < 850 then
 			TRP3_RegisterListHeaderAddon:SetWidth(2);
 		else
 			TRP3_RegisterListHeaderAddon:SetWidth(160);
 		end
 	end);
+
+
+	RegisterPlayerChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Player Profile", "DIR_PLAYER_PROFILE");
+
+	function RegisterPlayerChatLinkModule:GetLinkData(profileID, canBeImported)
+		local profile = {};
+		TRP3_API.Ellyb.Tables.copy(profile, getProfile(profileID));
+		-- Else, create a new menu entry and open it.
+		local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
+		profile.profileID = profileID;
+		profile.canBeImported = canBeImported;
+
+		return linkText, profile;
+	end
+
+	function RegisterPlayerChatLinkModule:GetCustomData(profile)
+		return profile.profileID;
+	end
+
+	function RegisterPlayerChatLinkModule:GetTooltipLines(profile)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+
+		local customColor = TRP3_API.Ellyb.ColorManager.YELLOW;
+		if profile.characteristics.CH then
+			customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
+		end
+
+		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+
+		if profile.characteristics.FT then
+			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		end
+		if profile.character.CU then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
+			tooltipLines:AddLine(profile.character.CU, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+		if profile.character.CO then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
+			tooltipLines:AddLine(profile.character.CO, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+
+		return tooltipLines;
+	end
+
+	local OpenRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("OPEN_REG_PROFILE", "Open in directory");
+	local LINK_COMMAND_OPEN_PLAYER_PROFILE_Q = "REG_P_O_Q";
+	local LINK_COMMAND_OPEN_PLAYER_PROFILE_A = "REG_P_O_A";
+
+	function OpenRegisterPlayerProfileButton:OnClick(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, profileID, sender);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, {
+			profileData = getProfile(profileID),
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PLAYER_PROFILE_A, function(profileData, sender)
+		local profile, profileID = profileData.profileData, profileData.profileID;
+		profile.link = {};
+		TRP3_API.register.insertProfile(profileID, profile)
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+
+		TRP3_API.register.openPageByProfileID(profileID);
+		TRP3_API.navigation.openMainFrame();
+	end)
+
+	local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinkModule:NewActionButton("IMPORT_REG_PROFILE", "Import profile");
+	local LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q = "REG_P_I_Q";
+	local LINK_COMMAND_IMPORT_PLAYER_PROFILE_A = "REG_P_I_A";
+
+	function ImportRegisterPlayerProfileButton:IsVisible(profile)
+		return profile.canBeImported;
+	end
+
+	function ImportRegisterPlayerProfileButton:OnClick(profileID, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, profileID, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PLAYER_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PLAYER_PROFILE_A, {
+			profileData = getProfile(profileID),
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PLAYER_PROFILE_A, function(profileData, sender)
+		local profile, profileID = profileData.profileData, profileData.profileID;
+		-- Else, create a new menu entry and open it.
+		local profileName = UNKNOWN;
+		if profile.characteristics and profile.characteristics.FN then
+			profileName = profile.characteristics.FN;
+		end
+		local i = 1;
+		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
+			i = i + 1;
+			profileName = profileName .. " " .. i;
+		end
+		TRP3_API.profile.duplicateProfile({
+			player = profile
+		}, profileName);
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.page.setPage("player_profiles", {});
+		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
+	end)
+
+	RegisterCompanionChatLinkModule = TRP3_API.ChatLinks:InstantiateModule("Directory Companion Profile", "DIR_COMPANION_PROFILE");
+
+	function RegisterCompanionChatLinkModule:GetLinkData(profileID, canBeImported)
+		local profile = {};
+		TRP3_API.Ellyb.Tables.copy(profile, getCompanionProfiles()[profileID]);
+		-- Else, create a new menu entry and open it.
+		local linkText = UNKNOWN;
+		if profile.data and profile.data.NA then
+			linkText = profile.data.NA;
+		end
+		profile.profileID = profileID;
+		profile.canBeImported = canBeImported;
+
+		return linkText, profile;
+	end
+
+	function RegisterCompanionChatLinkModule:GetCustomData(profile)
+		return profile.profileID;
+	end
+
+	function RegisterCompanionChatLinkModule:GetTooltipLines(profile)
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+		local dataTab = profile.data;
+		local name = dataTab.NA;
+		if dataTab.IC then
+			name = Utils.str.icon(dataTab.IC, 30) .. " " .. name;
+		end
+		tooltipLines:SetTitle(name, TRP3_API.Ellyb.ColorManager.WHITE);
+		if dataTab.TI then
+			tooltipLines:AddLine("< " .. dataTab.TI .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		end
+		return tooltipLines;
+	end
+
+	local OpenRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("OPEN_REG_COMPANION", "Open in directory");
+	local LINK_COMMAND_OPEN_COMPANION_PROFILE_Q = "REG_C_O_Q";
+	local LINK_COMMAND_OPEN_COMPANION_PROFILE_A = "REG_C_O_A";
+
+	function OpenRegisterCompanionProfileButton:OnClick(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, profileID, sender);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, {
+			profileData = getCompanionProfiles()[profileID],
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_COMPANION_PROFILE_A, function(profileData, sender)
+		local profileID, profile = profileData.profileID, profileData.profileData;
+		-- Check profile exists
+		if not TRP3_API.companions.register.getProfiles()[profileID] then
+			TRP3_API.companions.register.registerCreateProfile(profileID);
+		end
+		TRP3_API.companions.register.setProfileData(profileID, profile);
+
+		TRP3_API.companions.register.openPage(profileID);
+		openMainFrame();
+	end)
+
+	local ImportRegisterCompanionProfileButton = RegisterCompanionChatLinkModule:NewActionButton("IMPORT_REG_COMPANION",
+			"Import profile");
+	local LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q = "REG_C_I_Q";
+	local LINK_COMMAND_IMPORT_COMPANION_PROFILE_A = "REG_C_I_A";
+
+	function ImportRegisterPlayerProfileButton:IsVisible(profile)
+		return profile.canBeImported;
+	end
+
+	function ImportRegisterCompanionProfileButton:OnClick(profileID, sender)
+		TRP3_API.ChatLinks:CheckVersions(function()
+			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, profileID, sender);
+		end);
+	end
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_PROFILE_Q, function(profileID, sender)
+		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_COMPANION_PROFILE_A, {
+			profileData = getCompanionProfiles()[profileID],
+			profileID = profileID,
+		}, sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_COMPANION_PROFILE_A, function(profileData, sender)
+		local profile = profileData.profileData;
+		local newName = UNKNOWN;
+		if profile.data and profile.data.NA then
+			newName = profile.data.NA;
+		end
+		local i = 1;
+		while not TRP3_API.companions.player.isProfileNameAvailable(newName) and i < 500 do
+			i = i + 1;
+			newName = newName .. " " .. i;
+		end
+		local profileID = TRP3_API.companions.player.duplicateProfile(profile, newName);
+		TRP3_API.companions.openPage(profileID);
+		openMainFrame();
+	end)
 end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

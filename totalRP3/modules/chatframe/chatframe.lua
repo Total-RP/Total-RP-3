@@ -1,27 +1,35 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Chat management
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Chat management
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 -- Removed NPC talk prefix option and changed prefix to a hardcoded one (Paul Corlay) [RIP NPC talk prefix option 2014 - 2017]
 
+-- Ellyb imports
+local ColorManager = TRP3_API.Ellyb.ColorManager;
+local Color = TRP3_API.Ellyb.Color;
+
 -- imports
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
@@ -53,6 +61,7 @@ end
 TRP3_API.chat.isChannelHandled = isChannelHandled;
 
 local CONFIG_NAME_METHOD = "chat_name";
+local CONFIG_DISABLE_OOC = "chat_disable_ooc";
 local CONFIG_REMOVE_REALM = "remove_realm";
 local CONFIG_NAME_COLOR = "chat_color";
 local CONFIG_NPC_TALK = "chat_npc_talk";
@@ -66,10 +75,16 @@ local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
 local CONFIG_INCREASE_CONTRAST = "chat_color_contrast";
 local CONFIG_SHOW_ICON = "chat_show_icon";
+local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
 end
+
+local function disabledByOOC()
+	return getConfigValue(CONFIG_DISABLE_OOC) and get("player/character/RP") == 2
+end
+TRP3_API.chat.disabledByOOC = disabledByOOC;
 
 local function configNameMethod()
 	return getConfigValue(CONFIG_NAME_METHOD);
@@ -115,7 +130,7 @@ local function configOOCDetectionPattern()
 end
 
 local function configOOCDetectionColor()
-	return getColorFromHexadecimalCode(getConfigValue(CONFIG_OOC_COLOR));
+	return Color(getConfigValue(CONFIG_OOC_COLOR));
 end
 
 local function configInsertFullRPName()
@@ -125,6 +140,7 @@ end
 local function createConfigPage()
 	-- Config default value
 	registerConfigKey(CONFIG_NAME_METHOD, 3);
+	registerConfigKey(CONFIG_DISABLE_OOC, false);
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
@@ -137,6 +153,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
     registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
     registerConfigKey(CONFIG_SHOW_ICON, false);
+	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
 
 	local NAMING_METHOD_TAB = {
 		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
@@ -167,6 +184,12 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc("CO_CHAT_MAIN"),
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_DISABLE_OOC,
+				help = loc.CO_CHAT_DISABLE_OOC_TT,
+				configKey = CONFIG_DISABLE_OOC
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
@@ -202,6 +225,12 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_CHAT_USE_ICONS"),
 				configKey = CONFIG_SHOW_ICON,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc("CO_CHAT_NPCSPEECH_REPLACEMENT"),
+				help = loc("CO_CHAT_NPCSPEECH_REPLACEMENT_TT"),
+				configKey = CONFIG_NPCSPEECH_REPLACEMENT,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -298,22 +327,74 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function detectEmoteAndOOC(message)
-	
-	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
-		local chatColor = getChatColorForChannel("EMOTE");
-		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return chatColor:WrapTextInColorCode(content);
-		end);
+---@param message string
+---@param NPCEmoteChatColor Color
+local function detectEmoteAndOOC(message, NPCEmoteChatColor)
+	if disabledByOOC() then
+		return message;
 	end
-	
+
+	-- For NPC speech color reset
+	local NPCEmoteChatString = "";
+	if NPCEmoteChatColor then
+		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
+	end
+
+	-- For links exception
+	local EmoteTempPatternStart = "TRP3BTMPEMOTE"
+	local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
+	local OOCTempPatternStart = "TRP3BTEMPOOC"
+	local OOCTempPatternEnd = "TRP3ETEMPOOC"
+
+	local LinkDetectionPattern = "(%|H.-%|h.-|h)"
+	local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
+	local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
+
+	-- Emote/OOC replacement
+	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
+		local chatColor = ColorManager.getChatColorForChannel("EMOTE");
+		message = message:gsub(configEmoteDetectionPattern(), function(content)
+			return EmoteTempPatternStart .. content .. EmoteTempPatternEnd;
+		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(EmoteTempDetectionPattern)) then
+			message = message:gsub(EmoteTempDetectionPattern, function(content)
+				return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
+	end
+
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+		-- Wrapping patterns in a temporary pattern
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
-			return OOCColor:WrapTextInColorCode(content);
+			return OOCTempPatternStart .. content .. OOCTempPatternEnd;
 		end);
+
+		-- Removing temporary patterns from links
+		if (message:find(LinkDetectionPattern)) then
+			message = message:gsub(LinkDetectionPattern, function(content)
+				return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
+			end);
+		end
+
+		-- Replacing temporary patterns by color wrap
+		if (message:find(OOCTempDetectionPattern)) then
+			message = message:gsub(OOCTempDetectionPattern, function(content)
+				return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
 	end
-	
+
 	return message;
 end
 
@@ -323,22 +404,116 @@ end
 
 local NPC_TALK_PATTERNS;
 
-local function handleNPCEmote(message)
+-- Checking if it's a pet profile and customizing appropriately
+local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
+	-- If option disabled, just return the colored name.
+	if disabledByOOC() then
+		return name;
+	end
+
+	local nameColor;
+	local petProfile;
+
+	local innerName = name:sub(2, name:len() - 1);
+
+	-- If option disabled, just return the colored name.
+	if not getConfigValue(CONFIG_NPCSPEECH_REPLACEMENT) then
+		return chatColor:WrapTextInColorCode(innerName);
+	end
+
+	-- If it's the player's emote, look in his own pet profiles
+	if (senderID == Globals.player_id) then
+		for profileID, profile in pairs(TRP3_API.companions.player.getProfiles()) do
+			if (profile.data and profile.data.NA == innerName) then
+				petProfile = profile;
+				name = innerName;
+				break
+			end
+		end
+	-- If it's another player's emote, look in the register for a matching pet profile from that player
+	else
+		for profileID, profile in pairs(TRP3_API.companions.register.getProfiles()) do
+			local isMaster = false;
+			for companionFullID, _ in pairs(profile.links) do
+				if (TRP3_API.utils.str.companionIDToInfo(companionFullID) == senderID) then
+					isMaster = true;
+					break
+				end
+			end
+
+			if (isMaster and profile.data and profile.data.NA == innerName) then
+				petProfile = profile;
+				name = innerName;
+				break
+			end
+		end
+	end
+
+	-- Get the pet custom color
+	if configShowNameCustomColors() and petProfile and petProfile.data then
+		local customColor = petProfile.data.NH;
+
+		if customColor then
+			customColor = Color(petProfile.data.NH);
+
+			if configIncreaseNameColorContrast() then
+				customColor:LightenColorUntilItIsReadable();
+			end
+
+			nameColor = customColor;
+		end
+	end
+
+	-- If we did get a color wrap the name inside the color code
+	if nameColor then
+		-- And wrap the name inside the color's code
+		name = nameColor:WrapTextInColorCode(name) .. chatColor:GetColorCodeStartSequence();
+		-- We need the start sequence at the end because emotes replace names in the whole message. Might be redundant for other speech types.
+	else
+		name = chatColor:WrapTextInColorCode(name);
+	end
+
+	-- Add the icon
+	if getConfigValue(CONFIG_SHOW_ICON) then
+		if petProfile and petProfile.data and petProfile.data.IC then
+			name = Utils.str.icon(petProfile.data.IC, 15) .. " " .. name;
+		end
+	end
+
+	return name;
+end
+
+local function handleNPCEmote(message, senderID)
+
+	local chatColor;
 
 	-- Go through all talk types
 	for talkType, talkChannel in pairs(NPC_TALK_PATTERNS) do
-		if message:find(talkType) then
-			local chatColor = getChatColorForChannel(talkChannel);
-			local name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
-			local content = message:sub(name:len() + 5);
 
-			return chatColor:WrapTextInColorCode(name), chatColor:WrapTextInColorCode(content);
+		local name;
+		local content;
+
+		if message:find(talkType) then
+			chatColor = ColorManager.getChatColorForChannel(talkChannel);
+			name = message:sub(4, message:find(talkType) - 2); -- Isolate the name
+			content = message:sub(name:len() + 5);
+
+			if (name:match("^%[.-%]$")) then
+				name = wrapNameInColorForNPCEmote(name, senderID, chatColor);
+			else
+				name = chatColor:WrapTextInColorCode(name);
+			end
+
+			return name, chatColor:WrapTextInColorCode(content), chatColor;
 		end
 	end
 
 	-- If none was found, we default to emote
-	local chatColor = getChatColorForChannel("MONSTER_EMOTE");
-	return chatColor:WrapTextInColorCode(message:sub(4)), " ";
+	chatColor = ColorManager.getChatColorForChannel("MONSTER_EMOTE");
+	message = chatColor:WrapTextInColorCode(message:sub(4));
+	message = message:gsub("%[.-%]", function(name) return wrapNameInColorForNPCEmote(name, senderID, chatColor); end);
+
+	return message, " ", chatColor;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -362,14 +537,20 @@ function TRP3_API.chat.getOwnershipNameID()
 end
 
 function handleCharacterMessage(_, event, message, ...)
-	
+
+	if disabledByOOC() then
+		return false, message, ...;
+	end
+
+	local messageSender = ...;
 	local messageID = select(10, ...);
+	local NPCEmoteChatColor;
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
 		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
-			npcMessageName, message = handleNPCEmote(message);
+			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 
 		-- This is one of Saelora's neat modification
 		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
@@ -395,7 +576,7 @@ function handleCharacterMessage(_, event, message, ...)
 	end
 
 	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(message);
+	message = detectEmoteAndOOC(message, NPCEmoteChatColor);
 
 	return false, message, ...;
 end
@@ -462,6 +643,10 @@ local GetCustomColorByGUID = TRP3_API.utils.color.GetCustomColorByGUID;
 function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
 
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
+
+	if disabledByOOC() then
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+	end
 
 	local GUID = arg12;
 	local unitID = arg2;
@@ -575,6 +760,8 @@ function hooking()
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
 	hooksecurefunc("ChatEdit_InsertLink", function(unitID)
 
+		if disabledByOOC() then return end;
+
 		-- If we didn't get a name at all then we have nothing to do here
 		if not unitID then return end;
 
@@ -592,7 +779,7 @@ function hooking()
 			local currentCursorPosition = editBox:GetCursorPosition();
 
 			-- Save the text that is before and after the name inserted
-			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len() - 1);
+			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len());
 			local textAfter = currentText:sub(currentCursorPosition+1 );
 
 			local name = getFullnameForUnitUsingChatMethod(unitID, unitID);

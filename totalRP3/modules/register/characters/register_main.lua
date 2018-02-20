@@ -252,12 +252,13 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 end
 
 --- Raises error if unknown unitName
-function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended)
+function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount)
 	local character = getUnitIDCharacter(unitID);
 	character.client = client;
 	character.clientVersion = clientVersion;
 	character.msp = msp;
 	character.extended = extended;
+	character.isTrial = trialAccount;
 end
 
 --- Raises error if unknown unitName
@@ -375,6 +376,10 @@ end
 
 function TRP3_API.register.getProfileList()
 	return profiles;
+end
+
+function TRP3_API.register.insertProfile(profileID, profileData)
+	profiles[profileID] = profileData;
 end
 
 local function getUnitRPNameWithID(unitID, unitName)
@@ -663,7 +668,6 @@ function TRP3_API.register.init()
 	});
 
 	registerConfigKey("register_about_use_vote", true);
-	registerConfigKey("register_auto_add", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
 	registerConfigKey("register_sanitization", true);
 
@@ -697,12 +701,6 @@ function TRP3_API.register.init()
 				help = loc("CO_REGISTER_ABOUT_VOTE_TT")
 			},
 			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_REGISTER_AUTO_ADD"),
-				configKey = "register_auto_add",
-				help = loc("CO_REGISTER_AUTO_ADD_TT")
-			},
-			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
 				title = loc("CO_REGISTER_AUTO_PURGE"),
@@ -725,21 +723,20 @@ function TRP3_API.register.init()
 				title = loc("CO_LOCATION_ACTIVATE"),
 				help = loc("CO_LOCATION_ACTIVATE_TT"),
 				configKey = CONFIG_ENABLE_MAP_LOCATION,
-				dependentOnOptions = {"comm_broad_use"}
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_OOC"),
 				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
-				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
+				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc("CO_LOCATION_DISABLE_PVP"),
 				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
-				dependentOnOptions = {"comm_broad_use", CONFIG_ENABLE_MAP_LOCATION},
+				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
 		}
 	};

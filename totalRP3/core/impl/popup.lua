@@ -24,7 +24,7 @@ TRP3_API.popup = {};
 local Utils = TRP3_API.utils;
 local loc, table = TRP3_API.locale.getText, table;
 local initList = TRP3_API.ui.list.initList;
-local tinsert, _G, pairs, wipe, math, assert = tinsert, _G, pairs, wipe, math, assert;
+local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
@@ -32,6 +32,7 @@ local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList
 local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.utils.color.numberToHexa;
 local strconcat = strconcat;
 local safeMatch = TRP3_API.utils.str.safeMatch;
+local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -62,6 +63,25 @@ StaticPopupDialogs["TRP3_CONFIRM"] = {
 	hideOnEscape = true,
 	showAlert = true,
 };
+
+StaticPopupDialogs["TRP3_YES_NO"] = {
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function(self)
+		if StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept then
+			StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept();
+		end
+	end,
+	OnCancel = function(self)
+		if StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel then
+			StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel();
+		end
+	end,
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true,
+	showAlert = true,
+}
 
 StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button1 = ACCEPT,
@@ -146,6 +166,17 @@ function TRP3_API.popup.showConfirmPopup(text, onAccept, onCancel)
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_CONFIRM");
+	if dialog then
+		dialog:ClearAllPoints();
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
+	end
+end
+
+function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
+	StaticPopupDialogs["TRP3_YES_NO"].text = POPUP_HEAD..text.."\n\n";
+	StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept = onAccept;
+	StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel = onCancel;
+	local dialog = StaticPopup_Show("TRP3_YES_NO");
 	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
@@ -501,20 +532,179 @@ end
 
 local TRP3_ColorBrowser, TRP3_ColorBrowserColor = TRP3_ColorBrowser, TRP3_ColorBrowserColor;
 local toast = TRP3_API.ui.tooltip.toast;
+local Color, ColorManager = TRP3_API.Ellyb.Color, TRP3_API.Ellyb.ColorManager;
+
+local COLOR_PRESETS_BASIC = {
+	{ CO = ColorManager.RED, TX = loc("CM_RED")},
+	{ CO = ColorManager.ORANGE, TX = loc("CM_ORANGE")},
+	{ CO = ColorManager.YELLOW, TX = loc("CM_YELLOW")},
+	{ CO = ColorManager.GREEN, TX = loc("CM_GREEN")},
+	{ CO = ColorManager.CYAN, TX = loc("CM_CYAN")},
+	{ CO = ColorManager.BLUE, TX = loc("CM_BLUE")},
+	{ CO = ColorManager.PURPLE, TX = loc("CM_PURPLE")},
+	{ CO = ColorManager.PINK, TX = loc("CM_PINK")},
+	{ CO = ColorManager.WHITE, TX = loc("CM_WHITE")},
+	{ CO = ColorManager.GREY, TX = loc("CM_GREY")},
+	{ CO = ColorManager.BLACK, TX = loc("CM_BLACK")},
+}
+
+local COLOR_PRESETS_CLASS = {
+	{ CO = ColorManager.HUNTER, TX = ({GetClassInfo(3)})[1]},
+	{ CO = ColorManager.WARLOCK, TX = ({GetClassInfo(9)})[1]},
+	{ CO = ColorManager.PRIEST, TX = ({GetClassInfo(5)})[1]},
+	{ CO = ColorManager.PALADIN, TX = ({GetClassInfo(2)})[1]},
+	{ CO = ColorManager.MAGE, TX = ({GetClassInfo(8)})[1]},
+	{ CO = ColorManager.ROGUE, TX = ({GetClassInfo(4)})[1]},
+	{ CO = ColorManager.DRUID, TX = ({GetClassInfo(11)})[1]},
+	{ CO = ColorManager.SHAMAN, TX = ({GetClassInfo(7)})[1]},
+	{ CO = ColorManager.WARRIOR, TX = ({GetClassInfo(1)})[1]},
+	{ CO = ColorManager.DEATHKNIGHT, TX = ({GetClassInfo(6)})[1]},
+	{ CO = ColorManager.MONK, TX = ({GetClassInfo(10)})[1]},
+	{ CO = ColorManager.DEMONHUNTER, TX = ({GetClassInfo(12)})[1]},
+}
+table.sort(COLOR_PRESETS_CLASS, function(a,b) return a.TX<b.TX end)
+
+local COLOR_PRESETS_RESOURCES = {
+	{ CO = ColorManager.POWER_MANA, TX = MANA},
+	{ CO = ColorManager.POWER_RAGE, TX = RAGE},
+	{ CO = ColorManager.POWER_FOCUS, TX = FOCUS},
+	{ CO = ColorManager.POWER_ENERGY, TX = ENERGY},
+	{ CO = ColorManager.POWER_COMBO_POINTS, TX = COMBO_POINTS},
+	{ CO = ColorManager.POWER_RUNES, TX = RUNES},
+	{ CO = ColorManager.POWER_RUNIC_POWER, TX = RUNIC_POWER},
+	{ CO = ColorManager.POWER_SOUL_SHARDS, TX = SOUL_SHARDS},
+	{ CO = ColorManager.POWER_LUNAR_POWER, TX = LUNAR_POWER},
+	{ CO = ColorManager.POWER_HOLY_POWER, TX = HOLY_POWER},
+	{ CO = ColorManager.POWER_MAELSTROM, TX = MAELSTROM},
+	{ CO = ColorManager.POWER_INSANITY, TX = INSANITY},
+	{ CO = ColorManager.POWER_CHI, TX = CHI},
+	{ CO = ColorManager.POWER_ARCANE_CHARGES, TX = ARCANE_CHARGES},
+	{ CO = ColorManager.POWER_FURY, TX = FURY},
+	{ CO = ColorManager.POWER_PAIN, TX = PAIN},
+	{ CO = ColorManager.POWER_AMMOSLOT, TX = AMMOSLOT},
+	{ CO = ColorManager.POWER_FUEL, TX = FUEL},
+}
+table.sort(COLOR_PRESETS_RESOURCES, function(a,b) return a.TX<b.TX end)
+
+local COLOR_PRESETS_ITEMS = {
+	{ CO = ColorManager.ITEM_POOR, TX = ITEM_QUALITY0_DESC},
+	{ CO = ColorManager.ITEM_COMMON, TX = ITEM_QUALITY1_DESC},
+	{ CO = ColorManager.ITEM_UNCOMMON, TX = ITEM_QUALITY2_DESC},
+	{ CO = ColorManager.ITEM_RARE, TX = ITEM_QUALITY3_DESC},
+	{ CO = ColorManager.ITEM_EPIC, TX = ITEM_QUALITY4_DESC},
+	{ CO = ColorManager.ITEM_LEGENDARY, TX = ITEM_QUALITY5_DESC},
+	{ CO = ColorManager.ITEM_ARTIFACT, TX = ITEM_QUALITY6_DESC},
+	{ CO = ColorManager.ITEM_HEIRLOOM, TX = ITEM_QUALITY7_DESC},
+	{ CO = ColorManager.ITEM_WOW_TOKEN, TX = ITEM_QUALITY8_DESC},
+}
+
+local function colorPresetsDropDownSelection(hexValue)
+	local r, g, b = ColorManager.hexaToNumber(hexValue);
+	TRP3_ColorBrowser.red = r;
+	TRP3_ColorBrowser.green = g;
+	TRP3_ColorBrowser.blue = b;
+	TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
+	TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
+end
+
+local function colorPresetsDropDown()
+	local values = {};
+
+	local values_basic = {};
+	for index, preset in pairs(COLOR_PRESETS_BASIC) do
+		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_BASIC"), values_basic});
+
+	local values_classes = {};
+	for index, preset in pairs(COLOR_PRESETS_CLASS) do
+		tinsert(values_classes, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CLASSES"), values_classes});
+
+	local values_resources = {};
+	for index, preset in pairs(COLOR_PRESETS_RESOURCES) do
+		tinsert(values_resources, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_RESOURCES"), values_resources});
+
+	local values_items = {};
+	for index, preset in pairs(COLOR_PRESETS_ITEMS) do
+		tinsert(values_items, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_ITEMS"), values_items});
+
+	local values_custom = {};
+	for index, preset in pairs(TRP3_Colors) do
+		tinsert(values_custom, { Color(preset.CO):WrapTextInColorCode(preset.TX), preset.CO });
+	end
+	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CUSTOM"), values_custom});
+
+	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
+end
+
+local function saveCustomColor(color, name)
+	TRP3_ColorBrowserEditBox:ClearFocus();
+	TRP3_ColorBrowserNameEditBox:ClearFocus();
+
+	local hexaColorCode = "#" .. color:GenerateHexadecimalColor(true);
+	if (name == "") then
+		name = hexaColorCode;
+	end
+
+	local indexToUpdate;
+	for index, preset in pairs(TRP3_Colors) do
+		if (Color(preset.CO):IsEqualTo(color)) then
+			indexToUpdate = index;
+			break
+		end
+	end
+
+	if (indexToUpdate) then
+		TRP3_Colors[indexToUpdate].TX = name;
+	else
+		tinsert(TRP3_Colors, { CO = hexaColorCode, TX = name });
+		table.sort(TRP3_Colors, function(a,b) return ColorManager.compareHSL(Color(a.CO),Color(b.CO)) end)
+	end
+end
+
+local function deleteCustomColor(color)
+	TRP3_ColorBrowserEditBox:ClearFocus();
+	TRP3_ColorBrowserNameEditBox:ClearFocus();
+
+	local indexToDelete;
+	for index, preset in pairs(TRP3_Colors) do
+		if (Color(preset.CO):IsEqualTo(color)) then
+			indexToDelete = index;
+			break
+		end
+	end
+	if (indexToDelete) then
+		tremove(TRP3_Colors, indexToDelete);
+		TRP3_ColorBrowserNameEditBox:SetText("");
+	end
+end
 
 local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
 	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
+	TRP3_ColorBrowserPresets:SetText(loc("UI_COLOR_BROWSER_PRESETS"));
+	TRP3_ColorBrowserSave:SetText(loc("CM_SAVE"));
+	TRP3_ColorBrowserDelete:SetText(loc("CM_DELETE"));
+
+	if not TRP3_Colors then
+		TRP3_Colors = {};
+	end
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
-	
+
+	TRP3_ColorBrowserNameEditBoxText:SetText(loc("BW_CUSTOM_NAME_TITLE"));
+	setTooltipForSameFrame(TRP3_ColorBrowserNameEditBoxHelp, "RIGHT", 0, 5, loc("BW_CUSTOM_NAME"), loc("BW_CUSTOM_NAME_TT"));
+
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
-		if self:GetText():match("^%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number
-			local r, g, b = hexaToNumber(self:GetText());
-			r = r / 255;
-			g = g / 255;
-			b = b / 255;
+		if self:GetText():match("^%x%x%x%x%x%x$") or self:GetText():match("^#%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number (with or without a #)
+			local r, g, b = ColorManager.hexaToNumber(self:GetText());
 			TRP3_ColorBrowser.red = r;
 			TRP3_ColorBrowser.green = g;
 			TRP3_ColorBrowser.blue = b;
@@ -525,13 +715,40 @@ local function initColorBrowser()
 			toast(loc("BW_COLOR_CODE_ALERT"), 1);
 		end
 	end);
-	
+
+	TRP3_ColorBrowserNameEditBox:SetScript("OnEnterPressed", function(self)
+		if (self:GetText() ~= "") then
+			saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), TRP3_ColorBrowserNameEditBox:GetText());
+			TRP3_ColorBrowserDelete:Enable();
+		else
+			self:ClearFocus();
+		end
+	end);
+
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
+		TRP3_ColorBrowserEditBox:ClearFocus();
+		TRP3_ColorBrowserNameEditBox:ClearFocus();
+
 		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
-		TRP3_ColorBrowserEditBox:SetText(("%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255));
+		TRP3_ColorBrowserEditBox:SetText(("#%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255):upper());
+
+		TRP3_ColorBrowserNameEditBox:SetText("");
+		TRP3_ColorBrowserDelete:Disable();
+		for index, preset in pairs(TRP3_Colors) do
+			if (Color(preset.CO):IsEqualTo(Color(r, g, b))) then
+				local name = preset.TX;
+				if (name == preset.CO) then
+					name = "";
+				end
+				TRP3_ColorBrowserNameEditBox:SetText(name);
+
+				TRP3_ColorBrowserDelete:Enable();
+				break
+			end
+		end
 	end);
 
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
@@ -540,6 +757,18 @@ local function initColorBrowser()
 		if TRP3_ColorBrowser.callback ~= nil then
 			TRP3_ColorBrowser.callback((TRP3_ColorBrowser.red or 1) * 255, (TRP3_ColorBrowser.green or 1) * 255, (TRP3_ColorBrowser.blue or 1) * 255);
 		end
+	end);
+
+	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
+
+	TRP3_ColorBrowserSave:SetScript("OnClick", function()
+		saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), TRP3_ColorBrowserNameEditBox:GetText());
+		TRP3_ColorBrowserDelete:Enable();
+	end);
+
+	TRP3_ColorBrowserDelete:SetScript("OnClick", function()
+		deleteCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+		TRP3_ColorBrowserDelete:Disable();
 	end);
 end
 
@@ -568,6 +797,30 @@ function TRP3_ColorButtonLoad(self)
 		_G[self:GetName() .. "BlinkAnimate"]:Finish();
 	end
 	self.setColor();
+end
+
+function TRP3_API.popup.showDefaultColorPicker(popupArgs)
+	local setColor, r, g, b = unpack(popupArgs);
+
+	ColorPickerFrame:SetColorRGB((r or 255) / 255, (g or 255) / 255, (b or 255) / 255);
+	ColorPickerFrame.hasOpacity = false;
+	ColorPickerFrame.opacity = 1;
+
+	-- func is called every time the color is changed, whereas opacityFunc is only called when changing opacity or pressing OKAY
+	-- Since we don't have opacity, I put the callback on opacityFunc to have the same behaviour as TRP3 color picker.
+	ColorPickerFrame.func = function()
+	end
+
+	ColorPickerFrame.opacityFunc = function()
+		local newR, newG, newB = ColorPickerFrame:GetColorRGB();
+		setColor(newR * 255, newG * 255, newB * 255);
+	end
+
+	ColorPickerFrame.cancelFunc = function()
+		setColor(r, g, b);
+	end
+
+	ShowUIPanel(ColorPickerFrame);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

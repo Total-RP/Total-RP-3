@@ -309,6 +309,7 @@ local function registerCreateProfile(profileID)
 	};
 	log(("Create companion register profile %s"):format(profileID));
 end
+TRP3_API.companions.register.registerCreateProfile = registerCreateProfile;
 
 function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, masterProfileID, v1, v2)
 	local companionID, profileID, companionFullID;
@@ -376,6 +377,12 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	end
 	
+end
+
+function TRP3_API.companions.register.setProfileData(profileID, profile)
+	registerCompanions[profileID] = profile;
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "characteristics");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 end
 
 function TRP3_API.companions.register.getCompanionProfile(companionFullID)

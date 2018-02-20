@@ -17,12 +17,15 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+---@type TRP3_API
+local _, TRP3_API = ...;
+
+local loc = TRP3_API.loc;
 
 local function onStart()
 	-- Stop right here if Prat is not installed
 	if not Prat then
-		return false, loc("MO_ADDON_NOT_INSTALLED"):format("Prat");
+		return false, loc(loc.MO_ADDON_NOT_INSTALLED, "Prat");
 	end;
 
 	Prat:AddModuleToLoad(function()
@@ -45,6 +48,7 @@ local function onStart()
 		local getConfigValue 					= TRP3_API.configuration.getValue;
 		local getCharacterInfoTab 				= TRP3_API.utils.getCharacterInfoTab;
 		local icon 								= TRP3_API.utils.str.icon;
+		local disabledByOOC = TRP3_API.chat.disabledByOOC;
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
 	
@@ -70,6 +74,8 @@ local function onStart()
 
 		-- Runs before Prat add the message to the chat frames
 		function pratModule:Prat_PreAddMessage(arg, message, frame, event)
+
+			if disabledByOOC() then return end;
 
 			-- If the message has no GUID (system?) we don't have anything to do with this
 			if not message.GUID then return end;
@@ -158,7 +164,7 @@ end
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
 	["name"] = "Prat",
-	["description"] = loc("MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"):format("TinyTooltip"),
+	["description"] = loc(loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION, "Prat"),
 	["version"] = 1.1,
 	["id"] = "trp3_prat",
 	["onStart"] = onStart,

@@ -1,27 +1,30 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Communication protocol and API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Communication protocol and API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
 -- For debug
 local VERBOSE = false;
 
 -- Public accessor
-TRP3_API.communication = {};
+local Communication = {};
+TRP3_API.communication = Communication;
 
 -- imports
 local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
@@ -30,7 +33,7 @@ local tconcat = table.concat;
 local ChatThrottleLib = ChatThrottleLib;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm, isIDIgnored = TRP3_API.communication;
+local isIDIgnored;
 local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 
 -- function definition
@@ -50,12 +53,12 @@ local interface_id = {
 	DIRECT_RELAY = 2,
 	DIRECT_PRINT = 3
 };
-Comm.total = 0;
-Comm.totalReceived = 0;
-Comm.interface_id = interface_id;
+Communication.total = 0;
+Communication.totalReceived = 0;
+Communication.interface_id = interface_id;
 local selected_interface_id = interface_id.WOW;
 
-function Comm.init()
+function Communication.init()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onAddonMessageReceived);
 	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function() 
@@ -84,7 +87,7 @@ function onAddonMessageReceived(...)
 			Log.log("Malformed senderID: " .. tostring(sender), Log.level.WARNING);
 			return;
 		end
-		Comm.totalReceived = Comm.totalReceived + prefix:len() + packet:len();
+		Communication.totalReceived = Communication.totalReceived + prefix:len() + packet:len();
 		handlePacketsIn(packet, sender);
 	end
 end
@@ -112,7 +115,7 @@ local function getCommunicationInterface()
 end
 
 -- Changes the communication interface to use
-function Comm.setInterfaceID(id)
+function Communication.setInterfaceID(id)
 	selected_interface_id = id;
 end
 
@@ -151,7 +154,7 @@ local function handlePacketsOut(messageID, packets, target, priority)
 			end
 			local str = messageID .. control .. total256 .. packet;
 			local size = str:len() + wowCom_prefix:len();
-			Comm.total = Comm.total + size;
+			Communication.total = Communication.total + size;
 			getCommunicationInterface()(str, target, priority);
 
 		end
@@ -181,7 +184,7 @@ local function savePacket(sender, messageID, packet, total)
 	end
 end
 
-function Comm.addMessageIDHandler(target, messageID, callback)
+function Communication.addMessageIDHandler(target, messageID, callback)
 	if not PACKET_MESSAGE_HANDLERS[target] then PACKET_MESSAGE_HANDLERS[target] = {} end
 	if not PACKET_MESSAGE_HANDLERS[target][messageID] then PACKET_MESSAGE_HANDLERS[target][messageID] = {} end
 	tinsert(PACKET_MESSAGE_HANDLERS[target][messageID], callback);
@@ -238,7 +241,7 @@ local function getMessageIDAndIncrement()
 	end
 	return toReturn;
 end
-Comm.getMessageIDAndIncrement = getMessageIDAndIncrement;
+Communication.getMessageIDAndIncrement = getMessageIDAndIncrement;
 
 -- Convert structure to message, cut message in packets.
 local function handleStructureOut(structure, target, priority, messageID)
@@ -274,7 +277,7 @@ end
 local PREFIX_REGISTRATION = {};
 
 -- Register a function to callback when receiving a object attached to the given prefix
-function Comm.registerProtocolPrefix(prefix, callback)
+function Communication.registerProtocolPrefix(prefix, callback)
 	assert(prefix and callback and type(callback) == "function", "Usage: prefix, callback");
 	if PREFIX_REGISTRATION[prefix] == nil then
 		PREFIX_REGISTRATION[prefix] = {};
@@ -286,7 +289,7 @@ end
 -- Prefix must have been registered before use this function
 -- The object can be any lua type (numbers, strings, tables, but NOT functions or userdatas)
 -- Priority is optional ("Bulk" by default)
-function Comm.sendObject(prefix, object, target, priority, messageID)
+function Communication.sendObject(prefix, object, target, priority, messageID)
 	assert(PREFIX_REGISTRATION[prefix] ~= nil, "Unregistered prefix: "..prefix);
 	if not isIDIgnored(target) then
 		if isSpecialTarget(target) or target:match("[^%-]+%-[^%-]+") then
@@ -324,7 +327,7 @@ function receiveObject(structure, sender, messageID)
 end
 
 -- Estimate the number of packet needed to send a object.
-function Comm.estimateStructureLoad(object)
+function Communication.estimateStructureLoad(object)
 	assert(object, "Object nil");
 	return math.ceil((#(libSerializer:Serialize({"MOCK", object}))) / AVAILABLE_CHARACTERS);
 end

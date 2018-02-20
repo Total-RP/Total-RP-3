@@ -32,7 +32,7 @@ local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3
 local addCharacter = TRP3_API.register.addCharacter;
 local saveCurrentProfileID, saveClientInformation, saveInformation = TRP3_API.register.saveCurrentProfileID, TRP3_API.register.saveClientInformation, TRP3_API.register.saveInformation;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
-local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
+local isUnitIDKnown, hasProfile = TRP3_API.register.isUnitIDKnown, TRP3_API.register.hasProfile;
 local playerAPI = TRP3_API.register.player;
 local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
@@ -44,24 +44,25 @@ local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
+local displayMessage = TRP3_API.utils.message.displayMessage;
 
 -- WoW imports
-local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance;
+local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
+local newTimer = C_Timer.NewTimer;
 
 -- Config keys
-local CONFIG_REGISTRE_AUTO_ADD = "register_auto_add";
 local CONFIG_NEW_VERSION = "new_version_alert";
+
+-- Character name for profile opening command
+local characterToOpen = "";
+local commandOpeningTimerHandle;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local has_seen_update_alert, has_seen_extended_update_alert = false, false;
-
-local function configIsAutoAdd()
-	return getConfigValue(CONFIG_REGISTRE_AUTO_ADD);
-end
 
 local function configShowVersionAlert()
 	return getConfigValue(CONFIG_NEW_VERSION);
@@ -98,6 +99,7 @@ local VERNUM_QUERY_INDEX_COMPANION_MOUNT = 14;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
 local VERNUM_QUERY_INDEX_EXTENDED = 17;
+local VERNUM_QUERY_INDEX_TRIALS = 18;
 
 local queryInformationType, createVernumQuery;
 
@@ -130,6 +132,8 @@ function createVernumQuery()
 	if Globals.extended_version then
 		query[VERNUM_QUERY_INDEX_EXTENDED] = Globals.extended_version;
 	end
+	-- Trial accounts
+	query[VERNUM_QUERY_INDEX_TRIALS] = Globals.is_trial_account;
 
 	return query;
 end
@@ -255,6 +259,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	local senderVersionText = structure[VERNUM_QUERY_INDEX_VERSION_DISPLAY];
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 	local senderExtendedVersion = structure[VERNUM_QUERY_INDEX_EXTENDED];
+	local senderIsTrial = structure[VERNUM_QUERY_INDEX_TRIALS];
 
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
@@ -266,41 +271,39 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 
 	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion);
 
-	if isUnitIDKnown(senderID) or configIsAutoAdd() then
-		if not isUnitIDKnown(senderID) then
-			addCharacter(senderID);
-		end
-		saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion);
-		saveCurrentProfileID(senderID, senderProfileID);
-
-		-- Query specific data, depending on version number.
-		local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
-		for _, infoType in pairs(infoTypeTab) do
-			if shouldUpdateInformation(senderID, infoType, structure[index]) then
-				log(("Should update: %s's %s"):format(senderID, infoType));
-				queryInformationType(senderID, infoType);
-			end
-			index = index + 1;
-		end
-
-		-- Battle pet
-		local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
-		local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
-		local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
-		parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
-
-		-- Pet
-		local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
-		local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
-		local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
-		parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
-
-		-- Mount
-		local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
-		local mountV1 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1];
-		local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
-		parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
+	if not isUnitIDKnown(senderID) then
+		addCharacter(senderID);
 	end
+	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial);
+	saveCurrentProfileID(senderID, senderProfileID);
+
+	-- Query specific data, depending on version number.
+	local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
+	for _, infoType in pairs(infoTypeTab) do
+		if shouldUpdateInformation(senderID, infoType, structure[index]) then
+			log(("Should update: %s's %s"):format(senderID, infoType));
+			queryInformationType(senderID, infoType);
+		end
+		index = index + 1;
+	end
+
+	-- Battle pet
+	local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
+	local battlePetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1];
+	local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
+	parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
+
+	-- Pet
+	local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
+	local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
+	local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
+	parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
+
+	-- Mount
+	local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
+	local mountV1 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1];
+	local mountV2 = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2];
+	parseCompanionInfo(senderID, senderProfileID, mountLine, mountV1, mountV2);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -470,3 +473,67 @@ function TRP3_API.register.inits.dataExchangeInit()
 		end
 	end);
 end
+
+TRP3_API.slash.registerCommand({
+	id = "open",
+	helpLine = " " .. loc("PR_SLASH_OPEN_HELP"),
+	handler = function(...)
+		local args = {...};
+
+		if commandOpeningTimerHandle then
+			commandOpeningTimerHandle:Cancel();
+		end
+
+		if #args > 1 then
+			displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+			return
+		elseif #args == 1 then
+			characterToOpen = table.concat(args, " ");
+
+			-- Capitalizing first letter of the name, just in case someone is lazy.
+			-- We don't have a solution for "I'm lazy but need someone from another realm" yet.
+			characterToOpen = characterToOpen:gsub("^%l", string.upper);
+
+			-- If no realm has been entered, we use the player's realm automatically
+			if not characterToOpen:find("-") then
+				characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
+			end
+		else
+			-- If no name is provided, we use the target ID
+			if UnitIsPlayer("target") then
+				characterToOpen = Utils.str.getUnitID("target");
+			else
+				displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+				return
+			end
+		end
+
+		sendQuery(characterToOpen);
+		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
+		if isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen) then
+			TRP3_API.navigation.openMainFrame();
+			TRP3_API.register.openPageByUnitID(characterToOpen);
+			characterToOpen = "";
+		else
+			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
+
+			-- If after 1 minute they didn't reply, abort
+			commandOpeningTimerHandle = newTimer(60, function()
+				displayMessage(loc("PR_SLASH_OPEN_ABORTING"));
+				characterToOpen = "";
+			end)
+		end
+	end
+})
+
+-- Event for the "/trp3 open" command
+Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	if unitID == characterToOpen and dataType == "character" then
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.register.openPageByUnitID(characterToOpen);
+		if commandOpeningTimerHandle then
+			commandOpeningTimerHandle:Cancel();
+		end
+		characterToOpen = "";
+	end
+end);

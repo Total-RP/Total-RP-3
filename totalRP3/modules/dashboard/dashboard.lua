@@ -1,22 +1,25 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Dashboard
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Dashboard
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---	Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
 
 TRP3_API.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
@@ -24,7 +27,6 @@ TRP3_API.dashboard = {
 
 -- imports
 local GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo = GetMouseFocus, _G, TRP3_DashboardStatus_Currently, RaidNotice_AddMessage, TRP3_DashboardStatus_OOCInfo;
-local loc = TRP3_API.locale.getText;
 local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCharacter, TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -45,6 +47,9 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
 local tconcat = table.concat;
+
+-- Total RP 3 imports
+local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -202,26 +207,14 @@ TRP3_API.dashboard.init = function()
 		end
 	end);
 
-	local PATREON_SUPPORTERS = {
-		"Connor Macleod",
-		"Bas (AstaLawl)",
-		"Vlad",
-	}
-	table.sort(PATREON_SUPPORTERS);
-
-	local patreonMessage = "";
-	for _, patreonSupporter in pairs(PATREON_SUPPORTERS) do
-		patreonMessage = strconcat(patreonMessage, "- ", patreonSupporter, "\n");
-	end
-
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_16_3") .. loc("WHATS_NEW_16_2") .. loc("WHATS_NEW_16_1") .. loc("WHATS_NEW_16");
+	local whatsNewText = loc("WHATS_NEW_17");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
-	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, patreonMessage));
+	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, ELLYPSE_PATREON_SUPPORTERS));
 
 	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
 	frame:SetSize(400, 30);
@@ -247,6 +240,16 @@ TRP3_API.dashboard.init = function()
 		end
 	);
 
+	local function toggleSettingWithToast(settingName)
+		if TRP3_API.configuration.getValue(settingName) then
+			TRP3_API.configuration.setValue(settingName, false);
+			TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+		else
+			TRP3_API.configuration.setValue(settingName, true);
+			TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+		end
+	end
+
 	TRP3_DashboardBottomContent:SetFontObject("p", GameFontNormal);
 	TRP3_DashboardBottomContent:SetFontObject("h1", GameFontNormalHuge3);
 	TRP3_DashboardBottomContent:SetFontObject("h2", GameFontNormalHuge);
@@ -263,32 +266,30 @@ TRP3_API.dashboard.init = function()
 				Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
 			else
 				url = url:gsub("twitter", "http://twitter.com/");
-				TRP3_API.popup.showTextInputPopup("|cff55aceeTwitter profile|r\n" .. loc("UI_LINK_WARNING"), nil, nil, url);
+				TRP3_API.Ellyb.Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n");
 			end
 		--[[
-		-- Links relative to the What's new section (valid for version 1.1.0)
+		-- Links relative to the What's new section (valid for version 1.3.0)
 		 ]]
-        elseif url == "chat_settings" then
-			if TRP3_API.configuration.getValue("chat_show_icon") then
-				TRP3_API.configuration.setValue("chat_show_icon", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("chat_show_icon", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
-		elseif url == "tooltip_cropping" then
-			if TRP3_API.configuration.getValue("tooltip_crop_text") then
-				TRP3_API.configuration.setValue("tooltip_crop_text", false);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
-			else
-				TRP3_API.configuration.setValue("tooltip_crop_text", true);
-				TRP3_API.ui.tooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
-			end
+       elseif url == "right_click_profile" then
+			toggleSettingWithToast("CONFIG_RIGHT_CLICK_OPEN_PROFILE")
+		-- Toggle the option to replace companion name in NPC speeches
+		elseif url == "companion_speeches" then
+			toggleSettingWithToast("chat_npcspeech_replacement")
+		-- Toggle the option to use the default color picker
+		elseif url == "default_color_picker" then
+			toggleSettingWithToast("default_color_picker")
+		-- Toggle the option to disable chat while OOC
+		elseif url == "disable_chat_ooc" then
+			toggleSettingWithToast("chat_disable_ooc")
+		-- Mature filter settings slider
+		elseif url == "open_mature_filter_settings" then
+			TRP3_API.navigation.menu.selectMenu("main_91_config_main_config_register");
 		--[[
 	 	-- Fallback, open URL in a popup
 		 ]]
 		else
-			TRP3_API.popup.showTextInputPopup(loc("UI_LINK_WARNING"), nil, nil, url);
+			TRP3_API.Ellyb.Popups:OpenURL(url, loc.UI_LINK_SAFE);
 		end
 	end);
 	TRP3_DashboardBottomContent:SetScript("OnHyperlinkEnter", function(self, link, text)

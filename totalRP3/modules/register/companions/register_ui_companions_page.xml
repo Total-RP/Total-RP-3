@@ -149,7 +149,7 @@
 									<Frame>
 										<Size x="10" y="10"/>
 										<Frames>
-											<SimpleHTML name="$parentText">
+											<SimpleHTML name="$parentText" inherits="TRP3_HyperLinkedScripts">
 												<Size x="462" y="5"/>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="5" y="-5"/>

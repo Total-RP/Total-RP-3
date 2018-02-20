@@ -42,7 +42,7 @@ local function config_UseBroadcast()
 end
 
 local function config_BroadcastChannel()
-	return getConfigValue("comm_broad_chan");
+	return "xtensionxtooltip2";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

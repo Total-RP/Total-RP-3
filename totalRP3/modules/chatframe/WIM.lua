@@ -17,12 +17,15 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+---@type TRP3_API
+local _, TRP3_API = ...;
+
+local loc = TRP3_API.loc;
 
 local function onStart()
 	-- Stop right here if WIM is not installed
 	if not WIM then
-		return false, loc("MO_ADDON_NOT_INSTALLED"):format("WIM");
+		return false, loc(loc.MO_ADDON_NOT_INSTALLED, "WIM");
 	end
 	
 	-- Import Total RP 3 functions
@@ -38,6 +41,7 @@ local function onStart()
 	local getConfigValue 								 = TRP3_API.configuration.getValue;
 	local icon 											 = TRP3_API.utils.str.icon;
 	local playerName									 = TRP3_API.globals.player;
+	local disabledByOOC = TRP3_API.chat.disabledByOOC;
 
 	local classes = WIM.constants.classes;
 
@@ -47,11 +51,20 @@ local function onStart()
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
 	classes.GetColoredNameByChatEvent = function(...)
+		if disabledByOOC() then
+			return WIMsGetColoredNameFunction();
+		end
 		return customGetColoredNameWithCustomFallbackFunction(WIMsGetColoredNameFunction, ...);
 	end;
 
 	-- Replace WIM's GetMyColoredName to display our full RP name
+	local oldWIMGetMyColoredName = classes.GetMyColoredName;
 	classes.GetMyColoredName = function()
+
+		if disabledByOOC() then
+			return oldWIMGetMyColoredName();
+		end
+
 		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
 		local _, playerClass = UnitClass("Player");
 		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
@@ -76,7 +89,7 @@ end
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
 	["name"] = "WIM",
-	["description"] = loc("MO_CHAT_CUSTOMIZATIONS_DESCRIPTION"):format("WIM (WoW Instant Messenger"),
+	["description"] = loc(loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION, "WIM (WoW Instant Messenger"),
 	["version"] = 1.000,
 	["id"] = "trp3_wim",
 	["onStart"] = onStart,

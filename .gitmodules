@@ -1,0 +1,6 @@
+[submodule "totalRP3/libs/Ellyb"]
+	path = totalRP3/libs/Ellyb
+	url = https://github.com/Ellypse/Ellyb
+[submodule "Documents/Scripts/mature-dict"]
+	path = Documents/Scripts/mature-dict
+	url = https://github.com/Ellypse/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words

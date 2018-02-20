@@ -786,31 +786,29 @@ local unitTexture = {
 		"Achievement_Guild_ClassyPanda",
 		"Achievement_Character_Pandaren_Female",
 	},
+	Nightborne = {
+		"Ability_Racial_DispelIllusions",
+		"Ability_Racial_Masquerade",
+	},
+	LightforgedDraenei = {
+		"Ability_Racial_FinalVerdict",
+		"Achievement_AlliedRace_LightforgedDraenei",
+	},
+	VoidElf = {
+		"Ability_Racial_EntropicEmbrace",
+		"Ability_Racial_PreturnaturalCalm",
+	},
+	HighmountainTauren = {
+		"Ability_Racial_BullRush",
+		"Achievement_AlliedRace_HighmountainTauren",
+	},
 };
-
-local classTexture = {
-	ROGUE = "Ability_Rogue_DualWeild",
-	WARLOCK = "Ability_Warlock_Eradication",
-	PALADIN = "Spell_Paladin_Clarityofpurpose",
-	MONK = "Monk_Ability_Transcendence",
-	MAGE = "spell_Mage_NetherTempest",
-	HUNTER = "Ability_Hunter_MasterMarksman",
-	WARRIOR = "Ability_Warrior_OffensiveStance",
-	DEATHKNIGHT = "Spell_Deathknight_FrostPresence",
-	DRUID = "Spell_druid_tirelesspursuit",
-	SHAMAN = "Ability_Shaman_WindwalkTotem",
-	PRIEST = "Priest_icon_Chakra",
-}
 
 TRP3_API.ui.misc.getUnitTexture = function(race, gender)
 	if unitTexture[race] and unitTexture[race][gender - 1] then
 		return unitTexture[race][gender - 1];
 	end
 	return globals.icons.default;
-end
-
-TRP3_API.ui.misc.getClassTexture = function (class)
-	return classTexture[class] or globals.icons.default;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -923,10 +921,14 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 			{function(icon) onIconTagSelected(icon, textFrame) end});
 	end);
 	toolbar.color:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(
-			TRP3_API.popup.COLORS,
-			{parent = parentFrame, point = point, parentPoint = parentPoint},
-			{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+			TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		else
+			TRP3_API.popup.showPopup(
+				TRP3_API.popup.COLORS,
+				{parent = parentFrame, point = point, parentPoint = parentPoint},
+				{function(red, green, blue) onColorTagSelected(red, green, blue, textFrame) end});
+		end
 	end);
 	toolbar.image:SetScript("OnClick", function()
 		TRP3_API.popup.showPopup(
@@ -1118,28 +1120,4 @@ function TRP3_API.ui.frame.setupMove(frame)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing();
 	end)
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Workarounds
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-function TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(frame)
-	local parentFrame = frame:GetParent():GetParent();
-	return parentFrame and parentFrame:GetEffectiveScale() or 1;
-end
-
-function TRP3_API.ui.frame.workaround7_SetFontScale(editboxFrame)
-	local effectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local fontPath, fontSize, fontFlag = editboxFrame:GetFont();
-	editboxFrame:SetFont(fontPath, 11 * effectiveScale, fontFlag);
-end
-
-function TRP3_API.ui.frame.workaround7_3SetWidth(editboxFrame)
-	local parentFrame = editboxFrame:GetParent():GetParent();
-	local parentFrameEffectiveScale = TRP3_API.ui.frame.workaround7_3GetParentEffectiveScale(editboxFrame);
-	local parentEffectiveWidth = parentFrame:GetWidth() * parentFrameEffectiveScale;
-	local effectiveMargin = 40 * parentFrameEffectiveScale;
-	editboxFrame:SetWidth(parentEffectiveWidth - effectiveMargin);
-	editboxFrame:SetHeight(editboxFrame:GetHeight() * parentFrameEffectiveScale);
 end
