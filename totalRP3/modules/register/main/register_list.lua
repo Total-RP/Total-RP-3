@@ -365,14 +365,12 @@ local function getCharacterLines()
 			nameIsConform = true;
 		end
 
-		local formatDate = date(DATE_FORMAT, profile.time);
-
 		nameIsConform = nameIsConform or nameSearch:len() == 0;
 		guildIsConform = guildIsConform or guildSearch:len() == 0;
 		realmIsConform = realmIsConform or not realmOnly;
 
 		if nameIsConform and guildIsConform and realmIsConform then
-			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), formatDate});
+			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
 		end
 	end
 
