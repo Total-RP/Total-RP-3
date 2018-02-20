@@ -175,11 +175,11 @@ local function infoComparatorInverted(elem1, elem2)
 end
 
 local function timeComparator(elem1, elem2)
-	return elem1[4]:lower() < elem2[4]:lower();
+	return elem1[4] < elem2[4];
 end
 
 local function timeComparatorInverted(elem1, elem2)
-	return elem1[4]:lower() > elem2[4]:lower();
+	return elem1[4] > elem2[4];
 end
 
 local comparators = {
