@@ -102,6 +102,7 @@ local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
 local ANCHOR_TAB;
 
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
+local registerTooltipModuleIsEnabled = false;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -141,7 +142,11 @@ end
 TRP3_API.ui.tooltip.getSmallLineFontSize = getSmallLineFontSize;
 
 function TRP3_API.ui.tooltip.shouldCropTexts()
-	return getConfigValue(CONFIG_CROP_TEXT);
+	if not registerTooltipModuleIsEnabled then
+		return true;
+	else
+		return getConfigValue(CONFIG_CROP_TEXT);
+	end
 end
 
 local function showIcons()
@@ -1079,6 +1084,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 end);
 
 local function onModuleInit()
+	registerTooltipModuleIsEnabled = true;
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
     isPlayerIC = TRP3_API.dashboard.isPlayerIC;
