@@ -223,7 +223,7 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_PEEK = "Miscellaneous",
 	REG_PLAYER_CURRENT = "Currently",
 	REG_PLAYER_CURRENTOOC = "Currently (OOC)",
-	REG_PLAYER_CURRENT_OOC = "This is a OOC information";
+	REG_PLAYER_CURRENT_OOC = "This is OOC information";
 	REG_PLAYER_GLANCE = "At first glance",
 	REG_PLAYER_GLANCE_USE = "Activate this slot",
 	REG_PLAYER_GLANCE_TITLE = "Attribute name",
@@ -261,7 +261,7 @@ The chosen template defines |cffffff00the general layout and writing possibiliti
 Once a template is selected, you can open this tutorial again to have more help about each template.]],
 	REG_PLAYER_TUTO_ABOUT_T1 = [[This template allows you to |cff00ff00freely structure your description|r.
 
-The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.
 
 With this template you can use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
 These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
@@ -269,7 +269,7 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 
 Each frame is caracterized by an |cffffff00icon, a background and a text|r. Note that you can use some text tags in these frames, like the color and the icon text tags.
 
-The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.]],
+The description doesn't have to be limited to your character's |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.]],
 	REG_PLAYER_TUTO_ABOUT_T3 = [[This template is cut in 3 sections: |cff00ff00Physical description, personality and history|r.
 
 You don't have to fill all the frames, |cffff9900if you leave an empty frame it won't be shown on your description|r.
@@ -350,9 +350,9 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_ACTIONS_PURGE_ALL_COMP_C = "This purge will remove all companions from the directory.\n\n|cff00ff00%s companions.",
 	REG_LIST_ACTIONS_PURGE_ALL_C = "This purge will remove all profiles and linked characters from the directory.\n\n|cff00ff00%s characters.",
 	REG_LIST_ACTIONS_PURGE_TIME = "Profiles not seen for 1 month",
-	REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles whose have not been seen for a month.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles that have not been seen for a month.\n\n|cff00ff00%s",
 	REG_LIST_ACTIONS_PURGE_UNLINKED = "Profiles not bound to a character",
-	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles whose are not bound to a WoW character.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles that are not bound to a WoW character.\n\n|cff00ff00%s",
 	REG_LIST_ACTIONS_PURGE_IGNORE = "Profiles from ignored characters",
 	REG_LIST_ACTIONS_PURGE_IGNORE_C = "This purge will remove all profiles linked to an ignored WoW character.\n\n|cff00ff00%s",
 	REG_LIST_ACTIONS_PURGE_EMPTY = "No profile to purge.",
@@ -363,7 +363,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_ACTIONS_MASS_IGNORE = "Ignore profiles",
 	REG_LIST_ACTIONS_MASS_IGNORE_C = [[This action will add |cff00ff00%s character(s)|r to the ignore list.
 
-You can optionally enter the reason below. This is a personal note, it will serves as a reminder.]],
+You can optionally enter the reason below. This is a personal note, it will serve as a reminder.]],
 	REG_LIST_CHAR_TUTO_ACTIONS = "This column allows you to select multiple characters and perform an action on all of them.",
 	REG_LIST_CHAR_TUTO_LIST = [[The first column shows the character's name.
 
@@ -417,7 +417,7 @@ If you don't want TRP3 to be your MSP addon and don't want to see this alert aga
 	REG_COMPANION_PAGE_TUTO_E_1 = "This is |cff00ff00your companion main information|r.\n\nAll these information will appear on |cffff9900your companion's tooltip|r.",
 	REG_COMPANION_PAGE_TUTO_E_2 = [[This is |cff00ff00your companion description|r.
 
-It isn't limited to |cffff9900physical description|r. Feel free to indicate parts from his |cffff9900background|r or details about his |cffff9900personality|r.
+It isn't limited to |cffff9900physical description|r. Feel free to indicate parts from their |cffff9900background|r or details about their |cffff9900personality|r.
 
 There are a lot of ways to customize the description.
 You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
@@ -495,7 +495,7 @@ Class: 50 characters|r]],
 	CO_REGISTER_ABOUT_VOTE = "Use voting system",
 	CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
-	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommand to avoid disabling the purge system.",
+	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
 	CO_REGISTER_AUTO_PURGE_1 = "After %s day(s)",
 	CO_CURSOR_TITLE = "Cursor interactions",
@@ -682,7 +682,7 @@ Possible status:
 	PR_PROFILE_CREATED = "Profile %s created.",
 	PR_CREATE_PROFILE = "Create profile",
 	PR_PROFILE_DELETED = "Profile %s deleted.",
-	PR_PROFILE_HELP = "A profile contains all information about a |cffffff00\"character\"|r as a |cff00ff00roleplay character|r.\n\nA real |cffffff00\"WoW character\"|r can be bound to only one profile at a time, but can switch from one to another whenever you want.\n\nYou can also bound several |cffffff00\"WoW characters\"|r to the same |cff00ff00profile|r !",
+	PR_PROFILE_HELP = "A profile contains all information about a |cffffff00\"character\"|r as a |cff00ff00roleplay character|r.\n\nA real |cffffff00\"WoW character\"|r can be bound to only one profile at a time, but can switch from one to another whenever you want.\n\nYou can also bind several |cffffff00\"WoW characters\"|r to the same |cff00ff00profile|r !",
 	PR_PROFILE_DETAIL = "This profile is currently bound to these WoW characters",
 	PR_DELETE_PROFILE = "Delete profile",
 	PR_DUPLICATE_PROFILE = "Duplicate profile",
@@ -742,9 +742,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_IMPORT_PROFILE = "Import profile",
 	PR_EXPORT_NAME = "Serial for profile %s (size %0.2f kB)",
 	PR_EXPORT_TOO_LARGE = "This profile is too large and can't be exported.\n\nSize of profile: %0.2f kB\nMax: 20 kB",
-	PR_IMPORT_PROFILE_TT = "Paste here a profile serial",
+	PR_IMPORT_PROFILE_TT = "Paste a profile serial here",
 	PR_IMPORT = "Import",
-	PR_PROFILEMANAGER_IMPORT_WARNING = "Replacing all the content of profile %s with this imported data?",
+	PR_PROFILEMANAGER_IMPORT_WARNING = "Replace all the content of profile %s with this imported data?",
 	PR_PROFILEMANAGER_IMPORT_WARNING_2 = "Warning: this profile serial has been made from an older version of TRP3.\nThis can bring incompatibilities.\n\nReplacing all the content of profile %s with this imported data?",
 	PR_SLASH_SWITCH_HELP = "Switch to another profile using its name.",
 	PR_SLASH_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 profile Millidan Foamrage|r |cffffff00to switch to Millidan Foamrage's profile.|r",
@@ -778,7 +778,7 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_STATUS_RP_VOLUNTEER_TT = "This selection will show an icon on your tooltip, indicating\nto beginner roleplayers that you are willing to help them.",
 	DB_TUTO_1 = [[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
 
-|cffffff00The roleplayer status|r allows you to state that you are a beginner or a veteran willing to help rookies !
+|cffffff00The roleplayer status|r allows you to state that you are a beginner, or a veteran willing to help rookies!
 
 |cff00ff00These information will be placed in your character's tooltip.]],
 	DB_NEW = "What's new?",
