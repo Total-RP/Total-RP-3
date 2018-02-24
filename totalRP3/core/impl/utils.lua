@@ -983,12 +983,16 @@ function Utils.music.stopSound(handlerID)
 	StopSound(handlerID);
 end
 
-function Utils.music.stopChannel(channel)
+function Utils.music.stopSoundID(soundID, channel, source)
 	for index, handler in pairs(soundHandlers) do
-		if not channel or handler.channel == channel then
+		if (not soundID or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			Utils.music.stopSound(handler.handlerID);
 		end
 	end
+end
+
+function Utils.music.stopChannel(channel)
+	Utils.music.stopSoundID(nil, channel, nil);
 end
 
 function Utils.music.stopMusic()
