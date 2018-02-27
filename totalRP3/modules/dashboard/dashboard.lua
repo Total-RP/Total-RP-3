@@ -208,7 +208,7 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_17") .. loc("WHATS_NEW_17_1");
+	local whatsNewText = loc("WHATS_NEW_17_1") .. loc("WHATS_NEW_17");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 

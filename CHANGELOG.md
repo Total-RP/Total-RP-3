@@ -1,11 +1,15 @@
 # Changelog
 
-## [1.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.0...1.3.1) - 2018-02-24
+## [1.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.0...1.3.1) - 2018-02-27
 
 ### Fixed
 
 - Fixed an issue with the cropping system introduced to the at-first-glance tooltips when the Register Tooltips module is disabled.
-- Fixed an issue when sorting profiles in the Directory by Last seen where the profiles would be sorted by the dates alphabetically. 
+- Fixed an issue when sorting profiles in the Directory by Last seen where the profiles would be sorted by the dates alphabetically.
+
+### Added
+
+- Added sound related APIs for future Total RP 3: Extended features.
 
 ## [1.3.0](https://github.com/Ellypse/Total-RP-3/compare/1.2.11.3...1.3.0) - 2018-02-19
 

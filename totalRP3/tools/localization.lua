@@ -1161,12 +1161,16 @@ We have added a new feature that allows you to right-click on a player in the ga
 ]],
 	---@language Markdown
 	WHATS_NEW_17_1 = [[
-## 1.3.1 - 2018-02-24
+## 1.3.1 - 2018-02-27
 
 ### Fixed
 
 - Fixed an issue with the cropping system introduced to the at-first-glance tooltips when the Register Tooltips module is disabled.
 - Fixed an issue when sorting profiles in the Directory by Last seen where the profiles would be sorted by the dates alphabetically.
+
+### Added
+
+- Added sound related APIs for future Total RP 3: Extended features.
 
 ]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
