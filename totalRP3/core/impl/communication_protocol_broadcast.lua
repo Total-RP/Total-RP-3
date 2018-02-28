@@ -257,6 +257,9 @@ Comm.broadcast.init = function()
 					end
 				end
 			end, 9);
+		else
+			-- Broadcast isn't enabled so we should probably say it's offline.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc("BROADCAST_OFFLINE_DISABLED"));
 		end
 	end);
 
