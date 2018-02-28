@@ -42,7 +42,7 @@ local loc = TRP3_API.locale.getText;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
-local strtrim = strtrim;
+local strsplit, strtrim = strsplit, strtrim;
 local tinsert, assert, _G, tremove, next = tinsert, assert, _G, tremove, next;
 local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
@@ -314,7 +314,7 @@ function Utils.str.getUnitID(unit)
 	return playerName .. "-" .. realm;
 end
 
-local strsplit, UnitGUID = strsplit, UnitGUID;
+local UnitGUID = UnitGUID;
 
 function Utils.str.getUnitDataFromGUIDDirect(GUID)
 	local unitType, _, _, _, _, npcID = strsplit("-", GUID or "");
@@ -753,11 +753,32 @@ local structureTags = {
 	["{/p}"] = "</P>",
 };
 
-local strtrim = strtrim;
+--- alignmentAttributes is a conversion table for taking a single-character
+--  alignment specifier and getting a value suitable for use in the HTML
+--  "align" attribute.
+local alignmentAttributes = {
+	["c"] = "center",
+	["l"] = "left",
+	["r"] = "right",
+};
+
+--- IMAGE_PATTERN is the string pattern used for performing image replacements
+--  in strings that should be rendered as HTML.
+---
+--- The accepted form this is "{img:<src>:<width>:<height>[:align]}".
+---
+--- Each individual segment matches up to the next present colon. The third
+--- match (height) and everything thereafter needs to check up-to the next
+--- colon -or- ending bracket since they could be the final segment.
+---
+--- Optional segments should of course have the "?" modifer attached to
+--- their preceeding colon, and should use * for the content match rather
+--- than +.
+local IMAGE_PATTERN = [[{img%:([^:]+)%:([^:]+)%:([^:}]+)%:?([^:}]*)%}]];
 
 --- Note that the image tag has to be outside a <P> tag.
 ---@language HTML
-local IMAGE_TAG = [[</P><img src="%s" align="center" width="%s" height="%s"/><P>]];
+local IMAGE_TAG = [[</P><img src="%s" width="%s" height="%s" align="%s"/><P>]];
 
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text, noColor)
@@ -842,10 +863,16 @@ Utils.str.toHTML = function(text, noColor)
 		end
 		line = line:gsub("\n","<br/>");
 
-		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}", function(img, width, height)
+		-- Image tag. Specifiers after the height are optional, so they
+		-- must be suitably defaulted and validated.
+		line = line:gsub(IMAGE_PATTERN, function(img, width, height, align)
+			-- If you've not given an alignment, or it's entirely invalid,
+			-- you'll get the old default of center.
+			align = alignmentAttributes[align] or "center";
+
 			-- Width and height should be absolute.
 			-- The tag accepts negative value but people used that to fuck up their profiles
-			return string.format(IMAGE_TAG, img, math.abs(width), math.abs(height));
+			return string.format(IMAGE_TAG, img, math.abs(width), math.abs(height), align);
 		end);
 
 		line = line:gsub("%!%[(.-)%]%((.-)%)", function(icon, size)
@@ -860,7 +887,7 @@ Utils.str.toHTML = function(text, noColor)
 				end
 				-- Width and height should be absolute.
 				-- The tag accepts negative value but people used that to fuck up their profiles
-				return string.format(IMAGE_TAG, icon, math.abs(width), math.abs(height));
+				return string.format(IMAGE_TAG, icon, math.abs(width), math.abs(height), "center");
 			end
 			return Utils.str.icon(icon, tonumber(size) or 25);
 		end);
