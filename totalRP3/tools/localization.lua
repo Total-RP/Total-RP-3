@@ -548,6 +548,8 @@ Possible status:
 	CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
 	CO_TOOLBAR_SHOW_ON_LOGIN = "Show toolbar on login",
 	CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "If you don't want the toolbar to be displayed on login, you can disable this option.",
+	CO_TOOLBAR_HIDE_TITLE = "Hide Toolbar Title",
+	CO_TOOLBAR_HIDE_TITLE_HELP = "Hides the title shown above the toolbar.",
 	CO_TARGETFRAME = "Target frame settings",
 	CO_TARGETFRAME_USE = "Display conditions",
 	CO_TARGETFRAME_USE_TT = "Determines in which conditions the target frame should be shown on target selection.",

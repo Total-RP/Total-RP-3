@@ -47,6 +47,7 @@ local function onStart()
 	local CONFIG_ICON_MAX_PER_LINE = "toolbar_max_per_line";
 	local CONFIG_CONTENT_PREFIX = "toolbar_content_";
 	local CONFIG_SHOW_ON_LOGIN = "toolbar_show_on_login";
+	local CONFIG_HIDE_TITLE = "toolbar_hide_title";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Toolbar Logic
@@ -60,6 +61,9 @@ local function onStart()
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
 		local buttonSize = getConfigValue(CONFIG_ICON_SIZE);
+
+		-- Toggle the visibility of the toolbar title as needed.
+		TRP3_ToolbarTopFrame:SetShown(not getConfigValue(CONFIG_HIDE_TITLE));
 
 		local ids = {};
 		for id, buttonStructure in pairs(buttonStructures) do
@@ -301,7 +305,13 @@ local function onStart()
 		registerConfigKey(CONFIG_SHOW_ON_LOGIN, true);
 		registerConfigKey(CONFIG_ICON_SIZE, 25);
 		registerConfigKey(CONFIG_ICON_MAX_PER_LINE, 7);
-		registerConfigHandler({CONFIG_ICON_SIZE, CONFIG_ICON_MAX_PER_LINE}, buildToolbar);
+		registerConfigKey(CONFIG_HIDE_TITLE, false);
+
+		registerConfigHandler({
+			CONFIG_ICON_SIZE,
+			CONFIG_ICON_MAX_PER_LINE,
+			CONFIG_HIDE_TITLE,
+		}, buildToolbar);
 
 		-- Build configuration page
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
@@ -332,6 +342,12 @@ local function onStart()
 			max = 25,
 			step = 1,
 			integer = true,
+		});
+		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc("CO_TOOLBAR_HIDE_TITLE"),
+			help = loc("CO_TOOLBAR_HIDE_TITLE_HELP"),
+			configKey = CONFIG_HIDE_TITLE,
 		});
 
 		local ids = {};
