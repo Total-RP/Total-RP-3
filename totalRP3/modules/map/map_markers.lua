@@ -364,3 +364,34 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
 
 end);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Broadcast Lifecycle
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- When we get BROADCAST_CHANNEL_CONNECTING we'll ensure the button is
+-- disabled and tell the user things are firing up.
+TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING, function()
+	TRP3_WorldMapButton:SetEnabled(false);
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE_CONNECTING");
+
+	TRP3_WorldMapButtonIcon:SetDesaturated(true);
+end);
+
+-- If we get BROADCAST_CHANNEL_OFFLINE we'll ensure the button remains
+-- disabled and dump the localised error into the tooltip, to be useful.
+TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, function(reason)
+	TRP3_WorldMapButton:SetEnabled(false);
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE_OFFLINE"):format(reason);
+
+	TRP3_WorldMapButtonIcon:SetDesaturated(true);
+end);
+
+-- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
+-- standard tooltip description.
+TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
+	TRP3_WorldMapButton:SetEnabled(true);
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
+
+	TRP3_WorldMapButtonIcon:SetDesaturated(false);
+end);
