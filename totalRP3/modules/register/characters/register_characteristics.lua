@@ -173,16 +173,12 @@ end
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function refreshPsycho(psychoLine, value)
-	print(("Line %s has value %s"):format(tostringall(psychoLine, value)));
-	-- local dotIndex;
-	-- for dotIndex = 1, 6 do
-	-- 	_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:Show();
-	-- 	if dotIndex <= value then
-	-- 		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0.375, 0.5, 0, 0.125);
-	-- 	else
-	-- 		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
-	-- 	end
-	-- end
+	psychoLine.Bar:SetValue(value);
+
+	if psychoLine.Slider and psychoLine.Slider:GetValue() ~= value then
+		psychoLine.Slider:SetValue(value);
+	end
+
 	psychoLine.V2 = value;
 end
 
@@ -327,10 +323,14 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName() .. "LeftText"]:SetText(psychoStructure.LT or "");
-			_G[frame:GetName() .. "RightText"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
+			frame.LeftText:SetText(psychoStructure.LT or "");
+			frame.RightText:SetText(psychoStructure.RT or "");
+
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
+
+			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+
 			refreshPsycho(frame, value or Globals.PSYCHO_DEFAULT_VALUE_V2);
 			frame:Show();
 			previous = frame;
@@ -427,16 +427,8 @@ local function onClassColorSelected(red, green, blue)
 	end
 end
 
-local function onPsychoClick(frame, value, modif)
-	refreshPsycho(frame, math.max(math.min(value + modif, Globals.PSYCHO_MAX_VALUE_V2), 0));
-end
-
-local function onLeftClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().V2 or Globals.PSYCHO_DEFAULT_VALUE_V2, 1);
-end
-
-local function onRightClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().V2 or Globals.PSYCHO_DEFAULT_VALUE_V2, -1);
+local function onPsychoValueChanged(frame, value)
+	refreshPsycho(frame:GetParent(), math.max(math.min(value, Globals.PSYCHO_MAX_VALUE_V2), 0));
 end
 
 local function refreshEditIcon(frame)
@@ -942,23 +934,27 @@ function setEditDisplay()
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
-			_G[frame:GetName() .. "LeftButton"]:SetScript("OnClick", onLeftClick);
-			_G[frame:GetName() .. "RightButton"]:SetScript("OnClick", onRightClick);
-			_G[frame:GetName() .. "Delete"]:SetScript("OnClick", onPsychoDelete);
-			_G[frame:GetName() .. "LeftFieldText"]:SetText(loc("REG_PLAYER_LEFTTRAIT"));
-			_G[frame:GetName() .. "RightFieldText"]:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
+			frame.DeleteButton:SetScript("OnClick", onPsychoDelete);
+			frame.CustomLeftField:SetText(loc("REG_PLAYER_LEFTTRAIT"));
+			frame.CustomRightField:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
+
+			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+
+			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
+
+			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
+			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
+			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc("CM_REMOVE"));
 			tinsert(psychoEditCharFrame, frame);
 		end
-		_G[frame:GetName() .. "LeftIcon"]:SetScript("OnClick", function(self)
+		frame.CustomLeftIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
-		_G[frame:GetName() .. "RightIcon"]:SetScript("OnClick", function(self)
+		frame.CustomRightIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
@@ -966,42 +962,34 @@ function setEditDisplay()
 		end);
 
 		if psychoStructure.ID then
-			_G[frame:GetName() .. "JaugeLeftIcon"]:Show();
-			_G[frame:GetName() .. "JaugeRightIcon"]:Show();
-			_G[frame:GetName() .. "LeftText"]:Show();
-			_G[frame:GetName() .. "RightText"]:Show();
-			_G[frame:GetName() .. "LeftField"]:Hide();
-			_G[frame:GetName() .. "RightField"]:Hide();
-			_G[frame:GetName() .. "LeftIcon"]:Hide();
-			_G[frame:GetName() .. "RightIcon"]:Hide();
-			_G[frame:GetName() .. "JaugeLeftIcon"]:ClearAllPoints();
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetPoint("RIGHT", _G[frame:GetName() .. "Jauge"], "LEFT", -22, 2);
-			_G[frame:GetName() .. "JaugeRightIcon"]:ClearAllPoints();
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetPoint("LEFT", _G[frame:GetName() .. "Jauge"], "RIGHT", 22, 2);
+			frame.LeftIcon:Show();
+			frame.RightIcon:Show();
+			frame.LeftText:Show();
+			frame.RightText:Show();
+			frame.CustomLeftField:Hide();
+			frame.CustomRightField:Hide();
+			frame.CustomLeftIcon:Hide();
+			frame.CustomRightIcon:Hide();
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
-			_G[frame:GetName() .. "LeftText"]:SetText(preset.LT or "");
-			_G[frame:GetName() .. "RightText"]:SetText(preset.RT or "");
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.LT));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.RT));
+			frame.LeftText:SetText(preset.LT or "");
+			frame.RightText:SetText(preset.RT or "");
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
 		else
-			_G[frame:GetName() .. "JaugeLeftIcon"]:Hide();
-			_G[frame:GetName() .. "JaugeRightIcon"]:Hide();
-			_G[frame:GetName() .. "LeftText"]:Hide();
-			_G[frame:GetName() .. "RightText"]:Hide();
-			_G[frame:GetName() .. "LeftField"]:Show();
-			_G[frame:GetName() .. "RightField"]:Show();
-			_G[frame:GetName() .. "LeftIcon"]:Show();
-			_G[frame:GetName() .. "RightIcon"]:Show();
-			_G[frame:GetName() .. "LeftField"]:SetText(psychoStructure.LT or "");
-			_G[frame:GetName() .. "RightField"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName() .. "LeftIcon"].IC = psychoStructure.LI or Globals.icons.default;
-			_G[frame:GetName() .. "RightIcon"].IC = psychoStructure.RI or Globals.icons.default;
-			refreshEditIcon(_G[frame:GetName() .. "LeftIcon"]);
-			refreshEditIcon(_G[frame:GetName() .. "RightIcon"]);
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_LEFTTRAIT")));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_RIGHTTRAIT")));
+			frame.LeftIcon:Hide();
+			frame.RightIcon:Hide();
+			frame.LeftText:Hide();
+			frame.RightText:Hide();
+			frame.CustomLeftField:Show();
+			frame.CustomRightField:Show();
+			frame.CustomLeftIcon:Show();
+			frame.CustomRightIcon:Show();
+			frame.CustomLeftField:SetText(psychoStructure.LT or "");
+			frame.CustomRightField:SetText(psychoStructure.RT or "");
+			frame.CustomLeftIcon.IC = psychoStructure.LI or Globals.icons.default;
+			frame.CustomRightIcon.IC = psychoStructure.RI or Globals.icons.default;
+			refreshEditIcon(frame.CustomLeftIcon);
+			refreshEditIcon(frame.CustomRightIcon);
 		end
 
 		frame.psychoIndex = frameIndex;
