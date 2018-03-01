@@ -173,16 +173,17 @@ end
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function refreshPsycho(psychoLine, value)
-	local dotIndex;
-	for dotIndex = 1, 6 do
-		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:Show();
-		if dotIndex <= value then
-			_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0.375, 0.5, 0, 0.125);
-		else
-			_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
-		end
-	end
-	psychoLine.VA = value;
+	print(("Line %s has value %s"):format(tostringall(psychoLine, value)));
+	-- local dotIndex;
+	-- for dotIndex = 1, 6 do
+	-- 	_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:Show();
+	-- 	if dotIndex <= value then
+	-- 		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0.375, 0.5, 0, 0.125);
+	-- 	else
+	-- 		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
+	-- 	end
+	-- end
+	psychoLine.V2 = value;
 end
 
 local function setBkg(backgroundIndex)
@@ -312,7 +313,7 @@ local function setConsultDisplay(context)
 
 		for frameIndex, psychoStructure in pairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
-			local value = psychoStructure.VA;
+			local value = psychoStructure.V2;
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
 				tinsert(psychoCharFrame, frame);
@@ -330,7 +331,7 @@ local function setConsultDisplay(context)
 			_G[frame:GetName() .. "RightText"]:SetText(psychoStructure.RT or "");
 			_G[frame:GetName() .. "JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
 			_G[frame:GetName() .. "JaugeRightIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
-			refreshPsycho(frame, value or 3);
+			refreshPsycho(frame, value or Globals.PSYCHO_DEFAULT_VALUE_V2);
 			frame:Show();
 			previous = frame;
 		end
@@ -375,7 +376,7 @@ local function saveInDraft()
 
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do
-		psychoStructure.VA = psychoEditCharFrame[index].VA;
+		psychoStructure.V2 = psychoEditCharFrame[index].V2;
 		if not psychoStructure.ID then
 			-- If not a preset
 			psychoStructure.LT = stEtN(_G[psychoEditCharFrame[index]:GetName() .. "LeftField"]:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
@@ -387,6 +388,13 @@ local function saveInDraft()
 			psychoStructure.LI = nil;
 			psychoStructure.RI = nil;
 		end
+
+		-- We'll also update the VA field so that changes made in newer versions
+		-- can, to some degree, be shown to older clients.
+		--
+		-- Floating point numbers get rounded to nearest integers.
+		local downscale = Globals.PSYCHO_MAX_VALUE_V1 / Globals.PSYCHO_MAX_VALUE_V2;
+		psychoStructure.VA = math.floor((psychoStructure.V2 * downscale) + 0.5);
 	end
 	-- Save Misc
 	for index, miscStructure in pairs(draftData.MI) do
@@ -420,17 +428,15 @@ local function onClassColorSelected(red, green, blue)
 end
 
 local function onPsychoClick(frame, value, modif)
-	if value + modif < 6 and value + modif > 0 then
-		refreshPsycho(frame, value + modif);
-	end
+	refreshPsycho(frame, math.max(math.min(value + modif, Globals.PSYCHO_MAX_VALUE_V2), 0));
 end
 
 local function onLeftClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, 1);
+	onPsychoClick(button:GetParent(), button:GetParent().V2 or Globals.PSYCHO_DEFAULT_VALUE_V2, 1);
 end
 
 local function onRightClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, -1);
+	onPsychoClick(button:GetParent(), button:GetParent().V2 or Globals.PSYCHO_DEFAULT_VALUE_V2, -1);
 end
 
 local function refreshEditIcon(frame)
@@ -518,10 +524,15 @@ local function psychoAdd(presetID)
 			LI = "TEMP",
 			RT = loc("REG_PLAYER_RIGHTTRAIT"),
 			RI = "TEMP",
-			VA = 3,
+			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
+			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	else
-		tinsert(draftData.PS, { ID = presetID, VA = 3 });
+		tinsert(draftData.PS, {
+			ID = presetID,
+			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
+			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
+		});
 	end
 	setEditDisplay();
 end
@@ -997,7 +1008,7 @@ function setEditDisplay()
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
-		refreshPsycho(frame, psychoStructure.VA or 3);
+		refreshPsycho(frame, psychoStructure.V2 or Globals.PSYCHO_DEFAULT_VALUE_V2);
 		frame:Show();
 		previous = frame;
 	end
