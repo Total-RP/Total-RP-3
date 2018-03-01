@@ -291,7 +291,7 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
 			local message = loc("BROADCAST_10");
-			Utils.message.displayMessage();
+			Utils.message.displayMessage(message);
 			ticker:Cancel();
 
 			-- Notify that broadcast won't work due to the channel limit.
