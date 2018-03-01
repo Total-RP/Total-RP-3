@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
 <!--
@@ -18,7 +18,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
 	<!-- Common icon button  -->
 	<Button name="TRP3_MapHereButton" virtual="true">
 		<Size x="16" y="16"/>
@@ -68,7 +68,7 @@
 			</Button>
 		</Frames>
 	</Frame>
-	
+
 	<!-- Register characteristics psycho line jauge -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-Parchment" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -111,45 +111,105 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
+	<StatusBar name="TRP3_RegisterCharact_PsychoInfoLineBar" virtual="true">
+		<Size x="105" y="14"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Color r="0" g="0" b="0" a=".4"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="BorderLeft" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16" y="0"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="-6" y="5"/>
+						<Anchor point="BOTTOMLEFT" x="-6" y="-5"/>
+					</Anchors>
+					<TexCoords left="0" right="0.0625" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture parentKey="BorderRight" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16" y="0"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="6" y="5"/>
+						<Anchor point="BOTTOMRIGHT" x="6" y="-5"/>
+					</Anchors>
+					<TexCoords left="0.812" right="0.8745" top="0" bottom="0.75"/>
+				</Texture>
+				<Texture parentKey="BorderCenter" file="Interface\AchievementFrame\UI-Achievement-ProgressBar-Border">
+					<Size x="16"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.BorderLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER">
+				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" horizWrap="REPEAT" subLayer="-1">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Color r="1" g="0" b="0"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				local barTexture = self:GetStatusBarTexture();
+				barTexture:SetDrawLayer("BORDER", 1);
+			</OnLoad>
+		</Scripts>
+		<BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+	</StatusBar>
+
 	<!-- Register characteristics psycho display line -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoDisplayLine" virtual="true">
 		<Size x="0" y="40"/>
 		<Frames>
-			<Frame name="$parentJauge" inherits="TRP3_RegisterCharact_PsychoInfoLineJauge">
+			<StatusBar name="$parentBar" parentKey="Bar" inherits="TRP3_RegisterCharact_PsychoInfoLineBar">
 				<Anchors>
 					<Anchor point="CENTER" x="0" y="0"/>
 				</Anchors>
-			</Frame>
+			</StatusBar>
 		</Frames>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture name="$parentJaugeLeftIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
+				<Texture name="$parentJaugeLeftIcon" parentKey="LeftIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
 					<Size x="30" y="30"/>
 					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="2" relativeTo="$parentJauge"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
 					</Anchors>
 				</Texture>
-				<Texture name="$parentJaugeRightIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
+				<Texture name="$parentJaugeRightIcon" parentKey="RightIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
 					<Size x="30" y="30"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="2" relativeTo="$parentJauge"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
 					</Anchors>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
-				<FontString name="$parentLeftText" text="[left text]" inherits="GameFontNormal" justifyH="RIGHT">
+				<FontString name="$parentLeftText" parentKey="LeftText" text="[left text]" inherits="GameFontNormal" justifyH="RIGHT">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0" relativeTo="$parentJaugeLeftIcon"/>
+						<Anchor point="RIGHT" relativePoint="LEFT" x="-5" y="0" relativeKey="$parent.LeftIcon"/>
 						<Anchor point="LEFT" x="0" y="0"/>
 					</Anchors>
 					<Color r="1" g="1" b="0.4"/>
 				</FontString>
-				<FontString name="$parentRightText" text="[right text]" inherits="GameFontNormal" justifyH="LEFT">
+				<FontString name="$parentRightText" parentKey="RightText" text="[right text]" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="0" y="10"/>
 					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeTo="$parentJaugeRightIcon"/>
+						<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="0" relativeKey="$parent.RightIcon"/>
 						<Anchor point="RIGHT" x="-8" y="0"/>
 					</Anchors>
 					<Color r="0.55" g="0.55" b="0.95"/>
@@ -157,56 +217,61 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 	<!-- Register characteristics psycho edit line -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoEditLine" inherits="TRP3_RegisterCharact_PsychoInfoDisplayLine" virtual="true">
 		<Size x="0" y="40"/>
 		<Frames>
-			<Button name="$parentLeftButton" inherits="TRP3_CommonButton" text="+">
-				<Size x="20" y="15"/>
+			<Slider name="$parentBarSlider" parentKey="Slider" orientation="HORIZONTAL" enableMouse="true" valueStep="1" obeyStepOnDrag="true">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="LEFT" x="0" y="1" relativeTo="$parentJauge"/>
+					<Anchor point="TOPLEFT" relativeKey="$parent.Bar" x="-16"/>
+					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Bar" x="16"/>
+				</Anchors>
+				<ThumbTexture parentKey="Thumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+					<Size>
+						<AbsDimension x="32" y="32"/>
+					</Size>
+				</ThumbTexture>
+				<Scripts>
+					<OnLoad>
+						-- Ensure we stick the slider on top of the bar.
+						self:SetFrameLevel(self:GetParent().Bar:GetFrameLevel() + 1);
+					</OnLoad>
+				</Scripts>
+			</Slider>
+			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-2" />
 				</Anchors>
 			</Button>
-			<Button name="$parentRightButton" inherits="TRP3_CommonButton" text="+">
-				<Size x="20" y="15"/>
+			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="1" relativeTo="$parentJauge"/>
+					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="2" />
 				</Anchors>
 			</Button>
-			<Button name="$parentLeftIcon" inherits="TRP3_IconButton">
-				<Anchors>
-					<Anchor point="LEFT" x="10" y="2"/>
-				</Anchors>
-			</Button>
-			<Button name="$parentRightIcon" inherits="TRP3_IconButton">
-				<Anchors>
-					<Anchor point="RIGHT" x="-30" y="2"/>
-				</Anchors>
-			</Button>
-			<EditBox name="$parentLeftField" inherits="TRP3_TitledEditBox">
+			<EditBox name="$parentLeftField" parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="RIGHT" x="-5" y="-2" relativePoint="LEFT" relativeTo="$parentLeftButton"/>
-					<Anchor point="LEFT" x="10" y="-2" relativePoint="RIGHT" relativeTo="$parentLeftIcon"/>
+					<Anchor point="RIGHT" relativeKey="$parent.CustomLeftIcon" relativePoint="LEFT" x="-12" y="0"/>
+					<Anchor point="LEFT" x="35" y="0"/>
 				</Anchors>
 			</EditBox>
-			<EditBox name="$parentRightField" inherits="TRP3_TitledEditBox">
+			<EditBox name="$parentRightField" parentKey="CustomRightField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
-					<Anchor point="LEFT" x="5" y="-2" relativePoint="RIGHT" relativeTo="$parentRightButton"/>
-					<Anchor point="RIGHT" x="-10" y="-2" relativePoint="LEFT" relativeTo="$parentRightIcon"/>
+					<Anchor point="LEFT" relativeKey="$parent.CustomRightIcon" relativePoint="RIGHT" x="12" y="0"/>
+					<Anchor point="RIGHT" x="-35" y="0"/>
 				</Anchors>
 			</EditBox>
 
-			<Button name="$parentDelete" inherits="TRP3_CloseButton">
+			<Button name="$parentDelete" parentKey="DeleteButton" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentRightIcon" x="0" y="0"/>
+					<Anchor point="RIGHT" relativePoint="RIGHT" relativeKey="$parent" x="0" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
 	</Frame>
-	
+
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
 		<Size x="0" y="30"/>
@@ -230,7 +295,7 @@
 			</Layer>
 		</Layers>
 	</Frame>
-    
+
     <!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
@@ -260,13 +325,13 @@
 				<Frames>
 					<Frame name="TRP3_RegisterCharact_NamePanel_Icon" inherits="TRP3_SimpleIcon">
 						<Size x="40" y="40"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="LEFT" x="15" y="-2"/>
 						</Anchors>
 					</Frame>
 					<Button name="TRP3_RegisterCharact_NamePanel_EditButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 						</Anchors>
 					</Button>
@@ -278,16 +343,16 @@
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="TRP3_RegisterCharact_NamePanel_Icon"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>
-							</Anchors>				
-							<Color b="0.95" r="0.95" g="0.95"/>	
+							</Anchors>
+							<Color b="0.95" r="0.95" g="0.95"/>
 						</FontString>
 						<FontString name="TRP3_RegisterCharact_NamePanel_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
 							<Size x="0" y="15"/>
 							<Anchors>
 								<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="TRP3_RegisterCharact_NamePanel_Name"/>
 								<Anchor point="RIGHT" x="-10" y="0"/>
-							</Anchors>		
-							<Color b="0.1" r="0.95" g="0.60"/>				
+							</Anchors>
+							<Color b="0.1" r="0.95" g="0.60"/>
 						</FontString>
 					</Layer>
 				</Layers>
@@ -350,7 +415,7 @@
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_EditButton" x="0" y="5"/>
 				</Anchors>
 			</Button>
-			
+
 			<!-- EDIT MODE -->
 			<Frame name="TRP3_RegisterCharact_Edit_NamePanel" inherits="TRP3_FieldSetFrame">
 				<Size x="0" y="70"/>
@@ -361,19 +426,19 @@
 				</Anchors>
 				<Frames>
 					<Button name="TRP3_RegisterCharact_Edit_NamePanel_Icon" inherits="TRP3_IconButton">
-						<Anchors>	
+						<Anchors>
 							<Anchor point="LEFT" x="20" y="-2"/>
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_SaveButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
 						</Anchors>
 					</Button>
 					<Button name="TRP3_RegisterCharact_NamePanel_Edit_CancelButton" inherits="TRP3_CommonButton">
 						<Size x="75" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="TRP3_RegisterCharact_NamePanel_Edit_SaveButton"/>
 						</Anchors>
 					</Button>
@@ -390,13 +455,13 @@
 						</Anchors>
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_LastField" inherits="TRP3_TitledHelpEditBox">
-						<Anchors>	
+						<Anchors>
 							<Anchor point="LEFT" x="14" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_FirstField"/>
 							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
 					</EditBox>
 					<EditBox name="TRP3_RegisterCharact_Edit_FullTitleField" inherits="TRP3_TitledHelpEditBox">
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_TitleField"/>
 							<Anchor point="RIGHT" x="-20" y="0"/>
 						</Anchors>
@@ -405,7 +470,7 @@
 			</Frame>
 			<Frame name="TRP3_RegisterCharact_Edit_CharactPanel" inherits="TRP3_FieldSetFrame">
 				<Size x="0" y="70"/>
-				<Anchors>	
+				<Anchors>
 					<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_NamePanel"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 					<Anchor point="RIGHT" x="-10" y="0"/>
@@ -451,76 +516,76 @@
 									</Frame>
 									<EditBox name="TRP3_RegisterCharact_Edit_RaceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="0" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="10" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle"/>
 											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_ClassField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="LEFT" x="25" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
 											<Anchor point="RIGHT" x="-40" y="0"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ClassButton" inherits="TRP3_ColorPickerButton">
-                						<Anchors>	
+                						<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_AgeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_RaceField"/>
 											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_EyeField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_AgeField"/>
 											<Anchor point="RIGHT" x="-30" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_EyeButton" inherits="TRP3_ColorPickerButton">
-                						<Anchors>	
+                						<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_HeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
 									<EditBox name="TRP3_RegisterCharact_Edit_ResidenceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 											<Anchor point="RIGHT" x="-40" y="0"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ResidenceButton" inherits="TRP3_MapHereButton">
-										<Anchors>	
+										<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_BirthplaceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_ResidenceField"/>
 											<Anchor point="RIGHT" x="-40" y="0"/>
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_BirthplaceButton" inherits="TRP3_MapHereButton">
-										<Anchors>	
+										<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
 										</Anchors>
 									</Button>
 									<EditBox name="TRP3_RegisterCharact_Edit_WeightField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="200" y="18"/>
-										<Anchors>	
+										<Anchors>
 											<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_BirthplaceField"/>
 											<Anchor point="RIGHT" x="-10" y="0"/>
 										</Anchors>
@@ -539,5 +604,5 @@
 			</Frame>
 		</Frames>
 	</Frame>
-    
+
 </Ui>
