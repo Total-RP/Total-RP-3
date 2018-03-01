@@ -172,6 +172,20 @@ end
 
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
+local function getPsychoStructureValue(psychoStructure)
+	-- If this structure has a V2 field already then yield that, otherwise
+	-- upscale the VA field.
+	if psychoStructure.V2 then
+		return psychoStructure.V2;
+	elseif psychoStructure.VA then
+		local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
+		return math.floor((psychoStructure.VA * scale) + 0.5);
+	end
+
+	-- In really broken cases we'll return the default.
+	return Globals.PSYCHO_DEFAULT_VALUE_V2;
+end
+
 local function refreshPsycho(psychoLine, value)
 	-- Update value and then go on to update the stack count indicators.
 	psychoLine.Bar:SetValue(value);
@@ -331,7 +345,7 @@ local function setConsultDisplay(context)
 
 		for frameIndex, psychoStructure in pairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
-			local value = psychoStructure.V2;
+			local value = getPsychoStructureValue(psychoStructure);
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
 				tinsert(psychoCharFrame, frame);
@@ -355,7 +369,7 @@ local function setConsultDisplay(context)
 			frame.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
-			refreshPsycho(frame, value or Globals.PSYCHO_DEFAULT_VALUE_V2);
+			refreshPsycho(frame, value);
 			frame:Show();
 			previous = frame;
 		end
@@ -955,6 +969,8 @@ function setEditDisplay()
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.PS) do
 		local frame = psychoEditCharFrame[frameIndex];
+		local value = getPsychoStructureValue(psychoStructure);
+
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
@@ -1022,7 +1038,7 @@ function setEditDisplay()
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
-		refreshPsycho(frame, psychoStructure.V2 or Globals.PSYCHO_DEFAULT_VALUE_V2);
+		refreshPsycho(frame, value);
 		frame:Show();
 		previous = frame;
 	end

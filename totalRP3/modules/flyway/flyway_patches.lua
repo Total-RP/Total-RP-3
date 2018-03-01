@@ -87,9 +87,4 @@ TRP3_API.flyway.patches["6"] = function()
 			updateProfile(profile.player);
 		end
 	end
-
-	-- Run through the profiles in the register next.
-	for _, profile in pairs(TRP3_Register.profiles) do
-		updateProfile(profile);
-	end
 end
