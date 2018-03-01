@@ -640,15 +640,16 @@ local function miscInfoQueryCursorIndexPosition()
 		--
 		-- So we'll roll our own bounds checker that tells us if you're
 		-- on an item, or above/below one.
-		local relIndex = miscInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
-		if relIndex then
-			if relIndex == 0 then
+		local relativeMousePosition = miscInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
+		if relativeMousePosition then
+			if relativeMousePosition == 0 then
+				-- You're directly over this item.
 				return i;
-			elseif relIndex < 0 and i == lastItemIndex then
+			elseif relativeMousePosition < 0 and i == lastItemIndex then
 				-- The relative index of the last item is lesser, which
 				-- means you've moved your cursor below it.
 				return lastItemIndex;
-			elseif relIndex > 0 and i == 1 then
+			elseif relativeMousePosition > 0 and i == 1 then
 				-- The relative index of the first item is greater, which
 				-- means you've moved your cursor above it.
 				return i;
@@ -663,21 +664,30 @@ end
 local function miscInfoScrollParentTowardCursor()
 	-- Get the scroll frame and query its current position.
 	local frame = TRP3_RegisterCharact_Edit_CharactPanel_Scroll;
-	local position = frame:GetVerticalScroll();
 
 	-- Work out our mouse position, calculate to effective scale of the frame.
-	local _, mouseY = GetCursorPosition();
+	local mx, my = GetCursorPosition();
 	local scale = frame:GetEffectiveScale();
-	mouseY = mouseY / scale;
+	mx, my = mx / scale, my / scale;
+
+	-- Only adjust positioning if the mouse is outside of the frame bounds
+	-- from a vertical perspective.
+	local x1, y1, width, height = frame:GetRect();
+	local x2, y2 = x1 + width, y1 + height;
+	local relativeMousePosition = miscInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
+	if not relativeMousePosition or relativeMousePosition == 0 then
+		-- Either you're not within the bounds from an X coordinate perspective
+		-- or you're mousing over the frame.
+		return;
+	end
 
 	-- Work out the center Y coordinate of the frame.
 	local bottom = frame:GetBottom();
-	local height = frame:GetHeight();
 	local center = bottom + height;
 
-	-- If you're above the center then we want to scroll up, otherwise
-	-- scroll down.
-	if mouseY > center then
+	-- If you're above the center then we want to scroll up, otherwise down.
+	local position = frame:GetVerticalScroll();
+	if my > center then
 		position = position - MISC_INFO_DRAG_SCROLL_DELTA;
 	else
 		position = position + MISC_INFO_DRAG_SCROLL_DELTA;
@@ -747,12 +757,8 @@ end
 --
 --  @param ticker The ticker associated with the handle being dragged.
 local function onMiscInfoDragUpdate(ticker)
-	-- If you've gone out of the scroll bounds we'll adjust the position
-	-- of the frame a slight bit so you can see what you're dragging to.
-	local scrollFrame = TRP3_RegisterCharact_Edit_CharactPanel_Scroll;
-	if not scrollFrame:IsMouseOver() then
-		miscInfoScrollParentTowardCursor();
-	end
+	-- Ensure the scroll frame moves with the cursor.
+	miscInfoScrollParentTowardCursor();
 
 	-- Grab the handle when we tick and, from that, we can get the source
 	-- node.
