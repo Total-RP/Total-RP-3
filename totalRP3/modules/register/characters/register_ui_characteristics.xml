@@ -33,12 +33,12 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Register characteristics register line -->
 	<Frame name="TRP3_RegisterCharact_MiscEditLine" virtual="true">
 		<Size x="20" y="40"/>
 		<Frames>
-			<Button name="$parentIcon" inherits="TRP3_IconButton">
+			<Button name="$parentIcon" parentKey="Icon" inherits="TRP3_IconButton">
 				<Anchors>
 					<Anchor point="LEFT" x="30" y="0"/>
 				</Anchors>

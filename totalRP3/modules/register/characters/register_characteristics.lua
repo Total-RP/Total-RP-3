@@ -546,6 +546,287 @@ local function refreshDraftHouseCoordinates()
 	TRP3_RegisterCharact_Edit_ResidenceButton:Show(); -- Hax to refresh tooltip
 end
 
+--- MISC_INFO_DRAG_UPDATE_PERIOD is the rate at which we'll test other
+--  Misc. items in the list to update their positions in a drag/drop reorder
+--  operation.
+local MISC_INFO_DRAG_UPDATE_PERIOD = 0.01;
+
+--- MISC_INFO_DRAG_SCROLL_DELTA is the amount of pixels to scroll by when
+--  the cursor is outside of the scroll frame.
+--
+--  Increasing this gives you a faster scroll, but be mindful - it gets
+--  re-checked every time the update period elapses.
+local MISC_INFO_DRAG_SCROLL_DELTA = 1;
+
+--- miscInfoTestRectangleCoord takes a bounding rectangle of a widget in
+--  (x1, y1)(x2, y2) coordinate pairs, and a (cx, cy) coordinate pair, and
+--  tests if the bounding rectangle contains the point or not.
+--
+--  If the point is within the rectangle, 0 is returned. If the point is
+--  above, -1 is returned, and if the point is below then 1 is returned.
+--
+--  If the point is not within the X coordinate boundaries, nil is returned.
+--
+--  The parameters assume that the coordinates passed match the convention
+--  used by the API, such that (0, 0) represents the bottom-left of the screen.
+--
+--  @param x1 Bottom-left corner X coordinate of the rectangle.
+--  @param y1 Bottom-left corner Y coordinate of the rectangle.
+--  @param x2 Top-right corner X coordinate of the rectangle.
+--  @param y2 Top-right corner Y coordinate of the rectangle.
+--  @param cx X coordinate to test.
+--  @param cy Y coordinate to test.
+local function miscInfoTestRectangleCoord(x1, y1, x2, y2, cx, cy)
+	-- Skip if the given coords aren't within the width of the rectangle.
+	if cx < x1 or cx > x2 then
+		return;
+	end
+
+	if cy >= y2 then
+		return 1;
+	elseif cy <= y1 then
+		return -1;
+	else
+		-- Logically it's impossible at this point for (cx, cy) to be anywhere
+		-- but within bounds of the rectangle.
+		return 0;
+	end
+end
+
+--- miscInfoQueryCursorIndexPosition calculates out the index of which item
+--  in the character info sheet list that the mouse is presently located over.
+--
+--  If the mouse is not over any item, nil is returned. If the mouse is within
+--  the X coordinate boundaries of the first or last items but above or below
+--  the first or last items in the list, the indices of those items are
+--  returned respectively.
+local function miscInfoQueryCursorIndexPosition()
+	-- Grab the cursor position early on, since we don't need to keep
+	-- asking for it in one update.
+	local mouseX, mouseY = GetCursorPosition();
+
+	-- We need to know the total number of characteristics for a bit later.
+	local lastItemIndex = 0;
+	for frameIndex, _ in pairs(draftData.MI) do
+		if frameIndex > lastItemIndex then
+			lastItemIndex = frameIndex;
+		end
+	end
+
+	-- Iterate over each of the misc info items and process them in turn.
+	for i = 1, lastItemIndex do
+		local frame = miscEditCharFrame[i];
+
+		-- We can work out the actual bounding coordinates now. The
+		-- coords we'll get are the bottom and left of the frame, and as
+		-- the width and height are always positive we can just add them
+		-- to get the other corners.
+		--
+		-- The (x1, y1) point refers to the bottom-left corner, as is standard
+		-- with the API.
+		local left, bottom, width, height = frame:GetRect();
+		local x1, y1 = left, bottom;
+		local x2, y2 = left + width, bottom + height;
+
+		-- Now grab our mouse position and fix it according to the scale
+		-- of the target frame.
+		local frameScale = frame:GetEffectiveScale();
+		local mx, my = mouseX / frameScale, mouseY / frameScale;
+
+		-- So, why not use IsMouseOver to test if this node is of any interest?
+		-- Because you've got the problem of the first and last items. If you
+		-- drag your cursor above or below them you'd expect the one you're
+		-- moving to go to the first or last position.
+		--
+		-- So we'll roll our own bounds checker that tells us if you're
+		-- on an item, or above/below one.
+		local relIndex = miscInfoTestRectangleCoord(x1, y1, x2, y2, mx, my);
+		if relIndex then
+			if relIndex == 0 then
+				return i;
+			elseif relIndex < 0 and i == lastItemIndex then
+				-- The relative index of the last item is lesser, which
+				-- means you've moved your cursor below it.
+				return lastItemIndex;
+			elseif relIndex > 0 and i == 1 then
+				-- The relative index of the first item is greater, which
+				-- means you've moved your cursor above it.
+				return i;
+			end
+		end
+	end
+end
+
+--- miscInfoScrollParentTowardCursor updates the vertical scroll position of
+--  the edit character panel, adjusting it so that the position is moving
+--  toward the location of the cursor.
+local function miscInfoScrollParentTowardCursor()
+	-- Get the scroll frame and query its current position.
+	local frame = TRP3_RegisterCharact_Edit_CharactPanel_Scroll;
+	local position = frame:GetVerticalScroll();
+
+	-- Work out our mouse position, calculate to effective scale of the frame.
+	local _, mouseY = GetCursorPosition();
+	local scale = frame:GetEffectiveScale();
+	mouseY = mouseY / scale;
+
+	-- Work out the center Y coordinate of the frame.
+	local bottom = frame:GetBottom();
+	local height = frame:GetHeight();
+	local center = bottom + height;
+
+	-- If you're above the center then we want to scroll up, otherwise
+	-- scroll down.
+	if mouseY > center then
+		position = position - MISC_INFO_DRAG_SCROLL_DELTA;
+	else
+		position = position + MISC_INFO_DRAG_SCROLL_DELTA;
+	end
+
+	frame:SetVerticalScroll(position);
+end
+
+--- miscInfoFixupPosition adjusts the points on a given frame, altering
+--  the TOP anchor point such that it is made relative to a different
+--  frame.
+--
+--  This operation preserves all other points, as well as the offsets of the
+--  TOP point.
+--
+--  @param frame The frame to alter the TOP point on.
+--  @param relative The frame to make the TOP point relative to.
+local function miscInfoFixupPosition(frame, relative)
+	-- We could abstract the positioning into a separate function but
+	-- in this case it should happen infrequently enough.
+	--
+	-- Check the anchor points of the frame and find the TOP point anchor.
+	-- When we do, we'll re-assign that point to the given relative frame
+	-- and preserve all the other attributes.
+	for i = 1, frame:GetNumPoints() do
+		local point, _, relPoint, x, y = frame:GetPoint(i);
+		if point == "TOP" and relPoint == "BOTTOM" then
+			frame:SetPoint(point, relative, relPoint, x, y);
+			return;
+		end
+	end
+end
+
+--- miscInfoPerformReorder reorders the character frame info list, moving
+--  the item at a given source index to that of a target index, and updating
+--  the layout of the UI.
+--
+--  @param sourceIndex The index of the node being moved.
+--  @param targetIndex The index to place the node at.
+local function miscInfoPerformReorder(sourceIndex, targetIndex)
+	-- We'll just do a flat table order change here with a tinsert/tremove.
+	local source = table.remove(draftData.MI, sourceIndex);
+	table.insert(draftData.MI, targetIndex, source);
+
+	-- Reorder the frame too. Means we don't need to transfer all the values,
+	-- which fixes issues with icons not persisting correctly when reordering.
+	local sourceFrame = table.remove(miscEditCharFrame, sourceIndex);
+	table.insert(miscEditCharFrame, targetIndex, sourceFrame);
+
+	-- Now fix up all the frames in terms of their referenced indices.
+	local previous = TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle;
+	for frameIndex, _ in pairs(draftData.MI) do
+		local frame = miscEditCharFrame[frameIndex];
+		frame.miscIndex = frameIndex;
+
+		miscInfoFixupPosition(frame, previous);
+		previous = frame;
+	end
+
+	-- The add characteristic button needs to be moved to the last item.
+	miscInfoFixupPosition(TRP3_RegisterCharact_Edit_MiscAdd, previous);
+end
+
+--- onMiscInfoDragUpdate is called when the timer associated with a handle
+--  drag ticks. This is responsible for checking the position of the
+--  mouse relative to items in the list.
+--
+--  @param ticker The ticker associated with the handle being dragged.
+local function onMiscInfoDragUpdate(ticker)
+	-- If you've gone out of the scroll bounds we'll adjust the position
+	-- of the frame a slight bit so you can see what you're dragging to.
+	local scrollFrame = TRP3_RegisterCharact_Edit_CharactPanel_Scroll;
+	if not scrollFrame:IsMouseOver() then
+		miscInfoScrollParentTowardCursor();
+	end
+
+	-- Grab the handle when we tick and, from that, we can get the source
+	-- node.
+	local handle = ticker.handle;
+	local source = handle.node;
+
+	-- Work out the index of the frame to swap with, if any. Skip if the
+	-- source and target are identical, or if there is no target.
+	local targetIndex = miscInfoQueryCursorIndexPosition(frame);
+	if not targetIndex or targetIndex == sourceIndex then
+		return;
+	end
+
+	miscInfoPerformReorder(source.miscIndex, targetIndex);
+end
+
+--- onMiscInfoDragStop is called when a handle begins being dragged.
+--  This is responsible for starting a ticker to control the reorder operation.
+--
+--  @param handle The handle being dragged by the user.
+local function onMiscInfoDragStart(handle)
+	-- In theory it'll be impossible to have a ticker (you'd need this
+	-- handler to be called twice), but let's be safe. Would rather not
+	-- assert since there's no real harm otherwise.
+	if handle.miscInfoTicker then
+		handle.miscInfoTicker:Cancel();
+	end
+
+	-- Keep a reference to the handle on the ticker that we create.
+	local ticker = C_Timer.NewTicker(MISC_INFO_DRAG_UPDATE_PERIOD, onMiscInfoDragUpdate);
+	ticker.handle = handle;
+	handle.miscInfoTicker = ticker;
+end
+
+--- onMiscInfoDragStop is called when a handle is no longer being dragged.
+--  This is responsible for stopping the drag/drop operation ticker.
+
+--  @param handle The handle being dragged by the user.
+local function onMiscInfoDragStop(handle)
+	-- Expect a ticker. We won't assert since there's no harm in not having one.
+	if not handle.miscInfoTicker then
+		return;
+	end
+
+	-- Kill the ticker as we no longer need it.
+	handle.miscInfoTicker:Cancel();
+	handle.miscInfoTicker = nil;
+end
+
+--- setMiscInfoReorderable installs the necessary script handlers to enable
+--  a handle frame to control the drag and drop operations of a given node
+--  frame.
+--
+--  @param handle The frame that, when dragged, will start repositioning the
+--                associated node.
+--  @param node   The info item to be reordered when the handle is dragged.
+local function setMiscInfoReorderable(handle, node)
+	-- Store a reference to the node that we're controlling on the handle.
+	-- The handle needs this when updating in the drag events.
+	handle.node = node;
+
+	-- This'll hold our drag/drop ticker so we can stop it later. The field
+	-- is initialised here more for documentational purposes.
+	handle.miscInfoTicker = nil;
+
+	handle:EnableMouse(true);
+	handle:RegisterForDrag("LeftButton");
+	handle:SetScript("OnDragStart", onMiscInfoDragStart);
+	handle:SetScript("OnDragStop", onMiscInfoDragStop);
+
+	-- If the handle stops being shown we should kill the drag.
+	handle:SetScript("OnHide", onMiscInfoDragStop);
+end
+
 function setEditDisplay()
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
@@ -588,6 +869,11 @@ function setEditDisplay()
 			_G[frame:GetName() .. "Delete"]:SetScript("OnClick", onMiscDelete);
 			setTooltipForSameFrame(_G[frame:GetName() .. "Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
 			scaleField(frame, TRP3_RegisterCharact_Edit_CharactPanel_Container:GetWidth(), "NameField");
+
+			-- Register the drag/drop handlers for reordering. Use the
+			-- icon as our handle, and make it control this frame.
+			setMiscInfoReorderable(frame.Icon, frame);
+
 			tinsert(miscEditCharFrame, frame);
 		end
 		_G[frame:GetName() .. "Icon"]:SetScript("OnClick", function()
