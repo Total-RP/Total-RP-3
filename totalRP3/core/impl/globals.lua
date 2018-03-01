@@ -80,6 +80,13 @@ TRP3_API.globals = {
 		unknown = "INV_Misc_QuestionMark",
 		profile_default = "INV_Misc_GroupLooking",
 	},
+
+	-- Profile Constants
+	PSYCHO_DEFAULT_VALUE_V1 = 3,
+	PSYCHO_MAX_VALUE_V1 = 6,
+
+	PSYCHO_DEFAULT_VALUE_V2 = 10,
+	PSYCHO_MAX_VALUE_V2 = 20,
 }
 
 local emptyMeta = {

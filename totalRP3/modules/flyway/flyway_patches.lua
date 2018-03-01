@@ -19,6 +19,7 @@
 
 TRP3_API.flyway.patches = {};
 
+local Globals = TRP3_API.globals;
 local pairs, wipe = pairs, wipe;
 
 -- Delete notification system
@@ -49,4 +50,46 @@ TRP3_API.flyway.patches["5"] = function()
 			end
 		end
 	end)
+end
+
+TRP3_API.flyway.patches["6"] = function()
+	-- Run through all the profiles and upgrade the personality traits
+	-- structure to upscale the values and copy them to a new field.
+	--
+	-- As the old maximum doesn't easily divide (or multiply) into whole
+	-- numbers at most of the steps, we'll round the value to the nearest
+	-- whole integer.
+	--
+	-- The field with the new value is called V2; we leave VA intact for
+	-- backwards compatibility.
+	--
+	-- If for some reason there's already a V2 present, we leave it alone
+	-- and don't migrate the value over.
+	local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
+
+	local updateProfile = function(profile)
+		local characteristics = profile.characteristics;
+		local psycho = characteristics and characteristics.PS;
+
+		if psycho then
+			for i = 1, #psycho do
+				local trait = psycho[i];
+				local value = trait.VA or Globals.PSYCHO_DEFAULT_VALUE_V1;
+
+				trait.V2 = trait.V2 or math.floor((value * scale) + 0.5);
+			end
+		end
+	end
+
+	-- Run through the user profiles.
+	for _, profile in pairs(TRP3_Profiles) do
+		if profile.player then
+			updateProfile(profile.player);
+		end
+	end
+
+	-- Run through the profiles in the register next.
+	for _, profile in pairs(TRP3_Register.profiles) do
+		updateProfile(profile);
+	end
 end
