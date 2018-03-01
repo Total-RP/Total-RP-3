@@ -791,6 +791,16 @@ local function onMiscInfoDragStart(handle)
 	local ticker = C_Timer.NewTicker(MISC_INFO_DRAG_UPDATE_PERIOD, onMiscInfoDragUpdate);
 	ticker.handle = handle;
 	handle.miscInfoTicker = ticker;
+
+	-- Stick the icon of the item in question onto the cursor for some feedback.
+	-- Also throw in some sound cues a-la spellbook drag/drop.
+	local node = handle.node;
+	SetCursor(node.Icon.Icon:GetTexture());
+
+	-- For some reason there's no constant for the pickup sound effect
+	-- used by ability icons. Logically this'd be present as
+	-- IG_ABILITY_ICON_PICKUP.
+	PlaySound(837);
 end
 
 --- onMiscInfoDragStop is called when a handle is no longer being dragged.
@@ -806,6 +816,10 @@ local function onMiscInfoDragStop(handle)
 	-- Kill the ticker as we no longer need it.
 	handle.miscInfoTicker:Cancel();
 	handle.miscInfoTicker = nil;
+
+	-- Kill the icon following the cursor.
+	SetCursor(nil);
+	PlaySound(SOUNDKIT.IG_ABILITY_ICON_DROP);
 end
 
 --- setMiscInfoReorderable installs the necessary script handlers to enable
