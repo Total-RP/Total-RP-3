@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local Globals, Utils, Comm, Events, UI = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
@@ -800,7 +800,7 @@ local function onMiscInfoDragStart(handle)
 	-- For some reason there's no constant for the pickup sound effect
 	-- used by ability icons. Logically this'd be present as
 	-- IG_ABILITY_ICON_PICKUP.
-	PlaySound(837);
+	UI.misc.playUISound(837);
 end
 
 --- onMiscInfoDragStop is called when a handle is no longer being dragged.
@@ -819,7 +819,7 @@ local function onMiscInfoDragStop(handle)
 
 	-- Kill the icon following the cursor.
 	SetCursor(nil);
-	PlaySound(SOUNDKIT.IG_ABILITY_ICON_DROP);
+	UI.misc.playUISound(SOUNDKIT.IG_ABILITY_ICON_DROP);
 end
 
 --- setMiscInfoReorderable installs the necessary script handlers to enable
