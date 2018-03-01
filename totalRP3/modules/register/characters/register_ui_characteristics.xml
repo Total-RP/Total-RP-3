@@ -153,8 +153,8 @@
 					<TexCoords left="0.0625" right="0.812" top="0" bottom="0.75"/>
 				</Texture>
 			</Layer>
-			<Layer level="BORDER">
-				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" horizWrap="REPEAT" subLayer="-1">
+			<Layer level="BORDER" textureSubLevel="-1">
+				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" horizWrap="REPEAT">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT"/>
@@ -214,6 +214,16 @@
 					</Anchors>
 					<Color r="0.55" g="0.55" b="0.95"/>
 				</FontString>
+				<FontString inherits="NumberFontNormal" parentKey="LeftCount">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.LeftIcon" x="-1" y="1"/>
+					</Anchors>
+				</FontString>
+				<FontString inherits="NumberFontNormal" parentKey="RightCount">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightIcon" x="-1" y="1"/>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 	</Frame>
@@ -243,11 +253,29 @@
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-2" />
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString inherits="NumberFontNormal" parentKey="Count">
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Button>
 			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.RightIcon" x="2" />
 				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString inherits="NumberFontNormal" parentKey="Count">
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="-1" y="1"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Button>
 			<EditBox name="$parentLeftField" parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>

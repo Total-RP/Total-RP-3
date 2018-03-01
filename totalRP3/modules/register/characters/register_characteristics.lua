@@ -173,8 +173,30 @@ end
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
 local function refreshPsycho(psychoLine, value)
+	-- Update value and then go on to update the stack count indicators.
 	psychoLine.Bar:SetValue(value);
 
+	local leftCount = value;
+	local rightCount = Globals.PSYCHO_MAX_VALUE_V2 - value;
+
+	-- If in edit mode and we have a visible custom icon, update that string
+	-- and clear the normal one.
+	if psychoLine.CustomLeftIcon and psychoLine.CustomLeftIcon:IsShown() then
+		psychoLine.CustomLeftIcon.Count:SetText(leftCount);
+		psychoLine.LeftCount:SetText("");
+	else
+		psychoLine.LeftCount:SetText(leftCount);
+	end
+
+	if psychoLine.CustomRightIcon and psychoLine.CustomRightIcon:IsShown() then
+		psychoLine.CustomRightIcon.Count:SetText(rightCount);
+		psychoLine.LeftCount:SetText("");
+	else
+		psychoLine.RightCount:SetText(rightCount);
+	end
+
+	-- The slider calls this function, so only update it if present and
+	-- the value is different.
 	if psychoLine.Slider and psychoLine.Slider:GetValue() ~= value then
 		psychoLine.Slider:SetValue(value);
 	end
