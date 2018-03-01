@@ -24,7 +24,7 @@ local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
+local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
@@ -351,6 +351,8 @@ local function setConsultDisplay(context)
 			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
 			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
 
+			frame.Bar:SetStatusBarColor(hexaToFloat(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
+			frame.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			refreshPsycho(frame, value or Globals.PSYCHO_DEFAULT_VALUE_V2);
@@ -960,6 +962,8 @@ function setEditDisplay()
 			frame.CustomLeftField.title:SetText(loc("REG_PLAYER_LEFTTRAIT"));
 			frame.CustomRightField.title:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
 
+			frame.Bar:SetStatusBarColor(hexaToFloat(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
+			frame.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
