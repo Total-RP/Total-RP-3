@@ -1087,12 +1087,7 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 	---@language Markdown
 	WHATS_NEW_17 = [[
 
-## 1.3.0
-
-### Changes beta 2 and beta 3
-
-- Fixed an issue with the new localization system that would completely break Total RP 3: Extended.
-- Fixed an issue where using the option to disable the chat feature while Out of character would completely break the chat.
+## 1.3.0 - 2018-02-19
 
 ### New feature: chat links
 
@@ -1162,6 +1157,20 @@ We have added a new feature that allows you to right-click on a player in the ga
 ### Removed
 
 - Removed various advanced options that were causing confusion and would often result in the add-on not working when the user changed the default configuration (automatically adding people to the directory, the broadcast channel name).
+
+]],
+	---@language Markdown
+	WHATS_NEW_17_1 = [[
+## 1.3.1 - 2018-02-27
+
+### Fixed
+
+- Fixed an issue with the cropping system introduced to the at-first-glance tooltips when the Register Tooltips module is disabled.
+- Fixed an issue when sorting profiles in the Directory by Last seen where the profiles would be sorted by the dates alphabetically.
+
+### Added
+
+- Added sound related APIs for future Total RP 3: Extended features.
 
 ]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}

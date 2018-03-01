@@ -755,6 +755,10 @@ local structureTags = {
 
 local strtrim = strtrim;
 
+--- Note that the image tag has to be outside a <P> tag.
+---@language HTML
+local IMAGE_TAG = [[</P><img src="%s" align="center" width="%s" height="%s"/><P>]];
+
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text, noColor)
 
@@ -838,11 +842,15 @@ Utils.str.toHTML = function(text, noColor)
 		end
 		line = line:gsub("\n","<br/>");
 
-		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}",
-			"</P><img src=\"%1\" align=\"center\" width=\"%2\" height=\"%3\"/><P>");
+		line = line:gsub("{img%:(.-)%:(.-)%:(.-)%}", function(img, width, height)
+			-- Width and height should be absolute.
+			-- The tag accepts negative value but people used that to fuck up their profiles
+			return string.format(IMAGE_TAG, img, math.abs(width), math.abs(height));
+		end);
 
 		line = line:gsub("%!%[(.-)%]%((.-)%)", function(icon, size)
 			if icon:find("\\") then
+				-- If icon text contains \ we have a full texture path
 				local width, height;
 				if size:find("%,") then
 					width, height = strsplit(",", size);
@@ -850,7 +858,9 @@ Utils.str.toHTML = function(text, noColor)
 					width = tonumber(size) or 128;
 					height = width;
 				end
-				return "</P><img src=\"".. icon .. "\" align=\"center\" width=\"".. width .. "\" height=\"" .. height .. "\"/><P>";
+				-- Width and height should be absolute.
+				-- The tag accepts negative value but people used that to fuck up their profiles
+				return string.format(IMAGE_TAG, icon, math.abs(width), math.abs(height));
 			end
 			return Utils.str.icon(icon, tonumber(size) or 25);
 		end);
@@ -983,12 +993,16 @@ function Utils.music.stopSound(handlerID)
 	StopSound(handlerID);
 end
 
-function Utils.music.stopChannel(channel)
+function Utils.music.stopSoundID(soundID, channel, source)
 	for index, handler in pairs(soundHandlers) do
-		if not channel or handler.channel == channel then
+		if (not soundID or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			Utils.music.stopSound(handler.handlerID);
 		end
 	end
+end
+
+function Utils.music.stopChannel(channel)
+	Utils.music.stopSoundID(nil, channel, nil);
 end
 
 function Utils.music.stopMusic()

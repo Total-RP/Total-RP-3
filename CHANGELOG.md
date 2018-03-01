@@ -1,8 +1,17 @@
 # Changelog
 
-## 1.3.0
+## [1.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.0...1.3.1) - 2018-02-27
 
-### Changes between 1.3.0 beta 2 and beta 3
+### Fixed
+
+- Fixed an issue with the cropping system introduced to the at-first-glance tooltips when the Register Tooltips module is disabled.
+- Fixed an issue when sorting profiles in the Directory by Last seen where the profiles would be sorted by the dates alphabetically.
+
+### Added
+
+- Added sound related APIs for future Total RP 3: Extended features.
+
+## [1.3.0](https://github.com/Ellypse/Total-RP-3/compare/1.2.11.3...1.3.0) - 2018-02-19
 
 - Fixed an issue with the new localization system that would completely break Total RP 3: Extended.
 - Fixed an issue where using the option to disable the chat feature while Out of character would completely break the chat.
