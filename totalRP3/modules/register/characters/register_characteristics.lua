@@ -935,8 +935,8 @@ function setEditDisplay()
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
 			frame.DeleteButton:SetScript("OnClick", onPsychoDelete);
-			frame.CustomLeftField:SetText(loc("REG_PLAYER_LEFTTRAIT"));
-			frame.CustomRightField:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
+			frame.CustomLeftField.title:SetText(loc("REG_PLAYER_LEFTTRAIT"));
+			frame.CustomRightField.title:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
