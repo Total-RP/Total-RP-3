@@ -82,8 +82,20 @@ local UnitExists, UnitInParty, UnitInRaid = UnitExists, UnitInParty, UnitInRaid;
 
 local DICE_SIGNAL = "DISN";
 
+--- isTargetValidForDiceRoll checks if the target unit is valid for sending
+--  the outcome of a dice roll to.
+--
+--  Returns true if the target is a friendly player who is not in your raid or
+--  party.
+local function isTargetValidForDiceRoll()
+	return UnitExists("target")
+		and not (UnitInParty("target") or UnitInRaid("target"))
+		and UnitIsPlayer("target")
+		and UnitFactionGroup("player") == UnitFactionGroup("target");
+end
+
 local function sendDiceRoll(args)
-	if UnitExists("target") and not (UnitInParty("target") or UnitInRaid("target")) then
+	if isTargetValidForDiceRoll() then
 		TRP3_API.communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
 	end
 	if IsInRaid() then
@@ -94,15 +106,25 @@ local function sendDiceRoll(args)
 end
 
 local function rollDice(diceString, noSend)
-	local _, _, num, diceCount = diceString:find("(%d+)d(%d+)");
-	num = tonumber(num) or 0;
+	local _, _, num, diceCount, modifierOperator, modifierValue = diceString:find("(%d*)d(%d+)([-+]?)(%d*)");
+	num = tonumber(num) or 1;
 	diceCount = tonumber(diceCount) or 0;
+
+	modifierOperator = modifierOperator or "+";
+	modifierValue = tonumber(modifierValue) or 0;
+	if modifierOperator == "-" then
+		modifierValue = -modifierValue
+	end
+
 	if num > 0 and diceCount > 0 then
 		local total = 0;
-		for i = 1, num do
+		for _ = 1, num do
 			local value = math.random(1, diceCount);
 			total = total + value;
 		end
+
+		total = total + modifierValue;
+
 		Utils.message.displayMessage(loc("DICE_ROLL"):format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
 		sendDiceRoll({c = num, d = diceCount, t = total});
 		return total;
