@@ -189,12 +189,18 @@
 					<Anchors>
 						<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
 					</Anchors>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</Texture>
 				<Texture name="$parentJaugeRightIcon" parentKey="RightIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
 					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
 					</Anchors>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</Texture>
 			</Layer>
 			<Layer level="OVERLAY">
@@ -205,6 +211,9 @@
 						<Anchor point="LEFT" x="0" y="0"/>
 					</Anchors>
 					<Color r="1" g="1" b="0.4"/>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</FontString>
 				<FontString name="$parentRightText" parentKey="RightText" text="[right text]" inherits="GameFontNormal" justifyH="LEFT">
 					<Size x="0" y="10"/>
@@ -213,16 +222,26 @@
 						<Anchor point="RIGHT" x="-8" y="0"/>
 					</Anchors>
 					<Color r="0.55" g="0.55" b="0.95"/>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</FontString>
+
 				<FontString inherits="NumberFontNormal" parentKey="LeftCount">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.LeftIcon" x="-1" y="1"/>
 					</Anchors>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</FontString>
 				<FontString inherits="NumberFontNormal" parentKey="RightCount">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightIcon" x="-1" y="1"/>
 					</Anchors>
+					<KeyValues>
+						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
+					</KeyValues>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -250,6 +269,7 @@
 					</OnLoad>
 				</Scripts>
 			</Slider>
+
 			<Button name="$parentLeftIcon" parentKey="CustomLeftIcon" inherits="TRP3_IconButton">
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.LeftIcon" x="-2" />
@@ -263,6 +283,9 @@
 						</FontString>
 					</Layer>
 				</Layers>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
 			</Button>
 			<Button name="$parentRightIcon" parentKey="CustomRightIcon" inherits="TRP3_IconButton">
 				<Anchors>
@@ -277,25 +300,52 @@
 						</FontString>
 					</Layer>
 				</Layers>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
 			</Button>
+
+			<Button name="$parentCustomLeftColor" parentKey="CustomLeftColor" inherits="TRP3_ColorPickerButton">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent" relativePoint="LEFT" x="22" y="0" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
+			</Button>
+			<Button name="$parentCustomRightColor" parentKey="CustomRightColor" inherits="TRP3_ColorPickerButton">
+				<Anchors>
+					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="-22" y="0" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
+			</Button>
+
 			<EditBox name="$parentLeftField" parentKey="CustomLeftField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="RIGHT" relativeKey="$parent.CustomLeftIcon" relativePoint="LEFT" x="-12" y="0"/>
-					<Anchor point="LEFT" x="35" y="0"/>
+					<Anchor point="LEFT" relativeKey="$parent.CustomLeftColor" relativePoint="RIGHT" x="12" y="0"/>
 				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
 			</EditBox>
 			<EditBox name="$parentRightField" parentKey="CustomRightField" inherits="TRP3_TitledEditBox">
 				<Size x="0" y="18"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.CustomRightIcon" relativePoint="RIGHT" x="12" y="0"/>
-					<Anchor point="RIGHT" x="-35" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent.CustomRightColor" relativePoint="LEFT" x="-12" y="0"/>
 				</Anchors>
+				<KeyValues>
+					<KeyValue key="HideOnPreset" value="true" type="boolean"/>
+				</KeyValues>
 			</EditBox>
 
 			<Button name="$parentDelete" parentKey="DeleteButton" inherits="TRP3_CloseButton">
 				<Anchors>
-					<Anchor point="RIGHT" relativePoint="RIGHT" relativeKey="$parent" x="0" y="0"/>
+					<Anchor point="RIGHT" relativeKey="$parent" relativePoint="RIGHT" x="10" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>

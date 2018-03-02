@@ -60,10 +60,6 @@ end;
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
 local PSYCHO_PRESETS_DROPDOWN;
-local PSYCHO_CUSTOM_DROPDOWN;
-
-local PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR = 1;
-local PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR = 2;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -230,18 +226,18 @@ end
 --  @param color The color to be applied. Must be an instance of Ellyb.Color,
 --               or nil if resetting the color to a default.
 local function refreshPsychoColor(psychoLine, psychoColorField, color)
-	-- Store the coloring on the line item itself.
+	-- Store the coloring on the line item itself for persistence later.
 	if color then
 		psychoLine[psychoColorField] = color;
 	else
 		psychoLine[psychoColorField] = nil;
 	end
 
-	-- Refresh the bar coloring itself.
-	if psychoLine.Bar then
-		local lc = psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR;
-		local rc = psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
+	-- Grab the now-updated color objects for both ends and update the UI.
+	local lc = psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR;
+	local rc = psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
 
+	if psychoLine.Bar then
 		psychoLine.Bar:SetStatusBarColor(lc:GetRGBA());
 		psychoLine.Bar.OppositeFill:SetVertexColor(rc:GetRGBA());
 	end
@@ -458,12 +454,12 @@ local function saveInDraft()
 
 			local lc = psychoLine.LC;
 			if lc then
-				psychoStructure.LC = { r = lc:GetRed(), g = lc:GetGreen(), b = lc:GetBlue() };
+				psychoStructure.LC = lc:GetRGBTable();
 			end
 
 			local rc = psychoLine.RC;
 			if rc then
-				psychoStructure.RC = { r = rc:GetRed(), g = rc:GetGreen(), b = rc:GetBlue() };
+				psychoStructure.RC = rc:GetRGBTable();
 			end
 		else
 			-- Don't save preset data !
@@ -936,42 +932,20 @@ local function setMiscInfoReorderable(handle, node)
 	handle:SetScript("OnHide", onMiscInfoDragStop);
 end
 
---- onPsychoDropdownItemSelected is called when an item in the right-click
---  dropdown menu present on the custom icons for psycho traits is clicked.
-local function onPsychoDropdownItemSelected(value, button)
-	-- The line will be the parent of the button. We'll test which color
-	-- we would modify based upon the button that we actually are.
-	local psychoLine = button:GetParent();
-	local psychoColorField = (button == psychoLine.CustomLeftIcon and "LC" or "RC");
+--- updatePsychoLineEditorFieldVisibility toggles the shown state of all
+--  given child widgets or regions based upon the presents of a pair boolean
+--  flags (HideOnPreset and HideOnCustom).
+--
+--  @param isPreset Is the current line representative of a preset structure?
+--  @param ... The frames or regions to update the visibility of.
+local function updatePsychoLineEditorFieldVisibility(isPreset, ...)
+	for i = 1, select("#", ...) do
+		local child = select(i, ...);
 
-	-- Grab the default color for this field.
-	local defaultColor = Globals.PSYCHO_DEFAULT_LEFT_COLOR;
-	if psychoColorField == "RC" then
-		defaultColor = Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
-	end
-
-	-- And then work out the current active color.
-	local segmentColor = psychoLine[psychoColorField] or defaultColor;
-
-	-- Dispatch based upon the selected item.
-	if value == PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR then
-		-- Callback invoked when the color picker has a new color for us.
-		local setColor = function(r, g, b)
-			refreshPsychoColor(psychoLine, psychoColorField, Ellyb.Color(r, g, b));
-		end
-
-		-- Arguments passed to the color picker configuration function.
-		local colorPickerArgs = {setColor, segmentColor:GetRGBAsBytes()};
-
-		-- Launch the correct color picker based upon the present config.
-		if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
-			TRP3_API.popup.showDefaultColorPicker(colorPickerArgs);
-		else
-			TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, colorPickerArgs);
-		end
-	elseif value == PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR then
-		-- Unset the color. Will cause the default to be used.
-		refreshPsychoColor(psychoLine, psychoColorField, nil);
+		-- Be strict on the check here since we're going to get elements that
+		-- can have neither set.
+		local shouldHide = (isPreset and child.HideOnPreset) or (not isPreset and child.HideOnCustom);
+		child:SetShown(not shouldHide);
 	end
 end
 
@@ -1073,63 +1047,75 @@ function setEditDisplay()
 			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
 			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
 			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc("CM_REMOVE"));
+			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR"), loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"));
+			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR"), loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"));
+
+			-- Only need to set up the closure for color pickers once, as it
+			-- just needs a reference to the frame itself.
+			frame.CustomLeftColor.onSelection = function(r, g, b)
+				refreshPsychoColor(frame, "LC", r and Ellyb.Color(r, g, b));
+			end
+
+			frame.CustomRightColor.onSelection = function(r, g, b)
+				refreshPsychoColor(frame, "RC", r and Ellyb.Color(r, g, b));
+			end
 
 			tinsert(psychoEditCharFrame, frame);
 		end
 
-		frame.CustomLeftIcon:RegisterForClicks("AnyUp");
-		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
-			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.LI = icon;
-					setupIconButton(self, icon or Globals.icons.default);
-				end);
-			elseif button == "RightButton" then
-				displayDropDown(frame.CustomLeftIcon, PSYCHO_CUSTOM_DROPDOWN, onPsychoDropdownItemSelected, 0, true);
-			end
+		frame.CustomLeftIcon:SetScript("OnClick", function(self)
+			showIconBrowser(function(icon)
+				psychoStructure.LI = icon;
+				setupIconButton(self, icon or Globals.icons.default);
+			end);
 		end);
 
-		frame.CustomRightIcon:RegisterForClicks("AnyUp");
-		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
-			if button == "LeftButton" then
-				showIconBrowser(function(icon)
-					psychoStructure.RI = icon;
-					setupIconButton(self, icon or Globals.icons.default);
-				end);
-			elseif button == "RightButton" then
-				displayDropDown(frame.CustomRightIcon, PSYCHO_CUSTOM_DROPDOWN, onPsychoDropdownItemSelected, 0, true);
-			end
+		frame.CustomRightIcon:SetScript("OnClick", function(self)
+			showIconBrowser(function(icon)
+				psychoStructure.RI = icon;
+				setupIconButton(self, icon or Globals.icons.default);
+			end);
 		end);
+
+		-- Run through all the child elements. If they've got a hide set flag
+		-- that corresponds to our structure type (preset or custom), then
+		-- update the visibility accordingly.
+		--
+		-- The XML UI definition includes these fields where appropriate.
+		updatePsychoLineEditorFieldVisibility(psychoStructure.ID, frame:GetChildren());
+		updatePsychoLineEditorFieldVisibility(psychoStructure.ID, frame:GetRegions());
 
 		if psychoStructure.ID then
-			frame.LeftIcon:Show();
-			frame.RightIcon:Show();
-			frame.LeftText:Show();
-			frame.RightText:Show();
-			frame.CustomLeftField:Hide();
-			frame.CustomRightField:Hide();
-			frame.CustomLeftIcon:Hide();
-			frame.CustomRightIcon:Hide();
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
 			frame.LeftText:SetText(preset.LT or "");
 			frame.RightText:SetText(preset.RT or "");
+
 			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
 			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
 		else
-			frame.LeftIcon:Hide();
-			frame.RightIcon:Hide();
-			frame.LeftText:Hide();
-			frame.RightText:Hide();
-			frame.CustomLeftField:Show();
-			frame.CustomRightField:Show();
-			frame.CustomLeftIcon:Show();
-			frame.CustomRightIcon:Show();
 			frame.CustomLeftField:SetText(psychoStructure.LT or "");
 			frame.CustomRightField:SetText(psychoStructure.RT or "");
+
 			frame.CustomLeftIcon.IC = psychoStructure.LI or Globals.icons.default;
 			frame.CustomRightIcon.IC = psychoStructure.RI or Globals.icons.default;
+
 			refreshEditIcon(frame.CustomLeftIcon);
 			refreshEditIcon(frame.CustomRightIcon);
+		end
+
+		-- Update the color swatches and the bars. Calling setColor seems to
+		-- invoke onSelected anyway, which means we'll update the bars through
+		-- that handler.
+		if psychoStructure.LC then
+			frame.CustomLeftColor.setColor(Ellyb.Color(psychoStructure.LC):GetRGBAsBytes());
+		else
+			frame.CustomLeftColor.setColor(nil);
+		end
+
+		if psychoStructure.RC then
+			frame.CustomRightColor.setColor(Ellyb.Color(psychoStructure.RC):GetRGBAsBytes());
+		else
+			frame.CustomRightColor.setColor(nil);
 		end
 
 		frame.psychoIndex = frameIndex;
@@ -1137,8 +1123,6 @@ function setEditDisplay()
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
 		refreshPsycho(frame, value);
-		refreshPsychoColor(frame, "LC", psychoStructure.LC and Ellyb.Color(psychoStructure.LC));
-		refreshPsychoColor(frame, "RC", psychoStructure.RC and Ellyb.Color(psychoStructure.RC));
 		frame:Show();
 		previous = frame;
 	end
@@ -1382,12 +1366,6 @@ local function initStructures()
 		{ loc("REG_PLAYER_PSYCHO_Valeureux") .. " - " .. loc("REG_PLAYER_PSYCHO_Couard"), 11 },
 		{ loc("REG_PLAYER_PSYCHO_CUSTOM") },
 		{ loc("REG_PLAYER_PSYCHO_CREATENEW"), "new" },
-	};
-
-	PSYCHO_CUSTOM_DROPDOWN = {
-		{ loc("REG_PLAYER_PSYCHO_COLOR_HEADER") },
-		{ loc("REG_PLAYER_PSYCHO_COLOR_SELECT"), PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR },
-		{ loc("REG_PLAYER_PSYCHO_COLOR_RESET"), PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR },
 	};
 end
 
