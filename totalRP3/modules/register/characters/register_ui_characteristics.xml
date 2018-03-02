@@ -237,6 +237,7 @@
 					<Anchor point="TOPLEFT" relativeKey="$parent.Bar" x="-16"/>
 					<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Bar" x="16"/>
 				</Anchors>
+				<HitRectInsets left="12" right="12" top="0" bottom="0" />
 				<ThumbTexture parentKey="Thumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
 					<Size>
 						<AbsDimension x="32" y="32"/>
