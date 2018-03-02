@@ -1054,6 +1054,11 @@ function setEditDisplay()
 
 			-- Only need to set up the closure for color pickers once, as it
 			-- just needs a reference to the frame itself.
+			--
+			-- FIXME: When the feature/color_picker_button_mixin branch
+			--        lands we can drop these closures and swap to methods,
+			--        as well as not worry about all the Ellyb.Color -> rgb
+			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
 				refreshPsychoColor(frame, "LC", r and Ellyb.Color(r, g, b));
 			end
