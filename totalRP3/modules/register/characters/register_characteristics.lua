@@ -60,6 +60,10 @@ end;
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
 local PSYCHO_PRESETS_DROPDOWN;
+local PSYCHO_CUSTOM_DROPDOWN;
+
+local PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR = 1;
+local PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR = 2;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -218,6 +222,33 @@ local function refreshPsycho(psychoLine, value)
 	psychoLine.V2 = value;
 end
 
+--- refreshPsychoColor refreshes the color shown on a line item, updating
+--  the given named color field.
+--
+--  @param psychoLine The line item to update.
+--  @param psychoColorField The color field being updated. Either LC or RC.
+--  @param r The red color component in 0-255 range.
+--  @param g The green color component in 0-255 range.
+--  @param b The blue color component in 0-255 range.
+local function refreshPsychoColor(psychoLine, psychoColorField, r, g, b)
+	-- Store the coloring on the line item itself.
+	if r and g and b then
+		psychoLine[psychoColorField] = strconcat(
+			numberToHexa(r),
+			numberToHexa(g),
+			numberToHexa(b)
+		);
+	else
+		psychoLine[psychoColorField] = nil;
+	end
+
+	-- Refresh the bar coloring itself.
+	if psychoLine.Bar then
+		psychoLine.Bar:SetStatusBarColor(hexaToFloat(psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
+		psychoLine.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
+	end
+end
+
 local function setBkg(backgroundIndex)
 	local backdrop = TRP3_RegisterCharact_CharactPanel:GetBackdrop();
 	backdrop.bgFile = getTiledBackground(backgroundIndex);
@@ -365,11 +396,11 @@ local function setConsultDisplay(context)
 			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
 			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
 
-			frame.Bar:SetStatusBarColor(hexaToFloat(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
-			frame.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			refreshPsycho(frame, value);
+			refreshPsychoColor(frame, "LC", hexaToNumber(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
+			refreshPsychoColor(frame, "RC", hexaToNumber(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame:Show();
 			previous = frame;
 		end
@@ -414,17 +445,24 @@ local function saveInDraft()
 
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do
-		psychoStructure.V2 = psychoEditCharFrame[index].V2;
+		local psychoLine = psychoEditCharFrame[index];
+		psychoStructure.V2 = psychoLine.V2;
+
 		if not psychoStructure.ID then
 			-- If not a preset
-			psychoStructure.LT = stEtN(_G[psychoEditCharFrame[index]:GetName() .. "LeftField"]:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
-			psychoStructure.RT = stEtN(_G[psychoEditCharFrame[index]:GetName() .. "RightField"]:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
+			psychoStructure.LT = stEtN(psychoLine.CustomLeftField:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
+			psychoStructure.RT = stEtN(psychoLine.CustomRightField:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
+
+			psychoStructure.LC = stEtN(psychoLine.LC);
+			psychoStructure.RC = stEtN(psychoLine.RC);
 		else
 			-- Don't save preset data !
 			psychoStructure.LT = nil;
 			psychoStructure.RT = nil;
 			psychoStructure.LI = nil;
 			psychoStructure.RI = nil;
+			psychoStructure.LC = nil;
+			psychoStructure.RC = nil;
 		end
 
 		-- We'll also update the VA field so that changes made in newer versions
@@ -888,6 +926,42 @@ local function setMiscInfoReorderable(handle, node)
 	handle:SetScript("OnHide", onMiscInfoDragStop);
 end
 
+--- onPsychoDropdownItemSelected is called when an item in the right-click
+--  dropdown menu present on the custom icons for psycho traits is clicked.
+local function onPsychoDropdownItemSelected(value, button)
+	-- The line will be the parent of the button. We'll test which color
+	-- we would modify based upon the button that we actually are.
+	local psychoLine = button:GetParent();
+	local psychoColorField = (button == psychoLine.CustomLeftIcon and "LC" or "RC");
+
+	-- Grab the default color for this field.
+	local defaultColor = Globals.PSYCHO_DEFAULT_LEFT_COLOR;
+	if psychoColorField == "RC" then
+		defaultColor = Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
+	end
+
+	-- Dispatch based upon the selected item.
+	if value == PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR then
+		-- Callback invoked when the color picker has a new color for us.
+		local setColor = function(r, g, b)
+			refreshPsychoColor(psychoLine, psychoColorField, r, g, b);
+		end
+
+		-- Arguments passed to the color picker configuration function.
+		local colorPickerArgs = {setColor, hexaToNumber(psychoLine[psychoColorField] or defaultColor)};
+
+		-- Launch the correct color picker based upon the present config.
+		if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
+			TRP3_API.popup.showDefaultColorPicker(colorPickerArgs);
+		else
+			TRP3_API.popup.showPopup(TRP3_API.popup.COLORS, nil, colorPickerArgs);
+		end
+	elseif value == PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR then
+		-- Unset the color. Will cause the default to be used.
+		refreshPsychoColor(psychoLine, psychoColorField, nil, nil, nil);
+	end
+end
+
 function setEditDisplay()
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
@@ -978,8 +1052,6 @@ function setEditDisplay()
 			frame.CustomLeftField.title:SetText(loc("REG_PLAYER_LEFTTRAIT"));
 			frame.CustomRightField.title:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
 
-			frame.Bar:SetStatusBarColor(hexaToFloat(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
-			frame.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
@@ -988,19 +1060,32 @@ function setEditDisplay()
 			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
 			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
 			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc("CM_REMOVE"));
+
 			tinsert(psychoEditCharFrame, frame);
 		end
-		frame.CustomLeftIcon:SetScript("OnClick", function(self)
-			showIconBrowser(function(icon)
-				psychoStructure.LI = icon;
-				setupIconButton(self, icon or Globals.icons.default);
-			end);
+
+		frame.CustomLeftIcon:RegisterForClicks("AnyUp");
+		frame.CustomLeftIcon:SetScript("OnClick", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					psychoStructure.LI = icon;
+					setupIconButton(self, icon or Globals.icons.default);
+				end);
+			elseif button == "RightButton" then
+				displayDropDown(frame.CustomLeftIcon, PSYCHO_CUSTOM_DROPDOWN, onPsychoDropdownItemSelected, 0, true);
+			end
 		end);
-		frame.CustomRightIcon:SetScript("OnClick", function(self)
-			showIconBrowser(function(icon)
-				psychoStructure.RI = icon;
-				setupIconButton(self, icon or Globals.icons.default);
-			end);
+
+		frame.CustomRightIcon:RegisterForClicks("AnyUp");
+		frame.CustomRightIcon:SetScript("OnClick", function(self, button)
+			if button == "LeftButton" then
+				showIconBrowser(function(icon)
+					psychoStructure.RI = icon;
+					setupIconButton(self, icon or Globals.icons.default);
+				end);
+			elseif button == "RightButton" then
+				displayDropDown(frame.CustomRightIcon, PSYCHO_CUSTOM_DROPDOWN, onPsychoDropdownItemSelected, 0, true);
+			end
 		end);
 
 		if psychoStructure.ID then
@@ -1039,6 +1124,8 @@ function setEditDisplay()
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
 		refreshPsycho(frame, value);
+		refreshPsychoColor(frame, "LC", hexaToNumber(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
+		refreshPsychoColor(frame, "RC", hexaToNumber(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
 		frame:Show();
 		previous = frame;
 	end
@@ -1163,8 +1250,6 @@ local function onActionClicked(button)
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
-
-
 local function showCharacteristicsTab()
 	TRP3_RegisterCharact:Show();
 	getCurrentContext().isEditMode = false;
@@ -1284,6 +1369,12 @@ local function initStructures()
 		{ loc("REG_PLAYER_PSYCHO_Valeureux") .. " - " .. loc("REG_PLAYER_PSYCHO_Couard"), 11 },
 		{ loc("REG_PLAYER_PSYCHO_CUSTOM") },
 		{ loc("REG_PLAYER_PSYCHO_CREATENEW"), "new" },
+	};
+
+	PSYCHO_CUSTOM_DROPDOWN = {
+		{ loc("REG_PLAYER_PSYCHO_COLOR_HEADER") },
+		{ loc("REG_PLAYER_PSYCHO_COLOR_SELECT"), PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR },
+		{ loc("REG_PLAYER_PSYCHO_COLOR_RESET"), PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR },
 	};
 end
 
