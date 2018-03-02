@@ -945,7 +945,9 @@ local function updatePsychoLineEditorFieldVisibility(isPreset, ...)
 		-- Be strict on the check here since we're going to get elements that
 		-- can have neither set.
 		local shouldHide = (isPreset and child.HideOnPreset) or (not isPreset and child.HideOnCustom);
-		child:SetShown(not shouldHide);
+		if not child.IgnoreVisibilityUpdates then
+			child:SetShown(not shouldHide);
+		end
 	end
 end
 
