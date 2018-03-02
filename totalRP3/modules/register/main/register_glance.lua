@@ -120,11 +120,11 @@ local GLANCE_MENU_FLAG_PRESETS = 0x01;
 local GLANCE_MENU_FLAG_CLIPBOARD = 0x02;
 
 --- GLANCE_MENU_FLAGSET_DEFAULT is a set of flags used by default when
---  populating a list for the preset context menu.
+--  populating a list for the glance context menu.
 local GLANCE_MENU_FLAGSET_DEFAULT = bit.bor(GLANCE_MENU_FLAG_CLIPBOARD);
 
 --- GLANCE_MENU_FLAGSET_IS_MINE is a set of flags used when populating
---  the preset context menu for a preset owned by the user.
+--  the preset context menu for a glance owned by the user.
 local GLANCE_MENU_FLAGSET_IS_USER = bit.bor(GLANCE_MENU_FLAGSET_DEFAULT, GLANCE_MENU_FLAG_PRESETS);
 
 --- GLANCE_MENU_ENTRY_HANDLERS is a mapping of menu entry value IDs to
