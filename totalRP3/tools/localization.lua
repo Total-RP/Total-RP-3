@@ -249,6 +249,8 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cff00ff00%s|r.";
 	REG_PLAYER_GLANCE_PRESET_ALERT1 = "You must enter a preset category.",
 	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
+	REG_PLAYER_GLANCE_MENU_COPY = "Copy slot",
+	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: %s",
 	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 
