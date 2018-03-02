@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- imports
-local Globals, Utils, Comm, Events, UI = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui;
+local Globals, Utils, Comm, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
@@ -227,25 +227,23 @@ end
 --
 --  @param psychoLine The line item to update.
 --  @param psychoColorField The color field being updated. Either LC or RC.
---  @param r The red color component in 0-255 range.
---  @param g The green color component in 0-255 range.
---  @param b The blue color component in 0-255 range.
-local function refreshPsychoColor(psychoLine, psychoColorField, r, g, b)
+--  @param color The color to be applied. Must be an instance of Ellyb.Color,
+--               or nil if resetting the color to a default.
+local function refreshPsychoColor(psychoLine, psychoColorField, color)
 	-- Store the coloring on the line item itself.
-	if r and g and b then
-		psychoLine[psychoColorField] = strconcat(
-			numberToHexa(r),
-			numberToHexa(g),
-			numberToHexa(b)
-		);
+	if color then
+		psychoLine[psychoColorField] = color;
 	else
 		psychoLine[psychoColorField] = nil;
 	end
 
 	-- Refresh the bar coloring itself.
 	if psychoLine.Bar then
-		psychoLine.Bar:SetStatusBarColor(hexaToFloat(psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
-		psychoLine.Bar.OppositeFill:SetVertexColor(hexaToFloat(psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
+		local lc = psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR;
+		local rc = psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
+
+		psychoLine.Bar:SetStatusBarColor(lc:GetRGBA());
+		psychoLine.Bar.OppositeFill:SetVertexColor(rc:GetRGBA());
 	end
 end
 
@@ -399,8 +397,8 @@ local function setConsultDisplay(context)
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
 			refreshPsycho(frame, value);
-			refreshPsychoColor(frame, "LC", hexaToNumber(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
-			refreshPsychoColor(frame, "RC", hexaToNumber(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
+			refreshPsychoColor(frame, "LC", psychoStructure.LC and Ellyb.Color(psychoStructure.LC));
+			refreshPsychoColor(frame, "RC", psychoStructure.RC and Ellyb.Color(psychoStructure.RC));
 			frame:Show();
 			previous = frame;
 		end
@@ -448,13 +446,25 @@ local function saveInDraft()
 		local psychoLine = psychoEditCharFrame[index];
 		psychoStructure.V2 = psychoLine.V2;
 
+		-- Clear out the colors prior to persistence.
+		psychoStructure.LC = nil;
+		psychoStructure.RC = nil;
+
 		if not psychoStructure.ID then
 			-- If not a preset
 			psychoStructure.LT = stEtN(psychoLine.CustomLeftField:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
 			psychoStructure.RT = stEtN(psychoLine.CustomRightField:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
 
-			psychoStructure.LC = stEtN(psychoLine.LC);
-			psychoStructure.RC = stEtN(psychoLine.RC);
+
+			local lc = psychoLine.LC;
+			if lc then
+				psychoStructure.LC = { r = lc:GetRed(), g = lc:GetGreen(), b = lc:GetBlue() };
+			end
+
+			local rc = psychoLine.RC;
+			if rc then
+				psychoStructure.RC = { r = rc:GetRed(), g = rc:GetGreen(), b = rc:GetBlue() };
+			end
 		else
 			-- Don't save preset data !
 			psychoStructure.LT = nil;
@@ -940,15 +950,18 @@ local function onPsychoDropdownItemSelected(value, button)
 		defaultColor = Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
 	end
 
+	-- And then work out the current active color.
+	local segmentColor = psychoLine[psychoColorField] or defaultColor;
+
 	-- Dispatch based upon the selected item.
 	if value == PSYCHO_CUSTOM_DROPDOWN_SELECT_COLOR then
 		-- Callback invoked when the color picker has a new color for us.
 		local setColor = function(r, g, b)
-			refreshPsychoColor(psychoLine, psychoColorField, r, g, b);
+			refreshPsychoColor(psychoLine, psychoColorField, Ellyb.Color(r, g, b));
 		end
 
 		-- Arguments passed to the color picker configuration function.
-		local colorPickerArgs = {setColor, hexaToNumber(psychoLine[psychoColorField] or defaultColor)};
+		local colorPickerArgs = {setColor, segmentColor:GetRGBAsBytes()};
 
 		-- Launch the correct color picker based upon the present config.
 		if IsShiftKeyDown() or (TRP3_API.configuration.getValue("default_color_picker")) then
@@ -958,7 +971,7 @@ local function onPsychoDropdownItemSelected(value, button)
 		end
 	elseif value == PSYCHO_CUSTOM_DROPDOWN_RESET_COLOR then
 		-- Unset the color. Will cause the default to be used.
-		refreshPsychoColor(psychoLine, psychoColorField, nil, nil, nil);
+		refreshPsychoColor(psychoLine, psychoColorField, nil);
 	end
 end
 
@@ -1124,8 +1137,8 @@ function setEditDisplay()
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
 		refreshPsycho(frame, value);
-		refreshPsychoColor(frame, "LC", hexaToNumber(psychoStructure.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR));
-		refreshPsychoColor(frame, "RC", hexaToNumber(psychoStructure.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR));
+		refreshPsychoColor(frame, "LC", psychoStructure.LC and Ellyb.Color(psychoStructure.LC));
+		refreshPsychoColor(frame, "RC", psychoStructure.RC and Ellyb.Color(psychoStructure.RC));
 		frame:Show();
 		previous = frame;
 	end
