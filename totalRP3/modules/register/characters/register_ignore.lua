@@ -18,6 +18,7 @@
 ----------------------------------------------------------------------------------
 
 local Events = TRP3_API.events;
+local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local loc = TRP3_API.locale.getText;
 local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
@@ -34,16 +35,8 @@ local profiles, characters, blackList, whiteList;
 -- Relation
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local RELATIONS = {
-	UNFRIENDLY = "UNFRIENDLY",
-	NONE = "NONE",
-	NEUTRAL = "NEUTRAL",
-	BUSINESS = "BUSINESS",
-	FRIEND = "FRIEND",
-	LOVE = "LOVE",
-	FAMILY = "FAMILY"
-}
-TRP3_API.register.relation = RELATIONS;
+local RELATIONS = Globals.RELATIONS;
+TRP3_API.register.relation = Globals.RELATIONS;
 
 local RELATIONS_TEXTURES = {
 	[RELATIONS.UNFRIENDLY] = "Ability_DualWield",
