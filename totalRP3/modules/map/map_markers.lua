@@ -133,6 +133,8 @@ local function animateMarker(marker, x, y, directAnimation)
 			playAnimation(marker.Bounce);
 		end
 	else
+		-- The default alpha on the widget is zero, so need to change it here.
+		marker:SetAlpha(1);
 		marker:Show();
 	end
 end
