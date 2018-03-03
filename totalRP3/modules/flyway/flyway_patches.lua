@@ -53,6 +53,7 @@ TRP3_API.flyway.patches["5"] = function()
 end
 
 TRP3_API.flyway.patches["6"] = function()
+	if not TRP3_Profiles then return end
 	-- Run through all the profiles and upgrade the personality traits
 	-- structure to upscale the values and copy them to a new field.
 	--
