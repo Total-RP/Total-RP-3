@@ -210,23 +210,27 @@ local DECORATION_TYPES = {
 TRP3_API.map.DECORATION_TYPES = DECORATION_TYPES;
 
 local function decorateMarker(marker, decorationType)
-	-- Reset any customisations.
-	marker.Icon:SetAtlas(nil);
-	marker.Icon:SetVertexColor(1, 1, 1, 1);
-
-	if not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
-		if marker.iconColor then
-			marker.Icon:SetAtlas("PlayerPartyBlip");
-			marker.Icon:SetVertexColor(marker.iconColor:GetRGBA());
-		else
-			marker.Icon:SetAtlas("PartyMember");
-		end
-
-		local layer = marker.Icon:GetDrawLayer();
-		marker.Icon:SetDrawLayer(layer, marker.iconSublevel or 0);
+	-- Custom atlases on the marker take priority; after that we'll fall
+	-- back to given decoration types.
+	if marker.iconAtlas then
+		marker.Icon:SetAtlas(marker.iconAtlas);
+	elseif not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
+		marker.Icon:SetAtlas("PartyMember");
 	elseif decorationType == DECORATION_TYPES.HOUSE then
 		marker.Icon:SetAtlas("poi-town");
 	end
+
+	-- Set a custom vertex color on the atlas or reset it to normal if not
+	-- explicitly overridden.
+	if marker.iconColor then
+		marker.Icon:SetVertexColor(marker.iconColor:GetRGBA());
+	else
+		marker.Icon:SetVertexColor(1, 1, 1, 1);
+	end
+
+	-- Change the draw layer if requested.
+	local layer = marker.Icon:GetDrawLayer();
+	marker.Icon:SetDrawLayer(layer, marker.iconSublevel or 0);
 end
 
 ---@param structure table
