@@ -1060,11 +1060,11 @@ function setEditDisplay()
 			--        as well as not worry about all the Ellyb.Color -> rgb
 			--        conversion nonsense.
 			frame.CustomLeftColor.onSelection = function(r, g, b)
-				refreshPsychoColor(frame, "LC", r and Ellyb.Color(r, g, b));
+				refreshPsychoColor(frame, "LC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
 			end
 
 			frame.CustomRightColor.onSelection = function(r, g, b)
-				refreshPsychoColor(frame, "RC", r and Ellyb.Color(r, g, b));
+				refreshPsychoColor(frame, "RC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
 			end
 
 			tinsert(psychoEditCharFrame, frame);

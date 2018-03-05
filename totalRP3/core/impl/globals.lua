@@ -87,8 +87,8 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V1 = 6,
 	PSYCHO_DEFAULT_VALUE_V2 = 10,
 	PSYCHO_MAX_VALUE_V2 = 20,
-	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color(255, 140, 26):Freeze(),
-	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color(32, 208, 249):Freeze(),
+	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(255, 140, 26):Freeze(),
+	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
 }
 
 local emptyMeta = {
