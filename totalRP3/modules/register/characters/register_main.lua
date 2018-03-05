@@ -631,6 +631,9 @@ local function scanMarkerDecorateRelationship(characterID, entry, marker)
 		return;
 	end
 
+	-- Swap out the atlas for this marker.
+	marker.iconAtlas = "PlayerPartyBlip";
+
 	-- Recycle any color instance already present if there is one.
 	local r, g, b = TRP3_API.register.relation.getRelationColors(profileID);
 	marker.iconColor = marker.iconColor or Ellyb.Color(0, 0, 0, 0);
@@ -871,9 +874,15 @@ function TRP3_API.register.init()
 			-- Reset attributes on the marker before decorating.
 			marker.categoryName = nil;
 			marker.categoryPriority = nil;
-			marker.iconColor = nil;
+			marker.iconAtlas = nil;
 			marker.iconSublevel = nil;
 			marker.sortName = characterID;
+
+			-- We'll reset the color rather than nil it out and potentially
+			-- allocate a new one anyway.
+			if marker.iconColor then
+				marker.iconColor:SetRGBA(1, 1, 1, 1);
+			end
 
 			local line;
 			if isUnitIDKnown(characterID) and getUnitIDCurrentProfile(characterID) then
