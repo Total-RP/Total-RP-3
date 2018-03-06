@@ -1228,38 +1228,37 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 
 ]],
 
+	THANK_YOU_ROLE_AUTHOR = "Author",
+	THANK_YOU_ROLE_CONTRIBUTOR = "Contributor",
+	THANK_YOU_ROLE_COMMUNITY_MANAGER = "Community Manager",
+	THANK_YOU_ROLE_TESTER = "QA Team",
+	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
+	THANK_YOU_WITH_ROLE = "%s (%s)",
+
 	THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
 {p:c}{link*http://totalrp3.info*TotalRP3.info} — {twitter*TotalRP3*@TotalRP3} {/p}
 {p:c}{link*http://discord.totalrp3.info*Join us on Discord}{/p}
 
 {h2}{icon:INV_Eng_gizmo1:20} Created by{/h2}
-- Renaud "{twitter*EllypseCelwe*Ellypse}" Parize
-- Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement
+%AUTHORS$s
 
 {h2}{icon:QUEST_KHADGAR:20} The Rest of the Team{/h2}
-- Connor "{twitter*Saelorable*Sælorable}" Macleod (Contributor)
-- {twitter*Solanya_*Solanya} (Community Manager)
+%CONTRIBUTORS$s
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon} {col:ffffff}supporters:{/col}
+{col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon}{col:ffffff} supporters:{/col}
 %s
 
 {col:ffffff}Our pre-alpha QA team:{/col}
-- Erzan
-- Calian
-- Kharess
-- Alnih
-- 611
+%TESTERS$s
 
 {col:ffffff}Thanks to all our friends for their support all these years:{/col}
 - For Telkos: Kharess, Kathryl, Marud, Solona, Stretcher, Lisma...
 - For Ellypse: The guilds Eglise du Saint Gamon, Maison Celwë'Belore, Mercenaires Atal'ai, and more particularly Erzan, Elenna, Caleb, Siana and Adaeria
 
 {col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}
-- Azane
-- Hellclaw
-- Leylou
+%GUILD_MEMBERS$s
 
 {col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
 
