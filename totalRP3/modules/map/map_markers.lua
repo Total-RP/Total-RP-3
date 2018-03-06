@@ -19,6 +19,7 @@
 
 TRP3_API.map = {};
 
+local Ellyb = TRP3_API.Ellyb;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local Comm = TRP3_API.communication;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
@@ -29,6 +30,9 @@ local CreateFrame = CreateFrame;
 local after = C_Timer.After;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local getConfigValue = TRP3_API.configuration.getValue;
+
+-- Ellyb Imports.
+local Color = Ellyb.Color;
 
 local CONFIG_UI_ANIMATIONS = "ui_animations";
 
@@ -58,6 +62,14 @@ local MARKER_NAME_PREFIX = "TRP3_WordMapMarker";
 
 local MAX_DISTANCE_MARKER = math.sqrt(0.5 * 0.5 + 0.5 * 0.5);
 
+--- TOOLTIP_CATEGORY_TEXT_COLOR is the text color used for category headers
+--  in the displayed tooltip.
+local TOOLTIP_CATEGORY_TEXT_COLOR = Color.CreateFromRGBAAsBytes(255, 209, 0);
+
+--- TOOLTIP_CATEGORY_SEPARATOR is a texture string displayed as a separator.
+local TOOLTIP_CATEGORY_SEPARATOR =
+	[[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]];
+
 local function hideAllMarkers()
 	local i = 1;
 	while(_G[MARKER_NAME_PREFIX .. i]) do
@@ -65,6 +77,67 @@ local function hideAllMarkers()
 		marker:Hide();
 		marker.scanLine = nil;
 		i = i + 1;
+	end
+end
+
+--- Temporary table used by writeMarkerTooltipLines when it queries the marker
+--  list for widgets currently under the mouse cursor.
+local markerTooltipEntries = {};
+
+--- Custom sorting function that compares entries. The resulting order is
+--  in order of their category priority (descending), or if equal, their
+--  sortable name equivalent (ascending).
+local function sortMarkerEntries(a, b)
+	local categoryA = a.categoryPriority or -math.huge;
+	local categoryB = b.categoryPriority or -math.huge;
+
+	local nameA = a.sortName or "";
+	local nameB = b.sortName or "";
+
+	return (categoryA > categoryB)
+		or (categoryA == categoryB and nameA < nameB);
+end
+
+--- Writes the required lines for a world map marker tooltip based on the
+--  current location of the cursor.
+local function writeMarkerTooltipLines(tooltip)
+	-- Iterate over the blips in a first pass to build a list of all the
+	-- ones we're mousing over.
+	local index = 1;
+	while(_G[MARKER_NAME_PREFIX .. index]) do
+		local marker = _G[MARKER_NAME_PREFIX .. index];
+		if marker:IsVisible() and marker:IsMouseOver() then
+			tinsert(markerTooltipEntries, marker);
+		end
+		index = index + 1;
+	end
+
+	-- Sort the entries prior to display.
+	table.sort(markerTooltipEntries, sortMarkerEntries);
+
+	-- Tracking variable for our last category inserted into the tip.
+	-- If it changes we'll stick in a separator.
+	local lastCategory = nil;
+
+	-- This layout will put the category status text above entries
+	-- when the type changes. Requires the entries be sorted by category.
+	for i = 1, #markerTooltipEntries do
+		local marker = markerTooltipEntries[i];
+		if marker.categoryName ~= lastCategory then
+			-- If the previous category was nil we assume this is
+			-- the first, so we'll not put a separating border in.
+			if lastCategory ~= nil then
+				tooltip:AddLine(TOOLTIP_CATEGORY_SEPARATOR, 1, 1, 1);
+			end
+
+			tooltip:AddLine(marker.categoryName or "", TOOLTIP_CATEGORY_TEXT_COLOR:GetRGB());
+			lastCategory = marker.categoryName;
+		end
+
+		tooltip:AddLine(marker.scanLine or "", 1, 1, 1);
+
+		-- Wipe the table as we go.
+		markerTooltipEntries[i] = nil;
 	end
 end
 
@@ -81,17 +154,8 @@ local function getMarker(i, tooltip)
 			WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT", 0, 0);
 			WorldMapTooltip:AddLine(self.tooltip, 1, 1, 1, true);
 
-			local j = 1;
-			while(_G[MARKER_NAME_PREFIX .. j]) do
-				local markerWidget = _G[MARKER_NAME_PREFIX .. j];
-				if markerWidget:IsVisible() and markerWidget:IsMouseOver() then
-					local scanLine = markerWidget.scanLine;
-					if scanLine then
-						WorldMapTooltip:AddLine(scanLine, 1, 1, 1, true);
-					end
-				end
-				j = j + 1;
-			end
+			writeMarkerTooltipLines(WorldMapTooltip);
+
 			WorldMapTooltip:Show();
 		end);
 		marker:SetScript("OnLeave", function()
@@ -142,17 +206,31 @@ end
 local DECORATION_TYPES = {
 	HOUSE = "house",
 	CHARACTER = "character"
-}
+};
 TRP3_API.map.DECORATION_TYPES = DECORATION_TYPES;
 
 local function decorateMarker(marker, decorationType)
-	if not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
-		marker.Icon:SetTexture("Interface\\Minimap\\OBJECTICONS");
-		marker.Icon:SetTexCoord(0, 0.125, 0, 0.125);
+	-- Custom atlases on the marker take priority; after that we'll fall
+	-- back to given decoration types.
+	if marker.iconAtlas then
+		marker.Icon:SetAtlas(marker.iconAtlas);
+	elseif not decorationType or decorationType == DECORATION_TYPES.CHARACTER then
+		marker.Icon:SetAtlas("PartyMember");
 	elseif decorationType == DECORATION_TYPES.HOUSE then
-		marker.Icon:SetTexture("Interface\\Minimap\\POIICONS");
-		marker.Icon:SetTexCoord(0.357143, 0.422, 0, 0.036);
+		marker.Icon:SetAtlas("poi-town");
 	end
+
+	-- Set a custom vertex color on the atlas or reset it to normal if not
+	-- explicitly overridden.
+	if marker.iconColor then
+		marker.Icon:SetVertexColor(marker.iconColor:GetRGBA());
+	else
+		marker.Icon:SetVertexColor(1, 1, 1, 1);
+	end
+
+	-- Change the draw layer if requested.
+	local layer = marker.Icon:GetDrawLayer();
+	marker.Icon:SetDrawLayer(layer, marker.iconSublevel or 0);
 end
 
 ---@param structure table
@@ -164,15 +242,17 @@ local function displayMarkers(structure)
 	local i = 1;
 	for key, entry in pairs(structure.saveStructure) do
 		local marker = getMarker(i, structure.scanTitle);
-		placeMarker(marker, entry.x, entry.y);
 
-		decorateMarker(marker, DECORATION_TYPES.CHARACTER);
-
-		-- Implementation can be adapted by decorator
+		-- Implementation can be adapted by decorator.
+		--
+		-- Do this before the rest so the decorators have more control over
+		-- the resulting display.
 		if structure.scanMarkerDecorator then
 			structure.scanMarkerDecorator(key, entry, marker);
 		end
 
+		placeMarker(marker, entry.x, entry.y);
+		decorateMarker(marker, DECORATION_TYPES.CHARACTER);
 		animateMarker(marker, entry.x, entry.y, structure.noAnim);
 
 		i = i + 1;
