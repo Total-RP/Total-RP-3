@@ -241,13 +241,16 @@ local function getGlanceMenuClipboardEntries(button, output)
 		or GLANCE_MENU_CLIPBOARD_ID_COMPANION;
 
 	-- Create a key for the copy entry of the form "prefix:type,buttonName".
-	local copyKey = string.format("%s:%s,%s",
-		GLANCE_MENU_ENTRY_CLIPBOARD_COPY_PREFIX,
-		clipboardType,
-		button:GetName()
-	);
+	-- Only do this if the button has a data member.
+	if button.data then
+		local copyKey = string.format("%s:%s,%s",
+			GLANCE_MENU_ENTRY_CLIPBOARD_COPY_PREFIX,
+			clipboardType,
+			button:GetName()
+		);
 
-	tinsert(output, { loc("REG_PLAYER_GLANCE_MENU_COPY"), copyKey });
+		tinsert(output, { loc("REG_PLAYER_GLANCE_MENU_COPY"), copyKey });
+	end
 
 	-- The paste operation should only be present if you have something,
 	-- and if this is your own profile.
@@ -603,7 +606,9 @@ local function onGlanceSlotClick(button, clickType)
 		local values = getGlanceMenuEntries(button, flags);
 		local onSelected = function(value) onGlanceSelection(value, button) end;
 
-		displayDropDown(button, values, onSelected, 0, true);
+		if #values > 0 then
+			displayDropDown(button, values, onSelected, 0, true);
+		end
 	end
 end
 TRP3_API.register.glance.onGlanceSlotClick = onGlanceSlotClick;
