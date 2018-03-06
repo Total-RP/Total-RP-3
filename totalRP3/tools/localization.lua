@@ -148,6 +148,9 @@ TRP3_API.loc = {
 	REG_PLAYER_PSYCHO_Couard = "Spineless";
 	REG_PLAYER_PSYCHO_CUSTOM = "Custom trait",
 	REG_PLAYER_PSYCHO_CREATENEW = "Create a trait",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR = "Select attribute color",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT = "Select a color used by the bar for the left attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT = "Select a color used by the bar for the right attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
 	REG_PLAYER_LEFTTRAIT = "Left attribute",
 	REG_PLAYER_RIGHTTRAIT = "Right attribute",
 	REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
@@ -249,6 +252,8 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cff00ff00%s|r.";
 	REG_PLAYER_GLANCE_PRESET_ALERT1 = "You must enter a preset category.",
 	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
+	REG_PLAYER_GLANCE_MENU_COPY = "Copy slot",
+	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: %s",
 	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 

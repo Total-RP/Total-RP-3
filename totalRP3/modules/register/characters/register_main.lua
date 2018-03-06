@@ -30,6 +30,7 @@ TRP3_API.register.MENU_LIST_ID = "main_30_register";
 TRP3_API.register.MENU_LIST_ID_TAB = "main_31_";
 
 -- imports
+local Ellyb = TRP3_API.Ellyb;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
@@ -595,6 +596,59 @@ local function cleanupMyProfiles()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Scan Marker Decorators
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-- SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL is a texture sublevel applied to the
+-- blip for markers representing characters you have relationship states set
+-- with.
+--
+-- The net result is they'll take priority in the draw order, and get shown
+-- on top of a pile of dots in crowded scenarios.
+local SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL = 4;
+
+--- Decorates a marker with additional information based upon the established
+--  relationship defined in the characters' profile.
+--
+--  @param characterID The ID of the character.
+--  @param entry The entry containing the scan result data.
+--  @param marker The marker blip being decorated.
+local function scanMarkerDecorateRelationship(characterID, entry, marker)
+	-- Skip bad character IDs.
+	if not isUnitIDKnown(characterID) then
+		return;
+	end
+
+	-- Easiest way to get at relationship stuff takes the profile ID.
+	local profileID = getUnitIDProfileID(characterID);
+	if not profileID then
+		return;
+	end
+
+	local relation = TRP3_API.register.relation.getRelation(profileID);
+	if relation == TRP3_API.register.relation.NONE then
+		-- This profile has no relationship status.
+		return;
+	end
+
+	-- Swap out the atlas for this marker.
+	marker.iconAtlas = "PlayerPartyBlip";
+
+	-- Recycle any color instance already present if there is one.
+	local r, g, b = TRP3_API.register.relation.getRelationColors(profileID);
+	marker.iconColor = marker.iconColor or Ellyb.Color(0, 0, 0, 0);
+	marker.iconColor:SetRGBA(r, g, b, 1);
+
+	-- Arbitrary increase in layer means we'll display these icons over the
+	-- defaults.
+	marker.iconSublevel = SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL;
+
+	-- Store the relationship on the marker itself as the category.
+	marker.categoryName = loc("REG_RELATION_" .. relation);
+	marker.categoryPriority = Globals.RELATIONS_ORDER[relation] or -math.huge;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -618,9 +672,6 @@ function TRP3_API.register.init()
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
-
-
-
 
 	registerMenu({
 		id = "main_10_player",
@@ -820,10 +871,27 @@ function TRP3_API.register.init()
 		scanComplete = function(saveStructure)
 		end,
 		scanMarkerDecorator = function(characterID, entry, marker)
+			-- Reset attributes on the marker before decorating.
+			marker.categoryName = nil;
+			marker.categoryPriority = nil;
+			marker.iconAtlas = nil;
+			marker.iconSublevel = nil;
+			marker.sortName = characterID;
+
+			-- We'll reset the color rather than nil it out and potentially
+			-- allocate a new one anyway.
+			if marker.iconColor then
+				marker.iconColor:SetRGBA(1, 1, 1, 1);
+			end
+
 			local line;
 			if isUnitIDKnown(characterID) and getUnitIDCurrentProfile(characterID) then
 				local profile = getUnitIDCurrentProfile(characterID);
 				line = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
+
+				-- Sort by the proper name of the character instead.
+				marker.sortName = line;
+
 				if profile.characteristics and profile.characteristics.CH then
 					line = "|cff" .. profile.characteristics.CH .. line;
 				end
@@ -832,6 +900,8 @@ function TRP3_API.register.init()
 				line = 	characterID:gsub("%-.*$", "");
 			end
 			marker.scanLine = line;
+
+			scanMarkerDecorateRelationship(characterID, entry, marker);
 		end,
 		scanDuration = 2.5;
 	});

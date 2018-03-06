@@ -18,13 +18,13 @@
 ----------------------------------------------------------------------------------
 
 -- imports
-local Globals, Utils, Comm, Events, UI = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui;
+local Globals, Utils, Comm, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
+local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
 local loc = TRP3_API.locale.getText;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
@@ -172,17 +172,75 @@ end
 
 TRP3_API.register.getPlayerCompleteName = getPlayerCompleteName;
 
-local function refreshPsycho(psychoLine, value)
-	local dotIndex;
-	for dotIndex = 1, 6 do
-		_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:Show();
-		if dotIndex <= value then
-			_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0.375, 0.5, 0, 0.125);
-		else
-			_G[psychoLine:GetName() .. "JaugeDot" .. dotIndex]:SetTexCoord(0, 0.125, 0, 0.125);
-		end
+local function getPsychoStructureValue(psychoStructure)
+	-- If this structure has a V2 field already then yield that, otherwise
+	-- upscale the VA field.
+	if psychoStructure.V2 then
+		return psychoStructure.V2;
+	elseif psychoStructure.VA then
+		local scale = Globals.PSYCHO_MAX_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V1;
+		return math.floor((psychoStructure.VA * scale) + 0.5);
 	end
-	psychoLine.VA = value;
+
+	-- In really broken cases we'll return the default.
+	return Globals.PSYCHO_DEFAULT_VALUE_V2;
+end
+
+local function refreshPsycho(psychoLine, value)
+	-- Update value and then go on to update the stack count indicators.
+	psychoLine.Bar:SetValue(value);
+
+	local leftCount = value;
+	local rightCount = Globals.PSYCHO_MAX_VALUE_V2 - value;
+
+	-- If in edit mode and we have a visible custom icon, update that string
+	-- and clear the normal one.
+	if psychoLine.CustomLeftIcon and psychoLine.CustomLeftIcon:IsShown() then
+		psychoLine.CustomLeftIcon.Count:SetText(leftCount);
+		psychoLine.LeftCount:SetText("");
+	else
+		psychoLine.LeftCount:SetText(leftCount);
+	end
+
+	if psychoLine.CustomRightIcon and psychoLine.CustomRightIcon:IsShown() then
+		psychoLine.CustomRightIcon.Count:SetText(rightCount);
+		psychoLine.LeftCount:SetText("");
+	else
+		psychoLine.RightCount:SetText(rightCount);
+	end
+
+	-- The slider calls this function, so only update it if present and
+	-- the value is different.
+	if psychoLine.Slider and psychoLine.Slider:GetValue() ~= value then
+		psychoLine.Slider:SetValue(value);
+	end
+
+	psychoLine.V2 = value;
+end
+
+--- refreshPsychoColor refreshes the color shown on a line item, updating
+--  the given named color field.
+--
+--  @param psychoLine The line item to update.
+--  @param psychoColorField The color field being updated. Either LC or RC.
+--  @param color The color to be applied. Must be an instance of Ellyb.Color,
+--               or nil if resetting the color to a default.
+local function refreshPsychoColor(psychoLine, psychoColorField, color)
+	-- Store the coloring on the line item itself for persistence later.
+	if color then
+		psychoLine[psychoColorField] = color;
+	else
+		psychoLine[psychoColorField] = nil;
+	end
+
+	-- Grab the now-updated color objects for both ends and update the UI.
+	local lc = psychoLine.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR;
+	local rc = psychoLine.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR;
+
+	if psychoLine.Bar then
+		psychoLine.Bar:SetStatusBarColor(lc:GetRGBA());
+		psychoLine.Bar.OppositeFill:SetVertexColor(rc:GetRGBA());
+	end
 end
 
 local function setBkg(backgroundIndex)
@@ -312,7 +370,7 @@ local function setConsultDisplay(context)
 
 		for frameIndex, psychoStructure in pairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
-			local value = psychoStructure.VA;
+			local value = getPsychoStructureValue(psychoStructure);
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoDisplayLine");
 				tinsert(psychoCharFrame, frame);
@@ -326,11 +384,17 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName() .. "LeftText"]:SetText(psychoStructure.LT or "");
-			_G[frame:GetName() .. "RightText"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
-			refreshPsycho(frame, value or 3);
+			frame.LeftText:SetText(psychoStructure.LT or "");
+			frame.RightText:SetText(psychoStructure.RT or "");
+
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
+
+			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+
+			refreshPsycho(frame, value);
+			refreshPsychoColor(frame, "LC", psychoStructure.LC and Ellyb.Color(psychoStructure.LC));
+			refreshPsychoColor(frame, "RC", psychoStructure.RC and Ellyb.Color(psychoStructure.RC));
 			frame:Show();
 			previous = frame;
 		end
@@ -375,18 +439,44 @@ local function saveInDraft()
 
 	-- Save psycho values
 	for index, psychoStructure in pairs(draftData.PS) do
-		psychoStructure.VA = psychoEditCharFrame[index].VA;
+		local psychoLine = psychoEditCharFrame[index];
+		psychoStructure.V2 = psychoLine.V2;
+
+		-- Clear out the colors prior to persistence.
+		psychoStructure.LC = nil;
+		psychoStructure.RC = nil;
+
 		if not psychoStructure.ID then
 			-- If not a preset
-			psychoStructure.LT = stEtN(_G[psychoEditCharFrame[index]:GetName() .. "LeftField"]:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
-			psychoStructure.RT = stEtN(_G[psychoEditCharFrame[index]:GetName() .. "RightField"]:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
+			psychoStructure.LT = stEtN(psychoLine.CustomLeftField:GetText()) or loc("REG_PLAYER_LEFTTRAIT");
+			psychoStructure.RT = stEtN(psychoLine.CustomRightField:GetText()) or loc("REG_PLAYER_RIGHTTRAIT");
+
+
+			local lc = psychoLine.LC;
+			if lc then
+				psychoStructure.LC = lc:GetRGBTable();
+			end
+
+			local rc = psychoLine.RC;
+			if rc then
+				psychoStructure.RC = rc:GetRGBTable();
+			end
 		else
 			-- Don't save preset data !
 			psychoStructure.LT = nil;
 			psychoStructure.RT = nil;
 			psychoStructure.LI = nil;
 			psychoStructure.RI = nil;
+			psychoStructure.LC = nil;
+			psychoStructure.RC = nil;
 		end
+
+		-- We'll also update the VA field so that changes made in newer versions
+		-- can, to some degree, be shown to older clients.
+		--
+		-- Floating point numbers get rounded to nearest integers.
+		local downscale = Globals.PSYCHO_MAX_VALUE_V1 / Globals.PSYCHO_MAX_VALUE_V2;
+		psychoStructure.VA = math.floor((psychoStructure.V2 * downscale) + 0.5);
 	end
 	-- Save Misc
 	for index, miscStructure in pairs(draftData.MI) do
@@ -419,18 +509,8 @@ local function onClassColorSelected(red, green, blue)
 	end
 end
 
-local function onPsychoClick(frame, value, modif)
-	if value + modif < 6 and value + modif > 0 then
-		refreshPsycho(frame, value + modif);
-	end
-end
-
-local function onLeftClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, 1);
-end
-
-local function onRightClick(button)
-	onPsychoClick(button:GetParent(), button:GetParent().VA or 3, -1);
+local function onPsychoValueChanged(frame, value)
+	refreshPsycho(frame:GetParent(), math.max(math.min(value, Globals.PSYCHO_MAX_VALUE_V2), 0));
 end
 
 local function refreshEditIcon(frame)
@@ -518,10 +598,15 @@ local function psychoAdd(presetID)
 			LI = "TEMP",
 			RT = loc("REG_PLAYER_RIGHTTRAIT"),
 			RI = "TEMP",
-			VA = 3,
+			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
+			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
 	else
-		tinsert(draftData.PS, { ID = presetID, VA = 3 });
+		tinsert(draftData.PS, {
+			ID = presetID,
+			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
+			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
+		});
 	end
 	setEditDisplay();
 end
@@ -847,6 +932,25 @@ local function setMiscInfoReorderable(handle, node)
 	handle:SetScript("OnHide", onMiscInfoDragStop);
 end
 
+--- updatePsychoLineEditorFieldVisibility toggles the shown state of all
+--  given child widgets or regions based upon the presents of a pair boolean
+--  flags (HideOnPreset and HideOnCustom).
+--
+--  @param isPreset Is the current line representative of a preset structure?
+--  @param ... The frames or regions to update the visibility of.
+local function updatePsychoLineEditorFieldVisibility(isPreset, ...)
+	for i = 1, select("#", ...) do
+		local child = select(i, ...);
+
+		-- Be strict on the check here since we're going to get elements that
+		-- can have neither set.
+		local shouldHide = (isPreset and child.HideOnPreset) or (not isPreset and child.HideOnCustom);
+		if not child.IgnoreVisibilityUpdates then
+			child:SetShown(not shouldHide);
+		end
+	end
+end
+
 function setEditDisplay()
 	-- Copy character's data into draft structure : We never work directly on saved_variable structures !
 	if not draftData then
@@ -928,76 +1032,104 @@ function setEditDisplay()
 	for _, frame in pairs(psychoEditCharFrame) do frame:Hide(); end
 	for frameIndex, psychoStructure in pairs(draftData.PS) do
 		local frame = psychoEditCharFrame[frameIndex];
+		local value = getPsychoStructureValue(psychoStructure);
+
 		if frame == nil then
 			-- Create psycho attribute widget if not already exists
 			frame = CreateFrame("Frame", "TRP3_RegisterCharact_PsychoEditLine" .. frameIndex, TRP3_RegisterCharact_Edit_CharactPanel_Container, "TRP3_RegisterCharact_PsychoInfoEditLine");
-			_G[frame:GetName() .. "LeftButton"]:SetScript("OnClick", onLeftClick);
-			_G[frame:GetName() .. "RightButton"]:SetScript("OnClick", onRightClick);
-			_G[frame:GetName() .. "Delete"]:SetScript("OnClick", onPsychoDelete);
-			_G[frame:GetName() .. "LeftFieldText"]:SetText(loc("REG_PLAYER_LEFTTRAIT"));
-			_G[frame:GetName() .. "RightFieldText"]:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightIcon"], "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
-			setTooltipForSameFrame(_G[frame:GetName() .. "Delete"], "TOP", 0, 5, loc("CM_REMOVE"));
+			frame.DeleteButton:SetScript("OnClick", onPsychoDelete);
+			frame.CustomLeftField.title:SetText(loc("REG_PLAYER_LEFTTRAIT"));
+			frame.CustomRightField.title:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
+
+			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+
+			frame.Slider:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
+			frame.Slider:SetScript("OnValueChanged", onPsychoValueChanged);
+
+			setTooltipForSameFrame(frame.CustomLeftIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_LEFTICON_TT"));
+			setTooltipForSameFrame(frame.CustomRightIcon, "TOP", 0, 5, loc("UI_ICON_SELECT"), loc("REG_PLAYER_PSYCHO_RIGHTICON_TT"));
+			setTooltipForSameFrame(frame.DeleteButton, "TOP", 0, 5, loc("CM_REMOVE"));
+			setTooltipForSameFrame(frame.CustomLeftColor, "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR"), loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT"));
+			setTooltipForSameFrame(frame.CustomRightColor, "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR"), loc("REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT"));
+
+			-- Only need to set up the closure for color pickers once, as it
+			-- just needs a reference to the frame itself.
+			--
+			-- FIXME: When the feature/color_picker_button_mixin branch
+			--        lands we can drop these closures and swap to methods,
+			--        as well as not worry about all the Ellyb.Color -> rgb
+			--        conversion nonsense.
+			frame.CustomLeftColor.onSelection = function(r, g, b)
+				refreshPsychoColor(frame, "LC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
+			end
+
+			frame.CustomRightColor.onSelection = function(r, g, b)
+				refreshPsychoColor(frame, "RC", r and Ellyb.Color.CreateFromRGBAAsBytes(r, g, b));
+			end
+
 			tinsert(psychoEditCharFrame, frame);
 		end
-		_G[frame:GetName() .. "LeftIcon"]:SetScript("OnClick", function(self)
+
+		frame.CustomLeftIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
-		_G[frame:GetName() .. "RightIcon"]:SetScript("OnClick", function(self)
+
+		frame.CustomRightIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
 				setupIconButton(self, icon or Globals.icons.default);
 			end);
 		end);
 
+		-- Run through all the child elements. If they've got a hide set flag
+		-- that corresponds to our structure type (preset or custom), then
+		-- update the visibility accordingly.
+		--
+		-- The XML UI definition includes these fields where appropriate.
+		updatePsychoLineEditorFieldVisibility(psychoStructure.ID, frame:GetChildren());
+		updatePsychoLineEditorFieldVisibility(psychoStructure.ID, frame:GetRegions());
+
 		if psychoStructure.ID then
-			_G[frame:GetName() .. "JaugeLeftIcon"]:Show();
-			_G[frame:GetName() .. "JaugeRightIcon"]:Show();
-			_G[frame:GetName() .. "LeftText"]:Show();
-			_G[frame:GetName() .. "RightText"]:Show();
-			_G[frame:GetName() .. "LeftField"]:Hide();
-			_G[frame:GetName() .. "RightField"]:Hide();
-			_G[frame:GetName() .. "LeftIcon"]:Hide();
-			_G[frame:GetName() .. "RightIcon"]:Hide();
-			_G[frame:GetName() .. "JaugeLeftIcon"]:ClearAllPoints();
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetPoint("RIGHT", _G[frame:GetName() .. "Jauge"], "LEFT", -22, 2);
-			_G[frame:GetName() .. "JaugeRightIcon"]:ClearAllPoints();
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetPoint("LEFT", _G[frame:GetName() .. "Jauge"], "RIGHT", 22, 2);
 			local preset = PSYCHO_PRESETS[psychoStructure.ID] or PSYCHO_PRESETS_UNKOWN;
-			_G[frame:GetName() .. "LeftText"]:SetText(preset.LT or "");
-			_G[frame:GetName() .. "RightText"]:SetText(preset.RT or "");
-			_G[frame:GetName() .. "JaugeLeftIcon"]:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
-			_G[frame:GetName() .. "JaugeRightIcon"]:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.LT));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(preset.RT));
+			frame.LeftText:SetText(preset.LT or "");
+			frame.RightText:SetText(preset.RT or "");
+
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
 		else
-			_G[frame:GetName() .. "JaugeLeftIcon"]:Hide();
-			_G[frame:GetName() .. "JaugeRightIcon"]:Hide();
-			_G[frame:GetName() .. "LeftText"]:Hide();
-			_G[frame:GetName() .. "RightText"]:Hide();
-			_G[frame:GetName() .. "LeftField"]:Show();
-			_G[frame:GetName() .. "RightField"]:Show();
-			_G[frame:GetName() .. "LeftIcon"]:Show();
-			_G[frame:GetName() .. "RightIcon"]:Show();
-			_G[frame:GetName() .. "LeftField"]:SetText(psychoStructure.LT or "");
-			_G[frame:GetName() .. "RightField"]:SetText(psychoStructure.RT or "");
-			_G[frame:GetName() .. "LeftIcon"].IC = psychoStructure.LI or Globals.icons.default;
-			_G[frame:GetName() .. "RightIcon"].IC = psychoStructure.RI or Globals.icons.default;
-			refreshEditIcon(_G[frame:GetName() .. "LeftIcon"]);
-			refreshEditIcon(_G[frame:GetName() .. "RightIcon"]);
-			setTooltipForSameFrame(_G[frame:GetName() .. "LeftButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_LEFTTRAIT")));
-			setTooltipForSameFrame(_G[frame:GetName() .. "RightButton"], "TOP", 0, 5, loc("REG_PLAYER_PSYCHO_POINT"), loc("REG_PLAYER_PSYCHO_MORE"):format(loc("REG_PLAYER_RIGHTTRAIT")));
+			frame.CustomLeftField:SetText(psychoStructure.LT or "");
+			frame.CustomRightField:SetText(psychoStructure.RT or "");
+
+			frame.CustomLeftIcon.IC = psychoStructure.LI or Globals.icons.default;
+			frame.CustomRightIcon.IC = psychoStructure.RI or Globals.icons.default;
+
+			refreshEditIcon(frame.CustomLeftIcon);
+			refreshEditIcon(frame.CustomRightIcon);
+		end
+
+		-- Update the color swatches and the bars. Calling setColor seems to
+		-- invoke onSelected anyway, which means we'll update the bars through
+		-- that handler.
+		if psychoStructure.LC then
+			frame.CustomLeftColor.setColor(Ellyb.Color(psychoStructure.LC):GetRGBAsBytes());
+		else
+			frame.CustomLeftColor.setColor(nil);
+		end
+
+		if psychoStructure.RC then
+			frame.CustomRightColor.setColor(Ellyb.Color(psychoStructure.RC):GetRGBAsBytes());
+		else
+			frame.CustomRightColor.setColor(nil);
 		end
 
 		frame.psychoIndex = frameIndex;
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
-		refreshPsycho(frame, psychoStructure.VA or 3);
+		refreshPsycho(frame, value);
 		frame:Show();
 		previous = frame;
 	end
@@ -1121,8 +1253,6 @@ local function onActionClicked(button)
 	});
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
-
-
 
 local function showCharacteristicsTab()
 	TRP3_RegisterCharact:Show();
