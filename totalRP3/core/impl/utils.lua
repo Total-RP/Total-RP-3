@@ -870,6 +870,11 @@ Utils.str.toHTML = function(text, noColor)
 			-- you'll get the old default of center.
 			align = alignmentAttributes[align] or "center";
 
+			-- Don't blow up on non-numeric inputs. They won't display properly
+			-- but that's a separate issue.
+			width = tonumber(width) or 128;
+			height = tonumber(height) or 128;
+
 			-- Width and height should be absolute.
 			-- The tag accepts negative value but people used that to fuck up their profiles
 			return string.format(IMAGE_TAG, img, math.abs(width), math.abs(height), align);
