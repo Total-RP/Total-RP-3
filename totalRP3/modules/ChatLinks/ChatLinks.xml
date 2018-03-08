@@ -19,6 +19,7 @@
     -->
 
 	<Script file="ChatLinkActionButton.lua"/>
+	<Script file="ChatLinkTooltip.lua"/>
 
 	<Button name="TRP3_ChatLinkActionButton" inherits="UIPanelButtonTemplate" virtual="true" hidden="true" mixin="TRP3_ChatLinkActionButtonMixin">
 		<Size x="100" y="20"/>
@@ -28,7 +29,7 @@
 		</Scripts>
 	</Button>
 
-	<GameTooltip name="TRP3_RefTooltip" inherits="GameTooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true">
+	<GameTooltip name="TRP3_RefTooltip" inherits="GameTooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true" mixin="TRP3_ChatLinkTooltipMixin">
 		<Size>
 			<AbsDimension x="128" y="64"/>
 		</Size>
@@ -88,23 +89,7 @@
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad>
-				GameTooltip_OnLoad(self);
-				self:SetPadding(16, 0);
-				self:RegisterForDrag("LeftButton");
-			</OnLoad>
-			<OnDragStart>
-				self:StartMoving();
-			</OnDragStart>
-			<OnDragStop>
-				self:StopMovingOrSizing();
-				ValidateFramePosition(self);
-			</OnDragStop>
-			<OnHide>
-				GameTooltip_OnHide(self);
-				--While it is true that OnUpdate won't fire while the frame is hidden, we don't want to have to check-and-unregister when we show it
-				self:SetScript("OnUpdate", nil);
-			</OnHide>
+			<OnLoad method="OnLoad" />
 		</Scripts>
 	</GameTooltip>
 

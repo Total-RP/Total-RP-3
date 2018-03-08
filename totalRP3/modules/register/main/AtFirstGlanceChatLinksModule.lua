@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
-local TRP3_API = ...;
+local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
 -- Lua imports
