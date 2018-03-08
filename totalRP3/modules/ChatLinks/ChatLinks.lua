@@ -85,6 +85,7 @@ local chatLinksModules = {};
 --- Instantiate a new ChatLinkModule with the ChatLinks module
 ---@param moduleName string @ The name of the module (
 ---@param moduleID string @ A unique (but identifiable) ID for the new chat link module. Will be used to relate links back to the module
+---@return ChatLinkModule module
 function ChatLinks:InstantiateModule(moduleName, moduleID)
 	assert(not chatLinksModules[moduleID], "Trying to register a ChatLinkModule with an existing ID " .. moduleID);
 
@@ -179,6 +180,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 
 		if actionButtons and ChatLinks:HasModule(itemData.moduleID) then
+			if itemData.size then
+				TRP3_RefTooltip:AddLine(loc(loc.CL_CONTENT_SIZE, Ellyb.Strings.formatBytes(itemData.size)));
+			end
+
 			for i, button in pairs(actionButtons) do
 				ActionButtons[i]:Set(button);
 			end
@@ -231,7 +236,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
 			moduleID = link:GetModuleID(), -- Module ID is sent so recipient know what it is and use the right functions if they have the module
-			customData = link:GetCustomData(),
+			customData = link:GetIdentifier(),
+			size = link:GetContentSize(), -- Indicates the size of the content
 			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
 		}, sender);
 	end);

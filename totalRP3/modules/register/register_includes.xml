@@ -36,6 +36,8 @@
 	<Script file="main\register_exchange.lua" />
 	<Script file="main\register_tooltip.lua" />
 	<Script file="main\register_list.lua" />
+	<Script file="main\RegisterPlayerChatLinksModule.lua" />
+	<Script file="main\RegisterCompanionChatLinksModule.lua" />
 
 	<Script file="main\register_glance.lua" />
 	

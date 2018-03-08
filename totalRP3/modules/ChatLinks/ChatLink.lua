@@ -23,6 +23,8 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
+
 -- Lua imports
 local format = string.format;
 local assert = assert;
@@ -102,4 +104,14 @@ end
 function ChatLink:GetCustomData()
 	return self:GetModule():GetCustomData(self:GetData());
 end
+
+---Returns the size of the data that will be sent
+function ChatLink:GetContentSize()
+	if not _private[self].contentSize then
+		-- We save the content size so we only have to get it once, instead of serializing every time
+		_private[self].contentSize = #libSerializer:Serialize(self:GetData());
+	end
+	return _private[self].contentSize;
+end
+
 TRP3_API.ChatLink = ChatLink;
