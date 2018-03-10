@@ -1192,7 +1192,7 @@ This update is brought by Meorawr. Huge thanks to him for his contribution to th
 ### Added
 
 - Added option to hide the toolbar's title.
-- Added an optional alignment parameter to the image tag (`{img:src:width:height[:align]}`). Add `:l` for left or `:r` for right (or `:c` for center, but the image is always centered by default) at the end of an image tag to align it to the left or to the right. For example `{img:Interface\QUESTFRAME\UI-HorizontalBreak:256:32:r}`. Note that due to limitations in the game's engine, the text cannot wrap around the image.
+- Added an optional alignment parameter to the image tag. Add `:l` for left or `:r` for right (or `:c` for center, but the image is always centered by default) at the end of an image tag to align it to the left or to the right. Note that due to limitations in the game's engine, the text cannot wrap around the image.
 - You can now reorder your Additional information by dragging their icons.
 - Total RP 3's dice rolls feature now supports modifiers to apply to the total for the roll, for example `/trp3 roll 1d20+10` would add 10 to the result of the roll.
 - You can now copy and paste an at-first-glance slot content into another slot, by right-clicking on an at-first-glance slot to copy its content inside Total RP 3's clipboard and right-click on another slot to paste the content.
