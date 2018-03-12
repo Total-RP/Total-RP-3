@@ -218,6 +218,18 @@ local function refreshPsycho(psychoLine, value)
 	psychoLine.V2 = value;
 end
 
+-- TODO One day I'm gonna refactor all this and make a nice pretty mixin for TRP3_RegisterCharact_PsychoInfoDisplayLine, but not today
+function TRP3_API.register.togglePsychoCountText(frame, isCursorOnFrame)
+	local context = getCurrentContext();
+	if isCursorOnFrame or context.isEditMode then
+		frame.LeftCount:Show();
+		frame.RightCount:Show();
+	else
+		frame.LeftCount:Hide();
+		frame.RightCount:Hide();
+	end
+end
+
 --- refreshPsychoColor refreshes the color shown on a line item, updating
 --  the given named color field.
 --
@@ -1040,6 +1052,9 @@ function setEditDisplay()
 			frame.DeleteButton:SetScript("OnClick", onPsychoDelete);
 			frame.CustomLeftField.title:SetText(loc("REG_PLAYER_LEFTTRAIT"));
 			frame.CustomRightField.title:SetText(loc("REG_PLAYER_RIGHTTRAIT"));
+
+			frame.LeftCount:Show();
+			frame.RightCount:Show();
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 

@@ -227,7 +227,7 @@
 					</KeyValues>
 				</FontString>
 
-				<FontString inherits="NumberFontNormal" parentKey="LeftCount">
+				<FontString inherits="NumberFontNormal" parentKey="LeftCount" hidden="true">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.LeftIcon" x="-1" y="1"/>
 					</Anchors>
@@ -235,7 +235,7 @@
 						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
 					</KeyValues>
 				</FontString>
-				<FontString inherits="NumberFontNormal" parentKey="RightCount">
+				<FontString inherits="NumberFontNormal" parentKey="RightCount" hidden="true">
 					<Anchors>
 						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightIcon" x="-1" y="1"/>
 					</Anchors>
@@ -245,6 +245,14 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_API.register.togglePsychoCountText(self, true);
+			</OnEnter>
+			<OnLeave>
+				TRP3_API.register.togglePsychoCountText(self, false);
+			</OnLeave>
+		</Scripts>
 	</Frame>
 
 	<!-- Register characteristics psycho edit line -->
