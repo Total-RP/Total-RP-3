@@ -91,6 +91,11 @@ local function getProfiles()
 end
 TRP3_API.profile.getProfiles = getProfiles;
 
+function TRP3_API.profile.getProfileByID(profileID)
+	assert(profiles[profileID], "Unknown profile ID " .. tostring(profileID));
+	return profiles[profileID];
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
 -- For decoupling reasons, the saved variables TRP3_Profiles and TRP3_Characters should'nt be used outside this file !
@@ -420,114 +425,6 @@ function TRP3_API.profile.init()
 		selectProfile(character.profileID);
 	end
 
-	local ProfilesChatLinkModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_PLAYER_PROFILE, "PLAYER_PROFILE");
-	local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
-
-	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT_PLAYER_PROFILE", loc.CL_IMPORT_PROFILE);
-	local LINK_COMMAND_IMPORT_PROFILE_Q = "PROF_I_Q";
-	local LINK_COMMAND_IMPORT_PROFILE_A = "PROF_I_A";
-
-	function ImportProfileButton:OnClick(profileID, sender)
-		TRP3_API.ChatLinks:CheckVersions(function()
-			TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_Q, profileID, sender);
-		end);
-	end
-
-	function ImportProfileButton:IsVisible(tooltipData)
-		return tooltipData.canBeImported;
-	end
-
-	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PROFILE_Q, function(profileID, sender)
-		local profile = profiles[profileID];
-		TRP3_API.communication.sendObject(LINK_COMMAND_IMPORT_PROFILE_A, profile, sender);
-	end);
-
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_IMPORT_PROFILE_A, function(profile, sender)
-		local profileName = profile.profileName;
-		local i = 1;
-		while not isProfileNameAvailable(profileName) and i < 500 do
-			i = i + 1;
-			profileName = profileName .. " " .. i;
-		end
-		duplicateProfile(profile, profileName);
-		TRP3_API.navigation.openMainFrame();
-		TRP3_API.navigation.page.setPage("player_profiles", {});
-		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
-	end);
-
-	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE);
-	local LINK_COMMAND_OPEN_PROFILE_Q = "PROF_O_Q";
-	local LINK_COMMAND_OPEN_PROFILE_A = "PROF_O_A";
-
-	function OpenProfileButton:OnClick(profileID, sender)
-		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_Q, profileID, sender);
-	end
-
-	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_Q, function(profileID, sender)
-		local profile = profiles[profileID];
-		TRP3_API.communication.sendObject(LINK_COMMAND_OPEN_PROFILE_A, {
-			profile = profile.player,
-			profileID = profileID,
-		}, sender);
-	end);
-
-	TRP3_API.communication.registerProtocolPrefix(LINK_COMMAND_OPEN_PROFILE_A, function(profileData, senderID)
-		local profile, profileID = profileData.profile, profileData.profileID;
-		profile.link = {};
-		TRP3_API.register.insertProfile(profileID, profile)
-		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-
-		TRP3_API.register.openPageByProfileID(profileID);
-		TRP3_API.navigation.openMainFrame();
-	end);
-
-	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
-		local profile = profiles[profileID];
-		local tooltipData = {};
-		tcopy(tooltipData, profile);
-		tooltipData.profileID = profileID;
-		tooltipData.canBeImported = canBeImported;
-
-		return profile.profileName, tooltipData;
-	end
-
-	function ProfilesChatLinkModule:GetCustomData(profile)
-		return profile.profileID;
-	end
-
-	function ProfilesChatLinkModule:GetTooltipLines(tooltipData)
-
-		local profile = tooltipData;
-		local info = getData("player", profile);
-
-		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
-
-		local customColor = YELLOW;
-		if info.characteristics.CH then
-			customColor = TRP3_API.Ellyb.Color(info.characteristics.CH);
-		end
-
-		tooltipLines:SetTitle(customColor(Utils.str.icon(info.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(info.characteristics, profile.profileName, true)));
-
-		if info.characteristics.FT then
-			tooltipLines:AddLine("< " .. info.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
-		end
-		if info.character.CU then
-			tooltipLines:AddLine(" ");
-			tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
-			tooltipLines:AddLine(info.character.CU, YELLOW);
-		end
-		if info.character.CO then
-			tooltipLines:AddLine(" ");
-			tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
-			tooltipLines:AddLine(info.character.CO, YELLOW);
-		end
-
-		return tooltipLines;
-	end
-
 	-- UI
 	local tabGroup; -- Reference to the tab panel tabs group
 	handleMouseWheel(TRP3_ProfileManagerList, TRP3_ProfileManagerListSlider);
@@ -538,7 +435,7 @@ function TRP3_API.profile.init()
 		widget:SetScript("OnMouseUp",function (self)
 			if IsShiftKeyDown() then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
-					ProfilesChatLinkModule:InsertLink(self.profileID, canBeImported);
+					TRP3_API.ProfilesChatLinkModule:InsertLink(self.profileID, canBeImported);
 				end);
 			else
 				if currentProfileId ~= self.profileID then

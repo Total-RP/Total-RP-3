@@ -118,12 +118,16 @@ end
 --- Instantiate a new action button for this module
 ---@param actionID string @ Unique ID for this action
 ---@param buttonText string @ The text that will be shown on the button
+---@param questionCommand string @ The command send by the button to ask for the data
+---@param answerCommand string @ The command send by the button to answer with the data
 ---@return ChatLinkActionButton actionButton @ A new ChatLinkActionButton
-function ChatLinkModule:NewActionButton(actionID, buttonText)
+function ChatLinkModule:NewActionButton(actionID, buttonText, questionCommand, answerCommand)
 	assert(isType(actionID, "string", "actionID"));
 	assert(isType(buttonText, "string", "buttonText"));
+	assert(isType(questionCommand, "string", questionCommand));
+	assert(isType(answerCommand, "string", answerCommand));
 
-	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText);
+	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText, questionCommand, answerCommand);
 	_private[self].actionButtons[actionID] = actionButton;
 	return actionButton;
 end

@@ -1064,6 +1064,8 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	CL_REQUESTING_DATA = "Requesting link data from %s.",
 	CL_EXPIRED = "This link has expired.",
 	CL_PLAYER_PROFILE = "Player profile",
+	CL_DIRECTORY_PLAYER_PROFILE = "Directory player profile",
+	CL_DIRECTORY_COMPANION_PROFILE = "Directory companion profile",
 	CL_OPEN_PROFILE = "Open profile",
 	CL_IMPORT_PROFILE = "Import profile",
 	CL_GLANCE = "At-first-glance",
@@ -1079,6 +1081,7 @@ If you answer no, they will only be able to consult the content of the link.]],
 	CL_VERSIONS_DIFFER = [[This link has been generated using a different version of Total RP 3.
 
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
+	CL_CONTENT_SIZE = [[Size: %s]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- COMMANDS

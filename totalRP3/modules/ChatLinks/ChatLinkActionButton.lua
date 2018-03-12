@@ -35,13 +35,27 @@ local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
 
 ---@param actionID string @ The ID of the action
 ---@param buttonText string @ The text to be displayed on the button
-function ChatLinkActionButton:initialize(actionID, buttonText)
+function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, answerCommand)
 	assert(isType(actionID, "string", actionID));
 	assert(isType(buttonText, "string", buttonText));
+	assert(isType(questionCommand, "string", questionCommand));
+	assert(isType(answerCommand, "string", answerCommand));
 
 	_private[self] = {}
 	_private[self].actionID = actionID;
 	_private[self].buttonText = buttonText;
+	_private[self].questionCommand = questionCommand;
+	_private[self].answerCommand = answerCommand;
+
+	-- Register to answer questions
+	TRP3_API.communication.registerProtocolPrefix(questionCommand, function(linkID, sender)
+		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkID);
+		TRP3_API.communication.sendObject(answerCommand, link:GetData(), sender);
+	end);
+
+	TRP3_API.communication.registerProtocolPrefix(answerCommand, function(data, sender)
+		self:OnAnswerCommandReceived(data, sender)
+	end)
 end
 
 ---@return string actionID @ The ID of the action
@@ -61,11 +75,23 @@ function ChatLinkActionButton:IsVisible(...)
 	return true
 end
 
---- OVERRIDE
+--- OVERRIDE By default will send a command if one has been registered before
 --- [RECIPIENT] Function called when the recipient clicked the button
 ---@param linkData table @ The link data as saved by the module
 ---@param sender string @ The name of the sender of the link
-function ChatLinkActionButton:OnClick(linkData, sender) end
+function ChatLinkActionButton:OnClick(linkData, sender)
+	TRP3_API.ChatLinks:CheckVersions(function()
+		TRP3_API.communication.sendObject(_private[self].questionCommand, linkData, sender);
+	end);
+end
+
+--- OVERRIDE
+--- [RECIPIENT] Function called when the recipient received the requested data
+---@param linkData table @ The request data
+---@param sender string @ The name of the sender of the link
+function ChatLinkActionButton:OnAnswerCommandReceived(data, sender)
+
+end
 
 ---@class TRP3_ChatLinkActionButtonMixin : Button
 TRP3_ChatLinkActionButtonMixin = {};
