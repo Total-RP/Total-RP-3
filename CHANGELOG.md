@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Chat links now indicate the size of the content in the tooltip.
+
+### Modified
+
+- Player personality traits now only show the value numbers when the cursor is on the bar.
+- Improved generation of chat links for better efficiency.
+
 ## [1.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.1...1.3.2) - 2018-03-06
 
 This update is brought by Meorawr. Huge thanks to him for his contribution to the Total RP 3 project!
