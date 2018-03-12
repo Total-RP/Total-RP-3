@@ -3346,7 +3346,7 @@ local IMAGES = {
 	{
 		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
 		width = 256,
-		height = 32
+		height = 64
 	},
 };
 

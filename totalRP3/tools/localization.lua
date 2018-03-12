@@ -148,6 +148,9 @@ TRP3_API.loc = {
 	REG_PLAYER_PSYCHO_Couard = "Spineless";
 	REG_PLAYER_PSYCHO_CUSTOM = "Custom trait",
 	REG_PLAYER_PSYCHO_CREATENEW = "Create a trait",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR = "Select attribute color",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_LEFT_TT = "Select a color used by the bar for the left attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
+	REG_PLAYER_PSYCHO_CUSTOMCOLOR_RIGHT_TT = "Select a color used by the bar for the right attribute.\n\n|cffffff00Click:|r Select a color\n|cffffff00Right-click:|r Discard color\n|cffffff00Shift-Click:|r Use the default color picker",
 	REG_PLAYER_LEFTTRAIT = "Left attribute",
 	REG_PLAYER_RIGHTTRAIT = "Right attribute",
 	REG_DELETE_WARNING = "Are you sure you want to delete %s's profile?\n",
@@ -249,6 +252,8 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_GLANCE_PRESET_ADD = "Created preset |cff00ff00%s|r.";
 	REG_PLAYER_GLANCE_PRESET_ALERT1 = "You must enter a preset category.",
 	REG_PLAYER_GLANCE_PRESET_GET_CAT = "%s\n\nPlease enter the category name for this preset.",
+	REG_PLAYER_GLANCE_MENU_COPY = "Copy slot",
+	REG_PLAYER_GLANCE_MENU_PASTE = "Paste slot: %s",
 	REG_PLAYER_TUTO_ABOUT_COMMON = [[|cff00ff00Character theme:|r
 You can choose a |cffffff00theme|r for your character. Think of it as an |cffffff00ambiance music for reading your character description|r.
 
@@ -548,6 +553,8 @@ Possible status:
 	CO_TOOLBAR_CONTENT_RPSTATUS = "Character status (IC/OOC)",
 	CO_TOOLBAR_SHOW_ON_LOGIN = "Show toolbar on login",
 	CO_TOOLBAR_SHOW_ON_LOGIN_HELP = "If you don't want the toolbar to be displayed on login, you can disable this option.",
+	CO_TOOLBAR_HIDE_TITLE = "Hide Toolbar Title",
+	CO_TOOLBAR_HIDE_TITLE_HELP = "Hides the title shown above the toolbar.",
 	CO_TARGETFRAME = "Target frame settings",
 	CO_TARGETFRAME_USE = "Display conditions",
 	CO_TARGETFRAME_USE_TT = "Determines in which conditions the target frame should be shown on target selection.",
@@ -945,6 +952,8 @@ Total RP is not responsible for links leading to harmful content.]],
 
 	MAP_BUTTON_TITLE = "Scan for roleplay",
 	MAP_BUTTON_SUBTITLE = "Click to show available scans",
+	MAP_BUTTON_SUBTITLE_OFFLINE = "Map scanning is unavailable right now: %s",
+	MAP_BUTTON_SUBTITLE_CONNECTING = "Map scanning is setting up. Please wait.",
 	MAP_BUTTON_NO_SCAN = "No scan available",
 	MAP_BUTTON_SCANNING = "Scanning",
 	MAP_SCAN_CHAR = "Scan for characters",
@@ -1046,6 +1055,7 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	BROADCAST_PASSWORD = "|cffff0000There is a password placed on the broadcast channel (%s).\n|cffff9900TRP3 won't try again to connect to it but you won't be able to use some features like players location on map.\n|cff00ff00You can disable or change the broadcast channel in the TRP3 general settings.",
 	BROADCAST_PASSWORDED = "|cffff0000The user |r%s|cffff0000 just placed a password on the broadcast channel (%s).\n|cffff9900If you don't know that password, you won't be able to use features like players location on the map.",
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
+	BROADCAST_OFFLINE_DISABLED = "Broadcast has been disabled.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- CHAT LINKS
@@ -1171,6 +1181,33 @@ We have added a new feature that allows you to right-click on a player in the ga
 ### Added
 
 - Added sound related APIs for future Total RP 3: Extended features.
+
+]],
+	---@language Markdown
+	WHATS_NEW_17_2 = [[
+## [1.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.1...1.3.2) - 2018-03-06
+
+This update is brought by Meorawr. Huge thanks to him for his contribution to the Total RP 3 project!
+
+### Added
+
+- Added option to hide the toolbar's title.
+- Added an optional alignment parameter to the image tag. Add `:l` for left or `:r` for right (or `:c` for center, but the image is always centered by default) at the end of an image tag to align it to the left or to the right. Note that due to limitations in the game's engine, the text cannot wrap around the image.
+- You can now reorder your Additional information by dragging their icons.
+- Total RP 3's dice rolls feature now supports modifiers to apply to the total for the roll, for example `/trp3 roll 1d20+10` would add 10 to the result of the roll.
+- You can now copy and paste an at-first-glance slot content into another slot, by right-clicking on an at-first-glance slot to copy its content inside Total RP 3's clipboard and right-click on another slot to paste the content.
+
+### Modified
+
+- Personality traits have been completely reworked. The points now go from 0 to 20 (yes, you can pick the extremes now :P), using a slider to more visually set the values. The representation now uses a status bar that is filled proportionally. You can use custom colors of your choice when using custom personality traits. The system automatically converts to and from old values when viewing or sending profiles with people using an older version of Total RP 3.
+- When rolling a single dice using Total RP 3's dice rolls feature you no longer need to precise `1` in front of the dice. Instead of `/trp3 roll 1d20` you can just use `/trp3 roll d20`.
+- The map scanner for players now displays color dots for players who you have set a relationship with. Players with a relationship are also sorted into groups when displayed inside the map tooltips.
+
+### Fixed
+
+- The map scans button is now disabled when the broadcast channel is not available yet or could not be joined. A tooltip indicates the current state of the process.
+- Fixed an issue where the map icons from map scans would not be visible if the user had the option to disable UI animations enabled.
+- Fixed many typos and grammatical errors in the English localization of the add-on (thanks Kruithne for her help!).
 
 ]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}

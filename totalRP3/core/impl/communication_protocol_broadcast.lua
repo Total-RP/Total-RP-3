@@ -241,6 +241,9 @@ Comm.broadcast.init = function()
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if config_UseBroadcast() then
+			-- We'll send out the event nice and early to say we're setting up.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
+
 			local firstTime = true;
 			ticker = C_Timer.NewTicker(5, function(self)
 				if firstTime then firstTime = false; return; end
@@ -254,6 +257,9 @@ Comm.broadcast.init = function()
 					end
 				end
 			end, 9);
+		else
+			-- Broadcast isn't enabled so we should probably say it's offline.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc("BROADCAST_OFFLINE_DISABLED"));
 		end
 	end);
 
@@ -264,8 +270,13 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHANNEL_PASSWORD_REQUEST", function(channel)
 		if channel == config_BroadcastChannel() then
 			Log.log("Passworded !");
-			Utils.message.displayMessage(loc("BROADCAST_PASSWORD"):format(channel));
+
+			local message = loc("BROADCAST_PASSWORD"):format(channel);
+			Utils.message.displayMessage(message);
 			ticker:Cancel();
+
+			-- Notify that it's unlikely broadcast will work due to the password.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, message);
 		end
 	end);
 
@@ -279,8 +290,12 @@ Comm.broadcast.init = function()
 	-- When you are already in 10 channel
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
-			Utils.message.displayMessage(loc("BROADCAST_10"));
+			local message = loc("BROADCAST_10");
+			Utils.message.displayMessage(message);
 			ticker:Cancel();
+
+			-- Notify that broadcast won't work due to the channel limit.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, message);
 		end
 	end);
 
@@ -294,6 +309,9 @@ Comm.broadcast.init = function()
 			Log.log("Step 3: HELLO command sent and parsed. Broadcast channel initialized.");
 			helloWorlded = true;
 			ticker:Cancel();
+
+			-- Notify our other bits and pieces that we're all good to go.
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
 		end
 	end);
 end

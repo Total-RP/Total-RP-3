@@ -20,6 +20,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = TRP3_API.Ellyb;
 
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
@@ -47,7 +48,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 40,
+	version = 41,
 
 	--@debug@
 	version_display = "-dev",
@@ -80,7 +81,39 @@ TRP3_API.globals = {
 		unknown = "INV_Misc_QuestionMark",
 		profile_default = "INV_Misc_GroupLooking",
 	},
-}
+
+	-- Profile Constants
+	PSYCHO_DEFAULT_VALUE_V1 = 3,
+	PSYCHO_MAX_VALUE_V1 = 6,
+	PSYCHO_DEFAULT_VALUE_V2 = 10,
+	PSYCHO_MAX_VALUE_V2 = 20,
+	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(255, 140, 26):Freeze(),
+	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
+};
+
+--- RELATIONS is a list of (backwards-compatible) relationship IDs.
+local RELATIONS = {
+	UNFRIENDLY = "UNFRIENDLY",
+	NONE = "NONE",
+	NEUTRAL = "NEUTRAL",
+	BUSINESS = "BUSINESS",
+	FRIEND = "FRIEND",
+	LOVE = "LOVE",
+	FAMILY = "FAMILY",
+};
+TRP3_API.globals.RELATIONS = RELATIONS;
+
+--- RELATIONS_ORDER defines a logical ordering for relations.
+local RELATIONS_ORDER = {
+	[RELATIONS.NONE] = 0,
+	[RELATIONS.UNFRIENDLY] = 1,
+	[RELATIONS.NEUTRAL] = 2,
+	[RELATIONS.BUSINESS] = 3,
+	[RELATIONS.FRIEND] = 4,
+	[RELATIONS.LOVE] = 5,
+	[RELATIONS.FAMILY] = 6,
+};
+TRP3_API.globals.RELATIONS_ORDER = RELATIONS_ORDER;
 
 local emptyMeta = {
 	__newindex = function(_, _, _) end

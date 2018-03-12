@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.1...1.3.2) - 2018-03-06
+
+This update is brought by Meorawr. Huge thanks to him for his contribution to the Total RP 3 project!
+
+### Added
+
+- Added option to hide the toolbar's title.
+- Added an optional alignment parameter to the image tag (`{img:src:width:height[:align]}`). Add `:l` for left or `:r` for right (or `:c` for center, but the image is always centered by default) at the end of an image tag to align it to the left or to the right. For example `{img:Interface\QUESTFRAME\UI-HorizontalBreak:256:32:r}`. Note that due to limitations in the game's engine, the text cannot wrap around the image.
+- You can now reorder your Additional information by dragging their icons.  
+![](https://user-images.githubusercontent.com/287102/36848343-e5ad26a0-1d58-11e8-9376-7b54177168ab.gif)
+- Total RP 3's dice rolls feature now supports modifiers to apply to the total for the roll, for example `/trp3 roll 1d20+10` would add 10 to the result of the roll.
+- You can now copy and paste an at-first-glance slot content into another slot, by right-clicking on an at-first-glance slot to copy its content inside Total RP 3's clipboard and right-click on another slot to paste the content.
+
+### Modified
+
+- Personality traits have been completely reworked. The points now go from 0 to 20 (yes, you can pick the extremes now :P), using a slider to more visually set the values. The representation now uses a status bar that is filled proportionally. You can use custom colors of your choice when using custom personality traits. The system automatically converts to and from old values when viewing or sending profiles with people using an older version of Total RP 3.  
+![](https://user-images.githubusercontent.com/287102/36901768-2cbe7a4a-1e20-11e8-9693-a352d6fcdce4.png)
+- When rolling a single dice using Total RP 3's dice rolls feature you no longer need to precise `1` in front of the dice. Instead of `/trp3 roll 1d20` you can just use `/trp3 roll d20`.
+- The map scanner for players now displays color dots for players who you have set a relationship with. Players with a relationship are also sorted into groups when displayed inside the map tooltips.  
+![](https://user-images.githubusercontent.com/287102/36998397-b3e90ad0-20b4-11e8-8f53-ef7b2fb50aaf.png)
+
+### Fixed
+
+- The map scans button is now disabled when the broadcast channel is not available yet or could not be joined. A tooltip indicates the current state of the process.
+- Fixed an issue where the map icons from map scans would not be visible if the user had the option to disable UI animations enabled.
+- Fixed many typos and grammatical errors in the English localization of the add-on (thanks Kruithne for her help!).
+
 ## [1.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.0...1.3.1) - 2018-02-27
 
 ### Fixed

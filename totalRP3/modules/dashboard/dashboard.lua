@@ -208,13 +208,13 @@ TRP3_API.dashboard.init = function()
 	end);
 
 	-- Tab bar
-	local whatsNewText = loc("WHATS_NEW_17_1") .. loc("WHATS_NEW_17");
+	local whatsNewText = loc("WHATS_NEW_17_2") .. loc("WHATS_NEW_17_1") .. loc("WHATS_NEW_17");
 	local moreModuleText = loc("MORE_MODULES_2");
 	local aboutText = loc("THANK_YOU_1");
 
 	moreModuleText = Utils.str.toHTML(moreModuleText);
 	whatsNewText = Utils.str.toHTML(whatsNewText);
-	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, ELLYPSE_PATREON_SUPPORTERS));
+	aboutText = Utils.str.toHTML(aboutText:format(TRP3_API.globals.version_display, TRP3_API.globals.version, TRP3_API.Ellyb:GetPatreonSupporters()));
 
 	local frame = CreateFrame("Frame", "TRP3_DashboardBottomTabBar", TRP3_DashboardBottom);
 	frame:SetSize(400, 30);
