@@ -33,6 +33,9 @@ local assert = assert;
 local isType = Ellyb.Assertions.isType;
 local isNotEmpty = Ellyb.Assertions.isNotEmpty;
 
+-- Total RP 3 imports
+local loc = TRP3_API.loc;
+
 ---@class ChatLink
 local ChatLink, _private = Ellyb.Class("ChatLink");
 
@@ -56,6 +59,8 @@ function ChatLink:initialize(identifier, data, moduleID)
 		TRP3_API.Ellyb.ColorManager.ORANGE,
 		TRP3_API.Ellyb.ColorManager.ORANGE
 	);
+	tooltipLines:AddLine(loc(loc.CL_CONTENT_SIZE, Ellyb.Strings.formatBytes(self:GetContentSize())), TRP3_API.Ellyb.ColorManager.ORANGE);
+
 	_private[self].tooltipLines = tooltipLines;
 end
 

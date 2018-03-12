@@ -35,96 +35,100 @@ local Globals = TRP3_API.Globals;
 local Utils = TRP3_API.utils;
 local Events = TRP3_API.events;
 
-local RegisterPlayerChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_PLAYER_PROFILE, "DIR_PLAYER_PROFILE");
+TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
---- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
-function RegisterPlayerChatLinksModule:GetLinkData(profileID, canBeImported)
-	assert(isType(profileID, "string", "profileID"));
+	local RegisterPlayerChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_DIRECTORY_PLAYER_PROFILE, "DIR_PLAYER_PROFILE");
 
-	local profile = TRP3_API.register.getProfile(profileID);
-	local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
+	--- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
+	function RegisterPlayerChatLinksModule:GetLinkData(profileID, canBeImported)
+		assert(isType(profileID, "string", "profileID"));
 
-	local tooltipData = {
-		profile = {},
-	};
+		local profile = TRP3_API.register.getProfile(profileID);
+		local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
 
-	tcopy(tooltipData.profile, profile);
-	tooltipData.profileID = profileID;
-	tooltipData.canBeImported = canBeImported == true;
+		local tooltipData = {
+			profile = {},
+		};
 
-	return linkText, tooltipData;
-end
+		tcopy(tooltipData.profile, profile);
+		tooltipData.profileID = profileID;
+		tooltipData.canBeImported = canBeImported == true;
 
---- Creates and decorates tooltip lines for the given data
----@return ChatLinkTooltipLines
-function RegisterPlayerChatLinksModule:GetTooltipLines(tooltipData)
-	assert(tooltipData.profile, "Invalid tooltipData");
-
-	local profile = tooltipData.profile;
-
-	local tooltipLines = TRP3_API.ChatLinkTooltipLines();
-
-	local customColor = TRP3_API.Ellyb.ColorManager.YELLOW;
-	if profile.characteristics.CH then
-		customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
+		return linkText, tooltipData;
 	end
 
-	tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+	--- Creates and decorates tooltip lines for the given data
+	---@return ChatLinkTooltipLines
+	function RegisterPlayerChatLinksModule:GetTooltipLines(tooltipData)
+		assert(tooltipData.profile, "Invalid tooltipData");
 
-	if profile.characteristics.FT then
-		tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		local profile = tooltipData.profile;
+
+		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
+
+		local customColor = TRP3_API.Ellyb.ColorManager.YELLOW;
+		if profile.characteristics.CH then
+			customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
+		end
+
+		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+
+		if profile.characteristics.FT then
+			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);
+		end
+		if profile.character.CU then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
+			tooltipLines:AddLine(profile.character.CU, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+		if profile.character.CO then
+			tooltipLines:AddLine(" ");
+			tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
+			tooltipLines:AddLine(profile.character.CO, TRP3_API.Ellyb.ColorManager.YELLOW);
+		end
+
+		return tooltipLines;
 	end
-	if profile.character.CU then
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("REG_PLAYER_CURRENT") .. ": ");
-		tooltipLines:AddLine(profile.character.CU, TRP3_API.Ellyb.ColorManager.YELLOW);
+
+	-- Open profile in directory button
+	local OpenProfileButton = RegisterPlayerChatLinksModule:NewActionButton("OPEN_REG_PROFILE", loc.CL_OPEN_PROFILE, "REG_P_O_Q", "REG_P_O_A");
+
+	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
+		local profile, profileID = profileData.profile, profileData.profileID;
+		profile.link = {};
+		TRP3_API.register.insertProfile(profileID, profile)
+		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
+
+		TRP3_API.register.openPageByProfileID(profileID);
+		TRP3_API.navigation.openMainFrame();
 	end
-	if profile.character.CO then
-		tooltipLines:AddLine(" ");
-		tooltipLines:AddLine(loc("DB_STATUS_CURRENTLY_OOC") .. ": ");
-		tooltipLines:AddLine(profile.character.CO, TRP3_API.Ellyb.ColorManager.YELLOW);
+
+	-- Import profile action button
+	local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinksModule:NewActionButton("IMPORT_REG_PROFILE", loc.CL_IMPORT_PROFILE, "REG_P_I_Q", "REG_P_I_A");
+
+	function ImportRegisterPlayerProfileButton:IsVisible(tooltipData)
+		return tooltipData.canBeImported;
 	end
 
-	return tooltipLines;
-end
-
--- Open profile in directory button
-local OpenProfileButton = RegisterPlayerChatLinksModule:NewActionButton("OPEN_REG_PROFILE", loc.CL_OPEN_PROFILE, "REG_P_O_Q", "REG_P_O_A");
-
-function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
-	local profile, profileID = profileData.profile, profileData.profileID;
-	profile.link = {};
-	TRP3_API.register.insertProfile(profileID, profile)
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
-
-	TRP3_API.register.openPageByProfileID(profileID);
-	TRP3_API.navigation.openMainFrame();
-end
-
--- Import profile action button
-local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinksModule:NewActionButton("IMPORT_REG_PROFILE", loc.CL_IMPORT_PROFILE, "REG_P_I_Q", "REG_P_I_A");
-
-function ImportRegisterPlayerProfileButton:IsVisible(tooltipData)
-	return tooltipData.canBeImported;
-end
-
-function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)
-	local profile, profileID = profileData.profileData, profileData.profileID;
-	local profileName = UNKNOWN;
-	if profile.characteristics and profile.characteristics.FN then
-		profileName = profile.characteristics.FN;
+	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)
+		local profile, profileID = profileData.profileData, profileData.profileID;
+		local profileName = UNKNOWN;
+		if profile.characteristics and profile.characteristics.FN then
+			profileName = profile.characteristics.FN;
+		end
+		local i = 1;
+		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
+			i = i + 1;
+			profileName = profileName .. " " .. i;
+		end
+		TRP3_API.profile.duplicateProfile({
+			player = profile
+		}, profileName);
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.navigation.page.setPage("player_profiles", {});
+		Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
 	end
-	local i = 1;
-	while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
-		i = i + 1;
-		profileName = profileName .. " " .. i;
-	end
-	TRP3_API.profile.duplicateProfile({
-		player = profile
-	}, profileName);
-	TRP3_API.navigation.openMainFrame();
-	TRP3_API.navigation.page.setPage("player_profiles", {});
-	Events.fireEvent(Events.REGISTER_PROFILES_LOADED);
-end
 
-TRP3_API.RegisterPlayerChatLinksModule = RegisterPlayerChatLinksModule;
+	TRP3_API.RegisterPlayerChatLinksModule = RegisterPlayerChatLinksModule;
+
+end);

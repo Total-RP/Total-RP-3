@@ -72,6 +72,6 @@
 	
 	<Include file="ui\profiles.xml"/>
 	<Script file="impl\profiles.lua"/>
-	<Script file="impl\ProfilesChatLinkModule.lua"/>
+	<Script file="impl\ProfilesChatLinksModule.lua"/>
 
 </Ui>

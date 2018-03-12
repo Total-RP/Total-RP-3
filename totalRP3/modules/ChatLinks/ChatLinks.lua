@@ -180,10 +180,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 
 		if actionButtons and ChatLinks:HasModule(itemData.moduleID) then
-			if itemData.size then
-				TRP3_RefTooltip:AddLine(loc(loc.CL_CONTENT_SIZE, Ellyb.Strings.formatBytes(itemData.size)));
-			end
-
 			for i, button in pairs(actionButtons) do
 				ActionButtons[i]:Set(button);
 			end
