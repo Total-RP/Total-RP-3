@@ -238,7 +238,7 @@
 				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
 				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
-			</Button>s
+			</Button>
 
 			<!-- MiniButton -->
 			<Button parentKey="Minimize" hidden="true">
