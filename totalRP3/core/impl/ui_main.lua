@@ -94,7 +94,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end,
 		OnTooltipShow = function(tooltip)
-			tooltip:AddLine("Total RP 3");
+			tooltip:AddLine("Total RP 3", Ellyb.ColorManager.WHITE:GetRGB());
 			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_L_CLICK"), loc("MM_SHOW_HIDE_MAIN")));
 			if TRP3_API.toolbar then
 				tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_R_CLICK"), loc("MM_SHOW_HIDE_SHORTCUT")));
