@@ -36,7 +36,7 @@ local twipe = table.wipe;
 local loc = TRP3_API.loc;
 
 --- Mixin for the SimpleHTML content frame that provides a GetText() method,
---  as well as script handlers for hyperlinks.
+---  as well as script handlers for hyperlinks.
 TRP3_DashboardHTMLContentMixin = {};
 
 function TRP3_DashboardHTMLContentMixin:OnLoad()
@@ -117,13 +117,13 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkLeave()
 end
 
 --- Called when the text on the widget has changed. Stores the text for
---  retrieval via GetText().
+---  retrieval via GetText().
 function TRP3_DashboardHTMLContentMixin:OnTextChanged(text)
 	self.text = text;
 end
 
 --- Registers a handler for the given URL. When clicked, this handler will
---  be called. Only a single handler may be present for any URL at a given time.
+---  be called. Only a single handler may be present for any URL at a given time.
 function TRP3_DashboardHTMLContentMixin:RegisterHyperlink(url, handler)
 	self.urlHandlers[url] = handler;
 end

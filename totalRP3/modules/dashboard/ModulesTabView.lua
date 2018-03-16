@@ -24,7 +24,6 @@ local Ellyb = Ellyb(addonName);
 
 -- Ellyb imports
 local Class = Ellyb.Class;
-local Funcs = Ellyb.Funcs;
 
 -- Total RP 3 imports
 local Dashboard = TRP3_API.dashboard;
@@ -37,8 +36,8 @@ local function getLocalizedText()
 end
 
 --- Displays a list of additional cool modules that the user can download.
---  These are totally mindblowing, radical, and have an unconstrained amount
---  of tubular-ness.
+---  These are totally mindblowing, radical, and have an unconstrained amount
+---  of tubular-ness.
 local ModulesTabView = Class("TRP3_DashboardModulesTabView", Dashboard.TabView);
 Dashboard.ModulesTabView = ModulesTabView;
 

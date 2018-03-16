@@ -24,11 +24,9 @@ local Ellyb = Ellyb(addonName);
 
 -- Lua imports
 local tconcat = table.concat;
-local tinsert = table.insert;
 
 -- Ellyb imports
 local Class = Ellyb.Class;
-local Funcs = Ellyb.Funcs;
 local Strings = Ellyb.Strings;
 local Tables = Ellyb.Tables;
 

@@ -50,7 +50,7 @@ local Credit = Class("TRP3_Credit");
 Dashboard.Credit = Credit;
 
 --- Initialises the credit with the given person's name string and a list of
---  roles to assign them.
+---  roles to assign them.
 function Credit:initialize(person, ...)
 	self.person = person;
 	self.roles = { ... };
@@ -62,7 +62,7 @@ function Credit:GetName()
 end
 
 --- Returns the full text to display for this role, which consists of the
---  persons name and their role(s).
+---  persons name and their role(s).
 function Credit:GetLocalizedFullText()
 	local formatString = loc("THANK_YOU_WITH_ROLE");
 	return formatString:format(self:GetName(), self:GetLocalizedRoleText());

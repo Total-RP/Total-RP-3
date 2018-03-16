@@ -38,7 +38,7 @@ local loc = TRP3_API.loc;
 local strhtml = TRP3_API.utils.str.toHTML;
 
 --- List of "What's new" segments to concatenate and display together when
---  this view is activated.
+---  this view is activated.
 local SEGMENTS = {
 	loc("WHATS_NEW_17_2"),
 	loc("WHATS_NEW_17_1"),
@@ -51,7 +51,7 @@ local function getLocalizedText()
 end
 
 --- Toggles a setting and displays a UI toast.
---  @param setting The setting to be toggled.
+---  @param setting The setting to be toggled.
 local function toggleSetting(setting)
 	if Configuration.getValue(setting) then
 		Configuration.setValue(setting, false);
@@ -74,7 +74,7 @@ local URL_HANDLERS = {
 };
 
 --- Tab view class that displays our changelog, and points out the awesome
---  new features that we've spent far too much time working on.
+---  new features that we've spent far too much time working on.
 local WhatsNewTabView = Class("TRP3_DashboardWhatsNewTabView", Dashboard.TabView);
 Dashboard.WhatsNewTabView = WhatsNewTabView;
 

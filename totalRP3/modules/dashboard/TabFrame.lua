@@ -41,12 +41,12 @@ local strhtml = TRP3_API.utils.str.toHTML;
 local UIFrame = TRP3_API.ui.frame;
 
 --- Creates an entry for a tab compatible for use with the ui.createTabFrame
---  function. This has an additional field (View) which is an instantiated
---  instance of the view class.
---
---  @param viewClass The class to wrap and instantiate.
---  @param index The index of the tab. This is stored as the "value" of the entry.
---  @param ... Arguments to pass to the viewClass constructor.
+---  function. This has an additional field (View) which is an instantiated
+---  instance of the view class.
+---
+---  @param viewClass The class to wrap and instantiate.
+---  @param index The index of the tab. This is stored as the "value" of the entry.
+---  @param ... Arguments to pass to the viewClass constructor.
 local function createTabFromClass(index, viewClass, ...)
 	-- Use explicit indices here to make it clear on the structure.
 	return {
@@ -58,9 +58,9 @@ local function createTabFromClass(index, viewClass, ...)
 end
 
 --- Mixin attached to the TRP3_DashboardTabFrame template. Generally speaking
---  you'll need to implement OnLoad yourself and set "self.TabClasses" to
---  a table of TabView classes to be displayed in this widget, then call into
---  the OnLoad method afterward.
+---  you'll need to implement OnLoad yourself and set "self.TabClasses" to
+---  a table of TabView classes to be displayed in this widget, then call into
+---  the OnLoad method afterward.
 TRP3_DashboardTabFrameMixin = {};
 
 function TRP3_DashboardTabFrameMixin:OnLoad()
@@ -95,7 +95,7 @@ function TRP3_DashboardTabFrameMixin:OnLoad()
 end
 
 --- Called when the NAVIGATION_RESIZED event fires. Re-draws the content
---  frame to make it adjust to the new dimensions.
+---  frame to make it adjust to the new dimensions.
 function TRP3_DashboardTabFrameMixin:OnNavigationResized(width, height)
 	-- Resize the content frame and try to refresh it.
 	local htmlFrame = self.HTMLContent;
@@ -104,9 +104,9 @@ function TRP3_DashboardTabFrameMixin:OnNavigationResized(width, height)
 end
 
 --- Called when a tab in this frame has been selected. Updates the content
---  and notifies the view.
---
---  @param index The index of the newly selected tab.
+---  and notifies the view.
+---
+---  @param index The index of the newly selected tab.
 function TRP3_DashboardTabFrameMixin:OnTabSelected(index)
 	local entry = self.tabs[index];
 	assert(entry, "invalid tab index");
@@ -124,7 +124,7 @@ function TRP3_DashboardTabFrameMixin:OnTabSelected(index)
 end
 
 --- Resets the font objects and colors associated with the HTML content
---  frame on the widget.
+---  frame on the widget.
 function TRP3_DashboardTabFrameMixin:ResetHTMLStyles()
 	local htmlFrame = self.HTMLContent;
 
@@ -139,36 +139,36 @@ function TRP3_DashboardTabFrameMixin:ResetHTMLStyles()
 end
 
 --- Convenience method that sets the text on the HTMLContent child widget
---  to that of the given text. The text is converted to HTML prior to display.
---
---  @param text The unformatted source text string to display in the widget.
---              This will be converted to html prior to display.
+---  to that of the given text. The text is converted to HTML prior to display.
+---
+---  @param text The unformatted source text string to display in the widget.
+---              This will be converted to html prior to display.
 function TRP3_DashboardTabFrameMixin:SetHTMLFromText(text)
 	return self:SetHTML(strhtml(text));
 end
 
 --- Convenience method that sets the text on the HTMLContent child widget
---  to that of the given text. The text is assumed to be valid HTML.
---
---  @param html The preformatted HTML string to display in the widget.
+---  to that of the given text. The text is assumed to be valid HTML.
+---
+---  @param html The preformatted HTML string to display in the widget.
 function TRP3_DashboardTabFrameMixin:SetHTML(html)
 	return self.HTMLContent:SetText(html);
 end
 
 --- Convenience method that registers a hyperlink handler on the HTMLContent
---  child widget. See that mixin for argument documentation.
+---  child widget. See that mixin for argument documentation.
 function TRP3_DashboardTabFrameMixin:RegisterHyperlink(...)
 	return self.HTMLContent:RegisterHyperlink(...);
 end
 
 --- Convenience method that unregisters a hyperlink handler on the HTMLContent
---  child widget. See that mixin for argument documentation.
+---  child widget. See that mixin for argument documentation.
 function TRP3_DashboardTabFrameMixin:UnregisterHyperlink(...)
 	return self.HTMLContent:UnregisterHyperlink(...);
 end
 
 --- Convenience method that unregisters all hyperlink handlers on the
---  HTMLContent child widget. See that mixin for argument documentation.
+---  HTMLContent child widget. See that mixin for argument documentation.
 function TRP3_DashboardTabFrameMixin:UnregisterAllHyperlinks(...)
 	return self.HTMLContent:UnregisterAllHyperlinks(...);
 end

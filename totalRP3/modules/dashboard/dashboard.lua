@@ -31,14 +31,13 @@ local getPlayerCharacter, getPlayerCurrentProfileID = TRP3_API.profile.getPlayer
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local icon, color = Utils.str.icon, Utils.str.color;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local setPage = TRP3_API.navigation.page.setPage;
 local assert, tostring, tinsert, date, time, pairs, tremove, EMPTY, unpack, wipe, strconcat = assert, tostring, tinsert, date, time, pairs, tremove, TRP3_API.globals.empty, unpack, wipe, strconcat;
 local initList, handleMouseWheel = TRP3_API.ui.list.initList, TRP3_API.ui.list.handleMouseWheel;
 local TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No = TRP3_DashboardNotifications, TRP3_DashboardNotificationsSlider, TRP3_DashboardNotifications_No;
@@ -46,7 +45,6 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local displayMessage, RaidWarningFrame = TRP3_API.utils.message.displayMessage, RaidWarningFrame;
 local GetInventoryItemID, GetItemInfo = GetInventoryItemID, GetItemInfo;
-local tconcat = table.concat;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -274,10 +272,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		rpText2 = rpText2.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
 		local rpText3 = color("y")..loc("CM_L_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
 		rpText3 = rpText3.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
-		local get = TRP3_API.profile.getData;
 		local defaultIcon = TRP3_API.globals.player_icon;
 
-		local Button_RPStatus = {
+		Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
 			icon = "Inv_misc_grouplooking",
 			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
