@@ -25,20 +25,12 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(_);
 
 -- WoW imports
-local format = string.format;
-local assert = assert;
-local sort = table.sort;
 local pairs = pairs;
 local tinsert = table.insert;
-local tostring = tostring;
-local error = error;
 local sub = string.sub;
-local setmetatable = setmetatable;
-local rawset = rawset;
-
-local isType = TRP3_API.Ellyb.Assertions.isType;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
@@ -48,16 +40,16 @@ BINDING_HEADER_TRP3 = "Total RP 3";
 -- Complete locale declaration
 TRP3_API.loc = {
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- GENERAL
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- GENERAL
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 	GEN_VERSION = "Version: %s (Build %s)",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- REGISTER
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- REGISTER
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	REG_PLAYER = "Character",
 	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway ?\n|cffff9900Any changes will be lost.",
 	REG_PLAYER_CARACT = "Characteristics",
@@ -428,9 +420,9 @@ There are a lot of ways to customize the description.
 You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
 These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- CONFIGURATION
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CONFIGURATION
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CO_CONFIGURATION = "Settings",
 	CO_GENERAL = "General settings",
@@ -640,9 +632,9 @@ Possible status:
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- TOOLBAR AND UI BUTTONS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- TOOLBAR AND UI BUTTONS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TB_TOOLBAR = "Toolbar",
 	TB_SWITCH_TOOLBAR = "Switch toolbar",
@@ -676,9 +668,9 @@ Possible status:
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- PROFILES
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- PROFILES
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PR_PROFILEMANAGER_TITLE = "Characters profiles",
 	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
@@ -759,9 +751,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
 	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DASHBOARD
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- DASHBOARD
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DB_STATUS = "Status",
 	DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
@@ -790,9 +782,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_ABOUT = "About Total RP 3",
 	DB_MORE = "More modules",
 	DB_HTML_GOTO = "Click to open",
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- COMMON UI TEXTS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMMON UI TEXTS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	UI_BKG = "Background %s",
 	UI_ICON_BROWSER = "Icon browser",
@@ -834,9 +826,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	NPC_TALK_YELL_PATTERN = "yells:",
 	NPC_TALK_WHISPER_PATTERN = "whispers:",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- COMMON TEXTS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMMON TEXTS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CM_SHOW = "Show",
 	CM_ACTIONS = "Actions",
@@ -904,17 +896,17 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_BLACK = "Black",
 	CM_GREY = "Grey",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Minimap button
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Minimap button
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MM_SHOW_HIDE_MAIN = "Show/hide the main frame",
 	MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar",
 	MM_SHOW_HIDE_MOVE = "Move button",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Browsers
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Browsers
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
@@ -923,9 +915,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Databroker
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Databroker
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DTBK_HELMET = "Total RP 3 - Helmet",
 	DTBK_CLOAK = "Total RP 3 - Cloak",
@@ -933,22 +925,22 @@ Total RP is not responsible for links leading to harmful content.]],
 	DTBK_RP = "Total RP 3 - IC/OOC",
 	DTBK_LANGUAGES = "Total RP 3 - Languages",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- Bindings
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Bindings
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- About TRP3
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- About TRP3
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	ABOUT_TITLE = "About",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- MAP
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MAP
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MAP_BUTTON_TITLE = "Scan for roleplay",
 	MAP_BUTTON_SUBTITLE = "Click to show available scans",
@@ -959,9 +951,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	MAP_SCAN_CHAR = "Scan for characters",
 	MAP_SCAN_CHAR_TITLE = "Characters",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- MATURE FILTER
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MATURE FILTER
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	MATURE_FILTER_TITLE = "Mature profiles filter",
 	MATURE_FILTER_TOOLTIP_WARNING = "Mature content",
 	MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
@@ -1013,9 +1005,9 @@ This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- DICE ROLL
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- DICE ROLL
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
@@ -1023,9 +1015,9 @@ Are you sure you want to view this profile?]],
 	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- NPC Speeches
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- NPC Speeches
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	NPC_TALK_TITLE = "NPC speeches",
 	NPC_TALK_NAME = "NPC name",
@@ -1042,9 +1034,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
 	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- MISC
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MISC
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PATTERN_ERROR = "Error in pattern.",
 	PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
@@ -1057,9 +1049,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
 	BROADCAST_OFFLINE_DISABLED = "Broadcast has been disabled.",
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- CHAT LINKS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- CHAT LINKS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CL_REQUESTING_DATA = "Requesting link data from %s.",
 	CL_EXPIRED = "This link has expired.",
@@ -1083,9 +1075,9 @@ If you answer no, they will only be able to consult the content of the link.]],
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
 	CL_CONTENT_SIZE = [[Size: %s]],
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- COMMANDS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- COMMANDS
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	COM_LIST = "List of commands:",
 	COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
@@ -1267,199 +1259,99 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
 };
 
--- Save the raw locale content to be used as default
-local DEFAULT_LOCALE = CopyTable(TRP3_API.loc);
+-- Use Ellyb to generate the Localization system
+TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
 
---- @type fun(localeKey:string):string
----
----	# Total RP 3's New Localization System, TRP3_API.loc
----
----	## Description
----
----	We are using a meta table here to make it easier for us to access the locale content thanks to IDE code completion.
----	The IDE is reading the TRP3_API.loc field as a table and offer all the localization keys when typing TRP3_API.loc.
----
---- Yet, the metatable applied here (using an empty table) will instead use our TRP3_API.Locale.getText(localeKey) function
---- to fetch the localized version of the text.
----
---- For backward compatibility and convinience, the TRP3_API.loc meta table is also made callable.
---- This means we can get the localization by calling the table with a locale key string TRP3_API.loc("LOCALE_KEY").
---- The table call accepts more arguments. In that case, a string.format will be applied to the localized value,
---- so it become a quick shortcut to string.format(TRP3_API.loc.LOCALE_KEY, arg1, arg2, arg3)
----
---- ## Usage
----
----		local loc = TRP3_API.loc; -- local import for a shorter access
----
----		button:SetText(loc.LOCALE_KEY) 		-- Get the localized value for LOCALE_KEY
----		button:SetText(loc("LOCALE_KEY")) 	-- Backward compatible way to get the localized value for LOCALE_KEY (less efficient)
----		button:SetText(loc(loc.LOCALE_KEY)) -- This will work but is inneficient and should be avoided
----		button:SetText(loc(loc.LOCALE_KEY, arg1, arg2, arg3)) -- A string.format will be applied to the value of LOCALE_KEY using the given arguments
-TRP3_API.loc = setmetatable({}, {
+-- Register all locales into the localization system
+-- Note the localization content is filled by CurseForge when the add-on is built
+TRP3_API.loc:RegisterNewLocale("enUS", "English",
+--@localization(locale="enUS", format="lua_table")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-	-- When accessing a locale value via its key we call our locale function to get the localized text
-	__index = function(_, localeKey)
-		return TRP3_API.Locale.getText(localeKey);
-	end,
+TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch",
+--@localization(locale="deDE", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-	-- We can also "call" the table itself with either the key as a string (.ie TRP3_API.loc("GEN_VERSION")
-	-- (this gives us backward compatibility with the previous system where we would call a function with keys as strings)
-	-- Or using the direct value of the locale (.ie TRP3_API.loc(TRP3_API.loc.GEN_VERSION)
-	-- (although this is less interesting)
-	--
-	-- We can even add more arguments to automatically apply a format (ie. TRP3_API.loc(TRP3_API.loc.GEN_VERSION, genVersion, genNumber))
-	__call = function(table, localeKey, ...)
-		local localeText;
+TRP3_API.loc:RegisterNewLocale("frFR", "Français",
+--@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-		-- If a locale value for the key exists in our locale content we get its localized value
-		if TRP3_API.Locale.keyExists(localeKey) then
-			localeText = TRP3_API.Locale.getText(localeKey);
+TRP3_API.loc:RegisterNewLocale("esES", "Español",
+--@localization(locale="esES", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-		else -- If it doesn't exist, we assume we want the actual text that was given as is
-			localeText = localeKey;
-		end
+TRP3_API.loc:RegisterNewLocale("esMX", "Español (Latin American)",
+--@localization(locale="esMX", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-		-- If we were given more arguments, we want to format the value
-		if #{...} > 0 then
-			localeText = format(localeText, ...);
-		end
+TRP3_API.loc:RegisterNewLocale("itIT", "Italian",
+--@localization(locale="itIT", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
-		return localeText;
-	end
-})
+TRP3_API.loc:RegisterNewLocale("koKR", "Korean",
+--@localization(locale="koKR", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
+
+TRP3_API.loc:RegisterNewLocale("ptBR", "Brazilian Portuguese",
+--@localization(locale="ptBR", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
+
+TRP3_API.loc:RegisterNewLocale("ruRU", "Russian",
+--@localization(locale="ruRU", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
+
+TRP3_API.loc:RegisterNewLocale("zhCN", "Simplified Chinese",
+--@localization(locale="zhCN", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
+
+TRP3_API.loc:RegisterNewLocale("zhTW", "Traditional Chinese",
+--@localization(locale="zhTW", format="lua_table", handle-unlocalized="ignore")@
+--@do-not-package@
+	{}
+--@end-do-not-package@
+);
 
 local Locale = {};
 TRP3_API.Locale = Locale;
-
-local localizations = {};
-local effectiveLocal = {};
-local current;
-
-local addNewKeyToDefaultLocaleMetatable = {
-	__newindex = function(self, key, value)
-		rawset(self, key, value);
-		DEFAULT_LOCALE[key] = value;
-	end
-};
-
----Add a locale key with its value inside a specific locale via its code
----@param localeCode string @ The locale code (enUS, frFR, esES)
----@param key string @ The locale key
----@param value string @ The value of the locale
-function Locale.insertKeyValueInLocale(localeCode, key, value)
-	assert(isType(localeCode, "string", "localeCode"));
-	assert(isType(key, "string", "key"));
-	assert(isType(value, "string", "value"));
-	assert(localizations[localeCode], format("Tried to insert localization values into an unknown language %s", localeCode));
-	assert(not localizations[localeCode].localeContent[key], format("A locale value for the key %s has already been provided for the language %s.\nValue: %s\nTried to insert: %s", key, localeCode, localizations[localeCode].localeContent[key], value))
-
-	localizations[localeCode].localeContent[key] = value;
-	if localeCode == "enUS" then
-		DEFAULT_LOCALE[key] = value;
-	end
-end
-
----Insert a table of locale values into a specific locale via its code
----@param localeCode string @ The locale code (enUS, frFR, esES)
----@param keysValuesTable table @ A table where the indexes are the locale keys and the values are the locale value
-function Locale.insertKeysInLocale(localeCode, keysValuesTable)
-	for key, value in pairs(keysValuesTable) do
-		Locale.insertKeyValueInLocale(localeCode, key, value);
-	end
-end
-
----Register a new localization
----@param localeStructure table
-function Locale.registerLocale(localeStructure)
-	assert(isType(localeStructure, "table", "localeStructure"));
-	assert(isType(localeStructure.locale, "string", "localeStructure.locale"));
-	assert(isType(localeStructure.localeText, "string", "localeStructure.localeText"));
-	assert(isType(localeStructure.localeContent, "table", "localeStructure.localeContent"));
-
-	assert(localizations[localeStructure.locale] == nil, format("A localization for %s has already been registered.", localeStructure.locale));
-
-	if not localizations[localeStructure.locale] then
-		localizations[localeStructure.locale] = localeStructure;
-		if localeStructure.locale == "enUS" then
-			setmetatable(localizations[localeStructure.locale].localeContent, addNewKeyToDefaultLocaleMetatable);
-		end
-	end
-end
-
----@return table locales @ A sorted list of registered locales ID ("frFR", "enUS" ...).
-function Locale.getLocales()
-	local locales = {};
-	for locale, _ in pairs(localizations) do
-		tinsert(locales, locale);
-	end
-	sort(locales);
-	return locales;
-end
-
----@param localeID string @ The ID of the locale (`"frFR"`, `"enUS"`)
----@return string localeText @ The display name of a locale (`"Français"`, `"English"` ...)
-function Locale.getLocaleText(localeID)
-	if localizations[localeID] then
-		return localizations[localeID].localeText
-	end
-	return UNKNOWN;
-end
-
----@return table locale @ The locale structure currently active
-function Locale.getEffectiveLocale()
-	return effectiveLocal;
-end
-
----@return table locale @ The default locale structure
-function Locale.getDefaultLocaleStructure()
-	return {
-		locale = "enUS",
-		localeText = "English",
-		localeContent = DEFAULT_LOCALE
-	};
-end
-
----@return string localeID @ The locale key currently active
-function Locale.getCurrentLocale()
-	return current;
-end
-
----@param localeID string @ The ID of the locale to get (`"frFR"`, `"enUS"`)
----@return table locale @ The locale structure associated with the given locale ID
-function Locale.getLocale(localeID)
-	assert(localizations[localeID], "Unknown locale: " .. localeID);
-	return localizations[localeID];
-end
-
----Check if a specified localization key exists in the current locale
----@param localeKey string @ A localization key
----@return boolean exists @ True if the key exists.
-function Locale.keyExists(localeKey)
-	return effectiveLocal[localeKey] ~= nil or DEFAULT_LOCALE[localeKey] ~= nil;
-end
-
----Return the localized text link to this key.
----If the key isn't present in the current `localizations` table, then it returns the default localization.
----If the key is totally unknown from Total RP 3, then an error will be raised.
----@param key string @ A locale key to get a localized text
----@return string text @ The localized text corresponding to the given key
-function Locale.getText(key)
-	if effectiveLocal[key] or DEFAULT_LOCALE[key] then
-		return effectiveLocal[key] or DEFAULT_LOCALE[key];
-	end
-	error("Unknown localization key: ".. tostring(key));
-end
 
 --- Initialize a locale for the addon.
 function Locale.init()
 	-- Register config
 	TRP3_API.configuration.registerConfigKey("AddonLocale", GetLocale());
-	current = TRP3_API.configuration.getValue("AddonLocale");
-	if not localizations[current] then
-		current = DEFAULT_LOCALE;
-	end
-	effectiveLocal = localizations[current].localeContent;
+	TRP3_API.loc:SetCurrentLocale(TRP3_API.configuration.getValue("AddonLocale"), true);
 end
+
+Locale.getText = Ellyb.Functions.bind(TRP3_API.loc.GetText, TRP3_API.loc);
 
 -- Only used for French related stuff, it's okay if non-latin characters are not here
 -- Note: We have a list of lowercase and uppercase letters here, because string.lower doesn't
@@ -1626,4 +1518,5 @@ function Locale.findBattlePetOwner(lines)
 	end
 end
 
+-- Backward compatibility locale = Locale
 TRP3_API.locale = TRP3_API.Locale;

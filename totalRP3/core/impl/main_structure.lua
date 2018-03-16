@@ -30,7 +30,7 @@ TRP3_API.navigation = {
 -- imports
 local Log = TRP3_API.utils.log;
 local CreateFrame = CreateFrame;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton = TRP3_TutorialFrame, TRP3_TutorialTooltip, TRP3_MainTutorialButton;
 local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame = TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame;
@@ -442,8 +442,8 @@ TRP3_API.navigation.init = function()
 			showTutorial(self.provider());
 		end
 	end);
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "TOP", 0, 0, loc("UI_TUTO_BUTTON"), loc("UI_TUTO_BUTTON_TT"));
-	closeAllButton:SetText(loc("UI_CLOSE_ALL"));
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_MainTutorialButton, "TOP", 0, 0, loc.UI_TUTO_BUTTON, loc.UI_TUTO_BUTTON_TT);
+	closeAllButton:SetText(loc.UI_CLOSE_ALL);
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);
 	end);

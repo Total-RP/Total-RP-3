@@ -17,9 +17,13 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type
+local _, TRP3_API = ...;
+
 -- Imports
 local Globals = TRP3_API.globals;
 local Log = TRP3_API.utils.log;
+local loc = TRP3_API.loc;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- LOADING SEQUENCE
@@ -46,8 +50,8 @@ local function loadingSequence()
 	TRP3_API.flyway.applyPatches();
 
 	-- Inits locale
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.locale.init";
-	TRP3_API.locale.init();
+	MAIN_SEQUENCE_DETAIL = "TRP3_API.Locale.init";
+	TRP3_API.Locale.init();
 
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.init";
 	TRP3_API.module.init();
@@ -58,7 +62,7 @@ local function loadingSequence()
 	
 	-- Welcome \o/
 	MAIN_SEQUENCE_DETAIL = "Welcome message";
-	TRP3_API.utils.message.displayMessage(TRP3_API.locale.getText("GEN_WELCOME_MESSAGE"):format(Globals.version_display));
+	TRP3_API.utils.message.displayMessage(loc(loc.GEN_WELCOME_MESSAGE, Globals.version_display));
 	
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.init";
 	TRP3_API.communication.init();

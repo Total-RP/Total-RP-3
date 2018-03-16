@@ -384,13 +384,13 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if isIDIgnored(targetID) then
-		tooltipBuilder:AddLine(loc("REG_TT_IGNORED"), 1, 0, 0, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_IGNORED, 1, 0, 0, getSubLineFontSize());
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
     elseif unitIDIsFilteredForMatureContent(targetID) then
-        tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc("MATURE_FILTER_TOOLTIP_WARNING"), 1, 0.75, 0.86, getSubLineFontSize());
-        tooltipBuilder:AddLine(loc("MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT"), 1, 0.75, 0, getSmallLineFontSize(), true);
+        tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING, 1, 0.75, 0.86, getSubLineFontSize());
+        tooltipBuilder:AddLine(loc.MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT, 1, 0.75, 0, getSmallLineFontSize(), true);
         tooltipBuilder:Build();
         return;
     end
@@ -498,7 +498,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			class = crop(class, FIELDS_TO_CROP.CLASS);
 		end
 		lineLeft = strconcat("|cffffffff", race, " ", color:WrapTextInColorCode(class));
-		lineRight = strconcat("|cffffffff", loc("REG_TT_LEVEL"):format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
+		lineRight = strconcat("|cffffffff", loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
 
 		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
 	end
@@ -509,7 +509,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local _, realm = UnitName(targetType);
 	if showRealm() and realm then
-		tooltipBuilder:AddLine(loc("REG_TT_REALM"):format(realm), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_REALM:format(realm), 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -518,7 +518,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
-		local text = loc("REG_TT_GUILD"):format(grade, guild);
+		local text = loc.REG_TT_GUILD:format(grade, guild);
 		local membership;
 		if info.misc and info.misc.ST then
 			if info.misc.ST["6"] == 1 then -- IC guild membership
@@ -537,7 +537,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCurrently() and info.character and (info.character.CU or ""):len() > 0 then
-		tooltipBuilder:AddLine(loc("REG_PLAYER_CURRENT"), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CU);
 		if text:len() > getCurrentMaxSize() then
@@ -553,7 +553,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showMoreInformation() and info.character and (info.character.CO or ""):len() > 0 then
-		tooltipBuilder:AddLine(loc("DB_STATUS_CURRENTLY_OOC"), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CO);
 		if text:len() > getCurrentMaxSize() then
@@ -595,7 +595,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 			name = color:WrapTextInColorCode(name);
 		end
-		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -705,7 +705,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if isIDIgnored(ownerID) then
-		tooltipBuilder:AddLine(loc("REG_TT_IGNORED_OWNER"), 1, 0, 0, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_IGNORED_OWNER, 1, 0, 0, getSubLineFontSize());
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(ownerID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
@@ -786,7 +786,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		end
 
 		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
-		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
+		ownerFinalName = loc.REG_COMPANION_TF_OWNER:format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
 	end
@@ -912,7 +912,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionWoWInfo() then
-		tooltipCompanionBuilder:AddLine(loc("PR_CO_MOUNT") .. " |cff" .. (info.NH or "ffffff") .. mountName, 1, 1, 1, getSubLineFontSize());
+		tooltipCompanionBuilder:AddLine(loc.PR_CO_MOUNT .. " |cff" .. (info.NH or "ffffff") .. mountName, 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1105,8 +1105,8 @@ local function onModuleInit()
 	ui_CompanionTT.TimeSinceLastUpdate = 0;
 	ui_CompanionTT:SetScript("OnUpdate", onUpdateCompanion);
 
-	IC_GUILD = " |cff00ff00(" .. loc("REG_TT_GUILD_IC") .. ")";
-	OOC_GUILD = " |cffff0000(" .. loc("REG_TT_GUILD_OOC") .. ")";
+	IC_GUILD = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
+	OOC_GUILD = " |cffff0000(" .. loc.REG_TT_GUILD_OOC .. ")";
 
 	-- Config default value
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
@@ -1142,69 +1142,69 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PETS_INFO, true);
 
 	ANCHOR_TAB = {
-		{loc("CO_ANCHOR_TOP_LEFT"), "ANCHOR_TOPLEFT"},
-		{loc("CO_ANCHOR_TOP"), "ANCHOR_TOP"},
-		{loc("CO_ANCHOR_TOP_RIGHT"), "ANCHOR_TOPRIGHT"},
-		{loc("CO_ANCHOR_RIGHT"), "ANCHOR_RIGHT"},
-		{loc("CO_ANCHOR_BOTTOM_RIGHT"), "ANCHOR_BOTTOMRIGHT"},
-		{loc("CO_ANCHOR_BOTTOM"), "ANCHOR_BOTTOM"},
-		{loc("CO_ANCHOR_BOTTOM_LEFT"), "ANCHOR_BOTTOMLEFT"},
-		{loc("CO_ANCHOR_LEFT"), "ANCHOR_LEFT"},
-		{loc("CO_ANCHOR_CURSOR"), "ANCHOR_CURSOR"},
+		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
+		{loc.CO_ANCHOR_TOP, "ANCHOR_TOP"},
+		{loc.CO_ANCHOR_TOP_RIGHT, "ANCHOR_TOPRIGHT"},
+		{loc.CO_ANCHOR_RIGHT, "ANCHOR_RIGHT"},
+		{loc.CO_ANCHOR_BOTTOM_RIGHT, "ANCHOR_BOTTOMRIGHT"},
+		{loc.CO_ANCHOR_BOTTOM, "ANCHOR_BOTTOM"},
+		{loc.CO_ANCHOR_BOTTOM_LEFT, "ANCHOR_BOTTOMLEFT"},
+		{loc.CO_ANCHOR_LEFT, "ANCHOR_LEFT"},
+		{loc.CO_ANCHOR_CURSOR, "ANCHOR_CURSOR"},
 	};
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_tooltip",
-		menuText = loc("CO_TOOLTIP"),
-		pageText = loc("CO_TOOLTIP"),
+		menuText = loc.CO_TOOLTIP,
+		pageText = loc.CO_TOOLTIP,
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLTIP_COMMON"),
+				title = loc.CO_TOOLTIP_COMMON,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_PROFILE_ONLY"),
+				title = loc.CO_TOOLTIP_PROFILE_ONLY,
 				configKey = CONFIG_PROFILE_ONLY,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_IN_CHARACTER_ONLY"),
+				title = loc.CO_TOOLTIP_IN_CHARACTER_ONLY,
 				configKey = CONFIG_IN_CHARACTER_ONLY,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_COMBAT"),
+				title = loc.CO_TOOLTIP_COMBAT,
 				configKey = CONFIG_CHARACT_COMBAT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_COLOR"),
+				title = loc.CO_TOOLTIP_COLOR,
 				configKey = CONFIG_CHARACT_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_CONTRAST"),
+				title = loc.CO_TOOLTIP_CONTRAST,
 				configKey = CONFIG_CHARACT_CONTRAST,
-				help = loc("CO_TOOLTIP_CONTRAST_TT"),
+				help = loc.CO_TOOLTIP_CONTRAST_TT,
 				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_CROP_TEXT"),
+				title = loc.CO_TOOLTIP_CROP_TEXT,
 				configKey = CONFIG_CROP_TEXT,
-				help = loc("CO_TOOLTIP_CROP_TEXT_TT")
+				help = loc.CO_TOOLTIP_CROP_TEXT_TT
 			},
 			{
 				inherit = "TRP3_ConfigEditBox",
-				title = loc("CO_TOOLTIP_ANCHORED"),
+				title = loc.CO_TOOLTIP_ANCHORED,
 				configKey = CONFIG_CHARACT_ANCHORED_FRAME,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationTooltip_Charact_Anchor",
-				title = loc("CO_TOOLTIP_ANCHOR"),
+				title = loc.CO_TOOLTIP_ANCHOR,
 				listContent = ANCHOR_TAB,
 				configKey = CONFIG_CHARACT_ANCHOR,
 				listWidth = nil,
@@ -1212,12 +1212,12 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_HIDE_ORIGINAL"),
+				title = loc.CO_TOOLTIP_HIDE_ORIGINAL,
 				configKey = CONFIG_CHARACT_HIDE_ORIGINAL,
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLTIP_MAINSIZE"),
+				title = loc.CO_TOOLTIP_MAINSIZE,
 				configKey = CONFIG_CHARACT_MAIN_SIZE,
 				min = 6,
 				max = 20,
@@ -1226,7 +1226,7 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLTIP_SUBSIZE"),
+				title = loc.CO_TOOLTIP_SUBSIZE,
 				configKey = CONFIG_CHARACT_SUB_SIZE,
 				min = 6,
 				max = 20,
@@ -1235,7 +1235,7 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLTIP_TERSIZE"),
+				title = loc.CO_TOOLTIP_TERSIZE,
 				configKey = CONFIG_CHARACT_TER_SIZE,
 				min = 6,
 				max = 20,
@@ -1244,79 +1244,79 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_SPACING"),
-				help = loc("CO_TOOLTIP_SPACING_TT"),
+				title = loc.CO_TOOLTIP_SPACING,
+				help = loc.CO_TOOLTIP_SPACING_TT,
 				configKey = CONFIG_CHARACT_SPACING,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_NO_FADE_OUT"),
+				title = loc.CO_TOOLTIP_NO_FADE_OUT,
 				configKey = CONFIG_NO_FADE_OUT,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLTIP_CHARACTER"),
+				title = loc.CO_TOOLTIP_CHARACTER,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_ICONS"),
+				title = loc.CO_TOOLTIP_ICONS,
 				configKey = CONFIG_CHARACT_ICONS,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_TITLE"),
+				title = loc.CO_TOOLTIP_TITLE,
 				configKey = CONFIG_CHARACT_TITLE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_FT"),
+				title = loc.CO_TOOLTIP_FT,
 				configKey = CONFIG_CHARACT_FT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_RACE"),
+				title = loc.CO_TOOLTIP_RACE,
 				configKey = CONFIG_CHARACT_RACECLASS,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_REALM"),
+				title = loc.CO_TOOLTIP_REALM,
 				configKey = CONFIG_CHARACT_REALM,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_GUILD"),
+				title = loc.CO_TOOLTIP_GUILD,
 				configKey = CONFIG_CHARACT_GUILD,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_TARGET"),
+				title = loc.CO_TOOLTIP_TARGET,
 				configKey = CONFIG_CHARACT_TARGET,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_CURRENT"),
+				title = loc.CO_TOOLTIP_CURRENT,
 				configKey = CONFIG_CHARACT_CURRENT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("DB_STATUS_CURRENTLY_OOC"),
+				title = loc.DB_STATUS_CURRENTLY_OOC,
 				configKey = CONFIG_CHARACT_OOC,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_NOTIF"),
+				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = CONFIG_CHARACT_NOTIF,
-				help = loc("CO_TOOLTIP_NOTIF_TT"),
+				help = loc.CO_TOOLTIP_NOTIF_TT,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_RELATION"),
-				help = loc("CO_TOOLTIP_RELATION_TT"),
+				title = loc.CO_TOOLTIP_RELATION,
+				help = loc.CO_TOOLTIP_RELATION_TT,
 				configKey = CONFIG_CHARACT_RELATION,
 			},
 			{
 				inherit = "TRP3_ConfigSlider",
-				title = loc("CO_TOOLTIP_CURRENT_SIZE"),
+				title = loc.CO_TOOLTIP_CURRENT_SIZE,
 				configKey = CONFIG_CHARACT_CURRENT_SIZE,
 				min = 40,
 				max = 200,
@@ -1325,31 +1325,31 @@ local function onModuleInit()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_TOOLTIP_PETS"),
+				title = loc.CO_TOOLTIP_PETS,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_ICONS"),
+				title = loc.CO_TOOLTIP_ICONS,
 				configKey = CONFIG_PETS_ICON,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_FT"),
+				title = loc.CO_TOOLTIP_FT,
 				configKey = CONFIG_PETS_TITLE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_OWNER"),
+				title = loc.CO_TOOLTIP_OWNER,
 				configKey = CONFIG_PETS_OWNER,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_PETS_INFO"),
+				title = loc.CO_TOOLTIP_PETS_INFO,
 				configKey = CONFIG_PETS_INFO,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_TOOLTIP_NOTIF"),
+				title = loc.CO_TOOLTIP_NOTIF,
 				configKey = CONFIG_PETS_NOTIF,
 			},
 		}

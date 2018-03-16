@@ -29,7 +29,8 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 local CONFIG_MINIMAP_SHOW = "minimap_show";
 local CONFIG_MINIMAP_POSITION = "minimap_icon_position";
 local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
-local color, loc, strconcat = TRP3_API.utils.str.color, TRP3_API.locale.getText, strconcat;
+local color, strconcat = TRP3_API.utils.str.color, strconcat;
+local loc = TRP3_API.loc;
 local tinsert = tinsert;
 
 -- Minimap button API initialization
@@ -65,12 +66,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Build configuration page
 	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
-		title = loc("CO_MINIMAP_BUTTON"),
+		title = loc.CO_MINIMAP_BUTTON,
 	});
 	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = loc("CO_MINIMAP_BUTTON_SHOW_TITLE"),
-		help = loc("CO_MINIMAP_BUTTON_SHOW_HELP"),
+		title = loc.CO_MINIMAP_BUTTON_SHOW_TITLE,
+		help = loc.CO_MINIMAP_BUTTON_SHOW_HELP,
 		configKey = CONFIG_MINIMAP_SHOW,
 	});
 
@@ -95,11 +96,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end,
 		OnTooltipShow = function(tooltip)
 			tooltip:AddLine("Total RP 3", Ellyb.ColorManager.WHITE:GetRGB());
-			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_L_CLICK"), loc("MM_SHOW_HIDE_MAIN")));
+			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_L_CLICK, loc.MM_SHOW_HIDE_MAIN));
 			if TRP3_API.toolbar then
-				tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_R_CLICK"), loc("MM_SHOW_HIDE_SHORTCUT")));
+				tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_R_CLICK, loc.MM_SHOW_HIDE_SHORTCUT));
 			end
-			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc("CM_DRAGDROP"), loc("MM_SHOW_HIDE_MOVE")));
+			tooltip:AddLine(Ellyb.Strings.clickInstruction(loc.CM_DRAGDROP, loc.MM_SHOW_HIDE_MOVE));
 		end,
 	})
 
@@ -114,7 +115,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		helpLine = " main || toolbar",
 		handler = function(arg1)
 			if arg1 ~= "main" and arg1 ~= "toolbar" then
-				displayMessage(loc("COM_SWITCH_USAGE"));
+				displayMessage(loc.COM_SWITCH_USAGE);
 			elseif arg1 == "main" then
 				TRP3_API.navigation.switchMainFrame();
 			else
@@ -131,7 +132,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		helpLine = " frames",
 		handler = function(arg1)
 			if arg1 ~= "frames" then
-				displayMessage(loc("COM_RESET_USAGE"));
+				displayMessage(loc.COM_RESET_USAGE);
 			else
 				-- Target frame
 				if TRP3_API.target then
@@ -176,10 +177,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.ui.frame.setupMove(TRP3_MainFrame);
 
 	-- Update frame
-	TRP3_UpdateFrame.popup.title:SetText(loc("NEW_VERSION_TITLE"));
+	TRP3_UpdateFrame.popup.title:SetText(loc.NEW_VERSION_TITLE);
 
-	BINDING_NAME_TRP3_TOGGLE = loc("BINDING_NAME_TRP3_TOGGLE");
-	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = loc("BINDING_NAME_TRP3_TOOLBAR_TOGGLE");
+	BINDING_NAME_TRP3_TOGGLE = loc.BINDING_NAME_TRP3_TOGGLE;
+	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = loc.BINDING_NAME_TRP3_TOOLBAR_TOGGLE;
 
 	-- CTL debug frame
 	local tostring, GetTime, pairs, type = tostring, GetTime, pairs, type;

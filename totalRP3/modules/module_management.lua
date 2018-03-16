@@ -23,7 +23,7 @@ TRP3_API.module = {};
 local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, type, assert, pcall, tinsert, table, _G, tostring = pairs, type, assert, pcall, tinsert, table, _G, tostring;
 local Log = Utils.log;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
@@ -182,22 +182,22 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function moduleInit()
-	TRP3_ConfigurationModuleTitle:SetText(loc("CO_MODULES"));
+	TRP3_ConfigurationModuleTitle:SetText(loc.CO_MODULES);
 end
 
 local function moduleStatusText(statusCode)
 	if statusCode == MODULE_STATUS.OK then
-		return "|cff00ff00"..loc("CO_MODULES_STATUS_1");
+		return "|cff00ff00"..loc.CO_MODULES_STATUS_1;
 	elseif statusCode == MODULE_STATUS.DISABLED then
-		return "|cff999999"..loc("CO_MODULES_STATUS_2");
+		return "|cff999999"..loc.CO_MODULES_STATUS_2;
 	elseif statusCode == MODULE_STATUS.OUT_TO_DATE_TRP3 then
-		return "|cffff0000"..loc("CO_MODULES_STATUS_3");
+		return "|cffff0000"..loc.CO_MODULES_STATUS_3;
 	elseif statusCode == MODULE_STATUS.ERROR_ON_INIT then
-		return "|cffff0000"..loc("CO_MODULES_STATUS_4");
+		return "|cffff0000"..loc.CO_MODULES_STATUS_4;
 	elseif statusCode == MODULE_STATUS.ERROR_ON_LOAD then
-		return "|cffff0000"..loc("CO_MODULES_STATUS_5");
+		return "|cffff0000"..loc.CO_MODULES_STATUS_5;
 	elseif statusCode == MODULE_STATUS.MISSING_DEPENDENCY then
-		return "|cffff0000"..loc("CO_MODULES_STATUS_0");
+		return "|cffff0000"..loc.CO_MODULES_STATUS_0;
 	end
 	error("Unknown status code");
 end
@@ -207,20 +207,20 @@ local function getModuleHint_TRP(module)
 	if module.status == MODULE_STATUS.OUT_TO_DATE_TRP3 then
 		trp_version_color = "|cffff0000";
 	end
-	return loc("CO_MODULES_TT_TRP"):format(trp_version_color, module.minVersion);
+	return loc.CO_MODULES_TT_TRP:format(trp_version_color, module.minVersion);
 end
 
 local function getModuleHint_Deps(module)
-	local deps = loc("CO_MODULES_TT_DEPS")..": ";
+	local deps = loc.CO_MODULES_TT_DEPS..": ";
 	if module.requiredDeps == nil then
-		deps = loc("CO_MODULES_TT_NONE");
+		deps = loc.CO_MODULES_TT_NONE;
 	else
 		for _, depTab in pairs(module.requiredDeps) do
 			local deps_version_color = "|cff00ff00";
 			if not checkModuleDependency(module.id, depTab[1], depTab[2]) then
 				deps_version_color = "|cffff0000";
 			end
-			deps = deps..(loc("CO_MODULES_TT_DEP"):format(deps_version_color, depTab[1], depTab[2]));
+			deps = deps..(loc.CO_MODULES_TT_DEP:format(deps_version_color, depTab[1], depTab[2]));
 		end
 	end
 	return deps;
@@ -236,7 +236,7 @@ local function getModuleTooltip(module)
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
 
 	if module.error ~= nil then
-		message = message .. "\n\n" .. (loc("CO_MODULES_TT_ERROR"):format(module.error));
+		message = message .. "\n\n" .. (loc.CO_MODULES_TT_ERROR:format(module.error));
 	end
 
 	return message;
@@ -257,9 +257,9 @@ local function onActionClicked(button)
 	local module = button:GetParent().module;
 	local values = {};
 	if MODULE_ACTIVATION[module.id] ~= false then
-		tinsert(values, {loc("CO_MODULES_DISABLE"), 1});
+		tinsert(values, {loc.CO_MODULES_DISABLE, 1});
 	else
-		tinsert(values, {loc("CO_MODULES_ENABLE"), 2});
+		tinsert(values, {loc.CO_MODULES_ENABLE, 2});
 	end
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
@@ -289,9 +289,9 @@ function onModuleStarted()
 		end
 		previous = frame;
 		_G[frame:GetName().."ModuleName"]:SetText(module.name);
-		_G[frame:GetName().."ModuleVersion"]:SetText(loc("CO_MODULES_VERSION"):format(module.version));
-		_G[frame:GetName().."ModuleID"]:SetText(loc("CO_MODULES_ID"):format(moduleID));
-		_G[frame:GetName().."Status"]:SetText(loc("CO_MODULES_STATUS"):format(moduleStatusText(module.status)));
+		_G[frame:GetName().."ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
+		_G[frame:GetName().."ModuleID"]:SetText(loc.CO_MODULES_ID:format(moduleID));
+		_G[frame:GetName().."Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
 		setTooltipForSameFrame(_G[frame:GetName().."Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
 		if module.status == MODULE_STATUS.OK then
 			frame:SetBackdropBorderColor(0, 1, 0);
@@ -299,7 +299,7 @@ function onModuleStarted()
 			frame:SetBackdropBorderColor(1, 1, 1);
 		end
 		local actionButton = _G[frame:GetName().."Action"];
-		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc("CM_ACTIONS"));
+		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
 		actionButton:SetScript("OnClick", onActionClicked);
 		i = i + 1;
 	end
@@ -349,7 +349,7 @@ TRP3_API.module.init = function()
 			},
 			button = {
 				x = 0, y = 10, anchor = "BOTTOM",
-				text = loc("CO_MODULES_TUTO"),
+				text = loc.CO_MODULES_TUTO,
 				textWidth = 425,
 				arrow = "UP"
 			}
@@ -365,7 +365,7 @@ TRP3_API.module.init = function()
 	});
 	registerMenu({
 		id = "main_99_config_mod",
-		text = loc("CO_MODULES"),
+		text = loc.CO_MODULES,
 		isChildOf = "main_90_config",
 		onSelected = function() setPage("main_config_module"); end,
 	});

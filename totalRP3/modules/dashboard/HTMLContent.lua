@@ -96,8 +96,8 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(url, text)
 		tooltip:AddLine(url:gsub("twitter", "|cff61AAEE@"), 1, 1, 1, true);
 		tooltip:AddLine(strformat(
 			"|cffffff00%s:|r %s|n|cffffff00%s:|r %s",
-			loc("CM_CLICK"), loc("CM_TWEET"),
-			loc("CM_R_CLICK"), loc("CM_TWEET_PROFILE")
+			loc.CM_CLICK, loc.CM_TWEET,
+			loc.CM_R_CLICK, loc.CM_TWEET_PROFILE
 		), 1, 1, 1, true);
 	else
 		-- Display the text of the hyperlink and a single left-click
@@ -105,7 +105,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkEnter(url, text)
 		tooltip:AddLine(text, 1, 1, 1, true);
 		tooltip:AddLine(strformat(
 			"|cffffff00%s:|r %s",
-			loc("CM_CLICK"), loc("CM_OPEN")
+			loc.CM_CLICK, loc.CM_OPEN
 		), 1, 1, 1, true);
 	end
 	tooltip:Show();

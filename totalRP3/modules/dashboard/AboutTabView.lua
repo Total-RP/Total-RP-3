@@ -108,7 +108,7 @@ local function getLocalizedText()
 		replacements[section] = getLocalizedCreditsSection(people);
 	end
 
-	return strhtml(Strings.interpolate(loc("THANK_YOU_1"), replacements));
+	return strhtml(Strings.interpolate(loc.THANK_YOU_1, replacements));
 end
 
 --- Displays the credits and some text about what addon this is, just in

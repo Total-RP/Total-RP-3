@@ -4,7 +4,7 @@
 
 assert(TRP3_API, "Unable to find TRP3.");
 
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local getDefaultLocaleStructure = TRP3_API.locale.getDefaultLocaleStructure;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;

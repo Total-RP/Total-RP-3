@@ -34,7 +34,7 @@ local Ellyb = TRP3_API.Ellyb;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local stEtN = Utils.str.emptyToNil;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local buildZoneText = Utils.str.buildZoneText;
 local getUnitID = Utils.str.getUnitID;
@@ -462,9 +462,9 @@ local function createTabBar()
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{ loc("REG_PLAYER_CARACT"), 1, 150 },
-			{ loc("REG_PLAYER_ABOUT"), 2, 110 },
-			{ loc("REG_PLAYER_PEEK"), 3, 130 }
+			{ loc.REG_PLAYER_CARACT, 1, 150 },
+			{ loc.REG_PLAYER_ABOUT, 2, 110 },
+			{ loc.REG_PLAYER_PEEK, 3, 130 }
 		},
 		function(tabWidget, value)
 		-- Clear all
@@ -483,7 +483,7 @@ local function createTabBar()
 		-- Confirmation callback
 		function(callback)
 			if getCurrentContext() and getCurrentContext().isEditMode then
-				TRP3_API.popup.showConfirmPopup(loc("REG_PLAYER_CHANGE_CONFIRM"),
+				TRP3_API.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM,
 					function()
 						callback();
 					end);
@@ -591,7 +591,7 @@ local function cleanupMyProfiles()
 	end
 	if atLeastOneProfileWasSanitized then
 		-- Yell at the user about their mischieves
-		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
 	end
 end
 
@@ -644,7 +644,7 @@ local function scanMarkerDecorateRelationship(characterID, entry, marker)
 	marker.iconSublevel = SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL;
 
 	-- Store the relationship on the marker itself as the category.
-	marker.categoryName = loc("REG_RELATION_" .. relation);
+	marker.categoryName = loc:GetText("REG_RELATION_".. relation);
 	marker.categoryPriority = Globals.RELATIONS_ORDER[relation] or -math.huge;
 end
 
@@ -675,13 +675,13 @@ function TRP3_API.register.init()
 
 	registerMenu({
 		id = "main_10_player",
-		text = loc("REG_PLAYER"),
+		text = loc.REG_PLAYER,
 		onSelected = function() selectMenu("main_12_player_character") end,
 	});
 
 	registerMenu({
 		id = "main_11_profiles",
-		text = loc("PR_PROFILES"),
+		text = loc.PR_PROFILES,
 		onSelected = function() setPage("player_profiles"); end,
 		isChildOf = "main_10_player",
 	});
@@ -731,61 +731,61 @@ function TRP3_API.register.init()
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
 
 	local AUTO_PURGE_VALUES = {
-		{loc("CO_REGISTER_AUTO_PURGE_0"), false},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(1), 86400},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(2), 86400*2},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(5), 86400*5},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(10), 86400*10},
-		{loc("CO_REGISTER_AUTO_PURGE_1"):format(30), 86400*30},
+		{loc.CO_REGISTER_AUTO_PURGE_0, false},
+		{loc.CO_REGISTER_AUTO_PURGE_1:format(1), 86400},
+		{loc.CO_REGISTER_AUTO_PURGE_1:format(2), 86400*2},
+		{loc.CO_REGISTER_AUTO_PURGE_1:format(5), 86400*5},
+		{loc.CO_REGISTER_AUTO_PURGE_1:format(10), 86400*10},
+		{loc.CO_REGISTER_AUTO_PURGE_1:format(30), 86400*30},
 	}
 
 	-- Build configuration page
 	TRP3_API.register.CONFIG_STRUCTURE = {
 		id = "main_config_register",
-		menuText = loc("CO_REGISTER"),
-		pageText = loc("CO_REGISTER"),
+		menuText = loc.CO_REGISTER,
+		pageText = loc.CO_REGISTER,
 		elements = {
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_REGISTER_ABOUT_VOTE"),
+				title = loc.CO_REGISTER_ABOUT_VOTE,
 				configKey = "register_about_use_vote",
-				help = loc("CO_REGISTER_ABOUT_VOTE_TT")
+				help = loc.CO_REGISTER_ABOUT_VOTE_TT
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
-				title = loc("CO_REGISTER_AUTO_PURGE"),
-				help = loc("CO_REGISTER_AUTO_PURGE_TT"),
+				title = loc.CO_REGISTER_AUTO_PURGE,
+				help = loc.CO_REGISTER_AUTO_PURGE_TT,
 				listContent = AUTO_PURGE_VALUES,
 				configKey = "register_auto_purge_mode",
 				listCancel = true,
 			},			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_SANITIZER"),
+				title = loc.CO_SANITIZER,
 				configKey = "register_sanitization",
-				help = loc("CO_SANITIZER_TT")
+				help = loc.CO_SANITIZER_TT
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_LOCATION"),
+				title = loc.CO_LOCATION,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_LOCATION_ACTIVATE"),
-				help = loc("CO_LOCATION_ACTIVATE_TT"),
+				title = loc.CO_LOCATION_ACTIVATE,
+				help = loc.CO_LOCATION_ACTIVATE_TT,
 				configKey = CONFIG_ENABLE_MAP_LOCATION,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_LOCATION_DISABLE_OOC"),
-				help = loc("CO_LOCATION_DISABLE_OOC_TT"),
+				title = loc.CO_LOCATION_DISABLE_OOC,
+				help = loc.CO_LOCATION_DISABLE_OOC_TT,
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_LOCATION_DISABLE_PVP"),
-				help = loc("CO_LOCATION_DISABLE_PVP_TT"),
+				title = loc.CO_LOCATION_DISABLE_PVP,
+				help = loc.CO_LOCATION_DISABLE_PVP_TT,
 				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
 				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
 			},
@@ -841,13 +841,13 @@ function TRP3_API.register.init()
 
 	TRP3_API.map.registerScan({
 		id = "playerScan",
-		buttonText = loc("MAP_SCAN_CHAR"),
+		buttonText = loc.MAP_SCAN_CHAR,
 		buttonIcon = "Achievement_GuildPerk_EverybodysFriend",
 		scan = function()
 			local zoneID = GetCurrentMapAreaID();
 			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);
 		end,
-		scanTitle = loc("MAP_SCAN_CHAR_TITLE"),
+		scanTitle = loc.MAP_SCAN_CHAR_TITLE,
 		scanCommand = CHARACTER_SCAN_COMMAND,
 		scanResponder = function(sender, zoneID)
 			if locationEnabled() and playersCanSeeEachOthers(sender) then

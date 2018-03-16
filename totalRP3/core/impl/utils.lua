@@ -38,7 +38,7 @@ TRP3_API.utils = {
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 -- WOW imports
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
@@ -828,11 +828,11 @@ Utils.str.toHTML = function(text, noColor)
 		if tag then
 			tagText = text:sub( text:find("<"), text:find("</") + #tag + 2);
 			if #tagText == #tag + 3 then
-				return loc("PATTERN_ERROR");
+				return loc.PATTERN_ERROR;
 			end
 			tinsert(tab, tagText);
 		else
-			return loc("PATTERN_ERROR");
+			return loc.PATTERN_ERROR;
 		end
 
 		local after;

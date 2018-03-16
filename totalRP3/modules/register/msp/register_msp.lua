@@ -21,10 +21,12 @@
 -- /dump TRP3_Characters["Telkostrasz-KirinTor"].mspver;
 
 local function onStart()
+	local loc = TRP3_API.loc;
+
 	-- Check for already loaded MSP addon
 	if _G.msp_RPAddOn then
 		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
-		TRP3_API.popup.showAlertPopup(TRP3_API.locale.getText("REG_MSP_ALERT"):format(addonName));
+		TRP3_API.popup.showAlertPopup(loc(loc.REG_MSP_ALERT, addonName));
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(addonName));
 	end
@@ -34,7 +36,6 @@ local function onStart()
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local tsize = Utils.table.size;
 	local log = Utils.log.log;
-	local loc = TRP3_API.locale.getText;
 	local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
@@ -460,11 +461,11 @@ local function onStart()
 		msp.my['NT'] = dataTab.FT;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
-				if miscData.NA == loc("REG_PLAYER_MSP_MOTTO") then
+				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO then
 					msp.my['MO'] = miscData.VA;
-				elseif miscData.NA == loc("REG_PLAYER_MSP_HOUSE") then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE then
 					msp.my['NH'] = miscData.VA;
-				elseif miscData.NA == loc("REG_PLAYER_MSP_NICK") then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK then
 					msp.my['NI'] = miscData.VA;
 				end
 			end
@@ -644,7 +645,7 @@ local function onStart()
 						end
 						local index = #profile.characteristics.MI + 1;
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc("REG_PLAYER_MSP_MOTTO") then
+							if miscStructure.NA == loc.REG_PLAYER_MSP_MOTTO then
 								index = miscIndex;
 							end
 						end
@@ -653,7 +654,7 @@ local function onStart()
 						else
 							wipe(profile.characteristics.MI[index]);
 						end
-						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_MOTTO");
+						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
 						profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
 						profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
 					end
@@ -664,7 +665,7 @@ local function onStart()
 						end
 						local index = #profile.characteristics.MI + 1;
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc("REG_PLAYER_MSP_HOUSE") then
+							if miscStructure.NA == loc.REG_PLAYER_MSP_HOUSE then
 								index = miscIndex;
 							end
 						end
@@ -673,7 +674,7 @@ local function onStart()
 						else
 							wipe(profile.characteristics.MI[index]);
 						end
-						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_HOUSE");
+						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
 						profile.characteristics.MI[index].VA = value;
 						profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
 					end
@@ -684,7 +685,7 @@ local function onStart()
 						end
 						local index = #profile.characteristics.MI + 1;
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc("REG_PLAYER_MSP_NICK") then
+							if miscStructure.NA == loc.REG_PLAYER_MSP_NICK then
 								index = miscIndex;
 							end
 						end
@@ -693,7 +694,7 @@ local function onStart()
 						else
 							wipe(profile.characteristics.MI[index]);
 						end
-						profile.characteristics.MI[index].NA = loc("REG_PLAYER_MSP_NICK");
+						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
 						profile.characteristics.MI[index].VA = value;
 						profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
 					end
@@ -779,12 +780,12 @@ local function onStart()
 	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
 	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
-		title = loc("CO_MSP"),
+		title = loc.CO_MSP,
 	});
 	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
-		title = loc("CO_MSP_T3"),
-		help = loc("CO_MSP_T3_TT"),
+		title = loc.CO_MSP_T3,
+		help = loc.CO_MSP_T3_TT,
 		configKey = CONFIG_T3_ONLY,
 	});
 

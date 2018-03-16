@@ -195,7 +195,7 @@ local function onStart()
 		local profileID = getUnitIDProfileID(unitID);
 		local unitName = getUnitRPName(unitID);
 
-		showTextInputPopup(loc("MATURE_FILTER_FLAG_PLAYER_TEXT"):format(unitName), function(text)
+		showTextInputPopup(loc.MATURE_FILTER_FLAG_PLAYER_TEXT:format(unitName), function(text)
 			-- If the user inserted words to add to the dicitonnary, we add them
 			for word in text:gmatch("[^%s%p]+") do
 				addWordToCustomDictionary(word);
@@ -209,7 +209,7 @@ local function onStart()
 	end
 
 	local function removeUnitProfileFromWhitelistConfirm(unitID)
-		TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"):format(unitID), function()
+		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT:format(unitID), function()
 			local profileID = getUnitIDProfileID(unitID);
 			-- Flag the profile of the unit has having mature content
 			removeProfileIDFromWhiteList(profileID);
@@ -225,7 +225,7 @@ local function onStart()
 	local function whitelistProfileByUnitIDConfirm(unitID, callback)
 		local profileID = getUnitIDProfileID(unitID);
 
-		TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_ADD_TO_WHITELIST_TEXT"):format(unitID), function()
+		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_WHITELIST_TEXT:format(unitID), function()
 			whitelistProfileID(profileID);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 			if callback and type(callback) == "function" then callback() end;
@@ -324,10 +324,10 @@ local function onStart()
 		lineFrame, lineFrame, "RIGHT", 0, -30, -- Tooltip position
 		word, -- Tooltip title
 		("\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffff0000%s"):format( -- Tooltip content
-		loc("CM_L_CLICK"),
-		loc("MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"),
-		loc("CM_R_CLICK"),
-		loc("MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD")
+		loc.CM_L_CLICK,
+		loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD,
+		loc.CM_R_CLICK,
+		loc.MATURE_FILTER_EDIT_DICTIONARY_DELETE_WORD
 		)
 		);
 		lineFrame.text:SetText(word);
@@ -427,14 +427,14 @@ local function onStart()
 		tinsert(dictionaryEditor.widgetTab, lineFrame);
 	end
 
-	dictionaryEditor.title:SetText(loc("MATURE_FILTER_EDIT_DICTIONARY_TITLE"));
+	dictionaryEditor.title:SetText(loc.MATURE_FILTER_EDIT_DICTIONARY_TITLE);
 
-	dictionaryEditor.addNewWord.button:SetText(loc("MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"));
+	dictionaryEditor.addNewWord.button:SetText(loc.MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON);
 	dictionaryEditor.addNewWord.button:SetScript("OnClick", saveNewWordToDictionnary);
 	dictionaryEditor.addNewWord.input:SetScript("OnEnterPressed", saveNewWordToDictionnary);
-	dictionaryEditor.addNewWord.input.title:SetText(loc("MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"));
+	dictionaryEditor.addNewWord.input.title:SetText(loc.MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT);
 
-	dictionaryEditor.editPopup.title:SetText(loc("MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD"));
+	dictionaryEditor.editPopup.title:SetText(loc.MATURE_FILTER_EDIT_DICTIONARY_EDIT_WORD);
 	dictionaryEditor.editPopup.button:SetText(SAVE);
 	dictionaryEditor.editPopup.button:SetScript("OnClick", editWord);
 	dictionaryEditor.editPopup.input:SetScript("OnEnterPressed", editWord);
@@ -447,11 +447,11 @@ local function onStart()
 	-- MATURE ALERT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	TRP3_MatureFilterPopup.title:SetText(loc("MATURE_FILTER_WARNING_TITLE"));
-	TRP3_MatureFilterPopup.text:SetText(loc("MATURE_FILTER_WARNING_TEXT"));
+	TRP3_MatureFilterPopup.title:SetText(loc.MATURE_FILTER_WARNING_TITLE);
+	TRP3_MatureFilterPopup.text:SetText(loc.MATURE_FILTER_WARNING_TEXT);
 
 	-- Go back
-	TRP3_MatureFilterPopup.cancel:SetText(loc("MATURE_FILTER_WARNING_GO_BACK"));
+	TRP3_MatureFilterPopup.cancel:SetText(loc.MATURE_FILTER_WARNING_GO_BACK);
 	TRP3_MatureFilterPopup.cancel:SetScript("OnClick", function()
 		-- Remove the current profile from the menu list
 		TRP3_API.navigation.menu.unregisterMenu(TRP3_MatureFilterPopup.menuID);
@@ -460,7 +460,7 @@ local function onStart()
 	end);
 
 	-- Continue
-	TRP3_MatureFilterPopup.accept:SetText(loc("MATURE_FILTER_WARNING_CONTINUE"));
+	TRP3_MatureFilterPopup.accept:SetText(loc.MATURE_FILTER_WARNING_CONTINUE);
 	TRP3_MatureFilterPopup.accept:SetScript("OnClick", hidePopups)
 
 	-- Remember for this profile
@@ -516,14 +516,14 @@ local function onStart()
 		-- Section title
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
-			title = loc("MATURE_FILTER_TITLE"),
+			title = loc.MATURE_FILTER_TITLE,
 		});
 		-- Enable mature filter checkbox
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
-			title = loc("MATURE_FILTER_OPTION"),
+			title = loc.MATURE_FILTER_OPTION,
 			configKey = MATURE_FILTER_CONFIG,
-			help = loc("MATURE_FILTER_OPTION_TT")
+			help = loc.MATURE_FILTER_OPTION_TT
 		});
 		-- Enable mature filter checkbox
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
@@ -539,9 +539,9 @@ local function onStart()
 		-- Edit dictionary button
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("MATURE_FILTER_EDIT_DICTIONARY"),
-			help = loc("MATURE_FILTER_EDIT_DICTIONARY_TT"),
-			text = loc("MATURE_FILTER_EDIT_DICTIONARY_BUTTON"),
+			title = loc.MATURE_FILTER_EDIT_DICTIONARY,
+			help = loc.MATURE_FILTER_EDIT_DICTIONARY_TT,
+			text = loc.MATURE_FILTER_EDIT_DICTIONARY_BUTTON,
 			callback = function()
 				TRP3_API.popup.showPopup("mature_dictionary");
 				refreshDictionaryList();
@@ -551,10 +551,10 @@ local function onStart()
 		-- Reset dictionnary button
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE"),
-			text = loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON"),
+			title = loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_TITLE,
+			text = loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_BUTTON,
 			callback = function()
-				TRP3_API.popup.showConfirmPopup(loc("MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING"), function()
+				TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_EDIT_DICTIONARY_RESET_WARNING, function()
 					resetDictionnary();
 				end);
 			end,
@@ -580,7 +580,7 @@ local function onStart()
 	-- Add to white list button
 	TRP3_API.target.registerButton({
 		id = "aa_player_w_mature_white_list",
-		configText = loc("MATURE_FILTER_ADD_TO_WHITELIST_OPTION"),
+		configText = loc.MATURE_FILTER_ADD_TO_WHITELIST_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
@@ -591,14 +591,14 @@ local function onStart()
 			end
 		end,
 		onClick = whitelistProfileByUnitIDConfirm,
-		tooltipSub = "|cffffff00" .. loc("CM_CLICK") .. "|r: " .. loc("MATURE_FILTER_ADD_TO_WHITELIST_TT"),
-		tooltip = loc("MATURE_FILTER_ADD_TO_WHITELIST"),
+		tooltipSub = "|cffffff00" .. loc.CM_CLICK .. "|r: " .. loc.MATURE_FILTER_ADD_TO_WHITELIST_TT,
+		tooltip = loc.MATURE_FILTER_ADD_TO_WHITELIST,
 		icon = "INV_ValentinesCard02"
 	});
 	-- Remove from white list button
 	TRP3_API.target.registerButton({
 		id = "aa_player_w_mature_remove_white_list",
-		configText = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"),
+		configText = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
@@ -612,15 +612,15 @@ local function onStart()
 		onClick = function(unitID)
 			removeUnitProfileFromWhitelistConfirm(unitID);
 		end,
-		tooltipSub = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"),
-		tooltip = loc("MATURE_FILTER_REMOVE_FROM_WHITELIST"),
+		tooltipSub = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_TT,
+		tooltip = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST,
 		icon = "INV_Inscription_ParchmentVar03"
 	});
 
 	-- Manually flag player button
 	TRP3_API.target.registerButton({
 		id = "aa_player_w_mature_flag",
-		configText = loc("MATURE_FILTER_FLAG_PLAYER_OPTION"),
+		configText = loc.MATURE_FILTER_FLAG_PLAYER_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 		condition = function(targetType, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
@@ -634,8 +634,8 @@ local function onStart()
 		onClick = function(unitID)
 			flagUnitProfileHasHavingMatureContentConfirm(unitID);
 		end,
-		tooltipSub = loc("MATURE_FILTER_FLAG_PLAYER_TT"),
-		tooltip = loc("MATURE_FILTER_FLAG_PLAYER"),
+		tooltipSub = loc.MATURE_FILTER_FLAG_PLAYER_TT,
+		tooltip = loc.MATURE_FILTER_FLAG_PLAYER,
 		icon = "Ability_Hunter_MasterMarksman"
 	});
 

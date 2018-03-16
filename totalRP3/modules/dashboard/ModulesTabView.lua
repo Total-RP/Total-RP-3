@@ -32,7 +32,7 @@ local strhtml = TRP3_API.utils.str.toHTML;
 
 --- Returns the fully formatted localized text for this view.
 local function getLocalizedText()
-	return strhtml(loc("MORE_MODULES_2"));
+	return strhtml(loc.MORE_MODULES_2);
 end
 
 --- Displays a list of additional cool modules that the user can download.
@@ -42,7 +42,7 @@ local ModulesTabView = Class("TRP3_DashboardModulesTabView", Dashboard.TabView);
 Dashboard.ModulesTabView = ModulesTabView;
 
 function ModulesTabView.static.getTabTitle()
-	return loc("DB_MORE");
+	return loc.DB_MORE;
 end
 
 function ModulesTabView:initialize(dashboard)

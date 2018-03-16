@@ -17,19 +17,19 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 TRP3_API.module.registerModule({
 	["name"] = "TinyTooltip",
 	["id"] = "trp3_tinytooltip",
-	["description"] = loc("MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"):format("TinyTooltip"),
+	["description"] = loc.MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION:format("TinyTooltip"),
 	["version"] = 1.000,
 	["minVersion"] = 25,
 	["onStart"] = function()
 
 		-- Check if the add-on TinyTooltip is installed
 		if not TinyTooltip then
-			return false,  loc("MO_ADDON_NOT_INSTALLED"):format("TinyTooltip");
+			return false,  loc.MO_ADDON_NOT_INSTALLED:format("TinyTooltip");
 		end
 
 		-- List of the tooltips we want to be customized by TinyTooltips

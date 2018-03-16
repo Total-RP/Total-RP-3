@@ -20,7 +20,7 @@
 local Events = TRP3_API.events;
 local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
 local EMPTY = TRP3_API.globals.empty;
 local UnitIsPlayer = UnitIsPlayer;
@@ -68,12 +68,12 @@ local function getRelationText(profileID)
 	if relation == RELATIONS.NONE then
 		return "";
 	end
-	return loc("REG_RELATION_" .. relation);
+	return loc:GetText("REG_RELATION_" .. relation);
 end
 TRP3_API.register.relation.getRelationText = getRelationText;
 
 local function getRelationTooltipText(profileID, profile)
-	return loc("REG_RELATION_" .. getRelation(profileID) .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
+	return loc:GetText("REG_RELATION_" .. getRelation(profileID) .. "_TT"):format(getPlayerCompleteName(true), getCompleteName(profile.characteristics or EMPTY, UNKNOWN, true));
 end
 TRP3_API.register.relation.getRelationTooltipText = getRelationTooltipText;
 
@@ -113,7 +113,7 @@ TRP3_API.register.isIDIgnored = isIDIgnored;
 
 local function ignoreID(unitID, reason)
 	if reason:len() == 0 then
-		reason = loc("TF_IGNORE_NO_REASON");
+		reason = loc.TF_IGNORE_NO_REASON;
 	end
 	blackList[unitID] = reason;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
@@ -121,7 +121,7 @@ end
 TRP3_API.register.ignoreID = ignoreID;
 
 local function ignoreIDConfirm(unitID)
-	showTextInputPopup(loc("TF_IGNORE_CONFIRM"):format(unitID), function(text)
+	showTextInputPopup(loc.TF_IGNORE_CONFIRM:format(unitID), function(text)
 		ignoreID(unitID, text);
 	end);
 end
@@ -170,14 +170,14 @@ end
 local function onTargetButtonClicked(unitID, _, _, button)
 	local profileID = hasProfile(unitID);
 	local values = {};
-	tinsert(values, {loc("REG_RELATION"), nil});
-	tinsert(values, {loc("REG_RELATION_NONE"), RELATIONS.NONE});
-	tinsert(values, {loc("REG_RELATION_UNFRIENDLY"), RELATIONS.UNFRIENDLY});
-	tinsert(values, {loc("REG_RELATION_NEUTRAL"), RELATIONS.NEUTRAL});
-	tinsert(values, {loc("REG_RELATION_BUSINESS"), RELATIONS.BUSINESS});
-	tinsert(values, {loc("REG_RELATION_FRIEND"), RELATIONS.FRIEND});
-	tinsert(values, {loc("REG_RELATION_LOVE"), RELATIONS.LOVE});
-	tinsert(values, {loc("REG_RELATION_FAMILY"), RELATIONS.FAMILY});
+	tinsert(values, {loc.REG_RELATION, nil});
+	tinsert(values, {loc.REG_RELATION_NONE, RELATIONS.NONE});
+	tinsert(values, {loc.REG_RELATION_UNFRIENDLY, RELATIONS.UNFRIENDLY});
+	tinsert(values, {loc.REG_RELATION_NEUTRAL, RELATIONS.NEUTRAL});
+	tinsert(values, {loc.REG_RELATION_BUSINESS, RELATIONS.BUSINESS});
+	tinsert(values, {loc.REG_RELATION_FRIEND, RELATIONS.FRIEND});
+	tinsert(values, {loc.REG_RELATION_LOVE, RELATIONS.LOVE});
+	tinsert(values, {loc.REG_RELATION_FAMILY, RELATIONS.FAMILY});
 	displayDropDown(button, values, onRelationSelected, 0, true);
 end
 
@@ -202,7 +202,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local player_id = TRP3_API.globals.player_id;
 		TRP3_API.target.registerButton({
 			id = "aa_player_z_ignore",
-			configText = loc("TF_IGNORE"),
+			configText = loc.TF_IGNORE,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
@@ -210,14 +210,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onClick = function(unitID)
 				ignoreIDConfirm(unitID);
 			end,
-			tooltipSub = loc("TF_IGNORE_TT"),
-			tooltip = loc("TF_IGNORE"),
+			tooltipSub = loc.TF_IGNORE_TT,
+			tooltip = loc.TF_IGNORE,
 			icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
 		});
 
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_relation",
-			configText = loc("REG_RELATION"),
+			configText = loc.REG_RELATION,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
@@ -225,8 +225,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			onClick = onTargetButtonClicked,
 			adapter = function(buttonStructure, unitID)
 				local profileID = hasProfile(unitID);
-				buttonStructure.tooltip = loc("REG_RELATION") .. ": " .. getRelationText(profileID);
-				buttonStructure.tooltipSub = "|cff00ff00" .. getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc("REG_RELATION_TARGET");
+				buttonStructure.tooltip = loc.REG_RELATION .. ": " .. getRelationText(profileID);
+				buttonStructure.tooltipSub = "|cff00ff00" .. getRelationTooltipText(profileID, getProfile(profileID)) .. "\n" .. loc.REG_RELATION_TARGET;
 				buttonStructure.icon = getRelationTexture(profileID);
 			end,
 		});

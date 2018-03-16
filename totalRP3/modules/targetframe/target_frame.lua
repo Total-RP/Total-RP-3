@@ -30,7 +30,8 @@ local function onStart()
 
 	-- imports
 	local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-	local loc, CreateFrame, EMPTY = TRP3_API.locale.getText, CreateFrame, Globals.empty;
+	local CreateFrame, EMPTY = CreateFrame, Globals.empty;
+	local loc = TRP3_API.loc;
 	local isPlayerIC, isUnitIDKnown, getUnitIDCurrentProfile, hasProfile, isIDIgnored;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local assert, pairs, tinsert, table, math, _G = assert, pairs, tinsert, table, math, _G;
@@ -298,17 +299,17 @@ local function onStart()
 
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
-			title = loc("CO_TARGETFRAME"),
+			title = loc.CO_TARGETFRAME,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigTarget_Usage",
-			title = loc("CO_TARGETFRAME_USE"),
-			help = loc("CO_TARGETFRAME_USE_TT"),
+			title = loc.CO_TARGETFRAME_USE,
+			help = loc.CO_TARGETFRAME_USE_TT,
 			listContent = {
-				{loc("CO_TARGETFRAME_USE_1"), 1},
-				{loc("CO_TARGETFRAME_USE_2"), 2},
-				{loc("CO_TARGETFRAME_USE_3"), 3}
+				{loc.CO_TARGETFRAME_USE_1, 1},
+				{loc.CO_TARGETFRAME_USE_2, 2},
+				{loc.CO_TARGETFRAME_USE_3, 3}
 			},
 			configKey = CONFIG_TARGET_USE,
 			listWidth = nil,
@@ -316,7 +317,7 @@ local function onStart()
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigSlider",
-			title = loc("CO_TARGETFRAME_ICON_SIZE"),
+			title = loc.CO_TARGETFRAME_ICON_SIZE,
 			configKey = CONFIG_TARGET_ICON_SIZE,
 			min = 15,
 			max = 50,
@@ -325,8 +326,8 @@ local function onStart()
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("CO_MINIMAP_BUTTON_RESET"),
-			text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
+			title = loc.CO_MINIMAP_BUTTON_RESET,
+			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
 			callback = function()
 				setConfigValue(CONFIG_TARGET_POS_A, "CENTER");
 				setConfigValue(CONFIG_TARGET_POS_X, 0);

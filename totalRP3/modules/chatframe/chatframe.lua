@@ -156,10 +156,10 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
 
 	local NAMING_METHOD_TAB = {
-		{loc("CO_CHAT_MAIN_NAMING_1"), 1},
-		{loc("CO_CHAT_MAIN_NAMING_2"), 2},
-		{loc("CO_CHAT_MAIN_NAMING_3"), 3},
-		{loc("CO_CHAT_MAIN_NAMING_4"), 4},
+		{loc.CO_CHAT_MAIN_NAMING_1, 1},
+		{loc.CO_CHAT_MAIN_NAMING_2, 2},
+		{loc.CO_CHAT_MAIN_NAMING_3, 3},
+		{loc.CO_CHAT_MAIN_NAMING_4, 4},
 	}
 	
 	local EMOTE_PATTERNS = {
@@ -178,12 +178,12 @@ local function createConfigPage()
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
 		id = "main_config_chatframe",
-		menuText = loc("CO_CHAT"),
-		pageText = loc("CO_CHAT"),
+		menuText = loc.CO_CHAT,
+		pageText = loc.CO_CHAT,
 		elements = {
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_CHAT_MAIN"),
+				title = loc.CO_CHAT_MAIN,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -194,72 +194,72 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationTooltip_Chat_NamingMethod",
-				title = loc("CO_CHAT_MAIN_NAMING"),
+				title = loc.CO_CHAT_MAIN_NAMING,
 				listContent = NAMING_METHOD_TAB,
 				configKey = CONFIG_NAME_METHOD,
 				listCancel = true,
 			},
             {
                 inherit = "TRP3_ConfigCheck",
-                title = loc("CO_CHAT_REMOVE_REALM"),
+                title = loc.CO_CHAT_REMOVE_REALM,
                 configKey = CONFIG_REMOVE_REALM
             },
             {
                 inherit = "TRP3_ConfigCheck",
-                title = loc("CO_CHAT_INSERT_FULL_RP_NAME"),
+                title = loc.CO_CHAT_INSERT_FULL_RP_NAME,
                 configKey = CONFIG_INSERT_FULL_RP_NAME,
-                help = loc("CO_CHAT_INSERT_FULL_RP_NAME_TT")
+                help = loc.CO_CHAT_INSERT_FULL_RP_NAME_TT
             },
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_MAIN_COLOR"),
+				title = loc.CO_CHAT_MAIN_COLOR,
 				configKey = CONFIG_NAME_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_INCREASE_CONTRAST"),
+				title = loc.CO_CHAT_INCREASE_CONTRAST,
 				configKey = CONFIG_INCREASE_CONTRAST,
 				dependentOnOptions = {CONFIG_NAME_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_USE_ICONS"),
+				title = loc.CO_CHAT_USE_ICONS,
 				configKey = CONFIG_SHOW_ICON,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_NPCSPEECH_REPLACEMENT"),
-				help = loc("CO_CHAT_NPCSPEECH_REPLACEMENT_TT"),
+				title = loc.CO_CHAT_NPCSPEECH_REPLACEMENT,
+				help = loc.CO_CHAT_NPCSPEECH_REPLACEMENT_TT,
 				configKey = CONFIG_NPCSPEECH_REPLACEMENT,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_CHAT_MAIN_NPC"),
+				title = loc.CO_CHAT_MAIN_NPC,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_MAIN_NPC_USE"),
+				title = loc.CO_CHAT_MAIN_NPC_USE,
 				configKey = CONFIG_NPC_TALK,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_CHAT_MAIN_EMOTE"),
+				title = loc.CO_CHAT_MAIN_EMOTE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_MAIN_EMOTE_YELL"),
-				help = loc("CO_CHAT_MAIN_EMOTE_YELL_TT"),
+				title = loc.CO_CHAT_MAIN_EMOTE_YELL,
+				help = loc.CO_CHAT_MAIN_EMOTE_YELL_TT,
 				configKey = CONFIG_YELL_NO_EMOTE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_MAIN_EMOTE_USE"),
+				title = loc.CO_CHAT_MAIN_EMOTE_USE,
 				configKey = CONFIG_EMOTE,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationTooltip_Chat_EmotePattern",
-				title = loc("CO_CHAT_MAIN_EMOTE_PATTERN"),
+				title = loc.CO_CHAT_MAIN_EMOTE_PATTERN,
 				listContent = EMOTE_PATTERNS,
 				configKey = CONFIG_EMOTE_PATTERN,
 				listCancel = true,
@@ -267,17 +267,17 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_CHAT_MAIN_OOC"),
+				title = loc.CO_CHAT_MAIN_OOC,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc("CO_CHAT_MAIN_OOC_USE"),
+				title = loc.CO_CHAT_MAIN_OOC_USE,
 				configKey = CONFIG_OOC,
 			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationTooltip_Chat_OOCPattern",
-				title = loc("CO_CHAT_MAIN_OOC_PATTERN"),
+				title = loc.CO_CHAT_MAIN_OOC_PATTERN,
 				listContent = OOC_PATTERNS,
 				configKey = CONFIG_OOC_PATTERN,
 				listCancel = true,
@@ -285,13 +285,13 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigColorPicker",
-				title = loc("CO_CHAT_MAIN_OOC_COLOR"),
+				title = loc.CO_CHAT_MAIN_OOC_COLOR,
 				configKey = CONFIG_OOC_COLOR,
 				dependentOnOptions = {CONFIG_OOC},
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc("CO_CHAT_USE"),
+				title = loc.CO_CHAT_USE,
 			},
 		}
 	};
@@ -807,9 +807,9 @@ local function onStart()
 
 
 	NPC_TALK_PATTERNS = {
-		[loc("NPC_TALK_SAY_PATTERN")] = "MONSTER_SAY",
-		[loc("NPC_TALK_YELL_PATTERN")] = "MONSTER_YELL",
-		[loc("NPC_TALK_WHISPER_PATTERN")] = "MONSTER_WHISPER",
+		[loc.NPC_TALK_SAY_PATTERN] = "MONSTER_SAY",
+		[loc.NPC_TALK_YELL_PATTERN] = "MONSTER_YELL",
+		[loc.NPC_TALK_WHISPER_PATTERN] = "MONSTER_WHISPER",
 	};
 	createConfigPage();
 	hooking();

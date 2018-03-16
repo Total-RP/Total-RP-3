@@ -32,7 +32,7 @@ local Log = Utils.log;
 local Comm, isIDIgnored = TRP3_API.communication, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 Comm.broadcast = {};
 local ticker;
@@ -259,7 +259,7 @@ Comm.broadcast.init = function()
 			end, 9);
 		else
 			-- Broadcast isn't enabled so we should probably say it's offline.
-			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc("BROADCAST_OFFLINE_DISABLED"));
+			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc.BROADCAST_OFFLINE_DISABLED);
 		end
 	end);
 
@@ -271,7 +271,7 @@ Comm.broadcast.init = function()
 		if channel == config_BroadcastChannel() then
 			Log.log("Passworded !");
 
-			local message = loc("BROADCAST_PASSWORD"):format(channel);
+			local message = loc(loc.BROADCAST_PASSWORD, channel);
 			Utils.message.displayMessage(message);
 			ticker:Cancel();
 
@@ -283,14 +283,14 @@ Comm.broadcast.init = function()
 	-- For when someone just places a password
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
 		if mode == "PASSWORD_CHANGED" and channel == config_BroadcastChannel() then
-			Utils.message.displayMessage(loc("BROADCAST_PASSWORDED"):format(user, channel));
+			Utils.message.displayMessage(loc(loc.BROADCAST_PASSWORDED, user, channel));
 		end
 	end);
 
 	-- When you are already in 10 channel
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
-			local message = loc("BROADCAST_10");
+			local message = loc.BROADCAST_10;
 			Utils.message.displayMessage(message);
 			ticker:Cancel();
 

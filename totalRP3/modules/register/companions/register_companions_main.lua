@@ -23,7 +23,8 @@ TRP3_API.companions = {
 }
 
 -- imports
-local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.locale.getText, TRP3_API.utils, TRP3_API.events;
+local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
@@ -151,7 +152,7 @@ local function duplicateProfile(duplicatedProfile, profileName)
 	playerCompanions[profileID] = {};
 	Utils.table.copy(playerCompanions[profileID], duplicatedProfile);
 	playerCompanions[profileID].profileName = profileName;
-	displayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
+	displayMessage(loc.PR_PROFILE_CREATED:format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
 TRP3_API.companions.player.duplicateProfile = duplicateProfile;
@@ -183,7 +184,7 @@ local function deleteProfile(profileID, silently)
 	wipe(playerCompanions[profileID]);
 	playerCompanions[profileID] = nil;
 	if not silently then
-		displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
+		displayMessage(loc.PR_PROFILE_DELETED:format(Utils.str.color("g")..profileName.."|r"));
 		Events.fireEvent(Events.REGISTER_PROFILE_DELETED, profileID);
 	end
 end
@@ -461,7 +462,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	registerMenu({
 		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,
-		text = loc("REG_COMPANIONS"),
+		text = loc.REG_COMPANIONS,
 		onSelected = function() setPage(TRP3_API.navigation.page.id.COMPANIONS_PROFILES) end,
 		closeable = true,
 	});

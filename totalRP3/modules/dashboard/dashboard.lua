@@ -153,7 +153,7 @@ TRP3_API.dashboard.init = function()
 			},
 			button = {
 				x = -50, y = 0, anchor = "RIGHT",
-				text = loc("DB_TUTO_1"):format(TRP3_API.globals.player_id),
+				text = loc.DB_TUTO_1:format(TRP3_API.globals.player_id),
 				textWidth = 425,
 				arrow = "UP"
 			}
@@ -174,23 +174,23 @@ TRP3_API.dashboard.init = function()
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
 
-	setupFieldSet(TRP3_DashboardStatus, loc("DB_STATUS"), 150);
-	TRP3_DashboardStatus_CharactStatus:SetText(loc("DB_STATUS_RP"));
+	setupFieldSet(TRP3_DashboardStatus, loc.DB_STATUS, 150);
+	TRP3_DashboardStatus_CharactStatus:SetText(loc.DB_STATUS_RP);
 	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
 	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
 	local statusTab = {
-		{IC_ICON .. " " .. loc("DB_STATUS_RP_IC"), 1, loc("DB_STATUS_RP_IC_TT")},
-		{OOC_ICON .. " " .. loc("DB_STATUS_RP_OOC"), 2, loc("DB_STATUS_RP_OOC_TT")},
+		{IC_ICON .. " " .. loc.DB_STATUS_RP_IC, 1, loc.DB_STATUS_RP_IC_TT},
+		{OOC_ICON .. " " .. loc.DB_STATUS_RP_OOC, 2, loc.DB_STATUS_RP_OOC_TT},
 	};
 	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 170, true);
 
-	TRP3_DashboardStatus_XPStatus:SetText(loc("DB_STATUS_XP"));
+	TRP3_DashboardStatus_XPStatus:SetText(loc.DB_STATUS_XP);
 	local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
 	local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15|t";
 	local xpTab = {
-		{BEGINNER_ICON .. " " .. loc("DB_STATUS_XP_BEGINNER"), 1, loc("DB_STATUS_XP_BEGINNER_TT")},
-		{loc("DB_STATUS_RP_EXP"), 2, loc("DB_STATUS_RP_EXP_TT")},
-		{VOLUNTEER_ICON .. " " .. loc("DB_STATUS_RP_VOLUNTEER"), 3, loc("DB_STATUS_RP_VOLUNTEER_TT")},
+		{BEGINNER_ICON .. " " .. loc.DB_STATUS_XP_BEGINNER, 1, loc.DB_STATUS_XP_BEGINNER_TT},
+		{loc.DB_STATUS_RP_EXP, 2, loc.DB_STATUS_RP_EXP_TT},
+		{VOLUNTEER_ICON .. " " .. loc.DB_STATUS_RP_VOLUNTEER, 3, loc.DB_STATUS_RP_VOLUNTEER_TT},
 	};
 	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 170, true);
 
@@ -216,16 +216,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
 		-- away/dnd
-		local status1Text = color("w")..loc("TB_STATUS")..": "..color("r")..loc("TB_DND_MODE");
-		local status1SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-		local status2Text = color("w")..loc("TB_STATUS")..": "..color("o")..loc("TB_AFK_MODE");
-		local status2SubText = color("y")..loc("CM_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("g")..loc("TB_NORMAL_MODE")..color("w")));
-		local status3Text = color("w")..loc("TB_STATUS")..": "..color("g")..loc("TB_NORMAL_MODE");
-		local status3SubText = color("y")..loc("CM_L_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("o")..loc("TB_AFK_MODE")..color("w"))).."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..(loc("TB_GO_TO_MODE"):format(color("r")..loc("TB_DND_MODE")..color("w")));
+		local status1Text = color("w")..loc.TB_STATUS..": "..color("r")..loc.TB_DND_MODE;
+		local status1SubText = color("y")..loc.CM_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("g")..loc.TB_NORMAL_MODE..color("w")));
+		local status2Text = color("w")..loc.TB_STATUS..": "..color("o")..loc.TB_AFK_MODE;
+		local status2SubText = color("y")..loc.CM_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("g")..loc.TB_NORMAL_MODE..color("w")));
+		local status3Text = color("w")..loc.TB_STATUS..": "..color("g")..loc.TB_NORMAL_MODE;
+		local status3SubText = color("y")..loc.CM_L_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("o")..loc.TB_AFK_MODE..color("w"))).."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("r")..loc.TB_DND_MODE..color("w")));
 		Button_Status = {
 			id = "aa_trp3_c",
 			icon = "Ability_Rogue_MasterOfSubtlety",
-			configText = loc("CO_TOOLBAR_CONTENT_STATUS"),
+			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onUpdate = function(Uibutton, buttonStructure)
 				updateToolbarButton(Uibutton, buttonStructure);
 				if GetMouseFocus() == Uibutton then
@@ -266,18 +266,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		-- Toolbar RP status
 		local RP_ICON, OOC_ICON = "spell_shadow_charm", "Inv_misc_grouplooking";
-		local rpTextOn = loc("TB_RPSTATUS_ON");
-		local rpTextOff = loc("TB_RPSTATUS_OFF");
-		local rpText2 = color("y")..loc("CM_L_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_ON");
-		rpText2 = rpText2.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
-		local rpText3 = color("y")..loc("CM_L_CLICK")..": "..color("w")..loc("TB_RPSTATUS_TO_OFF");
-		rpText3 = rpText3.."\n"..color("y")..loc("CM_R_CLICK")..": "..color("w")..loc("TB_SWITCH_PROFILE");
+		local rpTextOn = loc.TB_RPSTATUS_ON;
+		local rpTextOff = loc.TB_RPSTATUS_OFF;
+		local rpText2 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_ON;
+		rpText2 = rpText2.."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..loc.TB_SWITCH_PROFILE;
+		local rpText3 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_OFF;
+		rpText3 = rpText3.."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..loc.TB_SWITCH_PROFILE;
 		local defaultIcon = TRP3_API.globals.player_icon;
 
 		Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
 			icon = "Inv_misc_grouplooking",
-			configText = loc("CO_TOOLBAR_CONTENT_RPSTATUS"),
+			configText = loc.CO_TOOLBAR_CONTENT_RPSTATUS,
 			onEnter = function(Uibutton, buttonStructure) end,
 			onUpdate = function(Uibutton, buttonStructure)
 				updateToolbarButton(Uibutton, buttonStructure);
@@ -303,7 +303,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					local list = getProfiles();
 
 					local dropdownItems = {};
-					tinsert(dropdownItems,{loc("TB_SWITCH_PROFILE"), nil});
+					tinsert(dropdownItems,{loc.TB_SWITCH_PROFILE, nil});
 					local currentProfileID = getPlayerCurrentProfileID()
 					for key, value in pairs(list) do
 						local icon = value.player.characteristics.IC or Globals.icons.profile_default;

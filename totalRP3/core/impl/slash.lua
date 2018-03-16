@@ -17,7 +17,7 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local tonumber, math, tinsert, type, assert, tostring, pairs, sort = tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid;
@@ -57,7 +57,7 @@ function SlashCmdList.TOTALRP3(msg, editbox)
 		COMMANDS[cmdID].handler(unpack(args));
 	else
 		-- Show command list
-		displayMessage(loc("COM_LIST"));
+		displayMessage(loc.COM_LIST);
 		wipe(sortTable);
 		for cmdID, _ in pairs(COMMANDS) do
 			tinsert(sortTable, cmdID);
@@ -125,7 +125,7 @@ local function rollDice(diceString, noSend)
 
 		total = total + modifierValue;
 
-		Utils.message.displayMessage(loc("DICE_ROLL"):format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
+		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
 		sendDiceRoll({c = num, d = diceCount, t = total});
 		return total;
 	end
@@ -147,7 +147,7 @@ function TRP3_API.slash.rollDices(...)
 		i = index;
 	end
 
-	local totalMessage = loc("DICE_TOTAL"):format(Utils.str.icon("inv_misc_dice_01", 20), total);
+	local totalMessage = loc.DICE_TOTAL:format(Utils.str.icon("inv_misc_dice_01", 20), total);
 	if i > 1 then
 		Utils.message.displayMessage(totalMessage);
 		sendDiceRoll({t = total});
@@ -166,7 +166,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
 		id = "roll",
-		helpLine = " " .. loc("DICE_HELP"),
+		helpLine = " " .. loc.DICE_HELP,
 		handler = function(...)
 			TRP3_API.slash.rollDices(...);
 		end
@@ -176,9 +176,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if sender ~= Globals.player_id then
 			if type(arg) == "table" then
 				if arg.c and arg.d and arg.t then
-					Utils.message.displayMessage(loc("DICE_ROLL_T"):format(Utils.str.icon("inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
+					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon("inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
 				elseif arg.t then
-					local totalMessage = loc("DICE_TOTAL_T"):format(Utils.str.icon("inv_misc_dice_01", 20), sender, arg.t);
+					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon("inv_misc_dice_01", 20), sender, arg.t);
 					Utils.message.displayMessage(totalMessage);
 				end
 				Utils.music.playSoundID(36629, "SFX", sender);

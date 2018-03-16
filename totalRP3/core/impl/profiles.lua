@@ -121,7 +121,7 @@ local function duplicateProfile(duplicatedProfile, profileName)
 	profiles[profileID] = {};
 	Utils.table.copy(profiles[profileID], duplicatedProfile);
 	profiles[profileID].profileName = profileName;
-	displayMessage(loc("PR_PROFILE_CREATED"):format(Utils.str.color("g")..profileName.."|r"));
+	displayMessage(loc.PR_PROFILE_CREATED:format(Utils.str.color("g")..profileName.."|r"));
 	return profileID;
 end
 TRP3_API.profile.duplicateProfile = duplicateProfile;
@@ -139,7 +139,7 @@ local function selectProfile(profileID)
 	currentProfile = profiles[profileID];
 	currentProfileId = profileID;
 	character.profileID = profileID;
-	displayMessage(loc("PR_PROFILE_LOADED"):format(Utils.str.color("g")..profiles[character.profileID]["profileName"].."|r"));
+	displayMessage(loc.PR_PROFILE_LOADED:format(Utils.str.color("g")..profiles[character.profileID]["profileName"].."|r"));
 	Events.fireEvent(Events.REGISTER_PROFILES_LOADED, currentProfile);
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, profileID);
 end
@@ -160,7 +160,7 @@ local function deleteProfile(profileID)
 	local profileName = profiles[profileID]["profileName"];
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
-	displayMessage(loc("PR_PROFILE_DELETED"):format(Utils.str.color("g")..profileName.."|r"));
+	displayMessage(loc.PR_PROFILE_DELETED:format(Utils.str.color("g")..profileName.."|r"));
 end
 
 function TRP3_API.profile.getPlayerCurrentProfileID()
@@ -205,16 +205,16 @@ local function decorateProfileList(widget, index)
 			i = i + 1;
 		end
 	end
-	_G[widget:GetName().."Count"]:SetText(loc("PR_PROFILEMANAGER_COUNT"):format(i));
+	_G[widget:GetName().."Count"]:SetText(loc.PR_PROFILEMANAGER_COUNT:format(i));
 
 	local text = "";
 	if i > 0 then
-		text = text..loc("PR_PROFILE_DETAIL")..":\n"..listText;
+		text = text..loc.PR_PROFILE_DETAIL..":\n"..listText;
 	else
-		text = text..loc("PR_UNUSED_PROFILE");
+		text = text..loc.PR_UNUSED_PROFILE;
 	end
 
-	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc("PR_PROFILE"), text);
+	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
 end
 
 local function profileSortingByProfileName(profileID1, profileID2)
@@ -235,14 +235,14 @@ local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.show
 
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
-		TRP3_API.ui.tooltip.toast(loc("PR_PROFILEMANAGER_ALREADY_IN_USE"):format(Utils.str.color("r")..profileName.."|r"), 3);
+		TRP3_API.ui.tooltip.toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..profileName.."|r"), 3);
 		return false;
 	end
 	return true;
 end
 
 local function uiCreateProfile()
-	showTextInputPopup(loc("PR_PROFILEMANAGER_CREATE_POPUP"),
+	showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -257,7 +257,7 @@ end
 
 -- Promps profile delete confirmation
 local function uiDeleteProfile(profileID)
-	showConfirmPopup(loc("PR_PROFILEMANAGER_DELETE_WARNING"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	showConfirmPopup(loc.PR_PROFILEMANAGER_DELETE_WARNING:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function()
 		deleteProfile(profileID);
 		uiInitProfileList();
@@ -266,7 +266,7 @@ end
 
 local function uiEditProfile(profileID)
 	showTextInputPopup(
-	loc("PR_PROFILEMANAGER_EDIT_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	loc.PR_PROFILEMANAGER_EDIT_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -289,7 +289,7 @@ end
 
 local function uiDuplicateProfile(profileID)
 	showTextInputPopup(
-	loc("PR_PROFILEMANAGER_DUPP_POPUP"):format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
+	loc.PR_PROFILEMANAGER_DUPP_POPUP:format(Utils.str.color("g")..profiles[profileID].profileName.."|r"),
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
@@ -323,11 +323,11 @@ local function onActionSelected(value, button)
 		local serial = Utils.serial.serialize({Globals.version, profileID, profile });
 		if serial:len() < 20000 then
 			TRP3_ProfileExport.content.scroll.text:SetText(serial);
-			TRP3_ProfileExport.content.title:SetText(loc("PR_EXPORT_NAME"):format(profile.profileName, serial:len() / 1024));
+			TRP3_ProfileExport.content.title:SetText(loc.PR_EXPORT_NAME:format(profile.profileName, serial:len() / 1024));
 			TRP3_ProfileExport:Show();
 			TRP3_ProfileExport.content.scroll.text:SetFocus();
 		else
-			Utils.message.displayMessage(loc("PR_EXPORT_TOO_LARGE"):format(serial:len() / 1024), 2);
+			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1024), 2);
 		end
 	elseif value == 5 then
 		TRP3_ProfileImport.profileID = profileID;
@@ -340,23 +340,23 @@ local function onActionClicked(button)
 	local profileID = button:GetParent().profileID;
 	local values = {};
 
-	tinsert(values, {loc("PR_PROFILE_MANAGEMENT_TITLE")});
-	tinsert(values, {loc("PR_PROFILEMANAGER_RENAME"), 2});
-	tinsert(values, {loc("PR_DUPLICATE_PROFILE"), 3});
+	tinsert(values, {loc.PR_PROFILE_MANAGEMENT_TITLE});
+	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, 2});
+	tinsert(values, {loc.PR_DUPLICATE_PROFILE, 3});
 	if currentProfileId ~= profileID then
-		tinsert(values, {loc("PR_DELETE_PROFILE"), 1});
+		tinsert(values, {loc.PR_DELETE_PROFILE, 1});
 	else
-		tinsert(values, {"|cff999999" .. loc("PR_DELETE_PROFILE"), nil});
+		tinsert(values, {"|cff999999" .. loc.PR_DELETE_PROFILE, nil});
 	end
 
 	tinsert(values, {""});
-	tinsert(values, {loc("PR_EXPORT_IMPORT_TITLE")});
+	tinsert(values, {loc.PR_EXPORT_IMPORT_TITLE});
 	if currentProfileId ~= profileID then
-		tinsert(values, {loc("PR_IMPORT_PROFILE"), 5});
+		tinsert(values, {loc.PR_IMPORT_PROFILE, 5});
 	else
-		tinsert(values, {"|cff999999" .. loc("PR_IMPORT_PROFILE"), nil});
+		tinsert(values, {"|cff999999" .. loc.PR_IMPORT_PROFILE, nil});
 	end
-	tinsert(values, {loc("PR_EXPORT_PROFILE"), 4});
+	tinsert(values, {loc.PR_EXPORT_PROFILE, 4});
 
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
@@ -384,7 +384,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = -110, anchor = "CENTER",
-				text = loc("PR_PROFILE_HELP"),
+				text = loc.PR_PROFILE_HELP,
 				textWidth = 400,
 				arrow = "UP"
 			}
@@ -448,8 +448,8 @@ function TRP3_API.profile.init()
 			end
 		end);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
-		_G[widget:GetName().."Current"]:SetText(loc("PR_PROFILEMANAGER_CURRENT"));
-		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc("PR_PROFILEMANAGER_ACTIONS"));
+		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
+		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc.PR_PROFILEMANAGER_ACTIONS);
 		table.insert(widgetTab, widget);
 
 	end
@@ -458,10 +458,10 @@ function TRP3_API.profile.init()
 	TRP3_ProfileManagerAdd:SetScript("OnClick", uiCreateProfile);
 
 	--Localization
-	TRP3_ProfileManagerAdd:SetText(loc("PR_CREATE_PROFILE"));
+	TRP3_ProfileManagerAdd:SetText(loc.PR_CREATE_PROFILE);
 
 	TRP3_ProfileManagerInfo:Show();
-	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc("PR_EXPORT_IMPORT_TITLE"), loc("PR_EXPORT_IMPORT_HELP"));
+	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
 
 	registerPage({
 		id = "player_profiles",
@@ -488,8 +488,8 @@ function TRP3_API.profile.init()
 
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
-			{loc("PR_PROFILEMANAGER_TITLE"), "list", 175},
-			{loc("PR_IMPORT_CHAR_TAB"), "characterImporter", 175},
+			{loc.PR_PROFILEMANAGER_TITLE, "list", 175},
+			{loc.PR_IMPORT_CHAR_TAB, "characterImporter", 175},
 		},
 		function(tabWidget, value)
 			for _, child in pairs({TRP3_ProfileManager:GetChildren()}) do
@@ -537,7 +537,7 @@ function TRP3_API.profile.init()
 				ReloadUI();
             else
                 -- Ask for confirmation before stashing user data!
-                showConfirmPopup(loc("COM_STASH_DATA"), function()
+                showConfirmPopup(loc.COM_STASH_DATA, function()
                     TRP3_StashedData = {};
                     -- Loop through each global variable we want to stash
                     for _, variable in pairs(globalVariables) do
@@ -554,10 +554,10 @@ function TRP3_API.profile.init()
     });
 
 	-- Export/Import
-	TRP3_ProfileExport.title:SetText(loc("PR_EXPORT_PROFILE"));
-	TRP3_ProfileImport.title:SetText(loc("PR_IMPORT_PROFILE"));
-	TRP3_ProfileImport.content.title:SetText(loc("PR_IMPORT_PROFILE_TT"));
-	TRP3_ProfileImport.save:SetText(loc("PR_IMPORT"));
+	TRP3_ProfileExport.title:SetText(loc.PR_EXPORT_PROFILE);
+	TRP3_ProfileImport.title:SetText(loc.PR_IMPORT_PROFILE);
+	TRP3_ProfileImport.content.title:SetText(loc.PR_IMPORT_PROFILE_TT);
+	TRP3_ProfileImport.save:SetText(loc.PR_IMPORT);
 	TRP3_ProfileImport.save:SetScript("OnClick", function()
 		local profileID = TRP3_ProfileImport.profileID;
 		local code = TRP3_ProfileImport.content.scroll.text:GetText();
@@ -577,23 +577,23 @@ function TRP3_API.profile.init()
 			end
 
 			if version ~= Globals.version then
-				showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING_2"):format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING_2:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			else
-				showConfirmPopup(loc("PR_PROFILEMANAGER_IMPORT_WARNING"):format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
+				showConfirmPopup(loc.PR_PROFILEMANAGER_IMPORT_WARNING:format(Utils.str.color("g") .. profiles[profileID].profileName .. "|r"), import);
 			end
 		else
-			Utils.message.displayMessage(loc("DB_IMPORT_ERROR1"), 2);
+			Utils.message.displayMessage(loc.DB_IMPORT_ERROR1, 2);
 		end
 	end);
 
 	TRP3_API.slash.registerCommand({
 		id = "profile",
-		helpLine = " " .. loc("PR_SLASH_SWITCH_HELP"),
+		helpLine = " " .. loc.PR_SLASH_SWITCH_HELP,
 		handler = function(...)
 			local args = {...};
 
 			if #args < 1 then
-				displayMessage(loc("PR_SLASH_EXAMPLE"));
+				displayMessage(loc.PR_SLASH_EXAMPLE);
 				return
 			end
 
@@ -607,7 +607,7 @@ function TRP3_API.profile.init()
 				end
 			end
 
-			displayMessage(loc("PR_SLASH_NOT_FOUND"):format(profileName));
+			displayMessage(loc.PR_SLASH_NOT_FOUND:format(profileName));
 		end
 	});
 end

@@ -40,9 +40,9 @@ local strhtml = TRP3_API.utils.str.toHTML;
 --- List of "What's new" segments to concatenate and display together when
 ---  this view is activated.
 local SEGMENTS = {
-	loc("WHATS_NEW_17_2"),
-	loc("WHATS_NEW_17_1"),
-	loc("WHATS_NEW_17"),
+	loc.WHATS_NEW_17_2,
+	loc.WHATS_NEW_17_1,
+	loc.WHATS_NEW_17,
 };
 
 --- Returns the fully formatted localized text for this view.
@@ -55,10 +55,10 @@ end
 local function toggleSetting(setting)
 	if Configuration.getValue(setting) then
 		Configuration.setValue(setting, false);
-		UITooltip.toast(loc("OPTION_DISABLED_TOAST"), 3);
+		UITooltip.toast(loc.OPTION_DISABLED_TOAST, 3);
 	else
 		Configuration.setValue(setting, true);
-		UITooltip.toast(loc("OPTION_ENABLED_TOAST"), 3);
+		UITooltip.toast(loc.OPTION_ENABLED_TOAST, 3);
 	end
 end
 
@@ -79,7 +79,7 @@ local WhatsNewTabView = Class("TRP3_DashboardWhatsNewTabView", Dashboard.TabView
 Dashboard.WhatsNewTabView = WhatsNewTabView;
 
 function WhatsNewTabView.static.getTabTitle()
-	return loc("DB_NEW");
+	return loc.DB_NEW;
 end
 
 function WhatsNewTabView:initialize(dashboard)

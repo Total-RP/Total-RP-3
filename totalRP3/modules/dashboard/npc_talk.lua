@@ -23,7 +23,7 @@
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local strconcat = strconcat;
-	local loc = TRP3_API.locale.getText;
+	local loc = TRP3_API.loc;
 	local getConfigValue = TRP3_API.configuration.getValue;
 	local displayMessage = TRP3_API.utils.message.displayMessage;
 	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -50,9 +50,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	}
 
 	local CHANNEL_TYPES_TO_PATTERNS = {
-		[CHANNEL_TYPES.SAY] = loc("NPC_TALK_SAY_PATTERN"),
-		[CHANNEL_TYPES.YELL] = loc("NPC_TALK_YELL_PATTERN"),
-		[CHANNEL_TYPES.WHISPER] = loc("NPC_TALK_WHISPER_PATTERN"),
+		[CHANNEL_TYPES.SAY] = loc.NPC_TALK_SAY_PATTERN,
+		[CHANNEL_TYPES.YELL] = loc.NPC_TALK_YELL_PATTERN,
+		[CHANNEL_TYPES.WHISPER] = loc.NPC_TALK_WHISPER_PATTERN,
 	}
 
 	--- Returns the channel action string (says:, yells:, etc.) corresponding to the given CHANNEL_TYPE
@@ -159,10 +159,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	SendButton:SetScript("OnClick", sendNPCTalk);
 	frame.messageText.scroll.text:SetScript("OnEnterPressed", sendNPCTalk);
-	frame.title:SetText(loc("NPC_TALK_TITLE"));
-	frame.name.title:SetText(loc("NPC_TALK_NAME"));
-	frame.messageLabel:SetText(loc("NPC_TALK_MESSAGE"));
-	frame.send:SetText(loc("NPC_TALK_SEND"));
+	frame.title:SetText(loc.NPC_TALK_TITLE);
+	frame.name.title:SetText(loc.NPC_TALK_NAME);
+	frame.messageLabel:SetText(loc.NPC_TALK_MESSAGE);
+	frame.send:SetText(loc.NPC_TALK_SEND);
 
 	-- Add hooks to check for the length of the message and make sure we don't try to send a message to big
 	frame.messageText.scroll.text:HookScript("OnTextChanged", checkCharactersLimit);
@@ -170,7 +170,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	frame.name:HookScript("OnTextChanged", checkCharactersLimit);
 	frame.name:HookScript("OnEditFocusGained", checkCharactersLimit);
 
-	setTooltipForSameFrame(frame.name.help, "RIGHT", 0, 5, loc("NPC_TALK_NAME"), loc("NPC_TALK_NAME_TT"));
+	setTooltipForSameFrame(frame.name.help, "RIGHT", 0, 5, loc.NPC_TALK_NAME, loc.NPC_TALK_NAME_TT);
 
 	TRP3_API.Ellyb.EditBoxes.setupTabKeyNavigation(frame.name, frame.messageText.scroll.text);
 
@@ -183,9 +183,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_npctalk",
 			icon = "Ability_Warrior_CommandingShout",
-			configText = loc("NPC_TALK_TITLE"),
-			tooltip = loc("NPC_TALK_TITLE"),
-			tooltipSub = loc("NPC_TALK_BUTTON_TT"),
+			configText = loc.NPC_TALK_TITLE,
+			tooltip = loc.NPC_TALK_TITLE,
+			tooltipSub = loc.NPC_TALK_BUTTON_TT,
 			onClick = function(Uibutton, buttonStructure, button)
 				if frame:IsShown() then
 					frame:Hide();
@@ -200,7 +200,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- or the toolbar module entirely can still access the feature
 	TRP3_API.slash.registerCommand({
 		id = "npc_speeches",
-		helpLine = " " .. loc("NPC_TALK_COMMAND_HELP"),
+		helpLine = " " .. loc.NPC_TALK_COMMAND_HELP,
 		handler = showNPCTalkFrame
 	});
 

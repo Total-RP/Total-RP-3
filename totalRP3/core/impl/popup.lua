@@ -20,9 +20,12 @@
 -- Public accessor
 TRP3_API.popup = {};
 
+-- Lua imports
+local table = table;
+
 -- imports
 local Utils = TRP3_API.utils;
-local loc, table = TRP3_API.locale.getText, table;
+local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
 local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -241,7 +244,7 @@ local function decorateMusic(lineFrame, musicURL)
 	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
 
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc("CM_L_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_SELECT2"), loc("CM_R_CLICK"), loc("REG_PLAYER_ABOUT_MUSIC_LISTEN")));
+	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 	lineFrame.musicURL = musicURL;
 end
@@ -290,9 +293,9 @@ local function initMusicBrowser()
 
 	TRP3_MusicBrowserFilterBox:SetScript("OnTextChanged", filteredMusicBrowser);
 
-	TRP3_MusicBrowserTitle:SetText(loc("UI_MUSIC_BROWSER"));
-	TRP3_MusicBrowserFilterBoxText:SetText(loc("UI_FILTER"));
-	TRP3_MusicBrowserFilterStop:SetText(loc("REG_PLAYER_ABOUT_MUSIC_STOP"));
+	TRP3_MusicBrowserTitle:SetText(loc.UI_MUSIC_BROWSER);
+	TRP3_MusicBrowserFilterBoxText:SetText(loc.UI_FILTER);
+	TRP3_MusicBrowserFilterStop:SetText(loc.REG_PLAYER_ABOUT_MUSIC_STOP);
 	filteredMusicBrowser();
 end
 
@@ -369,8 +372,8 @@ local function initIconBrowser()
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
 
-	TRP3_IconBrowserTitle:SetText(loc("UI_ICON_BROWSER"));
-	TRP3_IconBrowserFilterBoxText:SetText(loc("UI_FILTER"));
+	TRP3_IconBrowserTitle:SetText(loc.UI_ICON_BROWSER);
+	TRP3_IconBrowserFilterBoxText:SetText(loc.UI_FILTER);
 	filteredIconBrowser();
 end
 
@@ -454,7 +457,7 @@ local function getWoWCompanionFilteredList(filter)
 			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
 			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
 				local _, description = C_MountJournal.GetMountInfoExtraByID(id);
-				tinsert(filteredCompanionList, {creatureName, icon, description, loc("PR_CO_MOUNT"), spellID, id});
+				tinsert(filteredCompanionList, {creatureName, icon, description, loc.PR_CO_MOUNT, spellID, id});
 				count = count + 1;
 			end
 		end
@@ -499,19 +502,19 @@ local function initCompanionBrowser()
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
 	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0,
-		"|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc("UI_COMPANION_BROWSER_HELP") ,loc("UI_COMPANION_BROWSER_HELP_TT"));
+		"|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
 
-	TRP3_CompanionBrowserFilterBoxText:SetText(loc("UI_FILTER"));
+	TRP3_CompanionBrowserFilterBoxText:SetText(loc.UI_FILTER);
 end
 
 function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, companionType)
 	currentCompanionType = companionType or TRP3_API.ui.misc.TYPE_BATTLE_PET;
 	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
-		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_BATTLE"));
+		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_BATTLE);
 		TRP3_CompanionBrowserFilterHelp:Show();
 		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
 	else
-		TRP3_CompanionBrowserTitle:SetText(loc("REG_COMPANION_BROWSER_MOUNT"));
+		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_MOUNT);
 		TRP3_CompanionBrowserFilterHelp:Hide();
 	end
 	ui_CompanionBrowserContent.onSelectCallback = onSelectCallback;
@@ -535,17 +538,17 @@ local toast = TRP3_API.ui.tooltip.toast;
 local Color, ColorManager = TRP3_API.Ellyb.Color, TRP3_API.Ellyb.ColorManager;
 
 local COLOR_PRESETS_BASIC = {
-	{ CO = ColorManager.RED, TX = loc("CM_RED")},
-	{ CO = ColorManager.ORANGE, TX = loc("CM_ORANGE")},
-	{ CO = ColorManager.YELLOW, TX = loc("CM_YELLOW")},
-	{ CO = ColorManager.GREEN, TX = loc("CM_GREEN")},
-	{ CO = ColorManager.CYAN, TX = loc("CM_CYAN")},
-	{ CO = ColorManager.BLUE, TX = loc("CM_BLUE")},
-	{ CO = ColorManager.PURPLE, TX = loc("CM_PURPLE")},
-	{ CO = ColorManager.PINK, TX = loc("CM_PINK")},
-	{ CO = ColorManager.WHITE, TX = loc("CM_WHITE")},
-	{ CO = ColorManager.GREY, TX = loc("CM_GREY")},
-	{ CO = ColorManager.BLACK, TX = loc("CM_BLACK")},
+	{ CO = ColorManager.RED, TX = loc.CM_RED},
+	{ CO = ColorManager.ORANGE, TX = loc.CM_ORANGE},
+	{ CO = ColorManager.YELLOW, TX = loc.CM_YELLOW},
+	{ CO = ColorManager.GREEN, TX = loc.CM_GREEN},
+	{ CO = ColorManager.CYAN, TX = loc.CM_CYAN},
+	{ CO = ColorManager.BLUE, TX = loc.CM_BLUE},
+	{ CO = ColorManager.PURPLE, TX = loc.CM_PURPLE},
+	{ CO = ColorManager.PINK, TX = loc.CM_PINK},
+	{ CO = ColorManager.WHITE, TX = loc.CM_WHITE},
+	{ CO = ColorManager.GREY, TX = loc.CM_GREY},
+	{ CO = ColorManager.BLACK, TX = loc.CM_BLACK},
 }
 
 local COLOR_PRESETS_CLASS = {
@@ -614,31 +617,31 @@ local function colorPresetsDropDown()
 	for index, preset in pairs(COLOR_PRESETS_BASIC) do
 		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
-	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_BASIC"), values_basic});
+	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_BASIC, values_basic});
 
 	local values_classes = {};
 	for index, preset in pairs(COLOR_PRESETS_CLASS) do
 		tinsert(values_classes, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
-	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CLASSES"), values_classes});
+	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CLASSES, values_classes});
 
 	local values_resources = {};
 	for index, preset in pairs(COLOR_PRESETS_RESOURCES) do
 		tinsert(values_resources, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
-	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_RESOURCES"), values_resources});
+	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_RESOURCES, values_resources});
 
 	local values_items = {};
 	for index, preset in pairs(COLOR_PRESETS_ITEMS) do
 		tinsert(values_items, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
-	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_ITEMS"), values_items});
+	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_ITEMS, values_items});
 
 	local values_custom = {};
 	for index, preset in pairs(TRP3_Colors) do
 		tinsert(values_custom, { Color(preset.CO):WrapTextInColorCode(preset.TX), preset.CO });
 	end
-	tinsert(values, {loc("UI_COLOR_BROWSER_PRESETS_CUSTOM"), values_custom});
+	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CUSTOM, values_custom});
 
 	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
 end
@@ -686,21 +689,21 @@ local function deleteCustomColor(color)
 end
 
 local function initColorBrowser()
-	TRP3_ColorBrowserSelect:SetText(loc("UI_COLOR_BROWSER_SELECT"));
-	TRP3_ColorBrowserTitle:SetText(loc("UI_COLOR_BROWSER"));
-	TRP3_ColorBrowserPresets:SetText(loc("UI_COLOR_BROWSER_PRESETS"));
-	TRP3_ColorBrowserSave:SetText(loc("CM_SAVE"));
-	TRP3_ColorBrowserDelete:SetText(loc("CM_DELETE"));
+	TRP3_ColorBrowserSelect:SetText(loc.UI_COLOR_BROWSER_SELECT);
+	TRP3_ColorBrowserTitle:SetText(loc.UI_COLOR_BROWSER);
+	TRP3_ColorBrowserPresets:SetText(loc.UI_COLOR_BROWSER_PRESETS);
+	TRP3_ColorBrowserSave:SetText(loc.CM_SAVE);
+	TRP3_ColorBrowserDelete:SetText(loc.CM_DELETE);
 
 	if not TRP3_Colors then
 		TRP3_Colors = {};
 	end
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
-	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc("BW_COLOR_CODE"), loc("BW_COLOR_CODE_TT"));
+	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc.BW_COLOR_CODE, loc.BW_COLOR_CODE_TT);
 
-	TRP3_ColorBrowserNameEditBoxText:SetText(loc("BW_CUSTOM_NAME_TITLE"));
-	setTooltipForSameFrame(TRP3_ColorBrowserNameEditBoxHelp, "RIGHT", 0, 5, loc("BW_CUSTOM_NAME"), loc("BW_CUSTOM_NAME_TT"));
+	TRP3_ColorBrowserNameEditBoxText:SetText(loc.BW_CUSTOM_NAME_TITLE);
+	setTooltipForSameFrame(TRP3_ColorBrowserNameEditBoxHelp, "RIGHT", 0, 5, loc.BW_CUSTOM_NAME, loc.BW_CUSTOM_NAME_TT);
 
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
 		if self:GetText():match("^%x%x%x%x%x%x$") or self:GetText():match("^#%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number (with or without a #)
@@ -712,7 +715,7 @@ local function initColorBrowser()
 			TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 			self:ClearFocus();
 		else
-			toast(loc("BW_COLOR_CODE_ALERT"), 1);
+			toast(loc.BW_COLOR_CODE_ALERT, 1);
 		end
 	end);
 
@@ -877,9 +880,9 @@ local function initImageBrowser()
 
 	tinsert(imageWidgetTab, TRP3_ImageBrowserContentTexture);
 
-	TRP3_ImageBrowserTitle:SetText(loc("UI_IMAGE_BROWSER"));
-	TRP3_ImageBrowserFilterBoxText:SetText(loc("UI_FILTER"));
-	TRP3_ImageBrowserSelect:SetText(loc("UI_IMAGE_SELECT"));
+	TRP3_ImageBrowserTitle:SetText(loc.UI_IMAGE_BROWSER);
+	TRP3_ImageBrowserFilterBoxText:SetText(loc.UI_FILTER);
+	TRP3_ImageBrowserSelect:SetText(loc.UI_IMAGE_SELECT);
 	filteredImageBrowser();
 end
 

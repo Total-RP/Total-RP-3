@@ -24,7 +24,7 @@ local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals
 local Comm = TRP3_API.communication;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pairs, _G, wipe;
 local CreateFrame = CreateFrame;
 local after = C_Timer.After;
@@ -358,7 +358,7 @@ local function onButtonClicked(self)
 		end
 	end
 	if #structure == 0 then
-		tinsert(structure, {loc("MAP_BUTTON_NO_SCAN"), nil});
+		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
 	displayDropDown(self, structure, launchScan, 0, true);
 end
@@ -373,10 +373,10 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-	TRP3_WorldMapButton.title = loc("MAP_BUTTON_TITLE");
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
+	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE;
 	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
-	TRP3_ScanLoaderFrameScanning:SetText(loc("MAP_BUTTON_SCANNING"));
+	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
 		self.refreshTimer = 0;
@@ -425,18 +425,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
-		title = loc("CO_MAP_BUTTON"),
+		title = loc.CO_MAP_BUTTON,
 	});
 
 	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
-		title = loc("CO_MAP_BUTTON_POS"),
+		title = loc.CO_MAP_BUTTON_POS,
 		listContent = {
-			{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
-			{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
-			{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
-			{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"}
+			{loc.CO_ANCHOR_BOTTOM_LEFT, "BOTTOMLEFT"},
+			{loc.CO_ANCHOR_TOP_LEFT, "TOPLEFT"},
+			{loc.CO_ANCHOR_BOTTOM_RIGHT, "BOTTOMRIGHT"},
+			{loc.CO_ANCHOR_TOP_RIGHT, "TOPRIGHT"}
 		},
 		listCallback = placeMapButton,
 		listCancel = true,
@@ -455,7 +455,7 @@ end);
 -- disabled and tell the user things are firing up.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING, function()
 	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE_CONNECTING");
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE_CONNECTING;
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
@@ -464,7 +464,7 @@ end);
 -- disabled and dump the localised error into the tooltip, to be useful.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, function(reason)
 	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE_OFFLINE"):format(reason);
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE_OFFLINE:format(reason);
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
@@ -473,7 +473,7 @@ end);
 -- standard tooltip description.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
 	TRP3_WorldMapButton:SetEnabled(true);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc("MAP_BUTTON_SUBTITLE");
+	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE;
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(false);
 end);

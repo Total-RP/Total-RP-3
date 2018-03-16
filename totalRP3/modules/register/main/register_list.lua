@@ -245,26 +245,26 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Info2"]:SetText("");
 	local firstLink;
 	if profile.link and tsize(profile.link) > 0 then
-		leftTooltipText = leftTooltipText .. loc("REG_LIST_CHAR_TT_CHAR");
+		leftTooltipText = leftTooltipText .. loc.REG_LIST_CHAR_TT_CHAR;
 		for unitID, _ in pairs(profile.link) do
 			if not firstLink then
 				firstLink = unitID;
 			end
 			local unitName, unitRealm = unitIDToInfo(unitID);
 			if isIDIgnored(unitID) then
-				leftTooltipText = leftTooltipText .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_IGNORED");
+				leftTooltipText = leftTooltipText .. "\n|cffff0000 - " .. unitName .. " ( " .. unitRealm .. " ) - " .. IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_IGNORED;
 				atLeastOneIgnored = true;
 			else
 				leftTooltipText = leftTooltipText .. "\n|cff00ff00 - " .. unitName .. " ( " .. unitRealm .. " )";
 			end
 		end
 	else
-		leftTooltipText = leftTooltipText .. "|cffffff00" .. loc("REG_LIST_CHAR_TT_CHAR_NO");
+		leftTooltipText = leftTooltipText .. "|cffffff00" .. loc.REG_LIST_CHAR_TT_CHAR_NO;
 	end
 
 	if profile.time and profile.zone then
 		local formatDate = date(DATE_FORMAT, profile.time);
-		leftTooltipText = leftTooltipText .. "\n|r" .. loc("REG_LIST_CHAR_TT_DATE"):format(formatDate, profile.zone);
+		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 
 	-- Middle column : relation
@@ -290,28 +290,28 @@ local function decorateCharacterLine(line, characterIndex)
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. IGNORED_ICON;
-		rightTooltipText = rightTooltipText .. IGNORED_ICON .. " " .. loc("REG_LIST_CHAR_TT_IGNORE");
+		rightTooltipText = rightTooltipText .. IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_TT_IGNORE;
 	end
 	if hasGlance then
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. GLANCE_ICON;
-		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
+		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE;
 	end
 	if hasNewAbout then
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. NEW_ABOUT_ICON;
-		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
+		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT;
 	end
 	if profile.hasMatureContent then
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. MATURE_CONTENT_ICON;
-		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc("MATURE_FILTER_TOOLTIP_WARNING");
+		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING;
 	end
 	if rightTooltipText then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, rightTooltipText);
 	else
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
@@ -330,7 +330,7 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
 
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n|cffffff00" .. loc.REG_LIST_CHAR_TT);
 end
 
 local function getCharacterLines()
@@ -377,21 +377,21 @@ local function getCharacterLines()
 	local lineSize = #characterLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
-			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY"));
+			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_CHAR_EMPTY);
 		else
-			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_CHAR_EMPTY2"));
+			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_CHAR_EMPTY2);
 		end
 	end
-	setupFieldSet(TRP3_RegisterListCharactFilter, loc("REG_LIST_CHAR_FILTER"):format(lineSize, fullSize), 200);
+	setupFieldSet(TRP3_RegisterListCharactFilter, loc.REG_LIST_CHAR_FILTER:format(lineSize, fullSize), 200);
 
 	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
-	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER") .. nameArrow);
-	TRP3_RegisterListHeaderInfo:SetText(loc("REG_RELATION") .. relationArrow);
-	TRP3_RegisterListHeaderTime:SetText(loc("REG_TIME") .. timeArrow);
+	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER .. nameArrow);
+	TRP3_RegisterListHeaderInfo:SetText(loc.REG_RELATION .. relationArrow);
+	TRP3_RegisterListHeaderTime:SetText(loc.REG_TIME .. timeArrow);
 	TRP3_RegisterListHeaderTimeTT:Enable();
 	TRP3_RegisterListHeaderInfoTT:Enable();
 	TRP3_RegisterListHeaderNameTT:Enable();
-	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
+	TRP3_RegisterListHeaderInfo2:SetText(loc.REG_LIST_FLAGS);
 	TRP3_RegisterListHeaderActions:Show();
 
 	return characterLines;
@@ -410,9 +410,9 @@ local function onCharactersActionSelected(value, button)
 			end
 		end
 		if #profilesToPurge == 0 then
-			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_TIME_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+			showAlertPopup(loc.REG_LIST_ACTIONS_PURGE_TIME_C:format(loc.REG_LIST_ACTIONS_PURGE_EMPTY));
 		else
-			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_TIME_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
+			showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_TIME_C:format(loc.REG_LIST_ACTIONS_PURGE_COUNT:format(#profilesToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
 					deleteProfile(profileID, true);
 				end
@@ -430,9 +430,9 @@ local function onCharactersActionSelected(value, button)
 			end
 		end
 		if #profilesToPurge == 0 then
-			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_UNLINKED_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+			showAlertPopup(loc.REG_LIST_ACTIONS_PURGE_UNLINKED_C:format(loc.REG_LIST_ACTIONS_PURGE_EMPTY));
 		else
-			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_UNLINKED_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge)), function()
+			showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_UNLINKED_C:format(loc.REG_LIST_ACTIONS_PURGE_COUNT:format(#profilesToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
 					deleteProfile(profileID, true);
 				end
@@ -444,9 +444,9 @@ local function onCharactersActionSelected(value, button)
 	elseif value == "purge_ignore" then
 		local profilesToPurge, characterToPurge = TRP3_API.register.getIDsToPurge();
 		if #profilesToPurge + #characterToPurge == 0 then
-			showAlertPopup(loc("REG_LIST_ACTIONS_PURGE_IGNORE_C"):format(loc("REG_LIST_ACTIONS_PURGE_EMPTY")));
+			showAlertPopup(loc.REG_LIST_ACTIONS_PURGE_IGNORE_C:format(loc.REG_LIST_ACTIONS_PURGE_EMPTY));
 		else
-			showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_IGNORE_C"):format(loc("REG_LIST_ACTIONS_PURGE_COUNT"):format(#profilesToPurge + #characterToPurge)), function()
+			showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_IGNORE_C:format(loc.REG_LIST_ACTIONS_PURGE_COUNT:format(#profilesToPurge + #characterToPurge)), function()
 				for _, profileID in pairs(profilesToPurge) do
 					deleteProfile(profileID, true);
 				end
@@ -458,7 +458,7 @@ local function onCharactersActionSelected(value, button)
 		end
 	elseif value == "purge_all" then
 		local list = getProfileList();
-		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_C"):format(tsize(list)), function()
+		showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_ALL_C:format(tsize(list)), function()
 			for profileID, _ in pairs(list) do
 				deleteProfile(profileID, true);
 			end
@@ -467,7 +467,7 @@ local function onCharactersActionSelected(value, button)
 		end);
 	-- Mass actions
 	elseif value == "actions_delete" then
-		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
+		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
 				deleteProfile(profileID, true);
 			end
@@ -482,7 +482,7 @@ local function onCharactersActionSelected(value, button)
 				charactToIgnore[unitID] = true;
 			end
 		end
-		showTextInputPopup(loc("REG_LIST_ACTIONS_MASS_IGNORE_C"):format(tsize(charactToIgnore)), function(text)
+		showTextInputPopup(loc.REG_LIST_ACTIONS_MASS_IGNORE_C:format(tsize(charactToIgnore)), function(text)
 			for unitID, _ in pairs(charactToIgnore) do
 				ignoreID(unitID, text);
 			end
@@ -493,16 +493,16 @@ end
 
 local function onCharactersActions(self)
 	local values = {};
-	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
-			{loc("REG_LIST_ACTIONS_PURGE_TIME"), "purge_time"},
-			{loc("REG_LIST_ACTIONS_PURGE_UNLINKED"), "purge_unlinked"},
-			{loc("REG_LIST_ACTIONS_PURGE_IGNORE"), "purge_ignore"},
-			{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
+	tinsert(values, {loc.REG_LIST_ACTIONS_PURGE, {
+			{loc.REG_LIST_ACTIONS_PURGE_TIME, "purge_time"},
+			{loc.REG_LIST_ACTIONS_PURGE_UNLINKED, "purge_unlinked"},
+			{loc.REG_LIST_ACTIONS_PURGE_IGNORE, "purge_ignore"},
+			{loc.REG_LIST_ACTIONS_PURGE_ALL, "purge_all"},
 		}});
 	if tsize(selectedIDs) > 0 then
-		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
-				{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
-				{loc("REG_LIST_ACTIONS_MASS_IGNORE"), "actions_ignore"},
+		tinsert(values, {loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)), {
+				{loc.REG_LIST_ACTIONS_MASS_REMOVE, "actions_delete"},
+				{loc.REG_LIST_ACTIONS_MASS_IGNORE, "actions_ignore"},
 			}});
 	end
 	displayDropDown(self, values, onCharactersActionSelected, 0, true);
@@ -560,8 +560,8 @@ local function decorateCompanionLine(line, index)
 	end
 	_G[line:GetName().."Addon"]:SetText(firstMaster);
 
-	secondLine = loc("REG_LIST_PETS_TOOLTIP") .. ":\n" .. companionList .. "\n" .. loc("REG_LIST_PETS_TOOLTIP2") .. ":\n" .. masterList;
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc("REG_LIST_CHAR_TT"));
+	secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc.REG_LIST_CHAR_TT);
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
 	-- Third column : flags
@@ -570,16 +570,16 @@ local function decorateCompanionLine(line, index)
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. GLANCE_ICON;
-		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc("REG_LIST_CHAR_TT_GLANCE");
+		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE;
 	end
 	if hasNewAbout then
 		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
 		if not flags then flags = "" else flags = flags .. " " end
 		flags = flags .. NEW_ABOUT_ICON;
-		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc("REG_LIST_CHAR_TT_NEW_ABOUT");
+		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT;
 	end
 	if rightTooltipText then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc("REG_LIST_FLAGS"), rightTooltipText);
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, rightTooltipText);
 	else
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
@@ -638,21 +638,21 @@ local function getCompanionLines()
 	local lineSize = #companionLines;
 	if lineSize == 0 then
 		if fullSize == 0 then
-			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY"));
+			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_PETS_EMPTY);
 		else
-			TRP3_RegisterListEmpty:SetText(loc("REG_LIST_PETS_EMPTY2"));
+			TRP3_RegisterListEmpty:SetText(loc.REG_LIST_PETS_EMPTY2);
 		end
 	end
-	setupFieldSet(TRP3_RegisterListPetFilter, loc("REG_LIST_PETS_FILTER"):format(lineSize, fullSize), 200);
+	setupFieldSet(TRP3_RegisterListPetFilter, loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize), 200);
 
 	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
-	TRP3_RegisterListHeaderName:SetText(loc("REG_COMPANION") .. nameArrow);
+	TRP3_RegisterListHeaderName:SetText(loc.REG_COMPANION .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderTime:SetText("");
 	TRP3_RegisterListHeaderTimeTT:Disable();
 	TRP3_RegisterListHeaderInfoTT:Disable();
 	TRP3_RegisterListHeaderNameTT:Enable();
-	TRP3_RegisterListHeaderInfo2:SetText(loc("REG_LIST_FLAGS"));
+	TRP3_RegisterListHeaderInfo2:SetText(loc.REG_LIST_FLAGS);
 	TRP3_RegisterListHeaderActions:Show();
 
 	return companionLines;
@@ -662,7 +662,7 @@ local DO_NOT_FIRE_EVENTS = true;
 local function onCompanionActionSelected(value, button)
 	if value == "purge_all" then
 		local list = getCompanionProfiles();
-		showConfirmPopup(loc("REG_LIST_ACTIONS_PURGE_ALL_COMP_C"):format(tsize(list)), function()
+		showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_ALL_COMP_C:format(tsize(list)), function()
 			for profileID, _ in pairs(list) do
 				-- We delete the companion profile without fire events to prevent UI freeze
 				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
@@ -671,7 +671,7 @@ local function onCompanionActionSelected(value, button)
 			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 		end);
 	elseif value == "actions_delete" then
-		showConfirmPopup(loc("REG_LIST_ACTIONS_MASS_REMOVE_C"):format(tsize(selectedIDs)), function()
+		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
 				-- We delete the companion profile without fire events to prevent UI freeze
 				deleteCompanionProfile(profileID, DO_NOT_FIRE_EVENTS);
@@ -684,12 +684,12 @@ end
 
 local function onPetsActions(self)
 	local values = {};
-	tinsert(values, {loc("REG_LIST_ACTIONS_PURGE"), {
-			{loc("REG_LIST_ACTIONS_PURGE_ALL"), "purge_all"},
+	tinsert(values, {loc.REG_LIST_ACTIONS_PURGE, {
+			{loc.REG_LIST_ACTIONS_PURGE_ALL, "purge_all"},
 		}});
 	if tsize(selectedIDs) > 0 then
-		tinsert(values, {loc("REG_LIST_ACTIONS_MASS"):format(tsize(selectedIDs)), {
-				{loc("REG_LIST_ACTIONS_MASS_REMOVE"), "actions_delete"},
+		tinsert(values, {loc.REG_LIST_ACTIONS_MASS:format(tsize(selectedIDs)), {
+				{loc.REG_LIST_ACTIONS_MASS_REMOVE, "actions_delete"},
 			}});
 	end
 	displayDropDown(self, values, onCompanionActionSelected, 0, true);
@@ -707,16 +707,16 @@ local function decorateIgnoredLine(line, unitID)
 	_G[line:GetName().."Info2"]:SetText("");
 	_G[line:GetName().."Addon"]:SetText("");
 	_G[line:GetName().."Select"]:Hide();
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc("REG_LIST_IGNORE_TT"):format(getIgnoredList()[unitID]));
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, unitID, loc.REG_LIST_IGNORE_TT:format(getIgnoredList()[unitID]));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 	setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 end
 
 local function getIgnoredLines()
 	if tsize(getIgnoredList()) == 0 then
-		TRP3_RegisterListEmpty:SetText(loc("REG_LIST_IGNORE_EMPTY"));
+		TRP3_RegisterListEmpty:SetText(loc.REG_LIST_IGNORE_EMPTY);
 	end
-	TRP3_RegisterListHeaderName:SetText(loc("REG_PLAYER"));
+	TRP3_RegisterListHeaderName:SetText(loc.REG_PLAYER);
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderTime:SetText("");
 	TRP3_RegisterListHeaderTimeTT:Disable();
@@ -792,10 +792,10 @@ local function changeMode(tabWidget, value)
 	TRP3_RegisterListHeaderAddon:SetText("");
 	if currentMode == MODE_CHARACTER then
 		TRP3_RegisterListCharactFilter:Show();
-		TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_ADDON"));
+		TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
 	elseif currentMode == MODE_PETS then
 		TRP3_RegisterListPetFilter:Show();
-		TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_PET_MASTER"));
+		TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_PET_MASTER);
 	end
 	refreshList();
 	Events.fireEvent(Events.NAVIGATION_TUTORIAL_REFRESH, REGISTER_LIST_PAGEID);
@@ -814,9 +814,9 @@ local function createTabBar()
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 	{
-		{loc("REG_LIST_CHAR_TITLE"), 1, 150},
-		{loc("REG_LIST_PETS_TITLE"), 2, 150},
-		{loc("REG_LIST_IGNORE_TITLE"), 3, 150},
+		{loc.REG_LIST_CHAR_TITLE, 1, 150},
+		{loc.REG_LIST_PETS_TITLE, 2, 150},
+		{loc.REG_LIST_IGNORE_TITLE, 3, 150},
 	},
 	changeMode
 	);
@@ -833,7 +833,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("REG_LIST_CHAR_TUTO_ACTIONS"),
+				text = loc.REG_LIST_CHAR_TUTO_ACTIONS,
 				arrow = "LEFT"
 			}
 		},
@@ -843,7 +843,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("REG_LIST_CHAR_TUTO_LIST"),
+				text = loc.REG_LIST_CHAR_TUTO_LIST,
 				textWidth = 400,
 				arrow = "DOWN"
 			}
@@ -854,7 +854,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 10, anchor = "CENTER",
-				text = loc("REG_LIST_CHAR_TUTO_FILTER"),
+				text = loc.REG_LIST_CHAR_TUTO_FILTER,
 				textWidth = 400,
 				arrow = "UP"
 			}
@@ -893,7 +893,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	registerMenu({
 		id = REGISTER_PAGE,
 		closeable = true,
-		text = loc("REG_REGISTER"),
+		text = loc.REG_REGISTER,
 		onSelected = function() setPage(REGISTER_LIST_PAGEID); end,
 	});
 
@@ -931,11 +931,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "LEFT", 0, 5, loc("REG_LIST_FILTERS"), loc("REG_LIST_FILTERS_TT"));
-	TRP3_RegisterListFilterCharactNameText:SetText(loc("REG_LIST_NAME"));
-	TRP3_RegisterListFilterCharactGuildText:SetText(loc("REG_LIST_GUILD"));
-	TRP3_RegisterListFilterCharactRealmText:SetText(loc("REG_LIST_REALMONLY"));
-	TRP3_RegisterListHeaderAddon:SetText(loc("REG_LIST_ADDON"));
+	setTooltipForSameFrame(TRP3_RegisterListCharactFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
+	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
+	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
+	TRP3_RegisterListFilterCharactRealmText:SetText(loc.REG_LIST_REALMONLY);
+	TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
@@ -949,17 +949,17 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 		refreshList();
 	end)
-	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "LEFT", 0, 5, loc("REG_LIST_FILTERS"), loc("REG_LIST_FILTERS_TT"));
-	TRP3_RegisterListPetFilterNameText:SetText(loc("REG_LIST_PET_NAME"));
-	TRP3_RegisterListPetFilterTypeText:SetText(loc("REG_LIST_PET_TYPE"));
-	TRP3_RegisterListPetFilterMasterText:SetText(loc("REG_LIST_PET_MASTER"));
+	setTooltipForSameFrame(TRP3_RegisterListPetFilterButton, "LEFT", 0, 5, loc.REG_LIST_FILTERS, loc.REG_LIST_FILTERS_TT);
+	TRP3_RegisterListPetFilterNameText:SetText(loc.REG_LIST_PET_NAME);
+	TRP3_RegisterListPetFilterTypeText:SetText(loc.REG_LIST_PET_TYPE);
+	TRP3_RegisterListPetFilterMasterText:SetText(loc.REG_LIST_PET_MASTER);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListPetFilterName, TRP3_RegisterListPetFilterType, TRP3_RegisterListPetFilterMaster});
 
 	TRP3_RegisterListHeaderNameTT:SetScript("OnClick", switchNameSorting);
 	TRP3_RegisterListHeaderInfoTT:SetScript("OnClick", switchInfoSorting);
 	TRP3_RegisterListHeaderTimeTT:SetScript("OnClick", switchTimeSorting);
 
-	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc("CM_ACTIONS"));
+	setTooltipForSameFrame(TRP3_RegisterListHeaderActions, "TOP", 0, 0, loc.CM_ACTIONS);
 	TRP3_RegisterListHeaderActions:SetScript("OnClick", function(self)
 		if currentMode == MODE_CHARACTER then
 			onCharactersActions(self);
@@ -1004,7 +1004,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
 			id = "aa_player_a_page",
-			configText = loc("TF_OPEN_CHARACTER"),
+			configText = loc.TF_OPEN_CHARACTER,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(targetType, unitID)
 				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
@@ -1014,13 +1014,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				openPageByUnitID(unitID);
 			end,
 			adapter = function(buttonStructure, unitID, currentTargetType)
-				buttonStructure.tooltip = loc("REG_PLAYER");
-				buttonStructure.tooltipSub =  "|cffffff00" .. loc("CM_CLICK") .. ": |r" .. loc("TF_OPEN_CHARACTER");
+				buttonStructure.tooltip = loc.REG_PLAYER;
+				buttonStructure.tooltipSub =  "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.TF_OPEN_CHARACTER;
 				buttonStructure.alert = nil;
 				if unitID ~= Globals.player_id and hasProfile(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					if profile.about and not profile.about.read then
-						buttonStructure.tooltipSub =  "|cff00ff00" .. loc("REG_TT_NOTIF") .. "\n" .. buttonStructure.tooltipSub;
+						buttonStructure.tooltipSub =  "|cff00ff00" .. loc.REG_TT_NOTIF .. "\n" .. buttonStructure.tooltipSub;
 						buttonStructure.alert = true;
 					end
 				end

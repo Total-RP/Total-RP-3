@@ -21,7 +21,7 @@
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local stEtN = Utils.str.emptyToNil;
 local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
 local assert, table, wipe, _G = assert, table, wipe, _G;
@@ -57,64 +57,64 @@ local function buildStyleStructure()
 	STYLE_FIELDS = {
 		{
 			id = "1",
-			name = loc("REG_PLAYER_STYLE_FREQ"),
+			name = loc.REG_PLAYER_STYLE_FREQ,
 			values = {
-				{loc("REG_PLAYER_STYLE_FREQ_1"), 1},
-				{loc("REG_PLAYER_STYLE_FREQ_2"), 2},
-				{loc("REG_PLAYER_STYLE_FREQ_3"), 3},
-				{loc("REG_PLAYER_STYLE_FREQ_4"), 4},
-				{loc("REG_PLAYER_STYLE_FREQ_5"), 5},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_FREQ_1, 1},
+				{loc.REG_PLAYER_STYLE_FREQ_2, 2},
+				{loc.REG_PLAYER_STYLE_FREQ_3, 3},
+				{loc.REG_PLAYER_STYLE_FREQ_4, 4},
+				{loc.REG_PLAYER_STYLE_FREQ_5, 5},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "2",
-			name = loc("REG_PLAYER_STYLE_INJURY"),
+			name = loc.REG_PLAYER_STYLE_INJURY,
 			values = {
 				{YES, 1},
 				{NO, 2},
-				{loc("REG_PLAYER_STYLE_PERMI"), 3},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_PERMI, 3},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "3",
-			name = loc("REG_PLAYER_STYLE_DEATH"),
+			name = loc.REG_PLAYER_STYLE_DEATH,
 			values = {
 				{YES, 1},
 				{NO, 2},
-				{loc("REG_PLAYER_STYLE_PERMI"), 3},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_PERMI, 3},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "4",
-			name = loc("REG_PLAYER_STYLE_ROMANCE"),
+			name = loc.REG_PLAYER_STYLE_ROMANCE,
 			values = {
 				{YES, 1},
 				{NO, 2},
-				{loc("REG_PLAYER_STYLE_PERMI"), 3},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_PERMI, 3},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "5",
-			name = loc("REG_PLAYER_STYLE_BATTLE"),
+			name = loc.REG_PLAYER_STYLE_BATTLE,
 			values = {
-				{loc("REG_PLAYER_STYLE_BATTLE_1"), 1},
-				{loc("REG_PLAYER_STYLE_BATTLE_2"), 2},
-				{loc("REG_PLAYER_STYLE_BATTLE_3"), 3},
-				{loc("REG_PLAYER_STYLE_BATTLE_4"), 4},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_BATTLE_1, 1},
+				{loc.REG_PLAYER_STYLE_BATTLE_2, 2},
+				{loc.REG_PLAYER_STYLE_BATTLE_3, 3},
+				{loc.REG_PLAYER_STYLE_BATTLE_4, 4},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 		{
 			id = "6",
-			name = loc("REG_PLAYER_STYLE_GUILD"),
+			name = loc.REG_PLAYER_STYLE_GUILD,
 			values = {
-				{loc("REG_PLAYER_STYLE_GUILD_IC"), 1},
-				{loc("REG_PLAYER_STYLE_GUILD_OOC"), 2},
-				{loc("REG_PLAYER_STYLE_HIDE"), 0},
+				{loc.REG_PLAYER_STYLE_GUILD_IC, 1},
+				{loc.REG_PLAYER_STYLE_GUILD_OOC, 2},
+				{loc.REG_PLAYER_STYLE_HIDE, 0},
 			}
 		},
 	};
@@ -228,7 +228,7 @@ local function setupGlanceButton(button, active, icon, title, text, isMine)
 		if not isMine then
 			button:Disable();
 		else
-			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc("REG_PLAYER_GLANCE_UNUSED"));
+			setTooltipForSameFrame(button, "RIGHT", 0, 5, loc.REG_PLAYER_GLANCE_UNUSED);
 		end
 	end
 end
@@ -327,7 +327,7 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 
 	if sanitizeMisc(dataTab) then
 		-- Yell at the user about their mischieves
-		showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+		showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
 	end
 
 	-- version increment
@@ -373,12 +373,12 @@ local function displayCurrently(context)
 	TRP3_RegisterMiscViewCurrentlyIC:SetText(dataTab.CU or "");
 	TRP3_RegisterMiscViewCurrentlyOOC:SetText(dataTab.CO or "");
 	if not context.isPlayer and dataTab.CU and dataTab.CU:len() > 0 then
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC, "TOP", 0, 5, loc("DB_STATUS_CURRENTLY"), dataTab.CU);
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC, "TOP", 0, 5, loc.DB_STATUS_CURRENTLY, dataTab.CU);
 	else
 		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyIC);
 	end
 	if not context.isPlayer and dataTab.CO and dataTab.CO:len() > 0 then
-		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC, "TOP", 0, 5, loc("DB_STATUS_CURRENTLY_OOC"), dataTab.CO);
+		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC, "TOP", 0, 5, loc.DB_STATUS_CURRENTLY_OOC, dataTab.CO);
 	else
 		setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOC);
 	end
@@ -394,7 +394,7 @@ local function onCurrentlyChanged()
 		if sanitizedCU ~= character.CU then
 			character.CU = sanitizedCU;
 			-- Yell at the user about their mischieves
-			showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
 		end
 
 		if old ~= character.CU then
@@ -414,7 +414,7 @@ local function onOOCInfoChanged()
 		if sanitizedCO ~= character.CO then
 			character.CO = sanitizedCO;
 			-- Yell at the user about their mischieves
-			showAlertPopup(loc("REG_CODE_INSERTION_WARNING"));
+			showAlertPopup(loc.REG_CODE_INSERTION_WARNING);
 		end
 
 		if old ~= character.CO then
@@ -483,7 +483,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("REG_PLAYER_TUTO_ABOUT_MISC_1"),
+				text = loc.REG_PLAYER_TUTO_ABOUT_MISC_1,
 				textWidth = 400,
 				arrow = "DOWN"
 			}
@@ -494,7 +494,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("DB_STATUS_CURRENTLY_COMMON") .. "\n\n" .. "|cff00ff00" .. loc("DB_STATUS_CURRENTLY") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_TT") .. "\n\n|cff00ff00" .. loc("DB_STATUS_CURRENTLY_OOC") .. ":|r\n" .. loc("DB_STATUS_CURRENTLY_OOC_TT"),
+				text = loc.DB_STATUS_CURRENTLY_COMMON .. "\n\n" .. "|cff00ff00" .. loc.DB_STATUS_CURRENTLY .. ":|r\n" .. loc.DB_STATUS_CURRENTLY_TT .. "\n\n|cff00ff00" .. loc.DB_STATUS_CURRENTLY_OOC .. ":|r\n" .. loc.DB_STATUS_CURRENTLY_OOC_TT,
 				textWidth = 400,
 				arrow = "RIGHT"
 			}
@@ -505,7 +505,7 @@ local function createTutorialStructure()
 			},
 			button = {
 				x = 0, y = 0, anchor = "CENTER",
-				text = loc("REG_PLAYER_TUTO_ABOUT_MISC_3"),
+				text = loc.REG_PLAYER_TUTO_ABOUT_MISC_3,
 				textWidth = 300,
 				arrow = "RIGHT"
 			}
@@ -528,23 +528,23 @@ function TRP3_API.register.inits.miscInit()
 	buildStyleStructure();
 	createTutorialStructure();
 
-	setupFieldSet(TRP3_RegisterMiscViewGlance, loc("REG_PLAYER_GLANCE"), 150);
-	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc("REG_PLAYER_CURRENT"), 150);
-	TRP3_AtFirstGlanceEditorApply:SetText(loc("CM_APPLY"));
-	TRP3_AtFirstGlanceEditorNameText:SetText(loc("REG_PLAYER_GLANCE_TITLE"));
-	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc("REG_PLAYER_STYLE_EMPTY"));
+	setupFieldSet(TRP3_RegisterMiscViewGlance, loc.REG_PLAYER_GLANCE, 150);
+	setupFieldSet(TRP3_RegisterMiscViewCurrently, loc.REG_PLAYER_CURRENT, 150);
+	TRP3_AtFirstGlanceEditorApply:SetText(loc.CM_APPLY);
+	TRP3_AtFirstGlanceEditorNameText:SetText(loc.REG_PLAYER_GLANCE_TITLE);
+	TRP3_RegisterMiscViewRPStyleEmpty:SetText(loc.REG_PLAYER_STYLE_EMPTY);
 
-	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc("REG_PLAYER_GLANCE_USE"));
+	TRP3_API.ui.tooltip.setTooltipAll(TRP3_AtFirstGlanceEditorActive, "TOP", 0, 0, loc.REG_PLAYER_GLANCE_USE);
 
-	TRP3_RegisterMiscViewCurrentlyICTitle:SetText(loc("DB_STATUS_CURRENTLY"));
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 10, loc("DB_STATUS_CURRENTLY"), loc("DB_STATUS_CURRENTLY_TT"));
+	TRP3_RegisterMiscViewCurrentlyICTitle:SetText(loc.DB_STATUS_CURRENTLY);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyICHelp, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY, loc.DB_STATUS_CURRENTLY_TT);
 	TRP3_RegisterMiscViewCurrentlyIC:SetScript("OnTextChanged", onCurrentlyChanged);
 
-	TRP3_RegisterMiscViewCurrentlyOOCTitle:SetText(loc("DB_STATUS_CURRENTLY_OOC"));
-	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOCHelp, "LEFT", 0, 10, loc("DB_STATUS_CURRENTLY_OOC"), loc("DB_STATUS_CURRENTLY_OOC_TT"));
+	TRP3_RegisterMiscViewCurrentlyOOCTitle:SetText(loc.DB_STATUS_CURRENTLY_OOC);
+	setTooltipForSameFrame(TRP3_RegisterMiscViewCurrentlyOOCHelp, "LEFT", 0, 10, loc.DB_STATUS_CURRENTLY_OOC, loc.DB_STATUS_CURRENTLY_OOC_TT);
 	TRP3_RegisterMiscViewCurrentlyOOC:SetScript("OnTextChanged", onOOCInfoChanged);
 
-	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc("REG_PLAYER_GLANCE"), loc("REG_PLAYER_GLANCE_CONFIG"));
+	setTooltipForSameFrame(TRP3_RegisterMiscViewGlanceHelp, "LEFT", 0, 10, loc.REG_PLAYER_GLANCE, loc.REG_PLAYER_GLANCE_CONFIG);
 
 	for index=1,5,1 do
 		-- DISPLAY
@@ -562,7 +562,7 @@ function TRP3_API.register.inits.miscInit()
 	end
 
 	-- RP style
-	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc("REG_PLAYER_STYLE_RPSTYLE"), 150);
+	setupFieldSet(TRP3_RegisterMiscViewRPStyle, loc.REG_PLAYER_STYLE_RPSTYLE, 150);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if getCurrentPageID() == "player_main" and unitID == Globals.player_id and (not dataType or dataType == "misc") then

@@ -22,7 +22,7 @@
     -->
 
 	<Include file="HTML.xml" />
-	<Script file="localization.lua"/>
+	<Script file="Locale.lua"/>
 	<Script file="workarounds.lua"/>
 
 </Ui>

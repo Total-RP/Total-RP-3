@@ -64,7 +64,7 @@ end
 --- Returns the full text to display for this role, which consists of the
 ---  persons name and their role(s).
 function Credit:GetLocalizedFullText()
-	local formatString = loc("THANK_YOU_WITH_ROLE");
+	local formatString = loc.THANK_YOU_WITH_ROLE;
 	return formatString:format(self:GetName(), self:GetLocalizedRoleText());
 end
 
@@ -75,14 +75,14 @@ function Credit:GetLocalizedRoleText()
 	if roleCount == 0 then
 		return "";
 	elseif roleCount == 1 then
-		return loc("THANK_YOU_ROLE_" .. self.roles[1]);
+		return loc:GetText("THANK_YOU_ROLE_" .. self.roles[1]);
 	end
 
 	-- If this person is multi-talented and can perform not one, but MULTIPLE
 	-- roles then we need to join them up with a list delimiter.
 	local localisedRoles = Tables.getTempTable();
 	for i = 1, roleCount do
-		localisedRoles[i] = loc("THANK_YOU_ROLE_" .. self.roles[i]);
+		localisedRoles[i] = loc:GetText("THANK_YOU_ROLE_" .. self.roles[i]);
 	end
 
 	local localisedRoleString = tconcat(localisedRoles, LIST_DELIMITER);

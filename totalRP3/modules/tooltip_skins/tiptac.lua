@@ -17,19 +17,19 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 
 TRP3_API.module.registerModule({
 	["name"] = "TipTac",
 	["id"] = "trp3_tiptac",
-	["description"] = loc("MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION"):format("TipTac"),
+	["description"] = loc.MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION:format("TipTac"),
 	["version"] = 1.200,
 	["minVersion"] = 25,
 	["onStart"] = function()
 
 		-- Stop right here if TipTac is not installed
 		if not TipTac then
-			return false, loc("MO_ADDON_NOT_INSTALLED"):format("TipTac");
+			return false, loc.MO_ADDON_NOT_INSTALLED:format("TipTac");
 		end
 
 		-- List of the tooltips we want to be customized by TipTac

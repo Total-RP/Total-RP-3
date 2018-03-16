@@ -28,7 +28,7 @@ TRP3_API.ui = {
 
 -- imports
 local globals = TRP3_API.globals;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
 local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, L_ToggleDropDownMenu;
@@ -78,7 +78,7 @@ end
 function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
 	for index, texture in pairs(tiledBackgrounds) do
-		tinsert(tab, {loc("UI_BKG"):format(tostring(index)), index, "|T" .. texture .. ":200:200|t"});
+		tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. texture .. ":200:200|t"});
 	end
 	return tab;
 end
@@ -477,7 +477,7 @@ end
 local DUMMY_TOOLTIP = CreateFrame("GameTooltip", "TRP3_DUMMY_TOOLTIP", nil, "GameTooltipTemplate");
 DUMMY_TOOLTIP:SetOwner( WorldFrame, "ANCHOR_NONE" );
 
-local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.locale.findPetOwner, TRP3_API.locale.findBattlePetOwner, UnitName;
+local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.Locale.findPetOwner, TRP3_API.Locale.findBattlePetOwner, UnitName;
 TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
 TRP3_API.ui.misc.TYPE_PET = "PET";
 TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";
@@ -851,8 +851,8 @@ local function insertContainerTag(alignIndex, button, frame)
 	assert(button.tagIndex and TAGS_INFO[button.tagIndex], "Button is not properly init with a tag index");
 	local tagInfo = TAGS_INFO[button.tagIndex];
 	local cursorIndex = frame:GetCursorPosition();
-	insertTag(strconcat(tagInfo.openTags[alignIndex], loc("REG_PLAYER_ABOUT_T1_YOURTEXT"), tagInfo.closeTag), cursorIndex, frame);
-	postInsertHighlight(cursorIndex, tagInfo.openTags[alignIndex]:len(), loc("REG_PLAYER_ABOUT_T1_YOURTEXT"):len(), frame);
+	insertTag(strconcat(tagInfo.openTags[alignIndex], loc.REG_PLAYER_ABOUT_T1_YOURTEXT, tagInfo.closeTag), cursorIndex, frame);
+	postInsertHighlight(cursorIndex, tagInfo.openTags[alignIndex]:len(), loc.REG_PLAYER_ABOUT_T1_YOURTEXT:len(), frame);
 end
 
 local function onColorTagSelected(red, green, blue, frame)
@@ -878,34 +878,34 @@ end
 
 local function onLinkTagClicked(frame)
 	local cursorIndex = frame:GetCursorPosition();
-	local tag = ("{link*%s*%s}"):format(loc("UI_LINK_URL"), loc("UI_LINK_TEXT"));
+	local tag = ("{link*%s*%s}"):format(loc.UI_LINK_URL, loc.UI_LINK_TEXT);
 	insertTag(tag, cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + 6);
-	frame:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc("UI_LINK_URL"):len());
+	frame:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc.UI_LINK_URL:len());
 end
 
 -- Drop down
 local function onContainerTagClicked(button, frame, isP)
 	local values = {};
 	if not isP then
-		tinsert(values, {loc("REG_PLAYER_ABOUT_P")});
-		tinsert(values, {loc("CM_LEFT"), 1});
-		tinsert(values, {loc("CM_CENTER"), 2});
-		tinsert(values, {loc("CM_RIGHT"), 3});
+		tinsert(values, {loc.REG_PLAYER_ABOUT_P});
+		tinsert(values, {loc.CM_LEFT, 1});
+		tinsert(values, {loc.CM_CENTER, 2});
+		tinsert(values, {loc.CM_RIGHT, 3});
 	else
-		tinsert(values, {loc("REG_PLAYER_ABOUT_HEADER")});
-		tinsert(values, {loc("CM_CENTER"), 1});
-		tinsert(values, {loc("CM_RIGHT"), 2});
+		tinsert(values, {loc.REG_PLAYER_ABOUT_HEADER});
+		tinsert(values, {loc.CM_CENTER, 1});
+		tinsert(values, {loc.CM_RIGHT, 2});
 	end
 	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
 end
 
 function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
-	toolbar.title:SetText(loc("REG_PLAYER_ABOUT_TAGS"));
-	toolbar.image:SetText(loc("CM_IMAGE"));
-	toolbar.icon:SetText(loc("CM_ICON"));
-	toolbar.color:SetText(loc("CM_COLOR"));
-	toolbar.link:SetText(loc("CM_LINK"));
+	toolbar.title:SetText(loc.REG_PLAYER_ABOUT_TAGS);
+	toolbar.image:SetText(loc.CM_IMAGE);
+	toolbar.icon:SetText(loc.CM_ICON);
+	toolbar.color:SetText(loc.CM_COLOR);
+	toolbar.link:SetText(loc.CM_LINK);
 	toolbar.h1.tagIndex = 1;
 	toolbar.h2.tagIndex = 2;
 	toolbar.h3.tagIndex = 3;
@@ -1058,7 +1058,7 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	resizeButton.resizableFrame = resizeButton.resizableFrame or resizeButton:GetParent();
 	assert(resizeButton.minWidth, "minWidth key is not set.");
 	assert(resizeButton.minHeight, "minHeight key is not set.");
-	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc("CM_RESIZE"), loc("CM_RESIZE_TT"));
+	TRP3_API.ui.tooltip.setTooltipAll(resizeButton, "BOTTOMLEFT", 0, 0, loc.CM_RESIZE, loc.CM_RESIZE_TT);
 	local parentFrame = resizeButton.resizableFrame;
 	resizeButton:RegisterForDrag("LeftButton");
 	resizeButton:SetScript("OnDragStart", function(self)

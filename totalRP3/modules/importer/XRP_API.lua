@@ -24,7 +24,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	local tcopy, getDefaultProfile = TRP3_API.utils.table.copy, TRP3_API.profile.getDefaultProfile;
-	local loc = TRP3_API.locale.getText;
+	local loc = TRP3_API.loc;
 
 	local XRP = {};
 
@@ -99,21 +99,21 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		profile.player.characteristics.WE = importedProfile.AW;
 		if importedProfile.MO then
 			tinsert(profile.player.characteristics.MI, {
-				NA = loc("REG_PLAYER_MSP_MOTTO");
+				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
 				IC = "INV_Inscription_ScrollOfWisdom_01";
 			});
 		end
 		if importedProfile.NI then
 			tinsert(profile.player.characteristics.MI, {
-				NA = loc("REG_PLAYER_MSP_NICK");
+				NA = loc.REG_PLAYER_MSP_NICK;
 				VA = importedProfile.NI;
 				IC = "Ability_Hunter_BeastCall";
 			});
 		end
 		if importedProfile.NH then
 			tinsert(profile.player.characteristics.MI, {
-				NA = loc("REG_PLAYER_MSP_HOUSE");
+				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
 				IC = "inv_misc_kingsring1";
 			});

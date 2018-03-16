@@ -22,7 +22,7 @@ local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
 local Comm = TRP3_API.communication;
-local loc = TRP3_API.locale.getText;
+local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
 local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
@@ -186,7 +186,7 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 		-- Test for TRP3
 		if  senderVersion > Globals.version and not has_seen_update_alert then
 			if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
-				TRP3_UpdateFrame.popup.text:SetText(loc("NEW_VERSION"):format(senderVersionText:sub(1, 15)));
+				TRP3_UpdateFrame.popup.text:SetText(loc.NEW_VERSION:format(senderVersionText:sub(1, 15)));
 				TRP3_UpdateFrame:Show();
 				has_seen_update_alert = true;
 			end
@@ -195,7 +195,7 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 		-- Test for Extended
 		if extendedVersion and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
 			if Utils.table.size(extendedNewVersionAlerts[extendedVersion]) >= 3 then
-				Utils.message.displayMessage(loc("NEW_EXTENDED_VERSION"):format(extendedVersion));
+				Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersion));
 				has_seen_extended_update_alert = true;
 			end
 		end
@@ -418,7 +418,7 @@ local function checkPlayerDataWeight()
 	if computedSize > ALERT_FOR_SIZE then
 		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 		if getConfigValue("heavy_profile_alert") then
-			TRP3_API.ui.tooltip.toast(loc("REG_PLAYER_ALERT_HEAVY_SMALL"), 5);
+			TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
 		end
 	end
 end
@@ -476,7 +476,7 @@ end
 
 TRP3_API.slash.registerCommand({
 	id = "open",
-	helpLine = " " .. loc("PR_SLASH_OPEN_HELP"),
+	helpLine = " " .. loc.PR_SLASH_OPEN_HELP,
 	handler = function(...)
 		local args = {...};
 
@@ -485,7 +485,7 @@ TRP3_API.slash.registerCommand({
 		end
 
 		if #args > 1 then
-			displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
 			return
 		elseif #args == 1 then
 			characterToOpen = table.concat(args, " ");
@@ -503,7 +503,7 @@ TRP3_API.slash.registerCommand({
 			if UnitIsPlayer("target") then
 				characterToOpen = Utils.str.getUnitID("target");
 			else
-				displayMessage(loc("PR_SLASH_OPEN_EXAMPLE"));
+				displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
 				return
 			end
 		end
@@ -515,11 +515,11 @@ TRP3_API.slash.registerCommand({
 			TRP3_API.register.openPageByUnitID(characterToOpen);
 			characterToOpen = "";
 		else
-			displayMessage(loc("PR_SLASH_OPEN_WAITING"));
+			displayMessage(loc.PR_SLASH_OPEN_WAITING);
 
 			-- If after 1 minute they didn't reply, abort
 			commandOpeningTimerHandle = newTimer(60, function()
-				displayMessage(loc("PR_SLASH_OPEN_ABORTING"));
+				displayMessage(loc.PR_SLASH_OPEN_ABORTING);
 				characterToOpen = "";
 			end)
 		end

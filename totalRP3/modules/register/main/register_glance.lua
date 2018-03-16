@@ -66,8 +66,8 @@ local function getSlotPresetDataForList(output)
 	end
 
 	-- Title
-	tinsert(output, {loc("REG_PLAYER_GLANCE_PRESET_SELECT"), nil});
-	tinsert(output, {loc("REG_PLAYER_GLANCE_PRESET_CREATE"), -1});
+	tinsert(output, {loc.REG_PLAYER_GLANCE_PRESET_SELECT, nil});
+	tinsert(output, {loc.REG_PLAYER_GLANCE_PRESET_CREATE, -1});
 	-- Category sorting
 	local tmp = {};
 	for category, _ in pairs(GLANCE_PRESETS_CATEGORY) do
@@ -82,8 +82,8 @@ local function getSlotPresetDataForList(output)
 			local glanceInfo = GLANCE_PRESETS[glance];
 			tinsert(categoryListElementTarget[2], {getIcon(glanceInfo.icon, 20) .. " " .. tostring(glanceInfo.title),
 				{
-					{loc("CM_LOAD"), LOAD_PREFIX .. glance},
-					{loc("CM_REMOVE"), REMOVE_PREFIX .. glance}
+					{loc.CM_LOAD, LOAD_PREFIX .. glance},
+					{loc.CM_REMOVE, REMOVE_PREFIX .. glance}
 				}
 			});
 		end
@@ -247,7 +247,7 @@ local function getGlanceMenuClipboardEntries(button, output)
 			button:GetName()
 		);
 
-		tinsert(output, { loc("REG_PLAYER_GLANCE_MENU_COPY"), copyKey });
+		tinsert(output, { loc.REG_PLAYER_GLANCE_MENU_COPY, copyKey });
 	end
 
 	-- The paste operation should only be present if you have something,
@@ -272,7 +272,7 @@ local function getGlanceMenuClipboardEntries(button, output)
 	-- We'll also put the name of the item that you'd paste into the menu
 	-- so that you have a rough idea on what would happen.
 	local pasteName = clipboardCurrentEntries[clipboardType].TI or "";
-	tinsert(output, { loc("REG_PLAYER_GLANCE_MENU_PASTE"):format(pasteName), pasteKey });
+	tinsert(output, { loc.REG_PLAYER_GLANCE_MENU_PASTE:format(pasteName), pasteKey });
 end
 TRP3_API.register.glance.getGlanceMenuClipboardEntries = getGlanceMenuClipboardEntries;
 
@@ -362,7 +362,7 @@ local function removeSlotPreset(presetID)
 			GLANCE_PRESETS_CATEGORY[category] = nil;
 		end
 	end
-	presetMessage(loc("REG_PLAYER_GLANCE_PRESET_REMOVE"):format(Utils.str.icon(icon, 15) .. " " .. name), 3);
+	presetMessage(loc.REG_PLAYER_GLANCE_PRESET_REMOVE:format(Utils.str.icon(icon, 15) .. " " .. name), 3);
 end
 TRP3_API.register.glance.removeSlotPreset = removeSlotPreset;
 
@@ -373,9 +373,9 @@ local function saveSlotPreset(glanceTab)
 	local presetID = Utils.str.id();
 
 	local icon = Utils.str.icon(presetIcon, 25) .. "\n|cff00ff00" .. presetTitle .. "|r";
-	TRP3_API.popup.showTextInputPopup(loc("REG_PLAYER_GLANCE_PRESET_GET_CAT"):format(icon), function(presetCategory)
+	TRP3_API.popup.showTextInputPopup(loc.REG_PLAYER_GLANCE_PRESET_GET_CAT:format(icon), function(presetCategory)
 		if not presetCategory or presetCategory:len() == 0 then
-			presetMessage(loc("REG_PLAYER_GLANCE_PRESET_ALERT1"), 2);
+			presetMessage(loc.REG_PLAYER_GLANCE_PRESET_ALERT1, 2);
 			return;
 		end
 		GLANCE_PRESETS[presetID] = {};
@@ -386,7 +386,7 @@ local function saveSlotPreset(glanceTab)
 			GLANCE_PRESETS_CATEGORY[presetCategory] = {};
 		end
 		tinsert(GLANCE_PRESETS_CATEGORY[presetCategory], presetID);
-		presetMessage(loc("REG_PLAYER_GLANCE_PRESET_ADD"):format(Utils.str.icon(presetIcon, 15) .. " " .. presetTitle), 3);
+		presetMessage(loc.REG_PLAYER_GLANCE_PRESET_ADD:format(Utils.str.icon(presetIcon, 15) .. " " .. presetTitle), 3);
 	end);
 end
 TRP3_API.register.glance.saveSlotPreset = saveSlotPreset;
@@ -421,7 +421,7 @@ end
 local function openGlanceEditor(slot, slotData, callback, external, arg1, arg2)
 	assert(callback, "No callback for glance editor");
 
-	TRP3_AtFirstGlanceEditorTitle:SetText(loc("REG_PLAYER_GLANCE_EDITOR"):format(slot));
+	TRP3_AtFirstGlanceEditorTitle:SetText(loc.REG_PLAYER_GLANCE_EDITOR:format(slot));
 	TRP3_AtFirstGlanceEditorActive:SetChecked(slotData.AC);
 	TRP3_AtFirstGlanceEditorTextScrollText:SetText(slotData.TX or "");
 	TRP3_AtFirstGlanceEditorName:SetText(slotData.TI or "");
@@ -779,31 +779,31 @@ local function onStart()
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigH1",
-			title = loc("CO_GLANCE_MAIN"),
+			title = loc.CO_GLANCE_MAIN,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigEditBox",
-			title = loc("CO_MINIMAP_BUTTON_FRAME"),
+			title = loc.CO_MINIMAP_BUTTON_FRAME,
 			configKey = CONFIG_GLANCE_PARENT,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigCheck",
-			title = loc("CO_GLANCE_LOCK"),
-			help = loc("CO_GLANCE_LOCK_TT"),
+			title = loc.CO_GLANCE_LOCK,
+			help = loc.CO_GLANCE_LOCK_TT,
 			configKey = CONFIG_GLANCE_LOCK,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("CO_MINIMAP_BUTTON_RESET"),
-			help = loc("CO_GLANCE_RESET_TT"),
-			text = loc("CO_MINIMAP_BUTTON_RESET_BUTTON"),
+			title = loc.CO_MINIMAP_BUTTON_RESET,
+			help = loc.CO_GLANCE_RESET_TT,
+			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
 			callback = resetPosition,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
-			title = loc("CO_GLANCE_PRESET_TRP2"),
-			text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
-			help = loc("CO_GLANCE_PRESET_TRP2_HELP"),
+			title = loc.CO_GLANCE_PRESET_TRP2,
+			text = loc.CO_GLANCE_PRESET_TRP2_BUTTON,
+			help = loc.CO_GLANCE_PRESET_TRP2_HELP,
 			callback = function()
 				setConfigValue(CONFIG_GLANCE_PARENT, "TargetFrame");
 				setConfigValue(CONFIG_GLANCE_ANCHOR_X, 161);
@@ -814,9 +814,9 @@ local function onStart()
 		if TRP3_API.target then
 			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 				inherit = "TRP3_ConfigButton",
-				title = loc("CO_GLANCE_PRESET_TRP3"),
-				text = loc("CO_GLANCE_PRESET_TRP2_BUTTON"),
-				help = loc("CO_GLANCE_PRESET_TRP3_HELP"),
+				title = loc.CO_GLANCE_PRESET_TRP3,
+				text = loc.CO_GLANCE_PRESET_TRP2_BUTTON,
+				help = loc.CO_GLANCE_PRESET_TRP3_HELP,
 				callback = function()
 					setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
 					setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
@@ -828,16 +828,16 @@ local function onStart()
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigurationTooltip_GlanceTT_Anchor",
-			title = loc("CO_GLANCE_TT_ANCHOR"),
+			title = loc.CO_GLANCE_TT_ANCHOR,
 			listContent = {
-				{loc("CO_ANCHOR_TOP_LEFT"), "TOPLEFT"},
-				{loc("CO_ANCHOR_TOP"), "TOP"},
-				{loc("CO_ANCHOR_TOP_RIGHT"), "TOPRIGHT"},
-				{loc("CO_ANCHOR_RIGHT"), "RIGHT"},
-				{loc("CO_ANCHOR_BOTTOM_RIGHT"), "BOTTOMRIGHT"},
-				{loc("CO_ANCHOR_BOTTOM"), "BOTTOM"},
-				{loc("CO_ANCHOR_BOTTOM_LEFT"), "BOTTOMLEFT"},
-				{loc("CO_ANCHOR_LEFT"), "LEFT"}
+				{loc.CO_ANCHOR_TOP_LEFT, "TOPLEFT"},
+				{loc.CO_ANCHOR_TOP, "TOP"},
+				{loc.CO_ANCHOR_TOP_RIGHT, "TOPRIGHT"},
+				{loc.CO_ANCHOR_RIGHT, "RIGHT"},
+				{loc.CO_ANCHOR_BOTTOM_RIGHT, "BOTTOMRIGHT"},
+				{loc.CO_ANCHOR_BOTTOM, "BOTTOM"},
+				{loc.CO_ANCHOR_BOTTOM_LEFT, "BOTTOMLEFT"},
+				{loc.CO_ANCHOR_LEFT, "LEFT"}
 			},
 			configKey = CONFIG_GLANCE_TT_ANCHOR,
 			listWidth = nil,
