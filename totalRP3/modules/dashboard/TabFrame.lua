@@ -74,22 +74,24 @@ function TRP3_DashboardTabFrameMixin:OnLoad()
 
 	-- Wrap the tab view classes in a table to be passed to the tab controller.
 	self.tabs = {};
-	for i = 1, #self.TabClasses do
-		self.tabs[i] = createTabFromClass(i, self.TabClasses[i], self);
-	end
+	Events.listenToEvent(Events.WORKFLOW_ON_LOADED, function()
+		for i = 1, #self.TabClasses do
+			self.tabs[i] = createTabFromClass(i, self.TabClasses[i], self);
+		end
+
+		-- Feed in the tabs and, when clicked, forward the call to OnTabSelected.
+		self.controller = UIFrame.createTabPanel(self.TabBar, self.tabs, function(_, ...)
+			return self:OnTabSelected(...);
+		end);
+
+		-- Cycle to the first tab by default. This'll trigger OnTabSelected.
+		self.controller:SelectTab(1);
+	end)
 
 	-- Listen for updates on our frame being resized.
 	Events.listenToEvent(Events.NAVIGATION_RESIZED, function(width, height)
 		return self:OnNavigationResized(width, height);
 	end);
-
-	-- Feed in the tabs and, when clicked, forward the call to OnTabSelected.
-	self.controller = UIFrame.createTabPanel(self.TabBar, self.tabs, function(_, ...)
-		return self:OnTabSelected(...);
-	end);
-
-	-- Cycle to the first tab by default. This'll trigger OnTabSelected.
-	self.controller:SelectTab(1);
 end
 
 --- Called when the NAVIGATION_RESIZED event fires. Re-draws the content

@@ -120,7 +120,7 @@ local AboutTabView = Class("TRP3_DashboardAboutTabView", Dashboard.TabView);
 Dashboard.AboutTabView = AboutTabView;
 
 function AboutTabView.static.getTabTitle()
-	return loc("DB_ABOUT");
+	return loc.DB_ABOUT;
 end
 
 function AboutTabView.static.getTabWidth()
