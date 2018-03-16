@@ -121,6 +121,10 @@ function TRP3_DashboardTabFrameMixin:OnTabSelected(index)
 	if self.view then
 		self.view:Show();
 	end
+
+	if self.ScrollFrame then
+		self.ScrollFrame:SetVerticalScroll(0);
+	end
 end
 
 --- Resets the font objects and colors associated with the HTML content
