@@ -204,7 +204,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- TODO Localization and better UI feedback
 			showTooltip({
 				tooltipLines = {
-					title = loc(loc.CL_REQUESTING_DATA, playerName),
+					title = loc.CL_REQUESTING_DATA:format(playerName),
 				},
 			});
 		end
@@ -258,7 +258,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		assert(isType(linkType, "string", "linkType"));
 		assert(isType(callback, "function", "callback"));
 
-		TRP3_API.popup.showYesNoPopup(loc(loc.CL_MAKE_IMPORTABLE, TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
+		TRP3_API.popup.showYesNoPopup(loc.CL_MAKE_IMPORTABLE:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
 			function()
 				callback(true);
 			end,

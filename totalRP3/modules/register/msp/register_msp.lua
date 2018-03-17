@@ -26,7 +26,7 @@ local function onStart()
 	-- Check for already loaded MSP addon
 	if _G.msp_RPAddOn then
 		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
-		TRP3_API.popup.showAlertPopup(loc(loc.REG_MSP_ALERT, addonName));
+		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(addonName));
 		-- Provoke error to cancel module activation
 		error(("Conflict with another MSP addon: %s"):format(addonName));
 	end

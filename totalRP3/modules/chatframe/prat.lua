@@ -25,7 +25,7 @@ local loc = TRP3_API.loc;
 local function onStart()
 	-- Stop right here if Prat is not installed
 	if not Prat then
-		return false, loc(loc.MO_ADDON_NOT_INSTALLED, "Prat");
+		return false, loc.MO_ADDON_NOT_INSTALLED:format("Prat");
 	end;
 
 	Prat:AddModuleToLoad(function()
@@ -164,7 +164,7 @@ end
 -- Register a Total RP 3 module that can be disabled in the settings
 TRP3_API.module.registerModule({
 	["name"] = "Prat",
-	["description"] = loc(loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION, "Prat"),
+	["description"] = loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION:format("Prat"),
 	["version"] = 1.1,
 	["id"] = "trp3_prat",
 	["onStart"] = onStart,

@@ -271,7 +271,7 @@ Comm.broadcast.init = function()
 		if channel == config_BroadcastChannel() then
 			Log.log("Passworded !");
 
-			local message = loc(loc.BROADCAST_PASSWORD, channel);
+			local message = loc.BROADCAST_PASSWORD:format(channel);
 			Utils.message.displayMessage(message);
 			ticker:Cancel();
 
@@ -283,7 +283,7 @@ Comm.broadcast.init = function()
 	-- For when someone just places a password
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
 		if mode == "PASSWORD_CHANGED" and channel == config_BroadcastChannel() then
-			Utils.message.displayMessage(loc(loc.BROADCAST_PASSWORDED, user, channel));
+			Utils.message.displayMessage(loc.BROADCAST_PASSWORDED:format(user, channel));
 		end
 	end);
 

@@ -59,7 +59,7 @@ function ChatLink:initialize(identifier, data, moduleID)
 		TRP3_API.Ellyb.ColorManager.ORANGE,
 		TRP3_API.Ellyb.ColorManager.ORANGE
 	);
-	tooltipLines:AddLine(loc(loc.CL_CONTENT_SIZE, Ellyb.Strings.formatBytes(self:GetContentSize())), TRP3_API.Ellyb.ColorManager.ORANGE);
+	tooltipLines:AddLine(loc.CL_CONTENT_SIZE:format(Ellyb.Strings.formatBytes(self:GetContentSize())), TRP3_API.Ellyb.ColorManager.ORANGE);
 
 	_private[self].tooltipLines = tooltipLines;
 end

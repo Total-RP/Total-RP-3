@@ -349,7 +349,7 @@ Config.registerConfigurationPage = registerConfigurationPage;
 local function changeLocale(newLocaleCode)
 	if newLocaleCode ~= loc:GetActiveLocale():GetCode() then
 		setValue("AddonLocale", newLocaleCode);
-		TRP3_API.popup.showConfirmPopup(loc(loc.CO_GENERAL_CHANGELOCALE_ALERT, Ellyb.ColorManager.GREEN(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
+		TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(Ellyb.ColorManager.GREEN(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
 	end
 end
 

@@ -320,7 +320,7 @@ local function setConsultDisplay(context)
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
-		_G[frame:GetName() .. "FieldName"]:SetText(loc(registerCharLocals[charName]));
+		_G[frame:GetName() .. "FieldName"]:SetText(loc:GetText(registerCharLocals[charName]));
 		if charName == "EC" then
 			local hexa = dataTab.EH or "ffffff"
 			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
