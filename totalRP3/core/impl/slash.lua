@@ -17,6 +17,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 local loc = TRP3_API.loc;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local tonumber, math, tinsert, type, assert, tostring, pairs, sort = tonumber, math, tinsert, type, assert, tostring, pairs, table.sort;
@@ -64,9 +67,9 @@ function SlashCmdList.TOTALRP3(msg, editbox)
 		end
 		sort(sortTable);
 		for _, cmdID in pairs(sortTable) do
-			local cmd, cmdText = COMMANDS[cmdID], "|cff00ff00/trp3 " .. cmdID .. "|r|cffff9900";
+			local cmd, cmdText = COMMANDS[cmdID], TRP3_API.Ellyb.ColorManager.GREEN("/trp3 " .. cmdID);
 			if cmd.helpLine then
-				cmdText = cmdText .. cmd.helpLine;
+				cmdText = cmdText .. TRP3_API.Ellyb.ColorManager.ORANGE(cmd.helpLine);
 			end
 			displayMessage(cmdText);
 		end

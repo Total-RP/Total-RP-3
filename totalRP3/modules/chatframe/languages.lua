@@ -153,7 +153,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			for i = 1, GetNumLanguages() do
 				local language, index = GetLanguageByIndex(i);
 				if index == ChatFrame1EditBox.languageID then
-					tinsert(dropdownItems,{"|Tinterface\\icons\\"..(languagesIcon[index] or "TEMP")..":15|t|cff00ff00 "..language.."|r", nil});
+					tinsert(dropdownItems,{"|Tinterface\\icons\\"..(languagesIcon[index] or "TEMP")..":15|t" .. TRP3_API.Ellyb.ColorManager.GREEN(language), nil});
 				else
 					tinsert(dropdownItems,{"|Tinterface\\icons\\"..(languagesIcon[index] or "TEMP")..":15|t "..language, i});
 				end

@@ -17,6 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type
+local _, TRP3_API = ...;
+
 TRP3_API.ui = {
 	tooltip = {},
 	listbox = {},
@@ -1096,16 +1099,18 @@ function TRP3_API.ui.frame.initResize(resizeButton)
 	end);
 end
 
+local VALID_SIZE_COLOR = TRP3_API.Ellyb.ColorManager.GREEN;
+local INVALID_SIZE_COLOR = TRP3_API.Ellyb.ColorManager.RED;
 resizeShadowFrame:SetScript("OnUpdate", function(self)
 	local height, width = self:GetHeight(), self:GetWidth();
-	local heightColor, widthColor = "|cff00ff00", "|cff00ff00";
+	local heightColor, widthColor = VALID_SIZE_COLOR, VALID_SIZE_COLOR;
 	if height < self.minHeight then
-		heightColor = "|cffff0000";
+		heightColor = INVALID_SIZE_COLOR;
 	end
 	if width < self.minWidth then
-		widthColor = "|cffff0000";
+		widthColor = INVALID_SIZE_COLOR;
 	end
-	resizeShadowFrame.text:SetText(widthColor .. math.ceil(width) .. "|r x " .. heightColor .. math.ceil(height));
+	resizeShadowFrame.text:SetText(heightColor(math.ceil(width)) .. " x " .. heightColor(math.ceil(height)));
 end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

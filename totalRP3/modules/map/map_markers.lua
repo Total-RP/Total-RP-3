@@ -17,7 +17,13 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+
 TRP3_API.map = {};
+
+-- Ellyb imports
+local YELLOW = TRP3_API.Ellyb.ColorManager.YELLOW;
 
 local Ellyb = TRP3_API.Ellyb;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -163,7 +169,7 @@ local function getMarker(i, tooltip)
 			WorldMapTooltip:Hide();
 		end);
 	end
-	marker.tooltip = "|cffff9900" .. (tooltip or "");
+	marker.tooltip = YELLOW(tooltip or "");
 	return marker;
 end
 
@@ -374,7 +380,7 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE;
+	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
 	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
@@ -455,7 +461,7 @@ end);
 -- disabled and tell the user things are firing up.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING, function()
 	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE_CONNECTING;
+	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_CONNECTING);
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
@@ -464,7 +470,7 @@ end);
 -- disabled and dump the localised error into the tooltip, to be useful.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, function(reason)
 	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE_OFFLINE:format(reason);
+	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_OFFLINE):format(reason);
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
@@ -473,7 +479,7 @@ end);
 -- standard tooltip description.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
 	TRP3_WorldMapButton:SetEnabled(true);
-	TRP3_WorldMapButton.subtitle = "|cffff9900" .. loc.MAP_BUTTON_SUBTITLE;
+	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
 
 	TRP3_WorldMapButtonIcon:SetDesaturated(false);
 end);

@@ -18,6 +18,9 @@
 --	limitations under the License.
 ---------------------------------------------------------------------------------
 
+---@type
+local _, TRP3_API = ...;
+
 -- Changed NPC talk prefix to a hardcoded one following option removal (Paul Corlay)
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -33,10 +36,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local strtrim, pairs, tinsert = strtrim, pairs, tinsert;
 	local ChatTypeInfo = ChatTypeInfo;
 	local messageTypes = TRP3_API.utils.message.type;
-	local CreateColor = CreateColor;
-	local colorTool = CreateColor();
 	local strlen = strlen;
-	local strtrim = strtrim;
 
 	local frame = TRP3_NPCTalk;
 	---@type Button
@@ -134,9 +134,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local channelTypes = {};
 
 		for channelLabel, channelName in pairs(CHANNEL_TYPES) do
-			local chatInfo = ChatTypeInfo[channelName];
-			colorTool:SetRGB(chatInfo.r, chatInfo.g, chatInfo.b)
-			tinsert(channelTypes, {"|cfff2bf03Channel:|r " .. colorTool:WrapTextInColorCode(_G[channelLabel]), channelName});
+			local channelColor = TRP3_API.Ellyb.ColorManager.getChatColorForChannel(channelName);
+			tinsert(channelTypes, { TRP3_API.Ellyb.ColorManager.YELLOW(loc.NPC_TALK_CHANNEL) .. channelColor(_G[channelLabel]), channelName});
 		end
 
 		-- Set the dropdown for the channels
