@@ -30,7 +30,9 @@ local Ellyb = Ellyb(_);
 -- WoW imports
 local pairs = pairs;
 local tinsert = table.insert;
-local sub = string.sub;
+
+-- Ellyb imports
+local Strings = Ellyb.Strings;
 
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
@@ -1351,64 +1353,8 @@ function Locale.init()
 	TRP3_API.loc:SetCurrentLocale(TRP3_API.configuration.getValue("AddonLocale"), true);
 end
 
+-- Backward compatibility with older use of Total RP 3's Locale module
 Locale.getText = Ellyb.Functions.bind(TRP3_API.loc.GetText, TRP3_API.loc);
-
--- Only used for French related stuff, it's okay if non-latin characters are not here
--- Note: We have a list of lowercase and uppercase letters here, because string.lower doesn't
--- like accentuated uppercase letters at all, so we can't have just lowercase letters and apply a string.lower.
-local VOWELS = {
-	"a",
-	"e",
-	"i",
-	"o",
-	"u",
-	"y",
-	"A";
-	"E",
-	"I",
-	"O",
-	"U",
-	"Y",
-	"À",
-	"Â",
-	"Ä",
-	"Æ",
-	"È",
-	"É",
-	"Ê",
-	"Ë",
-	"Î",
-	"Ï",
-	"Ô",
-	"Œ",
-	"Ù",
-	"Û",
-	"Ü",
-	"Ÿ",
-	"à",
-	"â",
-	"ä",
-	"æ",
-	"è",
-	"é",
-	"ê",
-	"ë",
-	"î",
-	"ï",
-	"ô",
-	"œ",
-	"ù",
-	"û",
-	"ü",
-	"ÿ",
-};
-VOWELS = tInvert(VOWELS);
-
----@param letter string @ A single letter as a string (can be uppercase or lowercase)
----@return boolean isAVowel @ True if the letter is a vowel
-function Locale.isAVowel(letter)
-	return VOWELS[letter] ~= nil;
-end
 
 ---generateFrenchDeterminerForText
 ---@param text string @ The text containing the |2 tag to replace with the appropriate determiner
@@ -1418,8 +1364,7 @@ function Locale.generateFrenchDeterminerForText(text, followingText)
 	-- This function only applies to the French locale. If we were to call it on a different locale, do nothing
 	if not IS_FRENCH_LOCALE then return text end
 
-	local firstLetterFollowing = sub(followingText, 1, 1);
-	if Locale.isAVowel(firstLetterFollowing) then
+	if Ellyb.Strings.isAVowel(Ellyb.Strings.getFirstLetter(followingText)) then
 		text = text:gsub("|2", "de");
 	else
 		text = text:gsub("|2 ", "d'");
