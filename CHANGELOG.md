@@ -2,7 +2,12 @@
 
 ## [1.3.3](https://github.com/Ellypse/Total-RP-3/compare/1.3.2.1...1.3.3) - 2018-03-30
 
+### Added
+
+- Added 16 new musics from patch 7.3.5 (Silithus and Seething Shore musics). (Unfortunately, the music paths for the allied races have not been decrupted yet)
+
 ### Modified
+
 - Minor Text Fixes
 - Updated libraries and dependencies
 
