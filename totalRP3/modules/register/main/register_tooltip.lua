@@ -104,6 +104,23 @@ local ANCHOR_TAB;
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
 
+local currentDate = date("*t");
+local seriousDay = currentDate.month == 4 and currentDate.day == 1
+-- Borrowed from BfA alpha. I need that NOW
+local function Wrap(value, max)
+	return (value - 1) % max + 1;
+end
+local RAINBOW = {
+	TRP3_API.Ellyb.ColorManager.RED,
+	TRP3_API.Ellyb.ColorManager.ORANGE,
+	TRP3_API.Ellyb.ColorManager.YELLOW,
+	TRP3_API.Ellyb.ColorManager.GREEN,
+	TRP3_API.Ellyb.ColorManager.CYAN,
+	TRP3_API.Ellyb.ColorManager.BLUE,
+	TRP3_API.Ellyb.ColorManager.PURPLE,
+	TRP3_API.Ellyb.ColorManager.PINK
+}
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -423,7 +440,18 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	completeName = color:WrapTextInColorCode(completeName);
+	if seriousDay then
+		if getConfigValue("AF_STUFF") then
+			local finalName = ""
+			for i = 1, #completeName do
+				---@type Color
+				local color = RAINBOW[Wrap(i, #RAINBOW)]
+				finalName = finalName .. color:WrapTextInColorCode(completeName[i])
+			end
+		end
+	else
+		completeName = color:WrapTextInColorCode(completeName);
+	end
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
@@ -1354,6 +1382,19 @@ local function onModuleInit()
 			},
 		}
 	}
+
+	if seriousDay then
+		registerConfigKey("AF_STUFF", true);
+		tinsert(CONFIG_STRUCTURE.elements, {
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "Enable April Fools' joke",
+				help = "Disable this option to remove this year's April Fools' joke.",
+				configKey = "AF_STUFF",
+			},
+		})
+	end
+
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
