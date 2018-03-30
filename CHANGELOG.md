@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.3](https://github.com/Ellypse/Total-RP-3/compare/1.3.2.1...1.3.3) - 2018-03-30
+
+### Modified
+- Minor Text Fixes
+- Updated libraries and dependencies
+
 ## [1.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.1...1.3.2) - 2018-03-06
 
 This update is brought by Meorawr. Huge thanks to him for his contribution to the Total RP 3 project!
