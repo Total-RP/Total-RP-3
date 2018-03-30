@@ -106,24 +106,7 @@ local registerTooltipModuleIsEnabled = false;
 
 local currentDate = date("*t");
 local seriousDay = currentDate.month == 4 and currentDate.day == 1
--- Borrowed from BfA alpha. I need that NOW
-local function Rainbow(value, max)
-	local movedValue = value - 1;	-- screw Lua lmao
-	local fifth = (max - 1) / 5;
-	if movedValue < fifth then
-		return TRP3_API.Ellyb.Color(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
-	elseif movedValue < 2 * fifth then
-		return TRP3_API.Ellyb.Color(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
-	elseif movedValue < 3 * fifth then
-		return TRP3_API.Ellyb.Color(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
-	elseif movedValue < 4 * fifth then
-		return TRP3_API.Ellyb.Color(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
-	elseif movedValue ~= max - 1 then
-		return TRP3_API.Ellyb.Color(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
-	else
-		return TRP3_API.Ellyb.Color(1, 0.3, 1)
-	end
-end
+local Rainbowify = TRP3_API.utils.Rainbowify;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -445,22 +428,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	end
 
 	if seriousDay and getConfigValue("AF_STUFF") then
-		local finalName = ""
-		local i = 1
-
-		local characterCount = 0;
-		for character in string.gmatch(completeName, "([%z\1-\127\194-\244][\128-\191]*)") do
-			characterCount = characterCount + 1
-		end
-
-		for character in string.gmatch(completeName, "([%z\1-\127\194-\244][\128-\191]*)") do
-			---@type Color
-			local color = Rainbow(i, characterCount)
-			finalName = finalName .. color:WrapTextInColorCode(character)
-			i = i + 1
-		end
-
-		completeName = finalName;
+		completeName = Rainbowify(completeName);
 	else
 		completeName = color:WrapTextInColorCode(completeName);
 	end
@@ -633,7 +601,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			name = color:WrapTextInColorCode(name);
+			if seriousDay and getConfigValue("AF_STUFF") then
+				name = Rainbowify(name);
+			else
+				name = color:WrapTextInColorCode(name);
+			end
 		end
 		tooltipBuilder:AddLine(loc("REG_TT_TARGET"):format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -770,6 +742,10 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
 	end
 
+	if seriousDay and getConfigValue("AF_STUFF") then
+		petName = Rainbowify(petName);
+	end
+
 
 	tooltipBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (petName or companionID), 1, 1, 1, getMainLineFontSize());
 
@@ -825,7 +801,12 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			end
 		end
 
-		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+		if seriousDay and getConfigValue("AF_STUFF") then
+			ownerFinalName = Rainbowify(ownerFinalName);
+		else
+			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+
+		end
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -923,6 +904,10 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
+	end
+
+	if seriousDay and getConfigValue("AF_STUFF") then
+		mountCustomName = Rainbowify(mountCustomName);
 	end
 
 
@@ -1397,14 +1382,12 @@ local function onModuleInit()
 
 	if seriousDay then
 		registerConfigKey("AF_STUFF", true);
-		tinsert(CONFIG_STRUCTURE.elements, {
-			{
+		tinsert(CONFIG_STRUCTURE.elements, 2, {
 				inherit = "TRP3_ConfigCheck",
-				title = "Enable April Fools' joke",
+				title = Rainbowify("Enable April Fools' joke"),
 				help = "Disable this option to remove this year's April Fools' joke.",
 				configKey = "AF_STUFF",
-			},
-		})
+			})
 	end
 
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);

@@ -1077,3 +1077,40 @@ Utils.texture.applyRoundTexture = function(textureFrame, texturePath, failTextur
 		end
 	end
 end
+
+local function Rainbow(value, max)
+	local movedValue = value - 1;    -- screw Lua lmao
+	local fifth = (max - 1) / 5;
+	if movedValue < fifth then
+		return TRP3_API.Ellyb.Color(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
+	elseif movedValue < 2 * fifth then
+		return TRP3_API.Ellyb.Color(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
+	elseif movedValue < 3 * fifth then
+		return TRP3_API.Ellyb.Color(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
+	elseif movedValue < 4 * fifth then
+		return TRP3_API.Ellyb.Color(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
+	elseif movedValue ~= max - 1 then
+		return TRP3_API.Ellyb.Color(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
+	else
+		return TRP3_API.Ellyb.Color(1, 0.3, 1)
+	end
+end
+
+local function Rainbowify(text)
+	local finalText = ""
+	local i = 1
+
+	local characterCount = 0;
+	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		characterCount = characterCount + 1
+	end
+
+	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		---@type Color
+		local color = Rainbow(i, characterCount)
+		finalText = finalText .. color:WrapTextInColorCode(character)
+		i = i + 1
+	end
+	return finalText
+end
+TRP3_API.utils.Rainbowify = Rainbowify;
