@@ -107,19 +107,23 @@ local registerTooltipModuleIsEnabled = false;
 local currentDate = date("*t");
 local seriousDay = currentDate.month == 4 and currentDate.day == 1
 -- Borrowed from BfA alpha. I need that NOW
-local function Wrap(value, max)
-	return (value - 1) % max + 1;
+local function Rainbow(value, max)
+	local movedValue = value - 1;	-- screw Lua lmao
+	local fifth = (max - 1) / 5;
+	if movedValue < fifth then
+		return TRP3_API.Ellyb.Color(1, 0.3 + 0.7 * movedValue / fifth, 0.3)
+	elseif movedValue < 2 * fifth then
+		return TRP3_API.Ellyb.Color(1 - 0.7 * (movedValue - fifth) / fifth, 1, 0.3)
+	elseif movedValue < 3 * fifth then
+		return TRP3_API.Ellyb.Color(0.3, 1, 0.3 + 0.7 * (movedValue - 2 * fifth) / fifth)
+	elseif movedValue < 4 * fifth then
+		return TRP3_API.Ellyb.Color(0.3, 1 - 0.7 * (movedValue - 3 * fifth) / fifth, 1)
+	elseif movedValue ~= max - 1 then
+		return TRP3_API.Ellyb.Color(0.3 + 0.7 * (movedValue - 4 * fifth) / fifth, 0.3, 1)
+	else
+		return TRP3_API.Ellyb.Color(1, 0.3, 1)
+	end
 end
-local RAINBOW = {
-	TRP3_API.Ellyb.ColorManager.RED,
-	TRP3_API.Ellyb.ColorManager.ORANGE,
-	TRP3_API.Ellyb.ColorManager.YELLOW,
-	TRP3_API.Ellyb.ColorManager.GREEN,
-	TRP3_API.Ellyb.ColorManager.CYAN,
-	TRP3_API.Ellyb.ColorManager.BLUE,
-	TRP3_API.Ellyb.ColorManager.PURPLE,
-	TRP3_API.Ellyb.ColorManager.PINK
-}
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -440,15 +444,23 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	if seriousDay then
-		if getConfigValue("AF_STUFF") then
-			local finalName = ""
-			for i = 1, #completeName do
-				---@type Color
-				local color = RAINBOW[Wrap(i, #RAINBOW)]
-				finalName = finalName .. color:WrapTextInColorCode(completeName[i])
-			end
+	if seriousDay and getConfigValue("AF_STUFF") then
+		local finalName = ""
+		local i = 1
+
+		local characterCount = 0;
+		for character in string.gmatch(completeName, "([%z\1-\127\194-\244][\128-\191]*)") do
+			characterCount = characterCount + 1
 		end
+
+		for character in string.gmatch(completeName, "([%z\1-\127\194-\244][\128-\191]*)") do
+			---@type Color
+			local color = Rainbow(i, characterCount)
+			finalName = finalName .. color:WrapTextInColorCode(character)
+			i = i + 1
+		end
+
+		completeName = finalName;
 	else
 		completeName = color:WrapTextInColorCode(completeName);
 	end
