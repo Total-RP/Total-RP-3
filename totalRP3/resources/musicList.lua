@@ -17,6 +17,12 @@
 ----------------------------------------------------------------------------------
 
 local musicList = {
+	"battleforazeroth\\mus_735_pointofimpact_a",
+	"battleforazeroth\\mus_735_pointofimpact_b",
+	"battleforazeroth\\mus_735_pointofimpact_battle_h",
+	"battleforazeroth\\mus_735_pointofimpact_c",
+	"battleforazeroth\\mus_735_pointofimpact_d",
+	"battleforazeroth\\mus_735_pointofimpact_h",
 	"cataclysm\\mus_41_faeriedragon_ue01",
 	"cataclysm\\mus_41_za_altarbloodgod_uu01",
 	"cataclysm\\mus_41_za_altarbloodgod_uu02",
