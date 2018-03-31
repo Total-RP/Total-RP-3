@@ -1233,6 +1233,15 @@ This update is brought by Meorawr. Huge thanks to him for his contribution to th
 - Fixed a library compatibility issue when running both Total RP 3 and Storyline.
 
 ]],
+	---@language Markdown
+	WHATS_NEW_17_5 = [[
+## [1.3.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.3.1...1.3.3.2) - 2018-03-31
+
+### Fixed
+
+- Fixed a critical issue with localizations that are not English or French.
+
+]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
