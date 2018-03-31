@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.3...1.3.3.1) - 2018-03-31
+
+### Fixed
+
+- Fixed a library compatibility issue when running both Total RP 3 and Storyline.
+
 ## [1.3.3](https://github.com/Ellypse/Total-RP-3/compare/1.3.2.1...1.3.3) - 2018-03-30
 
 ### Added
