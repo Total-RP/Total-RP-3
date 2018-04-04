@@ -98,6 +98,7 @@ local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
+local CONFIG_PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
 
 local ANCHOR_TAB;
 
@@ -427,7 +428,11 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
-		completeName = strconcat(TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
+		if getConfigValue(CONFIG_PREFER_OOC_ICON) == "TEXT" then
+			completeName = strconcat(TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
+		else
+			rightIcons = strconcat(rightIcons, OOC_ICON);
+		end
 	end
 
 	if showIcons() then
@@ -1135,6 +1140,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
 	registerConfigKey(CONFIG_NO_FADE_OUT, false);
+	registerConfigKey(CONFIG_PREFER_OOC_ICON, "TEXT");
 	registerConfigKey(CONFIG_PETS_ICON, true);
 	registerConfigKey(CONFIG_PETS_TITLE, true);
 	registerConfigKey(CONFIG_PETS_OWNER, true);
@@ -1152,6 +1158,11 @@ local function onModuleInit()
 		{loc.CO_ANCHOR_LEFT, "ANCHOR_LEFT"},
 		{loc.CO_ANCHOR_CURSOR, "ANCHOR_CURSOR"},
 	};
+
+	local OOC_INDICATOR_TYPES = {
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, "ICON"}
+	}
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -1256,6 +1267,15 @@ local function onModuleInit()
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc.CO_TOOLTIP_CHARACTER,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Charact_OOC_Indicator",
+				title = loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
+				listContent = OOC_INDICATOR_TYPES,
+				configKey = CONFIG_PREFER_OOC_ICON,
+				listWidth = nil,
+				listCancel = true,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
