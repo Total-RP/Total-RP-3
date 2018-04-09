@@ -535,6 +535,7 @@ local function onStart()
 			max = 10,
 			step = 1,
 			integer = true,
+			dependentOnOptions = {MATURE_FILTER_CONFIG},
 		});
 		-- Edit dictionary button
 		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
