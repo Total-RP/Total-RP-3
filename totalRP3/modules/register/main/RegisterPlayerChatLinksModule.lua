@@ -111,7 +111,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)
-		local profile, profileID = profileData.profileData, profileData.profileID;
+		local profile, profileID = profileData.profile, profileData.profileID;
 		local profileName = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
 			profileName = profile.characteristics.FN;

@@ -47,10 +47,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local AtFirstGlanceChatLinksModule = TRP3_API.ChatLinks:InstantiateModule(loc.CL_GLANCE, "AT_FIRST_GLANCE");
 
 	--- Get a copy of the data for the link, using the information provided when using AtFirstGlanceChatLinksModule:InsertLink
-	function AtFirstGlanceChatLinksModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
-
-		local glanceTab = getDataDefault("misc/PE", EMPTY, get("player") or EMPTY);
+	function AtFirstGlanceChatLinksModule:GetLinkData(glanceTab, canBeImported)
 
 		local tooltipData = {
 			glanceTab = {},
@@ -65,8 +62,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	--- Creates and decorates tooltip lines for the given data
 	---@return ChatLinkTooltipLines
 	function AtFirstGlanceChatLinksModule:GetTooltipLines(tooltipData)
-		assert(tooltipData.profile, "Invalid tooltipData");
-
 		local tooltipLines = TRP3_API.ChatLinkTooltipLines();
 
 		local glance = tooltipData.glanceTab;

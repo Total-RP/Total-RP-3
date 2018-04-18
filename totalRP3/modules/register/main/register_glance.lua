@@ -578,7 +578,7 @@ local function onGlanceSlotClick(button, clickType)
 			local glance = glanceTab[button.slot];
 			if glance and glance.AC then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_GLANCE, function(canBeImported)
-					TRP3_API.AtFirstGlanceChatLinksModule:InsertLink(button.slot, canBeImported);
+					TRP3_API.AtFirstGlanceChatLinksModule:InsertLink(glance, canBeImported);
 				end);
 			end
 		else

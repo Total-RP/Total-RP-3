@@ -94,7 +94,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Import profile action button
 	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT_PLAYER_PROFILE", loc.CL_IMPORT_PROFILE, "PROF_I_Q", "PROF_I_A");
 
-	function ImportProfileButton:OnAnswerCommandReceived(profile, sender)
+	function ImportProfileButton:OnAnswerCommandReceived(data, sender)
+		local profile = data.profile;
 		local profileName = profile.profileName;
 		local i = 1;
 		while not TRP3_API.profile.isProfileNameAvailable(profileName) and i < 500 do
@@ -111,9 +112,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE, "PROF_O_Q", "PROF_O_A");
 
 	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
+		TRP3_API.Ellyb.Tables.inspect(profileData);
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
-		TRP3_API.register.insertProfile(profileID, profile)
+		TRP3_API.register.insertProfile(profileID, profile.player)
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, nil);
 
 		TRP3_API.register.openPageByProfileID(profileID);
