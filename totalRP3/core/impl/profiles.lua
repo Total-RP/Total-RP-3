@@ -588,6 +588,10 @@ function TRP3_API.profile.init()
 		end
 	end);
 
+	-- Setup edit boxes to handle serialized data using Ellyb's mixin
+	Mixin(TRP3_ProfileExport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
+	Mixin(TRP3_ProfileImport.content.scroll.text, TRP3_API.Ellyb.EditBoxes.SerializedDataEditBoxMixin);
+
 	TRP3_API.slash.registerCommand({
 		id = "profile",
 		helpLine = " " .. loc.PR_SLASH_SWITCH_HELP,
