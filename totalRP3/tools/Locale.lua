@@ -1511,3 +1511,22 @@ end
 
 -- Backward compatibility locale = Locale
 TRP3_API.locale = TRP3_API.Locale;
+
+--- Backward compatibility layer for third party mods
+--- This will create a proxy meta table that third party mods can use
+--- to insert new localization keys inside a locale.
+function TRP3_API.locale.getLocale(localeID)
+	---@type Locale
+	local locale = TRP3_API.loc:GetLocale(localeID);
+
+	TRP3_API.utils.log.log([[DEPRECATED USAGE OF TRP3_API.locale.getLocale(localeID) TO ADD LOCALIZATION KEYS.
+Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to insert localization strings.]], TRP3_API.utils.log.level.WARNING)
+
+	return {
+		localeContent = setmetatable({}, {
+			__newindex = function(_, key, value)
+				locale:AddText(key, value);
+			end,
+		})
+	}
+end
