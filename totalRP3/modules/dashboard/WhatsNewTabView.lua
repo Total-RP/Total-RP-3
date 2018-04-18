@@ -40,12 +40,7 @@ local strhtml = TRP3_API.utils.str.toHTML;
 --- List of "What's new" segments to concatenate and display together when
 ---  this view is activated.
 local SEGMENTS = {
-	loc.WHATS_NEW_17_5,
-	loc.WHATS_NEW_17_4,
-	loc.WHATS_NEW_17_3,
-	loc.WHATS_NEW_17_2,
-	loc.WHATS_NEW_17_1,
-	loc.WHATS_NEW_17,
+	loc.WHATS_NEW_18,
 };
 
 --- Returns the fully formatted localized text for this view.
