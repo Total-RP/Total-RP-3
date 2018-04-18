@@ -242,6 +242,14 @@
 					</Anchors>
 					<Color r="0.95" g="0.95" b="0.95" />
 				</FontString>
+				<FontString parentKey="warning" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" />
+						<Anchor point="RIGHT" x="-30" y="0"/>
+						<Anchor point="LEFT" x="30" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95" />
+				</FontString>
 			</Layer>
 		</Layers>
 
@@ -270,7 +278,7 @@
 					</Layer>
 				</Layers>
 				<Anchors>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" x="0" y="-21"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.warning" x="0" y="-25"/>
 					<Anchor point="RIGHT" x="-30" y="0"/>
 					<Anchor point="LEFT" x="20" y="0"/>
 					<Anchor point="BOTTOM" x="0" y="30"/>
