@@ -451,13 +451,14 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 
 	-- Get the pet custom color
 	if configShowNameCustomColors() and petProfile and petProfile.data then
+		---@type Color
 		local customColor = petProfile.data.NH;
 
 		if customColor then
 			customColor = Color(petProfile.data.NH);
 
 			if configIncreaseNameColorContrast() then
-				customColor:LightenColorUntilItIsReadable();
+				customColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 			end
 
 			nameColor = customColor;

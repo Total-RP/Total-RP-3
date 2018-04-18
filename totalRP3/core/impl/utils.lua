@@ -19,6 +19,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(_);
 
 -- Public accessor
 TRP3_API.utils = {
@@ -558,34 +559,28 @@ Utils.color.lightenColorUntilItIsReadable = function(textColor)
 	return textColor;
 end
 
--- I quite like Blizzard's Color mixins, it has some nice functions like :WrapTextInColorCode(text)
--- But I will extend them with my own functions like :LightenColorUntilItIsReadable();
-local BlizzardCreateColor = CreateColor;
+local function mixinColor(color)
+	-- Backward compatibility
+	color.LightenColorUntilItIsReadable = color.LightenColorUntilItIsReadableOnDarkBackgrounds;
+	return color;
+end
 
 ---@return ColorMixin
-local function CreateColor(r, g, b, a)
-	local color = BlizzardCreateColor(r, g, b, a);
-	color.LightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
-	return color;
+local function CreateColor(...)
+	return mixinColor(Ellyb.Color(...));
 end
 Utils.color.CreateColor = CreateColor;
 
---- Returns a Color using Blizzard's ColorMixin for a given hexadecimal color code
--- @see ColorMixin
-function Utils.color.getColorFromHexadecimalCode(hexadecimalCode)
-	local r, g, b = Utils.color.hexaToFloat(hexadecimalCode);
-	return CreateColor(r, g, b, 1);
+-- Backward compatibility
+function Utils.color.getColorFromHexadecimalCode(...)
+	return mixinColor(Ellyb.Color.CreateFromHexa(...));
 end
 
 --- Returns a Color using Blizzard's ColorMixin for a given class (english, not localized)
 -- @see ColorMixin
 function Utils.color.getClassColor(englishClass)
-	if not RAID_CLASS_COLORS[englishClass] then return end
-	local classColorTable = RAID_CLASS_COLORS[englishClass];
-	return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
+	return mixinColor(Ellyb.ColorManager.getClassColor(englishClass));
 end
-
-local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 
 --- Returns the custom color defined in the unitID's profile as a Color using Blizzard's ColorMixing.
 -- @param unitID
@@ -595,16 +590,12 @@ function Utils.color.getUnitCustomColor(unitID)
 	local info = TRP3_API.register.getUnitIDCurrentProfileSafe(unitID);
 
 	if info.characteristics and info.characteristics.CH then
-		-- If we do have a custom color code (in hexa) defined, get the RGB float values
-		local r, g, b = Utils.color.hexaToFloat(info.characteristics.CH);
-		local color = CreateColor(r, g, b, 1);
-		return color;
+		return CreateColor(info.characteristics.CH);
 	end
 end
 
 function Utils.color.getChatColorForChannel(channel)
-	local chatInfo = ChatTypeInfo[channel];
-	return CreateColor(chatInfo.r, chatInfo.g, chatInfo.b, 1);
+	return mixinColor(Ellyb.ColorManager.getChatColorForChannel(channel));
 end
 
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
