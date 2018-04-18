@@ -11,6 +11,29 @@
 - Player personality traits now only show the value numbers when the cursor is on the bar.
 - Improved generation of chat links for better efficiency.
 
+## [1.3.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.3.1...1.3.3.2) - 2018-03-31
+
+### Fixed
+
+- Fixed a critical issue with localizations that are not English or French.
+
+## [1.3.3.1](https://github.com/Ellypse/Total-RP-3/compare/1.3.3...1.3.3.1) - 2018-03-31
+
+### Fixed
+
+- Fixed a library compatibility issue when running both Total RP 3 and Storyline.
+
+## [1.3.3](https://github.com/Ellypse/Total-RP-3/compare/1.3.2.1...1.3.3) - 2018-03-30
+
+### Added
+
+- Added 16 new musics from patch 7.3.5 (Silithus and Seething Shore musics). (Unfortunately, the music paths for the allied races have not been decrupted yet)
+
+### Modified
+
+- Minor Text Fixes
+- Updated libraries and dependencies
+
 ## [1.3.2](https://github.com/Ellypse/Total-RP-3/compare/1.3.1...1.3.2) - 2018-03-06
 
 This update is brought by Meorawr. Huge thanks to him for his contribution to the Total RP 3 project!
