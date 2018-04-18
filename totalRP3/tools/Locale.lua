@@ -919,6 +919,10 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_CUSTOM_NAME = "Custom color name",
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
+	BW_COLOR_PRESET_TITLE = "Color presets",
+	BW_COLOR_PRESET_SAVE = "Save current color",
+	BW_COLOR_PRESET_RENAME = "Rename %s preset",
+	BW_COLOR_PRESET_DELETE = "Delete %s preset",
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Databroker

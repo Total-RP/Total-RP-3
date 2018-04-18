@@ -601,19 +601,90 @@ local COLOR_PRESETS_ITEMS = {
 	{ CO = ColorManager.ITEM_WOW_TOKEN, TX = ITEM_QUALITY8_DESC},
 }
 
+---@param color Color
+local function getPresetForColor(color)
+	local hexa = "#" .. color:GenerateHexadecimalColor(true);
+	for k, color in pairs(TRP3_Colors) do
+		if color.CO == hexa then
+			return color, k;
+		end
+	end
+	return false;
+end
+
+local function saveCustomColor(color, name, indexToUpdate)
+	TRP3_ColorBrowserEditBox:ClearFocus();
+
+	local hexaColorCode = "#" .. color:GenerateHexadecimalColor(true);
+	if (name == "") then
+		name = hexaColorCode;
+	end
+
+	if not indexToUpdate then
+		for index, preset in pairs(TRP3_Colors) do
+			if (Color(preset.CO):IsEqualTo(color)) then
+				indexToUpdate = index;
+				break
+			end
+		end
+	end
+
+	if (indexToUpdate) then
+		TRP3_Colors[indexToUpdate].TX = name;
+	else
+		tinsert(TRP3_Colors, { CO = hexaColorCode, TX = name });
+		table.sort(TRP3_Colors, function(a, b)
+			return ColorManager.compareHSL(Color(a.CO), Color(b.CO))
+		end)
+	end
+end
+
+local function deleteCustomColorAtIndex(indexToDelete)
+	if (indexToDelete) then
+		tremove(TRP3_Colors, indexToDelete);
+	end
+end
+
 local function colorPresetsDropDownSelection(hexValue)
-	local r, g, b = ColorManager.hexaToNumber(hexValue);
-	TRP3_ColorBrowser.red = r;
-	TRP3_ColorBrowser.green = g;
-	TRP3_ColorBrowser.blue = b;
-	TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
-	TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
+	if hexValue == "SAVE" then
+		TRP3_API.popup.showTextInputPopup(loc.BW_CUSTOM_NAME .. "\n\n" .. loc.BW_CUSTOM_NAME_TT, function(text)
+			saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), text);
+		end);
+	elseif hexValue == "RENAME" then
+		local existingPreset, index = getPresetForColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+		TRP3_API.popup.showTextInputPopup(loc.BW_CUSTOM_NAME .. "\n\n" .. loc.BW_CUSTOM_NAME_TT, function(text)
+			saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), text, index);
+		end, nil, existingPreset.TX);
+	elseif hexValue == "DELETE" then
+		local existingPreset, index = getPresetForColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+		deleteCustomColorAtIndex(index)
+	else
+		local r, g, b = ColorManager.hexaToNumber(hexValue);
+		TRP3_ColorBrowser.red = r;
+		TRP3_ColorBrowser.green = g;
+		TRP3_ColorBrowser.blue = b;
+		TRP3_ColorBrowserColor:SetColorRGB(r, g, b);
+		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
+	end
 end
 
 local function colorPresetsDropDown()
 	local values = {};
 
 	local values_basic = {};
+
+	tinsert(values, { Ellyb.ColorManager.YELLOW(loc.BW_COLOR_PRESET_TITLE)});
+
+	local existingPreset = getPresetForColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+	if existingPreset then
+		local coloredText = Color(existingPreset.CO):WrapTextInColorCode(existingPreset.TX);
+		tinsert(values, { loc.BW_COLOR_PRESET_RENAME:format(coloredText), "RENAME" });
+		tinsert(values, { loc.BW_COLOR_PRESET_DELETE:format(coloredText), "DELETE" });
+	else
+		tinsert(values, { loc.BW_COLOR_PRESET_SAVE, "SAVE" });
+	end
+	tinsert(values, { "" }); -- Separator
+
 	for index, preset in pairs(COLOR_PRESETS_BASIC) do
 		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
@@ -646,54 +717,10 @@ local function colorPresetsDropDown()
 	displayDropDown(TRP3_ColorBrowserPresets, values, colorPresetsDropDownSelection, 0, true);
 end
 
-local function saveCustomColor(color, name)
-	TRP3_ColorBrowserEditBox:ClearFocus();
-	TRP3_ColorBrowserNameEditBox:ClearFocus();
-
-	local hexaColorCode = "#" .. color:GenerateHexadecimalColor(true);
-	if (name == "") then
-		name = hexaColorCode;
-	end
-
-	local indexToUpdate;
-	for index, preset in pairs(TRP3_Colors) do
-		if (Color(preset.CO):IsEqualTo(color)) then
-			indexToUpdate = index;
-			break
-		end
-	end
-
-	if (indexToUpdate) then
-		TRP3_Colors[indexToUpdate].TX = name;
-	else
-		tinsert(TRP3_Colors, { CO = hexaColorCode, TX = name });
-		table.sort(TRP3_Colors, function(a,b) return ColorManager.compareHSL(Color(a.CO),Color(b.CO)) end)
-	end
-end
-
-local function deleteCustomColor(color)
-	TRP3_ColorBrowserEditBox:ClearFocus();
-	TRP3_ColorBrowserNameEditBox:ClearFocus();
-
-	local indexToDelete;
-	for index, preset in pairs(TRP3_Colors) do
-		if (Color(preset.CO):IsEqualTo(color)) then
-			indexToDelete = index;
-			break
-		end
-	end
-	if (indexToDelete) then
-		tremove(TRP3_Colors, indexToDelete);
-		TRP3_ColorBrowserNameEditBox:SetText("");
-	end
-end
-
 local function initColorBrowser()
 	TRP3_ColorBrowserSelect:SetText(loc.UI_COLOR_BROWSER_SELECT);
 	TRP3_ColorBrowserTitle:SetText(loc.UI_COLOR_BROWSER);
 	TRP3_ColorBrowserPresets:SetText(loc.UI_COLOR_BROWSER_PRESETS);
-	TRP3_ColorBrowserSave:SetText(loc.CM_SAVE);
-	TRP3_ColorBrowserDelete:SetText(loc.CM_DELETE);
 
 	if not TRP3_Colors then
 		TRP3_Colors = {};
@@ -701,9 +728,6 @@ local function initColorBrowser()
 
 	TRP3_ColorBrowserEditBoxText:SetText("Code");
 	setTooltipForSameFrame(TRP3_ColorBrowserEditBoxHelp, "RIGHT", 0, 5, loc.BW_COLOR_CODE, loc.BW_COLOR_CODE_TT);
-
-	TRP3_ColorBrowserNameEditBoxText:SetText(loc.BW_CUSTOM_NAME_TITLE);
-	setTooltipForSameFrame(TRP3_ColorBrowserNameEditBoxHelp, "RIGHT", 0, 5, loc.BW_CUSTOM_NAME, loc.BW_CUSTOM_NAME_TT);
 
 	TRP3_ColorBrowserEditBox:SetScript("OnEnterPressed", function(self)
 		if self:GetText():match("^%x%x%x%x%x%x$") or self:GetText():match("^#%x%x%x%x%x%x$") then -- Checks that it is a 6 figures hexadecimal number (with or without a #)
@@ -719,39 +743,14 @@ local function initColorBrowser()
 		end
 	end);
 
-	TRP3_ColorBrowserNameEditBox:SetScript("OnEnterPressed", function(self)
-		if (self:GetText() ~= "") then
-			saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), TRP3_ColorBrowserNameEditBox:GetText());
-			TRP3_ColorBrowserDelete:Enable();
-		else
-			self:ClearFocus();
-		end
-	end);
-
 	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
 		TRP3_ColorBrowserEditBox:ClearFocus();
-		TRP3_ColorBrowserNameEditBox:ClearFocus();
 
 		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
 		TRP3_ColorBrowser.red = r;
 		TRP3_ColorBrowser.green = g;
 		TRP3_ColorBrowser.blue = b;
 		TRP3_ColorBrowserEditBox:SetText(("#%.2x%.2x%.2x"):format(r * 255, g * 255, b * 255):upper());
-
-		TRP3_ColorBrowserNameEditBox:SetText("");
-		TRP3_ColorBrowserDelete:Disable();
-		for index, preset in pairs(TRP3_Colors) do
-			if (Color(preset.CO):IsEqualTo(Color(r, g, b))) then
-				local name = preset.TX;
-				if (name == preset.CO) then
-					name = "";
-				end
-				TRP3_ColorBrowserNameEditBox:SetText(name);
-
-				TRP3_ColorBrowserDelete:Enable();
-				break
-			end
-		end
 	end);
 
 	TRP3_ColorBrowserSelect:SetScript("OnClick", function()
@@ -763,16 +762,6 @@ local function initColorBrowser()
 	end);
 
 	TRP3_ColorBrowserPresets:SetScript("OnClick", colorPresetsDropDown);
-
-	TRP3_ColorBrowserSave:SetScript("OnClick", function()
-		saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), TRP3_ColorBrowserNameEditBox:GetText());
-		TRP3_ColorBrowserDelete:Enable();
-	end);
-
-	TRP3_ColorBrowserDelete:SetScript("OnClick", function()
-		deleteCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
-		TRP3_ColorBrowserDelete:Disable();
-	end);
 end
 
 local function showColorBrowser(callback, red, green, blue)
