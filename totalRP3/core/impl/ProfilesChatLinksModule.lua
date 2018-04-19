@@ -112,7 +112,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE, "PROF_O_Q", "PROF_O_A");
 
 	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
-		TRP3_API.Ellyb.Tables.inspect(profileData);
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
 		TRP3_API.register.insertProfile(profileID, profile.player)
