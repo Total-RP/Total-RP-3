@@ -738,10 +738,10 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_EXPORT_WARNING_TITLE = "Warning:",
 	PR_EXPORT_WARNING_WINDOWS = [[Please note that some advanced text editing tools like Microsoft Word or Discord will reformat special characters like quotes, altering the content of the data.
 
-If you are planning on copying the text bellow inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
+If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
 	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
 
-If you are planning on copying the text bellow inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
+If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
 	PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
 
 Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special characters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
@@ -1125,7 +1125,7 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 
 ### Fixed
 
-- Fixed a missing option dependency for the mature filter strength slider so that it is correctly disabled when the mature filter is disable.
+- Fixed a missing option dependency for the mature filter strength slider so that it is correctly disabled when the mature filter is disabled.
 - Fixed an issue with the import/export profile UI when a profile had the `~` character inside a field.
 ]],
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
