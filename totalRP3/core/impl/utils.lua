@@ -1004,7 +1004,7 @@ function Utils.music.playSoundID(soundID, channel, source)
 	assert(soundID, "soundID can't be nil.")
 	local willPlay, handlerID = PlaySound(soundID, channel, false);
 	if willPlay then
-		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S")});	
+		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});	
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
@@ -1018,12 +1018,13 @@ end
 
 function Utils.music.stopSoundID(soundID, channel, source)
 	for index, handler in pairs(soundHandlers) do
-		if (not soundID or soundID == "0" or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
+		if (not handler.stopped) and (not soundID or soundID == "0" or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			if (handler.channel == "Music" and handler.handlerID == 0) then
 				StopMusic();
 			else
 				Utils.music.stopSound(handler.handlerID);
 			end
+			handler.stopped = true;
 		end
 	end
 end
@@ -1046,7 +1047,7 @@ function Utils.music.playMusic(music, source)
 	else
 		Log.log("Playing music: " .. music);
 		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
-		tinsert(soundHandlers, {channel = "Music", id = music, handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S")});
+		tinsert(soundHandlers, {channel = "Music", id = music, handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
