@@ -1004,7 +1004,7 @@ function Utils.music.playSoundID(soundID, channel, source)
 	assert(soundID, "soundID can't be nil.")
 	local willPlay, handlerID = PlaySound(soundID, channel, false);
 	if willPlay then
-		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S")});
+		tinsert(soundHandlers, {channel = channel, id = tonumber(soundID), handlerID = handlerID, source = source, date = date("%H:%M:%S")});	-- I'm thoroughly confused as to why soundID is a string when playing local sounds, but not when stopping them.
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
@@ -1017,9 +1017,18 @@ function Utils.music.stopSound(handlerID)
 end
 
 function Utils.music.stopSoundID(soundID, channel, source)
-	for index, handler in pairs(soundHandlers) do
+	local i=1;
+	while i <= #soundHandlers do
+		local handler = soundHandlers[i];
 		if (not soundID or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
-			Utils.music.stopSound(handler.handlerID);
+			if (handler.channel == "Music" and handler.handlerID == 0) then
+				StopMusic();
+			else
+				Utils.music.stopSound(handler.handlerID);
+			end
+			table.remove(soundHandlers, i);
+		else
+			i = i + 1;
 		end
 	end
 end
