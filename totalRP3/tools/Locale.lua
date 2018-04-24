@@ -1199,83 +1199,42 @@ If you are planning on copying the text below inside a document, please use simp
 TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
 
 -- Register all locales into the localization system
--- Note the localization content is filled by CurseForge when the add-on is built
-TRP3_API.loc:RegisterNewLocale("enUS", "English",
---@localization(locale="enUS", format="lua_table")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+-- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
+-- See https://wow.curseforge.com/projects/total-rp-3/localization
+local localeContent = {};
 
-TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch",
---@localization(locale="deDE", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="enUS", format="lua_table", table-name="localeContent")@
+TRP3_API.loc:RegisterNewLocale("enUS", "English", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("frFR", "Français",
---@localization(locale="frFR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("esES", "Español",
---@localization(locale="esES", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="frFR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("frFR", "Français", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (Latin American)",
---@localization(locale="esMX", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("esES", "Español", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("itIT", "Italian",
---@localization(locale="itIT", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("esMX", "Español (Latin American)", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("koKR", "Korean",
---@localization(locale="koKR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("itIT", "Italian", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("ptBR", "Brazilian Portuguese",
---@localization(locale="ptBR", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("koKR", "Korean", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("ruRU", "Russian",
---@localization(locale="ruRU", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("ptBR", "Brazilian Portuguese", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("zhCN", "Simplified Chinese",
---@localization(locale="zhCN", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("ruRU", "Russian", localeContent);
 
-TRP3_API.loc:RegisterNewLocale("zhTW", "Traditional Chinese",
---@localization(locale="zhTW", format="lua_table", handle-unlocalized="ignore")@
---@do-not-package@
-	{}
---@end-do-not-package@
-);
+--@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("zhCN", "Simplified Chinese", localeContent);
+
+--@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
+TRP3_API.loc:RegisterNewLocale("zhTW", "Traditional Chinese", localeContent);
 
 local Locale = {};
 TRP3_API.Locale = Locale;
