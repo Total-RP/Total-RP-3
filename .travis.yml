@@ -1,0 +1,32 @@
+# Travis CI configuration file
+# http://travis-ci.org
+
+sudo: false
+
+language: c
+
+addons:
+  apt:
+    packages:
+    - luarocks
+    - pandoc
+
+install:
+  - eval $(luarocks path --bin)
+  - luarocks install --local luacheck
+
+# Run luacheck to make sure there is not syntax error left in the add-on
+script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
+
+notifications:
+  email:
+    on_failure: always
+    on_success: always
+
+# The following part is for automatic building and publishing to Curse and Wowinterface
+# We're not there yet, so I have documented this out
+after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash
+
+#branches:
+#  only:
+#  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
