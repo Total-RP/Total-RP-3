@@ -1163,12 +1163,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR = "Preferred OOC indicator",
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT = "Text: ",
 	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON = "Icon: ",
@@ -1192,6 +1186,11 @@ If you are planning on copying the text below inside a document, please use simp
 	THANK_YOU_ROLE_TESTER = "QA Team",
 	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
 	THANK_YOU_WITH_ROLE = "%s (%s)",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
 };
 
