@@ -16,7 +16,7 @@ install:
   - luarocks install --local luacheck
 
 # Run luacheck to make sure there is not syntax error left in the add-on
-script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011"
+script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --exclude-files "totalRP3_zTest/*"
 
 notifications:
   email:
