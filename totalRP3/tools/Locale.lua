@@ -464,9 +464,6 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_ANCHORED = "Anchored frame",
 	CO_TOOLTIP_ANCHOR = "Anchor point",
 	CO_TOOLTIP_HIDE_ORIGINAL = "Hide original tooltip",
-	CO_TOOLTIP_PREFERRED_OOC_INDICATOR = "Preferred OOC indicator",
-	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT = "Text: ",
-	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON = "Icon: ",
 	CO_TOOLTIP_MAINSIZE = "Main font size",
 	CO_TOOLTIP_SUBSIZE = "Secondary font size",
 	CO_TOOLTIP_TERSIZE = "Tertiary font size",
@@ -926,10 +923,6 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_CUSTOM_NAME = "Custom color name",
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
-	BW_COLOR_PRESET_TITLE = "Color presets",
-	BW_COLOR_PRESET_SAVE = "Save current color",
-	BW_COLOR_PRESET_RENAME = "Rename %s preset",
-	BW_COLOR_PRESET_DELETE = "Delete %s preset",
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Databroker
@@ -1072,8 +1065,6 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	CL_REQUESTING_DATA = "Requesting link data from %s.",
 	CL_EXPIRED = "This link has expired.",
 	CL_PLAYER_PROFILE = "Player profile",
-	CL_DIRECTORY_PLAYER_PROFILE = "Directory player profile",
-	CL_DIRECTORY_COMPANION_PROFILE = "Directory companion profile",
 	CL_OPEN_PROFILE = "Open profile",
 	CL_IMPORT_PROFILE = "Import profile",
 	CL_GLANCE = "At-first-glance",
@@ -1089,7 +1080,6 @@ If you answer no, they will only be able to consult the content of the link.]],
 	CL_VERSIONS_DIFFER = [[This link has been generated using a different version of Total RP 3.
 
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
-	CL_CONTENT_SIZE = [[Size: %s]],
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMMANDS
@@ -1142,12 +1132,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 
 
 ]],
-	THANK_YOU_ROLE_AUTHOR = "Author",
-	THANK_YOU_ROLE_CONTRIBUTOR = "Contributor",
-	THANK_YOU_ROLE_COMMUNITY_MANAGER = "Community Manager",
-	THANK_YOU_ROLE_TESTER = "QA Team",
-	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
-	THANK_YOU_WITH_ROLE = "%s (%s)",
 
 	THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
 {p:c}{col:6eff51}Version %s (build %s){/col}{/p}
@@ -1179,6 +1163,36 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	MO_ADDON_NOT_INSTALLED = "The %s add-on is not installed, custom Total RP 3 integration disabled.",
 	MO_TOOLTIP_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that your tooltip preferences are applied to Total RP 3's tooltips.",
 	MO_CHAT_CUSTOMIZATIONS_DESCRIPTION = "Add custom compatibility for the %s add-on, so that chat messages and player names are modified by Total RP 3 in that add-on.",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_TOOLTIP_PREFERRED_OOC_INDICATOR = "Preferred OOC indicator",
+	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT = "Text: ",
+	CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON = "Icon: ",
+	PR_EXPORT_WARNING_TITLE = "Warning:",
+	PR_EXPORT_WARNING_WINDOWS = [[Please note that some advanced text editing tools like Microsoft Word or Discord will reformat special characters like quotes, altering the content of the data.
+
+If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
+	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
+
+If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
+	BW_COLOR_PRESET_TITLE = "Color presets",
+	BW_COLOR_PRESET_SAVE = "Save current color",
+	BW_COLOR_PRESET_RENAME = "Rename %s preset",
+	BW_COLOR_PRESET_DELETE = "Delete %s preset",
+	CL_DIRECTORY_PLAYER_PROFILE = "Directory player profile",
+	CL_DIRECTORY_COMPANION_PROFILE = "Directory companion profile",
+	CL_CONTENT_SIZE = [[Size: %s]],
+	THANK_YOU_ROLE_AUTHOR = "Author",
+	THANK_YOU_ROLE_CONTRIBUTOR = "Contributor",
+	THANK_YOU_ROLE_COMMUNITY_MANAGER = "Community Manager",
+	THANK_YOU_ROLE_TESTER = "QA Team",
+	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
+	THANK_YOU_WITH_ROLE = "%s (%s)",
+
 };
 
 -- Use Ellyb to generate the Localization system
