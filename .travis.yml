@@ -21,7 +21,7 @@ script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --exclude-fil
 notifications:
   email:
     on_failure: always
-    on_success: always
+    on_success: never
 
 cache:
   apt: true

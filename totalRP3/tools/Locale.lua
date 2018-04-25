@@ -31,9 +31,6 @@ local Ellyb = Ellyb(_);
 local pairs = pairs;
 local tinsert = table.insert;
 
--- Ellyb imports
-local Strings = Ellyb.Strings;
-
 local IS_FRENCH_LOCALE = GetLocale() == "frFR";
 
 -- Bindings locale
@@ -1200,6 +1197,7 @@ TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
 -- Register all locales into the localization system
 -- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
 -- See https://wow.curseforge.com/projects/total-rp-3/localization
+---@type table<string, string>
 local localeContent = {};
 
 --@localization(locale="enUS", format="lua_table", table-name="localeContent")@

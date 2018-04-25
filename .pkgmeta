@@ -13,3 +13,7 @@ ignore:
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
+
+move-folders:
+  totalRP3/totalRP3: totalRP3
+  totalRP3/totalRP3_Data: totalRP3_Data
