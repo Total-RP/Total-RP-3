@@ -29,7 +29,7 @@ cache:
     - $HOME/.luarocks
 
 # Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
-after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113
+after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -o
 
 #branches:
 #  only:
