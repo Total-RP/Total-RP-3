@@ -23,9 +23,13 @@ notifications:
     on_failure: always
     on_success: always
 
-# The following part is for automatic building and publishing to Curse and Wowinterface
-# We're not there yet, so I have documented this out
-after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash
+cache:
+  apt: true
+  directories:
+    - $HOME/.luarocks
+
+# Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
+after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113
 
 #branches:
 #  only:

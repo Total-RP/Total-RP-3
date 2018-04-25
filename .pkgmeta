@@ -1,43 +1,11 @@
 package-as: totalRP3
 enable-nolib-creation: no
 
-externals:
-  # Ace libs
-  totalRP3/libs/AceAddon-3.0:
-      url: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
-  totalRP3/libs/AceSerializer-3.0:
-      url: https://repos.wowace.com/wow/ace3/trunk/AceSerializer-3.0
-  totalRP3/libs/CallbackHandler-1.0:
-      url: https://repos.wowace.com/wow/ace3/trunk/CallbackHandler-1.0
-  totalRP3/libs/LibCompress:
-      url: https://repos.wowace.com/wow/libcompress/trunk
-  totalRP3/libs/LibStub:
-      url: https://repos.wowace.com/wow/ace3/trunk/LibStub
-
-  # LibUIDropDownMenu for drop downs without taint
-  totalRP3/libs/LibUIDropDownMenu:
-      https://repos.wowace.com/wow/libuidropdownmenu/trunk
-
-  # Chat Throttle Lib
-  totalRP3/libs/ChatThrottleLib:
-      https://repos.wowace.com/wow/chatthrottlelib/trunk
-
-  # Databroker
-  totalRP3/libs/LibDataBroker-1.1:
-    url: https://repos.wowace.com/wow/libdatabroker-1-1
-
-  # LibDBIcon create a minimap icon for a databroker launcher
-  totalRP3/libs/LibDBIcon-1.0:
-      url: https://repos.wowace.com/wow/libdbicon-1-0/trunk
-
-   # Ellypse's shared library
-  totalRP3/libs/Ellyb:
-      url: git://github.com/Ellypse/Ellyb.git
-
 ignore:
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
+  - LICENSE
   - Documents
   - totalRP3_zTest
   - totalRP3_Localizator
@@ -45,8 +13,3 @@ ignore:
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
-
-
-move-folders:
-  totalRP3/totalRP3: totalRP3
-  totalRP3/totalRP3_Data: totalRP3_Data
