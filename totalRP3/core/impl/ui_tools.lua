@@ -52,6 +52,25 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Foxlit easy fix to remove dropdown taint
+if not UIDROPDOWNMENU_VALUE_PATCH_VERSION then
+	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 1
+	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
+		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 1 then
+			return
+		end
+		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
+			for j = 1, UIDROPDOWNMENU_MAXBUTTONS do
+				local b = _G["DropDownList" .. i .. "Button" .. j]
+				while not issecurevariable(b, "value") do
+					b.value = nil
+					j, b["fx" .. j] = j + 1
+				end
+			end
+		end
+	end)
+end
+
 local tiledBackgrounds = {
 	"Interface\\DialogFrame\\UI-DialogBox-Background", -- 1
 	"Interface\\BankFrame\\Bank-Background", -- 2
