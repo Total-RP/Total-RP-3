@@ -34,8 +34,8 @@ local globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
 local math = math;
-local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, ToggleDropDownMenu;
-local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton;
+local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, MSA_ToggleDropDownMenu;
+local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = MSA_DropDownMenu_Initialize, MSA_DropDownMenu_CreateInfo, MSA_DropDownMenu_AddButton;
 local CloseDropDownMenus = CloseDropDownMenus;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
@@ -51,25 +51,6 @@ local CONFIG_UI_ANIMATIONS = "ui_animations";
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- Foxlit easy fix to remove dropdown taint
-if not UIDROPDOWNMENU_VALUE_PATCH_VERSION then
-	UIDROPDOWNMENU_VALUE_PATCH_VERSION = 1
-	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
-		if UIDROPDOWNMENU_VALUE_PATCH_VERSION ~= 1 then
-			return
-		end
-		for i = 1, UIDROPDOWNMENU_MAXLEVELS do
-			for j = 1, UIDROPDOWNMENU_MAXBUTTONS do
-				local b = _G["DropDownList" .. i .. "Button" .. j]
-				while not issecurevariable(b, "value") do
-					b.value = nil
-					j, b["fx" .. j] = j + 1
-				end
-			end
-		end
-	end)
-end
 
 local tiledBackgrounds = {
 	"Interface\\DialogFrame\\UI-DialogBox-Background", -- 1
@@ -137,7 +118,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
 
 	if not dropDownFrame then
-		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "UIDropDownMenuTemplate");
+		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "MSA_DropDownMenuTemplate");
 	end
 
 	if _G["DropDownList1"]:IsVisible() then
