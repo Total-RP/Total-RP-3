@@ -140,6 +140,11 @@
 		<Anchors>
 			<Anchor point="CENTER"/>
 		</Anchors>
+		<Scripts>
+			<OnLoad>
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
