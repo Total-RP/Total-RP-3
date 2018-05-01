@@ -72,7 +72,7 @@ end
 ---@param colorRight Color
 ---@param colorLeft Color
 ---@param size number
-function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorRight, colorLeft, size)
+function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorLeft, colorRight, size)
 	assert(isType(textLeft, "string", "textLeft"));
 	assert(isType(textRight, "string", "textRight"));
 
