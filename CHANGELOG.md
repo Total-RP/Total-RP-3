@@ -1,3 +1,7 @@
+# Changelog for version 1.3.4.1
+
+- Fixed a possible issues with other add-ons drop down menus.
+
 # Changelog for version 1.3.4
 
 ## Added

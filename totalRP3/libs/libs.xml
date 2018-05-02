@@ -27,6 +27,9 @@
 	<Include file="LibDataBroker-1.1\LibDataBroker-1.1.lua" />
 	<Include file="LibDBIcon-1.0\LibDBIcon-1.0.lua" />
 
+	<!-- MSA DropDownMenu: Drop down library by Kaliel https://wow.curseforge.com/projects/msa-dropdownmenu-10 -->
+	<Include file="MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml" />
+
 	<!-- Ellyb: shared library between our own projects -->
 	<Include file="Ellyb\Ellyb.xml" />
 	
