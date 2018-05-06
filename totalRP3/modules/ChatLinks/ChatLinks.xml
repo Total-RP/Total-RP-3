@@ -90,6 +90,7 @@
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad" />
+			<OnUpdate method="OnUpdate" />
 		</Scripts>
 	</GameTooltip>
 

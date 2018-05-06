@@ -114,10 +114,6 @@ function TRP3_ChatLinkActionButtonMixin:Set(button)
 	assert(isType(button.text, "string", button.text));
 	assert(isType(button.command, "string", button.command));
 
-	-- TODO find a more elegant solution than adding blank lines to make room for the button
-	TRP3_RefTooltip:AddLine(" ");
-	TRP3_RefTooltip:AddLine(" ");
-
 	self:SetText(button.text);
 	self.command = button.command;
 	self:Show();

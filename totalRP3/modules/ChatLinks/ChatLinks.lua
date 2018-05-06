@@ -36,6 +36,7 @@ TRP3_API.ChatLinks = ChatLinks;
 local ColorManager = Ellyb.ColorManager;
 local isType = Ellyb.Assertions.isType;
 local isInstanceOf = Ellyb.Assertions.isInstanceOf;
+local ORANGE = ColorManager.ORANGE;
 
 --- Wow Imports
 local assert = assert;
@@ -179,14 +180,42 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end
 
+		if IsAltKeyDown() then
+			TRP3_RefTooltip:AddLine(" ");
+			if itemData.moduleName then
+				TRP3_RefTooltip:AddLine(loc.CL_TYPE:format(ORANGE(itemData.moduleName)));
+			end
+			TRP3_RefTooltip:AddLine(loc.CL_SENT_BY:format(ORANGE(sender)));
+			if itemData.size then
+				TRP3_RefTooltip:AddLine(loc.CL_CONTENT_SIZE:format(ORANGE(Ellyb.Strings.formatBytes(itemData.size))));
+			end
+			TRP3_RefTooltip.wasAltKeyDown = true;
+		else
+			TRP3_RefTooltip.wasAltKeyDown = false;
+		end
+
+		local minWidth = 0;
+		local buttonAddedHeight = 0;
 		if actionButtons and ChatLinks:HasModule(itemData.moduleID) then
 			for i, button in pairs(actionButtons) do
 				ActionButtons[i]:Set(button);
+				buttonAddedHeight = buttonAddedHeight + ActionButtons[i]:GetHeight() + 5;
+				if ActionButtons[i]:GetWidth() > minWidth then
+					minWidth = ActionButtons[i]:GetWidth();
+				end
 			end
 		end
 
 		TRP3_RefTooltip.itemData = itemData;
 		TRP3_RefTooltip:Show();
+		TRP3_RefTooltip:SetHeight(TRP3_RefTooltip:GetHeight() + buttonAddedHeight + 5);
+		if TRP3_RefTooltip:GetWidth() < minWidth then
+			TRP3_RefTooltip:SetWidth(minWidth + 20)
+		end
+	end
+
+	function TRP3_RefTooltip:Refresh()
+		showTooltip(self.itemData, self.sender);
 	end
 
 	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
@@ -234,6 +263,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			moduleID = link:GetModuleID(), -- Module ID is sent so recipient know what it is and use the right functions if they have the module
 			customData = link:GetIdentifier(),
 			size = link:GetContentSize(), -- Indicates the size of the content
+			moduleName = link:GetModuleName(), -- Module name, shown in the tooltip
 			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
 		}, sender);
 	end);
@@ -258,7 +288,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		assert(isType(linkType, "string", "linkType"));
 		assert(isType(callback, "function", "callback"));
 
-		TRP3_API.popup.showYesNoPopup(loc.CL_MAKE_IMPORTABLE:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
+		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
+			loc.CL_MAKE_IMPORTABLE,
+			loc.CL_MAKE_NON_IMPORTABLE,
 			function()
 				callback(true);
 			end,

@@ -86,6 +86,25 @@ StaticPopupDialogs["TRP3_YES_NO"] = {
 	showAlert = true,
 }
 
+StaticPopupDialogs["TRP3_YES_NO_CUSTOM"] = {
+	button1 = YES,
+	button2 = NO,
+	OnAccept = function(self)
+		if StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onAccept then
+			StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onAccept();
+		end
+	end,
+	OnCancel = function(self)
+		if StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onCancel then
+			StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onCancel();
+		end
+	end,
+	timeout = false,
+	whileDead = true,
+	hideOnEscape = true,
+	showAlert = true,
+}
+
 StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
@@ -180,6 +199,19 @@ function TRP3_API.popup.showYesNoPopup(text, onAccept, onCancel)
 	StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept = onAccept;
 	StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel = onCancel;
 	local dialog = StaticPopup_Show("TRP3_YES_NO");
+	if dialog then
+		dialog:ClearAllPoints();
+		dialog:SetPoint("CENTER", UIParent, "CENTER");
+	end
+end
+
+function TRP3_API.popup.showCustomYesNoPopup(text, yesText, noText, onAccept, onCancel)
+	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button1 = yesText;
+	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].button2 = noText;
+	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].text = text;
+	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onAccept = onAccept;
+	StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onCancel = onCancel;
+	local dialog = StaticPopup_Show("TRP3_YES_NO_CUSTOM");
 	if dialog then
 		dialog:ClearAllPoints();
 		dialog:SetPoint("CENTER", UIParent, "CENTER");
