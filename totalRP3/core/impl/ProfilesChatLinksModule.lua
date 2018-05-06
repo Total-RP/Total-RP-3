@@ -92,7 +92,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- Import profile action button
+	---@type ChatLinkActionButton
 	local ImportProfileButton = ProfilesChatLinkModule:NewActionButton("IMPORT_PLAYER_PROFILE", loc.CL_IMPORT_PROFILE, "PROF_I_Q", "PROF_I_A");
+
+	function ImportProfileButton:IsVisible(tooltipData)
+		return tooltipData.canBeImported;
+	end
 
 	function ImportProfileButton:OnAnswerCommandReceived(data, sender)
 		local profile = data.profile;
