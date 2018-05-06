@@ -93,9 +93,11 @@ TRP3_API.register.getProfile = getProfile;
 local function deleteProfile(profileID, dontFireEvents)
 	assert(profiles[profileID], "Unknown profile ID: " .. tostring(profileID));
 	-- Unbound characters from this profile
-	for characterID, _ in pairs(profiles[profileID].link) do
-		if characters[characterID].profileID == profileID then
-			characters[characterID].profileID = nil;
+	if profiles[profileID].link then
+		for characterID, _ in pairs(profiles[profileID].link) do
+			if characters[characterID].profileID == profileID then
+				characters[characterID].profileID = nil;
+			end
 		end
 	end
 	local mspOwners;
