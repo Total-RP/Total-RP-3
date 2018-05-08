@@ -1194,6 +1194,23 @@ People will be able to copy and use the content of the link.]],
 - Fixed a possible issues with other add-ons drop down menus.
 
 ]],
+	---@language Markdown
+	WHATS_NEW_18_2 = [[
+# Changelog for version 1.3.4.2
+
+- The NPC speeches frame now closes when pressing the Escape key.
+- Updated the list of Patreon supporters in the About tab.
+
+## Chat links fixes
+
+- Fixed a Lua error that would happen when the directory is being purged of old profiles and one of them was received from a chat link, and was not properly formatted.
+- Simplified wording when creating a new chat link so that the alert is more quickly readable and the buttons actions are more obvious.
+- The technical information shown in the chat links tooltip (type of link, sender name, size) are now only shown when the Alt key is held down, so that by default links only show RP-related information.
+- The chat links tooltip title now uses the text size defined in the tooltip settings.
+- Fixed an issue where player profiles that were marked as non-importable when creating a link would still show the import button in the tooltip.
+- Fixed and improved the buttons alignment in the chat links tooltip.
+
+]],
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
