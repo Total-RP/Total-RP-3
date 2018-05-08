@@ -110,8 +110,9 @@ local function configDoHandleNPCTalk()
 end
 
 local function configNPCTalkPrefix()
-	return getConfigValue(CONFIG_NPC_TALK_PREFIX);
+	return getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX);
 end
+TRP3_API.chat.configNPCTalkPrefix = configNPCTalkPrefix;
 
 local function configDoEmoteDetection()
 	return getConfigValue(CONFIG_EMOTE);
@@ -307,6 +308,17 @@ local function createConfigPage()
 	end
 
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
+
+	-- Use broadcast communications
+	TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED = "npc_talk_prefix";
+	TRP3_API.configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED, "|| ");
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
+		inherit = "TRP3_ConfigEditBox",
+		title = loc.CO_CHAT_MAIN_NPC_PREFIX,
+		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED,
+		help = loc.CO_CHAT_MAIN_NPC_PREFIX_TT,
+		dependentOnOptions = { CONFIG_NPC_TALK },
+	});
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -549,7 +561,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
-		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
+		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
 			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 

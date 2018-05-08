@@ -1216,6 +1216,13 @@ People will be able to copy and use the content of the link.]],
 	------------------------------------------------------------------------------------------------
 
 	CL_TOOLTIP = "Create a chat link",
+	CO_ADVANCED_SETTINGS = "Advanced settings",
+	CO_ADVANCED_SETTINGS_POPUP = [[You have just modified an advanced setting.
+
+Please keep in mind that changing those settings might alter your experience with the add-on and could prevent some features from working correctly. Use at your own risk.]],
+	CO_ADVANCED_SETTINGS_RESET = "Reset advanced settings",
+	CO_ADVANCED_SETTINGS_RESET_TT = "Reset all the advanced settings to their default value. Use this if you have issues after modifying the settings.",
+	CO_GENERAL_BROADCAST_C = "Broadcast channel name",
 };
 
 -- Use Ellyb to generate the Localization system

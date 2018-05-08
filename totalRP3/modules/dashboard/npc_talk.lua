@@ -74,7 +74,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	--- @param message string
 	--- @return string
 	local function constructMessage(NPCName, channel, message)
-		return strconcat("|| ", NPCName or "", " ", getChannelActionString(channel), message or "");
+		return strconcat(TRP3_API.chat.configNPCTalkPrefix(), NPCName or "", " ", getChannelActionString(channel), message or "");
 	end
 
 	local function sendNPCTalk()

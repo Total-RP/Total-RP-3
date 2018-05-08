@@ -38,11 +38,11 @@ Comm.broadcast = {};
 local ticker;
 
 local function config_UseBroadcast()
-	return getConfigValue("comm_broad_use");
+	return getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS);
 end
 
 local function config_BroadcastChannel()
-	return "xtensionxtooltip2";
+	return getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
