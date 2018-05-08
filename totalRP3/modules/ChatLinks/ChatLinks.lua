@@ -289,7 +289,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		assert(isType(callback, "function", "callback"));
 
 		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
-			loc.CL_MAKE_IMPORTABLE,
+			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
 			loc.CL_MAKE_NON_IMPORTABLE,
 			function()
 				callback(true);

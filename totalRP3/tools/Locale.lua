@@ -1159,7 +1159,7 @@ If you are planning on copying the text below inside a document, please use simp
 	CL_MAKE_IMPORTABLE_SIMPLER = [[Make this %s link importable?
 
 People will be able to copy and use the content of the link.]],
-	CL_MAKE_IMPORTABLE = "Make importable",
+	CL_MAKE_IMPORTABLE_BUTTON_TEXT = "Make importable",
 	CL_MAKE_NON_IMPORTABLE = "Viewable only",
 
 	---@language Markdown
