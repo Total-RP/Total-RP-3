@@ -63,9 +63,9 @@ end
 
 --- Returns the full text to display for this role, which consists of the
 ---  persons name and their role(s).
+local ROLE_STRING_FORMAT = "%s (%s)";
 function Credit:GetLocalizedFullText()
-	local formatString = loc.THANK_YOU_WITH_ROLE;
-	return formatString:format(self:GetName(), self:GetLocalizedRoleText());
+	return ROLE_STRING_FORMAT:format(self:GetName(), self:GetLocalizedRoleText());
 end
 
 --- Returns a localized string that describes the roles this person has.

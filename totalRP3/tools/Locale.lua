@@ -1154,7 +1154,6 @@ If you are planning on copying the text below inside a document, please use simp
 	THANK_YOU_ROLE_COMMUNITY_MANAGER = "Community Manager",
 	THANK_YOU_ROLE_TESTER = "QA Team",
 	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
-	THANK_YOU_WITH_ROLE = "%s (%s)",
 	CL_SENT_BY = "Link sent by: %s",
 	CL_TYPE = "TRP3 Link type: %s",
 	CL_MAKE_IMPORTABLE_SIMPLER = [[Make this %s link importable?
