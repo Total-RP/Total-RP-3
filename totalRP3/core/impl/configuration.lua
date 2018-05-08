@@ -383,7 +383,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- GENERAL SETTINGS INIT
 	-- localization
 	local localeTab = {};
-	for _, locale in pairs(loc:GetLocales()) do
+	for _, locale in pairs(loc:GetLocales(true)) do
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
