@@ -19,6 +19,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- imports
 local Globals, Events = TRP3_API.globals, TRP3_API.events;
@@ -918,6 +919,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);
 		table.insert(widgetTab, widget);
+
+		-- Display indications in the tooltip on how to create a chat link
+		Ellyb.Tooltips.getTooltip(widget):AddLine(
+				Ellyb.Strings.clickInstruction(
+						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+						loc.CL_TOOLTIP
+				)
+		)
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
 	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);

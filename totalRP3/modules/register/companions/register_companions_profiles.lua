@@ -19,6 +19,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- imports
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;
@@ -504,6 +505,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		_G[widget:GetName().."Bound"]:SetScript("OnClick", onBoundClicked);
 		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc.PR_PROFILEMANAGER_ACTIONS);
 		tinsert(widgetTab, widget);
+
+		-- Display indications in the tooltip on how to create a chat link
+		Ellyb.Tooltips.getTooltip(widget):AddLine(
+				Ellyb.Strings.clickInstruction(
+						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+						loc.CL_TOOLTIP
+				)
+		)
 	end
 	TRP3_CompanionsProfilesList.widgetTab = widgetTab;
 	TRP3_CompanionsProfilesList.decorate = decorateProfileList;

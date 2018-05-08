@@ -20,6 +20,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- API
 TRP3_API.register.glance = {};
@@ -865,6 +866,14 @@ local function onStart()
 		slot:SetScript("OnDragStop", onGlanceDragStop);
 		slot:SetScript("OnClick", onGlanceSlotClick);
 		slot:SetScript("OnDoubleClick", onGlanceDoubleClick);
+
+		-- Display indications in the tooltip on how to create a chat link
+		Ellyb.Tooltips.getTooltip(slot):AddLine(
+				Ellyb.Strings.clickInstruction(
+						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+						loc.CL_TOOLTIP
+				)
+		)
 	end
 end
 

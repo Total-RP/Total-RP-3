@@ -19,6 +19,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
 
 -- Public accessor
 TRP3_API.profile = {};
@@ -451,6 +452,14 @@ function TRP3_API.profile.init()
 		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
 		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc.PR_PROFILEMANAGER_ACTIONS);
 		table.insert(widgetTab, widget);
+
+		-- Display indications in the tooltip on how to create a chat link
+		Ellyb.Tooltips.getTooltip(widget):AddLine(
+				Ellyb.Strings.clickInstruction(
+						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+						loc.CL_TOOLTIP
+				)
+		)
 
 	end
 	TRP3_ProfileManagerList.widgetTab = widgetTab;

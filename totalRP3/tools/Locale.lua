@@ -1214,6 +1214,8 @@ People will be able to copy and use the content of the link.]],
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
+
+	CL_TOOLTIP = "Create a chat link",
 };
 
 -- Use Ellyb to generate the Localization system
