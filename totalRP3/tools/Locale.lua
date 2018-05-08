@@ -1155,6 +1155,13 @@ If you are planning on copying the text below inside a document, please use simp
 	THANK_YOU_ROLE_TESTER = "QA Team",
 	THANK_YOU_ROLE_GUILD_MEMBER = "Guild Member",
 	THANK_YOU_WITH_ROLE = "%s (%s)",
+	CL_SENT_BY = "Link sent by: %s",
+	CL_TYPE = "TRP3 Link type: %s",
+	CL_MAKE_IMPORTABLE_SIMPLER = [[Make this %s link importable?
+
+People will be able to copy and use the content of the link.]],
+	CL_MAKE_IMPORTABLE = "Make importable",
+	CL_MAKE_NON_IMPORTABLE = "Viewable only",
 
 	---@language Markdown
 	WHATS_NEW_18 = [[
@@ -1191,14 +1198,6 @@ If you are planning on copying the text below inside a document, please use simp
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
-
-	CL_SENT_BY = "Link sent by: %s",
-	CL_TYPE = "TRP3 Link type: %s",
-	CL_MAKE_IMPORTABLE_SIMPLER = [[Make this %s link importable?
-
-People will be able to copy and use the content of the link.]],
-	CL_MAKE_IMPORTABLE = "Make importable",
-	CL_MAKE_NON_IMPORTABLE = "Viewable only",
 };
 
 -- Use Ellyb to generate the Localization system
