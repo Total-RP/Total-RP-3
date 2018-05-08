@@ -1209,7 +1209,7 @@ TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
 ---@type table<string, string>
 local localeContent = {};
 
---@localization(locale="enUS", format="lua_table", table-name="localeContent")@
+--@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
 TRP3_API.loc:RegisterNewLocale("enUS", "English", localeContent);
 
 --@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
