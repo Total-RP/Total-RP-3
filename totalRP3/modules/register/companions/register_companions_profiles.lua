@@ -230,6 +230,8 @@ local function decorateProfileList(widget, index)
 	loc.PR_PROFILE,
 	text
 	)
+
+	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText)
 end
 
 local function profileSortingByProfileName(profileID1, profileID2)
@@ -503,11 +505,17 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		_G[widget:GetName().."Bound"]:SetText(loc.REG_COMPANION_BOUNDS);
 		_G[widget:GetName().."Bound"]:Show();
 		_G[widget:GetName().."Bound"]:SetScript("OnClick", onBoundClicked);
-		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc.PR_PROFILEMANAGER_ACTIONS);
 		tinsert(widgetTab, widget);
 
+
+		Ellyb.Tooltips.getTooltip(_G[widget:GetName().."Action"])
+			:SetAnchor(Ellyb.Tooltips.ANCHORS.TOP)
+			:SetTitle(loc.PR_PROFILEMANAGER_ACTIONS);
+
 		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(widget):AddLine(
+		Ellyb.Tooltips.getTooltip(widget)
+			:AddLine(Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN))
+			:AddLine(
 				Ellyb.Strings.clickInstruction(
 						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
 						loc.CL_TOOLTIP

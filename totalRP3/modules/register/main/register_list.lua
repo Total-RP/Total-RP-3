@@ -331,7 +331,12 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
 
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n|cffffff00" .. loc.REG_LIST_CHAR_TT);
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
+		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
+		Ellyb.Strings.clickInstruction(
+			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+			loc.CL_TOOLTIP
+		));
 end
 
 local function getCharacterLines()
@@ -562,7 +567,12 @@ local function decorateCompanionLine(line, index)
 	_G[line:GetName().."Addon"]:SetText(firstMaster);
 
 	secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
-	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n|cffffff00" .. loc.REG_LIST_CHAR_TT);
+	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
+		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
+		Ellyb.Strings.clickInstruction(
+			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
+			loc.CL_TOOLTIP
+		));
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
 	-- Third column : flags
@@ -758,9 +768,7 @@ local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
 		if IsShiftKeyDown() then
-			TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_PLAYER_PROFILE, function(canBeImported)
-				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id, canBeImported);
-			end);
+			TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
 		else
 			openPage(self:GetParent().id);
 		end
@@ -919,14 +927,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);
 		table.insert(widgetTab, widget);
-
-		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(widget):AddLine(
-				Ellyb.Strings.clickInstruction(
-						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
-						loc.CL_TOOLTIP
-				)
-		)
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
 	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
