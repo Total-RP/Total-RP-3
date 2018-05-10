@@ -107,7 +107,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	local ImportRegisterPlayerProfileButton = RegisterPlayerChatLinksModule:NewActionButton("IMPORT_REG_PROFILE", loc.CL_IMPORT_PROFILE, "REG_P_I_Q", "REG_P_I_A");
 
 	function ImportRegisterPlayerProfileButton:IsVisible(tooltipData)
-		return tooltipData.canBeImported;
+		return tooltipData.profile and tooltipData.profile.link and tooltipData.profile.link[TRP3_API.globals.player_id];
 	end
 
 	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)

@@ -11,6 +11,7 @@
 - The chat links tooltip title now uses the text size defined in the tooltip settings.
 - Fixed an issue where player profiles that were marked as non-importable when creating a link would still show the import button in the tooltip.
 - Fixed and improved the buttons alignment in the chat links tooltip.
+- **Directory profiles can no longer be made importable**, only the players who were seen with a linked profile will be able to import it (so that you can still link someone their profile if they lost it and they will be able to import them back).
 
 # Changelog for version 1.3.4.1
 
