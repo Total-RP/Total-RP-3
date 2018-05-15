@@ -720,7 +720,6 @@ function TRP3_API.register.init()
 		tutorialProvider = tutorialProvider
 	});
 
-	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
 	registerConfigKey("register_sanitization", true);
 
@@ -747,12 +746,6 @@ function TRP3_API.register.init()
 		menuText = loc.CO_REGISTER,
 		pageText = loc.CO_REGISTER,
 		elements = {
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_REGISTER_ABOUT_VOTE,
-				configKey = "register_about_use_vote",
-				help = loc.CO_REGISTER_ABOUT_VOTE_TT
-			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
