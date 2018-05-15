@@ -1216,7 +1216,13 @@ People will be able to copy and use the content of the link.]],
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
+
+Would you like to reload the interface now?]],
 	CL_TOOLTIP = "Create a chat link",
+	TT_ELVUI_SKIN = "ElvUI skin",
+	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
+	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
 };
 
 -- Use Ellyb to generate the Localization system

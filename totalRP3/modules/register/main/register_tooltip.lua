@@ -1409,6 +1409,8 @@ local function onModuleInit()
 			})
 	end
 
+	TRP3_API.ui.tooltip.CONFIG = CONFIG_STRUCTURE;
+
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
 
