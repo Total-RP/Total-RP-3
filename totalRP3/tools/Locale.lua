@@ -1217,6 +1217,8 @@ People will be able to copy and use the content of the link.]],
 	------------------------------------------------------------------------------------------------
 
 	CL_TOOLTIP = "Create a chat link",
+	CL_DOWNLOADING = "Downloading: %0.1f %%",
+	CL_SENDING_COMMAND = "Sending command…",
 };
 
 -- Use Ellyb to generate the Localization system

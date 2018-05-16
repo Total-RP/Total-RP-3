@@ -27,6 +27,9 @@ local Ellyb = Ellyb(...);
 -- Lua imports
 local assert = assert;
 
+-- Total RP 3 imports
+local loc = TRP3_API.loc;
+
 -- Ellyb imports
 local isType = Ellyb.Assertions.isType;
 
@@ -48,9 +51,14 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 	_private[self].answerCommand = answerCommand;
 
 	-- Register to answer questions
-	TRP3_API.communication.registerProtocolPrefix(questionCommand, function(linkID, sender)
-		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkID);
-		TRP3_API.communication.sendObject(answerCommand, link:GetData(), sender);
+	TRP3_API.communication.registerProtocolPrefix(questionCommand, function(linkData, sender)
+		-- Previous versions of the chat links system were sending the link ID directly, as a string.
+		-- We need to handle this for backward compatibility and
+		if type(linkData) == "string" then
+			linkData = { linkID = linkData };
+		end
+		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
+		TRP3_API.communication.sendObject(answerCommand, link:GetData(), sender, "BULK", linkData.messageID);
 	end);
 
 	TRP3_API.communication.registerProtocolPrefix(answerCommand, function(data, sender)
@@ -79,9 +87,31 @@ end
 --- [RECIPIENT] Function called when the recipient clicked the button
 ---@param linkData table @ The link data as saved by the module
 ---@param sender string @ The name of the sender of the link
-function ChatLinkActionButton:OnClick(linkData, sender)
+---@param button Button @ The UI button that was clicked
+function ChatLinkActionButton:OnClick(linkID, sender, button)
 	TRP3_API.ChatLinks:CheckVersions(function()
-		TRP3_API.communication.sendObject(_private[self].questionCommand, linkData, sender);
+		-- Set the button text to indicate that we are sending the command
+		button:SetText(loc.CL_SENDING_COMMAND);
+		button:Disable();
+		-- Get a unique message identifier for the data request, used for progression updates
+		local reservedMessageID = TRP3_API.communication.getMessageIDAndIncrement();
+		-- Register a new progress handler for this message ID
+		TRP3_API.communication.addMessageIDHandler(sender, reservedMessageID, function(_, total, current)
+			-- If the download is complete, we restore the button text
+			if current == total then
+				button:SetText(_private[self].buttonText);
+				button:Enable();
+			else
+				-- We update the button text with the progression percentage
+				button:SetText(loc.CL_DOWNLOADING:format((current / total) * 100));
+			end
+		end);
+
+		-- Send a request for this link ID and indicate a message ID to use for progression updates
+		TRP3_API.communication.sendObject(_private[self].questionCommand, {
+			linkID = linkID,
+			messageID = reservedMessageID,
+		}, sender);
 	end);
 end
 
@@ -106,7 +136,7 @@ end
 
 function TRP3_ChatLinkActionButtonMixin:OnClick()
 	local module = TRP3_API.ChatLinks:GetModuleByID(TRP3_RefTooltip.itemData.moduleID);
-	module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender);
+	module:OnActionButtonClicked(self.command, TRP3_RefTooltip.itemData.customData, TRP3_RefTooltip.sender, self);
 end
 
 function TRP3_ChatLinkActionButtonMixin:Set(button)
@@ -123,6 +153,7 @@ function TRP3_ChatLinkActionButtonMixin:Reset()
 	self:SetText("");
 	self.command = nil;
 	self:Hide();
+	self:Enable();
 end
 
 TRP3_API.ChatLinkActionButton = ChatLinkActionButton;
