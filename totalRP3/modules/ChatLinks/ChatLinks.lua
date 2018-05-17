@@ -222,20 +222,29 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
 		local linkType = link:sub(1, LINK_LENGTHS);
 		if linkType == LINK_CODE then
-			local linkContent = link:sub(LINK_LENGTHS + 2);
-			local separatorIndex = linkContent:find(":");
-			local playerName = linkContent:sub(1, separatorIndex - 1);
-			local itemName = linkContent:sub(separatorIndex + 1);
+			if IsShiftKeyDown() then
+				-- If the shift key is down, the user is trying to insert a TRP3 link.
+				-- That's not supported for now, so we'll remove the hyperlink escape sequence from the chatframe editbox text
+				local activeChatFrame = ChatEdit_GetActiveWindow();
+				if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
+					activeChatFrame.chatFrame.editBox:SetText(TRP3_API.utils.str.sanitize(activeChatFrame.chatFrame.editBox:GetText()));
+				end
+			else
+				local linkContent = link:sub(LINK_LENGTHS + 2);
+				local separatorIndex = linkContent:find(":");
+				local playerName = linkContent:sub(1, separatorIndex - 1);
+				local itemName = linkContent:sub(separatorIndex + 1);
 
-			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
-			TRP3_RefTooltip.itemName = itemName;
-			-- TODO Localization and better UI feedback
-			showTooltip({
-				tooltipLines = {
-					title = loc.CL_REQUESTING_DATA:format(playerName),
-				},
-			});
+				TRP3_RefTooltip.itemName = itemName;
+				-- TODO Localization and better UI feedback
+				showTooltip({
+					tooltipLines = {
+						title = loc.CL_REQUESTING_DATA:format(playerName),
+					},
+				});
+			end
 		end
 	end)
 
