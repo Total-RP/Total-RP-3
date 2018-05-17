@@ -103,6 +103,7 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 				button:Enable();
 			else
 				-- We update the button text with the progression percentage
+				button:Disable();
 				button:SetText(loc.CL_DOWNLOADING:format((current / total) * 100));
 			end
 		end);
