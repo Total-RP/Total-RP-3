@@ -517,7 +517,7 @@ TRP3_API.slash.registerCommand({
 
 		sendQuery(characterToOpen);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
-		if isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen) then
+		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();
 			TRP3_API.register.openPageByUnitID(characterToOpen);
 			characterToOpen = "";
