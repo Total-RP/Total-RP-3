@@ -1224,14 +1224,15 @@ People will be able to copy and use the content of the link.]],
 
 - The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus"
 ]],
+	CL_TOOLTIP = "Create a chat link",
+	CL_DOWNLOADING = "Downloading: %0.1f %%",
+	CL_SENDING_COMMAND = "Sending command…",
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CL_TOOLTIP = "Create a chat link",
-	CL_DOWNLOADING = "Downloading: %0.1f %%",
-	CL_SENDING_COMMAND = "Sending command…",
 };
 
 -- Use Ellyb to generate the Localization system
