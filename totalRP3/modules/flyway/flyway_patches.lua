@@ -83,3 +83,12 @@ TRP3_API.flyway.patches["6"] = function()
 		end
 	end
 end
+
+-- Patches potentially badly created profiles from chat links
+TRP3_API.flyway.patches["7"] = function()
+	for _, profile in pairs(TRP3_Register.profiles) do
+		if not profile.link then
+			profile.link = {};
+		end
+	end
+end

@@ -7,7 +7,8 @@
 
 ## Changes
 
-- The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus"
+- The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus".
+- Patched directory profiles that were imported from chat links and caused some issues.
 
 # Changelog for version 1.3.4.2
 
