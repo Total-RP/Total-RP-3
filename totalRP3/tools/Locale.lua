@@ -1225,6 +1225,11 @@ People will be able to copy and use the content of the link.]],
 - The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus".
 - Patched directory profiles that were imported from chat links and caused some issues.
 ]],
+    WHATS_NEW_18_4 = [[
+# Changelog for version 1.3.4.4
+
+- Fixed a critical issue with patches for new installations of the add-on.
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
 	CL_SENDING_COMMAND = "Sending command…",
