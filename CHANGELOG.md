@@ -1,3 +1,7 @@
+# Changelog for version 1.3.4.4
+
+- Fixed a critical issue with patches for new installations of the add-on.
+
 # Changelog for version 1.3.4.3
 
 ## Chat links fixes
