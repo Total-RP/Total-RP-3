@@ -28,13 +28,21 @@ local function onStart()
 	if not ElvUI then
 		return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 	end
-	
-	local ElvUIChatModule = ElvUI:GetModule("Chat");
+
+	local ElvUI = ElvUI[1];
+	local ElvUIChatModule = ElvUI:GetModule("Chat", true);
+	if not ElvUIChatModule then
+		return false, "Your version of ElvUI doesn't need this module to function.";
+	end
 	local ElvUIGetColoredName = ElvUIChatModule.GetColoredName;
+
+	if not ElvUIGetColoredName then
+		return false, "Your version of ElvUI doesn't need this module to function.";
+	end
 
 	-- Build the fallback, using ElvUI's function
 	local function fallback(...)
-		ElvUIGetColoredName(ElvUIChatModule, ...);
+		return ElvUIGetColoredName(ElvUIChatModule, ...);
 	end
 
 	-- Replace ElvUI's GetColoredName
