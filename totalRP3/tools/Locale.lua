@@ -39,16 +39,16 @@ BINDING_HEADER_TRP3 = "Total RP 3";
 -- Complete locale declaration
 TRP3_API.loc = {
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- GENERAL
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- GENERAL
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 	GEN_VERSION = "Version: %s (Build %s)",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- REGISTER
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- REGISTER
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	REG_PLAYER = "Character",
 	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway ?\n|cffff9900Any changes will be lost.",
 	REG_PLAYER_CARACT = "Characteristics",
@@ -419,9 +419,9 @@ There are a lot of ways to customize the description.
 You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
 These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- CONFIGURATION
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CONFIGURATION
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CO_CONFIGURATION = "Settings",
 	CO_GENERAL = "General settings",
@@ -631,9 +631,9 @@ Possible status:
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- TOOLBAR AND UI BUTTONS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TOOLBAR AND UI BUTTONS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TB_TOOLBAR = "Toolbar",
 	TB_SWITCH_TOOLBAR = "Switch toolbar",
@@ -667,9 +667,9 @@ Possible status:
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- PROFILES
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- PROFILES
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PR_PROFILEMANAGER_TITLE = "Characters profiles",
 	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
@@ -757,9 +757,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
 	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DASHBOARD
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DASHBOARD
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DB_STATUS = "Status",
 	DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
@@ -788,9 +788,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_ABOUT = "About Total RP 3",
 	DB_MORE = "More modules",
 	DB_HTML_GOTO = "Click to open",
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMON UI TEXTS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMON UI TEXTS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	UI_BKG = "Background %s",
 	UI_ICON_BROWSER = "Icon browser",
@@ -832,9 +832,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	NPC_TALK_YELL_PATTERN = "yells:",
 	NPC_TALK_WHISPER_PATTERN = "whispers:",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMON TEXTS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMON TEXTS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CM_SHOW = "Show",
 	CM_ACTIONS = "Actions",
@@ -902,17 +902,17 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_BLACK = "Black",
 	CM_GREY = "Grey",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Minimap button
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Minimap button
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MM_SHOW_HIDE_MAIN = "Show/hide the main frame",
 	MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar",
 	MM_SHOW_HIDE_MOVE = "Move button",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Browsers
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Browsers
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
@@ -921,9 +921,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Databroker
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Databroker
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DTBK_HELMET = "Total RP 3 - Helmet",
 	DTBK_CLOAK = "Total RP 3 - Cloak",
@@ -931,22 +931,22 @@ Total RP is not responsible for links leading to harmful content.]],
 	DTBK_RP = "Total RP 3 - IC/OOC",
 	DTBK_LANGUAGES = "Total RP 3 - Languages",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Bindings
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Bindings
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- About TRP3
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- About TRP3
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	ABOUT_TITLE = "About",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MAP
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MAP
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MAP_BUTTON_TITLE = "Scan for roleplay",
 	MAP_BUTTON_SUBTITLE = "Click to show available scans",
@@ -957,9 +957,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	MAP_SCAN_CHAR = "Scan for characters",
 	MAP_SCAN_CHAR_TITLE = "Characters",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MATURE FILTER
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MATURE FILTER
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	MATURE_FILTER_TITLE = "Mature profiles filter",
 	MATURE_FILTER_TOOLTIP_WARNING = "Mature content",
 	MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
@@ -1011,9 +1011,9 @@ This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DICE ROLL
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DICE ROLL
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
@@ -1021,9 +1021,9 @@ Are you sure you want to view this profile?]],
 	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- NPC Speeches
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- NPC Speeches
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	NPC_TALK_TITLE = "NPC speeches",
 	NPC_TALK_NAME = "NPC name",
@@ -1040,9 +1040,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
 	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MISC
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MISC
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PATTERN_ERROR = "Error in pattern.",
 	PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
@@ -1055,9 +1055,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
 	BROADCAST_OFFLINE_DISABLED = "Broadcast has been disabled.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- CHAT LINKS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CHAT LINKS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CL_REQUESTING_DATA = "Requesting link data from %s.",
 	CL_EXPIRED = "This link has expired.",
@@ -1073,9 +1073,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMANDS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMANDS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	COM_LIST = "List of commands:",
 	COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
@@ -1211,6 +1211,29 @@ People will be able to copy and use the content of the link.]],
 - **Directory profiles can no longer be made importable**, only the players who were seen with a linked profile will be able to import it (so that you can still link someone their profile if they lost it and they will be able to import them back).
 
 ]],
+	---@language Markdown
+	WHATS_NEW_18_3 = [[
+# Changelog for version 1.3.4.3
+
+## Chat links fixes
+
+- Added download progress indication on the action buttons when importing content from a chat link. The action buttons will now be disabled during the download to prevent starting multiple downloads in parallel.
+- Fixed an issue when Shift-Clicking on a chat link in the chat frame to insert it inside the chat edit box (this behavior is currently disable until a proper workflow supports linking existing links from the chat frame).
+
+## Changes
+
+- The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus".
+- Patched directory profiles that were imported from chat links and caused some issues.
+]],
+    WHATS_NEW_18_4 = [[
+# Changelog for version 1.3.4.4
+
+- Fixed a critical issue with patches for new installations of the add-on.
+]],
+	CL_TOOLTIP = "Create a chat link",
+	CL_DOWNLOADING = "Downloading: %0.1f %%",
+	CL_SENDING_COMMAND = "Sending command…",
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED

@@ -51,9 +51,6 @@ local function onStart()
 	-- Replace WIM's GetColoredName function by our own to display RP names and fallback to WIM's GetColoredName function
 	-- if we couldn't handle the name ourselves.
 	classes.GetColoredNameByChatEvent = function(...)
-		if disabledByOOC() then
-			return WIMsGetColoredNameFunction();
-		end
 		return customGetColoredNameWithCustomFallbackFunction(WIMsGetColoredNameFunction, ...);
 	end;
 

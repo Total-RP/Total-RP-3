@@ -1,3 +1,19 @@
+# Changelog for version 1.3.4.4
+
+- Fixed a critical issue with patches for new installations of the add-on.
+
+# Changelog for version 1.3.4.3
+
+## Chat links fixes
+
+- Added download progress indication on the action buttons when importing content from a chat link. The action buttons will now be disabled during the download to prevent starting multiple downloads in parallel.
+- Fixed an issue when Shift-Clicking on a chat link in the chat frame to insert it inside the chat edit box (this behavior is currently disable until a proper workflow supports linking existing links from the chat frame).
+
+## Changes
+
+- The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus".
+- Patched directory profiles that were imported from chat links and caused some issues.
+
 # Changelog for version 1.3.4.2
 
 - The NPC speeches frame now closes when pressing the escape key.

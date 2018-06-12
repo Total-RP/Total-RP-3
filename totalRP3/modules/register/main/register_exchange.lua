@@ -474,6 +474,8 @@ function TRP3_API.register.inits.dataExchangeInit()
 	end);
 end
 
+local UNIT_TOKENS = { "target", "mouseover", "player", "focus" };
+UNIT_TOKENS = tInvert(UNIT_TOKENS);
 TRP3_API.slash.registerCommand({
 	id = "open",
 	helpLine = " " .. loc.PR_SLASH_OPEN_HELP,
@@ -490,9 +492,14 @@ TRP3_API.slash.registerCommand({
 		elseif #args == 1 then
 			characterToOpen = table.concat(args, " ");
 
-			-- Capitalizing first letter of the name, just in case someone is lazy.
-			-- We don't have a solution for "I'm lazy but need someone from another realm" yet.
-			characterToOpen = characterToOpen:gsub("^%l", string.upper);
+			if UNIT_TOKENS[characterToOpen:lower()] then
+				-- If we typed a unit token we resolve it
+				characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
+			else
+				-- Capitalizing first letter of the name, just in case someone is lazy.
+				-- We don't have a solution for "I'm lazy but need someone from another realm" yet.
+				characterToOpen = characterToOpen:gsub("^%l", string.upper);
+			end
 
 			-- If no realm has been entered, we use the player's realm automatically
 			if not characterToOpen:find("-") then
@@ -510,7 +517,7 @@ TRP3_API.slash.registerCommand({
 
 		sendQuery(characterToOpen);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
-		if isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen) then
+		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();
 			TRP3_API.register.openPageByUnitID(characterToOpen);
 			characterToOpen = "";
