@@ -120,7 +120,7 @@ function Globals.addon:OnEnable()
 	ticker = C_Timer.NewTicker(0.1, function(self)
 		local _, realm = UnitFullName("player")
 
-		if false and realm then
+		if realm then
 			-- We finally have realm info, we can cancel the ticket and initialize the addon.
 			ticker:Cancel()
 			MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
