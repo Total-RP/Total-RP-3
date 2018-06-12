@@ -38,6 +38,8 @@ TRP3_API.module.registerModule({
 			return false, loc.MO_ADDON_NOT_INSTALLED:format("ElvUI");
 		end
 
+		local skinTargetFrame, skinTooltips;
+
 		local CONFIG = {
 			SKIN_TOOLTIPS = "elvui_skin_tooltips",
 			SKIN_TARGET_FRAME = "elvui_skin_target_frame",
@@ -65,51 +67,35 @@ TRP3_API.module.registerModule({
 			"TRP3_GlanceBarSlot5",
 		}
 
-		-- Wait for the add-on to be fully loaded so all the tooltips are available
-		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
-
-			local TT = _G["ElvUI"][1]:GetModule('Tooltip');
-
-			local function skinTooltips()
-				-- Go through each tooltips from our table
-				for _, tooltip in pairs(TOOLTIPS) do
-					if _G[tooltip] then
-						-- We check that the tooltip exists and then add it to ElvUI
-						TT:SecureHookScript(_G[tooltip], 'OnShow', 'SetStyle')
-					end
-				end
-			end
-
-			local function skinTargetFrame()
-				-- Go through each skinnable frames from our table
-				for _, frame in pairs(SKINNABLE_FRAMES) do
-					if _G[frame] then
-						-- We check that the frame exists and then add it to ElvUI
-						TT:SecureHookScript(_G[frame], 'OnShow', 'SetStyle')
-					end
-				end
-			end
-
+		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- Register configurations options
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TOOLTIPS, true);
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TARGET_FRAME, false);
 
-			-- Category header for the ElvUI tooltip skin configurations
-			table.insert(TRP3_API.ui.tooltip.CONFIG.elements, {
-				inherit = "TRP3_ConfigH1",
-				title = loc.TT_ELVUI_SKIN,
-			});
-			-- Checkbox to toggle tooltip skinning
-			table.insert(TRP3_API.ui.tooltip.CONFIG.elements, {
-				inherit = "TRP3_ConfigCheck",
-				title = loc.TT_ELVUI_SKIN_ENABLE_TOOLTIPS,
-				configKey = CONFIG.SKIN_TOOLTIPS,
-			});
-			-- Checkbox to toggle target frame skinning
-			table.insert(TRP3_API.ui.tooltip.CONFIG.elements, {
-				inherit = "TRP3_ConfigCheck",
-				title = loc.TT_ELVUI_SKIN_ENABLE_TARGET_FRAME,
-				configKey = CONFIG.SKIN_TARGET_FRAME,
+			-- Build configuration page
+			TRP3_API.configuration.registerConfigurationPage({
+				id = "main_config_elvui",
+				menuText = "ElvUI",
+				pageText = "ElvUI",
+				elements = {
+					-- Category header for the ElvUI tooltip skin configurations
+					{
+						inherit = "TRP3_ConfigH1",
+						title = loc.TT_ELVUI_SKIN,
+					},
+					-- Checkbox to toggle tooltip skinning
+					{
+						inherit = "TRP3_ConfigCheck",
+						title = loc.TT_ELVUI_SKIN_ENABLE_TOOLTIPS,
+						configKey = CONFIG.SKIN_TOOLTIPS,
+					},
+					-- Checkbox to toggle target frame skinning
+					{
+						inherit = "TRP3_ConfigCheck",
+						title = loc.TT_ELVUI_SKIN_ENABLE_TARGET_FRAME,
+						configKey = CONFIG.SKIN_TARGET_FRAME,
+					},
+				}
 			});
 
 			-- Register configuration handlers to apply the changes
@@ -127,6 +113,32 @@ TRP3_API.module.registerModule({
 					TRP3_API.popup.showConfirmPopup(loc.CO_UI_RELOAD_WARNING, ReloadUI);
 				end
 			end);
+		end)
+
+		-- Wait for the add-on to be fully loaded so all the tooltips are available
+		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+
+			local TT = _G["ElvUI"][1]:GetModule('Tooltip');
+
+			function skinTooltips()
+				-- Go through each tooltips from our table
+				for _, tooltip in pairs(TOOLTIPS) do
+					if _G[tooltip] then
+						-- We check that the tooltip exists and then add it to ElvUI
+						TT:SecureHookScript(_G[tooltip], 'OnShow', 'SetStyle')
+					end
+				end
+			end
+
+			function skinTargetFrame()
+				-- Go through each skinnable frames from our table
+				for _, frame in pairs(SKINNABLE_FRAMES) do
+					if _G[frame] then
+						-- We check that the frame exists and then add it to ElvUI
+						TT:SecureHookScript(_G[frame], 'OnShow', 'SetStyle')
+					end
+				end
+			end
 
 			-- Apply the skinning if the settings are enabled
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TOOLTIPS) then
@@ -135,7 +147,6 @@ TRP3_API.module.registerModule({
 			if TRP3_API.configuration.getValue(CONFIG.SKIN_TARGET_FRAME) then
 				skinTargetFrame();
 			end
-
 		end);
 	end,
 });
