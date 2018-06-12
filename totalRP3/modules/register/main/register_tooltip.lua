@@ -232,6 +232,13 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 	line:SetFont(font, fontSize, flag);
 end
 
+local GetCursorPosition = GetCursorPosition;
+local function placeTooltipOnCursor(tooltip)
+	local effScale, x, y = ui_CharacterTT:GetEffectiveScale(), GetCursorPosition();
+	ui_CharacterTT:ClearAllPoints();
+	ui_CharacterTT:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TOOLTIP BUILDER
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1008,6 +1015,9 @@ local function show(targetType, targetID, targetMode)
 					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+				elseif getAnchoredPosition() == "ANCHOR_CURSOR" then
+					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+					placeTooltipOnCursor(ui_CharacterTT);
 				else
 					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
@@ -1056,9 +1066,7 @@ local function onUpdate(self, elapsed)
 	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 
 	if getAnchoredPosition() == "ANCHOR_CURSOR" then
-		local effScale, x, y = self:GetEffectiveScale(), GetCursorPosition();
-		self:ClearAllPoints();
-		self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
+		placeTooltipOnCursor(self);
 	end
 
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
