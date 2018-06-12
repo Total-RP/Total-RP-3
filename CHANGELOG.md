@@ -1,55 +1,14 @@
-# Changelog for version 1.3.4.4
-
-- Fixed a critical issue with patches for new installations of the add-on.
-
-# Changelog for version 1.3.4.3
-
-## Chat links fixes
-
-- Added download progress indication on the action buttons when importing content from a chat link. The action buttons will now be disabled during the download to prevent starting multiple downloads in parallel.
-- Fixed an issue when Shift-Clicking on a chat link in the chat frame to insert it inside the chat edit box (this behavior is currently disable until a proper workflow supports linking existing links from the chat frame).
-
-## Changes
-
-- The `/trp3 open PlayerName` command can now be used with unit tokens like "target", "mouseover", "player" or "focus".
-- Patched directory profiles that were imported from chat links and caused some issues.
-
-# Changelog for version 1.3.4.2
-
-- The NPC speeches frame now closes when pressing the escape key.
-- Updated the list of Patreon supporters in the About tab.
-
-## Chat links fixes
-
-- Fixed a Lua error that would happen when the directory is being purged of old profiles and one of them was received from a chat link, and was not properly formatted.
-- Simplified wording when creating a new chat link so that the alert is more quickly readable and the buttons actions are more obvious.
-- The technical information shown in the chat links tooltip (type of link, sender name, size) are now only shown when the Alt key is held down, so that by default links only show RP-related information.
-- The chat links tooltip title now uses the text size defined in the tooltip settings.
-- Fixed an issue where player profiles that were marked as non-importable when creating a link would still show the import button in the tooltip.
-- Fixed and improved the buttons alignment in the chat links tooltip.
-- **Directory profiles can no longer be made importable**, only the players who were seen with a linked profile will be able to import it (so that you can still link someone their profile if they lost it and they will be able to import them back).
-
-# Changelog for version 1.3.4.1
-
-- Fixed a possible issues with other add-ons drop down menus.
-
-# Changelog for version 1.3.4
-
-## Added
-
-- Chat links now indicate the size of the content in the tooltip.
-- Added an option in the tooltip settings to use the old OOC indicator (the red dot in the top right corner) instead of the [OOC] red text.
-- Added information text on the profile export window to warn about using advanced text editing software when copy-pasting serialized profile as they can alter the data when replacing special characters like quotes.
-
-## Modified
-
-- The dashboard has received under-the-hood improvements to improve localization and prepare for future features.
-- Streamlined color picker presets UI to avoid confusions. Only the presets button is now visible, bellow the color preview. The presets dropdown now gives access to saving, renaming and deleting custom presets.
-- Player personality traits now only show the value numbers when the cursor is on the bar.
-- Improved generation of chat links for better efficiency.
-- Updated list of Patreon supporters.
+# Changelog for version 1.3.5
 
 ## Fixed
 
-- Fixed a missing option dependency for the mature filter strength slider so that it is correctly disabled when the mature filter is disable.
-- Fixed an issue with the import/export profile UI when a profile had the `~` character inside a field.
+- Fixed issue when trying to get realm name introduced with the latest maintenance.
+- Fixed an error that would prevent the add-on from having access to the game's tooltip when using friendly nameplates in dungeons.
+- Fixed an issue with the WIM custom chat module when the option to disable chat features when Out Of Character was enabled.
+- Fixed an issue that would make the tooltip flicker briefly when using the option to position the tooltip on the cursor.
+
+## Added
+
+- Added custom chat module for ElvUI (now required as they are no longer using standard functions to get player names).
+- Added custom skinning module for ElvUI, to apply ElvUI's theme to the tooltip and target frame (can be disabled in the new ElvUI settings tab).  
+![](https://www.dropbox.com/s/g57644riwygwww9/elvui_tooltip.png?raw=1)

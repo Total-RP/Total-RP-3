@@ -70,7 +70,7 @@ TRP3_API.module.registerModule({
 		TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- Register configurations options
 			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TOOLTIPS, true);
-			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TARGET_FRAME, false);
+			TRP3_API.configuration.registerConfigKey(CONFIG.SKIN_TARGET_FRAME, true);
 
 			-- Build configuration page
 			TRP3_API.configuration.registerConfigurationPage({
