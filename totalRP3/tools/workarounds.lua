@@ -31,14 +31,32 @@ local workaroundsToApply = {};
 -- the GameTooltip and Blizzard is giving us no choice. This situation is a fucking sad joke.
 -- See https://www.wowace.com/projects/libactionbutton-1-0/issues/23
 table.insert(workaroundsToApply, function()
+	local IsInInstance = IsInInstance;
+	local InCombatLockdown = InCombatLockdown;
+	local SetCVar = SetCVar;
+	local GetCVar = GetCVar;
+	local previousUserSetting = GetCVar("nameplateShowDebuffsOnFriendly");
 
-	-- Set the nameplateShowDebuffsOnFriendly to false, never show debuff on friendly nameplates
-	SetCVar("nameplateShowDebuffsOnFriendly", false);
+	local function fix(value)
+		SetCVar("nameplateShowDebuffsOnFriendly", value)
+	end
 
 	-- To make sure the user never turns that option on again, we hook SetCVar and check if someone is trying to turn that on
 	hooksecurefunc("SetCVar", function(cvarName, value)
-		if  cvarName == "nameplateShowDebuffsOnFriendly" and value == true then
-			SetCVar("nameplateShowDebuffsOnFriendly", false)
+		if InCombatLockdown() then return end
+		if cvarName == "nameplateShowDebuffsOnFriendly" and value == 1 and IsInInstance() then
+			fix(0)
+		end
+	end)
+
+	TRP3_API.Ellyb.GameEvents.registerHandler("PLAYER_ENTERING_WORLD", function()
+		if InCombatLockdown() then return end
+		if IsInInstance() and GetCVar("nameplateShowDebuffsOnFriendly") == 1 then
+			previousUserSetting = 1
+			-- Set the nameplateShowDebuffsOnFriendly to false, never show debuff on friendly nameplates
+			fix(0)
+		else
+			fix(previousUserSetting)
 		end
 	end)
 end)
