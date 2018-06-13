@@ -128,7 +128,7 @@ setmetatable(TRP3_API.globals.empty, emptyMeta);
 
 TRP3_API.globals.build = function()
 	local fullName = UnitFullName("player");
-	local _, _, realm = LibRealmInfo:GetRealmInfoByUnit(unit)
+	local _, _, realm = LibRealmInfo:GetRealmInfoByUnit("player");
 	assert(realm, "Cannot have realm name information !");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;

@@ -111,36 +111,17 @@ end
 local MAIN_SEQUENCE_ERROR;
 -- Called upon PLAYER_LOGIN after all addons are loaded.
 function Globals.addon:OnEnable()
-
-	MAIN_SEQUENCE_ID = "OnEnable"
-	MAIN_SEQUENCE_DETAIL = "Globals.addon:OnEnable"
-	-- Dirty work around after a maintenance on 12/06/2018 that made the realm name unavailable for a few moments after login
-	-- We create a new ticker to try and get a realm name every 0.1 seconds for 2.5 seconds.
-	local ticker;
-	ticker = C_Timer.NewTicker(0.1, function(self)
-		local _, realm = UnitFullName("player")
-
-		if realm then
-			-- We finally have realm info, we can cancel the ticket and initialize the addon.
-			ticker:Cancel()
-			MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
-			if not Globals.DEBUG_MODE then
-				local ok, errorMessage = pcall(loadingSequence);
-				if not ok then
-					MAIN_SEQUENCE_ERROR = errorMessage;
-					TRP3_ShowErrorMessage();
-					error("Error during TRP3 loading sequence: " .. errorMessage);
-				end
-			else
-				loadingSequence();
-			end
+	MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
+	if not Globals.DEBUG_MODE then
+		local ok, errorMessage = pcall(loadingSequence);
+		if not ok then
+			MAIN_SEQUENCE_ERROR = errorMessage;
+			TRP3_ShowErrorMessage();
+			error("Error during TRP3 loading sequence: " .. errorMessage);
 		end
-
-		if ticker._remainingIterations == 1 then
-			MAIN_SEQUENCE_ERROR = "Cannot retrieve realm info from Blizzard's API. Either you are trying to use the add-on on a private server that does not implement Blizzard's functions correctly or there is an issue with the game client."
-			TRP3_ShowErrorMessage()
-		end
-	end, 25);
+	else
+		loadingSequence();
+	end
 end
 
 function TRP3_ShowErrorMessage()
