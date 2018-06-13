@@ -1187,7 +1187,14 @@ People will be able to copy and use the content of the link.]],
 ## Fixed
 
 - Removed the workaround for the realm name issue introduced in yesterday's maintenance as it was causing multiple issues in other parts of the add-on. We are now using LibRealmInfo instead, which is more stable.
+]],
+	---@language Markdown
+	WHATS_NEW_19_2 = [[
+# Changelog for version 1.3.5.2
 
+## Fixed
+
+- More fixes for the realm name issue. Sorry about that. Again.
 ]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
