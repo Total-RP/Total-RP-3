@@ -1,3 +1,9 @@
+# Changelog for version 1.3.5.1
+
+## Fixed
+
+- Removed the workaround for the realm name issue introduced in yesterday's maintenance as it was causing multiple issues in other parts of the add-on. We are now using LibRealmInfo instead, which is more stable.
+
 # Changelog for version 1.3.5
 
 ## Fixed
