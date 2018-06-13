@@ -22,6 +22,8 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
+local LibRealmInfo = LibStub("LibRealmInfo");
+
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
@@ -125,7 +127,8 @@ setmetatable(TRP3_API.globals.empty, emptyMeta);
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.globals.build = function()
-	local fullName, realm = UnitFullName("player");
+	local fullName = UnitFullName("player");
+	local _, _, realm = LibRealmInfo:GetRealmInfoByUnit(unit)
 	assert(realm, "Cannot have realm name information !");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
