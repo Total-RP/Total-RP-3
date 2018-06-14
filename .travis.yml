@@ -31,6 +31,6 @@ cache:
 # Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
 after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 7.3.5 -o
 
-#branches:
-#  only:
-#  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+branches:
+  only:
+  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
