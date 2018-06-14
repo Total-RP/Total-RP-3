@@ -234,9 +234,7 @@ Comm.broadcast.init = function()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 
 	-- First, register prefix
-	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function()
-		RegisterAddonMessagePrefix(BROADCAST_HEADER);
-	end);
+	RegisterAddonMessagePrefix(BROADCAST_HEADER);
 
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

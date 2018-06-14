@@ -61,9 +61,7 @@ local selected_interface_id = interface_id.WOW;
 function Communication.init()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onAddonMessageReceived);
-	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function() 
-		RegisterAddonMessagePrefix(wowCom_prefix);
-	end);
+	RegisterAddonMessagePrefix(wowCom_prefix);
 end
 
 local function isSpecialTarget(target)
