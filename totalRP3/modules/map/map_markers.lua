@@ -369,14 +369,6 @@ local function onButtonClicked(self)
 	displayDropDown(self, structure, launchScan, 0, true);
 end
 
-local function onWorldMapUpdate()
-	local mapID = GetCurrentMapAreaID();
-	if currentMapID ~= mapID then
-		currentMapID = mapID;
-		hideAllMarkers();
-	end
-end
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
@@ -384,14 +376,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
+
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.BorderFrame);
+	TRP3_ScanLoaderFrame:SetPoint("CENTER", WorldMapFrame.ScrollContainer, "CENTER");
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
 		self.refreshTimer = 0;
 	end);
 	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
 		self.refreshTimer = self.refreshTimer + elapsed;
 	end);
-
-	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);
 
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
@@ -404,8 +397,7 @@ local function placeMapButton(position)
 	---@type Frame
 	local worldMapButton = TRP3_WorldMapButton;
 
-	worldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame)
+	worldMapButton:SetParent(WorldMapFrame.BorderFrame);
 	worldMapButton:ClearAllPoints();
 
 	local xPadding = 10;
@@ -421,7 +413,7 @@ local function placeMapButton(position)
 		yPadding = 40;
 	end
 
-	worldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
+	worldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 
 	setConfigValue(CONFIG_MAP_BUTTON_POSITION, position);
 end

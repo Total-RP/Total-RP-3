@@ -56,7 +56,7 @@
 		</Animations>
 	</Frame>
 
-	<Frame name="TRP3_ScanLoaderFrame" parent="WorldMapButton" hidden="true">
+	<Frame name="TRP3_ScanLoaderFrame" hidden="true">
 		<Size x="200" y="200"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
