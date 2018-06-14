@@ -103,8 +103,6 @@ local function loadingSequence()
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 
-	LoadAddOn("Blizzard_SocialUI");
-
 	Log.log("OnEnable() DONE");
 end
 

@@ -240,7 +240,7 @@ local function onStart()
 		msp.dummyframe:RegisterEvent( "CHAT_MSG_ADDON" )
 
 		for prefix, handler in pairs( MSP_INCOMING_HANDLER ) do
-			RegisterAddonMessagePrefix( prefix )
+			C_ChatInfo.RegisterAddonMessagePrefix( prefix )
 		end
 
 		function msp:InitCache()

@@ -27,7 +27,7 @@ local Communication = {};
 TRP3_API.communication = Communication;
 
 -- imports
-local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
+local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
 local tostring, pairs, assert, string, wipe, tinsert, type, math = tostring, pairs, assert, string, wipe, tinsert, type, math;
 local tconcat = table.concat;
 local ChatThrottleLib = ChatThrottleLib;
