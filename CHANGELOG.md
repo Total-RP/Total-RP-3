@@ -1,3 +1,9 @@
+# Changelog for version 1.3.5.3
+
+## Fixed
+
+- Improvements to the realm name fixes.
+
 # Changelog for version 1.3.5.2
 
 ## Fixed

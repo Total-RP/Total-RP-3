@@ -1196,6 +1196,14 @@ People will be able to copy and use the content of the link.]],
 
 - More fixes for the realm name issue. Sorry about that. Again.
 ]],
+	---@language Markdown
+	WHATS_NEW_19_3 = [[
+# Changelog for version 1.3.5.3
+
+## Fixed
+
+- Improvements to the realm name fixes.
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
 	CL_SENDING_COMMAND = "Sending command…",
