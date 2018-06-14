@@ -29,7 +29,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -45,7 +45,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -85,7 +85,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -103,7 +103,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -363,7 +363,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</CheckButton>
@@ -434,7 +434,7 @@
 		</HighlightTexture>
 		<Scripts>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("igCharacterInfoTab");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_CHARACTER_INFO_TAB);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -630,7 +630,7 @@
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
 			<PostClick>
-				TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>
 		</Scripts>
 	</Button>
@@ -1059,7 +1059,7 @@
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() - 1);
-							TRP3_API.ui.misc.playUISound("UChatScrollButton");
+							TRP3_API.ui.misc.playUISound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
 						else
 							self:Disable();
 						end
@@ -1075,7 +1075,7 @@
 						local slider = self:GetParent();
 						if slider:IsEnabled() then
 							slider:SetValue(slider:GetValue() + 1);
-							TRP3_API.ui.misc.playUISound("UChatScrollButton");
+							TRP3_API.ui.misc.playUISound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
 						else
 							self:Disable();
 						end

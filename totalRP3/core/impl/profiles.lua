@@ -444,7 +444,7 @@ function TRP3_API.profile.init()
 					onProfileSelected(widget);
 					playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
 					playAnimation(_G[self:GetName() .. "Animate"]);
-					playUISound("gsCharacterSelection");
+					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 				end
 				
 			end

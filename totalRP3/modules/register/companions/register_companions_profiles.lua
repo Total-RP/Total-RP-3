@@ -498,7 +498,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				end);
 			else
 				onOpenProfile(widget);
-				playUISound("gsCharacterSelection");
+				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			end
 		end);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);

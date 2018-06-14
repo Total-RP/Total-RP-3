@@ -332,7 +332,7 @@
 						</HighlightTexture>
 						<Scripts>
 							<PostClick>
-								TRP3_API.ui.misc.playUISound("gsCharacterSelection");
+								TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 							</PostClick>
 						</Scripts>
 					</Button>

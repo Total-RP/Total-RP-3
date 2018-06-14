@@ -271,7 +271,7 @@ local function setPage(pageId, context)
 	end
 	
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, pageId);
-	playUISound("gsCharacterSelection");
+	playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 end
 TRP3_API.navigation.page.setPage = setPage;
 
@@ -288,13 +288,13 @@ TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
 TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
-	TRP3_API.ui.misc.playUISound("AchievementMenuOpen");
+	TRP3_API.ui.misc.playUISound(SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
 end
 
 local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();
-		TRP3_API.ui.misc.playUISound("AchievementMenuClose");
+		TRP3_API.ui.misc.playUISound(SOUNDKIT.ACHIEVEMENT_MENU_CLOSE);
 	else
 		TRP3_API.navigation.openMainFrame();
 	end
