@@ -17,8 +17,18 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
--- Public accessor
-TRP3_API.events = {
+---@type TRP3_API
+local _, TRP3_API = ...;
+local Ellyb = Ellyb(...);
+
+-- Lua imports
+local pairs = pairs;
+local assert = assert;
+
+-- Ellyb imports
+local isType = Ellyb.Assertions.isType;
+
+local Events = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Total RP 3 events
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -70,48 +80,38 @@ TRP3_API.events = {
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
 };
 
--- TRP3 imports
-local assert, tostring, type, tinsert, pairs = assert, tostring, type, tinsert, pairs;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- EVENT HANDLING
 -- Handles Total RP 3 events system
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local REGISTERED_EVENTS = {};
+local log = TRP3_API.Ellyb.Logger("TRP3 Events");
+local eventsDispatcher = TRP3_API.Ellyb.EventsDispatcher();
 
-local function registerEvent(event)
-	assert(event, "Event can't be nil.");
-	assert(not REGISTERED_EVENTS[event], "Event already registered.");
-	REGISTERED_EVENTS[event] = {};
+function Events.registerEvent(event)
+	log:Warning("DEPRECATED: Registering events is not longer required with the new events system.");
+	assert(isType(event, "string", "event"));
+	eventsDispatcher:RegisterCallback(event)
 end
 
--- Register main Total RP 3 events
-for event, eventID in pairs(TRP3_API.events) do
-	registerEvent(eventID);
+function Events.listenToEvent(event, handler)
+	assert(isType(event, "string", "event"));
+	assert(isType(handler, "function", "handler"));
+	eventsDispatcher:RegisterCallback(event, handler);
 end
 
-TRP3_API.events.registerEvent = registerEvent;
-
-local function listenToEvent(event, handler)
-	assert(event, "Event must be set.");
-	assert(REGISTERED_EVENTS[event], "Unknown event: " .. tostring(event));
-	assert(handler and type(handler) == "function", "Handler must be a function");
-	tinsert(REGISTERED_EVENTS[event], handler);
-end
-TRP3_API.events.listenToEvent = listenToEvent;
-
-TRP3_API.events.listenToEvents = function(events, handler)
-	assert(events and type(events) == "table", "Events must be a table.");
+function Events.listenToEvents(events, handler)
+	assert(isType(events, "table", "events"));
+	assert(isType(handler, "function", "handler"));
 	for _, event in pairs(events) do
-		listenToEvent(event, handler);
+		Events.ListenToEvent(event, handler);
 	end
 end
 
-TRP3_API.events.fireEvent = function(event, ...)
-	assert(event, "Event must be set.");
-	assert(REGISTERED_EVENTS[event], "Unknown event: " .. tostring(event));
-	for _, handler in pairs(REGISTERED_EVENTS[event]) do
-		handler(...);
-	end
+function Events.fireEvent(event, ...)
+	assert(isType(event, "string", "event"));
+	eventsDispatcher:TriggerEvent(event, ...);
 end
+
+TRP3_API.Events = Events;
+TRP3_API.events = Events;
