@@ -157,6 +157,7 @@ function TRP3_API.slash.rollDices(...)
 	end
 	Utils.message.displayMessage(totalMessage, 3);
 	TRP3_API.ui.misc.playSoundKit(36629, "SFX");
+	Events.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
 
 	return total, i;
 end
