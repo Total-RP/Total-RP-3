@@ -521,7 +521,7 @@ local tsize = Utils.table.size;
 -- Unbound character from missing profiles
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
-		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
+		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link or not profiles[character.profileID].link[unitID]) then
 			character.profileID = nil;
 		end
 	end
@@ -559,6 +559,16 @@ local function cleanupPlayerRelations()
 end
 
 local function cleanupProfiles()
+
+	-- Make sure profiles are always correctly formatted
+	if not TRP3_Register and TRP3_Register.profiles then
+		for _, profile in pairs(TRP3_Register.profiles) do
+			if not profile.link then
+				profile.link = {};
+			end
+		end
+	end
+
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
