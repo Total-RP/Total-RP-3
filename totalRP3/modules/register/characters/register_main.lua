@@ -561,7 +561,7 @@ end
 local function cleanupProfiles()
 
 	-- Make sure profiles are always correctly formatted
-	if not TRP3_Register and TRP3_Register.profiles then
+	if TRP3_Register and TRP3_Register.profiles then
 		for _, profile in pairs(TRP3_Register.profiles) do
 			if not profile.link then
 				profile.link = {};
