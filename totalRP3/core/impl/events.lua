@@ -92,6 +92,11 @@ function Events.registerEvent(event)
 	log:Warning("DEPRECATED: Registering events is not longer required with the new events system.");
 end
 
+function Events.unregisterCallback(handlerID)
+	assert(isType(handlerID, "string", "handlerID"));
+	return eventsDispatcher:UnregisterCallback(handlerID);
+end
+
 function Events.registerCallback(event, handler, handlerID)
 	assert(isType(event, "string", "event"));
 	assert(isType(handler, "function", "handler"));
