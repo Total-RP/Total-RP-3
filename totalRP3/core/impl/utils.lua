@@ -980,11 +980,11 @@ end
 -- Handles WOW events
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerHandler;
+Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerCallback;
 
-Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterHandler;
+Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterCallback;
 
-Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.fireEvent;
+Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.triggerEvent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS

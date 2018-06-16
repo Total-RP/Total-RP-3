@@ -90,28 +90,35 @@ local eventsDispatcher = TRP3_API.Ellyb.EventsDispatcher();
 
 function Events.registerEvent(event)
 	log:Warning("DEPRECATED: Registering events is not longer required with the new events system.");
-	assert(isType(event, "string", "event"));
-	eventsDispatcher:RegisterCallback(event)
 end
 
-function Events.listenToEvent(event, handler)
+function Events.registerCallback(event, handler, handlerID)
 	assert(isType(event, "string", "event"));
 	assert(isType(handler, "function", "handler"));
-	eventsDispatcher:RegisterCallback(event, handler);
+	return eventsDispatcher:RegisterCallback(event, handler, handlerID);
 end
 
-function Events.listenToEvents(events, handler)
+Events.listenToEvent = Events.registerCallback;
+
+function Events.registerCallbacks(events, handler)
 	assert(isType(events, "table", "events"));
 	assert(isType(handler, "function", "handler"));
-	for _, event in pairs(events) do
-		Events.ListenToEvent(event, handler);
-	end
-end
 
-function Events.fireEvent(event, ...)
+	local handlerID;
+	for _, event in pairs(events) do
+		handlerID = Events.registerCallback(events, handler, handlerID);
+	end
+
+	return handlerID;
+end
+Events.listenToEvents = Events.registerCallback;
+
+function Events.triggerEvent(event, ...)
 	assert(isType(event, "string", "event"));
 	eventsDispatcher:TriggerEvent(event, ...);
 end
+
+Events.fireEvent = Events.triggerEvent;
 
 TRP3_API.Events = Events;
 TRP3_API.events = Events;
