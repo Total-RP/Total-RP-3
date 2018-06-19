@@ -3,6 +3,7 @@
 ## Fixed
 
 - Improvements to the realm name fixes.
+- Fixed possible issues with profile that were imported from chat links
 
 # Changelog for version 1.3.5.2
 

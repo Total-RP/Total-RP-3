@@ -1203,6 +1203,7 @@ People will be able to copy and use the content of the link.]],
 ## Fixed
 
 - Improvements to the realm name fixes.
+- Fixed possible issues with profile that were imported from chat links
 ]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
