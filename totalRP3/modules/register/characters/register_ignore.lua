@@ -29,7 +29,7 @@ local getProfile, getUnitID, deleteProfile = TRP3_API.register.getProfile, TRP3_
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local getCompleteName, getPlayerCompleteName;
-local profiles, characters, blackList, whiteList;
+local profiles, characters, blackList, whiteList = {}, {}, {}, {};
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation

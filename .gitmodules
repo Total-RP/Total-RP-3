@@ -7,3 +7,6 @@
 [submodule "totalRP3/libs/LibRealmInfo"]
 	path = totalRP3/libs/LibRealmInfo
 	url = https://github.com/phanx-wow/LibRealmInfo
+[submodule "totalRP3/libs/LibMSP"]
+	path = totalRP3/libs/LibMSP
+	url = https://github.com/Ellypse/LibMSP

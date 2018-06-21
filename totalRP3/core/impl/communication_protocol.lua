@@ -30,7 +30,7 @@ TRP3_API.communication = Communication;
 local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
 local tostring, pairs, assert, string, wipe, tinsert, type, math = tostring, pairs, assert, string, wipe, tinsert, type, math;
 local tconcat = table.concat;
-local ChatThrottleLib = ChatThrottleLib;
+local ChatThrottleLib = ChatThrottleLibMSP;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
 local isIDIgnored;
