@@ -387,7 +387,7 @@ local function onStart()
 		if targetID and targetMode == TYPE_CHARACTER
 		and targetID ~= Globals.player_id
 		and not isIgnored(targetID)
-		and (not data or data.VA:sub(1, 8) ~= "TotalRP3")
+		and (not data or not data.VA or data.VA:sub(1, 8) ~= "TotalRP3")
 		then
 			local request = {};
 			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
