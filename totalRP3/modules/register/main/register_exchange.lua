@@ -21,7 +21,7 @@
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
-local Comm = TRP3_API.communication;
+local Comm = TRP3_API.Communication;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
@@ -415,6 +415,7 @@ local ALERT_FOR_SIZE = 20;
 local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
+	print("Profile size", computedSize);
 	if computedSize > ALERT_FOR_SIZE then
 		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 		if getConfigValue("heavy_profile_alert") then

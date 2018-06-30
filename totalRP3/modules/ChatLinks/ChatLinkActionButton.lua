@@ -51,17 +51,17 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 	_private[self].answerCommand = answerCommand;
 
 	-- Register to answer questions
-	TRP3_API.communication.registerProtocolPrefix(questionCommand, function(linkData, sender)
+	TRP3_API.Communication.registerProtocolPrefix(questionCommand, function(linkData, sender)
 		-- Previous versions of the chat links system were sending the link ID directly, as a string.
 		-- We need to handle this for backward compatibility and
 		if type(linkData) == "string" then
 			linkData = { linkID = linkData };
 		end
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
-		TRP3_API.communication.sendObject(answerCommand, link:GetData(), sender, "BULK", linkData.messageID);
+		TRP3_API.Communication.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageID);
 	end);
 
-	TRP3_API.communication.registerProtocolPrefix(answerCommand, function(data, sender)
+	TRP3_API.Communication.registerProtocolPrefix(answerCommand, function(data, sender)
 		self:OnAnswerCommandReceived(data, sender)
 	end)
 end
@@ -109,7 +109,7 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		end);
 
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
-		TRP3_API.communication.sendObject(_private[self].questionCommand, {
+		TRP3_API.Communication.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
 			messageID = reservedMessageID,
 		}, sender);

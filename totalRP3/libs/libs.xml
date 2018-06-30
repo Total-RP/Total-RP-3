@@ -33,9 +33,15 @@
 	<!-- Ellyb: shared library between our own projects -->
 	<Include file="Ellyb\Ellyb.xml" />
 
+	<!-- Chomp https://github.com/Itarater/Chomp -->
+	<Include file="Chomp\Chomp.xml" />
+
 	<!-- LibMSP: Newer version of the LibMSP, from https://github.com/Ellypse/LibMSP -->
 	<!-- This version has its own implementation of the ChatThrottleLib -->
 	<Script file="LibMSP\ChatThrottleLib.lua" />
 	<Script file="LibMSP\LibMSP.lua" />
+
+	<!-- LibDeflate https://github.com/SafeteeWoW/LibDeflate -->
+	<Include file="LibDeflate\lib.xml" />
 	
 </Ui>

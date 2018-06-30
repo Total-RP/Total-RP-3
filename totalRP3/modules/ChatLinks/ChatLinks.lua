@@ -235,7 +235,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				local playerName = linkContent:sub(1, separatorIndex - 1);
 				local itemName = linkContent:sub(separatorIndex + 1);
 
-				TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
 				TRP3_RefTooltip.itemName = itemName;
 				-- TODO Localization and better UI feedback
@@ -258,14 +258,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+	TRP3_API.Communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+		print("Being asked for link data", identifier);
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
-			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
+			TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
 		end
 
-		TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
+		TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
 			itemName = link:GetIdentifier(), -- Item name is sent back so the recipient knows what we are answering to
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
@@ -278,7 +279,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end);
 
 	-- Register command prefix when received tooltip data
-	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+	TRP3_API.Communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
 		if itemData == UNKNOWN_LINK then
 			showTooltip({
 				tooltipLines = {

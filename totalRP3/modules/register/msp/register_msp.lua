@@ -49,7 +49,7 @@ local function onStart()
 	-- This is a huge modification of Etarna's LibMSP
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp.msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
+	-- msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
 
 	-- Hook MSP's msp_onevent to check if the player is ignored before accepting incoming messages
 	local oldMspOnEvent = msp_onevent;
