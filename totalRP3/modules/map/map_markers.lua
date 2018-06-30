@@ -49,12 +49,9 @@ local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GetPlayerMapPosition = GetPlayerMapPosition;
-local GetCurrentMapAreaID = GetCurrentMapAreaID;
-
 function TRP3_API.map.getCurrentCoordinates()
-	local mapID = GetCurrentMapAreaID();
-	local x, y = GetPlayerMapPosition("player");
+	local mapID = C_Map.GetBestMapForUnit("player");
+	local x, y = C_Map.GetPlayerMapPosition(mapID, "player"):GetXY();
 	return mapID, x, y;
 end
 
@@ -306,7 +303,7 @@ function launchScan(scanID)
 		wipe(structure.saveStructure);
 		structure.scan(structure.saveStructure);
 		if structure.scanDuration then
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			currentMapID = mapID;
 			TRP3_WorldMapButton:Disable();
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
@@ -326,7 +323,7 @@ function launchScan(scanID)
 			after(structure.scanDuration, function()
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-				if mapID == GetCurrentMapAreaID() then
+				if mapID == WorldMapFrame:GetMapID() then
 					if structure.scanComplete then
 						structure.scanComplete(structure.saveStructure);
 					end
@@ -373,7 +370,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
 	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
-	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
+	--TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
 
@@ -470,8 +467,9 @@ end);
 -- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
 -- standard tooltip description.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
-	TRP3_WorldMapButton:SetEnabled(true);
-	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
+	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
+	TRP3_WorldMapButton:SetEnabled(false);
+	TRP3_WorldMapButton.subtitle = TRP3_API.Ellyb.ColorManager.RED(loc.MAP_BUTTON_SUBTITLE_80_DISABLED);
 
-	TRP3_WorldMapButtonIcon:SetDesaturated(false);
+	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
