@@ -383,6 +383,7 @@ local function onStart()
 	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
 
 	local function requestInformation(targetID, targetMode)
+		if not targetID then return end
 		local data = msp.char[targetID].field;
 		if targetID and targetMode == TYPE_CHARACTER
 		and targetID ~= Globals.player_id
