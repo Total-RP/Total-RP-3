@@ -1220,6 +1220,7 @@ Would you like to reload the interface now?]],
 	TT_ELVUI_SKIN = "ElvUI skin",
 	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
 	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
+	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
 };
 
 -- Use Ellyb to generate the Localization system
