@@ -1404,9 +1404,14 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(self, button)
 		if button == "LeftButton" then
-			draftData.RC = {TRP3_API.map.getCurrentCoordinates()};
-			tinsert(draftData.RC, Utils.str.buildZoneText());
-			TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+			if TRP3_API.map.getCurrentCoordinates() then
+				draftData.RC = {TRP3_API.map.getCurrentCoordinates()};
+				tinsert(draftData.RC, Utils.str.buildZoneText());
+				TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+			else
+				draftData.RC = nil;
+				TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
+			end
 		else
 			draftData.RC = nil;
 			TRP3_RegisterCharact_Edit_ResidenceField:SetText("");
