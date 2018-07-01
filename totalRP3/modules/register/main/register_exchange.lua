@@ -46,6 +46,9 @@ local getConfigValue = TRP3_API.configuration.getValue;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 -- WoW imports
 local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
@@ -345,7 +348,7 @@ local function incomingInformationType(informationType, senderID)
 	end
 	if data then
 		log(("Send %s info to %s"):format(informationType, senderID));
-		Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
+		AddOn_TotalRP3.Communications.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY, nil, true);
 	end
 end
 
@@ -353,7 +356,10 @@ end
 -- Received information
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function incomingInformationTypeSent(structure, senderID)
+local function incomingInformationTypeSent(structure, senderID, channel)
+	if not channel:find("LOGGED", nil, true) or not channel:find("BATTLENET", nil, true) then
+		return -- ignore non logged profiles
+	end
 	local informationType = structure[1];
 	local data = structure[2];
 

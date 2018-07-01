@@ -21,6 +21,9 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 ---@class TRP3_ChatLinks
 --- # Chat links API
 ---
@@ -235,7 +238,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				local playerName = linkContent:sub(1, separatorIndex - 1);
 				local itemName = linkContent:sub(separatorIndex + 1);
 
-				TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
 				TRP3_RefTooltip.itemName = itemName;
 				-- TODO Localization and better UI feedback
@@ -266,7 +269,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			return
 		end
 
-		TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
+		AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
 			itemName = link:GetIdentifier(), -- Item name is sent back so the recipient knows what we are answering to
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
@@ -275,7 +278,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			size = link:GetContentSize(), -- Indicates the size of the content
 			moduleName = link:GetModuleName(), -- Module name, shown in the tooltip
 			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
-		}, sender);
+		}, sender, nil, nil, true);
 	end);
 
 	-- Register command prefix when received tooltip data
