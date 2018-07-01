@@ -51,8 +51,11 @@ local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 
 function TRP3_API.map.getCurrentCoordinates()
 	local mapID = C_Map.GetBestMapForUnit("player");
-	local x, y = C_Map.GetPlayerMapPosition(mapID, "player"):GetXY();
-	return mapID, x, y;
+	local mapVector = C_Map.GetPlayerMapPosition(mapID, "player");
+	if mapVector then
+		local x, y = mapVector:GetXY();
+		return mapID, x, y;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
