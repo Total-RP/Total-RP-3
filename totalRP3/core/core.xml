@@ -57,6 +57,7 @@
 	<Include file="ui\configuration.xml"/>
 	<Script file="impl\configuration.lua"/>
 
+	<Script file="impl\Compression.lua"/>
 	<Script file="impl\CommunicationProtocol.lua"/>
 	<Script file="impl\communication_protocol_broadcast.lua"/>
 	
