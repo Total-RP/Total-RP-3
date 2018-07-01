@@ -40,7 +40,7 @@ function Compression.compress(data, willBeSentViaAddOnChannel)
 	local compressedData = LibDeflate:CompressDeflate(data);
 
 	if willBeSentViaAddOnChannel then
-		compressedData = LibDeflate:EncodeForWoWAddonChannel(compressedData);
+		compressedData = LibDeflate:EncodeForWoWChatChannel(compressedData);
 	end
 
 	return compressedData;
@@ -50,7 +50,13 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 	assert(isType(compressedData, "string", "data"));
 
 	if wasReceivedViaAddOnChannel then
-		compressedData = LibDeflate:DecodeForWoWAddonChannel(compressedData);
+		local decodedCompressedData = LibDeflate:DecodeForWoWChatChannel(compressedData);
+		-- TODO Clean that up, instead of just returning the passed data
+		if not decodedCompressedData then
+			return compressedData;
+		else
+			compressedData = decodedCompressedData;
+		end
 	end
 
 	local decompressedData, status = LibDeflate:DecompressDeflate(compressedData);
