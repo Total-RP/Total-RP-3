@@ -33,7 +33,7 @@
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="24"/>
+			<EdgeSize val="16"/>
 		</Backdrop>
 		<Layers>
 			<Layer level="BACKGROUND">
