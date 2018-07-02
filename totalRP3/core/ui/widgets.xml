@@ -350,7 +350,7 @@
 	</EditBox>
 
 	<!-- Checkbox with small label and TT compatible -->
-	<CheckButton name="TRP3_CheckBox" inherits="OptionsCheckButtonTemplate" virtual="true" checked="false">
+	<CheckButton name="TRP3_CheckBox" inherits="InterfaceOptionsCheckButtonTemplate" virtual="true" checked="false">
 		<Scripts>
 			<OnLoad>
 				self.Text = _G[self:GetName() .. "Text"];
