@@ -50,7 +50,7 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- WoW imports
-local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
+local UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
 
@@ -357,7 +357,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function incomingInformationTypeSent(structure, senderID, channel)
-	if not channel:find("LOGGED", nil, true) or not channel:find("BATTLENET", nil, true) then
+	if not channel:find("LOGGED", nil, true) and not channel:find("BATTLENET", nil, true) then
 		return -- ignore non logged profiles
 	end
 	local informationType = structure[1];
@@ -393,21 +393,19 @@ end
 local companionIDToInfo = Utils.str.companionIDToInfo;
 
 local function onMouseOverCharacter(unitID)
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") then
-		sendQuery(unitID);
-	end
+	sendQuery(unitID);
 end
 
 local function onMouseOverCompanion(companionFullID)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and isUnitIDKnown(ownerID) then
+	if isUnitIDKnown(ownerID) then
 		sendQuery(ownerID);
 	end
 end
 
 local function onTargetChanged()
 	local unitID = Utils.str.getUnitID("target");
-	if UnitIsPlayer("target") and UnitFactionGroup("player") == UnitFactionGroup("target") then
+	if UnitIsPlayer("target") then
 		sendQuery(unitID);
 	end
 end
@@ -421,7 +419,6 @@ local ALERT_FOR_SIZE = 20;
 local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
-	print("Profile size", computedSize);
 	if computedSize > ALERT_FOR_SIZE then
 		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
 		if getConfigValue("heavy_profile_alert") then

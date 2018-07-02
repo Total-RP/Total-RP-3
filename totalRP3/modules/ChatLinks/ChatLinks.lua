@@ -262,7 +262,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	-- Register command prefix when requested for tooltip data for an item
 	TRP3_API.Communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
-		print("Being asked for link data", identifier);
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
 			TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
