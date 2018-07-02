@@ -149,6 +149,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		title = loc.CO_CURSOR_DISABLE_OOC,
 		help = loc.CO_CURSOR_DISABLE_OOC_TT,
 		configKey = CONFIG_RIGHT_CLICK_DISABLE_OOC,
+		dependentOnOptions = { CONFIG_RIGHT_CLICK_OPEN_PROFILE },
 	});
 
 	-- Modifier key dropdown option
