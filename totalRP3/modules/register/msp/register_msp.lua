@@ -49,7 +49,7 @@ local function onStart()
 	-- This is a huge modification of Etarna's LibMSP
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp.msp_RPAddOn = "Total RP 3";
-	-- msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
+	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
 
 	-- Hook MSP's msp_onevent to check if the player is ignored before accepting incoming messages
 	local oldMspOnEvent = msp_onevent;
@@ -224,6 +224,7 @@ local function onStart()
 	end
 
 	tinsert( msp.callback.received, function (senderID)
+		print("msp.callback.received", senderID)
 		local data = msp.char[senderID].field;
 		if data and not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
 			local profile, character = getProfileForSender(senderID);
@@ -426,13 +427,6 @@ local function onStart()
 	msp.my['GC'] = Globals.player_character.class;
 	msp.my['GR'] = Globals.player_character.race;
 	msp.my['GF'] = Globals.player_character.faction;
-
-	-- MSP versions handling
-	local character = getPlayerCharacter();
-	if not character.mspver then
-		character.mspver = {};
-	end
-	msp.myver = character.mspver;
 
 	-- Init others vernum
 	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
