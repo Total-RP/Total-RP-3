@@ -224,7 +224,6 @@ local function onStart()
 	end
 
 	tinsert( msp.callback.received, function (senderID)
-		print("msp.callback.received", senderID)
 		local data = msp.char[senderID].field;
 		if data and not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
 			local profile, character = getProfileForSender(senderID);
