@@ -25,7 +25,7 @@ local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
 local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, string, pairs, strsplit, assert, tinsert, type, tostring;
 local time = time;
-local ChatThrottleLib = ChatThrottleLibMSP;
+local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
@@ -83,7 +83,7 @@ local function broadcast(command, ...)
 	end
 	if message:len() < 254 then
 		local channelName = GetChannelName(config_BroadcastChannel());
-		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", channelName);
+		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
@@ -145,7 +145,7 @@ local function sendP2PMessage(target, command, ...)
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
 	if message:len() < 254 then
-		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "WHISPER", target);
+		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a P2P message with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
