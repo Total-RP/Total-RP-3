@@ -1167,6 +1167,14 @@ People will be able to copy and use the content of the link.]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
 	CL_SENDING_COMMAND = "Sending command…",
+	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
+
+Would you like to reload the interface now?]],
+	CL_TOOLTIP = "Create a chat link",
+	TT_ELVUI_SKIN = "ElvUI skin",
+	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
+	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
+	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
 
 	---@language Markdown
 	WHATS_NEW_20 = [[
@@ -1201,15 +1209,6 @@ A new minimap icon also replaces the older one and showcases a classic D&D die.
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
-
-	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
-
-Would you like to reload the interface now?]],
-	CL_TOOLTIP = "Create a chat link",
-	TT_ELVUI_SKIN = "ElvUI skin",
-	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
-	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
-	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
 };
 
 -- Use Ellyb to generate the Localization system
