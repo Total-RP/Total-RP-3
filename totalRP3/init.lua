@@ -21,6 +21,15 @@
 ---@class TRP3_API
 local addOnName, TRP3_API = ...;
 
+local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo()
+
+if interfaceVersionNumber < 80000 then
+	error(([[This version of Total RP 3 only supports patch 8.0 Battle for Azeroth, but you are running patch %s.
+
+Please downgrade to the latest version available for this patch.
+If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha.]]):format(displayBuild))
+end
+
 -- Global informations
 -- Note: This table will be overwritten in totalRP3/core/impl/globals.lua
 -- It is here only so that DEBUG_MODE is available from the start
