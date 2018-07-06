@@ -52,7 +52,7 @@ TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);
 --[===[@non-debug@
 
 -- Debug mode is disabled when the add-on has been packaged by Curse
-TRP3_API.Ellyb.DEBUG_MODE = false;
+TRP3_API.Ellyb.SetDebugMode(false)
 
 --@end-non-debug@]===]
 
