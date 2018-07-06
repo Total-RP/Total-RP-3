@@ -66,9 +66,7 @@ local function loadingSequence()
 	-- Welcome \o/
 	MAIN_SEQUENCE_DETAIL = "Welcome message";
 	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
-	
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.init";
-	TRP3_API.communication.init();
+
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.broadcast.init";
 	TRP3_API.communication.broadcast.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";

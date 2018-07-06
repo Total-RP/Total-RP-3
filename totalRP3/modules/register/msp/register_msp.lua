@@ -427,13 +427,6 @@ local function onStart()
 	msp.my['GR'] = Globals.player_character.race;
 	msp.my['GF'] = Globals.player_character.faction;
 
-	-- MSP versions handling
-	local character = getPlayerCharacter();
-	if not character.mspver then
-		character.mspver = {};
-	end
-	msp.myver = character.mspver;
-
 	-- Init others vernum
 	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
 		if profile.msp and profile.mspver and profile.link then
