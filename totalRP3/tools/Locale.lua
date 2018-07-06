@@ -1164,52 +1164,38 @@ If you are planning on copying the text below inside a document, please use simp
 People will be able to copy and use the content of the link.]],
 	CL_MAKE_IMPORTABLE_BUTTON_TEXT = "Make importable",
 	CL_MAKE_NON_IMPORTABLE = "Viewable only",
-
-	---@language Markdown
-	WHATS_NEW_19 = [[
-# Changelog for version 1.3.5
-
-## Fixed
-
-- Fixed issue when trying to get realm name introduced with the latest maintenance.
-- Fixed an error that would prevent the add-on from having access to the game's tooltip when using friendly nameplates in dungeons.
-- Fixed an issue with the WIM custom chat module when the option to disable chat features when Out Of Character was enabled.
-- Fixed an issue that would make the tooltip flicker briefly when using the option to position the tooltip on the cursor.
-
-## Added
-
-- Added custom chat module for ElvUI (now required as they are no longer using standard functions to get player names).
-- Added custom skinning module for ElvUI, to apply ElvUI's theme to the tooltip and target frame (can be disabled in the new ElvUI settings tab).
-
-]],
-
-	---@language Markdown
-	WHATS_NEW_19_1 = [[
-# Changelog for version 1.3.5.1
-
-## Fixed
-
-- Removed the workaround for the realm name issue introduced in yesterday's maintenance as it was causing multiple issues in other parts of the add-on. We are now using LibRealmInfo instead, which is more stable.
-]],
-	---@language Markdown
-	WHATS_NEW_19_2 = [[
-# Changelog for version 1.3.5.2
-
-## Fixed
-
-- More fixes for the realm name issue. Sorry about that. Again.
-]],
-	---@language Markdown
-	WHATS_NEW_19_3 = [[
-# Changelog for version 1.3.5.3
-
-## Fixed
-
-- Improvements to the realm name fixes.
-]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
 	CL_SENDING_COMMAND = "Sending command…",
+
+	---@language Markdown
+	WHATS_NEW_20 = [[
+# Changelog for version 1.4
+
+|cffff8000This version requires Battle for Azeroth, patch 8.0.1.|r
+
+## Add-on communications improvement
+
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - |cffff8000Profiles are now logged on Blizzard's servers|r when sent to other players. This is so Blizzard can see what's the content of people's RP profile in case of report of abuses, like target harassment or doxxing. |rThis means that you should now treat what you put in your profile as if you were witting that content in /say |cffaaaaaa(Goldshire)|r.
+ - |cffff8000Cross server and cross faction support with Battle.net friends:|r the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - |cffff8000Improved performances:|r thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
+
+|cffaaaaaaIt was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol.|r
+
+## New logos
+{img:Interface\AddOns\totalRP3\resources\trp3logo.blp:128:64}
+Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
+
+A new minimap icon also replaces the older one and showcases a classic D&D die.
+{img:Interface\AddOns\totalRP3\resources\trp3minimap.tga:25:25}
+
+## Other modifications
+
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.
+]],
 
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
