@@ -144,7 +144,16 @@ local function onStart()
 			x = x + buttonSize + 2;
 		end
 
+		local oldWidth = ui_TargetFrame:GetWidth();
 		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
+		-- Updating anchors so the toolbar expands from the center
+		local anchor, _, _, tfX, tfY = ui_TargetFrame:GetPoint();
+		if anchor == "LEFT" then
+			tfX = tfX - (ui_TargetFrame:GetWidth() - oldWidth) / 2;
+		elseif anchor == "RIGHT" then
+			tfX = tfX + (ui_TargetFrame:GetWidth() - oldWidth) / 2;
+		end
+		ui_TargetFrame:SetPoint(anchor, tfX, tfY);
 		ui_TargetFrame:SetHeight(buttonSize + 23);
 	end
 
@@ -275,7 +284,8 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_Y, y);
 	end);
 
-	ui_TargetFrame.caption:SetPoint("TOPLEFT", 16, 15);
+	ui_TargetFrame.caption:ClearAllPoints();
+	ui_TargetFrame.caption:SetPoint("TOP", 0, 15);
 	ui_TargetFrame.caption:EnableMouse(true);
 	ui_TargetFrame.caption:RegisterForDrag("LeftButton");
 	ui_TargetFrame.caption:SetScript("OnDragStart", function(self)
