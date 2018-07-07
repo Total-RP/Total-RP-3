@@ -731,17 +731,17 @@ local function onStart()
 		local parentScale = UIParent:GetEffectiveScale();
 		ui_GlanceBar:SetParent(parentFrame);
 		ui_GlanceBar:ClearAllPoints();
-		ui_GlanceBar:SetPoint("BOTTOMLEFT", parentFrame, "BOTTOMLEFT", getConfigValue(CONFIG_GLANCE_ANCHOR_X) / parentScale, getConfigValue(CONFIG_GLANCE_ANCHOR_Y) / parentScale);
+		ui_GlanceBar:SetPoint("BOTTOM", parentFrame, "BOTTOM", getConfigValue(CONFIG_GLANCE_ANCHOR_X) / parentScale, getConfigValue(CONFIG_GLANCE_ANCHOR_Y) / parentScale);
 	end
 
 	local function resetPosition()
 		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
 		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
 		replaceBar();
 	end
 
-	-- Function called when the minimap icon is dragged
+	-- Function called when the glance bar is dragged
 	local function glanceBar_DraggingFrame_OnUpdate(self)
 		if not getConfigValue(CONFIG_GLANCE_LOCK) and self.isDraging then
 			local parentFrame = getParentFrame();
@@ -761,7 +761,7 @@ local function onStart()
 	end
 
 	registerConfigKey(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 24);
+	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 0);
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_Y, -14);
 	registerConfigKey(CONFIG_GLANCE_LOCK, true);
 	registerConfigKey(CONFIG_GLANCE_TT_ANCHOR, "LEFT");
@@ -772,7 +772,7 @@ local function onStart()
 
 	function TRP3_API.register.resetGlanceBar()
 		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
 		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
 	end
 
@@ -820,7 +820,7 @@ local function onStart()
 				help = loc.CO_GLANCE_PRESET_TRP3_HELP,
 				callback = function()
 					setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-					setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+					setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
 					setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
 					replaceBar();
 				end,
