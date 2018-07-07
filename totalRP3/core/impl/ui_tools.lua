@@ -192,7 +192,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	);
 	dropDownFrame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
-	TRP3_API.ui.misc.playUISound("igMainMenuOptionCheckBoxOn");
+	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	currentlyOpenedDrop = anchoredFrame;
 end
 TRP3_API.ui.listbox.displayDropDown = openDropDown;
@@ -389,7 +389,7 @@ end
 
 TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE = "CONFIG_TOOLTIP_SIZE";
 local CONFIG_TOOLTIP_SIZE = TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE;
-local getConfigValue;
+local getConfigValue = function() end;
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.configuration.registerConfigKey(TRP3_API.ui.tooltip.CONFIG_TOOLTIP_SIZE, 11);
@@ -947,29 +947,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local PlaySoundFile = PlaySoundFile;
---- Patch 7.3 compatibility preparation
 local PlaySound = PlaySound;
-
-if select(4, GetBuildInfo()) == 70300 then
-	-- 7.3 uses IDs instead of sound strings. This table is mapping the IDs we need to use instead
-	local FILE_IDS_TO_OLD_PATHS = {
-		["QUESTLOGOPEN"] = 844, -- SOUNDKIT.IG_QUEST_LOG_OPEN
-		["QUESTLOGCLOSE"] = 845, -- SOUNDKIT.IG_QUEST_LOG_CLOSE
-		["igMainMenuOptionCheckBoxOn"] = 856, -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
-		["gsCharacterSelection"] = 856, -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON (this one no longer exists)
-		["igCharacterInfoTab"] = 841, -- SOUNDKIT.IG_CHARACTER_INFO_TAB (this one no longer exists)
-		["UChatScrollButton"] = 1115, -- SOUNDKIT.U_CHAT_SCROLL_BUTTON
-		["AchievementMenuClose"] = 13833, -- SOUNDKIT.ACHIEVEMENT_MENU_CLOSE
-		["AchievementMenuOpen"] = 13832, -- SOUNDKIT.ACHIEVEMENT_MENU_OPEN
-		["GAMEDIALOGCLOSE"] = 850, -- SOUNDKIT.IG_MAINMENU_OPEN
-		["GAMEDIALOGOPEN"] = 851, -- SOUNDKIT.IG_MAINMENU_CLOSE
-	}
-
-	local oldPlaySound = PlaySound;
-	PlaySound = function(sound)
-		oldPlaySound(FILE_IDS_TO_OLD_PATHS[sound] or sound);
-	end
-end
 
 function TRP3_API.ui.misc.playUISound(pathToSound, url)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then

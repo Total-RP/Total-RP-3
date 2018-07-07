@@ -19,6 +19,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 TRP3_API.map = {};
 
@@ -49,13 +51,13 @@ local TRP3_ScanLoaderFrame = TRP3_ScanLoaderFrame;
 -- Utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GetPlayerMapPosition = GetPlayerMapPosition;
-local GetCurrentMapAreaID = GetCurrentMapAreaID;
-
 function TRP3_API.map.getCurrentCoordinates()
-	local mapID = GetCurrentMapAreaID();
-	local x, y = GetPlayerMapPosition("player");
-	return mapID, x, y;
+	local mapID = C_Map.GetBestMapForUnit("player");
+	local mapVector = C_Map.GetPlayerMapPosition(mapID, "player");
+	if mapVector then
+		local x, y = mapVector:GetXY();
+		return mapID, x, y;
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -285,13 +287,13 @@ local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
 	SCAN_STRUCTURES[structure.id] = structure;
 	if structure.scanResponder and structure.scanCommand then
-		Comm.broadcast.registerCommand(structure.scanCommand, structure.scanResponder);
+		AddOn_TotalRP3.Communications.broadcast.registerCommand(structure.scanCommand, structure.scanResponder);
 	end
 	if not structure.saveStructure then
 		structure.saveStructure = {};
 	end
 	if structure.scanAssembler and structure.scanCommand then
-		Comm.broadcast.registerP2PCommand(structure.scanCommand, function(...)
+		AddOn_TotalRP3.Communications.broadcast.registerP2PCommand(structure.scanCommand, function(...)
 			structure.scanAssembler(structure.saveStructure, ...);
 		end)
 	end
@@ -306,7 +308,7 @@ function launchScan(scanID)
 		wipe(structure.saveStructure);
 		structure.scan(structure.saveStructure);
 		if structure.scanDuration then
-			local mapID = GetCurrentMapAreaID();
+			local mapID = WorldMapFrame:GetMapID();
 			currentMapID = mapID;
 			TRP3_WorldMapButton:Disable();
 			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
@@ -326,7 +328,7 @@ function launchScan(scanID)
 			after(structure.scanDuration, function()
 				TRP3_WorldMapButton:Enable();
 				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-				if mapID == GetCurrentMapAreaID() then
+				if mapID == WorldMapFrame:GetMapID() then
 					if structure.scanComplete then
 						structure.scanComplete(structure.saveStructure);
 					end
@@ -369,29 +371,22 @@ local function onButtonClicked(self)
 	displayDropDown(self, structure, launchScan, 0, true);
 end
 
-local function onWorldMapUpdate()
-	local mapID = GetCurrentMapAreaID();
-	if currentMapID ~= mapID then
-		currentMapID = mapID;
-		hideAllMarkers();
-	end
-end
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
 	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
 	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
-	TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);
+	--TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
+
+	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.BorderFrame);
+	TRP3_ScanLoaderFrame:SetPoint("CENTER", WorldMapFrame.ScrollContainer, "CENTER");
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
 		self.refreshTimer = 0;
 	end);
 	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
 		self.refreshTimer = self.refreshTimer + elapsed;
 	end);
-
-	Utils.event.registerHandler("WORLD_MAP_UPDATE", onWorldMapUpdate);
 end);
 
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
@@ -404,8 +399,7 @@ local function placeMapButton(position)
 	---@type Frame
 	local worldMapButton = TRP3_WorldMapButton;
 
-	worldMapButton:SetParent(WorldMapFrame.UIElementsFrame);
-	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.UIElementsFrame)
+	worldMapButton:SetParent(WorldMapFrame.BorderFrame);
 	worldMapButton:ClearAllPoints();
 
 	local xPadding = 10;
@@ -421,7 +415,7 @@ local function placeMapButton(position)
 		yPadding = 40;
 	end
 
-	worldMapButton:SetPoint(position, WorldMapFrame.UIElementsFrame, position, xPadding, yPadding);
+	worldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 
 	setConfigValue(CONFIG_MAP_BUTTON_POSITION, position);
 end
@@ -478,8 +472,9 @@ end);
 -- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
 -- standard tooltip description.
 TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
-	TRP3_WorldMapButton:SetEnabled(true);
-	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
+	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
+	TRP3_WorldMapButton:SetEnabled(false);
+	TRP3_WorldMapButton.subtitle = TRP3_API.Ellyb.ColorManager.RED(loc.MAP_BUTTON_SUBTITLE_80_DISABLED);
 
-	TRP3_WorldMapButtonIcon:SetDesaturated(false);
+	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);

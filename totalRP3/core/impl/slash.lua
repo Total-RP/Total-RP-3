@@ -1,24 +1,26 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Slash commands
--- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.apache.org/licenses/LICENSE-2.0
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
+--- Total RP 3
+--- Slash commands
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 local loc = TRP3_API.loc;
 local displayMessage = TRP3_API.utils.message.displayMessage;
@@ -99,12 +101,12 @@ end
 
 local function sendDiceRoll(args)
 	if isTargetValidForDiceRoll() then
-		TRP3_API.communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
+		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
 	end
 	if IsInRaid() then
-		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "RAID");
+		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, "RAID");
 	elseif IsInGroup() then
-		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "PARTY");
+		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, "PARTY");
 	end
 end
 
@@ -157,7 +159,7 @@ function TRP3_API.slash.rollDices(...)
 	end
 	Utils.message.displayMessage(totalMessage, 3);
 	TRP3_API.ui.misc.playSoundKit(36629, "SFX");
-	Utils.event.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
+	Events.fireEvent("TRP3_ROLL", strjoin(" ", unpack(args)), total);
 
 	return total, i;
 end
@@ -175,7 +177,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		end
 	});
 
-	TRP3_API.communication.registerProtocolPrefix(DICE_SIGNAL, function(arg, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(DICE_SIGNAL, function(arg, sender)
 		if sender ~= Globals.player_id then
 			if type(arg) == "table" then
 				if arg.c and arg.d and arg.t then

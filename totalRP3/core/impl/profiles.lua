@@ -196,6 +196,7 @@ local function decorateProfileList(widget, index)
 
 	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or Globals.icons.profile_default);
 	_G[widget:GetName().."Name"]:SetText(mainText);
+	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText);
 
 	local listText = "";
 	local i = 0;
@@ -443,23 +444,30 @@ function TRP3_API.profile.init()
 					onProfileSelected(widget);
 					playAnimation(_G[self:GetName() .. "HighlightAnimate"]);
 					playAnimation(_G[self:GetName() .. "Animate"]);
-					playUISound("gsCharacterSelection");
+					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 				end
 				
 			end
 		end);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
 		_G[widget:GetName().."Current"]:SetText(loc.PR_PROFILEMANAGER_CURRENT);
-		setTooltipAll(_G[widget:GetName().."Action"], "TOP", 0, 0, loc.PR_PROFILEMANAGER_ACTIONS);
 		table.insert(widgetTab, widget);
 
+		Ellyb.Tooltips.getTooltip(_G[widget:GetName().."Action"])
+			:SetAnchor(Ellyb.Tooltips.ANCHORS.TOP)
+			:SetTitle(loc.PR_PROFILEMANAGER_ACTIONS);
+
 		-- Display indications in the tooltip on how to create a chat link
-		Ellyb.Tooltips.getTooltip(widget):AddLine(
+		Ellyb.Tooltips.getTooltip(widget)
+			:AddLine(
+				Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN)
+			)
+			:AddLine(
 				Ellyb.Strings.clickInstruction(
 						Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
 						loc.CL_TOOLTIP
 				)
-		)
+			);
 
 	end
 	TRP3_ProfileManagerList.widgetTab = widgetTab;

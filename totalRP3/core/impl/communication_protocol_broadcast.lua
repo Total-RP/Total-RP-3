@@ -1,35 +1,41 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Broadcast communication system
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Broadcast communication system
+---	---------------------------------------------------------------------------
+---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---
+---	Licensed under the Apache License, Version 2.0 (the "License");
+---	you may not use this file except in compliance with the License.
+---	You may obtain a copy of the License at
+---
+---		http://www.apache.org/licenses/LICENSE-2.0
+---
+---	Unless required by applicable law or agreed to in writing, software
+---	distributed under the License is distributed on an "AS IS" BASIS,
+---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+---	See the License for the specific language governing permissions and
+---	limitations under the License.
 ----------------------------------------------------------------------------------
+
+---@type TRP3_API
+local _, TRP3_API = ...;
+local Ellyb = Ellyb(_);
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- imports
 local GetChannelRosterInfo = GetChannelRosterInfo;
 local GetChannelDisplayInfo = GetChannelDisplayInfo;
 local GetChannelName = GetChannelName;
 local JoinChannelByName = JoinChannelByName;
-local RegisterAddonMessagePrefix = RegisterAddonMessagePrefix;
+local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
 local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, string, pairs, strsplit, assert, tinsert, type, tostring;
 local time = time;
-local ChatThrottleLib = ChatThrottleLib;
+local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Log = Utils.log;
-local Comm, isIDIgnored = TRP3_API.communication, nil;
+local Comm, isIDIgnored = AddOn_TotalRP3.Communications, nil;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local getConfigValue = TRP3_API.configuration.getValue;
 local loc = TRP3_API.loc;
@@ -83,7 +89,7 @@ local function broadcast(command, ...)
 	end
 	if message:len() < 254 then
 		local channelName = GetChannelName(config_BroadcastChannel());
-		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "CHANNEL", channelName);
+		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
@@ -145,7 +151,7 @@ local function sendP2PMessage(target, command, ...)
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
 	if message:len() < 254 then
-		ChatThrottleLib:SendAddonMessage("NORMAL", BROADCAST_HEADER, message, "WHISPER", target);
+		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "WHISPER", target);
 		Comm.totalBroadcastP2P = Comm.totalBroadcastP2P + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a P2P message with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
@@ -234,9 +240,7 @@ Comm.broadcast.init = function()
 	isIDIgnored = TRP3_API.register.isIDIgnored;
 
 	-- First, register prefix
-	Utils.event.registerHandler("PLAYER_ENTERING_WORLD", function()
-		RegisterAddonMessagePrefix(BROADCAST_HEADER);
-	end);
+	RegisterAddonMessagePrefix(BROADCAST_HEADER);
 
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

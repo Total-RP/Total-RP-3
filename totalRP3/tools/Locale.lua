@@ -39,16 +39,16 @@ BINDING_HEADER_TRP3 = "Total RP 3";
 -- Complete locale declaration
 TRP3_API.loc = {
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- GENERAL
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- GENERAL
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
 	GEN_VERSION = "Version: %s (Build %s)",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- REGISTER
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- REGISTER
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	REG_PLAYER = "Character",
 	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway ?\n|cffff9900Any changes will be lost.",
 	REG_PLAYER_CARACT = "Characteristics",
@@ -177,15 +177,6 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_ABOUT_P = "Paragraph tag",
 	REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 	REG_PLAYER_ABOUT_SOME = "Some text ...",
-	REG_PLAYER_ABOUT_VOTE_UP = "I like this content",
-	REG_PLAYER_ABOUT_VOTE_DOWN = "I don't like this content",
-	REG_PLAYER_ABOUT_VOTE_TT = "Your vote is totally anonymous and can only be seen by this player.",
-	REG_PLAYER_ABOUT_VOTE_TT2 = "You can vote only if the player is online.",
-	REG_PLAYER_ABOUT_VOTE_NO = "No characters linked to this profile seem to be online.\nDo you want to force Total RP 3 to send your vote anyway ?",
-	REG_PLAYER_ABOUT_VOTE_SENDING = "Sending your vote to %s ...",
-	REG_PLAYER_ABOUT_VOTE_SENDING_OK = "Your vote has been sent to %s !",
-	REG_PLAYER_ABOUT_VOTES = "Statistics",
-	REG_PLAYER_ABOUT_VOTES_R = "|cff00ff00%s like this content\n|cffff0000%s dislike this content",
 	REG_PLAYER_ABOUT_EMPTY = "No description",
 	REG_PLAYER_STYLE_RPSTYLE_SHORT = "RP style",
 	REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
@@ -419,9 +410,9 @@ There are a lot of ways to customize the description.
 You can choose a |cffffff00background texture|r for the description. You can also use the formatting tools to access several layout parameters like |cffffff00texts sizes, colors and alignments|r.
 These tools also allow you to insert |cffffff00images, icons or links to external web sites|r.]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- CONFIGURATION
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CONFIGURATION
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CO_CONFIGURATION = "Settings",
 	CO_GENERAL = "General settings",
@@ -488,8 +479,6 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
 	CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
 	CO_REGISTER = "Register settings",
-	CO_REGISTER_ABOUT_VOTE = "Use voting system",
-	CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -631,9 +620,9 @@ Possible status:
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- TOOLBAR AND UI BUTTONS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- TOOLBAR AND UI BUTTONS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TB_TOOLBAR = "Toolbar",
 	TB_SWITCH_TOOLBAR = "Switch toolbar",
@@ -667,9 +656,9 @@ Possible status:
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- PROFILES
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- PROFILES
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PR_PROFILEMANAGER_TITLE = "Characters profiles",
 	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
@@ -757,9 +746,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
 	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DASHBOARD
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DASHBOARD
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DB_STATUS = "Status",
 	DB_STATUS_CURRENTLY_COMMON = "These statuses will be displayed on your character's tooltip. Keep it clear and brief as |cffff9900by default TRP3 players will only see the first 140 characters of them!",
@@ -788,9 +777,9 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_ABOUT = "About Total RP 3",
 	DB_MORE = "More modules",
 	DB_HTML_GOTO = "Click to open",
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMON UI TEXTS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMON UI TEXTS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	UI_BKG = "Background %s",
 	UI_ICON_BROWSER = "Icon browser",
@@ -832,9 +821,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	NPC_TALK_YELL_PATTERN = "yells:",
 	NPC_TALK_WHISPER_PATTERN = "whispers:",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMON TEXTS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMON TEXTS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CM_SHOW = "Show",
 	CM_ACTIONS = "Actions",
@@ -902,17 +891,17 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_BLACK = "Black",
 	CM_GREY = "Grey",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Minimap button
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Minimap button
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MM_SHOW_HIDE_MAIN = "Show/hide the main frame",
 	MM_SHOW_HIDE_SHORTCUT = "Show/hide the toolbar",
 	MM_SHOW_HIDE_MOVE = "Move button",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Browsers
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Browsers
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
@@ -921,9 +910,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Databroker
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Databroker
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DTBK_HELMET = "Total RP 3 - Helmet",
 	DTBK_CLOAK = "Total RP 3 - Cloak",
@@ -931,22 +920,22 @@ Total RP is not responsible for links leading to harmful content.]],
 	DTBK_RP = "Total RP 3 - IC/OOC",
 	DTBK_LANGUAGES = "Total RP 3 - Languages",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Bindings
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Bindings
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
 	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- About TRP3
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- About TRP3
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	ABOUT_TITLE = "About",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MAP
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MAP
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	MAP_BUTTON_TITLE = "Scan for roleplay",
 	MAP_BUTTON_SUBTITLE = "Click to show available scans",
@@ -957,9 +946,9 @@ Total RP is not responsible for links leading to harmful content.]],
 	MAP_SCAN_CHAR = "Scan for characters",
 	MAP_SCAN_CHAR_TITLE = "Characters",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MATURE FILTER
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MATURE FILTER
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	MATURE_FILTER_TITLE = "Mature profiles filter",
 	MATURE_FILTER_TOOLTIP_WARNING = "Mature content",
 	MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT = "This character profile contains mature content. Use the target bar action button to reveal the content if you really want to…",
@@ -1011,9 +1000,9 @@ This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- DICE ROLL
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- DICE ROLL
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
@@ -1021,9 +1010,9 @@ Are you sure you want to view this profile?]],
 	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- NPC Speeches
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- NPC Speeches
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	NPC_TALK_TITLE = "NPC speeches",
 	NPC_TALK_NAME = "NPC name",
@@ -1040,9 +1029,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	NPC_TALK_COMMAND_HELP = "Open the NPC speeches frame.",
 	NPC_TALK_BUTTON_TT = "Open the NPC speeches frame allowing you to do NPC speeches or emotes.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- MISC
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- MISC
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PATTERN_ERROR = "Error in pattern.",
 	PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
@@ -1055,9 +1044,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	BROADCAST_10 = "|cffff9900You already are in 10 channels. TRP3 won't try again to connect to the broadcast channel but you won't be able to use some features like players location on map.",
 	BROADCAST_OFFLINE_DISABLED = "Broadcast has been disabled.",
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- CHAT LINKS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- CHAT LINKS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	CL_REQUESTING_DATA = "Requesting link data from %s.",
 	CL_EXPIRED = "This link has expired.",
@@ -1073,9 +1062,9 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- COMMANDS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- COMMANDS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	COM_LIST = "List of commands:",
 	COM_SWITCH_USAGE = "Usage: |cff00ff00/trp3 switch main|r to switch main frame or |cff00ff00/trp3 switch toolbar|r to switch the toolbar.",
@@ -1116,6 +1105,9 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
 {col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon}{col:ffffff} supporters:{/col}
 %s
+
+{col:ffffff}Logo and minimap button icon:{/col}
+- {link*https://ebonfeathers.tumblr.com/*EbonFeather@Tumblr}
 
 {col:ffffff}Our pre-alpha QA team:{/col}
 %TESTERS$s
@@ -1161,55 +1153,47 @@ If you are planning on copying the text below inside a document, please use simp
 People will be able to copy and use the content of the link.]],
 	CL_MAKE_IMPORTABLE_BUTTON_TEXT = "Make importable",
 	CL_MAKE_NON_IMPORTABLE = "Viewable only",
+	CL_TOOLTIP = "Create a chat link",
+	CL_DOWNLOADING = "Downloading: %0.1f %%",
+	CL_SENDING_COMMAND = "Sending command…",
+	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
+
+Would you like to reload the interface now?]],
+	CL_TOOLTIP = "Create a chat link",
+	TT_ELVUI_SKIN = "ElvUI skin",
+	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
+	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
+	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
 
 	---@language Markdown
-	WHATS_NEW_18 = [[
-# Changelog for version 1.3.4
+	WHATS_NEW_20 = [[
+# Changelog for version 1.4
 
-## Added
+|cffff8000This version requires Battle for Azeroth, patch 8.0.1.|r
 
-- Chat links now indicate the size of the content in the tooltip.
-- Added an option in the tooltip settings to use the old OOC indicator (the red dot in the top right corner) instead of the [OOC] red text.
-- Added information text on the profile export window to warn about using advanced text editing software when copy-pasting serialized profile as they can alter the data when replacing special characters like quotes.
+## Add-on communications improvement
 
-## Modified
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - |cffff8000Profiles are now logged on Blizzard's servers|r when sent to other players. This is so Blizzard can see what's the content of people's RP profile in case of report of abuses, like target harassment or doxxing. |rThis means that you should now treat what you put in your profile as if you were witting that content in /say |cffaaaaaa(Goldshire)|r.
+ - |cffff8000Cross server and cross faction support with Battle.net friends:|r the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - |cffff8000Improved performances:|r thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
 
-- The dashboard has received under-the-hood improvements to improve localization and prepare for future features.
-- Streamlined color picker presets UI to avoid confusions. Only the presets button is now visible, bellow the color preview. The presets dropdown now gives access to saving, renaming and deleting custom presets.
-- Player personality traits now only show the value numbers when the cursor is on the bar.
-- Improved generation of chat links for better efficiency.
-- Updated list of Patreon supporters.
+|cffaaaaaaIt was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol.|r
 
-## Fixed
+## New logos
+{img:Interface\AddOns\totalRP3\resources\trp3logo.blp:128:64}
+Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
 
-- Fixed a missing option dependency for the mature filter strength slider so that it is correctly disabled when the mature filter is disable.
-- Fixed an issue with the import/export profile UI when a profile had the `~` character inside a field.
+A new minimap icon also replaces the older one and showcases a classic D&D die.
+{img:Interface\AddOns\totalRP3\resources\trp3minimap.tga:25:25}
 
+## Other modifications
+
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.
 ]],
-	---@language Markdown
-	WHATS_NEW_18_1 = [[
-# Changelog for version 1.3.4.1
 
-- Fixed a possible issues with other add-ons drop down menus.
-
-]],
-	---@language Markdown
-	WHATS_NEW_18_2 = [[
-# Changelog for version 1.3.4.2
-
-- The NPC speeches frame now closes when pressing the Escape key.
-- Updated the list of Patreon supporters in the About tab.
-
-## Chat links fixes
-
-- Fixed a Lua error that would happen when the directory is being purged of old profiles and one of them was received from a chat link, and was not properly formatted.
-- Simplified wording when creating a new chat link so that the alert is more quickly readable and the buttons actions are more obvious.
-- The technical information shown in the chat links tooltip (type of link, sender name, size) are now only shown when the Alt key is held down, so that by default links only show RP-related information.
-- The chat links tooltip title now uses the text size defined in the tooltip settings.
-- Fixed an issue where player profiles that were marked as non-importable when creating a link would still show the import button in the tooltip.
-- Fixed and improved the buttons alignment in the chat links tooltip.
-
-]],
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED

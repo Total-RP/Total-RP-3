@@ -653,12 +653,12 @@ local GetCustomColorByGUID = TRP3_API.utils.color.GetCustomColorByGUID;
 -- and use their custom colors.
 -- (It is stored in Utils as we need it in other modules like Prat or WIM)
 -- It must receive a fallback function as first parameter. It is the function it will use if we don't handle name customizations ourselves
-function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
+function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12, ...)
 
 	assert(fallback, "Trying to call TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, ...) without a fallback function!")
 
 	if disabledByOOC() then
-		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12);
+		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12, ...);
 	end
 
 	local GUID = arg12;

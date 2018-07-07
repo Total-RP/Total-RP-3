@@ -521,7 +521,7 @@ local tsize = Utils.table.size;
 -- Unbound character from missing profiles
 local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
-		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link[unitID]) then
+		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link or not profiles[character.profileID].link[unitID]) then
 			character.profileID = nil;
 		end
 	end
@@ -559,6 +559,16 @@ local function cleanupPlayerRelations()
 end
 
 local function cleanupProfiles()
+
+	-- Make sure profiles are always correctly formatted
+	if TRP3_Register and TRP3_Register.profiles then
+		for _, profile in pairs(TRP3_Register.profiles) do
+			if not profile.link then
+				profile.link = {};
+			end
+		end
+	end
+
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
@@ -720,7 +730,6 @@ function TRP3_API.register.init()
 		tutorialProvider = tutorialProvider
 	});
 
-	registerConfigKey("register_about_use_vote", true);
 	registerConfigKey("register_auto_purge_mode", 864000);
 	registerConfigKey("register_sanitization", true);
 
@@ -747,12 +756,6 @@ function TRP3_API.register.init()
 		menuText = loc.CO_REGISTER,
 		pageText = loc.CO_REGISTER,
 		elements = {
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_REGISTER_ABOUT_VOTE,
-				configKey = "register_about_use_vote",
-				help = loc.CO_REGISTER_ABOUT_VOTE_TT
-			},
 			{
 				inherit = "TRP3_ConfigDropDown",
 				widgetName = "TRP3_ConfigurationRegister_AutoPurge",
@@ -821,7 +824,7 @@ function TRP3_API.register.init()
 
 	local CHARACTER_SCAN_COMMAND = "CSCAN";
 	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
-	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
+	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, AddOn_TotalRP3.Communications.broadcast;
 	local UnitInParty = UnitInParty;
 	local Ambiguate, tContains = Ambiguate, tContains;
 	local phasedZones = {
@@ -854,9 +857,7 @@ function TRP3_API.register.init()
 		scanResponder = function(sender, zoneID)
 			if locationEnabled() and playersCanSeeEachOthers(sender) then
 				local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-				x = x or 0;
-				y = y or 0;
-				if tonumber(mapID) == tonumber(zoneID) and not (x == 0 and y == 0) then
+				if mapID and x and y and tonumber(mapID) == tonumber(zoneID) then
 					broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
 				end
 			end;

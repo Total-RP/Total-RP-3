@@ -1,11 +1,11 @@
 ------------------------------------------
 trp3logo.blp
-Resource by Quentin Charton
-http://quentincharton.fr/
+Resource by EbonFeather@Tumblr
+https://ebonfeathers.tumblr.com/
 ------------------------------------------
 
 ------------------------------------------
 trp3minimap.blp
-Resource by Quentin Charton
-http://quentincharton.fr/
+Resource by EbonFeather@Tumblr
+https://ebonfeathers.tumblr.com/
 ------------------------------------------

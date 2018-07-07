@@ -22,7 +22,9 @@
 	<Script file="HTMLContent.lua"/>
 
 	<SimpleHTML name="TRP3_DashboardHTMLContent" mixin="TRP3_DashboardHTMLContentMixin" virtual="true">
-		<FontString inherits="GameFontNormalSmall"/>
+		<FontString inherits="GameFontNormalSmall">
+			<Color r="1" g="1" b="1" />
+		</FontString>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnHyperlinkClick method="OnHyperlinkClick"/>

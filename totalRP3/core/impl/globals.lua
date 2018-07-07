@@ -22,6 +22,8 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
+local LibRealmInfo = LibStub("LibRealmInfo");
+
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
@@ -48,7 +50,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 45,
+	version = 52,
 
 	--@debug@
 	version_display = "-dev",

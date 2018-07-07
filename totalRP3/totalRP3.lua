@@ -17,8 +17,10 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type
+---@type TRP3_API
 local _, TRP3_API = ...;
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- Ellyb imports
 local COLORS = TRP3_API.Ellyb.ColorManager;
@@ -66,11 +68,9 @@ local function loadingSequence()
 	-- Welcome \o/
 	MAIN_SEQUENCE_DETAIL = "Welcome message";
 	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
-	
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.init";
-	TRP3_API.communication.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.broadcast.init";
-	TRP3_API.communication.broadcast.init();
+
+	MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
+	AddOn_TotalRP3.Communications.broadcast.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";
 	TRP3_API.profile.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.dashboard.init";
@@ -103,25 +103,40 @@ local function loadingSequence()
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 
-	LoadAddOn("Blizzard_SocialUI");
-
 	Log.log("OnEnable() DONE");
 end
 
 local MAIN_SEQUENCE_ERROR;
 -- Called upon PLAYER_LOGIN after all addons are loaded.
 function Globals.addon:OnEnable()
-	MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
-	if not Globals.DEBUG_MODE then
-		local ok, errorMessage = pcall(loadingSequence);
-		if not ok then
-			MAIN_SEQUENCE_ERROR = errorMessage;
-			TRP3_ShowErrorMessage();
-			error("Error during TRP3 loading sequence: " .. errorMessage);
+	MAIN_SEQUENCE_ID = "OnEnable"
+	MAIN_SEQUENCE_DETAIL = "Globals.addon:OnEnable"
+	local ticker;
+	ticker = C_Timer.NewTicker(0.1, function(self)
+		local _, realm = UnitFullName("player")
+
+		if realm then
+			-- We finally have realm info, we can cancel the ticket and initialize the addon.
+			ticker:Cancel()
+			MAIN_SEQUENCE_ID = "Globals.addon:OnEnable";
+			if not Globals.DEBUG_MODE then
+				local ok, errorMessage = pcall(loadingSequence);
+				if not ok then
+					MAIN_SEQUENCE_ERROR = errorMessage;
+					TRP3_ShowErrorMessage();
+					error("Error during TRP3 loading sequence: " .. errorMessage);
+				end
+			else
+				loadingSequence();
+			end
 		end
-	else
-		loadingSequence();
-	end
+
+		if ticker._remainingIterations == 1 then
+			MAIN_SEQUENCE_ERROR = "Cannot retrieve realm info from Blizzard's API. Either you are trying to use the add-on on a private server that does not implement Blizzard's functions correctly or there is an issue with the game client."
+			TRP3_ShowErrorMessage()
+			error("Error during TRP3 loading sequence: " .. MAIN_SEQUENCE_ERROR);
+		end
+	end, 25);
 end
 
 function TRP3_ShowErrorMessage()
@@ -129,4 +144,5 @@ function TRP3_ShowErrorMessage()
 	print(COLORS.ORANGE("Sequence ID: ") .. " " .. MAIN_SEQUENCE_ID);
 	print(COLORS.ORANGE("Sub-sequence ID: ") .. " " .. MAIN_SEQUENCE_DETAIL);
 	print(COLORS.ORANGE("Error message: ") .. " " .. tostring(MAIN_SEQUENCE_ERROR));
+	print(COLORS.ITEM_ARTIFACT("Note: If you just recently updated the add-on, remember that you need to fully relaunch the add-on. Updating while the game client is open will not load new files."));
 end

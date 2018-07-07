@@ -27,13 +27,4 @@
 	<Script file="totalRP3.lua"/>
 	<Include file="modules\modules.xml"/>
 
-	<Frame parent="UIParent" name="TRP3_EventFrame">
-		<Anchors>
-			<Anchor point="CENTER"/>
-		</Anchors>
-		<Scripts>
-			<OnEvent function="TRP3_EventDispatcher"/>
-		</Scripts>
-	</Frame>
-
 </Ui>

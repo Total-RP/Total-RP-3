@@ -1,38 +1,27 @@
-# Changelog for version 1.3.4.2
+# Changelog for version 1.4
 
-- The NPC speeches frame now closes when pressing the escape key.
-- Updated the list of Patreon supporters in the About tab.
+**This version requires Battle for Azeroth, patch 8.0.1.**
 
-## Chat links fixes
+ ## Add-on communications improvement
+ 
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - **Profiles are now logged on Blizzard's servers** when sent to other players. This is so Blizzard can see what's the actual content of people's RP profiles in case of reported of abuses, like target harassment or doxxing. **This means that you should now treat what you put in your profile as if you were witting that content in /say** (_Goldshire_).
+ - **Cross server and cross faction support with Battle.net friends:** the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - **Improved performances:** thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
+ 
+ **_It was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol._**
 
-- Fixed a Lua error that would happen when the directory is being purged of old profiles and one of them was received from a chat link, and was not properly formatted.
-- Simplified wording when creating a new chat link so that the alert is more quickly readable and the buttons actions are more obvious.
-- The technical information shown in the chat links tooltip (type of link, sender name, size) are now only shown when the Alt key is held down, so that by default links only show RP-related information.
-- The chat links tooltip title now uses the text size defined in the tooltip settings.
-- Fixed an issue where player profiles that were marked as non-importable when creating a link would still show the import button in the tooltip.
-- Fixed and improved the buttons alignment in the chat links tooltip.
+## New logos
 
-# Changelog for version 1.3.4.1
+![](https://www.dropbox.com/s/rm0lzcubo9tl5bk/TRP3_Extended_Logo.png?raw=1)  
+Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
 
-- Fixed a possible issues with other add-ons drop down menus.
 
-# Changelog for version 1.3.4
+A new minimap icon also replaces the older one and showcases a classic D&D die.  
+![](https://www.dropbox.com/s/ri35tugtkj0g2c7/trp_icon.png?raw=1)
 
-## Added
+## Other modifications
 
-- Chat links now indicate the size of the content in the tooltip.
-- Added an option in the tooltip settings to use the old OOC indicator (the red dot in the top right corner) instead of the [OOC] red text.
-- Added information text on the profile export window to warn about using advanced text editing software when copy-pasting serialized profile as they can alter the data when replacing special characters like quotes.
-
-## Modified
-
-- The dashboard has received under-the-hood improvements to improve localization and prepare for future features.
-- Streamlined color picker presets UI to avoid confusions. Only the presets button is now visible, bellow the color preview. The presets dropdown now gives access to saving, renaming and deleting custom presets.
-- Player personality traits now only show the value numbers when the cursor is on the bar.
-- Improved generation of chat links for better efficiency.
-- Updated list of Patreon supporters.
-
-## Fixed
-
-- Fixed a missing option dependency for the mature filter strength slider so that it is correctly disabled when the mature filter is disable.
-- Fixed an issue with the import/export profile UI when a profile had the `~` character inside a field.
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.

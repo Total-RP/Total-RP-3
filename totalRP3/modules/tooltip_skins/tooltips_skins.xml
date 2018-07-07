@@ -22,4 +22,5 @@
 
 	<Script file="tiptac.lua"/>
 	<Script file="tinytooltip.lua"/>
+	<Script file="ElvUI.lua"/>
 </Ui>

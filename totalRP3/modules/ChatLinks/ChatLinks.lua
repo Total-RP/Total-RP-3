@@ -21,6 +21,9 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 ---@class TRP3_ChatLinks
 --- # Chat links API
 ---
@@ -222,20 +225,29 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
 		local linkType = link:sub(1, LINK_LENGTHS);
 		if linkType == LINK_CODE then
-			local linkContent = link:sub(LINK_LENGTHS + 2);
-			local separatorIndex = linkContent:find(":");
-			local playerName = linkContent:sub(1, separatorIndex - 1);
-			local itemName = linkContent:sub(separatorIndex + 1);
+			if IsShiftKeyDown() then
+				-- If the shift key is down, the user is trying to insert a TRP3 link.
+				-- That's not supported for now, so we'll remove the hyperlink escape sequence from the chatframe editbox text
+				local activeChatFrame = ChatEdit_GetActiveWindow();
+				if activeChatFrame and activeChatFrame.chatFrame and activeChatFrame.chatFrame.editBox then
+					activeChatFrame.chatFrame.editBox:SetText(TRP3_API.utils.str.sanitize(activeChatFrame.chatFrame.editBox:GetText()));
+				end
+			else
+				local linkContent = link:sub(LINK_LENGTHS + 2);
+				local separatorIndex = linkContent:find(":");
+				local playerName = linkContent:sub(1, separatorIndex - 1);
+				local itemName = linkContent:sub(separatorIndex + 1);
 
-			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
+				AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, itemName, playerName);
 
-			TRP3_RefTooltip.itemName = itemName;
-			-- TODO Localization and better UI feedback
-			showTooltip({
-				tooltipLines = {
-					title = loc.CL_REQUESTING_DATA:format(playerName),
-				},
-			});
+				TRP3_RefTooltip.itemName = itemName;
+				-- TODO Localization and better UI feedback
+				showTooltip({
+					tooltipLines = {
+						title = loc.CL_REQUESTING_DATA:format(playerName),
+					},
+				});
+			end
 		end
 	end)
 
@@ -249,14 +261,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
-			TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
+			AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
 		end
 
-		TRP3_API.communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
+		AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, {
 			itemName = link:GetIdentifier(), -- Item name is sent back so the recipient knows what we are answering to
 			tooltipLines = link:GetTooltipLines():GetRaw(), -- Get a list of lines to show inside the tooltip
 			actionButtons = link:GetActionButtons(), --  Get a list of actions buttons to show inside the tooltip (only data)
@@ -265,11 +277,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			size = link:GetContentSize(), -- Indicates the size of the content
 			moduleName = link:GetModuleName(), -- Module name, shown in the tooltip
 			v = TRP3_API.globals.version, -- The TRP3 version is sent so that a warning is shown if version differs while clicking action buttons
-		}, sender);
+		}, sender, nil, nil, true);
 	end);
 
 	-- Register command prefix when received tooltip data
-	TRP3_API.communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
 		if itemData == UNKNOWN_LINK then
 			showTooltip({
 				tooltipLines = {
