@@ -19,6 +19,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- Ellyb imports
 local COLORS = TRP3_API.Ellyb.ColorManager;
@@ -67,8 +69,8 @@ local function loadingSequence()
 	MAIN_SEQUENCE_DETAIL = "Welcome message";
 	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.communication.broadcast.init";
-	TRP3_API.communication.broadcast.init();
+	MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
+	AddOn_TotalRP3.Communications.broadcast.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";
 	TRP3_API.profile.init();
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.dashboard.init";

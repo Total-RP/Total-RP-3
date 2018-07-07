@@ -23,6 +23,8 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- Lua imports
 local assert = assert;
@@ -51,19 +53,22 @@ function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, 
 	_private[self].answerCommand = answerCommand;
 
 	-- Register to answer questions
-	TRP3_API.Communication.registerProtocolPrefix(questionCommand, function(linkData, sender)
-		-- Previous versions of the chat links system were sending the link ID directly, as a string.
-		-- We need to handle this for backward compatibility and
-		if type(linkData) == "string" then
-			linkData = { linkID = linkData };
-		end
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(questionCommand, function(linkData, sender)
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(linkData.linkID);
-		TRP3_API.Communication.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageID);
+		AddOn_TotalRP3.Communications.sendObject(answerCommand, link:GetData(), sender, "LOW", linkData.messageToken)
 	end);
 
-	TRP3_API.Communication.registerProtocolPrefix(answerCommand, function(data, sender)
-		self:OnAnswerCommandReceived(data, sender)
-	end)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(
+		answerCommand,
+		-- Note: We cannot use Ellyb's Functions.bind here since the OnAnswerCommandReceived method is overwritten at a
+		-- later time by the module created and the binding will target the wrong method.
+		function(data, sender, channel)
+			self:OnAnswerCommandReceived(data, sender, channel);
+		end,
+		function(messageToken, sender, msgTotal, msgID)
+			self:OnProgressDownload(messageToken, sender, msgTotal, msgID);
+		end
+	)
 end
 
 ---@return string actionID @ The ID of the action
@@ -94,24 +99,12 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		button:SetText(loc.CL_SENDING_COMMAND);
 		button:Disable();
 		-- Get a unique message identifier for the data request, used for progression updates
-		local reservedMessageID = TRP3_API.communication.getMessageIDAndIncrement();
-		-- Register a new progress handler for this message ID
-		TRP3_API.communication.addMessageIDHandler(sender, reservedMessageID, function(_, total, current)
-			-- If the download is complete, we restore the button text
-			if current == total then
-				button:SetText(_private[self].buttonText);
-				button:Enable();
-			else
-				-- We update the button text with the progression percentage
-				button:Disable();
-				button:SetText(loc.CL_DOWNLOADING:format((current / total) * 100));
-			end
-		end);
-
+		local messageToken = TRP3_API.communication.getMessageIDAndIncrement();
+		self.messageToken = messageToken;
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
 		TRP3_API.Communication.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
-			messageID = reservedMessageID,
+			messageID = messageToken,
 		}, sender);
 	end);
 end
@@ -122,6 +115,21 @@ end
 ---@param sender string @ The name of the sender of the link
 function ChatLinkActionButton:OnAnswerCommandReceived(data, sender)
 
+end
+
+function ChatLinkActionButton:OnProgressDownload(messageToken, sender, amountOfMessagesIncoming, amountOfMessagesReceived)
+	if not messageToken == self.messageToken then
+		return
+	end
+	-- If the download is complete, we restore the button text
+	if amountOfMessagesReceived == amountOfMessagesIncoming then
+		self.button:SetText(_private[self].buttonText);
+		self.button:Enable();
+	else
+		-- We update the button text with the progression percentage
+		self.button:Disable();
+		self.button:SetText(loc.CL_DOWNLOADING:format((amountOfMessagesReceived / amountOfMessagesIncoming) * 100));
+	end
 end
 
 ---@class TRP3_ChatLinkActionButtonMixin : Button

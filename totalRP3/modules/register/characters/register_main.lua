@@ -824,7 +824,7 @@ function TRP3_API.register.init()
 
 	local CHARACTER_SCAN_COMMAND = "CSCAN";
 	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
-	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, TRP3_API.communication.broadcast;
+	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, AddOn_TotalRP3.Communications.broadcast;
 	local UnitInParty = UnitInParty;
 	local Ambiguate, tContains = Ambiguate, tContains;
 	local phasedZones = {

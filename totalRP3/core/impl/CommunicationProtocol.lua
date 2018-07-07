@@ -3,8 +3,8 @@
 ---
 --- Communication protocol and API
 --- ---------------------------------------------------------------------------
---- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- Lua imports
 local assert = assert;
-local type = type;
 local string = string;
 local math = math;
 
@@ -260,8 +259,7 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 
 -- DEPRECATED
 -- Backward compatibility layer
-TRP3_API.Communication = Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.Communication", "AddOn_TotalRP3.Communication");
-TRP3_API.communication = Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communication");
+TRP3_API.communication = {};
 TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communication.getNewMessageToken");
 TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communication.registerSubSystemPrefix");
 
@@ -273,5 +271,7 @@ TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID,
 		end
 	end);
 end
+
+Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communication", TRP3_API.communication);
 
 

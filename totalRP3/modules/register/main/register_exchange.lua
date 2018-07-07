@@ -21,7 +21,7 @@
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
-local Comm = TRP3_API.Communication;
+local Comm = AddOn_TotalRP3.Communications;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
@@ -458,17 +458,17 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange
-	Comm.registerProtocolPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, true);
 	end);
-	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, false);
 	end);
-	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
-	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	-- When receiving HELLO from someone else (from the other side ?)
-	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
+	AddOn_TotalRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
 		version = tonumber(version) or 0;
 		extendedVersion = tonumber(extendedVersion) or 0;
 		-- Only treat the message if it does not come from us

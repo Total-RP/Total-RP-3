@@ -19,6 +19,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 TRP3_API.map = {};
 
@@ -285,13 +287,13 @@ local function registerScan(structure)
 	assert(structure and structure.id, "Must have a structure and a structure.id!");
 	SCAN_STRUCTURES[structure.id] = structure;
 	if structure.scanResponder and structure.scanCommand then
-		Comm.broadcast.registerCommand(structure.scanCommand, structure.scanResponder);
+		AddOn_TotalRP3.Communications.broadcast.registerCommand(structure.scanCommand, structure.scanResponder);
 	end
 	if not structure.saveStructure then
 		structure.saveStructure = {};
 	end
 	if structure.scanAssembler and structure.scanCommand then
-		Comm.broadcast.registerP2PCommand(structure.scanCommand, function(...)
+		AddOn_TotalRP3.Communications.broadcast.registerP2PCommand(structure.scanCommand, function(...)
 			structure.scanAssembler(structure.saveStructure, ...);
 		end)
 	end

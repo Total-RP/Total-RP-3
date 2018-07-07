@@ -261,10 +261,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- Register command prefix when requested for tooltip data for an item
-	TRP3_API.Communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
 		local link = TRP3_API.ChatLinksManager:GetSentLinkForIdentifier(identifier);
 		if not link then
-			TRP3_API.Communication.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
+			AddOn_TotalRP3.Communications.sendObject(CHAT_LINKS_PROTOCOL_DATA_PREFIX, UNKNOWN_LINK, sender);
 			return
 		end
 
@@ -281,7 +281,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end);
 
 	-- Register command prefix when received tooltip data
-	TRP3_API.Communication.registerProtocolPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_DATA_PREFIX, function(itemData, sender)
 		if itemData == UNKNOWN_LINK then
 			showTooltip({
 				tooltipLines = {
