@@ -20,8 +20,16 @@ Total RP 3 has a new original logo, to replace the modified game logo (which we 
 A new minimap icon also replaces the older one and showcases a classic D&D die.  
 ![](https://www.dropbox.com/s/ri35tugtkj0g2c7/trp_icon.png?raw=1)
 
-## Other modifications
+## Added
 
-- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values.
+
+## Modified
+
 - You can no longer set your residence marker inside an instanced zone.
 - Fixed several issues related to patch 8.0.1.
+
+## Removed
+
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.
