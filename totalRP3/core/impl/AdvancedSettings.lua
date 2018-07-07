@@ -47,9 +47,12 @@ TRP3_API.ADVANCED_SETTINGS_STRUCTURE = {
 TRP3_API.ADVANCED_SETTINGS_KEYS = {
 	USE_BROADCAST_COMMUNICATIONS = "comm_broad_use",
 	BROADCAST_CHANNEL = "comm_broad_chan",
+	PROFILE_SANITIZATION = "register_sanitization",
 }
+local defaultValues = {};
 
 -- Use broadcast communications
+defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
 insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_GENERAL_BROADCAST,
@@ -58,18 +61,30 @@ insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 });
 
 -- Broadcast communications channel
+
+defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
 insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigEditBox",
 	title = loc.CO_GENERAL_BROADCAST_C,
 	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL,
 	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS },
 });
+
+-- Profile sanitization
+defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
+insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigCheck",
+	title = loc.CO_SANITIZER,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION,
+	help = loc.CO_SANITIZER_TT
 });
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
-	Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS, true);
-	Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL, "xtensionxtooltip2");
+	for configurationKey, defaultValue in pairs(defaultValues) do
+		Configuration.registerConfigKey(configurationKey, defaultValue)
+	end
+
 	local localeTab = {};
 	for _, locale in pairs(loc:GetLocales(true)) do
 		insert(localeTab, { locale:GetName(), locale:GetCode() });
