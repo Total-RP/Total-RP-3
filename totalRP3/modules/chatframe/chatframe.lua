@@ -145,7 +145,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
-	registerConfigKey(CONFIG_NPC_TALK, true);
 	registerConfigKey(CONFIG_EMOTE, true);
 	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
@@ -235,15 +234,6 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc.CO_CHAT_MAIN_NPC,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_CHAT_MAIN_NPC_USE,
-				configKey = CONFIG_NPC_TALK,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
 				title = loc.CO_CHAT_MAIN_EMOTE,
 			},
 			{
@@ -308,18 +298,33 @@ local function createConfigPage()
 	end
 
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
-
-	-- Use broadcast communications
-	TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED = "npc_talk_prefix";
-	TRP3_API.configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED, "|| ");
-	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
-		inherit = "TRP3_ConfigEditBox",
-		title = loc.CO_CHAT_MAIN_NPC_PREFIX,
-		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIXED,
-		help = loc.CO_CHAT_MAIN_NPC_PREFIX_TT,
-		dependentOnOptions = { CONFIG_NPC_TALK },
-	});
 end
+
+-- Advanced settings
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigH1",
+	title = loc.CO_CHAT_MAIN_NPC,
+});
+
+-- NPC talks
+TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK = "chat_npc_talk";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK] = true;
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigCheck",
+	title = loc.CO_CHAT_MAIN_NPC_USE,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK,
+});
+
+-- NPC talks pattern
+TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX = "npc_talk_prefix";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX] = "|| ";
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigEditBox",
+	title = loc.CO_CHAT_MAIN_NPC_PREFIX,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX,
+	help = loc.CO_CHAT_MAIN_NPC_PREFIX_TT,
+	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK },
+});
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils

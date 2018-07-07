@@ -1208,6 +1208,7 @@ Please keep in mind that changing those settings might alter your experience wit
 	CO_ADVANCED_SETTINGS_RESET = "Reset advanced settings",
 	CO_ADVANCED_SETTINGS_RESET_TT = "Reset all the advanced settings to their default value. Use this if you have issues after modifying the settings.",
 	CO_GENERAL_BROADCAST_C = "Broadcast channel name",
+	CO_ADVANCED_BROADCAST = "Add-on communications",
 };
 
 -- Use Ellyb to generate the Localization system

@@ -49,10 +49,16 @@ TRP3_API.ADVANCED_SETTINGS_KEYS = {
 	BROADCAST_CHANNEL = "comm_broad_chan",
 	PROFILE_SANITIZATION = "register_sanitization",
 }
-local defaultValues = {};
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES = {};
+
+-- Reset button
+insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigH1",
+	title = loc.CO_ADVANCED_BROADCAST,
+});
 
 -- Use broadcast communications
-defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
 insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_GENERAL_BROADCAST,
@@ -61,8 +67,7 @@ insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 });
 
 -- Broadcast communications channel
-
-defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
 insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigEditBox",
 	title = loc.CO_GENERAL_BROADCAST_C,
@@ -70,8 +75,14 @@ insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS },
 });
 
+-- Localization settings
+insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigH1",
+	title = loc.REG_REGISTER,
+});
+
 -- Profile sanitization
-defaultValues[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
 insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_SANITIZER,
@@ -81,7 +92,7 @@ insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
-	for configurationKey, defaultValue in pairs(defaultValues) do
+	for configurationKey, defaultValue in pairs(TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES) do
 		Configuration.registerConfigKey(configurationKey, defaultValue)
 	end
 
@@ -91,6 +102,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 
 	-- Localization settings
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc.CO_GENERAL_LOCALE,
+	});
 	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationGeneral_LangWidget",
