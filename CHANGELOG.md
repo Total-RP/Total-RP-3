@@ -5,7 +5,7 @@
  ## Add-on communications improvement
  
  Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
- - **Profiles are now logged on Blizzard's servers** when sent to other players. This is so Blizzard can see what's the content of people's RP profile in case of report of abuses, like target harassment or doxxing. **This means that you should now treat what you put in your profile as if you were witting that content in /say** (_Goldshire_).
+ - **Profiles are now logged on Blizzard's servers** when sent to other players. This is so Blizzard can see what's the actual content of people's RP profiles in case of reported of abuses, like target harassment or doxxing. **This means that you should now treat what you put in your profile as if you were witting that content in /say** (_Goldshire_).
  - **Cross server and cross faction support with Battle.net friends:** the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
  - **Improved performances:** thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
  
