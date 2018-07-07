@@ -83,6 +83,11 @@ local function getValue(key)
 end
 Config.getValue = getValue;
 
+function Config.getDefaultValue(key)
+	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
+	return defaultValues[key]
+end
+
 local function registerConfigKey(key, defaultValue)
 	assert(type(key) == "string" and defaultValue ~= nil, "Must be a string key and a not nil default value.");
 	assert(not defaultValues[key], "Config key already registered: " .. tostring(key));
@@ -341,6 +346,10 @@ local function registerConfigurationPage(pageStructure)
 	buildConfigurationPage(pageStructure);
 end
 Config.registerConfigurationPage = registerConfigurationPage;
+
+function Config.refreshPage(pageID)
+	buildConfigurationPage(registeredConfiPage[pageID]);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT

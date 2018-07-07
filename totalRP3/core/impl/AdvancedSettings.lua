@@ -24,19 +24,22 @@ local Ellyb = Ellyb(...);
 
 -- Lua imports
 local insert = table.insert;
+local pairs = pairs;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local Configuration = TRP3_API.configuration;
 
 --- Display a warning to let the user know modifying advanced settings might cause issues
-local function advancedSettingsModifiedPopup()
-	TRP3_API.popup.showAlertPopup(loc.CO_ADVANCED_SETTINGS_POPUP)
+local function advancedSettingsModifiedPopup(settingKey, value)
+	if Configuration.getDefaultValue(settingKey) ~= value then
+		TRP3_API.popup.showAlertPopup(loc.CO_ADVANCED_SETTINGS_POPUP)
+	end
 end
 
 TRP3_API.ADVANCED_SETTINGS_STRUCTURE = {
 	id = "main_config_zzz_advanced_settings",
-	menuText = loc.CO_ADVANCED_SETTINGS,
+	menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME,
 	pageText = loc.CO_ADVANCED_SETTINGS,
 	elements = {}
 }
@@ -47,8 +50,7 @@ TRP3_API.ADVANCED_SETTINGS_KEYS = {
 }
 
 -- Use broadcast communications
-Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS, true);
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
+insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
 	title = loc.CO_GENERAL_BROADCAST,
 	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS,
@@ -56,22 +58,25 @@ insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
 });
 
 -- Broadcast communications channel
-Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL, "xtensionxtooltip2");
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
-	inherit = "TRP3_ConfigCheck",
+insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigEditBox",
 	title = loc.CO_GENERAL_BROADCAST_C,
 	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL,
+	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS },
+});
 });
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
+	Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS, true);
+	Configuration.registerConfigKey(TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL, "xtensionxtooltip2");
 	local localeTab = {};
 	for _, locale in pairs(loc:GetLocales(true)) do
 		insert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
 	-- Localization settings
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationGeneral_LangWidget",
 		title = loc.CO_GENERAL_LOCALE,
@@ -87,7 +92,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 
 	-- Reset button
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE, {
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = " ",
+	});
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigButton",
 		title = loc.CO_ADVANCED_SETTINGS_RESET,
 		help = loc.CO_ADVANCED_SETTINGS_RESET_TT,
@@ -96,6 +105,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			for _, advancedKey in pairs(TRP3_API.ADVANCED_SETTINGS_KEYS) do
 				Configuration.resetValue(advancedKey);
 			end
+			Configuration.refreshPage("main_config_zzz_advanced_settings");
 		end,
 	});
 
