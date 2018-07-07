@@ -29,6 +29,7 @@ local Globals = TRP3_API.globals;
 local tinsert, _G, strconcat = tinsert, _G, strconcat;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
 local Log = TRP3_API.utils.log;
+local Configuration = TRP3_API.configuration;
 
 local LAST_LANGUAGE_USED = "chat_last_language_used";
 
@@ -37,7 +38,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 
 	---
-	-- Check if the player has previously selected a lanauge or use the default one.
+	-- Check if the player has previously selected a language or use the default one.
 	local function getCharacterPreviouslySelectedLanguage()
 		if TRP3_Characters and TRP3_Characters[Globals.player_id] and TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] then
 			return TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED];
@@ -166,10 +167,27 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	};
 	TRP3_API.toolbar.toolbarAddButton(languagesButton);
 
-	-- We have to wait a little for everything to be fully loaded before trying to restore previously selected language
-	C_Timer.After(1, function()
-		setLanguage(getCharacterPreviouslySelectedLanguage());
-	end)
-
-	
+	if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED) then
+		-- We have to wait a little for everything to be fully loaded before trying to restore previously selected language
+		C_Timer.After(1, function()
+			setLanguage(getCharacterPreviouslySelectedLanguage());
+		end)
+	end
 end);
+
+
+-- Advanced settings
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigH1",
+	title = loc.CO_ADVANCED_LANGUAGES,
+});
+-- Remember last language used
+-- NPC talks
+TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED = "chat_language_remember_last_used";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED] = true;
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigCheck",
+	title = loc.CO_ADVANCED_LANGUAGES_REMEMBER,
+	help = loc.CO_ADVANCED_LANGUAGES_REMEMBER_TT,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED,
+});
