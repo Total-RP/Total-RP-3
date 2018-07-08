@@ -983,6 +983,10 @@ local function playAnimation(animationGroup, callback)
 end
 TRP3_API.ui.misc.playAnimation = playAnimation;
 
+function TRP3_API.ui.misc.shouldPlayUIAnimation()
+	return getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Hovered frames
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

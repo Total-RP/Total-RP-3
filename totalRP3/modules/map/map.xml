@@ -5,6 +5,7 @@
 	<!--
 		Total RP 3
 		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+		Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -19,42 +20,16 @@
 		limitations under the License.
 	-->
 
+	<Script file="Map.lua" />
+	<Script file="MapScanner.lua" />
+	<Script file="MapScannersManager.lua" />
+	<Script file="MapDataProvider.lua" />
+
 	<Button name="TRP3_WorldMapButton" parent="UIParent" inherits="TRP3_IconButton" frameStrata="FULLSCREEN" toplevel="true" motionScriptsWhileDisabled="true">
 		<Frames>
 			<Cooldown parentKey="Cooldown" setAllPoints="true" inherits="CooldownFrameTemplate" />
 		</Frames>
-		<Scripts>
-			<OnEnter>
-					--WorldMapPOIFrame.allowBlobTooltip = false;
-					WorldMapTooltip:Hide();
-					WorldMapTooltip:SetOwner(self, "ANCHOR_RIGHT",0,0);
-					WorldMapTooltip:AddLine(self.title, 1, 1, 1,true);
-					WorldMapTooltip:AddLine(self.subtitle, 1, 1, 1,true);
-					WorldMapTooltip:Show();
-			</OnEnter>
-			<OnLeave>
-					WorldMapTooltip:Hide();
-			</OnLeave>
-		</Scripts>
 	</Button>
-
-	<Frame name="TRP3_WorldMapUnit" virtual="true" alpha="0">
-		<Size>
-			<AbsDimension x="16" y="16"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture parentKey="Icon" file="Interface\Minimap\PartyRaidBlips" setAllPoints="true" />
-			</Layer>
-		</Layers>
-		<Animations>
-			<AnimationGroup parentKey="Bounce" setToFinalAlpha="true">
-				<Alpha toAlpha="1" fromAlpha="0" duration="0.2"/>
-				<Scale scaleX="1.5" scaleY="1.5" duration="0.2"/>
-				<Scale scaleX="0.5" scaleY="0.5" duration="0.2" startDelay="0.2"/>
-			</AnimationGroup>
-		</Animations>
-	</Frame>
 
 	<Frame name="TRP3_ScanLoaderFrame" hidden="true">
 		<Size x="200" y="200"/>
@@ -154,4 +129,5 @@
 	</Frame>
 
 	<Script file="map_markers.lua"/>
+	<Script file="WorldMapButton.lua"/>
 </Ui>

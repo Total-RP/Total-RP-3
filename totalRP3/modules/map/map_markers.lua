@@ -31,7 +31,7 @@ local Ellyb = TRP3_API.Ellyb;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local Comm = TRP3_API.communication;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+
 local loc = TRP3_API.loc;
 local tinsert, assert, tonumber, pairs, _G, wipe = tinsert, assert, tonumber, pairs, _G, wipe;
 local CreateFrame = CreateFrame;
@@ -304,15 +304,7 @@ function launchScan(scanID)
 	assert(SCAN_STRUCTURES[scanID], ("Unknown scan id %s"):format(scanID));
 	local structure = SCAN_STRUCTURES[scanID];
 	if structure.scan then
-		hideAllMarkers();
-		wipe(structure.saveStructure);
-		structure.scan(structure.saveStructure);
 		if structure.scanDuration then
-			local mapID = WorldMapFrame:GetMapID();
-			currentMapID = mapID;
-			TRP3_WorldMapButton:Disable();
-			setupIconButton(TRP3_WorldMapButton, "ability_mage_timewarp");
-			TRP3_WorldMapButton.Cooldown:SetCooldown(GetTime(), structure.scanDuration)
 			TRP3_ScanLoaderFrame.time = structure.scanDuration;
 			TRP3_ScanLoaderFrame:Show();
 			TRP3_ScanLoaderAnimationRotation:SetDuration(structure.scanDuration);
@@ -324,17 +316,7 @@ function launchScan(scanID)
 			playAnimation(TRP3_ScanLoaderGlow);
 			playAnimation(TRP3_ScanLoaderBackAnimation1);
 			playAnimation(TRP3_ScanLoaderBackAnimation2);
-			TRP3_API.ui.misc.playSoundKit(40216);
 			after(structure.scanDuration, function()
-				TRP3_WorldMapButton:Enable();
-				setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-				if mapID == WorldMapFrame:GetMapID() then
-					if structure.scanComplete then
-						structure.scanComplete(structure.saveStructure);
-					end
-					displayMarkers(structure);
-					TRP3_API.ui.misc.playSoundKit(43493);
-				end
 				playAnimation(TRP3_ScanLoaderBackAnimationGrow1);
 				playAnimation(TRP3_ScanLoaderBackAnimationGrow2);
 				playAnimation(TRP3_ScanFadeOut);
@@ -348,34 +330,15 @@ function launchScan(scanID)
 				end
 			end);
 		else
-			if structure.scanComplete then
-				structure.scanComplete(structure.saveStructure);
-			end
-			displayMarkers(structure);
-			TRP3_API.ui.misc.playSoundKit(43493);
+
 		end
 	end
 end
 TRP3_API.map.launchScan = launchScan;
 
-local function onButtonClicked(self)
-	local structure = {};
-	for scanID, scanStructure in pairs(SCAN_STRUCTURES) do
-		if not scanStructure.canScan or scanStructure.canScan() == true then
-			tinsert(structure, { Utils.str.icon(scanStructure.buttonIcon or "Inv_misc_enggizmos_20", 20) .. " " .. (scanStructure.buttonText or scanID), scanID});
-		end
-	end
-	if #structure == 0 then
-		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
-	end
-	displayDropDown(self, structure, launchScan, 0, true);
-end
+
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
-	setupIconButton(TRP3_WorldMapButton, "icon_treasuremap");
-	TRP3_WorldMapButton.title = loc.MAP_BUTTON_TITLE;
-	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE);
-	--TRP3_WorldMapButton:SetScript("OnClick", onButtonClicked);	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
 
@@ -387,94 +350,4 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_ScanLoaderFrame:SetScript("OnUpdate", function(self, elapsed)
 		self.refreshTimer = self.refreshTimer + elapsed;
 	end);
-end);
-
-local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
-local getConfigValue, registerConfigKey, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.setValue;
-
----@param position string
-local function placeMapButton(position)
-	position = position or "BOTTOMLEFT";
-
-	---@type Frame
-	local worldMapButton = TRP3_WorldMapButton;
-
-	worldMapButton:SetParent(WorldMapFrame.BorderFrame);
-	worldMapButton:ClearAllPoints();
-
-	local xPadding = 10;
-	local yPadding = 10;
-
-	if position == "TOPRIGHT" then
-		xPadding = -10;
-		yPadding = -45;
-	elseif position == "TOPLEFT" then
-		yPadding = -30;
-	elseif position == "BOTTOMRIGHT" then
-		xPadding = -10;
-		yPadding = 40;
-	end
-
-	worldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
-
-	setConfigValue(CONFIG_MAP_BUTTON_POSITION, position);
-end
-
-TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
-
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc.CO_MAP_BUTTON,
-	});
-
-	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-		inherit = "TRP3_ConfigDropDown",
-		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
-		title = loc.CO_MAP_BUTTON_POS,
-		listContent = {
-			{loc.CO_ANCHOR_BOTTOM_LEFT, "BOTTOMLEFT"},
-			{loc.CO_ANCHOR_TOP_LEFT, "TOPLEFT"},
-			{loc.CO_ANCHOR_BOTTOM_RIGHT, "BOTTOMRIGHT"},
-			{loc.CO_ANCHOR_TOP_RIGHT, "TOPRIGHT"}
-		},
-		listCallback = placeMapButton,
-		listCancel = true,
-		configKey = CONFIG_MAP_BUTTON_POSITION,
-	});
-
-	placeMapButton(getConfigValue(CONFIG_MAP_BUTTON_POSITION));
-
-end);
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Broadcast Lifecycle
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- When we get BROADCAST_CHANNEL_CONNECTING we'll ensure the button is
--- disabled and tell the user things are firing up.
-TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING, function()
-	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_CONNECTING);
-
-	TRP3_WorldMapButtonIcon:SetDesaturated(true);
-end);
-
--- If we get BROADCAST_CHANNEL_OFFLINE we'll ensure the button remains
--- disabled and dump the localised error into the tooltip, to be useful.
-TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, function(reason)
-	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = YELLOW(loc.MAP_BUTTON_SUBTITLE_OFFLINE):format(reason);
-
-	TRP3_WorldMapButtonIcon:SetDesaturated(true);
-end);
-
--- When we get BROADCAST_CHANNEL_READY it's time to enable the button use the
--- standard tooltip description.
-TRP3_API.events.listenToEvent(TRP3_API.events.BROADCAST_CHANNEL_READY, function()
-	-- TODO : Update scans with the 8.0 changes. For now, disabling button and changing the message.
-	TRP3_WorldMapButton:SetEnabled(false);
-	TRP3_WorldMapButton.subtitle = TRP3_API.Ellyb.ColorManager.RED(loc.MAP_BUTTON_SUBTITLE_80_DISABLED);
-
-	TRP3_WorldMapButtonIcon:SetDesaturated(true);
 end);
