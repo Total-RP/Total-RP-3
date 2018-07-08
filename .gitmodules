@@ -9,7 +9,7 @@
 	url = https://github.com/phanx-wow/LibRealmInfo
 [submodule "totalRP3/libs/LibMSP"]
 	path = totalRP3/libs/LibMSP
-	url = https://github.com/Itarater/LibMSP
+	url = https://github.com/Ellypse/LibMSP
 [submodule "totalRP3/libs/Chomp"]
 	path = totalRP3/libs/Chomp
 	url = https://github.com/Itarater/Chomp
