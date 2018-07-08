@@ -38,6 +38,7 @@ local broadcast = AddOn_TotalRP3.Communications.broadcast;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
 local get = TRP3_API.profile.getData;
+local Map = AddOn_TotalRP3.Map;
 --endregion
 
 local MAP_PLAYER_SCAN_FAKE_DATA =  {
@@ -453,17 +454,15 @@ for k, v in pairs(MAP_PLAYER_SCAN_FAKE_DATA.saveStructure) do
 	MAP_PLAYER_SCAN_FAKE_DATA.saveStructure[k].sender = k
 end
 
+local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
+local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
+
+local function shouldAnswerToLocationRequest()
+	return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
+		and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
+end
+
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
-
-	local Map = AddOn_TotalRP3.Map;
-	--region Configuration
-	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
-	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
-
-	local function shouldAnswerToLocationRequest()
-		return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
-			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
-	end
 
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
@@ -485,57 +484,55 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
-	--endregion
-
-	---@type MapScanner
-	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
-	playerMapScanner.scanIcon = "Achievement_GuildPerk_EverybodysFriend"
-	playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
-	playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
-	playerMapScanner.scanCommand = "CSCAN";
-	playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
-
-	function playerMapScanner:Scan()
-		self.scanData = {};
-		broadcast.broadcast(self.scanCommand, Map.getPlayerMapID());
-	end
-
-	function playerMapScanner:OnScanRequestReceived(sender, mapID)
-		mapID = tonumber(mapID);
-		if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
-			local playerMapID = Map.getPlayerMapID();
-			if playerMapID ~= mapID then
-				return
-			end
-			local x, y = Map.getPlayerCoordinates();
-			if x and y then
-				broadcast.sendP2PMessage(sender, self.scanCommand, x, y, playerMapID, TRP3_API.globals.addon_name_short);
-			end
-		end
-	end
-
-	-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
-	function playerMapScanner:CanScan()
-		if getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-			local x, y = Map.getPlayerCoordinates()
-			if x and y then
-				return true;
-			end
-		end
-		return false;
-	end
-
-	function playerMapScanner:OnScanResultReceived(sender, x, y, mapId, addon)
-		if Map.playerCanSeeTarget(sender) then
-			self.scanData[sender] = {
-				position = CreateVector2D(x, y),
-				sender = sender,
-				addon = addon,
-			};
-		end
-	end
-
-	function playerMapScanner:GetData()
-		return MAP_PLAYER_SCAN_FAKE_DATA.saveStructure or self.scanData;
-	end
 end)
+
+---@type MapScanner
+local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
+playerMapScanner.scanIcon = "Achievement_GuildPerk_EverybodysFriend"
+playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
+playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
+playerMapScanner.scanCommand = "CSCAN";
+playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
+
+function playerMapScanner:Scan()
+	self.scanData = {};
+	broadcast.broadcast(self.scanCommand, Map.getPlayerMapID());
+end
+
+function playerMapScanner:OnScanRequestReceived(sender, mapID)
+	mapID = tonumber(mapID);
+	if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
+		local playerMapID = Map.getPlayerMapID();
+		if playerMapID ~= mapID then
+			return
+		end
+		local x, y = Map.getPlayerCoordinates();
+		if x and y then
+			broadcast.sendP2PMessage(sender, self.scanCommand, x, y, playerMapID);
+		end
+	end
+end
+
+-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
+function playerMapScanner:CanScan()
+	if getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+		local x, y = Map.getPlayerCoordinates()
+		if x and y then
+			return true;
+		end
+	end
+	return false;
+end
+
+function playerMapScanner:OnScanResultReceived(sender, x, y, mapId)
+	if Map.playerCanSeeTarget(sender) then
+		self.scanData[sender] = {
+			position = CreateVector2D(x, y),
+			sender = sender
+		};
+	end
+end
+
+function playerMapScanner:GetData()
+	return MAP_PLAYER_SCAN_FAKE_DATA.saveStructure or self.scanData;
+end

@@ -21,6 +21,8 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+local pairs = pairs;
+
 ---@type MapCanvasDataProviderMixin|{GetMap:fun():MapCanvasMixin}
 local TRP3_MapDataProvider = CreateFromMixins(MapCanvasDataProviderMixin);
 

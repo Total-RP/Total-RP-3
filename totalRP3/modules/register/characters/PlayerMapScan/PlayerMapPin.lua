@@ -24,13 +24,7 @@ local Ellyb = TRP3_API.Ellyb;
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 --region Lua imports
-local insert = table.insert;
-local sort = table.sort;
 local huge = math.huge;
---endregion
-
---region WoW imports
-local After = C_Timer.After;
 --endregion
 
 --region Total RP 3 imports
@@ -41,104 +35,78 @@ local loc = TRP3_API.loc;
 ---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
 TRP3_PlayerMapPinMixin = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
 
+-- Add mixins to automatically animate the pins and coalesce nearby pins
+Mixin(TRP3_PlayerMapPinMixin, AddOn_TotalRP3.MapPOIMixins.GroupedCoalescedMapPinMixin);
+Mixin(TRP3_PlayerMapPinMixin, AddOn_TotalRP3.MapPOIMixins.AnimatedPinMixin);
+
+
 TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
--- SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL is a texture sublevel applied to the
--- blip for markers representing characters you have relationship states set
--- with.
---
--- The net result is they'll take priority in the draw order, and get shown
--- on top of a pile of dots in crowded scenarios.
-local SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL = 4;
+local function getDisplayDataFromPOIInfo(poiInfo)
+	local characterID = poiInfo.sender;
+	local displayData = {};
 
---- Decorates a marker with additional information based upon the established
---  relationship defined in the characters' profile.
---
---  @param characterID The ID of the character.
---  @param entry The entry containing the scan result data.
---  @param marker The marker blip being decorated.
-local function scanMarkerDecorateRelationship(characterID, marker)
-	-- Skip bad character IDs.
-	if not TRP3_API.register.isUnitIDKnown(characterID) then
-		return;
+	if TRP3_API.register.isUnitIDKnown(characterID) and TRP3_API.register.hasProfile(characterID) then
+
+		local profileID = TRP3_API.register.getUnitIDProfileID(characterID);
+		--region Player name
+		local profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
+		displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
+
+		if profile.characteristics and profile.characteristics.CH then
+			local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
+			displayData.playerName = color(displayData.playerName)
+		end
+		--endregion
+	else
+		-- Remove server name
+		displayData.playerName = characterID:gsub("%-.*$", "");
 	end
 
-	-- Easiest way to get at relationship stuff takes the profile ID.
-	local profileID = TRP3_API.register.getUnitIDProfileID(characterID);
-	if not profileID then
-		return;
+	--region Player relationship
+	--local relation = TRP3_API.register.relation.getRelation(profileID);
+	local relation = TRP3_API.register.relation.NONE
+	local rand = math.random(100);
+	if rand > 80 then
+		relation = TRP3_API.globals.RELATIONS.LOVE;
+	elseif rand > 50 then
+		relation = TRP3_API.globals.RELATIONS.FRIEND;
 	end
+	if relation ~= TRP3_API.register.relation.NONE then
+		local relationShipColor = TRP3_API.register.relation.getColor(relation);
+		-- Swap out the atlas for this marker.
+		displayData.iconAtlas = "PlayerPartyBlip";
+		displayData.iconColor = relationShipColor;
 
-	local relation = TRP3_API.register.relation.getRelation(profileID);
-	if math.random() > 0.5 then
-		relation = TRP3_API.register.relation.BUSINESS
+		-- Store the relationship on the marker itself as the category.
+		displayData.categoryName = loc.REG_RELATION .. ": " .. relationShipColor(loc:GetText("REG_RELATION_".. relation));
+		displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
 	end
-	if relation == TRP3_API.register.relation.NONE then
-		-- This profile has no relationship status.
-		return;
-	end
+	--endregion
 
-	-- Swap out the atlas for this marker.
-	marker.iconAtlas = "PlayerPartyBlip";
-
-	-- Recycle any color instance already present if there is one.
-	local r, g, b = TRP3_API.register.relation.getRelationColors(profileID);
-	marker.iconColor = marker.iconColor or Ellyb.Color(0, 0, 0, 0);
-	marker.iconColor:SetRGBA(r, g, b, 1);
-
-	-- Arbitrary increase in layer means we'll display these icons over the
-	-- defaults.
-	marker.iconSublevel = SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL;
-
-	-- Store the relationship on the marker itself as the category.
-	marker.categoryName = loc:GetText("REG_RELATION_".. relation);
-	marker.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
+	return displayData
 end
 
-
----@param poiInfo {position:Vector2DMixin}
+---@param poiInfo {position:Vector2DMixin, sender:string}
 function TRP3_PlayerMapPinMixin:OnAcquired(poiInfo)
-	poiInfo.atlasName = "RaidMember";
+	local displayData = getDisplayDataFromPOIInfo(poiInfo);
+	poiInfo.atlasName = displayData.iconAtlas or "PartyMember";
 	BaseMapPoiPinMixin.OnAcquired(self, poiInfo);
 
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
 
-	local characterID = poiInfo.sender;
-	local playerName;
-	if TRP3_API.register.isUnitIDKnown(characterID) and TRP3_API.register.hasProfile(characterID) then
-		local profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
-		playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
+	self.tooltipLine = displayData.playerName;
 
-		if profile.characteristics and profile.characteristics.CH then
-			local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
-			playerName = color(playerName)
-		end
+	self.categoryName = displayData.categoryName;
+	self.categoryPriority = displayData.categoryPriority;
+	self.sortName = displayData.playerName;
+
+	if displayData.iconColor then
+		self.Texture:SetVertexColor(displayData.iconColor:GetRGBA());
 	else
-		-- Remove server name
-		playerName = characterID:gsub("%-.*$", "");
+		self.Texture:SetVertexColor(1, 1, 1, 1);
 	end
-	self.tooltipLine = playerName;
 
 	Ellyb.Tooltips.getTooltip(self):SetTitle(loc.REG_PLAYERS):ClearLines();
-
-	if TRP3_API.ui.misc.shouldPlayUIAnimation then
-		local x, y = poiInfo.position:GetXY();
-		self:Hide();
-		After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
-			self:Show();
-			TRP3_API.ui.misc.playAnimation(self.Bounce);
-		end);
-	end
-end
-
-function TRP3_PlayerMapPinMixin:OnMouseEnter()
-	local tooltip = Ellyb.Tooltips.getTooltip(self);
-	-- Iterate over the blips in a first pass to build a list of all the ones we're mousing over.
-	for marker in self:GetMap():EnumerateAllPins() do
-		if marker:IsVisible() and marker:IsMouseOver() then
-			tooltip:AddTempLine(marker.tooltipLine)
-		end
-	end
-	tooltip:Show();
 end

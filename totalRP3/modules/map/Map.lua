@@ -95,4 +95,5 @@ function Map.getDisplayedMapID()
 	return WorldMapFrame:GetMapID();
 end
 
+-- Exposing public API
 AddOn_TotalRP3.Map = Map;
