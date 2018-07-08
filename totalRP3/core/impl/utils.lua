@@ -283,7 +283,7 @@ Utils.str.unitInfoToID = function(unitName, unitRealmID)
 	if not unitRealmID or unitRealmID == "" then
 		unitRealmID = Globals.player_realm_id
 	end
-	return strconcat(unitName or "_", '-', unitRealmID);
+	return strconcat(unitName or "_", '-', unitRealmID or "_");
 end
 
 -- Separates the unit name and realm from an unit ID
