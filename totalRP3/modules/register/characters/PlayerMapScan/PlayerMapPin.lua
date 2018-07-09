@@ -32,17 +32,14 @@ local loc = TRP3_API.loc;
 --endregion
 
 -- Create the pin template, above group members
----@type BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
-TRP3_PlayerMapPinMixin = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
-
--- Add mixins to automatically animate the pins and coalesce nearby pins
-Mixin(TRP3_PlayerMapPinMixin, AddOn_TotalRP3.MapPOIMixins.GroupedCoalescedMapPinMixin);
-Mixin(TRP3_PlayerMapPinMixin, AddOn_TotalRP3.MapPOIMixins.AnimatedPinMixin);
-
+TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPOIMixins.createPinTemplate(
+	AddOn_TotalRP3.MapPOIMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
+	AddOn_TotalRP3.MapPOIMixins.AnimatedPinMixin -- Use animated icons (bounce in)
+);
 
 TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
-local function getDisplayDataFromPOIInfo(poiInfo)
+function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
 	local characterID = poiInfo.sender;
 	local displayData = {};
 
@@ -88,16 +85,11 @@ local function getDisplayDataFromPOIInfo(poiInfo)
 end
 
 ---@param poiInfo {position:Vector2DMixin, sender:string}
-function TRP3_PlayerMapPinMixin:OnAcquired(poiInfo)
-	local displayData = getDisplayDataFromPOIInfo(poiInfo);
-	poiInfo.atlasName = displayData.iconAtlas or "PartyMember";
-	BaseMapPoiPinMixin.OnAcquired(self, poiInfo);
-
+function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
 
 	self.tooltipLine = displayData.playerName;
-
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
 	self.sortName = displayData.playerName;

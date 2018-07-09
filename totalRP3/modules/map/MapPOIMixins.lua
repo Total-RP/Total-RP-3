@@ -34,6 +34,7 @@ local pairs = pairs;
 local after = C_Timer.After;
 local hooksecurefunc = hooksecurefunc;
 local BaseMapPoiPinMixin = BaseMapPoiPinMixin;
+local Mixin = Mixin;
 --endregion
 
 local MapPOIMixins = {};
@@ -125,7 +126,6 @@ function AnimatedPinMixin:OnLoad()
 
 	hooksecurefunc(self, "OnAcquired", function(marker, poiInfo)
 		if poiInfo.position and self.Bounce and TRP3_API.ui.misc.shouldPlayUIAnimation() then
-			local x, y = poiInfo.position:GetXY();
 			self:Hide();
 			after(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
@@ -136,5 +136,47 @@ function AnimatedPinMixin:OnLoad()
 end
 MapPOIMixins.AnimatedPinMixin = AnimatedPinMixin;
 --endregion
+
+--region BasePinMixin
+---@class BasePinMixin
+local BasePinMixin = {};
+
+--- Build display data that will be used by BasePinMixin:Decorate(displayData) to decorate the mixin
+--[[ Override ]] function BasePinMixin:GetDisplayDataFromPOIInfo(poiInfo)
+	return {}
+end
+
+--- Decorates the pin using the display data we received from BasePinMixin:GetDisplayDataFromPOIInfo(poiInfo)
+--[[ Override ]] function BasePinMixin:Decorate(displayData)
+
+end
+
+function BasePinMixin:OnAcquired(poiInfo)
+	-- Get display data
+	local displayData = self:GetDisplayDataFromPOIInfo(poiInfo);
+	-- Get the atlasName we should use for the pin texture
+	poiInfo.atlasName = displayData.iconAtlas or "PartyMember";
+	-- Call the BaseMapPoiPinMixin's OnAcquired method, to have it set the position of the POI and everything
+	BaseMapPoiPinMixin.OnAcquired(self, poiInfo);
+	-- Call :Decorate() to let the pin decorate itself based on the displayData we received
+	self:Decorate(displayData)
+end
+MapPOIMixins.BasePinMixin = BasePinMixin;
+--endregion
+
+--- Create a new pin template
+---@param ... table @ A list of mixins to include for this new template
+---@return BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
+function MapPOIMixins.createPinTemplate(...)
+	-- Create a new template for POI pins
+	local pinTemplate = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
+	-- Add our base mixin to it
+	Mixin(pinTemplate, AddOn_TotalRP3.MapPOIMixins.BasePinMixin);
+	-- Go through all the mixins we were given and add them too
+	for _, mixin in pairs({...}) do
+		Mixin(pinTemplate, mixin);
+	end
+	return pinTemplate
+end
 
 AddOn_TotalRP3.MapPOIMixins = MapPOIMixins;
