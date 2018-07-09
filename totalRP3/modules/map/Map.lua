@@ -68,8 +68,8 @@ end
 ---@param target string @ A valid unit token
 ---@return boolean canSeeTarget @ Return true if the player can see the target, or false if something like phases prevent them from seeing each other.
 function Map.playerCanSeeTarget(target)
-	-- Players should not see themselves (answer their own requests)
-	if target == TRP3_API.globals.player_id then
+	-- Players should not see themselves (answer their own requests), except if in DEBUG_MODE, for testing
+	if target == TRP3_API.globals.player_id and not TRP3_API.globals.DEBUG_MODE then
 		return false;
 	end
 	local currentMapID = Map.getPlayerMapID();

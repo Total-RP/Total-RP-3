@@ -55,31 +55,24 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
 			displayData.playerName = color(displayData.playerName)
 		end
 		--endregion
+
+		--region Player relationship
+		local relation = TRP3_API.register.relation.getRelation(profileID);
+		if relation ~= TRP3_API.register.relation.NONE then
+			local relationShipColor = TRP3_API.register.relation.getColor(relation);
+			-- Swap out the atlas for this marker.
+			displayData.iconAtlas = "PlayerPartyBlip";
+			displayData.iconColor = relationShipColor;
+
+			-- Store the relationship on the marker itself as the category.
+			displayData.categoryName = loc.REG_RELATION .. ": " .. relationShipColor(loc:GetText("REG_RELATION_".. relation));
+			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
+		end
+		--endregion
 	else
 		-- Remove server name
 		displayData.playerName = characterID:gsub("%-.*$", "");
 	end
-
-	--region Player relationship
-	--local relation = TRP3_API.register.relation.getRelation(profileID);
-	local relation = TRP3_API.register.relation.NONE
-	local rand = math.random(100);
-	if rand > 80 then
-		relation = TRP3_API.globals.RELATIONS.LOVE;
-	elseif rand > 50 then
-		relation = TRP3_API.globals.RELATIONS.FRIEND;
-	end
-	if relation ~= TRP3_API.register.relation.NONE then
-		local relationShipColor = TRP3_API.register.relation.getColor(relation);
-		-- Swap out the atlas for this marker.
-		displayData.iconAtlas = "PlayerPartyBlip";
-		displayData.iconColor = relationShipColor;
-
-		-- Store the relationship on the marker itself as the category.
-		displayData.categoryName = loc.REG_RELATION .. ": " .. relationShipColor(loc:GetText("REG_RELATION_".. relation));
-		displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
-	end
-	--endregion
 
 	return displayData
 end
