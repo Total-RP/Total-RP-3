@@ -73,30 +73,20 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	});
 end)
 
+local SCAN_COMMAND = "CSCAN";
 ---@type MapScanner
 local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
+-- Set scan display properties
 playerMapScanner.scanIcon = "Achievement_GuildPerk_EverybodysFriend"
 playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
 playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
-playerMapScanner.scanCommand = "CSCAN";
+-- Indicate the name of the pin template to use with this scan.
+-- The MapDataProvider will use this template to generate the pin
 playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
+--region Scan behavior
 function playerMapScanner:Scan()
-	broadcast.broadcast(self.scanCommand, Map.getPlayerMapID());
-end
-
-function playerMapScanner:OnScanRequestReceived(sender, mapID)
-	mapID = tonumber(mapID);
-	if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
-		local playerMapID = Map.getPlayerMapID();
-		if playerMapID ~= mapID then
-			return
-		end
-		local x, y = Map.getPlayerCoordinates();
-		if x and y then
-			broadcast.sendP2PMessage(sender, self.scanCommand, x, y, playerMapID);
-		end
-	end
+	broadcast.broadcast(SCAN_COMMAND, Map.getPlayerMapID());
 end
 
 -- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
@@ -109,15 +99,28 @@ function playerMapScanner:CanScan()
 	end
 	return false;
 end
+--endregion
 
-broadcast.registerCommand(playerMapScanner.scanCommand, function(sender, mapId)
+--region Broadcast commands
+broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
 	if Map.playerCanSeeTarget(sender) then
-		playerMapScanner:OnScanRequestReceived(sender, mapId)
+		mapID = tonumber(mapID);
+		if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
+			local playerMapID = Map.getPlayerMapID();
+			if playerMapID ~= mapID then
+				return
+			end
+			local x, y = Map.getPlayerCoordinates();
+			if x and y then
+				broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, playerMapID);
+			end
+		end
 	end
 end)
 
-broadcast.registerP2PCommand(playerMapScanner.scanCommand, function(sender, x, y)
+broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y)
 	if Map.playerCanSeeTarget(sender) then
 		playerMapScanner:OnScanDataReceived(sender, x, y)
 	end
 end)
+--endregion

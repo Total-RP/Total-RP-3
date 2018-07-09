@@ -37,8 +37,11 @@ TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPOIMixins.createPinTemplate(
 	AddOn_TotalRP3.MapPOIMixins.AnimatedPinMixin -- Use animated icons (bounce in)
 );
 
+-- Expose template name, so the scan can use it for the MapDataProvider
 TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
+--- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
+--- into display info to be used to decorate the pin.
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
 	local characterID = poiInfo.sender;
 	local displayData = {};
@@ -77,6 +80,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
 	return displayData
 end
 
+--- This is called by the data provider to decorate the pin after the base pin mixin has done its job.
 ---@param poiInfo {position:Vector2DMixin, sender:string}
 function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);

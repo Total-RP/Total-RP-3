@@ -74,23 +74,11 @@ end
 
 end
 
---[[Override]] function MapScanner:OnScanRequestReceived(sender, ...)
-
-end
-
 --[[Override]] function MapScanner:CanScan()
 	return true;
 end
 
---[[Override]] function MapScanner:OnScanResultReceived(sender, ...)
-
-end
-
 --[[Override]] function MapScanner:OnScanCompleted()
-
-end
-
---[[Override]] function MapScanner:DecorateDataProviderPOI(marker, info)
 
 end
 

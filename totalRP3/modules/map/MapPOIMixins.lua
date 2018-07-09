@@ -152,6 +152,7 @@ end
 end
 
 function BasePinMixin:OnAcquired(poiInfo)
+	-- TODO Check all the results to make sure they contain expected data
 	-- Get display data
 	local displayData = self:GetDisplayDataFromPOIInfo(poiInfo);
 	-- Get the atlasName we should use for the pin texture
@@ -168,6 +169,7 @@ MapPOIMixins.BasePinMixin = BasePinMixin;
 ---@param ... table @ A list of mixins to include for this new template
 ---@return BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
 function MapPOIMixins.createPinTemplate(...)
+	-- TODO Check all the results to make sure they contain expected data
 	-- Create a new template for POI pins
 	local pinTemplate = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
 	-- Add our base mixin to it
