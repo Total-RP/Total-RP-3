@@ -24,8 +24,7 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 local assert = assert;
 local isType = Ellyb.Assertions.isType;
-local isInstanceOf = Ellyb.Assertions.isInstanceOf;
-local After = C_Timer.After;
+local CreateVector2D = CreateVector2D;
 
 ---@class MapScanner : Object
 local MapScanner, _private = Ellyb.Class("MapScanner");
@@ -41,6 +40,7 @@ function MapScanner:initialize(scanID)
 
 	_private[self] = {};
 	_private[self].scanID = scanID;
+	_private[self].scanData = {};
 
 	TRP3_API.MapScannersManager.registerScan(self);
 end
@@ -51,6 +51,23 @@ end
 
 function MapScanner:GetDataProviderTemplate()
 	return self.dataProviderTemplate
+end
+
+function MapScanner:OnScanDataReceived(sender, x, y, poiInfo)
+	local poiInfoCopy = Ellyb.Tables.copy(poiInfo or {});
+
+	poiInfoCopy.sender = sender;
+	poiInfoCopy.position = CreateVector2D(x, y);
+
+	_private[self].scanData[sender] = poiInfoCopy;
+end
+
+function MapScanner:ResetScanData()
+	_private[self].scanData = {};
+end
+
+function MapScanner:GetData()
+	return _private[self].scanData;
 end
 
 --[[Override]] function MapScanner:Scan()
@@ -75,10 +92,6 @@ end
 
 --[[Override]] function MapScanner:DecorateDataProviderPOI(marker, info)
 
-end
-
---[[Override]] function MapScanner:GetData()
-	return {}
 end
 
 AddOn_TotalRP3.MapScanner = MapScanner

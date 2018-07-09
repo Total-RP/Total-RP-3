@@ -58,6 +58,7 @@ function MapScannersManager.launchScan(scanID)
 
 	displayedMapID = AddOn_TotalRP3.Map.getDisplayedMapID()
 
+	scan:ResetScanData();
 	scan:Scan();
 	local promise = Ellyb.Promise()
 

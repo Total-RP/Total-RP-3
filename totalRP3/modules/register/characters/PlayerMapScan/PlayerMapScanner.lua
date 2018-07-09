@@ -495,7 +495,6 @@ playerMapScanner.scanCommand = "CSCAN";
 playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
 function playerMapScanner:Scan()
-	self.scanData = {};
 	broadcast.broadcast(self.scanCommand, Map.getPlayerMapID());
 end
 
@@ -524,15 +523,14 @@ function playerMapScanner:CanScan()
 	return false;
 end
 
-function playerMapScanner:OnScanResultReceived(sender, x, y, mapId)
+broadcast.registerCommand(playerMapScanner.scanCommand, function(sender, mapId)
 	if Map.playerCanSeeTarget(sender) then
-		self.scanData[sender] = {
-			position = CreateVector2D(x, y),
-			sender = sender
-		};
+		playerMapScanner:OnScanRequestReceived(sender, mapId)
 	end
-end
+end)
 
-function playerMapScanner:GetData()
-	return MAP_PLAYER_SCAN_FAKE_DATA.saveStructure or self.scanData;
-end
+broadcast.registerP2PCommand(playerMapScanner.scanCommand, function(sender, x, y)
+	if Map.playerCanSeeTarget(sender) then
+		playerMapScanner:OnScanDataReceived(sender, x, y)
+	end
+end)
