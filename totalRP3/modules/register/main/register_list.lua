@@ -99,6 +99,8 @@ local function openPage(profileID, unitID)
 			TRP3_MatureFilterPopup.menuID = currentlyOpenedProfilePrefix .. profileID;
 		end
 	end
+	
+	Events.triggerEvent(Events.REGISTER_PROFILE_READ, profileID, unitID)
 end
 TRP3_API.register.openPageByProfileID = openPage;
 
