@@ -71,6 +71,11 @@ local Events = {
 	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
 
+	-- Called when the user opens someone's profile.
+	-- Arg1 : Profile ID
+	-- Arg2 : Unit ID (only given when opening from a unit ID, and not if opening from the directory or similar).
+	REGISTER_PROFILE_READ = "REGISTER_PROFILE_READ",
+	
 	-- Called when a notifications is created/read/removed
 	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
 	
