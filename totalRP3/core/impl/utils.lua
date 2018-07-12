@@ -283,7 +283,7 @@ Utils.str.unitInfoToID = function(unitName, unitRealmID)
 	if not unitRealmID or unitRealmID == "" then
 		unitRealmID = Globals.player_realm_id
 	end
-	return strconcat(unitName or "_", '-', unitRealmID);
+	return strconcat(unitName or "_", '-', unitRealmID or "_");
 end
 
 -- Separates the unit name and realm from an unit ID
@@ -980,11 +980,11 @@ end
 -- Handles WOW events
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerHandler;
+Utils.event.registerHandler = TRP3_API.Ellyb.GameEvents.registerCallback;
 
-Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterHandler;
+Utils.event.unregisterHandler = TRP3_API.Ellyb.GameEvents.unregisterCallback;
 
-Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.fireEvent;
+Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.triggerEvent;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MUSIC / SOUNDS

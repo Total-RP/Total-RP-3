@@ -259,7 +259,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						SendChatMessage("","DND");
 					end
 				end
-				playUISound("igMainMenuOptionCheckBoxOn");
+				playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			end,
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
@@ -316,7 +316,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					displayDropDown(Uibutton, dropdownItems, profileSelected, 0, true);
 				else
 					switchStatus();
-					playUISound("igMainMenuOptionCheckBoxOn");
+					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 				end
 			end,
 			onLeave = function()

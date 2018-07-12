@@ -110,8 +110,9 @@ local function configDoHandleNPCTalk()
 end
 
 local function configNPCTalkPrefix()
-	return getConfigValue(CONFIG_NPC_TALK_PREFIX);
+	return getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX);
 end
+TRP3_API.chat.configNPCTalkPrefix = configNPCTalkPrefix;
 
 local function configDoEmoteDetection()
 	return getConfigValue(CONFIG_EMOTE);
@@ -144,7 +145,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
 	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
-	registerConfigKey(CONFIG_NPC_TALK, true);
 	registerConfigKey(CONFIG_EMOTE, true);
 	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
@@ -234,15 +234,6 @@ local function createConfigPage()
 			},
 			{
 				inherit = "TRP3_ConfigH1",
-				title = loc.CO_CHAT_MAIN_NPC,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_CHAT_MAIN_NPC_USE,
-				configKey = CONFIG_NPC_TALK,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
 				title = loc.CO_CHAT_MAIN_EMOTE,
 			},
 			{
@@ -308,6 +299,32 @@ local function createConfigPage()
 
 	TRP3_API.configuration.registerConfigurationPage(CONFIG_STRUCTURE);
 end
+
+-- Advanced settings
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigH1",
+	title = loc.CO_CHAT_MAIN_NPC,
+});
+
+-- NPC talks
+TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK = "chat_npc_talk";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK] = true;
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigCheck",
+	title = loc.CO_CHAT_MAIN_NPC_USE,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK,
+});
+
+-- NPC talks pattern
+TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX = "npc_talk_prefix";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX] = "|| ";
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigEditBox",
+	title = loc.CO_CHAT_MAIN_NPC_PREFIX,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK_PREFIX,
+	help = loc.CO_CHAT_MAIN_NPC_PREFIX_TT,
+	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.NPC_TALK },
+});
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Utils
@@ -549,7 +566,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
-		if message:sub(1, 3) == "|| " and configDoHandleNPCTalk() then
+		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
 			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 

@@ -1,33 +1,35 @@
-# Changelog for version 1.3.5.3
+# Changelog for version 1.4
 
-## Fixed
+**This version requires Battle for Azeroth, patch 8.0.1.**
 
-- Improvements to the realm name fixes.
-- Fixed possible issues with profile that were imported from chat links
+ ## Add-on communications improvement
+ 
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - **Profiles are now logged on Blizzard's servers** when sent to other players. This is so Blizzard can see what's the actual content of people's RP profiles in case of reported of abuses, like target harassment or doxxing. **This means that you should now treat what you put in your profile as if you were witting that content in /say** (_Goldshire_).
+ - **Cross server and cross faction support with Battle.net friends:** the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - **Improved performances:** thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
+ 
+ **_It was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol._**
 
-# Changelog for version 1.3.5.2
+## New logos
 
-## Fixed
+![](https://www.dropbox.com/s/rm0lzcubo9tl5bk/TRP3_Extended_Logo.png?raw=1)  
+Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
 
-- More fixes for the realm name issue. Sorry about that. Again.
 
-# Changelog for version 1.3.5.1
-
-## Fixed
-
-- Removed the workaround for the realm name issue introduced in yesterday's maintenance as it was causing multiple issues in other parts of the add-on. We are now using LibRealmInfo instead, which is more stable.
-
-# Changelog for version 1.3.5
-
-## Fixed
-
-- Fixed issue when trying to get realm name introduced with the latest maintenance.
-- Fixed an error that would prevent the add-on from having access to the game's tooltip when using friendly nameplates in dungeons.
-- Fixed an issue with the WIM custom chat module when the option to disable chat features when Out Of Character was enabled.
-- Fixed an issue that would make the tooltip flicker briefly when using the option to position the tooltip on the cursor.
+A new minimap icon also replaces the older one and showcases a classic D&D die.  
+![](https://www.dropbox.com/s/ri35tugtkj0g2c7/trp_icon.png?raw=1)
 
 ## Added
 
-- Added custom chat module for ElvUI (now required as they are no longer using standard functions to get player names).
-- Added custom skinning module for ElvUI, to apply ElvUI's theme to the tooltip and target frame (can be disabled in the new ElvUI settings tab).  
-![](https://www.dropbox.com/s/g57644riwygwww9/elvui_tooltip.png?raw=1)
+- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values.
+
+## Modified
+
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.
+
+## Removed
+
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.

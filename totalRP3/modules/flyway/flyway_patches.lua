@@ -93,3 +93,13 @@ TRP3_API.flyway.patches["7"] = function()
 		end
 	end
 end
+
+-- Remove voting feature
+TRP3_API.flyway.patches["8"] = function()
+	if not TRP3_Profiles then return end
+	for _, profile in pairs(TRP3_Profiles) do
+		if profile.about then
+			profile.about.vote = nil;
+		end
+	end
+end

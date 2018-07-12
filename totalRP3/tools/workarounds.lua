@@ -49,7 +49,7 @@ table.insert(workaroundsToApply, function()
 		end
 	end)
 
-	TRP3_API.Ellyb.GameEvents.registerHandler("PLAYER_ENTERING_WORLD", function()
+	TRP3_API.Ellyb.GameEvents.registerCallback("PLAYER_ENTERING_WORLD", function()
 		if InCombatLockdown() then return end
 		if IsInInstance() and GetCVar("nameplateShowDebuffsOnFriendly") == 1 then
 			previousUserSetting = 1

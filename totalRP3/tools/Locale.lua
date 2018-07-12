@@ -177,15 +177,6 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_ABOUT_P = "Paragraph tag",
 	REG_PLAYER_ABOUT_TAGS = "Formatting tools",
 	REG_PLAYER_ABOUT_SOME = "Some text ...",
-	REG_PLAYER_ABOUT_VOTE_UP = "I like this content",
-	REG_PLAYER_ABOUT_VOTE_DOWN = "I don't like this content",
-	REG_PLAYER_ABOUT_VOTE_TT = "Your vote is totally anonymous and can only be seen by this player.",
-	REG_PLAYER_ABOUT_VOTE_TT2 = "You can vote only if the player is online.",
-	REG_PLAYER_ABOUT_VOTE_NO = "No characters linked to this profile seem to be online.\nDo you want to force Total RP 3 to send your vote anyway ?",
-	REG_PLAYER_ABOUT_VOTE_SENDING = "Sending your vote to %s ...",
-	REG_PLAYER_ABOUT_VOTE_SENDING_OK = "Your vote has been sent to %s !",
-	REG_PLAYER_ABOUT_VOTES = "Statistics",
-	REG_PLAYER_ABOUT_VOTES_R = "|cff00ff00%s like this content\n|cffff0000%s dislike this content",
 	REG_PLAYER_ABOUT_EMPTY = "No description",
 	REG_PLAYER_STYLE_RPSTYLE_SHORT = "RP style",
 	REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
@@ -488,8 +479,6 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
 	CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
 	CO_REGISTER = "Register settings",
-	CO_REGISTER_ABOUT_VOTE = "Use voting system",
-	CO_REGISTER_ABOUT_VOTE_TT = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -1117,6 +1106,9 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 {col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon}{col:ffffff} supporters:{/col}
 %s
 
+{col:ffffff}Logo and minimap button icon:{/col}
+- {link*https://ebonfeathers.tumblr.com/*EbonFeather@Tumblr}
+
 {col:ffffff}Our pre-alpha QA team:{/col}
 %TESTERS$s
 
@@ -1161,59 +1153,9 @@ If you are planning on copying the text below inside a document, please use simp
 People will be able to copy and use the content of the link.]],
 	CL_MAKE_IMPORTABLE_BUTTON_TEXT = "Make importable",
 	CL_MAKE_NON_IMPORTABLE = "Viewable only",
-
-	---@language Markdown
-	WHATS_NEW_19 = [[
-# Changelog for version 1.3.5
-
-## Fixed
-
-- Fixed issue when trying to get realm name introduced with the latest maintenance.
-- Fixed an error that would prevent the add-on from having access to the game's tooltip when using friendly nameplates in dungeons.
-- Fixed an issue with the WIM custom chat module when the option to disable chat features when Out Of Character was enabled.
-- Fixed an issue that would make the tooltip flicker briefly when using the option to position the tooltip on the cursor.
-
-## Added
-
-- Added custom chat module for ElvUI (now required as they are no longer using standard functions to get player names).
-- Added custom skinning module for ElvUI, to apply ElvUI's theme to the tooltip and target frame (can be disabled in the new ElvUI settings tab).
-
-]],
-
-	---@language Markdown
-	WHATS_NEW_19_1 = [[
-# Changelog for version 1.3.5.1
-
-## Fixed
-
-- Removed the workaround for the realm name issue introduced in yesterday's maintenance as it was causing multiple issues in other parts of the add-on. We are now using LibRealmInfo instead, which is more stable.
-]],
-	---@language Markdown
-	WHATS_NEW_19_2 = [[
-# Changelog for version 1.3.5.2
-
-## Fixed
-
-- More fixes for the realm name issue. Sorry about that. Again.
-]],
-	---@language Markdown
-	WHATS_NEW_19_3 = [[
-# Changelog for version 1.3.5.3
-
-## Fixed
-
-- Improvements to the realm name fixes.
-- Fixed possible issues with profile that were imported from chat links
-]],
 	CL_TOOLTIP = "Create a chat link",
 	CL_DOWNLOADING = "Downloading: %0.1f %%",
 	CL_SENDING_COMMAND = "Sending command…",
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
 
 Would you like to reload the interface now?]],
@@ -1221,6 +1163,55 @@ Would you like to reload the interface now?]],
 	TT_ELVUI_SKIN = "ElvUI skin",
 	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
 	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
+	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
+
+	---@language Markdown
+	WHATS_NEW_20 = [[
+# Changelog for version 1.4
+
+|cffff8000This version requires Battle for Azeroth, patch 8.0.1.|r
+
+## Add-on communications improvement
+
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - |cffff8000Profiles are now logged on Blizzard's servers|r when sent to other players. This is so Blizzard can see what's the content of people's RP profile in case of report of abuses, like target harassment or doxxing. |rThis means that you should now treat what you put in your profile as if you were witting that content in /say |cffaaaaaa(Goldshire)|r.
+ - |cffff8000Cross server and cross faction support with Battle.net friends:|r the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - |cffff8000Improved performances:|r thanks to looser limitations and newer compression algorithms, all data transfers should be faster (sometimes up to 8 times faster for big Extended campaigns).
+
+|cffaaaaaaIt was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol.|r
+
+## New logos
+{img:Interface\AddOns\totalRP3\resources\trp3logo.blp:128:64}
+Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
+
+A new minimap icon also replaces the older one and showcases a classic D&D die.
+{img:Interface\AddOns\totalRP3\resources\trp3minimap.tga:25:25}
+
+## Other modifications
+
+- The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CL_TOOLTIP = "Create a chat link",
+	CO_ADVANCED_SETTINGS = "Advanced settings",
+	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
+	CO_ADVANCED_SETTINGS_POPUP = [[You have just modified an advanced setting.
+
+Please keep in mind that changing those settings might alter your experience with the add-on and could prevent some features from working correctly. Use at your own risk.]],
+	CO_ADVANCED_SETTINGS_RESET = "Reset advanced settings",
+	CO_ADVANCED_SETTINGS_RESET_TT = "Reset all the advanced settings to their default value. Use this if you have issues after modifying the settings.",
+	CO_GENERAL_BROADCAST_C = "Broadcast channel name",
+	CO_ADVANCED_BROADCAST = "Add-on communications",
+	CO_ADVANCED_LANGUAGES = "Languages",
+	CO_ADVANCED_LANGUAGES_REMEMBER = "Remember last language used",
+	CO_ADVANCED_LANGUAGES_REMEMBER_TT = "Total RP 3 will remember what language you were using before logging off and automatically select this language back on next login.",
 };
 
 -- Use Ellyb to generate the Localization system

@@ -21,7 +21,7 @@
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local get = TRP3_API.profile.getData;
-local Comm = TRP3_API.communication;
+local Comm = AddOn_TotalRP3.Communications;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
@@ -46,8 +46,11 @@ local getConfigValue = TRP3_API.configuration.getValue;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 -- WoW imports
-local UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, UnitFactionGroup, CheckInteractDistance, UnitFullName;
+local UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
 
@@ -345,7 +348,7 @@ local function incomingInformationType(informationType, senderID)
 	end
 	if data then
 		log(("Send %s info to %s"):format(informationType, senderID));
-		Comm.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY);
+		AddOn_TotalRP3.Communications.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY, nil, true);
 	end
 end
 
@@ -353,7 +356,10 @@ end
 -- Received information
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function incomingInformationTypeSent(structure, senderID)
+local function incomingInformationTypeSent(structure, senderID, channel)
+	if not channel:find("LOGGED", nil, true) and not channel:find("BATTLENET", nil, true) then
+		return -- ignore non logged profiles
+	end
 	local informationType = structure[1];
 	local data = structure[2];
 
@@ -387,21 +393,19 @@ end
 local companionIDToInfo = Utils.str.companionIDToInfo;
 
 local function onMouseOverCharacter(unitID)
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") then
-		sendQuery(unitID);
-	end
+	sendQuery(unitID);
 end
 
 local function onMouseOverCompanion(companionFullID)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
-	if UnitFactionGroup("player") == UnitFactionGroup("mouseover") and isUnitIDKnown(ownerID) then
+	if isUnitIDKnown(ownerID) then
 		sendQuery(ownerID);
 	end
 end
 
 local function onTargetChanged()
 	local unitID = Utils.str.getUnitID("target");
-	if UnitIsPlayer("target") and UnitFactionGroup("player") == UnitFactionGroup("target") then
+	if UnitIsPlayer("target") then
 		sendQuery(unitID);
 	end
 end
@@ -454,17 +458,17 @@ function TRP3_API.register.inits.dataExchangeInit()
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
 
 	-- Register prefix for data exchange
-	Comm.registerProtocolPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, true);
 	end);
-	Comm.registerProtocolPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(VERNUM_R_QUERY_PREFIX, function(structure, senderID)
 		incomingVernumQuery(structure, senderID, false);
 	end);
-	Comm.registerProtocolPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
-	Comm.registerProtocolPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_QUERY_PREFIX, incomingInformationType);
+	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	-- When receiving HELLO from someone else (from the other side ?)
-	Comm.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
+	AddOn_TotalRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
 		version = tonumber(version) or 0;
 		extendedVersion = tonumber(extendedVersion) or 0;
 		-- Only treat the message if it does not come from us

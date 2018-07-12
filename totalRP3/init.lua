@@ -21,6 +21,15 @@
 ---@class TRP3_API
 local addOnName, TRP3_API = ...;
 
+local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo()
+
+if interfaceVersionNumber < 80000 then
+	error(([[This version of Total RP 3 only supports patch 8.0 Battle for Azeroth, but you are running patch %s.
+
+Please downgrade to the latest version available for this patch.
+If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha.]]):format(displayBuild))
+end
+
 -- Global informations
 -- Note: This table will be overwritten in totalRP3/core/impl/globals.lua
 -- It is here only so that DEBUG_MODE is available from the start
@@ -52,10 +61,13 @@ TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);
 --[===[@non-debug@
 
 -- Debug mode is disabled when the add-on has been packaged by Curse
-TRP3_API.Ellyb.DEBUG_MODE = false;
+TRP3_API.Ellyb.SetDebugMode(false)
 
 --@end-non-debug@]===]
 
 
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;
+
+-- New public API, intended for external use
+_G.AddOn_TotalRP3 = {};

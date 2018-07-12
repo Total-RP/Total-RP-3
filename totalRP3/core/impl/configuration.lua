@@ -83,6 +83,11 @@ local function getValue(key)
 end
 Config.getValue = getValue;
 
+function Config.getDefaultValue(key)
+	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
+	return defaultValues[key]
+end
+
 local function registerConfigKey(key, defaultValue)
 	assert(type(key) == "string" and defaultValue ~= nil, "Must be a string key and a not nil default value.");
 	assert(not defaultValues[key], "Config key already registered: " .. tostring(key));
@@ -342,15 +347,8 @@ local function registerConfigurationPage(pageStructure)
 end
 Config.registerConfigurationPage = registerConfigurationPage;
 
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- GENERAL SETTINGS
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local function changeLocale(newLocaleCode)
-	if newLocaleCode ~= loc:GetActiveLocale():GetCode() then
-		setValue("AddonLocale", newLocaleCode);
-		TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(Ellyb.ColorManager.GREEN(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
-	end
+function Config.refreshPage(pageID)
+	buildConfigurationPage(registeredConfiPage[pageID]);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -387,7 +385,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
-	registerConfigKey("comm_broad_use", true);
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
@@ -400,29 +397,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		menuText = loc.CO_GENERAL,
 		pageText = loc.CO_GENERAL,
 		elements = {
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc.CO_GENERAL_LOCALE,
-			},
-			{
-				inherit = "TRP3_ConfigDropDown",
-				widgetName = "TRP3_ConfigurationGeneral_LangWidget",
-				title = loc.CO_GENERAL_LOCALE,
-				listContent = localeTab,
-				listCallback = changeLocale,
-				listDefault = loc:GetActiveLocale():GetName(),
-				listCancel = true,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc.CO_GENERAL_COM,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_GENERAL_BROADCAST,
-				configKey = "comm_broad_use",
-				help = loc.CO_GENERAL_BROADCAST_TT,
-			},
 			{
 				inherit = "TRP3_ConfigH1",
 				title = loc.CO_GENERAL_MISC,

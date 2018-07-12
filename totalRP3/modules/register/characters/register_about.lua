@@ -22,7 +22,7 @@
 local _, TRP3_API = ...;
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
+local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.Communication, TRP3_API.events;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local safeGet = TRP3_API.profile.getDataDefault;
@@ -438,122 +438,6 @@ local function showTemplate3(dataTab)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- VOTE
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local sendVote;
-local VOTE_MESSAGE_PREFIX = "ABVT";
-local VOTE_MESSAGE_PRIORITY = "ALERT";
-local VOTE_MESSAGE_R_PREFIX = "ABVR";
-local VOTE_MESSAGE_R_PRIORITY = "ALERT";
-
-local function refreshVoteDisplay(aboutTab)
-	if aboutTab.vote == 1 then
-		TRP3_RegisterAbout_AboutPanel_ThumbUp:LockHighlight();
-		TRP3_RegisterAbout_AboutPanel_ThumbUp:GetHighlightTexture():SetVertexColor(0, 1, 0);
-	else
-		TRP3_RegisterAbout_AboutPanel_ThumbUp:UnlockHighlight();
-		TRP3_RegisterAbout_AboutPanel_ThumbUp:GetHighlightTexture():SetVertexColor(1, 1, 1);
-	end
-	if aboutTab.vote == -1 then
-		TRP3_RegisterAbout_AboutPanel_ThumbDown:LockHighlight();
-		TRP3_RegisterAbout_AboutPanel_ThumbDown:GetHighlightTexture():SetVertexColor(0, 1, 0);
-	else
-		TRP3_RegisterAbout_AboutPanel_ThumbDown:UnlockHighlight();
-		TRP3_RegisterAbout_AboutPanel_ThumbDown:GetHighlightTexture():SetVertexColor(1, 1, 1);
-	end
-end
-
-local function showVotingOption(voteValue)
-	local context = getCurrentContext();
-	assert(context, "No context for page player_main !");
-	assert(context.profile, "No profile in context !");
-	assert(not context.isPlayer, "Trying to vote for yourself ...");
-
-	local profile = context.profile;
-	if profile.link then
-		local sent = false;
-		for unitID, _ in pairs(profile.link) do
-			local isOnline = true;
-			if isOnline then
-				sendVote(voteValue, unitID, profile);
-				sent = true;
-				break;
-			end
-		end
-		if not sent then
-			Utils.message.displayMessage(loc.REG_PLAYER_ABOUT_VOTE_NO);
-		end
-	end
-end
-
-function sendVote(voteValue, target, profile)
-	if target ~= Globals.player_id and profile and profile.about then
-		if voteValue == profile.about.vote then
-			voteValue = 0; -- Unvoting
-		end
-		Comm.sendObject(VOTE_MESSAGE_PREFIX, {voteValue, Globals.player_hash}, target, VOTE_MESSAGE_PRIORITY);
-		local playerName = unitIDToInfo(target);
-		Utils.message.displayMessage(loc.REG_PLAYER_ABOUT_VOTE_SENDING:format(playerName));
-	end
-end
-
-local function aggregateVotes(voteData)
-	local voteUp = 0;
-	local voteDown = 0;
-	for voter, vote in pairs(voteData or {}) do
-		if vote == 1 then
-			voteUp = voteUp + 1;
-		elseif vote == -1 then
-			voteDown = voteDown + 1;
-		end
-	end
-	return voteUp, voteDown;
-end
-
-local function refreshPlayerVoteDisplay()
-	if getCurrentPageID() == "player_main" then
-		local context = getCurrentContext();
-		if context and context.isPlayer and context.profile and context.profile.about then
-			setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbResult,
-			"LEFT", 0, 5, loc.REG_PLAYER_ABOUT_VOTES,
-			loc.REG_PLAYER_ABOUT_VOTES_R:format(aggregateVotes(context.profile.about.vote))
-			);
-		end
-	end
-end
-
--- Someone vote for your description
-local function vote(values, sender)
-	local value, fromHash = unpack(values);
-	Log.log(("Receive vote from %s: %s (%s)"):format(sender, value, fromHash));
-	local about = get("player/about");
-	if not about.vote then
-		about.vote = {};
-	end
-	about.vote[fromHash] = value;
-	Comm.sendObject(VOTE_MESSAGE_R_PREFIX, value, sender, VOTE_MESSAGE_R_PRIORITY);
-	refreshPlayerVoteDisplay();
-end
-
--- Your vote has been registered
-local function voteResponse(value, sender)
-	local value = tonumber(value);
-	if isUnitIDKnown(sender) and hasProfile(sender) and getUnitIDProfile(sender).about then
-		getUnitIDProfile(sender).about.vote = value;
-		local playerName = unitIDToInfo(sender);
-		Utils.message.displayMessage(loc.REG_PLAYER_ABOUT_VOTE_SENDING_OK:format(playerName));
-		if getCurrentPageID() == "player_main" then
-			local context = getCurrentContext();
-			assert(context, "No context for page player_main !");
-			if context.profile == getUnitIDProfile(sender) then
-				refreshVoteDisplay(getUnitIDProfile(sender).about);
-			end
-		end
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -564,7 +448,6 @@ local function getOptimizedData()
 	-- Optimize : only send the selected template
 	local dataToSend = {};
 	tcopy(dataToSend, dataTab);
-	dataToSend.vote = nil; -- Don't send your votes ...
 	-- Don't send data about templates you don't use ...
 	local template = dataToSend.TE or 1;
 	if template ~= 1 then
@@ -615,19 +498,15 @@ local function refreshConsultDisplay(context)
 	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
 	TRP3_RegisterAbout_AboutPanel_ThumbResult:Hide();
 	TRP3_RegisterAbout_AboutPanel_ThumbUp:Hide();
-	TRP3_RegisterAbout_AboutPanel_ThumbDown:Hide();
 
 	if context.isPlayer then
 		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
-		refreshPlayerVoteDisplay();
 	else
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
 		TRP3_RegisterAbout_AboutPanel_ThumbUp:Show();
-		TRP3_RegisterAbout_AboutPanel_ThumbDown:Show();
-		refreshVoteDisplay(dataTab);
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
@@ -683,11 +562,6 @@ local function save()
 	wipe(dataTab);
 	-- By simply copy the draftData we get everything we need about ordering and structures.
 	tcopy(dataTab, draftData);
-	-- Reinit votes
-	if dataTab.vote then
-		wipe(dataTab.vote);
-	end
-	dataTab.vote = nil;
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
@@ -833,10 +707,6 @@ local TRP3_RegisterAbout_AboutPanel_EditButton = TRP3_RegisterAbout_AboutPanel_E
 local TRP3_RegisterAbout_AboutPanel_MusicPlayer = TRP3_RegisterAbout_AboutPanel_MusicPlayer;
 
 local function onPlayerAboutRefresh()
-	local profile = getCurrentContext().profile;
-	if getConfigValue("register_about_use_vote") and (getCurrentContext().isPlayer or (not profile.msp and profile.link and tsize(profile.link) > 0)) then
-		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_Thumb, TRP3_RegisterAbout_AboutPanel);
-	end
 	if TRP3_RegisterAbout_AboutPanel.isMine then
 		showIfMouseOver(TRP3_RegisterAbout_AboutPanel_EditButton, TRP3_RegisterAbout_AboutPanel);
 	end
@@ -978,9 +848,6 @@ end);
 function TRP3_API.register.inits.aboutInit()
 	createTutorialStructures();
 
-	Comm.registerProtocolPrefix(VOTE_MESSAGE_PREFIX, vote);
-	Comm.registerProtocolPrefix(VOTE_MESSAGE_R_PREFIX, voteResponse);
-
 	-- UI
 	createRefreshOnFrame(TRP3_RegisterAbout_AboutPanel, 0.2, onPlayerAboutRefresh);
 	local bkgTab = getTiledBackgroundList();
@@ -1019,15 +886,6 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1", 1, 1, 1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2", 1, 1, 1);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3", 1, 1, 1);
-
-	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbResult, "INV_Inscription_RunescrollOfFortitude_Green");
-	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbUp, "THUMBUP");
-	setupIconButton(TRP3_RegisterAbout_AboutPanel_ThumbDown, "THUMBSDOWN");
-
-	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbUp, "LEFT", 0, 5, loc.REG_PLAYER_ABOUT_VOTE_UP, loc.REG_PLAYER_ABOUT_VOTE_TT .. "\n\n" .. Utils.str.color("y") .. loc.REG_PLAYER_ABOUT_VOTE_TT2);
-	setTooltipForSameFrame(TRP3_RegisterAbout_AboutPanel_ThumbDown, "LEFT", 0, 5, loc.REG_PLAYER_ABOUT_VOTE_DOWN, loc.REG_PLAYER_ABOUT_VOTE_TT .. "\n\n" .. Utils.str.color("y") .. loc.REG_PLAYER_ABOUT_VOTE_TT2);
-	TRP3_RegisterAbout_AboutPanel_ThumbUp:SetScript("OnClick", function() showVotingOption(1) end);
-	TRP3_RegisterAbout_AboutPanel_ThumbDown:SetScript("OnClick", function() showVotingOption(-1) end);
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
