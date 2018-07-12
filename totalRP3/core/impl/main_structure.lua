@@ -272,6 +272,8 @@ local function setPage(pageId, context)
 	
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, pageId);
 	playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+	
+	TRP3_API.Events.triggerEvent(TRP3_API.Events.PAGE_OPENED, pageId, context)
 end
 TRP3_API.navigation.page.setPage = setPage;
 
