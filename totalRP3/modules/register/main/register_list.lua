@@ -100,7 +100,7 @@ local function openPage(profileID, unitID)
 		end
 	end
 	
-	Events.triggerEvent(Events.REGISTER_PROFILE_READ, profileID, unitID)
+	Events.triggerEvent(Events.REGISTER_PROFILE_OPENED, profileID, unitID)
 end
 TRP3_API.register.openPageByProfileID = openPage;
 
