@@ -441,8 +441,6 @@ end
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentCompressed;
-
 local function getOptimizedData()
 	local dataTab = get("player/about");
 	-- Optimize : only send the selected template
@@ -460,18 +458,6 @@ local function getOptimizedData()
 		dataToSend.T3 = nil;
 	end
 	return dataToSend;
-end
-
-local function compressData()
-	local dataTab = getOptimizedData();
-	local serial = Utils.serial.serialize(dataTab);
-	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
-
-	if compressed and compressed:len() < serial:len() then
-		currentCompressed = compressed;
-	else
-		currentCompressed = nil;
-	end
 end
 
 function TRP3_API.register.player.getAboutExchangeData()
@@ -556,7 +542,6 @@ local function save()
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
-	compressData();
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "about");
 end
 
@@ -882,9 +867,6 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetScript("OnClick", function()
 		Utils.music.stopMusic();
 	end);
-
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
-	compressData();
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if dataType == "about" and unitID and unitID ~= Globals.player_id then

@@ -108,20 +108,6 @@ TRP3_API.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentCompressed;
-
-local function compressData()
-	local dataTab = get("player/characteristics");
-	local serial = Utils.serial.serialize(dataTab);
-	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
-
-	if compressed and compressed:len() < serial:len() then
-		currentCompressed = compressed;
-	else
-		currentCompressed = nil;
-	end
-end
-
 function TRP3_API.register.player.getCharacteristicsExchangeData()
 	return get("player/characteristics");
 end
@@ -1170,7 +1156,6 @@ local function saveCharacteristics()
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
-	compressData();
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "characteristics");
 end
 
@@ -1492,8 +1477,6 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc.REG_PLAYER_RESIDENCE);
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc.REG_PLAYER_BIRTHPLACE);
 
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
-	compressData();
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
