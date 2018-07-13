@@ -496,17 +496,12 @@ local function refreshConsultDisplay(context)
 	local dataTab = context.profile.about or Globals.empty;
 	local template = dataTab.TE or 1;
 	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
-	TRP3_RegisterAbout_AboutPanel_ThumbResult:Hide();
-	TRP3_RegisterAbout_AboutPanel_ThumbUp:Hide();
 
-	if context.isPlayer then
-		TRP3_RegisterAbout_AboutPanel_ThumbResult:Show();
-	else
+	if not context.isPlayer then
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
-		TRP3_RegisterAbout_AboutPanel_ThumbUp:Show();
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
@@ -519,7 +514,6 @@ local function refreshConsultDisplay(context)
 	end
 
 	TRP3_RegisterAbout_AboutPanel_EditButton:Hide();
-	TRP3_RegisterAbout_AboutPanel_Thumb:Hide();
 	TRP3_RegisterAbout_AboutPanel:Show();
 	-- Putting the right templates
 	templatesFunction[template](dataTab);
@@ -702,7 +696,6 @@ end
 -- UI MISC
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TRP3_RegisterAbout_AboutPanel_Thumb = TRP3_RegisterAbout_AboutPanel_Thumb;
 local TRP3_RegisterAbout_AboutPanel_EditButton = TRP3_RegisterAbout_AboutPanel_EditButton;
 local TRP3_RegisterAbout_AboutPanel_MusicPlayer = TRP3_RegisterAbout_AboutPanel_MusicPlayer;
 
