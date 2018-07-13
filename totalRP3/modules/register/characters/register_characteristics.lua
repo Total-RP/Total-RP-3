@@ -334,13 +334,17 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
-			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
-				loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
+			--[[ TODO: Reimplement this feature for patch 8.0
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
 				SetMapByID(dataTab.RC[1]);
 				TRP3_API.map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], completeName, TRP3_API.map.DECORATION_TYPES.HOUSE);
 			end);
+			]]
+
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
+				loc.REG_PLAYER_RESIDENCE_SHOW, Ellyb.ColorManager.GREEN(dataTab.RC[4]).. Ellyb.ColorManager.RED("\n\nDisplaying player residence on the map disabled due to 8.0 changes."));
 		end
 		frame:Show();
 		previous = frame;
