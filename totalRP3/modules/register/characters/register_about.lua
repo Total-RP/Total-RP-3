@@ -475,11 +475,7 @@ local function compressData()
 end
 
 function TRP3_API.register.player.getAboutExchangeData()
-	if currentCompressed ~= nil then
-		return currentCompressed;
-	else
-		return getOptimizedData();
-	end
+	return getOptimizedData();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

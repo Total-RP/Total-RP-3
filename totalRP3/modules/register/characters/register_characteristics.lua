@@ -123,11 +123,7 @@ local function compressData()
 end
 
 function TRP3_API.register.player.getCharacteristicsExchangeData()
-	if currentCompressed ~= nil then
-		return currentCompressed;
-	else
-		return get("player/characteristics");
-	end
+	return get("player/characteristics");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
