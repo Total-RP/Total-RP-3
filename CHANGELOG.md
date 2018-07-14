@@ -22,14 +22,19 @@ A new minimap icon also replaces the older one and showcases a classic D&D die.
 
 ## Added
 
-- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values.
+- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values. Amongst these new advanced settings you can find the settings for the broadcast channel, NPC talk prefix, disable the option to remember the last language used between session, and more.
 
 ## Modified
 
 - You can no longer set your residence marker inside an instanced zone.
 - Fixed several issues related to patch 8.0.1.
 
+## Fixed
+
+- Added support for other add-ons through the Mary Sue Protocol when using `/trp3 open [playerName]` command.
+
 ## Removed
 
 - The map features have been temporarily disabled while we are still working on having them fixed for Battle for Azeroth. The entire world map UI has been completely re-implemented by Blizzard and it requires more or less a complete rewrite of how we handle map stuff.
+- We have disabled the button to show the residence location of players from the profile page while we are re-implementing the map features for patch 8.0.
 - The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.
