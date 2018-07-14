@@ -75,21 +75,6 @@ local Events = {
 	-- Called when as "About" page is shown.
 	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
-
-	-- Called when the user opens a profile in the viewer.
-	-- Arg1 : Profile ID - may be nil when viewing the player's profile.
-	-- Arg2 : Context. This comes in two formats:
-	--         Player's profile format: (triggered when opening from the Character menu)
-	--           source   = "player"
-	--           isPlayer = true
-	--           profile  = player's profile data
-	--         Directory profile format: (triggered when opening someone else's profile)
-	--           source            = "directory".
-	--           profile,profileID = Profile data and ID.
-	--           openingWithUnitID = true if opening the page with a fresh unitID (name).
-	--           unitID            = unitID (name) used to open the page; may be nil or 
-	--                               the previously set value if openingWithUnitID=false.
-	REGISTER_PROFILE_OPENED = "REGISTER_PROFILE_OPENED",
 	
 	-- Called when a notifications is created/read/removed
 	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
