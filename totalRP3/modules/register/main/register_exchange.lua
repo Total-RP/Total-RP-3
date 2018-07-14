@@ -45,6 +45,7 @@ local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local displayMessage = TRP3_API.utils.message.displayMessage;
+local msp = _G.msp;
 
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
@@ -520,6 +521,8 @@ TRP3_API.slash.registerCommand({
 		end
 
 		sendQuery(characterToOpen);
+		local request = {"TT", "HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
+		msp:Request(characterToOpen, request);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();
@@ -539,7 +542,7 @@ TRP3_API.slash.registerCommand({
 
 -- Event for the "/trp3 open" command
 Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
-	if unitID == characterToOpen and dataType == "character" then
+	if unitID == characterToOpen and (not dataType or dataType == "character") then
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.register.openPageByUnitID(characterToOpen);
 		if commandOpeningTimerHandle then
