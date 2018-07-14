@@ -904,9 +904,3 @@ function TRP3_API.register.init()
 		scanDuration = 2.5;
 	});
 end
-
-Events.registerCallback( Events.PAGE_OPENED, function( pageId, context )
-	if pageId == "player_main" then
-		Events.triggerEvent(Events.REGISTER_PROFILE_OPENED, context )
-	end
-end)
