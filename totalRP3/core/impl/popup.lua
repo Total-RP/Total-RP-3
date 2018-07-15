@@ -36,6 +36,7 @@ local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.u
 local strconcat = strconcat;
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local max = math.max;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
@@ -867,7 +868,14 @@ end
 local function decorateImage(texture, index)
 	local image = filteredImageList[index];
 	local ratio = image.height / image.width;
-	texture:SetHeight(texture:GetWidth() * ratio);
+	local maxSize = max(texture:GetHeight(), texture:GetWidth());
+	if ratio > 1 then
+		texture:SetHeight(maxSize);
+		texture:SetWidth(texture:GetHeight() / ratio);
+	else
+		texture:SetWidth(maxSize);
+		texture:SetHeight(texture:GetWidth() * ratio);
+	end
 	texture:SetTexture(image.url);
 	TRP3_ImageBrowserContentURL:SetText(image.url:sub(11));
 	TRP3_ImageBrowserContent.currentImage = index;
