@@ -25,10 +25,12 @@ local Ellyb = Ellyb(_);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Lua imports
+--region Lua imports
 local assert = assert;
 local string = string;
 local math = math;
+local tostring = tostring;
+--endregion
 
 -- AddOn imports
 local Chomp = AddOn_Chomp;
@@ -99,18 +101,29 @@ local function extractMessageTokenFromData(data)
 	return data:sub(1, 2), data:sub(3, -1);
 end
 
-local function registerSubSystemPrefix(prefix, callback, onProgressCallback)
+local function registerSubSystemPrefix(prefix, callback)
 	local handlerID, onProgressHandlerID;
 
 	assert(isType(callback, "function", "callback"));
 	handlerID = subSystemsDispatcher:RegisterCallback(prefix, callback);
 
-	if onProgressCallback then
-		assert(isType(onProgressCallback, "function", "onProgressCallback"));
-		onProgressHandlerID = subSystemsOnProgressDispatcher:RegisterCallback(prefix, onProgressCallback);
-	end
-
 	return handlerID, onProgressHandlerID;
+end
+
+local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
+	assert(isType(onProgressCallback, "function", "onProgressCallback"));
+	assert(isType(sender, "string", "sender"));
+
+	return subSystemsOnProgressDispatcher:RegisterCallback(tostring(messageToken), function(receivedSender, ...)
+		if receivedSender == sender then
+			onProgressCallback(receivedSender, ...)
+		end
+	end);
+end
+
+local function unregisterMessageTokenProgressHandler(handlerID)
+	assert(isType(handlerID, "string", "handlerID"));
+	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
 local function sendObject(prefix, object, target, priority, messageToken, useLoggedMessages)
@@ -161,14 +174,9 @@ local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _,
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;
 	end
-	subSystemsOnProgressDispatcher:TriggerEvent(prefix, internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID);
-	messageIDDispatcher:TriggerEvent(internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID)
+	subSystemsOnProgressDispatcher:TriggerEvent(internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID);
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
-
-function Communication.addMessageIDHandler(sender, reservedMessageID, callback)
-	subSystemsOnProgressDispatcher:RegisterCallback(reservedMessageID, callback)
-end
 
 local function onChatMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
 	_, data = extractMessageTokenFromData(data);
@@ -195,6 +203,8 @@ end
 AddOn_TotalRP3.Communications = {
 	getNewMessageToken = getNewMessageToken,
 	registerSubSystemPrefix = registerSubSystemPrefix,
+	registerMessageTokenProgressHandler = registerMessageTokenProgressHandler,
+	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
 	sendObject = sendObject,
 }
@@ -223,7 +233,31 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 			Arguments = {
 				{ Name = "prefix", Type = "string", Nilable = false, Documentation = { "A unique prefix for this sub-system, used to differentiate between all sub-systems using communications. An error will be thrown if the prefix has already been registered before." } },
 				{ Name = "callback", Type = "function", Nilable = false, Documentation = { "This callback will be called when we receive data that uses this prefix." } },
-				{ Name = "onProgressCallback", Type = "function", Nilable = true, Documentation = { "This callback will be called as the transfers are progressing, with the message token associated to the transfer and the transfer progression." } },
+			},
+		},
+		{
+			Name = "registerMessageTokenProgressHandler",
+			Type = "Function",
+			Documentation = { "Register a new callback for a specific message token to be called when we receive new data for this message token." },
+
+			Arguments = {
+				{ Name = "messageToken", Type = "string", Nilable = false, Documentation = { "A valid message token generated using getNewMessageToken()." } },
+				{ Name = "sender", Type = "string", Nilable = false, Documentation = { "The unit name for the sender of the messages that we will be receiving on the message token; It is used to filter out other sender and only listen to messages coming from the expected sender." } },
+				{ Name = "onProgressCallback", Type = "function", Nilable = false, Documentation = { "This callback will be called when we receive new data for the specified message token with \"sender, amountOfMessagesIncoming, amountOfMessagesReceived\" as arguments.." } },
+			},
+
+			Returns =
+			{
+				{ Name = "handlerID", Type = "string", Nilable = false, Documentation = { "An identifier for the callback registered, to be used later for unregisterMessageTokenProgressHandler()." }  },
+			},
+		},
+		{
+			Name = "unregisterMessageTokenProgressHandler",
+			Type = "Function",
+			Documentation = { "Unregister an existing callback for a specified message token. It is best practice to unregister callbacks once we don't need them anymore." },
+
+			Arguments = {
+				{ Name = "handlerID", Type = "string", Nilable = false, Documentation = { "The identifier for the callback we want to unregister, as received when registering the callback." } },
 			},
 		},
 		{
