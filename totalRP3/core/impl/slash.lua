@@ -101,12 +101,12 @@ end
 
 local function sendDiceRoll(args)
 	if isTargetValidForDiceRoll() then
-		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
 	end
 	if IsInRaid() then
-		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, "RAID");
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "RAID");
 	elseif IsInGroup() then
-		TRP3_API.Communication.sendObject(DICE_SIGNAL, args, "PARTY");
+		TRP3_API.communication.sendObject(DICE_SIGNAL, args, "PARTY");
 	end
 end
 

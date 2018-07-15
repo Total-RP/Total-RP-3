@@ -22,7 +22,7 @@
 local _, TRP3_API = ...;
 
 -- imports
-local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.Communication, TRP3_API.events;
+local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
 local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local safeGet = TRP3_API.profile.getDataDefault;
