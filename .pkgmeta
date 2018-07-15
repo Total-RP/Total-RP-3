@@ -9,6 +9,12 @@ ignore:
   - Documents
   - totalRP3_zTest
   - totalRP3_Localizator
+  - totalRP3/libs/LibDeflate/.appveyor
+  - totalRP3/libs/LibDeflate/.travis
+  - totalRP3/libs/LibDeflate/docs
+  - totalRP3/libs/LibDeflate/examples
+  - totalRP3/libs/LibDeflate/rockspecs
+  - totalRP3/libs/LibDeflate/tests
 
 manual-changelog:
   filename: CHANGELOG.md
