@@ -99,10 +99,10 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		button:SetText(loc.CL_SENDING_COMMAND);
 		button:Disable();
 		-- Get a unique message identifier for the data request, used for progression updates
-		local messageToken = TRP3_API.communication.getMessageIDAndIncrement();
+		local messageToken = AddOn_TotalRP3.Communications.getNewMessageToken();
 		self.messageToken = messageToken;
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
-		TRP3_API.communication.sendObject(_private[self].questionCommand, {
+		AddOn_TotalRP3.Communications.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
 			messageID = messageToken,
 		}, sender);

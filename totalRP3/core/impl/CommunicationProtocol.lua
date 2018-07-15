@@ -260,8 +260,8 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 -- DEPRECATED
 -- Backward compatibility layer
 TRP3_API.communication = {};
-TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communication.getNewMessageToken");
-TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communication.registerSubSystemPrefix");
+TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communications.getNewMessageToken");
+TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communications.registerSubSystemPrefix");
 
 TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID, callback)
 	Ellyb.DeprecationWarnings.warn([[Deprecated usage of TRP3_API.communication.addMessageIDHandler(sender, reservedMessageID, callback). You should now provide an onProgression callback when using AddOn_TotalRP3.registerSubSystemPrefix(prefix, callback, onProgressCallback) for the sub-system. This callback will be called with the message ID in the parameters.]]);
@@ -272,6 +272,6 @@ TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID,
 	end);
 end
 
-Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communication", TRP3_API.communication);
+Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communications", TRP3_API.communication);
 
 
