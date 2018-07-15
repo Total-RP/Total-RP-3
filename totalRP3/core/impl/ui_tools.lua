@@ -805,6 +805,14 @@ local unitTexture = {
 		"Ability_Racial_BullRush",
 		"Achievement_AlliedRace_HighmountainTauren",
 	},
+	MagharOrc = {
+		"ACHIEVEMENT_CHARACTER_ORC_MALE_BRN",
+		"ACHIEVEMENT_CHARACTER_ORC_FEMALE_BRN"
+	},
+	DarkIronDwarf = {
+		"Ability_Racial_Fireblood",
+		"ability_racial_foregedinFlames"
+	}
 };
 
 TRP3_API.ui.misc.getUnitTexture = function(race, gender)

@@ -22,8 +22,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
-local LibRealmInfo = LibStub("LibRealmInfo");
-
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
