@@ -102,7 +102,7 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		local messageToken = TRP3_API.communication.getMessageIDAndIncrement();
 		self.messageToken = messageToken;
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
-		TRP3_API.Communication.sendObject(_private[self].questionCommand, {
+		TRP3_API.communication.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
 			messageID = messageToken,
 		}, sender);
