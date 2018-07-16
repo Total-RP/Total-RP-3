@@ -2,7 +2,7 @@
 
 **This version requires Battle for Azeroth, patch 8.0.1.**
 
- ## Add-on communications improvement
+## Add-on communications improvement
  
  Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
  
@@ -14,7 +14,7 @@
 
 ## New logos
 
-![](https://www.dropbox.com/s/rm0lzcubo9tl5bk/TRP3_Extended_Logo.png?raw=1)  
+![](http://totalrp3.info/documentation/TRP3_Logo_small.png)  
 Total RP 3 has a new original logo, to replace the modified game logo (which we obviously did not owned), that was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
 
 
