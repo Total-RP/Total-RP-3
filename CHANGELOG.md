@@ -24,6 +24,7 @@ A new minimap icon also replaces the older one and showcases a classic D&D die.
 ## Added
 
 - Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values. Amongst these new advanced settings you can find the settings for the broadcast channel, NPC talk prefix, disable the option to remember the last language used between session, and more.
+- Resources added to the browsers: 369 musics, 1698 icons and 178 images from the Battle for Azeroth expansion.
 
 ## Modified
 
