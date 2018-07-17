@@ -1,3 +1,7 @@
+# Changelog for version 1.4.1
+
+Fixed a rare Lua error that could randomly happen on login.
+
 # Changelog for version 1.4
 
 **This version requires Battle for Azeroth, patch 8.0.1.**
