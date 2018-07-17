@@ -1207,6 +1207,10 @@ A new minimap icon also replaces the older one and showcases a classic D&D die.
 - We have disabled the button to show the residence location of players from the profile page while we are re-implementing the map features for patch 8.0.
 - The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.
 ]],
+	WHATS_NEW_20_1 = [[
+# Changelog for version 1.4.1
+
+Fixed a rare Lua error that could randomly happen on login.]],
 	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
