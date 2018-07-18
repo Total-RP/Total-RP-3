@@ -1,3 +1,9 @@
+# Changelog for version 1.4.2
+
+## Fixed
+
+- Fixed another rare Lua error that could randomly happen on login (with the `getPlayerCompleteName()` function) - [Issue #159](https://github.com/Ellypse/Total-RP-3/issues/159)
+
 # Changelog for version 1.4.1
 
 Fixed a rare Lua error that could randomly happen on login.
