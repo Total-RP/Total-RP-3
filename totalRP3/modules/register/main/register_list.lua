@@ -493,10 +493,9 @@ local function onCharactersActionSelected(value, button)
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				deleteProfile(profileID, true);
+				deleteProfile(profileID);
 			end
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
-			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 			refreshList();
 		end);
 	elseif value == "actions_ignore" then
