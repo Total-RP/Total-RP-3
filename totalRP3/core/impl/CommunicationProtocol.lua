@@ -207,6 +207,7 @@ AddOn_TotalRP3.Communications = {
 	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
 	sendObject = sendObject,
+	extractMessageTokenFromData = extractMessageTokenFromData
 }
 
 Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
@@ -273,6 +274,21 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 			Returns =
 			{
 				{ Name = "approximateAmountOfMessages", Type = "number", Nilable = false, Documentation = { "The approximate amount of messages need to send the structure." }  },
+			},
+		},
+		{
+			Name = "extractMessageTokenFromData",
+			Type = "Function",
+			Documentation = { "Extract the message token from data received from Chomp, to get proper deserializable data and the message token separately." },
+
+			Arguments = {
+				{ Name = "data", Type = "string", Nilable = false, Documentation = { "A string of data received from Chomp." } },
+			},
+
+			Returns =
+			{
+				{ Name = "messageToken", Type = "string", Nilable = false, Documentation = { "The internal message token used by Total RP 3 to keep track of a single structure being sent over several messages." }  },
+				{ Name = "data", Type = "string", Nilable = false, Documentation = { "The actual raw data that was sent by Total RP 3. Can be deserialize using Chomp's Deserialize function. MUST be decompress using TRP3's Compression module if the message came from non-logged channels." }  },
 			},
 		},
 	},
