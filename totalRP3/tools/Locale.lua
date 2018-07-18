@@ -1210,7 +1210,17 @@ A new minimap icon also replaces the older one and showcases a classic D&D die.
 	WHATS_NEW_20_1 = [[
 # Changelog for version 1.4.1
 
-Fixed a rare Lua error that could randomly happen on login.]],
+Fixed a rare Lua error that could randomly happen on login.
+
+]],
+	WHATS_NEW_20_2 = [[
+# Changelog for version 1.4.2
+
+## Fixed
+
+- Fixed another rare Lua error that could randomly happen on login (with the `getPlayerCompleteName()` function) - [Issue #159](https://github.com/Ellypse/Total-RP-3/issues/159)
+
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",

@@ -41,7 +41,8 @@ local strhtml = TRP3_API.utils.str.toHTML;
 ---  this view is activated.
 local SEGMENTS = {
     loc.WHATS_NEW_20,
-	loc.WHATS_NEW_20_1
+	loc.WHATS_NEW_20_1,
+	loc.WHATS_NEW_20_2,
 };
 
 --- Returns the fully formatted localized text for this view.
