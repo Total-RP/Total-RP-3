@@ -807,11 +807,7 @@ end
 
 local function onLineSelected(self, button)
 	assert(self:GetParent().id, "No id on line.");
-	local newValue = self:GetChecked();
-	if not newValue then
-		newValue = nil;
-	end
-	selectedIDs[self:GetParent().id] = newValue;
+	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
 end
 
 local function changeMode(tabWidget, value)
