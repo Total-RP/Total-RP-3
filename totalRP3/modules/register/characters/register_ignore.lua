@@ -155,7 +155,7 @@ end
 
 function TRP3_API.register.unignoreID(unitID)
 	blackList[unitID] = nil;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, TRP3_API.register.isUnitIDKnown(unitID) and hasProfile(unitID) or nil, nil);
 end
 
 function TRP3_API.register.getIgnoredList()
