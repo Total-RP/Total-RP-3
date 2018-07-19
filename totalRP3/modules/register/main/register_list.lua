@@ -493,9 +493,10 @@ local function onCharactersActionSelected(value, button)
 	elseif value == "actions_delete" then
 		showConfirmPopup(loc.REG_LIST_ACTIONS_MASS_REMOVE_C:format(tsize(selectedIDs)), function()
 			for profileID, _ in pairs(selectedIDs) do
-				deleteProfile(profileID);
+				deleteProfile(profileID, true);
 			end
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+			Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 			refreshList();
 		end);
 	elseif value == "actions_ignore" then
@@ -910,6 +911,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 				unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 			end
+		else
+			for profileID, _ in pairs(selectedIDs) do
+				if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+					unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+				end
+			end
+			wipe(selectedIDs);
 		end
 		if getCurrentPageID() == REGISTER_LIST_PAGEID then
 			refreshList();
