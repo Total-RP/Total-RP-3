@@ -477,6 +477,8 @@ local function onCharactersActionSelected(value, button)
 				for _, unitID in pairs(characterToPurge) do
 					deleteCharacter(unitID);
 				end
+				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
