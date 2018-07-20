@@ -427,9 +427,9 @@ end
 
 function TRP3_API.companions.register.getUnitMount(ownerID, unitType)
 	local buffIndex = 1;
-	local spellBuffID = select(11, UnitAura(unitType, buffIndex));
+	local spellBuffID = select(10, UnitAura(unitType, buffIndex));
 	while(spellBuffID) do
-		spellBuffID = select(11, UnitAura(unitType, buffIndex));
+		spellBuffID = select(10, UnitAura(unitType, buffIndex));
 		local companionFullID = ownerID .. "_" .. tostring(spellBuffID);
 		if registerProfileAssociation[companionFullID] then
 			return companionFullID, registerProfileAssociation[companionFullID], tostring(spellBuffID);
