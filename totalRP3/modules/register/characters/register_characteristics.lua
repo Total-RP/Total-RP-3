@@ -18,6 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- imports
+local ipairs = ipairs;
 local Globals, Utils, Comm, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
@@ -340,7 +341,7 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
 
-		for frameIndex, miscStructure in pairs(dataTab.MI) do
+		for frameIndex, miscStructure in ipairs(dataTab.MI) do
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
@@ -366,7 +367,7 @@ local function setConsultDisplay(context)
 		margin = 0;
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
 
-		for frameIndex, psychoStructure in pairs(dataTab.PS) do
+		for frameIndex, psychoStructure in ipairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
 			local value = getPsychoStructureValue(psychoStructure);
 			if frame == nil then

@@ -35,25 +35,29 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local ChatLinks = {};
 TRP3_API.ChatLinks = ChatLinks;
 
---- Ellyb imports
+--region Ellyb imports
 local ColorManager = Ellyb.ColorManager;
 local isType = Ellyb.Assertions.isType;
 local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 local ORANGE = ColorManager.ORANGE;
+--endregion
 
---- Wow Imports
+--region Wow Imports
 local assert = assert;
 local pairs = pairs;
 local gsub = string.gsub;
+local ipairs = ipairs
 local strconcat = strconcat;
 local format = string.format;
 local ChatFrame_AddMessageEventFilter = ChatFrame_AddMessageEventFilter;
 local UIParent = UIParent;
 local ShowUIPanel = ShowUIPanel;
+--endregion
 
---- Total RP 3 imports
+--region Total RP 3 imports
 local ChatLinkModule = TRP3_API.ChatLinkModule;
 local loc = TRP3_API.loc;
+--endregion
 
 local LINK_CODE = "totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
