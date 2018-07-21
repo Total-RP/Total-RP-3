@@ -42,8 +42,6 @@ local isNotNil = Ellyb.Assertions.isNotNil;
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
 
-local Communication = {};
-
 local PROTOCOL_PREFIX = "TRP3.2";
 local PROTOCOL_SETTINGS = {
 	permitUnlogged = true,
@@ -55,7 +53,7 @@ local PROTOCOL_SETTINGS = {
 		["table"] = true,
 	},
 }
-Communication.PRIORITIES = {
+local PRIORITIES = {
 	LOW = "LOW",
 	MEDIUM = "MEDIUM",
 	HIGH = "HIGH",
@@ -71,12 +69,12 @@ local messageIDDispatcher = Ellyb.EventsDispatcher();
 local DEPRECATED_MESSAGE_PRIORITY = [[Deprecated usage of message priority "%s". Use "%s" instead.]];
 --[[ Deprecated ]] local function CTLToChompPriority(priority)
 	if priority == "BULK" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("BULK", Communication.PRIORITIES.LOW));
-		priority = Communication.PRIORITIES.LOW
+		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("BULK", PRIORITIES.LOW));
+		priority = PRIORITIES.LOW
 	end
 	if priority == "NORMAL" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", Communication.PRIORITIES.MEDIUM));
-		priority = Communication.PRIORITIES.MEDIUM
+		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", PRIORITIES.MEDIUM));
+		priority = PRIORITIES.MEDIUM
 	end
 	return priority
 end
@@ -207,7 +205,8 @@ AddOn_TotalRP3.Communications = {
 	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
 	sendObject = sendObject,
-	extractMessageTokenFromData = extractMessageTokenFromData
+	extractMessageTokenFromData = extractMessageTokenFromData,
+	PRIORITIES = PRIORITIES,
 }
 
 Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
