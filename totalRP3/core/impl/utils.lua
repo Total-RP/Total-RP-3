@@ -145,6 +145,9 @@ local function tableDump(table, level, withCount)
 	
 	if type(table) == "table" then
 		for key, value in pairs(table) do
+			if type(key) == "string" then
+				key = "[\"" .. key .. "\"]"
+			end
 			if type(value) == "table" then
 				log(dumpIndent .. dumpColor2 .. key .. "|r=".. dumpColor3 .. "{", Log.level.DEBUG);
 				tableDump(value, level + 1);
