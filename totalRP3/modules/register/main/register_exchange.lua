@@ -17,6 +17,9 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 -- TRP3 imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -82,9 +85,9 @@ local VERNUM_QUERY_PREFIX = "VQ";
 local VERNUM_R_QUERY_PREFIX = "VR";
 local INFO_TYPE_QUERY_PREFIX = "GI";
 local INFO_TYPE_SEND_PREFIX = "SI";
-local VERNUM_QUERY_PRIORITY = "NORMAL";
-local INFO_TYPE_QUERY_PRIORITY = "NORMAL";
-local INFO_TYPE_SEND_PRIORITY = "BULK";
+local VERNUM_QUERY_PRIORITY = Comm.PRIORITIES.MEDIUM;
+local INFO_TYPE_QUERY_PRIORITY = Comm.PRIORITIES.MEDIUM;
+local INFO_TYPE_SEND_PRIORITY = Comm.PRIORITIES.LOW;
 
 local VERNUM_QUERY_INDEX_VERSION = 1;
 local VERNUM_QUERY_INDEX_VERSION_DISPLAY = 2;
