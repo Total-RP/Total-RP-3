@@ -1221,6 +1221,20 @@ Fixed a rare Lua error that could randomly happen on login.
 - Fixed another rare Lua error that could randomly happen on login (with the `getPlayerCompleteName()` function) - [Issue #159](https://github.com/Ellypse/Total-RP-3/issues/159)
 
 ]],
+	---@language Markdown
+	WHATS_NEW_20_3= [[
+# Changelog for version 1.4.3
+
+## Fixed
+
+- Fixed an issue brought by yesterday's hotfixes that would prevent Battle.net communications from working.
+- Fixed an issue where un-selecting profiles in the directory would not actually deselect them, and improved consistency when purging profiles while having some profiles already selected - [Issue #160](https://github.com/Ellypse/Total-RP-3/issues/160)
+- Fixed an issue introduced with the 8.0.1 pre-patch preventing mount profiles from being displayed properly in the tooltips and on the target frame - [Issue #164](https://github.com/Ellypse/Total-RP-3/issues/164)
+- Fixed a layout in the profiles UI that would prevent the Additional information parts from being rendered properly - [Issue #162](https://github.com/Ellypse/Total-RP-3/issues/162)
+- Fixed an issue that would render the chat links tooltip lines in a random order, instead of the correct one.
+- Fixed an issue that would render some profile informations (Additional information, Personality traits) in a random order, instead of the correct one.
+
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
