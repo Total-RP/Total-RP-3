@@ -173,7 +173,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_RefTooltip:SetText(tooltipContent.title, TRP3_API.Ellyb.ColorManager.WHITE:GetRGB());
 
 		if tooltipContent.lines then
-			for _, line in pairs(tooltipContent.lines) do
+			for _, line in ipairs(tooltipContent.lines) do
 				if line.double then
 					TRP3_RefTooltip:AddDoubleLine(line.textLeft, line.textRight, line.rLeft, line.gLeft, line.bLeft,
 						line.rRight, line.gRight, line.bRight, line.wrap);
