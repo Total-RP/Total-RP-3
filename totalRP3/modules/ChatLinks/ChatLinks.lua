@@ -42,6 +42,12 @@ local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 local ORANGE = ColorManager.ORANGE;
 --endregion
 
+--region Lua imports
+local IsControlKeyDown = IsControlKeyDown;
+local strsplit = strsplit;
+local strsub = strsub;
+--endregion
+
 --region Wow Imports
 local assert = assert;
 local pairs = pairs;
@@ -254,6 +260,25 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end
 	end)
+
+	-- Hey, so you know that function we just securely hooked? Well what
+	-- if we want people to be able to ctrl-click names? Then we need to
+	-- replace it anyway!
+	local OriginalChatFrame_OnHyperLinkShow = ChatFrame_OnHyperlinkShow;
+	ChatFrame_OnHyperlinkShow = function(self, link, text, button)
+		-- Grab the link and see if it's a player name.
+		local isPlayerNameLink = (strsub(link, 1, 7) == "player:");
+		local playerName = strsplit(":", strsub(link, 8));
+
+		-- Is it not a ctrl-left-click on a player name?
+		if not isPlayerNameLink or not playerName
+			or button ~= "LeftButton" or not IsControlKeyDown() then
+			-- No. No it isn't.
+			return OriginalChatFrame_OnHyperLinkShow(self, link, text, button);
+		end
+
+		TRP3_API.slash.openProfile(playerName);
+	end
 
 	-- Sadly we need this so that Blizzard's code doesn't raise an error because we clicked on a link it doesn't understand
 	local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
