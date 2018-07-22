@@ -313,16 +313,16 @@ Menus = {
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
 		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
 	},
-	BN_FRIEND = {
-		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
-		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
-	},
-	BN_FRIEND_OFFLINE = {
-		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
-		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
-	},
+	-- BN_FRIEND = {
+	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
+	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
+	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- },
+	-- BN_FRIEND_OFFLINE = {
+	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
+	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
+	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- },
 	GUILD = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
@@ -348,9 +348,9 @@ Menus = {
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
 		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
 	},
-	COMMUNITIES_MEMBER = {
-		{ button = Buttons.SEPARATOR },
-		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
-	},
+	-- COMMUNITIES_MEMBER = {
+	-- 	{ button = Buttons.SEPARATOR },
+	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
+	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- },
 };
