@@ -187,15 +187,19 @@ end
 
 Chomp.RegisterAddonPrefix(PROTOCOL_PREFIX, onChatMessageReceived, PROTOCOL_SETTINGS)
 
--- Estimate the number of packet needed to send a object.
-local function estimateStructureLoad(object, shouldBeCompressed)
 
+local function estimateStructureSize(object, shouldBeCompressed)
 	assert(isNotNil(object, "object"));
 	local serializedObject = Chomp.Serialize(object);
 	if shouldBeCompressed then
 		serializedObject = Compression.compress(serializedObject);
 	end
-	return #serializedObject / Chomp.GetBPS();
+	return #serializedObject;
+end
+
+-- Estimate the number of packet needed to send a object.
+local function estimateStructureLoad(object, shouldBeCompressed)
+	return estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS();
 end
 
 AddOn_TotalRP3.Communications = {
@@ -204,6 +208,7 @@ AddOn_TotalRP3.Communications = {
 	registerMessageTokenProgressHandler = registerMessageTokenProgressHandler,
 	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
+	estimateStructureSize = estimateStructureSize,
 	sendObject = sendObject,
 	extractMessageTokenFromData = extractMessageTokenFromData,
 	PRIORITIES = PRIORITIES,
