@@ -109,6 +109,8 @@ local currentDate = date("*t");
 local seriousDay = currentDate.month == 4 and currentDate.day == 1
 local Rainbowify = TRP3_API.utils.Rainbowify;
 
+local isTrial = IsTrialAccount();
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -637,6 +639,9 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
+			if isTrial then
+				clientText = strconcat(clientText, " ", Utils.str.color("o"), "(", loc.REG_TRIAL_ACCOUNT, ")");
+			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
