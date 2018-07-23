@@ -640,14 +640,6 @@ local function getChatTypeForEvent(event, channelNumber)
 	return chatType
 end
 
---- Check if class color is enabled for names for a specified chat type
----	@param chatType string
----	@return boolean
-local function classColorNameIsEnableOnChatType(chatType)
-	local info = ChatTypeInfo[chatType];
-	return info and info.colorNameByClass;
-end
-
 -- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
 local defaultGetColoredNameFunction = GetColoredName;
 
@@ -710,10 +702,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = customizedName;
 	end
 
-
-	if classColorNameIsEnableOnChatType(getChatTypeForEvent(event, channelNumber)) then
-		characterColor = GetClassColorByGUID(GUID);
-	end
+	characterColor = GetClassColorByGUID(GUID);
 
 	if configShowNameCustomColors() then
 		local customColor = GetCustomColorByGUID(GUID);
