@@ -1,3 +1,12 @@
+# Changelog for version 1.4.4
+
+## Fixed
+
+- Fixed XML errors from libraries when using both Storyline and Total RP 3.
+- Fixed Lua error when targeting companions.
+- The trial account flagged is now also displayed in your own tooltip.
+- Names are now correctly class colored in chat for non-customized names - [Issue #175](https://github.com/Ellypse/Total-RP-3/issues/175)
+
 # Changelog for version 1.4.3
 
 ## Fixed

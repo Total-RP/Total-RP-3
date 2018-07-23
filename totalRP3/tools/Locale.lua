@@ -1235,6 +1235,18 @@ Fixed a rare Lua error that could randomly happen on login.
 - Fixed an issue that would render some profile informations (Additional information, Personality traits) in a random order, instead of the correct one.
 
 ]],
+	---@language Markdown
+	WHATS_NEW_20_4= [[
+# Changelog for version 1.4.4
+
+## Fixed
+
+- Fixed XML errors from libraries when using both Storyline and Total RP 3.
+- Fixed Lua error when targeting companions.
+- The trial account flagged is now also displayed in your own tooltip.
+- Names are now correctly class colored in chat for non-customized names - [Issue #175](https://github.com/Ellypse/Total-RP-3/issues/175)
+
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
