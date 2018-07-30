@@ -47,62 +47,34 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
+				<Texture parentKey="flash1" alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
 					<Size x="300" y="300"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimation1">
-							<Rotation name="$parentRotation" degrees="-90"/>
-						</AnimationGroup>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow1">
-							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
-				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
+				<Texture parentKey="flash2" alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Flash" alpha="0.5">
 					<Size x="400" y="400"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimation2">
-							<Rotation name="$parentRotation" degrees="90"/>
-						</AnimationGroup>
-						<AnimationGroup name="TRP3_ScanLoaderBackAnimationGrow2" >
-							<Scale duration="1" scaleX="2.5" scaleY="2.5"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
-				<Texture alphaMode="BLEND" file="Interface\Timer\Challenges-Logo">
+			<Layer>
+				<Texture parentKey="hourGlass" file="Interface\Timer\Challenges-Logo">
 					<Size x="130" y="130"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderAnimation">
-							<Rotation name="$parentRotation" degrees="-360"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
-				<!--F:\Games\World of Warcraft\BlizzardInterfaceArt\Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame.blp-->
-				<!--Mechanical_Circular_Frame-->
-				<Texture alphaMode="BLEND" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
+				<Texture file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Frame">
 					<Size x="256" y="256"/>
 					<Anchors>
 						<Anchor point="CENTER" x="0" y="0"/>
 					</Anchors>
-					<Animations>
-						<AnimationGroup name="TRP3_ScanLoaderGlow">
-							<Rotation name="$parentRotation" degrees="-360"/>
-						</AnimationGroup>
-					</Animations>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
+			<Layer>
 				<Texture parentKey="Banner" atlas="GarrMission_RewardsBanner-Desaturate" useAtlasSize="true">
 					<Anchors>
 						<Anchor point="CENTER" relativePoint="TOP" x="0" y="10"/>
@@ -119,16 +91,24 @@
 			</Layer>
 		</Layers>
 		<Animations>
-			<AnimationGroup name="TRP3_ScanFadeOut" setToFinalAlpha="true">
+			<AnimationGroup parentKey="fadeOut" setToFinalAlpha="true">
 				<Alpha duration="1" toAlpha="0" fromAlpha="1"/>
 			</AnimationGroup>
-			<AnimationGroup name="TRP3_ScanFadeIn" setToFinalAlpha="true">
+			<AnimationGroup parentKey="fadeIn" setToFinalAlpha="true">
 				<Alpha duration="0" fromAlpha="1" toAlpha="0"/>
 				<Alpha duration="0.5" fromAlpha="0" toAlpha="1"/>
+			</AnimationGroup>
+			<AnimationGroup parentKey="content">
+				<Rotation parentKey="flash1Rotation" targetKey="$parent.$parent.flash1" degrees="-90"/>
+				<Rotation parentKey="flash2Rotation" targetKey="$parent.$parent.flash2" degrees="90"/>
+				<Scale duration="1" targetKey="flash1" scaleX="2.5" scaleY="2.5"/>
+				<Scale duration="1" targetKey="flash2" scaleX="2.5" scaleY="2.5"/>
+				<Rotation parentKey="hourGlassRotation" targetKey="$parent.$parent.hourGlass" degrees="-360"/>
 			</AnimationGroup>
 		</Animations>
 	</Frame>
 
 	<Script file="map_markers.lua"/>
 	<Script file="WorldMapButton.lua"/>
+	<Script file="WorldMapScanLoadingFrame.lua"/>
 </Ui>

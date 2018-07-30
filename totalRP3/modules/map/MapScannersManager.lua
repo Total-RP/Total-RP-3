@@ -30,6 +30,13 @@ local bind = Ellyb.Functions.bind;
 local MapScannersManager = {}
 local registeredMapScans = {};
 
+--region Total RP 3 imports
+local Events = TRP3_API.Events;
+--endregion
+
+Events.MAP_SCAN_STARTED = "MAP_SCAN_STARTED"
+Events.MAP_SCAN_ENDED = "MAP_SCAN_ENDED"
+
 
 ---@param scan MapScanner
 function MapScannersManager.registerScan(scan)
@@ -59,8 +66,15 @@ function MapScannersManager.launchScan(scanID)
 	displayedMapID = AddOn_TotalRP3.Map.getDisplayedMapID()
 
 	scan:ResetScanData();
+
+
+	local promise = Ellyb.Promise();
+	promise:Always(function()
+		Events.fireEvent(Events.MAP_SCAN_ENDED)
+	end)
+
+	Events.fireEvent(Events.MAP_SCAN_STARTED, scan.duration);
 	scan:Scan();
-	local promise = Ellyb.Promise()
 
 	if scan.duration > 0 then
 		-- Resolve the promise after the scan duration
