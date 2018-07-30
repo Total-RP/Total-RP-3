@@ -6,6 +6,12 @@
 - Fixed Lua error when targeting companions.
 - The trial account flagged is now also displayed in your own tooltip.
 - Names are now correctly class colored in chat for non-customized names - [Issue #175](https://github.com/Ellypse/Total-RP-3/issues/175)
+- Fixed Total RP 3's logo missing a die, and improved the minimap icon, including a transparent version for databroker add-ons.
+- The target frame is now refreshed when you summon and dismiss your own mount.
+
+## Added
+
+- Added a limitation option for line breaks in the "currently" tooltip fields (default to 5 line breaks).
 
 # Changelog for version 1.4.3
 
