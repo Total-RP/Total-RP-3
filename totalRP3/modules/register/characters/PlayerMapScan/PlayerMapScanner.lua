@@ -73,7 +73,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	});
 end)
 
-local SCAN_COMMAND = "CSCAN";
+local SCAN_COMMAND = "C_SCAN";
 ---@type MapScanner
 local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
 -- Set scan display properties
