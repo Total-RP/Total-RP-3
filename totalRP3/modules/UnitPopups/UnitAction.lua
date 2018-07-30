@@ -22,6 +22,8 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+-- Grab the module table or initialise it.
+TRP3_API.UnitPopups = TRP3_API.UnitPopups or {};
 local UnitPopups = TRP3_API.UnitPopups;
 
 --region Lua imports
@@ -33,7 +35,9 @@ local UnitPopups = TRP3_API.UnitPopups;
 --region Ellyb imports
 --endregion
 
---- @class UnitAction
+--- Base class for action handlers on menus. The important method to override
+--  is OnTriggered, which is called when the menu item is clicked by users.
+-- @class UnitAction
 local UnitAction, _private = Ellyb.Class("UnitAction")
 
 --- Initializes the class with the given display text.

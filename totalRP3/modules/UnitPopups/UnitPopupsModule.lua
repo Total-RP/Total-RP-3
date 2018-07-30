@@ -23,6 +23,8 @@ local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 local loc = TRP3_API.loc;
 
+-- Grab the module table or initialise it.
+TRP3_API.UnitPopups = TRP3_API.UnitPopups or {};
 local UnitPopups = TRP3_API.UnitPopups;
 
 --region Lua imports
@@ -50,7 +52,7 @@ local ACTION_KEY = newproxy(true);
 local Buttons = {
 	SEPARATOR = "TRP3_SEPARATOR",
 	HEADER = "TRP3_HEADER",
-	OPEN_PLAYER_PROFILE = "TRP3_OPEN_PLAYER_PROFILE",
+	OPEN_PROFILE = "TRP3_OPEN_PLAYER_PROFILE",
 };
 
 --- Enumeration of menus to insert button IDs into.
@@ -236,13 +238,13 @@ local function onModuleStart()
 	local headerAction = UnitPopups.UnitAction(loc.UP_GENERIC_MENU_TITLE);
 	headerAction:SetHeader(true);
 
-	local openPlayerProfileAction = UnitPopups.OpenPlayerProfileAction();
+	local openProfileAction = UnitPopups.OpenProfileAction();
 
 	-- Register the actions.
 	local actions = {};
 	actions[Buttons.SEPARATOR] = separatorAction;
 	actions[Buttons.HEADER] = headerAction;
-	actions[Buttons.OPEN_PLAYER_PROFILE] = openPlayerProfileAction;
+	actions[Buttons.OPEN_PROFILE] = openProfileAction;
 
 	-- Create and register buttons for all those actions.
 	for buttonID, action in pairs(actions) do
@@ -273,76 +275,76 @@ Menus = {
 	-- SELF = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	-- PARTY = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	-- PLAYER = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	-- RAID_PLAYER = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	-- RAID = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	FRIEND = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	FRIEND_OFFLINE = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	-- BN_FRIEND = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	-- BN_FRIEND_OFFLINE = {
 	-- 	{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 	GUILD = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	GUILD_OFFLINE = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CANCEL" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	CHAT_ROSTER = {
 		{ button = Buttons.SEPARATOR, insertBefore = "CLOSE" },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	COMMUNITIES_WOW_MEMBER = {
 		{ button = Buttons.SEPARATOR },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	COMMUNITIES_GUILD_MEMBER = {
 		{ button = Buttons.SEPARATOR },
 		{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-		{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+		{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	},
 	-- COMMUNITIES_MEMBER = {
 	-- 	{ button = Buttons.SEPARATOR },
 	-- 	{ button = Buttons.HEADER, insertAfter = Buttons.SEPARATOR },
-	-- 	{ button = Buttons.OPEN_PLAYER_PROFILE, insertAfter = Buttons.HEADER },
+	-- 	{ button = Buttons.OPEN_PROFILE, insertAfter = Buttons.HEADER },
 	-- },
 };

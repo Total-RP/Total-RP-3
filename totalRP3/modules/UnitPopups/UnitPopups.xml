@@ -21,12 +21,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
-	<Script>
-		TRP3_API.UnitPopups = {};
-	</Script>
-
 	<Script file="UnitAction.lua" />
-	<Script file="OpenPlayerProfileAction.lua" />
-
+	<Script file="OpenProfileAction.lua" />
 	<Script file="UnitPopupsModule.lua" />
 </Ui>
