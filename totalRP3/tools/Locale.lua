@@ -1260,6 +1260,15 @@ Please keep in mind that changing those settings might alter your experience wit
 	CO_ADVANCED_LANGUAGES = "Languages",
 	CO_ADVANCED_LANGUAGES_REMEMBER = "Remember last language used",
 	CO_ADVANCED_LANGUAGES_REMEMBER_TT = "Total RP 3 will remember what language you were using before logging off and automatically select this language back on next login.",
+	---@language Markdown
+	WHATS_NEW_21 = [[
+# Changelog version 1.5.0
+
+## Added
+
+- Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
+
+]],
 
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
