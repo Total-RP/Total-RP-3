@@ -42,9 +42,6 @@ local UnitPopupShown = _G.UnitPopupShown;
 local Assertions = Ellyb.Assertions;
 --endregion
 
---- Logger for this module.
-local logger = Ellyb.Logger("TotalRP3_UnitPopups");
-
 --- Unique key added to button tables that refers back to the defining action.
 --  It's a constant. You do anything with this, I'll find you.
 local ACTION_KEY = newproxy(true);
@@ -113,7 +110,7 @@ end
 -- @return Numerical index of the button if found, or nil.
 local function indexOfButton(menuID, buttonID)
 	local menu = UnitPopupMenus[menuID];
-	assert(Assertions.isNotNil(menu));
+	assert(menu, "menu with given ID does not exist");
 
 	for i = 1, #menu do
 		if menu[i] == buttonID then
@@ -130,9 +127,9 @@ local function insertButton(menuID, index, buttonID)
 	local menu = UnitPopupMenus[menuID];
 	local button = UnitPopupButtons[buttonID];
 
-	assert(Assertions.isNotNil(button, "button"));
-	assert(Assertions.isNotNil(menu, "menu"));
-	assert(Assertions.isNotNil(index, "index"));
+	assert(menu, "menu with given ID does not exist");
+	assert(Assertions.isType(index, "number"));
+	assert(button, "button with given ID does not exist");
 
 	tinsert(menu, index, buttonID);
 end
@@ -143,7 +140,7 @@ end
 -- @param entries A list of entries to insert.
 local function insertMenuEntries(menuID, entries)
 	local menu = UnitPopupMenus[menuID];
-	assert(Assertions.isNotNil(menu, "menu"));
+	assert(menu, "menu with given ID does not exist");
 
 	-- Hit up each entry in the menu.
 	for _, entry in ipairs(entries) do
@@ -157,13 +154,9 @@ local function insertMenuEntries(menuID, entries)
 			index = index and index + 1;
 		end
 
-		if not index then
-			logger:Severe("Failed to insert button", entry.button, "into menu", menuID);
-			assert(Assertions.isNotNil(index, "index"));
-
-			-- Recover by just appending.
-			index = #menu + 1;
-		end
+		-- Only reason this'll be triggered is if you specified an insertBefore
+		-- or insertAfter that resolved to a button that doesn't exist.
+		assert(index, "attempted to insert a button without a valid index");
 
 		-- Insert at the specified index.
 		insertButton(menuID, index, entry.button);
@@ -174,8 +167,7 @@ end
 -- @param buttonID The ID of the button to register.
 -- @param button The button to be registered.
 local function registerButton(buttonID, button)
-	local existingButton = UnitPopupButtons[buttonID];
-	assert(Assertions.isType(existingButton, "nil", "existingButton"));
+	assert(not UnitPopupButtons[buttonID], "button with given ID already exists");
 
 	UnitPopupButtons[buttonID] = button;
 end
