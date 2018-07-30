@@ -1266,7 +1266,7 @@ Please keep in mind that changing those settings might alter your experience wit
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CO_TOOLTIP_CURRENT_LINES = "Max \"current\" lines count",
+	CO_TOOLTIP_CURRENT_LINES = "Max \"current\" line breaks",
 };
 
 -- Use Ellyb to generate the Localization system
