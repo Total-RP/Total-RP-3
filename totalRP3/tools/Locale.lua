@@ -1063,16 +1063,6 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 Importing content coming from a different version may cause issues in case of incompatibilities. Do you want to proceed anyway?]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- UNIT POPUPS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	UP_MODULE_NAME = "Player Dropdown Integration",
-	UP_MODULE_DESCRIPTION = "Adds profile-related shortcuts to player dropdown menus.",
-
-	UP_GENERIC_MENU_TITLE = "Total RP 3",
-	UP_OPEN_PROFILE_BUTTON = "Open Profile",
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- COMMANDS
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -1263,6 +1253,16 @@ Please keep in mind that changing those settings might alter your experience wit
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- UNIT POPUPS
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	UP_MODULE_NAME = "Player Dropdown Integration",
+	UP_MODULE_DESCRIPTION = "Adds profile-related shortcuts to player dropdown menus.",
+
+	UP_GENERIC_MENU_TITLE = "Total RP 3",
+	UP_OPEN_PROFILE_BUTTON = "Open Profile",
 
 };
 
