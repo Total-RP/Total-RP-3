@@ -31,6 +31,10 @@ local huge = math.huge;
 local loc = TRP3_API.loc;
 --endregion
 
+--region Ellyb imports
+local ORANGE = Ellyb.ColorManager.ORANGE;
+---endregion
+
 -- Create the pin template, above group members
 TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPOIMixins.createPinTemplate(
 	AddOn_TotalRP3.MapPOIMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
@@ -53,9 +57,14 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
 		local profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
 		displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
 
-		if profile.characteristics and profile.characteristics.CH then
-			local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
-			displayData.playerName = color(displayData.playerName)
+		if profile.characteristics then
+			if profile.characteristics.CH then
+				local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
+				displayData.playerName = color(displayData.playerName);
+			end
+			if profile.characteristics.IC then
+				displayData.playerName = TRP3_API.utils.str.icon(profile.characteristics.IC, 15) .. " " .. displayData.playerName;
+			end
 		end
 		--endregion
 
@@ -97,5 +106,5 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 		self.Texture:SetVertexColor(1, 1, 1, 1);
 	end
 
-	Ellyb.Tooltips.getTooltip(self):SetTitle(loc.REG_PLAYERS):ClearLines();
+	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
 end
