@@ -60,7 +60,7 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 	end
 
 	local decompressedData, status = LibDeflate:DecompressDeflate(compressedData);
-	if status == -1 then
+	if decompressedData == nil then
 		error(RED("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. GREY(tostring(compressedData)) .. "\"");
 	end
 

@@ -30,8 +30,15 @@ local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_
 local getProfile, getUnitID, deleteProfile = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID, TRP3_API.register.deleteProfile;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-local getCompleteName, getPlayerCompleteName;
 local profiles, characters, blackList, whiteList = {}, {}, {}, {};
+
+-- These functions gets replaced by the proper TRP3 one once the addon has finished loading
+local function getPlayerCompleteName()
+	return TRP3_API.globals.player
+end
+local function getCompleteName()
+	return UNKNOWN
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Relation
@@ -173,7 +180,7 @@ end
 
 function TRP3_API.register.unignoreID(unitID)
 	blackList[unitID] = nil;
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, TRP3_API.register.isUnitIDKnown(unitID) and hasProfile(unitID) or nil, nil);
 end
 
 function TRP3_API.register.getIgnoredList()

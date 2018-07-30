@@ -18,6 +18,7 @@
 ----------------------------------------------------------------------------------
 
 -- imports
+local ipairs = ipairs;
 local Globals, Utils, Comm, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
 local stNtE = Utils.str.nilToEmpty;
@@ -108,26 +109,8 @@ TRP3_API.register.ui.sanitizeCharacteristics = sanitizeCharacteristics;
 -- COMPRESSION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local currentCompressed;
-
-local function compressData()
-	local dataTab = get("player/characteristics");
-	local serial = Utils.serial.serialize(dataTab);
-	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
-
-	if compressed and compressed:len() < serial:len() then
-		currentCompressed = compressed;
-	else
-		currentCompressed = nil;
-	end
-end
-
 function TRP3_API.register.player.getCharacteristicsExchangeData()
-	if currentCompressed ~= nil then
-		return currentCompressed;
-	else
-		return get("player/characteristics");
-	end
+	return get("player/characteristics");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -334,13 +317,17 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
-			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
-				loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
+			--[[ TODO: Reimplement this feature for patch 8.0
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
 				SetMapByID(dataTab.RC[1]);
 				TRP3_API.map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], completeName, TRP3_API.map.DECORATION_TYPES.HOUSE);
 			end);
+			]]
+
+			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
+				loc.REG_PLAYER_RESIDENCE_SHOW, Ellyb.ColorManager.GREEN(dataTab.RC[4]).. Ellyb.ColorManager.RED("\n\nDisplaying player residence on the map disabled due to 8.0 changes."));
 		end
 		frame:Show();
 		previous = frame;
@@ -354,7 +341,7 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_MiscTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
 		previous = TRP3_RegisterCharact_CharactPanel_MiscTitle;
 
-		for frameIndex, miscStructure in pairs(dataTab.MI) do
+		for frameIndex, miscStructure in ipairs(dataTab.MI) do
 			local frame = miscCharFrame[frameIndex];
 			if frame == nil then
 				frame = CreateFrame("Frame", "TRP3_RegisterCharact_MiscInfoLine" .. frameIndex, TRP3_RegisterCharact_CharactPanel_Container, "TRP3_RegisterCharact_RegisterInfoLine");
@@ -380,7 +367,7 @@ local function setConsultDisplay(context)
 		margin = 0;
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
 
-		for frameIndex, psychoStructure in pairs(dataTab.PS) do
+		for frameIndex, psychoStructure in ipairs(dataTab.PS) do
 			local frame = psychoCharFrame[frameIndex];
 			local value = getPsychoStructureValue(psychoStructure);
 			if frame == nil then
@@ -1170,7 +1157,6 @@ local function saveCharacteristics()
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
 
-	compressData();
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getCurrentContext().profileID, "characteristics");
 end
 
@@ -1492,8 +1478,6 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc.REG_PLAYER_RESIDENCE);
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc.REG_PLAYER_BIRTHPLACE);
 
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
-	compressData();
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)

@@ -32,7 +32,7 @@ local isType = Ellyb.Assertions.isType;
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
-local Globals = TRP3_API.Globals;
+local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Events = TRP3_API.events;
 

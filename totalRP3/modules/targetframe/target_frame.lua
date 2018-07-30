@@ -192,7 +192,8 @@ local function onStart()
 			end
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
-			local info = getCompanionInfo(owner, companionID, currentTargetID).data or EMPTY;
+			local companionInfo = getCompanionInfo(owner, companionID, currentTargetID);
+			local info = companionInfo and companionInfo.data or EMPTY;
 			setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
 		elseif currentTargetType == TYPE_NPC then
 			setupFieldSet(ui_TargetFrame, UnitName("target"), TARGET_NAME_WIDTH);
@@ -373,6 +374,7 @@ local function onStart()
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
+	Utils.event.registerHandler("PLAYER_MOUNT_DISPLAY_CHANGED", onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if (not unitID or (currentTargetID == unitID)) and (not dataType or dataType == "characteristics" or dataType == "about") then

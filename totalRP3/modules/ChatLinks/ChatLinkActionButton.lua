@@ -34,6 +34,7 @@ local loc = TRP3_API.loc;
 
 -- Ellyb imports
 local isType = Ellyb.Assertions.isType;
+local bind = Ellyb.Functions.bind;
 
 ---@class ChatLinkActionButton : Object
 local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
@@ -98,13 +99,17 @@ function ChatLinkActionButton:OnClick(linkID, sender, button)
 		-- Set the button text to indicate that we are sending the command
 		button:SetText(loc.CL_SENDING_COMMAND);
 		button:Disable();
+		self.button = button;
+
 		-- Get a unique message identifier for the data request, used for progression updates
-		local messageToken = TRP3_API.communication.getMessageIDAndIncrement();
+		local messageToken = AddOn_TotalRP3.Communications.getNewMessageToken();
 		self.messageToken = messageToken;
+		self.handlerID = AddOn_TotalRP3.Communications.registerMessageTokenProgressHandler(messageToken, sender, bind(self.OnProgressDownload, self));
+
 		-- Send a request for this link ID and indicate a message ID to use for progression updates
-		TRP3_API.Communication.sendObject(_private[self].questionCommand, {
+		AddOn_TotalRP3.Communications.sendObject(_private[self].questionCommand, {
 			linkID = linkID,
-			messageID = messageToken,
+			messageToken = messageToken,
 		}, sender);
 	end);
 end
@@ -117,18 +122,23 @@ function ChatLinkActionButton:OnAnswerCommandReceived(data, sender)
 
 end
 
-function ChatLinkActionButton:OnProgressDownload(messageToken, sender, amountOfMessagesIncoming, amountOfMessagesReceived)
-	if not messageToken == self.messageToken then
-		return
-	end
+function ChatLinkActionButton:OnProgressDownload(sender, amountOfMessagesIncoming, amountOfMessagesReceived)
 	-- If the download is complete, we restore the button text
 	if amountOfMessagesReceived == amountOfMessagesIncoming then
-		self.button:SetText(_private[self].buttonText);
-		self.button:Enable();
+		if self.button then
+			self.button:SetText(_private[self].buttonText);
+			self.button:Enable();
+			self.button = nil;
+		end
+		if self.handlerID then
+			AddOn_TotalRP3.Communications.unregisterMessageTokenProgressHandler(self.handlerID);
+		end
 	else
-		-- We update the button text with the progression percentage
-		self.button:Disable();
-		self.button:SetText(loc.CL_DOWNLOADING:format((amountOfMessagesReceived / amountOfMessagesIncoming) * 100));
+		if self.button then
+			-- We update the button text with the progression percentage
+			self.button:Disable();
+			self.button:SetText(loc.CL_DOWNLOADING:format((amountOfMessagesReceived / amountOfMessagesIncoming) * 100));
+		end
 	end
 end
 

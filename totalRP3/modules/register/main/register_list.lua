@@ -73,30 +73,48 @@ local REGISTER_PAGE = TRP3_API.register.MENU_LIST_ID;
 
 local function openPage(profileID, unitID)
 	local profile = getProfile(profileID);
-	if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+	local menuID = currentlyOpenedProfilePrefix .. profileID
+	if isMenuRegistered(menuID) then
+		local menuItem = TRP3_API.navigation.menu.getMenuItem(menuID)
+		if unitID then
+			menuItem.pageContext.unitID            = unitID
+			menuItem.pageContext.openingWithUnitID = true
+		end
 		-- If the character already has his "tab", simply open it
-		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+		selectMenu(menuID);
+		TRP3_API.navigation.page.getCurrentContext().openingWithUnitID = false
 	else
 		-- Else, create a new menu entry and open it.
 		local tabText = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
 			tabText = profile.characteristics.FN;
 		end
+		local pageContext = {
+			-- source isn't used, but useful in to know where you're getting the
+			-- REGISTER_PROFILE_OPENED event from.
+			source            = "directory",
+			profile           = profile,
+			profileID         = profileID,
+			unitID            = unitID,
+			openingWithUnitID = unitID ~= nil
+		}
 		registerMenu({
-			id = currentlyOpenedProfilePrefix .. profileID,
+			id = menuID,
 			text = tabText,
-			onSelected = function() setPage("player_main", {profile = profile, profileID = profileID}) end,
+			onSelected = function() setPage("player_main", pageContext ) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
 			icon = "Interface\\ICONS\\pet_type_humanoid",
+			pageContext = pageContext,
 		});
-		selectMenu(currentlyOpenedProfilePrefix .. profileID);
+		selectMenu(menuID);
+		TRP3_API.navigation.page.getCurrentContext().openingWithUnitID = false
 
 		if (unitID and unitIDIsFilteredForMatureContent(unitID)) or (profileID and profileIDISFilteredForMatureContent(profileID)) then
 			TRP3_API.popup.showPopup("mature_filtered");
 			TRP3_MatureFilterPopup.profileID = profileID;
 			TRP3_MatureFilterPopup.unitID = unitID;
-			TRP3_MatureFilterPopup.menuID = currentlyOpenedProfilePrefix .. profileID;
+			TRP3_MatureFilterPopup.menuID = menuID;
 		end
 	end
 end
@@ -459,6 +477,8 @@ local function onCharactersActionSelected(value, button)
 				for _, unitID in pairs(characterToPurge) do
 					deleteCharacter(unitID);
 				end
+				Events.fireEvent(Events.REGISTER_DATA_UPDATED);
+				Events.fireEvent(Events.REGISTER_PROFILE_DELETED);
 				refreshList();
 			end);
 		end
@@ -790,7 +810,7 @@ end
 
 local function onLineSelected(self, button)
 	assert(self:GetParent().id, "No id on line.");
-	selectedIDs[self:GetParent().id] = self:GetChecked();
+	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
 end
 
 local function changeMode(tabWidget, value)
@@ -893,6 +913,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
 				unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 			end
+		else
+			for profileID, _ in pairs(selectedIDs) do
+				if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
+					unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+				end
+			end
+			wipe(selectedIDs);
 		end
 		if getCurrentPageID() == REGISTER_LIST_PAGEID then
 			refreshList();

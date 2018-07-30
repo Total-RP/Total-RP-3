@@ -23,6 +23,111 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-ArakkoaBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-DemonsBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-DraeneiBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-DraenorOrcBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-DrustvariBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-DwarfBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-FossilBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-HighborneNightElvesBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-HighmountainTaurenBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-MantidBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-MiscBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-MoguBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-NerubianBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-NightElfBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-OgreBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-OrcBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-PandarenBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-TolvirBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-TrollBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-VrykulBIG",
+		width = 256,
+		height = 512
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\Arch-Race-ZandalariBIG",
+		width = 256,
+		height = 512
+	},
+	{
 		url = "Interface\\ARCHEOLOGY\\Arch-TempRareSketch",
 		width = 512,
 		height = 256
@@ -69,6 +174,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\ARCHEOLOGY\\ArchRare-Demons",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\ARCHEOLOGY\\ArchRare-Drustvari",
 		width = 512,
 		height = 256
 	},
@@ -243,6 +353,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\ARCHEOLOGY\\ArchRare-Zandalari",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\ARCHEOLOGY\\ArchRare-ZinRokhDestroyer",
 		width = 512,
 		height = 256
@@ -313,6 +428,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_UldirStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendBlackTempleStart",
 		width = 128,
 		height = 128
@@ -359,6 +479,106 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Challenges\\challenges-silver",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-BloodElf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-DarkIronDwarf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-DeathKnight1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Draenei1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Dwarf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DRESSUPBACKGROUND-GNOME1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Goblin1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-HighmountainTauren1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Human1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-LightforgedDraenei1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Maghar1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Nightborne1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Orc1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Pandaren1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Scourge1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Tauren1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DRESSUPBACKGROUND-TROLL1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-VoidElf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Worgen1",
 		width = 256,
 		height = 256
 	},
@@ -709,11 +929,31 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-AntorusWing1",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ArgentDungeon",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ArgentRaid",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Argus",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Ashran",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-AssaultonVioletHold",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Ataldazar",
 		width = 256,
 		height = 256
 	}, {
@@ -726,6 +966,14 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-BaradinHold",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-BlackRookHold",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-BlackrookHoldArena",
 		width = 256,
 		height = 256
 	}, {
@@ -757,6 +1005,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-BrokenIsles",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CataEventFlamelash",
 		width = 256,
 		height = 256
@@ -773,7 +1025,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CathedralOfEternalNight",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ChamberOfAspects",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CourtofStars",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DarkheartThicket",
 		width = 256,
 		height = 256
 	}, {
@@ -805,11 +1069,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-EyeofAzshara",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-FallofDeathwing",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Firelands",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Freehold",
 		width = 256,
 		height = 256
 	}, {
@@ -842,6 +1114,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-HallsofStone",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-HallsofValor",
 		width = 256,
 		height = 256
 	}, {
@@ -881,6 +1157,14 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-KingsRest",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-KulTiras",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Love",
 		width = 256,
 		height = 256
@@ -889,11 +1173,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MawofSouls",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MogushanPalace",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MogushanVaults",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-NeltharionsLair",
 		width = 256,
 		height = 256
 	}, {
@@ -937,11 +1229,23 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-ReturntoKarazhan",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-RubySanctum",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ScarletHalls",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SeatoftheTriumvirate",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SeethingShore",
 		width = 256,
 		height = 256
 	}, {
@@ -954,6 +1258,14 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ShadowpanMonastery",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-ShrineoftheStorm",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SiegeofBoralus",
 		width = 256,
 		height = 256
 	}, {
@@ -985,6 +1297,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TempleofSethraliss",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TempleoftheJadeSerpent",
 		width = 256,
 		height = 256
@@ -993,7 +1309,23 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheArcway",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheDreadApproach",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheEmeraldNightmare-Darkbough",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheEmeraldNightmare-RiftofAln",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheEmeraldNightmare-TormentedGuardians",
 		width = 256,
 		height = 256
 	}, {
@@ -1001,11 +1333,39 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheMotherlode",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheNexus",
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheNighthold",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheNighthold-ArcingAqueducts",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheNighthold-BetrayersRise",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheNighthold-Nightspire",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheNighthold-RoyalAthenaeum",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheOculus",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheUnderrot",
 		width = 256,
 		height = 256
 	}, {
@@ -1033,7 +1393,31 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TolDagor",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TolvirArena",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasChamberOfTheAvatar",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasDeceiversFall",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasTheGatesOfHell",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasWailingHalls",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TrialofValor",
 		width = 256,
 		height = 256
 	}, {
@@ -1042,6 +1426,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TwinPeaksBG",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Uldir",
 		width = 256,
 		height = 256
 	}, {
@@ -1069,7 +1457,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-valsharrahArena",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-VaultOfArchavon",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-VaultoftheWardens",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-WaycrestManor",
 		width = 256,
 		height = 256
 	}, {
@@ -1077,35 +1477,7 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-CathedralOfEternalNight",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasChamberOfTheAvatar",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasDeceiversFall",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasTheGatesOfHell",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasWailingHalls",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-AntorusWing1",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-Argus",
-		width = 256,
-		height = 256
-	}, {
-		url = "Interface\\LFGFRAME\\LFGIcon-SeatoftheTriumvirate",
+		url = "Interface\\LFGFRAME\\LFGIcon-Zandalar",
 		width = 256,
 		height = 256
 	}, {
@@ -1251,6 +1623,246 @@ local IMAGES = {
 	{
 		url = "Interface\\Pictures\\9330_gammerita_sepia_256",
 		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-apocalypse",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-bladesofthefallenprince",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-deathknight-mawofthedamned",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-thealdrachiwarblades",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-demonhunter-twinbladesofthedeceiver",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-ghanirthemothertree",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-scytheofelune",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-theclawsofursoc",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-druid-thefangsofashamane",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-talonclaw",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-thasdorah",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-hunter-titanstrike",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-aluneth",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-ebonchill",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-mage-felomelorn",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-fists",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-fuzan",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-monk-sheilun",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-ashbringer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-silverhand",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-paladin-truthguard",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-lightswrath",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-tuure",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-priest-xalatath",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-dreadblades",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-fangsofthedevourer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-rogue-kingslayers",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-doomhammer",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-fistofraden",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-shaman-sharasdal",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-scepterofsargeras",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-skullofthemanari",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warlock-ulthalesh",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-cover",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-scaleoftheearthwarder",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-stromkar",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\artifactbook-warrior-warswordsofthevalarjar",
+		width = 512,
 		height = 256
 	},
 	{
@@ -1969,6 +2581,51 @@ local IMAGES = {
 		height = 64
 	},
 	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_01",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_02",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_03",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_04",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_05",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_06",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_07",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\PVPFrame\\Icons\\UI_RankedPvP_07Mod",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
+		width = 256,
+		height = 64
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-ArmoryAlliance",
 		width = 512,
 		height = 256
@@ -2449,12 +3106,22 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-DarkIronDwarf",
+		width = 256,
+		height = 128,
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Highmountain",
 		width = 256,
 		height = 128,
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Lightforged",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-MagharOrc",
 		width = 256,
 		height = 128,
 	},
@@ -2505,6 +3172,36 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warboard-bc-Zangarmarsh",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Boralus",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Drustvar",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Nazmir",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Stormsong",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Voldun",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warboard-bfa-Zuldazar",
 		width = 512,
 		height = 256
 	},
@@ -2914,6 +3611,376 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliance-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliance",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliancecontribution-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliancewar-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-horde-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-horde",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-hordecontribution-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-hordewar-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-AltarOfKings-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-AltarofKings",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Armory-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Armory",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Barracks-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Barracks",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-ElekMount-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-ElekMount",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Footmen",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Knight",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Priest",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Riflemen",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-SiegeEngine-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-SiegeEngine",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-SpiritofWater-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-SpiritofWater",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TownHall1",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TownHall2-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TownHall2",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TownHall3-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TownHall3",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Workshop-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Workshop",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-AltarOfStorms-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-AltarOfStorms",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Armory-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Armory",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-AxeThrower",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-AxeThrowerDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Barracks-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Barracks",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-BristlingPower",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-CallOfTheStorm",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Demolisher-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Demolisher",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DemolisherDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Grunt",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-GruntAxeThrowerandTaurenWarrior",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-GruntAxeThrowerandTaurenWarriorDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-GruntDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-GruntandAxeThrower",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-GruntandAxeThrowerDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-KodoMount-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-KodoMount",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Raider",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-RaiderDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Shaman",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ShamanDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-SpiritofFire-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-SpiritofFire",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ShamanDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TaurenWarrior",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TaurenWarriorDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall1",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall2-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall2",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall3-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall3",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TrollBatRider",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TrollBatRiderDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-WitchDoctor",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-WitchDoctorDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Workshop-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Workshop",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-zone-BattleforAzerothKulTiras",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-zone-BattleforAzerothZandalar",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-zone-BurningCrusade",
 		width = 512,
 		height = 256
@@ -2930,246 +3997,6 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-zone-WrathoftheLichKing",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-deathknight-apocalypse",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-deathknight-bladesofthefallenprince",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-deathknight-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-deathknight-mawofthedamned",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-demonhunter-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-demonhunter-thealdrachiwarblades",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-demonhunter-twinbladesofthedeceiver",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-druid-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-druid-ghanirthemothertree",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-druid-scytheofelune",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-druid-theclawsofursoc",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-druid-thefangsofashamane",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-hunter-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-hunter-talonclaw",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-hunter-thasdorah",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-hunter-titanstrike",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-mage-aluneth",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-mage-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-mage-ebonchill",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-mage-felomelorn",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-monk-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-monk-fists",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-monk-fuzan",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-monk-sheilun",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-paladin-ashbringer",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-paladin-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-paladin-silverhand",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-paladin-truthguard",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-priest-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-priest-lightswrath",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-priest-tuure",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-priest-xalatath",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-rogue-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-rogue-dreadblades",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-rogue-fangsofthedevourer",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-rogue-kingslayers",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-shaman-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-shaman-doomhammer",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-shaman-fistofraden",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-shaman-sharasdal",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warlock-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warlock-scepterofsargeras",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warlock-skullofthemanari",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warlock-ulthalesh",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warrior-cover",
-		width = 256,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warrior-scaleoftheearthwarder",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warrior-stromkar",
-		width = 512,
-		height = 256
-	},
-	{
-		url = "Interface\\Pictures\\artifactbook-warrior-warswordsofthevalarjar",
 		width = 512,
 		height = 256
 	},
@@ -3344,9 +4171,34 @@ local IMAGES = {
 		height = 512
 	},
 	{
-		url = "Interface\\QUESTFRAME\\UI-HorizontalBreak",
-		width = 256,
-		height = 64
+		url = "Interface\\TAXIFRAME\\TAXIMAP0",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TAXIFRAME\\TAXIMAP1",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TAXIFRAME\\TAXIMAP530",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TAXIFRAME\\TAXIMAP571",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TAXIFRAME\\Taximap870",
+		width = 512,
+		height = 512
+	},
+	{
+		url = "Interface\\TAXIFRAME\\Taximap1116",
+		width = 512,
+		height = 512
 	},
 };
 

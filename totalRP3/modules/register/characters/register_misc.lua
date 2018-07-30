@@ -36,7 +36,6 @@ local showPopup = TRP3_API.popup.showPopup;
 local hasProfile = TRP3_API.register.hasProfile;
 local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
-local compressData;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -135,7 +134,6 @@ local function onEditStyle(choice, frame)
 			-- version increment
 			assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 			dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-			compressData();
 		end
 	end
 end
@@ -333,7 +331,6 @@ local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	-- version increment
 	assert(type(dataTab.v) == "number", "Error: No version in draftData or not a number.");
 	dataTab.v = Utils.math.incrementNumber(dataTab.v, 2);
-	compressData();
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
 
@@ -346,7 +343,6 @@ local function swapGlanceSlot(from, to)
 	TRP3_API.register.glance.swapDataFromSlots(dataTab, from, to);
 	-- Refresh display & target frame
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, getPlayerCurrentProfileID(), "misc");
-	compressData();
 end
 TRP3_API.register.swapGlanceSlot = swapGlanceSlot;
 
@@ -439,34 +435,8 @@ local function showMiscTab()
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
-local currentCompressed;
-
-function compressData()
-	local data = get("player/misc");
-	local dataToSend = {
-		v = data.v,
-		ST = data.ST,
-		PE = {},
-	};
-	-- Only send used slot !
-	for slotIndex, slot in pairs(data.PE) do
-		if slot.AC then
-			dataToSend.PE[slotIndex] = slot;
-		end
-	end
-
-	local serial = Utils.serial.serialize(dataToSend);
-	local compressed = Utils.serial.safeEncodeCompressMessage(serial);
-
-	if compressed and compressed:len() < serial:len() then
-		currentCompressed = compressed;
-	else
-		currentCompressed = dataToSend;
-	end
-end
-
 function TRP3_API.register.player.getMiscExchangeData()
-	return currentCompressed;
+	return get("player/misc");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -572,9 +542,6 @@ function TRP3_API.register.inits.miscInit()
 			displayPeek(context);
 		end
 	end);
-
-	Events.listenToEvent(Events.REGISTER_PROFILES_LOADED, compressData); -- On profile change, compress the new data
-	compressData();
 
 	-- Resizing
 	TRP3_AtFirstGlanceEditorResizeButton.onResizeStop = function()

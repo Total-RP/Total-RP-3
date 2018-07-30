@@ -25,10 +25,12 @@ local Ellyb = Ellyb(_);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Lua imports
+--region Lua imports
 local assert = assert;
 local string = string;
 local math = math;
+local tostring = tostring;
+--endregion
 
 -- AddOn imports
 local Chomp = AddOn_Chomp;
@@ -39,8 +41,6 @@ local isNotNil = Ellyb.Assertions.isNotNil;
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
-
-local Communication = {};
 
 local PROTOCOL_PREFIX = "TRP3.2";
 local PROTOCOL_SETTINGS = {
@@ -53,7 +53,7 @@ local PROTOCOL_SETTINGS = {
 		["table"] = true,
 	},
 }
-Communication.PRIORITIES = {
+local PRIORITIES = {
 	LOW = "LOW",
 	MEDIUM = "MEDIUM",
 	HIGH = "HIGH",
@@ -69,12 +69,12 @@ local messageIDDispatcher = Ellyb.EventsDispatcher();
 local DEPRECATED_MESSAGE_PRIORITY = [[Deprecated usage of message priority "%s". Use "%s" instead.]];
 --[[ Deprecated ]] local function CTLToChompPriority(priority)
 	if priority == "BULK" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("BULK", Communication.PRIORITIES.LOW));
-		priority = Communication.PRIORITIES.LOW
+		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("BULK", PRIORITIES.LOW));
+		priority = PRIORITIES.LOW
 	end
 	if priority == "NORMAL" then
-		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", Communication.PRIORITIES.MEDIUM));
-		priority = Communication.PRIORITIES.MEDIUM
+		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", PRIORITIES.MEDIUM));
+		priority = PRIORITIES.MEDIUM
 	end
 	return priority
 end
@@ -99,18 +99,29 @@ local function extractMessageTokenFromData(data)
 	return data:sub(1, 2), data:sub(3, -1);
 end
 
-local function registerSubSystemPrefix(prefix, callback, onProgressCallback)
+local function registerSubSystemPrefix(prefix, callback)
 	local handlerID, onProgressHandlerID;
 
 	assert(isType(callback, "function", "callback"));
 	handlerID = subSystemsDispatcher:RegisterCallback(prefix, callback);
 
-	if onProgressCallback then
-		assert(isType(onProgressCallback, "function", "onProgressCallback"));
-		onProgressHandlerID = subSystemsOnProgressDispatcher:RegisterCallback(prefix, onProgressCallback);
-	end
-
 	return handlerID, onProgressHandlerID;
+end
+
+local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
+	assert(isType(onProgressCallback, "function", "onProgressCallback"));
+	assert(isType(sender, "string", "sender"));
+
+	return subSystemsOnProgressDispatcher:RegisterCallback(tostring(messageToken), function(receivedSender, ...)
+		if receivedSender == sender then
+			onProgressCallback(receivedSender, ...)
+		end
+	end);
+end
+
+local function unregisterMessageTokenProgressHandler(handlerID)
+	assert(isType(handlerID, "string", "handlerID"));
+	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
 local function sendObject(prefix, object, target, priority, messageToken, useLoggedMessages)
@@ -161,14 +172,9 @@ local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _,
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;
 	end
-	subSystemsOnProgressDispatcher:TriggerEvent(prefix, internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID);
-	messageIDDispatcher:TriggerEvent(internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID)
+	subSystemsOnProgressDispatcher:TriggerEvent(internalMessageIDToChompSessionIDMatching[sessionID], sender, msgTotal, msgID);
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
-
-function Communication.addMessageIDHandler(sender, reservedMessageID, callback)
-	subSystemsOnProgressDispatcher:RegisterCallback(reservedMessageID, callback)
-end
 
 local function onChatMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
 	_, data = extractMessageTokenFromData(data);
@@ -181,22 +187,31 @@ end
 
 Chomp.RegisterAddonPrefix(PROTOCOL_PREFIX, onChatMessageReceived, PROTOCOL_SETTINGS)
 
--- Estimate the number of packet needed to send a object.
-local function estimateStructureLoad(object, shouldBeCompressed)
 
+local function estimateStructureSize(object, shouldBeCompressed)
 	assert(isNotNil(object, "object"));
 	local serializedObject = Chomp.Serialize(object);
 	if shouldBeCompressed then
 		serializedObject = Compression.compress(serializedObject);
 	end
-	return #serializedObject / Chomp.GetBPS();
+	return #serializedObject;
+end
+
+-- Estimate the number of packet needed to send a object.
+local function estimateStructureLoad(object, shouldBeCompressed)
+	return estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS();
 end
 
 AddOn_TotalRP3.Communications = {
 	getNewMessageToken = getNewMessageToken,
 	registerSubSystemPrefix = registerSubSystemPrefix,
+	registerMessageTokenProgressHandler = registerMessageTokenProgressHandler,
+	unregisterMessageTokenProgressHandler = unregisterMessageTokenProgressHandler,
 	estimateStructureLoad = estimateStructureLoad,
+	estimateStructureSize = estimateStructureSize,
 	sendObject = sendObject,
+	extractMessageTokenFromData = extractMessageTokenFromData,
+	PRIORITIES = PRIORITIES,
 }
 
 Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
@@ -223,7 +238,31 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 			Arguments = {
 				{ Name = "prefix", Type = "string", Nilable = false, Documentation = { "A unique prefix for this sub-system, used to differentiate between all sub-systems using communications. An error will be thrown if the prefix has already been registered before." } },
 				{ Name = "callback", Type = "function", Nilable = false, Documentation = { "This callback will be called when we receive data that uses this prefix." } },
-				{ Name = "onProgressCallback", Type = "function", Nilable = true, Documentation = { "This callback will be called as the transfers are progressing, with the message token associated to the transfer and the transfer progression." } },
+			},
+		},
+		{
+			Name = "registerMessageTokenProgressHandler",
+			Type = "Function",
+			Documentation = { "Register a new callback for a specific message token to be called when we receive new data for this message token." },
+
+			Arguments = {
+				{ Name = "messageToken", Type = "string", Nilable = false, Documentation = { "A valid message token generated using getNewMessageToken()." } },
+				{ Name = "sender", Type = "string", Nilable = false, Documentation = { "The unit name for the sender of the messages that we will be receiving on the message token; It is used to filter out other sender and only listen to messages coming from the expected sender." } },
+				{ Name = "onProgressCallback", Type = "function", Nilable = false, Documentation = { "This callback will be called when we receive new data for the specified message token with \"sender, amountOfMessagesIncoming, amountOfMessagesReceived\" as arguments.." } },
+			},
+
+			Returns =
+			{
+				{ Name = "handlerID", Type = "string", Nilable = false, Documentation = { "An identifier for the callback registered, to be used later for unregisterMessageTokenProgressHandler()." }  },
+			},
+		},
+		{
+			Name = "unregisterMessageTokenProgressHandler",
+			Type = "Function",
+			Documentation = { "Unregister an existing callback for a specified message token. It is best practice to unregister callbacks once we don't need them anymore." },
+
+			Arguments = {
+				{ Name = "handlerID", Type = "string", Nilable = false, Documentation = { "The identifier for the callback we want to unregister, as received when registering the callback." } },
 			},
 		},
 		{
@@ -239,6 +278,21 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 			Returns =
 			{
 				{ Name = "approximateAmountOfMessages", Type = "number", Nilable = false, Documentation = { "The approximate amount of messages need to send the structure." }  },
+			},
+		},
+		{
+			Name = "extractMessageTokenFromData",
+			Type = "Function",
+			Documentation = { "Extract the message token from data received from Chomp, to get proper deserializable data and the message token separately." },
+
+			Arguments = {
+				{ Name = "data", Type = "string", Nilable = false, Documentation = { "A string of data received from Chomp." } },
+			},
+
+			Returns =
+			{
+				{ Name = "messageToken", Type = "string", Nilable = false, Documentation = { "The internal message token used by Total RP 3 to keep track of a single structure being sent over several messages." }  },
+				{ Name = "data", Type = "string", Nilable = false, Documentation = { "The actual raw data that was sent by Total RP 3. Can be deserialize using Chomp's Deserialize function. MUST be decompress using TRP3's Compression module if the message came from non-logged channels." }  },
 			},
 		},
 	},
@@ -260,8 +314,8 @@ Ellyb.Documentation:AddDocumentationTable("TotalRP3_Communication", {
 -- DEPRECATED
 -- Backward compatibility layer
 TRP3_API.communication = {};
-TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communication.getNewMessageToken");
-TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communication.registerSubSystemPrefix");
+TRP3_API.communication.getMessageIDAndIncrement = Ellyb.DeprecationWarnings.wrapFunction(getNewMessageToken, "TRP3_API.communication.getMessageIDAndIncrement", "AddOn_TotalRP3.Communications.getNewMessageToken");
+TRP3_API.communication.registerProtocolPrefix = Ellyb.DeprecationWarnings.wrapFunction(registerSubSystemPrefix, "TRP3_API.communication.registerProtocolPrefix", "AddOn_TotalRP3.Communications.registerSubSystemPrefix");
 
 TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID, callback)
 	Ellyb.DeprecationWarnings.warn([[Deprecated usage of TRP3_API.communication.addMessageIDHandler(sender, reservedMessageID, callback). You should now provide an onProgression callback when using AddOn_TotalRP3.registerSubSystemPrefix(prefix, callback, onProgressCallback) for the sub-system. This callback will be called with the message ID in the parameters.]]);
@@ -272,6 +326,6 @@ TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID,
 	end);
 end
 
-Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communication", TRP3_API.communication);
+Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communications", TRP3_API.communication);
 
 

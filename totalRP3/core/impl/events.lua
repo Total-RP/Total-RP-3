@@ -47,6 +47,11 @@ local Events = {
 	NAVIGATION_TUTORIAL_REFRESH = "NAVIGATION_TUTORIAL_REFRESH",
 	NAVIGATION_RESIZED = "NAVIGATION_RESIZED",
 	
+	-- Called when the user changes the page in the main frame. (setPage)
+	-- Arg1 : Page ID
+	-- Arg2 : Page context
+	PAGE_OPENED = "PAGE_OPENED",
+	
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Data changed
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -70,7 +75,7 @@ local Events = {
 	-- Called when as "About" page is shown.
 	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
-
+	
 	-- Called when a notifications is created/read/removed
 	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
 	

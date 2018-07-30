@@ -652,6 +652,7 @@ function TRP3_API.register.init()
 		text = get("player/characteristics/FN") or Globals.player,
 		onSelected = function()
 			setPage("player_main", {
+				source = "player",
 				profile = get("player"),
 				isPlayer = true,
 			});

@@ -22,8 +22,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
-local LibRealmInfo = LibStub("LibRealmInfo");
-
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
@@ -50,7 +48,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 52,
+	version = 56,
 
 	--@debug@
 	version_display = "-dev",
@@ -127,8 +125,8 @@ setmetatable(TRP3_API.globals.empty, emptyMeta);
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 TRP3_API.globals.build = function()
-	local fullName, realm = UnitFullName("player");
-	assert(realm, "Cannot have realm name information !");
+	local fullName = UnitName("player");
+	local realm = GetRealmName():gsub("[%s*%-*]", "");
 	TRP3_API.globals.player_realm_id = realm;
 	TRP3_API.globals.player_id = fullName .. "-" .. realm;
 	TRP3_API.globals.player_icon = TRP3_API.ui.misc.getUnitTexture(race, UnitSex("player"));

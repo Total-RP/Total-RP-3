@@ -173,7 +173,6 @@ local function saveInformation()
 	-- version increment
 	dataTab.data.v = Utils.math.incrementNumber(dataTab.data.v or 0, 2);
 
-	--	compressData();
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, context.profileID);
 end
 
