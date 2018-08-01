@@ -45,7 +45,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'});
+	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO'});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
