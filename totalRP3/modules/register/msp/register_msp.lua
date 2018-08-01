@@ -24,15 +24,13 @@ local function onStart()
 	local loc = TRP3_API.loc;
 
 	-- Check for already loaded MSP addon
-	if _G.msp_RPAddOn then
-		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
-		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(addonName));
+	if msp_RPAddOn then
+		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(msp_RPAddOn));
 		-- Provoke error to cancel module activation
-		error(("Conflict with another MSP addon: %s"):format(addonName));
+		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
 	local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
-	local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local tsize = Utils.table.size;
 	local log = Utils.log.log;
@@ -45,8 +43,8 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	_G.msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
+	msp_RPAddOn = "Total RP 3";
+	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -81,7 +79,7 @@ local function onStart()
 		local dataTab = get("player/about");
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
-		
+
 		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
 			msp.my['HI'] = dataTab.T3.HI.TX;
 			msp.my['DE'] = dataTab.T3.PH.TX;
@@ -163,7 +161,7 @@ local function onStart()
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
-	local strtrim, emptyToNil, unitIDToInfo = strtrim, Utils.str.emptyToNil, Utils.str.unitIDToInfo;
+	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
@@ -180,12 +178,12 @@ local function onStart()
 	}
 
 	local CHARACTER_FIELDS = {
-		FR = true, FC = true, CU = true, VA = true, CO = true
+		FR = true, FC = true, CU = true, VA = true, CO = true,
 	}
 
 	local ABOUT_FIELDS = {
 		HI = "HI",
-		DE = "PH"
+		DE = "PH",
 	}
 
 	local function getProfileForSender(senderID)
@@ -211,9 +209,9 @@ local function onStart()
 		return profile, character;
 	end
 
-	tinsert( msp.callback.received, function (senderID)
+	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
-		if data and not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
+		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
 			local profile, character = getProfileForSender(senderID);
 			if not profile.characteristics then
 				profile.characteristics = {};
@@ -249,7 +247,7 @@ local function onStart()
 					end
 					-- We do not want to trim the class field
 					-- Some users are using a space to indicate they don't have a class
-					if not CHARACTERISTICS_FIELDS[field] == "CL" then
+					if CHARACTERISTICS_FIELDS[field] ~= "CL" then
 						value = strtrim(value);
 					end
 					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(value);
@@ -280,9 +278,10 @@ local function onStart()
 				elseif CHARACTER_FIELDS[field] then
 					updatedCharacter = true;
 					if field == "FC" then
-						profile.character.RP = 1;
 						if value == "1" then
 							profile.character.RP = 2;
+						else
+							profile.character.RP = 1;
 						end
 					elseif field == "CU" then
 						profile.character.CU = value;
@@ -364,7 +363,7 @@ local function onStart()
 				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 			end
 		end
-	end)
+	end);
 
 	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
 	local TT_DELAY, FIELDS_DELAY = 5, 20;
@@ -376,7 +375,7 @@ local function onStart()
 		if targetID and targetMode == TYPE_CHARACTER
 		and targetID ~= Globals.player_id
 		and not isIgnored(targetID)
-		and (not data or not data.VA or data.VA:sub(1, 8) ~= "TotalRP3")
+		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
 			local request = {};
 			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
@@ -425,7 +424,7 @@ local function onStart()
 			end
 		end
 	end
-	
+
 	-- Build configuration page
 	registerConfigKey(CONFIG_T3_ONLY, false);
 	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
