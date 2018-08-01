@@ -368,31 +368,35 @@ local function getCharacterLines()
 	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
 
-		-- Defines if at least one character is conform to the search criteria
-		for unitID, _ in pairs(profile.link or Globals.empty) do
-			local unitName, unitRealm = unitIDToInfo(unitID);
-			if safeMatch(unitName:lower(), nameSearch) then
+		if profile.characteristics and not Ellyb.Tables.isEmpty(profile.characteristics) then
+
+			-- Defines if at least one character is conform to the search criteria
+			for unitID, _ in pairs(profile.link or Globals.empty) do
+				local unitName, unitRealm = unitIDToInfo(unitID);
+				if safeMatch(unitName:lower(), nameSearch) then
+					nameIsConform = true;
+				end
+				if  unitRealm == Globals.player_realm_id then
+					realmIsConform = true;
+				end
+				local character = getUnitIDCharacter(unitID);
+				if character.guild and safeMatch(character.guild:lower(), guildSearch) then
+					guildIsConform = true;
+				end
+			end
+			local completeName = getCompleteName(profile.characteristics or {}, "", true);
+			if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
 				nameIsConform = true;
 			end
-			if unitRealm == Globals.player_realm_id then
-				realmIsConform = true;
-			end
-			local character = getUnitIDCharacter(unitID);
-			if character.guild and safeMatch(character.guild:lower(), guildSearch) then
-				guildIsConform = true;
-			end
-		end
-		local completeName = getCompleteName(profile.characteristics or {}, "", true);
-		if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
-			nameIsConform = true;
-		end
 
-		nameIsConform = nameIsConform or nameSearch:len() == 0;
-		guildIsConform = guildIsConform or guildSearch:len() == 0;
-		realmIsConform = realmIsConform or not realmOnly;
+			nameIsConform = nameIsConform or nameSearch:len() == 0;
+			guildIsConform = guildIsConform or guildSearch:len() == 0;
+			realmIsConform = realmIsConform or not realmOnly;
 
-		if nameIsConform and guildIsConform and realmIsConform then
-			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
+			if nameIsConform and guildIsConform and realmIsConform then
+				tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
+			end
+
 		end
 	end
 
