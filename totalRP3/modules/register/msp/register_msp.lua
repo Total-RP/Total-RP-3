@@ -42,22 +42,11 @@ local function onStart()
 	local onInformationReceived;
 	local CONFIG_T3_ONLY = "msp_t3";
 
-	local msp = _G.msp;
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- LibMSP4TRP3
-	-- This is a huge modification of Etarna's LibMSP
+	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	msp.msp_RPAddOn = "Total RP 3";
+	_G.msp_RPAddOn = "Total RP 3";
 	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
-
-	-- Hook MSP's msp_onevent to check if the player is ignored before accepting incoming messages
-	local oldMspOnEvent = msp_onevent;
-	function msp_onevent(this, event, prefix, body, dist, sender)
-		if not isIgnored(sender) then
-			oldMspOnEvent(this, event, prefix, body, dist, sender)
-		end
-	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -186,7 +175,6 @@ local function onStart()
 		AW = "WE",
 		HH = "RE",
 		HB = "BP",
-		NT = "FT",
 		NA = "FN",
 		IC = "IC",
 	}
