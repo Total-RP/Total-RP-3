@@ -61,6 +61,8 @@ local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpel
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
+local tContains = tContains;
+local GetAutoCompleteRealms = GetAutoCompleteRealms;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -376,7 +378,7 @@ local function getCharacterLines()
 				if safeMatch(unitName:lower(), nameSearch) then
 					nameIsConform = true;
 				end
-				if  unitRealm == Globals.player_realm_id then
+				if  unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
 					realmIsConform = true;
 				end
 				local character = getUnitIDCharacter(unitID);
