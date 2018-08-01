@@ -432,13 +432,13 @@ local function onStart()
 	msp:Update();
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
-		if unitID == Globals.player_id and (not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character") then
-			onProfileChanged();
-		end
-	end);
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
-		if unitID == Globals.player_id and (not dataType or dataType == "character") then
-			onCharacterChanged();
+		if unitID == Globals.player_id then
+			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" then
+				onProfileChanged();
+			end
+			if not dataType or dataType == "character" then
+				onCharacterChanged();
+			end
 		end
 	end);
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
