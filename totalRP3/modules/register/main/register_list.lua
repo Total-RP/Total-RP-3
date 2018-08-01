@@ -177,12 +177,19 @@ local function switchTimeSorting()
 	refreshList();
 end
 
+local function getNameForSort(name)
+	name = name:lower()
+	name = name:gsub("\"", "")
+	name = name:gsub("'", "")
+	return name
+end
+
 local function nameComparator(elem1, elem2)
-	return elem1[2]:lower() < elem2[2]:lower();
+	return getNameForSort(elem1[2]) < getNameForSort(elem2[2]);
 end
 
 local function nameComparatorInverted(elem1, elem2)
-	return elem1[2]:lower() > elem2[2]:lower();
+	return getNameForSort(elem1[2]) > getNameForSort(elem2[2]);
 end
 
 local function infoComparator(elem1, elem2)
