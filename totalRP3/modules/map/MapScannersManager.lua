@@ -39,7 +39,7 @@ Events.MAP_SCAN_ENDED = "MAP_SCAN_ENDED"
 
 
 ---@param scan MapScanner
-function MapScannersManager.registerScan(scan)
+function MapScannersManager.register(scan)
 	assert(isInstanceOf(scan, AddOn_TotalRP3.MapScanner, "scan"));
 
 	registeredMapScans[scan:GetID()] = scan;
@@ -57,7 +57,7 @@ function MapScannersManager.getByID(scanID)
 end
 
 local displayedMapID;
-function MapScannersManager.launchScan(scanID)
+function MapScannersManager.launch(scanID)
 	assert(registeredMapScans[scanID], ("Unknown scan id %s"):format(scanID));
 	---@type MapScanner
 	local scan = registeredMapScans[scanID];

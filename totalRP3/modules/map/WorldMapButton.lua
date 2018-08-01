@@ -147,7 +147,7 @@ WorldMapButton:SetScript("OnClick", function(self)
 	if #structure == 0 then
 		insert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
-	displayDropDown(self, structure, TRP3_API.MapScannersManager.launchScan, 0, true);
+	displayDropDown(self, structure, TRP3_API.MapScannersManager.launch, 0, true);
 end);
 
 function WorldMapButton.resetCooldown()

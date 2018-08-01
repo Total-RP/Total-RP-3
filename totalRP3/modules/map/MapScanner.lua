@@ -42,7 +42,7 @@ function MapScanner:initialize(scanID)
 	_private[self].scanID = scanID;
 	_private[self].scanData = {};
 
-	TRP3_API.MapScannersManager.registerScan(self);
+	TRP3_API.MapScannersManager.register(self);
 end
 
 function MapScanner:GetID()
