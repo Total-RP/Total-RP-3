@@ -369,9 +369,7 @@ local function onStart()
 		end
 	end);
 
-	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
-	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
+	local REQUEST_TAB = {"TT", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
 
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
@@ -381,20 +379,7 @@ local function onStart()
 		and not isIgnored(targetID)
 		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			local request = {};
-			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
-				tinsert(request, "TT");
-				TT_TIMER_TAB[targetID] = time();
-			end
-			if not FIELDS_TIMER_TAB[targetID] or time() - FIELDS_TIMER_TAB[targetID] >= FIELDS_DELAY then
-				for _, field in pairs(REQUEST_TAB) do
-					tinsert(request, field);
-				end
-				FIELDS_TIMER_TAB[targetID] = time();
-			end
-			if #request > 0 then
-				msp:Request(targetID, request);
-			end
+			msp:Request(targetID, REQUEST_TAB);
 		end
 	end
 
@@ -459,8 +444,6 @@ local function onStart()
 		if mspOwners then
 			for _, ownerID in pairs(mspOwners) do
 				msp.char[ownerID] = nil;
-				TT_TIMER_TAB[ownerID] = nil;
-				FIELDS_TIMER_TAB[ownerID] = nil;
 			end
 		end
 	end);
