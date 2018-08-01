@@ -36,9 +36,9 @@ local ORANGE = Ellyb.ColorManager.ORANGE;
 ---endregion
 
 -- Create the pin template, above group members
-TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPOIMixins.createPinTemplate(
-	AddOn_TotalRP3.MapPOIMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
-	AddOn_TotalRP3.MapPOIMixins.AnimatedPinMixin -- Use animated icons (bounce in)
+TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
+	AddOn_TotalRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
+	AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
 );
 
 -- Expose template name, so the scan can use it for the MapDataProvider
@@ -46,7 +46,7 @@ TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
-function TRP3_PlayerMapPinMixin:GetDisplayDataFromPOIInfo(poiInfo)
+function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local characterID = poiInfo.sender;
 	local displayData = {};
 

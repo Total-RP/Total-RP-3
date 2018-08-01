@@ -35,8 +35,8 @@ function TRP3_MapDataProvider:RefreshAllData(fromOnShow, ...)
 
 	if not self.data then return end
 
-	for _, POIInfo in pairs(self.data) do
-		self:GetMap():AcquirePin(self.pinTemplate, POIInfo);
+	for _, poiInfo in pairs(self.data) do
+		self:GetMap():AcquirePin(self.pinTemplate, poiInfo);
 	end
 
 end

@@ -37,7 +37,7 @@ local BaseMapPoiPinMixin = BaseMapPoiPinMixin;
 local Mixin = Mixin;
 --endregion
 
-local MapPOIMixins = {};
+local MapPoiMixins = {};
 
 --region CoalescedMapPin
 local CoalescedMapPinMixin = {};
@@ -51,7 +51,7 @@ function CoalescedMapPinMixin:OnMouseEnter()
 	end
 	tooltip:Show();
 end
-MapPOIMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
+MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
 --endregion
 
 --region GroupedCoalescedMapMixin
@@ -115,7 +115,7 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 
 	tooltip:Show();
 end
-MapPOIMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
+MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 
 --region AnimatedPinMixin
@@ -134,7 +134,7 @@ function AnimatedPinMixin:OnLoad()
 		end
 	end)
 end
-MapPOIMixins.AnimatedPinMixin = AnimatedPinMixin;
+MapPoiMixins.AnimatedPinMixin = AnimatedPinMixin;
 --endregion
 
 --region BasePinMixin
@@ -142,11 +142,11 @@ MapPOIMixins.AnimatedPinMixin = AnimatedPinMixin;
 local BasePinMixin = {};
 
 --- Build display data that will be used by BasePinMixin:Decorate(displayData) to decorate the mixin
---[[ Override ]] function BasePinMixin:GetDisplayDataFromPOIInfo(poiInfo)
+--[[ Override ]] function BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	return {}
 end
 
---- Decorates the pin using the display data we received from BasePinMixin:GetDisplayDataFromPOIInfo(poiInfo)
+--- Decorates the pin using the display data we received from BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 --[[ Override ]] function BasePinMixin:Decorate(displayData)
 
 end
@@ -154,7 +154,7 @@ end
 function BasePinMixin:OnAcquired(poiInfo)
 	-- TODO Check all the results to make sure they contain expected data
 	-- Get display data
-	local displayData = self:GetDisplayDataFromPOIInfo(poiInfo);
+	local displayData = self:GetDisplayDataFromPoiInfo(poiInfo);
 	-- Get the atlasName we should use for the pin texture
 	poiInfo.atlasName = displayData.iconAtlas or "PartyMember";
 	-- Call the BaseMapPoiPinMixin's OnAcquired method, to have it set the position of the POI and everything
@@ -162,18 +162,18 @@ function BasePinMixin:OnAcquired(poiInfo)
 	-- Call :Decorate() to let the pin decorate itself based on the displayData we received
 	self:Decorate(displayData)
 end
-MapPOIMixins.BasePinMixin = BasePinMixin;
+MapPoiMixins.BasePinMixin = BasePinMixin;
 --endregion
 
 --- Create a new pin template
 ---@param ... table @ A list of mixins to include for this new template
 ---@return BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
-function MapPOIMixins.createPinTemplate(...)
+function MapPoiMixins.createPinTemplate(...)
 	-- TODO Check all the results to make sure they contain expected data
 	-- Create a new template for POI pins
 	local pinTemplate = BaseMapPoiPinMixin:CreateSubPin("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
 	-- Add our base mixin to it
-	Mixin(pinTemplate, AddOn_TotalRP3.MapPOIMixins.BasePinMixin);
+	Mixin(pinTemplate, AddOn_TotalRP3.MapPoiMixins.BasePinMixin);
 	-- Go through all the mixins we were given and add them too
 	for _, mixin in pairs({...}) do
 		Mixin(pinTemplate, mixin);
@@ -181,4 +181,4 @@ function MapPOIMixins.createPinTemplate(...)
 	return pinTemplate
 end
 
-AddOn_TotalRP3.MapPOIMixins = MapPOIMixins;
+AddOn_TotalRP3.MapPoiMixins = MapPoiMixins;
