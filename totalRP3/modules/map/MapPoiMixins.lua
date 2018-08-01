@@ -23,6 +23,11 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
+--region Ellyb imports
+local Tables = Ellyb.Tables;
+local Tooltips = Ellyb.Tooltips;
+--endregion
+
 --region Lua imports
 local huge = math.huge;
 local insert = table.insert;
@@ -43,7 +48,7 @@ local MapPoiMixins = {};
 local CoalescedMapPinMixin = {};
 
 function CoalescedMapPinMixin:OnMouseEnter()
-	local tooltip = Ellyb.Tooltips.getTooltip(self);
+	local tooltip = Tooltips.getTooltip(self);
 	for marker in self:GetMap():EnumerateAllPins() do
 		if marker:IsVisible() and marker:IsMouseOver() then
 			tooltip:AddTempLine(marker.tooltipLine)
@@ -76,9 +81,9 @@ end
 
 function GroupedCoalescedMapPinMixin:OnMouseEnter()
 
-	local tooltip = Ellyb.Tooltips.getTooltip(self);
+	local tooltip = Tooltips.getTooltip(self);
 
-	local markerTooltipEntries = Ellyb.Tables.getTempTable();
+	local markerTooltipEntries = Tables.getTempTable();
 	-- Iterate over the blips in a first pass to build a list of all the
 	-- ones we're mousing over.
 	for marker in self:GetMap():EnumerateAllPins() do
@@ -111,7 +116,7 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 		tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
 	end
 
-	Ellyb.Tables.releaseTempTable(markerTooltipEntries)
+	Tables.releaseTempTable(markerTooltipEntries)
 
 	tooltip:Show();
 end
