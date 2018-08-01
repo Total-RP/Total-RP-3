@@ -459,7 +459,7 @@ local function onStart()
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
 		if mspOwners then
 			for _, ownerID in pairs(mspOwners) do
-				wipe(msp.char[ownerID].ver);
+				msp.char[ownerID] = nil;
 				TT_TIMER_TAB[ownerID] = nil;
 				FIELDS_TIMER_TAB[ownerID] = nil;
 			end
