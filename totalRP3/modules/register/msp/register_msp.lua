@@ -123,6 +123,10 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
+		-- Clear fields that may or may not exist in the updated profile.
+		msp.my['MO'] = nil;
+		msp.my['NH'] = nil;
+		msp.my['NI'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
 				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO then
