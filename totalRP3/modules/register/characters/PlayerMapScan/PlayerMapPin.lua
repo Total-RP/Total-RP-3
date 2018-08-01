@@ -49,27 +49,27 @@ TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local characterID = poiInfo.sender;
 	local displayData = {};
+	local isSelf = characterID == TRP3_API.globals.player_id;
 
-	if TRP3_API.register.isUnitIDKnown(characterID) and TRP3_API.register.hasProfile(characterID) then
+	if not isSelf and (not TRP3_API.register.isUnitIDKnown(characterID) or not TRP3_API.register.hasProfile(characterID)) then
+		-- Only remove the server name from the sender ID
+		displayData.playerName = characterID:gsub("%-.*$", "");
+		return displayData;
+	end
 
-		local profileID = TRP3_API.register.getUnitIDProfileID(characterID);
-		--region Player name
-		local profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
-		displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
-
-		if profile.characteristics then
-			if profile.characteristics.CH then
-				local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
-				displayData.playerName = color(displayData.playerName);
-			end
-			if profile.characteristics.IC then
-				displayData.playerName = TRP3_API.utils.str.icon(profile.characteristics.IC, 15) .. " " .. displayData.playerName;
-			end
-		end
-		--endregion
+	local profile;
+	if isSelf then
+		-- Special case when seeing ourselves on the map (DEBUG)
+		profile = TRP3_API.profile.getPlayerCurrentProfile().player;
+		displayData.iconAtlas = "PlayerPartyBlip";
+		displayData.iconColor = Ellyb.ColorManager.CYAN;
+		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
+		displayData.categoryPriority = -huge;
+	else
+		profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
 
 		--region Player relationship
-		local relation = TRP3_API.register.relation.getRelation(profileID);
+		local relation = TRP3_API.register.relation.getRelation(TRP3_API.register.getUnitIDProfileID(characterID));
 		if relation ~= TRP3_API.register.relation.NONE then
 			local relationShipColor = TRP3_API.register.relation.getColor(relation);
 			-- Swap out the atlas for this marker.
@@ -81,10 +81,21 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
 		end
 		--endregion
-	else
-		-- Remove server name
-		displayData.playerName = characterID:gsub("%-.*$", "");
 	end
+
+	--region Player name
+	displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
+
+	if profile.characteristics then
+		if profile.characteristics.CH then
+			local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
+			displayData.playerName = color(displayData.playerName);
+		end
+		if profile.characteristics.IC then
+			displayData.playerName = TRP3_API.utils.str.icon(profile.characteristics.IC, 15) .. " " .. displayData.playerName;
+		end
+	end
+	--endregion
 
 	return displayData
 end
