@@ -173,7 +173,7 @@ local function onStart()
 		RA = "RA",
 		RC = "CL",
 		AG = "AG",
-		AE = "AE",
+		AE = "EC",
 		AH = "HE",
 		AW = "WE",
 		HH = "RE",
@@ -233,6 +233,7 @@ local function onStart()
 
 			-- And only after all these checks, store data !
 			local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
+			local color;
 			for field, value in pairs(data) do
 				-- Save version
 				profile.mspver[field] = msp.char[senderID].ver[field];
@@ -240,15 +241,21 @@ local function onStart()
 				-- Save fields
 				if CHARACTERISTICS_FIELDS[field] then
 					updatedCharacteristics = true;
-					-- NA color escaping
-					if field == "NA" and value then
-						local color;
-						value:gsub("|c%x%x(%x%x%x%x%x%x)", function(arg1)
-							if not color then color = arg1 end
-							return "";
-						end);
+					-- NA/RC color escaping
+					if (field == "NA" or field == "RC") and value then
+						if not color then
+							color = value:match("|c%x%x(%x%x%x%x%x%x)");
+						end
 						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
-						profile.characteristics["CH"] = color;
+					end
+					-- AE color escaping
+					if field == "AE" then
+						if value then
+							profile.characteristics["EH"] = value:match("|c%x%x(%x%x%x%x%x%x)");
+							value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+						else
+							profile.characteristics["EH"] = nil;
+						end
 					end
 					-- We do not want to trim the class field
 					-- Some users are using a space to indicate they don't have a class
@@ -363,6 +370,8 @@ local function onStart()
 					end
 				end
 			end
+
+			profile.characteristics["CH"] = color;
 
 			if updatedCharacter or updatedCharacteristics or updatedAbout then
 				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
