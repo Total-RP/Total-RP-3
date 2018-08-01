@@ -412,11 +412,6 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
-	msp.my['GU'] = UnitGUID("player");
-	msp.my['GS'] = tostring( UnitSex("player") );
-	msp.my['GC'] = Globals.player_character.class;
-	msp.my['GR'] = Globals.player_character.race;
-	msp.my['GF'] = Globals.player_character.faction;
 
 	-- Init others vernum
 	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
