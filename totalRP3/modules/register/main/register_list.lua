@@ -194,10 +194,20 @@ local function infoComparatorInverted(elem1, elem2)
 end
 
 local function timeComparator(elem1, elem2)
+	if elem1[4] == nil then
+		return false;
+	elseif elem2[4] == nil then
+		return true;
+	end
 	return elem1[4] < elem2[4];
 end
 
 local function timeComparatorInverted(elem1, elem2)
+	if elem1[4] == nil then
+		return false;
+	elseif elem2[4] == nil then
+		return true;
+	end
 	return elem1[4] > elem2[4];
 end
 
