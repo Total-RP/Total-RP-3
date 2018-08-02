@@ -461,12 +461,9 @@ local function onStart()
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
-		local request = {};
-		tinsert(request, "TT");
-		for _, field in pairs(REQUEST_TAB) do
-			tinsert(request, field);
-		end
-		msp:Request(name, request);
+		-- This function has never had the checks that the above does. Whether
+		-- it should or not should be revisited in the future.
+		msp:Request(name, REQUEST_TAB);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
