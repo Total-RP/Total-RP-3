@@ -502,9 +502,9 @@ local function onStart()
 
 	-- Initial update
 	updateCharacteristicsData();
-	onProfileChanged();
-	onCharacterChanged();
-
+	updateAboutData();
+	updateMiscData();
+	updateCharacterData();
 	msp:Update();
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
