@@ -254,7 +254,7 @@ local function limitText(input, maxCharLength, maxLinesCount)
 	repeat
 		finish = string.find(input, "\n", finish + 1, true);
 		matches = matches + 1;
-	until not finish or matches >= maxLinesCount
+	until not finish or matches >= maxLinesCount + 1
 
 	-- If we exited because we reached the end of the string then there's
 	-- not too many lines, so we just need to limit the total length of the
@@ -264,13 +264,13 @@ local function limitText(input, maxCharLength, maxLinesCount)
 			return input;
 		end
 
-		return string.sub(input, 1, maxCharLength) .. "...";
+		return string.sub(input, 1, maxCharLength) .. "…";
 	end
 
 	-- Otherwise extract the substring up to the character preceeding the
 	-- last matched newline or to the maximum allowable length of the text,
 	-- whichever is shorter.
-	return string.sub(input, 1, math.min(finish - 1, maxCharLength)) .. "...";
+	return string.sub(input, 1, math.min(finish - 1, maxCharLength)) .. "…";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1203,7 +1203,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PETS_OWNER, true);
 	registerConfigKey(CONFIG_PETS_NOTIF, true);
 	registerConfigKey(CONFIG_PETS_INFO, true);
-	registerConfigKey(CONFIG_CHARACT_CURRENT_LINES, 5);
+	registerConfigKey(CONFIG_CHARACT_CURRENT_LINES, 4);
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1405,7 +1405,7 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigSlider",
 				title = loc.CO_TOOLTIP_CURRENT_LINES,
 				configKey = CONFIG_CHARACT_CURRENT_LINES,
-				min = 1,
+				min = 0,
 				max = 20,
 				step = 1,
 				integer = true,
