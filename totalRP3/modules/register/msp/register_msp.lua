@@ -141,9 +141,35 @@ local function onStart()
 		end
 	end
 
+	local function updateMiscData()
+		local dataTab = get("player/misc");
+		local peeks = {};
+		for i = 1, 5 do
+			local peek = dataTab.PE[tostring(i)];
+			if peek and peek.AC then
+				if i > 1 then
+					peeks[#peeks + 1] = "\n\n---\n\n";
+				end
+				peeks[#peeks + 1] = "|TInterface\\Icons\\";
+				peeks[#peeks + 1] = peek.IC;
+				peeks[#peeks + 1] = ":32:32|t\n";
+				if peek.TI then
+					peeks[#peeks + 1] = "#";
+					peeks[#peeks + 1] = peek.TI;
+					peeks[#peeks + 1] = "\n\n";
+				end
+				if peek.TX then
+					peeks[#peeks + 1] = peek.TX;
+				end
+			end
+		end
+		msp.my['PE'] = table.concat(peeks);
+	end
+
 	local function onProfileChanged()
 		updateCharacteristicsData();
 		updateAboutData();
+		updateMiscData();
 		msp:Update();
 	end
 
@@ -186,6 +212,10 @@ local function onStart()
 		FR = true, FC = true, CU = true, VA = true, CO = true,
 	}
 
+	local MISC_FIELDS = {
+		PE = "PE",
+	}
+
 	local ABOUT_FIELDS = {
 		HI = "HI",
 		DE = "PH",
@@ -212,6 +242,23 @@ local function onStart()
 		character.msp = true;
 		character.profileID = "[MSP]" .. senderID;
 		return profile, character;
+	end
+
+	local function parsePeekString(str)
+		local icon = str:match("^%s*|TInterface\\Icons\\([^:|]+)") or "TEMP";
+		str = str:gsub("^%s*|T.-|t%s*", "");
+		local title = str:match("^#([^\n]+)");
+		if title then
+			title = title:trim();
+		end
+		str = str:gsub("^#[^\n]+%s*", "");
+		local text = str:trim();
+		return {
+			AC = true,
+			IC = icon,
+			TI = title,
+			TX = text,
+		};
 	end
 
 	tinsert(msp.callback.received, function(senderID)
@@ -308,6 +355,26 @@ local function onStart()
 						character.client = value:sub(1, value:find("%/") - 1);
 						character.clientVersion = value:sub(value:find("%/") + 1);
 					end
+				elseif MISC_FIELDS[field] then
+					updatedCharacter = true;
+					if field == "PE" then
+						local peeks = {};
+						local index = 1;
+						for i = 1, 5 do
+							local nextSplit, nextIndex = value:find("\n\n---\n\n", index, true);
+							if not nextSplit then
+								peeks[tostring(i)] = parsePeekString(value:sub(index, #value));
+								break;
+							else
+								peeks[tostring(i)] = parsePeekString(value:sub(index, nextSplit));
+							end
+							index = nextIndex;
+						end
+						if not profile.misc then
+							profile.misc = {};
+						end
+						profile.misc.PE = peeks;
+					end
 				elseif field == "MO" then
 					if strtrim(value):len() ~= 0 then
 						if not profile.characteristics.MI then
@@ -379,7 +446,7 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
+	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
 
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
@@ -442,7 +509,7 @@ local function onStart()
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if unitID == Globals.player_id then
-			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" then
+			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
 				onProfileChanged();
 			end
 			if not dataType or dataType == "character" then
