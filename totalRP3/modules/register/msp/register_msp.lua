@@ -208,6 +208,7 @@ local function onStart()
 		HH = "RE",
 		HB = "BP",
 		NA = "FN",
+		PX = "TI",
 		IC = "IC",
 	}
 
@@ -297,6 +298,12 @@ local function onStart()
 							color = value:match("|c%x%x(%x%x%x%x%x%x)");
 						end
 						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+					end
+					-- Remove title from full name, if present
+					if field == "NA" and value and data.PX then
+						if value:sub(1, #data.PX) == data.PX then
+							value = strtrim(value:sub(#data.PX + 1));
+						end
 					end
 					-- AE color escaping
 					if field == "AE" then
