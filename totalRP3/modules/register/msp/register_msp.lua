@@ -387,6 +387,7 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_MOTTO then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
@@ -407,6 +408,7 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_HOUSE then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
@@ -427,6 +429,7 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_NICK then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
