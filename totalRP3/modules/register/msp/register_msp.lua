@@ -56,11 +56,11 @@ local function onStart()
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
 		if character.XP == 1 then
-			msp.my['FR'] = "Beginner roleplayer";
+			msp.my['FR'] = loc.DB_STATUS_XP_BEGINNER;
 		elseif character.XP == 2 then
-			msp.my['FR'] = "Experienced roleplayer";
+			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
 		else
-			msp.my['FR'] = "Volunteer roleplayer";
+			msp.my['FR'] = loc.DB_STATUS_RP_VOLUNTEER;
 		end
 		if character.RP == 1 then
 			msp.my['FC'] = "2";
