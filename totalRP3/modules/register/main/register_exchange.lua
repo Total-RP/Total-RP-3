@@ -94,6 +94,7 @@ local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
 local VERNUM_QUERY_INDEX_EXTENDED = 17;
 local VERNUM_QUERY_INDEX_TRIALS = 18;
+local VERNUM_QUERY_INDEX_EXTENDED_DISPLAY = 19;
 
 local queryInformationType, createVernumQuery;
 
@@ -125,6 +126,7 @@ function createVernumQuery()
 	-- Extended
 	if Globals.extended_version then
 		query[VERNUM_QUERY_INDEX_EXTENDED] = Globals.extended_version;
+		query[VERNUM_QUERY_INDEX_EXTENDED_DISPLAY] = Globals.extended_display_version;
 	end
 	-- Trial accounts
 	query[VERNUM_QUERY_INDEX_TRIALS] = Globals.is_trial_account;
@@ -167,13 +169,13 @@ local function parseCompanionInfo(senderID, senderProfileID, petLine, petV1, pet
 	end
 end
 
-local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion)
+local function checkVersion(sender, senderVersion, senderVersionText, extendedVersion, extendedVersionText)
 	-- Record all versions for statistics purpose.
 	newVersionAlerts[senderVersionText] = newVersionAlerts[senderVersionText] or {};
 	newVersionAlerts[senderVersionText][sender] = senderVersion;
-	if extendedVersion then
-		extendedNewVersionAlerts[extendedVersion] = extendedNewVersionAlerts[extendedVersion] or {};
-		extendedNewVersionAlerts[extendedVersion][sender] = true;
+	if extendedVersion and extendedVersionText then
+		extendedNewVersionAlerts[extendedVersionText] = extendedNewVersionAlerts[extendedVersionText] or {};
+		extendedNewVersionAlerts[extendedVersionText][sender] = extendedVersion;
 	end
 
 	-- Test for Total RP 3
@@ -191,9 +193,9 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 	end
 
 	-- Test for Extended
-	if extendedVersion and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
-		if Utils.table.size(extendedNewVersionAlerts[extendedVersion]) >= 3 then
-			Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersion));
+		if extendedVersion and extendedVersionText and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
+			if Utils.table.size(extendedNewVersionAlerts[extendedVersionText]) >= 3 then
+				Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersionText));
 			has_seen_extended_update_alert = true;
 		end
 	end
@@ -257,6 +259,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	local senderProfileID = structure[VERNUM_QUERY_INDEX_CHARACTER_PROFILE];
 	local senderExtendedVersion = structure[VERNUM_QUERY_INDEX_EXTENDED];
 	local senderIsTrial = structure[VERNUM_QUERY_INDEX_TRIALS];
+	local senderExtendedVersionText = structure[VERNUM_QUERY_INDEX_EXTENDED_DISPLAY];
 
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
@@ -266,12 +269,12 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 		clientName = Globals.addon_name_extended;
 	end
 
-	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion);
+	checkVersion(senderID, senderVersion, senderVersionText, senderExtendedVersion, senderExtendedVersionText);
 
 	if not isUnitIDKnown(senderID) then
 		addCharacter(senderID);
 	end
-	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial);
+	saveClientInformation(senderID, clientName, senderVersionText, false, senderExtendedVersion, senderIsTrial, senderExtendedVersionText);
 	saveCurrentProfileID(senderID, senderProfileID);
 
 	-- Query specific data, depending on version number.
@@ -462,12 +465,12 @@ function TRP3_API.register.inits.dataExchangeInit()
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(INFO_TYPE_SEND_PREFIX, incomingInformationTypeSent);
 
 	-- When receiving HELLO from someone else (from the other side ?)
-	AddOn_TotalRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion)
+	AddOn_TotalRP3.Communications.broadcast.registerCommand(Comm.broadcast.HELLO_CMD, function(sender, version, versionDisplay, extendedVersion, extendedVersionDisplay)
 		version = tonumber(version) or 0;
 		extendedVersion = tonumber(extendedVersion) or 0;
 		-- Only treat the message if it does not come from us
 		if sender ~= Globals.player_id then
-			checkVersion(sender, version, versionDisplay, extendedVersion);
+			checkVersion(sender, version, versionDisplay, extendedVersion, extendedVersionDisplay);
 		end
 	end);
 end

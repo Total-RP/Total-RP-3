@@ -638,12 +638,18 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
+			if Globals.extended_version then
+				clientText = strconcat(clientText, " x ", Globals.extended_display_version);
+			end
 			if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
+				if character.extendedVersion then
+					clientText = strconcat(clientText, " x ", character.extendedVersion);
+				end
 			end
 			if player:IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
