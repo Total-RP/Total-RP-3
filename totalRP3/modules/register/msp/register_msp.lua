@@ -56,7 +56,7 @@ local function onStart()
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
 		if character.XP == 1 then
-			msp.my['FR'] = loc.DB_STATUS_XP_BEGINNER;
+			msp.my['FR'] = "4";
 		elseif character.XP == 2 then
 			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
 		else
