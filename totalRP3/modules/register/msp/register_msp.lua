@@ -71,6 +71,7 @@ local function onStart()
 
 	local function removeTextTags(text)
 		if text then
+			text = Utils.str.convertTextTags(text);
 			text = text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
 			return text:gsub("%{.-%}", "");
 		end
@@ -82,18 +83,20 @@ local function onStart()
 		msp.my['HI'] = nil;
 
 		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
-			msp.my['HI'] = dataTab.T3.HI.TX;
-			msp.my['DE'] = dataTab.T3.PH.TX;
+			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
+			local PH = removeTextTags(dataTab.T3.PH.TX);
+			local PS = removeTextTags(dataTab.T3.PS.TX);
+			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
 		elseif dataTab.TE == 1 then
-			local text = Utils.str.convertTextTags(dataTab.T1.TX);
-			msp.my['DE'] = removeTextTags(text);
+			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
-			local text;
-			for _, data in pairs(dataTab.T2) do
-				if not text then text = "" end
-				text = text .. (data.TX or "") .. "\n\n";
+			local t = {};
+			for i, data in ipairs(dataTab.T2) do
+				if data.TX then
+					t[#t + 1] = removeTextTags(data.TX);
+				end
 			end
-			msp.my['DE'] = text;
+			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
 	end
 
