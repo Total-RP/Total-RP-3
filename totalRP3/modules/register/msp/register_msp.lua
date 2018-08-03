@@ -364,9 +364,13 @@ local function onStart()
 						if value == "4" then
 							profile.character.XP = 1;
 						end
-					elseif field == "VA" and value:find("%/") then
-						character.client = value:sub(1, value:find("%/") - 1);
-						character.clientVersion = value:sub(value:find("%/") + 1);
+					elseif field == "VA" then
+						if value:find("/", nil, true) then
+							character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
+						else
+							character.client = UNKNOWN;
+							character.clientVerion = "0";
+						end
 					end
 				elseif MISC_FIELDS[field] then
 					if field == "PE" then
