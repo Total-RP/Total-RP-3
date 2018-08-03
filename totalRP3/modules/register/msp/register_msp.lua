@@ -282,8 +282,6 @@ local function onStart()
 				profile.mspver = {};
 			end
 
-			-- And only after all these checks, store data !
-			local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
 			local color;
 			for field, value in pairs(data) do
 				-- Save version
@@ -291,7 +289,6 @@ local function onStart()
 
 				-- Save fields
 				if CHARACTERISTICS_FIELDS[field] then
-					updatedCharacteristics = true;
 					-- NA/RC color escaping
 					if (field == "NA" or field == "RC") and value then
 						if not color then
@@ -333,7 +330,6 @@ local function onStart()
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
 					end
 				elseif ABOUT_FIELDS[field] then
-					updatedAbout = true;
 					local old;
 					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
 						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
@@ -353,7 +349,6 @@ local function onStart()
 					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 					profile.about.read = value == old or value == nil or value:len() == 0;
 				elseif CHARACTER_FIELDS[field] then
-					updatedCharacter = true;
 					if field == "FC" then
 						if value == "1" then
 							profile.character.RP = 2;
@@ -374,7 +369,6 @@ local function onStart()
 						character.clientVersion = value:sub(value:find("%/") + 1);
 					end
 				elseif MISC_FIELDS[field] then
-					updatedCharacter = true;
 					if field == "PE" then
 						local peeks = {};
 						local index = 1;
@@ -461,9 +455,7 @@ local function onStart()
 
 			profile.characteristics["CH"] = color;
 
-			if updatedCharacter or updatedCharacteristics or updatedAbout then
-				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
-			end
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
 	end);
 
