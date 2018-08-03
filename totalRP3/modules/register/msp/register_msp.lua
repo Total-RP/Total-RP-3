@@ -197,6 +197,12 @@ local function onStart()
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
 	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
+	local SUPPORTED_FIELDS = {
+		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
+		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
+		"HI",
+	};
+
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
 		RA = "RA",
@@ -265,6 +271,13 @@ local function onStart()
 		};
 	end
 
+	-- TODO: Expose this from LibMSP instead of duplicating here.
+	local TT_ALL = {
+		VP = true, VA = true, NA = true, NH = true,	NI = true, NT = true,
+		RA = true, CU = true, FR = true, FC = true,	RC = true, CO = true,
+		IC = true, PX = true,
+	}
+
 	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
 		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
@@ -282,119 +295,124 @@ local function onStart()
 				profile.mspver = {};
 			end
 
-			local color;
-			for field, value in pairs(data) do
-				-- Save version
-				profile.mspver[field] = msp.char[senderID].ver[field];
+			local color = false;
+			for i, field in ipairs(SUPPORTED_FIELDS) do
+				if profile.mspver[field] ~= msp.char[senderID].ver[field]
+				or TT_ALL[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
+				then
+					-- Save version
+					profile.mspver[field] = msp.char[senderID].ver[field];
 
-				-- Save fields
-				if CHARACTERISTICS_FIELDS[field] then
-					-- NA/RC color escaping
-					if (field == "NA" or field == "RC") and value then
-						if not color then
-							color = value:match("|c%x%x(%x%x%x%x%x%x)");
-						end
-						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
-					end
-					-- Remove title from full name, if present
-					if field == "NA" and value and data.PX then
-						if value:sub(1, #data.PX) == data.PX then
-							value = strtrim(value:sub(#data.PX + 1));
+					-- Save fields
+					local value = data[field];
+					if value then
+						value = emptyToNil(strtrim(value));
+						-- Preserve empty class field.
+						if not value and CHARACTERISTICS_FIELDS[field] == "CL" then
+							value = " ";
 						end
 					end
-					-- AE color escaping
-					if field == "AE" then
-						if value then
-							profile.characteristics["EH"] = value:match("|c%x%x(%x%x%x%x%x%x)");
-							value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
-						else
-							profile.characteristics["EH"] = nil;
-						end
-					end
-					-- Internal MSP weight is kilograms without units.
-					if field == "AW" and tonumber(value) then
-						value = value .. " kg";
-					end
-					-- Internal MSP height is centimeters without units.
-					if field == "AH" and tonumber(value) then
-						value = value .. " cm";
-					end
-					-- We do not want to trim the class field
-					-- Some users are using a space to indicate they don't have a class
-					if CHARACTERISTICS_FIELDS[field] ~= "CL" then
-						value = strtrim(value);
-					end
-					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(value);
-					-- Hack for spaced name tolerated in MRP
-					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
-						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
-					end
-				elseif ABOUT_FIELDS[field] then
-					local old;
-					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
-						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
-					end
-					profile.about.BK = 5;
-					profile.about.TE = 3;
-					if not profile.about.T3 then
-						profile.about.T3 = {};
-					end
-					if not profile.about.T3.HI then
-						profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
-					end
-					if not profile.about.T3.PH then
-						profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
-					end
-					value = emptyToNil(strtrim(value));
-					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-					if profile.about.read ~= false then
-						profile.about.read = not value or value == old;
-					end
-				elseif CHARACTER_FIELDS[field] then
-					if field == "FC" then
-						if value == "1" then
-							profile.character.RP = 2;
-						else
-							profile.character.RP = 1;
-						end
-					elseif field == "CU" then
-						profile.character.CU = value;
-					elseif field == "CO" then
-						profile.character.CO = value;
-					elseif field == "FR" then
-						profile.character.XP = 2;
-						if value == "4" then
-							profile.character.XP = 1;
-						end
-					elseif field == "VA" then
-						if value:find("/", nil, true) then
-							character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
-						else
-							character.client = UNKNOWN;
-							character.clientVerion = "0";
-						end
-					end
-				elseif MISC_FIELDS[field] then
-					if field == "PE" then
-						local peeks = {};
-						local index = 1;
-						for i = 1, 5 do
-							local nextSplit, nextIndex = value:find("\n\n---\n\n", index, true);
-							if not nextSplit then
-								peeks[tostring(i)] = parsePeekString(value:sub(index, #value));
-								break;
-							else
-								peeks[tostring(i)] = parsePeekString(value:sub(index, nextSplit));
+					if CHARACTERISTICS_FIELDS[field] then
+						-- NA/RC color escaping
+						if (field == "NA" or field == "RC") and value then
+							if not color then
+								color = value:match("|c%x%x(%x%x%x%x%x%x)");
 							end
-							index = nextIndex;
+							value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
 						end
-						if not profile.misc then
+						-- Remove title from full name, if present
+						if field == "NA" and value and data.PX then
+							if value:sub(1, #data.PX) == data.PX then
+								value = strtrim(value:sub(#data.PX + 1));
+							end
+						end
+						-- AE color escaping
+						if field == "AE" then
+							if value then
+								profile.characteristics["EH"] = value:match("|c%x%x(%x%x%x%x%x%x)");
+								value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+							else
+								profile.characteristics["EH"] = nil;
+							end
+						end
+						-- Internal MSP weight is kilograms without units.
+						if field == "AW" and value and tonumber(value) then
+							value = value .. " kg";
+						end
+						-- Internal MSP height is centimeters without units.
+						if field == "AH" and value and tonumber(value) then
+							value = value .. " cm";
+						end
+						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
+						-- Hack for spaced name tolerated in MRP
+						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+						end
+					elseif ABOUT_FIELDS[field] then
+						local old;
+						if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
+							old = profile.about.T3[ABOUT_FIELDS[field]].TX;
+						end
+						profile.about.BK = 5;
+						profile.about.TE = 3;
+						if not profile.about.T3 then
+							profile.about.T3 = {};
+						end
+						if not profile.about.T3.HI then
+							profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+						end
+						if not profile.about.T3.PH then
+							profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+						end
+						profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+						if profile.about.read ~= false then
+							profile.about.read = not value or value == old;
+						end
+					elseif CHARACTER_FIELDS[field] then
+						if field == "FC" then
+							if value == "1" then
+								profile.character.RP = 2;
+							else
+								profile.character.RP = 1;
+							end
+						elseif field == "CU" then
+							profile.character.CU = value;
+						elseif field == "CO" then
+							profile.character.CO = value;
+						elseif field == "FR" then
+							profile.character.XP = 2;
+							if value == "4" then
+								profile.character.XP = 1;
+							end
+						elseif field == "VA" then
+							if value and value:find("/", nil, true) then
+								character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
+							else
+								character.client = UNKNOWN;
+								character.clientVerion = "0";
+							end
+						end
+					elseif MISC_FIELDS[field] then
+						if field == "PE" and value then
+							local peeks = {};
+							local index = 1;
+							for i = 1, 5 do
+								local nextSplit, nextIndex = value:find("\n\n---\n\n", index, true);
+								if not nextSplit then
+									peeks[tostring(i)] = parsePeekString(value:sub(index, #value));
+									break;
+								else
+									peeks[tostring(i)] = parsePeekString(value:sub(index, nextSplit));
+								end
+								index = nextIndex;
+							end
+							value = peeks;
+						end
+						if value and not profile.misc then
 							profile.misc = {};
 						end
-						profile.misc.PE = peeks;
-					end
-				elseif field == "MO" then
-					if strtrim(value):len() ~= 0 then
+						profile.misc[MISC_FIELDS[field]] = value;
+					elseif field == "MO" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -406,16 +424,22 @@ local function onStart()
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
-						profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
-						profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
-					end
-				elseif field == "NH" then
-					if strtrim(value):len() ~= 0 then
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
+							profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
+							profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
+						end
+					elseif field == "NH" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -427,16 +451,22 @@ local function onStart()
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
-						profile.characteristics.MI[index].VA = value;
-						profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
-					end
-				elseif field == "NI" then
-					if strtrim(value):len() ~= 0 then
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
+							profile.characteristics.MI[index].VA = value;
+							profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
+						end
+					elseif field == "NI" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -448,18 +478,28 @@ local function onStart()
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
-						profile.characteristics.MI[index].VA = value;
-						profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
+							profile.characteristics.MI[index].VA = value;
+							profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
+						end
 					end
 				end
 			end
 
-			profile.characteristics["CH"] = color;
+			if color ~= false then
+				profile.characteristics["CH"] = color;
+			end
 
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
 		end
