@@ -307,6 +307,14 @@ local function onStart()
 							profile.characteristics["EH"] = nil;
 						end
 					end
+					-- Internal MSP weight is kilograms without units.
+					if field == "AW" and tonumber(value) then
+						value = value .. " kg";
+					end
+					-- Internal MSP height is centimeters without units.
+					if field == "AH" and tonumber(value) then
+						value = value .. " cm";
+					end
 					-- We do not want to trim the class field
 					-- Some users are using a space to indicate they don't have a class
 					if CHARACTERISTICS_FIELDS[field] ~= "CL" then
