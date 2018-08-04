@@ -86,7 +86,7 @@ playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
 --region Scan behavior
 function playerMapScanner:Scan()
-	broadcast.broadcast(SCAN_COMMAND, Map.getPlayerMapID());
+	broadcast.broadcast(SCAN_COMMAND, Map.getDisplayedMapID());
 end
 
 -- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
