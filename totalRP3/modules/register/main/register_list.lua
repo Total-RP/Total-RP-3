@@ -61,6 +61,8 @@ local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpel
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
+local tContains = tContains;
+local GetAutoCompleteRealms = GetAutoCompleteRealms;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -175,12 +177,19 @@ local function switchTimeSorting()
 	refreshList();
 end
 
+local function getNameForSort(name)
+	name = name:lower()
+	name = name:gsub("\"", "")
+	name = name:gsub("'", "")
+	return name
+end
+
 local function nameComparator(elem1, elem2)
-	return elem1[2]:lower() < elem2[2]:lower();
+	return getNameForSort(elem1[2]) < getNameForSort(elem2[2]);
 end
 
 local function nameComparatorInverted(elem1, elem2)
-	return elem1[2]:lower() > elem2[2]:lower();
+	return getNameForSort(elem1[2]) > getNameForSort(elem2[2]);
 end
 
 local function infoComparator(elem1, elem2)
@@ -192,10 +201,20 @@ local function infoComparatorInverted(elem1, elem2)
 end
 
 local function timeComparator(elem1, elem2)
+	if elem1[4] == nil then
+		return false;
+	elseif elem2[4] == nil then
+		return true;
+	end
 	return elem1[4] < elem2[4];
 end
 
 local function timeComparatorInverted(elem1, elem2)
+	if elem1[4] == nil then
+		return false;
+	elseif elem2[4] == nil then
+		return true;
+	end
 	return elem1[4] > elem2[4];
 end
 
@@ -368,31 +387,35 @@ local function getCharacterLines()
 	for profileID, profile in pairs(profileList) do
 		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
 
-		-- Defines if at least one character is conform to the search criteria
-		for unitID, _ in pairs(profile.link or Globals.empty) do
-			local unitName, unitRealm = unitIDToInfo(unitID);
-			if safeMatch(unitName:lower(), nameSearch) then
+		if profile.characteristics and not Ellyb.Tables.isEmpty(profile.characteristics) then
+
+			-- Defines if at least one character is conform to the search criteria
+			for unitID, _ in pairs(profile.link or Globals.empty) do
+				local unitName, unitRealm = unitIDToInfo(unitID);
+				if safeMatch(unitName:lower(), nameSearch) then
+					nameIsConform = true;
+				end
+				if  unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
+					realmIsConform = true;
+				end
+				local character = getUnitIDCharacter(unitID);
+				if character.guild and safeMatch(character.guild:lower(), guildSearch) then
+					guildIsConform = true;
+				end
+			end
+			local completeName = getCompleteName(profile.characteristics or {}, "", true);
+			if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
 				nameIsConform = true;
 			end
-			if unitRealm == Globals.player_realm_id then
-				realmIsConform = true;
-			end
-			local character = getUnitIDCharacter(unitID);
-			if character.guild and safeMatch(character.guild:lower(), guildSearch) then
-				guildIsConform = true;
-			end
-		end
-		local completeName = getCompleteName(profile.characteristics or {}, "", true);
-		if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
-			nameIsConform = true;
-		end
 
-		nameIsConform = nameIsConform or nameSearch:len() == 0;
-		guildIsConform = guildIsConform or guildSearch:len() == 0;
-		realmIsConform = realmIsConform or not realmOnly;
+			nameIsConform = nameIsConform or nameSearch:len() == 0;
+			guildIsConform = guildIsConform or guildSearch:len() == 0;
+			realmIsConform = realmIsConform or not realmOnly;
 
-		if nameIsConform and guildIsConform and realmIsConform then
-			tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
+			if nameIsConform and guildIsConform and realmIsConform then
+				tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
+			end
+
 		end
 	end
 

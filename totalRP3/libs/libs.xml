@@ -32,9 +32,6 @@
 	<!-- Ellyb: shared library between our own projects -->
 	<Include file="Ellyb\Ellyb.xml" />
 
-	<!-- Chomp https://github.com/Itarater/Chomp -->
-	<Include file="Chomp\Chomp.xml" />
-
 	<!-- LibMSP: Newer version of the LibMSP, from https://github.com/Ellypse/LibMSP -->
 	<!-- This version has its own implementation of the ChatThrottleLib -->
 	<Include file="LibMSP\LibMSP.xml" />

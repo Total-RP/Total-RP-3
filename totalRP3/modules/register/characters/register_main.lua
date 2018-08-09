@@ -571,6 +571,13 @@ local function cleanupProfiles()
 		end
 	end
 
+	log("Purging profiles with no data")
+	for profileID, profile in pairs(profiles) do
+		if not profile.characteristics or Ellyb.Tables.isEmpty(profile.characteristics) then
+			deleteProfile(profileID, true);
+		end
+	end
+
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return;
 	end
