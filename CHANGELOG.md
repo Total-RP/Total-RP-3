@@ -4,14 +4,21 @@
 
 - Fixed XML errors from libraries when using both Storyline and Total RP 3.
 - Fixed Lua error when targeting companions.
-- The trial account flagged is now also displayed in your own tooltip.
+- The trial account flag is now also displayed in your own tooltip.
 - Names are now correctly class colored in chat for non-customized names - [Issue #175](https://github.com/Ellypse/Total-RP-3/issues/175)
 - Fixed Total RP 3's logo missing a die, and improved the minimap icon, including a transparent version for databroker add-ons.
 - The target frame is now refreshed when you summon and dismiss your own mount.
+- Fixed an issue when sorting the directory by last time seen when that information was missing.
+- Unknown profiles are now hidden from the directory and cleaned on launch.
 
 ## Added
 
 - Added a limitation option for line breaks in the "currently" tooltip fields (default to 5 line breaks).
+
+## Modified
+
+- Sorting by names in the directory now ignore quotes around names.
+- The "This realm only" filter for the directory now takes into account connected realms.
 
 # Changelog for version 1.4.3
 
