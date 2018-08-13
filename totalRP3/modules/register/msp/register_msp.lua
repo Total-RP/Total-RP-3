@@ -255,14 +255,9 @@ local function onStart()
 	end
 
 	local function parsePeekString(str)
-		local icon = str:match("^%s*|TInterface\\Icons\\([^:|]+)") or "TEMP";
-		str = str:gsub("^%s*|T.-|t%s*", "");
-		local title = str:match("^#([^\n]+)");
-		if title then
-			title = title:trim();
-		end
-		str = str:gsub("^#[^\n]+%s*", "");
-		local text = str:trim();
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or "TEMP";
+		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
+		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
 			AC = true,
 			IC = icon,
