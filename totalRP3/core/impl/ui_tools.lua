@@ -118,7 +118,7 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
 
 	if not dropDownFrame then
-		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "MSA_DropDownMenuTemplate");
+		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
 	end
 
 	if _G["DropDownList1"]:IsVisible() then
