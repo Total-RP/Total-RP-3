@@ -58,6 +58,14 @@ local PRIORITIES = {
 	MEDIUM = "MEDIUM",
 	HIGH = "HIGH",
 }
+local ALLOWED_CHANNELS = {
+	PARTY=true,
+	RAID=true,
+	GUILD=true,
+	BATTLEGROUND=true,
+	WHISPER=true,
+	CHANNEL=true
+}
 
 local subSystemsDispatcher = Ellyb.EventsDispatcher();
 local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
@@ -148,15 +156,43 @@ local function sendObject(prefix, object, target, priority, messageToken, useLog
 			serializedData = Compression.compress(serializedData, true);
 		end
 
-		Chomp.SmartAddonMessage(
-			PROTOCOL_PREFIX,
-			messageToken .. serializedData,
-			"WHISPER",
-			target,
-			{
-				priority = priority,
-				binaryBlob = not useLoggedMessages,
-			});
+		if ALLOWED_CHANNELS[target] then
+			--We're sending to RAID, PARTY, GUILD etcetera these channels can be disabled as per config option at the top
+			Chomp.SmartAddonMessage(
+				PROTOCOL_PREFIX,
+				messageToken .. serializedData,
+				target,
+				nil,
+				{
+					priority = priority,
+					binaryBlob = not useLoggedMessages,
+				}
+			);
+		elseif tonumber(target) ~= nil and ALLOWED_CHANNELS["CHANNEL"] then
+			--if the target is a number, and we're allowed to send to CHANNEL, send there (as players can't be numbered)
+			Chomp.SmartAddonMessage(
+				PROTOCOL_PREFIX,
+				messageToken .. serializedData,
+				"CHANNEL",
+				target,
+				{
+					priority = priority,
+					binaryBlob = not useLoggedMessages,
+				}
+			);
+		elseif ALLOWED_CHANNELS["WHISPER"] then
+			--otherwise, try for a player (assuming WHISPER is allowed)
+			Chomp.SmartAddonMessage(
+				PROTOCOL_PREFIX,
+				messageToken .. serializedData,
+				"WHISPER",
+				target,
+				{
+					priority = priority,
+					binaryBlob = not useLoggedMessages,
+				}
+			);
+		end
 	else
 		logger:Warning("[sendObject]", "target is ignored", target);
 		return false;
