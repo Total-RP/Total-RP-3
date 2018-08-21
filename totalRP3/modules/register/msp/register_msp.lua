@@ -181,7 +181,7 @@ local function onStart()
 		RA = "RA",
 		RC = "CL",
 		AG = "AG",
-		AE = "AE",
+		AE = "EC",
 		AH = "HE",
 		AW = "WE",
 		HH = "RE",
@@ -258,6 +258,20 @@ local function onStart()
 						end);
 						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
 						profile.characteristics["CH"] = color;
+					end
+					-- EC color escaping
+					if field == "AE" and value then
+						local color;
+						value:gsub("|c%x%x(%x%x%x%x%x%x)", function(arg1)
+							if not color then color = arg1 end
+							return "";
+						end);
+						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+						profile.characteristics["EH"] = color;
+					end
+					-- RC color escaping
+					if field == "RC" and value then
+						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
 					end
 					-- We do not want to trim the class field
 					-- Some users are using a space to indicate they don't have a class
