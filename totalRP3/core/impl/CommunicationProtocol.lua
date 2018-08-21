@@ -60,8 +60,8 @@ local PRIORITIES = {
 	HIGH = "HIGH",
 }
 
-local validChannels = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
-local validPriorities = {"HIGH", "MEDIUM", "LOW"};
+local VALID_CHANNELS = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
+local VALID_PRIORITIES = {"HIGH", "MEDIUM", "LOW"};
 
 local subSystemsDispatcher = Ellyb.EventsDispatcher();
 local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
