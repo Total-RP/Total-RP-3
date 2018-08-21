@@ -60,6 +60,9 @@ local PRIORITIES = {
 	HIGH = "HIGH",
 }
 
+local validChannels = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
+local validPriorities = {"HIGH", "MEDIUM", "LOW"};
+
 local subSystemsDispatcher = Ellyb.EventsDispatcher();
 local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
 local internalMessageIDToChompSessionIDMatching = {};
@@ -126,18 +129,18 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 end
 
 local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
-	if not tContains({"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, channel) then
+	if not tContains(validChannels, channel) then
 		--if channel is ignored, default channel and bump everything along by one
 		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
 	end
-	if tContains({"HIGH", "MEDIUM", "LOW"}, target) then
+	if tContains(validPriorities, target) then
 		-- if target has values expected for priority, bump everything back by one
 		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
 	end
 
 	assert(isType(prefix, "string", "prefix"));
 	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
-	assert(isOneOf(channel, {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, "channel"));
+	assert(isOneOf(channel, validChannels, "channel"));
 
 	if not TRP3_API.register.isIDIgnored(target) then
 
@@ -146,7 +149,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 		end
 		priority = CTLToChompPriority(priority);
 
-		assert(isOneOf(priority, {"HIGH", "MEDIUM", "LOW"}, "priority"));
+		assert(isOneOf(priority, validPriorities, "priority"));
 
 		messageToken = messageToken or getNewMessageToken();
 
@@ -160,14 +163,15 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 		end
 
 		Chomp.SmartAddonMessage(
-		PROTOCOL_PREFIX,
-		messageToken .. serializedData,
-		channel,
-		target,
-		{
-			priority = priority,
-			binaryBlob = not useLoggedMessages,
-		});
+			PROTOCOL_PREFIX,
+			messageToken .. serializedData,
+			channel,
+			target,
+			{
+				priority = priority,
+				binaryBlob = not useLoggedMessages,
+			}
+		);
 	else
 		logger:Warning("[sendObject]", "target is ignored", target);
 		return false;
