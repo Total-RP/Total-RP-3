@@ -38,6 +38,7 @@ local logger = Ellyb.Logger("TotalRP3_Communication");
 local isType = Ellyb.Assertions.isType;
 local isOneOf = Ellyb.Assertions.isOneOf;
 local isNotNil = Ellyb.Assertions.isNotNil;
+local containsValue = Ellyb.Tables.containsValue;
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
@@ -57,14 +58,6 @@ local PRIORITIES = {
 	LOW = "LOW",
 	MEDIUM = "MEDIUM",
 	HIGH = "HIGH",
-}
-local ALLOWED_CHANNELS = {
-	PARTY=true,
-	RAID=true,
-	GUILD=true,
-	BATTLEGROUND=true,
-	WHISPER=true,
-	CHANNEL=true
 }
 
 local subSystemsDispatcher = Ellyb.EventsDispatcher();
@@ -132,9 +125,19 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
-local function sendObject(prefix, object, target, priority, messageToken, useLoggedMessages)
+local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
+	if not containsValue({"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, channel) then
+		--if channel is ignored, default channel and bump everything along by one
+		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
+	end
+	if containsValue({"HIGH", "MEDIUM", "LOW"}, target) then
+		-- if target has values expected for priority, bump everything back by one
+		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
+	end
+
 	assert(isType(prefix, "string", "prefix"));
 	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
+	assert(isOneOf(channel, {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, "channel"));
 
 	if not TRP3_API.register.isIDIgnored(target) then
 
@@ -156,43 +159,15 @@ local function sendObject(prefix, object, target, priority, messageToken, useLog
 			serializedData = Compression.compress(serializedData, true);
 		end
 
-		if ALLOWED_CHANNELS[target] then
-			--We're sending to RAID, PARTY, GUILD etcetera these channels can be disabled as per config option at the top
-			Chomp.SmartAddonMessage(
-				PROTOCOL_PREFIX,
-				messageToken .. serializedData,
-				target,
-				nil,
-				{
-					priority = priority,
-					binaryBlob = not useLoggedMessages,
-				}
-			);
-		elseif tonumber(target) ~= nil and ALLOWED_CHANNELS["CHANNEL"] then
-			--if the target is a number, and we're allowed to send to CHANNEL, send there (as players can't be numbered)
-			Chomp.SmartAddonMessage(
-				PROTOCOL_PREFIX,
-				messageToken .. serializedData,
-				"CHANNEL",
-				target,
-				{
-					priority = priority,
-					binaryBlob = not useLoggedMessages,
-				}
-			);
-		elseif ALLOWED_CHANNELS["WHISPER"] then
-			--otherwise, try for a player (assuming WHISPER is allowed)
-			Chomp.SmartAddonMessage(
-				PROTOCOL_PREFIX,
-				messageToken .. serializedData,
-				"WHISPER",
-				target,
-				{
-					priority = priority,
-					binaryBlob = not useLoggedMessages,
-				}
-			);
-		end
+		Chomp.SmartAddonMessage(
+		PROTOCOL_PREFIX,
+		messageToken .. serializedData,
+		channel,
+		target,
+		{
+			priority = priority,
+			binaryBlob = not useLoggedMessages,
+		});
 	else
 		logger:Warning("[sendObject]", "target is ignored", target);
 		return false;
