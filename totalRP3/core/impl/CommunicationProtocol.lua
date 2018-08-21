@@ -30,6 +30,7 @@ local assert = assert;
 local string = string;
 local math = math;
 local tostring = tostring;
+local tContains = tContains;
 --endregion
 
 -- AddOn imports
@@ -38,7 +39,6 @@ local logger = Ellyb.Logger("TotalRP3_Communication");
 local isType = Ellyb.Assertions.isType;
 local isOneOf = Ellyb.Assertions.isOneOf;
 local isNotNil = Ellyb.Assertions.isNotNil;
-local containsValue = Ellyb.Tables.containsValue;
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
@@ -126,11 +126,11 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 end
 
 local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
-	if not containsValue({"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, channel) then
+	if not tContains({"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"}, channel) then
 		--if channel is ignored, default channel and bump everything along by one
 		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
 	end
-	if containsValue({"HIGH", "MEDIUM", "LOW"}, target) then
+	if tContains({"HIGH", "MEDIUM", "LOW"}, target) then
 		-- if target has values expected for priority, bump everything back by one
 		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
 	end
