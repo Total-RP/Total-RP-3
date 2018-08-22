@@ -1,3 +1,29 @@
+# Changelog for version 1.4.5
+
+This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the later.
+
+## Added
+
+- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP will soon be updated to be able to read at-first-glance from Total RP 3 and also send them from its own implementation!
+- Class and eye colors are now read from other RP add-ons.
+
+## Fixed
+
+- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors.
+- The chat module will now once again respect the game's settings for displaying class color.
+- Clicking again on a dropdown menu button will now close the dropdown menu.
+- Fixed a bunch of issues when viewing profile of players using a different RP add-on, like an incorrect Out of character status or an incorrect unread flag.
+- Improved the formatting of descriptions sent to players using a different RP add-on. When using the template 3 for your description, the personality traits part of the description is now also sent in the description.
+- Removed invalid Total RP 3 text tags that would sometimes be outputted as is in the descriptions when sent to players using a different add-on.
+- Removing a motto, house or nickname field in your description will now correctly remove those fields from the data sent to other RP add-ons.
+- Fixed broadcasting Total RP 3 dice rolls to your party or raid.
+
+
+## Modified
+
+- The at-first-glance bar and the player name will now be aligned to the center of the target frame, instead of the left.
+- Updated libraries used inside the add-on to the latest version available for Battle for Azeroth.
+
 # Changelog for version 1.4.4
 
 ## Fixed
