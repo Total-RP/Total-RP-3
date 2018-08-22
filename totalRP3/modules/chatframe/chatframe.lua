@@ -701,7 +701,9 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = customizedName;
 	end
 
-	characterColor = GetClassColorByGUID(GUID);
+	if GetCVar("chatClassColorOverride") ~= "1" then
+		characterColor = GetClassColorByGUID(GUID);
+	end
 
 	if configShowNameCustomColors() then
 		local customColor = GetCustomColorByGUID(GUID);
