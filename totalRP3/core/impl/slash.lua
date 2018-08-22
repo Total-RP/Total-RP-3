@@ -100,7 +100,6 @@ local function parseCommandTable(args)
 end
 
 local function testConditions(conditionals)
-	logger:Info(Ellyb.Tables.toString(conditionals));
 	local conditionalsPassed = false;
 	for _, condition in pairs(conditionals) do
 		--cleanup the square brackets to give us a comma seperated lsit of tests
@@ -128,13 +127,12 @@ local function testConditions(conditionals)
 end
 
 function SlashCmdList.TOTALRP3(msg, editbox)
-
 	if not string.match(msg, "%[[^%;%[%]]*%]") then
 		--we don't have any conditionals, so trigger the old code
 		local args = {strsplit(" ", msg)};
 		return parseCommandTable(args);
 	end
-	logger:Info(msg);
+
 	for segment in string.gmatch(msg, "(%b[] ?[^%;%[%]]*)") do
 		local segmentConditionals = {string.match(segment, "%[([^%;%[%]]*)%] ?([^%;%[%]]*)")};
 		local segmentCommand = segmentConditionals[#segmentConditionals];
@@ -143,9 +141,8 @@ function SlashCmdList.TOTALRP3(msg, editbox)
 			return parseCommandTable({strsplit(" ", segmentCommand)})
 		end
 	end
-	logger:Info("Last");
+
 	local unconditionalCommand = string.match(msg, "%; ?([^;%]]+)$")
-	logger:Info(unconditionalCommand)
 	if unconditionalCommand then
 		return parseCommandTable({strsplit(" ", unconditionalCommand, nil)});
 	end
