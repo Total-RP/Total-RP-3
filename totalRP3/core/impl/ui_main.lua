@@ -105,6 +105,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	})
 
 	icon = LibStub("LibDBIcon-1.0");
+	icon:SetButtonRadius(10)
 	local configKey = getConfigValue(CONFIG_MINIMAP_POSITION);
 	configKey.hide = not getConfigValue(CONFIG_MINIMAP_SHOW);
 	icon:Register("Total RP 3", LDBObject, getConfigValue(CONFIG_MINIMAP_POSITION));
