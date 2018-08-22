@@ -275,6 +275,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			profileName = string.lower(profileName);--we lowercase it all
 			profileName = string.gsub(profileName, "[^%s%a]", "");--remove anything that's not a letter or space)
 			profileName = string.gsub(profileName,"(%s)(%a)", function(a,b) return string.upper(b) end) -- and turn it into a camelCaseValue
+			profileName = string.gsub(profileName, "%s", ""); --and clean up any remaining spaces
 			return profileName==targetProfile; --then compare it to the given string
 		end
 	})
