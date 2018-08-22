@@ -34,6 +34,7 @@ TRP3_API.slash = {}
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local COMMANDS = {};
+local CONDITIONALS = {};
 
 function TRP3_API.slash.registerCommand(commandStructure)
 	assert(commandStructure and commandStructure.id, "Command structure must have and id.");
@@ -46,6 +47,27 @@ function TRP3_API.slash.unregisterCommand(commandID)
 	COMMANDS[commandID] = nil;
 end
 
+
+function TRP3_API.slash.registerConditional(conditionalStructure)
+	assert(conditionalStructure and conditionalStructure.id, "Conditional structure must have and id.");
+	assert(not CONDITIONALS[conditionalStructure.id], "Already registered conditional id: " .. tostring(conditionalStructure.id));
+	CONDITIONALS[conditionalStructure.id] = conditionalStructure;
+
+	--we automatically create the inverse as well
+	CONDITIONALS["no"..conditionalStructure.id] = {
+		id = "no"..conditionalStructure.id,
+		test = function(...)
+			return not conditionalStructure.test(...)
+		end
+	}
+end
+
+function TRP3_API.slash.unregisterConditional(conditionalID)
+	CONDITIONALS[conditionalID] = nil;
+	CONDITIONALS["no"..conditionalID] = nil;
+end
+
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Command handling
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -53,8 +75,7 @@ end
 SLASH_TOTALRP31, SLASH_TOTALRP32 = '/trp3', '/totalrp3';
 local sortTable = {};
 
-function SlashCmdList.TOTALRP3(msg, editbox)
-	local args = {strsplit(" ", msg)};
+local function parseCommandTable(args)
 	local cmdID = args[1];
 	table.remove(args, 1);
 
@@ -75,6 +96,58 @@ function SlashCmdList.TOTALRP3(msg, editbox)
 			end
 			displayMessage(cmdText);
 		end
+	end
+end
+
+local function testConditions(conditionals)
+	logger:Info(Ellyb.Tables.toString(conditionals));
+	local conditionalsPassed = false;
+	for _, condition in pairs(conditionals) do
+		--cleanup the square brackets to give us a comma seperated lsit of tests
+		local passed = true;
+		for test in string.gmatch(condition, "[^, ]+") do
+			if test ~= "" then
+				local args = {strsplit(":", test)};
+				if CONDITIONALS[args[1]] then
+					if not CONDITIONALS[args[1]].test(unpack(args)) then
+						passed = false;
+						break;
+					end
+				elseif SecureCmdOptionParse("["..test.."] true; false")=="false" then
+					passed = false;
+					break;
+				end
+			end
+		end
+		if passed then
+			conditionalsPassed = true
+			break;
+		end
+	end
+	return conditionalsPassed;
+end
+
+function SlashCmdList.TOTALRP3(msg, editbox)
+
+	if not string.match(msg, "%[[^%;%[%]]*%]") then
+		--we don't have any conditionals, so trigger the old code
+		local args = {strsplit(" ", msg)};
+		return parseCommandTable(args);
+	end
+	logger:Info(msg);
+	for segment in string.gmatch(msg, "(%b[] ?[^%;%[%]]*)") do
+		local segmentConditionals = {string.match(segment, "%[([^%;%[%]]*)%] ?([^%;%[%]]*)")};
+		local segmentCommand = segmentConditionals[#segmentConditionals];
+		table.remove(segmentConditionals);
+		if testConditions(segmentConditionals) then
+			return parseCommandTable({strsplit(" ", segmentCommand)})
+		end
+	end
+	logger:Info("Last");
+	local unconditionalCommand = string.match(msg, "%; ?([^;%]]+)$")
+	logger:Info(unconditionalCommand)
+	if unconditionalCommand then
+		return parseCommandTable({strsplit(" ", unconditionalCommand, nil)});
 	end
 end
 
@@ -166,6 +239,48 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
+
+	TRP3_API.slash.registerConditional({
+		id = "ic",
+		test = function()
+			return (TRP3_API.profile.getData("player/character/RP") == 1);
+		end
+	})
+	TRP3_API.slash.registerConditional({
+		id = "ooc",
+		test = function()
+			return (TRP3_API.profile.getData("player/character/RP") ~= 1);
+		end
+	})
+
+	local location = function(id, targetLocation)
+		--we don't allow spaces in conditionals. So we turn any multiword names into camelCase
+		local locationString = GetMinimapZoneText();
+		locationString = string.lower(locationString);--we lowercase it all
+		locationString = string.gsub(locationString, "[^%s%a]", "");--remove any apostrophies (or anything else that's not a letter)
+		locationString = string.gsub(locationString,"(%s)(%a)", function(a,b) return string.upper(b) end) -- and turn it into a camelCaseValue
+		return targetLocation==locationString; --then compare it to the given string
+	end
+	TRP3_API.slash.registerConditional({
+		id = "loc",
+		test = location
+	})
+	TRP3_API.slash.registerConditional({
+		id = "location",
+		test = location
+	})
+
+
+	TRP3_API.slash.registerConditional({
+		id = "profile",
+		test = function(id, targetProfile)
+			local profileName = TRP3_API.profile.getPlayerCurrentProfile().profileName
+			profileName = string.lower(profileName);--we lowercase it all
+			profileName = string.gsub(profileName, "[^%s%a]", "");--remove anything that's not a letter or space)
+			profileName = string.gsub(profileName,"(%s)(%a)", function(a,b) return string.upper(b) end) -- and turn it into a camelCaseValue
+			return profileName==targetProfile; --then compare it to the given string
+		end
+	})
 
 
 	-- Slash command to switch frames
