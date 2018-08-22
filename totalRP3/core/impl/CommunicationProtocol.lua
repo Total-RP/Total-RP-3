@@ -128,21 +128,17 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
-local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
-	if not tContains(VALID_CHANNELS, channel) then
-		--if channel is ignored, default channel and bump everything along by one
-		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
-	end
-	if tContains(VALID_PRIORITIES, target) then
-		-- if target has values expected for priority, bump everything back by one
-		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
-	end
-
+local function sendObject(prefix, object, target, priority, messageToken, useLoggedMessages)
 	assert(isType(prefix, "string", "prefix"));
 	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
+	local channel = "WHISPER"
+	if type(target) == "table" then
+		channel = target.channel
+		target = target.target
+	end
 	assert(isOneOf(channel, VALID_CHANNELS, "channel"));
 
-	if not TRP3_API.register.isIDIgnored(target) then
+	if not target or not TRP3_API.register.isIDIgnored(target) then
 
 		if priority == nil then
 			priority = "LOW";

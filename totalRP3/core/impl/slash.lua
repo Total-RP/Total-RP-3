@@ -104,9 +104,9 @@ local function sendDiceRoll(args)
 		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, Utils.str.getUnitID("target"));
 	end
 	if IsInRaid() then
-		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, "RAID");
+		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, { channel = "RAID" });
 	elseif IsInGroup() then
-		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, "PARTY");
+		AddOn_TotalRP3.Communications.sendObject(DICE_SIGNAL, args, { channel = "PARTY" });
 	end
 end
 
