@@ -120,9 +120,9 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	if not dropDownFrame then
 		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
 	end
-
-	if _G["DropDownList1"]:IsVisible() then
-		CloseDropDownMenus();
+	
+	if _G["MSA_DropDownList1"]:IsVisible() then
+		MSA_HideDropDownMenu(1);
 		return;
 	end
 
