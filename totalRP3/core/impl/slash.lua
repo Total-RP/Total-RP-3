@@ -100,30 +100,29 @@ local function parseCommandTable(args)
 end
 
 local function testConditions(conditionals)
-	local conditionalsPassed = false;
-	for _, condition in pairs(conditionals) do
-		--cleanup the square brackets to give us a comma seperated lsit of tests
-		local passed = true;
-		for test in string.gmatch(condition, "[^, ]+") do
-			if test ~= "" then
-				local args = {strsplit(":", test)};
-				if CONDITIONALS[args[1]] then
-					if not CONDITIONALS[args[1]].test(unpack(args)) then
+	for _, condition in pairs({strsplit("[]", conditionals)}) do
+		if condition ~= "" then
+			local passed = true;
+			for test in string.gmatch(condition, "[^,]+") do
+				if test ~= "" then
+					local args = {strsplit(":", test)};
+					if CONDITIONALS[args[1]] then
+						if not CONDITIONALS[args[1]].test(unpack(args)) then
+							passed = false;
+							break;
+						end
+					elseif SecureCmdOptionParse("["..test.."] true; false")=="false" then
 						passed = false;
 						break;
 					end
-				elseif SecureCmdOptionParse("["..test.."] true; false")=="false" then
-					passed = false;
-					break;
 				end
 			end
-		end
-		if passed then
-			conditionalsPassed = true
-			break;
+			if passed then
+				return true;
+			end
 		end
 	end
-	return conditionalsPassed;
+	return false;
 end
 
 function SlashCmdList.TOTALRP3(msg, editbox)
@@ -133,10 +132,8 @@ function SlashCmdList.TOTALRP3(msg, editbox)
 		return parseCommandTable(args);
 	end
 
-	for segment in string.gmatch(msg, "(%b[] ?[^%;%[%]]*)") do
-		local segmentConditionals = {string.match(segment, "%[([^%;%[%]]*)%] ?([^%;%[%]]*)")};
-		local segmentCommand = segmentConditionals[#segmentConditionals];
-		table.remove(segmentConditionals);
+	for segment in string.gmatch(msg, "(%[[^;]*%] ?[^%;%[%]]*)") do
+		local segmentConditionals, segmentCommand = string.match(segment, "(%[[^%;]*%]) ?([^%;%[%]]*)");
 		if testConditions(segmentConditionals) then
 			return parseCommandTable({strsplit(" ", segmentCommand)})
 		end
