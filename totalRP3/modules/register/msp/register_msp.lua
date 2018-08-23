@@ -310,8 +310,8 @@ local function onStart()
 						end
 						-- Remove title from full name, if present
 						if field == "NA" and value and data.PX then
-							if value:sub(1, #data.PX) == data.PX then
-								value = strtrim(value:sub(#data.PX + 1));
+							if value:sub(1, #data.PX + 1) == (data.PX .. " ") then
+								value = value:sub(#data.PX + 2);
 							end
 						end
 						-- AE color escaping
