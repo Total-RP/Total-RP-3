@@ -266,13 +266,6 @@ local function onStart()
 		};
 	end
 
-	-- TODO: Expose this from LibMSP instead of duplicating here.
-	local TT_ALL = {
-		VP = true, VA = true, NA = true, NH = true,	NI = true, NT = true,
-		RA = true, CU = true, FR = true, FC = true,	RC = true, CO = true,
-		IC = true, PX = true,
-	}
-
 	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
 		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
@@ -293,7 +286,7 @@ local function onStart()
 			local color = false;
 			for i, field in ipairs(SUPPORTED_FIELDS) do
 				if profile.mspver[field] ~= msp.char[senderID].ver[field]
-				or TT_ALL[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
+				or msp.ttAll[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
 				then
 					-- Save version
 					profile.mspver[field] = msp.char[senderID].ver[field];
