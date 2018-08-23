@@ -150,7 +150,7 @@ local function onStart()
 		for i = 1, 5 do
 			local peek = dataTab.PE[tostring(i)];
 			if peek and peek.AC then
-				if i > 1 then
+				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
 				peeks[#peeks + 1] = "|TInterface\\Icons\\";
