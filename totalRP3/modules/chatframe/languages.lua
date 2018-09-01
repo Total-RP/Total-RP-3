@@ -83,6 +83,18 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		-- Allied races
 		[181] = "Achievement_AlliedRace_Nightborne", -- Shalassian
+		
+		-- Funsies
+		[37] = "inv_misc_punchcards_blue", -- Gnome binary (Brewfest beer)
+		[38] = "inv_misc_punchcards_blue", -- Goblin binary (Brewfest beer)
+		[11] = "ability_warrior_dragonroar", -- Draconic (learned when opening the gates of AQ)
+		[180] = "ability_druid_improvedmoonkinform", -- Moonkin (seasonal event)
+		[12] = "shaman_talent_elementalblast", -- Kalimag (shaman?)
+		[179] = "inv_pet_babymurlocs_blue", -- Murloc (?)
+		[178] = "spell_priest_voidform", -- Shath'Yar (Shadow priests, Void Elves and Alliance Archbishops)
+		[9] = "achievement_dungeon_ulduarraid_titan_01", -- Titan
+		[36] = "icon_petfamily_undead", -- Zombie (in your head)
+		[168] = "inv_pet_sprite_darter_hatchling", -- Sprite (Faerie dragon)
 
 	}
 
