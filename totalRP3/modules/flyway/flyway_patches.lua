@@ -106,7 +106,9 @@ end
 
 -- Reset glance bar coordinates
 TRP3_API.flyway.patches["9"] = function()
-	if TRP3_API.register.resetGlanceBar then
-		TRP3_API.register.resetGlanceBar();
-	end
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		if TRP3_API.register.resetGlanceBar then
+			TRP3_API.register.resetGlanceBar();
+		end
+	end)
 end
