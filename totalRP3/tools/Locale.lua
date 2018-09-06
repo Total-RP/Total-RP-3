@@ -1305,6 +1305,14 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 - Updated libraries used inside the add-on to the latest version available for Battle for Azeroth.
 
 ]],
+	---@language Markdown
+	WHATS_NEW_21_2 = [[
+# Changelog for version 1.4.6
+
+## Fixed
+
+- Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
+]]
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED

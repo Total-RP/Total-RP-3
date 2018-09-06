@@ -1,3 +1,9 @@
+# Changelog for version 1.4.6
+
+## Fixed
+
+- Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
+
 # Changelog for version 1.4.5
 
 This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the add-on communication layer.
