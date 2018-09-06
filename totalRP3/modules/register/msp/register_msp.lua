@@ -84,8 +84,8 @@ local function onStart()
 
 		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
 			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
-			local PH = removeTextTags(dataTab.T3.PH.TX);
-			local PS = removeTextTags(dataTab.T3.PS.TX);
+			local PH = removeTextTags(dataTab.T3.PH.TX) or "";
+			local PS = removeTextTags(dataTab.T3.PS.TX) or "";
 			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
 		elseif dataTab.TE == 1 then
 			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
