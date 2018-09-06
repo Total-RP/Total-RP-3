@@ -1,15 +1,16 @@
 # Changelog for version 1.4.5
 
-This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the later.
+This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the add-on communication layer.
 
 ## Added
 
-- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP will soon be updated to be able to read at-first-glance from Total RP 3 and also send them from its own implementation!
+- Added support for cross-realm add-on communication via group channels. You can now see profiles, trade Total RP 3: Extended items, or even send Total RP chat links of campaigns, with players from a completely different server than yours when they are in your group (party, instance, raid, battleground, etc.).
+- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP and MyRolePlay, will now be able to read at-first-glances from Total RP 3 and also send them from their own implementation!
 - Class and eye colors are now read from other RP add-ons.
 
 ## Fixed
 
-- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors.
+- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors and force error reporting.
 - The chat module will now once again respect the game's settings for displaying class color.
 - Clicking again on a dropdown menu button will now close the dropdown menu.
 - Fixed a bunch of issues when viewing profile of players using a different RP add-on, like an incorrect Out of character status or an incorrect unread flag.
