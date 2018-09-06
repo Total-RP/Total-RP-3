@@ -53,6 +53,7 @@ local PROTOCOL_SETTINGS = {
 		["string"] = true,
 		["table"] = true,
 	},
+	broadcastPrefix = "TRP3"
 }
 local PRIORITIES = {
 	LOW = "LOW",
@@ -170,6 +171,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 			{
 				priority = priority,
 				binaryBlob = not useLoggedMessages,
+				allowBroadcast = true,
 			}
 		);
 	else
