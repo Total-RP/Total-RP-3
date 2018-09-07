@@ -50,16 +50,11 @@ local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local msp = _G.msp;
 
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- WoW imports
 local UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName;
 local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
-
--- Config keys
-local CONFIG_NEW_VERSION = "new_version_alert";
 
 -- Character name for profile opening command
 local characterToOpen = "";
@@ -70,10 +65,6 @@ local commandOpeningTimerHandle;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local has_seen_update_alert, has_seen_extended_update_alert = false, false;
-
-local function configShowVersionAlert()
-	return getConfigValue(CONFIG_NEW_VERSION);
-end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Vernum queries
@@ -189,22 +180,25 @@ local function checkVersion(sender, senderVersion, senderVersionText, extendedVe
 		extendedNewVersionAlerts[extendedVersion][sender] = true;
 	end
 
-	if configShowVersionAlert() then
-		-- Test for TRP3
-		if  senderVersion > Globals.version and not has_seen_update_alert then
-			if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
-				TRP3_UpdateFrame.popup.text:SetText(loc.NEW_VERSION:format(senderVersionText:sub(1, 15)));
-				TRP3_UpdateFrame:Show();
-				has_seen_update_alert = true;
+	-- Test for TRP3
+	if  senderVersion > Globals.version and not has_seen_update_alert then
+		if Utils.table.size(newVersionAlerts[senderVersionText]) >= 15 then
+			local newVersionAlert = loc.NEW_VERSION:format(senderVersionText:sub(1, 15));
+			local numberOfVersionsBehind = senderVersion - Globals.version;
+			if numberOfVersionsBehind > 3 then
+				newVersionAlert = newVersionAlert .. "\n\n" .. loc.NEW_VERSION_BEHIND:format(numberOfVersionsBehind)
 			end
+			TRP3_UpdateFrame.popup.text:SetText(newVersionAlert);
+			TRP3_UpdateFrame:Show();
+			has_seen_update_alert = true;
 		end
+	end
 
-		-- Test for Extended
-		if extendedVersion and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
-			if Utils.table.size(extendedNewVersionAlerts[extendedVersion]) >= 3 then
-				Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersion));
-				has_seen_extended_update_alert = true;
-			end
+	-- Test for Extended
+	if extendedVersion and Globals.extended_version and extendedVersion > Globals.extended_version and not has_seen_extended_update_alert then
+		if Utils.table.size(extendedNewVersionAlerts[extendedVersion]) >= 3 then
+			Utils.message.displayMessage(loc.NEW_EXTENDED_VERSION:format(extendedVersion));
+			has_seen_extended_update_alert = true;
 		end
 	end
 end
