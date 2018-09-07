@@ -1312,7 +1312,7 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 ## Fixed
 
 - Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
-]]
+]],
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
