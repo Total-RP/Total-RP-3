@@ -120,6 +120,8 @@
 	<Include file="dashboard\dashboard.xml"/>
 	
 	<Include file="register\register_includes.xml"/>
+
+	<Include file="Languages\Languages.xml"/>
 	
 	<Include file="chatframe\chatframe.xml"/>
 	
