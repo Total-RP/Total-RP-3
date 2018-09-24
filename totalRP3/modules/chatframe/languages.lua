@@ -169,7 +169,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if not savedLanguage:IsKnown() then
 			local defaultLanguage = Languages.getDefaultLanguage()
 			Languages.setLanguage(defaultLanguage)
-			TRP3_API.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(savedLanguage:GetName(), defaultLanguage:GetName()))
+			TRP3_API.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(defaultLanguage:GetName(), savedLanguage:GetName()))
 		else
 			if Languages.getCurrentLanguage() ~= savedLanguage then
 				Languages.setLanguage(savedLanguage)
@@ -219,7 +219,7 @@ TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET = "chat_langua
 TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET] = true;
 tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigCheck",
-	title = loc.CO_ADVANCED_LANGUAGES_REMEMBER,
-	help = loc.CO_ADVANCED_LANGUAGES_REMEMBER_TT,
+	title = loc.CO_ADVANCED_LANGUAGE_WORKAROUND,
+	help = loc.CO_ADVANCED_LANGUAGE_WORKAROUND_TT,
 	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET,
 });
