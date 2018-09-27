@@ -33,7 +33,6 @@
 	<Include file="Ellyb\Ellyb.xml" />
 
 	<!-- LibMSP: Newer version of the LibMSP, from https://github.com/Ellypse/LibMSP -->
-	<!-- This version has its own implementation of the ChatThrottleLib -->
 	<Include file="LibMSP\LibMSP.xml" />
 
 	<!-- LibDeflate https://github.com/SafeteeWoW/LibDeflate -->

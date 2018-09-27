@@ -1164,6 +1164,102 @@ Would you like to reload the interface now?]],
 	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
 	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
 	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
+
+	---@language Markdown
+	WHATS_NEW_20 = [[
+# Changelog for version 1.4
+
+|cffff8000This version requires Battle for Azeroth, patch 8.0.1.|r
+
+## Add-on communications improvement
+
+ Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
+ - |cffff8000Profiles are now logged on Blizzard's servers|r when sent to other players. This enables Blizzard to view the content of RP profiles in cases of abuse, such as harassment or doxxing. This means you should now treat the contents of your profile as you would public chat in /say, for example. |cffaaaaaa(Goldshire)|r.
+ - |cffff8000Cross server and cross faction support with Battle.net friends:|r the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
+ - |cffff8000Improved performance:|r thanks to looser limitations and newer compression algorithms, all data transfer should be faster (sometimes up to 8 times faster for big Extended campaigns).
+
+|cffaaaaaaIt was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol.|r
+
+## New logos
+{img:Interface\AddOns\totalRP3\resources\trp3logo.blp:128:64}
+Total RP 3 has a new, original logo, to replace the modified game logo (which we obviously did not own). It was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role you want to play.
+
+A new minimap icon also replaces the older one and showcases a classic D&D die.
+{img:Interface\AddOns\totalRP3\resources\trp3minimap.tga:25:25}
+
+## Added
+
+- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values. Amongst these new advanced settings you can find the settings for the broadcast channel, NPC talk prefix, disable the option to remember the last language used between session, and more.
+- Resources added to the browsers: 369 musics, 1698 icons and 178 images from the Battle for Azeroth expansion.
+
+## Modified
+
+- You can no longer set your residence marker inside an instanced zone.
+- Fixed several issues related to patch 8.0.1.
+
+## Fixed
+
+- Added support for other add-ons through the Mary Sue Protocol when using `/trp3 open [playerName]` command.
+
+## Removed
+
+- Map features have been temporarily disabled while we keep working on fixing them for Battle for Azeroth. The entire world map UI has been re-implemented by Blizzard and it requires more or less a complete rewrite of our map code.
+- We have disabled the button to show the residence location of players from the profile page while we are re-implementing the map features for patch 8.0.
+- The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.
+]],
+	WHATS_NEW_20_1 = [[
+# Changelog for version 1.4.1
+
+Fixed a rare Lua error that could randomly happen on login.
+
+]],
+	WHATS_NEW_20_2 = [[
+# Changelog for version 1.4.2
+
+## Fixed
+
+- Fixed another rare Lua error that could randomly happen on login (with the `getPlayerCompleteName()` function) - [Issue #159](https://github.com/Ellypse/Total-RP-3/issues/159)
+
+]],
+	---@language Markdown
+	WHATS_NEW_20_3= [[
+# Changelog for version 1.4.3
+
+## Fixed
+
+- Fixed an issue brought by yesterday's hotfixes that would prevent Battle.net communications from working.
+- Fixed an issue where un-selecting profiles in the directory would not actually deselect them, and improved consistency when purging profiles while having some profiles already selected - [Issue #160](https://github.com/Ellypse/Total-RP-3/issues/160)
+- Fixed an issue introduced with the 8.0.1 pre-patch preventing mount profiles from being displayed properly in the tooltips and on the target frame - [Issue #164](https://github.com/Ellypse/Total-RP-3/issues/164)
+- Fixed a layout in the profiles UI that would prevent the Additional information parts from being rendered properly - [Issue #162](https://github.com/Ellypse/Total-RP-3/issues/162)
+- Fixed an issue that would render the chat links tooltip lines in a random order, instead of the correct one.
+- Fixed an issue that would render some profile informations (Additional information, Personality traits) in a random order, instead of the correct one.
+
+]],
+	---@language Markdown
+	WHATS_NEW_20_4= [[
+# Changelog for version 1.4.4
+
+## Fixed
+
+- Fixed XML errors from libraries when using both Storyline and Total RP 3.
+- Fixed Lua error when targeting companions.
+- The trial account flag is now also displayed in your own tooltip.
+- Names are now correctly class colored in chat for non-customized names - [Issue #175](https://github.com/Ellypse/Total-RP-3/issues/175)
+- Fixed Total RP 3's logo missing a die, and improved the minimap icon, including a transparent version for databroker add-ons.
+- The target frame is now refreshed when you summon and dismiss your own mount.
+- Fixed an issue when sorting the directory by last time seen when that information was missing.
+- Unknown profiles are now hidden from the directory and cleaned on launch.
+
+## Added
+
+- Added a limitation option for line breaks in the "currently" tooltip fields (default to 5 line breaks).
+
+## Modified
+
+- Sorting by names in the directory now ignore quotes around names.
+- The "This realm only" filter for the directory now takes into account connected realms.
+
+]],
 	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
@@ -1179,21 +1275,60 @@ Please keep in mind that changing those settings might alter your experience wit
 	CO_ADVANCED_LANGUAGES_REMEMBER_TT = "Total RP 3 will remember what language you were using before logging off and automatically select this language back on next login.",
 	CO_TOOLTIP_CURRENT_LINES = "Max \"Currently\" line breaks",
 
+	---@language Markdown
+	WHATS_NEW_21 = [[
+# Changelog for version 1.4.5
+
+This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the add-on communication layer.
+
+## Added
+
+- Added support for cross-realm add-on communication via group channels. You can now see profiles, trade Total RP 3: Extended items, or even send Total RP chat links of campaigns, with players from a completely different server than yours when they are in your group (party, instance, raid, battleground, etc.).
+- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP and MyRolePlay, will now be able to read at-first-glances from Total RP 3 and also send them from their own implementation!
+- Class and eye colors are now read from other RP add-ons.
+
+## Fixed
+
+- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors and force error reporting.
+- The chat module will now once again respect the game's settings for displaying class color.
+- Clicking again on a dropdown menu button will now close the dropdown menu.
+- Fixed a bunch of issues when viewing profile of players using a different RP add-on, like an incorrect Out of character status or an incorrect unread flag.
+- Improved the formatting of descriptions sent to players using a different RP add-on. When using the template 3 for your description, the personality traits part of the description is now also sent in the description.
+- Removed invalid Total RP 3 text tags that would sometimes be outputted as is in the descriptions when sent to players using a different add-on.
+- Removing a motto, house or nickname field in your description will now correctly remove those fields from the data sent to other RP add-ons.
+- Fixed broadcasting Total RP 3 dice rolls to your party or raid.
+
+
+## Modified
+
+- The at-first-glance bar and the player name will now be aligned to the center of the target frame, instead of the left.
+- Updated libraries used inside the add-on to the latest version available for Battle for Azeroth.
+
+]],
+	---@language Markdown
+	WHATS_NEW_21_2 = [[
+# Changelog for version 1.4.6
+
+## Fixed
+
+- Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
+]],
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+  REG_PLAYERS = "Players",
+  ---@language Markdown
+  	WHATS_NEW_22 = [[
+  # Changelog version 1.5.0
 
-	---@language Markdown
-	WHATS_NEW_21 = [[
-# Changelog version 1.5.0
+  ## Added
 
-## Added
+  - Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
 
-- Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
-
-]],
+  ]],
 };
 
 -- Use Ellyb to generate the Localization system

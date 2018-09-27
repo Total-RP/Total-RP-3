@@ -131,7 +131,7 @@ local function rollDice(diceString, noSend)
 		total = total + modifierValue;
 
 		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
-		sendDiceRoll({c = num, d = diceCount, t = total});
+		sendDiceRoll({c = num, d = diceCount, t = total, m = modifierValue});
 		return total;
 	end
 	return 0;

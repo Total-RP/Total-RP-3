@@ -30,6 +30,7 @@ local assert = assert;
 local string = string;
 local math = math;
 local tostring = tostring;
+local tContains = tContains;
 --endregion
 
 -- AddOn imports
@@ -52,12 +53,16 @@ local PROTOCOL_SETTINGS = {
 		["string"] = true,
 		["table"] = true,
 	},
+	broadcastPrefix = "TRP3"
 }
 local PRIORITIES = {
 	LOW = "LOW",
 	MEDIUM = "MEDIUM",
 	HIGH = "HIGH",
 }
+
+local VALID_CHANNELS = {"PARTY", "RAID", "GUILD", "BATTLEGROUND", "WHISPER", "CHANNEL"};
+local VALID_PRIORITIES = {"HIGH", "MEDIUM", "LOW"};
 
 local subSystemsDispatcher = Ellyb.EventsDispatcher();
 local subSystemsOnProgressDispatcher = Ellyb.EventsDispatcher();
@@ -124,9 +129,19 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
-local function sendObject(prefix, object, target, priority, messageToken, useLoggedMessages)
+local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
+	if not tContains(VALID_CHANNELS, channel) then
+		--if channel is ignored, default channel and bump everything along by one
+		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
+	end
+	if tContains(VALID_PRIORITIES, target) then
+		-- if target has values expected for priority, bump everything back by one
+		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
+	end
+
 	assert(isType(prefix, "string", "prefix"));
 	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
+	assert(isOneOf(channel, VALID_CHANNELS, "channel"));
 
 	if not TRP3_API.register.isIDIgnored(target) then
 
@@ -135,7 +150,7 @@ local function sendObject(prefix, object, target, priority, messageToken, useLog
 		end
 		priority = CTLToChompPriority(priority);
 
-		assert(isOneOf(priority, {"HIGH", "MEDIUM", "LOW"}, "priority"));
+		assert(isOneOf(priority, VALID_PRIORITIES, "priority"));
 
 		messageToken = messageToken or getNewMessageToken();
 
@@ -151,12 +166,14 @@ local function sendObject(prefix, object, target, priority, messageToken, useLog
 		Chomp.SmartAddonMessage(
 			PROTOCOL_PREFIX,
 			messageToken .. serializedData,
-			"WHISPER",
+			channel,
 			target,
 			{
 				priority = priority,
 				binaryBlob = not useLoggedMessages,
-			});
+				allowBroadcast = true,
+			}
+		);
 	else
 		logger:Warning("[sendObject]", "target is ignored", target);
 		return false;
