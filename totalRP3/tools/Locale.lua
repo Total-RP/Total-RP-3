@@ -1312,12 +1312,23 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 ## Fixed
 
 - Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
-]]
+]],
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+  REG_PLAYERS = "Players",
+  ---@language Markdown
+  	WHATS_NEW_22 = [[
+  # Changelog version 1.5.0
+
+  ## Added
+
+  - Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
+
+  ]],
 };
 
 -- Use Ellyb to generate the Localization system

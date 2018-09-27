@@ -249,7 +249,7 @@ Comm.broadcast.init = function()
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
 
 			local firstTime = true;
-			ticker = C_Timer.NewTicker(5, function(self)
+			ticker = C_Timer.NewTicker(1, function(self)
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
 					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());

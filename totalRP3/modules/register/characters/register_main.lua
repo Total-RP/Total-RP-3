@@ -57,6 +57,8 @@ local tcopy = tcopy;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
+local Map = AddOn_TotalRP3.Map;
+
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references
@@ -615,59 +617,6 @@ local function cleanupMyProfiles()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Scan Marker Decorators
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
--- SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL is a texture sublevel applied to the
--- blip for markers representing characters you have relationship states set
--- with.
---
--- The net result is they'll take priority in the draw order, and get shown
--- on top of a pile of dots in crowded scenarios.
-local SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL = 4;
-
---- Decorates a marker with additional information based upon the established
---  relationship defined in the characters' profile.
---
---  @param characterID The ID of the character.
---  @param entry The entry containing the scan result data.
---  @param marker The marker blip being decorated.
-local function scanMarkerDecorateRelationship(characterID, entry, marker)
-	-- Skip bad character IDs.
-	if not isUnitIDKnown(characterID) then
-		return;
-	end
-
-	-- Easiest way to get at relationship stuff takes the profile ID.
-	local profileID = getUnitIDProfileID(characterID);
-	if not profileID then
-		return;
-	end
-
-	local relation = TRP3_API.register.relation.getRelation(profileID);
-	if relation == TRP3_API.register.relation.NONE then
-		-- This profile has no relationship status.
-		return;
-	end
-
-	-- Swap out the atlas for this marker.
-	marker.iconAtlas = "PlayerPartyBlip";
-
-	-- Recycle any color instance already present if there is one.
-	local r, g, b = TRP3_API.register.relation.getRelationColors(profileID);
-	marker.iconColor = marker.iconColor or Ellyb.Color(0, 0, 0, 0);
-	marker.iconColor:SetRGBA(r, g, b, 1);
-
-	-- Arbitrary increase in layer means we'll display these icons over the
-	-- defaults.
-	marker.iconSublevel = SCAN_MARKER_BLIP_RELATIONSHIP_SUBLEVEL;
-
-	-- Store the relationship on the marker itself as the category.
-	marker.categoryName = loc:GetText("REG_RELATION_".. relation);
-	marker.categoryPriority = Globals.RELATIONS_ORDER[relation] or -math.huge;
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -740,14 +689,6 @@ function TRP3_API.register.init()
 
 	registerConfigKey("register_auto_purge_mode", 864000);
 
-	local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
-	local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
-	local CONFIG_DISABLE_MAP_LOCATION_ON_PVP = "register_map_location_pvp";
-
-	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
-	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
-	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_PVP, false);
-
 	local AUTO_PURGE_VALUES = {
 		{loc.CO_REGISTER_AUTO_PURGE_0, false},
 		{loc.CO_REGISTER_AUTO_PURGE_1:format(1), 86400},
@@ -807,12 +748,6 @@ function TRP3_API.register.init()
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
-	local function locationEnabled()
-		return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
-			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
-			and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_PVP) or not UnitIsPVP("player"));
-	end
-
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
@@ -823,91 +758,4 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
 
 	createTabBar();
-
-	local CHARACTER_SCAN_COMMAND = "CSCAN";
-	local GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition = GetCurrentMapAreaID, SetMapToCurrentZone, GetPlayerMapPosition;
-	local SetMapByID, tonumber, broadcast = SetMapByID, tonumber, AddOn_TotalRP3.Communications.broadcast;
-	local UnitInParty = UnitInParty;
-	local Ambiguate, tContains = Ambiguate, tContains;
-	local phasedZones = {
-		971, -- Alliance garrison
-		976  -- Horde garrison
-	};
-
-	local function playersCanSeeEachOthers(sender)
-		if sender == Globals.player_id then
-			return false;
-		end
-		local currentMapID = GetCurrentMapAreaID();
-		if tContains(phasedZones, currentMapID) then
-			return UnitInParty(Ambiguate(sender, "none"));
-		else
-			return true;
-		end
-	end
-
-	TRP3_API.map.registerScan({
-		id = "playerScan",
-		buttonText = loc.MAP_SCAN_CHAR,
-		buttonIcon = "Achievement_GuildPerk_EverybodysFriend",
-		scan = function()
-			local zoneID = GetCurrentMapAreaID();
-			broadcast.broadcast(CHARACTER_SCAN_COMMAND, zoneID);
-		end,
-		scanTitle = loc.MAP_SCAN_CHAR_TITLE,
-		scanCommand = CHARACTER_SCAN_COMMAND,
-		scanResponder = function(sender, zoneID)
-			if locationEnabled() and playersCanSeeEachOthers(sender) then
-				local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-				if mapID and x and y and tonumber(mapID) == tonumber(zoneID) then
-					broadcast.sendP2PMessage(sender, CHARACTER_SCAN_COMMAND, x, y, zoneID, Globals.addon_name_short);
-				end
-			end;
-		end,
-		canScan = function(currentlyScanning)
-			local mapID, x, y = TRP3_API.map.getCurrentCoordinates("player");
-			return getConfigValue(CONFIG_ENABLE_MAP_LOCATION) and not currentlyScanning and x ~= nil and y ~= nil;
-		end,
-		scanAssembler = function(saveStructure, sender, x, y, mapId, addon)
-			if playersCanSeeEachOthers(sender) then
-				saveStructure[sender] = { x = x, y = y, mapId = mapId, addon = addon };
-			end
-		end,
-		scanComplete = function(saveStructure)
-		end,
-		scanMarkerDecorator = function(characterID, entry, marker)
-			-- Reset attributes on the marker before decorating.
-			marker.categoryName = nil;
-			marker.categoryPriority = nil;
-			marker.iconAtlas = nil;
-			marker.iconSublevel = nil;
-			marker.sortName = characterID;
-
-			-- We'll reset the color rather than nil it out and potentially
-			-- allocate a new one anyway.
-			if marker.iconColor then
-				marker.iconColor:SetRGBA(1, 1, 1, 1);
-			end
-
-			local line;
-			if isUnitIDKnown(characterID) and getUnitIDCurrentProfile(characterID) then
-				local profile = getUnitIDCurrentProfile(characterID);
-				line = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
-
-				-- Sort by the proper name of the character instead.
-				marker.sortName = line;
-
-				if profile.characteristics and profile.characteristics.CH then
-					line = "|cff" .. profile.characteristics.CH .. line;
-				end
-			end
-			if not line then
-				line = 	characterID:gsub("%-.*$", "");
-			end
-			marker.scanLine = line;
-
-			scanMarkerDecorateRelationship(characterID, entry, marker);
-		end,
-		scanDuration = 2.5;
-	});
 end
