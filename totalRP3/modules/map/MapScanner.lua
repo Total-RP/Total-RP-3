@@ -59,7 +59,7 @@ function MapScanner:OnScanDataReceived(sender, x, y, poiInfo)
 	poiInfoCopy.sender = sender;
 	poiInfoCopy.position = CreateVector2D(x, y);
 
-	_private[self].scanData[sender] = poiInfoCopy;
+	tinsert(_private[self].scanData, poiInfoCopy);
 end
 
 function MapScanner:ResetScanData()
