@@ -72,6 +72,12 @@ local function sortMarkerEntries(a, b)
 	local categoryA = a.categoryPriority or huge;
 	local categoryB = b.categoryPriority or huge;
 
+	if categoryA == huge and type(categoryB) == "string" then
+		categoryA = "";
+	elseif categoryB == huge and type(categoryA) == "string" then
+		categoryB = "";
+	end
+
 	local nameA = a.sortName or "";
 	local nameB = b.sortName or "";
 
