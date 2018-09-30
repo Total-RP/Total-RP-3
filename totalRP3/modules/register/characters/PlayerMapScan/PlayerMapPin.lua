@@ -64,7 +64,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = Ellyb.ColorManager.CYAN;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
-		displayData.categoryPriority = -huge;
+		displayData.categoryPriority = huge;
 	else
 		profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
 
@@ -78,7 +78,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 
 			-- Store the relationship on the marker itself as the category.
 			displayData.categoryName = loc.REG_RELATION .. ": " .. relationShipColor(loc:GetText("REG_RELATION_".. relation));
-			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or -huge;
+			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or huge;
 		end
 		--endregion
 	end
