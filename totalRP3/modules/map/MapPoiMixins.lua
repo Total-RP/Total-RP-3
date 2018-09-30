@@ -69,13 +69,13 @@ local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transp
 ---  in order of their category priority (descending), or if equal, their
 ---  sortable name equivalent (ascending).
 local function sortMarkerEntries(a, b)
-	local categoryA = a.categoryPriority or -huge;
-	local categoryB = b.categoryPriority or -huge;
+	local categoryA = a.categoryPriority or huge;
+	local categoryB = b.categoryPriority or huge;
 
 	local nameA = a.sortName or "";
 	local nameB = b.sortName or "";
 
-	return (categoryA > categoryB)
+	return (categoryA < categoryB)
 		or (categoryA == categoryB and nameA < nameB);
 end
 
