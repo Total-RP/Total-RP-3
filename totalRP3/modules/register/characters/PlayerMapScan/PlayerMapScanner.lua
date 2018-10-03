@@ -20,39 +20,48 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
+--{{{ Lua imports
 local tonumber = tonumber;
 local insert = table.insert;
---endregion
+--}}}
 
---region WoW imports
-local CreateVector2D = CreateVector2D;
---endregion
-
---region Total RP 3 imports
+--{{{ Total RP 3 imports
 local loc = TRP3_API.loc;
 local broadcast = AddOn_TotalRP3.Communications.broadcast;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local getConfigValue = TRP3_API.configuration.getValue;
-local get = TRP3_API.profile.getData;
 local Map = AddOn_TotalRP3.Map;
---endregion
+--}}}
 
 local CONFIG_ENABLE_MAP_LOCATION = "register_map_location";
 local CONFIG_DISABLE_MAP_LOCATION_ON_OOC = "register_map_location_ooc";
+local CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE = "register_map_location_disable_war_mode";
+local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
+
+local player = AddOn_TotalRP3.Player.GetCurrentUser()
 
 local function shouldAnswerToLocationRequest()
-	return getConfigValue(CONFIG_ENABLE_MAP_LOCATION)
-		and (not getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) or get("player/character/RP") ~= 2)
+	if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+		return false;
+	end
+	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_OOC) and not player:IsInCharacter() then
+		return false;
+	end
+	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE) then
+		if C_PvP.IsWarModeActive() then
+			return GetZonePVPInfo() == "sanctuary"
+		end
+	end
+	return true;
 end
 
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 
 	registerConfigKey(CONFIG_ENABLE_MAP_LOCATION, true);
 	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_OOC, false);
+	registerConfigKey(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE, false);
+	registerConfigKey(CONFIG_SHOW_DIFFERENT_WAR_MODES, false);
 
 	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
@@ -71,6 +80,20 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_DISABLE_WAR_MODE,
+		help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
+		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+	});
+	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
+		help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
+		configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
+		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+	});
 end)
 
 local SCAN_COMMAND = "C_SCAN";
@@ -84,43 +107,59 @@ playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
 -- The MapDataProvider will use this template to generate the pin
 playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
---region Scan behavior
+--{{{ Scan behavior
 function playerMapScanner:Scan()
 	broadcast.broadcast(SCAN_COMMAND, Map.getDisplayedMapID());
 end
 
 -- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
 function playerMapScanner:CanScan()
-	if getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+	if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+		return false
+	end
+
+	-- Check if the map we are going to scan is the map the player is currently in
+	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
 		local x, y = Map.getPlayerCoordinates()
-		if x and y then
-			return true;
+		if not x or not y then
+			return false;
 		end
 	end
-	return false;
-end
---endregion
 
---region Broadcast commands
+	return true;
+end
+--}}}
+
+--{{{ Broadcast commands
 broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
 	if Map.playerCanSeeTarget(sender) then
 		mapID = tonumber(mapID);
-		if shouldAnswerToLocationRequest() and Map.playerCanSeeTarget(sender) then
+		if shouldAnswerToLocationRequest() then
 			local playerMapID = Map.getPlayerMapID();
 			if playerMapID ~= mapID then
 				return
 			end
 			local x, y = Map.getPlayerCoordinates();
 			if x and y then
-				broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, playerMapID);
+				broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, C_PvP.IsWarModeActive());
 			end
 		end
 	end
 end)
 
-broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y)
-	if Map.playerCanSeeTarget(sender) then
-		playerMapScanner:OnScanDataReceived(sender, x, y)
+broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
+	local checkWarMode;
+
+	-- If the option to show people in different War Mode is not enabled we will filter them out from the result
+	if not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
+		checkWarMode = hasWarModeActive;
+	end
+
+	if Map.playerCanSeeTarget(sender, checkWarMode) then
+		playerMapScanner:OnScanDataReceived(sender, x, y, {
+			hasWarModeActive = hasWarModeActive
+		})
 	end
 end)
---endregion
+--}}}

@@ -20,22 +20,21 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
+--{{{ Lua imports
 local huge = math.huge;
---endregion
+--}}}
 
---region Total RP 3 imports
+--{{{ Total RP 3 imports
 local loc = TRP3_API.loc;
---endregion
+--}}}
 
---region Ellyb imports
+--{{{ Ellyb imports
 local ORANGE = Ellyb.ColorManager.ORANGE;
----endregion
+---}}}
 
 -- Create the pin template, above group members
+---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
 TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
 	AddOn_TotalRP3.MapPoiMixins.GroupedCoalescedMapPinMixin, -- Use coalesced grouped tooltips (show multiple player names)
 	AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
@@ -44,64 +43,69 @@ TRP3_PlayerMapPinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
 -- Expose template name, so the scan can use it for the MapDataProvider
 TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
+local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
+local getConfigValue = TRP3_API.configuration.getValue;
+local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
+local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
+
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
 function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
-	local characterID = poiInfo.sender;
-	local displayData = {};
-	local isSelf = characterID == TRP3_API.globals.player_id;
+	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.sender);
+	local hasWarModeActive = poiInfo.hasWarModeActive;
+	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
+	local hasSameWarModeAsPlayer = hasWarModeActive == C_PvP.IsWarModeActive()
 
-	if not isSelf and (not TRP3_API.register.isUnitIDKnown(characterID) or not TRP3_API.register.hasProfile(characterID)) then
-		-- Only remove the server name from the sender ID
-		displayData.playerName = characterID:gsub("%-.*$", "");
-		return displayData;
+	local displayData = {};
+
+	--{{{ Player name
+	local name, color, icon = player:GetRoleplayingName(), player:GetCustomColor(), player:GetCustomIcon();
+
+	if color ~= nil then
+		name = color:WrapTextInColorCode(name);
+	end
+	if icon ~= nil then
+		name = TRP3_API.utils.str.icon(icon, 15) .. " " .. name;
 	end
 
-	local profile;
-	if isSelf then
-		-- Special case when seeing ourselves on the map (DEBUG)
-		profile = TRP3_API.profile.getPlayerCurrentProfile().player;
+	if shouldDifferentiateBetweenWarModes and hasWarModeActive then
+		name = name .. " " .. (UnitFactionGroup("player") == "Alliance" and ALLIANCE_ICON or HORDE_ICON)
+	end
+
+	displayData.playerName = name;
+	--}}}
+
+	--{{{ Player relationship
+	-- Special case when seeing ourselves on the map (DEBUG)
+	if player:IsCurrentUser() then
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = Ellyb.ColorManager.CYAN;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
 		displayData.categoryPriority = huge;
 	else
-		profile = TRP3_API.register.getUnitIDCurrentProfile(characterID);
-
-		--region Player relationship
-		local relation = TRP3_API.register.relation.getRelation(TRP3_API.register.getUnitIDProfileID(characterID));
+		local relation = player:GetRelationshipWithPlayer()
 		if relation ~= TRP3_API.register.relation.NONE then
-			local relationShipColor = TRP3_API.register.relation.getColor(relation);
+			local relationshipColor = TRP3_API.register.relation.getColor(relation);
 			-- Swap out the atlas for this marker.
 			displayData.iconAtlas = "PlayerPartyBlip";
-			displayData.iconColor = relationShipColor;
+			displayData.iconColor = relationshipColor;
 
 			-- Store the relationship on the marker itself as the category.
-			displayData.categoryName = loc.REG_RELATION .. ": " .. relationShipColor(loc:GetText("REG_RELATION_".. relation));
+			displayData.categoryName = loc.REG_RELATION .. ": " .. relationshipColor(loc:GetText("REG_RELATION_".. relation));
 			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or huge;
 		end
-		--endregion
 	end
+	--}}}
 
-	--region Player name
-	displayData.playerName = TRP3_API.register.getCompleteName(profile.characteristics, characterID, true);
-
-	if profile.characteristics then
-		if profile.characteristics.CH then
-			local color = Ellyb.Color.CreateFromHexa(profile.characteristics.CH);
-			displayData.playerName = color(displayData.playerName);
-		end
-		if profile.characteristics.IC then
-			displayData.playerName = TRP3_API.utils.str.icon(profile.characteristics.IC, 15) .. " " .. displayData.playerName;
-		end
+	if shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
+		displayData.opacity = 0.5
 	end
-	--endregion
 
 	return displayData
 end
 
 --- This is called by the data provider to decorate the pin after the base pin mixin has done its job.
----@param poiInfo {position:Vector2DMixin, sender:string}
+---@param displayData {playerName:string, categoryName:string|nil, categoryPriority:number|nil, iconColor: Color, opacity: number|nil}
 function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
@@ -116,6 +120,8 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	else
 		self.Texture:SetVertexColor(1, 1, 1, 1);
 	end
+
+	self.Texture:SetAlpha(displayData.opacity or 1)
 
 	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
 end

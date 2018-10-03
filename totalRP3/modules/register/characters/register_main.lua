@@ -57,8 +57,6 @@ local tcopy = tcopy;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
-local Map = AddOn_TotalRP3.Map;
-
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references

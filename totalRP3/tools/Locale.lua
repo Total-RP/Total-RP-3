@@ -615,8 +615,6 @@ Possible status:
 	CO_LOCATION_ACTIVATE_TT = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
 	CO_LOCATION_DISABLE_OOC = "Disable location when OOC",
 	CO_LOCATION_DISABLE_OOC_TT = "You will not respond to location requests from other players when you've set your RP status to Out Of Character.",
-	CO_LOCATION_DISABLE_PVP = "Disable location when flagged for PvP",
-	CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
@@ -1313,22 +1311,26 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 
 - Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-  REG_PLAYERS = "Players",
-  ---@language Markdown
-  	WHATS_NEW_22 = [[
+	---@language Markdown
+	WHATS_NEW_22 = [[
   # Changelog version 1.5.0
 
   ## Added
 
   - Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
 
-  ]],
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	REG_PLAYERS = "Players",
+	CO_LOCATION_DISABLE_WAR_MODE = "Disable location when in War Mode",
+	CO_LOCATION_DISABLE_WAR_MODE_TT = "You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip."
 };
 
 -- Use Ellyb to generate the Localization system
