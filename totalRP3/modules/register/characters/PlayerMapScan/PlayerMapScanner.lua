@@ -149,6 +149,8 @@ broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
 end)
 
 broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
+	-- Booleans received from commands are strings, need to cast to boolean
+	hasWarModeActive = hasWarModeActive == "true"
 	local checkWarMode;
 
 	-- If the option to show people in different War Mode is not enabled we will filter them out from the result

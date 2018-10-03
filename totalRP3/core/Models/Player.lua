@@ -45,7 +45,10 @@ end
 
 ---@return {characteristics: {FN: string, LN: string}}|nil profile
 function Player:GetProfile()
-	return TRP3_Register.profiles[TRP3_Register.character[self:GetCharacterID()].profileID];
+	local characterInfo = TRP3_Register.character[self:GetCharacterID()]
+	if characterInfo then
+		return TRP3_Register.profiles[characterInfo.profileID];
+	end
 end
 
 ---@return {FN: string, LN: string, CH:string, IC:string}|nil characteristics
@@ -127,7 +130,7 @@ end
 
 	local player = Player();
 
-	_private[self].characterID = characterID;
+	_private[player].characterID = characterID;
 
 	return player;
 end

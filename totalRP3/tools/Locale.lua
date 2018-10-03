@@ -1313,11 +1313,11 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 ]],
 	---@language Markdown
 	WHATS_NEW_22 = [[
-  # Changelog version 1.5.0
+# Changelog version 1.5.0
 
-  ## Added
+## Added
 
-  - Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
+- Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
 
 ]],
 
