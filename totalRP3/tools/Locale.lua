@@ -1330,7 +1330,8 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 	CO_LOCATION_DISABLE_WAR_MODE = "Disable location when in War Mode",
 	CO_LOCATION_DISABLE_WAR_MODE_TT = "You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
 	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
-	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip."
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
+	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
 };
 
 -- Use Ellyb to generate the Localization system

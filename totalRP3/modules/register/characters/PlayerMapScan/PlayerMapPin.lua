@@ -68,10 +68,6 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		name = TRP3_API.utils.str.icon(icon, 15) .. " " .. name;
 	end
 
-	if shouldDifferentiateBetweenWarModes and hasWarModeActive then
-		name = name .. " " .. (UnitFactionGroup("player") == "Alliance" and ALLIANCE_ICON or HORDE_ICON)
-	end
-
 	displayData.playerName = name;
 	--}}}
 
@@ -82,6 +78,13 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		displayData.iconColor = Ellyb.ColorManager.CYAN;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
 		displayData.categoryPriority = huge;
+	elseif shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
+		-- Swap out the atlas for this marker, show it in red, low opacity, and in a special category
+		displayData.iconAtlas = "PlayerPartyBlip";
+		displayData.iconColor = Ellyb.ColorManager.GREY;
+		displayData.opacity = 0.5
+		displayData.categoryName = Ellyb.ColorManager.RED(loc.REG_LOCATION_DIFFERENT_WAR_MODE);
+		displayData.categoryPriority = -1;
 	else
 		local relation = player:GetRelationshipWithPlayer()
 		if relation ~= TRP3_API.register.relation.NONE then
@@ -96,10 +99,6 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 		end
 	end
 	--}}}
-
-	if shouldDifferentiateBetweenWarModes and not hasSameWarModeAsPlayer then
-		displayData.opacity = 0.5
-	end
 
 	return displayData
 end
