@@ -45,6 +45,7 @@ local Mixin = Mixin;
 local MapPoiMixins = {};
 
 --region CoalescedMapPin
+-- The coalesced map pins display one single tooltip with the content of all the markers under the cursor
 local CoalescedMapPinMixin = {};
 
 function CoalescedMapPinMixin:OnMouseEnter()
@@ -60,6 +61,7 @@ MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
 --endregion
 
 --region GroupedCoalescedMapMixin
+-- The grouped coalesced map pins have uses categories to group the content of the markers under the cursor
 local GroupedCoalescedMapPinMixin = {};
 
 local WHITE = Ellyb.ColorManager.WHITE;
@@ -124,8 +126,11 @@ MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 
 --region AnimatedPinMixin
+-- The animated pin mixin automatically animates the pin when displayed so that it bounces and fade into the view
+-- It will also delay the animation for the pin so that the animation starts from the pins in the center of the map and finishes with the pin at the corners of the map.
 local AnimatedPinMixin = {}
 
+-- TODO Create the bounce animation instead of requiring an existing one in the XML template
 function AnimatedPinMixin:OnLoad()
 	BaseMapPoiPinMixin.OnLoad(self);
 
