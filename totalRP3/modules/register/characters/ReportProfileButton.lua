@@ -28,7 +28,6 @@ local function slightlyCustomizeReportingFrame()
 end
 
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
-    -- Add to white list button
     TRP3_API.target.registerButton({
         id = "aa_player_report",
         configText = loc.REG_REPORT_PLAYER_PROFILE,
