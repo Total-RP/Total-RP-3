@@ -117,7 +117,7 @@ function Player:IsInCharacter()
 end
 
 function Player:GetInfo(path)
-	return TRP3_API.profile.getData("player/character/RP", self:GetProfile())
+	return TRP3_API.profile.getData(path, self:GetProfile())
 end
 
 ---@return Player player
@@ -151,7 +151,7 @@ function currentUser:GetRelationshipWithPlayer()
 end
 
 --- Returns a reference to the current user as a Player model.
---- The current user has some specific behavior due to data not being stored in the same palces.
+--- The current user has some specific behavior due to data not being stored in the same places.
 ---@return Player currentUser
 --[[ static ]] function Player.GetCurrentUser()
 	return currentUser;
