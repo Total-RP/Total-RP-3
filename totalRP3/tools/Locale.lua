@@ -162,7 +162,6 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_MISC_ADD = "Add an additional field",
 	REG_PLAYER_ABOUT = "About",
 	REG_PLAYER_ABOUTS = "About %s",
-	REG_PLAYER_ABOUT_MUSIC = "Character theme",
 	REG_PLAYER_ABOUT_NOMUSIC = "|cffff9900No theme",
 	REG_PLAYER_ABOUT_UNMUSIC = "|cffff9900Unknown theme",
 	REG_PLAYER_ABOUT_MUSIC_SELECT = "Select character theme",
@@ -1334,6 +1333,17 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
 	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST = "Keep broadcast channel last",
 	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT = "This option will make sure that the broadcast channel is always the last channel in your channels list.",
+	---@language Markdown
+	WHATS_NEW_22 = [[
+# Changelog version 1.5.0
+
+## Added
+
+- Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
+
+]],
+	REG_PLAYER_ABOUT_MUSIC_THEME = "Character music theme",
+	REG_PLAYER_EDIT_MUSIC_THEME = "Pick a theme",
 };
 
 -- Use Ellyb to generate the Localization system

@@ -851,7 +851,8 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetText(loc.CM_PLAY);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetText(loc.CM_STOP);
-	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC);
+	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.REG_PLAYER_EDIT_MUSIC_THEME);
+	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC_THEME);
 
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p", GameFontNormal);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1", GameFontNormalHuge3);

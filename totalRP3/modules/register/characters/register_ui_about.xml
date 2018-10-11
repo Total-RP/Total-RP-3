@@ -245,7 +245,8 @@
 							<Anchor point="TOPLEFT" x="0" y="-5" />
 						</Anchors>
 						<Frames>
-							<Button name="TRP3_RegisterAbout_Edit_Music_Action" inherits="TRP3_ActionButton">
+							<Button name="TRP3_RegisterAbout_Edit_Music_Action" inherits="TRP3_CommonButton">
+								<Size x="100" y="20"/>
 								<Anchors>
 									<Anchor point="TOPLEFT" x="15" y="0"/>
 								</Anchors>
