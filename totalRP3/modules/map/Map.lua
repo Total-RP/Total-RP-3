@@ -94,5 +94,10 @@ function Map.getDisplayedMapID()
 	return WorldMapFrame:GetMapID();
 end
 
+function Map.placeSingleMarker(x, y, poiInfo, pinTemplate)
+	poiInfo.position = CreateVector2D(x, y);
+	TRP3_API.MapDataProvider:OnScan({ poiInfo }, pinTemplate)
+end
+
 -- Exposing public API
 AddOn_TotalRP3.Map = Map;

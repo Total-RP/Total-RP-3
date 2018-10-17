@@ -45,8 +45,6 @@ TRP3_PlayerMapPinMixin.TEMPLATE_NAME = "TRP3_PlayerMapPinTemplate";
 
 local CONFIG_SHOW_DIFFERENT_WAR_MODES = "register_map_location_show_war_modes";
 local getConfigValue = TRP3_API.configuration.getValue;
-local ALLIANCE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Alliance:20:20|t";
-local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
 
 --- This is called when the data provider acquire a pin, to transform poiInfo received from the scan
 --- into display info to be used to decorate the pin.
@@ -59,16 +57,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local displayData = {};
 
 	--{{{ Player name
-	local name, color, icon = player:GetRoleplayingName(), player:GetCustomColor(), player:GetCustomIcon();
-
-	if color ~= nil then
-		name = color:WrapTextInColorCode(name);
-	end
-	if icon ~= nil then
-		name = TRP3_API.utils.str.icon(icon, 15) .. " " .. name;
-	end
-
-	displayData.playerName = name;
+	displayData.playerName = player:GetCustomColoredRoleplayingNamePrefixedWithIcon();
 	--}}}
 
 	--{{{ Player relationship

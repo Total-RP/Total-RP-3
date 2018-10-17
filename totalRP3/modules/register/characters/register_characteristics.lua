@@ -251,6 +251,42 @@ local function scaleField(field, containerSize, fieldName)
 	_G[field:GetName() .. (fieldName or "FieldName")]:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
 end
 
+-- Create the pin template, above group members
+---@type BaseMapPoiPinMixin|MapCanvasPinMixin|{Texture: Texture, GetMap: fun():MapCanvasMixin}
+TRP3_PlayerHousePinMixin = AddOn_TotalRP3.MapPoiMixins.createPinTemplate(
+		AddOn_TotalRP3.MapPoiMixins.AnimatedPinMixin -- Use animated icons (bounce in)
+);
+
+-- Expose template name, so the scan can use it for the MapDataProvider
+TRP3_PlayerHousePinMixin.TEMPLATE_NAME = "TRP3_PlayerHousePinTemplate";
+
+function TRP3_PlayerHousePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
+	local player
+	if poiInfo.characterID then
+		player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.characterID);
+	elseif poiInfo.profileID then
+		player = AddOn_TotalRP3.Player.CreateFromProfileID(poiInfo.profileID);
+	else
+		error("Cannot get display data for this player house.");
+	end
+	return {
+		iconAtlas = "poi-town",
+		tooltip = player:GetCustomColoredRoleplayingNamePrefixedWithIcon()
+	}
+end
+
+function TRP3_PlayerHousePinMixin:Decorate(displayData)
+	self.Texture:SetSize(16, 16);
+	self:SetSize(16, 16);
+
+	if displayData.tooltip then
+		Ellyb.Tooltips.getTooltip(self)
+				:SetTitle(loc.REG_PLAYER_RESIDENCE, Ellyb.ColorManager.ORANGE)
+				:ClearLines()
+				:AddLine(displayData.tooltip)
+	end
+end
+
 local function setConsultDisplay(context)
 	local dataTab = context.profile.characteristics or Globals.empty;
 	local hasCharac, hasPsycho, hasMisc, margin;
@@ -317,17 +353,25 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
-			--[[ TODO: Reimplement this feature for patch 8.0
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				MiniMapWorldMapButton:GetScript("OnClick")(MiniMapWorldMapButton, "LeftButton");
-				SetMapByID(dataTab.RC[1]);
-				TRP3_API.map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], completeName, TRP3_API.map.DECORATION_TYPES.HOUSE);
+				OpenWorldMap(dataTab.RC[1])
+				local characterID;
+				local profileID;
+				if context.source == "player" then
+					characterID = TRP3_API.globals.player_id
+				elseif context.unitID then
+					characterID = context.unitID
+				elseif context.profileID then
+					profileID = context.profileID
+				else
+					error("Could not retrieve unit from this profile.")
+				end
+				AddOn_TotalRP3.Map.placeSingleMarker(dataTab.RC[2], dataTab.RC[3], { characterID = characterID, profileID = profileID }, TRP3_PlayerHousePinMixin.TEMPLATE_NAME)
 			end);
-			]]
 
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5,
-				loc.REG_PLAYER_RESIDENCE_SHOW, Ellyb.ColorManager.GREEN(dataTab.RC[4]).. Ellyb.ColorManager.RED("\n\nDisplaying player residence on the map disabled due to 8.0 changes."));
+				loc.REG_PLAYER_RESIDENCE_SHOW, Ellyb.ColorManager.GREEN(dataTab.RC[4]));
 		end
 		frame:Show();
 		previous = frame;

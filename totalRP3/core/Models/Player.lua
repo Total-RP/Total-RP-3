@@ -108,6 +108,21 @@ function Player:GetCustomIcon()
 	end
 end
 
+--- Get a colored version of the roleplaying name prefixed with the custom icon
+---@return string
+function Player:GetCustomColoredRoleplayingNamePrefixedWithIcon(iconSize)
+	iconSize = iconSize or 15;
+	local name, color, icon = self:GetRoleplayingName(), self:GetCustomColor(), self:GetCustomIcon();
+
+	if color ~= nil then
+		name = color:WrapTextInColorCode(name);
+	end
+	if icon ~= nil then
+		name = TRP3_API.utils.str.icon(icon, iconSize) .. " " .. name;
+	end
+	return name
+end
+
 function Player:IsCurrentUser()
 	return self:GetCharacterID() == currentUser:GetCharacterID();
 end
@@ -131,6 +146,22 @@ end
 	local player = Player();
 
 	_private[player].characterID = characterID;
+
+	return player;
+end
+
+---@return Player player
+--[[ static ]] function Player.CreateFromProfileID(profileID)
+	assert(Ellyb.Assertions.isType(profileID, "string", "profileID"));
+	assert(TRP3_Register.profiles[profileID], ("Unknown profile ID %s"):format(profileID));
+
+	local player = Player();
+
+	_private[player].characterID = UNKNOWN;
+
+	function player:GetProfile()
+		return TRP3_Register.profiles[profileID];
+	end
 
 	return player;
 end
