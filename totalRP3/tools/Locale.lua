@@ -1332,6 +1332,8 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
 	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
 	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST = "Keep broadcast channel last",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT = "This option will make sure that the broadcast channel is always the last channel in your channels list.",
 };
 
 -- Use Ellyb to generate the Localization system
