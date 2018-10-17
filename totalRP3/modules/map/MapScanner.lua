@@ -27,7 +27,7 @@ local isType = Ellyb.Assertions.isType;
 local CreateVector2D = CreateVector2D;
 
 --- A MapScanner is module that can be used to scan for things on the map.
---- Create new a MapScanner and override the methods to define the behavior for your MapScanner.
+--- Create a new MapScanner and override the methods to define the behavior for your MapScanner.
 ---@class MapScanner : Object
 local MapScanner, _private = Ellyb.Class("MapScanner");
 
