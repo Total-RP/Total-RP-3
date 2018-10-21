@@ -232,6 +232,23 @@ local function onMessageReceived(...)
 	end
 end
 
+local function moveBroadcastChannelToTheBottomOfTheList(...)
+	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) then
+		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
+			local _, channelName = GetChannelName(channelIndex);
+			if channelName == config_BroadcastChannel() then
+				SwapChatChannelByLocalID(channelIndex, channelIndex + 1);
+			end
+		end
+		-- Make sure the channel is also always hidden
+		ToggleChatChannel(false, config_BroadcastChannel());
+	end
+end
+
+Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init and helloWorld
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -256,6 +273,7 @@ Comm.broadcast.init = function()
 					JoinChannelByName(string.lower(config_BroadcastChannel()));
 				else
 					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
+					moveBroadcastChannelToTheBottomOfTheList();
 					if not helloWorlded then
 						broadcast(HELLO_CMD, Globals.version, Globals.version_display);
 					end

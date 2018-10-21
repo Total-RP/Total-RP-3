@@ -123,6 +123,7 @@
 
 	<Include file="register\register_includes.xml"/>
 
+	<Include file="Languages\Languages.xml"/>
 	<Include file="chatframe\chatframe.xml"/>
 
 	<Include file="targetframe\target_frame.xml"/>

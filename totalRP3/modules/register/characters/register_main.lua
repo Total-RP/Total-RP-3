@@ -57,8 +57,6 @@ local tcopy = tcopy;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
-local Map = AddOn_TotalRP3.Map;
-
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references
@@ -616,6 +614,12 @@ local function cleanupMyProfiles()
 	end
 end
 
+local function getFirstCharacterIDFromProfile(profile)
+	if type(profile.link ) == "table" then
+		return next(profile.link)
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -712,31 +716,7 @@ function TRP3_API.register.init()
 				listContent = AUTO_PURGE_VALUES,
 				configKey = "register_auto_purge_mode",
 				listCancel = true,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc.CO_LOCATION,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_ACTIVATE,
-				help = loc.CO_LOCATION_ACTIVATE_TT,
-				configKey = CONFIG_ENABLE_MAP_LOCATION,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_DISABLE_OOC,
-				help = loc.CO_LOCATION_DISABLE_OOC_TT,
-				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
-				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_DISABLE_PVP,
-				help = loc.CO_LOCATION_DISABLE_PVP_TT,
-				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
-				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
-			},
+			}
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
@@ -756,6 +736,12 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
+
+	TRP3_ProfileReportButton:SetScript("OnClick", function()
+		local context = TRP3_API.navigation.page.getCurrentContext();
+		local characterID = getFirstCharacterIDFromProfile(context.profile) or UNKNOWN;
+		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", loc.REG_REPORT_PLAYER_OPEN_URL:format(characterID));
+	end)
 
 	createTabBar();
 end

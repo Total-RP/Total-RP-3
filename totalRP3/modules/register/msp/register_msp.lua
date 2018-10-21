@@ -396,10 +396,12 @@ local function onStart()
 							end
 							value = peeks;
 						end
-						if value and not profile.misc then
-							profile.misc = {};
+						if value then
+							if not profile.misc then
+								profile.misc = {};
+							end
+							profile.misc[MISC_FIELDS[field]] = value;
 						end
-						profile.misc[MISC_FIELDS[field]] = value;
 					elseif field == "MO" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
