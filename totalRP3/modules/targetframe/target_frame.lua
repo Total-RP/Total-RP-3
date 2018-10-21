@@ -114,8 +114,13 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
-			uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
+				uiButton:SetNormalTexture(buttonStructure.icon:GetFileID())
+				uiButton:SetPushedTexture(buttonStructure.icon:GetFileID());
+			else
+				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
+				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+			end
 			uiButton:GetPushedTexture():SetDesaturated(1);
 			uiButton:SetPoint("TOPLEFT", x, -12);
 			uiButton:SetWidth(buttonSize);

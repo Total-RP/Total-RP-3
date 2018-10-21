@@ -27,9 +27,11 @@ local function slightlyCustomizeReportingFrame()
     PlayerReportFrame.CommentBox:SetMaxLetters(250);
 end
 
+local REPORT_ICON = Ellyb.Icon([[Interface\HelpFrame\HelpIcon-OpenTicket]]);
+
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
     TRP3_API.target.registerButton({
-        id = "aa_player_report",
+        id = "zzzzzzzzzz_player_report",
         configText = loc.REG_REPORT_PLAYER_PROFILE,
         onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
         condition = function(targetType, unitID)
@@ -64,8 +66,8 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
             end
             PlayerReportFrame.CommentBox:SetText(commentText);
         end,
-        tooltip = [[|TInterface\HelpFrame\HelpIcon-OpenTicket:25|t]] .. loc.REG_REPORT_PLAYER_PROFILE,
+        tooltip =  REPORT_ICON:GenerateString(25) .. loc.REG_REPORT_PLAYER_PROFILE,
         tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
-        icon = "WoW_Store"
+        icon = REPORT_ICON
     });
 end)
