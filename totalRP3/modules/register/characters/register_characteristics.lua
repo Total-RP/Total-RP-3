@@ -1226,12 +1226,16 @@ local function refreshDisplay()
 
 	-- IsSelf ?
 	TRP3_RegisterCharact_NamePanel_EditButton:Hide();
+	TRP3_ProfileReportButton:Hide()
 	if context.isPlayer then
 		TRP3_RegisterCharact_NamePanel_EditButton:Show();
 	else
 		assert(context.profileID, "No profileID in context");
 		TRP3_RegisterCharact_ActionButton:Show();
 		setupRelationButton(context.profileID, context.profile);
+		if context.profile and context.profile.link then
+			TRP3_ProfileReportButton:Show()
+		end
 	end
 
 	if context.isEditMode then

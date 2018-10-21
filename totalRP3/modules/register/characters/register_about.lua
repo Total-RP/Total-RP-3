@@ -479,11 +479,15 @@ local function refreshConsultDisplay(context)
 	local template = dataTab.TE or 1;
 	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
 
+	TRP3_ProfileReportButton:Hide();
 	if not context.isPlayer then
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
+		if context.profile and context.profile.link then
+			TRP3_ProfileReportButton:Show();
+		end
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");

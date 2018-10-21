@@ -614,6 +614,12 @@ local function cleanupMyProfiles()
 	end
 end
 
+local function getFirstCharacterIDFromProfile(profile)
+	if type(profile.link ) == "table" then
+		return next(profile.link)
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -730,6 +736,12 @@ function TRP3_API.register.init()
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
+
+	TRP3_ProfileReportButton:SetScript("OnClick", function()
+		local context = TRP3_API.navigation.page.getCurrentContext();
+		local characterID = getFirstCharacterIDFromProfile(context.profile) or UNKNOWN;
+		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", loc.REG_REPORT_PLAYER_OPEN_URL:format(characterID));
+	end)
 
 	createTabBar();
 end

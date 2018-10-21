@@ -58,6 +58,18 @@
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
+			<Button name="TRP3_ProfileReportButton">
+				<Size x="30" y="30" />
+				<Anchors>
+					<Anchor point="TOPRIGHT" y="-2" x="-5"/>
+				</Anchors>
+				<Layers>
+					<Layer>
+						<Texture file="Interface\HelpFrame\HelpIcon-OpenTicket"/>
+					</Layer>
+				</Layers>
+				<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
+			</Button>
 		</Frames>
 	</Frame>
     

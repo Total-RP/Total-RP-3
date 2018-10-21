@@ -432,6 +432,10 @@ local function showMiscTab()
 	displayPeek(context);
 	displayRPStyle(context);
 	displayCurrently(context);
+	TRP3_ProfileReportButton:Hide();
+	if not context.isPlayer and context.profile and context.profile.link then
+		TRP3_ProfileReportButton:Show();
+	end
 end
 TRP3_API.register.ui.showMiscTab = showMiscTab;
 
