@@ -66,5 +66,6 @@
 	<Script file="main\register_cursor.lua" />
 
 	<Include file="filter\register_mature_filter.xml" />
+	<Script file="characters\ReportProfileButton.lua" />
 
 </Ui>
