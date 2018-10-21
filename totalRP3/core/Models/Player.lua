@@ -43,12 +43,19 @@ function Player:GetName()
 	end
 end
 
----@return {characteristics: {FN: string, LN: string}}|nil profile
-function Player:GetProfile()
+function Player:GetProfileID()
+	if _private[self].profileID then
+		return _private[self].profileID
+	end
 	local characterInfo = TRP3_Register.character[self:GetCharacterID()]
 	if characterInfo then
-		return TRP3_Register.profiles[characterInfo.profileID];
+		return characterInfo.profileID
 	end
+end
+
+---@return {characteristics: {FN: string, LN: string}}|nil profile
+function Player:GetProfile()
+	return TRP3_Register.profiles[self:GetProfileID()];
 end
 
 ---@return {FN: string, LN: string, CH:string, IC:string}|nil characteristics
@@ -158,10 +165,7 @@ end
 	local player = Player();
 
 	_private[player].characterID = UNKNOWN;
-
-	function player:GetProfile()
-		return TRP3_Register.profiles[profileID];
-	end
+	_private[player].profileID = profileID;
 
 	return player;
 end
