@@ -100,9 +100,9 @@ end
 
 local function selectMusic(music)
 	if music then
-		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC, Utils.music.getTitle(music)));
+		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC_THEME, Utils.music.getTitle(music)));
 	else
-		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC, loc.REG_PLAYER_ABOUT_NOMUSIC));
+		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC_THEME, loc.REG_PLAYER_ABOUT_NOMUSIC));
 	end
 end
 

@@ -1343,7 +1343,7 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 
 ]],
 	REG_PLAYER_ABOUT_MUSIC_THEME = "Character music theme",
-	REG_PLAYER_EDIT_MUSIC_THEME = "Pick a theme",
+	REG_PLAYER_EDIT_MUSIC_THEME = "Music theme",
 };
 
 -- Use Ellyb to generate the Localization system
