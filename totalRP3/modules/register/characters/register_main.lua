@@ -57,8 +57,6 @@ local tcopy = tcopy;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
-local Map = AddOn_TotalRP3.Map;
-
 local EMPTY = Globals.empty;
 local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references
@@ -712,31 +710,7 @@ function TRP3_API.register.init()
 				listContent = AUTO_PURGE_VALUES,
 				configKey = "register_auto_purge_mode",
 				listCancel = true,
-			},
-			{
-				inherit = "TRP3_ConfigH1",
-				title = loc.CO_LOCATION,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_ACTIVATE,
-				help = loc.CO_LOCATION_ACTIVATE_TT,
-				configKey = CONFIG_ENABLE_MAP_LOCATION,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_DISABLE_OOC,
-				help = loc.CO_LOCATION_DISABLE_OOC_TT,
-				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
-				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_LOCATION_DISABLE_PVP,
-				help = loc.CO_LOCATION_DISABLE_PVP_TT,
-				configKey = CONFIG_DISABLE_MAP_LOCATION_ON_PVP,
-				dependentOnOptions = {CONFIG_ENABLE_MAP_LOCATION},
-			},
+			}
 		}
 	};
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()

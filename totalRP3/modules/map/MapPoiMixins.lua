@@ -45,6 +45,7 @@ local Mixin = Mixin;
 local MapPoiMixins = {};
 
 --region CoalescedMapPin
+-- The coalesced map pins display one single tooltip with the content of all the markers under the cursor
 local CoalescedMapPinMixin = {};
 
 function CoalescedMapPinMixin:OnMouseEnter()
@@ -60,6 +61,7 @@ MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
 --endregion
 
 --region GroupedCoalescedMapMixin
+-- The grouped coalesced map pins have uses categories to group the content of the markers under the cursor
 local GroupedCoalescedMapPinMixin = {};
 
 local WHITE = Ellyb.ColorManager.WHITE;
@@ -130,10 +132,35 @@ MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 
 --region AnimatedPinMixin
+-- The animated pin mixin automatically animates the pin when displayed so that it bounces and fade into the view
+-- It will also delay the animation for the pin so that the animation starts from the pins in the center of the map and finishes with the pin at the corners of the map.
 local AnimatedPinMixin = {}
 
+---@param pin Frame
+local function createBounceAnimation(pin)
+	if pin.Bounce then return end
+	pin.Bounce = pin:CreateAnimationGroup("Bounce")
+	pin.Bounce:SetToFinalAlpha(true)
+
+	local alpha = pin.Bounce:CreateAnimation("Alpha");
+	alpha:SetFromAlpha(0);
+	alpha:SetToAlpha(1);
+	alpha:SetDuration(0.2);
+
+	local bounceIn = pin.Bounce:CreateAnimation("Scale");
+	bounceIn:SetScale(1.5, 1.5);
+	bounceIn:SetDuration(0.2);
+
+	local bounceOut = pin.Bounce:CreateAnimation("Scale")
+	bounceOut:SetScale(0.5, 0.5);
+	bounceOut:SetDuration(0.2);
+	bounceOut:SetStartDelay(0.2);
+end
+
+-- TODO Create the bounce animation instead of requiring an existing one in the XML template
 function AnimatedPinMixin:OnLoad()
 	BaseMapPoiPinMixin.OnLoad(self);
+	createBounceAnimation(self)
 
 	hooksecurefunc(self, "OnAcquired", function(marker, poiInfo)
 		if poiInfo.position and self.Bounce and TRP3_API.ui.misc.shouldPlayUIAnimation() then

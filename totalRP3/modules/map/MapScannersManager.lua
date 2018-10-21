@@ -63,10 +63,10 @@ function MapScannersManager.launch(scanID)
 	local scan = registeredMapScans[scanID];
 	TRP3_API.MapDataProvider:RemoveAllData();
 
+	-- Save the displayed map ID so we can check that we are still on the requested map when the scan ends
 	displayedMapID = AddOn_TotalRP3.Map.getDisplayedMapID()
 
 	scan:ResetScanData();
-
 
 	local promise = Ellyb.Promise();
 	promise:Always(function()

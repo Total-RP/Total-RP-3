@@ -24,21 +24,17 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
+--{{{ Lua imports
 local sqrt = math.sqrt;
---endregion
+--}}}
 
---region WoW imports
+--{{{ WoW imports
 local GetBestMapForUnit = C_Map.GetBestMapForUnit;
 local GetPlayerMapPosition = C_Map.GetPlayerMapPosition;
 local tContains = tContains;
 local Ambiguate = Ambiguate;
 local UnitInParty = UnitInParty;
---endregion
-
---region Ellyb imports
-local isType = Ellyb.Assertions.isType;
---endregion
+--}}}
 
 local Map = {};
 
@@ -54,7 +50,7 @@ function Map.getPlayerMapID()
 	return GetBestMapForUnit("player");
 end
 
----@return number, number, x, y @ Returns the X and Y coordinates of the player for the current map, or nil if we could not get their coordinates
+---@return number, number x, y @ Returns the X and Y coordinates of the player for the current map, or nil if we could not get their coordinates
 function Map.getPlayerCoordinates()
 	---@type Vector2DMixin
 	local position = GetPlayerMapPosition(Map.getPlayerMapID(), "player");
@@ -66,8 +62,9 @@ end
 
 ---playerCanSeeTarget
 ---@param target string @ A valid unit token
+---@param targetHasWarModeEnabled bool|nil @ Indicate if the target has War Mode enabled or not. If nil, the check for War Mode will be ignored.
 ---@return boolean canSeeTarget @ Return true if the player can see the target, or false if something like phases prevent them from seeing each other.
-function Map.playerCanSeeTarget(target)
+function Map.playerCanSeeTarget(target, targetHasWarModeEnabled)
 	-- Players should not see themselves (answer their own requests), except if in DEBUG_MODE, for testing
 	if target == TRP3_API.globals.player_id and not TRP3_API.globals.DEBUG_MODE then
 		return false;
@@ -76,9 +73,11 @@ function Map.playerCanSeeTarget(target)
 	if tContains(PERSONAL_PHASED_ZONES, currentMapID) then
 		-- If the player is in a personal phased zone, the target has to be in their group to be seen
 		return UnitInParty(Ambiguate(target, "none"));
-	else
-		return true;
 	end
+	if targetHasWarModeEnabled ~= nil then
+		return C_PvP.IsWarModeActive() == targetHasWarModeEnabled
+	end
+	return true;
 end
 
 local MAX_DISTANCE_MARKER = sqrt(0.5);
@@ -93,6 +92,11 @@ end
 
 function Map.getDisplayedMapID()
 	return WorldMapFrame:GetMapID();
+end
+
+function Map.placeSingleMarker(x, y, poiInfo, pinTemplate)
+	poiInfo.position = CreateVector2D(x, y);
+	TRP3_API.MapDataProvider:OnScan({ poiInfo }, pinTemplate)
 end
 
 -- Exposing public API
