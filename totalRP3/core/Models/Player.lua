@@ -164,8 +164,13 @@ end
 
 	local player = Player();
 
-	_private[player].characterID = UNKNOWN;
 	_private[player].profileID = profileID;
+	local profile = player:GetProfile();
+	local characterID = UNKNOWN;
+	if profile.link then
+		characterID = next(profile.link, nil)
+	end
+	_private[player].characterID = characterID
 
 	return player;
 end
