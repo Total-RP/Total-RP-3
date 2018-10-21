@@ -17,12 +17,13 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local AddOn_TotalRP3 = AddOn_TotalRP3;
 local Ellyb = Ellyb(...)
-local Languages = {}
+local Languages = {};
+AddOn_TotalRP3.Languages = Languages;
 
 ---@type TRP3_API;
 local _, TRP3_API = ...;
-local Language = AddOn_TotalRP3.Language
 
 -- Imports
 local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
@@ -49,7 +50,7 @@ end
 ---@return Language
 function Languages.getDefaultLanguage()
 	local name, id = GetDefaultLanguage()
-	return Language(id, name)
+	return AddOn_TotalRP3.Language(id, name)
 end
 
 ---@return Language|nil
@@ -63,19 +64,19 @@ end
 
 function Languages.getLanguageByIndex(languageIndex)
 	local name, id = GetLanguageByIndex(languageIndex)
-	return Language(id, name)
+	return AddOn_TotalRP3.Language(id, name)
 end
 
 ---@param language Language
 local function saveSelectedLanguageToCharacterData(language)
-	assert(Ellyb.Assertions.isInstanceOf(language, "Language", "language"));
+	assert(Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language"));
 	TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] = language:GetID();
 end
 
 ---Will set the language currently spoken by the player using a language ID
 ---@param language Language
 function Languages.setLanguage(language)
-	Ellyb.Assertions.isInstanceOf(language, "Language", "language")
+	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
 	Log.log("Setting language " .. language:GetName());
 
 	saveSelectedLanguageToCharacterData(language);
@@ -109,10 +110,6 @@ function Languages.getSavedLanguage()
 	end
 end
 
-local function restoreSavedLanguages()
-	Languages.setLanguage(Languages.getSavedLanguage() or Languages.getDefaultLanguage());
-end
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
 	
@@ -124,20 +121,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			refreshTooltip(Uibutton);
 		end,
 		onUpdate = function(Uibutton, buttonStructure)
-			if buttonStructure.currentLanguageID ~= ChatFrame1EditBox.languageID then
-				TRP3_API.toolbar.updateToolbarButton(Uibutton, buttonStructure);
-			end
+			TRP3_API.toolbar.updateToolbarButton(Uibutton, buttonStructure);
 		end,
 		onModelUpdate = function(buttonStructure)
-			local currentLanguage = Languages.getCurrentLanguage()
-
-			if currentLanguage then
-				buttonStructure.currentLanguageID = currentLanguage:GetID()
-				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName()
+			if buttonStructure.currentLanguageID ~= ChatFrame1EditBox.languageID then
+				buttonStructure.currentLanguageID = ChatFrame1EditBox.languageID
+				local currentLanguage = Languages.getCurrentLanguage()
+				buttonStructure.currentLanguageID = currentLanguage:GetID();
+				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
 				buttonStructure.tooltipSub = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_LANGUAGES_TT);
-				buttonStructure.icon = currentLanguage:GetIcon():GetFilename()
-			else
-				buttonStructure.icon = "spell_holy_silence";
+				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or "spell_holy_silence";
 			end
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
