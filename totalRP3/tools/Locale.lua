@@ -1344,6 +1344,9 @@ This version focuses on bug fixes and improvements of Total RP 3's compatibility
 ]],
 	REG_PLAYER_ABOUT_MUSIC_THEME = "Character music theme",
 	REG_PLAYER_EDIT_MUSIC_THEME = "Music theme",
+	LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT = "Current spoken language reverted to default %s because you no longer know the previously selected language %s.",
+	CO_ADVANCED_LANGUAGE_WORKAROUND = "Enable workaround against language reset",
+	CO_ADVANCED_LANGUAGE_WORKAROUND_TT = "Since patch 8.0.1 the game will reset the selected language to the default language for your faction during every loading screen. This workaround makes sure to restore the selected language after a loading screen.",
 };
 
 -- Use Ellyb to generate the Localization system
