@@ -232,16 +232,39 @@ local function onMessageReceived(...)
 	end
 end
 
-local function moveBroadcastChannelToTheBottomOfTheList(...)
+--- Makes sure the broadcast channel is hidden from the chat frame.
+--- Some add-ons are still sending chat messages instead of add-on message on the channel, so it's best for
+--- the user if we hide the channel so they never have to see add-on generated text messages.
+local function hideBroadcastChannelFromChatFrame()
+	local chatFrame = FCF_GetCurrentChatFrame();
+	if not chatFrame then return end -- In some instances we cannot get a chat frame (Details!?!?)
+
+	local broadcastChannelName = config_BroadcastChannel();
+	for index, value in pairs(chatFrame.channelList) do
+		if strupper(broadcastChannelName) == strupper(value) then
+			chatFrame.channelList[index] = nil;
+			chatFrame.zoneChannelList[index] = nil;
+		end
+	end
+
+	RemoveChatWindowChannel(chatFrame:GetID(), broadcastChannelName);
+end
+
+--- Makes sure the broadcast channel is always at the bottom of list.
+--- This is so the user always have the channels they actually use first and that the broadcast channel
+--- is never taking the General or Trade chat position.
+local function moveBroadcastChannelToTheBottomOfTheList()
 	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) then
+		local broadcastChannelName = config_BroadcastChannel();
+
 		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
 			local _, channelName = GetChannelName(channelIndex);
-			if channelName == config_BroadcastChannel() then
+			if channelName == broadcastChannelName then
 				SwapChatChannelByLocalID(channelIndex, channelIndex + 1);
 			end
 		end
-		-- Make sure the channel is also always hidden
-		ToggleChatChannel(false, config_BroadcastChannel());
+
+		hideBroadcastChannelFromChatFrame()
 	end
 end
 
