@@ -1,5 +1,9 @@
 # Changelog version 1.5.0
 
+## Changes from beta 1 to beta 2
+
+- Fixed an incompatibility issue with the Details! add-on introduced with the workaround for the broadcast channel position.
+
 ## Re-implemented map scans feature
 
 You can now once again scan for Total RP 3 users on the world map.

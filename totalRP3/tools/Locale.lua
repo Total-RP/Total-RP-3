@@ -1273,69 +1273,13 @@ Please keep in mind that changing those settings might alter your experience wit
 	CO_TOOLTIP_CURRENT_LINES = "Max \"Currently\" line breaks",
 
 	---@language Markdown
-	WHATS_NEW_21 = [[
-# Changelog for version 1.4.5
-
-This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the add-on communication layer.
-
-## Added
-
-- Added support for cross-realm add-on communication via group channels. You can now see profiles, trade Total RP 3: Extended items, or even send Total RP chat links of campaigns, with players from a completely different server than yours when they are in your group (party, instance, raid, battleground, etc.).
-- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP and MyRolePlay, will now be able to read at-first-glances from Total RP 3 and also send them from their own implementation!
-- Class and eye colors are now read from other RP add-ons.
-
-## Fixed
-
-- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors and force error reporting.
-- The chat module will now once again respect the game's settings for displaying class color.
-- Clicking again on a dropdown menu button will now close the dropdown menu.
-- Fixed a bunch of issues when viewing profile of players using a different RP add-on, like an incorrect Out of character status or an incorrect unread flag.
-- Improved the formatting of descriptions sent to players using a different RP add-on. When using the template 3 for your description, the personality traits part of the description is now also sent in the description.
-- Removed invalid Total RP 3 text tags that would sometimes be outputted as is in the descriptions when sent to players using a different add-on.
-- Removing a motto, house or nickname field in your description will now correctly remove those fields from the data sent to other RP add-ons.
-- Fixed broadcasting Total RP 3 dice rolls to your party or raid.
-
-
-## Modified
-
-- The at-first-glance bar and the player name will now be aligned to the center of the target frame, instead of the left.
-- Updated libraries used inside the add-on to the latest version available for Battle for Azeroth.
-
-]],
-	---@language Markdown
-	WHATS_NEW_21_2 = [[
-# Changelog for version 1.4.6
-
-## Fixed
-
-- Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
-]],
-	---@language Markdown
 	WHATS_NEW_22 = [[
 # Changelog version 1.5.0
 
-## Added
+## Changes from beta 1 to beta 2
 
-- Re-implemented the map scans feature. The features are the same, but the system has been rebuilt from the ground up to use new technologies provided by the new World Map in patch 8.0.1.
+- Fixed an incompatibility issue with the Details! add-on introduced with the workaround for the broadcast channel position.
 
-]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	REG_PLAYERS = "Players",
-	CO_LOCATION_DISABLE_WAR_MODE = "Disable location when in War Mode",
-	CO_LOCATION_DISABLE_WAR_MODE_TT = "You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
-	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
-	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
-	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
-	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST = "Keep broadcast channel last",
-	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT = "This option will make sure that the broadcast channel is always the last channel in your channels list.",
-	---@language Markdown
-	WHATS_NEW_22 = [[
-# Changelog version 1.5.0
 
 ## Re-implemented map scans feature
 
@@ -1361,6 +1305,19 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 - Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all others channels you have joined down in the list. You can disable this workaround in cases of issues in the advanced settings.
 
 ]],
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	REG_PLAYERS = "Players",
+	CO_LOCATION_DISABLE_WAR_MODE = "Disable location when in War Mode",
+	CO_LOCATION_DISABLE_WAR_MODE_TT = "You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
+	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST = "Keep broadcast channel last",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT = "This option will make sure that the broadcast channel is always the last channel in your channels list.",
 	REG_PLAYER_ABOUT_MUSIC_THEME = "Character music theme",
 	REG_PLAYER_EDIT_MUSIC_THEME = "Music theme",
 	LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT = "Current spoken language reverted to default %s because you no longer know the previously selected language %s.",
