@@ -32,8 +32,6 @@ local loc = TRP3_API.loc;
 local Events = TRP3_API.Events;
 local getConfigValue = TRP3_API.configuration.getValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local icon = TRP3_API.utils.str.icon;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 --endregion
 
@@ -49,6 +47,9 @@ local GetTime = GetTime;
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
 ---@type Button
 local WorldMapButton = TRP3_WorldMapButton;
+
+local NORMAL_STATE_MAP_ICON = Ellyb.Icon("icon_treasuremap");
+local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon("ability_mage_timewarp")
 
 --region Configuration
 Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
@@ -96,6 +97,16 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_MAP_BUTTON_POSITION,
 	});
 
+	--{{{ UI setup
+	NORMAL_STATE_MAP_ICON:Apply(WorldMapButton.Icon);
+	---@type Tooltip
+	Ellyb.Tooltips.getTooltip(WorldMapButton)
+		 :SetTitle(loc.MAP_BUTTON_TITLE)
+		 :OnShow(function(tooltip)
+		tooltip:AddTempLine(WorldMapButton.subtitle)
+	end)
+	--}}}
+
 	placeMapButton();
 end)
 --endregion
@@ -127,16 +138,6 @@ end);
 
 --endregion
 
---region UI setup
-setupIconButton(WorldMapButton, "icon_treasuremap");
----@type Tooltip
-Ellyb.Tooltips.getTooltip(WorldMapButton)
-	 :SetTitle(loc.MAP_BUTTON_TITLE)
-	 :OnShow(function(tooltip)
-	tooltip:AddTempLine(WorldMapButton.subtitle)
-end)
---endregion
-
 WorldMapButton:SetScript("OnClick", function(self)
 	local structure = {};
 	for scanID, scan in pairs(TRP3_API.MapScannersManager.getAllScans()) do
@@ -152,12 +153,12 @@ end);
 
 function WorldMapButton.resetCooldown()
 	WorldMapButton:Enable();
-	setupIconButton(WorldMapButton, "icon_treasuremap");
+	NORMAL_STATE_MAP_ICON:Apply(WorldMapButton.Icon);
 end
 
 function WorldMapButton.startCooldown(timer)
 	WorldMapButton:Disable();
-	setupIconButton(WorldMapButton, "ability_mage_timewarp");
+	ON_COOLDOWN_STATE_MAP_ICON:Apply(WorldMapButton.Icon);
 	WorldMapButton.Cooldown:SetCooldown(GetTime(), timer)
 	after(timer, WorldMapButton.resetCooldown)
 end
