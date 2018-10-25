@@ -94,74 +94,75 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
-end)
 
-local SCAN_COMMAND = "C_SCAN";
----@type MapScanner
-local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
--- Set scan display properties
-playerMapScanner.scanIcon = "Achievement_GuildPerk_EverybodysFriend"
-playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
-playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
--- Indicate the name of the pin template to use with this scan.
--- The MapDataProvider will use this template to generate the pin
-playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
---{{{ Scan behavior
-function playerMapScanner:Scan()
-	broadcast.broadcast(SCAN_COMMAND, Map.getDisplayedMapID());
-end
+	local SCAN_COMMAND = "C_SCAN";
+	---@type MapScanner
+	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
+	-- Set scan display properties
+	playerMapScanner.scanIcon = Ellyb.Icon("Achievement_GuildPerk_EverybodysFriend")
+	playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
+	playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
+	-- Indicate the name of the pin template to use with this scan.
+	-- The MapDataProvider will use this template to generate the pin
+	playerMapScanner.dataProviderTemplate = TRP3_PlayerMapPinMixin.TEMPLATE_NAME;
 
--- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
-function playerMapScanner:CanScan()
-	if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
-		return false
+	--{{{ Scan behavior
+	function playerMapScanner:Scan()
+		broadcast.broadcast(SCAN_COMMAND, Map.getDisplayedMapID());
 	end
 
-	-- Check if the map we are going to scan is the map the player is currently in
-	-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
-	if Map.getDisplayedMapID() == Map.getPlayerMapID() then
-		local x, y = Map.getPlayerCoordinates()
-		if not x or not y then
-			return false;
+	-- Players can only scan for other players in zones where it is possible to retrieve player coordinates.
+	function playerMapScanner:CanScan()
+		if not getConfigValue(CONFIG_ENABLE_MAP_LOCATION) then
+			return false
 		end
-	end
 
-	return true;
-end
---}}}
-
---{{{ Broadcast commands
-broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
-	if Map.playerCanSeeTarget(sender) then
-		mapID = tonumber(mapID);
-		if shouldAnswerToLocationRequest() then
-			local playerMapID = Map.getPlayerMapID();
-			if playerMapID ~= mapID then
-				return
-			end
-			local x, y = Map.getPlayerCoordinates();
-			if x and y then
-				broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, C_PvP.IsWarModeActive());
+		-- Check if the map we are going to scan is the map the player is currently in
+		-- and if we have access to coordinates. If not, it's a protected zone and we cannot scan.
+		if Map.getDisplayedMapID() == Map.getPlayerMapID() then
+			local x, y = Map.getPlayerCoordinates()
+			if not x or not y then
+				return false;
 			end
 		end
+
+		return true;
 	end
+	--}}}
+
+	--{{{ Broadcast commands
+	broadcast.registerCommand(SCAN_COMMAND, function(sender, mapID)
+		if Map.playerCanSeeTarget(sender) then
+			mapID = tonumber(mapID);
+			if shouldAnswerToLocationRequest() then
+				local playerMapID = Map.getPlayerMapID();
+				if playerMapID ~= mapID then
+					return
+				end
+				local x, y = Map.getPlayerCoordinates();
+				if x and y then
+					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, C_PvP.IsWarModeActive());
+				end
+			end
+		end
+	end)
+
+	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
+		-- Booleans received from commands are strings, need to cast to boolean
+		hasWarModeActive = hasWarModeActive == "true"
+		local checkWarMode;
+
+		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
+		if not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
+			checkWarMode = hasWarModeActive;
+		end
+
+		if Map.playerCanSeeTarget(sender, checkWarMode) then
+			playerMapScanner:OnScanDataReceived(sender, x, y, {
+				hasWarModeActive = hasWarModeActive
+			})
+		end
+	end)
+	--}}}
 end)
-
-broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
-	-- Booleans received from commands are strings, need to cast to boolean
-	hasWarModeActive = hasWarModeActive == "true"
-	local checkWarMode;
-
-	-- If the option to show people in different War Mode is not enabled we will filter them out from the result
-	if not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
-		checkWarMode = hasWarModeActive;
-	end
-
-	if Map.playerCanSeeTarget(sender, checkWarMode) then
-		playerMapScanner:OnScanDataReceived(sender, x, y, {
-			hasWarModeActive = hasWarModeActive
-		})
-	end
-end)
---}}}
