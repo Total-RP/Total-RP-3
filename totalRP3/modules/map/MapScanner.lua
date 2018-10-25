@@ -31,7 +31,8 @@ local CreateVector2D = CreateVector2D;
 ---@class MapScanner : Object
 local MapScanner, _private = Ellyb.Class("MapScanner");
 
-MapScanner.scanIcon = "Inv_misc_enggizmos_20";
+---@type Icon
+MapScanner.scanIcon = Ellyb.Icon("Inv_misc_enggizmos_20");
 MapScanner.scanOptionText = UNKNOWN;
 MapScanner.scanTitle = UNKNOWN;
 MapScanner.duration = 3;
@@ -46,6 +47,17 @@ function MapScanner:initialize(scanID)
 	_private[self].scanData = {};
 
 	TRP3_API.MapScannersManager.register(self);
+end
+
+---@deprecated scanIcon now HAS to be an instance of Ellyb.Icon
+function MapScanner:__newindex(key, value)
+	if key == "scanIcon" then
+		if not value or not value.class or not value.class.name == "Icon" then
+			Ellyb.DeprecationWarnings.warn("MapScanner.scanIcon now requires an instance of an Ellyb.Icon");
+			value = Ellyb.Icon(value);
+		end
+	end
+	rawset(self, key, value)
 end
 
 function MapScanner:GetID()
@@ -71,6 +83,10 @@ end
 
 function MapScanner:GetData()
 	return _private[self].scanData;
+end
+
+function MapScanner:GetActionString()
+	return self.scanIcon:GenerateString(20) .. " " .. self.scanOptionText;
 end
 
 -- This function will be called when the scan is being fired by the user.
