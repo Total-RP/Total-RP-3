@@ -17,6 +17,11 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+local Ellyb = Ellyb(...)
+local Languages = {};
+AddOn_TotalRP3.Languages = Languages;
+
 ---@type TRP3_API;
 local _, TRP3_API = ...;
 
@@ -33,110 +38,80 @@ local Configuration = TRP3_API.configuration;
 
 local LAST_LANGUAGE_USED = "chat_last_language_used";
 
+---@return Language[]
+function Languages.getAvailableLanguages()
+	local languages = {}
+	for i = 1, GetNumLanguages() do
+		table.insert(languages, Languages.getLanguageByIndex(i))
+	end
+	return languages
+end
+
+---@return Language
+function Languages.getDefaultLanguage()
+	local name, id = GetDefaultLanguage()
+	return AddOn_TotalRP3.Language(id, name)
+end
+
+---@return Language|nil
+function Languages.getLanguageByID(languageID)
+	for _, knownLanguage in ipairs(Languages.getAvailableLanguages()) do
+		if knownLanguage:GetID() == languageID then
+			return knownLanguage
+		end
+	end
+end
+
+function Languages.getLanguageByIndex(languageIndex)
+	local name, id = GetLanguageByIndex(languageIndex)
+	return AddOn_TotalRP3.Language(id, name)
+end
+
+---@param language Language
+local function saveSelectedLanguageToCharacterData(language)
+	assert(Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language"));
+	TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] = language:GetID();
+end
+
+---Will set the language currently spoken by the player using a language ID
+---@param language Language
+function Languages.setLanguage(language)
+	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language")
+	Log.log("Setting language " .. language:GetName());
+
+	saveSelectedLanguageToCharacterData(language);
+
+	for i = 1, 9 do
+		if _G["ChatFrame"..i.."EditBox"] then
+			_G["ChatFrame"..i.."EditBox"].languageID = language:GetID();
+			_G["ChatFrame"..i.."EditBox"].language = language:GetName();
+		end
+	end
+end
+
+---@param languageID string
+function Languages.setLanguageByID(languageID)
+	local language = Languages.getLanguageByID(languageID)
+	if not language then
+		language = Languages.getDefaultLanguage()
+		Log.log("Trying to set a language that is not known by this character, going back to default language: " .. language, Log.level.WARNING);
+	end
+	Languages.setLanguage(language)
+end
+
+---@return Language
+function Languages.getCurrentLanguage()
+	return Languages.getLanguageByID(ChatFrame1EditBox.languageID)
+end
+
+function Languages.getSavedLanguage()
+	if TRP3_Characters and TRP3_Characters[Globals.player_id] and TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] then
+		return Languages.getLanguageByID(TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED])
+	end
+end
+
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
-
-
-	---
-	-- Check if the player has previously selected a language or use the default one.
-	local function getCharacterPreviouslySelectedLanguage()
-		if TRP3_Characters and TRP3_Characters[Globals.player_id] and TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] then
-			return TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED];
-		else
-			local _, defaultLanguageID = GetDefaultLanguage();
-			return defaultLanguageID;
-		end
-	end
-
-	---
-	-- Save the language used at a character level
-	-- @param languageID
-	--
-	local updateToolbarButton = TRP3_API.toolbar.updateToolbarButton;
-	local function saveCharacterLanguage(languageID)
-		assert(languageID, "No language ID given to saveCharacterLanguage(languageID)");
-		TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] = languageID;
-	end
-
-	local languagesIcon = {
-
-		-- Alliance
-		[35] = "Inv_Misc_Tournaments_banner_Draenei", -- Draenei
-		[2] = "Inv_Misc_Tournaments_banner_Nightelf", -- Dranassian
-		[6] = "Inv_Misc_Tournaments_banner_Dwarf", -- Dwarvish
-		[7] = "Inv_Misc_Tournaments_banner_Human",-- Common
-		[13] = "Inv_Misc_Tournaments_banner_Gnome",-- Gnomish
-
-		-- Horde
-		[1] = "Inv_Misc_Tournaments_banner_Orc", -- Orcish
-		[33] = "Inv_Misc_Tournaments_banner_Scourge", -- Forsaken
-		[3] = "Inv_Misc_Tournaments_banner_Tauren", -- Taurahe
-		[10] = "Inv_Misc_Tournaments_banner_Bloodelf", -- Thalassian
-		[14] = "Inv_Misc_Tournaments_banner_Troll", -- Zandali
-		[40] = "achievement_Goblinhead", -- Goblin
-
-		-- Pandaren (now neutral)
-		[42] = "Achievement_Guild_ClassyPanda",
-
-		-- Demon hunters
-		[8] = "artifactability_havocdemonhunter_anguishofthedeceiver",
-
-		-- Allied races
-		[181] = "Achievement_AlliedRace_Nightborne", -- Shalassian
-		
-		-- Funsies
-		[37] = "inv_misc_punchcards_blue", -- Gnome binary (Brewfest beer)
-		[38] = "inv_misc_punchcards_blue", -- Goblin binary (Brewfest beer)
-		[11] = "ability_warrior_dragonroar", -- Draconic (learned when opening the gates of AQ)
-		[180] = "ability_druid_improvedmoonkinform", -- Moonkin (seasonal event)
-		[12] = "shaman_talent_elementalblast", -- Kalimag (shaman?)
-		[179] = "inv_pet_babymurlocs_blue", -- Murloc (?)
-		[178] = "spell_priest_voidform", -- Shath'Yar (Shadow priests, Void Elves and Alliance Archbishops)
-		[9] = "achievement_dungeon_ulduarraid_titan_01", -- Titan
-		[36] = "icon_petfamily_undead", -- Zombie (in your head)
-		[168] = "inv_pet_sprite_darter_hatchling", -- Sprite (Faerie dragon)
-
-	}
-
-	---
-	-- Will set the language currently spoken by the player using a language ID
-	-- @param languageID
-	--
-	local function setLanguage(languageID)
-		Log.log("Setting language " .. languageID);
-		local language;
-		for i = 1, GetNumLanguages() do
-			local name, id = GetLanguageByIndex(i)
-			if name and id == languageID then
-				language = name;
-			end
-		end
-
-		if not language then
-			language, languageID = GetDefaultLanguage();
-			Log.log("Trying to set a language that is not known by this character, going back to default language: " .. language, Log.level.WARNING);
-		end
-
-		saveCharacterLanguage(languageID);
-
-		for i = 1, 9 do
-			if _G["ChatFrame"..i.."EditBox"] then
-				_G["ChatFrame"..i.."EditBox"].languageID = languageID;
-				_G["ChatFrame"..i.."EditBox"].language = language;
-			end
-		end
-	end
-
-	---
-	-- Callback called when the user has selected a language in the dropdown
-	-- We need to retreive the language ID using the index to thenset the language.
-	-- @param languageIndex
-	--
-	local function languageSelected(languageIndex)
-		local _, languageID = GetLanguageByIndex(languageIndex);
-		setLanguage(languageID);
-
-	end
 	
 	local languagesButton = {
 		id = "ww_trp3_languages",
@@ -146,32 +121,35 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			refreshTooltip(Uibutton);
 		end,
 		onUpdate = function(Uibutton, buttonStructure)
-			updateToolbarButton(Uibutton, buttonStructure);
+			TRP3_API.toolbar.updateToolbarButton(Uibutton, buttonStructure);
 		end,
 		onModelUpdate = function(buttonStructure)
-			local currentLanguageID = ChatFrame1EditBox.languageID;
-			local currentLanguage = ChatFrame1EditBox.language
-
-			if languagesIcon[currentLanguageID] then
-				buttonStructure.tooltip  = loc.TB_LANGUAGE .. ": " .. currentLanguage;
-				buttonStructure.tooltipSub  = strconcat(color("y"), loc.CM_CLICK, ": ", color("w"), loc.TB_LANGUAGES_TT);
-				buttonStructure.icon = languagesIcon[currentLanguageID];
-			else
-				buttonStructure.icon = "spell_holy_silence";
+			if buttonStructure.currentLanguageID ~= ChatFrame1EditBox.languageID then
+				buttonStructure.currentLanguageID = ChatFrame1EditBox.languageID
+				local currentLanguage = Languages.getCurrentLanguage()
+				buttonStructure.currentLanguageID = currentLanguage:GetID();
+				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
+				buttonStructure.tooltipSub = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_LANGUAGES_TT);
+				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or "spell_holy_silence";
 			end
 		end,
 		onClick = function(Uibutton, buttonStructure, button)
 			local dropdownItems = {};
 			tinsert(dropdownItems,{loc.TB_LANGUAGE, nil});
-			for i = 1, GetNumLanguages() do
-				local language, index = GetLanguageByIndex(i);
-				if index == ChatFrame1EditBox.languageID then
-					tinsert(dropdownItems,{"|Tinterface\\icons\\"..(languagesIcon[index] or "TEMP")..":15|t " .. TRP3_API.Ellyb.ColorManager.GREEN(language), nil});
+			for _, language in ipairs(Languages.getAvailableLanguages()) do
+				if language:IsActive() then
+					tinsert(dropdownItems, {
+						language:GetIcon():GenerateString(15) .. " " .. TRP3_API.Ellyb.ColorManager.GREEN(language:GetName()),
+						nil
+					})
 				else
-					tinsert(dropdownItems,{"|Tinterface\\icons\\"..(languagesIcon[index] or "TEMP")..":15|t "..language, i});
+					tinsert(dropdownItems,{
+						language:GetIcon():GenerateString(15) .. " " .. language:GetName(),
+						language:GetID()
+					})
 				end
 			end
-			displayDropDown(Uibutton, dropdownItems, languageSelected, 0, true);
+			displayDropDown(Uibutton, dropdownItems, Languages.setLanguageByID, 0, true);
 		end,
 		onLeave = function()
 			mainTooltip:Hide();
@@ -179,11 +157,38 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	};
 	TRP3_API.toolbar.toolbarAddButton(languagesButton);
 
+	local function checkCurrentLanguageAndRestoreSavedState()
+		local savedLanguage = Languages.getSavedLanguage()
+		if not savedLanguage then
+			return
+		end
+		if not savedLanguage:IsKnown() then
+			local defaultLanguage = Languages.getDefaultLanguage()
+			Languages.setLanguage(defaultLanguage)
+			TRP3_API.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(defaultLanguage:GetName(), savedLanguage:GetName()))
+		else
+			if Languages.getCurrentLanguage() ~= savedLanguage then
+				Languages.setLanguage(savedLanguage)
+			end
+		end
+	end
+
+	-- Listen to events related to language changes and check that we are still able to speak the saved language
+	TRP3_API.Events.registerCallback("LANGUAGE_LIST_CHANGED", checkCurrentLanguageAndRestoreSavedState)
+	TRP3_API.Events.registerCallback("NEUTRAL_FACTION_SELECT_RESULT", checkCurrentLanguageAndRestoreSavedState)
+
+	-- If workaround for language reset is enabled, try to restore saved language when loading screen ended
+	TRP3_API.Events.registerCallback("LOADING_SCREEN_DISABLED", function()
+		if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET) then
+			checkCurrentLanguageAndRestoreSavedState()
+		end
+	end)
+
+	-- If the option to remember last language used is enabled, try to restore saved language after entering world
 	if Configuration.getValue(TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED) then
+		TRP3_API.Events.registerCallback("PLAYER_ENTERING_WORLD", checkCurrentLanguageAndRestoreSavedState)
 		-- We have to wait a little for everything to be fully loaded before trying to restore previously selected language
-		C_Timer.After(1, function()
-			setLanguage(getCharacterPreviouslySelectedLanguage());
-		end)
+		C_Timer.After(1, checkCurrentLanguageAndRestoreSavedState)
 	end
 end);
 
@@ -193,8 +198,8 @@ tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	inherit = "TRP3_ConfigH1",
 	title = loc.CO_ADVANCED_LANGUAGES,
 });
+
 -- Remember last language used
--- NPC talks
 TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED = "chat_language_remember_last_used";
 TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED] = true;
 tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
@@ -202,4 +207,15 @@ tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 	title = loc.CO_ADVANCED_LANGUAGES_REMEMBER,
 	help = loc.CO_ADVANCED_LANGUAGES_REMEMBER_TT,
 	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.REMEMBER_LAST_LANGUAGE_USED,
+});
+
+-- Workaround for language resetting
+-- Remember last language used
+TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET = "chat_language_enabled_workaround_for_language_reset";
+TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET] = true;
+tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	inherit = "TRP3_ConfigCheck",
+	title = loc.CO_ADVANCED_LANGUAGE_WORKAROUND,
+	help = loc.CO_ADVANCED_LANGUAGE_WORKAROUND_TT,
+	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_WORKAROUND_FOR_LANGUAGE_RESET,
 });

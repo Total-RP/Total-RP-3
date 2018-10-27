@@ -100,9 +100,9 @@ end
 
 local function selectMusic(music)
 	if music then
-		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC, Utils.music.getTitle(music)));
+		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC_THEME, Utils.music.getTitle(music)));
 	else
-		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC, loc.REG_PLAYER_ABOUT_NOMUSIC));
+		TRP3_RegisterAbout_Edit_Music_Text:SetText(("%s: |cff00ff00%s"):format(loc.REG_PLAYER_ABOUT_MUSIC_THEME, loc.REG_PLAYER_ABOUT_NOMUSIC));
 	end
 end
 
@@ -479,11 +479,15 @@ local function refreshConsultDisplay(context)
 	local template = dataTab.TE or 1;
 	TRP3_RegisterAbout_AboutPanel.isMine = context.isPlayer;
 
+	TRP3_ProfileReportButton:Hide();
 	if not context.isPlayer then
 		if dataTab ~= Globals.empty then
 			dataTab.read = true;
 		end
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
+		if context.profile and context.profile.link then
+			TRP3_ProfileReportButton:Show();
+		end
 	end
 
 	assert(type(dataTab) == "table", "Error: Nil about data or not a table.");
@@ -851,7 +855,8 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetText(loc.CM_CANCEL);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetText(loc.CM_PLAY);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Stop:SetText(loc.CM_STOP);
-	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC);
+	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.REG_PLAYER_EDIT_MUSIC_THEME);
+	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC_THEME);
 
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p", GameFontNormal);
 	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1", GameFontNormalHuge3);

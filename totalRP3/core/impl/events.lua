@@ -102,6 +102,7 @@ function Events.unregisterCallback(handlerID)
 	return eventsDispatcher:UnregisterCallback(handlerID);
 end
 
+---@overload fun(event:string, handler:function)
 function Events.registerCallback(event, handler, handlerID)
 	assert(isType(event, "string", "event"));
 	assert(isType(handler, "function", "handler"));

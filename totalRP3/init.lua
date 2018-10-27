@@ -61,4 +61,5 @@ TRP3_API.Ellyb.SetDebugMode(false)
 _G.TRP3_API = TRP3_API;
 
 -- New public API, intended for external use
-_G.AddOn_TotalRP3 = {};
+---@type AddOn_TotalRP3
+AddOn_TotalRP3 = {};

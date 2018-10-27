@@ -162,7 +162,6 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_MISC_ADD = "Add an additional field",
 	REG_PLAYER_ABOUT = "About",
 	REG_PLAYER_ABOUTS = "About %s",
-	REG_PLAYER_ABOUT_MUSIC = "Character theme",
 	REG_PLAYER_ABOUT_NOMUSIC = "|cffff9900No theme",
 	REG_PLAYER_ABOUT_UNMUSIC = "|cffff9900Unknown theme",
 	REG_PLAYER_ABOUT_MUSIC_SELECT = "Select character theme",
@@ -615,8 +614,6 @@ Possible status:
 	CO_LOCATION_ACTIVATE_TT = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
 	CO_LOCATION_DISABLE_OOC = "Disable location when OOC",
 	CO_LOCATION_DISABLE_OOC_TT = "You will not respond to location requests from other players when you've set your RP status to Out Of Character.",
-	CO_LOCATION_DISABLE_PVP = "Disable location when flagged for PvP",
-	CO_LOCATION_DISABLE_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
@@ -1274,45 +1271,59 @@ Please keep in mind that changing those settings might alter your experience wit
 	CO_ADVANCED_LANGUAGES_REMEMBER = "Remember last language used",
 	CO_ADVANCED_LANGUAGES_REMEMBER_TT = "Total RP 3 will remember what language you were using before logging off and automatically select this language back on next login.",
 	CO_TOOLTIP_CURRENT_LINES = "Max \"Currently\" line breaks",
+	REG_PLAYERS = "Players",
+	CO_LOCATION_DISABLE_WAR_MODE = "Disable location when in War Mode",
+	CO_LOCATION_DISABLE_WAR_MODE_TT = "You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES = "Show players in different War Mode",
+	CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT = "Players who are currently in the zone but have a different War Mode status than you will be shown on the map, with a lower opacity and a special icon in the tooltip.",
+	REG_LOCATION_DIFFERENT_WAR_MODE = "Different War Mode",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST = "Keep broadcast channel last",
+	CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT = "This option will make sure that the broadcast channel is always the last channel in your channels list.",
+	REG_PLAYER_ABOUT_MUSIC_THEME = "Character music theme",
+	REG_PLAYER_EDIT_MUSIC_THEME = "Music theme",
+	LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT = "Current spoken language reverted to default %s because you no longer know the previously selected language %s.",
+	CO_ADVANCED_LANGUAGE_WORKAROUND = "Enable workaround against language reset",
+	CO_ADVANCED_LANGUAGE_WORKAROUND_TT = "Since patch 8.0.1 the game will reset the selected language to the default language for your faction during every loading screen. This workaround makes sure to restore the selected language after a loading screen.",
+
+	REG_REPORT_PLAYER_PROFILE = "Report profile to |cff449fe0Blizzard|r",
+	REG_REPORT_PLAYER_PROFILE_TT = [[You can report a profile that infringe on Blizzard's Terms of Service. This can include harassment, doxxing, hate speech, obscene content or other form of disruptive content.
+
+|cffff0000Please note that this option is NOT to report RP profiles of disputable quality or griefing. Abuses of this feature are punishable!]],
+	REG_REPORT_PLAYER_TEMPLATE = "This player is using the RP profile addon %s to share content against the Terms of Service.",
+	REG_REPORT_PLAYER_TEMPLATE_DATE = "The addon data was transferred through logged addon messages on %s.",
+	REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT = "This player was on a trial account.",
+	REG_REPORT_PLAYER_OPEN_URL = [[You can only report players directly from within the game if you can target them (use TRP3's target frame button).
+
+If you wish to report %s's profile and you cannot target them you will need to open a ticket with Blizzard's support using the link bellow.]],
 
 	---@language Markdown
-	WHATS_NEW_21 = [[
-# Changelog for version 1.4.5
+	WHATS_NEW_22 = [[
+# Changelog version 1.5.0
 
-This version focuses on bug fixes and improvements of Total RP 3's compatibility with other RP add-ons. Special thanks to Itarater, XRP's author, for his help on the add-on communication layer.
+## Re-implemented map scans feature
+
+You can now once again scan for Total RP 3 users on the world map.
+
+- Added support for War Mode. Players that are not in the same War Mode as you will not appear on the world map by default.
+- In the Location settings (Register settings tab) you can enable the option to show people who are in a different War Mode, they will appear greyed out and semi-transparent on the world map, and will be grouped separately when displayed in the tooltip.
+- You can opt in to not be visible to other players while you are in War Mode.
+- Map scans now differentiate between levels of a same zone (like Dalaran), and setting your home to a specific level of map will now correctly show on that level when users click on the home button on your profile.
+
+Please note: Only players with Total RP 3 version 1.5.0 and above will show up. Total RP 3: Extended's scans will be updated to working with this new system.
+
+## Profile reporting
+
+Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms of Services by opening a support ticket.
+
+- Following Blizzard's guidance, you can now report a player who have a profile that goes against the [Code of Conduct](https://battle.net/support/article/42673) via a new button on Total RP 3's target frame. A standard game report window will open pre-filled with information about the player you are reporting.
+- Since it is not technically possible to report a player you cannot target, we have added a button to the profile page when opening a profile that opens up a [link to a Blizzard support page on how to report add-on text](https://battle.net/support/help/product/wow/197/1501/solution).
 
 ## Added
 
-- Added support for cross-realm add-on communication via group channels. You can now see profiles, trade Total RP 3: Extended items, or even send Total RP chat links of campaigns, with players from a completely different server than yours when they are in your group (party, instance, raid, battleground, etc.).
-- The at-first-glance feature is now exposed to other RP add-ons via the Mary Sue Protocol. XRP and MyRolePlay, will now be able to read at-first-glances from Total RP 3 and also send them from their own implementation!
-- Class and eye colors are now read from other RP add-ons.
-
-## Fixed
-
-- Fixed an issue that would report Total RP 3 as the culprit of other add-ons errors and force error reporting.
-- The chat module will now once again respect the game's settings for displaying class color.
-- Clicking again on a dropdown menu button will now close the dropdown menu.
-- Fixed a bunch of issues when viewing profile of players using a different RP add-on, like an incorrect Out of character status or an incorrect unread flag.
-- Improved the formatting of descriptions sent to players using a different RP add-on. When using the template 3 for your description, the personality traits part of the description is now also sent in the description.
-- Removed invalid Total RP 3 text tags that would sometimes be outputted as is in the descriptions when sent to players using a different add-on.
-- Removing a motto, house or nickname field in your description will now correctly remove those fields from the data sent to other RP add-ons.
-- Fixed broadcasting Total RP 3 dice rolls to your party or raid.
-
-
-## Modified
-
-- The at-first-glance bar and the player name will now be aligned to the center of the target frame, instead of the left.
-- Updated libraries used inside the add-on to the latest version available for Battle for Azeroth.
+- Added a workaround against a current game bug that will always reset the language currently selected after a loading screen. You can disable this workaround in cases of issues in the advanced settings.
+- Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all others channels you have joined down in the list. You can disable this workaround in cases of issues in the advanced settings.
 
 ]],
-	---@language Markdown
-	WHATS_NEW_21_2 = [[
-# Changelog for version 1.4.6
-
-## Fixed
-
-- Fixed an issue introduced in version 1.4.5 that could prevent the add-on to load when using the template 3 for the About section of your profile.
-]]
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
