@@ -159,7 +159,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local function checkCurrentLanguageAndRestoreSavedState()
 		local savedLanguage = Languages.getSavedLanguage()
-		if not savedLanguage or not savedLanguage:IsKnown() then
+		if not savedLanguage then
+			return
+		end
+		if not savedLanguage:IsKnown() then
 			local defaultLanguage = Languages.getDefaultLanguage()
 			Languages.setLanguage(defaultLanguage)
 			TRP3_API.utils.message.displayMessage(loc.LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT:format(defaultLanguage:GetName(), savedLanguage:GetName()))
