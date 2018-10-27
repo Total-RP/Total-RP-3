@@ -1300,16 +1300,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	WHATS_NEW_22 = [[
 # Changelog version 1.5.0
 
-## Changes from beta 2 to beta 3
-
-- Fixed an issue with the workaround to restore the selected language after a loading screen when no languages had ever been saved before.
-- Fixed an issue causing the localized text for the map scans button to always use English instead of the current locale.
-
-## Changes from beta 1 to beta 2
-
-- Fixed an incompatibility issue with the Details! add-on introduced with the workaround for the broadcast channel position.
-
-
 ## Re-implemented map scans feature
 
 You can now once again scan for Total RP 3 users on the world map.
