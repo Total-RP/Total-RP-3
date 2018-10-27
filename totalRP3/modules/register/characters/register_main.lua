@@ -743,5 +743,7 @@ function TRP3_API.register.init()
 		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", loc.REG_REPORT_PLAYER_OPEN_URL:format(characterID));
 	end)
 
+	Ellyb.Tooltips.getTooltip(TRP3_ProfileReportButton):SetTitle(loc.REG_REPORT_PLAYER_PROFILE)
+
 	createTabBar();
 end
