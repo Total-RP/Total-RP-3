@@ -21,6 +21,8 @@ Since patch 8.0.1 you are able to report profiles that violate Blizzard's Terms 
 
 ![The target frame report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_target_button.png)
 
+![Prefilled message when reporting a player](https://totalrp3.info/documentation/changelogs/1_5_0_report_window.PNG)
+
 - Since it is not technically possible to report a player you cannot target, we have added a button to the profile page when opening a profile that opens up a link to a Blizzard support page on how to report add-on text.
 
 ![The profile page report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_profile_button.PNG)
