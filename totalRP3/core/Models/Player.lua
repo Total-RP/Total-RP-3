@@ -135,9 +135,10 @@ function Player:IsCurrentUser()
 end
 
 function Player:IsInCharacter()
-	return self:GetInfo("player/character/RP") ~= 2
+	return self:GetInfo("character/RP") ~= 2
 end
 
+-- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
 function Player:GetInfo(path)
 	return TRP3_API.profile.getData(path, self:GetProfile())
 end
