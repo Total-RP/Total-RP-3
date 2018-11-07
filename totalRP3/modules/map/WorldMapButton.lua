@@ -140,9 +140,10 @@ end);
 
 WorldMapButton:SetScript("OnClick", function(self)
 	local structure = {};
+	---@param scan MapScanner
 	for scanID, scan in pairs(TRP3_API.MapScannersManager.getAllScans()) do
 		if scan:CanScan() then
-			insert(structure, {icon(scan.scanIcon, 20) .. " " .. (scan.scanOptionText or scanID), scanID});
+			insert(structure, { scan:GetActionString(), scanID });
 		end
 	end
 	if #structure == 0 then
