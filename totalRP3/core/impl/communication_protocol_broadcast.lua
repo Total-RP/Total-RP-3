@@ -232,6 +232,46 @@ local function onMessageReceived(...)
 	end
 end
 
+--- Makes sure the broadcast channel is hidden from the chat frame.
+--- Some add-ons are still sending chat messages instead of add-on message on the channel, so it's best for
+--- the user if we hide the channel so they never have to see add-on generated text messages.
+local function hideBroadcastChannelFromChatFrame()
+	local chatFrame = FCF_GetCurrentChatFrame();
+	if not chatFrame then return end -- In some instances we cannot get a chat frame (Details!?!?)
+
+	local broadcastChannelName = config_BroadcastChannel();
+	for index, value in pairs(chatFrame.channelList) do
+		if strupper(broadcastChannelName) == strupper(value) then
+			chatFrame.channelList[index] = nil;
+			chatFrame.zoneChannelList[index] = nil;
+		end
+	end
+
+	RemoveChatWindowChannel(chatFrame:GetID(), broadcastChannelName);
+end
+
+--- Makes sure the broadcast channel is always at the bottom of list.
+--- This is so the user always have the channels they actually use first and that the broadcast channel
+--- is never taking the General or Trade chat position.
+local function moveBroadcastChannelToTheBottomOfTheList()
+	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) then
+		local broadcastChannelName = config_BroadcastChannel();
+
+		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
+			local _, channelName = GetChannelName(channelIndex);
+			if channelName == broadcastChannelName then
+				SwapChatChannelByLocalID(channelIndex, channelIndex + 1);
+			end
+		end
+
+		hideBroadcastChannelFromChatFrame()
+	end
+end
+
+Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init and helloWorld
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -249,13 +289,14 @@ Comm.broadcast.init = function()
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
 
 			local firstTime = true;
-			ticker = C_Timer.NewTicker(5, function(self)
+			ticker = C_Timer.NewTicker(1, function(self)
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
 					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
 					JoinChannelByName(string.lower(config_BroadcastChannel()));
 				else
 					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
+					moveBroadcastChannelToTheBottomOfTheList();
 					if not helloWorlded then
 						broadcast(HELLO_CMD, Globals.version, Globals.version_display);
 					end

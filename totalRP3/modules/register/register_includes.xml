@@ -30,6 +30,8 @@
 	<Script file="characters\register_characteristics.lua" />
 	<Script file="characters\register_about.lua" />
 	<Script file="characters\register_misc.lua" />
+
+	<Include file="characters\PlayerMapScan\PlayerMapScan.xml" />
 	
 	<Include file="companions\register_ui_companions_main.xml" />
 	
@@ -64,5 +66,6 @@
 	<Script file="main\register_cursor.lua" />
 
 	<Include file="filter\register_mature_filter.xml" />
+	<Script file="characters\ReportProfileButton.lua" />
 
 </Ui>
