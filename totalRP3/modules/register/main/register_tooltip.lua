@@ -56,6 +56,7 @@ local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
 local IsAltKeyDown = IsAltKeyDown;
+local ColorManager = TRP3_API.Ellyb.ColorManager;
 
 -- ICONS
 local AFK_ICON = "|TInterface\\FriendsFrame\\StatusIcon-Away:15:15|t";
@@ -99,6 +100,7 @@ local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
 local CONFIG_PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
+local CONFIG_CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
 
 local ANCHOR_TAB;
 
@@ -108,6 +110,8 @@ local registerTooltipModuleIsEnabled = false;
 local currentDate = date("*t");
 local seriousDay = currentDate.month == 4 and currentDate.day == 1
 local Rainbowify = TRP3_API.utils.Rainbowify;
+
+local isTrial = IsTrialAccount();
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -206,6 +210,10 @@ local function fadeOutEnabled()
 	return not getConfigValue(CONFIG_NO_FADE_OUT);
 end
 
+local function getCurrentMaxLines()
+	return getConfigValue(CONFIG_CHARACT_CURRENT_LINES);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTIL METHOD
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -237,6 +245,32 @@ local function placeTooltipOnCursor(tooltip)
 	local effScale, x, y = ui_CharacterTT:GetEffectiveScale(), GetCursorPosition();
 	ui_CharacterTT:ClearAllPoints();
 	ui_CharacterTT:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
+end
+
+local function limitText(input, maxCharLength, maxLinesCount)
+	-- Loop through the string finding newline characters until we either
+	-- reach the end of the string or find enough to break our max line limit.
+	local finish, matches = 0, 0;
+	repeat
+		finish = string.find(input, "\n", finish + 1, true);
+		matches = matches + 1;
+	until not finish or matches >= maxLinesCount + 1
+
+	-- If we exited because we reached the end of the string then there's
+	-- not too many lines, so we just need to limit the total length of the
+	-- text. This would likely be the most common case.
+	if not finish then
+		if #input <= maxCharLength then
+			return input;
+		end
+
+		return string.sub(input, 1, maxCharLength) .. "…";
+	end
+
+	-- Otherwise extract the substring up to the character preceeding the
+	-- last matched newline or to the maximum allowable length of the text,
+	-- whichever is shorter.
+	return string.sub(input, 1, math.min(finish - 1, maxCharLength)) .. "…";
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -435,16 +469,12 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	if seriousDay and getConfigValue("AF_STUFF") then
-		completeName = Rainbowify(completeName);
-	else
-		completeName = color:WrapTextInColorCode(completeName);
-	end
+	completeName = color:WrapTextInColorCode(completeName);
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
 		if getConfigValue(CONFIG_PREFER_OOC_ICON) == "TEXT" then
-			completeName = strconcat(TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
+			completeName = strconcat(ColorManager.RED("[" .. loc.CM_OOC .. "] "), completeName);
 		else
 			rightIcons = strconcat(rightIcons, OOC_ICON);
 		end
@@ -560,9 +590,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CU);
-		if text:len() > getCurrentMaxSize() then
-			text = text:sub(1, getCurrentMaxSize()) .. "…";
-		end
+		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
 		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
 	end
 
@@ -576,9 +604,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CO);
-		if text:len() > getCurrentMaxSize() then
-			text = text:sub(1, getCurrentMaxSize()) .. "…";
-		end
+		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
 		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
 	end
 
@@ -613,11 +639,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			if seriousDay and getConfigValue("AF_STUFF") then
-				name = Rainbowify(name);
-			else
-				name = color:WrapTextInColorCode(name);
-			end
+			name = color:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -637,12 +659,15 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
+			if isTrial then
+				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end
 			if character.isTrial then
-				clientText = strconcat(clientText, " ", Utils.str.color("o"), "(", loc.REG_TRIAL_ACCOUNT, ")");
+				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end
 		if notifText:len() > 0 or clientText:len() > 0 then
@@ -1178,6 +1203,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PETS_OWNER, true);
 	registerConfigKey(CONFIG_PETS_NOTIF, true);
 	registerConfigKey(CONFIG_PETS_INFO, true);
+	registerConfigKey(CONFIG_CHARACT_CURRENT_LINES, 4);
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1192,7 +1218,7 @@ local function onModuleInit()
 	};
 
 	local OOC_INDICATOR_TYPES = {
-		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
+		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, "ICON"}
 	}
 
@@ -1373,6 +1399,15 @@ local function onModuleInit()
 				min = 40,
 				max = 200,
 				step = 10,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc.CO_TOOLTIP_CURRENT_LINES,
+				configKey = CONFIG_CHARACT_CURRENT_LINES,
+				min = 0,
+				max = 20,
+				step = 1,
 				integer = true,
 			},
 			{

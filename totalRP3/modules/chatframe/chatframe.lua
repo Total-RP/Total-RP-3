@@ -36,7 +36,6 @@ local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
-local ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter = ChatFrame_RemoveMessageEventFilter, ChatFrame_AddMessageEventFilter;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local handleCharacterMessage, hooking;
 local tContains = tContains;
@@ -640,14 +639,6 @@ local function getChatTypeForEvent(event, channelNumber)
 	return chatType
 end
 
---- Check if class color is enabled for names for a specified chat type
----	@param chatType string
----	@return boolean
-local function classColorNameIsEnableOnChatType(chatType)
-	local info = ChatTypeInfo[chatType];
-	return info and info.colorNameByClass;
-end
-
 -- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
 local defaultGetColoredNameFunction = GetColoredName;
 
@@ -710,8 +701,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 		characterName = customizedName;
 	end
 
-
-	if classColorNameIsEnableOnChatType(getChatTypeForEvent(event, channelNumber)) then
+	if GetCVar("chatClassColorOverride") ~= "1" then
 		characterColor = GetClassColorByGUID(GUID);
 	end
 

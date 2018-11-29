@@ -118,11 +118,11 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
 
 	if not dropDownFrame then
-		dropDownFrame = CreateFrame("Frame", DROPDOWN_FRAME, UIParent, "MSA_DropDownMenuTemplate");
+		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
 	end
-
-	if _G["DropDownList1"]:IsVisible() then
-		CloseDropDownMenus();
+	
+	if _G["MSA_DropDownList1"]:IsVisible() then
+		MSA_HideDropDownMenu(1);
 		return;
 	end
 
@@ -574,10 +574,18 @@ end
 -- Icon utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+---@param icon string|EllybTexture
 function TRP3_API.ui.frame.setupIconButton(self, icon)
 	assert(self, "Frame is nil");
 	assert(self.Icon or (self:GetName() and _G[self:GetName() .. "Icon"]), "Frame must have a Icon");
-	(self.Icon or _G[self:GetName() .. "Icon"]):SetTexture("Interface\\ICONS\\" .. icon);
+
+	---@type Texture
+	local iconWidget = (self.Icon or _G[self:GetName() .. "Icon"]);
+	if type(icon) == "table" and icon.Apply then
+		icon:Apply(iconWidget);
+	else
+		iconWidget:SetTexture("Interface\\ICONS\\" .. icon);
+	end
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -990,6 +998,10 @@ local function playAnimation(animationGroup, callback)
 	end
 end
 TRP3_API.ui.misc.playAnimation = playAnimation;
+
+function TRP3_API.ui.misc.shouldPlayUIAnimation()
+	return getConfigValue and getConfigValue(CONFIG_UI_ANIMATIONS);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Hovered frames

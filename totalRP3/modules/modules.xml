@@ -119,7 +119,11 @@
 
 	<Include file="dashboard\dashboard.xml"/>
 
+	<Include file="map\map.xml"/>
+
 	<Include file="register\register_includes.xml"/>
+
+	<Include file="Languages\Languages.xml"/>
 
 	<Include file="chatframe\chatframe.xml"/>
 
@@ -129,7 +133,6 @@
 
 	<Include file="importer\importer.xml"/>
 
-	<Include file="map\map.xml"/>
 
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
 

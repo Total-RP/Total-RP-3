@@ -731,17 +731,10 @@ local function onStart()
 		local parentScale = UIParent:GetEffectiveScale();
 		ui_GlanceBar:SetParent(parentFrame);
 		ui_GlanceBar:ClearAllPoints();
-		ui_GlanceBar:SetPoint("BOTTOMLEFT", parentFrame, "BOTTOMLEFT", getConfigValue(CONFIG_GLANCE_ANCHOR_X) / parentScale, getConfigValue(CONFIG_GLANCE_ANCHOR_Y) / parentScale);
+		ui_GlanceBar:SetPoint("BOTTOM", parentFrame, "BOTTOM", getConfigValue(CONFIG_GLANCE_ANCHOR_X) / parentScale, getConfigValue(CONFIG_GLANCE_ANCHOR_Y) / parentScale);
 	end
 
-	local function resetPosition()
-		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
-		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
-		replaceBar();
-	end
-
-	-- Function called when the minimap icon is dragged
+	-- Function called when the glance bar is dragged
 	local function glanceBar_DraggingFrame_OnUpdate(self)
 		if not getConfigValue(CONFIG_GLANCE_LOCK) and self.isDraging then
 			local parentFrame = getParentFrame();
@@ -761,7 +754,7 @@ local function onStart()
 	end
 
 	registerConfigKey(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 24);
+	registerConfigKey(CONFIG_GLANCE_ANCHOR_X, 0);
 	registerConfigKey(CONFIG_GLANCE_ANCHOR_Y, -14);
 	registerConfigKey(CONFIG_GLANCE_LOCK, true);
 	registerConfigKey(CONFIG_GLANCE_TT_ANCHOR, "LEFT");
@@ -772,8 +765,9 @@ local function onStart()
 
 	function TRP3_API.register.resetGlanceBar()
 		setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
+		setConfigValue(CONFIG_GLANCE_ANCHOR_X, 0);
 		setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
+		replaceBar();
 	end
 
 	-- Config must be built on WORKFLOW_ON_LOADED or else the TargetFrame module could be not yet loaded.
@@ -798,7 +792,7 @@ local function onStart()
 			title = loc.CO_MINIMAP_BUTTON_RESET,
 			help = loc.CO_GLANCE_RESET_TT,
 			text = loc.CO_MINIMAP_BUTTON_RESET_BUTTON,
-			callback = resetPosition,
+			callback = TRP3_API.register.resetGlanceBar,
 		});
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigButton",
@@ -812,20 +806,6 @@ local function onStart()
 				replaceBar();
 			end,
 		});
-		if TRP3_API.target then
-			tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
-				inherit = "TRP3_ConfigButton",
-				title = loc.CO_GLANCE_PRESET_TRP3,
-				text = loc.CO_GLANCE_PRESET_TRP2_BUTTON,
-				help = loc.CO_GLANCE_PRESET_TRP3_HELP,
-				callback = function()
-					setConfigValue(CONFIG_GLANCE_PARENT, "TRP3_TargetFrame");
-					setConfigValue(CONFIG_GLANCE_ANCHOR_X, 24);
-					setConfigValue(CONFIG_GLANCE_ANCHOR_Y, -14);
-					replaceBar();
-				end,
-			});
-		end
 		tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 			inherit = "TRP3_ConfigDropDown",
 			widgetName = "TRP3_ConfigurationTooltip_GlanceTT_Anchor",

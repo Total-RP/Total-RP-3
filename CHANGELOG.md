@@ -1,64 +1,33 @@
-# Changelog for version 1.4.3
+# Changelog version 1.5.0
 
-## Fixed
+## Re-implemented map scans feature
 
-- Fixed an issue brought by yesterday's hotfixes that would prevent Battle.net communications from working.
-- Fixed an issue where un-selecting profiles in the directory would not actually deselect them, and improved consistency when purging profiles while having some profiles already selected - [Issue #160](https://github.com/Ellypse/Total-RP-3/issues/160)
-- Fixed an issue introduced with the 8.0.1 pre-patch preventing mount profiles from being displayed properly in the tooltips and on the target frame - [Issue #164](https://github.com/Ellypse/Total-RP-3/issues/164)
-- Fixed a layout in the profiles UI that would prevent the Additional information parts from being rendered properly - [Issue #162](https://github.com/Ellypse/Total-RP-3/issues/162)
-- Fixed an issue that would render the chat links tooltip lines in a random order, instead of the correct one.
-- Fixed an issue that would render some profile informations (Additional information, Personality traits) in a random order, instead of the correct one.
+You can now once again scan for Total RP 3 users on the world map.
 
+![Location of players in a different War Mode](https://totalrp3.info/documentation/changelogs/1_5_0_location_war_mode.PNG)
 
-# Changelog for version 1.4.2
+- Added support for War Mode. Players that are not in the same War Mode as you will not appear on the world map by default.
+- In the Location settings (Register settings tab) you can enable the option to show people who are in a different War Mode, they will appear greyed out and semi-transparent on the world map, and will be grouped separately when displayed in the tooltip.
+- You can opt in to not be visible to other players while you are in War Mode.
+- Map scans now differentiate between levels of a same zone (like Dalaran), and setting your home to a specific level of map will now correctly show on that level when users click on the home button on your profile.
 
-## Fixed
+Please note: Only players with Total RP 3 version 1.5.0 and above will show up. Total RP 3: Extended's scans will be updated to work with this new system.
 
-- Fixed another rare Lua error that could randomly happen on login (with the `getPlayerCompleteName()` function) - [Issue #159](https://github.com/Ellypse/Total-RP-3/issues/159)
+## Profile reporting
 
-# Changelog for version 1.4.1
+Since patch 8.0.1 you are able to report profiles that violate Blizzard's Terms of Service by opening a support ticket.
 
-Fixed a rare Lua error that could randomly happen on login.
+- Following Blizzard's guidance, you can now report a player who has a profile that goes against the Code of Conduct via Total RP 3's target frame. A standard game report window will open pre-filled with information about the player you are reporting.
 
-# Changelog for version 1.4
+![The target frame report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_target_button.png)
 
-**This version requires Battle for Azeroth, patch 8.0.1.**
+![Prefilled message when reporting a player](https://totalrp3.info/documentation/changelogs/1_5_0_report_window.PNG)
 
-## Add-on communications improvement
- 
- Total RP 3 implements the next version of the Mary Sue Protocol. This improved version bring the following improvements:
- 
-- **Profiles are now logged on Blizzard's servers** when sent to other players. This enables Blizzard to view the content of RP profiles in cases of abuse, such as harassment or doxxing. **This means you should now treat the contents of your profile as you would public chat in /say, for example.** (_Goldshire_)
-- **Cross server and cross faction support with Battle.net friends:** the add-on can now use Battle.net to transfer data between two Battle.net friends, even if they are from a server that is not connected to yours or if they are from the opposite faction.
-- **Improved performance:** thanks to looser limitations and newer compression algorithms, all data transfer should be faster (sometimes up to 8 times faster for big Extended campaigns).
- 
- **_It was not possible to make this newer protocol backward compatible with older versions (which will not work with patch 8.0 anyway) and cross add-on communications will only work between people using this newer version of the protocol._**
+- Since it is not technically possible to report a player you cannot target, we have added a button to the profile page when opening a profile that opens up a link to a Blizzard support page on how to report add-on text.
 
-## New logos
-
-![](http://totalrp3.info/documentation/TRP3_Logo_small.png)  
-Total RP 3 has a new, original logo, to replace the modified game logo (which we obviously did not own). It was commissioned to [EbonFeathers@Tumblr](https://ebonfeathers.tumblr.com/). Using the theme of classic D&D, this logo showcases that role-playing is all about picking the role _you_ want to play.
-
-
-A new minimap icon also replaces the older one and showcases a classic D&D die.  
-![](https://www.dropbox.com/s/ri35tugtkj0g2c7/trp_icon.png?raw=1)
+![The profile page report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_profile_button.PNG)
 
 ## Added
 
-- Added a new settings category called Advanced. Changing the settings on this page may break your experience of the add-on, so a warning message will be displayed to warn you when you modify something, and a reset button will allow you to reset all advanced settings to their default values. Amongst these new advanced settings you can find the settings for the broadcast channel, NPC talk prefix, disable the option to remember the last language used between session, and more.
-- Resources added to the browsers: 369 musics, 1698 icons and 178 images from the Battle for Azeroth expansion.
-
-## Modified
-
-- You can no longer set your residence marker inside an instanced zone.
-- Fixed several issues related to patch 8.0.1.
-
-## Fixed
-
-- Added support for other add-ons through the Mary Sue Protocol when using `/trp3 open [playerName]` command.
-
-## Removed
-
-- Map features have been temporarily disabled while we keep working on fixing them for Battle for Azeroth. The entire world map UI has been re-implemented by Blizzard and it requires more or less a complete rewrite of our map code.
-- We have disabled the button to show the residence location of players from the profile page while we are re-implementing the map features for patch 8.0.
-- The system to upvote or downvote profiles have been removed. The system was confusing to new players and was incorrectly used by groups of people to downvote targeted people.
+- Added a workaround against a current game bug that will always reset the language currently selected after a loading screen. You can disable this workaround in case of issues in the advanced settings.
+- Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all other channels you have joined down in the list. You can disable this workaround in case of issues in the advanced settings.

@@ -114,8 +114,13 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
-			uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
+				uiButton:SetNormalTexture(buttonStructure.icon:GetFileID())
+				uiButton:SetPushedTexture(buttonStructure.icon:GetFileID());
+			else
+				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
+				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
+			end
 			uiButton:GetPushedTexture():SetDesaturated(1);
 			uiButton:SetPoint("TOPLEFT", x, -12);
 			uiButton:SetWidth(buttonSize);
@@ -144,7 +149,16 @@ local function onStart()
 			x = x + buttonSize + 2;
 		end
 
+		local oldWidth = ui_TargetFrame:GetWidth();
 		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
+		-- Updating anchors so the toolbar expands from the center
+		local anchor, _, _, tfX, tfY = ui_TargetFrame:GetPoint();
+		if anchor == "LEFT" then
+			tfX = tfX - (ui_TargetFrame:GetWidth() - oldWidth) / 2;
+		elseif anchor == "RIGHT" then
+			tfX = tfX + (ui_TargetFrame:GetWidth() - oldWidth) / 2;
+		end
+		ui_TargetFrame:SetPoint(anchor, tfX, tfY);
 		ui_TargetFrame:SetHeight(buttonSize + 23);
 	end
 
@@ -192,7 +206,8 @@ local function onStart()
 			end
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
-			local info = getCompanionInfo(owner, companionID, currentTargetID).data or EMPTY;
+			local companionInfo = getCompanionInfo(owner, companionID, currentTargetID);
+			local info = companionInfo and companionInfo.data or EMPTY;
 			setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
 		elseif currentTargetType == TYPE_NPC then
 			setupFieldSet(ui_TargetFrame, UnitName("target"), TARGET_NAME_WIDTH);
@@ -275,7 +290,8 @@ local function onStart()
 		setConfigValue(CONFIG_TARGET_POS_Y, y);
 	end);
 
-	ui_TargetFrame.caption:SetPoint("TOPLEFT", 16, 15);
+	ui_TargetFrame.caption:ClearAllPoints();
+	ui_TargetFrame.caption:SetPoint("TOP", 0, 15);
 	ui_TargetFrame.caption:EnableMouse(true);
 	ui_TargetFrame.caption:RegisterForDrag("LeftButton");
 	ui_TargetFrame.caption:SetScript("OnDragStart", function(self)
@@ -373,6 +389,7 @@ local function onStart()
 	companionHasProfile = TRP3_API.companions.register.companionHasProfile;
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
+	Utils.event.registerHandler("PLAYER_MOUNT_DISPLAY_CHANGED", onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_ABOUT_READ, onTargetChanged);
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
 		if (not unitID or (currentTargetID == unitID)) and (not dataType or dataType == "characteristics" or dataType == "about") then

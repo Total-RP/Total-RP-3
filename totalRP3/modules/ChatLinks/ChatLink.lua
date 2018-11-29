@@ -23,6 +23,9 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
+---@type AddOn_TotalRP3
+local AddOn_TotalRP3 = AddOn_TotalRP3;
+
 local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 
@@ -106,7 +109,7 @@ end
 function ChatLink:GetContentSize()
 	if not _private[self].contentSize then
 		-- We save the content size so we only have to get it once, instead of serializing every time
-		_private[self].contentSize = #LibDeflate:CompressDeflate(libSerializer:Serialize(self:GetData()));
+		_private[self].contentSize = AddOn_TotalRP3.Communications.estimateStructureSize(self:GetData(), true);
 	end
 	return _private[self].contentSize;
 end

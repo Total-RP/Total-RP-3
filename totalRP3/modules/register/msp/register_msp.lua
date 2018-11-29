@@ -5,6 +5,7 @@
 ---	---------------------------------------------------------------------------
 ---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 --- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright / © 2018 Justin Snelgrove
 ---
 ---	Licensed under the Apache License, Version 2.0 (the "License");
 ---	you may not use this file except in compliance with the License.
@@ -24,15 +25,13 @@ local function onStart()
 	local loc = TRP3_API.loc;
 
 	-- Check for already loaded MSP addon
-	if _G.msp_RPAddOn then
-		local addonName = _G.msp_RPAddOn or "Unknown MSP addon";
-		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(addonName));
+	if msp_RPAddOn then
+		TRP3_API.popup.showAlertPopup(loc.REG_MSP_ALERT:format(msp_RPAddOn));
 		-- Provoke error to cancel module activation
-		error(("Conflict with another MSP addon: %s"):format(addonName));
+		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
 	local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
-	local _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time = _G, error, tinsert, assert, setmetatable, type, pairs, wipe, GetTime, time;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local tsize = Utils.table.size;
 	local log = Utils.log.log;
@@ -42,22 +41,11 @@ local function onStart()
 	local onInformationReceived;
 	local CONFIG_T3_ONLY = "msp_t3";
 
-	local msp = _G.msp;
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- LibMSP4TRP3
-	-- This is a huge modification of Etarna's LibMSP
+	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	msp.msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'RC', 'IC', 'CO'})
-
-	-- Hook MSP's msp_onevent to check if the player is ignored before accepting incoming messages
-	local oldMspOnEvent = msp_onevent;
-	function msp_onevent(this, event, prefix, body, dist, sender)
-		if not isIgnored(sender) then
-			oldMspOnEvent(this, event, prefix, body, dist, sender)
-		end
-	end
+	msp_RPAddOn = "Total RP 3";
+	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO'});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -68,11 +56,11 @@ local function onStart()
 		msp.my['CU'] = character.CU;
 		msp.my['CO'] = character.CO;
 		if character.XP == 1 then
-			msp.my['FR'] = "Beginner roleplayer";
+			msp.my['FR'] = "4";
 		elseif character.XP == 2 then
-			msp.my['FR'] = "Experienced roleplayer";
+			msp.my['FR'] = loc.DB_STATUS_RP_EXP;
 		else
-			msp.my['FR'] = "Volunteer roleplayer";
+			msp.my['FR'] = loc.DB_STATUS_RP_VOLUNTEER;
 		end
 		if character.RP == 1 then
 			msp.my['FC'] = "2";
@@ -83,6 +71,7 @@ local function onStart()
 
 	local function removeTextTags(text)
 		if text then
+			text = Utils.str.convertTextTags(text);
 			text = text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
 			return text:gsub("%{.-%}", "");
 		end
@@ -92,20 +81,22 @@ local function onStart()
 		local dataTab = get("player/about");
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
-		
+
 		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
-			msp.my['HI'] = dataTab.T3.HI.TX;
-			msp.my['DE'] = dataTab.T3.PH.TX;
+			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
+			local PH = removeTextTags(dataTab.T3.PH.TX) or "";
+			local PS = removeTextTags(dataTab.T3.PS.TX) or "";
+			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
 		elseif dataTab.TE == 1 then
-			local text = Utils.str.convertTextTags(dataTab.T1.TX);
-			msp.my['DE'] = removeTextTags(text);
+			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
-			local text;
-			for _, data in pairs(dataTab.T2) do
-				if not text then text = "" end
-				text = text .. (data.TX or "") .. "\n\n";
+			local t = {};
+			for i, data in ipairs(dataTab.T2) do
+				if data.TX then
+					t[#t + 1] = removeTextTags(data.TX);
+				end
 			end
-			msp.my['DE'] = text;
+			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
 	end
 
@@ -136,6 +127,10 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
+		-- Clear fields that may or may not exist in the updated profile.
+		msp.my['MO'] = nil;
+		msp.my['NH'] = nil;
+		msp.my['NI'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
 				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO then
@@ -149,9 +144,35 @@ local function onStart()
 		end
 	end
 
+	local function updateMiscData()
+		local dataTab = get("player/misc");
+		local peeks = {};
+		for i = 1, 5 do
+			local peek = dataTab.PE[tostring(i)];
+			if peek and peek.AC then
+				if #peeks > 0 then
+					peeks[#peeks + 1] = "\n\n---\n\n";
+				end
+				peeks[#peeks + 1] = "|TInterface\\Icons\\";
+				peeks[#peeks + 1] = peek.IC;
+				peeks[#peeks + 1] = ":32:32|t\n";
+				if peek.TI then
+					peeks[#peeks + 1] = "#";
+					peeks[#peeks + 1] = peek.TI;
+					peeks[#peeks + 1] = "\n\n";
+				end
+				if peek.TX then
+					peeks[#peeks + 1] = peek.TX;
+				end
+			end
+		end
+		msp.my['PE'] = table.concat(peeks);
+	end
+
 	local function onProfileChanged()
 		updateCharacteristicsData();
 		updateAboutData();
+		updateMiscData();
 		msp:Update();
 	end
 
@@ -174,30 +195,40 @@ local function onStart()
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
-	local strtrim, emptyToNil, unitIDToInfo = strtrim, Utils.str.emptyToNil, Utils.str.unitIDToInfo;
+	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
+
+	local SUPPORTED_FIELDS = {
+		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
+		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
+		"HI",
+	};
 
 	local CHARACTERISTICS_FIELDS = {
 		NT = "FT",
 		RA = "RA",
 		RC = "CL",
 		AG = "AG",
-		AE = "AE",
+		AE = "EC",
 		AH = "HE",
 		AW = "WE",
 		HH = "RE",
 		HB = "BP",
-		NT = "FT",
 		NA = "FN",
+		PX = "TI",
 		IC = "IC",
 	}
 
 	local CHARACTER_FIELDS = {
-		FR = true, FC = true, CU = true, VA = true, CO = true
+		FR = true, FC = true, CU = true, VA = true, CO = true,
+	}
+
+	local MISC_FIELDS = {
+		PE = "PE",
 	}
 
 	local ABOUT_FIELDS = {
 		HI = "HI",
-		DE = "PH"
+		DE = "PH",
 	}
 
 	local function getProfileForSender(senderID)
@@ -223,9 +254,21 @@ local function onStart()
 		return profile, character;
 	end
 
-	tinsert( msp.callback.received, function (senderID)
+	local function parsePeekString(str)
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or "TEMP";
+		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
+		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
+		return {
+			AC = true,
+			IC = icon,
+			TI = title,
+			TX = text,
+		};
+	end
+
+	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
-		if data and not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
+		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
 			local profile, character = getProfileForSender(senderID);
 			if not profile.characteristics then
 				profile.characteristics = {};
@@ -240,77 +283,126 @@ local function onStart()
 				profile.mspver = {};
 			end
 
-			-- And only after all these checks, store data !
-			local updatedCharacteristics, updatedAbout, updatedCharacter = false, false, false;
-			for field, value in pairs(data) do
-				-- Save version
-				profile.mspver[field] = msp.char[senderID].ver[field];
+			local color = false;
+			for i, field in ipairs(SUPPORTED_FIELDS) do
+				if profile.mspver[field] ~= msp.char[senderID].ver[field]
+				or msp.ttAll[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
+				then
+					-- Save version
+					profile.mspver[field] = msp.char[senderID].ver[field];
 
-				-- Save fields
-				if CHARACTERISTICS_FIELDS[field] then
-					updatedCharacteristics = true;
-					-- NA color escaping
-					if field == "NA" and value then
-						local color;
-						value:gsub("|c%x%x(%x%x%x%x%x%x)", function(arg1)
-							if not color then color = arg1 end
-							return "";
-						end);
-						value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
-						profile.characteristics["CH"] = color;
-					end
-					-- We do not want to trim the class field
-					-- Some users are using a space to indicate they don't have a class
-					if not CHARACTERISTICS_FIELDS[field] == "CL" then
-						value = strtrim(value);
-					end
-					profile.characteristics[CHARACTERISTICS_FIELDS[field]] = emptyToNil(value);
-					-- Hack for spaced name tolerated in MRP
-					if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
-						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
-					end
-				elseif ABOUT_FIELDS[field] then
-					updatedAbout = true;
-					local old;
-					if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
-						old = profile.about.T3[ABOUT_FIELDS[field]].TX;
-					end
-					profile.about.BK = 5;
-					profile.about.TE = 3;
-					if not profile.about.T3 then
-						profile.about.T3 = {};
-					end
-					if not profile.about.T3.HI then
-						profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
-					end
-					if not profile.about.T3.PH then
-						profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
-					end
-					value = emptyToNil(strtrim(value));
-					profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-					profile.about.read = value == old or value == nil or value:len() == 0;
-				elseif CHARACTER_FIELDS[field] then
-					updatedCharacter = true;
-					if field == "FC" then
-						profile.character.RP = 1;
-						if value == "1" then
-							profile.character.RP = 2;
+					-- Save fields
+					local value = data[field];
+					if value then
+						value = emptyToNil(strtrim(value));
+						-- Preserve empty class field.
+						if not value and CHARACTERISTICS_FIELDS[field] == "CL" then
+							value = " ";
 						end
-					elseif field == "CU" then
-						profile.character.CU = value;
-					elseif field == "CO" then
-						profile.character.CO = value;
-					elseif field == "FR" then
-						profile.character.XP = 2;
-						if value == "4" then
-							profile.character.XP = 1;
-						end
-					elseif field == "VA" and value:find("%/") then
-						character.client = value:sub(1, value:find("%/") - 1);
-						character.clientVersion = value:sub(value:find("%/") + 1);
 					end
-				elseif field == "MO" then
-					if strtrim(value):len() ~= 0 then
+					if CHARACTERISTICS_FIELDS[field] then
+						-- NA/RC color escaping
+						if (field == "NA" or field == "RC") and value then
+							if not color then
+								color = value:match("|c%x%x(%x%x%x%x%x%x)");
+							end
+							value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+						end
+						-- Remove title from full name, if present
+						if field == "NA" and value and data.PX then
+							if value:sub(1, #data.PX + 1) == (data.PX .. " ") then
+								value = value:sub(#data.PX + 2);
+							end
+						end
+						-- AE color escaping
+						if field == "AE" then
+							if value then
+								profile.characteristics["EH"] = value:match("|c%x%x(%x%x%x%x%x%x)");
+								value = value:gsub("|c%x%x%x%x%x%x%x%x", "");
+							else
+								profile.characteristics["EH"] = nil;
+							end
+						end
+						-- Internal MSP weight is kilograms without units.
+						if field == "AW" and value and tonumber(value) then
+							value = value .. " kg";
+						end
+						-- Internal MSP height is centimeters without units.
+						if field == "AH" and value and tonumber(value) then
+							value = value .. " cm";
+						end
+						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
+						-- Hack for spaced name tolerated in MRP
+						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+						end
+					elseif ABOUT_FIELDS[field] then
+						local old;
+						if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
+							old = profile.about.T3[ABOUT_FIELDS[field]].TX;
+						end
+						profile.about.BK = 5;
+						profile.about.TE = 3;
+						if not profile.about.T3 then
+							profile.about.T3 = {};
+						end
+						if not profile.about.T3.HI then
+							profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+						end
+						if not profile.about.T3.PH then
+							profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+						end
+						profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+						if profile.about.read ~= false then
+							profile.about.read = not value or value == old;
+						end
+					elseif CHARACTER_FIELDS[field] then
+						if field == "FC" then
+							if value == "1" then
+								profile.character.RP = 2;
+							else
+								profile.character.RP = 1;
+							end
+						elseif field == "CU" then
+							profile.character.CU = value;
+						elseif field == "CO" then
+							profile.character.CO = value;
+						elseif field == "FR" then
+							profile.character.XP = 2;
+							if value == "4" then
+								profile.character.XP = 1;
+							end
+						elseif field == "VA" then
+							if value and value:find("/", nil, true) then
+								character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
+							else
+								character.client = UNKNOWN;
+								character.clientVerion = "0";
+							end
+						end
+					elseif MISC_FIELDS[field] then
+						if field == "PE" and value then
+							local peeks = {};
+							local index = 1;
+							for i = 1, 5 do
+								local nextSplit, nextIndex = value:find("\n\n---\n\n", index, true);
+								if not nextSplit then
+									peeks[tostring(i)] = parsePeekString(value:sub(index, #value));
+									break;
+								else
+									peeks[tostring(i)] = parsePeekString(value:sub(index, nextSplit));
+								end
+								index = nextIndex;
+							end
+							value = peeks;
+						end
+						if value then
+							if not profile.misc then
+								profile.misc = {};
+							end
+							profile.misc[MISC_FIELDS[field]] = value;
+						end
+					elseif field == "MO" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -318,19 +410,26 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_MOTTO then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
-						profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
-						profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
-					end
-				elseif field == "NH" then
-					if strtrim(value):len() ~= 0 then
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
+							profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
+							profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
+						end
+					elseif field == "NH" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -338,19 +437,26 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_HOUSE then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
-						profile.characteristics.MI[index].VA = value;
-						profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
-					end
-				elseif field == "NI" then
-					if strtrim(value):len() ~= 0 then
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
+							profile.characteristics.MI[index].VA = value;
+							profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
+						end
+					elseif field == "NI" then
 						if not profile.characteristics.MI then
 							profile.characteristics.MI = {};
 						end
@@ -358,29 +464,38 @@ local function onStart()
 						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
 							if miscStructure.NA == loc.REG_PLAYER_MSP_NICK then
 								index = miscIndex;
+								break;
 							end
 						end
 						if not profile.characteristics.MI[index] then
-							profile.characteristics.MI[index] = {};
+							if value then
+								profile.characteristics.MI[index] = {};
+							end
 						else
-							wipe(profile.characteristics.MI[index]);
+							if value then
+								wipe(profile.characteristics.MI[index]);
+							else
+								tremove(profile.characteristics.MI, index);
+							end
 						end
-						profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
-						profile.characteristics.MI[index].VA = value;
-						profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
+						if value then
+							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
+							profile.characteristics.MI[index].VA = value;
+							profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
+						end
 					end
 				end
 			end
 
-			if updatedCharacter or updatedCharacteristics or updatedAbout then
-				Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
+			if color ~= false then
+				profile.characteristics["CH"] = color;
 			end
-		end
-	end)
 
-	local TT_TIMER_TAB, FIELDS_TIMER_TAB = {}, {};
-	local TT_DELAY, FIELDS_DELAY = 5, 20;
-	local REQUEST_TAB = {"HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
+			Events.fireEvent(Events.REGISTER_DATA_UPDATED, senderID, hasProfile(senderID), nil);
+		end
+	end);
+
+	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
 
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
@@ -388,32 +503,16 @@ local function onStart()
 		if targetID and targetMode == TYPE_CHARACTER
 		and targetID ~= Globals.player_id
 		and not isIgnored(targetID)
-		and (not data or not data.VA or data.VA:sub(1, 8) ~= "TotalRP3")
+		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			local request = {};
-			if not TT_TIMER_TAB[targetID] or time() - TT_TIMER_TAB[targetID] >= TT_DELAY then
-				tinsert(request, "TT");
-				TT_TIMER_TAB[targetID] = time();
-			end
-			if not FIELDS_TIMER_TAB[targetID] or time() - FIELDS_TIMER_TAB[targetID] >= FIELDS_DELAY then
-				for _, field in pairs(REQUEST_TAB) do
-					tinsert(request, field);
-				end
-				FIELDS_TIMER_TAB[targetID] = time();
-			end
-			if #request > 0 then
-				msp:Request(targetID, request);
-			end
+			msp:Request(targetID, REQUEST_TAB);
 		end
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
-		local request = {};
-		tinsert(request, "TT");
-		for _, field in pairs(REQUEST_TAB) do
-			tinsert(request, field);
-		end
-		msp:Request(name, request);
+		-- This function has never had the checks that the above does. Whether
+		-- it should or not should be revisited in the future.
+		msp:Request(name, REQUEST_TAB);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -421,11 +520,6 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
-	msp.my['GU'] = UnitGUID("player");
-	msp.my['GS'] = tostring( UnitSex("player") );
-	msp.my['GC'] = Globals.player_character.class;
-	msp.my['GR'] = Globals.player_character.race;
-	msp.my['GF'] = Globals.player_character.faction;
 
 	-- Init others vernum
 	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
@@ -437,7 +531,7 @@ local function onStart()
 			end
 		end
 	end
-	
+
 	-- Build configuration page
 	registerConfigKey(CONFIG_T3_ONLY, false);
 	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
@@ -454,27 +548,25 @@ local function onStart()
 
 	-- Initial update
 	updateCharacteristicsData();
-	onProfileChanged();
-	onCharacterChanged();
-
+	updateAboutData();
+	updateMiscData();
+	updateCharacterData();
 	msp:Update();
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
-		if unitID == Globals.player_id and (not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character") then
-			onProfileChanged();
-		end
-	end);
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
-		if unitID == Globals.player_id and (not dataType or dataType == "character") then
-			onCharacterChanged();
+		if unitID == Globals.player_id then
+			if not dataType or dataType == "about" or dataType == "characteristics" or dataType == "character" or dataType == "misc" then
+				onProfileChanged();
+			end
+			if not dataType or dataType == "character" then
+				onCharacterChanged();
+			end
 		end
 	end);
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
 		if mspOwners then
 			for _, ownerID in pairs(mspOwners) do
-				wipe(msp.char[ownerID].ver);
-				TT_TIMER_TAB[ownerID] = nil;
-				FIELDS_TIMER_TAB[ownerID] = nil;
+				msp.char[ownerID] = nil;
 			end
 		end
 	end);
