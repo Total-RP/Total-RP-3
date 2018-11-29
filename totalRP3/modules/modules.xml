@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,7 +18,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	 
+
 	 <Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
@@ -70,7 +70,7 @@
 			</Button>
 		</Frames>
 	</Frame>
-    
+
     <Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
         <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize val="24"/>
@@ -111,12 +111,12 @@
 		    </Frame>
 		</Frames>
     </Frame>
-	
+
 	<Script file="module_management.lua"/>
-	
+
 	<Script file="flyway\flyway.lua"/>
 	<Script file="flyway\flyway_patches.lua"/>
-	
+
 	<Include file="dashboard\dashboard.xml"/>
 
 	<Include file="map\map.xml"/>
@@ -124,6 +124,7 @@
 	<Include file="register\register_includes.xml"/>
 
 	<Include file="Languages\Languages.xml"/>
+
 	<Include file="chatframe\chatframe.xml"/>
 
 	<Include file="targetframe\target_frame.xml"/>
@@ -136,4 +137,6 @@
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
 
 	<Include file="ChatLinks\ChatLinks.xml"/>
+
+	<Include file="UnitPopups\UnitPopups.xml"/>
 </Ui>
