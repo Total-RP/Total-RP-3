@@ -260,7 +260,7 @@ local function moveBroadcastChannelToTheBottomOfTheList()
 		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
 			local _, channelName = GetChannelName(channelIndex);
 			if channelName == broadcastChannelName then
-				SwapChatChannelByLocalID(channelIndex, channelIndex + 1);
+				(SwapChatChannelByLocalID and SwapChatChannelByLocalID or C_ChatInfo.SwapChatChannelsByChannelIndex)(channelIndex, channelIndex + 1);
 			end
 		end
 
