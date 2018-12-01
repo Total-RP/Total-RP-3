@@ -1329,16 +1329,6 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- UNIT POPUPS
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	UP_MODULE_NAME = "Player Dropdown Integration",
-	UP_MODULE_DESCRIPTION = "Adds profile-related shortcuts to player dropdown menus.",
-
-	UP_GENERIC_MENU_TITLE = "Total RP 3",
-	UP_OPEN_PROFILE_BUTTON = "Open Profile",
-
 };
 
 -- Use Ellyb to generate the Localization system
