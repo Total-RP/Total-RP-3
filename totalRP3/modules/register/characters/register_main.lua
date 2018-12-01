@@ -248,6 +248,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound
 	profile.msp = isMSP;
+	profile.time = time()
 
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
