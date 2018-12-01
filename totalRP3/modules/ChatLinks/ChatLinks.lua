@@ -42,12 +42,6 @@ local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 local ORANGE = ColorManager.ORANGE;
 --endregion
 
---region Lua imports
-local IsControlKeyDown = IsControlKeyDown;
-local strsplit = strsplit;
-local strsub = strsub;
---endregion
-
 --region Wow Imports
 local assert = assert;
 local pairs = pairs;
