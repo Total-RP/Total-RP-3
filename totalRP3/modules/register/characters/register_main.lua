@@ -525,6 +525,12 @@ local function cleanupCharacters()
 			character.profileID = nil;
 		end
 	end
+	for unitID, character in pairs(characters) do
+		if not character.profileID and not TRP3_API.register.isIDIgnored(unitID) then
+			wipe(character)
+			characters[unitID] = nil
+		end
+	end
 end
 
 local function cleanupCompanions()
