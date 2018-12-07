@@ -1,3 +1,15 @@
+# Changelog version 1.5.1
+
+## Fixed
+
+- Fixed an issue that would make users still send their map location when the option to not send it when your roleplaying status is set to "Out of character" was enabled and they were indeed "Out of character".
+- Fixed an issue that would prevent the `/trp3 roll` to work properly when in a group or a raid.
+- Other layers' characters information without a profile attached to them are now correctly purged on startup to avoid storing them indefinitely.
+- Profiles received from links are now correctly applied a "Last seen" timestamp so they are correctly treated by the automatic directory purge instead of being always deleted because of the lack of timestamp.
+- The add-on will now warn you with a different message than the regular one if you are several versions behind and are at risk of issues because of that.
+- The advanced settings would not get the user selected localization applied to their texts.
+- Fixed issues related to upcoming API changes in patch 8.1.
+
 # Changelog version 1.5.0
 
 ## Re-implemented map scans feature
