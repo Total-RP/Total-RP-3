@@ -248,6 +248,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound
 	profile.msp = isMSP;
+	profile.time = time()
 
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
@@ -523,6 +524,12 @@ local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
 		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link or not profiles[character.profileID].link[unitID]) then
 			character.profileID = nil;
+		end
+	end
+	for unitID, character in pairs(characters) do
+		if not character.profileID and not TRP3_API.register.isIDIgnored(unitID) then
+			wipe(character)
+			characters[unitID] = nil
 		end
 	end
 end
