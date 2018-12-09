@@ -17,6 +17,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local Directory = {};
+AddOn_TotalRP3.Directory = Directory;
+
 -- Public accessor
 TRP3_API.register = {
 	inits = {},
@@ -367,6 +370,13 @@ end
 
 function TRP3_API.register.getCharacterList()
 	return characters;
+end
+
+--- Fetch character specific data for the given character ID.
+---@param characterID string The character ID (PlayerName-RealmName) that we want to query
+---@return table|nil Either the character data or nil if the character was not found.
+function Directory.getCharacterDataForCharacterId(characterID)
+	return characters[characterID]
 end
 
 --- Raises error if unknown unitID
