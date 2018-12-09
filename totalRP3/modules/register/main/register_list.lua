@@ -398,8 +398,8 @@ local function getCharacterLines()
 				if  unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
 					realmIsConform = true;
 				end
-				local character = getUnitIDCharacter(unitID);
-				if character.guild and safeMatch(character.guild:lower(), guildSearch) then
+				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
+				if characterData and characterData.guild and safeMatch(characterData.guild:lower(), guildSearch) then
 					guildIsConform = true;
 				end
 			end
@@ -872,7 +872,6 @@ local function createTabBar()
 	},
 	changeMode
 	);
-	tabGroup:SelectTab(1);
 end
 
 local TUTORIAL_CHARACTER;
