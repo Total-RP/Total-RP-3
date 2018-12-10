@@ -98,7 +98,7 @@ local function deleteProfile(profileID, dontFireEvents)
 	-- Unbound characters from this profile
 	if profiles[profileID].link then
 		for characterID, _ in pairs(profiles[profileID].link) do
-			if characters[characterID].profileID == profileID then
+			if characters[characterID] and characters[characterID].profileID == profileID then
 				characters[characterID].profileID = nil;
 			end
 		end
