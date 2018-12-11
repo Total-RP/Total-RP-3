@@ -19,8 +19,8 @@
 
 local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo()
 
-if interfaceVersionNumber < 80000 then
-	error(([[This version of Total RP 3 only supports patch 8.0 Battle for Azeroth, but you are running patch %s.
+if interfaceVersionNumber < 80100 then
+	error(([[This version of Total RP 3 only supports patch 8.1.0 Battle for Azeroth, but you are running patch %s.
 
 Please downgrade to the latest version available for this patch.
 If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha.]]):format(displayBuild))
