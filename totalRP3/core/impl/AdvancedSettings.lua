@@ -30,17 +30,8 @@ local pairs = pairs;
 local loc = TRP3_API.loc;
 local Configuration = TRP3_API.configuration;
 
---- Display a warning to let the user know modifying advanced settings might cause issues
-local function advancedSettingsModifiedPopup(settingKey, value)
-	if Configuration.getDefaultValue(settingKey) ~= value then
-		TRP3_API.popup.showAlertPopup(loc.CO_ADVANCED_SETTINGS_POPUP)
-	end
-end
-
 TRP3_API.ADVANCED_SETTINGS_STRUCTURE = {
 	id = "main_config_zzz_advanced_settings",
-	menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME,
-	pageText = loc.CO_ADVANCED_SETTINGS,
 	elements = {}
 }
 
@@ -49,57 +40,68 @@ TRP3_API.ADVANCED_SETTINGS_KEYS = {
 	BROADCAST_CHANNEL = "comm_broad_chan",
 	PROFILE_SANITIZATION = "register_sanitization",
 }
+
 TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES = {};
 
--- Reset button
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigH1",
-	title = loc.CO_ADVANCED_BROADCAST,
-});
-
--- Use broadcast communications
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigCheck",
-	title = loc.CO_GENERAL_BROADCAST,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS,
-	help = loc.CO_GENERAL_BROADCAST_TT,
-});
-
--- Broadcast communications channel
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigEditBox",
-	title = loc.CO_GENERAL_BROADCAST_C,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL,
-	dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS },
-});
-
-TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST] = true;
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigCheck",
-	title = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST,
-	help = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT
-});
-
--- Localization settings
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigH1",
-	title = loc.REG_REGISTER,
-});
-
--- Profile sanitization
-TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
-insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-	inherit = "TRP3_ConfigCheck",
-	title = loc.CO_SANITIZER,
-	configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION,
-	help = loc.CO_SANITIZER_TT
-});
+--- Display a warning to let the user know modifying advanced settings might cause issues
+local function advancedSettingsModifiedPopup(settingKey, value)
+	if Configuration.getDefaultValue(settingKey) ~= value then
+		TRP3_API.popup.showAlertPopup(loc.CO_ADVANCED_SETTINGS_POPUP)
+	end
+end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
+
+	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME
+	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
+
+	-- Reset button
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc.CO_ADVANCED_BROADCAST,
+	});
+
+	-- Use broadcast communications
+	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_GENERAL_BROADCAST,
+		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS,
+		help = loc.CO_GENERAL_BROADCAST_TT,
+	});
+
+	-- Broadcast communications channel
+	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigEditBox",
+		title = loc.CO_GENERAL_BROADCAST_C,
+		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL,
+		dependentOnOptions = { TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS },
+	});
+
+	TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
+	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST] = true;
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST,
+		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST,
+		help = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT
+	});
+
+	-- Localization settings
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc.REG_REGISTER,
+	});
+
+	-- Profile sanitization
+	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
+	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_SANITIZER,
+		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION,
+		help = loc.CO_SANITIZER_TT
+	});
 
 	for configurationKey, defaultValue in pairs(TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES) do
 		Configuration.registerConfigKey(configurationKey, defaultValue)

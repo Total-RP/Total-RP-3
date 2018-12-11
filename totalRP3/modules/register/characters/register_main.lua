@@ -17,6 +17,9 @@
 -- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local Directory = {};
+AddOn_TotalRP3.Directory = Directory;
+
 -- Public accessor
 TRP3_API.register = {
 	inits = {},
@@ -95,7 +98,7 @@ local function deleteProfile(profileID, dontFireEvents)
 	-- Unbound characters from this profile
 	if profiles[profileID].link then
 		for characterID, _ in pairs(profiles[profileID].link) do
-			if characters[characterID].profileID == profileID then
+			if characters[characterID] and characters[characterID].profileID == profileID then
 				characters[characterID].profileID = nil;
 			end
 		end
@@ -248,6 +251,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local profile = getProfile(currentProfileID);
 	profile.link[unitID] = 1; -- bound
 	profile.msp = isMSP;
+	profile.time = time()
 
 	if oldProfileID ~= currentProfileID then
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, currentProfileID, nil);
@@ -366,6 +370,13 @@ end
 
 function TRP3_API.register.getCharacterList()
 	return characters;
+end
+
+--- Fetch character specific data for the given character ID.
+---@param characterID string The character ID (PlayerName-RealmName) that we want to query
+---@return table|nil Either the character data or nil if the character was not found.
+function Directory.getCharacterDataForCharacterId(characterID)
+	return characters[characterID]
 end
 
 --- Raises error if unknown unitID
@@ -523,6 +534,12 @@ local function cleanupCharacters()
 	for unitID, character in pairs(characters) do
 		if character.profileID and (not profiles[character.profileID] or not profiles[character.profileID].link or not profiles[character.profileID].link[unitID]) then
 			character.profileID = nil;
+		end
+	end
+	for unitID, character in pairs(characters) do
+		if not character.profileID and not TRP3_API.register.isIDIgnored(unitID) then
+			wipe(character)
+			characters[unitID] = nil
 		end
 	end
 end
