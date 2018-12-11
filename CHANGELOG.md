@@ -1,3 +1,7 @@
+# Changelog version 1.5.2
+
+- Fixed invalid game version check on login. We cannot properly check the game build number in the current 8.1 build.
+
 # Changelog version 1.5.1
 
 ## Fixed
