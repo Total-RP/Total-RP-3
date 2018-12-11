@@ -16,6 +16,10 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+if true then
+return
+end
+
 
 local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo()
 
