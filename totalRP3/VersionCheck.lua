@@ -1,5 +1,7 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
+---
+--- This file does a couple of checks to make sure the add-on is being loaded properly in the expected environment.
 --- ---------------------------------------------------------------------------
 --- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
@@ -16,16 +18,36 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-if true then
-return
+--region Build version check
+if TRP3_API.BUILD_NUMBER == nil then
+	TRP3_API = nil -- Force API reference to nil. This will break most of the add-on so it stops loading.
+	error([[Missing critical Total RP 3 files.
+
+You probably tried to update the add-on while the game client was running. This is not recommended.
+Please quit the game completely in order for the add-on to properly update.
+]]);
 end
+--endregion
 
+--region Game version check
+local SUPPORTED_API_VERSION = 80000;
+local SUPPORTED_BUILD = ("8.0 (API %s)"):format(SUPPORTED_API_VERSION);
 
-local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo()
+local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo();
 
-if interfaceVersionNumber < 80100 then
-	error(([[This version of Total RP 3 only supports patch 8.1.0 Battle for Azeroth, but you are running patch %s.
+if interfaceVersionNumber < SUPPORTED_API_VERSION then
+	local currentBuild = ("%s (API %s)"):format(displayBuild, interfaceVersionNumber);
+	error(([[This version of Total RP 3 only supports patch %s or above, but you are running patch %s.
 
 Please downgrade to the latest version available for this patch.
-If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha.]]):format(displayBuild))
+If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha to avoid getting preview versions.]])
+		:format(SUPPORTED_BUILD, currentBuild));
 end
+--endregion
+
+--region Dev builds setup
+--@alpha@
+-- Force showing Lua errors on non release builds
+SetCVar("scriptErrors", 1);
+--@end-alpha@
+--endregion
