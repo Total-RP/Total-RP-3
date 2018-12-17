@@ -1248,6 +1248,15 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 - The advanced settings would not get the user selected localization applied to their texts.
 - Fixed issues related to upcoming API changes in patch 8.1.
 ]],
+	WHATS_NEW_22_2 = [[
+# Changelog version 1.5.3
+
+- Removed all references to guild chat messages customization support in the add-on, as add-ons are no longer able to modify guild chat messages due to protections introduced by Blizzard in patch 8.1.
+
+# Changelog version 1.5.2
+
+- Fixed invalid game version check on login. We cannot properly check the game build number in the current 8.1 build.
+]]
 };
 
 -- Use Ellyb to generate the Localization system

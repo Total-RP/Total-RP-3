@@ -1,3 +1,7 @@
+# Changelog version 1.5.3
+
+- Removed all references to guild chat messages customization support in the add-on, as add-ons are no longer able to modify guild chat messages due to protections introduced by Blizzard in patch 8.1.
+
 # Changelog version 1.5.2
 
 - Fixed invalid game version check on login. We cannot properly check the game build number in the current 8.1 build.
