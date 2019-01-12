@@ -398,6 +398,16 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_AllianceWarCampaign",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_BattleForDazaralorStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_Brawl",
 		width = 128,
 		height = 128
@@ -408,7 +418,17 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_HordeWarCampaign",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_MoonkinFestival",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCrucibleOfStormsStart",
 		width = 128,
 		height = 128
 	},
@@ -969,6 +989,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-BattleOfDazaralor",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-BlackRookHold",
 		width = 256,
 		height = 256
@@ -1034,6 +1058,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CourtofStars",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CrucibleOfStorms",
 		width = 256,
 		height = 256
 	}, {
@@ -3626,9 +3654,19 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliancecontribution",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliancewar-large",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-alliancewar",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-horde-large",
@@ -3646,7 +3684,52 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-hordecontribution",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-hordewar-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-arathi-hordewar",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-alliance",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-alliancecontribution",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-alliancewar",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-horde",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-hordecontribution",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfrontqueue-darkshore-hordewar",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-AltarOfElders-large",
 		width = 512,
 		height = 256
 	},
@@ -3659,6 +3742,16 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-AltarofKings",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-AncientOfWar-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-ArchDruid-large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Armory-large",
@@ -3681,6 +3774,16 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-CallOfNature",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Chimaera-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-ElekMount-large",
 		width = 512,
 		height = 256
@@ -3692,6 +3795,41 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Footmen",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-GlaiveThrower-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Glaiveworks-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-HuntersHall-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-KaldoreiArcher",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-KaldoreiHuntress",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-KaldoreiSentinel",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-KaldoreiTreant",
 		width = 256,
 		height = 128
 	},
@@ -3756,12 +3894,47 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TransformDryad",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TransformFaerieDragon",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TransformKeeper",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TreeOfAges-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TreeOfEternity-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-TreeOfLife-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Workshop-large",
 		width = 512,
 		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-alliance-Workshop",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Abomination-large",
 		width = 256,
 		height = 128
 	},
@@ -3806,6 +3979,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-BatVehicle-large",
+		width = 512,
+		height = 256
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-horde-BristlingPower",
 		width = 256,
 		height = 128
@@ -3814,6 +3992,36 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-warfronts-horde-CallOfTheStorm",
 		width = 256,
 		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreAltarOfStorms-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreArmory-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreBarracks-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreCatapult-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreTownHall-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DarkshoreWorkshop-large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-horde-Demolisher-large",
@@ -3827,6 +4035,36 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-horde-DemolisherDisable",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-FelBat-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-FleshTitan-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ForsakenAlchemist",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ForsakenCavalry",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ForsakenFootman",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-ForsakenFusilier",
 		width = 256,
 		height = 128
 	},
@@ -3937,6 +4175,21 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TownHall3",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TransformAbomination",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TransformAzermek",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-warfronts-horde-TransformBanshee",
 		width = 256,
 		height = 128
 	},
