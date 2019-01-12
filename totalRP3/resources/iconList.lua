@@ -20561,7 +20561,6 @@ local iconList = {
 	"inv_throwingchakrum_01_fel",
 	"inv_trinket_firelands_02",
 	"inv_trinket_firelands_03",
-	"list_icons",
 	"misc_arrowdown",
 	"misc_arrowleft",
 	"misc_arrowlup",
