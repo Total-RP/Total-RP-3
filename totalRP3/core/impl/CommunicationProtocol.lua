@@ -81,6 +81,10 @@ local DEPRECATED_MESSAGE_PRIORITY = [[Deprecated usage of message priority "%s".
 		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("NORMAL", PRIORITIES.MEDIUM));
 		priority = PRIORITIES.MEDIUM
 	end
+	if priority == "ALERT" then
+		Ellyb.DeprecationWarnings.warn(DEPRECATED_MESSAGE_PRIORITY:format("ALERT", PRIORITIES.HIGH));
+		priority = PRIORITIES.HIGH
+	end
 	return priority
 end
 
