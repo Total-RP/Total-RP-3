@@ -18,10 +18,10 @@ before_script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --excl
 
 script:
   - |
-  if [ -z "$TRAVIS_TAG" ]; then
-    mv "totalRP3/__version.lua" "totalRP3/$TRAVIS_TAG.lua"
-    curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.1.0 -o
-  fi
+    if [ -z "$TRAVIS_TAG" ]; then
+      mv "totalRP3/__version.lua" "totalRP3/$TRAVIS_TAG.lua"
+      curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.1.0 -o
+    fi
 
 notifications:
   email:
