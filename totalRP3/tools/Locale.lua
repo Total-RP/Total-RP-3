@@ -1248,6 +1248,19 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 - The advanced settings would not get the user selected localization applied to their texts.
 - Fixed issues related to upcoming API changes in patch 8.1.
 ]],
+	---@language Markdown
+	WHATS_NEW_22_2 = [[
+# Changelog version 1.5.3
+
+## Added
+
+- Added 562 icons, 51 images and 56 musics to Total RP 3's resources browsers for patch 8.1.
+- Total RP 3 will now warn you if you updated the add-on while the game was running and will now require you to properly relaunch the game when updating the add-on, to avoid invalid bug reports.
+
+## Fixed
+
+- Fixed a Lua error that could sometime appear when trying to request data from one of your Battle.net friend while you're Battle.net status is set to appear offline.
+]],
 };
 
 -- Use Ellyb to generate the Localization system
