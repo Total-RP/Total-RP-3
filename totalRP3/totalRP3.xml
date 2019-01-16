@@ -20,12 +20,7 @@
 
 	<!-- Please note that the loading order matters a lot -->
 
-	<!--@debug@-->
 	<Script file="__version.lua"/>
-	<!--@end-debug@-->
-	<!--@non-debug@
-	<Script file="@project-version@.lua"/>
-	end-non-debug@-->
 
 	<Script file="VersionCheck.lua"/>
 	<Include file="libs\libs.xml"/>
