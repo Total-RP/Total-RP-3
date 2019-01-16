@@ -2,35 +2,37 @@
 # http://travis-ci.org
 
 sudo: false
-
-language: c
+language: minimal
 
 addons:
   apt:
     packages:
     - luarocks
-    - pandoc
 
-install:
-  - eval $(luarocks path --bin)
-  - luarocks install --local luacheck
+git:
+  depth: 150
 
-# Run luacheck to make sure there is not syntax error left in the add-on
-script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --exclude-files "totalRP3_zTest/*"
+install: luarocks install --local luacheck
+
+before_script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --exclude-files "totalRP3_zTest/*"
+
+script:
+  - |
+  	if [ -z "$TRAVIS_TAG" ]
+	  mv "totalRP3/__version.lua" "totalRP3/$TRAVIS_TAG.lua"
+	  curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.1.0 -o
+	fi
 
 notifications:
   email:
     on_failure: always
     on_success: never
 
-cache:
-  apt: true
-  directories:
-    - $HOME/.luarocks
-
-# Call script to package the add-on. We pass the CurseForge and WoWInterface IDs to the script (it can't read it from the .toc file somehow)
-after_script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.1.0 -o
-
-#branches:
-#  only:
-#  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
