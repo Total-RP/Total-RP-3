@@ -7,7 +7,7 @@
 
 ## Fixed
 
-- Fixed a Lua error that could sometime appear when trying to request data from one of your Battle.net friend while you're Battle.net status is set to appear offline.
+- Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
 
 # Changelog version 1.5.2
 
