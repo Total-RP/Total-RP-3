@@ -3,7 +3,6 @@
 ## Added
 
 - Added 562 icons, 51 images and 56 musics to Total RP 3's resources browsers for patch 8.1.
-- Total RP 3 will now warn you if you updated the add-on while the game was running and will now require you to properly relaunch the game when updating the add-on, to avoid invalid bug reports.
 
 ## Fixed
 
