@@ -28,8 +28,7 @@ if not TRP3_Flyway then
 end
 
 local function applyPatches(fromBuild, toBuild)
-	local i;
-	for i=fromBuild, toBuild do
+	for i = fromBuild, toBuild do
 		if type(TRP3_API.flyway.patches[tostring(i)]) == "function" then
 			TRP3_API.utils.log.log(("Applying patch %s"):format(i));
 			TRP3_API.flyway.patches[tostring(i)]();
@@ -40,7 +39,7 @@ end
 
 function TRP3_API.flyway.applyPatches()
 	if not TRP3_Flyway.currentBuild or TRP3_Flyway.currentBuild < SCHEMA_VERSION then
-		applyPatches( (TRP3_Flyway.currentBuild or 0) + 1, SCHEMA_VERSION);
+		applyPatches((TRP3_Flyway.currentBuild or 0) + 1, SCHEMA_VERSION);
 	end
 	TRP3_Flyway.currentBuild = SCHEMA_VERSION;
 end

@@ -46,7 +46,7 @@ local UIFrame = TRP3_API.ui.frame;
 ---
 ---  @param viewClass The class to wrap and instantiate.
 ---  @param index The index of the tab. This is stored as the "value" of the entry.
----  @param ... Arguments to pass to the viewClass constructor.
+---  @vararg any Arguments to pass to the viewClass constructor.
 local function createTabFromClass(index, viewClass, ...)
 	-- Use explicit indices here to make it clear on the structure.
 	return {
@@ -96,7 +96,7 @@ end
 
 --- Called when the NAVIGATION_RESIZED event fires. Re-draws the content
 ---  frame to make it adjust to the new dimensions.
-function TRP3_DashboardTabFrameMixin:OnNavigationResized(width, height)
+function TRP3_DashboardTabFrameMixin:OnNavigationResized(width)
 	-- Resize the content frame and try to refresh it.
 	local htmlFrame = self.HTMLContent;
 	htmlFrame:SetSize(width - 54, 5);

@@ -19,13 +19,6 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
-
---region Lua imports
-local insert = table.insert;
-local pairs = pairs;
---endregion
 
 --region Total RP 3 imports
 local loc = TRP3_API.loc;

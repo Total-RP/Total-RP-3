@@ -26,8 +26,8 @@ local Ellyb = Ellyb(...);
 TRP3_API.register.glance = {};
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
 local tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit = tostring, _G, pairs, type, tinsert, assert, wipe, bit, strsplit;
-local tsize, loc = Utils.table.size, TRP3_API.loc;
-local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
+local loc = TRP3_API.loc;
+local getIcon, tableRemove = Utils.str.icon, Utils.table.remove;
 local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
 local unitIDIsFilteredForMatureContent;
 local crop = TRP3_API.Ellyb.Strings.crop;
@@ -461,14 +461,11 @@ TRP3_API.register.glance.openGlanceEditor = openGlanceEditor;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
-local getUnitID, unitIDToInfo, companionIDToInfo = Utils.str.getUnitID, Utils.str.unitIDToInfo, Utils.str.companionIDToInfo;
+local getUnitID, companionIDToInfo = Utils.str.getUnitID, Utils.str.companionIDToInfo;
 local get, getDataDefault = TRP3_API.profile.getData, TRP3_API.profile.getDataDefault;
 local hasProfile, isUnitIDKnown, getUnitIDCurrentProfile = TRP3_API.register.hasProfile, TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCurrentProfile;
 local getCompanionProfile, getCompanionRegisterProfile = TRP3_API.companions.player.getCompanionProfile, TRP3_API.companions.register.getCompanionProfile;
-local companionHasProfile = TRP3_API.companions.register.companionHasProfile;
-local setGlanceSlotPreset = TRP3_API.register.player.setGlanceSlotPreset;
 local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 local isIDIgnored = TRP3_API.register.isIDIgnored;
 
@@ -486,7 +483,7 @@ end
 local GLANCE_TOOLTIP_CROP = 400;
 local GLANCE_TITLE_CROP = 150;
 
-local currentTargetID, currentTargetType, isCurrentMine, currentTargetProfileID;
+local currentTargetID, currentTargetType, isCurrentMine;
 
 local function getCharacterInfo()
 	if currentTargetID == Globals.player_id then
@@ -497,18 +494,17 @@ local function getCharacterInfo()
 	return EMPTY;
 end
 
-local function getCompanionInfo(owner, companionID, currentTargetID)
+local function getCompanionInfo(owner, companionID, currentTargetId)
 	local profile;
 	if owner == Globals.player_id then
 		profile = getCompanionProfile(companionID) or EMPTY;
 	else
-		profile = getCompanionRegisterProfile(currentTargetID) or EMPTY;
+		profile = getCompanionRegisterProfile(currentTargetId) or EMPTY;
 	end
 	return profile;
 end
 
 local function getGlanceTab()
-	local glanceTab;
 	if currentTargetType == TYPE_CHARACTER then
 		if isIDIgnored(currentTargetID) or unitIDIsFilteredForMatureContent(currentTargetID) then
 			return;
@@ -524,7 +520,7 @@ local function getGlanceTab()
 end
 
 local function atLeastOneactiveGlance(tab)
-	for i, info in pairs(tab) do
+	for _, info in pairs(tab) do
 		if type(info) == "table" and info.AC then
 			return true;
 		end
@@ -587,7 +583,7 @@ local function onGlanceSlotClick(button, clickType)
 			if TRP3_AtFirstGlanceEditor:IsVisible() and TRP3_AtFirstGlanceEditor.current == button then
 				TRP3_AtFirstGlanceEditor:Hide();
 			else
-				local x, y = GetCursorPosition();
+				local _, y = GetCursorPosition();
 				local scale = UIParent:GetEffectiveScale();
 				y = y / scale;
 				TRP3_API.ui.frame.configureHoverFrame(TRP3_AtFirstGlanceEditor, button, y <= 200 and "BOTTOM" or "TOP");
@@ -691,7 +687,6 @@ local function onTargetChanged()
 	ui_GlanceBar:Hide();
 	TRP3_AtFirstGlanceEditor:Hide();
 	currentTargetType, isCurrentMine = getTargetType();
-	currentTargetProfileID = nil;
 	currentTargetID = nil;
 	if currentTargetType == TYPE_CHARACTER then
 		currentTargetID = getUnitID("target");
@@ -831,7 +826,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	Utils.event.registerHandler("PLAYER_TARGET_CHANGED", onTargetChanged);
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if not unitID or (currentTargetID == unitID) and (not dataType or dataType == "misc") then
 			onTargetChanged();
 		end

@@ -42,7 +42,7 @@ local selectMenu, unregisterMenu;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 -- Placeholder for menu structures
-local menuStructures = {}; 
+local menuStructures = {};
 -- The currently selected menuId
 local selectedMenuId;
 -- Placeholder for menu ui button
@@ -84,7 +84,7 @@ local function rebuildMenu()
 	for _, widget in pairs(uiMenuWidgets) do
 		widget:Hide();
 	end
-	
+
 	-- Sort menu by name
 	-- Only take visible menu
 	local ids = {};
@@ -98,7 +98,6 @@ local function rebuildMenu()
 	local closeableChildCount = 0;
 	local index = 0;
 	local y = marginTop;
-	local latestID;
 	for i, id in pairs(ids) do
 		local menuStructure = menuStructures[id];
 		-- if Top button || Selected parent || Selected sibling
@@ -112,13 +111,13 @@ local function rebuildMenu()
 			end
 			uiButton:Enable();
 			uiButton:UnlockHighlight();
-			
+
 			if id == selectedMenuId then
 				uiButton:Disable();
 				uiButton:LockHighlight();
 			end
 			uiButton:ClearAllPoints();
-			
+
 			local label = _G[uiButton:GetName().."Label"];
 			local close = _G[uiButton:GetName().."Close"];
 			close:Hide();
@@ -138,20 +137,19 @@ local function rebuildMenu()
 				label:SetJustifyH(menuStructure.align or "LEFT");
 			end
 			label:SetText(menuStructure.text);
-			
+
 			local icon = _G[uiButton:GetName().."Icon"];
 			icon:Hide();
 			if menuStructure.icon then
 				icon:Show();
 				icon:SetTexture(menuStructure.icon);
 			end
-			
-			latestID = id;
+
 			uiButton:Show();
 			uiButton.id = id;
 			index = index + 1;
 			y = y - buttonHeight;
-			
+
 			if closeableChildCount > 0 and menuStructure.isChildOf and menuStructures[menuStructure.isChildOf].closeable and (not ids[i + 1] or not menuStructures[ids[i + 1]].isChildOf) then
 				-- Place close all button
 				closeAllButton:SetPoint("LEFT", 32, y);
@@ -178,7 +176,7 @@ TRP3_API.navigation.menu.registerMenu = registerMenu;
 -- Unregister a menu structure.
 -- Automatically refresh the menu display
 function unregisterMenu(menuId)
-	if selectedMenuId == menuId then 
+	if selectedMenuId == menuId then
 		if menuStructures[menuId].isChildOf then
 			selectMenu(menuStructures[menuId].isChildOf);
 		else
@@ -234,16 +232,16 @@ TRP3_API.navigation.page.registerPage = registerPage;
 
 local function setPage(pageId, context)
 	Log.log("setPage: "..pageId);
-	
+
 	assert(pageStructures[pageId], "Unknown pageId "..pageId);
 	assert(context == nil or type(context) == "table", "Context must be a table or nil.");
-	
+
 	if currentPageId then -- Hide current page
 		if pageStructures[currentPageId].frame then
 			pageStructures[currentPageId].frame:Hide();
 		end
 	end
-	
+
 	currentPageId = pageId;
 	currentContext = context;
 	local currentPage = pageStructures[currentPageId];
@@ -254,25 +252,25 @@ local function setPage(pageId, context)
 		end
 		currentPage.frame = _G[currentPage.frameName];
 	end
-	
+
 	-- Show
 	if currentPage.onPagePreShow then
 		currentPage.onPagePreShow(context);
 	end
-	
+
 	currentPage.frame:ClearAllPoints();
 	currentPage.frame:SetParent(TRP3_MainFramePageContainer);
 	currentPage.frame:SetAllPoints(TRP3_MainFramePageContainer);
 	currentPage.frame:Show();
-	
+
 	-- Show
 	if currentPage.onPagePostShow then
 		currentPage.onPagePostShow(context);
 	end
-	
+
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, pageId);
 	playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-	
+
 	TRP3_API.Events.triggerEvent(TRP3_API.Events.PAGE_OPENED, pageId, context)
 end
 TRP3_API.navigation.page.setPage = setPage;
@@ -354,7 +352,7 @@ local function buttonOnEnter(button)
 		TRP3_TutorialTooltip.ArrowDOWN:Show();
 		TRP3_TutorialTooltip.ArrowGlowDOWN:Show();
 	end
-	
+
 	TRP3_TutorialTooltip:SetWidth(button.textWidth);
 	TRP3_TutorialTooltip.Text:SetWidth(button.textWidth - 30);
 	TRP3_TutorialTooltip.Text:SetText(button.text);
@@ -390,7 +388,7 @@ local function showTutorial(tutorialStructure)
 		buttonWidget.arrow = frameInfo.button.arrow or "RIGHT";
 		buttonWidget.text = frameInfo.button.text;
 		buttonWidget.textWidth = frameInfo.button.textWidth or 220;
-		
+
 		local box = buttonWidget.box;
 		box:ClearAllPoints();
 		if frameInfo.box.allPoints then
@@ -401,9 +399,9 @@ local function showTutorial(tutorialStructure)
 		end
 		box:SetScript("OnEnter", nil);
 		box:SetScript("OnLeave", nil);
-		
+
 		box:Show();
-		
+
 		local highlight = buttonWidget.boxHighlight;
 		highlight:ClearAllPoints();
 		if frameInfo.box.allPoints then
@@ -436,7 +434,7 @@ end
 
 TRP3_API.navigation.init = function()
 	TRP3_MainFrame.Close:SetScript("OnClick", function() switchMainFrame() end);
-	
+
 	TRP3_MainTutorialButton:SetScript("OnClick", function(self)
 		if TRP3_TutorialFrame:IsShown() then
 			TRP3_TutorialFrame:Hide();
@@ -449,6 +447,6 @@ TRP3_API.navigation.init = function()
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);
 	end);
-	
+
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
 end

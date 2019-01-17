@@ -29,7 +29,6 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 local CONFIG_MINIMAP_SHOW = "minimap_show";
 local CONFIG_MINIMAP_POSITION = "minimap_icon_position";
 local getConfigValue, registerConfigKey = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey;
-local color, strconcat = TRP3_API.utils.str.color, strconcat;
 local loc = TRP3_API.loc;
 local tinsert = tinsert;
 

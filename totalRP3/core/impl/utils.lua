@@ -50,7 +50,6 @@ local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
 local getZoneText, getSubZoneText = GetZoneText, GetSubZoneText;
-local PlaySound, select, StopSound = PlaySound, select, StopSound;
 
 function Utils.pcall(func, ...)
 	if func then
@@ -139,10 +138,10 @@ local function tableDump(table, level, withCount)
 	local i = 0;
 	local dumpIndent = "";
 
-	for indent = 1, level, 1 do
+	for _ = 1, level, 1 do
 		dumpIndent = dumpIndent .. "    ";
 	end
-	
+
 	if type(table) == "table" then
 		for key, value in pairs(table) do
 			if type(key) == "string" then
@@ -160,7 +159,7 @@ local function tableDump(table, level, withCount)
 			i = i + 1;
 		end
 	end
-	
+
 	if withCount then
 		log(dumpIndent .. dumpColor1 .. ("Level %s size: %s elements"):format(level, i), Log.level.DEBUG);
 	end
@@ -271,7 +270,7 @@ local sID_CHARS = #ID_CHARS;
 --	ID's have a id_length characters length
 local function generateID()
 	local ID = date("%m%d%H%M%S");
-	for i=1, 5 do
+	for _=1, 5 do
 		ID = ID .. ID_CHARS[math.random(1, sID_CHARS)];
 	end
 	return ID;
@@ -330,7 +329,7 @@ function Utils.str.getUnitDataFromGUID(unitID)
 end
 
 function Utils.str.getUnitNPCID(unitID)
-	local unitType, npcID = Utils.str.getUnitDataFromGUID(unitID);
+	local _, npcID = Utils.str.getUnitDataFromGUID(unitID);
 	return npcID;
 end
 
@@ -484,7 +483,7 @@ end
 
 --- Value must be 256 based
 local function numberToHexa(number)
-	local number = string.format('%x', number);
+	number = string.format('%x', number);
 	if number:len() == 1 then
 		number = '0' .. number;
 	end
@@ -607,7 +606,7 @@ local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
 ---@param GUID string
 ---@return ColorMixin
 function TRP3_API.utils.color.GetClassColorByGUID(GUID)
-	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local _, englishClass, _, _, _, _, _ = GetPlayerInfoByGUID(GUID);
 	local classColorTable = RAID_CLASS_COLORS[englishClass];
 	if classColorTable then
 		return CreateColor(classColorTable.r, classColorTable.g, classColorTable.b, 1);
@@ -618,12 +617,12 @@ end
 ---@param GUID string
 ---@return ColorMixin
 function TRP3_API.utils.color.GetCustomColorByGUID(GUID)
-	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(GUID);
 
 	local unitID = Utils.str.unitInfoToID(name, realm);
 	return Utils.color.getUnitCustomColor(unitID)
 end
-	
+
 ---
 -- Returns the color for the unit corresponding to the given GUID.
 -- @param GUID The GUID to use to retrieve player information
@@ -632,7 +631,7 @@ end
 --
 function Utils.color.getUnitColorByGUID(GUID, useCustomColors, lightenColorUntilItIsReadable)
 	assert(GUID, "Invalid GUID given to Utils.color.getUnitColorByGUID(GUID)");
-	local localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = GetPlayerInfoByGUID(GUID);
+	local _, englishClass, _, _, _, name, realm = GetPlayerInfoByGUID(GUID);
 	local color;
 
 	if not englishClass then return end
@@ -1007,7 +1006,7 @@ function Utils.music.playSoundID(soundID, channel, source)
 	assert(soundID, "soundID can't be nil.")
 	local willPlay, handlerID = PlaySound(soundID, channel, false);
 	if willPlay then
-		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});	
+		tinsert(soundHandlers, {channel = channel, id = soundID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
@@ -1020,7 +1019,7 @@ function Utils.music.stopSound(handlerID)
 end
 
 function Utils.music.stopSoundID(soundID, channel, source)
-	for index, handler in pairs(soundHandlers) do
+	for _, handler in pairs(soundHandlers) do
 		if (not handler.stopped) and (not soundID or soundID == "0" or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			if (handler.channel == "Music" and handler.handlerID == 0) then
 				StopMusic();
@@ -1100,7 +1099,7 @@ local function Rainbowify(text)
 	local i = 1
 
 	local characterCount = 0;
-	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+	for _ in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
 		characterCount = characterCount + 1
 	end
 

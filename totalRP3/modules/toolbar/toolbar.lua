@@ -36,8 +36,7 @@ local function onStart()
 	local loc = TRP3_API.loc;
 	local icon = Utils.str.icon;
 	local color = Utils.str.color;
-	local assert, pairs, tContains, tinsert, table, math, _G = assert, pairs, tContains, tinsert, table, math, _G;
-	local CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus = CreateFrame, SendChatMessage, UnitIsDND, UnitIsAFK, GetMouseFocus;
+	local assert, pairs, tinsert, table, math  = assert, pairs, tinsert, table, math;
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
 	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
 	local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForFrame;
@@ -85,7 +84,7 @@ local function onStart()
 			local x = marginLeft;
 			local y = -marginTop;
 			local numLines = 1;
-			for i, id in pairs(ids) do
+			for _, id in pairs(ids) do
 				local buttonStructure = buttonStructures[id];
 				local uiButton = uiButtons[index+1];
 				if uiButton == nil then -- Create the button
@@ -351,7 +350,7 @@ local function onStart()
 		});
 
 		local ids = {};
-		for buttonID, button in pairs(buttonStructures) do
+		for buttonID, _ in pairs(buttonStructures) do
 			tinsert(ids, buttonID);
 		end
 		table.sort(ids);

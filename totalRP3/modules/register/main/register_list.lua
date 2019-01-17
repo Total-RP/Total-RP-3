@@ -24,11 +24,8 @@ local Ellyb = Ellyb(...);
 -- imports
 local Globals, Events = TRP3_API.globals, TRP3_API.events;
 local Utils = TRP3_API.utils;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
-local get = TRP3_API.profile.getData;
-local assert, table, _G, date, pairs, error, tinsert, wipe, time = assert, table, _G, date, pairs, error, tinsert, wipe, time;
-local isUnitIDKnown, getCharacterList = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getCharacterList;
+local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local unitIDToInfo, tsize = Utils.str.unitIDToInfo, Utils.table.size;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
@@ -40,19 +37,17 @@ local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile = TRP3_API.register.hasProfile;
-local getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
+local getCompleteName = TRP3_API.register.getCompleteName;
 local TRP3_RegisterListEmpty = TRP3_RegisterListEmpty;
-local getProfile, getProfileList = TRP3_API.register.getProfile, TRP3_API.register.getProfileList;
+local getProfile = TRP3_API.register.getProfile;
 local getIgnoredList, unignoreID, isIDIgnored = TRP3_API.register.getIgnoredList, TRP3_API.register.unignoreID, TRP3_API.register.isIDIgnored;
 local getRelationText, getRelationTooltipText = TRP3_API.register.relation.getRelationText, TRP3_API.register.relation.getRelationTooltipText;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local displayDropDown, showAlertPopup, showConfirmPopup = TRP3_API.ui.listbox.displayDropDown, TRP3_API.popup.showAlertPopup, TRP3_API.popup.showConfirmPopup;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local deleteProfile, deleteCharacter, getProfileList = TRP3_API.register.deleteProfile, TRP3_API.register.deleteCharacter, TRP3_API.register.getProfileList;
-local toast = TRP3_API.ui.tooltip.toast;
 local ignoreID = TRP3_API.register.ignoreID;
 local refreshList;
-local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
@@ -304,7 +299,6 @@ local function decorateCharacterLine(line, characterIndex)
 		local formatDate = date(DATE_FORMAT, profile.time);
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
-
 	-- Middle column : relation
 	local relation, relationRed, relationGreen, relationBlue = getRelationText(profileID), getRelationColors(profileID);
 	local color = Utils.color.colorCode(relationRed * 255, relationGreen * 255, relationBlue * 255);
@@ -323,37 +317,30 @@ local function decorateCharacterLine(line, characterIndex)
 	_G[line:GetName().."Time"]:SetText(timeStr);
 
 	-- Third column : flags
-	local rightTooltipTitle, rightTooltipText, flags;
+	---@type string[]
+	local rightTooltipTexts, flags = {}, {};
 	if atLeastOneIgnored then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. IGNORED_ICON;
-		rightTooltipText = rightTooltipText .. IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_TT_IGNORE;
+		table.insert(flags, IGNORED_ICON);
+		table.insert(rightTooltipTexts, IGNORED_ICON .. " " .. loc.REG_LIST_CHAR_TT_IGNORE);
 	end
 	if hasGlance then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. GLANCE_ICON;
-		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE;
+		table.insert(flags, GLANCE_ICON);
+		table.insert(rightTooltipTexts, GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE);
 	end
 	if hasNewAbout then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. NEW_ABOUT_ICON;
-		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT;
+		table.insert(flags, NEW_ABOUT_ICON);
+		table.insert(rightTooltipTexts, NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT);
 	end
 	if profile.hasMatureContent then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. MATURE_CONTENT_ICON;
-		rightTooltipText = rightTooltipText .. MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING;
+		table.insert(flags, MATURE_CONTENT_ICON);
+		table.insert(rightTooltipTexts, MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING);
 	end
-	if rightTooltipText then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, rightTooltipText);
+	if #rightTooltipTexts > 0 then
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipTexts, "\n"));
 	else
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
-	_G[line:GetName().."Info2"]:SetText(flags);
+	_G[line:GetName().."Info2"]:SetText(table.concat(flags, " "));
 
 	local addon = Globals.addon_name;
 	if profile.msp then
@@ -446,7 +433,7 @@ end
 
 local MONTH_IN_SECONDS = 2592000;
 
-local function onCharactersActionSelected(value, button)
+local function onCharactersActionSelected(value)
 	-- PURGES
 	if value == "purge_time" then
 		local profiles = getProfileList();
@@ -562,7 +549,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local companionIDToInfo, getAssociationsForProfile = TRP3_API.utils.str.companionIDToInfo, TRP3_API.companions.register.getAssociationsForProfile;
-local getCompanionProfiles, deleteCompanionProfile = TRP3_API.companions.register.getProfiles, TRP3_API.companions.register.deleteProfile;
+local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
 local companionLines = {};
 
 local function decorateCompanionLine(line, index)
@@ -579,7 +566,7 @@ local function decorateCompanionLine(line, index)
 	end
 	_G[line:GetName().."Name"]:SetText(name);
 
-	local tooltip, secondLine = name, "";
+	local tooltip = name;
 	if profile.data and profile.data.IC then
 		tooltip = Utils.str.icon(profile.data.IC, ICON_SIZE) .. " " .. name;
 	end
@@ -609,7 +596,7 @@ local function decorateCompanionLine(line, index)
 	end
 	_G[line:GetName().."Addon"]:SetText(firstMaster);
 
-	secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
+	local secondLine = loc.REG_LIST_PETS_TOOLTIP .. ":\n" .. companionList .. "\n" .. loc.REG_LIST_PETS_TOOLTIP2 .. ":\n" .. masterList;
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, tooltip, secondLine .. "\n\n" ..
 		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
 		Ellyb.Strings.clickInstruction(
@@ -619,25 +606,22 @@ local function decorateCompanionLine(line, index)
 	setTooltipForSameFrame(_G[line:GetName().."ClickMiddle"]);
 
 	-- Third column : flags
-	local rightTooltipTitle, rightTooltipText, flags;
+	---@type string[]
+	local rightTooltipText, flags = {}, {};
 	if hasGlance then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. GLANCE_ICON;
-		rightTooltipText = rightTooltipText .. GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE;
+		table.insert(flags, GLANCE_ICON);
+		table.insert(rightTooltipText, GLANCE_ICON .. " " .. loc.REG_LIST_CHAR_TT_GLANCE);
 	end
 	if hasNewAbout then
-		if not rightTooltipText then rightTooltipText = "" else rightTooltipText = rightTooltipText .. "\n" end
-		if not flags then flags = "" else flags = flags .. " " end
-		flags = flags .. NEW_ABOUT_ICON;
-		rightTooltipText = rightTooltipText .. NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT;
+		table.insert(flags, NEW_ABOUT_ICON);
+		table.insert(rightTooltipText, NEW_ABOUT_ICON .. " " .. loc.REG_LIST_CHAR_TT_NEW_ABOUT);
 	end
-	if rightTooltipText then
-		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, rightTooltipText);
+	if #rightTooltipText > 0 then
+		setTooltipForSameFrame(_G[line:GetName().."ClickRight"], "TOPLEFT", 0, 5, loc.REG_LIST_FLAGS, table.concat(rightTooltipText, "\n"));
 	else
 		setTooltipForSameFrame(_G[line:GetName().."ClickRight"]);
 	end
-	_G[line:GetName().."Info2"]:SetText(flags);
+	_G[line:GetName().."Info2"]:SetText(table.concat(flags, " "));
 
 	_G[line:GetName().."Select"]:SetChecked(selectedIDs[profileID]);
 	_G[line:GetName().."Select"]:Show();
@@ -699,7 +683,7 @@ local function getCompanionLines()
 	end
 	setupFieldSet(TRP3_RegisterListPetFilter, loc.REG_LIST_PETS_FILTER:format(lineSize, fullSize), 200);
 
-	local nameArrow, relationArrow, timeArrow = getComparatorArrows();
+	local nameArrow = getComparatorArrows();
 	TRP3_RegisterListHeaderName:SetText(loc.REG_COMPANION .. nameArrow);
 	TRP3_RegisterListHeaderInfo:SetText("");
 	TRP3_RegisterListHeaderTime:SetText("");
@@ -713,7 +697,7 @@ local function getCompanionLines()
 end
 
 local DO_NOT_FIRE_EVENTS = true;
-local function onCompanionActionSelected(value, button)
+local function onCompanionActionSelected(value)
 	if value == "purge_all" then
 		local list = getCompanionProfiles();
 		showConfirmPopup(loc.REG_LIST_ACTIONS_PURGE_ALL_COMP_C:format(tsize(list)), function()
@@ -807,7 +791,7 @@ function refreshList()
 	initList(TRP3_RegisterList, lines, TRP3_RegisterListSlider);
 end
 
-local function onLineClicked(self, button)
+local function onLineClicked(self)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
 		if IsShiftKeyDown() then
@@ -831,12 +815,12 @@ local function onLineClicked(self, button)
 	end
 end
 
-local function onLineSelected(self, button)
+local function onLineSelected(self)
 	assert(self:GetParent().id, "No id on line.");
 	selectedIDs[self:GetParent().id] = self:GetChecked() or nil;
 end
 
-local function changeMode(tabWidget, value)
+local function changeMode(_, value)
 	currentMode = value;
 	wipe(selectedIDs);
 	TRP3_RegisterListCharactFilter:Hide();
@@ -923,12 +907,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	createTutorialStructure();
 
 	-- To try, but I'm afraid for performances ...
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 		if getCurrentPageID() == REGISTER_LIST_PAGEID and unitID ~= Globals.player_id and (not dataType or dataType == "characteristics") then
 			refreshList();
 		end
 	end);
-	
+
 	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID)
 		if profileID then
 			selectedIDs[profileID] = nil;
@@ -936,9 +920,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
 			end
 		else
-			for profileID, _ in pairs(selectedIDs) do
-				if isMenuRegistered(currentlyOpenedProfilePrefix .. profileID) then
-					unregisterMenu(currentlyOpenedProfilePrefix .. profileID);
+			for selectedProfileId, _ in pairs(selectedIDs) do
+				if isMenuRegistered(currentlyOpenedProfilePrefix .. selectedProfileId) then
+					unregisterMenu(currentlyOpenedProfilePrefix .. selectedProfileId);
 				end
 			end
 			wipe(selectedIDs);
@@ -981,7 +965,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
-	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(self, button)
+	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListFilterCharactName:SetText("");
 			TRP3_RegisterListFilterCharactGuild:SetText("");
@@ -999,7 +983,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListPetFilterName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterType:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListPetFilterMaster:SetScript("OnEnterPressed", refreshList);
-	TRP3_RegisterListPetFilterButton:SetScript("OnClick", function(self, button)
+	TRP3_RegisterListPetFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListPetFilterName:SetText("");
 			TRP3_RegisterListPetFilterType:SetText("");
@@ -1064,14 +1048,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			condition = function(targetType, unitID)
+			condition = function(_, unitID)
 				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,
 			onClick = function(unitID)
 				openMainFrame();
 				openPageByUnitID(unitID);
 			end,
-			adapter = function(buttonStructure, unitID, currentTargetType)
+			adapter = function(buttonStructure, unitID)
 				buttonStructure.tooltip = loc.REG_PLAYER;
 				buttonStructure.tooltipSub =  "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.TF_OPEN_CHARACTER;
 				buttonStructure.alert = nil;

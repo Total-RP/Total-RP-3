@@ -25,20 +25,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local matureFilterPopup;
 
 local function onStart()
-
-	-- Lua imports
-	local pairs = pairs;
-	local tinsert = tinsert;
-	local assert = assert;
-	local type = type;
-	local strtrim = strtrim;
-	local time = time;
-
-	-- WoW imports
-	local UnitIsPlayer = UnitIsPlayer;
 
 	-- TRP3 API imports
 	local Utils, Events, Register, UI, Config = TRP3_API.utils, TRP3_API.events, TRP3_API.register, TRP3_API.ui, TRP3_API.configuration;
@@ -499,7 +487,7 @@ local function onStart()
 	registerConfigHandler(MATURE_FILTER_CONFIG, function()
 		local unitID = getUnitID("target");
 		if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
-			local profile, profileID = getUnitIDProfile(unitID);
+			local _, profileID = getUnitIDProfile(unitID);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, profileID, nil);
 		end
 	end);
@@ -583,7 +571,7 @@ local function onStart()
 		id = "aa_player_w_mature_white_list",
 		configText = loc.MATURE_FILTER_ADD_TO_WHITELIST_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
+		condition = function(_, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 				local profileID = getUnitIDProfileID(unitID);
 				return profileID and TRP3_API.register.unitIDIsFilteredForMatureContent(unitID)
@@ -601,7 +589,7 @@ local function onStart()
 		id = "aa_player_w_mature_remove_white_list",
 		configText = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
+		condition = function(_, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 				local profile = getUnitIDProfile(unitID);
 				local profileID = getUnitIDProfileID(unitID);
@@ -623,7 +611,7 @@ local function onStart()
 		id = "aa_player_w_mature_flag",
 		configText = loc.MATURE_FILTER_FLAG_PLAYER_OPTION,
 		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-		condition = function(targetType, unitID)
+		condition = function(_, unitID)
 			if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 				local profile = getUnitIDProfile(unitID);
 				local profileID = getUnitIDProfileID(unitID);

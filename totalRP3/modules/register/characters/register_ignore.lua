@@ -23,14 +23,12 @@ local Events = TRP3_API.events;
 local Globals = TRP3_API.globals;
 local showTextInputPopup = TRP3_API.popup.showTextInputPopup;
 local loc = TRP3_API.loc;
-local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
 local EMPTY = TRP3_API.globals.empty;
 local UnitIsPlayer = UnitIsPlayer;
 local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_API.profile.getPlayerCurrentProfile, TRP3_API.register.hasProfile;
-local getProfile, getUnitID, deleteProfile = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID, TRP3_API.register.deleteProfile;
+local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local registerInfoTypes = TRP3_API.register.registerInfoTypes;
-local profiles, characters, blackList, whiteList = {}, {}, {}, {};
+local characters, blackList= {}, {};
 
 -- These functions gets replaced by the proper TRP3 one once the addon has finished loading
 local function getPlayerCompleteName()
@@ -167,7 +165,7 @@ TRP3_API.register.getIgnoreReason = getIgnoreReason;
 function TRP3_API.register.getIDsToPurge()
 	local profileToPurge = {};
 	local characterToPurge = {};
-	for unitID, reason in pairs(blackList) do
+	for unitID, _ in pairs(blackList) do
 		if characters[unitID] then
 			tinsert(characterToPurge, unitID);
 			if characters[unitID].profileID then
@@ -199,8 +197,7 @@ local function onRelationSelected(value)
 	end
 end
 
-local function onTargetButtonClicked(unitID, _, _, button)
-	local profileID = hasProfile(unitID);
+local function onTargetButtonClicked(_, _, _, button)
 	local values = {};
 	tinsert(values, {loc.REG_RELATION, nil});
 	tinsert(values, {loc.REG_RELATION_NONE, RELATIONS.NONE});
@@ -222,10 +219,8 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	if not TRP3_Register.whiteList then
 		TRP3_Register.whiteList = {};
 	end
-	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
 	blackList = TRP3_Register.blackList;
-	whiteList = TRP3_Register.whiteList;
 end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -236,7 +231,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			id = "aa_player_z_ignore",
 			configText = loc.TF_IGNORE,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			condition = function(targetType, unitID)
+			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
 			end,
 			onClick = function(unitID)
@@ -251,7 +246,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			id = "aa_player_d_relation",
 			configText = loc.REG_RELATION,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			condition = function(targetType, unitID)
+			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
 			end,
 			onClick = onTargetButtonClicked,

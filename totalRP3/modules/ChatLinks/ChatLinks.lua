@@ -136,7 +136,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
-	local function lookForChatLinks(_, event, message, playerName, ...)
+	local function lookForChatLinks(_, _, message, playerName, ...)
 		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
 			return generateFormattedLink(name, playerName)
 		end)
@@ -226,7 +226,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
-	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
+	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(_, link)
 		local linkType = link:sub(1, LINK_LENGTHS);
 		if linkType == LINK_CODE then
 			if IsShiftKeyDown() then

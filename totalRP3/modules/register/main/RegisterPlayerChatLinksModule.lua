@@ -93,7 +93,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenProfileButton = RegisterPlayerChatLinksModule:NewActionButton("OPEN_REG_PROFILE", loc.CL_OPEN_PROFILE, "REG_P_O_Q", "REG_P_O_A");
 
-	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenProfileButton:OnAnswerCommandReceived(profileData)
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
 		TRP3_API.register.insertProfile(profileID, profile)
@@ -110,8 +110,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.profile and tooltipData.profile.link and tooltipData.profile.link[TRP3_API.globals.player_id];
 	end
 
-	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)
-		local profile, profileID = profileData.profile, profileData.profileID;
+	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData)
+		local profile = profileData.profile;
 		local profileName = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
 			profileName = profile.characteristics.FN;

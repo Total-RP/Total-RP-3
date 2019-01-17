@@ -25,14 +25,6 @@ local Ellyb = Ellyb(_);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
-local assert = assert;
-local string = string;
-local math = math;
-local tostring = tostring;
-local tContains = tContains;
---endregion
-
 -- AddOn imports
 local Chomp = AddOn_Chomp;
 local logger = Ellyb.Logger("TotalRP3_Communication");
@@ -109,12 +101,12 @@ local function extractMessageTokenFromData(data)
 end
 
 local function registerSubSystemPrefix(prefix, callback)
-	local handlerID, onProgressHandlerID;
+	local handlerID;
 
 	assert(isType(callback, "function", "callback"));
 	handlerID = subSystemsDispatcher:RegisterCallback(prefix, callback);
 
-	return handlerID, onProgressHandlerID;
+	return handlerID;
 end
 
 local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
@@ -188,7 +180,7 @@ local function isLoggedChannel(channel)
 	return channel:find("LOGGED");
 end
 
-local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
+local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
 	if msgID == 1 then
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;
@@ -197,7 +189,7 @@ local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _,
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
 
-local function onChatMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
+local function onChatMessageReceived(_, data, channel, sender)
 	_, data = extractMessageTokenFromData(data);
 	if not isLoggedChannel(channel) then
 		data = Compression.decompress(data, true);

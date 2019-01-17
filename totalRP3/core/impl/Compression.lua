@@ -18,14 +18,9 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = Ellyb(_);
+local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
-
--- Lua imports
-local assert = assert;
 
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
@@ -59,7 +54,7 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 		end
 	end
 
-	local decompressedData, status = LibDeflate:DecompressDeflate(compressedData);
+	local decompressedData, _ = LibDeflate:DecompressDeflate(compressedData);
 	if decompressedData == nil then
 		error(RED("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. GREY(tostring(compressedData)) .. "\"");
 	end

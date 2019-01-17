@@ -26,9 +26,6 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Lua imports
-local assert = assert;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 
@@ -85,7 +82,7 @@ end
 --- OVERRIDE
 --- [SENDER] Check if the button should be visible for the given data
 ---@return boolean isVisible @ Returns true if the action should be visible
-function ChatLinkActionButton:IsVisible(...)
+function ChatLinkActionButton:IsVisible(...) -- luacheck: ignore 212
 	return true
 end
 
@@ -116,13 +113,13 @@ end
 
 --- OVERRIDE
 --- [RECIPIENT] Function called when the recipient received the requested data
----@param linkData table @ The request data
+---@param data table @ The request data
 ---@param sender string @ The name of the sender of the link
-function ChatLinkActionButton:OnAnswerCommandReceived(data, sender)
+function ChatLinkActionButton:OnAnswerCommandReceived(data, sender) -- luacheck: ignore 212
 
 end
 
-function ChatLinkActionButton:OnProgressDownload(sender, amountOfMessagesIncoming, amountOfMessagesReceived)
+function ChatLinkActionButton:OnProgressDownload(_, amountOfMessagesIncoming, amountOfMessagesReceived)
 	-- If the download is complete, we restore the button text
 	if amountOfMessagesReceived == amountOfMessagesIncoming then
 		if self.button then

@@ -28,20 +28,6 @@ local Tables = Ellyb.Tables;
 local Tooltips = Ellyb.Tooltips;
 --endregion
 
---region Lua imports
-local huge = math.huge;
-local insert = table.insert;
-local sort = table.sort;
-local pairs = pairs;
---endregion
-
---region WoW imports
-local after = C_Timer.After;
-local hooksecurefunc = hooksecurefunc;
-local BaseMapPoiPinMixin = BaseMapPoiPinMixin;
-local Mixin = Mixin;
---endregion
-
 local MapPoiMixins = {};
 
 --region CoalescedMapPin
@@ -157,15 +143,14 @@ local function createBounceAnimation(pin)
 	bounceOut:SetStartDelay(0.2);
 end
 
--- TODO Create the bounce animation instead of requiring an existing one in the XML template
 function AnimatedPinMixin:OnLoad()
 	BaseMapPoiPinMixin.OnLoad(self);
 	createBounceAnimation(self)
 
-	hooksecurefunc(self, "OnAcquired", function(marker, poiInfo)
+	hooksecurefunc(self, "OnAcquired", function(_, poiInfo)
 		if poiInfo.position and self.Bounce and TRP3_API.ui.misc.shouldPlayUIAnimation() then
 			self:Hide();
-			after(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
+			C_Timer.After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
 				TRP3_API.ui.misc.playAnimation(self.Bounce);
 			end);
@@ -180,12 +165,12 @@ MapPoiMixins.AnimatedPinMixin = AnimatedPinMixin;
 local BasePinMixin = {};
 
 --- Build display data that will be used by BasePinMixin:Decorate(displayData) to decorate the mixin
---[[ Override ]] function BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
+--[[ Override ]] function BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo) -- luacheck: ignore 212
 	return {}
 end
 
 --- Decorates the pin using the display data we received from BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
---[[ Override ]] function BasePinMixin:Decorate(displayData)
+--[[ Override ]] function BasePinMixin:Decorate(displayData)  -- luacheck: ignore 212
 
 end
 
@@ -204,7 +189,7 @@ MapPoiMixins.BasePinMixin = BasePinMixin;
 --endregion
 
 --- Create a new pin template
----@param ... table @ A list of mixins to include for this new template
+---@vararg table @ A list of mixins to include for this new template
 ---@return BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
 function MapPoiMixins.createPinTemplate(...)
 	-- TODO Check all the results to make sure they contain expected data

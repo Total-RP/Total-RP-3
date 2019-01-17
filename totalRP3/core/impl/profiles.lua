@@ -29,14 +29,11 @@ local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
-local displayMessage = Utils.message.displayMessage;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
-local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local registerPage = TRP3_API.navigation.page.registerPage;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
@@ -233,7 +230,7 @@ local function uiInitProfileList()
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
-local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
+local showTextInputPopup, showConfirmPopup = TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
 
 local function uiCheckNameAvailability(profileName)
 	if not isProfileNameAvailable(profileName) then
@@ -446,7 +443,7 @@ function TRP3_API.profile.init()
 					playAnimation(_G[self:GetName() .. "Animate"]);
 					playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 				end
-				
+
 			end
 		end);
 		_G[widget:GetName().."Action"]:SetScript("OnClick", onActionClicked);
@@ -508,7 +505,7 @@ function TRP3_API.profile.init()
 			{loc.PR_PROFILEMANAGER_TITLE, "list", 175},
 			{loc.PR_IMPORT_CHAR_TAB, "characterImporter", 175},
 		},
-		function(tabWidget, value)
+		function(_, value)
 			for _, child in pairs({TRP3_ProfileManager:GetChildren()}) do
 				if frame ~= child then
 					child:Hide();
@@ -584,7 +581,6 @@ function TRP3_API.profile.init()
 
 		if object and type(object) == "table" and #object == 3 then
 			local version = object[1];
-			local ID = object[2];
 			local data = object[3];
 
 			local import = function()
@@ -621,7 +617,6 @@ function TRP3_API.profile.init()
 			end
 
 			local profileName = table.concat(args, " ");
-			local profiles = getProfiles();
 
 			for profileID, profile in pairs(profiles) do
 				if profile.profileName == profileName then

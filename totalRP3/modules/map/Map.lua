@@ -20,21 +20,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
-
---{{{ Lua imports
-local sqrt = math.sqrt;
---}}}
-
---{{{ WoW imports
-local GetBestMapForUnit = C_Map.GetBestMapForUnit;
-local GetPlayerMapPosition = C_Map.GetPlayerMapPosition;
-local tContains = tContains;
-local Ambiguate = Ambiguate;
-local UnitInParty = UnitInParty;
---}}}
 
 local Map = {};
 
@@ -47,13 +34,13 @@ local PERSONAL_PHASED_ZONES = {
 
 ---@return number mapID @ The ID of the zone where the player currently is
 function Map.getPlayerMapID()
-	return GetBestMapForUnit("player");
+	return C_Map.GetBestMapForUnit("player");
 end
 
 ---@return number, number x, y @ Returns the X and Y coordinates of the player for the current map, or nil if we could not get their coordinates
 function Map.getPlayerCoordinates()
 	---@type Vector2DMixin
-	local position = GetPlayerMapPosition(Map.getPlayerMapID(), "player");
+	local position = C_Map.GetPlayerMapPosition(Map.getPlayerMapID(), "player");
 	if not position then
 		return
 	end
@@ -80,12 +67,12 @@ function Map.playerCanSeeTarget(target, targetHasWarModeEnabled)
 	return true;
 end
 
-local MAX_DISTANCE_MARKER = sqrt(0.5);
+local MAX_DISTANCE_MARKER = math.sqrt(0.5);
 function Map.getDistanceFromMapCenterFactor(position)
 	local x, y = position:GetXY();
 	local distanceX = 0.5 - x;
 	local distanceY = 0.5 - y;
-	local distance = sqrt(distanceX * distanceX + distanceY * distanceY);
+	local distance = math.sqrt(distanceX * distanceX + distanceY * distanceY);
 	local factor = distance/MAX_DISTANCE_MARKER;
 	return factor;
 end

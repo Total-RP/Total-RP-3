@@ -77,7 +77,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", loc.CL_OPEN_COMPANION, "CMPN_O_Q", "CMPN_O_A");
 
-	function OpenCompanionProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profileID, profile = profileData.profileID, profileData.profile;
 		-- Check profile exists
 		if not TRP3_API.companions.register.getProfiles()[profileID] then
@@ -96,7 +96,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportCompanionProfileButton:OnAnswerCommandReceived(profileData, sender)
+	function ImportCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profile = profileData.profile;
 		local newName = profile.profileName;
 		local i = 1;

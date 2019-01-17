@@ -29,7 +29,7 @@ local MODULE_ACTIVATION;
 local hasBeenInit = false;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
 local onModuleStarted;
@@ -49,10 +49,10 @@ function TRP3_API.module.isModuleLoaded(moduleID)
 end
 
 --- Register a module structure.
--- 
+--
 -- These parameters are mandatory :
 -- id : The moduleID. It must be unique. You can't register two modules having the same ID.
--- 
+--
 -- These parameters are optional :
 -- name : The module name is a non empty string. If nil, equals the module ID.
 -- version : The version is a number. If nil, equals 1.
@@ -61,26 +61,26 @@ end
 -- onInit : A callback triggered before Total RP 3 initialization.
 -- onStart : A callback triggered after Total RP 3 initialization.
 TRP3_API.module.registerModule = function(moduleStructure)
-	
+
 	assert(moduleStructure, "Module structure can't be nil");
 	assert(moduleStructure.id, "Illegal module structure. Module id: "..moduleStructure.id);
 	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: "..moduleStructure.id);
 	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: "..moduleStructure.id);
-	
+
 	if not moduleStructure.name or not type(moduleStructure.name) == "string" or moduleStructure.name:len() == 0 then
 		moduleStructure.name = moduleStructure.id;
 	end
-	
+
 	if not moduleStructure.version then
 		moduleStructure.version = 1;
 	end
-	
+
 	if not moduleStructure.minVersion then
 		moduleStructure.minVersion = 0;
 	end
-	
+
 	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
-	
+
 	Log.log("Module registered: " .. moduleStructure.id);
 end
 
@@ -138,7 +138,7 @@ TRP3_API.module.startModules = function()
 	onModuleStarted();
 end
 
---- Return an array of all registered module structures. 
+--- Return an array of all registered module structures.
 local function getModules()
 	return MODULE_REGISTRATION;
 end
@@ -153,8 +153,7 @@ end
 
 --- Check a module dependency
 -- Return true if dependency is OK.
-local function checkModuleDependency(moduleID, dependency_id, dependency_version)
-	local module = getModule(moduleID);
+local function checkModuleDependency(_, dependency_id, dependency_version)
 	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and MODULE_ACTIVATION[dependency_id] ~= false;
 end
 
@@ -171,7 +170,7 @@ local function checkModuleDependencies(moduleID)
 end
 
 --- Check the TRP minimum version for a module
--- Return true if TRP version is OK. 
+-- Return true if TRP version is OK.
 local function checkModuleTRPVersion(moduleID)
 	local module = getModule(moduleID);
 	return module.minVersion <= Globals.version;
@@ -228,11 +227,11 @@ end
 
 local function getModuleTooltip(module)
 	local message = "";
-	
+
 	if module.description and module.description:len() > 0 then
 		message = message .. "|cffffff00" .. module.description .. "|r\n\n";
 	end
-	
+
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
 
 	if module.error ~= nil then
@@ -270,7 +269,7 @@ function onModuleStarted()
 	local sortedID = {};
 
 	-- Sort module id
-	for moduleID, module in pairs(modules) do
+	for moduleID, _ in pairs(modules) do
 		tinsert(sortedID, moduleID);
 	end
 	table.sort(sortedID);
@@ -316,11 +315,11 @@ TRP3_API.module.init = function()
 		TRP3_Configuration.MODULE_ACTIVATION = {};
 	end
 	MODULE_ACTIVATION = TRP3_Configuration.MODULE_ACTIVATION;
-	
+
 	-- If new module (MODULE_ACTIVATION is saved), then activate if autoEnable;
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
 		module.status = MODULE_STATUS.OK;
-	
+
 		if MODULE_ACTIVATION[moduleID] == nil then
 			MODULE_ACTIVATION[moduleID] = true;
 			if module.autoEnable ~= nil then
@@ -341,7 +340,7 @@ TRP3_API.module.init = function()
 			end
 		end
 	end
-	
+
 	local TUTORIAL_STRUCTURE = {
 		{
 			box = {
@@ -355,7 +354,7 @@ TRP3_API.module.init = function()
 			}
 		},
 	}
-	
+
 	registerPage({
 		id = "main_config_module",
 		templateName = "TRP3_ConfigurationModule",
@@ -369,11 +368,11 @@ TRP3_API.module.init = function()
 		isChildOf = "main_90_config",
 		onSelected = function() setPage("main_config_module"); end,
 	});
-	
+
 	moduleInit();
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		TRP3_ConfigurationModuleContainer:SetSize(containerwidth - 70, 50);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		TRP3_ConfigurationModuleContainer:SetSize(containerWidth - 70, 50);
 	end);
 end

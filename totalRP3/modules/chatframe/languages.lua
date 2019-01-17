@@ -26,12 +26,10 @@ AddOn_TotalRP3.Languages = Languages;
 local _, TRP3_API = ...;
 
 -- Imports
-local setTooltipForFrame, refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
-local icon, color = TRP3_API.utils.str.icon, TRP3_API.utils.str.color;
+local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local loc = TRP3_API.loc;
 local Globals = TRP3_API.globals;
-local tinsert, _G, strconcat = tinsert, _G, strconcat;
 local GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage = GetNumLanguages, GetLanguageByIndex, GetDefaultLanguage;
 local Log = TRP3_API.utils.log;
 local Configuration = TRP3_API.configuration;
@@ -112,12 +110,12 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if not TRP3_API.toolbar then return end;
-	
+
 	local languagesButton = {
 		id = "ww_trp3_languages",
 		icon = "spell_holy_silence",
 		configText = loc.TB_LANGUAGE,
-		onEnter = function(Uibutton, buttonStructure)
+		onEnter = function(Uibutton)
 			refreshTooltip(Uibutton);
 		end,
 		onUpdate = function(Uibutton, buttonStructure)
@@ -133,7 +131,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or "spell_holy_silence";
 			end
 		end,
-		onClick = function(Uibutton, buttonStructure, button)
+		onClick = function(Uibutton)
 			local dropdownItems = {};
 			tinsert(dropdownItems,{loc.TB_LANGUAGE, nil});
 			for _, language in ipairs(Languages.getAvailableLanguages()) do

@@ -19,13 +19,12 @@
 
 -- imports
 local ipairs = ipairs;
-local Globals, Utils, Comm, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
+local Globals, Utils, Events, UI, Ellyb = TRP3_API.globals, TRP3_API.utils, TRP3_API.events, TRP3_API.ui, TRP3_API.Ellyb;
 local stEtN = Utils.str.emptyToNil;
-local stNtE = Utils.str.nilToEmpty;
 local get = TRP3_API.profile.getData;
 local getProfile = TRP3_API.register.getProfile;
 local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local numberToHexa, hexaToNumber, hexaToFloat = Utils.color.numberToHexa, Utils.color.hexaToNumber, Utils.color.hexaToFloat;
+local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
@@ -36,9 +35,8 @@ local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local getUnitIDCharacter = TRP3_API.register.getUnitIDCharacter;
-local getUnitIDProfile, getPlayerCurrentProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.profile.getPlayerCurrentProfile;
-local hasProfile, getRelationTexture = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationTexture;
+local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
+local getRelationTexture = TRP3_API.register.relation.getRelationTexture;
 local RELATIONS = TRP3_API.register.relation;
 local getRelationText, getRelationTooltipText, setRelation = RELATIONS.getRelationText, RELATIONS.getRelationTooltipText, RELATIONS.setRelation;
 local CreateFrame = CreateFrame;
@@ -48,8 +46,6 @@ local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local showConfirmPopup, showTextInputPopup = TRP3_API.popup.showConfirmPopup, TRP3_API.popup.showTextInputPopup;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local deleteProfile = TRP3_API.register.deleteProfile;
-local selectMenu = TRP3_API.navigation.menu.selectMenu;
-local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
@@ -408,7 +404,6 @@ local function setConsultDisplay(context)
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:Show();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:ClearAllPoints();
 		TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, margin);
-		margin = 0;
 		previous = TRP3_RegisterCharact_CharactPanel_PsychoTitle;
 
 		for frameIndex, psychoStructure in ipairs(dataTab.PS) do
@@ -1181,7 +1176,6 @@ function setEditDisplay()
 	end
 	TRP3_RegisterCharact_Edit_PsychoAdd:ClearAllPoints();
 	TRP3_RegisterCharact_Edit_PsychoAdd:SetPoint("TOP", previous, "BOTTOM", 0, -5);
-	previous = TRP3_RegisterCharact_Edit_PsychoAdd;
 end
 
 local function setupRelationButton(profileID, profile)
@@ -1252,7 +1246,7 @@ end
 
 local toast = TRP3_API.ui.tooltip.toast;
 
-local function onActionSelected(value, button)
+local function onActionSelected(value)
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
@@ -1436,10 +1430,12 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_NamePanel_EditButton:SetScript("OnClick", onEdit);
 	TRP3_RegisterCharact_ActionButton:SetScript("OnClick", onActionClicked);
 	TRP3_RegisterCharact_Edit_ResidenceButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(self, button)
+	TRP3_RegisterCharact_Edit_ResidenceButton:SetScript("OnClick", function(_, button)
 		if button == "LeftButton" then
-			if TRP3_API.map.getCurrentCoordinates() then
-				draftData.RC = {TRP3_API.map.getCurrentCoordinates()};
+			if AddOn_TotalRP3.Map.getPlayerCoordinates() then
+				local x, y= AddOn_TotalRP3.Map.getPlayerCoordinates();
+				local mapId = AddOn_TotalRP3.Map.getPlayerMapID()
+				draftData.RC = { mapId, x, y };
 				tinsert(draftData.RC, Utils.str.buildZoneText());
 				TRP3_RegisterCharact_Edit_ResidenceField:SetText(buildZoneText());
 			else
@@ -1528,8 +1524,8 @@ function TRP3_API.register.inits.characteristicsInit()
 
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		local finalContainerWidth = containerwidth - 70;
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		local finalContainerWidth = containerWidth - 70;
 		TRP3_RegisterCharact_CharactPanel_Container:SetSize(finalContainerWidth, 50);
 		TRP3_RegisterCharact_Edit_CharactPanel_Container:SetSize(finalContainerWidth, 50);
 		for _, frame in pairs(registerCharFrame) do

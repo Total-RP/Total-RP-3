@@ -30,7 +30,6 @@ local GetChannelName = GetChannelName;
 local JoinChannelByName = JoinChannelByName;
 local RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix;
 local wipe, string, pairs, strsplit, assert, tinsert, type, tostring = wipe, string, pairs, strsplit, assert, tinsert, type, tostring;
-local time = time;
 local Chomp = AddOn_Chomp;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
@@ -194,14 +193,14 @@ Comm.broadcast.resetPlayers = function()
 	return connectedPlayers;
 end
 
-local function onChannelJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+local function onChannelJoin(_, arg2, _, _, _, _, _, _, arg9)
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = 1;
 	end
 end
 
-local function onChannelLeave(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+local function onChannelLeave(_, arg2, _, _, _, _, _, _, arg9)
 	if config_UseBroadcast() and arg2 and arg9 == config_BroadcastChannel() then
 		local unitName = unitIDToInfo(arg2);
 		connectedPlayers[unitName] = nil;
@@ -289,7 +288,7 @@ Comm.broadcast.init = function()
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
 
 			local firstTime = true;
-			ticker = C_Timer.NewTicker(1, function(self)
+			ticker = C_Timer.NewTicker(1, function(_)
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
 					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
@@ -335,8 +334,7 @@ Comm.broadcast.init = function()
 	-- When you are already in 10 channel
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
 		if config_UseBroadcast() and message == ERR_TOO_MANY_CHAT_CHANNELS and not helloWorlded then
-			local message = loc.BROADCAST_10;
-			Utils.message.displayMessage(message);
+			Utils.message.displayMessage(loc.BROADCAST_10);
 			ticker:Cancel();
 
 			-- Notify that broadcast won't work due to the channel limit.
@@ -349,7 +347,7 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_LEAVE", onChannelLeave);
 
 	-- We register our own HELLO msg so that when it happens we know we are capable of sending and receive on the channel.
-	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, command)
+	Comm.broadcast.registerCommand(HELLO_CMD, function(sender, _)
 		if sender == Globals.player_id then
 			Log.log("Step 3: HELLO command sent and parsed. Broadcast channel initialized.");
 			helloWorlded = true;

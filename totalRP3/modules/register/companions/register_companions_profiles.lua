@@ -31,7 +31,6 @@ local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registe
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
-local setTooltipAll = TRP3_API.ui.tooltip.setTooltipAll;
 local initList = TRP3_API.ui.list.initList;
 local getProfiles, isProfileNameAvailable = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.isProfileNameAvailable;
 local createProfile, deleteProfile = TRP3_API.companions.player.createProfile, TRP3_API.companions.player.deleteProfile;
@@ -52,7 +51,7 @@ local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
-local getCompanionProfileID, getCompanionNameFromSpellID = TRP3_API.companions.player.getCompanionProfileID, TRP3_API.companions.getCompanionNameFromSpellID;
+local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local getCurrentMountSpellID, getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountSpellID, TRP3_API.companions.player.getCurrentMountProfile;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -114,8 +113,8 @@ local function uiDuplicateProfile(profileID)
 	function(newName)
 		if newName and #newName ~= 0 then
 			if not uiCheckNameAvailability(newName) then return end
-			local profileID = duplicateProfile(profile, newName);
-			openProfile(profileID);
+			local newProfileId = duplicateProfile(profile, newName);
+			openProfile(newProfileId);
 		end
 	end,
 	nil,
@@ -174,7 +173,7 @@ local function uiBoundTargetProfile(profileID)
 end
 
 local unboundPlayerCompanion = TRP3_API.companions.player.unboundPlayerCompanion;
-local function uiUnboundTargetProfile(profileID, companionInfo)
+local function uiUnboundTargetProfile(_, companionInfo)
 	local companionID, companionType = companionInfo:sub(1, companionInfo:find("|") - 1), companionInfo:sub(companionInfo:find("|") + 1);
 	unboundPlayerCompanion(companionID, companionType);
 	TRP3_API.ui.tooltip.toast(loc.REG_COMPANION_LINKED_NO:format("|cff00ff00" .. getCompanionNameFromSpellID(companionID) .. "|r"), 4);
@@ -298,7 +297,6 @@ local function onBoundClicked(button)
 end
 
 local function onActionClicked(button)
-	local profileID = button:GetParent().profileID;
 	local values = {};
 	tinsert(values, {loc.PR_DELETE_PROFILE, 1});
 	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, 2});
@@ -314,10 +312,9 @@ end
 -- Target button
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local displayDropDown, UnitName = TRP3_API.ui.listbox.displayDropDown, UnitName;
-local getProfiles, boundPlayerCompanion = TRP3_API.companions.player.getProfiles, TRP3_API.companions.player.boundPlayerCompanion;
+local boundPlayerCompanion = TRP3_API.companions.player.boundPlayerCompanion;
 local displayMessage = Utils.message.displayMessage;
-local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
 ui_boundPlayerCompanion = function (companionID, profileID, targetType)
 	if targetType == TYPE_PET and UnitName("pet") == companionID and PetCanBeRenamed() then
@@ -395,7 +392,7 @@ local function getCompanionInfo(owner, companionID, companionFullID)
 	return profile;
 end
 
-local function companionProfileSelectionList(unitID, targetType, buttonStructure, button)
+local function companionProfileSelectionList(unitID, targetType, _, button)
 	local ownerID, companionID, companionFullID;
 
 	if targetType == TYPE_CHARACTER then
@@ -431,7 +428,7 @@ end
 -- Init
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local function onPageShow(context)
+local function onPageShow()
 	uiInitProfileList();
 end
 
@@ -491,7 +488,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	local widgetTab = {};
 	for i=1,5 do
 		local widget = _G["TRP3_CompanionsProfilesListLine"..i];
-		widget:SetScript("OnMouseUp",function (self)
+		widget:SetScript("OnMouseUp",function ()
 			if IsShiftKeyDown() then
 				TRP3_API.ChatLinks:OpenMakeImportablePrompt(loc.CL_COMPANION_PROFILE, function(canBeImported)
 					TRP3_API.CompanionProfileChatLinksModule:InsertLink(widget.profileID, canBeImported)
@@ -529,7 +526,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	--Localization
 	TRP3_CompanionsProfilesAdd:SetText(loc.PR_CREATE_PROFILE);
 	TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_CO_EMPTY);
-	
+
 	local frame = CreateFrame("Frame", "TRP3_CompanionsProfilesTabBar", TRP3_CompanionsProfiles);
 	frame:SetSize(400, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
@@ -539,7 +536,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		{
 			{loc.PR_CO_PROFILEMANAGER_TITLE, 1, 175},
 		},
-		function(tabWidget, value)
+		function(_, value)
 			local list, importer = TRP3_CompanionsProfiles:GetChildren();
 			importer:Hide();
 			list:Hide();
@@ -563,13 +560,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			configText = loc.REG_COMPANION_TF_PROFILE,
 			condition = function(targetType, unitID)
 				if isTargetTypeACompanion(targetType) then
-					local ownerID, companionID = companionIDToInfo(unitID);
+					local ownerID = companionIDToInfo(unitID);
 					return ownerID == Globals.player_id or companionHasProfile(unitID);
 				end
 			end,
 			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-			adapter = function(buttonStructure, unitID, targetType)
+			adapter = function(buttonStructure, unitID)
 				local ownerID, companionID = companionIDToInfo(unitID);
 				local profile = getCompanionInfo(ownerID, companionID, unitID);
 				buttonStructure.alert = nil;
@@ -604,21 +601,21 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			id = "bb_companion_profile_mount",
 			configText = loc.REG_COMPANION_TF_PROFILE_MOUNT,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
-			condition = function(targetType, unitID)
+			condition = function(_, unitID)
 				if unitID == Globals.player_id then
 					return getCurrentMountSpellID() ~= nil;
 				end
-				local companionFullID, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+				local _, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 				return profileID ~= nil;
 			end,
 			onClick = companionProfileSelectionList,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-			adapter = function(buttonStructure, unitID, targetType)
+			adapter = function(buttonStructure, unitID)
 				buttonStructure.tooltip = loc.TF_OPEN_MOUNT;
 				buttonStructure.alert = nil;
 				buttonStructure.tooltipSub = nil;
 				if unitID == Globals.player_id then
-					local profile, profileID = getCurrentMountProfile();
+					local profile = getCurrentMountProfile();
 					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.PR_PROFILEMANAGER_ACTIONS;
 					if profile then
 						if profile and profile.data and profile.data.NA then
@@ -637,7 +634,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						buttonStructure.tooltip = loc.PR_CO_MOUNT;
 					end
 				else
-					local companionFullID, profileID = TRP3_API.companions.register.getUnitMount(unitID, "target");
+					local companionFullID = TRP3_API.companions.register.getUnitMount(unitID, "target");
 					local profile = getCompanionRegisterProfile(companionFullID);
 					buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.TF_OPEN_MOUNT;
 					if profile and profile.data and profile.data.NA then

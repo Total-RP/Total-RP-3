@@ -64,7 +64,7 @@ local function loadingSequence()
 	-- Call the init callback on all modules
 	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.initModules";
 	TRP3_API.module.initModules();
-	
+
 	-- Welcome \o/
 	MAIN_SEQUENCE_DETAIL = "Welcome message";
 	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));

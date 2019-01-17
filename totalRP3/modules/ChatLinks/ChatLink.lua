@@ -26,19 +26,9 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
-local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
-local LibDeflate = LibStub:GetLibrary("LibDeflate");
-
--- Lua imports
-local format = string.format;
-local assert = assert;
-
 -- Ellyb imports
 local isType = Ellyb.Assertions.isType;
 local isNotEmpty = Ellyb.Assertions.isNotEmpty;
-
--- Total RP 3 imports
-local loc = TRP3_API.loc;
 
 ---@class ChatLink
 local ChatLink, _private = Ellyb.Class("ChatLink");
@@ -71,7 +61,7 @@ function ChatLink:SetIdentifier(identifier)
 end
 
 function ChatLink:GetText()
-	return format(TRP3_API.ChatLinks.LINK_PATTERN, self:GetIdentifier());
+	return TRP3_API.ChatLinks.LINK_PATTERN:format(self:GetIdentifier());
 end
 
 function ChatLink:GetModuleID()

@@ -28,8 +28,6 @@ local Ellyb = Ellyb(...);
 
 -- Lua imports
 local insert = table.insert;
-local pairs = pairs;
-local assert = assert;
 
 -- WoW imports
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow;
@@ -68,7 +66,7 @@ end
 --- [SENDER SIDE] Get the link data that will be sent
 --- MODULES SHOULD OVERRIDE THIS FUNCTION to implement the behaviour needed for that module
 ----@return string, table linkText, linkData @ The text to show in the link and a table with whatever data the module needs to format the tooltip later
-function ChatLinkModule:GetLinkData(...)
+function ChatLinkModule:GetLinkData()
 	return "link", {};
 end
 
@@ -76,7 +74,7 @@ end
 ---@param linkData table @ The data table that was given by the ChatLinkModule in :GetLinkData()
 ---@return ChatLinkTooltipLines tooltipLines @ A table of tooltip lines to be displayed inside the tooltip on the recipient's end
 function ChatLinkModule:GetTooltipLines(linkData)
-	return {};
+	return linkData;
 end
 
 --- [SENDER SIDE] Get the action buttons to display inside the tooltip
@@ -97,7 +95,7 @@ end
 
 --- [SENDER SIDE] Get whatever custom data that will be used to execute actions upon the link (like an ID)
 --- MODULES SHOULD OVERRIDE THIS FUNCTION
-function ChatLinkModule:GetCustomData(linkData)
+function ChatLinkModule:GetCustomData(linkData) -- luacheck: ignore 212
 	return {};
 end
 
@@ -137,7 +135,7 @@ end
 
 --- Insert a link inside the currently focused editbox.
 --- The arguments passed to this function will be passed to
----@param ... any @ You can pass any arguments that ChatLinkModule:GetLinkData(...) needs
+---@vararg any @ You can pass any arguments that ChatLinkModule:GetLinkData(...) needs
 function ChatLinkModule:InsertLink(...)
 	local editbox = ChatEdit_GetActiveWindow();
 	if editbox then

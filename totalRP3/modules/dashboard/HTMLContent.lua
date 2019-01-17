@@ -73,7 +73,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkClick(url, text, button)
 	Popups:OpenURL(url, loc.UI_LINK_SAFE);
 end
 
-function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url, text, button)
+function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url, _, button)
 	-- Left click opens the Social UI, right-click gives you a profile link.
 	if Social_ToggleShow and button == "LeftButton" then
 		Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");

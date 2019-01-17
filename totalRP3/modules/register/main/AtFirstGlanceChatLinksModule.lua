@@ -20,22 +20,12 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = TRP3_API.Ellyb;
-
--- Lua imports
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
 local Globals = TRP3_API.globals;
-local EMPTY = Globals.empty;
-local get = TRP3_API.profile.getData;
-local getDataDefault = TRP3_API.profile.getDataDefault;
 local crop = TRP3_API.Ellyb.Strings.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
@@ -89,7 +79,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportGlanceButton:OnAnswerCommandReceived(tooltipData, sender)
+	function ImportGlanceButton:OnAnswerCommandReceived(tooltipData)
 		local glance = tooltipData.glanceTab;
 		TRP3_API.register.glance.saveSlotPreset(glance);
 	end

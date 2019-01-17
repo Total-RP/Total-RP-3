@@ -23,6 +23,7 @@ local _, TRP3_API = ...;
 
 --region Build version check
 if TRP3_API.BUILD_NUMBER == nil then
+	-- luacheck: ignore 311
 	TRP3_API = nil -- Force API reference to nil. This will break most of the add-on so it stops loading.
 	error([[Missing critical Total RP 3 files.
 

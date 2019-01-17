@@ -31,7 +31,7 @@ function TRP3_MapDataProvider:RemoveAllData()
 end
 
 --- Called when we want to display data and also dynamically by the map frame if it needs to refresh the data providers
-function TRP3_MapDataProvider:RefreshAllData(fromOnShow, ...)
+function TRP3_MapDataProvider:RefreshAllData()
 	self:RemoveAllData();
 
 	if not self.data then return end

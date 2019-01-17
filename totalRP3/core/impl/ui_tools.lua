@@ -36,14 +36,12 @@ local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat 
 local math = math;
 local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, MSA_ToggleDropDownMenu;
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = MSA_DropDownMenu_Initialize, MSA_DropDownMenu_CreateInfo, MSA_DropDownMenu_AddButton;
-local CloseDropDownMenus = CloseDropDownMenus;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
 local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
-local tcopy = TRP3_API.utils.table.copy;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
@@ -98,7 +96,7 @@ end
 function TRP3_API.ui.frame.createRefreshOnFrame(frame, time, callback)
 	assert(frame and time and callback, "Argument must be not nil");
 	frame.refreshTimer = 1000;
-	frame:SetScript("OnUpdate", function(arg, elapsed)
+	frame:SetScript("OnUpdate", function(_, elapsed)
 		frame.refreshTimer = frame.refreshTimer + elapsed;
 		if frame.refreshTimer > time then
 			frame.refreshTimer = 0;
@@ -112,7 +110,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local DROPDOWN_FRAME = "TRP3_UIDD";
-local dropDownFrame, currentlyOpenedDrop;
+local dropDownFrame;
 
 local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	assert(anchoredFrame, "No anchoredFrame");
@@ -120,17 +118,17 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	if not dropDownFrame then
 		dropDownFrame = MSA_DropDownMenu_Create(DROPDOWN_FRAME, UIParent);
 	end
-	
+
 	if _G["MSA_DropDownList1"]:IsVisible() then
 		MSA_HideDropDownMenu(1);
 		return;
 	end
 
 	UIDropDownMenu_Initialize(dropDownFrame,
-		function(uiFrame, level, menuList)
+		function(_, level, menuList)
 			local levelValues = menuList or values;
 			level = level or 1;
-			for index, tab in pairs(levelValues) do
+			for _, tab in pairs(levelValues) do
 				assert(type(tab) == "table", "Level value is not a table !");
 				local text = tab[1];
 				local value = tab[2];
@@ -171,7 +169,6 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 							if level > 1 then
 								ToggleDropDownMenu(nil, nil, dropDownFrame);
 							end
-							currentlyOpenedDrop = nil;
 						end;
 					else
 						info.disabled = true;
@@ -193,13 +190,12 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 	dropDownFrame:SetParent(anchoredFrame);
 	ToggleDropDownMenu(1, nil, dropDownFrame, anchoredFrame:GetName() or "cursor", -((space or -10)), 0);
 	TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-	currentlyOpenedDrop = anchoredFrame;
 end
 TRP3_API.ui.listbox.displayDropDown = openDropDown;
 
 --- Setup a drop down menu for a clickable (Button ...)
 local function setupDropDownMenu(hasClickFrame, values, callback, space, addCancel, rightClick)
-	hasClickFrame:SetScript("OnClick", function(self, button)
+	hasClickFrame:SetScript("OnClick", function(_, button)
 		if (rightClick and button ~= "RightButton") or (not rightClick and button ~= "LeftButton") then return; end
 		openDropDown(hasClickFrame, values, callback, space, addCancel);
 	end);
@@ -243,7 +239,7 @@ local function setupListBox(listBox, values, callback, defaultText, boxWidth, ad
 	listBox.values = values;
 	listBox.callback = callback;
 	local listCallback = function(value)
-		for index, tab in pairs(values) do
+		for _, tab in pairs(values) do
 			local text = tab[1];
 			local val = tab[2];
 			if val == value then
@@ -276,7 +272,7 @@ TRP3_API.ui.listbox.setupListBox = setupListBox;
 
 -- Handle the mouse wheel for the frame in order to slide the slider
 TRP3_API.ui.list.handleMouseWheel = function(frame, slider)
-	frame:SetScript("OnMouseWheel",function(self, delta)
+	frame:SetScript("OnMouseWheel",function(_, delta)
 		if slider:IsEnabled() then
 			local mini,maxi = slider:GetMinMaxValues();
 			if delta == 1 and slider:GetValue() > mini then
@@ -321,7 +317,6 @@ TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 	assert(infoTab.widgetTab, "Error : no widget tab in infoTab.");
 	assert(infoTab.decorate, "Error : no decorate function in infoTab.");
 
-	local count = 0;
 	local maxPerPage = #infoTab.widgetTab;
 	infoTab.maxPerPage = maxPerPage;
 
@@ -343,7 +338,7 @@ TRP3_API.ui.list.initList = function(infoTab, dataTab, slider)
 			tinsert(infoTab.uiTab, i);
 		end
 	end
-	count = #infoTab.uiTab;
+	local count = #infoTab.uiTab;
 
 	table.sort(infoTab.uiTab);
 
@@ -415,10 +410,12 @@ local function refreshTooltip(Frame)
 			TRP3_MainTooltipTextRight1:SetNonSpaceWrap(true);
 			TRP3_MainTooltipTextRight1:SetTextColor(1, 1, 1);
 		end
-		local font, _, flag = TRP3_MainTooltipTextLeft1:GetFont();
-		TRP3_MainTooltipTextLeft1:SetFont(font, getTooltipSize() + 4, flag);
-		TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
-		TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
+		do
+			local font, _, flag = TRP3_MainTooltipTextLeft1:GetFont();
+			TRP3_MainTooltipTextLeft1:SetFont(font, getTooltipSize() + 4, flag);
+			TRP3_MainTooltipTextLeft1:SetNonSpaceWrap(true);
+			TRP3_MainTooltipTextLeft1:SetTextColor(1, 1, 1);
+		end
 		if Frame.bodyText then
 			TRP3_MainTooltip:AddLine(Frame.bodyText, 1, 0.6666, 0, true);
 			local font, _, flag = TRP3_MainTooltipTextLeft2:GetFont();
@@ -436,7 +433,7 @@ local function tooltipSimpleOnEnter(self)
 	refreshTooltip(self);
 end
 
-local function tooltipSimpleOnLeave(self)
+local function tooltipSimpleOnLeave()
 	TRP3_MainTooltip:Hide();
 end
 
@@ -611,7 +608,7 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 	local maxBound = # tabEditBoxes;
 	local minBound = 1;
 	for index, editbox in pairs(tabEditBoxes) do
-		editbox:SetScript("OnTabPressed", function(self, button)
+		editbox:SetScript("OnTabPressed", function()
 			local cursor = index
 			if shiftDown() then
 				if cursor == minBound then
@@ -625,8 +622,8 @@ function TRP3_API.ui.frame.setupEditBoxesNavigation(tabEditBoxes)
 				else
 					cursor = cursor + 1
 				end
-			end			
-			tabEditBoxes[cursor]:SetFocus();		
+			end
+			tabEditBoxes[cursor]:SetFocus();
 		end)
 	end
 end
@@ -641,7 +638,6 @@ local tabBar_HEIGHT_NORMAL = 32;
 
 local function tabBar_onSelect(tabGroup, index)
 	assert(#tabGroup.tabs >= index, "Index out of bound.");
-	local i;
 	for i=1, #tabGroup.tabs do
 		local widget = tabGroup.tabs[i];
 		if i == index then
@@ -720,7 +716,7 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallbac
 					callback(tabWidget, value);
 				end
 		end
-		tabWidget:SetScript("OnClick", function(self)
+		tabWidget:SetScript("OnClick", function()
 			if not confirmCallback then
 				clickFunction();
 			else
@@ -916,7 +912,7 @@ local function onContainerTagClicked(button, frame, isP)
 		tinsert(values, {loc.CM_CENTER, 1});
 		tinsert(values, {loc.CM_RIGHT, 2});
 	end
-	openDropDown(button, values, function(alignIndex, button) insertContainerTag(alignIndex, button, frame) end, 0, true);
+	openDropDown(button, values, function(alignIndex, mouseButton) insertContainerTag(alignIndex, mouseButton, frame) end, 0, true);
 end
 
 function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, parentPoint)
@@ -977,7 +973,7 @@ end
 
 function TRP3_API.ui.misc.playSoundKit(soundID, channel)
 	if getConfigValue and getConfigValue(CONFIG_UI_SOUNDS) then
-		local willPlay, handlerID = PlaySound(soundID, channel or "SFX");
+		local _, handlerID = PlaySound(soundID, channel or "SFX");
 		return handlerID;
 	end
 end
@@ -1108,7 +1104,7 @@ resizeShadowFrame:SetScript("OnUpdate", function(self)
 	if width < self.minWidth then
 		widthColor = INVALID_SIZE_COLOR;
 	end
-	resizeShadowFrame.text:SetText(heightColor(math.ceil(width)) .. " x " .. heightColor(math.ceil(height)));
+	resizeShadowFrame.text:SetText(widthColor(math.ceil(width)) .. " x " .. heightColor(math.ceil(height)));
 end);
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

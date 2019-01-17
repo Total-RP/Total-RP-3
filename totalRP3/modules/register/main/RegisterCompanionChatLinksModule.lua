@@ -82,7 +82,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenRegisterCompanionProfileButton = RegisterCompanionChatLinksModule:NewActionButton("OPEN_REG_COMPANION", loc.CL_OPEN_COMPANION, "REG_C_O_Q","REG_C_O_A");
 
-	function OpenRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profileID, profile = profileData.profileID, profileData.profileData;
 		-- Check profile exists
 		if not TRP3_API.companions.register.getProfiles()[profileID] then
@@ -101,7 +101,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData, sender)
+	function ImportRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profile = profileData.profileData;
 		local newName = UNKNOWN;
 		if profile.data and profile.data.NA then

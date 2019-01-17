@@ -31,14 +31,10 @@ local function onStart()
 		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
-	local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
-	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local tsize = Utils.table.size;
-	local log = Utils.log.log;
-	local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
+	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
+	local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
-	local onInformationReceived;
 	local CONFIG_T3_ONLY = "msp_t3";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -91,7 +87,7 @@ local function onStart()
 			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
 			local t = {};
-			for i, data in ipairs(dataTab.T2) do
+			for _, data in ipairs(dataTab.T2) do
 				if data.TX then
 					t[#t + 1] = removeTextTags(data.TX);
 				end
@@ -193,7 +189,7 @@ local function onStart()
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
-	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
+	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
 	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
@@ -284,7 +280,7 @@ local function onStart()
 			end
 
 			local color = false;
-			for i, field in ipairs(SUPPORTED_FIELDS) do
+			for _, field in ipairs(SUPPORTED_FIELDS) do
 				if profile.mspver[field] ~= msp.char[senderID].ver[field]
 				or msp.ttAll[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
 				then
@@ -522,7 +518,7 @@ local function onStart()
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
 
 	-- Init others vernum
-	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
+	for _, profile in pairs(TRP3_API.register.getProfileList()) do
 		if profile.msp and profile.mspver and profile.link then
 			for fieldID, version in pairs(profile.mspver) do
 				for ownerID, _ in pairs(profile.link) do
@@ -563,7 +559,7 @@ local function onStart()
 			end
 		end
 	end);
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
+	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(_, mspOwners)
 		if mspOwners then
 			for _, ownerID in pairs(mspOwners) do
 				msp.char[ownerID] = nil;

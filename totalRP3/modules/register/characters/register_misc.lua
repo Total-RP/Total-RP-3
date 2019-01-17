@@ -19,22 +19,15 @@
 
 -- imports
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-local stEtN = Utils.str.emptyToNil;
-local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
 local loc = TRP3_API.loc;
 local get = TRP3_API.profile.getData;
-local tcopy, tsize = Utils.table.copy, Utils.table.size;
-local assert, table, wipe, _G = assert, table, wipe, _G;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local tinsert, pairs, type, tostring = tinsert, pairs, type, tostring;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.toast;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local setupIconButton, getPlayerCurrentProfileID = TRP3_API.ui.frame.setupIconButton, TRP3_API.profile.getPlayerCurrentProfileID;
+local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local showPopup = TRP3_API.popup.showPopup;
-local hasProfile = TRP3_API.register.hasProfile;
-local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -182,7 +175,7 @@ local function displayRPStyle(context)
 			else
 				dropDown:Hide();
 				readOnlyValue:Show();
-				local valueText = nil;
+				local valueText;
 				for _, data in pairs(fieldData.values) do
 					if data[2] == selectedValue then
 						valueText = data[1];
@@ -299,9 +292,6 @@ TRP3_API.register.ui.sanitizeMisc = sanitizeMisc;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peek editor
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local draftData = {};
-local displayDropDown, setGlanceSlotPreset = TRP3_API.ui.listbox.displayDropDown;
 
 local function applyPeekSlot(slot, ic, ac, ti, tx, swap)
 	TRP3_AtFirstGlanceEditor:Hide();
