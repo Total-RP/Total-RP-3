@@ -1,3 +1,13 @@
+# Changelog version 1.5.3
+
+## Added
+
+- Added 562 icons, 51 images and 56 musics to Total RP 3's resources browsers for patch 8.1.
+
+## Fixed
+
+- Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
+
 # Changelog version 1.5.2
 
 - Fixed invalid game version check on login. We cannot properly check the game build number in the current 8.1 build.
