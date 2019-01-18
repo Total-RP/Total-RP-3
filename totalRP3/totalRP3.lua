@@ -123,7 +123,7 @@ function Globals.addon:OnEnable()
 end
 
 function TRP3_ShowErrorMessage()
-	print(COLORS.ORANGE("[TRP3]") .. " " .. COLORS.RED("Error during addon loading sequence:"));
+	print(COLORS.ORANGE(("[TRP3: %s]"):format(TRP3_API.VERSION_DISPLAY)) .. " " .. COLORS.RED("Error during addon loading sequence:"));
 	print(COLORS.ORANGE("Sequence ID: ") .. " " .. MAIN_SEQUENCE_ID);
 	print(COLORS.ORANGE("Sub-sequence ID: ") .. " " .. MAIN_SEQUENCE_DETAIL);
 	print(COLORS.ORANGE("Error message: ") .. " " .. tostring(MAIN_SEQUENCE_ERROR));
