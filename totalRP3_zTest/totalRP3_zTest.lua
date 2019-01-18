@@ -268,28 +268,28 @@ end
 local function onStart()
 	Log.log("onStart test module");
 
-	--	testSerial();
+	--- testSerial();
 
 -- TRP-54
---	local data = {
---		["RA"] = "Draeneï",
---		["MI"] = {
---		},
---		["PS"] = {
---			{
---				["ID"] = 3,
---				["VA"] = 3,
---			}, -- [1]
---		},
---		["v"] = 11,
---		["CL"] = "Shaman",
---		["CH"] = "ff4bbd",
---		["IC"] = "Ability_Crown_of_the_Heavens_Icon",
---		["FN"] = "Ellypse",
---		["FT"] = "(Developer for Total RP 2 & 3)",
---		["HE"] = "Really tall !!",
---	}
---	Comm.sendObject("SI", {TRP3_API.register.registerInfoTypes.CHARACTERISTICS, data}, "Telkostrasz-KirinTor", "BULK");
+--- local data = {
+--- 	["RA"] = "Draeneï",
+--- 	["MI"] = {
+--- 	},
+--- 	["PS"] = {
+--- 		{
+--- 			["ID"] = 3,
+--- 			["VA"] = 3,
+--- 		}, -- [1]
+--- 	},
+--- 	["v"] = 11,
+--- 	["CL"] = "Shaman",
+--- 	["CH"] = "ff4bbd",
+--- 	["IC"] = "Ability_Crown_of_the_Heavens_Icon",
+--- 	["FN"] = "Ellypse",
+--- 	["FT"] = "(Developer for Total RP 2 & 3)",
+--- 	["HE"] = "Really tall !!",
+--- }
+--- Comm.sendObject("SI", {TRP3_API.register.registerInfoTypes.CHARACTERISTICS, data}, "Telkostrasz-KirinTor", "BULK");
 end
 
 function BULLSHIT()
@@ -391,8 +391,8 @@ local MODULE_STRUCTURE = {
 	["onStart"] = onStart,
 	["minVersion"] = 0.1,
 	["requiredDeps"] = {
-	--		{"dyn_locale", 1},
-	--		{"test", 0.57}
+	--- 	{"dyn_locale", 1},
+	--- 	{"test", 0.57}
 	}
 };
 

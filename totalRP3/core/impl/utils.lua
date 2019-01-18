@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Util API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Util API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -265,9 +266,9 @@ for i=97, 122 do
 end
 local sID_CHARS = #ID_CHARS;
 
---	Generate a pseudo-unique random ID.
+--- Generate a pseudo-unique random ID.
 --  If you encounter a collision, you really should playing lottery
---	ID's have a id_length characters length
+--- ID's have a id_length characters length
 local function generateID()
 	local ID = date("%m%d%H%M%S");
 	for _=1, 5 do
@@ -832,10 +833,10 @@ Utils.str.toHTML = function(text, noColor)
 		after = text:sub(#before + #tagText + 1);
 		text = after;
 
-		--		Log.log("Iteration "..i);
-		--		Log.log("before ("..(#before).."): "..before);
-		--		Log.log("tagText ("..(#tagText).."): "..tagText);
-		--		Log.log("after ("..(#before).."): "..after);
+		--- 	Log.log("Iteration "..i);
+		--- 	Log.log("before ("..(#before).."): "..before);
+		--- 	Log.log("tagText ("..(#tagText).."): "..tagText);
+		--- 	Log.log("after ("..(#before).."): "..after);
 
 		i = i+1;
 		if i == 500 then
@@ -846,7 +847,7 @@ Utils.str.toHTML = function(text, noColor)
 		tinsert(tab, text); -- Rest of the text
 	end
 
-	--	log("Parts count "..(#tab));
+	--- log("Parts count "..(#tab));
 
 	local finalText = "";
 	for _, line in pairs(tab) do
