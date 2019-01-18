@@ -145,7 +145,7 @@ end
 
 ---@return Player player
 --[[ static ]] function Player.CreateFromCharacterID(characterID)
-	assert(Ellyb.Assertions.isType(characterID, "string", "characterID"));
+	Ellyb.Assertions.isType(characterID, "string", "characterID");
 
 	if characterID == currentUser:GetCharacterID() then
 		return Player.GetCurrentUser();
@@ -160,7 +160,7 @@ end
 
 ---@return Player player
 --[[ static ]] function Player.CreateFromProfileID(profileID)
-	assert(Ellyb.Assertions.isType(profileID, "string", "profileID"));
+	Ellyb.Assertions.isType(profileID, "string", "profileID");
 	assert(TRP3_Register.profiles[profileID], ("Unknown profile ID %s"):format(profileID));
 
 	local player = Player();

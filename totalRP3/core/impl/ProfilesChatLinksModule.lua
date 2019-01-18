@@ -27,7 +27,6 @@ local assert = assert;
 
 -- Ellyb imports
 local YELLOW = Ellyb.ColorManager.YELLOW;
-local isType = Ellyb.Assertions.isType;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -42,7 +41,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	--- Get a copy of the data for the link, using the information provided when using ProfilesChatLinkModule:InsertLink
 	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
+		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
 		local profile = TRP3_API.profile.getProfileByID(profileID);
 

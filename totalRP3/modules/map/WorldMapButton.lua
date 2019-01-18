@@ -70,12 +70,12 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 		WorldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 	end
 
-	insert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_MAP_BUTTON,
 	});
 
-	insert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
 		title = loc.CO_MAP_BUTTON_POS,
@@ -136,11 +136,11 @@ WorldMapButton:SetScript("OnClick", function(self)
 	---@param scan MapScanner
 	for scanID, scan in pairs(TRP3_API.MapScannersManager.getAllScans()) do
 		if scan:CanScan() then
-			insert(structure, { scan:GetActionString(), scanID });
+			tinsert(structure, { scan:GetActionString(), scanID });
 		end
 	end
 	if #structure == 0 then
-		insert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
+		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
 	displayDropDown(self, structure, TRP3_API.MapScannersManager.launch, 0, true);
 end);

@@ -22,12 +22,8 @@
 local addonName, TRP3_API = ...;
 local Ellyb = Ellyb(addonName);
 
--- Lua imports
-local assert = assert;
-
 -- Ellyb imports
 local ColorManager = Ellyb.ColorManager;
-local isType = Ellyb.Assertions.isType;
 
 -- WoW imports
 local GameFontNormal = GameFontNormal;
@@ -66,7 +62,7 @@ TRP3_DashboardTabFrameMixin = {};
 function TRP3_DashboardTabFrameMixin:OnLoad()
 	-- Expect self.TabClasses to be a table. If it isn't, see above for what
 	-- you've gotta do.
-	assert(isType(self.TabClasses, "table", "self.TabClasses"));
+	Ellyb.Assertions.isType(self.TabClasses, "table", "self.TabClasses");
 
 	-- Can't set parentKey on a scroll child and expect it to work, so
 	-- assign it as a child here instead.

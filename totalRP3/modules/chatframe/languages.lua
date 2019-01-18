@@ -67,7 +67,7 @@ end
 
 ---@param language Language
 local function saveSelectedLanguageToCharacterData(language)
-	assert(Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language"));
+	Ellyb.Assertions.isInstanceOf(language, AddOn_TotalRP3.Language, "language");
 	TRP3_Characters[Globals.player_id][LAST_LANGUAGE_USED] = language:GetID();
 end
 

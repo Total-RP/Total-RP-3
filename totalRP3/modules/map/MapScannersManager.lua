@@ -22,8 +22,6 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
-local assert = assert;
-local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 local after = C_Timer.After;
 local bind = Ellyb.Functions.bind;
 
@@ -40,7 +38,7 @@ Events.MAP_SCAN_ENDED = "MAP_SCAN_ENDED"
 
 ---@param scan MapScanner
 function MapScannersManager.register(scan)
-	assert(isInstanceOf(scan, AddOn_TotalRP3.MapScanner, "scan"));
+	Ellyb.Assertions.isInstanceOf(scan, AddOn_TotalRP3.MapScanner, "scan");
 
 	registeredMapScans[scan:GetID()] = scan;
 end

@@ -24,13 +24,12 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
-local isType = Ellyb.Assertions.isType;
 local RED, GREY, ORANGE = Ellyb.ColorManager.RED, Ellyb.ColorManager.GREY, Ellyb.ColorManager.ORANGE;
 
 local Compression = {};
 
 function Compression.compress(data, willBeSentViaAddOnChannel)
-	assert(isType(data, "string", "data"));
+	Ellyb.Assertions.isType(data, "string", "data");
 
 	local compressedData = LibDeflate:CompressDeflate(data);
 
@@ -42,7 +41,7 @@ function Compression.compress(data, willBeSentViaAddOnChannel)
 end
 
 function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
-	assert(isType(compressedData, "string", "data"));
+	Ellyb.Assertions.isType(compressedData, "string", "data");
 
 	if wasReceivedViaAddOnChannel then
 		local decodedCompressedData = LibDeflate:DecodeForWoWChatChannel(compressedData);

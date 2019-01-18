@@ -20,7 +20,7 @@
 -- imports
 local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
 local loc = TRP3_API.loc;
-local registerPage = TRP3_API.navigation.page.setPage;
+local registerPage = TRP3_API.navigation.page.registerPage;
 local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;

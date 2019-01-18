@@ -22,10 +22,6 @@ local Ellyb = TRP3_API.Ellyb;
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
-local assert = assert;
-local isType = Ellyb.Assertions.isType;
-local CreateVector2D = CreateVector2D;
-
 --- A MapScanner is module that can be used to scan for things on the map.
 --- Create a new MapScanner and override the methods to define the behavior for your MapScanner.
 ---@class MapScanner : Object
@@ -40,7 +36,7 @@ MapScanner.dataProviderTemplate = "TRP3_PlayerMapPinTemplate";
 
 ---@private
 function MapScanner:initialize(scanID)
-	assert(isType(scanID, "string", "scanID"));
+	Ellyb.Assertions.isType(scanID, "string", "scanID");
 
 	_private[self] = {};
 	_private[self].scanID = scanID;

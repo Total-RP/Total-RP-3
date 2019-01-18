@@ -26,17 +26,13 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-local isNotEmpty = Ellyb.Assertions.isNotEmpty;
-
 ---@class ChatLink
 local ChatLink, _private = Ellyb.Class("ChatLink");
 
 function ChatLink:initialize(identifier, data, moduleID)
-	assert(isType(identifier, "string", "identifier"));
-	assert(isNotEmpty(data, "data"));
-	assert(isType(moduleID, "string", "moduleID"));
+	Ellyb.Assertions.isType(identifier, "string", "identifier");
+	Ellyb.Assertions.isNotEmpty(data, "data");
+	Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 
 	_private[self] = {};
 	_private[self].identifier = identifier;
@@ -55,7 +51,7 @@ end
 
 ---@param identifier string
 function ChatLink:SetIdentifier(identifier)
-	assert(isType(identifier, "string", "identifier"));
+	Ellyb.Assertions.isType(identifier, "string", "identifier");
 
 	_private[self].identifier = identifier;
 end

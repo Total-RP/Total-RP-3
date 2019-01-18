@@ -30,7 +30,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local loc = TRP3_API.loc;
 
 -- Ellyb imports
-local isType = Ellyb.Assertions.isType;
 local bind = Ellyb.Functions.bind;
 
 ---@class ChatLinkActionButton : Object
@@ -39,10 +38,10 @@ local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
 ---@param actionID string @ The ID of the action
 ---@param buttonText string @ The text to be displayed on the button
 function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, answerCommand)
-	assert(isType(actionID, "string", actionID));
-	assert(isType(buttonText, "string", buttonText));
-	assert(isType(questionCommand, "string", questionCommand));
-	assert(isType(answerCommand, "string", answerCommand));
+	Ellyb.Assertions.isType(actionID, "string", actionID);
+	Ellyb.Assertions.isType(buttonText, "string", buttonText);
+	Ellyb.Assertions.isType(questionCommand, "string", questionCommand);
+	Ellyb.Assertions.isType(answerCommand, "string", answerCommand);
 
 	_private[self] = {}
 	_private[self].actionID = actionID;
@@ -156,9 +155,9 @@ function TRP3_ChatLinkActionButtonMixin:OnClick()
 end
 
 function TRP3_ChatLinkActionButtonMixin:Set(button)
-	assert(isType(button, "table", button));
-	assert(isType(button.text, "string", button.text));
-	assert(isType(button.command, "string", button.command));
+	Ellyb.Assertions.isType(button, "table", button);
+	Ellyb.Assertions.isType(button.text, "string", button.text);
+	Ellyb.Assertions.isType(button.command, "string", button.command);
 
 	self:SetText(button.text);
 	self.command = button.command;

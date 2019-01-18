@@ -33,9 +33,6 @@ local insert = table.insert;
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow;
 local ChatEdit_GetActiveWindow = ChatEdit_GetActiveWindow;
 
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 -- Total RP 3 imports
 local ChatLink = TRP3_API.ChatLink;
 
@@ -43,8 +40,8 @@ local ChatLink = TRP3_API.ChatLink;
 local ChatLinkModule, _private = Ellyb.Class("ChatLinkModule");
 
 function ChatLinkModule:initialize(moduleName, moduleID)
-	assert(isType(moduleName, "string", "moduleName"));
-	assert(isType(moduleID, "string", "moduleID"));
+	Ellyb.Assertions.isType(moduleName, "string", "moduleName");
+	Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 
 	_private[self] = {}
 	_private[self].moduleName = moduleName;
@@ -105,9 +102,9 @@ end
 ---@param sender string @ The sender of the link currently opened
 ---@param button Button @ The UI button that was clicked
 function ChatLinkModule:OnActionButtonClicked(actionID, customData, sender, button)
-	assert(isType(actionID, "string", "actionID"));
-	assert(isType(sender, "string", "sender"));
-	assert(isType(button, "Button", "button"));
+	Ellyb.Assertions.isType(actionID, "string", "actionID");
+	Ellyb.Assertions.isType(sender, "string", "sender");
+	Ellyb.Assertions.isType(button, "Button", "button");
 
 	---@type ChatLinkActionButton
 	local actionButton = _private[self].actionButtons[actionID];
@@ -123,10 +120,10 @@ end
 ---@param answerCommand string @ The command send by the button to answer with the data
 ---@return ChatLinkActionButton actionButton @ A new ChatLinkActionButton
 function ChatLinkModule:NewActionButton(actionID, buttonText, questionCommand, answerCommand)
-	assert(isType(actionID, "string", "actionID"));
-	assert(isType(buttonText, "string", "buttonText"));
-	assert(isType(questionCommand, "string", questionCommand));
-	assert(isType(answerCommand, "string", answerCommand));
+	Ellyb.Assertions.isType(actionID, "string", "actionID");
+	Ellyb.Assertions.isType(buttonText, "string", "buttonText");
+	Ellyb.Assertions.isType(questionCommand, "string", questionCommand);
+	Ellyb.Assertions.isType(answerCommand, "string", answerCommand);
 
 	local actionButton = TRP3_API.ChatLinkActionButton(actionID, buttonText, questionCommand, answerCommand);
 	_private[self].actionButtons[actionID] = actionButton;

@@ -21,13 +21,6 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
--- Lua imports
-local pairs = pairs;
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 local Events = {
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Total RP 3 events
@@ -98,22 +91,22 @@ function Events.registerEvent()
 end
 
 function Events.unregisterCallback(handlerID)
-	assert(isType(handlerID, "string", "handlerID"));
+	Ellyb.Assertions.isType(handlerID, "string", "handlerID");
 	return eventsDispatcher:UnregisterCallback(handlerID);
 end
 
 ---@overload fun(event:string, handler:function)
 function Events.registerCallback(event, handler, handlerID)
-	assert(isType(event, "string", "event"));
-	assert(isType(handler, "function", "handler"));
+	Ellyb.Assertions.isType(event, "string", "event");
+	Ellyb.Assertions.isType(handler, "function", "handler");
 	return eventsDispatcher:RegisterCallback(event, handler, handlerID);
 end
 
 Events.listenToEvent = Events.registerCallback;
 
 function Events.registerCallbacks(events, handler)
-	assert(isType(events, "table", "events"));
-	assert(isType(handler, "function", "handler"));
+	Ellyb.Assertions.isType(events, "table", "events");
+	Ellyb.Assertions.isType(handler, "function", "handler");
 
 	local handlerID;
 	for _, event in pairs(events) do
@@ -125,7 +118,7 @@ end
 Events.listenToEvents = Events.registerCallback;
 
 function Events.triggerEvent(event, ...)
-	assert(isType(event, "string", "event"));
+	Ellyb.Assertions.isType(event, "string", "event");
 	eventsDispatcher:TriggerEvent(event, ...);
 end
 

@@ -22,10 +22,6 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
--- Lua imports
-local insert = table.insert;
-local pairs = pairs;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local Configuration = TRP3_API.configuration;
@@ -56,14 +52,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
 
 	-- Reset button
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_ADVANCED_BROADCAST,
 	});
 
 	-- Use broadcast communications
 	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS] = true;
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_GENERAL_BROADCAST,
 		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS,
@@ -72,7 +68,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	-- Broadcast communications channel
 	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL] = "xtensionxtooltip2";
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigEditBox",
 		title = loc.CO_GENERAL_BROADCAST_C,
 		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL,
@@ -81,7 +77,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
 	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST] = true;
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST,
 		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST,
@@ -89,14 +85,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 
 	-- Localization settings
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.REG_REGISTER,
 	});
 
 	-- Profile sanitization
 	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigCheck",
 		title = loc.CO_SANITIZER,
 		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION,
@@ -109,15 +105,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	local localeTab = {};
 	for _, locale in pairs(loc:GetLocales(true)) do
-		insert(localeTab, { locale:GetName(), locale:GetCode() });
+		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
 	-- Localization settings
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_GENERAL_LOCALE,
 	});
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationGeneral_LangWidget",
 		title = loc.CO_GENERAL_LOCALE,
@@ -133,11 +129,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	});
 
 	-- Reset button
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {
 		inherit = "TRP3_ConfigH1",
 		title = " ",
 	});
-	insert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {
+	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {
 		inherit = "TRP3_ConfigButton",
 		title = loc.CO_ADVANCED_SETTINGS_RESET,
 		help = loc.CO_ADVANCED_SETTINGS_RESET_TT,
