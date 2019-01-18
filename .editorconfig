@@ -8,7 +8,7 @@ root = true
 # - UTF-8 encoding
 # - TABS!
 [*]
-end_of_line = crlf
+end_of_line = unset
 charset = utf-8
 indent_style = tab
 
