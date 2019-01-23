@@ -41,4 +41,4 @@ TRP3_API.VERSION_DISPLAY = "-dev";
 --@end-debug@
 
 --- Legacy version number (we keep it for now, it should go in the long term)
-TRP3_API.LEGACY_VERSION = 62;
+TRP3_API.LEGACY_VERSION = 63;
