@@ -61,7 +61,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
             end
 
             -- Indicate if this was a trial account if we have that info
-            if characterInfo.isTrial then
+            if characterInfo.isTrial ~= 0 then
                 commentText = commentText .. "\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT;
             end
             PlayerReportFrame.CommentBox:SetText(commentText);

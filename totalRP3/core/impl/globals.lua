@@ -70,7 +70,12 @@ TRP3_API.globals = {
 		class = class,
 		faction = faction
 	},
-	is_trial_account = IsTrialAccount() or IsVeteranTrialAccount(),
+	is_trial_account = 0;
+	if IsTrialAccount() then
+		is_trial_account = 1;
+	elseif IsVeteranTrialAccount() then
+		is_trial_account = 2;
+	end
 	clients = {
 		TRP3 = "trp3",
 		MSP = "msp",

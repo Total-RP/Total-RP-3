@@ -45,7 +45,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO'});
+	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR'});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -67,6 +67,7 @@ local function onStart()
 		else
 			msp.my['FC'] = "1";
 		end
+
 	end
 
 	local function removeTextTags(text)
@@ -98,6 +99,8 @@ local function onStart()
 			end
 			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
+
+		msp.my['MU'] = dataTab.MU;
 	end
 
 	local function updateCharacteristicsData()
@@ -200,7 +203,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI",
+		"HI", "TR", "MU", "RS"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -216,10 +219,11 @@ local function onStart()
 		NA = "FN",
 		PX = "TI",
 		IC = "IC",
+		RS = "RS",
 	}
 
 	local CHARACTER_FIELDS = {
-		FR = true, FC = true, CU = true, VA = true, CO = true,
+		FR = true, FC = true, CU = true, VA = true, CO = true, TR = true,
 	}
 
 	local MISC_FIELDS = {
@@ -229,6 +233,7 @@ local function onStart()
 	local ABOUT_FIELDS = {
 		HI = "HI",
 		DE = "PH",
+		MU = "MU",
 	}
 
 	local function getProfileForSender(senderID)
@@ -337,24 +342,28 @@ local function onStart()
 							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
 						end
 					elseif ABOUT_FIELDS[field] then
-						local old;
-						if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
-							old = profile.about.T3[ABOUT_FIELDS[field]].TX;
-						end
-						profile.about.BK = 5;
-						profile.about.TE = 3;
-						if not profile.about.T3 then
-							profile.about.T3 = {};
-						end
-						if not profile.about.T3.HI then
-							profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
-						end
-						if not profile.about.T3.PH then
-							profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
-						end
-						profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-						if profile.about.read ~= false then
-							profile.about.read = not value or value == old;
+						if field == "MU" then
+							profile.about.MU = value;
+						else
+							local old;
+							if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
+								old = profile.about.T3[ABOUT_FIELDS[field]].TX;
+							end
+							profile.about.BK = 5;
+							profile.about.TE = 3;
+							if not profile.about.T3 then
+								profile.about.T3 = {};
+							end
+							if not profile.about.T3.HI then
+								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+							end
+							if not profile.about.T3.PH then
+								profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+							end
+							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+							if profile.about.read ~= false then
+								profile.about.read = not value or value == old;
+							end
 						end
 					elseif CHARACTER_FIELDS[field] then
 						if field == "FC" then
@@ -377,8 +386,10 @@ local function onStart()
 								character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
 							else
 								character.client = UNKNOWN;
-								character.clientVerion = "0";
+								character.clientVersion = "0";
 							end
+						elseif field == "TR" then
+							character.isTrial = tonumber(value);
 						end
 					elseif MISC_FIELDS[field] then
 						if field == "PE" and value then
@@ -495,7 +506,7 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
+	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS"};
 
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
@@ -520,6 +531,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
+	msp.my['TR'] = tostring(Globals.is_trial_account);
 
 	-- Init others vernum
 	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
