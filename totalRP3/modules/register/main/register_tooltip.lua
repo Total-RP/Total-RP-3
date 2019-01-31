@@ -666,7 +666,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end
-			if character.isTrial ~= 0 then
+			if character.isTrial ~= false and character.isTrial ~= 0 then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end
