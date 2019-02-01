@@ -1,25 +1,25 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Settings API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Settings API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(_);
 
 -- public accessor
 TRP3_API.configuration = {};
@@ -28,7 +28,6 @@ TRP3_API.configuration = {};
 local loc = TRP3_API.loc;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
-local _G, tonumber, math, tinsert, type, assert, tostring, pairs, sort, strconcat = _G, tonumber, math, tinsert, type, assert, tostring, pairs, table.sort, strconcat;
 local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local CreateFrame = CreateFrame;
 local setTooltipForFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
@@ -115,7 +114,7 @@ local function buildConfigurationPage(structure)
 	local optionsDependency = {};
 	local lastWidget;
 	local marginLeft = structure.marginLeft or 5;
-	for index, element in pairs(structure.elements) do
+	for _, element in pairs(structure.elements) do
 		local widget = element.widget or CreateFrame("Frame", element.widgetName or ("TRP3_ConfigurationWidget"..GENERATED_WIDGET_INDEX), structure.parent, element.inherit);
 		widget:ClearAllPoints();
 		widget:SetPoint("LEFT", structure.parent, "LEFT", marginLeft + (element.marginLeft or 5), 0);
@@ -225,12 +224,12 @@ local function buildConfigurationPage(structure)
 				box:SetScript("OnClick", function(self)
 					local optionIsEnabled = self:GetChecked();
 					setValue(element.configKey, optionIsEnabled);
-					
+
 					if optionsDependentOnOtherOptions[element.configKey] then
 						for _, dependentOption in pairs(optionsDependentOnOtherOptions[element.configKey]) do
-							
+
 							dependentOption.widget:SetAlpha(optionIsEnabled and 1 or 0.5);
-						
+
 							if dependentOption.controller then
 								if optionIsEnabled then
 									dependentOption.controller:Enable();
@@ -258,7 +257,7 @@ local function buildConfigurationPage(structure)
 			slider:SetValueStep(element.step);
 			slider:SetObeyStepOnDrag(element.integer);
 
-			local onChange = function(self, value)
+			local onChange = function(_, value)
 				if element.integer then
 					value = math.floor(value);
 				end
@@ -277,7 +276,7 @@ local function buildConfigurationPage(structure)
 
 			onChange(slider, slider:GetValue());
 		end
-		
+
 		if element.dependentOnOptions then
 			for _, dependence in pairs(element.dependentOnOptions) do
 				if not optionsDependency[dependence] then
@@ -290,24 +289,24 @@ local function buildConfigurationPage(structure)
 		lastWidget = widget;
 		GENERATED_WIDGET_INDEX = GENERATED_WIDGET_INDEX + 1;
 	end
-	
+
 	-- Now that we have built all our widget we can go through the dependencies table
 	-- and disable the elements that need to be disabled if the option they are dependent on
 	-- is disabled.
 	for dependence, dependentElements in pairs(optionsDependency) do
-		
+
 		-- Go through each element of the dependence
 		for _, element in pairs(dependentElements) do
-			
+
 			-- If the option is disable we render the element as being disable
 			if not getValue(dependence) then
 				element.widget:SetAlpha(0.5);
-				
+
 				if element.controller then
 					element.controller:Disable();
 				end
 			end
-			
+
 			-- Insert the dependent element in our optionsDependentOnOtherOptions table
 			-- used for cross option page dependencies (like the location feature needing the broadcast protocol)
 			if not optionsDependentOnOtherOptions[dependence] then
@@ -358,9 +357,9 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
 		for _, structure in pairs(registeredConfiPage) do
-			structure.parent:SetSize(containerwidth - 70, 50);
+			structure.parent:SetSize(containerWidth - 70, 50);
 		end
 	end);
 
@@ -377,7 +376,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		pageText = loc.CO_TOOLBAR,
 		elements = {},
 	};
-	
+
 	-- GENERAL SETTINGS INIT
 	-- localization
 	local localeTab = {};

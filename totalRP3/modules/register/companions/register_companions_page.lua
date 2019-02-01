@@ -1,43 +1,39 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Pets/mounts managements
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Pets/mounts managements
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- imports
 local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
 local loc = TRP3_API.loc;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
+local registerPage = TRP3_API.navigation.page.registerPage;
 local companionIDToInfo = TRP3_API.utils.str.companionIDToInfo;
-local getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
-local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
-local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local color, getIcon, tableRemove = Utils.str.color, Utils.str.icon, Utils.table.remove;
+local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local assert, tostring, type, _G, wipe, strtrim, strconcat, pairs = assert, tostring, type, _G, wipe, strtrim, strconcat, pairs;
 local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
 local tcopy, tsize, tinsert, EMPTY = Utils.table.copy, Utils.table.size, tinsert, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
-local stNtE = Utils.str.nilToEmpty;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
@@ -47,7 +43,6 @@ local getCompleteName, openPageByUnitID = TRP3_API.register.getCompleteName;
 local deleteProfile = TRP3_API.companions.register.deleteProfile;
 local showConfirmPopup = TRP3_API.popup.showConfirmPopup;
 local getCompanionProfileID = TRP3_API.companions.player.getCompanionProfileID;
-local refreshTooltip = TRP3_API.ui.tooltip.refresh;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -97,7 +92,7 @@ end
 
 local function applyPeekSlot(slot, ic, ac, ti, tx, swap, companionFullID, profileID)
 	if not profileID then
-		local owner, companionID = companionIDToInfo(companionFullID);
+		local _, companionID = companionIDToInfo(companionFullID);
 		profileID = getCompanionProfileID(companionID);
 	end
 	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
@@ -110,7 +105,7 @@ TRP3_API.companions.player.applyPeekSlot = applyPeekSlot;
 local function swapGlanceSlot(from, to, companionFullID, profileID)
 	TRP3_AtFirstGlanceEditor:Hide();
 	if not profileID then
-		local owner, companionID = companionIDToInfo(companionFullID);
+		local _, companionID = companionIDToInfo(companionFullID);
 		profileID = getCompanionProfileID(companionID);
 	end
 	local dataTab = TRP3_API.companions.player.getCompanionProfileByID(profileID) or {};
@@ -209,7 +204,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function displayConsult(context)
-	local profileName = context.profile.profileName;
 	local dataTab = context.profile.data or Globals.empty;
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
@@ -349,7 +343,7 @@ local function createTabBar()
 	{
 		{loc.REG_COMPANION_INFO, 1, 150}
 	},
-	function(tabWidget, value)
+	function(_, value)
 		-- Clear all
 		TRP3_CompanionsPageInformation:Hide();
 		if value == 1 then
@@ -431,8 +425,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			end
 		end
 	});
-	
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, dataType)
 		onInformationUpdated(profileID, dataType);
 	end);
 
@@ -489,9 +483,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	createTabBar();
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerwidth - 75, 5);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerWidth - 75, 5);
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html);
-		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerwidth - 85, 5);
+		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerWidth - 85, 5);
 	end);
 end);

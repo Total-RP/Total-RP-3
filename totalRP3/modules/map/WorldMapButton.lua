@@ -1,31 +1,24 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----	---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- ---------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
----@type AddOn_TotalRP3
-local AddOn_TotalRP3 = AddOn_TotalRP3;
-
---region Lua imports
-local insert = table.insert;
-local pairs = pairs;
---endregion
 
 --region Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -77,12 +70,12 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 		WorldMapButton:SetPoint(position, WorldMapFrame.ScrollContainer, position, xPadding, yPadding);
 	end
 
-	insert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.CO_MAP_BUTTON,
 	});
 
-	insert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
 		inherit = "TRP3_ConfigDropDown",
 		widgetName = "TRP3_ConfigurationFrame_MapButtonWidget",
 		title = loc.CO_MAP_BUTTON_POS,
@@ -143,11 +136,11 @@ WorldMapButton:SetScript("OnClick", function(self)
 	---@param scan MapScanner
 	for scanID, scan in pairs(TRP3_API.MapScannersManager.getAllScans()) do
 		if scan:CanScan() then
-			insert(structure, { scan:GetActionString(), scanID });
+			tinsert(structure, { scan:GetActionString(), scanID });
 		end
 	end
 	if #structure == 0 then
-		insert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
+		tinsert(structure, {loc.MAP_BUTTON_NO_SCAN, nil});
 	end
 	displayDropDown(self, structure, TRP3_API.MapScannersManager.launch, 0, true);
 end);

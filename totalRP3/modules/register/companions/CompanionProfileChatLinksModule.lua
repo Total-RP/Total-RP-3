@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Companion profiles chat links module
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -22,12 +21,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
@@ -38,7 +31,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	--- Get a copy of the data for the link, using the information provided when using CompanionProfileChatLinksModule:InsertLink
 	function CompanionProfileChatLinksModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
+		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
 		local profile = TRP3_API.companions.player.getProfiles()[profileID];
 
@@ -77,7 +70,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenCompanionProfileButton = CompanionProfileChatLinksModule:NewActionButton("OPEN_COMPANION", loc.CL_OPEN_COMPANION, "CMPN_O_Q", "CMPN_O_A");
 
-	function OpenCompanionProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profileID, profile = profileData.profileID, profileData.profile;
 		-- Check profile exists
 		if not TRP3_API.companions.register.getProfiles()[profileID] then
@@ -96,7 +89,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportCompanionProfileButton:OnAnswerCommandReceived(profileData, sender)
+	function ImportCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profile = profileData.profile;
 		local newName = profile.profileName;
 		local i = 1;

@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Directory : main API
--- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.apache.org/licenses/LICENSE-2.0
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
+--- Total RP 3
+--- Directory : main API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 local Directory = {};
@@ -36,32 +37,23 @@ TRP3_API.register.MENU_LIST_ID_TAB = "main_31_";
 local Ellyb = TRP3_API.Ellyb;
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local stEtN = Utils.str.emptyToNil;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local buildZoneText = Utils.str.buildZoneText;
 local getUnitID = Utils.str.getUnitID;
-local UnitRace, UnitIsPlayer, UnitClass = UnitRace, UnitIsPlayer, UnitClass;
-local UnitFactionGroup, UnitSex, GetGuildInfo = UnitFactionGroup, UnitSex, GetGuildInfo;
-local getDefaultProfile, get = TRP3_API.profile.getDefaultProfile, TRP3_API.profile.getData;
-local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local Config = TRP3_API.configuration;
 local registerConfigKey = Config.registerConfigKey;
 local getConfigValue = Config.getValue;
 local Events = TRP3_API.events;
-local assert, tostring, time, wipe, strconcat, pairs, tinsert = assert, tostring, time, wipe, strconcat, pairs, tinsert;
+local assert, tostring, wipe, pairs, tinsert = assert, tostring, wipe, pairs, tinsert;
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
 local showCharacteristicsTab, showAboutTab, showMiscTab;
 local get = TRP3_API.profile.getData;
-local UnitIsPVP = UnitIsPVP;
-local tcopy = tcopy;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
-local EMPTY = Globals.empty;
-local NOTIFICATION_ID_NEW_CHARACTER = TRP3_API.register.NOTIFICATION_ID_NEW_CHARACTER;
 -- Saved variables references
 local profiles, characters;
 
@@ -191,7 +183,7 @@ end
 -- @param unitID Unit ID of the player to test
 --
 local function unitIDIsFilteredForMatureContent(unitID)
-	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
+	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
 	local profile = getUnitIDProfile(unitID);
 	local profileID = getUnitIDProfileID(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
@@ -202,7 +194,7 @@ end
 TRP3_API.register.unitIDIsFilteredForMatureContent = unitIDIsFilteredForMatureContent;
 
 local function profileIDISFilteredForMatureContent (profileID)
-	if not TRP3_API.register.mature_filter then return false end;
+	if not TRP3_API.register.mature_filter then return false end ;
 
 	local profile = getProfileOrNil(profileID);
 
@@ -216,7 +208,7 @@ TRP3_API.register.profileIDISFilteredForMatureContent = profileIDISFilteredForMa
 -- @param unitID Unit ID of the player to test
 --
 local function unitIDIsFlaggedForMatureContent(unitID)
-	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end;
+	if not TRP3_API.register.mature_filter or not unitID or unitID == Globals.player_id or not isUnitIDKnown(unitID) or not profileExists(unitID) then return false end ;
 	local profile = getUnitIDProfile(unitID);
 	-- Check if the profile has been flagged as containing mature content, that the option to filter such content is enabled
 	-- and that the profile is not in the pink list.
@@ -240,7 +232,7 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	-- Search if this character was bounded to another profile
-	for profileID, profile in pairs(profiles) do
+	for _, profile in pairs(profiles) do
 		if profile.link and profile.link[unitID] then
 			profile.link[unitID] = nil; -- unbound
 		end
@@ -427,8 +419,8 @@ TRP3_API.r.name = TRP3_API.register.getUnitRPName;
 
 local tabGroup; -- Reference to the tab panel tabs group
 
-local function onMouseOver(...)
-	local unitID, unitRealm = getUnitID("mouseover");
+local function onMouseOver()
+	local unitID = getUnitID("mouseover");
 	if unitID and isUnitIDKnown(unitID) then
 		local _, race = UnitRace("mouseover");
 		local _, class, _ = UnitClass("mouseover");
@@ -459,9 +451,7 @@ end
 
 local function tutorialProvider()
 	if tabGroup then
-		if tabGroup.current == 1 then
-			--			return TRP3_API.register.ui.characteristicsTutorialProvider();
-		elseif tabGroup.current == 2 then
+		if tabGroup.current == 2 then
 			return TRP3_API.register.ui.aboutTutorialProvider();
 		elseif tabGroup.current == 3 then
 			return TRP3_API.register.ui.miscTutorialProvider();
@@ -480,8 +470,8 @@ local function createTabBar()
 			{ loc.REG_PLAYER_ABOUT, 2, 110 },
 			{ loc.REG_PLAYER_PEEK, 3, 130 }
 		},
-		function(tabWidget, value)
-		-- Clear all
+		function(_, value)
+			-- Clear all
 			TRP3_RegisterCharact:Hide();
 			TRP3_RegisterAbout:Hide();
 			TRP3_RegisterMisc:Hide();
@@ -494,7 +484,7 @@ local function createTabBar()
 			end
 			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 		end,
-		-- Confirmation callback
+	-- Confirmation callback
 		function(callback)
 			if getCurrentContext() and getCurrentContext().isEditMode then
 				TRP3_API.popup.showConfirmPopup(loc.REG_PLAYER_CHANGE_CONFIRM,
@@ -508,7 +498,7 @@ local function createTabBar()
 	TRP3_API.register.player.tabGroup = tabGroup;
 end
 
-local function showTabs(context)
+local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	tabGroup:SelectTab(1);
@@ -520,8 +510,8 @@ end
 
 function TRP3_API.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
-			or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-			or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
+		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -550,11 +540,10 @@ local function cleanupCompanions()
 	local deleteCompanionProfile = TRP3_API.companions.register.deleteProfile;
 
 	local companionProfiles = TRP3_API.companions.register.getProfiles();
-	local characterProfiles = TRP3_API.profile.getProfiles();
 
 	for companionProfileID, companionProfile in pairs(companionProfiles) do
 		for companionFullID, _ in pairs(companionProfile.links) do
-			local ownerID, companionID = companionIDToInfo(companionFullID);
+			local ownerID, _ = companionIDToInfo(companionFullID);
 			if not isUnitIDKnown(ownerID) or not profileExists(ownerID) then
 				companionProfile.links[companionFullID] = nil;
 			end
@@ -568,7 +557,7 @@ end
 
 local function cleanupPlayerRelations()
 	for _, myProfile in pairs(TRP3_API.profile.getProfiles()) do
-		for profileID, relation in pairs(myProfile.relation or {}) do
+		for profileID, _ in pairs(myProfile.relation or {}) do
 			if not profiles[profileID] then
 				myProfile.relation[profileID] = nil;
 			end
@@ -595,13 +584,13 @@ local function cleanupProfiles()
 	end
 
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
-		return;
+		return ;
 	end
 	log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
 	-- First, get a tab with all profileID with which we have a relation
 	local relatedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
-		for profileID, relation in pairs(profile.relation or {}) do
+		for profileID, _ in pairs(profile.relation or {}) do
 			relatedProfileIDs[profileID] = true;
 		end
 	end
@@ -633,7 +622,7 @@ local function cleanupMyProfiles()
 end
 
 local function getFirstCharacterIDFromProfile(profile)
-	if type(profile.link ) == "table" then
+	if type(profile.link) == "table" then
 		return next(profile.link)
 	end
 end
@@ -712,12 +701,12 @@ function TRP3_API.register.init()
 	registerConfigKey("register_auto_purge_mode", 864000);
 
 	local AUTO_PURGE_VALUES = {
-		{loc.CO_REGISTER_AUTO_PURGE_0, false},
-		{loc.CO_REGISTER_AUTO_PURGE_1:format(1), 86400},
-		{loc.CO_REGISTER_AUTO_PURGE_1:format(2), 86400*2},
-		{loc.CO_REGISTER_AUTO_PURGE_1:format(5), 86400*5},
-		{loc.CO_REGISTER_AUTO_PURGE_1:format(10), 86400*10},
-		{loc.CO_REGISTER_AUTO_PURGE_1:format(30), 86400*30},
+		{ loc.CO_REGISTER_AUTO_PURGE_0, false },
+		{ loc.CO_REGISTER_AUTO_PURGE_1:format(1), 86400 },
+		{ loc.CO_REGISTER_AUTO_PURGE_1:format(2), 86400 * 2 },
+		{ loc.CO_REGISTER_AUTO_PURGE_1:format(5), 86400 * 5 },
+		{ loc.CO_REGISTER_AUTO_PURGE_1:format(10), 86400 * 10 },
+		{ loc.CO_REGISTER_AUTO_PURGE_1:format(30), 86400 * 30 },
 	}
 
 	-- Build configuration page

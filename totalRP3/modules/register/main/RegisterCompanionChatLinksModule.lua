@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Register companions chat links module
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -22,12 +21,6 @@
 local _, TRP3_API = ...;
 local Ellyb = TRP3_API.Ellyb;
 
--- Lua imports
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
@@ -39,7 +32,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	--- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
 	function RegisterCompanionChatLinksModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
+		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
 		local profile = TRP3_API.companions.register.getProfiles()[profileID];
 		local linkText = UNKNOWN;
@@ -82,7 +75,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenRegisterCompanionProfileButton = RegisterCompanionChatLinksModule:NewActionButton("OPEN_REG_COMPANION", loc.CL_OPEN_COMPANION, "REG_C_O_Q","REG_C_O_A");
 
-	function OpenRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profileID, profile = profileData.profileID, profileData.profileData;
 		-- Check profile exists
 		if not TRP3_API.companions.register.getProfiles()[profileID] then
@@ -101,7 +94,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData, sender)
+	function ImportRegisterCompanionProfileButton:OnAnswerCommandReceived(profileData)
 		local profile = profileData.profileData;
 		local newName = UNKNOWN;
 		if profile.data and profile.data.NA then

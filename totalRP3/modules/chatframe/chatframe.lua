@@ -1,27 +1,25 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
 --- Chat management
----	---------------------------------------------------------------------------
----	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-
--- Removed NPC talk prefix option and changed prefix to a hardcoded one (Paul Corlay) [RIP NPC talk prefix option 2014 - 2017]
 
 -- Ellyb imports
 local ColorManager = TRP3_API.Ellyb.ColorManager;
@@ -33,16 +31,12 @@ local loc = TRP3_API.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
-local strsub, strlen, format, _G, pairs, tinsert, time, strtrim = strsub, strlen, format, _G, pairs, tinsert, time, strtrim;
+local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local handleCharacterMessage, hooking;
 local tContains = tContains;
 local assert = assert;
-local getUnitColorByGUID = Utils.color.getUnitColorByGUID;
-local getChatColorForChannel = Utils.color.getChatColorForChannel;
-local getColorFromHexadecimalCode = Utils.color.getColorFromHexadecimalCode;
 local select = select;
 
 TRP3_API.chat = {};
@@ -134,7 +128,7 @@ local function configOOCDetectionColor()
 end
 
 local function configInsertFullRPName()
-    return getConfigValue(CONFIG_INSERT_FULL_RP_NAME);
+	return getConfigValue(CONFIG_INSERT_FULL_RP_NAME);
 end
 
 local function createConfigPage()
@@ -150,28 +144,28 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_OOC_PATTERN, "(%(.-%))");
 	registerConfigKey(CONFIG_OOC_COLOR, "aaaaaa");
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
-    registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
-    registerConfigKey(CONFIG_SHOW_ICON, false);
+	registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
+	registerConfigKey(CONFIG_SHOW_ICON, false);
 	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
 
 	local NAMING_METHOD_TAB = {
-		{loc.CO_CHAT_MAIN_NAMING_1, 1},
-		{loc.CO_CHAT_MAIN_NAMING_2, 2},
-		{loc.CO_CHAT_MAIN_NAMING_3, 3},
-		{loc.CO_CHAT_MAIN_NAMING_4, 4},
+		{ loc.CO_CHAT_MAIN_NAMING_1, 1 },
+		{ loc.CO_CHAT_MAIN_NAMING_2, 2 },
+		{ loc.CO_CHAT_MAIN_NAMING_3, 3 },
+		{ loc.CO_CHAT_MAIN_NAMING_4, 4 },
 	}
-	
+
 	local EMOTE_PATTERNS = {
-		{"* Emote *", "(%*.-%*)"},
-		{"** Emote **", "(%*%*.-%*%*)"},
-		{"< Emote >", "(%<.-%>)"},
-		{"* Emote * + < Emote >", "([%*%<].-[%*%>])"},
+		{ "* Emote *", "(%*.-%*)" },
+		{ "** Emote **", "(%*%*.-%*%*)" },
+		{ "< Emote >", "(%<.-%>)" },
+		{ "* Emote * + < Emote >", "([%*%<].-[%*%>])" },
 	}
-	
+
 	local OOC_PATTERNS = {
-		{"( OOC )", "(%(.-%))"},
-		{"(( OOC ))", "(%(%(.-%)%))"},
-		{"(OOC) + (( OOC )) ", "(%(+[^%)]+%)+)"},
+		{ "( OOC )", "(%(.-%))" },
+		{ "(( OOC ))", "(%(%(.-%)%))" },
+		{ "(OOC) + (( OOC )) ", "(%(+[^%)]+%)+)" },
 	}
 
 	-- Build configuration page
@@ -198,17 +192,17 @@ local function createConfigPage()
 				configKey = CONFIG_NAME_METHOD,
 				listCancel = true,
 			},
-            {
-                inherit = "TRP3_ConfigCheck",
-                title = loc.CO_CHAT_REMOVE_REALM,
-                configKey = CONFIG_REMOVE_REALM
-            },
-            {
-                inherit = "TRP3_ConfigCheck",
-                title = loc.CO_CHAT_INSERT_FULL_RP_NAME,
-                configKey = CONFIG_INSERT_FULL_RP_NAME,
-                help = loc.CO_CHAT_INSERT_FULL_RP_NAME_TT
-            },
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_REMOVE_REALM,
+				configKey = CONFIG_REMOVE_REALM
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_INSERT_FULL_RP_NAME,
+				configKey = CONFIG_INSERT_FULL_RP_NAME,
+				help = loc.CO_CHAT_INSERT_FULL_RP_NAME_TT
+			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_MAIN_COLOR,
@@ -218,7 +212,7 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_INCREASE_CONTRAST,
 				configKey = CONFIG_INCREASE_CONTRAST,
-				dependentOnOptions = {CONFIG_NAME_COLOR},
+				dependentOnOptions = { CONFIG_NAME_COLOR },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -253,7 +247,7 @@ local function createConfigPage()
 				listContent = EMOTE_PATTERNS,
 				configKey = CONFIG_EMOTE_PATTERN,
 				listCancel = true,
-				dependentOnOptions = {CONFIG_EMOTE},
+				dependentOnOptions = { CONFIG_EMOTE },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -271,13 +265,13 @@ local function createConfigPage()
 				listContent = OOC_PATTERNS,
 				configKey = CONFIG_OOC_PATTERN,
 				listCancel = true,
-				dependentOnOptions = {CONFIG_OOC},
+				dependentOnOptions = { CONFIG_OOC },
 			},
 			{
 				inherit = "TRP3_ConfigColorPicker",
 				title = loc.CO_CHAT_MAIN_OOC_COLOR,
 				configKey = CONFIG_OOC_COLOR,
-				dependentOnOptions = {CONFIG_OOC},
+				dependentOnOptions = { CONFIG_OOC },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -439,16 +433,16 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 
 	-- If it's the player's emote, look in his own pet profiles
 	if (senderID == Globals.player_id) then
-		for profileID, profile in pairs(TRP3_API.companions.player.getProfiles()) do
+		for _, profile in pairs(TRP3_API.companions.player.getProfiles()) do
 			if (profile.data and profile.data.NA == innerName) then
 				petProfile = profile;
 				name = innerName;
 				break
 			end
 		end
-	-- If it's another player's emote, look in the register for a matching pet profile from that player
+		-- If it's another player's emote, look in the register for a matching pet profile from that player
 	else
-		for profileID, profile in pairs(TRP3_API.companions.register.getProfiles()) do
+		for _, profile in pairs(TRP3_API.companions.register.getProfiles()) do
 			local isMaster = false;
 			for companionFullID, _ in pairs(profile.links) do
 				if (TRP3_API.utils.str.companionIDToInfo(companionFullID) == senderID) then
@@ -569,18 +563,19 @@ function handleCharacterMessage(_, event, message, ...)
 			npcMessageId = messageID;
 			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 
-		-- This is one of Saelora's neat modification
-		-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
-		-- the game would insert a space between the player's name and the 's (like "Kristoff 's reindeer eats Olaf's nose.").
-		-- We store the message ID in the ownershipNameId variable that will be checked in the function to colore player names.
-		-- The 's is removed from the original message, it will be inserted in the name of the player
-		--
-		-- I actually really like this.
-		-- — Ellypse
+			-- This is one of Saelora's neat modification
+			-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
+			-- the game would insert a space between the player's name and the 's (like "Kristoff 's reindeer eats Olaf's nose.").
+			-- We store the message ID in the ownershipNameId variable that will be checked in the function to colore player names.
+			-- The 's is removed from the original message, it will be inserted in the name of the player
+			--
+			-- I actually really like this.
+			-- — Ellypse
 		elseif message:sub(1, 3) == "'s " then
 			ownershipNameId = messageID; -- pass the messageID to the name altering functionality. This uses a separate variable to identify wich method should be used. - Lora
 			message = message:sub(4);
-		elseif message:sub(1, 2) == ", " then -- Added support for , at the start of an emote
+		elseif message:sub(1, 2) == ", " then
+			-- Added support for , at the start of an emote
 			emoteStartingWithACommaID = messageID;
 			message = message:sub(3);
 		end
@@ -602,22 +597,26 @@ local function getFullnameUsingChatMethod(info)
 	local characterName;
 	local nameMethod = configNameMethod();
 
-	if nameMethod ~= 1 then -- TRP3 names
+	if nameMethod ~= 1 then
+		-- TRP3 names
 		local characteristics = info.characteristics or {};
-	
-		if characteristics.FN then -- Use custom name if defined
+
+		if characteristics.FN then
+			-- Use custom name if defined
 			characterName = characteristics.FN;
 		end
 
-		if nameMethod == 4 and characteristics.TI then -- With short title in front of the name
+		if nameMethod == 4 and characteristics.TI then
+			-- With short title in front of the name
 			characterName = characteristics.TI .. " " .. characterName;
 		end
 
-		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then -- With last name
+		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then
+			-- With last name
 			characterName = characterName .. " " .. characteristics.LN;
 		end
 	end
-	
+
 	return characterName;
 end
 TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
@@ -627,17 +626,6 @@ local function getFullnameForUnitUsingChatMethod(unitID)
 	return getFullnameUsingChatMethod(info);
 end
 TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMethod;
-
-local function getChatTypeForEvent(event, channelNumber)
-	local chatType = strsub(event, 10);
-	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
-		chatType = "WHISPER";
-	end
-	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
-		chatType = "CHANNEL".. channelNumber;
-	end
-	return chatType
-end
 
 -- I have renamed this function from beta 1 to beta 2 because Saelora commented on its name :P
 local defaultGetColoredNameFunction = GetColoredName;
@@ -664,7 +652,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	-- Do not change stuff if the customizations are disabled for this channel or the GUID is invalid (WIM…), use the default function
 	if not isChannelHandled(event) or not configIsChannelUsed(event) or not GUID or not Utils.guid.isAPlayerGUID(GUID) then
 		return fallback(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12)
-	end;
+	end ;
 
 	local characterName = unitID;
 	--@type ColorMixin
@@ -672,7 +660,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 
 	-- We don't have a unit ID for this message (WTF? Some other add-on must be doing some weird shit again…)
 	-- Bail out, let the fallback function handle that shit.
-	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end;
+	if not unitID then return fallback(event, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, channelNumber, arg9, arg10, arg11, arg12) end ;
 
 	-- Check if this message ID was flagged as containing NPC chat
 	-- If it does we use the NPC name that was saved before.
@@ -768,16 +756,16 @@ function hooking()
 	-- We can replace the name inserted by the complete RP name of the player if we have it.
 	hooksecurefunc("ChatEdit_InsertLink", function(unitID)
 
-		if disabledByOOC() then return end;
+		if disabledByOOC() then return end ;
 
 		-- If we didn't get a name at all then we have nothing to do here
-		if not unitID then return end;
+		if not unitID then return end ;
 
 		-- Do not modify the name inserted if the option is not enabled or if the ALT key is down.
-		if not configInsertFullRPName() or IsAltKeyDown() then return end;
+		if not configInsertFullRPName() or IsAltKeyDown() then return end ;
 
 		-- Do not modify the name if we don't know that character
-		if not (IsUnitIDKnown(unitID) or unitID == Globals.player_id) then return end;
+		if not (IsUnitIDKnown(unitID) or unitID == Globals.player_id) then return end ;
 
 		local activeChatFrame = ChatEdit_GetActiveWindow();
 
@@ -788,7 +776,7 @@ function hooking()
 
 			-- Save the text that is before and after the name inserted
 			local textBefore = currentText:sub(1, currentCursorPosition - unitID:len());
-			local textAfter = currentText:sub(currentCursorPosition+1 );
+			local textAfter = currentText:sub(currentCursorPosition + 1);
 
 			local name = getFullnameForUnitUsingChatMethod(unitID, unitID);
 
@@ -812,7 +800,6 @@ local function onStart()
 		"CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
 		"CHAT_MSG_GUILD", "CHAT_MSG_OFFICER", "CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM"
 	};
-
 
 	NPC_TALK_PATTERNS = {
 		[loc.NPC_TALK_SAY_PATTERN] = "MONSTER_SAY",

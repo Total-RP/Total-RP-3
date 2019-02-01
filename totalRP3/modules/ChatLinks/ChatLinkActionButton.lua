@@ -1,11 +1,9 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Chat Link Action Button
----
 --- This an Ellyb class that defines action buttons to be displayed in chat links tooltips
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -26,14 +24,10 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Lua imports
-local assert = assert;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 
 -- Ellyb imports
-local isType = Ellyb.Assertions.isType;
 local bind = Ellyb.Functions.bind;
 
 ---@class ChatLinkActionButton : Object
@@ -42,10 +36,10 @@ local ChatLinkActionButton, _private = Ellyb.Class("ChatLinkActionButton");
 ---@param actionID string @ The ID of the action
 ---@param buttonText string @ The text to be displayed on the button
 function ChatLinkActionButton:initialize(actionID, buttonText, questionCommand, answerCommand)
-	assert(isType(actionID, "string", actionID));
-	assert(isType(buttonText, "string", buttonText));
-	assert(isType(questionCommand, "string", questionCommand));
-	assert(isType(answerCommand, "string", answerCommand));
+	Ellyb.Assertions.isType(actionID, "string", actionID);
+	Ellyb.Assertions.isType(buttonText, "string", buttonText);
+	Ellyb.Assertions.isType(questionCommand, "string", questionCommand);
+	Ellyb.Assertions.isType(answerCommand, "string", answerCommand);
 
 	_private[self] = {}
 	_private[self].actionID = actionID;
@@ -85,7 +79,7 @@ end
 --- OVERRIDE
 --- [SENDER] Check if the button should be visible for the given data
 ---@return boolean isVisible @ Returns true if the action should be visible
-function ChatLinkActionButton:IsVisible(...)
+function ChatLinkActionButton:IsVisible(...) -- luacheck: ignore 212
 	return true
 end
 
@@ -116,13 +110,13 @@ end
 
 --- OVERRIDE
 --- [RECIPIENT] Function called when the recipient received the requested data
----@param linkData table @ The request data
+---@param data table @ The request data
 ---@param sender string @ The name of the sender of the link
-function ChatLinkActionButton:OnAnswerCommandReceived(data, sender)
+function ChatLinkActionButton:OnAnswerCommandReceived(data, sender) -- luacheck: ignore 212
 
 end
 
-function ChatLinkActionButton:OnProgressDownload(sender, amountOfMessagesIncoming, amountOfMessagesReceived)
+function ChatLinkActionButton:OnProgressDownload(_, amountOfMessagesIncoming, amountOfMessagesReceived)
 	-- If the download is complete, we restore the button text
 	if amountOfMessagesReceived == amountOfMessagesIncoming then
 		if self.button then
@@ -159,9 +153,9 @@ function TRP3_ChatLinkActionButtonMixin:OnClick()
 end
 
 function TRP3_ChatLinkActionButtonMixin:Set(button)
-	assert(isType(button, "table", button));
-	assert(isType(button.text, "string", button.text));
-	assert(isType(button.command, "string", button.command));
+	Ellyb.Assertions.isType(button, "table", button);
+	Ellyb.Assertions.isType(button.text, "string", button.text);
+	Ellyb.Assertions.isType(button.command, "string", button.command);
 
 	self:SetText(button.text);
 	self.command = button.command;
