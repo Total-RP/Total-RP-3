@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Pets/mounts managements
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Pets/mounts managements
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 TRP3_API.companions = {
@@ -26,19 +27,13 @@ TRP3_API.companions = {
 local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
-local pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, type, strtrim, tonumber;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
-local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
-local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
-local showAlertPopup, showTextInputPopup, showConfirmPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup, TRP3_API.popup.showConfirmPopup;
+local pairs, assert, tostring, wipe, tinsert, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, strtrim, tonumber;
+local registerMenu= TRP3_API.navigation.menu.registerMenu;
+local setPage = TRP3_API.navigation.page.registerPage;
 local GetSpellInfo = GetSpellInfo;
 local displayMessage = Utils.message.displayMessage;
-local companionIDToInfo = Utils.str.companionIDToInfo;
 local EMPTY = Globals.empty;
 local tcopy = Utils.table.copy;
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
@@ -135,7 +130,7 @@ TRP3_API.companions.player.unboundPlayerCompanion = unboundPlayerCompanion;
 
 -- Check if the profileName is not already used
 local function isProfileNameAvailable(profileName)
-	for profileID, profile in pairs(playerCompanions) do
+	for _, profile in pairs(playerCompanions) do
 		if profile.profileName == profileName then
 			return false;
 		end
@@ -199,8 +194,8 @@ end
 local GetMountIDs, GetMountInfoByID, IsMounted = C_MountJournal.GetMountIDs, C_MountJournal.GetMountInfoByID, IsMounted;
 local function getCurrentMountSpellID()
 	if IsMounted() then
-		for i, id in pairs(GetMountIDs()) do
-			local creatureName, spellID, icon, active = GetMountInfoByID(id);
+		for _, id in pairs(GetMountIDs()) do
+			local _, spellID, _, active = GetMountInfoByID(id);
 			if active then
 				return spellID;
 			end
@@ -312,7 +307,7 @@ local function registerCreateProfile(profileID)
 end
 TRP3_API.companions.register.registerCreateProfile = registerCreateProfile;
 
-function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, masterProfileID, v1, v2)
+function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID, _, v1, v2)
 	local companionID, profileID, companionFullID;
 	if queryLine:find("_") then
 		companionID = queryLine:sub(1, queryLine:find('_') - 1);
@@ -335,8 +330,8 @@ function TRP3_API.companions.register.boundAndCheckCompanion(queryLine, ownerID,
 			registerProfileAssociation[companionFullID] = profileID;
 			if not profile.links[companionFullID] then
 				-- Unbound from others
-				for id, profile in pairs(registerCompanions) do
-					profile.links[companionFullID] = nil;
+				for _, otherProfile in pairs(registerCompanions) do
+					otherProfile.links[companionFullID] = nil;
 				end
 				profile.links[companionFullID] = 1;
 				log(("Bound %s to profile %s"):format(companionFullID, profileID));
@@ -377,7 +372,7 @@ function TRP3_API.companions.register.saveInformation(profileID, v, data)
 		tcopy(profile.PE, data);
 		Events.fireEvent(Events.REGISTER_DATA_UPDATED, nil, profileID, "misc");
 	end
-	
+
 end
 
 function TRP3_API.companions.register.setProfileData(profileID, profile)

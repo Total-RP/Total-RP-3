@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Communication protocol and API
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,20 +24,9 @@ local Ellyb = Ellyb(_);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
---region Lua imports
-local assert = assert;
-local string = string;
-local math = math;
-local tostring = tostring;
-local tContains = tContains;
---endregion
-
 -- AddOn imports
 local Chomp = AddOn_Chomp;
 local logger = Ellyb.Logger("TotalRP3_Communication");
-local isType = Ellyb.Assertions.isType;
-local isOneOf = Ellyb.Assertions.isOneOf;
-local isNotNil = Ellyb.Assertions.isNotNil;
 
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
@@ -109,17 +97,17 @@ local function extractMessageTokenFromData(data)
 end
 
 local function registerSubSystemPrefix(prefix, callback)
-	local handlerID, onProgressHandlerID;
+	local handlerID;
 
-	assert(isType(callback, "function", "callback"));
+	Ellyb.Assertions.isType(callback, "function", "callback");
 	handlerID = subSystemsDispatcher:RegisterCallback(prefix, callback);
 
-	return handlerID, onProgressHandlerID;
+	return handlerID;
 end
 
 local function registerMessageTokenProgressHandler(messageToken, sender, onProgressCallback)
-	assert(isType(onProgressCallback, "function", "onProgressCallback"));
-	assert(isType(sender, "string", "sender"));
+	Ellyb.Assertions.isType(onProgressCallback, "function", "onProgressCallback");
+	Ellyb.Assertions.isType(sender, "string", "sender");
 
 	return subSystemsOnProgressDispatcher:RegisterCallback(tostring(messageToken), function(receivedSender, ...)
 		if receivedSender == sender then
@@ -129,7 +117,7 @@ local function registerMessageTokenProgressHandler(messageToken, sender, onProgr
 end
 
 local function unregisterMessageTokenProgressHandler(handlerID)
-	assert(isType(handlerID, "string", "handlerID"));
+	Ellyb.Assertions.isType(handlerID, "string", "handlerID");
 	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
@@ -143,9 +131,9 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
 	end
 
-	assert(isType(prefix, "string", "prefix"));
+	Ellyb.Assertions.isType(prefix, "string", "prefix");
 	assert(subSystemsDispatcher:HasCallbacksForEvent(prefix), "Unregistered prefix: "..prefix);
-	assert(isOneOf(channel, VALID_CHANNELS, "channel"));
+	Ellyb.Assertions.isOneOf(channel, VALID_CHANNELS, "channel");
 
 	if not TRP3_API.register.isIDIgnored(target) then
 
@@ -154,7 +142,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 		end
 		priority = CTLToChompPriority(priority);
 
-		assert(isOneOf(priority, VALID_PRIORITIES, "priority"));
+		Ellyb.Assertions.isOneOf(priority, VALID_PRIORITIES, "priority");
 
 		messageToken = messageToken or getNewMessageToken();
 
@@ -188,7 +176,7 @@ local function isLoggedChannel(channel)
 	return channel:find("LOGGED");
 end
 
-local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
+local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
 	if msgID == 1 then
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;
@@ -197,7 +185,7 @@ local function onIncrementalMessageReceived(prefix, data, channel, sender, _, _,
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
 
-local function onChatMessageReceived(prefix, data, channel, sender, _, _, _, _, _, _, _, _, sessionID, msgID, msgTotal)
+local function onChatMessageReceived(_, data, channel, sender)
 	_, data = extractMessageTokenFromData(data);
 	if not isLoggedChannel(channel) then
 		data = Compression.decompress(data, true);
@@ -210,7 +198,7 @@ Chomp.RegisterAddonPrefix(PROTOCOL_PREFIX, onChatMessageReceived, PROTOCOL_SETTI
 
 
 local function estimateStructureSize(object, shouldBeCompressed)
-	assert(isNotNil(object, "object"));
+	Ellyb.Assertions.isNotNil(object, "object");
 	local serializedObject = Chomp.Serialize(object);
 	if shouldBeCompressed then
 		serializedObject = Compression.compress(serializedObject);

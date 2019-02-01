@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Profiles chat links module
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -27,7 +26,6 @@ local assert = assert;
 
 -- Ellyb imports
 local YELLOW = Ellyb.ColorManager.YELLOW;
-local isType = Ellyb.Assertions.isType;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -42,7 +40,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	--- Get a copy of the data for the link, using the information provided when using ProfilesChatLinkModule:InsertLink
 	function ProfilesChatLinkModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
+		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
 		local profile = TRP3_API.profile.getProfileByID(profileID);
 
@@ -99,7 +97,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.canBeImported;
 	end
 
-	function ImportProfileButton:OnAnswerCommandReceived(data, sender)
+	function ImportProfileButton:OnAnswerCommandReceived(data)
 		local profile = data.profile;
 		local profileName = profile.profileName;
 		local i = 1;
@@ -116,7 +114,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenProfileButton = ProfilesChatLinkModule:NewActionButton("OPEN_PLAYER_PROFILE", loc.CL_OPEN_PROFILE, "PROF_O_Q", "PROF_O_A");
 
-	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenProfileButton:OnAnswerCommandReceived(profileData)
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
 		TRP3_API.register.insertProfile(profileID, profile.player)

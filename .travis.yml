@@ -14,7 +14,7 @@ git:
 
 install: luarocks install --local luacheck
 
-before_script: /home/travis/.luarocks/bin/luacheck . --no-color -qo "011" --exclude-files "totalRP3_zTest/*"
+before_script: /home/travis/.luarocks/bin/luacheck .
 
 script: curl -s https://raw.githubusercontent.com/Ellypse/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.1.0 -o
 

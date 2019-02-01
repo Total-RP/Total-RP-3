@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
 --- World map data provider
----	---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- ---------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -26,20 +26,6 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 --region Ellyb imports
 local Tables = Ellyb.Tables;
 local Tooltips = Ellyb.Tooltips;
---endregion
-
---region Lua imports
-local huge = math.huge;
-local insert = table.insert;
-local sort = table.sort;
-local pairs = pairs;
---endregion
-
---region WoW imports
-local after = C_Timer.After;
-local hooksecurefunc = hooksecurefunc;
-local BaseMapPoiPinMixin = BaseMapPoiPinMixin;
-local Mixin = Mixin;
 --endregion
 
 local MapPoiMixins = {};
@@ -157,15 +143,14 @@ local function createBounceAnimation(pin)
 	bounceOut:SetStartDelay(0.2);
 end
 
--- TODO Create the bounce animation instead of requiring an existing one in the XML template
 function AnimatedPinMixin:OnLoad()
 	BaseMapPoiPinMixin.OnLoad(self);
 	createBounceAnimation(self)
 
-	hooksecurefunc(self, "OnAcquired", function(marker, poiInfo)
+	hooksecurefunc(self, "OnAcquired", function(_, poiInfo)
 		if poiInfo.position and self.Bounce and TRP3_API.ui.misc.shouldPlayUIAnimation() then
 			self:Hide();
-			after(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
+			C_Timer.After(AddOn_TotalRP3.Map.getDistanceFromMapCenterFactor(poiInfo.position), function()
 				self:Show();
 				TRP3_API.ui.misc.playAnimation(self.Bounce);
 			end);
@@ -180,12 +165,12 @@ MapPoiMixins.AnimatedPinMixin = AnimatedPinMixin;
 local BasePinMixin = {};
 
 --- Build display data that will be used by BasePinMixin:Decorate(displayData) to decorate the mixin
---[[ Override ]] function BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
+--[[ Override ]] function BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo) -- luacheck: ignore 212
 	return {}
 end
 
 --- Decorates the pin using the display data we received from BasePinMixin:GetDisplayDataFromPoiInfo(poiInfo)
---[[ Override ]] function BasePinMixin:Decorate(displayData)
+--[[ Override ]] function BasePinMixin:Decorate(displayData)  -- luacheck: ignore 212
 
 end
 
@@ -204,7 +189,7 @@ MapPoiMixins.BasePinMixin = BasePinMixin;
 --endregion
 
 --- Create a new pin template
----@param ... table @ A list of mixins to include for this new template
+---@vararg table @ A list of mixins to include for this new template
 ---@return BaseMapPoiPinMixin|MapCanvasPinMixin|{GetMap:fun():MapCanvasMixin}
 function MapPoiMixins.createPinTemplate(...)
 	-- TODO Check all the results to make sure they contain expected data

@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Player model
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -145,7 +144,7 @@ end
 
 ---@return Player player
 --[[ static ]] function Player.CreateFromCharacterID(characterID)
-	assert(Ellyb.Assertions.isType(characterID, "string", "characterID"));
+	Ellyb.Assertions.isType(characterID, "string", "characterID");
 
 	if characterID == currentUser:GetCharacterID() then
 		return Player.GetCurrentUser();
@@ -160,7 +159,7 @@ end
 
 ---@return Player player
 --[[ static ]] function Player.CreateFromProfileID(profileID)
-	assert(Ellyb.Assertions.isType(profileID, "string", "profileID"));
+	Ellyb.Assertions.isType(profileID, "string", "profileID");
 	assert(TRP3_Register.profiles[profileID], ("Unknown profile ID %s"):format(profileID));
 
 	local player = Player();

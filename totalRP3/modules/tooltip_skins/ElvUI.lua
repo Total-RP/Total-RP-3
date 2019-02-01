@@ -3,7 +3,7 @@
 --- ElvUI tooltip skin
 --- ---------------------------------------------------------------------------
 --- Copyright 2018 Zarania from Stormrage-US
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
