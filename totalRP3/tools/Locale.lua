@@ -1257,7 +1257,6 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
 	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
 	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
-	
 };
 
 -- Use Ellyb to generate the Localization system

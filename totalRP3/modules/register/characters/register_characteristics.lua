@@ -1332,7 +1332,7 @@ local function onSave()
 	showCharacteristicsTab();
 end
 
-local function onRelationshipStatusSelection(choice, frame)
+local function onRelationshipStatusSelection(choice)
 	draftData.RS = choice;
 end
 
