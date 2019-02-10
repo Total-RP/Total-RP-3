@@ -6,20 +6,9 @@
 --- The goal here is to have IDE auto-completion by directly using the table and
 --- accessing its indexes in the code, but actually having the meta table call
 --- the localization functions on runtime to get the localized version of the text.
---- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
---- Licensed under the Apache License, Version 2.0 (the "License");
---- you may not use this file except in compliance with the License.
---- You may obtain a copy of the License at
 ---
---- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
---- Unless required by applicable law or agreed to in writing, software
---- distributed under the License is distributed on an "AS IS" BASIS,
---- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---- See the License for the specific language governing permissions and
---- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -1250,13 +1239,14 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "N/A",
+	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
 	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
 	REG_PLAYER_RELATIONSHIP_STATUS_TAKEN = "Taken",
 	REG_PLAYER_RELATIONSHIP_STATUS_MARRIED = "Married",
 	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
 	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
 	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
+	
 };
 
 -- Use Ellyb to generate the Localization system

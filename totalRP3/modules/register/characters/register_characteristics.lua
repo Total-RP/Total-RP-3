@@ -1,21 +1,4 @@
 ----------------------------------------------------------------------------------
---- Total RP 3
---- Character page : Characteristics
-------------------------------------------------------------------------------
---- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
----
---- Licensed under the Apache License, Version 2.0 (the "License");
---- you may not use this file except in compliance with the License.
---- You may obtain a copy of the License at
----
---- http://www.apache.org/licenses/LICENSE-2.0
----
---- Unless required by applicable law or agreed to in writing, software
---- distributed under the License is distributed on an "AS IS" BASIS,
---- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---- See the License for the specific language governing permissions and
---- limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- imports
@@ -317,7 +300,7 @@ local function setConsultDisplay(context)
 	local shownValues = {};
 	for _, attribute in pairs(CHAR_KEYS) do
 		if attribute == "RS" then
-			if dataTab[attribute] > 0 then
+			if dataTab[attribute] and dataTab[attribute] > 0 then
 				tinsert(shownCharacteristics, attribute);
 				shownValues[attribute] = RELATIONSHIP_STATUS_DROPDOWN[dataTab[attribute] + 1][1];
 			end
@@ -1549,6 +1532,7 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc.REG_PLAYER_BIRTHPLACE);
 
 	setupListBox(TRP3_RegisterCharact_Dropdown_RelationshipField, RELATIONSHIP_STATUS_DROPDOWN, onRelationshipStatusSelection, loc.REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN, 200, false);
+	TRP3_RegisterCharact_Dropdown_RelationshipFieldTitle:SetText(loc.REG_PLAYER_RELATIONSHIP_STATUS);
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
