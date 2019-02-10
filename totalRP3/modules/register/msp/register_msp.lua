@@ -40,7 +40,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR'});
+	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR', 'RS'});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -125,6 +125,7 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
+		msp.my['RS'] = tostring(dataTab.RS or 0);
 		-- Clear fields that may or may not exist in the updated profile.
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
@@ -330,6 +331,9 @@ local function onStart()
 						-- Internal MSP height is centimeters without units.
 						if field == "AH" and value and tonumber(value) then
 							value = value .. " cm";
+						end
+						if field == "RS" and value then
+							value = tonumber(value);
 						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
