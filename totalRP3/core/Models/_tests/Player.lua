@@ -66,6 +66,26 @@ function Tests:CheckIfPlayerIsOnTrialAccountFromCharacterInfo()
 	player = Player.CreateFromCharacterID("any");
 	-- Then
 	WoWUnit.IsFalse(player:IsOnATrialAccount());
+
+	-- Backward compatibility check
+
+	-- Given
+	WoWUnit.Replace(TRP3_API.register, "getUnitIDCharacter", function()
+		return { isTrial = true }
+	end)
+	-- When
+	player = Player.CreateFromCharacterID("any");
+	-- Then
+	WoWUnit.IsTrue(player:IsOnATrialAccount());
+
+	-- Given
+	WoWUnit.Replace(TRP3_API.register, "getUnitIDCharacter", function()
+		return { isTrial = false }
+	end)
+	-- When
+	player = Player.CreateFromCharacterID("any");
+	-- Then
+	WoWUnit.IsFalse(player:IsOnATrialAccount());
 end
 --endregion
 
