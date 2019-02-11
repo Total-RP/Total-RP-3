@@ -50,6 +50,7 @@ local deleteProfile = TRP3_API.register.deleteProfile;
 local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
+local setupListBox = TRP3_API.ui.listbox.setupListBox;
 
 local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
@@ -58,6 +59,8 @@ end;
 local PSYCHO_PRESETS_UNKOWN;
 local PSYCHO_PRESETS;
 local PSYCHO_PRESETS_DROPDOWN;
+
+local RELATIONSHIP_STATUS_DROPDOWN;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -123,7 +126,8 @@ local registerCharLocals = {
 	HE = "REG_PLAYER_HEIGHT",
 	WE = "REG_PLAYER_WEIGHT",
 	BP = "REG_PLAYER_BIRTHPLACE",
-	RE = "REG_PLAYER_RESIDENCE"
+	RE = "REG_PLAYER_RESIDENCE",
+	RS = "REG_PLAYER_RELATIONSHIP_STATUS"
 };
 local miscCharFrame = {};
 local psychoCharFrame = {};
@@ -241,7 +245,7 @@ local function setBkg(backgroundIndex)
 	TRP3_RegisterCharact_CharactPanel:SetBackdrop(backdrop);
 end
 
-local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE" };
+local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
 local FIELD_TITLE_SCALE = 0.3;
 
 local function scaleField(field, containerSize, fieldName)
@@ -312,7 +316,15 @@ local function setConsultDisplay(context)
 	local shownCharacteristics = {};
 	local shownValues = {};
 	for _, attribute in pairs(CHAR_KEYS) do
-		if strtrim(dataTab[attribute] or ""):len() > 0 then
+		if attribute == "RS" then
+			if dataTab[attribute] and dataTab[attribute] > 0 then
+				local relationshipToDisplay = RELATIONSHIP_STATUS_DROPDOWN[dataTab[attribute] + 1];
+				if relationshipToDisplay then
+					tinsert(shownCharacteristics, attribute);
+					shownValues[attribute] = relationshipToDisplay[1];
+				end
+			end
+		elseif strtrim(dataTab[attribute] or ""):len() > 0 then
 			tinsert(shownCharacteristics, attribute);
 			shownValues[attribute] = dataTab[attribute];
 		end
@@ -470,6 +482,7 @@ local function saveInDraft()
 	draftData.WE = stEtN(strtrim(TRP3_RegisterCharact_Edit_WeightField:GetText()));
 	draftData.RE = stEtN(strtrim(TRP3_RegisterCharact_Edit_ResidenceField:GetText()));
 	draftData.BP = stEtN(strtrim(TRP3_RegisterCharact_Edit_BirthplaceField:GetText()));
+	draftData.RS = tonumber(TRP3_RegisterCharact_Dropdown_RelationshipField:GetSelectedValue());
 
 	if sanitizeCharacteristics(draftData) then
 		-- Yell at the user about their mischieves
@@ -1018,6 +1031,8 @@ function setEditDisplay()
 	TRP3_RegisterCharact_Edit_ResidenceField:SetText(draftData.RE or "");
 	TRP3_RegisterCharact_Edit_BirthplaceField:SetText(draftData.BP or "");
 
+	TRP3_RegisterCharact_Dropdown_RelationshipField:SetSelectedValue(draftData.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN)
+
 	refreshDraftHouseCoordinates();
 
 	-- Misc
@@ -1320,6 +1335,10 @@ local function onSave()
 	showCharacteristicsTab();
 end
 
+local function onRelationshipStatusSelection(choice)
+	draftData.RS = choice;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- CHARACTERISTICS - INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1417,6 +1436,15 @@ local function initStructures()
 		{ loc.REG_PLAYER_PSYCHO_Valeureux .. " - " .. loc.REG_PLAYER_PSYCHO_Couard, 11 },
 		{ loc.REG_PLAYER_PSYCHO_CUSTOM },
 		{ loc.REG_PLAYER_PSYCHO_CREATENEW, "new" },
+	};
+
+	RELATIONSHIP_STATUS_DROPDOWN = {
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_SINGLE, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.SINGLE},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_TAKEN, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.TAKEN},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_MARRIED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.MARRIED},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.DIVORCED},
+		{loc.REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED, AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.WIDOWED},
 	};
 end
 
@@ -1523,6 +1551,11 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_ResidenceFieldText:SetText(loc.REG_PLAYER_RESIDENCE);
 	TRP3_RegisterCharact_Edit_BirthplaceFieldText:SetText(loc.REG_PLAYER_BIRTHPLACE);
 
+	setupListBox(TRP3_RegisterCharact_Dropdown_RelationshipField, RELATIONSHIP_STATUS_DROPDOWN, onRelationshipStatusSelection, loc.REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN, 200, false);
+	Ellyb.Tooltips.getTooltip(TRP3_RegisterCharact_Dropdown_RelationshipField)
+		:SetTitle(loc.REG_PLAYER_RELATIONSHIP_STATUS)
+		:AddLine(loc.REG_PLAYER_RELATIONSHIP_STATUS_TT);
+	TRP3_RegisterCharact_Dropdown_RelationshipFieldTitle:SetText(loc.REG_PLAYER_RELATIONSHIP_STATUS);
 
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)

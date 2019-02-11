@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,7 +18,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
 	<!-- Please note that the loading order matters a lot -->
 	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
 	<GameTooltip name="TRP3_Toast" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate">
@@ -43,19 +43,21 @@
 		</Layers>
 	</Frame>
 
+	<Script file="impl\Enums.lua" />
 	<Script file="Models\Player.lua" />
-	
+	<Script file="Models\_tests\Player.lua" />
+
 	<Script file="impl\globals.lua"/>
 	<Script file="impl\events.lua"/>
 	<Script file="impl\utils.lua"/>
 	<Script file="impl\ui_tools.lua"/>
 	<Script file="impl\slash.lua"/>
-	
+
 	<Include file="ui\widgets.xml"/>
-	
+
 	<Include file="ui\main.xml"/>
 	<Script file="impl\main_structure.lua"/>
-	
+
 	<Include file="ui\configuration.xml"/>
 	<Script file="impl\configuration.lua"/>
 	<Script file="impl\AdvancedSettings.lua"/>
@@ -63,16 +65,16 @@
 	<Script file="impl\Compression.lua"/>
 	<Script file="impl\CommunicationProtocol.lua"/>
 	<Script file="impl\communication_protocol_broadcast.lua"/>
-	
+
 	<Script file="impl\ui_main.lua"/>
-	
+
 	<Include file="ui\browsers\icons.xml"/>
 	<Include file="ui\browsers\companions.xml"/>
 	<Include file="ui\browsers\musics.xml"/>
 	<Include file="ui\browsers\colors.xml"/>
 	<Include file="ui\browsers\images.xml"/>
 	<Script file="impl\popup.lua"/>
-	
+
 	<Include file="ui\profiles.xml"/>
 	<Script file="impl\profiles.lua"/>
 	<Script file="impl\ProfilesChatLinksModule.lua"/>

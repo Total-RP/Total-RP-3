@@ -106,8 +106,6 @@ local currentDate = date("*t");
 local seriousDay = currentDate.month == 4 and currentDate.day == 1
 local Rainbowify = TRP3_API.utils.Rainbowify;
 
-local isTrial = IsTrialAccount();
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -643,6 +641,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID)
 	if showNotifications() then
 		local notifText = "";
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
@@ -654,14 +653,14 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
-			if isTrial then
+			if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end
-			if character.isTrial then
+			if player:IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end

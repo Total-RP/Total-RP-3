@@ -5,7 +5,7 @@
 ## Notes: Main addon
 ## URL: http://totalrp3.info
 ## RequiredDeps:
-## OptionalDeps: totalRP3_Debug
+## OptionalDeps: totalRP3_Debug, WoWUnit
 ## RequiredDeps: totalRP3_Data
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
