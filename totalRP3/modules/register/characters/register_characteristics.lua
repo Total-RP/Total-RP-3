@@ -318,8 +318,11 @@ local function setConsultDisplay(context)
 	for _, attribute in pairs(CHAR_KEYS) do
 		if attribute == "RS" then
 			if dataTab[attribute] and dataTab[attribute] > 0 then
-				tinsert(shownCharacteristics, attribute);
-				shownValues[attribute] = RELATIONSHIP_STATUS_DROPDOWN[dataTab[attribute] + 1][1];
+				local relationshipToDisplay = RELATIONSHIP_STATUS_DROPDOWN[dataTab[attribute] + 1];
+				if relationshipToDisplay then
+					tinsert(shownCharacteristics, attribute);
+					shownValues[attribute] = relationshipToDisplay[1];
+				end
 			end
 		elseif strtrim(dataTab[attribute] or ""):len() > 0 then
 			tinsert(shownCharacteristics, attribute);
