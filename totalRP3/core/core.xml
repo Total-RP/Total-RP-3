@@ -45,7 +45,8 @@
 
 	<Script file="impl\Enums.lua" />
 	<Script file="Models\Player.lua" />
-	
+	<Script file="Models\_tests\Player.lua" />
+
 	<Script file="impl\globals.lua"/>
 	<Script file="impl\events.lua"/>
 	<Script file="impl\utils.lua"/>
