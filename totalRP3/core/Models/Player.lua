@@ -137,6 +137,21 @@ function Player:IsInCharacter()
 	return self:GetInfo("character/RP") ~= 2
 end
 
+function Player:GetAccountType()
+	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
+	return characterInfo.isTrial
+end
+
+function Player:IsOnATrialAccount()
+	local accountType = self:GetAccountType()
+	if type(accountType) == "number" then
+		return accountType == AddOn_TotalRP3.Enums.ACCOUNT_TYPE.TRIAL or accountType == AddOn_TotalRP3.Enums.ACCOUNT_TYPE.VETERAN
+	else
+		-- Backward compatible check, for versions where the trial flag was true or false
+		return accountType == true
+	end
+end
+
 -- TODO Deprecate GetInfo(path) in favor of proper type safe methods to access profile data
 function Player:GetInfo(path)
 	return TRP3_API.profile.getData(path, self:GetProfile())
@@ -176,19 +191,32 @@ end
 end
 
 --{{{ Current user
-currentUser = Player();
+---@class CurrentUser
+local CurrentUser = Ellyb.Class("CurrentUser", Player)
 
-function currentUser:GetProfile()
+function CurrentUser:GetProfile()
 	return TRP3_API.profile.getPlayerCurrentProfile().player;
 end
 
-function currentUser:GetCharacterID()
+function CurrentUser:GetCharacterID()
 	return TRP3_API.globals.player_id;
 end
 
-function currentUser:GetRelationshipWithPlayer()
+function CurrentUser:GetRelationshipWithPlayer()
 	return TRP3_API.globals.RELATIONS.NONE;
 end
+
+function CurrentUser:GetAccountType()
+	if IsTrialAccount() then
+		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.TRIAL;
+	elseif IsVeteranTrialAccount() then
+		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.VETERAN;
+	else
+		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.REGULAR;
+	end
+end
+
+currentUser = CurrentUser()
 
 --- Returns a reference to the current user as a Player model.
 --- The current user has some specific behavior due to data not being stored in the same places.

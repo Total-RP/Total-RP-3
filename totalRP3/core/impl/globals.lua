@@ -25,12 +25,8 @@ local Ellyb = TRP3_API.Ellyb;
 local race_loc, race = UnitRace("player");
 local class_loc, class, class_index = UnitClass("player");
 local faction, faction_loc = UnitFactionGroup("player");
-local is_trial_account = 0;
-if IsTrialAccount() then
-	is_trial_account = 1;
-elseif IsVeteranTrialAccount() then
-	is_trial_account = 2;
-end
+
+local Player = AddOn_TotalRP3.Player.GetCurrentUser();
 
 -- Public accessor
 TRP3_API.r = {};
@@ -76,7 +72,7 @@ TRP3_API.globals = {
 		class = class,
 		faction = faction
 	},
-	is_trial_account = is_trial_account,
+	is_trial_account = Player:GetAccountType(),
 	clients = {
 		TRP3 = "trp3",
 		MSP = "msp",

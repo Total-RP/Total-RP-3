@@ -530,7 +530,7 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
-	msp.my['TR'] = tostring(Globals.is_trial_account);
+	msp.my['TR'] = tostring(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType());
 
 	-- Init others vernum
 	for _, profile in pairs(TRP3_API.register.getProfileList()) do

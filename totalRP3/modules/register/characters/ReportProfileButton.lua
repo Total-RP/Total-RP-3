@@ -40,6 +40,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
         onClick = function()
             local DATE_FORMAT = "%Y-%m-%d around %H:%M";
             local playerID = TRP3_API.utils.str.getUnitID("target");
+			local player = AddOn_TotalRP3.Player.CreateFromCharacterID(playerID);
             local profile = TRP3_API.register.getUnitIDProfile(playerID)
             local characterInfo = TRP3_API.register.getUnitIDCharacter(playerID);
 
@@ -61,7 +62,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
             end
 
             -- Indicate if this was a trial account if we have that info
-            if characterInfo.isTrial ~= false and characterInfo.isTrial ~= 0 then
+            if player:IsOnATrialAccount() then
                 commentText = commentText .. "\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT;
             end
             PlayerReportFrame.CommentBox:SetText(commentText);
