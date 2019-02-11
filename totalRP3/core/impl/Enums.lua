@@ -27,3 +27,12 @@ AddOn_TotalRP3.Enums.ACCOUNT_TYPE = {
 	TRIAL = 1,
 	VETERAN = 2
 }
+
+AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS = {
+	UNKNOWN = 0,
+	SINGLE = 1,
+	TAKEN = 2,
+	MARRIED = 3,
+	DIVORCED = 4,
+	WIDOWED = 5,
+}

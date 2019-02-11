@@ -125,7 +125,7 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
-		msp.my['RS'] = tostring(dataTab.RS or 0);
+		msp.my['RS'] = tostring(dataTab.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 		-- Clear fields that may or may not exist in the updated profile.
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
