@@ -31,7 +31,6 @@ local function onStart()
 	end
 
 	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
-	local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
 
@@ -171,11 +170,6 @@ local function onStart()
 		updateCharacteristicsData();
 		updateAboutData();
 		updateMiscData();
-		msp:Update();
-	end
-
-	local function onAboutChanged()
-		updateAboutData();
 		msp:Update();
 	end
 
@@ -541,12 +535,6 @@ local function onStart()
 			end
 		end
 	end
-
-	-- Build configuration page
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc.CO_MSP,
-	});
 
 	-- Initial update
 	updateCharacteristicsData();
