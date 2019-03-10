@@ -22,9 +22,15 @@ local Ellyb = Ellyb(...);
 local module = AddOn_TotalRP3.MSP or {};
 module.log = module.log or Ellyb.Logger("MSP");
 
+-- Registry of known serializers/deserializers by name.
 local serializers = {};
 local deserializers = {};
 
+-- SerializeField converts a given TRP profile value back to an
+-- MSP-exportable value (typically a string or number).
+--
+-- If the serializer for the named field encounters an error, it is logged
+-- and nil is returned instead.
 function module.SerializeField(field, ...)
 	Ellyb.Assertions.isNotNil(field, "field");
 
@@ -43,6 +49,11 @@ function module.SerializeField(field, ...)
 	return result;
 end
 
+-- DeserializeField converts a given field value back to a TRP-compatible
+-- result for storage in a profile.
+--
+-- If the deserializer for the named field encounters an error, it is logged
+-- and nil is returned instead.
 function module.DeserializeField(field, value)
 	Ellyb.Assertions.isNotNil(field, "field");
 
@@ -61,6 +72,13 @@ function module.DeserializeField(field, value)
 	return result;
 end
 
+-- Registers a field with the given name and specification. The specification
+-- must contain two functions with the keys Serialize and Deserialize.
+--
+-- If the field already exists, an error is raised.
+--
+-- @param field string The name of the field to add.
+-- @param spec  table  The specification for this field.
 function module.RegisterField(field, spec)
 	Ellyb.Assertions.isNotNil(field, "field");
 	Ellyb.Assertions.isType(spec, "table", "spec");
@@ -78,6 +96,8 @@ function module.RegisterField(field, spec)
 	deserializers[field] = spec.Deserialize;
 end
 
+-- Attempts to register a named field with the given specification. If the
+-- field already exists, false is returned, else true.
 function module.TryRegisterField(...)
 	if not pcall(module.RegisterField, ...) then
 		return false;
