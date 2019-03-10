@@ -202,9 +202,9 @@ module.TryRegisterField("PS", {
 		return traitString;
 	end,
 
-	Deserialize = function(value)
+	Deserialize = function(fieldValue)
 		-- Shortcut cases where a profile hasn't given us a thing.
-		if not value or type(value) ~= "string" then
+		if not fieldValue or type(fieldValue) ~= "string" then
 			return nil;
 		end
 
@@ -212,7 +212,7 @@ module.TryRegisterField("PS", {
 		local traits = {};
 
 		-- Parse each [trait {attr...}] block.
-		for trait in value:gmatch("%[trait [^%]]-%]") do
+		for trait in fieldValue:gmatch("%[trait [^%]]-%]") do
 			local struct = {};
 
 			-- And then each attr="value" pair.
