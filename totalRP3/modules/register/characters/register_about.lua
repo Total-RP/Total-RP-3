@@ -389,11 +389,22 @@ local function resizeTemplate3()
 	for i=1, 3 do
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
-		if text:GetText() and text:GetText():len() > 0 then
-			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
-			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
+		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
+
+		if not text.html or text.html:len() == 0 then
+			frame:SetHeight(1)
 		else
-			frame:SetHeight(1);
+			-- Use the height of the title text, the margin, and sum up
+			-- the regions within the HTML frame itself.
+			local frameHeight = title:GetHeight() + (TEMPLATE3_MARGIN);
+
+			local numRegions = select("#", text:GetRegions());
+			for j = 1, numRegions do
+				local region = select(j, text:GetRegions());
+				frameHeight = frameHeight + region:GetHeight();
+			end
+
+			frame:SetHeight(frameHeight);
 		end
 	end
 end
@@ -413,7 +424,11 @@ local function showTemplate3(dataTab)
 			local icon = Utils.str.icon(data.IC or icons[i], 25);
 			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
-			text:SetText(convertTextTags(data.TX));
+
+			-- We'll need to access the HTML later when resizing things.
+			text.html = Utils.str.toHTML(data.TX or "")
+			text:SetText(text.html);
+
 			setBkg(frame, data.BK);
 			frame:Show();
 		else
