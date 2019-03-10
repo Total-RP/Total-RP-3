@@ -139,6 +139,8 @@ local function onStart()
 				end
 			end
 		end
+
+		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
 	local function updateMiscData()
@@ -192,7 +194,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS"
+		"HI", "TR", "MU", "RS", "PS"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -209,6 +211,7 @@ local function onStart()
 		PX = "TI",
 		IC = "IC",
 		RS = "RS",
+		PS = "PS",
 	}
 
 	local CHARACTER_FIELDS = {
@@ -332,6 +335,10 @@ local function onStart()
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+						end
+						-- Machine-formatted psychological traits.
+						if field == "PS" and value then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MRP.DeserializeField(field, value);
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
@@ -498,7 +505,7 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS"};
+	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS", "PS"};
 
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
