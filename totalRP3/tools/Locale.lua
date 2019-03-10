@@ -604,8 +604,6 @@ Possible status:
 	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
 	CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
 	CO_MSP = "Mary Sue Protocol",
-	CO_MSP_T3 = "Use template 3 only",
-	CO_MSP_T3_TT = "Even if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
 	CO_WIM = "|cffff9900Whisper channels are disabled.",
 	CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purposes",
 	CO_LOCATION = "Location settings",
