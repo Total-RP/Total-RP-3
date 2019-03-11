@@ -239,6 +239,14 @@ module.TryRegisterField("PS", {
 				end
 			end
 
+			-- Ensure we default any missing fields from custom traits.
+			if not struct.ID and (struct.LT or struct.RT) then
+				struct.LI = struct.LI or Globals.icons.default;
+				struct.LC = struct.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
+				struct.RI = struct.RI or Globals.icons.default;
+				struct.RC = struct.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
+			end
+
 			-- If we get a trait that doesn't have either an ID or both
 			-- name fields, or is missing a value, we'll ignore it.
 			if (struct.ID or (struct.LT and struct.RT)) and struct.V2 then
