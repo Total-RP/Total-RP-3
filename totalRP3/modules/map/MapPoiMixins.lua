@@ -57,12 +57,12 @@ local TOOLTIP_CATEGORY_SEPARATOR = [[|TInterface\Common\UI-TooltipDivider-Transp
 ---  in order of their category priority (descending), or if equal, their
 ---  sortable name equivalent (ascending).
 local function sortMarkerEntries(a, b)
-	local categoryA = a.categoryPriority or huge;
-	local categoryB = b.categoryPriority or huge;
+	local categoryA = a.categoryPriority or math.huge;
+	local categoryB = b.categoryPriority or math.huge;
 
-	if categoryA == huge and type(categoryB) == "string" then
+	if categoryA == math.huge and type(categoryB) == "string" then
 		categoryA = "";
-	elseif categoryB == huge and type(categoryA) == "string" then
+	elseif categoryB == math.huge and type(categoryA) == "string" then
 		categoryB = "";
 	end
 
@@ -82,7 +82,7 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	-- ones we're mousing over.
 	for marker in self:GetMap():EnumerateAllPins() do
 		if marker:IsVisible() and marker:IsMouseOver() then
-			insert(markerTooltipEntries, marker);
+			table.insert(markerTooltipEntries, marker);
 		end
 	end
 
