@@ -114,7 +114,6 @@ local function updateScores(profileID, updateText)
     local pseudoRandomSeed = 0;
     for index = 1,splitAmount do
         local splitString = stringSeed:sub((index - 1) * 6 + 1, index * 6);
-        
         pseudoRandomSeed = pseudoRandomSeed + tonumber(splitString, 36);
     end
 
