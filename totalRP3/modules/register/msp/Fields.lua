@@ -221,6 +221,7 @@ module.TryRegisterField("PS", {
 				if key == "id" then
 					struct.ID = tonumber(value);
 				elseif key == "value" then
+					struct.VA = math.floor(tonumber(value) * Globals.PSYCHO_MAX_VALUE_V1);
 					struct.V2 = math.floor(tonumber(value) * Globals.PSYCHO_MAX_VALUE_V2);
 				elseif key == "left-name" then
 					struct.LT = value;
