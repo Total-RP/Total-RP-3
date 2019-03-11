@@ -88,7 +88,7 @@ loc:GetLocale("esES"):AddTexts(RPIO_LOC_ES);
 
 local SCORE_NAMES;
 
-local SCORE_ICON = Ellyb.Icon([[Interface\ICONS\Achievement_ashran_tourofduty]]);
+local SCORE_ICON = Ellyb.Icon("Achievement_ashran_tourofduty");
 
 local SCORE_ICONS = {
     "INV_Archaeology_70_CrownJewelsOfSuramar",
