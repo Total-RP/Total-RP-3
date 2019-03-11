@@ -137,67 +137,70 @@ AddOn_TotalRP3.MSP = module;
 --    (left|right)-icon:  Name of a custom icon for this trait.
 --    (left|right)-color: Hexadecimal color code for this trait.
 
+-- Min/max ranges of the known trait IDs. These map to our own internal
+-- trait ID definitions exactly, but if we add new ones then other addons
+-- would need to support them too.
+local PS_MIN_BUILTIN_TRAIT_ID = 1;
+local PS_MAX_BUILTIN_TRAIT_ID = 11;
+
+-- Format strings used when serialising the traits.
+local PS_BUILTIN_FORMAT = "[trait value=\"%.2f\" id=\"%d\"]";
+local PS_CUSTOM_FORMAT = "[trait value=\"%.2f\""
+	.. " left-name=%q left-icon=%q left-color=\"%02x%02x%02x\""
+	.. " right-name=%q right-icon=%q right-color=\"%02x%02x%02x\""
+	.. "]";
+
 module.TryRegisterField("PS", {
 	Serialize = function(traits)
 		local out = Ellyb.Tables.getTempTable();
-		for traitIndex = 1, #traits do
+		for i = 1, #traits do
 			-- Start writing out this trait.
-			local trait = traits[traitIndex];
-			table.insert(out, "[trait");
+			local trait = traits[i];
 
-			-- Support both old and new range values.
+			-- Support both old and new range values. Default if not
+			-- present to something sensible.
+			local value = (Globals.PSYCHO_DEFAULT_VALUE_V2 / Globals.PSYCHO_MAX_VALUE_V2);
 			if trait.V2 then
-				table.insert(out, ([[ value="%f"]]):format(trait.V2 / Globals.PSYCHO_MAX_VALUE_V2));
+				value = trait.V2 / Globals.PSYCHO_MAX_VALUE_V2;
 			elseif trait.VA then
-				table.insert(out, ([[ value="%f"]]):format(trait.VA / Globals.PSYCHO_MAX_VALUE_V1));
-			else
-				-- Placeholder value so nothing breaks in odd circumstances.
-				table.insert(out, [[ value="0.5"]]);
+				value = trait.VA / Globals.PSYCHO_MAX_VALUE_V1;
 			end
 
 			-- If there's an ID it's a built-in trait, otherwise it's custom
 			-- and thus needs the name/icon/color stuff.
-			if trait.ID then
-				table.insert(out, ([[ id="%d"]]):format(trait.ID));
-			else
-				-- We'll strip " and ] from the name for simplicity if present.
-				local leftName = (trait.LT or ""):gsub("[%]=]", "");
-				local leftIcon = trait.LI or "";
+			if trait.ID
+				and trait.ID >= PS_MIN_BUILTIN_TRAIT_ID
+				and trait.ID <= PS_MAX_BUILTIN_TRAIT_ID then
+				-- It's a builtin trait within the known ID range.
+				table.insert(out, PS_BUILTIN_FORMAT:format(value, trait.ID));
+			elseif trait.LT and trait.RT then
+				-- We'll strip " and ] from the names for simplicity if present.
+				local leftName = trait.LT:gsub("[%]=]", "");
+				local leftIcon = trait.LI or Globals.icons.default;
+				local leftColor = trait.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
 
-				table.insert(out, ([[ left-name=%q]]):format(leftName));
-				table.insert(out, ([[ left-icon=%q]]):format(leftIcon));
-				table.insert(out, ([[ left-color="%02x%02x%02x"]]):format(
-					(trait.LC.r or 1) * 255,
-					(trait.LC.g or 1) * 255,
-					(trait.LC.b or 1) * 255
+				local rightName = trait.RT:gsub("[%]=]", "");
+				local rightIcon = trait.RI or Globals.icons.default;
+				local rightColor = trait.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
+
+				table.insert(out, PS_CUSTOM_FORMAT:format(
+					value,
+					leftName,
+					leftIcon,
+					(leftColor.r or 1) * 255,
+					(leftColor.g or 1) * 255,
+					(leftColor.b or 1) * 255,
+					rightName,
+					rightIcon,
+					(rightColor.r or 1) * 255,
+					(rightColor.g or 1) * 255,
+					(rightColor.b or 1) * 255
 				));
-
-				local rightName = (trait.RT or ""):gsub("[%]=]", "");
-				local rightIcon = trait.RI or "";
-
-				table.insert(out, ([[ right-name=%q]]):format(rightName));
-				table.insert(out, ([[ right-icon=%q]]):format(rightIcon));
-				table.insert(out, ([[ right-color="%02x%02x%02x"]]):format(
-					(trait.RC.r or 1) * 255,
-					(trait.RC.g or 1) * 255,
-					(trait.RC.b or 1) * 255
-				));
-			end
-
-			-- Close off the trait line and concat the contents.
-			table.insert(out, "]");
-			out[traitIndex] = table.concat(out, "", traitIndex);
-
-			-- Remove the pieces from the table in reverse order. The idea
-			-- is that out[traitIndex] is our full trait string and everything
-			-- afterwards is nil.
-			for i = #out, traitIndex + 1, -1 do
-				out[i] = nil;
 			end
 		end
 
 		-- Join all the resulting traits into a single string.
-		local traitString = table.concat(out, "");
+		local traitString = table.concat(out, "\n");
 		Ellyb.Tables.releaseTempTable(out);
 
 		return traitString;
