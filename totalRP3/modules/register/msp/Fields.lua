@@ -160,8 +160,8 @@ module.TryRegisterField("PS", {
 			if trait.ID then
 				table.insert(out, ([[ id="%d"]]):format(trait.ID));
 			else
-				-- We'll strip " from the name for simplicity if present.
-				local leftName = (trait.LT or ""):gsub([["]], "");
+				-- We'll strip " and ] from the name for simplicity if present.
+				local leftName = (trait.LT or ""):gsub("[%]=]", "");
 				local leftIcon = trait.LI or "";
 
 				table.insert(out, ([[ left-name=%q]]):format(leftName));
@@ -172,7 +172,7 @@ module.TryRegisterField("PS", {
 					(trait.LC.b or 1) * 255
 				));
 
-				local rightName = (trait.RT or ""):gsub([["]], "");
+				local rightName = (trait.RT or ""):gsub("[%]=]", "");
 				local rightIcon = trait.RI or "";
 
 				table.insert(out, ([[ right-name=%q]]):format(rightName));
