@@ -60,9 +60,9 @@ local function sortMarkerEntries(a, b)
 	local categoryA = a.categoryPriority or math.huge;
 	local categoryB = b.categoryPriority or math.huge;
 
-	if categoryA == huge and type(categoryB) == "string" then
+	if categoryA == math.huge and type(categoryB) == "string" then
 		categoryA = "";
-	elseif categoryB == huge and type(categoryA) == "string" then
+	elseif categoryB == math.huge and type(categoryA) == "string" then
 		categoryB = "";
 	end
 
