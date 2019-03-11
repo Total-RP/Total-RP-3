@@ -19,6 +19,8 @@
 
 local Ellyb = Ellyb(...);
 
+local Globals = TRP3_API.globals;
+
 local module = AddOn_TotalRP3.MSP or {};
 module.log = module.log or Ellyb.Logger("MSP");
 
@@ -145,9 +147,9 @@ module.TryRegisterField("PS", {
 
 			-- Support both old and new range values.
 			if trait.V2 then
-				table.insert(out, ([[ value="%f"]]):format(trait.V2 / 20));
+				table.insert(out, ([[ value="%f"]]):format(trait.V2 / Globals.PSYCHO_MAX_VALUE_V2));
 			elseif trait.VA then
-				table.insert(out, ([[ value="%f"]]):format(trait.VA / 6));
+				table.insert(out, ([[ value="%f"]]):format(trait.VA / Globals.PSYCHO_MAX_VALUE_V1));
 			else
 				-- Placeholder value so nothing breaks in odd circumstances.
 				table.insert(out, [[ value="0.5"]]);
@@ -219,7 +221,7 @@ module.TryRegisterField("PS", {
 				if key == "id" then
 					struct.ID = tonumber(value);
 				elseif key == "value" then
-					struct.V2 = math.floor(tonumber(value) * 20);
+					struct.V2 = math.floor(tonumber(value) * Globals.PSYCHO_MAX_VALUE_V2);
 				elseif key == "left-name" then
 					struct.LT = value;
 				elseif key == "left-icon" then
