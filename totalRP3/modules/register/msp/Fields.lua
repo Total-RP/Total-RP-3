@@ -198,7 +198,6 @@ module.TryRegisterField("PS", {
 		local traitString = table.concat(out, "");
 		Ellyb.Tables.releaseTempTable(out);
 
-		module.DeserializeField("PS", traitString);
 		return traitString;
 	end,
 
