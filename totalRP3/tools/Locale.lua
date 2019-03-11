@@ -1243,6 +1243,21 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 
 - Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
 ]],
+	---@language Markdown
+	WHATS_NEW_22_3 = [[
+# Changelog version 1.5.4
+
+## Added
+
+- Added a relationship status dropdown in the Characteristics tab to display (if you wish) if your character is in a relationship. **This is unrelated to the relationship update planned at a later date.**
+- Added compatibility with the MSP protocol to share trial flag and music theme with other RP addons users.
+
+## Fixed
+
+- Fixed an issue with map scans tooltips not working properly.
+- Fixed a bug occuring when scrolling down the music list if it passed over specific invalid musics.
+- Fixed an issue that would stop displaying a profile using template 3 halfway through.
+]],
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
