@@ -99,15 +99,23 @@ local function deleteProfile(profileID, dontFireEvents)
 			end
 		end
 	end
+
+	-- Deleting a profile should clear the local MSP knowledge of it,
+	-- otherwise things get out of sync if the profile comes through again
+	-- after deletion. For compatibility we'll still emit the table of owners.
 	local mspOwners;
-	if not dontFireEvents then
-		if profiles[profileID].msp then
-			mspOwners = {};
-			for ownerID, _ in pairs(profiles[profileID].link) do
+	if profiles[profileID].msp then
+		for ownerID, _ in pairs(profiles[profileID].link) do
+			msp.char[ownerID] = nil;
+
+			-- No need to build the owner table if we ain't gonna emit it.
+			if not dontFireEvents then
+				mspOwners = mspOwners or {};
 				tinsert(mspOwners, ownerID);
 			end
 		end
 	end
+
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
 	if not dontFireEvents then
