@@ -1260,6 +1260,7 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 - Fixed a bug occuring when scrolling down the music list if it passed over specific invalid musics.
 - Fixed an issue that would stop displaying a profile using template 3 halfway through.
 - Fixed an issue that would create duplicate profiles in the directory.
+- Fixed an issue that would not reload a profile coming from MSP properly after deleting it from the register.
 ]],
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
