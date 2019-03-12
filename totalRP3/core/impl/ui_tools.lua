@@ -817,6 +817,14 @@ local unitTexture = {
 	DarkIronDwarf = {
 		"Ability_Racial_Fireblood",
 		"ability_racial_foregedinFlames"
+	},
+	KulTiran = {
+		"Achievement_Boss_Zuldazar_Manceroy_Mestrah",
+		"INV_Faction_ProudmooreAdmiralty"
+	},
+	ZandalariTroll = {
+		"INV_ZandalariMaleHead",
+		"INV_ZandalariFemaleHead"
 	}
 };
 
