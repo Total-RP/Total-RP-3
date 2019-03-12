@@ -243,16 +243,29 @@ module.TryRegisterField("PS", {
 				end
 			end
 
-			-- Ensure we default any missing fields from custom traits.
-			if not struct.ID and (struct.LT or struct.RT) then
+			-- If it's a built-in clear any extraenous junk.
+			if struct.ID then
+				-- Capture the keepable fields and then wipe the table. Less
+				-- hassle when new things pop up.
+				local id = struct.ID;
+				local va = struct.VA;
+				local v2 = struct.V2;
+
+				table.wipe(struct);
+
+				struct.ID = id;
+				struct.VA = va;
+				struct.V2 = v2;
+			elseif struct.LT and struct.RT then
+				-- It's custom, default any missing fields.
 				struct.LI = struct.LI or Globals.icons.default;
 				struct.LC = struct.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
 				struct.RI = struct.RI or Globals.icons.default;
 				struct.RC = struct.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
 			end
 
-			-- If we get a trait that doesn't have either an ID or both
-			-- name fields, or is missing a value, we'll ignore it.
+			-- Only register traits that are valid. If the ID or custom names
+			-- are missing, or the value isn't present we'll ignore it.
 			if (struct.ID or (struct.LT and struct.RT)) and struct.V2 then
 				table.insert(traits, struct);
 			end
