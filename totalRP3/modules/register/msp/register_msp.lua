@@ -338,7 +338,7 @@ local function onStart()
 						end
 						-- Machine-formatted psychological traits.
 						if field == "PS" and value then
-							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MRP.DeserializeField(field, value);
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MSP.DeserializeField(field, value);
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
