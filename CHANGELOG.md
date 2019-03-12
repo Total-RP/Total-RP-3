@@ -10,6 +10,7 @@
 - Fixed an issue with map scans tooltips not working properly.
 - Fixed a bug occuring when scrolling down the music list if it passed over specific invalid musics.
 - Fixed an issue that would stop displaying a profile using template 3 halfway through.
+- Fixed an issue that would create duplicate profiles in the directory.
 
 # Changelog version 1.5.3
 
