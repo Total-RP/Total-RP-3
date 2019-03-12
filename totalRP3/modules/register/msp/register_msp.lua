@@ -38,7 +38,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR', 'RS'});
+	msp:AddFieldsToTooltip(AddOn_TotalRP3.MSP.TOOLTIP_FIELDS);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -505,8 +505,6 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS", "PS"};
-
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
 		local data = msp.char[targetID].field;
@@ -515,14 +513,14 @@ local function onStart()
 		and not isIgnored(targetID)
 		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			msp:Request(targetID, REQUEST_TAB);
+			msp:Request(targetID, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		end
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
 		-- This function has never had the checks that the above does. Whether
 		-- it should or not should be revisited in the future.
-		msp:Request(name, REQUEST_TAB);
+		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
