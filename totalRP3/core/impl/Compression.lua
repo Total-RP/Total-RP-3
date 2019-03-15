@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- New compression system
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -18,24 +17,18 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type TRP3_API
-local _, TRP3_API = ...;
-local Ellyb = Ellyb(_);
+local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
--- Lua imports
-local assert = assert;
-
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
-local isType = Ellyb.Assertions.isType;
 local RED, GREY, ORANGE = Ellyb.ColorManager.RED, Ellyb.ColorManager.GREY, Ellyb.ColorManager.ORANGE;
 
 local Compression = {};
 
 function Compression.compress(data, willBeSentViaAddOnChannel)
-	assert(isType(data, "string", "data"));
+	Ellyb.Assertions.isType(data, "string", "data");
 
 	local compressedData = LibDeflate:CompressDeflate(data);
 
@@ -47,7 +40,7 @@ function Compression.compress(data, willBeSentViaAddOnChannel)
 end
 
 function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
-	assert(isType(compressedData, "string", "data"));
+	Ellyb.Assertions.isType(compressedData, "string", "data");
 
 	if wasReceivedViaAddOnChannel then
 		local decodedCompressedData = LibDeflate:DecodeForWoWChatChannel(compressedData);
@@ -59,7 +52,7 @@ function Compression.decompress(compressedData, wasReceivedViaAddOnChannel)
 		end
 	end
 
-	local decompressedData, status = LibDeflate:DecompressDeflate(compressedData);
+	local decompressedData, _ = LibDeflate:DecompressDeflate(compressedData);
 	if decompressedData == nil then
 		error(RED("[AddOn_TotalRP3.Compression.decompress ERROR]:") .. "\nCould not decompress data \"" .. GREY(tostring(compressedData)) .. "\"");
 	end

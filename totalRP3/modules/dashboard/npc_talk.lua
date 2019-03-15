@@ -1,21 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Dashboard
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---	Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Dashboard
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ---------------------------------------------------------------------------------
 
 ---@type
@@ -27,16 +27,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local strconcat = strconcat;
 	local loc = TRP3_API.loc;
-	local getConfigValue = TRP3_API.configuration.getValue;
-	local displayMessage = TRP3_API.utils.message.displayMessage;
 	local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 	local setupMovableFrame = TRP3_API.ui.frame.setupMove;
 	local setupListBox = TRP3_API.ui.listbox.setupListBox;
 	local SendChatMessage = SendChatMessage;
 	local strtrim, pairs, tinsert = strtrim, pairs, tinsert;
-	local ChatTypeInfo = ChatTypeInfo;
-	local messageTypes = TRP3_API.utils.message.type;
-	local strlen = strlen;
 
 	local frame = TRP3_NPCTalk;
 	---@type Button
@@ -84,7 +79,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local message = frame.messageText.scroll.text:GetText();
 
 		-- Always check that the message is not empty before trying to send it
-		if not message or strlen(strtrim(message)) < 1 then return end 
+		if not message or strlen(strtrim(message)) < 1 then return end
 
 		-- Send a chat message via the EMOTE channel
 		SendChatMessage(constructMessage(NPCName, channel, message), "EMOTE");
@@ -185,7 +180,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			configText = loc.NPC_TALK_TITLE,
 			tooltip = loc.NPC_TALK_TITLE,
 			tooltipSub = loc.NPC_TALK_BUTTON_TT,
-			onClick = function(Uibutton, buttonStructure, button)
+			onClick = function()
 				if frame:IsShown() then
 					frame:Hide();
 				else

@@ -6,21 +6,20 @@
 --- The goal here is to have IDE auto-completion by directly using the table and
 --- accessing its indexes in the code, but actually having the meta table call
 --- the localization functions on runtime to get the localized version of the text.
+--- ---------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	---------------------------------------------------------------------------
----	Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
----
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -605,8 +604,6 @@ Possible status:
 	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
 	CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
 	CO_MSP = "Mary Sue Protocol",
-	CO_MSP_T3 = "Use template 3 only",
-	CO_MSP_T3_TT = "Even if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
 	CO_WIM = "|cffff9900Whisper channels are disabled.",
 	CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purposes",
 	CO_LOCATION = "Location settings",
@@ -715,13 +712,6 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_IMPORT_EMPTY = "No importable profile",
 	PR_PROFILE_MANAGEMENT_TITLE = "Profile management",
 	PR_EXPORT_IMPORT_TITLE = "Export/import profile",
-	PR_EXPORT_WARNING_TITLE = "Warning:",
-	PR_EXPORT_WARNING_WINDOWS = [[Please note that some advanced text editing tools like Microsoft Word or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
-	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
 	PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
 
 Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special characters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
@@ -1156,12 +1146,10 @@ People will be able to copy and use the content of the link.]],
 	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
 
 Would you like to reload the interface now?]],
-	CL_TOOLTIP = "Create a chat link",
 	TT_ELVUI_SKIN = "ElvUI skin",
 	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
 	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
 	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
-	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
 	CO_ADVANCED_SETTINGS_POPUP = [[You have just modified an advanced setting.
@@ -1229,11 +1217,6 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 - Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all others channels you have joined down in the list. You can disable this workaround in cases of issues in the advanced settings.
 
 ]],
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_22_1 = [[
 # Changelog version 1.5.1
@@ -1260,6 +1243,38 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 
 - Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
 ]],
+	---@language Markdown
+	WHATS_NEW_22_3 = [[
+# Changelog version 1.5.4
+
+## Added
+
+- Added a relationship status dropdown in the Characteristics tab to display (if you wish) if your character is in a relationship. **This is unrelated to the relationship update planned at a later date.**
+- Added compatibility with the MSP protocol to share trial flag and music theme with other RP addons users.
+- Added new default icons for Kul Tirans and Zandalaris (sorry KT females, couldn't find a better icon).
+- Added 2 images, 36 musics and 46 icons from patch 8.1.5.
+
+## Fixed
+
+- Fixed an issue with map scans tooltips not working properly.
+- Fixed a bug occuring when scrolling down the music list if it passed over specific invalid musics.
+- Fixed an issue that would stop displaying a profile using template 3 halfway through.
+- Fixed an issue that would create duplicate profiles in the directory.
+- Fixed an issue that would not reload a profile coming from MSP properly after deleting it from the register.
+]],
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
+	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
+	REG_PLAYER_RELATIONSHIP_STATUS_TAKEN = "Taken",
+	REG_PLAYER_RELATIONSHIP_STATUS_MARRIED = "Married",
+	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
+	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
+	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
+	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
 };
 
 -- Use Ellyb to generate the Localization system

@@ -2,7 +2,7 @@
 --- Total RP 3
 --- WIM plugin
 --- ---------------------------------------------------------------------------
---- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -27,20 +27,20 @@ local function onStart()
 	if not WIM then
 		return false, loc.MO_ADDON_NOT_INSTALLED:format("WIM");
 	end
-	
+
 	-- Import Total RP 3 functions
 	local customGetColoredNameWithCustomFallbackFunction = TRP3_API.utils.customGetColoredNameWithCustomFallbackFunction;
-	local playerID                                       = TRP3_API.globals.player_id;
-	local getFullnameForUnitUsingChatMethod              = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
-	local getClassColor 								 = TRP3_API.utils.color.getClassColor;
-	local getUnitCustomColor							 = TRP3_API.utils.color.getUnitCustomColor;
-	local increaseColorContrast							 = TRP3_API.chat.configIncreaseNameColorContrast;
-	local configShowNameCustomColors					 = TRP3_API.chat.configShowNameCustomColors
-	local getData 										 = TRP3_API.profile.getData;
-	local UnitClass 									 = UnitClass;
-	local getConfigValue 								 = TRP3_API.configuration.getValue;
-	local icon 											 = TRP3_API.utils.str.icon;
-	local playerName									 = TRP3_API.globals.player;
+	local playerID = TRP3_API.globals.player_id;
+	local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
+	local getClassColor = TRP3_API.utils.color.getClassColor;
+	local getUnitCustomColor = TRP3_API.utils.color.getUnitCustomColor;
+	local increaseColorContrast = TRP3_API.chat.configIncreaseNameColorContrast;
+	local configShowNameCustomColors = TRP3_API.chat.configShowNameCustomColors
+	local getData = TRP3_API.profile.getData;
+	local UnitClass = UnitClass;
+	local getConfigValue = TRP3_API.configuration.getValue;
+	local icon = TRP3_API.utils.str.icon;
+	local playerName = TRP3_API.globals.player;
 	local disabledByOOC = TRP3_API.chat.disabledByOOC;
 
 	local classes = WIM.constants.classes;
@@ -65,7 +65,7 @@ local function onStart()
 		local name = getFullnameForUnitUsingChatMethod(playerID) or playerName;
 		local _, playerClass = UnitClass("Player");
 		local color = configShowNameCustomColors() and getUnitCustomColor(playerID) or getClassColor(playerClass);
-	
+
 		if increaseColorContrast() then
 			color:LightenColorUntilItIsReadable();
 		end
@@ -78,7 +78,7 @@ local function onStart()
 				name = icon(info.characteristics.IC, 15) .. " " .. name;
 			end
 		end
-		
+
 		return name;
 	end
 end
@@ -92,6 +92,6 @@ TRP3_API.module.registerModule({
 	["onStart"] = onStart,
 	["minVersion"] = 25,
 	["requiredDeps"] = {
-		{"trp3_chatframes",  1.100},
+		{ "trp3_chatframes", 1.100 },
 	}
 });

@@ -1,6 +1,5 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Dashboard "What's New" Tab
 --- ------------------------------------------------------------------------------
 --- Copyright 2018 Daniel "Meorawr" Yates <me@meorawr.io>
@@ -40,6 +39,7 @@ local strhtml = TRP3_API.utils.str.toHTML;
 --- List of "What's new" segments to concatenate and display together when
 ---  this view is activated.
 local SEGMENTS = {
+	loc.WHATS_NEW_22_3,
 	loc.WHATS_NEW_22_2,
 	loc.WHATS_NEW_22_1,
 	loc.WHATS_NEW_22,

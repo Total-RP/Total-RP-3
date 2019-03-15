@@ -1,10 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Chat Link
----
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -26,27 +24,13 @@ local Ellyb = Ellyb(...);
 ---@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
-local libSerializer = LibStub:GetLibrary("AceSerializer-3.0");
-local LibDeflate = LibStub:GetLibrary("LibDeflate");
-
--- Lua imports
-local format = string.format;
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-local isNotEmpty = Ellyb.Assertions.isNotEmpty;
-
--- Total RP 3 imports
-local loc = TRP3_API.loc;
-
 ---@class ChatLink
 local ChatLink, _private = Ellyb.Class("ChatLink");
 
 function ChatLink:initialize(identifier, data, moduleID)
-	assert(isType(identifier, "string", "identifier"));
-	assert(isNotEmpty(data, "data"));
-	assert(isType(moduleID, "string", "moduleID"));
+	Ellyb.Assertions.isType(identifier, "string", "identifier");
+	Ellyb.Assertions.isNotEmpty(data, "data");
+	Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 
 	_private[self] = {};
 	_private[self].identifier = identifier;
@@ -65,13 +49,13 @@ end
 
 ---@param identifier string
 function ChatLink:SetIdentifier(identifier)
-	assert(isType(identifier, "string", "identifier"));
+	Ellyb.Assertions.isType(identifier, "string", "identifier");
 
 	_private[self].identifier = identifier;
 end
 
 function ChatLink:GetText()
-	return format(TRP3_API.ChatLinks.LINK_PATTERN, self:GetIdentifier());
+	return TRP3_API.ChatLinks.LINK_PATTERN:format(self:GetIdentifier());
 end
 
 function ChatLink:GetModuleID()
