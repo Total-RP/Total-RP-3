@@ -3145,6 +3145,11 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-Kultiran",
+		width = 256,
+		height = 128,
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Lightforged",
 		width = 256,
 		height = 128,
@@ -3161,6 +3166,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Voidelf",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-Zandalari",
 		width = 256,
 		height = 128,
 	},

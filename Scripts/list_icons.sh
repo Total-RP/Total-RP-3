@@ -17,9 +17,9 @@ listIgnore=(6IH_IronHorde_Stone_Base_StonewallEdge \
 6OR_Garrison_metalbracket \
 6OR_Garrison_metaltrim_02 \
 6OR_Garrison_spikes \
-Cape_DraeNorCraftedCaster_D_01black \
-Cape_DraeNorCraftedCaster_D_01blue \
-Cape_DraeNorCraftedCaster_D_01red \
+Cape_DraenorCraftedCaster_D_01black \
+Cape_DraenorCraftedCaster_D_01blue \
+Cape_DraenorCraftedCaster_D_01red \
 Cape_DraenorRaid_D_01caster_blue \
 Cape_DraenorRaid_D_01caster_purple \
 Cape_DraenorRaid_D_01caster_red \

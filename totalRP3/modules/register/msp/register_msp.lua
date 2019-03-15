@@ -553,13 +553,6 @@ local function onStart()
 			end
 		end
 	end);
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(_, mspOwners)
-		if mspOwners then
-			for _, ownerID in pairs(mspOwners) do
-				msp.char[ownerID] = nil;
-			end
-		end
-	end);
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
 
 end
