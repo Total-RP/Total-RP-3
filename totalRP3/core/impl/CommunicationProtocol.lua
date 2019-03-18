@@ -181,13 +181,13 @@ local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _
 		local messageToken = extractMessageTokenFromData(data);
 		internalMessageIDToChompSessionIDMatching[sessionID] = messageToken;
 	end
-	
+
 	local event = internalMessageIDToChompSessionIDMatching[sessionID];
 	if not event then
 		-- TODO: Would be a good idea to figure out the circumstances leading to this.
 		return;
 	end
-	
+
 	subSystemsOnProgressDispatcher:TriggerEvent(event, sender, msgTotal, msgID);
 end
 PROTOCOL_SETTINGS.rawCallback = onIncrementalMessageReceived;
