@@ -184,7 +184,9 @@ local function onIncrementalMessageReceived(_, data, _, sender, _, _, _, _, _, _
 
 	local event = internalMessageIDToChompSessionIDMatching[sessionID];
 	if not event then
-		-- TODO: Would be a good idea to figure out the circumstances leading to this.
+		-- This can be the case if a message is received out-of-order (unlikely!) or
+		-- if the first part of a multipart message we receive is after the first part,
+		-- for example due to us logging in or changing zones or whatever.
 		return;
 	end
 
