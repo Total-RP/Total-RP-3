@@ -31,10 +31,8 @@ local function onStart()
 	end
 
 	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
-	local getConfigValue, registerConfigKey, registerConfigHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
-	local CONFIG_T3_ONLY = "msp_t3";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP support code
@@ -78,11 +76,11 @@ local function onStart()
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
 
-		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
+		if dataTab.TE == 3 then
 			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
 			local PH = removeTextTags(dataTab.T3.PH.TX) or "";
 			local PS = removeTextTags(dataTab.T3.PS.TX) or "";
-			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
+			msp.my['DE'] = ("#Physical Description\n\n%s\n\n---\n\n#Personality traits\n\n%s"):format(PH, PS);
 		elseif dataTab.TE == 1 then
 			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
@@ -172,11 +170,6 @@ local function onStart()
 		updateCharacteristicsData();
 		updateAboutData();
 		updateMiscData();
-		msp:Update();
-	end
-
-	local function onAboutChanged()
-		updateAboutData();
 		msp:Update();
 	end
 
@@ -543,20 +536,6 @@ local function onStart()
 		end
 	end
 
-	-- Build configuration page
-	registerConfigKey(CONFIG_T3_ONLY, false);
-	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc.CO_MSP,
-	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_MSP_T3,
-		help = loc.CO_MSP_T3_TT,
-		configKey = CONFIG_T3_ONLY,
-	});
-
 	-- Initial update
 	updateCharacteristicsData();
 	updateAboutData();
@@ -571,13 +550,6 @@ local function onStart()
 			end
 			if not dataType or dataType == "character" then
 				onCharacterChanged();
-			end
-		end
-	end);
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(_, mspOwners)
-		if mspOwners then
-			for _, ownerID in pairs(mspOwners) do
-				msp.char[ownerID] = nil;
 			end
 		end
 	end);

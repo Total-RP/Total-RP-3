@@ -49,13 +49,16 @@ local assert, tostring, wipe, pairs, tinsert = assert, tostring, wipe, pairs, ti
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
-local showCharacteristicsTab, showAboutTab, showMiscTab;
+local showCharacteristicsTab, showAboutTab, showMiscTab, showScoreTab;
 local get = TRP3_API.profile.getData;
 local type = type;
 local showAlertPopup = TRP3_API.popup.showAlertPopup;
 
 -- Saved variables references
 local profiles, characters;
+
+local currentDate = date("*t");
+local seriousDay = currentDate.month == 4 and currentDate.day == 1;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -65,6 +68,7 @@ TRP3_API.register.registerInfoTypes = {
 	CHARACTERISTICS = "characteristics",
 	ABOUT = "about",
 	MISC = "misc",
+	SCORE = "score",
 	CHARACTER = "character",
 }
 
@@ -95,15 +99,23 @@ local function deleteProfile(profileID, dontFireEvents)
 			end
 		end
 	end
+
+	-- Deleting a profile should clear the local MSP knowledge of it,
+	-- otherwise things get out of sync if the profile comes through again
+	-- after deletion. For compatibility we'll still emit the table of owners.
 	local mspOwners;
-	if not dontFireEvents then
-		if profiles[profileID].msp then
-			mspOwners = {};
-			for ownerID, _ in pairs(profiles[profileID].link) do
+	if profiles[profileID].msp then
+		for ownerID, _ in pairs(profiles[profileID].link) do
+			msp.char[ownerID] = nil;
+
+			-- No need to build the owner table if we ain't gonna emit it.
+			if not dontFireEvents then
+				mspOwners = mspOwners or {};
 				tinsert(mspOwners, ownerID);
 			end
 		end
 	end
+
 	wipe(profiles[profileID]);
 	profiles[profileID] = nil;
 	if not dontFireEvents then
@@ -440,6 +452,8 @@ local function onInformationUpdated(profileID, infoType)
 				showCharacteristicsTab();
 			elseif infoType == registerInfoTypes.MISC and tabGroup.current == 3 then
 				showMiscTab();
+			elseif infoType == registerInfoTypes.SCORE and tabGroup.current == 4 then
+				showScoreTab();
 			end
 		end
 	end
@@ -461,26 +475,30 @@ end
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
-	frame:SetSize(400, 30);
+	frame:SetSize(470, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
 		{
 			{ loc.REG_PLAYER_CARACT, 1, 150 },
 			{ loc.REG_PLAYER_ABOUT, 2, 110 },
-			{ loc.REG_PLAYER_PEEK, 3, 130 }
+			{ loc.REG_PLAYER_PEEK, 3, 130 },
+			TRP3_API.register.showRPIO() and { "RP.IO", 4, 70 } or nil
 		},
 		function(_, value)
 			-- Clear all
 			TRP3_RegisterCharact:Hide();
 			TRP3_RegisterAbout:Hide();
 			TRP3_RegisterMisc:Hide();
+			TRP3_RegisterScore:Hide();
 			if value == 1 then
 				showCharacteristicsTab();
 			elseif value == 2 then
 				showAboutTab();
 			elseif value == 3 then
 				showMiscTab();
+			elseif value == 4 then
+				showScoreTab();
 			end
 			TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 		end,
@@ -511,7 +529,8 @@ end
 function TRP3_API.register.ui.isTabSelected(infoType)
 	return (infoType == registerInfoTypes.CHARACTERISTICS and tabGroup.current == 1)
 		or (infoType == registerInfoTypes.ABOUT and tabGroup.current == 2)
-		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3);
+		or (infoType == registerInfoTypes.MISC and tabGroup.current == 3)
+		or (infoType == registerInfoTypes.SCORE and tabGroup.current == 4);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -635,6 +654,7 @@ function TRP3_API.register.init()
 	showCharacteristicsTab = TRP3_API.register.ui.showCharacteristicsTab;
 	showAboutTab = TRP3_API.register.ui.showAboutTab;
 	showMiscTab = TRP3_API.register.ui.showMiscTab;
+	showScoreTab = TRP3_API.register.ui.showScoreTab;
 
 	-- Init save variables
 	if not TRP3_Register then
@@ -735,11 +755,24 @@ function TRP3_API.register.init()
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
+	if seriousDay then
+		registerConfigKey("rp_io", true);
+		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements,
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = "RP.IO",
+				configKey = "rp_io",
+			});
+	end
+
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
 	TRP3_API.register.inits.glanceInit();
 	TRP3_API.register.inits.miscInit();
+	if TRP3_API.register.showRPIO() then
+		TRP3_API.register.inits.scoreInit();
+	end
 	TRP3_API.register.inits.dataExchangeInit();
 	wipe(TRP3_API.register.inits);
 	TRP3_API.register.inits = nil; -- Prevent init function to be called again, and free them from memory
@@ -754,3 +787,8 @@ function TRP3_API.register.init()
 
 	createTabBar();
 end
+
+local function showRPIO()
+	return seriousDay and getConfigValue("rp_io");
+end
+TRP3_API.register.showRPIO = showRPIO;

@@ -638,6 +638,20 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- RP.IO
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	if TRP3_API.register.showRPIO() then
+		local profileID;
+		if targetID == Globals.player_id then
+			profileID = TRP3_API.profile.getPlayerCurrentProfileID();
+		else
+			profileID = ({getUnitIDCurrentProfile(targetID)})[2];
+		end
+		tooltipBuilder:AddLine(string.format(loc.RP_IO_SCORE_TT .. " : %s", TRP3_API.register.updateScores(profileID)), 0, 1, 0, getSubLineFontSize());
+	end
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
