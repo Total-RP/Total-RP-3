@@ -20,7 +20,7 @@
 -->
 
 	<!-- Register Score panel -->
-	<Frame name="TRP3_RegisterScoreTemplate" virtual="true">
+	<Frame name="TRP3_RegisterNotesTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize val="24"/>
 		</Backdrop>
@@ -33,14 +33,6 @@
 						<Anchor point="LEFT" x="5" y="0"/>
 					</Anchors>
 					<!--TexCoords left="0.07" right="1" top="0" bottom="0.975" /-->
-				</Texture>
-			</Layer>
-			<Layer level="ARTWORK">
-				<Texture parentKey="logo" file="Interface\AddOns\totalRP3\resources\RIO.tga">
-					<Size x="256" y="128"/>
-					<Anchors>
-						<Anchor point="TOP" x="0" y="20"/>
-					</Anchors>
 				</Texture>
 			</Layer>
 		</Layers>

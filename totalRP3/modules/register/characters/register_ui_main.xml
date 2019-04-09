@@ -58,7 +58,7 @@
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterScore" inherits="TRP3_RegisterScoreTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterNotes" inherits="TRP3_RegisterNotesTemplate" frameLevel="2">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="2" y="-28" />
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
