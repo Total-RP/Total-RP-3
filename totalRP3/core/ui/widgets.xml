@@ -463,7 +463,7 @@
 								self:ClearFocus();
 							</OnEscapePressed>
 							<OnEditFocusGained>
-								self:HighlightText();
+								--self:HighlightText();
 								self:GetParent():GetParent().dummy:Hide();
 							</OnEditFocusGained>
 							<OnEditFocusLost>
