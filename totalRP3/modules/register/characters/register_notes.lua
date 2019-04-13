@@ -26,7 +26,6 @@ local Globals = TRP3_API.globals;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
-local openPageByUnitID = TRP3_API.register.openPageByUnitID;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
@@ -42,10 +41,8 @@ end
 TRP3_API.register.ui.showNotesTab = showNotesTab;
 
 function TRP3_API.register.inits.notesInit()
-    
-
-
     TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+        local openPageByUnitID = TRP3_API.register.openPageByUnitID;
         local openNotesTab = TRP3_TabBar_Tab_5:GetScript("OnClick");    -- This was a quick workaround for RP.IO, is there a better option ?
         TRP3_API.target.registerButton({
             id = "za_notes",
