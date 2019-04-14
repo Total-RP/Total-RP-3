@@ -39,6 +39,11 @@ local function displayNotes(context)
     local profileID = context.profileID;
     if context.isPlayer then
         profileID = getPlayerCurrentProfileID();
+        TRP3_RegisterNotesViewAccount:Hide();
+        TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesView, "BOTTOM", 0, 10);
+    else
+        TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesViewPoint, "TOP", 0, 5);
+        TRP3_RegisterNotesViewAccount:Show();
     end
 
     assert(profileID, "No profileID in context !");
@@ -46,6 +51,21 @@ local function displayNotes(context)
     local profileNotes = GetCurrentUser():GetProfile().notes;
     TRP3_RegisterNotesViewProfileScrollText:SetText(profileNotes and profileNotes[profileID] or "");
     TRP3_RegisterNotesViewAccountScrollText:SetText(TRP3_Notes and TRP3_Notes[profileID] or "");
+end
+
+local function onProfileNotesChanged()
+    local context = getCurrentContext();
+    local profileID = context.profileID;
+    if context.isPlayer then
+        profileID = getPlayerCurrentProfileID();
+    end
+
+    local profile = GetCurrentUser():GetProfile();
+    if not profile.notes then
+        profile.notes = {};
+    end
+
+    profile.notes[profileID] = TRP3_RegisterNotesViewProfileScrollText:GetText();
 end
 
 local function onAccountNotesChanged()
@@ -75,6 +95,7 @@ function TRP3_API.register.inits.notesInit()
     end
 
     TRP3_RegisterNotesViewAccountScrollText:SetScript("OnTextChanged", onAccountNotesChanged);
+    TRP3_RegisterNotesViewProfileScrollText:SetScript("OnTextChanged", onProfileNotesChanged);
 
     TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
         local openPageByUnitID = TRP3_API.register.openPageByUnitID;
