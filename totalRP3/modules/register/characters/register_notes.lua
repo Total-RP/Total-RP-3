@@ -28,6 +28,8 @@ local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
+local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
+local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
 local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
@@ -45,6 +47,13 @@ local function displayNotes(context)
         TRP3_RegisterNotesViewProfile:SetPoint("BOTTOM", TRP3_RegisterNotesViewPoint, "TOP", 0, 5);
         TRP3_RegisterNotesViewAccount:Show();
     end
+
+    local currentName = GetCurrentUser():GetRoleplayingName();
+    local profileNotesTitle = loc.REG_PLAYER_NOTES_PROFILE_NONAME;
+    if currentName then
+        profileNotesTitle = string.format(loc.REG_PLAYER_NOTES_PROFILE, currentName);
+    end
+    TRP3_RegisterNotesViewProfileTitle:SetText(profileNotesTitle);
 
     assert(profileID, "No profileID in context !");
 
@@ -83,8 +92,8 @@ local function showNotesTab()
     assert(context, "No context for page player_main !");
     assert(context.profile, "No profile in context");
     TRP3_ProfileReportButton:Hide();
-    TRP3_RegisterNotes:Show();
     displayNotes(context);
+    TRP3_RegisterNotes:Show();
 end
 TRP3_API.register.ui.showNotesTab = showNotesTab;
 
@@ -93,6 +102,13 @@ function TRP3_API.register.inits.notesInit()
     if not TRP3_Notes then
         TRP3_Notes = {};
     end
+
+    setupFieldSet(TRP3_RegisterNotesView, loc.REG_PLAYER_NOTES, 150);
+
+    TRP3_RegisterNotesViewAccountTitle:SetText(loc.REG_PLAYER_NOTES_ACCOUNT);
+
+    setTooltipForSameFrame(TRP3_RegisterNotesViewProfileHelp, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_PROFILE_NONAME, loc.REG_PLAYER_NOTES_PROFILE_HELP);
+    setTooltipForSameFrame(TRP3_RegisterNotesViewAccountHelp, "LEFT", 0, 10, loc.REG_PLAYER_NOTES_ACCOUNT, loc.REG_PLAYER_NOTES_ACCOUNT_HELP);
 
     TRP3_RegisterNotesViewAccountScrollText:SetScript("OnTextChanged", onAccountNotesChanged);
     TRP3_RegisterNotesViewProfileScrollText:SetScript("OnTextChanged", onProfileNotesChanged);
