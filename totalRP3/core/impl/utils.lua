@@ -422,6 +422,7 @@ local escapes = {
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
+	["|A.-|a"] = "", -- atlas textures
 }
 function Utils.str.sanitize(text)
 	if not text then return end
