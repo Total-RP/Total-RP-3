@@ -19,7 +19,7 @@
 	limitations under the License.
 -->
 
-	<!-- Register Score panel -->
+	<!-- Register Notes panel -->
 	<Frame name="TRP3_RegisterNotesTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize val="24"/>
