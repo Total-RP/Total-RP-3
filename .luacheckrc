@@ -44,6 +44,7 @@ globals = {
     "TRP3_Characters",
     "TRP3_Profiles",
     "TRP3_Configuration",
+    "TRP3_Notes",
 
     -- Global methods
     "TRP3_ShowErrorMessage",

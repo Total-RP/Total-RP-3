@@ -821,9 +821,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			end
 		end
 
-		
 		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
-		
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());

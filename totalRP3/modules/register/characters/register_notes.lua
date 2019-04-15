@@ -27,7 +27,6 @@ local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local hasProfile = TRP3_API.register.hasProfile;
 local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
-local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 
