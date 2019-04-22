@@ -941,8 +941,8 @@ function TRP3_API.register.inits.aboutInit()
 		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
 		TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerwidth - 70);
 		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
-		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight(containerHeight * 0.25);
-		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight(containerHeight * 0.25);
+		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
+		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);
 		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 75, 5);
 		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 70, 5);
 		resizeTemplate3();
