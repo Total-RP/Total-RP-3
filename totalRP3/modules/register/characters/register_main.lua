@@ -603,17 +603,20 @@ local function cleanupProfiles()
 		return ;
 	end
 	log(("Purging profiles older than %s day(s)"):format(getConfigValue("register_auto_purge_mode") / 86400));
-	-- First, get a tab with all profileID with which we have a relation
-	local relatedProfileIDs = {};
+	-- First, get a tab with all profileID with which we have a relation or on which we have notes
+	local protectedProfileIDs = {};
 	for _, profile in pairs(TRP3_API.profile.getProfiles()) do
 		for profileID, _ in pairs(profile.relation or {}) do
-			relatedProfileIDs[profileID] = true;
+			protectedProfileIDs[profileID] = true;
+		end
+		for profileID, _ in pairs(profile.notes or {}) do
+			protectedProfileIDs[profileID] = true;
 		end
 	end
-	log("Protected profiles: " .. tsize(relatedProfileIDs));
+	log("Protected profiles: " .. tsize(protectedProfileIDs));
 	local profilesToPurge = {};
 	for profileID, profile in pairs(profiles) do
-		if not relatedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
+		if not protectedProfileIDs[profileID] and (not profile.time or time() - profile.time > getConfigValue("register_auto_purge_mode")) then
 			tinsert(profilesToPurge, profileID);
 		end
 	end

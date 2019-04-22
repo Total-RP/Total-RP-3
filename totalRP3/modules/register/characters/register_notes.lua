@@ -29,8 +29,10 @@ local openMainFrame = TRP3_API.navigation.openMainFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
+local stEtN = TRP3_API.utils.str.emptyToNil;
 
 local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
+local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 
 local NOTES_ICON = Ellyb.Icon("Inv_misc_scrollunrolled03b");
@@ -56,7 +58,7 @@ local function displayNotes(context)
 
     assert(profileID, "No profileID in context !");
 
-    local profileNotes = GetCurrentUser():GetProfile().notes;
+    local profileNotes = getPlayerCurrentProfile().notes;
     TRP3_RegisterNotesViewProfileScrollText:SetText(profileNotes and profileNotes[profileID] or "");
     TRP3_RegisterNotesViewAccountScrollText:SetText(TRP3_Notes and TRP3_Notes[profileID] or "");
 end
@@ -68,12 +70,12 @@ local function onProfileNotesChanged()
         profileID = getPlayerCurrentProfileID();
     end
 
-    local profile = GetCurrentUser():GetProfile();
+    local profile = getPlayerCurrentProfile();
     if not profile.notes then
         profile.notes = {};
     end
 
-    profile.notes[profileID] = TRP3_RegisterNotesViewProfileScrollText:GetText();
+    profile.notes[profileID] = stEtN(TRP3_RegisterNotesViewProfileScrollText:GetText());
 end
 
 local function onAccountNotesChanged()
@@ -83,7 +85,7 @@ local function onAccountNotesChanged()
         profileID = getPlayerCurrentProfileID();
     end
 
-    TRP3_Notes[profileID] = TRP3_RegisterNotesViewAccountScrollText:GetText();
+    TRP3_Notes[profileID] = stEtN(TRP3_RegisterNotesViewAccountScrollText:GetText());
 end
 
 local function showNotesTab()
