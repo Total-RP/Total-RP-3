@@ -1188,6 +1188,14 @@ Please keep in mind that changing those settings might alter your experience wit
 
 If you wish to report %s's profile and you cannot target them you will need to open a ticket with Blizzard's support using the link bellow.]],
 	NEW_VERSION_BEHIND = "You are currently %s versions behind and are missing on many bug fixes and new features. Other players might not be able to see your profile correctly. Please consider updating the add-on.",
+	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
+	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
+	REG_PLAYER_RELATIONSHIP_STATUS_TAKEN = "Taken",
+	REG_PLAYER_RELATIONSHIP_STATUS_MARRIED = "Married",
+	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
+	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
+	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
+	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
 
 	---@language Markdown
 	WHATS_NEW_22 = [[
@@ -1267,14 +1275,14 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
-	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
-	REG_PLAYER_RELATIONSHIP_STATUS_TAKEN = "Taken",
-	REG_PLAYER_RELATIONSHIP_STATUS_MARRIED = "Married",
-	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
-	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
-	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
-	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
+	REG_NOTES_PROFILE = "Notes",
+	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
+	REG_PLAYER_NOTES = "Notes",
+	REG_PLAYER_NOTES_PROFILE = "Notes from %s",
+	REG_PLAYER_NOTES_PROFILE_NONAME = "Profile notes",
+	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
+	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
+	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
 };
 
 -- Use Ellyb to generate the Localization system
