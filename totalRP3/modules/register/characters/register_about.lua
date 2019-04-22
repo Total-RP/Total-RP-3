@@ -27,7 +27,6 @@ local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local convertTextTags = Utils.str.convertTextTags;
 local CreateFrame = CreateFrame;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
