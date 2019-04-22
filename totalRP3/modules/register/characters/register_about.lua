@@ -739,6 +739,10 @@ local function onAboutReceived(profileID)
 	end
 end
 
+local function resetHTMLText(frame)
+	frame:SetText(frame.html);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -913,16 +917,20 @@ function TRP3_API.register.inits.aboutInit()
 		TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerwidth - 40, 5);
 		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 50, 5);
 		TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerwidth - 70);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
 		TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerwidth - 70);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
 		TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerwidth - 70);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
 		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight(containerHeight * 0.25);
 		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight(containerHeight * 0.25);
 		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 75, 5);
 		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 70, 5);
 		resizeTemplate3();
-		TRP3_RegisterAbout_AboutPanel_Template1:SetText(TRP3_RegisterAbout_AboutPanel_Template1.html);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
 		for _, frame in pairs(template2Frames) do
 			_G[frame:GetName().."Text"]:SetWidth(containerwidth - 150);
+			resetHTMLText(_G[frame:GetName().."Text"]);
 		end
 		for _, frame in pairs(template2EditFrames) do
 			frame:SetHeight(containerHeight * 0.26);
