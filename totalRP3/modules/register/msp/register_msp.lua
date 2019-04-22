@@ -38,7 +38,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR', 'RS'});
+	msp:AddFieldsToTooltip(AddOn_TotalRP3.MSP.TOOLTIP_FIELDS);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -138,6 +138,8 @@ local function onStart()
 				end
 			end
 		end
+
+		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
 	local function updateMiscData()
@@ -191,7 +193,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS"
+		"HI", "TR", "MU", "RS", "PS"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -208,6 +210,7 @@ local function onStart()
 		PX = "TI",
 		IC = "IC",
 		RS = "RS",
+		PS = "PS",
 	}
 
 	local CHARACTER_FIELDS = {
@@ -331,6 +334,10 @@ local function onStart()
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+						end
+						-- Machine-formatted psychological traits.
+						if field == "PS" and value then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MSP.DeserializeField(field, value);
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
@@ -497,8 +504,6 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS"};
-
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
 		local data = msp.char[targetID].field;
@@ -507,14 +512,14 @@ local function onStart()
 		and not isIgnored(targetID)
 		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			msp:Request(targetID, REQUEST_TAB);
+			msp:Request(targetID, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		end
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
 		-- This function has never had the checks that the above does. Whether
 		-- it should or not should be revisited in the future.
-		msp:Request(name, REQUEST_TAB);
+		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
