@@ -52,6 +52,16 @@ local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
 end;
 
+local function setupHTMLFonts(frame)
+	frame:SetFontObject("p", GameFontNormal);
+	frame:SetFontObject("h1", GameFontNormalHuge3);
+	frame:SetFontObject("h2", GameFontNormalHuge);
+	frame:SetFontObject("h3", GameFontNormalLarge);
+	frame:SetTextColor("h1", 1, 1, 1);
+	frame:SetTextColor("h2", 1, 1, 1);
+	frame:SetTextColor("h3", 1, 1, 1);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -142,7 +152,15 @@ end
 local function resizeTemplate2()
 	for _, frame in pairs(template2Frames) do
 		local text = _G[frame:GetName().."Text"];
-		local height = math.max(text:GetHeight(), 50) + TEMPLATE2_PADDING;
+		local height = 0;
+
+		local numRegions = select("#", text:GetRegions());
+		for j = 1, numRegions do
+			local region = select(j, text:GetRegions());
+			height = height + region:GetHeight();
+		end
+
+		height = math.max(height, 50) + TEMPLATE2_PADDING;
 		frame:SetHeight(height);
 	end
 end
@@ -176,16 +194,24 @@ local function showTemplate2(dataTab)
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
 		setupIconButton(icon, frameTab.IC or Globals.icons.default);
-		text:SetText(convertTextTags(frameTab.TX));
+
+		setupHTMLFonts(text);
+
+		-- We'll need to access the HTML later when resizing things.
+		text.html = Utils.str.toHTML(frameTab.TX or "")
+		text:SetText(text.html);
+
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
 		if bool then
 			icon:SetPoint("LEFT", 15, 0);
 			text:SetPoint("LEFT", icon, "RIGHT", 10, 0);
+			text:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -20, -10)
 			text:SetJustifyH("LEFT")
 		else
 			icon:SetPoint("RIGHT", -15, 0);
 			text:SetPoint("RIGHT", icon, "LEFT", -10, 0);
+			text:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -10)
 			text:SetJustifyH("RIGHT")
 		end
 
@@ -863,14 +889,12 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.REG_PLAYER_EDIT_MUSIC_THEME);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC_THEME);
 
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p", GameFontNormal);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1", GameFontNormalHuge3);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h2", GameFontNormalHuge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h3", GameFontNormalLarge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1", 1, 1, 1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2", 1, 1, 1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3", 1, 1, 1);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template1);
 
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+	
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);

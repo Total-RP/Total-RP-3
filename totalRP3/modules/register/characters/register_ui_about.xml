@@ -146,15 +146,12 @@
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
 				<Size x="50" y="50"/>
 			</Frame>
+			<SimpleHTML name="$parentText" inherits="TRP3_HyperLinkedScripts">
+				<Size x="380" y="0"/>
+				<Color b="1.0" r="1.0" g="1.0"/>
+				<FontString inherits="GameFontNormalSmall"/>
+			</SimpleHTML>
 		</Frames>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parentText" inherits="GameFontNormal" justifyV="TOP">
-					<Size x="380" y="0"/>
-					<Color b="1.0" r="1.0" g="1.0"/>
-				</FontString>
-			</Layer>
-		</Layers>
 	</Frame>
 
 	<!-- Register about template 2 edit frame -->
