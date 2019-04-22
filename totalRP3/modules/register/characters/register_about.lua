@@ -62,6 +62,10 @@ local function setupHTMLFonts(frame)
 	frame:SetTextColor("h3", 1, 1, 1);
 end
 
+local function setToolbarTextFrameScript(toolbar, frame)
+	frame:SetScript("OnEditFocusGained", function() TRP3_API.ui.text.changeToolbarTextFrame(toolbar, frame) end);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -285,6 +289,7 @@ local function createTemplate2Frame(frameIndex)
 	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc.CM_MOVE_DOWN);
 	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc.REG_PLAYER_ABOUT_REMOVE_FRAME);
 	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
 end
@@ -561,6 +566,15 @@ local function setEditTemplate(value)
 	TRP3_RegisterAbout_Edit_Template2:Hide();
 	TRP3_RegisterAbout_Edit_Template3:Hide();
 	_G["TRP3_RegisterAbout_Edit_Template"..value]:Show();
+
+	if value == 1 then
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	elseif value == 2 then
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Template2_Edit1TextScrollText);
+	else
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
+	end
+
 	draftData.TE = value;
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 	TRP3_API.navigation.delayedRefresh();
@@ -879,7 +893,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
-	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Template1_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
 
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc.REG_PLAYER_PHYSICAL);
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc.REG_PLAYER_PSYCHO);
@@ -898,7 +912,12 @@ function TRP3_API.register.inits.aboutInit()
 	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
 	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
 	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
-	
+
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_HistTextScrollText);
+
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
 	end);

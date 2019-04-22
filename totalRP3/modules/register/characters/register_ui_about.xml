@@ -271,6 +271,14 @@
 							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
 				    </Frame>
+				    <!-- Toolbar -->
+					<Frame name="TRP3_RegisterAbout_Edit_Toolbar" inherits="TRP3_TextToolbar">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-20" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="LEFT" x="10" y="0"/>
+							<Anchor point="RIGHT" x="-10" y="0"/>
+						</Anchors>
+					</Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template1">
 				    	<Anchors>
 							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
@@ -279,17 +287,9 @@
 							<Anchor point="RIGHT" x="0" y="0"/>
 						</Anchors>
 						<Frames>
-							<!-- Toolbar -->
-							<Frame name="TRP3_RegisterAbout_Edit_Template1_Toolbar" inherits="TRP3_TextToolbar">
-								<Anchors>
-									<Anchor point="TOP" x="0" y="-10"/>
-									<Anchor point="LEFT" x="10" y="0"/>
-									<Anchor point="RIGHT" x="-10" y="0"/>
-								</Anchors>
-							</Frame>
 							<Frame name="TRP3_RegisterAbout_Edit_Template1" inherits="TRP3_TextArea">
 								<Anchors>
-									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Template1_Toolbar" x="0" y="-5"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 									<Anchor point="BOTTOM" x="0" y="5"/>
 									<Anchor point="LEFT" x="10" y="0"/>
 									<Anchor point="RIGHT" x="-10" y="0"/>
@@ -303,7 +303,7 @@
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
 				    	<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="30"/>
 							<Anchor point="LEFT" x="10" y="0"/>
 							<Anchor point="RIGHT" x="-10" y="0"/>
@@ -332,7 +332,7 @@
 					</Frame>
 				    <Frame name="TRP3_RegisterAbout_Edit_Template3">
 				    	<Anchors>
-							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
 							<Anchor point="RIGHT" x="0" y="0"/>
