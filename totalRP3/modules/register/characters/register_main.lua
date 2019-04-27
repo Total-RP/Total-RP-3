@@ -472,7 +472,7 @@ end
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
-	frame:SetSize(500, 30);
+	frame:SetSize(485, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
@@ -480,7 +480,7 @@ local function createTabBar()
 			{ loc.REG_PLAYER_CARACT, 1, 150 },
 			{ loc.REG_PLAYER_ABOUT, 2, 110 },
 			{ loc.REG_PLAYER_PEEK, 3, 130 },
-			{ loc.REG_PLAYER_NOTES, 4, 100 }
+			{ loc.REG_PLAYER_NOTES, 4, 85 }
 		},
 		function(_, value)
 			-- Clear all
