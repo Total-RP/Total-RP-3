@@ -514,8 +514,7 @@ TRP3_API.slash.registerCommand({
 		end
 
 		sendQuery(characterToOpen);
-		local request = {"TT", "HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
-		msp:Request(characterToOpen, request);
+		msp:Request(characterToOpen, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();

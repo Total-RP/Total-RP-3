@@ -27,7 +27,6 @@ local stEtN = Utils.str.emptyToNil;
 local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
-local convertTextTags = Utils.str.convertTextTags;
 local CreateFrame = CreateFrame;
 local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
@@ -51,6 +50,20 @@ local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Functio
 local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
 end;
+
+local function setupHTMLFonts(frame)
+	frame:SetFontObject("p", GameFontNormal);
+	frame:SetFontObject("h1", GameFontNormalHuge3);
+	frame:SetFontObject("h2", GameFontNormalHuge);
+	frame:SetFontObject("h3", GameFontNormalLarge);
+	frame:SetTextColor("h1", 1, 1, 1);
+	frame:SetTextColor("h2", 1, 1, 1);
+	frame:SetTextColor("h3", 1, 1, 1);
+end
+
+local function setToolbarTextFrameScript(toolbar, frame)
+	frame:SetScript("OnEditFocusGained", function() TRP3_API.ui.text.changeToolbarTextFrame(toolbar, frame) end);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- SCHEMA
@@ -142,7 +155,15 @@ end
 local function resizeTemplate2()
 	for _, frame in pairs(template2Frames) do
 		local text = _G[frame:GetName().."Text"];
-		local height = math.max(text:GetHeight(), 50) + TEMPLATE2_PADDING;
+		local height = 0;
+
+		local numRegions = select("#", text:GetRegions());
+		for j = 1, numRegions do
+			local region = select(j, text:GetRegions());
+			height = height + region:GetHeight();
+		end
+
+		height = math.max(height, 50) + TEMPLATE2_PADDING;
 		frame:SetHeight(height);
 	end
 end
@@ -176,16 +197,24 @@ local function showTemplate2(dataTab)
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		frame:SetBackdrop(backdrop);
 		setupIconButton(icon, frameTab.IC or Globals.icons.default);
-		text:SetText(convertTextTags(frameTab.TX));
+
+		setupHTMLFonts(text);
+
+		-- We'll need to access the HTML later when resizing things.
+		text.html = Utils.str.toHTML(frameTab.TX or "")
+		text:SetText(text.html);
+
 		icon:ClearAllPoints();
 		text:ClearAllPoints();
 		if bool then
 			icon:SetPoint("LEFT", 15, 0);
 			text:SetPoint("LEFT", icon, "RIGHT", 10, 0);
+			text:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -20, -10)
 			text:SetJustifyH("LEFT")
 		else
 			icon:SetPoint("RIGHT", -15, 0);
 			text:SetPoint("RIGHT", icon, "LEFT", -10, 0);
+			text:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -10)
 			text:SetJustifyH("RIGHT")
 		end
 
@@ -259,6 +288,7 @@ local function createTemplate2Frame(frameIndex)
 	setTooltipAll(_G[frame:GetName().."Down"], "TOP", 0, 0, loc.CM_MOVE_DOWN);
 	setTooltipAll(_G[frame:GetName().."Delete"], "TOP", 0, 5, loc.REG_PLAYER_ABOUT_REMOVE_FRAME);
 	setTooltipAll(_G[frame:GetName().."Icon"], "TOP", 0, 5, loc.UI_ICON_SELECT);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, _G["TRP3_RegisterAbout_Template2_Edit"..frameIndex.."TextScrollText"]);
 	tinsert(template2EditFrames, frame);
 	return frame;
 end
@@ -389,11 +419,22 @@ local function resizeTemplate3()
 	for i=1, 3 do
 		local frame = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s"):format(i)];
 		local text = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Text"):format(i)];
-		if text:GetText() and text:GetText():len() > 0 then
-			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
-			frame:SetHeight(title:GetHeight() + text:GetHeight() + TEMPLATE3_MARGIN);
+		local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
+
+		if not text.html or text.html:len() == 0 then
+			frame:SetHeight(1)
 		else
-			frame:SetHeight(1);
+			-- Use the height of the title text, the margin, and sum up
+			-- the regions within the HTML frame itself.
+			local frameHeight = title:GetHeight() + (TEMPLATE3_MARGIN);
+
+			local numRegions = select("#", text:GetRegions());
+			for j = 1, numRegions do
+				local region = select(j, text:GetRegions());
+				frameHeight = frameHeight + region:GetHeight();
+			end
+
+			frame:SetHeight(frameHeight);
 		end
 	end
 end
@@ -413,7 +454,11 @@ local function showTemplate3(dataTab)
 			local icon = Utils.str.icon(data.IC or icons[i], 25);
 			local title = _G[("TRP3_RegisterAbout_AboutPanel_Template3_%s_Title"):format(i)];
 			title:SetText(icon .. "    " .. titles[i] .. "    " .. icon);
-			text:SetText(convertTextTags(data.TX));
+
+			-- We'll need to access the HTML later when resizing things.
+			text.html = Utils.str.toHTML(data.TX or "")
+			text:SetText(text.html);
+
 			setBkg(frame, data.BK);
 			frame:Show();
 		else
@@ -520,6 +565,15 @@ local function setEditTemplate(value)
 	TRP3_RegisterAbout_Edit_Template2:Hide();
 	TRP3_RegisterAbout_Edit_Template3:Hide();
 	_G["TRP3_RegisterAbout_Edit_Template"..value]:Show();
+
+	if value == 1 then
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	elseif value == 2 then
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Template2_Edit1TextScrollText);
+	else
+		TRP3_API.ui.text.changeToolbarTextFrame(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
+	end
+
 	draftData.TE = value;
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
 	TRP3_API.navigation.delayedRefresh();
@@ -698,6 +752,10 @@ local function onAboutReceived(profileID)
 	end
 end
 
+local function resetHTMLText(frame)
+	frame:SetText(frame.html);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- TUTORIAL
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -834,7 +892,7 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_CancelButton:SetScript("OnClick", showAboutTab);
 
 	TRP3_RegisterAbout_AboutPanel_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
-	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Template1_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	TRP3_API.ui.text.setupToolbar(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
 
 	TRP3_RegisterAbout_Edit_Template3_PhysTitle:SetText(loc.REG_PLAYER_PHYSICAL);
 	TRP3_RegisterAbout_Edit_Template3_PsyTitle:SetText(loc.REG_PLAYER_PSYCHO);
@@ -848,13 +906,16 @@ function TRP3_API.register.inits.aboutInit()
 	TRP3_RegisterAbout_Edit_Music_Action:SetText(loc.REG_PLAYER_EDIT_MUSIC_THEME);
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Title:SetText(loc.REG_PLAYER_ABOUT_MUSIC_THEME);
 
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("p", GameFontNormal);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h1", GameFontNormalHuge3);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h2", GameFontNormalHuge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetFontObject("h3", GameFontNormalLarge);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h1", 1, 1, 1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h2", 1, 1, 1);
-	TRP3_RegisterAbout_AboutPanel_Template1:SetTextColor("h3", 1, 1, 1);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template1);
+
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
+	setupHTMLFonts(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template1ScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText);
+	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_HistTextScrollText);
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);
@@ -874,16 +935,20 @@ function TRP3_API.register.inits.aboutInit()
 		TRP3_RegisterAbout_AboutPanel_Container:SetSize(containerwidth - 40, 5);
 		TRP3_RegisterAbout_AboutPanel_Template1:SetSize(containerwidth - 50, 5);
 		TRP3_RegisterAbout_AboutPanel_Template3_1_Text:SetWidth(containerwidth - 70);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
 		TRP3_RegisterAbout_AboutPanel_Template3_2_Text:SetWidth(containerwidth - 70);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
 		TRP3_RegisterAbout_AboutPanel_Template3_3_Text:SetWidth(containerwidth - 70);
-		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight(containerHeight * 0.25);
-		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight(containerHeight * 0.25);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+		TRP3_RegisterAbout_Edit_Template3_Phys:SetHeight((containerHeight - 165) * 0.33);
+		TRP3_RegisterAbout_Edit_Template3_Psy:SetHeight((containerHeight - 165) * 0.33);
 		TRP3_RegisterAbout_Edit_Template1ScrollText:SetSize(containerwidth - 75, 5);
 		TRP3_RegisterAbout_Edit_Template2_Container:SetSize(containerwidth - 70, 5);
 		resizeTemplate3();
-		TRP3_RegisterAbout_AboutPanel_Template1:SetText(TRP3_RegisterAbout_AboutPanel_Template1.html);
+		resetHTMLText(TRP3_RegisterAbout_AboutPanel_Template1);
 		for _, frame in pairs(template2Frames) do
 			_G[frame:GetName().."Text"]:SetWidth(containerwidth - 150);
+			resetHTMLText(_G[frame:GetName().."Text"]);
 		end
 		for _, frame in pairs(template2EditFrames) do
 			frame:SetHeight(containerHeight * 0.26);

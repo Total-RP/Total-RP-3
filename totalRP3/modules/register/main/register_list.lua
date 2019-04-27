@@ -368,12 +368,13 @@ local function getCharacterLines()
 	local nameSearch = TRP3_RegisterListFilterCharactName:GetText():lower();
 	local guildSearch = TRP3_RegisterListFilterCharactGuild:GetText():lower();
 	local realmOnly = TRP3_RegisterListFilterCharactRealm:GetChecked();
+	local notesOnly = TRP3_RegisterListFilterCharactNotes:GetChecked();
 	local profileList = getProfileList();
 	local fullSize = tsize(profileList);
 	wipe(characterLines);
 
 	for profileID, profile in pairs(profileList) do
-		local nameIsConform, guildIsConform, realmIsConform = false, false, false;
+		local nameIsConform, guildIsConform, realmIsConform, notesIsConform = false, false, false, false;
 
 		if profile.characteristics and not Ellyb.Tables.isEmpty(profile.characteristics) then
 
@@ -383,12 +384,16 @@ local function getCharacterLines()
 				if safeMatch(unitName:lower(), nameSearch) then
 					nameIsConform = true;
 				end
-				if  unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
+				if unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
 					realmIsConform = true;
 				end
 				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
 				if characterData and characterData.guild and safeMatch(characterData.guild:lower(), guildSearch) then
 					guildIsConform = true;
+				end
+				local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
+				if TRP3_Notes and TRP3_Notes[profileID] or currentNotes[profileID] then
+					notesIsConform = true;
 				end
 			end
 			local completeName = getCompleteName(profile.characteristics or {}, "", true);
@@ -399,8 +404,9 @@ local function getCharacterLines()
 			nameIsConform = nameIsConform or nameSearch:len() == 0;
 			guildIsConform = guildIsConform or guildSearch:len() == 0;
 			realmIsConform = realmIsConform or not realmOnly;
+			notesIsConform = notesIsConform or not notesOnly;
 
-			if nameIsConform and guildIsConform and realmIsConform then
+			if nameIsConform and guildIsConform and realmIsConform and notesIsConform then
 				tinsert(characterLines, {profileID, completeName, getRelationText(profileID), profile.time});
 			end
 
@@ -963,14 +969,17 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		table.insert(widgetTab, widget);
 	end
 	TRP3_RegisterList.widgetTab = widgetTab;
+	TRP3_RegisterListFilterCharactNotes:SetChecked(false);
 	TRP3_RegisterListFilterCharactName:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactGuild:SetScript("OnEnterPressed", refreshList);
 	TRP3_RegisterListFilterCharactRealm:SetScript("OnClick", refreshList);
+	TRP3_RegisterListFilterCharactNotes:SetScript("OnClick", refreshList);
 	TRP3_RegisterListCharactFilterButton:SetScript("OnClick", function(_, button)
 		if button == "RightButton" then
 			TRP3_RegisterListFilterCharactName:SetText("");
 			TRP3_RegisterListFilterCharactGuild:SetText("");
 			TRP3_RegisterListFilterCharactRealm:SetChecked(true);
+			TRP3_RegisterListFilterCharactNotes:SetChecked(false);
 		end
 		refreshList();
 	end)
@@ -978,6 +987,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_RegisterListFilterCharactNameText:SetText(loc.REG_LIST_NAME);
 	TRP3_RegisterListFilterCharactGuildText:SetText(loc.REG_LIST_GUILD);
 	TRP3_RegisterListFilterCharactRealmText:SetText(loc.REG_LIST_REALMONLY);
+	TRP3_RegisterListFilterCharactNotesText:SetText(loc.REG_LIST_NOTESONLY);
 	TRP3_RegisterListHeaderAddon:SetText(loc.REG_LIST_ADDON);
 	TRP3_API.ui.frame.setupEditBoxesNavigation({TRP3_RegisterListFilterCharactName, TRP3_RegisterListFilterCharactGuild});
 

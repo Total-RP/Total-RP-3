@@ -38,7 +38,7 @@ local function onStart()
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO', 'TR', 'RS'});
+	msp:AddFieldsToTooltip(AddOn_TotalRP3.MSP.TOOLTIP_FIELDS);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -66,8 +66,7 @@ local function onStart()
 	local function removeTextTags(text)
 		if text then
 			text = Utils.str.convertTextTags(text);
-			text = text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
-			return text:gsub("%{.-%}", "");
+			return text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
 		end
 	end
 
@@ -80,7 +79,7 @@ local function onStart()
 			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
 			local PH = removeTextTags(dataTab.T3.PH.TX) or "";
 			local PS = removeTextTags(dataTab.T3.PS.TX) or "";
-			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
+			msp.my['DE'] = ("#Physical Description\n\n%s\n\n---\n\n#Personality traits\n\n%s"):format(PH, PS);
 		elseif dataTab.TE == 1 then
 			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
@@ -139,6 +138,8 @@ local function onStart()
 				end
 			end
 		end
+
+		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
 	local function updateMiscData()
@@ -192,7 +193,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS"
+		"HI", "TR", "MU", "RS", "PS"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -209,6 +210,7 @@ local function onStart()
 		PX = "TI",
 		IC = "IC",
 		RS = "RS",
+		PS = "PS",
 	}
 
 	local CHARACTER_FIELDS = {
@@ -332,6 +334,10 @@ local function onStart()
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
+						end
+						-- Machine-formatted psychological traits.
+						if field == "PS" and value then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MSP.DeserializeField(field, value);
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
@@ -498,8 +504,6 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI", "MU", "RS"};
-
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
 		local data = msp.char[targetID].field;
@@ -508,14 +512,14 @@ local function onStart()
 		and not isIgnored(targetID)
 		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			msp:Request(targetID, REQUEST_TAB);
+			msp:Request(targetID, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		end
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
 		-- This function has never had the checks that the above does. Whether
 		-- it should or not should be revisited in the future.
-		msp:Request(name, REQUEST_TAB);
+		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

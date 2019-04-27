@@ -102,10 +102,6 @@ local ANCHOR_TAB;
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
 
-local currentDate = date("*t");
-local seriousDay = currentDate.month == 4 and currentDate.day == 1
-local Rainbowify = TRP3_API.utils.Rainbowify;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -638,20 +634,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- RP.IO
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-	if TRP3_API.register.showRPIO() then
-		local profileID;
-		if targetID == Globals.player_id then
-			profileID = TRP3_API.profile.getPlayerCurrentProfileID();
-		else
-			profileID = ({getUnitIDCurrentProfile(targetID)})[2];
-		end
-		tooltipBuilder:AddLine(string.format(loc.RP_IO_SCORE_TT .. " : %s", TRP3_API.register.updateScores(profileID)), 0, 1, 0, getSubLineFontSize());
-	end
-
-	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -784,10 +766,6 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
 	end
 
-	if seriousDay and getConfigValue("AF_STUFF") then
-		petName = Rainbowify(petName);
-	end
-
 
 	tooltipBuilder:AddLine(leftIcons .. "|cff" .. (info.NH or "ffffff") .. (petName or companionID), 1, 1, 1, getMainLineFontSize());
 
@@ -843,11 +821,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			end
 		end
 
-		if seriousDay and getConfigValue("AF_STUFF") then
-			ownerFinalName = Rainbowify(ownerFinalName);
-		else
-			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
-		end
+		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -945,10 +919,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
-	end
-
-	if seriousDay and getConfigValue("AF_STUFF") then
-		mountCustomName = Rainbowify(mountCustomName);
 	end
 
 
@@ -1446,16 +1416,6 @@ local function onModuleInit()
 			},
 		}
 	}
-
-	if seriousDay then
-		registerConfigKey("AF_STUFF", true);
-		tinsert(CONFIG_STRUCTURE.elements, 2, {
-				inherit = "TRP3_ConfigCheck",
-				title = Rainbowify("Enable April Fools' joke"),
-				help = "Disable this option to remove this year's April Fools' joke.",
-				configKey = "AF_STUFF",
-			})
-	end
 
 	TRP3_API.ui.tooltip.CONFIG = CONFIG_STRUCTURE;
 
