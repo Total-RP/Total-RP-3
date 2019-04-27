@@ -940,7 +940,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.h3:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame) end end);
 	toolbar.p:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame, true) end end);
 	toolbar.icon:SetScript("OnClick", function()
-		if toolbar.textFrame then 
+		if toolbar.textFrame then
 			TRP3_API.popup.showPopup(
 				TRP3_API.popup.ICONS,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},
@@ -948,7 +948,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 		end
 	end);
 	toolbar.color:SetScript("OnClick", function()
-		if toolbar.textFrame then 
+		if toolbar.textFrame then
 			if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
 				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
 			else
@@ -960,7 +960,7 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 		end
 	end);
 	toolbar.image:SetScript("OnClick", function()
-		if toolbar.textFrame then 
+		if toolbar.textFrame then
 			TRP3_API.popup.showPopup(
 				TRP3_API.popup.IMAGES,
 				{parent = parentFrame, point = point, parentPoint = parentPoint},

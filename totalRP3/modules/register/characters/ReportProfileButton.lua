@@ -21,12 +21,6 @@ local Ellyb = Ellyb(...);
 
 local loc = TRP3_API.loc;
 
-local function slightlyCustomizeReportingFrame()
-    PlayerReportFrame:SetHeight(254)
-    PlayerReportFrame.Comment:SetHeight(120)
-    PlayerReportFrame.CommentBox:SetMaxLetters(250);
-end
-
 local REPORT_ICON = Ellyb.Icon([[Interface\HelpFrame\HelpIcon-OpenTicket]]);
 
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
@@ -38,7 +32,6 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
             return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id
         end,
         onClick = function()
-            local DATE_FORMAT = "%Y-%m-%d around %H:%M";
             local playerID = TRP3_API.utils.str.getUnitID("target");
             local profile = TRP3_API.register.getUnitIDProfile(playerID)
 
