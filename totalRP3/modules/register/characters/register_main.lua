@@ -472,7 +472,7 @@ end
 
 local function createTabBar()
 	local frame = CreateFrame("Frame", "TRP3_RegisterMainTabBar", TRP3_RegisterMain);
-	frame:SetSize(500, 30);
+	frame:SetSize(485, 30);
 	frame:SetPoint("TOPLEFT", 17, 0);
 	frame:SetFrameLevel(1);
 	tabGroup = TRP3_API.ui.frame.createTabPanel(frame,
@@ -480,7 +480,7 @@ local function createTabBar()
 			{ loc.REG_PLAYER_CARACT, 1, 150 },
 			{ loc.REG_PLAYER_ABOUT, 2, 110 },
 			{ loc.REG_PLAYER_PEEK, 3, 130 },
-			{ loc.REG_PLAYER_NOTES, 4, 100 }
+			{ loc.REG_PLAYER_NOTES, 4, 85 }
 		},
 		function(_, value)
 			-- Clear all
@@ -779,7 +779,12 @@ function TRP3_API.register.init()
 	TRP3_ProfileReportButton:SetScript("OnClick", function()
 		local context = TRP3_API.navigation.page.getCurrentContext();
 		local characterID = getFirstCharacterIDFromProfile(context.profile) or UNKNOWN;
-		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", loc.REG_REPORT_PLAYER_OPEN_URL:format(characterID));
+		local reportText = loc.REG_REPORT_PLAYER_OPEN_URL_160:format(characterID);
+		if context.profile.time then
+			local DATE_FORMAT = "%Y-%m-%d around %H:%M";
+			reportText = reportText .. "\n\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_DATE:format(date(DATE_FORMAT, context.profile.time));
+		end
+		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText);
 	end)
 
 	Ellyb.Tooltips.getTooltip(TRP3_ProfileReportButton):SetTitle(loc.REG_REPORT_PLAYER_PROFILE)
