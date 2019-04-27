@@ -1283,6 +1283,7 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
 	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
 	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
+	REG_REPORT_PLAYER_OPEN_URL_160 = [[If you wish to report %s's profile, you will need to open a ticket with Blizzard's support using the link below.]],
 };
 
 -- Use Ellyb to generate the Localization system

@@ -779,7 +779,12 @@ function TRP3_API.register.init()
 	TRP3_ProfileReportButton:SetScript("OnClick", function()
 		local context = TRP3_API.navigation.page.getCurrentContext();
 		local characterID = getFirstCharacterIDFromProfile(context.profile) or UNKNOWN;
-		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", loc.REG_REPORT_PLAYER_OPEN_URL:format(characterID));
+		local reportText = loc.REG_REPORT_PLAYER_OPEN_URL_160:format(characterID);
+		if context.profile.time then
+			local DATE_FORMAT = "%Y-%m-%d around %H:%M";
+			reportText = reportText .. "\n\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_DATE:format(date(DATE_FORMAT, context.profile.time));
+		end
+		Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText);
 	end)
 
 	Ellyb.Tooltips.getTooltip(TRP3_ProfileReportButton):SetTitle(loc.REG_REPORT_PLAYER_PROFILE)

@@ -40,32 +40,14 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
         onClick = function()
             local DATE_FORMAT = "%Y-%m-%d around %H:%M";
             local playerID = TRP3_API.utils.str.getUnitID("target");
-			local player = AddOn_TotalRP3.Player.CreateFromCharacterID(playerID);
             local profile = TRP3_API.register.getUnitIDProfile(playerID)
-            local characterInfo = TRP3_API.register.getUnitIDCharacter(playerID);
 
-            assert(profile, "Something went wrong, could not retrieve the profile.")
-            assert(characterInfo, "Something went wrong, could not retrieve the information about the player linked to this profile.")
-            assert(profile.link and Ellyb.Tables.size(profile.link) > 0, "Something went wrong, could not retrieve the players linked to this profile.")
-
-            local playerLocation = PlayerLocation:CreateFromUnit("target");
-
-            slightlyCustomizeReportingFrame()
-            PlayerReportFrame:InitiateReport(PLAYER_REPORT_TYPE_LANGUAGE, playerID, playerLocation);
-
-            -- Use reporting template
-            local commentText = loc.REG_REPORT_PLAYER_TEMPLATE:format(characterInfo.client);
-
-            -- Add information about the last time we saw this profile, if we have the info
+            local reportText = loc.REG_REPORT_PLAYER_OPEN_URL_160:format(playerID);
             if profile.time then
-                commentText = commentText .. "\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_DATE:format(date(DATE_FORMAT, profile.time));
+                local DATE_FORMAT = "%Y-%m-%d around %H:%M";
+                reportText = reportText .. "\n\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_DATE:format(date(DATE_FORMAT, profile.time));
             end
-
-            -- Indicate if this was a trial account if we have that info
-            if player:IsOnATrialAccount() then
-                commentText = commentText .. "\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_TRIAL_ACCOUNT;
-            end
-            PlayerReportFrame.CommentBox:SetText(commentText);
+            Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText);
         end,
         tooltip =  REPORT_ICON:GenerateString(25) .. loc.REG_REPORT_PLAYER_PROFILE,
         tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
