@@ -935,33 +935,39 @@ function TRP3_API.ui.text.setupToolbar(toolbar, textFrame, parentFrame, point, p
 	toolbar.h2.tagIndex = 2;
 	toolbar.h3.tagIndex = 3;
 	toolbar.p.tagIndex = 4;
-	toolbar.h1:SetScript("OnClick", function(button) onContainerTagClicked(button, toolbar.textFrame) end);
-	toolbar.h2:SetScript("OnClick", function(button) onContainerTagClicked(button, toolbar.textFrame) end);
-	toolbar.h3:SetScript("OnClick", function(button) onContainerTagClicked(button, toolbar.textFrame) end);
-	toolbar.p:SetScript("OnClick", function(button) onContainerTagClicked(button, toolbar.textFrame, true) end);
+	toolbar.h1:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame) end end);
+	toolbar.h2:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame) end end);
+	toolbar.h3:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame) end end);
+	toolbar.p:SetScript("OnClick", function(button) if toolbar.textFrame then onContainerTagClicked(button, toolbar.textFrame, true) end end);
 	toolbar.icon:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(
-			TRP3_API.popup.ICONS,
-			{parent = parentFrame, point = point, parentPoint = parentPoint},
-			{function(icon) onIconTagSelected(icon, toolbar.textFrame) end});
+		if toolbar.textFrame then 
+			TRP3_API.popup.showPopup(
+				TRP3_API.popup.ICONS,
+				{parent = parentFrame, point = point, parentPoint = parentPoint},
+				{function(icon) onIconTagSelected(icon, toolbar.textFrame) end});
+		end
 	end);
 	toolbar.color:SetScript("OnClick", function()
-		if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
-			TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
-		else
-			TRP3_API.popup.showPopup(
-				TRP3_API.popup.COLORS,
-				{parent = parentFrame, point = point, parentPoint = parentPoint},
-				{function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
+		if toolbar.textFrame then 
+			if shiftDown() or (getConfigValue and getConfigValue("default_color_picker")) then
+				TRP3_API.popup.showDefaultColorPicker({function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
+			else
+				TRP3_API.popup.showPopup(
+					TRP3_API.popup.COLORS,
+					{parent = parentFrame, point = point, parentPoint = parentPoint},
+					{function(red, green, blue) onColorTagSelected(red, green, blue, toolbar.textFrame) end});
+			end
 		end
 	end);
 	toolbar.image:SetScript("OnClick", function()
-		TRP3_API.popup.showPopup(
-			TRP3_API.popup.IMAGES,
-			{parent = parentFrame, point = point, parentPoint = parentPoint},
-			{function(image) onImageTagSelected(image, toolbar.textFrame) end});
+		if toolbar.textFrame then 
+			TRP3_API.popup.showPopup(
+				TRP3_API.popup.IMAGES,
+				{parent = parentFrame, point = point, parentPoint = parentPoint},
+				{function(image) onImageTagSelected(image, toolbar.textFrame) end});
+		end
 	end);
-	toolbar.link:SetScript("OnClick", function() onLinkTagClicked(toolbar.textFrame) end);
+	toolbar.link:SetScript("OnClick", function() if toolbar.textFrame then onLinkTagClicked(toolbar.textFrame) end end);
 end
 
 function TRP3_API.ui.text.changeToolbarTextFrame(toolbar, textFrame)
