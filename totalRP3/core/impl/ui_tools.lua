@@ -47,6 +47,12 @@ local numberToHexa = TRP3_API.utils.color.numberToHexa;
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
 
+-- Classic proofing
+if TRP3_API.Ellyb.System:IsClassicClient() then
+	UnitIsBattlePetCompanion = function() return false end;
+	UnitIsOtherPlayersBattlePet = function() return false end;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

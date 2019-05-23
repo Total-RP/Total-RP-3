@@ -122,7 +122,10 @@ local function onStart()
 				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
 				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
 			end
-			uiButton:GetPushedTexture():SetDesaturated(1);
+			
+			if uiButton:GetPushedTexture() then
+				uiButton:GetPushedTexture():SetDesaturated(1);
+			end
 			uiButton:SetPoint("TOPLEFT", x, -12);
 			uiButton:SetWidth(buttonSize);
 			uiButton:SetHeight(buttonSize);
