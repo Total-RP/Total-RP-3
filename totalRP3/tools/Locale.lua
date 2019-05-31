@@ -326,6 +326,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_FILTERS = "Filters",
 	REG_LIST_FILTERS_TT = "|cffffff00Click:|r Apply filters\n|cffffff00Right-Click:|r Clear filters",
 	REG_LIST_REALMONLY = "This realm only",
+	REG_LIST_NOTESONLY = "Has notes only",
 	REG_LIST_GUILD = "Character's guild",
 	REG_LIST_NAME = "Character's name",
 	REG_LIST_FLAGS = "Flags",
@@ -1187,6 +1188,7 @@ Please keep in mind that changing those settings might alter your experience wit
 	REG_REPORT_PLAYER_OPEN_URL = [[You can only report players directly from within the game if you can target them (use TRP3's target frame button).
 
 If you wish to report %s's profile and you cannot target them you will need to open a ticket with Blizzard's support using the link bellow.]],
+	REG_REPORT_PLAYER_OPEN_URL_160 = [[If you wish to report %s's profile, you will need to open a ticket with Blizzard's support using the link below.]],
 	NEW_VERSION_BEHIND = "You are currently %s versions behind and are missing on many bug fixes and new features. Other players might not be able to see your profile correctly. Please consider updating the add-on.",
 	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
 	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
@@ -1196,12 +1198,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
 	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
 	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	REG_NOTES_PROFILE = "Notes",
 	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
 	REG_PLAYER_NOTES = "Notes",
@@ -1210,8 +1206,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
 	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
 	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
-	REG_REPORT_PLAYER_OPEN_URL_160 = [[If you wish to report %s's profile, you will need to open a ticket with Blizzard's support using the link below.]],
-	REG_LIST_NOTESONLY = "Has notes only",
 	---@language Markdown
 	WHATS_NEW_23 = [[
 # Changelog version 1.6.0
@@ -1255,6 +1249,12 @@ The register also received a checkbox to only display profiles on which you wrot
 - Removed April Fools' code (including the forgotten rainbow companion names).
 
 ]],
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CM_CLASS_DEMONHUNTER = "Demon Hunter",
 };
 
 -- Use Ellyb to generate the Localization system
