@@ -66,7 +66,6 @@ local CONFIG_OOC_PATTERN = "chat_ooc_pattern";
 local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
-local CONFIG_INCREASE_CONTRAST = "chat_color_contrast";
 local CONFIG_SHOW_ICON = "chat_show_icon";
 local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
 
@@ -88,10 +87,8 @@ local function configShowNameCustomColors()
 end
 TRP3_API.chat.configShowNameCustomColors = configShowNameCustomColors;
 
-local function configIncreaseNameColorContrast()
-	return getConfigValue(CONFIG_INCREASE_CONTRAST);
-end
-TRP3_API.chat.configIncreaseNameColorContrast = configIncreaseNameColorContrast;
+---@deprecated
+TRP3_API.chat.configIncreaseNameColorContrast = TRP3_API.Ellyb.DeprecationWarnings.wrapFunction(AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast, "TRP3_API.chat.configIncreaseNameColorContrast", "AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast");
 
 local function configIsChannelUsed(channel)
 	return getConfigValue(CONFIG_USAGE .. channel);
@@ -137,7 +134,6 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_DISABLE_OOC, false);
 	registerConfigKey(CONFIG_REMOVE_REALM, true);
 	registerConfigKey(CONFIG_NAME_COLOR, true);
-	registerConfigKey(CONFIG_INCREASE_CONTRAST, false);
 	registerConfigKey(CONFIG_EMOTE, true);
 	registerConfigKey(CONFIG_EMOTE_PATTERN, "(%*.-%*)");
 	registerConfigKey(CONFIG_OOC, true);
@@ -207,12 +203,6 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_MAIN_COLOR,
 				configKey = CONFIG_NAME_COLOR,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_CHAT_INCREASE_CONTRAST,
-				configKey = CONFIG_INCREASE_CONTRAST,
-				dependentOnOptions = { CONFIG_NAME_COLOR },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -676,6 +666,8 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	end
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
+	---@type Player
+	local player = AddOn_TotalRP3.Player.static.CreateFromGUID(GUID)
 
 	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
 	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
@@ -694,15 +686,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	end
 
 	if configShowNameCustomColors() then
-		local customColor = GetCustomColorByGUID(GUID);
-
-		if customColor then
-			if configIncreaseNameColorContrast() then
-				customColor:LightenColorUntilItIsReadable();
-			end
-
-			characterColor = customColor;
-		end
+		characterColor = player:GetCustomColorForDisplay() or characterColor;
 	end
 
 	-- If we did get a color wrap the name inside the color code

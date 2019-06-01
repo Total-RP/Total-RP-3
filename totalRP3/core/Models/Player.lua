@@ -98,12 +98,24 @@ function Player:GetRelationshipWithPlayer()
 	return TRP3_API.register.relation.getRelation(TRP3_API.register.getUnitIDProfileID(self:GetCharacterID()));
 end
 
----@return Color|nil customColor
+---@return Ellyb_Color|nil customColor
 function Player:GetCustomColor()
 	local characteristics = self:GetCharacteristics();
 	if characteristics and characteristics.CH then
 		return Ellyb.Color.CreateFromHexa(characteristics.CH);
 	end
+end
+
+
+--- Returns a suitable for display custom color for the player.
+--- If the current user has the option to increase color contrast on darker names, the color will be affected.
+--- @ return Ellyb_Color|nil
+function Player:GetCustomColorForDisplay()
+	local color = self:GetCustomColor()
+	if color and AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+		color:LightenColorUntilItIsReadableOnDarkBackgrounds()
+	end
+	return color
 end
 
 ---@return string|nil
@@ -118,7 +130,7 @@ end
 ---@return string
 function Player:GetCustomColoredRoleplayingNamePrefixedWithIcon(iconSize)
 	iconSize = iconSize or 15;
-	local name, color, icon = self:GetRoleplayingName(), self:GetCustomColor(), self:GetCustomIcon();
+	local name, color, icon = self:GetRoleplayingName(), self:GetCustomColorForDisplay(), self:GetCustomIcon();
 
 	if color ~= nil then
 		name = color:WrapTextInColorCode(name);
@@ -157,8 +169,10 @@ function Player:GetInfo(path)
 	return TRP3_API.profile.getData(path, self:GetProfile())
 end
 
+--- Creates a new Player for a character ID ("PlayerName-ServerName")
+--- @param characterID string
 ---@return Player player
---[[ static ]] function Player.CreateFromCharacterID(characterID)
+function Player.static.CreateFromCharacterID(characterID)
 	Ellyb.Assertions.isType(characterID, "string", "characterID");
 
 	if characterID == currentUser:GetCharacterID() then
@@ -172,8 +186,10 @@ end
 	return player;
 end
 
+--- Create a new player from a Total RP 3 profile ID.
+--- Will throw an error if the profile doesn't exist.
 ---@return Player player
---[[ static ]] function Player.CreateFromProfileID(profileID)
+function Player.static.CreateFromProfileID(profileID)
 	Ellyb.Assertions.isType(profileID, "string", "profileID");
 	assert(TRP3_Register.profiles[profileID], ("Unknown profile ID %s"):format(profileID));
 
@@ -188,6 +204,26 @@ end
 	_private[player].characterID = characterID
 
 	return player;
+end
+
+--- Create a new Player using a name and a realm.
+--- The realm can be nil, in which case the current realm of the user will be used.
+--- @param name string Name of the player
+--- @param realm string|nil The server of the player, default to the server of the current user
+--- @return Player
+function Player.static.CreateFromNameAndRealm(name, realm)
+	if not realm or realm == "" then
+		realm = TRP3_API.globals.player_realm_id
+	end
+	return Player.static.CreateFromCharacterID(name .. "-" .. realm)
+end
+
+--- Create a new Player using a player GUID
+--- @param guid string The player GUID to use
+--- @return Player
+function Player.static.CreateFromGUID(guid)
+	local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(guid);
+	return Player.static.CreateFromNameAndRealm(name, realm)
 end
 
 --{{{ Current user
