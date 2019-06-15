@@ -266,15 +266,14 @@ local TRP3_MusicBrowser = TRP3_MusicBrowser;
 local musicWidgetTab = {};
 local filteredMusicList;
 
-local function decorateMusic(lineFrame, musicURL)
-	musicURL = filteredMusicList[musicURL];
-	local musicName = musicURL:reverse();
-	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
+local function decorateMusic(lineFrame, musicID)
+	local musicName = filteredMusicList[musicID][1];
+	local musicFile = filteredMusicList[musicID][2];
 
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
+	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicFile, loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
-	lineFrame.musicURL = musicURL;
+	lineFrame.musicURL = musicFile;
 end
 
 local function onMusicClick(lineFrame, mousebutton)

@@ -46,7 +46,6 @@ local loc = TRP3_API.loc;
 local pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber = pcall, tostring, pairs, type, print, string, date, math, strconcat, wipe, tonumber;
 local strsplit, strtrim = strsplit, strtrim;
 local tinsert, assert, _G, tremove, next = tinsert, assert, _G, tremove, next;
-local PlayMusic, StopMusic = PlayMusic, StopMusic;
 local UnitFullName = UnitFullName;
 local UNKNOWNOBJECT = UNKNOWNOBJECT;
 local SetPortraitToTexture = SetPortraitToTexture;
@@ -1016,6 +1015,18 @@ function Utils.music.playSoundID(soundID, channel, source)
 	return willPlay, handlerID;
 end
 
+function Utils.music.playSoundFileID(soundFileID, channel, source)
+	assert(soundFileID, "soundFileID can't be nil.")
+	local willPlay, handlerID = PlaySoundFile(soundFileID, channel);
+	if willPlay then
+		tinsert(soundHandlers, {channel = channel, id = soundFileID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});
+		if TRP3_SoundsHistoryFrame then
+			TRP3_SoundsHistoryFrame.onSoundPlayed();
+		end
+	end
+	return willPlay, handlerID;
+end
+
 function Utils.music.stopSound(handlerID)
 	StopSound(handlerID);
 end
@@ -1047,7 +1058,7 @@ function Utils.music.playMusic(music, source)
 	Utils.music.stopMusic();
 	if type(music) == "number" then
 		Log.log("Playing sound: " .. music);
-		Utils.music.playSoundID(music, "Music");
+		Utils.music.playSoundFileID(music, "Music");
 	else
 		Log.log("Playing music: " .. music);
 		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
