@@ -21,6 +21,7 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(_);
+local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 -- Public accessor
 TRP3_API.utils = {
@@ -994,6 +995,7 @@ Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.triggerEvent;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local soundHandlers = {};
+local musicTimer;
 
 function Utils.music.getHandlers()
 	return soundHandlers;
@@ -1049,8 +1051,12 @@ function Utils.music.stopChannel(channel)
 end
 
 function Utils.music.stopMusic()
-	StopMusic();
 	Utils.music.stopChannel("Music");
+	StopMusic();
+	if musicTimer then
+		musicTimer:Cancel();
+		musicTimer = nil;
+	end
 end
 
 function Utils.music.playMusic(music, source)
@@ -1058,6 +1064,8 @@ function Utils.music.playMusic(music, source)
 	Utils.music.stopMusic();
 	if type(music) == "number" then
 		Log.log("Playing sound: " .. music);
+		PlayMusic("Interface\\AddOns\\totalRP3\\resources\\silent.mp3");
+		musicTimer = C_Timer.NewTimer(LibRPMedia:GetMusicFileDuration(music), Utils.music.stopMusic);
 		Utils.music.playSoundFileID(music, "Music");
 	else
 		Log.log("Playing music: " .. music);
