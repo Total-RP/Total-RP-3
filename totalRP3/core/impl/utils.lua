@@ -1069,6 +1069,15 @@ function Utils.music.getTitle(musicURL)
 	return type(musicURL) == "number" and LibRPMedia:GetMusicNameByFile(musicURL) or musicURL:match("[%\\]?([^%\\]+)$");
 end
 
+function Utils.music.convertPathToID(musicURL)
+	assert(musicURL, "Music path can't be nil.")
+	local musicName = musicURL:match("[%\\]?([^%\\]+)$");
+	if not musicName then
+		return;
+	end
+	return LibRPMedia:GetMusicFileByName();
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Textures
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

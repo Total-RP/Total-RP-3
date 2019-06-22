@@ -19,8 +19,6 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
-
 local function onStart()
 	local loc = TRP3_API.loc;
 
@@ -342,7 +340,7 @@ local function onStart()
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
-							profile.about.MU = tonumber(value) or LibRPMedia:GetMusicFileByName(value);
+							profile.about.MU = tonumber(value) or Utils.music.convertPathToID(value);
 						else
 							local old;
 							if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
