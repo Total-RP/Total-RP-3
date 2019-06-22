@@ -995,7 +995,6 @@ Utils.event.fireEvent = TRP3_API.Ellyb.GameEvents.triggerEvent;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local soundHandlers = {};
-local musicTimer;
 
 function Utils.music.getHandlers()
 	return soundHandlers;
@@ -1053,27 +1052,16 @@ end
 function Utils.music.stopMusic()
 	Utils.music.stopChannel("Music");
 	StopMusic();
-	if musicTimer then
-		musicTimer:Cancel();
-		musicTimer = nil;
-	end
 end
 
 function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
-	if type(music) == "number" then
-		Log.log("Playing sound: " .. music);
-		PlayMusic("Interface\\AddOns\\totalRP3\\resources\\silent.mp3");
-		musicTimer = C_Timer.NewTimer(LibRPMedia:GetMusicFileDuration(music), Utils.music.stopMusic);
-		Utils.music.playSoundFileID(music, "Music");
-	else
-		Log.log("Playing music: " .. music);
-		PlayMusic("Sound\\Music\\" .. music .. ".mp3");
-		tinsert(soundHandlers, {channel = "Music", id = music, handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
-		if TRP3_SoundsHistoryFrame then
-			TRP3_SoundsHistoryFrame.onSoundPlayed();
-		end
+	Log.log("Playing music: " .. music);
+	PlayMusic(music);
+	tinsert(soundHandlers, {channel = "Music", id = Utils.music.getTitle(music), handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
+	if TRP3_SoundsHistoryFrame then
+		TRP3_SoundsHistoryFrame.onSoundPlayed();
 	end
 end
 
