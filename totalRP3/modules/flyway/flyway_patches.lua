@@ -113,3 +113,15 @@ TRP3_API.flyway.patches["9"] = function()
 		end
 	end)
 end
+
+TRP3_API.flyway.patches["10"] = function()
+	-- Migrate contrast settings to the new common one
+	if TRP3_Configuration then
+		if TRP3_Configuration["chat_color_contrast"] or TRP3_Configuration["tooltip_char_contrast"] then
+			TRP3_Configuration["increase_color_contrast"] = true;
+		end
+
+		TRP3_Configuration["chat_color_contrast"] = nil;
+		TRP3_Configuration["tooltip_char_contrast"] = nil;
+	end
+end
