@@ -73,7 +73,6 @@ local CONFIG_IN_CHARACTER_ONLY = "tooltip_in_character_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
 local CONFIG_CHARACT_COLOR = "tooltip_char_color";
 local CONFIG_CROP_TEXT = "tooltip_crop_text";
-local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -406,6 +405,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
+	---@type Player
+	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
@@ -441,14 +442,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 
     -- Only use custom colors if the option is enabled and if we have one
-    if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
-        local customColor = Utils.color.getColorFromHexadecimalCode(info.characteristics.CH);
-
-		if getConfigValue(CONFIG_CHARACT_CONTRAST) then
-			customColor:LightenColorUntilItIsReadable();
-		end
-
-		color = customColor or color;
+    if getConfigValue(CONFIG_CHARACT_COLOR) then
+		color = player:GetCustomColorForDisplay() or color;
     end
 
 
@@ -607,19 +602,14 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
+			---@type Player
+			local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
 			local _, targetEnglishClass = UnitClass(targetType .. "target");
 			local targetInfo = getCharacterInfoTab(targetTargetID);
 			local targetClassColor = targetEnglishClass and Utils.color.getClassColor(targetEnglishClass) or Utils.color.CreateColor(1, 1, 1, 1);
 
-			-- Only use custom colors if the option is enabled and if we have one
-			if getConfigValue(CONFIG_CHARACT_COLOR) and targetInfo.characteristics and targetInfo.characteristics.CH then
-				local customColor = Utils.color.getColorFromHexadecimalCode(targetInfo.characteristics.CH);
-
-				if getConfigValue(CONFIG_CHARACT_CONTRAST) then
-					customColor:LightenColorUntilItIsReadable();
-				end
-
-				targetClassColor = customColor or targetClassColor;
+			if getConfigValue(CONFIG_CHARACT_COLOR) then
+				targetClassColor = targetTarget:GetCustomColorForDisplay() or targetClassColor;
 			end
 
 			name = getCompleteName(targetInfo.characteristics or {}, name, true);
@@ -637,7 +627,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- Quick peek & new description notifications & Client
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(targetID)
 	if showNotifications() then
 		local notifText = "";
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
@@ -808,7 +797,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 				if getConfigValue(CONFIG_CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = Utils.color.getColorFromHexadecimalCode(ownerInfo.characteristics.CH);
 
-						if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+						if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 							customColor:LightenColorUntilItIsReadable();
 						end
 
@@ -1150,7 +1139,6 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_IN_CHARACTER_ONLY, false);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_COLOR, true);
-	registerConfigKey(CONFIG_CHARACT_CONTRAST, false);
 	registerConfigKey(CONFIG_CROP_TEXT, true);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
@@ -1226,13 +1214,6 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_COLOR,
 				configKey = CONFIG_CHARACT_COLOR,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_CONTRAST,
-				configKey = CONFIG_CHARACT_CONTRAST,
-				help = loc.CO_TOOLTIP_CONTRAST_TT,
-				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

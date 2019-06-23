@@ -389,6 +389,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("default_color_picker", false);
+	registerConfigKey("increase_color_contrast", false);
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -434,6 +435,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				help = loc.CO_GENERAL_DEFAULT_COLOR_PICKER_TT,
 			},
 			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_CONTRAST ,
+				configKey = "increase_color_contrast",
+				help = loc.CO_TOOLTIP_CONTRAST_TT ,
+			},
+			{
 				inherit = "TRP3_ConfigButton",
 				title = loc.CO_GENERAL_RESET_CUSTOM_COLORS,
 				help = loc.CO_GENERAL_RESET_CUSTOM_COLORS_TT,
@@ -447,6 +454,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		}
 	}
 end);
+
+AddOn_TotalRP3.Configuration = {}
+
+--- Returns true if the user checked the setting to increase color contrast to make text colored using user selected custom
+--- colors more readable.
+--- @return boolean
+function AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast()
+	return getValue("increase_color_contrast")
+end
 
 function TRP3_API.configuration.constructConfigPage()
 	TRP3_API.configuration.registerConfigurationPage(TRP3_API.configuration.CONFIG_FRAME_PAGE);

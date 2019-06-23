@@ -50,7 +50,7 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
 
 	local function placeMapButton(newPosition)
-		if newPosition then setConfigValue(newPosition) end
+		if newPosition then setConfigValue(CONFIG_MAP_BUTTON_POSITION, newPosition) end
 		local position = newPosition or getConfigValue(CONFIG_MAP_BUTTON_POSITION)
 
 		WorldMapButton:SetParent(WorldMapFrame.BorderFrame);
