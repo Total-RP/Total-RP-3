@@ -1071,11 +1071,7 @@ end
 
 function Utils.music.convertPathToID(musicURL)
 	assert(musicURL, "Music path can't be nil.")
-	local musicName = musicURL:match("[%\\]?([^%\\]+)$");
-	if not musicName then
-		return;
-	end
-	return LibRPMedia:GetMusicFileByName();
+	return LibRPMedia:GetMusicFileByName(musicURL);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
