@@ -1070,6 +1070,7 @@ function Utils.music.getTitle(musicURL)
 		musicURL = LibRPMedia:GetMusicNameByFile(musicURL);
 	end
 
+	local musicTitle;
 	if musicURL then
 		musicTitle = musicURL:match("[%/]?([^%/]+)$");
 	end
