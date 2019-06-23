@@ -1071,7 +1071,7 @@ function Utils.music.getTitle(musicURL)
 	end
 
 	if musicURL then
-		musicTitle = musicURL:match("[%\\]?([^%\\]+)$");
+		musicTitle = musicURL:match("[%/]?([^%/]+)$");
 	end
 
 	return musicTitle or musicURL;
