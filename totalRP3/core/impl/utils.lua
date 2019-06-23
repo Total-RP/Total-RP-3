@@ -1066,7 +1066,15 @@ function Utils.music.playMusic(music, source)
 end
 
 function Utils.music.getTitle(musicURL)
-	return type(musicURL) == "number" and LibRPMedia:GetMusicNameByFile(musicURL) or musicURL:match("[%\\]?([^%\\]+)$");
+	if type(musicURL) == "number" then
+		musicURL = LibRPMedia:GetMusicNameByFile(musicURL);
+	end
+
+	if musicURL then
+		musicTitle = musicURL:match("[%\\]?([^%\\]+)$");
+	end
+
+	return musicTitle or musicURL;
 end
 
 function Utils.music.convertPathToID(musicURL)
