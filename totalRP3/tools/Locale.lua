@@ -1196,12 +1196,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
 	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
 	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	REG_NOTES_PROFILE = "Notes",
 	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
 	REG_PLAYER_NOTES = "Notes",
@@ -1255,6 +1249,12 @@ The register also received a checkbox to only display profiles on which you wrot
 - Removed April Fools' code (including the forgotten rainbow companion names).
 
 ]],
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	UI_MUSIC_DURATION = "Duration",
 };
 
 -- Use Ellyb to generate the Localization system

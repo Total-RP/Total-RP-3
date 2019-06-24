@@ -10,3 +10,6 @@
 [submodule "totalRP3/libs/LibDeflate"]
 	path = totalRP3/libs/LibDeflate
 	url = https://github.com/SafeteeWoW/LibDeflate
+[submodule "totalRP3/libs/LibRPMedia"]
+	path = totalRP3/libs/LibRPMedia
+	url = https://github.com/wow-rp-addons/LibRPMedia
