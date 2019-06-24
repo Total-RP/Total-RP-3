@@ -272,7 +272,7 @@ local function decorateMusic(lineFrame, musicID)
 	local musicDuration = filteredMusicList[musicID][3];
 
 	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-	("|cff00ff00%s : %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
+	("|cff00ff00%s: %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
 	lineFrame.musicURL = musicFile;
 end
