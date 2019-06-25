@@ -621,7 +621,6 @@ TRP3_API.chat.getFullnameForUnitUsingChatMethod = getFullnameForUnitUsingChatMet
 local defaultGetColoredNameFunction = GetColoredName;
 
 local GetClassColorByGUID = TRP3_API.utils.color.GetClassColorByGUID;
-local GetCustomColorByGUID = TRP3_API.utils.color.GetCustomColorByGUID;
 
 -- This is our custom GetColoredName function that will replace player's names with their full RP names
 -- and use their custom colors.
