@@ -1,3 +1,7 @@
+# Changelog version 1.6.1.2
+
+- Fixed an issue with the music patch when the player logged in before updating the addon.
+
 # Changelog version 1.6.1.1
 
 - Fixed a potential error on login related to the map.
