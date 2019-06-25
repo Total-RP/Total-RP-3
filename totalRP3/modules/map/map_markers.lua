@@ -30,6 +30,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_ScanLoaderFrameScanning:SetText(loc.MAP_BUTTON_SCANNING);
 
 	TRP3_ScanLoaderFrame:SetParent(WorldMapFrame.BorderFrame);
+	TRP3_ScanLoaderFrame:ClearAllPoints();
 	TRP3_ScanLoaderFrame:SetPoint("CENTER", WorldMapFrame.ScrollContainer, "CENTER");
 	TRP3_ScanLoaderFrame:SetScript("OnShow", function(self)
 		self.refreshTimer = 0;
