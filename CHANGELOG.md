@@ -1,3 +1,7 @@
+# Changelog version 1.6.1.1
+
+- Fixed a potential error on login related to the map.
+
 # Changelog version 1.6.1
 
 ## Music system rework
