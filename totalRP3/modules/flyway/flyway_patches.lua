@@ -136,8 +136,8 @@ TRP3_API.flyway.patches["10"] = function()
 
 	if TRP3_Register and TRP3_Register.profiles then
 		for _, profile in pairs(TRP3_Register.profiles) do
-			if profile.about and profile.about.MU then
-				profile.about.MU = Utils.music.convertPathToID(profile.about.MU);
+			if profile.about and profile.about.MU and type(profile.about.MU) == "string" then
+				profile.about.MU = Utils.music.convertPathToID(profile.about.MU) or tonumber(profile.about.MU);
 			end
 		end
 	end
