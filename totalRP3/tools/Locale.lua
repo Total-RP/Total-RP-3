@@ -1255,6 +1255,26 @@ The register also received a checkbox to only display profiles on which you wrot
 	------------------------------------------------------------------------------------------------
 
 	UI_MUSIC_DURATION = "Duration",
+	WHATS_NEW_23_1 = [[
+# Changelog version 1.6.1
+
+## Music system rework
+
+- Technical changes in patch 8.2 required us to change how music is handled by the addon. **This means the update is required for musics to work.** This change should be seamless and backwards compatible (music themes from profiles coming from outdated versions should still play fine).
+- This allowed for the addition of musics previously unavailable (looking at you, void elf musics).
+- The duration of all musics should now be visible in the music browser line tooltips.
+
+## Changed
+
+- Settings to increase color contrast in tooltips and chat have been consolidated in a single setting for both which can be found in the General settings. It also applies in more places, like the map scan tooltips.
+
+## Fixed
+
+- The anchor for the map scan button can now properly be set.
+- Fixed a switch in Headers/Paragraph dropdown titles
+- Fixed an error message that could be caused by other addons misusing official API functions.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
