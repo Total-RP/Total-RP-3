@@ -128,7 +128,7 @@ TRP3_API.flyway.patches["10"] = function()
 	-- Migrate music paths to music IDs
 	if TRP3_Profiles then
 		for _, profile in pairs(TRP3_Profiles) do
-			if profile.player and profile.player.about and profile.player.about.MU then
+			if profile.player and profile.player.about and profile.player.about.MU and type(profile.player.about.MU) == "string" then
 				profile.player.about.MU = Utils.music.convertPathToID(profile.player.about.MU);
 			end
 		end

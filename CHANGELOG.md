@@ -1,3 +1,7 @@
+# Changelog version 1.6.1.3
+
+- Fixed another issue with the music patch. I promise we're done with bugfixes for now (;-;)
+
 # Changelog version 1.6.1.2
 
 - Fixed an issue with the music patch when the player logged in before updating the addon.
