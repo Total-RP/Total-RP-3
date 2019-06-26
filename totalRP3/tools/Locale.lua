@@ -1276,6 +1276,21 @@ The register also received a checkbox to only display profiles on which you wrot
 	------------------------------------------------------------------------------------------------
 
 	UI_MUSIC_ALTTITLE = "Alternate title",
+	WHATS_NEW_23_2 = [[
+# Changelog version 1.6.2
+
+## Added
+
+- Added 328 icons and 20 images from patch 8.2.
+- Added an indicator to the music browser when the default name of a music differs from the one matching the current filter.
+
+## Fixed
+
+- Fixed issues in the music data transfer between TRP and MRP.
+- Fixed an issue with duplicated lines on the map scan button tooltip.
+- Further speculative fixes to the map issue on login.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
