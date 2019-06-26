@@ -91,7 +91,7 @@ local function onStart()
 			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
 
-		msp.my['MU'] = tostring(dataTab.MU);
+		msp.my['MU'] = dataTab.MU and tostring(dataTab.MU) or nil;
 	end
 
 	local function updateCharacteristicsData()
@@ -340,7 +340,12 @@ local function onStart()
 						end
 					elseif ABOUT_FIELDS[field] then
 						if field == "MU" then
-							profile.about.MU = tonumber(value) or Utils.music.convertPathToID(value);
+							local fileID = tonumber(value);
+							if not fileID and type(value) == "string" then
+								fileID = Utils.music.convertPathToID(value);
+							end
+
+							profile.about.MU = fileID;
 						else
 							local old;
 							if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
