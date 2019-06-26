@@ -91,7 +91,7 @@ local function onStart()
 			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
 
-		msp.my['MU'] = tostring(dataTab.MU);
+		msp.my['MU'] = dataTab.MU and tostring(dataTab.MU) or nil;
 	end
 
 	local function updateCharacteristicsData()
