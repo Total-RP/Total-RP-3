@@ -98,6 +98,7 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	Ellyb.Tooltips.getTooltip(WorldMapButton)
 		 :SetTitle(loc.MAP_BUTTON_TITLE)
 		 :OnShow(function(tooltip)
+		tooltip:ClearTempLines();
 		tooltip:AddTempLine(WorldMapButton.subtitle)
 	end)
 	--}}}
