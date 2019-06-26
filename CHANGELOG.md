@@ -1,3 +1,9 @@
+# Changelog version 1.6.1.4
+
+- Fixed issues in the music data transfer between TRP and MRP.
+- Fixed an issue with duplicated lines on the map scan button tooltip.
+- Further speculative fixes to the map issue on login.
+
 # Changelog version 1.6.1.3
 
 - Fixed another issue with the music patch. I promise we're done with bugfixes for now (;-;)
