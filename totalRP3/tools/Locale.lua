@@ -781,6 +781,7 @@ This will works:|cff00ff00
 	UI_ICON_SELECT = "Select icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
+	UI_MUSIC_DURATION = "Duration",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
 	UI_COLOR_BROWSER_PRESETS = "Presets",
@@ -1249,12 +1250,6 @@ The register also received a checkbox to only display profiles on which you wrot
 - Removed April Fools' code (including the forgotten rainbow companion names).
 
 ]],
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	UI_MUSIC_DURATION = "Duration",
 	WHATS_NEW_23_1 = [[
 # Changelog version 1.6.1
 
@@ -1275,6 +1270,12 @@ The register also received a checkbox to only display profiles on which you wrot
 - Fixed an error message that could be caused by other addons misusing official API functions.
 
 ]],
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	UI_MUSIC_ALTTITLE = "Alternate title",
 };
 
 -- Use Ellyb to generate the Localization system
