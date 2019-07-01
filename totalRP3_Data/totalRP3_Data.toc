@@ -3,8 +3,7 @@
 ## Author: Telkostrasz & Ellypse
 ## Notes: Data storage
 ## URL: http://totalrp3.info
-## RequiredDeps: totalRP3
 ## DefaultState: Enabled
-## LoadOnDemand: 0
+## LoadOnDemand: 1
 ## SavedVariables: TRP3_Register
 totalRP3_Data.lua
