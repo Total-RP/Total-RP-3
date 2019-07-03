@@ -14,6 +14,8 @@ ignore:
   - totalRP3/libs/LibDeflate/examples
   - totalRP3/libs/LibDeflate/tests
   - totalRP3/libs/LibRPMedia/*.manifest
+  - totalRP3/libs/LibRPMedia/Makefile
+  - totalRP3/libs/LibRPMedia/Tests
 
 manual-changelog:
   filename: CHANGELOG.md
