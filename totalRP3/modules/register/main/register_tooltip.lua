@@ -824,10 +824,24 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		local text;
 		if targetMode == TYPE_PET then
 			local creatureType = UnitCreatureType(targetType);
+			if not creatureType then
+				-- Can be nil if the creature type isn't available yet
+				-- such as after freshly crossing a load screen.
+				creatureType = UNKNOWNOBJECT;
+			end
+
 			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitLevel(targetType) or "??", creatureType);
 		elseif targetMode == TYPE_BATTLE_PET then
 			local type = UnitBattlePetType(targetType);
-			type = _G["BATTLE_PET_NAME_" .. type];
+			if type then
+				type = _G["BATTLE_PET_NAME_" .. type];
+			else
+				-- Not sure if UnitBattlePetType can be nil, but it would
+				-- make sense for the same edge cases to possibly occur as
+				-- with UnitCreatureType.
+				type = UNKNOWNOBJECT;
+			end
+
 			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitBattlePetLevel(targetType) or "??", type);
 		end
 
