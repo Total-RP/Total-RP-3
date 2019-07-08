@@ -103,6 +103,7 @@ function TRP3_NamePlates:OnInitialize()
 	self.unitFrameWidgets = {};
 
 	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
+	self.texturePool = CreateTexturePool(UIParent, "ARTWORK", 0);
 end
 
 -- Handler called when the module is started up. This is responsible for
@@ -288,6 +289,11 @@ function TRP3_NamePlates:AcquireUnitFrameFontString(frame, widgetName)
 	return self:AcquireUnitFrameWidget(frame, widgetName, self.fontStringPool);
 end
 
+-- Acquires a texture widget and assigns it to the given frame.
+function TRP3_NamePlates:AcquireUnitFrameTexture(frame, widgetName)
+	return self:AcquireUnitFrameWidget(frame, widgetName, self.texturePool);
+end
+
 -- Releases a named widget from a unit frame, placing it back into the
 -- given pool.
 function TRP3_NamePlates:ReleaseUnitFrameWidget(frame, widgetName, pool)
@@ -317,8 +323,14 @@ function TRP3_NamePlates:ReleaseUnitFrameFontString(frame, widgetName)
 	return self:ReleaseUnitFrameWidget(frame, widgetName, self.fontStringPool);
 end
 
+-- Releases a named texture widget from a unit frame.
+function TRP3_NamePlates:ReleaseUnitFrameTexture(frame, widgetName)
+	return self:ReleaseUnitFrameWidget(frame, widgetName, self.texturePool);
+end
+
 -- Sets up custom widgets and modifications on a unit frame.
 function TRP3_NamePlates:SetUpUnitFrame(frame, unitToken)
+	self:SetUpUnitFrameIcon(frame, unitToken);
 	self:SetUpUnitFrameTitle(frame, unitToken);
 end
 
@@ -327,11 +339,13 @@ end
 function TRP3_NamePlates:UpdateUnitFrame(frame, unitToken)
 	-- Update all portions of the unit frame.
 	self:UpdateUnitFrameName(frame, unitToken);
+	self:UpdateUnitFrameIcon(frame, unitToken);
 	self:UpdateUnitFrameTitle(frame, unitToken);
 end
 
 -- Tears down custom widgets and modifications from a unit frame.
 function TRP3_NamePlates:TearDownUnitFrame(frame, unitToken)
+	self:TearDownUnitFrameIcon(frame, unitToken);
 	self:TearDownUnitFrameTitle(frame, unitToken);
 end
 
@@ -393,6 +407,70 @@ function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
 	end
 end
 
+-- Initializes the RP icon widget on a unit frame.
+function TRP3_NamePlates:SetUpUnitFrameIcon(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
+	local iconWidget = self:AcquireUnitFrameTexture(frame, "icon");
+	if not iconWidget then
+		return;
+	end
+
+	-- Set up anchoring and reparent.
+	iconWidget:ClearAllPoints();
+	iconWidget:SetParent(frame);
+	iconWidget:SetPoint("RIGHT", frame.name, "LEFT", -4, 0);
+	iconWidget:SetSize(16, 16);
+	iconWidget:Show();
+end
+
+-- Updates the RP icon widget on a unit frame.
+function TRP3_NamePlates:UpdateUnitFrameIcon(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
+	-- Get the icon widget if one was allocated.
+	local iconWidget = self:GetUnitFrameWidget(frame, "icon");
+	if not iconWidget then
+		return;
+	end
+
+	-- Name of the icon to be set, or nil if none is present.
+	local iconName;
+
+	-- Get the appropriate icon for this unit type.
+	if UnitIsPlayer(unitToken) then
+		local profile = GetPlayerProfile(unitToken);
+		if profile then
+			iconName = profile:GetCustomIcon();
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetCombatPetProfile(unitToken);
+		if profile then
+			iconName = profile.IC;
+		end
+	end
+
+	-- If there's no icon, we'll hide it entirely.
+	if not iconName or iconName == "" then
+		iconWidget:Hide();
+		return;
+	end
+
+	iconWidget:SetTexture([[Interface\ICONS\]] .. iconName);
+	iconWidget:Show();
+end
+
+-- Deinitializes the RP icon widget on a unit frame.
+function TRP3_NamePlates:TearDownUnitFrameIcon(frame, unitToken)
+	self:ReleaseUnitFrameTexture(frame, "icon");
+end
+
 -- Initializes the custom RP title widget on a unit frame.
 function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
 	-- Ignore forbidden frames and bad units.
@@ -426,8 +504,10 @@ function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
 		return;
 	end
 
+	-- Title text to be shown, or nil if to be hidden.
 	local titleText;
 
+	-- Get the appropriate title for this unit type.
 	if UnitIsPlayer(unitToken) then
 		local profile = GetPlayerProfile(unitToken);
 		local characteristics = profile and profile:GetCharacteristics();
