@@ -27,6 +27,10 @@ local Player = AddOn_TotalRP3.Player;
 
 -- Ellyb imports.
 local Color = TRP3_API.Ellyb.Color;
+local ColorManager = TRP3_API.Ellyb.ColorManager;
+
+-- Maximum width for displayed titles.
+local MAX_TITLE_SIZE = 40;
 
 -- Returns true if the given unit token refers to a combat companion pet.
 --
@@ -95,6 +99,9 @@ local TRP3_NamePlates = {};
 function TRP3_NamePlates:OnInitialize()
 	self.activeUnitTokens = {};
 	self.registerUnitIDMap = {};
+	self.unitFrameWidgets = {};
+
+	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
 end
 
 -- Handler called when the module is started up. This is responsible for
@@ -156,6 +163,12 @@ function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 		self.registerUnitIDMap[registerUnitID] = unitToken;
 	end
 
+	-- Initialize the unit frame.
+	local frame = self:GetUnitFrameForUnit(unitToken);
+	if frame then
+		self:SetUpUnitFrame(frame, unitToken);
+	end
+
 	-- Update the unit frame for them immediately. It might not be fully
 	-- configured at this point, however our hooks will fire if that's the
 	-- case anyway.
@@ -173,8 +186,11 @@ end
 
 -- Handler triggered then the game removes a name plate unit token.
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
-	-- Flag the unit as inactive.
-	self.activeUnitTokens[unitToken] = nil;
+	-- Remove additional customizations that might be attached to the frame.
+	local frame = self:GetUnitFrameForUnit(unitToken);
+	if frame then
+		self:TearDownUnitFrame(frame, unitToken);
+	end
 
 	-- Remove any mappings from register unit IDs to this unit token.
 	for registerUnitID, storedUnitToken in pairs(self.registerUnitIDMap) do
@@ -182,6 +198,9 @@ function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
 			self.registerUnitIDMap[registerUnitID] = nil;
 		end
 	end
+
+	-- Flag the unit as inactive.
+	self.activeUnitTokens[unitToken] = nil;
 end
 
 -- Handler triggered when TRP updates the registry for a named profile.
@@ -203,33 +222,92 @@ end
 
 -- Returns true if the given unit token is actively tracked as belonging
 -- to a nameplate.
-function TRP3_NamePlates:IsActiveUnitToken(unitToken)
+function TRP3_NamePlates:IsTrackedUnit(unitToken)
 	return not not self.activeUnitTokens[unitToken];
 end
 
--- Returns true if the given unit frame and unit token are valid for
--- applying modifications.
+-- Returns the unit frame on a name plate for the given unit token, or nil
+-- if the given token is invalid.
+function TRP3_NamePlates:GetUnitFrameForUnit(unitToken)
+	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
+	if not frame or not frame.UnitFrame then
+		return nil;
+	end
+
+	return frame.UnitFrame;
+end
+
+-- Returns a named widget for a unit frame, or nil if the widget doesn't
+-- exist.
+function TRP3_NamePlates:GetUnitFrameWidget(frame, widgetName)
+	local widgets = self.unitFrameWidgets[frame];
+	if not widgets then
+		return nil;
+	end
+
+	return widgets[widgetName];
+end
+
+-- Acquires a named widget for a unit frame, sourcing it from the given
+-- pool and returning it.
 --
--- This will return false if, for example, the unit is invalid or if the
--- frame itself is forbidden.
-function TRP3_NamePlates:CanUpdateUnitFrame(frame, unitToken)
-	-- Ignore forbidden frames, in case they ever snake their way in here.
+-- This function will return nil if the given frame is forbidden, and
+-- no widget will be acquired.
+function TRP3_NamePlates:AcquireUnitFrameWidget(frame, widgetName, pool)
+	-- Don't add widgets to locked down frames.
 	if not CanAccessObject(frame) then
-		return false;
+		return nil;
 	end
 
-	-- Ignore unit tokens that aren't actively being tracked. This will
-	-- filter out non-nameplate units, primarily.
-	if not self:IsActiveUnitToken(unitToken) then
-		return false;
+	-- We'll store widget sets keyed by the frame. Frames themselves are
+	-- pooled, so this won't leak anything.
+	local widgets = self.unitFrameWidgets[frame] or {};
+	self.unitFrameWidgets[frame] = widgets;
+
+	assert(not widgets[widgetName], "Duplicate widget name.");
+
+	local widget = pool:Acquire();
+	widgets[widgetName] = widget;
+	return widget;
+end
+
+-- Acquires a font string widget and assigns it to the given frame.
+function TRP3_NamePlates:AcquireUnitFrameFontString(frame, widgetName)
+	return self:AcquireUnitFrameWidget(frame, widgetName, self.fontStringPool);
+end
+
+-- Releases a named widget from a unit frame, placing it back into the
+-- given pool.
+function TRP3_NamePlates:ReleaseUnitFrameWidget(frame, widgetName, pool)
+	-- Don't release widget from to locked down frames. These should never
+	-- have had them added in the first place, so this should be fine.
+	if not CanAccessObject(frame) then
+		return;
 	end
 
-	-- Ignore units that don't exist.
-	if not UnitExists(unitToken) then
-		return false;
+	local widgets = self.unitFrameWidgets[frame];
+	if not widgets then
+		return;
 	end
 
-	return true;
+	local widget = widgets[widgetName];
+	if not widget then
+		return;
+	end
+
+	-- Remove the widget from the UI as much as possible.
+	pool:Release(widget);
+	widgets[widgetName] = nil;
+end
+
+-- Releases a named font string widget from a unit frame.
+function TRP3_NamePlates:ReleaseUnitFrameFontString(frame, widgetName)
+	return self:ReleaseUnitFrameWidget(frame, widgetName, self.fontStringPool);
+end
+
+-- Sets up custom widgets and modifications on a unit frame.
+function TRP3_NamePlates:SetUpUnitFrame(frame, unitToken)
+	self:SetUpUnitFrameTitle(frame, unitToken);
 end
 
 -- Updates the given unit frame, applying changes for the profile represented
@@ -237,13 +315,19 @@ end
 function TRP3_NamePlates:UpdateUnitFrame(frame, unitToken)
 	-- Update all portions of the unit frame.
 	self:UpdateUnitFrameName(frame, unitToken);
+	self:UpdateUnitFrameTitle(frame, unitToken);
+end
+
+-- Tears down custom widgets and modifications from a unit frame.
+function TRP3_NamePlates:TearDownUnitFrame(frame, unitToken)
+	self:TearDownUnitFrameTitle(frame, unitToken);
 end
 
 -- Updates the name display on a given unit frame, applying changes for the
 -- profile represented by the given unit token.
 function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
-	-- Ignore frames that shouldn't be updated.
-	if not self:CanUpdateUnitFrame(frame, unitToken) then
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -297,6 +381,77 @@ function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
 	end
 end
 
+-- Initializes the custom RP title widget on a unit frame.
+function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
+	local title = self:AcquireUnitFrameFontString(frame, "title");
+	if not title then
+		return;
+	end
+
+	-- Set up anchoring and reparent.
+	title:ClearAllPoints();
+	title:SetParent(frame);
+	title:SetPoint("TOP", frame.name, "BOTTOM", 0, -4);
+	title:SetVertexColor(ColorManager.ORANGE:GetRGBA());
+	title:Show();
+end
+
+-- Updates the title display on a name plate.
+function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
+	-- Get the title widget if one was allocated.
+	local titleWidget = self:GetUnitFrameWidget(frame, "title");
+	if not titleWidget then
+		return;
+	end
+
+	local titleText;
+
+	if UnitIsPlayer(unitToken) then
+		local profile = GetPlayerProfile(unitToken);
+		local characteristics = profile and profile:GetCharacteristics();
+		if characteristics then
+			titleText = characteristics.FT;
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetCombatPetProfile(unitToken);
+		if profile then
+			titleText = profile.TI;
+		end
+	end
+
+	-- If there's no title text, we'll hide it entirely.
+	if not titleText or titleText == "" then
+		titleWidget:Hide();
+		return;
+	end
+
+	-- Crop titles and format them appropriately.
+	titleText = format("<%s>", TRP3_Utils.str.crop(titleText, MAX_TITLE_SIZE));
+
+	titleWidget:SetText(titleText);
+	titleWidget:Show();
+end
+
+-- Deinitializes the custom RP title widget on a unit frame.
+function TRP3_NamePlates:TearDownUnitFrameTitle(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
+	self:ReleaseUnitFrameFontString(frame, "title");
+end
+
 -- Updates all modified unit frames.
 function TRP3_NamePlates:UpdateAllUnitFrames()
 	self:UpdateAllUnits();
@@ -304,12 +459,12 @@ end
 
 -- Updates the nameplate frame for a given unit token.
 function TRP3_NamePlates:UpdateUnitToken(unitToken)
-	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
-	if not frame or not frame.UnitFrame then
+	local frame = self:GetUnitFrameForUnit(unitToken);
+	if not frame then
 		return;
 	end
 
-	self:UpdateUnitFrame(frame.UnitFrame, unitToken);
+	self:UpdateUnitFrame(frame, unitToken);
 end
 
 -- Updates all nameplate frames for actively tracked unit tokens.
