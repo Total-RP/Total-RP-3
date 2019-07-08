@@ -477,17 +477,17 @@ function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
 		return;
 	end
 
-	local title = self:AcquireUnitFrameFontString(frame, "title");
-	if not title then
+	local titleWidget = self:AcquireUnitFrameFontString(frame, "title");
+	if not titleWidget then
 		return;
 	end
 
 	-- Set up anchoring and reparent.
-	title:ClearAllPoints();
-	title:SetParent(frame);
-	title:SetPoint("TOP", frame.name, "BOTTOM", 0, -4);
-	title:SetVertexColor(ColorManager.ORANGE:GetRGBA());
-	title:Show();
+	titleWidget:ClearAllPoints();
+	titleWidget:SetParent(frame);
+	titleWidget:SetPoint("TOP", frame.name, "BOTTOM", 0, -4);
+	titleWidget:SetVertexColor(ColorManager.ORANGE:GetRGBA());
+	titleWidget:Show();
 end
 
 -- Updates the title display on a name plate.
