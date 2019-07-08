@@ -17,7 +17,6 @@ local _, TRP3_API = ...;
 -- TRP3_API imports.
 local L = TRP3_API.loc;
 local TRP3_Companions = TRP3_API.companions;
-local TRP3_Configuration = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
