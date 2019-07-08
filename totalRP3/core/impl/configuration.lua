@@ -26,6 +26,7 @@ TRP3_API.configuration = {};
 
 -- imports
 local loc = TRP3_API.loc;
+local Events = TRP3_API.events;
 local Utils = TRP3_API.utils;
 local Config = TRP3_API.configuration;
 local numberToHexa, hexaToNumber = Utils.color.numberToHexa, Utils.color.hexaToNumber;
@@ -73,6 +74,8 @@ local function setValue(key, value)
 			callback(key, value);
 		end
 	end
+
+	Events.triggerEvent(Events.CONFIG_SETTING_CHANGED, key, value);
 end
 Config.setValue = setValue;
 

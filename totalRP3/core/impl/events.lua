@@ -77,6 +77,11 @@ local Events = {
 	-- Arg1 : Target ID
 	-- Arg2 : Target mode (Character, pet, battle pet ...)
 	MOUSE_OVER_CHANGED = "MOUSE_OVER_CHANGED",
+
+	-- Dispatched when a configuration change occurs.
+	-- Arg1 : Configuration Key
+	-- Arg2 : Configured Value
+	CONFIG_SETTING_CHANGED = "CONFIG_SETTING_CHANGED",
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

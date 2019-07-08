@@ -17,6 +17,7 @@ local _, TRP3_API = ...;
 -- TRP3_API imports.
 local L = TRP3_API.loc;
 local TRP3_Companions = TRP3_API.companions;
+local TRP3_Configuration = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
@@ -124,6 +125,10 @@ function TRP3_NamePlates:OnEnable()
 		self:OnRegisterDataUpdated(...);
 	end);
 
+	TRP3_Events.registerCallback("CONFIG_SETTING_CHANGED", function(...)
+		self:OnConfigSettingChanged(...);
+	end);
+
 	-- Install hooks.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
 		return self:OnUnitFrameNameChanged(frame);
@@ -139,7 +144,13 @@ function TRP3_NamePlates:OnEvent(event, ...)
 	end
 end
 
---- Handler triggered when the player mouses over an in-game unit.
+-- Handler triggered when a configuration setting is changed.
+function TRP3_NamePlates:OnConfigSettingChanged(key, value)
+	-- Force refresh all frames to apply the change, whatever it is.
+	self:UpdateAllUnitFrames();
+end
+
+-- Handler triggered when the player mouses over an in-game unit.
 function TRP3_NamePlates:OnMouseOverChanged(targetID)
 	-- Try and convert the target ID (a register-internal ID) to that of
 	-- a unit token and force-refresh the frame. This can be used as a
