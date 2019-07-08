@@ -1291,6 +1291,9 @@ The register also received a checkbox to only display profiles on which you wrot
 - Further speculative fixes to the map issue on login.
 
 ]],
+
+	NAMEPLATES_MODULE_NAME = "Name Plates",
+	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default name plates with additional role play characteristics.",
 };
 
 -- Use Ellyb to generate the Localization system
