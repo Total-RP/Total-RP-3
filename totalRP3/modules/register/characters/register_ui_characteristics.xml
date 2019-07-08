@@ -154,7 +154,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER" textureSubLevel="-1">
-				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" horizWrap="REPEAT">
+				<Texture parentKey="OppositeFill" file="Interface\TargetingFrame\UI-StatusBar" hWrapMode="REPEAT">
 					<Anchors>
 						<Anchor point="TOPLEFT"/>
 						<Anchor point="BOTTOMRIGHT"/>
