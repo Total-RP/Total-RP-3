@@ -24,7 +24,7 @@
 	</Button>
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_ToolbarTemplate" frameStrata="DIALOG" toplevel="true" parent="UIParent" enableMouse="true" virtual="true">
+	<Frame name="TRP3_ToolbarTemplate" frameStrata="MEDIUM" toplevel="true" parent="UIParent" enableMouse="true" virtual="true">
 		<Size x="190" y="60" />
 		<Scripts>
 			<OnLoad>
