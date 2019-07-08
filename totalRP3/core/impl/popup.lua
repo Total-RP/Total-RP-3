@@ -1,27 +1,25 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Popups API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Popups API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 -- Public accessor
 TRP3_API.popup = {};
-
--- Lua imports
-local table = table;
 
 -- imports
 local Utils = TRP3_API.utils;
@@ -30,10 +28,7 @@ local initList = TRP3_API.ui.list.initList;
 local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local hooksecurefunc, GetItemIcon, IsControlKeyDown = hooksecurefunc, GetItemIcon, IsControlKeyDown;
 local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
-local hexaToNumber, numberToHexa = TRP3_API.utils.color.hexaToNumber, TRP3_API.utils.color.numberToHexa;
-local strconcat = strconcat;
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
@@ -52,12 +47,12 @@ StaticPopupDialogs["TRP3_INFO"] = {
 StaticPopupDialogs["TRP3_CONFIRM"] = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function(self)
+	OnAccept = function()
 		if StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept then
 			StaticPopupDialogs["TRP3_CONFIRM"].trp3onAccept();
 		end
 	end,
-	OnCancel = function(arg1,arg2)
+	OnCancel = function()
 		if StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel then
 			StaticPopupDialogs["TRP3_CONFIRM"].trp3onCancel();
 		end
@@ -71,12 +66,12 @@ StaticPopupDialogs["TRP3_CONFIRM"] = {
 StaticPopupDialogs["TRP3_YES_NO"] = {
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function(self)
+	OnAccept = function()
 		if StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept then
 			StaticPopupDialogs["TRP3_YES_NO"].trp3onAccept();
 		end
 	end,
-	OnCancel = function(self)
+	OnCancel = function()
 		if StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel then
 			StaticPopupDialogs["TRP3_YES_NO"].trp3onCancel();
 		end
@@ -90,12 +85,12 @@ StaticPopupDialogs["TRP3_YES_NO"] = {
 StaticPopupDialogs["TRP3_YES_NO_CUSTOM"] = {
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function(self)
+	OnAccept = function()
 		if StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onAccept then
 			StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onAccept();
 		end
 	end,
-	OnCancel = function(self)
+	OnCancel = function()
 		if StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onCancel then
 			StaticPopupDialogs["TRP3_YES_NO_CUSTOM"].trp3onCancel();
 		end
@@ -119,7 +114,7 @@ StaticPopupDialogs["TRP3_INPUT_TEXT"] = {
 			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onAccept(_G[self:GetName().."EditBox"]:GetText());
 		end
 	end,
-	OnCancel = function(arg1,arg2)
+	OnCancel = function()
 		if StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel then
 			StaticPopupDialogs["TRP3_INPUT_TEXT"].trp3onCancel();
 		end
@@ -150,7 +145,7 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 	OnHide = function(self)
 		_G[self:GetName().."EditBox"]:SetNumeric(false);
 	end,
-	OnCancel = function(arg1,arg2)
+	OnCancel = function()
 		if StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel then
 			StaticPopupDialogs["TRP3_INPUT_NUMBER"].trp3onCancel();
 		end
@@ -271,15 +266,25 @@ local TRP3_MusicBrowser = TRP3_MusicBrowser;
 local musicWidgetTab = {};
 local filteredMusicList;
 
-local function decorateMusic(lineFrame, musicURL)
-	musicURL = filteredMusicList[musicURL];
-	local musicName = musicURL:reverse();
-	musicName = (musicName:sub(1, musicName:find("%\\")-1)):reverse();
+local function decorateMusic(lineFrame, musicID)
+	local musicName = filteredMusicList[musicID][1];
+	local musicFile = filteredMusicList[musicID][2];
+	local musicDuration = filteredMusicList[musicID][3];
 
-	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicName,
-	("|cff00ff00%s\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(musicURL, loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN));
+	local musicShortName = Utils.music.getTitle(musicName);
+	local musicDefaultName = Utils.music.getTitle(musicFile);
+	local tooltipContent;
+	if musicDefaultName == musicShortName then
+		tooltipContent = ("|cff00ff00%s: %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
+	else
+		tooltipContent = ("|cffffff00%s: %s\n|cff00ff00%s: %ss\n\n|cffff9900%s: |cffffffff%s\n|cffff9900%s: |cffffffff%s"):format(loc.UI_MUSIC_ALTTITLE, musicDefaultName, loc.UI_MUSIC_DURATION, floor(musicDuration + 0.5), loc.CM_L_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_SELECT2, loc.CM_R_CLICK, loc.REG_PLAYER_ABOUT_MUSIC_LISTEN);
+		musicName = musicName.."|cffffff00*";
+	end
+
+	setTooltipForFrame(lineFrame, lineFrame, "RIGHT", 0, -30, musicShortName, tooltipContent);
 	_G[lineFrame:GetName().."Text"]:SetText(musicName);
-	lineFrame.musicURL = musicURL;
+
+	lineFrame.musicURL = musicFile;
 end
 
 local function onMusicClick(lineFrame, mousebutton)
@@ -390,8 +395,6 @@ local function initIconBrowser()
 	handleMouseWheel(ui_IconBrowserContent, TRP3_IconBrowserContentSlider);
 	TRP3_IconBrowserContentSlider:SetValue(0);
 	-- Create icons
-	local row, column;
-
 	for row = 0, 5 do
 		for column = 0, 7 do
 			local button = CreateFrame("Button", "TRP3_IconBrowserButton_"..row.."_"..column, ui_IconBrowserContent, "TRP3_IconBrowserButton");
@@ -475,9 +478,9 @@ local function getWoWCompanionFilteredList(filter)
 
 	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
 		-- Battle pets
-		local numPets, numOwned = GetNumPets();
+		local numPets = GetNumPets();
 		for i = 1, numPets do
-			local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description = GetPetInfoByIndex(i);
+			local _, _, _, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
 			-- Only renamed pets can be bound
 			if customName and (filter:len() == 0 or safeMatch(customName:lower(), filter)) then
 				tinsert(filteredCompanionList, {customName, icon, description, speciesName});
@@ -486,8 +489,8 @@ local function getWoWCompanionFilteredList(filter)
 		end
 	elseif currentCompanionType == TRP3_API.ui.misc.TYPE_MOUNT then
 		-- Mounts
-		for i, id in pairs(GetMountIDs()) do
-			local creatureName, spellID, icon, active, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
+		for _, id in pairs(GetMountIDs()) do
+			local creatureName, spellID, icon, _, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
 			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
 				local _, description = C_MountJournal.GetMountInfoExtraByID(id);
 				tinsert(filteredCompanionList, {creatureName, icon, description, loc.PR_CO_MOUNT, spellID, id});
@@ -520,7 +523,6 @@ local function initCompanionBrowser()
 	handleMouseWheel(ui_CompanionBrowserContent, TRP3_CompanionBrowserContentSlider);
 	TRP3_CompanionBrowserContentSlider:SetValue(0);
 	-- Create icons
-	local row, column;
 
 	for row = 0, 5 do
 		for column = 0, 7 do
@@ -637,9 +639,9 @@ local COLOR_PRESETS_ITEMS = {
 ---@param color Color
 local function getPresetForColor(color)
 	local hexa = "#" .. color:GenerateHexadecimalColor(true);
-	for k, color in pairs(TRP3_Colors) do
-		if color.CO == hexa then
-			return color, k;
+	for k, colorPreset in pairs(TRP3_Colors) do
+		if colorPreset.CO == hexa then
+			return colorPreset, k;
 		end
 	end
 	return false;
@@ -689,7 +691,7 @@ local function colorPresetsDropDownSelection(hexValue)
 			saveCustomColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue), text, index);
 		end, nil, existingPreset.TX);
 	elseif hexValue == "DELETE" then
-		local existingPreset, index = getPresetForColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
+		local _, index = getPresetForColor(Color(TRP3_ColorBrowser.red, TRP3_ColorBrowser.green, TRP3_ColorBrowser.blue));
 		deleteCustomColorAtIndex(index)
 	else
 		local r, g, b = ColorManager.hexaToNumber(hexValue);
@@ -718,31 +720,31 @@ local function colorPresetsDropDown()
 	end
 	tinsert(values, { "" }); -- Separator
 
-	for index, preset in pairs(COLOR_PRESETS_BASIC) do
+	for _, preset in pairs(COLOR_PRESETS_BASIC) do
 		tinsert(values_basic, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
 	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_BASIC, values_basic});
 
 	local values_classes = {};
-	for index, preset in pairs(COLOR_PRESETS_CLASS) do
+	for _, preset in pairs(COLOR_PRESETS_CLASS) do
 		tinsert(values_classes, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
 	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CLASSES, values_classes});
 
 	local values_resources = {};
-	for index, preset in pairs(COLOR_PRESETS_RESOURCES) do
+	for _, preset in pairs(COLOR_PRESETS_RESOURCES) do
 		tinsert(values_resources, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
 	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_RESOURCES, values_resources});
 
 	local values_items = {};
-	for index, preset in pairs(COLOR_PRESETS_ITEMS) do
+	for _, preset in pairs(COLOR_PRESETS_ITEMS) do
 		tinsert(values_items, { preset.CO:WrapTextInColorCode(preset.TX), preset.CO:GenerateHexadecimalColor() });
 	end
 	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_ITEMS, values_items});
 
 	local values_custom = {};
-	for index, preset in pairs(TRP3_Colors) do
+	for _, preset in pairs(TRP3_Colors) do
 		tinsert(values_custom, { Color(preset.CO):WrapTextInColorCode(preset.TX), preset.CO });
 	end
 	tinsert(values, {loc.UI_COLOR_BROWSER_PRESETS_CUSTOM, values_custom});
@@ -776,7 +778,7 @@ local function initColorBrowser()
 		end
 	end);
 
-	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(self, r, g, b)
+	TRP3_ColorBrowserColor:SetScript("OnColorSelect", function(_, r, g, b)
 		TRP3_ColorBrowserEditBox:ClearFocus();
 
 		TRP3_ColorBrowserSwatch:SetColorTexture(r, g, b);
@@ -915,7 +917,7 @@ local function initImageBrowser()
 	filteredImageBrowser();
 end
 
-local function showImageBrowser(callback, externalFrame)
+local function showImageBrowser(callback)
 	TRP3_ImageBrowser.callback = callback;
 end
 

@@ -1,19 +1,20 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- ---------------------------------------------------------------------------
--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.apache.org/licenses/LICENSE-2.0
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
+--- Total RP 3
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 local IMAGES = {
@@ -418,6 +419,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_EternalPalace",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_HordeWarCampaign",
 		width = 128,
 		height = 128
@@ -722,6 +728,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGICON-BLADESEDGEARENA",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGICON-Brewfest",
 		width = 256,
 		height = 256
 	}, {
@@ -1093,6 +1103,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-EternalPalace",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Everbloom",
 		width = 256,
 		height = 256
@@ -1202,6 +1216,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MawofSouls",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Mechagon",
 		width = 256,
 		height = 256
 	}, {
@@ -1555,6 +1573,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\PETBATTLES\\Weather-Sunlight",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\PETBATTLES\\Weather-ToxicFumes",
 		width = 512,
 		height = 128
 	},
@@ -2749,6 +2772,56 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-PH_BladesmanInowari",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_HunterAkana",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_TrackerOnu",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyExpressFlag",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyExpressFlag2",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyFlex",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyMK",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyPM1",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyPM2",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-PH_mooblyShe",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-Shadowmoon-DarktideRoost",
 		width = 512,
 		height = 256
@@ -3144,6 +3217,11 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-Kultiran",
+		width = 256,
+		height = 128,
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Lightforged",
 		width = 256,
 		height = 128,
@@ -3162,6 +3240,36 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-AlliedRace-Voidelf",
 		width = 256,
 		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-AlliedRace-Zandalari",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-mechagon-chargingstation-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-mechagon-drillrig-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-mechagon-flameturret-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-mechagon-jetpack-large",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-mechagon-reclamationdevice-large",
+		width = 512,
+		height = 256
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warboard-bc-BladesEdgeMountains",

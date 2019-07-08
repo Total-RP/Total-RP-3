@@ -1,0 +1,120 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	
+<!--
+	Total RP 3
+	Copyright 2019 Solanya (solanya@totalrp3.info) @Solanya_
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+
+	<!-- Register Notes panel -->
+	<Frame name="TRP3_RegisterNotesTemplate" virtual="true">
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+			<EdgeSize val="24"/>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="background" file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_RegisterNotesView">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="10" y="-20"/>
+					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Frames>
+					<Frame name="TRP3_RegisterNotesView" inherits="TRP3_FieldSetFrame">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="0" y="0"/>
+							<Anchor point="BOTTOMRIGHT" x="-3" y="0"/>
+						</Anchors>
+						<Frames>
+							<Frame name="TRP3_RegisterNotesViewPoint">
+								<Size x="10" y="10"/>
+								<Anchors>
+									<Anchor point="CENTER" x="0" y="0"/>
+								</Anchors>
+							</Frame>
+							<Frame name="TRP3_RegisterNotesViewProfile" inherits="TRP3_TextArea">
+								<Anchors>
+									<Anchor point="TOP" x="0" y="-25"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+									<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="TRP3_RegisterNotesViewPoint" x="0" y="5"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterNotesViewProfileTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="15" y="10"/>
+												<Anchor point="TOPRIGHT" x="-15" y="10"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterNotesViewProfileHelp" inherits="TRP3_HelpButton">
+										<Size x="14" y="14"/>
+										<Anchors>
+											<Anchor point="TOPRIGHT" x="0" y="13"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
+							<Frame name="TRP3_RegisterNotesViewAccount" inherits="TRP3_TextArea">
+								<Size x="235" y="0"/>
+								<Anchors>
+									<Anchor point="BOTTOM" x="0" y="10"/>
+									<Anchor point="LEFT" x="10" y="0"/>
+									<Anchor point="RIGHT" x="-10" y="0"/>
+									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterNotesViewPoint" x="0" y="-5"/>
+								</Anchors>
+								<Layers>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterNotesViewAccountTitle" text="[title]" inherits="GameFontNormalSmall" justifyH="LEFT">
+											<Anchors>
+												<Anchor point="TOPLEFT" x="15" y="10"/>
+												<Anchor point="TOPRIGHT" x="-15" y="10"/>
+											</Anchors>
+											<Color r="0.95" g="0.75" b="0.1"/>
+										</FontString>
+									</Layer>
+								</Layers>
+								<Frames>
+									<Button name="TRP3_RegisterNotesViewAccountHelp" inherits="TRP3_HelpButton">
+										<Size x="14" y="14"/>
+										<Anchors>
+											<Anchor point="TOPRIGHT" x="0" y="13"/>
+										</Anchors>
+									</Button>
+								</Frames>
+							</Frame>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+</Ui>

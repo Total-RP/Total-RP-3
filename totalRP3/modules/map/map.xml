@@ -5,7 +5,7 @@
 	<!--
 		Total RP 3
 		Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
-		Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+		Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -32,11 +32,8 @@
 		</Frames>
 	</Button>
 
-	<Frame name="TRP3_ScanLoaderFrame" hidden="true">
+	<Frame name="TRP3_ScanLoaderFrame" parent="UIParent" hidden="true">
 		<Size x="200" y="200"/>
-		<Anchors>
-			<Anchor point="CENTER" x="0" y="0"/>
-		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture alphaMode="ADD" file="Interface\UNITPOWERBARALT\PandarenTrainingLarge_Circular_Fill" alpha="0.5">

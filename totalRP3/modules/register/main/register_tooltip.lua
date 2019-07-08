@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Characters and companions tooltip
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Characters and companions tooltip
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -23,7 +24,7 @@ local _, TRP3_API = ...;
 -- imports
 local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
-local colorCode, hexaToNumber, getTempTable, releaseTempTable = Utils.color.colorCode, Utils.color.hexaToNumber, Utils.table.getTempTable, Utils.table.releaseTempTable;
+local getTempTable, releaseTempTable = Utils.table.getTempTable, Utils.table.releaseTempTable;
 local loc = TRP3_API.loc;
 local getUnitIDCurrentProfile, isIDIgnored = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.isIDIgnored;
 local getIgnoreReason = TRP3_API.register.getIgnoreReason;
@@ -39,9 +40,7 @@ local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_API.events;
-local GameTooltip, _G, pairs, wipe, tinsert, strtrim = GameTooltip, _G, pairs, wipe, tinsert, strtrim;
-local UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND = UnitName, UnitPVPName, UnitFactionGroup, UnitIsAFK, UnitIsDND;
-local UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass = UnitIsPVP, UnitRace, UnitLevel, GetGuildInfo, UnitIsPlayer, UnitClass;
+local GameTooltip, _G, pairs, tinsert, strtrim = GameTooltip, _G, pairs, tinsert, strtrim;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local IC_GUILD, OOC_GUILD;
@@ -51,11 +50,9 @@ local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
 local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local EMPTY = Globals.empty;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local lightenColorUntilItIsReadable = Utils.color.lightenColorUntilItIsReadable;
 local isPlayerIC;
 local unitIDIsFilteredForMatureContent;
 local crop = Utils.str.crop;
-local IsAltKeyDown = IsAltKeyDown;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
 -- ICONS
@@ -67,10 +64,8 @@ local HORDE_ICON = "|TInterface\\GROUPFRAME\\UI-Group-PVP-Horde:20:20|t";
 local PVP_ICON = "|TInterface\\GossipFrame\\BattleMasterGossipIcon:15:15|t";
 local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20:20|t";
 local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15:15|t";
-local BANNED_ICON = "|TInterface\\EncounterJournal\\UI-EJ-HeroicTextIcon:15:15|t";
 local GLANCE_ICON = "|TInterface\\MINIMAP\\TRACKING\\None:18:18|t";
 local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18|t";
-local PEEK_ICON_SIZE = 20;
 
 -- Config keys
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
@@ -78,7 +73,6 @@ local CONFIG_IN_CHARACTER_ONLY = "tooltip_in_character_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
 local CONFIG_CHARACT_COLOR = "tooltip_char_color";
 local CONFIG_CROP_TEXT = "tooltip_crop_text";
-local CONFIG_CHARACT_CONTRAST = "tooltip_char_contrast";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
 local CONFIG_CHARACT_ANCHOR = "tooltip_char_Anchor";
 local CONFIG_CHARACT_HIDE_ORIGINAL = "tooltip_char_HideOriginal";
@@ -106,12 +100,6 @@ local ANCHOR_TAB;
 
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
-
-local currentDate = date("*t");
-local seriousDay = currentDate.month == 4 and currentDate.day == 1
-local Rainbowify = TRP3_API.utils.Rainbowify;
-
-local isTrial = IsTrialAccount();
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
@@ -241,7 +229,7 @@ local function setDoubleLineFont(tooltip, lineIndex, fontSize)
 end
 
 local GetCursorPosition = GetCursorPosition;
-local function placeTooltipOnCursor(tooltip)
+local function placeTooltipOnCursor()
 	local effScale, x, y = ui_CharacterTT:GetEffectiveScale(), GetCursorPosition();
 	ui_CharacterTT:ClearAllPoints();
 	ui_CharacterTT:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", (x / effScale) + 10, (y / effScale) + 10);
@@ -413,10 +401,12 @@ end
 
 
 --- The complete character's tooltip writing sequence.
-local function writeTooltipForCharacter(targetID, originalTexts, targetType)
+local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
+	---@type Player
+	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
@@ -452,14 +442,8 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 
 
     -- Only use custom colors if the option is enabled and if we have one
-    if getConfigValue(CONFIG_CHARACT_COLOR) and info.characteristics and info.characteristics.CH then
-        local customColor = Utils.color.getColorFromHexadecimalCode(info.characteristics.CH);
-	
-		if getConfigValue(CONFIG_CHARACT_CONTRAST) then
-			customColor:LightenColorUntilItIsReadable();
-		end
-		
-		color = customColor or color;
+    if getConfigValue(CONFIG_CHARACT_COLOR) then
+		color = player:GetCustomColorForDisplay() or color;
     end
 
 
@@ -533,7 +517,7 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showRaceClass() then
-		local lineLeft = "";
+		local lineLeft;
 		local lineRight;
 		local race = UnitRace(targetType);
 		local class = localizedClass;
@@ -618,28 +602,23 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local name = UnitName(targetType .. "target");
 		local targetTargetID = getUnitID(targetType .. "target");
 		if targetTargetID then
-			local localizedClass, englishClass = UnitClass(targetType .. "target");
+			---@type Player
+			local targetTarget = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetTargetID)
+			local _, targetEnglishClass = UnitClass(targetType .. "target");
 			local targetInfo = getCharacterInfoTab(targetTargetID);
-			local color = englishClass and Utils.color.getClassColor(englishClass) or Utils.color.CreateColor(1, 1, 1, 1);
-			
-			-- Only use custom colors if the option is enabled and if we have one
-			if getConfigValue(CONFIG_CHARACT_COLOR) and targetInfo.characteristics and targetInfo.characteristics.CH then
-				local customColor = Utils.color.getColorFromHexadecimalCode(targetInfo.characteristics.CH);
-				
-				if getConfigValue(CONFIG_CHARACT_CONTRAST) then
-					customColor:LightenColorUntilItIsReadable();
-				end
-				
-				color = customColor or color;
+			local targetClassColor = targetEnglishClass and Utils.color.getClassColor(targetEnglishClass) or Utils.color.CreateColor(1, 1, 1, 1);
+
+			if getConfigValue(CONFIG_CHARACT_COLOR) then
+				targetClassColor = targetTarget:GetCustomColorForDisplay() or targetClassColor;
 			end
-			
+
 			name = getCompleteName(targetInfo.characteristics or {}, name, true);
 
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			name = color:WrapTextInColorCode(name);
+			name = targetClassColor:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -659,14 +638,14 @@ local function writeTooltipForCharacter(targetID, originalTexts, targetType)
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
-			if isTrial then
+			if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
 				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
 			end
-			if character.isTrial then
+			if player:IsOnATrialAccount() then
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end
@@ -730,24 +709,21 @@ local function getCompanionInfo(owner, companionID)
 end
 
 local function ownerIsIgnored(compagnonFullID)
-	local ownerID, companionID = companionIDToInfo(compagnonFullID);
+	local ownerID = companionIDToInfo(compagnonFullID);
 	return isIDIgnored(ownerID);
 end
 
-local function writeCompanionTooltip(companionFullID, originalTexts, targetType, targetMode)
+local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	local ownerID, companionID = companionIDToInfo(companionFullID);
 	local data = getCompanionInfo(ownerID, companionID);
 	local info = data.data or EMPTY;
 	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
-	local companionFamily = UnitCreatureType(targetType);
-
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
 		NAME  = 100
 	}
-
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- BLOCKED
@@ -777,10 +753,6 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
-	end
-
-	if seriousDay and getConfigValue("AF_STUFF") then
-		petName = Rainbowify(petName);
 	end
 
 
@@ -824,11 +796,11 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 
 				if getConfigValue(CONFIG_CHARACT_COLOR) and ownerInfo.characteristics.CH then
 					local customColor = Utils.color.getColorFromHexadecimalCode(ownerInfo.characteristics.CH);
-						
-						if getConfigValue(CONFIG_CHARACT_CONTRAST) then
+
+						if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 							customColor:LightenColorUntilItIsReadable();
 						end
-					
+
 					ownerColor = customColor or ownerColor;
 				end
 			end
@@ -838,11 +810,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			end
 		end
 
-		if seriousDay and getConfigValue("AF_STUFF") then
-			ownerFinalName = Rainbowify(ownerFinalName);
-		else
-			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
-		end
+		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -859,7 +827,7 @@ local function writeCompanionTooltip(companionFullID, originalTexts, targetType,
 			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitLevel(targetType) or "??", creatureType);
 		elseif targetMode == TYPE_BATTLE_PET then
 			local type = UnitBattlePetType(targetType);
-			local type = _G["BATTLE_PET_NAME_" .. type];
+			type = _G["BATTLE_PET_NAME_" .. type];
 			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitBattlePetLevel(targetType) or "??", type);
 		end
 
@@ -901,7 +869,7 @@ local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpel
 
 local function getMountProfile(ownerID, companionFullID)
 	if ownerID == Globals.player_id then
-		local profile, profileID = getCurrentMountProfile();
+		local profile, _ = getCurrentMountProfile();
 		return profile;
 	elseif companionFullID then
 		local profile = getCompanionRegisterProfile(companionFullID);
@@ -940,10 +908,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
-	end
-
-	if seriousDay and getConfigValue("AF_STUFF") then
-		mountCustomName = Rainbowify(mountCustomName);
 	end
 
 
@@ -1134,7 +1098,7 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
-	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function(...)
+	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
 		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
 		-- But there is a target on mouseover (maintaining ALT on spell buttons)
 		-- So we need to check that we have indeed a unit before displaying our tooltip.
@@ -1156,7 +1120,7 @@ local function onModuleInit()
 		show("mouseover", targetID, targetMode);
 	end);
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, _)
 		if not unitID or (ui_CharacterTT.target == unitID) then
 			show("mouseover", getUnitID("mouseover"));
 		end
@@ -1175,7 +1139,6 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_IN_CHARACTER_ONLY, false);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
 	registerConfigKey(CONFIG_CHARACT_COLOR, true);
-	registerConfigKey(CONFIG_CHARACT_CONTRAST, false);
 	registerConfigKey(CONFIG_CROP_TEXT, true);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
 	registerConfigKey(CONFIG_CHARACT_ANCHOR, "ANCHOR_TOPRIGHT");
@@ -1251,13 +1214,6 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_COLOR,
 				configKey = CONFIG_CHARACT_COLOR,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_TOOLTIP_CONTRAST,
-				configKey = CONFIG_CHARACT_CONTRAST,
-				help = loc.CO_TOOLTIP_CONTRAST_TT,
-				dependentOnOptions = {CONFIG_CHARACT_COLOR},
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1441,16 +1397,6 @@ local function onModuleInit()
 			},
 		}
 	}
-
-	if seriousDay then
-		registerConfigKey("AF_STUFF", true);
-		tinsert(CONFIG_STRUCTURE.elements, 2, {
-				inherit = "TRP3_ConfigCheck",
-				title = Rainbowify("Enable April Fools' joke"),
-				help = "Disable this option to remove this year's April Fools' joke.",
-				configKey = "AF_STUFF",
-			})
-	end
 
 	TRP3_API.ui.tooltip.CONFIG = CONFIG_STRUCTURE;
 

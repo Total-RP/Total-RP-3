@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Register players chat links module
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -25,9 +24,6 @@ local Ellyb = TRP3_API.Ellyb;
 -- Lua imports
 local assert = assert;
 
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
@@ -41,7 +37,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	--- Get a copy of the data for the link, using the information provided when using RegisterChatLinkModule:InsertLink
 	function RegisterPlayerChatLinksModule:GetLinkData(profileID, canBeImported)
-		assert(isType(profileID, "string", "profileID"));
+		Ellyb.Assertions.isType(profileID, "string", "profileID");
 
 		local profile = TRP3_API.register.getProfile(profileID);
 		local linkText = TRP3_API.register.getCompleteName(profile.characteristics, UNKNOWN, true);
@@ -93,7 +89,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- Open profile in directory button
 	local OpenProfileButton = RegisterPlayerChatLinksModule:NewActionButton("OPEN_REG_PROFILE", loc.CL_OPEN_PROFILE, "REG_P_O_Q", "REG_P_O_A");
 
-	function OpenProfileButton:OnAnswerCommandReceived(profileData, senderID)
+	function OpenProfileButton:OnAnswerCommandReceived(profileData)
 		local profile, profileID = profileData.profile, profileData.profileID;
 		profile.link = {};
 		TRP3_API.register.insertProfile(profileID, profile)
@@ -110,8 +106,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		return tooltipData.profile and tooltipData.profile.link and tooltipData.profile.link[TRP3_API.globals.player_id];
 	end
 
-	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData, sender)
-		local profile, profileID = profileData.profile, profileData.profileID;
+	function ImportRegisterPlayerProfileButton:OnAnswerCommandReceived(profileData)
+		local profile = profileData.profile;
 		local profileName = UNKNOWN;
 		if profile.characteristics and profile.characteristics.FN then
 			profileName = profile.characteristics.FN;

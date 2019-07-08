@@ -1,10 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Chat Link Tooltip Data
----
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -23,13 +21,6 @@
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
 
--- Lua imports
-local insert = table.insert;
-local assert = assert;
-
--- Ellyb imports
-local isType = Ellyb.Assertions.isType;
-
 ---@class ChatLinkTooltipLines
 local ChatLinkTooltipLines, _private = TRP3_API.Ellyb.Class("ChatLinkTooltipLines");
 
@@ -42,7 +33,7 @@ function ChatLinkTooltipLines:initialize(title)
 end
 
 function ChatLinkTooltipLines:SetTitle(title)
-	assert(isType(title, "string", "title"));
+	Ellyb.Assertions.isType(title, "string", "title");
 
 	_private[self].title = title;
 end
@@ -51,13 +42,13 @@ end
 ---@param optional color Color
 ---@param optional size number
 function ChatLinkTooltipLines:AddLine(text, color, size)
-	assert(isType(text, "string", "text"));
+	Ellyb.Assertions.isType(text, "string", "text");
 
 	if not color then
 		color = TRP3_API.Ellyb.ColorManager.WHITE;
 	end
 	local r, g, b = color:GetRGB();
-	insert(_private[self].lines, {
+	tinsert(_private[self].lines, {
 		text = text,
 		r = r,
 		g = g,
@@ -73,8 +64,8 @@ end
 ---@param colorLeft Color
 ---@param size number
 function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorLeft, colorRight, size)
-	assert(isType(textLeft, "string", "textLeft"));
-	assert(isType(textRight, "string", "textRight"));
+	Ellyb.Assertions.isType(textLeft, "string", "textLeft");
+	Ellyb.Assertions.isType(textRight, "string", "textRight");
 
 	if not colorLeft then
 		colorLeft = TRP3_API.Ellyb.ColorManager.WHITE;
@@ -85,7 +76,7 @@ function ChatLinkTooltipLines:AddDoubleLine(textLeft, textRight, colorLeft, colo
 
 	local rLeft, gLeft, bLeft = colorLeft:GetRGB();
 	local rRight, gRight, bRight = colorRight:GetRGB();
-	insert(_private[self].lines, {
+	tinsert(_private[self].lines, {
 		double = true,
 		textLeft = textLeft,
 		textRight = textRight,

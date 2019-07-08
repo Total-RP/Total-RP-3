@@ -583,7 +583,7 @@
 										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
 									    	<Size x="0" y="50"/>
 									    	<Anchors>
-												<Anchor point="TOPLEFT" x="10" y="-145"/>
+												<Anchor point="TOPLEFT" x="10" y="-185"/>
 												<Anchor point="RIGHT" x="-10" y="0"/>
 											</Anchors>
 											<Color r="0.95" g="0.95" b="0.95"/>
@@ -646,6 +646,12 @@
 											<Anchor point="RIGHT" x="0" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
 										</Anchors>
 									</EditBox>
+									<Frame name="TRP3_RegisterCharact_Dropdown_RelationshipField" inherits="TRP3_TitledDropdown">
+										<Anchors>
+											<Anchor point="TOPLEFT" x="-22" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterCharact_Edit_HeightField"/>
+											<Anchor point="RIGHT" x="-22" y="0" relativePoint="LEFT" relativeTo="TRP3_RegisterCharact_CharactPanel_Edit_RegisterPoint"/>
+										</Anchors>
+									</Frame>
 									<EditBox name="TRP3_RegisterCharact_Edit_ResidenceField" inherits="TRP3_TitledHelpEditBox">
 										<Size x="170" y="18"/>
 										<Anchors>

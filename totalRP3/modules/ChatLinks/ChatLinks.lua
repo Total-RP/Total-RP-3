@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
 --- Chat links
----    ---------------------------------------------------------------------------
----    Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+------------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----    Licensed under the Apache License, Version 2.0 (the "License");
----    you may not use this file except in compliance with the License.
----    You may obtain a copy of the License at
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----        http://www.apache.org/licenses/LICENSE-2.0
+---     http://www.apache.org/licenses/LICENSE-2.0
 ---
----    Unless required by applicable law or agreed to in writing, software
----    distributed under the License is distributed on an "AS IS" BASIS,
----    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----    See the License for the specific language governing permissions and
----    limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -37,8 +37,6 @@ TRP3_API.ChatLinks = ChatLinks;
 
 --region Ellyb imports
 local ColorManager = Ellyb.ColorManager;
-local isType = Ellyb.Assertions.isType;
-local isInstanceOf = Ellyb.Assertions.isInstanceOf;
 local ORANGE = ColorManager.ORANGE;
 --endregion
 
@@ -104,7 +102,7 @@ end
 
 ---@return ChatLinkModule
 function ChatLinks:GetModuleByID(moduleID)
-	assert(isType(moduleID, "string", "moduleID"));
+	Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 	return chatLinksModules[moduleID];
 end
 
@@ -112,7 +110,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	---@param link ChatLink
 	function ChatLinks.storeLink(link)
-		assert(isInstanceOf(link, "ChatLink", "link"));
+		Ellyb.Assertions.isInstanceOf(link, "ChatLink", "link");
 		local linkIdentifier = TRP3_API.Ellyb.Strings.generateUniqueName(sentLinks, link:GetIdentifier());
 		link:SetIdentifier(linkIdentifier);
 		sentLinks[linkIdentifier] = link;
@@ -128,15 +126,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h|r";
 	local function generateFormattedLink(text, playerName)
-		assert(isType(text, "string", "text"));
-		assert(isType(playerName, "string", "playerName"));
+		Ellyb.Assertions.isType(text, "string", "text");
+		Ellyb.Assertions.isType(playerName, "string", "playerName");
 
 		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", text, "]"));
 		return format(FORMATTED_LINK_FORMAT, playerName, text, formattedName);
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
-	local function lookForChatLinks(_, event, message, playerName, ...)
+	local function lookForChatLinks(_, _, message, playerName, ...)
 		message = gsub(message, ChatLinks.FIND_LINK_PATTERN, function(name)
 			return generateFormattedLink(name, playerName)
 		end)
@@ -226,7 +224,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
-	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(self, link, text, button)
+	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(_, link)
 		local linkType = link:sub(1, LINK_LENGTHS);
 		if linkType == LINK_CODE then
 			if IsShiftKeyDown() then
@@ -301,8 +299,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end);
 
 	function ChatLinks:OpenMakeImportablePrompt(linkType, callback)
-		assert(isType(linkType, "string", "linkType"));
-		assert(isType(callback, "function", "callback"));
+		Ellyb.Assertions.isType(linkType, "string", "linkType");
+		Ellyb.Assertions.isType(callback, "function", "callback");
 
 		TRP3_API.popup.showCustomYesNoPopup(loc.CL_MAKE_IMPORTABLE_SIMPLER:format(TRP3_API.Ellyb.ColorManager.ORANGE(linkType)),
 			loc.CL_MAKE_IMPORTABLE_BUTTON_TEXT,
@@ -316,7 +314,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	function ChatLinks:CheckVersions(callback)
-		assert(isType(callback, "function", "callback"));
+		Ellyb.Assertions.isType(callback, "function", "callback");
 
 		if TRP3_RefTooltip.itemData.v ~= TRP3_API.globals.version then
 			TRP3_API.popup.showConfirmPopup(TRP3_API.loc.CL_VERSIONS_DIFFER, callback);
@@ -326,7 +324,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	end
 
 	function ChatLinks:HasModule(moduleID)
-		assert(isType(moduleID, "string", "moduleID"));
+		Ellyb.Assertions.isType(moduleID, "string", "moduleID");
 		return chatLinksModules[moduleID] ~= nil;
 	end
 end)

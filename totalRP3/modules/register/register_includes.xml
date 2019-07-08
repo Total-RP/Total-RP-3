@@ -21,20 +21,22 @@
 	<Include file="characters\register_ui_characteristics.xml" />
 	<Include file="characters\register_ui_about.xml" />
 	<Include file="characters\register_ui_misc.xml" />
+	<Include file="characters\register_ui_notes.xml" />
 	<Include file="main\register_ui_glance.xml" />
 	<Include file="main\register_ui_list.xml" />
 	<Include file="characters\register_ui_main.xml" />
-	
+
 	<Script file="characters\register_main.lua" />
 	<Script file="characters\register_ignore.lua" />
 	<Script file="characters\register_characteristics.lua" />
 	<Script file="characters\register_about.lua" />
 	<Script file="characters\register_misc.lua" />
+	<Script file="characters\register_notes.lua" />
 
 	<Include file="characters\PlayerMapScan\PlayerMapScan.xml" />
-	
+
 	<Include file="companions\register_ui_companions_main.xml" />
-	
+
 	<Script file="main\register_exchange.lua" />
 	<Script file="main\register_tooltip.lua" />
 	<Script file="main\register_list.lua" />
@@ -43,7 +45,8 @@
 	<Script file="main\AtFirstGlanceChatLinksModule.lua" />
 
 	<Script file="main\register_glance.lua" />
-	
+
+	<Script file="msp\Fields.lua" />
 	<Script file="msp\register_msp.lua" />
 
 	<Frame name="TRP3_CursorFrame" parent="UIParent" hidden="true">

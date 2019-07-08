@@ -1,9 +1,8 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- This file does a couple of checks to make sure the add-on is being loaded properly in the expected environment.
 --- ---------------------------------------------------------------------------
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -23,6 +22,7 @@ local _, TRP3_API = ...;
 
 --region Build version check
 if TRP3_API.BUILD_NUMBER == nil then
+	-- luacheck: ignore 311
 	TRP3_API = nil -- Force API reference to nil. This will break most of the add-on so it stops loading.
 	error([[Missing critical Total RP 3 files.
 

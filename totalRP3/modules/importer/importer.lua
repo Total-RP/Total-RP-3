@@ -1,20 +1,20 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- TRP2 / MRP / XRP profiles importer
--- ---------------------------------------------------------------------------
--- Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
---
--- Licensed under the Apache License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.apache.org/licenses/LICENSE-2.0
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
+--- Total RP 3
+--- TRP2 / MRP / XRP profiles importer
+--- ---------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -152,9 +152,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		-- it will be displayed as "will be imported". If not, it will be greyed out.
 		for key, value in pairs(importableData) do
 			if profile.info[key] then
-				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREEN(value)"\n";
+				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREEN(value) .. "\n";
 			else
-				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREY(value)"\n";
+				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREY(value) .. "\n";
 			end
 		end
 

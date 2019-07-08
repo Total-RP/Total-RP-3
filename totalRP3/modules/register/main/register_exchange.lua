@@ -1,23 +1,22 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Character data exchange
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Character data exchange
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type AddOn_TotalRP3
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- TRP3 imports
@@ -28,7 +27,6 @@ local Comm = AddOn_TotalRP3.Communications;
 local loc = TRP3_API.loc;
 local log = Utils.log.log;
 local Events = TRP3_API.events;
-local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
 local getCharacterExchangeData = TRP3_API.dashboard.getCharacterExchangeData;
 local registerInfoTypes = TRP3_API.register.registerInfoTypes;
 local isIDIgnored, shouldUpdateInformation = TRP3_API.register.isIDIgnored, TRP3_API.register.shouldUpdateInformation;
@@ -46,14 +44,12 @@ local getCurrentMountQueryLine = TRP3_API.companions.player.getCurrentMountQuery
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local msp = _G.msp;
 
 
 -- WoW imports
-local UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName = UnitName, UnitIsPlayer, CheckInteractDistance, UnitFullName;
-local tinsert, time, type, pairs, tonumber = tinsert, GetTime, type, pairs, tonumber;
+local time, type, pairs, tonumber = GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
 
 -- Character name for profile opening command
@@ -395,7 +391,7 @@ local function onMouseOverCharacter(unitID)
 end
 
 local function onMouseOverCompanion(companionFullID)
-	local ownerID, companionID = companionIDToInfo(companionFullID);
+	local ownerID = companionIDToInfo(companionFullID);
 	if isUnitIDKnown(ownerID) then
 		sendQuery(ownerID);
 	end
@@ -439,7 +435,7 @@ function TRP3_API.register.inits.dataExchangeInit()
 		TRP3_Register = {};
 	end
 
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID)
+	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID)
 		if unitID == Globals.player_id then
 			checkPlayerDataWeight();
 		end
@@ -518,8 +514,7 @@ TRP3_API.slash.registerCommand({
 		end
 
 		sendQuery(characterToOpen);
-		local request = {"TT", "HH", "AG", "AE", "HB", "DE", "HI", "AH", "AW", "MO", "NH", "IC", "CO"};
-		msp:Request(characterToOpen, request);
+		msp:Request(characterToOpen, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();
@@ -538,7 +533,7 @@ TRP3_API.slash.registerCommand({
 })
 
 -- Event for the "/trp3 open" command
-Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, profileID, dataType)
+Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
 	if unitID == characterToOpen and (not dataType or dataType == "character") then
 		TRP3_API.navigation.openMainFrame();
 		TRP3_API.register.openPageByUnitID(characterToOpen);

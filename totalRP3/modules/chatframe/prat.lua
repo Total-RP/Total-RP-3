@@ -2,7 +2,7 @@
 --- Total RP 3
 --- Prat plugin
 --- ---------------------------------------------------------------------------
---- Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ local function onStart()
 		-- Create Prat module
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 		local pratModule = Prat:NewModule(PRAT_MODULE);
-	
+
 		-- Import Total RP 3 functions
 		local Globals 							= TRP3_API.globals;
 		local unitInfoToID                      = TRP3_API.utils.str.unitInfoToID; -- Get "Player-Realm" unit ID
@@ -51,7 +51,7 @@ local function onStart()
 		local disabledByOOC = TRP3_API.chat.disabledByOOC;
 		-- WoW imports
 		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
-	
+
 
 		Prat:SetModuleOptions(pratModule, {
 			name = "Total RP 3",
@@ -73,7 +73,7 @@ local function onStart()
 		});
 
 		-- Runs before Prat add the message to the chat frames
-		function pratModule:Prat_PreAddMessage(arg, message, frame, event)
+		function pratModule:Prat_PreAddMessage(_, message, _, event)
 
 			if disabledByOOC() then return end;
 
@@ -87,7 +87,7 @@ local function onStart()
 
 			-- Retrieve all the player info from the message GUID
 			local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
-		
+
 			-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
 			local unitID = unitInfoToID(name, realm);
 			local characterName = unitID;

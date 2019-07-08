@@ -1,25 +1,23 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Mary Sue Protocol implementation
----	---------------------------------------------------------------------------
----	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2018 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --- Copyright / © 2018 Justin Snelgrove
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
-
 
 local function onStart()
 	local loc = TRP3_API.loc;
@@ -31,21 +29,15 @@ local function onStart()
 		error(("Conflict with another MSP addon: %s"):format(msp_RPAddOn));
 	end
 
-	local Globals, Utils, Comm, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.communication, TRP3_API.events;
-	local getConfigValue, registerConfigKey, registerConfigHandler, setConfigValue = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler, TRP3_API.configuration.setValue;
-	local tsize = Utils.table.size;
-	local log = Utils.log.log;
-	local getPlayerCharacter = TRP3_API.profile.getPlayerCharacter;
+	local Globals, Utils, Events = TRP3_API.globals, TRP3_API.utils, TRP3_API.events;
 	local get, getCompleteName = TRP3_API.profile.getData, TRP3_API.register.getCompleteName;
 	local isIgnored = TRP3_API.register.isIDIgnored;
-	local onInformationReceived;
-	local CONFIG_T3_ONLY = "msp_t3";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- LibMSP support code
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	msp_RPAddOn = "Total RP 3";
-	msp:AddFieldsToTooltip({'PX', 'RC', 'IC', 'CO'});
+	msp:AddFieldsToTooltip(AddOn_TotalRP3.MSP.TOOLTIP_FIELDS);
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Update
@@ -67,13 +59,13 @@ local function onStart()
 		else
 			msp.my['FC'] = "1";
 		end
+
 	end
 
 	local function removeTextTags(text)
 		if text then
 			text = Utils.str.convertTextTags(text);
-			text = text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
-			return text:gsub("%{.-%}", "");
+			return text:gsub("%{link%*(.-)%*(.-)%}","[%2]( %1 )"); --cleanup links instead of outright removing the tag
 		end
 	end
 
@@ -82,22 +74,24 @@ local function onStart()
 		msp.my['DE'] = nil;
 		msp.my['HI'] = nil;
 
-		if getConfigValue(CONFIG_T3_ONLY) or dataTab.TE == 3 then
+		if dataTab.TE == 3 then
 			msp.my['HI'] = removeTextTags(dataTab.T3.HI.TX);
 			local PH = removeTextTags(dataTab.T3.PH.TX) or "";
 			local PS = removeTextTags(dataTab.T3.PS.TX) or "";
-			msp.my['DE'] = ("#%s\n\n%s\n\n---\n\n#%s\n\n%s"):format(loc.REG_PLAYER_PHYSICAL, PH, loc.REG_PLAYER_PSYCHO, PS);
+			msp.my['DE'] = ("#Physical Description\n\n%s\n\n---\n\n#Personality traits\n\n%s"):format(PH, PS);
 		elseif dataTab.TE == 1 then
 			msp.my['DE'] = removeTextTags(dataTab.T1.TX);
 		elseif dataTab.TE == 2 then
 			local t = {};
-			for i, data in ipairs(dataTab.T2) do
+			for _, data in ipairs(dataTab.T2) do
 				if data.TX then
 					t[#t + 1] = removeTextTags(data.TX);
 				end
 			end
 			msp.my['DE'] = table.concat(t, "\n\n---\n\n");
 		end
+
+		msp.my['MU'] = dataTab.MU and tostring(dataTab.MU) or nil;
 	end
 
 	local function updateCharacteristicsData()
@@ -127,6 +121,7 @@ local function onStart()
 		msp.my['HH'] = dataTab.RE;
 		msp.my['HB'] = dataTab.BP;
 		msp.my['NT'] = dataTab.FT;
+		msp.my['RS'] = tostring(dataTab.RS or AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS.UNKNOWN);
 		-- Clear fields that may or may not exist in the updated profile.
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
@@ -142,6 +137,8 @@ local function onStart()
 				end
 			end
 		end
+
+		msp.my['PS'] = AddOn_TotalRP3.MSP.SerializeField("PS", dataTab.PS);
 	end
 
 	local function updateMiscData()
@@ -176,11 +173,6 @@ local function onStart()
 		msp:Update();
 	end
 
-	local function onAboutChanged()
-		updateAboutData();
-		msp:Update();
-	end
-
 	local function onCharacterChanged()
 		updateCharacterData();
 		msp:Update();
@@ -193,14 +185,14 @@ local function onStart()
 	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
-	local getUnitIDProfile, createUnitIDProfile = TRP3_API.register.getUnitIDProfile, TRP3_API.register.createUnitIDProfile;
+	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 	local hasProfile, saveCurrentProfileID = TRP3_API.register.hasProfile, TRP3_API.register.saveCurrentProfileID;
 	local emptyToNil, unitIDToInfo = Utils.str.emptyToNil, Utils.str.unitIDToInfo;
 
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI",
+		"HI", "TR", "MU", "RS", "PS"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -216,10 +208,12 @@ local function onStart()
 		NA = "FN",
 		PX = "TI",
 		IC = "IC",
+		RS = "RS",
+		PS = "PS",
 	}
 
 	local CHARACTER_FIELDS = {
-		FR = true, FC = true, CU = true, VA = true, CO = true,
+		FR = true, FC = true, CU = true, VA = true, CO = true, TR = true,
 	}
 
 	local MISC_FIELDS = {
@@ -229,6 +223,7 @@ local function onStart()
 	local ABOUT_FIELDS = {
 		HI = "HI",
 		DE = "PH",
+		MU = "MU",
 	}
 
 	local function getProfileForSender(senderID)
@@ -284,7 +279,7 @@ local function onStart()
 			end
 
 			local color = false;
-			for i, field in ipairs(SUPPORTED_FIELDS) do
+			for _, field in ipairs(SUPPORTED_FIELDS) do
 				if profile.mspver[field] ~= msp.char[senderID].ver[field]
 				or msp.ttAll[field] and profile.mspver.TT ~= msp.char[senderID].ver.TT
 				then
@@ -331,30 +326,46 @@ local function onStart()
 						if field == "AH" and value and tonumber(value) then
 							value = value .. " cm";
 						end
+						if field == "RS" and value then
+							value = tonumber(value);
+						end
 						profile.characteristics[CHARACTERISTICS_FIELDS[field]] = value;
 						-- Hack for spaced name tolerated in MRP
 						if field == "NA" and not profile.characteristics[CHARACTERISTICS_FIELDS[field]] then
 							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = unitIDToInfo(senderID);
 						end
+						-- Machine-formatted psychological traits.
+						if field == "PS" and value then
+							profile.characteristics[CHARACTERISTICS_FIELDS[field]] = AddOn_TotalRP3.MSP.DeserializeField(field, value);
+						end
 					elseif ABOUT_FIELDS[field] then
-						local old;
-						if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
-							old = profile.about.T3[ABOUT_FIELDS[field]].TX;
-						end
-						profile.about.BK = 5;
-						profile.about.TE = 3;
-						if not profile.about.T3 then
-							profile.about.T3 = {};
-						end
-						if not profile.about.T3.HI then
-							profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
-						end
-						if not profile.about.T3.PH then
-							profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
-						end
-						profile.about.T3[ABOUT_FIELDS[field]].TX = value;
-						if profile.about.read ~= false then
-							profile.about.read = not value or value == old;
+						if field == "MU" then
+							local fileID = tonumber(value);
+							if not fileID and type(value) == "string" then
+								fileID = Utils.music.convertPathToID(value);
+							end
+
+							profile.about.MU = fileID;
+						else
+							local old;
+							if profile.about.T3 and profile.about.T3[ABOUT_FIELDS[field]] then
+								old = profile.about.T3[ABOUT_FIELDS[field]].TX;
+							end
+							profile.about.BK = 5;
+							profile.about.TE = 3;
+							if not profile.about.T3 then
+								profile.about.T3 = {};
+							end
+							if not profile.about.T3.HI then
+								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+							end
+							if not profile.about.T3.PH then
+								profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+							end
+							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
+							if profile.about.read ~= false then
+								profile.about.read = not value or value == old;
+							end
 						end
 					elseif CHARACTER_FIELDS[field] then
 						if field == "FC" then
@@ -377,8 +388,10 @@ local function onStart()
 								character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
 							else
 								character.client = UNKNOWN;
-								character.clientVerion = "0";
+								character.clientVersion = "0";
 							end
+						elseif field == "TR" then
+							character.isTrial = tonumber(value);
 						end
 					elseif MISC_FIELDS[field] then
 						if field == "PE" and value then
@@ -495,8 +508,6 @@ local function onStart()
 		end
 	end);
 
-	local REQUEST_TAB = {"TT", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE", "HI"};
-
 	local function requestInformation(targetID, targetMode)
 		if not targetID then return end
 		local data = msp.char[targetID].field;
@@ -505,14 +516,14 @@ local function onStart()
 		and not isIgnored(targetID)
 		and data.VA:sub(1, 8) ~= "TotalRP3"
 		then
-			msp:Request(targetID, REQUEST_TAB);
+			msp:Request(targetID, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		end
 	end
 
 	TRP3_API.r.sendMSPQuery = function(name)
 		-- This function has never had the checks that the above does. Whether
 		-- it should or not should be revisited in the future.
-		msp:Request(name, REQUEST_TAB);
+		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -520,9 +531,10 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	msp.my['VA'] = "TotalRP3/" .. Globals.version_display;
+	msp.my['TR'] = tostring(AddOn_TotalRP3.Player.GetCurrentUser():GetAccountType());
 
 	-- Init others vernum
-	for profileID, profile in pairs(TRP3_API.register.getProfileList()) do
+	for _, profile in pairs(TRP3_API.register.getProfileList()) do
 		if profile.msp and profile.mspver and profile.link then
 			for fieldID, version in pairs(profile.mspver) do
 				for ownerID, _ in pairs(profile.link) do
@@ -531,20 +543,6 @@ local function onStart()
 			end
 		end
 	end
-
-	-- Build configuration page
-	registerConfigKey(CONFIG_T3_ONLY, false);
-	registerConfigHandler(CONFIG_T3_ONLY, onAboutChanged);
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc.CO_MSP,
-	});
-	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_MSP_T3,
-		help = loc.CO_MSP_T3_TT,
-		configKey = CONFIG_T3_ONLY,
-	});
 
 	-- Initial update
 	updateCharacteristicsData();
@@ -560,13 +558,6 @@ local function onStart()
 			end
 			if not dataType or dataType == "character" then
 				onCharacterChanged();
-			end
-		end
-	end);
-	Events.listenToEvent(Events.REGISTER_PROFILE_DELETED, function(profileID, mspOwners)
-		if mspOwners then
-			for _, ownerID in pairs(mspOwners) do
-				msp.char[ownerID] = nil;
 			end
 		end
 	end);

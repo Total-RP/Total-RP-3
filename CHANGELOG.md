@@ -1,59 +1,82 @@
-# Changelog version 1.5.3
+# Changelog version 1.6.2
 
 ## Added
 
-- Added 562 icons, 51 images and 56 musics to Total RP 3's resources browsers for patch 8.1.
+- Added 328 icons and 20 images from patch 8.2.
+- Added an indicator to the music browser when the default name of a music differs from the one matching the current filter.
 
 ## Fixed
 
-- Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
+- Fixed issues in the music data transfer between TRP and MRP.
+- Fixed an issue with duplicated lines on the map scan button tooltip.
+- Further speculative fixes to the map issue on login.
 
-# Changelog version 1.5.2
+# Changelog version 1.6.1.3
 
-- Fixed invalid game version check on login. We cannot properly check the game build number in the current 8.1 build.
+- Fixed another issue with the music patch. I promise we're done with bugfixes for now (;-;)
 
-# Changelog version 1.5.1
+# Changelog version 1.6.1.2
+
+- Fixed an issue with the music patch when the player logged in before updating the addon.
+
+# Changelog version 1.6.1.1
+
+- Fixed a potential error on login related to the map.
+
+# Changelog version 1.6.1
+
+## Music system rework
+
+- Technical changes in patch 8.2 required us to change how music is handled by the addon. **This means the update is required for musics to work.** This change should be seamless and backwards compatible (music themes from profiles coming from outdated versions should still play fine).
+- This allowed for the addition of musics previously unavailable (looking at you, void elf musics).
+- The duration of all musics should now be visible in the music browser line tooltips.
+
+## Changed
+
+- Settings to increase color contrast in tooltips and chat have been consolidated in a single setting for both which can be found in the General settings. It also applies in more places, like the map scan tooltips.
 
 ## Fixed
 
-- Fixed an issue that would make users still send their map location when the option to not send it when your roleplaying status is set to "Out of character" was enabled and they were indeed "Out of character".
-- Fixed an issue that would prevent the `/trp3 roll` command to work properly when in a group or a raid.
-- Other players' characters information without a profile attached to them are now correctly purged on startup to avoid storing them indefinitely.
-- Profiles received from links are now correctly applied a "Last seen" timestamp so they are correctly treated by the automatic directory purge instead of being always deleted because of the lack of timestamp.
-- The add-on will now warn you with a different message than the regular one if you are several versions behind and are at risk of issues because of that.
-- The advanced settings would not get the user selected localization applied to their texts.
-- Fixed issues related to upcoming API changes in patch 8.1.
+- The anchor for the map scan button can now properly be set.
+- Fixed a switch in Headers/Paragraph dropdown titles
+- Fixed an error message that could be caused by other addons misusing official API functions.
 
-# Changelog version 1.5.0
+# Changelog version 1.6.0
 
-## Re-implemented map scans feature
+## Personal notes
 
-You can now once again scan for Total RP 3 users on the world map.
+You can now write personal notes inside the addon !
 
-![Location of players in a different War Mode](https://totalrp3.info/documentation/changelogs/1_5_0_location_war_mode.PNG)
+These notes can either be written on your own profile (if you wish to take generic notes for your character), or on someone else's profile (the top field being tied to your current profile, the bottom field being common to all your profiles). These notes are obviously private, nobody else but you can see them.
 
-- Added support for War Mode. Players that are not in the same War Mode as you will not appear on the world map by default.
-- In the Location settings (Register settings tab) you can enable the option to show people who are in a different War Mode, they will appear greyed out and semi-transparent on the world map, and will be grouped separately when displayed in the tooltip.
-- You can opt in to not be visible to other players while you are in War Mode.
-- Map scans now differentiate between levels of a same zone (like Dalaran), and setting your home to a specific level of map will now correctly show on that level when users click on the home button on your profile.
+![The new personal notes tab](https://i.imgur.com/Q2cW18F.jpg)
 
-Please note: Only players with Total RP 3 version 1.5.0 and above will show up. Total RP 3: Extended's scans will be updated to work with this new system.
+To access personal notes, simply click on the new Notes button on the target frame, or open a profile and click on the Notes tab.
 
-## Profile reporting
+![The target frame button to access notes](https://i.imgur.com/POCSb9V.jpg)
 
-Since patch 8.0.1 you are able to report profiles that violate Blizzard's Terms of Service by opening a support ticket.
+The register also received a checkbox to only display profiles on which you wrote notes.
 
-- Following Blizzard's guidance, you can now report a player who has a profile that goes against the Code of Conduct via Total RP 3's target frame. A standard game report window will open pre-filled with information about the player you are reporting.
-
-![The target frame report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_target_button.png)
-
-![Prefilled message when reporting a player](https://totalrp3.info/documentation/changelogs/1_5_0_report_window.PNG)
-
-- Since it is not technically possible to report a player you cannot target, we have added a button to the profile page when opening a profile that opens up a link to a Blizzard support page on how to report add-on text.
-
-![The profile page report button](https://totalrp3.info/documentation/changelogs/1_5_0_report_profile_button.PNG)
+![The register new notes filter checkbox](https://i.imgur.com/USuXjiS.jpg)
 
 ## Added
 
-- Added a workaround against a current game bug that will always reset the language currently selected after a loading screen. You can disable this workaround in case of issues in the advanced settings.
-- Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all other channels you have joined down in the list. You can disable this workaround in case of issues in the advanced settings.
+- Added HTML support for About templates 2 and 3. You can now use the full array of HTML tags while using those templates to format their fields, using the toolbar which is now visible for all templates.
+
+![A template 2 profile using HTML](https://i.imgur.com/cfyZXGo.jpg)
+
+- Added compatibility with other RP addons for personality traits and HTML tags.
+
+## Changed
+
+- The "Report profile" buttons will now both link to the [support website](https://battle.net/support/help/product/wow/197/1501/solution), as the in-game report feature previously added was an invalid method to report addon abuse. The popup will still show a timestamp for the profile's reception, which you can provide to Blizzard CS to help them track the offense.
+
+## Fixed
+
+- Fixed an error which could prevent the addon from loading.
+- Fixed a compatibility issue for template 3 if the addon locale was not English.
+
+## Removed
+
+- Removed auto-highlighting of the full text when entering focus of a text area (About fields, Currently, OOC Info...)
+- Removed April Fools' code (including the forgotten rainbow companion names).

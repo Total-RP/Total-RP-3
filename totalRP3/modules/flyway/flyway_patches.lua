@@ -1,25 +1,26 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Schema migration tool : Patches
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Schema migration tool : Patches
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 TRP3_API.flyway.patches = {};
 
-local Globals = TRP3_API.globals;
+local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 local pairs, wipe = pairs, wipe;
 
 -- Delete notification system
@@ -111,4 +112,33 @@ TRP3_API.flyway.patches["9"] = function()
 			TRP3_API.register.resetGlanceBar();
 		end
 	end)
+end
+
+TRP3_API.flyway.patches["10"] = function()
+	-- Migrate contrast settings to the new common one
+	if TRP3_Configuration then
+		if TRP3_Configuration["chat_color_contrast"] or TRP3_Configuration["tooltip_char_contrast"] then
+			TRP3_Configuration["increase_color_contrast"] = true;
+		end
+
+		TRP3_Configuration["chat_color_contrast"] = nil;
+		TRP3_Configuration["tooltip_char_contrast"] = nil;
+	end
+
+	-- Migrate music paths to music IDs
+	if TRP3_Profiles then
+		for _, profile in pairs(TRP3_Profiles) do
+			if profile.player and profile.player.about and profile.player.about.MU and type(profile.player.about.MU) == "string" then
+				profile.player.about.MU = Utils.music.convertPathToID(profile.player.about.MU);
+			end
+		end
+	end
+
+	if TRP3_Register and TRP3_Register.profiles then
+		for _, profile in pairs(TRP3_Register.profiles) do
+			if profile.about and profile.about.MU and type(profile.about.MU) == "string" then
+				profile.about.MU = Utils.music.convertPathToID(profile.about.MU) or tonumber(profile.about.MU);
+			end
+		end
+	end
 end

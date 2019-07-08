@@ -6,21 +6,20 @@
 --- The goal here is to have IDE auto-completion by directly using the table and
 --- accessing its indexes in the code, but actually having the meta table call
 --- the localization functions on runtime to get the localized version of the text.
+--- ---------------------------------------------------------------------------
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
----	---------------------------------------------------------------------------
----	Copyright 2017 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
 ---
----	Licensed under the Apache License, Version 2.0 (the "License");
----	you may not use this file except in compliance with the License.
----	You may obtain a copy of the License at
+--- 	http://www.apache.org/licenses/LICENSE-2.0
 ---
----		http://www.apache.org/licenses/LICENSE-2.0
----
----	Unless required by applicable law or agreed to in writing, software
----	distributed under the License is distributed on an "AS IS" BASIS,
----	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
----	See the License for the specific language governing permissions and
----	limitations under the License.
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 ---@type TRP3_API
@@ -605,8 +604,6 @@ Possible status:
 	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
 	CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
 	CO_MSP = "Mary Sue Protocol",
-	CO_MSP_T3 = "Use template 3 only",
-	CO_MSP_T3_TT = "Even if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
 	CO_WIM = "|cffff9900Whisper channels are disabled.",
 	CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purposes",
 	CO_LOCATION = "Location settings",
@@ -715,13 +712,6 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_IMPORT_EMPTY = "No importable profile",
 	PR_PROFILE_MANAGEMENT_TITLE = "Profile management",
 	PR_EXPORT_IMPORT_TITLE = "Export/import profile",
-	PR_EXPORT_WARNING_TITLE = "Warning:",
-	PR_EXPORT_WARNING_WINDOWS = [[Please note that some advanced text editing tools like Microsoft Word or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters, like Notepad.]],
-	PR_EXPORT_WARNING_MAC = [[Please note that some advanced text editing tools like Text Edit or Discord will reformat special characters like quotes, altering the content of the data.
-
-If you are planning on copying the text below inside a document, please use simpler text editing tools that do not automatically change characters (in Text Edit go to Format > Make Plain Text before pasting)]],
 	PR_EXPORT_IMPORT_HELP = [[You can export and import profiles using the options in the dropdown menu.
 
 Use the |cffffff00Export profile|r option to generate a chunk of text containing the profile serialized data. You can copy the text using Control-C (or Command-C on a Mac) and paste it somewhere else as a backup. (|cffff0000Please note that some advanced text editing tools like Microsoft Word will reformat special characters like quotes, altering the data. Use simpler text editing tools like Notepad.|r)
@@ -791,6 +781,7 @@ This will works:|cff00ff00
 	UI_ICON_SELECT = "Select icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
+	UI_MUSIC_DURATION = "Duration",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
 	UI_COLOR_BROWSER_PRESETS = "Presets",
@@ -1156,12 +1147,10 @@ People will be able to copy and use the content of the link.]],
 	CO_UI_RELOAD_WARNING = [[The interface needs to be reloaded in order for the changes to be applied.
 
 Would you like to reload the interface now?]],
-	CL_TOOLTIP = "Create a chat link",
 	TT_ELVUI_SKIN = "ElvUI skin",
 	TT_ELVUI_SKIN_ENABLE_TOOLTIPS = "Skin tooltips",
 	TT_ELVUI_SKIN_ENABLE_TARGET_FRAME = "Skin target frame",
 	MAP_BUTTON_SUBTITLE_80_DISABLED = "Scans temporarily unavailable due to 8.0 changes",
-	CL_TOOLTIP = "Create a chat link",
 	CO_ADVANCED_SETTINGS = "Advanced settings",
 	CO_ADVANCED_SETTINGS_MENU_NAME = "Advanced",
 	CO_ADVANCED_SETTINGS_POPUP = [[You have just modified an advanced setting.
@@ -1200,33 +1189,85 @@ Please keep in mind that changing those settings might alter your experience wit
 
 If you wish to report %s's profile and you cannot target them you will need to open a ticket with Blizzard's support using the link bellow.]],
 	NEW_VERSION_BEHIND = "You are currently %s versions behind and are missing on many bug fixes and new features. Other players might not be able to see your profile correctly. Please consider updating the add-on.",
-
+	REG_PLAYER_RELATIONSHIP_STATUS_UNKNOWN = "Do not show",
+	REG_PLAYER_RELATIONSHIP_STATUS_SINGLE = "Single",
+	REG_PLAYER_RELATIONSHIP_STATUS_TAKEN = "Taken",
+	REG_PLAYER_RELATIONSHIP_STATUS_MARRIED = "Married",
+	REG_PLAYER_RELATIONSHIP_STATUS_DIVORCED = "Divorced",
+	REG_PLAYER_RELATIONSHIP_STATUS_WIDOWED = "Widowed",
+	REG_PLAYER_RELATIONSHIP_STATUS = "Relationship status",
+	REG_PLAYER_RELATIONSHIP_STATUS_TT = [[Indicate the relationship status of your character. Select "Do not show" if you wish to keep that information hidden.]],
+	REG_NOTES_PROFILE = "Notes",
+	REG_NOTES_PROFILE_TT = "Open the notes window for the target character.",
+	REG_PLAYER_NOTES = "Notes",
+	REG_PLAYER_NOTES_PROFILE = "Notes from %s",
+	REG_PLAYER_NOTES_PROFILE_NONAME = "Profile notes",
+	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
+	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
+	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
+	REG_REPORT_PLAYER_OPEN_URL_160 = [[If you wish to report %s's profile, you will need to open a ticket with Blizzard's support using the link below.]],
+	REG_LIST_NOTESONLY = "Has notes only",
 	---@language Markdown
-	WHATS_NEW_22 = [[
-# Changelog version 1.5.0
+	WHATS_NEW_23 = [[
+# Changelog version 1.6.0
 
-## Re-implemented map scans feature
+## Personal notes
 
-You can now once again scan for Total RP 3 users on the world map.
+You can now write personal notes inside the addon !
 
-- Added support for War Mode. Players that are not in the same War Mode as you will not appear on the world map by default.
-- In the Location settings (Register settings tab) you can enable the option to show people who are in a different War Mode, they will appear greyed out and semi-transparent on the world map, and will be grouped separately when displayed in the tooltip.
-- You can opt in to not be visible to other players while you are in War Mode.
-- Map scans now differentiate between levels of a same zone (like Dalaran), and setting your home to a specific level of map will now correctly show on that level when users click on the home button on your profile.
+These notes can either be written on your own profile (if you wish to take generic notes for your character), or on someone else's profile (the top field being tied to your current profile, the bottom field being common to all your profiles). These notes are obviously private, nobody else but you can see them.
 
-Please note: Only players with Total RP 3 version 1.5.0 and above will show up. Total RP 3: Extended's scans will be updated to working with this new system.
+{img:Interface\AddOns\totalRP3\resources\160-1.tga:480:480}
 
-## Profile reporting
+To access personal notes, simply click on the new Notes button on the target frame, or open a profile and click on the Notes tab.
 
-Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms of Services by opening a support ticket.
+{img:Interface\AddOns\totalRP3\resources\160-2.tga:240:120}
 
-- Following Blizzard's guidance, you can now report a player who have a profile that goes against the [Code of Conduct](https://battle.net/support/article/42673) via a new button on Total RP 3's target frame. A standard game report window will open pre-filled with information about the player you are reporting.
-- Since it is not technically possible to report a player you cannot target, we have added a button to the profile page when opening a profile that opens up a [link to a Blizzard support page on how to report add-on text](https://battle.net/support/help/product/wow/197/1501/solution).
+The register also received a checkbox to only display profiles on which you wrote notes.
+
+{img:Interface\AddOns\totalRP3\resources\160-3.tga:480:120}
 
 ## Added
 
-- Added a workaround against a current game bug that will always reset the language currently selected after a loading screen. You can disable this workaround in cases of issues in the advanced settings.
-- Added a workaround to make sure Total RP 3's broadcast channel (xtensionxtooltip2) is always at the bottom of the channel list. This should fix issues where it would be the first channel and move all others channels you have joined down in the list. You can disable this workaround in cases of issues in the advanced settings.
+- Added HTML support for About templates 2 and 3. You can now use the full array of HTML tags while using those templates to format their fields, using the toolbar which is now visible for all templates.
+
+{img:Interface\AddOns\totalRP3\resources\160-4.tga:480:480}
+
+- Added compatibility with other RP addons for personality traits and HTML tags.
+
+## Changed
+
+- The "Report profile" buttons will now both link to the [support website's page on harassment via addons](https://battle.net/support/help/product/wow/197/1501/solution), as the in-game report feature previously added was an invalid method to report addon abuse. The popup will still show a timestamp for the profile's reception, which you can provide to Blizzard CS to help them track the offense.
+
+## Fixed
+
+- Fixed an error which could prevent the addon from loading.
+- Fixed a compatibility issue for template 3 if the addon locale was not English.
+
+## Removed
+
+- Removed auto-highlighting of the full text when entering focus of a text area (About fields, Currently, OOC Info...)
+- Removed April Fools' code (including the forgotten rainbow companion names).
+
+]],
+	WHATS_NEW_23_1 = [[
+# Changelog version 1.6.1
+
+## Music system rework
+
+- Technical changes in patch 8.2 required us to change how music is handled by the addon. **This means the update is required for musics to work.** This change should be seamless and backwards compatible (music themes from profiles coming from outdated versions should still play fine).
+- This allowed for the addition of musics previously unavailable (looking at you, void elf musics).
+- The duration of all musics should now be visible in the music browser line tooltips.
+
+## Changed
+
+- Settings to increase color contrast in tooltips and chat have been consolidated in a single setting for both which can be found in the General settings. It also applies in more places, like the map scan tooltips.
+
+## Fixed
+
+- The anchor for the map scan button can now properly be set.
+- Fixed a switch in Headers/Paragraph dropdown titles
+- Fixed an error message that could be caused by other addons misusing official API functions.
 
 ]],
 	------------------------------------------------------------------------------------------------
@@ -1234,31 +1275,21 @@ Since patch 8.0.1 you are able to report profiles that violates Blizzard's Terms
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	---@language Markdown
-	WHATS_NEW_22_1 = [[
-# Changelog version 1.5.1
-
-## Fixed
-
-- Fixed an issue that would make users still send their map location when the option to not send it when your roleplaying status is set to "Out of character" was enabled and they were indeed "Out of character".
-- Fixed an issue that would prevent the `/trp3 roll` command to work properly when in a group or a raid.
-- Other players' characters information without a profile attached to them are now correctly purged on startup to avoid storing them indefinitely.
-- Profiles received from links are now correctly applied a "Last seen" timestamp so they are correctly treated by the automatic directory purge instead of being always deleted because of the lack of timestamp.
-- The add-on will now warn you with a different message than the regular one if you are several versions behind and are at risk of issues because of that.
-- The advanced settings would not get the user selected localization applied to their texts.
-- Fixed issues related to upcoming API changes in patch 8.1.
-]],
-	---@language Markdown
-	WHATS_NEW_22_2 = [[
-# Changelog version 1.5.3
+	UI_MUSIC_ALTTITLE = "Alternate title",
+	WHATS_NEW_23_2 = [[
+# Changelog version 1.6.2
 
 ## Added
 
-- Added 562 icons, 51 images and 56 musics to Total RP 3's resources browsers for patch 8.1.
+- Added 328 icons and 20 images from patch 8.2.
+- Added an indicator to the music browser when the default name of a music differs from the one matching the current filter.
 
 ## Fixed
 
-- Fixed a Lua error that could sometimes appear when trying to request data from one of your Battle.net friends while your Battle.net status is set to appear offline.
+- Fixed issues in the music data transfer between TRP and MRP.
+- Fixed an issue with duplicated lines on the map scan button tooltip.
+- Further speculative fixes to the map issue on login.
+
 ]],
 };
 

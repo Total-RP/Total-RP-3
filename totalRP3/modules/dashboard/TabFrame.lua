@@ -1,6 +1,5 @@
 ----------------------------------------------------------------------------------
 --- Total RP 3
----
 --- Dashboard Tab Frame
 --- ------------------------------------------------------------------------------
 --- Copyright 2018 Daniel "Meorawr" Yates <me@meorawr.io>
@@ -22,12 +21,8 @@
 local addonName, TRP3_API = ...;
 local Ellyb = Ellyb(addonName);
 
--- Lua imports
-local assert = assert;
-
 -- Ellyb imports
 local ColorManager = Ellyb.ColorManager;
-local isType = Ellyb.Assertions.isType;
 
 -- WoW imports
 local GameFontNormal = GameFontNormal;
@@ -46,7 +41,7 @@ local UIFrame = TRP3_API.ui.frame;
 ---
 ---  @param viewClass The class to wrap and instantiate.
 ---  @param index The index of the tab. This is stored as the "value" of the entry.
----  @param ... Arguments to pass to the viewClass constructor.
+---  @vararg any Arguments to pass to the viewClass constructor.
 local function createTabFromClass(index, viewClass, ...)
 	-- Use explicit indices here to make it clear on the structure.
 	return {
@@ -66,7 +61,7 @@ TRP3_DashboardTabFrameMixin = {};
 function TRP3_DashboardTabFrameMixin:OnLoad()
 	-- Expect self.TabClasses to be a table. If it isn't, see above for what
 	-- you've gotta do.
-	assert(isType(self.TabClasses, "table", "self.TabClasses"));
+	Ellyb.Assertions.isType(self.TabClasses, "table", "self.TabClasses");
 
 	-- Can't set parentKey on a scroll child and expect it to work, so
 	-- assign it as a child here instead.
@@ -96,7 +91,7 @@ end
 
 --- Called when the NAVIGATION_RESIZED event fires. Re-draws the content
 ---  frame to make it adjust to the new dimensions.
-function TRP3_DashboardTabFrameMixin:OnNavigationResized(width, height)
+function TRP3_DashboardTabFrameMixin:OnNavigationResized(width)
 	-- Resize the content frame and try to refresh it.
 	local htmlFrame = self.HTMLContent;
 	htmlFrame:SetSize(width - 54, 5);

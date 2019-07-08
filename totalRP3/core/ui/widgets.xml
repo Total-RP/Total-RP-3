@@ -463,7 +463,6 @@
 								self:ClearFocus();
 							</OnEscapePressed>
 							<OnEditFocusGained>
-								self:HighlightText();
 								self:GetParent():GetParent().dummy:Hide();
 							</OnEditFocusGained>
 							<OnEditFocusLost>
@@ -1142,5 +1141,26 @@
 				</Texture>
 			</Layer>
 		</Layers>
+	</Frame>
+	<Frame name="TRP3_TitledDropdown" inherits="UIDropDownMenuTemplate" enableMouse="true" virtual="true">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTitle" parentKey="title" text="" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="27" y="4"/>
+						<Anchor point="TOPRIGHT" x="22" y="4"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
 	</Frame>
 </Ui>

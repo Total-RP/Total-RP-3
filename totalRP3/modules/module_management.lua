@@ -1,20 +1,21 @@
 ----------------------------------------------------------------------------------
--- Total RP 3
--- Modules API
---	---------------------------------------------------------------------------
---	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---
---	Licensed under the Apache License, Version 2.0 (the "License");
---	you may not use this file except in compliance with the License.
---	You may obtain a copy of the License at
---
---		http://www.apache.org/licenses/LICENSE-2.0
---
---	Unless required by applicable law or agreed to in writing, software
---	distributed under the License is distributed on an "AS IS" BASIS,
---	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
---	See the License for the specific language governing permissions and
---	limitations under the License.
+--- Total RP 3
+--- Modules API
+--- ---------------------------------------------------------------------------
+--- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
+--- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+---
+--- Licensed under the Apache License, Version 2.0 (the "License");
+--- you may not use this file except in compliance with the License.
+--- You may obtain a copy of the License at
+---
+--- 	http://www.apache.org/licenses/LICENSE-2.0
+---
+--- Unless required by applicable law or agreed to in writing, software
+--- distributed under the License is distributed on an "AS IS" BASIS,
+--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+--- See the License for the specific language governing permissions and
+--- limitations under the License.
 ----------------------------------------------------------------------------------
 
 TRP3_API.module = {};
@@ -29,9 +30,12 @@ local MODULE_ACTIVATION;
 local hasBeenInit = false;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
-local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
+local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
+local callModuleFunction;
+local initModule;
+local startModule;
 local onModuleStarted;
 
 TRP3_API.module.status = {
@@ -49,10 +53,10 @@ function TRP3_API.module.isModuleLoaded(moduleID)
 end
 
 --- Register a module structure.
--- 
+--
 -- These parameters are mandatory :
 -- id : The moduleID. It must be unique. You can't register two modules having the same ID.
--- 
+--
 -- These parameters are optional :
 -- name : The module name is a non empty string. If nil, equals the module ID.
 -- version : The version is a number. If nil, equals 1.
@@ -61,26 +65,26 @@ end
 -- onInit : A callback triggered before Total RP 3 initialization.
 -- onStart : A callback triggered after Total RP 3 initialization.
 TRP3_API.module.registerModule = function(moduleStructure)
-	
+
 	assert(moduleStructure, "Module structure can't be nil");
 	assert(moduleStructure.id, "Illegal module structure. Module id: "..moduleStructure.id);
 	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: "..moduleStructure.id);
 	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: "..moduleStructure.id);
-	
+
 	if not moduleStructure.name or not type(moduleStructure.name) == "string" or moduleStructure.name:len() == 0 then
 		moduleStructure.name = moduleStructure.id;
 	end
-	
+
 	if not moduleStructure.version then
 		moduleStructure.version = 1;
 	end
-	
+
 	if not moduleStructure.minVersion then
 		moduleStructure.minVersion = 0;
 	end
-	
+
 	MODULE_REGISTRATION[moduleStructure.id] = moduleStructure;
-	
+
 	Log.log("Module registered: " .. moduleStructure.id);
 end
 
@@ -89,21 +93,8 @@ end
 -- The onInit callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired.
 -- The onInit is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
 TRP3_API.module.initModules = function()
-	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == MODULE_STATUS.OK and module.onInit and type(module.onInit) == "function" then
-			if not Globals.DEBUG_MODE then
-				local ok, mess = pcall(module.onInit);
-				if not ok then
-					module.status = MODULE_STATUS.ERROR_ON_INIT;
-					module.error = mess;
-					if DEFAULT_CHAT_FRAME then
-						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while init module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
-					end
-				end
-			else
-				module.onInit();
-			end
-		end
+	for _, module in pairs(MODULE_REGISTRATION) do
+		initModule(module);
 	end
 end
 
@@ -112,33 +103,14 @@ end
 -- The onStart callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
 -- onStart is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
 TRP3_API.module.startModules = function()
-	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == MODULE_STATUS.OK and module.onStart and type(module.onStart) == "function" then
-			if not Globals.DEBUG_MODE then
-				local ok, error, message  = pcall(module.onStart);
-				if not ok then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = error;
-					if DEFAULT_CHAT_FRAME then
-						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(moduleID), tostring(error)), 1, 1, 1);
-					end
-				elseif error == false then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = message;
-				end
-			else
-				local ok, message = module.onStart();
-				if ok == false then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = message;
-				end
-			end
-		end
+	for _, module in pairs(MODULE_REGISTRATION) do
+		startModule(module);
 	end
+
 	onModuleStarted();
 end
 
---- Return an array of all registered module structures. 
+--- Return an array of all registered module structures.
 local function getModules()
 	return MODULE_REGISTRATION;
 end
@@ -153,8 +125,7 @@ end
 
 --- Check a module dependency
 -- Return true if dependency is OK.
-local function checkModuleDependency(moduleID, dependency_id, dependency_version)
-	local module = getModule(moduleID);
+local function checkModuleDependency(_, dependency_id, dependency_version)
 	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and MODULE_ACTIVATION[dependency_id] ~= false;
 end
 
@@ -171,10 +142,139 @@ local function checkModuleDependencies(moduleID)
 end
 
 --- Check the TRP minimum version for a module
--- Return true if TRP version is OK. 
+-- Return true if TRP version is OK.
 local function checkModuleTRPVersion(moduleID)
 	local module = getModule(moduleID);
 	return module.minVersion <= Globals.version;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MODULES LIFECYCLE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--- Error handler function for modules in release builds.
+--
+--  Reports the error information for the given module to the default chat
+--  frame, if present.
+--
+--  @param module The module to handle an error for.
+--  @param err    The error to be reported.
+local function handleModuleError(module, err)
+	if not DEFAULT_CHAT_FRAME then
+		return;
+	end
+
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
+end
+
+--- Invokes a given module function with any additional given parameters,
+--  capturing error information and returning it as if via pcall or xpcall.
+--
+--  In release builds, error information is not reported via the global
+--  error handler (as if it were called via pcall).
+--
+--  In debug builds, error information is forwarded to the global error
+--  handler, and is additionally returned.
+--
+--  If a function does not fail with an error but returns an explicit false,
+--  the function is treated as failed and any additional message is returned.
+--
+--  @param module   The module to invoke a function upon.
+--  @param funcName The module function name to be invoked.
+--  @param ...      Additional arguments to pass to the function.
+--
+--  @return true if no error occurred, false and an error message if not.
+function callModuleFunction(module, funcName, ...)
+	-- In debug mode, pass the error information through the global error
+	-- handler. This will flag it in BugSack or any other error reporter,
+	-- but will allow the loading process to continue.
+	local ok, err, message;
+	if Globals.DEBUG_MODE then
+		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
+	else
+		-- In release builds swallow the error via pcall. We'll forward it
+		-- to our own error handler instead.
+		ok, err, message = pcall(module[funcName], ...);
+		if not ok then
+			handleModuleError(module, err);
+		end
+	end
+
+	-- Some modules on failure will return a true/false status if they didn't
+	-- explicitly error out. If so, shift the returns over to the left.
+	--
+	-- These aren't considered "real" errors, but rather optional failures, so
+	-- they're never passed through the error handler implementations.
+	if ok and err == false then
+		-- We'll assume message isn't nil, but if it is then default it.
+		ok, err = err, message or "<no error information>";
+	end
+
+	return ok, err;
+end
+
+--- Initializes the given module.
+--
+--  This will invoke the onInit function on the module if present and, if it
+--  fails, will capture error information and update the module status
+--  appropriately.
+--
+--  This function does nothing if the module status already indicates a
+--  failure has occurred.
+--
+--  @param module The module to initialize.
+--
+--  @return true if no errors occurred, false and an error message if not.
+function initModule(module)
+	-- Disregard failed modules and yield their current error information.
+	if module.status ~= MODULE_STATUS.OK then
+		return false, module.error;
+	end
+
+	-- No need to do anything if the lifecycle function isn't present.
+	if module.onInit == nil then
+		return true;
+	end
+
+	-- Call the lifecycle function and update the module status on failure.
+	local ok, err = callModuleFunction(module, "onInit");
+	if not ok then
+		module.error = err;
+		module.status = MODULE_STATUS.ERROR_ON_INIT;
+	end
+
+	return ok, err;
+end
+
+--- Starts the given module.
+--
+--  This will invoke the onStart function on the module if present and, if it
+--  fails, will capture error information and update the module status
+--  appropriately.
+--
+--  This function does nothing if the module status already indicates a
+--  failure has occurred.
+--
+--  @param module The module to start.
+function startModule(module)
+	-- Disregard failed modules and yield their current error information.
+	if module.status ~= MODULE_STATUS.OK then
+		return false, module.error;
+	end
+
+	-- No need to do anything if the lifecycle function isn't present.
+	if module.onStart == nil then
+		return true;
+	end
+
+	-- Call the lifecycle function and update the module status on failure.
+	local ok, err = callModuleFunction(module, "onStart");
+	if not ok then
+		module.error = err;
+		module.status = MODULE_STATUS.ERROR_ON_LOAD;
+	end
+
+	return ok, err;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -228,11 +328,11 @@ end
 
 local function getModuleTooltip(module)
 	local message = "";
-	
+
 	if module.description and module.description:len() > 0 then
 		message = message .. "|cffffff00" .. module.description .. "|r\n\n";
 	end
-	
+
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
 
 	if module.error ~= nil then
@@ -270,7 +370,7 @@ function onModuleStarted()
 	local sortedID = {};
 
 	-- Sort module id
-	for moduleID, module in pairs(modules) do
+	for moduleID, _ in pairs(modules) do
 		tinsert(sortedID, moduleID);
 	end
 	table.sort(sortedID);
@@ -316,11 +416,11 @@ TRP3_API.module.init = function()
 		TRP3_Configuration.MODULE_ACTIVATION = {};
 	end
 	MODULE_ACTIVATION = TRP3_Configuration.MODULE_ACTIVATION;
-	
+
 	-- If new module (MODULE_ACTIVATION is saved), then activate if autoEnable;
 	for moduleID, module in pairs(MODULE_REGISTRATION) do
 		module.status = MODULE_STATUS.OK;
-	
+
 		if MODULE_ACTIVATION[moduleID] == nil then
 			MODULE_ACTIVATION[moduleID] = true;
 			if module.autoEnable ~= nil then
@@ -341,7 +441,7 @@ TRP3_API.module.init = function()
 			end
 		end
 	end
-	
+
 	local TUTORIAL_STRUCTURE = {
 		{
 			box = {
@@ -355,7 +455,7 @@ TRP3_API.module.init = function()
 			}
 		},
 	}
-	
+
 	registerPage({
 		id = "main_config_module",
 		templateName = "TRP3_ConfigurationModule",
@@ -369,11 +469,11 @@ TRP3_API.module.init = function()
 		isChildOf = "main_90_config",
 		onSelected = function() setPage("main_config_module"); end,
 	});
-	
+
 	moduleInit();
 
 	-- Resizing
-	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerwidth, containerHeight)
-		TRP3_ConfigurationModuleContainer:SetSize(containerwidth - 70, 50);
+	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
+		TRP3_ConfigurationModuleContainer:SetSize(containerWidth - 70, 50);
 	end);
 end
