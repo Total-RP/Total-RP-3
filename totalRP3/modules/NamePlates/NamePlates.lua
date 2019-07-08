@@ -455,7 +455,7 @@ end
 
 -- Updates all modified unit frames.
 function TRP3_NamePlates:UpdateAllUnitFrames()
-	self:UpdateAllUnits();
+	self:UpdateAllUnitTokens();
 end
 
 -- Updates the nameplate frame for a given unit token.
@@ -471,7 +471,7 @@ end
 -- Updates all nameplate frames for actively tracked unit tokens.
 function TRP3_NamePlates:UpdateAllUnitTokens()
 	for unitToken, _ in pairs(self.activeUnitTokens) do
-		self:UpdateUnit(unitToken);
+		self:UpdateUnitToken(unitToken);
 	end
 end
 
