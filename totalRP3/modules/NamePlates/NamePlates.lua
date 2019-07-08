@@ -264,9 +264,10 @@ function TRP3_NamePlates:AcquireUnitFrameWidget(frame, widgetName, pool)
 	local widgets = self.unitFrameWidgets[frame] or {};
 	self.unitFrameWidgets[frame] = widgets;
 
-	assert(not widgets[widgetName], "Duplicate widget name.");
-
-	local widget = pool:Acquire();
+	-- There's a few cases where widgets don't get cleaned up if you toggle,
+	-- but that's fine. We'll just re-use them even if they weren't put back
+	-- into the pool.
+	local widget = widgets[widgetName] or pool:Acquire();
 	widgets[widgetName] = widget;
 	return widget;
 end
