@@ -97,17 +97,24 @@ local NamePlates = {
 	provider = nil,
 };
 
+-- Returns true if the user has elected to customize nameplates.
+--
 -- If this returns false, all customizations are disabled.
 function NamePlates.ShouldCustomizeNamePlates()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS);
 end
 
--- they themselves are in-character.
+-- Returns true if the user has elected to customize nameplates, but only
+-- while in-character.
+--
+-- If this returns false, customizations should be disabled when not
+-- in-character.
 function NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
 end
 
--- seeing a player nameplate.
+-- Returns true if the user has elected to request profiles upon seeing a
+-- nameplate.
 function NamePlates.ShouldRequestProfiles()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ACTIVE_QUERY);
 end
