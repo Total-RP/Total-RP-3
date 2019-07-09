@@ -197,9 +197,21 @@ end
 
 -- Handler triggered when a configuration setting is changed.
 function TRP3_NamePlates:OnConfigSettingChanged(key, value)
-	-- Only trigger on name plate config changes. As we've got a lot of
-	-- settings, we'll just use a heuristic on the key to check this.
-	if not strfind(tostring(key), "^nameplates_") then
+	local shouldRefresh = false;
+
+	-- If color contrast is changed, we should refresh things.
+	if key == "increase_color_contrast" then
+		shouldRefresh = true;
+	end
+
+	-- Otherwise, check for nameplate settings. We've got a lot, so use
+	-- a heuristic for this instead of matching them all.
+	if strfind(tostring(key), "^nameplates_") then
+		shouldRefresh = true;
+	end
+
+	-- If we shouldn't refresh, we'll stop now.
+	if not shouldRefresh then
 		return;
 	end
 
