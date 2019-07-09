@@ -773,6 +773,20 @@ function TRP3_NamePlates:ReleaseUnitFrameTexture(frame, widgetName)
 	return self:ReleaseUnitFrameWidget(frame, widgetName, self.texturePool);
 end
 
+-- Returns true if the given frame is a valid target for customization.
+--
+-- This will not check if the settings would permit customization; instead the
+-- return value of true simply indicates that the frame won't blow up in our
+-- faces if we try to poke at it.
+function TRP3_NamePlates:CanCustomizeUnitFrame(frame)
+	-- Don't allow customizing frames that are forbidden.
+	if not CanAccessObject(frame) then
+		return false;
+	end
+
+	return true;
+end
+
 -- Sets up custom widgets and modifications on a unit frame.
 function TRP3_NamePlates:SetUpUnitFrame(frame, unitToken)
 	self:SetUpUnitFrameIcon(frame, unitToken);
@@ -827,8 +841,8 @@ end
 -- Updates the name display on a given unit frame, applying changes for the
 -- profile represented by the given unit token.
 function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -850,8 +864,8 @@ end
 
 -- Initializes the RP icon widget on a unit frame.
 function TRP3_NamePlates:SetUpUnitFrameIcon(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -870,8 +884,8 @@ end
 
 -- Updates the RP icon widget on a unit frame.
 function TRP3_NamePlates:UpdateUnitFrameIcon(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -894,8 +908,8 @@ end
 
 -- Deinitializes the RP icon widget on a unit frame.
 function TRP3_NamePlates:TearDownUnitFrameIcon(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -904,8 +918,8 @@ end
 
 -- Initializes the custom RP title widget on a unit frame.
 function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -925,8 +939,8 @@ end
 
 -- Updates the title display on a nameplate.
 function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
@@ -952,8 +966,8 @@ end
 
 -- Deinitializes the custom RP title widget on a unit frame.
 function TRP3_NamePlates:TearDownUnitFrameTitle(frame, unitToken)
-	-- Ignore forbidden frames and bad units.
-	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+	-- Check if we can customize this frame for this unit.
+	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
 		return;
 	end
 
