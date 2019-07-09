@@ -54,9 +54,6 @@ local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 -- List of addon names that conflict with this module. If these are enabled
 -- for the current character on initialization of this module, we won't
 -- set up customizations.
---
--- Configuration keys will still be defined so that other modules can make
--- use of them as needed regardless of conflict status.
 local CONFLICTING_ADDONS = {
 	"Kui_Nameplates", -- No errors, but customizations won't display.
 	"Plater",         -- Untested. Assuming it won't work.
@@ -155,6 +152,15 @@ local TRP3_NamePlates = {};
 -- for setting up the base internal state without actually enabling any
 -- behaviours.
 function TRP3_NamePlates:OnInitialize()
+	-- Prevent the module from actually being set up if there's any of the
+	-- conflicting addons installed.
+	for _, addonName in ipairs(CONFLICTING_ADDONS) do
+		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
+		if state == 2 then
+			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
+		end
+	end
+
 	self.activeUnitTokens = {};
 	self.registerUnitIDMap = {};
 	self.registerUnitIDCooldowns = {};
@@ -174,15 +180,6 @@ function TRP3_NamePlates:OnInitialize()
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, GetDefaultOOCIndicator());
-
-	-- Prevent the module from actually being *enabled* if there's any of the
-	-- conflicting addons installed.
-	for _, addonName in ipairs(CONFLICTING_ADDONS) do
-		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
-		if state == 2 then
-			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
-		end
-	end
 end
 
 -- Handler called when the module is started up. This is responsible for
