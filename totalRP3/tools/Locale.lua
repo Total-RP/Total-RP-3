@@ -1295,8 +1295,8 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_MODULE_NAME = "Name Plates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default name plates with additional role play characteristics.",
 
-	NAMEPLATES_CONFIG_MENU_TEXT = "Name Plates",
-	NAMEPLATES_CONFIG_PAGE_TEXT = "Name Plates",
+	NAMEPLATES_CONFIG_MENU_TEXT = "Name plates",
+	NAMEPLATES_CONFIG_PAGE_TEXT = "Name plate settings",
 	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable name plate customization",
 	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP = "If selected, enable name plate customization.\n\nUnchecking this will disable all customizations present in the module.",
 	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",

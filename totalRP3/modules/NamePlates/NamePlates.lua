@@ -933,9 +933,9 @@ function TRP3_NamePlates:InitializeConfiguration()
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, "TEXT");
 
-	-- Build configuration page.
+	-- Register the configuration page.
 	TRP3_Config.registerConfigurationPage({
-		id = "TRP3_NamePlates",
+		id = "main_config_uuu_nameplates",
 		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
 		elements = {
@@ -1043,7 +1043,6 @@ function TRP3_NamePlates:InitializeConfiguration()
 			},
 		}
 	});
-
 end
 
 -- Module registration.
