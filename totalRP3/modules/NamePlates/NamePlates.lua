@@ -34,6 +34,10 @@ local Icon = TRP3_API.Ellyb.Icon;
 -- Maximum width for displayed titles.
 local MAX_TITLE_SIZE = 40;
 
+-- Size of custom icons.
+local ICON_WIDTH = 16;
+local ICON_HEIGHT = 16;
+
 -- OOC indicators for text or icon mode appropriately.
 local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
 local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
@@ -644,7 +648,7 @@ function TRP3_NamePlates:SetUpUnitFrameIcon(frame, unitToken)
 	iconWidget:ClearAllPoints();
 	iconWidget:SetParent(frame);
 	iconWidget:SetPoint("RIGHT", frame.name, "LEFT", -4, 0);
-	iconWidget:SetSize(16, 16);
+	iconWidget:SetSize(ICON_WIDTH, ICON_HEIGHT);
 	iconWidget:Show();
 end
 
