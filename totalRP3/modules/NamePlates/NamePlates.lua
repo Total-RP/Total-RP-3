@@ -941,7 +941,18 @@ function TRP3_NamePlates:InitializeConfiguration()
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, "TEXT");
+
+	-- The default OOC icon should inherit from the tooltip setting.
+	--
+	-- Unfortunately, we don't want to add a hard dependency between this
+	-- and the tooltip module for the sake of *one* setting so instead we'll
+	-- just grab it from the config table directly.
+	local defaultOOCIndicator = "TEXT";
+	if TRP3_Configuration and TRP3_Configuration["tooltip_prefere_ooc_icon"] then
+		defaultOOCIndicator = TRP3_Configuration["tooltip_prefere_ooc_icon"];
+	end
+
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, defaultOOCIndicator);
 
 	-- Register the configuration page.
 	TRP3_Config.registerConfigurationPage({
