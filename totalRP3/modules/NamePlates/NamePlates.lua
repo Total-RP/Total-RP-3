@@ -977,7 +977,7 @@ end
 
 -- Registers the configuration page for this module.
 function TRP3_NamePlates:RegisterConfigurationPage()
-	TRP3_Config:registerConfigurationPage({
+	TRP3_Config.registerConfigurationPage({
 		id = "main_config_uuu_nameplates",
 		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
