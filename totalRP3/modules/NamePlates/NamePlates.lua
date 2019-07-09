@@ -157,6 +157,23 @@ function TRP3_NamePlates:OnEnable()
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
 		return self:OnUnitFrameNameChanged(frame);
 	end);
+
+	-- Put in a low resolution ticker to detect IC/OOC swaps. There's no event
+	-- that fires to signal this, and a similar approach is used by the
+	-- toolbar already. One second should be small enough to make it feel
+	-- like the setting works, and infrequent enough to not be an issue.
+	(function()
+		local previousState;
+		C_Timer.NewTicker(1, function()
+			local currentUser = Player.GetCurrentUser();
+			local IsInCharacter = currentUser:IsInCharacter();
+
+			if previousState ~= IsInCharacter then
+				previousState = IsInCharacter;
+				self:OnRoleplayStatusChanged();
+			end
+		end);
+	end)()
 end
 
 -- Handler dispatched in response to in-game events.
@@ -176,16 +193,9 @@ function TRP3_NamePlates:OnConfigSettingChanged(key, value)
 		return;
 	end
 
-	-- Some settings mean we should reset the name displayed by all
-	-- unit frames back to the Blizzard-defaults. We'll do that now.
-	for unitToken, _ in pairs(self.activeUnitTokens) do
-		local frame = self:GetUnitFrameForUnit(unitToken);
-		if frame then
-			CompactUnitFrame_UpdateName(frame);
-		end
-	end
-
-	-- Now force-update all the frames to re-apply customizations.
+	-- Reset names to ensure that the Blizzard names are set first before
+	-- mass-reapplying the customizations, in case things got turned off.
+	self:ResetAllUnitFrameNames();
 	self:UpdateAllUnitFrames();
 end
 
@@ -264,6 +274,17 @@ function TRP3_NamePlates:OnRegisterDataUpdated(registerUnitID)
 	self:UpdateUnitToken(unitToken);
 end
 
+-- Handler triggered when the roleplay status of the character changes, such
+-- as from IC to OOC.
+function TRP3_NamePlates:OnRoleplayStatusChanged()
+	-- Update all frames if we're dependant upon the status.
+	if self:ShouldOnlyCustomizeInCharacter() then
+		-- Do a full reset and update.
+		self:ResetAllUnitFrameNames();
+		self:UpdateAllUnitFrames();
+	end
+end
+
 -- Handler triggered when the name on a unit frame is modified by the UI.
 function TRP3_NamePlates:OnUnitFrameNameChanged(frame)
 	-- Update the name portion of the unit frame.
@@ -315,6 +336,26 @@ end
 -- Returns the token of the currently configured OOC indicator.
 function TRP3_NamePlates:GetConfiguredOOCIndicator()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
+end
+
+-- Returns true if customizations should be enabled for unit frames. This
+-- will return false if, for example, the player doesn't want to show plates
+-- while OOC.
+function TRP3_NamePlates:ShouldCustomizeUnitFrames()
+	-- If customizations are globally disabled, that's a no.
+	if not self:ShouldCustomizeNamePlates() then
+		return false;
+	end
+
+	-- Disable customizations if we need to be in-character.
+	if self:ShouldOnlyCustomizeInCharacter() then
+		local currentUser = Player.GetCurrentUser();
+		if not currentUser:IsInCharacter() then
+			return false;
+		end
+	end
+
+	return true;
 end
 
 -- Returns the name text to be displayed for the given unit token, or nil
@@ -478,25 +519,6 @@ function TRP3_NamePlates:IsTrackedUnit(unitToken)
 	return not not self.activeUnitTokens[unitToken];
 end
 
--- Returns true if customizations should be enabled for unit frames. This
--- will return false if, for example, the player doesn't want to show plates
--- while OOC.
-function TRP3_NamePlates:ShouldCustomizeUnitFrames()
-	-- If customizations are globally disabled, that's a no.
-	if not self:ShouldCustomizeNamePlates() then
-		return false;
-	end
-
-	-- Allow customization if we're not limiting ourselves to being IC.
-	if not self:ShouldOnlyCustomizeInCharacter() then
-		return true;
-	end
-
-	-- Otherwise, check the current status of the player.
-	local currentUser = Player.GetCurrentUser();
-	return currentUser:IsInCharacter();
-end
-
 -- Returns the unit frame on a name plate for the given unit token, or nil
 -- if the given token is invalid.
 function TRP3_NamePlates:GetUnitFrameForUnit(unitToken)
@@ -606,6 +628,31 @@ end
 function TRP3_NamePlates:TearDownUnitFrame(frame, unitToken)
 	self:TearDownUnitFrameIcon(frame, unitToken);
 	self:TearDownUnitFrameTitle(frame, unitToken);
+end
+
+-- Resets the name displayed for a unit frame. This will trigger any
+-- customizations of the name to immediately occur afterwards.
+function TRP3_NamePlates:ResetUnitFrameName(frame)
+	CompactUnitFrame_UpdateName(frame);
+end
+
+-- Resets all names displayed on modified unit frames. This should be called
+-- when a configuration change has been applied that might affect whether or
+-- not name customizations should take place.
+--
+-- This will trigger any customizations of the name to immediately occur
+-- afterwards.
+--
+-- This is not performed automatically as we want to avoid a recursion when
+-- updating names, since we need to hook the same function that is called to
+-- reset the name.
+function TRP3_NamePlates:ResetAllUnitFrameNames()
+	for unitToken, _ in pairs(self.activeUnitTokens) do
+		local frame = self:GetUnitFrameForUnit(unitToken);
+		if frame then
+			self:ResetUnitFrameName(frame);
+		end
+	end
 end
 
 -- Updates the name display on a given unit frame, applying changes for the
@@ -739,7 +786,7 @@ function TRP3_NamePlates:TearDownUnitFrameTitle(frame, unitToken)
 	self:ReleaseUnitFrameFontString(frame, "title");
 end
 
--- Updates all modified unit frames.
+-- Updates all modified unit frames, re-applying customizations.
 function TRP3_NamePlates:UpdateAllUnitFrames()
 	self:UpdateAllUnitTokens();
 end
