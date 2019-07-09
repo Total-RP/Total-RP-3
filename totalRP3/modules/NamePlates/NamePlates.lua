@@ -19,17 +19,25 @@ local L = TRP3_API.loc;
 local TRP3_Companions = TRP3_API.companions;
 local TRP3_Config = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
+local TRP3_Register = TRP3_API.register;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
 
 -- AddOn_TotalRP3 imports.
-local MSP = AddOn_TotalRP3.MSP;
 local Player = AddOn_TotalRP3.Player;
 
 -- Ellyb imports.
 local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 local Icon = TRP3_API.Ellyb.Icon;
+
+-- Cooldown between queries for the same profile from nameplate activity
+-- alone, in seconds. Defaults to 5 minutes.
+--
+-- This should be higher than the cooldown imposed by protocols because
+-- name plates are generally more numerous than tooltips or the number of
+-- people you can actively mouse-over.
+local ACTIVE_QUERY_COOLDOWN = 300;
 
 -- Maximum width for displayed titles.
 local MAX_TITLE_SIZE = 40;
@@ -52,6 +60,7 @@ local CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS   = "nameplates_show_ooc_indicators"
 local CONFIG_NAMEPLATES_SHOW_ICONS            = "nameplates_show_icons";
 local CONFIG_NAMEPLATES_SHOW_TITLES           = "nameplates_show_titles";
 local CONFIG_NAMEPLATES_OOC_INDICATOR         = "nameplates_ooc_indicator";
+local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 
 -- Returns true if the given unit token refers to a combat companion pet.
 --
@@ -120,6 +129,7 @@ local TRP3_NamePlates = {};
 function TRP3_NamePlates:OnInitialize()
 	self.activeUnitTokens = {};
 	self.registerUnitIDMap = {};
+	self.registerUnitIDCooldowns = {};
 	self.unitFrameWidgets = {};
 
 	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
@@ -229,19 +239,15 @@ function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 		self:SetUpUnitFrame(frame, unitToken);
 	end
 
+	-- Issue requests as needed.
+	if self:ShouldRequestUnitProfile(unitToken) then
+		self:RequestUnitProfile(unitToken);
+	end
+
 	-- Update the unit frame for them immediately. It might not be fully
 	-- configured at this point, however our hooks will fire if that's the
 	-- case anyway.
 	self:UpdateUnitToken(unitToken);
-
-	-- Send out a request for the profile.
-	if registerUnitID then
-		TRP3_API.r.sendQuery(registerUnitID);
-
-		if UnitIsPlayer(unitToken) then
-			msp:Request(registerUnitID, MSP.REQUEST_FIELDS);
-		end
-	end
 end
 
 -- Handler triggered then the game removes a name plate unit token.
@@ -303,6 +309,12 @@ function TRP3_NamePlates:ShouldOnlyCustomizeInCharacter()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
 end
 
+-- Returns true if the user has elected to actively query profiles upon
+-- seeing a player name plate.
+function TRP3_NamePlates:ShouldActivelyQueryProfiles()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ACTIVE_QUERY);
+end
+
 -- Returns true if the user has elected to show custom player names.
 function TRP3_NamePlates:ShouldShowCustomPlayerNames()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
@@ -356,6 +368,93 @@ function TRP3_NamePlates:ShouldCustomizeUnitFrames()
 	end
 
 	return true;
+end
+
+-- Returns true if a request for the given unit token can be issued.
+function TRP3_NamePlates:CanRequestUnitProfile(unitToken)
+	-- If it's a player or a combat pet, then that's a yes.
+	if UnitIsPlayer(unitToken) then
+		return true;
+	end
+
+	-- If it's a combat pet, it's a yes if we can scrape the owner.
+	if UnitIsCombatPet(unitToken) then
+		local registerUnitID = GetRegisterUnitID(unitToken);
+		if not registerUnitID then
+			return false;
+		end
+
+		-- Check if the owner ID is known.
+		local ownerID = TRP3_Utils.str.companionIDToInfo(registerUnitID);
+		if TRP3_Register.isUnitIDKnown(ownerID) then
+			return true;
+		end
+	end
+
+	return false;
+end
+
+-- Returns true if a request for the given unit token should be issued.
+function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
+	-- If the user has disabled this feature, then it's always an o.
+	if not self:ShouldActivelyQueryProfiles() then
+		return false;
+	end
+
+	-- If you can't, then you shouldn't.
+	if not self:CanRequestUnitProfile(unitToken) then
+		return false;
+	end
+
+	-- Convert the token to an internal unit ID.
+	local registerUnitID = GetRegisterUnitID(unitToken);
+	if not registerUnitID then
+		-- If you can't convert it, you sure as heck can't request it.
+		return false;
+	end
+
+	-- If the unit is already known and they have a profile, we'll reject
+	-- sending out requests.
+	if TRP3_Register.isUnitIDKnown(registerUnitID)
+	and TRP3_Register.hasProfile(registerUnitID) then
+		return false;
+	end
+
+	-- We'll want to *strongly* debounce requests. Both protocols implement
+	-- a cooldown however nameplates are displayed quite a lot more, so we'll
+	-- want to significantly increase this.
+	local cooldown = self.registerUnitIDCooldowns[registerUnitID];
+	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
+		return false;
+	end
+
+	-- Otherwise assume that the request should be sent.
+	return true;
+end
+
+-- Requests a profile for the given unit token.
+function TRP3_NamePlates:RequestUnitProfile(unitToken)
+	local registerUnitID = GetRegisterUnitID(unitToken);
+	if not registerUnitID then
+		return;
+	end
+
+	-- Issue requests via both TRP and MSP protocols. MSP is limited to
+	-- players only, so don't send anything for pets out.
+	if UnitIsPlayer(unitToken) then
+		TRP3_API.r.sendQuery(registerUnitID);
+		TRP3_API.r.sendMSPQueryIfAppropriate(registerUnitID);
+	elseif UnitIsCombatPet(unitToken) then
+		-- Queries for companions take a little bit extra effort.
+		local ownerID = TRP3_Utils.str.companionIDToInfo(registerUnitID);
+		if TRP3_Register.isUnitIDKnown(ownerID) then
+			TRP3_API.r.sendQuery(ownerID);
+		end
+	end
+
+	-- Debounce further requests for a significant amount of time.
+	local cooldown = GetTime() + ACTIVE_QUERY_COOLDOWN;
+	self.registerUnitIDCooldowns[registerUnitID] = cooldown;
 end
 
 -- Returns the name text to be displayed for the given unit token, or nil
@@ -813,6 +912,7 @@ function TRP3_NamePlates:InitializeConfiguration()
 	-- Register configuration keys.
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ACTIVE_QUERY, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
 	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
@@ -838,6 +938,15 @@ function TRP3_NamePlates:InitializeConfiguration()
 				title = L.NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE,
 				help = L.NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP,
 				configKey = CONFIG_NAMEPLATES_ONLY_IN_CHARACTER,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE,
+				help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
+				configKey = CONFIG_NAMEPLATES_ACTIVE_QUERY,
 				dependentOnOptions = {
 					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
 				},

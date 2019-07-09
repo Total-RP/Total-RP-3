@@ -526,6 +526,11 @@ local function onStart()
 		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 	end
 
+	TRP3_API.r.sendMSPQueryIfAppropriate = function(name)
+		-- This function *does* implement aforementioned checks.
+		requestInformation(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
+	end
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
