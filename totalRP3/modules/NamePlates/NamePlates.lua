@@ -28,9 +28,24 @@ local Player = AddOn_TotalRP3.Player;
 -- Ellyb imports.
 local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
+local Icon = TRP3_API.Ellyb.Icon;
 
 -- Maximum width for displayed titles.
 local MAX_TITLE_SIZE = 40;
+
+-- OOC indicators for text or icon mode appropriately.
+local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
+local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
+
+-- Configuration keys.
+local CONFIG_NAMEPLATES_ONLY_IN_CHARACTER   = "nameplates_only_in_character";
+local CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES   = "nameplates_show_player_names";
+local CONFIG_NAMEPLATES_SHOW_PET_NAMES      = "nameplates_show_pet_names";
+local CONFIG_NAMEPLATES_SHOW_COLORS         = "nameplates_show_colors";
+local CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS = "nameplates_show_ooc_indicators";
+local CONFIG_NAMEPLATES_SHOW_ICONS          = "nameplates_show_icons";
+local CONFIG_NAMEPLATES_SHOW_TITLES         = "nameplates_show_titles";
+local CONFIG_NAMEPLATES_OOC_INDICATOR       = "nameplates_ooc_indicator";
 
 -- Returns true if the given unit token refers to a combat companion pet.
 --
@@ -231,10 +246,228 @@ function TRP3_NamePlates:OnUnitFrameNameChanged(frame)
 	self:UpdateUnitFrameName(frame, frame.unit);
 end
 
+-- Returns true if the user has elected to only enable customizations while
+-- they themselves are in-character.
+function TRP3_NamePlates:ShouldOnlyCustomizeInCharacter()
+	return false;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
+end
+
+-- Returns true if the user has elected to show custom player names.
+function TRP3_NamePlates:ShouldShowCustomPlayerNames()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
+end
+
+-- Returns true if the user has elected to show custom pet titles.
+function TRP3_NamePlates:ShouldShowCustomPetNames()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_PET_NAMES);
+end
+
+-- Returns true if the user has elected to show custom colors.
+function TRP3_NamePlates:ShouldShowCustomColors()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_COLORS);
+end
+
+-- Returns true if the user has elected to show the OOC indicator.
+function TRP3_NamePlates:ShouldShowOOCIndicators()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS);
+end
+
+-- Returns true if the user has elected to show custom icons.
+function TRP3_NamePlates:ShouldShowCustomIcons()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_ICONS);
+end
+
+-- Returns true if the user has elected to show custom titles.
+function TRP3_NamePlates:ShouldShowCustomTitles()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_TITLES);
+end
+
+-- Returns the token of the currently configured OOC indicator.
+function TRP3_NamePlates:GetConfiguredOOCIndicator()
+	return true;
+	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
+end
+
+-- Returns the name text to be displayed for the given unit token, or nil
+-- if customizations are disabled or no profile is available.
+function TRP3_NamePlates:GetCustomUnitName(unitToken)
+	-- If customization is disabled entirely for any reason, stop.
+	if not self:ShouldCustomizeUnitFrames() then
+		return nil;
+	end
+
+	-- Dispatch based on the profile type.
+	if UnitIsPlayer(unitToken) and self:ShouldShowCustomPlayerNames() then
+		-- Get the profile for the player and with it, their name.
+		local profile = GetPlayerProfile(unitToken);
+		if not profile then
+			return nil;
+		end
+
+		local nameText = profile:GetRoleplayingName();
+
+		-- Prefix the OOC indicator if configured.
+		if not profile:IsInCharacter() and self:ShouldShowOOCIndicators() then
+			local oocIndicator = self:GetConfiguredOOCIndicator();
+			if oocIndicator == "text" then
+				nameText = strjoin(" ", OOC_TEXT_INDICATOR, nameText);
+			elseif oocIndicator == "icon" then
+				nameText = strjoin(" ", tostring(OOC_ICON_INDICATOR), nameText);
+			end
+		end
+
+		return nameText;
+	elseif UnitIsCombatPet(unitToken) and self:ShouldShowCustomPetNames() then
+		-- Combat pets use companion pet profiles.
+		local profile = GetCombatPetProfile(unitToken);
+		if not profile then
+			return nil;
+		end
+
+		return profile.NA;
+	end
+
+	-- Unknown profile type.
+	return nil;
+end
+
+-- Returns the custom color to display for the given unit token, or nil if
+-- customization is disabled or no profile is available.
+function TRP3_NamePlates:GetCustomUnitColor(unitToken)
+	-- If customization is disabled entirely for any reason, stop.
+	if not self:ShouldCustomizeUnitFrames() then
+		return nil;
+	end
+
+	-- Don't bother if custom colors are disabled.
+	if not self:ShouldShowCustomColors() then
+		return nil;
+	end
+
+	-- Dispatch based on the profile type.
+	if UnitIsPlayer(unitToken) then
+		-- Get the profile for the player and with it, their custom color.
+		local profile = GetPlayerProfile(unitToken);
+		if not profile then
+			return nil;
+		end
+
+		local nameColor = profile:GetCustomColorForDisplay();
+
+		-- If there is no color, use class coloring instead.
+		if not nameColor then
+			local _, class = UnitClass(unitToken);
+			if class then
+				nameColor = C_ClassColor.GetClassColor(class);
+			end
+		end
+
+		return nameColor;
+	elseif UnitIsCombatPet(unitToken) then
+		-- Combat pets use companion pet profiles.
+		local profile = GetCombatPetProfile(unitToken);
+		if not profile then
+			return nil;
+		end
+
+		return profile.NH and Color.CreateFromHexa(profile.NH) or nil;
+	end
+
+	-- Unknown profile type.
+	return nil;
+end
+
+-- Returns the name of an icon without its path prefix for display in a unit
+-- frame. This will return nil if customization is disabled, or no icon
+-- is available.
+function TRP3_NamePlates:GetCustomUnitIcon(unitToken)
+	-- If customization is disabled entirely for any reason, stop.
+	if not self:ShouldCustomizeUnitFrames() then
+		return nil;
+	end
+
+	-- If not displaying icons, return early.
+	if not self:ShouldShowCustomIcons() then
+		return nil;
+	end
+
+	-- Get the appropriate icon for this unit type.
+	if UnitIsPlayer(unitToken) then
+		local profile = GetPlayerProfile(unitToken);
+		if profile then
+			return profile:GetCustomIcon();
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetCombatPetProfile(unitToken);
+		if profile then
+			return profile.IC;
+		end
+	end
+
+	-- Unknown profile type.
+	return nil;
+end
+
+-- Returns the custom title for a given unit token to be displayed in a
+-- unit frame. This will return nil if customization is disabled, or no title
+-- is available.
+--
+-- The title returned is the raw, uncropped, unformatted text. This should
+-- be formatted/cropped appropriately prior to display.
+function TRP3_NamePlates:GetCustomUnitTitle(unitToken)
+	-- If customization is disabled entirely for any reason, stop.
+	if not self:ShouldCustomizeUnitFrames() then
+		return nil;
+	end
+
+	-- If not displaying titles, return early.
+	if not self:ShouldShowCustomTitles() then
+		return nil;
+	end
+
+	-- Get the appropriate title for this unit type.
+	if UnitIsPlayer(unitToken) then
+		local profile = GetPlayerProfile(unitToken);
+		local characteristics = profile and profile:GetCharacteristics();
+		if characteristics then
+			return characteristics.FT;
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetCombatPetProfile(unitToken);
+		if profile then
+			return profile.TI;
+		end
+	end
+
+	-- Unknown profile type.
+	return nil;
+end
+
 -- Returns true if the given unit token is actively tracked as belonging
 -- to a nameplate.
 function TRP3_NamePlates:IsTrackedUnit(unitToken)
 	return not not self.activeUnitTokens[unitToken];
+end
+
+-- Returns true if customizations should be enabled for unit frames. This
+-- will return false if, for example, the player doesn't want to show plates
+-- while OOC.
+function TRP3_NamePlates:ShouldCustomizeUnitFrames()
+	-- Allow customization if we're not limiting ourselves to being IC.
+	if not self:ShouldOnlyCustomizeInCharacter() then
+		return true;
+	end
+
+	-- Otherwise, check the current status of the player.
+	local currentUser = Player.GetCurrentUser();
+	return currentUser:IsInCharacter();
 end
 
 -- Returns the unit frame on a name plate for the given unit token, or nil
@@ -356,49 +589,15 @@ function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
 		return;
 	end
 
-	-- Ignore frames where the name is hidden. This usually implies they
-	-- configured a setting somewhere to prevent the name being shown.
-	if not frame.name:IsShown() then
-		return;
-	end
-
-	-- The name to show in the nameplate, if not nil.
-	local nameText;
-	-- The color to apply to the name, if not nil.
-	local nameColor;
-
-	-- Are we altering a player name plate?
-	if UnitIsPlayer(unitToken) then
-		-- Get the profile for the player and their preferred options.
-		local profile = GetPlayerProfile(unitToken);
-		if not profile then
-			return;
-		end
-
-		nameText = profile:GetRoleplayingName();
-		nameColor = profile:GetCustomColorForDisplay();
-
-		-- If there is no color, try class coloring instead.
-		if not nameColor then
-			local _, class = UnitClass(unitToken);
-			nameColor = C_ClassColor.GetClassColor(class);
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		-- Combat pets use companion pet profiles, which aren't as nice.
-		local profile = GetCombatPetProfile(unitToken);
-		if not profile then
-			return;
-		end
-
-		nameText = profile.NA;
-		nameColor = profile.NH and Color.CreateFromHexa(profile.NH) or nil;
-	end
-
-	-- Apply changes where we can.
+	-- Apply changes to the name and color. These will return nil if
+	-- customizations are disabled/impossible, in which case we'll assume
+	-- that the Blizzard-provided defaults are currently set.
+	local nameText = self:GetCustomUnitName(unitToken);
 	if nameText then
 		frame.name:SetText(nameText);
 	end
 
+	local nameColor = self:GetCustomUnitColor(unitToken);
 	if nameColor then
 		-- While SetTextColor might be more obvious, Blizzard instead calls
 		-- SetVertexColor. We mirror to ensure things work.
@@ -439,29 +638,14 @@ function TRP3_NamePlates:UpdateUnitFrameIcon(frame, unitToken)
 		return;
 	end
 
-	-- Name of the icon to be set, or nil if none is present.
-	local iconName;
-
-	-- Get the appropriate icon for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetPlayerProfile(unitToken);
-		if profile then
-			iconName = profile:GetCustomIcon();
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetCombatPetProfile(unitToken);
-		if profile then
-			iconName = profile.IC;
-		end
-	end
-
-	-- If there's no icon, we'll hide it entirely.
-	if not iconName or iconName == "" then
+	-- Get the icon. If there's no icon, we'll hide it entirely.
+	local icon = self:GetCustomUnitIcon(unitToken);
+	if not icon or icon == "" then
 		iconWidget:Hide();
 		return;
 	end
 
-	iconWidget:SetTexture([[Interface\ICONS\]] .. iconName);
+	iconWidget:SetTexture([[Interface\ICONS\]] .. icon);
 	iconWidget:Show();
 end
 
@@ -477,6 +661,7 @@ function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
 		return;
 	end
 
+	-- Get the title widget if one was allocated.
 	local titleWidget = self:AcquireUnitFrameFontString(frame, "title");
 	if not titleWidget then
 		return;
@@ -503,33 +688,17 @@ function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
 		return;
 	end
 
-	-- Title text to be shown, or nil if to be hidden.
-	local titleText;
-
-	-- Get the appropriate title for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetPlayerProfile(unitToken);
-		local characteristics = profile and profile:GetCharacteristics();
-		if characteristics then
-			titleText = characteristics.FT;
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetCombatPetProfile(unitToken);
-		if profile then
-			titleText = profile.TI;
-		end
-	end
-
-	-- If there's no title text, we'll hide it entirely.
-	if not titleText or titleText == "" then
+	-- Grab the title text. If there's no title text, we'll hide it entirely.
+	local title = self:GetCustomUnitTitle(unitToken);
+	if not title or title == "" then
 		titleWidget:Hide();
 		return;
 	end
 
 	-- Crop titles and format them appropriately.
-	titleText = format("<%s>", TRP3_Utils.str.crop(titleText, MAX_TITLE_SIZE));
+	title = format("<%s>", TRP3_Utils.str.crop(title, MAX_TITLE_SIZE));
 
-	titleWidget:SetText(titleText);
+	titleWidget:SetText(title);
 	titleWidget:Show();
 end
 
@@ -567,8 +736,8 @@ end
 
 -- Module registration.
 TRP3_API.module.registerModule({
-	name        = L["NAMEPLATES_MODULE_NAME"],
-	description = L["NAMEPLATES_MODULE_DESCRIPTION"],
+	name        = L.NAMEPLATES_MODULE_NAME,
+	description = L.NAMEPLATES_MODULE_DESCRIPTION,
 	version     = 1,
 	id          = "TRP3_NamePlates",
 	onInit      = function(...) return TRP3_NamePlates:OnInitialize(...); end,
