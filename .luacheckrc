@@ -5,12 +5,6 @@ exclude_files = {
 	"totalRP3/libs",
     "totalRP3_zTest"
 }
-
--- Allow unused arguments. Naming arguments even if they're unused is
--- perfectly fine since you can't exactly tell what "_" is for when it isn't
--- explicitly named.
-unused_args = false
-
 ignore = {
     -- Ignore undefined globals for now TODO cleanup global access
     "112",

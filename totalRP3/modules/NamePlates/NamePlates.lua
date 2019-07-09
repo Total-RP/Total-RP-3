@@ -245,7 +245,7 @@ function TRP3_NamePlates:OnEvent(event, ...)
 end
 
 -- Handler triggered when a configuration setting is changed.
-function TRP3_NamePlates:OnConfigSettingChanged(key, value)
+function TRP3_NamePlates:OnConfigSettingChanged(key, _)
 	local shouldRefresh = false;
 
 	-- If color contrast is changed, we should refresh things.
