@@ -57,7 +57,10 @@ local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 --
 -- Configuration keys will still be defined so that other modules can make
 -- use of them as needed regardless of conflict status.
-local CONFLICTING_ADDONS = {};
+local CONFLICTING_ADDONS = {
+	"Kui_Nameplates", -- No errors, but customizations won't display.
+	"Plater",         -- Untested. Assuming it won't work.
+};
 
 -- Configuration keys.
 local CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS = "nameplates_enable_customizations";
