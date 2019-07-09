@@ -17,6 +17,7 @@ local _, TRP3_API = ...;
 -- TRP3_API imports.
 local L = TRP3_API.loc;
 local TRP3_Companions = TRP3_API.companions;
+local TRP3_Config = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
@@ -38,14 +39,15 @@ local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
 local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Configuration keys.
-local CONFIG_NAMEPLATES_ONLY_IN_CHARACTER   = "nameplates_only_in_character";
-local CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES   = "nameplates_show_player_names";
-local CONFIG_NAMEPLATES_SHOW_PET_NAMES      = "nameplates_show_pet_names";
-local CONFIG_NAMEPLATES_SHOW_COLORS         = "nameplates_show_colors";
-local CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS = "nameplates_show_ooc_indicators";
-local CONFIG_NAMEPLATES_SHOW_ICONS          = "nameplates_show_icons";
-local CONFIG_NAMEPLATES_SHOW_TITLES         = "nameplates_show_titles";
-local CONFIG_NAMEPLATES_OOC_INDICATOR       = "nameplates_ooc_indicator";
+local CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS = "nameplates_enable_customizations";
+local CONFIG_NAMEPLATES_ONLY_IN_CHARACTER     = "nameplates_only_in_character";
+local CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES     = "nameplates_show_player_names";
+local CONFIG_NAMEPLATES_SHOW_PET_NAMES        = "nameplates_show_pet_names";
+local CONFIG_NAMEPLATES_SHOW_COLORS           = "nameplates_show_colors";
+local CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS   = "nameplates_show_ooc_indicators";
+local CONFIG_NAMEPLATES_SHOW_ICONS            = "nameplates_show_icons";
+local CONFIG_NAMEPLATES_SHOW_TITLES           = "nameplates_show_titles";
+local CONFIG_NAMEPLATES_OOC_INDICATOR         = "nameplates_ooc_indicator";
 
 -- Returns true if the given unit token refers to a combat companion pet.
 --
@@ -123,6 +125,9 @@ end
 -- Handler called when the module is started up. This is responsible for
 -- fully starting the module, registering events and hooks as needed.
 function TRP3_NamePlates:OnEnable()
+	-- Install the configuration UI.
+	self:InitializeConfiguration();
+
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
@@ -161,7 +166,22 @@ end
 
 -- Handler triggered when a configuration setting is changed.
 function TRP3_NamePlates:OnConfigSettingChanged(key, value)
-	-- Force refresh all frames to apply the change, whatever it is.
+	-- Only trigger on name plate config changes. As we've got a lot of
+	-- settings, we'll just use a heuristic on the key to check this.
+	if not strfind(tostring(key), "^nameplates_") then
+		return;
+	end
+
+	-- Some settings mean we should reset the name displayed by all
+	-- unit frames back to the Blizzard-defaults. We'll do that now.
+	for unitToken, _ in pairs(self.activeUnitTokens) do
+		local frame = self:GetUnitFrameForUnit(unitToken);
+		if frame then
+			CompactUnitFrame_UpdateName(frame);
+		end
+	end
+
+	-- Now force-update all the frames to re-apply customizations.
 	self:UpdateAllUnitFrames();
 end
 
@@ -246,53 +266,51 @@ function TRP3_NamePlates:OnUnitFrameNameChanged(frame)
 	self:UpdateUnitFrameName(frame, frame.unit);
 end
 
+-- Returns true if the user has elected to enable name plate customizations.
+-- If this returns false, all customizations are disabled.
+function TRP3_NamePlates:ShouldCustomizeNamePlates()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS);
+end
+
 -- Returns true if the user has elected to only enable customizations while
 -- they themselves are in-character.
 function TRP3_NamePlates:ShouldOnlyCustomizeInCharacter()
-	return false;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
 end
 
 -- Returns true if the user has elected to show custom player names.
 function TRP3_NamePlates:ShouldShowCustomPlayerNames()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
 end
 
 -- Returns true if the user has elected to show custom pet titles.
 function TRP3_NamePlates:ShouldShowCustomPetNames()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_PET_NAMES);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PET_NAMES);
 end
 
 -- Returns true if the user has elected to show custom colors.
 function TRP3_NamePlates:ShouldShowCustomColors()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_COLORS);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_COLORS);
 end
 
 -- Returns true if the user has elected to show the OOC indicator.
 function TRP3_NamePlates:ShouldShowOOCIndicators()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS);
 end
 
 -- Returns true if the user has elected to show custom icons.
 function TRP3_NamePlates:ShouldShowCustomIcons()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_ICONS);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_ICONS);
 end
 
 -- Returns true if the user has elected to show custom titles.
 function TRP3_NamePlates:ShouldShowCustomTitles()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_SHOW_TITLES);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_TITLES);
 end
 
 -- Returns the token of the currently configured OOC indicator.
 function TRP3_NamePlates:GetConfiguredOOCIndicator()
-	return true;
-	-- return TRP3_Configuration.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
 end
 
 -- Returns the name text to be displayed for the given unit token, or nil
@@ -316,9 +334,9 @@ function TRP3_NamePlates:GetCustomUnitName(unitToken)
 		-- Prefix the OOC indicator if configured.
 		if not profile:IsInCharacter() and self:ShouldShowOOCIndicators() then
 			local oocIndicator = self:GetConfiguredOOCIndicator();
-			if oocIndicator == "text" then
+			if oocIndicator == "TEXT" then
 				nameText = strjoin(" ", OOC_TEXT_INDICATOR, nameText);
-			elseif oocIndicator == "icon" then
+			elseif oocIndicator == "ICON" then
 				nameText = strjoin(" ", tostring(OOC_ICON_INDICATOR), nameText);
 			end
 		end
@@ -460,6 +478,11 @@ end
 -- will return false if, for example, the player doesn't want to show plates
 -- while OOC.
 function TRP3_NamePlates:ShouldCustomizeUnitFrames()
+	-- If customizations are globally disabled, that's a no.
+	if not self:ShouldCustomizeNamePlates() then
+		return false;
+	end
+
 	-- Allow customization if we're not limiting ourselves to being IC.
 	if not self:ShouldOnlyCustomizeInCharacter() then
 		return true;
@@ -732,6 +755,123 @@ function TRP3_NamePlates:UpdateAllUnitTokens()
 	for unitToken, _ in pairs(self.activeUnitTokens) do
 		self:UpdateUnitToken(unitToken);
 	end
+end
+
+-- Registers configuration keys and installs the UI.
+function TRP3_NamePlates:InitializeConfiguration()
+	-- Register configuration keys.
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, "TEXT");
+
+	-- Build configuration page.
+	TRP3_Config.registerConfigurationPage({
+		id = "TRP3_NamePlates",
+		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
+		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
+		elements = {
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE,
+				help = L.NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP,
+				configKey = CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE,
+				help = L.NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP,
+				configKey = CONFIG_NAMEPLATES_ONLY_IN_CHARACTER,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_PET_NAMES_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_PET_NAMES_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_PET_NAMES,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_COLORS_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_COLORS_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_COLORS,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_ICONS_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_ICONS_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_ICONS,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_TITLES_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_TITLES_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_TITLES,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE,
+				help = L.NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP,
+				configKey = CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+					CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				title = L.NAMEPLATES_CONFIG_OOC_INDICATOR_TITLE,
+				help = L.NAMEPLATES_CONFIG_OOC_INDICATOR_HELP,
+				configKey = CONFIG_NAMEPLATES_OOC_INDICATOR,
+				dependentOnOptions = {
+					CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS,
+					CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES,
+					CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS,
+				},
+				listContent = {
+					{
+						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. OOC_TEXT_INDICATOR,
+						"TEXT",
+					},
+					{
+						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. tostring(OOC_ICON_INDICATOR),
+						"ICON",
+					},
+				},
+				listWidth = nil,
+				listCancel = true,
+			},
+		}
+	});
+
 end
 
 -- Module registration.

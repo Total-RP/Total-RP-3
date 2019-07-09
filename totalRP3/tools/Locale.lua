@@ -1294,6 +1294,27 @@ The register also received a checkbox to only display profiles on which you wrot
 
 	NAMEPLATES_MODULE_NAME = "Name Plates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default name plates with additional role play characteristics.",
+
+	NAMEPLATES_CONFIG_MENU_TEXT = "Name Plates",
+	NAMEPLATES_CONFIG_PAGE_TEXT = "Name Plates",
+	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable name plate customization",
+	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP = "If selected, enable name plate customization.\n\nUnchecking this will disable all customizations present in the module.",
+	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
+	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP = "If selected, only customize name plates while your current profile is marked as in-character.",
+	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE = "Show custom player names",
+	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP = "If selected, custom player names will be shown in preference to their character names.",
+	NAMEPLATES_CONFIG_SHOW_PET_NAMES_TITLE = "Show custom pet names",
+	NAMEPLATES_CONFIG_SHOW_PET_NAMES_HELP = "If selected, custom pet names will be shown in preference to their standard names.",
+	NAMEPLATES_CONFIG_SHOW_COLORS_TITLE = "Show custom colors",
+	NAMEPLATES_CONFIG_SHOW_COLORS_HELP = "If selected, the names of players and pets will use the colors defined in their profiles.",
+	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
+	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_TITLE = "Preferred OOC indicators",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_HELP = "The type of out-of-character (OOC) indicator to display.\n\nThis requires that OOC indicators be enabled.",
+	NAMEPLATES_CONFIG_SHOW_ICONS_TITLE = "Show custom icons",
+	NAMEPLATES_CONFIG_SHOW_ICONS_HELP = "If selected, profile icons will be displayed next to the names of players and pets.",
+	NAMEPLATES_CONFIG_SHOW_TITLES_TITLE = "Show custom titles",
+	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = "If selected, profile titles will be displayed below the names of players and pets.",
 };
 
 -- Use Ellyb to generate the Localization system
