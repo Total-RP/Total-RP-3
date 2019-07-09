@@ -19,6 +19,7 @@ local L = TRP3_API.loc;
 local TRP3_Companions = TRP3_API.companions;
 local TRP3_Config = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
+local TRP3_Globals = TRP3_API.globals;
 local TRP3_Register = TRP3_API.register;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
@@ -49,6 +50,14 @@ local ICON_HEIGHT = 16;
 -- OOC indicators for text or icon mode appropriately.
 local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
 local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
+
+-- List of addon names that conflict with this module. If these are enabled
+-- for the current character on initialization of this module, we won't
+-- set up customizations.
+--
+-- Configuration keys will still be defined so that other modules can make
+-- use of them as needed regardless of conflict status.
+local CONFLICTING_ADDONS = {};
 
 -- Configuration keys.
 local CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS = "nameplates_enable_customizations";
@@ -120,6 +129,22 @@ local function GetCombatPetProfile(unitToken)
 	return profile.data;
 end
 
+-- Returns an appropriate default OOC indicator style for configuration.
+local function GetDefaultOOCIndicator()
+	local defaultOOCIndicator = "TEXT";
+
+	-- The default OOC icon should inherit from the tooltip setting if
+	-- available, but without adding a module dependency please.
+	if TRP3_Configuration then
+		local tooltipOOCIndicator = TRP3_Configuration["tooltip_prefere_ooc_icon"];
+		if tooltipOOCIndicator == "TEXT" or tooltipOOCIndicator == "ICON" then
+			defaultOOCIndicator = tooltipOOCIndicator;
+		end
+	end
+
+	return defaultOOCIndicator;
+end
+
 -- Nameplate module table.
 local TRP3_NamePlates = {};
 
@@ -134,14 +159,32 @@ function TRP3_NamePlates:OnInitialize()
 
 	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
 	self.texturePool = CreateTexturePool(UIParent, "ARTWORK", 0);
+
+	-- Register configuration keys. Do this on-init so the keys always exist.
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ACTIVE_QUERY, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, GetDefaultOOCIndicator());
+
+	-- Prevent the module from actually being *enabled* if there's any of the
+	-- conflicting addons installed.
+	for _, addonName in ipairs(CONFLICTING_ADDONS) do
+		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
+		if state == 2 then
+			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
+		end
+	end
 end
 
 -- Handler called when the module is started up. This is responsible for
 -- fully starting the module, registering events and hooks as needed.
 function TRP3_NamePlates:OnEnable()
-	-- Install the configuration UI.
-	self:InitializeConfiguration();
-
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
@@ -184,6 +227,9 @@ function TRP3_NamePlates:OnEnable()
 			end
 		end);
 	end)();
+
+	-- Register the configuration page as our last act.
+	self:RegisterConfigurationPage();
 end
 
 -- Handler dispatched in response to in-game events.
@@ -929,33 +975,9 @@ function TRP3_NamePlates:UpdateAllUnitTokens()
 	end
 end
 
--- Registers configuration keys and installs the UI.
-function TRP3_NamePlates:InitializeConfiguration()
-	-- Register configuration keys.
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ACTIVE_QUERY, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
-
-	-- The default OOC icon should inherit from the tooltip setting.
-	--
-	-- Unfortunately, we don't want to add a hard dependency between this
-	-- and the tooltip module for the sake of *one* setting so instead we'll
-	-- just grab it from the config table directly.
-	local defaultOOCIndicator = "TEXT";
-	if TRP3_Configuration and TRP3_Configuration["tooltip_prefere_ooc_icon"] then
-		defaultOOCIndicator = TRP3_Configuration["tooltip_prefere_ooc_icon"];
-	end
-
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, defaultOOCIndicator);
-
-	-- Register the configuration page.
-	TRP3_Config.registerConfigurationPage({
+-- Registers the configuration page for this module.
+function TRP3_NamePlates:RegisterConfigurationPage()
+	TRP3_Config:registerConfigurationPage({
 		id = "main_config_uuu_nameplates",
 		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,

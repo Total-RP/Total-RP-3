@@ -1295,6 +1295,8 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_MODULE_NAME = "Nameplates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default nameplates with additional role play characteristics.",
 
+	NAMEPLATES_ERR_ADDON_CONFLICT = "Module disabled as a conflicting addon is enabled: %1$s",
+
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable nameplate customization",
