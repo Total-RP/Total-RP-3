@@ -744,6 +744,11 @@ end
 -- Resets the name displayed for a unit frame. This will trigger any
 -- customizations of the name to immediately occur afterwards.
 function TRP3_NamePlates:ResetUnitFrameName(frame)
+	-- Ignore forbidden frames.
+	if not CanAccessObject(frame) then
+		return;
+	end
+
 	CompactUnitFrame_UpdateName(frame);
 end
 
@@ -836,6 +841,11 @@ end
 
 -- Deinitializes the RP icon widget on a unit frame.
 function TRP3_NamePlates:TearDownUnitFrameIcon(frame, unitToken)
+	-- Ignore forbidden frames and bad units.
+	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
+		return;
+	end
+
 	self:ReleaseUnitFrameTexture(frame, "icon");
 end
 
