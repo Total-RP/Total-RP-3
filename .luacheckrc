@@ -96,6 +96,7 @@ read_globals = {
     "AddOn_Lib_Middleclass",
     "APIDocumentation",
 	"CreateFromMixins",
+	"CreateAndInitFromMixin",
 	"CallbackRegistryBaseMixin",
 	"CanAccessObject",
 	"CreateFontStringPool",

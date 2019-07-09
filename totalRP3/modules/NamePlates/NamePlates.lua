@@ -32,6 +32,29 @@ local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 local Icon = TRP3_API.Ellyb.Icon;
 
+-- Local declarations.
+local GetDefaultOOCIndicator;
+local GetNamePlateDisplayProvider;
+local GetRegisterIDForUnit;
+local GetRegisterIDRequestCooldown;
+local GetUnitCombatPetProfile;
+local GetUnitForRegisterID;
+local GetUnitPlayerProfile;
+local OnConfigSettingChanged;
+local OnModuleInitialize;
+local OnModuleStart;
+local OnMouseOverChanged;
+local OnNamePlateUnitAdded;
+local OnNamePlateUnitRemoved;
+local OnRegisterDataUpdated;
+local OnRoleplayStatusChanged;
+local PruneRegisterIDRequestCooldowns;
+local RegisterModuleConfigurationPage;
+local SetNamePlateDisplayProvider;
+local SetRegisterIDRequestCooldown;
+local SetUnitForRegisterID;
+local UnitIsCombatPet;
+
 -- Cooldown between queries for the same profile from nameplate activity
 -- alone, in seconds. Defaults to 5 minutes.
 --
@@ -40,24 +63,17 @@ local Icon = TRP3_API.Ellyb.Icon;
 -- people you can actively mouse-over.
 local ACTIVE_QUERY_COOLDOWN = 300;
 
--- Maximum number of characters for displayed titles.
-local MAX_TITLE_SIZE = 40;
-
--- Size of custom icons.
-local ICON_WIDTH = 16;
-local ICON_HEIGHT = 16;
-
--- OOC indicators for text or icon mode appropriately.
-local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
-local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
-
 -- List of addon names that conflict with this module. If these are enabled
 -- for the current character on initialization of this module, we won't
 -- set up customizations.
 local CONFLICTING_ADDONS = {
-	"Kui_Nameplates", -- No errors, but customizations won't display.
+	"Kui_Nameplates", -- No errors, however modifications aren't visible.
 	"Plater",         -- Untested. Assuming it won't work.
 };
+
+-- OOC indicators for text or icon mode appropriately.
+local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
+local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Configuration keys.
 local CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS = "nameplates_enable_customizations";
@@ -71,66 +87,414 @@ local CONFIG_NAMEPLATES_SHOW_TITLES           = "nameplates_show_titles";
 local CONFIG_NAMEPLATES_OOC_INDICATOR         = "nameplates_ooc_indicator";
 local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 
--- Returns true if the given unit token refers to a combat companion pet.
---
--- Returns false if the unit is invalid, refers to a player, or is a
--- battle pet companion.
-local function UnitIsCombatPet(unitToken)
-	-- Ensure battle pets don't accidentally pass this test, in case one
-	-- day they get nameplates added for no reason.
-	if UnitIsBattlePetCompanion(unitToken) then
+-- Nameplate module table.
+local NamePlates = {
+	-- Mapping of register IDs ("unit IDs") to nameplate unit tokens.
+	registerIDUnitMap = {},
+	-- Mapping of register IDs ("unit IDs") to request cooldowns.
+	registerIDCooldowns = {},
+	-- Active integration that is used to customize nameplates.
+	provider = nil,
+};
+
+-- If this returns false, all customizations are disabled.
+function NamePlates.ShouldCustomizeNamePlates()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS);
+end
+
+-- they themselves are in-character.
+function NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
+end
+
+-- seeing a player nameplate.
+function NamePlates.ShouldRequestProfiles()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ACTIVE_QUERY);
+end
+
+-- Returns true if the user has elected to show custom player names.
+function NamePlates.ShouldShowCustomPlayerNames()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
+end
+
+-- Returns true if the user has elected to show custom pet titles.
+function NamePlates.ShouldShowCustomPetNames()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PET_NAMES);
+end
+
+-- Returns true if the user has elected to show custom colors.
+function NamePlates.ShouldShowCustomColors()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_COLORS);
+end
+
+-- Returns true if the user has elected to show custom icons.
+function NamePlates.ShouldShowCustomIcons()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_ICONS);
+end
+
+-- Returns true if the user has elected to show custom titles.
+function NamePlates.ShouldShowCustomTitles()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_TITLES);
+end
+
+-- Returns true if the user has elected to show OOC indicators.
+function NamePlates.ShouldShowOOCIndicators()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS);
+end
+
+-- Returns the currently configured style token for OOC indicators.
+function NamePlates.GetConfiguredOOCIndicatorStyle()
+	return TRP3_Config.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
+end
+
+-- Returns true if customizations should be enabled for unit frames.
+function NamePlates.IsCustomizationEnabled()
+	-- If customizations are globally disabled, that's a no.
+	if not NamePlates.ShouldCustomizeNamePlates() then
 		return false;
 	end
 
-	return UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet");
+	-- Disable customizations if we need to be in-character.
+	if NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
+		local currentUser = Player.GetCurrentUser();
+		if not currentUser:IsInCharacter() then
+			return false;
+		end
+	end
+
+	return true;
 end
 
--- Returns the TRP3 API internal "unit ID" for a given unit token. This will
--- typically be a "name-realm" string for a player, or a "name-realm_pet"
--- for a companion pet.
-local function GetRegisterUnitID(unitToken)
+-- Returns true if the given unit token is valid, and refers to either a
+-- player or a combat pet.
+--
+-- The unit token may or may not have a nameplate assigned; this function
+-- only tests if it's capable of having one.
+function NamePlates.IsValidUnit(unitToken)
+	-- Obviously invalid tokens are invalid. Who knew.
+	if not unitToken or unitToken == "" then
+		return false;
+	end
+
+	-- Validate the type of unit it represents.
+	if not UnitIsPlayer(unitToken) and not UnitIsCombatPet(unitToken) then
+		return false;
+	end
+
+	return true;
+end
+
+-- Returns true if a request for the given unit token can be issued.
+--
+-- This will return false for invalid unit tokens, or in cases where
+-- actively requesting units is disabled.
+function NamePlates.ShouldRequestUnitProfile(unitToken)
+	-- Don't allow requests if customizations are turned off. This is more
+	-- an optimization, since they wouldn't be shown anyway.
+	if not NamePlates.ShouldCustomizeNamePlates() then
+		return false;
+	end
+
+	-- Don't allow requests if they themselves are disabled.
+	if not NamePlates.ShouldRequestProfiles() then
+		return false;
+	end
+
+	-- Validate the unit token.
+	if not NamePlates.IsValidUnit(unitToken) then
+		return false;
+	end
+
+	-- Get the register ID for this unit and see if they have a profile.
+	local registerID = GetRegisterIDForUnit(unitToken);
+	if not registerID then
+		return false;
+	end
+
+	if TRP3_Register.isUnitIDKnown(registerID)
+	and TRP3_Register.hasProfile(registerID) then
+		return false;
+	end
+
+	-- Otherwise, check if we've sent a request too recently.
+	local cooldown = GetRegisterIDRequestCooldown(registerID);
+	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
+		return false;
+	end
+
+	-- Otherwise, allow requests to occur.
+	return true;
+end
+
+-- Requests a profile for the given unit token.
+--
+-- Returns true if a request was issued, or false if no request was issued.
+--
+-- This function will do nothing if ShouldRequestUnitProfile would itself
+-- return false.
+function NamePlates.RequestUnitProfile(unitToken)
+	-- Don't dispatch a request if we shouldn't do so.
+	if not NamePlates.ShouldRequestUnitProfile(unitToken) then
+		return false;
+	end
+
+	-- Get the register ID for this unit token, if available.
+	local registerID = GetRegisterIDForUnit(unitToken);
+	if not registerID then
+		return false;
+	end
+
+	-- Issue requests via both TRP and MSP protocols. MSP is limited to
+	-- players only, so don't send anything for pets out.
 	if UnitIsPlayer(unitToken) then
-		return TRP3_Utils.str.getUnitID(unitToken);
+		TRP3_API.r.sendQuery(registerID);
+		TRP3_API.r.sendMSPQueryIfAppropriate(registerID);
 	elseif UnitIsCombatPet(unitToken) then
-		local companionType = TRP3_UI.misc.TYPE_PET;
-		return TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
+		-- Queries for companions take a little bit extra effort.
+		local ownerID = TRP3_Utils.str.companionIDToInfo(registerID);
+		if TRP3_Register.isUnitIDKnown(ownerID) then
+			TRP3_API.r.sendQuery(ownerID);
+		end
+	else
+		-- Unknown unit type.
+		return false;
 	end
+
+	-- Debounce further requests for a significant amount of time.
+	local cooldown = GetTime() + ACTIVE_QUERY_COOLDOWN;
+	SetRegisterIDRequestCooldown(registerID, cooldown);
+
+	return true;
 end
 
--- Returns the player model associated with the given unit token.
+-- Returns the custom name text to be displayed for the given unit token.
 --
--- If no valid model can be found, nil is returned.
-local function GetPlayerProfile(unitToken)
-	local name, realm = UnitName(unitToken)
-	if not name or name == "" or name == UNKNOWNOBJECT then
-		-- Don't return profiles for invalid/unknown units.
+-- Return nil if customizations are disabled, or if no name can be obtained.
+function NamePlates.GetCustomUnitName(unitToken)
+	-- Don't bother if customization is disabled.
+	if not NamePlates.IsCustomizationEnabled() then
 		return nil;
 	end
 
-	return Player.CreateFromNameAndRealm(name, realm);
+	-- Dispatch based on the profile type.
+	if UnitIsPlayer(unitToken) and NamePlates.ShouldShowCustomPlayerNames() then
+		-- Get the profile for the player and with it, their name.
+		local profile = GetUnitPlayerProfile(unitToken);
+		if not profile then
+			-- No profile data available.
+			return nil;
+		end
+
+		local nameText = profile:GetRoleplayingName();
+
+		-- Prefix the OOC indicator if configured.
+		if not profile:IsInCharacter() and NamePlates.ShouldShowOOCIndicators() then
+			local oocIndicator = NamePlates.GetConfiguredOOCIndicatorStyle();
+			if oocIndicator == "TEXT" then
+				nameText = strjoin(" ", OOC_TEXT_INDICATOR, nameText);
+			elseif oocIndicator == "ICON" then
+				nameText = strjoin(" ", tostring(OOC_ICON_INDICATOR), nameText);
+			end
+		end
+
+		return nameText;
+	elseif UnitIsCombatPet(unitToken) and NamePlates.ShouldShowCustomPetNames() then
+		-- Combat pets use companion pet profiles.
+		local profile = GetUnitCombatPetProfile(unitToken);
+		if not profile then
+			-- No profile data available.
+			return nil;
+		end
+
+		return profile.NA;
+	end
+
+	-- No name is available.
+	return nil;
 end
 
--- Returns the (combat) pet companion profile associated with the given
--- unit token.
+-- Returns the custom color to be displayed for the given unit token.
 --
--- If no profile can be found, nil is returned.
-local function GetCombatPetProfile(unitToken)
-	local companionType = TRP3_UI.misc.TYPE_PET;
-	local fullID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
-	if not fullID then
+-- Return nil if customizations are disabled, or if no color can be obtained.
+function NamePlates.GetCustomUnitColor(unitToken)
+	-- Don't bother if customization is disabled.
+	if not NamePlates.IsCustomizationEnabled()
+	or not NamePlates.ShouldShowCustomColors() then
 		return nil;
 	end
 
-	local profile = TRP3_Companions.register.getCompanionProfile(fullID);
-	if not profile then
-		return nil;
+	-- Dispatch based on the profile type.
+	if UnitIsPlayer(unitToken) then
+		-- Get the profile for the player and with it, their custom color.
+		local profile = GetUnitPlayerProfile(unitToken);
+		local nameColor = profile and profile:GetCustomColorForDisplay();
+
+		-- If there is no profile or color, use class coloring instead.
+		if not nameColor then
+			local _, class = UnitClass(unitToken);
+			if class then
+				nameColor = C_ClassColor.GetClassColor(class);
+			end
+		end
+
+		return nameColor;
+	elseif UnitIsCombatPet(unitToken) then
+		-- Combat pets use companion pet profiles.
+		local profile = GetUnitCombatPetProfile(unitToken);
+		if not profile then
+			-- No profile available.
+			return nil;
+		end
+
+		local petColor = profile.NH and Color.CreateFromHexa(profile.NH);
+		if not petColor then
+			-- No color was set.
+			return nil;
+		end
+
+		-- Apply contrast changes as needed.
+		if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+			petColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+		end
+
+		return petColor;
 	end
 
-	return profile.data;
+	-- No color is available.
+	return nil;
 end
+
+-- Returns the name of an icon without its path prefix for the given unit
+-- token.
+--
+-- Returns nil if customization is disabled, or if no icon is available.
+function NamePlates.GetCustomUnitIcon(unitToken)
+	-- If not displaying icons, return early.
+	if not NamePlates.IsCustomizationEnabled()
+	or not NamePlates.ShouldShowCustomIcons() then
+		return nil;
+	end
+
+	-- Get the appropriate icon for this unit type.
+	if UnitIsPlayer(unitToken) then
+		local profile = GetUnitPlayerProfile(unitToken);
+		if profile then
+			return profile:GetCustomIcon();
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetUnitCombatPetProfile(unitToken);
+		if profile then
+			return profile.IC;
+		end
+	end
+
+	-- No icon is available.
+	return nil;
+end
+
+-- Returns the name of an title text of a profile for the given unit token.
+--
+-- The title returned is the raw, uncropped, unformatted text. This should
+-- be formatted/cropped appropriately prior to display.
+--
+-- Returns nil if customization is disabled, or if no title is available.
+function NamePlates.GetCustomUnitTitle(unitToken)
+	-- If not displaying titles, return early.
+	if not NamePlates.IsCustomizationEnabled()
+	or not NamePlates.ShouldShowCustomTitles() then
+		return nil;
+	end
+
+	-- Get the appropriate title for this unit type.
+	if UnitIsPlayer(unitToken) then
+		local profile = GetUnitPlayerProfile(unitToken);
+		local characteristics = profile and profile:GetCharacteristics();
+		if characteristics then
+			return characteristics.FT;
+		end
+	elseif UnitIsCombatPet(unitToken) then
+		local profile = GetUnitCombatPetProfile(unitToken);
+		if profile then
+			return profile.TI;
+		end
+	end
+
+	-- No title is available.
+	return nil;
+end
+
+-- Updates a single nameplate for the given unit token, if one exists.
+--
+-- Return true if a nameplate is successfully updated, or false if not.
+function NamePlates.UpdateNamePlateForUnit(unitToken)
+	-- Validate the unit token.
+	if not NamePlates.IsValidUnit(unitToken) then
+		return false;
+	end
+
+	-- Grab the provider if one exists and trigger the update.
+	local provider = GetNamePlateDisplayProvider();
+	if not provider then
+		return false;
+	end
+
+	return provider:UpdateNamePlateForUnit(unitToken);
+end
+
+-- Updates all nameplates managed by this module.
+function NamePlates.UpdateAllNamePlates()
+	local provider = GetNamePlateDisplayProvider();
+	if not provider then
+		return;
+	end
+
+	return provider:UpdateAllNamePlates();
+end
+
+-- Base mixin used for nameplate display providers. A provider implements the
+-- logic for updating nameplates depending upon which addon is being used
+-- to customize them by the end-user.
+local DisplayProviderMixin = {};
+NamePlates.DisplayProviderMixin = DisplayProviderMixin;
+
+-- Initializes the provider. This is called at-most once when your provider
+-- is selected for use by the module.
+function DisplayProviderMixin:Init()
+	-- Override this in your implementation to perform initialization logic.
+end
+
+-- Called when a nameplate unit token is attached to an allocated nameplate
+-- frame. This can be used to perform setup logic.
+function DisplayProviderMixin:OnNamePlateUnitAdded()
+	-- Override this in your implementation if setup logic is desired.
+end
+
+-- Called when a nameplate unit token is removed from an allocated nameplate
+-- frame. This can be used to perform teardown logic.
+function DisplayProviderMixin:OnNamePlateUnitRemoved()
+	-- Override this in your implementation if teardown logic is desired.
+end
+
+-- Updates the name plate for a single unit identified by the given token.
+--
+-- Returns true if the frame is updated successfully, or false if the given
+-- unit token is invalid.
+--
+-- @param unitToken The unit token to update a nameplate for.
+function DisplayProviderMixin:UpdateNamePlateForUnit(_)
+	-- Override this in your implementation.
+	return false;
+end
+
+-- Updates all name plates managed by this provider.
+function DisplayProviderMixin:UpdateAllNamePlates()
+	-- Override this in your implementation.
+end
+
+-- Private module functions.
 
 -- Returns an appropriate default OOC indicator style for configuration.
-local function GetDefaultOOCIndicator()
+function GetDefaultOOCIndicator()
 	local defaultOOCIndicator = "TEXT";
 
 	-- The default OOC icon should inherit from the tooltip setting if
@@ -145,104 +509,167 @@ local function GetDefaultOOCIndicator()
 	return defaultOOCIndicator;
 end
 
--- Nameplate module table.
-local TRP3_NamePlates = {};
+-- Returns the TRP3 API internal "unit ID" for a given unit token. This will
+-- typically be a "name-realm" string for a player, or a "name-realm_pet"
+-- for a companion pet.
+--
+-- Due to the similarity of unit tokens ("player", "target", ...) and the
+-- internal "unit ID" moniker, the nameplate module refers to these as
+-- register IDs.
+function GetRegisterIDForUnit(unitToken)
+	if UnitIsPlayer(unitToken) then
+		return TRP3_Utils.str.getUnitID(unitToken);
+	elseif UnitIsCombatPet(unitToken) then
+		local companionType = TRP3_UI.misc.TYPE_PET;
+		return TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
+	end
+end
 
--- Handler called when the module is being initialized. This is responsible
--- for setting up the base internal state without actually enabling any
--- behaviours.
-function TRP3_NamePlates:OnInitialize()
-	-- Prevent the module from actually being set up if there's any of the
-	-- conflicting addons installed.
-	for _, addonName in ipairs(CONFLICTING_ADDONS) do
-		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
-		if state == 2 then
-			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
+-- Returns the cooldown for requests for a given register ID, or nil if
+-- no cooldown is set.
+function GetRegisterIDRequestCooldown(unitToken)
+	local registerIDCooldowns = NamePlates.registerIDCooldowns;
+	return registerIDCooldowns[unitToken];
+end
+
+-- Sets the cooldown for future requests for a given register ID. The given
+-- value should be a number in seconds, or nil to unset the cooldown.
+function SetRegisterIDRequestCooldown(unitToken, cooldown)
+	local registerIDCooldowns = NamePlates.registerIDCooldowns;
+	registerIDCooldowns[unitToken] = cooldown;
+end
+
+-- Prunes the table of cooldowns for requests, removing all expired request
+-- cooldowns.
+function PruneRegisterIDRequestCooldowns()
+	local registerIDCooldowns = NamePlates.registerIDCooldowns;
+	for registerID, cooldown in pairs(registerIDCooldowns) do
+		if (GetTime() - cooldown) >= ACTIVE_QUERY_COOLDOWN then
+			SetRegisterIDRequestCooldown(registerID, nil);
 		end
 	end
-
-	self.activeUnitTokens = {};
-	self.registerUnitIDMap = {};
-	self.registerUnitIDCooldowns = {};
-	self.unitFrameWidgets = {};
-
-	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
-	self.texturePool = CreateTexturePool(UIParent, "ARTWORK", 0);
-
-	-- Register configuration keys. Do this on-init so the keys always exist.
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ACTIVE_QUERY, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
-	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, GetDefaultOOCIndicator());
 end
 
--- Handler called when the module is started up. This is responsible for
--- fully starting the module, registering events and hooks as needed.
-function TRP3_NamePlates:OnStart()
-	-- Register events and script handlers.
-	local eventFrame = CreateFrame("Frame");
-	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
-	eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
-	eventFrame:SetScript("OnEvent", function(_, ...)
-		return self:OnEvent(...);
-	end);
-
-	-- Register internal events.
-	TRP3_Events.registerCallback("MOUSE_OVER_CHANGED", function(...)
-		self:OnMouseOverChanged(...);
-	end);
-
-	TRP3_Events.registerCallback("REGISTER_DATA_UPDATED", function(...)
-		self:OnRegisterDataUpdated(...);
-	end);
-
-	TRP3_Events.registerCallback("CONFIG_SETTING_CHANGED", function(...)
-		self:OnConfigSettingChanged(...);
-	end);
-
-	-- Install hooks.
-	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
-		return self:OnUnitFrameNameChanged(frame);
-	end);
-
-	-- Put in a low resolution ticker to detect IC/OOC swaps. There's no event
-	-- that fires to signal this, and a similar approach is used by the
-	-- toolbar already. One second should be small enough to make it feel
-	-- like the setting works, and infrequent enough to not be an issue.
-	(function()
-		local previousState;
-		C_Timer.NewTicker(1, function()
-			local currentUser = Player.GetCurrentUser();
-			local isInCharacter = currentUser:IsInCharacter();
-
-			if previousState ~= isInCharacter then
-				previousState = isInCharacter;
-				self:OnRoleplayStatusChanged();
-			end
-		end);
-	end)();
-
-	-- Register the configuration page as our last act.
-	self:RegisterConfigurationPage();
+-- Returns the nameplate unit token associated with a given register unit ID.
+--
+-- Returns nil if no nameplate unit is known for the given register unit ID.
+function GetUnitForRegisterID(registerID)
+	local registerIDUnitMap = NamePlates.registerIDUnitMap;
+	return registerIDUnitMap[registerID];
 end
 
--- Handler dispatched in response to in-game events.
-function TRP3_NamePlates:OnEvent(event, ...)
-	if event == "NAME_PLATE_UNIT_ADDED" then
-		self:OnNamePlateUnitAdded(...);
-	elseif event == "NAME_PLATE_UNIT_REMOVED" then
-		self:OnNamePlateUnitRemoved(...);
+-- Sets the nameplate unit token for a register unit ID. The assigned token
+-- will be returned by future calls to GetUnitForRegisterID.
+--
+-- The unit token may be set to nil to remove the relation completely.
+function SetUnitForRegisterID(registerID, unitToken)
+	local registerIDUnitMap = NamePlates.registerIDUnitMap;
+	registerIDUnitMap[registerID] = unitToken;
+end
+
+-- Returns the (combat) pet companion profile associated with the given
+-- unit token.
+--
+-- If no profile can be found, nil is returned.
+function GetUnitCombatPetProfile(unitToken)
+	local companionType = TRP3_UI.misc.TYPE_PET;
+	local fullID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
+	if not fullID then
+		return nil;
+	end
+
+	local profile = TRP3_Companions.register.getCompanionProfile(fullID);
+	if not profile then
+		return nil;
+	end
+
+	return profile.data;
+end
+
+-- Returns the player model associated with the given unit token.
+--
+-- If no valid model can be found, nil is returned.
+function GetUnitPlayerProfile(unitToken)
+	local name, realm = UnitName(unitToken)
+	if not name or name == "" or name == UNKNOWNOBJECT then
+		-- Don't return profiles for invalid/unknown units.
+		return nil;
+	end
+
+	return Player.CreateFromNameAndRealm(name, realm);
+end
+
+-- Returns the provider in use for the nameplate display.
+function GetNamePlateDisplayProvider()
+	return NamePlates.provider;
+end
+
+-- Sets the provider to use for the nameplate display.
+function SetNamePlateDisplayProvider(provider)
+	NamePlates.provider = provider;
+end
+
+-- Returns true if the given unit token refers to a combat companion pet.
+--
+-- Returns false if the unit is invalid, refers to a player, or is a
+-- battle pet companion.
+function UnitIsCombatPet(unitToken)
+	-- Ensure battle pets don't accidentally pass this test, in case one
+	-- day they get nameplates added for no reason.
+	if UnitIsBattlePetCompanion(unitToken) then
+		return false;
+	end
+
+	return UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet");
+end
+
+-- Game integration handlers.
+
+-- Handler triggered then the game assigns a nameplate unit token.
+function OnNamePlateUnitAdded(unitToken)
+	-- Forward to the active provider.
+	local provider = GetNamePlateDisplayProvider();
+	if provider then
+		provider:OnNamePlateUnitAdded(unitToken);
+	end
+
+	-- Map the unit token to a register ID for updates.
+	local registerID = GetRegisterIDForUnit(unitToken);
+	if registerID then
+		SetUnitForRegisterID(registerID, unitToken);
+	end
+
+	-- Issue a request for the profile.
+	NamePlates.RequestUnitProfile(unitToken);
+
+	-- Update the unit frame for them immediately with whatever data we have.
+	NamePlates.UpdateNamePlateForUnit(unitToken);
+end
+
+-- Handler triggered then the game deactivates a nameplate unit token.
+function OnNamePlateUnitRemoved(unitToken)
+	-- Forward to the active provider.
+	local provider = GetNamePlateDisplayProvider();
+	if provider then
+		provider:OnNamePlateUnitRemoved(unitToken);
+	end
+
+	-- Remove all mappings for this register IDs to this unit token. This
+	-- needs to check them all because there's cases where we'll install a
+	-- mapping but the register ID later changes; for example if a unit
+	-- loads in with an "Unknown" pet.
+	local registerIDUnitMap = NamePlates.registerIDUnitMap;
+	for registerID, mappedUnitToken in pairs(registerIDUnitMap) do
+		if unitToken == mappedUnitToken then
+			SetUnitForRegisterID(registerID, nil);
+		end
 	end
 end
 
+-- TRP integration handlers.
+
 -- Handler triggered when a configuration setting is changed.
-function TRP3_NamePlates:OnConfigSettingChanged(key, _)
+function OnConfigSettingChanged(key, _)
 	local shouldRefresh = false;
 
 	-- If color contrast is changed, we should refresh things.
@@ -261,753 +688,118 @@ function TRP3_NamePlates:OnConfigSettingChanged(key, _)
 		return;
 	end
 
-	-- Reset names to ensure that the Blizzard names are set first before
-	-- mass-reapplying the customizations, in case things got turned off.
-	self:ResetAllUnitFrameNames();
-	self:UpdateAllUnitFrames();
+	-- In response to configuration changes update all frames.
+	NamePlates.UpdateAllNamePlates();
 end
 
 -- Handler triggered when the player mouses over an in-game unit.
-function TRP3_NamePlates:OnMouseOverChanged(targetID)
-	-- Try and convert the target ID (a register-internal ID) to that of
-	-- a unit token and force-refresh the frame. This can be used as a
-	-- get-out-of-jail card if there's some issue updating nameplates.
-	local unitToken = self.registerUnitIDMap[targetID];
-	if not unitToken then
+function OnMouseOverChanged()
+	-- The nameplate API can link mouseover/target/etc. units to frames, so
+	-- just validate it.
+	local unitToken = "mouseover";
+	if not NamePlates.IsValidUnit(unitToken) then
 		return;
 	end
 
-	self:UpdateUnitToken(unitToken);
-end
-
--- Handler triggered then the game creates a nameplate unit token.
-function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
-	-- Flag the unit as active.
-	self.activeUnitTokens[unitToken] = true;
-
-	-- Map the unit token to a register-local unit ID for updates.
-	local registerUnitID = GetRegisterUnitID(unitToken);
-	if registerUnitID then
-		self.registerUnitIDMap[registerUnitID] = unitToken;
-	end
-
-	-- Initialize the unit frame.
-	local frame = self:GetUnitFrameForUnit(unitToken);
-	if frame then
-		self:SetUpUnitFrame(frame, unitToken);
-	end
-
-	-- Issue requests as needed.
-	if self:ShouldRequestUnitProfile(unitToken) then
-		self:RequestUnitProfile(unitToken);
-	end
-
-	-- Update the unit frame for them immediately. It might not be fully
-	-- configured at this point, however our hooks will fire if that's the
-	-- case anyway.
-	self:UpdateUnitToken(unitToken);
-end
-
--- Handler triggered then the game removes a nameplate unit token.
-function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
-	-- Remove additional customizations that might be attached to the frame.
-	local frame = self:GetUnitFrameForUnit(unitToken);
-	if frame then
-		self:TearDownUnitFrame(frame, unitToken);
-	end
-
-	-- Remove any mappings from register unit IDs to this unit token.
-	for registerUnitID, storedUnitToken in pairs(self.registerUnitIDMap) do
-		if unitToken == storedUnitToken then
-			self.registerUnitIDMap[registerUnitID] = nil;
-		end
-	end
-
-	-- Flag the unit as inactive.
-	self.activeUnitTokens[unitToken] = nil;
+	NamePlates.UpdateNamePlateForUnit(unitToken);
 end
 
 -- Handler triggered when TRP updates the registry for a named profile.
-function TRP3_NamePlates:OnRegisterDataUpdated(registerUnitID)
-	-- Try and get a unit token from the internal unit ID.
-	local unitToken = self.registerUnitIDMap[registerUnitID];
+function OnRegisterDataUpdated(registerID)
+	-- Trigger an update for the token linked to this ID, if one exists.
+	local unitToken = GetUnitForRegisterID(registerID);
 	if not unitToken then
 		return;
 	end
 
-	self:UpdateUnitToken(unitToken);
+	NamePlates.UpdateNamePlateForUnit(unitToken);
 end
 
 -- Handler triggered when the roleplay status of the character changes, such
 -- as from IC to OOC.
-function TRP3_NamePlates:OnRoleplayStatusChanged()
-	-- Update all frames if we're dependant upon the status.
-	if self:ShouldOnlyCustomizeInCharacter() then
-		-- Do a full reset and update.
-		self:ResetAllUnitFrameNames();
-		self:UpdateAllUnitFrames();
-	end
-end
-
--- Handler triggered when the name on a unit frame is modified by the UI.
-function TRP3_NamePlates:OnUnitFrameNameChanged(frame)
-	-- Update the name portion of the unit frame.
-	self:UpdateUnitFrameName(frame, frame.unit);
-end
-
--- Returns true if the user has elected to enable nameplate customizations.
--- If this returns false, all customizations are disabled.
-function TRP3_NamePlates:ShouldCustomizeNamePlates()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS);
-end
-
--- Returns true if the user has elected to only enable customizations while
--- they themselves are in-character.
-function TRP3_NamePlates:ShouldOnlyCustomizeInCharacter()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER);
-end
-
--- Returns true if the user has elected to actively query profiles upon
--- seeing a player nameplate.
-function TRP3_NamePlates:ShouldActivelyQueryProfiles()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ACTIVE_QUERY);
-end
-
--- Returns true if the user has elected to show custom player names.
-function TRP3_NamePlates:ShouldShowCustomPlayerNames()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES);
-end
-
--- Returns true if the user has elected to show custom pet titles.
-function TRP3_NamePlates:ShouldShowCustomPetNames()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_PET_NAMES);
-end
-
--- Returns true if the user has elected to show custom colors.
-function TRP3_NamePlates:ShouldShowCustomColors()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_COLORS);
-end
-
--- Returns true if the user has elected to show the OOC indicator.
-function TRP3_NamePlates:ShouldShowOOCIndicators()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS);
-end
-
--- Returns true if the user has elected to show custom icons.
-function TRP3_NamePlates:ShouldShowCustomIcons()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_ICONS);
-end
-
--- Returns true if the user has elected to show custom titles.
-function TRP3_NamePlates:ShouldShowCustomTitles()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_SHOW_TITLES);
-end
-
--- Returns the token of the currently configured OOC indicator.
-function TRP3_NamePlates:GetConfiguredOOCIndicator()
-	return TRP3_Config.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
-end
-
--- Returns true if customizations should be enabled for unit frames. This
--- will return false based on the current state of the addon and the values
--- of multiple settings.
-function TRP3_NamePlates:ShouldCustomizeUnitFrames()
-	-- If customizations are globally disabled, that's a no.
-	if not self:ShouldCustomizeNamePlates() then
-		return false;
+function OnRoleplayStatusChanged()
+	-- No need to handle status changes if we don't customize based on our
+	-- IC/OOC state.
+	if not NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
+		return;
 	end
 
-	-- Disable customizations if we need to be in-character.
-	if self:ShouldOnlyCustomizeInCharacter() then
-		local currentUser = Player.GetCurrentUser();
-		if not currentUser:IsInCharacter() then
-			return false;
+	-- Otherwise, trigger updates.
+	NamePlates.UpdateAllNamePlates();
+end
+
+-- Module lifecycle functions.
+
+-- Handler called when the module is being initialized. This is responsible
+-- for setting up the base internal state without actually enabling any
+-- behaviours.
+function OnModuleInitialize()
+	-- Prevent the module from actually being set up if there's any of the
+	-- conflicting addons installed.
+	for _, addonName in ipairs(CONFLICTING_ADDONS) do
+		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
+		if state == 2 then
+			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
 		end
 	end
 
-	return true;
+	-- Register configuration keys. Do this on-init so the keys always exist.
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ONLY_IN_CHARACTER, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_ACTIVE_QUERY, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PLAYER_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_PET_NAMES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_COLORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_ICONS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_TITLES, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_SHOW_OOC_INDICATORS, true);
+	TRP3_Config.registerConfigKey(CONFIG_NAMEPLATES_OOC_INDICATOR, GetDefaultOOCIndicator());
 end
 
--- Returns true if a request for the given unit token can be issued. If this
--- returns false, it should indicate that even if a request were issued it
--- would do nothing as the token doesn't point to a requestable unit.
-function TRP3_NamePlates:CanRequestUnitProfile(unitToken)
-	-- If it's a player or a combat pet, then that's a yes.
-	if UnitIsPlayer(unitToken) then
-		return true;
+-- Handler called when the module is started up. This is responsible for
+-- fully starting the module, registering events and hooks as needed.
+function OnModuleStart()
+	-- Activate an appropriate provider based on the environment.
+	local providerMixin;
+
+	if IsAddOnLoaded("Blizzard_NamePlates") then
+		-- Blizzard_NamePlate should be a last resort. Add custom integrations
+		-- above this one.
+		providerMixin = NamePlates.BlizzardProviderMixin;
+	else
+		return false, L.NAMEPLATES_ERR_NO_VALID_PROVIDER;
 	end
 
-	-- If it's a combat pet, it's a yes if we can scrape the owner.
-	if UnitIsCombatPet(unitToken) then
-		local registerUnitID = GetRegisterUnitID(unitToken);
-		if not registerUnitID then
-			return false;
+	local provider = CreateAndInitFromMixin(providerMixin);
+	SetNamePlateDisplayProvider(provider);
+
+	-- Register events and script handlers.
+	local eventFrame = CreateFrame("Frame");
+	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
+	eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
+	eventFrame:SetScript("OnEvent", function(_, event, ...)
+		if event == "NAME_PLATE_UNIT_ADDED" then
+			OnNamePlateUnitAdded(...);
+		elseif event == "NAME_PLATE_UNIT_REMOVED" then
+			OnNamePlateUnitRemoved(...);
 		end
-
-		-- Check if the owner ID is known.
-		local ownerID = TRP3_Utils.str.companionIDToInfo(registerUnitID);
-		if TRP3_Register.isUnitIDKnown(ownerID) then
-			return true;
-		end
-	end
-
-	return false;
-end
-
--- Returns true if a request for the given unit token should be issued. If
--- this returns false, a request should not be sent for this unit token as
--- we may already have recent enough data on them.
-function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
-	-- If the user has disabled this feature, then it's always a no.
-	if not self:ShouldActivelyQueryProfiles() then
-		return false;
-	end
-
-	-- If you can't, then you shouldn't.
-	if not self:CanRequestUnitProfile(unitToken) then
-		return false;
-	end
-
-	-- Convert the token to an internal unit ID.
-	local registerUnitID = GetRegisterUnitID(unitToken);
-	if not registerUnitID then
-		-- If you can't convert it, you sure as heck can't request it.
-		return false;
-	end
-
-	-- If the unit is already known and they have a profile, we'll reject
-	-- sending out requests.
-	if TRP3_Register.isUnitIDKnown(registerUnitID)
-	and TRP3_Register.hasProfile(registerUnitID) then
-		return false;
-	end
-
-	-- We'll want to *strongly* debounce requests. Both protocols implement
-	-- a cooldown however nameplates are displayed quite a lot more, so we'll
-	-- want to significantly increase this.
-	local cooldown = self.registerUnitIDCooldowns[registerUnitID];
-	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
-		return false;
-	end
-
-	-- Otherwise assume that the request should be sent.
-	return true;
-end
-
--- Requests a profile for the given unit token.
---
--- This will not check if a request should be sent; it us up to the caller
--- to consult the result of the ShouldRequestUnitProfile function.
-function TRP3_NamePlates:RequestUnitProfile(unitToken)
-	local registerUnitID = GetRegisterUnitID(unitToken);
-	if not registerUnitID then
-		return;
-	end
-
-	-- Issue requests via both TRP and MSP protocols. MSP is limited to
-	-- players only, so don't send anything for pets out.
-	if UnitIsPlayer(unitToken) then
-		TRP3_API.r.sendQuery(registerUnitID);
-		TRP3_API.r.sendMSPQueryIfAppropriate(registerUnitID);
-	elseif UnitIsCombatPet(unitToken) then
-		-- Queries for companions take a little bit extra effort.
-		local ownerID = TRP3_Utils.str.companionIDToInfo(registerUnitID);
-		if TRP3_Register.isUnitIDKnown(ownerID) then
-			TRP3_API.r.sendQuery(ownerID);
-		end
-	end
-
-	-- Debounce further requests for a significant amount of time.
-	local cooldown = GetTime() + ACTIVE_QUERY_COOLDOWN;
-	self.registerUnitIDCooldowns[registerUnitID] = cooldown;
-end
-
--- Returns the name text to be displayed for the given unit token, or nil
--- if customizations are disabled or no profile is available.
-function TRP3_NamePlates:GetCustomUnitName(unitToken)
-	-- If customization is disabled entirely for any reason, stop.
-	if not self:ShouldCustomizeUnitFrames() then
-		return nil;
-	end
-
-	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) and self:ShouldShowCustomPlayerNames() then
-		-- Get the profile for the player and with it, their name.
-		local profile = GetPlayerProfile(unitToken);
-		if not profile then
-			return nil;
-		end
-
-		local nameText = profile:GetRoleplayingName();
-
-		-- Prefix the OOC indicator if configured.
-		if not profile:IsInCharacter() and self:ShouldShowOOCIndicators() then
-			local oocIndicator = self:GetConfiguredOOCIndicator();
-			if oocIndicator == "TEXT" then
-				nameText = strjoin(" ", OOC_TEXT_INDICATOR, nameText);
-			elseif oocIndicator == "ICON" then
-				nameText = strjoin(" ", tostring(OOC_ICON_INDICATOR), nameText);
-			end
-		end
-
-		return nameText;
-	elseif UnitIsCombatPet(unitToken) and self:ShouldShowCustomPetNames() then
-		-- Combat pets use companion pet profiles.
-		local profile = GetCombatPetProfile(unitToken);
-		if not profile then
-			return nil;
-		end
-
-		return profile.NA;
-	end
-
-	-- Unknown profile type.
-	return nil;
-end
-
--- Returns the custom color to display for the given unit token, or nil if
--- customization is disabled or no profile is available.
-function TRP3_NamePlates:GetCustomUnitColor(unitToken)
-	-- If customization is disabled entirely for any reason, stop.
-	if not self:ShouldCustomizeUnitFrames() then
-		return nil;
-	end
-
-	-- Don't bother if custom colors are disabled.
-	if not self:ShouldShowCustomColors() then
-		return nil;
-	end
-
-	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) then
-		-- Get the profile for the player and with it, their custom color.
-		local profile = GetPlayerProfile(unitToken);
-		if not profile then
-			return nil;
-		end
-
-		local nameColor = profile:GetCustomColorForDisplay();
-
-		-- If there is no color, use class coloring instead.
-		if not nameColor then
-			local _, class = UnitClass(unitToken);
-			if class then
-				nameColor = C_ClassColor.GetClassColor(class);
-			end
-		end
-
-		return nameColor;
-	elseif UnitIsCombatPet(unitToken) then
-		-- Combat pets use companion pet profiles.
-		local profile = GetCombatPetProfile(unitToken);
-		if not profile then
-			return nil;
-		end
-
-		local petColor = profile.NH and Color.CreateFromHexa(profile.NH);
-		if not petColor then
-			return nil;
-		end
-
-		-- Apply contrast changes as needed.
-		if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-			petColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
-		end
-
-		return petColor;
-	end
-
-	-- Unknown profile type.
-	return nil;
-end
-
--- Returns the name of an icon without its path prefix for display in a unit
--- frame. This will return nil if customization is disabled, or no icon
--- is available.
-function TRP3_NamePlates:GetCustomUnitIcon(unitToken)
-	-- If customization is disabled entirely for any reason, stop.
-	if not self:ShouldCustomizeUnitFrames() then
-		return nil;
-	end
-
-	-- If not displaying icons, return early.
-	if not self:ShouldShowCustomIcons() then
-		return nil;
-	end
-
-	-- Get the appropriate icon for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetPlayerProfile(unitToken);
-		if profile then
-			return profile:GetCustomIcon();
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetCombatPetProfile(unitToken);
-		if profile then
-			return profile.IC;
-		end
-	end
-
-	-- Unknown profile type.
-	return nil;
-end
-
--- Returns the custom title for a given unit token to be displayed in a
--- unit frame. This will return nil if customization is disabled, or no title
--- is available.
---
--- The title returned is the raw, uncropped, unformatted text. This should
--- be formatted/cropped appropriately prior to display.
-function TRP3_NamePlates:GetCustomUnitTitle(unitToken)
-	-- If customization is disabled entirely for any reason, stop.
-	if not self:ShouldCustomizeUnitFrames() then
-		return nil;
-	end
-
-	-- If not displaying titles, return early.
-	if not self:ShouldShowCustomTitles() then
-		return nil;
-	end
-
-	-- Get the appropriate title for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetPlayerProfile(unitToken);
-		local characteristics = profile and profile:GetCharacteristics();
-		if characteristics then
-			return characteristics.FT;
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetCombatPetProfile(unitToken);
-		if profile then
-			return profile.TI;
-		end
-	end
-
-	-- Unknown profile type.
-	return nil;
-end
-
--- Returns true if the given unit token is actively tracked as belonging
--- to a nameplate.
-function TRP3_NamePlates:IsTrackedUnit(unitToken)
-	return not not self.activeUnitTokens[unitToken];
-end
-
--- Returns the unit frame on a nameplate for the given unit token, or nil
--- if the given token is invalid.
-function TRP3_NamePlates:GetUnitFrameForUnit(unitToken)
-	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
-	if not frame or not frame.UnitFrame then
-		return nil;
-	end
-
-	return frame.UnitFrame;
-end
-
--- Returns a named widget for a unit frame, or nil if the widget doesn't
--- exist.
-function TRP3_NamePlates:GetUnitFrameWidget(frame, widgetName)
-	local widgets = self.unitFrameWidgets[frame];
-	if not widgets then
-		return nil;
-	end
-
-	return widgets[widgetName];
-end
-
--- Acquires a named widget for a unit frame, sourcing it from the given
--- pool and returning it.
---
--- This function will return nil if the given frame is forbidden, and
--- no widget will be acquired.
-function TRP3_NamePlates:AcquireUnitFrameWidget(frame, widgetName, pool)
-	-- Don't add widgets to locked down frames.
-	if not CanAccessObject(frame) then
-		return nil;
-	end
-
-	-- We'll store widget sets keyed by the frame. Frames themselves are
-	-- pooled, so this won't leak anything.
-	local widgets = self.unitFrameWidgets[frame] or {};
-	self.unitFrameWidgets[frame] = widgets;
-
-	-- There's a few cases where widgets don't get cleaned up if you toggle,
-	-- but that's fine. We'll just re-use them even if they weren't put back
-	-- into the pool.
-	local widget = widgets[widgetName] or pool:Acquire();
-	widgets[widgetName] = widget;
-	return widget;
-end
-
--- Acquires a font string widget and assigns it to the given frame.
-function TRP3_NamePlates:AcquireUnitFrameFontString(frame, widgetName)
-	return self:AcquireUnitFrameWidget(frame, widgetName, self.fontStringPool);
-end
-
--- Acquires a texture widget and assigns it to the given frame.
-function TRP3_NamePlates:AcquireUnitFrameTexture(frame, widgetName)
-	return self:AcquireUnitFrameWidget(frame, widgetName, self.texturePool);
-end
-
--- Releases a named widget from a unit frame, placing it back into the
--- given pool.
-function TRP3_NamePlates:ReleaseUnitFrameWidget(frame, widgetName, pool)
-	-- Don't release widget from to locked down frames. These should never
-	-- have had them added in the first place, so this should be fine.
-	if not CanAccessObject(frame) then
-		return;
-	end
-
-	local widgets = self.unitFrameWidgets[frame];
-	if not widgets then
-		return;
-	end
-
-	local widget = widgets[widgetName];
-	if not widget then
-		return;
-	end
-
-	-- Remove the widget from the UI as much as possible.
-	pool:Release(widget);
-	widgets[widgetName] = nil;
-end
-
--- Releases a named font string widget from a unit frame.
-function TRP3_NamePlates:ReleaseUnitFrameFontString(frame, widgetName)
-	return self:ReleaseUnitFrameWidget(frame, widgetName, self.fontStringPool);
-end
-
--- Releases a named texture widget from a unit frame.
-function TRP3_NamePlates:ReleaseUnitFrameTexture(frame, widgetName)
-	return self:ReleaseUnitFrameWidget(frame, widgetName, self.texturePool);
-end
-
--- Returns true if the given frame is a valid target for customization.
---
--- This will not check if the settings would permit customization; instead the
--- return value of true simply indicates that the frame won't blow up in our
--- faces if we try to poke at it.
-function TRP3_NamePlates:CanCustomizeUnitFrame(frame)
-	-- Don't allow customizing frames that are forbidden.
-	if not CanAccessObject(frame) then
-		return false;
-	end
-
-	return true;
-end
-
--- Sets up custom widgets and modifications on a unit frame.
-function TRP3_NamePlates:SetUpUnitFrame(frame, unitToken)
-	self:SetUpUnitFrameIcon(frame, unitToken);
-	self:SetUpUnitFrameTitle(frame, unitToken);
-end
-
--- Updates the given unit frame, applying changes for the profile represented
--- by the given unit token.
-function TRP3_NamePlates:UpdateUnitFrame(frame, unitToken)
-	-- Update all portions of the unit frame.
-	self:UpdateUnitFrameName(frame, unitToken);
-	self:UpdateUnitFrameIcon(frame, unitToken);
-	self:UpdateUnitFrameTitle(frame, unitToken);
-end
-
--- Tears down custom widgets and modifications from a unit frame.
-function TRP3_NamePlates:TearDownUnitFrame(frame, unitToken)
-	self:TearDownUnitFrameIcon(frame, unitToken);
-	self:TearDownUnitFrameTitle(frame, unitToken);
-end
-
--- Resets the name displayed for a unit frame. This will trigger any
--- customizations of the name to immediately occur afterwards.
-function TRP3_NamePlates:ResetUnitFrameName(frame)
-	-- Ignore forbidden frames.
-	if not CanAccessObject(frame) then
-		return;
-	end
-
-	CompactUnitFrame_UpdateName(frame);
-end
-
--- Resets all names displayed on modified unit frames. This should be called
--- when a configuration change has been applied that might affect whether or
--- not name customizations should take place.
---
--- This will trigger any customizations of the name to immediately occur
--- afterwards.
---
--- This is not performed automatically as we want to avoid a recursion when
--- updating names, since we need to hook the same function that is called to
--- reset the name.
-function TRP3_NamePlates:ResetAllUnitFrameNames()
-	for unitToken, _ in pairs(self.activeUnitTokens) do
-		local frame = self:GetUnitFrameForUnit(unitToken);
-		if frame then
-			self:ResetUnitFrameName(frame);
-		end
-	end
-end
-
--- Updates the name display on a given unit frame, applying changes for the
--- profile represented by the given unit token.
-function TRP3_NamePlates:UpdateUnitFrameName(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	-- Apply changes to the name and color. These will return nil if
-	-- customizations are disabled/impossible, in which case we'll assume
-	-- that the Blizzard-provided defaults are currently set.
-	local nameText = self:GetCustomUnitName(unitToken);
-	if nameText then
-		frame.name:SetText(nameText);
-	end
-
-	local nameColor = self:GetCustomUnitColor(unitToken);
-	if nameColor then
-		-- While SetTextColor might be more obvious, Blizzard instead calls
-		-- SetVertexColor. We mirror to ensure things work.
-		frame.name:SetVertexColor(nameColor:GetRGBA());
-	end
-end
-
--- Initializes the RP icon widget on a unit frame.
-function TRP3_NamePlates:SetUpUnitFrameIcon(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	local iconWidget = self:AcquireUnitFrameTexture(frame, "icon");
-	if not iconWidget then
-		return;
-	end
-
-	-- Set up anchoring and reparent.
-	iconWidget:ClearAllPoints();
-	iconWidget:SetParent(frame);
-	iconWidget:SetPoint("RIGHT", frame.name, "LEFT", -4, 0);
-	iconWidget:SetSize(ICON_WIDTH, ICON_HEIGHT);
-	iconWidget:Show();
-end
-
--- Updates the RP icon widget on a unit frame.
-function TRP3_NamePlates:UpdateUnitFrameIcon(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	-- Get the icon widget if one was allocated.
-	local iconWidget = self:GetUnitFrameWidget(frame, "icon");
-	if not iconWidget then
-		return;
-	end
-
-	-- Get the icon. If there's no icon, we'll hide it entirely.
-	local icon = self:GetCustomUnitIcon(unitToken);
-	if not icon or icon == "" then
-		iconWidget:Hide();
-		return;
-	end
-
-	iconWidget:SetTexture([[Interface\ICONS\]] .. icon);
-	iconWidget:Show();
-end
-
--- Deinitializes the RP icon widget on a unit frame.
-function TRP3_NamePlates:TearDownUnitFrameIcon(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	self:ReleaseUnitFrameTexture(frame, "icon");
-end
-
--- Initializes the custom RP title widget on a unit frame.
-function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	-- Get the title widget if one was allocated.
-	local titleWidget = self:AcquireUnitFrameFontString(frame, "title");
-	if not titleWidget then
-		return;
-	end
-
-	-- Set up anchoring and reparent.
-	titleWidget:ClearAllPoints();
-	titleWidget:SetParent(frame);
-	titleWidget:SetPoint("TOP", frame.name, "BOTTOM", 0, -4);
-	titleWidget:SetVertexColor(ColorManager.ORANGE:GetRGBA());
-	titleWidget:Show();
-end
-
--- Updates the title display on a nameplate.
-function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	-- Get the title widget if one was allocated.
-	local titleWidget = self:GetUnitFrameWidget(frame, "title");
-	if not titleWidget then
-		return;
-	end
-
-	-- Grab the title text. If there's no title text, we'll hide it entirely.
-	local title = self:GetCustomUnitTitle(unitToken);
-	if not title or title == "" then
-		titleWidget:Hide();
-		return;
-	end
-
-	-- Crop titles and format them appropriately.
-	title = format("<%s>", TRP3_Utils.str.crop(title, MAX_TITLE_SIZE));
-
-	titleWidget:SetText(title);
-	titleWidget:Show();
-end
-
--- Deinitializes the custom RP title widget on a unit frame.
-function TRP3_NamePlates:TearDownUnitFrameTitle(frame, unitToken)
-	-- Check if we can customize this frame for this unit.
-	if not self:CanCustomizeUnitFrame(frame) or not self:IsTrackedUnit(unitToken) then
-		return;
-	end
-
-	self:ReleaseUnitFrameFontString(frame, "title");
-end
-
--- Updates all modified unit frames, re-applying customizations.
-function TRP3_NamePlates:UpdateAllUnitFrames()
-	self:UpdateAllUnitTokens();
-end
-
--- Updates the nameplate frame for a given unit token.
-function TRP3_NamePlates:UpdateUnitToken(unitToken)
-	local frame = self:GetUnitFrameForUnit(unitToken);
-	if not frame then
-		return;
-	end
-
-	self:UpdateUnitFrame(frame, unitToken);
-end
-
--- Updates all nameplate frames for actively tracked unit tokens.
-function TRP3_NamePlates:UpdateAllUnitTokens()
-	for unitToken, _ in pairs(self.activeUnitTokens) do
-		self:UpdateUnitToken(unitToken);
-	end
+	end);
+
+	-- Register internal events.
+	TRP3_Events.registerCallback("MOUSE_OVER_CHANGED", OnMouseOverChanged);
+	TRP3_Events.registerCallback("REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
+	TRP3_Events.registerCallback("CONFIG_SETTING_CHANGED", OnConfigSettingChanged);
+	TRP3_Events.registerCallback("ROLEPLAY_STATUS_CHANGED", OnRoleplayStatusChanged);
+
+	-- Set up a timer to periodically prune the cooldown table.
+	C_Timer.NewTicker(30, PruneRegisterIDRequestCooldowns);
+
+	-- Install the configuration UI.
+	RegisterModuleConfigurationPage();
 end
 
 -- Registers the configuration page for this module.
-function TRP3_NamePlates:RegisterConfigurationPage()
+function RegisterModuleConfigurationPage()
 	TRP3_Config.registerConfigurationPage({
 		id = "main_config_uuu_nameplates",
 		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
@@ -1119,13 +911,16 @@ function TRP3_NamePlates:RegisterConfigurationPage()
 	});
 end
 
+-- Module exports.
+AddOn_TotalRP3.NamePlates = NamePlates;
+
 -- Module registration.
 TRP3_API.module.registerModule({
 	name        = L.NAMEPLATES_MODULE_NAME,
 	description = L.NAMEPLATES_MODULE_DESCRIPTION,
 	version     = 1,
-	id          = "TRP3_NamePlates",
-	onInit      = function(...) return TRP3_NamePlates:OnInitialize(...); end,
-	onStart     = function(...) return TRP3_NamePlates:OnStart(...); end,
+	id          = "NamePlates",
+	onInit      = OnModuleInitialize,
+	onStart     = OnModuleStart,
 	minVersion  = 70,
 });
