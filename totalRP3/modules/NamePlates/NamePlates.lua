@@ -183,7 +183,7 @@ function TRP3_NamePlates:OnEnable()
 				self:OnRoleplayStatusChanged();
 			end
 		end);
-	end)()
+	end)();
 end
 
 -- Handler dispatched in response to in-game events.
