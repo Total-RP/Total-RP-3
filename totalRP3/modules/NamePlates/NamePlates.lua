@@ -184,7 +184,7 @@ end
 
 -- Handler called when the module is started up. This is responsible for
 -- fully starting the module, registering events and hooks as needed.
-function TRP3_NamePlates:OnEnable()
+function TRP3_NamePlates:OnStart()
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
@@ -1126,6 +1126,6 @@ TRP3_API.module.registerModule({
 	version     = 1,
 	id          = "TRP3_NamePlates",
 	onInit      = function(...) return TRP3_NamePlates:OnInitialize(...); end,
-	onStart     = function(...) return TRP3_NamePlates:OnEnable(...); end,
+	onStart     = function(...) return TRP3_NamePlates:OnStart(...); end,
 	minVersion  = 70,
 });
