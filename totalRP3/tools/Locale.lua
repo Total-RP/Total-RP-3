@@ -1292,15 +1292,15 @@ The register also received a checkbox to only display profiles on which you wrot
 
 ]],
 
-	NAMEPLATES_MODULE_NAME = "Name Plates",
-	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default name plates with additional role play characteristics.",
+	NAMEPLATES_MODULE_NAME = "Nameplates",
+	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default nameplates with additional role play characteristics.",
 
-	NAMEPLATES_CONFIG_MENU_TEXT = "Name plates",
-	NAMEPLATES_CONFIG_PAGE_TEXT = "Name plate settings",
-	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable name plate customization",
-	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP = "If selected, enable name plate customization.\n\nUnchecking this will disable all customizations present in the module.",
+	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
+	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
+	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable nameplate customization",
+	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP = "If selected, enable nameplate customization.\n\nUnchecking this will disable all customizations present in the module.",
 	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
-	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP = "If selected, only customize name plates while your current profile is marked as in-character.",
+	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If selected, profiles for newly met players will be downloaded automatically when their nameplate becomes visible.",
 	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE = "Show custom player names",

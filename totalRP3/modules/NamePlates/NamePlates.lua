@@ -31,11 +31,11 @@ local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 local Icon = TRP3_API.Ellyb.Icon;
 
--- Cooldown between queries for the same profile from name plate activity
+-- Cooldown between queries for the same profile from nameplate activity
 -- alone, in seconds. Defaults to 5 minutes.
 --
 -- This should be higher than the cooldown imposed by protocols because
--- name plates are generally more numerous than tooltips or the number of
+-- nameplates are generally more numerous than tooltips or the number of
 -- people you can actively mouse-over.
 local ACTIVE_QUERY_COOLDOWN = 300;
 
@@ -68,7 +68,7 @@ local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 -- battle pet companion.
 local function UnitIsCombatPet(unitToken)
 	-- Ensure battle pets don't accidentally pass this test, in case one
-	-- day they get name plates added for no reason.
+	-- day they get nameplates added for no reason.
 	if UnitIsBattlePetCompanion(unitToken) then
 		return false;
 	end
@@ -204,7 +204,7 @@ function TRP3_NamePlates:OnConfigSettingChanged(key, value)
 		shouldRefresh = true;
 	end
 
-	-- Otherwise, check for name plate settings. We've got a lot, so use
+	-- Otherwise, check for nameplate settings. We've got a lot, so use
 	-- a heuristic for this instead of matching them all.
 	if strfind(tostring(key), "^nameplates_") then
 		shouldRefresh = true;
@@ -225,7 +225,7 @@ end
 function TRP3_NamePlates:OnMouseOverChanged(targetID)
 	-- Try and convert the target ID (a register-internal ID) to that of
 	-- a unit token and force-refresh the frame. This can be used as a
-	-- get-out-of-jail card if there's some issue updating name plates.
+	-- get-out-of-jail card if there's some issue updating nameplates.
 	local unitToken = self.registerUnitIDMap[targetID];
 	if not unitToken then
 		return;
@@ -234,7 +234,7 @@ function TRP3_NamePlates:OnMouseOverChanged(targetID)
 	self:UpdateUnitToken(unitToken);
 end
 
--- Handler triggered then the game creates a name plate unit token.
+-- Handler triggered then the game creates a nameplate unit token.
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 	-- Flag the unit as active.
 	self.activeUnitTokens[unitToken] = true;
@@ -262,7 +262,7 @@ function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 	self:UpdateUnitToken(unitToken);
 end
 
--- Handler triggered then the game removes a name plate unit token.
+-- Handler triggered then the game removes a nameplate unit token.
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
 	-- Remove additional customizations that might be attached to the frame.
 	local frame = self:GetUnitFrameForUnit(unitToken);
@@ -309,7 +309,7 @@ function TRP3_NamePlates:OnUnitFrameNameChanged(frame)
 	self:UpdateUnitFrameName(frame, frame.unit);
 end
 
--- Returns true if the user has elected to enable name plate customizations.
+-- Returns true if the user has elected to enable nameplate customizations.
 -- If this returns false, all customizations are disabled.
 function TRP3_NamePlates:ShouldCustomizeNamePlates()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS);
@@ -322,7 +322,7 @@ function TRP3_NamePlates:ShouldOnlyCustomizeInCharacter()
 end
 
 -- Returns true if the user has elected to actively query profiles upon
--- seeing a player name plate.
+-- seeing a player nameplate.
 function TRP3_NamePlates:ShouldActivelyQueryProfiles()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_ACTIVE_QUERY);
 end
@@ -433,7 +433,7 @@ function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
 	end
 
 	-- We'll want to *strongly* debounce requests. Both protocols implement
-	-- a cooldown however name plates are displayed quite a lot more, so we'll
+	-- a cooldown however nameplates are displayed quite a lot more, so we'll
 	-- want to significantly increase this.
 	local cooldown = self.registerUnitIDCooldowns[registerUnitID];
 	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
@@ -625,12 +625,12 @@ function TRP3_NamePlates:GetCustomUnitTitle(unitToken)
 end
 
 -- Returns true if the given unit token is actively tracked as belonging
--- to a name plate.
+-- to a nameplate.
 function TRP3_NamePlates:IsTrackedUnit(unitToken)
 	return not not self.activeUnitTokens[unitToken];
 end
 
--- Returns the unit frame on a name plate for the given unit token, or nil
+-- Returns the unit frame on a nameplate for the given unit token, or nil
 -- if the given token is invalid.
 function TRP3_NamePlates:GetUnitFrameForUnit(unitToken)
 	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
@@ -870,7 +870,7 @@ function TRP3_NamePlates:SetUpUnitFrameTitle(frame, unitToken)
 	titleWidget:Show();
 end
 
--- Updates the title display on a name plate.
+-- Updates the title display on a nameplate.
 function TRP3_NamePlates:UpdateUnitFrameTitle(frame, unitToken)
 	-- Ignore forbidden frames and bad units.
 	if not CanAccessObject(frame) or not self:IsTrackedUnit(unitToken) then
@@ -912,7 +912,7 @@ function TRP3_NamePlates:UpdateAllUnitFrames()
 	self:UpdateAllUnitTokens();
 end
 
--- Updates the name plate frame for a given unit token.
+-- Updates the nameplate frame for a given unit token.
 function TRP3_NamePlates:UpdateUnitToken(unitToken)
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -922,7 +922,7 @@ function TRP3_NamePlates:UpdateUnitToken(unitToken)
 	self:UpdateUnitFrame(frame, unitToken);
 end
 
--- Updates all name plate frames for actively tracked unit tokens.
+-- Updates all nameplate frames for actively tracked unit tokens.
 function TRP3_NamePlates:UpdateAllUnitTokens()
 	for unitToken, _ in pairs(self.activeUnitTokens) do
 		self:UpdateUnitToken(unitToken);
