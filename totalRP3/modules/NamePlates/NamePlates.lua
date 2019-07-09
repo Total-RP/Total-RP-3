@@ -31,7 +31,7 @@ local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 local Icon = TRP3_API.Ellyb.Icon;
 
--- Cooldown between queries for the same profile from nameplate activity
+-- Cooldown between queries for the same profile from name plate activity
 -- alone, in seconds. Defaults to 5 minutes.
 --
 -- This should be higher than the cooldown imposed by protocols because
@@ -39,7 +39,7 @@ local Icon = TRP3_API.Ellyb.Icon;
 -- people you can actively mouse-over.
 local ACTIVE_QUERY_COOLDOWN = 300;
 
--- Maximum width for displayed titles.
+-- Maximum number of characters for displayed titles.
 local MAX_TITLE_SIZE = 40;
 
 -- Size of custom icons.
@@ -68,7 +68,7 @@ local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 -- battle pet companion.
 local function UnitIsCombatPet(unitToken)
 	-- Ensure battle pets don't accidentally pass this test, in case one
-	-- day they get nameplates added for no reason.
+	-- day they get name plates added for no reason.
 	if UnitIsBattlePetCompanion(unitToken) then
 		return false;
 	end
@@ -176,10 +176,10 @@ function TRP3_NamePlates:OnEnable()
 		local previousState;
 		C_Timer.NewTicker(1, function()
 			local currentUser = Player.GetCurrentUser();
-			local IsInCharacter = currentUser:IsInCharacter();
+			local isInCharacter = currentUser:IsInCharacter();
 
-			if previousState ~= IsInCharacter then
-				previousState = IsInCharacter;
+			if previousState ~= isInCharacter then
+				previousState = isInCharacter;
 				self:OnRoleplayStatusChanged();
 			end
 		end);
@@ -204,7 +204,7 @@ function TRP3_NamePlates:OnConfigSettingChanged(key, value)
 		shouldRefresh = true;
 	end
 
-	-- Otherwise, check for nameplate settings. We've got a lot, so use
+	-- Otherwise, check for name plate settings. We've got a lot, so use
 	-- a heuristic for this instead of matching them all.
 	if strfind(tostring(key), "^nameplates_") then
 		shouldRefresh = true;
@@ -225,7 +225,7 @@ end
 function TRP3_NamePlates:OnMouseOverChanged(targetID)
 	-- Try and convert the target ID (a register-internal ID) to that of
 	-- a unit token and force-refresh the frame. This can be used as a
-	-- get-out-of-jail card if there's some issue updating nameplates.
+	-- get-out-of-jail card if there's some issue updating name plates.
 	local unitToken = self.registerUnitIDMap[targetID];
 	if not unitToken then
 		return;
@@ -433,7 +433,7 @@ function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
 	end
 
 	-- We'll want to *strongly* debounce requests. Both protocols implement
-	-- a cooldown however nameplates are displayed quite a lot more, so we'll
+	-- a cooldown however name plates are displayed quite a lot more, so we'll
 	-- want to significantly increase this.
 	local cooldown = self.registerUnitIDCooldowns[registerUnitID];
 	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
@@ -625,7 +625,7 @@ function TRP3_NamePlates:GetCustomUnitTitle(unitToken)
 end
 
 -- Returns true if the given unit token is actively tracked as belonging
--- to a nameplate.
+-- to a name plate.
 function TRP3_NamePlates:IsTrackedUnit(unitToken)
 	return not not self.activeUnitTokens[unitToken];
 end
@@ -902,7 +902,7 @@ function TRP3_NamePlates:UpdateAllUnitFrames()
 	self:UpdateAllUnitTokens();
 end
 
--- Updates the nameplate frame for a given unit token.
+-- Updates the name plate frame for a given unit token.
 function TRP3_NamePlates:UpdateUnitToken(unitToken)
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -912,7 +912,7 @@ function TRP3_NamePlates:UpdateUnitToken(unitToken)
 	self:UpdateUnitFrame(frame, unitToken);
 end
 
--- Updates all nameplate frames for actively tracked unit tokens.
+-- Updates all name plate frames for actively tracked unit tokens.
 function TRP3_NamePlates:UpdateAllUnitTokens()
 	for unitToken, _ in pairs(self.activeUnitTokens) do
 		self:UpdateUnitToken(unitToken);
