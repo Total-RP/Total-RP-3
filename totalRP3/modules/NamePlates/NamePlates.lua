@@ -604,7 +604,17 @@ function TRP3_NamePlates:GetCustomUnitColor(unitToken)
 			return nil;
 		end
 
-		return profile.NH and Color.CreateFromHexa(profile.NH) or nil;
+		local petColor = profile.NH and Color.CreateFromHexa(profile.NH);
+		if not petColor then
+			return nil;
+		end
+
+		-- Apply contrast changes as needed.
+		if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+			petColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+		end
+
+		return petColor;
 	end
 
 	-- Unknown profile type.
