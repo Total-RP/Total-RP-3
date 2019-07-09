@@ -409,8 +409,8 @@ function TRP3_NamePlates:GetConfiguredOOCIndicator()
 end
 
 -- Returns true if customizations should be enabled for unit frames. This
--- will return false if, for example, the player doesn't want to show plates
--- while OOC.
+-- will return false based on the current state of the addon and the values
+-- of multiple settings.
 function TRP3_NamePlates:ShouldCustomizeUnitFrames()
 	-- If customizations are globally disabled, that's a no.
 	if not self:ShouldCustomizeNamePlates() then
@@ -428,7 +428,9 @@ function TRP3_NamePlates:ShouldCustomizeUnitFrames()
 	return true;
 end
 
--- Returns true if a request for the given unit token can be issued.
+-- Returns true if a request for the given unit token can be issued. If this
+-- returns false, it should indicate that even if a request were issued it
+-- would do nothing as the token doesn't point to a requestable unit.
 function TRP3_NamePlates:CanRequestUnitProfile(unitToken)
 	-- If it's a player or a combat pet, then that's a yes.
 	if UnitIsPlayer(unitToken) then
@@ -452,9 +454,11 @@ function TRP3_NamePlates:CanRequestUnitProfile(unitToken)
 	return false;
 end
 
--- Returns true if a request for the given unit token should be issued.
+-- Returns true if a request for the given unit token should be issued. If
+-- this returns false, a request should not be sent for this unit token as
+-- we may already have recent enough data on them.
 function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
-	-- If the user has disabled this feature, then it's always an o.
+	-- If the user has disabled this feature, then it's always a no.
 	if not self:ShouldActivelyQueryProfiles() then
 		return false;
 	end
@@ -491,6 +495,9 @@ function TRP3_NamePlates:ShouldRequestUnitProfile(unitToken)
 end
 
 -- Requests a profile for the given unit token.
+--
+-- This will not check if a request should be sent; it us up to the caller
+-- to consult the result of the ShouldRequestUnitProfile function.
 function TRP3_NamePlates:RequestUnitProfile(unitToken)
 	local registerUnitID = GetRegisterUnitID(unitToken);
 	if not registerUnitID then
