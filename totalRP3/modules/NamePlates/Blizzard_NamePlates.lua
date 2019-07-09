@@ -23,8 +23,6 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 -- Ellyb imports.
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
--- AddOn_TotalRP3 imports.
-
 -- Maximum number of characters for displayed titles.
 local MAX_TITLE_SIZE = 40;
 
