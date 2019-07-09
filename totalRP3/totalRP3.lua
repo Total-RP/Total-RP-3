@@ -104,6 +104,29 @@ local function loadingSequence()
 
 	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
 
+	-- Hack to implement the ROLEPLAY_STATUS_CHANGED event; we'll monitor
+	-- REGISTER_DATA_UPDATED for player profile changes and trigger the event
+	-- if the roleplay status changes.
+	local currentRoleplayStatus; -- Initialized to nil explicitly.
+
+	TRP3_API.events.registerCallback(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID)
+		-- Disregard updates for non-player changes.
+		if unitID ~= TRP3_API.globals.player_id then
+			return;
+		end
+
+		local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+		local isInCharacter = currentUser:IsInCharacter();
+
+		if currentRoleplayStatus ~= isInCharacter then
+			currentRoleplayStatus = isInCharacter;
+			TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED);
+		end
+	end);
+
+	-- Always trigger ROLEPLAY_STATUS_CHANGED on startup.
+	TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED);
+
 	Log.log("OnEnable() DONE");
 end
 

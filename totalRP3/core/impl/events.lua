@@ -82,6 +82,10 @@ local Events = {
 	-- Arg1 : Configuration Key
 	-- Arg2 : Configured Value
 	CONFIG_SETTING_CHANGED = "CONFIG_SETTING_CHANGED",
+
+	-- Dispatched when the player reconfigures their own roleplay status,
+	-- for example from in-character (IC) to out-of-character (OOC).
+	ROLEPLAY_STATUS_CHANGED = "ROLEPLAY_STATUS_CHANGED",
 };
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
