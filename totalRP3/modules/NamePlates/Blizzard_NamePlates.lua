@@ -32,6 +32,7 @@ local ICON_HEIGHT = 16;
 
 local BlizzardProviderMixin = CreateFromMixins(NamePlates.DisplayProviderMixin);
 
+-- Initializes the provider, enabling it to modify Blizzard nameplates.
 --[[override]] function BlizzardProviderMixin:Init()
 	-- Mapping of unit frame objects to a table of widgets.
 	self.unitFrameWidgets = {};
