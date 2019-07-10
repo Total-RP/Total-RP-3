@@ -38,7 +38,6 @@ local GetNamePlateDisplayProvider;
 local GetRegisterIDForUnit;
 local GetRegisterIDRequestCooldown;
 local GetUnitCombatPetProfile;
-local GetUnitForRegisterID;
 local GetUnitPlayerProfile;
 local OnConfigSettingChanged;
 local OnModuleInitialize;
@@ -52,7 +51,6 @@ local PruneRegisterIDRequestCooldowns;
 local RegisterModuleConfigurationPage;
 local SetNamePlateDisplayProvider;
 local SetRegisterIDRequestCooldown;
-local SetUnitForRegisterID;
 local UnitIsCombatPet;
 
 -- Cooldown between queries for the same profile from nameplate activity
@@ -89,8 +87,6 @@ local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 
 -- Nameplate module table.
 local NamePlates = {
-	-- Mapping of register IDs ("unit IDs") to nameplate unit tokens.
-	registerIDUnitMap = {},
 	-- Mapping of register IDs ("unit IDs") to request cooldowns.
 	registerIDCooldowns = {},
 	-- Active integration that is used to customize nameplates.
@@ -557,23 +553,6 @@ function PruneRegisterIDRequestCooldowns()
 	end
 end
 
--- Returns the nameplate unit token associated with a given register unit ID.
---
--- Returns nil if no nameplate unit is known for the given register unit ID.
-function GetUnitForRegisterID(registerID)
-	local registerIDUnitMap = NamePlates.registerIDUnitMap;
-	return registerIDUnitMap[registerID];
-end
-
--- Sets the nameplate unit token for a register unit ID. The assigned token
--- will be returned by future calls to GetUnitForRegisterID.
---
--- The unit token may be set to nil to remove the relation completely.
-function SetUnitForRegisterID(registerID, unitToken)
-	local registerIDUnitMap = NamePlates.registerIDUnitMap;
-	registerIDUnitMap[registerID] = unitToken;
-end
-
 -- Returns the (combat) pet companion profile associated with the given
 -- unit token.
 --
@@ -640,12 +619,6 @@ function OnNamePlateUnitAdded(unitToken)
 		provider:OnNamePlateUnitAdded(unitToken);
 	end
 
-	-- Map the unit token to a register ID for updates.
-	local registerID = GetRegisterIDForUnit(unitToken);
-	if registerID then
-		SetUnitForRegisterID(registerID, unitToken);
-	end
-
 	-- Issue a request for the profile.
 	NamePlates.RequestUnitProfile(unitToken);
 
@@ -659,17 +632,6 @@ function OnNamePlateUnitRemoved(unitToken)
 	local provider = GetNamePlateDisplayProvider();
 	if provider then
 		provider:OnNamePlateUnitRemoved(unitToken);
-	end
-
-	-- Remove all mappings for this register IDs to this unit token. This
-	-- needs to check them all because there's cases where we'll install a
-	-- mapping but the register ID later changes; for example if a unit
-	-- loads in with an "Unknown" pet.
-	local registerIDUnitMap = NamePlates.registerIDUnitMap;
-	for registerID, mappedUnitToken in pairs(registerIDUnitMap) do
-		if unitToken == mappedUnitToken then
-			SetUnitForRegisterID(registerID, nil);
-		end
 	end
 end
 
@@ -713,13 +675,13 @@ end
 
 -- Handler triggered when TRP updates the registry for a named profile.
 function OnRegisterDataUpdated(registerID)
-	-- Trigger an update for the token linked to this ID, if one exists.
-	local unitToken = GetUnitForRegisterID(registerID);
-	if not unitToken then
-		return;
+	-- Trigger an update for the nameplate linked to this ID, if one exists.
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		local frameRegisterID = GetRegisterIDForUnit(frame.namePlateUnitToken);
+		if registerID == frameRegisterID then
+			NamePlates.UpdateNamePlateForUnit(frame.namePlateUnitToken);
+		end
 	end
-
-	NamePlates.UpdateNamePlateForUnit(unitToken);
 end
 
 -- Handler triggered when the roleplay status of the character changes, such
