@@ -18,27 +18,6 @@ local _, TRP3_API = ...;
 local L = TRP3_API.loc;
 local TRP3_Events = TRP3_API.events;
 local TRP3_Globals = TRP3_API.globals;
-local TRP3_Register = TRP3_API.register;
-
--- Local declarations.
-local GetNamePlateDisplayDecorator;
-local OnConfigSettingChanged;
-local OnModuleInitialize;
-local OnModuleStart;
-local OnMouseOverChanged;
-local OnNamePlateUnitAdded;
-local OnNamePlateUnitRemoved;
-local OnRegisterDataUpdated;
-local OnRoleplayStatusChanged;
-local SetNamePlateDisplayDecorator;
-
--- List of addon names that conflict with this module. If these are enabled
--- for the current character on initialization of this module, we won't
--- set up customizations.
-local CONFLICTING_ADDONS = {
-	"Kui_Nameplates", -- No errors, however modifications aren't visible.
-	"Plater",         -- Untested. Assuming it won't work.
-};
 
 -- Nameplate module table.
 local NamePlates = {
@@ -56,7 +35,7 @@ function NamePlates.UpdateNamePlateForUnit(unitToken)
 	end
 
 	-- Grab the decorator if one exists and trigger the update.
-	local decorator = GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
 	if not decorator then
 		return false;
 	end
@@ -66,7 +45,7 @@ end
 
 -- Updates all nameplates managed by this module.
 function NamePlates.UpdateAllNamePlates()
-	local decorator = GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
 	if not decorator then
 		return;
 	end
@@ -74,47 +53,53 @@ function NamePlates.UpdateAllNamePlates()
 	return decorator:UpdateAllNamePlates();
 end
 
--- Private module functions.
+-- Returns the mixin that should be used to provide a nameplate display.
+--[[private]] function NamePlates.GetSuggestedNamePlateDisplayDecorator()
+	-- Add any supported addons here. The Blizzard one should be a last
+	-- resort option.
+	if IsAddOnLoaded("Blizzard_NamePlates") then
+		return NamePlates.BlizzardDecoratorMixin;
+	end
+
+	-- Nothing is supported.
+	return nil;
+end
 
 -- Returns the decorator in use for the nameplate display.
-function GetNamePlateDisplayDecorator()
+--[[private]] function NamePlates.GetNamePlateDisplayDecorator()
 	return NamePlates.decorator;
 end
 
 -- Sets the decorator to use for the nameplate display.
-function SetNamePlateDisplayDecorator(decorator)
+--[[private]] function NamePlates.SetNamePlateDisplayDecorator(decorator)
 	NamePlates.decorator = decorator;
 end
 
--- Game integration handlers.
-
 -- Handler triggered then the game assigns a nameplate unit token.
-function OnNamePlateUnitAdded(unitToken)
+--[[private]] function NamePlates.OnNamePlateUnitAdded(unitToken)
 	-- Issue a request for the profile ahead of notifying the decorator.
 	if NamePlates.ShouldRequestUnitProfile(unitToken) then
 		NamePlates.RequestUnitProfile(unitToken);
 	end
 
 	-- Forward to the active decorator.
-	local decorator = GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
 	if decorator then
 		decorator:OnNamePlateUnitAdded(unitToken);
 	end
 end
 
 -- Handler triggered then the game deactivates a nameplate unit token.
-function OnNamePlateUnitRemoved(unitToken)
+--[[private]] function NamePlates.OnNamePlateUnitRemoved(unitToken)
 	-- Forward to the active decorator.
-	local decorator = GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
 	if decorator then
 		decorator:OnNamePlateUnitRemoved(unitToken);
 	end
 end
 
--- TRP integration handlers.
-
 -- Handler triggered when a configuration setting is changed.
-function OnConfigSettingChanged(key, _)
+--[[private]] function NamePlates.OnConfigSettingChanged(key, _)
 	local shouldRefresh = false;
 
 	-- If color contrast is changed, we should refresh things.
@@ -138,7 +123,7 @@ function OnConfigSettingChanged(key, _)
 end
 
 -- Handler triggered when the player mouses over an in-game unit.
-function OnMouseOverChanged()
+--[[private]] function NamePlates.OnMouseOverChanged()
 	-- The nameplate API can link mouseover/target/etc. units to frames, so
 	-- just validate it.
 	if not NamePlates.IsUnitValid("mouseover") then
@@ -149,7 +134,7 @@ function OnMouseOverChanged()
 end
 
 -- Handler triggered when TRP updates the registry for a named profile.
-function OnRegisterDataUpdated(registerID)
+--[[private]] function NamePlates.OnRegisterDataUpdated(registerID)
 	-- Get the unit token associated with the updated profile.
 	local unitToken = NamePlates.GetUnitForRegisterID(registerID);
 	if not NamePlates.IsUnitValid(unitToken) then
@@ -161,7 +146,7 @@ end
 
 -- Handler triggered when the roleplay status of the character changes, such
 -- as from IC to OOC.
-function OnRoleplayStatusChanged()
+--[[private]] function NamePlates.OnRoleplayStatusChanged()
 	-- No need to handle status changes if we don't customize based on our
 	-- IC/OOC state.
 	if not NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
@@ -177,36 +162,32 @@ end
 -- Handler called when the module is being initialized. This is responsible
 -- for setting up the base internal state without actually enabling any
 -- behaviours.
-function OnModuleInitialize()
-	-- Prevent the module from actually being set up if there's any of the
-	-- conflicting addons installed.
-	for _, addonName in ipairs(CONFLICTING_ADDONS) do
+--[[private]] function NamePlates.OnModuleInitialize()
+	-- Register the configuration keys early so we can access them whenever.
+	NamePlates.RegisterConfigurationKeys();
+
+	-- Prevent the module from actually being set up further if any
+	-- known addon conflicts exists.
+	for _, addonName in ipairs(NamePlates.CONFLICTING_ADDONS) do
 		local state = GetAddOnEnableState(TRP3_Globals.player, addonName);
 		if state == 2 then
 			return false, format(L.NAMEPLATES_ERR_ADDON_CONFLICT, addonName);
 		end
 	end
-
-	-- Register the configuration keys early so we can access them whenever.
-	NamePlates.RegisterConfigurationKeys();
 end
 
 -- Handler called when the module is started up. This is responsible for
 -- fully starting the module, registering events and hooks as needed.
-function OnModuleStart()
+--[[private]] function NamePlates.OnModuleStart()
 	-- Activate an appropriate decorator based on the environment.
-	local decoratorMixin;
-
-	if IsAddOnLoaded("Blizzard_NamePlates") then
-		-- Blizzard_NamePlate should be a last resort. Add custom integrations
-		-- above this one.
-		decoratorMixin = NamePlates.BlizzardDecoratorMixin;
-	else
+	local decoratorMixin = NamePlates.GetSuggestedNamePlateDisplayDecorator();
+	if not decoratorMixin then
 		return false, L.NAMEPLATES_ERR_NO_VALID_PROVIDER;
 	end
 
+	-- Initialize and activate it.
 	local decorator = CreateAndInitFromMixin(decoratorMixin);
-	SetNamePlateDisplayDecorator(decorator);
+	NamePlates.SetNamePlateDisplayDecorator(decorator);
 
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
@@ -214,23 +195,26 @@ function OnModuleStart()
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	eventFrame:SetScript("OnEvent", function(_, event, ...)
 		if event == "NAME_PLATE_UNIT_ADDED" then
-			OnNamePlateUnitAdded(...);
+			NamePlates.OnNamePlateUnitAdded(...);
 		elseif event == "NAME_PLATE_UNIT_REMOVED" then
-			OnNamePlateUnitRemoved(...);
+			NamePlates.OnNamePlateUnitRemoved(...);
 		end
 	end);
 
 	-- Register internal events.
-	TRP3_Events.registerCallback("MOUSE_OVER_CHANGED", OnMouseOverChanged);
-	TRP3_Events.registerCallback("REGISTER_DATA_UPDATED", OnRegisterDataUpdated);
-	TRP3_Events.registerCallback("CONFIG_SETTING_CHANGED", OnConfigSettingChanged);
-	TRP3_Events.registerCallback("ROLEPLAY_STATUS_CHANGED", OnRoleplayStatusChanged);
+	TRP3_Events.registerCallback("MOUSE_OVER_CHANGED", NamePlates.OnMouseOverChanged);
+	TRP3_Events.registerCallback("REGISTER_DATA_UPDATED", NamePlates.OnRegisterDataUpdated);
+	TRP3_Events.registerCallback("CONFIG_SETTING_CHANGED", NamePlates.OnConfigSettingChanged);
+	TRP3_Events.registerCallback("ROLEPLAY_STATUS_CHANGED", NamePlates.OnRoleplayStatusChanged);
 
 	-- Set up a timer to periodically prune the cooldown table.
 	C_Timer.NewTicker(30, NamePlates.PruneUnitRequestCooldowns);
 
 	-- Install the configuration UI.
 	NamePlates.RegisterConfigurationUI();
+
+	-- Trigger an update of all nameplates.
+	NamePlates.UpdateAllNamePlates();
 end
 
 -- Module exports.
@@ -242,7 +226,7 @@ TRP3_API.module.registerModule({
 	description = L.NAMEPLATES_MODULE_DESCRIPTION,
 	version     = 1,
 	id          = "NamePlates",
-	onInit      = OnModuleInitialize,
-	onStart     = OnModuleStart,
+	onInit      = NamePlates.OnModuleInitialize,
+	onStart     = NamePlates.OnModuleStart,
 	minVersion  = 70,
 });

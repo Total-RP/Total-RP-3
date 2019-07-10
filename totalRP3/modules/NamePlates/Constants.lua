@@ -41,6 +41,14 @@ local function GetDefaultOOCIndicatorStyle()
 	return defaultStyle;
 end
 
+-- List of addon names that conflict with this module. If these are enabled
+-- for the current character on initialization of this module, we won't
+-- set up customizations.
+NamePlates.CONFLICTING_ADDONS = {
+	"Kui_Nameplates", -- No errors, however modifications aren't visible.
+	"Plater",         -- Untested. Assuming it won't work.
+};
+
 -- Controls if customizations are enabled globally.
 NamePlates.CONFIG_ENABLE = "nameplates_enables";
 -- Controls if customizations are enabled only while in-character.
