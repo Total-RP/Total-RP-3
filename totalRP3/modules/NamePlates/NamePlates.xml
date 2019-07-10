@@ -20,6 +20,7 @@
 
     <Script file="NamePlates.lua"/>
     <Script file="Constants.lua"/>
+    <Script file="Configuration.lua"/>
     <Script file="Display.lua"/>
     <Script file="DecoratorBaseMixin.lua"/>
     <Script file="Blizzard_NamePlates.lua"/>

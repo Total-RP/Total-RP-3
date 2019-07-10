@@ -238,9 +238,9 @@ function NamePlates.GetUnitOOCIndicator(unitToken)
 
 	-- Return an appropriate indicator based on the configured style.
 	local style = NamePlates.GetConfiguredOOCIndicatorStyle();
-	if style == "TEXT" then
+	if style == NamePlates.OOC_STYLE_TEXT then
 		return NamePlates.OOC_TEXT_INDICATOR;
-	elseif style == "ICON" then
+	elseif style == NamePlates.OOC_STYLE_ICON then
 		return tostring(NamePlates.OOC_ICON_INDICATOR);
 	end
 

@@ -1300,10 +1300,10 @@ The register also received a checkbox to only display profiles on which you wrot
 
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_TITLE = "Enable nameplate customization",
-	NAMEPLATES_CONFIG_ENABLE_CUSTOMIZATIONS_HELP = "If selected, enable nameplate customization.\n\nUnchecking this will disable all customizations present in the module.",
-	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
-	NAMEPLATES_CONFIG_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
+	NAMEPLATES_CONFIG_ENABLE_TITLE = "Enable nameplate customization",
+	NAMEPLATES_CONFIG_ENABLE_HELP = "If selected, enable nameplate customization.\n\nUnchecking this will disable all customizations present in the module.",
+	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
+	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If selected, profiles for newly met players will be downloaded automatically when their nameplate becomes visible.",
 	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE = "Show custom player names",
@@ -1318,8 +1318,8 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = "If selected, profile titles will be displayed below the names of players and pets.",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
-	NAMEPLATES_CONFIG_OOC_INDICATOR_TITLE = "Preferred OOC indicators",
-	NAMEPLATES_CONFIG_OOC_INDICATOR_HELP = "The type of out-of-character (OOC) indicator to display.\n\nThis requires that OOC indicators be enabled.",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = "The type of out-of-character (OOC) indicator to display.\n\nThis requires that OOC indicators be enabled.",
 };
 
 -- Use Ellyb to generate the Localization system

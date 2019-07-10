@@ -3921,6 +3921,7 @@ read_globals = {
 	"ButtonInventorySlot",
 	"CRFFlowFilterFunc",
 	"CRFGroupFilterFunc",
+	"CallErrorHandler",
 	"CallRestrictedClosure",
 	"CanCooperateWithToon",
 	"CanCreateFilters",
