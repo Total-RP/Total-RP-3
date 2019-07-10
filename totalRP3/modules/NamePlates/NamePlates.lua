@@ -16,7 +16,6 @@ local _, TRP3_API = ...;
 
 -- TRP3_API imports.
 local L = TRP3_API.loc;
-local TRP3_Companions = TRP3_API.companions;
 local TRP3_Config = TRP3_API.configuration;
 local TRP3_Events = TRP3_API.events;
 local TRP3_Globals = TRP3_API.globals;
@@ -24,21 +23,11 @@ local TRP3_Register = TRP3_API.register;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
 
--- AddOn_TotalRP3 imports.
-local Player = AddOn_TotalRP3.Player;
-
--- Ellyb imports.
-local Color = TRP3_API.Ellyb.Color;
-local ColorManager = TRP3_API.Ellyb.ColorManager;
-local Icon = TRP3_API.Ellyb.Icon;
-
 -- Local declarations.
 local GetDefaultOOCIndicator;
 local GetNamePlateDisplayDecorator;
 local GetRegisterIDForUnit;
 local GetRegisterIDRequestCooldown;
-local GetUnitCombatPetProfile;
-local GetUnitPlayerProfile;
 local OnConfigSettingChanged;
 local OnModuleInitialize;
 local OnModuleStart;
@@ -68,10 +57,6 @@ local CONFLICTING_ADDONS = {
 	"Kui_Nameplates", -- No errors, however modifications aren't visible.
 	"Plater",         -- Untested. Assuming it won't work.
 };
-
--- OOC indicators for text or icon mode appropriately.
-local OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
-local OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Configuration keys.
 local CONFIG_NAMEPLATES_ENABLE_CUSTOMIZATIONS = "nameplates_enable_customizations";
@@ -148,24 +133,6 @@ end
 -- Returns the currently configured style token for OOC indicators.
 function NamePlates.GetConfiguredOOCIndicatorStyle()
 	return TRP3_Config.getValue(CONFIG_NAMEPLATES_OOC_INDICATOR);
-end
-
--- Returns true if customizations should be enabled for unit frames.
-function NamePlates.IsCustomizationEnabled()
-	-- If customizations are globally disabled, that's a no.
-	if not NamePlates.ShouldCustomizeNamePlates() then
-		return false;
-	end
-
-	-- Disable customizations if we need to be in-character.
-	if NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
-		local currentUser = Player.GetCurrentUser();
-		if not currentUser:IsInCharacter() then
-			return false;
-		end
-	end
-
-	return true;
 end
 
 -- Returns true if the given unit token is valid, and refers to either a
@@ -270,162 +237,6 @@ function NamePlates.RequestUnitProfile(unitToken)
 	return true;
 end
 
--- Returns the custom name text to be displayed for the given unit token.
---
--- Return nil if customizations are disabled, or if no name can be obtained.
-function NamePlates.GetCustomUnitName(unitToken)
-	-- Don't bother if customization is disabled.
-	if not NamePlates.IsCustomizationEnabled() then
-		return nil;
-	end
-
-	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) and NamePlates.ShouldShowCustomPlayerNames() then
-		-- Get the profile for the player and with it, their name.
-		local profile = GetUnitPlayerProfile(unitToken);
-		if not profile then
-			-- No profile data available.
-			return nil;
-		end
-
-		local nameText = profile:GetRoleplayingName();
-
-		-- Prefix the OOC indicator if configured.
-		if not profile:IsInCharacter() and NamePlates.ShouldShowOOCIndicators() then
-			local oocIndicator = NamePlates.GetConfiguredOOCIndicatorStyle();
-			if oocIndicator == "TEXT" then
-				nameText = strjoin(" ", OOC_TEXT_INDICATOR, nameText);
-			elseif oocIndicator == "ICON" then
-				nameText = strjoin(" ", tostring(OOC_ICON_INDICATOR), nameText);
-			end
-		end
-
-		return nameText;
-	elseif UnitIsCombatPet(unitToken) and NamePlates.ShouldShowCustomPetNames() then
-		-- Combat pets use companion pet profiles.
-		local profile = GetUnitCombatPetProfile(unitToken);
-		if not profile then
-			-- No profile data available.
-			return nil;
-		end
-
-		return profile.NA;
-	end
-
-	-- No name is available.
-	return nil;
-end
-
--- Returns the custom color to be displayed for the given unit token.
---
--- Return nil if customizations are disabled, or if no color can be obtained.
-function NamePlates.GetCustomUnitColor(unitToken)
-	-- Don't bother if customization is disabled.
-	if not NamePlates.IsCustomizationEnabled()
-	or not NamePlates.ShouldShowCustomColors() then
-		return nil;
-	end
-
-	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) then
-		-- Get the profile for the player and with it, their custom color.
-		local profile = GetUnitPlayerProfile(unitToken);
-		local nameColor = profile and profile:GetCustomColorForDisplay();
-
-		-- If there is no profile or color, use class coloring instead.
-		if not nameColor then
-			local _, class = UnitClass(unitToken);
-			if class then
-				nameColor = C_ClassColor.GetClassColor(class);
-			end
-		end
-
-		return nameColor;
-	elseif UnitIsCombatPet(unitToken) then
-		-- Combat pets use companion pet profiles.
-		local profile = GetUnitCombatPetProfile(unitToken);
-		if not profile then
-			-- No profile available.
-			return nil;
-		end
-
-		local petColor = profile.NH and Color.CreateFromHexa(profile.NH);
-		if not petColor then
-			-- No color was set.
-			return nil;
-		end
-
-		-- Apply contrast changes as needed.
-		if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-			petColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
-		end
-
-		return petColor;
-	end
-
-	-- No color is available.
-	return nil;
-end
-
--- Returns the name of an icon without its path prefix for the given unit
--- token.
---
--- Returns nil if customization is disabled, or if no icon is available.
-function NamePlates.GetCustomUnitIcon(unitToken)
-	-- If not displaying icons, return early.
-	if not NamePlates.IsCustomizationEnabled()
-	or not NamePlates.ShouldShowCustomIcons() then
-		return nil;
-	end
-
-	-- Get the appropriate icon for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetUnitPlayerProfile(unitToken);
-		if profile then
-			return profile:GetCustomIcon();
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetUnitCombatPetProfile(unitToken);
-		if profile then
-			return profile.IC;
-		end
-	end
-
-	-- No icon is available.
-	return nil;
-end
-
--- Returns the name of an title text of a profile for the given unit token.
---
--- The title returned is the raw, uncropped, unformatted text. This should
--- be formatted/cropped appropriately prior to display.
---
--- Returns nil if customization is disabled, or if no title is available.
-function NamePlates.GetCustomUnitTitle(unitToken)
-	-- If not displaying titles, return early.
-	if not NamePlates.IsCustomizationEnabled()
-	or not NamePlates.ShouldShowCustomTitles() then
-		return nil;
-	end
-
-	-- Get the appropriate title for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetUnitPlayerProfile(unitToken);
-		local characteristics = profile and profile:GetCharacteristics();
-		if characteristics then
-			return characteristics.FT;
-		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetUnitCombatPetProfile(unitToken);
-		if profile then
-			return profile.TI;
-		end
-	end
-
-	-- No title is available.
-	return nil;
-end
-
 -- Updates a single nameplate for the given unit token, if one exists.
 --
 -- Return true if a nameplate is successfully updated, or false if not.
@@ -511,38 +322,6 @@ function PruneRegisterIDRequestCooldowns()
 			SetRegisterIDRequestCooldown(registerID, nil);
 		end
 	end
-end
-
--- Returns the (combat) pet companion profile associated with the given
--- unit token.
---
--- If no profile can be found, nil is returned.
-function GetUnitCombatPetProfile(unitToken)
-	local companionType = TRP3_UI.misc.TYPE_PET;
-	local fullID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
-	if not fullID then
-		return nil;
-	end
-
-	local profile = TRP3_Companions.register.getCompanionProfile(fullID);
-	if not profile then
-		return nil;
-	end
-
-	return profile.data;
-end
-
--- Returns the player model associated with the given unit token.
---
--- If no valid model can be found, nil is returned.
-function GetUnitPlayerProfile(unitToken)
-	local name, realm = UnitName(unitToken)
-	if not name or name == "" or name == UNKNOWNOBJECT then
-		-- Don't return profiles for invalid/unknown units.
-		return nil;
-	end
-
-	return Player.CreateFromNameAndRealm(name, realm);
 end
 
 -- Returns the decorator in use for the nameplate display.
@@ -826,11 +605,11 @@ function RegisterModuleConfigurationPage()
 				},
 				listContent = {
 					{
-						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. OOC_TEXT_INDICATOR,
+						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. NamePlates.OOC_TEXT_INDICATOR,
 						"TEXT",
 					},
 					{
-						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. tostring(OOC_ICON_INDICATOR),
+						L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. tostring(NamePlates.OOC_ICON_INDICATOR),
 						"ICON",
 					},
 				},

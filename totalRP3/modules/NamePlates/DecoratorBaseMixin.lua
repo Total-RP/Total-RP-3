@@ -12,6 +12,10 @@
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
+local _, TRP3_API = ...;
+
+-- TRP3_API imports.
+local TRP3_Utils = TRP3_API.utils;
 
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
@@ -37,6 +41,57 @@ end
 -- frame. This can be used to perform teardown logic.
 function DecoratorBaseMixin:OnNamePlateUnitRemoved()
 	-- Override this in your implementation if teardown logic is desired.
+end
+
+-- Returns the custom name text to be displayed for the given unit token.
+--
+-- Return nil if customizations are disabled, or if no name can be obtained.
+function DecoratorBaseMixin:GetUnitCustomName(unitToken)
+	-- Grab the name and prefix it with the OOC indicator.
+	local nameText = NamePlates.GetUnitCustomName(unitToken);
+	if nameText then
+		local oocIndicator = NamePlates.GetUnitOOCIndicator(unitToken);
+		if oocIndicator then
+			nameText = strjoin(" ", oocIndicator, nameText);
+		end
+	end
+
+	return nameText;
+end
+
+-- Returns the custom color to be displayed for the given unit token.
+--
+-- Return nil if customizations are disabled, or if no color can be obtained.
+function DecoratorBaseMixin:GetUnitCustomColor(unitToken)
+	-- Implement any custom logic to be shared between decorators if needed.
+	return NamePlates.GetUnitCustomColor(unitToken);
+end
+
+-- Returns the full file path of an icon for the given unit token.
+--
+-- Returns nil if customization is disabled, or if no icon is available.
+function DecoratorBaseMixin:GetUnitCustomIcon(unitToken)
+	-- Prefix the icon name for this unit with the standard path, if present.
+	local iconName = NamePlates.GetUnitCustomIcon(unitToken);
+	if iconName then
+		return [[Interface\Icons\]] .. iconName;
+	end
+
+	return nil;
+end
+
+-- Returns the name of an title text of a profile for the given unit token.
+--
+-- Returns nil if customization is disabled, or if no title is available.
+function DecoratorBaseMixin:GetUnitCustomTitle(unitToken)
+	-- Get the title and apply a standard amount of cropping that should be
+	-- consistent across all displays.
+	local titleText = NamePlates.GetUnitCustomTitle(unitToken);
+	if titleText then
+		titleText = TRP3_Utils.str.crop(titleText, NamePlates.MAX_TITLE_CHARS);
+	end
+
+	return titleText;
 end
 
 -- Updates the name plate for a single unit identified by the given token.

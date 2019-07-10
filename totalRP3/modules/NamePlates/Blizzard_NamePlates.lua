@@ -12,19 +12,12 @@
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
-local _, TRP3_API = ...;
-
--- TRP3_API imports.
-local TRP3_Utils = TRP3_API.utils;
 
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
 -- Ellyb imports.
 local ColorManager = TRP3_API.Ellyb.ColorManager;
-
--- Maximum number of characters for displayed titles.
-local MAX_TITLE_SIZE = 40;
 
 -- Size of custom icons.
 local ICON_WIDTH = 16;
@@ -60,6 +53,9 @@ end
 	-- Set up custom widgets to the frame.
 	self:SetUpUnitFrameIcon(frame);
 	self:SetUpUnitFrameTitle(frame);
+
+	-- Update the frame immediately with customizations.
+	self:UpdateNamePlateForUnit(unitToken);
 end
 
 -- Called when a nameplate unit token is removed from an allocated nameplate
@@ -120,12 +116,12 @@ function BlizzardDecoratorMixin:UpdateUnitFrameName(frame)
 	-- Apply changes to the name and color. These will return nil if
 	-- customizations are disabled/impossible, in which case we'll assume
 	-- that the Blizzard-provided defaults are currently set.
-	local nameText = NamePlates.GetCustomUnitName(frame.unit);
+	local nameText = self:GetUnitCustomName(frame.unit);
 	if nameText then
 		frame.name:SetText(nameText);
 	end
 
-	local nameColor = NamePlates.GetCustomUnitColor(frame.unit);
+	local nameColor = self:GetUnitCustomColor(frame.unit);
 	if nameColor then
 		-- While SetTextColor might be more obvious, Blizzard instead calls
 		-- SetVertexColor. We mirror to ensure things work.
@@ -168,11 +164,11 @@ function BlizzardDecoratorMixin:UpdateUnitFrameIcon(frame)
 	end
 
 	-- Get the icon. If there's no icon, we'll hide it entirely.
-	local iconName = NamePlates.GetCustomUnitIcon(frame.unit);
-	if not iconName or iconName == "" then
+	local iconPath = self:GetUnitCustomIcon(frame.unit);
+	if not iconPath or iconPath == "" then
 		iconWidget:Hide();
 	else
-		iconWidget:SetTexture([[Interface\ICONS\]] .. iconName);
+		iconWidget:SetTexture(iconPath);
 		iconWidget:Show();
 	end
 end
@@ -223,13 +219,10 @@ function BlizzardDecoratorMixin:UpdateUnitFrameTitle(frame)
 	end
 
 	-- Grab the title text. If there's no title text, we'll hide it entirely.
-	local titleText = NamePlates.GetCustomUnitTitle(frame.unit);
+	local titleText = self:GetUnitCustomTitle(frame.unit);
 	if not titleText or titleText == "" then
 		titleWidget:Hide();
 	else
-		-- Crop titles and format them appropriately.
-		titleText = TRP3_Utils.str.crop(titleText, MAX_TITLE_SIZE);
-
 		titleWidget:SetFormattedText("<%s>", titleText);
 		titleWidget:Show();
 	end
