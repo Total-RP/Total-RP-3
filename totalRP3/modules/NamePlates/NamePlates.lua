@@ -19,11 +19,9 @@ local L = TRP3_API.loc;
 local TRP3_Events = TRP3_API.events;
 local TRP3_Globals = TRP3_API.globals;
 local TRP3_Register = TRP3_API.register;
-local TRP3_Utils = TRP3_API.utils;
 
 -- Local declarations.
 local GetNamePlateDisplayDecorator;
-local GetRegisterIDRequestCooldown;
 local OnConfigSettingChanged;
 local OnModuleInitialize;
 local OnModuleStart;
@@ -32,17 +30,7 @@ local OnNamePlateUnitAdded;
 local OnNamePlateUnitRemoved;
 local OnRegisterDataUpdated;
 local OnRoleplayStatusChanged;
-local PruneRegisterIDRequestCooldowns;
 local SetNamePlateDisplayDecorator;
-local SetRegisterIDRequestCooldown;
-
--- Cooldown between queries for the same profile from nameplate activity
--- alone, in seconds. Defaults to 5 minutes.
---
--- This should be higher than the cooldown imposed by protocols because
--- nameplates are generally more numerous than tooltips or the number of
--- people you can actively mouse-over.
-local ACTIVE_QUERY_COOLDOWN = 300;
 
 -- List of addon names that conflict with this module. If these are enabled
 -- for the current character on initialization of this module, we won't
@@ -54,95 +42,9 @@ local CONFLICTING_ADDONS = {
 
 -- Nameplate module table.
 local NamePlates = {
-	-- Mapping of register IDs ("unit IDs") to request cooldowns.
-	registerIDCooldowns = {},
 	-- Active decorator that is used to customize nameplates.
 	decorator = nil,
 };
-
--- Returns true if a request for the given unit token can be issued.
---
--- This will return false for invalid unit tokens, or in cases where
--- actively requesting units is disabled.
-function NamePlates.ShouldRequestUnitProfile(unitToken)
-	-- Don't allow requests if customizations are turned off. This is more
-	-- an optimization, since they wouldn't be shown anyway.
-	if not NamePlates.ShouldCustomizeNamePlates() then
-		return false;
-	end
-
-	-- Don't allow requests if they themselves are disabled.
-	if not NamePlates.ShouldActivelyQueryProfiles() then
-		return false;
-	end
-
-	-- Validate the unit token.
-	if not NamePlates.IsUnitValid(unitToken) then
-		return false;
-	end
-
-	-- Get the register ID for this unit and see if they have a profile.
-	local registerID = NamePlates.GetRegisterIDForUnit(unitToken);
-	if not registerID then
-		return false;
-	end
-
-	if TRP3_Register.isUnitIDKnown(registerID)
-	and TRP3_Register.hasProfile(registerID) then
-		return false;
-	end
-
-	-- Otherwise, check if we've sent a request too recently.
-	local cooldown = GetRegisterIDRequestCooldown(registerID);
-	if cooldown and (GetTime() - cooldown) < ACTIVE_QUERY_COOLDOWN then
-		return false;
-	end
-
-	-- Otherwise, allow requests to occur.
-	return true;
-end
-
--- Requests a profile for the given unit token.
---
--- Returns true if a request was issued, or false if no request was issued.
---
--- This function will do nothing if ShouldRequestUnitProfile would itself
--- return false.
-function NamePlates.RequestUnitProfile(unitToken)
-	-- Don't dispatch a request if we shouldn't do so.
-	if not NamePlates.ShouldRequestUnitProfile(unitToken) then
-		return false;
-	end
-
-	-- Get the register ID for this unit token, if available.
-	local registerID = NamePlates.GetRegisterIDForUnit(unitToken);
-	if not registerID then
-		return false;
-	end
-
-	-- Issue requests via both TRP and MSP protocols. MSP is limited to
-	-- players only, so don't send anything for pets out.
-	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
-		TRP3_API.r.sendQuery(registerID);
-		TRP3_API.r.sendMSPQueryIfAppropriate(registerID);
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
-		-- Queries for companions take a little bit extra effort.
-		local ownerID = TRP3_Utils.str.companionIDToInfo(registerID);
-		if TRP3_Register.isUnitIDKnown(ownerID) then
-			TRP3_API.r.sendQuery(ownerID);
-		end
-	else
-		-- Unknown unit type.
-		return false;
-	end
-
-	-- Debounce further requests for a significant amount of time.
-	local cooldown = GetTime() + ACTIVE_QUERY_COOLDOWN;
-	SetRegisterIDRequestCooldown(registerID, cooldown);
-
-	return true;
-end
 
 -- Updates a single nameplate for the given unit token, if one exists.
 --
@@ -174,31 +76,6 @@ end
 
 -- Private module functions.
 
--- Returns the cooldown for requests for a given register ID, or nil if
--- no cooldown is set.
-function GetRegisterIDRequestCooldown(unitToken)
-	local registerIDCooldowns = NamePlates.registerIDCooldowns;
-	return registerIDCooldowns[unitToken];
-end
-
--- Sets the cooldown for future requests for a given register ID. The given
--- value should be a number in seconds, or nil to unset the cooldown.
-function SetRegisterIDRequestCooldown(unitToken, cooldown)
-	local registerIDCooldowns = NamePlates.registerIDCooldowns;
-	registerIDCooldowns[unitToken] = cooldown;
-end
-
--- Prunes the table of cooldowns for requests, removing all expired request
--- cooldowns.
-function PruneRegisterIDRequestCooldowns()
-	local registerIDCooldowns = NamePlates.registerIDCooldowns;
-	for registerID, cooldown in pairs(registerIDCooldowns) do
-		if (GetTime() - cooldown) >= ACTIVE_QUERY_COOLDOWN then
-			SetRegisterIDRequestCooldown(registerID, nil);
-		end
-	end
-end
-
 -- Returns the decorator in use for the nameplate display.
 function GetNamePlateDisplayDecorator()
 	return NamePlates.decorator;
@@ -213,17 +90,16 @@ end
 
 -- Handler triggered then the game assigns a nameplate unit token.
 function OnNamePlateUnitAdded(unitToken)
+	-- Issue a request for the profile ahead of notifying the decorator.
+	if NamePlates.ShouldRequestUnitProfile(unitToken) then
+		NamePlates.RequestUnitProfile(unitToken);
+	end
+
 	-- Forward to the active decorator.
 	local decorator = GetNamePlateDisplayDecorator();
 	if decorator then
 		decorator:OnNamePlateUnitAdded(unitToken);
 	end
-
-	-- Issue a request for the profile.
-	NamePlates.RequestUnitProfile(unitToken);
-
-	-- Update the unit frame for them immediately with whatever data we have.
-	NamePlates.UpdateNamePlateForUnit(unitToken);
 end
 
 -- Handler triggered then the game deactivates a nameplate unit token.
@@ -265,21 +141,22 @@ end
 function OnMouseOverChanged()
 	-- The nameplate API can link mouseover/target/etc. units to frames, so
 	-- just validate it.
-	local unitToken = "mouseover";
+	if not NamePlates.IsUnitValid("mouseover") then
+		return;
+	end
+
+	NamePlates.UpdateNamePlateForUnit("mouseover");
+end
+
+-- Handler triggered when TRP updates the registry for a named profile.
+function OnRegisterDataUpdated(registerID)
+	-- Get the unit token associated with the updated profile.
+	local unitToken = NamePlates.GetUnitForRegisterID(registerID);
 	if not NamePlates.IsUnitValid(unitToken) then
 		return;
 	end
 
 	NamePlates.UpdateNamePlateForUnit(unitToken);
-end
-
--- Handler triggered when TRP updates the registry for a named profile.
-function OnRegisterDataUpdated(registerID)
-	-- Trigger an update for the nameplate linked to this ID, if one exists.
-	local unitToken = NamePlates.GetUnitForRegisterID(registerID);
-	if NamePlates.IsUnitValid(unitToken) then
-		NamePlates.UpdateNamePlateForUnit(unitToken);
-	end
 end
 
 -- Handler triggered when the roleplay status of the character changes, such
@@ -350,7 +227,7 @@ function OnModuleStart()
 	TRP3_Events.registerCallback("ROLEPLAY_STATUS_CHANGED", OnRoleplayStatusChanged);
 
 	-- Set up a timer to periodically prune the cooldown table.
-	C_Timer.NewTicker(30, PruneRegisterIDRequestCooldowns);
+	C_Timer.NewTicker(30, NamePlates.PruneUnitRequestCooldowns);
 
 	-- Install the configuration UI.
 	NamePlates.RegisterConfigurationUI();

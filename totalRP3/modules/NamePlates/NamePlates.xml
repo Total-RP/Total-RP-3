@@ -23,6 +23,7 @@
     <Script file="Configuration.lua"/>
     <Script file="Display.lua"/>
     <Script file="Unit.lua"/>
+    <Script file="Request.lua"/>
 
     <Script file="DecoratorBaseMixin.lua"/>
 
