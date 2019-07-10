@@ -31,7 +31,7 @@ local ICON_WIDTH = 16;
 local ICON_HEIGHT = 16;
 
 -- Decorator plugin for styling Blizzard's default nameplates.
-local BlizzardDecoratorMixin = CreateFromMixins(NamePlates.DisplayDecoratorMixin);
+local BlizzardDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
 
 -- Initializes the decorator, enabling it to modify Blizzard nameplates.
 --[[override]] function BlizzardDecoratorMixin:Init()
