@@ -85,7 +85,6 @@ end
 		-- If the default is a function, execute it to obtain the value.
 		if type(default) == "function" then
 			default = select(2, xpcall(default, CallErrorHandler));
-			print("DEFAULT", key, default);
 		end
 
 		TRP3_Config.registerConfigKey(key, default);
