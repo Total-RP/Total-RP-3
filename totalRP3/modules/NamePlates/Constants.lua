@@ -74,7 +74,7 @@ NamePlates.CONFIG_OOC_INDICATOR_STYLE = "nameplates_ooc_indicator_style";
 -- is a function reference, it is executed when the key is due to be
 -- registered.
 NamePlates.DEFAULT_CONFIG = {
-	[NamePlates.CONFIG_ENABLE]    = true,
+	[NamePlates.CONFIG_ENABLE]                   = true,
 	[NamePlates.CONFIG_ENABLE_ONLY_IN_CHARACTER] = true,
 	[NamePlates.CONFIG_ACTIVE_QUERY]             = true,
 	[NamePlates.CONFIG_SHOW_PLAYER_NAMES]        = true,
