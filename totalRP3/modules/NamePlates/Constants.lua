@@ -50,7 +50,7 @@ NamePlates.CONFLICTING_ADDONS = {
 };
 
 -- Controls if customizations are enabled globally.
-NamePlates.CONFIG_ENABLE = "nameplates_enables";
+NamePlates.CONFIG_ENABLE = "nameplates_enable";
 -- Controls if customizations are enabled only while in-character.
 NamePlates.CONFIG_ENABLE_ONLY_IN_CHARACTER = "nameplates_enable_only_in_character";
 -- Controls if requests should be sent out upon seeing new player nameplates.
