@@ -28,5 +28,6 @@
     <Script file="CustomWidgetHostMixin.lua"/>
     <Script file="DecoratorBaseMixin.lua"/>
 
-    <Script file="Blizzard_NamePlates.lua"/>
+    <Script file="Decorators\Blizzard.lua"/>
+    <Script file="Decorators\Kui.lua"/>
 </Ui>

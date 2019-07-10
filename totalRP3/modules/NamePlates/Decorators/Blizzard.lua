@@ -16,9 +16,6 @@
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
--- Ellyb imports.
-local ColorManager = TRP3_API.Ellyb.ColorManager;
-
 -- Decorator plugin for styling Blizzard's default nameplates.
 local BlizzardDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
 Mixin(BlizzardDecoratorMixin, NamePlates.CustomWidgetHostMixin);
@@ -201,7 +198,7 @@ function BlizzardDecoratorMixin:SetUpUnitFrameTitle(frame)
 	titleWidget:ClearAllPoints();
 	titleWidget:SetParent(frame);
 	titleWidget:SetPoint("TOP", frame.name, "BOTTOM", 0, -4);
-	titleWidget:SetVertexColor(ColorManager.ORANGE:GetRGBA());
+	titleWidget:SetVertexColor(NamePlates.TITLE_TEXT_COLOR:GetRGBA());
 	titleWidget:Hide();
 end
 

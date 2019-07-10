@@ -57,7 +57,9 @@ end
 --[[private]] function NamePlates.GetSuggestedNamePlateDisplayDecorator()
 	-- Add any supported addons here. The Blizzard one should be a last
 	-- resort option.
-	if IsAddOnLoaded("Blizzard_NamePlates") then
+	if IsAddOnLoaded("Kui_Nameplates") then
+		return NamePlates.KuiDecoratorMixin;
+	elseif IsAddOnLoaded("Blizzard_NamePlates") then
 		return NamePlates.BlizzardDecoratorMixin;
 	end
 

@@ -71,6 +71,7 @@ read_globals = {
 	"LibStub",
 	"TinyTooltip",
 	"ElvUI",
+	"KuiNameplates",
 
 	-- FrameXML misc
 	"bit",

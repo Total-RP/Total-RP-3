@@ -45,8 +45,8 @@ end
 -- for the current character on initialization of this module, we won't
 -- set up customizations.
 NamePlates.CONFLICTING_ADDONS = {
-	"Kui_Nameplates", -- No errors, however modifications aren't visible.
-	"Plater",         -- Untested. Assuming it won't work.
+	"ElvUI",  -- Untested.
+	"Plater", -- Untested.
 };
 
 -- Controls if customizations are enabled globally.
@@ -109,6 +109,10 @@ NamePlates.OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Maximum number of characters for displayed titles before cropping.
 NamePlates.MAX_TITLE_CHARS = 40;
+
+-- Common color to use for title text in nameplates. Displays need not use
+-- this if another color is available; think of this as a default.
+NamePlates.TITLE_TEXT_COLOR = ColorManager.ORANGE;
 
 -- Size of custom icons.
 NamePlates.ICON_WIDTH = 16;
