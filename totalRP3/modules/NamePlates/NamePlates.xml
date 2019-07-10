@@ -25,6 +25,7 @@
     <Script file="Unit.lua"/>
     <Script file="Request.lua"/>
 
+    <Script file="CustomWidgetHostMixin.lua"/>
     <Script file="DecoratorBaseMixin.lua"/>
 
     <Script file="Blizzard_NamePlates.lua"/>

@@ -109,3 +109,7 @@ NamePlates.OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Maximum number of characters for displayed titles before cropping.
 NamePlates.MAX_TITLE_CHARS = 40;
+
+-- Size of custom icons.
+NamePlates.ICON_WIDTH = 16;
+NamePlates.ICON_HEIGHT = 16;

@@ -19,31 +19,28 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 -- Ellyb imports.
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
--- Size of custom icons.
-local ICON_WIDTH = 16;
-local ICON_HEIGHT = 16;
-
 -- Decorator plugin for styling Blizzard's default nameplates.
 local BlizzardDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
+Mixin(BlizzardDecoratorMixin, NamePlates.CustomWidgetHostMixin);
 
 -- Initializes the decorator, enabling it to modify Blizzard nameplates.
 --[[override]] function BlizzardDecoratorMixin:Init()
-	-- Mapping of unit frame objects to a table of widgets.
-	self.unitFrameWidgets = {};
-
-	-- Pools from which widgets are sourced.
-	self.fontStringPool = CreateFontStringPool(UIParent, "ARTWORK", 0, "SystemFont_NamePlate");
-	self.texturePool = CreateTexturePool(UIParent, "ARTWORK", 0);
+	-- Dispatch to base mixins.
+	NamePlates.DecoratorBaseMixin.Init(self);
+	NamePlates.CustomWidgetHostMixin.Init(self);
 
 	-- Install hooks.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
-		return self:OnUnitFrameNameChanged(frame);
+		return self:OnUnitFrameNameUpdated(frame);
 	end);
 end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
 -- frame. This is used to set up custom widgets on Blizzard nameplates.
 --[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitAdded(unitToken)
+	-- Dispatch to base mixins.
+	NamePlates.DecoratorBaseMixin.OnNamePlateUnitAdded(self, unitToken);
+
 	-- Grab the frame for this unit token.
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -61,6 +58,9 @@ end
 -- Called when a nameplate unit token is removed from an allocated nameplate
 -- frame. This is used to remove custom widgets from Blizzard nameplates.
 --[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitRemoved(unitToken)
+	-- Dispatch to base mixins.
+	NamePlates.DecoratorBaseMixin.OnNamePlateUnitRemoved(self, unitToken);
+
 	-- Grab the frame for this unit token.
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -73,7 +73,7 @@ end
 end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
-function BlizzardDecoratorMixin:OnUnitFrameNameChanged(frame)
+function BlizzardDecoratorMixin:OnUnitFrameNameUpdated(frame)
 	-- Discard frames that don't refer to nameplate units.
 	if not strfind(tostring(frame.unit), "^nameplate%d+$") then
 		return;
@@ -137,7 +137,7 @@ function BlizzardDecoratorMixin:SetUpUnitFrameIcon(frame)
 	end
 
 	-- Try to obtain a texture widget.
-	local iconWidget = self:AcquireUnitFrameTexture(frame, "icon");
+	local iconWidget = self:AcquireCustomTexture(frame, "icon");
 	if not iconWidget then
 		return;
 	end
@@ -146,7 +146,7 @@ function BlizzardDecoratorMixin:SetUpUnitFrameIcon(frame)
 	iconWidget:ClearAllPoints();
 	iconWidget:SetParent(frame);
 	iconWidget:SetPoint("RIGHT", frame.name, "LEFT", -4, 0);
-	iconWidget:SetSize(ICON_WIDTH, ICON_HEIGHT);
+	iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
 	iconWidget:Hide();
 end
 
@@ -158,7 +158,7 @@ function BlizzardDecoratorMixin:UpdateUnitFrameIcon(frame)
 	end
 
 	-- Get the icon widget if one was allocated.
-	local iconWidget = self:GetUnitFrameWidget(frame, "icon");
+	local iconWidget = self:GetCustomWidget(frame, "icon");
 	if not iconWidget then
 		return;
 	end
@@ -181,7 +181,7 @@ function BlizzardDecoratorMixin:TearDownUnitFrameIcon(frame)
 	end
 
 	-- Release the custom texture widget.
-	self:ReleaseUnitFrameTexture(frame, "icon");
+	self:ReleaseCustomTexture(frame, "icon");
 end
 
 -- Initializes the title display on a unit frame.
@@ -192,7 +192,7 @@ function BlizzardDecoratorMixin:SetUpUnitFrameTitle(frame)
 	end
 
 	-- Try to obtain a fontstring widget.
-	local titleWidget = self:AcquireUnitFrameFontString(frame, "title");
+	local titleWidget = self:AcquireCustomFontString(frame, "title");
 	if not titleWidget then
 		return;
 	end
@@ -213,7 +213,7 @@ function BlizzardDecoratorMixin:UpdateUnitFrameTitle(frame)
 	end
 
 	-- Get the title widget if one was allocated.
-	local titleWidget = self:GetUnitFrameWidget(frame, "title");
+	local titleWidget = self:GetCustomWidget(frame, "title");
 	if not titleWidget then
 		return;
 	end
@@ -236,7 +236,7 @@ function BlizzardDecoratorMixin:TearDownUnitFrameTitle(frame)
 	end
 
 	-- Release the custom fontstring widget.
-	self:ReleaseUnitFrameFontString(frame, "title");
+	self:ReleaseCustomFontString(frame, "title");
 end
 
 -- Updates the name plate for a single unit identified by the given token.
@@ -270,95 +270,6 @@ end
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlateForUnit(frame.namePlateUnitToken);
 	end
-end
-
--- Returns a named custom widget for a unit frame, or nil if the widget
--- doesn't exist.
-function BlizzardDecoratorMixin:GetUnitFrameWidget(frame, widgetName)
-	local widgets = self.unitFrameWidgets[frame];
-	if not widgets then
-		return nil;
-	end
-
-	return widgets[widgetName];
-end
-
--- Acquires a named custom widget for a unit frame, sourcing it from the given
--- pool and returning it.
---
--- This function will return nil if the given frame is forbidden, and
--- no widget will be acquired.
---
--- The widget returned may or may not be sourced from the reusable pool. It
--- is the responsibility of the caller to ensure that the widget is reset
--- prior to modifications.
-function BlizzardDecoratorMixin:AcquireUnitFrameWidget(frame, widgetName, pool)
-	-- Don't add widgets to locked down frames.
-	if not CanAccessObject(frame) then
-		return nil;
-	end
-
-	-- We'll store widget sets keyed by the frame. Frames themselves are
-	-- pooled, so this won't leak anything.
-	local widgets = self.unitFrameWidgets[frame] or {};
-	self.unitFrameWidgets[frame] = widgets;
-
-	-- There's a few cases where widgets don't get cleaned up if you toggle,
-	-- but that's fine. We'll just re-use them even if they weren't put back
-	-- into the pool.
-	local widget = widgets[widgetName] or pool:Acquire();
-	widgets[widgetName] = widget;
-	return widget;
-end
-
--- Acquires a custom font string widget and assigns it to the given frame.
-function BlizzardDecoratorMixin:AcquireUnitFrameFontString(frame, widgetName)
-	return self:AcquireUnitFrameWidget(frame, widgetName, self.fontStringPool);
-end
-
--- Acquires a custom texture widget and assigns it to the given frame.
-function BlizzardDecoratorMixin:AcquireUnitFrameTexture(frame, widgetName)
-	return self:AcquireUnitFrameWidget(frame, widgetName, self.texturePool);
-end
-
--- Releases a named custom widget from a unit frame, placing it back into the
--- given pool.
---
--- If the frame is inaccessible, this will not release the widget, however
--- the future acquisitions of the widget with the same name will return the
--- same widget.
-function BlizzardDecoratorMixin:ReleaseUnitFrameWidget(frame, widgetName, pool)
-	-- Don't release widget from to locked down frames. These should never
-	-- have had them added in the first place, so this should be fine.
-	if not CanAccessObject(frame) then
-		return;
-	end
-
-	local widgets = self.unitFrameWidgets[frame];
-	if not widgets then
-		-- No widgets exist on this frame.
-		return;
-	end
-
-	local widget = widgets[widgetName];
-	if not widget then
-		-- No widget with this name exists.
-		return;
-	end
-
-	-- Remove the widget from the UI as much as possible.
-	pool:Release(widget);
-	widgets[widgetName] = nil;
-end
-
--- Releases a named custom font string widget from a unit frame.
-function BlizzardDecoratorMixin:ReleaseUnitFrameFontString(frame, widgetName)
-	return self:ReleaseUnitFrameWidget(frame, widgetName, self.fontStringPool);
-end
-
--- Releases a named custom texture widget from a unit frame.
-function BlizzardDecoratorMixin:ReleaseUnitFrameTexture(frame, widgetName)
-	return self:ReleaseUnitFrameWidget(frame, widgetName, self.texturePool);
 end
 
 -- Module exports.
