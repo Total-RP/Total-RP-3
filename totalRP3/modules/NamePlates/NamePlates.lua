@@ -680,6 +680,7 @@ function OnRegisterDataUpdated(registerID)
 		local frameRegisterID = GetRegisterIDForUnit(frame.namePlateUnitToken);
 		if registerID == frameRegisterID then
 			NamePlates.UpdateNamePlateForUnit(frame.namePlateUnitToken);
+			return;
 		end
 	end
 end
