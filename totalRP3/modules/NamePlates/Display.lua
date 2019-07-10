@@ -14,10 +14,6 @@
 -- limitations under the License.
 local _, TRP3_API = ...;
 
--- TRP3_API imports.
-local TRP3_Companions = TRP3_API.companions;
-local TRP3_UI = TRP3_API.ui;
-
 -- AddOn_TotalRP3 imports.
 local Configuration = AddOn_TotalRP3.Configuration;
 local Player = AddOn_TotalRP3.Player;
@@ -25,11 +21,6 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 
 -- Ellyb imports.
 local Color = TRP3_API.Ellyb.Color;
-
--- Local declarations.
-local GetUnitCombatPetProfile;
-local GetUnitPlayerProfile;
-local UnitIsCombatPet;
 
 -- Returns true if customization of nameplates is globally enabled.
 --
@@ -73,28 +64,29 @@ function NamePlates.GetUnitCustomName(unitToken)
 	end
 
 	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) then
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
 		if not NamePlates.ShouldShowCustomPlayerNames() then
 			-- Not displaying custom player names.
 			return nil;
 		end
 
 		-- Get the profile for the player and with it, their name.
-		local profile = GetUnitPlayerProfile(unitToken);
+		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
 		if not profile then
 			-- No profile data available.
 			return nil;
 		end
 
 		return profile:GetRoleplayingName();
-	elseif UnitIsCombatPet(unitToken) then
+	elseif profileType == NamePlates.PROFILE_TYPE_PET then
 		if not NamePlates.ShouldShowCustomPetNames() then
 			-- Not displaying custom pet names.
 			return nil;
 		end
 
 		-- Combat pets use companion pet profiles.
-		local profile = GetUnitCombatPetProfile(unitToken);
+		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if not profile then
 			-- No profile data available.
 			return nil;
@@ -118,9 +110,10 @@ function NamePlates.GetUnitCustomColor(unitToken)
 	end
 
 	-- Dispatch based on the profile type.
-	if UnitIsPlayer(unitToken) then
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
 		-- Get the profile for the player and with it, their custom color.
-		local profile = GetUnitPlayerProfile(unitToken);
+		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
 		local nameColor = profile and profile:GetCustomColorForDisplay();
 
 		-- If there is no profile or color, use class coloring instead.
@@ -132,9 +125,9 @@ function NamePlates.GetUnitCustomColor(unitToken)
 		end
 
 		return nameColor;
-	elseif UnitIsCombatPet(unitToken) then
+	elseif profileType == NamePlates.PROFILE_TYPE_PET then
 		-- Combat pets use companion pet profiles.
-		local profile = GetUnitCombatPetProfile(unitToken);
+		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if not profile then
 			-- No profile available.
 			return nil;
@@ -170,13 +163,14 @@ function NamePlates.GetUnitCustomIcon(unitToken)
 	end
 
 	-- Get the appropriate icon for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetUnitPlayerProfile(unitToken);
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
 		if profile then
 			return profile:GetCustomIcon();
 		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetUnitCombatPetProfile(unitToken);
+	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if profile then
 			return profile.IC;
 		end
@@ -197,14 +191,15 @@ function NamePlates.GetUnitCustomTitle(unitToken)
 	end
 
 	-- Get the appropriate title for this unit type.
-	if UnitIsPlayer(unitToken) then
-		local profile = GetUnitPlayerProfile(unitToken);
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
 		local characteristics = profile and profile:GetCharacteristics();
 		if characteristics then
 			return characteristics.FT;
 		end
-	elseif UnitIsCombatPet(unitToken) then
-		local profile = GetUnitCombatPetProfile(unitToken);
+	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if profile then
 			return profile.TI;
 		end
@@ -231,7 +226,7 @@ function NamePlates.GetUnitOOCIndicator(unitToken)
 	end
 
 	-- Grab the profile for the player and check if they're in-character.
-	local profile = GetUnitPlayerProfile(unitToken);
+	local profile = NamePlates.GetUnitCharacterProfile(unitToken);
 	if not profile or profile:IsInCharacter() then
 		return nil;
 	end
@@ -246,47 +241,4 @@ function NamePlates.GetUnitOOCIndicator(unitToken)
 
 	-- Unsupported style.
 	return nil;
-end
-
--- Returns the (combat) pet companion profile associated with the given
--- unit token.
---
--- If no profile can be found, nil is returned.
-function GetUnitCombatPetProfile(unitToken)
-	local companionType = TRP3_UI.misc.TYPE_PET;
-	local fullID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
-	if not fullID then
-		return nil;
-	end
-
-	local profile = TRP3_Companions.register.getCompanionProfile(fullID);
-	if not profile then
-		return nil;
-	end
-
-	return profile.data;
-end
-
--- Returns the player model associated with the given unit token.
---
--- If no valid model can be found, nil is returned.
-function GetUnitPlayerProfile(unitToken)
-	local name, realm = UnitName(unitToken)
-	if not name or name == "" or name == UNKNOWNOBJECT then
-		-- Don't return profiles for invalid/unknown units.
-		return nil;
-	end
-
-	return Player.CreateFromNameAndRealm(name, realm);
-end
-
--- TODO: Swap to using TRP3_API.ui.misc.getTargetType.
-function UnitIsCombatPet(unitToken)
-	-- Ensure battle pets don't accidentally pass this test, in case one
-	-- day they get nameplates added for no reason.
-	if UnitIsBattlePetCompanion(unitToken) then
-		return false;
-	end
-
-	return UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet");
 end

@@ -19,12 +19,10 @@ local L = TRP3_API.loc;
 local TRP3_Events = TRP3_API.events;
 local TRP3_Globals = TRP3_API.globals;
 local TRP3_Register = TRP3_API.register;
-local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
 
 -- Local declarations.
 local GetNamePlateDisplayDecorator;
-local GetRegisterIDForUnit;
 local GetRegisterIDRequestCooldown;
 local OnConfigSettingChanged;
 local OnModuleInitialize;
@@ -37,7 +35,6 @@ local OnRoleplayStatusChanged;
 local PruneRegisterIDRequestCooldowns;
 local SetNamePlateDisplayDecorator;
 local SetRegisterIDRequestCooldown;
-local UnitIsCombatPet;
 
 -- Cooldown between queries for the same profile from nameplate activity
 -- alone, in seconds. Defaults to 5 minutes.
@@ -63,25 +60,6 @@ local NamePlates = {
 	decorator = nil,
 };
 
--- Returns true if the given unit token is valid, and refers to either a
--- player or a combat pet.
---
--- The unit token may or may not have a nameplate assigned; this function
--- only tests if it's capable of having one.
-function NamePlates.IsValidUnit(unitToken)
-	-- Obviously invalid tokens are invalid. Who knew.
-	if not unitToken or unitToken == "" then
-		return false;
-	end
-
-	-- Validate the type of unit it represents.
-	if not UnitIsPlayer(unitToken) and not UnitIsCombatPet(unitToken) then
-		return false;
-	end
-
-	return true;
-end
-
 -- Returns true if a request for the given unit token can be issued.
 --
 -- This will return false for invalid unit tokens, or in cases where
@@ -99,12 +77,12 @@ function NamePlates.ShouldRequestUnitProfile(unitToken)
 	end
 
 	-- Validate the unit token.
-	if not NamePlates.IsValidUnit(unitToken) then
+	if not NamePlates.IsUnitValid(unitToken) then
 		return false;
 	end
 
 	-- Get the register ID for this unit and see if they have a profile.
-	local registerID = GetRegisterIDForUnit(unitToken);
+	local registerID = NamePlates.GetRegisterIDForUnit(unitToken);
 	if not registerID then
 		return false;
 	end
@@ -137,17 +115,18 @@ function NamePlates.RequestUnitProfile(unitToken)
 	end
 
 	-- Get the register ID for this unit token, if available.
-	local registerID = GetRegisterIDForUnit(unitToken);
+	local registerID = NamePlates.GetRegisterIDForUnit(unitToken);
 	if not registerID then
 		return false;
 	end
 
 	-- Issue requests via both TRP and MSP protocols. MSP is limited to
 	-- players only, so don't send anything for pets out.
-	if UnitIsPlayer(unitToken) then
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
 		TRP3_API.r.sendQuery(registerID);
 		TRP3_API.r.sendMSPQueryIfAppropriate(registerID);
-	elseif UnitIsCombatPet(unitToken) then
+	elseif profileType == NamePlates.PROFILE_TYPE_PET then
 		-- Queries for companions take a little bit extra effort.
 		local ownerID = TRP3_Utils.str.companionIDToInfo(registerID);
 		if TRP3_Register.isUnitIDKnown(ownerID) then
@@ -170,7 +149,7 @@ end
 -- Return true if a nameplate is successfully updated, or false if not.
 function NamePlates.UpdateNamePlateForUnit(unitToken)
 	-- Validate the unit token.
-	if not NamePlates.IsValidUnit(unitToken) then
+	if not NamePlates.IsUnitValid(unitToken) then
 		return false;
 	end
 
@@ -194,22 +173,6 @@ function NamePlates.UpdateAllNamePlates()
 end
 
 -- Private module functions.
-
--- Returns the TRP3 API internal "unit ID" for a given unit token. This will
--- typically be a "name-realm" string for a player, or a "name-realm_pet"
--- for a companion pet.
---
--- Due to the similarity of unit tokens ("player", "target", ...) and the
--- internal "unit ID" moniker, the nameplate module refers to these as
--- register IDs.
-function GetRegisterIDForUnit(unitToken)
-	if UnitIsPlayer(unitToken) then
-		return TRP3_Utils.str.getUnitID(unitToken);
-	elseif UnitIsCombatPet(unitToken) then
-		local companionType = TRP3_UI.misc.TYPE_PET;
-		return TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
-	end
-end
 
 -- Returns the cooldown for requests for a given register ID, or nil if
 -- no cooldown is set.
@@ -244,20 +207,6 @@ end
 -- Sets the decorator to use for the nameplate display.
 function SetNamePlateDisplayDecorator(decorator)
 	NamePlates.decorator = decorator;
-end
-
--- Returns true if the given unit token refers to a combat companion pet.
---
--- Returns false if the unit is invalid, refers to a player, or is a
--- battle pet companion.
-function UnitIsCombatPet(unitToken)
-	-- Ensure battle pets don't accidentally pass this test, in case one
-	-- day they get nameplates added for no reason.
-	if UnitIsBattlePetCompanion(unitToken) then
-		return false;
-	end
-
-	return UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet");
 end
 
 -- Game integration handlers.
@@ -317,7 +266,7 @@ function OnMouseOverChanged()
 	-- The nameplate API can link mouseover/target/etc. units to frames, so
 	-- just validate it.
 	local unitToken = "mouseover";
-	if not NamePlates.IsValidUnit(unitToken) then
+	if not NamePlates.IsUnitValid(unitToken) then
 		return;
 	end
 
@@ -327,12 +276,9 @@ end
 -- Handler triggered when TRP updates the registry for a named profile.
 function OnRegisterDataUpdated(registerID)
 	-- Trigger an update for the nameplate linked to this ID, if one exists.
-	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-		local frameRegisterID = GetRegisterIDForUnit(frame.namePlateUnitToken);
-		if registerID == frameRegisterID then
-			NamePlates.UpdateNamePlateForUnit(frame.namePlateUnitToken);
-			return;
-		end
+	local unitToken = NamePlates.GetUnitForRegisterID(registerID);
+	if NamePlates.IsUnitValid(unitToken) then
+		NamePlates.UpdateNamePlateForUnit(unitToken);
 	end
 end
 

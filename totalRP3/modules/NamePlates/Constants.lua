@@ -16,6 +16,7 @@ local _, TRP3_API = ...;
 
 -- TRP3_API imports.
 local L = TRP3_API.loc;
+local TRP3_UI = TRP3_API.ui;
 
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
@@ -76,6 +77,11 @@ NamePlates.DEFAULT_CONFIG = {
 	[NamePlates.CONFIG_SHOW_OOC_INDICATORS]      = true,
 	[NamePlates.CONFIG_OOC_INDICATOR_STYLE]      = GetDefaultOOCIndicatorStyle,
 };
+
+-- Profile type constants. This is a subset of the standard types supported
+-- by TRP, as not all types can have decoratable nameplates.
+NamePlates.PROFILE_TYPE_CHARACTER = TRP3_UI.misc.TYPE_CHARACTER;
+NamePlates.PROFILE_TYPE_PET = TRP3_UI.misc.TYPE_PET;
 
 -- OOC indicator style tokens.
 NamePlates.OOC_STYLE_ICON = "ICON";
