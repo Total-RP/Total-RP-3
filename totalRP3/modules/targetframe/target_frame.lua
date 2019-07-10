@@ -159,6 +159,7 @@ local function onStart()
 		elseif anchor == "RIGHT" then
 			tfX = tfX + (ui_TargetFrame:GetWidth() - oldWidth) / 2;
 		end
+		ui_TargetFrame:ClearAllPoints();
 		ui_TargetFrame:SetPoint(anchor, tfX, tfY);
 		ui_TargetFrame:SetHeight(buttonSize + 23);
 	end
