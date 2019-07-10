@@ -109,9 +109,9 @@ local function loadingSequence()
 	-- if the roleplay status changes.
 	local function getRoleplayStatusToken(player)
 		if player:IsInCharacter() then
-			return Globals.ROLEPLAY_STATUS.IN_CHARACTER;
+			return AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER;
 		else
-			return Globals.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+			return AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
 		end
 	end
 

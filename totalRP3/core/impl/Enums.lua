@@ -36,3 +36,9 @@ AddOn_TotalRP3.Enums.RELATIONSHIP_STATUS = {
 	DIVORCED = 4,
 	WIDOWED = 5,
 }
+
+-- ROLEPLAY_STATUS is an enumeration of roleplay statuses for a player unit.
+AddOn_TotalRP3.Enums.ROLEPLAY_STATUS = {
+	IN_CHARACTER = 1,
+	OUT_OF_CHARACTER = 2,
+};
