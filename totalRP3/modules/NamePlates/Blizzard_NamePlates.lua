@@ -30,10 +30,11 @@ local MAX_TITLE_SIZE = 40;
 local ICON_WIDTH = 16;
 local ICON_HEIGHT = 16;
 
-local BlizzardProviderMixin = CreateFromMixins(NamePlates.DisplayProviderMixin);
+-- Decorator plugin for styling Blizzard's default nameplates.
+local BlizzardDecoratorMixin = CreateFromMixins(NamePlates.DisplayDecoratorMixin);
 
--- Initializes the provider, enabling it to modify Blizzard nameplates.
---[[override]] function BlizzardProviderMixin:Init()
+-- Initializes the decorator, enabling it to modify Blizzard nameplates.
+--[[override]] function BlizzardDecoratorMixin:Init()
 	-- Mapping of unit frame objects to a table of widgets.
 	self.unitFrameWidgets = {};
 
@@ -49,7 +50,7 @@ end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
 -- frame. This is used to set up custom widgets on Blizzard nameplates.
---[[override]] function BlizzardProviderMixin:OnNamePlateUnitAdded(unitToken)
+--[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitAdded(unitToken)
 	-- Grab the frame for this unit token.
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -63,7 +64,7 @@ end
 
 -- Called when a nameplate unit token is removed from an allocated nameplate
 -- frame. This is used to remove custom widgets from Blizzard nameplates.
---[[override]] function BlizzardProviderMixin:OnNamePlateUnitRemoved(unitToken)
+--[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitRemoved(unitToken)
 	-- Grab the frame for this unit token.
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -76,7 +77,7 @@ end
 end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
-function BlizzardProviderMixin:OnUnitFrameNameChanged(frame)
+function BlizzardDecoratorMixin:OnUnitFrameNameChanged(frame)
 	-- Discard frames that don't refer to nameplate units.
 	if not strfind(tostring(frame.unit), "^nameplate%d+$") then
 		return;
@@ -88,7 +89,7 @@ end
 
 -- Returns true if the given frame can be customized without raising any
 -- potential errors if untrusted code attempts to modify it.
-function BlizzardProviderMixin:IsUnitFrameCustomizable(frame)
+function BlizzardDecoratorMixin:IsUnitFrameCustomizable(frame)
 	-- Only non-forbidden frames can be customized.
 	return CanAccessObject(frame);
 end
@@ -100,7 +101,7 @@ end
 -- customized. It is the responsibility of the caller to ensure that
 -- customizability is checked via IsUnitFrameCustomizable prior to making
 -- any changes.
-function BlizzardProviderMixin:GetUnitFrameForUnit(unitToken)
+function BlizzardDecoratorMixin:GetUnitFrameForUnit(unitToken)
 	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
 	if not frame or not frame.UnitFrame then
 		return nil;
@@ -110,7 +111,7 @@ function BlizzardProviderMixin:GetUnitFrameForUnit(unitToken)
 end
 
 -- Updates the name display on a given unit frame.
-function BlizzardProviderMixin:UpdateUnitFrameName(frame)
+function BlizzardDecoratorMixin:UpdateUnitFrameName(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -133,7 +134,7 @@ function BlizzardProviderMixin:UpdateUnitFrameName(frame)
 end
 
 -- Initializes the icon display on a unit frame.
-function BlizzardProviderMixin:SetUpUnitFrameIcon(frame)
+function BlizzardDecoratorMixin:SetUpUnitFrameIcon(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -154,7 +155,7 @@ function BlizzardProviderMixin:SetUpUnitFrameIcon(frame)
 end
 
 -- Updates the icon display on a nameplate.
-function BlizzardProviderMixin:UpdateUnitFrameIcon(frame)
+function BlizzardDecoratorMixin:UpdateUnitFrameIcon(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -177,7 +178,7 @@ function BlizzardProviderMixin:UpdateUnitFrameIcon(frame)
 end
 
 -- Deinitializes RP icon display on a unit frame.
-function BlizzardProviderMixin:TearDownUnitFrameIcon(frame)
+function BlizzardDecoratorMixin:TearDownUnitFrameIcon(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -188,7 +189,7 @@ function BlizzardProviderMixin:TearDownUnitFrameIcon(frame)
 end
 
 -- Initializes the title display on a unit frame.
-function BlizzardProviderMixin:SetUpUnitFrameTitle(frame)
+function BlizzardDecoratorMixin:SetUpUnitFrameTitle(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -209,7 +210,7 @@ function BlizzardProviderMixin:SetUpUnitFrameTitle(frame)
 end
 
 -- Updates the title display on a nameplate.
-function BlizzardProviderMixin:UpdateUnitFrameTitle(frame)
+function BlizzardDecoratorMixin:UpdateUnitFrameTitle(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -235,7 +236,7 @@ function BlizzardProviderMixin:UpdateUnitFrameTitle(frame)
 end
 
 -- Deinitializes the title display on a unit frame.
-function BlizzardProviderMixin:TearDownUnitFrameTitle(frame)
+function BlizzardDecoratorMixin:TearDownUnitFrameTitle(frame)
 	-- Check if we can customize this frame.
 	if not self:IsUnitFrameCustomizable(frame) then
 		return;
@@ -249,7 +250,7 @@ end
 --
 -- Returns true if the frame is updated successfully, or false if the given
 -- unit token is invalid.
---[[override]] function BlizzardProviderMixin:UpdateNamePlateForUnit(unitToken)
+--[[override]] function BlizzardDecoratorMixin:UpdateNamePlateForUnit(unitToken)
 	-- Grab the frame for this unit.
 	local frame = self:GetUnitFrameForUnit(unitToken);
 	if not frame then
@@ -271,8 +272,8 @@ end
 	return true;
 end
 
--- Updates all name plates managed by this provider.
---[[override]] function BlizzardProviderMixin:UpdateAllNamePlates()
+-- Updates all name plates managed by this decorator.
+--[[override]] function BlizzardDecoratorMixin:UpdateAllNamePlates()
 	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlateForUnit(frame.namePlateUnitToken);
 	end
@@ -280,7 +281,7 @@ end
 
 -- Returns a named custom widget for a unit frame, or nil if the widget
 -- doesn't exist.
-function BlizzardProviderMixin:GetUnitFrameWidget(frame, widgetName)
+function BlizzardDecoratorMixin:GetUnitFrameWidget(frame, widgetName)
 	local widgets = self.unitFrameWidgets[frame];
 	if not widgets then
 		return nil;
@@ -298,7 +299,7 @@ end
 -- The widget returned may or may not be sourced from the reusable pool. It
 -- is the responsibility of the caller to ensure that the widget is reset
 -- prior to modifications.
-function BlizzardProviderMixin:AcquireUnitFrameWidget(frame, widgetName, pool)
+function BlizzardDecoratorMixin:AcquireUnitFrameWidget(frame, widgetName, pool)
 	-- Don't add widgets to locked down frames.
 	if not CanAccessObject(frame) then
 		return nil;
@@ -318,12 +319,12 @@ function BlizzardProviderMixin:AcquireUnitFrameWidget(frame, widgetName, pool)
 end
 
 -- Acquires a custom font string widget and assigns it to the given frame.
-function BlizzardProviderMixin:AcquireUnitFrameFontString(frame, widgetName)
+function BlizzardDecoratorMixin:AcquireUnitFrameFontString(frame, widgetName)
 	return self:AcquireUnitFrameWidget(frame, widgetName, self.fontStringPool);
 end
 
 -- Acquires a custom texture widget and assigns it to the given frame.
-function BlizzardProviderMixin:AcquireUnitFrameTexture(frame, widgetName)
+function BlizzardDecoratorMixin:AcquireUnitFrameTexture(frame, widgetName)
 	return self:AcquireUnitFrameWidget(frame, widgetName, self.texturePool);
 end
 
@@ -333,7 +334,7 @@ end
 -- If the frame is inaccessible, this will not release the widget, however
 -- the future acquisitions of the widget with the same name will return the
 -- same widget.
-function BlizzardProviderMixin:ReleaseUnitFrameWidget(frame, widgetName, pool)
+function BlizzardDecoratorMixin:ReleaseUnitFrameWidget(frame, widgetName, pool)
 	-- Don't release widget from to locked down frames. These should never
 	-- have had them added in the first place, so this should be fine.
 	if not CanAccessObject(frame) then
@@ -358,14 +359,14 @@ function BlizzardProviderMixin:ReleaseUnitFrameWidget(frame, widgetName, pool)
 end
 
 -- Releases a named custom font string widget from a unit frame.
-function BlizzardProviderMixin:ReleaseUnitFrameFontString(frame, widgetName)
+function BlizzardDecoratorMixin:ReleaseUnitFrameFontString(frame, widgetName)
 	return self:ReleaseUnitFrameWidget(frame, widgetName, self.fontStringPool);
 end
 
 -- Releases a named custom texture widget from a unit frame.
-function BlizzardProviderMixin:ReleaseUnitFrameTexture(frame, widgetName)
+function BlizzardDecoratorMixin:ReleaseUnitFrameTexture(frame, widgetName)
 	return self:ReleaseUnitFrameWidget(frame, widgetName, self.texturePool);
 end
 
 -- Module exports.
-NamePlates.BlizzardProviderMixin = BlizzardProviderMixin;
+NamePlates.BlizzardDecoratorMixin = BlizzardDecoratorMixin;

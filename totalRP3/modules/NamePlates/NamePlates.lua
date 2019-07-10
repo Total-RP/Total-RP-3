@@ -34,7 +34,7 @@ local Icon = TRP3_API.Ellyb.Icon;
 
 -- Local declarations.
 local GetDefaultOOCIndicator;
-local GetNamePlateDisplayProvider;
+local GetNamePlateDisplayDecorator;
 local GetRegisterIDForUnit;
 local GetRegisterIDRequestCooldown;
 local GetUnitCombatPetProfile;
@@ -49,7 +49,7 @@ local OnRegisterDataUpdated;
 local OnRoleplayStatusChanged;
 local PruneRegisterIDRequestCooldowns;
 local RegisterModuleConfigurationPage;
-local SetNamePlateDisplayProvider;
+local SetNamePlateDisplayDecorator;
 local SetRegisterIDRequestCooldown;
 local UnitIsCombatPet;
 
@@ -89,8 +89,8 @@ local CONFIG_NAMEPLATES_ACTIVE_QUERY          = "nameplates_active_query";
 local NamePlates = {
 	-- Mapping of register IDs ("unit IDs") to request cooldowns.
 	registerIDCooldowns = {},
-	-- Active integration that is used to customize nameplates.
-	provider = nil,
+	-- Active decorator that is used to customize nameplates.
+	decorator = nil,
 };
 
 -- Returns true if the user has elected to customize nameplates.
@@ -435,46 +435,46 @@ function NamePlates.UpdateNamePlateForUnit(unitToken)
 		return false;
 	end
 
-	-- Grab the provider if one exists and trigger the update.
-	local provider = GetNamePlateDisplayProvider();
-	if not provider then
+	-- Grab the decorator if one exists and trigger the update.
+	local decorator = GetNamePlateDisplayDecorator();
+	if not decorator then
 		return false;
 	end
 
-	return provider:UpdateNamePlateForUnit(unitToken);
+	return decorator:UpdateNamePlateForUnit(unitToken);
 end
 
 -- Updates all nameplates managed by this module.
 function NamePlates.UpdateAllNamePlates()
-	local provider = GetNamePlateDisplayProvider();
-	if not provider then
+	local decorator = GetNamePlateDisplayDecorator();
+	if not decorator then
 		return;
 	end
 
-	return provider:UpdateAllNamePlates();
+	return decorator:UpdateAllNamePlates();
 end
 
--- Base mixin used for nameplate display providers. A provider implements the
--- logic for updating nameplates depending upon which addon is being used
+-- Base mixin used for nameplate decorators. A decorator implements the
+-- logic for styling nameplates depending upon which addon is being used
 -- to customize them by the end-user.
-local DisplayProviderMixin = {};
-NamePlates.DisplayProviderMixin = DisplayProviderMixin;
+local DisplayDecoratorMixin = {};
+NamePlates.DisplayDecoratorMixin = DisplayDecoratorMixin;
 
--- Initializes the provider. This is called at-most once when your provider
+-- Initializes the decorator. This is called at-most once when your decorator
 -- is selected for use by the module.
-function DisplayProviderMixin:Init()
+function DisplayDecoratorMixin:Init()
 	-- Override this in your implementation to perform initialization logic.
 end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
 -- frame. This can be used to perform setup logic.
-function DisplayProviderMixin:OnNamePlateUnitAdded()
+function DisplayDecoratorMixin:OnNamePlateUnitAdded()
 	-- Override this in your implementation if setup logic is desired.
 end
 
 -- Called when a nameplate unit token is removed from an allocated nameplate
 -- frame. This can be used to perform teardown logic.
-function DisplayProviderMixin:OnNamePlateUnitRemoved()
+function DisplayDecoratorMixin:OnNamePlateUnitRemoved()
 	-- Override this in your implementation if teardown logic is desired.
 end
 
@@ -484,13 +484,13 @@ end
 -- unit token is invalid.
 --
 -- @param unitToken The unit token to update a nameplate for.
-function DisplayProviderMixin:UpdateNamePlateForUnit(_)
+function DisplayDecoratorMixin:UpdateNamePlateForUnit(_)
 	-- Override this in your implementation.
 	return false;
 end
 
--- Updates all name plates managed by this provider.
-function DisplayProviderMixin:UpdateAllNamePlates()
+-- Updates all name plates managed by this decorator.
+function DisplayDecoratorMixin:UpdateAllNamePlates()
 	-- Override this in your implementation.
 end
 
@@ -585,14 +585,14 @@ function GetUnitPlayerProfile(unitToken)
 	return Player.CreateFromNameAndRealm(name, realm);
 end
 
--- Returns the provider in use for the nameplate display.
-function GetNamePlateDisplayProvider()
-	return NamePlates.provider;
+-- Returns the decorator in use for the nameplate display.
+function GetNamePlateDisplayDecorator()
+	return NamePlates.decorator;
 end
 
--- Sets the provider to use for the nameplate display.
-function SetNamePlateDisplayProvider(provider)
-	NamePlates.provider = provider;
+-- Sets the decorator to use for the nameplate display.
+function SetNamePlateDisplayDecorator(decorator)
+	NamePlates.decorator = decorator;
 end
 
 -- Returns true if the given unit token refers to a combat companion pet.
@@ -613,10 +613,10 @@ end
 
 -- Handler triggered then the game assigns a nameplate unit token.
 function OnNamePlateUnitAdded(unitToken)
-	-- Forward to the active provider.
-	local provider = GetNamePlateDisplayProvider();
-	if provider then
-		provider:OnNamePlateUnitAdded(unitToken);
+	-- Forward to the active decorator.
+	local decorator = GetNamePlateDisplayDecorator();
+	if decorator then
+		decorator:OnNamePlateUnitAdded(unitToken);
 	end
 
 	-- Issue a request for the profile.
@@ -628,10 +628,10 @@ end
 
 -- Handler triggered then the game deactivates a nameplate unit token.
 function OnNamePlateUnitRemoved(unitToken)
-	-- Forward to the active provider.
-	local provider = GetNamePlateDisplayProvider();
-	if provider then
-		provider:OnNamePlateUnitRemoved(unitToken);
+	-- Forward to the active decorator.
+	local decorator = GetNamePlateDisplayDecorator();
+	if decorator then
+		decorator:OnNamePlateUnitRemoved(unitToken);
 	end
 end
 
@@ -729,19 +729,19 @@ end
 -- Handler called when the module is started up. This is responsible for
 -- fully starting the module, registering events and hooks as needed.
 function OnModuleStart()
-	-- Activate an appropriate provider based on the environment.
-	local providerMixin;
+	-- Activate an appropriate decorator based on the environment.
+	local decoratorMixin;
 
 	if IsAddOnLoaded("Blizzard_NamePlates") then
 		-- Blizzard_NamePlate should be a last resort. Add custom integrations
 		-- above this one.
-		providerMixin = NamePlates.BlizzardProviderMixin;
+		decoratorMixin = NamePlates.BlizzardDecoratorMixin;
 	else
 		return false, L.NAMEPLATES_ERR_NO_VALID_PROVIDER;
 	end
 
-	local provider = CreateAndInitFromMixin(providerMixin);
-	SetNamePlateDisplayProvider(provider);
+	local decorator = CreateAndInitFromMixin(decoratorMixin);
+	SetNamePlateDisplayDecorator(decorator);
 
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
