@@ -93,6 +93,13 @@ TRP3_API.globals = {
 	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
 };
 
+-- ROLEPLAY_STATUS is an enumeration of roleplay statuses for a player unit.
+local ROLEPLAY_STATUS = {
+	IN_CHARACTER = "IN_CHARACTER",
+	OUT_OF_CHARACTER = "OUT_OF_CHARACTER",
+};
+TRP3_API.globals.ROLEPLAY_STATUS = ROLEPLAY_STATUS;
+
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.
 local RELATIONS = {
 	UNFRIENDLY = "UNFRIENDLY",

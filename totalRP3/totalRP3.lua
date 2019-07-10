@@ -107,7 +107,16 @@ local function loadingSequence()
 	-- Hack to implement the ROLEPLAY_STATUS_CHANGED event; we'll monitor
 	-- REGISTER_DATA_UPDATED for player profile changes and trigger the event
 	-- if the roleplay status changes.
-	local currentRoleplayStatus; -- Initialized to nil explicitly.
+	local function getRoleplayStatusToken(player)
+		if player:IsInCharacter() then
+			return Globals.ROLEPLAY_STATUS.IN_CHARACTER;
+		else
+			return Globals.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+		end
+	end
+
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentRoleplayStatus = getRoleplayStatusToken(currentUser);
 
 	TRP3_API.events.registerCallback(TRP3_API.events.REGISTER_DATA_UPDATED, function(unitID)
 		-- Disregard updates for non-player changes.
@@ -115,17 +124,15 @@ local function loadingSequence()
 			return;
 		end
 
-		local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-		local isInCharacter = currentUser:IsInCharacter();
-
-		if currentRoleplayStatus ~= isInCharacter then
-			currentRoleplayStatus = isInCharacter;
-			TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED);
+		local newRoleplayStatus = getRoleplayStatusToken(currentUser);
+		if currentRoleplayStatus ~= newRoleplayStatus then
+			currentRoleplayStatus = newRoleplayStatus;
+			TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED, newRoleplayStatus);
 		end
 	end);
 
 	-- Always trigger ROLEPLAY_STATUS_CHANGED on startup.
-	TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED);
+	TRP3_API.events.triggerEvent(TRP3_API.events.ROLEPLAY_STATUS_CHANGED, currentRoleplayStatus);
 
 	Log.log("OnEnable() DONE");
 end

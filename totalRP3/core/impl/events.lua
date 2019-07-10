@@ -85,6 +85,7 @@ local Events = {
 
 	-- Dispatched when the player reconfigures their own roleplay status,
 	-- for example from in-character (IC) to out-of-character (OOC).
+	-- Arg1 : Current status (see Globals.ROLEPLAY_STATUS enumeration).
 	ROLEPLAY_STATUS_CHANGED = "ROLEPLAY_STATUS_CHANGED",
 };
 
