@@ -265,12 +265,5 @@ end
 	return true;
 end
 
--- Updates all name plates managed by this decorator.
---[[override]] function BlizzardDecoratorMixin:UpdateAllNamePlates()
-	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-		self:UpdateNamePlateForUnit(frame.namePlateUnitToken);
-	end
-end
-
 -- Module exports.
 NamePlates.BlizzardDecoratorMixin = BlizzardDecoratorMixin;

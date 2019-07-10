@@ -107,7 +107,10 @@ end
 
 -- Updates all name plates managed by this decorator.
 function DecoratorBaseMixin:UpdateAllNamePlates()
-	-- Override this in your implementation.
+	-- Dispatch updates for all existing nameplate frames.
+	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
+		self:UpdateNamePlateForUnit(frame.namePlateUnitToken);
+	end
 end
 
 -- Module exports.
