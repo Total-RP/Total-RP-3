@@ -77,6 +77,11 @@ end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
 function BlizzardProviderMixin:OnUnitFrameNameChanged(frame)
+	-- Discard frames that don't refer to nameplate units.
+	if not strfind(tostring(frame.unit), "^nameplate%d+$") then
+		return;
+	end
+
 	-- Update the name portion of the unit frame.
 	self:UpdateUnitFrameName(frame);
 end
