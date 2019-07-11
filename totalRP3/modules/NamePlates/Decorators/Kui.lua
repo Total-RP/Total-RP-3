@@ -91,6 +91,7 @@ end
 function KuiDecoratorMixin:OnNamePlateHidden(nameplate)
 	-- Hide the RP icon element by force.
 	local icon = nameplate.TRP3_RPIcon;
+	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if icon then
 		icon:Hide();
 	end
