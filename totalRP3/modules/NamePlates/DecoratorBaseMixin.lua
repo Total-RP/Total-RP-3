@@ -95,6 +95,11 @@ function DecoratorBaseMixin:GetUnitCustomTitle(unitToken)
 	return titleText;
 end
 
+-- Returns the nameplate frame for a given unit token.
+function DecoratorBaseMixin:GetNamePlateForUnit(unitToken)
+	return C_NamePlate.GetNamePlateForUnit(unitToken);
+end
+
 -- Updates the name plate for a single unit identified by the given token.
 --
 -- Returns true if the frame is updated successfully, or false if the given

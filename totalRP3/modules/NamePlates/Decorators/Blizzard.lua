@@ -95,12 +95,12 @@ end
 -- customizability is checked via IsUnitFrameCustomizable prior to making
 -- any changes.
 function BlizzardDecoratorMixin:GetUnitFrameForUnit(unitToken)
-	local frame = C_NamePlate.GetNamePlateForUnit(unitToken);
-	if not frame or not frame.UnitFrame then
+	local nameplate = self:GetNamePlateForUnit(unitToken);
+	if not nameplate or not nameplate.UnitFrame then
 		return nil;
 	end
 
-	return frame.UnitFrame;
+	return nameplate.UnitFrame;
 end
 
 -- Updates the name display on a given unit frame.
