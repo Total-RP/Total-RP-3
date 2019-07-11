@@ -101,6 +101,14 @@ function KuiDecoratorMixin:OnNamePlateHidden(nameplate)
 	end
 end
 
+-- Returns true if the given nameplate is valid for customizing.
+function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
+	-- Only allow decorations of valid, non-personal, friendly nameplates.
+	return nameplate.unit ~= nil
+		and not nameplate.state.personal
+		and nameplate.state.friend;
+end
+
 -- Updates the given nameplate.
 function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 	-- Hide custom elements before doing customizations; this ensure we
@@ -110,11 +118,8 @@ function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 		icon:Hide();
 	end
 
-	-- If this nameplate looks like it should be left alone, ignore it,
-	if not nameplate.unit
-	or nameplate.state.personal
-	or not nameplate.state.friend then
-		-- It has no unit, it's the personal resource, or it's an enemy.
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return false;
 	end
 
@@ -140,10 +145,9 @@ end
 
 -- Updates the name text display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
-	-- Restore the original name text before doing anything.
-	local namePlugin = self.addon:GetPlugin("NameText");
-	if namePlugin then
-		namePlugin:Show(nameplate);
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
+		return;
 	end
 
 	-- Get the custom name to be applied.
@@ -163,6 +167,11 @@ end
 
 -- Updates the icon display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
+		return;
+	end
+
 	-- Grab the custom icon element.
 	local icon = nameplate.TRP3_RPIcon;
 	if not icon then
@@ -180,6 +189,11 @@ end
 
 -- Updates the title display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
+		return;
+	end
+
 	-- Get the title text to be displayed.
 	local titleText = self:GetUnitCustomTitle(nameplate.unit);
 	if not titleText then
