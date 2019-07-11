@@ -115,10 +115,8 @@ end
 
 -- Returns true if the given nameplate is valid for customizing.
 function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
-	-- Only allow decorations of valid, non-personal, friendly nameplates.
-	return nameplate.unit ~= nil
-		and not nameplate.state.personal
-		and nameplate.state.friend;
+	-- Only allow decorations of valid, non-personal nameplates.
+	return nameplate.unit ~= nil and not nameplate.state.personal;
 end
 
 -- Sets up the given nameplate, installing custom elements and hooks.
