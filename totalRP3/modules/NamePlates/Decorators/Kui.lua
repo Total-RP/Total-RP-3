@@ -154,6 +154,11 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 		-- Format and show it.
 		nameplate.state.name = nameText;
 		nameplate.NameText:SetText(nameplate.state.name);
+
+		-- If we're in name-only mode we need to fix up the health colouring.
+		if self:IsNamePlateInNameOnlyMode(nameplate) then
+			KuiNameplatesCore:NameOnlySetNameTextToHealth(nameplate);
+		end
 	end
 
 	-- Now for the custom color...
@@ -215,6 +220,13 @@ end
 -- Returns the nameplate frame used by a named unit.
 --[[override]] function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
 	return self.addon:GetActiveNameplateForUnit(unitToken);
+end
+
+-- Returns true if the given nameplate frame is in name-only mode. Some
+-- customizations shouldn't display if not in name-only mode, but this
+-- decision is left to the individual displays.
+--[[override]] function KuiDecoratorMixin:IsNamePlateInNameOnlyMode(nameplate)
+	return nameplate.IN_NAMEONLY;
 end
 
 -- Updates the name plate for a single unit identified by the given token.

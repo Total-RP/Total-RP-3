@@ -217,7 +217,7 @@ function BlizzardDecoratorMixin:UpdateUnitFrameTitle(frame)
 
 	-- If the healthbar is showing, customizing the title won't be available
 	-- since the bar overlaps the title.
-	if frame.healthBar:IsShown() then
+	if not self:IsNamePlateInNameOnlyMode(frame:GetParent()) then
 		titleWidget:Hide();
 		return;
 	end
@@ -241,6 +241,16 @@ function BlizzardDecoratorMixin:TearDownUnitFrameTitle(frame)
 
 	-- Release the custom fontstring widget.
 	self:ReleaseCustomFontString(frame, "title");
+end
+
+-- Returns true if the given nameplate frame is in name-only mode. Some
+-- customizations shouldn't display if not in name-only mode, but this
+-- decision is left to the individual displays.
+--[[override]] function BlizzardDecoratorMixin:IsNamePlateInNameOnlyMode(nameplate)
+	-- The healthbar will be visible if not in name-only mode. The CVar isn't
+	-- applied until reloads, hence why we don't test that in case it got
+	-- toggled.
+	return not nameplate.UnitFrame.healthBar:IsShown();
 end
 
 -- Updates the name plate for a single unit identified by the given token.

@@ -100,6 +100,15 @@ function DecoratorBaseMixin:GetNamePlateForUnit(unitToken)
 	return C_NamePlate.GetNamePlateForUnit(unitToken);
 end
 
+-- Returns true if the given nameplate frame is in name-only mode. Some
+-- customizations shouldn't display if not in name-only mode, but this
+-- decision is left to the individual displays.
+--
+-- @param nameplate The nameplate frame to test.
+function DecoratorBaseMixin:IsNamePlateInNameOnlyMode(_)
+	return false;
+end
+
 -- Updates the name plate for a single unit identified by the given token.
 --
 -- Returns true if the frame is updated successfully, or false if the given
