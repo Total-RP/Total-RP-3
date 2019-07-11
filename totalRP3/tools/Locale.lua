@@ -1292,6 +1292,8 @@ The register also received a checkbox to only display profiles on which you wrot
 
 ]],
 
+	CO_MODULE_BLACKLIST_REASON_trp3_kuinameplates = "The |cffff9900Total RP 3: KuiNameplates|r module has been |cffff0000disabled|r as its functionality is now included within Total RP 3 itself, and should be uninstalled.",
+
 	NAMEPLATES_MODULE_NAME = "Nameplates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Augments the default nameplates with additional role play characteristics.",
 
@@ -1307,7 +1309,7 @@ If selected, enable nameplate customization.
 Customization is only enabled if using any of the following nameplates:
 
 - |cffffffffBlizzard Nameplates|r
-- |cffffffffKui Nameplates|r
+- |cffffffffKuiNameplates|r
 
 If none of the above are in-use, customizations will be automatically disabled.]],
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
@@ -1330,7 +1332,7 @@ This option only works in the following circumstances:
 
 - |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
 
-- |cffffffffKui Nameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
+- |cffffffffKuiNameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",

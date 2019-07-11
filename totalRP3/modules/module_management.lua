@@ -48,6 +48,16 @@ TRP3_API.module.status = {
 };
 local MODULE_STATUS = TRP3_API.module.status;
 
+-- Mapping of module IDs that should be disabled on startup. These will have
+-- a message printed to the chatframe explaining why the module has been
+-- disabled.
+--
+-- An message will be printed on startup if a localization key exists with
+-- the same module ID, prefixed by "CO_MODULE_BLACKLIST_REASON_".
+TRP3_API.module.MODULE_BLACKLIST = {
+	trp3_kuinameplates = true, -- Merged into the core addon.
+};
+
 function TRP3_API.module.isModuleLoaded(moduleID)
 	return MODULE_REGISTRATION[moduleID] and MODULE_REGISTRATION[moduleID].status == MODULE_STATUS.OK;
 end
@@ -437,6 +447,20 @@ TRP3_API.module.init = function()
 			elseif module.requiredDeps then
 				if not checkModuleDependencies(moduleID) then
 					module.status = MODULE_STATUS.MISSING_DEPENDENCY;
+				end
+			end
+
+			-- Check blacklist. If on it, we'll disable.
+			if TRP3_API.module.MODULE_BLACKLIST[moduleID] then
+				module.status = MODULE_STATUS.DISABLED;
+
+				local localizationKey = "CO_MODULE_BLACKLIST_REASON_" .. moduleID;
+				if loc:KeyExists(localizationKey) then
+					module.error = loc:GetText(localizationKey);
+
+					-- Print the reason for disabling this module so the user
+					-- can take corrective actions.
+					Utils.message.displayMessage(module.error);
 				end
 			end
 		end
