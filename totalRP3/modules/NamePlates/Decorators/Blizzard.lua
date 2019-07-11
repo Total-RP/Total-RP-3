@@ -215,6 +215,13 @@ function BlizzardDecoratorMixin:UpdateUnitFrameTitle(frame)
 		return;
 	end
 
+	-- If the healthbar is showing, customizing the title won't be available
+	-- since the bar overlaps the title.
+	if frame.healthBar:IsShown() then
+		titleWidget:Hide();
+		return;
+	end
+
 	-- Grab the title text. If there's no title text, we'll hide it entirely.
 	local titleText = self:GetUnitCustomTitle(frame.unit);
 	if not titleText or titleText == "" then
