@@ -150,6 +150,7 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	if nameText then
 		-- Format and show it.
 		nameplate.state.name = nameText;
+		nameplate.NameText:SetText(nameplate.state.name);
 
 		-- If we're in name-only mode we need to fix up the health colouring.
 		-- This should only apply if the Core layout is in use.
@@ -160,10 +161,8 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 		-- Once colouring is applied we'll prefix the indicator.
 		local oocText = NamePlates.GetUnitOOCIndicator(nameplate.unit);
 		if oocText then
-			nameplate.state.name = strjoin(" ", oocText, nameplate.state.name);
+			nameplate.NameText:SetText(strjoin(" ", oocText, nameplate.NameText:GetText()));
 		end
-
-		nameplate.NameText:SetText(nameplate.state.name);
 	end
 
 	-- Now for the custom color...
