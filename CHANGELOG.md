@@ -1,3 +1,15 @@
+# Changelog version 1.6.3
+
+## Changed
+
+- Companion tooltips will now adjust contrast for the custom color if the setting is enabled.
+
+## Fixed
+
+- Fixed a companion tooltip error when the API fails to return the pet type.
+- Fixed an issue which could make the toolbar appear above the world map.
+- Fixed an anchoring error with the target frame.
+
 # Changelog version 1.6.2
 
 ## Added

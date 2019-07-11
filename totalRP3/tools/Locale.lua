@@ -782,6 +782,7 @@ This will works:|cff00ff00
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
 	UI_MUSIC_DURATION = "Duration",
+	UI_MUSIC_ALTTITLE = "Alternate title",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
 	UI_COLOR_BROWSER_PRESETS = "Presets",
@@ -1270,12 +1271,6 @@ The register also received a checkbox to only display profiles on which you wrot
 - Fixed an error message that could be caused by other addons misusing official API functions.
 
 ]],
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	UI_MUSIC_ALTTITLE = "Alternate title",
 	WHATS_NEW_23_2 = [[
 # Changelog version 1.6.2
 
@@ -1289,6 +1284,27 @@ The register also received a checkbox to only display profiles on which you wrot
 - Fixed issues in the music data transfer between TRP and MRP.
 - Fixed an issue with duplicated lines on the map scan button tooltip.
 - Further speculative fixes to the map issue on login.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	
+	WHATS_NEW_23_3 = [[
+# Changelog version 1.6.3
+
+## Changed
+
+- Companion tooltips will now adjust contrast for the custom color if the setting is enabled.
+
+## Fixed
+
+- Fixed a companion tooltip error when the API fails to return the pet type.
+- Fixed an issue which could make the toolbar appear above the world map.
+- Fixed an anchoring error with the target frame.
 
 ]],
 };
