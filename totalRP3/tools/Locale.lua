@@ -1301,7 +1301,15 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_ENABLE_TITLE = "Enable nameplate customization",
-	NAMEPLATES_CONFIG_ENABLE_HELP = "If selected, enable nameplate customization.\n\nUnchecking this will disable all customizations present in the module.",
+	NAMEPLATES_CONFIG_ENABLE_HELP = [[
+If selected, enable nameplate customization.
+
+Customization is only enabled if using any of the following nameplates:
+
+- |cffffffffBlizzard Nameplates|r
+- |cffffffffKui Nameplates|r
+
+If none of the above are in-use, customizations will be automatically disabled.]],
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
@@ -1315,7 +1323,14 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_CONFIG_SHOW_ICONS_TITLE = "Show custom icons",
 	NAMEPLATES_CONFIG_SHOW_ICONS_HELP = "If selected, profile icons will be displayed next to the names of players and pets.",
 	NAMEPLATES_CONFIG_SHOW_TITLES_TITLE = "Show custom titles",
-	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = "If selected, profile titles will be displayed below the names of players and pets.",
+	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = [[
+If selected, profile titles will be displayed below the names of players and pets.
+
+This option only works in the following circumstances:
+
+- |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
+
+- |cffffffffKui Nameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",
