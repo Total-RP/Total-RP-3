@@ -108,12 +108,12 @@ end
 --[[private]] function NamePlates.GetUnitForRegisterID(registerID)
 	-- Iterate over all the active nameplate frames and check for a unit that
 	-- maps to the same register ID.
-	for _, frame in pairs(C_NamePlate.GetNamePlates()) do
-		local frameUnitToken = frame.namePlateUnitToken;
-		local frameRegisterID = NamePlates.GetRegisterIDForUnit(frameUnitToken);
+	for _, nameplate in pairs(C_NamePlate.GetNamePlates()) do
+		local namePlateUnitToken = nameplate.namePlateUnitToken;
+		local namePlateRegisterID = NamePlates.GetRegisterIDForUnit(namePlateUnitToken);
 
-		if registerID == frameRegisterID then
-			return frameUnitToken;
+		if registerID == namePlateRegisterID then
+			return namePlateUnitToken;
 		end
 	end
 
