@@ -41,32 +41,26 @@ function KuiDecoratorMixin:Init()
 	-- Initialize a plugin for our augmentations.
 	self.plugin = self.addon:NewPlugin("TotalRP3", 200);
 
-	self.plugin.Create = function(_, frame)
+	-- Register message handlers for plates.
+	self.plugin:RegisterMessage("Create", function(_, frame)
 		self:OnNamePlateCreated(frame);
-	end
+	end);
 
-	self.plugin.Show = function(_, frame)
+	self.plugin:RegisterMessage("Show", function(_, frame)
 		self:OnNamePlateShow(frame);
-	end
+	end);
 
-	self.plugin.Update = function(_, frame)
-		self:OnNamePlateUpdate(frame);
-	end
-
-	self.plugin.Hide = function(_, frame)
+	self.plugin:RegisterMessage("Hide", function(_, frame)
 		self:OnNamePlateHidden(frame);
-	end
+	end);
 
-	-- Message handlers for the plugin.
-	self.plugin.GainedTarget = self.plugin.Update;
-	self.plugin.LostTarget = self.plugin.Update;
+	self.plugin:RegisterMessage("GainedTarget", function(_, frame)
+		self:OnNamePlateUpdate(frame);
+	end);
 
-	-- Register the actual messages.
-	self.plugin:RegisterMessage("Create");
-	self.plugin:RegisterMessage("Show");
-	self.plugin:RegisterMessage("Hide");
-	self.plugin:RegisterMessage("GainedTarget");
-	self.plugin:RegisterMessage("LostTarget");
+	self.plugin:RegisterMessage("LostTarget", function(_, frame)
+		self:OnNamePlateUpdate(frame);
+	end);
 
 	-- Run over all the already-created frames and set them up.
 	for _, frame in self.addon:Frames() do
@@ -95,9 +89,6 @@ end
 
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHidden(nameplate)
-	-- Update the nameplate.
-	self:UpdateNamePlate(nameplate);
-
 	-- Hide the RP icon element by force.
 	local icon = nameplate.TRP3_RPIcon;
 	if icon then
@@ -148,6 +139,7 @@ function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 	-- Hide custom elements before doing customizations; this ensure we
 	-- properly hide them if the nameplate state changes for the next test.
 	local icon = nameplate.TRP3_RPIcon;
+	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if icon then
 		icon:Hide();
 	end
