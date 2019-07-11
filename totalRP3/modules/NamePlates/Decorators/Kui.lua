@@ -34,6 +34,10 @@ function KuiDecoratorMixin:Init()
 		self:OnNamePlateCreated(frame);
 	end
 
+	self.plugin.Show = function(_, frame)
+		self:OnNamePlateShow(frame);
+	end
+
 	self.plugin.Update = function(_, frame)
 		self:OnNamePlateUpdate(frame);
 	end
@@ -43,9 +47,6 @@ function KuiDecoratorMixin:Init()
 	end
 
 	-- Message handlers for the plugin.
-	self.plugin.Create = self.plugin.Create;
-	self.plugin.Show = self.plugin.Update;
-	self.plugin.Hide = self.plugin.Hide;
 	self.plugin.GainedTarget = self.plugin.Update;
 	self.plugin.LostTarget = self.plugin.Update;
 
@@ -65,28 +66,76 @@ function KuiDecoratorMixin:OnNamePlateCreated(nameplate)
 	icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
 
 	nameplate.handler:RegisterElement("TRP3_RPIcon", icon);
+
+	-- Install hooks on some of the update functions to apply modifications.
+	hooksecurefunc(nameplate, "UpdateNameText", function(frame)
+		self:UpdateNamePlateName(frame);
+	end);
+
+	hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
+		self:UpdateNamePlateTitle(frame);
+	end);
 end
 
--- Handler called when a nameplate frame is shown or updated.
+-- Handler called when a nameplate frame is shown .
+function KuiDecoratorMixin:OnNamePlateShow(nameplate)
+	-- Update the nameplate.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate frame is updated.
 function KuiDecoratorMixin:OnNamePlateUpdate(nameplate)
-	-- Dispatch the update through the normal channel.
-	if nameplate.unit then
-		self:UpdateNamePlateForUnit(nameplate.unit);
-	end
+	-- Update the nameplate.
+	self:UpdateNamePlate(nameplate);
 end
 
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHidden(nameplate)
-	-- Hide the RP icon element.
+	-- Update the nameplate.
+	self:UpdateNamePlate(nameplate);
+
+	-- Hide the RP icon element by force.
 	local icon = nameplate.TRP3_RPIcon;
 	if icon then
 		icon:Hide();
 	end
 end
 
--- Returns the nameplate frame used by a named unit.
-function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
-	return self.addon:GetActiveNameplateForUnit(unitToken);
+-- Updates the given nameplate.
+function KuiDecoratorMixin:UpdateNamePlate(nameplate)
+	-- Hide custom elements before doing customizations; this ensure we
+	-- properly hide them if the nameplate state changes for the next test.
+	local icon = nameplate.TRP3_RPIcon;
+	if icon then
+		icon:Hide();
+	end
+
+	-- If this nameplate looks like it should be left alone, ignore it,
+	if not nameplate.unit
+	or nameplate.state.personal
+	or not nameplate.state.friend then
+		-- It has no unit, it's the personal resource, or it's an enemy.
+		return false;
+	end
+
+	-- Reset the name and guild texts on this unit.
+	local nameTextMod = self.addon:GetPlugin("NameText");
+	if nameTextMod then
+		nameTextMod:Show(nameplate);
+	end
+
+	local guildTextMod = self.addon:GetPlugin("GuildText");
+	if guildTextMod then
+		guildTextMod:Show(nameplate);
+	end
+
+	-- Apply modifications. We'll call the hooked functions to ensure that
+	-- sensible defaults get re-applied where possible.
+	self:UpdateNamePlateIcon(nameplate);
+	nameplate:UpdateNameText();
+	nameplate:UpdateGuildText();
+
+	return true;
 end
 
 -- Updates the name text display on a nameplate frame.
@@ -143,6 +192,11 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	nameplate.GuildText:SetText(nameplate.state.guild_text);
 end
 
+-- Returns the nameplate frame used by a named unit.
+function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
+	return self.addon:GetActiveNameplateForUnit(unitToken);
+end
+
 -- Updates the name plate for a single unit identified by the given token.
 --
 -- Returns true if the frame is updated successfully, or false if the given
@@ -154,51 +208,14 @@ function KuiDecoratorMixin:UpdateNamePlateForUnit(unitToken)
 		return false;
 	end
 
-	-- Hide custom elements before doing customizations; this ensure we
-	-- properly hide them if the nameplate state changes for the next test.
-	local icon = nameplate.TRP3_RPIcon;
-	if icon then
-		icon:Hide();
-	end
-
-	-- If this nameplate looks like it should be left alone, ignore it,
-	if not nameplate.unit
-	or nameplate.state.personal
-	or not nameplate.state.friend then
-		-- It has no unit, it's the personal resource, or it's an enemy.
-		return false;
-	end
-
-	-- Reset the name and guild texts on this unit.
-	local nameTextMod = self.addon:GetPlugin("NameText");
-	if nameTextMod then
-		nameTextMod:Show(nameplate);
-	end
-
-	local guildTextMod = self.addon:GetPlugin("GuildText");
-	if guildTextMod then
-		guildTextMod:Show(nameplate);
-	end
-
-	-- Commit the original texts and their colors before we augment them.
-	nameplate:UpdateNameText();
-	nameplate:UpdateGuildText();
-
-	-- Apply the actual modifications piece by piece.
-	self:UpdateNamePlateName(nameplate);
-	self:UpdateNamePlateIcon(nameplate);
-	self:UpdateNamePlateTitle(nameplate);
-
-	return true;
+	return self:UpdateNamePlate(nameplate);
 end
 
 -- Updates all name plates managed by this decorator.
 function KuiDecoratorMixin:UpdateAllNamePlates()
 	-- We'll use Kui's framelist instead of the default.
 	for _, frame in self.addon:Frames() do
-		if frame.unit then
-			self:UpdateNamePlateForUnit(frame.unit);
-		end
+		self:UpdateNamePlate(frame);
 	end
 end
 
