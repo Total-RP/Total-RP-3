@@ -63,8 +63,9 @@ end
 --
 -- Return nil if customizations are disabled, or if no color can be obtained.
 function DecoratorBaseMixin:GetUnitCustomColor(unitToken)
-	-- Implement any custom logic to be shared between decorators if needed.
-	return NamePlates.GetUnitCustomColor(unitToken);
+	-- Use the custom color or the class color, in that order of preference.
+	return NamePlates.GetUnitCustomColor(unitToken)
+		or NamePlates.GetUnitClassColor(unitToken);
 end
 
 -- Returns the full file path of an icon for the given unit token.

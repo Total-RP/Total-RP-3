@@ -21,6 +21,7 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 
 -- Ellyb imports.
 local Color = TRP3_API.Ellyb.Color;
+local ColorManager = TRP3_API.Ellyb.ColorManager;
 
 -- Returns true if customization of nameplates is globally enabled.
 --
@@ -114,17 +115,12 @@ function NamePlates.GetUnitCustomColor(unitToken)
 	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
 		-- Get the profile for the player and with it, their custom color.
 		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-		local nameColor = profile and profile:GetCustomColorForDisplay();
-
-		-- If there is no profile or color, use class coloring instead.
-		if not nameColor then
-			local _, class = UnitClass(unitToken);
-			if class then
-				nameColor = C_ClassColor.GetClassColor(class);
-			end
+		if not profile then
+			-- No profile available.
+			return nil;
 		end
 
-		return nameColor;
+		return profile:GetCustomColorForDisplay();
 	elseif profileType == NamePlates.PROFILE_TYPE_PET then
 		-- Combat pets use companion pet profiles.
 		local profile = NamePlates.GetUnitPetProfile(unitToken);
@@ -149,6 +145,33 @@ function NamePlates.GetUnitCustomColor(unitToken)
 
 	-- No color is available.
 	return nil;
+end
+
+-- Returns the class color for a given unit token.
+--
+-- Returns nil if no class color is available; this will additionally return
+-- nil for all non-player units.
+function NamePlates.GetUnitClassColor(unitToken)
+	-- Don't bother if customization is disabled. The "custom colors" flag
+	-- also controls this, since some nameplate decorators themselves might
+	-- already provide class coloring.
+	if not NamePlates.IsCustomizationEnabledForUnit(unitToken)
+	or not NamePlates.ShouldShowCustomColors() then
+		return nil;
+	end
+
+	-- Ignore non-player units.
+	if not UnitIsPlayer(unitToken) then
+		return nil;
+	end
+
+	local _, class = UnitClass(unitToken);
+	if not ColorManager[class] then
+		-- Unknown class for this unit.
+		return nil;
+	end
+
+	return ColorManager[class];
 end
 
 -- Returns the name of an icon without its path prefix for the given unit
