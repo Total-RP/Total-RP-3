@@ -16,6 +16,17 @@
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
+-- TEMP: Temporary function to test some invariants.
+local function DebugCheck(cond, msg)
+	if not cond and TRP3_API.globals.DEBUG_MODE then
+		-- pcall into error means we'll get a "<file>:<line>:" prefix.
+		local _, err = pcall(error, msg or "check failed!", 2);
+		CallErrorHandler(err);
+	end
+
+	return cond;
+end
+
 -- Decorator that integrates with Kui nameplates.
 local KuiDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
 
@@ -56,25 +67,18 @@ function KuiDecoratorMixin:Init()
 	self.plugin:RegisterMessage("Hide");
 	self.plugin:RegisterMessage("GainedTarget");
 	self.plugin:RegisterMessage("LostTarget");
+
+	-- Run over all the already-created frames and set them up.
+	for _, frame in self.addon:Frames() do
+		self:SetUpNamePlate(frame);
+	end
 end
 
 -- Handler called when a nameplate frame is initially created.
 function KuiDecoratorMixin:OnNamePlateCreated(nameplate)
-	-- Create an icon texture and register it as an element.
-	local icon = nameplate:CreateTexture(nil, "ARTWORK");
-	icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-	icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
-
-	nameplate.handler:RegisterElement("TRP3_RPIcon", icon);
-
-	-- Install hooks on some of the update functions to apply modifications.
-	hooksecurefunc(nameplate, "UpdateNameText", function(frame)
-		self:UpdateNamePlateName(frame);
-	end);
-
-	hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
-		self:UpdateNamePlateTitle(frame);
-	end);
+	-- Set the nameplate up and then update it.
+	self:SetUpNamePlate(nameplate);
+	self:UpdateNamePlate(nameplate);
 end
 
 -- Handler called when a nameplate frame is shown .
@@ -105,6 +109,38 @@ end
 function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
 	-- Only allow decorations of valid, non-personal nameplates.
 	return nameplate.unit ~= nil and not nameplate.state.personal;
+end
+
+-- Sets up the given nameplate, installing custom elements and hooks.
+function KuiDecoratorMixin:SetUpNamePlate(nameplate)
+	-- We assume this only gets called once per nameplate.
+	DebugCheck(not nameplate.TRP3_RPIcon, "Attempted to set up a nameplate twice");
+
+	-- Create an icon texture and register it as an element.
+	if not nameplate.TRP3_RPIcon then
+		local icon = nameplate:CreateTexture(nil, "ARTWORK");
+		icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+
+		nameplate.handler:RegisterElement("TRP3_RPIcon", icon);
+	end
+
+	-- Install hooks on some of the update functions to apply modifications.
+	if not nameplate.TRP3_UpdateNameTextHookInstalled then
+		hooksecurefunc(nameplate, "UpdateNameText", function(frame)
+			self:UpdateNamePlateName(frame);
+		end);
+
+		nameplate.TRP3_UpdateNameTextHookInstalled = true;
+	end
+
+	if not nameplate.TRP3_UpdateGuildTextHookInstalled then
+		hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
+			self:UpdateNamePlateTitle(frame);
+		end);
+
+		nameplate.TRP3_UpdateGuildTextHookInstalled = true;
+	end
 end
 
 -- Updates the given nameplate.
@@ -181,6 +217,7 @@ function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 
 	-- Grab the custom icon element.
 	local icon = nameplate.TRP3_RPIcon;
+	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if not icon then
 		return;
 	end
