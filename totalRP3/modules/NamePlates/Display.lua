@@ -48,11 +48,14 @@ end
 -- unit token.
 --
 -- Returns false if disabled globally, or disabled for this specific unit.
---
--- @param unitToken The unit token to check.
-function NamePlates.IsCustomizationEnabledForUnit(_)
-	-- Add in any per-unit logic here if ever needed.
-	return NamePlates.IsCustomizationEnabled();
+function NamePlates.IsCustomizationEnabledForUnit(unitToken)
+	-- Obviously globally disabling things means we should never customize.
+	if not NamePlates.IsCustomizationEnabled() then
+		return false;
+	end
+
+	-- Otherwise, ensure this is a player and that they're friendly.
+	return UnitIsPlayer(unitToken) and UnitIsFriend("player", unitToken);
 end
 
 -- Returns the custom name text to be displayed for the given unit token.
