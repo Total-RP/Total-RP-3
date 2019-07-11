@@ -43,15 +43,11 @@ function KuiDecoratorMixin:Init()
 
 	-- Register message handlers for plates.
 	self.plugin:RegisterMessage("Create", function(_, frame)
-		self:OnNamePlateCreated(frame);
+		self:OnNamePlateCreate(frame);
 	end);
 
 	self.plugin:RegisterMessage("Show", function(_, frame)
 		self:OnNamePlateShow(frame);
-	end);
-
-	self.plugin:RegisterMessage("Hide", function(_, frame)
-		self:OnNamePlateHidden(frame);
 	end);
 
 	self.plugin:RegisterMessage("HealthUpdate", function(_, frame)
@@ -66,6 +62,10 @@ function KuiDecoratorMixin:Init()
 		self:OnNamePlateLostTarget(frame);
 	end);
 
+	self.plugin:RegisterMessage("Hide", function(_, frame)
+		self:OnNamePlateHide(frame);
+	end);
+
 	-- Run over all the already-created frames and set them up.
 	for _, frame in self.addon:Frames() do
 		self:SetUpNamePlate(frame);
@@ -73,7 +73,7 @@ function KuiDecoratorMixin:Init()
 end
 
 -- Handler called when a nameplate frame is initially created.
-function KuiDecoratorMixin:OnNamePlateCreated(nameplate)
+function KuiDecoratorMixin:OnNamePlateCreate(nameplate)
 	-- Set the nameplate up and then update it.
 	self:SetUpNamePlate(nameplate);
 	self:UpdateNamePlate(nameplate);
@@ -104,7 +104,7 @@ function KuiDecoratorMixin:OnNamePlateLostTarget(nameplate)
 end
 
 -- Handler called when a nameplate frame is hidden.
-function KuiDecoratorMixin:OnNamePlateHidden(nameplate)
+function KuiDecoratorMixin:OnNamePlateHide(nameplate)
 	-- Hide the RP icon element by force.
 	local icon = nameplate.TRP3_RPIcon;
 	DebugCheck(icon, "Nameplate is missing a custom icon element");
@@ -115,10 +115,10 @@ end
 
 -- Returns true if the given nameplate is valid for customizing.
 function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
-	-- Only allow decorations of valid, non-personal, player nameplates.
+	-- Only allow decorations of valid, non-personal, friendly nameplates.
 	return nameplate.unit ~= nil
 		and not nameplate.state.personal
-		and nameplate.state.player;
+		and nameplate.state.friend;
 end
 
 -- Sets up the given nameplate, installing custom elements and hooks.
