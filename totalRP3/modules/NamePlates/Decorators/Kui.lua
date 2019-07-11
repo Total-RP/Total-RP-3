@@ -54,12 +54,16 @@ function KuiDecoratorMixin:Init()
 		self:OnNamePlateHidden(frame);
 	end);
 
+	self.plugin:RegisterMessage("HealthUpdate", function(_, frame)
+		self:OnNamePlateHealthUpdate(frame);
+	end);
+
 	self.plugin:RegisterMessage("GainedTarget", function(_, frame)
-		self:OnNamePlateUpdate(frame);
+		self:OnNamePlateGainedTarget(frame);
 	end);
 
 	self.plugin:RegisterMessage("LostTarget", function(_, frame)
-		self:OnNamePlateUpdate(frame);
+		self:OnNamePlateLostTarget(frame);
 	end);
 
 	-- Run over all the already-created frames and set them up.
@@ -75,14 +79,26 @@ function KuiDecoratorMixin:OnNamePlateCreated(nameplate)
 	self:UpdateNamePlate(nameplate);
 end
 
--- Handler called when a nameplate frame is shown .
+-- Handler called when a nameplate frame is shown.
 function KuiDecoratorMixin:OnNamePlateShow(nameplate)
 	-- Update the nameplate.
 	self:UpdateNamePlate(nameplate);
 end
 
--- Handler called when a nameplate frame is updated.
-function KuiDecoratorMixin:OnNamePlateUpdate(nameplate)
+-- Handler called when a nameplate's health changes.
+function KuiDecoratorMixin:OnNamePlateHealthUpdate(nameplate)
+	-- Update the nameplate.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate gains a target.
+function KuiDecoratorMixin:OnNamePlateGainedTarget(nameplate)
+	-- Update the nameplate.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate loses a target.
+function KuiDecoratorMixin:OnNamePlateLostTarget(nameplate)
 	-- Update the nameplate.
 	self:UpdateNamePlate(nameplate);
 end
