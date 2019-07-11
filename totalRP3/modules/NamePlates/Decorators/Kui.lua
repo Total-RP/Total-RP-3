@@ -13,6 +13,11 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
+-- Note: This module is in a temporary "just get it working" state. It does
+--       a few things which will hopefully not be present in the final
+--       release, and thus additionally depends upon the Core layout as
+--       shipped with KNP by default to be used.
+
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
