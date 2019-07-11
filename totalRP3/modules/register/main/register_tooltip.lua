@@ -759,7 +759,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	---@type Ellyb_Color
 	local companionCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-		mountCustomColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+		companionCustomColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 	end
 	tooltipBuilder:AddLine(leftIcons .. companionCustomColor:WrapTextInColorCode((petName or companionID)), 1, 1, 1, getMainLineFontSize());
 
