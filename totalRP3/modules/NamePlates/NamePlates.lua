@@ -227,7 +227,7 @@ TRP3_API.module.registerModule({
 	name        = L.NAMEPLATES_MODULE_NAME,
 	description = L.NAMEPLATES_MODULE_DESCRIPTION,
 	version     = 1,
-	id          = "NamePlates",
+	id          = "trp3_nameplates",
 	onInit      = NamePlates.OnModuleInitialize,
 	onStart     = NamePlates.OnModuleStart,
 	minVersion  = 70,
