@@ -54,9 +54,10 @@ local MODULE_STATUS = TRP3_API.module.status;
 --
 -- An message will be printed on startup if a localization key exists with
 -- the same module ID, prefixed by "CO_MODULE_BLACKLIST_REASON_".
-TRP3_API.module.MODULE_BLACKLIST = {
+TRP3_API.module.blacklist = {
 	trp3_kuinameplates = true, -- Merged into the core addon.
 };
+local MODULE_BLACKLIST = TRP3_API.module.blacklist;
 
 function TRP3_API.module.isModuleLoaded(moduleID)
 	return MODULE_REGISTRATION[moduleID] and MODULE_REGISTRATION[moduleID].status == MODULE_STATUS.OK;
@@ -451,7 +452,7 @@ TRP3_API.module.init = function()
 			end
 
 			-- Check blacklist. If on it, we'll disable.
-			if TRP3_API.module.MODULE_BLACKLIST[moduleID] then
+			if MODULE_BLACKLIST[moduleID] then
 				module.status = MODULE_STATUS.DISABLED;
 
 				local localizationKey = "CO_MODULE_BLACKLIST_REASON_" .. moduleID;
