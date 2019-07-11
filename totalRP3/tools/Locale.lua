@@ -782,6 +782,7 @@ This will works:|cff00ff00
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
 	UI_MUSIC_DURATION = "Duration",
+	UI_MUSIC_ALTTITLE = "Alternate title",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
 	UI_COLOR_BROWSER_PRESETS = "Presets",
@@ -1270,12 +1271,6 @@ The register also received a checkbox to only display profiles on which you wrot
 - Fixed an error message that could be caused by other addons misusing official API functions.
 
 ]],
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	UI_MUSIC_ALTTITLE = "Alternate title",
 	WHATS_NEW_23_2 = [[
 # Changelog version 1.6.2
 
@@ -1292,6 +1287,26 @@ The register also received a checkbox to only display profiles on which you wrot
 
 ]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_23_3 = [[
+# Changelog version 1.6.3
+
+## Changed
+
+- Companion tooltips will now adjust contrast for the custom color if the setting is enabled.
+
+## Fixed
+
+- Fixed a companion tooltip error when the API fails to return the pet type.
+- Fixed an issue which could make the toolbar appear above the world map.
+- Fixed an anchoring error with the target frame.
+
+]],
+
 	CO_MODULE_BLACKLIST_REASON_trp3_kuinameplates = "The |cffff9900Total RP 3: KuiNameplates|r module has been |cffff0000disabled|r as its functionality is now included within Total RP 3 itself, and should be uninstalled.",
 
 	NAMEPLATES_MODULE_NAME = "Nameplates",
@@ -1304,14 +1319,14 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_ENABLE_TITLE = "Enable nameplate customization",
 	NAMEPLATES_CONFIG_ENABLE_HELP = [[
-If selected, enable nameplate customization.
+	If selected, enable nameplate customization.
 
-Customization is only enabled if using any of the following nameplates:
+	Customization is only enabled if using any of the following nameplates:
 
-- |cffffffffBlizzard Nameplates|r
-- |cffffffffKuiNameplates|r
+	- |cffffffffBlizzard Nameplates|r
+	- |cffffffffKuiNameplates|r
 
-If none of the above are in-use, customizations will be automatically disabled.]],
+	If none of the above are in-use, customizations will be automatically disabled.]],
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
@@ -1326,13 +1341,13 @@ If none of the above are in-use, customizations will be automatically disabled.]
 	NAMEPLATES_CONFIG_SHOW_ICONS_HELP = "If selected, profile icons will be displayed next to the names of players and pets.",
 	NAMEPLATES_CONFIG_SHOW_TITLES_TITLE = "Show custom titles",
 	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = [[
-If selected, profile titles will be displayed below the names of players and pets.
+	If selected, profile titles will be displayed below the names of players and pets.
 
-This option only works in the following circumstances:
+	This option only works in the following circumstances:
 
-- |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
+	- |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
 
-- |cffffffffKuiNameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
+	- |cffffffffKuiNameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",
