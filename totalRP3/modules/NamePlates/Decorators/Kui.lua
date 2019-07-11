@@ -122,10 +122,7 @@ function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 	end
 
 	-- Reset the name and guild texts on this unit.
-	local nameTextMod = self.addon:GetPlugin("NameText");
-	if nameTextMod then
-		nameTextMod:Show(nameplate);
-	end
+	nameplate.handler:UpdateName();
 
 	local guildTextMod = self.addon:GetPlugin("GuildText");
 	if guildTextMod then
@@ -134,9 +131,9 @@ function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 
 	-- Apply modifications. We'll call the hooked functions to ensure that
 	-- sensible defaults get re-applied where possible.
-	self:UpdateNamePlateIcon(nameplate);
 	nameplate:UpdateNameText();
 	nameplate:UpdateGuildText();
+	self:UpdateNamePlateIcon(nameplate);
 
 	return true;
 end
@@ -153,12 +150,20 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	if nameText then
 		-- Format and show it.
 		nameplate.state.name = nameText;
-		nameplate.NameText:SetText(nameplate.state.name);
 
 		-- If we're in name-only mode we need to fix up the health colouring.
-		if self:IsNamePlateInNameOnlyMode(nameplate) then
+		-- This should only apply if the Core layout is in use.
+		if self:IsNamePlateInNameOnlyMode(nameplate) and KuiNameplatesCore then
 			KuiNameplatesCore:NameOnlySetNameTextToHealth(nameplate);
 		end
+
+		-- Once colouring is applied we'll prefix the indicator.
+		local oocText = NamePlates.GetUnitOOCIndicator(nameplate.unit);
+		if oocText then
+			nameplate.state.name = strjoin(" ", oocText, nameplate.state.name);
+		end
+
+		nameplate.NameText:SetText(nameplate.state.name);
 	end
 
 	-- Now for the custom color...
@@ -178,6 +183,12 @@ function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	-- Grab the custom icon element.
 	local icon = nameplate.TRP3_RPIcon;
 	if not icon then
+		return;
+	end
+
+	-- Hide the icon if the name text is itself hidden.
+	if not nameplate.NameText:IsShown() then
+		icon:Hide();
 		return;
 	end
 
@@ -207,6 +218,14 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	titleText = format("<%s>", titleText);
 	nameplate.state.guild_text = titleText;
 	nameplate.GuildText:SetText(nameplate.state.guild_text);
+end
+
+-- Returns the custom name text to be displayed for the given unit token.
+--
+-- Return nil if customizations are disabled, or if no name can be obtained.
+--[[override]] function KuiDecoratorMixin:GetUnitCustomName(unitToken)
+	-- The OOC indicator is handled specially.
+	return NamePlates.GetUnitCustomName(unitToken);
 end
 
 -- Returns the custom color to be displayed for the given unit token.
