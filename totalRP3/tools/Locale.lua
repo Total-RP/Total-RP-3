@@ -1292,7 +1292,6 @@ The register also received a checkbox to only display profiles on which you wrot
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	
 	WHATS_NEW_23_3 = [[
 # Changelog version 1.6.3
 
