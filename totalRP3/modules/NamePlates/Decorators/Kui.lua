@@ -206,6 +206,14 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	nameplate.GuildText:SetText(nameplate.state.guild_text);
 end
 
+-- Returns the custom color to be displayed for the given unit token.
+--
+-- Return nil if customizations are disabled, or if no color can be obtained.
+--[[override]] function KuiDecoratorMixin:GetUnitCustomColor(unitToken)
+	-- Kui already provides class coloring as a default, so just use customs.
+	return NamePlates.GetUnitCustomColor(unitToken);
+end
+
 -- Returns the nameplate frame used by a named unit.
 function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
 	return self.addon:GetActiveNameplateForUnit(unitToken);
