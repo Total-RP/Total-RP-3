@@ -215,7 +215,7 @@ end
 end
 
 -- Returns the nameplate frame used by a named unit.
-function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
+--[[override]] function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
 	return self.addon:GetActiveNameplateForUnit(unitToken);
 end
 
@@ -223,7 +223,7 @@ end
 --
 -- Returns true if the frame is updated successfully, or false if the given
 -- unit token is invalid.
-function KuiDecoratorMixin:UpdateNamePlateForUnit(unitToken)
+--[[override]] function KuiDecoratorMixin:UpdateNamePlateForUnit(unitToken)
 	-- Grab the nameplate for this unit.
 	local nameplate = self:GetNamePlateForUnit(unitToken);
 	if not nameplate then
@@ -234,7 +234,7 @@ function KuiDecoratorMixin:UpdateNamePlateForUnit(unitToken)
 end
 
 -- Updates all name plates managed by this decorator.
-function KuiDecoratorMixin:UpdateAllNamePlates()
+--[[override]] function KuiDecoratorMixin:UpdateAllNamePlates()
 	-- We'll use Kui's framelist instead of the default.
 	for _, frame in self.addon:Frames() do
 		self:UpdateNamePlate(frame);
