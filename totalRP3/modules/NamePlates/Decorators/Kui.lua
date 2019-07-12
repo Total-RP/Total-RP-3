@@ -144,7 +144,7 @@ function KuiDecoratorMixin:InitNamePlate(nameplate)
 	end
 
 	-- Install a hook to handle name changes. We want to override the
-	-- player title text and retain the ability to colour things nicely,
+	-- player title text and retain the ability to color things nicely,
 	-- as well as prefix OOC indicators. The cleanest way to do this is
 	-- with a hook.
 	hooksecurefunc(nameplate, "UpdateNameText", function(plate)
@@ -231,7 +231,7 @@ function KuiDecoratorMixin:OnNameTextUpdated(nameplate)
 	-- Get the custom name to be applied.
 	local nameText = self:GetUnitCustomName(nameplate.unit);
 	if nameText then
-		-- If we're in name-only mode we need to fix up the health colouring.
+		-- If we're in name-only mode we need to fix up the health coloring.
 		if self:IsNamePlateInNameOnlyMode(nameplate) then
 			-- The NameOnlySetNameTextToHealth function reads from the state,
 			-- but to ease resetting things and not pointlessly resetting
@@ -245,7 +245,7 @@ function KuiDecoratorMixin:OnNameTextUpdated(nameplate)
 			nameplate.NameText:SetText(nameText);
 		end
 
-		-- Once colouring is applied we'll prefix the indicator.
+		-- Once coloring is applied we'll prefix the indicator.
 		local oocText = NamePlates.GetUnitOOCIndicator(nameplate.unit);
 		if oocText then
 			nameplate.NameText:SetText(strjoin(" ", oocText, nameplate.NameText:GetText()));
