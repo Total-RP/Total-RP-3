@@ -106,8 +106,8 @@ end
 
 -- Returns true if the given nameplate can be customized without raising any
 -- potential errors if untrusted code attempts to modify it.
-function BlizzardDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
-	-- Only non-forbidden and can be customized.
+function BlizzardDecoratorMixin:IsNamePlateCustomizable(nameplate)
+	-- Only non-forbidden plates can be customized.
 	return not nameplate:IsForbidden();
 end
 
@@ -124,7 +124,7 @@ end
 -- Updates the name display on a nameplate.
 function BlizzardDecoratorMixin:UpdateNamePlateName(nameplate)
 	-- Check if we can customize this frame.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -149,7 +149,7 @@ end
 -- Updates the icon display on a nameplate.
 function BlizzardDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	-- Check if we can customize this frame.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -167,7 +167,7 @@ end
 -- Updates the title display on a nameplate.
 function BlizzardDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	-- Check if we can customize this frame.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -194,7 +194,7 @@ end
 	-- A full update for this nameplate will first reset the name to the
 	-- Blizzard default. This will unfortunately trigger two updates for
 	-- the name, but that's life.
-	if self:ShouldCustomizeNamePlate(nameplate) then
+	if self:IsNamePlateCustomizable(nameplate) then
 		CompactUnitFrame_UpdateName(nameplate.UnitFrame);
 	end
 

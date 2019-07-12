@@ -107,7 +107,7 @@ end
 -- Handler called when name text is updated on a nameplate.
 function KuiDecoratorMixin:OnNameTextUpdated(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -145,7 +145,7 @@ end
 -- Handler called when guild text is updated on a nameplate.
 function KuiDecoratorMixin:OnGuildTextUpdated(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -160,7 +160,7 @@ function KuiDecoratorMixin:OnGuildTextUpdated(nameplate)
 end
 
 -- Returns true if the given nameplate is valid for customizing.
-function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
+function KuiDecoratorMixin:IsNamePlateCustomizable(nameplate)
 	-- Disable if the layout was invalid.
 	if not self.isValidLayout then
 		return false;
@@ -180,7 +180,7 @@ end
 -- Updates the name text display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
@@ -194,7 +194,7 @@ function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	local iconWidget = nameplate.TRP3_Icon;
 
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		-- The icon widget will be nil if the layout is invalid.
 		if iconWidget then
 			iconWidget:Hide();
@@ -221,7 +221,7 @@ end
 -- Updates the title display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
