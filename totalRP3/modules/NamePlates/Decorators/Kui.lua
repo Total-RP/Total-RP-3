@@ -33,7 +33,6 @@ function KuiDecoratorMixin:Init()
 	-- other layouts might do a lot of things with their texts that we can't
 	-- realistically account for.
 	if KuiNameplates.layout ~= KuiNameplatesCore then
-		TRP3_Utils.message.displayMessage(L.NAMEPLATES_KUI_INVALID_LAYOUT);
 		return;
 	end
 
@@ -221,6 +220,17 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 
 	-- Call the hooked function to trigger the update.
 	nameplate:UpdateGuildText();
+end
+
+-- Called when customizations for nameplates are globally enabled for all
+-- frames. This can occurs either when the main enable setting is toggled,
+-- or if the player's roleplay status changes.
+--[[override]] function KuiDecoratorMixin:OnCustomizationEnabled()
+	-- When customizations are enabled but the layout is invalid, we'll
+	-- re-print the message to make it clear.
+	if not self.isValidLayout then
+		TRP3_Utils.message.displayMessage(L.NAMEPLATES_KUI_INVALID_LAYOUT);
+	end
 end
 
 -- Updates the given nameplate.
