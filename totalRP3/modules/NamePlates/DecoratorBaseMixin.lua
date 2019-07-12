@@ -113,6 +113,12 @@ function DecoratorBaseMixin:GetUnitCustomTitle(unitToken)
 	-- Get the title and apply a standard amount of cropping that should be
 	-- consistent across all displays.
 	local titleText = NamePlates.GetUnitCustomTitle(unitToken);
+	if not titleText then
+		-- Try an ingame title too, as a fallback for consistency with
+		-- tooltips and such.
+		titleText = NamePlates.GetUnitIngameTitle(unitToken);
+	end
+
 	if titleText then
 		titleText = TRP3_Utils.str.crop(titleText, NamePlates.MAX_TITLE_CHARS);
 	end

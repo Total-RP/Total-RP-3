@@ -214,7 +214,7 @@ function NamePlates.GetUnitCustomIcon(unitToken)
 	return nil;
 end
 
--- Returns the name of an title text of a profile for the given unit token.
+-- Returns the custom title text of a profile for the given unit token.
 --
 -- Returns nil if customization is disabled, or if no title is available.
 function NamePlates.GetUnitCustomTitle(unitToken)
@@ -237,6 +237,33 @@ function NamePlates.GetUnitCustomTitle(unitToken)
 		if profile then
 			return profile.TI;
 		end
+	end
+
+	-- No title is available.
+	return nil;
+end
+
+-- Returns the ingame title for a given unit token,
+--
+-- Returns nil if no title is available; this will additionally return
+-- nil for all non-player units.
+function NamePlates.GetUnitIngameTitle(unitToken)
+	-- Don't bother if customization is disabled. The "custom titles" flag
+	-- also controls this.
+	if not NamePlates.IsCustomizationEnabledForUnit(unitToken)
+	or not NamePlates.ShouldShowCustomTitles() then
+		return nil;
+	end
+
+	-- Ignore non-player units.
+	if not UnitIsPlayer(unitToken) then
+		return nil;
+	end
+
+	-- Do they have a title that isn't just their own name?
+	local titleName = UnitPVPName(unitToken);
+	if titleName and titleName ~= UnitName(unitToken) then
+		return titleName;
 	end
 
 	-- No title is available.
