@@ -27,14 +27,78 @@ local BlizzardDecoratorMixin = CreateFromMixins(DecoratorBaseMixin);
 	-- Dispatch to base mixins.
 	DecoratorBaseMixin.Init(self);
 
-	-- Install hooks.
+	-- Keep track of initialized nameplates and integrations.
+	self.initNamePlates = {};
+	self.initIntegrations = false;
+end
+
+-- Initializes integration with the stock UI. This function will only
+-- perform initialization work once; if called multiple times, future calls
+-- will have no effect.
+function BlizzardDecoratorMixin:InitIntegrations()
+	-- Don't double-initialize integrations.
+	if self.initIntegrations then
+		return;
+	end
+
+	-- Hook name updates for unitframes so we can replace the name properly.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
 		return self:OnUnitFrameNameUpdated(frame);
 	end);
 
-	-- Ensure we create modifications for all active nameplates.
+	-- Mark integrations as initialized when done.
+	self.initIntegrations = true;
+end
+
+-- Initializes the given nameplate with custom widgets.  This function will
+-- only perform initialization work once; if called multiple times, future
+-- calls will have no effect.
+function BlizzardDecoratorMixin:InitNamePlate(nameplate)
+	-- Don't allow double-initializing a nameplate.
+	local nameplateKey = nameplate:GetName();
+	if self.initNamePlates[nameplateKey] then
+		return;
+	end
+
+	-- We'll be anchoring things to the unitframe.
+	local unitFrame = nameplate.UnitFrame;
+
+	-- Create the icon and title widgets for each nameplate.
+	do
+		local iconWidget = unitFrame:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", unitFrame.name, "LEFT", -4, 0);
+		iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+		iconWidget:Hide();
+
+		nameplate.TRP3_Icon = iconWidget;
+	end
+
+	do
+		local titleWidget = unitFrame:CreateFontString(nil, "ARTWORK");
+		titleWidget:ClearAllPoints();
+		titleWidget:SetPoint("TOP", unitFrame.name, "BOTTOM", 0, -4);
+		titleWidget:SetVertexColor(NamePlates.TITLE_TEXT_COLOR:GetRGBA());
+		titleWidget:SetFontObject(SystemFont_NamePlate);
+		titleWidget:Hide();
+
+		nameplate.TRP3_Title = titleWidget;
+	end
+
+	-- Mark the plate as initialized.
+	self.initNamePlates[nameplateKey] = true;
+end
+
+-- Called when customizations for nameplates are globally enabled for all
+-- frames. This can occurs either when the main enable setting is toggled,
+-- or if the player's roleplay status changes.
+--[[override]] function BlizzardDecoratorMixin:OnCustomizationEnabled()
+	-- Initialize our integrations with the stock UI.
+	self:InitIntegrations();
+
+	-- Initialize all the nameplate frames.
 	for _, nameplate in self:GetAllNamePlates() do
-		self:OnNamePlateCreated(nameplate);
+		self:InitNamePlate(nameplate)
 	end
 end
 
@@ -44,29 +108,10 @@ end
 	-- Dispatch to base mixins.
 	DecoratorBaseMixin.OnNamePlateCreated(self, nameplate);
 
-	-- We'll be anchoring things to the unitframe.
-	local unitFrame = nameplate.UnitFrame;
-
-	-- Create the icon and title widgets for each nameplate.
-	local iconWidget = unitFrame:CreateTexture(nil, "ARTWORK");
-	iconWidget:ClearAllPoints();
-	iconWidget:SetPoint("RIGHT", unitFrame.name, "LEFT", -4, 0);
-	iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
-	iconWidget:Hide();
-
-	local titleWidget = unitFrame:CreateFontString(nil, "ARTWORK");
-	titleWidget:ClearAllPoints();
-	titleWidget:SetPoint("TOP", unitFrame.name, "BOTTOM", 0, -4);
-	titleWidget:SetVertexColor(NamePlates.TITLE_TEXT_COLOR:GetRGBA());
-	titleWidget:SetFontObject(SystemFont_NamePlate);
-	titleWidget:Hide();
-
-	-- It's safe to add these to the nameplate frame.
-	nameplate.TRP3_Icon = iconWidget;
-	nameplate.TRP3_Title = titleWidget;
-
-	-- Immediately update the nameplate.
-	self:UpdateNamePlate(nameplate);
+	-- Initialize the nameplate only if we're customizing things.
+	if self:IsCustomizationEnabled() then
+		self:InitNamePlate(nameplate);
+	end
 end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
@@ -87,7 +132,7 @@ end
 
 	-- Hide the custom widgets.
 	local nameplate = self:GetNamePlateForUnit(unitToken);
-	if nameplate then
+	if self:IsNamePlateCustomizable(nameplate) then
 		nameplate.TRP3_Icon:Hide();
 		nameplate.TRP3_Title:Hide();
 	end
@@ -106,11 +151,10 @@ function BlizzardDecoratorMixin:OnUnitFrameNameUpdated(unitFrame)
 	self:UpdateNamePlateName(nameplate);
 end
 
--- Returns true if the given nameplate can be customized without raising any
--- potential errors if untrusted code attempts to modify it.
+-- Returns true if the given nameplate is valid for customizing.
 function BlizzardDecoratorMixin:IsNamePlateCustomizable(nameplate)
-	-- Only non-forbidden plates can be customized.
-	return not nameplate:IsForbidden();
+	-- Only initialized plates are valid.
+	return self.initNamePlates[nameplate:GetName()];
 end
 
 -- Returns true if the given nameplate frame is in name-only mode. Some
@@ -204,8 +248,6 @@ end
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
 	self:UpdateNamePlateTitle(nameplate);
-
-	return true;
 end
 
 -- Module exports.
