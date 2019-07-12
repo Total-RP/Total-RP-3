@@ -111,7 +111,7 @@ end
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHide(nameplate)
 	-- Hide the RP icon element by force.
-	local icon = nameplate.TRP3_RPIcon;
+	local icon = nameplate.TRP3_Icon;
 	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if icon then
 		icon:Hide();
@@ -134,15 +134,15 @@ end
 -- Sets up the given nameplate, installing custom elements and hooks.
 function KuiDecoratorMixin:SetUpNamePlate(nameplate)
 	-- We assume this only gets called once per nameplate.
-	DebugCheck(not nameplate.TRP3_RPIcon, "Attempted to set up a nameplate twice");
+	DebugCheck(not nameplate.TRP3_Icon, "Attempted to set up a nameplate twice");
 
 	-- Create an icon texture and register it as an element.
-	if not nameplate.TRP3_RPIcon then
+	if not nameplate.TRP3_Icon then
 		local icon = nameplate:CreateTexture(nil, "ARTWORK");
 		icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
 		icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
 
-		nameplate.handler:RegisterElement("TRP3_RPIcon", icon);
+		nameplate.handler:RegisterElement("TRP3_Icon", icon);
 	end
 
 	-- Install hooks on some of the update functions to apply modifications.
@@ -205,7 +205,7 @@ function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	end
 
 	-- Grab the custom icon element.
-	local icon = nameplate.TRP3_RPIcon;
+	local icon = nameplate.TRP3_Icon;
 	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if not icon then
 		return;
@@ -249,7 +249,7 @@ end
 --[[override]] function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 	-- Hide custom elements before doing customizations; this ensure we
 	-- properly hide them if the nameplate state changes for the next test.
-	local icon = nameplate.TRP3_RPIcon;
+	local icon = nameplate.TRP3_Icon;
 	DebugCheck(icon, "Nameplate is missing a custom icon element");
 	if icon then
 		icon:Hide();
