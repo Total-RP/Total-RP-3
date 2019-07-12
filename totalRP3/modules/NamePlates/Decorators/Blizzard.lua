@@ -154,7 +154,18 @@ end
 -- Returns true if the given nameplate is valid for customizing.
 function BlizzardDecoratorMixin:IsNamePlateCustomizable(nameplate)
 	-- Only initialized plates are valid.
-	return self.initNamePlates[nameplate:GetName()];
+	if not self.initNamePlates[nameplate:GetName()] then
+		return false;
+	end
+
+	-- Additionally, reject the personal nameplate. Only test if the token
+	-- is non-nil explicitly; a nil unit doesn't mean the plate is invalid.
+	local unitToken = nameplate.namePlateUnitToken;
+	if unitToken and UnitIsUnit("player", unitToken) then
+		return false;
+	end
+
+	return true;
 end
 
 -- Returns true if the given nameplate frame is in name-only mode. Some
