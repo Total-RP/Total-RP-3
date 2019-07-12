@@ -59,12 +59,11 @@ function NamePlates.IsCustomizationEnabledForUnit(unitToken)
 	end
 
 	-- Invalid units are a no-no.
-	if not unitToken then
+	if not unitToken or not UnitExists(unitToken) then
 		return false;
 	end
 
-	-- Otherwise, ensure this is a player..
-	return UnitIsPlayer(unitToken);
+	return true;
 end
 
 -- Returns the custom name text to be displayed for the given unit token.
