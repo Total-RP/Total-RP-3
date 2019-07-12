@@ -49,6 +49,9 @@ NamePlates.CONFLICTING_ADDONS = {
 	"Plater", -- Untested.
 };
 
+-- Page ID for the module configuration page.
+NamePlates.CONFIG_PAGE_ID = "main_config_uuu_nameplates";
+
 -- Controls if customizations are enabled globally.
 NamePlates.CONFIG_ENABLE = "nameplates_enable";
 -- Controls if customizations are enabled only while in-character.

@@ -94,7 +94,7 @@ end
 -- Registers the configuration UI with the TRP configuration API.
 --[[private]] function NamePlates.RegisterConfigurationUI()
 	TRP3_Config.registerConfigurationPage({
-		id = "main_config_uuu_nameplates",
+		id = NamePlates.CONFIG_PAGE_ID,
 		menuText = L.NAMEPLATES_CONFIG_MENU_TEXT,
 		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
 		elements = {

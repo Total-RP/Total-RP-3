@@ -16,6 +16,8 @@ local _, TRP3_API = ...;
 
 -- TRP3_API imports.
 local L = TRP3_API.loc;
+local TRP3_Config = TRP3_API.configuration;
+local TRP3_Popup = TRP3_API.popup;
 local TRP3_Utils = TRP3_API.utils;
 
 -- AddOn_TotalRP3 imports.
@@ -54,6 +56,11 @@ function KuiDecoratorMixin:Init()
 	for _, frame in self:GetAllNamePlates() do
 		self:OnNamePlateCreate(frame);
 	end
+
+	-- Register some setting callbacks so we can prompt to make changes.
+	TRP3_Config.registerHandler(NamePlates.CONFIG_SHOW_TITLES, function(_, value)
+		self:OnConfigShowTitlesChanged(value)
+	end);
 end
 
 -- Handler called when a nameplate frame is initially created.
@@ -265,6 +272,27 @@ end
 -- Returns an iterator for accessing all nameplate frames.
 --[[override]] function KuiDecoratorMixin:GetAllNamePlates()
 	return KuiNameplates:Frames();
+end
+
+-- Handler called when the "Show custom titles" setting is changed.
+function KuiDecoratorMixin:OnConfigShowTitlesChanged(state)
+	-- Grab the active settings profile in the core layout.
+	local profile = KuiNameplatesCore.config:GetActiveProfile();
+	if not profile then
+		return;
+	end
+
+	-- If titles are on but guild text isn't, prompt to enable it.
+	if state and not profile["guild_text_players"] then
+		TRP3_Popup.showYesNoPopup(L.NAMEPLATES_KUI_TOGGLE_GUILD_TEXT, function()
+			-- On accept, apply the change.
+			KuiNameplatesCore.config:SetKey("guild_text_players", true);
+		end, function()
+			-- On rjection, disable the title setting.
+			TRP3_Config.setValue(NamePlates.CONFIG_SHOW_TITLES, false);
+			TRP3_Config.refreshPage(NamePlates.CONFIG_PAGE_ID);
+		end);
+	end
 end
 
 -- Module exports.
