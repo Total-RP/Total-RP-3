@@ -59,7 +59,7 @@ function KuiDecoratorMixin:Init()
 
 	-- Register some setting callbacks so we can prompt to make changes.
 	TRP3_Config.registerHandler(NamePlates.CONFIG_SHOW_TITLES, function(_, value)
-		self:OnConfigShowTitlesChanged(value)
+		self:OnConfigShowTitlesChanged(value);
 	end);
 end
 
