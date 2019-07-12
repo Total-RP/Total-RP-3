@@ -143,9 +143,10 @@ function KuiDecoratorMixin:InitNamePlate(nameplate)
 		nameplate.handler:RegisterElement("TRP3_Title", titleWidget);
 	end
 
-	-- Install hooks on a couple of the nameplate functions. We use hooks
-	-- because the other choice is to either constantly monitor the core
-	-- layout or each and every message it updates things on.
+	-- Install a hook to handle name changes. We want to override the
+	-- player title text and retain the ability to colour things nicely,
+	-- as well as prefix OOC indicators. The cleanest way to do this is
+	-- with a hook.
 	hooksecurefunc(nameplate, "UpdateNameText", function(plate)
 		self:OnNameTextUpdated(plate);
 	end);
