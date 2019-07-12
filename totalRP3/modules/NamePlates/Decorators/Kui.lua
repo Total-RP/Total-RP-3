@@ -32,7 +32,7 @@ function KuiDecoratorMixin:Init()
 	-- The only supported layout for use with this module is the Core one;
 	-- other layouts might do a lot of things with their texts that we can't
 	-- realistically account for.
-	if KuiNameplates.layout ~= KuiNameplatesCore then
+	if not KuiNameplates.layout or KuiNameplates.layout ~= KuiNameplatesCore then
 		return;
 	end
 
