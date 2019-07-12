@@ -47,28 +47,28 @@ function KuiDecoratorMixin:Init()
 	self.plugin = self.addon:NewPlugin("TotalRP3", 200);
 
 	-- Register message handlers for plates.
-	self.plugin:RegisterMessage("Create", function(_, frame)
-		self:OnNamePlateCreate(frame);
+	self.plugin:RegisterMessage("Create", function(_, nameplate)
+		self:OnNamePlateCreate(nameplate);
 	end);
 
-	self.plugin:RegisterMessage("Show", function(_, frame)
-		self:OnNamePlateShow(frame);
+	self.plugin:RegisterMessage("Show", function(_, nameplate)
+		self:OnNamePlateShow(nameplate);
 	end);
 
-	self.plugin:RegisterMessage("HealthUpdate", function(_, frame)
-		self:OnNamePlateHealthUpdate(frame);
+	self.plugin:RegisterMessage("HealthUpdate", function(_, nameplate)
+		self:OnNamePlateHealthUpdate(nameplate);
 	end);
 
-	self.plugin:RegisterMessage("GainedTarget", function(_, frame)
-		self:OnNamePlateGainedTarget(frame);
+	self.plugin:RegisterMessage("GainedTarget", function(_, nameplate)
+		self:OnNamePlateGainedTarget(nameplate);
 	end);
 
-	self.plugin:RegisterMessage("LostTarget", function(_, frame)
-		self:OnNamePlateLostTarget(frame);
+	self.plugin:RegisterMessage("LostTarget", function(_, nameplate)
+		self:OnNamePlateLostTarget(nameplate);
 	end);
 
-	self.plugin:RegisterMessage("Hide", function(_, frame)
-		self:OnNamePlateHide(frame);
+	self.plugin:RegisterMessage("Hide", function(_, nameplate)
+		self:OnNamePlateHide(nameplate);
 	end);
 
 	-- Run over all the already-created frames and set them up.
@@ -147,16 +147,16 @@ function KuiDecoratorMixin:SetUpNamePlate(nameplate)
 
 	-- Install hooks on some of the update functions to apply modifications.
 	if not nameplate.TRP3_UpdateNameTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateNameText", function(frame)
-			self:UpdateNamePlateName(frame);
+		hooksecurefunc(nameplate, "UpdateNameText", function(nameplate)
+			self:UpdateNamePlateName(nameplate);
 		end);
 
 		nameplate.TRP3_UpdateNameTextHookInstalled = true;
 	end
 
 	if not nameplate.TRP3_UpdateGuildTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
-			self:UpdateNamePlateTitle(frame);
+		hooksecurefunc(nameplate, "UpdateGuildText", function(nameplate)
+			self:UpdateNamePlateTitle(nameplate);
 		end);
 
 		nameplate.TRP3_UpdateGuildTextHookInstalled = true;
