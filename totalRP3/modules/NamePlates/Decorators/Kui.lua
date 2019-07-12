@@ -44,9 +44,11 @@ function KuiDecoratorMixin:Init()
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, nameplate) self:OnNamePlateCreate(nameplate); end
 	self.plugin.Show = function(_, nameplate) self:OnNamePlateShow(nameplate); end
+	self.plugin.HealthUpdate = function(_, nameplate) self:OnNamePlateHealthUpdate(nameplate); end
 	self.plugin.Hide = function(_, nameplate) self:OnNamePlateHide(nameplate); end
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
+	self.plugin:RegisterMessage("HealthUpdate");
 	self.plugin:RegisterMessage("Hide");
 
 	-- Run over any already-created frames and set them up.
@@ -82,6 +84,12 @@ end
 function KuiDecoratorMixin:OnNamePlateShow(nameplate)
 	-- Update the nameplate.
 	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate's health updates.
+function KuiDecoratorMixin:OnNamePlateHealthUpdate(nameplate)
+	-- Update the name portion of the health plate.
+	self:UpdateNamePlateName(nameplate);
 end
 
 -- Handler called when a nameplate frame is hidden.
