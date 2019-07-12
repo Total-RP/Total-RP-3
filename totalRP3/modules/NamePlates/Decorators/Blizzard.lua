@@ -41,9 +41,13 @@ function BlizzardDecoratorMixin:InitIntegrations()
 		return;
 	end
 
-	-- Hook name updates for unitframes so we can replace the name properly.
+	-- Hook updates for parts of unitframes so we can replace things.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
 		return self:OnUnitFrameNameUpdated(frame);
+	end);
+
+	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(frame)
+		return self:OnUnitFrameHealthColorUpdated(frame);
 	end);
 
 	-- Mark integrations as initialized when done.
@@ -140,21 +144,45 @@ end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
 function BlizzardDecoratorMixin:OnUnitFrameNameUpdated(unitFrame)
+	-- Grab the nameplate for this unitframe, if it's attached to one.
+	local nameplate = self:GetNamePlateForUnitFrame(unitFrame);
+	if not nameplate then
+		return;
+	end
+
+	-- Update the name portion of the owning nameplate.
+	self:UpdateNamePlateName(nameplate);
+end
+
+-- Handler triggered when the health color on a unit frame is modified.
+function BlizzardDecoratorMixin:OnUnitFrameHealthColorUpdated(unitFrame)
+	-- Grab the nameplate for this unitframe, if it's attached to one.
+	local nameplate = self:GetNamePlateForUnitFrame(unitFrame);
+	if not nameplate then
+		return;
+	end
+
+	-- Update the health bar color portion of the owning nameplate.
+	self:UpdateNamePlateHealthColor(nameplate);
+end
+
+-- Returns the nameplate that owns the given unitframe, or nil if none is
+-- found.
+function BlizzardDecoratorMixin:GetNamePlateForUnitFrame(unitFrame)
 	-- Don't even think about looking at forbidden frames. Even querying
 	-- their parents is a bad idea.
 	if unitFrame:IsForbidden() then
-		return;
+		return nil;
 	end
 
 	-- Discard frames that aren't attached to nameplates.
 	local nameplate = unitFrame:GetParent();
 	local unitToken = unitFrame.unit;
 	if not unitToken or nameplate ~= self:GetNamePlateForUnit(unitToken) then
-		return;
+		return nil;
 	end
 
-	-- Update the name portion of the owning nameplate.
-	self:UpdateNamePlateName(nameplate);
+	return nameplate;
 end
 
 -- Returns true if the given nameplate is valid for customizing.
@@ -209,6 +237,26 @@ function BlizzardDecoratorMixin:UpdateNamePlateName(nameplate)
 	end
 end
 
+-- Updates the health bar color on a nameplate.
+function BlizzardDecoratorMixin:UpdateNamePlateHealthColor(nameplate)
+	-- Check if we can customize this frame.
+	if not self:IsNamePlateCustomizable(nameplate) then
+		return;
+	end
+
+	-- Apply the custom color if it exists.
+	local unitFrame = nameplate.UnitFrame;
+	local healthBar = unitFrame.healthBar;
+
+	local customColor = self:GetUnitCustomColor(unitFrame.unit);
+	if not customColor then
+		-- Ensure we restore the original color if this hook replaced it.
+		healthBar:SetStatusBarColor(healthBar.r, healthBar.g, healthBar.b);
+	else
+		unitFrame.healthBar:SetStatusBarColor(customColor:GetRGB());
+	end
+end
+
 -- Updates the icon display on a nameplate.
 function BlizzardDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	-- Check if we can customize this frame.
@@ -254,11 +302,11 @@ end
 
 -- Updates a given nameplate frame.
 --[[override]] function BlizzardDecoratorMixin:UpdateNamePlate(nameplate)
-	-- A full update for this nameplate will first reset the name to the
-	-- Blizzard default. This will unfortunately trigger two updates for
-	-- the name, but that's life.
+	-- A full update for this nameplate will first reset elements to the
+	-- Blizzard defaults.
 	if self:IsNamePlateCustomizable(nameplate) then
 		CompactUnitFrame_UpdateName(nameplate.UnitFrame);
+		CompactUnitFrame_UpdateHealthColor(nameplate.UnitFrame);
 	end
 
 	-- Then update all the individual customizations.
