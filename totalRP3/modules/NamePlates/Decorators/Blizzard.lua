@@ -98,7 +98,7 @@ end
 
 	-- Initialize all the nameplate frames.
 	for _, nameplate in self:GetAllNamePlates() do
-		self:InitNamePlate(nameplate)
+		self:InitNamePlate(nameplate);
 	end
 end
 
