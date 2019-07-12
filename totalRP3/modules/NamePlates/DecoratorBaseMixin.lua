@@ -63,6 +63,11 @@ function DecoratorBaseMixin:OnNamePlateUnitRemoved()
 	-- Override this in your implementation if teardown logic is desired.
 end
 
+-- Returns true if customizations are enabled.
+function DecoratorBaseMixin:IsCustomizationEnabled()
+	return NamePlates.IsCustomizationEnabled();
+end
+
 -- Returns the custom name text to be displayed for the given unit token.
 --
 -- Return nil if customizations are disabled, or if no name can be obtained.
