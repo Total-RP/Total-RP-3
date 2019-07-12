@@ -140,6 +140,12 @@ end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
 function BlizzardDecoratorMixin:OnUnitFrameNameUpdated(unitFrame)
+	-- Don't even think about looking at forbidden frames. Even querying
+	-- their parents is a bad idea.
+	if unitFrame:IsForbidden() then
+		return;
+	end
+
 	-- Discard frames that aren't attached to nameplates.
 	local nameplate = unitFrame:GetParent();
 	local unitToken = unitFrame.unit;
