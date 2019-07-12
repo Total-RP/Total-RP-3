@@ -40,7 +40,10 @@ end
 
 -- Called when a nameplate is initially created. This is used to perform
 -- one-time setup logic for each plate.
-function BlizzardDecoratorMixin:OnNamePlateCreated(nameplate)
+--[[override]] function BlizzardDecoratorMixin:OnNamePlateCreated(nameplate)
+	-- Dispatch to base mixins.
+	DecoratorBaseMixin.OnNamePlateCreated(self, nameplate);
+
 	-- We'll be anchoring things to the unitframe.
 	local unitFrame = nameplate.UnitFrame;
 
