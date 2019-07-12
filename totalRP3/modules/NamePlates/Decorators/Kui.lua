@@ -72,7 +72,7 @@ function KuiDecoratorMixin:Init()
 	end);
 
 	-- Run over all the already-created frames and set them up.
-	for _, frame in self.addon:Frames() do
+	for _, frame in self:GetAllNamePlates() do
 		self:SetUpNamePlate(frame);
 	end
 end
