@@ -12,25 +12,14 @@
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
+local _, TRP3_API = ...;
 
--- Note: This module is in a temporary "just get it working" state. It does
---       a few things which will hopefully not be present in the final
---       release, and thus additionally depends upon the Core layout as
---       shipped with KNP by default to be used.
+-- TRP3_API imports.
+local L = TRP3_API.loc;
+local TRP3_Utils = TRP3_API.utils;
 
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
-
--- TEMP: Temporary function to test some invariants.
-local function DebugCheck(cond, msg)
-	if not cond and TRP3_API.globals.DEBUG_MODE then
-		-- pcall into error means we'll get a "<file>:<line>:" prefix.
-		local _, err = pcall(error, msg or "check failed!", 2);
-		CallErrorHandler(err);
-	end
-
-	return cond;
-end
 
 -- Decorator that integrates with Kui nameplates.
 local KuiDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
@@ -40,47 +29,52 @@ function KuiDecoratorMixin:Init()
 	-- Call the inherited method first.
 	NamePlates.DecoratorBaseMixin.Init(self);
 
-	-- Keep a reference to the addon table locally.
-	self.addon = KuiNameplates;
+	-- The only supported layout for use with this module is the Core one;
+	-- other layouts might do a lot of things with their texts that we can't
+	-- realistically account for.
+	if KuiNameplates.layout ~= KuiNameplatesCore then
+		TRP3_Utils.message.displayMessage(L.NAMEPLATES_KUI_INVALID_LAYOUT);
+		return;
+	end
+
+	-- We'll internally disable a lot of stuff if this isn't set.
+	self.isValidLayout = true;
 
 	-- Initialize a plugin for our augmentations.
-	self.plugin = self.addon:NewPlugin("TotalRP3", 200);
+	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
+	self.plugin.Create = function(_, nameplate) self:OnNamePlateCreate(nameplate); end
+	self.plugin.Show = function(_, nameplate) self:OnNamePlateShow(nameplate); end
+	self.plugin.Hide = function(_, nameplate) self:OnNamePlateHide(nameplate); end
+	self.plugin:RegisterMessage("Create");
+	self.plugin:RegisterMessage("Show");
+	self.plugin:RegisterMessage("Hide");
 
-	-- Register message handlers for plates.
-	self.plugin:RegisterMessage("Create", function(_, nameplate)
-		self:OnNamePlateCreate(nameplate);
-	end);
-
-	self.plugin:RegisterMessage("Show", function(_, nameplate)
-		self:OnNamePlateShow(nameplate);
-	end);
-
-	self.plugin:RegisterMessage("HealthUpdate", function(_, nameplate)
-		self:OnNamePlateHealthUpdate(nameplate);
-	end);
-
-	self.plugin:RegisterMessage("GainedTarget", function(_, nameplate)
-		self:OnNamePlateGainedTarget(nameplate);
-	end);
-
-	self.plugin:RegisterMessage("LostTarget", function(_, nameplate)
-		self:OnNamePlateLostTarget(nameplate);
-	end);
-
-	self.plugin:RegisterMessage("Hide", function(_, nameplate)
-		self:OnNamePlateHide(nameplate);
-	end);
-
-	-- Run over all the already-created frames and set them up.
+	-- Run over any already-created frames and set them up.
 	for _, frame in self:GetAllNamePlates() do
-		self:SetUpNamePlate(frame);
+		self:OnNamePlateCreate(frame);
 	end
 end
 
 -- Handler called when a nameplate frame is initially created.
 function KuiDecoratorMixin:OnNamePlateCreate(nameplate)
-	-- Set the nameplate up and then update it.
-	self:SetUpNamePlate(nameplate);
+	-- Add a custom icon element to the nameplate.
+	local icon = nameplate:CreateTexture(nil, "ARTWORK");
+	icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+	icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+	nameplate.handler:RegisterElement("TRP3_Icon", icon);
+
+	-- Install hooks on a couple of the nameplate functions. We use hooks
+	-- because the other choice is to either constantly monitor the core
+	-- layout or each and every message it updates things on.
+	hooksecurefunc(nameplate, "UpdateNameText", function(plate)
+		self:OnNameTextUpdated(plate);
+	end);
+
+	hooksecurefunc(nameplate, "UpdateGuildText", function(plate)
+		self:OnGuildTextUpdated(plate);
+	end);
+
+	-- Immediately update the nameplate.
 	self:UpdateNamePlate(nameplate);
 end
 
@@ -90,81 +84,14 @@ function KuiDecoratorMixin:OnNamePlateShow(nameplate)
 	self:UpdateNamePlate(nameplate);
 end
 
--- Handler called when a nameplate's health changes.
-function KuiDecoratorMixin:OnNamePlateHealthUpdate(nameplate)
-	-- Update the nameplate.
-	self:UpdateNamePlate(nameplate);
-end
-
--- Handler called when a nameplate gains a target.
-function KuiDecoratorMixin:OnNamePlateGainedTarget(nameplate)
-	-- Update the nameplate.
-	self:UpdateNamePlate(nameplate);
-end
-
--- Handler called when a nameplate loses a target.
-function KuiDecoratorMixin:OnNamePlateLostTarget(nameplate)
-	-- Update the nameplate.
-	self:UpdateNamePlate(nameplate);
-end
-
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHide(nameplate)
 	-- Hide the RP icon element by force.
-	local icon = nameplate.TRP3_Icon;
-	DebugCheck(icon, "Nameplate is missing a custom icon element");
-	if icon then
-		icon:Hide();
-	end
+	nameplate.TRP3_Icon:Hide();
 end
 
--- Returns true if the given nameplate is valid for customizing.
-function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
-	-- Only allow decorations of valid, non-personal nameplates.
-	return nameplate.unit ~= nil and not nameplate.state.personal;
-end
-
--- Returns true if the given nameplate frame is in name-only mode. Some
--- customizations shouldn't display if not in name-only mode, but this
--- decision is left to the individual displays.
-function KuiDecoratorMixin:IsNamePlateInNameOnlyMode(nameplate)
-	return nameplate.IN_NAMEONLY;
-end
-
--- Sets up the given nameplate, installing custom elements and hooks.
-function KuiDecoratorMixin:SetUpNamePlate(nameplate)
-	-- We assume this only gets called once per nameplate.
-	DebugCheck(not nameplate.TRP3_Icon, "Attempted to set up a nameplate twice");
-
-	-- Create an icon texture and register it as an element.
-	if not nameplate.TRP3_Icon then
-		local icon = nameplate:CreateTexture(nil, "ARTWORK");
-		icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-		icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
-
-		nameplate.handler:RegisterElement("TRP3_Icon", icon);
-	end
-
-	-- Install hooks on some of the update functions to apply modifications.
-	if not nameplate.TRP3_UpdateNameTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateNameText", function(frame)
-			self:UpdateNamePlateName(frame);
-		end);
-
-		nameplate.TRP3_UpdateNameTextHookInstalled = true;
-	end
-
-	if not nameplate.TRP3_UpdateGuildTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
-			self:UpdateNamePlateTitle(frame);
-		end);
-
-		nameplate.TRP3_UpdateGuildTextHookInstalled = true;
-	end
-end
-
--- Updates the name text display on a nameplate frame.
-function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
+-- Handler called when name text is updated on a nameplate.
+function KuiDecoratorMixin:OnNameTextUpdated(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
 	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
@@ -173,14 +100,18 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	-- Get the custom name to be applied.
 	local nameText = self:GetUnitCustomName(nameplate.unit);
 	if nameText then
-		-- Format and show it.
-		nameplate.state.name = nameText;
-		nameplate.NameText:SetText(nameplate.state.name);
-
 		-- If we're in name-only mode we need to fix up the health colouring.
-		-- This should only apply if the Core layout is in use.
-		if self:IsNamePlateInNameOnlyMode(nameplate) and KuiNameplatesCore then
+		if self:IsNamePlateInNameOnlyMode(nameplate) then
+			-- The NameOnlySetNameTextToHealth function reads from the state,
+			-- but to ease resetting things and not pointlessly resetting
+			-- things on each update we'll change it for a moment only.
+			local originalName = nameplate.state.name;
+			nameplate.state.name = nameText;
 			KuiNameplatesCore:NameOnlySetNameTextToHealth(nameplate);
+			nameplate.state.name = originalName;
+		else
+			-- Not in name-only mode, so we'll just apply our change.
+			nameplate.NameText:SetText(nameText);
 		end
 
 		-- Once colouring is applied we'll prefix the indicator.
@@ -197,32 +128,79 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	end
 end
 
--- Updates the icon display on a nameplate frame.
-function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
+-- Handler called when guild text is updated on a nameplate.
+function KuiDecoratorMixin:OnGuildTextUpdated(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
 	if not self:ShouldCustomizeNamePlate(nameplate) then
 		return;
 	end
 
-	-- Grab the custom icon element.
-	local icon = nameplate.TRP3_Icon;
-	DebugCheck(icon, "Nameplate is missing a custom icon element");
-	if not icon then
+	-- Get the title text to be displayed.
+	local titleText = self:GetUnitCustomTitle(nameplate.unit);
+	if not titleText then
+		return;
+	end
+
+	-- Format it somewhat and show it in the guild text field.
+	nameplate.GuildText:SetFormattedText("<%s>", titleText);
+end
+
+-- Returns true if the given nameplate is valid for customizing.
+function KuiDecoratorMixin:ShouldCustomizeNamePlate(nameplate)
+	-- Disable if the layout was invalid.
+	if not self.isValidLayout then
+		return false;
+	end
+
+	-- Only allow decorations of valid, non-personal nameplates.
+	return nameplate.unit ~= nil and not nameplate.state.personal;
+end
+
+-- Returns true if the given nameplate frame is in name-only mode. Some
+-- customizations shouldn't display if not in name-only mode, but this
+-- decision is left to the individual displays.
+function KuiDecoratorMixin:IsNamePlateInNameOnlyMode(nameplate)
+	return nameplate.IN_NAMEONLY;
+end
+
+-- Updates the name text display on a nameplate frame.
+function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	-- Call the hooked function to trigger the update.
+	nameplate:UpdateNameText();
+end
+
+-- Updates the icon display on a nameplate frame.
+function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
+	-- Grab the widget from the frame.
+	local iconWidget = nameplate.TRP3_Icon;
+
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:ShouldCustomizeNamePlate(nameplate) then
+		-- The icon widget will be nil if the layout is invalid.
+		if iconWidget then
+			iconWidget:Hide();
+		end
+
 		return;
 	end
 
 	-- Hide the icon if the name text is itself hidden.
 	if not nameplate.NameText:IsShown() then
-		icon:Hide();
+		iconWidget:Hide();
 		return;
 	end
 
 	local iconPath = self:GetUnitCustomIcon(nameplate.unit);
 	if not iconPath then
-		icon:Hide();
+		iconWidget:Hide();
 	else
-		icon:SetTexture(iconPath);
-		icon:Show();
+		iconWidget:SetTexture(iconPath);
+		iconWidget:Show();
 	end
 end
 
@@ -233,45 +211,15 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 		return;
 	end
 
-	-- Get the title text to be displayed.
-	local titleText = self:GetUnitCustomTitle(nameplate.unit);
-	if not titleText then
-		return false;
-	end
-
-	-- Format it somewhat and show it in the guild text field.
-	titleText = format("<%s>", titleText);
-	nameplate.state.guild_text = titleText;
-	nameplate.GuildText:SetText(nameplate.state.guild_text);
+	-- Call the hooked function to trigger the update.
+	nameplate:UpdateGuildText();
 end
 
 -- Updates the given nameplate.
 --[[override]] function KuiDecoratorMixin:UpdateNamePlate(nameplate)
-	-- Hide custom elements before doing customizations; this ensure we
-	-- properly hide them if the nameplate state changes for the next test.
-	local icon = nameplate.TRP3_Icon;
-	DebugCheck(icon, "Nameplate is missing a custom icon element");
-	if icon then
-		icon:Hide();
-	end
-
-	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:ShouldCustomizeNamePlate(nameplate) then
-		return;
-	end
-
-	-- Reset the name and guild texts on this unit.
-	nameplate.handler:UpdateName();
-
-	local guildTextMod = self.addon:GetPlugin("GuildText");
-	if guildTextMod then
-		guildTextMod:Show(nameplate);
-	end
-
-	-- Apply modifications. We'll call the hooked functions to ensure that
-	-- sensible defaults get re-applied where possible.
-	nameplate:UpdateNameText();
-	nameplate:UpdateGuildText();
+	-- Apply the modifications piece by piece.
+	self:UpdateNamePlateName(nameplate);
+	self:UpdateNamePlateTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
 end
 
@@ -293,12 +241,12 @@ end
 
 -- Returns the nameplate frame used by a named unit.
 --[[override]] function KuiDecoratorMixin:GetNamePlateForUnit(unitToken)
-	return self.addon:GetActiveNameplateForUnit(unitToken);
+	return KuiNameplates:GetActiveNameplateForUnit(unitToken);
 end
 
 -- Returns an iterator for accessing all nameplate frames.
 --[[override]] function KuiDecoratorMixin:GetAllNamePlates()
-	return self.addon:Frames();
+	return KuiNameplates:Frames();
 end
 
 -- Module exports.
