@@ -289,7 +289,9 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 		return;
 	end
 
-	-- Call the hooked function to trigger the update.
+	-- Call the hooked function to trigger the update after we set the
+	-- current state text to restore it.
+	nameplate.NameText:SetText(nameplate.state.name or UNKNOWNOBJECT);
 	nameplate:UpdateNameText();
 end
 
