@@ -1352,8 +1352,8 @@ This option only works in the following circumstances:
 - |cffffffffKui Nameplates:|r Name-only mode must be enabled.]],
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
-	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",
-	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = "The type of out-of-character (OOC) indicator to display.\n\nThis requires that OOC indicators be enabled.",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "OOC indicator style",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = "The style of out-of-character (OOC) indicators to display.\n\nThis requires that OOC indicators be enabled.",
 };
 
 -- Use Ellyb to generate the Localization system
