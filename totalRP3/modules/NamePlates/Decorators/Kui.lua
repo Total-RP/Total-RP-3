@@ -166,7 +166,7 @@ end
 -- Handler called when a nameplate frame is shown.
 function KuiDecoratorMixin:OnNamePlateShow(nameplate)
 	-- Before updating, we'll mirror any font changes to that of our title.
-	if self:IsCustomizationEnabled() then
+	if self:IsCustomizationEnabled() and self:IsNamePlateCustomizable(nameplate) then
 		local titleWidget = nameplate.TRP3_Title;
 
 		if nameplate.GuildText:GetFont() then
@@ -367,13 +367,25 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 		return;
 	end
 
+
 	-- Update the title text appropriately.
 	local titleText = self:GetUnitCustomTitle(nameplate.unit);
-	if not titleText or not titleWidget:GetFont() then
+	if not titleText then
 		self:SetNamePlateTitleShown(nameplate, false);
 	else
-		titleWidget:SetFormattedText("<%s>", titleText);
-		self:SetNamePlateTitleShown(nameplate, true);
+		-- Grab the font from the guild text if we still don't have one.
+		if not titleWidget:GetFont() and nameplate.GuildText:GetFont() then
+			titleWidget:SetFont(nameplate.GuildText:GetFont());
+			titleWidget:SetTextColor(nameplate.GuildText:GetTextColor());
+		end
+
+		-- Only show if a font was successfully applied.
+		if titleWidget:GetFont() then
+			titleWidget:SetFormattedText("<%s>", titleText);
+			self:SetNamePlateTitleShown(nameplate, true);
+		else
+			self:SetNamePlateTitleShown(nameplate, false);
+		end
 	end
 end
 
