@@ -147,16 +147,16 @@ function KuiDecoratorMixin:SetUpNamePlate(nameplate)
 
 	-- Install hooks on some of the update functions to apply modifications.
 	if not nameplate.TRP3_UpdateNameTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateNameText", function(nameplate)
-			self:UpdateNamePlateName(nameplate);
+		hooksecurefunc(nameplate, "UpdateNameText", function(frame)
+			self:UpdateNamePlateName(frame);
 		end);
 
 		nameplate.TRP3_UpdateNameTextHookInstalled = true;
 	end
 
 	if not nameplate.TRP3_UpdateGuildTextHookInstalled then
-		hooksecurefunc(nameplate, "UpdateGuildText", function(nameplate)
-			self:UpdateNamePlateTitle(nameplate);
+		hooksecurefunc(nameplate, "UpdateGuildText", function(frame)
+			self:UpdateNamePlateTitle(frame);
 		end);
 
 		nameplate.TRP3_UpdateGuildTextHookInstalled = true;
