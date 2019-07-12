@@ -111,25 +111,12 @@ end
 
 -- Handler triggered when a configuration setting is changed.
 --[[private]] function NamePlates.OnConfigSettingChanged(key, _)
-	local shouldRefresh = false;
-
-	-- If color contrast is changed, we should refresh things.
-	if key == "increase_color_contrast" then
-		shouldRefresh = true;
-	end
-
-	-- Otherwise, check for nameplate settings. We've got a lot, so use
-	-- a heuristic for this instead of matching them all.
-	if strfind(tostring(key), "^nameplates_") then
-		shouldRefresh = true;
-	end
-
-	-- If we shouldn't refresh, we'll stop now.
-	if not shouldRefresh then
+	-- Only nameplate setting changes and color contrast updates, please.
+	if not strfind(tostring(key), "^nameplates_") and key ~= "increase_color_contrast" then
 		return;
 	end
 
-	-- In response to configuration changes update all frames.
+	NamePlates.UpdateCustomizationState();
 	NamePlates.UpdateAllNamePlates();
 end
 
@@ -158,13 +145,8 @@ end
 -- Handler triggered when the roleplay status of the character changes, such
 -- as from IC to OOC.
 --[[private]] function NamePlates.OnRoleplayStatusChanged()
-	-- No need to handle status changes if we don't customize based on our
-	-- IC/OOC state.
-	if not NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
-		return;
-	end
-
-	-- Otherwise, trigger updates.
+	-- Update internal state and then all the nameplates.
+	NamePlates.UpdateCustomizationState();
 	NamePlates.UpdateAllNamePlates();
 end
 
@@ -226,6 +208,9 @@ end
 
 	-- Install the configuration UI.
 	NamePlates.RegisterConfigurationUI();
+
+	-- Update the initial state of our customizations.
+	NamePlates.UpdateCustomizationState();
 
 	-- Trigger an update of all nameplates.
 	NamePlates.UpdateAllNamePlates();

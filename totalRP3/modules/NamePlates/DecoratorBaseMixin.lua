@@ -31,6 +31,20 @@ function DecoratorBaseMixin:Init()
 	-- Override this in your implementation to perform initialization logic.
 end
 
+-- Called when customizations for nameplates are globally enabled for all
+-- frames. This can occurs either when the main enable setting is toggled,
+-- or if the player's roleplay status changes.
+function DecoratorBaseMixin:OnCustomizationEnabled()
+	-- Override this in your implementation to enable customizations.
+end
+
+-- Called when customizations for nameplates are globally disabled for all
+-- frames. This can occurs either when the main enable setting is toggled,
+-- or if the player's roleplay status changes.
+function DecoratorBaseMixin:OnCustomizationDisabled()
+	-- Override this in your implementation to disable customizations.
+end
+
 -- Called when a nameplate is initially created. This can be used to
 -- perform one-time setup logic for each plate.
 function DecoratorBaseMixin:OnNamePlateCreated()

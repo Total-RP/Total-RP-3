@@ -23,6 +23,10 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
+-- Last known state of whether or not we're customizing plates. This is
+-- used to trigger some notifications on decorators.
+NamePlates.shouldCustomize = nil;
+
 -- Returns true if customization of nameplates is globally enabled.
 --
 -- Returns false if disabled, or if enabled while only in-character and the
@@ -272,4 +276,26 @@ function NamePlates.GetUnitOOCIndicator(unitToken)
 
 	-- Unsupported style.
 	return nil;
+end
+
+-- Updates the internal state tracking whether or not customizations are
+-- enabled, notifying the installed decorator if this changes.
+--[[private]] function NamePlates.UpdateCustomizationState()
+	-- Cancel early if the state hasn't changed.
+	local state = NamePlates.IsCustomizationEnabled();
+	if state == NamePlates.shouldCustomize then
+		return;
+	end
+
+	-- Store the updated state and notify the decorator, if installed.
+	NamePlates.shouldCustomize = state;
+
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
+	if decorator then
+		if state then
+			decorator:OnCustomizationEnabled();
+		else
+			decorator:OnCustomizationDisabled();
+		end
+	end
 end
