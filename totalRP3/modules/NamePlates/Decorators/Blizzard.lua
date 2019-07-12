@@ -61,6 +61,9 @@ function BlizzardDecoratorMixin:OnNamePlateCreated(nameplate)
 	-- It's safe to add these to the nameplate frame.
 	nameplate.TRP3_Icon = iconWidget;
 	nameplate.TRP3_Title = titleWidget;
+
+	-- Immediately update the nameplate.
+	self:UpdateNamePlate(nameplate);
 end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
