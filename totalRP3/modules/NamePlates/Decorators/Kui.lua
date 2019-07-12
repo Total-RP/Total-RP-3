@@ -138,7 +138,8 @@ end
 -- Handler called when guild text is updated on a nameplate.
 function KuiDecoratorMixin:OnGuildTextUpdated(nameplate)
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:IsNamePlateCustomizable(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate)
+	or not self:IsNamePlateInNameOnlyMode(nameplate) then
 		return;
 	end
 
