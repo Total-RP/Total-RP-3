@@ -295,6 +295,28 @@ function KuiDecoratorMixin:UpdateNamePlateName(nameplate)
 	nameplate:UpdateNameText();
 end
 
+-- Updates the health bar color on a nameplate frame.
+function KuiDecoratorMixin:UpdateNamePlateHealthBarColor(nameplate)
+	-- If this nameplate looks like it should be left alone, ignore it.
+	if not self:IsNamePlateCustomizable(nameplate) then
+		return;
+	end
+
+	-- If we've got a custom color, override what's present on the bar.
+	local customColor = self:GetUnitCustomColor(nameplate.unit);
+	if not customColor then
+		-- Ensure the original color is restored, if we did modify it.
+		local originalColor = nameplate.state.healthColour;
+		if originalColor then
+			nameplate.HealthBar:SetStatusBarColor(unpack(originalColor));
+		end
+	else
+		-- Don't persist this in the state to simplify resetting it if the
+		-- customization is disabled.
+		nameplate.HealthBar:SetStatusBarColor(customColor:GetRGB());
+	end
+end
+
 -- Updates the icon display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	-- Grab the widget from the frame.
@@ -405,6 +427,7 @@ end
 --[[override]] function KuiDecoratorMixin:UpdateNamePlate(nameplate)
 	-- Apply the modifications piece by piece.
 	self:UpdateNamePlateName(nameplate);
+	self:UpdateNamePlateHealthBarColor(nameplate);
 	self:UpdateNamePlateTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
 end
