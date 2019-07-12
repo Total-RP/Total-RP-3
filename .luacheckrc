@@ -134,6 +134,7 @@ read_globals = {
 	"FONT_COLOR_CODE_CLOSE",
 	"RED_FONT_COLOR_CODE",
 	"STANDARD_TEXT_FONT",
+	"SystemFont_NamePlate",
 	"ChatFontNormal",
 
 	-- ENUMS
