@@ -95,13 +95,15 @@ end
 
 -- Handler triggered when the name on a unit frame is modified by the UI.
 function BlizzardDecoratorMixin:OnUnitFrameNameUpdated(unitFrame)
-	-- Discard frames that don't refer to nameplate units.
-	if not strfind(tostring(unitFrame.unit), "^nameplate%d+$") then
+	-- Discard frames that aren't attached to nameplates.
+	local nameplate = unitFrame:GetParent();
+	local unitToken = unitFrame.unit;
+	if not unitToken or nameplate ~= self:GetNamePlateForUnit(unitToken) then
 		return;
 	end
 
 	-- Update the name portion of the owning nameplate.
-	self:UpdateNamePlateName(unitFrame:GetParent());
+	self:UpdateNamePlateName(nameplate);
 end
 
 -- Returns true if the given nameplate can be customized without raising any
