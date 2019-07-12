@@ -98,20 +98,37 @@ function KuiDecoratorMixin:InitNamePlate(nameplate)
 	end
 
 	-- Add a custom icon element to the nameplate.
-	local icon = nameplate:CreateTexture(nil, "ARTWORK");
-	icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-	icon:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
-	nameplate.handler:RegisterElement("TRP3_Icon", icon);
+	do
+		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+		iconWidget:Hide();
+
+		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
+	end
+
+	-- Add a custom label for the title text.
+	do
+		local titleWidget = nameplate:CreateFontString(nil, "ARTWORK");
+		titleWidget:ClearAllPoints();
+		titleWidget:SetPoint("TOP", nameplate.NameText, "BOTTOM", 0, -2);
+
+		-- Style to match Kui.
+		titleWidget:SetTextColor(1, 1, 1, 0.8);
+		titleWidget:SetShadowOffset(1, -1);
+		titleWidget:SetShadowColor(0, 0, 0, 1);
+
+		titleWidget:Hide();
+
+		nameplate.handler:RegisterElement("TRP3_Title", titleWidget);
+	end
 
 	-- Install hooks on a couple of the nameplate functions. We use hooks
 	-- because the other choice is to either constantly monitor the core
 	-- layout or each and every message it updates things on.
 	hooksecurefunc(nameplate, "UpdateNameText", function(plate)
 		self:OnNameTextUpdated(plate);
-	end);
-
-	hooksecurefunc(nameplate, "UpdateGuildText", function(plate)
-		self:OnGuildTextUpdated(plate);
 	end);
 
 	-- Mark the plate as initialized.
@@ -128,6 +145,14 @@ end
 
 -- Handler called when a nameplate frame is shown.
 function KuiDecoratorMixin:OnNamePlateShow(nameplate)
+	-- Before updating, we'll mirror any font changes to that of our title.
+	if self:IsCustomizationEnabled() then
+		local titleWidget = nameplate.TRP3_Title;
+
+		titleWidget:SetFont(nameplate.GuildText:GetFont());
+		titleWidget:SetTextColor(nameplate.GuildText:GetTextColor());
+	end
+
 	-- Update the nameplate.
 	self:UpdateNamePlate(nameplate);
 end
@@ -140,9 +165,10 @@ end
 
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHide(nameplate)
-	-- Hide the RP icon element by force.
+	-- Hide the custom widgets by force.
 	if self:IsNamePlateCustomizable(nameplate) then
 		nameplate.TRP3_Icon:Hide();
+		nameplate.TRP3_Title:Hide();
 	end
 end
 
@@ -181,31 +207,6 @@ function KuiDecoratorMixin:OnNameTextUpdated(nameplate)
 	local nameColor = self:GetUnitCustomColor(nameplate.unit);
 	if nameColor then
 		nameplate.NameText:SetTextColor(nameColor:GetRGBA());
-	end
-end
-
--- Handler called when guild text is updated on a nameplate.
-function KuiDecoratorMixin:OnGuildTextUpdated(nameplate)
-	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:IsNamePlateCustomizable(nameplate)
-	or not self:IsNamePlateInNameOnlyMode(nameplate) then
-		return;
-	end
-
-	-- Get the title text to be displayed.
-	local titleText = self:GetUnitCustomTitle(nameplate.unit);
-	if not titleText then
-		return;
-	end
-
-	-- Format it somewhat and show it in the guild text field.
-	nameplate.GuildText:SetFormattedText("<%s>", titleText);
-
-	-- If we're actually showing the guild text because of a title, then we
-	-- need to mirror the reposition change that occurs.
-	if not nameplate.GuildText:IsShown() then
-		nameplate.GuildText:Show();
-		nameplate.NameText:SetPoint("CENTER", 0.5, 6);
 	end
 end
 
@@ -275,13 +276,51 @@ end
 
 -- Updates the title display on a nameplate frame.
 function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
+	-- Grab the widget from the frame.
+	local titleWidget = nameplate.TRP3_Title;
+
 	-- If this nameplate looks like it should be left alone, ignore it.
-	if not self:IsNamePlateCustomizable(nameplate) then
+	if not self:IsNamePlateCustomizable(nameplate)
+	or not self:IsNamePlateInNameOnlyMode(nameplate) then
+		self:SetNamePlateTitleShown(nameplate, false);
 		return;
 	end
 
-	-- Call the hooked function to trigger the update.
-	nameplate:UpdateGuildText();
+	-- Hide the title if the name text is itself hidden.
+	if not nameplate.NameText:IsShown() then
+		self:SetNamePlateTitleShown(nameplate, false);
+		return;
+	end
+
+	-- Update the title text appropriately.
+	local titleText = self:GetUnitCustomTitle(nameplate.unit);
+	if not titleText or not titleWidget:GetFont() then
+		self:SetNamePlateTitleShown(nameplate, false);
+	else
+		titleWidget:SetFormattedText("<%s>", titleText);
+		self:SetNamePlateTitleShown(nameplate, true);
+	end
+end
+
+-- Toggles the visibility of the title text in a nameplate. This function
+-- must be called to ensure the guild text is appropriately repositioned.
+function KuiDecoratorMixin:SetNamePlateTitleShown(nameplate, shown)
+	-- Grab the widget from the frame.
+	local titleWidget = nameplate.TRP3_Title;
+	if not titleWidget then
+		return;
+	end
+
+	-- Update visibility and re-anchor the guild line appopriately.
+	titleWidget:SetShown(shown);
+
+	local relativeWidget = nameplate.NameText;
+	if shown then
+		relativeWidget = titleWidget;
+	end
+
+	nameplate.GuildText:ClearAllPoints();
+	nameplate.GuildText:SetPoint("TOP", relativeWidget, "BOTTOM", 0, -2);
 end
 
 -- Called when customizations for nameplates are globally enabled for all

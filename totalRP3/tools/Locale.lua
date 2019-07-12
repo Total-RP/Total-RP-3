@@ -1316,7 +1316,6 @@ The register also received a checkbox to only display profiles on which you wrot
 	NAMEPLATES_ERR_NO_VALID_PROVIDER = "No suitable display provider could be found for nameplates.",
 
 	NAMEPLATES_KUI_INVALID_LAYOUT = "Nameplate customizations only support the use of the |cffff9900Kui Nameplates: Core|r layout, and will be |cffff0000disabled|r for this session.",
-	NAMEPLATES_KUI_TOGGLE_GUILD_TEXT = "Showing custom titles requires Kui Nameplates: Core to show guild text.\n\nShould this setting be enabled?";
 
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
@@ -1350,7 +1349,7 @@ This option only works in the following circumstances:
 
 - |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
 
-- |cffffffffKui Nameplates:|r Name-only mode and "Show Guild Text" settings must be enabled.]],
+- |cffffffffKui Nameplates:|r Name-only mode must be enabled.]],
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "Preferred OOC indicators",
