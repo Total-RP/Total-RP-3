@@ -169,8 +169,10 @@ function KuiDecoratorMixin:OnNamePlateShow(nameplate)
 	if self:IsCustomizationEnabled() then
 		local titleWidget = nameplate.TRP3_Title;
 
-		titleWidget:SetFont(nameplate.GuildText:GetFont());
-		titleWidget:SetTextColor(nameplate.GuildText:GetTextColor());
+		if nameplate.GuildText:GetFont() then
+			titleWidget:SetFont(nameplate.GuildText:GetFont());
+			titleWidget:SetTextColor(nameplate.GuildText:GetTextColor());
+		end
 	end
 
 	-- Update the nameplate.
