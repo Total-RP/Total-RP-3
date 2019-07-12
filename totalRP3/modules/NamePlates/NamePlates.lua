@@ -77,6 +77,15 @@ end
 	NamePlates.decorator = decorator;
 end
 
+-- Handler triggered when the game creates a nameplate.
+--[[private]] function NamePlates.OnNamePlateCreated(nameplate)
+	-- Forward to the active decorator.
+	local decorator = NamePlates.GetNamePlateDisplayDecorator();
+	if decorator then
+		decorator:OnNamePlateCreated(nameplate);
+	end
+end
+
 -- Handler triggered then the game assigns a nameplate unit token.
 --[[private]] function NamePlates.OnNamePlateUnitAdded(unitToken)
 	-- Issue a request for the profile ahead of notifying the decorator.
@@ -193,6 +202,7 @@ end
 
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
+	eventFrame:RegisterEvent("NAME_PLATE_CREATED");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
 	eventFrame:SetScript("OnEvent", function(_, event, ...)
@@ -200,6 +210,8 @@ end
 			NamePlates.OnNamePlateUnitAdded(...);
 		elseif event == "NAME_PLATE_UNIT_REMOVED" then
 			NamePlates.OnNamePlateUnitRemoved(...);
+		elseif event == "NAME_PLATE_CREATED" then
+			NamePlates.OnNamePlateCreated(...);
 		end
 	end);
 

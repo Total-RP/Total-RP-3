@@ -31,6 +31,12 @@ function DecoratorBaseMixin:Init()
 	-- Override this in your implementation to perform initialization logic.
 end
 
+-- Called when a nameplate is initially created. This can be used to
+-- perform one-time setup logic for each plate.
+function DecoratorBaseMixin:OnNamePlateCreated()
+	-- Override this in your implementation if one-time logic is desired.
+end
+
 -- Called when a nameplate unit token is attached to an allocated nameplate
 -- frame. This can be used to perform setup logic.
 function DecoratorBaseMixin:OnNamePlateUnitAdded()
@@ -95,36 +101,47 @@ function DecoratorBaseMixin:GetUnitCustomTitle(unitToken)
 	return titleText;
 end
 
+-- Updates a given nameplate frame.
+--
+-- @param nameplate The nameplate frame to be updated.
+function DecoratorBaseMixin:UpdateNamePlate(_)
+	-- Override this in your implementation to update a nameplate.
+end
+
 -- Returns the nameplate frame for a given unit token.
 function DecoratorBaseMixin:GetNamePlateForUnit(unitToken)
 	return C_NamePlate.GetNamePlateForUnit(unitToken);
 end
 
--- Returns true if the given nameplate frame is in name-only mode. Some
--- customizations shouldn't display if not in name-only mode, but this
--- decision is left to the individual displays.
+-- Returns an iterator for accessing all nameplate frames.
 --
--- @param nameplate The nameplate frame to test.
-function DecoratorBaseMixin:IsNamePlateInNameOnlyMode(_)
-	return false;
+-- The default implementation of this mixin assumes the nameplate frame will
+-- be returned as the second value from each call to the iterator, as if
+-- iterating by pairs/ipairs.
+function DecoratorBaseMixin:GetAllNamePlates()
+	return next, C_NamePlate.GetNamePlates();
 end
 
 -- Updates the name plate for a single unit identified by the given token.
 --
 -- Returns true if the frame is updated successfully, or false if the given
 -- unit token is invalid.
---
--- @param unitToken The unit token to update a nameplate for.
-function DecoratorBaseMixin:UpdateNamePlateForUnit(_)
-	-- Override this in your implementation.
-	return false;
+function DecoratorBaseMixin:UpdateNamePlateForUnit(unitToken)
+	-- Obtain the nameplate for this unit and update it.
+	local nameplate = self:GetNamePlateForUnit(unitToken);
+	if not nameplate then
+		return false;
+	end
+
+	self:UpdateNamePlate(nameplate);
+	return true;
 end
 
 -- Updates all name plates managed by this decorator.
 function DecoratorBaseMixin:UpdateAllNamePlates()
 	-- Dispatch updates for all existing nameplate frames.
-	for _, nameplate in pairs(C_NamePlate.GetNamePlates()) do
-		self:UpdateNamePlateForUnit(nameplate.namePlateUnitToken);
+	for _, nameplate in self:GetAllNamePlates() do
+		self:UpdateNamePlate(nameplate);
 	end
 end
 
