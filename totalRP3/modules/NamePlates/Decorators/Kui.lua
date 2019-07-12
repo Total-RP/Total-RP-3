@@ -39,25 +39,64 @@ function KuiDecoratorMixin:Init()
 	-- We'll internally disable a lot of stuff if this isn't set.
 	self.isValidLayout = true;
 
-	-- Initialize a plugin for our augmentations.
+	-- Initialize a plugin for our augmentations and define the message
+	-- handler functions ahead of time.
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
 	self.plugin.Create = function(_, nameplate) self:OnNamePlateCreate(nameplate); end
 	self.plugin.Show = function(_, nameplate) self:OnNamePlateShow(nameplate); end
 	self.plugin.HealthUpdate = function(_, nameplate) self:OnNamePlateHealthUpdate(nameplate); end
 	self.plugin.Hide = function(_, nameplate) self:OnNamePlateHide(nameplate); end
+
+	-- Keep track of initialized nameplates and integrations.
+	self.initNamePlates = {};
+	self.initIntegrations = false;
+end
+
+-- Enables integrations with the KuiNameplates addon. This will register
+-- message handlers for its internal events.
+function KuiDecoratorMixin:EnableIntegrations()
+	-- Don't allow double-initialization.
+	if self.initIntegrations then
+		return;
+	end
+
+	-- Register message handlers.
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
 	self.plugin:RegisterMessage("HealthUpdate");
 	self.plugin:RegisterMessage("Hide");
 
-	-- Run over any already-created frames and set them up.
-	for _, frame in self:GetAllNamePlates() do
-		self:OnNamePlateCreate(frame);
-	end
+	-- Flag ourselves as initialized.
+	self.initIntegrations = true;
 end
 
--- Handler called when a nameplate frame is initially created.
-function KuiDecoratorMixin:OnNamePlateCreate(nameplate)
+-- Disables integrations with tke KuiNameplates addon, unregistering all
+-- message handlers.
+function KuiDecoratorMixin:DisableIntegrations()
+	-- Don't allow double-deinitialization.
+	if not self.initIntegrations then
+		return;
+	end
+
+	-- Unregister all the message handlers so that they stop bugging us.
+	self.plugin:UnregisterAllMessages();
+
+	-- Flag ourselves as de-initialized.
+	self.initIntegrations = false;
+end
+
+-- Initializes the given nameplate, populating it with hooks and custom
+-- widgets as needed.
+--
+-- This function will not allow initializing the same nameplate twice; once
+-- initialized, future calls with the same nameplate are a no-op.
+function KuiDecoratorMixin:InitNamePlate(nameplate)
+	-- Don't allow double-initializing a nameplate.
+	local nameplateKey = nameplate:GetName();
+	if self.initNamePlates[nameplateKey] then
+		return;
+	end
+
 	-- Add a custom icon element to the nameplate.
 	local icon = nameplate:CreateTexture(nil, "ARTWORK");
 	icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
@@ -75,8 +114,16 @@ function KuiDecoratorMixin:OnNamePlateCreate(nameplate)
 		self:OnGuildTextUpdated(plate);
 	end);
 
-	-- Immediately update the nameplate.
-	self:UpdateNamePlate(nameplate);
+	-- Mark the plate as initialized.
+	self.initNamePlates[nameplateKey] = true;
+end
+
+-- Handler called when a nameplate frame is initially created.
+function KuiDecoratorMixin:OnNamePlateCreate(nameplate)
+	-- Initialize the nameplate only if we're customizing things.
+	if self:IsCustomizationEnabled() then
+		self:InitNamePlate(nameplate);
+	end
 end
 
 -- Handler called when a nameplate frame is shown.
@@ -94,7 +141,9 @@ end
 -- Handler called when a nameplate frame is hidden.
 function KuiDecoratorMixin:OnNamePlateHide(nameplate)
 	-- Hide the RP icon element by force.
-	nameplate.TRP3_Icon:Hide();
+	if self:IsNamePlateCustomizable(nameplate) then
+		nameplate.TRP3_Icon:Hide();
+	end
 end
 
 -- Handler called when name text is updated on a nameplate.
@@ -167,8 +216,13 @@ function KuiDecoratorMixin:IsNamePlateCustomizable(nameplate)
 		return false;
 	end
 
-	-- Only allow decorations of valid, non-personal nameplates.
-	return nameplate.unit ~= nil and not nameplate.state.personal;
+	-- Ignore nameplates that haven't been initialized.
+	if not self.initNamePlates[nameplate:GetName()] then
+		return false;
+	end
+
+	-- Non-personal nameplates.
+	return not nameplate.state.personal;
 end
 
 -- Returns true if the given nameplate frame is in name-only mode. Some
@@ -196,7 +250,7 @@ function KuiDecoratorMixin:UpdateNamePlateIcon(nameplate)
 
 	-- If this nameplate looks like it should be left alone, ignore it.
 	if not self:IsNamePlateCustomizable(nameplate) then
-		-- The icon widget will be nil if the layout is invalid.
+		-- The icon widget may or may not exist at this point.
 		if iconWidget then
 			iconWidget:Hide();
 		end
@@ -239,6 +293,22 @@ end
 	if not self.isValidLayout then
 		TRP3_Utils.message.displayMessage(L.NAMEPLATES_KUI_INVALID_LAYOUT);
 	end
+
+	-- Initialize our integrations with the addon.
+	self:EnableIntegrations();
+
+	-- Initialize all the nameplate frames.
+	for _, nameplate in self:GetAllNamePlates() do
+		self:InitNamePlate(nameplate);
+	end
+end
+
+-- Called when customizations for nameplates are globally disabled for all
+-- frames. This can occurs either when the main enable setting is toggled,
+-- or if the player's roleplay status changes.
+--[[override]] function KuiDecoratorMixin:OnCustomizationDisabled()
+	-- Our integrations can be toggled off again when disabling things.
+	self:DisableIntegrations();
 end
 
 -- Updates the given nameplate.
