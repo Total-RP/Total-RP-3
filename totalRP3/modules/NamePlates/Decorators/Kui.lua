@@ -42,10 +42,24 @@ function KuiDecoratorMixin:Init()
 	-- Initialize a plugin for our augmentations and define the message
 	-- handler functions ahead of time.
 	self.plugin = KuiNameplates:NewPlugin("TotalRP3", 250);
-	self.plugin.Create = function(_, nameplate) self:OnNamePlateCreate(nameplate); end
-	self.plugin.Show = function(_, nameplate) self:OnNamePlateShow(nameplate); end
-	self.plugin.HealthUpdate = function(_, nameplate) self:OnNamePlateHealthUpdate(nameplate); end
-	self.plugin.Hide = function(_, nameplate) self:OnNamePlateHide(nameplate); end
+
+	-- Helper that'll create a function forwarding notifications to a
+	-- local method on our mixin.
+	local CreateHandler = function(fn)
+		return function(_, ...)
+			return fn(self, ...);
+		end
+	end
+
+	self.plugin.Create = CreateHandler(self.OnNamePlateCreate);
+	self.plugin.Show = CreateHandler(self.OnNamePlateShow);
+	self.plugin.HealthUpdate = CreateHandler(self.OnNamePlateHealthUpdate);
+	self.plugin.HealthColourChange = CreateHandler(self.OnNamePlateHealthColourChange);
+	self.plugin.GlowColourChange = CreateHandler(self.OnNamePlateGlowColourChange);
+	self.plugin.GainedTarget = CreateHandler(self.OnNamePlateGainedTarget);
+	self.plugin.LostTarget = CreateHandler(self.OnNamePlateLostTarget);
+	self.plugin.Combat = CreateHandler(self.OnNamePlateCombat);
+	self.plugin.Hide = CreateHandler(self.OnNamePlateHide);
 
 	-- Keep track of initialized nameplates and integrations.
 	self.initNamePlates = {};
@@ -64,6 +78,11 @@ function KuiDecoratorMixin:EnableIntegrations()
 	self.plugin:RegisterMessage("Create");
 	self.plugin:RegisterMessage("Show");
 	self.plugin:RegisterMessage("HealthUpdate");
+	self.plugin:RegisterMessage("HealthColourChange");
+	self.plugin:RegisterMessage("GlowColourChange");
+	self.plugin:RegisterMessage("GainedTarget");
+	self.plugin:RegisterMessage("LostTarget");
+	self.plugin:RegisterMessage("Combat");
 	self.plugin:RegisterMessage("Hide");
 
 	-- Flag ourselves as initialized.
@@ -161,6 +180,35 @@ end
 function KuiDecoratorMixin:OnNamePlateHealthUpdate(nameplate)
 	-- Update the name portion of the health plate.
 	self:UpdateNamePlateName(nameplate);
+end
+
+-- Handler called when health/reaction color changes for a nameplate.
+function KuiDecoratorMixin:OnNamePlateHealthColourChange(nameplate)
+	-- This toggles name-only mode, so update it all.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when glow color changes for a nameplate.
+function KuiDecoratorMixin:OnNamePlateGlowColourChange(nameplate)
+	-- This toggles name-only mode, so update it all.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate's unit is targetted.
+function KuiDecoratorMixin:OnNamePlateGainedTarget(nameplate)
+	-- This toggles name-only mode, so update it all.
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when a nameplate's unit is no longer targetted.
+function KuiDecoratorMixin:OnNamePlateLostTarget(nameplate)
+	self:UpdateNamePlate(nameplate);
+end
+
+-- Handler called when combat status changes for a nameplate.
+function KuiDecoratorMixin:OnNamePlateCombat(nameplate)
+	-- This toggles name-only mode, so update it all.
+	self:UpdateNamePlate(nameplate);
 end
 
 -- Handler called when a nameplate frame is hidden.
