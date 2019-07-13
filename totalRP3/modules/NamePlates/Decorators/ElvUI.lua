@@ -161,7 +161,7 @@ end
 --
 -- luacheck: read globals _COLORS _FRAME _TAGS _VARS ColorGradient Hex
 
--- oUF Tag functions.
+ElvUIDecoratorMixin.Events["trp3np:name"] = "UNIT_NAME_UPDATE";
 ElvUIDecoratorMixin.Tags["trp3np:name"] = function(unit, realUnit)
 	local name = NamePlates.GetUnitCustomName(unit);
 	if name then
