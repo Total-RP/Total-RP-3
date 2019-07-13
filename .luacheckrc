@@ -123,6 +123,7 @@ read_globals = {
 
 	-- FrameXML frames
 	"GameTooltip",
+	"NamePlateDriverFrame",
 	"UIErrorsFrame",
 	"UIParent",
 	"UIPanelWindows",
