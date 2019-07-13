@@ -3958,6 +3958,7 @@ read_globals = {
 	"ComboPointShineFadeIn",
 	"ComboPointShineFadeOut",
 	"CompactUnitFrame_UpdateName",
+	"CompactUnitFrame_UpdateHealthColor",
 	"ComputePetBonus",
 	"ConfirmOrLeaveBattlefield",
 	"ConfirmOrLeaveLFGParty",
