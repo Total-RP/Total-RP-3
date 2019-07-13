@@ -1321,6 +1321,7 @@ The register also received a checkbox to only display profiles on which you wrot
 
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
+
 	NAMEPLATES_CONFIG_ENABLE_TITLE = "Enable nameplate customization",
 	NAMEPLATES_CONFIG_ENABLE_HELP = [[
 If selected, enable nameplate customization.
@@ -1328,34 +1329,72 @@ If selected, enable nameplate customization.
 Customization is only enabled if using any of the following nameplates:
 
 - |cffffffffBlizzard Nameplates|r
+- |cffffffffElvUI Nameplates|r
 - |cffffffffKui Nameplates|r
 
 If none of the above are in-use, customizations will be automatically disabled.]],
+
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE = "Customize only when in-character",
 	NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_HELP = "If selected, only customize nameplates while your current profile is marked as in-character.",
+
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If selected, profiles for newly met players will be downloaded automatically when their nameplate becomes visible.",
+
 	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE = "Show custom player names",
-	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP = "If selected, custom player names will be shown in preference to their character names.",
+	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP = [[
+If selected, custom player names will be shown in preference to their character names.
+
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:name]|r tag.]],
+
 	NAMEPLATES_CONFIG_SHOW_PET_NAMES_TITLE = "Show custom pet names",
-	NAMEPLATES_CONFIG_SHOW_PET_NAMES_HELP = "If selected, custom pet names will be shown in preference to their standard names.",
+	NAMEPLATES_CONFIG_SHOW_PET_NAMES_HELP = [[
+If selected, custom pet names will be shown in preference to their standard names.
+
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:name]|r tag.]],
+
 	NAMEPLATES_CONFIG_SHOW_COLORS_TITLE = "Show custom colors",
-	NAMEPLATES_CONFIG_SHOW_COLORS_HELP = "If selected, the names of players and pets will use the colors defined in their profiles.",
+	NAMEPLATES_CONFIG_SHOW_COLORS_HELP = [[
+If selected, the names of players and pets will use the colors defined in their profiles.
+
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:namecolor]|r tag.]],
+
 	NAMEPLATES_CONFIG_SHOW_ICONS_TITLE = "Show custom icons",
-	NAMEPLATES_CONFIG_SHOW_ICONS_HELP = "If selected, profile icons will be displayed next to the names of players and pets.",
+	NAMEPLATES_CONFIG_SHOW_ICONS_HELP = [[
+If selected, profile icons will be displayed next to the names of players and pets.
+
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:icon]|r tag.]],
+
 	NAMEPLATES_CONFIG_SHOW_TITLES_TITLE = "Show custom titles",
 	NAMEPLATES_CONFIG_SHOW_TITLES_HELP = [[
 If selected, profile titles will be displayed below the names of players and pets.
 
-This option only works in the following circumstances:
+|cffffffffBlizzard Nameplates:|r
+Title text will only display in name-only mode.
 
-- |cffffffffBlizzard Nameplates:|r Name-only mode must be enabled.
+|cffffffffKui Nameplates:|r
+Title text will only display in name-only mode.
 
-- |cffffffffKui Nameplates:|r Name-only mode must be enabled.]],
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:title]|r tag.]],
+
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
-	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = "If selected, out-of-character (OOC) indicators will be displayed next to player names.\n\nThis requires that custom player names be enabled.",
+	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = [[
+If selected, out-of-character (OOC) indicators will be displayed next to player names.
+
+The |cffffffffShow custom player names|r option must be enabled for this setting to work.
+
+|cffffffffElvUI Nameplates:|r
+Nameplates must be configured to use the |cff00ff00[trp3np:ooc]|r tag.]],
+
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "OOC indicator style",
-	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = "The style of out-of-character (OOC) indicators to display.\n\nThis requires that OOC indicators be enabled.",
+	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = [[
+The style of out-of-character (OOC) indicators to display.
+
+The |cffffffffShow OOC indicators|r option must be enabled for this setting to work.]],
 };
 
 -- Use Ellyb to generate the Localization system
