@@ -41,6 +41,19 @@ function BlizzardDecoratorMixin:InitIntegrations()
 		return;
 	end
 
+	-- Hook event notifications on the base UI's NamePlateDriverFrame.
+	hooksecurefunc(NamePlateDriverFrame, "OnNamePlateCreated", function(_, nameplate)
+		self:OnNamePlateCreated(nameplate);
+	end);
+
+	hooksecurefunc(NamePlateDriverFrame, "OnNamePlateAdded", function(_, unitToken)
+		self:OnNamePlateAdded(unitToken);
+	end);
+
+	hooksecurefunc(NamePlateDriverFrame, "OnNamePlateRemoved", function(_, unitToken)
+		self:OnNamePlateRemoved(unitToken);
+	end);
+
 	-- Hook updates for parts of unitframes so we can replace things.
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(frame)
 		return self:OnUnitFrameNameUpdated(frame);
@@ -108,10 +121,7 @@ end
 
 -- Called when a nameplate is initially created. This is used to perform
 -- one-time setup logic for each plate.
---[[override]] function BlizzardDecoratorMixin:OnNamePlateCreated(nameplate)
-	-- Dispatch to base mixins.
-	DecoratorBaseMixin.OnNamePlateCreated(self, nameplate);
-
+function BlizzardDecoratorMixin:OnNamePlateCreated(nameplate)
 	-- Initialize the nameplate only if we're customizing things.
 	if self:IsCustomizationEnabled() then
 		self:InitNamePlate(nameplate);
@@ -120,23 +130,17 @@ end
 
 -- Called when a nameplate unit token is attached to an allocated nameplate
 -- frame.
---[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitAdded(unitToken)
-	-- Dispatch to base mixins.
-	DecoratorBaseMixin.OnNamePlateUnitAdded(self, unitToken);
-
+function BlizzardDecoratorMixin:OnNamePlateAdded(unitToken)
 	-- Update the nameplate immediately with customizations.
 	self:UpdateNamePlateForUnit(unitToken);
 end
 
 -- Called when a nameplate unit token is removed from an allocated nameplate
 -- frame. This is used to perform teardown logic.
---[[[override]] function BlizzardDecoratorMixin:OnNamePlateUnitRemoved(unitToken)
-	-- Dispatch to base mixins.
-	DecoratorBaseMixin.OnNamePlateUnitRemoved(self, unitToken);
-
+function BlizzardDecoratorMixin:OnNamePlateRemoved(unitToken)
 	-- Hide the custom widgets.
 	local nameplate = self:GetNamePlateForUnit(unitToken);
-	if self:IsNamePlateCustomizable(nameplate) then
+	if nameplate and self:IsNamePlateCustomizable(nameplate) then
 		nameplate.TRP3_Icon:Hide();
 		nameplate.TRP3_Title:Hide();
 	end

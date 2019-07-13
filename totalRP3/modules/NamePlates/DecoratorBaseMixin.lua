@@ -45,24 +45,6 @@ function DecoratorBaseMixin:OnCustomizationDisabled()
 	-- Override this in your implementation to disable customizations.
 end
 
--- Called when a nameplate is initially created. This can be used to
--- perform one-time setup logic for each plate.
-function DecoratorBaseMixin:OnNamePlateCreated()
-	-- Override this in your implementation if one-time logic is desired.
-end
-
--- Called when a nameplate unit token is attached to an allocated nameplate
--- frame. This can be used to perform setup logic.
-function DecoratorBaseMixin:OnNamePlateUnitAdded()
-	-- Override this in your implementation if setup logic is desired.
-end
-
--- Called when a nameplate unit token is removed from an allocated nameplate
--- frame. This can be used to perform teardown logic.
-function DecoratorBaseMixin:OnNamePlateUnitRemoved()
-	-- Override this in your implementation if teardown logic is desired.
-end
-
 -- Returns true if customizations are enabled.
 function DecoratorBaseMixin:IsCustomizationEnabled()
 	return NamePlates.IsCustomizationEnabled();
