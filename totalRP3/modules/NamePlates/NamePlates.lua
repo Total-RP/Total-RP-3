@@ -66,10 +66,10 @@ end
 	local aceAddon = LibStub:GetLibrary("AceAddon-3.0", true);
 	local addonElvUI = aceAddon and aceAddon:GetAddon("ElvUI");
 	if addonElvUI then
-		local module = addonElvUI:GetModule("NamePlates");
-		-- FIXME: This incorrectly (?) returns true on startup even if
-		--        disabled.
-		if module and module:IsEnabled() then
+		-- Helpfully, ElvUI's nameplate module may not be initialized at
+		-- this point so the only option we realistically have is this.
+		local private = addonElvUI.private;
+		if private and private.nameplates and private.nameplates.enable then
 			return NamePlates.ElvUIDecoratorMixin;
 		end
 	end
