@@ -63,7 +63,7 @@ end
 --[[private]] function NamePlates.ShouldRequestUnitProfile(unitToken)
 	-- Don't allow requests if customizations are turned off, or if
 	-- actively querying for profiles is itself disabled.
-	if not NamePlates.ShouldCustomizeNamePlates()
+	if not NamePlates.IsCustomizationEnabled()
 	or not NamePlates.ShouldActivelyQueryProfiles() then
 		return false;
 	end
