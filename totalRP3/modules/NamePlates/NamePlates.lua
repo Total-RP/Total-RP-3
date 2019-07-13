@@ -109,6 +109,19 @@ end
 	end
 end
 
+-- Handler triggered when a unit's name updates.
+--[[private]] function NamePlates.OnUnitNameUpdate(unitToken)
+	-- Reject any non-nameplate units.
+	if not strfind(unitToken, "nameplate", 1, true) then
+		return;
+	end
+
+	-- Issue a request for the profile.
+	if NamePlates.ShouldRequestUnitProfile(unitToken) then
+		NamePlates.RequestUnitProfile(unitToken);
+	end
+end
+
 -- Handler triggered when a configuration setting is changed.
 --[[private]] function NamePlates.OnConfigSettingChanged(key, _)
 	-- Only nameplate setting changes and color contrast updates, please.
@@ -187,6 +200,7 @@ end
 	eventFrame:RegisterEvent("NAME_PLATE_CREATED");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED");
+	eventFrame:RegisterEvent("UNIT_NAME_UPDATE");
 	eventFrame:SetScript("OnEvent", function(_, event, ...)
 		if event == "NAME_PLATE_UNIT_ADDED" then
 			NamePlates.OnNamePlateUnitAdded(...);
@@ -194,6 +208,8 @@ end
 			NamePlates.OnNamePlateUnitRemoved(...);
 		elseif event == "NAME_PLATE_CREATED" then
 			NamePlates.OnNamePlateCreated(...);
+		elseif event == "UNIT_NAME_UPDATE" then
+			NamePlates.OnUnitNameUpdate(...);
 		end
 	end);
 
