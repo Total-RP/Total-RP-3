@@ -55,11 +55,27 @@ end
 
 -- Returns the mixin that should be used to provide a nameplate display.
 --[[private]] function NamePlates.GetSuggestedNamePlateDisplayDecorator()
-	-- Add any supported addons here. The Blizzard one should be a last
-	-- resort option.
+	-- Add any supported addons here.
 	if IsAddOnLoaded("Kui_Nameplates") then
 		return NamePlates.KuiDecoratorMixin;
-	elseif IsAddOnLoaded("Blizzard_NamePlates") then
+	end
+
+	-- ElvUI has a separately configurable module for its nameplates;
+	-- users sometimes opt to use another addon instead, so we'll check
+	-- for ElvUI near the end.
+	local aceAddon = LibStub:GetLibrary("AceAddon-3.0", true);
+	local addonElvUI = aceAddon and aceAddon:GetAddon("ElvUI");
+	if addonElvUI then
+		local module = addonElvUI:GetModule("NamePlates");
+		-- FIXME: This incorrectly (?) returns true on startup even if
+		--        disabled.
+		if module and module:IsEnabled() then
+			return NamePlates.ElvUIDecoratorMixin;
+		end
+	end
+
+	-- Last resort; Blizzard defaults. Don't put addons below here.
+	if IsAddOnLoaded("Blizzard_NamePlates") then
 		return NamePlates.BlizzardDecoratorMixin;
 	end
 

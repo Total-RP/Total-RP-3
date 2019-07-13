@@ -28,5 +28,6 @@
     <Script file="DecoratorBaseMixin.lua"/>
 
     <Script file="Decorators\Blizzard.lua"/>
+    <Script file="Decorators\ElvUI.lua"/>
     <Script file="Decorators\Kui.lua"/>
 </Ui>

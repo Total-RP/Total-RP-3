@@ -1317,6 +1317,8 @@ The register also received a checkbox to only display profiles on which you wrot
 
 	NAMEPLATES_KUI_INVALID_LAYOUT = "Nameplate customizations only support the use of the |cffff9900Kui Nameplates: Core|r layout, and will be |cffff0000disabled|r for this session.",
 
+	NAMEPLATES_ELVUI_INVALID_FRAME_FOR_TAG = "You have configured the |cffff9900%1$s|r frame in ElvUI to use a Total RP 3 nameplate tag. This is |cffff0000not|r supported, and will not update dynamically when new profile data is received.",
+
 	NAMEPLATES_CONFIG_MENU_TEXT = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_ENABLE_TITLE = "Enable nameplate customization",

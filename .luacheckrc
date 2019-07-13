@@ -33,6 +33,9 @@ globals = {
 	"SlashCmdList",
 	"StaticPopupDialogs",
 
+	-- AddOn integrations
+	"ElvUI", -- Adding oUF tags.
+
 	-- Saved variables
 	"TRP3_Presets",
 	"TRP3_Register",
@@ -70,8 +73,8 @@ read_globals = {
 	"TipTac",
 	"LibStub",
 	"TinyTooltip",
-	"ElvUI",
 	"KuiNameplates",
+	"KuiNameplatesCore",
 
 	-- FrameXML misc
 	"bit",
