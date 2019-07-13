@@ -45,8 +45,7 @@ end
 -- for the current character on initialization of this module, we won't
 -- set up customizations.
 NamePlates.CONFLICTING_ADDONS = {
-	"ElvUI",  -- Untested.
-	"Plater", -- Untested.
+	-- "AddOn_Name", -- Reason why it's disabled.
 };
 
 -- Page ID for the module configuration page.
