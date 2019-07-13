@@ -24,8 +24,7 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 -- Mapping of register IDs ("unit IDs") to request cooldowns.
 NamePlates.requestCooldowns = {};
 
--- Requests a profile for the given unit token. This function bypasses the
--- queue and explicitly forces a request be sent out.
+-- Requests a profile for the given unit token.
 --
 -- Returns true if a request was issued, or false if no request was issued.
 --[[private]] function NamePlates.RequestUnitProfile(unitToken)
@@ -53,7 +52,7 @@ NamePlates.requestCooldowns = {};
 	end
 
 	-- Apply a default cooldown for future requests to this person.
-	NamePlates.SetUnitRequestCooldown(unitToken, -1);
+	NamePlates.SetUnitRequestCooldown(unitToken, NamePlates.REQUEST_COOLDOWN);
 	return true;
 end
 
@@ -110,15 +109,10 @@ end
 
 -- Sets the cooldown for future requests for a given unit token.
 --
--- If the given expiry value is 0 or nil, the cooldown is unset. If -1,
--- a sensible default is chosen.
+-- If the given expiry value is 0 or nil, the cooldown is unset.
 --[[private]] function NamePlates.SetUnitRequestCooldown(unitToken, expiry)
-	-- Handle special expiry values.
-	if expiry == -1 then
-		-- This value means we should apply a sensible automatic cooldown.
-		expiry = GetTime() + NamePlates.DEFAULT_REQUEST_COOLDOWN;
-	elseif expiry == 0 then
-		-- This value means unset the cooldown.
+	-- Zero expiry should mean unset the cooldown.
+	if expiry == 0 then
 		expiry = nil;
 	end
 

@@ -100,7 +100,7 @@ NamePlates.PROFILE_TYPE_PET = TRP3_UI.misc.TYPE_PET;
 -- This should be higher than the cooldown imposed by protocols because
 -- nameplates are generally more numerous than tooltips or the number of
 -- people you can actively mouse-over.
-NamePlates.DEFAULT_REQUEST_COOLDOWN = 300;
+NamePlates.REQUEST_COOLDOWN = 300;
 
 -- OOC indicator style tokens.
 NamePlates.OOC_STYLE_ICON = "ICON";
