@@ -56,6 +56,24 @@ NamePlates.requestCooldowns = {};
 	return true;
 end
 
+-- Attempts to issue requests for all displayed nameplates that have units
+-- assigned to them.
+--
+-- Requests will only be issued for units that require them, as determined
+-- by the return of ShouldRequestUnitProfile.
+--[[private]] function NamePlates.RequestAllUnitProfiles()
+	-- Go over the nameplates and request ones that have units.
+	for _, nameplate in pairs(C_NamePlate.GetNamePlates()) do
+		local unitToken = nameplate.namePlateUnitToken;
+
+		if NamePlates.IsUnitValid(unitToken)
+		and NamePlates.ShouldRequestUnitProfile(unitToken) then
+			-- Issue the request.
+			NamePlates.RequestUnitProfile(unitToken);
+		end
+	end
+end
+
 -- Returns true if a request for the given unit token can be issued.
 --
 -- This will return false if requests are disabled, or if there is already

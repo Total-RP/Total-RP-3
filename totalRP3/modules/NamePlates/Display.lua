@@ -324,4 +324,7 @@ end
 			decorator:OnCustomizationDisabled();
 		end
 	end
+
+	-- Request profiles for all active nameplates.
+	NamePlates.RequestAllUnitProfiles();
 end
