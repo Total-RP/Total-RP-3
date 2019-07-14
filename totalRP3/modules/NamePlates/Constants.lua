@@ -110,7 +110,7 @@ NamePlates.OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
 NamePlates.OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
 -- Maximum number of characters for displayed titles before cropping.
-NamePlates.MAX_TITLE_CHARS = 40;
+NamePlates.MAX_TITLE_CHARS = 50;
 
 -- Common color to use for title text in nameplates. Displays need not use
 -- this if another color is available; think of this as a default.
