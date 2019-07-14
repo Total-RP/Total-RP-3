@@ -64,7 +64,7 @@ end
 	-- users sometimes opt to use another addon instead, so we'll check
 	-- for ElvUI near the end.
 	local aceAddon = LibStub:GetLibrary("AceAddon-3.0", true);
-	local addonElvUI = aceAddon and aceAddon:GetAddon("ElvUI");
+	local addonElvUI = aceAddon and aceAddon:GetAddon("ElvUI", true);
 	if addonElvUI then
 		-- Helpfully, ElvUI's nameplate module may not be initialized at
 		-- this point so the only option we realistically have is this.
