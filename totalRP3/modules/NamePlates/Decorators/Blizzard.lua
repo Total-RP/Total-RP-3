@@ -264,12 +264,19 @@ end
 -- Updates the icon display on a nameplate.
 function BlizzardDecoratorMixin:UpdateNamePlateIcon(nameplate)
 	-- Check if we can customize this frame.
+	local iconWidget = nameplate.TRP3_Icon;
 	if not self:IsNamePlateCustomizable(nameplate) then
 		return;
 	end
 
+	-- Hide icon if the name isn't showing for whatever reason.
+	local unitFrame = nameplate.UnitFrame;
+	if not unitFrame.name:IsShown() then
+		iconWidget:Hide();
+		return;
+	end
+
 	-- Get the icon. If there's no icon, we'll hide it entirely.
-	local iconWidget = nameplate.TRP3_Icon;
 	local iconPath = self:GetUnitCustomIcon(nameplate.namePlateUnitToken);
 	if not iconPath or iconPath == "" then
 		iconWidget:Hide();
@@ -290,6 +297,13 @@ function BlizzardDecoratorMixin:UpdateNamePlateTitle(nameplate)
 	-- since the bar overlaps the title.
 	local titleWidget = nameplate.TRP3_Title;
 	if not self:IsNamePlateInNameOnlyMode(nameplate) then
+		titleWidget:Hide();
+		return;
+	end
+
+	-- Hide title if the name isn't showing for whatever reason.
+	local unitFrame = nameplate.UnitFrame;
+	if not unitFrame.name:IsShown() then
 		titleWidget:Hide();
 		return;
 	end
