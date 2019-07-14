@@ -16,6 +16,7 @@ local _, TRP3_API = ...;
 
 -- TRP3_API imports.
 local TRP3_Companions = TRP3_API.companions;
+local TRP3_Globals = TRP3_API.globals;
 local TRP3_UI = TRP3_API.ui;
 local TRP3_Utils = TRP3_API.utils;
 
@@ -82,13 +83,19 @@ end
 --[[private]] function NamePlates.GetUnitPetProfile(unitToken)
 	-- Grab the internal ID for this companion based off the unit token.
 	local companionType = TRP3_UI.misc.TYPE_PET;
-	local fullID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
+	local fullID, ownerID = TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
 	if not fullID then
 		return nil;
 	end
 
 	-- Them from that we can obtain the profile.
-	local profile = TRP3_Companions.register.getCompanionProfile(fullID);
+	local profile;
+	if ownerID == TRP3_Globals.player_id then
+		profile = TRP3_Companions.player.getCompanionProfile(fullID);
+	else
+		profile = TRP3_Companions.register.getCompanionProfile(fullID);
+	end
+
 	if not profile then
 		return nil;
 	end
