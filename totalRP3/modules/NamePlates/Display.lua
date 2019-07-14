@@ -38,7 +38,7 @@ function NamePlates.IsCustomizationEnabled()
 	end
 
 	-- Disable customizations if we need to be in-character.
-	if NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter() then
+	if NamePlates.ShouldDisableCustomizationOutOfCharacter() then
 		local currentUser = Player.GetCurrentUser();
 		if not currentUser:IsInCharacter() then
 			return false;

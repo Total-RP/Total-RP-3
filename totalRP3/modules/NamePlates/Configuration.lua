@@ -28,13 +28,10 @@ function NamePlates.ShouldCustomizeNamePlates()
 	return TRP3_Config.getValue(NamePlates.CONFIG_ENABLE);
 end
 
--- Returns true if the user has elected to customize nameplates, but only
--- while in-character.
---
--- If this returns false, customizations should be disabled when not
--- in-character.
-function NamePlates.ShouldCustomizeNamePlatesOnlyInCharacter()
-	return TRP3_Config.getValue(NamePlates.CONFIG_ENABLE_ONLY_IN_CHARACTER);
+-- Returns true if the user has elected to disable customizations
+-- when out-of-character.
+function NamePlates.ShouldDisableCustomizationOutOfCharacter()
+	return TRP3_Config.getValue(NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER);
 end
 
 -- Returns true if the user has elected to request profiles upon seeing a
@@ -106,9 +103,9 @@ end
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = L.NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_TITLE,
-				help = L.NAMEPLATES_CONFIG_ENABLE_ONLY_IN_CHARACTER_HELP,
-				configKey = NamePlates.CONFIG_ENABLE_ONLY_IN_CHARACTER,
+				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_TITLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
+				configKey = NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER,
 				dependentOnOptions = {
 					NamePlates.CONFIG_ENABLE,
 				},
