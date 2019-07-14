@@ -144,6 +144,12 @@ end
 -- Prunes the table of cooldowns for requests, removing all expired request
 -- cooldowns.
 --[[private]] function NamePlates.PruneUnitRequestCooldowns()
+	-- This table can get fairly large, so we'll not do any pruning if
+	-- the player is in combat.
+	if InCombatLockdown() then
+		return;
+	end
+
 	-- Search the state for expired cooldowns and unset them,
 	for registerID, expiry in pairs(NamePlates.requestCooldowns) do
 		if GetTime() >= expiry then
