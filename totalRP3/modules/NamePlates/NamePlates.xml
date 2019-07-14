@@ -15,19 +15,19 @@
 	limitations under the License.
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 
-    <Script file="NamePlates.lua"/>
-    <Script file="Constants.lua"/>
-    <Script file="Configuration.lua"/>
-    <Script file="Display.lua"/>
-    <Script file="Unit.lua"/>
-    <Script file="Request.lua"/>
+	<Script file="NamePlates.lua"/>
+	<Script file="Constants.lua"/>
+	<Script file="Configuration.lua"/>
+	<Script file="Display.lua"/>
+	<Script file="Unit.lua"/>
+	<Script file="Request.lua"/>
 
-    <Script file="DecoratorBaseMixin.lua"/>
+	<Script file="DecoratorBaseMixin.lua"/>
 
-    <Script file="Decorators\Blizzard.lua"/>
-    <Script file="Decorators\ElvUI.lua"/>
-    <Script file="Decorators\Kui.lua"/>
+	<Script file="Decorators\Blizzard.lua"/>
+	<Script file="Decorators\ElvUI.lua"/>
+	<Script file="Decorators\Kui.lua"/>
 </Ui>
