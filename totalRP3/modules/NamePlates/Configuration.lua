@@ -135,6 +135,10 @@ end
 				},
 			},
 			{
+				inherit = "TRP3_ConfigH1",
+				title = L.NAMEPLATES_CONFIG_DISPLAY_SETTINGS_TITLE,
+			},
+			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE,
 				help = L.NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP,

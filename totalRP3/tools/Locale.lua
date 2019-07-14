@@ -1343,6 +1343,8 @@ If none of the above are in-use, customizations will be automatically disabled.]
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If selected, profiles for newly met players will be downloaded automatically when their nameplate becomes visible.",
 
+	NAMEPLATES_CONFIG_DISPLAY_SETTINGS_TITLE = "Display settings",
+
 	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_TITLE = "Show custom player names",
 	NAMEPLATES_CONFIG_SHOW_PLAYER_NAMES_HELP = [[
 If selected, custom player names will be shown in preference to their character names.
@@ -1386,7 +1388,7 @@ Nameplates must be configured to use the |cff00ff00[trp3np:title]|r tag.]],
 
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_TITLE = "Show OOC indicators",
 	NAMEPLATES_CONFIG_SHOW_OOC_INDICATORS_HELP = [[
-If selected, out-of-character (OOC) indicators will be displayed next to player names.
+If selected, out of character (OOC) indicators will be displayed next to player names.
 
 The |cffffffffShow custom player names|r option must be enabled for this setting to work.
 
@@ -1395,7 +1397,7 @@ Nameplates must be configured to use the |cff00ff00[trp3np:ooc]|r tag.]],
 
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_TITLE = "OOC indicator style",
 	NAMEPLATES_CONFIG_OOC_INDICATOR_STYLE_HELP = [[
-The style of out-of-character (OOC) indicators to display.
+The style of out of character (OOC) indicators to display.
 
 The |cffffffffShow OOC indicators|r option must be enabled for this setting to work.]],
 };
