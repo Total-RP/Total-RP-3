@@ -1337,6 +1337,9 @@ If none of the above are in-use, customizations will be automatically disabled.]
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_TITLE = "Disable when out of character",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If selected, nameplate customizations will be disabled when your roleplay status is set to out of character.",
 
+	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_TITLE = "|cffff9900[EXPERIMENTAL]|r Disable when in combat",
+	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If selected, nameplate customizations will be disabled when you are in combat.",
+
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_TITLE = "Automatically query new profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If selected, profiles for newly met players will be downloaded automatically when their nameplate becomes visible.",
 

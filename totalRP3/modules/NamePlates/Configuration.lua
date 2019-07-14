@@ -34,6 +34,12 @@ function NamePlates.ShouldDisableCustomizationOutOfCharacter()
 	return TRP3_Config.getValue(NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER);
 end
 
+-- Returns true if the user has elected to disable customizations when in
+-- combat.
+function NamePlates.ShouldDisableCustomizationInCombat()
+	return TRP3_Config.getValue(NamePlates.CONFIG_DISABLE_IN_COMBAT);
+end
+
 -- Returns true if the user has elected to request profiles upon seeing a
 -- nameplate.
 function NamePlates.ShouldActivelyQueryProfiles()
@@ -106,6 +112,15 @@ end
 				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_TITLE,
 				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
 				configKey = NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER,
+				dependentOnOptions = {
+					NamePlates.CONFIG_ENABLE,
+				},
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_TITLE,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP,
+				configKey = NamePlates.CONFIG_DISABLE_IN_COMBAT,
 				dependentOnOptions = {
 					NamePlates.CONFIG_ENABLE,
 				},

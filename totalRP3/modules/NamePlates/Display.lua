@@ -27,6 +27,11 @@ local ColorManager = TRP3_API.Ellyb.ColorManager;
 -- used to trigger some notifications on decorators.
 NamePlates.shouldCustomize = nil;
 
+-- Last known state of our player combat status. We can't trust
+-- InCombatLockdown for tests normally because its state only changes *after*
+-- the PLAYER_REGEN_* events fire.
+NamePlates.inCombat = InCombatLockdown();
+
 -- Returns true if customization of nameplates is globally enabled.
 --
 -- Returns false if disabled, or if enabled while only in-character and the
@@ -35,6 +40,13 @@ function NamePlates.IsCustomizationEnabled()
 	-- If customizations are globally disabled, that's a no.
 	if not NamePlates.ShouldCustomizeNamePlates() then
 		return false;
+	end
+
+	-- Disable customizations if we need to be out of combat.
+	if NamePlates.ShouldDisableCustomizationInCombat() then
+		if NamePlates.IsInCombat() then
+			return false;
+		end
 	end
 
 	-- Disable customizations if we need to be in-character.
@@ -325,6 +337,18 @@ end
 		end
 	end
 
-	-- Request profiles for all active nameplates.
+	-- Request profiles for all active nameplates and then update them.
 	NamePlates.RequestAllUnitProfiles();
+	NamePlates.UpdateAllNamePlates();
+end
+
+-- Marks the player as being in or out of combat according to the given
+-- boolean value.
+--[[private]] function NamePlates.SetInCombat(inCombat)
+	NamePlates.inCombat = not not inCombat;
+end
+
+-- Returns true if the player is in combat.
+--[[private]] function NamePlates.IsInCombat()
+	return NamePlates.inCombat;
 end

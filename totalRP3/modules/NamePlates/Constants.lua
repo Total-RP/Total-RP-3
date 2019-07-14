@@ -55,6 +55,8 @@ NamePlates.CONFIG_PAGE_ID = "main_config_uuu_nameplates";
 NamePlates.CONFIG_ENABLE = "nameplates_enable";
 -- Controls if customizations are disabled when out of character.
 NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER = "nameplates_disable_out_of_character";
+-- Controls if customizations are disabled when in combat.
+NamePlates.CONFIG_DISABLE_IN_COMBAT = "nameplates_disable_in_combat";
 -- Controls if requests should be sent out upon seeing new player nameplates.
 NamePlates.CONFIG_ACTIVE_QUERY = "nameplates_active_query";
 -- Controls if custom player names should be shown.
@@ -78,6 +80,7 @@ NamePlates.CONFIG_OOC_INDICATOR_STYLE = "nameplates_ooc_indicator_style";
 NamePlates.DEFAULT_CONFIG = {
 	[NamePlates.CONFIG_ENABLE]                   = true,
 	[NamePlates.CONFIG_DISABLE_OUT_OF_CHARACTER] = false,
+	[NamePlates.CONFIG_DISABLE_IN_COMBAT]        = false,
 	[NamePlates.CONFIG_ACTIVE_QUERY]             = true,
 	[NamePlates.CONFIG_SHOW_PLAYER_NAMES]        = true,
 	[NamePlates.CONFIG_SHOW_PET_NAMES]           = true,

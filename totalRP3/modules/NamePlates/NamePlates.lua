@@ -101,6 +101,20 @@ end
 	end
 end
 
+-- Handler triggered when the player leaves combat.
+--[[private]] function NamePlates.OnPlayerRegenEnabled()
+	-- Update our customization state for all nameplates.
+	NamePlates.SetInCombat(false);
+	NamePlates.UpdateCustomizationState();
+end
+
+-- Handler triggered when the player enters combat.
+--[[private]] function NamePlates.OnPlayerRegenDisabled()
+	-- Update our customization state for all nameplates.
+	NamePlates.SetInCombat(true);
+	NamePlates.UpdateCustomizationState();
+end
+
 -- Handler triggered when a unit's name updates.
 --[[private]] function NamePlates.OnUnitNameUpdate(unitToken)
 	-- Reject any non-nameplate units.
@@ -122,7 +136,6 @@ end
 	end
 
 	NamePlates.UpdateCustomizationState();
-	NamePlates.UpdateAllNamePlates();
 end
 
 -- Handler triggered when the player mouses over an in-game unit.
@@ -190,10 +203,17 @@ end
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");
 	eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED");
+	eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+	eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
 	eventFrame:RegisterEvent("UNIT_NAME_UPDATE");
+
 	eventFrame:SetScript("OnEvent", function(_, event, ...)
 		if event == "NAME_PLATE_UNIT_ADDED" then
 			NamePlates.OnNamePlateUnitAdded(...);
+		elseif event == "PLAYER_REGEN_ENABLED" then
+			NamePlates.OnPlayerRegenEnabled(...);
+		elseif event == "PLAYER_REGEN_DISABLED" then
+			NamePlates.OnPlayerRegenDisabled(...);
 		elseif event == "UNIT_NAME_UPDATE" then
 			NamePlates.OnUnitNameUpdate(...);
 		end
