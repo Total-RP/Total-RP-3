@@ -35,7 +35,7 @@ function NamePlates.UpdateNamePlateForUnit(unitToken)
 	end
 
 	-- Grab the decorator if one exists and trigger the update.
-	local decorator = NamePlates.GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetCurrentDecorator();
 	if not decorator then
 		return false;
 	end
@@ -45,7 +45,7 @@ end
 
 -- Updates all nameplates managed by this module.
 function NamePlates.UpdateAllNamePlates()
-	local decorator = NamePlates.GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetCurrentDecorator();
 	if not decorator then
 		return;
 	end
@@ -54,7 +54,7 @@ function NamePlates.UpdateAllNamePlates()
 end
 
 -- Returns the mixin that should be used to provide a nameplate display.
---[[private]] function NamePlates.GetSuggestedNamePlateDisplayDecorator()
+--[[private]] function NamePlates.GetSuggestedDecorator()
 	-- Add any supported addons here.
 	if IsAddOnLoaded("Kui_Nameplates") then
 		return NamePlates.KuiDecoratorMixin;
@@ -84,12 +84,12 @@ end
 end
 
 -- Returns the decorator in use for the nameplate display.
---[[private]] function NamePlates.GetNamePlateDisplayDecorator()
+--[[private]] function NamePlates.GetCurrentDecorator()
 	return NamePlates.decorator;
 end
 
 -- Sets the decorator to use for the nameplate display.
---[[private]] function NamePlates.SetNamePlateDisplayDecorator(decorator)
+--[[private]] function NamePlates.SetCurrentDecorator(decorator)
 	NamePlates.decorator = decorator;
 end
 
@@ -191,14 +191,14 @@ end
 -- fully starting the module, registering events and hooks as needed.
 --[[private]] function NamePlates.OnModuleStart()
 	-- Activate an appropriate decorator based on the environment.
-	local decoratorMixin = NamePlates.GetSuggestedNamePlateDisplayDecorator();
+	local decoratorMixin = NamePlates.GetSuggestedDecorator();
 	if not decoratorMixin then
 		return false, L.NAMEPLATES_ERR_NO_VALID_PROVIDER;
 	end
 
 	-- Initialize and activate it.
 	local decorator = CreateAndInitFromMixin(decoratorMixin);
-	NamePlates.SetNamePlateDisplayDecorator(decorator);
+	NamePlates.SetCurrentDecorator(decorator);
 
 	-- Register events and script handlers.
 	local eventFrame = CreateFrame("Frame");

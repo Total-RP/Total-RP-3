@@ -328,7 +328,7 @@ end
 	-- Store the updated state and notify the decorator, if installed.
 	NamePlates.shouldCustomize = state;
 
-	local decorator = NamePlates.GetNamePlateDisplayDecorator();
+	local decorator = NamePlates.GetCurrentDecorator();
 	if decorator then
 		if state then
 			decorator:OnCustomizationEnabled();
