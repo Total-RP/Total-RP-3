@@ -118,7 +118,8 @@ NamePlates.OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 -- Maximum number of characters for displayed strings before cropping.
 NamePlates.MAX_TITLE_CHARS = 45;
 NamePlates.MAX_NAME_CHARS = 45;
-NamePlates.MAX_GLANCE_TITLE_CHARS = 30;
+NamePlates.MAX_GLANCE_TITLE_CHARS = 45;
+NamePlates.MAX_GLANCE_TEXT_CHARS = 280;
 
 -- Common color to use for title text in nameplates. Displays need not use
 -- this if another color is available; think of this as a default.

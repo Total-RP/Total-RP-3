@@ -29,6 +29,7 @@ local ColorManager = TRP3_API.Ellyb.ColorManager;
 local DEFAULT_GLANCE_ICON = NamePlates.DEFAULT_GLANCE_ICON;
 local DEFAULT_GLANCE_TEXT = NamePlates.DEFAULT_GLANCE_TEXT;
 local ICON_PATH = NamePlates.ICON_PATH;
+local MAX_GLANCE_TEXT_CHARS = NamePlates.MAX_GLANCE_TEXT_CHARS;
 local MAX_GLANCE_TITLE_CHARS = NamePlates.MAX_GLANCE_TITLE_CHARS;
 local MAX_NAME_CHARS = NamePlates.MAX_NAME_CHARS;
 local MAX_NUM_GLANCES = NamePlates.MAX_NUM_GLANCES;
@@ -109,15 +110,17 @@ end
 
 	local title = glance.TI or DEFAULT_GLANCE_TEXT;
 	local icon = glance.IC or DEFAULT_GLANCE_ICON;
+	local text = glance.TX or DEFAULT_GLANCE_TEXT;
 
-	-- Crop the title text and prefix it with the icon.
-	local titleText = TRP3_Utils.str.crop(title, MAX_GLANCE_TITLE_CHARS);
-	local iconMarkup = CreateTextureMarkup(ICON_PATH .. icon, 64, 64, 16, 16, 0, 1, 0, 1);
+	-- Crop the texts and generate the string for the icon.
+	title = TRP3_Utils.str.crop(title, MAX_GLANCE_TITLE_CHARS);
+	icon = CreateTextureMarkup(ICON_PATH .. icon, 64, 64, 16, 16, 0, 1, 0, 1);
+	text = TRP3_Utils.str.crop(text, MAX_GLANCE_TEXT_CHARS);
 
 	-- Display the tooltip with hints on the user can do.
 	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	TRP3_MainTooltip:AddLine(strjoin(" ", iconMarkup, titleText));
-	TRP3_MainTooltip:AddLine(glance.TX or DEFAULT_GLANCE_TEXT, 1, 1, 1, true);
+	TRP3_MainTooltip:AddLine(strjoin(" ", icon, title));
+	TRP3_MainTooltip:AddLine(text, 1, 1, 1, true);
 	TRP3_MainTooltip:AddLine(" ");
 	TRP3_MainTooltip:AddLine("|cffffff00Left-click:|r Show glance", 1, 1, 1);
 	TRP3_MainTooltip:AddLine("|cffffff00Right-click:|r Open profile", 1, 1, 1);
