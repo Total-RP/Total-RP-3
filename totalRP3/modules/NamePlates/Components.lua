@@ -85,6 +85,7 @@ end
 		end
 
 		TRP3_NamePlateGlanceDisplayFrame:SetGlance(self.glance, self.owningUnit);
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	elseif button == "RightButton" then
 		-- Open the profile.
 		local registerID = NamePlates.GetRegisterIDForUnit(self.owningUnit);
@@ -97,6 +98,7 @@ end
 
 		TRP3_Navigation.openMainFrame();
 		TRP3_Register.openPageByUnitID(registerID);
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	end
 end
 
