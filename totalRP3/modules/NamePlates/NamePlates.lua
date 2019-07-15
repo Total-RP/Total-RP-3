@@ -136,6 +136,7 @@ end
 	end
 
 	NamePlates.UpdateCustomizationState();
+	NamePlates.UpdateAllNamePlates();
 end
 
 -- Handler triggered when the player mouses over an in-game unit.
