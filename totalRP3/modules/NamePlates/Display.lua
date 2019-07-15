@@ -23,6 +23,14 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 local Color = TRP3_API.Ellyb.Color;
 local ColorManager = TRP3_API.Ellyb.ColorManager;
 
+-- NamePlates module imports.
+local OOC_ICON_INDICATOR = NamePlates.OOC_ICON_INDICATOR;
+local OOC_STYLE_ICON = NamePlates.OOC_STYLE_ICON;
+local OOC_STYLE_TEXT = NamePlates.OOC_STYLE_TEXT;
+local OOC_TEXT_INDICATOR = NamePlates.OOC_TEXT_INDICATOR;
+local PROFILE_TYPE_CHARACTER = NamePlates.PROFILE_TYPE_CHARACTER;
+local PROFILE_TYPE_PET = NamePlates.PROFILE_TYPE_PET;
+
 -- Last known state of whether or not we're customizing plates. This is
 -- used to trigger some notifications on decorators.
 NamePlates.shouldCustomize = nil;
@@ -89,21 +97,21 @@ function NamePlates.GetUnitCustomName(unitToken)
 
 	-- Dispatch based on the profile type.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+	if profileType == PROFILE_TYPE_CHARACTER then
 		if not NamePlates.ShouldShowCustomPlayerNames() then
 			-- Not displaying custom player names.
 			return nil;
 		end
 
 		-- Get the profile for the player and with it, their name.
-		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-		if not profile then
+		local player = NamePlates.GetUnitCharacterProfile(unitToken);
+		if not player then
 			-- No profile data available.
 			return nil;
 		end
 
-		return profile:GetRoleplayingName();
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+		return player:GetRoleplayingName();
+	elseif profileType == PROFILE_TYPE_PET then
 		if not NamePlates.ShouldShowCustomPetNames() then
 			-- Not displaying custom pet names.
 			return nil;
@@ -135,16 +143,16 @@ function NamePlates.GetUnitCustomColor(unitToken)
 
 	-- Dispatch based on the profile type.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+	if profileType == PROFILE_TYPE_CHARACTER then
 		-- Get the profile for the player and with it, their custom color.
-		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-		if not profile then
+		local player = NamePlates.GetUnitCharacterProfile(unitToken);
+		if not player then
 			-- No profile available.
 			return nil;
 		end
 
-		return profile:GetCustomColorForDisplay();
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+		return player:GetCustomColorForDisplay();
+	elseif profileType == PROFILE_TYPE_PET then
 		-- Combat pets use companion pet profiles.
 		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if not profile then
@@ -210,12 +218,12 @@ function NamePlates.GetUnitCustomIcon(unitToken)
 
 	-- Get the appropriate icon for this unit type.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
-		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-		if profile then
-			return profile:GetCustomIcon();
+	if profileType == PROFILE_TYPE_CHARACTER then
+		local player = NamePlates.GetUnitCharacterProfile(unitToken);
+		if player then
+			return player:GetCustomIcon();
 		end
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+	elseif profileType == PROFILE_TYPE_PET then
 		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if profile then
 			return profile.IC;
@@ -238,13 +246,13 @@ function NamePlates.GetUnitCustomTitle(unitToken)
 
 	-- Get the appropriate title for this unit type.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
-		local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-		local characteristics = profile and profile:GetCharacteristics();
+	if profileType == PROFILE_TYPE_CHARACTER then
+		local player = NamePlates.GetUnitCharacterProfile(unitToken);
+		local characteristics = player and player:GetCharacteristics();
 		if characteristics then
 			return characteristics.FT;
 		end
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+	elseif profileType == PROFILE_TYPE_PET then
 		local profile = NamePlates.GetUnitPetProfile(unitToken);
 		if profile then
 			return profile.TI;
@@ -299,20 +307,50 @@ function NamePlates.GetUnitOOCIndicator(unitToken)
 	end
 
 	-- Grab the profile for the player and check if they're in-character.
-	local profile = NamePlates.GetUnitCharacterProfile(unitToken);
-	if not profile or profile:IsInCharacter() then
+	local player = NamePlates.GetUnitCharacterProfile(unitToken);
+	if not player or player:IsInCharacter() then
 		return nil;
 	end
 
 	-- Return an appropriate indicator based on the configured style.
 	local style = NamePlates.GetConfiguredOOCIndicatorStyle();
-	if style == NamePlates.OOC_STYLE_TEXT then
-		return NamePlates.OOC_TEXT_INDICATOR;
-	elseif style == NamePlates.OOC_STYLE_ICON then
-		return tostring(NamePlates.OOC_ICON_INDICATOR);
+	if style == OOC_STYLE_TEXT then
+		return OOC_TEXT_INDICATOR;
+	elseif style == OOC_STYLE_ICON then
+		return tostring(OOC_ICON_INDICATOR);
 	end
 
 	-- Unsupported style.
+	return nil;
+end
+
+-- Returns the glances table for a profile owned by the given for
+-- a given unit token.
+--
+-- Reutrns nil if customization disabled, or if no glances are available.
+function NamePlates.GetUnitGlances(unitToken)
+	-- If not displaying titles, return early.
+	if not NamePlates.IsCustomizationEnabledForUnit(unitToken)
+	or not NamePlates.ShouldShowGlances() then
+		return nil;
+	end
+
+	-- Get the appropriate title for this unit type.
+	local profileType = NamePlates.GetUnitProfileType(unitToken);
+	if profileType == PROFILE_TYPE_CHARACTER then
+		local player = NamePlates.GetUnitCharacterProfile(unitToken);
+		local profile = player and player:GetProfile();
+		if profile and profile.misc then
+			return profile.misc.PE;
+		end
+	elseif profileType == PROFILE_TYPE_PET then
+		local profile = NamePlates.GetUnitPetProfile(unitToken);
+		if profile then
+			return profile.PE;
+		end
+	end
+
+	-- No title is available.
 	return nil;
 end
 

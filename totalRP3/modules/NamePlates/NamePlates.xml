@@ -26,6 +26,7 @@
 	<Script file="Request.lua"/>
 
 	<Script file="DecoratorBaseMixin.lua"/>
+	<Include file="Components.xml"/>
 
 	<Script file="Decorators\Blizzard.lua"/>
 	<Script file="Decorators\ElvUI.lua"/>

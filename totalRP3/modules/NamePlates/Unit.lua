@@ -24,6 +24,10 @@ local TRP3_Utils = TRP3_API.utils;
 local NamePlates = AddOn_TotalRP3.NamePlates;
 local Player = AddOn_TotalRP3.Player;
 
+-- NamePlates module imports.
+local PROFILE_TYPE_CHARACTER = NamePlates.PROFILE_TYPE_CHARACTER;
+local PROFILE_TYPE_PET = NamePlates.PROFILE_TYPE_PET;
+
 -- Returns true if the given unit token refers to a valid, existing unit.
 --
 -- This function can return true even if the given unit token does not
@@ -54,9 +58,9 @@ end
 	-- Get the type and map it to our subset of constants.
 	local unitType = TRP3_UI.misc.getTargetType(unitToken);
 	if unitType == TRP3_UI.misc.TYPE_CHARACTER then
-		return NamePlates.PROFILE_TYPE_CHARACTER;
+		return PROFILE_TYPE_CHARACTER;
 	elseif unitType == TRP3_UI.misc.TYPE_PET then
-		return NamePlates.PROFILE_TYPE_PET;
+		return PROFILE_TYPE_PET;
 	end
 
 	-- Unknown or unsupported profile type.
@@ -138,9 +142,9 @@ end
 --[[private]] function NamePlates.GetRegisterIDForUnit(unitToken)
 	-- Dispatch based off the profile type.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+	if profileType == PROFILE_TYPE_CHARACTER then
 		return TRP3_Utils.str.getUnitID(unitToken);
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+	elseif profileType == PROFILE_TYPE_PET then
 		local companionType = TRP3_UI.misc.TYPE_PET;
 		return TRP3_UI.misc.getCompanionFullID(unitToken, companionType);
 	end

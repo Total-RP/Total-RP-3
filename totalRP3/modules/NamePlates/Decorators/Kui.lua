@@ -21,6 +21,11 @@ local TRP3_Utils = TRP3_API.utils;
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
+-- NamePlates module imports.
+local ICON_HEIGHT = NamePlates.ICON_HEIGHT;
+local ICON_WIDTH = NamePlates.ICON_WIDTH;
+local MAX_NAME_CHARS = NamePlates.MAX_NAME_CHARS;
+
 -- Decorator that integrates with Kui nameplates.
 local KuiDecoratorMixin = CreateFromMixins(NamePlates.DecoratorBaseMixin);
 
@@ -121,7 +126,7 @@ function KuiDecoratorMixin:InitNamePlate(nameplate)
 		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-		iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+		iconWidget:SetSize(ICON_WIDTH, ICON_HEIGHT);
 		iconWidget:Hide();
 
 		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
@@ -141,6 +146,17 @@ function KuiDecoratorMixin:InitNamePlate(nameplate)
 		titleWidget:Hide();
 
 		nameplate.handler:RegisterElement("TRP3_Title", titleWidget);
+	end
+
+	-- Add the glance bar widget.
+	do
+		local glanceBarWidget = CreateFrame("Frame", nil, nameplate, "TRP3_NamePlateGlanceBar");
+		glanceBarWidget:ClearAllPoints();
+		glanceBarWidget:SetPoint("BOTTOM", nameplate, "TOP", 0, 4);
+		glanceBarWidget:SetHeight(36);
+		glanceBarWidget:Hide();
+
+		nameplate.handler:RegisterElement("TRP3_GlanceBar", glanceBarWidget);
 	end
 
 	-- Install a hook to handle name changes. We want to override the
@@ -220,6 +236,7 @@ function KuiDecoratorMixin:OnNamePlateHide(nameplate)
 	if self:IsNamePlateCustomizable(nameplate) then
 		nameplate.TRP3_Icon:Hide();
 		nameplate.TRP3_Title:Hide();
+		nameplate.TRP3_GlanceBar:SetOwningUnit(nil);
 	end
 end
 
@@ -273,7 +290,7 @@ function KuiDecoratorMixin:IsNamePlateCustomizable(nameplate)
 		return false;
 	end
 
-	-- Non-personal nameplates.
+	-- Ignore non-personal nameplates.
 	return not nameplate.state.personal;
 end
 
@@ -367,7 +384,6 @@ function KuiDecoratorMixin:UpdateNamePlateTitle(nameplate)
 		return;
 	end
 
-
 	-- Update the title text appropriately.
 	local titleText = self:GetUnitCustomTitle(nameplate.unit);
 	if not titleText then
@@ -410,6 +426,39 @@ function KuiDecoratorMixin:SetNamePlateTitleShown(nameplate, shown)
 	nameplate.GuildText:SetPoint("TOP", relativeWidget, "BOTTOM", 0, -2);
 end
 
+-- Updates the glance display on a nameplate.
+function KuiDecoratorMixin:UpdateNamePlateGlances(nameplate)
+	-- Grab the glance bar from the frame.
+	local glanceBarWidget = nameplate.TRP3_GlanceBar;
+
+	-- If this nameplate looks like it should be left alone, if the name
+	-- text isn't showing, ignore it and reset.
+	if not self:IsNamePlateCustomizable(nameplate)
+	or not nameplate.NameText:IsShown() then
+		glanceBarWidget:ClearGlances();
+		return;
+	end
+
+	-- Obtain the glances to be displayed.
+	local glances = self:GetUnitGlances(nameplate.unit);
+	if not glances then
+		-- Clear the glances.
+		glanceBarWidget:ClearGlances();
+	else
+		-- Reposition the glance bar based on name-only mode.
+		glanceBarWidget:ClearAllPoints();
+		if self:IsNamePlateInNameOnlyMode(nameplate) then
+			glanceBarWidget:SetPoint("BOTTOM", nameplate, "TOP", 0, 4);
+		else
+			glanceBarWidget:SetPoint("BOTTOM", nameplate, "TOP", 0, 10);
+		end
+
+		-- Apply the glances and update the owner.
+		glanceBarWidget:SetGlances(glances);
+		glanceBarWidget:SetOwningUnit(nameplate.unit);
+	end
+end
+
 -- Called when customizations for nameplates are globally enabled for all
 -- frames. This can occurs either when the main enable setting is toggled,
 -- or if the player's roleplay status changes.
@@ -444,14 +493,21 @@ end
 	self:UpdateNamePlateHealthBarColor(nameplate);
 	self:UpdateNamePlateTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
+	self:UpdateNamePlateGlances(nameplate);
 end
 
 -- Returns the custom name text to be displayed for the given unit token.
 --
 -- Return nil if customizations are disabled, or if no name can be obtained.
 --[[override]] function KuiDecoratorMixin:GetUnitCustomName(unitToken)
-	-- The OOC indicator is handled specially.
-	return NamePlates.GetUnitCustomName(unitToken);
+	-- The OOC indicator is handled specially and shouldn't be prefixed.
+	local nameText = NamePlates.GetUnitCustomName(unitToken);
+	if nameText then
+		-- Apply cropping before prefixing the OOC indicator.
+		nameText = TRP3_Utils.str.crop(nameText, MAX_NAME_CHARS);
+	end
+
+	return nameText;
 end
 
 -- Returns the custom color to be displayed for the given unit token.

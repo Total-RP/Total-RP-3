@@ -1,0 +1,228 @@
+<!--
+	Total RP 3 Nameplate Module
+	Copyright 2019 Total RP 3 Development Team
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+
+	<Script file="Components.lua"/>
+
+	<Button name="TRP3_NamePlateGlanceButton" virtual="true" registerForClicks="LeftButtonUp, RightButtonUp" mixin="TRP3_NamePlateGlanceButtonMixin">
+		<Layers>
+			<Layer level="ARTWORK" textureSubLevel="0">
+				<Texture parentKey="Icon">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="8" y="-8"/>
+						<Anchor point="BOTTOMRIGHT" x="-8" y="8"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<Texture parentKey="Border" atlas="pvpqueue-rewardring" useAtlasSize="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="HIGHLIGHT">
+				<Texture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="0" y="0"/>
+						<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<CheckedTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT" x="0" y="0"/>
+				<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
+			</Anchors>
+		</CheckedTexture>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnClick method="OnClick"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_NamePlateGlanceBar" virtual="true" mixin="TRP3_NamePlateGlanceBarMixin">
+		<HitRectInsets left="-5" right="-5" top="-5" bottom="-5"/>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnEnter method="OnEnter"/>
+			<OnLeave method="OnLeave"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_NamePlateGlanceDisplayFrame" parent="UIParent" toplevel="true" movable="true" clampedToScreen="true" mixin="TRP3_NamePlateGlanceDisplayMixin">
+		<Size x="300" y="88"/>
+		<Anchors>
+			<Anchor point="LEFT" x="128" y="0"/>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="Background" textureSubLevel="-6" file="Interface\AchievementFrame\UI-GuildAchievement-Parchment-Horizontal-Desaturated">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="4" y="-4"/>
+						<Anchor point="BOTTOMRIGHT" x="-4" y="4"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="0">
+				<Texture parentKey="CloseButtonBorder" atlas="UI-Frame-Neutral-ExitButtonBorder" useAtlasSize="true">
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.Background" x="4" y="6"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="BORDER" textureSubLevel="1">
+				<Texture parentKey="BorderTopLeft" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0.5" right="0.625" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderTopRight" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.625" right="0.75" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderBottomLeft" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.75" right="0.875" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderBottomRight" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.875" right="1" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderLeft" file="Interface\FriendsFrame\UI-Toast-Border" vertTile="true">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.BorderTopLeft" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.BorderBottomLeft" relativePoint="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.125" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderRight" file="Interface\FriendsFrame\UI-Toast-Border" vertTile="true">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.BorderTopRight" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderBottomRight" relativePoint="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.125" right="0.25" top="0" bottom="1"/>
+				</Texture>
+				<Texture parentKey="BorderTop" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.BorderTopLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="TOPRIGHT" relativeKey="$parent.BorderTopRight" relativePoint="TOPLEFT"/>
+					</Anchors>
+					<TexCoords>
+						<Rect ULx="0.25" ULy="1" LLx="0.375" LLy="1" URx="0.25" URy="0" LRx="0.375" LRy="0"/>
+					</TexCoords>
+				</Texture>
+				<Texture parentKey="BorderBottom" file="Interface\FriendsFrame\UI-Toast-Border">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.BorderBottomLeft" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.BorderBottomRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords>
+						<Rect ULx="0.375" ULy="1" LLx="0.5" LLy="1" URx="0.375" URy="0" LRx="0.5" LRy="0"/>
+					</TexCoords>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Icon" file="Interface\Icons\INV_Misc_QuestionMark">
+					<Size x="40" y="40"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Background" x="10" y="-10"/>
+					</Anchors>
+				</Texture>
+				<MaskTexture parentKey="IconMask" atlas="UI-Frame-IconMask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon"/>
+					</Anchors>
+					<MaskedTextures>
+						<MaskedTexture childKey="Icon"/>
+					</MaskedTextures>
+				</MaskTexture>
+				<FontString parentKey="Title" inherits="GameFontNormalLarge" text="[Title]" justifyH="LEFT" justifyV="MIDDLE" wordWrap="false" nonSpaceWrap="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="TOPRIGHT" x="8" y="0"/>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="8" y="0"/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey="Owner" inherits="GameFontNormal" text="[Owner]" justifyH="LEFT" justifyV="MIDDLE" wordWrap="false" nonSpaceWrap="false">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="RIGHT" x="8" y="0"/>
+						<Anchor point="BOTTOMLEFT" relativeKey="$parent.Icon" relativePoint="BOTTOMRIGHT" x="8" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+				<FontString parentKey="Description" inherits="GameFontNormal" text="[Description]" justifyH="LEFT" justifyV="TOP" wordWrap="true" nonSpaceWrap="true">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" relativePoint="BOTTOMLEFT" x="0" y="-8"/>
+						<Anchor point="RIGHT" relativeKey="$parent.Background" x="-10" y="0"/>
+					</Anchors>
+					<Color r="1" g="1" b="1"/>
+				</FontString>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="IconBorder" atlas="mountequipment-slot-iconborder">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.Icon" x="-2" y="2"/>
+						<Anchor point="BOTTOMRIGHT" relativeKey="$parent.Icon" x="2" y="-2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonNoScripts">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeKey="$parent.CloseButtonBorder" x="1" y="-1"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						self:GetParent():Clear();
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnHide method="OnHide"/>
+			<OnDragStart method="StartMoving"/>
+			<OnDragStop method="StopMovingOrSizing"/>
+		</Scripts>
+	</Frame>
+</Ui>

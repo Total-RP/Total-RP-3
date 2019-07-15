@@ -1400,6 +1400,12 @@ Nameplates must be configured to use the |cff00ff00[trp3np:ooc]|r tag.]],
 The style of out of character (OOC) indicators to display.
 
 The |cffffffffShow OOC indicators|r option must be enabled for this setting to work.]],
+
+	NAMEPLATES_CONFIG_SHOW_GLANCES_TITLE = "|cffff9900[EXPERIMENTAL]|r Show glances",
+	NAMEPLATES_CONFIG_SHOW_GLANCES_HELP = [[
+If selected, display glances above nameplates of recently-highlighted or actively targetted players.
+
+|cffff0000Note:|r This feature is currently only implemented for |cffffffffKui Nameplates|r.]],
 };
 
 -- Use Ellyb to generate the Localization system

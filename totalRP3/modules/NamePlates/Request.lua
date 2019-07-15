@@ -21,6 +21,11 @@ local TRP3_Utils = TRP3_API.utils;
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
+-- NamePlates module imports.
+local PROFILE_TYPE_CHARACTER = NamePlates.PROFILE_TYPE_CHARACTER;
+local PROFILE_TYPE_PET = NamePlates.PROFILE_TYPE_PET;
+local REQUEST_COOLDOWN = NamePlates.REQUEST_COOLDOWN;
+
 -- Mapping of register IDs ("unit IDs") to request cooldowns.
 NamePlates.requestCooldowns = {};
 
@@ -37,10 +42,10 @@ NamePlates.requestCooldowns = {};
 	-- Issue requests via both TRP and MSP protocols. MSP is limited to
 	-- players only, so don't send anything for pets out.
 	local profileType = NamePlates.GetUnitProfileType(unitToken);
-	if profileType == NamePlates.PROFILE_TYPE_CHARACTER then
+	if profileType == PROFILE_TYPE_CHARACTER then
 		TRP3_API.r.sendQuery(registerID);
 		TRP3_API.r.sendMSPQueryIfAppropriate(registerID);
-	elseif profileType == NamePlates.PROFILE_TYPE_PET then
+	elseif profileType == PROFILE_TYPE_PET then
 		-- Queries for companions take a little bit extra effort.
 		local ownerID = TRP3_Utils.str.companionIDToInfo(registerID);
 		if TRP3_Register.isUnitIDKnown(ownerID) then
@@ -52,7 +57,7 @@ NamePlates.requestCooldowns = {};
 	end
 
 	-- Apply a default cooldown for future requests to this person.
-	NamePlates.SetUnitRequestCooldown(unitToken, NamePlates.REQUEST_COOLDOWN);
+	NamePlates.SetUnitRequestCooldown(unitToken, REQUEST_COOLDOWN);
 	return true;
 end
 

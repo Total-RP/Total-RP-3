@@ -3,27 +3,27 @@ max_line_length = false
 exclude_files = {
 	"totalRP3_Localizator",
 	"totalRP3/libs",
-    "totalRP3_zTest"
+	"totalRP3_zTest"
 }
 ignore = {
-    -- Ignore undefined globals for now TODO cleanup global access
-    "112",
-    "113",
-    -- Ignore unused self. This would popup for Mixins and Objects
-    "212/self",
+	-- Ignore undefined globals for now TODO cleanup global access
+	"112",
+	"113",
+	-- Ignore unused self. This would popup for Mixins and Objects
+	"212/self",
 }
 globals = {
 	"Ellyb",
-    "TRP3_API",
-    "AddOn_TotalRP3",
-    "_G",
+	"TRP3_API",
+	"AddOn_TotalRP3",
+	"_G",
 
-    -- Globals
-    "BINDING_HEADER_TRP3",
-    "BINDING_NAME_TRP3_TOOLBAR_TOGGLE",
-    "BINDING_NAME_TRP3_TOGGLE",
-    "SLASH_TOTALRP32",
-    "SLASH_TOTALRP31",
+	-- Globals
+	"BINDING_HEADER_TRP3",
+	"BINDING_NAME_TRP3_TOOLBAR_TOGGLE",
+	"BINDING_NAME_TRP3_TOGGLE",
+	"SLASH_TOTALRP32",
+	"SLASH_TOTALRP31",
 	"msp_RPAddOn",
 	"msp",
 
@@ -44,28 +44,33 @@ globals = {
 	"TRP3_Flyway",
 	"TRP3_Colors",
 	"TRP3_StashedData",
-    "TRP3_Characters",
-    "TRP3_Profiles",
-    "TRP3_Configuration",
-    "TRP3_Notes",
+	"TRP3_Characters",
+	"TRP3_Profiles",
+	"TRP3_Configuration",
+	"TRP3_Notes",
 
-    -- Global methods
-    "TRP3_ShowErrorMessage",
-    "TRP3_RefreshTooltipForFrame",
-    "TRP3_ColorButtonLoad",
+	-- Global methods
+	"TRP3_ShowErrorMessage",
+	"TRP3_RefreshTooltipForFrame",
+	"TRP3_ColorButtonLoad",
 
-    -- Global mixins
-    "TRP3_HyperLinkedMixin",
-    "TRP3_PlayerHousePinMixin",
-    "TRP3_PlayerMapPinMixin",
-    "TRP3_DashboardTabFrameMixin",
-    "TRP3_DashboardHTMLContentMixin",
-    "TRP3_ChatLinkTooltipMixin",
-    "TRP3_ChatLinkActionButtonMixin",
+	-- Global mixins
+	"TRP3_HyperLinkedMixin",
+	"TRP3_PlayerHousePinMixin",
+	"TRP3_PlayerMapPinMixin",
+	"TRP3_DashboardTabFrameMixin",
+	"TRP3_DashboardHTMLContentMixin",
+	"TRP3_ChatLinkTooltipMixin",
+	"TRP3_ChatLinkActionButtonMixin",
+	"TRP3_NamePlateGlanceButtonMixin",
+	"TRP3_NamePlateGlanceBarMixin",
+	"TRP3_NamePlateGlanceDisplayMixin",
 
-    -- Global frames
-    "TRP3_CharacterTooltip",
-    "TRP3_CompanionTooltip",
+	-- Global frames
+	"TRP3_CharacterTooltip",
+	"TRP3_CompanionTooltip",
+	"TRP3_MainTooltip",
+	"TRP3_NamePlateGlanceDisplayFrame",
 }
 read_globals = {
 
@@ -81,24 +86,24 @@ read_globals = {
 	"ENABLE_COLORBLIND_MODE",
 	"SOUNDKIT",
 	"PowerBarColor",
-    "ChatTypeInfo",
-    "tInvert",
-    "FRIENDS_BNET_NAME_COLOR",
-    "LE_ITEM_QUALITY_POOR",
-    "LE_ITEM_QUALITY_COMMON",
-    "LE_ITEM_QUALITY_UNCOMMON",
-    "LE_ITEM_QUALITY_RARE",
-    "LE_ITEM_QUALITY_EPIC",
-    "LE_ITEM_QUALITY_LEGENDARY",
-    "LE_ITEM_QUALITY_ARTIFACT",
-    "LE_ITEM_QUALITY_HEIRLOOM",
-    "LE_ITEM_QUALITY_WOW_TOKEN",
-    "PowerBarColor",
+	"ChatTypeInfo",
+	"tInvert",
+	"FRIENDS_BNET_NAME_COLOR",
+	"LE_ITEM_QUALITY_POOR",
+	"LE_ITEM_QUALITY_COMMON",
+	"LE_ITEM_QUALITY_UNCOMMON",
+	"LE_ITEM_QUALITY_RARE",
+	"LE_ITEM_QUALITY_EPIC",
+	"LE_ITEM_QUALITY_LEGENDARY",
+	"LE_ITEM_QUALITY_ARTIFACT",
+	"LE_ITEM_QUALITY_HEIRLOOM",
+	"LE_ITEM_QUALITY_WOW_TOKEN",
+	"PowerBarColor",
 	"GetTimePreciseSec",
-    "GetFileIDFromPath",
-    "NUM_CHAT_WINDOWS",
-    "AddOn_Lib_Middleclass",
-    "APIDocumentation",
+	"GetFileIDFromPath",
+	"NUM_CHAT_WINDOWS",
+	"AddOn_Lib_Middleclass",
+	"APIDocumentation",
 	"CreateFromMixins",
 	"CreateAndInitFromMixin",
 	"CallbackRegistryBaseMixin",
@@ -3970,6 +3975,8 @@ read_globals = {
 	"ConvertRGBtoColorString",
 	"CopyTable",
 	"CreateChatChannelList",
+	"CreateFramePool",
+	"CreateTextureMarkup",
 	"CursorOnUpdate",
 	"CursorUpdate",
 	"DeathKnniggetThrobFunction",

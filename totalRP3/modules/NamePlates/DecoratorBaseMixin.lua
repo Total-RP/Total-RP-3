@@ -20,6 +20,10 @@ local TRP3_Utils = TRP3_API.utils;
 -- AddOn_TotalRP3 imports.
 local NamePlates = AddOn_TotalRP3.NamePlates;
 
+-- NamePlates module imports.
+local MAX_NAME_CHARS = NamePlates.MAX_NAME_CHARS;
+local MAX_TITLE_CHARS = NamePlates.MAX_TITLE_CHARS;
+
 -- Base mixin used for nameplate decorators. A decorator implements the
 -- logic for styling nameplates depending upon which addon is being used
 -- to customize them by the end-user.
@@ -56,6 +60,11 @@ end
 function DecoratorBaseMixin:GetUnitCustomName(unitToken)
 	-- Grab the name and prefix it with the OOC indicator.
 	local nameText = NamePlates.GetUnitCustomName(unitToken);
+	if nameText then
+		-- Apply cropping before prefixing the OOC indicator.
+		nameText = TRP3_Utils.str.crop(nameText, MAX_NAME_CHARS);
+	end
+
 	if nameText then
 		local oocIndicator = NamePlates.GetUnitOOCIndicator(unitToken);
 		if oocIndicator then
@@ -102,10 +111,18 @@ function DecoratorBaseMixin:GetUnitCustomTitle(unitToken)
 	end
 
 	if titleText then
-		titleText = TRP3_Utils.str.crop(titleText, NamePlates.MAX_TITLE_CHARS);
+		titleText = TRP3_Utils.str.crop(titleText, MAX_TITLE_CHARS);
 	end
 
 	return titleText;
+end
+
+-- Returns the glance table from the profile for the given unit token.
+--
+-- Returns nil if customization is disabled, or if no glances are available.
+function DecoratorBaseMixin:GetUnitGlances(unitToken)
+	-- If glances ever need customizing in some way... Somehow...
+	return NamePlates.GetUnitGlances(unitToken);
 end
 
 -- Updates a given nameplate frame.

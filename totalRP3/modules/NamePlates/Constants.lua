@@ -73,6 +73,8 @@ NamePlates.CONFIG_SHOW_TITLES = "nameplates_show_titles";
 NamePlates.CONFIG_SHOW_OOC_INDICATORS = "nameplates_show_ooc_indicators";
 -- Controls the style of OOC indicator to use. See OOC_STYLE_* constants.
 NamePlates.CONFIG_OOC_INDICATOR_STYLE = "nameplates_ooc_indicator_style";
+-- Controls if glances should be shown.
+NamePlates.CONFIG_SHOW_GLANCES = "nameplates_show_glances";
 
 -- Map of configuration keys to their default values. If the value type
 -- is a function reference, it is executed when the key is due to be
@@ -89,6 +91,7 @@ NamePlates.DEFAULT_CONFIG = {
 	[NamePlates.CONFIG_SHOW_TITLES]              = true,
 	[NamePlates.CONFIG_SHOW_OOC_INDICATORS]      = true,
 	[NamePlates.CONFIG_OOC_INDICATOR_STYLE]      = GetDefaultOOCIndicatorStyle,
+	[NamePlates.CONFIG_SHOW_GLANCES]             = true,
 };
 
 -- Profile type constants. This is a subset of the standard types supported
@@ -112,8 +115,10 @@ NamePlates.OOC_STYLE_TEXT = "TEXT";
 NamePlates.OOC_TEXT_INDICATOR = ColorManager.RED("[" .. L.CM_OOC .. "]");
 NamePlates.OOC_ICON_INDICATOR = Icon([[Interface\COMMON\Indicator-Red]], 15);
 
--- Maximum number of characters for displayed titles before cropping.
-NamePlates.MAX_TITLE_CHARS = 50;
+-- Maximum number of characters for displayed strings before cropping.
+NamePlates.MAX_TITLE_CHARS = 45;
+NamePlates.MAX_NAME_CHARS = 45;
+NamePlates.MAX_GLANCE_TITLE_CHARS = 30;
 
 -- Common color to use for title text in nameplates. Displays need not use
 -- this if another color is available; think of this as a default.
@@ -122,3 +127,13 @@ NamePlates.TITLE_TEXT_COLOR = ColorManager.ORANGE;
 -- Size of custom icons.
 NamePlates.ICON_WIDTH = 16;
 NamePlates.ICON_HEIGHT = 16;
+
+-- Path prefix for icons.
+NamePlates.ICON_PATH = [[Interface\Icons\]];
+
+-- Maximum number of glances to display.
+NamePlates.MAX_NUM_GLANCES = 5;
+
+-- Default icon name (without path) and text for empty glances.
+NamePlates.DEFAULT_GLANCE_ICON = "INV_Misc_QuestionMark";
+NamePlates.DEFAULT_GLANCE_TEXT = "...";

@@ -18,6 +18,9 @@ local NamePlates = AddOn_TotalRP3.NamePlates;
 
 -- NamePlates module imports.
 local DecoratorBaseMixin = NamePlates.DecoratorBaseMixin;
+local ICON_HEIGHT = NamePlates.ICON_HEIGHT;
+local ICON_WIDTH = NamePlates.ICON_WIDTH;
+local TITLE_TEXT_COLOR = NamePlates.TITLE_TEXT_COLOR;
 
 -- Decorator plugin for styling Blizzard's default nameplates.
 local BlizzardDecoratorMixin = CreateFromMixins(DecoratorBaseMixin);
@@ -85,7 +88,7 @@ function BlizzardDecoratorMixin:InitNamePlate(nameplate)
 		local iconWidget = unitFrame:CreateTexture(nil, "ARTWORK");
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", unitFrame.name, "LEFT", -4, 0);
-		iconWidget:SetSize(NamePlates.ICON_WIDTH, NamePlates.ICON_HEIGHT);
+		iconWidget:SetSize(ICON_WIDTH, ICON_HEIGHT);
 		iconWidget:Hide();
 
 		nameplate.TRP3_Icon = iconWidget;
@@ -95,7 +98,7 @@ function BlizzardDecoratorMixin:InitNamePlate(nameplate)
 		local titleWidget = unitFrame:CreateFontString(nil, "ARTWORK");
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitFrame.name, "BOTTOM", 0, -4);
-		titleWidget:SetVertexColor(NamePlates.TITLE_TEXT_COLOR:GetRGBA());
+		titleWidget:SetVertexColor(TITLE_TEXT_COLOR:GetRGBA());
 		titleWidget:SetFontObject(SystemFont_NamePlate);
 		titleWidget:Hide();
 
