@@ -291,8 +291,7 @@ function KuiDecoratorMixin:IsNamePlateCustomizable(nameplate)
 	end
 
 	-- Ignore non-personal nameplates, or ones that otherwise look invalid.
-	return not nameplate.state.personal
-		or not nameplate.state.reaction;
+	return (not nameplate.state.personal) and nameplate.state.reaction;
 end
 
 -- Returns true if the given nameplate frame is in name-only mode. Some
