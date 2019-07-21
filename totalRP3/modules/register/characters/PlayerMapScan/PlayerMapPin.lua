@@ -109,6 +109,15 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 		self.Texture:SetVertexColor(1, 1, 1, 1);
 	end
 
+	-- Adjust the frame level of pins that have a priority assigned.
+	if displayData.categoryPriority then
+		-- Topmost level if there's any sort of priority.
+		self:UseFrameLevelType("PIN_FRAME_LEVEL_TOPMOST");
+	else
+		-- Default level.
+		self:UseFrameLevelType("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
+	end
+
 	self.Texture:SetAlpha(displayData.opacity or 1)
 
 	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
