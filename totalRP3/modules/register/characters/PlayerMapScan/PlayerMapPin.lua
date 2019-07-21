@@ -112,7 +112,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	-- Adjust the frame level of pins that have a zero or higher priority.
 	-- This applies to pins that have a relationship status set.
 	local priority = displayData.categoryPriority or -1;
-	if priority >= 0 then
+	if type(priority) == "number" and priority >= 0 then
 		-- Topmost level if there's any sort of priority.
 		self:UseFrameLevelType("PIN_FRAME_LEVEL_TOPMOST");
 	else
