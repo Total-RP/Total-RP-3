@@ -87,9 +87,6 @@ local function configShowNameCustomColors()
 end
 TRP3_API.chat.configShowNameCustomColors = configShowNameCustomColors;
 
----@deprecated
-TRP3_API.chat.configIncreaseNameColorContrast = TRP3_API.Ellyb.DeprecationWarnings.wrapFunction(AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast, "TRP3_API.chat.configIncreaseNameColorContrast", "AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast");
-
 local function configIsChannelUsed(channel)
 	return getConfigValue(CONFIG_USAGE .. channel);
 end
@@ -457,7 +454,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		if customColor then
 			customColor = Color(petProfile.data.NH);
 
-			if configIncreaseNameColorContrast() then
+			if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 				customColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 			end
 
