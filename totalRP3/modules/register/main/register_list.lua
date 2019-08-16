@@ -59,6 +59,7 @@ local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMa
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 local tContains = tContains;
 local GetAutoCompleteRealms = GetAutoCompleteRealms;
+local is_classic = Globals.is_classic;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -102,7 +103,7 @@ local function openPage(profileID, unitID)
 			onSelected = function() setPage("player_main", pageContext ) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
-			icon = "Interface\\ICONS\\pet_type_humanoid",
+			icon = is_classic and "Interface\\ICONS\\INV_Helmet_20" or "Interface\\ICONS\\pet_type_humanoid",
 			pageContext = pageContext,
 		});
 		selectMenu(menuID);

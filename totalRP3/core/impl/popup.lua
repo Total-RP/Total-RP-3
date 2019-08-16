@@ -32,12 +32,13 @@ local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList
 local safeMatch = TRP3_API.utils.str.safeMatch;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
+local is_classic = TRP3_API.globals.is_classic;
 
 -- Classic proofing
 local GetNumPets, GetPetInfoByIndex;
 local GetMountIDs, GetMountInfoByID, GetMountInfoExtraByID;
 
-if TRP3_API.globals.is_classic then
+if is_classic then
 	GetNumPets = function() return 0 end;
 	GetPetInfoByIndex = function() return end;
 	GetMountIDs = function() return {} end;
@@ -553,7 +554,7 @@ local function initCompanionBrowser()
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
 	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0,
-		"|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
+		is_classic and "|TInterface\\ICONS\\Ability_Druid_CatForm:25|t " or "|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
 
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc.UI_FILTER);
 end
