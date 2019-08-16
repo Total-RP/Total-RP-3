@@ -122,7 +122,7 @@ local function onStart()
 				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
 				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
 			end
-			
+
 			if uiButton:GetPushedTexture() then
 				uiButton:GetPushedTexture():SetDesaturated(1);
 			end
