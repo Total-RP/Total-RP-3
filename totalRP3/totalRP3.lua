@@ -47,62 +47,78 @@ end
 local function loadingSequence()
 	Log.log("OnEnable() START");
 
-	-- Get info we can't have earlier
-	MAIN_SEQUENCE_DETAIL = "Globals.build";
-	Globals.build();
+	--region Client check
+	local clientMismatch = false;
+	--[===[@non-debug@
+	local isClassicBuild = string.find(TRP3_API.VERSION_DISPLAY, "c");
+	if isClassicBuild and WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3", "You are trying to use |cffff0000Total RP 3: Classic|r. Please install the retail version of Total RP 3 instead.");
+		clientMismatch = true;
+	elseif not isClassicBuild and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3-classic", "You are trying to use the |cffff0000retail|r version of Total RP 3. Please install Total RP 3: Classic instead.");
+		clientMismatch = true;
+	end
+	--@end-non-debug@]===]
+	--endregion
 
-	-- Adapt saved variables structures between versions
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.flyway.applyPatches";
-	TRP3_API.flyway.applyPatches();
+	if not clientMismatch then
+		-- Get info we can't have earlier
+		MAIN_SEQUENCE_DETAIL = "Globals.build";
+		Globals.build();
 
-	-- Inits locale
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.Locale.init";
-	TRP3_API.Locale.init();
+		-- Adapt saved variables structures between versions
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.flyway.applyPatches";
+		TRP3_API.flyway.applyPatches();
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.init";
-	TRP3_API.module.init();
+		-- Inits locale
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.Locale.init";
+		TRP3_API.Locale.init();
 
-	-- Call the init callback on all modules
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.initModules";
-	TRP3_API.module.initModules();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.module.init";
+		TRP3_API.module.init();
 
-	-- Welcome \o/
-	MAIN_SEQUENCE_DETAIL = "Welcome message";
-	TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
+		-- Call the init callback on all modules
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.module.initModules";
+		TRP3_API.module.initModules();
 
-	MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
-	AddOn_TotalRP3.Communications.broadcast.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";
-	TRP3_API.profile.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.dashboard.init";
-	TRP3_API.dashboard.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.navigation.init";
-	TRP3_API.navigation.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.register.init";
-	TRP3_API.register.init();
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.popup.init";
-	TRP3_API.popup.init();
+		-- Welcome \o/
+		MAIN_SEQUENCE_DETAIL = "Welcome message";
+		TRP3_API.utils.message.displayMessage(loc.GEN_WELCOME_MESSAGE:format(Globals.version_display));
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOAD";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOAD);
+		MAIN_SEQUENCE_DETAIL = "AddOn_TotalRP3.Communications.broadcast.init";
+		AddOn_TotalRP3.Communications.broadcast.init();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.profile.init";
+		TRP3_API.profile.init();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.dashboard.init";
+		TRP3_API.dashboard.init();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.navigation.init";
+		TRP3_API.navigation.init();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.register.init";
+		TRP3_API.register.init();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.popup.init";
+		TRP3_API.popup.init();
 
-	-- Call module callback for all modules (onStart)
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.module.startModules";
-	TRP3_API.module.startModules();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOAD";
+		TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOAD);
 
-	-- Select first menu
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.navigation.menu.selectMenu";
-	TRP3_API.navigation.menu.selectMenu("main_00_dashboard");
+		-- Call module callback for all modules (onStart)
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.module.startModules";
+		TRP3_API.module.startModules();
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOADED";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOADED);
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_FINISH";
-	TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_FINISH);
+		-- Select first menu
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.navigation.menu.selectMenu";
+		TRP3_API.navigation.menu.selectMenu("main_00_dashboard");
 
-	MAIN_SEQUENCE_DETAIL = "TRP3_API.configuration.constructConfigPage";
-	TRP3_API.configuration.constructConfigPage();
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_LOADED";
+		TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_LOADED);
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.events.fireEvent::WORKFLOW_ON_FINISH";
+		TRP3_API.events.fireEvent(TRP3_API.events.WORKFLOW_ON_FINISH);
 
-	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+		MAIN_SEQUENCE_DETAIL = "TRP3_API.configuration.constructConfigPage";
+		TRP3_API.configuration.constructConfigPage();
+
+		TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_RESIZED, TRP3_MainFramePageContainer:GetWidth(), TRP3_MainFramePageContainer:GetHeight());
+	end
 
 	Log.log("OnEnable() DONE");
 end
