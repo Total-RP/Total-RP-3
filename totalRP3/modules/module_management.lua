@@ -33,6 +33,9 @@ local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForS
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
+local callModuleFunction;
+local initModule;
+local startModule;
 local onModuleStarted;
 
 TRP3_API.module.status = {
@@ -90,21 +93,8 @@ end
 -- The onInit callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired.
 -- The onInit is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
 TRP3_API.module.initModules = function()
-	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == MODULE_STATUS.OK and module.onInit and type(module.onInit) == "function" then
-			if not Globals.DEBUG_MODE then
-				local ok, mess = pcall(module.onInit);
-				if not ok then
-					module.status = MODULE_STATUS.ERROR_ON_INIT;
-					module.error = mess;
-					if DEFAULT_CHAT_FRAME then
-						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while init module \"%s\": |r%s"):format(tostring(moduleID), tostring(mess)), 1, 1, 1);
-					end
-				end
-			else
-				module.onInit();
-			end
-		end
+	for _, module in pairs(MODULE_REGISTRATION) do
+		initModule(module);
 	end
 end
 
@@ -113,29 +103,10 @@ end
 -- The onStart callback from any REGISTERED & ENABLED & DEPENDENCIES module is fired, only if previous onInit ran without error (if onInit was defined).
 -- onStart is run on a secure environment. If there is any error, the error is silent and will be store into the structure.
 TRP3_API.module.startModules = function()
-	for moduleID, module in pairs(MODULE_REGISTRATION) do
-		if module.status == MODULE_STATUS.OK and module.onStart and type(module.onStart) == "function" then
-			if not Globals.DEBUG_MODE then
-				local ok, error, message  = pcall(module.onStart);
-				if not ok then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = error;
-					if DEFAULT_CHAT_FRAME then
-						DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(moduleID), tostring(error)), 1, 1, 1);
-					end
-				elseif error == false then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = message;
-				end
-			else
-				local ok, message = module.onStart();
-				if ok == false then
-					module.status = MODULE_STATUS.ERROR_ON_LOAD;
-					module.error = message;
-				end
-			end
-		end
+	for _, module in pairs(MODULE_REGISTRATION) do
+		startModule(module);
 	end
+
 	onModuleStarted();
 end
 
@@ -175,6 +146,135 @@ end
 local function checkModuleTRPVersion(moduleID)
 	local module = getModule(moduleID);
 	return module.minVersion <= Globals.version;
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- MODULES LIFECYCLE
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+--- Error handler function for modules in release builds.
+--
+--  Reports the error information for the given module to the default chat
+--  frame, if present.
+--
+--  @param module The module to handle an error for.
+--  @param err    The error to be reported.
+local function handleModuleError(module, err)
+	if not DEFAULT_CHAT_FRAME then
+		return;
+	end
+
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
+end
+
+--- Invokes a given module function with any additional given parameters,
+--  capturing error information and returning it as if via pcall or xpcall.
+--
+--  In release builds, error information is not reported via the global
+--  error handler (as if it were called via pcall).
+--
+--  In debug builds, error information is forwarded to the global error
+--  handler, and is additionally returned.
+--
+--  If a function does not fail with an error but returns an explicit false,
+--  the function is treated as failed and any additional message is returned.
+--
+--  @param module   The module to invoke a function upon.
+--  @param funcName The module function name to be invoked.
+--  @param ...      Additional arguments to pass to the function.
+--
+--  @return true if no error occurred, false and an error message if not.
+function callModuleFunction(module, funcName, ...)
+	-- In debug mode, pass the error information through the global error
+	-- handler. This will flag it in BugSack or any other error reporter,
+	-- but will allow the loading process to continue.
+	local ok, err, message;
+	if Globals.DEBUG_MODE then
+		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
+	else
+		-- In release builds swallow the error via pcall. We'll forward it
+		-- to our own error handler instead.
+		ok, err, message = pcall(module[funcName], ...);
+		if not ok then
+			handleModuleError(module, err);
+		end
+	end
+
+	-- Some modules on failure will return a true/false status if they didn't
+	-- explicitly error out. If so, shift the returns over to the left.
+	--
+	-- These aren't considered "real" errors, but rather optional failures, so
+	-- they're never passed through the error handler implementations.
+	if ok and err == false then
+		-- We'll assume message isn't nil, but if it is then default it.
+		ok, err = err, message or "<no error information>";
+	end
+
+	return ok, err;
+end
+
+--- Initializes the given module.
+--
+--  This will invoke the onInit function on the module if present and, if it
+--  fails, will capture error information and update the module status
+--  appropriately.
+--
+--  This function does nothing if the module status already indicates a
+--  failure has occurred.
+--
+--  @param module The module to initialize.
+--
+--  @return true if no errors occurred, false and an error message if not.
+function initModule(module)
+	-- Disregard failed modules and yield their current error information.
+	if module.status ~= MODULE_STATUS.OK then
+		return false, module.error;
+	end
+
+	-- No need to do anything if the lifecycle function isn't present.
+	if module.onInit == nil then
+		return true;
+	end
+
+	-- Call the lifecycle function and update the module status on failure.
+	local ok, err = callModuleFunction(module, "onInit");
+	if not ok then
+		module.error = err;
+		module.status = MODULE_STATUS.ERROR_ON_INIT;
+	end
+
+	return ok, err;
+end
+
+--- Starts the given module.
+--
+--  This will invoke the onStart function on the module if present and, if it
+--  fails, will capture error information and update the module status
+--  appropriately.
+--
+--  This function does nothing if the module status already indicates a
+--  failure has occurred.
+--
+--  @param module The module to start.
+function startModule(module)
+	-- Disregard failed modules and yield their current error information.
+	if module.status ~= MODULE_STATUS.OK then
+		return false, module.error;
+	end
+
+	-- No need to do anything if the lifecycle function isn't present.
+	if module.onStart == nil then
+		return true;
+	end
+
+	-- Call the lifecycle function and update the module status on failure.
+	local ok, err = callModuleFunction(module, "onStart");
+	if not ok then
+		module.error = err;
+		module.status = MODULE_STATUS.ERROR_ON_LOAD;
+	end
+
+	return ok, err;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

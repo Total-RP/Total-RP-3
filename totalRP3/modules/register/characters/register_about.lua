@@ -750,6 +750,9 @@ local function onAboutReceived(profileID)
 		aboutData.read = true;
 		Events.fireEvent(Events.REGISTER_ABOUT_READ);
 	end
+	if aboutData.MU and type(aboutData) == "string" then
+		aboutData.MU = Utils.music.convertPathToID(aboutData.MU);
+	end
 end
 
 local function resetHTMLText(frame)

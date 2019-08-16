@@ -782,6 +782,8 @@ This will works:|cff00ff00
 	UI_ICON_SELECT = "Select icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
+	UI_MUSIC_DURATION = "Duration",
+	UI_MUSIC_ALTTITLE = "Alternate title",
 	UI_COLOR_BROWSER = "Color browser",
 	UI_COLOR_BROWSER_SELECT = "Select color",
 	UI_COLOR_BROWSER_PRESETS = "Presets",
@@ -1249,11 +1251,61 @@ The register also received a checkbox to only display profiles on which you wrot
 - Removed April Fools' code (including the forgotten rainbow companion names).
 
 ]],
+	WHATS_NEW_23_1 = [[
+# Changelog version 1.6.1
+
+## Music system rework
+
+- Technical changes in patch 8.2 required us to change how music is handled by the addon. **This means the update is required for musics to work.** This change should be seamless and backwards compatible (music themes from profiles coming from outdated versions should still play fine).
+- This allowed for the addition of musics previously unavailable (looking at you, void elf musics).
+- The duration of all musics should now be visible in the music browser line tooltips.
+
+## Changed
+
+- Settings to increase color contrast in tooltips and chat have been consolidated in a single setting for both which can be found in the General settings. It also applies in more places, like the map scan tooltips.
+
+## Fixed
+
+- The anchor for the map scan button can now properly be set.
+- Fixed a switch in Headers/Paragraph dropdown titles
+- Fixed an error message that could be caused by other addons misusing official API functions.
+
+]],
+	WHATS_NEW_23_2 = [[
+# Changelog version 1.6.2
+
+## Added
+
+- Added 328 icons and 20 images from patch 8.2.
+- Added an indicator to the music browser when the default name of a music differs from the one matching the current filter.
+
+## Fixed
+
+- Fixed issues in the music data transfer between TRP and MRP.
+- Fixed an issue with duplicated lines on the map scan button tooltip.
+- Further speculative fixes to the map issue on login.
+
+]],
+
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	WHATS_NEW_23_3 = [[
+# Changelog version 1.6.3
+
+## Changed
+
+- Companion tooltips will now adjust contrast for the custom color if the setting is enabled.
+
+## Fixed
+
+- Fixed a companion tooltip error when the API fails to return the pet type.
+- Fixed an issue which could make the toolbar appear above the world map.
+- Fixed an anchoring error with the target frame.
+
+]],
 	CM_CLASS_DEMONHUNTER = "Demon Hunter",
 };
 

@@ -918,12 +918,12 @@ end
 local function onContainerTagClicked(button, frame, isP)
 	local values = {};
 	if not isP then
-		tinsert(values, {loc.REG_PLAYER_ABOUT_P});
+		tinsert(values, {loc.REG_PLAYER_ABOUT_HEADER});
 		tinsert(values, {loc.CM_LEFT, 1});
 		tinsert(values, {loc.CM_CENTER, 2});
 		tinsert(values, {loc.CM_RIGHT, 3});
 	else
-		tinsert(values, {loc.REG_PLAYER_ABOUT_HEADER});
+		tinsert(values, {loc.REG_PLAYER_ABOUT_P});
 		tinsert(values, {loc.CM_CENTER, 1});
 		tinsert(values, {loc.CM_RIGHT, 2});
 	end

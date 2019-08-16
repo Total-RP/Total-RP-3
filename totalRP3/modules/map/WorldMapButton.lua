@@ -24,6 +24,7 @@ local Ellyb = TRP3_API.Ellyb;
 local loc = TRP3_API.loc;
 local Events = TRP3_API.Events;
 local getConfigValue = TRP3_API.configuration.getValue;
+local setConfigValue = TRP3_API.configuration.setValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 --endregion
@@ -48,8 +49,9 @@ local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon("ability_mage_timewarp")
 Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
 
-	local function placeMapButton()
-		local position = getConfigValue(CONFIG_MAP_BUTTON_POSITION)
+	local function placeMapButton(newPosition)
+		if newPosition then setConfigValue(CONFIG_MAP_BUTTON_POSITION, newPosition) end
+		local position = newPosition or getConfigValue(CONFIG_MAP_BUTTON_POSITION)
 
 		WorldMapButton:SetParent(WorldMapFrame.BorderFrame);
 		WorldMapButton:ClearAllPoints();
@@ -96,6 +98,7 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	Ellyb.Tooltips.getTooltip(WorldMapButton)
 		 :SetTitle(loc.MAP_BUTTON_TITLE)
 		 :OnShow(function(tooltip)
+		tooltip:ClearTempLines();
 		tooltip:AddTempLine(WorldMapButton.subtitle)
 	end)
 	--}}}

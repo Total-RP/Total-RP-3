@@ -152,9 +152,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		-- it will be displayed as "will be imported". If not, it will be greyed out.
 		for key, value in pairs(importableData) do
 			if profile.info[key] then
-				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREEN(value)"\n";
+				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREEN(value) .. "\n";
 			else
-				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREY(value)"\n";
+				tooltip = tooltip .. TRP3_API.Ellyb.ColorManager.GREY(value) .. "\n";
 			end
 		end
 
