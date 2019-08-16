@@ -176,7 +176,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		-- Create a button for the toolbar to show/hide the NPC Talk frame
 		TRP3_API.toolbar.toolbarAddButton({
 			id = "bb_trp3_npctalk",
-			icon = "Ability_Warrior_CommandingShout",
+			icon = TRP3_API.globals.is_classic and "Ability_Warrior_BattleShout" or "Ability_Warrior_CommandingShout",
 			configText = loc.NPC_TALK_TITLE,
 			tooltip = loc.NPC_TALK_TITLE,
 			tooltipSub = loc.NPC_TALK_BUTTON_TT,
