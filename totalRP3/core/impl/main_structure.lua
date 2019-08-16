@@ -423,7 +423,7 @@ local function onTutorialRefresh(pageID)
 	if currentPageId == pageID then
 		local currentPage = pageStructures[currentPageId];
 		TRP3_TutorialFrame:Hide();
-		if currentPage.tutorialProvider and currentPage.tutorialProvider() then
+		if not TRP3_API.globals.is_classic and currentPage.tutorialProvider and currentPage.tutorialProvider() then
 			TRP3_MainTutorialButton:Show();
 			TRP3_MainTutorialButton.provider = currentPage.tutorialProvider;
 		else
