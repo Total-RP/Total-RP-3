@@ -79,10 +79,12 @@ TRP3_API.globals = {
 	},
 
 	icons = {
-		default = "TEMP",
+		default = "INV_Misc_QuestionMark",
 		unknown = "INV_Misc_QuestionMark",
 		profile_default = "INV_Misc_GroupLooking",
 	},
+
+	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
 
 	-- Profile Constants
 	PSYCHO_DEFAULT_VALUE_V1 = 3,

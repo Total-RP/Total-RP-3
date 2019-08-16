@@ -41,7 +41,7 @@ local GetSummonedPetGUID, GetPetInfoByPetID;
 local GetMountIDs, GetMountInfoByID;
 
 -- Classic proofing
-if TRP3_API.Ellyb.System:IsClassicClient() then
+if TRP3_API.globals.is_classic then
 	GetSummonedPetGUID = function() return end;
 	GetPetInfoByPetID = function() return end;
 	GetMountIDs = function() return {} end;

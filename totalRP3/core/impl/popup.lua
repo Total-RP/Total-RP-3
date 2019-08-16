@@ -37,7 +37,7 @@ local max = math.max;
 local GetNumPets, GetPetInfoByIndex;
 local GetMountIDs, GetMountInfoByID, GetMountInfoExtraByID;
 
-if TRP3_API.Ellyb.System:IsClassicClient() then
+if TRP3_API.globals.is_classic then
 	GetNumPets = function() return 0 end;
 	GetPetInfoByIndex = function() return end;
 	GetMountIDs = function() return {} end;

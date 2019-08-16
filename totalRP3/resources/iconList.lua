@@ -17,6 +17,11 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local version = select(4, GetBuildInfo());
+if version < 80100 then
+	return;
+end
+
 local iconList = {
 	"6BF_Blackrock_Nova",
 	"6BF_Explosive_Shard",

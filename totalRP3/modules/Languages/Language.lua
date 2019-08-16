@@ -63,7 +63,7 @@ local LANGUAGES_ICONS = {
 
 }
 
-local TEMP_ICON = Icon("TEMP")
+local TEMP_ICON = Icon("INV_Misc_QuestionMark")
 
 ---@class Language : Object
 local Language, _private = Ellyb.Class("Language")

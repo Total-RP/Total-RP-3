@@ -39,6 +39,6 @@
 	<Include file="LibDeflate\lib.xml" />
 	
 	<!-- LibRPMedia https://github.com/wow-rp-addons/LibRPMedia -->
-	<Include file="LibRPMedia\LibRPMedia-Retail-1.0.xml" />
+	<Include file="LibRPMedia\LibRPMedia-1.0.xml" />
 
 </Ui>
