@@ -831,7 +831,7 @@ function TRP3_ColorButtonLoad(self)
 			_G[self:GetName() .. "SwatchBg"]:SetColorTexture(red / 255, green / 255, blue / 255);
 			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
 		else
-			_G[self:GetName() .. "SwatchBg"]:SetTexture("Interface\\ICONS\\icon_petfamily_mechanical");
+			_G[self:GetName() .. "SwatchBg"]:SetTexture(is_classic and "Interface\\ICONS\\INV_Misc_Gear_01" or "Interface\\ICONS\\icon_petfamily_mechanical");
 			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		if self.onSelection then
