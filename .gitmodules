@@ -1,6 +1,6 @@
 [submodule "totalRP3/libs/Ellyb"]
 	path = totalRP3/libs/Ellyb
-url=https://github.com/Solanya/Ellyb
+url=https://github.com/Ellypse/Ellyb
 [submodule "Scripts/mature-dict"]
 	path = Scripts/mature-dict
 	url = https://github.com/Ellypse/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words
