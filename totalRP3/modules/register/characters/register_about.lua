@@ -869,7 +869,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			tooltip = loc.TF_PLAY_THEME,
-			icon = "inv_misc_drum_06"
+			icon = Globals.is_classic and "INV_Misc_Drum_01" or "inv_misc_drum_06"
 		});
 	end
 end);

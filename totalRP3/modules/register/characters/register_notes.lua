@@ -35,7 +35,7 @@ local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
 local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 
-local NOTES_ICON = Ellyb.Icon("Inv_misc_scrollunrolled03b");
+local NOTES_ICON = Ellyb.Icon(Globals.is_classic and "INV_Scroll_02" or "Inv_misc_scrollunrolled03b");
 
 local function displayNotes(context)
 

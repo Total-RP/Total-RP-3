@@ -1080,7 +1080,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-			icon = "inv_inscription_scroll"
+			icon = Globals.is_classic and "INV_Misc_Book_09" or "inv_inscription_scroll"
 		});
 	end
 end);
