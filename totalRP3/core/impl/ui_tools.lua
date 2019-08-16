@@ -43,6 +43,7 @@ local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPl
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
+local is_classic = globals.is_classic;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
@@ -749,32 +750,32 @@ end
 
 local unitTexture = {
 	Human = {
-		"Achievement_Character_Human_Male",
-		"Achievement_Character_Human_Female",
+		is_classic and "Ability_Warrior_Revenge" or "Achievement_Character_Human_Male",
+		is_classic and "INV_Misc_Head_Human_02" or "Achievement_Character_Human_Female",
 	},
 	Gnome = {
-		"Achievement_Character_Gnome_Male",
-		"Achievement_Character_Gnome_Female",
+		is_classic and "INV_Misc_Head_Gnome_01" or "Achievement_Character_Gnome_Male",
+		is_classic and "INV_Misc_Head_Gnome_02" or "Achievement_Character_Gnome_Female",
 	},
 	Scourge = {
-		"Achievement_Character_Undead_Male",
-		"Achievement_Character_Undead_Female",
+		is_classic and "INV_Misc_Head_Undead_01" or "Achievement_Character_Undead_Male",
+		is_classic and "INV_Misc_Head_Undead_02" or "Achievement_Character_Undead_Female",
 	},
 	NightElf = {
-		"Achievement_Character_Nightelf_Male",
+		is_classic and "Ability_Ambush" or "Achievement_Character_Nightelf_Male",
 		"Achievement_Character_Nightelf_Female",
 	},
 	Dwarf = {
 		"Achievement_Character_Dwarf_Male",
-		"Achievement_Character_Dwarf_Female",
+		is_classic and "INV_Misc_Head_Dwarf_02" or "Achievement_Character_Dwarf_Female",
 	},
 	Draenei = {
 		"Achievement_Character_Draenei_Male",
 		"Achievement_Character_Draenei_Female",
 	},
 	Orc = {
-		"Achievement_Character_Orc_Male",
-		"Achievement_Character_Orc_Female",
+		is_classic and "Ability_Warrior_WarCry" or "Achievement_Character_Orc_Male",
+		is_classic and "INV_Misc_Head_Orc_02" or "Achievement_Character_Orc_Female",
 	},
 	BloodElf = {
 		"Achievement_Character_Bloodelf_Male",
@@ -782,11 +783,11 @@ local unitTexture = {
 	},
 	Troll = {
 		"Achievement_Character_Troll_Male",
-		"Achievement_Character_Troll_Female",
+		is_classic and "INV_Misc_Head_Troll_02" or "Achievement_Character_Troll_Female",
 	},
 	Tauren = {
-		"Achievement_Character_Tauren_Male",
-		"Achievement_Character_Tauren_Female",
+		is_classic and "Spell_Holy_BlessingOfStamina" or "Achievement_Character_Tauren_Male",
+		is_classic and "INV_Misc_Head_Tauren_02" or "Achievement_Character_Tauren_Female",
 	},
 	Worgen = {
 		"achievement_worganhead",
