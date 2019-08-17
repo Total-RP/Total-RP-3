@@ -17,8 +17,7 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local version = select(4, GetBuildInfo());
-if version < 80100 then
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
 	return;
 end
 
