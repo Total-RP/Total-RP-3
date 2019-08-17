@@ -1093,9 +1093,6 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 %CONTRIBUTORS$s
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
-{col:ffffff}Ellypse's {/col}{link*https://www.patreon.com/ellypse*Patreon}{col:ffffff} supporters:{/col}
-%s
-
 {col:ffffff}Logo and minimap button icon:{/col}
 - {link*https://ebonfeathers.tumblr.com/*EbonFeather@Tumblr}
 

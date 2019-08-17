@@ -100,7 +100,6 @@ local function getLocalizedText()
 	local replacements = {
 		[1] = TRP3_API.globals.version_display,
 		[2] = TRP3_API.globals.version,
-		[3] = Ellyb:GetPatreonSupporters(),
 	};
 
 	for section, people in pairs(CREDITS) do
