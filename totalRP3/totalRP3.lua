@@ -49,14 +49,18 @@ local function loadingSequence()
 
 	--region Client check
 	--[===[@non-debug@
-	local isClassicBuild = string.find(TRP3_API.VERSION_DISPLAY, "c");
-	if isClassicBuild and WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
-		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3", "You are trying to use |cffff0000Total RP 3: Classic|r. Please install the retail version of Total RP 3 instead.");
-		return;
-	elseif not isClassicBuild and WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
+	--@retail@
+	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
 		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3-classic", "You are trying to use the |cffff0000retail|r version of Total RP 3. Please install Total RP 3: Classic instead.");
 		return;
 	end
+	--@end-retail@
+	--[===[@non-retail@
+	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
+		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3", "You are trying to use |cffff0000Total RP 3: Classic|r. Please install the retail version of Total RP 3 instead.");
+		return;
+	end
+	--@end-non-retail@]===]
 	--@end-non-debug@]===]
 	--endregion
 
