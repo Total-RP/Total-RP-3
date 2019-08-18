@@ -35,6 +35,23 @@ local displayMessage = Utils.message.displayMessage;
 local EMPTY = Globals.empty;
 local tcopy = Utils.table.copy;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
+local IsMounted = IsMounted;
+
+local GetSummonedPetGUID, GetPetInfoByPetID;
+local GetMountIDs, GetMountInfoByID;
+
+-- Classic proofing
+if TRP3_API.globals.is_classic then
+	GetSummonedPetGUID = function() return end;
+	GetPetInfoByPetID = function() return end;
+	GetMountIDs = function() return {} end;
+	GetMountInfoByID = function() return end;
+else
+	GetSummonedPetGUID = C_PetJournal.GetSummonedPetGUID;
+	GetPetInfoByPetID = C_PetJournal.GetPetInfoByPetID;
+	GetMountIDs = C_MountJournal.GetMountIDs;
+	GetMountInfoByID = C_MountJournal.GetMountInfoByID;
+end
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
 
@@ -191,7 +208,6 @@ function TRP3_API.companions.player.getProfiles()
 	return playerCompanions;
 end
 
-local GetMountIDs, GetMountInfoByID, IsMounted = C_MountJournal.GetMountIDs, C_MountJournal.GetMountInfoByID, IsMounted;
 local function getCurrentMountSpellID()
 	if IsMounted() then
 		for _, id in pairs(GetMountIDs()) do
@@ -218,8 +234,6 @@ TRP3_API.companions.player.getCurrentMountProfile = getCurrentMountProfile;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Exchange
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local GetSummonedPetGUID, GetPetInfoByPetID = C_PetJournal.GetSummonedPetGUID, C_PetJournal.GetPetInfoByPetID;
 
 local function getCompanionVersionNumbers(profileID)
 	local profile = playerCompanions[profileID];

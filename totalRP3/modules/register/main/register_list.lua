@@ -59,6 +59,7 @@ local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMa
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 local tContains = tContains;
 local GetAutoCompleteRealms = GetAutoCompleteRealms;
+local is_classic = Globals.is_classic;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -102,7 +103,7 @@ local function openPage(profileID, unitID)
 			onSelected = function() setPage("player_main", pageContext ) end,
 			isChildOf = REGISTER_PAGE,
 			closeable = true,
-			icon = "Interface\\ICONS\\pet_type_humanoid",
+			icon = is_classic and "Interface\\ICONS\\INV_Helmet_20" or "Interface\\ICONS\\pet_type_humanoid",
 			pageContext = pageContext,
 		});
 		selectMenu(menuID);
@@ -1079,7 +1080,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			alertIcon = "Interface\\GossipFrame\\AvailableQuestIcon",
-			icon = "inv_inscription_scroll"
+			icon = Globals.is_classic and "INV_Misc_Book_09" or "inv_inscription_scroll"
 		});
 	end
 end);

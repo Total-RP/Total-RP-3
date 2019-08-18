@@ -38,6 +38,7 @@ local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_A
 local setPage = TRP3_API.navigation.page.setPage;
 local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
+local is_classic = Globals.is_classic;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -227,7 +228,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				if UnitIsDND("player") then
 					buttonStructure.tooltip  = status1Text;
 					buttonStructure.tooltipSub  = status1SubText;
-					buttonStructure.icon = "Ability_Mage_IncantersAbsorbtion";
+					buttonStructure.icon = is_classic and "Ability_Warrior_Challange" or "Ability_Mage_IncantersAbsorbtion";
 				elseif UnitIsAFK("player") then
 					buttonStructure.tooltip  = status2Text;
 					buttonStructure.tooltipSub  = status2SubText;
@@ -235,7 +236,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				else
 					buttonStructure.tooltip  = status3Text;
 					buttonStructure.tooltipSub  = status3SubText;
-					buttonStructure.icon = "Ability_Rogue_MasterOfSubtlety";
+					buttonStructure.icon = is_classic and "Ability_Stealth" or "Ability_Rogue_MasterOfSubtlety";
 				end
 			end,
 			onClick = function(_, _, button)
@@ -256,7 +257,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
 
 		-- Toolbar RP status
-		local RP_ICON, OOC_ICON = "spell_shadow_charm", "Inv_misc_grouplooking";
+		local RP_ICON, OOC_ICON = "spell_shadow_charm", is_classic and "Achievement_GuildPerk_EverybodysFriend" or "Inv_misc_grouplooking";
 		local rpTextOn = loc.TB_RPSTATUS_ON;
 		local rpTextOff = loc.TB_RPSTATUS_OFF;
 		local rpText2 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_ON;

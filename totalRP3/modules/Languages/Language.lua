@@ -17,6 +17,10 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+---@type TRP3_API
+local _, TRP3_API = ...;
+local is_classic = TRP3_API.globals.is_classic;
+
 local Ellyb = Ellyb(...);
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
@@ -27,17 +31,17 @@ local LANGUAGES_ICONS = {
 
 	-- Alliance
 	[35] = Icon("Inv_Misc_Tournaments_banner_Draenei"), -- Draenei
-	[2] = Icon("Inv_Misc_Tournaments_banner_Nightelf"), -- Dranassian
-	[6] = Icon("Inv_Misc_Tournaments_banner_Dwarf"), -- Dwarvish
-	[7] = Icon("Inv_Misc_Tournaments_banner_Human"),-- Common
-	[13] = Icon("Inv_Misc_Tournaments_banner_Gnome"),-- Gnomish
+	[2] = Icon(is_classic and "Spell_Arcane_TeleportMoonglade" or "Inv_Misc_Tournaments_banner_Nightelf"), -- Dranassian
+	[6] = Icon(is_classic and "Spell_Arcane_TeleportIronForge" or "Inv_Misc_Tournaments_banner_Dwarf"), -- Dwarvish
+	[7] = Icon(is_classic and "Spell_Arcane_TeleportStormWind" or "Inv_Misc_Tournaments_banner_Human"),-- Common
+	[13] = Icon(is_classic and "INV_Misc_EngGizmos_01" or "Inv_Misc_Tournaments_banner_Gnome"),-- Gnomish
 
 	-- Horde
-	[1] = Icon("Inv_Misc_Tournaments_banner_Orc"), -- Orcish
-	[33] = Icon("Inv_Misc_Tournaments_banner_Scourge"), -- Forsaken
-	[3] = Icon("Inv_Misc_Tournaments_banner_Tauren"), -- Taurahe
+	[1] = Icon(is_classic and "Spell_Arcane_TeleportOrgrimmar" or "Inv_Misc_Tournaments_banner_Orc"), -- Orcish
+	[33] = Icon(is_classic and "Spell_Arcane_TeleportUnderCity" or "Inv_Misc_Tournaments_banner_Scourge"), -- Forsaken
+	[3] = Icon(is_classic and "Spell_Arcane_TeleportThunderBluff" or "Inv_Misc_Tournaments_banner_Tauren"), -- Taurahe
 	[10] = Icon("Inv_Misc_Tournaments_banner_Bloodelf"), -- Thalassian
-	[14] = Icon("Inv_Misc_Tournaments_banner_Troll"), -- Zandali
+	[14] = Icon(is_classic and "INV_Banner_01" or "Inv_Misc_Tournaments_banner_Troll"), -- Zandali
 	[40] = Icon("achievement_Goblinhead"), -- Goblin
 
 	-- Pandaren (now neutral)
@@ -63,7 +67,7 @@ local LANGUAGES_ICONS = {
 
 }
 
-local TEMP_ICON = Icon("TEMP")
+local TEMP_ICON = Icon("INV_Misc_QuestionMark")
 
 ---@class Language : Object
 local Language, _private = Ellyb.Class("Language")

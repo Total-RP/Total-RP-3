@@ -32,22 +32,6 @@ Please quit the game completely in order for the add-on to properly update.
 end
 --endregion
 
---region Game version check
-local SUPPORTED_API_VERSION = 80000;
-local SUPPORTED_BUILD = ("8.0 (API %s)"):format(SUPPORTED_API_VERSION);
-
-local displayBuild, _, _, interfaceVersionNumber = GetBuildInfo();
-
-if interfaceVersionNumber < SUPPORTED_API_VERSION then
-	local currentBuild = ("%s (API %s)"):format(displayBuild, interfaceVersionNumber);
-	error(([[This version of Total RP 3 only supports patch %s or above, but you are running patch %s.
-
-Please downgrade to the latest version available for this patch.
-If you are using the Twitch client, make sure to set your release type preferences to Release instead of Beta/Alpha to avoid getting preview versions.]])
-		:format(SUPPORTED_BUILD, currentBuild));
-end
---endregion
-
 --region Dev builds setup
 --@alpha@
 -- Force showing Lua errors on non release builds
