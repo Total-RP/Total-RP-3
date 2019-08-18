@@ -18,7 +18,7 @@ script: /home/travis/.luarocks/bin/luacheck .
 
 deploy:
   provider: script
-  script: https://raw.githubusercontent.com/Total-RP/Total-RP-3/Scripts/release.sh
+  script: bash ./Scripts/release.sh
   on:
     tags: true
 
