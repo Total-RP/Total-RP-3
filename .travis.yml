@@ -18,7 +18,11 @@ script: /home/travis/.luarocks/bin/luacheck .
 
 deploy:
   provider: script
-  script: curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.2.0 -o
+  before_script:
+    - '[[ "${TRAVIS_TAG,,}" == *"alpha"* ]] || [[ "${TRAVIS_TAG,,}" == *"beta"* ]] && unset WOWI_API_TOKEN'
+  script:
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.2.0 -o
+    - curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -p 335857 -w 24113 -g 1.13.2 -o
   on:
     tags: true
 
