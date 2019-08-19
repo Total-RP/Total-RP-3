@@ -40,7 +40,7 @@ local function onStart()
 		local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
 		local isChannelHandled                  = TRP3_API.chat.isChannelHandled; -- Check if Total RP 3 handles this channel
 		local configIsChannelUsed               = TRP3_API.chat.configIsChannelUsed; -- Check if a channel is enable in settings
-		local configIncreaseNameColorContrast   = TRP3_API.chat.configIncreaseNameColorContrast; -- Check if the config is to increase color contrast for custom colored names
+		local configIncreaseNameColorContrast   = AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast; -- Check if the config is to increase color contrast for custom colored names
 		local configShowNameCustomColors        = TRP3_API.chat.configShowNameCustomColors; -- Check if the config is to use custom color for names
 		local getUnitCustomColor                = TRP3_API.utils.color.getUnitCustomColor; -- Get the custom color of a unit using its Unit ID
 		local extractColorFromText              = TRP3_API.utils.color.extractColorFromText; -- Get a Color object from a colored text

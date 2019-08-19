@@ -34,7 +34,7 @@ local function onStart()
 	local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
 	local getClassColor = TRP3_API.utils.color.getClassColor;
 	local getUnitCustomColor = TRP3_API.utils.color.getUnitCustomColor;
-	local increaseColorContrast = TRP3_API.chat.configIncreaseNameColorContrast;
+	local increaseColorContrast = AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast;
 	local configShowNameCustomColors = TRP3_API.chat.configShowNameCustomColors
 	local getData = TRP3_API.profile.getData;
 	local UnitClass = UnitClass;
