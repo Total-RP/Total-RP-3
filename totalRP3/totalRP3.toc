@@ -1,4 +1,9 @@
+#@retail@
 ## Interface: 80200
+#@end-retail@
+#@non-retail@
+# ## Interface: 11302
+#@end-non-retail@
 ## Title: Total RP 3
 ## Author: Telkostrasz & Ellypse
 ## Version: @project-version@

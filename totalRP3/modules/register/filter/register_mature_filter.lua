@@ -603,7 +603,7 @@ local function onStart()
 		end,
 		tooltipSub = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_TT,
 		tooltip = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST,
-		icon = "INV_Inscription_ParchmentVar03"
+		icon = TRP3_API.globals.is_classic and "INV_Scroll_07" or "INV_Inscription_ParchmentVar03"
 	});
 
 	-- Manually flag player button
@@ -625,7 +625,7 @@ local function onStart()
 		end,
 		tooltipSub = loc.MATURE_FILTER_FLAG_PLAYER_TT,
 		tooltip = loc.MATURE_FILTER_FLAG_PLAYER,
-		icon = "Ability_Hunter_MasterMarksman"
+		icon = TRP3_API.globals.is_classic and "Ability_Hunter_SniperShot" or "Ability_Hunter_MasterMarksman"
 	});
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

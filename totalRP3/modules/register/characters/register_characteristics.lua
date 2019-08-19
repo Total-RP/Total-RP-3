@@ -51,6 +51,7 @@ local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
+local is_classic = TRP3_API.globals.is_classic;
 
 local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
@@ -593,7 +594,7 @@ local MISC_PRESET = {
 	{
 		NA = loc.REG_PLAYER_MSP_HOUSE,
 		VA = "",
-		IC = "inv_misc_kingsring1"
+		IC = is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1"
 	},
 	{
 		NA = loc.REG_PLAYER_MSP_NICK,
@@ -603,7 +604,7 @@ local MISC_PRESET = {
 	{
 		NA = loc.REG_PLAYER_MSP_MOTTO,
 		VA = "",
-		IC = "INV_Inscription_ScrollOfWisdom_01"
+		IC = is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01"
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_TRAITS,
@@ -618,13 +619,13 @@ local MISC_PRESET = {
 	{
 		NA = loc.REG_PLAYER_TRP2_TATTOO,
 		VA = "",
-		IC = "INV_Inscription_inkblack01"
+		IC = is_classic and "INV_Potion_65" or "INV_Inscription_inkblack01"
 	},
 	{
 		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
 		NA = loc.CM_NAME,
 		VA = loc.CM_VALUE,
-		IC = "TEMP"
+		IC = "INV_Misc_QuestionMark"
 	},
 }
 
@@ -647,9 +648,9 @@ local function psychoAdd(presetID)
 	if presetID == "new" then
 		tinsert(draftData.PS, {
 			LT = loc.REG_PLAYER_LEFTTRAIT,
-			LI = "TEMP",
+			LI = "INV_Misc_QuestionMark",
 			RT = loc.REG_PLAYER_RIGHTTRAIT,
-			RI = "TEMP",
+			RI = "INV_Misc_QuestionMark",
 			VA = Globals.PSYCHO_DEFAULT_VALUE_V1,
 			V2 = Globals.PSYCHO_DEFAULT_VALUE_V2,
 		});
@@ -1355,8 +1356,8 @@ local function initStructures()
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHAOTIC,
 			RT = loc.REG_PLAYER_PSYCHO_Loyal,
-			LI = "Ability_Rogue_WrongfullyAccused",
-			RI = "Ability_Paladin_SanctifiedWrath",
+			LI = is_classic and "Spell_Shadow_UnholyFrenzy" or "Ability_Rogue_WrongfullyAccused",
+			RI = is_classic and "Spell_Holy_RighteousFury" or "Ability_Paladin_SanctifiedWrath",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Chaste,
@@ -1374,48 +1375,48 @@ local function initStructures()
 			LT = loc.REG_PLAYER_PSYCHO_Genereux,
 			RT = loc.REG_PLAYER_PSYCHO_Egoiste,
 			LI = "INV_Misc_Gift_02",
-			RI = "INV_Misc_Coin_02",
+			RI = is_classic and "INV_Ingot_03" or "INV_Misc_Coin_02",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Sincere,
 			RT = loc.REG_PLAYER_PSYCHO_Trompeur,
-			LI = "INV_Misc_Toy_07",
+			LI = is_classic and "Spell_Holy_AuraOfLight" or "INV_Misc_Toy_07",
 			RI = "Ability_Rogue_Disguise",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Misericordieux,
 			RT = loc.REG_PLAYER_PSYCHO_Cruel,
 			LI = "INV_ValentinesCandySack",
-			RI = "Ability_Warrior_Trauma",
+			RI = is_classic and "Ability_Rogue_Eviscerate" or "Ability_Warrior_Trauma",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Pieux,
 			RT = loc.REG_PLAYER_PSYCHO_Rationnel,
-			LI = "Spell_Holy_HolyGuidance",
+			LI = is_classic and "Spell_Holy_PowerInfusion" or "Spell_Holy_HolyGuidance",
 			RI = "INV_Gizmo_02",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Pragmatique,
 			RT = loc.REG_PLAYER_PSYCHO_Conciliant,
-			LI = "Ability_Rogue_HonorAmongstThieves",
-			RI = "INV_Misc_GroupNeedMore",
+			LI = is_classic and "Ability_Rogue_DualWeild" or "Ability_Rogue_HonorAmongstThieves",
+			RI = is_classic and "ACHIEVEMENT_GUILDPERK_HAVEGROUP WILLTRAVEL" or "INV_Misc_GroupNeedMore",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Reflechi,
 			RT = loc.REG_PLAYER_PSYCHO_Impulsif,
-			LI = "Spell_Shadow_Brainwash",
-			RI = "Achievement_BG_CaptureFlag_EOS",
+			LI = is_classic and "INV_Misc_PocketWatch_01" or "Spell_Shadow_Brainwash",
+			RI = is_classic and "SPELL_FIRE_INCINERATE" or "Achievement_BG_CaptureFlag_EOS",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Acete,
 			RT = loc.REG_PLAYER_PSYCHO_Bonvivant,
-			LI = "INV_Misc_Food_PineNut",
-			RI = "INV_Misc_Food_99",
+			LI = is_classic and "INV_Misc_Coin_05" or "INV_Misc_Food_PineNut",
+			RI = is_classic and "INV_Misc_Coin_02" or "INV_Misc_Food_99",
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Valeureux,
 			RT = loc.REG_PLAYER_PSYCHO_Couard,
-			LI = "Ability_Paladin_BeaconofLight",
+			LI = is_classic and "Ability_Warrior_BattleShout" or "Ability_Paladin_BeaconofLight",
 			RI = "Ability_Druid_Cower",
 		},
 	};
@@ -1538,8 +1539,9 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
 	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25) .. " " .. loc.REG_PLAYER_REGISTER);
 	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon("Spell_Arcane_MindMastery", 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon("Spell_Arcane_MindMastery", 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	local PSYCHO_ICON = is_classic and "Spell_Holy_MindSooth" or "Spell_Arcane_MindMastery";
+	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(PSYCHO_ICON, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(PSYCHO_ICON, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
 	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc.REG_PLAYER_RACE);

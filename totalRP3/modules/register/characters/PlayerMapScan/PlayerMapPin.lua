@@ -52,7 +52,7 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(poiInfo.sender);
 	local hasWarModeActive = poiInfo.hasWarModeActive;
 	local shouldDifferentiateBetweenWarModes = getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES);
-	local hasSameWarModeAsPlayer = hasWarModeActive == C_PvP.IsWarModeActive()
+	local hasSameWarModeAsPlayer = TRP3_API.globals.is_classic or hasWarModeActive == C_PvP.IsWarModeActive()
 
 	local displayData = {};
 
@@ -107,6 +107,17 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 		self.Texture:SetVertexColor(displayData.iconColor:GetRGBA());
 	else
 		self.Texture:SetVertexColor(1, 1, 1, 1);
+	end
+
+	-- Adjust the frame level of pins that have a zero or higher priority.
+	-- This applies to pins that have a relationship status set.
+	local priority = displayData.categoryPriority or -1;
+	if type(priority) == "number" and priority >= 0 then
+		-- Topmost level if there's any sort of priority.
+		self:UseFrameLevelType("PIN_FRAME_LEVEL_TOPMOST");
+	else
+		-- Default level.
+		self:UseFrameLevelType("PIN_FRAME_LEVEL_VEHICLE_ABOVE_GROUP_MEMBER");
 	end
 
 	self.Texture:SetAlpha(displayData.opacity or 1)

@@ -49,7 +49,9 @@ local function shouldAnswerToLocationRequest()
 		return false;
 	end
 	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE) then
-		if C_PvP.IsWarModeActive() then
+		if TRP3_API.globals.is_classic then
+			return UnitIsPVP("player");
+		elseif C_PvP.IsWarModeActive() then
 			return GetZonePVPInfo() == "sanctuary"
 		end
 	end

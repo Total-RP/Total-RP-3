@@ -18,7 +18,7 @@ script: /home/travis/.luarocks/bin/luacheck .
 
 deploy:
   provider: script
-  script: curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | bash -s -- -p 75973 -w 24113 -g 8.2.0 -o
+  script: bash ./Scripts/release.sh
   on:
     tags: true
 

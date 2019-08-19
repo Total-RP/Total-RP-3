@@ -22,4 +22,5 @@
 	<Script file="iconList.lua"/>
 	<Script file="musicList.lua"/>
 	<Script file="imageList.lua"/>
+	<Script file="imageList-classic.lua"/>
 </Ui>

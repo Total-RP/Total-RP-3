@@ -580,7 +580,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 							buttonStructure.icon = profile.data.IC;
 						end
 					else
-						buttonStructure.icon = "icon_petfamily_mechanical";
+						buttonStructure.icon = Globals.is_classic and "INV_Misc_Gear_01" or "icon_petfamily_mechanical";
 						buttonStructure.tooltip = loc.REG_COMPANION_TF_NO;
 					end
 				else

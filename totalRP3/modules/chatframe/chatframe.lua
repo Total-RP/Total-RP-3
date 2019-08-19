@@ -457,7 +457,7 @@ local function wrapNameInColorForNPCEmote(name, senderID, chatColor)
 		if customColor then
 			customColor = Color(petProfile.data.NH);
 
-			if configIncreaseNameColorContrast() then
+			if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 				customColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 			end
 

@@ -30,6 +30,7 @@ local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_
 local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local characters, blackList= {}, {};
+local is_classic = Globals.is_classic;
 
 -- These functions gets replaced by the proper TRP3 one once the addon has finished loading
 local function getPlayerCompleteName()
@@ -49,11 +50,11 @@ TRP3_API.register.relation = Globals.RELATIONS;
 local RELATIONS_TEXTURES = {
 	[RELATIONS.UNFRIENDLY] = "Ability_DualWield",
 	[RELATIONS.NONE] = "Ability_rogue_disguise",
-	[RELATIONS.NEUTRAL] = "Achievement_Reputation_05",
-	[RELATIONS.BUSINESS] = "Achievement_Reputation_08",
-	[RELATIONS.FRIEND] = "Achievement_Reputation_06",
+	[RELATIONS.NEUTRAL] = is_classic and "Ability_Hibernation" or "Achievement_Reputation_05",
+	[RELATIONS.BUSINESS] = is_classic and "INV_Misc_Coin_04" or "Achievement_Reputation_08",
+	[RELATIONS.FRIEND] = is_classic and "Spell_Holy_PrayerOfHealing" or "Achievement_Reputation_06",
 	[RELATIONS.LOVE] = "INV_ValentinesCandy",
-	[RELATIONS.FAMILY] = "Achievement_Reputation_07"
+	[RELATIONS.FAMILY] = is_classic and "Spell_Holy_SpellWarding" or "Achievement_Reputation_07"
 }
 
 local function setRelation(profileID, relation)
@@ -240,7 +241,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end,
 			tooltipSub = loc.TF_IGNORE_TT,
 			tooltip = loc.TF_IGNORE,
-			icon = "Achievement_BG_interruptX_flagcapture_attempts_1game"
+			icon = is_classic and "SPELL_HOLY_SILENCE" or "Achievement_BG_interruptX_flagcapture_attempts_1game"
 		});
 
 		TRP3_API.target.registerButton({

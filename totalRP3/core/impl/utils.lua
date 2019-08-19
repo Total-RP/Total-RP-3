@@ -1057,6 +1057,12 @@ end
 function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
+	if TRP3_API.globals.is_classic then
+		local musicName = LibRPMedia:GetMusicNameByFile(music);
+		if musicName then
+			music = "Sound/Music/" .. musicName .. ".mp3";
+		end
+	end
 	Log.log("Playing music: " .. music);
 	PlayMusic(music);
 	tinsert(soundHandlers, {channel = "Music", id = Utils.music.getTitle(music), handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});
