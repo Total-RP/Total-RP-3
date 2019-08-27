@@ -863,6 +863,7 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_CLASS_WARLOCK = "Warlock",
 	CM_CLASS_MONK = "Monk",
 	CM_CLASS_DRUID = "Druid",
+	CM_CLASS_DEMONHUNTER = "Demon Hunter",
 	CM_CLASS_UNKNOWN = "Unknown",
 	CM_RESIZE = "Resize",
 	CM_RESIZE_TT = "Drag to resize the frame.",
@@ -1205,12 +1206,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	REG_PLAYER_NOTES_PROFILE_HELP = "These private notes are tied to your current profile and will change based on what profile you currently have active.",
 	REG_PLAYER_NOTES_ACCOUNT = "Common notes",
 	REG_PLAYER_NOTES_ACCOUNT_HELP = "These private notes are tied to your account and will be shared with all of your profiles.",
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_4 = [[
 # Changelog version 1.6.4
@@ -1230,7 +1225,26 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
 
 ]],
-	CM_CLASS_DEMONHUNTER = "Demon Hunter",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	---@language Markdown
+	WHATS_NEW_23_5 = [[
+# Changelog version 1.6.5
+
+## Added
+
+- Added Total RP 3: Extended version number alongside Total RP 3 version number at the bottom of the tooltip.
+
+## Fixed
+
+- Fixed an error when someone executes a scan in your zone. (Classic only)
+- Fixed a potential error when saving a glance slot.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
