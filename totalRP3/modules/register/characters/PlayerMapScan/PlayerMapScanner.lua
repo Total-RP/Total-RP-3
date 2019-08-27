@@ -144,7 +144,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 				end
 				local x, y = Map.getPlayerCoordinates();
 				if x and y then
-					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, C_PvP.IsWarModeActive());
+					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, TRP3_API.globals.is_classic or C_PvP.IsWarModeActive());
 				end
 			end
 		end
