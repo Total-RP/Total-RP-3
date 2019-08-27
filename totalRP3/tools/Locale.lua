@@ -1231,6 +1231,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
+
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
