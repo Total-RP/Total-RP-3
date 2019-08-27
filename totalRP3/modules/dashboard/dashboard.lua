@@ -21,7 +21,7 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
-local Ellyb = Ellyb(_);
+local Ellyb = Ellyb(...);
 
 TRP3_API.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
