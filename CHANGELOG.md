@@ -1,3 +1,14 @@
+# Changelog version 1.6.5
+
+## Added
+
+- Added Total RP 3: Extended version number alongside Total RP 3 version number at the bottom of the tooltip.
+
+## Fixed
+
+- Fixed an error when someone executes a scan in your zone. (Classic only)
+- Fixed a potential error when saving a glance slot.
+
 # Changelog version 1.6.4
 
 We are aware of a current issue on Retail causing **quest item usage from the objective tracker** to sometimes fail. While we do not have a fix for it just yet, **typing /reload after getting the error message** temporarily fixes the issue. Sorry for the inconvenience.
