@@ -241,11 +241,11 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	-- Search if this character was bounded to another profile
-	for _, profile in pairs(profiles) do
+	for profileID, profile in pairs(profiles) do
 		if profile.link and profile.link[unitID] then
 			profile.link[unitID] = nil; -- unbound
 			if profile.msp then
-				profile = nil;
+				profiles[profileID] = nil;
 			end
 		end
 	end
