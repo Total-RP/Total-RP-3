@@ -244,6 +244,9 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	for _, profile in pairs(profiles) do
 		if profile.link and profile.link[unitID] then
 			profile.link[unitID] = nil; -- unbound
+			if profile.msp then
+				profile = nil;
+			end
 		end
 	end
 	if not profileExists(unitID) then
@@ -596,6 +599,13 @@ local function cleanupProfiles()
 	log("Purging profiles with no data")
 	for profileID, profile in pairs(profiles) do
 		if not profile.characteristics or Ellyb.Tables.isEmpty(profile.characteristics) then
+			deleteProfile(profileID, true);
+		end
+	end
+
+	log("Purging unbound MSP profiles")
+	for profileID, profile in pairs(profiles) do
+		if profile.msp and Ellyb.Tables.isEmpty(profile.link) then
 			deleteProfile(profileID, true);
 		end
 	end
