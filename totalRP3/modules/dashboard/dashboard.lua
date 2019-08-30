@@ -203,6 +203,28 @@ local function profileSelected(profileID)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- Register slash commands for IC/OOC toggle.
+	TRP3_API.slash.registerCommand({
+		id = "ic",
+		helpLine = " " .. loc.SLASH_CMD_IC_HELP,
+		handler = function()
+			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			if not currentUser:IsInCharacter() then
+				switchStatus();
+			end
+		end,
+	});
+
+	TRP3_API.slash.registerCommand({
+		id = "ooc",
+		helpLine = " " .. loc.SLASH_CMD_OOC_HELP,
+		handler = function()
+			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			if currentUser:IsInCharacter() then
+				switchStatus();
+			end
+		end,
+	});
 
 	if TRP3_API.toolbar then
 

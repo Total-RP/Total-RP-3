@@ -1226,13 +1226,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	---@language Markdown
-	WHATS_NEW_23_5 = [[
+---@language Markdown
+WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
 
 ## Added
@@ -1245,6 +1240,14 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a potential error when saving a glance slot.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	SLASH_CMD_IC_HELP = "Changes your profile to in character status.",
+	SLASH_CMD_OOC_HELP = "Changes your profile to out of character status",
 };
 
 -- Use Ellyb to generate the Localization system
