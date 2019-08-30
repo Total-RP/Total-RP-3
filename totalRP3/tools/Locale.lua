@@ -1225,12 +1225,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
@@ -1245,6 +1239,18 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a potential error when saving a glance slot.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	DB_STATUS_LC = "Roleplay language",
+	-- DB_STATUS_LC_DEFAULT will be formatted with the current locale name, eg. "Italiano".
+	DB_STATUS_LC_DEFAULT = "Default (%1$s)",
+
+	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
+	DB_STATUS_ICON_ITEM = "%1$s %2$s",
 };
 
 -- Use Ellyb to generate the Localization system
@@ -1266,28 +1272,28 @@ TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", localeContent);
 TRP3_API.loc:RegisterNewLocale("frFR", "Français", localeContent);
 
 --@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esES", "Español", localeContent);
+TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", localeContent);
 
 --@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (Latin American)", localeContent);
+TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", localeContent);
 
 --@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("itIT", "Italian", localeContent);
+TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", localeContent);
 
 --@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("koKR", "Korean", localeContent);
+TRP3_API.loc:RegisterNewLocale("koKR", "한국어", localeContent);
 
 --@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ptBR", "Brazilian Portuguese", localeContent);
+TRP3_API.loc:RegisterNewLocale("ptBR", "Português", localeContent);
 
 --@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ruRU", "Russian", localeContent);
+TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", localeContent);
 
 --@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhCN", "Simplified Chinese", localeContent);
+TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", localeContent);
 
 --@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhTW", "Traditional Chinese", localeContent);
+TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", localeContent);
 
 local Locale = {};
 TRP3_API.Locale = Locale;

@@ -19,6 +19,9 @@
 
 local Ellyb = Ellyb(...);
 
+-- Imports.
+local Enums = AddOn_TotalRP3.Enums;
+
 ---@class Player : Object
 local Player, _private = Ellyb.Class("Player")
 ---@type Player
@@ -146,7 +149,19 @@ function Player:IsCurrentUser()
 end
 
 function Player:IsInCharacter()
-	return self:GetInfo("character/RP") ~= 2
+	return self:GetRoleplayStatus() ~= Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+end
+
+function Player:GetRoleplayLanguage()
+	return self:GetInfo("character/LC");
+end
+
+function Player:GetRoleplayExperience()
+	return self:GetInfo("character/XP");
+end
+
+function Player:GetRoleplayStatus()
+	return self:GetInfo("character/RP");
 end
 
 function Player:GetAccountType()

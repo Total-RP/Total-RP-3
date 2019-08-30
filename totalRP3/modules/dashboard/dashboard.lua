@@ -26,6 +26,11 @@ TRP3_API.dashboard = {
 };
 
 -- imports
+local TRP3_Config = TRP3_API.configuration;
+local TRP3_Enums = AddOn_TotalRP3.Enums;
+local TRP3_Events = TRP3_API.events;
+local TRP3_UI = TRP3_API.ui;
+
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
@@ -73,27 +78,18 @@ local function onStatusChange(status)
 end
 
 local function switchStatus()
-	if get("player/character/RP") == 1 then
-		onStatusChange(2);
+	if get("player/character/RP") == TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 	else
-		onStatusChange(1);
+		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 	end
 end
 TRP3_API.dashboard.switchStatus = switchStatus;
 
-local function onStatusXPChange(status)
-	local character = get("player/character");
-	local old = character.XP;
-	character.XP = status;
-	if old ~= status then
-		incrementCharacterVernum();
-	end
-end
-
 local function onShow()
-	local character = get("player/character");
-	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
-	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
+	TRP3_DashboardStatus.RPStatus:UpdateSelectedListItem();
+	TRP3_DashboardStatus.XPStatus:UpdateSelectedListItem();
+	TRP3_DashboardStatus.RPLanguage:UpdateSelectedListItem();
 end
 
 function TRP3_API.dashboard.isPlayerIC()
@@ -167,24 +163,6 @@ TRP3_API.dashboard.init = function()
 	});
 
 	setupFieldSet(TRP3_DashboardStatus, loc.DB_STATUS, 150);
-	TRP3_DashboardStatus_CharactStatus:SetText(loc.DB_STATUS_RP);
-	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
-	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
-	local statusTab = {
-		{IC_ICON .. " " .. loc.DB_STATUS_RP_IC, 1, loc.DB_STATUS_RP_IC_TT},
-		{OOC_ICON .. " " .. loc.DB_STATUS_RP_OOC, 2, loc.DB_STATUS_RP_OOC_TT},
-	};
-	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 170, true);
-
-	TRP3_DashboardStatus_XPStatus:SetText(loc.DB_STATUS_XP);
-	local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
-	local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15|t";
-	local xpTab = {
-		{BEGINNER_ICON .. " " .. loc.DB_STATUS_XP_BEGINNER, 1, loc.DB_STATUS_XP_BEGINNER_TT},
-		{loc.DB_STATUS_RP_EXP, 2, loc.DB_STATUS_RP_EXP_TT},
-		{VOLUNTEER_ICON .. " " .. loc.DB_STATUS_RP_VOLUNTEER, 3, loc.DB_STATUS_RP_VOLUNTEER_TT},
-	};
-	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 170, true);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, _, dataType)
 		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then
@@ -318,3 +296,343 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
 	end
 end);
+
+--- Mixin for dropdown menus on the dashboard status frame. These widgets
+--  come with an attached label for the control and a dropdown as a subframe.
+local DashboardStatusDropDownMixin = {};
+TRP3_DashboardStatusDropDownMixin = DashboardStatusDropDownMixin;
+
+--- Handler called when the dropdown is loaded.
+function DashboardStatusDropDownMixin:OnLoad()
+	-- Initialize all Dashboard status dropdowns with a common width.
+	MSA_DropDownMenu_SetWidth(self.DropDown, 170);
+
+	-- Callbacks used by the dropdown API.
+	self.onDropDownInitialize = function(...)
+		self:VisualizeListModel(...);
+	end
+
+	self.onDropDownItemClicked = function(...)
+		self:OnListItemClicked(...)
+	end
+
+	-- Subscribe to important events.
+	TRP3_Events.registerCallback(TRP3_Events.WORKFLOW_ON_LOADED, function()
+		self:OnAddOnWorkflowLoaded();
+	end);
+end
+
+--- Handler called when the WORKFLOW_ON_LOADED event is raised.
+function DashboardStatusDropDownMixin:OnAddOnWorkflowLoaded()
+	-- Defer registering config handlers to here, since OnLoad is too early.
+	TRP3_Config.registerHandler({ "AddonLocale" }, function()
+		self:OnAddOnLocaleChanged();
+	end);
+
+	self:LocalizeUI();
+end
+
+--- Handler called when the selected locale for the addon changes.
+function DashboardStatusDropDownMixin:OnAddOnLocaleChanged()
+	self:LocalizeUI();
+end
+
+--- Handler called when an item in the list model is clicked.
+function DashboardStatusDropDownMixin:OnListItemClicked(item)
+	self:SetSelectedListItem(item.value);
+end
+
+--- Returns the localization key used by the UI label.
+function DashboardStatusDropDownMixin:GetLabelTextKey()
+	return self.labelTextKey;
+end
+
+--- Sets the localization key used by the UI label.
+function DashboardStatusDropDownMixin:SetLabelTextKey(labelTextKey)
+	self.labelTextKey = labelTextKey;
+	self:LocalizeUI();
+end
+
+--- Returns the list model displayed by the dropdown menu widget.
+function DashboardStatusDropDownMixin:GetListModel()
+	return self.listModel;
+end
+
+--- Replaces the list model displayed by the dropdown menu widget.
+function DashboardStatusDropDownMixin:SetListModel(listModel)
+	self.listModel = listModel;
+
+	MSA_DropDownMenu_Initialize(self.DropDown, self.onDropDownInitialize);
+end
+
+--- Returns the currently selected list item value.
+function DashboardStatusDropDownMixin:GetSelectedListItem()
+	return self.DropDown.selectedValue;
+end
+
+--- Sets the currently selected list item value.
+function DashboardStatusDropDownMixin:SetSelectedListItem(value)
+	-- Don't use the _SetSelected* type functions as they're not reliable
+	-- if we're not the open/initializing menu. Instead, do it by hand.
+	self.DropDown.selectedValue = value;
+	self:RefreshListModel();
+end
+
+--- Updates the UI to apply any localization-specific changes.
+function DashboardStatusDropDownMixin:LocalizeUI()
+	self.Label:SetText(loc:GetText(self:GetLabelTextKey()) or "");
+end
+
+--- Refreshes the dropdown list from the contents of the assigned model.
+function DashboardStatusDropDownMixin:RefreshListModel()
+	-- Refresh the full menu only if open.
+	if MSA_DROPDOWNMENU_OPEN_MENU == self.DropDown then
+		MSA_DropDownMenu_RefreshAll(self.DropDown);
+		return;
+	end
+
+	-- The menu isn't open, but we can update the text on the widget at least.
+	-- The default is "Custom", in line with the stock UI.
+	local text = VIDEO_QUALITY_LABEL6;
+	local listModel = self:GetListModel();
+	if self.DropDown.selectedValue ~= nil and listModel then
+		for listIndex = 1, #listModel do
+			local listItem = listModel[listIndex];
+			if listItem.value == self.DropDown.selectedValue then
+				text = listItem.text;
+				break;
+			end
+		end
+	end
+
+	MSA_DropDownMenu_SetText(self.DropDown, text);
+end
+
+--- Populates a dropdown menu based off the contents of the assigned model.
+function DashboardStatusDropDownMixin:VisualizeListModel(_, level)
+	local listModel = self:GetListModel();
+	if not listModel or (level and level > 1) then
+		-- No model assigned, or you're (somehow) building a tree.
+		return;
+	end
+
+	for listIndex = 1, #listModel do
+		local listItem = listModel[listIndex];
+		local menuItem = MSA_DropDownMenu_CreateInfo();
+
+		if listItem.class == "separator" then
+			MSA_DropDownMenu_AddSeparator(menuItem, level);
+		else
+			-- The list item fields are passed through, but we'll set some
+			-- common sense defaults.
+			menuItem.func = self.onDropDownItemClicked;
+			menuItem.tooltipOnButton = true;
+			Mixin(menuItem, listItem);
+
+			-- And we'll apply more defaults afterwards.
+			if menuItem.tooltipText and not menuItem.tooltipTitle then
+				-- Has tooltip text but no title; use item text.
+				menuItem.tooltipTitle = menuItem.text;
+			end
+
+			MSA_DropDownMenu_AddButton(menuItem, level);
+		end
+	end
+end
+
+--- Mixin for the RP Status dropdown widget.
+local RPStatusDropDownMixin = CreateFromMixins(DashboardStatusDropDownMixin);
+TRP3_RPStatusDropDownMixin = RPStatusDropDownMixin;
+
+function RPStatusDropDownMixin:OnAddOnWorkflowLoaded()
+	DashboardStatusDropDownMixin.OnAddOnWorkflowLoaded(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function RPStatusDropDownMixin:OnAddOnLocaleChanged()
+	DashboardStatusDropDownMixin.OnAddOnLocaleChanged(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function RPStatusDropDownMixin:OnListItemClicked(item)
+	DashboardStatusDropDownMixin.OnListItemClicked(self, item);
+
+	-- Update the character data on the current user profile.
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local character = currentUser:GetInfo("character");
+	if character.RP == item.value then
+		-- Value isn't changing.
+		return;
+	end
+
+	character.RP = item.value;
+	incrementCharacterVernum();
+end
+
+function RPStatusDropDownMixin:UpdateListModel()
+	-- Build the model for the dropdown.
+	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
+	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
+
+	self:SetListModel({
+		{
+			text = format(loc.DB_STATUS_ICON_ITEM, IC_ICON, loc.DB_STATUS_RP_IC),
+			value = TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER,
+			tooltipText = loc.DB_STATUS_RP_IC_TT,
+		},
+		{
+			text = format(loc.DB_STATUS_ICON_ITEM, OOC_ICON, loc.DB_STATUS_RP_OOC),
+			value = TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER,
+			tooltipText = loc.DB_STATUS_RP_OOC_TT,
+		},
+	});
+end
+
+function RPStatusDropDownMixin:UpdateSelectedListItem()
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	self:SetSelectedListItem(currentUser:GetRoleplayStatus());
+end
+
+--- Mixin for the RP experience dropdown widget.
+local XPStatusDropDownMixin = CreateFromMixins(DashboardStatusDropDownMixin);
+TRP3_XPStatusDropDownMixin = XPStatusDropDownMixin;
+
+function XPStatusDropDownMixin:OnAddOnWorkflowLoaded()
+	DashboardStatusDropDownMixin.OnAddOnWorkflowLoaded(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function XPStatusDropDownMixin:OnAddOnLocaleChanged()
+	DashboardStatusDropDownMixin.OnAddOnLocaleChanged(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function XPStatusDropDownMixin:OnListItemClicked(item)
+	DashboardStatusDropDownMixin.OnListItemClicked(self, item);
+
+	-- Update the character data on the current user profile.
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local character = currentUser:GetInfo("character");
+	if character.XP == item.value then
+		-- Value isn't changing.
+		return;
+	end
+
+	character.XP = item.value;
+	incrementCharacterVernum();
+end
+
+function XPStatusDropDownMixin:UpdateListModel()
+	-- Build the model for the dropdown.
+	local ICON_BEGINNER = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
+	local ICON_VOLUNTEER = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15|t";
+
+	self:SetListModel({
+		{
+			text = format(loc.DB_STATUS_ICON_ITEM, ICON_BEGINNER, loc.DB_STATUS_XP_BEGINNER),
+			value = TRP3_Enums.ROLEPLAY_EXPERIENCE.BEGINNER,
+			tooltipText = loc.DB_STATUS_XP_BEGINNER_TT,
+		},
+		{
+			text = loc.DB_STATUS_RP_EXP,
+			value = TRP3_Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED,
+			tooltipTitle = loc.DB_STATUS_RP_EXP,
+			tooltipText = loc.DB_STATUS_RP_EXP_TT,
+		},
+		{
+			text = format(loc.DB_STATUS_ICON_ITEM, ICON_VOLUNTEER, loc.DB_STATUS_RP_VOLUNTEER),
+			value = TRP3_Enums.ROLEPLAY_EXPERIENCE.VOLUNTEER,
+			tooltipText = loc.DB_STATUS_RP_VOLUNTEER_TT,
+		},
+	});
+end
+
+function XPStatusDropDownMixin:UpdateSelectedListItem()
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	self:SetSelectedListItem(currentUser:GetRoleplayExperience());
+end
+
+
+--- Mixin for the RP language widget.
+local RPLanguageDropDownMixin = CreateFromMixins(DashboardStatusDropDownMixin);
+TRP3_RPLanguageDropDownMixin = RPLanguageDropDownMixin;
+
+function RPLanguageDropDownMixin:OnAddOnWorkflowLoaded()
+	DashboardStatusDropDownMixin.OnAddOnWorkflowLoaded(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function RPLanguageDropDownMixin:OnAddOnLocaleChanged()
+	DashboardStatusDropDownMixin.OnAddOnLocaleChanged(self);
+
+	self:UpdateListModel();
+	self:UpdateSelectedListItem();
+end
+
+function RPLanguageDropDownMixin:OnListItemClicked(item)
+	DashboardStatusDropDownMixin.OnListItemClicked(self, item);
+
+	-- Translate special locale entries to values suitable for storage
+	-- in the profile.
+	local localeCode = item.value;
+	if localeCode == self.LocaleCodeDefault then
+		local locale = loc:GetActiveLocale();
+		localeCode = locale and locale:GetCode() or nil;
+	end
+
+	-- Update the character data on the current user profile.
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local character = currentUser:GetInfo("character");
+	if character.LC == localeCode then
+		-- Locale code isn't changing.
+		return;
+	end
+
+	character.LC = localeCode;
+	incrementCharacterVernum();
+end
+
+function RPLanguageDropDownMixin:UpdateListModel()
+	-- Grab all the registered locale codes and sort them.
+	local localeCodes = {};
+	for localeCode in pairs(loc:GetLocales(true)) do
+		table.insert(localeCodes, localeCode);
+	end
+
+	table.sort(localeCodes);
+
+	-- Add all the locales to the model.
+	local model = {};
+
+	for _, localeCode in ipairs(localeCodes) do
+		local locale = loc:GetLocale(localeCode);
+		table.insert(model, {
+			text = locale:GetName(),
+			value = localeCode,
+			radio = true,
+		});
+	end
+
+	self:SetListModel(model);
+end
+
+function RPLanguageDropDownMixin:UpdateSelectedListItem()
+	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+	local localeCode = currentUser:GetRoleplayLanguage();
+	if localeCode == nil then
+		-- A nil locale code translates to "whatever the addon locale is".
+		localeCode = self.LocaleCodeDefault;
+	end
+
+	self:SetSelectedListItem(localeCode);
+end
