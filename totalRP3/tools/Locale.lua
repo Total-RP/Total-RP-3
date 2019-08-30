@@ -1247,7 +1247,7 @@ WHATS_NEW_23_5 = [[
 	------------------------------------------------------------------------------------------------
 
 	SLASH_CMD_STATUS_USAGE = "ic || ooc || toggle",
-	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status <ic||ooc||toggle>|r
+	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
 Changes your character status to the specified option:
 
 |cffff9900/trp3 status ic|r will set your status to |cff00ff00in character|r.
