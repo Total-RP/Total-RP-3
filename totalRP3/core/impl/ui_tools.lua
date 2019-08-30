@@ -1155,7 +1155,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local LOCALE_ATLAS = [[Interface\AddOns\totalRP3\resources\locales]];
-local LOCALE_TEXTURES = {
+local LOCALE_ICONS = {
 	["deDE"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.00, 0.25, 0.00, 0.171875, 0, 0),
 	["enGB"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.25, 0.50, 0.00, 0.171875, 0, 0),
 	["enUS"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.50, 0.75, 0.00, 0.171875, 0, 0),
@@ -1188,5 +1188,5 @@ function TRP3_API.ui.misc.getLocaleIcon(localeCode)
 		end
 	end
 
-	return LOCALE_TEXTURES[localeCode];
+	return LOCALE_ICONS[localeCode];
 end
