@@ -3985,7 +3985,6 @@ read_globals = {
 	"GetBindingFromClick",
 	"GetBindingText",
 	"GetChatUnitColor",
-	"GetColoredName",
 	"GetDenominationsFromCopper",
 	"GetDisplayedAllyFrames",
 	"GetDungeonNameWithDifficulty",
