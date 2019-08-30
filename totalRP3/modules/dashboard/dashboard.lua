@@ -29,12 +29,10 @@ TRP3_API.dashboard = {
 local TRP3_Config = TRP3_API.configuration;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 local TRP3_Events = TRP3_API.events;
-local TRP3_UI = TRP3_API.ui;
 
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local color = Utils.str.color;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;

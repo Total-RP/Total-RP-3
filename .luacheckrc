@@ -52,13 +52,17 @@ globals = {
     "TRP3_ColorButtonLoad",
 
     -- Global mixins
+	"TRP3_ChatLinkActionButtonMixin",
+	"TRP3_DashboardStatusDropDownMixin",
+	"TRP3_RPLanguageDropDownMixin",
+	"TRP3_RPStatusDropDownMixin",
+	"TRP3_XPStatusDropDownMixin",
+    "TRP3_ChatLinkTooltipMixin",
+    "TRP3_DashboardHTMLContentMixin",
+    "TRP3_DashboardTabFrameMixin",
     "TRP3_HyperLinkedMixin",
     "TRP3_PlayerHousePinMixin",
     "TRP3_PlayerMapPinMixin",
-    "TRP3_DashboardTabFrameMixin",
-    "TRP3_DashboardHTMLContentMixin",
-    "TRP3_ChatLinkTooltipMixin",
-    "TRP3_ChatLinkActionButtonMixin",
 
     -- Global frames
     "TRP3_CharacterTooltip",
