@@ -29,168 +29,7 @@
 
 	<Include file="HTMLContent.xml"/>
 	<Include file="TabFrame.xml"/>
-
-	<Frame name="TRP3_DropDownMenuTemplate" virtual="true">
-		<Size>
-			<AbsDimension x="40" y="32"/>
-		</Size>
-		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parentLeft" parentKey="Left" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="25" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset>
-								<AbsDimension x="0" y="17"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-					<TexCoords left="0" right="0.1953125" top="0" bottom="1"/>
-				</Texture>
-				<Texture name="$parentMiddle" parentKey="Middle" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="115" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Left" relativePoint="RIGHT"/>
-					</Anchors>
-					<TexCoords left="0.1953125" right="0.8046875" top="0" bottom="1"/>
-				</Texture>
-				<Texture name="$parentRight" parentKey="Right" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
-					<Size>
-						<AbsDimension x="25" y="64"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativeKey="$parent.Middle" relativePoint="RIGHT"/>
-					</Anchors>
-					<TexCoords left="0.8046875" right="1" top="0" bottom="1"/>
-				</Texture>
-				<FontString parentKey="Text" name="$parentText" inherits="GameFontHighlightSmall" wordwrap="false" justifyH="RIGHT">
-					<Size>
-						<AbsDimension x="0" y="10"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT" relativeKey="$parent.Right">
-							<Offset>
-								<AbsDimension x="-43" y="2"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-			</Layer>
-			<Layer level="OVERLAY">
-				<Texture parentKey="Icon" name="$parentIcon" hidden="true">
-					<Size>
-						<AbsDimension x="16" y="16"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT">
-							<Offset x="30" y="2"/>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Button parentKey="Button" name="$parentButton" motionScriptsWhileDisabled="true" >
-				<Size>
-					<AbsDimension x="24" y="24"/>
-				</Size>
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativeKey="$parent.Right">
-						<Offset>
-							<AbsDimension x="-16" y="-18"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnEnter>
-						ExecuteFrameScript(self:GetParent(), "OnEnter");
-					</OnEnter>
-					<OnLeave>
-						ExecuteFrameScript(self:GetParent(), "OnLeave");
-					</OnLeave>
-					<OnClick>
-						MSA_ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-					</OnClick>
-				</Scripts>
-				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</NormalTexture>
-				<PushedTexture name="$parentPushedTexture" parentKey="PushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</PushedTexture>
-				<DisabledTexture name="$parentDisabledTexture" parentKey="DisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</DisabledTexture>
-				<HighlightTexture name="$parentHighlightTexture" parentKey="HighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
-					<Size>
-						<AbsDimension x="24" y="24"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT"/>
-					</Anchors>
-				</HighlightTexture>
-			</Button>
-		</Frames>
-		<Scripts>
-			<OnHide>
-				MSA_CloseDropDownMenus();
-			</OnHide>
-		</Scripts>
-	</Frame>
-
-	<Frame name="TRP3_DashboardStatusDropDownTemplate" virtual="true" mixin="TRP3_DashboardStatusDropDownMixin">
-		<KeyValues>
-			<!--
-				Options:
-					labelTextKey: Localization key to use for the label text.
-					listModel: Table of entries for the dropdown.
-			-->
-			<!-- <KeyValue key="labelTextKey" value="LOCALIZATION_KEY" type="string"/> -->
-			<!-- <KeyValue key="listModel" value="TRP3_SomeGlobalModel" type="global"/> -->
-		</KeyValues>
-		<Size x="200" y="18"/>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString parentKey="Label" inherits="GameFontNormal" justifyH="LEFT">
-					<Size x="200" y="18"/>
-					<Anchors>
-						<Anchor point="LEFT" x="0" y="0"/>
-					</Anchors>
-					<Color b="1.0" r="1.0" g="1.0"/>
-				</FontString>
-			</Layer>
-		</Layers>
-		<Frames>
-			<Frame name="$parentDropDown" parentKey="DropDown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.Label" relativePoint="RIGHT" x="10" y="-2"/>
-				</Anchors>
-			</Frame>
-		</Frames>
-		<Scripts>
-			<OnLoad method="OnLoad"/>
-		</Scripts>
-	</Frame>
+	<Include file="StatusPanel.xml"/>
 
 	<!-- Dashboard -->
 	<Frame name="TRP3_Dashboard" hidden="true">
@@ -220,42 +59,13 @@
 		<Frames>
 
 			<!-- Status -->
-			<Frame name="TRP3_DashboardStatus" inherits="TRP3_FieldSetFrame">
+			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">
 				<Size x="0" y="115"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-10"/>
 				</Anchors>
-				<Frames>
-					<Frame parentKey="RPStatus" name="$parentRPStatus" inherits="TRP3_DashboardStatusDropDownTemplate" mixin="TRP3_RPStatusDropDownMixin">
-						<KeyValues>
-							<KeyValue key="labelTextKey" value="DB_STATUS_RP" type="string"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOPLEFT" x="30" y="-18"/>
-							<Anchor point="TOPRIGHT" x="-30" y="-18"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="XPStatus" name="$parentXPStatus" inherits="TRP3_DashboardStatusDropDownTemplate" mixin="TRP3_XPStatusDropDownMixin">
-						<KeyValues>
-							<KeyValue key="labelTextKey" value="DB_STATUS_XP" type="string"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeKey="$parent.RPStatus" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
-							<Anchor point="TOPRIGHT" relativeKey="$parent.RPStatus" relativePoint="BOTTOMRIGHT" x="0" y="-13"/>
-						</Anchors>
-					</Frame>
-					<Frame parentKey="RPLanguage" name="$parentRPLanguage" inherits="TRP3_DashboardStatusDropDownTemplate" mixin="TRP3_RPLanguageDropDownMixin">
-						<KeyValues>
-							<KeyValue key="labelTextKey" value="DB_STATUS_LC" type="string"/>
-						</KeyValues>
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeKey="$parent.XPStatus" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
-							<Anchor point="TOPRIGHT" relativeKey="$parent.XPStatus" relativePoint="BOTTOMRIGHT" x="0" y="-13"/>
-						</Anchors>
-					</Frame>
-				</Frames>
 			</Frame>
 
 			<!-- What's new / About / Thanks -->
@@ -263,7 +73,7 @@
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>
-					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardStatus" x="0" y="-35"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.StatusPanel" x="0" y="-35"/>
 					<Anchor point="BOTTOM" x="0" y="10"/>
 				</Anchors>
 				<Scripts>
