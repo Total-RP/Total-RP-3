@@ -3,18 +3,24 @@ max_line_length = false
 exclude_files = {
 	"totalRP3_Localizator",
 	"totalRP3/libs",
-	"totalRP3_zTest"
+	"totalRP3_zTest",
+	"Scripts/mature_dictionary_template.lua",
 }
 ignore = {
 	-- Ignore undefined globals for now TODO cleanup global access
 	"112",
 	"113",
+
+	-- Ignore global writes/accesses/mutations on anything prefixed with
+	-- "TRP3_". This is the standard prefix for all of our global frame names
+	-- and mixins.
+	"11./^TRP3_",
+
 	-- Ignore unused self. This would popup for Mixins and Objects
 	"212/self",
 }
 globals = {
 	"Ellyb",
-	"TRP3_API",
 	"AddOn_TotalRP3",
 	"_G",
 
@@ -32,41 +38,6 @@ globals = {
 	"ItemRefTooltip",
 	"SlashCmdList",
 	"StaticPopupDialogs",
-
-	-- Saved variables
-	"TRP3_Presets",
-	"TRP3_Register",
-	"TRP3_MatureFilter",
-	"TRP3_Companions",
-	"TRP3_Flyway",
-	"TRP3_Colors",
-	"TRP3_StashedData",
-	"TRP3_Characters",
-	"TRP3_Profiles",
-	"TRP3_Configuration",
-	"TRP3_Notes",
-
-	-- Global methods
-	"TRP3_ShowErrorMessage",
-	"TRP3_RefreshTooltipForFrame",
-	"TRP3_ColorButtonLoad",
-
-	-- Global mixins
-	"TRP3_ChatLinkActionButtonMixin",
-	"TRP3_DashboardStatusDropDownMixin",
-	"TRP3_RPLanguageDropDownMixin",
-	"TRP3_RPStatusDropDownMixin",
-	"TRP3_XPStatusDropDownMixin",
-	"TRP3_ChatLinkTooltipMixin",
-	"TRP3_DashboardHTMLContentMixin",
-	"TRP3_DashboardTabFrameMixin",
-	"TRP3_HyperLinkedMixin",
-	"TRP3_PlayerHousePinMixin",
-	"TRP3_PlayerMapPinMixin",
-
-	-- Global frames
-	"TRP3_CharacterTooltip",
-	"TRP3_CompanionTooltip",
 }
 read_globals = {
 
