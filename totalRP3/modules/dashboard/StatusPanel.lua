@@ -1,6 +1,6 @@
 -------------------------------------------------------
 -- Total RP 3
--- Dashboard Status Frame
+-- Dashboard Status Panel
 -- --------------------------------------------------
 -- Copyright 2014-2019 Total RP 3 Development Team
 --
