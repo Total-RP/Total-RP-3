@@ -21,6 +21,8 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
+local Ellyb = Ellyb(...);
+
 TRP3_API.dashboard = {
 	NOTIF_CONFIG_PREFIX = "notification_"
 };
@@ -316,5 +318,98 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			visible = 1
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
+
+		if TRP3_API.globals.is_classic then
+			-- Show / hide helmet
+			local helmetOffIcon = Ellyb.Icon("spell_nature_invisibilty");
+			local helmetOnIcon = Ellyb.Icon("INV_Helmet_13");
+			local helmTextOn = loc.TB_SWITCH_HELM_ON;
+			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
+			local helmText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_HELM_1);
+			local helmText3 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_HELM_2);
+
+			local Button_Helmet = {
+				id = "aa_trp3_b",
+				icon = helmetOnIcon:GetFileName(),
+				configText = loc.CO_TOOLBAR_CONTENT_HELMET,
+				onEnter = function() end,
+				onModelUpdate = function(buttonStructure)
+					if ShowingHelm() then
+						buttonStructure.tooltip  = helmTextOn;
+						buttonStructure.tooltipSub = helmText3;
+						local currentHelmetTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot")));
+						buttonStructure.icon = currentHelmetTexture and Ellyb.Icon(currentHelmetTexture) or helmetOnIcon;
+					else
+						buttonStructure.tooltip  = helmTextOff;
+						buttonStructure.tooltipSub  = helmText2;
+						buttonStructure.icon = helmetOffIcon;
+					end
+				end,
+				onUpdate = function(Uibutton, buttonStructure)
+					updateToolbarButton(Uibutton, buttonStructure);
+					if GetMouseFocus() == Uibutton then
+						refreshTooltip(Uibutton);
+					end
+				end,
+				onClick = function()
+					if ShowingHelm() then
+						ShowHelm(false);
+						playUISound(1202); -- Putdowncloth_Leather01
+					else
+						ShowHelm(true);
+						playUISound(1185); -- Pickupcloth_Leather01
+					end
+				end,
+				onLeave = function()
+					mainTooltip:Hide();
+				end,
+			};
+			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
+
+			-- Show/hide cloak
+			local cloakOnIcon = Ellyb.Icon("INV_Misc_Cape_18");
+			local cloakOffIcon = Ellyb.Icon("inv_misc_cape_20");
+			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
+			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
+			local capeText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_CAPE_1);
+			local capeText3 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_CAPE_2);
+			local Button_Cape = {
+				id = "aa_trp3_a",
+				icon = cloakOnIcon:GetFileName(),
+				configText = loc.CO_TOOLBAR_CONTENT_CAPE,
+				onEnter = function() end,
+				onModelUpdate = function(buttonStructure)
+					if ShowingCloak() then
+						buttonStructure.tooltip  = capeTextOn;
+						buttonStructure.tooltipSub = capeText3;
+						local currentCloakTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")));
+						buttonStructure.icon = currentCloakTexture and Ellyb.Icon(currentCloakTexture) or cloakOnIcon;
+					else
+						buttonStructure.tooltip  = capeTextOff;
+						buttonStructure.tooltipSub  = capeText2;
+						buttonStructure.icon = cloakOffIcon;
+					end
+				end,
+				onUpdate = function(Uibutton, buttonStructure)
+					updateToolbarButton(Uibutton, buttonStructure);
+					if GetMouseFocus() == Uibutton then
+						refreshTooltip(Uibutton);
+					end
+				end,
+				onClick = function(_)
+					if ShowingCloak() then
+						ShowCloak(false);
+						playUISound(1202); -- Putdowncloth_Leather01
+					else
+						ShowCloak(true);
+						playUISound(1185); -- Pickupcloth_Leather01
+					end
+				end,
+				onLeave = function()
+					mainTooltip:Hide();
+				end,
+			};
+			TRP3_API.toolbar.toolbarAddButton(Button_Cape);
+		end
 	end
 end);
