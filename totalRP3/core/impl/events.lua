@@ -70,9 +70,6 @@ local Events = {
 	-- This is used by the tooltip and the target bar to be refreshed
 	REGISTER_ABOUT_READ = "REGISTER_ABOUT_READ",
 
-	-- Called when a notifications is created/read/removed
-	NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED",
-
 	-- Called when Wow Event UPDATE_MOUSEOVER_UNIT is fired
 	-- Arg1 : Target ID
 	-- Arg2 : Target mode (Character, pet, battle pet ...)
