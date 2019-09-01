@@ -1248,7 +1248,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	DB_STATUS_LC = "Roleplay language",
 	DB_STATUS_LC_TT = [[Sets your preferred roleplaying language. This will be shared with other compatible RP addon users.
 
-|cffff9900Note:|r This does |cffff0000not|r change the user interface language of Total RP 3. This option can instead be found in the |cffffcc00Advanced Settings|r page.]],
+|cffff9900Note:|r This does |cffff0000not|r change the user interface language of Total RP 3. This option can instead be found in the |cfffff569Advanced Settings|r page.]],
 
 	-- DB_STATUS_LC_DEFAULT will be formatted with the current locale name, eg. "Italiano".
 	DB_STATUS_LC_DEFAULT = "Default (%1$s)",
