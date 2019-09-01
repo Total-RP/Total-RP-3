@@ -371,8 +371,8 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local TEMPLATE3_MARGIN = 30;
-local TEMPLATE3_ICON_PHYSICAL = "Ability_Warrior_StrengthOfArms";
-local TEMPLATE3_ICON_PSYCHO = "Spell_Arcane_MindMastery";
+local TEMPLATE3_ICON_PHYSICAL = Globals.is_classic and "spell_holy_fistofjustice" or "Ability_Warrior_StrengthOfArms";
+local TEMPLATE3_ICON_PSYCHO = Globals.is_classic and "spell_holy_mindvision" or "Spell_Arcane_MindMastery";
 local TEMPLATE3_ICON_HISTORY = "INV_Misc_Book_12";
 
 local function setTemplate3PhysBkg(bkg)
