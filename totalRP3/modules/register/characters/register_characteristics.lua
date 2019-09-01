@@ -905,8 +905,8 @@ local function onMiscInfoDragUpdate(ticker)
 
 	-- Work out the index of the frame to swap with, if any. Skip if the
 	-- source and target are identical, or if there is no target.
-	local targetIndex = miscInfoQueryCursorIndexPosition(frame);
-	if not targetIndex or targetIndex == sourceIndex then
+	local targetIndex = miscInfoQueryCursorIndexPosition();
+	if not targetIndex or targetIndex == source.miscIndex then
 		return;
 	end
 
