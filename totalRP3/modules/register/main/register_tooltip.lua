@@ -424,12 +424,12 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
-    elseif unitIDIsFilteredForMatureContent(targetID) then
-        tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING, 1, 0.75, 0.86, getSubLineFontSize());
-        tooltipBuilder:AddLine(loc.MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT, 1, 0.75, 0, getSmallLineFontSize(), true);
-        tooltipBuilder:Build();
-        return;
-    end
+	elseif unitIDIsFilteredForMatureContent(targetID) then
+		tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING, 1, 0.75, 0.86, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT, 1, 0.75, 0, getSmallLineFontSize(), true);
+		tooltipBuilder:Build();
+		return;
+	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- icon, complete name, RP/AFK/PVP/Volunteer status
@@ -441,10 +441,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	local leftIcons = "";
 
 
-    -- Only use custom colors if the option is enabled and if we have one
-    if getConfigValue(CONFIG_CHARACT_COLOR) then
+	-- Only use custom colors if the option is enabled and if we have one
+	if getConfigValue(CONFIG_CHARACT_COLOR) then
 		color = player:GetCustomColorForDisplay() or color;
-    end
+	end
 
 
 	local completeName = getCompleteName(info.characteristics or {}, targetName, not showTitle());
@@ -1142,7 +1142,7 @@ local function onModuleInit()
 	registerTooltipModuleIsEnabled = true;
 	getCompanionProfile = TRP3_API.companions.player.getCompanionProfile;
 	getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
-    isPlayerIC = TRP3_API.dashboard.isPlayerIC;
+	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
 	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)

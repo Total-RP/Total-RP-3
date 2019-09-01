@@ -1216,9 +1216,9 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 - Total RP 3: Classic is now available as a separate download on CurseForge and WoWInterface! Be sure to install it instead of the retail version of Total RP 3 if you plan on roleplaying in WoW: Classic.
 - Important points to be aware of for the Classic version:
-  - A few icons have been changed across the addon to replace missing icons in Classic.
-  - Companion profiles have been disabled for mounts and non-combat pets, as Blizzard did not provide us with beta access. We will work on implementing them back as soon as possible.
-  - Total RP 3: Extended will not be ported to Classic at launch. We will be evaluating if a Classic port makes sense for us to do at a later date.
+	- A few icons have been changed across the addon to replace missing icons in Classic.
+	- Companion profiles have been disabled for mounts and non-combat pets, as Blizzard did not provide us with beta access. We will work on implementing them back as soon as possible.
+	- Total RP 3: Extended will not be ported to Classic at launch. We will be evaluating if a Classic port makes sense for us to do at a later date.
 
 ## Changed
 

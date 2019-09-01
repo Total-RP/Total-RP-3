@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,19 +18,19 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
 	<!-- Icon browser button  -->
 	<Button name="TRP3_IconBrowserButton" virtual="true">
 		<Size x="40" y="40"/>
-	    <NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark">
 			<Size x="40" y="40"/>
 			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
-	    </NormalTexture>
-	    <PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+		</NormalTexture>
+		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark">
 			<Size x="40" y="40"/>
 			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
 		</PushedTexture>
-	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
 		<Scripts>
 			<OnLoad>
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
@@ -43,9 +43,9 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Icon browser  -->
-    <Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true">
+	<Frame name="TRP3_IconBrowser" parent="TRP3_PopupsFrame" hidden="true" enableMouse="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="16"/>
@@ -134,5 +134,5 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 </Ui>

@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -20,7 +20,7 @@
 -->
 
 	<!-- Icon browser  -->
-    <Frame name="TRP3_CompanionBrowser" parent="TRP3_PopupsFrame" hidden="true">
+	<Frame name="TRP3_CompanionBrowser" parent="TRP3_PopupsFrame" hidden="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="16"/>
@@ -142,5 +142,5 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 </Ui>

@@ -417,8 +417,7 @@
 		<NormalFont style="GameFontHighlightSmall"/>
 		<HighlightFont style="GameFontHighlightSmall"/>
 		<DisabledFont style="GameFontHighlight"/>
-		<HighlightTexture name="$parentHighlightTexture"
-						  file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
+		<HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight-yellow" alphaMode="ADD">
 			<Anchors>
 				<Anchor point="TOPLEFT">
 					<Offset>
@@ -799,8 +798,8 @@
 	</Button>
 
 	<!-- Art pieces to hide border seams
-	 	(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
-	 -->
+		(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
+	-->
 	<Frame name="TRP3_StandardParchmentFrame" virtual="true">
 		<Layers>
 			<Layer level="ARTWORK">
@@ -931,8 +930,8 @@
 	</Frame>
 
 	<!-- Art pieces to hide border seams
-	 	(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
-	 -->
+		(copied from Blizzard, it adds a gradient texture between corners and borders so they blend)
+	-->
 	<Frame name="TRP3_SmallerStandardParchmentFrame" virtual="true">
 		<Layers>
 			<Layer level="BORDER">

@@ -7,14 +7,16 @@ language: minimal
 addons:
   apt:
     packages:
-    - luarocks
+      - luarocks
 
 git:
   depth: 150
 
 install: luarocks install --local luacheck
 
-script: /home/travis/.luarocks/bin/luacheck .
+script:
+  - /home/travis/.luarocks/bin/luacheck .
+  #- editorconfig-checker $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*')
 
 deploy:
   provider: script

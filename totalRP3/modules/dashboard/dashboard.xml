@@ -89,14 +89,14 @@
 				</Layers>
 				<Frames>
 					<Frame name="TRP3_DashboardStatus_CharactStatusList" inherits="UIDropDownMenuTemplate"
-						   enableMouse="true">
+						enableMouse="true">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_CharactStatus"
 									x="10" y="-2"/>
 						</Anchors>
 					</Frame>
 					<Frame name="TRP3_DashboardStatus_XPStatusList" inherits="UIDropDownMenuTemplate"
-						   enableMouse="true">
+						enableMouse="true">
 						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="TRP3_DashboardStatus_XPStatus" x="10"
 									y="-2"/>

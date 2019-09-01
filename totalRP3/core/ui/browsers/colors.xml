@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
 <!--
@@ -20,7 +20,7 @@
 -->
 
 	<!-- Color browser  -->
-    <Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true">
+	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -40,7 +40,7 @@
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
 			</Layer>
-			
+
 		</Layers>
 		<Frames>
 			<Button inherits="UIPanelCloseButton">
@@ -66,7 +66,7 @@
 					<Anchor point="BOTTOMRIGHT" x="-10" y="10"/>
 				</Anchors>
 				<Frames>
-				
+
 					<ColorSelect name="TRP3_ColorBrowserColor" enableMouse="true" enableKeyboard="true">
 						<Size x="365" y="128"/>
 						<Anchors>
@@ -99,13 +99,13 @@
 									<Anchors>
 										<Anchor x="-86" y="13"/>
 									</Anchors>
-									<TexCoords left="0" right="1" top="0.11" bottom="1" /> 
+									<TexCoords left="0" right="1" top="0.11" bottom="1" />
 								</Texture>
 								<Texture file="Interface\BUTTONS/UI-Quickslot2">
 									<Size x="60" y="60"/>
 									<Anchors>
 										<Anchor x="280" y="-35"/>
-									</Anchors> 
+									</Anchors>
 								</Texture>
 							</Layer>
 						</Layers>
@@ -113,11 +113,11 @@
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">
 						<Size x="145" y="20"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="BOTTOM" x="0" y="15"/>
 						</Anchors>
 					</Button>
-					
+
 					<EditBox name="TRP3_ColorBrowserEditBox" inherits="TRP3_TitledHelpEditBox" letters="7">
 						<Anchors>
 							<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="TRP3_ColorBrowserSelect" x="-15" y="0"/>
@@ -130,7 +130,7 @@
 							<Anchor point="TOPRIGHT" relativeTo="TRP3_ColorBrowserColor" relativePoint="BOTTOMRIGHT" />
 						</Anchors>
 					</Button>
-					
+
 				</Frames>
 				<Layers>
 					<Layer level="ARTWORK">
@@ -146,5 +146,5 @@
 			</Frame>
 		</Frames>
 	</Frame>
-	
+
 </Ui>

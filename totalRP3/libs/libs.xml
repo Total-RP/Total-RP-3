@@ -37,7 +37,7 @@
 
 	<!-- LibDeflate https://github.com/SafeteeWoW/LibDeflate -->
 	<Include file="LibDeflate\lib.xml" />
-	
+
 	<!-- LibRPMedia https://github.com/wow-rp-addons/LibRPMedia -->
 	<Include file="LibRPMedia\LibRPMedia-1.0.xml" />
 
