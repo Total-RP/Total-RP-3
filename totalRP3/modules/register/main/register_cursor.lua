@@ -58,7 +58,7 @@ local function canInteractWithUnit()
 	not Mouseover:Exists()
 	or InCombatLockdown() -- We don't want to open stuff in combat
 	or not Mouseover:IsPlayer() -- Unit has to be a player
-	or Mouseover:IsMountable() -- Avoid unit on multi seats mounts
+	or not TRP3_API.globals.is_classic and Mouseover:IsMountable() -- Avoid unit on multi seats mounts
 	or Mouseover:IsAttackable() -- Unit must not be attackable
 	then
 		return false;
