@@ -151,7 +151,7 @@ function TRP3_API.slash.rollDices(...)
 		i = index;
 	end
 
-	local totalMessage = loc.DICE_TOTAL:format(Utils.str.icon("inv_misc_dice_01", 20), total);
+	local totalMessage = loc.DICE_TOTAL:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_01", 20), total);
 	if i > 1 then
 		Utils.message.displayMessage(totalMessage);
 		sendDiceRoll({t = total});
@@ -180,9 +180,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if sender ~= Globals.player_id then
 			if type(arg) == "table" then
 				if arg.c and arg.d and arg.t then
-					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon("inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
+					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
 				elseif arg.t then
-					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon("inv_misc_dice_01", 20), sender, arg.t);
+					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_01", 20), sender, arg.t);
 					Utils.message.displayMessage(totalMessage);
 				end
 				Utils.music.playSoundID(36629, "SFX", sender);
