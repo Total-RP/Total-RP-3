@@ -131,7 +131,7 @@ local function rollDice(diceString)
 
 		total = total + modifierValue;
 
-		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon("inv_misc_dice_02", 20), num, diceCount, total));
+		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), num, diceCount, total));
 		sendDiceRoll({c = num, d = diceCount, t = total, m = modifierValue});
 		return total;
 	end
