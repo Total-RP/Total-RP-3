@@ -756,16 +756,6 @@ function TRP3_API.register.init()
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
-	if seriousDay then
-		registerConfigKey("rp_io", true);
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements,
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = "RP.IO",
-				configKey = "rp_io",
-			});
-	end
-
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
@@ -792,8 +782,3 @@ function TRP3_API.register.init()
 
 	createTabBar();
 end
-
-local function showRPIO()
-	return seriousDay and getConfigValue("rp_io");
-end
-TRP3_API.register.showRPIO = showRPIO;

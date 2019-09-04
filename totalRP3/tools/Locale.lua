@@ -1255,6 +1255,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
 	DB_STATUS_ICON_ITEM = "%1$s %2$s",
+
+	CO_CHAT_SHOW_OOC = "Show OOC indicator",
 };
 
 -- Use Ellyb to generate the Localization system
