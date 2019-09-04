@@ -53,7 +53,7 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_HIDE_BUTTON_IF_EMPTY, false);
 
 	local function placeMapButton(newPosition)
-		if getConfigValue(CONFIG_HIDE_BUTTON_IF_EMPTY) and #TRP3_API.MapScannersManager.getAllScans() < 1 then
+		if getConfigValue(CONFIG_HIDE_BUTTON_IF_EMPTY) and Ellyb.Tables.isEmpty(TRP3_API.MapScannersManager.getAllScans()) then
 			WorldMapButton:Hide();
 			return
 		else
