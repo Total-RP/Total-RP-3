@@ -1231,9 +1231,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
-	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
-
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
