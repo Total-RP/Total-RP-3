@@ -40,6 +40,7 @@ local GetTime = GetTime;
 --endregion
 
 local CONFIG_MAP_BUTTON_POSITION = "MAP_BUTTON_POSITION";
+local CONFIG_HIDE_BUTTON_IF_EMPTY = "HIDE_MAP_BUTTON_IF_EMPTY";
 ---@type Button
 local WorldMapButton = TRP3_WorldMapButton;
 
@@ -49,8 +50,16 @@ local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(is_classic and "Spell_Nature_TimeS
 --region Configuration
 Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	registerConfigKey(CONFIG_MAP_BUTTON_POSITION, "BOTTOMLEFT");
+	registerConfigKey(CONFIG_HIDE_BUTTON_IF_EMPTY, false);
 
 	local function placeMapButton(newPosition)
+		if getConfigValue(CONFIG_HIDE_BUTTON_IF_EMPTY) and #TRP3_API.MapScannersManager.getAllScans() < 1 then
+			WorldMapButton:Hide();
+			return
+		else
+			WorldMapButton:Show();
+		end
+
 		if newPosition then setConfigValue(CONFIG_MAP_BUTTON_POSITION, newPosition) end
 		local position = newPosition or getConfigValue(CONFIG_MAP_BUTTON_POSITION)
 
@@ -94,6 +103,16 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 		listCancel = true,
 		configKey = CONFIG_MAP_BUTTON_POSITION,
 	});
+
+	tinsert(TRP3_API.configuration.CONFIG_FRAME_PAGE.elements, {
+		inherit = "TRP3_ConfigCheck",
+		title = loc.CO_HIDE_EMPTY_MAP_BUTTON,
+		configKey = CONFIG_HIDE_BUTTON_IF_EMPTY
+	});
+
+	TRP3_API.configuration.registerHandler(CONFIG_HIDE_BUTTON_IF_EMPTY, function()
+		placeMapButton();
+	end)
 
 	--{{{ UI setup
 	NORMAL_STATE_MAP_ICON:Apply(WorldMapButton.Icon);
