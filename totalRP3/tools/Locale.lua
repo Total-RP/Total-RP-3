@@ -1226,11 +1226,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
@@ -1245,6 +1240,13 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a potential error when saving a glance slot.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_CHAT_SHOW_OOC = "Show OOC indicator",
 };
 
 -- Use Ellyb to generate the Localization system

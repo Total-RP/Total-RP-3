@@ -67,7 +67,10 @@ local CONFIG_OOC_COLOR = "chat_ooc_color";
 local CONFIG_YELL_NO_EMOTE = "chat_yell_no_emote";
 local CONFIG_INSERT_FULL_RP_NAME = "chat_insert_full_rp_name";
 local CONFIG_SHOW_ICON = "chat_show_icon";
+local CONFIG_SHOW_OOC = "chat_show_ooc";
 local CONFIG_NPCSPEECH_REPLACEMENT = "chat_npcspeech_replacement";
+
+local OOC_INDICATOR_TEXT = ColorManager.RED("<" .. loc.CM_OOC .. "> ");
 
 local function configNoYelledEmote()
 	return getConfigValue(CONFIG_YELL_NO_EMOTE);
@@ -142,6 +145,7 @@ local function createConfigPage()
 	registerConfigKey(CONFIG_YELL_NO_EMOTE, false);
 	registerConfigKey(CONFIG_INSERT_FULL_RP_NAME, true);
 	registerConfigKey(CONFIG_SHOW_ICON, false);
+	registerConfigKey(CONFIG_SHOW_OOC, false);
 	registerConfigKey(CONFIG_NPCSPEECH_REPLACEMENT, true);
 
 	local NAMING_METHOD_TAB = {
@@ -208,6 +212,11 @@ local function createConfigPage()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_USE_ICONS,
 				configKey = CONFIG_SHOW_ICON,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_CHAT_SHOW_OOC,
+				configKey = CONFIG_SHOW_OOC,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -692,6 +701,11 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	if characterColor then
 		-- And wrap the name inside the color's code
 		characterName = characterColor:WrapTextInColorCode(characterName);
+	end
+
+	if getConfigValue(CONFIG_SHOW_OOC) and not player:IsInCharacter() then
+		-- Prefix name with OOC indicator.
+		characterName = OOC_INDICATOR_TEXT .. characterName;
 	end
 
 	if getConfigValue(CONFIG_SHOW_ICON) then
