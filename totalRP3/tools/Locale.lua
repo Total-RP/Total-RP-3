@@ -1225,9 +1225,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
 
 ]],
-
----@language Markdown
-WHATS_NEW_23_5 = [[
+	---@language Markdown
+	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
 
 ## Added
@@ -1253,6 +1252,7 @@ Changes your character status to the specified option:
 |cffff9900/trp3 status ic|r will set your status to |cff00ff00in character|r.
 |cffff9900/trp3 status ooc|r will set your status to |cffff0000out of character|r.
 |cffff9900/trp3 status toggle|r will switch your status to the opposite state.]],
+	CO_CHAT_SHOW_OOC = "Show OOC indicator",
 };
 
 -- Use Ellyb to generate the Localization system

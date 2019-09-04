@@ -163,7 +163,11 @@ local function onStart()
 	-- @param buttonStructure
 	--
 	local function getTooltipTitleWithIcon(buttonStructure)
-		return icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+		if type(buttonStructure.icon) == "string" then
+			return icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+		else
+			return buttonStructure.icon:GenerateString(25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -207,7 +211,11 @@ local function onStart()
 		local LDBButton = LDBObjects[buttonStructure.id];
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
-		LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
+		if type(buttonStructure.icon) == "string" then
+			LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
+		else
+			LDBButton.icon = buttonStructure.icon:GetFileID();
+		end
 		LDBButton.tooltipTitle = getTooltipTitleWithIcon(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
 
@@ -236,8 +244,13 @@ local function onStart()
 	--
 	local function updateToolbarButton(toolbarButton, buttonStructure)
 		-- Setting the textures
-		toolbarButton:SetNormalTexture("Interface\\ICONS\\" .. buttonStructure.icon);
-		toolbarButton:SetPushedTexture("Interface\\ICONS\\" .. buttonStructure.icon);
+		if type(buttonStructure.icon) == "string" then
+			toolbarButton:SetNormalTexture("Interface\\ICONS\\" .. buttonStructure.icon);
+			toolbarButton:SetPushedTexture("Interface\\ICONS\\" .. buttonStructure.icon);
+		else
+			toolbarButton:SetNormalTexture(buttonStructure.icon:GetFileID());
+			toolbarButton:SetPushedTexture(buttonStructure.icon:GetFileID());
+		end
 		toolbarButton:GetPushedTexture():SetDesaturated(1);
 		-- Refreshing the tooltip
 		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
