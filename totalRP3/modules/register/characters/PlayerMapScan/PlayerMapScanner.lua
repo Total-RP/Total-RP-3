@@ -82,20 +82,30 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_LOCATION_DISABLE_WAR_MODE,
-		help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
-		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
-		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-	});
-	insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
-		help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
-		configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
-		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
-	});
+	if TRP3_API.globals.is_classic then
+		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
+			help = loc.CO_LOCATION_DISABLE_CLASSIC_PVP_TT,
+			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
+			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		});
+	else
+		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc.CO_LOCATION_DISABLE_WAR_MODE,
+			help = loc.CO_LOCATION_DISABLE_WAR_MODE_TT,
+			configKey = CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE,
+			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		});
+		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+			inherit = "TRP3_ConfigCheck",
+			title = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES,
+			help = loc.CO_LOCATION_SHOW_DIFFERENT_WAR_MODES_TT,
+			configKey = CONFIG_SHOW_DIFFERENT_WAR_MODES,
+			dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
+		});
+	end
 
 
 	local SCAN_COMMAND = "C_SCAN";
@@ -153,10 +163,10 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
 		-- Booleans received from commands are strings, need to cast to boolean
 		hasWarModeActive = hasWarModeActive == "true"
-		local checkWarMode;
+		local checkWarMode = not TRP3_API.globals.is_classic;
 
 		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
-		if not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
+		if not TRP3_API.globals.is_classic and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
 			checkWarMode = hasWarModeActive;
 		end
 
