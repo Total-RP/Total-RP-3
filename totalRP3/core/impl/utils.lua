@@ -20,7 +20,7 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
-local Ellyb = Ellyb(_);
+local Ellyb = Ellyb(...);
 local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
 
 -- Public accessor
@@ -70,13 +70,12 @@ end
 -- LOGGING
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Default logger.
+local logger = Ellyb.Logger("TRP3");
+
+-- Alias the log level constants for backwards compatibility.
 -- The log level defines the prefix color and serves as filter
-Log.level = {
-	DEBUG = "-|cff00ffffDEBUG|r] ",
-	INFO = "-|cff00ff00INFO|r] ",
-	WARNING = "-|cffffaa00WARNING|r] ",
-	SEVERE = "-|cffff0000SEVERE|r] "
-}
+Log.level = Ellyb.Logger.LEVELS;
 
 -- Print a log message to the chatFrame.
 local function log(message, level)
@@ -84,7 +83,8 @@ local function log(message, level)
 	if not Globals.DEBUG_MODE then
 		return;
 	end
-	Utils.print( "[TRP3".. level ..tostring(message));
+
+	logger:Log(level, message);
 end
 Log.log = log;
 
