@@ -205,6 +205,31 @@ local function profileSelected(profileID)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- Register slash command for IC/OOC status control.
+	TRP3_API.slash.registerCommand({
+		id = "status",
+		helpLine = " " .. loc.SLASH_CMD_STATUS_USAGE,
+		handler = function(subcommand)
+			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			if subcommand == "ic" then
+				if not currentUser:IsInCharacter() then
+					-- User is OOC, they want to be IC.
+					switchStatus();
+				end
+			elseif subcommand == "ooc" then
+				if currentUser:IsInCharacter() then
+					-- User is IC, they want to be OOC.
+					switchStatus();
+				end
+			elseif subcommand == "toggle" then
+				-- Toggle whatever the current status is.
+				switchStatus();
+			else
+				-- Unknown subcommand.
+				TRP3_API.utils.message.displayMessage(loc.SLASH_CMD_STATUS_HELP);
+			end
+		end,
+	});
 
 	if TRP3_API.toolbar then
 
