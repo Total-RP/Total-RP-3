@@ -1225,6 +1225,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
 
 ]],
+
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
@@ -1245,6 +1246,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
 	SLASH_CMD_STATUS_USAGE = "ic || ooc || toggle",
 	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
 Changes your character status to the specified option:
