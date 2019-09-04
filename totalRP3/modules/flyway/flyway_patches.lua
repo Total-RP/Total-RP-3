@@ -142,3 +142,14 @@ TRP3_API.flyway.patches["10"] = function()
 		end
 	end
 end
+
+TRP3_API.flyway.patches["11"] = function()
+	-- Add in the Roleplay Language (LC) field.
+	if TRP3_Profiles then
+		for _, profile in pairs(TRP3_Profiles) do
+			if profile.player and profile.player.character then
+				profile.player.character.LC = TRP3_Configuration["AddonLocale"] or GetLocale();
+			end
+		end
+	end
+end
