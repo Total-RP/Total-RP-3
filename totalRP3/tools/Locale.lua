@@ -1270,7 +1270,7 @@ Changes your character status to the specified option:
 
 	---@language Markdown
 	WHATS_NEW_23_6 = [[
-## Changelog version 1.6.6
+# Changelog version 1.6.6
 
 ## Added
 
