@@ -1267,6 +1267,35 @@ Changes your character status to the specified option:
 	CO_CHAT_SHOW_OOC = "Show OOC indicator",
 	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
 	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
+
+	---@language Markdown
+	WHATS_NEW_23_6 = [[
+## Changelog version 1.6.6
+
+## Added
+
+- Added slash commands to change your roleplay status, which you can use in macros. You can now use `/trp3 status ic` to get in character, `/trp3 status ooc` to get out of character, or `/trp3 status toggle` to switch status.
+- Added a chat setting to display the OOC indicator next to the name in chat.
+- Added a setting to hide the map scan button if no scan is available.
+- Added a roleplay language field to the main dashboard.
+  - This setting is profile-based, defaults to your addon language, and allows you to indicate the language you're roleplaying in.
+  - If your addon language doesn't match a player's roleplaying language, you'll see a flag at the bottom of their tooltip indicating their roleplaying language.
+  - This change is mainly aimed at Classic roleplayers, as only English RP realms were made.
+- Added back buttons to toggle helmet and cloak display for Classic.
+
+## Changed
+
+- Renamed the war mode setting to PvP mode for Classic.
+
+## Fixed
+
+- Fixed issues when the target bar module was disabled.
+- Fixed an issue causing duplicate Mary-Sue Protocol profiles to appear in the register when unchecking "This realm only".
+- Fixed a few remaining missing icons for Classic (default template 3 icons and `/trp3 roll` icons)
+- Fixed an issue when using the "Right-click to open profile" setting on Classic.
+
+]],
+
 };
 
 -- Use Ellyb to generate the Localization system
