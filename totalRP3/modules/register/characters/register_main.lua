@@ -241,9 +241,12 @@ function TRP3_API.register.saveCurrentProfileID(unitID, currentProfileID, isMSP)
 	local oldProfileID = character.profileID;
 	character.profileID = currentProfileID;
 	-- Search if this character was bounded to another profile
-	for _, profile in pairs(profiles) do
+	for profileID, profile in pairs(profiles) do
 		if profile.link and profile.link[unitID] then
 			profile.link[unitID] = nil; -- unbound
+			if profile.msp then
+				profiles[profileID] = nil;
+			end
 		end
 	end
 	if not profileExists(unitID) then
@@ -600,6 +603,13 @@ local function cleanupProfiles()
 		end
 	end
 
+	log("Purging unbound MSP profiles")
+	for profileID, profile in pairs(profiles) do
+		if profile.msp and Ellyb.Tables.isEmpty(profile.link) then
+			deleteProfile(profileID, true);
+		end
+	end
+
 	if type(getConfigValue("register_auto_purge_mode")) ~= "number" then
 		return ;
 	end
@@ -756,16 +766,6 @@ function TRP3_API.register.init()
 		Config.registerConfigurationPage(TRP3_API.register.CONFIG_STRUCTURE);
 	end);
 
-	if seriousDay then
-		registerConfigKey("rp_io", true);
-		tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements,
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = "RP.IO",
-				configKey = "rp_io",
-			});
-	end
-
 	-- Initialization
 	TRP3_API.register.inits.characteristicsInit();
 	TRP3_API.register.inits.aboutInit();
@@ -792,8 +792,3 @@ function TRP3_API.register.init()
 
 	createTabBar();
 end
-
-local function showRPIO()
-	return seriousDay and getConfigValue("rp_io");
-end
-TRP3_API.register.showRPIO = showRPIO;

@@ -1,0 +1,84 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<!--
+		Total RP 3
+		Dashboard Status Panel
+
+		Copyright 2014-2019 Total RP 3 Development Team
+
+		Licensed under the Apache License, Version 2.0 (the "License");
+		you may not use this file except in compliance with the License.
+		You may obtain a copy of the License at
+
+			http://www.apache.org/licenses/LICENSE-2.0
+
+		Unless required by applicable law or agreed to in writing, software
+		distributed under the License is distributed on an "AS IS" BASIS,
+		WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+		See the License for the specific language governing permissions and
+		limitations under the License.
+	-->
+
+	<Script file="StatusPanel.lua"/>
+
+	<Frame name="TRP3_DashboardStatusMenuTemplate" virtual="true" inherits="TRP3_DropDownMenuTemplate" mixin="TRP3_DashboardStatusMenuMixin">
+		<Scripts>
+			<OnLoad method="OnLoad" inherit="prepend"/>
+			<OnShow method="OnShow" inherit="prepend"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_DashboardStatusPanelTemplate" virtual="true" inherits="TRP3_FieldSetFrame" mixin="TRP3_DashboardStatusPanelMixin">
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="RPStatusLabel" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="200" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="30" y="-18"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+				<FontString parentKey="XPStatusLabel" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="200" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.RPStatusLabel" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+				<FontString parentKey="RPLanguageLabel" inherits="GameFontNormal" justifyH="LEFT">
+					<Size x="200" y="18"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeKey="$parent.XPStatusLabel" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
+					</Anchors>
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey="RPStatusMenu" name="$parentRPStatus" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardRPStatusMenuMixin">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.RPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="XPStatusMenu" name="$parentXPStatus" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardXPStatusMenuMixin">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.XPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="RPLanguageMenu" name="$parentRPLanguage" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardRPLanguageMenuMixin">
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.RPLanguageLabel" relativePoint="RIGHT" x="10" y="-2"/>
+				</Anchors>
+				<Scripts>
+					<OnEnter method="OnEnter" inherit="prepend"/>
+					<OnLeave function="GameTooltip_Hide" inherit="prepend"/>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+</Ui>
