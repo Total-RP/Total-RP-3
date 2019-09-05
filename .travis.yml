@@ -12,7 +12,6 @@ addons:
 install:
   - luarocks install --local luacheck
   - nvm install node
-  - nvm install-latest-npm
   - npm install -g eclint
 
 script:
