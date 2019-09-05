@@ -369,7 +369,21 @@ end
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function Utils.str.icon(iconPath, iconSize)
 	iconPath = iconPath or Globals.icons.default;
-	return Utils.str.texture("Interface\\ICONS\\" .. iconPath, iconSize);
+	return Utils.str.texture(Utils.getIconTexture(iconPath), iconSize);
+end
+
+--- Gives the full texture path of an individual icon.
+--- Handle using icon as a string, a file ID or as an Ellyb.icon
+--- @param icon string|Icon
+--- @return string
+function Utils.getIconTexture(icon)
+	if icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
+		return icon:GetFileID()
+	else if type(icon) == "number" then
+		return icon
+	else
+		return "Interface\\ICONS\\" .. tostring(icon)
+	end
 end
 
 -- Return a color tag based on a letter

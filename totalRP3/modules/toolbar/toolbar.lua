@@ -35,7 +35,6 @@ local function onStart()
 	-- imports
 	local Globals, Utils = TRP3_API.globals, TRP3_API.utils;
 	local loc = TRP3_API.loc;
-	local icon = Utils.str.icon;
 	local color = Utils.str.color;
 	local assert, pairs, tinsert, table, math  = assert, pairs, tinsert, table, math;
 	local toolbarContainer, mainTooltip = TRP3_ToolbarContainer, TRP3_MainTooltip;
@@ -57,6 +56,15 @@ local function onStart()
 	local uiButtons = {};
 	local marginLeft = 7;
 	local marginTop = 7;
+
+
+	--- Small tool function to create a title string with the icon of the button in front of it, for the tooltip
+	--- @param buttonStructure {icon: string|Icon, tooltip: string, configText: string}
+	--- @return string
+	local function getTooltipTitleWithIcon(buttonStructure)
+		return Utils.str.icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
+	end
+
 
 	local function buildToolbar()
 		local maxButtonPerLine = getConfigValue(CONFIG_ICON_MAX_PER_LINE);
@@ -94,8 +102,8 @@ local function onStart()
 					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 					tinsert(uiButtons, uiButton);
 				end
-				uiButton:SetNormalTexture("Interface\\ICONS\\".. (buttonStructure.icon or Globals.icons.default));
-				uiButton:SetPushedTexture("Interface\\ICONS\\".. (buttonStructure.icon or Globals.icons.default));
+				uiButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon or Globals.icons.default));
+				uiButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon or Globals.icons.default));
 				uiButton:GetPushedTexture():SetDesaturated(1);
 				uiButton:SetPoint("TOPLEFT", x, y);
 				uiButton:SetScript("OnClick", function(self, button)
@@ -128,8 +136,7 @@ local function onStart()
 					end
 				end);
 				if buttonStructure.tooltip then
-					local tooltipTitleWithIcon = icon(buttonStructure.icon, 25) .. " " .. buttonStructure.tooltip;
-					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, tooltipTitleWithIcon, buttonStructure.tooltipSub);
+					setTooltipForFrame(uiButton, uiButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
 				end
 				uiButton:SetWidth(buttonSize);
 				uiButton:SetHeight(buttonSize);
@@ -159,17 +166,6 @@ local function onStart()
 		end
 	end
 
-	--- Small tool function to create a title string with the icon of the button in front of it, for the tooltip
-	-- @param buttonStructure
-	--
-	local function getTooltipTitleWithIcon(buttonStructure)
-		if type(buttonStructure.icon) == "string" then
-			return icon(buttonStructure.icon, 25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
-		else
-			return buttonStructure.icon:GenerateString(25) .. " " .. (buttonStructure.tooltip or buttonStructure.configText);
-		end
-	end
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Databroker integration
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -185,7 +181,7 @@ local function onStart()
 			TRP3_API.globals.addon_name_short .. " — " .. buttonStructure.configText,
 			{
 				type= "data source",
-				icon = "Interface\\ICONS\\"..buttonStructure.icon,
+				icon = Utils.getIconTexture(buttonStructure.icon),
 				OnClick = function(Uibutton, button)
 					if buttonStructure.onClick then
 						buttonStructure.onClick(Uibutton, buttonStructure, button);
@@ -211,11 +207,8 @@ local function onStart()
 		local LDBButton = LDBObjects[buttonStructure.id];
 		assert(LDBButton, "Could not find a registered LDB object for id " .. buttonStructure.id)
 
-		if type(buttonStructure.icon) == "string" then
-			LDBButton.icon = "Interface\\ICONS\\" .. buttonStructure.icon;
-		else
-			LDBButton.icon = buttonStructure.icon:GetFileID();
-		end
+		LDBButton.icon = Utils.getIconTexture(buttonStructure.icon);
+
 		LDBButton.tooltipTitle = getTooltipTitleWithIcon(buttonStructure);
 		LDBButton.tooltipSub = buttonStructure.tooltipSub;
 
@@ -244,13 +237,9 @@ local function onStart()
 	--
 	local function updateToolbarButton(toolbarButton, buttonStructure)
 		-- Setting the textures
-		if type(buttonStructure.icon) == "string" then
-			toolbarButton:SetNormalTexture("Interface\\ICONS\\" .. buttonStructure.icon);
-			toolbarButton:SetPushedTexture("Interface\\ICONS\\" .. buttonStructure.icon);
-		else
-			toolbarButton:SetNormalTexture(buttonStructure.icon:GetFileID());
-			toolbarButton:SetPushedTexture(buttonStructure.icon:GetFileID());
-		end
+		toolbarButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon));
+		toolbarButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon));
+
 		toolbarButton:GetPushedTexture():SetDesaturated(1);
 		-- Refreshing the tooltip
 		setTooltipForFrame(toolbarButton, toolbarButton, "LEFT", 0, 0, getTooltipTitleWithIcon(buttonStructure), buttonStructure.tooltipSub);
