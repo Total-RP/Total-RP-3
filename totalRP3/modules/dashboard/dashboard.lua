@@ -318,12 +318,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						buttonStructure.tooltip  = helmTextOn;
 						buttonStructure.tooltipSub = helmText3;
 						local currentHelmetTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("HeadSlot")));
-						local icon = currentHelmetTexture and Ellyb.Icon(currentHelmetTexture) or helmetOnIcon;
-						buttonStructure.icon = icon:GetFileName();
+						buttonStructure.icon = currentHelmetTexture and Ellyb.Icon(currentHelmetTexture) or helmetOnIcon;
 					else
 						buttonStructure.tooltip  = helmTextOff;
 						buttonStructure.tooltipSub  = helmText2;
-						buttonStructure.icon = helmetOffIcon:GetFileName();
+						buttonStructure.icon = helmetOffIcon;
 					end
 				end,
 				onUpdate = function(Uibutton, buttonStructure)
@@ -364,12 +363,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						buttonStructure.tooltip  = capeTextOn;
 						buttonStructure.tooltipSub = capeText3;
 						local currentCloakTexture = GetInventoryItemTexture("player", select(1, GetInventorySlotInfo("BackSlot")));
-						local icon = currentCloakTexture and Ellyb.Icon(currentCloakTexture) or cloakOnIcon;
-						buttonStructure.icon = icon:GetFileName();
+						buttonStructure.icon = currentCloakTexture and Ellyb.Icon(currentCloakTexture) or cloakOnIcon;
 					else
 						buttonStructure.tooltip  = capeTextOff;
 						buttonStructure.tooltipSub  = capeText2;
-						buttonStructure.icon = cloakOffIcon:GetFileName();
+						buttonStructure.icon = cloakOffIcon;
 					end
 				end,
 				onUpdate = function(Uibutton, buttonStructure)
