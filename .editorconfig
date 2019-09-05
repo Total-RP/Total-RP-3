@@ -4,7 +4,6 @@
 root = true
 
 # For the sake of consistency across the entire project we want:
-# - Carriage Return Line Feed (we started with that because Windows ¯\_(ツ)_/¯ )
 # - UTF-8 encoding
 # - TABS!
 [*]
