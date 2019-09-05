@@ -75,6 +75,8 @@ read_globals = {
 	"XRP_RC",
 
 	-- MSA-DropDownMenu-1.0
+	"MSA_DROPDOWNMENU_OPEN_MENU",
+	"MSA_DROPDOWNMENU_INIT_MENU",
 	"MSA_CloseDropDownMenus",
 	"MSA_DropDownMenu_AddButton",
 	"MSA_DropDownMenu_AddSeparator",

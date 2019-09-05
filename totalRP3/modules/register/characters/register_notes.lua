@@ -115,6 +115,11 @@ function TRP3_API.register.inits.notesInit()
 	TRP3_RegisterNotesViewProfileScrollText:SetScript("OnTextChanged", onProfileNotesChanged);
 
 	TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+		if not TRP3_API.target then
+			-- Target bar module disabled.
+			return;
+		end
+
 		local openPageByUnitID = TRP3_API.register.openPageByUnitID;
 		local openNotesTab = TRP3_TabBar_Tab_5:GetScript("OnClick");    -- This was a quick workaround for RP.IO, is there a better option ?
 		TRP3_API.target.registerButton({

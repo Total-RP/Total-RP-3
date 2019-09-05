@@ -28,17 +28,16 @@ TRP3_API.dashboard = {
 };
 
 -- imports
+local TRP3_Enums = AddOn_TotalRP3.Enums;
+
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getProfiles = TRP3_API.profile.getProfiles;
 local Utils, Events, Globals = TRP3_API.utils, TRP3_API.events, TRP3_API.globals;
-local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local color = Utils.str.color;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainTooltip;
-local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
-local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local is_classic = Globals.is_classic;
 
@@ -53,6 +52,9 @@ local get, getDefaultProfile = TRP3_API.profile.getData, TRP3_API.profile.getDef
 
 getDefaultProfile().player.character = {
 	v = 1,
+	RP = TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER,
+	XP = TRP3_Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED,
+	LC = TRP3_Configuration["AddonLocale"] or GetLocale(),
 }
 
 local function incrementCharacterVernum()
@@ -75,28 +77,13 @@ local function onStatusChange(status)
 end
 
 local function switchStatus()
-	if get("player/character/RP") == 1 then
-		onStatusChange(2);
+	if get("player/character/RP") == TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER then
+		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 	else
-		onStatusChange(1);
+		onStatusChange(TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 	end
 end
 TRP3_API.dashboard.switchStatus = switchStatus;
-
-local function onStatusXPChange(status)
-	local character = get("player/character");
-	local old = character.XP;
-	character.XP = status;
-	if old ~= status then
-		incrementCharacterVernum();
-	end
-end
-
-local function onShow()
-	local character = get("player/character");
-	TRP3_DashboardStatus_CharactStatusList:SetSelectedValue(character.RP or 1);
-	TRP3_DashboardStatus_XPStatusList:SetSelectedValue(character.XP or 2);
-end
 
 function TRP3_API.dashboard.isPlayerIC()
 	return get("player/character/RP") == 1;
@@ -164,40 +151,8 @@ TRP3_API.dashboard.init = function()
 	registerPage({
 		id = DASHBOARD_PAGE_ID,
 		frame = TRP3_Dashboard,
-		onPagePostShow = onShow,
 		tutorialProvider = function() return TUTORIAL_STRUCTURE; end
 	});
-
-	setupFieldSet(TRP3_DashboardStatus, loc.DB_STATUS, 150);
-	TRP3_DashboardStatus_CharactStatus:SetText(loc.DB_STATUS_RP);
-	local OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15|t";
-	local IC_ICON = "|TInterface\\COMMON\\Indicator-Green:15|t";
-	local statusTab = {
-		{IC_ICON .. " " .. loc.DB_STATUS_RP_IC, 1, loc.DB_STATUS_RP_IC_TT},
-		{OOC_ICON .. " " .. loc.DB_STATUS_RP_OOC, 2, loc.DB_STATUS_RP_OOC_TT},
-	};
-	setupListBox(TRP3_DashboardStatus_CharactStatusList, statusTab, onStatusChange, nil, 170, true);
-
-	TRP3_DashboardStatus_XPStatus:SetText(loc.DB_STATUS_XP);
-	local BEGINNER_ICON = "|TInterface\\TARGETINGFRAME\\UI-TargetingFrame-Seal:20|t";
-	local VOLUNTEER_ICON = "|TInterface\\TARGETINGFRAME\\PortraitQuestBadge:15|t";
-	local xpTab = {
-		{BEGINNER_ICON .. " " .. loc.DB_STATUS_XP_BEGINNER, 1, loc.DB_STATUS_XP_BEGINNER_TT},
-		{loc.DB_STATUS_RP_EXP, 2, loc.DB_STATUS_RP_EXP_TT},
-		{VOLUNTEER_ICON .. " " .. loc.DB_STATUS_RP_VOLUNTEER, 3, loc.DB_STATUS_RP_VOLUNTEER_TT},
-	};
-	setupListBox(TRP3_DashboardStatus_XPStatusList, xpTab, onStatusXPChange, nil, 170, true);
-
-	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, _, dataType)
-		if (not dataType or dataType == "character") and getCurrentPageID() == DASHBOARD_PAGE_ID then
-			onShow(nil);
-		end
-	end);
-	Events.listenToEvent(Events.NOTIFICATION_CHANGED, function()
-		if getCurrentPageID() == DASHBOARD_PAGE_ID then
-			onShow(nil);
-		end
-	end);
 end
 
 local function profileSelected(profileID)
@@ -205,6 +160,31 @@ local function profileSelected(profileID)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- Register slash command for IC/OOC status control.
+	TRP3_API.slash.registerCommand({
+		id = "status",
+		helpLine = " " .. loc.SLASH_CMD_STATUS_USAGE,
+		handler = function(subcommand)
+			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			if subcommand == "ic" then
+				if not currentUser:IsInCharacter() then
+					-- User is OOC, they want to be IC.
+					switchStatus();
+				end
+			elseif subcommand == "ooc" then
+				if currentUser:IsInCharacter() then
+					-- User is IC, they want to be OOC.
+					switchStatus();
+				end
+			elseif subcommand == "toggle" then
+				-- Toggle whatever the current status is.
+				switchStatus();
+			else
+				-- Unknown subcommand.
+				TRP3_API.utils.message.displayMessage(loc.SLASH_CMD_STATUS_HELP);
+			end
+		end,
+	});
 
 	if TRP3_API.toolbar then
 

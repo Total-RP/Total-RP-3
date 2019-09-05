@@ -24,6 +24,11 @@ local loc = TRP3_API.loc;
 local REPORT_ICON = Ellyb.Icon([[Interface\HelpFrame\HelpIcon-OpenTicket]]);
 
 TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+	if not TRP3_API.target then
+		-- Target bar module disabled.
+		return;
+	end
+
 	TRP3_API.target.registerButton({
 		id = "zzzzzzzzzz_player_report",
 		configText = loc.REG_REPORT_PLAYER_PROFILE,

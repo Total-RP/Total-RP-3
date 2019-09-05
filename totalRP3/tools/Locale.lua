@@ -1226,11 +1226,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_5 = [[
 # Changelog version 1.6.5
@@ -1245,6 +1240,62 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a potential error when saving a glance slot.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	DB_STATUS_LC = "Roleplay language",
+	DB_STATUS_LC_TT = [[Sets your preferred roleplaying language. This will be shared with other compatible RP addon users.
+
+|cffff9900Note:|r This does |cffff0000not|r change the user interface language of Total RP 3. This option can instead be found in the |cfffff569Advanced Settings|r page.]],
+
+	-- DB_STATUS_LC_DEFAULT will be formatted with the current locale name, eg. "Italiano".
+	DB_STATUS_LC_DEFAULT = "Default (%1$s)",
+
+	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
+	DB_STATUS_ICON_ITEM = "%1$s %2$s",
+	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
+	SLASH_CMD_STATUS_USAGE = "ic || ooc || toggle",
+	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
+Changes your character status to the specified option:
+
+|cffff9900/trp3 status ic|r will set your status to |cff00ff00in character|r.
+|cffff9900/trp3 status ooc|r will set your status to |cffff0000out of character|r.
+|cffff9900/trp3 status toggle|r will switch your status to the opposite state.]],
+	CO_CHAT_SHOW_OOC = "Show OOC indicator",
+	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
+	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
+
+	---@language Markdown
+	WHATS_NEW_23_6 = [[
+# Changelog version 1.6.6
+
+## Added
+
+- Added slash commands to change your roleplay status, which you can use in macros. You can now use `/trp3 status ic` to get in character, `/trp3 status ooc` to get out of character, or `/trp3 status toggle` to switch status.
+- Added a chat setting to display the OOC indicator next to the name in chat.
+- Added a setting to hide the map scan button if no scan is available.
+- Added a roleplay language field to the main dashboard.
+  - This setting is profile-based, defaults to your addon language, and allows you to indicate the language you're roleplaying in.
+  - If your addon language doesn't match a player's roleplaying language, you'll see a flag at the bottom of their tooltip indicating their roleplaying language.
+  - This change is mainly aimed at Classic roleplayers, as only English RP realms were made.
+- Added back buttons to toggle helmet and cloak display for Classic.
+
+## Changed
+
+- Renamed the war mode setting to PvP mode for Classic.
+
+## Fixed
+
+- Fixed issues when the target bar module was disabled.
+- Fixed an issue causing duplicate Mary-Sue Protocol profiles to appear in the register when unchecking "This realm only".
+- Fixed a few remaining missing icons for Classic (default template 3 icons and `/trp3 roll` icons)
+- Fixed an issue when using the "Right-click to open profile" setting on Classic.
+
+]],
+
 };
 
 -- Use Ellyb to generate the Localization system
@@ -1266,28 +1317,28 @@ TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", localeContent);
 TRP3_API.loc:RegisterNewLocale("frFR", "Français", localeContent);
 
 --@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esES", "Español", localeContent);
+TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", localeContent);
 
 --@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (Latin American)", localeContent);
+TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", localeContent);
 
 --@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("itIT", "Italian", localeContent);
+TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", localeContent);
 
 --@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("koKR", "Korean", localeContent);
+TRP3_API.loc:RegisterNewLocale("koKR", "한국어", localeContent);
 
 --@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ptBR", "Brazilian Portuguese", localeContent);
+TRP3_API.loc:RegisterNewLocale("ptBR", "Português", localeContent);
 
 --@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ruRU", "Russian", localeContent);
+TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", localeContent);
 
 --@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhCN", "Simplified Chinese", localeContent);
+TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", localeContent);
 
 --@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhTW", "Traditional Chinese", localeContent);
+TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", localeContent);
 
 local Locale = {};
 TRP3_API.Locale = Locale;

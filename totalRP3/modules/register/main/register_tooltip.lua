@@ -397,9 +397,6 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
-
-
-
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
@@ -628,13 +625,30 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showNotifications() then
-		local notifText = "";
+		local notifPieces = {};
+
 		if info.misc and info.misc.PE and checkGlanceActivation(info.misc.PE) then
-			notifText = GLANCE_ICON;
+			table.insert(notifPieces, GLANCE_ICON);
 		end
+
 		if targetID ~= Globals.player_id and info.about and not info.about.read then
-			notifText = notifText .. " " ..NEW_ABOUT_ICON;
+			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
+
+		do
+			-- If the locale matches that of the users own current settings, we'll
+			-- display nothing since the information isn't that useful.
+			local localeCode = info.character and info.character.LC or nil;
+			if localeCode and localeCode ~= TRP3_API.configuration.getValue("AddonLocale") then
+				local localeIcon = TRP3_API.ui.misc.getLocaleIcon(localeCode);
+				if localeIcon then
+					table.insert(notifPieces, localeIcon);
+				end
+			end
+		end
+
+		local notifText = table.concat(notifPieces, " ");
+
 		local clientText = "";
 		if targetID == Globals.player_id then
 			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
