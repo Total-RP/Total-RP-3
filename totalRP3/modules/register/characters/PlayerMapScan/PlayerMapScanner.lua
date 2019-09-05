@@ -163,7 +163,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	broadcast.registerP2PCommand(SCAN_COMMAND, function(sender, x, y, hasWarModeActive)
 		-- Booleans received from commands are strings, need to cast to boolean
 		hasWarModeActive = hasWarModeActive == "true"
-		local checkWarMode = not TRP3_API.globals.is_classic;
+		local checkWarMode;
 
 		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
 		if not TRP3_API.globals.is_classic and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
