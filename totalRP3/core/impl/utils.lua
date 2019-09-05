@@ -377,9 +377,9 @@ end
 --- @param icon string|Icon
 --- @return string
 function Utils.getIconTexture(icon)
-	if icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
+	if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
 		return icon:GetFileID()
-	else if type(icon) == "number" then
+	elseif type(icon) == "number" then
 		return icon
 	else
 		return "Interface\\ICONS\\" .. tostring(icon)
