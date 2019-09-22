@@ -576,6 +576,7 @@ Possible status:
 (When this option is enabled, you can ALT-SHIFT-Click on a name when you want the default behavior and insert the character name instead of the full RP name.)]],
 	CO_CHAT_MAIN_COLOR = "Use custom colors for names",
 	CO_CHAT_INCREASE_CONTRAST = "Increase color contrast",
+	CO_CHAT_SHOW_OOC = "Show OOC indicator",
 	CO_CHAT_USE_ICONS = "Show player icons",
 	CO_CHAT_USE = "Used chat channels",
 	CO_CHAT_USE_SAY = "Say channel",
@@ -592,8 +593,6 @@ Possible status:
 	CO_CHAT_MAIN_OOC_COLOR = "OOC color",
 	CO_CHAT_MAIN_EMOTE_YELL = "No yelled emote",
 	CO_CHAT_MAIN_EMOTE_YELL_TT = "Do not show *emote* or <emote> in yelling.",
-	CO_CHAT_MAIN_SPEECH = "Speech detection",
-	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
 	CO_CHAT_NPCSPEECH_REPLACEMENT = "Customize companion names in NPC speeches",
 	CO_CHAT_NPCSPEECH_REPLACEMENT_TT = "If a companion name is in brackets in an NPC speech, it will be colored and its icon will be shown depending on your settings above.",
 	CO_GLANCE_MAIN = "\"At first glance\" bar",
@@ -606,6 +605,7 @@ Possible status:
 	CO_GLANCE_PRESET_TRP3 = "Use Total RP 3 style positions",
 	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
 	CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
+	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
 	CO_MSP = "Mary Sue Protocol",
 	CO_WIM = "|cffff9900Whisper channels are disabled.",
 	CO_WIM_TT = "You are using |cff00ff00WIM|r, the handling for whisper channels is disabled for compatibility purposes",
@@ -614,6 +614,8 @@ Possible status:
 	CO_LOCATION_ACTIVATE_TT = "Enable the character location system, allowing you to scan for other Total RP users on the world map and allowing them to find you.",
 	CO_LOCATION_DISABLE_OOC = "Disable location when OOC",
 	CO_LOCATION_DISABLE_OOC_TT = "You will not respond to location requests from other players when you've set your RP status to Out Of Character.",
+	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
+	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
 
@@ -758,6 +760,16 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	DB_STATUS_RP_EXP_TT = "Shows that you are an experienced roleplayer.\nIt will not show any specific icon on your tooltip.",
 	DB_STATUS_RP_VOLUNTEER = "Volunteer roleplayer",
 	DB_STATUS_RP_VOLUNTEER_TT = "This selection will show an icon on your tooltip, indicating\nto beginner roleplayers that you are willing to help them.",
+	DB_STATUS_LC = "Roleplay language",
+	DB_STATUS_LC_TT = [[Sets your preferred roleplaying language. This will be shared with other compatible RP addon users.
+
+|cffff9900Note:|r This does |cffff0000not|r change the user interface language of Total RP 3. This option can instead be found in the |cfffff569Advanced Settings|r page.]],
+
+	-- DB_STATUS_LC_DEFAULT will be formatted with the current locale name, eg. "Italiano".
+	DB_STATUS_LC_DEFAULT = "Default (%1$s)",
+
+	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
+	DB_STATUS_ICON_ITEM = "%1$s %2$s",
 	DB_TUTO_1 = [[|cffffff00The character status|r indicates if you are currently playing your character's role or not.
 
 |cffffff00The roleplayer status|r allows you to state that you are a beginner, or a veteran willing to help rookies!
@@ -925,6 +937,18 @@ Total RP is not responsible for links leading to harmful content.]],
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	ABOUT_TITLE = "About",
+
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+	-- Slash commands
+	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	SLASH_CMD_STATUS_USAGE = "ic || ooc || toggle",
+	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
+Changes your character status to the specified option:
+
+|cffff9900/trp3 status ic|r will set your status to |cff00ff00in character|r.
+|cffff9900/trp3 status ooc|r will set your status to |cffff0000out of character|r.
+|cffff9900/trp3 status toggle|r will switch your status to the opposite state.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- MAP
@@ -1243,33 +1267,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	DB_STATUS_LC = "Roleplay language",
-	DB_STATUS_LC_TT = [[Sets your preferred roleplaying language. This will be shared with other compatible RP addon users.
-
-|cffff9900Note:|r This does |cffff0000not|r change the user interface language of Total RP 3. This option can instead be found in the |cfffff569Advanced Settings|r page.]],
-
-	-- DB_STATUS_LC_DEFAULT will be formatted with the current locale name, eg. "Italiano".
-	DB_STATUS_LC_DEFAULT = "Default (%1$s)",
-
-	-- DB_STATUS_ICON_ITEM will be formatted with an icon texture and a label for a dropdown item.
-	DB_STATUS_ICON_ITEM = "%1$s %2$s",
-	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
-	SLASH_CMD_STATUS_USAGE = "ic || ooc || toggle",
-	SLASH_CMD_STATUS_HELP = [[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
-Changes your character status to the specified option:
-
-|cffff9900/trp3 status ic|r will set your status to |cff00ff00in character|r.
-|cffff9900/trp3 status ooc|r will set your status to |cffff0000out of character|r.
-|cffff9900/trp3 status toggle|r will switch your status to the opposite state.]],
-	CO_CHAT_SHOW_OOC = "Show OOC indicator",
-	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
-	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
-
 	---@language Markdown
 	WHATS_NEW_23_6 = [[
 # Changelog version 1.6.6
@@ -1297,6 +1294,15 @@ Changes your character status to the specified option:
 - Fixed an issue when using the "Right-click to open profile" setting on Classic.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_CHAT_MAIN_SPEECH = "Speech detection",
+	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
+	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be coloured as if written in /say.",
 
 };
 

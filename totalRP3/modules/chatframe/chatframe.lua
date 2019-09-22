@@ -285,6 +285,7 @@ local function createConfigPage()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_CHAT_MAIN_SPEECH_USE,
+				help = loc.CO_CHAT_MAIN_SPEECH_USE_TT,
 				configKey = CONFIG_SPEECH,
 			},
 			{
