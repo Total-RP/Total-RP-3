@@ -22,8 +22,8 @@
 	<!-- Common icon button  -->
 	<Button name="TRP3_MapHereButton" virtual="true">
 		<Size x="16" y="16"/>
-	    <NormalTexture file="Interface\Buttons\UI-HomeButton"/>
-	    <HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
+		<NormalTexture file="Interface\Buttons\UI-HomeButton"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);
@@ -364,8 +364,8 @@
 		<Size x="0" y="30"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				 <FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-				 	<Size x="135" y="10"/>
+				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
+					<Size x="135" y="10"/>
 					<Anchors>
 						<Anchor point="LEFT" x="25" y="0"/>
 					</Anchors>
@@ -383,7 +383,7 @@
 		</Layers>
 	</Frame>
 
-    <!-- Register characteristics panel -->
+	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize val="24"/>
@@ -453,7 +453,7 @@
 				</Anchors>
 				<Layers>
 					<Layer level="OVERLAY">
-						 <FontString name="TRP3_RegisterCharact_CharactPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+						<FontString name="TRP3_RegisterCharact_CharactPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
 							<Size x="0" y="10"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>
@@ -471,20 +471,20 @@
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_CharactPanel_Container">
 								<Layers>
-								    <Layer level="OVERLAY">
-									    <FontString name="TRP3_RegisterCharact_CharactPanel_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterCharact_CharactPanel_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
+											<Size x="0" y="50"/>
 											<Anchors>
 												<Anchor point="TOPLEFT" x="10" y="0"/>
 											</Anchors>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 										<FontString name="TRP3_RegisterCharact_CharactPanel_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
+											<Size x="0" y="50"/>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 										<FontString name="TRP3_RegisterCharact_CharactPanel_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
+											<Size x="0" y="50"/>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 									</Layer>
@@ -571,9 +571,9 @@
 						<ScrollChild>
 							<Frame name="TRP3_RegisterCharact_Edit_CharactPanel_Container">
 								<Layers>
-								    <Layer level="OVERLAY">
-									    <FontString name="TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
+									<Layer level="OVERLAY">
+										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
+											<Size x="0" y="50"/>
 											<Anchors>
 												<Anchor point="TOPLEFT" x="10" y="0"/>
 												<Anchor point="RIGHT" x="-10" y="0"/>
@@ -581,15 +581,15 @@
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
-									    	<Anchors>
+											<Size x="0" y="50"/>
+											<Anchors>
 												<Anchor point="TOPLEFT" x="10" y="-185"/>
 												<Anchor point="RIGHT" x="-10" y="0"/>
 											</Anchors>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 										<FontString name="TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle" inherits="GameFontNormalLarge" justifyH="LEFT" >
-									    	<Size x="0" y="50"/>
+											<Size x="0" y="50"/>
 											<Color r="0.95" g="0.95" b="0.95"/>
 										</FontString>
 									</Layer>
@@ -616,7 +616,7 @@
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_ClassButton" inherits="TRP3_ColorPickerButton">
-                						<Anchors>
+										<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_ClassField"/>
 										</Anchors>
 									</Button>
@@ -635,7 +635,7 @@
 										</Anchors>
 									</EditBox>
 									<Button name="TRP3_RegisterCharact_Edit_EyeButton" inherits="TRP3_ColorPickerButton">
-                						<Anchors>
+										<Anchors>
 											<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="TRP3_RegisterCharact_Edit_EyeField"/>
 										</Anchors>
 									</Button>

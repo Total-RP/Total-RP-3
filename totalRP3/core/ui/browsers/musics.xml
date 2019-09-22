@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -17,8 +17,8 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
--->	
-	
+-->
+
 	<!-- Music browser line  -->
 	<Button name="TRP3_MusicBrowserLine" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -77,9 +77,9 @@
 			</OnLeave>
 		</Scripts>
 	</Button>
-	
+
 	<!-- Music browser  -->
-    <Frame name="TRP3_MusicBrowser" parent="TRP3_PopupsFrame" hidden="true">
+	<Frame name="TRP3_MusicBrowser" parent="TRP3_PopupsFrame" hidden="true">
 		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize>
 				<AbsValue val="16"/>
@@ -179,5 +179,5 @@
 			</Layer>
 		</Layers>
 	</Frame>
-	
+
 </Ui>

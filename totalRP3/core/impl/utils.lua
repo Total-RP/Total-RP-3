@@ -466,7 +466,7 @@ For players: Player-[server ID]-[player UID] (Example: "Player-976-0002FD64")
 For creatures, pets, objects, and vehicles: [Unit type]-0-[server ID]-[instance ID]-[zone UID]-[ID]-[Spawn UID] (Example: "Creature-0-976-0-11-31146-000136DF91")
 Unit Type Names: "Creature", "Pet", "GameObject", and "Vehicle"
 For vignettes: Vignette-0-[server ID]-[instance ID]-[zone UID]-0-[spawn UID] (Example: "Vignette-0-970-1116-7-0-0017CAE465" for rare mob Sulfurious)
- ]]
+]]
 Utils.guid = {};
 
 local GUID_TYPES = {
@@ -557,7 +557,7 @@ end
 -- @return True if the text will be readable
 --
 local textColorIsReadableOnBackground = function(textColor)
-    return ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b)) >= 0.5;
+	return ((0.299 * textColor.r + 0.587 * textColor.g + 0.114 * textColor.b)) >= 0.5;
 end
 
 Utils.color.textColorIsReadableOnBackground = textColorIsReadableOnBackground;

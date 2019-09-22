@@ -22,7 +22,7 @@
 
 	<Include file="register_ui_companions_profiles.xml" />
 	<Script file="register_companions_profiles.lua" />
-	
+
 	<Include file="register_ui_companions_page.xml" />
 	<Script file="register_companions_page.lua" />
 	<Script file="CompanionProfileChatLinksModule.lua" />

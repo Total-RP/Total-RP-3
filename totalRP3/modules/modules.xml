@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,8 +18,8 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	 
-	 <Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
+
+	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
@@ -70,14 +70,14 @@
 			</Button>
 		</Frames>
 	</Frame>
-    
-    <Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
-        <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 			<EdgeSize val="24"/>
 		</Backdrop>
-        <Layers>
+		<Layers>
 			<Layer level="OVERLAY">
-			    <FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">
+				<FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="50" y="-25"/>
 					</Anchors>
@@ -86,7 +86,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-		    <Frame name="TRP3_ConfigurationModuleFrame" inherits="TRP3_InnerFrame">
+			<Frame name="TRP3_ConfigurationModuleFrame" inherits="TRP3_InnerFrame">
 				<Anchors>
 					<Anchor point="TOP" relativeTo="TRP3_ConfigurationModuleTitle" relativePoint="BOTTOM" x="0" y="-20"/>
 					<Anchor point="BOTTOM" x="0" y="20"/>
@@ -94,7 +94,7 @@
 					<Anchor point="RIGHT" x="-20" y="0"/>
 				</Anchors>
 				<Frames>
-				    <ScrollFrame name="TRP3_ConfigurationModuleScroll" inherits="UIPanelScrollFrameTemplate">
+					<ScrollFrame name="TRP3_ConfigurationModuleScroll" inherits="UIPanelScrollFrameTemplate">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="3"/>
@@ -108,15 +108,15 @@
 						</ScrollChild>
 					</ScrollFrame>
 				</Frames>
-		    </Frame>
+			</Frame>
 		</Frames>
-    </Frame>
-	
+	</Frame>
+
 	<Script file="module_management.lua"/>
-	
+
 	<Script file="flyway\flyway.lua"/>
 	<Script file="flyway\flyway_patches.lua"/>
-	
+
 	<Include file="dashboard\dashboard.xml"/>
 
 	<Include file="map\map.xml"/>

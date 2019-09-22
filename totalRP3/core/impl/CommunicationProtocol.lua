@@ -345,5 +345,3 @@ TRP3_API.communication.addMessageIDHandler = function(sender, reservedMessageID,
 end
 
 Ellyb.DeprecationWarnings.wrapAPI(AddOn_TotalRP3.Communications, "TRP3_API.communication", "AddOn_TotalRP3.Communications", TRP3_API.communication);
-
-
