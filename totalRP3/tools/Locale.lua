@@ -1302,7 +1302,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	CO_CHAT_MAIN_SPEECH = "Speech detection",
 	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
-	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be coloured as if written in /say.",
+	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
 
 };
 
