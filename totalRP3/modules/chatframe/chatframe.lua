@@ -422,10 +422,10 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor)
 		end
 	end
 
-	if configDoSpeechDetection() and message:find('(%".-%")') then
+	if configDoSpeechDetection() and message:find('%b""') then
 		-- Wrapping patterns in a temporary pattern
 		local chatColor = ColorManager.getChatColorForChannel("SAY");
-		message = message:gsub('(%".-%")', function(content)
+		message = message:gsub('%b""', function(content)
 			return SpeechTempPatternStart .. content .. SpeechTempPatternEnd;
 		end);
 
