@@ -4,6 +4,7 @@
 
 - Added a setting to detect speech in emotes and automatically color it.
 ![Speech detection](https://i.imgur.com/qpw46yg.png)
+- Added 7 icons and 1 music from patch 8.2.5.
 
 ## Changed
 

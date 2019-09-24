@@ -1311,6 +1311,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 ## Added
 
 - Added a setting to detect speech in emotes and automatically color it.
+- Added 7 icons and 1 music from patch 8.2.5.
 
 ## Changed
 
