@@ -1304,6 +1304,19 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
 	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
 
+	---@language Markdown
+	WHATS_NEW_23_7 = [[
+# Changelog version 1.6.7
+
+## Added
+
+- Added a setting to detect speech in emotes and automatically color it.
+
+## Changed
+
+- The companion profiles list accessed through the target frame is now alphabetically sorted, and "Create new profile" has been moved out of it.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
