@@ -1121,7 +1121,7 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 
 {h2}{icon:THUMBUP:20} Acknowledgements{/h2}
 {col:ffffff}Logo and minimap button icon:{/col}
-- {link*https://ebonfeathers.tumblr.com/*EbonFeather@Tumblr}
+- {link*https://twitter.com/Kelandiir*@Kelandiir}
 
 {col:ffffff}Our pre-alpha QA team:{/col}
 %TESTERS$s
