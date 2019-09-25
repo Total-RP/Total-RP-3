@@ -19,9 +19,9 @@
 		limitations under the License.
 	-->
 
-	<!-- 
+	<!--
 		WIDGETS
-	 -->
+	-->
 
 	<Frame name="TRP3_ConfigH1" virtual="true">
 		<Size x="0" y="35"/>
@@ -138,9 +138,9 @@
 		</Frames>
 	</Frame>
 
-	<!-- 
+	<!--
 		GENERAL SETTINGS
-	 -->
+	-->
 
 	<Frame name="TRP3_ConfigurationPage" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">

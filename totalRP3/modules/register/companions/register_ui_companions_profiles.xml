@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,7 +18,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
+
 	<Frame name="TRP3_CompanionsProfiles" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
-    
+
 </Ui>

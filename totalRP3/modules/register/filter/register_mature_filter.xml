@@ -133,8 +133,7 @@
 					</Anchors>
 					<Color b="0.95" r="0.95" g="0.95"/>
 				</FontString>
-				<Texture alphaMode="ADD" alpha="0" parentKey="tick"
-						 file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
+				<Texture alphaMode="ADD" alpha="0" parentKey="tick" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
 					<Size x="70" y="16"/>
 					<TexCoords left="0.8" right="1" top="0.1" bottom="0.22"/>
 					<Anchors>
@@ -206,8 +205,7 @@
 			</Frame>
 			<Frame parentKey="addNewWord">
 				<Size x="0" y="60"/>
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border"
-						  bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
 					<EdgeSize>
 						<AbsValue val="16"/>
 					</EdgeSize>
@@ -233,8 +231,7 @@
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								<Texture alphaMode="ADD" alpha="0" parentKey="tick"
-										 file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
+								<Texture alphaMode="ADD" alpha="0" parentKey="tick" file="Interface/ACHIEVEMENTFRAME/UI-Achievement-Alert-Glow">
 									<Size x="70" y="16"/>
 									<TexCoords left="0.8" right="1" top="0.1" bottom="0.22"/>
 									<Anchors>
@@ -250,8 +247,7 @@
 
 								<Alpha childKey="tick" duration="0.2"  fromAlpha="0" toAlpha="1" smoothing="IN" order="1"/>
 								<Translation childKey="tick" duration="0.4" offsetX="200" smoothing="IN_OUT" order="1"/>
-								<Alpha childKey="tick" duration="0.2" fromAlpha="1" toAlpha="0" smoothing="OUT" order="1"
-									   startDelay="0.2"/>
+								<Alpha childKey="tick" duration="0.2" fromAlpha="1" toAlpha="0" smoothing="OUT" order="1" startDelay="0.2"/>
 							</AnimationGroup>
 						</Animations>
 					</EditBox>

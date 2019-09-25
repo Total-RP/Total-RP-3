@@ -118,8 +118,8 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 	NORMAL_STATE_MAP_ICON:Apply(WorldMapButton.Icon);
 	---@type Tooltip
 	Ellyb.Tooltips.getTooltip(WorldMapButton)
-		 :SetTitle(loc.MAP_BUTTON_TITLE)
-		 :OnShow(function(tooltip)
+		:SetTitle(loc.MAP_BUTTON_TITLE)
+		:OnShow(function(tooltip)
 		tooltip:ClearTempLines();
 		tooltip:AddTempLine(WorldMapButton.subtitle)
 	end)

@@ -1,20 +1,22 @@
 # Travis CI configuration file
 # http://travis-ci.org
 
-sudo: false
+dist: bionic
 language: minimal
 
 addons:
   apt:
     packages:
-    - luarocks
+      - luarocks
 
-git:
-  depth: 150
+install:
+  - luarocks install --local luacheck
+  - nvm install node
+  - npm install -g eclint
 
-install: luarocks install --local luacheck
-
-script: /home/travis/.luarocks/bin/luacheck .
+script:
+  - /home/travis/.luarocks/bin/luacheck .
+  - eclint check $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
 
 deploy:
   provider: script

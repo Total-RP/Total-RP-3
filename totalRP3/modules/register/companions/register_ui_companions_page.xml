@@ -1,7 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-	
+
 <!--
 	Total RP 3
 	Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
@@ -18,10 +18,10 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-	
-	 <!-- Register characteristics panel -->
+
+	<!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true">
-	    <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize><AbsValue val="24"/></EdgeSize>
 			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 		</Backdrop>
@@ -40,24 +40,24 @@
 		<Frames>
 			<Frame name="$parentConsult" setAllPoints="true">
 				<Frames>
-				
+
 					<!-- Names and titles -->
 					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
 							<Anchor point="RIGHT" x="-95" y="0"/>
 						</Anchors>
 						<Frames>
 							<Frame name="$parent_Icon" inherits="TRP3_SimpleIcon">
 								<Size x="40" y="40"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="LEFT" x="15" y="-2"/>
 								</Anchors>
 							</Frame>
 							<Button name="$parent_EditButton" inherits="TRP3_CommonButton">
 								<Size x="75" y="20"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-5"/>
 								</Anchors>
 							</Button>
@@ -74,21 +74,21 @@
 									<Anchors>
 										<Anchor point="LEFT" relativePoint="RIGHT" x="10" y="10" relativeTo="$parent_Icon"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
-									</Anchors>				
-									<Color b="0.95" r="0.95" g="0.95"/>	
+									</Anchors>
+									<Color b="0.95" r="0.95" g="0.95"/>
 								</FontString>
 								<FontString name="$parent_Title" text="[Complete subtitle]" inherits="GameFontNormal" justifyH="LEFT">
 									<Size x="0" y="15"/>
 									<Anchors>
 										<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" x="0" y="-5" relativeTo="$parent_Name"/>
 										<Anchor point="RIGHT" x="-10" y="0"/>
-									</Anchors>		
-									<Color b="0.1" r="0.95" g="0.60"/>				
+									</Anchors>
+									<Color b="0.1" r="0.95" g="0.60"/>
 								</FontString>
 							</Layer>
 						</Layers>
 					</Frame>
-					
+
 					<!-- At a glance -->
 					<Frame name="$parent_Glance" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
@@ -120,17 +120,17 @@
 							</Button>
 						</Frames>
 					</Frame>
-					
+
 					<!-- Description -->
 					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_Glance"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
 							<Anchor point="TOPRIGHT" x="-15" y="0"/>
 						</Anchors>
 						<Layers>
 							<Layer level="OVERLAY">
-								 <FontString name="$parent_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+								<FontString name="$parent_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
 									<Size x="0" y="10"/>
 									<Anchors>
 										<Anchor point="CENTER" x="0" y="0"/>
@@ -166,69 +166,69 @@
 			</Frame>
 			<Frame name="$parentEdit" setAllPoints="true">
 				<Frames>
-				
+
 					<!-- Names and titles -->
 					<Frame name="$parent_NamePanel" inherits="TRP3_FieldSetFrame">
 						<Size x="0" y="70"/>
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="10" y="-20"/>
 							<Anchor point="RIGHT" x="-95" y="0"/>
 						</Anchors>
 						<Frames>
 							<Button name="$parent_Icon" inherits="TRP3_IconButton">
-								<Anchors>	
+								<Anchors>
 									<Anchor point="LEFT" x="20" y="-2"/>
 								</Anchors>
 							</Button>
 							<Button name="$parent_SaveButton" inherits="TRP3_CommonButton">
 								<Size x="75" y="20"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="LEFT" relativePoint="RIGHT" x="5" y="15"/>
 								</Anchors>
 							</Button>
 							<Button name="$parent_CancelButton" inherits="TRP3_CommonButton">
 								<Size x="75" y="20"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="TOP" x="0" y="-5" relativePoint="BOTTOM" relativeTo="$parent_SaveButton"/>
 								</Anchors>
 							</Button>
 							<EditBox name="$parent_NameField" inherits="TRP3_TitledHelpEditBox">
 								<Size x="0" y="18"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="TOPLEFT" x="20" y="8" relativePoint="TOPRIGHT" relativeTo="$parent_Icon"/>
 									<Anchor point="RIGHT" x="-50" y="0"/>
 								</Anchors>
 							</EditBox>
 							<Button name="$parent_NameColor" inherits="TRP3_ColorPickerButton">
-              					<Anchors>	
+							<Anchors>
 									<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parent_NameField"/>
 								</Anchors>
 							</Button>
 							<EditBox name="$parent_TitleField" inherits="TRP3_TitledHelpEditBox">
 								<Size x="0" y="18"/>
-								<Anchors>	
+								<Anchors>
 									<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="$parent_NameField"/>
 									<Anchor point="RIGHT" x="-20" y="0"/>
 								</Anchors>
 							</EditBox>
 						</Frames>
 					</Frame>
-					
+
 					<!-- Description -->
 					<Frame name="$parent_About" inherits="TRP3_FieldSetFrame">
-						<Anchors>	
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-10" relativePoint="BOTTOMLEFT" relativeTo="$parent_NamePanel"/>
 							<Anchor point="BOTTOM" x="0" y="10"/>
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 						<Frames>
 							<Frame name="$parent_BckField" inherits="UIDropDownMenuTemplate" enableMouse="true">
-						        <Anchors>
+								<Anchors>
 									<Anchor point="TOPLEFT" x="0" y="-15"/>
 								</Anchors>
-						    </Frame>
-						    
-						    <!-- Toolbar -->
+							</Frame>
+
+							<!-- Toolbar -->
 							<Frame name="$parent_Toolbar" inherits="TRP3_TextToolbar">
 								<Anchors>
 									<Anchor point="TOP" x="0" y="-50"/>
@@ -236,8 +236,8 @@
 									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
 							</Frame>
-							
-							 <!-- Text -->
+
+							<!-- Text -->
 							<Frame name="$parent_Text" inherits="TRP3_TextArea">
 								<Anchors>
 									<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parent_Toolbar" x="0" y="-5"/>
@@ -246,16 +246,16 @@
 									<Anchor point="RIGHT" x="-10" y="0"/>
 								</Anchors>
 							</Frame>
-							
+
 						</Frames>
 					</Frame>
-					
+
 				</Frames>
 			</Frame>
 		</Frames>
 	</Frame>
-	
-	 <!-- Register characteristics panel -->
+
+	<!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPage" hidden="true">
 		<Frames>
 			<Frame name="TRP3_CompanionsPageInformation" inherits="TRP3_CompanionsPageInformationTemplate" frameLevel="2">
@@ -266,5 +266,5 @@
 			</Frame>
 		</Frames>
 	</Frame>
-    
+
 </Ui>

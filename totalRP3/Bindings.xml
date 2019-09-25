@@ -16,12 +16,12 @@
 -->
 
 <Bindings>
-    <Binding name="TRP3_TOGGLE" header="TRP3">
-        TRP3_API.navigation.switchMainFrame();
-    </Binding>
-    <Binding name="TRP3_TOOLBAR_TOGGLE">
-        if TRP3_API.toolbar then
-            TRP3_API.toolbar.switch();
-        end
-    </Binding>
+	<Binding name="TRP3_TOGGLE" header="TRP3">
+		TRP3_API.navigation.switchMainFrame();
+	</Binding>
+	<Binding name="TRP3_TOOLBAR_TOGGLE">
+		if TRP3_API.toolbar then
+			TRP3_API.toolbar.switch();
+		end
+	</Binding>
 </Bindings>

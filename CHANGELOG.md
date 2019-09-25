@@ -1,3 +1,15 @@
+# Changelog version 1.6.7
+
+## Added
+
+- Added a setting to detect speech in emotes and automatically color it.
+![Speech detection](https://i.imgur.com/qpw46yg.png)
+- Added 7 icons and 1 music from patch 8.2.5.
+
+## Changed
+
+- The companion profiles list accessed through the target frame is now alphabetically sorted, and "Create new profile" has been moved out of it.
+
 # Changelog version 1.6.6
 
 ## Added

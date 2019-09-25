@@ -102,7 +102,7 @@
 				</Anchors>
 			</Button>
 			<Frame name="$parentBkg" inherits="UIDropDownMenuTemplate" enableMouse="true">
-		        <Anchors>
+				<Anchors>
 					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentIcon" x="-20" y="-5"/>
 				</Anchors>
 				<Scripts>
@@ -113,8 +113,8 @@
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>
-		    </Frame>
-		    <Frame name="$parentText" inherits="TRP3_TextArea">
+			</Frame>
+			<Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentBkg" x="0" y="0"/>
@@ -192,7 +192,7 @@
 				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 			</Button>
 			<Frame name="$parentBkg" inherits="UIDropDownMenuTemplate" enableMouse="true">
-		        <Anchors>
+				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="42" y="5"/>
 				</Anchors>
 				<Scripts>
@@ -203,7 +203,7 @@
 						TRP3_MainTooltip:Hide();
 					</OnLeave>
 				</Scripts>
-		    </Frame>
+			</Frame>
 			<Frame name="$parentText" inherits="TRP3_TextArea">
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-10"/>
@@ -215,7 +215,7 @@
 		</Frames>
 	</Frame>
 
-	 <!-- Register characteristics panel -->
+	<!-- Register characteristics panel -->
 	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
 		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
 			<EdgeSize val="24"/>
@@ -262,16 +262,16 @@
 						</Layers>
 					</Frame>
 					<Frame name="TRP3_RegisterAbout_Edit_BckField" inherits="UIDropDownMenuTemplate" enableMouse="true">
-				        <Anchors>
+						<Anchors>
 							<Anchor point="TOPLEFT" x="0" y="-35"/>
 						</Anchors>
-				    </Frame>
-				    <Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="UIDropDownMenuTemplate" enableMouse="true">
-				        <Anchors>
+					</Frame>
+					<Frame name="TRP3_RegisterAbout_Edit_TemplateField" inherits="UIDropDownMenuTemplate" enableMouse="true">
+						<Anchors>
 							<Anchor point="LEFT" relativePoint="RIGHT" x="0" y="0" relativeTo="TRP3_RegisterAbout_Edit_BckField"/>
 						</Anchors>
-				    </Frame>
-				    <!-- Toolbar -->
+					</Frame>
+					<!-- Toolbar -->
 					<Frame name="TRP3_RegisterAbout_Edit_Toolbar" inherits="TRP3_TextToolbar">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-20" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
@@ -279,8 +279,8 @@
 							<Anchor point="RIGHT" x="-10" y="0"/>
 						</Anchors>
 					</Frame>
-				    <Frame name="TRP3_RegisterAbout_Edit_Template1">
-				    	<Anchors>
+					<Frame name="TRP3_RegisterAbout_Edit_Template1">
+						<Anchors>
 							<Anchor point="TOP" x="0" y="-10" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_TemplateField"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
@@ -296,13 +296,13 @@
 								</Anchors>
 							</Frame>
 						</Frames>
-				    </Frame>
-				    <Frame name="TRP3_RegisterAbout_Edit_Template2">
-				    	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					</Frame>
+					<Frame name="TRP3_RegisterAbout_Edit_Template2">
+						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
 							<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
 							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
 						</Backdrop>
-				    	<Anchors>
+						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="30"/>
 							<Anchor point="LEFT" x="10" y="0"/>
@@ -330,8 +330,8 @@
 							</ScrollFrame>
 						</Frames>
 					</Frame>
-				    <Frame name="TRP3_RegisterAbout_Edit_Template3">
-				    	<Anchors>
+					<Frame name="TRP3_RegisterAbout_Edit_Template3">
+						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="0"/>
 							<Anchor point="LEFT" x="0" y="0"/>
@@ -361,13 +361,13 @@
 								</Anchors>
 							</Frame>
 						</Frames>
-				    </Frame>
+					</Frame>
 				</Frames>
 			</Frame>
 			<Frame name="TRP3_RegisterAbout_AboutPanel" setAllPoints="true">
 				<Layers>
 					<Layer level="OVERLAY">
-						 <FontString name="TRP3_RegisterAbout_AboutPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
+						<FontString name="TRP3_RegisterAbout_AboutPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
 							<Size x="0" y="10"/>
 							<Anchors>
 								<Anchor point="CENTER" x="0" y="0"/>

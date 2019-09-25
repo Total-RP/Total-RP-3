@@ -372,7 +372,6 @@ end
 
 local function getPlayerCompanionProfilesAsList(companionID)
 	local list = {};
-	tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
 	for profileID, profile in pairs(getProfiles()) do
 		if getCompanionProfileID(companionID) == profileID then
 			tinsert(list, {profile.profileName, nil});
@@ -380,6 +379,7 @@ local function getPlayerCompanionProfilesAsList(companionID)
 			tinsert(list, {profile.profileName, profileID});
 		end
 	end
+	table.sort(list, function(a,b) return string.lower(a[1]) < string.lower(b[1]) end);
 	return list;
 end
 
@@ -414,7 +414,11 @@ local function companionProfileSelectionList(unitID, targetType, _, button)
 			tinsert(list, {loc.REG_COMPANION_TF_OPEN, 0});
 			tinsert(list, {loc.REG_COMPANION_TF_UNBOUND, 1});
 		end
-		tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, getPlayerCompanionProfilesAsList(companionID)});
+		tinsert(list, {loc.REG_COMPANION_TF_CREATE, 2});
+		local profileList = getPlayerCompanionProfilesAsList(companionID);
+		if not Ellyb.Tables.isEmpty(profileList) then
+			tinsert(list, {loc.REG_COMPANION_TF_BOUND_TO, profileList});
+		end
 
 		displayDropDown(button, list, function(value) onCompanionProfileSelection(value, companionID, targetType) end, 0, true);
 	else
