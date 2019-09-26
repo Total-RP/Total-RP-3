@@ -1,3 +1,13 @@
+# Changelog version 1.6.7.1
+
+## Fixed
+
+- Fixed an issue with profiles not transmitting through Battle.net since 8.2.5 release. (Thanks for the useless wrapper, Blizzard.)
+
+## Changed
+
+- Updated logo artist credit (Kelandiir).
+
 # Changelog version 1.6.7
 
 ## Added
