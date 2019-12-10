@@ -70,11 +70,11 @@ Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
-	if not config_UseBroadcast() or not command then
+	if not TRP3_API.is_classic and not config_UseBroadcast() or not command then
 		Log.log("Bad params");
 		return;
 	end
-	if not helloWorlded and command ~= HELLO_CMD then
+	if not TRP3_API.is_classic and not helloWorlded and command ~= HELLO_CMD then
 		Log.log("Broadcast channel not yet initialized.");
 		return;
 	end
@@ -88,8 +88,12 @@ local function broadcast(command, ...)
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
 	if message:len() < 254 then
-		local channelName = GetChannelName(config_BroadcastChannel());
-		Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
+		if TRP3_API.is_classic then
+			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "YELL");
+		else
+			local channelName = GetChannelName(config_BroadcastChannel());
+			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
+		end
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
 		Log.log(("Trying a broadcast with a message with lenght %s. Abord !"):format(message:len()), Log.level.WARNING);
@@ -222,7 +226,7 @@ local function onMessageReceived(...)
 		end
 
 		if not isIDIgnored(sender) then
-			if distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
+			if distributionType == "YELL" or distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 				onBroadcastReceived(message, sender, channel);
 			else
 				onP2PMessageReceived(message, sender);
@@ -268,9 +272,11 @@ local function moveBroadcastChannelToTheBottomOfTheList()
 	end
 end
 
-Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+if not TRP3_API.is_classic then
+	Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+	Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+	Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init and helloWorld
@@ -281,6 +287,14 @@ Comm.broadcast.init = function()
 
 	-- First, register prefix
 	RegisterAddonMessagePrefix(BROADCAST_HEADER);
+
+	-- When we receive a broadcast or a P2P response
+	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
+
+	-- No broadcast channel on Classic (1.13.3)
+	if TRP3_API.is_classic then
+		return
+	end
 
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
@@ -307,9 +321,6 @@ Comm.broadcast.init = function()
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc.BROADCAST_OFFLINE_DISABLED);
 		end
 	end);
-
-	-- When we receive a broadcast or a P2P response
-	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
 
 	-- When someone placed a password on the channel
 	Utils.event.registerHandler("CHANNEL_PASSWORD_REQUEST", function(channel)
