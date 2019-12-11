@@ -137,6 +137,11 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 			if not x or not y then
 				return false;
 			end
+		else
+			-- Classic 1.13.3: with the scan moving to YELL, we're forbidding scans in another zone than the one you're in.
+			if TRP3_API.is_classic then
+				return false;
+			end
 		end
 
 		return true;
