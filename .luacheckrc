@@ -34,7 +34,7 @@ globals = {
 	-- Blizzard Overrides
 	"GetColoredName",
 	"ItemRefTooltip",
-    "SetChannelPassword",
+	"SetChannelPassword",
 	"SlashCmdList",
 	"StaticPopupDialogs",
 
