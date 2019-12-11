@@ -121,6 +121,17 @@ function Comm.broadcast.registerCommand(command, callback)
 	tinsert(PREFIX_REGISTRATION[command], callback);
 end
 
+local SetChannelPasswordOld = SetChannelPassword;
+SetChannelPassword = function(data, password)
+	if data ~= config_BroadcastChannel() or password == "" then
+		SetChannelPasswordOld(data, password);
+	else
+		-- We totally changed it :fatcat:
+		local message = loc.BROADCAST_PASSWORD:format(data);
+		Utils.message.displayMessage(message);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Peer to peer part
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -341,6 +352,10 @@ Comm.broadcast.init = function()
 		if mode == "PASSWORD_CHANGED" and channel == config_BroadcastChannel() then
 			Utils.message.displayMessage(loc.BROADCAST_PASSWORDED:format(user, channel));
 		end
+		-- We can't do this yet, will see in 9.0 if addons don't get restricted from using channels.
+		--if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
+		--	SetChannelPassword(config_BroadcastChannel(), "");
+		--end
 	end);
 
 	-- When you are already in 10 channel

@@ -34,6 +34,7 @@ globals = {
 	-- Blizzard Overrides
 	"GetColoredName",
 	"ItemRefTooltip",
+	"SetChannelPassword",
 	"SlashCmdList",
 	"StaticPopupDialogs",
 
@@ -9856,7 +9857,6 @@ stds.wow = {
 		"SetButtonPulse",
 		"SetCemeteryPreference",
 		"SetChannelOwner",
-		"SetChannelPassword",
 		"SetChatColorNameByClass",
 		"SetChatMouseOverDelay",
 		"SetChatUnitColor",
