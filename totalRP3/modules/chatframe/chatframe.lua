@@ -354,7 +354,7 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 
 ---@param message string
 ---@param NPCEmoteChatColor Color
-local function detectEmoteAndOOC(message, NPCEmoteChatColor)
+local function detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor)
 	if disabledByOOC() then
 		return message;
 	end
@@ -423,7 +423,8 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor)
 		end
 	end
 
-	if configDoSpeechDetection() and message:find('%b""') then
+	-- Only apply speech detections on emotes (excluding NPC non-emote speech)
+	if isEmote and configDoSpeechDetection() and message:find('%b""') then
 		-- Wrapping patterns in a temporary pattern
 		local chatColor = ColorManager.getChatColorForChannel("SAY");
 		message = message:gsub('%b""', function(content)
@@ -596,12 +597,19 @@ function handleCharacterMessage(_, event, message, ...)
 	local messageSender = ...;
 	local messageID = select(10, ...);
 	local NPCEmoteChatColor;
+	local isEmote;
 
 	-- Detect NPC talk pattern on authorized channels
 	if event == "CHAT_MSG_EMOTE" then
+		isEmote = true;
+
 		if message:sub(1, 3) == configNPCTalkPrefix() and configDoHandleNPCTalk() then
 			npcMessageId = messageID;
 			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
+
+			if message ~= " " then
+				isEmote = false;
+			end
 
 			-- This is one of Saelora's neat modification
 			-- If the emote starts with 's (the subject of the sentence might be someone's pet or mount)
@@ -628,7 +636,7 @@ function handleCharacterMessage(_, event, message, ...)
 	end
 
 	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(message, NPCEmoteChatColor);
+	message = detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor);
 
 	return false, message, ...;
 end
