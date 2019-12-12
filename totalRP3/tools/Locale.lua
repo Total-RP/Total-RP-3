@@ -1294,12 +1294,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue when using the "Right-click to open profile" setting on Classic.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CO_CHAT_MAIN_SPEECH = "Speech detection",
 	CO_CHAT_MAIN_SPEECH_USE = "Use speech detection",
 	CO_CHAT_MAIN_SPEECH_USE_TT = "Text surrounded by quotation marks will be colored as if written in /say.",
@@ -1318,6 +1312,30 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - The companion profiles list accessed through the target frame is now alphabetically sorted, and "Create new profile" has been moved out of it.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	---@language Markdown
+	WHATS_NEW_23_8 = [[
+# Changelog version 1.6.8
+
+## Changed
+
+- **Classic:** Due to 1.13.3 API changes, the map scan has been modified to find characters in yell range only. It will only show on the map you're in. **Only characters using Total RP 3 version 1.6.8 will be visible on the scan.**
+
+*Reminder : You can disable your scan appearance by unchecking "Register settings > Location settings > Enable character location. Please don't hold on the update for visibility reasons.*
+
+- Speech detection will now only apply to emotes (including NPC emotes).
+
+## Fixed
+
+- Fixed a rare issue where the addon loading process would be interrupted by a setting key unable to be read.
+
+]],
+
 };
 
 -- Use Ellyb to generate the Localization system

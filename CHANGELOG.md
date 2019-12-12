@@ -1,3 +1,17 @@
+# Changelog version 1.6.8
+
+## Changed
+
+- **Classic:** Due to 1.13.3 API changes, the map scan has been modified to find characters in yell range only. It will only show on the map you're in. **Only characters using Total RP 3 version 1.6.8 will be visible on the scan.**
+
+*Reminder : You can disable your scan appearance by unchecking "Register settings > Location settings > Enable character location. Please don't hold on the update for visibility reasons.*
+
+- Speech detection will now only apply to emotes (including NPC emotes).
+
+## Fixed
+
+- Fixed a rare issue where the addon loading process would be interrupted by a setting key unable to be read.
+
 # Changelog version 1.6.7.1
 
 ## Fixed
@@ -43,30 +57,3 @@
 - Fixed an issue causing duplicate Mary-Sue Protocol profiles to appear in the register when unchecking "This realm only".
 - Fixed a few remaining missing icons for Classic (default template 3 icons and `/trp3 roll` icons)
 - Fixed an issue when using the "Right-click to open profile" setting on Classic.
-
-# Changelog version 1.6.5
-
-## Added
-
-- Added Total RP 3: Extended version number alongside Total RP 3 version number at the bottom of the tooltip.
-
-## Fixed
-
-- Fixed an error when someone executes a scan in your zone. (Classic only)
-- Fixed a potential error when saving a glance slot.
-
-# Changelog version 1.6.4
-
-We are aware of a current issue on Retail causing **quest item usage from the objective tracker** to sometimes fail. While we do not have a fix for it just yet, **typing /reload after getting the error message** temporarily fixes the issue. Sorry for the inconvenience.
-
-## WoW: Classic support
-
-- Total RP 3: Classic is now available as a separate download on CurseForge and WoWInterface! Be sure to install it instead of the retail version of Total RP 3 if you plan on roleplaying in WoW: Classic.
-- Important points to be aware of for the Classic version:
-  - A few icons have been changed across the addon to replace missing icons in Classic.
-  - Companion profiles have been disabled for mounts and non-combat pets, as Blizzard did not provide us with beta access. We will work on implementing them back as soon as possible.
-  - Total RP 3: Extended will not be ported to Classic at launch. We will be evaluating if a Classic port makes sense for us to do at a later date.
-
-## Changed
-
-- When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
