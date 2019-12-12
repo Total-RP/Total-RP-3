@@ -31,11 +31,15 @@ TRP3_API.ADVANCED_SETTINGS_STRUCTURE = {
 }
 
 TRP3_API.ADVANCED_SETTINGS_KEYS = {
-	USE_BROADCAST_COMMUNICATIONS = "comm_broad_use",
-	BROADCAST_CHANNEL = "comm_broad_chan",
 	PROFILE_SANITIZATION = "register_sanitization",
-	MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST",
 }
+
+-- Broadcast keys should only be registered in Retail
+if not TRP3_API.globals.is_classic then
+	TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS = "comm_broad_use";
+	TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL = "comm_broad_chan";
+	TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
+end
 
 TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES = {};
 
@@ -51,8 +55,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
 
-	if not TRP3_API.is_classic then
-		-- Reset button
+	if not TRP3_API.globals.is_classic then
+		-- Broadcast settings
 		tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
 			title = loc.CO_ADVANCED_BROADCAST,
@@ -85,7 +89,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		});
 	end
 
-	-- Localization settings
+	-- Sanitization
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 		inherit = "TRP3_ConfigH1",
 		title = loc.REG_REGISTER,

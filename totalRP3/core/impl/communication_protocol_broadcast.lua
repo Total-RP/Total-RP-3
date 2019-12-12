@@ -70,11 +70,11 @@ Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
-	if not TRP3_API.is_classic and not config_UseBroadcast() or not command then
+	if not Globals.is_classic and not config_UseBroadcast() or not command then
 		Log.log("Bad params");
 		return;
 	end
-	if not TRP3_API.is_classic and not helloWorlded and command ~= HELLO_CMD then
+	if not Globals.is_classic and not helloWorlded and command ~= HELLO_CMD then
 		Log.log("Broadcast channel not yet initialized.");
 		return;
 	end
@@ -88,7 +88,7 @@ local function broadcast(command, ...)
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
 	if message:len() < 254 then
-		if TRP3_API.is_classic then
+		if Globals.is_classic then
 			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "YELL");
 		else
 			local channelName = GetChannelName(config_BroadcastChannel());
@@ -283,7 +283,7 @@ local function moveBroadcastChannelToTheBottomOfTheList()
 	end
 end
 
-if not TRP3_API.is_classic then
+if not Globals.is_classic then
 	Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
 	Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
 	Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
@@ -303,7 +303,8 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
 
 	-- No broadcast channel on Classic (1.13.3)
-	if TRP3_API.is_classic then
+	if Globals.is_classic then
+		TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
 		return
 	end
 
