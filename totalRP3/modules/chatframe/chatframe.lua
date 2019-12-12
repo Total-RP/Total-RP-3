@@ -607,7 +607,10 @@ function handleCharacterMessage(_, event, message, ...)
 			npcMessageId = messageID;
 			npcMessageName, message, NPCEmoteChatColor = handleNPCEmote(message, messageSender);
 
-			if message ~= " " then
+			if message == " " then
+				-- Colorize emote and OOC (it's an NPC emote, the content is in the name)
+				npcMessageName = detectEmoteAndOOC(npcMessageName, true, NPCEmoteChatColor);
+			else
 				isEmote = false;
 			end
 
@@ -636,7 +639,9 @@ function handleCharacterMessage(_, event, message, ...)
 	end
 
 	-- Colorize emote and OOC
-	message = detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor);
+	if message ~= " " then
+		message = detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor);
+	end
 
 	return false, message, ...;
 end
