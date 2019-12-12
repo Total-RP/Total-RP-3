@@ -51,7 +51,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
 
-	if not TRP3_API.is_classic then
+	if not TRP3_API.globals.is_classic then
 		-- Reset button
 		tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
