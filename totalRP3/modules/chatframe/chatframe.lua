@@ -354,7 +354,7 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 
 ---@param message string
 ---@param NPCEmoteChatColor Color
-local function detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor)
+local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	if disabledByOOC() then
 		return message;
 	end
@@ -609,7 +609,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 			if message == " " then
 				-- Colorize emote and OOC (it's an NPC emote, the content is in the name)
-				npcMessageName = detectEmoteAndOOC(npcMessageName, true, NPCEmoteChatColor);
+				npcMessageName = detectEmoteAndOOC(npcMessageName, NPCEmoteChatColor, true);
 			else
 				isEmote = false;
 			end
@@ -640,7 +640,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Colorize emote and OOC
 	if message ~= " " then
-		message = detectEmoteAndOOC(message, isEmote, NPCEmoteChatColor);
+		message = detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote);
 	end
 
 	return false, message, ...;
