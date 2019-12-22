@@ -728,8 +728,8 @@ local function convertTextTag(tag)
 		return Utils.str.color(tag:match("^col%:(%a)$"));
 	elseif tag:match("^col:%x%x%x%x%x%x$") then -- Hexa color replacement
 		return "|cff"..tag:match("^col:(%x%x%x%x%x%x)$");
-	elseif tag:match("^icon%:[%w%s%_%-%d]+%:%d+$") then -- Icon
-		local icon, size = tag:match("^icon%:([%w%s%_%-%d]+)%:(%d+)$");
+	elseif tag:match("^icon%:[%w%s%_%-%'%d]+%:%d+$") then -- Icon
+		local icon, size = tag:match("^icon%:([%w%s%_%-%'%d]+)%:(%d+)$");
 		return Utils.str.icon(icon, size);
 	end
 
