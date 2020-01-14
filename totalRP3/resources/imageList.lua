@@ -438,6 +438,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_NyalothaStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RaidCrucibleOfStormsStart",
 		width = 128,
 		height = 128
@@ -568,6 +573,11 @@ local IMAGES = {
 		height = 256
 	},
 	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Mechagnome1",
+		width = 256,
+		height = 256
+	},
+	{
 		url = "Interface\\DRESSUPFRAME\\DressUpBackground-NightElf1",
 		width = 256,
 		height = 256
@@ -604,6 +614,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\DRESSUPFRAME\\DressUpBackground-VoidElf1",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Vulpera1",
 		width = 256,
 		height = 256
 	},
@@ -1244,6 +1259,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-NightmareofShekzeer",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Nyalotha",
 		width = 256,
 		height = 256
 	}, {
