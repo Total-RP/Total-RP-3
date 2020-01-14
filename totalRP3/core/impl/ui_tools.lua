@@ -829,7 +829,7 @@ local unitTexture = {
 	},
 	KulTiran = {
 		"Achievement_Boss_Zuldazar_Manceroy_Mestrah",
-		"INV_Faction_ProudmooreAdmiralty"
+		"Ability_racial_childofthesea"
 	},
 	ZandalariTroll = {
 		"INV_ZandalariMaleHead",
