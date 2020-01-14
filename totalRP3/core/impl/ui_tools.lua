@@ -836,12 +836,12 @@ local unitTexture = {
 		"INV_ZandalariFemaleHead"
 	},
 	Mechagnome = {
-		"Inv_plate_mechagnome_c_01helm",
-		"Inv_misc_head_clockworkgnome_01"
+		"Ability_racial_hyperorganiclightoriginator",
+		"Inv_plate_mechagnome_c_01helm"
 	},
 	Vulpera = {
-		"Inv_misc_foxkit",
-		"Inv_misc_foxkit_white"
+		"Ability_racial_nosefortrouble",
+		"Ability_racial_nosefortrouble"
 	}
 };
 
