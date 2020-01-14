@@ -5312,7 +5312,7 @@ function TRP3_API.utils.resources.getImageList(filter)
 	filter = filter:lower();
 	local newList = {};
 	for _, image in pairs(IMAGES) do
-		if string.find(image.url:lower(), filter, 1,true) then
+		if string.find(image.url:lower(), filter, 1, true) then
 			tinsert(newList, image);
 		end
 	end
