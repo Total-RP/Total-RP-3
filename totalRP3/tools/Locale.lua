@@ -1312,12 +1312,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - The companion profiles list accessed through the target frame is now alphabetically sorted, and "Create new profile" has been moved out of it.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_8 = [[
 # Changelog version 1.6.8
@@ -1333,6 +1327,34 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 ## Fixed
 
 - Fixed a rare issue where the addon loading process would be interrupted by a setting key unable to be read.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	---@language Markdown
+	WHATS_NEW_23_9 = [[
+# Changelog version 1.6.9
+
+## Added
+
+- Added 61 musics, 5 images and 223 icons on Retail from patch 8.3.
+- Added 177 images on Retail from previous patches.
+- Added 1 icon on Classic from patch 1.13.3.
+- Added default icons for Vulperas and Mechagnomes.
+
+## Changed
+
+- Changed default Kul Tiran female icon.
+
+## Fixed
+
+- Added workaround to Classic map scan to handle Blizzard's lack of tests.
+- Fixed an issue when trying to use icons with an apostrophe in their name.
+- Image browser filter now correctly handles some special characters.
 
 ]],
 

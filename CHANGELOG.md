@@ -1,3 +1,22 @@
+# Changelog version 1.6.9
+
+## Added
+
+- Added 61 musics, 5 images and 223 icons on Retail from patch 8.3.
+- Added 177 images on Retail from previous patches.
+- Added 1 icon on Classic from patch 1.13.3.
+- Added default icons for Vulperas and Mechagnomes.
+
+## Changed
+
+- Changed default Kul Tiran female icon.
+
+## Fixed
+
+- Added workaround to Classic map scan to handle Blizzard's lack of tests.
+- Fixed an issue when trying to use icons with an apostrophe in their name.
+- Image browser filter now correctly handles some special characters.
+
 # Changelog version 1.6.8
 
 ## Changed
