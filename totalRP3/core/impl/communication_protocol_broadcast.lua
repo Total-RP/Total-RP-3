@@ -237,7 +237,8 @@ local function onMessageReceived(...)
 		end
 
 		if not isIDIgnored(sender) then
-			if distributionType == "YELL" or distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
+			-- Have to test "UNKNOWN" for "YELL" addon messages because Blizzard lul
+			if distributionType == "YELL" or distributionType == "UNKNOWN" or distributionType == "CHANNEL" and string.lower(channel) == string.lower(config_BroadcastChannel()) then
 				onBroadcastReceived(message, sender, channel);
 			else
 				onP2PMessageReceived(message, sender);
