@@ -419,6 +419,13 @@
 
 			</Frame>
 
+			<CinematicModel parentKey="Eye" frameLevel="2">
+				<Size x="200" y="400" />
+				<Anchors>
+					<Anchor point="BOTTOM" relativeTo="TRP3_MainFrameMenuScroll" y="-20" />
+				</Anchors>
+			</CinematicModel>
+
 			<!-- RIGHT PART : TUTORIAL FRAME : blocking access to content behind it -->
 			<Frame name="TRP3_TutorialFrame" frameStrata="DIALOG" enableMouse="true" hidden="true">
 				<Anchors>

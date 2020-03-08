@@ -40,6 +40,7 @@ local TRP3_MainFrameMenuContainer, TRP3_MainFramePageContainer, TRP3_MainFrame =
 local assert, pairs, tinsert, table, error, type, _G = assert, pairs, tinsert, table, error, type, _G;
 local selectMenu, unregisterMenu;
 
+local Globals = TRP3_API.globals;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Menu management
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -292,6 +293,11 @@ TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
 TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
+
+	if not Globals.is_classic and Globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF") then
+		TRP3_MainFrame.Eye:SetCreature(161946);
+	end
+
 	TRP3_API.ui.misc.playUISound(SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
 end
 
@@ -450,6 +456,15 @@ TRP3_API.navigation.init = function()
 	closeAllButton:SetText(loc.UI_CLOSE_ALL);
 	closeAllButton:SetScript("OnClick", function(self)
 		closeAll(self.parentMenu);
+	end);
+
+	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
+		if not Globals.is_classic and Globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF") then
+			TRP3_MainFrame.Eye:SetScript("OnModelLoaded", function()
+				TRP3_MainFrame.Eye:SetCameraPosition(0.5,-1.5,3);
+				TRP3_MainFrame.Eye:SetFacing(-math.pi/4);
+			end)
+		end
 	end);
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);

@@ -1155,3 +1155,34 @@ local function Rainbowify(text)
 	return finalText
 end
 TRP3_API.utils.Rainbowify = Rainbowify;
+
+local function OldgodCharacterColor(value, max)
+	local movedValue = value - 1;    -- screw Lua lmao
+	local third = (max - 1) / 3;
+	if movedValue < 2 * third then
+		return TRP3_API.Ellyb.Color(0.5 + 0.5 * movedValue / (2 * third), 0.3, 1 - 0.7 * movedValue / (2 * third))
+	elseif movedValue ~= max - 1 then
+		return TRP3_API.Ellyb.Color(1, 0.3 + 0.2 * (movedValue - 2 * third) / third, 0.3)
+	else
+		return TRP3_API.Ellyb.Color(1, 0.5, 0.3)
+	end
+end
+
+local function Oldgodify(text)
+	local finalText = ""
+	local i = 1
+
+	local characterCount = 0;
+	for _ in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		characterCount = characterCount + 1
+	end
+
+	for character in string.gmatch(text, "([%z\1-\127\194-\244][\128-\191]*)") do
+		---@type Color
+		local color = OldgodCharacterColor(i, characterCount)
+		finalText = finalText .. color:WrapTextInColorCode(character)
+		i = i + 1
+	end
+	return finalText
+end
+TRP3_API.utils.Oldgodify = Oldgodify;
