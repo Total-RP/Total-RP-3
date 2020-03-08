@@ -101,6 +101,8 @@ local ANCHOR_TAB;
 local MATURE_CONTENT_ICON = Utils.str.texture("Interface\\AddOns\\totalRP3\\resources\\18_emoji.tga", 20);
 local registerTooltipModuleIsEnabled = false;
 
+local customAFColor = TRP3_API.globals.is_classic and TRP3_API.utils.Rainbowify or TRP3_API.utils.Oldgodify;
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Config getters
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -450,7 +452,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	completeName = color:WrapTextInColorCode(completeName);
+	if Globals.serious_day and getConfigValue("AF_STUFF") then
+		completeName = customAFColor(completeName);
+	else
+		completeName = color:WrapTextInColorCode(completeName);
+	end
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
@@ -615,7 +621,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			name = targetClassColor:WrapTextInColorCode(name);
+			if Globals.serious_day and getConfigValue("AF_STUFF") then
+				name = customAFColor(name);
+			else
+				name = targetClassColor:WrapTextInColorCode(name);
+			end
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -775,6 +785,9 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
 	end
 
+	if Globals.serious_day and getConfigValue("AF_STUFF") then
+		petName = customAFColor(petName);
+	end
 
 	---@type Ellyb_Color
 	local companionCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
@@ -835,7 +848,12 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			end
 		end
 
-		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+		if Globals.serious_day and getConfigValue("AF_STUFF") then
+			ownerFinalName = customAFColor(ownerFinalName);
+		else
+			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+		end
+
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -949,6 +967,10 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
 	end
 
+	if Globals.serious_day and getConfigValue("AF_STUFF") then
+		mountCustomName = customAFColor(mountCustomName);
+	end
+
 	---@type Ellyb_Color
 	local mountCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
@@ -1054,6 +1076,10 @@ local function show(targetType, targetID, targetMode)
 					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 				end
 
+				if not Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+					GameTooltip_SetBackdropStyle(ui_CharacterTT, GAME_TOOLTIP_BACKDROP_STYLE_CORRUPTED_ITEM);
+					GameTooltip_SetBackdropStyle(ui_CompanionTT, GAME_TOOLTIP_BACKDROP_STYLE_CORRUPTED_ITEM);
+				end
 				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
 				if targetMode == TYPE_CHARACTER then
 					writeTooltipForCharacter(targetID, originalTexts, targetType);
