@@ -41,25 +41,56 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local isUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
 local hasProfile, getProfile = TRP3_API.register.hasProfile, TRP3_API.register.getProfile;
-local getConfigValue = TRP3_API.configuration.getValue;
+local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 
+-- Config keys
+local CONFIG_REGISTER_ABOUT_P_SIZE = "config_register_about_p_size";
+local CONFIG_REGISTER_ABOUT_H1_SIZE = "config_register_about_h1_size";
+local CONFIG_REGISTER_ABOUT_H2_SIZE = "config_register_about_h2_size";
+local CONFIG_REGISTER_ABOUT_H3_SIZE = "config_register_about_h3_size";
+
+local defaultFontParameters;
 local refreshTemplate2EditDisplay, saveInDraft, template2SaveToDraft; -- Function reference
 
 local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
 end;
 
+local function updateAboutTemplateFonts(frame)
+	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
+	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
+	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
+	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
+end
+
+local function updateAllAboutTemplateFonts()
+	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template1);
+	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_1_Text);
+	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_2_Text);
+	updateAboutTemplateFonts(TRP3_RegisterAbout_AboutPanel_Template3_3_Text);
+end
+
 local function setupHTMLFonts(frame)
 	frame:SetFontObject("p", GameFontNormal);
 	frame:SetFontObject("h1", GameFontNormalHuge3);
 	frame:SetFontObject("h2", GameFontNormalHuge);
 	frame:SetFontObject("h3", GameFontNormalLarge);
+
 	frame:SetTextColor("h1", 1, 1, 1);
 	frame:SetTextColor("h2", 1, 1, 1);
 	frame:SetTextColor("h3", 1, 1, 1);
+
+	-- Only need to fill once
+	if not defaultFontParameters then
+		defaultFontParameters = { p = {}, h1 = {}, h2 = {}, h3 = {}};
+		defaultFontParameters.p.font, defaultFontParameters.p.size = frame:GetFont("p");
+		defaultFontParameters.h1.font, defaultFontParameters.h1.size = frame:GetFont("h1");
+		defaultFontParameters.h2.font, defaultFontParameters.h2.size = frame:GetFont("h2");
+		defaultFontParameters.h3.font, defaultFontParameters.h3.size = frame:GetFont("h3");
+	end
 end
 
 local function setToolbarTextFrameScript(toolbar, frame)
@@ -920,6 +951,63 @@ function TRP3_API.register.inits.aboutInit()
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PhysTextScrollText);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText);
 	setToolbarTextFrameScript(TRP3_RegisterAbout_Edit_Toolbar, TRP3_RegisterAbout_Edit_Template3_HistTextScrollText);
+
+	registerConfigKey(CONFIG_REGISTER_ABOUT_P_SIZE, defaultFontParameters.p.size);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_H1_SIZE, defaultFontParameters.h1.size);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_H2_SIZE, defaultFontParameters.h2.size);
+	registerConfigKey(CONFIG_REGISTER_ABOUT_H3_SIZE, defaultFontParameters.h3.size);
+
+	updateAllAboutTemplateFonts();
+
+	registerHandler(CONFIG_REGISTER_ABOUT_P_SIZE, updateAllAboutTemplateFonts);
+	registerHandler(CONFIG_REGISTER_ABOUT_H1_SIZE, updateAllAboutTemplateFonts);
+	registerHandler(CONFIG_REGISTER_ABOUT_H2_SIZE, updateAllAboutTemplateFonts);
+	registerHandler(CONFIG_REGISTER_ABOUT_H3_SIZE, updateAllAboutTemplateFonts);
+
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigH1",
+		title = loc.CO_REGISTER_ABOUT_SETTINGS,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc.CO_REGISTER_ABOUT_P_SIZE,
+		help = loc.CO_REGISTER_ABOUT_P_SIZE_TT:format(defaultFontParameters.p.size),
+		configKey = CONFIG_REGISTER_ABOUT_P_SIZE,
+		min = 8,
+		max = 30,
+		step = 1,
+		integer = true,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc.CO_REGISTER_ABOUT_H3_SIZE,
+		help = loc.CO_REGISTER_ABOUT_H3_SIZE_TT:format(defaultFontParameters.h3.size),
+		configKey = CONFIG_REGISTER_ABOUT_H3_SIZE,
+		min = 8,
+		max = 30,
+		step = 1,
+		integer = true,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc.CO_REGISTER_ABOUT_H2_SIZE,
+		help = loc.CO_REGISTER_ABOUT_H2_SIZE_TT:format(defaultFontParameters.h2.size),
+		configKey = CONFIG_REGISTER_ABOUT_H2_SIZE,
+		min = 8,
+		max = 30,
+		step = 1,
+		integer = true,
+	});
+	tinsert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
+		inherit = "TRP3_ConfigSlider",
+		title = loc.CO_REGISTER_ABOUT_H1_SIZE,
+		help = loc.CO_REGISTER_ABOUT_H1_SIZE_TT:format(defaultFontParameters.h1.size),
+		configKey = CONFIG_REGISTER_ABOUT_H1_SIZE,
+		min = 8,
+		max = 30,
+		step = 1,
+		integer = true,
+	});
 
 	TRP3_RegisterAbout_AboutPanel_MusicPlayer_Play:SetScript("OnClick", function()
 		Utils.music.playMusic(TRP3_RegisterAbout_AboutPanel.musicURL);

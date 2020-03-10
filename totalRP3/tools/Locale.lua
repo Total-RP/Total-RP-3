@@ -1329,12 +1329,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a rare issue where the addon loading process would be interrupted by a setting key unable to be read.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	---@language Markdown
 	WHATS_NEW_23_9 = [[
 # Changelog version 1.6.9
@@ -1357,6 +1351,21 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Image browser filter now correctly handles some special characters.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
+	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
+	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %s",
+	CO_REGISTER_ABOUT_H2_SIZE = "Header 2 text size",
+	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %s",
+	CO_REGISTER_ABOUT_H3_SIZE = "Header 3 text size",
+	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
+	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
+	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
 
 };
 
