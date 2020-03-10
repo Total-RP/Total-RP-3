@@ -231,6 +231,7 @@ local function showTemplate2(dataTab)
 		setupIconButton(icon, frameTab.IC or Globals.icons.default);
 
 		setupHTMLFonts(text);
+		updateAboutTemplateFonts(text);
 
 		-- We'll need to access the HTML later when resizing things.
 		text.html = Utils.str.toHTML(frameTab.TX or "")
