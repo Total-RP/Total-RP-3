@@ -852,7 +852,7 @@ function hooking()
 	end);
 
 	-- Restore the text without substitution before it's stored in the chat history
-	hooksecurefunc("SubstituteChatMessageBeforeSend", function(text)
+	hooksecurefunc("SubstituteChatMessageBeforeSend", function()
 		if parsedEditBox and textBeforeParse then
 			parsedEditBox:SetText(textBeforeParse);
 			parsedEditBox = nil;
