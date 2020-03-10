@@ -31,7 +31,7 @@ local loc = TRP3_API.loc;
 local unitIDToInfo, unitInfoToID = Utils.str.unitIDToInfo, Utils.str.unitInfoToID;
 local get = TRP3_API.profile.getData;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
-local getUnitIDCurrentProfile = TRP3_API.register.getUnitIDCurrentProfile;
+local getUnitIDCurrentProfile, getUnitRPName = TRP3_API.register.getUnitIDCurrentProfile, TRP3_API.register.getUnitRPName;
 local getConfigValue, registerConfigKey, registerHandler = TRP3_API.configuration.getValue, TRP3_API.configuration.registerConfigKey, TRP3_API.configuration.registerHandler;
 local ChatEdit_GetActiveWindow, IsAltKeyDown = ChatEdit_GetActiveWindow, IsAltKeyDown;
 local handleCharacterMessage, hooking;
@@ -790,6 +790,7 @@ function Utils.customGetColoredName(...)
 	return Utils.customGetColoredNameWithCustomFallbackFunction(defaultGetColoredNameFunction, ...);
 end
 
+local textBeforeParse, parsedEditBox;
 function hooking()
 	for _, channel in pairs(POSSIBLE_CHANNELS) do
 		ChatFrame_RemoveMessageEventFilter(channel, handleCharacterMessage);
@@ -836,6 +837,26 @@ function hooking()
 			-- Move the cursor to the end of the insertion
 			editBox:SetCursorPosition(textBefore:len() + name:len());
 
+		end
+	end);
+
+	hooksecurefunc("ChatEdit_ParseText", function(editBox, send)
+		local text = editBox:GetText();
+		if text and send == 1 then
+			textBeforeParse = text;
+			parsedEditBox = editBox;
+			text = text:gsub("%%xt", getUnitRPName("target") or TARGET_TOKEN_NOT_FOUND);
+			text = text:gsub("%%xf", getUnitRPName("focus") or FOCUS_TOKEN_NOT_FOUND);
+			editBox:SetText(text);
+		end
+	end);
+
+	-- Restore the text without substitution before it's stored in the chat history
+	hooksecurefunc("SubstituteChatMessageBeforeSend", function(text)
+		if parsedEditBox and textBeforeParse then
+			parsedEditBox:SetText(textBeforeParse);
+			parsedEditBox = nil;
+			textBeforeParse = nil;
 		end
 	end);
 end
