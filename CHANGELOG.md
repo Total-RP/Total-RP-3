@@ -1,3 +1,10 @@
+# Changelog version 1.6.10
+
+## Added
+
+- Added %xt and %xf chat tokens. These will automatically be replaced by the RP name of your target and focus respectively when sending a message.
+- Added settings to adjust About font sizes.
+
 # Changelog version 1.6.9
 
 ## Added

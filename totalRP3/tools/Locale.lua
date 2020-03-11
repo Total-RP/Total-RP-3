@@ -1366,6 +1366,16 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
 	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
 	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
+	---@language Markdown
+	WHATS_NEW_23_10 = [[
+# Changelog version 1.6.10
+
+## Added
+
+- Added %xt and %xf chat tokens. These will automatically be replaced by the RP name of your target and focus respectively when sending a message.
+- Added settings to adjust About font sizes.
+
+]],
 
 };
 
