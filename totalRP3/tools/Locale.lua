@@ -116,7 +116,6 @@ TRP3_API.loc = {
 	REG_PLAYER_PSYCHO_PERSONAL = "Personal traits",
 	REG_PLAYER_PSYCHO_CHAOTIC = "Chaotic";
 	REG_PLAYER_PSYCHO_Loyal = "Lawful";
-	REG_PLAYER_PSYCHO_Chaste = "Chaste";
 	REG_PLAYER_PSYCHO_Indulgent = "Forgiving";
 	REG_PLAYER_PSYCHO_Rencunier = "Vindictive";
 	REG_PLAYER_PSYCHO_Genereux = "Altruistic";
