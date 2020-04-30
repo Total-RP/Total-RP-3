@@ -1424,7 +1424,6 @@ local function initStructures()
 	PSYCHO_PRESETS_DROPDOWN = {
 		{ loc.REG_PLAYER_PSYCHO_SOCIAL },
 		{ loc.REG_PLAYER_PSYCHO_CHAOTIC .. " - " .. loc.REG_PLAYER_PSYCHO_Loyal, 1 },
-		{ loc.REG_PLAYER_PSYCHO_Chaste .. " - " .. loc.REG_PLAYER_PSYCHO_Luxurieux, 2 },
 		{ loc.REG_PLAYER_PSYCHO_Indulgent .. " - " .. loc.REG_PLAYER_PSYCHO_Rencunier, 3 },
 		{ loc.REG_PLAYER_PSYCHO_Genereux .. " - " .. loc.REG_PLAYER_PSYCHO_Egoiste, 4 },
 		{ loc.REG_PLAYER_PSYCHO_Sincere .. " - " .. loc.REG_PLAYER_PSYCHO_Trompeur, 5 },
