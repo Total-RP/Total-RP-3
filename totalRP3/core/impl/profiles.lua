@@ -38,7 +38,6 @@ local registerPage = TRP3_API.navigation.page.registerPage;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
-local tcopy = TRP3_API.utils.table.copy;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
 
