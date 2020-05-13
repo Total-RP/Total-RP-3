@@ -426,6 +426,18 @@ end
 
 TRP3_API.r.name = TRP3_API.register.getUnitRPName;
 
+function TRP3_API.register.getUnitRPFirstName(targetType)
+	local unitID = getUnitID(targetType);
+	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
+	return player:GetFirstName() or TRP3_API.register.getUnitRPName(targetType);
+end
+
+function TRP3_API.register.getUnitRPLastName(targetType)
+	local unitID = getUnitID(targetType);
+	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(unitID);
+	return player:GetLastName() or TRP3_API.register.getUnitRPName(targetType);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
