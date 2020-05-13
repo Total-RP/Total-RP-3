@@ -366,35 +366,6 @@
 			</Frame>
 			<Frame name="TRP3_RegisterAbout_AboutPanel" setAllPoints="true">
 				<Layers>
-					<Layer level="ARTWORK">
-						<Texture parentKey="Corruption1" alphaMode="BLEND" alpha="0.8" hidden="true">
-							<Size x="181" y="165"/>
-							<Anchors>
-								<Anchor point="BOTTOMLEFT" x="5" y="5"/>
-							</Anchors>
-						</Texture>
-						<Texture parentKey="Corruption2" alphaMode="BLEND" alpha="0.8" hidden="true">
-							<Size x="181" y="165"/>
-							<Anchors>
-								<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
-							</Anchors>
-							<TexCoords top="0" left="1.0" bottom="1.0" right="0"/>
-						</Texture>
-						<Texture parentKey="Corruption3" alphaMode="BLEND" alpha="0.8" hidden="true">
-							<Size x="181" y="165"/>
-							<Anchors>
-								<Anchor point="TOPLEFT" x="5" y="-5"/>
-							</Anchors>
-							<TexCoords top="1.0" left="0" bottom="0" right="1.0"/>
-						</Texture>
-						<Texture parentKey="Corruption4" alphaMode="BLEND" alpha="0.8" hidden="true">
-							<Size x="181" y="165"/>
-							<Anchors>
-								<Anchor point="TOPRIGHT" x="-5" y="-5"/>
-							</Anchors>
-							<TexCoords top="1.0" left="1.0" bottom="0" right="0"/>
-						</Texture>
-					</Layer>
 					<Layer level="OVERLAY">
 						<FontString name="TRP3_RegisterAbout_AboutPanel_Empty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]">
 							<Size x="0" y="10"/>
