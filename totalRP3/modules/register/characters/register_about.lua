@@ -1053,17 +1053,4 @@ function TRP3_API.register.inits.aboutInit()
 		TRP3_RegisterAbout_Edit_Template3_PsyTextScrollText:SetWidth(containerwidth - 290);
 		TRP3_RegisterAbout_Edit_Template3_HistTextScrollText:SetWidth(containerwidth - 290);
 	end);
-
-	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_FINISH, function()
-		if not Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-			TRP3_RegisterAbout_AboutPanel.Corruption1:SetAtlas("bfa-threats-cornereye-background", true);
-			TRP3_RegisterAbout_AboutPanel.Corruption2:SetAtlas("bfa-threats-cornereye-background", true);
-			TRP3_RegisterAbout_AboutPanel.Corruption3:SetAtlas("bfa-threats-cornereye-background", true);
-			TRP3_RegisterAbout_AboutPanel.Corruption4:SetAtlas("bfa-threats-cornereye-background", true);
-			TRP3_RegisterAbout_AboutPanel.Corruption1:Show();
-			TRP3_RegisterAbout_AboutPanel.Corruption2:Show();
-			TRP3_RegisterAbout_AboutPanel.Corruption3:Show();
-			TRP3_RegisterAbout_AboutPanel.Corruption4:Show();
-		end
-	end);
 end
