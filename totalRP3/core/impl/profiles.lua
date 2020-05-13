@@ -38,7 +38,6 @@ local registerPage = TRP3_API.navigation.page.registerPage;
 local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
-local tcopy = TRP3_API.utils.table.copy;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
 
@@ -531,42 +530,6 @@ function TRP3_API.profile.init()
 			end
 		end
 	end);
-
-	-- Stash data command
-	-- Will move all the user data in a stash variable and reload UI with empty variables,
-	-- and then restore the data on the second use.
-	-- Used for debugging/testing
-	TRP3_API.slash.registerCommand({
-		id = "stash",
-		handler = function()
-			-- The list of our global variables that will be stashed away.
-			local globalVariables = {"TRP3_Profiles", "TRP3_Characters", "TRP3_Configuration", "TRP3_Flyway", "TRP3_Presets", "TRP3_Companions", "TRP3_Colors"};
-			-- If we already have data stashed, restore the data
-			if TRP3_StashedData then
-				for _, variable in pairs(globalVariables) do
-					-- Copy stashed data into the global variable
-					tcopy(_G[variable], TRP3_StashedData[variable] or _G[variable]);
-				end
-				-- Empty the stash so we know we can use it again
-				TRP3_StashedData = nil;
-				ReloadUI();
-			else
-				-- Ask for confirmation before stashing user data!
-				showConfirmPopup(loc.COM_STASH_DATA, function()
-					TRP3_StashedData = {};
-					-- Loop through each global variable we want to stash
-					for _, variable in pairs(globalVariables) do
-						TRP3_StashedData[variable] = {}
-						-- Store the globale variable data into the stash
-						tcopy(TRP3_StashedData[variable], _G[variable]);
-						-- And empty the variable
-						_G[variable] = nil;
-					end
-					ReloadUI();
-				end);
-			end
-		end
-	});
 
 	-- Export/Import
 	local exportWarningText = TRP3_API.Ellyb.System.IsMac() and loc.PR_EXPORT_WARNING_MAC or loc.PR_EXPORT_WARNING_WINDOWS;
