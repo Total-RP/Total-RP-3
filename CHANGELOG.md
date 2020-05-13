@@ -1,3 +1,14 @@
+# Changelog version 1.6.11
+
+## Added
+
+- Added new chat tokens for first and last names: %xtf (Target's first name), %xtl (Target's last name), %xff (Focus' first name), %xfl (Focus' last name).
+
+## Fixed
+
+- Fixed an issue when trying to add a chat link to an empty chatbox.
+- Fixed a compatibility issue with PallyPower.
+
 # Changelog version 1.6.10
 
 ## Added

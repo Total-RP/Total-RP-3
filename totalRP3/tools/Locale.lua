@@ -478,6 +478,15 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
 	CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
 	CO_REGISTER = "Register settings",
+	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
+	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
+	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %s",
+	CO_REGISTER_ABOUT_H2_SIZE = "Header 2 text size",
+	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %s",
+	CO_REGISTER_ABOUT_H3_SIZE = "Header 3 text size",
+	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
+	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
+	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
 	CO_REGISTER_AUTO_PURGE = "Auto purge directory",
 	CO_REGISTER_AUTO_PURGE_TT = "Automatically remove from directory the profiles of characters you haven't crossed for a certain time. You can choose the delay before deletion.\n\n|cff00ff00Note that profiles with a relation toward one of your characters will never be purged.\n\n|cffff9900There is a bug in WoW losing all the saved data when it reaches a certain threshold. We strongly recommend to avoid disabling the purge system.",
 	CO_REGISTER_AUTO_PURGE_0 = "Disable purge",
@@ -1351,21 +1360,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Image browser filter now correctly handles some special characters.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
-	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
-	CO_REGISTER_ABOUT_H1_SIZE_TT = "Size of the text between {h1} tags. Default: %s",
-	CO_REGISTER_ABOUT_H2_SIZE = "Header 2 text size",
-	CO_REGISTER_ABOUT_H2_SIZE_TT = "Size of the text between {h2} tags. Default: %s",
-	CO_REGISTER_ABOUT_H3_SIZE = "Header 3 text size",
-	CO_REGISTER_ABOUT_H3_SIZE_TT = "Size of the text between {h3} tags. Default: %s",
-	CO_REGISTER_ABOUT_P_SIZE = "Paragraph text size",
-	CO_REGISTER_ABOUT_P_SIZE_TT = "Size of the text outside of header tags. Default: %s",
 	---@language Markdown
 	WHATS_NEW_23_10 = [[
 # Changelog version 1.6.10
@@ -1377,6 +1371,24 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_23_11 = [[
+	# Changelog version 1.6.11
+
+## Added
+
+- Added new chat tokens for first and last names: %xtf (Target's first name), %xtl (Target's last name), %xff (Focus' first name), %xfl (Focus' last name).
+
+## Fixed
+
+- Fixed an issue when trying to add a chat link to an empty chatbox.
+- Fixed a compatibility issue with PallyPower.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
