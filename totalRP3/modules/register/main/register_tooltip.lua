@@ -40,7 +40,7 @@ local getYourCharacter = TRP3_API.profile.getPlayerCharacter;
 local IsUnitIDKnown = TRP3_API.register.isUnitIDKnown;
 local UnitAffectingCombat = UnitAffectingCombat;
 local Events = TRP3_API.events;
-local GameTooltip, _G, pairs, tinsert, strtrim = GameTooltip, _G, pairs, tinsert, strtrim;
+local GameTooltip, _G, ipairs, tinsert, strtrim = GameTooltip, _G, ipairs, tinsert, strtrim;
 local hasProfile, getRelationColors = TRP3_API.register.hasProfile, TRP3_API.register.relation.getRelationColors;
 local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local IC_GUILD, OOC_GUILD;
@@ -308,12 +308,17 @@ end
 local function Build(self)
 	local size = #self._content;
 	local tooltipLineIndex = 1;
-	for lineIndex, line in pairs(self._content) do
+	for lineIndex, line in ipairs(self._content) do
 		if line.type == BUILDER_TYPE_LINE then
+			-- Potential fix for SetFont call on a nil line
+			if line.text == "" then line.text = " " end
 			self.tooltip:AddLine(line.text, line.red, line.green, line.blue, line.lineWrap);
 			setLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
 			tooltipLineIndex = tooltipLineIndex + 1;
 		elseif line.type == BUILDER_TYPE_DOUBLELINE then
+			-- Potential fix for SetFont call on a nil line
+			if line.textL == "" then line.textL = " " end
+			if line.textR == "" then line.textR = " " end
 			self.tooltip:AddDoubleLine(line.textL, line.textR, line.redL, line.greenL, line.blueL, line.redR, line.greenR, line.blueR);
 			setDoubleLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
 			tooltipLineIndex = tooltipLineIndex + 1;
@@ -324,7 +329,7 @@ local function Build(self)
 		end
 	end
 	self.tooltip:Show();
-	for index, tempTable in pairs(self._content) do
+	for index, tempTable in ipairs(self._content) do
 		self._content[index] = nil;
 		releaseTempTable(tempTable);
 	end
