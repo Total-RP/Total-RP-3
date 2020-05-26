@@ -679,24 +679,29 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- Loading SavedVariables early to avoid potential nil accesses from some other addons
+Ellyb.GameEvents.registerCallback("ADDON_LOADED", function(addOnName)
+	if addOnName == "totalRP3_Data" then
+		-- Init save variables
+		if not TRP3_Register then
+			TRP3_Register = {};
+		end
+		if not TRP3_Register.character then
+			TRP3_Register.character = {};
+		end
+		if not TRP3_Register.profiles then
+			TRP3_Register.profiles = {};
+		end
+		profiles = TRP3_Register.profiles;
+		characters = TRP3_Register.character;
+	end
+end)
+
 function TRP3_API.register.init()
 	showCharacteristicsTab = TRP3_API.register.ui.showCharacteristicsTab;
 	showAboutTab = TRP3_API.register.ui.showAboutTab;
 	showMiscTab = TRP3_API.register.ui.showMiscTab;
 	showNotesTab = TRP3_API.register.ui.showNotesTab;
-
-	-- Init save variables
-	if not TRP3_Register then
-		TRP3_Register = {};
-	end
-	if not TRP3_Register.character then
-		TRP3_Register.character = {};
-	end
-	if not TRP3_Register.profiles then
-		TRP3_Register.profiles = {};
-	end
-	profiles = TRP3_Register.profiles;
-	characters = TRP3_Register.character;
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
