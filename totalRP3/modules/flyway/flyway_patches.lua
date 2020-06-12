@@ -153,3 +153,15 @@ TRP3_API.flyway.patches["11"] = function()
 		end
 	end
 end
+
+-- Migrate from register from "BlackList" to "BlockList" and "WhiteList" to "SafeList" naming conventions.
+TRP3_API.flyway.patches["12"] = function()
+	if TRP3_Register.blackList then
+		TRP3_Register.blockList = TRP3_Register.blackList;
+		TRP3_Register.blackList = nil;
+	end
+	if not TRP3_Register.whiteList then
+		TRP3_Register.safeList = TRP3_Register.whiteList;
+		TRP3_Register.whiteList = nil;
+	end
+end
