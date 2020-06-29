@@ -218,9 +218,6 @@ Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	if not TRP3_Register.blockList then
 		TRP3_Register.blockList = {};
 	end
-	if not TRP3_Register.safeList then
-		TRP3_Register.safeList = {};
-	end
 	characters = TRP3_Register.character;
 	blockList = TRP3_Register.blockList;
 end);

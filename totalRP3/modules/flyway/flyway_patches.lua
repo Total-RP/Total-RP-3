@@ -160,8 +160,8 @@ TRP3_API.flyway.patches["12"] = function()
 		TRP3_Register.blockList = TRP3_Register.blackList;
 		TRP3_Register.blackList = nil;
 	end
-	if not TRP3_Register.whiteList then
-		TRP3_Register.safeList = TRP3_Register.whiteList;
-		TRP3_Register.whiteList = nil;
+	if TRP3_MatureFilter.whitelist then
+		TRP3_MatureFilter.safeList = TRP3_MatureFilter.whitelist;
+		TRP3_MatureFilter.whitelist = nil;
 	end
 end
