@@ -365,13 +365,7 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				if TRP3_API.globals.is_classic then
-					ShowUIPanel(WorldMapFrame);
-					WorldMapFrame:SetMapID(dataTab.RC[1]);
-				else
-					OpenWorldMap(dataTab.RC[1]);
-				end
-
+				OpenWorldMap(dataTab.RC[1])
 				local characterID;
 				local profileID;
 				if context.source == "player" then
