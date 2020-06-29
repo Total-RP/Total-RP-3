@@ -1358,6 +1358,19 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Added settings to adjust About font sizes.
 
 ]],
+	WHATS_NEW_23_11 = [[
+	# Changelog version 1.6.11
+
+## Added
+
+- Added new chat tokens for first and last names: %xtf (Target's first name), %xtl (Target's last name), %xff (Focus' first name), %xfl (Focus' last name).
+
+## Fixed
+
+- Fixed an issue when trying to add a chat link to an empty chatbox.
+- Fixed a compatibility issue with PallyPower.
+
+]],
 
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
@@ -1375,19 +1388,16 @@ The content of their profiles will no longer be hidden.]],
 	MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature safelist|r.
 
 The content of their profiles will be hidden again.]],
-	WHATS_NEW_23_11 = [[
-	# Changelog version 1.6.11
-
-## Added
-
-- Added new chat tokens for first and last names: %xtf (Target's first name), %xtl (Target's last name), %xff (Focus' first name), %xfl (Focus' last name).
+	WHATS_NEW_23_12 = [[
+# Changelog version 1.6.12
 
 ## Fixed
 
-- Fixed an issue when trying to add a chat link to an empty chatbox.
-- Fixed a compatibility issue with PallyPower.
+- Tentatively fixed an issue with tooltip lines.
+- Fixed an issue with the residence button on Classic.
 
 ]],
+
 };
 
 -- Use Ellyb to generate the Localization system
