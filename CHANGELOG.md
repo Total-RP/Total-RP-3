@@ -1,3 +1,9 @@
+# Changelog version 1.6.13
+
+## Fixed
+
+- Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
+
 # Changelog version 1.6.12
 
 ## Fixed
