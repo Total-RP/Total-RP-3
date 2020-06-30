@@ -1397,6 +1397,13 @@ The content of their profiles will be hidden again.]],
 - Fixed an issue with the residence button on Classic.
 
 ]],
+	WHATS_NEW_23_13 =  [[# Changelog version 1.6.13
+
+## Fixed
+
+- Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
+
+]],
 
 };
 
