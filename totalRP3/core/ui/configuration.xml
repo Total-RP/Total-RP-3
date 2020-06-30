@@ -75,7 +75,7 @@
 
 	<Frame name="TRP3_ConfigEditBox" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<EditBox name="$parentBox" inherits="TRP3_TitledEditBox" virtual="true">
+			<EditBox name="$parentBox" inherits="TRP3_TitledEditBox">
 				<Size x="140" y="18"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>

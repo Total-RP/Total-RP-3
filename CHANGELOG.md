@@ -1,3 +1,10 @@
+# Changelog version 1.6.12
+
+## Fixed
+
+- Tentatively fixed an issue with tooltip lines.
+- Fixed an issue with the residence button on Classic.
+
 # Changelog version 1.6.11
 
 ## Added
