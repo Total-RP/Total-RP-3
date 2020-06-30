@@ -1,0 +1,15 @@
+name: PR branch check
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: marocchino/sticky-pull-request-comment@v1.4.0
+      with:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        message: |
+          Warning - This pull request is targeting master.
