@@ -69,7 +69,7 @@ Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
 		WorldMapButton:ClearAllPoints();
 
 		local xPadding = 10;
-		local yPadding = 10;
+		local yPadding = 80;
 
 		if position == "TOPRIGHT" then
 			xPadding = -10;
