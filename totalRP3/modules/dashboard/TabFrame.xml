@@ -53,7 +53,7 @@
 			</ScrollFrame>
 		</Frames>
 		<Scripts>
-			<OnLoad inherit="prepend" method="OnLoad"/>
+			<OnLoad method="OnLoad"/>
 		</Scripts>
 	</Frame>
 </Ui>
