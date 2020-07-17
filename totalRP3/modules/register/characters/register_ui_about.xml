@@ -90,7 +90,7 @@
 
 	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
 		<Size x="0" y="105"/>
 		<Frames>
@@ -137,7 +137,7 @@
 	<!-- Register about template 2 frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
@@ -154,7 +154,7 @@
 	<!-- Register about template 2 edit frame -->
 	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
 		<Size x="0" y="120"/>
 		<Frames>
