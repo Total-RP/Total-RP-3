@@ -21,6 +21,33 @@
 
 	<Script file="widgets.lua"/>
 
+	<!--
+		BackdropFrameTemplate
+
+		Provides a common method of handling 9.x style frame backdrops
+		across all client types.
+
+		For 9.x clients this transparently resolves to using the Blizzard
+		provided BackdropTemplateMixin; the usage of this template is
+		intended to remain identical to the API provided by this client.
+
+		For pre-9.x clients the original API functions for backdrop management
+		on frames are kept unaltered, with the only change being load-time
+		logic for translating 9.x style KeyValue pairs to the proper calls.
+
+		Frames that inherit this template should ensure that any OnLoad
+		or OnSizeChanged script handlers they install are affixed with the
+		inherit="prepend" attribute, or that the handlers themselves invoke
+		the OnBackdropLoaded/OnBackdropSizeChanged methods.
+	-->
+
+	<Frame name="TRP3_BackdropTemplate" mixin="TRP3_BackdropTemplateMixin" virtual="true">
+		<Scripts>
+			<OnLoad method="OnBackdropLoaded"/>
+			<OnSizeChanged method="OnBackdropSizeChanged"/>
+		</Scripts>
+	</Frame>
+
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
 		<Scripts>
@@ -1286,33 +1313,6 @@
 			<OnHide>
 				MSA_CloseDropDownMenus();
 			</OnHide>
-		</Scripts>
-	</Frame>
-
-	<!--
-		BackdropFrameTemplate
-
-		Provides a common method of handling 9.x style frame backdrops
-		across all client types.
-
-		For 9.x clients this transparently resolves to using the Blizzard
-		provided BackdropTemplateMixin; the usage of this template is
-		intended to remain identical to the API provided by this client.
-
-		For pre-9.x clients the original API functions for backdrop management
-		on frames are kept unaltered, with the only change being load-time
-		logic for translating 9.x style KeyValue pairs to the proper calls.
-
-		Frames that inherit this template should ensure that any OnLoad
-		or OnSizeChanged script handlers they install are affixed with the
-		inherit="prepend" attribute, or that the handlers themselves invoke
-		the OnBackdropLoaded/OnBackdropSizeChanged methods.
-	-->
-
-	<Frame name="TRP3_BackdropTemplate" mixin="TRP3_BackdropTemplateMixin" virtual="true">
-		<Scripts>
-			<OnLoad method="OnBackdropLoaded"/>
-			<OnSizeChanged method="OnBackdropSizeChanged"/>
 		</Scripts>
 	</Frame>
 </Ui>
