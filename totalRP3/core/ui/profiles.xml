@@ -220,7 +220,7 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ProfileManager" inherits="TRP3_ProfileManagerTemplate" hidden="true" />
+	<Frame name="TRP3_ProfileManager" parent="UIParent" inherits="TRP3_ProfileManagerTemplate" hidden="true" />
 
 	<Frame name="TRP3_ProfileExport" parentKey="export" parent="TRP3_ProfileManager" inherits="TRP3_AltHoveredFrame" enableMouse="true" frameStrata="HIGH" hidden="true">
 		<Size x="400" y="300"/>

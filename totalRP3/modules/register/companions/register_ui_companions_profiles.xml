@@ -19,6 +19,5 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_CompanionsProfiles" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
-
+	<Frame name="TRP3_CompanionsProfiles" parent="UIParent" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
 </Ui>
