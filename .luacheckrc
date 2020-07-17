@@ -11887,6 +11887,7 @@ stds.wow = {
 		"AzeriteTierPowerSelectedAnimationMixin",
 		"AzeriteTierRevealAnimationMixin",
 		"AzeriteUtil",
+		"BackdropTemplateMixin",
 		"BAG_FILTER_ICONS",
 		"BAG_FILTER_LABELS",
 		"BAG_ITEM_QUALITY_COLORS",

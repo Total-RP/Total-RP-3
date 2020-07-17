@@ -20,12 +20,11 @@
 -->
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_TextToolbar" virtual="true">
+	<Frame name="TRP3_TextToolbar" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+		</KeyValues>
 		<Size x="0" y="30"/>
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString parentKey="title" inherits="GameFontNormal" justifyH="CENTER" text="[formatting_tool]">
@@ -89,11 +88,10 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Size x="0" y="105"/>
 		<Frames>
 			<Button name="$parentIcon" inherits="TRP3_IconButton">
@@ -137,11 +135,10 @@
 	</Frame>
 
 	<!-- Register about template 2 frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
 				<Size x="50" y="50"/>
@@ -155,11 +152,10 @@
 	</Frame>
 
 	<!-- Register about template 2 edit frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true" bgFile="Interface\DialogFrame\UI-DialogBox-Background">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Size x="0" y="120"/>
 		<Frames>
 			<Button name="$parentIcon" inherits="TRP3_IconButton">
@@ -216,11 +212,10 @@
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterAboutTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize val="24"/>
-			<BackgroundInsets bottom="5" left="5" right="5" top="5"/>
-		</Backdrop>
+	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Frames>
 			<Frame name="TRP3_RegisterAbout_AboutPanel_Edit" setAllPoints="true">
 				<Frames>
@@ -297,11 +292,10 @@
 							</Frame>
 						</Frames>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_Template2">
-						<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-							<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-							<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-						</Backdrop>
+					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="TRP3_BackdropTemplate">
+						<KeyValues>
+							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
+						</KeyValues>
 						<Anchors>
 							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_RegisterAbout_Edit_Toolbar" x="0" y="-5"/>
 							<Anchor point="BOTTOM" x="0" y="30"/>
@@ -417,11 +411,10 @@
 											<Anchor point="RIGHT" x="0" y="0"/>
 										</Anchors>
 										<Frames>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-												</Backdrop>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="TRP3_BackdropTemplate">
+												<KeyValues>
+													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5"/>
 													<Anchor point="RIGHT" x="0" y="0"/>
@@ -448,11 +441,10 @@
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-												</Backdrop>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="TRP3_BackdropTemplate">
+												<KeyValues>
+													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_1"/>
 													<Anchor point="RIGHT" x="0" y="0"/>
@@ -479,11 +471,10 @@
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3">
-												<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-													<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="400"/></TileSize>
-													<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-												</Backdrop>
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="TRP3_BackdropTemplate">
+												<KeyValues>
+													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
+												</KeyValues>
 												<Anchors>
 													<Anchor point="TOPLEFT" x="0" y="-5" relativePoint="BOTTOMLEFT" relativeTo="TRP3_RegisterAbout_AboutPanel_Template3_2"/>
 													<Anchor point="RIGHT" x="0" y="0"/>
@@ -523,12 +514,11 @@
 								</Anchors>
 							</Button>
 							<!-- Music player -->
-							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer">
+							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="TRP3_BackdropTemplate">
+								<KeyValues>
+									<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_MARBLE_TOOLTIP_415_24_5555" type="global"/>
+								</KeyValues>
 								<Size x="200" y="65"/>
-								<Backdrop bgFile="Interface\FrameGeneral\UI-Background-Marble" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-									<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-									<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-								</Backdrop>
 								<Anchors>
 									<Anchor point="BOTTOM" x="0" y="5"/>
 								</Anchors>

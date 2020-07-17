@@ -76,10 +76,10 @@
 	</Button>
 
 	<!-- Register Peek panel -->
-	<Frame name="TRP3_RegisterMiscTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize val="24"/>
-		</Backdrop>
+	<Frame name="TRP3_RegisterMiscTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1" setAllPoints="true">
@@ -237,7 +237,6 @@
 							</Frame>
 						</Frames>
 					</Frame>
-
 				</Frames>
 			</Frame>
 		</Frames>

@@ -20,11 +20,10 @@
 -->
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize><AbsValue val="24"/></EdgeSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">

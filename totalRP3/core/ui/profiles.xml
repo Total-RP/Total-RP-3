@@ -18,12 +18,10 @@
 -->
 
 	<!-- Profile manager : Line -->
-	<Frame name="TRP3_ProfileManagerLine" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16" />
-			<TileSize val="418" />
-			<BackgroundInsets left="5" right="3" top="5" bottom="3"/>
-		</Backdrop>
+	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_5353" type="global"/>
+		</KeyValues>
 		<Size x="0" y="65" />
 		<Frames>
 			<Frame name="$parentIcon" inherits="TRP3_SimpleIcon">
@@ -128,10 +126,10 @@
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" virtual="true">
 		<Frames>
-			<Frame frameLevel="2" parentKey="list">
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-					<EdgeSize val="24"/>
-				</Backdrop>
+			<Frame frameLevel="2" parentKey="list" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="2" y="-28" />
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />

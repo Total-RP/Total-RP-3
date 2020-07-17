@@ -70,11 +70,10 @@
 	</Frame>
 
 	<!-- Register characteristics psycho line jauge -->
-	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-Parchment" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize><AbsValue val="16"/></EdgeSize><TileSize><AbsValue val="415"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
+		</KeyValues>
 		<Size x="105" y="20"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -384,10 +383,10 @@
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterCharactTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize val="24"/>
-		</Backdrop>
+	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
