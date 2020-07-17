@@ -21,7 +21,7 @@
 
 	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
 		</KeyValues>
 		<Size x="0" y="60"/>
 		<Layers>

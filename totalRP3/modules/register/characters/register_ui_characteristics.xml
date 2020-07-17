@@ -72,7 +72,7 @@
 	<!-- Register characteristics psycho line jauge -->
 	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_5555" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARCHMENT_TOOLTIP_415_16_5555" type="global"/>
 		</KeyValues>
 		<Size x="105" y="20"/>
 		<Layers>

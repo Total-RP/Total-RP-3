@@ -50,8 +50,27 @@ TRP3_BACKDROP_MIXED_PARTY_DIALOG_16_16_5555 = {
 	insets   = { left = 5, right = 5, top = 5, bottom = 5 },
 };
 
+TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555 = {
+	bgFile   = "Interface\\DialogFrame\\UI-DialogBox-Background",
+	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+	tile     = true,
+	tileEdge = true,
+	tileSize = 200,
+	edgeSize = 24,
+	insets   = { left = 5, right = 5, top = 5, bottom = 5 },
+};
+
 TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555 = {
 	bgFile   = "Interface\\DialogFrame\\UI-DialogBox-Background",
+	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+	tile     = true,
+	tileEdge = true,
+	tileSize = 400,
+	edgeSize = 24,
+	insets   = { left = 5, right = 5, top = 5, bottom = 5 },
+};
+
+TRP3_BACKDROP_TOOLTIP_0_24_5555 = {
 	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
 	tile     = true,
 	tileEdge = true,
@@ -139,6 +158,16 @@ TRP3_BACKDROP_ACHIEVEMENTS_32_64_5555 = {
 	tileEdge = true,
 	tileSize = 32,
 	edgeSize = 64,
+	insets   = { left = 5, right = 5, top = 5, bottom = 5 },
+};
+
+TRP3_BACKDROP_MIXED_PARCHMENT_TOOLTIP_415_16_5555 = {
+	bgFile   = "Interface\\AchievementFrame\\UI-Achievement-Parchment",
+	edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+	tile     = true,
+	tileEdge = true,
+	tileSize = 415,
+	edgeSize = 16,
 	insets   = { left = 5, right = 5, top = 5, bottom = 5 },
 };
 

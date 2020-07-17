@@ -22,7 +22,7 @@
 	<!-- Register characteristics panel -->
 	<Frame name="TRP3_CompanionsPageInformationTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
 		<KeyValues>
-			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
 		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
