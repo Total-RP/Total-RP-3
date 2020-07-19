@@ -1,3 +1,11 @@
+# Changelog version 1.6.14
+
+- Updated TOC version for Classic 1.13.5
+
+## Fixed
+
+- Fixed another issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
+
 # Changelog version 1.6.13
 
 ## Fixed
