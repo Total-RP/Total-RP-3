@@ -41,7 +41,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="$parentValues" inherits="UIDropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentValues" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
 				<Anchors>
 					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentFieldName" x="0" y="0"/>
 				</Anchors>
