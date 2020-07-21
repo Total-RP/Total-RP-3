@@ -291,17 +291,13 @@ function BackdropTemplatePolyfillMixin:OnBackdropLoaded()
 
 	self:ApplyBackdrop();
 
-	-- Use of ColorMixin.GetRGB below is to enable compatibility with any
-	-- Color-like tables (as in, those that just provide r/g/b fields)
-	-- without actually including a GetRGB method.
-
 	if self.backdropColor then
-		local r, g, b = ColorMixin.GetRGB(self.backdropColor);
+		local r, g, b = self.backdropColor:GetRGB();
 		self:SetBackdropColor(r, g, b, self.backdropColorAlpha or 1);
 	end
 
 	if self.backdropBorderColor then
-		local r, g, b = ColorMixin.GetRGB(self.backdropBorderColor);
+		local r, g, b = self.backdropBorderColor:GetRGB();
 		self:SetBackdropBorderColor(r, g, b, self.backdropBorderColorAlpha or 1);
 	end
 
