@@ -372,11 +372,14 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	local OOCTempPatternEnd = "TRP3ETEMPOOC"
 	local SpeechTempPatternStart = "TRP3BTEMPSPEECH"
 	local SpeechTempPatternEnd = "TRP3ETEMPSPEECH"
+	local RussianDeclensionStart = "TRP3BTEMPRUSSIAN"
+	local RussianDeclensionEnd = "TRP3ETEMPRUSSIAN"
 
 	local LinkDetectionPattern = "(%|H.-%|h.-|h)"
 	local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
 	local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
 	local SpeechTempDetectionPattern = SpeechTempPatternStart .. ".-" .. SpeechTempPatternEnd
+	local RussianDeclensionDetectionPattern = RussianDeclensionStart .. "(.)(.-)" .. RussianDeclensionEnd
 
 	-- Emote/OOC/Speech replacement
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
@@ -402,6 +405,12 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	end
 
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+
+		-- Wrapping Russian declension in a temporary pattern
+		message = message:gsub("|3%-(.)%((.-)%)", function(declension, content)
+			return RussianDeclensionStart .. declension .. content .. RussianDeclensionEnd;
+		end);
+
 		-- Wrapping patterns in a temporary pattern
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
@@ -419,6 +428,12 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		if (message:find(OOCTempDetectionPattern)) then
 			message = message:gsub(OOCTempDetectionPattern, function(content)
 				return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
+			end);
+		end
+
+		if (message:find(RussianDeclensionDetectionPattern)) then
+			message = message:gsub(RussianDeclensionDetectionPattern, function(declension, content)
+				return "|3-" .. declension .. "(" .. content .. ")";
 			end);
 		end
 	end
