@@ -26,6 +26,7 @@ local Ellyb = Ellyb(...);
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;
 local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
 local tsize = Utils.table.size;
+local safeMatch = Utils.str.safeMatch;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -241,16 +242,26 @@ end
 
 -- Refresh list display
 function uiInitProfileList()
-	local size = tsize(getProfiles());
+	wipe(profileListID);
+	local profiles = getProfiles();
+	local profileSearch = Utils.str.emptyToNil(TRP3_CompanionsProfilesSearch:GetText());
+	for profileID, _ in pairs(profiles) do
+		if not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
+			tinsert(profileListID, profileID);
+		end
+	end
+
+	local size = tsize(profileListID);
 	TRP3_CompanionsProfilesListEmpty:Hide();
 	if size == 0 then
+		if not profileSearch then
+			TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_CO_EMPTY);
+		else
+			TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
+		end
 		TRP3_CompanionsProfilesListEmpty:Show();
 	end
 
-	wipe(profileListID);
-	for profileID, _ in pairs(getProfiles()) do
-		tinsert(profileListID, profileID);
-	end
 	table.sort(profileListID, profileSortingByProfileName);
 
 	initList(TRP3_CompanionsProfilesList, profileListID, TRP3_CompanionsProfilesListSlider);
@@ -531,6 +542,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	--Localization
 	TRP3_CompanionsProfilesAdd:SetText(loc.PR_CREATE_PROFILE);
 	TRP3_CompanionsProfilesListEmpty:SetText(loc.PR_CO_EMPTY);
+
+	TRP3_CompanionsProfilesSearch:SetScript("OnEnterPressed", uiInitProfileList);
+	TRP3_CompanionsProfilesSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
 
 	local frame = CreateFrame("Frame", "TRP3_CompanionsProfilesTabBar", TRP3_CompanionsProfiles);
 	frame:SetSize(400, 30);

@@ -1405,6 +1405,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
+	PR_PROFILEMANAGER_EMPTY = "No matching profile",
 
 };
 

@@ -29,6 +29,7 @@ TRP3_API.profile = {};
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local safeMatch = Utils.str.safeMatch;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -40,6 +41,7 @@ local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
+local tsize = Utils.table.size;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -223,10 +225,21 @@ end
 -- Refresh list display
 local function uiInitProfileList()
 	wipe(profileListID);
+	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		tinsert(profileListID, profileID);
+		if not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
+			tinsert(profileListID, profileID);
+		end
 	end
+
+	local size = tsize(profileListID);
+	TRP3_ProfileManagerListEmpty:Hide();
+	if size == 0 then
+		TRP3_ProfileManagerListEmpty:Show();
+	end
+
 	table.sort(profileListID, profileSortingByProfileName);
+
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
@@ -473,9 +486,13 @@ function TRP3_API.profile.init()
 
 	--Localization
 	TRP3_ProfileManagerAdd:SetText(loc.PR_CREATE_PROFILE);
+	TRP3_ProfileManagerListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
 
 	TRP3_ProfileManagerInfo:Show();
 	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
+
+	TRP3_ProfileManagerSearch:SetScript("OnEnterPressed", uiInitProfileList);
+	TRP3_ProfileManagerSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
 
 	registerPage({
 		id = "player_profiles",
