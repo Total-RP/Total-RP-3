@@ -39,7 +39,7 @@
 	<Frame name="TRP3_TargetFrameTemplate" toplevel="true" enableMouse="true" hidden="true" inherits="TRP3_FieldSetFrame" virtual="true">
 		<Size x="200" y="50" />
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				self:SetClampedToScreen(true);
 			</OnLoad>
 		</Scripts>

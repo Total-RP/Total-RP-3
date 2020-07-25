@@ -32,36 +32,20 @@
 			</OnLoad>
 		</Scripts>
 		<Frames>
-			<Frame name="$parentContainer">
+			<Frame name="$parentContainer" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_20_20_5555" type="global"/>
+				</KeyValues>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="-18" />
 				</Anchors>
-				<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="20" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="20" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
 			</Frame>
 			<!-- Cadre Titre -->
-			<Frame name="$parentTopFrame">
+			<Frame name="$parentTopFrame" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARTY_DIALOG_16_16_5555" type="global"/>
+				</KeyValues>
 				<Size x="80" y="25" />
-				<Backdrop bgFile="Interface\CHARACTERFRAME\UI-Party-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
-					<EdgeSize>
-						<AbsValue val="16" />
-					</EdgeSize>
-					<TileSize>
-						<AbsValue val="16" />
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="5" right="5" top="5" bottom="5" />
-					</BackgroundInsets>
-				</Backdrop>
 				<Anchors>
 					<Anchor point="TOP" x="0" y="0" />
 				</Anchors>

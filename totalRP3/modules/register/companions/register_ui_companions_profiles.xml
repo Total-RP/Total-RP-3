@@ -20,5 +20,4 @@
 -->
 
 	<Frame name="TRP3_CompanionsProfiles" inherits="TRP3_ProfileManagerTemplate" hidden="true"/>
-
 </Ui>

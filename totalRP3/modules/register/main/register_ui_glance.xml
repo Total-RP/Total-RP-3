@@ -41,12 +41,10 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true">
-		<Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16" />
-			<TileSize val="418" />
-			<BackgroundInsets left="3" right="3" top="5" bottom="3"/>
-		</Backdrop>
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_3353" type="global"/>
+		</KeyValues>
 		<Size x="140" y="32" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0" />
@@ -79,7 +77,7 @@
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				self:RegisterForDrag("LeftButton")
 			</OnLoad>
 			<OnDragStart>

@@ -78,7 +78,7 @@
 			</Frame>
 		</Frames>
 		<Scripts>
-			<OnLoad method="OnLoad"/>
+			<OnLoad inherit="prepend" method="OnLoad"/>
 		</Scripts>
 	</Frame>
 </Ui>

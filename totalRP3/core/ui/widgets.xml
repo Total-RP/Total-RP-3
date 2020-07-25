@@ -19,6 +19,35 @@
 		limitations under the License.
 	-->
 
+	<Script file="widgets.lua"/>
+
+	<!--
+		BackdropFrameTemplate
+
+		Provides a common method of handling 9.x style frame backdrops
+		across all client types.
+
+		For 9.x clients this transparently resolves to using the Blizzard
+		provided BackdropTemplateMixin; the usage of this template is
+		intended to remain identical to the API provided by this client.
+
+		For pre-9.x clients the original API functions for backdrop management
+		on frames are kept unaltered, with the only change being load-time
+		logic for translating 9.x style KeyValue pairs to the proper calls.
+
+		Frames that inherit this template should ensure that any OnLoad
+		or OnSizeChanged script handlers they install are affixed with the
+		inherit="prepend" attribute, or that the handlers themselves invoke
+		the OnBackdropLoaded/OnBackdropSizeChanged methods.
+	-->
+
+	<Frame name="TRP3_BackdropTemplate" mixin="TRP3_BackdropTemplateMixin" virtual="true">
+		<Scripts>
+			<OnLoad method="OnBackdropLoaded"/>
+			<OnSizeChanged method="OnBackdropSizeChanged"/>
+		</Scripts>
+	</Frame>
+
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
 		<Scripts>
@@ -208,23 +237,15 @@
 	</Slider>
 
 	<!-- A bordered frame with a title -->
-	<Frame name="TRP3_FieldSetFrame" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16"/>
-			<TileSize val="380" />
-			<BackgroundInsets left="3" right="3" top="3" bottom="3" />
-		</Backdrop>
+	<Frame name="TRP3_FieldSetFrame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_380_16_3333" type="global"/>
+		</KeyValues>
 		<Frames>
-			<Frame name="$parentCaptionPanel" parentKey="caption">
-				<Backdrop bgFile="Interface\BankFrame\Bank-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-					<EdgeSize val="16"/>
-					<TileSize>
-						<AbsValue val="100"/>
-					</TileSize>
-					<BackgroundInsets>
-						<AbsInset left="4" right="2" top="2" bottom="2"/>
-					</BackgroundInsets>
-				</Backdrop>
+			<Frame name="$parentCaptionPanel" parentKey="caption" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_100_16_4222" type="global"/>
+				</KeyValues>
 				<Size x="150" y="23"/>
 				<Layers>
 					<Layer level="OVERLAY">
@@ -673,12 +694,10 @@
 	</Frame>
 
 	<!-- More classic style hovered frame -->
-	<Frame name="TRP3_AltHoveredFrame" virtual="true">
-		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Gold-Border">
-			<EdgeSize>
-				<AbsValue val="26"/>
-			</EdgeSize>
-		</Backdrop>
+	<Frame name="TRP3_AltHoveredFrame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_GOLD_DIALOG_0_26" type="global"/>
+		</KeyValues>
 		<Size x="220" y="100"/>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -751,7 +770,7 @@
 			</Layer>
 		</Layers>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				SetClampedTextureRotation(self.ArrowLEFT, 270);
 				SetClampedTextureRotation(self.ArrowRIGHT, 90);
 			</OnLoad>
