@@ -86,7 +86,7 @@
 
 	<Frame name="TRP3_ConfigDropDown" inherits="TRP3_ConfigNote" virtual="true">
 		<Frames>
-			<Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" enableMouse="true">
+			<Frame name="$parentDropDown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
 				<Anchors>
 					<Anchor point="RIGHT" x="5" y="0"/>
 				</Anchors>
