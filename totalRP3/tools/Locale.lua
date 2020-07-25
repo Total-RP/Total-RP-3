@@ -1013,6 +1013,18 @@ A mature profile will have a muted tooltip and you will have to confirm that you
 This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
+	MATURE_FILTER_ADD_TO_SAFELIST = "Add this profile to the |cffffffffmature safelist|r",
+	MATURE_FILTER_ADD_TO_SAFELIST_TT = "Add this profile to the |cffffffffmature safelist|r and reveal the mature content found inside.",
+	MATURE_FILTER_ADD_TO_SAFELIST_OPTION = "Add to the |cffffffffmature safelist|r",
+	MATURE_FILTER_ADD_TO_SAFELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature safelist|r.
+
+The content of their profiles will no longer be hidden.]],
+	MATURE_FILTER_REMOVE_FROM_SAFELIST = "Remove this profile from the |cffffffffmature safelist|r",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_TT = "Remove this profile from the |cffffffffmature safelist|r and hide again the mature content found inside.",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION = "Remove from the |cffffffffmature safelist|r",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature safelist|r.
+
+The content of their profiles will be hidden again.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DICE ROLL
@@ -1371,23 +1383,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a compatibility issue with PallyPower.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-	MATURE_FILTER_ADD_TO_SAFELIST = "Add this profile to the |cffffffffmature safelist|r",
-	MATURE_FILTER_ADD_TO_SAFELIST_TT = "Add this profile to the |cffffffffmature safelist|r and reveal the mature content found inside.",
-	MATURE_FILTER_ADD_TO_SAFELIST_OPTION = "Add to the |cffffffffmature safelist|r",
-	MATURE_FILTER_ADD_TO_SAFELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature safelist|r.
-
-The content of their profiles will no longer be hidden.]],
-	MATURE_FILTER_REMOVE_FROM_SAFELIST = "Remove this profile from the |cffffffffmature safelist|r",
-	MATURE_FILTER_REMOVE_FROM_SAFELIST_TT = "Remove this profile from the |cffffffffmature safelist|r and hide again the mature content found inside.",
-	MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION = "Remove from the |cffffffffmature safelist|r",
-	MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature safelist|r.
-
-The content of their profiles will be hidden again.]],
 	WHATS_NEW_23_12 = [[
 # Changelog version 1.6.12
 
@@ -1404,6 +1399,12 @@ The content of their profiles will be hidden again.]],
 - Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 
 };
 
