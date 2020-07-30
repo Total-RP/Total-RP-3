@@ -40,6 +40,7 @@ local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
+local getConfigValue = TRP3_API.configuration.getValue;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -128,6 +129,7 @@ TRP3_API.profile.duplicateProfile = duplicateProfile;
 local function createProfile(profileName)
 	return duplicateProfile(PR_DEFAULT_PROFILE, profileName);
 end
+TRP3_API.profile.createProfile = createProfile;
 
 -- Just internally switch the current profile structure. That's all.
 local function selectProfile(profileID)
@@ -169,6 +171,16 @@ function getPlayerCurrentProfile()
 	return currentProfile;
 end
 TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
+
+local function updateDefaultProfile()
+	local profileCharacteristics = profiles[getConfigValue("default_profile_id")].player.characteristics;
+
+	profileCharacteristics.v = profileCharacteristics.v + 1;
+	profileCharacteristics.RA = Globals.player_race_loc;
+	profileCharacteristics.CL = Globals.player_class_loc;
+	profileCharacteristics.FN = Globals.player;
+	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
@@ -213,6 +225,12 @@ local function decorateProfileList(widget, index)
 		text = text..loc.PR_UNUSED_PROFILE;
 	end
 
+	if id == getConfigValue("default_profile_id") then
+		_G[widget:GetName().."Action"]:Hide();
+	else
+		_G[widget:GetName().."Action"]:Show();
+	end
+
 	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
 end
 
@@ -223,10 +241,14 @@ end
 -- Refresh list display
 local function uiInitProfileList()
 	wipe(profileListID);
+	local defaultProfileID = getConfigValue("default_profile_id");
 	for profileID, _ in pairs(profiles) do
-		tinsert(profileListID, profileID);
+		if profileID ~= defaultProfileID then
+			tinsert(profileListID, profileID);
+		end
 	end
 	table.sort(profileListID, profileSortingByProfileName);
+	tinsert(profileListID, 1, defaultProfileID);
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
@@ -410,16 +432,19 @@ function TRP3_API.profile.init()
 	end
 	character = characters[Globals.player_id];
 
+	TRP3_API.configuration.registerConfigKey("default_profile_id", "");
+
+	-- Creating the default profile
+	if getConfigValue("default_profile_id") == "" then
+		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME));
+	else
+		updateDefaultProfile();
+	end
+
 	-- First time this character is connected with TRP3 or if deleted profile through another character
-	-- So we create a new profile named by his pseudo.
+	-- So we create a new profile named by his username.
 	if not character.profileID or not profiles[character.profileID] then
-		-- Detect if a profile with name - realm already exists
-		local available, profileID = isProfileNameAvailable(Globals.player_realm .. " - " .. Globals.player);
-		if not available and profileID then
-			selectProfile(profileID);
-		else
-			selectProfile(createProfile(Globals.player_realm .. " - " .. Globals.player));
-		end
+		selectProfile(getConfigValue("default_profile_id"));
 	else
 		selectProfile(character.profileID);
 	end
@@ -560,7 +585,7 @@ function TRP3_API.profile.init()
 
 					-- Default preferred locale appropriately.
 					if data.character and not data.character.LC then
-						data.character.LC = TRP3_API.configuration.getValue("AddonLocale") or GetLocale();
+						data.character.LC = getConfigValue("AddonLocale") or GetLocale();
 					end
 				end
 
