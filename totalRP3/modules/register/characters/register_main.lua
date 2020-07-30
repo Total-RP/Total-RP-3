@@ -722,9 +722,9 @@ function TRP3_API.register.init()
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
 
-	TRP3_RegisterDefaultViewText:SetText("Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.");
+	TRP3_RegisterDefaultViewText:SetText(loc.PR_DEFAULT_PROFILE_WARNING);
 	TRP3_RegisterDefaultViewText:SetJustifyH("CENTER");
-	TRP3_RegisterDefaultViewCreateProfile:SetText("Create Profile");
+	TRP3_RegisterDefaultViewCreateProfile:SetText(loc.PR_CREATE_PROFILE);
 	TRP3_RegisterDefaultViewCreateProfile:SetScript("OnClick", function()
 		showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
 			function(newName)

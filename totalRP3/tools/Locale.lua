@@ -1405,7 +1405,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-
+	PR_DEFAULT_PROFILE_NAME = "Default profile",
+	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
 };
 
 -- Use Ellyb to generate the Localization system
