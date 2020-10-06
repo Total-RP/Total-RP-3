@@ -41,7 +41,6 @@ local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
-local tsize = Utils.table.size;
 
 -- Saved variables references
 local profiles, character, characters;
