@@ -251,7 +251,7 @@ function uiInitProfileList()
 		end
 	end
 
-	local size = tsize(profileListID);
+	local size = #profileListID;
 	TRP3_CompanionsProfilesListEmpty:Hide();
 	if size == 0 then
 		if not profileSearch then

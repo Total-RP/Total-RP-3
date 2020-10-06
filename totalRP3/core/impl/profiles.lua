@@ -232,7 +232,7 @@ local function uiInitProfileList()
 		end
 	end
 
-	local size = tsize(profileListID);
+	local size = #profileListID;
 	TRP3_ProfileManagerListEmpty:Hide();
 	if size == 0 then
 		TRP3_ProfileManagerListEmpty:Show();
