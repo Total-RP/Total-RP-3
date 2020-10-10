@@ -174,8 +174,11 @@ end
 TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
 
 local function updateDefaultProfile()
-	local profileCharacteristics = profiles[getConfigValue("default_profile_id")].player.characteristics;
+	local profileDefault = profiles[getConfigValue("default_profile_id")];
+	-- Updating profile name in case of addon locale change
+	profileDefault.profileName = loc.PR_DEFAULT_PROFILE_NAME;
 
+	local profileCharacteristics = profileDefault.player.characteristics;
 	profileCharacteristics.v = profileCharacteristics.v + 1;
 	profileCharacteristics.RA = Globals.player_race_loc;
 	profileCharacteristics.CL = Globals.player_class_loc;
