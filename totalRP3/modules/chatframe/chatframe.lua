@@ -352,6 +352,22 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
+-- For links exception
+local EmoteTempPatternStart = "TRP3BTMPEMOTE"
+local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
+local OOCTempPatternStart = "TRP3BTEMPOOC"
+local OOCTempPatternEnd = "TRP3ETEMPOOC"
+local SpeechTempPatternStart = "TRP3BTEMPSPEECH"
+local SpeechTempPatternEnd = "TRP3ETEMPSPEECH"
+local RussianDeclensionStart = "TRP3BTEMPRUSSIAN"
+local RussianDeclensionEnd = "TRP3ETEMPRUSSIAN"
+
+local LinkDetectionPattern = "(%|H.-%|h.-|h)"
+local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
+local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
+local SpeechTempDetectionPattern = SpeechTempPatternStart .. ".-" .. SpeechTempPatternEnd
+local RussianDeclensionDetectionPattern = RussianDeclensionStart .. "(.)(.-)" .. RussianDeclensionEnd
+
 ---@param message string
 ---@param NPCEmoteChatColor Color
 local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
@@ -365,19 +381,6 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
 	end
 
-	-- For links exception
-	local EmoteTempPatternStart = "TRP3BTMPEMOTE"
-	local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
-	local OOCTempPatternStart = "TRP3BTEMPOOC"
-	local OOCTempPatternEnd = "TRP3ETEMPOOC"
-	local SpeechTempPatternStart = "TRP3BTEMPSPEECH"
-	local SpeechTempPatternEnd = "TRP3ETEMPSPEECH"
-
-	local LinkDetectionPattern = "(%|H.-%|h.-|h)"
-	local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
-	local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
-	local SpeechTempDetectionPattern = SpeechTempPatternStart .. ".-" .. SpeechTempPatternEnd
-
 	-- Emote/OOC/Speech replacement
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
 		-- Wrapping patterns in a temporary pattern
@@ -387,21 +390,23 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		end);
 
 		-- Removing temporary patterns from links
-		if (message:find(LinkDetectionPattern)) then
-			message = message:gsub(LinkDetectionPattern, function(content)
-				return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
-			end);
-		end
+		message = message:gsub(LinkDetectionPattern, function(content)
+			return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
+		end);
 
 		-- Replacing temporary patterns by color wrap
-		if (message:find(EmoteTempDetectionPattern)) then
-			message = message:gsub(EmoteTempDetectionPattern, function(content)
-				return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
-			end);
-		end
+		message = message:gsub(EmoteTempDetectionPattern, function(content)
+			return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
+		end);
 	end
 
 	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
+
+		-- Wrapping Russian declension in a temporary pattern
+		message = message:gsub("|3%-(.)%((.-)%)", function(declension, content)
+			return RussianDeclensionStart .. declension .. content .. RussianDeclensionEnd;
+		end);
+
 		-- Wrapping patterns in a temporary pattern
 		local OOCColor = configOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
@@ -409,18 +414,16 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		end);
 
 		-- Removing temporary patterns from links
-		if (message:find(LinkDetectionPattern)) then
-			message = message:gsub(LinkDetectionPattern, function(content)
-				return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
-			end);
-		end
+		message = message:gsub(LinkDetectionPattern, function(content)
+			return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
+		end);
 
 		-- Replacing temporary patterns by color wrap
-		if (message:find(OOCTempDetectionPattern)) then
-			message = message:gsub(OOCTempDetectionPattern, function(content)
-				return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
-			end);
-		end
+		message = message:gsub(OOCTempDetectionPattern, function(content)
+			return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
+		end);
+
+		message = message:gsub(RussianDeclensionDetectionPattern, "|3-%1(%2)");
 	end
 
 	-- Only apply speech detections on emotes (excluding NPC non-emote speech)
@@ -432,18 +435,14 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		end);
 
 		-- Removing temporary patterns from links
-		if (message:find(LinkDetectionPattern)) then
-			message = message:gsub(LinkDetectionPattern, function(content)
-				return content:gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "");
-			end);
-		end
+		message = message:gsub(LinkDetectionPattern, function(content)
+			return content:gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "");
+		end);
 
 		-- Replacing temporary patterns by color wrap
-		if (message:find(SpeechTempDetectionPattern)) then
-			message = message:gsub(SpeechTempDetectionPattern, function(content)
-				return chatColor:WrapTextInColorCode(content):gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "") .. NPCEmoteChatString;
-			end);
-		end
+		message = message:gsub(SpeechTempDetectionPattern, function(content)
+			return chatColor:WrapTextInColorCode(content):gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "") .. NPCEmoteChatString;
+		end);
 	end
 
 	return message;
