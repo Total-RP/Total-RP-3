@@ -242,27 +242,25 @@ end
 -- Refresh list display
 local function uiInitProfileList()
 	wipe(profileListID);
+	local defaultProfileID = getConfigValue("default_profile_id");
 	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		if not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
+		if profileID ~= defaultProfileID and not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
 			tinsert(profileListID, profileID);
 		end
 	end
 
-	local size = #profileListID;
-	TRP3_ProfileManagerListEmpty:Hide();
-	if size == 0 then
-		TRP3_ProfileManagerListEmpty:Show();
-	--local defaultProfileID = getConfigValue("default_profile_id");
-	--for profileID, _ in pairs(profiles) do
-	--	if profileID ~= defaultProfileID then
-	--		tinsert(profileListID, profileID);
-	--	end
-	end
-
 	table.sort(profileListID, profileSortingByProfileName);
 
-	--tinsert(profileListID, 1, defaultProfileID);
+	local size = #profileListID;
+	TRP3_ProfileManagerListEmpty:Hide();
+	if profileSearch then
+		if size == 0 then
+			TRP3_ProfileManagerListEmpty:Show();
+		end
+	else
+		tinsert(profileListID, 1, defaultProfileID);
+	end
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
