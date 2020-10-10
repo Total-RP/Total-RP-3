@@ -31,7 +31,7 @@ local logger = Ellyb.Logger("TotalRP3_Communication");
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
 
-local PROTOCOL_PREFIX = "TRP3.2";
+local PROTOCOL_PREFIX = "TRP3.3";
 local PROTOCOL_SETTINGS = {
 	permitUnlogged = true,
 	permitLogged = true,
