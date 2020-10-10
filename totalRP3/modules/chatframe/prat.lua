@@ -2,7 +2,7 @@
 --- Total RP 3
 --- Prat plugin
 --- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -77,8 +77,8 @@ local function onStart()
 
 			if disabledByOOC() then return end;
 
-			-- If the message has no GUID (system?) we don't have anything to do with this
-			if not message.GUID then return end;
+			-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
+			if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return end;
 
 			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 			-- for that channel in the settings

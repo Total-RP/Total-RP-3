@@ -3,7 +3,7 @@
 --- Character page : Characteristics
 ------------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -1430,7 +1430,6 @@ local function initStructures()
 	PSYCHO_PRESETS_DROPDOWN = {
 		{ loc.REG_PLAYER_PSYCHO_SOCIAL },
 		{ loc.REG_PLAYER_PSYCHO_CHAOTIC .. " - " .. loc.REG_PLAYER_PSYCHO_Loyal, 1 },
-		{ loc.REG_PLAYER_PSYCHO_Chaste .. " - " .. loc.REG_PLAYER_PSYCHO_Luxurieux, 2 },
 		{ loc.REG_PLAYER_PSYCHO_Indulgent .. " - " .. loc.REG_PLAYER_PSYCHO_Rencunier, 3 },
 		{ loc.REG_PLAYER_PSYCHO_Genereux .. " - " .. loc.REG_PLAYER_PSYCHO_Egoiste, 4 },
 		{ loc.REG_PLAYER_PSYCHO_Sincere .. " - " .. loc.REG_PLAYER_PSYCHO_Trompeur, 5 },

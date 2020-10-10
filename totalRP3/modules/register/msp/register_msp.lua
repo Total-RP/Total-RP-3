@@ -3,7 +3,7 @@
 --- Mary Sue Protocol implementation
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --- Copyright / © 2018 Justin Snelgrove
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");

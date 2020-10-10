@@ -3,7 +3,7 @@
 --- Player profiles API
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ TRP3_API.profile = {};
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local safeMatch = Utils.str.safeMatch;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -241,14 +242,27 @@ end
 -- Refresh list display
 local function uiInitProfileList()
 	wipe(profileListID);
-	local defaultProfileID = getConfigValue("default_profile_id");
+	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		if profileID ~= defaultProfileID then
+		if not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
 			tinsert(profileListID, profileID);
 		end
 	end
+
+	local size = #profileListID;
+	TRP3_ProfileManagerListEmpty:Hide();
+	if size == 0 then
+		TRP3_ProfileManagerListEmpty:Show();
+	--local defaultProfileID = getConfigValue("default_profile_id");
+	--for profileID, _ in pairs(profiles) do
+	--	if profileID ~= defaultProfileID then
+	--		tinsert(profileListID, profileID);
+	--	end
+	end
+
 	table.sort(profileListID, profileSortingByProfileName);
-	tinsert(profileListID, 1, defaultProfileID);
+
+	--tinsert(profileListID, 1, defaultProfileID);
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
@@ -498,9 +512,13 @@ function TRP3_API.profile.init()
 
 	--Localization
 	TRP3_ProfileManagerAdd:SetText(loc.PR_CREATE_PROFILE);
+	TRP3_ProfileManagerListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
 
 	TRP3_ProfileManagerInfo:Show();
 	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
+
+	TRP3_ProfileManagerSearch:SetScript("OnEnterPressed", uiInitProfileList);
+	TRP3_ProfileManagerSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
 
 	registerPage({
 		id = "player_profiles",

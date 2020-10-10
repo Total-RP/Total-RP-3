@@ -1,10 +1,10 @@
 --- MSA-DropDownMenu-1.0 - DropDown menu for non-Blizzard addons
---- Copyright (c) 2016-2018, Marouan Sabbagh <mar.sabbagh@gmail.com>
+--- Copyright (c) 2016-2020, Marouan Sabbagh <mar.sabbagh@gmail.com>
 --- All Rights Reserved.
 ---
 --- https://www.curseforge.com/wow/addons/msa-dropdownmenu-10
 
-local name, version = "MSA-DropDownMenu-1.0", 7
+local name, version = "MSA-DropDownMenu-1.0", 9
 
 local lib = LibStub:NewLibrary(name, version)
 if not lib then return end
@@ -207,7 +207,7 @@ local function CreateDropDownList(name, parent)
     DropDownList:SetFrameStrata("DIALOG")
     DropDownList:EnableMouse(true)
 
-    local frame1 = _G[name.."Backdrop"] or CreateFrame("Frame", name.."Backdrop", DropDownList)
+    local frame1 = _G[name.."Backdrop"] or CreateFrame("Frame", name.."Backdrop", DropDownList, BackdropTemplateMixin and "BackdropTemplate")
     frame1:SetAllPoints()
     frame1:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background-Dark",
@@ -223,7 +223,7 @@ local function CreateDropDownList(name, parent)
         },
     })
 
-    local frame2 = _G[name.."MenuBackdrop"] or CreateFrame("Frame", name.."MenuBackdrop", DropDownList)
+    local frame2 = _G[name.."MenuBackdrop"] or CreateFrame("Frame", name.."MenuBackdrop", DropDownList, BackdropTemplateMixin and "BackdropTemplate")
     frame2:SetAllPoints()
     frame2:SetBackdrop({
         bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
@@ -729,9 +729,17 @@ function MSA_DropDownMenu_AddButton(info, level)
         -- Set icon
         if ( info.icon ) then
             icon:SetSize(16,16);
-            icon:SetTexture(info.icon);
+            if ( info.iconAtlas ) then
+                icon:SetAtlas(info.icon, true);
+                info.tCoordLeft = nil
+                info.tCoordRight = nil
+                info.tCoordTop = nil
+                info.tCoordBottom = nil
+            else
+                icon:SetTexture(info.icon);
+            end
             icon:ClearAllPoints();
-            icon:SetPoint("RIGHT");
+            icon:SetPoint("RIGHT", -1, 0);
 
             if ( info.tCoordLeft ) then
                 icon:SetTexCoord(info.tCoordLeft, info.tCoordRight, info.tCoordTop, info.tCoordBottom);

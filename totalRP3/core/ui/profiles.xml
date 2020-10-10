@@ -215,6 +215,12 @@
 							<Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" relativeTo="$parentList" x="3" y="8" />
 						</Anchors>
 					</Button>
+					<EditBox name="$parentSearch" inherits="TRP3_TitledEditBox">
+						<Size x="125" y="18" />
+						<Anchors>
+							<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentList" x="10" y="5" />
+						</Anchors>
+					</EditBox>
 				</Frames>
 			</Frame>
 		</Frames>
