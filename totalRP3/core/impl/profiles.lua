@@ -248,7 +248,7 @@ local function uiInitProfileList()
 	local defaultProfileID = getConfigValue("default_profile_id");
 	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		if profileID ~= defaultProfileID and not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
+		if profileID ~= defaultProfileID and (not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower())) then
 			tinsert(profileListID, profileID);
 		end
 	end
