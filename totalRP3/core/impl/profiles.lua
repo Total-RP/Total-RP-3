@@ -450,7 +450,7 @@ function TRP3_API.profile.init()
 	TRP3_API.configuration.registerConfigKey("default_profile_id", "");
 
 	-- Creating the default profile
-	if getConfigValue("default_profile_id") == "" then
+	if getConfigValue("default_profile_id") == "" or not profiles[getConfigValue("default_profile_id")] then
 		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME));
 	else
 		updateDefaultProfile();
