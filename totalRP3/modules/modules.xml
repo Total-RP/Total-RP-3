@@ -19,11 +19,10 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-			<EdgeSize><AbsValue val="24"/></EdgeSize><TileSize><AbsValue val="200"/></TileSize>
-			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
+		</KeyValues>
 		<Size x="0" y="60"/>
 		<Layers>
 			<Layer level="OVERLAY">
@@ -71,10 +70,10 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="24"/>
-		</Backdrop>
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="OVERLAY">
 				<FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">

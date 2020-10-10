@@ -32,10 +32,10 @@
 	<Include file="StatusPanel.xml"/>
 
 	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16"/>
-		</Backdrop>
+	<Frame name="TRP3_Dashboard" hidden="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">

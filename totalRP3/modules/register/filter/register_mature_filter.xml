@@ -17,19 +17,11 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_MatureFilterPopup" hidden="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="415"/>
-			</TileSize>
-			<Color r="0.4" g="0.4" b="0.4"/>
-			<BackgroundInsets>
-				<AbsInset left="3" right="3" top="3" bottom="3"/>
-			</BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_415_16_3333" type="global"/>
+			<KeyValue key="backdropColor" value="TRP3_BACKDROP_COLOR_DARK" type="global"/>
+		</KeyValues>
 		<Size x="420" y="400"/>
 		<Anchors>
 			<Anchor point="LEFT" x="0" y="0"/>
@@ -106,18 +98,10 @@
 
 
 	<!-- Mature dictionary browser line  -->
-	<Button name="TRP3_MatureDictionaryLine" virtual="true">
-		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="415"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="3" right="3" top="3" bottom="3"/>
-			</BackgroundInsets>
-		</Backdrop>
+	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
+		</KeyValues>
 		<Size x="0" y="28"/>
 		<Anchors>
 			<Anchor point="LEFT" x="8" y="0"/>
@@ -151,7 +135,7 @@
 			</Frame>
 		</Frames>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 			</OnLoad>
 			<OnEnter>
@@ -166,18 +150,10 @@
 	</Button>
 
 	<!-- Mature dictionary editor  -->
-	<Frame name="TRP3_MatureDictionaryEditor" hidden="true">
-		<Backdrop bgFile="Interface\AchievementFrame\UI-Achievement-StatsBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-			<TileSize>
-				<AbsValue val="415"/>
-			</TileSize>
-			<BackgroundInsets>
-				<AbsInset left="3" right="3" top="3" bottom="3"/>
-			</BackgroundInsets>
-		</Backdrop>
+	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
+		</KeyValues>
 		<Size x="420" y="410"/>
 		<Anchors>
 			<Anchor point="CENTER" x="0" y="0"/>
@@ -203,16 +179,11 @@
 					<Slider parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
-			<Frame parentKey="addNewWord">
+			<Frame parentKey="addNewWord" inherits="TRP3_BackdropTemplate">
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_0_16_3333" type="global"/>
+				</KeyValues>
 				<Size x="0" y="60"/>
-				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface\DialogFrame\UI-DialogBox-Background" tile="true">
-					<EdgeSize>
-						<AbsValue val="16"/>
-					</EdgeSize>
-					<BackgroundInsets>
-						<AbsInset left="3" right="3" top="3" bottom="3"/>
-					</BackgroundInsets>
-				</Backdrop>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" x="15" y="10"/>
 					<Anchor point="BOTTOMRIGHT" x="-15" y="10"/>
