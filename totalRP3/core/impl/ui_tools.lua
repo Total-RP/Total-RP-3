@@ -702,6 +702,17 @@ local function tabBar_setTabVisible(tabGroup, index, isVisible)
 	tabGroup:Redraw();
 end
 
+local function tabBar_setAllTabsVisible(tabGroup, isVisible)
+	for index=1, #tabGroup.tabs do
+		if isVisible then
+			tabGroup.tabs[index]:Show();
+		else
+			tabGroup.tabs[index]:Hide();
+		end
+	end
+	tabGroup:Redraw();
+end
+
 local function tabBar_selectTab(tabGroup, index)
 	assert(tabGroup.tabs[index], "Tab index out of bound.");
 	assert(tabGroup.tabs[index]:IsShown(), "Try to select a hidden tab.");
@@ -741,6 +752,7 @@ function TRP3_API.ui.frame.createTabPanel(tabBar, data, callback, confirmCallbac
 	tabGroup.Size = tabBar_size;
 	tabGroup.SetTabVisible = tabBar_setTabVisible;
 	tabGroup.SelectTab = tabBar_selectTab;
+	tabGroup.SetAllTabsVisible = tabBar_setAllTabsVisible;
 	tabGroup:Redraw();
 
 	return tabGroup;

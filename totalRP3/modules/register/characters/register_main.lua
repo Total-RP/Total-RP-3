@@ -49,10 +49,12 @@ local assert, tostring, wipe, pairs, tinsert = assert, tostring, wipe, pairs, ti
 local registerMenu, selectMenu = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local getCurrentContext, getCurrentPageID = TRP3_API.navigation.page.getCurrentContext, TRP3_API.navigation.page.getCurrentPageID;
+local getPlayerCurrentProfileID, isProfileNameAvailable, createProfile, selectProfile = TRP3_API.profile.getPlayerCurrentProfileID, TRP3_API.profile.isProfileNameAvailable, TRP3_API.profile.createProfile, TRP3_API.profile.selectProfile;
 local showCharacteristicsTab, showAboutTab, showMiscTab, showNotesTab;
 local get = TRP3_API.profile.getData;
 local type = type;
-local showAlertPopup = TRP3_API.popup.showAlertPopup;
+local showAlertPopup, showTextInputPopup = TRP3_API.popup.showAlertPopup, TRP3_API.popup.showTextInputPopup;
+local toast = TRP3_API.ui.tooltip.toast;
 
 -- Saved variables references
 local profiles, characters;
@@ -510,6 +512,7 @@ local function createTabBar()
 			TRP3_RegisterAbout:Hide();
 			TRP3_RegisterMisc:Hide();
 			TRP3_RegisterNotes:Hide();
+			TRP3_RegisterDefault:Hide();
 			if value == 1 then
 				showCharacteristicsTab();
 			elseif value == 2 then
@@ -535,10 +538,31 @@ local function createTabBar()
 	TRP3_API.register.player.tabGroup = tabGroup;
 end
 
+local function showDefaultTab()
+	TRP3_RegisterCharact:Hide();
+	TRP3_RegisterAbout:Hide();
+	TRP3_RegisterMisc:Hide();
+	TRP3_RegisterNotes:Hide();
+	TRP3_ProfileReportButton:Hide();
+
+	tabGroup:SetAllTabsVisible(false);
+
+	TRP3_RegisterDefault:Show();
+
+	tabGroup.current = 0;	-- To avoid unwanted behaviour
+	getCurrentContext().isEditMode = false;
+	TRP3_API.events.fireEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, "player_main");
+end
+
 local function showTabs()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
-	tabGroup:SelectTab(1);
+	if not context.isPlayer or getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id") then
+		tabGroup:SetAllTabsVisible(true);
+		tabGroup:SelectTab(1);
+	else
+		showDefaultTab();
+	end
 end
 
 function TRP3_API.register.ui.getSelectedTabIndex()
@@ -697,6 +721,27 @@ function TRP3_API.register.init()
 	end
 	profiles = TRP3_Register.profiles;
 	characters = TRP3_Register.character;
+
+	TRP3_RegisterDefaultViewText:SetText(loc.PR_DEFAULT_PROFILE_WARNING);
+	TRP3_RegisterDefaultViewText:SetJustifyH("CENTER");
+	TRP3_RegisterDefaultViewCreateProfile:SetText(loc.PR_CREATE_PROFILE);
+	TRP3_RegisterDefaultViewCreateProfile:SetScript("OnClick", function()
+		showTextInputPopup(loc.PR_PROFILEMANAGER_CREATE_POPUP,
+			function(newName)
+				if newName and #newName ~= 0 then
+					if not isProfileNameAvailable(newName) then
+						toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..newName.."|r"), 3);
+					else
+						selectProfile(createProfile(newName));
+						tabGroup:SetAllTabsVisible(true);
+						tabGroup:SelectTab(1);
+					end
+				end
+			end,
+			nil,
+			Globals.player_realm .. " - " .. Globals.player
+		);
+	end);
 
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", onMouseOver);
