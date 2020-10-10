@@ -41,7 +41,7 @@ local PROTOCOL_SETTINGS = {
 		["string"] = true,
 		["table"] = true,
 	},
-	broadcastPrefix = "TRP3"
+	broadcastPrefix = "TRP3.3"
 }
 local PRIORITIES = {
 	LOW = "LOW",
