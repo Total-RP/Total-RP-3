@@ -1409,6 +1409,29 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	PR_PROFILEMANAGER_EMPTY = "No profiles found",
 	PR_DEFAULT_PROFILE_NAME = "Default profile",
 	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
+	WHATS_NEW_24_1 =  [[# Changelog version 2.0
+
+## Added
+
+- Added a default profile.
+  - This profile cannot be modified and only contains basic character information (name, race, class).
+  - New characters will now be bound to the default profile instead of creating a new one automatically.
+  - A new profile is still required to add custom information.
+
+- Added a search bar in the character and companion profiles lists.
+
+## Fixed
+
+- Fixed a conflict between OOC detection and Russian declensions.
+- Fixed an issue related to Prat + WIM chat history.
+
+## Changed
+
+- Removed a personality trait preset.
+- Improved communication protocol to reduce profile transfer size.
+- Various compatibility changes related to 9.0 API modifications.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
