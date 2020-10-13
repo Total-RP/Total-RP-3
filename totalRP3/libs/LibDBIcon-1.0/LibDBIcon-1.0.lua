@@ -467,3 +467,4 @@ for name, button in next, lib.objects do
 		button.fadeOut:SetToFinalAlpha(true)
 	end
 end
+lib:SetButtonRadius(lib.radius) -- Upgrade to 40
