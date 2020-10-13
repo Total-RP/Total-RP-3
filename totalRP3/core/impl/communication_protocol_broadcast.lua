@@ -351,13 +351,9 @@ Comm.broadcast.init = function()
 
 	-- For when someone just places a password
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
-		if mode == "PASSWORD_CHANGED" and channel == config_BroadcastChannel() then
-			Utils.message.displayMessage(loc.BROADCAST_PASSWORDED:format(user, channel));
+		if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
+			SetChannelPasswordOld(config_BroadcastChannel(), "");
 		end
-		-- We can't do this yet, will see in 9.0 if addons don't get restricted from using channels.
-		--if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
-		--	SetChannelPassword(config_BroadcastChannel(), "");
-		--end
 	end);
 
 	-- When you are already in 10 channel
