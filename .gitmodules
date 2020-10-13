@@ -16,3 +16,6 @@
 [submodule "totalRP3/libs/LibRealmInfo"]
 	path = totalRP3/libs/LibRealmInfo
 	url = https://github.com/phanx-wow/LibRealmInfo
+[submodule "totalRP3/libs/LibDataBroker-1.1"]
+	path = totalRP3/libs/LibDataBroker-1.1
+	url = https://github.com/tekkub/libdatabroker-1-1.git
