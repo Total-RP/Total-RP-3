@@ -123,7 +123,8 @@ end
 
 local SetChannelPasswordOld = SetChannelPassword;
 SetChannelPassword = function(data, password)
-	if data ~= config_BroadcastChannel() or password == "" then
+	local _, channelName = GetChannelName(data);
+	if channelName ~= config_BroadcastChannel() or password == "" then
 		SetChannelPasswordOld(data, password);
 	else
 		-- We totally changed it :fatcat:
