@@ -163,7 +163,8 @@ local function openDropDown(anchoredFrame, values, callback, space, addCancel)
 				else
 					info.text = text;
 					info.isTitle = false;
-					info.tooltipOnButton = tooltipText ~= nil;
+					-- 9.x: tooltipOnButton is required. Keeping old behaviour for Classic.
+					info.tooltipOnButton = not is_classic or tooltipText ~= nil;
 					info.tooltipTitle = text;
 					info.tooltipText = tooltipText;
 					if type(value) == "table" then
