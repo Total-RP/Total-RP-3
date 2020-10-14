@@ -96,6 +96,8 @@
 								<FontString name="TRP3_RegisterDefaultViewText" text="[text]" inherits="GameFontNormalLarge" justifyH="LEFT">
 									<Anchors>
 										<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="10"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
 									</Anchors>
 									<Color r="1" g="1" b="1"/>
 								</FontString>
