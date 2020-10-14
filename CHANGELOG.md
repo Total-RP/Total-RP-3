@@ -1,3 +1,13 @@
+# Changelog version 2.0.1
+
+## Fixed
+
+- Fixed a display issue with profile backgrounds.
+- Fixed an issue with some dropdowns.
+- Fixed a display issue with the URL dialog.
+- Fixed some refresh issues after creating a profile from the default profile warning.
+- Fixed a rare issue that could prevent reception of another character's profile.
+
 # Changelog version 2.0
 
 **Classic users: while the 9.0 API changes don't affect you, this update brings technical changes incompatible with the 1.X Total RP 3 versions. Please update as soon as possible.**
