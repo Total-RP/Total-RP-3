@@ -498,14 +498,13 @@ TRP3_API.slash.registerCommand({
 				characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
 			else
 				-- Capitalizing first letter of the name/realm, just in case someone is lazy.
-
 				local name, realm = AddOn_Chomp.NameSplitRealm(characterToOpen);
 
-				if not name then
-					displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
-					return;
-				end
+				-- If the split fails due to the user only giving a name then
+				-- neither a name/realm will be returned; in this case we'll
+				-- assume the input is name-only and use the current realm.
 
+				name  = name or characterToOpen;
 				realm = realm or TRP3_API.globals.player_realm_id;
 
 				name  = string.gsub(name, "^%l", string.upper);
