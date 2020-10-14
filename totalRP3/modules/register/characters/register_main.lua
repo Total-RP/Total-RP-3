@@ -733,6 +733,7 @@ function TRP3_API.register.init()
 						toast(loc.PR_PROFILEMANAGER_ALREADY_IN_USE:format(Utils.str.color("r")..newName.."|r"), 3);
 					else
 						selectProfile(createProfile(newName));
+						getCurrentContext().profile = get("player");
 						tabGroup:SetAllTabsVisible(true);
 						tabGroup:SelectTab(1);
 					end
