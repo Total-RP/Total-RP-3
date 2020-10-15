@@ -34,7 +34,7 @@ local function GUIDIsPlayer(guid)
 	end
 
 	-- Fallback for Classic. No idea what validation the C API does.
-	return string.find(guid, "^Player%-");
+	return not not string.find(guid, "^Player%-");
 end
 
 local function onStart()
