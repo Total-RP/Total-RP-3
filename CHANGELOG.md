@@ -1,3 +1,15 @@
+# Changelog version 2.0.2
+
+## Fixed
+
+- Fixed an issue with the Prat module on Classic.
+- Fixed default profile warning text escaping from the main window in non-English locale.
+- Fixed an issue when addon configuration was reset.
+
+## Changed
+
+- Improved handling of improper case in /trp3 open.
+
 # Changelog version 2.0.1
 
 ## Fixed
