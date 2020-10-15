@@ -19,7 +19,7 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots or error message**
 If applicable, add screenshots to help explain your problem.
-> If you don't see any errors, make sure that error reporting is enabled (`/console scriptErrors 1`) or install the [BugSack](https://mods.curse.com/addons/wow/BugSack) add-on.
+> If you don't see any errors, make sure that error reporting is enabled (`/console scriptErrors 1`) or install the [BugSack](https://www.curseforge.com/wow/addons/bugsack) add-on.
 
 **Version of the add-on:**
 Total RP 3 1.4.4
@@ -32,4 +32,5 @@ Add any other context about the problem here.
 
 **If your issue is related to profile data, please provide your data file.**
 
-> It is the `totalRP3.lua` file (not the .lua.bak files!) located in your `World of Warcraft/WTF/Account/ACCOUNT_NAME/SavedVariables` folder (replace `ACCOUNT_NAME` with your actual account name, visible on the Battle.net launcher, usually WoW1 for accounts created after the introduction of Battle.net). You can just drag and drop it here, no need for a third party service.
+> It is the `totalRP3.lua` file (not the .lua.bak files!) located in your `World of Warcraft/_retail_/WTF/Account/ACCOUNT_NAME/SavedVariables` folder (replace `ACCOUNT_NAME` with your actual account name, visible on the Battle.net launcher, usually WoW1 for accounts created after the introduction of Battle.net; replace `_retail_` with `_classic_` if you are using Total RP 3: Classic). You can just drag and drop it here, no need for a third party service.
+
