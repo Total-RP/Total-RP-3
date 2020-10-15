@@ -4,7 +4,7 @@
 ---
 --- https://www.curseforge.com/wow/addons/msa-dropdownmenu-10
 
-local name, version = "MSA-DropDownMenu-1.0", 9
+local name, version = "MSA-DropDownMenu-1.0", 10
 
 local lib = LibStub:NewLibrary(name, version)
 if not lib then return end
@@ -142,8 +142,6 @@ local function CreateDropDownMenuButton(name, parent)
                 GameTooltip:AddLine(parent.tooltipTitle, 1.0, 1.0, 1.0);
                 GameTooltip:AddLine(parent.tooltipText, nil, nil, nil, true);
                 GameTooltip:Show();
-            else
-                GameTooltip_AddNewbieTip(parent, parent.tooltipTitle, 1.0, 1.0, 1.0, parent.tooltipText, 1);
             end
         end
     end)
@@ -173,8 +171,6 @@ local function CreateDropDownMenuButton(name, parent)
                 GameTooltip:AddLine(self.tooltipTitle, 1.0, 1.0, 1.0);
                 GameTooltip:AddLine(self.tooltipText, nil, nil, nil, true);
                 GameTooltip:Show();
-            else
-                GameTooltip_AddNewbieTip(self, self.tooltipTitle, 1.0, 1.0, 1.0, self.tooltipText, 1);
             end
         end
     end)
@@ -1657,11 +1653,13 @@ local function LoadSkin_Tukui()
     local backdrop
     for i = 1, MSA_DROPDOWNMENU_MAXLEVELS do
         backdrop = _G["MSA_DropDownList"..i.."MenuBackdrop"]
-        backdrop:SetTemplate("Default")
+        backdrop:StripTextures()
+        backdrop:CreateBackdrop("Default")
         backdrop:CreateShadow()
         backdrop.IsSkinned = true
         backdrop = _G["MSA_DropDownList"..i.."Backdrop"]
-        backdrop:SetTemplate("Default")
+        backdrop:StripTextures()
+        backdrop:CreateBackdrop("Default")
         backdrop:CreateShadow()
         backdrop.IsSkinned = true
     end
