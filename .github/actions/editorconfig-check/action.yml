@@ -64,14 +64,14 @@ runs:
 
           # Matches "<line number>: <message>" lines and annotates them with
           # the last-found file path.
-          /\t[0-9]+: .+$/ {
+          /^\t[0-9]+: .+$/ {
               sub(/^\s+|\s+$/, "")
               printf "::warning file=%s,line=%s::%s\n", file, $1, substr($2, 2)
           }
 
           # As above but this is for diagnostics that do not have line numbers,
           # such as "Wrong line endings or new final newline".
-          /\t.+$/ {
+          /^\t.+$/ {
               sub(/^\s+|\s+$/, "")
               printf "::warning file=%s::%s\n", file, $1
           }'
