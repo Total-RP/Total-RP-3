@@ -17,11 +17,6 @@ jobs:
       - uses: actions/setup-ruby@v1
       - uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install editorconfig-checker
-
       - name: Run Luacheck
         uses: nebularg/actions-luacheck@44fc699 # TODO: Pin to @v1 when a new tag after v1.0.0 is made.
         with:
@@ -29,7 +24,10 @@ jobs:
           annotate: warning
 
       - name: Run editorconfig-checker
-        run:  editorconfig-checker -no-color $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
+        uses: ./.github/actions/editorconfig-check
+        with:
+          args:  -no-color
+          files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
 
       - name: Create Retail Package
         uses: Total-RP/packager@master
