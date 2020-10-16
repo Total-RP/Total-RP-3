@@ -2,8 +2,6 @@ max_line_length = false
 
 exclude_files = {
 	"Scripts/mature_dictionary_template.lua",
-	"totalRP3_Localizator",
-	"totalRP3_zTest",
 	"totalRP3/libs",
 };
 
