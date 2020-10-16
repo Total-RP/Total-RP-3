@@ -23,10 +23,10 @@ jobs:
           pip install editorconfig-checker
 
       - name: Run Luacheck
-        uses: meorawr/actions-luacheck@feature/annotations # TODO: Go back to the original repo if the PR gets merged.
+        uses: nebularg/actions-luacheck@44fc699 # TODO: Pin to @v1 when a new tag after v1.0.0 is made.
         with:
-          args: --no-color -q
-          annotate: error
+          args:     --no-color -q
+          annotate: warning
 
       - name: Run editorconfig-checker
         run:  editorconfig-checker -no-color $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
