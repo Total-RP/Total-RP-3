@@ -18,6 +18,18 @@ ignore:
   - totalRP3/libs/LibRPMedia/Tests
   - totalRP3/libs/LibRPMedia/UI
 
+embedded-libraries:
+  - ace3
+  - callbackhandler
+  - libcompress
+  - libdatabroker-1-1
+  - libdbicon-1-0
+  - libdeflate
+  - librealminfo
+  - librpmedia
+  - libstub
+  - msa-dropdownmenu-10
+
 manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
