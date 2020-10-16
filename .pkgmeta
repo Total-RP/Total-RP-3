@@ -21,6 +21,7 @@ ignore:
 embedded-libraries:
   - ace3
   - callbackhandler
+  - libchatanims
   - libcompress
   - libdatabroker-1-1
   - libdbicon-1-0
