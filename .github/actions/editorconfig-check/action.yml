@@ -1,0 +1,78 @@
+---
+name:        EditorConfig Check
+description: Lints files against the repository-wide editorconfig settings.
+
+inputs:
+  files:
+    description: >
+      List of files to be checked, or a command to execute that will generate such a list.
+
+      Defaults to the workspace path as set by the `path` input.
+    required: false
+
+  path:
+    description: >
+      Working directory for editorconfig-checker. The file list should be relative to this path and output filenames be displayed relative to this path.
+
+      Defaults to the workspace path.
+    required: false
+    default:  ${{ github.workspace }}
+
+  args:
+    description: >
+      Additional command-line arguments. See <https://github.com/editorconfig-checker/editorconfig-checker#usage>.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    # Note: Composite actions don't support "uses" steps, so we can't ensure
+    #       that the system has a consistent Python version installed. Users
+    #       of this action will need to add a step for managing this, such as:
+    #
+    #         - uses: actions/setup-python@v2
+
+    - name:  Install editorconfig-checker
+      shell: bash
+      run: |
+          echo "##[group]Install editorconfig-checker"
+
+          python -m pip install --upgrade pip
+          pip install editorconfig-checker
+
+          echo "##[command]editorconfig-checker -version"
+
+          editorconfig-checker -version
+
+          echo "##[endgroup]"
+
+    - name:  Run editorconfig-checker
+      shell: bash
+      run: |
+        # The awk script this pipes into will generate GitHub annotations
+        # based on the output of editorconfig-checker. Each line is echoed
+        # through to the log as-is in case we hit the annotation limit.
+
+        editorconfig-checker ${{ inputs.args }} -- ${{ inputs.files }} | awk -F':' '
+          { print $0 }
+
+          # Matches "path/to/file:" lines; each one will set a variable for
+          # the annotations we emit.
+          /^[a-zA-Z0-9_.\\/-]+:$/ {
+              file=substr($0, 1, length($0) - 1)
+          }
+
+          # Matches "<line number>: <message>" lines and annotates them with
+          # the last-found file path.
+          /^\t[0-9]+: .+$/ {
+              sub(/^\s+|\s+$/, "")
+              printf "::warning file=%s,line=%s::%s\n", file, $1, substr($2, 2)
+          }
+
+          # As above but this is for diagnostics that do not have line numbers,
+          # such as "Wrong line endings or new final newline".
+          /^\t.+$/ {
+              sub(/^\s+|\s+$/, "")
+              printf "::warning file=%s::%s\n", file, $1
+          }'
+      working-directory: ${{ inputs.path }}
