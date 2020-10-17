@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: actions/setup-ruby@v1
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Run Luacheck
         uses: nebularg/actions-luacheck@44fc699 # TODO: Pin to @v1 when a new tag after v1.0.0 is made.
