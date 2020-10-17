@@ -1,3 +1,10 @@
+# Changelog version 2.0.3
+
+## Fixed
+
+- Fixed a rare "Interface action failed because of an AddOn" when leveling up or changing talents.
+- Fixed an addon loading issue with zhTW locale.
+
 # Changelog version 2.0.2
 
 ## Fixed
