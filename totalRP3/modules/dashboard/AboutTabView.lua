@@ -41,7 +41,7 @@ local CreditRoles = Dashboard.CreditRoles;
 --  displayed in the replaced segment.
 local CREDITS = {
 	AUTHORS = {
-		Credit([[Morgane "{twitter*EllypseCelwe*Ellypse}" Parize]], CreditRoles.AUTHOR),
+	    Credit([[Morgane "{twitter*EllypseCelwe*Ellypse}" Parize]], CreditRoles.AUTHOR),
 		Credit([[Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement]], CreditRoles.AUTHOR),
 	},
 
