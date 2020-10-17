@@ -22,6 +22,21 @@ local _, TRP3_API = ...;
 
 local loc = TRP3_API.loc;
 
+local function GUIDIsPlayer(guid)
+	if type(guid) ~= "string" then
+		return false;
+	end
+
+	-- Classic has C_PlayerInfo, and every function _except_ GUIDIsPlayer.
+	-- ¯\_(ツ)_/¯
+	if C_PlayerInfo.GUIDIsPlayer then
+		return C_PlayerInfo.GUIDIsPlayer(guid);
+	end
+
+	-- Fallback for Classic. No idea what validation the C API does.
+	return not not string.find(guid, "^Player%-");
+end
+
 local function onStart()
 	-- Stop right here if Prat is not installed
 	if not Prat then
@@ -78,7 +93,7 @@ local function onStart()
 			if disabledByOOC() then return end;
 
 			-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
-			if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return end;
+			if not message.GUID or not GUIDIsPlayer(message.GUID) then return end;
 
 			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 			-- for that channel in the settings

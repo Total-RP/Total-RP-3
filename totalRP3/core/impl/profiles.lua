@@ -451,6 +451,13 @@ function TRP3_API.profile.init()
 
 	-- Creating the default profile
 	if getConfigValue("default_profile_id") == "" or not profiles[getConfigValue("default_profile_id")] then
+		-- Clearing a previous default profile if it existed (shouldn't happen unless you reset configuration)
+		for profileID, profile in pairs(profiles) do
+			if profile.profileName == loc.PR_DEFAULT_PROFILE_NAME then
+				profiles[profileID] = nil;
+				break;
+			end
+		end
 		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME));
 	else
 		updateDefaultProfile();
