@@ -26,7 +26,7 @@ jobs:
           annotate: warning
 
       - name: Run editorconfig-checker
-        uses: ./.github/actions/editorconfig-check
+        uses: wow-rp-addons/actions-editorconfig-check@v1
         with:
           args:  -no-color
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
