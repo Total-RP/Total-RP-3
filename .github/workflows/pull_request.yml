@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Run Luacheck
-        uses: nebularg/actions-luacheck@44fc699 # TODO: Pin to @v1 when a new tag after v1.0.0 is made.
+        uses: nebularg/actions-luacheck@v1
         with:
           args:     --no-color -q
           annotate: warning
