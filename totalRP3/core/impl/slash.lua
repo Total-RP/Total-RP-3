@@ -180,7 +180,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if sender ~= Globals.player_id then
 			if type(arg) == "table" then
 				if arg.c and arg.d and arg.t then
-					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
+					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.m, arg.t));
 				elseif arg.t then
 					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_01", 20), sender, arg.t);
 					Utils.message.displayMessage(totalMessage);
