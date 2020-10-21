@@ -131,7 +131,7 @@ local function rollDice(diceString)
 
 		total = total + modifierValue;
 
-		local modifierString = (modifierValue ~= 0) and ((modifierValue > 0 and '+')..(modifierValue)) or ''; -- we add a + to positive modifiers and don't render a 0 value
+		local modifierString = (modifierValue == 0) and "" or format("%+d", modifierValue); -- we add a + to positive modifiers and don't render a 0 value
 		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), num, diceCount, modifierString, total));
 		sendDiceRoll({c = num, d = diceCount, t = total, m = modifierValue});
 		return total;
