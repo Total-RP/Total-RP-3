@@ -1030,7 +1030,7 @@ The content of their profiles will be hidden again.]],
 	-- DICE ROLL
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r|cffCC6600%s|r and got |cff00ff00%s|r.",
+	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
 	DICE_HELP = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
 	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r|cffCC6600%s|r and got |cff00ff00%s|r.",
