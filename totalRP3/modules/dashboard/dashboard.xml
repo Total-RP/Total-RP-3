@@ -104,7 +104,7 @@
 			<Anchor point="CENTER"/>
 		</Anchors>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
