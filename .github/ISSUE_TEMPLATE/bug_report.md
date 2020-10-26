@@ -35,7 +35,7 @@ Give us a list of steps to reproduce the issue with.
 4. See error
 
 ## Additional files
-Please attach any additional applicable files such as screenshots, error logs, or profile data files.
+Please attach any additional applicable files such as screenshots, error logs, or profile data files. Files can be dragged and dropped into this report to attach them for upload.
 
 > If you don't see any errors, make sure that error reporting is enabled (`/console scriptErrors 1`) or install the [BugSack](https://www.curseforge.com/wow/addons/bugsack) addon.
 
