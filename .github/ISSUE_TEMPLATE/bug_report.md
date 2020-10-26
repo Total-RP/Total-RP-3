@@ -13,6 +13,8 @@ Give us a clear and concise description of what you expected to happen.
 ## Issue checklist
 Select the game version(s) that this issue occurs on.
 
+> You can place an "x" inside the brackets for each option below to tick it.
+
 - [ ] Retail
 - [ ] Classic
 
