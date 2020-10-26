@@ -16,7 +16,11 @@ Select the game version(s) that this issue occurs on.
 - [ ] Retail
 - [ ] Classic
 
-Please confirm that you are running the latest version of the addon. The latest version of the addon can be found on CurseForge for [Retail](http://curse.totalrp.com/) and [Classic](http://classic.totalrp.com/) game versions.
+Please confirm that you are running the latest version of the addon.
+
+> You can check the installed version of the addon by opening the "Addons" window in-game from the character selection screen or game menu and checking the version number shown in the tooltip of the "Total RP 3" entry in the list.
+
+> The latest version of the addon can be found on CurseForge for [Retail](http://curse.totalrp.com/) and [Classic](http://classic.totalrp.com/) game versions.
 
 - [ ] I am running the latest version of the addon as listed on the CurseForge project page.
 
