@@ -270,8 +270,8 @@ end
 --- Makes sure the broadcast channel is always at the bottom of list.
 --- This is so the user always have the channels they actually use first and that the broadcast channel
 --- is never taking the General or Trade chat position.
-local function moveBroadcastChannelToTheBottomOfTheList()
-	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) then
+local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
+	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded) then
 		local broadcastChannelName = config_BroadcastChannel();
 
 		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
@@ -324,7 +324,7 @@ Comm.broadcast.init = function()
 					JoinChannelByName(string.lower(config_BroadcastChannel()));
 				else
 					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
-					moveBroadcastChannelToTheBottomOfTheList();
+					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
 						broadcast(HELLO_CMD, Globals.version, Globals.version_display, Globals.extended_version, Globals.extended_display_version);
 					end
