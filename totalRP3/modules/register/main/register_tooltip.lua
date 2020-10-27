@@ -1056,7 +1056,11 @@ local function show(targetType, targetID, targetMode)
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
 					placeTooltipOnCursor(ui_CharacterTT);
 				else
-					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+					if getAnchoredFrame() == GameTooltip and getConfigValue(CONFIG_CHARACT_HIDE_ORIGINAL) then
+						GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+					else
+						ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+					end
 				end
 
 				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
