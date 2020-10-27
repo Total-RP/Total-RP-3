@@ -1109,7 +1109,7 @@ local function onUpdate(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1127,7 +1127,7 @@ local function onUpdateCompanion(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
