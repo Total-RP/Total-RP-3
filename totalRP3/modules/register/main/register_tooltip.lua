@@ -1147,19 +1147,25 @@ end
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- Listen to the mouse over event
 	Utils.event.registerHandler("UPDATE_MOUSEOVER_UNIT", function()
+		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
+		-- But there is a target on mouseover (maintaining ALT on spell buttons)
+		-- So we need to check that we have indeed a unit before displaying our tooltip.
 		if GameTooltip:GetUnit() then
 			local targetID, targetMode = getUnitID("mouseover");
 			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
 		end
 	end);
 	hooksecurefunc(GameTooltip, "SetUnit", function()
-		-- The event UPDATE_MOUSEOVER_UNIT is fired even when there is no unit on tooltip
-		-- But there is a target on mouseover (maintaining ALT on spell buttons)
-		-- So we need to check that we have indeed a unit before displaying our tooltip.
 		if GameTooltip:GetUnit() then
 			local _, unitID = GameTooltip:GetUnit();
 			local targetID, targetMode = getUnitID(unitID);
 			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
+		end
+	end);
+	GameTooltip:HookScript("OnShow", function()
+		if not GameTooltip:GetUnit() then
+			ui_CharacterTT:Hide();
+			ui_CompanionTT:Hide();
 		end
 	end);
 end);
