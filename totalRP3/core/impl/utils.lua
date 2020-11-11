@@ -909,6 +909,9 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		line = line:gsub("%[(.-)%]%((.-)%)",
 			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
 
+		line = line:gsub("{link%*(.-)%*({icon%:.-})}",
+			"<a href=\"%1\">" .. linkColor .. "%2|r</a>");
+
 		local linkText = "[%2]"
 		if noBrackets then
 			linkText = "%2"
