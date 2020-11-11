@@ -790,7 +790,7 @@ local IMAGE_PATTERN = [[{img%:([^:]+)%:([^:]+)%:([^:}]+)%:?([^:}]*)%}]];
 local IMAGE_TAG = [[</P><img src="%s" width="%s" height="%s" align="%s"/><P>]];
 
 -- Convert the given text by his HTML representation
-Utils.str.toHTML = function(text, noColor)
+Utils.str.toHTML = function(text, noColor, noBrackets)
 
 	local linkColor = "|cff00ff00";
 	if noColor then
@@ -909,8 +909,15 @@ Utils.str.toHTML = function(text, noColor)
 		line = line:gsub("%[(.-)%]%((.-)%)",
 			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
 
+		line = line:gsub("{link%*(.-)%*({icon%:.-})}",
+			"<a href=\"%1\">" .. linkColor .. "%2|r</a>");
+
+		local linkText = "[%2]"
+		if noBrackets then
+			linkText = "%2"
+		end
 		line = line:gsub("{link%*(.-)%*(.-)}",
-			"<a href=\"%1\">" .. linkColor .. "[%2]|r</a>");
+			"<a href=\"%1\">" .. linkColor .. linkText .. "|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
