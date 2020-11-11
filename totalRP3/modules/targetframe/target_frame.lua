@@ -238,8 +238,6 @@ local function onStart()
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner = companionIDToInfo(currentTargetID);
 			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
-		elseif currentTargetType == TYPE_NPC then
-			return TRP3_API.quest and TRP3_API.quest.getActiveCampaignLog();
 		end
 	end
 
