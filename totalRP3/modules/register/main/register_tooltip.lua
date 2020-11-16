@@ -1056,7 +1056,11 @@ local function show(targetType, targetID, targetMode)
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
 					placeTooltipOnCursor(ui_CharacterTT);
 				else
-					ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+					if getAnchoredFrame() == GameTooltip and getConfigValue(CONFIG_CHARACT_HIDE_ORIGINAL) then
+						GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+					else
+						ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
+					end
 				end
 
 				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
@@ -1109,7 +1113,7 @@ local function onUpdate(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1127,7 +1131,7 @@ local function onUpdateCompanion(self, elapsed)
 	if (self.TimeSinceLastUpdate > getFadeTime()) then
 		self.TimeSinceLastUpdate = 0;
 		if self.target and self.targetType and not self.isFading then
-			if self.target ~= getUnitID(self.targetType) then
+			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
 				self.target = nil;
 				if fadeOutEnabled() then
@@ -1152,7 +1156,20 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		-- So we need to check that we have indeed a unit before displaying our tooltip.
 		if GameTooltip:GetUnit() then
 			local targetID, targetMode = getUnitID("mouseover");
-			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode);
+			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
+		end
+	end);
+	hooksecurefunc(GameTooltip, "SetUnit", function()
+		if GameTooltip:GetUnit() then
+			local _, unitID = GameTooltip:GetUnit();
+			local targetID, targetMode = getUnitID(unitID);
+			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
+		end
+	end);
+	GameTooltip:HookScript("OnShow", function()
+		if not GameTooltip:GetUnit() then
+			ui_CharacterTT:Hide();
+			ui_CompanionTT:Hide();
 		end
 	end);
 end);
@@ -1164,8 +1181,8 @@ local function onModuleInit()
 	isPlayerIC = TRP3_API.dashboard.isPlayerIC;
 	unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 
-	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
-		show("mouseover", targetID, targetMode);
+	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, function(targetID, targetMode, unitID)
+		show(unitID, targetID, targetMode);
 	end);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, _)
