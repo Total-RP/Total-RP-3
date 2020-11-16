@@ -16,12 +16,21 @@
 -->
 
 <Bindings>
-	<Binding name="TRP3_TOGGLE" header="TRP3">
+	<Binding name="TRP3_TOGGLE" header="TRP3" category="ADDONS">
 		TRP3_API.navigation.switchMainFrame();
 	</Binding>
-	<Binding name="TRP3_TOOLBAR_TOGGLE">
+	<Binding name="TRP3_TOOLBAR_TOGGLE" category="ADDONS">
 		if TRP3_API.toolbar then
 			TRP3_API.toolbar.switch();
 		end
+	</Binding>
+	<Binding name="TRP3_OPEN_TARGET_PROFILE" category="ADDONS">
+		-- Work smart, not hard :)
+		if UnitExists("target") then
+			SlashCmdList["TOTALRP3"]("open target");
+		end
+	</Binding>
+	<Binding name="TRP3_TOGGLE_CHARACTER_STATUS" category="ADDONS">
+		TRP3_API.dashboard.switchStatus();
 	</Binding>
 </Bindings>

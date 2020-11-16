@@ -938,8 +938,8 @@ Total RP is not responsible for links leading to harmful content.]],
 	-- Bindings
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
-	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
+	BINDING_NAME_TRP3_TOGGLE = "Toggle main frame";
+	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toggle toolbar";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- About TRP3
@@ -1400,11 +1400,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
 	PR_PROFILEMANAGER_EMPTY = "No profiles found",
 	PR_DEFAULT_PROFILE_NAME = "Default profile",
@@ -1432,6 +1427,14 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Various compatibility changes related to 9.0 API modifications.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
+	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
 };
 
 -- Use Ellyb to generate the Localization system
