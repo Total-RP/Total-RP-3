@@ -1,0 +1,44 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Create Retail Package
+        uses: Total-RP/packager@master
+        with:
+          args: -p 75973 -w 24113
+        env:
+          CF_API_KEY:     ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH:   ${{ secrets.GITHUB_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+
+      - name: Create Classic Package
+        uses: Total-RP/packager@master
+        with:
+          args: -p 335857 -w 25153 -g classic
+        env:
+          CF_API_KEY:     ${{ secrets.CF_API_KEY }}
+          GITHUB_OAUTH:   ${{ secrets.GITHUB_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
+
+      - name:  Send Webhook Notification
+        if:    failure()
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        env:
+          JOB_STATUS:    ${{ job.status }}
+          HOOK_OS_NAME:  ${{ runner.os }}
+          WEBHOOK_URL:   ${{ secrets.WEBHOOK_URL }}
+          WORKFLOW_NAME: ${{ github.workflow }}

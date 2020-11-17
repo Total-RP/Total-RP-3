@@ -45,7 +45,6 @@ local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-local msp = _G.msp;
 
 
 -- WoW imports
@@ -497,9 +496,20 @@ TRP3_API.slash.registerCommand({
 				-- If we typed a unit token we resolve it
 				characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
 			else
-				-- Capitalizing first letter of the name, just in case someone is lazy.
-				-- We don't have a solution for "I'm lazy but need someone from another realm" yet.
-				characterToOpen = characterToOpen:gsub("^%l", string.upper);
+				-- Capitalizing first letter of the name/realm, just in case someone is lazy.
+				local name, realm = AddOn_Chomp.NameSplitRealm(characterToOpen);
+
+				-- If the split fails due to the user only giving a name then
+				-- neither a name/realm will be returned; in this case we'll
+				-- assume the input is name-only and use the current realm.
+
+				name  = name or characterToOpen;
+				realm = realm or TRP3_API.globals.player_realm_id;
+
+				name  = string.gsub(name, "^%l", string.upper);
+				realm = string.gsub(realm, "^%l", string.upper);
+
+				characterToOpen = AddOn_Chomp.NameMergedRealm(name, realm);
 			end
 
 			-- If no realm has been entered, we use the player's realm automatically
@@ -517,7 +527,7 @@ TRP3_API.slash.registerCommand({
 		end
 
 		sendQuery(characterToOpen);
-		msp:Request(characterToOpen, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
+		TRP3_API.r.sendMSPQuery(characterToOpen);
 		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 			TRP3_API.navigation.openMainFrame();
@@ -537,9 +547,14 @@ TRP3_API.slash.registerCommand({
 
 -- Event for the "/trp3 open" command
 Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID, _, dataType)
-	if unitID == characterToOpen and (not dataType or dataType == "character") then
+	if AddOn_Chomp.InsensitiveStringEquals(characterToOpen, unitID)
+		and (not dataType or dataType == "character") then
+		-- Use the unitID when opening the UI as it will be precisely what's
+		-- in the register, whereas characterToOpen might have incorrect
+		-- casing if, for example, the user typed the name in all-caps.
+
 		TRP3_API.navigation.openMainFrame();
-		TRP3_API.register.openPageByUnitID(characterToOpen);
+		TRP3_API.register.openPageByUnitID(unitID);
 		if commandOpeningTimerHandle then
 			commandOpeningTimerHandle:Cancel();
 		end

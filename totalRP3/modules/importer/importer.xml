@@ -3,7 +3,7 @@
 
 	<!--
 		Total RP 3
-		Copyright 2014 Renaud Parize (Ellypse) (ellypse@totalrp3.info)
+		Copyright 2014 Morgane Parize (Ellypse) (ellypse@totalrp3.info)
 
 		Licensed under the Apache License, Version 2.0 (the "License");
 		you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
 
 	<Frame name="TRP3_ProfileImporterLine" inherits="TRP3_ProfileManagerLine" virtual="true" />
 
-	<Frame name="TRP3_ImporterTemplate" virtual="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border">
-			<EdgeSize val="24"/>
-		</Backdrop>
+	<Frame name="TRP3_ImporterTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
 		<Anchors>
 			<Anchor point="TOPRIGHT" x="2" y="-28" />
 			<Anchor point="BOTTOMLEFT" x="2" y="0" />

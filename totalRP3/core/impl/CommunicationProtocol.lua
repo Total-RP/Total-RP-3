@@ -2,7 +2,7 @@
 --- Total RP 3
 --- Communication protocol and API
 --- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ local logger = Ellyb.Logger("TotalRP3_Communication");
 -- Total RP 3 imports
 local Compression = AddOn_TotalRP3.Compression;
 
-local PROTOCOL_PREFIX = "TRP3.2";
+local PROTOCOL_PREFIX = "TRP3.3";
 local PROTOCOL_SETTINGS = {
 	permitUnlogged = true,
 	permitLogged = true,
@@ -41,7 +41,7 @@ local PROTOCOL_SETTINGS = {
 		["string"] = true,
 		["table"] = true,
 	},
-	broadcastPrefix = "TRP3"
+	broadcastPrefix = "TRP3.3"
 }
 local PRIORITIES = {
 	LOW = "LOW",

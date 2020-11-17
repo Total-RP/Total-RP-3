@@ -3,7 +3,7 @@
 --- Broadcast communication system
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -123,7 +123,8 @@ end
 
 local SetChannelPasswordOld = SetChannelPassword;
 SetChannelPassword = function(data, password)
-	if data ~= config_BroadcastChannel() or password == "" then
+	local _, channelName = GetChannelName(data);
+	if channelName ~= config_BroadcastChannel() or password == "" then
 		SetChannelPasswordOld(data, password);
 	else
 		-- We totally changed it :fatcat:
@@ -269,8 +270,8 @@ end
 --- Makes sure the broadcast channel is always at the bottom of list.
 --- This is so the user always have the channels they actually use first and that the broadcast channel
 --- is never taking the General or Trade chat position.
-local function moveBroadcastChannelToTheBottomOfTheList()
-	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) then
+local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
+	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded) then
 		local broadcastChannelName = config_BroadcastChannel();
 
 		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
@@ -323,7 +324,7 @@ Comm.broadcast.init = function()
 					JoinChannelByName(string.lower(config_BroadcastChannel()));
 				else
 					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
-					moveBroadcastChannelToTheBottomOfTheList();
+					moveBroadcastChannelToTheBottomOfTheList(true);
 					if not helloWorlded then
 						broadcast(HELLO_CMD, Globals.version, Globals.version_display, Globals.extended_version, Globals.extended_display_version);
 					end
@@ -351,13 +352,9 @@ Comm.broadcast.init = function()
 
 	-- For when someone just places a password
 	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
-		if mode == "PASSWORD_CHANGED" and channel == config_BroadcastChannel() then
-			Utils.message.displayMessage(loc.BROADCAST_PASSWORDED:format(user, channel));
+		if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
+			SetChannelPasswordOld(config_BroadcastChannel(), "");
 		end
-		-- We can't do this yet, will see in 9.0 if addons don't get restricted from using channels.
-		--if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
-		--	SetChannelPassword(config_BroadcastChannel(), "");
-		--end
 	end);
 
 	-- When you are already in 10 channel

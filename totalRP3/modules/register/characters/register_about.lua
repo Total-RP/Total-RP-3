@@ -3,7 +3,7 @@
 --- Character page : About
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -124,6 +124,7 @@ local draftData;
 local function setBkg(frame, bkg)
 	local backdrop = frame:GetBackdrop();
 	backdrop.bgFile = getTiledBackground(bkg or 1);
+	backdrop.tile = false; -- We want it to stretch, not tile.
 	frame:SetBackdrop(backdrop);
 end
 
@@ -227,6 +228,7 @@ local function showTemplate2(dataTab)
 		local text = _G[frame:GetName().."Text"];
 		local backdrop = frame:GetBackdrop();
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
+		backdrop.tile = false;
 		frame:SetBackdrop(backdrop);
 		setupIconButton(icon, frameTab.IC or Globals.icons.default);
 

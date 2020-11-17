@@ -64,6 +64,56 @@
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
+			<Frame name="TRP3_RegisterDefault" inherits="TRP3_BackdropTemplate" frameLevel="2">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="2" y="-28" />
+					<Anchor point="BOTTOMLEFT" x="2" y="0" />
+				</Anchors>
+				<KeyValues>
+					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+				</KeyValues>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+							<Anchors>
+								<Anchor point="TOPRIGHT" x="-5" y="-2"/>
+								<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
+								<Anchor point="LEFT" x="5" y="0"/>
+							</Anchors>
+							<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="TRP3_RegisterDefaultView">
+						<Anchors>
+							<Anchor point="TOPLEFT" x="10" y="-20"/>
+							<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+							<Anchor point="BOTTOM" x="0" y="10"/>
+						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<FontString name="TRP3_RegisterDefaultViewText" text="[text]" inherits="GameFontNormalLarge" justifyH="LEFT">
+									<Anchors>
+										<Anchor point="BOTTOM" relativePoint="CENTER" x="0" y="10"/>
+										<Anchor point="LEFT" x="10" y="0"/>
+										<Anchor point="RIGHT" x="-10" y="0"/>
+									</Anchors>
+									<Color r="1" g="1" b="1"/>
+								</FontString>
+							</Layer>
+						</Layers>
+						<Frames>
+							<Button name="TRP3_RegisterDefaultViewCreateProfile" inherits="TRP3_CommonButton">
+								<Size x="150" y="20"/>
+								<Anchors>
+									<Anchor point="TOP" relativePoint="CENTER" x="0" y="-10"/>
+								</Anchors>
+							</Button>
+						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
 			<Button name="TRP3_ProfileReportButton">
 				<Size x="30" y="30" />
 				<Anchors>

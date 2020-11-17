@@ -3,7 +3,7 @@
 --- Mary Sue Protocol implementation
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 --- Copyright / © 2018 Justin Snelgrove
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
@@ -263,8 +263,16 @@ local function onStart()
 		};
 	end
 
+	local outstandingHelloRequests = {};
+
 	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
+
+		if outstandingHelloRequests[senderID] then
+			outstandingHelloRequests[senderID] = nil;
+			TRP3_API.r.sendMSPQuery(senderID);
+		end
+
 		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
 			local profile, character = getProfileForSender(senderID);
 			if not profile.characteristics then
@@ -512,23 +520,41 @@ local function onStart()
 		end
 	end);
 
-	local function requestInformation(targetID, targetMode)
-		if not targetID then return end
-		local data = msp.char[targetID].field;
-		if targetID and targetMode == TYPE_CHARACTER
-		and targetID ~= Globals.player_id
-		and not isIgnored(targetID)
-		and data.VA:sub(1, 8) ~= "TotalRP3"
-		then
-			msp:Request(targetID, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
+	local function requestInformation(name, targetMode)
+		if not name or name == Globals.player_id or isIgnored(name) then
+			return;
+		elseif targetMode and targetMode ~= TYPE_CHARACTER then
+			return;
+		end
+
+		local data = msp.char[name].field;
+
+		if string.find(data.VA, "TotalRP3") then
+			return;
+		end
+
+		-- Quick hack to fix the "double request" issue with our comms;
+		-- previously it would be possible for requests to be sent via both
+		-- TRP and MSP protocols. If this occurred at the same time, we
+		-- effectively ended up doubling the comms needlessly in the worst
+		-- case scenario.
+		--
+		-- To work around this, if we've not seen a unit (they have no VA
+		-- field) we first send a "hello" request for just that field and
+		-- mark the receiver in an outstanding requests table. When a response
+		-- is received, we then re-send the request only if we're sure that
+		-- the user is _not_ running TRP3.
+
+		if data.VA == "" then
+			outstandingHelloRequests[name] = true;
+			msp:Request(name, { "VA" });
+		else
+			outstandingHelloRequests[name] = false;
+			msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
 		end
 	end
 
-	TRP3_API.r.sendMSPQuery = function(name)
-		-- This function has never had the checks that the above does. Whether
-		-- it should or not should be revisited in the future.
-		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
-	end
+	TRP3_API.r.sendMSPQuery = requestInformation;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init

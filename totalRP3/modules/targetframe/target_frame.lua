@@ -3,7 +3,7 @@
 --- Target widget module
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -238,8 +238,6 @@ local function onStart()
 		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
 			local owner = companionIDToInfo(currentTargetID);
 			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
-		elseif currentTargetType == TYPE_NPC then
-			return TRP3_API.quest and TRP3_API.quest.getActiveCampaignLog();
 		end
 	end
 

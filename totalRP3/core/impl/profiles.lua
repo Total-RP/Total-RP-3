@@ -3,7 +3,7 @@
 --- Player profiles API
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ TRP3_API.profile = {};
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
+local safeMatch = Utils.str.safeMatch;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -40,6 +41,7 @@ local playUISound = TRP3_API.ui.misc.playUISound;
 local playAnimation = TRP3_API.ui.misc.playAnimation;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local getPlayerCurrentProfile;
+local getConfigValue = TRP3_API.configuration.getValue;
 
 -- Saved variables references
 local profiles, character, characters;
@@ -128,6 +130,7 @@ TRP3_API.profile.duplicateProfile = duplicateProfile;
 local function createProfile(profileName)
 	return duplicateProfile(PR_DEFAULT_PROFILE, profileName);
 end
+TRP3_API.profile.createProfile = createProfile;
 
 -- Just internally switch the current profile structure. That's all.
 local function selectProfile(profileID)
@@ -169,6 +172,19 @@ function getPlayerCurrentProfile()
 	return currentProfile;
 end
 TRP3_API.profile.getPlayerCurrentProfile = getPlayerCurrentProfile;
+
+local function updateDefaultProfile()
+	local profileDefault = profiles[getConfigValue("default_profile_id")];
+	-- Updating profile name in case of addon locale change
+	profileDefault.profileName = loc.PR_DEFAULT_PROFILE_NAME;
+
+	local profileCharacteristics = profileDefault.player.characteristics;
+	profileCharacteristics.v = profileCharacteristics.v + 1;
+	profileCharacteristics.RA = Globals.player_race_loc;
+	profileCharacteristics.CL = Globals.player_class_loc;
+	profileCharacteristics.FN = Globals.player;
+	profileCharacteristics.IC = TRP3_API.ui.misc.getUnitTexture(Globals.player_character.race, UnitSex("player"));
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UI
@@ -213,6 +229,12 @@ local function decorateProfileList(widget, index)
 		text = text..loc.PR_UNUSED_PROFILE;
 	end
 
+	if id == getConfigValue("default_profile_id") then
+		_G[widget:GetName().."Action"]:Hide();
+	else
+		_G[widget:GetName().."Action"]:Show();
+	end
+
 	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
 end
 
@@ -223,10 +245,25 @@ end
 -- Refresh list display
 local function uiInitProfileList()
 	wipe(profileListID);
+	local defaultProfileID = getConfigValue("default_profile_id");
+	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		tinsert(profileListID, profileID);
+		if profileID ~= defaultProfileID and (not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower())) then
+			tinsert(profileListID, profileID);
+		end
 	end
+
 	table.sort(profileListID, profileSortingByProfileName);
+
+	local size = #profileListID;
+	TRP3_ProfileManagerListEmpty:Hide();
+	if profileSearch then
+		if size == 0 then
+			TRP3_ProfileManagerListEmpty:Show();
+		end
+	else
+		tinsert(profileListID, 1, defaultProfileID);
+	end
 	initList(TRP3_ProfileManagerList, profileListID, TRP3_ProfileManagerListSlider);
 end
 
@@ -410,16 +447,26 @@ function TRP3_API.profile.init()
 	end
 	character = characters[Globals.player_id];
 
-	-- First time this character is connected with TRP3 or if deleted profile through another character
-	-- So we create a new profile named by his pseudo.
-	if not character.profileID or not profiles[character.profileID] then
-		-- Detect if a profile with name - realm already exists
-		local available, profileID = isProfileNameAvailable(Globals.player_realm .. " - " .. Globals.player);
-		if not available and profileID then
-			selectProfile(profileID);
-		else
-			selectProfile(createProfile(Globals.player_realm .. " - " .. Globals.player));
+	TRP3_API.configuration.registerConfigKey("default_profile_id", "");
+
+	-- Creating the default profile
+	if getConfigValue("default_profile_id") == "" or not profiles[getConfigValue("default_profile_id")] then
+		-- Clearing a previous default profile if it existed (shouldn't happen unless you reset configuration)
+		for profileID, profile in pairs(profiles) do
+			if profile.profileName == loc.PR_DEFAULT_PROFILE_NAME then
+				profiles[profileID] = nil;
+				break;
+			end
 		end
+		TRP3_API.configuration.setValue("default_profile_id", createProfile(loc.PR_DEFAULT_PROFILE_NAME));
+	else
+		updateDefaultProfile();
+	end
+
+	-- First time this character is connected with TRP3 or if deleted profile through another character
+	-- So we create a new profile named by his username.
+	if not character.profileID or not profiles[character.profileID] then
+		selectProfile(getConfigValue("default_profile_id"));
 	else
 		selectProfile(character.profileID);
 	end
@@ -473,9 +520,13 @@ function TRP3_API.profile.init()
 
 	--Localization
 	TRP3_ProfileManagerAdd:SetText(loc.PR_CREATE_PROFILE);
+	TRP3_ProfileManagerListEmpty:SetText(loc.PR_PROFILEMANAGER_EMPTY);
 
 	TRP3_ProfileManagerInfo:Show();
 	setTooltipForSameFrame(TRP3_ProfileManagerInfo, "RIGHT", 0, 0, loc.PR_EXPORT_IMPORT_TITLE, loc.PR_EXPORT_IMPORT_HELP);
+
+	TRP3_ProfileManagerSearch:SetScript("OnEnterPressed", uiInitProfileList);
+	TRP3_ProfileManagerSearchText:SetText(loc.PR_PROFILEMANAGER_SEARCH_PROFILE);
 
 	registerPage({
 		id = "player_profiles",
@@ -560,7 +611,7 @@ function TRP3_API.profile.init()
 
 					-- Default preferred locale appropriately.
 					if data.character and not data.character.LC then
-						data.character.LC = TRP3_API.configuration.getValue("AddonLocale") or GetLocale();
+						data.character.LC = getConfigValue("AddonLocale") or GetLocale();
 					end
 				end
 

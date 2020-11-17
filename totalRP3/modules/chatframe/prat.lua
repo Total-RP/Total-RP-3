@@ -2,7 +2,7 @@
 --- Total RP 3
 --- Prat plugin
 --- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -22,6 +22,21 @@ local _, TRP3_API = ...;
 
 local loc = TRP3_API.loc;
 
+local function GUIDIsPlayer(guid)
+	if type(guid) ~= "string" then
+		return false;
+	end
+
+	-- Classic has C_PlayerInfo, and every function _except_ GUIDIsPlayer.
+	-- ¯\_(ツ)_/¯
+	if C_PlayerInfo.GUIDIsPlayer then
+		return C_PlayerInfo.GUIDIsPlayer(guid);
+	end
+
+	-- Fallback for Classic. No idea what validation the C API does.
+	return not not string.find(guid, "^Player%-");
+end
+
 local function onStart()
 	-- Stop right here if Prat is not installed
 	if not Prat then
@@ -33,6 +48,12 @@ local function onStart()
 		-- Create Prat module
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 		local pratModule = Prat:NewModule(PRAT_MODULE);
+		local PL = pratModule.PL;
+
+		PL:AddLocale(PRAT_MODULE, "enUS", {
+			module_name = "Total RP 3",
+			module_desc = "Total RP 3 customizations for Prat",
+		});
 
 		-- Import Total RP 3 functions
 		local Globals 							= TRP3_API.globals;
@@ -77,8 +98,8 @@ local function onStart()
 
 			if disabledByOOC() then return end;
 
-			-- If the message has no GUID (system?) we don't have anything to do with this
-			if not message.GUID then return end;
+			-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
+			if not message.GUID or not GUIDIsPlayer(message.GUID) then return end;
 
 			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 			-- for that channel in the settings

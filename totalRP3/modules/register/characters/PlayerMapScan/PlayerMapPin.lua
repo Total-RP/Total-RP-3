@@ -2,7 +2,7 @@
 --- Total RP 3
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.tooltipLine = displayData.playerName;
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
-	self.sortName = displayData.playerName;
+	self.sortName = displayData.playerName:gsub("|T.-|t", ""):gsub("|c%x%x%x%x%x%x%x%x","");
 
 	if displayData.iconColor then
 		self.Texture:SetVertexColor(displayData.iconColor:GetRGBA());

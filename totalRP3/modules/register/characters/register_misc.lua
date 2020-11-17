@@ -418,6 +418,7 @@ local function showMiscTab()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
+	context.isEditMode = false;
 	TRP3_RegisterMisc:Show();
 	displayPeek(context);
 	displayRPStyle(context);

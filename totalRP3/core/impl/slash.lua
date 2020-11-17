@@ -3,7 +3,7 @@
 --- Slash commands
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -131,7 +131,8 @@ local function rollDice(diceString)
 
 		total = total + modifierValue;
 
-		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), num, diceCount, total));
+		local modifierString = (modifierValue == 0) and "" or format("%+d", modifierValue); -- we add a + to positive modifiers and don't render a 0 value
+		Utils.message.displayMessage(loc.DICE_ROLL:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), num, diceCount, modifierString, total));
 		sendDiceRoll({c = num, d = diceCount, t = total, m = modifierValue});
 		return total;
 	end
@@ -180,7 +181,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		if sender ~= Globals.player_id then
 			if type(arg) == "table" then
 				if arg.c and arg.d and arg.t then
-					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), sender, arg.c, arg.d, arg.t));
+					local modifierString = (arg.m == 0) and "" or format("%+d", arg.m); -- we add a + to positive modifiers and don't render a 0 value
+					Utils.message.displayMessage(loc.DICE_ROLL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_02", 20), sender, arg.c, arg.d, modifierString, arg.t));
 				elseif arg.t then
 					local totalMessage = loc.DICE_TOTAL_T:format(Utils.str.icon(TRP3_API.globals.is_classic and "inv_enchant_shardglowingsmall" or "inv_misc_dice_01", 20), sender, arg.t);
 					Utils.message.displayMessage(totalMessage);

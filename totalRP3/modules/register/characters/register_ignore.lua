@@ -3,7 +3,7 @@
 --- Directory : Ignore API
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ local UnitIsPlayer = UnitIsPlayer;
 local get, getPlayerCurrentProfile, hasProfile = TRP3_API.profile.getData, TRP3_API.profile.getPlayerCurrentProfile, TRP3_API.register.hasProfile;
 local getProfile, getUnitID = TRP3_API.register.getProfile, TRP3_API.utils.str.getUnitID;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local characters, blackList= {}, {};
+local characters, blockList = {}, {};
 local is_classic = Globals.is_classic;
 
 -- These functions gets replaced by the proper TRP3 one once the addon has finished loading
@@ -139,7 +139,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function isIDIgnored(ID)
-	return blackList[ID] ~= nil;
+	return blockList[ID] ~= nil;
 end
 TRP3_API.register.isIDIgnored = isIDIgnored;
 
@@ -147,7 +147,7 @@ local function ignoreID(unitID, reason)
 	if reason:len() == 0 then
 		reason = loc.TF_IGNORE_NO_REASON;
 	end
-	blackList[unitID] = reason;
+	blockList[unitID] = reason;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 end
 TRP3_API.register.ignoreID = ignoreID;
@@ -160,14 +160,14 @@ end
 TRP3_API.register.ignoreIDConfirm = ignoreIDConfirm;
 
 local function getIgnoreReason(unitID)
-	return blackList[unitID];
+	return blockList[unitID];
 end
 TRP3_API.register.getIgnoreReason = getIgnoreReason;
 
 function TRP3_API.register.getIDsToPurge()
 	local profileToPurge = {};
 	local characterToPurge = {};
-	for unitID, _ in pairs(blackList) do
+	for unitID, _ in pairs(blockList) do
 		if characters[unitID] then
 			tinsert(characterToPurge, unitID);
 			if characters[unitID].profileID then
@@ -179,12 +179,12 @@ function TRP3_API.register.getIDsToPurge()
 end
 
 function TRP3_API.register.unignoreID(unitID)
-	blackList[unitID] = nil;
+	blockList[unitID] = nil;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, TRP3_API.register.isUnitIDKnown(unitID) and hasProfile(unitID) or nil, nil);
 end
 
 function TRP3_API.register.getIgnoredList()
-	return blackList;
+	return blockList;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -215,14 +215,11 @@ end
 Events.listenToEvent(Events.WORKFLOW_ON_LOAD, function()
 	getCompleteName, getPlayerCompleteName = TRP3_API.register.getCompleteName, TRP3_API.register.getPlayerCompleteName;
 
-	if not TRP3_Register.blackList then
-		TRP3_Register.blackList = {};
-	end
-	if not TRP3_Register.whiteList then
-		TRP3_Register.whiteList = {};
+	if not TRP3_Register.blockList then
+		TRP3_Register.blockList = {};
 	end
 	characters = TRP3_Register.character;
-	blackList = TRP3_Register.blackList;
+	blockList = TRP3_Register.blockList;
 end);
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()

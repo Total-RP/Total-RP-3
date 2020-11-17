@@ -34,6 +34,7 @@ local stEtN = TRP3_API.utils.str.emptyToNil;
 local GetCurrentUser = AddOn_TotalRP3.Player.GetCurrentUser;
 local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
+local getConfigValue = TRP3_API.configuration.getValue;
 
 local NOTES_ICON = Ellyb.Icon(Globals.is_classic and "INV_Scroll_02" or "Inv_misc_scrollunrolled03b");
 
@@ -92,6 +93,7 @@ local function showNotesTab()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
+	context.isEditMode = false;
 	TRP3_ProfileReportButton:Hide();
 	displayNotes(context);
 	TRP3_RegisterNotes:Show();
@@ -127,7 +129,7 @@ function TRP3_API.register.inits.notesInit()
 			configText = loc.REG_NOTES_PROFILE,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(_, unitID)
-				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
+				return (unitID == Globals.player_id and getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id")) or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,
 			onClick = function(unitID)
 				openMainFrame();

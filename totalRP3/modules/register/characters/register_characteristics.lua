@@ -3,7 +3,7 @@
 --- Character page : Characteristics
 ------------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -365,7 +365,13 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				OpenWorldMap(dataTab.RC[1])
+				if TRP3_API.globals.is_classic then
+					ShowUIPanel(WorldMapFrame);
+					WorldMapFrame:SetMapID(dataTab.RC[1]);
+				else
+					OpenWorldMap(dataTab.RC[1]);
+				end
+
 				local characterID;
 				local profileID;
 				if context.source == "player" then
@@ -1424,7 +1430,6 @@ local function initStructures()
 	PSYCHO_PRESETS_DROPDOWN = {
 		{ loc.REG_PLAYER_PSYCHO_SOCIAL },
 		{ loc.REG_PLAYER_PSYCHO_CHAOTIC .. " - " .. loc.REG_PLAYER_PSYCHO_Loyal, 1 },
-		{ loc.REG_PLAYER_PSYCHO_Chaste .. " - " .. loc.REG_PLAYER_PSYCHO_Luxurieux, 2 },
 		{ loc.REG_PLAYER_PSYCHO_Indulgent .. " - " .. loc.REG_PLAYER_PSYCHO_Rencunier, 3 },
 		{ loc.REG_PLAYER_PSYCHO_Genereux .. " - " .. loc.REG_PLAYER_PSYCHO_Egoiste, 4 },
 		{ loc.REG_PLAYER_PSYCHO_Sincere .. " - " .. loc.REG_PLAYER_PSYCHO_Trompeur, 5 },

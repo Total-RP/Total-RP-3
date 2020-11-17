@@ -3,7 +3,7 @@
 --- Schema migration tool
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ TRP3_API.flyway = {};
 
 local type, tostring = type, tostring;
 
-local SCHEMA_VERSION = 11;
+local SCHEMA_VERSION = 12;
 
 if not TRP3_Flyway then
 	TRP3_Flyway = {};

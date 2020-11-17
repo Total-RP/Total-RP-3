@@ -7,7 +7,7 @@
 --- accessing its indexes in the code, but actually having the meta table call
 --- the localization functions on runtime to get the localized version of the text.
 --- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -690,6 +690,8 @@ Possible status:
 	PR_PROFILEMANAGER_SWITCH = "Select profile",
 	PR_PROFILEMANAGER_RENAME = "Rename profile",
 	PR_PROFILEMANAGER_CURRENT = "Current profile",
+	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
+	PR_PROFILEMANAGER_EMPTY = "No profiles found",
 	PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
 	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
 
@@ -746,6 +748,8 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_OPEN_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 open|r |cffffff00to open your target's profile or |cffcccccc/trp3 open CharacterName-RealmName|r |cffffff00to open that character's profile.|r",
 	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
 	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
+	PR_DEFAULT_PROFILE_NAME = "Default profile",
+	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DASHBOARD
@@ -938,8 +942,8 @@ Total RP is not responsible for links leading to harmful content.]],
 	-- Bindings
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
-	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
+	BINDING_NAME_TRP3_TOGGLE = "Toggle main frame";
+	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toggle toolbar";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- About TRP3
@@ -988,18 +992,6 @@ A mature profile will have a muted tooltip and you will have to confirm that you
 	MATURE_FILTER_STRENGTH_TT = [[Set the strength of the mature filter.
 
 |cffcccccc1 is weak (10 bad words required to flag), 10 is strong (only 1 bad word required to flag).|r]],
-	MATURE_FILTER_ADD_TO_WHITELIST = "Add this profile to the |cffffffffmature white list|r",
-	MATURE_FILTER_ADD_TO_WHITELIST_TT = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
-	MATURE_FILTER_ADD_TO_WHITELIST_OPTION = "Add to the |cffffffffmature white list|r",
-	MATURE_FILTER_ADD_TO_WHITELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature white list|r.
-
-The content of their profiles will no longer be hidden.]],
-	MATURE_FILTER_REMOVE_FROM_WHITELIST = "Remove this profile from the |cffffffffmature white list|r",
-	MATURE_FILTER_REMOVE_FROM_WHITELIST_TT = "Remove this profile from the |cffffffffmature white list|r and hide again the mature content found inside.",
-	MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION = "Remove from the |cffffffffmature white list|r",
-	MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature white list|r.
-
-The content of their profiles will be hidden again.]],
 	MATURE_FILTER_FLAG_PLAYER = "Flag as mature",
 	MATURE_FILTER_FLAG_PLAYER_TT = "Flag this profile has containing mature content. The profile content will be hidden.",
 	MATURE_FILTER_FLAG_PLAYER_OPTION = "Flag as mature",
@@ -1025,15 +1017,27 @@ The content of their profiles will be hidden again.]],
 This profile has been flagged as containing mature content.
 
 Are you sure you want to view this profile?]],
+	MATURE_FILTER_ADD_TO_SAFELIST = "Add this profile to the |cffffffffmature safelist|r",
+	MATURE_FILTER_ADD_TO_SAFELIST_TT = "Add this profile to the |cffffffffmature safelist|r and reveal the mature content found inside.",
+	MATURE_FILTER_ADD_TO_SAFELIST_OPTION = "Add to the |cffffffffmature safelist|r",
+	MATURE_FILTER_ADD_TO_SAFELIST_TEXT = [[Confirm that you want to add %s to the |cffffffffmature safelist|r.
+
+The content of their profiles will no longer be hidden.]],
+	MATURE_FILTER_REMOVE_FROM_SAFELIST = "Remove this profile from the |cffffffffmature safelist|r",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_TT = "Remove this profile from the |cffffffffmature safelist|r and hide again the mature content found inside.",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION = "Remove from the |cffffffffmature safelist|r",
+	MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT = [[Confirm that you want to remove %s from the |cffffffffmature safelist|r.
+
+The content of their profiles will be hidden again.]],
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DICE ROLL
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
+	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
 	DICE_HELP = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
-	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
+	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1370,12 +1374,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Added settings to adjust About font sizes.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_23_11 = [[
 	# Changelog version 1.6.11
 
@@ -1387,6 +1385,72 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 - Fixed an issue when trying to add a chat link to an empty chatbox.
 - Fixed a compatibility issue with PallyPower.
+
+]],
+	WHATS_NEW_23_12 = [[
+# Changelog version 1.6.12
+
+## Fixed
+
+- Tentatively fixed an issue with tooltip lines.
+- Fixed an issue with the residence button on Classic.
+
+]],
+	WHATS_NEW_23_13 =  [[# Changelog version 1.6.13
+
+## Fixed
+
+- Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
+
+]],
+	WHATS_NEW_24_1 =  [[# Changelog version 2.0
+
+## Added
+
+- Added a default profile.
+  - This profile cannot be modified and only contains basic character information (name, race, class).
+  - New characters will now be bound to the default profile instead of creating a new one automatically.
+  - A new profile is still required to add custom information.
+
+- Added a search bar in the character and companion profiles lists.
+
+## Fixed
+
+- Fixed a conflict between OOC detection and Russian declensions.
+- Fixed an issue related to Prat + WIM chat history.
+
+## Changed
+
+- Removed a personality trait preset.
+- Improved communication protocol to reduce profile transfer size.
+- Various compatibility changes related to 9.0 API modifications.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
+	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
+	WHATS_NEW_24_2 =  [[# Changelog version 2.1
+
+## Added
+
+- Added 113 images, 1437 icons and 613 musics from patch 9.0.
+- Added modifier to the dice roll output text.
+- Added keybinding options for opening the target profile and toggling RP status.
+
+## Fixed
+
+- Fixed an issue with the default tooltip appearing sometimes despite "Hide original tooltip" setting being checked.
+- Fixed an issue with the TRP3 tooltip being offset while the default tooltip is hidden.
+- Fixed an issue with the TRP3 tooltip briefly overlapping the default tooltip if quickly hovering from a player to a spell/item.
+- Fixed an issue when trying to open the Prat modules window while TRP3 is running.
+- Fixed a display issue with the NPC speech frame background.
+- Fixed alphabetical sorting when hovering a cluster of players in the map scan.
+- Potential fix for the guide channel being swapped with the xtensionxtooltip2 channel.
 
 ]],
 };

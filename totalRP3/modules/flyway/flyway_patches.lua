@@ -3,7 +3,7 @@
 --- Schema migration tool : Patches
 --- ---------------------------------------------------------------------------
 --- Copyright 2014 Sylvain Cossement (telkostrasz@telkostrasz.be)
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -151,5 +151,17 @@ TRP3_API.flyway.patches["11"] = function()
 				profile.player.character.LC = TRP3_Configuration["AddonLocale"] or GetLocale();
 			end
 		end
+	end
+end
+
+-- Migrate from register from "BlackList" to "BlockList" and "WhiteList" to "SafeList" naming conventions.
+TRP3_API.flyway.patches["12"] = function()
+	if TRP3_Register and TRP3_Register.blackList then
+		TRP3_Register.blockList = TRP3_Register.blackList;
+		TRP3_Register.blackList = nil;
+	end
+	if TRP3_MatureFilter and TRP3_MatureFilter.whitelist then
+		TRP3_MatureFilter.safeList = TRP3_MatureFilter.whitelist;
+		TRP3_MatureFilter.whitelist = nil;
 	end
 end

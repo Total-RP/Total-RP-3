@@ -8,7 +8,7 @@
 --- so we can check in the code if a profile has mature content by doing
 --- if profile.hasMatureContent then
 --- ---------------------------------------------------------------------------
---- Copyright 2014-2019 Renaud "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
+--- Copyright 2014-2019 Morgane "Ellypse" Parize <ellypse@totalrp3.info> @EllypseCelwe
 ---
 --- Licensed under the Apache License, Version 2.0 (the "License");
 --- you may not use this file except in compliance with the License.
@@ -25,6 +25,8 @@
 
 ---@type TRP3_API
 local _, TRP3_API = ...;
+
+local Ellyb = Ellyb(...);
 
 local function onStart()
 
@@ -60,48 +62,48 @@ local function onStart()
 
 	-- Saved variables
 	TRP3_MatureFilter = TRP3_MatureFilter or {
-		whitelist = {},
+		safeList = {},
 		dictionary = nil
 	}
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-	-- WHITE LIST MANAGEMENT
+	-- SAFE LIST MANAGEMENT
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local whiteList = TRP3_MatureFilter.whitelist;
+	local safeList = TRP3_MatureFilter.safeList;
 
 	---
-	-- Add a profile ID to the whitelist
+	-- Add a profile ID to the safe list
 	-- @param profileID
 	--
-	local function whitelistProfileID(profileID)
-		assert(profileID, ("Trying to call whitelistProfileID with a nil profileID."));
+	local function addProfileIdToSafeList(profileID)
+		assert(profileID, ("Trying to call addProfileIdToSafeList with a nil profileID."));
 
-		whiteList[profileID] = true;
+		safeList[profileID] = true;
 	end
 
-	TRP3_API.register.mature_filter.whitelistProfileID = whitelistProfileID;
+	TRP3_API.register.mature_filter.addProfileIdToSafeList = addProfileIdToSafeList;
 
 	---
-	-- Remove a profile from the white list
+	-- Remove a profile from the safe list
 	-- @param profileID ID of the profile to remove
 	--
-	local function removeProfileIDFromWhiteList(profileID)
-		assert(profileID, ("Trying to call removeProfileIDFromWhiteList with a nil profileID."));
-		assert(whiteList[profileID], ("Profile %s is not currently in the whitelist."):format(profileID));
+	local function removeProfileIdFromSafeList(profileID)
+		assert(profileID, ("Trying to call removeProfileIdFromSafeList with a nil profileID."));
+		assert(safeList[profileID], ("Profile %s is not currently in the safe list."):format(profileID));
 
-		whiteList[profileID] = nil;
+		safeList[profileID] = nil;
 	end
 
 	---
-	-- Check if a profile is white listed
+	-- Check if a profile is the safe list.
 	-- @param profileID ID of the profile to check
 	--
-	local function isProfileWhitelisted(profileID)
-		return whiteList[profileID] or false;
+	local function isProfileSafeListed(profileID)
+		return safeList[profileID] or false;
 	end
 
-	TRP3_API.register.mature_filter.isProfileWhitelisted = isProfileWhitelisted;
+	TRP3_API.register.mature_filter.isProfileSafeListed = isProfileSafeListed;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DICTIONARY MANAGEMENT
@@ -196,31 +198,30 @@ local function onStart()
 		end);
 	end
 
-	local function removeUnitProfileFromWhitelistConfirm(unitID)
-		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT:format(unitID), function()
+	local function presentRemoveUnitFromSafeListPopup(unitID)
+		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT:format(unitID), function()
 			local profileID = getUnitIDProfileID(unitID);
-			-- Flag the profile of the unit has having mature content
-			removeProfileIDFromWhiteList(profileID);
+			removeProfileIdFromSafeList(profileID);
 			-- Fire the event that the register has been updated so the UI stuff get refreshed
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 		end);
 	end
 
 	---
-	-- Open a confirm popup to add the profile of a given unit ID to the whitelist
+	-- Open a confirm popup to add the profile of a given unit ID to the safe list
 	-- @param unitID
 	--
-	local function whitelistProfileByUnitIDConfirm(unitID, callback)
+	local function presentAddUnitToSafeListPopup(unitID, callback)
 		local profileID = getUnitIDProfileID(unitID);
 
-		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_WHITELIST_TEXT:format(unitID), function()
-			whitelistProfileID(profileID);
+		TRP3_API.popup.showConfirmPopup(loc.MATURE_FILTER_ADD_TO_SAFELIST_TEXT:format(unitID), function()
+			addProfileIdToSafeList(profileID);
 			Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), nil);
 			if callback and type(callback) == "function" then callback() end;
 		end);
 	end
 
-	TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm = whitelistProfileByUnitIDConfirm;
+	TRP3_API.register.mature_filter.presentAddUnitToSafeListPopup = presentAddUnitToSafeListPopup;
 
 	local function getBadWordsThreshold()
 		return 11 - getConfigValue(MATURE_FILTER_CONFIG_STRENGTH);
@@ -455,7 +456,7 @@ local function onStart()
 	TRP3_MatureFilterPopup.remember:SetText("Remember for this profile");
 	TRP3_MatureFilterPopup.remember:SetScript("OnClick", function()
 		-- Ask to confirm then hide the popup
-		whitelistProfileByUnitIDConfirm(TRP3_MatureFilterPopup.unitID, function()
+		presentAddUnitToSafeListPopup(TRP3_MatureFilterPopup.unitID, function()
 			hidePopups();
 		end);
 	end)
@@ -567,10 +568,10 @@ local function onStart()
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if TRP3_API.target then
-		-- Add to white list button
+		-- Add to safe list button
 		TRP3_API.target.registerButton({
 			id = "aa_player_w_mature_white_list",
-			configText = loc.MATURE_FILTER_ADD_TO_WHITELIST_OPTION,
+			configText = loc.MATURE_FILTER_ADD_TO_SAFELIST_OPTION,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
@@ -580,30 +581,30 @@ local function onStart()
 					return false;
 				end
 			end,
-			onClick = whitelistProfileByUnitIDConfirm,
-			tooltipSub = "|cffffff00" .. loc.CM_CLICK .. "|r: " .. loc.MATURE_FILTER_ADD_TO_WHITELIST_TT,
-			tooltip = loc.MATURE_FILTER_ADD_TO_WHITELIST,
+			onClick = presentAddUnitToSafeListPopup,
+			tooltipSub = "|cffffff00" .. loc.CM_CLICK .. "|r: " .. loc.MATURE_FILTER_ADD_TO_SAFELIST_TT,
+			tooltip = loc.MATURE_FILTER_ADD_TO_SAFELIST,
 			icon = "INV_ValentinesCard02"
 		});
-		-- Remove from white list button
+		-- Remove from safe list button
 		TRP3_API.target.registerButton({
 			id = "aa_player_w_mature_remove_white_list",
-			configText = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION,
+			configText = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION,
 			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
-					return profileID and profile.hasMatureContent and isProfileWhitelisted(profileID);
+					return profileID and profile.hasMatureContent and isProfileSafeListed(profileID);
 				else
 					return false;
 				end
 			end,
 			onClick = function(unitID)
-				removeUnitProfileFromWhitelistConfirm(unitID);
+				presentRemoveUnitFromSafeListPopup(unitID);
 			end,
-			tooltipSub = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST_TT,
-			tooltip = loc.MATURE_FILTER_REMOVE_FROM_WHITELIST,
+			tooltipSub = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_TT,
+			tooltip = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST,
 			icon = TRP3_API.globals.is_classic and "INV_Scroll_07" or "INV_Inscription_ParchmentVar03"
 		});
 
@@ -616,7 +617,7 @@ local function onStart()
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
 					local profileID = getUnitIDProfileID(unitID);
-					return profileID and not profile.hasMatureContent and not isProfileWhitelisted(profileID);
+					return profileID and not profile.hasMatureContent and not isProfileSafeListed(profileID);
 				else
 					return false;
 				end
@@ -642,15 +643,20 @@ local function onStart()
 	end
 
 	-- We listen to data updates in the register and apply the filter if enabled
-	-- and the profile is not already whitelisted
+	-- and the profile is not already safe listed.
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(_, profileID, _)
-		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileWhitelisted(profileID) then
+		if isMatureFilterEnabled() and profileID and getProfileOrNil(profileID) and not isProfileSafeListed(profileID) then
 			local profile = getProfileByID(profileID);
 			if not profile.hasMatureContent or shouldReEvaluateContent(profile.lastMatureContentEvaluation) then
 				filterData(getProfileByID(profileID), profileID);
 			end
 		end
 	end);
+
+	-- TODO: Remove these deprecation warning wrappers in a future major version.
+	TRP3_API.register.mature_filter.whitelistProfileID = Ellyb.DeprecationWarnings.wrapFunction(addProfileIdToSafeList, "TRP3_API.register.mature_filter.whitelistProfileID", "TRP3_API.register.mature_filter.addProfileIdToSafeList");
+	TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm = Ellyb.DeprecationWarnings.wrapFunction(presentAddUnitToSafeListPopup, "TRP3_API.register.mature_filter.whitelistProfileByUnitIDConfirm", "TRP3_API.register.mature_filter.presentAddUnitToSafeListPopup");
+	TRP3_API.register.mature_filter.isProfileWhitelisted = Ellyb.DeprecationWarnings.wrapFunction(isProfileSafeListed, "TRP3_API.register.mature_filter.isProfileWhitelisted", "TRP3_API.register.mature_filter.isProfileSafeListed");
 end
 
 local MODULE_STRUCTURE = {

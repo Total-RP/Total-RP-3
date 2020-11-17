@@ -32,10 +32,10 @@
 	<Include file="StatusPanel.xml"/>
 
 	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true">
-		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-			<EdgeSize val="16"/>
-		</Backdrop>
+	<Frame name="TRP3_Dashboard" hidden="true" inherits="TRP3_BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
+		</KeyValues>
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
@@ -104,7 +104,7 @@
 			<Anchor point="CENTER"/>
 		</Anchors>
 		<Scripts>
-			<OnLoad>
+			<OnLoad inherit="prepend">
 				tinsert(UISpecialFrames, self:GetName());
 			</OnLoad>
 		</Scripts>
@@ -150,7 +150,7 @@
 					<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent" x="-20"/>
 				</Anchors>
 			</EditBox>
-			<Frame parentKey="channelDropdown" inherits="UIDropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
+			<Frame parentKey="channelDropdown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
 				<Anchors>
 					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
 					<Anchor point="RIGHT" relativePoint="RIGHT" x="-25"/>
