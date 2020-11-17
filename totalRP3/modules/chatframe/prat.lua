@@ -48,6 +48,12 @@ local function onStart()
 		-- Create Prat module
 		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 		local pratModule = Prat:NewModule(PRAT_MODULE);
+		local PL = pratModule.PL;
+
+		PL:AddLocale(PRAT_MODULE, "enUS", {
+			module_name = "Total RP 3",
+			module_desc = "Total RP 3 customizations for Prat",
+		});
 
 		-- Import Total RP 3 functions
 		local Globals 							= TRP3_API.globals;
