@@ -45,7 +45,6 @@ local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-local msp = _G.msp;
 
 
 -- WoW imports
