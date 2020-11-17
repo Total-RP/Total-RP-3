@@ -1438,7 +1438,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ## Added
 
-- TEMP: Nameplates module
 - Added modifier to the dice roll output text.
 - Added keybinding options for opening the target profile and toggling RP status.
 

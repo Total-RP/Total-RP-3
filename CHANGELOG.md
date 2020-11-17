@@ -2,7 +2,6 @@
 
 ## Added
 
-- TEMP: Nameplates module
 - Added modifier to the dice roll output text.
 - Added keybinding options for opening the target profile and toggling RP status.
 
