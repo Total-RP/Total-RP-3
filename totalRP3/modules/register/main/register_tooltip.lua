@@ -497,12 +497,12 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	if showFullTitle() then
 		local fullTitle = "";
-		if info.characteristics and info.characteristics.FT and info.characteristics.FT:len() > 0 then
+		if info.characteristics and info.characteristics.FT and info.characteristics.FT ~= "" then
 			fullTitle = info.characteristics.FT;
 		elseif UnitPVPName(targetType) ~= targetName then
 			fullTitle = UnitPVPName(targetType);
 		end
-		if fullTitle:len() > 0 then
+		if fullTitle and fullTitle ~= "" then
 
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
