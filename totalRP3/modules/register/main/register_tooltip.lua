@@ -195,7 +195,8 @@ local function showSpacing()
 end
 
 local function fadeOutEnabled()
-	return not getConfigValue(CONFIG_NO_FADE_OUT);
+	return true; -- TEMPORARY WORKAROUND
+	--return not getConfigValue(CONFIG_NO_FADE_OUT);
 end
 
 local function getCurrentMaxLines()
