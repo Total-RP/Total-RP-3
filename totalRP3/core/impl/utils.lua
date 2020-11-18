@@ -454,6 +454,78 @@ function Utils.str.crop(text, size)
 	return text
 end
 
+local tableAccents = {
+	["À"] = "A",
+	["Á"] = "A",
+	["Â"] = "A",
+	["Ã"] = "A",
+	["Ä"] = "A",
+	["Å"] = "A",
+	["Æ"] = "AE",
+	["Ç"] = "C",
+	["È"] = "E",
+	["É"] = "E",
+	["Ê"] = "E",
+	["Ë"] = "E",
+	["Ì"] = "I",
+	["Í"] = "I",
+	["Î"] = "I",
+	["Ï"] = "I",
+	["Ð"] = "D",
+	["Ñ"] = "N",
+	["Ò"] = "O",
+	["Ó"] = "O",
+	["Ô"] = "O",
+	["Õ"] = "O",
+	["Ö"] = "O",
+	["Ø"] = "O",
+	["Ù"] = "U",
+	["Ú"] = "U",
+	["Û"] = "U",
+	["Ü"] = "U",
+	["Ý"] = "Y",
+	["Þ"] = "P",
+	["ß"] = "s",
+	["à"] = "a",
+	["á"] = "a",
+	["â"] = "a",
+	["ã"] = "a",
+	["ä"] = "a",
+	["å"] = "a",
+	["æ"] = "ae",
+	["ç"] = "c",
+	["è"] = "e",
+	["é"] = "e",
+	["ê"] = "e",
+	["ë"] = "e",
+	["ì"] = "i",
+	["í"] = "i",
+	["î"] = "i",
+	["ï"] = "i",
+	["ð"] = "eth",
+	["ñ"] = "n",
+	["ò"] = "o",
+	["ó"] = "o",
+	["ô"] = "o",
+	["õ"] = "o",
+	["ö"] = "o",
+	["ø"] = "o",
+	["ù"] = "u",
+	["ú"] = "u",
+	["û"] = "u",
+	["ü"] = "u",
+	["ý"] = "y",
+	["þ"] = "p",
+	["ÿ"] = "y",
+};
+
+-- Convert special characters into regular a-z characters for alphabetical order purposes
+function Utils.str.convertSpecialChars(text)
+	local convertedText = text:gsub("[%z\1-\127\194-\244][\128-\191]*", tableAccents);
+	return convertedText;
+end
+
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- GUID
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -790,7 +862,7 @@ local IMAGE_PATTERN = [[{img%:([^:]+)%:([^:]+)%:([^:}]+)%:?([^:}]*)%}]];
 local IMAGE_TAG = [[</P><img src="%s" width="%s" height="%s" align="%s"/><P>]];
 
 -- Convert the given text by his HTML representation
-Utils.str.toHTML = function(text, noColor)
+Utils.str.toHTML = function(text, noColor, noBrackets)
 
 	local linkColor = "|cff00ff00";
 	if noColor then
@@ -909,8 +981,15 @@ Utils.str.toHTML = function(text, noColor)
 		line = line:gsub("%[(.-)%]%((.-)%)",
 			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
 
+		line = line:gsub("{link%*(.-)%*({icon%:.-})}",
+			"<a href=\"%1\">" .. linkColor .. "%2|r</a>");
+
+		local linkText = "[%2]"
+		if noBrackets then
+			linkText = "%2"
+		end
 		line = line:gsub("{link%*(.-)%*(.-)}",
-			"<a href=\"%1\">" .. linkColor .. "[%2]|r</a>");
+			"<a href=\"%1\">" .. linkColor .. linkText .. "|r</a>");
 
 		line = line:gsub("{twitter%*(.-)%*(.-)}",
 			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");

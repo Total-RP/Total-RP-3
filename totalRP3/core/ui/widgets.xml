@@ -517,6 +517,7 @@
 			<OnLeave>
 				TRP3_MainTooltip:Hide();
 			</OnLeave>
+			<OnClick/>
 			<PostClick>
 				TRP3_API.ui.misc.playUISound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 			</PostClick>

@@ -93,6 +93,7 @@ local function showNotesTab()
 	local context = getCurrentContext();
 	assert(context, "No context for page player_main !");
 	assert(context.profile, "No profile in context");
+	context.isEditMode = false;
 	TRP3_ProfileReportButton:Hide();
 	displayNotes(context);
 	TRP3_RegisterNotes:Show();

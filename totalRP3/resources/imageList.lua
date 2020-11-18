@@ -418,6 +418,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\calendar_CastleNathriaStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_DanceDay",
 		width = 128,
 		height = 128
@@ -453,7 +458,17 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_Shadowlands",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_TombofSargerasStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_Torghast",
 		width = 128,
 		height = 128
 	},
@@ -469,6 +484,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendBlackTempleStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_WeekendShadowlandsStart",
 		width = 128,
 		height = 128
 	},
@@ -515,6 +535,51 @@ local IMAGES = {
 	{
 		url = "Interface\\Challenges\\challenges-silver",
 		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt0WoW",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt1BC",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt2WotLK",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt3Cataclysm",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt4MoP",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt5WoD",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt6Legion",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt7BfA",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt8Shadowlands",
+		width = 512,
 		height = 256
 	},
 	{
@@ -691,8 +756,29 @@ local IMAGES = {
 		url = "Interface\\FlavorImages\\BloodElfLogo-small",
 		width = 256,
 		height = 256
-	}, {
+	},
+	{
 		url = "Interface\\FlavorImages\\ScarletCrusadeLogo",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Garrison\\ShadowlandsMissionLandingPageBackgroundKyrian",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Garrison\\ShadowlandsMissionLandingPageBackgroundNecrolord",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Garrison\\ShadowlandsMissionLandingPageBackgroundNightFae",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Garrison\\ShadowlandsMissionLandingPageBackgroundVenthyr",
 		width = 256,
 		height = 256
 	},
@@ -1062,6 +1148,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CastleNathria",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-CataEventFlamelash",
 		width = 256,
 		height = 256
@@ -1095,6 +1185,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-DarkheartThicket",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DarkmaulCitadel",
 		width = 256,
 		height = 256
 	}, {
@@ -1163,6 +1257,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Halloween",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-HallsofAtonement",
 		width = 256,
 		height = 256
 	}, {
@@ -1242,11 +1340,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-MistsOfTirnaScithe",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MogushanPalace",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-MogushanVaults",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-NecroticWake",
 		width = 256,
 		height = 256
 	}, {
@@ -1298,11 +1404,19 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Plaguefall",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ReturntoKarazhan",
 		width = 256,
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-RubySanctum",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SanguineDepths",
 		width = 256,
 		height = 256
 	}, {
@@ -1319,6 +1433,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ShadoPanBG",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Shadowlands",
 		width = 256,
 		height = 256
 	}, {
@@ -1354,6 +1472,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SpiresOfAscension",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-StormstoutBrewery",
 		width = 256,
 		height = 256
@@ -1379,6 +1501,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheArcway",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheaterOfPain",
 		width = 256,
 		height = 256
 	}, {
@@ -1434,6 +1560,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheOtherSide",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheUnderrot",
 		width = 256,
 		height = 256
@@ -1483,6 +1613,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TombOfSargerasWailingHalls",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Torghast",
 		width = 256,
 		height = 256
 	}, {
@@ -1678,6 +1812,26 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CastleNathria",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CastleNathriaWing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CastleNathriaWing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CastleNathriaWing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-CastleNathriaWing4Q",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Cataclysm",
 		width = 256,
 		height = 128
@@ -1710,7 +1864,15 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DarkmaulCitadel",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Draenor",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmberCourt",
 		width = 256,
 		height = 128
 	}, {
@@ -1771,6 +1933,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HALLOWEEN",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HallsOfAtonement",
 		width = 256,
 		height = 128
 	}, {
@@ -1902,11 +2068,19 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MistsOfTirnaScithe",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-MogushanPalace",
 		width = 256,
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NAXXRAMAS",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NecroticWake",
 		width = 256,
 		height = 128
 	}, {
@@ -1942,6 +2116,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Plaguefall",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-PITOFSARON",
 		width = 256,
 		height = 128
@@ -1970,6 +2148,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanguineDepths",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SCARLETMONASTERY",
 		width = 256,
 		height = 128
@@ -1979,6 +2161,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SHADOWFANGKEEP",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SpiresOfAscension",
 		width = 256,
 		height = 128
 	}, {
@@ -2082,6 +2268,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheaterOfPain",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheDreadApproach",
 		width = 256,
 		height = 128
@@ -2119,6 +2309,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheNightholdRoyalAthenaeum",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheOtherSide",
 		width = 256,
 		height = 128
 	}, {
@@ -2183,6 +2377,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TombOfSargerasWailingHalls",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Torghast",
 		width = 256,
 		height = 128
 	}, {
@@ -2649,6 +2847,146 @@ local IMAGES = {
 	{
 		url = "Interface\\Pictures\\artifactbook-warrior-warswordsofthevalarjar",
 		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-capheus",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-hermestes",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-kalisthene",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-polemarchadrestes",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-sika",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-soulguidedaelia",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-kyrian-head-xandria",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-drakzulifebane",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-grandmastervole",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-khaliiq",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-niallkugal",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-sergeantkrashj",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-tabulatorkillham",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-necrolord-head-yondarehex",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-blodwyn",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-eldershaperanwyn",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-featherlight",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-flutterby",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-lordherne",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-sesselie",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-nightfae-head-yanlar",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-devahia",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-princerenathal",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-rendle",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-tacticiansakaa",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-tenaval",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-theaccuser",
+		width = 256,
+		height = 256
+	},
+	{
+		url = "Interface\\Pictures\\callings-venthyr-head-thecurator",
+		width = 256,
 		height = 256
 	},
 	{
@@ -3907,6 +4245,11 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-ChromieScenario-Chromie-Small",
+		width = 256,
+		height = 128,
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-ChromieScenario-Drake",
 		width = 256,
 		height = 128,
@@ -3982,6 +4325,146 @@ local IMAGES = {
 		height = 128,
 	},
 	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-decorations-mortalreminders",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-decorations-mysterymirrors",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-decorations-traditional",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-entertainment-lostchaliceband",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-entertainment-soulrituals",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-entertainment-wildanimals",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-alexandrosmograine",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-baronessvashj",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-choofa",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-cryptkeeperkassir",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-dromanaliothe",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-grandmastervole",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-huntcaptainkorayn",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-kleia",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-ladymoonberry",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-mikanikos",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-plaguedevisermarileth",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-polemarchadrestes",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-rendle",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-sika",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-stonehead",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-guest-thecountess",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-refreshments-divinedesserts",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-refreshments-mushroomsurprise",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-refreshments-tubbinsteaparty",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-security-maldraxxusarmy",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-security-stonebornarmy",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-embercourt-security-venthyrvolunteers",
+		width = 256,
+		height = 128
+	},
+	{
 		url = "Interface\\QuestionFrame\\answer-mechagon-chargingstation-large",
 		width = 512,
 		height = 256
@@ -4005,6 +4488,56 @@ local IMAGES = {
 		url = "Interface\\QuestionFrame\\answer-mechagon-reclamationdevice-large",
 		width = 512,
 		height = 256
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-ashghoul",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-athanos",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-devourer",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-drustgronn",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-echtra",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-kalisthene",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-lich",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-oozecouncil",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-tirnenn",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-pathofascension-vorkaiduo",
+		width = 256,
+		height = 128
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-warboard-bc-BladesEdgeMountains",

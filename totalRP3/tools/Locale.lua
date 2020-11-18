@@ -690,6 +690,8 @@ Possible status:
 	PR_PROFILEMANAGER_SWITCH = "Select profile",
 	PR_PROFILEMANAGER_RENAME = "Rename profile",
 	PR_PROFILEMANAGER_CURRENT = "Current profile",
+	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
+	PR_PROFILEMANAGER_EMPTY = "No profiles found",
 	PR_CO_PROFILEMANAGER_TITLE = "Companions profiles",
 	PR_CO_PROFILE_HELP = [[A profile contains all information about a |cffffff00"pet"|r as a |cff00ff00roleplay character|r.
 
@@ -746,6 +748,8 @@ Use the |cffffff00Import profile|r option to paste data from a previous export i
 	PR_SLASH_OPEN_EXAMPLE = "|cffffff00Command usage:|r |cffcccccc/trp3 open|r |cffffff00to open your target's profile or |cffcccccc/trp3 open CharacterName-RealmName|r |cffffff00to open that character's profile.|r",
 	PR_SLASH_OPEN_WAITING = "|cffffff00Requesting profile, please wait...|r",
 	PR_SLASH_OPEN_ABORTING = "|cffffff00Aborted profile request.|r",
+	PR_DEFAULT_PROFILE_NAME = "Default profile",
+	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- DASHBOARD
@@ -938,8 +942,8 @@ Total RP is not responsible for links leading to harmful content.]],
 	-- Bindings
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	BINDING_NAME_TRP3_TOGGLE = "Toogle main frame";
-	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toogle toolbar";
+	BINDING_NAME_TRP3_TOGGLE = "Toggle main frame";
+	BINDING_NAME_TRP3_TOOLBAR_TOGGLE = "Toggle toolbar";
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- About TRP3
@@ -1030,10 +1034,10 @@ The content of their profiles will be hidden again.]],
 	-- DICE ROLL
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
+	DICE_ROLL = "%s Rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL = "%s Total of |cff00ff00%s|r for the roll.",
 	DICE_HELP = "A dice roll or rolls separated by spaces, example: 1d6, 2d12 3d20 ...",
-	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r and got |cff00ff00%s|r.",
+	DICE_ROLL_T = "%s %s rolled |cffff9900%sx d%s|r|cffcc6600%s|r and got |cff00ff00%s|r.",
 	DICE_TOTAL_T = "%s %s got a total of |cff00ff00%s|r for the roll.",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1399,16 +1403,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	PR_PROFILEMANAGER_SEARCH_PROFILE = "Search profile",
-	PR_PROFILEMANAGER_EMPTY = "No profiles found",
-	PR_DEFAULT_PROFILE_NAME = "Default profile",
-	PR_DEFAULT_PROFILE_WARNING = "Create a new profile\nor link to an existing one in Profiles\nto edit your character's information.",
 	WHATS_NEW_24_1 =  [[# Changelog version 2.0
 
 ## Added
@@ -1430,6 +1424,33 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Removed a personality trait preset.
 - Improved communication protocol to reduce profile transfer size.
 - Various compatibility changes related to 9.0 API modifications.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
+	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
+	WHATS_NEW_24_2 =  [[# Changelog version 2.1
+
+## Added
+
+- Added 113 images, 1437 icons and 613 musics from patch 9.0.
+- Added modifier to the dice roll output text.
+- Added keybinding options for opening the target profile and toggling RP status.
+
+## Fixed
+
+- Fixed an issue with the default tooltip appearing sometimes despite "Hide original tooltip" setting being checked.
+- Fixed an issue with the TRP3 tooltip being offset while the default tooltip is hidden.
+- Fixed an issue with the TRP3 tooltip briefly overlapping the default tooltip if quickly hovering from a player to a spell/item.
+- Fixed an issue when trying to open the Prat modules window while TRP3 is running.
+- Fixed a display issue with the NPC speech frame background.
+- Fixed alphabetical sorting when hovering a cluster of players in the map scan.
+- Potential fix for the guide channel being swapped with the xtensionxtooltip2 channel.
 
 ]],
 };

@@ -46,10 +46,13 @@
 	<!-- LibMSP: Newer version of the LibMSP, from https://github.com/wow-rp-addons/LibMSP -->
 	<Include file="LibMSP\LibMSP.xml" />
 
-	<!-- LibDeflate https://github.com/SafeteeWoW/LibDeflate -->
+	<!-- LibDeflate: https://github.com/SafeteeWoW/LibDeflate -->
 	<Include file="LibDeflate\lib.xml" />
 
-	<!-- LibRPMedia https://github.com/wow-rp-addons/LibRPMedia -->
+	<!-- LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia -->
 	<Include file="LibRPMedia\LibRPMedia-1.0.xml" />
+
+	<!-- LibChatAnims: https://www.wowace.com/projects/libchatanims -->
+	<Include file="LibChatAnims\LibChatAnims.xml" />
 
 </Ui>
