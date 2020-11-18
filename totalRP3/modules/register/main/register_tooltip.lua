@@ -524,10 +524,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local lineRight;
 		local race = UnitRace(targetType);
 		local class = localizedClass;
-		if info.characteristics and info.characteristics.RA and info.characteristics.RA:len() > 0 then
+		if info.characteristics and info.characteristics.RA and info.characteristics.RA ~= "" then
 			race = info.characteristics.RA;
 		end
-		if info.characteristics and info.characteristics.CL and info.characteristics.CL:len() > 0 then
+		if info.characteristics and info.characteristics.CL and info.characteristics.CL ~= "" then
 			class = info.characteristics.CL;
 		end
 		if getConfigValue(CONFIG_CROP_TEXT) then
@@ -573,7 +573,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- CURRENTLY
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showCurrently() and info.character and (info.character.CU or ""):len() > 0 then
+	if showCurrently() and info.character and info.character.CU and info.character.CU ~= "" then
 		tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CU);
@@ -587,7 +587,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	-- OOC More information
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	if showMoreInformation() and info.character and (info.character.CO or ""):len() > 0 then
+	if showMoreInformation() and info.character and info.character.CO and info.character.CO ~= "" then
 		tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
 
 		local text = strtrim(info.character.CO);
@@ -675,8 +675,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end
-		if notifText:len() > 0 or clientText:len() > 0 then
-			if notifText:len() == 0 then
+		if (notifText and notifText ~= "") or (clientText and clientText ~= "") then
+			if notifText == "" then
 				notifText = " "; -- Prevent bad right line height
 			end
 			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
@@ -798,7 +798,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		if info.TI then
 			fullTitle = strconcat("< ", info.TI, " |r>");
 		end
-		if fullTitle:len() > 0 then
+		if fullTitle and fullTitle ~= "" then
 
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
@@ -891,7 +891,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		if ownerID ~= Globals.player_id and info.read == false then
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
-		if notifText:len() > 0 then
+		if notifText and notifText ~= "" then
 			tooltipBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
 		end
 	end
@@ -971,7 +971,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		if info.TI then
 			fullTitle = strconcat("< ", info.TI, " |r>");
 		end
-		if fullTitle:len() > 0 then
+		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
@@ -1001,7 +1001,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		if ownerID ~= Globals.player_id and info.read == false then
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
-		if notifText:len() > 0 then
+		if notifText and notifText ~= "" then
 			tooltipCompanionBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
 		end
 	end
