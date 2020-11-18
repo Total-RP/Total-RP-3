@@ -1160,7 +1160,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		end
 	end);
 	hooksecurefunc(GameTooltip, "SetUnit", function()
-		if GameTooltip:GetUnit() then
+		if select(2, GameTooltip:GetUnit()) then
 			local _, unitID = GameTooltip:GetUnit();
 			local targetID, targetMode = getUnitID(unitID);
 			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, unitID);
