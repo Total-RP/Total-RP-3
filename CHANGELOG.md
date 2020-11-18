@@ -1,3 +1,11 @@
+# Changelog version 2.1.1
+
+## Fixed
+
+- Fixed the TRP3 tooltip being anchored in the default position when the original tooltip is hidden. It will now be anchored in the same place as the original one.
+- Fixed an issue when mousing over battle pets.
+- Fixed an occasional issue when showing a tooltip with no full title.
+
 # Changelog version 2.1
 
 ## Added
