@@ -1058,7 +1058,8 @@ local function show(targetType, targetID, targetMode)
 					placeTooltipOnCursor(ui_CharacterTT);
 				else
 					if getAnchoredFrame() == GameTooltip and getConfigValue(CONFIG_CHARACT_HIDE_ORIGINAL) then
-						GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
+						ui_CharacterTT:SetOwner(UIParent, "ANCHOR_NONE");
+						ui_CharacterTT:SetPoint(GameTooltip:GetPoint(1));
 					else
 						ui_CharacterTT:SetOwner(getAnchoredFrame(), getAnchoredPosition());
 					end
