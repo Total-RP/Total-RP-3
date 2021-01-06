@@ -45,7 +45,7 @@ local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- WoW imports
 local time, type, pairs, tonumber = GetTime, type, pairs, tonumber;
@@ -427,9 +427,6 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 TRP3_API.register.HAS_NOT_YET_RESPONDED = LAST_QUERY_STAT;
 
 function TRP3_API.register.inits.dataExchangeInit()
@@ -445,9 +442,9 @@ function TRP3_API.register.inits.dataExchangeInit()
 
 	-- Listen to the mouse over event
 	TRP3_API.events.listenToEvent(TRP3_API.events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
-		if targetMode == TYPE_CHARACTER and targetID then
+		if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID then
 			onMouseOverCharacter(targetID);
-		elseif (targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and targetID then
+		elseif (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and targetID then
 			onMouseOverCompanion(targetID);
 		end
 	end);

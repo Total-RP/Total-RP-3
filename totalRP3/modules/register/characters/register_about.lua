@@ -885,7 +885,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	if TRP3_API.target then
 		TRP3_API.target.registerButton({
 			id = "aa_player_b_music",
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			configText = loc.TF_PLAY_THEME,
 			condition = function(_, unitID)
 				return getUnitIDTheme(unitID) ~= nil;

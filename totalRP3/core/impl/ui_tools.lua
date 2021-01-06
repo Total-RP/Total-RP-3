@@ -46,6 +46,7 @@ local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
 local is_classic = globals.is_classic;
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
@@ -488,32 +489,30 @@ local DUMMY_TOOLTIP = CreateFrame("GameTooltip", "TRP3_DUMMY_TOOLTIP", nil, "Gam
 DUMMY_TOOLTIP:SetOwner( WorldFrame, "ANCHOR_NONE" );
 
 local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.Locale.findPetOwner, TRP3_API.Locale.findBattlePetOwner, UnitName;
-TRP3_API.ui.misc.TYPE_CHARACTER = "CHARACTER";
-TRP3_API.ui.misc.TYPE_PET = "PET";
-TRP3_API.ui.misc.TYPE_BATTLE_PET = "BATTLE_PET";
-TRP3_API.ui.misc.TYPE_MOUNT = "MOUNT";
-TRP3_API.ui.misc.TYPE_NPC = "NPC";
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
-local TYPE_NPC = TRP3_API.ui.misc.TYPE_NPC;
+
+-- TODO (10.0): Remove the following backwards compatibility aliases.
+TRP3_API.ui.misc.TYPE_CHARACTER = TRP3_Enums.UNIT_TYPE.CHARACTER;
+TRP3_API.ui.misc.TYPE_PET = TRP3_Enums.UNIT_TYPE.PET;
+TRP3_API.ui.misc.TYPE_BATTLE_PET = TRP3_Enums.UNIT_TYPE.BATTLE_PET;
+TRP3_API.ui.misc.TYPE_MOUNT = TRP3_Enums.UNIT_TYPE.MOUNT;
+TRP3_API.ui.misc.TYPE_NPC = TRP3_Enums.UNIT_TYPE.NPC;
 
 function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
-	return unitType == TYPE_BATTLE_PET or unitType == TYPE_PET;
+	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
 ---
 -- Returns target type as first return value and boolean isMine as second.
 function TRP3_API.ui.misc.getTargetType(unitType)
 	if UnitIsPlayer(unitType) then
-		return TYPE_CHARACTER, getUnitID(unitType) == globals.player_id;
+		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
 	elseif UnitIsBattlePetCompanion(unitType) then
-		return TYPE_BATTLE_PET, not UnitIsOtherPlayersBattlePet(unitType);
+		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, not UnitIsOtherPlayersBattlePet(unitType);
 	elseif UnitIsUnit(unitType, "pet") or UnitIsOtherPlayersPet(unitType) then
-		return TYPE_PET, UnitIsUnit(unitType, "pet");
+		return TRP3_Enums.TYPE_PET, UnitIsUnit(unitType, "pet");
 	end
 	if TRP3_API.utils.str.getUnitNPCID(unitType) then
-		return TYPE_NPC, false;
+		return TRP3_Enums.UNIT_TYPE.NPC, false;
 	end
 end
 
@@ -527,9 +526,9 @@ end
 
 local function getCompanionOwner(unitType, targetType)
 	DUMMY_TOOLTIP:SetUnit(unitType);
-	if targetType == TYPE_PET then
+	if targetType == TRP3_Enums.UNIT_TYPE.PET then
 		return findPetOwner(getDummyGameTooltipTexts());
-	elseif targetType == TYPE_BATTLE_PET then
+	elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		return findBattlePetOwner(getDummyGameTooltipTexts());
 	end
 end
