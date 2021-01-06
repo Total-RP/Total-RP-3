@@ -246,6 +246,7 @@ stds.wow = {
 		"GetPlayerInfoByGUID",
 		"GetRealmName",
 		"GetSpellInfo",
+		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTime",
 		"GetZonePVPInfo",
