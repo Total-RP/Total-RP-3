@@ -41,7 +41,6 @@ local MouseIsOver, CreateFrame, ToggleDropDownMenu = MouseIsOver, CreateFrame, M
 local UIDropDownMenu_Initialize, UIDropDownMenu_CreateInfo, UIDropDownMenu_AddButton = MSA_DropDownMenu_Initialize, MSA_DropDownMenu_CreateInfo, MSA_DropDownMenu_AddButton;
 local TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2 = TRP3_MainTooltip, TRP3_MainTooltipTextRight1, TRP3_MainTooltipTextLeft1, TRP3_MainTooltipTextLeft2;
 local shiftDown = IsShiftKeyDown;
-local UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet = UnitIsBattlePetCompanion, UnitIsUnit, UnitIsOtherPlayersPet, UnitIsOtherPlayersBattlePet;
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
@@ -52,10 +51,8 @@ local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
 
 -- Classic proofing
-if TRP3_API.globals.is_classic then
-	UnitIsBattlePetCompanion = function() return false end;
-	UnitIsOtherPlayersBattlePet = function() return false end;
-end
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion or function() return false end;
+local UnitIsOtherPlayersBattlePet = UnitIsOtherPlayersBattlePet or function() return false end;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
