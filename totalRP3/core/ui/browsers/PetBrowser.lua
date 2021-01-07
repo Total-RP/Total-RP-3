@@ -152,7 +152,8 @@ function TRP3_PetBrowserMixin:OnLoad()
 	-- Browser state.
 	self.pageNumber   = 1;
 	self.selectedSlot = nil;
-	self.tooltipFrame = nil;
+	self.tooltipSlot  = nil;
+	self.tooltipFrame = self.tooltipFrame or TRP3_MainTooltip;
 
 	-- Dynamic UI styling.
 	UIPanelCloseButton_SetBorderAtlas(self.CloseButton, "UI-Frame-GenericMetal-ExitButtonBorder", -1, 1);
@@ -164,9 +165,10 @@ function TRP3_PetBrowserMixin:OnLoad()
 	local GRID_PADDING_X = 4;
 	local GRID_PADDING_Y = 4;
 
-	self.iconPool   = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
-	self.iconAnchor = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
-	self.iconLayout = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
+	self.iconPool    = CreateFramePool("CheckButton", self, "TRP3_PetBrowserIconButton");
+	self.iconAnchor  = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
+	self.iconLayout  = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
+	self.iconButtons = {};
 end
 
 function TRP3_PetBrowserMixin:SetAcceptCallback(acceptCallback)
@@ -243,17 +245,22 @@ function TRP3_PetBrowserMixin:SetSelectedSlot(slotIndex)
 	end
 end
 
-function TRP3_PetBrowserMixin:GetTooltipFrame()
-	return self.tooltipFrame;
+function TRP3_PetBrowserMixin:GetTooltipSlot()
+	return self.tooltipSlot;
 end
 
-function TRP3_PetBrowserMixin:SetTooltipFrame(tooltipFrame)
-	if self.tooltipFrame == tooltipFrame then
+function TRP3_PetBrowserMixin:SetTooltipSlot(slotIndex)
+	slotIndex = IsValidPetSlot(slotIndex) and slotIndex or nil;
+
+	if self.tooltipSlot == slotIndex then
 		return;
 	end
 
-	self.tooltipFrame = tooltipFrame;
-	self:UpdateTooltipVisualization();
+	self.tooltipSlot = slotIndex;
+
+	if self:IsShown() then
+		self:UpdateTooltipVisualization();
+	end
 end
 
 function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
@@ -281,6 +288,18 @@ function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 	return NextFilledPetSlot(slotIndex);
 end
 
+function TRP3_PetBrowserMixin:GetIconButtonBySlot(slotIndex)
+	for i = 1, #self.iconButtons do
+		local iconButton = self.iconButtons[i];
+
+		if iconButton:GetID() == slotIndex then
+			return iconButton;
+		end
+	end
+
+	return nil;
+end
+
 function TRP3_PetBrowserMixin:UpdateVisualization()
 	self:UpdatePagerVisualization();
 	self:UpdateModelVisualization();
@@ -291,6 +310,7 @@ end
 
 function TRP3_PetBrowserMixin:UpdatePagerVisualization()
 	self.iconPool:ReleaseAll();
+	self.iconButtons = {};
 
 	local iconsPerPage = self:GetNumIconsPerPage();
 	local pageIndex    = self:GetCurrentPage();
@@ -305,19 +325,17 @@ function TRP3_PetBrowserMixin:UpdatePagerVisualization()
 	-- them in with pets from top-left to bottom-right. Empty spaces will
 	-- just have a placeholder that does nothing.
 
-	local iconButtons = {};
-
 	for _ = 1, iconsPerPage do
 		local iconButton = self.iconPool:Acquire();
 		self:UpdateIconButtonVisualization(iconButton, GetPetInfoBySlot(slotIndex));
-		table.insert(iconButtons, iconButton);
+		table.insert(self.iconButtons, iconButton);
 
 		-- Only advance to the next slot if the current one was valid,
 		-- otherwise keep it nil or we'll end up wrapping the iterator.
 		slotIndex = slotIndex and NextFilledPetSlot(slotIndex) or nil;
 	end
 
-	AnchorUtil.GridLayout(iconButtons, self.iconAnchor, self.iconLayout);
+	AnchorUtil.GridLayout(self.iconButtons, self.iconAnchor, self.iconLayout);
 end
 
 function TRP3_PetBrowserMixin:UpdateIconButtonVisualization(iconButton, petInfo)
@@ -358,30 +376,27 @@ function TRP3_PetBrowserMixin:UpdateNameVisualization()
 end
 
 function TRP3_PetBrowserMixin:UpdateTooltipVisualization()
-	local tooltipFrame = self:GetTooltipFrame();
-	if not tooltipFrame then
-		return;
-	end
-
-	local slotIndex = tooltipFrame and tooltipFrame:GetOwner():GetID() or nil;
-	local petInfo   = GetPetInfoBySlot(slotIndex);
-
-	tooltipFrame:ClearLines();
+	local slotIndex  = self:GetTooltipSlot();
+	local iconButton = self:GetIconButtonBySlot(slotIndex);
+	local petInfo    = GetPetInfoBySlot(slotIndex);
 
 	if petInfo then
 		local titleText = petInfo.name;
 		local levelText = format(UNIT_TYPE_LEVEL_TEMPLATE, petInfo.level, petInfo.family);
 
-		GameTooltip_SetTitle(tooltipFrame, titleText, false);
-		GameTooltip_AddNormalLine(tooltipFrame, levelText);
+		self.tooltipFrame:SetOwner(iconButton, "ANCHOR_RIGHT");
+		self.tooltipFrame:ClearLines();
+
+		GameTooltip_SetTitle(self.tooltipFrame, titleText, false);
+		GameTooltip_AddNormalLine(self.tooltipFrame, levelText);
 
 		-- Add a warning for pets that are bound to existing profiles.
 
 		if petInfo.profileID then
 			local boundText = format(L.UI_PET_BROWSER_BOUND_WARNING, petInfo.profileName);
 
-			GameTooltip_AddBlankLineToTooltip(tooltipFrame);
-			GameTooltip_AddNormalLine(tooltipFrame, boundText, true);
+			GameTooltip_AddBlankLineToTooltip(self.tooltipFrame);
+			GameTooltip_AddNormalLine(self.tooltipFrame, boundText, true);
 		end
 
 		-- Add a warning for pets that share the same name as their family.
@@ -392,13 +407,13 @@ function TRP3_PetBrowserMixin:UpdateTooltipVisualization()
 		-- default to the family name, but it's better than nothing.
 
 		if petInfo.name == petInfo.family then
-			GameTooltip_AddBlankLineToTooltip(tooltipFrame);
-			GameTooltip_AddNormalLine(tooltipFrame, L.UI_PET_BROWSER_NAME_WARNING, true);
+			GameTooltip_AddBlankLineToTooltip(self.tooltipFrame);
+			GameTooltip_AddNormalLine(self.tooltipFrame, L.UI_PET_BROWSER_NAME_WARNING, true);
 		end
 
-		tooltipFrame:Show();
+		self.tooltipFrame:Show();
 	else
-		tooltipFrame:Hide();
+		self.tooltipFrame:Hide();
 	end
 end
 
@@ -518,20 +533,10 @@ function TRP3_PetBrowserMixin:OnIconButtonClicked(iconButton, slotIndex)
 	self:SetSelectedSlot(slotIndex);
 end
 
-function TRP3_PetBrowserMixin:OnIconButtonEnter(iconButton)
-	local tooltipFrame = GameTooltip;
-
-	tooltipFrame:SetOwner(iconButton, "ANCHOR_RIGHT");
-	self:SetTooltipFrame(tooltipFrame);
+function TRP3_PetBrowserMixin:OnIconButtonEnter(_, slotIndex)
+	self:SetTooltipSlot(slotIndex);
 end
 
 function TRP3_PetBrowserMixin:OnIconButtonLeave()
-	local tooltipFrame = self:GetTooltipFrame();
-
-	if tooltipFrame then
-		tooltipFrame:ClearLines();
-		tooltipFrame:Hide();
-	end
-
-	self:SetTooltipFrame(nil);
+	self:SetTooltipSlot(nil);
 end
