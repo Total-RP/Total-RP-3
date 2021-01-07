@@ -588,18 +588,24 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 end
 
 function TRP3_API.popup.showPetBrowser(onSelectCallback, onCancelCallback)
-	local onClosedCallback = function()
-		hidePopups();
-	end
-
 	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
 	if not frame then
 		return;
 	end
 
-	frame:SetAcceptCallback(onSelectCallback);
-	frame:SetCancelCallback(onCancelCallback);
-	frame:SetClosedCallback(onClosedCallback);
+	onSelectCallback = onSelectCallback or nop;
+	onCancelCallback = onCancelCallback or nop;
+
+	frame:SetDialogCallback(function(result, ...)
+		hidePopups();
+
+		if result == frame.DialogResult.Accept then
+			onSelectCallback(...);
+		else
+			onCancelCallback();
+		end
+	end);
+
 	showPopup(frame);
 end
 

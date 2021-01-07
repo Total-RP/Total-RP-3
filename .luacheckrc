@@ -283,6 +283,7 @@ stds.wow = {
 		"JoinChannelByName",
 		"Mixin",
 		"MouseIsOver",
+		"nop",
 		"OpenWorldMap",
 		"PetCanBeRenamed",
 		"PlayMusic",

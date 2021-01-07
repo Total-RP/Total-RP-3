@@ -148,6 +148,11 @@ end
 
 TRP3_PetBrowserMixin = {};
 
+TRP3_PetBrowserMixin.DialogResult = tInvert({
+	"Accept",
+	"Cancel",
+});
+
 function TRP3_PetBrowserMixin:OnLoad()
 	-- Browser state.
 	self.pageNumber   = 1;
@@ -169,18 +174,6 @@ function TRP3_PetBrowserMixin:OnLoad()
 	self.iconAnchor  = AnchorUtil.CreateAnchor("TOPLEFT", self.IconPager, "TOPLEFT", 57, -12);
 	self.iconLayout  = AnchorUtil.CreateGridLayout(GRID_DIRECTION, GRID_STRIDE, GRID_PADDING_X, GRID_PADDING_Y);
 	self.iconButtons = {};
-end
-
-function TRP3_PetBrowserMixin:SetAcceptCallback(acceptCallback)
-	self.acceptCallback = acceptCallback;
-end
-
-function TRP3_PetBrowserMixin:SetCancelCallback(cancelCallback)
-	self.cancelCallback = cancelCallback;
-end
-
-function TRP3_PetBrowserMixin:SetClosedCallback(closedCallback)
-	self.closedCallback = closedCallback;
 end
 
 function TRP3_PetBrowserMixin:GetIconGridSize()
@@ -260,6 +253,32 @@ function TRP3_PetBrowserMixin:SetTooltipSlot(slotIndex)
 
 	if self:IsShown() then
 		self:UpdateTooltipVisualization();
+	end
+end
+
+function TRP3_PetBrowserMixin:Accept()
+	local slotIndex = self:GetSelectedSlot();
+	local petInfo   = GetPetInfoBySlot(slotIndex);
+
+	self:TriggerDialogCallback(self.DialogResult.Accept, petInfo);
+	self:Hide();
+end
+
+function TRP3_PetBrowserMixin:Cancel()
+	self:TriggerDialogCallback(self.DialogResult.Cancel);
+	self:Hide();
+end
+
+function TRP3_PetBrowserMixin:SetDialogCallback(dialogCallback)
+	self.dialogCallback = dialogCallback;
+end
+
+function TRP3_PetBrowserMixin:TriggerDialogCallback(result, ...)
+	local dialogCallback = self.dialogCallback;
+	self.dialogCallback = nil;
+
+	if dialogCallback then
+		xpcall(dialogCallback, CallErrorHandler, result, ...);
 	end
 end
 
@@ -466,15 +485,9 @@ function TRP3_PetBrowserMixin:OnShow()
 end
 
 function TRP3_PetBrowserMixin:OnHide()
-	if self.closedCallback then
-		self.closedCallback();
-	end
-
 	PlaySound(SOUNDKIT.IG_ABILITY_CLOSE);
 
-	self:SetAcceptCallback(nil);
-	self:SetCancelCallback(nil);
-	self:SetClosedCallback(nil);
+	self:Cancel();
 	self:SetCurrentPage(1);
 	self:SetSelectedSlot(nil);
 	self:UnregisterAllEvents();
@@ -492,25 +505,6 @@ function TRP3_PetBrowserMixin:OnMouseUp()
 
 	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF);
 	self:SetSelectedSlot(nil);
-end
-
-function TRP3_PetBrowserMixin:OnCloseButtonClicked()
-	if self.cancelCallback then
-		self.cancelCallback();
-	end
-
-	self:Hide();
-end
-
-function TRP3_PetBrowserMixin:OnAcceptButtonClicked()
-	local slotIndex = self:GetSelectedSlot();
-	local petInfo   = GetPetInfoBySlot(slotIndex);
-
-	if self.acceptCallback then
-		self.acceptCallback(petInfo);
-	end
-
-	self:Hide();
 end
 
 function TRP3_PetBrowserMixin:OnPrevPageButtonClicked()
