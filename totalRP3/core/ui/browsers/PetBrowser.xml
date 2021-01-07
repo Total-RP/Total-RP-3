@@ -70,8 +70,8 @@
 		</CheckedTexture>
 		<Scripts>
 			<OnClick>CallMethodOnNearestAncestor(self, "OnIconButtonClicked", self, self:GetID());</OnClick>
-			<OnEnter>CallMethodOnNearestAncestor(self, "OnIconButtonEnter", self, self:GetID());</OnEnter>
-			<OnLeave>CallMethodOnNearestAncestor(self, "OnIconButtonLeave", self, self:GetID());</OnLeave>
+			<OnEnter>CallMethodOnNearestAncestor(self, "SetTooltipSlot", self:GetID());</OnEnter>
+			<OnLeave>CallMethodOnNearestAncestor(self, "SetTooltipSlot", nil);</OnLeave>
 		</Scripts>
 	</CheckButton>
 

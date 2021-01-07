@@ -582,11 +582,3 @@ function TRP3_PetBrowserMixin:OnIconButtonClicked(iconButton, slotIndex)
 	PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 	self:SetSelectedSlot(slotIndex);
 end
-
-function TRP3_PetBrowserMixin:OnIconButtonEnter(_, slotIndex)
-	self:SetTooltipSlot(slotIndex);
-end
-
-function TRP3_PetBrowserMixin:OnIconButtonLeave()
-	self:SetTooltipSlot(nil);
-end
