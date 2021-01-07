@@ -61,7 +61,7 @@
 		</Scripts>
 	</CheckButton>
 
-	<Frame name="TRP3_PetBrowserFrame" parent="TRP3_PopupsFrame" mixin="TRP3_PetBrowserMixin" enableMouse="true" toplevel="true" hidden="true">
+	<Frame name="TRP3_PetBrowserFrameTemplate" virtual="true" mixin="TRP3_PetBrowserMixin" enableMouse="true" toplevel="true" hidden="true">
 		<KeyValues>
 			<KeyValue key="layoutType" value="Dialog" type="string"/>
 		</KeyValues>

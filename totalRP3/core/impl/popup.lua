@@ -592,10 +592,15 @@ function TRP3_API.popup.showPetBrowser(onSelectCallback, onCancelCallback)
 		hidePopups();
 	end
 
-	TRP3_PetBrowserFrame:SetAcceptCallback(onSelectCallback);
-	TRP3_PetBrowserFrame:SetCancelCallback(onCancelCallback);
-	TRP3_PetBrowserFrame:SetClosedCallback(onClosedCallback);
-	showPopup(TRP3_PetBrowserFrame);
+	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
+	if not frame then
+		return;
+	end
+
+	frame:SetAcceptCallback(onSelectCallback);
+	frame:SetCancelCallback(onCancelCallback);
+	frame:SetClosedCallback(onClosedCallback);
+	showPopup(frame);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1005,10 +1010,10 @@ local POPUP_STRUCTURE = {
 		frame = TRP3_CompanionBrowser,
 		showMethod = TRP3_API.popup.showCompanionBrowser,
 	},
-	[TRP3_API.popup.PETS] = {
-		frame = TRP3_PetBrowserFrame,
+	[TRP3_API.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
+		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
 		showMethod = TRP3_API.popup.showPetBrowser,
-	},
+	} or nil,
 }
 TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
 

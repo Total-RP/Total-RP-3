@@ -304,7 +304,7 @@ local function onBoundClicked(button)
 		}
 	});
 
-	if TRP3_PetBrowserFrame:CheckUsageConditions() then
+	if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
 		tinsert(values[1][2], 1, {loc.REG_COMPANION_BIND_TO_PET, 7});
 	end
 
