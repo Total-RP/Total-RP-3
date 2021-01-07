@@ -176,12 +176,12 @@
 				</Layers>
 			</PlayerModel>
 			<Button parentKey="AcceptButton" inherits="SharedButtonTemplate">
-				<Size x="175" y="28"/>
+				<Size x="120" y="23"/>
 				<Anchors>
-					<Anchor point="BOTTOM" y="16"/>
+					<Anchor point="BOTTOM" y="20"/>
 				</Anchors>
 				<Scripts>
-					<OnClick>CallMethodOnNearestAncestor(self, "OnAcceptButtonClicked");</OnClick>
+					<OnClick>CallMethodOnNearestAncestor(self, "Accept");</OnClick>
 				</Scripts>
 			</Button>
 			<Button parentKey="CloseButton" inherits="UIPanelCloseButtonNoScripts">
@@ -189,7 +189,7 @@
 					<Anchor point="TOPRIGHT" x="-8" y="-8"/>
 				</Anchors>
 				<Scripts>
-					<OnClick>CallMethodOnNearestAncestor(self, "OnCloseButtonClicked");</OnClick>
+					<OnClick>CallMethodOnNearestAncestor(self, "Cancel");</OnClick>
 				</Scripts>
 			</Button>
 		</Frames>

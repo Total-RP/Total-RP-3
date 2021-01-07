@@ -1455,9 +1455,9 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	------------------------------------------------------------------------------------------------
 
 	REG_COMPANION_BIND_TO_PET = "Pet",
-	UI_PET_BROWSER_ACCEPT = "Assign Profile",
+	UI_PET_BROWSER_ACCEPT = "Assign",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
-	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click \"Assign Profile\" to bind the profile to the companion.",
+	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
 	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a new profile to this pet will remove the current profile from it.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 };
