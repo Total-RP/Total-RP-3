@@ -168,6 +168,12 @@ stds.wow = {
 			},
 		},
 
+		C_LevelSquish = {
+			fields = {
+				"ConvertPlayerLevel",
+			},
+		},
+
 		C_Map = {
 			fields = {
 				"GetBestMapForUnit",
@@ -253,6 +259,7 @@ stds.wow = {
 		"GetInventorySlotInfo",
 		"GetLanguageByIndex",
 		"GetLocale",
+		"GetMaxLevelForLatestExpansion",
 		"GetMouseFocus",
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",

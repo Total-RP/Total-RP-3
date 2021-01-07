@@ -53,7 +53,7 @@ local function GetPetInfoBySlot(slotIndex)
 		return nil;
 	end
 
-	-- The information fetched by this function is a structed combination
+	-- The information fetched by this function is a structured combination
 	-- of the results of the stable master APIs and data on any associated
 	-- companion profile the pet has.
 
@@ -64,6 +64,16 @@ local function GetPetInfoBySlot(slotIndex)
 
 	local profileID   = TRP3_API.companions.player.getCompanionProfileID(name);
 	local profileData = GetPetCompanionProfile(name);
+
+	-- The level squish is only applied to pets after they're summoned for the
+	-- first time since the launch of patch 9.0; the stable master APIs will
+	-- return pre-squish levels until this occurs so we'll hack it for UI
+	-- purposes to automatically squish pet levels if they're greater than
+	-- the maximum attainable player level.
+
+	if level > GetMaxLevelForLatestExpansion() then
+		level = C_LevelSquish.ConvertPlayerLevel(level);
+	end
 
 	return {
 		slot        = slotIndex,
