@@ -172,7 +172,7 @@ local function uiBoundTargetProfile(profileID)
 end
 
 local function uiBindPetProfile(profileID)
-	TRP3_API.popup.showPetBrowser(function(petInfo)
+	TRP3_API.popup.showPetBrowser(profileID, function(petInfo)
 		ui_boundPlayerCompanion(petInfo.name, profileID, TRP3_Enums.UNIT_TYPE.PET);
 	end);
 end

@@ -18,6 +18,14 @@
 local _, TRP3_API = ...;
 local L = TRP3_API.loc;
 
+local function CallMethodIfShown(frame, methodName, ...)
+	if not frame:IsShown() then
+		return;
+	end
+
+	frame[methodName](frame, ...);
+end
+
 local function GetPetCompanionProfile(petName)
 	local profileID = TRP3_API.companions.player.getCompanionProfileID(petName);
 	if not profileID then
@@ -155,10 +163,11 @@ TRP3_PetBrowserMixin.DialogResult = tInvert({
 
 function TRP3_PetBrowserMixin:OnLoad()
 	-- Browser state.
-	self.pageNumber   = 1;
-	self.selectedSlot = nil;
-	self.tooltipSlot  = nil;
-	self.tooltipFrame = self.tooltipFrame or TRP3_MainTooltip;
+	self.dialogProfileID = nil;
+	self.pageNumber      = 1;
+	self.selectedSlot    = nil;
+	self.tooltipSlot     = nil;
+	self.tooltipFrame    = self.tooltipFrame or TRP3_MainTooltip;
 
 	-- Dynamic UI styling.
 	UIPanelCloseButton_SetBorderAtlas(self.CloseButton, "UI-Frame-GenericMetal-ExitButtonBorder", -1, 1);
@@ -203,9 +212,7 @@ function TRP3_PetBrowserMixin:SetCurrentPage(pageNumber)
 
 	self.pageNumber = pageNumber;
 
-	if self:IsShown() then
-		self:UpdatePagerVisualization();
-	end
+	CallMethodIfShown(self, "UpdatePagerVisualization");
 end
 
 function TRP3_PetBrowserMixin:AdvancePage(delta)
@@ -233,9 +240,7 @@ function TRP3_PetBrowserMixin:SetSelectedSlot(slotIndex)
 
 	self.selectedSlot = slotIndex;
 
-	if self:IsShown() then
-		self:UpdateVisualization();
-	end
+	CallMethodIfShown(self, "UpdateVisualization");
 end
 
 function TRP3_PetBrowserMixin:GetTooltipSlot()
@@ -251,9 +256,7 @@ function TRP3_PetBrowserMixin:SetTooltipSlot(slotIndex)
 
 	self.tooltipSlot = slotIndex;
 
-	if self:IsShown() then
-		self:UpdateTooltipVisualization();
-	end
+	CallMethodIfShown(self, "UpdateTooltipVisualization");
 end
 
 function TRP3_PetBrowserMixin:Accept()
@@ -267,6 +270,20 @@ end
 function TRP3_PetBrowserMixin:Cancel()
 	self:TriggerDialogCallback(self.DialogResult.Cancel);
 	self:Hide();
+end
+
+function TRP3_PetBrowserMixin:GetDialogProfileID()
+	return self.dialogProfileID;
+end
+
+function TRP3_PetBrowserMixin:SetDialogProfileID(dialogProfileID)
+	if self.dialogProfileID == dialogProfileID then
+		return;
+	end
+
+	self.dialogProfileID = dialogProfileID;
+
+	CallMethodIfShown(self, "UpdateVisualization");
 end
 
 function TRP3_PetBrowserMixin:SetDialogCallback(dialogCallback)
