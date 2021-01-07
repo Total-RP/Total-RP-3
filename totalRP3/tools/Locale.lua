@@ -1449,10 +1449,10 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-------------------------------------------------------------------------------------------------
---- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
---- THEN MOVE IT UP ONCE IMPORTED
-------------------------------------------------------------------------------------------------
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
 	UI_PET_BROWSER_ACCEPT = "Assign Profile",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
