@@ -587,6 +587,17 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	end
 end
 
+function TRP3_API.popup.showPetBrowser(onSelectCallback, onCancelCallback)
+	local onClosedCallback = function()
+		hidePopups();
+	end
+
+	TRP3_PetBrowserFrame:SetAcceptCallback(onSelectCallback);
+	TRP3_PetBrowserFrame:SetCancelCallback(onCancelCallback);
+	TRP3_PetBrowserFrame:SetClosedCallback(onClosedCallback);
+	showPopup(TRP3_PetBrowserFrame);
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Color browser
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -971,6 +982,7 @@ TRP3_API.popup.ICONS = "icons";
 TRP3_API.popup.COLORS = "colors";
 TRP3_API.popup.MUSICS = "musics";
 TRP3_API.popup.COMPANIONS = "companions";
+TRP3_API.popup.PETS = "pets";
 
 local POPUP_STRUCTURE = {
 	[TRP3_API.popup.IMAGES] = {
@@ -992,7 +1004,11 @@ local POPUP_STRUCTURE = {
 	[TRP3_API.popup.COMPANIONS] = {
 		frame = TRP3_CompanionBrowser,
 		showMethod = TRP3_API.popup.showCompanionBrowser,
-	}
+	},
+	[TRP3_API.popup.PETS] = {
+		frame = TRP3_PetBrowserFrame,
+		showMethod = TRP3_API.popup.showPetBrowser,
+	},
 }
 TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
 

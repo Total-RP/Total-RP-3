@@ -171,6 +171,12 @@ local function uiBoundTargetProfile(profileID)
 	TRP3_API.ui.tooltip.toast("|cffff0000" .. loc.REG_COMPANION_TARGET_NO, 4);
 end
 
+local function uiBindPetProfile(profileID)
+	TRP3_API.popup.showPetBrowser(function(petInfo)
+		ui_boundPlayerCompanion(petInfo.name, profileID, TRP3_Enums.UNIT_TYPE.PET);
+	end);
+end
+
 local unboundPlayerCompanion = TRP3_API.companions.player.unboundPlayerCompanion;
 local function uiUnboundTargetProfile(_, companionInfo)
 	local companionID, companionType = companionInfo:sub(1, companionInfo:find("|") - 1), companionInfo:sub(companionInfo:find("|") + 1);
@@ -278,6 +284,8 @@ local function onActionSelected(value, button)
 		uiBoundProfile(profileID, TRP3_Enums.UNIT_TYPE.MOUNT);
 	elseif value == 6 then
 		uiBoundTargetProfile(profileID);
+	elseif value == 7 then
+		uiBindPetProfile(profileID);
 	elseif value then
 		uiUnboundTargetProfile(profileID, value);
 	end
@@ -287,13 +295,19 @@ local function onBoundClicked(button)
 	local profileID = button:GetParent().profileID;
 	local profile = getCompanionProfiles()[profileID];
 	local values = {};
-	tinsert(values, {loc.REG_COMPANION_BOUND_TO,
+	tinsert(values, {
+		loc.REG_COMPANION_BOUND_TO,
 		{
 			{loc.PR_CO_BATTLE, 4},
 			{loc.PR_CO_MOUNT, 5},
 			{loc.REG_COMPANION_BOUND_TO_TARGET, 6},
 		}
 	});
+
+	if TRP3_PetBrowserFrame:CheckUsageConditions() then
+		tinsert(values[1][2], 1, {loc.REG_COMPANION_BIND_TO_PET, 7});
+	end
+
 	if profile.links and tsize(profile.links) > 0 then
 		local linksTab = {};
 		for companionID, companionType in pairs(profile.links) do

@@ -153,6 +153,14 @@ stds.wow = {
 
 		-- Global Functions
 
+		AnchorUtil = {
+			fields = {
+				"CreateAnchor",
+				"CreateGridLayout",
+				"GridLayout",
+			},
+		},
+
 		C_ChatInfo = {
 			fields = {
 				"RegisterAddonMessagePrefix",
@@ -218,12 +226,16 @@ stds.wow = {
 		"ChatFrame_AddMessageEventFilter",
 		"ChatFrame_OpenChat",
 		"ChatFrame_RemoveMessageEventFilter",
+		"Clamp",
 		"CreateColor",
 		"CreateFrame",
+		"CreateFramePool",
 		"CreateFromMixins",
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"FCF_GetCurrentChatFrame",
+		"GameTooltip_AddBlankLineToTooltip",
+		"GameTooltip_AddColoredLine",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
@@ -277,6 +289,7 @@ stds.wow = {
 		"SendChatMessage",
 		"SetCursor",
 		"SetCVar",
+		"SetPetStablePaperdoll",
 		"SetPortraitToTexture",
 		"ShowCloak",
 		"ShowHelm",
@@ -288,6 +301,7 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"SwapChatChannelByLocalID",
+		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
 		"UnitAura",
 		"UnitBattlePetLevel",
@@ -334,6 +348,7 @@ stds.wow = {
 		"GameFontNormalHuge3",
 		"GameFontNormalLarge",
 		"GameTooltip",
+		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
 		"TargetFrame",
 		"UIErrorsFrame",
@@ -377,10 +392,14 @@ stds.wow = {
 		"MAX_WOW_CHAT_CHANNELS",
 		"NO",
 		"NONE",
+		"NUM_PET_ACTIVE_SLOTS",
+		"NUM_PET_STABLE_PAGES",
+		"NUM_PET_STABLE_SLOTS",
 		"OKAY",
 		"PAIN",
 		"RAGE",
 		"RAID_CLASS_COLORS",
+		"RED_FONT_COLOR",
 		"RUNES",
 		"RUNIC_POWER",
 		"SAVE",
@@ -390,6 +409,7 @@ stds.wow = {
 		"TOOLTIP_DEFAULT_BACKGROUND_COLOR",
 		"TOOLTIP_DEFAULT_COLOR",
 		"TOOLTIP_UNIT_LEVEL_TYPE",
+		"UNIT_TYPE_LEVEL_TEMPLATE",
 		"UNITNAME_TITLE_CHARM",
 		"UNITNAME_TITLE_COMPANION",
 		"UNITNAME_TITLE_CREATION",
