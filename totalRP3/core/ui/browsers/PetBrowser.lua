@@ -411,6 +411,16 @@ function TRP3_PetBrowserMixin:UpdateIconButtonVisualization(iconButton, petInfo)
 	if petInfo then
 		iconButton:SetID(petInfo.slot);
 		iconButton.Icon:SetTexture(petInfo.icon);
+
+		-- For pets bound to a profile we'll make a few adjustments to make it
+		-- clearer without needing to look at the tooltip.
+
+		if petInfo.profileID then
+			iconButton.IconOverlay:SetAtlas([[LFG-lock]], true);
+			iconButton.IconOverlay:Show();
+		else
+			iconButton.IconOverlay:Hide();
+		end
 	else
 		iconButton:SetID(0);
 		iconButton.Icon:SetAtlas([[RecruitAFriend_RewardPane_IconBackground]]);

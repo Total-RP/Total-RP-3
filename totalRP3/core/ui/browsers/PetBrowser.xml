@@ -41,6 +41,13 @@
 					</MaskedTextures>
 				</MaskTexture>
 			</Layer>
+			<Layer level="OVERLAY">
+				<Texture parentKey="IconOverlay">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-2" y="2"/>
+					</Anchors>
+				</Texture>
+			</Layer>
 		</Layers>
 		<NormalTexture file="Interface\Buttons\UI-Quickslot2">
 			<Size x="60" y="60"/>
