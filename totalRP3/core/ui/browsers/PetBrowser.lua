@@ -26,6 +26,16 @@ local function CallMethodIfShown(frame, methodName, ...)
 	frame[methodName](frame, ...);
 end
 
+local function CountIterator(iter, ...)
+	local count = 0;
+
+	for _ in iter, ... do
+		count = count + 1;
+	end
+
+	return count;
+end
+
 local function GetPetCompanionProfile(petName)
 	local profileID = TRP3_API.companions.player.getCompanionProfileID(petName);
 	if not profileID then
@@ -92,18 +102,6 @@ local function GetPetInfoBySlot(slotIndex)
 		profileID   = profileID,
 		profileName = profileData and profileData.profileName or nil,
 	};
-end
-
-local function CountFilledPetSlots()
-	local count = 0;
-
-	for i = 1, GetNumPetSlots() do
-		if GetStablePetInfo(i) then
-			count = count + 1;
-		end
-	end
-
-	return count;
 end
 
 local function IsPetSlotFilled(slotIndex)
@@ -196,7 +194,8 @@ function TRP3_PetBrowserMixin:GetNumIconsPerPage()
 end
 
 function TRP3_PetBrowserMixin:GetNumPages()
-	return math.ceil(CountFilledPetSlots() / self:GetNumIconsPerPage());
+	local petCount = CountIterator(self.NextPetSlot, self);
+	return math.ceil(petCount / self:GetNumIconsPerPage());
 end
 
 function TRP3_PetBrowserMixin:GetCurrentPage()
@@ -299,6 +298,36 @@ function TRP3_PetBrowserMixin:TriggerDialogCallback(result, ...)
 	end
 end
 
+function TRP3_PetBrowserMixin:ShouldFilterPetSlot(slotIndex)
+	local petInfo = GetPetInfoBySlot(slotIndex);
+
+	-- For safety, filter any slots that aren't valid.
+
+	if not petInfo then
+		return true;
+	end
+
+	-- Filter any pets that are already assigned to the profile we're
+	-- actively adding pets to. These serve no purpose when shown.
+
+	if petInfo.profileID and petInfo.profileID == self:GetDialogProfileID() then
+		return true;
+	end
+
+	return false;
+end
+
+function TRP3_PetBrowserMixin:NextPetSlot(slotIndex)
+	-- Advancements through the pet slot iterator go through here where we
+	-- apply filtering logic to further reduce the number of shown slots.
+
+	repeat
+		slotIndex = NextFilledPetSlot(slotIndex);
+	until not slotIndex or not self:ShouldFilterPetSlot(slotIndex)
+
+	return slotIndex;
+end
+
 function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 	-- The API works in terms of slot indexes, and players can place pets
 	-- in any slot with gaps in between each. We compress this down in the
@@ -313,7 +342,7 @@ function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 	local slotsRemaining = self:GetNumIconsPerPage() * (pageNumber - 1);
 
 	while slotsRemaining > 0 do
-		slotIndex = NextFilledPetSlot(slotIndex);
+		slotIndex = self:NextPetSlot(slotIndex);
 		if not slotIndex then
 			return nil;
 		end
@@ -321,7 +350,7 @@ function TRP3_PetBrowserMixin:GetFirstPetSlotByPage(pageNumber)
 		slotsRemaining = slotsRemaining - 1;
 	end
 
-	return NextFilledPetSlot(slotIndex);
+	return self:NextPetSlot(slotIndex);
 end
 
 function TRP3_PetBrowserMixin:GetIconButtonBySlot(slotIndex)
@@ -368,7 +397,7 @@ function TRP3_PetBrowserMixin:UpdatePagerVisualization()
 
 		-- Only advance to the next slot if the current one was valid,
 		-- otherwise keep it nil or we'll end up wrapping the iterator.
-		slotIndex = slotIndex and NextFilledPetSlot(slotIndex) or nil;
+		slotIndex = slotIndex and self:NextPetSlot(slotIndex) or nil;
 	end
 
 	AnchorUtil.GridLayout(self.iconButtons, self.iconAnchor, self.iconLayout);
@@ -460,7 +489,7 @@ function TRP3_PetBrowserMixin:UpdateOverlayTextVisualization()
 	--
 	-- This is a child of the model for UI layering reasons.
 
-	local firstSlot = NextFilledPetSlot(nil);
+	local firstSlot = self:NextPetSlot(nil);
 	local slotIndex = self:GetSelectedSlot();
 
 	if not firstSlot then
