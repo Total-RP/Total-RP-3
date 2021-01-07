@@ -1454,11 +1454,12 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	REG_COMPANION_BIND_TO_PET = "Pet",
 	UI_PET_BROWSER_ACCEPT = "Assign Profile",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
 	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click \"Assign Profile\" to bind the profile to the companion.",
-	UI_PET_BROWSER_BOUND_WARNING = "This pet is currently bound to the profile %1$q.",
-	REG_COMPANION_BIND_TO_PET = "Pet...",
+	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a new profile to this pet will remove the current profile from it.",
+	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 };
 
 -- Use Ellyb to generate the Localization system

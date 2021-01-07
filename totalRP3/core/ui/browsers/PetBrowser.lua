@@ -371,7 +371,19 @@ function TRP3_PetBrowserMixin:UpdateTooltipVisualization()
 			local boundText = format(L.UI_PET_BROWSER_BOUND_WARNING, petInfo.profileName);
 
 			GameTooltip_AddBlankLineToTooltip(tooltipFrame);
-			GameTooltip_AddColoredLine(tooltipFrame, boundText, RED_FONT_COLOR);
+			GameTooltip_AddNormalLine(tooltipFrame, boundText, true);
+		end
+
+		-- Add a warning for pets that share the same name as their family.
+		--
+		-- This is intended as a basic way to suggest that the user should
+		-- rename their pet to avoid collisions if they tame another unnamed
+		-- pet from the same family. It isn't perfect since some tames don't
+		-- default to the family name, but it's better than nothing.
+
+		if petInfo.name == petInfo.family then
+			GameTooltip_AddBlankLineToTooltip(tooltipFrame);
+			GameTooltip_AddNormalLine(tooltipFrame, L.UI_PET_BROWSER_NAME_WARNING, true);
 		end
 
 		tooltipFrame:Show();
