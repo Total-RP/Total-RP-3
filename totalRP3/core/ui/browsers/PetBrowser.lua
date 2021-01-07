@@ -367,7 +367,7 @@ function TRP3_PetBrowserMixin:UpdateIconButtonVisualization(iconButton, petInfo)
 		iconButton.Icon:SetTexture(petInfo.icon);
 	else
 		iconButton:SetID(0);
-		iconButton.Icon:SetAtlas([[auctionhouse-itemicon-empty]]);
+		iconButton.Icon:SetAtlas([[RecruitAFriend_RewardPane_IconBackground]]);
 	end
 end
 

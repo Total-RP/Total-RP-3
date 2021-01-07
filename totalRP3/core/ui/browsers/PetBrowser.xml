@@ -27,8 +27,8 @@
 			<Layer level="BORDER">
 				<Texture parentKey="Icon" file="Interface\Icons\Temp">
 					<Anchors>
-						<Anchor point="TOPLEFT" x="-4" y="4"/>
-						<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+						<Anchor point="TOPLEFT" x="-2" y="2"/>
+						<Anchor point="BOTTOMRIGHT" x="2" y="-2"/>
 					</Anchors>
 				</Texture>
 				<MaskTexture parentKey="IconMask" file="Interface\Common\common-iconmask" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE">
@@ -41,19 +41,26 @@
 					</MaskedTextures>
 				</MaskTexture>
 			</Layer>
-			<Layer level="BACKGROUND">
-				<Texture parentKey="Background" atlas="auctionhouse-itemicon-empty"/>
-			</Layer>
 		</Layers>
-		<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-Quickslot2">
-			<Size x="64" y="64"/>
+		<NormalTexture file="Interface\Buttons\UI-Quickslot2">
+			<Size x="60" y="60"/>
 			<Anchors>
-				<Anchor point="CENTER" x="0" y="-1"/>
+				<Anchor point="CENTER" y="-1"/>
 			</Anchors>
 		</NormalTexture>
 		<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
-		<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
-		<CheckedTexture atlas="WoWShare-Selection"/>
+		<HighlightTexture atlas="WoWShare-Highlight">
+			<Size x="35" y="35"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</HighlightTexture>
+		<CheckedTexture atlas="WoWShare-Selection">
+			<Size x="35" y="35"/>
+			<Anchors>
+				<Anchor point="CENTER"/>
+			</Anchors>
+		</CheckedTexture>
 		<Scripts>
 			<OnClick>CallMethodOnNearestAncestor(self, "OnIconButtonClicked", self, self:GetID());</OnClick>
 			<OnEnter>CallMethodOnNearestAncestor(self, "OnIconButtonEnter", self, self:GetID());</OnEnter>
