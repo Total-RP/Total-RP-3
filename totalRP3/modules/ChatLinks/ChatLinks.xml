@@ -89,7 +89,7 @@
 			</Button>
 		</Frames>
 		<Scripts>
-			<OnLoad method="OnLoad" />
+			<OnLoad method="OnLoad" inherit="prepend" />
 			<OnUpdate method="OnUpdate" />
 		</Scripts>
 	</GameTooltip>
