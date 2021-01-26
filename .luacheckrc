@@ -224,6 +224,7 @@ stds.wow = {
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"FCF_GetCurrentChatFrame",
+		"FindInTableIf",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",

@@ -101,7 +101,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
-				IC = "INV_Inscription_ScrollOfWisdom_01";
+				IC = TRP3_API.globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01";
 			});
 		end
 		if importedProfile.NI then
@@ -115,7 +115,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
-				IC = "inv_misc_kingsring1";
+				IC = TRP3_API.globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1";
+			});
+		end
+		if importedProfile.PN then
+			tinsert(profile.player.characteristics.PN, {
+				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
+				VA = importedProfile.PN;
+				IC = TRP3_API.globals.is_classic and "inv_scroll_08" or "vas_namechange";
 			});
 		end
 		profile.player.character.CU = importedProfile.CU;
