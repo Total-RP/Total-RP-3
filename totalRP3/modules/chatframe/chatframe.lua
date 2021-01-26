@@ -127,6 +127,9 @@ end
 local function configOOCDetectionColor()
 	return Color(getConfigValue(CONFIG_OOC_COLOR));
 end
+TRP3_API.chat.getOOCDetectionColor = configOOCDetectionColor;
+TRP3_API.chat.getEmoteDetectionColor = function() return ColorManager.getChatColorForChannel("EMOTE") end;
+TRP3_API.chat.getSpeechDetectionColor = function() return ColorManager.getChatColorForChannel("SAY") end;
 
 local function configDoSpeechDetection()
 	return getConfigValue(CONFIG_SPEECH);
@@ -384,7 +387,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	-- Emote/OOC/Speech replacement
 	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
 		-- Wrapping patterns in a temporary pattern
-		local chatColor = ColorManager.getChatColorForChannel("EMOTE");
+		local chatColor = TRP3_API.chat.getEmoteDetectionColor();
 		message = message:gsub(configEmoteDetectionPattern(), function(content)
 			return EmoteTempPatternStart .. content .. EmoteTempPatternEnd;
 		end);
@@ -408,7 +411,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		end);
 
 		-- Wrapping patterns in a temporary pattern
-		local OOCColor = configOOCDetectionColor();
+		local OOCColor = TRP3_API.chat.getOOCDetectionColor();
 		message = message:gsub(configOOCDetectionPattern(), function(content)
 			return OOCTempPatternStart .. content .. OOCTempPatternEnd;
 		end);
@@ -429,7 +432,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 	-- Only apply speech detections on emotes (excluding NPC non-emote speech)
 	if isEmote and configDoSpeechDetection() and message:find('%b""') then
 		-- Wrapping patterns in a temporary pattern
-		local chatColor = ColorManager.getChatColorForChannel("SAY");
+		local chatColor = TRP3_API.chat.getSpeechDetectionColor();
 		message = message:gsub('%b""', function(content)
 			return SpeechTempPatternStart .. content .. SpeechTempPatternEnd;
 		end);
@@ -447,6 +450,7 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 
 	return message;
 end
+TRP3_API.chat.detectEmoteAndOOC = detectEmoteAndOOC;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- NPC talk detection
@@ -608,7 +612,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 			if message == " " then
 				-- Colorize emote and OOC (it's an NPC emote, the content is in the name)
-				npcMessageName = detectEmoteAndOOC(npcMessageName, NPCEmoteChatColor, true);
+				npcMessageName = TRP3_API.chat.detectEmoteAndOOC(npcMessageName, NPCEmoteChatColor, true);
 			else
 				isEmote = false;
 			end
@@ -639,7 +643,7 @@ function handleCharacterMessage(_, event, message, ...)
 
 	-- Colorize emote and OOC
 	if message ~= " " then
-		message = detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote);
+		message = TRP3_API.chat.detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote);
 	end
 
 	return false, message, ...;
