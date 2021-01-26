@@ -285,7 +285,7 @@ local function onStart()
 			icon = Globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1",
 		},
 		NI = {  -- Nickname
-			text = loc.REG_PLAYER_MSP_NIC,
+			text = loc.REG_PLAYER_MSP_NICK,
 			icon = "Ability_Hunter_BeastCall",
 		},
 		PN = {  -- Pronouns
