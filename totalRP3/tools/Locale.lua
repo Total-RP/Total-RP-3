@@ -1454,6 +1454,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	CO_TOOLTIP_PRONOUNS = "Show pronouns",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
 
 };
