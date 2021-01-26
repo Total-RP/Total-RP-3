@@ -114,7 +114,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			});
 		end
 		if importedProfile.PN then
-			tinsert(profile.player.characteristics.PN, {
+			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 				VA = importedProfile.PN;
 				IC = TRP3_API.globals.is_classic and "inv_scroll_08" or "vas_namechange";
