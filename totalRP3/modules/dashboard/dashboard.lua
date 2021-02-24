@@ -54,7 +54,7 @@ getDefaultProfile().player.character = {
 	v = 1,
 	RP = TRP3_Enums.ROLEPLAY_STATUS.IN_CHARACTER,
 	XP = TRP3_Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED,
-	LC = TRP3_Configuration["AddonLocale"] or GetLocale(),
+	LC = GetLocale(),
 }
 
 local function incrementCharacterVernum()
@@ -160,6 +160,11 @@ local function profileSelected(profileID)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- Update default LC field once addon configuration has loaded. We'll
+	-- assume this is _very_ early in setup and won't increment the vernum.
+
+	getDefaultProfile().player.character.LC = TRP3_Configuration["AddonLocale"] or GetLocale();
+
 	-- Register slash command for IC/OOC status control.
 	TRP3_API.slash.registerCommand({
 		id = "status",
