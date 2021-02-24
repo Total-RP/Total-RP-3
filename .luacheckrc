@@ -128,6 +128,14 @@ stds.wow = {
 			},
 		},
 
+		string = {
+			fields = {
+				"concat",
+				"join",
+				"trim",
+			},
+		},
+
 		table = {
 			fields = {
 				"wipe",
@@ -177,10 +185,24 @@ stds.wow = {
 
 		C_PetJournal = {
 			fields = {
+				"ClearSearchFilter",
 				"GetNumPets",
+				"GetNumPetSources",
+				"GetNumPetTypes",
 				"GetPetInfoByIndex",
 				"GetPetInfoByPetID",
+				"GetPetSortParameter",
 				"GetSummonedPetGUID",
+				"IsFilterChecked",
+				"IsPetSourceChecked",
+				"IsPetTypeChecked",
+				"SetAllPetSourcesChecked",
+				"SetAllPetTypesChecked",
+				"SetFilterChecked",
+				"SetPetSortParameter",
+				"SetPetSourceChecked",
+				"SetPetTypeFilter",
+				"SetSearchFilter",
 			},
 		},
 
@@ -365,6 +387,9 @@ stds.wow = {
 		"ITEM_QUALITY6_DESC",
 		"ITEM_QUALITY7_DESC",
 		"ITEM_QUALITY8_DESC",
+		"LE_PET_JOURNAL_FILTER_COLLECTED",
+		"LE_PET_JOURNAL_FILTER_NOT_COLLECTED",
+		"LE_SORT_BY_LEVEL",
 		"LIST_DELIMITER",
 		"LOCALIZED_CLASS_NAMES_MALE",
 		"LUNAR_POWER",
