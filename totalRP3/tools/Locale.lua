@@ -1460,6 +1460,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
 	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
+	CO_TOOLTIP_PRONOUNS = "Show pronouns",
+	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
 };
 
 -- Use Ellyb to generate the Localization system

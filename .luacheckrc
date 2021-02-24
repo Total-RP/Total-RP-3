@@ -242,6 +242,7 @@ stds.wow = {
 		"FCF_GetCurrentChatFrame",
 		"GameTooltip_AddBlankLineToTooltip",
 		"GameTooltip_AddColoredLine",
+		"FindInTableIf",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
