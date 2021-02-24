@@ -623,6 +623,11 @@ local MISC_PRESET = {
 		IC = "inv_jewelry_ring_14"
 	},
 	{
+		NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+		VA = "",
+		IC = is_classic and "inv_scroll_08" or "vas_namechange"
+	},
+	{
 		NA = loc.REG_PLAYER_TRP2_TATTOO,
 		VA = "",
 		IC = is_classic and "INV_Potion_65" or "INV_Inscription_inkblack01"

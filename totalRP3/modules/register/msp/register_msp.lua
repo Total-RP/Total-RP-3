@@ -19,6 +19,15 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local function GetOrCreateTable(t, key)
+	if t[key] ~= nil then
+		return t[key];
+	end
+
+	t[key] = {};
+	return t[key];
+end
+
 local function onStart()
 	local loc = TRP3_API.loc;
 
@@ -135,6 +144,8 @@ local function onStart()
 					msp.my['NH'] = miscData.VA;
 				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK then
 					msp.my['NI'] = miscData.VA;
+				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS then
+					msp.my['PN'] = miscData.VA;
 				end
 			end
 		end
@@ -193,7 +204,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS"
+		"HI", "TR", "MU", "RS", "PS", "PN"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -261,6 +272,48 @@ local function onStart()
 			TI = title,
 			TX = text,
 		};
+	end
+
+	local MISC_INFO_FIELDS = {
+		MO = {  -- Motto
+			text = loc.REG_PLAYER_MSP_MOTTO,
+			icon = Globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01",
+			formatter = function(value) return string.format([["%s"]], value); end,
+		},
+		NH = {  -- House Name
+			text = loc.REG_PLAYER_MSP_HOUSE,
+			icon = Globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1",
+		},
+		NI = {  -- Nickname
+			text = loc.REG_PLAYER_MSP_NICK,
+			icon = "Ability_Hunter_BeastCall",
+		},
+		PN = {  -- Pronouns
+			text = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+			icon = Globals.is_classic and "inv_scroll_08" or "vas_namechange",
+		},
+	};
+
+	local function updateMiscInfoField(profile, field, value)
+		local fieldInfo = MISC_INFO_FIELDS[field];
+
+		if not field then
+			return;
+		end
+
+		local miscInfo  = GetOrCreateTable(profile.characteristics, "MI");
+		local miscIndex = FindInTableIf(miscInfo, function(miscStruct) return miscStruct.NA == fieldInfo.text; end);
+
+		if value then
+			local miscStruct = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
+			table.wipe(miscStruct);
+
+			miscStruct.NA = fieldInfo.text;
+			miscStruct.IC = fieldInfo.icon;
+			miscStruct.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
+		elseif miscIndex then
+			table.remove(miscInfo, miscIndex);
+		end
 	end
 
 	local outstandingHelloRequests = {};
@@ -427,87 +480,8 @@ local function onStart()
 							end
 							profile.misc[MISC_FIELDS[field]] = value;
 						end
-					elseif field == "MO" then
-						if not profile.characteristics.MI then
-							profile.characteristics.MI = {};
-						end
-						local index = #profile.characteristics.MI + 1;
-						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc.REG_PLAYER_MSP_MOTTO then
-								index = miscIndex;
-								break;
-							end
-						end
-						if not profile.characteristics.MI[index] then
-							if value then
-								profile.characteristics.MI[index] = {};
-							end
-						else
-							if value then
-								wipe(profile.characteristics.MI[index]);
-							else
-								tremove(profile.characteristics.MI, index);
-							end
-						end
-						if value then
-							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_MOTTO;
-							profile.characteristics.MI[index].VA = "\"" .. value .. "\"";
-							profile.characteristics.MI[index].IC = "INV_Inscription_ScrollOfWisdom_01";
-						end
-					elseif field == "NH" then
-						if not profile.characteristics.MI then
-							profile.characteristics.MI = {};
-						end
-						local index = #profile.characteristics.MI + 1;
-						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc.REG_PLAYER_MSP_HOUSE then
-								index = miscIndex;
-								break;
-							end
-						end
-						if not profile.characteristics.MI[index] then
-							if value then
-								profile.characteristics.MI[index] = {};
-							end
-						else
-							if value then
-								wipe(profile.characteristics.MI[index]);
-							else
-								tremove(profile.characteristics.MI, index);
-							end
-						end
-						if value then
-							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_HOUSE;
-							profile.characteristics.MI[index].VA = value;
-							profile.characteristics.MI[index].IC = "inv_misc_kingsring1";
-						end
-					elseif field == "NI" then
-						if not profile.characteristics.MI then
-							profile.characteristics.MI = {};
-						end
-						local index = #profile.characteristics.MI + 1;
-						for miscIndex, miscStructure in pairs(profile.characteristics.MI) do
-							if miscStructure.NA == loc.REG_PLAYER_MSP_NICK then
-								index = miscIndex;
-								break;
-							end
-						end
-						if not profile.characteristics.MI[index] then
-							if value then
-								profile.characteristics.MI[index] = {};
-							end
-						else
-							if value then
-								wipe(profile.characteristics.MI[index]);
-							else
-								tremove(profile.characteristics.MI, index);
-							end
-						end
-						if value then
-							profile.characteristics.MI[index].NA = loc.REG_PLAYER_MSP_NICK;
-							profile.characteristics.MI[index].VA = value;
-							profile.characteristics.MI[index].IC = "Ability_Hunter_BeastCall";
-						end
+					elseif MISC_INFO_FIELDS[field] then
+						updateMiscInfoField(profile, field, value);
 					end
 				end
 			end

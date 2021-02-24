@@ -1427,11 +1427,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
 	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
 	WHATS_NEW_24_2 =  [[# Changelog version 2.1
@@ -1453,6 +1448,15 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Potential fix for the guide channel being swapped with the xtensionxtooltip2 channel.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CO_TOOLTIP_PRONOUNS = "Show pronouns",
+	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
+
 };
 
 -- Use Ellyb to generate the Localization system
