@@ -138,13 +138,13 @@ local function onStart()
 		msp.my['NI'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
-				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO then
+				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO or miscData.NA == "Motto" then
 					msp.my['MO'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE or miscData.NA == "House name" then
 					msp.my['NH'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK or miscData.NA == "Nickname" then
 					msp.my['NI'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS then
+				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS or miscData.NA == "Pronouns" then
 					msp.my['PN'] = miscData.VA;
 				end
 			end
@@ -276,20 +276,24 @@ local function onStart()
 
 	local MISC_INFO_FIELDS = {
 		MO = {  -- Motto
-			text = loc.REG_PLAYER_MSP_MOTTO,
+			localizedText = loc.REG_PLAYER_MSP_MOTTO,
+			englishText = "Motto",
 			icon = Globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01",
 			formatter = function(value) return string.format([["%s"]], value); end,
 		},
 		NH = {  -- House Name
-			text = loc.REG_PLAYER_MSP_HOUSE,
+			localizedText = loc.REG_PLAYER_MSP_HOUSE,
+			englishText = "House name",
 			icon = Globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1",
 		},
 		NI = {  -- Nickname
-			text = loc.REG_PLAYER_MSP_NICK,
+			localizedText = loc.REG_PLAYER_MSP_NICK,
+			englishText = "Nickname",
 			icon = "Ability_Hunter_BeastCall",
 		},
 		PN = {  -- Pronouns
-			text = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+			localizedText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+			englishText = "Pronouns",
 			icon = Globals.is_classic and "inv_scroll_08" or "vas_namechange",
 		},
 	};
@@ -302,7 +306,10 @@ local function onStart()
 		end
 
 		local miscInfo  = GetOrCreateTable(profile.characteristics, "MI");
-		local miscIndex = FindInTableIf(miscInfo, function(miscStruct) return miscStruct.NA == fieldInfo.text; end);
+		local miscIndex = FindInTableIf(miscInfo, function(miscStruct)
+			return miscStruct.NA == fieldInfo.localizedText
+				or miscStruct.NA == fieldInfo.englishText;
+		end);
 
 		if value then
 			local miscStruct = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
