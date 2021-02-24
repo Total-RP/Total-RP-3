@@ -114,7 +114,7 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET] = battlePetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1] = battlePetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2] = battlePetV2 or 0;
-	local primaryPetLine, primaryPetV1, primaryPetV2 = TRP3_API.companions.player.getCurrentPrimaryPetQueryLine();
+	local primaryPetLine, primaryPetV1, primaryPetV2 = TRP3_API.companions.player.getCurrentPetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET] = primaryPetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V1] = primaryPetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V2] = primaryPetV2 or 0;

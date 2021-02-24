@@ -268,7 +268,7 @@ function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
 end
 
 
-function TRP3_API.companions.player.getCurrentPrimaryPetQueryLine()
+function TRP3_API.companions.player.getCurrentPetQueryLine()
 	local summonedPet = UnitName("pet");
 	if summonedPet then
 		local queryLine = summonedPet;
