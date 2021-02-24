@@ -57,6 +57,6 @@ AddOn_TotalRP3.Enums.UNIT_TYPE = {
 	CHARACTER = "CHARACTER",
 	PET = "PET",
 	BATTLE_PET = "BATTLE_PET",
-	MOUNT = "MOUNT", -- TODO: Do we want mount in here? Seems wrong.
+	MOUNT = "MOUNT", -- Not a real unit, but used for companion profiles.
 	NPC = "NPC",
 };
