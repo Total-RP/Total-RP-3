@@ -136,6 +136,7 @@ local function onStart()
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
 		msp.my['NI'] = nil;
+		msp.my['PN'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
 				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO or miscData.NA == "Motto" then
