@@ -523,7 +523,7 @@ function TRP3_API.register.inits.miscInit()
 		button:SetScript("OnDragStart", TRP3_API.register.glance.onGlanceDragStart);
 		button:SetScript("OnDragStop", TRP3_API.register.glance.onGlanceDragStop);
 		button.slot = tostring(index);
-		button.targetType = TRP3_API.ui.misc.TYPE_CHARACTER;
+		button.targetType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER;
 	end
 
 	-- RP style

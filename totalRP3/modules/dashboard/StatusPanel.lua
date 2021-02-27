@@ -396,10 +396,15 @@ TRP3_DashboardRPLanguageMenuMixin = DashboardRPLanguageMenuMixin;
 
 -- Handler called when the cursor enters the region for this menu.
 function DashboardRPLanguageMenuMixin:OnEnter()
-	GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	GameTooltip_SetTitle(GameTooltip, L.DB_STATUS_LC);
-	GameTooltip_AddNormalLine(GameTooltip, L.DB_STATUS_LC_TT, true);
-	GameTooltip:Show();
+	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
+	TRP3_MainTooltip:ClearLines();
+	GameTooltip_SetTitle(TRP3_MainTooltip, L.DB_STATUS_LC);
+	GameTooltip_AddNormalLine(TRP3_MainTooltip, L.DB_STATUS_LC_TT, true);
+	TRP3_MainTooltip:Show();
+end
+
+function DashboardRPLanguageMenuMixin:OnLeave()
+	TRP3_MainTooltip:Hide();
 end
 
 --[[override]] function DashboardRPLanguageMenuMixin:GetMenuItemText(itemValue)

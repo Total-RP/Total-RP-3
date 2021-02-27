@@ -194,7 +194,6 @@ local function onStart()
 	-- Exchange
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
@@ -497,7 +496,7 @@ local function onStart()
 	local function requestInformation(name, targetMode)
 		if not name or name == Globals.player_id or isIgnored(name) then
 			return;
-		elseif targetMode and targetMode ~= TYPE_CHARACTER then
+		elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
 			return;
 		end
 

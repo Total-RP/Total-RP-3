@@ -47,14 +47,11 @@ local getCompanionProfile, getCompanionProfileID = TRP3_API.companions.player.ge
 local getCompanionProfiles = TRP3_API.companions.player.getProfiles;
 local getCompanionRegisterProfile = TRP3_API.companions.register.getCompanionProfile;
 local companionIDToInfo = Utils.str.companionIDToInfo;
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
-local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
 local playUISound = TRP3_API.ui.misc.playUISound;
 local isTargetTypeACompanion, companionHasProfile = TRP3_API.ui.misc.isTargetTypeACompanion, TRP3_API.companions.register.companionHasProfile;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
 local getCurrentMountSpellID, getCurrentMountProfile = TRP3_API.companions.player.getCurrentMountSpellID, TRP3_API.companions.player.getCurrentMountProfile;
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Logic
@@ -163,7 +160,7 @@ end
 
 local function uiBoundTargetProfile(profileID)
 	local targetType, isMine = TRP3_API.ui.misc.getTargetType("target");
-	if (targetType == TYPE_BATTLE_PET or targetType == TYPE_PET) and isMine then
+	if (targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetType == TRP3_Enums.UNIT_TYPE.PET) and isMine then
 		local companionFullID = TRP3_API.ui.misc.getCompanionFullID("target", targetType);
 		local companionID = UnitName("target");
 		if companionFullID then
@@ -172,6 +169,12 @@ local function uiBoundTargetProfile(profileID)
 		end
 	end
 	TRP3_API.ui.tooltip.toast("|cffff0000" .. loc.REG_COMPANION_TARGET_NO, 4);
+end
+
+local function uiBindPetProfile(profileID)
+	TRP3_API.popup.showPetBrowser(profileID, function(petInfo)
+		ui_boundPlayerCompanion(petInfo.name, profileID, TRP3_Enums.UNIT_TYPE.PET);
+	end);
 end
 
 local unboundPlayerCompanion = TRP3_API.companions.player.unboundPlayerCompanion;
@@ -190,11 +193,11 @@ local profileListID = {};
 local wipe, table = wipe, table;
 
 local function getCompanionTypeText(companionType)
-	if companionType == TYPE_PET then
+	if companionType == TRP3_Enums.UNIT_TYPE.PET then
 		return loc.PR_CO_PET;
-	elseif companionType == TYPE_BATTLE_PET then
+	elseif companionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		return loc.PR_CO_BATTLE;
-	elseif companionType == TYPE_MOUNT then
+	elseif companionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		return loc.PR_CO_MOUNT;
 	end
 	return "";
@@ -276,11 +279,13 @@ local function onActionSelected(value, button)
 	elseif value == 3 then
 		uiDuplicateProfile(profileID);
 	elseif value == 4 then
-		uiBoundProfile(profileID, TYPE_BATTLE_PET);
+		uiBoundProfile(profileID, TRP3_Enums.UNIT_TYPE.BATTLE_PET);
 	elseif value == 5 then
-		uiBoundProfile(profileID, TYPE_MOUNT);
+		uiBoundProfile(profileID, TRP3_Enums.UNIT_TYPE.MOUNT);
 	elseif value == 6 then
 		uiBoundTargetProfile(profileID);
+	elseif value == 7 then
+		uiBindPetProfile(profileID);
 	elseif value then
 		uiUnboundTargetProfile(profileID, value);
 	end
@@ -290,13 +295,19 @@ local function onBoundClicked(button)
 	local profileID = button:GetParent().profileID;
 	local profile = getCompanionProfiles()[profileID];
 	local values = {};
-	tinsert(values, {loc.REG_COMPANION_BOUND_TO,
+	tinsert(values, {
+		loc.REG_COMPANION_BOUND_TO,
 		{
 			{loc.PR_CO_BATTLE, 4},
 			{loc.PR_CO_MOUNT, 5},
 			{loc.REG_COMPANION_BOUND_TO_TARGET, 6},
 		}
 	});
+
+	if AddOn_TotalRP3.Ui.IsPetBrowserEnabled() then
+		tinsert(values[1][2], 1, {loc.REG_COMPANION_BIND_TO_PET, 7});
+	end
+
 	if profile.links and tsize(profile.links) > 0 then
 		local linksTab = {};
 		for companionID, companionType in pairs(profile.links) do
@@ -329,7 +340,7 @@ local displayMessage = Utils.message.displayMessage;
 local getCurrentPageID = TRP3_API.navigation.page.getCurrentPageID;
 
 ui_boundPlayerCompanion = function (companionID, profileID, targetType)
-	if targetType == TYPE_PET and UnitName("pet") == companionID and PetCanBeRenamed() then
+	if targetType == TRP3_Enums.UNIT_TYPE.PET and UnitName("pet") == companionID and PetCanBeRenamed() then
 		showConfirmPopup(loc.PR_CO_WARNING_RENAME, function()
 			boundPlayerCompanion(companionID, profileID, targetType);
 		end);
@@ -362,8 +373,8 @@ local function createNewAndBound(companionID, targetType)
 end
 
 local function onCompanionProfileSelection(value, companionID, targetType)
-	if targetType == TYPE_CHARACTER then
-		targetType = TYPE_MOUNT;
+	if targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
+		targetType = TRP3_Enums.UNIT_TYPE.MOUNT;
 	end
 	if value == 0 then
 		openProfile(getCompanionProfileID(companionID));
@@ -407,7 +418,7 @@ end
 local function companionProfileSelectionList(unitID, targetType, _, button)
 	local ownerID, companionID, companionFullID;
 
-	if targetType == TYPE_CHARACTER then
+	if targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 		ownerID = unitID;
 		if ownerID == Globals.player_id then
 			companionID = tostring(getCurrentMountSpellID());
@@ -619,7 +630,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "bb_companion_profile_mount",
 			configText = loc.REG_COMPANION_TF_PROFILE_MOUNT,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				if unitID == Globals.player_id then
 					return getCurrentMountSpellID() ~= nil;

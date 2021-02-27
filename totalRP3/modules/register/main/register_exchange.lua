@@ -39,13 +39,11 @@ local getCharExchangeData = playerAPI.getCharacteristicsExchangeData;
 local getAboutExchangeData = playerAPI.getAboutExchangeData;
 local getMiscExchangeData = playerAPI.getMiscExchangeData;
 local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
-local getCurrentBattlePetQueryLine, getCurrentPetQueryLine = TRP3_API.companions.player.getCurrentBattlePetQueryLine, TRP3_API.companions.player.getCurrentPetQueryLine;
-local getCurrentMountQueryLine = TRP3_API.companions.player.getCurrentMountQueryLine;
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
 local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
-
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- WoW imports
 local time, type, pairs, tonumber = GetTime, type, pairs, tonumber;
@@ -85,15 +83,18 @@ local VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V = 7;
 local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET = 8;
 local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1 = 9;
 local VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2 = 10;
-local VERNUM_QUERY_INDEX_COMPANION_PET = 11;
-local VERNUM_QUERY_INDEX_COMPANION_PET_V1 = 12;
-local VERNUM_QUERY_INDEX_COMPANION_PET_V2 = 13;
+local VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET = 11;
+local VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V1 = 12;
+local VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V2 = 13;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT = 14;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1 = 15;
 local VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2 = 16;
 local VERNUM_QUERY_INDEX_EXTENDED = 17;
 local VERNUM_QUERY_INDEX_TRIALS = 18;
 local VERNUM_QUERY_INDEX_EXTENDED_DISPLAY = 19;
+local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET = 20;
+local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V1 = 21;
+local VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V2 = 22;
 
 local queryInformationType, createVernumQuery;
 
@@ -109,15 +110,19 @@ function createVernumQuery()
 	query[VERNUM_QUERY_INDEX_CHARACTER_MISC_V] = get("player/misc").v or 0;
 	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V] = get("player/character").v or 1;
 	-- Companion
-	local battlePetLine, battlePetV1, battlePetV2 = getCurrentBattlePetQueryLine();
+	local battlePetLine, battlePetV1, battlePetV2 = TRP3_API.companions.player.getCurrentBattlePetQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET] = battlePetLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V1] = battlePetV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2] = battlePetV2 or 0;
-	local petLine, petV1, petV2 = getCurrentPetQueryLine();
-	query[VERNUM_QUERY_INDEX_COMPANION_PET] = petLine or "";
-	query[VERNUM_QUERY_INDEX_COMPANION_PET_V1] = petV1 or 0;
-	query[VERNUM_QUERY_INDEX_COMPANION_PET_V2] = petV2 or 0;
-	local mountLine, mountV1, mountV2 = getCurrentMountQueryLine();
+	local primaryPetLine, primaryPetV1, primaryPetV2 = TRP3_API.companions.player.getCurrentPetQueryLine();
+	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET] = primaryPetLine or "";
+	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V1] = primaryPetV1 or 0;
+	query[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V2] = primaryPetV2 or 0;
+	local secondaryPetLine, secondaryPetV1, secondaryPetV2 = TRP3_API.companions.player.getCurrentSecondaryPetQueryLine();
+	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET] = secondaryPetLine or "";
+	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V1] = secondaryPetV1 or 0;
+	query[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V2] = secondaryPetV2 or 0;
+	local mountLine, mountV1, mountV2 = TRP3_API.companions.player.getCurrentMountQueryLine();
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT] = mountLine or "";
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V1] = mountV1 or 0;
 	query[VERNUM_QUERY_INDEX_COMPANION_MOUNT_V2] = mountV2 or 0;
@@ -292,11 +297,20 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	local battlePetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET_V2];
 	parseCompanionInfo(senderID, senderProfileID, battlePetLine, battlePetV1, battlePetV2);
 
-	-- Pet
-	local petLine = structure[VERNUM_QUERY_INDEX_COMPANION_PET];
-	local petV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V1];
-	local petV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PET_V2];
-	parseCompanionInfo(senderID, senderProfileID, petLine, petV1, petV2);
+	-- Primary Pet
+	local primaryPetLine = structure[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET];
+	local primaryPetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V1];
+	local primaryPetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_PRIMARY_PET_V2];
+	parseCompanionInfo(senderID, senderProfileID, primaryPetLine, primaryPetV1, primaryPetV2);
+
+	-- Secondary Pet
+	local secondaryPetLine = structure[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET];
+	local secondaryPetV1 = structure[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V1];
+	local secondaryPetV2 = structure[VERNUM_QUERY_INDEX_COMPANION_SECONDARY_PET_V2];
+
+	if secondaryPetLine then
+		parseCompanionInfo(senderID, senderProfileID, secondaryPetLine, secondaryPetV1, secondaryPetV2);
+	end
 
 	-- Mount
 	local mountLine = structure[VERNUM_QUERY_INDEX_COMPANION_MOUNT];
@@ -427,9 +441,6 @@ end
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 TRP3_API.register.HAS_NOT_YET_RESPONDED = LAST_QUERY_STAT;
 
 function TRP3_API.register.inits.dataExchangeInit()
@@ -445,9 +456,9 @@ function TRP3_API.register.inits.dataExchangeInit()
 
 	-- Listen to the mouse over event
 	TRP3_API.events.listenToEvent(TRP3_API.events.MOUSE_OVER_CHANGED, function(targetID, targetMode)
-		if targetMode == TYPE_CHARACTER and targetID then
+		if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and targetID then
 			onMouseOverCharacter(targetID);
-		elseif (targetMode == TYPE_BATTLE_PET or targetMode == TYPE_PET) and targetID then
+		elseif (targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and targetID then
 			onMouseOverCompanion(targetID);
 		end
 	end);
