@@ -124,13 +124,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		"CHAT_MSG_CHANNEL"
 	};
 
-	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h|r";
+	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h";
 	local function generateFormattedLink(text, playerName)
 		Ellyb.Assertions.isType(text, "string", "text");
 		Ellyb.Assertions.isType(playerName, "string", "playerName");
 
-		local formattedName = LINK_COLOR:WrapTextInColorCode(strconcat("[", text, "]"));
-		return format(FORMATTED_LINK_FORMAT, playerName, text, formattedName);
+		local formattedName = strconcat("[", text, "]");
+		return LINK_COLOR:WrapTextInColorCode(format(FORMATTED_LINK_FORMAT, playerName, text, formattedName));
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
