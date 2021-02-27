@@ -12,6 +12,7 @@ jobs:
         with:
           message:      Warning - This pull request is targeting master.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
 
       - uses: actions/setup-python@v2
       - uses: actions/setup-ruby@v1

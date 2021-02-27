@@ -24,10 +24,8 @@ local Globals = TRP3_API.globals;
 local module = AddOn_TotalRP3.MSP or {};
 module.log = module.log or Ellyb.Logger("MSP");
 
--- TODO: Work on this some more. We're centralising this thing.
-module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "LC"};
-module.REQUEST_FIELDS = {"TT", "AE", "AG", "AH", "AW", "CO", "DE", "HB", "HH", "HI", "IC", "MO", "NH", "MU", "PE", "PS", "RS", "LC"};
-module.REQUEST_FIELDS_MIN = {"TT", "AE", "AG", "AH", "AW", "CO", "DE", "HB", "HH", "HI", "IC", "MO", "NH", "LC"};
+module.TOOLTIP_FIELDS = {"CO", "IC", "PX", "RC", "RS", "TR", "LC", "PN"};
+module.REQUEST_FIELDS = {"TT", "AE", "AG", "AH", "AW", "CO", "DE", "HB", "HH", "HI", "IC", "MO", "NH", "MU", "PE", "PS", "RS", "LC", "PN"};
 
 -- Registry of known serializers/deserializers by name.
 local serializers = {};

@@ -50,3 +50,13 @@ AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE = {
 	EXPERIENCED = 2,
 	VOLUNTEER = 3,
 };
+
+-- UNIT_TYPE describes the base type of a unit, such as whether it represents
+-- a character or pet. These replace the old TRP3_API.ui.misc.TYPE_* constants.
+AddOn_TotalRP3.Enums.UNIT_TYPE = {
+	CHARACTER = "CHARACTER",
+	PET = "PET",
+	BATTLE_PET = "BATTLE_PET",
+	MOUNT = "MOUNT", -- Not a real unit, but used for companion profiles.
+	NPC = "NPC",
+};

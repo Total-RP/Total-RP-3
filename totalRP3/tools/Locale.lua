@@ -1427,11 +1427,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
 	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
 	WHATS_NEW_24_2 =  [[# Changelog version 2.1
@@ -1453,6 +1448,20 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Potential fix for the guide channel being swapped with the xtensionxtooltip2 channel.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	REG_COMPANION_BIND_TO_PET = "Pet",
+	UI_PET_BROWSER_ACCEPT = "Assign",
+	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
+	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
+	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
+	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
+	CO_TOOLTIP_PRONOUNS = "Show pronouns",
+	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
 };
 
 -- Use Ellyb to generate the Localization system

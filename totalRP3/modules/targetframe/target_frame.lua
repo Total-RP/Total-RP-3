@@ -42,10 +42,7 @@ local function onStart()
 	local setupFieldSet = TRP3_API.ui.frame.setupFieldPanel;
 	local originalGetTargetType, getCompanionFullID = TRP3_API.ui.misc.getTargetType, TRP3_API.ui.misc.getCompanionFullID;
 	local getCompanionRegisterProfile, getCompanionProfile, companionHasProfile, isCurrentMine;
-	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-	local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-	local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
-	local TYPE_NPC = TRP3_API.ui.misc.TYPE_NPC;
+	local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 	local CONFIG_TARGET_USE = "target_use";
 	local CONFIG_TARGET_ICON_SIZE = "target_icon_size";
@@ -201,7 +198,7 @@ local function onStart()
 	local TARGET_NAME_WIDTH = 168;
 
 	local function displayTargetName()
-		if currentTargetType == TYPE_CHARACTER then
+		if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 			local info = getCharacterInfo(currentTargetID);
 			local name = unitIDToInfo(currentTargetID);
 			if info.characteristics then
@@ -209,12 +206,12 @@ local function onStart()
 			else
 				setupFieldSet(ui_TargetFrame, name, TARGET_NAME_WIDTH);
 			end
-		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.PET or currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 			local owner, companionID = companionIDToInfo(currentTargetID);
 			local companionInfo = getCompanionInfo(owner, companionID, currentTargetID);
 			local info = companionInfo and companionInfo.data or EMPTY;
 			setupFieldSet(ui_TargetFrame, info.NA or companionID, TARGET_NAME_WIDTH);
-		elseif currentTargetType == TYPE_NPC then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.NPC then
 			setupFieldSet(ui_TargetFrame, UnitName("target"), TARGET_NAME_WIDTH);
 		end
 	end
@@ -233,9 +230,9 @@ local function onStart()
 	local function shouldShowTargetFrame(config)
 		if currentTargetID == nil or (getConfigValue(config) ~= 1 and (getConfigValue(config) ~= 2 or not isPlayerIC())) then
 			return false;
-		elseif currentTargetType == TYPE_CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER and (currentTargetID == Globals.player_id or (not isIDIgnored(currentTargetID) and isUnitIDKnown(currentTargetID))) then
 			return true;
-		elseif currentTargetType == TYPE_PET or currentTargetType == TYPE_BATTLE_PET then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.PET or currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 			local owner = companionIDToInfo(currentTargetID);
 			return not isIDIgnored(owner) and (isCurrentMine or companionHasProfile(currentTargetID));
 		end
@@ -244,9 +241,9 @@ local function onStart()
 	local function onTargetChanged()
 		ui_TargetFrame:Hide();
 		currentTargetType, isCurrentMine = getTargetType();
-		if currentTargetType == TYPE_CHARACTER then
+		if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 			currentTargetID = getUnitID("target");
-		elseif currentTargetType == TYPE_NPC then
+		elseif currentTargetType == TRP3_Enums.UNIT_TYPE.NPC then
 			currentTargetID = TRP3_API.utils.str.getUnitNPCID("target");
 		else
 			currentTargetID = getCompanionFullID("target", currentTargetType);
