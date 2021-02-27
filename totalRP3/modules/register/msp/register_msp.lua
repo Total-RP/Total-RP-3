@@ -203,7 +203,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "PN"
+		"HI", "TR", "MU", "RS", "PS", "LC", "PN"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
