@@ -26,7 +26,6 @@ local Ellyb = Ellyb(...);
 local Globals, loc, Utils, Events = TRP3_API.globals, TRP3_API.loc, TRP3_API.utils, TRP3_API.events;
 local tinsert, _G, pairs, type, tostring = tinsert, _G, pairs, type, tostring;
 local tsize = Utils.table.size;
-local safeMatch = Utils.str.safeMatch;
 local unregisterMenu = TRP3_API.navigation.menu.unregisterMenu;
 local isMenuRegistered, rebuildMenu = TRP3_API.navigation.menu.isMenuRegistered, TRP3_API.navigation.menu.rebuildMenu;
 local registerMenu, selectMenu, openMainFrame = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.menu.selectMenu, TRP3_API.navigation.openMainFrame;
@@ -249,7 +248,7 @@ function uiInitProfileList()
 	local profiles = getProfiles();
 	local profileSearch = Utils.str.emptyToNil(TRP3_CompanionsProfilesSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		if not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower()) then
+		if not profileSearch or string.find(profiles[profileID].profileName:lower(), profileSearch:lower(), 1, true) then
 			tinsert(profileListID, profileID);
 		end
 	end
