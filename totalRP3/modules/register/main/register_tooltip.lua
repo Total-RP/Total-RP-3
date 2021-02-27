@@ -607,7 +607,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--
 
 	if showPronouns() then
-		local miscInfo = info.characteristics.MI;
+		local characteristics = info.characteristics;
+		local miscInfo = characteristics and characteristics.MI;
 		local miscIndex = miscInfo and FindInTableIf(miscInfo, function(struct)
 			return struct.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS
 				or struct.NA == "Pronouns";
