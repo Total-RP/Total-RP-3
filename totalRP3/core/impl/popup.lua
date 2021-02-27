@@ -29,7 +29,6 @@ local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pa
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
-local safeMatch = TRP3_API.utils.str.safeMatch;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
 local is_classic = TRP3_API.globals.is_classic;
@@ -458,8 +457,16 @@ end
 local TRP3_CompanionBrowser = TRP3_CompanionBrowser;
 local companionWidgetTab = {};
 local filteredCompanionList = {};
+local globalPetSearchFilter = "";
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local currentCompanionType;
+
+-- Blizzard don't provide a GetSearchFilter for the pet journal, so we
+-- keep track of it with a hook instead. This needs installing as early as
+-- possible.
+hooksecurefunc(C_PetJournal, "SetSearchFilter", function(text)
+	globalPetSearchFilter = (text == nil and "" or tostring(text));
+end);
 
 local function onCompanionClick(button)
 	TRP3_CompanionBrowser:Hide();
@@ -495,26 +502,116 @@ local function nameComparator(elem1, elem2)
 	return elem1[1] < elem2[1];
 end
 
+local function CollectIndexedAccessor(accessorFunc, count)
+	local data = {};
+
+	for i = 1, count do
+		data[i] = accessorFunc(i);
+	end
+
+	return data;
+end
+
+local function RestoreIndexedMutator(mutatorFunc, data)
+	for i = 1, #data do
+		mutatorFunc(i, data[i]);
+	end
+end
+
+local function CallWithUnfilteredPetJournal(func, ...)
+	-- The pet journal API is stateful and accesses to information such as the
+	-- total pet count or information by index is affected by the filters applied
+	-- either by the user (which persist across sessions) or other addons.
+	--
+	-- As such, any queries which need either of the above must go through
+	-- this function which does the following in-order:
+	--
+	--   1. Collects all the current known state on the journal.
+	--   2. Resets the journal state to consistent defaults.
+	--   3. Executes the supplied function.
+	--   4. Restores the original state.
+	--
+	-- This function is resilient to errors at any step and will restore all
+	-- state as best as possible.
+
+	local filters = {
+		options = CollectIndexedAccessor(C_PetJournal.IsFilterChecked, 2),
+		sources = CollectIndexedAccessor(C_PetJournal.IsPetSourceChecked, C_PetJournal.GetNumPetSources()),
+		types   = CollectIndexedAccessor(C_PetJournal.IsPetTypeChecked, C_PetJournal.GetNumPetTypes()),
+		search  = globalPetSearchFilter,
+		sort    = C_PetJournal.GetPetSortParameter(),
+	};
+
+	local function RestoreFiltersAndReturn(ok, ...)
+		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetFilterChecked, filters.options);
+		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetPetSourceChecked, filters.sources);
+		xpcall(RestoreIndexedMutator, CallErrorHandler, C_PetJournal.SetPetTypeFilter, filters.types);
+		xpcall(C_PetJournal.SetSearchFilter, CallErrorHandler, filters.search);
+		xpcall(C_PetJournal.SetPetSortParameter, CallErrorHandler, filters.sort);
+
+		if not ok then
+			error((...), 3);
+		else
+			return ...;
+		end
+	end
+
+	local function ClearFiltersAndInvokeFunction(...)
+		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_COLLECTED, true);
+		C_PetJournal.SetFilterChecked(LE_PET_JOURNAL_FILTER_NOT_COLLECTED, true);
+		C_PetJournal.SetAllPetSourcesChecked(true);
+		C_PetJournal.SetAllPetTypesChecked(true);
+		C_PetJournal.ClearSearchFilter();
+		C_PetJournal.SetPetSortParameter(LE_SORT_BY_LEVEL);
+
+		return func(...);
+	end
+
+	return RestoreFiltersAndReturn(pcall(ClearFiltersAndInvokeFunction, ...));
+end
+
+local function SearchFilterPredicate(value, filter)
+	if type(value) ~= "string" then
+		return false;
+	end
+
+	value = string.lower(string.trim(value));
+	filter = string.lower(string.trim(filter));
+
+	return filter == "" or (not not string.find(value, filter, 1, true));
+end
+
+local function CollectBattlePets(filter)
+	local function CollectUnfilteredBattlePets()
+		local battlePets = {};
+
+		for i = 1, GetNumPets() do
+			local _, _, _, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
+
+			if SearchFilterPredicate(customName, filter) then
+				table.insert(battlePets, { customName, icon, description, speciesName });
+			end
+		end
+
+		return battlePets;
+	end
+
+	return CallWithUnfilteredPetJournal(CollectUnfilteredBattlePets);
+end
+
 local function getWoWCompanionFilteredList(filter)
 	local count = 0;
 	wipe(filteredCompanionList);
 
 	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		-- Battle pets
-		local numPets = GetNumPets();
-		for i = 1, numPets do
-			local _, _, _, customName, _, _, _, speciesName, icon, _, _, _, description = GetPetInfoByIndex(i);
-			-- Only renamed pets can be bound
-			if customName and (filter:len() == 0 or safeMatch(customName:lower(), filter)) then
-				tinsert(filteredCompanionList, {customName, icon, description, speciesName});
-				count = count + 1;
-			end
-		end
+		Mixin(filteredCompanionList, CollectBattlePets(filter));
+		count = #filteredCompanionList;
 	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		-- Mounts
 		for _, id in pairs(GetMountIDs()) do
 			local creatureName, spellID, icon, _, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
-			if isCollected and creatureName and (filter:len() == 0 or safeMatch(creatureName:lower(), filter)) then
+			if isCollected and SearchFilterPredicate(creatureName, filter) then
 				local _, description = GetMountInfoExtraByID(id);
 				tinsert(filteredCompanionList, {creatureName, icon, description, loc.PR_CO_MOUNT, spellID, id});
 				count = count + 1;
@@ -528,9 +625,8 @@ local function getWoWCompanionFilteredList(filter)
 end
 
 local function filteredCompanionBrowser()
-	local filter = TRP3_CompanionBrowserFilterBox:GetText():lower();
-	local isOk = TRP3_API.utils.str.safeMatch("", filter) ~= nil;
-	local totalCompanionCount = getWoWCompanionFilteredList(isOk and filter or "");
+	local filter = TRP3_CompanionBrowserFilterBox:GetText();
+	local totalCompanionCount = getWoWCompanionFilteredList(filter);
 	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
 	initList(
 		{
