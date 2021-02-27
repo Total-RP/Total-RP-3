@@ -136,15 +136,16 @@ local function onStart()
 		msp.my['MO'] = nil;
 		msp.my['NH'] = nil;
 		msp.my['NI'] = nil;
+		msp.my['PN'] = nil;
 		if dataTab.MI then
 			for _, miscData in pairs(dataTab.MI) do
-				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO then
+				if miscData.NA == loc.REG_PLAYER_MSP_MOTTO or miscData.NA == "Motto" then
 					msp.my['MO'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_HOUSE or miscData.NA == "House name" then
 					msp.my['NH'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK then
+				elseif miscData.NA == loc.REG_PLAYER_MSP_NICK or miscData.NA == "Nickname" then
 					msp.my['NI'] = miscData.VA;
-				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS then
+				elseif miscData.NA == loc.REG_PLAYER_MISC_PRESET_PRONOUNS or miscData.NA == "Pronouns" then
 					msp.my['PN'] = miscData.VA;
 				end
 			end
@@ -194,7 +195,6 @@ local function onStart()
 	-- Exchange
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
 	local addCharacter, profileExists = TRP3_API.register.addCharacter, TRP3_API.register.profileExists;
 	local isUnitIDKnown, getUnitIDCharacter = TRP3_API.register.isUnitIDKnown, TRP3_API.register.getUnitIDCharacter;
 	local getUnitIDProfile = TRP3_API.register.getUnitIDProfile;
@@ -204,7 +204,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "PN"
+		"HI", "TR", "MU", "RS", "PS", "LC", "PN"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -276,20 +276,24 @@ local function onStart()
 
 	local MISC_INFO_FIELDS = {
 		MO = {  -- Motto
-			text = loc.REG_PLAYER_MSP_MOTTO,
+			localizedText = loc.REG_PLAYER_MSP_MOTTO,
+			englishText = "Motto",
 			icon = Globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01",
 			formatter = function(value) return string.format([["%s"]], value); end,
 		},
 		NH = {  -- House Name
-			text = loc.REG_PLAYER_MSP_HOUSE,
+			localizedText = loc.REG_PLAYER_MSP_HOUSE,
+			englishText = "House name",
 			icon = Globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1",
 		},
 		NI = {  -- Nickname
-			text = loc.REG_PLAYER_MSP_NICK,
+			localizedText = loc.REG_PLAYER_MSP_NICK,
+			englishText = "Nickname",
 			icon = "Ability_Hunter_BeastCall",
 		},
 		PN = {  -- Pronouns
-			text = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+			localizedText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
+			englishText = "Pronouns",
 			icon = Globals.is_classic and "inv_scroll_08" or "vas_namechange",
 		},
 	};
@@ -302,7 +306,10 @@ local function onStart()
 		end
 
 		local miscInfo  = GetOrCreateTable(profile.characteristics, "MI");
-		local miscIndex = FindInTableIf(miscInfo, function(miscStruct) return miscStruct.NA == fieldInfo.text; end);
+		local miscIndex = FindInTableIf(miscInfo, function(miscStruct)
+			return miscStruct.NA == fieldInfo.localizedText
+				or miscStruct.NA == fieldInfo.englishText;
+		end);
 
 		if value then
 			local miscStruct = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
@@ -420,10 +427,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_12"};
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+								profile.about.T3.PH = {BK = 1, IC = Globals.is_classic and "spell_holy_fistofjustice" or "Ability_Warrior_StrengthOfArms"};
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then
@@ -497,7 +504,7 @@ local function onStart()
 	local function requestInformation(name, targetMode)
 		if not name or name == Globals.player_id or isIgnored(name) then
 			return;
-		elseif targetMode and targetMode ~= TYPE_CHARACTER then
+		elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
 			return;
 		end
 

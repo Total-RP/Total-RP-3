@@ -32,11 +32,9 @@ local setTooltipForSameFrame, toast = TRP3_API.ui.tooltip.setTooltipForSameFrame
 local unitIDIsFilteredForMatureContent;
 local crop = TRP3_API.Ellyb.Strings.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- CONSTANTS
-local TYPE_CHARACTER = TRP3_API.ui.misc.TYPE_CHARACTER;
-local TYPE_PET = TRP3_API.ui.misc.TYPE_PET;
-local TYPE_BATTLE_PET = TRP3_API.ui.misc.TYPE_BATTLE_PET;
 local EMPTY = Globals.empty;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -235,7 +233,7 @@ local function getGlanceMenuClipboardEntries(button, output)
 	end
 
 	-- What clipboard section should we be dealing with here?
-	local clipboardType = (button.targetType == TYPE_CHARACTER)
+	local clipboardType = (button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER)
 		and GLANCE_MENU_CLIPBOARD_ID_CHARACTER
 		or GLANCE_MENU_CLIPBOARD_ID_COMPANION;
 
@@ -506,12 +504,12 @@ local function getCompanionInfo(owner, companionID, currentTargetId)
 end
 
 local function getGlanceTab()
-	if currentTargetType == TYPE_CHARACTER then
+	if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 		if isIDIgnored(currentTargetID) or unitIDIsFilteredForMatureContent(currentTargetID) then
 			return;
 		end
 		return getDataDefault("misc/PE", EMPTY, getCharacterInfo());
-	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+	elseif currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or currentTargetType == TRP3_Enums.UNIT_TYPE.PET then
 		local owner, companionID = companionIDToInfo(currentTargetID);
 		if isIDIgnored(owner) or unitIDIsFilteredForMatureContent(currentTargetID) then
 			return;
@@ -534,7 +532,7 @@ local function getTargetType()
 end
 
 local function getOnGlanceEditorConfirmFunction(button)
-	if button.targetType == TYPE_CHARACTER then
+	if button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 		return TRP3_API.register.applyPeekSlot;
 	end
 	return TRP3_API.companions.player.applyPeekSlot;
@@ -673,7 +671,7 @@ local function onGlanceDragStop(button)
 		if toButton.slot then
 			to = toButton.slot;
 			if to ~= from then
-				if button.targetType == TYPE_CHARACTER then
+				if button.targetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					TRP3_API.register.swapGlanceSlot(from, to);
 				else
 					TRP3_API.companions.player.swapGlanceSlot(from, to, button.targetID, button.profileID);
@@ -689,9 +687,9 @@ local function onTargetChanged()
 	TRP3_AtFirstGlanceEditor:Hide();
 	currentTargetType, isCurrentMine = getTargetType();
 	currentTargetID = nil;
-	if currentTargetType == TYPE_CHARACTER then
+	if currentTargetType == TRP3_Enums.UNIT_TYPE.CHARACTER then
 		currentTargetID = getUnitID("target");
-	elseif currentTargetType == TYPE_BATTLE_PET or currentTargetType == TYPE_PET then
+	elseif currentTargetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or currentTargetType == TRP3_Enums.UNIT_TYPE.PET then
 		currentTargetID = getCompanionFullID("target", currentTargetType);
 	end
 	for i=1,5,1 do

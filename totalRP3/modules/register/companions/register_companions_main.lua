@@ -280,6 +280,29 @@ function TRP3_API.companions.player.getCurrentPetQueryLine()
 	end
 end
 
+function TRP3_API.companions.player.getCurrentSecondaryPetQueryLine()
+	-- Secondary pets are those summoned through the Beast Mastery talent
+	-- "Animal Companion". This talent works by summoning a second pet from
+	-- the first stable slot. The summoned pet currently has no unit token,
+	-- but does carry a "Pet" type GUID and works with the
+	-- UnitIsOwnerOrControllerOfUnit API when queried against the player.
+
+	local FIRST_STABLE_SLOT = 6; -- Index 1 through 5 are for Call Pet slots.
+
+	local _, petName = GetStablePetInfo(FIRST_STABLE_SLOT);
+	if not petName or petName == UNKNOWNOBJECT then
+		return nil, nil, nil;
+	end
+
+	local profileID = getCompanionProfileID(petName);
+	if not profileID then
+		return nil, nil, nil;
+	end
+
+	local queryLine = petName .. "_" .. profileID;
+	return queryLine, getCompanionVersionNumbers(profileID);
+end
+
 function TRP3_API.companions.player.getCompanionData(profileID, v)
 	local profile = playerCompanions[profileID];
 	local data = {};

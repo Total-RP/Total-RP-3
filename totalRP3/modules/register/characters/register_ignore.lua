@@ -229,7 +229,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "aa_player_z_ignore",
 			configText = loc.TF_IGNORE,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and not isIDIgnored(unitID);
 			end,
@@ -244,7 +244,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "aa_player_d_relation",
 			configText = loc.REG_RELATION,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return UnitIsPlayer("target") and unitID ~= player_id and hasProfile(unitID);
 			end,

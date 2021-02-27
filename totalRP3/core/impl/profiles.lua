@@ -29,7 +29,6 @@ TRP3_API.profile = {};
 local Globals, Events, Utils = TRP3_API.globals, TRP3_API.events, TRP3_API.utils;
 local loc = TRP3_API.loc;
 local unitIDToInfo = Utils.str.unitIDToInfo;
-local safeMatch = Utils.str.safeMatch;
 local strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe = strsplit, tinsert, pairs, type, assert, _G, table, tostring, error, wipe;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
@@ -248,7 +247,7 @@ local function uiInitProfileList()
 	local defaultProfileID = getConfigValue("default_profile_id");
 	local profileSearch = Utils.str.emptyToNil(TRP3_ProfileManagerSearch:GetText());
 	for profileID, _ in pairs(profiles) do
-		if profileID ~= defaultProfileID and (not profileSearch or safeMatch(profiles[profileID].profileName:lower(), profileSearch:lower())) then
+		if profileID ~= defaultProfileID and (not profileSearch or string.find(profiles[profileID].profileName:lower(), profileSearch:lower(), 1, true)) then
 			tinsert(profileListID, profileID);
 		end
 	end

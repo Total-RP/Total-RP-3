@@ -592,7 +592,7 @@ Possible status:
 	CO_CHAT_MAIN_NPC = "NPC talk detection",
 	CO_CHAT_MAIN_NPC_USE = "Use NPC talk detection",
 	CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
-	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in SAY, EMOTE, GROUP or RAID channel begins with this prefix, it will be interpreted as an NPC chat.\n\n|cff00ff00By default : \"|| \"\n(without the \" and with a space after the pipe)",
+	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.\n\n|cff00ff00By default : \"|| \"\n(without the \" and with a space after the pipe)",
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
@@ -1454,9 +1454,14 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	REG_COMPANION_BIND_TO_PET = "Pet",
+	UI_PET_BROWSER_ACCEPT = "Assign",
+	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
+	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
+	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
+	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 	CO_TOOLTIP_PRONOUNS = "Show pronouns",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
-
 };
 
 -- Use Ellyb to generate the Localization system

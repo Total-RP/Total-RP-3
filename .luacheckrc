@@ -128,6 +128,14 @@ stds.wow = {
 			},
 		},
 
+		string = {
+			fields = {
+				"concat",
+				"join",
+				"trim",
+			},
+		},
+
 		table = {
 			fields = {
 				"wipe",
@@ -153,10 +161,24 @@ stds.wow = {
 
 		-- Global Functions
 
+		AnchorUtil = {
+			fields = {
+				"CreateAnchor",
+				"CreateGridLayout",
+				"GridLayout",
+			},
+		},
+
 		C_ChatInfo = {
 			fields = {
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",
+			},
+		},
+
+		C_LevelSquish = {
+			fields = {
+				"ConvertPlayerLevel",
 			},
 		},
 
@@ -177,10 +199,24 @@ stds.wow = {
 
 		C_PetJournal = {
 			fields = {
+				"ClearSearchFilter",
 				"GetNumPets",
+				"GetNumPetSources",
+				"GetNumPetTypes",
 				"GetPetInfoByIndex",
 				"GetPetInfoByPetID",
+				"GetPetSortParameter",
 				"GetSummonedPetGUID",
+				"IsFilterChecked",
+				"IsPetSourceChecked",
+				"IsPetTypeChecked",
+				"SetAllPetSourcesChecked",
+				"SetAllPetTypesChecked",
+				"SetFilterChecked",
+				"SetPetSortParameter",
+				"SetPetSourceChecked",
+				"SetPetTypeFilter",
+				"SetSearchFilter",
 			},
 		},
 
@@ -218,12 +254,16 @@ stds.wow = {
 		"ChatFrame_AddMessageEventFilter",
 		"ChatFrame_OpenChat",
 		"ChatFrame_RemoveMessageEventFilter",
+		"Clamp",
 		"CreateColor",
 		"CreateFrame",
+		"CreateFramePool",
 		"CreateFromMixins",
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"FCF_GetCurrentChatFrame",
+		"GameTooltip_AddBlankLineToTooltip",
+		"GameTooltip_AddColoredLine",
 		"FindInTableIf",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
@@ -242,11 +282,13 @@ stds.wow = {
 		"GetInventorySlotInfo",
 		"GetLanguageByIndex",
 		"GetLocale",
+		"GetMaxLevelForLatestExpansion",
 		"GetMouseFocus",
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",
 		"GetRealmName",
 		"GetSpellInfo",
+		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTime",
 		"GetZonePVPInfo",
@@ -264,6 +306,7 @@ stds.wow = {
 		"JoinChannelByName",
 		"Mixin",
 		"MouseIsOver",
+		"nop",
 		"OpenWorldMap",
 		"PetCanBeRenamed",
 		"PlayMusic",
@@ -277,6 +320,7 @@ stds.wow = {
 		"SendChatMessage",
 		"SetCursor",
 		"SetCVar",
+		"SetPetStablePaperdoll",
 		"SetPortraitToTexture",
 		"ShowCloak",
 		"ShowHelm",
@@ -288,6 +332,7 @@ stds.wow = {
 		"StopMusic",
 		"StopSound",
 		"SwapChatChannelByLocalID",
+		"UIPanelCloseButton_SetBorderAtlas",
 		"UnitAffectingCombat",
 		"UnitAura",
 		"UnitBattlePetLevel",
@@ -305,11 +350,13 @@ stds.wow = {
 		"UnitIsDND",
 		"UnitIsOtherPlayersBattlePet",
 		"UnitIsOtherPlayersPet",
+		"UnitIsOwnerOrControllerOfUnit",
 		"UnitIsPlayer",
 		"UnitIsPVP",
 		"UnitIsUnit",
 		"UnitLevel",
 		"UnitName",
+		"UnitPlayerControlled",
 		"UnitPVPName",
 		"UnitRace",
 		"UnitSex",
@@ -332,6 +379,7 @@ stds.wow = {
 		"GameFontNormalHuge3",
 		"GameFontNormalLarge",
 		"GameTooltip",
+		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
 		"TargetFrame",
 		"UIErrorsFrame",
@@ -366,6 +414,9 @@ stds.wow = {
 		"ITEM_QUALITY6_DESC",
 		"ITEM_QUALITY7_DESC",
 		"ITEM_QUALITY8_DESC",
+		"LE_PET_JOURNAL_FILTER_COLLECTED",
+		"LE_PET_JOURNAL_FILTER_NOT_COLLECTED",
+		"LE_SORT_BY_LEVEL",
 		"LIST_DELIMITER",
 		"LOCALIZED_CLASS_NAMES_MALE",
 		"LUNAR_POWER",
@@ -375,10 +426,14 @@ stds.wow = {
 		"MAX_WOW_CHAT_CHANNELS",
 		"NO",
 		"NONE",
+		"NUM_PET_ACTIVE_SLOTS",
+		"NUM_PET_STABLE_PAGES",
+		"NUM_PET_STABLE_SLOTS",
 		"OKAY",
 		"PAIN",
 		"RAGE",
 		"RAID_CLASS_COLORS",
+		"RED_FONT_COLOR",
 		"RUNES",
 		"RUNIC_POWER",
 		"SAVE",
@@ -388,6 +443,7 @@ stds.wow = {
 		"TOOLTIP_DEFAULT_BACKGROUND_COLOR",
 		"TOOLTIP_DEFAULT_COLOR",
 		"TOOLTIP_UNIT_LEVEL_TYPE",
+		"UNIT_TYPE_LEVEL_TEMPLATE",
 		"UNITNAME_TITLE_CHARM",
 		"UNITNAME_TITLE_COMPANION",
 		"UNITNAME_TITLE_CREATION",

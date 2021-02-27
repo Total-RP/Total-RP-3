@@ -54,7 +54,6 @@ local checkGlanceActivation = TRP3_API.register.checkGlanceActivation;
 local getCompanionProfiles = TRP3_API.companions.register.getProfiles;
 local getRelationColors = TRP3_API.register.relation.getRelationColors;
 local getCompanionNameFromSpellID = TRP3_API.companions.getCompanionNameFromSpellID;
-local safeMatch = TRP3_API.utils.str.safeMatch;
 local unitIDIsFilteredForMatureContent = TRP3_API.register.unitIDIsFilteredForMatureContent;
 local profileIDISFilteredForMatureContent = TRP3_API.register.profileIDISFilteredForMatureContent;
 local tContains = tContains;
@@ -382,14 +381,14 @@ local function getCharacterLines()
 			-- Defines if at least one character is conform to the search criteria
 			for unitID, _ in pairs(profile.link or Globals.empty) do
 				local unitName, unitRealm = unitIDToInfo(unitID);
-				if safeMatch(unitName:lower(), nameSearch) then
+				if string.find(unitName:lower(), nameSearch, 1, true) then
 					nameIsConform = true;
 				end
 				if unitRealm == Globals.player_realm_id or tContains(GetAutoCompleteRealms(), unitRealm) then
 					realmIsConform = true;
 				end
 				local characterData = AddOn_TotalRP3.Directory.getCharacterDataForCharacterId(unitID);
-				if characterData and characterData.guild and safeMatch(characterData.guild:lower(), guildSearch) then
+				if characterData and characterData.guild and string.find(characterData.guild:lower(), guildSearch, 1, true) then
 					guildIsConform = true;
 				end
 				local currentNotes = TRP3_API.profile.getPlayerCurrentProfile().notes or {};
@@ -398,7 +397,7 @@ local function getCharacterLines()
 				end
 			end
 			local completeName = getCompleteName(profile.characteristics or {}, "", true);
-			if not nameIsConform and safeMatch(completeName:lower(), nameSearch) then
+			if not nameIsConform and string.find(completeName:lower(), nameSearch, 1, true) then
 				nameIsConform = true;
 			end
 
@@ -653,10 +652,10 @@ local function getCompanionLines()
 		if typeSearch:len() > 0 or masterSearch:len() > 0 then
 			for companionFullID, _ in pairs(profile.links) do
 				local masterID, companionID = companionIDToInfo(companionFullID);
-				if safeMatch(companionID:lower(), typeSearch) then
+				if string.find(companionID:lower(), typeSearch, 1, true) then
 					typeIsConform = true;
 				end
-				if safeMatch(masterID:lower(), masterSearch) then
+				if string.find(masterID:lower(), masterSearch, 1, true) then
 					masterIsConform = true;
 				end
 			end
@@ -666,7 +665,7 @@ local function getCompanionLines()
 		if profile.data and profile.data.NA then
 			companionName = profile.data.NA;
 		end
-		if nameSearch:len() ~= 0 and profile.data and profile.data.NA and safeMatch(profile.data.NA:lower(), nameSearch) then
+		if nameSearch:len() ~= 0 and profile.data and profile.data.NA and string.find(profile.data.NA:lower(), nameSearch, 1, true) then
 			nameIsConform = true;
 		end
 
@@ -1059,7 +1058,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,
