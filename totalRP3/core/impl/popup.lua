@@ -464,9 +464,12 @@ local currentCompanionType;
 -- Blizzard don't provide a GetSearchFilter for the pet journal, so we
 -- keep track of it with a hook instead. This needs installing as early as
 -- possible.
-hooksecurefunc(C_PetJournal, "SetSearchFilter", function(text)
-	globalPetSearchFilter = (text == nil and "" or tostring(text));
-end);
+
+if C_PetJournal and C_PetJournal.SetSearchFilter then
+	hooksecurefunc(C_PetJournal, "SetSearchFilter", function(text)
+		globalPetSearchFilter = (text == nil and "" or tostring(text));
+	end);
+end
 
 local function onCompanionClick(button)
 	TRP3_CompanionBrowser:Hide();
