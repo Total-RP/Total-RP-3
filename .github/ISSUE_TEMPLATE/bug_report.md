@@ -4,32 +4,36 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Describe the issue
+Give us a clear and concise description of what the issue is.
 
-**To Reproduce**
-Steps to reproduce the behaviour:
+## Expected behaviour
+Give us a clear and concise description of what you expected to happen.
+
+## Issue checklist
+Please select any applicable options from the below list.
+
+> You can replace the "[ ]" with "[x]" for each option below to tick it.
+
+- [ ] The issue occurs with the [latest Retail version] of the addon.
+- [ ] The issue occurs with the [latest Classic version] of the addon.
+- [ ] The issue occurs with Total RP 3 as the only enabled addon.
+- [ ] The issue occurs only with other addon(s) enabled (please provide a list).
+
+## Steps to reproduce
+Give us a list of steps to reproduce the issue with.
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behaviour**
-A clear and concise description of what you expected to happen.
+## Additional files
+Please attach any additional applicable files such as screenshots, [error logs], or [profile data files]. Files can be dragged and dropped into this report to attach them for upload.
 
-**Screenshots or error message**
-If applicable, add screenshots to help explain your problem.
-> If you don't see any errors, make sure that error reporting is enabled (`/console scriptErrors 1`) or install the [BugSack](https://mods.curse.com/addons/wow/BugSack) add-on.
+---
 
-**Version of the add-on:**
-Total RP 3 1.4.4
-
-**Did you try having Total RP 3 as the only enabled addon and everything else (especially something like ElvUI) disabled?**
-Yes/No
-
-**Additional context**
-Add any other context about the problem here.
-
-**If your issue is related to profile data, please provide your data file.**
-
-> It is the `totalRP3.lua` file (not the .lua.bak files!) located in your `World of Warcraft/WTF/Account/ACCOUNT_NAME/SavedVariables` folder (replace `ACCOUNT_NAME` with your actual account name, visible on the Battle.net launcher, usually WoW1 for accounts created after the introduction of Battle.net). You can just drag and drop it here, no need for a third party service.
+[error logs]: https://www.curseforge.com/wow/addons/bugsack
+[profile data files]: https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables
+[latest Retail version]: https://www.curseforge.com/wow/addons/total-rp-3/files
+[latest Classic version]: https://www.curseforge.com/wow/addons/total-rp-3-classic/files

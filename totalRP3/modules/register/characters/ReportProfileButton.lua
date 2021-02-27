@@ -32,7 +32,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	TRP3_API.target.registerButton({
 		id = "zzzzzzzzzz_player_report",
 		configText = loc.REG_REPORT_PLAYER_PROFILE,
-		onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+		onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 		condition = function(_, unitID)
 			return UnitIsPlayer("target") and unitID ~= TRP3_API.globals.player_id
 		end,

@@ -6,7 +6,7 @@
 #@end-non-retail@
 ## Title: Total RP 3: Data
 ## Author: Telkostrasz & Ellypse
-## Notes: Data storage
+## Notes: The best data storage for the best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
 ## URL: http://totalrp3.info
 ## DefaultState: Enabled
 ## LoadOnDemand: 1

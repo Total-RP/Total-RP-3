@@ -1059,7 +1059,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.target.registerButton({
 			id = "aa_player_a_page",
 			configText = loc.TF_OPEN_CHARACTER,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return unitID == Globals.player_id or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,

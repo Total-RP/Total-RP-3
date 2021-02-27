@@ -572,7 +572,7 @@ local function onStart()
 		TRP3_API.target.registerButton({
 			id = "aa_player_w_mature_white_list",
 			configText = loc.MATURE_FILTER_ADD_TO_SAFELIST_OPTION,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profileID = getUnitIDProfileID(unitID);
@@ -590,7 +590,7 @@ local function onStart()
 		TRP3_API.target.registerButton({
 			id = "aa_player_w_mature_remove_white_list",
 			configText = loc.MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);
@@ -612,7 +612,7 @@ local function onStart()
 		TRP3_API.target.registerButton({
 			id = "aa_player_w_mature_flag",
 			configText = loc.MATURE_FILTER_FLAG_PLAYER_OPTION,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				if UnitIsPlayer("target") and unitID ~= player_id and not TRP3_API.register.isIDIgnored(unitID) then
 					local profile = getUnitIDProfile(unitID);

@@ -72,6 +72,7 @@
 	<Include file="ui\browsers\musics.xml"/>
 	<Include file="ui\browsers\colors.xml"/>
 	<Include file="ui\browsers\images.xml"/>
+	<Include file="ui\browsers\PetBrowser.xml"/>
 	<Script file="impl\popup.lua"/>
 
 	<Include file="ui\profiles.xml"/>

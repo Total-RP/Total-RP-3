@@ -32,6 +32,7 @@ local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
 local is_classic = TRP3_API.globals.is_classic;
+local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- Classic proofing
 local GetNumPets, GetPetInfoByIndex;
@@ -602,11 +603,11 @@ local function getWoWCompanionFilteredList(filter)
 	local count = 0;
 	wipe(filteredCompanionList);
 
-	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		-- Battle pets
 		Mixin(filteredCompanionList, CollectBattlePets(filter));
 		count = #filteredCompanionList;
-	elseif currentCompanionType == TRP3_API.ui.misc.TYPE_MOUNT then
+	elseif currentCompanionType == TRP3_Enums.UNIT_TYPE.MOUNT then
 		-- Mounts
 		for _, id in pairs(GetMountIDs()) do
 			local creatureName, spellID, icon, _, _, _, _, _, _, _, isCollected = GetMountInfoByID(id);
@@ -661,8 +662,8 @@ local function initCompanionBrowser()
 end
 
 function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback, companionType)
-	currentCompanionType = companionType or TRP3_API.ui.misc.TYPE_BATTLE_PET;
-	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+	currentCompanionType = companionType or TRP3_Enums.UNIT_TYPE.BATTLE_PET;
+	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_BATTLE);
 		TRP3_CompanionBrowserFilterHelp:Show();
 		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
@@ -677,9 +678,32 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	showPopup(TRP3_CompanionBrowser);
 	TRP3_CompanionBrowserFilterBox:SetFocus();
 
-	if currentCompanionType == TRP3_API.ui.misc.TYPE_BATTLE_PET then
+	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
 	end
+end
+
+function TRP3_API.popup.showPetBrowser(profileID, onSelectCallback, onCancelCallback)
+	local frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame();
+	if not frame then
+		return;
+	end
+
+	onSelectCallback = onSelectCallback or nop;
+	onCancelCallback = onCancelCallback or nop;
+
+	frame:SetDialogProfileID(profileID);
+	frame:SetDialogCallback(function(result, ...)
+		hidePopups();
+
+		if result == frame.DialogResult.Accept then
+			onSelectCallback(...);
+		else
+			onCancelCallback();
+		end
+	end);
+
+	showPopup(frame);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1066,6 +1090,7 @@ TRP3_API.popup.ICONS = "icons";
 TRP3_API.popup.COLORS = "colors";
 TRP3_API.popup.MUSICS = "musics";
 TRP3_API.popup.COMPANIONS = "companions";
+TRP3_API.popup.PETS = "pets";
 
 local POPUP_STRUCTURE = {
 	[TRP3_API.popup.IMAGES] = {
@@ -1087,7 +1112,11 @@ local POPUP_STRUCTURE = {
 	[TRP3_API.popup.COMPANIONS] = {
 		frame = TRP3_CompanionBrowser,
 		showMethod = TRP3_API.popup.showCompanionBrowser,
-	}
+	},
+	[TRP3_API.popup.PETS] = AddOn_TotalRP3.Ui.IsPetBrowserEnabled() and {
+		frame = AddOn_TotalRP3.Ui.GetPetBrowserFrame(),
+		showMethod = TRP3_API.popup.showPetBrowser,
+	} or nil,
 }
 TRP3_API.popup.POPUPS = POPUP_STRUCTURE;
 

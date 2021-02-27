@@ -127,7 +127,7 @@ function TRP3_API.register.inits.notesInit()
 		TRP3_API.target.registerButton({
 			id = "za_notes",
 			configText = loc.REG_NOTES_PROFILE,
-			onlyForType = TRP3_API.ui.misc.TYPE_CHARACTER,
+			onlyForType = AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER,
 			condition = function(_, unitID)
 				return (unitID == Globals.player_id and getPlayerCurrentProfileID() ~= getConfigValue("default_profile_id")) or (isUnitIDKnown(unitID) and hasProfile(unitID));
 			end,

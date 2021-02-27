@@ -73,7 +73,7 @@
 				</Anchors>
 				<Scripts>
 					<OnEnter method="OnEnter" inherit="prepend"/>
-					<OnLeave function="GameTooltip_Hide" inherit="prepend"/>
+					<OnLeave method="OnLeave" inherit="prepend"/>
 				</Scripts>
 			</Frame>
 		</Frames>
