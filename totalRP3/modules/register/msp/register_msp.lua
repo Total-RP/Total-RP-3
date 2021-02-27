@@ -427,10 +427,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_17"};
+								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_12"};
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = "Ability_Warrior_StrengthOfArms"};
+								profile.about.T3.PH = {BK = 1, IC = Globals.is_classic and "spell_holy_fistofjustice" or "Ability_Warrior_StrengthOfArms"};
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then
