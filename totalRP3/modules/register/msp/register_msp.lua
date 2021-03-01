@@ -315,7 +315,7 @@ local function onStart()
 			local miscStruct = GetOrCreateTable(miscInfo, miscIndex or #miscInfo + 1);
 			table.wipe(miscStruct);
 
-			miscStruct.NA = fieldInfo.text;
+			miscStruct.NA = fieldInfo.localizedText;
 			miscStruct.IC = fieldInfo.icon;
 			miscStruct.VA = fieldInfo.formatter and fieldInfo.formatter(value) or value;
 		elseif miscIndex then
