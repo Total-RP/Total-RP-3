@@ -728,7 +728,7 @@ function Utils.customGetColoredNameWithCustomFallbackFunction(fallback, event, a
 	-- Make sure we have a unitID formatted as "Player-Realm"
 	unitID = unitInfoToID(character, realm);
 	---@type Player
-	local player = AddOn_TotalRP3.Player.static.CreateFromGUID(GUID)
+	local player = AddOn_TotalRP3.Player.static.CreateFromNameAndRealm(character, realm);
 
 	-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
 	if realm == Globals.player_realm_id or getConfigValue(CONFIG_REMOVE_REALM) then
