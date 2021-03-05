@@ -358,6 +358,7 @@ local function decorateCharacterLine(line, characterIndex)
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
 		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
+		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
 		Ellyb.Strings.clickInstruction(
 			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
 			loc.CL_TOOLTIP

@@ -1480,6 +1480,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s\nPaste with %2$s",
+	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 };
 
 -- Use Ellyb to generate the Localization system
