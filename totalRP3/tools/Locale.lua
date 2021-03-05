@@ -1479,7 +1479,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed incorrect information on the tooltip of the NPC speech prefix setting.
 
 ]],
-	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s\nPaste with %2$s",
+	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 };
 
