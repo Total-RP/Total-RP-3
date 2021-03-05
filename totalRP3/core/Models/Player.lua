@@ -227,9 +227,9 @@ end
 --- @param realm string|nil The server of the player, default to the server of the current user
 --- @return Player
 function Player.static.CreateFromNameAndRealm(name, realm)
-	if not realm or realm == "" then
-		realm = TRP3_API.globals.player_realm_id
-	end
+	name = (name ~= "") and name or UNKNOWNOBJECT;
+	realm = (realm ~= "") and realm or TRP3_API.globals.player_realm_id;
+
 	return Player.static.CreateFromCharacterID(name .. "-" .. realm)
 end
 
