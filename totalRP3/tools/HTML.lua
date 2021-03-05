@@ -23,7 +23,7 @@ local _, TRP3_API = ...;
 TRP3_HyperLinkedMixin = {};
 
 function TRP3_HyperLinkedMixin:OnHyperlinkClick(url)
-	TRP3_API.Ellyb.Popups:OpenURL(url, TRP3_API.loc.UI_LINK_WARNING);
+	TRP3_API.Ellyb.Popups:OpenURL(url, TRP3_API.loc.UI_LINK_WARNING, nil, loc.COPY_SYSTEM_MESSAGE);
 end
 
 function TRP3_HyperLinkedMixin:OnHyperlinkEnter(link, text)

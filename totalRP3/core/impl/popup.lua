@@ -197,7 +197,7 @@ CopyTextPopup.CopyText:HookScript("OnEscapePressed", function() HideUIPanel(Copy
 CopyTextPopup.CopyText:HookScript("OnKeyDown", function(_, key)
 	if key == "C" and IsControlKeyDown() then
 		local systemInfo = ChatTypeInfo["SYSTEM"];
-		UIErrorsFrame:AddMessage(Ellyb.loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
+		UIErrorsFrame:AddMessage(loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
 		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 		HideUIPanel(CopyTextPopup);
 	end
