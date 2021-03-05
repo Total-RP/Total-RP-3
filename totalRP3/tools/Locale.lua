@@ -1479,6 +1479,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed incorrect information on the tooltip of the NPC speech prefix setting.
 
 ]],
+	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s\nPaste with %2$s",
 };
 
 -- Use Ellyb to generate the Localization system
