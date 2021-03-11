@@ -599,37 +599,37 @@ local MISC_PRESET = {
 	{
 		NA = loc.REG_PLAYER_MSP_HOUSE,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_House,
+		IC = TRP3_InterfaceIcons.MiscInfoHouse,
 	},
 	{
 		NA = loc.REG_PLAYER_MSP_NICK,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Nickname,
+		IC = TRP3_InterfaceIcons.MiscInfoNickname,
 	},
 	{
 		NA = loc.REG_PLAYER_MSP_MOTTO,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Motto,
+		IC = TRP3_InterfaceIcons.MiscInfoMotto,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_TRAITS,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Traits,
+		IC = TRP3_InterfaceIcons.MiscInfoTraits,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_PIERCING,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Piercings,
+		IC = TRP3_InterfaceIcons.MiscInfoPiercings,
 	},
 	{
 		NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Pronouns,
+		IC = TRP3_InterfaceIcons.MiscInfoPronouns,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_TATTOO,
 		VA = "",
-		IC = TRP3_InterfaceIcons.MiscInfo_Tattoos,
+		IC = TRP3_InterfaceIcons.MiscInfoTattoos,
 	},
 	{
 		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
@@ -1548,8 +1548,8 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
 	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
 	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitsSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitsSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
 	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
 	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc.REG_PLAYER_RACE);
