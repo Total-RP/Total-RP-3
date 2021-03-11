@@ -37,7 +37,7 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 local GetNumPets, GetPetInfoByIndex;
 local GetMountIDs, GetMountInfoByID, GetMountInfoExtraByID;
 
-if is_classic then
+if TRP3_API.globals.is_classic then
 	GetNumPets = function() return 0 end;
 	GetPetInfoByIndex = function() return end;
 	GetMountIDs = function() return {} end;
