@@ -277,6 +277,7 @@ stds.wow = {
 		"GetCursorPosition",
 		"GetCVar",
 		"GetDefaultLanguage",
+		"GetFileIDFromPath",
 		"GetGuildInfo",
 		"GetInventoryItemTexture",
 		"GetInventorySlotInfo",

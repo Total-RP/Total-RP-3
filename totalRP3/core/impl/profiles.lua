@@ -206,7 +206,7 @@ local function decorateProfileList(widget, index)
 		_G[widget:GetName().."Current"]:Hide();
 	end
 
-	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or Globals.icons.profile_default);
+	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 	_G[widget:GetName().."Name"]:SetText(mainText);
 	Ellyb.Tooltips.getTooltip(widget):SetTitle(mainText);
 

@@ -101,28 +101,28 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MSP_MOTTO;
 				VA = "\"" .. importedProfile.MO .. "\"";
-				IC = TRP3_API.globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01";
+				IC = TRP3_InterfaceIcons.MiscInfoMotto;
 			});
 		end
 		if importedProfile.NI then
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MSP_NICK;
 				VA = importedProfile.NI;
-				IC = "Ability_Hunter_BeastCall";
+				IC = TRP3_InterfaceIcons.MiscInfoNickname;
 			});
 		end
 		if importedProfile.NH then
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MSP_HOUSE;
 				VA = importedProfile.NH;
-				IC = TRP3_API.globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1";
+				IC = TRP3_InterfaceIcons.MiscInfoHouse;
 			});
 		end
 		if importedProfile.PN then
 			tinsert(profile.player.characteristics.MI, {
 				NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS;
 				VA = importedProfile.PN;
-				IC = TRP3_API.globals.is_classic and "inv_scroll_08" or "vas_namechange";
+				IC = TRP3_InterfaceIcons.MiscInfoPronouns;
 			});
 		end
 		profile.player.character.CU = importedProfile.CU;

@@ -27,7 +27,6 @@ local assert = assert;
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
-local Globals = TRP3_API.globals;
 local Utils = TRP3_API.utils;
 local Events = TRP3_API.events;
 
@@ -67,7 +66,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			customColor = TRP3_API.Ellyb.Color(profile.characteristics.CH);
 		end
 
-		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or Globals.icons.profile_default, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
+		tooltipLines:SetTitle(customColor(Utils.str.icon(profile.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 20) .. " " .. TRP3_API.register.getCompleteName(profile.characteristics, profile.profileName, true)));
 
 		if profile.characteristics and profile.characteristics.FT then
 			tooltipLines:AddLine("< " .. profile.characteristics.FT .. " >", TRP3_API.Ellyb.ColorManager.ORANGE);

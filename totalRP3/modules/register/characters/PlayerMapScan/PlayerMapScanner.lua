@@ -112,7 +112,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	---@type MapScanner
 	local playerMapScanner = AddOn_TotalRP3.MapScanner("playerScan")
 	-- Set scan display properties
-	playerMapScanner.scanIcon = Ellyb.Icon("Achievement_GuildPerk_EverybodysFriend")
+	playerMapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.PlayerScanIcon)
 	playerMapScanner.scanOptionText = loc.MAP_SCAN_CHAR;
 	playerMapScanner.scanTitle = loc.MAP_SCAN_CHAR_TITLE;
 	-- Indicate the name of the pin template to use with this scan.

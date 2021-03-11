@@ -113,7 +113,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local languagesButton = {
 		id = "ww_trp3_languages",
-		icon = "spell_holy_silence",
+		icon = TRP3_InterfaceIcons.ToolbarLanguage,
 		configText = loc.TB_LANGUAGE,
 		onEnter = function(Uibutton)
 			refreshTooltip(Uibutton);
@@ -128,7 +128,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				buttonStructure.currentLanguageID = currentLanguage:GetID();
 				buttonStructure.tooltip = loc.TB_LANGUAGE .. ": " .. currentLanguage:GetName();
 				buttonStructure.tooltipSub = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_LANGUAGES_TT);
-				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or "spell_holy_silence";
+				buttonStructure.icon = currentLanguage:GetIcon():GetFileName() or TRP3_InterfaceIcons.ToolbarLanguage;
 			end
 		end,
 		onClick = function(Uibutton)

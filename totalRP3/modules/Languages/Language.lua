@@ -17,10 +17,6 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
----@type TRP3_API
-local _, TRP3_API = ...;
-local is_classic = TRP3_API.globals.is_classic;
-
 local Ellyb = Ellyb(...);
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
@@ -28,46 +24,45 @@ local Icon = Ellyb.Icon
 
 ---@type Icon[]
 local LANGUAGES_ICONS = {
-
 	-- Alliance
-	[35] = Icon("Inv_Misc_Tournaments_banner_Draenei"), -- Draenei
-	[2] = Icon(is_classic and "Spell_Arcane_TeleportMoonglade" or "Inv_Misc_Tournaments_banner_Nightelf"), -- Dranassian
-	[6] = Icon(is_classic and "Spell_Arcane_TeleportIronForge" or "Inv_Misc_Tournaments_banner_Dwarf"), -- Dwarvish
-	[7] = Icon(is_classic and "Spell_Arcane_TeleportStormWind" or "Inv_Misc_Tournaments_banner_Human"),-- Common
-	[13] = Icon(is_classic and "INV_Misc_EngGizmos_01" or "Inv_Misc_Tournaments_banner_Gnome"),-- Gnomish
+	[35] = Icon(TRP3_InterfaceIcons.LanguageDraenei), -- Draenei
+	[2] = Icon(TRP3_InterfaceIcons.LanguageDarnassian), -- Dranassian
+	[6] = Icon(TRP3_InterfaceIcons.LanguageDwarvish), -- Dwarvish
+	[7] = Icon(TRP3_InterfaceIcons.LanguageCommon),-- Common
+	[13] = Icon(TRP3_InterfaceIcons.LanguageGnomish),-- Gnomish
 
 	-- Horde
-	[1] = Icon(is_classic and "Spell_Arcane_TeleportOrgrimmar" or "Inv_Misc_Tournaments_banner_Orc"), -- Orcish
-	[33] = Icon(is_classic and "Spell_Arcane_TeleportUnderCity" or "Inv_Misc_Tournaments_banner_Scourge"), -- Forsaken
-	[3] = Icon(is_classic and "Spell_Arcane_TeleportThunderBluff" or "Inv_Misc_Tournaments_banner_Tauren"), -- Taurahe
-	[10] = Icon("Inv_Misc_Tournaments_banner_Bloodelf"), -- Thalassian
-	[14] = Icon(is_classic and "INV_Banner_01" or "Inv_Misc_Tournaments_banner_Troll"), -- Zandali
-	[40] = Icon("achievement_Goblinhead"), -- Goblin
+	[1] = Icon(TRP3_InterfaceIcons.LanguageOrcish), -- Orcish
+	[33] = Icon(TRP3_InterfaceIcons.LanguageForsaken), -- Forsaken
+	[3] = Icon(TRP3_InterfaceIcons.LanguageTaurahe), -- Taurahe
+	[10] = Icon(TRP3_InterfaceIcons.LanguageThalassian), -- Thalassian
+	[14] = Icon(TRP3_InterfaceIcons.LanguageZandali), -- Zandali
+	[40] = Icon(TRP3_InterfaceIcons.LanguageGoblin), -- Goblin
 
 	-- Pandaren (now neutral)
-	[42] = Icon("Achievement_Guild_ClassyPanda"),
+	[42] = Icon(TRP3_InterfaceIcons.LanguagePandaren),
 
 	-- Demon hunters
-	[8] = Icon("artifactability_havocdemonhunter_anguishofthedeceiver"),
+	[8] = Icon(TRP3_InterfaceIcons.LanguageDemonic),
 
 	-- Allied races
-	[181] = Icon("Achievement_AlliedRace_Nightborne"), -- Shalassian
+	[181] = Icon(TRP3_InterfaceIcons.LanguageShalassian), -- Shalassian
 
 	-- Funsies
-	[37] = Icon("inv_misc_punchcards_blue"), -- Gnome binary (Brewfest beer)
-	[38] = Icon("inv_misc_punchcards_blue"), -- Goblin binary (Brewfest beer)
-	[11] = Icon("ability_warrior_dragonroar"), -- Draconic (learned when opening the gates of AQ)
-	[180] = Icon("ability_druid_improvedmoonkinform"), -- Moonkin (seasonal event)
-	[12] = Icon("shaman_talent_elementalblast"), -- Kalimag (shaman?)
-	[179] = Icon("inv_pet_babymurlocs_blue"), -- Murloc (?)
-	[178] = Icon("spell_priest_voidform"), -- Shath'Yar (Shadow priests, Void Elves and Alliance Archbishops)
-	[9] = Icon("achievement_dungeon_ulduarraid_titan_01"), -- Titan
-	[36] = Icon("icon_petfamily_undead"), -- Zombie (in your head)
-	[168] = Icon("inv_pet_sprite_darter_hatchling"), -- Sprite (Faerie dragon)
+	[37] = Icon(TRP3_InterfaceIcons.LanguageGnomishBinary), -- Gnome binary (Brewfest beer)
+	[38] = Icon(TRP3_InterfaceIcons.LanguageGoblinBinary), -- Goblin binary (Brewfest beer)
+	[11] = Icon(TRP3_InterfaceIcons.LanguageDraconic), -- Draconic (learned when opening the gates of AQ)
+	[180] = Icon(TRP3_InterfaceIcons.LanguageMoonkin), -- Moonkin (seasonal event)
+	[12] = Icon(TRP3_InterfaceIcons.LanguageKalimag), -- Kalimag (shaman?)
+	[179] = Icon(TRP3_InterfaceIcons.LanguageNerglish), -- Murloc (?)
+	[178] = Icon(TRP3_InterfaceIcons.LanguageShathYar), -- Shath'Yar (Shadow priests, Void Elves and Alliance Archbishops)
+	[9] = Icon(TRP3_InterfaceIcons.LanguageTitan), -- Titan
+	[36] = Icon(TRP3_InterfaceIcons.LanguageZombie), -- Zombie (in your head)
+	[168] = Icon(TRP3_InterfaceIcons.LanguageSprite), -- Sprite (Faerie dragon)
 
 }
 
-local TEMP_ICON = Icon("INV_Misc_QuestionMark")
+local TEMP_ICON = Icon(TRP3_InterfaceIcons.Default)
 
 ---@class Language : Object
 local Language, _private = Ellyb.Class("Language")

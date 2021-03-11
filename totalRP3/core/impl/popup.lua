@@ -31,7 +31,6 @@ local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setToolti
 local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
-local is_classic = TRP3_API.globals.is_classic;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- Classic proofing
@@ -658,8 +657,7 @@ local function initCompanionBrowser()
 
 	TRP3_CompanionBrowserFilterBox:SetScript("OnTextChanged", filteredCompanionBrowser);
 	TRP3_CompanionBrowserClose:SetScript("OnClick", onCompanionClose);
-	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0,
-		is_classic and "|TInterface\\ICONS\\Ability_Druid_CatForm:25|t " or "|TInterface\\ICONS\\icon_petfamily_beast:25|t " .. loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
+	setTooltipForSameFrame(TRP3_CompanionBrowserFilterHelp, "TOPLEFT", 0, 0, loc.UI_COMPANION_BROWSER_HELP ,loc.UI_COMPANION_BROWSER_HELP_TT);
 
 	TRP3_CompanionBrowserFilterBoxText:SetText(loc.UI_FILTER);
 end
@@ -959,7 +957,7 @@ function TRP3_ColorButtonLoad(self)
 			_G[self:GetName() .. "SwatchBg"]:SetColorTexture(red / 255, green / 255, blue / 255);
 			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(red / 255, green / 255, blue / 255);
 		else
-			_G[self:GetName() .. "SwatchBg"]:SetTexture(is_classic and "Interface\\ICONS\\INV_Misc_Gear_01" or "Interface\\ICONS\\icon_petfamily_mechanical");
+			_G[self:GetName() .. "SwatchBg"]:SetTexture([[interface\icons\]] .. TRP3_InterfaceIcons.Gears);
 			_G[self:GetName() .. "SwatchBgHighlight"]:SetVertexColor(1.0, 1.0, 1.0);
 		end
 		if self.onSelection then

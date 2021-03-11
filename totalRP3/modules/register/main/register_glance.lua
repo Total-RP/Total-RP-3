@@ -369,7 +369,7 @@ local function saveSlotPreset(glanceTab)
 	if glanceTab == nil then return end;
 	local presetTitle = glanceTab.TI or UNKNOWN;
 	local presetText = glanceTab.TX or "";
-	local presetIcon = glanceTab.IC or Globals.icons.unknown;
+	local presetIcon = glanceTab.IC or TRP3_InterfaceIcons.Unknown;
 	local presetID = Utils.str.id();
 
 	local icon = Utils.str.icon(presetIcon, 25) .. "\n|cff00ff00" .. presetTitle .. "|r";
@@ -413,7 +413,7 @@ local setupIconButton = TRP3_API.ui.frame.setupIconButton;
 local stEtN = Utils.str.emptyToNil;
 
 local function onIconSelected(icon)
-	icon = icon or Globals.icons.default;
+	icon = icon or TRP3_InterfaceIcons.Default;
 	setupIconButton(TRP3_AtFirstGlanceEditorIcon, icon);
 	TRP3_AtFirstGlanceEditorIcon.icon = icon;
 end
@@ -630,7 +630,7 @@ local function displayGlanceSlots()
 			button.data = glance;
 			button.glanceTab = glanceTab;
 
-			local icon = Globals.icons.default;
+			local icon = TRP3_InterfaceIcons.Default;
 
 			if glance and glance.AC then
 				button:SetAlpha(1);
@@ -658,7 +658,7 @@ end
 
 local function onGlanceDragStart(button)
 	if button.isCurrentMine and button.data then
-		SetCursor("Interface\\ICONS\\" .. (button.data.IC or Globals.icons.default));
+		SetCursor("Interface\\ICONS\\" .. (button.data.IC or TRP3_InterfaceIcons.Default));
 	end
 end
 TRP3_API.register.glance.onGlanceDragStart = onGlanceDragStart;

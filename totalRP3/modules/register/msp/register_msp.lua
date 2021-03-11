@@ -111,7 +111,7 @@ local function onStart()
 		else
 			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		end
-		msp.my['IC'] = dataTab.IC or Globals.icons.profile_default;
+		msp.my['IC'] = dataTab.IC or TRP3_InterfaceIcons.ProfileDefault;
 		msp.my['NT'] = dataTab.FT;
 		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
@@ -263,7 +263,7 @@ local function onStart()
 	end
 
 	local function parsePeekString(str)
-		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or "INV_Misc_QuestionMark";
+		local icon = str:match("%f[^\n%z]|TInterface\\Icons\\([^:|]+)[^|]*|t%f[\n%z]") or TRP3_InterfaceIcons.Default;
 		local title = str:match("%f[^\n%z]#+% *(.-)% *%f[\n%z]");
 		local text = str:match("%f[^\n%z]% *([^|#].-)%s*$");
 		return {
@@ -278,23 +278,23 @@ local function onStart()
 		MO = {  -- Motto
 			localizedText = loc.REG_PLAYER_MSP_MOTTO,
 			englishText = "Motto",
-			icon = Globals.is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01",
+			icon = TRP3_InterfaceIcons.MiscInfoMotto,
 			formatter = function(value) return string.format([["%s"]], value); end,
 		},
 		NH = {  -- House Name
 			localizedText = loc.REG_PLAYER_MSP_HOUSE,
 			englishText = "House name",
-			icon = Globals.is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1",
+			icon = TRP3_InterfaceIcons.MiscInfoHouse,
 		},
 		NI = {  -- Nickname
 			localizedText = loc.REG_PLAYER_MSP_NICK,
 			englishText = "Nickname",
-			icon = "Ability_Hunter_BeastCall",
+			icon = TRP3_InterfaceIcons.MiscInfoNickname,
 		},
 		PN = {  -- Pronouns
 			localizedText = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
 			englishText = "Pronouns",
-			icon = Globals.is_classic and "inv_scroll_08" or "vas_namechange",
+			icon = TRP3_InterfaceIcons.MiscInfoPronouns,
 		},
 	};
 
@@ -427,10 +427,10 @@ local function onStart()
 								profile.about.T3 = {};
 							end
 							if not profile.about.T3.HI then
-								profile.about.T3.HI = {BK = 1, IC = "INV_Misc_Book_12"};
+								profile.about.T3.HI = {BK = 1, IC = TRP3_InterfaceIcons.HistorySection };
 							end
 							if not profile.about.T3.PH then
-								profile.about.T3.PH = {BK = 1, IC = Globals.is_classic and "spell_holy_fistofjustice" or "Ability_Warrior_StrengthOfArms"};
+								profile.about.T3.PH = {BK = 1, IC = TRP3_InterfaceIcons.PhysicalSection };
 							end
 							profile.about.T3[ABOUT_FIELDS[field]].TX = value;
 							if profile.about.read ~= false then
