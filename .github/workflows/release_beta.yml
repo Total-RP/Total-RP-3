@@ -1,7 +1,7 @@
 ---
 # The differences between this workflow and the standard release are that no
 # upload to wowinterface occurs, since it lacks support for processing any
-#
+# alpha/beta releases separately.
 
 name: Package (Prerelease)
 on:
