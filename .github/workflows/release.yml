@@ -25,23 +25,15 @@ jobs:
           WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
           WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
 
-      - name: Create Classic Package (CF/WoWI)
-        uses: nebularg/packager@custom-filename
-        with:
-          args: -p 335857 -w 25153 -g classic -n '{package-name}-{project-version}'
-        env:
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
-
-      - name: Create Classic Package (GitHub/Wago)
+      - name: Create Classic Package
         uses: janpantel/packager@add_wago_addons_target
         with:
-          # -L skips upload to CF, as we need to provide the project ID/API key for fetching localizations.
-          args: -p 335857 -a q96dnGOm -g classic -L
+          args: -p 335857 -w 25153 -a q96dnGOm -g classic
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
           WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
+          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
 
       - name: Send Webhook Notification
         if: failure()
