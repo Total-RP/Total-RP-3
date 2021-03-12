@@ -1,11 +1,14 @@
 ---
-name: Package (Release)
+# The differences between this workflow and the standard release are that no
+# upload to wowinterface occurs, since it lacks support for processing any
+#
+
+name: Package (Prerelease)
 on:
   push:
     tags:
-      - '*'
-      - '!**-alpha**'
-      - '!**-beta**'
+      - '**-alpha**'
+      - '**-beta**'
 
 jobs:
   build:
@@ -18,20 +21,18 @@ jobs:
       - name: Create Retail Package
         uses: janpantel/packager@add_wago_addons_target
         with:
-          args: -p 75973 -w 24113 -a q96dnGOm
+          args: -p 75973 -a q96dnGOm
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
           WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
-          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
 
       - name: Create Classic Package (CF/WoWI)
         uses: nebularg/packager@custom-filename
         with:
-          args: -p 335857 -w 25153 -g classic -n '{package-name}-{project-version}'
+          args: -p 335857 -g classic -n '{package-name}-{project-version}'
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
 
       - name: Create Classic Package (GitHub/Wago)
         uses: janpantel/packager@add_wago_addons_target
