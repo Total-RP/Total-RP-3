@@ -19,7 +19,7 @@ jobs:
           submodules: recursive
 
       - name: Create Retail Package
-        uses: janpantel/packager@add_wago_addons_target
+        uses: BigWigsMods/packager@master
         with:
           args: -p 75973 -a q96dnGOm
         env:
@@ -28,7 +28,7 @@ jobs:
           WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
 
       - name: Create Classic Package
-        uses: janpantel/packager@add_wago_addons_target
+        uses: BigWigsMods/packager@master
         with:
           args: -p 335857 -a q96dnGOm -g classic
         env:
