@@ -17,180 +17,137 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+if not Prat then
+	return;
+end
+
 ---@type TRP3_API
 local _, TRP3_API = ...;
-
-local loc = TRP3_API.loc;
 
 local function GUIDIsPlayer(guid)
 	if type(guid) ~= "string" then
 		return false;
 	end
 
-	-- Classic has C_PlayerInfo, and every function _except_ GUIDIsPlayer.
-	-- ¯\_(ツ)_/¯
 	if C_PlayerInfo.GUIDIsPlayer then
 		return C_PlayerInfo.GUIDIsPlayer(guid);
+	else
+		-- Classic: Lacks C_PlayerInfo.GUIDIsPlayer, this is how it works though.
+		return string.find(guid, "^Player%-") ~= nil;
+	end
+end
+
+Prat:AddModuleToLoad(function()
+	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
+	local pratModule = Prat:NewModule(PRAT_MODULE);
+	local PL = pratModule.PL;
+
+	PL:AddLocale(PRAT_MODULE, "enUS", {
+		module_name = "Total RP 3",
+		module_desc = "Total RP 3 customizations for Prat",
+	});
+
+	Prat:SetModuleOptions(pratModule, {
+		name = "Total RP 3",
+		desc = "Total RP 3 customizations for Prat",
+		type = "group",
+		args = {
+			info = {
+				name = "Total RP 3 customizations for Prat",
+				type = "description",
+			}
+		}
+	});
+
+	-- Enable Total RP 3's module by default
+	Prat:SetModuleDefaults(pratModule.name, {
+		profile = {
+			on = true,
+		},
+	});
+
+	-- Runs before Prat add the message to the chat frames
+	function pratModule:Prat_PreAddMessage(_, message, _, event)
+		if TRP3_API.chat.disabledByOOC() then return end;
+
+		-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
+		if not message.GUID or not GUIDIsPlayer(message.GUID) then return end;
+
+		-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
+		-- for that channel in the settings
+		if not TRP3_API.chat.isChannelHandled(event) or not TRP3_API.chat.configIsChannelUsed(event) then return end;
+
+		-- Retrieve all the player info from the message GUID
+		local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
+
+		-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
+		local unitID = TRP3_API.utils.str.unitInfoToID(name, realm);
+		local characterName = unitID;
+
+		--- Extract the color used by Prat so we use it by default
+		---@type ColorMixin
+		local characterColor = TRP3_API.utils.color.extractColorFromText(message.PLAYER);
+
+		-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
+		if realm == TRP3_API.globals.player_realm_id or TRP3_API.configuration.getValue("remove_realm") then
+			characterName = name;
+		end
+
+		-- Get the unit color and name
+		local customizedName = TRP3_API.chat.getFullnameForUnitUsingChatMethod(unitID);
+
+		if customizedName then
+			characterName = customizedName;
+		end
+
+		-- We retrieve the custom color if the option for custom colored names in chat is enabled
+		if TRP3_API.chat.configShowNameCustomColors() then
+			local customColor = TRP3_API.utils.color.getUnitCustomColor(unitID);
+
+			-- If we do have a custom
+			if customColor then
+				-- Check if the option to increase the color contrast is enabled
+				if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+					-- And lighten the color if it is
+					customColor:LightenColorUntilItIsReadable();
+				end
+
+				-- And finally, use the color
+				characterColor = customColor;
+			end
+		end
+
+		if characterColor then
+			-- If we have a valid color in the end, wrap the name around the color's code
+			characterName = characterColor:WrapTextInColorCode(characterName);
+		end
+
+		if TRP3_API.configuration.getValue("chat_show_icon") then
+			local info = TRP3_API.utils.getCharacterInfoTab(unitID);
+			if info and info.characteristics and info.characteristics.IC then
+				characterName = TRP3_API.utils.str.icon(info.characteristics.IC, 15) .. " " .. characterName;
+			end
+		end
+
+		-- Check if this message was flagged as containing a 's at the beggning.
+		-- To avoid having a space between the name of the player and the 's we previously removed the 's
+		-- from the message. We now need to insert it after the player's name, without a space.
+		if TRP3_API.chat.getOwnershipNameID() == message.GUID then
+			characterName = characterName .. "'s";
+		end
+
+		-- Replace the message player name with the colored character name
+		message.PLAYER = characterName
+		message.sS = nil
+		message.SERVER = nil
+		message.Ss = nil
 	end
 
-	-- Fallback for Classic. No idea what validation the C API does.
-	return not not string.find(guid, "^Player%-");
-end
+	function pratModule:OnModuleEnable()
+		Prat.RegisterChatEvent(pratModule, "Prat_PreAddMessage");
+	end
 
-local function onStart()
-	-- Stop right here if Prat is not installed
-	if not Prat then
-		return false, loc.MO_ADDON_NOT_INSTALLED:format("Prat");
-	end;
-
-	Prat:AddModuleToLoad(function()
-
-		-- Create Prat module
-		local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
-		local pratModule = Prat:NewModule(PRAT_MODULE);
-		local PL = pratModule.PL;
-
-		PL:AddLocale(PRAT_MODULE, "enUS", {
-			module_name = "Total RP 3",
-			module_desc = "Total RP 3 customizations for Prat",
-		});
-
-		-- Import Total RP 3 functions
-		local Globals 							= TRP3_API.globals;
-		local unitInfoToID                      = TRP3_API.utils.str.unitInfoToID; -- Get "Player-Realm" unit ID
-		local getFullnameForUnitUsingChatMethod = TRP3_API.chat.getFullnameForUnitUsingChatMethod; -- Get full name using settings
-		local isChannelHandled                  = TRP3_API.chat.isChannelHandled; -- Check if Total RP 3 handles this channel
-		local configIsChannelUsed               = TRP3_API.chat.configIsChannelUsed; -- Check if a channel is enable in settings
-		local configIncreaseNameColorContrast   = AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast; -- Check if the config is to increase color contrast for custom colored names
-		local configShowNameCustomColors        = TRP3_API.chat.configShowNameCustomColors; -- Check if the config is to use custom color for names
-		local getUnitCustomColor                = TRP3_API.utils.color.getUnitCustomColor; -- Get the custom color of a unit using its Unit ID
-		local extractColorFromText              = TRP3_API.utils.color.extractColorFromText; -- Get a Color object from a colored text
-		local getOwnershipNameID                = TRP3_API.chat.getOwnershipNameID; -- Get the latest message ID associated to an ownership mark ('s)
-		local getConfigValue 					= TRP3_API.configuration.getValue;
-		local getCharacterInfoTab 				= TRP3_API.utils.getCharacterInfoTab;
-		local icon 								= TRP3_API.utils.str.icon;
-		local disabledByOOC = TRP3_API.chat.disabledByOOC;
-		-- WoW imports
-		local GetPlayerInfoByGUID = GetPlayerInfoByGUID;
-
-
-		Prat:SetModuleOptions(pratModule, {
-			name = "Total RP 3",
-			desc = "Total RP 3 customizations for Prat",
-			type = "group",
-			args = {
-				info = {
-					name = "Total RP 3 customizations for Prat",
-					type = "description",
-				}
-			}
-		});
-
-		-- Enable Total RP 3's module by default
-		Prat:SetModuleDefaults(pratModule.name, {
-			profile = {
-				on = true,
-			},
-		});
-
-		-- Runs before Prat add the message to the chat frames
-		function pratModule:Prat_PreAddMessage(_, message, _, event)
-
-			if disabledByOOC() then return end;
-
-			-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
-			if not message.GUID or not GUIDIsPlayer(message.GUID) then return end;
-
-			-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
-			-- for that channel in the settings
-			if not isChannelHandled(event) or not configIsChannelUsed(event) then return end;
-
-
-			-- Retrieve all the player info from the message GUID
-			local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(message.GUID);
-
-			-- Calling our unitInfoToID() function to get a "Player-Realm" formatted string (handles cases where realm is nil)
-			local unitID = unitInfoToID(name, realm);
-			local characterName = unitID;
-
-			--- Extract the color used by Prat so we use it by default
-			---@type ColorMixin
-			local characterColor = extractColorFromText(message.PLAYER);
-
-			-- Character name is without the server name is they are from the same realm or if the option to remove realm info is enabled
-			if realm == Globals.player_realm_id or getConfigValue("remove_realm") then
-				characterName = name;
-			end
-
-			-- Get the unit color and name
-			local customizedName = getFullnameForUnitUsingChatMethod(unitID);
-
-			if customizedName then
-				characterName = customizedName;
-			end
-
-			-- We retrieve the custom color if the option for custom colored names in chat is enabled
-			if configShowNameCustomColors() then
-				local customColor = getUnitCustomColor(unitID);
-
-				-- If we do have a custom
-				if customColor then
-					-- Check if the option to increase the color contrast is enabled
-					if configIncreaseNameColorContrast() then
-						-- And lighten the color if it is
-						customColor:LightenColorUntilItIsReadable();
-					end
-
-					-- And finally, use the color
-					characterColor = customColor;
-				end
-			end
-
-			if characterColor then
-				-- If we have a valid color in the end, wrap the name around the color's code
-				characterName = characterColor:WrapTextInColorCode(characterName);
-			end
-
-			if getConfigValue("chat_show_icon") then
-				local info = getCharacterInfoTab(unitID);
-				if info and info.characteristics and info.characteristics.IC then
-					characterName = icon(info.characteristics.IC, 15) .. " " .. characterName;
-				end
-			end
-
-			-- Check if this message was flagged as containing a 's at the beggning.
-			-- To avoid having a space between the name of the player and the 's we previously removed the 's
-			-- from the message. We now need to insert it after the player's name, without a space.
-			if getOwnershipNameID() == message.GUID then
-				characterName = characterName .. "'s";
-			end
-
-			-- Replace the message player name with the colored character name
-			message.PLAYER = characterName
-			message.sS = nil
-			message.SERVER = nil
-			message.Ss = nil
-		end
-
-		function pratModule:OnModuleEnable()
-			Prat.RegisterChatEvent(pratModule, "Prat_PreAddMessage");
-		end
-
-		function pratModule:OnModuleDisable()
-			Prat.UnregisterChatEvent(pratModule, "Prat_PreAddMessage");
-		end
-	end);
-end
-
--- Register a Total RP 3 module that can be disabled in the settings
-TRP3_API.module.registerModule({
-	["name"] = "Prat",
-	["description"] = loc.MO_CHAT_CUSTOMIZATIONS_DESCRIPTION:format("Prat"),
-	["version"] = 1.1,
-	["id"] = "trp3_prat",
-	["onStart"] = onStart,
-	["minVersion"] = 25,
-	["requiredDeps"] = {
-		{"trp3_chatframes",  1.100},
-	}
-});
+	function pratModule:OnModuleDisable()
+		Prat.UnregisterChatEvent(pratModule, "Prat_PreAddMessage");
+	end
+end);
