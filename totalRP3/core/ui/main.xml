@@ -328,6 +328,41 @@
 							</PostClick>
 						</Scripts>
 					</Button>
+					<Button name="TRP3_NewCustomizationsUnlockButton">
+						<Size x="110" y="110"/>
+						<Anchors><Anchor point="BOTTOM" x="5" y="25"/></Anchors>
+						<NormalTexture alphaMode="ADD" atlas="pvpqueue-chest-greatvault-complete"/>
+						<HighlightTexture alpha="0.5" alphaMode="ADD" atlas="pvpqueue-chest-greatvault-collect"/>
+						<Scripts>
+							<PostClick>
+								UIErrorsFrame:AddMessage(ANIMA_DIVERSION_NOT_ENOUGH_CURRENCY, 1.0, 0.0, 0.0);
+								TRP3_API.ui.misc.playUISound(122569);
+								TRP3_API.ui.misc.playAnimation(TRP3_NewCustomizationsUnlockButtonAnimate);
+							</PostClick>
+							<OnShow>
+								TRP3_API.ui.misc.playAnimation(TRP3_NewCustomizationsUnlockButtonAnimGlow);
+							</OnShow>
+							<OnEnter>
+								TRP3_API.ui.tooltip.refresh(TRP3_NewCustomizationsUnlockButton);
+								self.refreshTooltip = true;
+							</OnEnter>
+							<OnLeave>
+								self.refreshTooltip = false;
+								TRP3_MainTooltip:Hide();
+							</OnLeave>
+						</Scripts>
+						<Animations>
+							<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">
+								<Translation duration="0.05" offsetX="-2" smoothing="IN_OUT" order="1"/>
+								<Translation duration="0.1" offsetX="4" smoothing="IN_OUT" order="2"/>
+								<Translation duration="0.05" offsetX="-2" smoothing="IN_OUT" order="3"/>
+							</AnimationGroup>
+							<AnimationGroup name="$parentAnimGlow" looping="REPEAT">
+								<Alpha childKey="CollectGlow" startDelay="0" duration="1" order="1" fromAlpha="0.6" toAlpha="0.9"/>
+								<Alpha childKey="CollectGlow" startDelay="1" duration="1" order="1" fromAlpha="0.9" toAlpha="0.6"/>
+							</AnimationGroup>
+						</Animations>
+					</Button>
 				</Frames>
 			</ScrollFrame>
 
