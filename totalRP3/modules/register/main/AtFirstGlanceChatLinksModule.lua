@@ -24,7 +24,6 @@ local _, TRP3_API = ...;
 local loc = TRP3_API.loc;
 local tcopy = TRP3_API.utils.table.copy;
 local Utils = TRP3_API.utils;
-local Globals = TRP3_API.globals;
 local crop = TRP3_API.Ellyb.Strings.crop;
 local shouldCropTexts = TRP3_API.ui.tooltip.shouldCropTexts;
 
@@ -55,7 +54,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		local glance = tooltipData.glanceTab;
 
-		local icon = Globals.icons.default;
+		local icon = TRP3_InterfaceIcons.Default;
 		if glance.IC and glance.IC:len() > 0 then
 			icon = glance.IC;
 		end

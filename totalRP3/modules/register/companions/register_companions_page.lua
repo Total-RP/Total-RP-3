@@ -173,7 +173,7 @@ end
 
 local function onPlayerIconSelected(icon)
 	draftData.IC = icon;
-	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
 local function displayEdit()
@@ -189,7 +189,7 @@ local function displayEdit()
 		tcopy(draftData, dataTab);
 	end
 
-	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_CompanionsPageInformationEdit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_CompanionsPageInformationEdit_NamePanel_TitleField:SetText(draftData.TI or "");
 	TRP3_CompanionsPageInformationEdit_NamePanel_NameField:SetText(draftData.NA or Globals.player);
 	TRP3_CompanionsPageInformationEdit_About_BckField:SetSelectedIndex(draftData.BK or 1);
@@ -208,7 +208,7 @@ function displayConsult(context)
 
 	TRP3_CompanionsPageInformationConsult_NamePanel_Name:SetText("|cff" .. (dataTab.NH or "ffffff") .. (dataTab.NA or UNKNOWN));
 	TRP3_CompanionsPageInformationConsult_NamePanel_Title:SetText(dataTab.TI or "");
-	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_Icon, dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 
 	for i=1,5 do
 		local glanceData = (context.profile.PE or {})[tostring(i)] or {};
@@ -441,7 +441,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	setupFieldSet(TRP3_CompanionsPageInformationConsult_About, loc.REG_PLAYER_ABOUT, 150);
 	TRP3_CompanionsPageInformationConsult_About_Empty:SetText(loc.REG_PLAYER_ABOUT_EMPTY);
 	TRP3_CompanionsPageInformationConsult_NamePanel_EditButton:SetText(loc.CM_EDIT);
-	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "icon_petfamily_mechanical");
+	setupIconButton(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, TRP3_InterfaceIcons.Gears);
 	setTooltipForSameFrame(TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton, "TOP", 0, 5, loc.CM_ACTIONS);
 	TRP3_CompanionsPageInformationConsult_NamePanel_ActionButton:SetScript("OnClick", onActionClick);
 
@@ -469,7 +469,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	for index=1,5,1 do
 		-- DISPLAY
 		local button = _G["TRP3_CompanionsPageInformationConsult_GlanceSlot" .. index];
-		button:SetDisabledTexture("Interface\\ICONS\\" .. Globals.icons.default);
+		button:SetDisabledTexture("Interface\\ICONS\\" .. TRP3_InterfaceIcons.Default);
 		button:GetDisabledTexture():SetDesaturated(1);
 		button:SetScript("OnClick", TRP3_API.register.glance.onGlanceSlotClick);
 		button:SetScript("OnDoubleClick", TRP3_API.register.glance.onGlanceDoubleClick);

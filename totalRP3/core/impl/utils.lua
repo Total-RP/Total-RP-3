@@ -368,7 +368,7 @@ end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
 function Utils.str.icon(iconPath, iconSize)
-	iconPath = iconPath or Globals.icons.default;
+	iconPath = iconPath or TRP3_InterfaceIcons.Default;
 	return Utils.str.texture(Utils.getIconTexture(iconPath), iconSize);
 end
 

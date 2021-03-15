@@ -23,4 +23,5 @@
 	<Script file="musicList.lua"/>
 	<Script file="imageList.lua"/>
 	<Script file="imageList-classic.lua"/>
+	<Script file="InterfaceIcons.lua"/>
 </Ui>

@@ -80,12 +80,6 @@ TRP3_API.globals = {
 		MSP = "msp",
 	},
 
-	icons = {
-		default = "INV_Misc_QuestionMark",
-		unknown = "INV_Misc_QuestionMark",
-		profile_default = "INV_Misc_GroupLooking",
-	},
-
 	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
 	serious_day = currentDate.month == 4 and currentDate.day == 1,
 

@@ -230,7 +230,7 @@ local function showTemplate2(dataTab)
 		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
 		backdrop.tile = false;
 		frame:SetBackdrop(backdrop);
-		setupIconButton(icon, frameTab.IC or Globals.icons.default);
+		setupIconButton(icon, frameTab.IC or TRP3_InterfaceIcons.Default);
 
 		setupHTMLFonts(text);
 		updateAboutTemplateFonts(text);
@@ -358,7 +358,7 @@ function refreshTemplate2EditDisplay()
 		frame.frameData = frameData;
 		_G[frame:GetName().."Bkg"]:SetSelectedIndex(frameData.BK or 1);
 		_G[frame:GetName().."TextScrollText"]:SetText(frameData.TX or "");
-		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or Globals.icons.default);
+		setupIconButton(_G[frame:GetName().."Icon"], frameData.IC or TRP3_InterfaceIcons.Default);
 		_G[frame:GetName().."Icon"]:SetScript("OnClick", function()
 			showIconBrowser(function(icon)
 				frame.frameData.IC = icon;
@@ -406,9 +406,9 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local TEMPLATE3_MARGIN = 30;
-local TEMPLATE3_ICON_PHYSICAL = Globals.is_classic and "spell_holy_fistofjustice" or "Ability_Warrior_StrengthOfArms";
-local TEMPLATE3_ICON_PSYCHO = Globals.is_classic and "spell_holy_mindvision" or "Spell_Arcane_MindMastery";
-local TEMPLATE3_ICON_HISTORY = "INV_Misc_Book_12";
+local TEMPLATE3_ICON_PHYSICAL = TRP3_InterfaceIcons.PhysicalSection;
+local TEMPLATE3_ICON_PSYCHO = TRP3_InterfaceIcons.TraitSection;
+local TEMPLATE3_ICON_HISTORY = TRP3_InterfaceIcons.HistorySection;
 
 local function setTemplate3PhysBkg(bkg)
 	setBkg(TRP3_RegisterAbout_Edit_Template3_Phys, bkg);
@@ -904,7 +904,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				end
 			end,
 			tooltip = loc.TF_PLAY_THEME,
-			icon = Globals.is_classic and "INV_Misc_Drum_01" or "inv_misc_drum_06"
+			icon = TRP3_InterfaceIcons.TargetPlayMusic,
 		});
 	end
 end);

@@ -201,7 +201,7 @@ end
 -- PEEK
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local GLANCE_NOT_USED_ICON = "INV_Misc_QuestionMark";
+local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
@@ -256,7 +256,7 @@ function TRP3_API.register.getGlanceIconTextures(dataTab, size)
 	for i=1, 5, 1 do
 		local index = tostring(i);
 		if dataTab[index] and dataTab[index].AC then
-			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or Globals.icons.default) .. ":" .. size .. "|t "
+			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or TRP3_InterfaceIcons.Default) .. ":" .. size .. "|t "
 		end
 	end
 	return text;

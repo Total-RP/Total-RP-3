@@ -314,7 +314,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture name="$parentIcon" file="Interface\ICONS\pet_type_beast" hidden="true">
+				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="LEFT" x="9" y="-2"/>

@@ -24,7 +24,6 @@ local _, TRP3_API = ...;
 TRP3_API.importer = {};
 
 -- imports
-local Globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local initList = TRP3_API.ui.list.initList;
@@ -144,7 +143,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		widget.addOn = profiles[id];
 		_G[widget:GetName() .. "Count"]:SetText(profiles[id]);
 		_G[widget:GetName() .. "Name"]:SetText(profile.name);
-		setupIconButton(_G[widget:GetName() .. "Icon"], profile.info.icon or Globals.icons.profile_default);
+		setupIconButton(_G[widget:GetName() .. "Icon"], profile.info.icon or TRP3_InterfaceIcons.ProfileDefault);
 
 		local tooltip = "";
 
