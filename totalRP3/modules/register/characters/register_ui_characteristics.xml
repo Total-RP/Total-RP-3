@@ -362,24 +362,38 @@
 	<Frame name="TRP3_RegisterCharact_RegisterInfoLine" virtual="true">
 		<Size x="0" y="30"/>
 		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parentFieldName" inherits="GameFontNormal" justifyH="LEFT" text="[Field]">
-					<Size x="135" y="10"/>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark">
+					<Size x="16" y="16"/>
 					<Anchors>
-						<Anchor point="LEFT" x="25" y="0"/>
+						<Anchor point="LEFT" x="15" y="0"/>
 					</Anchors>
-					<Color r="0.95" g="0.75" b="0.10"/>
-				</FontString>
-				<FontString name="$parentFieldValue" inherits="GameFontNormal" justifyH="LEFT" text="[Value]">
-					<Size x="0" y="10"/>
-					<Anchors>
-						<Anchor point="LEFT" x="15" y="0" relativePoint="RIGHT" relativeTo="$parentFieldName"/>
-						<Anchor point="RIGHT" x="0" y="0"/>
-					</Anchors>
-					<Color r="0.95" g="0.95" b="0.95"/>
-				</FontString>
+				</Texture>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Frame parentKey="Name" inherits="TRP3_TruncatedTextTemplate">
+				<KeyValues>
+					<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
+					<KeyValue key="fontStringJustifyH" value="LEFT"/>
+				</KeyValues>
+				<Size x="135" y="10"/>
+				<Anchors>
+					<Anchor point="LEFT" x="35" y="0"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="Value" inherits="TRP3_TruncatedTextTemplate">
+				<KeyValues>
+					<KeyValue key="fontStringTemplate" value="GameFontHighlight"/>
+					<KeyValue key="fontStringJustifyH" value="LEFT"/>
+				</KeyValues>
+				<Size x="0" y="10"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeKey="$parent.Name" relativePoint="RIGHT" x="15" y="0"/>
+					<Anchor point="RIGHT" x="0" y="0"/>
+				</Anchors>
+			</Frame>
+		</Frames>
 	</Frame>
 
 	<!-- Register characteristics panel -->

@@ -357,3 +357,46 @@ end
 --]]
 
 TRP3_BackdropTemplateMixin = CreateFromMixins(BackdropTemplateMixin or BackdropTemplatePolyfillMixin);
+
+--[[
+	TRP3_TruncatedTextMixin
+--]]
+
+TRP3_TruncatedTextMixin = CreateFromMixins(FontableFrameMixin);
+
+function TRP3_TruncatedTextMixin:OnLoad()
+	self.Text = self:CreateFontString(nil, self.fontStringLayer, self.fontStringTemplate, self.fontStringSubLayer);
+	self.Text:SetAllPoints(self);
+
+	if self.fontStringColor then
+		self.Text:SetTextColor(self.fontStringColor);
+	end
+
+	if self.fontStringJustifyH then
+		self.Text:SetJustifyH(self.fontStringJustifyH);
+	end
+
+	if self.fontStringJustifyV then
+		self.Text:SetJustifyV(self.fontStringJustifyV);
+	end
+end
+
+function TRP3_TruncatedTextMixin:GetText()
+	return self.Text:GetText();
+end
+
+function TRP3_TruncatedTextMixin:IsTruncated()
+	return self.Text:IsTruncated();
+end
+
+function TRP3_TruncatedTextMixin:SetFormattedText(format, ...)
+	return self.Text:SetFormattedText(format, ...)
+end
+
+function TRP3_TruncatedTextMixin:SetText(text)
+	return self.Text:SetText(text);
+end
+
+--[[override]] function TRP3_TruncatedTextMixin:OnFontObjectUpdated()
+	self.Text:SetFontObject(self:GetFontObject());
+end
