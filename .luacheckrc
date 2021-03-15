@@ -132,6 +132,7 @@ stds.wow = {
 			fields = {
 				"concat",
 				"join",
+				"split",
 				"trim",
 			},
 		},
@@ -153,6 +154,7 @@ stds.wow = {
 		"strtrim",
 		"strupper",
 		"tContains",
+		"tFilter",
 		"time",
 		"tinsert",
 		"tInvert",
@@ -173,6 +175,15 @@ stds.wow = {
 			fields = {
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",
+			},
+		},
+
+		C_Item = {
+			fields = {
+				"DoesItemExistByID",
+				"GetItemIconByID",
+				"GetItemNameByID",
+				"RequestLoadItemDataByID",
 			},
 		},
 
@@ -232,6 +243,13 @@ stds.wow = {
 			},
 		},
 
+		C_Spell = {
+			fields = {
+				"DoesSpellExist",
+				"RequestLoadSpellData",
+			},
+		},
+
 		C_StorePublic = {
 			fields = {
 				"IsDisabledByParentalControls",
@@ -262,10 +280,10 @@ stds.wow = {
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"FCF_GetCurrentChatFrame",
-		"GameTooltip_AddBlankLineToTooltip",
-		"GameTooltip_AddColoredLine",
 		"FindInTableIf",
 		"FormatLargeNumber",
+		"GameTooltip_AddBlankLineToTooltip",
+		"GameTooltip_AddColoredLine",
 		"GameTooltip_AddNormalLine",
 		"GameTooltip_SetDefaultAnchor",
 		"GameTooltip_SetTitle",
@@ -289,7 +307,9 @@ stds.wow = {
 		"GetNumLanguages",
 		"GetPlayerInfoByGUID",
 		"GetRealmName",
+		"GetSpellDescription",
 		"GetSpellInfo",
+		"GetSpellTexture",
 		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTime",
@@ -303,6 +323,7 @@ stds.wow = {
 		"IsInRaid",
 		"IsMounted",
 		"IsShiftKeyDown",
+		"IsSpellKnown",
 		"IsTrialAccount",
 		"IsVeteranTrialAccount",
 		"JoinChannelByName",
@@ -316,6 +337,7 @@ stds.wow = {
 		"PlaySoundFile",
 		"RaidNotice_AddMessage",
 		"RaidWarningFrame",
+		"RegisterCVar",
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
@@ -341,6 +363,7 @@ stds.wow = {
 		"UnitBattlePetLevel",
 		"UnitBattlePetType",
 		"UnitClass",
+		"UnitClassBase",
 		"UnitCreatureType",
 		"UnitExists",
 		"UnitFactionGroup",

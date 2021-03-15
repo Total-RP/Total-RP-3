@@ -30,7 +30,6 @@ local loc = TRP3_API.loc;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim = assert, type, wipe, strconcat, pairs, tinsert, tremove, _G, strtrim;
 local strjoin, unpack, getKeys = strjoin, unpack, Utils.table.keys;
-local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local setupDropDownMenu = TRP3_API.ui.listbox.setupDropDownMenu;
 local setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForSameFrame;
 local getCurrentContext = TRP3_API.navigation.page.getCurrentContext;
@@ -240,9 +239,7 @@ local function refreshPsychoColor(psychoLine, psychoColorField, color)
 end
 
 local function setBkg(backgroundIndex)
-	local backdrop = TRP3_RegisterCharact_CharactPanel:GetBackdrop();
-	backdrop.bgFile = getTiledBackground(backgroundIndex);
-	TRP3_RegisterCharact_CharactPanel:SetBackdrop(backdrop);
+	TRP3_API.ui.frame.setBackdropToBackground(TRP3_RegisterCharact_CharactPanel, backgroundIndex);
 end
 
 local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
