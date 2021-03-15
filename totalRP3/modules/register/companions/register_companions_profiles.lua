@@ -209,7 +209,7 @@ local function decorateProfileList(widget, index)
 	local dataTab = profile.data or {};
 	local mainText = profile.profileName;
 
-	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or Globals.icons.profile_default);
+	setupIconButton(_G[widget:GetName().."Icon"], dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 	_G[widget:GetName().."Name"]:SetText(mainText);
 
 	local listText = "";
@@ -608,14 +608,14 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 							buttonStructure.icon = profile.data.IC;
 						end
 					else
-						buttonStructure.icon = Globals.is_classic and "INV_Misc_Gear_01" or "icon_petfamily_mechanical";
+						buttonStructure.icon = TRP3_InterfaceIcons.Gears;
 						buttonStructure.tooltip = loc.REG_COMPANION_TF_NO;
 					end
 				else
 					if profile and profile.data and profile.data.IC then
 						buttonStructure.icon = profile.data.IC;
 					else
-						buttonStructure.icon = Globals.icons.unknown;
+						buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
 					end
 					if profile and profile.data and profile.data.read == false then
 						buttonStructure.tooltipSub = loc.REG_TT_NOTIF;
@@ -655,10 +655,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						if profile and profile.data and profile.data.IC then
 							buttonStructure.icon = profile.data.IC;
 						else
-							buttonStructure.icon = Globals.icons.unknown;
+							buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
 						end
 					else
-						buttonStructure.icon = "ability_mount_charger";
+						buttonStructure.icon = TRP3_InterfaceIcons.TargetOpenMount;
 						buttonStructure.tooltipSub = "|cffffff00" .. loc.CM_CLICK .. ": |r" .. loc.REG_COMPANION_TF_BOUND_TO;
 						buttonStructure.tooltip = loc.PR_CO_MOUNT;
 					end
@@ -674,7 +674,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					if profile and profile.data and profile.data.IC then
 						buttonStructure.icon = profile.data.IC;
 					else
-						buttonStructure.icon = Globals.icons.unknown;
+						buttonStructure.icon = TRP3_InterfaceIcons.Unknown;
 					end
 					if profile and profile.data and profile.data.read == false then
 						buttonStructure.tooltipSub = "|cff00ff00" .. loc.REG_TT_NOTIF .. "\n" .. buttonStructure.tooltipSub;

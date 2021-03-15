@@ -39,7 +39,6 @@ local refreshTooltip, mainTooltip = TRP3_API.ui.tooltip.refresh, TRP3_MainToolti
 local registerMenu, registerPage = TRP3_API.navigation.menu.registerMenu, TRP3_API.navigation.page.registerPage;
 local setPage = TRP3_API.navigation.page.setPage;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local is_classic = Globals.is_classic;
 
 -- Total RP 3 imports
 local loc = TRP3_API.loc;
@@ -203,7 +202,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		local status3SubText = color("y")..loc.CM_L_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("o")..loc.TB_AFK_MODE..color("w"))).."\n"..color("y")..loc.CM_R_CLICK..": "..color("w")..(loc.TB_GO_TO_MODE:format(color("r")..loc.TB_DND_MODE..color("w")));
 		local Button_Status = {
 			id = "aa_trp3_c",
-			icon = "Ability_Rogue_MasterOfSubtlety",
+			icon = TRP3_InterfaceIcons.ModeNormal,
 			configText = loc.CO_TOOLBAR_CONTENT_STATUS,
 			onUpdate = function(Uibutton, buttonStructure)
 				updateToolbarButton(Uibutton, buttonStructure);
@@ -215,15 +214,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				if UnitIsDND("player") then
 					buttonStructure.tooltip  = status1Text;
 					buttonStructure.tooltipSub  = status1SubText;
-					buttonStructure.icon = is_classic and "Ability_Warrior_Challange" or "Ability_Mage_IncantersAbsorbtion";
+					buttonStructure.icon = TRP3_InterfaceIcons.ModeDND;
 				elseif UnitIsAFK("player") then
 					buttonStructure.tooltip  = status2Text;
 					buttonStructure.tooltipSub  = status2SubText;
-					buttonStructure.icon = "Spell_Nature_Sleep";
+					buttonStructure.icon = TRP3_InterfaceIcons.ModeAFK;
 				else
 					buttonStructure.tooltip  = status3Text;
 					buttonStructure.tooltipSub  = status3SubText;
-					buttonStructure.icon = is_classic and "Ability_Stealth" or "Ability_Rogue_MasterOfSubtlety";
+					buttonStructure.icon = TRP3_InterfaceIcons.ModeNormal;
 				end
 			end,
 			onClick = function(_, _, button)
@@ -244,7 +243,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		TRP3_API.toolbar.toolbarAddButton(Button_Status);
 
 		-- Toolbar RP status
-		local RP_ICON, OOC_ICON = "spell_shadow_charm", is_classic and "Achievement_GuildPerk_EverybodysFriend" or "Inv_misc_grouplooking";
+		local RP_ICON, OOC_ICON = TRP3_InterfaceIcons.ToolbarStatusIC, TRP3_InterfaceIcons.ToolbarStatusOOC;
 		local rpTextOn = loc.TB_RPSTATUS_ON;
 		local rpTextOff = loc.TB_RPSTATUS_OFF;
 		local rpText2 = color("y")..loc.CM_L_CLICK..": "..color("w")..loc.TB_RPSTATUS_TO_ON;
@@ -254,7 +253,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		local Button_RPStatus = {
 			id = "aa_trp3_rpstatus",
-			icon = "Inv_misc_grouplooking",
+			icon = OOC_ICON,
 			configText = loc.CO_TOOLBAR_CONTENT_RPSTATUS,
 			onEnter = function() end,
 			onUpdate = function(Uibutton, buttonStructure)
@@ -284,7 +283,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					tinsert(dropdownItems,{loc.TB_SWITCH_PROFILE, nil});
 					local currentProfileID = getPlayerCurrentProfileID()
 					for key, value in pairs(list) do
-						local icon = value.player.characteristics.IC or Globals.icons.profile_default;
+						local icon = value.player.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault;
 						if key == currentProfileID then
 							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t|cff00ff00 "..value.profileName.."|r", nil});
 						else
@@ -306,8 +305,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 		if TRP3_API.globals.is_classic then
 			-- Show / hide helmet
-			local helmetOffIcon = Ellyb.Icon("spell_nature_invisibilty");
-			local helmetOnIcon = Ellyb.Icon("INV_Helmet_13");
+			local helmetOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOff);
+			local helmetOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOn);
 			local helmTextOn = loc.TB_SWITCH_HELM_ON;
 			local helmTextOff = loc.TB_SWITCH_HELM_OFF;
 			local helmText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_HELM_1);
@@ -352,8 +351,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			TRP3_API.toolbar.toolbarAddButton(Button_Helmet);
 
 			-- Show/hide cloak
-			local cloakOnIcon = Ellyb.Icon("INV_Misc_Cape_18");
-			local cloakOffIcon = Ellyb.Icon("inv_misc_cape_20");
+			local cloakOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarCloakOff);
+			local cloakOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarCloakOn);
 			local capeTextOn =  loc.TB_SWITCH_CAPE_ON;
 			local capeTextOff = loc.TB_SWITCH_CAPE_OFF;
 			local capeText2 = Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.TB_SWITCH_CAPE_1);

@@ -460,7 +460,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	completeName = color:WrapTextInColorCode(completeName);
+	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+		completeName = Utils.Rainbowify(completeName);
+	else
+		completeName = color:WrapTextInColorCode(completeName);
+	end
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
@@ -648,7 +652,11 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			name = targetClassColor:WrapTextInColorCode(name);
+			if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+				name = Utils.Rainbowify(name);
+			else
+				name = targetClassColor:WrapTextInColorCode(name);
+			end
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
 	end
@@ -808,6 +816,9 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
 	end
 
+	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+		petName = Utils.Rainbowify(petName);
+	end
 
 	---@type Ellyb_Color
 	local companionCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
@@ -868,7 +879,11 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			end
 		end
 
-		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+		if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+			ownerFinalName = Utils.Rainbowify(ownerFinalName);
+		else
+			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+		end
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -980,6 +995,10 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 
 	if getConfigValue(CONFIG_CROP_TEXT) then
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
+	end
+
+	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
+		mountCustomName = Utils.Rainbowify(mountCustomName);
 	end
 
 	---@type Ellyb_Color

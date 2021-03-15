@@ -51,7 +51,6 @@ local ignoreID = TRP3_API.register.ignoreID;
 local buildZoneText = Utils.str.buildZoneText;
 local setupEditBoxesNavigation = TRP3_API.ui.frame.setupEditBoxesNavigation;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
-local is_classic = TRP3_API.globals.is_classic;
 
 local showIconBrowser = function(callback)
 	TRP3_API.popup.showPopup(TRP3_API.popup.ICONS, nil, {callback});
@@ -250,7 +249,15 @@ local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
 local FIELD_TITLE_SCALE = 0.3;
 
 local function scaleField(field, containerSize, fieldName)
-	_G[field:GetName() .. (fieldName or "FieldName")]:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
+	local widget;
+
+	if fieldName then
+		widget = _G[field:GetName() .. fieldName];
+	else
+		widget = field.Name;
+	end
+
+	widget:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
 end
 
 -- Create the pin template, above group members
@@ -297,7 +304,7 @@ local function setConsultDisplay(context)
 	local completeName = getCompleteName(dataTab, UNKNOWN);
 	TRP3_RegisterCharact_NamePanel_Name:SetText("|cff" .. (dataTab.CH or "ffffff") .. completeName);
 	TRP3_RegisterCharact_NamePanel_Title:SetText(dataTab.FT or "");
-	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_NamePanel_Icon, dataTab.IC or TRP3_InterfaceIcons.ProfileDefault);
 
 	setBkg(dataTab.bkg or 1);
 
@@ -349,20 +356,21 @@ local function setConsultDisplay(context)
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
-		_G[frame:GetName() .. "FieldName"]:SetText(loc:GetText(registerCharLocals[charName]));
+		frame.Icon:Hide();
+		frame.Name:SetText(loc:GetText(registerCharLocals[charName]));
 		if charName == "EC" then
 			local hexa = dataTab.EH or "ffffff"
-			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
+			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
 		elseif charName == "CL" then
 			local hexa = dataTab.CH or "ffffff";
-			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
+			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
 		else
-			_G[frame:GetName() .. "FieldValue"]:SetText(shownValues[charName]);
+			frame.Value:SetText(shownValues[charName]);
 		end
 		if charName == "RE" and dataTab.RC and # dataTab.RC >= 4 then
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
-			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				if TRP3_API.globals.is_classic then
@@ -411,8 +419,9 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName() .. "FieldName"]:SetText(strconcat(Utils.str.icon(miscStructure.IC, 18), " ", miscStructure.NA or ""));
-			_G[frame:GetName() .. "FieldValue"]:SetText(miscStructure.VA or "");
+			frame.Icon:SetTexture([[interface\icons\]] .. miscStructure.IC);
+			frame.Name:SetText(miscStructure.NA or "");
+			frame.Value:SetText(miscStructure.VA or "");
 			frame:Show();
 			previous = frame;
 		end
@@ -445,8 +454,8 @@ local function setConsultDisplay(context)
 			frame.LeftText:SetText(psychoStructure.LT or "");
 			frame.RightText:SetText(psychoStructure.RT or "");
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or Globals.icons.default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or Globals.icons.default));
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or TRP3_InterfaceIcons.Default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or TRP3_InterfaceIcons.Default));
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
@@ -547,7 +556,7 @@ end
 
 local function onPlayerIconSelected(icon)
 	draftData.IC = icon;
-	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
 local function onEyeColorSelected(red, green, blue)
@@ -573,7 +582,7 @@ local function onPsychoValueChanged(frame, value)
 end
 
 local function refreshEditIcon(frame)
-	setupIconButton(frame, frame.IC or Globals.icons.profile_default);
+	setupIconButton(frame, frame.IC or TRP3_InterfaceIcons.ProfileDefault);
 end
 
 local function onMiscDelete(self)
@@ -600,43 +609,43 @@ local MISC_PRESET = {
 	{
 		NA = loc.REG_PLAYER_MSP_HOUSE,
 		VA = "",
-		IC = is_classic and "INV_Jewelry_Ring_36" or "inv_misc_kingsring1"
+		IC = TRP3_InterfaceIcons.MiscInfoHouse,
 	},
 	{
 		NA = loc.REG_PLAYER_MSP_NICK,
 		VA = "",
-		IC = "Ability_Hunter_BeastCall"
+		IC = TRP3_InterfaceIcons.MiscInfoNickname,
 	},
 	{
 		NA = loc.REG_PLAYER_MSP_MOTTO,
 		VA = "",
-		IC = is_classic and "INV_Scroll_01" or "INV_Inscription_ScrollOfWisdom_01"
+		IC = TRP3_InterfaceIcons.MiscInfoMotto,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_TRAITS,
 		VA = "",
-		IC = "spell_shadow_mindsteal"
+		IC = TRP3_InterfaceIcons.MiscInfoTraits,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_PIERCING,
 		VA = "",
-		IC = "inv_jewelry_ring_14"
+		IC = TRP3_InterfaceIcons.MiscInfoPiercings,
 	},
 	{
 		NA = loc.REG_PLAYER_MISC_PRESET_PRONOUNS,
 		VA = "",
-		IC = is_classic and "inv_scroll_08" or "vas_namechange"
+		IC = TRP3_InterfaceIcons.MiscInfoPronouns,
 	},
 	{
 		NA = loc.REG_PLAYER_TRP2_TATTOO,
 		VA = "",
-		IC = is_classic and "INV_Potion_65" or "INV_Inscription_inkblack01"
+		IC = TRP3_InterfaceIcons.MiscInfoTattoos,
 	},
 	{
 		list = "|cff00ff00" .. loc.REG_PLAYER_ADD_NEW,
 		NA = loc.CM_NAME,
 		VA = loc.CM_VALUE,
-		IC = "INV_Misc_QuestionMark"
+		IC = TRP3_InterfaceIcons.Default,
 	},
 }
 
@@ -1024,7 +1033,7 @@ function setEditDisplay()
 		tcopy(draftData, dataTab);
 	end
 
-	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or Globals.icons.profile_default);
+	setupIconButton(TRP3_RegisterCharact_Edit_NamePanel_Icon, draftData.IC or TRP3_InterfaceIcons.ProfileDefault);
 	TRP3_RegisterCharact_Edit_TitleField:SetText(draftData.TI or "");
 	TRP3_RegisterCharact_Edit_FirstField:SetText(draftData.FN or Globals.player);
 	TRP3_RegisterCharact_Edit_LastField:SetText(draftData.LN or "");
@@ -1069,12 +1078,12 @@ function setEditDisplay()
 		_G[frame:GetName() .. "Icon"]:SetScript("OnClick", function()
 			showIconBrowser(function(icon)
 				miscStructure.IC = icon;
-				setupIconButton(_G[frame:GetName() .. "Icon"], icon or Globals.icons.default);
+				setupIconButton(_G[frame:GetName() .. "Icon"], icon or TRP3_InterfaceIcons.Default);
 			end);
 		end);
 
 		frame.miscIndex = frameIndex;
-		_G[frame:GetName() .. "Icon"].IC = miscStructure.IC or Globals.icons.default;
+		_G[frame:GetName() .. "Icon"].IC = miscStructure.IC or TRP3_InterfaceIcons.Default;
 		_G[frame:GetName() .. "NameField"]:SetText(miscStructure.NA or loc.CM_NAME);
 		_G[frame:GetName() .. "ValueField"]:SetText(miscStructure.VA or loc.CM_VALUE);
 		refreshEditIcon(_G[frame:GetName() .. "Icon"]);
@@ -1142,14 +1151,14 @@ function setEditDisplay()
 		frame.CustomLeftIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.LI = icon;
-				setupIconButton(self, icon or Globals.icons.default);
+				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
 			end);
 		end);
 
 		frame.CustomRightIcon:SetScript("OnClick", function(self)
 			showIconBrowser(function(icon)
 				psychoStructure.RI = icon;
-				setupIconButton(self, icon or Globals.icons.default);
+				setupIconButton(self, icon or TRP3_InterfaceIcons.Default);
 			end);
 		end);
 
@@ -1166,14 +1175,14 @@ function setEditDisplay()
 			frame.LeftText:SetText(preset.LT or "");
 			frame.RightText:SetText(preset.RT or "");
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or Globals.icons.default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or Globals.icons.default));
+			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or TRP3_InterfaceIcons.Default));
+			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or TRP3_InterfaceIcons.Default));
 		else
 			frame.CustomLeftField:SetText(psychoStructure.LT or "");
 			frame.CustomRightField:SetText(psychoStructure.RT or "");
 
-			frame.CustomLeftIcon.IC = psychoStructure.LI or Globals.icons.default;
-			frame.CustomRightIcon.IC = psychoStructure.RI or Globals.icons.default;
+			frame.CustomLeftIcon.IC = psychoStructure.LI or TRP3_InterfaceIcons.Default;
+			frame.CustomRightIcon.IC = psychoStructure.RI or TRP3_InterfaceIcons.Default;
 
 			refreshEditIcon(frame.CustomLeftIcon);
 			refreshEditIcon(frame.CustomRightIcon);
@@ -1359,76 +1368,76 @@ local function initStructures()
 	PSYCHO_PRESETS_UNKOWN = {
 		LT = loc.CM_UNKNOWN,
 		RT = loc.CM_UNKNOWN,
-		LI = "INV_Misc_QuestionMark",
-		RI = "INV_Misc_QuestionMark"
+		LI = TRP3_InterfaceIcons.Default,
+		RI = TRP3_InterfaceIcons.Default,
 	};
 
 	PSYCHO_PRESETS = {
 		{
 			LT = loc.REG_PLAYER_PSYCHO_CHAOTIC,
 			RT = loc.REG_PLAYER_PSYCHO_Loyal,
-			LI = is_classic and "Spell_Shadow_UnholyFrenzy" or "Ability_Rogue_WrongfullyAccused",
-			RI = is_classic and "Spell_Holy_RighteousFury" or "Ability_Paladin_SanctifiedWrath",
+			LI = TRP3_InterfaceIcons.TraitChaotic,
+			RI = TRP3_InterfaceIcons.TraitLoyal,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Chaste,
 			RT = loc.REG_PLAYER_PSYCHO_Luxurieux,
-			LI = "INV_Belt_27",
-			RI = "Spell_Shadow_SummonSuccubus",
+			LI = TRP3_InterfaceIcons.TraitChaste,
+			RI = TRP3_InterfaceIcons.TraitLustful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Indulgent,
 			RT = loc.REG_PLAYER_PSYCHO_Rencunier,
-			LI = "INV_RoseBouquet01",
-			RI = "Ability_Hunter_SniperShot",
+			LI = TRP3_InterfaceIcons.TraitForgiving,
+			RI = TRP3_InterfaceIcons.TraitVindictive,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Genereux,
 			RT = loc.REG_PLAYER_PSYCHO_Egoiste,
-			LI = "INV_Misc_Gift_02",
-			RI = is_classic and "INV_Ingot_03" or "INV_Misc_Coin_02",
+			LI = TRP3_InterfaceIcons.TraitAltruistic,
+			RI = TRP3_InterfaceIcons.TraitSelfish,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Sincere,
 			RT = loc.REG_PLAYER_PSYCHO_Trompeur,
-			LI = is_classic and "Spell_Holy_AuraOfLight" or "INV_Misc_Toy_07",
-			RI = "Ability_Rogue_Disguise",
+			LI = TRP3_InterfaceIcons.TraitTruthful,
+			RI = TRP3_InterfaceIcons.TraitDeceitful,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Misericordieux,
 			RT = loc.REG_PLAYER_PSYCHO_Cruel,
-			LI = "INV_ValentinesCandySack",
-			RI = is_classic and "Ability_Rogue_Eviscerate" or "Ability_Warrior_Trauma",
+			LI = TRP3_InterfaceIcons.TraitGentle,
+			RI = TRP3_InterfaceIcons.TraitBrutal,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Pieux,
 			RT = loc.REG_PLAYER_PSYCHO_Rationnel,
-			LI = is_classic and "Spell_Holy_PowerInfusion" or "Spell_Holy_HolyGuidance",
-			RI = "INV_Gizmo_02",
+			LI = TRP3_InterfaceIcons.TraitSuperstitious,
+			RI = TRP3_InterfaceIcons.TraitRational,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Pragmatique,
 			RT = loc.REG_PLAYER_PSYCHO_Conciliant,
-			LI = is_classic and "Ability_Rogue_DualWeild" or "Ability_Rogue_HonorAmongstThieves",
-			RI = is_classic and "ACHIEVEMENT_GUILDPERK_HAVEGROUP WILLTRAVEL" or "INV_Misc_GroupNeedMore",
+			LI = TRP3_InterfaceIcons.TraitRenegade,
+			RI = TRP3_InterfaceIcons.TraitParagon,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Reflechi,
 			RT = loc.REG_PLAYER_PSYCHO_Impulsif,
-			LI = is_classic and "INV_Misc_PocketWatch_01" or "Spell_Shadow_Brainwash",
-			RI = is_classic and "SPELL_FIRE_INCINERATE" or "Achievement_BG_CaptureFlag_EOS",
+			LI = TRP3_InterfaceIcons.TraitCautious,
+			RI = TRP3_InterfaceIcons.TraitImpulsive,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Acete,
 			RT = loc.REG_PLAYER_PSYCHO_Bonvivant,
-			LI = is_classic and "INV_Misc_Coin_05" or "INV_Misc_Food_PineNut",
-			RI = is_classic and "INV_Misc_Coin_02" or "INV_Misc_Food_99",
+			LI = TRP3_InterfaceIcons.TraitAscetic,
+			RI = TRP3_InterfaceIcons.TraitBonVivant,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Valeureux,
 			RT = loc.REG_PLAYER_PSYCHO_Couard,
-			LI = is_classic and "Ability_Warrior_BattleShout" or "Ability_Paladin_BeaconofLight",
-			RI = "Ability_Druid_Cower",
+			LI = TRP3_InterfaceIcons.TraitValorous,
+			RI = TRP3_InterfaceIcons.TraitSpineless,
 		},
 	};
 
@@ -1547,13 +1556,12 @@ function TRP3_API.register.inits.characteristicsInit()
 	TRP3_RegisterCharact_Edit_FirstFieldText:SetText(loc.REG_PLAYER_FIRSTNAME);
 	TRP3_RegisterCharact_Edit_LastFieldText:SetText(loc.REG_PLAYER_LASTNAME);
 	TRP3_RegisterCharact_Edit_FullTitleFieldText:SetText(loc.REG_PLAYER_FULLTITLE);
-	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon("INV_Misc_Book_09", 25) .. " " .. loc.REG_PLAYER_REGISTER);
-	local PSYCHO_ICON = is_classic and "Spell_Holy_MindSooth" or "Spell_Arcane_MindMastery";
-	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(PSYCHO_ICON, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(PSYCHO_ICON, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
-	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
-	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon("INV_MISC_NOTE_06", 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
+	TRP3_RegisterCharact_CharactPanel_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
+	TRP3_RegisterCharact_CharactPanel_Edit_RegisterTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.DirectorySection, 25) .. " " .. loc.REG_PLAYER_REGISTER);
+	TRP3_RegisterCharact_CharactPanel_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_Edit_PsychoTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.TraitSection, 25) .. " " .. loc.REG_PLAYER_PSYCHO);
+	TRP3_RegisterCharact_CharactPanel_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
+	TRP3_RegisterCharact_CharactPanel_Edit_MiscTitle:SetText(Utils.str.icon(TRP3_InterfaceIcons.MiscInfoSection, 25) .. " " .. loc.REG_PLAYER_MORE_INFO);
 	TRP3_RegisterCharact_Edit_RaceFieldText:SetText(loc.REG_PLAYER_RACE);
 	TRP3_RegisterCharact_Edit_ClassFieldText:SetText(loc.REG_PLAYER_CLASS);
 	TRP3_RegisterCharact_Edit_AgeFieldText:SetText(loc.REG_PLAYER_AGE);

@@ -28,6 +28,8 @@ local faction, faction_loc = UnitFactionGroup("player");
 
 local Player = AddOn_TotalRP3.Player.GetCurrentUser();
 
+local currentDate = date("*t");
+
 -- Public accessor
 TRP3_API.r = {};
 TRP3_API.formats = {
@@ -50,7 +52,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 92,
+	version = 93,
 
 	--@debug@
 	version_display = "-dev",
@@ -78,13 +80,8 @@ TRP3_API.globals = {
 		MSP = "msp",
 	},
 
-	icons = {
-		default = "INV_Misc_QuestionMark",
-		unknown = "INV_Misc_QuestionMark",
-		profile_default = "INV_Misc_GroupLooking",
-	},
-
 	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
+	serious_day = currentDate.month == 4 and currentDate.day == 1,
 
 	-- Profile Constants
 	PSYCHO_DEFAULT_VALUE_V1 = 3,

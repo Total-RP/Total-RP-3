@@ -19,7 +19,7 @@
 		limitations under the License.
 	-->
 
-	<Script file="widgets.lua"/>
+	<Include file="widgets.lua"/>
 
 	<!--
 		BackdropFrameTemplate
@@ -182,6 +182,27 @@
 		</Scripts>
 	</Frame>
 
+	<!--
+		TRP3_TruncatedTextTemplate
+
+		Fontable frame template that displays a tooltip for its contents if
+		they would be truncated.
+	-->
+
+	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin" motionScriptsWhileDisabled="true">
+		<KeyValues>
+			<KeyValue key="fontStringLayer" value="OVERLAY"/>
+			<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
+			<KeyValue key="fontStringSublayer" value="0" type="number"/>
+			<!-- <KeyValue key="fontStringColor" value="NORMAL_FONT_COLOR" type="global"/> -->
+			<!-- <KeyValue key="fontStringJustifyH" value="CENTER"/> -->
+			<!-- <KeyValue key="fontStringJustifyV" value="MIDDLE"/> -->
+		</KeyValues>
+		<Scripts>
+			<OnLoad method="OnLoad" inherit="prepend"/>
+		</Scripts>
+	</Frame>
+
 	<!-- Common close button  -->
 	<Button name="TRP3_CloseButton" inherits="UIPanelCloseButton" virtual="true">
 		<Scripts>
@@ -314,7 +335,7 @@
 				</Texture>
 			</Layer>
 			<Layer level="BORDER">
-				<Texture name="$parentIcon" file="Interface\ICONS\pet_type_beast" hidden="true">
+				<Texture name="$parentIcon" file="Interface\ICONS\INV_Misc_QuestionMark" hidden="true">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="LEFT" x="9" y="-2"/>

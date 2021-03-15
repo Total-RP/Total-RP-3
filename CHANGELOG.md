@@ -13,3 +13,4 @@
 - Fixed an issue causing the battle pet browser to show an incomplete list if the battle pet collection had search filters applied.
 - Fixed invalid icons in the About tab when receiving a profile from other RP addons on Classic.
 - Fixed incorrect information on the tooltip of the NPC speech prefix setting.
+- Fixed an issue with Tukui chat history.

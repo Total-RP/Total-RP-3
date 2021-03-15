@@ -36,8 +36,6 @@ local getPlayerCurrentProfile = TRP3_API.profile.getPlayerCurrentProfile;
 local getPlayerCurrentProfileID = TRP3_API.profile.getPlayerCurrentProfileID;
 local getConfigValue = TRP3_API.configuration.getValue;
 
-local NOTES_ICON = Ellyb.Icon(Globals.is_classic and "INV_Scroll_02" or "Inv_misc_scrollunrolled03b");
-
 local function displayNotes(context)
 
 	local profileID = context.profileID;
@@ -138,7 +136,7 @@ function TRP3_API.register.inits.notesInit()
 			end,
 			tooltip = loc.REG_NOTES_PROFILE,
 			tooltipSub = loc.REG_NOTES_PROFILE_TT,
-			icon = NOTES_ICON
+			icon = Ellyb.Icon(TRP3_InterfaceIcons.TargetNotes),
 		});
 	end)
 end

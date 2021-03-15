@@ -1,18 +1,16 @@
 #@retail@
-## Interface: 90002
+## Interface: 90005
 #@end-retail@
 #@non-retail@
-# ## Interface: 11306
+# ## Interface: 11307
 #@end-non-retail@
 ## Title: Total RP 3
 ## Author: Telkostrasz & Ellypse
 ## Version: @project-version@
 ## Notes: The best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
-## URL: http://totalrp3.info
-## RequiredDeps:
-## OptionalDeps: totalRP3_Debug, WoWUnit
+## OptionalDeps: Prat, WoWUnit
 ## RequiredDeps: totalRP3_Data
-## DefaultState: Enabled
-## LoadOnDemand: 0
 ## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_Colors, TRP3_Notes
+## X-URL: http://totalrp3.info
+
 totalRP3.xml

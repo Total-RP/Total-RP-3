@@ -25,7 +25,7 @@
 		<HitRectInsets left="-2" right="-2" top="-2" bottom="-2"/>
 		<Layers>
 			<Layer level="BORDER">
-				<Texture parentKey="Icon" file="Interface\Icons\Temp">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="-2" y="2"/>
 						<Anchor point="BOTTOMRIGHT" x="2" y="-2"/>

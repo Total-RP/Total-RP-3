@@ -44,7 +44,6 @@ local shiftDown = IsShiftKeyDown;
 local UnitIsPlayer = UnitIsPlayer;
 local getUnitID = TRP3_API.utils.str.getUnitID;
 local numberToHexa = TRP3_API.utils.color.numberToHexa;
-local is_classic = globals.is_classic;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 local CONFIG_UI_SOUNDS = "ui_sounds";
@@ -763,106 +762,11 @@ end
 -- Textures tools
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local unitTexture = {
-	Human = {
-		is_classic and "Ability_Warrior_Revenge" or "Achievement_Character_Human_Male",
-		is_classic and "INV_Misc_Head_Human_02" or "Achievement_Character_Human_Female",
-	},
-	Gnome = {
-		is_classic and "INV_Misc_Head_Gnome_01" or "Achievement_Character_Gnome_Male",
-		is_classic and "INV_Misc_Head_Gnome_02" or "Achievement_Character_Gnome_Female",
-	},
-	Scourge = {
-		is_classic and "INV_Misc_Head_Undead_01" or "Achievement_Character_Undead_Male",
-		is_classic and "INV_Misc_Head_Undead_02" or "Achievement_Character_Undead_Female",
-	},
-	NightElf = {
-		is_classic and "Ability_Ambush" or "Achievement_Character_Nightelf_Male",
-		"Achievement_Character_Nightelf_Female",
-	},
-	Dwarf = {
-		"Achievement_Character_Dwarf_Male",
-		is_classic and "INV_Misc_Head_Dwarf_02" or "Achievement_Character_Dwarf_Female",
-	},
-	Draenei = {
-		"Achievement_Character_Draenei_Male",
-		"Achievement_Character_Draenei_Female",
-	},
-	Orc = {
-		is_classic and "Ability_Warrior_WarCry" or "Achievement_Character_Orc_Male",
-		is_classic and "INV_Misc_Head_Orc_02" or "Achievement_Character_Orc_Female",
-	},
-	BloodElf = {
-		"Achievement_Character_Bloodelf_Male",
-		"Achievement_Character_Bloodelf_Female",
-	},
-	Troll = {
-		"Achievement_Character_Troll_Male",
-		is_classic and "INV_Misc_Head_Troll_02" or "Achievement_Character_Troll_Female",
-	},
-	Tauren = {
-		is_classic and "Spell_Holy_BlessingOfStamina" or "Achievement_Character_Tauren_Male",
-		is_classic and "INV_Misc_Head_Tauren_02" or "Achievement_Character_Tauren_Female",
-	},
-	Worgen = {
-		"achievement_worganhead",
-		"Ability_Racial_Viciousness",
-	},
-	Goblin = {
-		"Ability_Racial_RocketJump",
-		"Ability_Racial_RocketJump",
-	},
-	Pandaren = {
-		"Achievement_Guild_ClassyPanda",
-		"Achievement_Character_Pandaren_Female",
-	},
-	Nightborne = {
-		"Ability_Racial_DispelIllusions",
-		"Ability_Racial_Masquerade",
-	},
-	LightforgedDraenei = {
-		"Ability_Racial_FinalVerdict",
-		"Achievement_AlliedRace_LightforgedDraenei",
-	},
-	VoidElf = {
-		"Ability_Racial_EntropicEmbrace",
-		"Ability_Racial_PreturnaturalCalm",
-	},
-	HighmountainTauren = {
-		"Ability_Racial_BullRush",
-		"Achievement_AlliedRace_HighmountainTauren",
-	},
-	MagharOrc = {
-		"ACHIEVEMENT_CHARACTER_ORC_MALE_BRN",
-		"ACHIEVEMENT_CHARACTER_ORC_FEMALE_BRN"
-	},
-	DarkIronDwarf = {
-		"Ability_Racial_Fireblood",
-		"ability_racial_foregedinFlames"
-	},
-	KulTiran = {
-		"Achievement_Boss_Zuldazar_Manceroy_Mestrah",
-		"Ability_racial_childofthesea"
-	},
-	ZandalariTroll = {
-		"INV_ZandalariMaleHead",
-		"INV_ZandalariFemaleHead"
-	},
-	Mechagnome = {
-		"Ability_racial_hyperorganiclightoriginator",
-		"Inv_plate_mechagnome_c_01helm"
-	},
-	Vulpera = {
-		"Ability_racial_nosefortrouble",
-		"Ability_racial_nosefortrouble"
-	}
-};
-
 TRP3_API.ui.misc.getUnitTexture = function(race, gender)
-	if unitTexture[race] and unitTexture[race][gender - 1] then
-		return unitTexture[race][gender - 1];
-	end
-	return globals.icons.default;
+	local raceToken = race;
+	local genderToken = (gender == 2) and "Female" or "Male";
+
+	return TRP3_InterfaceIcons[raceToken .. genderToken] or TRP3_InterfaceIcons.Default;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

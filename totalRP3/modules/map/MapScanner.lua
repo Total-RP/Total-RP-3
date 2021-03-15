@@ -28,7 +28,7 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 local MapScanner, _private = Ellyb.Class("MapScanner");
 
 ---@type Icon
-MapScanner.scanIcon = Ellyb.Icon("Inv_misc_enggizmos_20");
+MapScanner.scanIcon = Ellyb.Icon(TRP3_InterfaceIcons.DefaultScanIcon);
 MapScanner.scanOptionText = UNKNOWN;
 MapScanner.scanTitle = UNKNOWN;
 MapScanner.duration = 3;

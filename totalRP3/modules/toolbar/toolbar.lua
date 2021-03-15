@@ -102,8 +102,8 @@ local function onStart()
 					uiButton:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 					tinsert(uiButtons, uiButton);
 				end
-				uiButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon or Globals.icons.default));
-				uiButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon or Globals.icons.default));
+				uiButton:SetNormalTexture(Utils.getIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default));
+				uiButton:SetPushedTexture(Utils.getIconTexture(buttonStructure.icon or TRP3_InterfaceIcons.Default));
 				uiButton:GetPushedTexture():SetDesaturated(1);
 				uiButton:SetPoint("TOPLEFT", x, y);
 				uiButton:SetScript("OnClick", function(self, button)

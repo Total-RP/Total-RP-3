@@ -179,11 +179,11 @@ module.TryRegisterField("PS", {
 			elseif trait.LT and trait.RT then
 				-- We'll strip " and ] from the names for simplicity if present.
 				local leftName = trait.LT:gsub("[%]=]", "");
-				local leftIcon = trait.LI or Globals.icons.default;
+				local leftIcon = trait.LI or TRP3_InterfaceIcons.Default;
 				local leftColor = trait.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
 
 				local rightName = trait.RT:gsub("[%]=]", "");
-				local rightIcon = trait.RI or Globals.icons.default;
+				local rightIcon = trait.RI or TRP3_InterfaceIcons.Default;
 				local rightColor = trait.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
 
 				table.insert(out, PS_CUSTOM_FORMAT:format(
@@ -261,9 +261,9 @@ module.TryRegisterField("PS", {
 				struct.V2 = v2;
 			elseif struct.LT and struct.RT then
 				-- It's custom, default any missing fields.
-				struct.LI = struct.LI or Globals.icons.default;
+				struct.LI = struct.LI or TRP3_InterfaceIcons.Default;
 				struct.LC = struct.LC or Globals.PSYCHO_DEFAULT_LEFT_COLOR:GetRGBTable();
-				struct.RI = struct.RI or Globals.icons.default;
+				struct.RI = struct.RI or TRP3_InterfaceIcons.Default;
 				struct.RC = struct.RC or Globals.PSYCHO_DEFAULT_RIGHT_COLOR:GetRGBTable();
 			end
 

@@ -27,7 +27,6 @@ local getConfigValue = TRP3_API.configuration.getValue;
 local setConfigValue = TRP3_API.configuration.setValue;
 local registerConfigKey = TRP3_API.configuration.registerConfigKey;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local is_classic = TRP3_API.globals.is_classic;
 --endregion
 
 --region Ellyb imports
@@ -44,8 +43,8 @@ local CONFIG_HIDE_BUTTON_IF_EMPTY = "HIDE_MAP_BUTTON_IF_EMPTY";
 ---@type Button
 local WorldMapButton = TRP3_WorldMapButton;
 
-local NORMAL_STATE_MAP_ICON = Ellyb.Icon(is_classic and "INV_Misc_Map_01" or "icon_treasuremap");
-local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(is_classic and "Spell_Nature_TimeStop" or "ability_mage_timewarp")
+local NORMAL_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanReady);
+local ON_COOLDOWN_STATE_MAP_ICON = Ellyb.Icon(TRP3_InterfaceIcons.ScanCooldown);
 
 --region Configuration
 Events.registerCallback(Events.WORKFLOW_ON_LOADED, function()
