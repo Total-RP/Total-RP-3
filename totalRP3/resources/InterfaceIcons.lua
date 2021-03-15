@@ -160,7 +160,7 @@ TRP3_InterfaceIcons = {
 
 	TraitAltruistic    = { "inv_misc_gift_02" },
 	TraitAscetic       = { "inv_misc_food_pinenut", "inv_misc_coin_05" },
-	TraitBonViviant    = { "inv_misc_food_99", "inv_misc_coin_02" },
+	TraitBonVivant    = { "inv_misc_food_99", "inv_misc_coin_02" },
 	TraitBrutal        = { "ability_warrior_trauma", "ability_rogue_eviscerate" },
 	TraitCautious      = { "spell_shadow_brainwash", "inv_misc_pocketwatch_01" },
 	TraitChaotic       = { "ability_rogue_wrongfullyaccused", "spell_shadow_unholyfrenzy" },
