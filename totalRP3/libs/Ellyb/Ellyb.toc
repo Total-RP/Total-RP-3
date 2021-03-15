@@ -1,0 +1,8 @@
+## Interface: 80100
+## Title: Ellyb
+## Author: Ellypse & Telkostrasz
+## Version: @project-version@
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+Ellyb.xml
