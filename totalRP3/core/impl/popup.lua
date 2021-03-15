@@ -22,6 +22,7 @@
 TRP3_API.popup = {};
 
 -- imports
+local Ellyb = TRP3_API.Ellyb;
 local Utils = TRP3_API.utils;
 local loc = TRP3_API.loc;
 local initList = TRP3_API.ui.list.initList;
@@ -180,6 +181,27 @@ StaticPopupDialogs["TRP3_INPUT_NUMBER"] = {
 	hasEditBox = true,
 };
 
+
+---@type Frame
+local CopyTextPopup = TRP3_StaticPopUpCopyDropdown;
+CopyTextPopup.Button.Text:SetText(CLOSE);
+Ellyb.EditBoxes.makeReadOnly(CopyTextPopup.CopyText);
+Ellyb.EditBoxes.selectAllTextOnFocus(CopyTextPopup.CopyText);
+Ellyb.EditBoxes.looseFocusOnEscape(CopyTextPopup.CopyText);
+-- Clear global variable
+_G["TRP3_StaticPopUpCopyDropdown"] = nil;
+
+CopyTextPopup.CopyText:HookScript("OnEnterPressed",	function() HideUIPanel(CopyTextPopup) end);
+CopyTextPopup.CopyText:HookScript("OnEscapePressed", function() HideUIPanel(CopyTextPopup) end);
+CopyTextPopup.CopyText:HookScript("OnKeyDown", function(_, key)
+	if key == "C" and IsControlKeyDown() then
+		local systemInfo = ChatTypeInfo["SYSTEM"];
+		UIErrorsFrame:AddMessage(loc.COPY_SYSTEM_MESSAGE, systemInfo.r, systemInfo.g, systemInfo.b);
+		PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+		HideUIPanel(CopyTextPopup);
+	end
+end);
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups methods
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -261,6 +283,40 @@ function TRP3_API.popup.showNumberInputPopup(text, onAccept, onCancel, default)
 		_G[dialog:GetName().."EditBox"]:SetNumber(default or false);
 		_G[dialog:GetName().."EditBox"]:HighlightText();
 	end
+end
+
+--- Open a popup with an autofocused text field to let the user copy the a text selected via dropdown
+---@param copyText string The text we want to let the user copy
+---@param customText string A custom text to display, instead of the default hint to copy the URL
+---@param customShortcutInstructions string A custom text for the copy and paste shortcut instructions.
+---@overload fun(url: string)
+---@overload fun(url: string, customText: string)
+function TRP3_API.popup.showCopyDropdownPopup(copyTexts, customText, customShortcutInstructions)
+	if type(copyTexts) ~= "table" or #copyTexts == 0 then return end
+	local popupText = customText and (customText .. "\n\n") or "";
+	if not customShortcutInstructions then
+		customShortcutInstructions = loc.COPY_DROPDOWN_POPUP_TEXT;
+	end
+	popupText = popupText .. customShortcutInstructions:format(Ellyb.ColorManager.ORANGE(Ellyb.System.SHORTCUTS.COPY), Ellyb.ColorManager.ORANGE(Ellyb.System.SHORTCUTS.PASTE));
+	CopyTextPopup.Text:SetText(popupText);
+	CopyTextPopup.CopyText:SetText(copyTexts[1]);
+	if #copyTexts > 1 then
+		CopyTextPopup.DropdownButton:Show();
+		local copyTextsTable = {};
+		for i, text in ipairs(copyTexts) do
+			copyTextsTable[i] = {text, text};
+		end
+		TRP3_API.ui.listbox.setupDropDownMenu(CopyTextPopup.DropdownButton, copyTextsTable, function(copyText)
+			CopyTextPopup.CopyText:SetText(copyText);
+			CopyTextPopup.CopyText:SetFocus();
+			CopyTextPopup.CopyText:HighlightText();
+		end, 0, false, false);
+	else
+		CopyTextPopup.DropdownButton:Hide();
+	end
+	CopyTextPopup:SetHeight(120 + CopyTextPopup.Text:GetHeight());
+	CopyTextPopup:Show();
+	CopyTextPopup.CopyText:SetFocus();
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

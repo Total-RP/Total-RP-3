@@ -45,7 +45,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 				local DATE_FORMAT = "%Y-%m-%d around %H:%M";
 				reportText = reportText .. "\n\n" .. loc.REG_REPORT_PLAYER_TEMPLATE_DATE:format(date(DATE_FORMAT, profile.time));
 			end
-			Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText);
+			Ellyb.Popups:OpenURL("https://battle.net/support/help/product/wow/197/1501/solution", reportText, nil, loc.COPY_SYSTEM_MESSAGE);
 		end,
 		tooltip =  REPORT_ICON:GenerateString(25) .. loc.REG_REPORT_PLAYER_PROFILE,
 		tooltipSub = loc.REG_REPORT_PLAYER_PROFILE_TT,
