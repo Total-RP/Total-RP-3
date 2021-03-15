@@ -1,6 +1,6 @@
 ---
 name: Pull Request
-on:   pull_request
+on: pull_request
 
 jobs:
   build:
@@ -8,9 +8,9 @@ jobs:
     steps:
       - name: Check Destination Branch
         uses: marocchino/sticky-pull-request-comment@v1.4.0
-        if:   github.base_ref == 'master'
+        if: github.base_ref == 'master'
         with:
-          message:      Warning - This pull request is targeting master.
+          message: Warning - This pull request is targeting master.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
@@ -23,17 +23,17 @@ jobs:
       - name: Run Luacheck
         uses: nebularg/actions-luacheck@v1
         with:
-          args:     --no-color -q
+          args: --no-color -q
           annotate: warning
 
       - name: Run editorconfig-checker
         uses: wow-rp-addons/actions-editorconfig-check@v1.0.1
         with:
-          args:  -no-color
+          args: -no-color
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
 
       - name: Create Retail Package
-        uses: Total-RP/packager@master
+        uses: BigWigsMods/packager@master
         with:
           args: -d -z
 
@@ -43,7 +43,7 @@ jobs:
           path: .release/
 
       - name: Create Classic Package
-        uses: Total-RP/packager@master
+        uses: BigWigsMods/packager@master
         with:
           args: -d -z -g classic
 
@@ -52,8 +52,8 @@ jobs:
           name: totalRP3-PR-${{ github.event.number }}-classic
           path: .release/
 
-      - name:  Send Webhook Notification
-        if:    failure()
+      - name: Send Webhook Notification
+        if: failure()
         run: |
           git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
           bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
