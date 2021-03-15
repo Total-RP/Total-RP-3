@@ -1421,7 +1421,7 @@ local function initStructures()
 			LT = loc.REG_PLAYER_PSYCHO_Acete,
 			RT = loc.REG_PLAYER_PSYCHO_Bonvivant,
 			LI = TRP3_InterfaceIcons.TraitAscetic,
-			RI = TRP3_InterfaceIcons.TraitBonViviant,
+			RI = TRP3_InterfaceIcons.TraitBonVivant,
 		},
 		{
 			LT = loc.REG_PLAYER_PSYCHO_Valeureux,
