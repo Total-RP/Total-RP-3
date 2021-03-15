@@ -1449,11 +1449,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	REG_COMPANION_BIND_TO_PET = "Pet",
 	UI_PET_BROWSER_ACCEPT = "Assign",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
@@ -1480,6 +1475,20 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with Tukui chat history.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
+	UNIT_POPUPS_MODULE_DESCRIPTION = "Adds integration with right-click menus on unit frames and player names in chat frames.",
+	UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER = "Roleplay Options",
+	UNIT_POPUPS_OPEN_PROFILE = "Open Profile",
+	UNIT_POPUPS_CURRENT_PROFILE = "Current Profile",
+	UNIT_POPUPS_CURRENT_PROFILE_NAME = "Current Profile: %1$s",
+	UNIT_POPUPS_CHARACTER_STATUS = "Character Status",
+
 };
 
 -- Use Ellyb to generate the Localization system

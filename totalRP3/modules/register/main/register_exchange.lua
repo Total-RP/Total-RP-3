@@ -487,73 +487,76 @@ end
 
 local UNIT_TOKENS = { "target", "mouseover", "player", "focus" };
 UNIT_TOKENS = tInvert(UNIT_TOKENS);
+
+function TRP3_API.slash.openProfile(...)
+	local args = {...};
+
+	if commandOpeningTimerHandle then
+		commandOpeningTimerHandle:Cancel();
+	end
+
+	if #args > 1 then
+		displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
+		return
+	elseif #args == 1 then
+		characterToOpen = table.concat(args, " ");
+
+		if UNIT_TOKENS[characterToOpen:lower()] then
+			-- If we typed a unit token we resolve it
+			characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
+		else
+			-- Capitalizing first letter of the name/realm, just in case someone is lazy.
+			local name, realm = AddOn_Chomp.NameSplitRealm(characterToOpen);
+
+			-- If the split fails due to the user only giving a name then
+			-- neither a name/realm will be returned; in this case we'll
+			-- assume the input is name-only and use the current realm.
+
+			name  = name or characterToOpen;
+			realm = realm or TRP3_API.globals.player_realm_id;
+
+			name  = string.gsub(name, "^%l", string.upper);
+			realm = string.gsub(realm, "^%l", string.upper);
+
+			characterToOpen = AddOn_Chomp.NameMergedRealm(name, realm);
+		end
+
+		-- If no realm has been entered, we use the player's realm automatically
+		if not characterToOpen:find("-") then
+			characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
+		end
+	else
+		-- If no name is provided, we use the target ID
+		if UnitIsPlayer("target") then
+			characterToOpen = Utils.str.getUnitID("target");
+		else
+			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
+			return
+		end
+	end
+
+	sendQuery(characterToOpen);
+	TRP3_API.r.sendMSPQuery(characterToOpen);
+	-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
+	if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
+		TRP3_API.navigation.openMainFrame();
+		TRP3_API.register.openPageByUnitID(characterToOpen);
+		characterToOpen = "";
+	else
+		displayMessage(loc.PR_SLASH_OPEN_WAITING);
+
+		-- If after 1 minute they didn't reply, abort
+		commandOpeningTimerHandle = newTimer(60, function()
+			displayMessage(loc.PR_SLASH_OPEN_ABORTING);
+			characterToOpen = "";
+		end)
+	end
+end
+
 TRP3_API.slash.registerCommand({
 	id = "open",
 	helpLine = " " .. loc.PR_SLASH_OPEN_HELP,
-	handler = function(...)
-		local args = {...};
-
-		if commandOpeningTimerHandle then
-			commandOpeningTimerHandle:Cancel();
-		end
-
-		if #args > 1 then
-			displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
-			return
-		elseif #args == 1 then
-			characterToOpen = table.concat(args, " ");
-
-			if UNIT_TOKENS[characterToOpen:lower()] then
-				-- If we typed a unit token we resolve it
-				characterToOpen = Utils.str.getUnitID(characterToOpen:lower());
-			else
-				-- Capitalizing first letter of the name/realm, just in case someone is lazy.
-				local name, realm = AddOn_Chomp.NameSplitRealm(characterToOpen);
-
-				-- If the split fails due to the user only giving a name then
-				-- neither a name/realm will be returned; in this case we'll
-				-- assume the input is name-only and use the current realm.
-
-				name  = name or characterToOpen;
-				realm = realm or TRP3_API.globals.player_realm_id;
-
-				name  = string.gsub(name, "^%l", string.upper);
-				realm = string.gsub(realm, "^%l", string.upper);
-
-				characterToOpen = AddOn_Chomp.NameMergedRealm(name, realm);
-			end
-
-			-- If no realm has been entered, we use the player's realm automatically
-			if not characterToOpen:find("-") then
-				characterToOpen = characterToOpen .. "-" .. TRP3_API.globals.player_realm_id;
-			end
-		else
-			-- If no name is provided, we use the target ID
-			if UnitIsPlayer("target") then
-				characterToOpen = Utils.str.getUnitID("target");
-			else
-				displayMessage(loc.PR_SLASH_OPEN_EXAMPLE);
-				return
-			end
-		end
-
-		sendQuery(characterToOpen);
-		TRP3_API.r.sendMSPQuery(characterToOpen);
-		-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
-		if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
-			TRP3_API.navigation.openMainFrame();
-			TRP3_API.register.openPageByUnitID(characterToOpen);
-			characterToOpen = "";
-		else
-			displayMessage(loc.PR_SLASH_OPEN_WAITING);
-
-			-- If after 1 minute they didn't reply, abort
-			commandOpeningTimerHandle = newTimer(60, function()
-				displayMessage(loc.PR_SLASH_OPEN_ABORTING);
-				characterToOpen = "";
-			end)
-		end
-	end
+	handler = TRP3_API.slash.openProfile,
 })
 
 -- Event for the "/trp3 open" command
