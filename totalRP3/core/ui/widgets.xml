@@ -19,7 +19,7 @@
 		limitations under the License.
 	-->
 
-	<Script file="widgets.lua"/>
+	<Include file="widgets.lua"/>
 
 	<!--
 		BackdropFrameTemplate
@@ -179,6 +179,27 @@
 			<OnHide>
 				MSA_CloseDropDownMenus();
 			</OnHide>
+		</Scripts>
+	</Frame>
+
+	<!--
+		TRP3_TruncatedTextTemplate
+
+		Fontable frame template that displays a tooltip for its contents if
+		they would be truncated.
+	-->
+
+	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin" motionScriptsWhileDisabled="true">
+		<KeyValues>
+			<KeyValue key="fontStringLayer" value="OVERLAY"/>
+			<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
+			<KeyValue key="fontStringSublayer" value="0" type="number"/>
+			<!-- <KeyValue key="fontStringColor" value="NORMAL_FONT_COLOR" type="global"/> -->
+			<!-- <KeyValue key="fontStringJustifyH" value="CENTER"/> -->
+			<!-- <KeyValue key="fontStringJustifyV" value="MIDDLE"/> -->
+		</KeyValues>
+		<Scripts>
+			<OnLoad method="OnLoad" inherit="prepend"/>
 		</Scripts>
 	</Frame>
 

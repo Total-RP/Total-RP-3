@@ -249,7 +249,15 @@ local CHAR_KEYS = { "RA", "CL", "AG", "EC", "HE", "WE", "BP", "RE", "RS" };
 local FIELD_TITLE_SCALE = 0.3;
 
 local function scaleField(field, containerSize, fieldName)
-	_G[field:GetName() .. (fieldName or "FieldName")]:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
+	local widget;
+
+	if fieldName then
+		widget = _G[field:GetName() .. fieldName];
+	else
+		widget = field.Name;
+	end
+
+	widget:SetSize(containerSize * FIELD_TITLE_SCALE, 18);
 end
 
 -- Create the pin template, above group members
@@ -348,20 +356,21 @@ local function setConsultDisplay(context)
 		frame:ClearAllPoints();
 		frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 10);
 		frame:SetPoint("RIGHT", 0, 0);
-		_G[frame:GetName() .. "FieldName"]:SetText(loc:GetText(registerCharLocals[charName]));
+		frame.Icon:Hide();
+		frame.Name:SetText(loc:GetText(registerCharLocals[charName]));
 		if charName == "EC" then
 			local hexa = dataTab.EH or "ffffff"
-			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
+			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
 		elseif charName == "CL" then
 			local hexa = dataTab.CH or "ffffff";
-			_G[frame:GetName() .. "FieldValue"]:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
+			frame.Value:SetText("|cff" .. hexa .. shownValues[charName] .. "|r");
 		else
-			_G[frame:GetName() .. "FieldValue"]:SetText(shownValues[charName]);
+			frame.Value:SetText(shownValues[charName]);
 		end
 		if charName == "RE" and dataTab.RC and # dataTab.RC >= 4 then
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:Show();
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:ClearAllPoints();
-			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame:GetName() .. "FieldValue", "LEFT", -5, 0);
+			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
 				if TRP3_API.globals.is_classic then
@@ -410,8 +419,9 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			_G[frame:GetName() .. "FieldName"]:SetText(strconcat(Utils.str.icon(miscStructure.IC, 18), " ", miscStructure.NA or ""));
-			_G[frame:GetName() .. "FieldValue"]:SetText(miscStructure.VA or "");
+			frame.Icon:SetTexture([[interface\icons\]] .. miscStructure.IC);
+			frame.Name:SetText(miscStructure.NA or "");
+			frame.Value:SetText(miscStructure.VA or "");
 			frame:Show();
 			previous = frame;
 		end

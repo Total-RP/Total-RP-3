@@ -377,6 +377,7 @@ stds.wow = {
 		"BaseMapPoiPinMixin",
 		"ChatFrame1EditBox",
 		"ChatTypeInfo",
+		"FontableFrameMixin",
 		"GameFontNormal",
 		"GameFontNormalHuge",
 		"GameFontNormalHuge3",
