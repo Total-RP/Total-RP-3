@@ -1501,7 +1501,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS = "Disable customizations on OOC units",
 	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, disables nameplate customizations on units that are out-of-character.",
 	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS = "Hide non-roleplay units",
-	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.",
+	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.|n|n|cffff0000Warning:|r This setting is highly experimental and may cause issues with other addons that modify nameplates. If you experience issues, we recommend disabling this feature.",
 	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Element settings",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
