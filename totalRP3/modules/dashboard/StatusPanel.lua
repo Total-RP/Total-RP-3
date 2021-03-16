@@ -298,16 +298,8 @@ end
 --[[override]] function DashboardRPStatusMenuMixin:OnMenuButtonClicked(button)
 	DashboardStatusMenuMixin.OnMenuButtonClicked(self, button);
 
-	-- Update the character data on the current user profile.
 	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	local character = currentUser:GetInfo("character");
-	if character.RP == button.value then
-		-- Value isn't changing.
-		return;
-	end
-
-	character.RP = button.value;
-	IncrementCharacterDataVersion(currentUser);
+	currentUser:SetRoleplayStatus(button.value);
 end
 
 -- Mixin for the Roleplay Experience dashboard menu.

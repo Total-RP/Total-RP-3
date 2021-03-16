@@ -22,6 +22,16 @@ local Ellyb = Ellyb(...);
 -- Imports.
 local Enums = AddOn_TotalRP3.Enums;
 
+local function IncrementSubtableVersion(player, subtableName)
+	local subtable = player:GetInfo(subtableName);
+	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
+
+	local playerName = TRP3_API.globals.player_id;
+	local profileID = player:GetProfileID();
+
+	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
+end
+
 ---@class Player : Object
 local Player, _private = Ellyb.Class("Player")
 ---@type Player
@@ -249,6 +259,18 @@ function CurrentUser:GetProfile()
 	return TRP3_API.profile.getPlayerCurrentProfile().player;
 end
 
+function CurrentUser:GetProfileID()
+	return TRP3_API.profile.getPlayerCurrentProfileID();
+end
+
+function CurrentUser:GetProfileName()
+	return TRP3_API.profile.getPlayerCurrentProfile().profileName;
+end
+
+function CurrentUser:SetProfileID(profileID)
+	TRP3_API.profile.selectProfile(profileID);
+end
+
 function CurrentUser:GetCharacterID()
 	return TRP3_API.globals.player_id;
 end
@@ -265,6 +287,19 @@ function CurrentUser:GetAccountType()
 	else
 		return AddOn_TotalRP3.Enums.ACCOUNT_TYPE.REGULAR;
 	end
+end
+
+function CurrentUser:SetRoleplayStatus(roleplayStatus)
+	local currentStatus = self:GetRoleplayStatus();
+
+	if currentStatus == roleplayStatus then
+		return;
+	end
+
+	local characterData = self:GetInfo("character");
+	characterData.RP = roleplayStatus;
+
+	IncrementSubtableVersion(self, "character");
 end
 
 currentUser = CurrentUser()
