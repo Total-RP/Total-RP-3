@@ -161,9 +161,6 @@ function TRP3_NamePlates:OnModuleEnable()
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
-	-- Our callback system is "helpful" and doesn't pass through the source
-	-- event/message names, so we need to bind things manually here...
-
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", function(...) return self:OnNamePlateUnitAdded(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", function(...) return self:OnNamePlateUnitRemoved(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", function(...) return self:OnUnitNameUpdate(...); end);
