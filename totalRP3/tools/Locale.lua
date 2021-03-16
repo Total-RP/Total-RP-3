@@ -1484,6 +1484,13 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
+	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
+	UNIT_POPUPS_MODULE_DESCRIPTION = "Adds integration with right-click menus on unit frames and player names in chat frames.",
+	UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER = "Roleplay Options",
+	UNIT_POPUPS_OPEN_PROFILE = "Open Profile",
+	UNIT_POPUPS_CURRENT_PROFILE = "Current Profile",
+	UNIT_POPUPS_CURRENT_PROFILE_NAME = "Current Profile: %1$s",
+	UNIT_POPUPS_CHARACTER_STATUS = "Character Status",
 
 	NAMEPLATES_MODULE_NAME = "Nameplates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of nameplates with information obtained from roleplay profiles.",

@@ -118,7 +118,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button parentKey="Button" name="$parentButton" motionScriptsWhileDisabled="true" >
+			<Button parentKey="Button" name="$parentButton" motionScriptsWhileDisabled="true">
 				<Size>
 					<AbsDimension x="24" y="24"/>
 				</Size>

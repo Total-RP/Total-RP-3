@@ -25,9 +25,8 @@
 		end
 	</Binding>
 	<Binding name="TRP3_OPEN_TARGET_PROFILE" category="ADDONS">
-		-- Work smart, not hard :)
 		if UnitExists("target") then
-			SlashCmdList["TOTALRP3"]("open target");
+			TRP3_API.slash.openProfile("target");
 		end
 	</Binding>
 	<Binding name="TRP3_TOGGLE_CHARACTER_STATUS" category="ADDONS">
