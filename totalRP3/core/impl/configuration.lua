@@ -68,11 +68,16 @@ local function setValue(key, value)
 	assert(defaultValues[key] ~= nil, "Unknown config key: " .. tostring(key));
 	local old = TRP3_Configuration[key];
 	TRP3_Configuration[key] = value;
-	if configHandlers[key] and old ~= value then
-		for _, callback in pairs(configHandlers[key]) do
-			callback(key, value);
+	if old ~= value then
+		TRP3_API.events.fireEvent("CONFIGURATION_CHANGED", key, value);
+
+		if configHandlers[key] then
+			for _, callback in pairs(configHandlers[key]) do
+				callback(key, value);
+			end
 		end
 	end
+
 end
 Config.setValue = setValue;
 

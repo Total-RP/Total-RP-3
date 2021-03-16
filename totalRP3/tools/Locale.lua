@@ -1449,11 +1449,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	REG_COMPANION_BIND_TO_PET = "Pet",
 	UI_PET_BROWSER_ACCEPT = "Assign",
 	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
@@ -1480,9 +1475,54 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with Tukui chat history.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
+
+	NAMEPLATES_MODULE_NAME = "Nameplates",
+	NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of nameplates with information obtained from roleplay profiles.",
+	NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL = "This module was disabled automatically due to a conflict with another module or addon.",
+	NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY = "This module was disabled automatically due to a missing dependency.",
+
+	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplate settings",
+	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that some settings may be supported by all nameplate addons, refer to the help tip on each for more information.",
+	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
+	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
+	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER = "Disable customizations when OOC",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, disables all nameplate customizations while you are out-of-character.",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS = "Disable customizations on OOC units",
+	NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, disables nameplate customizations on units that are out-of-character.",
+	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS = "Hide non-roleplay units",
+	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.",
+	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Element settings",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS = "Show custom name colors",
+	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP = "If checked, overrides the color of name texts with the class color of a units' profile.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS = "Show custom health colors",
+	NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP = "If checked, overrides the color of health bars with the class color of a units' profile.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES = "Show prefix titles",
+	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP = "If checked, shows the short title of a unit on nameplates before their name.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES = "Show full length titles",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP = "If checked, shows the full title of a unit on nameplates.|n|nThis option is not supported on the default Blizzard nameplates.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS = "Show roleplay status indicator",
+	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP = "If checked, shows an indicator of a units' roleplay status (IC or OOC) on nameplates.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_ICONS = "Show icons",
+	NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP = "If checked, shows profile icons on nameplates.",
+
+	BLIZZARD_NAMEPLATES_MODULE_NAME = "Blizzard Nameplates",
+	BLIZZARD_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Blizzard's default nameplates.",
+
+	KUI_NAMEPLATES_MODULE_NAME = "Kui Nameplates",
+	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 };
 
 -- Use Ellyb to generate the Localization system

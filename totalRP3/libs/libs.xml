@@ -18,41 +18,18 @@
 	limitations under the License.
 -->
 
-	<Script file="LibStub\LibStub.lua" />
-	<Include file="CallbackHandler-1.0\CallbackHandler-1.0.xml" />
-
-	<!-- Ace3: https://www.wowace.com/projects/ace3 -->
-	<Include file="AceAddon-3.0\AceAddon-3.0.xml" />
-	<Include file="AceSerializer-3.0\AceSerializer-3.0.xml" />
-
-	<!-- LibCompress: https://www.wowace.com/projects/libcompress -->
-	<Include file="LibCompress\lib.xml" />
-
-	<!-- LibDataBroker: https://github.com/tekkub/libdatabroker-1-1/ -->
-	<Include file="LibDataBroker-1.1\LibDataBroker-1.1.lua" />
-
-	<!-- LibDBIcon: https://www.wowace.com/projects/libdbicon-1-0 -->
-	<Include file="LibDBIcon-1.0\lib.xml" />
-
-	<!-- LibRealmInfo: https://github.com/phanx-wow/LibRealmInfo -->
-	<Include file="LibRealmInfo\LibRealmInfo.lua" />
-
-	<!-- MSA DropDownMenu: Drop down library by Kaliel https://wow.curseforge.com/projects/msa-dropdownmenu-10 -->
-	<Include file="MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml" />
-
-	<!-- Ellyb: shared library between our own projects -->
-	<Include file="Ellyb\Ellyb.xml" />
-
-	<!-- LibMSP: Newer version of the LibMSP, from https://github.com/wow-rp-addons/LibMSP -->
-	<Include file="LibMSP\LibMSP.xml" />
-
-	<!-- LibDeflate: https://github.com/SafeteeWoW/LibDeflate -->
-	<Include file="LibDeflate\lib.xml" />
-
-	<!-- LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia -->
-	<Include file="LibRPMedia\LibRPMedia-1.0.xml" />
-
-	<!-- LibChatAnims: https://www.wowace.com/projects/libchatanims -->
-	<Include file="LibChatAnims\LibChatAnims.xml" />
-
+	<Include file="LibStub\LibStub.lua"/>
+	<Include file="CallbackHandler-1.0\CallbackHandler-1.0.xml"/>
+	<Include file="AceAddon-3.0\AceAddon-3.0.xml"/>
+	<Include file="AceSerializer-3.0\AceSerializer-3.0.xml"/>
+	<Include file="LibCompress\lib.xml"/>
+	<Include file="LibDataBroker-1.1\LibDataBroker-1.1.lua"/>
+	<Include file="LibDBIcon-1.0\lib.xml"/>
+	<Include file="LibRealmInfo\LibRealmInfo.lua"/>
+	<Include file="MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml"/>
+	<Include file="Ellyb\Ellyb.xml"/>
+	<Include file="LibMSP\LibMSP.xml"/>
+	<Include file="LibDeflate\lib.xml"/>
+	<Include file="LibRPMedia\LibRPMedia-1.0.xml"/>
+	<Include file="LibChatAnims\LibChatAnims.xml"/>
 </Ui>

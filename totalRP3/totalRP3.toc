@@ -8,7 +8,7 @@
 ## Author: Telkostrasz & Ellypse
 ## Version: @project-version@
 ## Notes: The best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
-## OptionalDeps: Prat, WoWUnit
+## OptionalDeps: Blizzard_DebugTools, Prat, WoWUnit
 ## RequiredDeps: totalRP3_Data
 ## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_Colors, TRP3_Notes
 ## X-URL: http://totalrp3.info

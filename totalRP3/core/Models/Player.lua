@@ -80,7 +80,36 @@ end
 function Player:GetLastName()
 	local characteristics = self:GetCharacteristics();
 	if characteristics then
-		return characteristics.LN
+		return characteristics.LN;
+	end
+end
+
+---@return string|nil fullName
+function Player:GetFullName()
+	local characteristics = self:GetCharacteristics();
+	if characteristics then
+		local firstName = characteristics.FN;
+		local lastName = characteristics.LN;
+
+		if firstName then
+			return string.join(" ", firstName, lastName or "");
+		end
+	end
+end
+
+---@return string|nil lastName
+function Player:GetTitle()
+	local characteristics = self:GetCharacteristics();
+	if characteristics then
+		return characteristics.TI;
+	end
+end
+
+---@return string|nil lastName
+function Player:GetFullTitle()
+	local characteristics = self:GetCharacteristics();
+	if characteristics then
+		return characteristics.FT;
 	end
 end
 
@@ -93,7 +122,7 @@ function Player:GetRoleplayingName()
 		name = name .. " " .. self:GetLastName();
 	end
 
-	return name
+	return name;
 end
 
 ---@return string relationship
@@ -239,6 +268,11 @@ end
 function Player.static.CreateFromGUID(guid)
 	local _, _, _, _, _, name, realm = GetPlayerInfoByGUID(guid);
 	return Player.static.CreateFromNameAndRealm(name, realm)
+end
+
+function Player.static.CreateFromUnit(unit)
+	local guid = UnitGUID(unit);
+	return Player.static.CreateFromGUID(guid);
 end
 
 --{{{ Current user

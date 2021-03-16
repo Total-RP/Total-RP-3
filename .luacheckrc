@@ -51,6 +51,8 @@ read_globals = {
 	-- Libraries/AddOns
 	"AddOn_Chomp",
 	"ElvUI",
+	"KuiNameplates",
+	"KuiNameplatesCore",
 	"LibStub",
 	"mrp",
 	"mrpSaved",
@@ -208,6 +210,13 @@ stds.wow = {
 			},
 		},
 
+		C_NamePlate = {
+			fields = {
+				"GetNamePlateForUnit",
+				"GetNamePlates",
+			},
+		},
+
 		C_PetJournal = {
 			fields = {
 				"ClearSearchFilter",
@@ -273,6 +282,8 @@ stds.wow = {
 		"ChatFrame_OpenChat",
 		"ChatFrame_RemoveMessageEventFilter",
 		"Clamp",
+		"CompactUnitFrame_UpdateHealthColor",
+		"CompactUnitFrame_UpdateName",
 		"CreateColor",
 		"CreateFrame",
 		"CreateFramePool",
@@ -318,6 +329,7 @@ stds.wow = {
 		"HideUIPanel",
 		"hooksecurefunc",
 		"InCombatLockdown",
+		"IsAddOnLoaded",
 		"IsAltKeyDown",
 		"IsControlKeyDown",
 		"IsInGroup",
@@ -342,6 +354,7 @@ stds.wow = {
 		"ReloadUI",
 		"RemoveChatWindowChannel",
 		"ResetCursor",
+		"Saturate",
 		"SecondsToClock",
 		"SendChatMessage",
 		"SetCursor",
