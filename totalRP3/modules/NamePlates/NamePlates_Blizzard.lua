@@ -19,38 +19,82 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
-local function GetUnitFrameForNamePlate(nameplate)
-	return nameplate.UnitFrame;
+local function CreateOrUpdateColor(color, r, g, b, a)
+	if not color then
+		return CreateColor(r, g, b, a);
+	else
+		color:SetRGBA(r, g, b, a);
+		return color;
+	end
 end
 
-local function GetNamePlateForUnitFrame(unitframe)
-	if unitframe:IsForbidden() then
-		return nil;
-	end
-
-	local parent = unitframe:GetParent();
-	local nameplate = C_NamePlate.GetNamePlateForUnit(unitframe.displayedUnit or "none");
-
-	if not nameplate or nameplate ~= parent then
-		return nil;
-	end
-
-	return nameplate;
+local function CallUnhookedMethod(widget, methodName, ...)
+	getmetatable(widget).__index[methodName](widget, ...);
 end
 
 local function UpdateWidgetVisibility(widget)
-	local shouldShow = not widget.TRP3_forceHide and widget.TRP3_shouldShow;
-	getmetatable(widget).__index.SetShown(widget, shouldShow);
+	local shouldShow = widget.TRP3_originalShown;
+
+	if widget.TRP3_overrideShown == false then
+		shouldShow = false;
+	end
+
+	CallUnhookedMethod(widget, "SetShown", shouldShow);
 end
 
-local function OnWidgetVisibilityChanged(widget)
-	widget.TRP3_shouldShow = widget:IsShown();
+local function UpdateFontStringWidgetText(widget)
+	local desiredText = widget.TRP3_overrideText or widget.TRP3_originalText;
+	CallUnhookedMethod(widget, "SetText", desiredText);
+end
+
+local function UpdateFontStringWidgetColor(widget)
+	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
+	CallUnhookedMethod(widget, "SetVertexColor", desiredColor:GetRGBA());
+end
+
+local function UpdateStatusBarWidgetColor(widget)
+	local desiredColor = widget.TRP3_overrideColor or widget.TRP3_originalColor;
+	CallUnhookedMethod(widget, "SetStatusBarColor", desiredColor:GetRGBA());
+end
+
+local function ProcessWidgetVisibilityChanged(widget)
+	widget.TRP3_originalShown = widget:IsShown();
 	UpdateWidgetVisibility(widget);
 end
 
-local function SetWidgetForcedHideState(widget, hide)
-	widget.TRP3_forceHide = hide;
+local function ProcessFontStringWidgetTextChanged(widget)
+	widget.TRP3_originalText = widget:GetText();
+	UpdateFontStringWidgetText(widget);
+end
+
+local function ProcessFontStringWidgetColorChanged(widget)
+	widget.TRP3_originalColor = CreateOrUpdateColor(widget.TRP3_originalColor, widget:GetTextColor());
+	UpdateFontStringWidgetColor(widget);
+end
+
+local function ProcessStatusBarWidgetColorChanged(widget)
+	widget.TRP3_originalColor = CreateOrUpdateColor(widget.TRP3_originalColor, widget:GetStatusBarColor());
+	UpdateStatusBarWidgetColor(widget);
+end
+
+local function SetWidgetOverrideShownState(widget, show)
+	widget.TRP3_overrideShown = show;
 	UpdateWidgetVisibility(widget);
+end
+
+local function SetFontStringWidgetOverrideText(widget, text)
+	widget.TRP3_overrideText = text;
+	UpdateFontStringWidgetText(widget);
+end
+
+local function SetFontStringWidgetOverrideColor(widget, color)
+	widget.TRP3_overrideColor = color;
+	UpdateFontStringWidgetColor(widget);
+end
+
+local function SetStatusBarWidgetOverrideColor(widget, color)
+	widget.TRP3_overrideColor = color;
+	UpdateStatusBarWidgetColor(widget);
 end
 
 local function TryCallWidgetFunction(func, widget, ...)
@@ -76,13 +120,11 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 	end
 
 	self.unitDisplayInfo = {};
-	self.initializedUnitframes = {};
+	self.initializedNameplates = {};
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
 	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end)
-	hooksecurefunc("CompactUnitFrame_UpdateName", function(...) return self:OnUnitFrameNameUpdated(...); end);
-	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(...) return self:OnUnitFrameHealthColorUpdated(...); end);
 
 	TRP3_API.Ellyb.GameEvents.registerCallback("CVAR_UPDATE", function(...) return self:OnCVarUpdate(...); end);
 
@@ -112,9 +154,11 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 	local nameplate = unitframe:GetParent();
 	local frameName = nameplate:GetName();
 
-	if self.initializedUnitframes[frameName] or not string.find(frameName, "^NamePlate%d+$") then
+	if self.initializedNameplates[frameName] or not string.find(frameName, "^NamePlate%d+$") then
 		return;
 	end
+
+	-- Initialize visibility hooks.
 
 	local function InitWidgetVisibilityHooks(widget)
 		if not widget then
@@ -126,11 +170,11 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		-- requested visibility state and then override it only if we've set
 		-- a "forceHide" flag on the widget.
 
-		hooksecurefunc(widget, "Show", OnWidgetVisibilityChanged);
-		hooksecurefunc(widget, "Hide", OnWidgetVisibilityChanged);
-		hooksecurefunc(widget, "SetShown", OnWidgetVisibilityChanged);
+		hooksecurefunc(widget, "Show", ProcessWidgetVisibilityChanged);
+		hooksecurefunc(widget, "Hide", ProcessWidgetVisibilityChanged);
+		hooksecurefunc(widget, "SetShown", ProcessWidgetVisibilityChanged);
 
-		OnWidgetVisibilityChanged(widget);
+		ProcessWidgetVisibilityChanged(widget);
 	end
 
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.aggroHighlight);
@@ -144,26 +188,34 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.selectionHighlight);
 	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.WidgetContainer);
 
-	self.initializedUnitframes[frameName] = true;
+	-- Initialize name text/color hooks.
+
+	hooksecurefunc(unitframe.healthBar, "SetStatusBarColor", ProcessStatusBarWidgetColorChanged);
+	hooksecurefunc(unitframe.name, "SetFormattedText", ProcessFontStringWidgetTextChanged);
+	hooksecurefunc(unitframe.name, "SetText", ProcessFontStringWidgetTextChanged);
+	hooksecurefunc(unitframe.name, "SetTextColor", ProcessFontStringWidgetColorChanged);
+	hooksecurefunc(unitframe.name, "SetVertexColor", ProcessFontStringWidgetColorChanged);
+
+	ProcessStatusBarWidgetColorChanged(unitframe.healthBar);
+	ProcessFontStringWidgetColorChanged(unitframe.name);
+	ProcessFontStringWidgetTextChanged(unitframe.name);
+
+	self.initializedNameplates[frameName] = true;
 end
 
-function TRP3_BlizzardNamePlates:OnUnitFrameNameUpdated(unitframe)
-	-- This is called as a post-hook on CompactUnitFrame_UpdateName.
-	local nameplate = GetNamePlateForUnitFrame(unitframe);
-
-	if not nameplate or not unitframe:IsShown() then
+function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
 
-	local displayInfo = self:GetUnitDisplayInfo(unitframe.displayedUnit);
-	local fontstring = unitframe.name;
+	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate.namePlateUnitToken;
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
-	if not displayInfo then
-		-- No reset logic required as this is a post-hook.
-		return;
-	end
+	local overrideText = unitframe.name.TRP3_originalText;
+	local overrideColor;
 
-	do
+	if displayInfo then
 		local shouldCropName = false;
 
 		-- Anything that needs to potentially be cropped should be inserted
@@ -171,60 +223,63 @@ function TRP3_BlizzardNamePlates:OnUnitFrameNameUpdated(unitframe)
 		-- don't need to worry about cropping things like titles individually.
 
 		if displayInfo.nameText then
-			fontstring:SetText(displayInfo.nameText);
+			overrideText = displayInfo.nameText;
 			shouldCropName = true;
 		end
 
 		if displayInfo.prefixTitle then
-			TRP3_NamePlatesUtil.PrependTextToFontString(fontstring, displayInfo.prefixTitle);
+			overrideText = string.join(" ", displayInfo.prefixTitle, overrideText);
 			shouldCropName = true;
 		end
 
 		if shouldCropName then
-			TRP3_NamePlatesUtil.CropFontString(fontstring, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			overrideText = TRP3_API.utils.str.crop(overrideText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 		end
 
 		-- No cropping occurs after this point.
 
-		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, displayInfo.roleplayStatus);
-		TRP3_NamePlatesUtil.PrependIconToFontString(fontstring, displayInfo.icon);
-	end
+		overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+		overrideText = TRP3_NamePlatesUtil.PrependIconToText(overrideText, displayInfo.icon);
 
-	if displayInfo.nameColor then
-		local color = displayInfo.nameColor;
+		-- Process color overrides.
 
-		if UnitIsUnit(nameplate.namePlateUnitToken, "mouseover") then
-			local r = Saturate(color.r * 1.25);
-			local g = Saturate(color.g * 1.25);
-			local b = Saturate(color.b * 1.25);
+		if displayInfo.nameColor then
+			local color = displayInfo.nameColor;
+			overrideColor = unitframe.name.TRP3_overrideColor;
 
-			fontstring:SetVertexColor(r, g, b);
-		else
-			fontstring:SetVertexColor(color:GetRGB());
+			if UnitIsUnit(nameplate.namePlateUnitToken, "mouseover") then
+				local r = Saturate(color.r * 1.25);
+				local g = Saturate(color.g * 1.25);
+				local b = Saturate(color.b * 1.25);
+
+				overrideColor = CreateOrUpdateColor(overrideColor, r, g, b);
+			else
+				overrideColor = CreateOrUpdateColor(overrideColor, color:GetRGB());
+			end
 		end
 	end
+
+	SetFontStringWidgetOverrideText(unitframe.name, overrideText);
+	SetFontStringWidgetOverrideColor(unitframe.name, overrideColor);
 end
 
-function TRP3_BlizzardNamePlates:OnUnitFrameHealthColorUpdated(unitframe)
-	-- This is called as a post-hook on CompactUnitFrame_UpdateHealthColor.
-	local nameplate = GetNamePlateForUnitFrame(unitframe);
-
-	if not nameplate or not unitframe:IsShown() then
+function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
 
-	local displayInfo = self:GetUnitDisplayInfo(unitframe.displayedUnit);
-	local healthbar = unitframe.healthBar;
+	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate.namePlateUnitToken;
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+
+	local overrideColor;
 
 	if displayInfo and displayInfo.healthColor then
-		healthbar:SetStatusBarColor(displayInfo.healthColor:GetRGB());
-	else
-		-- Even though this is a post-hook we need reset logic here as Blizzard
-		-- doesn't change the color of the statusbar unless the fields on it
-		-- are modified.
-
-		healthbar:SetStatusBarColor(healthbar.r, healthbar.g, healthbar.b);
+		overrideColor = unitframe.healthBar.TRP3_overrideColor;
+		overrideColor = CreateOrUpdateColor(overrideColor, displayInfo.healthColor:GetRGB());
 	end
+
+	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
 end
 
 function TRP3_BlizzardNamePlates:GetUnitDisplayInfo(unitToken)
@@ -236,24 +291,27 @@ function TRP3_BlizzardNamePlates:SetUnitDisplayInfo(unitToken, displayInfo)
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
-	local unitframe = GetUnitFrameForNamePlate(nameplate);
-
-	if not unitframe or unitframe:IsForbidden() then
+	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
 	end
 
-	local shouldHide = TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitframe.displayedUnit);
+	local unitframe = nameplate.UnitFrame;
+	local shouldShow; -- This is only false or nil explicitly.
 
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.aggroHighlight, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.BuffFrame, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.castBar, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.ClassificationFrame, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.healthBar, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.LevelFrame, shouldHide);  -- Classic-only.
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.name, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.RaidTargetFrame, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.selectionHighlight, shouldHide);
-	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.WidgetContainer, shouldHide);
+	if TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitframe.displayedUnit) then
+		shouldShow = false;
+	end
+
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.aggroHighlight, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.BuffFrame, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.castBar, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.ClassificationFrame, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.healthBar, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.LevelFrame, shouldShow);  -- Classic-only.
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.name, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.RaidTargetFrame, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.selectionHighlight, shouldShow);
+	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.WidgetContainer, shouldShow);
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
@@ -261,20 +319,19 @@ function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 		return;
 	end
 
-	-- The name and health bar are widgets handled by the CompactUnitFrame,
-	-- which we hook to apply our modifications.
-	--
-	-- These should only be updated if a unit is assigned to them, since
-	-- the CUF framework will error out otherwise.
-
-	local unitframe = GetUnitFrameForNamePlate(nameplate);
-
-	if unitframe and unitframe.displayedUnit then
-		CompactUnitFrame_UpdateName(unitframe);
-		CompactUnitFrame_UpdateHealthColor(unitframe);
-	end
-
+	self:UpdateNamePlateName(nameplate);
+	self:UpdateNamePlateHealthBar(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
+end
+
+function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)
+	if nameplate:IsForbidden() or not nameplate.UnitFrame then
+		return false;
+	elseif not self.initializedNameplates[nameplate:GetName()] then
+		return false;
+	else
+		return true;
+	end
 end
 
 function TRP3_BlizzardNamePlates:UpdateAllNamePlates()

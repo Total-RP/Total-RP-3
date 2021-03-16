@@ -32,12 +32,31 @@ function TRP3_NamePlatesUtil.PrependTextToFontString(fontstring, text)
 	fontstring:SetFormattedText("%s %s", text, fontstring:GetText());
 end
 
+function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
+	if roleplayStatus ~= AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
+		return text;
+	end
+
+	return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+end
+
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, roleplayStatus)
 	if roleplayStatus ~= AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		return;
 	end
 
 	fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
+end
+
+function TRP3_NamePlatesUtil.PrependIconToText(text, icon)
+	if type(icon) ~= "string" then
+		return text;
+	end
+
+	local width = TRP3_NamePlatesUtil.ICON_WIDTH;
+	local height = TRP3_NamePlatesUtil.ICON_HEIGHT;
+
+	return string.format("|Tinterface\\icons\\%1$s:%2$d:%3$d:0:-1|t %4$s", icon, width, height, text);
 end
 
 function TRP3_NamePlatesUtil.PrependIconToFontString(fontstring, icon)
