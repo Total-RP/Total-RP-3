@@ -124,5 +124,6 @@
 	<Include file="importer\importer.xml"/>
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
 	<Include file="ChatLinks\ChatLinks.xml"/>
+	<Include file="UnitPopups\UnitPopups.xml"/>
 	<Include file="NamePlates\NamePlates.xml"/>
 </Ui>
