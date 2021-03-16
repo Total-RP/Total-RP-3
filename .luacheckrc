@@ -424,6 +424,8 @@ stds.wow = {
 		"GameTooltip",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
+		"SystemFont_LargeNamePlate",
+		"SystemFont_NamePlate",
 		"TargetFrame",
 		"UIErrorsFrame",
 		"UIParent",

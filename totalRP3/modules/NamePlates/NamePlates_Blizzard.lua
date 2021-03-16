@@ -226,6 +226,19 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 	ProcessFontStringWidgetColorChanged(unitframe.name);
 	ProcessFontStringWidgetTextChanged(unitframe.name);
 
+	-- Add full title widget.
+
+	do
+		local titleWidget = unitframe:CreateFontString(nil, "ARTWORK");
+		titleWidget:ClearAllPoints();
+		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
+		titleWidget:SetVertexColor(TRP3_API.Ellyb.ColorManager.GREY:GetRGBA());
+		titleWidget:SetFontObject(SystemFont_LargeNamePlate);
+		titleWidget:Hide();
+
+		nameplate.TRP3_Title = titleWidget;
+	end
+
 	self.initializedNameplates[frameName] = true;
 end
 
@@ -308,12 +321,31 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
 end
 
-function TRP3_BlizzardNamePlates:GetUnitDisplayInfo(unitToken)
-	return self.unitDisplayInfo[unitToken];
-end
+function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
 
-function TRP3_BlizzardNamePlates:SetUnitDisplayInfo(unitToken, displayInfo)
-	self.unitDisplayInfo[unitToken] = displayInfo;
+	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate.namePlateUnitToken;
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+
+	-- Hide the full title widget if no title is to be displayed, or if the
+	-- nameplate isn't in name-only mode.
+
+	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not unitframe.name:IsShown() then
+		nameplate.TRP3_Title:Hide();
+	else
+		nameplate.TRP3_Title:SetText(displayInfo.fullTitle);
+		nameplate.TRP3_Title:Show();
+	end
+
+	-- On Classic Blizzard shows the level text all the time in name-only
+	-- mode, so we'll be nice and fix that.
+
+	if unitframe.LevelFrame then
+		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());
+	end
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
@@ -347,6 +379,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
+	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
 
@@ -364,6 +397,14 @@ function TRP3_BlizzardNamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlate(nameplate);
 	end
+end
+
+function TRP3_BlizzardNamePlates:GetUnitDisplayInfo(unitToken)
+	return self.unitDisplayInfo[unitToken];
+end
+
+function TRP3_BlizzardNamePlates:SetUnitDisplayInfo(unitToken, displayInfo)
+	self.unitDisplayInfo[unitToken] = displayInfo;
 end
 
 --
