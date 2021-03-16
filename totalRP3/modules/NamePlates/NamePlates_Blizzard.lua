@@ -109,6 +109,32 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not IsAddOnLoaded("Blizzard_NamePlates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
 	end
+
+	-- Quick hack to make these nameplates "cowardly"; if any of the below
+	-- addons is enabled on this character we won't enable Blizzard
+	-- customizations. We don't (yet) support these nameplate addons, but
+	-- we don't want to needlessly do work if they're enabled.
+
+	local addons = {
+		"Plater",
+		"TidyPlates",
+	};
+
+	for _, addon in ipairs(addons) do
+		if GetAddOnEnableState(nil, addon) == 2 then
+			return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+		end
+	end
+
+	-- ElvUI nameplates are an optional module within ElvUI and need special
+	-- checks.
+
+	if ElvUI then
+		local E = ElvUI[1];
+		if E and E.private and E.private.nameplates and E.private.nameplates.enable then
+			return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+		end
+	end
 end
 
 function TRP3_BlizzardNamePlates:OnModuleEnable()
