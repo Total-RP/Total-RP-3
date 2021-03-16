@@ -22,7 +22,7 @@ Ellyb.EditBoxes.looseFocusOnEscape(URLPopup.Url);
 _G["Ellyb_StaticPopOpenUrl"] = nil;
 
 local function dismissPopup()
-	HideUIPanel(URLPopup);
+	URLPopup:Hide();
 end
 URLPopup.Url:HookScript("OnEnterPressed", dismissPopup);
 URLPopup.Url:HookScript("OnEscapePressed", dismissPopup);

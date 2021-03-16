@@ -54,7 +54,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						HideUIPanel(TRP3_RefTooltip);
+						TRP3_RefTooltip:Hide();
 					</OnClick>
 				</Scripts>
 				<NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
