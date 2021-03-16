@@ -34,7 +34,6 @@ local hidePopups = TRP3_API.popup.hidePopups;
 local displayConsult;
 local tcopy, tsize, tinsert, EMPTY = Utils.table.copy, Utils.table.size, tinsert, Globals.empty;
 local stEtN = Utils.str.emptyToNil;
-local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local setupListBox = TRP3_API.ui.listbox.setupListBox;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
@@ -147,9 +146,7 @@ local function onNameColorSelected(red, green, blue)
 end
 
 local function setBkg(frame, bkg)
-	local backdrop = frame:GetBackdrop();
-	backdrop.bgFile = getTiledBackground(bkg or 1);
-	frame:SetBackdrop(backdrop);
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
 end
 
 local function saveInformation()

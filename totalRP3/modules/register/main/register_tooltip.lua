@@ -905,20 +905,24 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitLevel(targetType) or "??", creatureType);
 		elseif targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-			local type = UnitBattlePetType(targetType);
-			if type then
-				type = _G["BATTLE_PET_NAME_" .. type];
-			else
-				-- Not sure if UnitBattlePetType can be nil, but it would
-				-- make sense for the same edge cases to possibly occur as
-				-- with UnitCreatureType.
-				type = UNKNOWNOBJECT;
-			end
+			if UnitBattlePetType then
+				local type = UnitBattlePetType(targetType);
+				if type then
+					type = _G["BATTLE_PET_NAME_" .. type];
+				else
+					-- Not sure if UnitBattlePetType can be nil, but it would
+					-- make sense for the same edge cases to possibly occur as
+					-- with UnitCreatureType.
+					type = UNKNOWNOBJECT;
+				end
 
-			text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitBattlePetLevel(targetType) or "??", type);
+				text = TOOLTIP_UNIT_LEVEL_TYPE:format(UnitBattlePetLevel(targetType) or "??", type);
+			end
 		end
 
-		tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
+		if text then
+			tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
+		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

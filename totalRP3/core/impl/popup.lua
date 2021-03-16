@@ -34,24 +34,6 @@ local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
--- Classic proofing
-local GetNumPets, GetPetInfoByIndex;
-local GetMountIDs, GetMountInfoByID, GetMountInfoExtraByID;
-
-if TRP3_API.globals.is_classic then
-	GetNumPets = function() return 0 end;
-	GetPetInfoByIndex = function() return end;
-	GetMountIDs = function() return {} end;
-	GetMountInfoByID = function() return end;
-	GetMountInfoExtraByID = function() return end;
-else
-	GetNumPets = C_PetJournal.GetNumPets;
-	GetPetInfoByIndex = C_PetJournal.GetPetInfoByIndex;
-	GetMountIDs = C_MountJournal.GetMountIDs;
-	GetMountInfoByID = C_MountJournal.GetMountInfoByID;
-	GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID;
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Static popups definition
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -516,6 +498,47 @@ local globalPetSearchFilter = "";
 local ui_CompanionBrowserContent = TRP3_CompanionBrowserContent;
 local currentCompanionType;
 
+local function GetNumPets()
+	if C_PetJournal then
+		return C_PetJournal.GetNumPets();
+	else
+		local numPets = TRP3_API.utils.resources.GetNumPets();
+		return numPets, numPets;
+	end
+end
+
+local function GetPetInfoByIndex(petIndex)
+	if C_PetJournal then
+		return C_PetJournal.GetPetInfoByIndex(petIndex);
+	else
+		return TRP3_API.utils.resources.GetPetInfoByIndex(petIndex);
+	end
+end
+
+local function GetMountIDs()
+	if C_MountJournal then
+		return C_MountJournal.GetMountIDs();
+	else
+		return TRP3_API.utils.resources.GetMountIDs();
+	end
+end
+
+local function GetMountInfoByID(mountID)
+	if C_MountJournal then
+		return C_MountJournal.GetMountInfoByID(mountID);
+	else
+		return TRP3_API.utils.resources.GetMountInfoByID(mountID);
+	end
+end
+
+local function GetMountInfoExtraByID(mountID)
+	if C_MountJournal then
+		return C_MountJournal.GetMountInfoExtraByID(mountID);
+	else
+		return TRP3_API.utils.resources.GetMountInfoExtraByID(mountID);
+	end
+end
+
 -- Blizzard don't provide a GetSearchFilter for the pet journal, so we
 -- keep track of it with a hook instead. This needs installing as early as
 -- possible.
@@ -591,6 +614,10 @@ local function CallWithUnfilteredPetJournal(func, ...)
 	--
 	-- This function is resilient to errors at any step and will restore all
 	-- state as best as possible.
+
+	if not C_PetJournal then
+		return func(...);
+	end
 
 	local filters = {
 		options = CollectIndexedAccessor(C_PetJournal.IsFilterChecked, 2),
@@ -722,8 +749,16 @@ function TRP3_API.popup.showCompanionBrowser(onSelectCallback, onCancelCallback,
 	currentCompanionType = companionType or TRP3_Enums.UNIT_TYPE.BATTLE_PET;
 	if currentCompanionType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_BATTLE);
-		TRP3_CompanionBrowserFilterHelp:Show();
 		TRP3_RefreshTooltipForFrame(TRP3_CompanionBrowserFilterHelp);
+
+		-- For Retail clients we have a restriction that battle pets
+		-- must be renamed to be bound, this is communicated in a help tooltip
+		-- but isn't relevant for Classic so it's hidden there.
+		if C_PetJournal then
+			TRP3_CompanionBrowserFilterHelp:Show();
+		else
+			TRP3_CompanionBrowserFilterHelp:Hide();
+		end
 	else
 		TRP3_CompanionBrowserTitle:SetText(loc.REG_COMPANION_BROWSER_MOUNT);
 		TRP3_CompanionBrowserFilterHelp:Hide();

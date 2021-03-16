@@ -1629,7 +1629,20 @@ function Locale.findPetOwner(tooltipLines)
 end
 
 function Locale.findBattlePetOwner(lines)
-	local masterLine = isColorBlindModeEnabled() and lines[4] or lines[3];
+	local lineNumber = 3;
+
+	if not TRP3_DUMMY_TOOLTIP.SetCompanionPet then
+		-- GameTooltip API doesn't support companion pets so this is likely
+		-- a Classic client, which uses the previous line.
+		lineNumber = lineNumber - 1;
+	end
+
+	if isColorBlindModeEnabled() then
+		-- Colorblind mode shifts the line down by one.
+		lineNumber = lineNumber + 1;
+	end
+
+	local masterLine = lines[lineNumber];
 	if masterLine then
 		local master;
 		for _, matchingPattern in pairs(BATTLE_PET_OWNER_MATCHING_LINES) do

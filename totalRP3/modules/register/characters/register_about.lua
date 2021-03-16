@@ -28,7 +28,6 @@ local get = TRP3_API.profile.getData;
 local tcopy = Utils.table.copy;
 local getDefaultProfile = TRP3_API.profile.getDefaultProfile;
 local CreateFrame = CreateFrame;
-local getTiledBackground = TRP3_API.ui.frame.getTiledBackground;
 local getTiledBackgroundList = TRP3_API.ui.frame.getTiledBackgroundList;
 local showIfMouseOver = TRP3_API.ui.frame.showIfMouseOverFrame;
 local createRefreshOnFrame = TRP3_API.ui.frame.createRefreshOnFrame;
@@ -122,10 +121,7 @@ getDefaultProfile().player.about = {
 local draftData;
 
 local function setBkg(frame, bkg)
-	local backdrop = frame:GetBackdrop();
-	backdrop.bgFile = getTiledBackground(bkg or 1);
-	backdrop.tile = false; -- We want it to stretch, not tile.
-	frame:SetBackdrop(backdrop);
+	TRP3_API.ui.frame.setBackdropToBackground(frame, bkg);
 end
 
 local function setConsultBkg(bkg)
@@ -226,10 +222,7 @@ local function showTemplate2(dataTab)
 
 		local icon = _G[frame:GetName().."Icon"];
 		local text = _G[frame:GetName().."Text"];
-		local backdrop = frame:GetBackdrop();
-		backdrop.bgFile = getTiledBackground(frameTab.BK or 1);
-		backdrop.tile = false;
-		frame:SetBackdrop(backdrop);
+		TRP3_API.ui.frame.setBackdropToBackground(frame, frameTab.BK);
 		setupIconButton(icon, frameTab.IC or TRP3_InterfaceIcons.Default);
 
 		setupHTMLFonts(text);

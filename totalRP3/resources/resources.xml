@@ -24,4 +24,5 @@
 	<Script file="imageList.lua"/>
 	<Script file="imageList-classic.lua"/>
 	<Script file="InterfaceIcons.lua"/>
+	<Script file="CompanionData.lua"/>
 </Ui>
