@@ -219,22 +219,27 @@ local function decorateProfileList(widget, index)
 			i = i + 1;
 		end
 	end
-	_G[widget:GetName().."Count"]:SetText(loc.PR_PROFILEMANAGER_COUNT:format(i));
-
-	local text = "";
-	if i > 0 then
-		text = text..loc.PR_PROFILE_DETAIL..":\n"..listText;
-	else
-		text = text..loc.PR_UNUSED_PROFILE;
-	end
 
 	if id == getConfigValue("default_profile_id") then
+		_G[widget:GetName().."Info"]:Hide();
+		_G[widget:GetName().."Count"]:Hide();
 		_G[widget:GetName().."Action"]:Hide();
 	else
+		_G[widget:GetName().."Info"]:Show();
+		_G[widget:GetName().."Count"]:Show();
 		_G[widget:GetName().."Action"]:Show();
-	end
 
-	setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
+		_G[widget:GetName().."Count"]:SetText(loc.PR_PROFILEMANAGER_COUNT:format(i));
+
+		local text = "";
+		if i > 0 then
+			text = text..loc.PR_PROFILE_DETAIL..":\n"..listText;
+		else
+			text = text..loc.PR_UNUSED_PROFILE;
+		end
+
+		setTooltipForSameFrame(_G[widget:GetName().."Info"], "RIGHT", 0, 0, loc.PR_PROFILE, text);
+	end
 end
 
 local function profileSortingByProfileName(profileID1, profileID2)
