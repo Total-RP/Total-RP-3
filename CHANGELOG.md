@@ -1,3 +1,27 @@
+# Changelog version 2.3
+
+## Added
+
+- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
+
+*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
+
+- Added support for companion profiles in Classic.
+- Added entries on unit frames right-click menu to open profile + change roleplay status.
+- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
+
+## Changed
+
+- The URL copy window now closes after pressing the copy shortcut.
+- The default profile no longer shows the amount of characters bound to it.
+- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
+
+## Fixed
+
+- Fixed an issue with chat customization not properly registering on login while using Prat.
+- Fixed missing sound cue when opening/closing the main window.
+
+
 # Changelog version 2.2
 
 ## Added
