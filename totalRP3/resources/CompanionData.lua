@@ -181,7 +181,8 @@ do
 	local companionPetsBySpellID = {};
 	local companionMountsByMountID = {};
 	local companionMountsBySpellID = {};
-	local currentSummonedMountID = nil;
+	local currentSummonedMountID = IsMounted();
+	local previousMountedStatus = nil;
 	local rescanSummonedMountID = true;
 
 	do
@@ -379,6 +380,8 @@ do
 	-- when unit auras change for the player.
 
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_AURA", function(unit)
-		rescanSummonedMountID = rescanSummonedMountID or (unit == "player");
+		local currentMountedStatus = IsMounted();
+		rescanSummonedMountID = rescanSummonedMountID or (unit == "player") and (previousMountedStatus ~= currentMountedStatus);
+		previousMountedStatus = currentMountedStatus;
 	end);
 end
