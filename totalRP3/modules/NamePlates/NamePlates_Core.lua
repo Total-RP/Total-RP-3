@@ -41,7 +41,7 @@ local function GetUnitRegisterID(unitToken)
 	return registerID;
 end
 
-local function GetCharacterUnitDisplayInfo(characterID)
+local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	-- If the character has no profile, we want to explicitly not return any
 	-- information in such a case to make it clear to decorators that
 	-- this unit has no known roleplay attributes.
@@ -51,6 +51,7 @@ local function GetCharacterUnitDisplayInfo(characterID)
 	end
 
 	local player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
+	local classToken = UnitClassBase(unitToken);
 	local displayInfo = {};
 
 	if TRP3_NamePlatesUtil.ShouldCustomizeFullTitles() then
@@ -59,6 +60,10 @@ local function GetCharacterUnitDisplayInfo(characterID)
 
 	if TRP3_NamePlatesUtil.ShouldCustomizeHealthColors() then
 		displayInfo.healthColor = player:GetCustomColorForDisplay();
+
+		if not displayInfo.healthColor then
+			displayInfo.healthColor = CreateColor(GetClassColor(classToken));
+		end
 	end
 
 	if TRP3_NamePlatesUtil.ShouldCustomizeIcons() then
@@ -67,6 +72,10 @@ local function GetCharacterUnitDisplayInfo(characterID)
 
 	if TRP3_NamePlatesUtil.ShouldCustomizeNameColors() then
 		displayInfo.nameColor = player:GetCustomColorForDisplay();
+
+		if not displayInfo.nameColor then
+			displayInfo.nameColor = CreateColor(GetClassColor(classToken));
+		end
 	end
 
 	if TRP3_NamePlatesUtil.ShouldCustomizeNames() then
@@ -84,7 +93,7 @@ local function GetCharacterUnitDisplayInfo(characterID)
 	return displayInfo;
 end
 
-local function GetCompanionUnitDisplayInfo(companionFullID)
+local function GetCompanionUnitDisplayInfo(unitToken, companionFullID) -- luacheck: ignore 212 (unused unitToken)
 	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
 
 	if not profile or not profile.data then
@@ -221,9 +230,9 @@ function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 	elseif not TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken) then
 		return nil;  -- Customizations disabled for this unit by config.
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		return GetCharacterUnitDisplayInfo(registerID);
+		return GetCharacterUnitDisplayInfo(unitToken, registerID);
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		return GetCompanionUnitDisplayInfo(registerID);
+		return GetCompanionUnitDisplayInfo(unitToken, registerID);
 	end
 end
 
