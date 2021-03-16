@@ -1512,7 +1512,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES = "Show prefix titles",
 	NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP = "If checked, shows the short title of a unit on nameplates before their name.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES = "Show full length titles",
-	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP = "If checked, shows the full title of a unit on nameplates.|n|nFor |cff449fe0Blizzard|r nameplates the |cffffcc00nameplateShowOnlyNames|r console variable must be enabled for full titles to be shown.",
+	NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP = "If checked, shows the full title of a unit on nameplates.|n|nFor |cff449fe0Blizzard|r nameplates, full titles are only shown if the |cffff9900nameplateShowOnlyNames|r console variable is enabled.|n|nFor |cff9966ffKui|r nameplates, full titles are only shown in name-only mode.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS = "Show roleplay status indicator",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP = "If checked, shows an indicator of a units' roleplay status (IC or OOC) on nameplates.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ICONS = "Show icons",
