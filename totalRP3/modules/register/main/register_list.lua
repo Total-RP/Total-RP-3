@@ -357,6 +357,7 @@ local function decorateCharacterLine(line, characterIndex)
 
 	setTooltipForSameFrame(_G[line:GetName().."Click"], "TOPLEFT", 0, 5, leftTooltipTitle, leftTooltipText .. "\n\n" ..
 		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.CLICK, loc.CM_OPEN) .. "\n" ..
+		Ellyb.Strings.clickInstruction(Ellyb.System.CLICKS.RIGHT_CLICK, loc.REG_LIST_CHAR_NAME_COPY) .. "\n" ..
 		Ellyb.Strings.clickInstruction(
 			Ellyb.System:FormatKeyboardShortcut(Ellyb.System.MODIFIERS.SHIFT, Ellyb.System.CLICKS.CLICK),
 			loc.CL_TOOLTIP
@@ -797,13 +798,29 @@ function refreshList()
 	initList(TRP3_RegisterList, lines, TRP3_RegisterListSlider);
 end
 
-local function onLineClicked(self)
+local function onLineClicked(self, button)
 	if currentMode == MODE_CHARACTER then
 		assert(self:GetParent().id, "No profileID on line.");
-		if IsShiftKeyDown() then
-			TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
+		if button == "LeftButton" then
+			if IsShiftKeyDown() then
+				TRP3_API.RegisterPlayerChatLinksModule:InsertLink(self:GetParent().id);
+			else
+				openPage(self:GetParent().id);
+			end
 		else
-			openPage(self:GetParent().id);
+			local profile = getProfile(self:GetParent().id);
+			if profile.link and tsize(profile.link) > 0 then
+				local characterList = {};
+				for unitID, _ in pairs(profile.link) do
+					local unitName, unitRealm = unitIDToInfo(unitID);
+					if unitRealm == Globals.player_realm_id then
+						tinsert(characterList, unitName);
+					else
+						tinsert(characterList, unitName .. "-" .. unitRealm);
+					end
+				end
+				TRP3_API.popup.showCopyDropdownPopup(characterList);
+			end
 		end
 	elseif currentMode == MODE_PETS then
 		assert(self:GetParent().id, "No profileID on line.");
@@ -962,6 +979,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		local widgetClick = _G["TRP3_RegisterListLine"..i.."Click"];
 		local widgetSelect = _G["TRP3_RegisterListLine"..i.."Select"];
 		widgetSelect:SetScript("OnClick", onLineSelected);
+		widgetClick:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 		widgetClick:SetScript("OnClick", onLineClicked);
 		widgetClick:SetHighlightTexture("Interface\\FriendsFrame\\UI-FriendsFrame-HighlightBar-Blue");
 		widgetClick:SetAlpha(0.75);

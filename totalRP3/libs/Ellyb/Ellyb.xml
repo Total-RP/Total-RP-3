@@ -1,0 +1,18 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+	<Script file="Ellyb.lua"/>
+	<Script file="Enum.lua" />
+	<Include file="Libraries\Libraries.xml" />
+	<Include file="Internals\Internals.xml" />
+	<Include file="Logs\Logs.xml"/>
+	<Include file="Tools\Tools.xml" />
+	<Include file="UI\UI.xml" />
+
+	<Script file="Textures\Texture.lua" />
+	<Script file="Tools\Icon.lua" />
+
+	<Script file="Configuration\Configuration.lua"/>
+
+	<Include file="Documentation\_Documentation.xml"/>
+
+</Ui>

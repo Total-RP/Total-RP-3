@@ -69,7 +69,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkClick(url, text, button)
 	end
 
 	-- Fallback: Allow the user to just copy the URL.
-	Popups:OpenURL(url, loc.UI_LINK_SAFE);
+	Popups:OpenURL(url, loc.UI_LINK_SAFE, nil, loc.COPY_SYSTEM_MESSAGE);
 end
 
 function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url, _, button)
@@ -78,7 +78,7 @@ function TRP3_DashboardHTMLContentMixin:OnHyperlinkClickTwitter(url, _, button)
 		Social_ToggleShow(url:gsub("twitter", "|cff61AAEE@") .. "|r ");
 	else
 		url = url:gsub("twitter", "http://twitter.com/");
-		Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n");
+		Popups:OpenURL(url, "|cff55aceeTwitter profile|r\n", nil, loc.COPY_SYSTEM_MESSAGE);
 	end
 end
 

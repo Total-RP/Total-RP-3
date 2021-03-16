@@ -49,44 +49,65 @@ local TRP3_Enums = AddOn_TotalRP3.Enums;
 local CONFIG_UI_SOUNDS = "ui_sounds";
 local CONFIG_UI_ANIMATIONS = "ui_animations";
 
--- Classic proofing
-local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion or function() return false end;
-local UnitIsOtherPlayersBattlePet = UnitIsOtherPlayersBattlePet or function() return false end;
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Frame utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local tiledBackgrounds = {
-	"Interface\\DialogFrame\\UI-DialogBox-Background", -- 1
-	"Interface\\BankFrame\\Bank-Background", -- 2
-	"Interface\\FrameGeneral\\UI-Background-Marble", -- 3
-	"Interface\\FrameGeneral\\UI-Background-Rock", -- 4
-	"Interface\\GuildBankFrame\\GuildVaultBG", -- 5
-	"Interface\\HELPFRAME\\DarkSandstone-Tile", -- 6
-	"Interface\\HELPFRAME\\Tileable-Parchment", -- 7
-	"Interface\\QuestionFrame\\question-background", -- 8
-	"Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", -- 9
-	"Interface\\Destiny\\EndscreenBG", -- 10
-	"Interface\\Stationery\\AuctionStationery1", -- 11
-	"Interface\\Stationery\\Stationery_ill1", -- 12
-	"Interface\\Stationery\\Stationery_OG1", -- 13
-	"Interface\\Stationery\\Stationery_TB1", -- 14
-	"Interface\\Stationery\\Stationery_UC1", -- 15
-	"Interface\\Stationery\\StationeryTest1", -- 16
-	"Interface\\WorldMap\\UI-WorldMap-Middle1", -- 17
-	"Interface\\WorldMap\\UI-WorldMap-Middle2", -- 18
-	"Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground" -- 19
+	{ bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", tile = false },
+	{ bgFile = "Interface\\BankFrame\\Bank-Background", tile = false },
+	{ bgFile = "Interface\\FrameGeneral\\UI-Background-Marble", tile = false },
+	{ bgFile = "Interface\\FrameGeneral\\UI-Background-Rock", tile = false },
+	{ bgFile = "Interface\\GuildBankFrame\\GuildVaultBG", tile = false },
+	{ bgFile = "Interface\\HELPFRAME\\DarkSandstone-Tile", tile = false },
+	{ bgFile = "Interface\\HELPFRAME\\Tileable-Parchment", tile = false },
+	{ bgFile = "Interface\\QuestionFrame\\question-background", tile = false },
+	{ bgFile = "Interface\\RAIDFRAME\\UI-RaidFrame-GroupBg", tile = false },
+	{ bgFile = "Interface\\Destiny\\EndscreenBG", tile = false },
+	{ bgFile = "Interface\\Stationery\\AuctionStationery1", tile = false },
+	{ bgFile = "Interface\\Stationery\\Stationery_ill1", tile = false },
+	{ bgFile = "Interface\\Stationery\\Stationery_OG1", tile = false },
+	{ bgFile = "Interface\\Stationery\\Stationery_TB1", tile = false },
+	{ bgFile = "Interface\\Stationery\\Stationery_UC1", tile = false },
+	{ bgFile = "Interface\\Stationery\\StationeryTest1", tile = false },
+	{ bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle1", tile = false },
+	{ bgFile = "Interface\\WorldMap\\UI-WorldMap-Middle2", tile = false },
+	{ bgFile = "Interface\\ACHIEVEMENTFRAME\\UI-Achievement-StatsBackground", tile = false },
 };
 
 function TRP3_API.ui.frame.getTiledBackground(index)
-	return tiledBackgrounds[index] or tiledBackgrounds[1];
+	local backgroundInfo = tiledBackgrounds[index];
+
+	if not backgroundInfo then
+		backgroundInfo = tiledBackgrounds[1];
+	end
+
+	return backgroundInfo.bgFile;
+end
+
+function TRP3_API.ui.frame.setBackdropToBackground(frame, index)
+	local backgroundInfo = tiledBackgrounds[index];
+
+	if not backgroundInfo then
+		backgroundInfo = tiledBackgrounds[1];
+	end
+
+	-- Applying a background retains any properties on existing backdrops and
+	-- replaces those present within the background definition. Only a few
+	-- keys are supported so as to not wipe out any border information.
+
+	local backdropInfo = CreateFromMixins(frame:GetBackdrop());
+	backdropInfo.bgFile = backgroundInfo.bgFile;
+	backdropInfo.tile = backgroundInfo.tile;
+	backdropInfo.tileSize = backgroundInfo.tileSize;
+
+	frame:SetBackdrop(backdropInfo);
 end
 
 function TRP3_API.ui.frame.getTiledBackgroundList()
 	local tab = {};
-	for index, texture in pairs(tiledBackgrounds) do
-		tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. texture .. ":200:200|t"});
+	for index, info in pairs(tiledBackgrounds) do
+		tinsert(tab, {loc.UI_BKG:format(tostring(index)), index, "|T" .. info.bgFile .. ":200:200|t"});
 	end
 	return tab;
 end
@@ -497,9 +518,27 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
-local function isPetUnit(unitToken)
+local function IsPetUnit(unitToken)
 	local unitGUID = UnitGUID(unitToken);
 	return unitGUID and strsplit("-", unitGUID) == "Pet";
+end
+
+local function IsBattlePetUnit(unitToken)
+	if UnitIsBattlePetCompanion then
+		return UnitIsBattlePetCompanion(unitToken);
+	end
+
+	-- Fallback for Classic; we can approximate companion pets with the
+	-- following API tests.
+
+	if not UnitPlayerControlled(unitToken) then
+		return false;
+	end
+
+	local unitGUID = UnitGUID(unitToken);
+	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
+
+	return guidType == "Creature" and TRP3_API.utils.resources.IsPetCreature(tonumber(creatureID));
 end
 
 ---
@@ -507,9 +546,9 @@ end
 function TRP3_API.ui.misc.getTargetType(unitType)
 	if UnitIsPlayer(unitType) then
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
-	elseif UnitIsBattlePetCompanion(unitType) then
-		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, not UnitIsOtherPlayersBattlePet(unitType);
-	elseif UnitPlayerControlled(unitType) and isPetUnit(unitType) then
+	elseif IsBattlePetUnit(unitType) then
+		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
+	elseif UnitPlayerControlled(unitType) and IsPetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
 	end
 	if TRP3_API.utils.str.getUnitNPCID(unitType) then
@@ -535,15 +574,33 @@ local function getCompanionOwner(unitType, targetType)
 end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
 
-function TRP3_API.ui.misc.getCompanionFullID(unitType, targetType)
-	local unitName = UnitName(unitType);
-	if unitName then
-		local owner = getCompanionOwner(unitType, targetType);
+function TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType)
+	local shortID = UnitName(unitToken);
+
+	if not C_PetJournal and unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.BATTLE_PET then
+		-- Classic: Companions can't be renamed nor can their names be
+		-- localized ahead of summoning, so we don't use the unit name but
+		-- instead tie their short IDs to a name inferred from how they're
+		-- summoned.
+
+		local unitGUID = UnitGUID(unitToken);
+		local creatureID = tonumber((select(6, string.split("-", unitGUID or "", 7))));
+		shortID = TRP3_API.utils.resources.GetPetNameByCreatureID(creatureID);
+	end
+
+	return shortID;
+end
+
+function TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType)
+	local shortID = TRP3_API.ui.misc.getCompanionShortID(unitToken, unitType);
+
+	if shortID then
+		local owner = getCompanionOwner(unitToken, unitType);
 		if owner ~= nil then
 			if not owner:find("-") then
 				owner = owner .. "-" .. globals.player_realm_id;
 			end
-			return owner .. "_" .. unitName, owner;
+			return owner .. "_" .. shortID, owner;
 		end
 	end
 	return nil;

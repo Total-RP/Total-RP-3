@@ -331,8 +331,8 @@
 					<Button name="TRP3_NewCustomizationsUnlockButton">
 						<Size x="110" y="110"/>
 						<Anchors><Anchor point="BOTTOM" x="5" y="25"/></Anchors>
-						<NormalTexture alphaMode="ADD" atlas="pvpqueue-chest-greatvault-complete"/>
-						<HighlightTexture alpha="0.5" alphaMode="ADD" atlas="pvpqueue-chest-greatvault-collect"/>
+						<NormalTexture alphaMode="ADD"/>
+						<HighlightTexture alpha="0.5" alphaMode="ADD"/>
 						<Scripts>
 							<PostClick>
 								UIErrorsFrame:AddMessage(ANIMA_DIVERSION_NOT_ENOUGH_CURRENCY, 1.0, 0.0, 0.0);
@@ -350,6 +350,10 @@
 								self.refreshTooltip = false;
 								TRP3_MainTooltip:Hide();
 							</OnLeave>
+							<OnLoad>
+								self:GetNormalTexture():SetAtlas("pvpqueue-chest-greatvault-complete");
+								self:GetHighlightTexture():SetAtlas("pvpqueue-chest-greatvault-collect");
+							</OnLoad>
 						</Scripts>
 						<Animations>
 							<AnimationGroup name="$parentAnimate" setToFinalAlpha="true" looping="NONE">

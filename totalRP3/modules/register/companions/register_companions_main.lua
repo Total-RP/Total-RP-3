@@ -30,27 +30,25 @@ local log = Utils.log.log;
 local pairs, assert, tostring, wipe, tinsert, strtrim, tonumber = pairs, assert, tostring, wipe, tinsert, strtrim, tonumber;
 local registerMenu= TRP3_API.navigation.menu.registerMenu;
 local setPage = TRP3_API.navigation.page.setPage;
-local GetSpellInfo = GetSpellInfo;
 local displayMessage = Utils.message.displayMessage;
 local EMPTY = Globals.empty;
 local tcopy = Utils.table.copy;
 local TYPE_MOUNT = TRP3_API.ui.misc.TYPE_MOUNT;
-local IsMounted = IsMounted;
 
-local GetSummonedPetGUID, GetPetInfoByPetID;
-local GetMountIDs, GetMountInfoByID;
+local function GetMountIDs()
+	if C_MountJournal then
+		return C_MountJournal.GetMountIDs();
+	else
+		return TRP3_API.utils.resources.GetMountIDs();
+	end
+end
 
--- Classic proofing
-if TRP3_API.globals.is_classic then
-	GetSummonedPetGUID = function() return end;
-	GetPetInfoByPetID = function() return end;
-	GetMountIDs = function() return {} end;
-	GetMountInfoByID = function() return end;
-else
-	GetSummonedPetGUID = C_PetJournal.GetSummonedPetGUID;
-	GetPetInfoByPetID = C_PetJournal.GetPetInfoByPetID;
-	GetMountIDs = C_MountJournal.GetMountIDs;
-	GetMountInfoByID = C_MountJournal.GetMountInfoByID;
+local function GetMountInfoByID(mountID)
+	if C_MountJournal then
+		return C_MountJournal.GetMountInfoByID(mountID);
+	else
+		return TRP3_API.utils.resources.GetMountInfoByID(mountID);
+	end
 end
 
 TRP3_API.navigation.menu.id.COMPANIONS_MAIN = "main_20_companions";
@@ -242,6 +240,65 @@ local function getCompanionVersionNumbers(profileID)
 	end
 end
 
+local function UpdateSummonedPetGUID(speciesID)
+	RegisterCVar("totalRP3_SummonedPetID", "");
+	SetCVar("totalRP3_SummonedPetID", speciesID);
+end
+
+local function UpdateSummonedPetGUIDFromCast(unitToken, castGUID)
+	-- For Classic clients we need to be creative with how we know what
+	-- non-combat pet the player has summoned. None of the companion API
+	-- exists, nor does the COMPANION_UPDATE event.
+	--
+	-- Our approach is to monitor for successful spellcasts whose spell IDs
+	-- are associated with that of a known companion pet. We assume that the
+	-- last successful cast will represent the current battle pet.
+	--
+	-- Note that we can't tell when a companion pet is dismissed, so our query
+	-- data will always contain the data for the last-successful cast even if
+	-- that cast dismissed the pet. Realistically this should be fine since
+	-- if it's dismissed other players can't see the unit to request the data
+	-- anyway.
+	--
+	-- For persistence across UI reloads we store the summoned pet data in a
+	-- temporary CVar. When logging out pets aren't resummoned in Classic, so
+	-- we don't need to worry about the case where a player switches
+	-- characters.
+
+	if unitToken ~= "player" then
+		return;
+	end
+
+	local spellID = tonumber((select(6, string.split("-", castGUID, 7))));
+	local speciesID = TRP3_API.utils.resources.GetPetSpeciesBySpellID(spellID);
+
+	if speciesID then
+		UpdateSummonedPetGUID(speciesID);
+	end
+end
+
+local function ResetSummonedPetGUIDFromLogin(isInitialLogin)
+	if isInitialLogin then
+		UpdateSummonedPetGUID(nil);
+	end
+end
+
+local function GetSummonedPetGUID()
+	if C_PetJournal then
+		return C_PetJournal.GetSummonedPetGUID();
+	else
+		return GetCVar("totalRP3_SummonedPetID");
+	end
+end
+
+local function GetPetInfoByPetID(petID)
+	if C_PetJournal then
+		return C_PetJournal.GetPetInfoByPetID(petID);
+	else
+		return TRP3_API.utils.resources.GetPetInfoByPetID(petID);
+	end
+end
+
 function TRP3_API.companions.player.getCurrentMountQueryLine()
 	local currentMountSpellID = getCurrentMountSpellID();
 	if currentMountSpellID then
@@ -266,7 +323,6 @@ function TRP3_API.companions.player.getCurrentBattlePetQueryLine()
 		return queryLine;
 	end
 end
-
 
 function TRP3_API.companions.player.getCurrentPetQueryLine()
 	local summonedPet = UnitName("pet");
@@ -491,6 +547,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	end
 	registerCompanions = TRP3_Register.companion;
 	parseRegisterProfiles(registerCompanions);
+
+	if not C_PetJournal then
+		-- Classic support for companion pets.
+		Utils.event.registerHandler("UNIT_SPELLCAST_SUCCEEDED", UpdateSummonedPetGUIDFromCast);
+		Utils.event.registerHandler("PLAYER_ENTERING_WORLD", ResetSummonedPetGUIDFromLogin);
+	end
 
 	registerMenu({
 		id = TRP3_API.navigation.menu.id.COMPANIONS_MAIN,

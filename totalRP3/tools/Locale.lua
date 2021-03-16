@@ -1481,6 +1481,9 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
+	REG_LIST_CHAR_NAME_COPY = "Copy character name",
+	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
 	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
 	UNIT_POPUPS_MODULE_DESCRIPTION = "Adds integration with right-click menus on unit frames and player names in chat frames.",
 	UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER = "Roleplay Options",
@@ -1635,7 +1638,20 @@ function Locale.findPetOwner(tooltipLines)
 end
 
 function Locale.findBattlePetOwner(lines)
-	local masterLine = isColorBlindModeEnabled() and lines[4] or lines[3];
+	local lineNumber = 3;
+
+	if not TRP3_DUMMY_TOOLTIP.SetCompanionPet then
+		-- GameTooltip API doesn't support companion pets so this is likely
+		-- a Classic client, which uses the previous line.
+		lineNumber = lineNumber - 1;
+	end
+
+	if isColorBlindModeEnabled() then
+		-- Colorblind mode shifts the line down by one.
+		lineNumber = lineNumber + 1;
+	end
+
+	local masterLine = lines[lineNumber];
 	if masterLine then
 		local master;
 		for _, matchingPattern in pairs(BATTLE_PET_OWNER_MATCHING_LINES) do

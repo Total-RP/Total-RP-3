@@ -132,8 +132,10 @@ AddOn_TotalRP3.Ui = AddOn_TotalRP3.Ui or {};
 
 function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
 	-- Only suggest that this browser be usable for Hunters as we're using
-	-- the stable APIs for populating it. On Classic, this will always
-	-- be disabled as we don't support companion profiles there.
+	-- the stable APIs for populating it.
+	--
+	-- Classic: This is disabled until the TBC prepatch as it relies on a lot
+	-- of post-8.1 changes in FrameXML to function.
 
 	return TRP3_API.globals.player_character.class == "HUNTER" and not TRP3_API.globals.is_classic;
 end

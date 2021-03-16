@@ -161,7 +161,7 @@ local function uiBoundTargetProfile(profileID)
 	local targetType, isMine = TRP3_API.ui.misc.getTargetType("target");
 	if (targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetType == TRP3_Enums.UNIT_TYPE.PET) and isMine then
 		local companionFullID = TRP3_API.ui.misc.getCompanionFullID("target", targetType);
-		local companionID = UnitName("target");
+		local companionID = TRP3_API.ui.misc.getCompanionShortID("target", targetType);
 		if companionFullID then
 			ui_boundPlayerCompanion(companionID, profileID, targetType);
 			return;
