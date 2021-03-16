@@ -46,6 +46,9 @@ local Events = {
 	-- Arg2 : Page context
 	PAGE_OPENED = "PAGE_OPENED",
 
+	-- Fired when a config value is modified.
+	CONFIGURATION_CHANGED = "CONFIGURATION_CHANGED",
+
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Data changed
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

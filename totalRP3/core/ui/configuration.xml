@@ -39,6 +39,21 @@
 		</Layers>
 	</Frame>
 
+	<Frame name="TRP3_ConfigParagraph" virtual="true">
+		<Size x="0" y="65"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTitle" inherits="GameFontNormalSmall" justifyH="LEFT" wordwrap="true">
+					<Anchors>
+						<Anchor point="LEFT" x="0" y="0"/>
+						<Anchor point="RIGHT" x="0" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
 	<Frame name="TRP3_ConfigNote" virtual="true">
 		<Size x="0" y="35"/>
 		<Layers>

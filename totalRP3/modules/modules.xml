@@ -111,9 +111,9 @@
 		</Frames>
 	</Frame>
 
-	<Script file="module_management.lua"/>
-	<Script file="flyway\flyway.lua"/>
-	<Script file="flyway\flyway_patches.lua"/>
+	<Include file="module_management.lua"/>
+	<Include file="flyway\flyway.lua"/>
+	<Include file="flyway\flyway_patches.lua"/>
 	<Include file="dashboard\dashboard.xml"/>
 	<Include file="map\map.xml"/>
 	<Include file="register\register_includes.xml"/>
@@ -124,5 +124,5 @@
 	<Include file="importer\importer.xml"/>
 	<Include file="tooltip_skins\tooltips_skins.xml"/>
 	<Include file="ChatLinks\ChatLinks.xml"/>
-	<Include file="UnitPopups\UnitPopups.xml"/>
+	<Include file="NamePlates\NamePlates.xml"/>
 </Ui>
