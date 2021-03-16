@@ -1523,6 +1523,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	KUI_NAMEPLATES_MODULE_NAME = "Kui Nameplates",
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
+	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 };
 
 -- Use Ellyb to generate the Localization system

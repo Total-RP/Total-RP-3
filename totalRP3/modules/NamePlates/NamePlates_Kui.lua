@@ -33,6 +33,14 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	-- almost certainly meet its activation criteria otherwise.
 
 	TRP3_DISABLE_BLIZZARD_NAMEPLATES = true;
+
+	-- Disable our (old) Kui nameplate module explicitly, we'll also tell
+	-- users that they can disable it.
+
+	if GetAddOnEnableState(nil, "totalRP3_KuiNameplates") ~= 0 then
+		DisableAddOn("totalRP3_KuiNameplates", true);
+		TRP3_API.popup.showAlertPopup(L.KUI_NAMEPLATES_WARN_OUTDATED_MODULE);
+	end
 end
 
 function TRP3_KuiNamePlates:OnModuleEnable()
