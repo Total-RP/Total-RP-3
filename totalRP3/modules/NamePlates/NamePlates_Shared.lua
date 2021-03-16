@@ -112,25 +112,25 @@ function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
 	end
 end
 
-function TRP3_NamePlatesUtil.ShouldShowUnitNamePlate(unitToken)
+function TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitToken)
 	if not TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken) then
-		return true;  -- Customizations are disabled.
+		return false;  -- Customizations are disabled.
 	elseif not TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits() then
-		return true;  -- Option to hide non-roleplay units is disabled.
+		return false;  -- Option to hide non-roleplay units is disabled.
 	elseif not unitToken or not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken) then
-		return true;  -- Always show creature nameplates.
+		return false;  -- Always show creature nameplates.
 	end
 
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
 
 	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
 		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
-		return characterID and TRP3_API.register.isUnitIDKnown(characterID) or false;
+		return not characterID or not TRP3_API.register.isUnitIDKnown(characterID);
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
 		local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-		return TRP3_API.companions.register.getCompanionProfile(companionFullID) ~= nil;
+		return TRP3_API.companions.register.getCompanionProfile(companionFullID) == nil;
 	else
-		return true;  -- Should be impossible, default to showing it.
+		return false;  -- Should be impossible, default to showing it.
 	end
 end
 

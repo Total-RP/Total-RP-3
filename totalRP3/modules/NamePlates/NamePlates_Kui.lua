@@ -268,13 +268,13 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
-	local shouldShow = TRP3_NamePlatesUtil.ShouldShowUnitNamePlate(nameplate.unit);
+	local shouldHide = TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(nameplate.unit);
 
-	if shouldShow then
+	if shouldHide then
+		nameplate:Hide();
+	elseif not shouldHide then
 		nameplate:Show();
 		KuiNameplatesCore:Show(nameplate);
-	elseif not shouldShow then
-		nameplate:Hide();
 	end
 end
 

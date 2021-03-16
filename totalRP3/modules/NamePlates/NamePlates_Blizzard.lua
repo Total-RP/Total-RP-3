@@ -38,6 +38,27 @@ local function GetNamePlateForUnitFrame(unitframe)
 	return nameplate;
 end
 
+local function UpdateWidgetVisibility(widget)
+	local shouldShow = not widget.TRP3_forceHide and widget.TRP3_shouldShow;
+	getmetatable(widget).__index.SetShown(widget, shouldShow);
+end
+
+local function OnWidgetVisibilityChanged(widget)
+	widget.TRP3_shouldShow = widget:IsShown();
+	UpdateWidgetVisibility(widget);
+end
+
+local function SetWidgetForcedHideState(widget, hide)
+	widget.TRP3_forceHide = hide;
+	UpdateWidgetVisibility(widget);
+end
+
+local function TryCallWidgetFunction(func, widget, ...)
+	if widget then
+		return func(widget, ...);
+	end
+end
+
 local TRP3_BlizzardNamePlates = {};
 
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
@@ -55,9 +76,11 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 	end
 
 	self.unitDisplayInfo = {};
+	self.initializedUnitframes = {};
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
+	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end)
 	hooksecurefunc("CompactUnitFrame_UpdateName", function(...) return self:OnUnitFrameNameUpdated(...); end);
 	hooksecurefunc("CompactUnitFrame_UpdateHealthColor", function(...) return self:OnUnitFrameHealthColorUpdated(...); end);
 
@@ -75,6 +98,53 @@ end
 function TRP3_BlizzardNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
 	self:SetUnitDisplayInfo(unitToken, displayInfo);
 	self:UpdateNamePlate(nameplate);
+end
+
+function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
+	-- This is called as a post-hook on CompactUnitFrame_SetUpFrame. This
+	-- occurs before a unit is assigned to the plate, so needs custom logic
+	-- to verify that it is indeed a child of a nameplate.
+
+	if unitframe:IsForbidden() then
+		return;
+	end
+
+	local nameplate = unitframe:GetParent();
+	local frameName = nameplate:GetName();
+
+	if self.initializedUnitframes[frameName] or not string.find(frameName, "^NamePlate%d+$") then
+		return;
+	end
+
+	local function InitWidgetVisibilityHooks(widget)
+		if not widget then
+			return;
+		end
+
+		-- Our visibility hack is implemented by way of posthooks on the
+		-- Show/Hide/SetShown methods. When these are called we store the
+		-- requested visibility state and then override it only if we've set
+		-- a "forceHide" flag on the widget.
+
+		hooksecurefunc(widget, "Show", OnWidgetVisibilityChanged);
+		hooksecurefunc(widget, "Hide", OnWidgetVisibilityChanged);
+		hooksecurefunc(widget, "SetShown", OnWidgetVisibilityChanged);
+
+		OnWidgetVisibilityChanged(widget);
+	end
+
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.aggroHighlight);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.BuffFrame);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.castBar);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.ClassificationFrame);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.healthBar);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.LevelFrame);  -- Classic-only.
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.name);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.RaidTargetFrame);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.selectionHighlight);
+	TryCallWidgetFunction(InitWidgetVisibilityHooks, unitframe.WidgetContainer);
+
+	self.initializedUnitframes[frameName] = true;
 end
 
 function TRP3_BlizzardNamePlates:OnUnitFrameNameUpdated(unitframe)
@@ -166,19 +236,24 @@ function TRP3_BlizzardNamePlates:SetUnitDisplayInfo(unitToken, displayInfo)
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
-	local shouldShow = TRP3_NamePlatesUtil.ShouldShowUnitNamePlate(nameplate.namePlateUnitToken);
+	local unitframe = GetUnitFrameForNamePlate(nameplate);
 
-	local function UpdateChildVisibility(object, ...)
-		if not object then
-			return;
-		end
-
-		object:SetShown(shouldShow);
-		return UpdateChildVisibility(...);
+	if not unitframe or unitframe:IsForbidden() then
+		return;
 	end
 
-	UpdateChildVisibility(nameplate:GetChildren());
-	UpdateChildVisibility(nameplate:GetRegions());
+	local shouldHide = TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitframe.displayedUnit);
+
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.aggroHighlight, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.BuffFrame, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.castBar, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.ClassificationFrame, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.healthBar, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.LevelFrame, shouldHide);  -- Classic-only.
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.name, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.RaidTargetFrame, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.selectionHighlight, shouldHide);
+	TryCallWidgetFunction(SetWidgetForcedHideState, unitframe.WidgetContainer, shouldHide);
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
