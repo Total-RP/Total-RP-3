@@ -137,7 +137,9 @@ end
 function TRP3_NamePlatesUtil.GetUnitRoleplayStatus(unitToken)
 	local player;
 
-	if UnitIsUnit(unitToken, "player") then
+	if not unitToken then
+		return nil;
+	elseif UnitIsUnit(unitToken, "player") then
 		player = AddOn_TotalRP3.Player.GetCurrentUser();
 	elseif UnitIsPlayer(unitToken) then
 		player = AddOn_TotalRP3.Player.CreateFromUnit(unitToken);
