@@ -131,7 +131,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	if ElvUI then
 		local E = ElvUI[1];
-		if E and E.private and E.private.nameplates and E.private.nameplates.enable then
+		if E and E.NamePlates and E.NamePlates.Initialized then
 			return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 		end
 	end
