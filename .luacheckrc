@@ -305,6 +305,7 @@ stds.wow = {
 		"GetChannelDisplayInfo",
 		"GetChannelName",
 		"GetChannelRosterInfo",
+		"GetClassColor",
 		"GetCurrentRegionName",
 		"GetCursorPosition",
 		"GetCVar",
