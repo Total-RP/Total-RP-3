@@ -17,6 +17,26 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
+local displayInfoPool = {};
+
+local function GetOrCreateDisplayInfo(unitToken)
+	if not displayInfoPool[unitToken] then
+		displayInfoPool[unitToken] = {};
+	end
+
+	local displayInfo = displayInfoPool[unitToken];
+
+	displayInfo.fullTitle = nil;
+	displayInfo.healthColor = nil;
+	displayInfo.icon = nil;
+	displayInfo.nameColor = nil;
+	displayInfo.nameText = nil;
+	displayInfo.roleplayStatus = nil;
+	displayInfo.shouldHide = nil;
+
+	return displayInfo;
+end
+
 local function SafeSet(table, key, value)
 	if key ~= nil then
 		table[key] = value;
@@ -173,7 +193,7 @@ local function GetCharacterColorForDisplay(player, classToken)
 end
 
 local function GetCharacterUnitDisplayInfo(unitToken, characterID)
-	local displayInfo = {};
+	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
 		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
@@ -223,7 +243,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 end
 
 local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
-	local displayInfo = {};
+	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 
 	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
 
