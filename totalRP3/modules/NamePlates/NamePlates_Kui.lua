@@ -167,7 +167,7 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 			displayText = displayInfo.nameText;
 			shouldCropName = true;
 		else
-			displayText = nameplate.NameText:GetText();
+			displayText = nameplate.state.name;
 		end
 
 		if displayInfo.prefixTitle then
