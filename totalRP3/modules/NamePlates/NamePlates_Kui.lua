@@ -151,33 +151,18 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-	local displayText;
 
 	if not displayInfo then
 		-- We're invoked as a posthook where the name will already be reset.
 		return;
 	end
 
-	do
-		local shouldCropName = false;
+	local displayText;
 
-		-- Any components subject to cropping should be configured here.
-
-		if displayInfo.nameText then
-			displayText = displayInfo.nameText;
-			shouldCropName = true;
-		else
-			displayText = nameplate.state.name;
-		end
-
-		if displayInfo.prefixTitle then
-			displayText = string.join(" ", displayInfo.prefixTitle, displayText);
-			shouldCropName = true;
-		end
-
-		if shouldCropName then
-			displayText = TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
-		end
+	if displayInfo.nameText then
+		displayText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+	else
+		displayText = nameplate.state.name;
 	end
 
 	-- No further cropping occurs below this point.

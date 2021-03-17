@@ -192,11 +192,15 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		end
 
 		if ShouldCustomizeNames() then
-			displayInfo.nameText = player:GetFullName();
+			displayInfo.nameText = player:GetRoleplayingName();
 		end
 
 		if ShouldCustomizeTitles() then
-			displayInfo.prefixTitle = player:GetTitle();
+			local prefix = player:GetTitle();
+
+			if prefix then
+				displayInfo.nameText = strjoin(" ", prefix, displayInfo.nameText or player:GetName());
+			end
 		end
 
 		if ShouldCustomizeRoleplayStatus() then

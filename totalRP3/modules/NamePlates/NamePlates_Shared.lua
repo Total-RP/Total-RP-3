@@ -29,14 +29,6 @@ function TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle()
 	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
 end
 
-function TRP3_NamePlatesUtil.CropFontString(fontstring, width)
-	fontstring:SetText(TRP3_API.utils.str.crop(fontstring:GetText(), width));
-end
-
-function TRP3_NamePlatesUtil.PrependTextToFontString(fontstring, text)
-	fontstring:SetFormattedText("%s %s", text, fontstring:GetText());
-end
-
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 	if roleplayStatus ~= AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER then
 		return text;

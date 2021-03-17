@@ -252,24 +252,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local overrideColor;
 
 	if displayInfo then
-		local shouldCropName = false;
-
-		-- Anything that needs to potentially be cropped should be inserted
-		-- first; the name is cropped as a single unit to ensure that we
-		-- don't need to worry about cropping things like titles individually.
-
 		if displayInfo.nameText then
-			overrideText = displayInfo.nameText;
-			shouldCropName = true;
-		end
-
-		if displayInfo.prefixTitle then
-			overrideText = string.join(" ", displayInfo.prefixTitle, overrideText);
-			shouldCropName = true;
-		end
-
-		if shouldCropName then
-			overrideText = TRP3_API.utils.str.crop(overrideText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			overrideText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 		end
 
 		-- No cropping occurs after this point.
