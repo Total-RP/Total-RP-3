@@ -23,6 +23,7 @@ TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
 TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
 TRP3_NamePlatesUtil.ICON_WIDTH = 16;
 TRP3_NamePlatesUtil.ICON_HEIGHT = 16;
+TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
 function TRP3_NamePlatesUtil.CropFontString(fontstring, width)
 	fontstring:SetText(TRP3_API.utils.str.crop(fontstring:GetText(), width));
@@ -37,7 +38,13 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 		return text;
 	end
 
-	return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicator();
+
+	if preferredStyle == "ICON" then
+		return string.join(" ", TRP3_NamePlatesUtil.OOC_ICON, text);
+	else
+		return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+	end
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, roleplayStatus)
@@ -45,7 +52,13 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 		return;
 	end
 
-	fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicator();
+
+	if preferredStyle == "ICON" then
+		fontstring:SetFormattedText("%s %s", TRP3_NamePlatesUtil.OOC_ICON, fontstring:GetText());
+	else
+		fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
+	end
 end
 
 function TRP3_NamePlatesUtil.PrependIconToText(text, icon)
@@ -73,6 +86,10 @@ end
 function TRP3_NamePlatesUtil.SetTextureToIcon(texture, icon)
 	texture:SetTexture([[interface\icons\]] .. icon);
 	texture:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
+end
+
+function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
+	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
 end
 
 function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
@@ -113,6 +130,10 @@ end
 
 function TRP3_NamePlatesUtil.ShouldCustomizeRoleplayStatus()
 	return TRP3_API.configuration.getValue("NamePlates_CustomizeRoleplayStatus");
+end
+
+function TRP3_NamePlatesUtil.GetPreferredOOCIndicator()
+	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
 end
 
 function TRP3_NamePlatesUtil.ShouldCustomizeFullTitles()
@@ -251,6 +272,11 @@ TRP3_NamePlatesUtil.Configuration = {
 		default = false,
 	},
 
+	PreferredOOCIndicator = {
+		key = "NamePlates_PreferredOOCIndicator",
+		default = "TEXT",
+	},
+
 	CustomizeFullTitles = {
 		key = "NamePlates_CustomizeFullTitles",
 		default = false,
@@ -333,6 +359,17 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP,
 			configKey = "NamePlates_CustomizeRoleplayStatus",
+		},
+		{
+			inherit = "TRP3_ConfigDropDown",
+			title = L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
+			listContent = {
+				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED(L.CM_OOC), "TEXT" },
+				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. TRP3_NamePlatesUtil.OOC_ICON, "ICON" },
+			},
+			configKey = "NamePlates_PreferredOOCIndicator",
+			listWidth = nil,
+			listCancel = true,
 		},
 		{
 			inherit = "TRP3_ConfigCheck",
