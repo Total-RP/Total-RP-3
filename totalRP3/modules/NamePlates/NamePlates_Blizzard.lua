@@ -241,7 +241,6 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		local iconWidget = unitframe:CreateTexture(nil, "ARTWORK");
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", unitframe.name, "LEFT", -4, 0);
-		iconWidget:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
 		iconWidget:Hide();
 
 		nameplate.TRP3_Icon = iconWidget;
@@ -336,6 +335,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 
 	if displayIcon then
 		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		nameplate.TRP3_Icon:Show();
 	else
 		nameplate.TRP3_Icon:Hide();

@@ -21,12 +21,15 @@ local TRP3_NamePlatesUtil = {};
 
 TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
 TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
-TRP3_NamePlatesUtil.ICON_WIDTH = 16;
-TRP3_NamePlatesUtil.ICON_HEIGHT = 16;
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
 function TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle()
 	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
+end
+
+function TRP3_NamePlatesUtil.GetPreferredIconSize()
+	local size = tonumber(TRP3_API.configuration.getValue("NamePlates_IconSize")) or 16;
+	return size, size;
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
@@ -105,6 +108,11 @@ TRP3_NamePlatesUtil.Configuration = {
 	CustomizeIcons = {
 		key = "NamePlates_CustomizeIcons",
 		default = false,
+	},
+
+	IconSize = {
+		key = "NamePlates_IconSize",
+		default = 16,
 	},
 
 	CustomizeHealthColors = {
@@ -243,6 +251,16 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP,
 			configKey = "NamePlates_CustomizeIcons",
+		},
+		{
+			inherit = "TRP3_ConfigSlider",
+			title = L.NAMEPLATES_CONFIG_ICON_SIZE,
+			help = L.NAMEPLATES_CONFIG_ICON_SIZE_HELP,
+			configKey = "NamePlates_IconSize",
+			min = 12,
+			max = 48,
+			step = 1,
+			integer = true,
 		},
 		{
 			inherit = "TRP3_ConfigH1",

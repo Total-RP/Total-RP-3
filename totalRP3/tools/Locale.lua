@@ -1526,6 +1526,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP = "If checked, shows an indicator of a units' roleplay status (IC or OOC) on nameplates.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ICONS = "Show icons",
 	NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP = "If checked, shows profile icons on nameplates.",
+	NAMEPLATES_CONFIG_ICON_SIZE = "Icon size",
+	NAMEPLATES_CONFIG_ICON_SIZE_HELP = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY = "Automatically fetch profiles",
 	NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP = "If checked, automatically fetches roleplay profiles for units with nameplates attached.",
 	NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK = "Use class color by default",

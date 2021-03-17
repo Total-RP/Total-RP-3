@@ -107,7 +107,6 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-		iconWidget:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
 		iconWidget:Hide();
 
 		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
@@ -243,6 +242,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
 	if displayIcon then
 		nameplate.TRP3_Icon:ClearAllPoints();
 		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 
 		if IsNamePlateInNameOnlyMode(nameplate) then
 			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
