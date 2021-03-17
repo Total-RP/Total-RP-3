@@ -1499,7 +1499,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that some settings may be supported by all nameplate addons, refer to the help tip on each for more information.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",
@@ -1511,7 +1511,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.|n|nFor |cff9966ffKui|r nameplates, this option is only supported in name-only mode.",
 	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS = "Hide out of character units",
 	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, hides the nameplates of units that are currently out of character.|n|nFor |cff9966ffKui|r nameplates, this option is only supported in name-only mode.",
-	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Element settings",
+	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Display settings",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS = "Show custom name colors",
