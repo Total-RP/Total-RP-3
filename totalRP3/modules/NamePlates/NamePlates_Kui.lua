@@ -235,6 +235,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 	local unitframe = nameplate.parent.UnitFrame;
 
 	if not nameplate.IN_NAMEONLY or not unitframe or not ShouldShowName(unitframe) then
@@ -242,7 +243,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 		displayText = nil;
 	end
 
-	if displayText and displayFont then
+	if displayText and displayFont and not shouldHide then
 		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
 		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
