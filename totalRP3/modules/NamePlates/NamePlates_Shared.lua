@@ -92,10 +92,6 @@ function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
 	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
 end
 
-function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
-end
-
 function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits()
 	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacterUnits");
 end
