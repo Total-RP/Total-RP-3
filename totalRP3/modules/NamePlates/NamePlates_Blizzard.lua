@@ -322,7 +322,6 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 	local displayIcon = displayInfo and displayInfo.icon or nil;
-
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Hide the icon if explicitly requested, or if the name isn't showing as
@@ -350,7 +349,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local unitframe = nameplate.UnitFrame;
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
-	local isNameOnly = (GetCVar("nameplateShowOnlyNames") ~= "0");
+	local displayText = displayInfo and displayInfo.fullTitle or nil;
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Hide the full title widget if no title is to be displayed, or if the
 	-- nameplate isn't in name-only mode.
@@ -359,14 +359,15 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- only applies it on a full UI reload; instead we check if the healthbar
 	-- is showing or not.
 
-	local shouldHideFromDisplayInfo = not displayInfo or (not displayInfo.fullTitle or displayInfo.shouldHide);
-	local shouldHideFromFrameConfig = unitframe.healthBar:IsShown() or not ShouldShowName(unitframe);
+	if shouldHide or not ShouldShowName(unitframe) or unitframe.healthBar:IsShown() then
+		displayText = nil;
+	end
 
-	if shouldHideFromDisplayInfo or shouldHideFromFrameConfig then
-		nameplate.TRP3_Title:Hide();
-	else
+	if displayText then
 		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
 		nameplate.TRP3_Title:Show();
+	else
+		nameplate.TRP3_Title:Hide();
 	end
 
 	-- On Classic Blizzard shows the level text all the time in name-only
@@ -376,6 +377,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- edge case with the hide nameplate options where the level text could
 	-- spuriously disappear if name only mode isn't enabled because of our
 	-- visibility overrides on the level frame widget.
+
+	local isNameOnly = (GetCVar("nameplateShowOnlyNames") ~= "0");
 
 	if unitframe.LevelFrame and isNameOnly then
 		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());
@@ -427,11 +430,11 @@ function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 		return;
 	end
 
+	self:UpdateNamePlateVisibility(nameplate);
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
 	self:UpdateNamePlateFullTitle(nameplate);
-	self:UpdateNamePlateVisibility(nameplate);
 end
 
 function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)
