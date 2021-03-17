@@ -240,10 +240,6 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 			displayInfo.nameText = profile.data.NA;
 		end
 
-		if ShouldCustomizeRoleplayStatus() then
-			displayInfo.roleplayStatus = GetUnitRoleplayStatus(unitToken);
-		end
-
 		if ShouldHideNonRoleplayUnits() then
 			displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
 		end
