@@ -157,6 +157,7 @@ function TRP3_KuiNamePlates:OnNamePlateCombat(nameplate)
 end
 
 function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
+	self:SetUnitDisplayInfo(nameplate.unit, nil);
 	self:UpdateNamePlate(nameplate);
 end
 
@@ -204,6 +205,19 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	if displayInfo.nameColor then
 		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
+	end
+
+	-- Force a visibililty update on the nameplate to work around an edge
+	-- case where a player logs in and the hide setting isn't necessarily
+	-- respected.
+
+	local shouldShow = not displayInfo or not displayInfo.shouldHide;
+
+	if nameplate.NameText:IsShown() ~= shouldShow then
+		local old = nameplate.UpdateNameText;
+		nameplate.UpdateNameText = nop;
+		xpcall(self.UpdateNamePlateVisibility, CallErrorHandler, self, nameplate);
+		nameplate.UpdateNameText = old;
 	end
 end
 
