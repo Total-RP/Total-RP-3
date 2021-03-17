@@ -18,6 +18,7 @@ local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
 local displayInfoPool = {};
+local isInCombat = InCombatLockdown();
 
 local function GetOrCreateDisplayInfo(unitToken)
 	if not displayInfoPool[unitToken] then
@@ -157,7 +158,7 @@ local function ShouldCustomizeUnitNamePlate(unitToken)
 		return false;  -- Unit can't have a roleplay profile.
 	elseif UnitIsUnit(unitToken, "player") then
 		return false;  -- Never decorate personal nameplates.
-	elseif ShouldDisableInCombat() and TRP3_NamePlates.isInCombat then
+	elseif ShouldDisableInCombat() and isInCombat then
 		return false;  -- Player is in (or about to enter) combat.
 	elseif ShouldDisableOutOfCharacter() and IsUnitOutOfCharacter("player") then
 		return false;  -- Player is currently OOC.
@@ -290,7 +291,6 @@ local TRP3_NamePlates = {};
 
 function TRP3_NamePlates:OnModuleInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
-	self.isInCombat = InCombatLockdown();
 	self.characterRequestTimes = {};
 	self.unitRegisterIDs = {};
 
@@ -340,12 +340,12 @@ function TRP3_NamePlates:OnUnitNameUpdate(unitToken)
 end
 
 function TRP3_NamePlates:OnPlayerRegenDisabled()
-	self.isInCombat = true;
+	isInCombat = true;
 	self:UpdateAllNamePlates();
 end
 
 function TRP3_NamePlates:OnPlayerRegenEnabled()
-	self.isInCombat = false;
+	isInCombat = false;
 	self:UpdateAllNamePlates();
 end
 
