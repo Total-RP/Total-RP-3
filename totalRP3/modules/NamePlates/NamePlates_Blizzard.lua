@@ -333,7 +333,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	-- Hide the full title widget if no title is to be displayed, or if the
 	-- nameplate isn't in name-only mode.
 
-	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not unitframe.name:IsShown() then
+	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not ShouldShowName(unitframe) then
 		nameplate.TRP3_Title:Hide();
 	else
 		nameplate.TRP3_Title:SetText(displayInfo.fullTitle);
