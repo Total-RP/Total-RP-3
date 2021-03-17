@@ -333,7 +333,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not ShouldShowName(unitframe) then
 		nameplate.TRP3_Title:Hide();
 	else
-		nameplate.TRP3_Title:SetText(displayInfo.fullTitle);
+		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
 		nameplate.TRP3_Title:Show();
 	end
 
