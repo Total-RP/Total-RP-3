@@ -19,8 +19,8 @@ local L = TRP3_API.loc;
 local TRP3_NamePlatesUtil = {};
 TRP3_NamePlatesUtil.isInCombat = InCombatLockdown();
 
-TRP3_NamePlatesUtil.MAX_NAME_CHARS = 45;
-TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 45;
+TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
+TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
 TRP3_NamePlatesUtil.ICON_WIDTH = 16;
 TRP3_NamePlatesUtil.ICON_HEIGHT = 16;
 
