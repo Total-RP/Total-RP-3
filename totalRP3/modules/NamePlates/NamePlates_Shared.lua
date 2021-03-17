@@ -140,6 +140,10 @@ function TRP3_NamePlatesUtil.ShouldCustomizeFullTitles()
 	return TRP3_API.configuration.getValue("NamePlates_CustomizeFullTitles");
 end
 
+function TRP3_NamePlatesUtil.ShouldRequestProfiles()
+	return TRP3_API.configuration.getValue("NamePlates_EnableActiveQuery");
+end
+
 function TRP3_NamePlatesUtil.ShouldCustomizeNamePlates()
 	if TRP3_NamePlatesUtil.ShouldDisableInCombat() and TRP3_NamePlatesUtil.isInCombat then
 		return false;
@@ -291,6 +295,11 @@ TRP3_NamePlatesUtil.Configuration = {
 		key = "NamePlates_CustomizeFullTitles",
 		default = false,
 	},
+
+	EnableActiveQuery = {
+		key = "NamePlates_EnableActiveQuery",
+		default = true,
+	},
 };
 
 TRP3_NamePlatesUtil.ConfigurationPage = {
@@ -386,6 +395,16 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP,
 			configKey = "NamePlates_CustomizeIcons",
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.CO_ADVANCED_SETTINGS,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_ACTIVE_QUERY,
+			help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
+			configKey = "NamePlates_EnableActiveQuery",
 		},
 	}
 };

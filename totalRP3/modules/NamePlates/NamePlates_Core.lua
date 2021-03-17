@@ -285,7 +285,7 @@ end
 function TRP3_NamePlates:UpdateRegisterIDForUnit(unitToken)
 	local registerID = GetUnitRegisterID(unitToken);
 
-	if registerID and TRP3_NamePlates.unitRegisterIDs[unitToken] ~= registerID then
+	if registerID and TRP3_NamePlates.unitRegisterIDs[unitToken] ~= registerID and TRP3_NamePlatesUtil.ShouldRequestProfiles() then
 		self:RequestUnitProfile(unitToken);
 	end
 
