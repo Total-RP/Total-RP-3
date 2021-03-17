@@ -235,8 +235,9 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
+	local unitframe = nameplate.parent.UnitFrame;
 
-	if not nameplate.IN_NAMEONLY or not nameplate.NameText:IsShown() then
+	if not nameplate.IN_NAMEONLY or not unitframe or not ShouldShowName(unitframe) then
 		-- Only show the title text in name-only mode and if the name is shown.
 		displayText = nil;
 	end
