@@ -273,9 +273,9 @@ function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
 		return;
 	end
 
-	local shouldHide = TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(nameplate.unit);
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 
-	if shouldHide then
+	if displayInfo and displayInfo.shouldHide then
 		nameplate.state.no_name = true;
 		nameplate:UpdateNameText();
 		nameplate:UpdateLevelText();

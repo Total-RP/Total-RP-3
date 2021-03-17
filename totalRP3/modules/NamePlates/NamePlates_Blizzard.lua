@@ -350,10 +350,11 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 		return;
 	end
 
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.namePlateUnitToken);
 	local unitframe = nameplate.UnitFrame;
 	local shouldShow; -- This is only false or nil explicitly.
 
-	if TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitframe.displayedUnit) then
+	if displayInfo and displayInfo.shouldHide then
 		shouldShow = false;
 	end
 

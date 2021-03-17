@@ -16,14 +16,18 @@
 
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
+
 local TRP3_NamePlatesUtil = {};
-TRP3_NamePlatesUtil.isInCombat = InCombatLockdown();
 
 TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
 TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
 TRP3_NamePlatesUtil.ICON_WIDTH = 16;
 TRP3_NamePlatesUtil.ICON_HEIGHT = 16;
 TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
+
+function TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle()
+	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
+end
 
 function TRP3_NamePlatesUtil.CropFontString(fontstring, width)
 	fontstring:SetText(TRP3_API.utils.str.crop(fontstring:GetText(), width));
@@ -38,7 +42,7 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 		return text;
 	end
 
-	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicator();
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle();
 
 	if preferredStyle == "ICON" then
 		return string.join(" ", TRP3_NamePlatesUtil.OOC_ICON, text);
@@ -52,7 +56,7 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 		return;
 	end
 
-	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicator();
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle();
 
 	if preferredStyle == "ICON" then
 		fontstring:SetFormattedText("%s %s", TRP3_NamePlatesUtil.OOC_ICON, fontstring:GetText());
@@ -88,145 +92,6 @@ function TRP3_NamePlatesUtil.SetTextureToIcon(texture, icon)
 	texture:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
 end
 
-function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
-end
-
-function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacterUnits");
-end
-
-function TRP3_NamePlatesUtil.ShouldDisableInCombat()
-	return TRP3_API.configuration.getValue("NamePlates_DisableInCombat");
-end
-
-function TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits()
-	return TRP3_API.configuration.getValue("NamePlates_HideNonRoleplayUnits");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeNames()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNames");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeNameColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNameColors");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeTitles");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeIcons()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeIcons");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeHealthColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeHealthColors");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeRoleplayStatus()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeRoleplayStatus");
-end
-
-function TRP3_NamePlatesUtil.GetPreferredOOCIndicator()
-	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeFullTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeFullTitles");
-end
-
-function TRP3_NamePlatesUtil.ShouldRequestProfiles()
-	return TRP3_API.configuration.getValue("NamePlates_EnableActiveQuery");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeNamePlates()
-	if TRP3_NamePlatesUtil.ShouldDisableInCombat() and TRP3_NamePlatesUtil.isInCombat then
-		return false;
-	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter("player") then
-		return false;
-	else
-		return true;
-	end
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
-	if not TRP3_NamePlatesUtil.ShouldCustomizeNamePlates() then
-		return false;
-	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken) then
-		return false;
-	else
-		return true;
-	end
-end
-
-function TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitToken)
-	if not TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits() then
-		return false;  -- Option to hide non-roleplay units is disabled.
-	elseif not TRP3_NamePlatesUtil.ShouldCustomizeNamePlates(unitToken) then
-		return false;  -- Customizations are globally disabled.
-	elseif not unitToken or not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken) then
-		return false;  -- Always show creature nameplates.
-	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken) then
-		return true;   -- Always hide if not decorating OOC units.
-	end
-
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
-		return not characterID or not TRP3_API.register.isUnitIDKnown(characterID);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-		return TRP3_API.companions.register.getCompanionProfile(companionFullID) == nil;
-	else
-		return false;  -- Should be impossible, default to showing it.
-	end
-end
-
-function TRP3_NamePlatesUtil.GetUnitRoleplayStatus(unitToken)
-	local player;
-
-	if not unitToken then
-		return nil;
-	elseif UnitIsUnit(unitToken, "player") then
-		player = AddOn_TotalRP3.Player.GetCurrentUser();
-	elseif UnitIsPlayer(unitToken) then
-		player = AddOn_TotalRP3.Player.CreateFromUnit(unitToken);
-	else
-		-- For companion units query the OOC state of their owner.
-		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-
-		if characterID then
-			if characterID == TRP3_API.globals.player_id then
-				player = AddOn_TotalRP3.Player.GetCurrentUser();
-			else
-				player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
-			end
-		end
-	end
-
-	if not player then
-		return nil;
-	else
-		return player:GetRoleplayStatus();
-	end
-end
-
-function TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken)
-	local roleplayStatus = TRP3_NamePlatesUtil.GetUnitRoleplayStatus(unitToken);
-	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-end
-
-function TRP3_NamePlatesUtil.IsInCombat()
-	return not not TRP3_NamePlatesUtil.isInCombat;
-end
-
-function TRP3_NamePlatesUtil.SetInCombat(isInCombat)
-	TRP3_NamePlatesUtil.isInCombat = isInCombat;
-end
-
 --
 -- Configuration Data
 --
@@ -249,6 +114,11 @@ TRP3_NamePlatesUtil.Configuration = {
 
 	HideNonRoleplayUnits = {
 		key = "NamePlates_HideNonRoleplayUnits",
+		default = false,
+	},
+
+	HideOutOfCharacterUnits = {
+		key = "NamePlates_HideOutOfCharacterUnits",
 		default = false,
 	},
 
@@ -334,6 +204,12 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS,
 			help = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP,
 			configKey = "NamePlates_HideNonRoleplayUnits",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
+			help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
+			configKey = "NamePlates_HideOutOfCharacterUnits",
 		},
 		{
 			inherit = "TRP3_ConfigH1",
