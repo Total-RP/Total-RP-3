@@ -158,6 +158,11 @@ TRP3_NamePlatesUtil.Configuration = {
 		key = "NamePlates_EnableActiveQuery",
 		default = true,
 	},
+
+	EnableClassColorFallback = {
+		key = "NamePlates_EnableClassColorFallback",
+		default = true,
+	},
 };
 
 TRP3_NamePlatesUtil.ConfigurationPage = {
@@ -224,6 +229,12 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP,
 			configKey = "NamePlates_CustomizeHealthColors",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK,
+			help = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP,
+			configKey = "NamePlates_EnableClassColorFallback",
 		},
 		{
 			inherit = "TRP3_ConfigCheck",

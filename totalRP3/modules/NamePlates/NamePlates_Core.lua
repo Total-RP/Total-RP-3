@@ -75,6 +75,10 @@ local function ShouldRequestProfiles()
 	return TRP3_API.configuration.getValue("NamePlates_EnableActiveQuery");
 end
 
+local function ShouldUseClassColorFallback()
+	return TRP3_API.configuration.getValue("NamePlates_EnableClassColorFallback");
+end
+
 local function GetUnitRegisterID(unitToken)
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
 	local registerID;
@@ -161,7 +165,7 @@ end
 local function GetCharacterColorForDisplay(player, classToken)
 	local color = player:GetCustomColorForDisplay();
 
-	if not color then
+	if not color and ShouldUseClassColorFallback() then
 		color = TRP3_API.Ellyb.ColorManager[classToken];
 	end
 
