@@ -326,11 +326,19 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local unitframe = nameplate.UnitFrame;
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+	local isNameOnly = (GetCVar("nameplateShowOnlyNames") ~= "0");
 
 	-- Hide the full title widget if no title is to be displayed, or if the
 	-- nameplate isn't in name-only mode.
+	--
+	-- Note that we don't check the name-only CVar here because Blizzard
+	-- only applies it on a full UI reload; instead we check if the healthbar
+	-- is showing or not.
 
-	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not ShouldShowName(unitframe) then
+	local shouldHideFromDisplayInfo = not displayInfo or (not displayInfo.fullTitle or displayInfo.shouldHide);
+	local shouldHideFromFrameConfig = unitframe.healthBar:IsShown() or not ShouldShowName(unitframe);
+
+	if shouldHideFromDisplayInfo or shouldHideFromFrameConfig then
 		nameplate.TRP3_Title:Hide();
 	else
 		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
@@ -339,8 +347,13 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 
 	-- On Classic Blizzard shows the level text all the time in name-only
 	-- mode, so we'll be nice and fix that.
+	--
+	-- In contrast to the above this _does_ check the CVar because of an
+	-- edge case with the hide nameplate options where the level text could
+	-- spuriously disappear if name only mode isn't enabled because of our
+	-- visibility overrides on the level frame widget.
 
-	if unitframe.LevelFrame then
+	if unitframe.LevelFrame and isNameOnly then
 		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());
 	end
 end
