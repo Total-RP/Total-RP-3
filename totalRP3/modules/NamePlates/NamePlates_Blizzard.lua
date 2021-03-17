@@ -235,6 +235,19 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		nameplate.TRP3_Title = titleWidget;
 	end
 
+	-- Add icon widget.
+
+	do
+		local iconWidget = unitframe:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", unitframe.name, "LEFT", -4, 0);
+		iconWidget:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
+		iconWidget:Hide();
+
+		nameplate.TRP3_Icon = iconWidget;
+	end
+
+
 	self.initializedNameplates[frameName] = true;
 	self:UpdateNamePlateOptions(nameplate);
 end
@@ -259,7 +272,6 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 		-- No cropping occurs after this point.
 
 		overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
-		overrideText = TRP3_NamePlatesUtil.PrependIconToText(overrideText, displayInfo.icon);
 
 		-- Process color overrides.
 
@@ -300,6 +312,34 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	end
 
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
+end
+
+function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate.namePlateUnitToken;
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+	local displayIcon = displayInfo and displayInfo.icon or nil;
+
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
+
+	-- Hide the icon if explicitly requested, or if the name isn't showing as
+	-- that's our only attachment point. For reference, putting it next to the
+	-- health bar looks weird on Blizzard plates.
+
+	if shouldHide or not ShouldShowName(unitframe) then
+		displayIcon = nil;
+	end
+
+	if displayIcon then
+		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:Show();
+	else
+		nameplate.TRP3_Icon:Hide();
+	end
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
@@ -389,6 +429,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end

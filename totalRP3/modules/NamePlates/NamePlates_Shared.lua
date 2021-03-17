@@ -57,33 +57,6 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 	end
 end
 
-function TRP3_NamePlatesUtil.PrependIconToText(text, icon)
-	if type(icon) ~= "string" then
-		return text;
-	end
-
-	local width = TRP3_NamePlatesUtil.ICON_WIDTH;
-	local height = TRP3_NamePlatesUtil.ICON_HEIGHT;
-
-	return string.format("|Tinterface\\icons\\%1$s:%2$d:%3$d:0:-1|t %4$s", icon, width, height, text);
-end
-
-function TRP3_NamePlatesUtil.PrependIconToFontString(fontstring, icon)
-	if type(icon) ~= "string" then
-		return;
-	end
-
-	local width = TRP3_NamePlatesUtil.ICON_WIDTH;
-	local height = TRP3_NamePlatesUtil.ICON_HEIGHT;
-
-	fontstring:SetFormattedText("|Tinterface\\icons\\%1$s:%2$d:%3$d:0:-1|t %4$s", icon, width, height, fontstring:GetText());
-end
-
-function TRP3_NamePlatesUtil.SetTextureToIcon(texture, icon)
-	texture:SetTexture([[interface\icons\]] .. icon);
-	texture:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
-end
-
 --
 -- Configuration Data
 --

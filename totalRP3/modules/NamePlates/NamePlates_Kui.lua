@@ -19,6 +19,11 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
+local function IsNamePlateInNameOnlyMode(nameplate)
+	local unitframe = nameplate.parent.UnitFrame;
+	return nameplate.IN_NAMEONLY and unitframe and ShouldShowName(unitframe);
+end
+
 local TRP3_KuiNamePlates = {};
 
 function TRP3_KuiNamePlates:OnModuleInitialize()
@@ -96,6 +101,17 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 
 	-- Name integrations are handled by a posthook on the nameplate.
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
+
+	do
+		-- Icon widget.
+		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		iconWidget:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
+		iconWidget:Hide();
+
+		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
+	end
 
 	do
 		-- Title text widget.
@@ -184,7 +200,6 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	-- Status indicators and icons.
 
 	TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
-	TRP3_NamePlatesUtil.PrependIconToFontString(nameplate.NameText, displayInfo.icon);
 
 	-- Apply custom coloring.
 
@@ -212,23 +227,50 @@ function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
 	end
 end
 
-function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
-		return;
+function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+	local displayIcon = displayInfo and displayInfo.icon or nil;
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
+	local unitframe = nameplate.parent.UnitFrame;
+
+	-- Only enable this if we're permitted to customize this nameplate, and
+	-- if we've not been requested to hide it.
+
+	if not self:CanCustomizeNamePlate(nameplate) or not ShouldShowName(unitframe) or shouldHide then
+		displayIcon = nil;
 	end
 
+	if displayIcon then
+		nameplate.TRP3_Icon:ClearAllPoints();
+		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+
+		if IsNamePlateInNameOnlyMode(nameplate) then
+			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		else
+			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.HealthBar, "LEFT", -4, 0);
+		end
+
+		nameplate.TRP3_Icon:Show();
+	elseif nameplate.TRP3_Icon then
+		nameplate.TRP3_Icon:Hide();
+	end
+end
+
+function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
-	local unitframe = nameplate.parent.UnitFrame;
 
-	if not nameplate.IN_NAMEONLY or not unitframe or not ShouldShowName(unitframe) then
-		-- Only show the title text in name-only mode and if the name is shown.
+	-- Only enable this widget in name-only mode if we're permitted to
+	-- customize this nameplate, and if we've not been requested to hide it.
+
+	if not self:CanCustomizeNamePlate(nameplate) or not IsNamePlateInNameOnlyMode(nameplate) or shouldHide then
 		displayText = nil;
+		displayFont = nil;
 	end
 
-	if displayText and displayFont and not shouldHide then
+	if displayText and displayFont then
 		nameplate.TRP3_Title:SetFont(nameplate.GuildText:GetFont());
 		nameplate.TRP3_Title:SetTextColor(nameplate.GuildText:GetTextColor());
 		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
@@ -236,7 +278,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 
 		nameplate.GuildText:ClearAllPoints();
 		nameplate.GuildText:SetPoint("TOP", nameplate.TRP3_Title, "BOTTOM", 0, -2);
-	else
+	elseif nameplate.TRP3_Title then
 		nameplate.TRP3_Title:Hide();
 
 		nameplate.GuildText:ClearAllPoints();
@@ -282,6 +324,7 @@ function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
 
 	self:UpdateNamePlateNameText(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
@@ -299,6 +342,8 @@ function TRP3_KuiNamePlates:CanCustomizeNamePlate(nameplate)
 		return false;  -- Reject uninitialized nameplates.
 	elseif nameplate.state.personal or not nameplate.state.reaction then
 		return false;  -- Reject personal and invalid nameplates.
+	elseif not nameplate.parent or not nameplate.parent.UnitFrame then
+		return false;  -- Nameplate doesn't have a unitframe (retail-specific).
 	else
 		return true;
 	end
