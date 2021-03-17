@@ -140,10 +140,18 @@ function TRP3_NamePlatesUtil.ShouldCustomizeFullTitles()
 	return TRP3_API.configuration.getValue("NamePlates_CustomizeFullTitles");
 end
 
-function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
+function TRP3_NamePlatesUtil.ShouldCustomizeNamePlates()
 	if TRP3_NamePlatesUtil.ShouldDisableInCombat() and TRP3_NamePlatesUtil.isInCombat then
 		return false;
 	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter("player") then
+		return false;
+	else
+		return true;
+	end
+end
+
+function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
+	if not TRP3_NamePlatesUtil.ShouldCustomizeNamePlates() then
 		return false;
 	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken) then
 		return false;
@@ -153,12 +161,14 @@ function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
 end
 
 function TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitToken)
-	if not TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken) then
-		return false;  -- Customizations are disabled.
-	elseif not TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits() then
+	if not TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits() then
 		return false;  -- Option to hide non-roleplay units is disabled.
+	elseif not TRP3_NamePlatesUtil.ShouldCustomizeNamePlates(unitToken) then
+		return false;  -- Customizations are globally disabled.
 	elseif not unitToken or not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken) then
 		return false;  -- Always show creature nameplates.
+	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken) then
+		return true;   -- Always hide if not decorating OOC units.
 	end
 
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
