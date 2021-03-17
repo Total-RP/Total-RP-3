@@ -438,6 +438,7 @@ stds.wow = {
 		"GameTooltip",
 		"GridLayoutMixin",
 		"MapCanvasDataProviderMixin",
+		"NamePlateDriverFrame",
 		"SystemFont_LargeNamePlate",
 		"SystemFont_NamePlate",
 		"TargetFrame",

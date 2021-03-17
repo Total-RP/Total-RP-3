@@ -150,17 +150,14 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
-	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end)
-
-	TRP3_API.Ellyb.GameEvents.registerCallback("CVAR_UPDATE", function(...) return self:OnCVarUpdate(...); end);
+	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end);
+	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", function() return self:OnUpdateNamePlateOptions(); end);
 
 	self:UpdateAllNamePlates();
 end
 
-function TRP3_BlizzardNamePlates:OnCVarUpdate(name)
-	if string.find(string.lower(name), "nameplate", 1, true) then
-		self:UpdateAllNamePlates();
-	end
+function TRP3_BlizzardNamePlates:OnUpdateNamePlateOptions()
+	self:UpdateAllNamePlateOptions();
 end
 
 function TRP3_BlizzardNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -233,13 +230,13 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
 		titleWidget:SetVertexColor(TRP3_API.Ellyb.ColorManager.GREY:GetRGBA());
-		titleWidget:SetFontObject(SystemFont_LargeNamePlate);
 		titleWidget:Hide();
 
 		nameplate.TRP3_Title = titleWidget;
 	end
 
 	self.initializedNameplates[frameName] = true;
+	self:UpdateNamePlateOptions(nameplate);
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
@@ -372,6 +369,21 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.WidgetContainer, shouldShow);
 end
 
+function TRP3_BlizzardNamePlates:UpdateNamePlateOptions(nameplate)
+	if nameplate:IsForbidden() or not self.initializedNameplates[nameplate:GetName()] then
+		return;
+	end
+
+	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
+	local isUsingLargerStyle = (namePlateVerticalScale > 1.0);
+
+	if isUsingLargerStyle then
+		nameplate.TRP3_Title:SetFontObject(SystemFont_LargeNamePlate);
+	else
+		nameplate.TRP3_Title:SetFontObject(SystemFont_NamePlate);
+	end
+end
+
 function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 	if nameplate:IsForbidden() or not nameplate:IsShown() then
 		return;
@@ -396,6 +408,12 @@ end
 function TRP3_BlizzardNamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlate(nameplate);
+	end
+end
+
+function TRP3_BlizzardNamePlates:UpdateAllNamePlateOptions()
+	for frameName in pairs(self.initializedNameplates) do
+		self:UpdateNamePlateOptions(_G[frameName]);
 	end
 end
 
