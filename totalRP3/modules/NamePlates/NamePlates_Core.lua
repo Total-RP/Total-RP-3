@@ -263,6 +263,7 @@ local TRP3_NamePlates = {};
 function TRP3_NamePlates:OnModuleInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
 	self.isInCombat = InCombatLockdown();
+	self.characterRequestTimes = {};
 	self.unitRegisterIDs = {};
 
 	-- Register configuration keys and the settings page early on so that
@@ -347,19 +348,6 @@ function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 	end
 end
 
-function TRP3_NamePlates:RequestUnitProfile(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
-		TRP3_API.r.sendQuery(characterID);
-		TRP3_API.r.sendMSPQuery(characterID);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-		TRP3_API.r.sendQuery(characterID);
-	end
-end
-
 function TRP3_NamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
 		local unitToken = nameplate.namePlateUnitToken;
@@ -375,35 +363,67 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 
 	if nameplate then
 		local displayInfo = self:GetUnitDisplayInfo(unitToken);
-		TRP3_NamePlates.callbacks:Fire("OnNamePlateDataUpdated", nameplate, unitToken, displayInfo);
+		self.callbacks:Fire("OnNamePlateDataUpdated", nameplate, unitToken, displayInfo);
 	end
 end
 
 function TRP3_NamePlates:UpdateNamePlateForRegisterID(registerID)
-	local unitToken = TRP3_NamePlates.unitRegisterIDs[registerID];
+	local unitToken = self.unitRegisterIDs[registerID];
 
 	if unitToken then
 		return self:UpdateNamePlateForUnit(unitToken);
 	end
 end
 
+function TRP3_NamePlates:ShouldRequestProfileFromCharacter(characterID)
+	local REQUEST_WAIT_SEC = 60;
+
+	local lastRequestTime = self.characterRequestTimes[characterID] or -math.huge;
+
+	if not ShouldRequestProfiles() then
+		return false;  -- Requests are disabled.
+	elseif GetTime() < (lastRequestTime + REQUEST_WAIT_SEC) then
+		return false;  -- Profile information was recently requested.
+	else
+		return true;
+	end
+end
+
+function TRP3_NamePlates:RequestUnitProfile(unitToken)
+	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
+	local characterID;
+
+	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+		characterID = TRP3_API.utils.str.getUnitID(unitToken);
+	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+		characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
+	end
+
+	if self:ShouldRequestProfileFromCharacter(characterID) then
+		TRP3_API.r.sendQuery(characterID);
+		TRP3_API.r.sendMSPQuery(characterID);
+
+		self.characterRequestTimes[characterID] = GetTime();
+	end
+end
+
 function TRP3_NamePlates:ClearRegisterIDForUnit(unitToken)
 	-- This removes the two-way mapping for the unit token <=> register ID.
-	SafeSet(TRP3_NamePlates.unitRegisterIDs, TRP3_NamePlates.unitRegisterIDs[unitToken], nil);
-	SafeSet(TRP3_NamePlates.unitRegisterIDs, unitToken, nil);
+	SafeSet(self.unitRegisterIDs, self.unitRegisterIDs[unitToken], nil);
+	SafeSet(self.unitRegisterIDs, unitToken, nil);
 end
 
 function TRP3_NamePlates:UpdateRegisterIDForUnit(unitToken)
 	local registerID = GetUnitRegisterID(unitToken);
 
-	if registerID and TRP3_NamePlates.unitRegisterIDs[unitToken] ~= registerID and ShouldRequestProfiles() then
+	if registerID and self.unitRegisterIDs[unitToken] ~= registerID then
 		self:RequestUnitProfile(unitToken);
 	end
 
 	-- This updates the two-way mapping for the unit token <=> register ID.
-	SafeSet(TRP3_NamePlates.unitRegisterIDs, TRP3_NamePlates.unitRegisterIDs[unitToken], nil);
-	SafeSet(TRP3_NamePlates.unitRegisterIDs, unitToken, registerID);
-	SafeSet(TRP3_NamePlates.unitRegisterIDs, registerID, unitToken);
+	SafeSet(self.unitRegisterIDs, self.unitRegisterIDs[unitToken], nil);
+	SafeSet(self.unitRegisterIDs, unitToken, registerID);
+	SafeSet(self.unitRegisterIDs, registerID, unitToken);
 end
 
 --
