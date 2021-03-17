@@ -269,7 +269,7 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 			displayInfo.nameText = profile.data.NA;
 		end
 
-		if ShouldHideNonRoleplayUnits() then
+		if ShouldHideOutOfCharacterUnits() then
 			displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
 		end
 	else
