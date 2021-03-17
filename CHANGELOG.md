@@ -20,7 +20,7 @@
 
 - Fixed an issue with chat customization not properly registering on login while using Prat.
 - Fixed missing sound cue when opening/closing the main window.
-
+- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
 
 # Changelog version 2.2
 
