@@ -116,6 +116,7 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	-- we don't want to needlessly do work if they're enabled.
 
 	local addons = {
+		"Kui_Nameplates",
 		"Plater",
 		"TidyPlates",
 	};

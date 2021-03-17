@@ -294,6 +294,8 @@ function TRP3_NamePlates:OnModuleInitialize()
 	self.characterRequestTimes = {};
 	self.unitRegisterIDs = {};
 
+	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
+
 	-- Register configuration keys and the settings page early on so that
 	-- everything can access it.
 
@@ -312,6 +314,22 @@ function TRP3_NamePlates:OnModuleEnable()
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
+	self.moduleEnabled = true;
+	self:ActivateModule();
+end
+
+function TRP3_NamePlates:OnModuleUsed()
+	self.moduleUsed = true;
+	self:ActivateModule();
+end
+
+function TRP3_NamePlates:ActivateModule()
+	if self.moduleActivated or (not self.moduleEnabled or not self.moduleUsed) then
+		return;
+	end
+
+	self.moduleActivated = true;
+
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", function(...) return self:OnNamePlateUnitAdded(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", function(...) return self:OnNamePlateUnitRemoved(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", function(...) return self:OnUnitNameUpdate(...); end);
@@ -320,6 +338,8 @@ function TRP3_NamePlates:OnModuleEnable()
 
 	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", function(...) return self:OnConfigurationChanged(...); end);
 	TRP3_API.Events.registerCallback("REGISTER_DATA_UPDATED", function(...) return self:OnRegisterDataUpdated(...); end);
+
+	self:UpdateAllNamePlates();
 end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
