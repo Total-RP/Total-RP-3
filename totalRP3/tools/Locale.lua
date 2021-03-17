@@ -1497,7 +1497,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL = "This module was disabled automatically due to a conflict with another module or addon.",
 	NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY = "This module was disabled automatically due to a missing dependency.",
 
-	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplate settings",
+	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that some settings may be supported by all nameplate addons, refer to the help tip on each for more information.",
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
