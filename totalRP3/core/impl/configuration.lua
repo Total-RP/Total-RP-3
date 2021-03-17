@@ -196,9 +196,9 @@ local function buildConfigurationPage(structure)
 		if _G[widget:GetName().."Button"] then
 			local button = _G[widget:GetName().."Button"];
 			element.controller = button;
-			if element.callback then
-				button:SetScript("OnClick", element.callback);
-			end
+			button:SetScript("OnClick", element.OnClick or element.callback);
+			button:SetScript("OnShow", element.OnShow);
+			button:SetScript("OnHide", element.OnHide);
 			button:SetText(element.text or "");
 		end
 
@@ -246,6 +246,12 @@ local function buildConfigurationPage(structure)
 					end
 				end);
 				box:SetChecked(getValue(element.configKey));
+				box:SetScript("OnShow", element.OnShow);
+				box:SetScript("OnHide", element.OnHide);
+			else
+				box:SetScript("OnClick", element.OnClick or element.callback);
+				box:SetScript("OnShow", element.OnShow);
+				box:SetScript("OnHide", element.OnHide);
 			end
 		end
 

@@ -281,6 +281,23 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
 			configKey = "NamePlates_EnableActiveQuery",
 		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
+			help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
+			OnShow = function(button)
+				button:SetChecked(GetCVar("nameplateShowOnlyNames") ~= "0");
+			end,
+			OnClick = function(button)
+				local value = button:GetChecked() and "1" or "0";
+				local current = GetCVar("nameplateShowOnlyNames");
+
+				if current ~= value then
+					SetCVar("nameplateShowOnlyNames", value);
+					TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+				end
+			end,
+		},
 	}
 };
 
