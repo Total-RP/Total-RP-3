@@ -32,4 +32,5 @@
 	<Include file="LibDeflate\lib.xml"/>
 	<Include file="LibRPMedia\LibRPMedia-1.0.xml"/>
 	<Include file="LibChatAnims\LibChatAnims.xml"/>
+	<Include file="TaintLess\TaintLess.xml"/>
 </Ui>
