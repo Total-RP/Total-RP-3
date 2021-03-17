@@ -1511,7 +1511,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP = "If checked, hides the nameplates of player and companion units that do not have roleplay profiles.|n|nFor |cff9966ffKui|r nameplates, this option is only supported in name-only mode.",
 	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS = "Hide out of character units",
 	NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP = "If checked, hides the nameplates of units that are currently out of character.|n|nFor |cff9966ffKui|r nameplates, this option is only supported in name-only mode.",
-	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Display settings",
+	NAMEPLATES_CONFIG_ELEMENT_HEADER = "Customization settings",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES = "Show custom names",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP = "If checked, replaces the name shown on nameplates.",
 	NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS = "Show custom name colors",
