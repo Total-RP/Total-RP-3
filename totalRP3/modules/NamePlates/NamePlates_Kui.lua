@@ -211,9 +211,9 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	-- case where a player logs in and the hide setting isn't necessarily
 	-- respected.
 
-	local shouldShow = not displayInfo or not displayInfo.shouldHide;
+	local shouldHide = displayInfo and displayInfo.shouldHide;
 
-	if nameplate.NameText:IsShown() ~= shouldShow then
+	if nameplate.NameText:IsShown() and shouldHide then
 		local old = nameplate.UpdateNameText;
 		nameplate.UpdateNameText = nop;
 		xpcall(self.UpdateNamePlateVisibility, CallErrorHandler, self, nameplate);
