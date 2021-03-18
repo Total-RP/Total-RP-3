@@ -211,6 +211,12 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	if displayInfo.nameColor then
 		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
 	end
+
+	-- Refresh full title/icon customizations as these depend on name-only
+	-- mode which might be toggled before this hook is fired.
+
+	self:UpdateNamePlateFullTitle(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
@@ -297,7 +303,9 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 		return;
 	end
 
-	-- Names are managed through a posthook.
+	-- Names are managed through a posthook. This will trigger icon and
+	-- full title updates.
+
 	nameplate.NameText:SetText(nameplate.state.name or UNKNOWNOBJECT);
 	nameplate:UpdateNameText();
 end
@@ -323,12 +331,12 @@ function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
 		return;
 	end
 
-	-- Some customizations are managed by posthooks on nameplate frames.
+	-- Some customizations are managed by posthooks on nameplate frames,
+	-- including icons and full titles which are updated in response to
+	-- the name text being updated.
 
 	self:UpdateNamePlateNameText(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
-	self:UpdateNamePlateIcon(nameplate);
-	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
 
