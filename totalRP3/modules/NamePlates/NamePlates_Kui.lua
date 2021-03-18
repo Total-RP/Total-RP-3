@@ -172,43 +172,33 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
-
-	if not displayInfo then
-		-- We're invoked as a posthook where the name will already be reset.
-		return;
-	end
-
 	local displayText;
 
-	if displayInfo.nameText then
+	if displayInfo and displayInfo.nameText then
 		displayText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
-	else
-		displayText = nameplate.state.name;
 	end
 
-	-- No further cropping occurs below this point.
+	if displayText then
+		if nameplate.IN_NAMEONLY then
+			-- In name-only mode we need to account for health coloring, which
+			-- reads from the current state. We replace it long enough to
+			-- update the underlying font string before restoring it.
 
-	if nameplate.IN_NAMEONLY then
-		-- In name-only mode we need to account for health coloring, which
-		-- reads from the current state. We replace it long enough to
-		-- update the underlying font string before restoring it.
-
-		local originalText = nameplate.state.name;
-		nameplate.state.name = displayText;
-		KuiNameplatesCore:NameOnlyUpdateNameText(nameplate);
-		nameplate.state.name = originalText;
-	else
-		-- Not in name-only mode so the logic is straightforward.
-		nameplate.NameText:SetText(displayText);
+			local originalText = nameplate.state.name;
+			nameplate.state.name = displayText;
+			KuiNameplatesCore:NameOnlyUpdateNameText(nameplate);
+			nameplate.state.name = originalText;
+		else
+			-- Not in name-only mode so the logic is straightforward.
+			nameplate.NameText:SetText(displayText);
+		end
 	end
 
-	-- Status indicators and icons.
+	if displayInfo and displayInfo.roleplayStatus then
+		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
+	end
 
-	TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
-
-	-- Apply custom coloring.
-
-	if displayInfo.nameColor then
+	if displayInfo and displayInfo.nameColor then
 		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
 	end
 
