@@ -156,20 +156,26 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_PAGE_HELP,
 		},
 		{
-			inherit = "TRP3_ConfigCheck",
+			inherit = "TRP3_ConfigButton",
 			title = L.NAMEPLATES_CONFIG_ENABLE_MODULE,
-			help = L.NAMEPLATES_CONFIG_ENABLE_MODULE_HELP,
+			text = DISABLE,
 			OnShow = function(button)
-				button:SetChecked(TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"]);
-			end,
-			OnClick = function(button)
-				local value = button:GetChecked();
-				local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
+				local element = button:GetParent();
+				local title = _G[element:GetName() .. "Title"];
+				local addon = TRP3_NAMEPLATES_ADDON;
 
-				if current ~= value then
-					TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = value;
-					TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+				if addon then
+					title:SetFormattedText(L.NAMEPLATES_MODULE_ACTIVE_STATUS, (select(2, GetAddOnInfo(addon)) or addon));
+				else
+					title:SetText(L.NAMEPLATES_MODULE_INACTIVE_STATUS);
 				end
+			end,
+			OnClick = function()
+				TRP3_API.popup.showConfirmPopup(L.NAMEPLATES_MODULE_DISABLE_WARNING, function()
+					local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
+					TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = not current;
+					ReloadUI();
+				end);
 			end,
 		},
 		{
