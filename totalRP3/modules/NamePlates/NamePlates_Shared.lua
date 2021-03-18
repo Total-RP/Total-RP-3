@@ -16,20 +16,20 @@
 
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
+
 local TRP3_NamePlatesUtil = {};
-TRP3_NamePlatesUtil.isInCombat = InCombatLockdown();
 
-TRP3_NamePlatesUtil.MAX_NAME_CHARS = 45;
-TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 45;
-TRP3_NamePlatesUtil.ICON_WIDTH = 16;
-TRP3_NamePlatesUtil.ICON_HEIGHT = 16;
+TRP3_NamePlatesUtil.MAX_NAME_CHARS = 30;
+TRP3_NamePlatesUtil.MAX_TITLE_CHARS = 30;
+TRP3_NamePlatesUtil.OOC_ICON = "|TInterface\\COMMON\\Indicator-Red:15:15|t";
 
-function TRP3_NamePlatesUtil.CropFontString(fontstring, width)
-	fontstring:SetText(TRP3_API.utils.str.crop(fontstring:GetText(), width));
+function TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle()
+	return TRP3_API.configuration.getValue("NamePlates_PreferredOOCIndicator");
 end
 
-function TRP3_NamePlatesUtil.PrependTextToFontString(fontstring, text)
-	fontstring:SetFormattedText("%s %s", text, fontstring:GetText());
+function TRP3_NamePlatesUtil.GetPreferredIconSize()
+	local size = tonumber(TRP3_API.configuration.getValue("NamePlates_IconSize")) or 16;
+	return size, size;
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
@@ -37,7 +37,13 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToText(text, roleplayStatus)
 		return text;
 	end
 
-	return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle();
+
+	if preferredStyle == "ICON" then
+		return string.join(" ", TRP3_NamePlatesUtil.OOC_ICON, text);
+	else
+		return string.format("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, text);
+	end
 end
 
 function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, roleplayStatus)
@@ -45,155 +51,13 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 		return;
 	end
 
-	fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
-end
+	local preferredStyle = TRP3_NamePlatesUtil.GetPreferredOOCIndicatorStyle();
 
-function TRP3_NamePlatesUtil.PrependIconToText(text, icon)
-	if type(icon) ~= "string" then
-		return text;
-	end
-
-	local width = TRP3_NamePlatesUtil.ICON_WIDTH;
-	local height = TRP3_NamePlatesUtil.ICON_HEIGHT;
-
-	return string.format("|Tinterface\\icons\\%1$s:%2$d:%3$d:0:-1|t %4$s", icon, width, height, text);
-end
-
-function TRP3_NamePlatesUtil.PrependIconToFontString(fontstring, icon)
-	if type(icon) ~= "string" then
-		return;
-	end
-
-	local width = TRP3_NamePlatesUtil.ICON_WIDTH;
-	local height = TRP3_NamePlatesUtil.ICON_HEIGHT;
-
-	fontstring:SetFormattedText("|Tinterface\\icons\\%1$s:%2$d:%3$d:0:-1|t %4$s", icon, width, height, fontstring:GetText());
-end
-
-function TRP3_NamePlatesUtil.SetTextureToIcon(texture, icon)
-	texture:SetTexture([[interface\icons\]] .. icon);
-	texture:SetSize(TRP3_NamePlatesUtil.ICON_WIDTH, TRP3_NamePlatesUtil.ICON_HEIGHT);
-end
-
-function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacter");
-end
-
-function TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits()
-	return TRP3_API.configuration.getValue("NamePlates_DisableOutOfCharacterUnits");
-end
-
-function TRP3_NamePlatesUtil.ShouldDisableInCombat()
-	return TRP3_API.configuration.getValue("NamePlates_DisableInCombat");
-end
-
-function TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits()
-	return TRP3_API.configuration.getValue("NamePlates_HideNonRoleplayUnits");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeNames()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNames");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeNameColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeNameColors");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeTitles");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeIcons()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeIcons");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeHealthColors()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeHealthColors");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeRoleplayStatus()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeRoleplayStatus");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeFullTitles()
-	return TRP3_API.configuration.getValue("NamePlates_CustomizeFullTitles");
-end
-
-function TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken)
-	if TRP3_NamePlatesUtil.ShouldDisableInCombat() and TRP3_NamePlatesUtil.isInCombat then
-		return false;
-	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacter() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter("player") then
-		return false;
-	elseif TRP3_NamePlatesUtil.ShouldDisableOutOfCharacterUnits() and TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken) then
-		return false;
+	if preferredStyle == "ICON" then
+		fontstring:SetFormattedText("%s %s", TRP3_NamePlatesUtil.OOC_ICON, fontstring:GetText());
 	else
-		return true;
+		fontstring:SetFormattedText("|cffff0000[%1$s]|r %2$s", TRP3_API.loc.CM_OOC, fontstring:GetText());
 	end
-end
-
-function TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitToken)
-	if not TRP3_NamePlatesUtil.ShouldCustomizeUnitNamePlate(unitToken) then
-		return false;  -- Customizations are disabled.
-	elseif not TRP3_NamePlatesUtil.ShouldHideNonRoleplayUnits() then
-		return false;  -- Option to hide non-roleplay units is disabled.
-	elseif not unitToken or not UnitIsPlayer(unitToken) and not UnitIsOtherPlayersPet(unitToken) then
-		return false;  -- Always show creature nameplates.
-	end
-
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
-		return not characterID or not TRP3_API.register.isUnitIDKnown(characterID);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		local companionFullID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-		return TRP3_API.companions.register.getCompanionProfile(companionFullID) == nil;
-	else
-		return false;  -- Should be impossible, default to showing it.
-	end
-end
-
-function TRP3_NamePlatesUtil.GetUnitRoleplayStatus(unitToken)
-	local player;
-
-	if not unitToken then
-		return nil;
-	elseif UnitIsUnit(unitToken, "player") then
-		player = AddOn_TotalRP3.Player.GetCurrentUser();
-	elseif UnitIsPlayer(unitToken) then
-		player = AddOn_TotalRP3.Player.CreateFromUnit(unitToken);
-	else
-		-- For companion units query the OOC state of their owner.
-		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-		local characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-
-		if characterID then
-			if characterID == TRP3_API.globals.player_id then
-				player = AddOn_TotalRP3.Player.GetCurrentUser();
-			else
-				player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
-			end
-		end
-	end
-
-	if not player then
-		return nil;
-	else
-		return player:GetRoleplayStatus();
-	end
-end
-
-function TRP3_NamePlatesUtil.IsUnitOutOfCharacter(unitToken)
-	local roleplayStatus = TRP3_NamePlatesUtil.GetUnitRoleplayStatus(unitToken);
-	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-end
-
-function TRP3_NamePlatesUtil.IsInCombat()
-	return not not TRP3_NamePlatesUtil.isInCombat;
-end
-
-function TRP3_NamePlatesUtil.SetInCombat(isInCombat)
-	TRP3_NamePlatesUtil.isInCombat = isInCombat;
 end
 
 --
@@ -221,6 +85,11 @@ TRP3_NamePlatesUtil.Configuration = {
 		default = false,
 	},
 
+	HideOutOfCharacterUnits = {
+		key = "NamePlates_HideOutOfCharacterUnits",
+		default = false,
+	},
+
 	CustomizeNames = {
 		key = "NamePlates_CustomizeNames",
 		default = true,
@@ -241,6 +110,11 @@ TRP3_NamePlatesUtil.Configuration = {
 		default = false,
 	},
 
+	IconSize = {
+		key = "NamePlates_IconSize",
+		default = 16,
+	},
+
 	CustomizeHealthColors = {
 		key = "NamePlates_CustomizeHealthColors",
 		default = true,
@@ -251,9 +125,24 @@ TRP3_NamePlatesUtil.Configuration = {
 		default = false,
 	},
 
+	PreferredOOCIndicator = {
+		key = "NamePlates_PreferredOOCIndicator",
+		default = "TEXT",
+	},
+
 	CustomizeFullTitles = {
 		key = "NamePlates_CustomizeFullTitles",
 		default = false,
+	},
+
+	EnableActiveQuery = {
+		key = "NamePlates_EnableActiveQuery",
+		default = true,
+	},
+
+	EnableClassColorFallback = {
+		key = "NamePlates_EnableClassColorFallback",
+		default = true,
 	},
 };
 
@@ -265,6 +154,29 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 		{
 			inherit = "TRP3_ConfigParagraph",
 			title = L.NAMEPLATES_CONFIG_PAGE_HELP,
+		},
+		{
+			inherit = "TRP3_ConfigButton",
+			title = L.NAMEPLATES_CONFIG_ENABLE_MODULE,
+			text = DISABLE,
+			OnShow = function(button)
+				local element = button:GetParent();
+				local title = _G[element:GetName() .. "Title"];
+				local addon = TRP3_NAMEPLATES_ADDON;
+
+				if addon then
+					title:SetFormattedText(L.NAMEPLATES_MODULE_ACTIVE_STATUS, (select(2, GetAddOnInfo(addon)) or addon));
+				else
+					title:SetText(L.NAMEPLATES_MODULE_INACTIVE_STATUS);
+				end
+			end,
+			OnClick = function()
+				TRP3_API.popup.showConfirmPopup(L.NAMEPLATES_MODULE_DISABLE_WARNING, function()
+					local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
+					TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = not current;
+					ReloadUI();
+				end);
+			end,
 		},
 		{
 			inherit = "TRP3_ConfigH1",
@@ -295,6 +207,12 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			configKey = "NamePlates_HideNonRoleplayUnits",
 		},
 		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
+			help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
+			configKey = "NamePlates_HideOutOfCharacterUnits",
+		},
+		{
 			inherit = "TRP3_ConfigH1",
 			title = L.NAMEPLATES_CONFIG_ELEMENT_HEADER,
 		},
@@ -318,6 +236,12 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 		},
 		{
 			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK,
+			help = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP,
+			configKey = "NamePlates_EnableClassColorFallback",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP,
 			configKey = "NamePlates_CustomizeTitles",
@@ -335,10 +259,58 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			configKey = "NamePlates_CustomizeRoleplayStatus",
 		},
 		{
+			inherit = "TRP3_ConfigDropDown",
+			title = L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
+			listContent = {
+				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED(L.CM_OOC), "TEXT" },
+				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. TRP3_NamePlatesUtil.OOC_ICON, "ICON" },
+			},
+			configKey = "NamePlates_PreferredOOCIndicator",
+			listWidth = nil,
+			listCancel = true,
+		},
+		{
 			inherit = "TRP3_ConfigCheck",
 			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS,
 			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP,
 			configKey = "NamePlates_CustomizeIcons",
+		},
+		{
+			inherit = "TRP3_ConfigSlider",
+			title = L.NAMEPLATES_CONFIG_ICON_SIZE,
+			help = L.NAMEPLATES_CONFIG_ICON_SIZE_HELP,
+			configKey = "NamePlates_IconSize",
+			min = 12,
+			max = 48,
+			step = 1,
+			integer = true,
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.CO_ADVANCED_SETTINGS,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_ACTIVE_QUERY,
+			help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
+			configKey = "NamePlates_EnableActiveQuery",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
+			help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
+			OnShow = function(button)
+				button:SetChecked(GetCVar("nameplateShowOnlyNames") ~= "0");
+			end,
+			OnClick = function(button)
+				local value = button:GetChecked() and "1" or "0";
+				local current = GetCVar("nameplateShowOnlyNames");
+
+				if current ~= value then
+					SetCVar("nameplateShowOnlyNames", value);
+					TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+				end
+			end,
 		},
 	}
 };

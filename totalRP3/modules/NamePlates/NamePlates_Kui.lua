@@ -19,6 +19,11 @@ local TRP3_NamePlates = TRP3_NamePlates;
 local TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
 local L = TRP3_API.loc;
 
+local function IsNamePlateInNameOnlyMode(nameplate)
+	local unitframe = nameplate.parent.UnitFrame;
+	return nameplate.IN_NAMEONLY and unitframe and ShouldShowName(unitframe);
+end
+
 local TRP3_KuiNamePlates = {};
 
 function TRP3_KuiNamePlates:OnModuleInitialize()
@@ -27,12 +32,16 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 	elseif not KuiNameplatesCore or KuiNameplates.layout ~= KuiNameplatesCore then
 		-- For now we only support the "Core" layout for Kui.
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+	elseif TRP3_NAMEPLATES_ADDON ~= nil then
+		-- Another nameplate decorator module met its own activation criteria.
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
-	-- Disable our own Blizzard nameplates module explicitly since that'll
-	-- almost certainly meet its activation criteria otherwise.
+	-- Define TRP3_NAMEPLATES_ADDON now to claim decoration rights. This
+	-- should be sanity checked on OnModuleEnable to make sure someone else
+	-- didn't trample over it.
 
-	TRP3_DISABLE_BLIZZARD_NAMEPLATES = true;
+	TRP3_NAMEPLATES_ADDON = "Kui_Nameplates";
 
 	-- Disable our (old) Kui nameplate module explicitly, we'll also tell
 	-- users that they can disable it.
@@ -44,10 +53,10 @@ function TRP3_KuiNamePlates:OnModuleInitialize()
 end
 
 function TRP3_KuiNamePlates:OnModuleEnable()
-	-- External nameplate addons can define the below global before the
-	-- PLAYER_LOGIN event fires to disable this integration.
+	-- Sanity check TRP3_NAMEPLATES_ADDON to ensure that we remain the chosen
+	-- decorator addon, since it may get trampled by external code.
 
-	if TRP3_DISABLE_KUI_NAMEPLATES then
+	if TRP3_NAMEPLATES_ADDON ~= "Kui_Nameplates" then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
@@ -94,8 +103,20 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 		return;
 	end
 
-	-- Name integrations are handled by a posthook on the nameplate.
+	-- Several integrations are applied as posthooks so as to not conflict
+	-- too much with Kui's internal state.
+
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
+
+	do
+		-- Icon widget.
+		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		iconWidget:Hide();
+
+		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
+	end
 
 	do
 		-- Title text widget.
@@ -153,59 +174,39 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText;
 
-	if not displayInfo then
-		-- We're invoked as a posthook where the name will already be reset.
-		return;
+	if displayInfo and displayInfo.nameText then
+		displayText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 	end
 
-	do
-		local shouldCropName = false;
+	if displayText then
+		if nameplate.IN_NAMEONLY then
+			-- In name-only mode we need to account for health coloring, which
+			-- reads from the current state. We replace it long enough to
+			-- update the underlying font string before restoring it.
 
-		-- Any components subject to cropping should be configured here.
-
-		if displayInfo.nameText then
-			displayText = displayInfo.nameText;
-			shouldCropName = true;
+			local originalText = nameplate.state.name;
+			nameplate.state.name = displayText;
+			KuiNameplatesCore:NameOnlyUpdateNameText(nameplate);
+			nameplate.state.name = originalText;
 		else
-			displayText = nameplate.NameText:GetText();
-		end
-
-		if displayInfo.prefixTitle then
-			displayText = string.join(" ", displayInfo.prefixTitle, displayText);
-			shouldCropName = true;
-		end
-
-		if shouldCropName then
-			displayText = TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			-- Not in name-only mode so the logic is straightforward.
+			nameplate.NameText:SetText(displayText);
 		end
 	end
 
-	-- No further cropping occurs below this point.
-
-	if nameplate.IN_NAMEONLY then
-		-- In name-only mode we need to account for health coloring, which
-		-- reads from the current state. We replace it long enough to
-		-- update the underlying font string before restoring it.
-
-		local originalText = nameplate.state.name;
-		nameplate.state.name = displayText;
-		KuiNameplatesCore:NameOnlyUpdateNameText(nameplate);
-		nameplate.state.name = originalText;
-	else
-		-- Not in name-only mode so the logic is straightforward.
-		nameplate.NameText:SetText(displayText);
+	if displayInfo and displayInfo.roleplayStatus then
+		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
 	end
 
-	-- Status indicators and icons.
-
-	TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
-	TRP3_NamePlatesUtil.PrependIconToFontString(nameplate.NameText, displayInfo.icon);
-
-	-- Apply custom coloring.
-
-	if displayInfo.nameColor then
+	if displayInfo and displayInfo.nameColor then
 		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
 	end
+
+	-- Refresh full title/icon customizations as these depend on name-only
+	-- mode which might be toggled before this hook is fired.
+
+	self:UpdateNamePlateFullTitle(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
@@ -227,18 +228,48 @@ function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
 	end
 end
 
-function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
-	if not self:CanCustomizeNamePlate(nameplate) then
-		return;
+function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+	local displayIcon = displayInfo and displayInfo.icon or nil;
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
+	local unitframe = nameplate.parent.UnitFrame;
+
+	-- Only enable this if we're permitted to customize this nameplate, and
+	-- if we've not been requested to hide it.
+
+	if not self:CanCustomizeNamePlate(nameplate) or not ShouldShowName(unitframe) or shouldHide then
+		displayIcon = nil;
 	end
 
+	if displayIcon then
+		nameplate.TRP3_Icon:ClearAllPoints();
+		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
+
+		if IsNamePlateInNameOnlyMode(nameplate) then
+			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
+		else
+			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.HealthBar, "LEFT", -4, 0);
+		end
+
+		nameplate.TRP3_Icon:Show();
+	elseif nameplate.TRP3_Icon then
+		nameplate.TRP3_Icon:Hide();
+	end
+end
+
+function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
 	local displayFont = nameplate.GuildText:GetFont();
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
-	if not nameplate.IN_NAMEONLY or not nameplate.NameText:IsShown() then
-		-- Only show the title text in name-only mode and if the name is shown.
+	-- Only enable this widget in name-only mode if we're permitted to
+	-- customize this nameplate, and if we've not been requested to hide it.
+
+	if not self:CanCustomizeNamePlate(nameplate) or not IsNamePlateInNameOnlyMode(nameplate) or shouldHide then
 		displayText = nil;
+		displayFont = nil;
 	end
 
 	if displayText and displayFont then
@@ -249,7 +280,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateFullTitle(nameplate)
 
 		nameplate.GuildText:ClearAllPoints();
 		nameplate.GuildText:SetPoint("TOP", nameplate.TRP3_Title, "BOTTOM", 0, -2);
-	else
+	elseif nameplate.TRP3_Title then
 		nameplate.TRP3_Title:Hide();
 
 		nameplate.GuildText:ClearAllPoints();
@@ -262,19 +293,30 @@ function TRP3_KuiNamePlates:UpdateNamePlateNameText(nameplate)
 		return;
 	end
 
-	-- Names are managed through a posthook.
+	-- Names are managed through a posthook. This will trigger icon and
+	-- full title updates.
+
 	nameplate.NameText:SetText(nameplate.state.name or UNKNOWNOBJECT);
 	nameplate:UpdateNameText();
 end
 
 function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
-	local shouldHide = TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(nameplate.unit);
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
 
-	if shouldHide then
-		nameplate:Hide();
-	elseif not shouldHide then
-		nameplate:Show();
-		KuiNameplatesCore:Show(nameplate);
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
+
+	if displayInfo and displayInfo.shouldHide then
+		if nameplate:IsShown() then
+			nameplate:Hide();
+			KuiNameplatesCore:Hide(nameplate);
+		end
+	else
+		if not nameplate:IsShown() then
+			nameplate:Show();
+			KuiNameplatesCore:Show(nameplate);
+		end
 	end
 end
 
@@ -283,11 +325,12 @@ function TRP3_KuiNamePlates:UpdateNamePlate(nameplate)
 		return;
 	end
 
-	-- Some customizations are managed by posthooks on nameplate frames.
+	-- Some customizations are managed by posthooks on nameplate frames,
+	-- including icons and full titles which are updated in response to
+	-- the name text being updated.
 
 	self:UpdateNamePlateNameText(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
-	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateVisibility(nameplate);
 end
 
@@ -304,6 +347,8 @@ function TRP3_KuiNamePlates:CanCustomizeNamePlate(nameplate)
 		return false;  -- Reject uninitialized nameplates.
 	elseif nameplate.state.personal or not nameplate.state.reaction then
 		return false;  -- Reject personal and invalid nameplates.
+	elseif not nameplate.parent or not nameplate.parent.UnitFrame then
+		return false;  -- Nameplate doesn't have a unitframe (retail-specific).
 	else
 		return true;
 	end

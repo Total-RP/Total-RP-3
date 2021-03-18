@@ -108,14 +108,17 @@ local TRP3_BlizzardNamePlates = {};
 function TRP3_BlizzardNamePlates:OnModuleInitialize()
 	if not IsAddOnLoaded("Blizzard_NamePlates") then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
+	elseif TRP3_NAMEPLATES_ADDON ~= nil then
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
 	end
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
 	-- addons is enabled on this character we won't enable Blizzard
-	-- customizations. We don't (yet) support these nameplate addons, but
-	-- we don't want to needlessly do work if they're enabled.
+	-- customizations. Some of these we don't support, and others don't
+	-- make sense to fallback on Blizzard nameplates if present.
 
 	local addons = {
+		"Kui_Nameplates",
 		"Plater",
 		"TidyPlates",
 	};
@@ -138,11 +141,16 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 end
 
 function TRP3_BlizzardNamePlates:OnModuleEnable()
-	-- External nameplate addons can define the below global before the
-	-- PLAYER_LOGIN event fires to disable this integration.
+	-- Note this below logic for the TRP3_NAMEPLATES_ADDON global is special
+	-- in this decorator; as Blizzard plates are the "default" we check if
+	-- at this point any other decorator has set the global.
+	--
+	-- For a more normal case, see the Kui logic.
 
-	if TRP3_DISABLE_BLIZZARD_NAMEPLATES then
+	if TRP3_NAMEPLATES_ADDON ~= nil then
 		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
+	else
+		TRP3_NAMEPLATES_ADDON = "Blizzard_NamePlates";
 	end
 
 	self.unitDisplayInfo = {};
@@ -150,17 +158,14 @@ function TRP3_BlizzardNamePlates:OnModuleEnable()
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
 
-	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end)
-
-	TRP3_API.Ellyb.GameEvents.registerCallback("CVAR_UPDATE", function(...) return self:OnCVarUpdate(...); end);
+	hooksecurefunc("CompactUnitFrame_SetUpFrame", function(...) return self:OnUnitFrameSetUp(...); end);
+	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateOptions", function() return self:OnUpdateNamePlateOptions(); end);
 
 	self:UpdateAllNamePlates();
 end
 
-function TRP3_BlizzardNamePlates:OnCVarUpdate(name)
-	if string.find(string.lower(name), "nameplate", 1, true) then
-		self:UpdateAllNamePlates();
-	end
+function TRP3_BlizzardNamePlates:OnUpdateNamePlateOptions()
+	self:UpdateAllNamePlateOptions();
 end
 
 function TRP3_BlizzardNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
@@ -233,13 +238,25 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", unitframe.name, "BOTTOM", 0, -2);
 		titleWidget:SetVertexColor(TRP3_API.Ellyb.ColorManager.GREY:GetRGBA());
-		titleWidget:SetFontObject(SystemFont_LargeNamePlate);
 		titleWidget:Hide();
 
 		nameplate.TRP3_Title = titleWidget;
 	end
 
+	-- Add icon widget.
+
+	do
+		local iconWidget = unitframe:CreateTexture(nil, "ARTWORK");
+		iconWidget:ClearAllPoints();
+		iconWidget:SetPoint("RIGHT", unitframe.name, "LEFT", -4, 0);
+		iconWidget:Hide();
+
+		nameplate.TRP3_Icon = iconWidget;
+	end
+
+
 	self.initializedNameplates[frameName] = true;
+	self:UpdateNamePlateOptions(nameplate);
 end
 
 function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
@@ -255,30 +272,13 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local overrideColor;
 
 	if displayInfo then
-		local shouldCropName = false;
-
-		-- Anything that needs to potentially be cropped should be inserted
-		-- first; the name is cropped as a single unit to ensure that we
-		-- don't need to worry about cropping things like titles individually.
-
 		if displayInfo.nameText then
-			overrideText = displayInfo.nameText;
-			shouldCropName = true;
-		end
-
-		if displayInfo.prefixTitle then
-			overrideText = string.join(" ", displayInfo.prefixTitle, overrideText);
-			shouldCropName = true;
-		end
-
-		if shouldCropName then
-			overrideText = TRP3_API.utils.str.crop(overrideText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+			overrideText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 		end
 
 		-- No cropping occurs after this point.
 
 		overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
-		overrideText = TRP3_NamePlatesUtil.PrependIconToText(overrideText, displayInfo.icon);
 
 		-- Process color overrides.
 
@@ -321,6 +321,34 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);
 end
 
+function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
+	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	local unitframe = nameplate.UnitFrame;
+	local unitToken = nameplate.namePlateUnitToken;
+	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+	local displayIcon = displayInfo and displayInfo.icon or nil;
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
+
+	-- Hide the icon if explicitly requested, or if the name isn't showing as
+	-- that's our only attachment point. For reference, putting it next to the
+	-- health bar looks weird on Blizzard plates.
+
+	if shouldHide or not ShouldShowName(unitframe) then
+		displayIcon = nil;
+	end
+
+	if displayIcon then
+		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
+		nameplate.TRP3_Icon:Show();
+	else
+		nameplate.TRP3_Icon:Hide();
+	end
+end
+
 function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
 		return;
@@ -329,21 +357,38 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local unitframe = nameplate.UnitFrame;
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
+	local displayText = displayInfo and displayInfo.fullTitle or nil;
+	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Hide the full title widget if no title is to be displayed, or if the
 	-- nameplate isn't in name-only mode.
+	--
+	-- Note that we don't check the name-only CVar here because Blizzard
+	-- only applies it on a full UI reload; instead we check if the healthbar
+	-- is showing or not.
 
-	if not displayInfo or not displayInfo.fullTitle or unitframe.healthBar:IsShown() or not unitframe.name:IsShown() then
-		nameplate.TRP3_Title:Hide();
-	else
-		nameplate.TRP3_Title:SetText(displayInfo.fullTitle);
+	if shouldHide or not ShouldShowName(unitframe) or unitframe.healthBar:IsShown() then
+		displayText = nil;
+	end
+
+	if displayText then
+		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
 		nameplate.TRP3_Title:Show();
+	else
+		nameplate.TRP3_Title:Hide();
 	end
 
 	-- On Classic Blizzard shows the level text all the time in name-only
 	-- mode, so we'll be nice and fix that.
+	--
+	-- In contrast to the above this _does_ check the CVar because of an
+	-- edge case with the hide nameplate options where the level text could
+	-- spuriously disappear if name only mode isn't enabled because of our
+	-- visibility overrides on the level frame widget.
 
-	if unitframe.LevelFrame then
+	local isNameOnly = (GetCVar("nameplateShowOnlyNames") ~= "0");
+
+	if unitframe.LevelFrame and isNameOnly then
 		unitframe.LevelFrame:SetShown(unitframe.healthBar:IsShown());
 	end
 end
@@ -353,10 +398,11 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 		return;
 	end
 
+	local displayInfo = self:GetUnitDisplayInfo(nameplate.namePlateUnitToken);
 	local unitframe = nameplate.UnitFrame;
 	local shouldShow; -- This is only false or nil explicitly.
 
-	if TRP3_NamePlatesUtil.ShouldHideUnitNamePlate(unitframe.displayedUnit) then
+	if displayInfo and displayInfo.shouldHide then
 		shouldShow = false;
 	end
 
@@ -372,15 +418,31 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateVisibility(nameplate)
 	TryCallWidgetFunction(SetWidgetOverrideShownState, unitframe.WidgetContainer, shouldShow);
 end
 
+function TRP3_BlizzardNamePlates:UpdateNamePlateOptions(nameplate)
+	if nameplate:IsForbidden() or not self.initializedNameplates[nameplate:GetName()] then
+		return;
+	end
+
+	local namePlateVerticalScale = tonumber(GetCVar("NamePlateVerticalScale"));
+	local isUsingLargerStyle = (namePlateVerticalScale > 1.0);
+
+	if isUsingLargerStyle then
+		nameplate.TRP3_Title:SetFontObject(SystemFont_LargeNamePlate);
+	else
+		nameplate.TRP3_Title:SetFontObject(SystemFont_NamePlate);
+	end
+end
+
 function TRP3_BlizzardNamePlates:UpdateNamePlate(nameplate)
 	if nameplate:IsForbidden() or not nameplate:IsShown() then
 		return;
 	end
 
+	self:UpdateNamePlateVisibility(nameplate);
 	self:UpdateNamePlateName(nameplate);
 	self:UpdateNamePlateHealthBar(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 	self:UpdateNamePlateFullTitle(nameplate);
-	self:UpdateNamePlateVisibility(nameplate);
 end
 
 function TRP3_BlizzardNamePlates:CanCustomizeNamePlate(nameplate)
@@ -396,6 +458,12 @@ end
 function TRP3_BlizzardNamePlates:UpdateAllNamePlates()
 	for _, nameplate in ipairs(C_NamePlate.GetNamePlates()) do
 		self:UpdateNamePlate(nameplate);
+	end
+end
+
+function TRP3_BlizzardNamePlates:UpdateAllNamePlateOptions()
+	for frameName in pairs(self.initializedNameplates) do
+		self:UpdateNamePlateOptions(_G[frameName]);
 	end
 end
 
