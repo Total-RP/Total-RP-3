@@ -114,8 +114,8 @@ function TRP3_BlizzardNamePlates:OnModuleInitialize()
 
 	-- Quick hack to make these nameplates "cowardly"; if any of the below
 	-- addons is enabled on this character we won't enable Blizzard
-	-- customizations. We don't (yet) support these nameplate addons, but
-	-- we don't want to needlessly do work if they're enabled.
+	-- customizations. Some of these we don't support, and others don't
+	-- make sense to fallback on Blizzard nameplates if present.
 
 	local addons = {
 		"Kui_Nameplates",
