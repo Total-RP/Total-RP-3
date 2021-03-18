@@ -1500,6 +1500,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
 	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	NAMEPLATES_CONFIG_ENABLE_MODULE = "Enable module",
+	NAMEPLATES_CONFIG_ENABLE_MODULE_HELP = "If unchecked this disables the nameplate module entirely, preventing customizations from being applied.|n|nOnce disabled this module can only be re-enabled from the |cffffff00Modules status|r page.",
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.",

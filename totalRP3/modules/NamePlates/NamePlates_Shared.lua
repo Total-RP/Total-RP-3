@@ -156,6 +156,23 @@ TRP3_NamePlatesUtil.ConfigurationPage = {
 			title = L.NAMEPLATES_CONFIG_PAGE_HELP,
 		},
 		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.NAMEPLATES_CONFIG_ENABLE_MODULE,
+			help = L.NAMEPLATES_CONFIG_ENABLE_MODULE_HELP,
+			OnShow = function(button)
+				button:SetChecked(TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"]);
+			end,
+			OnClick = function(button)
+				local value = button:GetChecked();
+				local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
+
+				if current ~= value then
+					TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = value;
+					TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+				end
+			end,
+		},
+		{
 			inherit = "TRP3_ConfigH1",
 			title = L.NAMEPLATES_CONFIG_VISIBILITY_HEADER,
 		},
