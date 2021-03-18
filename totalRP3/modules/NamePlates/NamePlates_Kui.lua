@@ -103,7 +103,9 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 		return;
 	end
 
-	-- Name integrations are handled by a posthook on the nameplate.
+	-- Several integrations are applied as posthooks so as to not conflict
+	-- too much with Kui's internal state.
+
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
 
 	do
@@ -161,7 +163,6 @@ function TRP3_KuiNamePlates:OnNamePlateCombat(nameplate)
 end
 
 function TRP3_KuiNamePlates:OnNamePlateHide(nameplate)
-	self:SetUnitDisplayInfo(nameplate.unit, nil);
 	self:UpdateNamePlate(nameplate);
 end
 
@@ -209,19 +210,6 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	if displayInfo.nameColor then
 		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
-	end
-
-	-- Force a visibililty update on the nameplate to work around an edge
-	-- case where a player logs in and the hide setting isn't necessarily
-	-- respected.
-
-	local shouldHide = displayInfo and displayInfo.shouldHide;
-
-	if nameplate.NameText:IsShown() and shouldHide then
-		local old = nameplate.UpdateNameText;
-		nameplate.UpdateNameText = nop;
-		xpcall(self.UpdateNamePlateVisibility, CallErrorHandler, self, nameplate);
-		nameplate.UpdateNameText = old;
 	end
 end
 
@@ -322,13 +310,10 @@ function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 
 	if displayInfo and displayInfo.shouldHide then
-		nameplate.state.no_name = true;
-		nameplate:UpdateNameText();
-		nameplate:UpdateLevelText();
-		nameplate:UpdateFrameSize();
-		nameplate.NameText:Hide();
-		nameplate.GuildText:Hide();
+		nameplate:Hide();
+		KuiNameplatesCore:Hide(nameplate);
 	else
+		nameplate:Show();
 		KuiNameplatesCore:Show(nameplate);
 	end
 end
