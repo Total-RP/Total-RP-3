@@ -308,11 +308,15 @@ function TRP3_KuiNamePlates:UpdateNamePlateVisibility(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 
 	if displayInfo and displayInfo.shouldHide then
-		nameplate:Hide();
-		KuiNameplatesCore:Hide(nameplate);
+		if nameplate:IsShown() then
+			nameplate:Hide();
+			KuiNameplatesCore:Hide(nameplate);
+		end
 	else
-		nameplate:Show();
-		KuiNameplatesCore:Show(nameplate);
+		if not nameplate:IsShown() then
+			nameplate:Show();
+			KuiNameplatesCore:Show(nameplate);
+		end
 	end
 end
 
