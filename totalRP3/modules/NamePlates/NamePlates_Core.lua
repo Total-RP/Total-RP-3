@@ -18,6 +18,7 @@ local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
 local displayInfoPool = {};
+local playerCharacterPool = setmetatable({}, { __mode = "kv" });
 local isInCombat = InCombatLockdown();
 
 local function GetOrCreateDisplayInfo(unitToken)
@@ -36,6 +37,22 @@ local function GetOrCreateDisplayInfo(unitToken)
 	displayInfo.shouldHide = nil;
 
 	return displayInfo;
+end
+
+local function GetOrCreatePlayerFromCharacterID(characterID)
+	-- TODO: Quick hack to reduce memory churn; should rework the Player class
+	-- to be implicitly pooled at some point as it has no internal mutable
+	-- state but don't want to take the risk yet.
+
+	local player = playerCharacterPool[characterID];
+
+	if player then
+		return player;
+	end
+
+	player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
+	playerCharacterPool[characterID] = player;
+	return player;
 end
 
 local function SafeSet(table, key, value)
@@ -126,7 +143,11 @@ local function GetUnitRoleplayStatus(unitToken)
 	elseif UnitIsUnit(unitToken, "player") then
 		player = AddOn_TotalRP3.Player.GetCurrentUser();
 	elseif UnitIsPlayer(unitToken) then
-		player = AddOn_TotalRP3.Player.CreateFromUnit(unitToken);
+		local characterID = TRP3_API.utils.str.getUnitID(unitToken);
+
+		if characterID then
+			player = GetOrCreatePlayerFromCharacterID(characterID);
+		end
 	else
 		-- For companion units query the OOC state of their owner.
 		local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
@@ -136,7 +157,7 @@ local function GetUnitRoleplayStatus(unitToken)
 			if characterID == TRP3_API.globals.player_id then
 				player = AddOn_TotalRP3.Player.GetCurrentUser();
 			else
-				player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
+				player = GetOrCreatePlayerFromCharacterID(characterID);
 			end
 		end
 	end
@@ -197,7 +218,7 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 	local displayInfo = GetOrCreateDisplayInfo(unitToken);
 
 	if characterID and TRP3_API.register.isUnitIDKnown(characterID) then
-		local player = AddOn_TotalRP3.Player.CreateFromCharacterID(characterID);
+		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
 
 		if ShouldCustomizeFullTitles() then
