@@ -15,6 +15,7 @@
 - The URL copy window now closes after pressing the copy shortcut.
 - The default profile no longer shows the amount of characters bound to it.
 - Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
+- The description editor will now receive input focus after clicking any formatting tool button.
 
 ## Fixed
 
