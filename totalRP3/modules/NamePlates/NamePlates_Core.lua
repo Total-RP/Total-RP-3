@@ -424,7 +424,7 @@ function TRP3_NamePlates:UpdateNamePlateForRegisterID(registerID)
 end
 
 function TRP3_NamePlates:ShouldRequestProfileFromCharacter(characterID)
-	local REQUEST_WAIT_SEC = 60;
+	local REQUEST_WAIT_SEC = 90;
 
 	local lastRequestTime = self.characterRequestTimes[characterID] or -math.huge;
 
