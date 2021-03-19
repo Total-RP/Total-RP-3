@@ -349,6 +349,8 @@ function TRP3_KuiNamePlates:CanCustomizeNamePlate(nameplate)
 		return false;  -- Reject personal and invalid nameplates.
 	elseif not nameplate.parent or not nameplate.parent.UnitFrame then
 		return false;  -- Nameplate doesn't have a unitframe (retail-specific).
+	elseif not nameplate.unit then
+		return false;  -- Nameplate doesn't have an associated unit.
 	else
 		return true;
 	end
