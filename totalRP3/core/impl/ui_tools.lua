@@ -860,6 +860,7 @@ end
 local function postInsertHighlight(index, tagSize, textSize, frame)
 	frame:SetCursorPosition(index + tagSize + textSize);
 	frame:HighlightText(index + tagSize, index + tagSize + textSize);
+	frame:SetFocus();
 end
 
 local function insertContainerTag(alignIndex, button, frame)
@@ -875,6 +876,7 @@ local function onColorTagSelected(red, green, blue, frame)
 	local tag = ("{col:%s}"):format(strconcat(numberToHexa(red), numberToHexa(green), numberToHexa(blue)));
 	insertTag(tag .. "{/col}", cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + tag:len());
+	frame:SetFocus();
 end
 
 local function onIconTagSelected(icon, frame)
@@ -882,6 +884,7 @@ local function onIconTagSelected(icon, frame)
 	local tag = ("{icon:%s:25}"):format(icon);
 	insertTag(tag, cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + tag:len());
+	frame:SetFocus();
 end
 
 local function onImageTagSelected(image, frame)
@@ -889,6 +892,7 @@ local function onImageTagSelected(image, frame)
 	local tag = ("{img:%s:%s:%s}"):format(image.url, math.min(image.width, 512), math.min(image.height, 512));
 	insertTag(tag, cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + tag:len());
+	frame:SetFocus();
 end
 
 local function onLinkTagClicked(frame)
@@ -897,6 +901,7 @@ local function onLinkTagClicked(frame)
 	insertTag(tag, cursorIndex, frame);
 	frame:SetCursorPosition(cursorIndex + 6);
 	frame:HighlightText(cursorIndex + 6, cursorIndex + 6 + loc.UI_LINK_URL:len());
+	frame:SetFocus();
 end
 
 -- Drop down
