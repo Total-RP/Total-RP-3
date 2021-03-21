@@ -673,6 +673,10 @@ local function getFullnameUsingChatMethod(info)
 		end
 	end
 
+	if characterName then
+		characterName = TRP3_API.utils.str.crop(characterName, 35);
+	end
+
 	return characterName;
 end
 TRP3_API.chat.getFullnameUsingChatMethod = getFullnameUsingChatMethod;
