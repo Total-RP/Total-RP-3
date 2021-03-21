@@ -652,6 +652,7 @@ end
 local function getFullnameUsingChatMethod(info)
 	local characterName;
 	local nameMethod = configNameMethod();
+	local cropSize = 45;
 
 	if nameMethod ~= 1 then
 		-- TRP3 names
@@ -665,6 +666,7 @@ local function getFullnameUsingChatMethod(info)
 		if nameMethod == 4 and characteristics.TI then
 			-- With short title in front of the name
 			characterName = characteristics.TI .. " " .. characterName;
+			cropSize = cropSize + 25;
 		end
 
 		if (nameMethod == 3 or nameMethod == 4) and characteristics.LN then
@@ -674,7 +676,7 @@ local function getFullnameUsingChatMethod(info)
 	end
 
 	if characterName then
-		characterName = TRP3_API.utils.str.crop(characterName, 35);
+		characterName = TRP3_API.utils.str.crop(characterName, cropSize);
 	end
 
 	return characterName;
