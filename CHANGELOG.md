@@ -16,6 +16,7 @@
 - The default profile no longer shows the amount of characters bound to it.
 - Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
 - The description editor will now receive input focus after clicking any formatting tool button.
+- Custom colors for personality traits now apply to attribute names.
 
 ## Fixed
 
