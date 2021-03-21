@@ -19,6 +19,8 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
+local outstandingHelloRequests = {};
+
 local function GetOrCreateTable(t, key)
 	if t[key] ~= nil then
 		return t[key];
@@ -323,8 +325,6 @@ local function onStart()
 		end
 	end
 
-	local outstandingHelloRequests = {};
-
 	tinsert(msp.callback.received, function(senderID)
 		local data = msp.char[senderID].field;
 
@@ -501,42 +501,6 @@ local function onStart()
 		end
 	end);
 
-	local function requestInformation(name, targetMode)
-		if not name or name == Globals.player_id or isIgnored(name) then
-			return;
-		elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-			return;
-		end
-
-		local data = msp.char[name].field;
-
-		if string.find(data.VA, "TotalRP3") then
-			return;
-		end
-
-		-- Quick hack to fix the "double request" issue with our comms;
-		-- previously it would be possible for requests to be sent via both
-		-- TRP and MSP protocols. If this occurred at the same time, we
-		-- effectively ended up doubling the comms needlessly in the worst
-		-- case scenario.
-		--
-		-- To work around this, if we've not seen a unit (they have no VA
-		-- field) we first send a "hello" request for just that field and
-		-- mark the receiver in an outstanding requests table. When a response
-		-- is received, we then re-send the request only if we're sure that
-		-- the user is _not_ running TRP3.
-
-		if data.VA == "" then
-			outstandingHelloRequests[name] = true;
-			msp:Request(name, { "VA" });
-		else
-			outstandingHelloRequests[name] = false;
-			msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
-		end
-	end
-
-	TRP3_API.r.sendMSPQuery = requestInformation;
-
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Init
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -572,8 +536,43 @@ local function onStart()
 			end
 		end
 	end);
-	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, requestInformation);
+	Events.listenToEvent(Events.MOUSE_OVER_CHANGED, TRP3_API.r.sendMSPQuery);
+end
 
+function TRP3_API.r.sendMSPQuery(name, targetMode)
+	if msp_RPAddOn ~= "Total RP 3" then
+		return;
+	elseif not name or name == TRP3_API.globals.player_id or TRP3_API.register.isIDIgnored(name) then
+		return;
+	elseif targetMode and targetMode ~= AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+		return;
+	end
+
+	local data = msp.char[name].field;
+
+	if string.find(data.VA, "TotalRP3") then
+		return;
+	end
+
+	-- Quick hack to fix the "double request" issue with our comms;
+	-- previously it would be possible for requests to be sent via both
+	-- TRP and MSP protocols. If this occurred at the same time, we
+	-- effectively ended up doubling the comms needlessly in the worst
+	-- case scenario.
+	--
+	-- To work around this, if we've not seen a unit (they have no VA
+	-- field) we first send a "hello" request for just that field and
+	-- mark the receiver in an outstanding requests table. When a response
+	-- is received, we then re-send the request only if we're sure that
+	-- the user is _not_ running TRP3.
+
+	if data.VA == "" then
+		outstandingHelloRequests[name] = true;
+		msp:Request(name, { "VA" });
+	else
+		outstandingHelloRequests[name] = false;
+		msp:Request(name, AddOn_TotalRP3.MSP.REQUEST_FIELDS);
+	end
 end
 
 local MODULE_STRUCTURE = {
