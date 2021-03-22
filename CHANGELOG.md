@@ -9,6 +9,7 @@
 - Added support for companion profiles in Classic.
 - Added entries on unit frames right-click menu to open profile + change roleplay status.
 - Added a window to copy character names linked to a profile when right-clicking it in the directory list.
+- Added an option to disable profile tooltips in instances.
 
 ## Changed
 
