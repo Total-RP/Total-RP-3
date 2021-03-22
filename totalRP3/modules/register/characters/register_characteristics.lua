@@ -448,8 +448,23 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 0);
 			frame:SetPoint("RIGHT", 0, 0);
-			frame.LeftText:SetText(psychoStructure.LT or "");
-			frame.RightText:SetText(psychoStructure.RT or "");
+
+			-- Applying custom colors to attribute names (with contrast adjustment for readability)
+			local leftText = psychoStructure.LT or "";
+			if psychoStructure.LC then
+				local leftTextColor = Ellyb.Color(psychoStructure.LC);
+				leftTextColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+				leftText = leftTextColor:WrapTextInColorCode(leftText);
+			end
+			local rightText = psychoStructure.RT or "";
+			if psychoStructure.RC then
+				local rightTextColor = Ellyb.Color(psychoStructure.RC);
+				rightTextColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
+				rightText = rightTextColor:WrapTextInColorCode(rightText);
+			end
+
+			frame.LeftText:SetText(leftText);
+			frame.RightText:SetText(rightText);
 
 			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or TRP3_InterfaceIcons.Default));
 			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or TRP3_InterfaceIcons.Default));

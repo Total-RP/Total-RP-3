@@ -17,6 +17,7 @@
 - Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
 - The description editor will now receive input focus after clicking any formatting tool button.
 - Customized names in chat frames that have excessively large lengths will now be cropped.
+- Custom colors for personality traits now apply to attribute names.
 
 ## Fixed
 
