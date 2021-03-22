@@ -207,6 +207,7 @@ TRP3_InterfaceIcons = {
 	LanguageTaurahe       = { "inv_misc_tournaments_banner_tauren", "spell_arcane_teleportthunderbluff" },
 	LanguageThalassian    = { "inv_misc_tournaments_banner_bloodelf", DEFAULT_ICON_NAME },
 	LanguageTitan         = { "achievement_dungeon_ulduarraid_titan_01", DEFAULT_ICON_NAME },
+	LanguageVulpera       = { "inv_tabard_vulpera", DEFAULT_ICON_NAME },
 	LanguageZandali       = { "inv_misc_tournaments_banner_troll", "inv_banner_01" },
 	LanguageZombie        = { "icon_petfamily_undead", DEFAULT_ICON_NAME },
 

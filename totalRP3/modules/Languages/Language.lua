@@ -47,6 +47,7 @@ local LANGUAGES_ICONS = {
 
 	-- Allied races
 	[181] = Icon(TRP3_InterfaceIcons.LanguageShalassian), -- Shalassian
+	[285] = Icon(TRP3_InterfaceIcons.LanguageVulpera), -- Vulpera
 
 	-- Funsies
 	[37] = Icon(TRP3_InterfaceIcons.LanguageGnomishBinary), -- Gnome binary (Brewfest beer)
