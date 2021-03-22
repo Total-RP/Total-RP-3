@@ -342,6 +342,7 @@ stds.wow = {
 		"IsAltKeyDown",
 		"IsControlKeyDown",
 		"IsInGroup",
+		"IsInInstance",
 		"IsInRaid",
 		"IsMounted",
 		"IsShiftKeyDown",

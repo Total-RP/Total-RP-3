@@ -69,6 +69,7 @@ local NEW_ABOUT_ICON = "|TInterface\\Buttons\\UI-GuildButton-PublicNote-Up:18:18
 local CONFIG_PROFILE_ONLY = "tooltip_profile_only";
 local CONFIG_IN_CHARACTER_ONLY = "tooltip_in_character_only";
 local CONFIG_CHARACT_COMBAT = "tooltip_char_combat";
+local CONFIG_HIDE_IN_INSTANCE = "tooltip_hide_in_instance";
 local CONFIG_CHARACT_COLOR = "tooltip_char_color";
 local CONFIG_CROP_TEXT = "tooltip_crop_text";
 local CONFIG_CHARACT_ANCHORED_FRAME = "tooltip_char_AnchoredFrame";
@@ -1071,6 +1072,7 @@ local function show(targetType, targetID, targetMode)
 
 	-- If option is to only show tooltips when player is in character and player is out of character, stop here
 	if getConfigValue(CONFIG_IN_CHARACTER_ONLY) and not isPlayerIC() then return end
+	if getConfigValue(CONFIG_HIDE_IN_INSTANCE) and IsInInstance() then return end
 
 	-- If using TRP TT
 	if not UnitAffectingCombat("player") or not getConfigValue(CONFIG_CHARACT_COMBAT) then
@@ -1255,6 +1257,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PROFILE_ONLY, true);
 	registerConfigKey(CONFIG_IN_CHARACTER_ONLY, false);
 	registerConfigKey(CONFIG_CHARACT_COMBAT, false);
+	registerConfigKey(CONFIG_HIDE_IN_INSTANCE, false);
 	registerConfigKey(CONFIG_CHARACT_COLOR, true);
 	registerConfigKey(CONFIG_CROP_TEXT, true);
 	registerConfigKey(CONFIG_CHARACT_ANCHORED_FRAME, "GameTooltip");
@@ -1327,6 +1330,11 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_COMBAT,
 				configKey = CONFIG_CHARACT_COMBAT,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_HIDE_IN_INSTANCE,
+				configKey = CONFIG_HIDE_IN_INSTANCE,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
