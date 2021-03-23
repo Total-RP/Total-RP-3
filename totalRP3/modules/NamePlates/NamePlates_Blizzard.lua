@@ -272,8 +272,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local overrideColor;
 
 	if displayInfo then
-		if displayInfo.nameText then
-			overrideText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+		if displayInfo.name then
+			overrideText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 		end
 
 		-- No cropping occurs after this point.
@@ -282,8 +282,8 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 		-- Process color overrides.
 
-		if displayInfo.nameColor then
-			local color = displayInfo.nameColor;
+		if displayInfo.shouldColorName then
+			local color = displayInfo.color;
 			overrideColor = unitframe.name.TRP3_overrideColor;
 
 			if UnitIsUnit(nameplate.namePlateUnitToken, "mouseover") then
@@ -313,9 +313,9 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateHealthBar(nameplate)
 
 	local overrideColor;
 
-	if displayInfo and displayInfo.healthColor then
+	if displayInfo and displayInfo.shouldColorHealth then
 		overrideColor = unitframe.healthBar.TRP3_overrideColor;
-		overrideColor = CreateOrUpdateColor(overrideColor, displayInfo.healthColor:GetRGB());
+		overrideColor = CreateOrUpdateColor(overrideColor, displayInfo.color:GetRGB());
 	end
 
 	SetStatusBarWidgetOverrideColor(unitframe.healthBar, overrideColor);

@@ -28,12 +28,13 @@ local function GetOrCreateDisplayInfo(unitToken)
 
 	local displayInfo = displayInfoPool[unitToken];
 
+	displayInfo.color = nil;
 	displayInfo.fullTitle = nil;
-	displayInfo.healthColor = nil;
 	displayInfo.icon = nil;
-	displayInfo.nameColor = nil;
-	displayInfo.nameText = nil;
+	displayInfo.name = nil;
 	displayInfo.roleplayStatus = nil;
+	displayInfo.shouldColorHealth = nil;
+	displayInfo.shouldColorName = nil;
 	displayInfo.shouldHide = nil;
 
 	return displayInfo;
@@ -221,36 +222,51 @@ local function GetCharacterUnitDisplayInfo(unitToken, characterID)
 		local player = GetOrCreatePlayerFromCharacterID(characterID);
 		local classToken = UnitClassBase(unitToken);
 
-		if ShouldCustomizeFullTitles() then
-			displayInfo.fullTitle = player:GetFullTitle();
-		end
+		do  -- Names/Titles
+			if ShouldCustomizeNames() then
+				displayInfo.name = player:GetRoleplayingName();
+			end
 
-		if ShouldCustomizeHealthColors() then
-			displayInfo.healthColor = GetCharacterColorForDisplay(player, classToken);
-		end
+			if ShouldCustomizeTitles() then
+				local prefix = player:GetTitle();
 
-		if ShouldCustomizeIcons() then
-			displayInfo.icon = player:GetCustomIcon();
-		end
+				if prefix then
+					displayInfo.name = strjoin(" ", prefix, displayInfo.name or player:GetName());
+				end
+			end
 
-		if ShouldCustomizeNameColors() then
-			displayInfo.nameColor = GetCharacterColorForDisplay(player, classToken);
-		end
-
-		if ShouldCustomizeNames() then
-			displayInfo.nameText = player:GetRoleplayingName();
-		end
-
-		if ShouldCustomizeTitles() then
-			local prefix = player:GetTitle();
-
-			if prefix then
-				displayInfo.nameText = strjoin(" ", prefix, displayInfo.nameText or player:GetName());
+			if ShouldCustomizeFullTitles() then
+				displayInfo.fullTitle = player:GetFullTitle();
 			end
 		end
 
-		if ShouldCustomizeRoleplayStatus() then
-			displayInfo.roleplayStatus = player:GetRoleplayStatus();
+		do  -- Colors
+			if ShouldCustomizeHealthColors() then
+				displayInfo.shouldColorHealth = true;
+			end
+
+			if ShouldCustomizeNameColors() then
+				displayInfo.shouldColorName = true;
+			end
+
+			if displayInfo.shouldColorHealth or displayInfo.shouldColorName then
+				displayInfo.color = GetCharacterColorForDisplay(player, classToken);
+
+				if not displayInfo.color then
+					displayInfo.shouldColorHealth = nil;
+					displayInfo.shouldColorName = nil;
+				end
+			end
+		end
+
+		do  -- Additional Indicators
+			if ShouldCustomizeIcons() then
+				displayInfo.icon = player:GetCustomIcon();
+			end
+
+			if ShouldCustomizeRoleplayStatus() then
+				displayInfo.roleplayStatus = player:GetRoleplayStatus();
+			end
 		end
 
 		if ShouldHideOutOfCharacterUnits() then
@@ -270,28 +286,43 @@ local function GetCompanionUnitDisplayInfo(unitToken, companionFullID)
 	local profile = TRP3_API.companions.register.getCompanionProfile(companionFullID);
 
 	if profile and profile.data then
-		if ShouldCustomizeTitles() then
-			displayInfo.fullTitle = profile.data.TI;
+		do  -- Names/Titles
+			if ShouldCustomizeNames() then
+				displayInfo.name = profile.data.NA;
+			end
+
+			if ShouldCustomizeTitles() then
+				displayInfo.fullTitle = profile.data.TI;
+			end
 		end
 
-		if ShouldCustomizeHealthColors() then
-			displayInfo.healthColor = GetCompanionColorForDisplay(profile.data.NH);
+		do  -- Colors
+			if ShouldCustomizeHealthColors() then
+				displayInfo.shouldColorHealth = true;
+			end
+
+			if ShouldCustomizeNameColors() then
+				displayInfo.shouldColorName = true;
+			end
+
+			if displayInfo.shouldColorHealth or displayInfo.shouldColorName then
+				displayInfo.color = GetCompanionColorForDisplay(profile.data.NH);
+
+				if not displayInfo.color then
+					displayInfo.shouldColorHealth = nil;
+					displayInfo.shouldColorName = nil;
+				end
+			end
 		end
 
-		if ShouldCustomizeIcons() then
-			displayInfo.icon = profile.data.IC;
-		end
+		do  -- Additional Indicators
+			if ShouldCustomizeIcons() then
+				displayInfo.icon = profile.data.IC;
+			end
 
-		if ShouldCustomizeNameColors() then
-			displayInfo.nameColor = GetCompanionColorForDisplay(profile.data.NH);
-		end
-
-		if ShouldCustomizeNames() then
-			displayInfo.nameText = profile.data.NA;
-		end
-
-		if ShouldHideOutOfCharacterUnits() then
-			displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
+			if ShouldHideOutOfCharacterUnits() then
+				displayInfo.shouldHide = displayInfo.shouldHide or IsUnitOutOfCharacter(unitToken);
+			end
 		end
 	else
 		-- Unit has no profile and so is a non-roleplay unit.

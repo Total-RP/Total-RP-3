@@ -174,8 +174,8 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayText;
 
-	if displayInfo and displayInfo.nameText then
-		displayText = TRP3_API.utils.str.crop(displayInfo.nameText, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
+	if displayInfo and displayInfo.name then
+		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS);
 	end
 
 	if displayText then
@@ -198,8 +198,8 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.NameText, displayInfo.roleplayStatus);
 	end
 
-	if displayInfo and displayInfo.nameColor then
-		nameplate.NameText:SetTextColor(displayInfo.nameColor:GetRGB());
+	if displayInfo and displayInfo.shouldColorName then
+		nameplate.NameText:SetTextColor(displayInfo.color:GetRGB());
 	end
 
 	-- Refresh full title/icon customizations as these depend on name-only
@@ -217,8 +217,8 @@ function TRP3_KuiNamePlates:UpdateNamePlateHealthBar(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unit);
 	local displayColor;
 
-	if displayInfo and displayInfo.healthColor then
-		displayColor = displayInfo.healthColor;
+	if displayInfo and displayInfo.shouldColorHealth then
+		displayColor = displayInfo.color;
 	elseif nameplate.state.healthColour then
 		displayColor = CreateColor(unpack(nameplate.state.healthColour, 1, 3));
 	end
