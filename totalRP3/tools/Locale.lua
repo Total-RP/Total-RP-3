@@ -1547,6 +1547,36 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
 	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
+	WHATS_NEW_24_4 = [[# Changelog version 2.3
+
+## Added
+
+- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
+
+*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
+
+- Added support for companion profiles in Classic.
+- Added entries on unit frames right-click menu to open profile + change roleplay status.
+- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
+- Added an option to disable profile tooltips in instances.
+
+## Changed
+
+- The URL copy window now closes after pressing the copy shortcut.
+- The default profile no longer shows the amount of characters bound to it.
+- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
+- The description editor will now receive input focus after clicking any formatting tool button.
+- Customized names in chat frames that have excessively large lengths will now be cropped.
+- Custom colors for personality traits now apply to attribute names.
+
+## Fixed
+
+- Fixed an issue with chat customization not properly registering on login while using Prat.
+- Fixed missing sound cue when opening/closing the main window.
+- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
+- Fixed missing vulpera language icon.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
