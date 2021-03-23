@@ -17,6 +17,22 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
+local function ShouldShowHeaderText()
+	return TRP3_API.configuration.getValue("UnitPopups_ShowHeaderText");
+end
+
+local function ShouldShowSeparator()
+	return TRP3_API.configuration.getValue("UnitPopups_ShowSeparator");
+end
+
+local function ShouldShowOpenProfile()
+	return TRP3_API.configuration.getValue("UnitPopups_ShowOpenProfile");
+end
+
+local function ShouldShowCharacterStatus()
+	return TRP3_API.configuration.getValue("UnitPopups_ShowCharacterStatus");
+end
+
 --
 -- Unit Popups Module
 --
@@ -26,7 +42,15 @@ local UnitPopupsModule = {};
 UnitPopupsModule.MenuButtons = {};
 UnitPopupsModule.MenuEntries = {};
 
-function UnitPopupsModule:Init()
+function UnitPopupsModule:OnModuleInitialize()
+	for _, setting in pairs(UnitPopupsModule.Configuration) do
+		TRP3_API.configuration.registerConfigKey(setting.key, setting.default);
+	end
+
+	TRP3_API.configuration.registerConfigurationPage(UnitPopupsModule.ConfigurationPage);
+end
+
+function UnitPopupsModule:OnModuleEnable()
 	hooksecurefunc("UnitPopup_ShowMenu", function(...) return self:OnUnitPopupShown(...); end);
 end
 
@@ -52,13 +76,73 @@ function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
 	-- as the Raider.IO addon which itself also adds unit menu options with
 	-- its own separator.
 
-	if UIDROPDOWNMENU_MENU_LEVEL == 1 then
-		UIDropDownMenu_AddSeparator();
-		UIDropDownMenu_AddButton(self.MenuButtons.RoleplayOptions);
+	local buttons = self:GetButtonsForMenu(menuType);
+
+	if #buttons == 0 then
+		return;
 	end
 
+	if UIDROPDOWNMENU_MENU_LEVEL == 1 then
+		if ShouldShowSeparator() then
+			UIDropDownMenu_AddSeparator();
+		end
+
+		if ShouldShowHeaderText() then
+			UIDropDownMenu_AddButton(self.MenuButtons.RoleplayOptions);
+		end
+	end
+
+	for _, button in ipairs(buttons) do
+		UIDropDownMenu_AddButton(button, UIDROPDOWNMENU_MENU_LEVEL);
+	end
+end
+
+function UnitPopupsModule:GetButtonsForMenu(menuType)
+	local buttons = {};
+
 	for _, buttonId in ipairs(self.MenuEntries[menuType]) do
-		UIDropDownMenu_AddButton(self.MenuButtons[buttonId], UIDROPDOWNMENU_MENU_LEVEL);
+		local button = self.MenuButtons[buttonId];
+
+		if button:ShouldShow() then
+			table.insert(buttons, button);
+		end
+	end
+
+	return buttons;
+end
+
+--
+-- Menu Commands
+--
+
+local function OpenProfile(button)  -- luacheck: ignore 212 (unused button)
+	local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
+	local unit = dropdownFrame.unit;
+	local name = dropdownFrame.name;
+	local server = dropdownFrame.server;
+	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
+
+	if UnitExists(unit) and false then
+		TRP3_API.slash.openProfile(unit);
+	elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
+		TRP3_API.slash.openProfile(fullName);
+	end
+end
+
+local function IsOutOfCharacter(button)  -- luacheck: ignore 212 (unused button)
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local roleplayStatus = player:GetRoleplayStatus();
+
+	return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
+end
+
+local function ToggleCharacterStatus(button)
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+
+	if button.checked() then
+		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
+	else
+		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
 	end
 end
 
@@ -77,19 +161,8 @@ Mixin(UnitPopupsModule.MenuButtons, {
 	OpenProfile = {
 		text = L.UNIT_POPUPS_OPEN_PROFILE,
 		notCheckable = true,
-		func = function()
-			local dropdownFrame = UIDROPDOWNMENU_INIT_MENU;
-			local unit = dropdownFrame.unit;
-			local name = dropdownFrame.name;
-			local server = dropdownFrame.server;
-			local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
-
-			if UnitExists(unit) and false then
-				TRP3_API.slash.openProfile(unit);
-			elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
-				TRP3_API.slash.openProfile(fullName);
-			end
-		end,
+		func = OpenProfile,
+		ShouldShow = ShouldShowOpenProfile,
 	},
 
 	CharacterStatus = {
@@ -97,21 +170,9 @@ Mixin(UnitPopupsModule.MenuButtons, {
 		notCheckable = false,
 		isNotRadio = true,
 		keepShownOnClick = true,
-		checked = function()
-			local player = AddOn_TotalRP3.Player.GetCurrentUser();
-			local roleplayStatus = player:GetRoleplayStatus();
-
-			return roleplayStatus == AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER;
-		end,
-		func = function(button)
-			local player = AddOn_TotalRP3.Player.GetCurrentUser();
-
-			if button.checked() then
-				player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
-			else
-				player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
-			end
-		end,
+		checked = IsOutOfCharacter,
+		func = ToggleCharacterStatus,
+		ShouldShow = ShouldShowCharacterStatus,
 	},
 });
 
@@ -138,5 +199,84 @@ TRP3_API.module.registerModule({
 	description = L.UNIT_POPUPS_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
-	onStart = function() UnitPopupsModule:Init(); end,
+	onInit = function() UnitPopupsModule:OnModuleInitialize(); end,
+	onStart = function() UnitPopupsModule:OnModuleEnable(); end,
 });
+
+--
+-- Configuration Data
+--
+
+UnitPopupsModule.Configuration = {
+	ShowHeaderText = {
+		key = "UnitPopups_ShowHeaderText",
+		default = true,
+	},
+
+	ShowSeparator = {
+		key = "UnitPopups_ShowSeparator",
+		default = true,
+	},
+
+	ShowOpenProfile = {
+		key = "UnitPopups_ShowOpenProfile",
+		default = true,
+	},
+
+	ShowCharacterStatus = {
+		key = "UnitPopups_ShowCharacterStatus",
+		default = true,
+	},
+};
+
+UnitPopupsModule.ConfigurationPage = {
+	id = "main_config_unitpopups",
+	menuText = L.UNIT_POPUPS_CONFIG_MENU_TITLE,
+	pageText = L.UNIT_POPUPS_CONFIG_PAGE_TEXT,
+	elements = {
+		{
+			inherit = "TRP3_ConfigParagraph",
+			title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
+		},
+		{
+			inherit = "TRP3_ConfigButton",
+			title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
+			text = DISABLE,
+			OnClick = function()
+				TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+					local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
+					TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
+					ReloadUI();
+				end);
+			end,
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.UNIT_POPUPS_CONFIG_ENTRIES_HEADER,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
+			help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
+			configKey = "UnitPopups_ShowHeaderText",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
+			help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
+			configKey = "UnitPopups_ShowSeparator",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
+			help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
+			configKey = "UnitPopups_ShowOpenProfile",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
+			help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
+			configKey = "UnitPopups_ShowCharacterStatus",
+		},
+	},
+};

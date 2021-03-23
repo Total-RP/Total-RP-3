@@ -1476,11 +1476,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
@@ -1547,6 +1542,27 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
 	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	UNIT_POPUPS_CONFIG_MENU_TITLE = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_TEXT = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
+	UNIT_POPUPS_CONFIG_ENABLE_MODULE = "Module |cff00ff00enabled|r",
+	UNIT_POPUPS_MODULE_DISABLE_WARNING = "A user interface reload is required to disable the unit popups module.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
+	UNIT_POPUPS_CONFIG_ENTRIES_HEADER = "Menu entries",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT = "Show header text",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP = "If checked, shows a \"Roleplay Options\" header above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR = "Show separator",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP = "If checked, shows a separator bar above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS = "Show character status toggle",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE = "Show open profile button",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP = "If checked, adds a button that opens the selected units' RP profile when clicked.|n|nThis option will be visible on all unit frame and chat menus.",
+
 };
 
 -- Use Ellyb to generate the Localization system
