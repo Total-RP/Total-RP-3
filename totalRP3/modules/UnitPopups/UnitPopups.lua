@@ -29,6 +29,10 @@ local function ShouldDisableInInstances()
 	return TRP3_API.configuration.getValue("UnitPopups_DisableInInstances");
 end
 
+local function ShouldDisableOnUnitFrames()
+	return TRP3_API.configuration.getValue("UnitPopups_DisableOnUnitFrames");
+end
+
 local function ShouldShowHeaderText()
 	return TRP3_API.configuration.getValue("UnitPopups_ShowHeaderText");
 end
@@ -67,20 +71,20 @@ function UnitPopupsModule:OnModuleEnable()
 end
 
 function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
-	if not dropdownMenu or not self.MenuEntries[menuType] or not self:ShouldCustomizeMenus() then
-		return;
+	if not dropdownMenu or dropdownMenu:IsForbidden() then
+		return;  -- Invalid or forbidden menu.
+	elseif UIDROPDOWNMENU_MENU_LEVEL ~= 1 then
+		return;  -- We don't support submenus.
+	elseif not self:ShouldCustomizeMenus() then
+		return;  -- Menu customizations are disabled.
+	elseif ShouldDisableOnUnitFrames() and dropdownMenu:GetParent() and dropdownMenu:GetParent():IsProtected() then
+		return;  -- Parent of the menu is a protected probably-unit frame.
 	end
 
-	-- If we're processing a submenu then the menu type is inferred from the
-	-- value field of the parent, which is stored a global when activated.
+	local buttons = self:GetButtonsForMenu(menuType);
 
-	if UIDROPDOWNMENU_MENU_LEVEL ~= 1 then
-		menuType = UIDROPDOWNMENU_MENU_VALUE;
-	end
-
-	local menuEntries = self.MenuEntries[menuType];
-	if not menuEntries or #menuEntries == 0 then
-		return;
+	if #buttons == 0 then
+		return;  -- No buttons to be shown.
 	end
 
 	-- The top-level menu has a separator/header display before the actual
@@ -88,20 +92,12 @@ function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
 	-- as the Raider.IO addon which itself also adds unit menu options with
 	-- its own separator.
 
-	local buttons = self:GetButtonsForMenu(menuType);
-
-	if #buttons == 0 then
-		return;
+	if ShouldShowSeparator() then
+		UIDropDownMenu_AddSeparator();
 	end
 
-	if UIDROPDOWNMENU_MENU_LEVEL == 1 then
-		if ShouldShowSeparator() then
-			UIDropDownMenu_AddSeparator();
-		end
-
-		if ShouldShowHeaderText() then
-			UIDropDownMenu_AddButton(self.MenuButtons.RoleplayOptions);
-		end
+	if ShouldShowHeaderText() then
+		UIDropDownMenu_AddButton(self.MenuButtons.RoleplayOptions);
 	end
 
 	for _, button in ipairs(buttons) do
@@ -124,13 +120,16 @@ function UnitPopupsModule:ShouldCustomizeMenus()
 end
 
 function UnitPopupsModule:GetButtonsForMenu(menuType)
+	local entries = self.MenuEntries[menuType];
 	local buttons = {};
 
-	for _, buttonId in ipairs(self.MenuEntries[menuType]) do
-		local button = self.MenuButtons[buttonId];
+	if entries then
+		for _, buttonId in ipairs(entries) do
+			local button = self.MenuButtons[buttonId];
 
-		if button:ShouldShow() then
-			table.insert(buttons, button);
+			if button:ShouldShow() then
+				table.insert(buttons, button);
+			end
 		end
 	end
 
@@ -249,6 +248,11 @@ UnitPopupsModule.Configuration = {
 		default = false,
 	},
 
+	DisableOnUnitFrames = {
+		key = "UnitPopups_DisableOnUnitFrames",
+		default = false,
+	},
+
 	ShowHeaderText = {
 		key = "UnitPopups_ShowHeaderText",
 		default = true,
@@ -312,6 +316,12 @@ UnitPopupsModule.ConfigurationPage = {
 			title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
 			help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
 			configKey = "UnitPopups_DisableInInstances",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
+			help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
+			configKey = "UnitPopups_DisableOnUnitFrames",
 		},
 		{
 			inherit = "TRP3_ConfigH1",
