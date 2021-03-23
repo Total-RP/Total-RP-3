@@ -17,6 +17,18 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
+local function ShouldDisableOutOfCharacter()
+	return TRP3_API.configuration.getValue("UnitPopups_DisableOutOfCharacter");
+end
+
+local function ShouldDisableInCombat()
+	return TRP3_API.configuration.getValue("UnitPopups_DisableInCombat");
+end
+
+local function ShouldDisableInInstances()
+	return TRP3_API.configuration.getValue("UnitPopups_DisableInInstances");
+end
+
 local function ShouldShowHeaderText()
 	return TRP3_API.configuration.getValue("UnitPopups_ShowHeaderText");
 end
@@ -55,7 +67,7 @@ function UnitPopupsModule:OnModuleEnable()
 end
 
 function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
-	if not dropdownMenu or not self.MenuEntries[menuType] then
+	if not dropdownMenu or not self.MenuEntries[menuType] or not self:ShouldCustomizeMenus() then
 		return;
 	end
 
@@ -94,6 +106,20 @@ function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
 
 	for _, button in ipairs(buttons) do
 		UIDropDownMenu_AddButton(button, UIDROPDOWNMENU_MENU_LEVEL);
+	end
+end
+
+function UnitPopupsModule:ShouldCustomizeMenus()
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+
+	if ShouldDisableOutOfCharacter() and not player:IsInCharacter() then
+		return false;
+	elseif ShouldDisableInCombat() and InCombatLockdown() then
+		return false;
+	elseif ShouldDisableInInstances() and IsInInstance() then
+		return false;
+	else
+		return true;
 	end
 end
 
@@ -208,6 +234,21 @@ TRP3_API.module.registerModule({
 --
 
 UnitPopupsModule.Configuration = {
+	DisableOutOfCharacter = {
+		key = "UnitPopups_DisableOutOfCharacter",
+		default = false,
+	},
+
+	DisableInCombat = {
+		key = "UnitPopups_DisableInCombat",
+		default = false,
+	},
+
+	DisableInInstances = {
+		key = "UnitPopups_DisableInInstances",
+		default = false,
+	},
+
 	ShowHeaderText = {
 		key = "UnitPopups_ShowHeaderText",
 		default = true,
@@ -249,6 +290,28 @@ UnitPopupsModule.ConfigurationPage = {
 					ReloadUI();
 				end);
 			end,
+		},
+		{
+			inherit = "TRP3_ConfigH1",
+			title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
+			help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
+			configKey = "UnitPopups_DisableOutOfCharacter",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
+			help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
+			configKey = "UnitPopups_DisableInCombat",
+		},
+		{
+			inherit = "TRP3_ConfigCheck",
+			title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
+			help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
+			configKey = "UnitPopups_DisableInInstances",
 		},
 		{
 			inherit = "TRP3_ConfigH1",

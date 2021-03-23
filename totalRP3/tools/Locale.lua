@@ -1562,6 +1562,13 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
 	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE = "Show open profile button",
 	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP = "If checked, adds a button that opens the selected units' RP profile when clicked.|n|nThis option will be visible on all unit frame and chat menus.",
+	UNIT_POPUPS_CONFIG_VISIBILITY_HEADER = "Visibility options",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER = "Hide menu entries while out of character",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, additional menu entries will not be shown while out-of-character.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT = "Hide menu entries while in combat",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, additional menu entries will not be shown while in combat.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES = "Hide menu entries while in instances",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, additional menu entries will not be shown while in instanced content.",
 
 };
 
