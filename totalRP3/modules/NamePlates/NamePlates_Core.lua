@@ -355,7 +355,7 @@ function TRP3_NamePlates:OnModuleInitialize()
 		TRP3_API.configuration.registerConfigKey(setting.key, setting.default);
 	end
 
-	TRP3_API.configuration.registerConfigurationPage(TRP3_NamePlatesUtil.ConfigurationPage);
+	TRP3_API.configuration.registerConfigurationPage(TRP3_NamePlatesUtil.GenerateConfigurationPage());
 end
 
 function TRP3_NamePlates:OnModuleEnable()
