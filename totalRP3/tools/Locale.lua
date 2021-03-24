@@ -1475,7 +1475,36 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with Tukui chat history.
 
 ]],
+	WHATS_NEW_24_4 = [[# Changelog version 2.3
 
+## Added
+
+- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
+
+*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
+
+- Added support for companion profiles in Classic.
+- Added entries on unit frames right-click menu to open profile + change roleplay status.
+- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
+- Added an option to disable profile tooltips in instances.
+
+## Changed
+
+- The URL copy window now closes after pressing the copy shortcut.
+- The default profile no longer shows the amount of characters bound to it.
+- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
+- The description editor will now receive input focus after clicking any formatting tool button.
+- Customized names in chat frames that have excessively large lengths will now be cropped.
+- Custom colors for personality traits now apply to attribute names.
+
+## Fixed
+
+- Fixed an issue with chat customization not properly registering on login while using Prat.
+- Fixed missing sound cue when opening/closing the main window.
+- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
+- Fixed missing vulpera language icon.
+
+]],
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
@@ -1770,3 +1799,12 @@ Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to in
 		})
 	}
 end
+
+-- The default locale for any lookups in script bodies is based on the client
+-- locale; this may change later based on the "addon locale" setting and cause
+-- differences, but for the majority of users it should go unnoticed.
+--
+-- Long term we should look at fixing those things; primary area being module
+-- names and descriptions which are looked up in script bodies.
+
+TRP3_API.loc:SetCurrentLocale(GetLocale(), true);

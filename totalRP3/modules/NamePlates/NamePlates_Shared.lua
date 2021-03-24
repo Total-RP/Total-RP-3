@@ -146,173 +146,175 @@ TRP3_NamePlatesUtil.Configuration = {
 	},
 };
 
-TRP3_NamePlatesUtil.ConfigurationPage = {
-	id = "main_config_nameplates",
-	menuText = L.NAMEPLATES_CONFIG_MENU_TITLE,
-	pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
-	elements = {
-		{
-			inherit = "TRP3_ConfigParagraph",
-			title = L.NAMEPLATES_CONFIG_PAGE_HELP,
-		},
-		{
-			inherit = "TRP3_ConfigButton",
-			title = L.NAMEPLATES_CONFIG_ENABLE_MODULE,
-			text = DISABLE,
-			OnShow = function(button)
-				local element = button:GetParent();
-				local title = _G[element:GetName() .. "Title"];
-				local addon = TRP3_NAMEPLATES_ADDON;
-
-				if addon then
-					title:SetFormattedText(L.NAMEPLATES_MODULE_ACTIVE_STATUS, (select(2, GetAddOnInfo(addon)) or addon));
-				else
-					title:SetText(L.NAMEPLATES_MODULE_INACTIVE_STATUS);
-				end
-			end,
-			OnClick = function()
-				TRP3_API.popup.showConfirmPopup(L.NAMEPLATES_MODULE_DISABLE_WARNING, function()
-					local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
-					TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = not current;
-					ReloadUI();
-				end);
-			end,
-		},
-		{
-			inherit = "TRP3_ConfigH1",
-			title = L.NAMEPLATES_CONFIG_VISIBILITY_HEADER,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT,
-			help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP,
-			configKey = "NamePlates_DisableInCombat",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER,
-			help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
-			configKey = "NamePlates_DisableOutOfCharacter",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS,
-			help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP,
-			configKey = "NamePlates_DisableOutOfCharacterUnits",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS,
-			help = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP,
-			configKey = "NamePlates_HideNonRoleplayUnits",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
-			help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
-			configKey = "NamePlates_HideOutOfCharacterUnits",
-		},
-		{
-			inherit = "TRP3_ConfigH1",
-			title = L.NAMEPLATES_CONFIG_ELEMENT_HEADER,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP,
-			configKey = "NamePlates_CustomizeNames",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP,
-			configKey = "NamePlates_CustomizeNameColors",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP,
-			configKey = "NamePlates_CustomizeHealthColors",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK,
-			help = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP,
-			configKey = "NamePlates_EnableClassColorFallback",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP,
-			configKey = "NamePlates_CustomizeTitles",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP,
-			configKey = "NamePlates_CustomizeFullTitles",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP,
-			configKey = "NamePlates_CustomizeRoleplayStatus",
-		},
-		{
-			inherit = "TRP3_ConfigDropDown",
-			title = L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
-			listContent = {
-				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED(L.CM_OOC), "TEXT" },
-				{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. TRP3_NamePlatesUtil.OOC_ICON, "ICON" },
+function TRP3_NamePlatesUtil.GenerateConfigurationPage()
+	return {
+		id = "main_config_nameplates",
+		menuText = L.NAMEPLATES_CONFIG_MENU_TITLE,
+		pageText = L.NAMEPLATES_CONFIG_PAGE_TEXT,
+		elements = {
+			{
+				inherit = "TRP3_ConfigParagraph",
+				title = L.NAMEPLATES_CONFIG_PAGE_HELP,
 			},
-			configKey = "NamePlates_PreferredOOCIndicator",
-			listWidth = nil,
-			listCancel = true,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS,
-			help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP,
-			configKey = "NamePlates_CustomizeIcons",
-		},
-		{
-			inherit = "TRP3_ConfigSlider",
-			title = L.NAMEPLATES_CONFIG_ICON_SIZE,
-			help = L.NAMEPLATES_CONFIG_ICON_SIZE_HELP,
-			configKey = "NamePlates_IconSize",
-			min = 12,
-			max = 48,
-			step = 1,
-			integer = true,
-		},
-		{
-			inherit = "TRP3_ConfigH1",
-			title = L.CO_ADVANCED_SETTINGS,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_ACTIVE_QUERY,
-			help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
-			configKey = "NamePlates_EnableActiveQuery",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
-			help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
-			OnShow = function(button)
-				button:SetChecked(GetCVar("nameplateShowOnlyNames") ~= "0");
-			end,
-			OnClick = function(button)
-				local value = button:GetChecked() and "1" or "0";
-				local current = GetCVar("nameplateShowOnlyNames");
+			{
+				inherit = "TRP3_ConfigButton",
+				title = L.NAMEPLATES_CONFIG_ENABLE_MODULE,
+				text = DISABLE,
+				OnShow = function(button)
+					local element = button:GetParent();
+					local title = _G[element:GetName() .. "Title"];
+					local addon = TRP3_NAMEPLATES_ADDON;
 
-				if current ~= value then
-					SetCVar("nameplateShowOnlyNames", value);
-					TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
-				end
-			end,
-		},
-	}
-};
+					if addon then
+						title:SetFormattedText(L.NAMEPLATES_MODULE_ACTIVE_STATUS, (select(2, GetAddOnInfo(addon)) or addon));
+					else
+						title:SetText(L.NAMEPLATES_MODULE_INACTIVE_STATUS);
+					end
+				end,
+				OnClick = function()
+					TRP3_API.popup.showConfirmPopup(L.NAMEPLATES_MODULE_DISABLE_WARNING, function()
+						local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"];
+						TRP3_Configuration.MODULE_ACTIVATION["trp3_nameplates"] = not current;
+						ReloadUI();
+					end);
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = L.NAMEPLATES_CONFIG_VISIBILITY_HEADER,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT,
+				help = L.NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP,
+				configKey = "NamePlates_DisableInCombat",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
+				configKey = "NamePlates_DisableOutOfCharacter",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS,
+				help = L.NAMEPLATES_CONFIG_DISABLE_OUT_OF_CHARACTER_UNITS_HELP,
+				configKey = "NamePlates_DisableOutOfCharacterUnits",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS,
+				help = L.NAMEPLATES_CONFIG_HIDE_NON_ROLEPLAY_UNITS_HELP,
+				configKey = "NamePlates_HideNonRoleplayUnits",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS,
+				help = L.NAMEPLATES_CONFIG_HIDE_OUT_OF_CHARACTER_UNITS_HELP,
+				configKey = "NamePlates_HideOutOfCharacterUnits",
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = L.NAMEPLATES_CONFIG_ELEMENT_HEADER,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAMES_HELP,
+				configKey = "NamePlates_CustomizeNames",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_NAME_COLORS_HELP,
+				configKey = "NamePlates_CustomizeNameColors",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_HEALTH_COLORS_HELP,
+				configKey = "NamePlates_CustomizeHealthColors",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK,
+				help = L.NAMEPLATES_CONFIG_ENABLE_CLASS_COLOR_FALLBACK_HELP,
+				configKey = "NamePlates_EnableClassColorFallback",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_TITLES_HELP,
+				configKey = "NamePlates_CustomizeTitles",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_FULL_TITLES_HELP,
+				configKey = "NamePlates_CustomizeFullTitles",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ROLEPLAY_STATUS_HELP,
+				configKey = "NamePlates_CustomizeRoleplayStatus",
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				title = L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR,
+				listContent = {
+					{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. TRP3_API.Ellyb.ColorManager.RED(L.CM_OOC), "TEXT" },
+					{ L.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. TRP3_NamePlatesUtil.OOC_ICON, "ICON" },
+				},
+				configKey = "NamePlates_PreferredOOCIndicator",
+				listWidth = nil,
+				listCancel = true,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS,
+				help = L.NAMEPLATES_CONFIG_CUSTOMIZE_ICONS_HELP,
+				configKey = "NamePlates_CustomizeIcons",
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = L.NAMEPLATES_CONFIG_ICON_SIZE,
+				help = L.NAMEPLATES_CONFIG_ICON_SIZE_HELP,
+				configKey = "NamePlates_IconSize",
+				min = 12,
+				max = 48,
+				step = 1,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = L.CO_ADVANCED_SETTINGS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_ACTIVE_QUERY,
+				help = L.NAMEPLATES_CONFIG_ACTIVE_QUERY_HELP,
+				configKey = "NamePlates_EnableActiveQuery",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY,
+				help = L.NAMEPLATES_CONFIG_BLIZZARD_NAME_ONLY_HELP,
+				OnShow = function(button)
+					button:SetChecked(GetCVar("nameplateShowOnlyNames") ~= "0");
+				end,
+				OnClick = function(button)
+					local value = button:GetChecked() and "1" or "0";
+					local current = GetCVar("nameplateShowOnlyNames");
+
+					if current ~= value then
+						SetCVar("nameplateShowOnlyNames", value);
+						TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+					end
+				end,
+			},
+		}
+	};
+end
 
 _G.TRP3_NamePlatesUtil = TRP3_NamePlatesUtil;
