@@ -149,7 +149,7 @@ local function OpenProfile(button)  -- luacheck: ignore 212 (unused button)
 	local server = dropdownFrame.server;
 	local fullName = string.join("-", name or UNKNOWNOBJECT, server or GetNormalizedRealmName());
 
-	if UnitExists(unit) and false then
+	if UnitExists(unit) then
 		TRP3_API.slash.openProfile(unit);
 	elseif not string.find(fullName, UNKNOWNOBJECT, 1, true) then
 		TRP3_API.slash.openProfile(fullName);
