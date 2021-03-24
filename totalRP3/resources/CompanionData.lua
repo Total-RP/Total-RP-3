@@ -21,6 +21,11 @@
 --
 
 TRP3_CompanionPetData = C_PetJournal and {} or {
+
+	--
+	-- Classic
+	--
+
 	{ speciesID = 106,  itemID = 19450, spellID = 23811, creatureID = 14878 }, -- A Jubling's Tiny Home
 	{ speciesID = 52,   itemID = 11023, spellID = 10685, creatureID = 7394  }, -- Ancona Chicken
 	{ speciesID = 75,   itemID = 10360, spellID = 10714, creatureID = 7565  }, -- Black Kingsnake
@@ -76,9 +81,59 @@ TRP3_CompanionPetData = C_PetJournal and {} or {
 	{ speciesID = 64,   itemID = 11027, spellID = 10703, creatureID = 7550  }, -- Wood Frog Box
 	{ speciesID = 89,   itemID = 12264, spellID = 15999, creatureID = 10259 }, -- Worg Carrier
 	{ speciesID = 94,   itemID = 13582, spellID = 17709, creatureID = 11327 }, -- Zergling Leash
+
+	--
+	-- Burning Crusade
+	--
+
+	{ speciesID = 57,   itemID = 34535, spellID = 10696, creatureID = 7547  }, -- Azure Whelpling
+	{ speciesID = 156,  itemID = 32588, spellID = 40549, creatureID = 23234 }, -- Banana Charm
+	{ speciesID = 145,  itemID = 29958, spellID = 36031, creatureID = 21056 }, -- Blue Dragonhawk Hatchling
+	{ speciesID = 138,  itemID = 29901, spellID = 35907, creatureID = 21010 }, -- Blue Moth Egg
+	{ speciesID = 137,  itemID = 29364, spellID = 35239, creatureID = 20472 }, -- Brown Rabbit Crate
+	{ speciesID = 146,  itemID = 29960, spellID = 36034, creatureID = 21076 }, -- Captured Firefly
+	{ speciesID = 174,  itemID = 35350, spellID = 46426, creatureID = 26056 }, -- Chuck's Bucket
+	{ speciesID = 180,  itemID = 37298, spellID = 48408, creatureID = 27346 }, -- Competitor's Souvenir
+	{ speciesID = 169,  itemID = 34493, spellID = 45127, creatureID = 25110 }, -- Dragon Kite
+	{ speciesID = 158,  itemID = 32616, spellID = 40614, creatureID = 23258 }, -- Egbert's Egg
+	{ speciesID = 159,  itemID = 32622, spellID = 40634, creatureID = 23266 }, -- Elekk Training Collar
+	{ speciesID = 155,  itemID = 32498, spellID = 40405, creatureID = 23198 }, -- Fortune Coin
+	{ speciesID = 179,  itemID = 37297, spellID = 48406, creatureID = 27217 }, -- Gold Medallion
+	{ speciesID = 142,  itemID = 29953, spellID = 36027, creatureID = 21055 }, -- Golden Dragonhawk Hatchling
+	{ speciesID = 170,  itemID = 34518, spellID = 45174, creatureID = 25146 }, -- Golden Pig Coin
+	{ speciesID = 111,  itemID = 30360, spellID = 24988, creatureID = 15358 }, -- Lurky's Egg
+	{ speciesID = 132,  itemID = 27445, spellID = 33050, creatureID = 18839 }, -- Magical Crawdad Box
+	{ speciesID = 136,  itemID = 29363, spellID = 35156, creatureID = 20408 }, -- Mana Wyrmling
+	{ speciesID = 149,  itemID = 31760, spellID = 39181, creatureID = 22445 }, -- Miniwing
+	{ speciesID = 165,  itemID = 33993, spellID = 43918, creatureID = 24480 }, -- Mojo
+	{ speciesID = 164,  itemID = 33818, spellID = 43698, creatureID = 24389 }, -- Muckbreath's Bucket
+	{ speciesID = 186,  itemID = 38628, spellID = 51716, creatureID = 28470 }, -- Nether Ray Fry
+	{ speciesID = 131,  itemID = 25535, spellID = 32298, creatureID = 18381 }, -- Netherwhelp's Collar
+	{ speciesID = 175,  itemID = 35504, spellID = 46599, creatureID = 26119 }, -- Phoenix Hatchling
+	{ speciesID = 143,  itemID = 29956, spellID = 36028, creatureID = 21064 }, -- Red Dragonhawk Hatchling
+	{ speciesID = 139,  itemID = 29902, spellID = 35909, creatureID = 21009 }, -- Red Moth Egg
+	{ speciesID = 168,  itemID = 34492, spellID = 45125, creatureID = 25109 }, -- Rocket Chicken
+	{ speciesID = 172,  itemID = 34955, spellID = 45890, creatureID = 25706 }, -- Scorched Stone
+	{ speciesID = 144,  itemID = 29957, spellID = 36029, creatureID = 21063 }, -- Silver Dragonhawk Hatchling
+	{ speciesID = 171,  itemID = 34519, spellID = 45175, creatureID = 25147 }, -- Silver Pig Coin
+	{ speciesID = 162,  itemID = 33154, spellID = 42609, creatureID = 23909 }, -- Sinister Squashling
+	{ speciesID = 157,  itemID = 32617, spellID = 40613, creatureID = 23231 }, -- Sleepy Willy
+	{ speciesID = 173,  itemID = 35349, spellID = 46425, creatureID = 26050 }, -- Snarly's Bucket
+	{ speciesID = 183,  itemID = 38050, spellID = 49964, creatureID = 27914 }, -- Soul-Trader Beacon
+	{ speciesID = 167,  itemID = 34478, spellID = 45082, creatureID = 25062 }, -- Tiny Sporebat
+	{ speciesID = 163,  itemID = 33816, spellID = 43697, creatureID = 24388 }, -- Toothy's Bucket
+	{ speciesID = 189,  itemID = 39656, spellID = 53082, creatureID = 29089 }, -- Tyrael's Hilt
+	{ speciesID = 141,  itemID = 29904, spellID = 35911, creatureID = 21018 }, -- White Moth Egg
+	{ speciesID = 153,  itemID = 32233, spellID = 39709, creatureID = 22943 }, -- Wolpertinger's Tankard
+	{ speciesID = 140,  itemID = 29903, spellID = 35910, creatureID = 21008 }, -- Yellow Moth Egg
 };
 
 TRP3_CompanionMountData = C_MountJournal and {} or {
+
+	--
+	-- Classic
+	--
+
 	{ mountID = 77,  itemID = 18243, spellID = 22719, classID = nil }, -- Black Battlestrider
 	{ mountID = 122, itemID = 21176, spellID = 26656, classID = nil }, -- Black Qiraji Resonating Crystal
 	{ mountID = 9,   itemID = 2411,  spellID = 470,   classID = nil }, -- Black Stallion Bridle
@@ -150,6 +205,95 @@ TRP3_CompanionMountData = C_MountJournal and {} or {
 	{ mountID = 38,  itemID = 8592,  spellID = 10799, classID = nil }, -- Whistle of the Violet Raptor
 	{ mountID = 24,  itemID = 5873,  spellID = 6898,  classID = nil }, -- White Ram
 	{ mountID = 119, itemID = 21324, spellID = 26055, classID = nil }, -- Yellow Qiraji Resonating Crystal
+
+	--
+	-- Burning Crusade
+	--
+
+	{ mountID = 125, itemID = 23720, spellID = 30174, classID = nil }, -- Riding Turtle
+	{ mountID = 129, itemID = 25470, spellID = 32235, classID = nil }, -- Golden Gryphon
+	{ mountID = 130, itemID = 25471, spellID = 32239, classID = nil }, -- Ebon Gryphon
+	{ mountID = 131, itemID = 25472, spellID = 32240, classID = nil }, -- Snowy Gryphon
+	{ mountID = 132, itemID = 25473, spellID = 32242, classID = nil }, -- Swift Blue Gryphon
+	{ mountID = 133, itemID = 25474, spellID = 32243, classID = nil }, -- Tawny Windrider
+	{ mountID = 134, itemID = 25475, spellID = 32244, classID = nil }, -- Blue Windrider
+	{ mountID = 135, itemID = 25476, spellID = 32245, classID = nil }, -- Green Windrider
+	{ mountID = 136, itemID = 25477, spellID = 32246, classID = nil }, -- Swift Red Windrider
+	{ mountID = 137, itemID = 25527, spellID = 32289, classID = nil }, -- Swift Red Gryphon
+	{ mountID = 138, itemID = 25528, spellID = 32290, classID = nil }, -- Swift Green Gryphon
+	{ mountID = 139, itemID = 25529, spellID = 32292, classID = nil }, -- Swift Purple Gryphon
+	{ mountID = 140, itemID = 25531, spellID = 32295, classID = nil }, -- Swift Green Windrider
+	{ mountID = 141, itemID = 25532, spellID = 32296, classID = nil }, -- Swift Yellow Windrider
+	{ mountID = 142, itemID = 25533, spellID = 32297, classID = nil }, -- Swift Purple Windrider
+	{ mountID = 146, itemID = 28936, spellID = 33660, classID = nil }, -- Swift Pink Hawkstrider
+	{ mountID = 147, itemID = 28481, spellID = 34406, classID = nil }, -- Brown Elekk
+	{ mountID = 149, itemID = nil,   spellID = 34767, classID = 2   }, -- Summon Thalassian Charger
+	{ mountID = 150, itemID = nil,   spellID = 34769, classID = 2   }, -- Summon Thalassian Warhorse
+	{ mountID = 151, itemID = 29228, spellID = 34790, classID = nil }, -- Reins of the Dark War Talbuk
+	{ mountID = 152, itemID = 28927, spellID = 34795, classID = nil }, -- Red Hawkstrider
+	{ mountID = 153, itemID = 29102, spellID = 34896, classID = nil }, -- Reins of the Cobalt War Talbuk
+	{ mountID = 153, itemID = 29227, spellID = 34896, classID = nil }, -- Reins of the Cobalt War Talbuk
+	{ mountID = 154, itemID = 29103, spellID = 34897, classID = nil }, -- Reins of the White War Talbuk
+	{ mountID = 154, itemID = 29231, spellID = 34897, classID = nil }, -- Reins of the White War Talbuk
+	{ mountID = 155, itemID = 29104, spellID = 34898, classID = nil }, -- Reins of the Silver War Talbuk
+	{ mountID = 155, itemID = 29229, spellID = 34898, classID = nil }, -- Reins of the Silver War Talbuk
+	{ mountID = 156, itemID = 29105, spellID = 34899, classID = nil }, -- Reins of the Tan War Talbuk
+	{ mountID = 156, itemID = 29230, spellID = 34899, classID = nil }, -- Reins of the Tan War Talbuk
+	{ mountID = 157, itemID = 29222, spellID = 35018, classID = nil }, -- Purple Hawkstrider
+	{ mountID = 158, itemID = 29220, spellID = 35020, classID = nil }, -- Blue Hawkstrider
+	{ mountID = 159, itemID = 29221, spellID = 35022, classID = nil }, -- Black Hawkstrider
+	{ mountID = 160, itemID = 29223, spellID = 35025, classID = nil }, -- Swift Green Hawkstrider
+	{ mountID = 161, itemID = 29224, spellID = 35027, classID = nil }, -- Swift Purple Hawkstrider
+	{ mountID = 162, itemID = 34129, spellID = 35028, classID = nil }, -- Swift Warstrider
+	{ mountID = 163, itemID = 29744, spellID = 35710, classID = nil }, -- Gray Elekk
+	{ mountID = 164, itemID = 29743, spellID = 35711, classID = nil }, -- Purple Elekk
+	{ mountID = 165, itemID = 29746, spellID = 35712, classID = nil }, -- Great Green Elekk
+	{ mountID = 166, itemID = 29745, spellID = 35713, classID = nil }, -- Great Blue Elekk
+	{ mountID = 167, itemID = 29747, spellID = 35714, classID = nil }, -- Great Purple Elekk
+	{ mountID = 168, itemID = 30480, spellID = 36702, classID = nil }, -- Fiery Warhorse's Reins
+	{ mountID = 169, itemID = 30609, spellID = 37015, classID = nil }, -- Swift Nether Drake
+	{ mountID = 170, itemID = 31829, spellID = 39315, classID = nil }, -- Reins of the Cobalt Riding Talbuk
+	{ mountID = 170, itemID = 31830, spellID = 39315, classID = nil }, -- Reins of the Cobalt Riding Talbuk
+	{ mountID = 171, itemID = 28915, spellID = 39316, classID = nil }, -- Reins of the Dark Riding Talbuk
+	{ mountID = 172, itemID = 31831, spellID = 39317, classID = nil }, -- Reins of the Silver Riding Talbuk
+	{ mountID = 172, itemID = 31832, spellID = 39317, classID = nil }, -- Reins of the Silver Riding Talbuk
+	{ mountID = 173, itemID = 31833, spellID = 39318, classID = nil }, -- Reins of the Tan Riding Talbuk
+	{ mountID = 173, itemID = 31834, spellID = 39318, classID = nil }, -- Reins of the Tan Riding Talbuk
+	{ mountID = 174, itemID = 31835, spellID = 39319, classID = nil }, -- Reins of the White Riding Talbuk
+	{ mountID = 174, itemID = 31836, spellID = 39319, classID = nil }, -- Reins of the White Riding Talbuk
+	{ mountID = 176, itemID = 32314, spellID = 39798, classID = nil }, -- Green Riding Nether Ray
+	{ mountID = 177, itemID = 32317, spellID = 39800, classID = nil }, -- Red Riding Nether Ray
+	{ mountID = 178, itemID = 32316, spellID = 39801, classID = nil }, -- Purple Riding Nether Ray
+	{ mountID = 179, itemID = 32318, spellID = 39802, classID = nil }, -- Silver Riding Nether Ray
+	{ mountID = 180, itemID = 32319, spellID = 39803, classID = nil }, -- Blue Riding Nether Ray
+	{ mountID = 183, itemID = 32458, spellID = 40192, classID = nil }, -- Ashes of Al'ar
+	{ mountID = 185, itemID = 32768, spellID = 41252, classID = nil }, -- Reins of the Raven Lord
+	{ mountID = 186, itemID = 32857, spellID = 41513, classID = nil }, -- Reins of the Onyx Netherwing Drake
+	{ mountID = 187, itemID = 32858, spellID = 41514, classID = nil }, -- Reins of the Azure Netherwing Drake
+	{ mountID = 188, itemID = 32859, spellID = 41515, classID = nil }, -- Reins of the Cobalt Netherwing Drake
+	{ mountID = 189, itemID = 32860, spellID = 41516, classID = nil }, -- Reins of the Purple Netherwing Drake
+	{ mountID = 190, itemID = 32861, spellID = 41517, classID = nil }, -- Reins of the Veridian Netherwing Drake
+	{ mountID = 191, itemID = 32862, spellID = 41518, classID = nil }, -- Reins of the Violet Netherwing Drake
+	{ mountID = 196, itemID = 33224, spellID = 42776, classID = nil }, -- Reins of the Spectral Tiger
+	{ mountID = 197, itemID = 33225, spellID = 42777, classID = nil }, -- Reins of the Swift Spectral Tiger
+	{ mountID = 199, itemID = 33809, spellID = 43688, classID = nil }, -- Amani War Bear
+	{ mountID = 201, itemID = 33976, spellID = 43899, classID = nil }, -- Brewfest Ram
+	{ mountID = 202, itemID = 33977, spellID = 43900, classID = nil }, -- Swift Brewfest Ram
+	{ mountID = 203, itemID = 33999, spellID = 43927, classID = nil }, -- Cenarion War Hippogryph
+	{ mountID = 204, itemID = 34061, spellID = 44151, classID = nil }, -- Turbo-Charged Flying Machine Control
+	{ mountID = 205, itemID = 34060, spellID = 44153, classID = nil }, -- Flying Machine Control
+	{ mountID = 207, itemID = 34092, spellID = 44744, classID = nil }, -- Merciless Nether Drake
+	{ mountID = 211, itemID = 35225, spellID = 46197, classID = nil }, -- X-51 Nether-Rocket
+	{ mountID = 212, itemID = 35226, spellID = 46199, classID = nil }, -- X-51 Nether-Rocket X-TREME
+	{ mountID = 213, itemID = 35513, spellID = 46628, classID = nil }, -- Swift White Hawkstrider
+	{ mountID = 219, itemID = 37012, spellID = 48025, classID = nil }, -- The Horseman's Reins
+	{ mountID = 220, itemID = 35906, spellID = 48027, classID = nil }, -- Reins of the Black War Elekk
+	{ mountID = 222, itemID = 37598, spellID = 48954, classID = nil }, -- Swift Zhevra
+	{ mountID = 223, itemID = 37676, spellID = 49193, classID = nil }, -- Vengeful Nether Drake
+	{ mountID = 224, itemID = 37719, spellID = 49322, classID = nil }, -- Swift Zhevra
+	{ mountID = 225, itemID = 37827, spellID = 49378, classID = nil }, -- Brewfest Kodo
+	{ mountID = 226, itemID = 37828, spellID = 49379, classID = nil }, -- Great Brewfest Kodo
+	{ mountID = 230, itemID = 38576, spellID = 51412, classID = nil }, -- Big Battle Bear
 };
 
 --
