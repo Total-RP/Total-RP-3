@@ -1475,12 +1475,36 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with Tukui chat history.
 
 ]],
+	WHATS_NEW_24_4 = [[# Changelog version 2.3
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
+## Added
 
+- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
+
+*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
+
+- Added support for companion profiles in Classic.
+- Added entries on unit frames right-click menu to open profile + change roleplay status.
+- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
+- Added an option to disable profile tooltips in instances.
+
+## Changed
+
+- The URL copy window now closes after pressing the copy shortcut.
+- The default profile no longer shows the amount of characters bound to it.
+- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
+- The description editor will now receive input focus after clicking any formatting tool button.
+- Customized names in chat frames that have excessively large lengths will now be cropped.
+- Custom colors for personality traits now apply to attribute names.
+
+## Fixed
+
+- Fixed an issue with chat customization not properly registering on login while using Prat.
+- Fixed missing sound cue when opening/closing the main window.
+- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
+- Fixed missing vulpera language icon.
+
+]],
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
@@ -1547,36 +1571,36 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
 	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
-	WHATS_NEW_24_4 = [[# Changelog version 2.3
 
-## Added
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
-- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
+	UNIT_POPUPS_CONFIG_MENU_TITLE = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_TEXT = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
+	UNIT_POPUPS_CONFIG_ENABLE_MODULE = "Module |cff00ff00enabled|r",
+	UNIT_POPUPS_MODULE_DISABLE_WARNING = "A user interface reload is required to disable the unit popups module.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
+	UNIT_POPUPS_CONFIG_ENTRIES_HEADER = "Menu entries",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT = "Show header text",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP = "If checked, shows a \"Roleplay Options\" header above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR = "Show separator",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP = "If checked, shows a separator bar above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS = "Show character status toggle",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE = "Show open profile button",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP = "If checked, adds a button that opens the selected units' RP profile when clicked.|n|nThis option will be visible on all unit frame and chat menus.",
+	UNIT_POPUPS_CONFIG_VISIBILITY_HEADER = "Visibility options",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER = "Hide menu entries while out of character",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, additional menu entries will not be shown while out-of-character.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT = "Hide menu entries while in combat",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, additional menu entries will not be shown while in combat.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES = "Hide menu entries while in instances",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, additional menu entries will not be shown while in instanced content.",
+	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES = "Hide menu entries on unit frames",
+	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP = "If checked, additional menu entries will not be shown in menus activated by right-clicking unit frames.",
 
-*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
-
-- Added support for companion profiles in Classic.
-- Added entries on unit frames right-click menu to open profile + change roleplay status.
-- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
-- Added an option to disable profile tooltips in instances.
-
-## Changed
-
-- The URL copy window now closes after pressing the copy shortcut.
-- The default profile no longer shows the amount of characters bound to it.
-- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
-- The description editor will now receive input focus after clicking any formatting tool button.
-- Customized names in chat frames that have excessively large lengths will now be cropped.
-- Custom colors for personality traits now apply to attribute names.
-
-## Fixed
-
-- Fixed an issue with chat customization not properly registering on login while using Prat.
-- Fixed missing sound cue when opening/closing the main window.
-- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
-- Fixed missing vulpera language icon.
-
-]],
 };
 
 -- Use Ellyb to generate the Localization system
