@@ -1775,3 +1775,12 @@ Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to in
 		})
 	}
 end
+
+-- The default locale for any lookups in script bodies is based on the client
+-- locale; this may change later based on the "addon locale" setting and cause
+-- differences, but for the majority of users it should go unnoticed.
+--
+-- Long term we should look at fixing those things; primary area being module
+-- names and descriptions which are looked up in script bodies.
+
+TRP3_API.loc:SetCurrentLocale(GetLocale(), true);
