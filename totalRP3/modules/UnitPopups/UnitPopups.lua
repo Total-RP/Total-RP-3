@@ -17,6 +17,8 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
+local GenerateConfigurationPage;
+
 local function ShouldDisableOutOfCharacter()
 	return TRP3_API.configuration.getValue("UnitPopups_DisableOutOfCharacter");
 end
@@ -63,7 +65,7 @@ function UnitPopupsModule:OnModuleInitialize()
 		TRP3_API.configuration.registerConfigKey(setting.key, setting.default);
 	end
 
-	TRP3_API.configuration.registerConfigurationPage(UnitPopupsModule.ConfigurationPage);
+	TRP3_API.configuration.registerConfigurationPage(GenerateConfigurationPage());
 end
 
 function UnitPopupsModule:OnModuleEnable()
@@ -274,82 +276,84 @@ UnitPopupsModule.Configuration = {
 	},
 };
 
-UnitPopupsModule.ConfigurationPage = {
-	id = "main_config_unitpopups",
-	menuText = L.UNIT_POPUPS_CONFIG_MENU_TITLE,
-	pageText = L.UNIT_POPUPS_CONFIG_PAGE_TEXT,
-	elements = {
-		{
-			inherit = "TRP3_ConfigParagraph",
-			title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
+function GenerateConfigurationPage()
+	return {
+		id = "main_config_unitpopups",
+		menuText = L.UNIT_POPUPS_CONFIG_MENU_TITLE,
+		pageText = L.UNIT_POPUPS_CONFIG_PAGE_TEXT,
+		elements = {
+			{
+				inherit = "TRP3_ConfigParagraph",
+				title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
+			},
+			{
+				inherit = "TRP3_ConfigButton",
+				title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
+				text = DISABLE,
+				OnClick = function()
+					TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+						local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
+						TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
+						ReloadUI();
+					end);
+				end,
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
+				help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
+				configKey = "UnitPopups_DisableOutOfCharacter",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
+				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
+				configKey = "UnitPopups_DisableInCombat",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
+				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
+				configKey = "UnitPopups_DisableInInstances",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
+				help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
+				configKey = "UnitPopups_DisableOnUnitFrames",
+			},
+			{
+				inherit = "TRP3_ConfigH1",
+				title = L.UNIT_POPUPS_CONFIG_ENTRIES_HEADER,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
+				help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
+				configKey = "UnitPopups_ShowHeaderText",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
+				help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
+				configKey = "UnitPopups_ShowSeparator",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
+				help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
+				configKey = "UnitPopups_ShowOpenProfile",
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
+				help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
+				configKey = "UnitPopups_ShowCharacterStatus",
+			},
 		},
-		{
-			inherit = "TRP3_ConfigButton",
-			title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
-			text = DISABLE,
-			OnClick = function()
-				TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
-					local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
-					TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
-					ReloadUI();
-				end);
-			end,
-		},
-		{
-			inherit = "TRP3_ConfigH1",
-			title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
-			help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
-			configKey = "UnitPopups_DisableOutOfCharacter",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
-			help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
-			configKey = "UnitPopups_DisableInCombat",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
-			help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
-			configKey = "UnitPopups_DisableInInstances",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
-			help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
-			configKey = "UnitPopups_DisableOnUnitFrames",
-		},
-		{
-			inherit = "TRP3_ConfigH1",
-			title = L.UNIT_POPUPS_CONFIG_ENTRIES_HEADER,
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
-			help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
-			configKey = "UnitPopups_ShowHeaderText",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
-			help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
-			configKey = "UnitPopups_ShowSeparator",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
-			help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
-			configKey = "UnitPopups_ShowOpenProfile",
-		},
-		{
-			inherit = "TRP3_ConfigCheck",
-			title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
-			help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
-			configKey = "UnitPopups_ShowCharacterStatus",
-		},
-	},
-};
+	};
+end
