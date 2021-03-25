@@ -268,7 +268,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
-	local overrideText = unitframe.name.TRP3_originalText;
+	local overrideText;
 	local overrideColor;
 
 	if displayInfo then
