@@ -278,7 +278,13 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 		-- No cropping occurs after this point.
 
-		overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+		if displayInfo.roleplayStatus then
+			overrideText = overrideText or unitframe.name.TRP3_originalText;
+
+			if overrideText then
+				overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+			end
+		end
 
 		-- Process color overrides.
 
