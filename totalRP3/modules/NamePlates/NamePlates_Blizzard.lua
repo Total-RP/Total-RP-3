@@ -268,7 +268,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 	local unitToken = nameplate.namePlateUnitToken;
 	local displayInfo = self:GetUnitDisplayInfo(unitToken);
 
-	local overrideText = unitframe.name.TRP3_originalText;
+	local overrideText;
 	local overrideColor;
 
 	if displayInfo then
@@ -278,7 +278,13 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateName(nameplate)
 
 		-- No cropping occurs after this point.
 
-		overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+		if displayInfo.roleplayStatus then
+			overrideText = overrideText or unitframe.name.TRP3_originalText;
+
+			if overrideText then
+				overrideText = TRP3_NamePlatesUtil.PrependRoleplayStatusToText(overrideText, displayInfo.roleplayStatus);
+			end
+		end
 
 		-- Process color overrides.
 
