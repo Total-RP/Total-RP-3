@@ -6,14 +6,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Destination Branch
-        uses: marocchino/sticky-pull-request-comment@v1.4.0
-        if: github.base_ref == 'master'
-        with:
-          message: Warning - This pull request is targeting master.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
-
       - uses: actions/setup-python@v2
       - uses: actions/setup-ruby@v1
       - uses: actions/checkout@v2
