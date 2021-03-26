@@ -1,3 +1,16 @@
+# Changelog version 2.3.2
+
+## Added
+
+- Added settings for right-click options on unit frames and chat names.
+
+## Fixed
+
+- Fixed incorrect names showing up on Blizzard NPC nameplates.
+- Fixed display issue with KuiNameplates tank mode.
+- Fixed a dependency issue with Prat preventing chat customization from working.
+- Fixed localization not being properly applied to nameplates settings.
+
 # Changelog version 2.3
 
 ## Added

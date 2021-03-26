@@ -1600,6 +1600,20 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, additional menu entries will not be shown while in instanced content.",
 	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES = "Hide menu entries on unit frames",
 	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP = "If checked, additional menu entries will not be shown in menus activated by right-clicking unit frames.",
+	WHATS_NEW_24_5 = [[# Changelog version 2.3.2
+
+## Added
+
+- Added settings for right-click options on unit frames and chat names.
+
+## Fixed
+
+- Fixed incorrect names showing up on Blizzard NPC nameplates.
+- Fixed display issue with KuiNameplates tank mode.
+- Fixed a dependency issue with Prat preventing chat customization from working.
+- Fixed localization not being properly applied to nameplates settings.
+
+]],
 
 };
 
