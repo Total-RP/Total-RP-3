@@ -1,4 +1,4 @@
-﻿## Interface: 90005
+## Interface: 90005
 ## Interface-BC: 20501
 ## Interface-Classic: 11307
 ## Title: Total RP 3: Data
