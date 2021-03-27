@@ -30,7 +30,7 @@ jobs:
       - name: Create BC Package
         uses: BigWigsMods/packager@master
         with:
-          args: -p 335857 -a q96dnGOm -g bc
+          args: -p 75973 -a q96dnGOm -g bc
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
