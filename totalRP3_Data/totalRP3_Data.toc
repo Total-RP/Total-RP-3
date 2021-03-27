@@ -1,9 +1,6 @@
-﻿#@retail@
-## Interface: 90005
-#@end-retail@
-#@non-retail@
-# ## Interface: 11307
-#@end-non-retail@
+﻿## Interface: 90005
+## Interface-BC: 20501
+## Interface-Classic: 11307
 ## Title: Total RP 3: Data
 ## Author: Telkostrasz & Ellypse
 ## Notes: The best data storage for the best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
