@@ -113,7 +113,7 @@ local function onStart()
 		else
 			msp.my['NA'] = getCompleteName(dataTab, Globals.player);
 		end
-		msp.my['IC'] = dataTab.IC or TRP3_InterfaceIcons.ProfileDefault;
+		msp.my['IC'] = tostring(dataTab.IC) or TRP3_InterfaceIcons.ProfileDefault;
 		msp.my['NT'] = dataTab.FT;
 		msp.my['PX'] = dataTab.TI;
 		msp.my['RA'] = dataTab.RA;
@@ -165,9 +165,7 @@ local function onStart()
 				if #peeks > 0 then
 					peeks[#peeks + 1] = "\n\n---\n\n";
 				end
-				peeks[#peeks + 1] = "|TInterface\\Icons\\";
-				peeks[#peeks + 1] = peek.IC;
-				peeks[#peeks + 1] = ":32:32|t\n";
+				peeks[#peeks + 1] = TRP3_API.utils.str.icon(peek.IC, 32);
 				if peek.TI then
 					peeks[#peeks + 1] = "#";
 					peeks[#peeks + 1] = peek.TI;

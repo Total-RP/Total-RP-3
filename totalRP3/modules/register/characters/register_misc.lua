@@ -206,7 +206,7 @@ local GLANCE_NOT_USED_ICON = TRP3_InterfaceIcons.Default;
 local function setupGlanceButton(button, active, icon, title, text, isMine)
 	button:Enable();
 	button.isCurrentMine = isMine;
-	button:SetNormalTexture("Interface\\ICONS\\" .. (icon or GLANCE_NOT_USED_ICON));
+	button:SetIcon(icon or GLANCE_NOT_USED_ICON);
 	if active then
 		button:SetAlpha(1);
 		if not isMine then
@@ -256,7 +256,7 @@ function TRP3_API.register.getGlanceIconTextures(dataTab, size)
 	for i=1, 5, 1 do
 		local index = tostring(i);
 		if dataTab[index] and dataTab[index].AC then
-			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or TRP3_InterfaceIcons.Default) .. ":" .. size .. "|t "
+			text = text .. TRP3_API.utils.str.icon(dataTab[index].IC or TRP3_InterfaceIcons.Default, size) .. " ";
 		end
 	end
 	return text;

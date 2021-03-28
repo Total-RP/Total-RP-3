@@ -21,7 +21,8 @@
 ---@type TRP3_API
 local _, TRP3_API = ...;
 local Ellyb = Ellyb(...);
-local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
+local LRPM10 = LibStub:GetLibrary("LibRPMedia-1.0");
+local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.2");
 
 -- Public accessor
 TRP3_API.utils = {
@@ -367,9 +368,14 @@ function Utils.str.texture(iconPath, iconSize)
 end
 
 -- Return an texture text tag based on the given icon url and size. Nil safe.
-function Utils.str.icon(iconPath, iconSize)
-	iconPath = iconPath or TRP3_InterfaceIcons.Default;
-	return Utils.str.texture(Utils.getIconTexture(iconPath), iconSize);
+function Utils.str.icon(icon, iconSize)
+	icon = icon or TRP3_InterfaceIcons.Default;
+
+	if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
+		return Utils.str.texture(icon:GetFileID(), iconSize);
+	else
+		return LibRPMedia:GenerateIconMarkup(icon, iconSize, iconSize);
+	end
 end
 
 --- Gives the full texture path of an individual icon.
@@ -378,11 +384,9 @@ end
 --- @return string
 function Utils.getIconTexture(icon)
 	if type(icon) == "table" and icon.isInstanceOf and icon:isInstanceOf(Ellyb.Icon) then
-		return icon:GetFileID()
-	elseif type(icon) == "number" then
-		return icon
+		return icon:GetFileID()  -- TODO: This'll be changed eventually.
 	else
-		return "Interface\\ICONS\\" .. tostring(icon)
+		return LibRPMedia:ResolveIcon(icon);
 	end
 end
 
@@ -1151,7 +1155,7 @@ function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
 	if TRP3_API.globals.is_classic then
-		local musicName = LibRPMedia:GetMusicNameByFile(music);
+		local musicName = LRPM10:GetMusicNameByFile(music);
 		if musicName then
 			music = "Sound/Music/" .. musicName .. ".mp3";
 		end
@@ -1166,7 +1170,7 @@ end
 
 function Utils.music.getTitle(musicURL)
 	if type(musicURL) == "number" then
-		musicURL = LibRPMedia:GetMusicNameByFile(musicURL);
+		musicURL = LRPM10:GetMusicNameByFile(musicURL);
 	end
 
 	local musicTitle;
@@ -1179,7 +1183,7 @@ end
 
 function Utils.music.convertPathToID(musicURL)
 	assert(musicURL, "Music path can't be nil.")
-	return LibRPMedia:GetMusicFileByName(musicURL);
+	return LRPM10:GetMusicFileByName(musicURL);
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

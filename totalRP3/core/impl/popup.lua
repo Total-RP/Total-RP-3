@@ -29,7 +29,7 @@ local initList = TRP3_API.ui.list.initList;
 local tinsert, tremove, _G, pairs, wipe, math, assert = tinsert, tremove, _G, pairs, wipe, math, assert;
 local handleMouseWheel = TRP3_API.ui.list.handleMouseWheel;
 local setTooltipForFrame, setTooltipForSameFrame = TRP3_API.ui.tooltip.setTooltipForFrame, TRP3_API.ui.tooltip.setTooltipForSameFrame;
-local getIconList, getIconListSize, getImageList, getImageListSize, getMusicList, getMusicListSize;
+local getImageList, getImageListSize, getMusicList, getMusicListSize;
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local max = math.max;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
@@ -362,10 +362,6 @@ end
 
 local function filteredMusicBrowser()
 	local filter = TRP3_MusicBrowserFilterBox:GetText();
-	if filteredMusicList and filteredMusicList ~= getMusicList() then  -- Remove previous filtering if is not full list
-		wipe(filteredMusicList);
-		filteredMusicList = nil;
-	end
 	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
 
 	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
@@ -391,11 +387,11 @@ local function initMusicBrowser()
 	end
 
 	TRP3_MusicBrowserFilterBox:SetScript("OnTextChanged", filteredMusicBrowser);
+	TRP3_MusicBrowser:SetScript("OnShow", filteredMusicBrowser);
 
 	TRP3_MusicBrowserTitle:SetText(loc.UI_MUSIC_BROWSER);
 	TRP3_MusicBrowserFilterBoxText:SetText(loc.UI_FILTER);
 	TRP3_MusicBrowserFilterStop:SetText(loc.REG_PLAYER_ABOUT_MUSIC_STOP);
-	filteredMusicBrowser();
 end
 
 local function showMusicBrowser(callback)
@@ -414,16 +410,17 @@ local filteredIconList;
 local ui_IconBrowserContent = TRP3_IconBrowserContent;
 
 local function decorateIcon(icon, index)
-	icon:SetNormalTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	icon:SetPushedTexture("Interface\\ICONS\\"..filteredIconList[index]);
-	setTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index], 75), filteredIconList[index]);
+	icon:GetNormalTexture():SetIcon(filteredIconList[index].key);
+	icon:GetPushedTexture():SetIcon(filteredIconList[index].key);
+
+	setTooltipForFrame(icon, TRP3_IconBrowser, "RIGHT", 0, -100, Utils.str.icon(filteredIconList[index].key, 75), filteredIconList[index].name);
 	icon.index = index;
 end
 
 local function onIconClick(icon)
 	TRP3_API.popup.hideIconBrowser();
 	if ui_IconBrowserContent.onSelectCallback then
-		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index], icon);
+		ui_IconBrowserContent.onSelectCallback(filteredIconList[icon.index].key, icon);
 	end
 end
 
@@ -436,12 +433,11 @@ end
 
 local function filteredIconBrowser()
 	local filter = TRP3_IconBrowserFilterBox:GetText();
-	if filteredIconList and filteredIconList ~= getIconList() then -- Remove previous filtering if is not full list
-		wipe(filteredIconList);
-		filteredIconList = nil;
-	end
-	filteredIconList = getIconList(filter);
-	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
+	local options = { allowAtlases = true };
+
+	filteredIconList = TRP3_API.utils.resources.getIconList(filter, options);
+
+	TRP3_IconBrowserTotal:SetText(#filteredIconList .. " / " .. #filteredIconList);
 	initList(
 		{
 			widgetTab = iconWidgetTab,
@@ -468,10 +464,10 @@ local function initIconBrowser()
 
 	TRP3_IconBrowserFilterBox:SetScript("OnTextChanged", filteredIconBrowser);
 	TRP3_IconBrowserClose:SetScript("OnClick", onIconClose);
+	TRP3_IconBrowser:SetScript("OnShow", filteredIconBrowser);
 
 	TRP3_IconBrowserTitle:SetText(loc.UI_ICON_BROWSER);
 	TRP3_IconBrowserFilterBoxText:SetText(loc.UI_FILTER);
-	filteredIconBrowser();
 end
 
 local function showIconBrowser(onSelectCallback, onCancelCallback, scale)
@@ -1160,7 +1156,6 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 function TRP3_API.popup.init()
-	getIconList, getIconListSize = TRP3_API.utils.resources.getIconList, TRP3_API.utils.resources.getIconListSize;
 	getImageList, getImageListSize = TRP3_API.utils.resources.getImageList, TRP3_API.utils.resources.getImageListSize;
 	getMusicList, getMusicListSize = TRP3_API.utils.resources.getMusicList, TRP3_API.utils.resources.getMusicListSize;
 

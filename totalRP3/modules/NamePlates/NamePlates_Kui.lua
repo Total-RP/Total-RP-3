@@ -108,9 +108,10 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 
 	hooksecurefunc(nameplate, "UpdateNameText", function(...) return self:OnNameplateNameTextUpdated(...); end);
 
-	do
-		-- Icon widget.
-		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
+	do  -- Icon widget.
+		local iconWidget = nameplate:CreateTexture(nil, "ARTWORK", "TRP3_IconTextureTemplate");
+		Mixin(iconWidget, TRP3_IconTextureMixin);  -- Bug: Stanzilla/WoWUIBugs#72
+
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
 		iconWidget:Hide();
@@ -118,8 +119,7 @@ function TRP3_KuiNamePlates:OnNamePlateCreate(nameplate)
 		nameplate.handler:RegisterElement("TRP3_Icon", iconWidget);
 	end
 
-	do
-		-- Title text widget.
+	do  -- Title text widget.
 		local titleWidget = nameplate:CreateFontString(nil, "ARTWORK");
 		titleWidget:ClearAllPoints();
 		titleWidget:SetPoint("TOP", nameplate.NameText, "BOTTOM", 0, -2);
@@ -238,7 +238,7 @@ function TRP3_KuiNamePlates:UpdateNamePlateIcon(nameplate)
 
 	if displayIcon then
 		nameplate.TRP3_Icon:ClearAllPoints();
-		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetIcon(TRP3_API.utils.getIconTexture(displayIcon));
 		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 
 		if IsNamePlateInNameOnlyMode(nameplate) then

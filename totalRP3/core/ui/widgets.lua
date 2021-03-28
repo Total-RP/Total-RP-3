@@ -400,3 +400,50 @@ end
 --[[override]] function TRP3_TruncatedTextMixin:OnFontObjectUpdated()
 	self.Text:SetFontObject(self:GetFontObject());
 end
+
+--[[
+	TRP3_IconTextureMixin
+--]]
+
+local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.2");
+
+TRP3_IconTextureMixin = {}
+
+function TRP3_IconTextureMixin:SetIcon(icon)
+	if type(icon) == "table" and icon.Apply then
+		icon:Apply(self);
+	else
+		LibRPMedia:SetTextureToIcon(self, icon);
+	end
+end
+
+--[[
+	TRP3_IconPortraitMixin
+--]]
+
+TRP3_IconPortraitMixin = {}
+
+function TRP3_IconPortraitMixin:SetIcon(icon)
+	-- The order of operations here looks odd because it's a hack; the below
+	-- call will set up the necessary masking for an icon and the Apply call
+	-- if passed an Icon instance will actually set the texture.
+
+	LibRPMedia:SetPortraitToIcon(self, icon);
+
+	if type(icon) == "table" and icon.Apply then
+		icon:Apply(self);
+	end
+end
+
+--[[
+	TRP3_IconFrameMixin
+--]]
+
+TRP3_IconFrameMixin = {};
+
+function TRP3_IconFrameMixin:SetIcon(icon)
+	local name = self:GetName();
+	local texture = self.Icon or (name and _G[name .. "Icon"]);
+
+	TRP3_IconTextureMixin.SetIcon(texture, icon);
+end

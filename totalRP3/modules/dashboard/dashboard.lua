@@ -283,11 +283,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 					tinsert(dropdownItems,{loc.TB_SWITCH_PROFILE, nil});
 					local currentProfileID = getPlayerCurrentProfileID()
 					for key, value in pairs(list) do
-						local icon = value.player.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault;
+						local icon = TRP3_API.utils.str.icon(value.player.characteristics.IC or TRP3_InterfaceIcons.ProfileDefault, 15);
 						if key == currentProfileID then
-							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t|cff00ff00 "..value.profileName.."|r", nil});
+							tinsert(dropdownItems,{icon .. "|cff00ff00 " .. value.profileName .. "|r", nil});
 						else
-							tinsert(dropdownItems,{"|Tinterface\\icons\\"..icon..":15|t "..value.profileName, key});
+							tinsert(dropdownItems,{icon .. " " .. value.profileName, key});
 						end
 					end
 					displayDropDown(Uibutton, dropdownItems, profileSelected, 0, true);

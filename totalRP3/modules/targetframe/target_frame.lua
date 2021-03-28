@@ -112,13 +112,8 @@ local function onStart()
 				buttonStructure.adapter(buttonStructure, currentTargetID, currentTargetType);
 			end
 
-			if type(buttonStructure.icon) == "table" and buttonStructure.icon.Apply then
-				uiButton:SetNormalTexture(buttonStructure.icon:GetFileID())
-				uiButton:SetPushedTexture(buttonStructure.icon:GetFileID());
-			else
-				uiButton:SetNormalTexture("Interface\\ICONS\\"..buttonStructure.icon);
-				uiButton:SetPushedTexture("Interface\\ICONS\\"..buttonStructure.icon);
-			end
+			uiButton:GetNormalTexture(TRP3_API):SetIcon(buttonStructure.icon);
+			uiButton:GetPushedTexture(TRP3_API):SetIcon(buttonStructure.icon);
 
 			if uiButton:GetPushedTexture() then
 				uiButton:GetPushedTexture():SetDesaturated(1);

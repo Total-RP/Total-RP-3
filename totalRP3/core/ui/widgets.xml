@@ -21,6 +21,9 @@
 
 	<Include file="widgets.lua"/>
 
+	<Texture name="TRP3_IconTextureTemplate" mixin="TRP3_IconTextureMixin" virtual="true"/>
+	<Texture name="TRP3_IconPortraitTemplate" mixin="TRP3_IconPortraitMixin" virtual="true"/>
+
 	<!--
 		BackdropFrameTemplate
 
@@ -235,11 +238,11 @@
 	</Button>
 
 	<!-- Common icon button  -->
-	<Button name="TRP3_IconButton" virtual="true">
+	<Button name="TRP3_IconButton" virtual="true" mixin="TRP3_IconFrameMixin">
 		<Size x="26" y="26"/>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture name="$parentIcon" parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" setAllPoints="true"/>
+				<Texture name="$parentIcon" parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" setAllPoints="true" inherits="TRP3_IconTextureTemplate"/>
 			</Layer>
 		</Layers>
 		<NormalTexture file="Interface\AchievementFrame\UI-Achievement-IconFrame">

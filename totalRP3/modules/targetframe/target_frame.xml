@@ -21,7 +21,8 @@
 	<!-- Target frame button -->
 	<Button name="TRP3_TargetFrameButton" virtual="true">
 		<Size x="30" y="30" />
-		<NormalTexture name="$parentNormal" />
+		<NormalTexture name="$parentNormal" inherits="TRP3_IconTextureTemplate"/>
+		<PushedTexture name="$parentPushed" inherits="TRP3_IconTextureTemplate"/>
 		<HighlightTexture alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
 		<Layers>
 			<Layer level="OVERLAY">

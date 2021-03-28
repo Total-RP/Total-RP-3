@@ -648,7 +648,7 @@ function TRP3_API.ui.frame.setupIconButton(self, icon)
 	if type(icon) == "table" and icon.Apply then
 		icon:Apply(iconWidget);
 	else
-		iconWidget:SetTexture("Interface\\ICONS\\" .. icon);
+		TRP3_IconTextureMixin.SetIcon(iconWidget, icon);
 	end
 end
 

@@ -416,7 +416,7 @@ local function setConsultDisplay(context)
 			frame:ClearAllPoints();
 			frame:SetPoint("TOPLEFT", previous, "BOTTOMLEFT", 0, 7);
 			frame:SetPoint("RIGHT", 0, 0);
-			frame.Icon:SetTexture([[interface\icons\]] .. miscStructure.IC);
+			frame.Icon:SetIcon(miscStructure.IC);
 			frame.Name:SetText(miscStructure.NA or "");
 			frame.Value:SetText(miscStructure.VA or "");
 			frame:Show();
@@ -466,8 +466,8 @@ local function setConsultDisplay(context)
 			frame.LeftText:SetText(leftText);
 			frame.RightText:SetText(rightText);
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.LI or TRP3_InterfaceIcons.Default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (psychoStructure.RI or TRP3_InterfaceIcons.Default));
+			frame.LeftIcon:SetIcon(psychoStructure.LI or TRP3_InterfaceIcons.Default);
+			frame.RightIcon:SetIcon(psychoStructure.RI or TRP3_InterfaceIcons.Default);
 
 			frame.Bar:SetMinMaxValues(0, Globals.PSYCHO_MAX_VALUE_V2);
 
@@ -1187,8 +1187,8 @@ function setEditDisplay()
 			frame.LeftText:SetText(preset.LT or "");
 			frame.RightText:SetText(preset.RT or "");
 
-			frame.LeftIcon:SetTexture("Interface\\ICONS\\" .. (preset.LI or TRP3_InterfaceIcons.Default));
-			frame.RightIcon:SetTexture("Interface\\ICONS\\" .. (preset.RI or TRP3_InterfaceIcons.Default));
+			frame.LeftIcon:SetIcon(preset.LI or TRP3_InterfaceIcons.Default);
+			frame.RightIcon:SetIcon(preset.RI or TRP3_InterfaceIcons.Default);
 		else
 			frame.CustomLeftField:SetText(psychoStructure.LT or "");
 			frame.CustomRightField:SetText(psychoStructure.RT or "");

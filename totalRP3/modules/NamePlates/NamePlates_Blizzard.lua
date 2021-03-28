@@ -246,7 +246,9 @@ function TRP3_BlizzardNamePlates:OnUnitFrameSetUp(unitframe)
 	-- Add icon widget.
 
 	do
-		local iconWidget = unitframe:CreateTexture(nil, "ARTWORK");
+		local iconWidget = unitframe:CreateTexture(nil, "ARTWORK", "TRP3_IconTextureTemplate");
+		Mixin(iconWidget, TRP3_IconTextureMixin);  -- Bug: Stanzilla/WoWUIBugs#72
+
 		iconWidget:ClearAllPoints();
 		iconWidget:SetPoint("RIGHT", unitframe.name, "LEFT", -4, 0);
 		iconWidget:Hide();
@@ -347,7 +349,7 @@ function TRP3_BlizzardNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 
 	if displayIcon then
-		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
+		nameplate.TRP3_Icon:SetIcon(TRP3_API.utils.getIconTexture(displayIcon));
 		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 		nameplate.TRP3_Icon:Show();
 	else

@@ -634,9 +634,7 @@ local function displayGlanceSlots()
 
 			if glance and glance.AC then
 				button:SetAlpha(1);
-				if glance.IC and glance.IC:len() > 0 then
-					icon = glance.IC;
-				end
+				icon = glance.IC;
 				local TTText = glance.TX or "...";
 				local glanceTitle = glance.TI or "...";
 				if not isCurrentMine and shouldCropTexts() then
@@ -650,7 +648,7 @@ local function displayGlanceSlots()
 				setTooltipForSameFrame(button);
 			end
 
-			Utils.texture.applyRoundTexture("TRP3_GlanceBarSlot" .. i .. "Image", "Interface\\ICONS\\" .. icon);
+			TRP3_IconPortraitMixin.SetIcon(_G["TRP3_GlanceBarSlot" .. i .. "Image"], icon);
 			button.isCurrentMine = isCurrentMine;
 		end
 	end

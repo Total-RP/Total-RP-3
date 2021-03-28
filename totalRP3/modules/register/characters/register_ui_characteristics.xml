@@ -183,7 +183,7 @@
 		</Frames>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture name="$parentJaugeLeftIcon" parentKey="LeftIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
+				<Texture name="$parentJaugeLeftIcon" parentKey="LeftIcon" file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate">
 					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="RIGHT" relativePoint="LEFT" x="-7" y="0" relativeKey="$parent.Bar"/>
@@ -192,7 +192,7 @@
 						<KeyValue key="HideOnCustom" value="true" type="boolean"/>
 					</KeyValues>
 				</Texture>
-				<Texture name="$parentJaugeRightIcon" parentKey="RightIcon" file="Interface\ICONS\INV_Misc_QuestionMark">
+				<Texture name="$parentJaugeRightIcon" parentKey="RightIcon" file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate">
 					<Size x="30" y="30"/>
 					<Anchors>
 						<Anchor point="LEFT" relativePoint="RIGHT" x="7" y="0" relativeKey="$parent.Bar"/>
@@ -363,7 +363,7 @@
 		<Size x="0" y="30"/>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark">
+				<Texture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate">
 					<Size x="16" y="16"/>
 					<Anchors>
 						<Anchor point="LEFT" x="15" y="0"/>

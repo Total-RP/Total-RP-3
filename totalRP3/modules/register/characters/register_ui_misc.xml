@@ -58,10 +58,10 @@
 	</Frame>
 
 	<!-- Glance consult button : ButtonHilight-Square -->
-	<Button name="TRP3_RegisterMiscGlanceButton" virtual="true">
+	<Button name="TRP3_RegisterMiscGlanceButton" virtual="true" mixin="TRP3_IconFrameMixin">
 		<Size x="40" y="40"/>
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\UI-Quickslot-Depress"/>
-		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark"/>
+		<NormalTexture parentKey="Icon" file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate"/>
 		<Scripts>
 			<OnEnter>
 				TRP3_RefreshTooltipForFrame(self);

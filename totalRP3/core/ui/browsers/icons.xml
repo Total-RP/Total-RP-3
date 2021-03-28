@@ -22,11 +22,11 @@
 	<!-- Icon browser button  -->
 	<Button name="TRP3_IconBrowserButton" virtual="true">
 		<Size x="40" y="40"/>
-		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+		<NormalTexture file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate">
 			<Size x="40" y="40"/>
 			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
 		</NormalTexture>
-		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark">
+		<PushedTexture file="Interface\ICONS\INV_Misc_QuestionMark" inherits="TRP3_IconTextureTemplate">
 			<Size x="40" y="40"/>
 			<Anchors><Anchor point="CENTER" x="0" y="0"/></Anchors>
 		</PushedTexture>

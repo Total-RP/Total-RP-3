@@ -17,19 +17,19 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.0");
+local LibRPMedia = LibStub:GetLibrary("LibRPMedia-1.2");
 
 function TRP3_API.utils.resources.getMusicList(filter)
 	local list = {};
+	local options = { reuseTable = {} };
 
-	for _, file, name in LibRPMedia:FindMusicFiles(filter or "", { method = "substring" }) do
-		local duration = LibRPMedia:GetMusicFileDuration(file);
-		list[#list + 1] = {name, file, duration};
+	for music in LibRPMedia:FindMusic(filter, options) do
+		list[#list + 1] = {music.names[1], music.id, music.duration};
 	end
 
 	return list;
 end
 
 function TRP3_API.utils.resources.getMusicListSize()
-	return LibRPMedia:GetNumMusicFiles();
+	return LibRPMedia:GetNumMusic();
 end

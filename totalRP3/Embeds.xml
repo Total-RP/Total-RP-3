@@ -29,7 +29,7 @@
 	<Include file="Libs\LibDeflate\lib.xml"/>
 	<Include file="Libs\LibMSP\LibMSP.xml"/>
 	<Include file="Libs\LibRealmInfo\LibRealmInfo.lua"/>
-	<Include file="Libs\LibRPMedia\LibRPMedia-1.0.xml"/>
+	<Include file="Libs\LibRPMedia\lib.xml"/>
 	<Include file="Libs\MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml"/>
 	<Include file="Libs\TaintLess\TaintLess.xml"/>
 </Ui>
