@@ -23,7 +23,6 @@
 	<Script file="__version.lua"/>
 
 	<Script file="VersionCheck.lua"/>
-	<Include file="libs\libs.xml"/>
 	<Script file="init.lua"/>
 	<Include file="tools\tools.xml"/>
 	<Include file="core\core.xml"/>

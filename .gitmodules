@@ -1,18 +1,21 @@
 [submodule "Scripts/mature-dict"]
 	path = Scripts/mature-dict
 	url = https://github.com/Ellypse/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words
-[submodule "totalRP3/libs/LibMSP"]
-	path = totalRP3/libs/LibMSP
-	url = https://github.com/wow-rp-addons/LibMSP
-[submodule "totalRP3/libs/LibDeflate"]
-	path = totalRP3/libs/LibDeflate
-	url = https://github.com/SafeteeWoW/LibDeflate
-[submodule "totalRP3/libs/LibRPMedia"]
-	path = totalRP3/libs/LibRPMedia
-	url = https://github.com/wow-rp-addons/LibRPMedia
-[submodule "totalRP3/libs/LibRealmInfo"]
-	path = totalRP3/libs/LibRealmInfo
-	url = https://github.com/phanx-wow/LibRealmInfo
-[submodule "totalRP3/libs/LibDataBroker-1.1"]
-	path = totalRP3/libs/LibDataBroker-1.1
+[submodule "totalRP3/Libs/Chomp"]
+	path = totalRP3/Libs/Chomp
+	url = https://github.com/wow-rp-addons/Chomp.git
+[submodule "totalRP3/Libs/LibMSP"]
+	path = totalRP3/Libs/LibMSP
+	url = https://github.com/wow-rp-addons/LibMSP.git
+[submodule "totalRP3/Libs/LibRPMedia"]
+	path = totalRP3/Libs/LibRPMedia
+	url = https://github.com/wow-rp-addons/LibRPMedia.git
+[submodule "totalRP3/Libs/LibDataBroker-1.1"]
+	path = totalRP3/Libs/LibDataBroker-1.1
 	url = https://github.com/tekkub/libdatabroker-1-1.git
+[submodule "totalRP3/Libs/LibRealmInfo"]
+	path = totalRP3/Libs/LibRealmInfo
+	url = https://github.com/janekjl/LibRealmInfo.git
+[submodule "totalRP3/Libs/LibDeflate"]
+	path = totalRP3/Libs/LibDeflate
+	url = https://github.com/SafeteeWoW/LibDeflate.git
