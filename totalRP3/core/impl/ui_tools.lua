@@ -518,11 +518,6 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
-local function IsPetUnit(unitToken)
-	local unitGUID = UnitGUID(unitToken);
-	return unitGUID and strsplit("-", unitGUID) == "Pet";
-end
-
 local function IsBattlePetUnit(unitToken)
 	if UnitIsBattlePetCompanion then
 		return UnitIsBattlePetCompanion(unitToken);
@@ -548,7 +543,7 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
 	elseif IsBattlePetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
-	elseif UnitPlayerControlled(unitType) and IsPetUnit(unitType) then
+	elseif UnitPlayerControlled(unitType) and UnitCreatureFamily(unitType) ~= nil then
 		return TRP3_Enums.UNIT_TYPE.PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
 	end
 	if TRP3_API.utils.str.getUnitNPCID(unitType) then

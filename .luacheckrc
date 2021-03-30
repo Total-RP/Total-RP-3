@@ -395,6 +395,7 @@ stds.wow = {
 		"UnitBattlePetType",
 		"UnitClass",
 		"UnitClassBase",
+		"UnitCreatureFamily",
 		"UnitCreatureType",
 		"UnitExists",
 		"UnitFactionGroup",
