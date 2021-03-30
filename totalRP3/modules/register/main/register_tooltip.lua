@@ -677,18 +677,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			table.insert(notifPieces, NEW_ABOUT_ICON);
 		end
 
-		do
-			-- If the locale matches that of the users own current settings, we'll
-			-- display nothing since the information isn't that useful.
-			local localeCode = info.character and info.character.LC or nil;
-			if localeCode and localeCode ~= TRP3_API.configuration.getValue("AddonLocale") then
-				local localeIcon = TRP3_API.ui.misc.getLocaleIcon(localeCode);
-				if localeIcon then
-					table.insert(notifPieces, localeIcon);
-				end
-			end
-		end
-
 		local notifText = table.concat(notifPieces, " ");
 
 		local clientText = "";
