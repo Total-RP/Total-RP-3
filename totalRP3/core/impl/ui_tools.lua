@@ -31,8 +31,6 @@ TRP3_API.ui = {
 }
 
 -- imports
-local LibRealmInfo = LibStub:GetLibrary("LibRealmInfo");
-
 local globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
