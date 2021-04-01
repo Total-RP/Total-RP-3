@@ -30,6 +30,7 @@ embedded-libraries:
   - librpmedia
   - libstub
   - msa-dropdownmenu-10
+  - utf8
 
 manual-changelog:
   filename: CHANGELOG.md
