@@ -257,13 +257,13 @@ local function limitText(input, maxCharLength, maxLinesCount)
 			return input;
 		end
 
-		return string.sub(input, 1, maxCharLength) .. "…";
+		return TRP3_API.utils.str.crop(input, maxCharLength);
 	end
 
 	-- Otherwise extract the substring up to the character preceeding the
 	-- last matched newline or to the maximum allowable length of the text,
 	-- whichever is shorter.
-	return string.sub(input, 1, math.min(finish - 1, maxCharLength)) .. "…";
+	return TRP3_API.utils.str.crop(input, math.min(finish - 1, maxCharLength));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
