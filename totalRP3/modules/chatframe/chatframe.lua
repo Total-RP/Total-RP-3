@@ -369,7 +369,7 @@ local function ProtectMessageContents(message)
 
 	message = string.gsub(message, "|H.-%|h.-|h", ProtectString);
 	message = string.gsub(message, "|3%-%d+%b()", ProtectString);
-	message = string.gsub(message, "%[TRP3:[^%]]+%]", ProtectString);
+	message = string.gsub(message, "%b[]", ProtectString);
 
 	return message, replacements;
 end
