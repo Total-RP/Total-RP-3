@@ -417,6 +417,7 @@ stds.wow = {
 		"UnitPVPName",
 		"UnitRace",
 		"UnitSex",
+		"WrapTextInColorCode",
 
 		-- Global Mixins and UI Objects
 
