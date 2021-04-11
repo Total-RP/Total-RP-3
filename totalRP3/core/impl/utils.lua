@@ -903,7 +903,7 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 
 	local linkColor = "00ff00";
 	if noColor then
-		linkColor = "";
+		linkColor = nil;
 	end
 
 	-- 1) Replacement : & character
