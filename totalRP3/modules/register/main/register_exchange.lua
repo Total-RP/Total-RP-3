@@ -430,10 +430,8 @@ local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
-		if getConfigValue("heavy_profile_alert") then
-			TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
-		end
+		log(("Profile too heavy! It would take %s messages to send."):format(computedSize));
+		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
 	end
 end
 
