@@ -437,6 +437,7 @@ local escapes = {
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
 	["|A.-|a"] = "", -- atlas textures
+	["|K.-|k"] = "", -- protected strings
 }
 function Utils.str.sanitize(text)
 	if not text then return end

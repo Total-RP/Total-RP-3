@@ -332,9 +332,7 @@ function TRP3_API.register.saveInformation(unitID, informationType, data)
 		wipe(profile[informationType]);
 	end
 
-	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION) == true then
-		TRP3_API.register.sanitizeProfile(informationType, data);
-	end
+	TRP3_API.register.sanitizeProfile(informationType, data);
 	profile[informationType] = data;
 	Events.fireEvent(Events.REGISTER_DATA_UPDATED, unitID, hasProfile(unitID), informationType);
 end

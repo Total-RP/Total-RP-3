@@ -31,7 +31,6 @@ TRP3_API.ADVANCED_SETTINGS_STRUCTURE = {
 }
 
 TRP3_API.ADVANCED_SETTINGS_KEYS = {
-	PROFILE_SANITIZATION = "register_sanitization",
 }
 
 -- Broadcast keys should only be registered in Retail
@@ -88,21 +87,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			help = loc.CO_ADVANCED_BROADCAST_CHANNEL_ALWAYS_LAST_TT
 		});
 	end
-
-	-- Sanitization
-	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigH1",
-		title = loc.REG_REGISTER,
-	});
-
-	-- Profile sanitization
-	TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES[TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION] = true;
-	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
-		inherit = "TRP3_ConfigCheck",
-		title = loc.CO_SANITIZER,
-		configKey = TRP3_API.ADVANCED_SETTINGS_KEYS.PROFILE_SANITIZATION,
-		help = loc.CO_SANITIZER_TT
-	});
 
 	for configurationKey, defaultValue in pairs(TRP3_API.ADVANCED_SETTINGS_DEFAULT_VALUES) do
 		Configuration.registerConfigKey(configurationKey, defaultValue)
