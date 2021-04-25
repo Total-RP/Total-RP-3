@@ -1616,6 +1616,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	REG_TT_ZONE = "Zone",
 	CO_TOOLTIP_ZONE = "Show zone",
 	CO_TOOLTIP_HEALTH = "Show health",
+	CO_TOOLTIP_HEALTH_TT = "Note: Health will only show if the target is not at full health",
 	CO_TOOLTIP_HEALTH_DISABLED = "Disabled",
 	CO_TOOLTIP_HEALTH_NUMBER = "Number",
 	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",

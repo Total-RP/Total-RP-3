@@ -690,19 +690,22 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	if healthFormat ~= 0 then
 		local targetHP = UnitHealth(targetType);
 		local targetHPMax = UnitHealthMax(targetType);
-		local percentHP = targetHP / targetHPMax;
-		local lineText;
-		-- Number
-		if healthFormat == 1 then
-			lineText = string.format("%1$s: |cffff9900%2$s/%3$s|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax));
-		-- Percentage
-		elseif healthFormat == 2 then
-			lineText = string.format("%1$s: |cffff9900%2$s|r", HEALTH, FormatPercentage(percentHP, true));
-		-- Both
-		else
-			lineText = string.format("%1$s: |cffff9900%2$s/%3$s (%4$s)|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax), FormatPercentage(percentHP, true));
+		-- Don't show health if full
+		if targetHP ~= targetHPMax then
+			local percentHP = targetHP / targetHPMax;
+			local lineText;
+			-- Number
+			if healthFormat == 1 then
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax));
+				-- Percentage
+			elseif healthFormat == 2 then
+				lineText = string.format("%1$s: |cffff9900%2$s|r", HEALTH, FormatPercentage(percentHP, true));
+				-- Both
+			else
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s (%4$s)|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax), FormatPercentage(percentHP, true));
+			end
+			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
 		end
-		tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1530,6 +1533,7 @@ local function onModuleInit()
 				title = loc.CO_TOOLTIP_HEALTH,
 				listContent = HEALTH_FORMAT_TAB,
 				configKey = CONFIG_CHARACT_HEALTH,
+				help = loc.CO_TOOLTIP_HEALTH_TT,
 				listWidth = nil,
 				listCancel = false,
 			},
