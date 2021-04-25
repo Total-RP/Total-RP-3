@@ -201,6 +201,7 @@ stds.wow = {
 		C_Map = {
 			fields = {
 				"GetBestMapForUnit",
+				"GetMapInfo",
 				"GetPlayerMapPosition",
 			},
 		},
@@ -299,6 +300,7 @@ stds.wow = {
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",
 		"FormatLargeNumber",
+		"FormatPercentage",
 		"GameTooltip_AddBlankLineToTooltip",
 		"GameTooltip_AddColoredLine",
 		"GameTooltip_AddNormalLine",
@@ -401,6 +403,8 @@ stds.wow = {
 		"UnitFactionGroup",
 		"UnitFullName",
 		"UnitGUID",
+		"UnitHealth",
+		"UnitHealthMax",
 		"UnitInParty",
 		"UnitInRaid",
 		"UnitIsAFK",
@@ -468,6 +472,7 @@ stds.wow = {
 		"FOCUS",
 		"FUEL",
 		"FURY",
+		"HEALTH",
 		"HOLY_POWER",
 		"INSANITY",
 		"ITEM_QUALITY0_DESC",
