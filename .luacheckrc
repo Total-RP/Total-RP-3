@@ -388,6 +388,7 @@ stds.wow = {
 		"StopSound",
 		"strcmputf8i",
 		"SwapChatChannelByLocalID",
+		"tostringall",
 		"UIDropDownMenu_AddButton",
 		"UIDropDownMenu_AddSeparator",
 		"UIDROPDOWNMENU_INIT_MENU",
