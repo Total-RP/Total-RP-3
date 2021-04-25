@@ -14,3 +14,7 @@
 ## X-URL: http://totalrp3.info
 
 totalRP3.xml
+
+#@do-not-package@
+## OptionalDeps: _DebugLog
+#@end-do-not-package@
