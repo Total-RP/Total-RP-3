@@ -311,6 +311,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_CHAR_EMPTY = "No character",
 	REG_LIST_CHAR_EMPTY2 = "No character matches your selection",
 	REG_LIST_CHAR_IGNORED = "Ignored",
+	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	REG_LIST_IGNORE_TITLE = "Ignored list",
 	REG_LIST_IGNORE_EMPTY = "No ignored character",
 	REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Click to remove from ignore list",
@@ -466,6 +467,7 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_RACE = "Show race, class and level",
 	CO_TOOLTIP_REALM = "Show realm",
 	CO_TOOLTIP_GUILD = "Show guild info",
+	CO_TOOLTIP_PRONOUNS = "Show pronouns",
 	CO_TOOLTIP_TARGET = "Show target",
 	CO_TOOLTIP_TITLE = "Show title",
 	CO_TOOLTIP_CLIENT = "Show client",
@@ -477,6 +479,7 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_CURRENT_SIZE = "Max \"current\" information length",
 	CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
 	CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
+	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
@@ -1455,7 +1458,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
 	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
-	CO_TOOLTIP_PRONOUNS = "Show pronouns",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
 	WHATS_NEW_24_3 =  [[# Changelog version 2.2
 
@@ -1505,8 +1507,21 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed missing vulpera language icon.
 
 ]],
+	WHATS_NEW_24_5 = [[# Changelog version 2.3.2
+
+## Added
+
+- Added settings for right-click options on unit frames and chat names.
+
+## Fixed
+
+- Fixed incorrect names showing up on Blizzard NPC nameplates.
+- Fixed display issue with KuiNameplates tank mode.
+- Fixed a dependency issue preventing chat customization from working when using Prat and Listener.
+- Fixed localization not being properly applied to various settings.
+
+]],
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
-	REG_LIST_CHAR_NAME_COPY = "Copy character name",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
 	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
 	UNIT_POPUPS_MODULE_DESCRIPTION = "Adds integration with right-click menus on unit frames and player names in chat frames.",
@@ -1515,6 +1530,29 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UNIT_POPUPS_CURRENT_PROFILE = "Current Profile",
 	UNIT_POPUPS_CURRENT_PROFILE_NAME = "Current Profile: %1$s",
 	UNIT_POPUPS_CHARACTER_STATUS = "Character Status",
+	UNIT_POPUPS_CONFIG_MENU_TITLE = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_TEXT = "Menu settings",
+	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
+	UNIT_POPUPS_CONFIG_ENABLE_MODULE = "Module |cff00ff00enabled|r",
+	UNIT_POPUPS_MODULE_DISABLE_WARNING = "A user interface reload is required to disable the unit popups module.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
+	UNIT_POPUPS_CONFIG_ENTRIES_HEADER = "Menu entries",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT = "Show header text",
+	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP = "If checked, shows a \"Roleplay Options\" header above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR = "Show separator",
+	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP = "If checked, shows a separator bar above any added menu entries.",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS = "Show character status toggle",
+	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE = "Show open profile button",
+	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP = "If checked, adds a button that opens the selected units' RP profile when clicked.|n|nThis option will be visible on all unit frame and chat menus.",
+	UNIT_POPUPS_CONFIG_VISIBILITY_HEADER = "Visibility options",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER = "Hide menu entries while out of character",
+	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, additional menu entries will not be shown while out-of-character.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT = "Hide menu entries while in combat",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, additional menu entries will not be shown while in combat.",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES = "Hide menu entries while in instances",
+	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, additional menu entries will not be shown while in instanced content.",
+	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES = "Hide menu entries on unit frames",
+	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP = "If checked, additional menu entries will not be shown in menus activated by right-clicking unit frames.",
 
 	NAMEPLATES_MODULE_NAME = "Nameplates",
 	NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of nameplates with information obtained from roleplay profiles.",
@@ -1570,51 +1608,20 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
-	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
-
 	------------------------------------------------------------------------------------------------
 	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	UNIT_POPUPS_CONFIG_MENU_TITLE = "Menu settings",
-	UNIT_POPUPS_CONFIG_PAGE_TEXT = "Menu settings",
-	UNIT_POPUPS_CONFIG_PAGE_HELP = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
-	UNIT_POPUPS_CONFIG_ENABLE_MODULE = "Module |cff00ff00enabled|r",
-	UNIT_POPUPS_MODULE_DISABLE_WARNING = "A user interface reload is required to disable the unit popups module.|n|n|cffff0000Warning: |rOnce disabled, this module can only be re-enabled from the |cffffcc00Modules status|r page.|n|nAre you sure you want to disable this module?",
-	UNIT_POPUPS_CONFIG_ENTRIES_HEADER = "Menu entries",
-	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT = "Show header text",
-	UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP = "If checked, shows a \"Roleplay Options\" header above any added menu entries.",
-	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR = "Show separator",
-	UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP = "If checked, shows a separator bar above any added menu entries.",
-	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS = "Show character status toggle",
-	UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
-	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE = "Show open profile button",
-	UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP = "If checked, adds a button that opens the selected units' RP profile when clicked.|n|nThis option will be visible on all unit frame and chat menus.",
-	UNIT_POPUPS_CONFIG_VISIBILITY_HEADER = "Visibility options",
-	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER = "Hide menu entries while out of character",
-	UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP = "If checked, additional menu entries will not be shown while out-of-character.",
-	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT = "Hide menu entries while in combat",
-	UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, additional menu entries will not be shown while in combat.",
-	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES = "Hide menu entries while in instances",
-	UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP = "If checked, additional menu entries will not be shown while in instanced content.",
-	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES = "Hide menu entries on unit frames",
-	UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP = "If checked, additional menu entries will not be shown in menus activated by right-clicking unit frames.",
-	WHATS_NEW_24_5 = [[# Changelog version 2.3.2
-
-## Added
-
-- Added settings for right-click options on unit frames and chat names.
-
-## Fixed
-
-- Fixed incorrect names showing up on Blizzard NPC nameplates.
-- Fixed display issue with KuiNameplates tank mode.
-- Fixed a dependency issue preventing chat customization from working when using Prat and Listener.
-- Fixed localization not being properly applied to various settings.
-
-]],
-
+	REG_TT_ZONE = "Zone",
+	CO_TOOLTIP_ZONE = "Show zone",
+	CO_TOOLTIP_ZONE_TT = "This will only show if the target is not in the same zone as you.",
+	CO_TOOLTIP_HEALTH = "Show health",
+	CO_TOOLTIP_HEALTH_TT = "This will only show if the target is not at full health.",
+	CO_TOOLTIP_HEALTH_DISABLED = "Disabled",
+	CO_TOOLTIP_HEALTH_NUMBER = "Number",
+	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",
+	CO_TOOLTIP_HEALTH_BOTH = "Number + Percentage",
 };
 
 -- Use Ellyb to generate the Localization system

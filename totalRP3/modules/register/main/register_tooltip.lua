@@ -89,6 +89,8 @@ local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_PRONOUNS = "tooltip_char_pronouns";
+local CONFIG_CHARACT_ZONE = "tooltip_char_zone";
+local CONFIG_CHARACT_HEALTH = "tooltip_char_health";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
@@ -188,6 +190,10 @@ end
 
 local function showPronouns()
 	return getConfigValue(CONFIG_CHARACT_PRONOUNS);
+end
+
+local function showZone()
+	return getConfigValue(CONFIG_CHARACT_ZONE);
 end
 
 local function getCurrentMaxSize()
@@ -656,6 +662,46 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			name = targetClassColor:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
+	end
+
+	--
+	-- Zone
+	--
+
+	if showZone() and targetType ~= "player" then
+		local mapID = C_Map.GetBestMapForUnit(targetType);
+		local playerMapID = C_Map.GetBestMapForUnit("player");
+		if mapID and mapID ~= playerMapID then
+			local mapInfo = C_Map.GetMapInfo(mapID);
+			local lineText = string.format("%1$s: |cffff9900%2$s|r", TRP3_API.loc.REG_TT_ZONE, mapInfo.name);
+			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+		end
+	end
+
+	--
+	-- Health
+	--
+
+	local healthFormat = getConfigValue(CONFIG_CHARACT_HEALTH);
+	if healthFormat ~= 0 then
+		local targetHP = UnitHealth(targetType);
+		local targetHPMax = UnitHealthMax(targetType);
+		-- Don't show health if full
+		if targetHP ~= targetHPMax then
+			local percentHP = targetHP / targetHPMax;
+			local lineText;
+			-- Number
+			if healthFormat == 1 then
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax));
+				-- Percentage
+			elseif healthFormat == 2 then
+				lineText = string.format("%1$s: |cffff9900%2$s|r", HEALTH, FormatPercentage(percentHP, true));
+				-- Both
+			else
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s (%4$s)|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax), FormatPercentage(percentHP, true));
+			end
+			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1263,6 +1309,8 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_OOC, true);
 	registerConfigKey(CONFIG_CHARACT_PRONOUNS, true);
+	registerConfigKey(CONFIG_CHARACT_ZONE, true);
+	registerConfigKey(CONFIG_CHARACT_HEALTH, 0);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
@@ -1290,7 +1338,14 @@ local function onModuleInit()
 	local OOC_INDICATOR_TYPES = {
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, "ICON"}
-	}
+	};
+
+	local HEALTH_FORMAT_TAB = {
+		{loc.CO_TOOLTIP_HEALTH_DISABLED, 0},
+		{loc.CO_TOOLTIP_HEALTH_NUMBER, 1},
+		{loc.CO_TOOLTIP_HEALTH_PERCENT, 2},
+		{loc.CO_TOOLTIP_HEALTH_BOTH, 3},
+	};
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -1452,6 +1507,22 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_PRONOUNS,
 				configKey = CONFIG_CHARACT_PRONOUNS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_ZONE,
+				help = loc.CO_TOOLTIP_ZONE_TT,
+				configKey = CONFIG_CHARACT_ZONE,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Charact_Health",
+				title = loc.CO_TOOLTIP_HEALTH,
+				listContent = HEALTH_FORMAT_TAB,
+				configKey = CONFIG_CHARACT_HEALTH,
+				help = loc.CO_TOOLTIP_HEALTH_TT,
+				listWidth = nil,
+				listCancel = false,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
