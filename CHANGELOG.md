@@ -1,3 +1,18 @@
+# Changelog version 2.3.3
+
+## Added
+- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
+  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
+  - The health field will only show if the character is not full health. It is disabled by default.
+
+## Fixed
+- Fixed a few issues with profile transfer.
+- Fixed Kui text-only RP nameplates not updating when level text and health were both disabled.
+- Fixed inability to set a pet profile when the pet is first summoned.
+- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
+- Fixed TRP chat links breaking from emote/OOC/speech detection.
+- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
+
 # Changelog version 2.3.2
 
 ## Added
