@@ -333,7 +333,7 @@ local function onStart()
 			TRP3_API.r.sendMSPQuery(senderID);
 		end
 
-		if not isIgnored(senderID) and data.VA:sub(1, 8) ~= "TotalRP3" then
+		if not isIgnored(senderID) and not string.find(data.VA, "TotalRP3") then
 			local profile, character = getProfileForSender(senderID);
 			if not profile.characteristics then
 				profile.characteristics = {};
