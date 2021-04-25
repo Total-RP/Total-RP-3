@@ -1085,8 +1085,9 @@ local function show(targetType, targetID, targetMode)
 
 				-- Stock all the current text from the GameTooltip
 				local originalTexts = getGameTooltipTexts(GameTooltip);
+				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
 
-				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and isIDIgnored(targetID)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and ownerIsIgnored(targetID)) then
+				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
 					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
