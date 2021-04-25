@@ -837,25 +837,26 @@ local COLOR_PRESETS_CLASS = {
 table.sort(COLOR_PRESETS_CLASS, function(a,b) return a.TX<b.TX end)
 
 local COLOR_PRESETS_RESOURCES = {
-	{ CO = ColorManager.POWER_MANA, TX = MANA},
-	{ CO = ColorManager.POWER_RAGE, TX = RAGE},
-	{ CO = ColorManager.POWER_FOCUS, TX = FOCUS},
-	{ CO = ColorManager.POWER_ENERGY, TX = ENERGY},
-	{ CO = ColorManager.POWER_COMBO_POINTS, TX = COMBO_POINTS},
-	{ CO = ColorManager.POWER_RUNES, TX = RUNES},
-	{ CO = ColorManager.POWER_RUNIC_POWER, TX = RUNIC_POWER},
-	{ CO = ColorManager.POWER_SOUL_SHARDS, TX = SOUL_SHARDS},
-	{ CO = ColorManager.POWER_LUNAR_POWER, TX = LUNAR_POWER},
-	{ CO = ColorManager.POWER_HOLY_POWER, TX = HOLY_POWER},
-	{ CO = ColorManager.POWER_MAELSTROM, TX = MAELSTROM},
-	{ CO = ColorManager.POWER_INSANITY, TX = INSANITY},
-	{ CO = ColorManager.POWER_CHI, TX = CHI},
-	{ CO = ColorManager.POWER_ARCANE_CHARGES, TX = ARCANE_CHARGES},
-	{ CO = ColorManager.POWER_FURY, TX = FURY},
-	{ CO = ColorManager.POWER_PAIN, TX = PAIN},
-	{ CO = ColorManager.POWER_AMMOSLOT, TX = AMMOSLOT},
-	{ CO = ColorManager.POWER_FUEL, TX = FUEL},
+	{ CO = ColorManager.POWER_MANA, TX = POWER_TYPE_MANA },
+	{ CO = ColorManager.POWER_RAGE, TX = RAGE },
+	{ CO = ColorManager.POWER_FOCUS, TX = POWER_TYPE_FOCUS },
+	{ CO = ColorManager.POWER_ENERGY, TX = POWER_TYPE_ENERGY },
+	{ CO = ColorManager.POWER_COMBO_POINTS, TX = COMBO_POINTS },
+	{ CO = ColorManager.POWER_RUNES, TX = RUNES },
+	{ CO = ColorManager.POWER_RUNIC_POWER, TX = POWER_TYPE_RUNIC_POWER or RUNIC_POWER },
+	{ CO = ColorManager.POWER_SOUL_SHARDS, TX = SOUL_SHARDS },
+	{ CO = ColorManager.POWER_LUNAR_POWER, TX = POWER_TYPE_LUNAR_POWER },
+	{ CO = ColorManager.POWER_HOLY_POWER, TX = HOLY_POWER },
+	{ CO = ColorManager.POWER_MAELSTROM, TX = POWER_TYPE_MAELSTROM },
+	{ CO = ColorManager.POWER_INSANITY, TX = POWER_TYPE_INSANITY },
+	{ CO = ColorManager.POWER_CHI, TX = CHI },
+	{ CO = ColorManager.POWER_ARCANE_CHARGES, TX = POWER_TYPE_ARCANE_CHARGES },
+	{ CO = ColorManager.POWER_FURY, TX = POWER_TYPE_FURY },
+	{ CO = ColorManager.POWER_PAIN, TX = POWER_TYPE_PAIN },
+	{ CO = ColorManager.POWER_AMMOSLOT, TX = AMMOSLOT },
+	{ CO = ColorManager.POWER_FUEL, TX = POWER_TYPE_FUEL },
 }
+
 table.sort(COLOR_PRESETS_RESOURCES, function(a,b) return a.TX<b.TX end)
 
 local COLOR_PRESETS_ITEMS = {
