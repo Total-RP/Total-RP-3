@@ -580,11 +580,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCurrently() and info.character and info.character.CU and info.character.CU ~= "" then
-		tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
-
 		local text = strtrim(info.character.CU);
-		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+
+		if text ~= "" then
+			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
+			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+		end
 	end
 
 	tooltipBuilder:AddSpace();
@@ -594,11 +596,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showMoreInformation() and info.character and info.character.CO and info.character.CO ~= "" then
-		tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
-
 		local text = strtrim(info.character.CO);
-		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+
+		if text ~= "" then
+			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
+			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+		end
 	end
 
 	tooltipBuilder:AddSpace();
