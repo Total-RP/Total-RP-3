@@ -1622,6 +1622,22 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CO_TOOLTIP_HEALTH_NUMBER = "Number",
 	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",
 	CO_TOOLTIP_HEALTH_BOTH = "Number + Percentage",
+	WHATS_NEW_24_6 = [[# Changelog version 2.3.3
+
+## Added
+- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
+  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
+  - The health field will only show if the character is not full health. It is disabled by default.
+
+## Fixed
+- Fixed a few issues with profile transfer.
+- Fixed Kui name-only RP nameplates not updating when level text and health were both disabled.
+- Fixed inability to set a pet profile when the pet is first summoned.
+- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
+- Fixed TRP chat links breaking from emote/OOC/speech detection.
+- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
