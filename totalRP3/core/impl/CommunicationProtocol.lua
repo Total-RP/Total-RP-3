@@ -121,14 +121,14 @@ local function unregisterMessageTokenProgressHandler(handlerID)
 	subSystemsOnProgressDispatcher:UnregisterCallback(handlerID)
 end
 
-local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages)
+local function sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue)
 	if not tContains(VALID_CHANNELS, channel) then
 		--if channel is ignored, default channel and bump everything along by one
-		channel, target, priority, messageToken, useLoggedMessages = "WHISPER", channel, target, priority, messageToken
+		channel, target, priority, messageToken, useLoggedMessages, queue = "WHISPER", channel, target, priority, messageToken, useLoggedMessages
 	end
 	if tContains(VALID_PRIORITIES, target) then
 		-- if target has values expected for priority, bump everything back by one
-		target, priority, messageToken, useLoggedMessages = nil, target, priority, messageToken
+		target, priority, messageToken, useLoggedMessages, queue = nil, target, priority, messageToken, useLoggedMessages
 	end
 
 	Ellyb.Assertions.isType(prefix, "string", "prefix");
@@ -164,6 +164,7 @@ local function sendObject(prefix, object, channel, target, priority, messageToke
 				priority = priority,
 				binaryBlob = not useLoggedMessages,
 				allowBroadcast = true,
+				queue = queue,
 			}
 		);
 	else

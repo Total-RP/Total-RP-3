@@ -152,10 +152,15 @@ local newVersionAlerts, extendedNewVersionAlerts = {}, {};
 
 local infoTypeTab = {
 	registerInfoTypes.CHARACTERISTICS,
-	registerInfoTypes.ABOUT,
 	registerInfoTypes.MISC,
-	registerInfoTypes.CHARACTER
+	registerInfoTypes.CHARACTER,
+	registerInfoTypes.ABOUT,
 };
+
+local function GenerateQueueName(query, infoType, target)
+	-- Example queue name: "TRP3-SI-ABOUT-Solanya-Moogle"
+	return string.join("-", tostringall("TRP3", query, string.upper(infoType), target));
+end
 
 local COMPANION_PREFIX = "comp_";
 
@@ -358,7 +363,17 @@ local function incomingInformationType(informationType, senderID)
 	end
 	if data then
 		log(("Send %s info to %s"):format(informationType, senderID));
-		AddOn_TotalRP3.Communications.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY, nil, true);
+
+		local prefix = INFO_TYPE_SEND_PREFIX;
+		local object = { informationType, data };
+		local channel = "WHISPER";
+		local target = senderID;
+		local priority = INFO_TYPE_SEND_PRIORITY;
+		local messageToken = nil;
+		local useLoggedMessages = true;
+		local queue = GenerateQueueName(prefix, informationType, senderID);
+
+		AddOn_TotalRP3.Communications.sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue);
 	end
 end
 
