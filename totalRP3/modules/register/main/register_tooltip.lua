@@ -1525,6 +1525,7 @@ local function onModuleInit()
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_ZONE,
+				help = loc.CO_TOOLTIP_ZONE_TT,
 				configKey = CONFIG_CHARACT_ZONE,
 			},
 			{
