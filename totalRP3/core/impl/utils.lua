@@ -784,19 +784,6 @@ function Utils.math.round(value, decimals)
 	return math.floor(value * mult) / mult;
 end
 
-Utils.math.formatHealth = function(health)
-	local formattedHealth;
-	if health >= 1000000 then
-		formattedHealth = string.format("%.1fM", health / 1000000);
-	elseif health >= 1000 then
-		formattedHealth = string.format("%.1fk", health / 1000);
-	else
-		formattedHealth = tostring(health);
-	end
-
-	return formattedHealth;
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Text tags utils
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

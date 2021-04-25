@@ -276,6 +276,7 @@ stds.wow = {
 			},
 		},
 
+        "AbbreviateLargeNumbers",
 		"Ambiguate",
 		"BNGetInfo",
 		"CallErrorHandler",
