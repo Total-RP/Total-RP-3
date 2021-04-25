@@ -447,11 +447,13 @@ function Utils.str.sanitize(text)
 end
 
 function Utils.str.crop(text, size)
-	text = strtrim(text or "");
-	if text:len() > size then
-		text = text:sub(1, size) .. "…";
+	text = string.trim(text or "");
+
+	if strlenutf8(text) > size then
+		text = string.utf8sub(text, 1, size - 1) .. "…";
 	end
-	return text
+
+	return text;
 end
 
 local tableAccents = {

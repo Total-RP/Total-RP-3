@@ -33,4 +33,5 @@
 	<Include file="LibRPMedia\LibRPMedia-1.0.xml"/>
 	<Include file="LibChatAnims\LibChatAnims.xml"/>
 	<Include file="TaintLess\TaintLess.xml"/>
+	<Include file="UTF8\lib.xml"/>
 </Ui>
