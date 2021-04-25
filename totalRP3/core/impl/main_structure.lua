@@ -452,19 +452,5 @@ TRP3_API.navigation.init = function()
 		closeAll(self.parentMenu);
 	end);
 
-	if not TRP3_API.globals.is_classic and TRP3_API.globals.serious_day then
-		local customizationTooltipContent = "\n" .. UNLOCK .. ": |cffffffff" .. FormatLargeNumber(10000000) .. "|r |TInterface\\ICONS\\spell_animabastion_orb:14|t\n\n|cff00ff00%s|r";
-		local expirationDateTable = { year=2021, month=4, day=2, hour=0, min=0, sec=0, isdst=true };
-		local expirationTime = time(expirationDateTable);
-		C_Timer.NewTicker(1, function()
-			TRP3_API.ui.tooltip.setTooltipForSameFrame(TRP3_NewCustomizationsUnlockButton, "RIGHT", 0, 0, "???", string.format(customizationTooltipContent, SecondsToClock(expirationTime - time(), true)));
-			if TRP3_NewCustomizationsUnlockButton.refreshTooltip then
-				TRP3_API.ui.tooltip.refresh(TRP3_NewCustomizationsUnlockButton);
-			end
-		end);
-	else
-		TRP3_NewCustomizationsUnlockButton:Hide();
-	end
-
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
 end
