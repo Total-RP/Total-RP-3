@@ -379,7 +379,11 @@ local function UnprotectMessageContents(message, replacements)
 		return replacements[sequence] or "";
 	end
 
-	message = string.gsub(message, "|Ktrp%d+|k", UnprotectString);
+	repeat
+		local replaced;
+		message, replaced = string.gsub(message, "|Ktrp%d+|k", UnprotectString);
+	until replaced == 0;
+
 	return message;
 end
 
