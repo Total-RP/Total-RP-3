@@ -294,6 +294,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_TT_REALM = "Realm: |cffff9900%s",
 	REG_TT_GUILD = "%s of |cffff9900%s",
 	REG_TT_TARGET = "Target: |cffff9900%s",
+	REG_TT_ZONE = "Zone",
 	REG_TT_NOTIF = "Unread description",
 	REG_TT_IGNORED = "< Character is ignored >",
 	REG_TT_IGNORED_OWNER = "< Owner is ignored >",
@@ -480,6 +481,14 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_PROFILE_ONLY = "Use only if target has a profile",
 	CO_TOOLTIP_IN_CHARACTER_ONLY = "Hide when out of character",
 	CO_TOOLTIP_HIDE_IN_INSTANCE = "Hide while in instance",
+	CO_TOOLTIP_ZONE = "Show zone",
+	CO_TOOLTIP_ZONE_TT = "This will only show if the target is not in the same zone as you.",
+	CO_TOOLTIP_HEALTH = "Show health",
+	CO_TOOLTIP_HEALTH_TT = "This will only show if the target is not at full health.",
+	CO_TOOLTIP_HEALTH_DISABLED = "Disabled",
+	CO_TOOLTIP_HEALTH_NUMBER = "Number",
+	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",
+	CO_TOOLTIP_HEALTH_BOTH = "Number + Percentage",
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
@@ -1521,6 +1530,22 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed localization not being properly applied to various settings.
 
 ]],
+	WHATS_NEW_24_6 = [[# Changelog version 2.3.3
+
+## Added
+- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
+  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
+  - The health field will only show if the character is not full health. It is disabled by default.
+
+## Fixed
+- Fixed a few issues with profile transfer.
+- Fixed Kui name-only RP nameplates not updating when level text and health were both disabled.
+- Fixed inability to set a pet profile when the pet is first summoned.
+- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
+- Fixed TRP chat links breaking from emote/OOC/speech detection.
+- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
+
+]],
 	COPY_DROPDOWN_POPUP_TEXT = "Copy with %1$s. Paste with %2$s.\nThis frame will close upon copy.",
 	COPY_SYSTEM_MESSAGE = "Copied to clipboard.",
 	UNIT_POPUPS_MODULE_NAME = "Unit Popups",
@@ -1613,29 +1638,11 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	REG_TT_ZONE = "Zone",
-	CO_TOOLTIP_ZONE = "Show zone",
-	CO_TOOLTIP_ZONE_TT = "This will only show if the target is not in the same zone as you.",
-	CO_TOOLTIP_HEALTH = "Show health",
-	CO_TOOLTIP_HEALTH_TT = "This will only show if the target is not at full health.",
-	CO_TOOLTIP_HEALTH_DISABLED = "Disabled",
-	CO_TOOLTIP_HEALTH_NUMBER = "Number",
-	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",
-	CO_TOOLTIP_HEALTH_BOTH = "Number + Percentage",
-	WHATS_NEW_24_6 = [[# Changelog version 2.3.3
-
-## Added
-- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
-  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
-  - The health field will only show if the character is not full health. It is disabled by default.
+	WHATS_NEW_24_7 = [[# Changelog version 2.3.4
 
 ## Fixed
-- Fixed a few issues with profile transfer.
-- Fixed Kui name-only RP nameplates not updating when level text and health were both disabled.
-- Fixed inability to set a pet profile when the pet is first summoned.
-- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
-- Fixed TRP chat links breaking from emote/OOC/speech detection.
-- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
+
+- Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
 
 ]],
 };
