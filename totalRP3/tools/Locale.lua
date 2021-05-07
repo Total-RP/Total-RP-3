@@ -1656,6 +1656,8 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CREDITS_THANK_YOU_SECTION_7 = [[{col:ffffff}Thanks to all our friends for their support all these years:{/col}]],
 	CREDITS_THANK_YOU_SECTION_8 = [[{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}]],
 	CREDITS_THANK_YOU_SECTION_9 = [[{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
+	CREDITS_THANK_YOU_SECTION_10 = [[{col:ffffff}Thanks to our active community members on Discord:{/col}]],
+	CREDITS_THANK_YOU_SECTION_11 = [[{col:ffffff}Thanks to Bor Blasthammer for his help during BfA testing.{/col}]],
 
 	CREDITS_THANK_YOU_ROLE_1 = "Project Lead",
 	CREDITS_THANK_YOU_ROLE_2 = "Author",
