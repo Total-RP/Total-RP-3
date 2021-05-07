@@ -28,10 +28,6 @@ local Class = Ellyb.Class;
 local Dashboard = TRP3_API.dashboard;
 local L = TRP3_API.loc;
 
-local function MakeEnum(...)
-	return tInvert({ ... });  -- TODO: Swap to EnumUtil.MakeEnum once available.
-end
-
 local CreditRole =
 {
 	ProjectLead = 1,
