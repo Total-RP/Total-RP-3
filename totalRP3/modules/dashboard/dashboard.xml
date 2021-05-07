@@ -18,14 +18,13 @@
 		See the License for the specific language governing permissions and
 		limitations under the License.
 	-->
-	<Script file="npc_talk.lua"/>
-	<Script file="dashboard.lua"/>
+	<Include file="npc_talk.lua"/>
+	<Include file="dashboard.lua"/>
 
-	<Script file="Credit.lua"/>
-	<Script file="TabView.lua"/>
-	<Script file="WhatsNewTabView.lua"/>
-	<Script file="AboutTabView.lua"/>
-	<Script file="ModulesTabView.lua"/>
+	<Include file="TabView.lua"/>
+	<Include file="WhatsNewTabView.lua"/>
+	<Include file="AboutTabView.lua"/>
+	<Include file="ModulesTabView.lua"/>
 
 	<Include file="HTMLContent.xml"/>
 	<Include file="TabFrame.xml"/>

@@ -1633,10 +1633,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
 
 	WHATS_NEW_24_7 = [[# Changelog version 2.3.4
 
@@ -1645,6 +1641,37 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
+	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
+	CREDITS_THANK_YOU_SECTION_3 = [[{h2}%1$s The Rest of the Team{/h2}]],
+	CREDITS_THANK_YOU_SECTION_4 = [[{h2}%1$s Acknowledgements{/h2}]],
+	CREDITS_THANK_YOU_SECTION_5 = [[{col:ffffff}Logo and minimap button icon:{/col} %1$s]],
+	CREDITS_THANK_YOU_SECTION_6 = [[{col:ffffff}Our pre-alpha QA team:{/col}]],
+	CREDITS_THANK_YOU_SECTION_7 = [[{col:ffffff}Thanks to all our friends for their support all these years:{/col}]],
+	CREDITS_THANK_YOU_SECTION_8 = [[{col:ffffff}For helping us creating the Total RP guild on Kirin Tor (EU):{/col}]],
+	CREDITS_THANK_YOU_SECTION_9 = [[{col:ffffff}Thanks to Horionne for sending us the magazine Gamer Culte Online #14 with an article about Total RP.{/col}]],
+
+	CREDITS_THANK_YOU_ROLE_1 = "Project Lead",
+	CREDITS_THANK_YOU_ROLE_2 = "Author",
+	CREDITS_THANK_YOU_ROLE_3 = "Developer",
+	CREDITS_THANK_YOU_ROLE_4 = "Community Manager",
+	CREDITS_THANK_YOU_ROLE_5 = "Translator",
+	CREDITS_THANK_YOU_ROLE_6 = "Mascot",
+	CREDITS_THANK_YOU_ROLE_7 = "Tester",
+	CREDITS_THANK_YOU_ROLE_8 = "Guild Member",
+	CREDITS_THANK_YOU_ROLE_9 = "Supporter",
+
+	CREDITS_VERSION_TEXT = "Version %s",
+	CREDITS_DISCORD_LINK_TEXT = "Join us on Discord",
+	CREDITS_WEBSITE_LINK_TEXT = "Website",
+	CREDITS_NAME_WITH_ROLE = "%1$s (%2$s)",
+	CREDITS_GUILD_NAME = "<%1$s>",
 };
 
 -- Use Ellyb to generate the Localization system

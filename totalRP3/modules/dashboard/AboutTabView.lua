@@ -21,102 +21,261 @@
 local addonName, TRP3_API = ...;
 local Ellyb = Ellyb(addonName);
 
--- Lua imports
-local tconcat = table.concat;
-
 -- Ellyb imports
 local Class = Ellyb.Class;
-local Strings = Ellyb.Strings;
-local Tables = Ellyb.Tables;
 
 -- Total RP 3 imports
 local Dashboard = TRP3_API.dashboard;
-local loc = TRP3_API.loc;
-local strhtml = TRP3_API.utils.str.toHTML;
+local L = TRP3_API.loc;
 
-local Credit = Dashboard.Credit;
-local CreditRoles = Dashboard.CreditRoles;
+local function MakeEnum(...)
+	return tInvert({ ... });  -- TODO: Swap to EnumUtil.MakeEnum once available.
+end
 
---- Mapping of replacement string keys to Credit instances that will be
---  displayed in the replaced segment.
-local CREDITS = {
-	AUTHORS = {
-		Credit([[Morgane "{twitter*EllypseCelwe*Ellypse}" Parize]], CreditRoles.AUTHOR),
-		Credit([[Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement]], CreditRoles.AUTHOR),
+local CreditRole = MakeEnum("ProjectLead", "Author", "Developer", "CommunityManager", "Translator", "Mascot", "Tester", "GuildMember", "Supporter");
+local CreditCategory = MakeEnum("Authors", "Developers", "QA", "GuildMembers", "Supporters");
+local CreditEntity = MakeEnum("Individual", "Guild");
+
+local CreditsData =
+{
+	[CreditCategory.Authors] =
+	{
+		{
+			name  = [[Morgane "{twitter*EllypseCelwe*Ellypse}" Parize]],
+			roles = { CreditRole.Author },
+		},
+		{
+			name  = [[Sylvain "{twitter*Telkostrasz*Telkostrasz}" Cossement]],
+			roles = { CreditRole.Author },
+		},
 	},
 
-	CONTRIBUTORS = {
-		ShowNamesWithRoles = true,
-
-		Credit([[{twitter*Solanya_*Solanya}]], CreditRoles.CONTRIBUTOR, CreditRoles.COMMUNITY_MANAGER),
-		Credit([[Connor "{twitter*Saelorable*Sælorable}" Macleod]], CreditRoles.CONTRIBUTOR),
-		Credit([[Daniel "Meorawr" Yates]], CreditRoles.CONTRIBUTOR),
+	[CreditCategory.Developers] =
+	{
+		{
+			name  = [[{twitter*Solanya_*Solanya}]],
+			roles = { CreditRole.ProjectLead, CreditRole.CommunityManager },
+		},
+		{
+			name  = [[Daniel "{twitter*Meorawr*Meorawr}" Yates]],
+			roles = { CreditRole.Developer, CreditRole.Mascot },
+		},
+		{
+			name  = [[Connor "{twitter*Saelorable*Sælorable}" Macleod]],
+			roles = { CreditRole.Developer },
+		},
 	},
 
-	TESTERS = {
-		Credit([[Erzan]], CreditRoles.TESTER),
-		Credit([[Calian]], CreditRoles.TESTER),
-		Credit([[Kharess]], CreditRoles.TESTER),
-		Credit([[Alnih]], CreditRoles.TESTER),
-		Credit([[611]], CreditRoles.TESTER),
+	[CreditCategory.QA] =
+	{
+		{
+			name  = "Erzan",
+			roles = { CreditRole.Tester },
+		},
+		{
+			name  = "Calian",
+			roles = { CreditRole.Tester },
+		},
+		{
+			name  = "Kharess",
+			roles = { CreditRole.Tester },
+		},
+		{
+			name  = "Alnih",
+			roles = { CreditRole.Tester },
+		},
+		{
+			name  = "611",
+			roles = { CreditRole.Tester },
+		},
 	},
 
-	GUILD_MEMBERS = {
-		Credit([[Azane]], CreditRoles.GUILD_MEMBER),
-		Credit([[Hellclaw]], CreditRoles.GUILD_MEMBER),
-		Credit([[Leylou]], CreditRoles.GUILD_MEMBER),
+	[CreditCategory.GuildMembers] =
+	{
+		{
+			name  = "Azane",
+			roles = { CreditRole.GuildMember },
+		},
+		{
+			name  = "Hellclaw",
+			roles = { CreditRole.GuildMember },
+		},
+		{
+			name  = "Leylou",
+			roles = { CreditRole.GuildMember },
+		},
+	},
+
+	[CreditCategory.Supporters] =
+	{
+		{
+			name  = "Eglise du Saint Gamon",
+			roles = { CreditRole.Supporter },
+			type  = CreditEntity.Guild,
+		},
+		{
+			name  = "Maison Celwë'Belore",
+			roles = { CreditRole.Supporter },
+			type  = CreditEntity.Guild,
+		},
+		{
+			name  = "Mercenaires Atal'ai",
+			roles = { CreditRole.Supporter },
+			type  = CreditEntity.Guild,
+		},
+		{
+			name  = "Kharess",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Kathryl",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Marud",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Solona",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Stretcher",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Lisma",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Erzan",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Elenna",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Caleb",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Siana",
+			roles = { CreditRole.Supporter },
+		},
+		{
+			name  = "Adaeria",
+			roles = { CreditRole.Supporter },
+		},
 	},
 };
 
---- Returns a formatted string that contains all the names for people
---  in a given credits section.
---
---- The credits table may have a "ShowNamesWithRoles" flag that controls
---  if role information is appended to individual names.
-local function getLocalizedCreditsSection(people)
-	-- Use a temporary table and get all the localized names in the
-	-- correct format.
-	local names = Tables.getTempTable();
-	for i = 1, #people do
-		local person = people[i];
+local function GenerateRoleString(roles)
+	local output = {};
 
-		if people.ShowNamesWithRoles then
-			names[i] = person:GetLocalizedFullText();
+	for _, role in ipairs(roles) do
+		local localizedRole = L:GetText("CREDITS_THANK_YOU_ROLE_" .. role);
+		table.insert(output, localizedRole);
+	end
+
+	return table.concat(output, LIST_DELIMITER);
+end
+
+local function GenerateCategoryString(category, options)
+	local output = {};
+
+	for _, credit in ipairs(category) do
+		local text;
+
+		if options and options.showRoleText and #credit.roles > 0 then
+			local roleString = GenerateRoleString(credit.roles);
+			text = string.format(L.CREDITS_NAME_WITH_ROLE, credit.name, roleString);
+		elseif credit.type == CreditEntity.Guild then
+			text = string.format(L.CREDITS_GUILD_NAME, credit.name);
 		else
-			names[i] = person:GetName();
+			text = credit.name;
 		end
+
+		table.insert(output, "- " .. text);
 	end
 
-	-- Build a newline separated list where each line has a preceeding
-	-- list marker ("- ") using the names.
-	local formatted = ("- %s"):format(tconcat(names, "\n- "));
+	table.insert(output, "");  -- Empty line for padding.
 
-	Tables.releaseTempTable(names);
-	return formatted;
+	return table.concat(output, "|n");
 end
 
---- Returns the fully formatted localized text for this view.
-local function getLocalizedText()
-	local replacements = {
-		[1] = TRP3_API.globals.version_display,
-		[2] = TRP3_API.globals.version,
-	};
+local function GenerateCreditsString(credits)
+	local output = {};
 
-	for section, people in pairs(CREDITS) do
-		replacements[section] = getLocalizedCreditsSection(people);
+	do  -- Header
+		local WEBSITE_LINK = string.format("{link*%1$s*%2$s}", "http://totalrp3.info", L.CREDITS_WEBSITE_LINK_TEXT);
+		local TWITTER_LINK = string.format("{twitter*%1$s*@%1$s}", "TotalRP3");
+		local DISCORD_LINK = string.format("{link*%1$s*%2$s}", "http://discord.totalrp3.info", L.CREDITS_DISCORD_LINK_TEXT);
+		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3_API.globals.version_display);
+
+		local lines = {};
+
+		table.insert(lines, string.format("{p:c}{col:6eff51}%1$s{/col}{/p}", VERSION_TEXT));
+		table.insert(lines, string.format("{p:c}%1$s — %2$s{/p}", WEBSITE_LINK, TWITTER_LINK));
+		table.insert(lines, string.format("{p:c}%1$s{/p}", DISCORD_LINK));
+
+		table.insert(output, L.CREDITS_THANK_YOU_SECTION_1);
+		table.insert(output, table.concat(lines, "|n"));
 	end
 
-	return strhtml(Strings.interpolate(loc.THANK_YOU_1, replacements));
+	do  -- Authors
+		local ICON_MARKUP = string.format("{icon:%1$s:20}", TRP3_InterfaceIcons.CreditsAuthors);
+
+		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_2, ICON_MARKUP));
+		table.insert(output, GenerateCategoryString(credits[CreditCategory.Authors]));
+	end
+
+	do  -- Developers
+		local ICON_MARKUP = string.format("{icon:%1$s:20}", TRP3_InterfaceIcons.CreditsTeam);
+
+		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_3, ICON_MARKUP));
+		table.insert(output, GenerateCategoryString(credits[CreditCategory.Developers], { showRoleText = true }));
+	end
+
+	-- Acknowledgements
+
+	do  -- Logo Author
+		local LOGO_AUTHOR_LINK = string.format("{twitter*%1$s*@%1$s}", "Kelandiir");
+		local ICON_MARKUP = string.format("{icon:%1$s:20}", TRP3_InterfaceIcons.CreditsOthers);
+
+		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_4, ICON_MARKUP));
+		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_5, LOGO_AUTHOR_LINK));
+	end
+
+	-- QA/Testers
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_6);
+	table.insert(output, GenerateCategoryString(credits[CreditCategory.QA]));
+
+	-- Additional mentions
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_7);
+	table.insert(output, GenerateCategoryString(credits[CreditCategory.Supporters]));
+
+	-- Guild Members
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_8);
+	table.insert(output, GenerateCategoryString(credits[CreditCategory.GuildMembers]));
+
+	-- Magazine thing.
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_9);
+
+	output = table.concat(output, "|n|n");
+	output = TRP3_API.utils.str.toHTML(output);
+
+	return output;
 end
 
---- Displays the credits and some text about what addon this is, just in
---  case the users want to tweet at the developers to tell them how loved
---  they are.
+-- Displays the credits and some text about what addon this is, just in
+-- case the users want to tweet at the developers to tell them how loved
+-- they are.
 local AboutTabView = Class("TRP3_DashboardAboutTabView", Dashboard.TabView);
 Dashboard.AboutTabView = AboutTabView;
 
 function AboutTabView.static.getTabTitle()
-	return loc.DB_ABOUT;
+	return L.DB_ABOUT;
 end
 
 function AboutTabView.static.getTabWidth()
@@ -126,7 +285,7 @@ end
 function AboutTabView:initialize(dashboard)
 	self.class.super.initialize(self, dashboard);
 
-	self.body = getLocalizedText();
+	self.body = GenerateCreditsString(CreditsData);
 end
 
 function AboutTabView:Show()
