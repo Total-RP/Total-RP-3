@@ -28,13 +28,28 @@ local Class = Ellyb.Class;
 local Dashboard = TRP3_API.dashboard;
 local L = TRP3_API.loc;
 
-local function MakeEnum(...)
-	return tInvert({ ... });  -- TODO: Swap to EnumUtil.MakeEnum once available.
-end
-
-local CreditRole = MakeEnum("ProjectLead", "Author", "Developer", "CommunityManager", "Translator", "Mascot", "Tester", "GuildMember", "Supporter");
-local CreditCategory = MakeEnum("Authors", "Developers", "QA", "GuildMembers", "Supporters");
-local CreditEntity = MakeEnum("Individual", "Guild");
+local CreditRole =
+{
+	ProjectLead = 1,
+	Author = 2,
+	Developer = 3,
+	CommunityManager = 4,
+	Mascot = 5,
+};
+local CreditCategory =
+{
+	Authors = 1,
+	Developers = 2,
+	QA = 3,
+	GuildMembers = 4,
+	Supporters = 5,
+	Discord = 6,
+};
+local CreditEntity =
+{
+	Individual = 1,
+	Guild = 2,
+};
 
 local CreditsData =
 {
@@ -70,23 +85,18 @@ local CreditsData =
 	{
 		{
 			name  = "Erzan",
-			roles = { CreditRole.Tester },
 		},
 		{
 			name  = "Calian",
-			roles = { CreditRole.Tester },
 		},
 		{
 			name  = "Kharess",
-			roles = { CreditRole.Tester },
 		},
 		{
 			name  = "Alnih",
-			roles = { CreditRole.Tester },
 		},
 		{
 			name  = "611",
-			roles = { CreditRole.Tester },
 		},
 	},
 
@@ -94,15 +104,12 @@ local CreditsData =
 	{
 		{
 			name  = "Azane",
-			roles = { CreditRole.GuildMember },
 		},
 		{
 			name  = "Hellclaw",
-			roles = { CreditRole.GuildMember },
 		},
 		{
 			name  = "Leylou",
-			roles = { CreditRole.GuildMember },
 		},
 	},
 
@@ -110,64 +117,69 @@ local CreditsData =
 	{
 		{
 			name  = "Eglise du Saint Gamon",
-			roles = { CreditRole.Supporter },
 			type  = CreditEntity.Guild,
 		},
 		{
 			name  = "Maison Celwë'Belore",
-			roles = { CreditRole.Supporter },
 			type  = CreditEntity.Guild,
 		},
 		{
 			name  = "Mercenaires Atal'ai",
-			roles = { CreditRole.Supporter },
 			type  = CreditEntity.Guild,
 		},
 		{
 			name  = "Kharess",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Kathryl",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Marud",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Solona",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Stretcher",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Lisma",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Erzan",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Elenna",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Caleb",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Siana",
-			roles = { CreditRole.Supporter },
 		},
 		{
 			name  = "Adaeria",
-			roles = { CreditRole.Supporter },
 		},
 	},
+
+	[CreditCategory.Discord] =
+	{
+		{
+			name = "Katorie",
+		},
+		{
+			name = "Keyboardturner",
+		},
+		{
+			name = "Lyra",
+		},
+		{
+			name = "Naeraa",
+		},
+		{
+			name = "Trinity",
+		},
+	}
 };
 
 local function GenerateRoleString(roles)
@@ -246,6 +258,13 @@ local function GenerateCreditsString(credits)
 		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_4, ICON_MARKUP));
 		table.insert(output, string.format(L.CREDITS_THANK_YOU_SECTION_5, LOGO_AUTHOR_LINK));
 	end
+
+	-- Discord members
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_10);
+	table.insert(output, GenerateCategoryString(credits[CreditCategory.Discord]));
+
+	-- Bor
+	table.insert(output, L.CREDITS_THANK_YOU_SECTION_11);
 
 	-- QA/Testers
 	table.insert(output, L.CREDITS_THANK_YOU_SECTION_6);
