@@ -137,7 +137,15 @@ function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
 	-- Classic: This is disabled until the TBC prepatch as it relies on a lot
 	-- of post-8.1 changes in FrameXML to function.
 
-	return TRP3_API.globals.player_character.class == "HUNTER" and not TRP3_API.globals.is_classic;
+	if TRP3_API.globals.player_character.class ~= "HUNTER" then
+		return false;  -- Player isn't the correct class.
+	elseif TRP3_API.globals.is_classic then
+		return false;  -- Classic is unsupported.
+	elseif TRP3_API.globals.is_bcc then
+		return false;  -- BCC is also unsupported for now!
+	else
+		return true;
+	end
 end
 
 function AddOn_TotalRP3.Ui.GetPetBrowserFrame()
