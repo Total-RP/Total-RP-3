@@ -8,6 +8,12 @@
 ## OptionalDeps: Prat-3.0, WoWUnit
 ## RequiredDeps: totalRP3_Data
 ## SavedVariables: TRP3_Profiles, TRP3_Characters, TRP3_Configuration, TRP3_Flyway, TRP3_Presets, TRP3_Companions, TRP3_MatureFilter, TRP3_Colors, TRP3_Notes
-## X-URL: http://totalrp3.info
+
+## X-Category: Roleplay
+## X-License: Apache-2.0
+## X-Website: http://totalrp3.info
+## X-Curse-Project-ID: 75973
+## X-Wago-ID: q96dnGOm
+## X-WoWI-ID: 24113
 
 totalRP3.xml

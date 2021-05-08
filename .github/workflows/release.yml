@@ -17,8 +17,6 @@ jobs:
 
       - name: Create Retail Package
         uses: BigWigsMods/packager@master
-        with:
-          args: -p 75973 -w 24113 -a q96dnGOm
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +26,7 @@ jobs:
       - name: Create BC Package
         uses: BigWigsMods/packager@master
         with:
-          args: -p 75973 -w 24113 -a q96dnGOm -g bc
+          args: -g bc
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
@@ -38,7 +36,7 @@ jobs:
       - name: Create Classic Package
         uses: BigWigsMods/packager@master
         with:
-          args: -p 335857 -w 25153 -a q96dnGOm -g classic
+          args: -g classic
         env:
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
