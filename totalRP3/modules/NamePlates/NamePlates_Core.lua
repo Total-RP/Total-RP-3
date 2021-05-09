@@ -415,7 +415,12 @@ function TRP3_NamePlates:OnRegisterDataUpdated(registerID)
 	if registerID == TRP3_API.globals.player_id then
 		self:UpdateAllNamePlates();
 	else
-		self:UpdateNamePlateForRegisterID(registerID);
+		local unitToken = self.unitRegisterIDs[registerID];
+
+		if unitToken then
+			TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken);
+			self:UpdateNamePlateForUnit(registerID);
+		end
 	end
 end
 
@@ -448,14 +453,6 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 	if nameplate then
 		local displayInfo = self:GetUnitDisplayInfo(unitToken);
 		self.callbacks:Fire("OnNamePlateDataUpdated", nameplate, unitToken, displayInfo);
-	end
-end
-
-function TRP3_NamePlates:UpdateNamePlateForRegisterID(registerID)
-	local unitToken = self.unitRegisterIDs[registerID];
-
-	if unitToken then
-		return self:UpdateNamePlateForUnit(unitToken);
 	end
 end
 
