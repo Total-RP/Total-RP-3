@@ -94,7 +94,7 @@ TRP3_NamePlatesRequestQueue.ProcessRate = 0.5;
 -- Lower values will cause more requests to be sent on average; higher values
 -- reduce "one hit wonders" for people you might quickly see on-screen for
 -- a moment and then never again.
-TRP3_NamePlatesRequestQueue.PreSubmitCooldown = 2.5;
+TRP3_NamePlatesRequestQueue.PreSubmitCooldown = 3;
 
 -- Time in fractional seconds that must pass before a request for a character
 -- that was already previously requested can be re-issued.
@@ -119,7 +119,7 @@ TRP3_NamePlatesRequestQueue.SlotLimit = 5;
 -- Lower values will allow requests to be sent quicker if the slot limit is
 -- reached, and higher values will potentially reduce the number of requests
 -- that may be outstanding.
-TRP3_NamePlatesRequestQueue.SlotRechargePeriod = 1.25;
+TRP3_NamePlatesRequestQueue.SlotRechargePeriod = 2.25;
 
 function TRP3_NamePlatesRequestQueue:Init()
 	self.requestsInfo = {};
