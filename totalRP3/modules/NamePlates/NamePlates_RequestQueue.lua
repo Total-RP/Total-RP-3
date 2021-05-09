@@ -94,7 +94,16 @@ TRP3_NamePlatesRequestQueue.ProcessRate = 0.5;
 -- Lower values will cause more requests to be sent on average; higher values
 -- reduce "one hit wonders" for people you might quickly see on-screen for
 -- a moment and then never again.
-TRP3_NamePlatesRequestQueue.EligibilityDelay = 2.5;
+TRP3_NamePlatesRequestQueue.PreSubmitCooldown = 2.5;
+
+-- Time in fractional seconds that must pass before a request for a character
+-- that was already previously requested can be re-issued.
+--
+-- Higher values mean that if we see the nameplate for the same character
+-- repeatedly within a session, we won't re-download any associated data
+-- for a while. Lower values will cause such cases to be more responsive
+-- but could significantly increase bandwidth consumption.
+TRP3_NamePlatesRequestQueue.PostSubmitCooldown = 300;
 
 -- Number of request "slots" that the system has. Each request in the queue
 -- consumes a slot when sent, and slots are regained based on a recharge
@@ -112,15 +121,6 @@ TRP3_NamePlatesRequestQueue.SlotLimit = 5;
 -- that may be outstanding.
 TRP3_NamePlatesRequestQueue.SlotRechargePeriod = 1.25;
 
--- Time in fractional seconds that must pass before a request for a character
--- that was already previously requested can be re-issued.
---
--- Higher values mean that if we see the nameplate for the same character
--- repeatedly within a session, we won't re-download any associated data
--- for a while. Lower values will cause such cases to be more responsive
--- but could significantly increase bandwidth consumption.
-TRP3_NamePlatesRequestQueue.CharacterCooldown = 300;
-
 function TRP3_NamePlatesRequestQueue:Init()
 	self.requestsInfo = {};
 	self.requestsQueue = CreateFromMixins(DoublyLinkedListMixin);
@@ -130,7 +130,7 @@ function TRP3_NamePlatesRequestQueue:Init()
 	self.slotsAvailable = TRP3_NamePlatesRequestQueue.SlotLimit;
 	self.slotsCooldown = math.huge;
 
-	self.characterCooldowns = {};
+	self.postSubmitCooldowns = {};
 
 	do
 		local function TickerCallback()
@@ -180,11 +180,11 @@ function TRP3_NamePlatesRequestQueue:EnqueueUnitQuery(unitToken)
 	-- the character associated with this nameplate has previously been
 	-- requested; if so then the delay is much larger.
 
-	if self.characterCooldowns[registerID] and self.characterCooldowns[registerID] > GetTime() then
-		local remainingCooldown = self.characterCooldowns[registerID] - currentTime;
+	if self.postSubmitCooldowns[registerID] and self.postSubmitCooldowns[registerID] > GetTime() then
+		local remainingCooldown = self.postSubmitCooldowns[registerID] - currentTime;
 		requestInfo.eligibleAt = currentTime + remainingCooldown;
 	else
-		requestInfo.eligibleAt = currentTime + TRP3_NamePlatesRequestQueue.EligibilityDelay;
+		requestInfo.eligibleAt = currentTime + TRP3_NamePlatesRequestQueue.PreSubmitCooldown;
 	end
 
 	-- Some attributes about the unit we're requesting from are cached ahead
@@ -253,7 +253,7 @@ function TRP3_NamePlatesRequestQueue:SubmitRequest(requestInfo)
 	TRP3_API.r.sendQuery(registerID);
 	TRP3_API.r.sendMSPQuery(registerID);
 
-	self.characterCooldowns[registerID] = GetTime() + TRP3_NamePlatesRequestQueue.CharacterCooldown;
+	self.postSubmitCooldowns[registerID] = GetTime() + TRP3_NamePlatesRequestQueue.PostSubmitCooldown;
 end
 
 -- private
