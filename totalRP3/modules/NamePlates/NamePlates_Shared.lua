@@ -60,6 +60,24 @@ function TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(fontstring, rolep
 	end
 end
 
+function TRP3_NamePlatesUtil.GetUnitRegisterID(unitToken)
+	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
+	local registerID;
+
+	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
+		registerID = TRP3_API.utils.str.getUnitID(unitToken);
+	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
+		registerID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
+	end
+
+	if registerID and string.find(registerID, UNKNOWNOBJECT, 1, true) == 1 then
+		-- The player that owns this profile isn't yet known to the client.
+		registerID = nil;
+	end
+
+	return registerID;
+end
+
 --
 -- Configuration Data
 --

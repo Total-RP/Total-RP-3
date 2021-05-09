@@ -178,10 +178,22 @@ stds.wow = {
 			},
 		},
 
+		C_BattleNet = {
+			fields = {
+				"GetAccountInfoByGUID",
+			},
+		},
+
 		C_ChatInfo = {
 			fields = {
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",
+			},
+		},
+
+		C_FriendList = {
+			fields = {
+				"IsFriend",
 			},
 		},
 
@@ -281,6 +293,7 @@ stds.wow = {
 
 		"AbbreviateLargeNumbers",
 		"Ambiguate",
+		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CallErrorHandler",
 		"ChatEdit_FocusActiveWindow",
@@ -346,6 +359,7 @@ stds.wow = {
 		"IsAddOnLoaded",
 		"IsAltKeyDown",
 		"IsControlKeyDown",
+		"IsGuildMember",
 		"IsInGroup",
 		"IsInInstance",
 		"IsInRaid",
@@ -409,6 +423,7 @@ stds.wow = {
 		"UnitGUID",
 		"UnitHealth",
 		"UnitHealthMax",
+		"UnitInAnyGroup",
 		"UnitInParty",
 		"UnitInRaid",
 		"UnitIsAFK",
@@ -440,6 +455,7 @@ stds.wow = {
 		"BaseMapPoiPinMixin",
 		"ChatFrame1EditBox",
 		"ChatTypeInfo",
+		"DoublyLinkedListMixin",
 		"DropDownList1",
 		"FontableFrameMixin",
 		"GameFontNormal",
