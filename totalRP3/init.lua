@@ -68,7 +68,7 @@ TRP3_API.utils = {};
 
 -- Get a new instance of the Ellyb library
 TRP3_API.Ellyb = Ellyb:GetInstance(addOnName);
-TRP3_API.Ellyb.SetDebugMode(TRP3_API.globals.DEBUG_MODE);
+TRP3_API.Ellyb:SetDebugMode(TRP3_API.globals.DEBUG_MODE);
 
 -- Make our shared table public so that our API is accessible to other add-ons and external modules
 _G.TRP3_API = TRP3_API;
