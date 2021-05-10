@@ -41,7 +41,6 @@ local getMiscExchangeData = playerAPI.getMiscExchangeData;
 local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
-local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
@@ -445,10 +444,8 @@ local function checkPlayerDataWeight()
 	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
 	local computedSize = Comm.estimateStructureLoad(totalData);
 	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
-		if getConfigValue("heavy_profile_alert") then
-			TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
-		end
+		log(("Profile too heavy! It would take %s messages to send."):format(computedSize));
+		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
 	end
 end
 

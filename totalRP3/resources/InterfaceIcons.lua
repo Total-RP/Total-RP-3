@@ -211,6 +211,13 @@ TRP3_InterfaceIcons = {
 	LanguageZandali       = { "inv_misc_tournaments_banner_troll", "inv_banner_01" },
 	LanguageZombie        = { "icon_petfamily_undead", DEFAULT_ICON_NAME },
 
+	--
+	-- Credits Icons
+	--
+
+	CreditsAuthors = { "inv_eng_gizmo1", "trade_engineering" },
+	CreditsTeam    = { "quest_khadgar", "achievement_general_stayclassy" },
+	CreditsOthers  = { "thumbup", "spell_holy_healingaura" },
 };
 
 --

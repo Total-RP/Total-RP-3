@@ -1,3 +1,9 @@
+# Changelog version 2.3.4
+
+## Fixed
+
+- Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
+
 # Changelog version 2.3.3
 
 ## Added
