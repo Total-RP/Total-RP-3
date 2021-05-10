@@ -118,24 +118,6 @@ local function ShouldUseClassColorFallback()
 	return TRP3_API.configuration.getValue("NamePlates_EnableClassColorFallback");
 end
 
-local function GetUnitRegisterID(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local registerID;
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		registerID = TRP3_API.utils.str.getUnitID(unitToken);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		registerID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-	end
-
-	if registerID and string.find(registerID, UNKNOWNOBJECT, 1, true) == 1 then
-		-- The player that owns this profile isn't yet known to the client.
-		registerID = nil;
-	end
-
-	return registerID;
-end
-
 local function GetUnitRoleplayStatus(unitToken)
 	local player;
 
@@ -343,7 +325,6 @@ local TRP3_NamePlates = {};
 
 function TRP3_NamePlates:OnModuleInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
-	self.characterRequestTimes = {};
 	self.unitRegisterIDs = {};
 
 	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
@@ -382,6 +363,8 @@ function TRP3_NamePlates:ActivateModule()
 
 	self.moduleActivated = true;
 
+	TRP3_NamePlatesRequestQueue:Init();
+
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", function(...) return self:OnNamePlateUnitAdded(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", function(...) return self:OnNamePlateUnitRemoved(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("UNIT_NAME_UPDATE", function(...) return self:OnUnitNameUpdate(...); end);
@@ -400,6 +383,7 @@ function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
 end
 
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
+	TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken);
 	self:ClearRegisterIDForUnit(unitToken);
 	self:UpdateNamePlateForUnit(unitToken);
 end
@@ -431,13 +415,18 @@ function TRP3_NamePlates:OnRegisterDataUpdated(registerID)
 	if registerID == TRP3_API.globals.player_id then
 		self:UpdateAllNamePlates();
 	else
-		self:UpdateNamePlateForRegisterID(registerID);
+		local unitToken = self.unitRegisterIDs[registerID];
+
+		if unitToken then
+			TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken);
+			self:UpdateNamePlateForUnit(registerID);
+		end
 	end
 end
 
 function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local registerID = GetUnitRegisterID(unitToken);
+	local registerID = TRP3_NamePlatesUtil.GetUnitRegisterID(unitToken);
 
 	if not ShouldCustomizeUnitNamePlate(unitToken) then
 		return nil;  -- Customizations disabled for this unit.
@@ -467,43 +456,11 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 	end
 end
 
-function TRP3_NamePlates:UpdateNamePlateForRegisterID(registerID)
-	local unitToken = self.unitRegisterIDs[registerID];
-
-	if unitToken then
-		return self:UpdateNamePlateForUnit(unitToken);
-	end
-end
-
-function TRP3_NamePlates:ShouldRequestProfileFromCharacter(characterID)
-	local REQUEST_WAIT_SEC = 90;
-
-	local lastRequestTime = self.characterRequestTimes[characterID] or -math.huge;
-
-	if not ShouldRequestProfiles() then
-		return false;  -- Requests are disabled.
-	elseif GetTime() < (lastRequestTime + REQUEST_WAIT_SEC) then
-		return false;  -- Profile information was recently requested.
-	else
-		return true;
-	end
-end
-
 function TRP3_NamePlates:RequestUnitProfile(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local characterID;
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		characterID = TRP3_API.utils.str.getUnitID(unitToken);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-	end
-
-	if self:ShouldRequestProfileFromCharacter(characterID) then
-		TRP3_API.r.sendQuery(characterID);
-		TRP3_API.r.sendMSPQuery(characterID);
-
-		self.characterRequestTimes[characterID] = GetTime();
+	if ShouldRequestProfiles() then
+		TRP3_NamePlatesRequestQueue:EnqueueUnitQuery(unitToken);
+	else
+		TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken);
 	end
 end
 
@@ -514,7 +471,7 @@ function TRP3_NamePlates:ClearRegisterIDForUnit(unitToken)
 end
 
 function TRP3_NamePlates:UpdateRegisterIDForUnit(unitToken)
-	local registerID = GetUnitRegisterID(unitToken);
+	local registerID = TRP3_NamePlatesUtil.GetUnitRegisterID(unitToken);
 
 	if registerID and self.unitRegisterIDs[unitToken] ~= registerID then
 		self:RequestUnitProfile(unitToken);
