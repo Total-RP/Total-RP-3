@@ -1674,6 +1674,13 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CREDITS_WEBSITE_LINK_TEXT = "Website",
 	CREDITS_NAME_WITH_ROLE = "%1$s (%2$s)",
 	CREDITS_GUILD_NAME = "<%1$s>",
+
+	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
+	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
+	CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION = "Controls the size of the queue pool used for profile communications.|n|nLower values will reduce latency of addon communications for non-RP profile data, but may increase the amount of time before other players begin to receive any profile data at all in high load scenarios.",
+	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
+	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cffff0000severely deteriorate|r the performance of all addon communications.",
+
 };
 
 -- Use Ellyb to generate the Localization system

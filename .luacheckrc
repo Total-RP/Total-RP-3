@@ -129,6 +129,7 @@ stds.wow = {
 			fields = {
 				"band",
 				"bor",
+				"bxor",
 			},
 		},
 
@@ -442,6 +443,7 @@ stds.wow = {
 		"UnitPVPName",
 		"UnitRace",
 		"UnitSex",
+		"Wrap",
 
 		-- Global Mixins and UI Objects
 
