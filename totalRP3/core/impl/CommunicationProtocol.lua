@@ -218,7 +218,7 @@ end
 
 -- Estimate the number of packet needed to send a object.
 local function estimateStructureLoad(object, shouldBeCompressed)
-	return estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS();
+	return math.ceil(estimateStructureSize(object, shouldBeCompressed) / Chomp.GetBPS());
 end
 
 AddOn_TotalRP3.Communications = {

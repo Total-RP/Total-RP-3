@@ -58,6 +58,77 @@ local commandOpeningTimerHandle;
 
 local has_seen_update_alert, has_seen_extended_update_alert = false, false;
 
+local band = bit.band;
+local bxor = bit.bxor;
+local floor = math.floor;
+local strbyte = string.byte;
+
+local function mul(x, y)
+	return (band(x, 0xffff) * y) + (band(floor(x / 65536) * y, 0xffff) * 65536);
+end
+
+local function FNV1A(str)
+	local hash = 2166136261;
+
+	for i = 1, #str do
+		local b = strbyte(str, i);
+		hash = bxor(hash, b);
+		hash = mul(hash, 16777619);
+	end
+
+	return hash;
+end
+
+local FNV1ACache = setmetatable({},
+	{
+		__mode = "k",
+		__index = function(t, k)
+			t[k] = FNV1A(k);
+			return t[k];
+		end,
+	}
+);
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Check size
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local ALERT_FOR_SIZE = 20;
+local cachedPlayerWeight;
+
+local function CalculatePlayerDataWeight()
+	return Comm.estimateStructureLoad(
+		{
+			getCharExchangeData(),
+			getAboutExchangeData(),
+			getMiscExchangeData(),
+			getCharacterExchangeData(),
+		}
+	);
+end
+
+local function RecalculatePlayerDataWeight()
+	cachedPlayerWeight = CalculatePlayerDataWeight();
+end
+
+local function GetPlayerDataWeight()
+	if not cachedPlayerWeight then
+		RecalculatePlayerDataWeight();
+	end
+
+	return cachedPlayerWeight;
+end
+
+local function checkPlayerDataWeight()
+	RecalculatePlayerDataWeight();
+
+	local computedSize = GetPlayerDataWeight();
+	if computedSize > ALERT_FOR_SIZE then
+		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
+		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
+	end
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Vernum queries
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -156,9 +227,79 @@ local infoTypeTab = {
 	registerInfoTypes.ABOUT,
 };
 
+local QueueStrategy =
+{
+	-- The independent queue strategy leaves the role of queuing messages
+	-- to the underlying transport mechanism. Typically this will put all
+	-- messages to a single player in single per-channel queue, and is best
+	-- for small streams of messages.
+	Independent = 1,
+
+	-- The pooled queue strategy uses a fixed set of queues used for all
+	-- comms from the player to other people irrespective of channel. This
+	-- is enabled when dealing with players who are sending profiles above
+	-- a minimum weight threshold.
+	--
+	-- This strategy is best used for larger data transfers where the number
+	-- of people we may be sending data to could be a large number. Using
+	-- pooled queues should improve comms performance for both other addons
+	-- and any metadata-style comms from ourselves.
+	Pooled = 2,
+};
+
+local DEFAULT_QUEUE_POOL_COUNT = 10;
+local MINIMUM_QUEUE_POOL_COUNT = 5;
+local MAXIMUM_QUEUE_POOL_COUNT = 30;
+
+local DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT = 4;
+local MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 1;
+local MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 20;
+
+-- The below is exposed purely for the settings UI; don't rely on these.
+TRP3_API.r.MINIMUM_QUEUE_POOL_COUNT = MINIMUM_QUEUE_POOL_COUNT;
+TRP3_API.r.MAXIMUM_QUEUE_POOL_COUNT = MAXIMUM_QUEUE_POOL_COUNT;
+TRP3_API.r.MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
+TRP3_API.r.MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
+
+local function GetQueuePoolCount()
+	local count = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolCount"));
+
+	if type(count) ~= "number" then
+		count = DEFAULT_QUEUE_POOL_COUNT;
+	end
+
+	return Clamp(count, MINIMUM_QUEUE_POOL_COUNT, MAXIMUM_QUEUE_POOL_COUNT);
+end
+
+local function GetQueuePoolMinimumWeight()
+	local threshold = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolWeightThreshold"));
+
+	if type(threshold) ~= "number" then
+		threshold = DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT;
+	end
+
+	return Clamp(threshold, MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT, MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT);
+end
+
+local function GetSuggestedQueueStrategy(query, infoType, target)  -- luacheck: no unused
+	if query == INFO_TYPE_SEND_PREFIX and GetPlayerDataWeight() >= GetQueuePoolMinimumWeight() then
+		return QueueStrategy.Pooled;
+	else
+		return QueueStrategy.Independent;
+	end
+end
+
 local function GenerateQueueName(query, infoType, target)
-	-- Example queue name: "TRP3-SI-ABOUT-Solanya-Moogle"
-	return string.join("-", tostringall("TRP3", query, string.upper(infoType), target));
+	local strategy = GetSuggestedQueueStrategy(query, infoType, target);
+
+	if strategy == QueueStrategy.Independent then
+		return nil;
+	elseif strategy == QueueStrategy.Pooled then
+		local queueIndex = Wrap(FNV1ACache[target], GetQueuePoolCount());
+		return string.format("TRP3-Queue-%d", queueIndex);
+	else
+		error("unknown queue strategy: " .. tostring(strategy));
+	end
 end
 
 local COMPANION_PREFIX = "comp_";
@@ -435,21 +576,6 @@ local function onTargetChanged()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Check size
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local ALERT_FOR_SIZE = 20;
-
-local function checkPlayerDataWeight()
-	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
-	local computedSize = Comm.estimateStructureLoad(totalData);
-	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile too heavy! It would take %s messages to send."):format(computedSize));
-		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -459,6 +585,9 @@ function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
+
+	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolCount", DEFAULT_QUEUE_POOL_COUNT);
+	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolWeightThreshold", DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID)
 		if unitID == Globals.player_id then
