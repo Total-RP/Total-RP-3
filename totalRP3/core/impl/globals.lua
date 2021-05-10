@@ -79,6 +79,7 @@ TRP3_API.globals = {
 	},
 
 	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
+	is_bcc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC,
 
 	-- Profile Constants
 	PSYCHO_DEFAULT_VALUE_V1 = 3,
