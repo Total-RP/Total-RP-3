@@ -419,7 +419,7 @@ function TRP3_NamePlates:OnRegisterDataUpdated(registerID)
 
 		if unitToken then
 			TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken);
-			self:UpdateNamePlateForUnit(registerID);
+			self:UpdateNamePlateForUnit(unitToken);
 		end
 	end
 end
