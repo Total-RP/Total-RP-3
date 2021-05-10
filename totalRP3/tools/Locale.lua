@@ -1663,11 +1663,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CREDITS_THANK_YOU_ROLE_2 = "Author",
 	CREDITS_THANK_YOU_ROLE_3 = "Developer",
 	CREDITS_THANK_YOU_ROLE_4 = "Community Manager",
-	CREDITS_THANK_YOU_ROLE_5 = "Translator",
-	CREDITS_THANK_YOU_ROLE_6 = "Mascot",
-	CREDITS_THANK_YOU_ROLE_7 = "Tester",
-	CREDITS_THANK_YOU_ROLE_8 = "Guild Member",
-	CREDITS_THANK_YOU_ROLE_9 = "Supporter",
+	CREDITS_THANK_YOU_ROLE_5 = "Mascot",
 
 	CREDITS_VERSION_TEXT = "Version %s",
 	CREDITS_DISCORD_LINK_TEXT = "Join us on Discord",
