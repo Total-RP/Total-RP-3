@@ -25,7 +25,8 @@ local RequestPriority =
 	Friend = 1,  -- Priority used for friended units.
 	Group = 2,   -- Priority used for grouped units.
 	Guild = 3,   -- Priority used for guild members.
-	Normal = 4,  -- Default priority for other units.
+	Nearby = 4,  -- Priority used for nearby units.
+	Normal = 5,  -- Default priority for other units.
 };
 
 local function GetOrCreateTable(t, key)
@@ -44,6 +45,8 @@ local function GetRequestPriority(requestInfo)
 		return RequestPriority.Group;
 	elseif requestInfo.isGuildMember then
 		return RequestPriority.Guild;
+	elseif requestInfo.isNearby then
+		return RequestPriority.Nearby;
 	else
 		return RequestPriority.Normal;
 	end
@@ -205,6 +208,7 @@ function TRP3_NamePlatesRequestQueue:EnqueueUnitQuery(unitToken)
 	-- The fields below are considered dynamic and may be modified while the
 	-- request is enqueued; see UpdateDynamicRequestData for details.
 
+	requestInfo.isNearby = false;
 	requestInfo.priority = RequestPriority.Normal;
 
 	self.requestsInfo[unitToken] = requestInfo;
@@ -239,7 +243,9 @@ end
 
 -- private
 function TRP3_NamePlatesRequestQueue:UpdateDynamicRequestData(requestInfo)
-	-- Priority is dynamic due to grouping information.
+	local RANGE_CHECK_ITEM_ID = 21519;  -- Mistletoe @ 23 yards.
+
+	requestInfo.isNearby = IsItemInRange(RANGE_CHECK_ITEM_ID, requestInfo.unit);
 	requestInfo.priority = GetRequestPriority(requestInfo);
 end
 

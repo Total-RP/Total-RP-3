@@ -363,6 +363,7 @@ stds.wow = {
 		"IsInGroup",
 		"IsInInstance",
 		"IsInRaid",
+		"IsItemInRange",
 		"IsMounted",
 		"IsShiftKeyDown",
 		"IsSpellKnown",
