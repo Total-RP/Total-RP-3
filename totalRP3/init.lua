@@ -38,9 +38,6 @@ TRP3_API.VERSION_DISPLAY = "@project-version@";
 TRP3_API.VERSION_DISPLAY = "-dev";
 --@end-debug@
 
---- Legacy version number (we keep it for now, it should go in the long term)
-TRP3_API.LEGACY_VERSION = 97;
-
 -- Global informations
 -- Note: This table will be overwritten in totalRP3/core/impl/globals.lua
 -- It is here only so that DEBUG_MODE is available from the start
