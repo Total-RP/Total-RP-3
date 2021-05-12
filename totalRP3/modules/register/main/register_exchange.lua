@@ -427,8 +427,8 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 
 	-- Query specific data, depending on version number.
 	TryQueryInformation(senderID, registerInfoTypes.CHARACTERISTICS, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V]);
-	TryQueryInformation(senderID, registerInfoTypes.MISC, structure[VERNUM_QUERY_INDEX_CHARACTER_MISC_V]);
 	TryQueryInformation(senderID, registerInfoTypes.CHARACTER, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V]);
+	TryQueryInformation(senderID, registerInfoTypes.MISC, structure[VERNUM_QUERY_INDEX_CHARACTER_MISC_V]);
 	TryQueryInformation(senderID, registerInfoTypes.ABOUT, structure[VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V]);
 
 	-- Battle pet
