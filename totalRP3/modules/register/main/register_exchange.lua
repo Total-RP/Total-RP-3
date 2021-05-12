@@ -45,7 +45,6 @@ local displayMessage = TRP3_API.utils.message.displayMessage;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- WoW imports
-local time, type, pairs, tonumber = GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
 
 -- Character name for profile opening command
@@ -209,7 +208,7 @@ function createVernumQuery()
 end
 
 local function checkCooldown(unitID, structure)
-	return not structure[unitID] or time() - structure[unitID] > COOLDOWN_DURATION;
+	return not structure[unitID] or GetTime() - structure[unitID] > COOLDOWN_DURATION;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -219,13 +218,6 @@ end
 
 -- We will store new versions alerts to remember how many people notified us of a new version.
 local newVersionAlerts, extendedNewVersionAlerts = {}, {};
-
-local infoTypeTab = {
-	registerInfoTypes.CHARACTERISTICS,
-	registerInfoTypes.MISC,
-	registerInfoTypes.CHARACTER,
-	registerInfoTypes.ABOUT,
-};
 
 local QueueStrategy =
 {
@@ -368,13 +360,20 @@ end
 --- Send vernum request to the player
 local function sendQuery(unitID)
 	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID, LAST_QUERY) then
-		LAST_QUERY[unitID] = time();
+		LAST_QUERY[unitID] = GetTime();
 		LAST_QUERY_STAT[unitID] = LAST_QUERY[unitID];
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
 	end
 end
 TRP3_API.r.sendQuery = sendQuery;
+
+local function TryQueryInformation(target, infoType, currentData)
+	if shouldUpdateInformation(target, infoType, currentData) then
+		log(("Should update: %s's %s"):format(target, infoType));
+		queryInformationType(target, infoType);
+	end
+end
 
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
@@ -394,7 +393,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	-- First send back or own vernum
 	if sendBack then
 		if checkCooldown(senderID, LAST_QUERY_R) then
-			LAST_QUERY_R[senderID] = time();
+			LAST_QUERY_R[senderID] = GetTime();
 			local query = createVernumQuery();
 			Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 		end
@@ -427,14 +426,10 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	saveCurrentProfileID(senderID, senderProfileID);
 
 	-- Query specific data, depending on version number.
-	local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
-	for _, infoType in pairs(infoTypeTab) do
-		if shouldUpdateInformation(senderID, infoType, structure[index]) then
-			log(("Should update: %s's %s"):format(senderID, infoType));
-			queryInformationType(senderID, infoType);
-		end
-		index = index + 1;
-	end
+	TryQueryInformation(senderID, registerInfoTypes.CHARACTERISTICS, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V]);
+	TryQueryInformation(senderID, registerInfoTypes.MISC, structure[VERNUM_QUERY_INDEX_CHARACTER_MISC_V]);
+	TryQueryInformation(senderID, registerInfoTypes.CHARACTER, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V]);
+	TryQueryInformation(senderID, registerInfoTypes.ABOUT, structure[VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V]);
 
 	-- Battle pet
 	local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
@@ -478,7 +473,7 @@ function queryInformationType(unitName, informationType)
 	if not CURRENT_QUERY_EXCHANGES[unitName] then
 		CURRENT_QUERY_EXCHANGES[unitName] = {};
 	end
-	CURRENT_QUERY_EXCHANGES[unitName][informationType] = time();
+	CURRENT_QUERY_EXCHANGES[unitName][informationType] = GetTime();
 	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
 end
 
