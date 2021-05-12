@@ -1,3 +1,13 @@
+# Changelog version 2.3.5
+
+## Added
+
+- Added support for Burning Crusade Classic.
+
+## Fixed
+
+- Fixed several performance issues when requesting character profiles.
+
 # Changelog version 2.3.4
 
 ## Fixed

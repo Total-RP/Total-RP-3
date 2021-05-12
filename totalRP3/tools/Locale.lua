@@ -1677,6 +1677,18 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
 	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cffff0000severely deteriorate|r the performance of all addon communications.",
 
+	WHATS_NEW_24_8 = [[# Changelog version 2.3.5
+
+## Added
+
+- Added support for Burning Crusade Classic.
+
+## Fixed
+
+- Fixed several performance issues when requesting character profiles.
+
+	]],
+
 };
 
 -- Use Ellyb to generate the Localization system
