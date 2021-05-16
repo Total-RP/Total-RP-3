@@ -31,11 +31,10 @@ local CompareResult =
 -- for sorting; lower values have a higher priority.
 local RequestPriority =
 {
-	Friend = 1, -- Priority used for friended units.
-	Group = 2,  -- Priority used for grouped units.
-	Guild = 3,  -- Priority used for guild members.
-	Nearby = 4, -- Priority used for nearby units.
-	Normal = 5, -- Default priority for other units.
+	Friend = 1,  -- Priority used for friended units.
+	Group = 2,   -- Priority used for grouped units.
+	Guild = 3,   -- Priority used for guild members.
+	Normal = 4,  -- Default priority for other units.
 };
 
 --
@@ -57,6 +56,8 @@ local function GetUnitDistance(unit)
 		return 11;  -- Trade (11 yards)
 	elseif IsItemInRange(21519, unit) then
 		return 23;  -- Mistletoe (23 yards)
+	elseif IsItemInRange(1180, unit) then
+		return 33;  -- Scroll of Stamina (33 yards)
 	else
 		return 60;  -- Max nameplate range (60 yards).
 	end
@@ -78,23 +79,21 @@ TRP3_NamePlatesRequestMixin = {};
 --
 -- Lower values mean these units will be requested sooner when they appear
 -- on screen, higher values reduce bandwidth.
-TRP3_NamePlatesRequestMixin.DefaultPriorityCooldown = 3;
+TRP3_NamePlatesRequestMixin.PresubmitCooldown = 3;
 
 -- Yards to which nameplate distance is rounded down to be a multiple of.
 TRP3_NamePlatesRequestMixin.DistanceRounding = 5;
 
--- Initial cooldown applied for "nearby" nameplates at a rate of 1 yard per
--- the below value rounded to the DistanceRounding value.
+-- Initial cooldown applied for nameplates at a rate of 1 yard per the below
+-- value rounded to the DistanceRounding value.
 --
 -- Lower values mean nameplates that are requested for possibly unrelated
 -- units will be requested sooner, whereas higher values will increase the
 -- amount of time such a unit has to be on-screen for.
 TRP3_NamePlatesRequestMixin.DistanceCooldownScaling = 0.4;
 
--- Distance at which nameplates are considered as "nearby". Nameplates that
--- do not meet any other priority criteria and aren't nearby are not requested
--- to conserve bandwidth.
-TRP3_NamePlatesRequestMixin.NearbyDistanceYards = 35;
+-- Distance at which nameplates can be requested if not otherwise prioritized.
+TRP3_NamePlatesRequestMixin.DistanceLimit = 35;
 
 function TRP3_NamePlatesRequestMixin:Init(unit)
 	self:SetUnit(unit);
@@ -155,8 +154,8 @@ function TRP3_NamePlatesRequestMixin:Clear()
 	self.extraCooldown = 0;
 
 	self.distance = math.huge;
-	self.inGroup = false;
 	self.isFriend = false;
+	self.isGrouped = false;
 	self.isGuildMember = false;
 end
 
@@ -165,50 +164,40 @@ function TRP3_NamePlatesRequestMixin:Update()
 	-- so are recalculated on each update.
 
 	self.distance = GetUnitDistance(self.unit);
-	self.inGroup = UnitInParty(self.unit) or UnitInRaid(self.unit);
+	self.isGrouped = UnitInParty(self.unit) or UnitInRaid(self.unit);
 
 	-- Priority is dynamic based on these attributes.
 
-	local NEARBY_DISTANCE_YARDS = 25;
-
 	if self.isFriend then
 		self.priority = RequestPriority.Friend;
-	elseif self.inGroup then
+	elseif self.isGrouped then
 		self.priority = RequestPriority.Group;
 	elseif self.isGuildMember then
 		self.priority = RequestPriority.Guild;
-	elseif self.distance < NEARBY_DISTANCE_YARDS then
-		self.priority = RequestPriority.Nearby;
 	else
 		self.priority = RequestPriority.Normal;
 	end
 
 	-- And then eligiblity time is also dynamic.
+	self.eligibleAt = self.enqueuedAt + self:CalculatePresubmitCooldown();
+end
 
-	do
-		local priorityCooldown;
+function TRP3_NamePlatesRequestMixin:CalculatePresubmitCooldown()
+	local rounding = self.DistanceRounding;
+	local distance = math.floor(self.distance / rounding) * rounding;
 
-		if self.priority == RequestPriority.Normal then
-			-- "Normal" priority means the unit wasn't nearby nor prioritised
-			-- in any other way. These are never requested due to bandwidth.
+	local priorityCooldown;
 
-			priorityCooldown = math.huge;
-		elseif self.priority == RequestPriority.Nearby then
-			-- "Nearby" units have a delay that scales by distance linearly,
-			-- with the yards rounded down to a configured multiple.
-
-			local rounding = self.DistanceRounding;
-			local scaling = self.DistanceCooldownScaling;
-
-			local distance = math.floor(self.distance / rounding) * rounding;
-			priorityCooldown = distance * scaling;
-		else
-			-- All other priority levels are higher and have a fixed delay.
-			priorityCooldown = self.DefaultPriorityCooldown;
-		end
-
-		self.eligibleAt = self.enqueuedAt + priorityCooldown + self.extraCooldown;
+	if self.priority ~= RequestPriority.Normal then
+		priorityCooldown = self.PresubmitCooldown;
+	elseif distance >= self.DistanceLimit then
+		priorityCooldown = math.huge;  -- Out of range.
+	else
+		local scaling = self.DistanceCooldownScaling;
+		priorityCooldown = distance * scaling;
 	end
+
+	return priorityCooldown + self.extraCooldown;
 end
 
 function TRP3_NamePlatesRequestMixin:CanSubmit()
