@@ -34,16 +34,6 @@ jobs:
           name: totalRP3-PR-${{ github.event.number }}
           path: .release/
 
-      - name: Create Classic Package
-        uses: BigWigsMods/packager@master
-        with:
-          args: -d -z -g classic
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: totalRP3-PR-${{ github.event.number }}-classic
-          path: .release/
-
       - name: Send Webhook Notification
         if: failure()
         run: |
