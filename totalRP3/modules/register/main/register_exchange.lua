@@ -737,7 +737,7 @@ function TRP3_API.slash.openProfile(...)
 	end
 
 	sendQuery(characterToOpen);
-	AddOn_TotalRP3.MSP.RequestCharacterProfile(characterToOpen);
+	AddOn_TotalRP3.MSP.RequestCharacterProfile(characterToOpen, AddOn_TotalRP3.MSP.RequestType.Full);
 	-- If we already have a profile for that user in the registry, we open it and reset the name (so it doesn't try to open again afterwards)
 	if characterToOpen == TRP3_API.globals.player_id or (isUnitIDKnown(characterToOpen) and hasProfile(characterToOpen)) then
 		TRP3_API.navigation.openMainFrame();
