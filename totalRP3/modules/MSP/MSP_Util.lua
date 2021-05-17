@@ -588,9 +588,9 @@ function TRP3_MSPUtil.ReadCharacterData(characterID, output)
 	-- Roleplay Experience
 
 	if source.FR == "4" then
-		output.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
-	else
 		output.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.BEGINNER;
+	else
+		output.XP = AddOn_TotalRP3.Enums.ROLEPLAY_EXPERIENCE.EXPERIENCED;
 	end
 
 	return output;
