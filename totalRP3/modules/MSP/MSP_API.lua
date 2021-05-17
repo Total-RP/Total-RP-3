@@ -26,11 +26,13 @@ end
 
 function AddOn_TotalRP3.MSP.RequestCharacterProfile(characterName, requestType, options)
 	if type(characterName) ~= "string" then
-		error(string.format("RequestCharacterProfile: 'characterName' must be a string"));
-	elseif options and type(options) ~= "table" then
-		error(string.format("RequestCharacterProfile: 'options' must be a table or nil"));
-	elseif options and options.skipProbe and type(options.skipProbe) ~= "boolean" then
-		error(string.format("RequestCharacterProfile: 'options.skipProbe' must be a boolean or nil"));
+		error("RequestCharacterProfile: 'characterName' must be a string");
+	elseif type(requestType) ~= "number" then
+		error("RequestCharacterProfile: 'requestType' must be a number");
+	elseif options ~= nil and type(options) ~= "table" then
+		error("RequestCharacterProfile: 'options' must be a table or nil");
+	elseif options ~= nil and options.skipProbe and type(options.skipProbe) ~= "boolean" then
+		error("RequestCharacterProfile: 'options.skipProbe' must be a boolean or nil");
 	end
 
 	return TRP3_MSP:SendRequest(characterName, requestType, options);
