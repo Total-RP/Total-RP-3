@@ -46,9 +46,6 @@
 
 	<Script file="main\register_glance.lua" />
 
-	<Script file="msp\Fields.lua" />
-	<Script file="msp\register_msp.lua" />
-
 	<Frame name="TRP3_CursorFrame" parent="UIParent" hidden="true">
 		<Size x="30" y="30" />
 		<Anchors>

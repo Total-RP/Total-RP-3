@@ -126,4 +126,5 @@
 	<Include file="ChatLinks\ChatLinks.xml"/>
 	<Include file="UnitPopups\UnitPopups.xml"/>
 	<Include file="NamePlates\NamePlates.xml"/>
+	<Include file="MSP\MSP.xml"/>
 </Ui>

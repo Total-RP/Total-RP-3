@@ -257,7 +257,7 @@ function TRP3_NamePlatesRequestQueue:SubmitRequest(requestInfo)
 	self:DequeueUnitQuery(unitToken);
 
 	TRP3_API.r.sendQuery(registerID);
-	TRP3_API.r.sendMSPQuery(registerID);
+	AddOn_TotalRP3.MSP.RequestCharacterProfile(registerID, AddOn_TotalRP3.MSP.RequestType.NamePlate);
 
 	self.postSubmitCooldowns[registerID] = GetTime() + TRP3_NamePlatesRequestQueue.PostSubmitCooldown;
 end

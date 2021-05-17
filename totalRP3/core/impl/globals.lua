@@ -88,6 +88,7 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V2 = 20,
 	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(255, 140, 26):Freeze(),
 	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
+	MAX_GLANCE_COUNT = 5,
 };
 
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.
