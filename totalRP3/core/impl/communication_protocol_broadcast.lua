@@ -122,14 +122,16 @@ function Comm.broadcast.registerCommand(command, callback)
 end
 
 local SetChannelPasswordOld = SetChannelPassword;
-SetChannelPassword = function(data, password)
-	local _, channelName = GetChannelName(data);
-	if channelName ~= config_BroadcastChannel() or password == "" then
-		SetChannelPasswordOld(data, password);
-	else
-		-- We totally changed it :fatcat:
-		local message = loc.BROADCAST_PASSWORD:format(data);
-		Utils.message.displayMessage(message);
+if not (Globals.is_classic or Globals.is_bcc) then
+	SetChannelPassword = function(data, password)
+		local _, channelName = GetChannelName(data);
+		if channelName ~= config_BroadcastChannel() or password == "" then
+			SetChannelPasswordOld(data, password);
+		else
+			-- We totally changed it :fatcat:
+			local message = loc.BROADCAST_PASSWORD:format(data);
+			Utils.message.displayMessage(message);
+		end
 	end
 end
 
@@ -350,12 +352,14 @@ Comm.broadcast.init = function()
 		end
 	end);
 
-	-- For when someone just places a password
-	Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
-		if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
-			SetChannelPasswordOld(config_BroadcastChannel(), "");
-		end
-	end);
+	if not (Globals.is_classic or Globals.is_bcc) then
+		-- For when someone just places a password
+		Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
+			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then
+				SetChannelPasswordOld(config_BroadcastChannel(), "");
+			end
+		end);
+	end
 
 	-- When you are already in 10 channel
 	Utils.event.registerHandler("CHAT_MSG_SYSTEM", function(message)
