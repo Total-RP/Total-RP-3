@@ -15,8 +15,7 @@ Please select any applicable options from the below list.
 
 > You can replace the "[ ]" with "[x]" for each option below to tick it.
 
-- [ ] The issue occurs with the [latest Retail version] of the addon.
-- [ ] The issue occurs with the [latest Classic version] of the addon.
+- [ ] The issue occurs with the [latest version] of the addon.
 - [ ] The issue occurs with Total RP 3 as the only enabled addon.
 - [ ] The issue occurs only with other addon(s) enabled (please provide a list).
 
@@ -35,5 +34,4 @@ Please attach any additional applicable files such as screenshots, [error logs],
 
 [error logs]: https://www.curseforge.com/wow/addons/bugsack
 [profile data files]: https://github.com/Total-RP/Total-RP-3/wiki/Saved-Variables
-[latest Retail version]: https://www.curseforge.com/wow/addons/total-rp-3/files
-[latest Classic version]: https://www.curseforge.com/wow/addons/total-rp-3-classic/files
+[latest version]: https://www.curseforge.com/wow/addons/total-rp-3/files
