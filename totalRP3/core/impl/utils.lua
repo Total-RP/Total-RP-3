@@ -1115,7 +1115,7 @@ function Utils.music.playSoundFileID(soundFileID, channel, source)
 	assert(soundFileID, "soundFileID can't be nil.")
 	local willPlay, handlerID = PlaySoundFile(soundFileID, channel);
 	if willPlay then
-		tinsert(soundHandlers, {channel = channel, id = soundFileID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});
+		tinsert(soundHandlers, {channel = channel, id = soundFileID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false, soundFile = true});
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
