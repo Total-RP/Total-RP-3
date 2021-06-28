@@ -1,3 +1,14 @@
+# Changelog version 2.3.6
+
+## Added
+
+- Added 323 new icons, X images and 138 new music files from patch 9.1.0.
+
+## Removed
+
+- Removed the roleplay language flag.
+- Fixed a bug with chat channels on Classic.
+
 # Changelog version 2.3.5
 
 ## Added

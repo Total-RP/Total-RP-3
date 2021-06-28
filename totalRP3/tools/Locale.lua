@@ -1633,19 +1633,11 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
-
-	WHATS_NEW_24_7 = [[# Changelog version 2.3.4
-
-## Fixed
-
-- Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
-
-]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
+	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
+	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
+	CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION = "Controls the size of the queue pool used for profile communications.|n|nLower values will reduce latency of addon communications for non-RP profile data, but may increase the amount of time before other players begin to receive any profile data at all in high load scenarios.",
+	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
+	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cffff0000severely deteriorate|r the performance of all addon communications.",
 
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
@@ -1671,12 +1663,14 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	CREDITS_NAME_WITH_ROLE = "%1$s (%2$s)",
 	CREDITS_GUILD_NAME = "<%1$s>",
 
-	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
-	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
-	CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION = "Controls the size of the queue pool used for profile communications.|n|nLower values will reduce latency of addon communications for non-RP profile data, but may increase the amount of time before other players begin to receive any profile data at all in high load scenarios.",
-	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD = "Queue pool data weight threshold",
-	CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION = "Controls the minimum weight your RP profile data must be before queue pools will be used.|n|nFor larger profiles, increasing this value may |cffff0000severely deteriorate|r the performance of all addon communications.",
 
+	WHATS_NEW_24_7 = [[# Changelog version 2.3.4
+
+## Fixed
+
+- Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
+
+]],
 	WHATS_NEW_24_8 = [[# Changelog version 2.3.5
 
 ## Added
@@ -1686,6 +1680,24 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 ## Fixed
 
 - Fixed several performance issues when requesting character profiles.
+
+	]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_24_9 = [[# Changelog version 2.3.6
+
+## Added
+
+- Added 323 new icons, X images and 138 new music files from patch 9.1.0.
+
+## Removed
+
+- Removed the roleplay language flag.
+- Fixed a bug with chat channels on Classic.
 
 	]],
 
