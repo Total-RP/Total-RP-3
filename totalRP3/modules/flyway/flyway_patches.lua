@@ -144,14 +144,8 @@ TRP3_API.flyway.patches["10"] = function()
 end
 
 TRP3_API.flyway.patches["11"] = function()
-	-- Add in the Roleplay Language (LC) field.
-	if TRP3_Profiles then
-		for _, profile in pairs(TRP3_Profiles) do
-			if profile.player and profile.player.character then
-				profile.player.character.LC = TRP3_Configuration["AddonLocale"] or GetLocale();
-			end
-		end
-	end
+	-- This patch used to add the Roleplay Language (LC) field, however this
+	-- has been removed as of 2021/04.
 end
 
 -- Migrate from register from "BlackList" to "BlockList" and "WhiteList" to "SafeList" naming conventions.

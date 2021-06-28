@@ -70,8 +70,6 @@ local function onStart()
 		else
 			msp.my['FC'] = "1";
 		end
-
-		msp.my["LC"] = character.LC;
 	end
 
 	local function removeTextTags(text)
@@ -206,7 +204,7 @@ local function onStart()
 	local SUPPORTED_FIELDS = {
 		"VA", "NA", "NH", "NI", "NT", "RA", "CU", "FR", "FC", "PX", "RC",
 		"IC", "CO", "PE", "HH", "AG", "AE", "HB", "AH", "AW", "MO", "DE",
-		"HI", "TR", "MU", "RS", "PS", "LC", "PN"
+		"HI", "TR", "MU", "RS", "PS", "PN"
 	};
 
 	local CHARACTERISTICS_FIELDS = {
@@ -228,7 +226,6 @@ local function onStart()
 
 	local CHARACTER_FIELDS = {
 		FR = true, FC = true, CU = true, VA = true, CO = true, TR = true,
-		LC = true,
 	}
 
 	local MISC_FIELDS = {
@@ -462,8 +459,6 @@ local function onStart()
 							end
 						elseif field == "TR" then
 							character.isTrial = tonumber(value);
-						elseif field == "LC" then
-							profile.character.LC = value;
 						end
 					elseif MISC_FIELDS[field] then
 						if field == "PE" and value then

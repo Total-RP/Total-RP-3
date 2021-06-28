@@ -129,19 +129,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				return;
 			end
 
-			local oldLocale = Configuration.getValue("AddonLocale");
 			Configuration.setValue("AddonLocale", newLocaleCode);
-
-			-- If the user has any profiles that have an LC field matching
-			-- that of the locale we're swapping from, we'll assume they
-			-- probably want that changed. We could prompt, but we're
-			-- already doing that to reload the UI.
-			for _, profile in pairs(TRP3_Profiles) do
-				if profile.player and profile.player.character and profile.player.character.LC == oldLocale then
-					profile.player.character.LC = newLocaleCode;
-				end
-			end
-
 			TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(Ellyb.ColorManager.GREEN(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
 		end,
 		listDefault = loc:GetActiveLocale():GetName(),
