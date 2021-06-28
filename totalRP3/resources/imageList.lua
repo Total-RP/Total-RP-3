@@ -458,6 +458,11 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_SanctumofDomination",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_Shadowlands",
 		width = 128,
 		height = 128
@@ -1416,6 +1421,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SanctumOfDomination",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-SanguineDepths",
 		width = 256,
 		height = 256
@@ -1481,6 +1490,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Summer",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TazaveshTheVeiledMarket",
 		width = 256,
 		height = 256
 	}, {
@@ -2147,6 +2160,22 @@ local IMAGES = {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ReturntoKarazhan",
 		width = 256,
 		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing4Q",
+		width = 512,
+		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanguineDepths",
 		width = 256,

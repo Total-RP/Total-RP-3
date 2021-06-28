@@ -2,7 +2,7 @@
 
 ## Added
 
-- Added 323 new icons, X images and 138 new music files from patch 9.1.0.
+- Added 323 new icons, 7 images and 138 new music files from patch 9.1.0.
 
 ## Removed
 
