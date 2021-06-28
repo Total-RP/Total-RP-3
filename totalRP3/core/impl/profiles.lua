@@ -612,11 +612,6 @@ function TRP3_API.profile.init()
 					if data.player and data.player.about and data.player.about.MU and type(data.player.about.MU) == "string" then
 						profiles[profileID].player.about.MU = Utils.music.convertPathToID(data.player.about.MU);
 					end
-
-					-- Default preferred locale appropriately.
-					if data.character and not data.character.LC then
-						data.character.LC = getConfigValue("AddonLocale") or GetLocale();
-					end
 				end
 
 				TRP3_ProfileImport:Hide();

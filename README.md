@@ -52,10 +52,6 @@ Also, Total RP 3 is a fully modular add-on. So even if it will greatly expand in
 
 This awesome module brings the new creation system. Create items, readable documents, campaigns with quests, customized NPCs and dialogs, loots. Use the inventory system to show items you are wearing and inspect other players' inventory. Create stashes that other players will be able to inspect. Trade items with other players safely thanks to our security level system that allows you to define authorizations per item and be sure you won't suddenly shout weird stuff because of a cursed item!
 
-### [Total RP 3: KuiNameplates module](https://www.curseforge.com/wow/addons/total-rp-3-kuinameplates-module), by Ellypse
-
-This module adds several customizations to [KuiNameplates](https://www.curseforge.com/wow/addons/kuinameplates) like displaying colored full RP names in the nameplates of players, customize pet names and even hide nameplates of non-RP players!
-
 ### [TRP3 Currently Frame](https://www.curseforge.com/wow/addons/trp3-currently-frame), by tammymg
 
 Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.

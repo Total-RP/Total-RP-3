@@ -36,8 +36,7 @@ local function IncrementCharacterDataVersion(player)
 	local character = player:GetInfo("character");
 	character.v = Utils.math.incrementNumber(character.v or 1, 2);
 
-	Events.fireEvent(Events.REGISTER_DATA_UPDATED,
-		Globals.player_id, player:GetProfileID(), "character");
+	Events.fireEvent(Events.REGISTER_DATA_UPDATED, Globals.player_id, player:GetProfileID(), "character");
 end
 
 -- Mixin for the top-level status frame panel.
@@ -46,16 +45,13 @@ TRP3_DashboardStatusPanelMixin = DashboardStatusPanelMixin;
 
 -- Handler called when the frame is loaded.
 function DashboardStatusPanelMixin:OnLoad()
-	-- Connect to addon events.
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED,
-		function(...) self:OnWorkflowLoaded(...); end);
+	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:OnWorkflowLoaded(...); end);
 end
 
 -- Handler called when addon workflow reaches the loaded state.
 function DashboardStatusPanelMixin:OnWorkflowLoaded()
 	-- Defer registering config handlers to here, since OnLoad is too early.
-	Config.registerHandler({ "AddonLocale" },
-		function(...) self:OnLocaleChanged(...); end);
+	Config.registerHandler({ "AddonLocale" }, function(...) self:OnLocaleChanged(...); end);
 
 	self:LocalizeUI();
 end
@@ -71,7 +67,6 @@ function DashboardStatusPanelMixin:LocalizeUI()
 
 	self.RPStatusLabel:SetText(L.DB_STATUS_RP);
 	self.XPStatusLabel:SetText(L.DB_STATUS_XP);
-	self.RPLanguageLabel:SetText(L.DB_STATUS_LC);
 end
 
 -- Mixin for dropdown menus on the dashboard status panel.
@@ -80,11 +75,8 @@ TRP3_DashboardStatusMenuMixin = DashboardStatusMenuMixin;
 
 -- Handler called when the menu frame is loaded.
 function DashboardStatusMenuMixin:OnLoad()
-	-- Connect to addon events.
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED,
-		function(...) self:OnWorkflowLoaded(...); end);
-	Events.registerCallback(Events.REGISTER_DATA_UPDATED,
-		function(...) self:OnRegisterDataUpdated(...); end);
+	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:OnWorkflowLoaded(...); end);
+	Events.registerCallback(Events.REGISTER_DATA_UPDATED, function(...) self:OnRegisterDataUpdated(...); end);
 end
 
 -- Handler called when the menu frame is shown.
@@ -379,74 +371,5 @@ end
 	end
 
 	character.XP = button.value;
-	IncrementCharacterDataVersion(currentUser);
-end
-
--- Mixin for the Roleplay Language dashboard menu.
-local DashboardRPLanguageMenuMixin = CreateFromMixins(DashboardStatusMenuMixin);
-TRP3_DashboardRPLanguageMenuMixin = DashboardRPLanguageMenuMixin;
-
--- Handler called when the cursor enters the region for this menu.
-function DashboardRPLanguageMenuMixin:OnEnter()
-	TRP3_MainTooltip:SetOwner(self, "ANCHOR_RIGHT");
-	TRP3_MainTooltip:ClearLines();
-	GameTooltip_SetTitle(TRP3_MainTooltip, L.DB_STATUS_LC);
-	GameTooltip_AddNormalLine(TRP3_MainTooltip, L.DB_STATUS_LC_TT, true);
-	TRP3_MainTooltip:Show();
-end
-
-function DashboardRPLanguageMenuMixin:OnLeave()
-	TRP3_MainTooltip:Hide();
-end
-
---[[override]] function DashboardRPLanguageMenuMixin:GetMenuItemText(itemValue)
-	if type(itemValue) ~= "string" then
-		-- Protect against assertion failures.
-		return;
-	end
-
-	local locale = L:GetLocale(itemValue);
-	return locale and locale:GetName() or nil;
-end
-
---[[override]] function DashboardRPLanguageMenuMixin:GetSelectedMenuItem()
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	return currentUser:GetRoleplayLanguage();
-end
-
---[[override]] function DashboardRPLanguageMenuMixin:OnMenuInitialize(level)
-	DashboardStatusMenuMixin.OnMenuInitialize(self, level);
-
-	-- Grab all the registered locale codes and sort them.
-	local localeCodes = {};
-	for localeCode in pairs(L:GetLocales(true)) do
-		table.insert(localeCodes, localeCode);
-	end
-
-	table.sort(localeCodes);
-
-	-- Add all the locales to the menu.
-	for _, localeCode in ipairs(localeCodes) do
-		local locale = L:GetLocale(localeCode);
-
-		local item = self:CreateMenuItem();
-		item.value = localeCode;
-		item.text = locale:GetName();
-		self:AddButtonToMenu(item, level);
-	end
-end
-
---[[override]] function DashboardRPLanguageMenuMixin:OnMenuButtonClicked(button)
-	DashboardStatusMenuMixin.OnMenuButtonClicked(self, button);
-
-	-- Update the character data on the current user profile.
-	local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-	local character = currentUser:GetInfo("character");
-	if character.LC == button.value then
-		-- Value isn't changing.
-		return;
-	end
-
-	character.LC = button.value;
 	IncrementCharacterDataVersion(currentUser);
 end

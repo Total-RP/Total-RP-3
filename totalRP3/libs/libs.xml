@@ -25,7 +25,6 @@
 	<Include file="LibCompress\lib.xml"/>
 	<Include file="LibDataBroker-1.1\LibDataBroker-1.1.lua"/>
 	<Include file="LibDBIcon-1.0\lib.xml"/>
-	<Include file="LibRealmInfo\LibRealmInfo.lua"/>
 	<Include file="MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml"/>
 	<Include file="Ellyb\Ellyb.xml"/>
 	<Include file="LibMSP\LibMSP.xml"/>

@@ -192,7 +192,7 @@ function Player:IsInCharacter()
 end
 
 function Player:GetRoleplayLanguage()
-	return self:GetInfo("character/LC");
+	return nil;  -- Deprecated, will remove soon.
 end
 
 function Player:GetRoleplayExperience()
