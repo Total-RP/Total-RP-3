@@ -1633,7 +1633,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 
-
 	WHATS_NEW_24_7 = [[# Changelog version 2.3.4
 
 ## Fixed
@@ -1641,12 +1640,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	CREDITS_THANK_YOU_SECTION_1 = [[{h1:c}Total RP 3{/h1}]],
 	CREDITS_THANK_YOU_SECTION_2 = [[{h2}%1$s Created by{/h2}]],
 	CREDITS_THANK_YOU_SECTION_3 = [[{h2}%1$s The Rest of the Team{/h2}]],
@@ -1688,6 +1681,15 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed several performance issues when requesting character profiles.
 
 	]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	MSP_MODULE_NAME = "Mary Sue Protocol",
+	MSP_MODULE_DESCRIPTION = "Module providing compatibility with the MSP protocol used by other RP addons.",
+	MSP_MODULE_DISABLED_CONFLICT = "Module disabled due to conflicting addon: %1$s",
 
 };
 

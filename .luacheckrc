@@ -352,6 +352,7 @@ stds.wow = {
 		"GetStablePetInfo",
 		"GetSubZoneText",
 		"GetTime",
+		"GetValueOrCallFunction",
 		"GetZonePVPInfo",
 		"GetZoneText",
 		"HideUIPanel",
