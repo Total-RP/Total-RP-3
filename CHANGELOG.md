@@ -1,3 +1,12 @@
+# Changelog version 2.3.7
+
+This version is updated for TBC Classic 2.5.2.
+
+# Fixed
+
+- 9.1 icons and musics have been properly added for retail.
+- Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
+
 # Changelog version 2.3.6
 
 ## Added

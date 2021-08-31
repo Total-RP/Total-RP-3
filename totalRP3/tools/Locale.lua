@@ -1682,12 +1682,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed several performance issues when requesting character profiles.
 
 	]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_24_9 = [[# Changelog version 2.3.6
 
 ## Added
@@ -1700,6 +1694,22 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a bug with chat channels on Classic.
 
 	]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_24_10 = [[# Changelog version 2.3.7
+
+This version is updated for TBC Classic 2.5.2.
+
+# Fixed
+
+- 9.1 icons and musics have been properly added for retail.
+- Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
+
+]],
 
 };
 
