@@ -157,7 +157,7 @@
 		GENERAL SETTINGS
 	-->
 
-	<Frame name="TRP3_ConfigurationPage" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ConfigurationPage" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 		</KeyValues>

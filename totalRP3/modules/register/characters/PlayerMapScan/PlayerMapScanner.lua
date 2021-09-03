@@ -138,7 +138,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 				return false;
 			end
 		else
-			-- Classic 1.13.3: with the scan moving to YELL, we're forbidding scans in another zone than the one you're in.
+			-- Classic/BCC: with the scan moving to YELL, we're forbidding scans in another zone than the one you're in.
 			if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
 				return false;
 			end

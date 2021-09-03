@@ -64,7 +64,7 @@
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterDefault" inherits="TRP3_BackdropTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterDefault" inherits="BackdropTemplate" frameLevel="2">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="2" y="-28" />
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />

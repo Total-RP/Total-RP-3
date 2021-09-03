@@ -20,7 +20,7 @@
 
 	<Frame name="TRP3_ProfileImporterLine" inherits="TRP3_ProfileManagerLine" virtual="true" />
 
-	<Frame name="TRP3_ImporterTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ImporterTemplate" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 		</KeyValues>

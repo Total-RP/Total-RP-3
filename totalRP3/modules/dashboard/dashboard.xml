@@ -31,7 +31,7 @@
 	<Include file="StatusPanel.xml"/>
 
 	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
 		</KeyValues>

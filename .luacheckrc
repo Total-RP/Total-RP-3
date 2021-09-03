@@ -454,7 +454,6 @@ stds.wow = {
 			},
 		},
 
-		"BackdropTemplateMixin",
 		"BaseMapPoiPinMixin",
 		"ChatFrame1EditBox",
 		"ChatTypeInfo",

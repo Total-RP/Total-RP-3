@@ -306,7 +306,7 @@ Comm.broadcast.init = function()
 	-- When we receive a broadcast or a P2P response
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
 
-	-- No broadcast channel on Classic (1.13.3) or BCC
+	-- No broadcast channel on Classic or BCC
 	if Globals.is_classic or Globals.is_bcc then
 		TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
 		return

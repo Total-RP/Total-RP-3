@@ -133,7 +133,7 @@
 
 	<Frame name="TRP3_RegisterList" hidden="true">
 		<Frames>
-			<Frame name="TRP3_RegisterListContainer" parentKey="Container" inherits="TRP3_BackdropTemplate">
+			<Frame name="TRP3_RegisterListContainer" parentKey="Container" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 				</KeyValues>

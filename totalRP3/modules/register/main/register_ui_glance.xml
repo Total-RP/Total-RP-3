@@ -41,7 +41,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_3353" type="global"/>
 		</KeyValues>

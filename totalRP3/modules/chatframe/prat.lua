@@ -24,19 +24,6 @@ end
 ---@type TRP3_API
 local _, TRP3_API = ...;
 
-local function GUIDIsPlayer(guid)
-	if type(guid) ~= "string" then
-		return false;
-	end
-
-	if C_PlayerInfo.GUIDIsPlayer then
-		return C_PlayerInfo.GUIDIsPlayer(guid);
-	else
-		-- Classic: Lacks C_PlayerInfo.GUIDIsPlayer, this is how it works though.
-		return string.find(guid, "^Player%-") ~= nil;
-	end
-end
-
 Prat:AddModuleToLoad(function()
 	local PRAT_MODULE = Prat:RequestModuleName("Total RP 3")
 	local pratModule = Prat:NewModule(PRAT_MODULE);
@@ -71,7 +58,7 @@ Prat:AddModuleToLoad(function()
 		if TRP3_API.chat.disabledByOOC() then return end;
 
 		-- If the message has no GUID (system?) or an invalid GUID (WIM >:( ) we don't have anything to do with this
-		if not message.GUID or not GUIDIsPlayer(message.GUID) then return end;
+		if not message.GUID or not C_PlayerInfo.GUIDIsPlayer(message.GUID) then return end;
 
 		-- Do not do any modification if the channel is not handled by TRP3 or customizations has been disabled
 		-- for that channel in the settings
