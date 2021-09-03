@@ -404,7 +404,7 @@ end
 TRP3_TooltipMixin = {};
 
 function TRP3_TooltipMixin:SetCenterColor(r, g, b, a)
-	if not self.SetBackdropBorderColor then
+	if not self.SetBackdropColor then
 		self.NineSlice:SetCenterColor(r, g, b, a or 1);
 	else
 		-- Classic/BCC: Use legacy Backdrop APIs.
@@ -413,7 +413,7 @@ function TRP3_TooltipMixin:SetCenterColor(r, g, b, a)
 end
 
 function TRP3_TooltipMixin:SetBorderColor(r, g, b, a)
-	if not self.SetBackdropColor then
+	if not self.SetBackdropBorderColor then
 		self.NineSlice:SetBorderColor(r, g, b, a or 1);
 	else
 		-- Classic/BCC: Use legacy Backdrop APIs.
