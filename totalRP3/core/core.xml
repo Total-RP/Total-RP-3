@@ -21,8 +21,8 @@
 	<Include file="ui\widgets.xml"/>
 
 	<!-- Please note that the loading order matters a lot -->
-	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate"/>
-	<GameTooltip name="TRP3_Toast" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="GameTooltipTemplate">
+	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
+	<GameTooltip name="TRP3_Toast" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate">
 		<Scripts>
 			<OnHide>
 				self.isFading = nil;
