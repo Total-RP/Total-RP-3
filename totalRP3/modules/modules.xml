@@ -19,7 +19,7 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
 		</KeyValues>
@@ -70,7 +70,7 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 		</KeyValues>

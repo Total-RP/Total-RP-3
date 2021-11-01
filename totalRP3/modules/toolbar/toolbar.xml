@@ -32,7 +32,7 @@
 			</OnLoad>
 		</Scripts>
 		<Frames>
-			<Frame name="$parentContainer" inherits="TRP3_BackdropTemplate">
+			<Frame name="$parentContainer" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_DIALOG_20_20_5555" type="global"/>
 				</KeyValues>
@@ -41,7 +41,7 @@
 				</Anchors>
 			</Frame>
 			<!-- Cadre Titre -->
-			<Frame name="$parentTopFrame" inherits="TRP3_BackdropTemplate">
+			<Frame name="$parentTopFrame" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARTY_DIALOG_16_16_5555" type="global"/>
 				</KeyValues>

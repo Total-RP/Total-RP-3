@@ -17,7 +17,7 @@
 	limitations under the License.
 -->
 
-	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_MatureFilterPopup" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_415_16_3333" type="global"/>
 			<KeyValue key="backdropColor" value="TRP3_BACKDROP_COLOR_DARK" type="global"/>
@@ -98,7 +98,7 @@
 
 
 	<!-- Mature dictionary browser line  -->
-	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Button name="TRP3_MatureDictionaryLine" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_16_3333" type="global"/>
 		</KeyValues>
@@ -150,7 +150,7 @@
 	</Button>
 
 	<!-- Mature dictionary editor  -->
-	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_MatureDictionaryEditor" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333" type="global"/>
 		</KeyValues>
@@ -179,7 +179,7 @@
 					<Slider parentKey="slider" inherits="TRP3_Scrollbar" />
 				</Frames>
 			</Frame>
-			<Frame parentKey="addNewWord" inherits="TRP3_BackdropTemplate">
+			<Frame parentKey="addNewWord" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_0_16_3333" type="global"/>
 				</KeyValues>
