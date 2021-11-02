@@ -21,6 +21,8 @@
 
 	<Include file="widgets.lua"/>
 
+	<GameTooltip name="TRP3_TooltipTemplate" mixin="TRP3_TooltipMixin" inherits="GameTooltipTemplate" virtual="true"/>
+
 	<!--
 		Dropdown Menu
 
