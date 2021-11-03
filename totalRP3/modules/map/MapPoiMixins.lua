@@ -36,11 +36,13 @@ local CoalescedMapPinMixin = {};
 
 function CoalescedMapPinMixin:OnMouseEnter()
 	local tooltip = Tooltips.getTooltip(self);
-	for marker in self:GetMap():EnumerateAllPins() do
-		if marker:IsVisible() and marker:IsMouseOver() then
-			tooltip:AddTempLine(marker.tooltipLine)
+	self:GetMap():ExecuteOnAllPins(
+		function(marker)
+			if marker:IsVisible() and marker:IsMouseOver() then
+				tooltip:AddTempLine(marker.tooltipLine)
+			end
 		end
-	end
+	);
 	tooltip:Show();
 end
 MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
@@ -80,11 +82,13 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	local markerTooltipEntries = Tables.getTempTable();
 	-- Iterate over the blips in a first pass to build a list of all the
 	-- ones we're mousing over.
-	for marker in self:GetMap():EnumerateAllPins() do
-		if marker:IsVisible() and marker:IsMouseOver() then
-			table.insert(markerTooltipEntries, marker);
+	self:GetMap():ExecuteOnAllPins(
+		function(marker)
+			if marker:IsVisible() and marker:IsMouseOver() then
+				table.insert(markerTooltipEntries, marker);
+			end
 		end
-	end
+	);
 
 	-- Sort the entries prior to display.
 	sort(markerTooltipEntries, sortMarkerEntries);
