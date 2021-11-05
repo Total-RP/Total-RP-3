@@ -36,13 +36,20 @@ local CoalescedMapPinMixin = {};
 
 function CoalescedMapPinMixin:OnMouseEnter()
 	local tooltip = Tooltips.getTooltip(self);
-	self:GetMap():ExecuteOnAllPins(
-		function(marker)
-			if marker:IsVisible() and marker:IsMouseOver() then
-				tooltip:AddTempLine(marker.tooltipLine)
-			end
+
+	local function coalesceMarkerTooltip(marker)
+		if marker:IsVisible() and marker:IsMouseOver() then
+			tooltip:AddTempLine(marker.tooltipLine)
 		end
-	);
+	end
+
+	if self:GetMap().ExecuteOnAllPins then
+		self:GetMap():ExecuteOnAllPins(coalesceMarkerTooltip);
+	else
+		for marker in self:GetMap():EnumerateAllPins() do
+			coalesceMarkerTooltip(marker);
+		end
+	end
 	tooltip:Show();
 end
 MapPoiMixins.CoalescedMapPinMixin = CoalescedMapPinMixin;
@@ -80,15 +87,22 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	local tooltip = Tooltips.getTooltip(self);
 
 	local markerTooltipEntries = Tables.getTempTable();
+
+	local function coalesceMarkerTooltip(marker)
+		if marker:IsVisible() and marker:IsMouseOver() then
+			table.insert(markerTooltipEntries, marker);
+		end
+	end
+
 	-- Iterate over the blips in a first pass to build a list of all the
 	-- ones we're mousing over.
-	self:GetMap():ExecuteOnAllPins(
-		function(marker)
-			if marker:IsVisible() and marker:IsMouseOver() then
-				table.insert(markerTooltipEntries, marker);
-			end
+	if self:GetMap().ExecuteOnAllPins then
+		self:GetMap():ExecuteOnAllPins(coalesceMarkerTooltip);
+	else
+		for marker in self:GetMap():EnumerateAllPins() do
+			coalesceMarkerTooltip(marker);
 		end
-	);
+	end
 
 	-- Sort the entries prior to display.
 	sort(markerTooltipEntries, sortMarkerEntries);
@@ -100,24 +114,24 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	-- This layout will put the category status text above entries
 	-- when the type changes. Requires the entries be sorted by category.
 	for _, marker in pairs(markerTooltipEntries) do
-		if marker.categoryName ~= lastCategory and marker.tooltipLine then
-			-- If the previous category was nil we assume this is
-			-- the first, so we'll not put a separating border in.
-			if lastCategory ~= nil then
-				tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
-			end
+	if marker.categoryName ~= lastCategory and marker.tooltipLine then
+	-- If the previous category was nil we assume this is
+	-- the first, so we'll not put a separating border in.
+	if lastCategory ~= nil then
+	tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
+	end
 
-			tooltip:AddTempLine(marker.categoryName or "");
-			lastCategory = marker.categoryName;
-		end
+	tooltip:AddTempLine(marker.categoryName or "");
+	lastCategory = marker.categoryName;
+	end
 
-		tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
+	tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
 	end
 
 	Tables.releaseTempTable(markerTooltipEntries)
 
 	tooltip:Show();
-end
+	end
 MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 
