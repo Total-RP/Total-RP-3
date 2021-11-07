@@ -1694,12 +1694,6 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed a bug with chat channels on Classic.
 
 	]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_24_10 = [[# Changelog version 2.3.7
 
 This version is updated for TBC Classic 2.5.2.
@@ -1708,6 +1702,23 @@ This version is updated for TBC Classic 2.5.2.
 
 - 9.1 icons and musics have been properly added for retail.
 - Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_24_11 = [[# Changelog version 2.3.9
+
+## Added
+
+- Added 32 icons and 7 music files from patch 9.1.5, 21 icons from Burning Crusade Classic and 2 icons from Classic Era.
+
+## Fixed
+
+- Fixed an issue with the character scan tooltips not showing since patch 9.1.5.
 
 ]],
 
