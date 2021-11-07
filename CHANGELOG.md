@@ -1,3 +1,13 @@
+# Changelog version 2.3.9
+
+## Added
+
+- Added 32 icons and 7 music files from patch 9.1.5, 21 icons from Burning Crusade Classic and 2 icons from Classic Era.
+
+## Fixed
+
+- Fixed an issue with the character scan tooltips not showing since patch 9.1.5.
+
 # Changelog version 2.3.8
 
 ## Fixed
