@@ -115,8 +115,8 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	-- when the type changes. Requires the entries be sorted by category.
 	for _, marker in pairs(markerTooltipEntries) do
 		if marker.categoryName ~= lastCategory and marker.tooltipLine then
-		-- If the previous category was nil we assume this is
-		-- the first, so we'll not put a separating border in.
+			-- If the previous category was nil we assume this is
+			-- the first, so we'll not put a separating border in.
 			if lastCategory ~= nil then
 				tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
 			end
