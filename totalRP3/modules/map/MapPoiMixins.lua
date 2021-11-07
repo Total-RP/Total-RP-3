@@ -114,24 +114,24 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	-- This layout will put the category status text above entries
 	-- when the type changes. Requires the entries be sorted by category.
 	for _, marker in pairs(markerTooltipEntries) do
-	if marker.categoryName ~= lastCategory and marker.tooltipLine then
-	-- If the previous category was nil we assume this is
-	-- the first, so we'll not put a separating border in.
-	if lastCategory ~= nil then
-	tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
-	end
+		if marker.categoryName ~= lastCategory and marker.tooltipLine then
+		-- If the previous category was nil we assume this is
+		-- the first, so we'll not put a separating border in.
+			if lastCategory ~= nil then
+				tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
+			end
 
-	tooltip:AddTempLine(marker.categoryName or "");
-	lastCategory = marker.categoryName;
-	end
+			tooltip:AddTempLine(marker.categoryName or "");
+			lastCategory = marker.categoryName;
+		end
 
-	tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
+		tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
 	end
 
 	Tables.releaseTempTable(markerTooltipEntries)
 
 	tooltip:Show();
-	end
+end
 MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 
