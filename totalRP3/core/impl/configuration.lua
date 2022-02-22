@@ -476,7 +476,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				print("false");
 				TRP3_NewFancyTechnicalButton:Hide();
 			end
- 		end);
+		end);
 
 	end
 end);
