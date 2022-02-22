@@ -1123,17 +1123,17 @@ function Utils.music.playSoundFileID(soundFileID, channel, source)
 	return willPlay, handlerID;
 end
 
-function Utils.music.stopSound(handlerID)
-	StopSound(handlerID);
+function Utils.music.stopSound(handlerID, fadeoutDuration)
+	StopSound(handlerID, fadeoutDuration);
 end
 
-function Utils.music.stopSoundID(soundID, channel, source)
+function Utils.music.stopSoundID(soundID, channel, source, fadeoutDuration)
 	for _, handler in pairs(soundHandlers) do
 		if (not handler.stopped) and (not soundID or soundID == "0" or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			if (handler.channel == "Music" and handler.handlerID == 0) then
 				StopMusic();
 			else
-				Utils.music.stopSound(handler.handlerID);
+				Utils.music.stopSound(handler.handlerID, fadeoutDuration);
 			end
 			handler.stopped = true;
 		end
