@@ -24,10 +24,10 @@ jobs:
           args: -no-color
           files: $(git ls-files '*.lua' '*.sh' '*.xml' ':!:totalRP3/libs/**/*' ':!:totalRP3/tools/Locale.lua')
 
-      - name: Create Retail Package
-        uses: BigWigsMods/packager@master
+      - name: Create Package
+        uses: BigWigsMods/packager@v2
         with:
-          args: -d -z
+          args: -d -S -z
 
       - uses: actions/upload-artifact@v2
         with:
