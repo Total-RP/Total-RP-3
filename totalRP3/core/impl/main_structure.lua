@@ -292,6 +292,11 @@ TRP3_API.navigation.page.getCurrentPageID = getCurrentPageID;
 TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
+
+	if not (TRP3_API.globals.serious_day and TRP3_API.configuration.getValue("AF_STUFF_2022")) then
+		TRP3_NewFancyTechnicalButton:Hide();
+	end
+
 	TRP3_API.ui.misc.playUISound((TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc) and SOUNDKIT.IG_CHARACTER_INFO_TAB or SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
 end
 
@@ -453,4 +458,18 @@ TRP3_API.navigation.init = function()
 	end);
 
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_TUTORIAL_REFRESH, onTutorialRefresh);
+
+	-- Page and menu
+	registerMenu({
+		id = "NewFancyTechnique",
+		onSelected = function() setPage("NewFancyTechnique_page") end,
+		hidden = true,
+	});
+
+	registerPage({
+		id = "NewFancyTechnique_page",
+		templateName = "TRP3_NewFancyTechnique",
+		frameName = "TRP3_NewFancyTechnique",
+		frame = TRP3_NewFancyTechnique,
+	});
 end
