@@ -1,3 +1,9 @@
+# Changelog version 2.3.10
+
+## Added
+
+- Added 438 icons, 133 music files and 10 images from patch 9.2.0, 2 icons from Burning Crusade Classic and 3 icons from Classic Era.
+
 # Changelog version 2.3.9
 
 ## Added
