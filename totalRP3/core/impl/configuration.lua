@@ -470,10 +470,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 
 		registerHandler("AF_STUFF_2022", function()
 			if getValue("AF_STUFF_2022") then
-				print("true");
 				TRP3_NewFancyTechnicalButton:Show();
 			else
-				print("false");
 				TRP3_NewFancyTechnicalButton:Hide();
 			end
 		end);
