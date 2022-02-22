@@ -328,6 +328,49 @@
 							</PostClick>
 						</Scripts>
 					</Button>
+					<Button name="TRP3_NewFancyTechnicalButton">
+						<Size x="50" y="50"/>
+						<Anchors><Anchor point="BOTTOM" x="10" y="30"/></Anchors>
+						<NormalTexture alphaMode="BLEND" file="Interface\Icons\inv_misc_food_24"/>
+						<HighlightTexture alpha="0.5" alphaMode="ADD" file="Interface/BUTTONS/ButtonHilight-Square"/>
+						<Scripts>
+							<PostClick>
+								TRP3_Configuration.af_2022=true;
+
+								TRP3_API.navigation.menu.selectMenu("NewFancyTechnique")
+
+								local sounds = {640410, 640412, 640414, 640514, 640516, 640518, 640630, 640632};
+								local random1 = math.random(1, 8);
+								TRP3_API.utils.music.playSoundFileID(sounds[random1]);
+								local random2 = math.random(1, 5);
+								TRP3_NewFancyTechniqueViewPicture:SetTexture("Interface\\AddOns\\totalRP3\\resources\\n" .. tostring(random2));
+								local bgs = {"DressUpBackground-BloodElf1","DressUpBackground-DeathKnight1","DressUpBackground-Draenei1","DressUpBackground-Dwarf1","DRESSUPBACKGROUND-GNOME1","DressUpBackground-Goblin1","DressUpBackground-HighmountainTauren1","DressUpBackground-Human1","DressUpBackground-LightforgedDraenei1","DressUpBackground-NightElf1","DressUpBackground-Nightborne1","DressUpBackground-Orc1","DressUpBackground-Pandaren1","DressUpBackground-Scourge1","DressUpBackground-Tauren1","DRESSUPBACKGROUND-TROLL1","DressUpBackground-VoidElf1","DressUpBackground-Worgen1","DressingRoomDeathKnight","DressingRoomDemonHunter","DressingRoomDruid","DressingRoomHunter","DressingRoomMage","DressingRoomMonk","DressingRoomPaladin","DressingRoomPriest","DressingRoomRogue","DressingRoomShaman","DressingRoomWarlock","DressingRoomWarrior"};
+								local nbBgs = 30;
+								if not (TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc) then
+									tinsert(bgs, "DressUpBackground-DarkIronDwarf1");
+									tinsert(bgs, "DressUpBackground-Maghar1");
+									tinsert(bgs, "DressUpBackground-Mechagnome1");
+									tinsert(bgs, "DressUpBackground-Vulpera1");
+									nbBgs = 34;
+								end
+								local random3 = math.random(1, nbBgs);
+								TRP3_NewFancyTechniqueViewBackground:SetTexture("Interface\\DRESSUPFRAME\\" .. bgs[random3]);
+								TRP3_NewFancyTechniqueViewBackground:SetTexCoord(0,0.9375,0,0.9805);
+
+								local id = random1 + random2 * 8 + random3 * 5 * 8;
+								TRP3_NewFancyTechniqueViewID:SetText("#" .. id);
+
+								ActionButton_HideOverlayGlow(self);
+							</PostClick>
+							<OnShow>
+								if not TRP3_Configuration.af_2022 then
+									ActionButton_ShowOverlayGlow(self);
+								else
+									ActionButton_HideOverlayGlow(self);
+								end
+							</OnShow>
+						</Scripts>
+					</Button>
 				</Frames>
 			</ScrollFrame>
 
@@ -509,6 +552,61 @@
 					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
 				</Anchors>
 			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_NewFancyTechnique" inherits="BackdropTemplate" hidden="true">
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="2" y="-28" />
+			<Anchor point="BOTTOMLEFT" x="2" y="0" />
+		</Anchors>
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="TRP3_NewFancyTechniqueViewBackground" file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="4"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.975" />
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="TRP3_NewFancyTechniqueViewPicture" file="Interface\AddOns\totalRP3\resources\n1">
+					<Size x="475" y="475"/>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" x="5" y="5"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_NewFancyTechniqueView">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="10" y="-20"/>
+					<Anchor point="TOPRIGHT" x="-10" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="TRP3_NewFancyTechniqueViewTitle" text="NFTRP3" inherits="BossEmoteNormalHuge" justifyH="CENTER">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="10" y="0"/>
+							</Anchors>
+							<Color r="1" g="1" b="1"/>
+						</FontString>
+						<FontString name="TRP3_NewFancyTechniqueViewID" inherits="BossEmoteNormalHuge" justifyH="CENTER">
+							<Anchors>
+								<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_NewFancyTechniqueViewTitle" x="0" y="-5"/>
+							</Anchors>
+							<Color r="0.92" g="0.765" b="0.2"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
 		</Frames>
 	</Frame>
 

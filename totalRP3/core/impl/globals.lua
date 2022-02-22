@@ -28,6 +28,8 @@ local faction, faction_loc = UnitFactionGroup("player");
 
 local Player = AddOn_TotalRP3.Player.GetCurrentUser();
 
+local currentDate = date("*t");
+
 -- Public accessor
 TRP3_API.r = {};
 TRP3_API.formats = {
@@ -80,6 +82,8 @@ TRP3_API.globals = {
 
 	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
 	is_bcc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC,
+
+	serious_day = currentDate.month == 4 and currentDate.day == 1,
 
 	-- Profile Constants
 	PSYCHO_DEFAULT_VALUE_V1 = 3,
