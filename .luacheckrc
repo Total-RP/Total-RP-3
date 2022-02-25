@@ -386,6 +386,9 @@ stds.wow = {
 		"RemoveChatWindowChannel",
 		"ResetCursor",
 		"Saturate",
+		"ScrollingEdit_OnCursorChanged",
+		"ScrollingEdit_OnLoad",
+		"ScrollingEdit_OnTextChanged",
 		"SecondsToClock",
 		"SendChatMessage",
 		"SetCursor",
@@ -455,6 +458,7 @@ stds.wow = {
 		},
 
 		"BaseMapPoiPinMixin",
+		"CallbackRegistryMixin",
 		"ChatFrame1EditBox",
 		"ChatTypeInfo",
 		"DoublyLinkedListMixin",
