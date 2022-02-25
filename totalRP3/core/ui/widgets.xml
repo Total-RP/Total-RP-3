@@ -590,7 +590,7 @@
 		</Scripts>
 	</Button>
 
-	<Frame name="TRP3_TextAreaBase" virtual="true" enableMouse="true">
+	<Frame name="TRP3_TextAreaBase" mixin="TRP3_TextAreaBaseMixin" virtual="true" enableMouse="true">
 		<Frames>
 			<ScrollFrame parentKey="scroll" name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
 				<Anchors>
@@ -600,26 +600,14 @@
 					<Anchor point="RIGHT" x="-18" y="0"/>
 				</Anchors>
 				<ScrollChild>
-					<EditBox name="$parentText" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">
+					<EditBox name="$parentText" mixin="TRP3_TextAreaBaseEditBoxMixin" parentKey="text" multiLine="true" enableMouse="false" autoFocus="false">
 						<Scripts>
-							<OnShow>
-								self:SetWidth(self:GetParent():GetParent():GetWidth() - 40);
-							</OnShow>
-							<OnTextChanged>
-								if self:IsVisible() and self:GetCursorPosition() == string.len(self:GetText()) then
-								self:GetParent():SetVerticalScroll(self:GetParent():GetVerticalScrollRange());
-								end
-							</OnTextChanged>
-							<OnEscapePressed>
-								self:ClearFocus();
-							</OnEscapePressed>
-							<OnEditFocusGained>
-								self:GetParent():GetParent().dummy:Hide();
-							</OnEditFocusGained>
-							<OnEditFocusLost>
-								self:HighlightText(0,0);
-								self:GetParent():GetParent().dummy:Show();
-							</OnEditFocusLost>
+							<OnLoad method="OnLoad"/>
+							<OnCursorChanged method="OnCursorChanged"/>
+							<OnTextChanged method="OnTextChanged"/>
+							<OnEscapePressed method="OnEscapePressed"/>
+							<OnEditFocusGained method="OnEditFocusGained"/>
+							<OnEditFocusLost method="OnEditFocusLost"/>
 						</Scripts>
 						<FontString inherits="ChatFontNormal"/>
 					</EditBox>
@@ -639,6 +627,9 @@
 				</Scripts>
 			</Button>
 		</Frames>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
 	</Frame>
 
 	<!-- Text area -->

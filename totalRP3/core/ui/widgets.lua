@@ -316,3 +316,71 @@ function TRP3_TooltipMixin:SetBorderColor(r, g, b, a)
 		self:SetBackdropBorderColor(r, g, b, a or 1);
 	end
 end
+
+TRP3_TextAreaBaseMixin = {};
+
+function TRP3_TextAreaBaseMixin:OnLoad()
+	local editbox = self:GetEditBox();
+	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusGained, self);
+	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusLost, self);
+end
+
+function TRP3_TextAreaBaseMixin:OnSizeChanged(w)
+	local editbox = self:GetEditBox();
+	editbox:SetWidth(w - 40);
+end
+
+function TRP3_TextAreaBaseMixin:OnEditFocusGained()
+	local focus = self:GetFocusFrame();
+	focus:Hide();
+end
+
+function TRP3_TextAreaBaseMixin:OnEditFocusLost()
+	local focus = self:GetFocusFrame();
+	focus:Show();
+end
+
+
+function TRP3_TextAreaBaseMixin:GetEditBox()
+	return self.scroll.text;
+end
+
+function TRP3_TextAreaBaseMixin:GetFocusFrame()
+	return self.dummy;
+end
+
+TRP3_TextAreaBaseEditBoxMixin = CreateFromMixins(CallbackRegistryMixin);
+TRP3_TextAreaBaseEditBoxMixin:GenerateCallbackEvents({
+	"OnEditFocusGained",
+	"OnEditFocusLost",
+});
+
+function TRP3_TextAreaBaseEditBoxMixin:OnLoad()
+	CallbackRegistryMixin.OnLoad(self);
+	ScrollingEdit_OnLoad(self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnCursorChanged(x, y, w, h)
+	ScrollingEdit_OnCursorChanged(self, x, y, w, h);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnTextChanged()
+	ScrollingEdit_OnTextChanged(self, self:GetScrollFrame());
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEscapePressed()
+	self:ClearFocus();
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEditFocusGained()
+	self:TriggerEvent("OnEditFocusGained", self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEditFocusLost()
+	self:HighlightText(0, 0);
+	self:TriggerEvent("OnEditFocusLost", self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:GetScrollFrame()
+	return self:GetParent();
+end
