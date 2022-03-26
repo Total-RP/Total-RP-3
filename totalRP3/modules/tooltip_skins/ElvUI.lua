@@ -130,12 +130,19 @@ TRP3_API.module.registerModule({
 				end
 			end
 
+			-- 9.2 changed Tooltips to use NineSlice but TargetFrame doesn't use it, therefore we need to use the old styling function
+			local function SetStyleForTargetFrame(tt)
+				if not tt or (tt == _G["ElvUI"][1].ScanTooltip or tt.IsEmbedded or not tt.SetTemplate or not tt.SetBackdrop) or tt:IsForbidden() then return end
+				tt.customBackdropAlpha = TT.db.colorAlpha
+				tt:SetTemplate('Transparent')
+			end
+
 			function skinTargetFrame()
 				-- Go through each skinnable frames from our table
 				for _, frame in pairs(SKINNABLE_FRAMES) do
 					if _G[frame] then
 						-- We check that the frame exists and then add it to ElvUI
-						TT:SecureHookScript(_G[frame], 'OnShow', 'SetStyle')
+						TT:SecureHookScript(_G[frame], 'OnShow', SetStyleForTargetFrame)
 					end
 				end
 			end
