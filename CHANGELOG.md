@@ -6,6 +6,10 @@
 
 - Added 3 icons and 4 music files from patch 9.2.5.
 
+## Fixed
+
+- Fixed the target frame not having the proper skin when using ElvUI.
+
 # Changelog version 2.3.10
 
 ## Added
