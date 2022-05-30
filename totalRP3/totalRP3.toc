@@ -1,4 +1,4 @@
-## Interface: 90200
+## Interface: 90205
 ## Interface-TBC: 20503
 ## Interface-Vanilla: 11402
 ## Title: Total RP 3

@@ -1,3 +1,11 @@
+# Changelog version 2.3.11
+
+**With the recent changes of patch 9.2.5, profiles can now be seen cross-faction for players in your party, or with whom you share a cross-faction WoW community.**
+
+## Added
+
+- Added 3 icons and 4 music files from patch 9.2.5.
+
 # Changelog version 2.3.10
 
 ## Added
