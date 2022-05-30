@@ -629,6 +629,8 @@
 		</Frames>
 		<Scripts>
 			<OnLoad method="OnLoad"/>
+			<OnShow method="OnShow"/>
+			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
 

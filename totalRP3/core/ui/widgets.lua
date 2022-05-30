@@ -325,9 +325,12 @@ function TRP3_TextAreaBaseMixin:OnLoad()
 	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusLost, self);
 end
 
-function TRP3_TextAreaBaseMixin:OnSizeChanged(w)
-	local editbox = self:GetEditBox();
-	editbox:SetWidth(w - 40);
+function TRP3_TextAreaBaseMixin:OnShow()
+	self:UpdateLayout();
+end
+
+function TRP3_TextAreaBaseMixin:OnSizeChanged()
+	self:UpdateLayout();
 end
 
 function TRP3_TextAreaBaseMixin:OnEditFocusGained()
@@ -340,13 +343,17 @@ function TRP3_TextAreaBaseMixin:OnEditFocusLost()
 	focus:Show();
 end
 
-
 function TRP3_TextAreaBaseMixin:GetEditBox()
 	return self.scroll.text;
 end
 
 function TRP3_TextAreaBaseMixin:GetFocusFrame()
 	return self.dummy;
+end
+
+function TRP3_TextAreaBaseMixin:UpdateLayout()
+	local editbox = self:GetEditBox();
+	editbox:SetWidth(self:GetWidth() - 40);
 end
 
 TRP3_TextAreaBaseEditBoxMixin = CreateFromMixins(CallbackRegistryMixin);
