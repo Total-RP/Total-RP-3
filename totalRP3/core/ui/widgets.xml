@@ -630,7 +630,7 @@
 		<Scripts>
 			<OnLoad method="OnLoad"/>
 			<OnShow method="OnShow"/>
-			<OnShow method="OnSizeChanged"/>
+			<OnSizeChanged method="OnSizeChanged"/>
 		</Scripts>
 	</Frame>
 
