@@ -5,6 +5,7 @@
 ## Added
 
 - Added 3 icons and 4 music files from patch 9.2.5.
+- Surrounding link tags with color tags will now apply the color to the link.
 
 ## Fixed
 
