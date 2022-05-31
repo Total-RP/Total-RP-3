@@ -863,12 +863,49 @@ local IMAGE_PATTERN = [[{img%:([^:]+)%:([^:]+)%:([^:}]+)%:?([^:}]*)%}]];
 ---@language HTML
 local IMAGE_TAG = [[</P><img src="%s" width="%s" height="%s" align="%s"/><P>]];
 
+local function GenerateLinkFormatter(line, defaultLinkColor, includeBraces, isMarkdown)
+	local function FormatLink(position, url, text)
+		-- If a link is preceeded by a "{col}" tag then we won't insert any
+		-- coloring for this link to allow users to customize things more.
+
+		local linkColor;
+
+		local shortColor = string.sub(line, position - 7, position - 1);
+		local hexColor   = string.sub(line, position - 12, position - 1);
+
+		if string.find(shortColor, "^{col:%w}$") then
+			linkColor = nil;  -- Preceeded by a short color tag, ignore.
+		elseif string.find(hexColor, "^{col:%x%x%x%x%x%x}$") then
+			linkColor = nil;  -- Preceeded by a hexadecimal color tag, ignore.
+		else
+			linkColor = defaultLinkColor;  -- No preceeding color, use default.
+		end
+
+		if isMarkdown then
+			-- Markdown style links invert the order of the text/url components.
+			url, text = text, url;
+		end
+
+		if includeBraces then
+			text = "[" .. text .. "]";
+		end
+
+		if linkColor then
+			text = WrapTextInColorCode(text, "ff" .. linkColor);
+		end
+
+		return string.format([[<a href="%1$s">%2$s</a>]], url, text);
+	end
+
+	return FormatLink;
+end
+
 -- Convert the given text by his HTML representation
 Utils.str.toHTML = function(text, noColor, noBrackets)
 
-	local linkColor = "|cff00ff00";
+	local linkColor = "00ff00";
 	if noColor then
-		linkColor = "";
+		linkColor = nil;
 	end
 
 	-- 1) Replacement : & character
@@ -980,21 +1017,31 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 			return Utils.str.icon(icon, tonumber(size) or 25);
 		end);
 
-		line = line:gsub("%[(.-)%]%((.-)%)",
-			"<a href=\"%2\">" .. linkColor .. "[%1]|r</a>");
+		do  -- Markdown Links
+			local includeBraces = true;
+			local isMarkdown    = true;
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
 
-		line = line:gsub("{link%*(.-)%*({icon%:.-})}",
-			"<a href=\"%1\">" .. linkColor .. "%2|r</a>");
-
-		local linkText = "[%2]"
-		if noBrackets then
-			linkText = "%2"
+			line = line:gsub("()%[(.-)%]%((.-)%)", formatter);
 		end
-		line = line:gsub("{link%*(.-)%*(.-)}",
-			"<a href=\"%1\">" .. linkColor .. linkText .. "|r</a>");
 
-		line = line:gsub("{twitter%*(.-)%*(.-)}",
-			"<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
+		do  -- Link tags with embedded icons
+			local includeBraces = false;
+			local isMarkdown    = false;
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
+
+			line = line:gsub("(){link%*([^*]+)%*({icon:[^}]+})}", formatter);
+		end
+
+		do  -- Link tags
+			local includeBraces = not noBrackets;
+			local isMarkdown    = false;
+			local formatter     = GenerateLinkFormatter(line, linkColor, includeBraces, isMarkdown);
+
+			line = line:gsub("(){link%*([^*]+)%*([^}]+)}", formatter);
+		end
+
+		line = line:gsub("{twitter%*(.-)%*(.-)}", "<a href=\"twitter%1\">|cff61AAEE%2|r</a>");
 
 		finalText = finalText .. line;
 	end
