@@ -1704,12 +1704,6 @@ This version is updated for TBC Classic 2.5.2.
 - Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_24_11 = [[# Changelog version 2.3.9
 
 ## Added
@@ -1722,6 +1716,26 @@ This version is updated for TBC Classic 2.5.2.
 
 ]],
 
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_24_12 = [[# Changelog version 2.3.11
+
+**With the recent changes of patch 9.2.5, profiles can now be seen cross-faction for players in your party, or with whom you share a cross-faction WoW community.**
+
+## Added
+
+- Added 3 icons and 4 music files from patch 9.2.5.
+- Surrounding link tags with color tags will now apply the color to the link.
+
+## Fixed
+
+- Fixed the target frame not having the proper skin when using ElvUI.
+
+]],
 };
 
 -- Use Ellyb to generate the Localization system
