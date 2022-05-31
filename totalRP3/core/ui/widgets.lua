@@ -18,14 +18,6 @@
 
 --[[
 	Backdrop Tables
-
-	The 9.x Backdrop API requires using <KeyValue> elements in XML that
-	reference global variables to provide color and backdrop information;
-	the below tables are all of our old <Backdrop> elements converted to
-	the appropriate format.
-
-	The naming format matches the Blizzard convention to avoid bikeshedding
-	over specific names.
 --]]
 
 TRP3_BACKDROP_COLOR_DARK = CreateColor(0.4, 0.4, 0.4);
@@ -263,102 +255,6 @@ TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333 = {
 };
 
 --[[
-	BackdropTemplatePolyfillMixin
-
-	Polyfill mixin that mirrors the API exposed by the BackdropTemplateMixin
-	in 9.x clients.
-
-	This implements all the methods provided by the Blizzard mixin, using
-	no-op stubs for areas of functionality that can't be handed in pre-9.x
-	client code.
-
-	Generally, this mixin shouldn't be used directly - use the globally
-	accessible TRP3_BackdropTemplateMixin instead which will default to
-	preferring the Blizzard mixin on supported clients.
---]]
-
-local BackdropTemplatePolyfillMixin = {};
-
-function BackdropTemplatePolyfillMixin:OnBackdropLoaded()
-	if not self.backdropInfo then
-		return;
-	end
-
-	if not self.backdropInfo.edgeFile and not self.backdropInfo.bgFile then
-		self.backdropInfo = nil;
-		return;
-	end
-
-	self:ApplyBackdrop();
-
-	if self.backdropColor then
-		local r, g, b = self.backdropColor:GetRGB();
-		self:SetBackdropColor(r, g, b, self.backdropColorAlpha or 1);
-	end
-
-	if self.backdropBorderColor then
-		local r, g, b = self.backdropBorderColor:GetRGB();
-		self:SetBackdropBorderColor(r, g, b, self.backdropBorderColorAlpha or 1);
-	end
-
-	if self.backdropBorderBlendMode then
-		self:SetBackdropBorderBlendMode(self.backdropBorderBlendMode);
-	end
-end
-
-function BackdropTemplatePolyfillMixin:OnBackdropSizeChanged()
-	if self.backdropInfo then
-		self:SetupTextureCoordinates();
-	end
-end
-
-function BackdropTemplatePolyfillMixin:ApplyBackdrop()
-	-- The SetBackdrop call will implicitly reset the background and border
-	-- texture vertex colors to white, consistent across all client versions.
-
-	self:SetBackdrop(self.backdropInfo);
-end
-
-function BackdropTemplatePolyfillMixin:ClearBackdrop()
-	self:SetBackdrop(nil);
-	self.backdropInfo = nil;
-end
-
-function BackdropTemplatePolyfillMixin:GetEdgeSize()
-	-- The below will indeed error if there's no backdrop assigned; this is
-	-- consistent with how it works on 9.x clients.
-
-	return self.backdropInfo.edgeSize or 39;
-end
-
-function BackdropTemplatePolyfillMixin:HasBackdropInfo(backdropInfo)
-	return self.backdropInfo == backdropInfo;
-end
-
-function BackdropTemplatePolyfillMixin:SetBorderBlendMode()
-	-- The pre-9.x API doesn't support setting blend modes for backdrop
-	-- borders, so this is a no-op that just exists in case we ever assume
-	-- it exists.
-end
-
-function BackdropTemplatePolyfillMixin:SetupPieceVisuals()
-	-- Deliberate no-op as backdrop internals are handled C-side pre-9.x.
-end
-
-function BackdropTemplatePolyfillMixin:SetupTextureCoordinates()
-	-- Deliberate no-op as texture coordinates are handled C-side pre-9.x.
-end
-
---[[
-	TRP3_BackdropTemplateMixin
-
-	Dummy mixin that either inherits the Blizzard BackdropTemplateMixin
-	for 9.x clients, or our polyfill one if otherwise unavailable.
---]]
-
-TRP3_BackdropTemplateMixin = CreateFromMixins(BackdropTemplateMixin or BackdropTemplatePolyfillMixin);
-
---[[
 	TRP3_TruncatedTextMixin
 --]]
 
@@ -399,4 +295,99 @@ end
 
 --[[override]] function TRP3_TruncatedTextMixin:OnFontObjectUpdated()
 	self.Text:SetFontObject(self:GetFontObject());
+end
+
+TRP3_TooltipMixin = {};
+
+function TRP3_TooltipMixin:SetCenterColor(r, g, b, a)
+	if not self.SetBackdropColor then
+		self.NineSlice:SetCenterColor(r, g, b, a or 1);
+	else
+		-- Classic/BCC: Use legacy Backdrop APIs.
+		self:SetBackdropColor(r, g, b, a or 1);
+	end
+end
+
+function TRP3_TooltipMixin:SetBorderColor(r, g, b, a)
+	if not self.SetBackdropBorderColor then
+		self.NineSlice:SetBorderColor(r, g, b, a or 1);
+	else
+		-- Classic/BCC: Use legacy Backdrop APIs.
+		self:SetBackdropBorderColor(r, g, b, a or 1);
+	end
+end
+
+TRP3_TextAreaBaseMixin = {};
+
+function TRP3_TextAreaBaseMixin:OnLoad()
+	local editbox = self:GetEditBox();
+	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusGained, self);
+	editbox:RegisterCallback("OnEditFocusGained", self.OnEditFocusLost, self);
+end
+
+function TRP3_TextAreaBaseMixin:OnShow()
+	self:UpdateLayout();
+end
+
+function TRP3_TextAreaBaseMixin:OnSizeChanged()
+	self:UpdateLayout();
+end
+
+function TRP3_TextAreaBaseMixin:OnEditFocusGained()
+	local focus = self:GetFocusFrame();
+	focus:Hide();
+end
+
+function TRP3_TextAreaBaseMixin:OnEditFocusLost()
+	local focus = self:GetFocusFrame();
+	focus:Show();
+end
+
+function TRP3_TextAreaBaseMixin:GetEditBox()
+	return self.scroll.text;
+end
+
+function TRP3_TextAreaBaseMixin:GetFocusFrame()
+	return self.dummy;
+end
+
+function TRP3_TextAreaBaseMixin:UpdateLayout()
+	local editbox = self:GetEditBox();
+	editbox:SetWidth(self:GetWidth() - 40);
+end
+
+TRP3_TextAreaBaseEditBoxMixin = CreateFromMixins(CallbackRegistryMixin);
+TRP3_TextAreaBaseEditBoxMixin:GenerateCallbackEvents({
+	"OnEditFocusGained",
+	"OnEditFocusLost",
+});
+
+function TRP3_TextAreaBaseEditBoxMixin:OnLoad()
+	CallbackRegistryMixin.OnLoad(self);
+	ScrollingEdit_OnLoad(self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnCursorChanged(x, y, w, h)
+	ScrollingEdit_OnCursorChanged(self, x, y, w, h);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnTextChanged()
+	ScrollingEdit_OnTextChanged(self, self:GetScrollFrame());
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEscapePressed()
+	self:ClearFocus();
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEditFocusGained()
+	self:TriggerEvent("OnEditFocusGained", self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:OnEditFocusLost()
+	self:HighlightText(0, 0);
+	self:TriggerEvent("OnEditFocusLost", self);
+end
+
+function TRP3_TextAreaBaseEditBoxMixin:GetScrollFrame()
+	return self:GetParent();
 end

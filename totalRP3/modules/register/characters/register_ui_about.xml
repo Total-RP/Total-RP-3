@@ -20,7 +20,7 @@
 -->
 
 	<!-- Toolbar -->
-	<Frame name="TRP3_TextToolbar" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_TextToolbar" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
 		</KeyValues>
@@ -88,7 +88,7 @@
 		</Frames>
 	</Frame>
 
-	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterAbout_Edit_Template3Frame" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
@@ -135,7 +135,7 @@
 	</Frame>
 
 	<!-- Register about template 2 frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterAbout_Template2_Frame" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
@@ -152,7 +152,7 @@
 	</Frame>
 
 	<!-- Register about template 2 edit frame -->
-	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterAbout_Template2_Edit" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
 		</KeyValues>
@@ -212,7 +212,7 @@
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterAboutTemplate" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24_5555" type="global"/>
 		</KeyValues>
@@ -292,7 +292,7 @@
 							</Frame>
 						</Frames>
 					</Frame>
-					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="TRP3_BackdropTemplate">
+					<Frame name="TRP3_RegisterAbout_Edit_Template2" inherits="BackdropTemplate">
 						<KeyValues>
 							<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
 						</KeyValues>
@@ -411,7 +411,7 @@
 											<Anchor point="RIGHT" x="0" y="0"/>
 										</Anchors>
 										<Frames>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="TRP3_BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_1" inherits="BackdropTemplate">
 												<KeyValues>
 													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
 												</KeyValues>
@@ -441,7 +441,7 @@
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="TRP3_BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_2" inherits="BackdropTemplate">
 												<KeyValues>
 													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
 												</KeyValues>
@@ -471,7 +471,7 @@
 													</SimpleHTML>
 												</Frames>
 											</Frame>
-											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="TRP3_BackdropTemplate">
+											<Frame name="TRP3_RegisterAbout_AboutPanel_Template3_3" inherits="BackdropTemplate">
 												<KeyValues>
 													<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_BANK_TOOLTIP_400_24_5555" type="global"/>
 												</KeyValues>
@@ -514,7 +514,7 @@
 								</Anchors>
 							</Button>
 							<!-- Music player -->
-							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="TRP3_BackdropTemplate">
+							<Frame name="TRP3_RegisterAbout_AboutPanel_MusicPlayer" inherits="BackdropTemplate">
 								<KeyValues>
 									<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_MARBLE_TOOLTIP_415_24_5555" type="global"/>
 								</KeyValues>

@@ -70,7 +70,7 @@
 	</Frame>
 
 	<!-- Register characteristics psycho line jauge -->
-	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterCharact_PsychoInfoLineJauge" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_PARCHMENT_TOOLTIP_415_16_5555" type="global"/>
 		</KeyValues>
@@ -397,7 +397,7 @@
 	</Frame>
 
 	<!-- Register characteristics panel -->
-	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_RegisterCharactTemplate" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 		</KeyValues>

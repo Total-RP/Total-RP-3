@@ -20,7 +20,7 @@
 -->
 
 	<!-- Character tooltip -->
-	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+	<GameTooltip name="TRP3_CharacterTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="TRP3_TooltipTemplate">
 		<Scripts>
 			<OnHide>
 				self.isFading = nil;
@@ -29,7 +29,7 @@
 	</GameTooltip>
 
 	<!-- Companion tooltip -->
-	<GameTooltip name="TRP3_CompanionTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="GameTooltipTemplate">
+	<GameTooltip name="TRP3_CompanionTooltip" frameStrata="TOOLTIP" parent="UIParent" inherits="TRP3_TooltipTemplate">
 		<Scripts>
 			<OnHide>
 				self.isFading = nil;
@@ -64,7 +64,7 @@
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />
 				</Anchors>
 			</Frame>
-			<Frame name="TRP3_RegisterDefault" inherits="TRP3_BackdropTemplate" frameLevel="2">
+			<Frame name="TRP3_RegisterDefault" inherits="BackdropTemplate" frameLevel="2">
 				<Anchors>
 					<Anchor point="TOPRIGHT" x="2" y="-28" />
 					<Anchor point="BOTTOMLEFT" x="2" y="0" />

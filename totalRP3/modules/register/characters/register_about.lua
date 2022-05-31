@@ -329,7 +329,7 @@ function refreshTemplate2EditDisplay()
 	end
 
 	local templateData = draftData.T2;
-	assert(type(templateData) == "table", "Error: Nil template3 data or not a table.");
+	assert(type(templateData) == "table", "Error: Nil template 2 data or not a table.");
 
 	local previous;
 	for frameIndex, frameData in pairs(templateData) do

@@ -447,11 +447,13 @@ function Utils.str.sanitize(text)
 end
 
 function Utils.str.crop(text, size)
-	text = strtrim(text or "");
-	if text:len() > size then
-		text = text:sub(1, size) .. "…";
+	text = string.trim(text or "");
+
+	if strlenutf8(text) > size then
+		text = string.utf8sub(text, 1, size - 1) .. "…";
 	end
-	return text
+
+	return text;
 end
 
 local tableAccents = {
@@ -1160,7 +1162,7 @@ function Utils.music.playSoundFileID(soundFileID, channel, source)
 	assert(soundFileID, "soundFileID can't be nil.")
 	local willPlay, handlerID = PlaySoundFile(soundFileID, channel);
 	if willPlay then
-		tinsert(soundHandlers, {channel = channel, id = soundFileID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false});
+		tinsert(soundHandlers, {channel = channel, id = soundFileID, handlerID = handlerID, source = source, date = date("%H:%M:%S"), stopped = false, soundFile = true});
 		if TRP3_SoundsHistoryFrame then
 			TRP3_SoundsHistoryFrame.onSoundPlayed();
 		end
@@ -1168,17 +1170,17 @@ function Utils.music.playSoundFileID(soundFileID, channel, source)
 	return willPlay, handlerID;
 end
 
-function Utils.music.stopSound(handlerID)
-	StopSound(handlerID);
+function Utils.music.stopSound(handlerID, fadeoutDuration)
+	StopSound(handlerID, fadeoutDuration);
 end
 
-function Utils.music.stopSoundID(soundID, channel, source)
+function Utils.music.stopSoundID(soundID, channel, source, fadeoutDuration)
 	for _, handler in pairs(soundHandlers) do
 		if (not handler.stopped) and (not soundID or soundID == "0" or handler.id == soundID) and (not channel or handler.channel == channel) and (not source or handler.source == source) then
 			if (handler.channel == "Music" and handler.handlerID == 0) then
 				StopMusic();
 			else
-				Utils.music.stopSound(handler.handlerID);
+				Utils.music.stopSound(handler.handlerID, fadeoutDuration);
 			end
 			handler.stopped = true;
 		end

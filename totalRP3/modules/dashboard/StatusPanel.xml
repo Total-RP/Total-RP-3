@@ -47,13 +47,6 @@
 					</Anchors>
 					<Color b="1.0" r="1.0" g="1.0"/>
 				</FontString>
-				<FontString parentKey="RPLanguageLabel" inherits="GameFontNormal" justifyH="LEFT">
-					<Size x="200" y="18"/>
-					<Anchors>
-						<Anchor point="TOPLEFT" relativeKey="$parent.XPStatusLabel" relativePoint="BOTTOMLEFT" x="0" y="-13"/>
-					</Anchors>
-					<Color b="1.0" r="1.0" g="1.0"/>
-				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
@@ -66,15 +59,6 @@
 				<Anchors>
 					<Anchor point="LEFT" relativeKey="$parent.XPStatusLabel" relativePoint="RIGHT" x="10" y="-2"/>
 				</Anchors>
-			</Frame>
-			<Frame parentKey="RPLanguageMenu" name="$parentRPLanguage" inherits="TRP3_DashboardStatusMenuTemplate" mixin="TRP3_DashboardRPLanguageMenuMixin">
-				<Anchors>
-					<Anchor point="LEFT" relativeKey="$parent.RPLanguageLabel" relativePoint="RIGHT" x="10" y="-2"/>
-				</Anchors>
-				<Scripts>
-					<OnEnter method="OnEnter" inherit="prepend"/>
-					<OnLeave method="OnLeave" inherit="prepend"/>
-				</Scripts>
 			</Frame>
 		</Frames>
 		<Scripts>

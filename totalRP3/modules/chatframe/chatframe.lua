@@ -355,21 +355,37 @@ TRP3_API.utils.getCharacterInfoTab = getCharacterInfoTab;
 -- Emote and OOC detection
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
--- For links exception
-local EmoteTempPatternStart = "TRP3BTMPEMOTE"
-local EmoteTempPatternEnd = "TRP3ETEMPEMOTE"
-local OOCTempPatternStart = "TRP3BTEMPOOC"
-local OOCTempPatternEnd = "TRP3ETEMPOOC"
-local SpeechTempPatternStart = "TRP3BTEMPSPEECH"
-local SpeechTempPatternEnd = "TRP3ETEMPSPEECH"
-local RussianDeclensionStart = "TRP3BTEMPRUSSIAN"
-local RussianDeclensionEnd = "TRP3ETEMPRUSSIAN"
+local function ProtectMessageContents(message)
+	local replacements = {};
+	local count = 0;
 
-local LinkDetectionPattern = "(%|H.-%|h.-|h)"
-local EmoteTempDetectionPattern = EmoteTempPatternStart .. ".-" .. EmoteTempPatternEnd
-local OOCTempDetectionPattern = OOCTempPatternStart .. ".-" .. OOCTempPatternEnd
-local SpeechTempDetectionPattern = SpeechTempPatternStart .. ".-" .. SpeechTempPatternEnd
-local RussianDeclensionDetectionPattern = RussianDeclensionStart .. "(.)(.-)" .. RussianDeclensionEnd
+	local function ProtectString(string)
+		local escape = "|Ktrp" .. count .. "|k";
+		replacements[escape] = string;
+		count = count + 1;
+
+		return escape;
+	end
+
+	message = string.gsub(message, "|H.-%|h.-|h", ProtectString);
+	message = string.gsub(message, "|3%-%d+%b()", ProtectString);
+	message = string.gsub(message, "%b[]", ProtectString);
+
+	return message, replacements;
+end
+
+local function UnprotectMessageContents(message, replacements)
+	local function UnprotectString(sequence)
+		return replacements[sequence] or "";
+	end
+
+	repeat
+		local replaced;
+		message, replaced = string.gsub(message, "|Ktrp%d+|k", UnprotectString);
+	until replaced == 0;
+
+	return message;
+end
 
 ---@param message string
 ---@param NPCEmoteChatColor Color
@@ -384,70 +400,34 @@ local function detectEmoteAndOOC(message, NPCEmoteChatColor, isEmote)
 		NPCEmoteChatString = NPCEmoteChatColor:GetColorCodeStartSequence();
 	end
 
-	-- Emote/OOC/Speech replacement
-	if configDoEmoteDetection() and message:find(configEmoteDetectionPattern()) then
-		-- Wrapping patterns in a temporary pattern
-		local chatColor = TRP3_API.chat.getEmoteDetectionColor();
-		message = message:gsub(configEmoteDetectionPattern(), function(content)
-			return EmoteTempPatternStart .. content .. EmoteTempPatternEnd;
-		end);
+	local protections;
+	message, protections = ProtectMessageContents(message);
 
-		-- Removing temporary patterns from links
-		message = message:gsub(LinkDetectionPattern, function(content)
-			return content:gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "");
-		end);
+	do -- Emote/OOC/Speech replacement
+		if configDoEmoteDetection() then
+			local color = TRP3_API.chat.getEmoteDetectionColor();
+			message = message:gsub(configEmoteDetectionPattern(), function(content)
+				return color:WrapTextInColorCode(content) .. NPCEmoteChatString;
+			end);
+		end
 
-		-- Replacing temporary patterns by color wrap
-		message = message:gsub(EmoteTempDetectionPattern, function(content)
-			return chatColor:WrapTextInColorCode(content):gsub(EmoteTempPatternStart, ""):gsub(EmoteTempPatternEnd, "") .. NPCEmoteChatString;
-		end);
+		if configDoOOCDetection() then
+			local color = TRP3_API.chat.getOOCDetectionColor();
+			message = message:gsub(configOOCDetectionPattern(), function(content)
+				return color:WrapTextInColorCode(content) .. NPCEmoteChatString;
+			end);
+		end
+
+		-- Only apply speech detections on emotes (excluding NPC non-emote speech)
+		if isEmote and configDoSpeechDetection() then
+			local color = TRP3_API.chat.getSpeechDetectionColor();
+			message = message:gsub('%b""', function(content)
+				return color:WrapTextInColorCode(content) .. NPCEmoteChatString;
+			end);
+		end
 	end
 
-	if configDoOOCDetection() and message:find(configOOCDetectionPattern()) then
-
-		-- Wrapping Russian declension in a temporary pattern
-		message = message:gsub("|3%-(.)%((.-)%)", function(declension, content)
-			return RussianDeclensionStart .. declension .. content .. RussianDeclensionEnd;
-		end);
-
-		-- Wrapping patterns in a temporary pattern
-		local OOCColor = TRP3_API.chat.getOOCDetectionColor();
-		message = message:gsub(configOOCDetectionPattern(), function(content)
-			return OOCTempPatternStart .. content .. OOCTempPatternEnd;
-		end);
-
-		-- Removing temporary patterns from links
-		message = message:gsub(LinkDetectionPattern, function(content)
-			return content:gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "");
-		end);
-
-		-- Replacing temporary patterns by color wrap
-		message = message:gsub(OOCTempDetectionPattern, function(content)
-			return OOCColor:WrapTextInColorCode(content):gsub(OOCTempPatternStart, ""):gsub(OOCTempPatternEnd, "") .. NPCEmoteChatString;
-		end);
-
-		message = message:gsub(RussianDeclensionDetectionPattern, "|3-%1(%2)");
-	end
-
-	-- Only apply speech detections on emotes (excluding NPC non-emote speech)
-	if isEmote and configDoSpeechDetection() and message:find('%b""') then
-		-- Wrapping patterns in a temporary pattern
-		local chatColor = TRP3_API.chat.getSpeechDetectionColor();
-		message = message:gsub('%b""', function(content)
-			return SpeechTempPatternStart .. content .. SpeechTempPatternEnd;
-		end);
-
-		-- Removing temporary patterns from links
-		message = message:gsub(LinkDetectionPattern, function(content)
-			return content:gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "");
-		end);
-
-		-- Replacing temporary patterns by color wrap
-		message = message:gsub(SpeechTempDetectionPattern, function(content)
-			return chatColor:WrapTextInColorCode(content):gsub(SpeechTempPatternStart, ""):gsub(SpeechTempPatternEnd, "") .. NPCEmoteChatString;
-		end);
-	end
-
+	message = UnprotectMessageContents(message, protections);
 	return message;
 end
 TRP3_API.chat.detectEmoteAndOOC = detectEmoteAndOOC;

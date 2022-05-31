@@ -41,12 +41,10 @@ local getMiscExchangeData = playerAPI.getMiscExchangeData;
 local boundAndCheckCompanion = TRP3_API.companions.register.boundAndCheckCompanion;
 local getCompanionData = TRP3_API.companions.player.getCompanionData;
 local saveCompanionInformation = TRP3_API.companions.register.saveInformation;
-local getConfigValue = TRP3_API.configuration.getValue;
 local displayMessage = TRP3_API.utils.message.displayMessage;
 local TRP3_Enums = AddOn_TotalRP3.Enums;
 
 -- WoW imports
-local time, type, pairs, tonumber = GetTime, type, pairs, tonumber;
 local newTimer = C_Timer.NewTimer;
 
 -- Character name for profile opening command
@@ -58,6 +56,134 @@ local commandOpeningTimerHandle;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local has_seen_update_alert, has_seen_extended_update_alert = false, false;
+
+local band = bit.band;
+local bxor = bit.bxor;
+local floor = math.floor;
+local strbyte = string.byte;
+
+local function mul(x, y)
+	return (band(x, 0xffff) * y) + (band(floor(x / 65536) * y, 0xffff) * 65536);
+end
+
+local function FNV1A(str)
+	local hash = 2166136261;
+
+	for i = 1, #str do
+		local b = strbyte(str, i);
+		hash = bxor(hash, b);
+		hash = mul(hash, 16777619);
+	end
+
+	return hash;
+end
+
+local FNV1ACache = setmetatable({},
+	{
+		__mode = "k",
+		__index = function(t, k)
+			t[k] = FNV1A(k);
+			return t[k];
+		end,
+	}
+);
+
+local KnownBadVersions =
+{
+	[97] = true,  -- 2.3.3: Affected by a bug where it thinks things are out of date.
+	[98] = true,  -- 2.3.4: As above, resolved in 2.3.5.
+};
+
+local senderBadVersions = {};
+local senderObjectRequestTimes = {};
+
+local function GetOrCreateTable(t, key)
+	if t[key] ~= nil then
+		return t[key];
+	end
+
+	t[key] = {};
+	return t[key];
+end
+
+local function RecordIncomingVersion(sender, version)
+	if KnownBadVersions[version] then
+		senderBadVersions[sender] = version;
+	else
+		senderBadVersions[sender] = nil;
+	end
+end
+
+local function IsSenderRunningBadVersion(sender)
+	return senderBadVersions[sender] ~= nil;
+end
+
+local function RecordSenderObjectRequestTime(sender, infoType)
+	if IsSenderRunningBadVersion(sender) then
+		local requestTimes = GetOrCreateTable(senderObjectRequestTimes, sender);
+		requestTimes[infoType] = GetTime();
+	end
+end
+
+local function ShouldRespondToObjectRequest(sender, infoType)
+	local BAD_VERSION_OBJECT_THROTTLE = 180;
+
+	local requestTimes = senderObjectRequestTimes[sender];
+
+	if type(requestTimes) ~= "table" then
+		return true;   -- They're running an okay version.
+	end
+
+	local requestTimeAt = requestTimes[infoType];
+
+	if type(requestTimeAt) ~= "number" then
+		return true;   -- They may have a bad version but they've not asked for this data.
+	elseif GetTime() >= (requestTimeAt + BAD_VERSION_OBJECT_THROTTLE) then
+		return true;   -- The last response was a while ago.
+	else
+		return false;  -- Don't respond; received another request too soon.
+	end
+end
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Check size
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+local ALERT_FOR_SIZE = 20;
+local cachedPlayerWeight;
+
+local function CalculatePlayerDataWeight()
+	return Comm.estimateStructureLoad(
+		{
+			getCharExchangeData(),
+			getAboutExchangeData(),
+			getMiscExchangeData(),
+			getCharacterExchangeData(),
+		}
+	);
+end
+
+local function RecalculatePlayerDataWeight()
+	cachedPlayerWeight = CalculatePlayerDataWeight();
+end
+
+local function GetPlayerDataWeight()
+	if not cachedPlayerWeight then
+		RecalculatePlayerDataWeight();
+	end
+
+	return cachedPlayerWeight;
+end
+
+local function checkPlayerDataWeight()
+	RecalculatePlayerDataWeight();
+
+	local computedSize = GetPlayerDataWeight();
+	if computedSize > ALERT_FOR_SIZE then
+		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
+		TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
+	end
+end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Vernum queries
@@ -139,7 +265,7 @@ function createVernumQuery()
 end
 
 local function checkCooldown(unitID, structure)
-	return not structure[unitID] or time() - structure[unitID] > COOLDOWN_DURATION;
+	return not structure[unitID] or GetTime() - structure[unitID] > COOLDOWN_DURATION;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -150,12 +276,80 @@ end
 -- We will store new versions alerts to remember how many people notified us of a new version.
 local newVersionAlerts, extendedNewVersionAlerts = {}, {};
 
-local infoTypeTab = {
-	registerInfoTypes.CHARACTERISTICS,
-	registerInfoTypes.ABOUT,
-	registerInfoTypes.MISC,
-	registerInfoTypes.CHARACTER
+local QueueStrategy =
+{
+	-- The independent queue strategy leaves the role of queuing messages
+	-- to the underlying transport mechanism. Typically this will put all
+	-- messages to a single player in single per-channel queue, and is best
+	-- for small streams of messages.
+	Independent = 1,
+
+	-- The pooled queue strategy uses a fixed set of queues used for all
+	-- comms from the player to other people irrespective of channel. This
+	-- is enabled when dealing with players who are sending profiles above
+	-- a minimum weight threshold.
+	--
+	-- This strategy is best used for larger data transfers where the number
+	-- of people we may be sending data to could be a large number. Using
+	-- pooled queues should improve comms performance for both other addons
+	-- and any metadata-style comms from ourselves.
+	Pooled = 2,
 };
+
+local DEFAULT_QUEUE_POOL_COUNT = 10;
+local MINIMUM_QUEUE_POOL_COUNT = 5;
+local MAXIMUM_QUEUE_POOL_COUNT = 30;
+
+local DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT = 4;
+local MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 1;
+local MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = 20;
+
+-- The below is exposed purely for the settings UI; don't rely on these.
+TRP3_API.r.MINIMUM_QUEUE_POOL_COUNT = MINIMUM_QUEUE_POOL_COUNT;
+TRP3_API.r.MAXIMUM_QUEUE_POOL_COUNT = MAXIMUM_QUEUE_POOL_COUNT;
+TRP3_API.r.MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
+TRP3_API.r.MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT = MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT;
+
+local function GetQueuePoolCount()
+	local count = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolCount"));
+
+	if type(count) ~= "number" then
+		count = DEFAULT_QUEUE_POOL_COUNT;
+	end
+
+	return Clamp(count, MINIMUM_QUEUE_POOL_COUNT, MAXIMUM_QUEUE_POOL_COUNT);
+end
+
+local function GetQueuePoolMinimumWeight()
+	local threshold = tonumber(TRP3_API.configuration.getValue("Exchange_QueuePoolWeightThreshold"));
+
+	if type(threshold) ~= "number" then
+		threshold = DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT;
+	end
+
+	return Clamp(threshold, MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT, MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT);
+end
+
+local function GetSuggestedQueueStrategy(query, infoType, target)  -- luacheck: no unused
+	if query == INFO_TYPE_SEND_PREFIX and GetPlayerDataWeight() >= GetQueuePoolMinimumWeight() then
+		return QueueStrategy.Pooled;
+	else
+		return QueueStrategy.Independent;
+	end
+end
+
+local function GenerateQueueName(query, infoType, target)
+	local strategy = GetSuggestedQueueStrategy(query, infoType, target);
+
+	if strategy == QueueStrategy.Independent then
+		return nil;
+	elseif strategy == QueueStrategy.Pooled then
+		local queueIndex = Wrap(FNV1ACache[target], GetQueuePoolCount());
+		return string.format("TRP3-Queue-%d", queueIndex);
+	else
+		error("unknown queue strategy: " .. tostring(strategy));
+	end
+end
 
 local COMPANION_PREFIX = "comp_";
 
@@ -223,13 +417,20 @@ end
 --- Send vernum request to the player
 local function sendQuery(unitID)
 	if unitID and unitID ~= Globals.player_id and not isIDIgnored(unitID) and checkCooldown(unitID, LAST_QUERY) then
-		LAST_QUERY[unitID] = time();
+		LAST_QUERY[unitID] = GetTime();
 		LAST_QUERY_STAT[unitID] = LAST_QUERY[unitID];
 		local query = createVernumQuery();
 		Comm.sendObject(VERNUM_QUERY_PREFIX, query, unitID, VERNUM_QUERY_PRIORITY);
 	end
 end
 TRP3_API.r.sendQuery = sendQuery;
+
+local function TryQueryInformation(target, infoType, currentData)
+	if shouldUpdateInformation(target, infoType, currentData) then
+		log(("Should update: %s's %s"):format(target, infoType));
+		queryInformationType(target, infoType);
+	end
+end
 
 --- Incoming vernum query
 -- This is received when another player has "mouseovered" you.
@@ -249,7 +450,7 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	-- First send back or own vernum
 	if sendBack then
 		if checkCooldown(senderID, LAST_QUERY_R) then
-			LAST_QUERY_R[senderID] = time();
+			LAST_QUERY_R[senderID] = GetTime();
 			local query = createVernumQuery();
 			Comm.sendObject(VERNUM_R_QUERY_PREFIX, query, senderID, VERNUM_QUERY_PRIORITY);
 		end
@@ -268,6 +469,8 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	senderVersion = tonumber(senderVersion) or 0;
 	senderExtendedVersion = tonumber(senderExtendedVersion) or 0;
 
+	RecordIncomingVersion(senderID, senderVersion);
+
 	local clientName = Globals.addon_name;
 	if senderExtendedVersion > 0 then
 		clientName = Globals.addon_name_extended;
@@ -282,14 +485,10 @@ local function incomingVernumQuery(structure, senderID, sendBack)
 	saveCurrentProfileID(senderID, senderProfileID);
 
 	-- Query specific data, depending on version number.
-	local index = VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V;
-	for _, infoType in pairs(infoTypeTab) do
-		if shouldUpdateInformation(senderID, infoType, structure[index]) then
-			log(("Should update: %s's %s"):format(senderID, infoType));
-			queryInformationType(senderID, infoType);
-		end
-		index = index + 1;
-	end
+	TryQueryInformation(senderID, registerInfoTypes.CHARACTERISTICS, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V]);
+	TryQueryInformation(senderID, registerInfoTypes.CHARACTER, structure[VERNUM_QUERY_INDEX_CHARACTER_CHARACTER_V]);
+	TryQueryInformation(senderID, registerInfoTypes.MISC, structure[VERNUM_QUERY_INDEX_CHARACTER_MISC_V]);
+	TryQueryInformation(senderID, registerInfoTypes.ABOUT, structure[VERNUM_QUERY_INDEX_CHARACTER_ABOUT_V]);
 
 	-- Battle pet
 	local battlePetLine = structure[VERNUM_QUERY_INDEX_COMPANION_BATTLE_PET];
@@ -333,7 +532,7 @@ function queryInformationType(unitName, informationType)
 	if not CURRENT_QUERY_EXCHANGES[unitName] then
 		CURRENT_QUERY_EXCHANGES[unitName] = {};
 	end
-	CURRENT_QUERY_EXCHANGES[unitName][informationType] = time();
+	CURRENT_QUERY_EXCHANGES[unitName][informationType] = GetTime();
 	Comm.sendObject(INFO_TYPE_QUERY_PREFIX, informationType, unitName, INFO_TYPE_QUERY_PRIORITY);
 end
 
@@ -342,6 +541,12 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function incomingInformationType(informationType, senderID)
+	if not ShouldRespondToObjectRequest(senderID, informationType) then
+		return;
+	end
+
+	RecordSenderObjectRequestTime(senderID, informationType);
+
 	local data;
 	if informationType == registerInfoTypes.CHARACTERISTICS then
 		data = getCharExchangeData();
@@ -358,7 +563,17 @@ local function incomingInformationType(informationType, senderID)
 	end
 	if data then
 		log(("Send %s info to %s"):format(informationType, senderID));
-		AddOn_TotalRP3.Communications.sendObject(INFO_TYPE_SEND_PREFIX, {informationType, data}, senderID, INFO_TYPE_SEND_PRIORITY, nil, true);
+
+		local prefix = INFO_TYPE_SEND_PREFIX;
+		local object = { informationType, data };
+		local channel = "WHISPER";
+		local target = senderID;
+		local priority = INFO_TYPE_SEND_PRIORITY;
+		local messageToken = nil;
+		local useLoggedMessages = true;
+		local queue = GenerateQueueName(prefix, informationType, senderID);
+
+		AddOn_TotalRP3.Communications.sendObject(prefix, object, channel, target, priority, messageToken, useLoggedMessages, queue);
 	end
 end
 
@@ -421,23 +636,6 @@ local function onTargetChanged()
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Check size
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local ALERT_FOR_SIZE = 20;
-
-local function checkPlayerDataWeight()
-	local totalData = {getCharExchangeData(), getAboutExchangeData(), getMiscExchangeData(), getCharacterExchangeData()};
-	local computedSize = Comm.estimateStructureLoad(totalData);
-	if computedSize > ALERT_FOR_SIZE then
-		log(("Profile too heavy ! It would take %s messages to send."):format(computedSize));
-		if getConfigValue("heavy_profile_alert") then
-			TRP3_API.ui.tooltip.toast(loc.REG_PLAYER_ALERT_HEAVY_SMALL, 5);
-		end
-	end
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- INIT
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -447,6 +645,9 @@ function TRP3_API.register.inits.dataExchangeInit()
 	if not TRP3_Register then
 		TRP3_Register = {};
 	end
+
+	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolCount", DEFAULT_QUEUE_POOL_COUNT);
+	TRP3_API.configuration.registerConfigKey("Exchange_QueuePoolWeightThreshold", DEFAULT_QUEUE_POOL_MINIMUM_WEIGHT);
 
 	Events.listenToEvent(Events.REGISTER_DATA_UPDATED, function(unitID)
 		if unitID == Globals.player_id then

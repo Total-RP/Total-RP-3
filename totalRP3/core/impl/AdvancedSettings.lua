@@ -35,7 +35,7 @@ TRP3_API.ADVANCED_SETTINGS_KEYS = {
 }
 
 -- Broadcast keys should only be registered in Retail
-if not TRP3_API.globals.is_classic then
+if not TRP3_API.globals.is_classic and not TRP3_API.globals.is_bcc then
 	TRP3_API.ADVANCED_SETTINGS_KEYS.USE_BROADCAST_COMMUNICATIONS = "comm_broad_use";
 	TRP3_API.ADVANCED_SETTINGS_KEYS.BROADCAST_CHANNEL = "comm_broad_chan";
 	TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST = "MAKE_SURE_BROADCAST_CHANNEL_IS_LAST";
@@ -55,7 +55,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.menuText = loc.CO_ADVANCED_SETTINGS_MENU_NAME
 	TRP3_API.ADVANCED_SETTINGS_STRUCTURE.pageText = loc.CO_ADVANCED_SETTINGS
 
-	if not TRP3_API.globals.is_classic then
+	if not TRP3_API.globals.is_classic and not TRP3_API.globals.is_bcc then
 		-- Broadcast settings
 		tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigH1",
@@ -129,24 +129,43 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				return;
 			end
 
-			local oldLocale = Configuration.getValue("AddonLocale");
 			Configuration.setValue("AddonLocale", newLocaleCode);
-
-			-- If the user has any profiles that have an LC field matching
-			-- that of the locale we're swapping from, we'll assume they
-			-- probably want that changed. We could prompt, but we're
-			-- already doing that to reload the UI.
-			for _, profile in pairs(TRP3_Profiles) do
-				if profile.player and profile.player.character and profile.player.character.LC == oldLocale then
-					profile.player.character.LC = newLocaleCode;
-				end
-			end
-
 			TRP3_API.popup.showConfirmPopup(loc.CO_GENERAL_CHANGELOCALE_ALERT:format(Ellyb.ColorManager.GREEN(loc:GetLocale(newLocaleCode):GetName())), ReloadUI);
 		end,
 		listDefault = loc:GetActiveLocale():GetName(),
 		listCancel = true,
 	});
+
+	-- Comms settings
+
+	tAppendAll(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements,
+		{
+			{
+				inherit = "TRP3_ConfigH1",
+				title = loc.CONFIG_COMMS_SETTINGS_HEADER,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc.CONFIG_COMMS_QUEUE_POOL_COUNT,
+				help = loc.CONFIG_COMMS_QUEUE_POOL_COUNT_DESCRIPTION,
+				configKey = "Exchange_QueuePoolCount",
+				min = TRP3_API.r.MINIMUM_QUEUE_POOL_COUNT,
+				max = TRP3_API.r.MAXIMUM_QUEUE_POOL_COUNT,
+				step = 1,
+				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigSlider",
+				title = loc.CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD,
+				help = loc.CONFIG_COMMS_QUEUE_POOL_WEIGHT_THRESHOLD_DESCRIPTION,
+				configKey = "Exchange_QueuePoolWeightThreshold",
+				min = TRP3_API.r.MINIMUM_QUEUE_POOL_MINIMUM_WEIGHT,
+				max = TRP3_API.r.MAXIMUM_QUEUE_POOL_MINIMUM_WEIGHT,
+				step = 1,
+				integer = true,
+			},
+		}
+	);
 
 	-- Reset button
 	tinsert(TRP3_API.ADVANCED_SETTINGS_STRUCTURE.elements, 1, {

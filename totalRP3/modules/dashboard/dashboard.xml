@@ -18,21 +18,20 @@
 		See the License for the specific language governing permissions and
 		limitations under the License.
 	-->
-	<Script file="npc_talk.lua"/>
-	<Script file="dashboard.lua"/>
+	<Include file="npc_talk.lua"/>
+	<Include file="dashboard.lua"/>
 
-	<Script file="Credit.lua"/>
-	<Script file="TabView.lua"/>
-	<Script file="WhatsNewTabView.lua"/>
-	<Script file="AboutTabView.lua"/>
-	<Script file="ModulesTabView.lua"/>
+	<Include file="TabView.lua"/>
+	<Include file="WhatsNewTabView.lua"/>
+	<Include file="AboutTabView.lua"/>
+	<Include file="ModulesTabView.lua"/>
 
 	<Include file="HTMLContent.xml"/>
 	<Include file="TabFrame.xml"/>
 	<Include file="StatusPanel.xml"/>
 
 	<!-- Dashboard -->
-	<Frame name="TRP3_Dashboard" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
 		</KeyValues>
@@ -60,7 +59,7 @@
 
 			<!-- Status -->
 			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">
-				<Size x="0" y="115"/>
+				<Size x="0" y="85"/>
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 					<Anchor point="LEFT" x="10" y="0"/>

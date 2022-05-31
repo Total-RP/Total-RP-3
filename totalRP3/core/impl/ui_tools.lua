@@ -31,8 +31,6 @@ TRP3_API.ui = {
 }
 
 -- imports
-local LibRealmInfo = LibStub:GetLibrary("LibRealmInfo");
-
 local globals = TRP3_API.globals;
 local loc = TRP3_API.loc;
 local floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat = floor, tinsert, pairs, wipe, assert, _G, tostring, table, type, strconcat;
@@ -518,11 +516,6 @@ function TRP3_API.ui.misc.isTargetTypeACompanion(unitType)
 	return unitType == TRP3_Enums.UNIT_TYPE.BATTLE_PET or unitType == TRP3_Enums.UNIT_TYPE.PET;
 end
 
-local function IsPetUnit(unitToken)
-	local unitGUID = UnitGUID(unitToken);
-	return unitGUID and strsplit("-", unitGUID) == "Pet";
-end
-
 local function IsBattlePetUnit(unitToken)
 	if UnitIsBattlePetCompanion then
 		return UnitIsBattlePetCompanion(unitToken);
@@ -548,7 +541,7 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 		return TRP3_Enums.UNIT_TYPE.CHARACTER, getUnitID(unitType) == globals.player_id;
 	elseif IsBattlePetUnit(unitType) then
 		return TRP3_Enums.UNIT_TYPE.BATTLE_PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
-	elseif UnitPlayerControlled(unitType) and IsPetUnit(unitType) then
+	elseif UnitPlayerControlled(unitType) and UnitCreatureFamily(unitType) ~= nil then
 		return TRP3_Enums.UNIT_TYPE.PET, UnitIsOwnerOrControllerOfUnit("player", unitType);
 	end
 	if TRP3_API.utils.str.getUnitNPCID(unitType) then
@@ -1135,45 +1128,4 @@ function TRP3_API.ui.frame.setupMove(frame)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing();
 	end)
-end
-
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- Locale Textures
---*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
-
-local LOCALE_ATLAS = [[Interface\AddOns\totalRP3\resources\locales]];
-local LOCALE_ICONS = {
-	["deDE"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.00, 0.25, 0.00, 0.171875, 0, 0),
-	["enGB"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.25, 0.50, 0.00, 0.171875, 0, 0),
-	["enUS"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.50, 0.75, 0.00, 0.171875, 0, 0),
-	["esES"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.75, 1.00, 0.00, 0.171875, 0, 0),
-	["esMX"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.00, 0.25, 0.25, 0.421875, 0, 0),
-	["frFR"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.25, 0.50, 0.25, 0.421875, 0, 0),
-	["itIT"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.50, 0.75, 0.25, 0.421875, 0, 0),
-	["koKR"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.75, 1.00, 0.25, 0.421875, 0, 0),
-	["ptBR"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.00, 0.25, 0.50, 0.671875, 0, 0),
-	["ptPT"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.25, 0.50, 0.50, 0.671875, 0, 0),
-	["ruRU"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.50, 0.75, 0.50, 0.671875, 0, 0),
-	["zhCN"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.75, 1.00, 0.50, 0.671875, 0, 0),
-	["zhTW"] = CreateTextureMarkup(LOCALE_ATLAS, 64, 64, 16, 11, 0.00, 0.25, 0.75, 0.921875, 0, 0),
-};
-
-function TRP3_API.ui.misc.getLocaleIcon(localeCode)
-	-- Some regions should have their locale codes transformed for accuracy,
-	-- for example ptBR on EU realms should probably be ptPT.
-	local currentRegion = LibRealmInfo:GetCurrentRegion();
-	if not currentRegion then
-		currentRegion = GetCurrentRegionName();
-	end
-
-	if currentRegion == "EU" or currentRegion == "RU" then
-		-- EU/RU: enUS => enGB, ptBR => ptPT.
-		if localeCode == "enUS" then
-			localeCode = "enGB";
-		elseif localeCode == "ptBR" then
-			localeCode = "ptPT";
-		end
-	end
-
-	return LOCALE_ICONS[localeCode];
 end

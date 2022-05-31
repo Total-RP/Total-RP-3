@@ -179,18 +179,21 @@ function TRP3_KuiNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayText then
+		nameplate.NameText:SetText(displayText);
+
 		if nameplate.IN_NAMEONLY then
 			-- In name-only mode we need to account for health coloring, which
 			-- reads from the current state. We replace it long enough to
 			-- update the underlying font string before restoring it.
+			--
+			-- Note this needs to occur after a SetText call to replace the
+			-- name, as health coloring and level information is only placed
+			-- onto the name if either are enabled.
 
 			local originalText = nameplate.state.name;
 			nameplate.state.name = displayText;
 			KuiNameplatesCore:NameOnlyUpdateNameText(nameplate);
 			nameplate.state.name = originalText;
-		else
-			-- Not in name-only mode so the logic is straightforward.
-			nameplate.NameText:SetText(displayText);
 		end
 	end
 

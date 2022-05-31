@@ -418,7 +418,12 @@ local IMAGES = {
 		height = 128
 	},
 	{
-		url = "Interface\\Calendar\\Holidays\\calendar_CastleNathriaStart",
+		url = "Interface\\Calendar\\Holidays\\Calendar_Brawl2Start",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_CastleNathriaStart",
 		width = 128,
 		height = 128
 	},
@@ -454,6 +459,16 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_RunningoftheGnomesEnd",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_SanctumofDomination",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_SepulcherOfTheFirstOnesStart",
 		width = 128,
 		height = 128
 	},
@@ -1416,6 +1431,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SanctumOfDomination",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-SanguineDepths",
 		width = 256,
 		height = 256
@@ -1429,6 +1448,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-SeethingShore",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-SepulcherOfTheFirstOnes",
 		width = 256,
 		height = 256
 	}, {
@@ -1481,6 +1504,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Summer",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TazaveshTheVeiledMarket",
 		width = 256,
 		height = 256
 	}, {
@@ -2148,6 +2175,22 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing3Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanctumOfDominationwing4Q",
+		width = 512,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SanguineDepths",
 		width = 256,
 		height = 128
@@ -2200,6 +2243,26 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SepulcherOfTheFirstOnes",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SepulcherOfTheFirstOnesWing1Q",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SepulcherOfTheFirstOnesWing2Q",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SepulcherOfTheFirstOnesWing3Q",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-SepulcherOfTheFirstOnesWing4Q",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ShadowmoonBurialGrounds",
 		width = 256,
 		height = 128
@@ -2233,6 +2296,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-StormStoutBrewery",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TazaveshTheVeiledMarket",
 		width = 256,
 		height = 128
 	}, {
@@ -4141,6 +4208,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-PriestShadow",
+		width = 256,
+		height = 128,
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-Profession-StewPot",
 		width = 256,
 		height = 128,
 	},

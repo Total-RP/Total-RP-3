@@ -29,7 +29,7 @@
 		</Scripts>
 	</Button>
 
-	<GameTooltip name="TRP3_RefTooltip" inherits="GameTooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true" mixin="TRP3_ChatLinkTooltipMixin">
+	<GameTooltip name="TRP3_RefTooltip" inherits="TRP3_TooltipTemplate" parent="UIParent" enableMouse="true" toplevel="true" movable="true" frameStrata="TOOLTIP" hidden="true" mixin="TRP3_ChatLinkTooltipMixin">
 		<Size>
 			<AbsDimension x="128" y="64"/>
 		</Size>

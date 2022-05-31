@@ -26,10 +26,10 @@ embedded-libraries:
   - libdatabroker-1-1
   - libdbicon-1-0
   - libdeflate
-  - librealminfo
   - librpmedia
   - libstub
   - msa-dropdownmenu-10
+  - utf8
 
 manual-changelog:
   filename: CHANGELOG.md

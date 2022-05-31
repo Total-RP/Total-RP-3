@@ -47,23 +47,6 @@ end
 local function loadingSequence()
 	Log.log("OnEnable() START");
 
-	--region Client check
-	--[===[@non-debug@
-	--@retail@
-	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3-classic", "You are trying to use the |cffff0000retail|r version of Total RP 3. Please install Total RP 3: Classic instead.", nil, loc.COPY_SYSTEM_MESSAGE);
-		return;
-	end
-	--@end-retail@
-	--[===[@non-retail@
-	if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC then
-		TRP3_API.Ellyb.Popups:OpenURL("https://www.curseforge.com/wow/addons/total-rp-3", "You are trying to use |cffff0000Total RP 3: Classic|r. Please install the retail version of Total RP 3 instead.", nil, loc.COPY_SYSTEM_MESSAGE);
-		return;
-	end
-	--@end-non-retail@]===]
-	--@end-non-debug@]===]
-	--endregion
-
 	-- Get info we can't have earlier
 	MAIN_SEQUENCE_DETAIL = "Globals.build";
 	Globals.build();

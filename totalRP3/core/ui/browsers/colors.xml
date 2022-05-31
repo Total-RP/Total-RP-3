@@ -20,7 +20,7 @@
 -->
 
 	<!-- Color browser  -->
-	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ColorBrowser" parent="TRP3_PopupsFrame" hidden="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_24_5555" type="global"/>
 		</KeyValues>
@@ -53,7 +53,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame inherits="TRP3_BackdropTemplate">
+			<Frame inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_415_24_5555" type="global"/>
 				</KeyValues>

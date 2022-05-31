@@ -18,7 +18,7 @@
 -->
 
 	<!-- Profile manager : Line -->
-	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="TRP3_BackdropTemplate">
+	<Frame name="TRP3_ProfileManagerLine" virtual="true" inherits="BackdropTemplate">
 		<KeyValues>
 			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_5353" type="global"/>
 		</KeyValues>
@@ -126,7 +126,7 @@
 	<!-- Profile manager -->
 	<Frame name="TRP3_ProfileManagerTemplate" hidden="true" virtual="true">
 		<Frames>
-			<Frame frameLevel="2" parentKey="list" inherits="TRP3_BackdropTemplate">
+			<Frame frameLevel="2" parentKey="list" inherits="BackdropTemplate">
 				<KeyValues>
 					<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
 				</KeyValues>

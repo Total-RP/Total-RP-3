@@ -1,3 +1,88 @@
+# Changelog version 2.3.11
+
+**With the recent changes of patch 9.2.5, profiles can now be seen cross-faction for players in your party, or with whom you share a cross-faction WoW community.**
+
+## Added
+
+- Added 3 icons and 4 music files from patch 9.2.5.
+
+## Fixed
+
+- Fixed the target frame not having the proper skin when using ElvUI.
+
+# Changelog version 2.3.10
+
+## Added
+
+- Added 438 icons, 133 music files and 10 images from patch 9.2.0, 2 icons from Burning Crusade Classic and 3 icons from Classic Era.
+
+# Changelog version 2.3.9
+
+## Added
+
+- Added 32 icons and 7 music files from patch 9.1.5, 21 icons from Burning Crusade Classic and 2 icons from Classic Era.
+
+## Fixed
+
+- Fixed an issue with the character scan tooltips not showing since patch 9.1.5.
+
+# Changelog version 2.3.8
+
+## Fixed
+
+- Fixed tooltip issues for patch 9.1.5.
+
+# Changelog version 2.3.7
+
+This version is updated for TBC Classic 2.5.2.
+
+## Fixed
+
+- 9.1 icons and musics have been properly added for retail.
+- Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
+
+# Changelog version 2.3.6
+
+## Added
+
+- Added 323 new icons, 7 images and 138 new music files from patch 9.1.0.
+
+## Removed
+
+- Removed the roleplay language flag.
+- Fixed a bug with chat channels on Classic.
+
+# Changelog version 2.3.5
+
+## Added
+
+- Added support for Burning Crusade Classic.
+
+## Fixed
+
+- Fixed several performance issues when requesting character profiles.
+
+# Changelog version 2.3.4
+
+## Fixed
+
+- Fixed an issue with links in brackets displaying incorrectly in chat while using ElvUI.
+
+# Changelog version 2.3.3
+
+## Added
+- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
+  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
+  - The health field will only show if the character is not full health. It is disabled by default.
+
+## Fixed
+- Fixed a few issues with profile transfer.
+- Fixed Kui name-only RP nameplates not updating when level text and health were both disabled.
+- Fixed inability to set a pet profile when the pet is first summoned.
+- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
+- Fixed TRP chat links breaking from emote/OOC/speech detection.
+- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
+
 # Changelog version 2.3.2
 
 ## Added

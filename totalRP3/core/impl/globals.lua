@@ -52,7 +52,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 96,
+	version = 105,
 
 	--@debug@
 	version_display = "-dev",
@@ -81,6 +81,8 @@ TRP3_API.globals = {
 	},
 
 	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
+	is_bcc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC,
+
 	serious_day = currentDate.month == 4 and currentDate.day == 1,
 
 	-- Profile Constants

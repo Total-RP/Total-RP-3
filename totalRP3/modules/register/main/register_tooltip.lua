@@ -89,6 +89,8 @@ local CONFIG_CHARACT_NOTIF = "tooltip_char_notif";
 local CONFIG_CHARACT_CURRENT = "tooltip_char_current";
 local CONFIG_CHARACT_OOC = "tooltip_char_ooc";
 local CONFIG_CHARACT_PRONOUNS = "tooltip_char_pronouns";
+local CONFIG_CHARACT_ZONE = "tooltip_char_zone";
+local CONFIG_CHARACT_HEALTH = "tooltip_char_health";
 local CONFIG_CHARACT_CURRENT_SIZE = "tooltip_char_current_size";
 local CONFIG_CHARACT_RELATION = "tooltip_char_relation";
 local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
@@ -190,6 +192,10 @@ local function showPronouns()
 	return getConfigValue(CONFIG_CHARACT_PRONOUNS);
 end
 
+local function showZone()
+	return getConfigValue(CONFIG_CHARACT_ZONE);
+end
+
 local function getCurrentMaxSize()
 	return getConfigValue(CONFIG_CHARACT_CURRENT_SIZE);
 end
@@ -257,13 +263,13 @@ local function limitText(input, maxCharLength, maxLinesCount)
 			return input;
 		end
 
-		return string.sub(input, 1, maxCharLength) .. "…";
+		return TRP3_API.utils.str.crop(input, maxCharLength);
 	end
 
 	-- Otherwise extract the substring up to the character preceeding the
 	-- last matched newline or to the maximum allowable length of the text,
 	-- whichever is shorter.
-	return string.sub(input, 1, math.min(finish - 1, maxCharLength)) .. "…";
+	return TRP3_API.utils.str.crop(input, math.min(finish - 1, maxCharLength));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -461,11 +467,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		completeName = crop(completeName, FIELDS_TO_CROP.NAME);
 	end
 
-	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-		completeName = Utils.Rainbowify(completeName);
-	else
-		completeName = color:WrapTextInColorCode(completeName);
-	end
+	completeName = color:WrapTextInColorCode(completeName);
 
 	-- OOC
 	if info.character and info.character.RP ~= 1 then
@@ -584,11 +586,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCurrently() and info.character and info.character.CU and info.character.CU ~= "" then
-		tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
-
 		local text = strtrim(info.character.CU);
-		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+
+		if text ~= "" then
+			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
+			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+		end
 	end
 
 	tooltipBuilder:AddSpace();
@@ -598,11 +602,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showMoreInformation() and info.character and info.character.CO and info.character.CO ~= "" then
-		tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
-
 		local text = strtrim(info.character.CO);
-		text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-		tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+
+		if text ~= "" then
+			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
+			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+		end
 	end
 
 	tooltipBuilder:AddSpace();
@@ -653,13 +659,49 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				name = crop(name, FIELDS_TO_CROP.NAME);
 			end
 
-			if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-				name = Utils.Rainbowify(name);
-			else
-				name = targetClassColor:WrapTextInColorCode(name);
-			end
+			name = targetClassColor:WrapTextInColorCode(name);
 		end
 		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
+	end
+
+	--
+	-- Zone
+	--
+
+	if showZone() and targetType ~= "player" then
+		local mapID = C_Map.GetBestMapForUnit(targetType);
+		local playerMapID = C_Map.GetBestMapForUnit("player");
+		if mapID and mapID ~= playerMapID then
+			local mapInfo = C_Map.GetMapInfo(mapID);
+			local lineText = string.format("%1$s: |cffff9900%2$s|r", TRP3_API.loc.REG_TT_ZONE, mapInfo.name);
+			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+		end
+	end
+
+	--
+	-- Health
+	--
+
+	local healthFormat = getConfigValue(CONFIG_CHARACT_HEALTH);
+	if healthFormat ~= 0 then
+		local targetHP = UnitHealth(targetType);
+		local targetHPMax = UnitHealthMax(targetType);
+		-- Don't show health if full
+		if targetHP ~= targetHPMax then
+			local percentHP = targetHP / targetHPMax;
+			local lineText;
+			-- Number
+			if healthFormat == 1 then
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax));
+				-- Percentage
+			elseif healthFormat == 2 then
+				lineText = string.format("%1$s: |cffff9900%2$s|r", HEALTH, FormatPercentage(percentHP, true));
+				-- Both
+			else
+				lineText = string.format("%1$s: |cffff9900%2$s/%3$s (%4$s)|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax), FormatPercentage(percentHP, true));
+			end
+			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+		end
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -675,18 +717,6 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 		if targetID ~= Globals.player_id and info.about and not info.about.read then
 			table.insert(notifPieces, NEW_ABOUT_ICON);
-		end
-
-		do
-			-- If the locale matches that of the users own current settings, we'll
-			-- display nothing since the information isn't that useful.
-			local localeCode = info.character and info.character.LC or nil;
-			if localeCode and localeCode ~= TRP3_API.configuration.getValue("AddonLocale") then
-				local localeIcon = TRP3_API.ui.misc.getLocaleIcon(localeCode);
-				if localeIcon then
-					table.insert(notifPieces, localeIcon);
-				end
-			end
 		end
 
 		local notifText = table.concat(notifPieces, " ");
@@ -817,10 +847,6 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		petName = crop(petName, FIELDS_TO_CROP.NAME);
 	end
 
-	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-		petName = Utils.Rainbowify(petName);
-	end
-
 	---@type Ellyb_Color
 	local companionCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
@@ -880,11 +906,8 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			end
 		end
 
-		if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-			ownerFinalName = Utils.Rainbowify(ownerFinalName);
-		else
-			ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
-		end
+		ownerFinalName = ownerColor:WrapTextInColorCode(ownerFinalName);
+
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
 		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
@@ -1002,10 +1025,6 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 		mountCustomName = crop(mountCustomName, FIELDS_TO_CROP.NAME);
 	end
 
-	if Globals.is_classic and Globals.serious_day and getConfigValue("AF_STUFF") then
-		mountCustomName = Utils.Rainbowify(mountCustomName);
-	end
-
 	---@type Ellyb_Color
 	local mountCustomColor = info.NH and TRP3_API.Ellyb.Color.CreateFromHexa(info.NH) or ColorManager.WHITE
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
@@ -1100,8 +1119,9 @@ local function show(targetType, targetID, targetMode)
 
 				-- Stock all the current text from the GameTooltip
 				local originalTexts = getGameTooltipTexts(GameTooltip);
+				local isMatureFlagged = unitIDIsFilteredForMatureContent(targetID);
 
-				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and isIDIgnored(targetID)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and ownerIsIgnored(targetID)) then
+				if (targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER and (isIDIgnored(targetID) or isMatureFlagged)) or ((targetMode == TRP3_Enums.UNIT_TYPE.BATTLE_PET or targetMode == TRP3_Enums.UNIT_TYPE.PET) and (ownerIsIgnored(targetID) or isMatureFlagged)) then
 					ui_CharacterTT:SetOwner(GameTooltip, "ANCHOR_TOPRIGHT");
 				elseif not getAnchoredFrame() then
 					GameTooltip_SetDefaultAnchor(ui_CharacterTT, UIParent);
@@ -1117,11 +1137,11 @@ local function show(targetType, targetID, targetMode)
 					end
 				end
 
-				ui_CharacterTT:SetBackdropBorderColor(1, 1, 1);
+				ui_CharacterTT:SetBorderColor(1, 1, 1);
 				if targetMode == TRP3_Enums.UNIT_TYPE.CHARACTER then
 					writeTooltipForCharacter(targetID, originalTexts, targetType);
 					if showRelationColor() and targetID ~= Globals.player_id and not isIDIgnored(targetID) and IsUnitIDKnown(targetID) and hasProfile(targetID) then
-						ui_CharacterTT:SetBackdropBorderColor(getRelationColors(hasProfile(targetID)));
+						ui_CharacterTT:SetBorderColor(getRelationColors(hasProfile(targetID)));
 					end
 					if shouldHideGameTooltip() and not (isIDIgnored(targetID) or unitIDIsFilteredForMatureContent(targetID)) then
 						GameTooltip:Hide();
@@ -1277,6 +1297,8 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_CHARACT_CURRENT, true);
 	registerConfigKey(CONFIG_CHARACT_OOC, true);
 	registerConfigKey(CONFIG_CHARACT_PRONOUNS, true);
+	registerConfigKey(CONFIG_CHARACT_ZONE, true);
+	registerConfigKey(CONFIG_CHARACT_HEALTH, 0);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_SIZE, 140);
 	registerConfigKey(CONFIG_CHARACT_RELATION, true);
 	registerConfigKey(CONFIG_CHARACT_SPACING, true);
@@ -1304,7 +1326,14 @@ local function onModuleInit()
 	local OOC_INDICATOR_TYPES = {
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_TEXT .. ColorManager.RED("[" .. loc.CM_OOC .. "] "), "TEXT"},
 		{loc.CO_TOOLTIP_PREFERRED_OOC_INDICATOR_ICON .. OOC_ICON, "ICON"}
-	}
+	};
+
+	local HEALTH_FORMAT_TAB = {
+		{loc.CO_TOOLTIP_HEALTH_DISABLED, 0},
+		{loc.CO_TOOLTIP_HEALTH_NUMBER, 1},
+		{loc.CO_TOOLTIP_HEALTH_PERCENT, 2},
+		{loc.CO_TOOLTIP_HEALTH_BOTH, 3},
+	};
 
 	-- Build configuration page
 	local CONFIG_STRUCTURE = {
@@ -1466,6 +1495,22 @@ local function onModuleInit()
 				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_TOOLTIP_PRONOUNS,
 				configKey = CONFIG_CHARACT_PRONOUNS,
+			},
+			{
+				inherit = "TRP3_ConfigCheck",
+				title = loc.CO_TOOLTIP_ZONE,
+				help = loc.CO_TOOLTIP_ZONE_TT,
+				configKey = CONFIG_CHARACT_ZONE,
+			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				widgetName = "TRP3_ConfigurationTooltip_Charact_Health",
+				title = loc.CO_TOOLTIP_HEALTH,
+				listContent = HEALTH_FORMAT_TAB,
+				configKey = CONFIG_CHARACT_HEALTH,
+				help = loc.CO_TOOLTIP_HEALTH_TT,
+				listWidth = nil,
+				listCancel = false,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",

@@ -423,12 +423,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
-				title = loc.CO_GENERAL_HEAVY,
-				configKey = "heavy_profile_alert",
-				help = loc.CO_GENERAL_HEAVY_TT,
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
 				title = loc.CO_GENERAL_UI_SOUNDS,
 				configKey = "ui_sounds",
 				help = loc.CO_GENERAL_UI_SOUNDS_TT,
@@ -464,17 +458,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			},
 		}
 	}
-
-	if TRP3_API.globals.is_classic and TRP3_API.globals.serious_day then
-		registerConfigKey("AF_STUFF", true);
-		local customAFColor = TRP3_API.utils.Rainbowify;
-		tinsert(TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL.elements, 2, {
-			inherit = "TRP3_ConfigCheck",
-			title = customAFColor("Enable April Fools' joke"),
-			help = "Disable this option to remove this year's April Fools' joke.",
-			configKey = "AF_STUFF",
-		})
-	end
 end);
 
 AddOn_TotalRP3.Configuration = {}

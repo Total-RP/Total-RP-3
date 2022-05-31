@@ -118,24 +118,6 @@ local function ShouldUseClassColorFallback()
 	return TRP3_API.configuration.getValue("NamePlates_EnableClassColorFallback");
 end
 
-local function GetUnitRegisterID(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local registerID;
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		registerID = TRP3_API.utils.str.getUnitID(unitToken);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		registerID = TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType);
-	end
-
-	if registerID and string.find(registerID, UNKNOWNOBJECT, 1, true) == 1 then
-		-- The player that owns this profile isn't yet known to the client.
-		registerID = nil;
-	end
-
-	return registerID;
-end
-
 local function GetUnitRoleplayStatus(unitToken)
 	local player;
 
@@ -343,8 +325,7 @@ local TRP3_NamePlates = {};
 
 function TRP3_NamePlates:OnModuleInitialize()
 	self.callbacks = LibStub:GetLibrary("CallbackHandler-1.0"):New(self);
-	self.characterRequestTimes = {};
-	self.unitRegisterIDs = {};
+	self.unitCharacterIDs = {};
 
 	self.callbacks.OnUsed = function() self:OnModuleUsed(); end;
 
@@ -381,6 +362,7 @@ function TRP3_NamePlates:ActivateModule()
 	end
 
 	self.moduleActivated = true;
+	self.requests = CreateAndInitFromMixin(TRP3_NamePlatesRequestManagerMixin);
 
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_ADDED", function(...) return self:OnNamePlateUnitAdded(...); end);
 	TRP3_API.Ellyb.GameEvents.registerCallback("NAME_PLATE_UNIT_REMOVED", function(...) return self:OnNamePlateUnitRemoved(...); end);
@@ -395,18 +377,19 @@ function TRP3_NamePlates:ActivateModule()
 end
 
 function TRP3_NamePlates:OnNamePlateUnitAdded(unitToken)
-	self:UpdateRegisterIDForUnit(unitToken);
+	self:UpdateCharacterIDForUnit(unitToken);
 	self:UpdateNamePlateForUnit(unitToken);
 end
 
 function TRP3_NamePlates:OnNamePlateUnitRemoved(unitToken)
-	self:ClearRegisterIDForUnit(unitToken);
+	self.requests:DequeueUnitQuery(unitToken);
+	self:ClearCharacterIDForUnit(unitToken);
 	self:UpdateNamePlateForUnit(unitToken);
 end
 
 function TRP3_NamePlates:OnUnitNameUpdate(unitToken)
 	if string.find(unitToken, "^nameplate[0-9]+$") then
-		self:UpdateRegisterIDForUnit(unitToken);
+		self:UpdateCharacterIDForUnit(unitToken);
 		self:UpdateNamePlateForUnit(unitToken);
 	end
 end
@@ -427,24 +410,29 @@ function TRP3_NamePlates:OnConfigurationChanged(key)
 	end
 end
 
-function TRP3_NamePlates:OnRegisterDataUpdated(registerID)
-	if registerID == TRP3_API.globals.player_id then
+function TRP3_NamePlates:OnRegisterDataUpdated(characterID)
+	if characterID == TRP3_API.globals.player_id then
 		self:UpdateAllNamePlates();
 	else
-		self:UpdateNamePlateForRegisterID(registerID);
+		local unitToken = self.unitCharacterIDs[characterID];
+
+		if unitToken then
+			self.requests:DequeueUnitQuery(unitToken);
+			self:UpdateNamePlateForUnit(unitToken);
+		end
 	end
 end
 
 function TRP3_NamePlates:GetUnitDisplayInfo(unitToken)
 	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local registerID = GetUnitRegisterID(unitToken);
+	local characterID = TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken);
 
 	if not ShouldCustomizeUnitNamePlate(unitToken) then
 		return nil;  -- Customizations disabled for this unit.
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		return GetCharacterUnitDisplayInfo(unitToken, registerID);
+		return GetCharacterUnitDisplayInfo(unitToken, characterID);
 	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		return GetCompanionUnitDisplayInfo(unitToken, registerID);
+		return GetCompanionUnitDisplayInfo(unitToken, characterID);
 	end
 end
 
@@ -467,63 +455,31 @@ function TRP3_NamePlates:UpdateNamePlateForUnit(unitToken)
 	end
 end
 
-function TRP3_NamePlates:UpdateNamePlateForRegisterID(registerID)
-	local unitToken = self.unitRegisterIDs[registerID];
-
-	if unitToken then
-		return self:UpdateNamePlateForUnit(unitToken);
-	end
-end
-
-function TRP3_NamePlates:ShouldRequestProfileFromCharacter(characterID)
-	local REQUEST_WAIT_SEC = 90;
-
-	local lastRequestTime = self.characterRequestTimes[characterID] or -math.huge;
-
-	if not ShouldRequestProfiles() then
-		return false;  -- Requests are disabled.
-	elseif GetTime() < (lastRequestTime + REQUEST_WAIT_SEC) then
-		return false;  -- Profile information was recently requested.
-	else
-		return true;
-	end
-end
-
 function TRP3_NamePlates:RequestUnitProfile(unitToken)
-	local unitType = TRP3_API.ui.misc.getTargetType(unitToken);
-	local characterID;
-
-	if unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.CHARACTER then
-		characterID = TRP3_API.utils.str.getUnitID(unitToken);
-	elseif unitType == AddOn_TotalRP3.Enums.UNIT_TYPE.PET then
-		characterID = select(2, TRP3_API.ui.misc.getCompanionFullID(unitToken, unitType));
-	end
-
-	if self:ShouldRequestProfileFromCharacter(characterID) then
-		TRP3_API.r.sendQuery(characterID);
-		TRP3_API.r.sendMSPQuery(characterID);
-
-		self.characterRequestTimes[characterID] = GetTime();
+	if ShouldRequestProfiles() then
+		self.requests:EnqueueUnitQuery(unitToken);
+	else
+		self.requests:DequeueUnitQuery(unitToken);
 	end
 end
 
-function TRP3_NamePlates:ClearRegisterIDForUnit(unitToken)
+function TRP3_NamePlates:ClearCharacterIDForUnit(unitToken)
 	-- This removes the two-way mapping for the unit token <=> register ID.
-	SafeSet(self.unitRegisterIDs, self.unitRegisterIDs[unitToken], nil);
-	SafeSet(self.unitRegisterIDs, unitToken, nil);
+	SafeSet(self.unitCharacterIDs, self.unitCharacterIDs[unitToken], nil);
+	SafeSet(self.unitCharacterIDs, unitToken, nil);
 end
 
-function TRP3_NamePlates:UpdateRegisterIDForUnit(unitToken)
-	local registerID = GetUnitRegisterID(unitToken);
+function TRP3_NamePlates:UpdateCharacterIDForUnit(unitToken)
+	local characterID = TRP3_NamePlatesUtil.GetUnitCharacterID(unitToken);
 
-	if registerID and self.unitRegisterIDs[unitToken] ~= registerID then
+	if characterID and self.unitCharacterIDs[unitToken] ~= characterID then
 		self:RequestUnitProfile(unitToken);
 	end
 
 	-- This updates the two-way mapping for the unit token <=> register ID.
-	SafeSet(self.unitRegisterIDs, self.unitRegisterIDs[unitToken], nil);
-	SafeSet(self.unitRegisterIDs, unitToken, registerID);
-	SafeSet(self.unitRegisterIDs, registerID, unitToken);
+	SafeSet(self.unitCharacterIDs, self.unitCharacterIDs[unitToken], nil);
+	SafeSet(self.unitCharacterIDs, unitToken, characterID);
+	SafeSet(self.unitCharacterIDs, characterID, unitToken);
 end
 
 --
