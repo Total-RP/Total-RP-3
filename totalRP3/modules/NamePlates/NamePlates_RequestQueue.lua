@@ -14,6 +14,15 @@
 	limitations under the License.
 ]]--
 
+-- Enumeration of comparison results with same semantics as strcmp style
+-- functions.
+local CompareResult =
+{
+	Lesser = -1,
+	Equal = 0,
+	Greater = 1,
+};
+
 -- Enumeration of priorities attributable to any single request. Anything
 -- aside from the "Normal" priority is considered a "priority request" and
 -- will gain queue perks.
@@ -25,79 +34,376 @@ local RequestPriority =
 	Friend = 1,  -- Priority used for friended units.
 	Group = 2,   -- Priority used for grouped units.
 	Guild = 3,   -- Priority used for guild members.
-	Nearby = 4,  -- Priority used for nearby units.
-	Normal = 5,  -- Default priority for other units.
+	Normal = 4,  -- Default priority for other units.
 };
 
-local function GetOrCreateTable(t, key)
-	if t[key] ~= nil then
-		return t[key];
-	end
+--
+-- NamePlateRequestMixin
+--
 
-	t[key] = {};
-	return t[key];
+local lastRequestID = 0;
+
+local function GenerateRequestID()
+	lastRequestID = lastRequestID + 1;
+	return lastRequestID;
 end
 
-local function GetRequestPriority(requestInfo)
-	if requestInfo.isFriend then
-		return RequestPriority.Friend;
-	elseif UnitInParty(requestInfo.unit) or UnitInRaid(requestInfo.unit) then
-		return RequestPriority.Group;
-	elseif requestInfo.isGuildMember then
-		return RequestPriority.Guild;
-	elseif requestInfo.isNearby then
-		return RequestPriority.Nearby;
+local function GetUnitDistance(unit)
+	-- Note that this logic is helpfully borrowed from DBM which tests and
+	-- bases ranges off comparisons to UnitDistanceSquared.
+
+	if CheckInteractDistance(unit, 2) then
+		return 11;  -- Trade (11 yards)
+	elseif IsItemInRange(21519, unit) then
+		return 23;  -- Mistletoe (23 yards)
+	elseif IsItemInRange(1180, unit) then
+		return 33;  -- Scroll of Stamina (33 yards)
 	else
-		return RequestPriority.Normal;
+		return 60;  -- Max nameplate range (60 yards).
 	end
 end
 
-local function IsRequestEligibleToSend(requestInfo)
-	return GetTime() >= requestInfo.eligibleAt;
+local function IsFriendsWithPlayer(guid)
+	if C_FriendList.IsFriend(guid) then
+		return true;
+	elseif C_BattleNet then
+		return (C_BattleNet.GetAccountInfoByGUID(guid) ~= nil);
+	else
+		return (BNGetGameAccountInfoByGUID(guid) ~= nil);
+	end
 end
 
-local function RequestSortPredicate(requestInfoA, requestInfoB)
-	do  -- Priority check
-		local requestPriorityA = requestInfoA.priority;
-		local requestPriorityB = requestInfoB.priority;
+TRP3_NamePlatesRequestMixin = {};
 
-		if requestPriorityA < requestPriorityB then
-			return true;
-		elseif requestPriorityB < requestPriorityA then
-			return false;
-		end
-	end
-
-	do  -- Eligibility check
-		local requestEligibilityA = requestInfoA.eligibleAt;
-		local requestEligibilityB = requestInfoB.eligibleAt;
-
-		if requestEligibilityA < requestEligibilityB then
-			return true;
-		elseif requestEligibilityB < requestEligibilityA then
-			return false;
-		end
-	end
-
-	-- Everything is identical so go on insertion order.
-	return requestInfoA.order < requestInfoB.order;
-end
-
-TRP3_NamePlatesRequestQueue = {};
-
--- Period in fractional seconds at which the request queue and slot cooldowns
--- are processed.
+-- Initial cooldown applied for all nameplates that have an elevated priority.
 --
--- Lower values will be more responsive but may slightly increase CPU usage.
-TRP3_NamePlatesRequestQueue.ProcessRate = 0.5;
+-- Lower values mean these units will be requested sooner when they appear
+-- on screen, higher values reduce bandwidth.
+TRP3_NamePlatesRequestMixin.PresubmitCooldown = 3;
 
--- Time in fractional seconds that a unit must be enqueued for before the
--- request for its nameplate will be dispatched.
+-- Yards to which nameplate distance is rounded down to be a multiple of.
+TRP3_NamePlatesRequestMixin.DistanceRounding = 5;
+
+-- Initial cooldown applied for nameplates at a rate of 1 yard per the below
+-- value rounded to the DistanceRounding value.
 --
--- Lower values will cause more requests to be sent on average; higher values
--- reduce "one hit wonders" for people you might quickly see on-screen for
--- a moment and then never again.
-TRP3_NamePlatesRequestQueue.PreSubmitCooldown = 3;
+-- Lower values mean nameplates that are requested for possibly unrelated
+-- units will be requested sooner, whereas higher values will increase the
+-- amount of time such a unit has to be on-screen for.
+TRP3_NamePlatesRequestMixin.DistanceCooldownScaling = 0.4;
+
+-- Distance at which nameplates can be requested if not otherwise prioritized.
+TRP3_NamePlatesRequestMixin.DistanceLimit = 35;
+
+function TRP3_NamePlatesRequestMixin:Init(unit)
+	self:SetUnit(unit);
+end
+
+function TRP3_NamePlatesRequestMixin:IsValid()
+	return UnitExists(self.unit);
+end
+
+function TRP3_NamePlatesRequestMixin:GetUnit()
+	return self.unit;
+end
+
+function TRP3_NamePlatesRequestMixin:GetCharacterID()
+	return self.characterID;
+end
+
+function TRP3_NamePlatesRequestMixin:SetUnit(unit)
+	self:Clear();
+
+	local characterID = TRP3_NamePlatesUtil.GetUnitCharacterID(unit or "none");
+
+	if not characterID then
+		return;
+	end
+
+	-- The below fields are fixed for the entirety of this request and won't
+	-- be modified by calls to Update. Anything not listed here nor handled
+	-- in Update will be left at the default value set during the initial
+	-- Clear call.
+
+	self.id = GenerateRequestID();
+	self.unit = unit;
+	self.guid = UnitGUID(self.unit);
+	self.characterID = characterID;
+
+	self.enqueuedAt = GetTime();
+
+	self.isFriend = IsFriendsWithPlayer(self.guid);
+	self.isGuildMember = IsGuildMember(self.guid);
+
+	self:Update();
+end
+
+function TRP3_NamePlatesRequestMixin:SetExtraCooldown(cooldown)
+	self.extraCooldown = tonumber(cooldown) or 0;
+end
+
+function TRP3_NamePlatesRequestMixin:Clear()
+	self.id = 0;
+	self.unit = "none";
+	self.guid = UnitGUID("none");
+	self.characterID = UNKNOWNOBJECT;
+
+	self.enqueuedAt = math.huge;
+	self.eligibleAt = math.huge;
+	self.priority = RequestPriority.Normal;
+	self.extraCooldown = 0;
+
+	self.distance = math.huge;
+	self.isFriend = false;
+	self.isGrouped = false;
+	self.isGuildMember = false;
+end
+
+function TRP3_NamePlatesRequestMixin:Update()
+	-- These things are more likely to change while a request is enqueued
+	-- so are recalculated on each update.
+
+	self.distance = GetUnitDistance(self.unit);
+	self.isGrouped = UnitInParty(self.unit) or UnitInRaid(self.unit);
+
+	-- Priority is dynamic based on these attributes.
+
+	if self.isFriend then
+		self.priority = RequestPriority.Friend;
+	elseif self.isGrouped then
+		self.priority = RequestPriority.Group;
+	elseif self.isGuildMember then
+		self.priority = RequestPriority.Guild;
+	else
+		self.priority = RequestPriority.Normal;
+	end
+
+	-- And then eligiblity time is also dynamic.
+	self.eligibleAt = self.enqueuedAt + self:CalculatePresubmitCooldown();
+end
+
+function TRP3_NamePlatesRequestMixin:CalculatePresubmitCooldown()
+	local rounding = self.DistanceRounding;
+	local distance = math.floor(self.distance / rounding) * rounding;
+
+	local priorityCooldown;
+
+	if self.priority ~= RequestPriority.Normal then
+		priorityCooldown = self.PresubmitCooldown;
+	elseif distance >= self.DistanceLimit then
+		priorityCooldown = math.huge;  -- Out of range.
+	else
+		local scaling = self.DistanceCooldownScaling;
+		priorityCooldown = distance * scaling;
+	end
+
+	return priorityCooldown + self.extraCooldown;
+end
+
+function TRP3_NamePlatesRequestMixin:CanSubmit()
+	return self:IsValid() and GetTime() >= self.eligibleAt;
+end
+
+function TRP3_NamePlatesRequestMixin:SubmitNow()
+	if not self:IsValid() then
+		return;
+	end
+
+	TRP3_API.r.sendQuery(self.characterID);
+	TRP3_API.r.sendMSPQuery(self.characterID);
+
+	-- Once submitted we clear the request as a sanity measure.
+	self:Clear();
+end
+
+function TRP3_NamePlatesRequestMixin:Compare(other)
+	-- Comparison favours priority, then eligibility time, then finally the
+	-- unique request ID as a fallback mechanism.
+
+	if self.priority < other.priority then
+		return CompareResult.Lesser;
+	elseif self.priority > other.priority then
+		return CompareResult.Greater;
+	end
+
+	if self.eligibleAt < other.eligibleAt then
+		return CompareResult.Lesser;
+	elseif self.eligibleAt > other.eligibleAt then
+		return CompareResult.Greater;
+	end
+
+	if self.id < other.id then
+		return CompareResult.Lesser;
+	elseif self.id > other.id then
+		return CompareResult.Greater;
+	else
+		return CompareResult.Equal;
+	end
+end
+
+--
+-- NamePlatesRequestQueueMixin
+--
+
+local function RequestSortPredicate(requestA, requestB)
+	return requestA:Compare(requestB) == CompareResult.Lesser;
+end
+
+TRP3_NamePlatesRequestQueueMixin = {};
+
+function TRP3_NamePlatesRequestQueueMixin:Init()
+	self.enqueued = {};
+	self.ordered = {};
+end
+
+function TRP3_NamePlatesRequestQueueMixin:Clear()
+	table.wipe(self.enqueued);
+	table.wipe(self.ordered);
+end
+
+function TRP3_NamePlatesRequestQueueMixin:Contains(request)
+	return self.enqueued[request] ~= nil;
+end
+
+function TRP3_NamePlatesRequestQueueMixin:Enqueue(request)
+	if self:Contains(request) then
+		return;
+	end
+
+	self.enqueued[request] = true;
+end
+
+function TRP3_NamePlatesRequestQueueMixin:Dequeue(request)
+	if not self:Contains(request) then
+		return;
+	end
+
+	self.enqueued[request] = nil;
+end
+
+function TRP3_NamePlatesRequestQueueMixin:EnumerateOrdered()
+	return ipairs(self.ordered);
+end
+
+function TRP3_NamePlatesRequestQueueMixin:UpdateEnqueued()
+	local count = 0;
+
+	-- Populate the ordered array with all currently enqueued requests,
+	-- updating them as we go for sorting purposes later.
+
+	for request in pairs(self.enqueued) do
+		request:Update();
+		count = count + 1;
+		self.ordered[count] = request;
+	end
+
+	-- If the number of enqueued requests shrank since the last update we
+	-- need to clear the remaining slots in the ordered array.
+
+	for index = #self.ordered, count + 1, -1 do
+		self.ordered[index] = nil;
+	end
+
+	table.sort(self.ordered, RequestSortPredicate);
+end
+
+--
+-- NamePlateRequestSlotPoolMixin
+--
+
+TRP3_NamePlatesRequestSlotPoolMixin = {};
+
+-- Base cooldown in fractional seconds for each slot to recharge.
+--
+-- Lower values will reduce the time between requests when the pool is
+-- exhausted, higher values will increase it.
+TRP3_NamePlatesRequestSlotPoolMixin.RechargeBaseRate = 3.0;
+
+-- Additional cooldown in fractional seconds applied for each missing slot
+-- beyond the first.
+--
+-- Increasing this value will further increase the amount of time between
+-- slots being recharged if the pool has been exhausted of multiple request
+-- slots.
+TRP3_NamePlatesRequestSlotPoolMixin.RechargeLinearRate = 0.5;
+
+function TRP3_NamePlatesRequestSlotPoolMixin:Init(capacity)
+	self.capacity = capacity;
+	self.available = 0;
+	self.cooldown = math.huge;
+	self.accumulator = 0;
+
+	-- The availability is initialized to zero so that UI reloads and
+	-- initial logins don't result in a burst of requests. As a result,
+	-- the cooldown needs to be calculated now.
+
+	self:RecalculateCooldown();
+end
+
+function TRP3_NamePlatesRequestSlotPoolMixin:IsEmpty()
+	return self.available == 0;
+end
+
+function TRP3_NamePlatesRequestSlotPoolMixin:IsFull()
+	return self.available == self.capacity;
+end
+
+function TRP3_NamePlatesRequestSlotPoolMixin:Acquire()
+	if self.available == 0 then
+		return false;
+	end
+
+	self.available = self.available - 1;
+	self:RecalculateCooldown();
+
+	return true;
+end
+
+function TRP3_NamePlatesRequestSlotPoolMixin:Release()
+	self.available = math.min(self.available + 1, self.capacity);
+	self:RecalculateCooldown();
+end
+
+function TRP3_NamePlatesRequestSlotPoolMixin:ProcessCooldown(dt)
+	if self:IsFull() then
+		return;
+	end
+
+	-- At this point we know that the cooldown isn't infinity, so all
+	-- operations below should be safe and never get things stuck.
+
+	self.accumulator = self.accumulator + dt;
+
+	while self.accumulator >= self.cooldown do
+		self.accumulator = self.accumulator - self.cooldown;
+		self:Release();
+	end
+end
+
+-- private
+function TRP3_NamePlatesRequestSlotPoolMixin:RecalculateCooldown()
+	local missing = self.capacity - self.available;
+
+	if missing == 0 then
+		self.cooldown = math.huge;
+		self.accumulator = 0;
+	else
+		local baseCooldown = self.RechargeBaseRate;
+		local extraCooldown = self.RechargeLinearRate;
+
+		self.cooldown = baseCooldown + ((missing - 1) * extraCooldown);
+	end
+end
+
+--
+-- NamePlatesRequestManagerMixin
+--
+
+TRP3_NamePlatesRequestManagerMixin = {};
+
+-- Rate at which the internal queue and slot cooldowns are processed.
+-- Lower values increase CPU usage, higher values make things snappier.
+TRP3_NamePlatesRequestManagerMixin.TickPeriod = 0.5;
 
 -- Time in fractional seconds that must pass before a request for a character
 -- that was already previously requested can be re-issued.
@@ -106,7 +412,7 @@ TRP3_NamePlatesRequestQueue.PreSubmitCooldown = 3;
 -- repeatedly within a session, we won't re-download any associated data
 -- for a while. Lower values will cause such cases to be more responsive
 -- but could significantly increase bandwidth consumption.
-TRP3_NamePlatesRequestQueue.PostSubmitCooldown = 300;
+TRP3_NamePlatesRequestManagerMixin.PostSubmitCooldown = 300;
 
 -- Number of request "slots" that the system has. Each request in the queue
 -- consumes a slot when sent, and slots are regained based on a recharge
@@ -115,254 +421,105 @@ TRP3_NamePlatesRequestQueue.PostSubmitCooldown = 300;
 -- A higher slot count means that we can burst-request more nameplates in a
 -- single go, and a lower slot count will reduce the number of requests that
 -- can be issued within a close time period.
-TRP3_NamePlatesRequestQueue.SlotLimit = 5;
+TRP3_NamePlatesRequestManagerMixin.SlotLimit = 5;
 
--- Period in fractional sections that request slots will be regained at.
---
--- Lower values will allow requests to be sent quicker if the slot limit is
--- reached, and higher values will potentially reduce the number of requests
--- that may be outstanding.
-TRP3_NamePlatesRequestQueue.SlotRechargePeriod = 2.25;
-
-function TRP3_NamePlatesRequestQueue:Init()
-	self.requestsInfo = {};
-	self.requestsQueue = CreateFromMixins(DoublyLinkedListMixin);
-	self.requestsOrdered = {};
-	self.requestsCount = 0;
-
-	self.slotsAvailable = TRP3_NamePlatesRequestQueue.SlotLimit;
-	self.slotsCooldown = math.huge;
-
-	self.postSubmitCooldowns = {};
-
-	do
-		local function TickerCallback()
-			return self:OnQueueProcessTimerTicked();
-		end;
-
-		self.processTicker = C_Timer.NewTicker(TRP3_NamePlatesRequestQueue.ProcessRate, TickerCallback);
-	end
+function TRP3_NamePlatesRequestManagerMixin:Init()
+	self.queue = CreateAndInitFromMixin(TRP3_NamePlatesRequestQueueMixin);
+	self.slots = CreateAndInitFromMixin(TRP3_NamePlatesRequestSlotPoolMixin, self.SlotLimit);
+	self.requests = {};
+	self.requestCooldowns = {};
+	self.ticker = C_Timer.NewTicker(self.TickPeriod, GenerateClosure(self.OnProcessTimerTicked, self));
 end
 
-function TRP3_NamePlatesRequestQueue:GetQueueSize()
-	return self.requestsQueue.nodeCount;
-end
+function TRP3_NamePlatesRequestManagerMixin:EnqueueUnitQuery(unit)
+	local request = self:GetOrCreateUnitRequest(unit);
+	request:SetUnit(unit);
 
-function TRP3_NamePlatesRequestQueue:EnqueueUnitQuery(unitToken)
-	local requestInfo = self:GetUnitRequestInfo(unitToken);
+	-- Note that these operations below are idempotent if called in succession
+	-- for an already enqueued/dequeued unit.
 
-	-- If a node already exists for this unit then we'll dequeue it
-	-- implicitly, since there isn't much else we can do that's sane.
+	if request:IsValid() then
+		-- For a character who had a recently submitted request an extra
+		-- cooldown is applied to further requests to further deprioritize.
 
-	if requestInfo then
-		self:DequeueUnitQuery(unitToken);
-	end
+		local characterID = request:GetCharacterID();
+		local characterCD = self.requestCooldowns[characterID];
 
-	-- For sanity, don't permit non-existent or unknown units to be queued.
-
-	local registerID = TRP3_NamePlatesUtil.GetUnitRegisterID(unitToken);
-
-	if not registerID then
-		return;
-	end
-
-	if not requestInfo then
-		requestInfo = {};
-	end
-
-	local guid = UnitGUID(unitToken);
-	local currentTime = GetTime();
-
-	requestInfo.unit = unitToken;
-	requestInfo.guid = guid;
-	requestInfo.registerID = registerID;
-	requestInfo.enqueuedAt = currentTime;
-	requestInfo.order = self.requestsCount;
-
-	-- Eligibility of a request will typically incur a small delay unless
-	-- the character associated with this nameplate has previously been
-	-- requested; if so then the delay is much larger.
-
-	if self.postSubmitCooldowns[registerID] and self.postSubmitCooldowns[registerID] > GetTime() then
-		local remainingCooldown = self.postSubmitCooldowns[registerID] - currentTime;
-		requestInfo.eligibleAt = currentTime + remainingCooldown;
-	else
-		requestInfo.eligibleAt = currentTime + TRP3_NamePlatesRequestQueue.PreSubmitCooldown;
-	end
-
-	-- Some attributes about the unit we're requesting from are cached ahead
-	-- of time; these are things that are unlikely to change while this
-	-- request is queued or are otherwise possibly expensive to query
-	-- periodically.
-
-	if C_FriendList.IsFriend(guid) then
-		requestInfo.isFriend = true;
-	elseif C_BattleNet then
-		requestInfo.isFriend = (C_BattleNet.GetAccountInfoByGUID(guid) ~= nil);
-	else
-		requestInfo.isFriend = (BNGetGameAccountInfoByGUID(guid) ~= nil);
-	end
-
-	requestInfo.isGuildMember = IsGuildMember(guid);
-
-	-- The fields below are considered dynamic and may be modified while the
-	-- request is enqueued; see UpdateDynamicRequestData for details.
-
-	requestInfo.isNearby = false;
-	requestInfo.priority = RequestPriority.Normal;
-
-	self.requestsInfo[unitToken] = requestInfo;
-	self.requestsCount = self.requestsCount + 1;
-	self.requestsQueue:PushBack(requestInfo);
-end
-
-function TRP3_NamePlatesRequestQueue:DequeueUnitQuery(unitToken)
-	local requestInfo = self:GetUnitRequestInfo(unitToken);
-
-	if requestInfo then
-		self.requestsQueue:Remove(requestInfo);
-		self.requestsInfo[unitToken] = nil;
-	end
-end
-
-function TRP3_NamePlatesRequestQueue:DequeueAllQueries()
-	table.wipe(self.requestsOrdered);
-	table.wipe(self.requestsQueue);
-	table.wipe(self.requestsInfo);
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:GetUnitRequestInfo(unitToken)
-	return self.requestsInfo[unitToken];
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:GetOrCreateUnitRequestInfo(unitToken)
-	return GetOrCreateTable(self.requestsInfo, unitToken);
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:UpdateDynamicRequestData(requestInfo)
-	local RANGE_CHECK_ITEM_ID = 21519;  -- Mistletoe @ 23 yards.
-
-	requestInfo.isNearby = IsItemInRange(RANGE_CHECK_ITEM_ID, requestInfo.unit);
-	requestInfo.priority = GetRequestPriority(requestInfo);
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:SubmitRequest(requestInfo)
-	local registerID = requestInfo.registerID;
-	local unitToken = requestInfo.unit;
-
-	self:DequeueUnitQuery(unitToken);
-
-	TRP3_API.r.sendQuery(registerID);
-	TRP3_API.r.sendMSPQuery(registerID);
-
-	self.postSubmitCooldowns[registerID] = GetTime() + TRP3_NamePlatesRequestQueue.PostSubmitCooldown;
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:AcquireRequestSlot()
-	if self.slotsAvailable == 0 then
-		return false;  -- No request slots available.
-	end
-
-	-- On acquisition of the first request slot we need to start the cooldown
-	-- recharge it.
-
-	if self.slotsAvailable == TRP3_NamePlatesRequestQueue.SlotLimit then
-		self.slotsCooldown = TRP3_NamePlatesRequestQueue.SlotRechargePeriod;
-	end
-
-	self.slotsAvailable = self.slotsAvailable - 1;
-	return true;
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:ReleaseRequestSlot()
-	if self.slotsAvailable >= TRP3_NamePlatesRequestQueue.SlotLimit then
-		-- Already at the request slot limit. Setting the cooldown to infinity
-		-- here is just for safety; we _shouldn't_ need it but let's be safe.
-
-		self.slotsCooldown = math.huge;
-
-		return false;
-	end
-
-	self.slotsAvailable = self.slotsAvailable + 1;
-
-	-- If we've regained all our request slots we'll disable the cooldown
-	-- by setting it to infinity; otherwise it needs to be reset to that
-	-- of the recharge rate.
-
-	if self.slotsAvailable == TRP3_NamePlatesRequestQueue.SlotLimit then
-		self.slotsCooldown = math.huge;
-	else
-		self.slotsCooldown = self.slotsCooldown + TRP3_NamePlatesRequestQueue.SlotRechargePeriod;
-	end
-
-	return true;
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:ProcessRequestSlotCooldown(dt)
-	self.slotsCooldown = self.slotsCooldown - dt;
-
-	while self.slotsCooldown <= 0 do
-		self:ReleaseRequestSlot();
-	end
-end
-
--- private
-function TRP3_NamePlatesRequestQueue:ProcessRequestQueue()
-	-- The ordered request table is reused on each process operation;
-	-- we copy the nodes present in the queue to the table to the first
-	-- n indices (where n is the queue length) and nil out anything left
-	-- over in the ordered queue.
-	--
-	-- The resulting list is then sorted via our predicate.
-
-	for index, requestInfo in self.requestsQueue:EnumerateNodes() do
-		self:UpdateDynamicRequestData(requestInfo);
-		self.requestsOrdered[index] = requestInfo;
-	end
-
-	for index = #self.requestsOrdered, self:GetQueueSize() + 1, -1 do
-		self.requestsOrdered[index] = nil;
-	end
-
-	table.sort(self.requestsOrdered, RequestSortPredicate);
-
-	-- With everything ordered we can now actually process the queue. Note
-	-- that entries aren't removed from this table during iteration; if
-	-- something is dequeued it will remain and instead be cleared when
-	-- next processed.
-	--
-	-- The ordering should be such that eligible requests are always at
-	-- the front of the queue - so if we find something that's not eligible
-	-- we use that as a signal to stop processing early.
-
-	for _, requestInfo in ipairs(self.requestsOrdered) do
-		if not IsRequestEligibleToSend(requestInfo) then
-			break;  -- Request isn't eligible.
-		elseif not self:AcquireRequestSlot() then
-			break;  -- No request slots available yet.
+		if characterCD and characterCD > GetTime() then
+			local remainingCD = characterCD - GetTime();
+			request:SetExtraCooldown(remainingCD);
 		end
 
-		self:SubmitRequest(requestInfo);
+		self.queue:Enqueue(request);
+	else
+		self.queue:Dequeue(request);
+	end
+end
+
+function TRP3_NamePlatesRequestManagerMixin:DequeueUnitQuery(unit)
+	local request = self:GetUnitRequest(unit);
+
+	if request then
+		request:Clear();
+		self.queue:Dequeue(request);
 	end
 end
 
 -- private
-function TRP3_NamePlatesRequestQueue:OnQueueProcessTimerTicked()
+function TRP3_NamePlatesRequestManagerMixin:GetUnitRequest(unit)
+	return self.requests[unit];
+end
+
+-- private
+function TRP3_NamePlatesRequestManagerMixin:GetOrCreateUnitRequest(unit)
+	local request = self.requests[unit];
+
+	if not request then
+		request = CreateAndInitFromMixin(TRP3_NamePlatesRequestMixin, unit);
+		self.requests[unit] = request;
+	end
+
+	return request;
+end
+
+-- private
+function TRP3_NamePlatesRequestManagerMixin:SubmitRequest(request)
+	local characterID = request:GetCharacterID();
+
+	request:SubmitNow();
+	request:Clear();
+
+	self.queue:Dequeue(request);
+	self.requestCooldowns[characterID] = GetTime() + self.PostSubmitCooldown;
+end
+
+-- private
+function TRP3_NamePlatesRequestManagerMixin:OnProcessTimerTicked()
 	-- Don't allow errors in processing to kill the ticker; if an error occurs
 	-- we'll just flush the whole queue and hope the user doesn't re-encounter
 	-- the problem.
 
-	xpcall(self.ProcessRequestSlotCooldown, CallErrorHandler, self, TRP3_NamePlatesRequestQueue.ProcessRate);
+	if not xpcall(self.OnProcessTimerTicked_Protected, CallErrorHandler, self) then
+		table.wipe(self.requests);
+		self.queue:Clear();
+	end
+end
 
-	if not xpcall(self.ProcessRequestQueue, CallErrorHandler, self) then
-		self:DequeueAllQueries();
+function TRP3_NamePlatesRequestManagerMixin:OnProcessTimerTicked_Protected()
+	self.slots:ProcessCooldown(self.TickPeriod);
+	self.queue:UpdateEnqueued();
+
+	-- The ordering should be such that eligible requests are always at
+	-- the front of the queue. Based on this, if we find something that isn't
+	-- eligible then we can stop processing early.
+
+	for _, request in self.queue:EnumerateOrdered() do
+		if not request:CanSubmit() then
+			break;  -- Request isn't eligible.
+		elseif not self.slots:Acquire() then
+			break;  -- No request slots available yet.
+		end
+
+		self:SubmitRequest(request);
 	end
 end
