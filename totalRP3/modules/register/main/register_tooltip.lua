@@ -97,6 +97,7 @@ local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
 local CONFIG_PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
 local CONFIG_CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
+local CONFIG_CHARACT_CURRENT_COLOR = "tootlip_char_current_color";
 
 local ANCHOR_TAB;
 
@@ -211,6 +212,12 @@ end
 
 local function getCurrentMaxLines()
 	return getConfigValue(CONFIG_CHARACT_CURRENT_LINES);
+end
+
+local function getCurrentColor()
+	-- Preferring to return the components as we need to separate them for
+	-- passing into the tooltip API anyway - plus free memory savings.
+	return Ellyb.ColorManager.hexaToNumber(getConfigValue(CONFIG_CHARACT_CURRENT_COLOR));
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -589,9 +596,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local text = strtrim(info.character.CU);
 
 		if text ~= "" then
+			local r, g, b = getCurrentColor();
 			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
 			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
-			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+			tooltipBuilder:AddLine(text, r, g, b, getSmallLineFontSize(), true);
 		end
 	end
 
@@ -605,9 +613,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local text = strtrim(info.character.CO);
 
 		if text ~= "" then
+			local r, g, b = getCurrentColor();
 			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
 			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
-			tooltipBuilder:AddLine(text, 1, 0.75, 0, getSmallLineFontSize(), true);
+			tooltipBuilder:AddLine(text, r, g, b, getSmallLineFontSize(), true);
 		end
 	end
 
@@ -1310,6 +1319,7 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PETS_NOTIF, true);
 	registerConfigKey(CONFIG_PETS_INFO, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_LINES, 4);
+	registerConfigKey(CONFIG_CHARACT_CURRENT_COLOR, "ffc000");
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1541,6 +1551,11 @@ local function onModuleInit()
 				max = 20,
 				step = 1,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = loc.CO_TOOLTIP_CURRENT_COLOR,
+				configKey = CONFIG_CHARACT_CURRENT_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigH1",
