@@ -97,7 +97,9 @@ local CONFIG_CHARACT_SPACING = "tooltip_char_spacing";
 local CONFIG_NO_FADE_OUT = "tooltip_no_fade_out";
 local CONFIG_PREFER_OOC_ICON = "tooltip_prefere_ooc_icon";
 local CONFIG_CHARACT_CURRENT_LINES = "tooltip_char_current_lines";
-local CONFIG_CHARACT_CURRENT_COLOR = "tootlip_char_current_color";
+local CONFIG_TOOLTIP_TITLE_COLOR = "tooltip_title_color";
+local CONFIG_TOOLTIP_MAIN_COLOR = "tooltip_main_color";
+local CONFIG_TOOLTIP_SECONDARY_COLOR = "tooltip_secondary_color";
 
 local ANCHOR_TAB;
 
@@ -214,10 +216,14 @@ local function getCurrentMaxLines()
 	return getConfigValue(CONFIG_CHARACT_CURRENT_LINES);
 end
 
-local function getCurrentColor()
-	-- Preferring to return the components as we need to separate them for
-	-- passing into the tooltip API anyway - plus free memory savings.
-	return Ellyb.ColorManager.hexaToNumber(getConfigValue(CONFIG_CHARACT_CURRENT_COLOR));
+local function getTooltipTextColors()
+	local colors = {
+		TITLE = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_TITLE_COLOR)),
+		MAIN = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_MAIN_COLOR)),
+		SECONDARY = Ellyb.Color.CreateFromHexa(getConfigValue(CONFIG_TOOLTIP_SECONDARY_COLOR)),
+	};
+
+	return colors;
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -287,29 +293,29 @@ local BUILDER_TYPE_LINE = 1;
 local BUILDER_TYPE_DOUBLELINE = 2;
 local BUILDER_TYPE_SPACE = 3;
 
-local function AddLine(self, text, red, green, blue, lineSize, lineWrap)
+local function AddLine(self, text, color, lineSize, lineWrap)
 	local lineStructure = getTempTable();
 	lineStructure.type = BUILDER_TYPE_LINE;
 	lineStructure.text = text;
-	lineStructure.red = red;
-	lineStructure.green = green;
-	lineStructure.blue = blue;
+	lineStructure.red = color.r;
+	lineStructure.green = color.g;
+	lineStructure.blue = color.b;
 	lineStructure.lineSize = lineSize;
 	lineStructure.lineWrap = lineWrap;
 	tinsert(self._content, lineStructure);
 end
 
-local function AddDoubleLine(self, textL, textR, redL, greenL, blueL, redR, greenR, blueR, lineSize)
+local function AddDoubleLine(self, textL, textR, colorL, colorR, lineSize)
 	local lineStructure = getTempTable();
 	lineStructure.type = BUILDER_TYPE_DOUBLELINE;
 	lineStructure.textL = textL;
-	lineStructure.redL = redL;
-	lineStructure.greenL = greenL;
-	lineStructure.blueL = blueL;
+	lineStructure.redL = colorL.r;
+	lineStructure.greenL = colorL.g;
+	lineStructure.blueL = colorL.b;
 	lineStructure.textR = textR;
-	lineStructure.redR = redR;
-	lineStructure.greenR = greenR;
-	lineStructure.blueR = blueR;
+	lineStructure.redR = colorR.r;
+	lineStructure.greenR = colorR.g;
+	lineStructure.blueR = colorR.b;
 	lineStructure.lineSize = lineSize;
 	tinsert(self._content, lineStructure);
 end
@@ -420,11 +426,16 @@ local function getLevelIconOrText(targetType)
 	end
 end
 
+local TOOLTIP_BLOCKED_IGNORED_COLOR = Ellyb.ColorManager.RED;
+local TOOLTIP_BLOCKED_MATURE_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.86, 1.00);
+local TOOLTIP_BLOCKED_MAIN_COLOR = Ellyb.Color.CreateFromRGBA(1.00, 0.75, 0.00, 1.00);
+
 --- The complete character's tooltip writing sequence.
 local function writeTooltipForCharacter(targetID, _, targetType)
 	local info = getCharacterInfoTab(targetID);
 	local character = getCharacter(targetID);
 	local targetName = UnitName(targetType);
+	local colors = getTooltipTextColors();
 	---@type Player
 	local player = AddOn_TotalRP3.Player.static.CreateFromCharacterID(targetID)
 
@@ -441,13 +452,13 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if isIDIgnored(targetID) then
-		tooltipBuilder:AddLine(loc.REG_TT_IGNORED, 1, 0, 0, getSubLineFontSize());
-		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_IGNORED, TOOLTIP_BLOCKED_IGNORED_COLOR, getSubLineFontSize());
+		tooltipBuilder:AddLine("\"" .. getIgnoreReason(targetID) .. "\"", TOOLTIP_BLOCKED_MAIN_COLOR, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
 	elseif unitIDIsFilteredForMatureContent(targetID) then
-		tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING, 1, 0.75, 0.86, getSubLineFontSize());
-		tooltipBuilder:AddLine(loc.MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT, 1, 0.75, 0, getSmallLineFontSize(), true);
+		tooltipBuilder:AddLine(MATURE_CONTENT_ICON .. " " .. loc.MATURE_FILTER_TOOLTIP_WARNING, TOOLTIP_BLOCKED_MATURE_COLOR, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.MATURE_FILTER_TOOLTIP_WARNING_SUBTEXT, TOOLTIP_BLOCKED_MAIN_COLOR, getSmallLineFontSize(), true);
 		tooltipBuilder:Build();
 		return;
 	end
@@ -508,7 +519,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		end
 	end
 
-	tooltipBuilder:AddDoubleLine(leftIcons .. completeName, rightIcons, 1, 1, 1, 1, 1, 1, getMainLineFontSize());
+	tooltipBuilder:AddDoubleLine(leftIcons .. completeName, rightIcons, colors.MAIN, colors.MAIN, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -528,7 +539,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
 
-			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " |r>"), 1, 0.50, 0, getSubLineFontSize(), true);
+			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " |r>"), colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
 
@@ -553,10 +564,10 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			race = crop(race, FIELDS_TO_CROP.RACE);
 			class = crop(class, FIELDS_TO_CROP.CLASS);
 		end
-		lineLeft = strconcat("|cffffffff", race, " ", color:WrapTextInColorCode(class));
-		lineRight = strconcat("|cffffffff", loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType)));
+		lineLeft = strconcat(race, " ", color:WrapTextInColorCode(class));
+		lineRight = loc.REG_TT_LEVEL:format(getLevelIconOrText(targetType), getFactionIcon(targetType));
 
-		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddDoubleLine(lineLeft, lineRight, colors.MAIN, colors.MAIN, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -565,7 +576,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	local _, realm = UnitName(targetType);
 	if showRealm() and realm then
-		tooltipBuilder:AddLine(loc.REG_TT_REALM:format(realm), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_REALM:format(colors.SECONDARY:WrapTextInColorCode(realm)), colors.MAIN, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -574,7 +585,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 	local guild, grade = GetGuildInfo(targetType);
 	if showGuild() and guild then
-		local text = loc.REG_TT_GUILD:format(grade, guild);
+		local text = loc.REG_TT_GUILD:format(grade, colors.SECONDARY:WrapTextInColorCode(guild));
 		local membership;
 		if info.misc and info.misc.ST then
 			if info.misc.ST["6"] == 1 then -- IC guild membership
@@ -583,7 +594,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				membership = OOC_GUILD;
 			end
 		end
-		tooltipBuilder:AddDoubleLine(text, membership, 1, 1, 1, 1, 1, 1, getSubLineFontSize());
+
+		tooltipBuilder:AddDoubleLine(text, membership, colors.MAIN, colors.MAIN, getSubLineFontSize());
 	end
 
 	tooltipBuilder:AddSpace();
@@ -596,10 +608,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local text = strtrim(info.character.CU);
 
 		if text ~= "" then
-			local r, g, b = getCurrentColor();
 			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, 1, 1, 1, getSubLineFontSize());
-			tooltipBuilder:AddLine(text, r, g, b, getSmallLineFontSize(), true);
+			tooltipBuilder:AddLine(loc.REG_PLAYER_CURRENT, colors.MAIN, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, colors.SECONDARY, getSmallLineFontSize(), true);
 		end
 	end
 
@@ -613,10 +624,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local text = strtrim(info.character.CO);
 
 		if text ~= "" then
-			local r, g, b = getCurrentColor();
 			text = limitText(text, getCurrentMaxSize(), getCurrentMaxLines());
-			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, 1, 1, 1, getSubLineFontSize());
-			tooltipBuilder:AddLine(text, r, g, b, getSmallLineFontSize(), true);
+			tooltipBuilder:AddLine(loc.DB_STATUS_CURRENTLY_OOC, colors.MAIN, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, colors.SECONDARY, getSmallLineFontSize(), true);
 		end
 	end
 
@@ -638,9 +648,9 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 			local pronouns = miscInfo[miscIndex];
 			local leftText = pronouns.NA;
 			local rightText = crop(pronouns.VA, FIELDS_TO_CROP.PRONOUNS);
-			local lineText = string.format("%1$s: |cffff9900%2$s|r", leftText, rightText);
+			local lineText = string.format("%1$s: %2$s", leftText, colors.SECONDARY:WrapTextInColorCode(rightText));
 
-			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize(), true);
+			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize(), true);
 		end
 	end
 
@@ -670,7 +680,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 			name = targetClassColor:WrapTextInColorCode(name);
 		end
-		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(loc.REG_TT_TARGET:format(name), colors.MAIN, getSubLineFontSize());
 	end
 
 	--
@@ -682,8 +692,8 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		local playerMapID = C_Map.GetBestMapForUnit("player");
 		if mapID and mapID ~= playerMapID then
 			local mapInfo = C_Map.GetMapInfo(mapID);
-			local lineText = string.format("%1$s: |cffff9900%2$s|r", TRP3_API.loc.REG_TT_ZONE, mapInfo.name);
-			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+			local lineText = string.format("%1$s: %2$s", TRP3_API.loc.REG_TT_ZONE, colors.SECONDARY:WrapTextInColorCode(mapInfo.name));
+			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -699,17 +709,25 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 		if targetHP ~= targetHPMax then
 			local percentHP = targetHP / targetHPMax;
 			local lineText;
+
+			local targetHPText = AbbreviateLargeNumbers(targetHP);
+			local percentHPText = FormatPercentage(percentHP, true);
+			local targetHPMaxText = AbbreviateLargeNumbers(targetHPMax);
+
 			-- Number
 			if healthFormat == 1 then
-				lineText = string.format("%1$s: |cffff9900%2$s/%3$s|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax));
+				local rightText = string.format("%1$s/%2$s", targetHPText, targetHPMaxText);
+				lineText = string.format("%1$s: %2$s", HEALTH, colors.SECONDARY:WrapTextInColorCode(rightText));
 				-- Percentage
 			elseif healthFormat == 2 then
-				lineText = string.format("%1$s: |cffff9900%2$s|r", HEALTH, FormatPercentage(percentHP, true));
+				local rightText = string.format("%1$s", percentHPText);
+				lineText = string.format("%1$s: %2$s", HEALTH, colors.SECONDARY:WrapTextInColorCode(rightText));
 				-- Both
 			else
-				lineText = string.format("%1$s: |cffff9900%2$s/%3$s (%4$s)|r", HEALTH, AbbreviateLargeNumbers(targetHP), AbbreviateLargeNumbers(targetHPMax), FormatPercentage(percentHP, true));
+				local rightText = string.format("%1$s/%2$s (%3$s)", targetHPText, targetHPMaxText, percentHPText);
+				lineText = string.format("%1$s: %2$s", HEALTH, colors.SECONDARY:WrapTextInColorCode(rightText));
 			end
-			tooltipBuilder:AddLine(lineText, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(lineText, colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -732,29 +750,29 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 
 		local clientText = "";
 		if targetID == Globals.player_id then
-			clientText = strconcat("|cffffffff", Globals.addon_name_me, " v", Globals.version_display);
+			clientText = strconcat(Globals.addon_name_me, " v", Globals.version_display);
 			if Globals.extended_version then
 				clientText = strconcat(clientText, " x ", Globals.extended_display_version);
 			end
 			if AddOn_TotalRP3.Player.GetCurrentUser():IsOnATrialAccount() then
-				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+				clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		elseif IsUnitIDKnown(targetID) then
 			if character.client then
-				clientText = strconcat("|cffffffff", character.client, " v", character.clientVersion);
+				clientText = strconcat(character.client, " v", character.clientVersion);
 				if character.extendedVersion then
 					clientText = strconcat(clientText, " x ", character.extendedVersion);
 				end
 			end
 			if player:IsOnATrialAccount() then
-				clientText = strconcat(clientText, " ", ColorManager.ORANGE("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
+				clientText = strconcat(clientText, " ", colors.SECONDARY("(" .. loc.REG_TRIAL_ACCOUNT .. ")"));
 			end
 		end
 		if (notifText and notifText ~= "") or (clientText and clientText ~= "") then
 			if notifText == "" then
 				notifText = " "; -- Prevent bad right line height
 			end
-			tooltipBuilder:AddDoubleLine(notifText, clientText, 1, 1, 1, 0, 1, 0, getSmallLineFontSize());
+			tooltipBuilder:AddDoubleLine(notifText, clientText, colors.MAIN, colors.MAIN, getSmallLineFontSize());
 		end
 	end
 
@@ -820,6 +838,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	local info = data.data or EMPTY;
 	local PE = data.PE or EMPTY;
 	local targetName = UnitName(targetType);
+	local colors = getTooltipTextColors();
 
 	local FIELDS_TO_CROP = {
 		TITLE = 150,
@@ -832,7 +851,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 	if isIDIgnored(ownerID) then
 		tooltipBuilder:AddLine(loc.REG_TT_IGNORED_OWNER, 1, 0, 0, getSubLineFontSize());
-		tooltipBuilder:AddLine("\"" .. getIgnoreReason(ownerID) .. "\"", 1, 0.75, 0, getSmallLineFontSize());
+		tooltipBuilder:AddLine("\"" .. getIgnoreReason(ownerID) .. "\"", TOOLTIP_BLOCKED_MAIN_COLOR, getSmallLineFontSize());
 		tooltipBuilder:Build();
 		return;
 	end
@@ -861,7 +880,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 		companionCustomColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 	end
-	tooltipBuilder:AddLine(leftIcons .. companionCustomColor:WrapTextInColorCode((petName or companionID)), 1, 1, 1, getMainLineFontSize());
+	tooltipBuilder:AddLine(leftIcons .. companionCustomColor:WrapTextInColorCode((petName or companionID)), colors.MAIN, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -877,7 +896,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
-			tooltipBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
+			tooltipBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize());
 		end
 	end
 
@@ -919,7 +938,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 
 		ownerFinalName = loc("REG_COMPANION_TF_OWNER"):format(ownerFinalName);
 
-		tooltipBuilder:AddLine(ownerFinalName, 1, 1, 1, getSubLineFontSize());
+		tooltipBuilder:AddLine(ownerFinalName, colors.MAIN, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -954,7 +973,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 		end
 
 		if text then
-			tooltipBuilder:AddLine(text, 1, 1, 1, getSubLineFontSize());
+			tooltipBuilder:AddLine(text, colors.MAIN, getSubLineFontSize());
 		end
 	end
 
@@ -971,7 +990,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText and notifText ~= "" then
-			tooltipBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
+			tooltipBuilder:AddLine(notifText, colors.MAIN, getSmallLineFontSize());
 		end
 	end
 
@@ -1009,6 +1028,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	local profile = getMountProfile(ownerID, companionFullID);
 	local info = profile.data or EMPTY;
 	local PE = profile.PE or EMPTY;
+	local colors = getTooltipTextColors();
 
 
 	local FIELDS_TO_CROP = {
@@ -1039,7 +1059,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
 		mountCustomColor:LightenColorUntilItIsReadableOnDarkBackgrounds();
 	end
-	tooltipCompanionBuilder:AddLine(leftIcons .. mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), 1, 1, 1, getMainLineFontSize());
+	tooltipCompanionBuilder:AddLine(leftIcons .. mountCustomColor:WrapTextInColorCode((mountCustomName or mountName)), colors.MAIN, getMainLineFontSize());
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- full title
@@ -1054,7 +1074,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			if getConfigValue(CONFIG_CROP_TEXT) then
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
-			tooltipCompanionBuilder:AddLine(fullTitle, 1, 0.50, 0, getSubLineFontSize());
+			tooltipCompanionBuilder:AddLine(fullTitle, colors.TITLE, getSubLineFontSize());
 		end
 	end
 
@@ -1065,7 +1085,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if showCompanionWoWInfo() then
-		tooltipCompanionBuilder:AddLine(loc.PR_CO_MOUNT .. " " .. mountCustomColor:WrapTextInColorCode(mountName), 1, 1, 1, getSubLineFontSize());
+		tooltipCompanionBuilder:AddLine(loc.PR_CO_MOUNT .. " " .. mountCustomColor:WrapTextInColorCode(mountName), colors.MAIN, getSubLineFontSize());
 	end
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -1081,7 +1101,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 			notifText = notifText .. " " .. NEW_ABOUT_ICON;
 		end
 		if notifText and notifText ~= "" then
-			tooltipCompanionBuilder:AddLine(notifText, 1, 1, 1, getSmallLineFontSize());
+			tooltipCompanionBuilder:AddLine(notifText, colors.MAIN, getSmallLineFontSize());
 		end
 	end
 
@@ -1319,7 +1339,9 @@ local function onModuleInit()
 	registerConfigKey(CONFIG_PETS_NOTIF, true);
 	registerConfigKey(CONFIG_PETS_INFO, true);
 	registerConfigKey(CONFIG_CHARACT_CURRENT_LINES, 4);
-	registerConfigKey(CONFIG_CHARACT_CURRENT_COLOR, "ffc000");
+	registerConfigKey(CONFIG_TOOLTIP_TITLE_COLOR, "ff8000");
+	registerConfigKey(CONFIG_TOOLTIP_MAIN_COLOR, "ffffff");
+	registerConfigKey(CONFIG_TOOLTIP_SECONDARY_COLOR, "ffc000");
 
 	ANCHOR_TAB = {
 		{loc.CO_ANCHOR_TOP_LEFT, "ANCHOR_TOPLEFT"},
@@ -1431,6 +1453,24 @@ local function onModuleInit()
 				max = 20,
 				step = 1,
 				integer = true,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = loc.CO_TOOLTIP_TITLE_COLOR,
+				help = loc.CO_TOOLTIP_TITLE_COLOR_HELP,
+				configKey = CONFIG_TOOLTIP_TITLE_COLOR,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = loc.CO_TOOLTIP_MAIN_COLOR,
+				help = loc.CO_TOOLTIP_MAIN_COLOR_HELP,
+				configKey = CONFIG_TOOLTIP_MAIN_COLOR,
+			},
+			{
+				inherit = "TRP3_ConfigColorPicker",
+				title = loc.CO_TOOLTIP_SECONDARY_COLOR,
+				help = loc.CO_TOOLTIP_SECONDARY_COLOR_HELP,
+				configKey = CONFIG_TOOLTIP_SECONDARY_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
@@ -1551,11 +1591,6 @@ local function onModuleInit()
 				max = 20,
 				step = 1,
 				integer = true,
-			},
-			{
-				inherit = "TRP3_ConfigColorPicker",
-				title = loc.CO_TOOLTIP_CURRENT_COLOR,
-				configKey = CONFIG_CHARACT_CURRENT_COLOR,
 			},
 			{
 				inherit = "TRP3_ConfigH1",

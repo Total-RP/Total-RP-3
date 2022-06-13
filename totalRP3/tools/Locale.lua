@@ -1736,7 +1736,13 @@ With the recent changes of patch 9.2.5, profiles can now be seen cross-faction f
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	CO_TOOLTIP_CURRENT_COLOR = "Text color for \"Currently\" and \"OOC\" lines",
+	CO_TOOLTIP_TITLE_COLOR = "Title text color",
+	CO_TOOLTIP_TITLE_COLOR_HELP = [[The color used in the tooltip to display full-length character titles.]],
+	CO_TOOLTIP_MAIN_COLOR = "Main text color",
+	CO_TOOLTIP_MAIN_COLOR_HELP = [[The color used in the tooltip to display text such as the race, level, and currently and OOC headers.]],
+	CO_TOOLTIP_SECONDARY_COLOR = "Secondary text color",
+	CO_TOOLTIP_SECONDARY_COLOR_HELP = [[The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.]],
+
 };
 
 -- Use Ellyb to generate the Localization system
