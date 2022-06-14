@@ -982,7 +982,17 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		if not line:find("<") then
 			line = "<P>" .. line .. "</P>";
 		end
-		line = line:gsub("\n","<br/>");
+
+		-- Replace newlines with <br/> tags unless following the immediate
+		-- start or end of a block element. This assumes no inline elements
+		-- have been added yet (namely - images).
+		line = line:gsub("()>?()\n", function(pos1, pos2)
+			if pos1 ~= pos2 then
+				return ">";
+			else
+				return "<br/>";
+			end
+		end);
 
 		-- Image tag. Specifiers after the height are optional, so they
 		-- must be suitably defaulted and validated.
