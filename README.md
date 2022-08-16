@@ -12,7 +12,7 @@ Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshoo
 
 ## Helpful links
 
-- Avoid losing all your profiles: sync up your saved data to an online storage. [Here’s a guide][installation guide]!
+- Avoid losing all your profiles: sync up your saved data to an online storage. [Here’s a guide](https://github.com/Total-RP/Total-RP-3/wiki/How-to-backup-and-synchronize-your-add-ons-settings-using-a-cloud-service)!
 - Don't know how to install an add-on? Check our [installation guide]!
 - Check out [Myth's excellent TRP3 guide][myth's guide] for an in depth tour of the add-on's features. Big thanks to him!
 - Join us on [Discord]!
@@ -60,9 +60,9 @@ Adds a standalone frame to your UI that displays your "Currently" text and allow
 [Discord]: http://discord.totalrp3.info
 [myth's guide]: http://tinyurl.com/myths-trp3-guide
 
-[F.A.Q]: https://wow.curseforge.com/projects/total-rp-3/pages/help/faq
-[troubleshooting page]: https://wow.curseforge.com/projects/total-rp-3/pages/help/troubleshooting
+[F.A.Q]: https://github.com/Total-RP/Total-RP-3/wiki/Frequently-Asked-Questions
+[troubleshooting page]: https://github.com/Total-RP/Total-RP-3/wiki/Troubleshooting-Common-Issues
 
-[installation guide]: http://totalrp3.info/wiki/how_to/install_and_update
-[import]: http://totalrp3.info/wiki/how_to/import
-[MSP]: http://totalrp3.info/wiki/technical_design/mary_sue_protocol
+[installation guide]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-install-and-update-Total-RP-3
+[import]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-import-your-existing-RP-profiles-from-another-add-on
+[MSP]: https://github.com/Total-RP/Total-RP-3/wiki/Mary-Sue-Protocol
