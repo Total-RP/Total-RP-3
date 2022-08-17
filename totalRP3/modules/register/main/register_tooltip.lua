@@ -869,7 +869,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	if showCompanionFullTitle() then
 		local fullTitle = "";
 		if info.TI then
-			fullTitle = strconcat("< ", info.TI, " |r>");
+			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
 
@@ -1047,7 +1047,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	if showCompanionFullTitle() then
 		local fullTitle = "";
 		if info.TI then
-			fullTitle = strconcat("< ", info.TI, " |r>");
+			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(CONFIG_CROP_TEXT) then
