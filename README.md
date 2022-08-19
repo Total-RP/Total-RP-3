@@ -21,9 +21,9 @@ Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshoo
 
 Total RP 3 aims to be the best way to customize and describe your role-play interactions, by bringing together the powerful customization features from Total RP 2, new features asked by our users and a much better user interface, designed with usability in mind. With this add-on, you can fully customize all the information about your characters and companion (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
 
-Our goal is to bring back the simplicity and user-friendliness of add-ons like **FlagRSP** and **MyRolePlay** but without sacrificing your freedom when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
+Our goal is to bring back the simplicity and user-friendliness of add-ons like **MyRolePlay** but without sacrificing your freedom when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
 
-Total RP 3 implements the **Mary Sue Protocol**, which is also used by roleplay addons like **MyRolePlay**, **XRP** or even **Total RP 2**. That means Total RP 3 can understand and exchange data with all these add-ons.
+Total RP 3 implements the **Mary Sue Protocol**, which is also used by roleplay addons like **MyRolePlay** and **XRP**. That means Total RP 3 can understand and exchange data with all these add-ons.
 
 Total RP 3 is also a fully modular add-on. You can choose exactly which features you want to use and won't be bothered by a complex user interface if you don't want to. This is the main module which will be required to run any future expansion.
 
@@ -33,11 +33,11 @@ Total RP 3 is also a fully modular add-on. You can choose exactly which features
 - Keep track of all characters and companions you met with **the directory**, a repository of profiles you have encountered.
 - **Locate other Total RP 3 users on the world map** to see where people tend to gather. You can decide to appear on the map or not, or even appear only if you are in character.
 - A customizable **target frame**, allowing you to easily reach useful actions about your roleplay target (see their profile, play their theme song).
-- **Chat customizations** like OOC chat coloring, emote detection and full role-play names using custom colors in the chat.
+- **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat.
 - **NPC speeches** to make an NPC say or do something during an event.
-- Full **Mary Sue Protocol** implementation: Total RP 3 can communicate with **MyRolePlay**, **XRP**, **Total RP 2** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
-- A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**.
-- **Import your existing profiles** from **Total RP 2**, **MyRolePlay**, **XRP**, **flagRSP2** and **flagRSP(MoP)**. ([Tutorial][import])
+- Full **Mary Sue Protocol** implementation: Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
+- A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**, etc.
+- **Import your existing profiles** from **Total RP 2**, **MyRolePlay** or **XRP**. ([Tutorial][import])
 - **Mature profile filtering** to warn you before opening profiles that may contain mature content.
 
 ## YouTube videos
