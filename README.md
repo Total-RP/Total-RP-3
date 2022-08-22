@@ -23,9 +23,9 @@ Total RP 3 aims to be the best way to customize, describe and drive your role-p
 
 Our goal is to bring back the simplicity and user-friendliness of add-ons like **MyRolePlay** but without sacrificing your freedom when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
 
-Total RP 3 implements the **Mary Sue Protocol**, which is also used by roleplay addons like **MyRolePlay** and **XRP**. That means Total RP 3 can understand and exchange data with all these add-ons.
+Total RP 3 can understand and exchange data with roleplay addons like **MyRolePlay** and **XRP**, allowing you to consult profiles coming from these addons seamlessly.
 
-Total RP 3 is also a fully modular add-on. You can choose exactly which features you want to use and won't be bothered by a complex user interface if you don't want to. This is the main module which will be required to run any future expansion.
+Total RP 3 is also a fully modular add-on. You can choose exactly which features you want to use and won't be bothered by a complex user interface if you don't want to.
 
 ## Main features
 
@@ -35,7 +35,7 @@ Total RP 3 is also a fully modular add-on. You can choose exactly which features
 - A customizable **target frame**, allowing you to easily access useful interactions for your roleplay target (see their profile, play their theme song).
 - **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat. ([Details on Chat Formatting][chatf])
 - **NPC speeches** to make an NPC say or do something during an event.
-- Full **Mary Sue Protocol** implementation: Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
+- Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
 - A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**, and more!
 - **Import your existing profiles** from **Total RP 2**, **MyRolePlay** or **XRP**. ([Tutorial][import])
 - **Mature profile filtering** to warn you before opening profiles that may contain mature content.
