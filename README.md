@@ -19,7 +19,7 @@ Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshoo
 
 ## Description 
 
-Total RP 3 aims to be the best way to customize and describe your role-play interactions, by bringing together the powerful customization features from Total RP 2, new features asked by our users and a much better user interface, designed with usability in mind. With this add-on, you can fully customize all the information about your characters and companion (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
+Total RP 3 aims to be the best way to customize, describe and drive your role-play interactions, by combining the powerful customization features from Total RP 2, new features requested by our users and a greatly improved user interface designed with usability in mind. With this add-on, you can fully customize all the information about your characters and companion (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
 
 Our goal is to bring back the simplicity and user-friendliness of add-ons like **MyRolePlay** but without sacrificing your freedom when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
 
@@ -32,11 +32,11 @@ Total RP 3 is also a fully modular add-on. You can choose exactly which features
 - You can customize your characters and companions (battle pets, pets, and mounts) with a powerful **profile system** and quickly switch between profiles.
 - Keep track of all characters and companions you met with **the directory**, a repository of profiles you have encountered.
 - **Locate other Total RP 3 users on the world map** to see where people tend to gather. You can decide to appear on the map or not, or even appear only if you are in character.
-- A customizable **target frame**, allowing you to easily reach useful actions about your roleplay target (see their profile, play their theme song).
-- **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat.
+- A customizable **target frame**, allowing you to easily access useful interactions for your roleplay target (see their profile, play their theme song).
+- **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat. ([Details on Chat Formatting][chatf])
 - **NPC speeches** to make an NPC say or do something during an event.
 - Full **Mary Sue Protocol** implementation: Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
-- A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**, etc.
+- A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**, and more!
 - **Import your existing profiles** from **Total RP 2**, **MyRolePlay** or **XRP**. ([Tutorial][import])
 - **Mature profile filtering** to warn you before opening profiles that may contain mature content.
 
@@ -63,6 +63,13 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 
 RP Tags adds a bunch of new tags to ElvUI's Unit Frames system to expose Total RP 3 fields, like RP names, colors, and more, to be used on the player and target frames.
 
+## Total RP 3 for add-on developers
+
+Want to integrate your addon with Total RP 3, or create your own module? Check out the [wiki](https://github.com/Total-RP/Total-RP-3/wiki) for a look into TRP3's public API, and a look into how Total RP 3 works.
+
+- Learn about Total RP 3's Communication System [here](https://github.com/Total-RP/Total-RP-3/wiki/Communication-system)!
+- Check out the [Total RP 3 API Documentation](https://github.com/Total-RP/Total-RP-3/wiki/Total-RP-3%27s-API-documentation)!
+
 [CurseForge]: http://curse.totalrp3.info
 [Discord]: http://discord.totalrp3.info
 [myth's guide]: http://tinyurl.com/myths-trp3-guide
@@ -73,3 +80,4 @@ RP Tags adds a bunch of new tags to ElvUI's Unit Frames system to expose Total R
 [installation guide]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-install-and-update-Total-RP-3
 [import]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-import-your-existing-RP-profiles-from-another-add-on
 [MSP]: https://github.com/Total-RP/Total-RP-3/wiki/Mary-Sue-Protocol
+[chatf]: https://github.com/Total-RP/Total-RP-3/wiki/Chat-formatting-in-Total-RP-3
