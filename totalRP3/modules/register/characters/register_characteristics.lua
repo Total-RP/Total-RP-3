@@ -80,7 +80,7 @@ getDefaultProfile().player.characteristics = {
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local FIELDS_TO_SANITIZE = {
-	"RA", "CL", "FN", "LN", "FT", "TI"
+	"RA", "CL", "FN", "LN", "FT", "TI", "EC", "AG", "HE", "RE", "BP"
 }
 
 ---@param structure table
@@ -95,6 +95,40 @@ local function sanitizeCharacteristics(structure)
 				if sanitizedValue ~= structure[field] then
 					structure[field] = sanitizedValue;
 					somethingWasSanitized = true;
+				end
+			end
+			-- Sanitizing misc traits
+			if structure.MI then
+				for _, trait in pairs(structure.MI) do
+					-- Sanitizing value
+					local sanitizedValue = Utils.str.sanitize(trait.VA);
+					if sanitizedValue ~= trait.VA then
+						trait.VA = sanitizedValue;
+						somethingWasSanitized = true;
+					end
+					-- Sanitizing name
+					sanitizedValue = Utils.str.sanitize(trait.NA);
+					if sanitizedValue ~= trait.NA then
+						trait.NA = sanitizedValue;
+						somethingWasSanitized = true;
+					end
+				end
+			end
+			-- Sanitizing personality traits
+			if structure.PS then
+				for _, trait in pairs(structure.PS) do
+					-- Sanitizing value
+					local sanitizedValue = Utils.str.sanitize(trait.RT);
+					if sanitizedValue ~= trait.RT then
+						trait.RT = sanitizedValue;
+						somethingWasSanitized = true;
+					end
+					-- Sanitizing name
+					sanitizedValue = Utils.str.sanitize(trait.LT);
+					if sanitizedValue ~= trait.LT then
+						trait.LT = sanitizedValue;
+						somethingWasSanitized = true;
+					end
 				end
 			end
 		end

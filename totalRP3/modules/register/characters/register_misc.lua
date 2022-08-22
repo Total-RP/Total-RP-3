@@ -256,7 +256,7 @@ function TRP3_API.register.getGlanceIconTextures(dataTab, size)
 	for i=1, 5, 1 do
 		local index = tostring(i);
 		if dataTab[index] and dataTab[index].AC then
-			text = text .. "|TInterface\\ICONS\\".. (dataTab[index].IC or TRP3_InterfaceIcons.Default) .. ":" .. size .. "|t "
+			text = text .. Utils.str.icon(dataTab[index].IC, size) .. " ";
 		end
 	end
 	return text;
