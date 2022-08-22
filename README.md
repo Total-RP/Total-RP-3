@@ -35,7 +35,7 @@ Total RP 3 is also a fully modular add-on. You can choose exactly which features
 - A customizable **target frame**, allowing you to easily access useful interactions for your roleplay target (see their profile, play their theme song).
 - **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat. ([Details on Chat Formatting][chatf])
 - **NPC speeches** to make an NPC say or do something during an event.
-- Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on. ([Details on the MSP implementation][MSP])
+- Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can view other players information even if they are using another roleplaying add-on.
 - A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC to OOC**, from **AFK to DND**, **switching languages**, and more!
 - **Import your existing profiles** from **Total RP 2**, **MyRolePlay** or **XRP**. ([Tutorial][import])
 - **Mature profile filtering** to warn you before opening profiles that may contain mature content.
@@ -43,7 +43,7 @@ Total RP 3 is also a fully modular add-on. You can choose exactly which features
 ## YouTube videos
 
 - Are you a new role-player? Check out [this great beginners guide to Total RP 3](https://youtu.be/pVQBxD4DiPM) by [Dizhon](https://www.youtube.com/channel/UC8UncaFHm3yL1eTKCjGDNtw)!
-- [Here's a video](https://youtu.be/pJyoBQVEVO8) from [Kraken Latte](https://www.youtube.com/c/KrakenLatte) detailing the basics of TotalRP3, including the setup and backing up of your profiles.
+- [Here's a video](https://youtu.be/pJyoBQVEVO8) from [Kraken Latte](https://www.youtube.com/c/KrakenLatte) detailing the basics of Total RP 3, including the setup and backing up of your profiles.
 
 ## Total RP 3 modules spotlight
 
@@ -75,5 +75,4 @@ Want to integrate your addon with Total RP 3, or create your own module? Check o
 
 [installation guide]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-install-and-update-Total-RP-3
 [import]: https://github.com/Total-RP/Total-RP-3/wiki/How-to-import-your-existing-RP-profiles-from-another-add-on
-[MSP]: https://github.com/Total-RP/Total-RP-3/wiki/Mary-Sue-Protocol
 [chatf]: https://github.com/Total-RP/Total-RP-3/wiki/Chat-formatting-in-Total-RP-3
