@@ -59,10 +59,6 @@ Adds a standalone frame to your UI that displays your "Currently" text and allow
 
 Adds a simple button to the toolbar to toggle on and off the map scan location feature.
 
-### [RP Tags](https://www.curseforge.com/wow/addons/rp-tags), by Oraibi
-
-RP Tags adds a bunch of new tags to ElvUI's Unit Frames system to expose Total RP 3 fields, like RP names, colors, and more, to be used on the player and target frames.
-
 ## Total RP 3 for add-on developers
 
 Want to integrate your addon with Total RP 3, or create your own module? Check out the [wiki](https://github.com/Total-RP/Total-RP-3/wiki) for a look into TRP3's public API, and a look into how Total RP 3 works.
