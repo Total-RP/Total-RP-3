@@ -19,13 +19,13 @@ Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshoo
 
 ## Description 
 
-Total RP 3 aims to be the best way to customize, describe and drive your role-play interactions, by combining the powerful customization features from Total RP 2, new features requested by our users and a greatly improved user interface designed with usability in mind. With this add-on, you can fully customize all the information about your characters and companion (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
+**Total RP 3** aims to be the best way to **customize, describe and drive your role-play interactions**, by combining the powerful customization features from Total RP 2, new features requested by our users and a greatly improved user interface designed with usability in mind. With this add-on, you can fully customize all the information about your characters and companion (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
 
-Our goal is to bring back the simplicity and user-friendliness of add-ons like **MyRolePlay** but without sacrificing your freedom when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
+Our goal is to bring back the **simplicity** and **user-friendliness** of add-ons like MyRolePlay but **without sacrificing your freedom** when defining your roleplay characters and adding neat features that you'll never want to live without anymore.
 
-Total RP 3 can understand and exchange data with roleplay addons like **MyRolePlay** and **XRP**, allowing you to consult profiles coming from these addons seamlessly.
+Total RP 3 can understand and exchange data with roleplay addons like MyRolePlay and XRP, allowing you to consult profiles coming from these addons seamlessly.
 
-Total RP 3 is also a fully modular add-on. You can choose exactly which features you want to use and won't be bothered by a complex user interface if you don't want to.
+Total RP 3 is also a **fully modular** add-on. You can choose exactly which features you want to use and won't be bothered by a complex user interface if you don't want to.
 
 ## Main features
 
