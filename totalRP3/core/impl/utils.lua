@@ -448,14 +448,13 @@ local escapes = {
 }
 function Utils.str.sanitize(text)
 	if not text then return end
-	local originalText = text;
-	for k, v in pairs(escapes) do
-		text = text:gsub(k, v);
-	end
-	-- Looping for nested tags
-	if originalText ~= text then
-		text = Utils.str.sanitize(text)
-	end
+	-- Repeat until nested tags are eliminated.
+	repeat
+		local originalText = text;
+		for k, v in pairs(escapes) do
+			text = text:gsub(k, v);
+		end
+	until originalText == text;
 	return text
 end
 
