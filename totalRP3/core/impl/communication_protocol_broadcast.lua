@@ -70,11 +70,11 @@ Comm.totalBroadcastR = 0;
 Comm.totalBroadcastP2PR = 0;
 
 local function broadcast(command, ...)
-	if not Globals.is_classic and not Globals.is_bcc and not config_UseBroadcast() or not command then
+	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not config_UseBroadcast() or not command then
 		Log.log("Bad params");
 		return;
 	end
-	if not Globals.is_classic and not Globals.is_bcc and not helloWorlded and command ~= HELLO_CMD then
+	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel and not helloWorlded and command ~= HELLO_CMD then
 		Log.log("Broadcast channel not yet initialized.");
 		return;
 	end
@@ -88,11 +88,13 @@ local function broadcast(command, ...)
 		message = message .. BROADCAST_SEPARATOR .. arg;
 	end
 	if message:len() < 254 then
-		if Globals.is_classic or Globals.is_bcc then
+		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
 			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "YELL");
-		else
+		elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
 			local channelName = GetChannelName(config_BroadcastChannel());
 			Chomp.SendAddonMessage(BROADCAST_HEADER, message, "CHANNEL", channelName);
+		else
+			error("Unknown broadcast method for this client");
 		end
 		Comm.totalBroadcast = Comm.totalBroadcast + BROADCAST_HEADER:len() + message:len();
 	else
@@ -122,7 +124,7 @@ function Comm.broadcast.registerCommand(command, callback)
 end
 
 local SetChannelPasswordOld = SetChannelPassword;
-if not (Globals.is_classic or Globals.is_bcc) then
+if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
 	SetChannelPassword = function(data, password)
 		local _, channelName = GetChannelName(data);
 		if channelName ~= config_BroadcastChannel() or password == "" then
@@ -287,7 +289,7 @@ local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 	end
 end
 
-if not Globals.is_classic and not Globals.is_bcc then
+if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
 	Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
 	Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
 	Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
@@ -307,7 +309,7 @@ Comm.broadcast.init = function()
 	Utils.event.registerHandler("CHAT_MSG_ADDON", onMessageReceived);
 
 	-- No broadcast channel on Classic or BCC
-	if Globals.is_classic or Globals.is_bcc then
+	if TRP3_ClientFeatures.BroadcastMethod ~= TRP3_BroadcastMethod.Channel then
 		TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_READY);
 		return
 	end
@@ -352,7 +354,7 @@ Comm.broadcast.init = function()
 		end
 	end);
 
-	if not (Globals.is_classic or Globals.is_bcc) then
+	if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
 		-- For when someone just places a password
 		Utils.event.registerHandler("CHAT_MSG_CHANNEL_NOTICE_USER", function(mode, user, _, _, _, _, _, _, channel)
 			if mode == "OWNER_CHANGED" and user == TRP3_API.globals.player_id and channel == config_BroadcastChannel() then

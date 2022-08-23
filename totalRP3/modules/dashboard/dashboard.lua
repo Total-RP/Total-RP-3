@@ -297,7 +297,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		};
 		TRP3_API.toolbar.toolbarAddButton(Button_RPStatus);
 
-		if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
+		if not TRP3_ClientFeatures.Transmogrification then
 			-- Show / hide helmet
 			local helmetOffIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOff);
 			local helmetOnIcon = Ellyb.Icon(TRP3_InterfaceIcons.ToolbarHelmetOn);

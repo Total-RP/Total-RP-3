@@ -18,7 +18,7 @@
 ----------------------------------------------------------------------------------
 
 if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
-	return;
+	return;  -- This file requires assets not present in Classic.
 end
 
 local IMAGES = {
