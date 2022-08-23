@@ -56,6 +56,23 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 						<Anchors>
 							<Anchor point="TOP" x="0" y="-30"/>
 						</Anchors>
+						<Layers>
+							<Layer level="OVERLAY">
+								<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
+									<Size x="253" y="226"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="-86" y="13"/>
+									</Anchors>
+									<TexCoords left="0" right="1" top="0.11" bottom="1" />
+								</Texture>
+								<Texture file="Interface\BUTTONS/UI-Quickslot2">
+									<Size x="60" y="60"/>
+									<Anchors>
+										<Anchor point="TOPLEFT" x="280" y="-35"/>
+									</Anchors>
+								</Texture>
+							</Layer>
+						</Layers>
 						<ColorWheelTexture name="TRP3_ColorBrowserColorWheel">
 							<Size x="128" y="128"/>
 							<Anchors>
@@ -76,23 +93,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 							<Size x="48" y="14"/>
 							<TexCoords left="0.25" right="1.0" top="0" bottom="0.875"/>
 						</ColorValueThumbTexture>
-						<Layers>
-							<Layer level="OVERLAY">
-								<Texture file="Interface\MINIMAP\UI-MINIMAP-BORDER">
-									<Size x="253" y="226"/>
-									<Anchors>
-										<Anchor x="-86" y="13"/>
-									</Anchors>
-									<TexCoords left="0" right="1" top="0.11" bottom="1" />
-								</Texture>
-								<Texture file="Interface\BUTTONS/UI-Quickslot2">
-									<Size x="60" y="60"/>
-									<Anchors>
-										<Anchor x="280" y="-35"/>
-									</Anchors>
-								</Texture>
-							</Layer>
-						</Layers>
 					</ColorSelect>
 
 					<Button name="TRP3_ColorBrowserSelect" inherits="TRP3_CommonButton" text="[SELECT]">

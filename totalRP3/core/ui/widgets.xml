@@ -150,7 +150,7 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		they would be truncated.
 	-->
 
-	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin" motionScriptsWhileDisabled="true">
+	<Frame name="TRP3_TruncatedTextTemplate" virtual="true" inherits="TruncatedTooltipScriptTemplate" mixin="TRP3_TruncatedTextMixin">
 		<KeyValues>
 			<KeyValue key="fontStringLayer" value="OVERLAY"/>
 			<KeyValue key="fontStringTemplate" value="GameFontNormal"/>
