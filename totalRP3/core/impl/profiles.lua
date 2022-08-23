@@ -645,6 +645,10 @@ function TRP3_API.profile.init()
 
 			local profileName = table.concat(args, " ");
 
+			if string.sub(profileName, 1, 1) == "[" then
+				profileName = SecureCmdOptionParse(profileName);
+			end
+
 			for profileID, profile in pairs(profiles) do
 				if profile.profileName == profileName then
 					selectProfile(profileID);

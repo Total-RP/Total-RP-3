@@ -49,7 +49,7 @@ local function shouldAnswerToLocationRequest()
 		return false;
 	end
 	if getConfigValue(CONFIG_DISABLE_MAP_LOCATION_ON_WAR_MODE) then
-		if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
+		if not TRP3_ClientFeatures.WarMode then
 			return not UnitIsPVP("player");
 		elseif C_PvP.IsWarModeActive() then
 			return GetZonePVPInfo() == "sanctuary"
@@ -82,7 +82,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		configKey = CONFIG_DISABLE_MAP_LOCATION_ON_OOC,
 		dependentOnOptions = { CONFIG_ENABLE_MAP_LOCATION },
 	});
-	if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
+	if not TRP3_ClientFeatures.WarMode then
 		insert(TRP3_API.register.CONFIG_STRUCTURE.elements, {
 			inherit = "TRP3_ConfigCheck",
 			title = loc.CO_LOCATION_DISABLE_CLASSIC_PVP,
@@ -137,11 +137,10 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 			if not x or not y then
 				return false;
 			end
-		else
-			-- Classic/BCC: with the scan moving to YELL, we're forbidding scans in another zone than the one you're in.
-			if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
-				return false;
-			end
+		elseif TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Yell then
+			-- When Yell comms are in use we forbid scans in zones other
+			-- than the one you're in.
+			return false;
 		end
 
 		return true;
@@ -159,7 +158,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 				end
 				local x, y = Map.getPlayerCoordinates();
 				if x and y then
-					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc or C_PvP.IsWarModeActive());
+					broadcast.sendP2PMessage(sender, SCAN_COMMAND, x, y, (not TRP3_ClientFeatures.WarMode) or C_PvP.IsWarModeActive());
 				end
 			end
 		end
@@ -171,7 +170,7 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 		local checkWarMode;
 
 		-- If the option to show people in different War Mode is not enabled we will filter them out from the result
-		if not TRP3_API.globals.is_classic and not TRP3_API.globals.is_bcc and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
+		if TRP3_ClientFeatures.WarMode and not getConfigValue(CONFIG_SHOW_DIFFERENT_WAR_MODES) then
 			checkWarMode = hasWarModeActive;
 		end
 

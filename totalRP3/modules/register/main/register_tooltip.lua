@@ -329,21 +329,29 @@ local function AddSpace(self)
 	tinsert(self._content, lineStructure);
 end
 
+local function GenerateColoredTooltipLine(text, r, g, b)
+	-- Workaround for issue #606 where certain unicode character ranges make
+	-- GameTooltip:AddLine not respect colors. We wrap the text in an
+	-- enclosing pair of color sequences to force it to be respected.
+	return string.format("|cff%.2x%.2x%.2x%s|r", r * 255, g * 255, b * 255, text);
+end
+
 local function Build(self)
 	local size = #self._content;
 	local tooltipLineIndex = 1;
 	for lineIndex, line in ipairs(self._content) do
 		if line.type == BUILDER_TYPE_LINE then
-			-- Potential fix for SetFont call on a nil line
 			if line.text == "" then line.text = " " end
-			self.tooltip:AddLine(line.text, line.red, line.green, line.blue, line.lineWrap);
+			local text = GenerateColoredTooltipLine(line.text, line.red, line.green, line.blue);
+			self.tooltip:AddLine(text, 1, 1, 1, line.lineWrap);
 			setLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
 			tooltipLineIndex = tooltipLineIndex + 1;
 		elseif line.type == BUILDER_TYPE_DOUBLELINE then
-			-- Potential fix for SetFont call on a nil line
 			if line.textL == "" then line.textL = " " end
 			if line.textR == "" then line.textR = " " end
-			self.tooltip:AddDoubleLine(line.textL, line.textR, line.redL, line.greenL, line.blueL, line.redR, line.greenR, line.blueR);
+			local textL = GenerateColoredTooltipLine(line.textL, line.redL, line.greenL, line.blueL);
+			local textR = GenerateColoredTooltipLine(line.textR, line.redR, line.greenR, line.blueR);
+			self.tooltip:AddDoubleLine(textL, textR, 1, 1, 1, 1, 1, 1);
 			setDoubleLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
 			tooltipLineIndex = tooltipLineIndex + 1;
 		elseif line.type == BUILDER_TYPE_SPACE and showSpacing() and lineIndex ~= size then
@@ -539,7 +547,7 @@ local function writeTooltipForCharacter(targetID, _, targetType)
 				fullTitle = crop(fullTitle, FIELDS_TO_CROP.TITLE);
 			end
 
-			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " |r>"), colors.TITLE, getSubLineFontSize(), true);
+			tooltipBuilder:AddLine(strconcat("< ", fullTitle, " >"), colors.TITLE, getSubLineFontSize(), true);
 		end
 	end
 
@@ -889,7 +897,7 @@ local function writeCompanionTooltip(companionFullID, _, targetType, targetMode)
 	if showCompanionFullTitle() then
 		local fullTitle = "";
 		if info.TI then
-			fullTitle = strconcat("< ", info.TI, " |r>");
+			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
 
@@ -1068,7 +1076,7 @@ local function writeTooltipForMount(ownerID, companionFullID, mountName)
 	if showCompanionFullTitle() then
 		local fullTitle = "";
 		if info.TI then
-			fullTitle = strconcat("< ", info.TI, " |r>");
+			fullTitle = strconcat("< ", info.TI, " >");
 		end
 		if fullTitle and fullTitle ~= "" then
 			if getConfigValue(CONFIG_CROP_TEXT) then

@@ -261,8 +261,10 @@ TRP3_BACKDROP_MIXED_ACHIEVEMENT_TOOLTIP_415_16_3333 = {
 TRP3_TruncatedTextMixin = CreateFromMixins(FontableFrameMixin);
 
 function TRP3_TruncatedTextMixin:OnLoad()
-	self.Text = self:CreateFontString(nil, self.fontStringLayer, self.fontStringTemplate, self.fontStringSubLayer);
-	self.Text:SetAllPoints(self);
+	if not self.Text then
+		self.Text = self:CreateFontString(nil, self.fontStringLayer, self.fontStringTemplate, self.fontStringSubLayer);
+		self.Text:SetAllPoints(self);
+	end
 
 	if self.fontStringColor then
 		self.Text:SetTextColor(self.fontStringColor);

@@ -144,6 +144,7 @@ ColorManager.WARRIOR = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.WARR
 ColorManager.DEATHKNIGHT = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.DEATHKNIGHT]):Freeze();
 ColorManager.MONK = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.MONK]):Freeze();
 ColorManager.DEMONHUNTER = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.DEMONHUNTER]):Freeze();
+ColorManager.EVOKER = Ellyb.Color:new(RAID_CLASS_COLORS[Ellyb.Enum.CLASSES.EVOKER] or { r = 0.2, g = 0.58, b = 0.5 }):Freeze();
 
 -- Brand colors
 ColorManager.TWITTER = Ellyb.Color:new("#1da1f2"):Freeze();
@@ -173,7 +174,9 @@ ColorManager.POWER_RAGE = Ellyb.Color:new(PowerBarColor["RAGE"]):Freeze();
 ColorManager.POWER_FOCUS = Ellyb.Color:new(PowerBarColor["FOCUS"]):Freeze();
 ColorManager.POWER_ENERGY = Ellyb.Color:new(PowerBarColor["ENERGY"]):Freeze();
 ColorManager.POWER_COMBO_POINTS = Ellyb.Color:new(PowerBarColor["COMBO_POINTS"]):Freeze();
-ColorManager.POWER_RUNES = Ellyb.Color:new(PowerBarColor["RUNES"]):Freeze();
+if PowerBarColor["RUNES"] then  -- Classic Wrath bein' all weird >:(
+	ColorManager.POWER_RUNES = Ellyb.Color:new(PowerBarColor["RUNES"]):Freeze();
+end
 ColorManager.POWER_RUNIC_POWER = Ellyb.Color:new(PowerBarColor["RUNIC_POWER"]):Freeze();
 ColorManager.POWER_SOUL_SHARDS = Ellyb.Color:new(PowerBarColor["SOUL_SHARDS"]):Freeze();
 ColorManager.POWER_LUNAR_POWER = Ellyb.Color:new(PowerBarColor["LUNAR_POWER"]):Freeze();

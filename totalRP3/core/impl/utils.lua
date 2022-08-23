@@ -982,7 +982,17 @@ Utils.str.toHTML = function(text, noColor, noBrackets)
 		if not line:find("<") then
 			line = "<P>" .. line .. "</P>";
 		end
-		line = line:gsub("\n","<br/>");
+
+		-- Replace newlines with <br/> tags unless following the immediate
+		-- start or end of a block element. This assumes no inline elements
+		-- have been added yet (namely - images).
+		line = line:gsub("()>?()\n", function(pos1, pos2)
+			if pos1 ~= pos2 then
+				return ">";
+			else
+				return "<br/>";
+			end
+		end);
 
 		-- Image tag. Specifiers after the height are optional, so they
 		-- must be suitably defaulted and validated.
@@ -1200,12 +1210,6 @@ end
 function Utils.music.playMusic(music, source)
 	assert(music, "Music can't be nil.")
 	Utils.music.stopMusic();
-	if TRP3_API.globals.is_classic then
-		local musicName = LibRPMedia:GetMusicNameByFile(music);
-		if musicName then
-			music = "Sound/Music/" .. musicName .. ".mp3";
-		end
-	end
 	Log.log("Playing music: " .. music);
 	PlayMusic(music);
 	tinsert(soundHandlers, {channel = "Music", id = Utils.music.getTitle(music), handlerID = 0, source = source or Globals.player_id, date = date("%H:%M:%S"), stopped = false});

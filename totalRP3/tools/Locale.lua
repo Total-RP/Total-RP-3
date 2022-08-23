@@ -1736,6 +1736,8 @@ With the recent changes of patch 9.2.5, profiles can now be seen cross-faction f
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
+
+	CM_CLASS_EVOKER = "Evoker",
 	CO_TOOLTIP_TITLE_COLOR = "Title text color",
 	CO_TOOLTIP_TITLE_COLOR_HELP = [[The color used in the tooltip to display full-length character titles.]],
 	CO_TOOLTIP_MAIN_COLOR = "Main text color",
