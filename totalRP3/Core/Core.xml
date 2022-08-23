@@ -4,7 +4,7 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="UI\Widgets.xml"/>
+	<Include file="..\UI\Widgets.xml"/>
 
 	<!-- Please note that the loading order matters a lot -->
 	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
@@ -29,40 +29,39 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 		</Layers>
 	</Frame>
 
-	<Include file="Impl\Enums.lua" />
-	<Include file="Models\Player.lua" />
-	<Include file="Models\Tests\Player.lua" />
+	<Include file="Enums.lua"/>
+	<Include file="Player.lua"/>
 
-	<Include file="Impl\Globals.lua"/>
-	<Include file="Impl\Events.lua"/>
-	<Include file="Impl\Utils.lua"/>
-	<Include file="Impl\UITools.lua"/>
-	<Include file="Impl\Slash.lua"/>
+	<Include file="Globals.lua"/>
+	<Include file="Events.lua"/>
+	<Include file="Utils.lua"/>
+	<Include file="UITools.lua"/>
+	<Include file="Slash.lua"/>
 
 
-	<Include file="UI\Main.xml"/>
-	<Include file="Impl\MainStructure.lua"/>
+	<Include file="..\UI\Main.xml"/>
+	<Include file="MainStructure.lua"/>
 
-	<Include file="UI\Configuration.xml"/>
-	<Include file="Impl\Configuration.lua"/>
-	<Include file="Impl\AdvancedSettings.lua"/>
+	<Include file="..\UI\Configuration.xml"/>
+	<Include file="Configuration.lua"/>
+	<Include file="AdvancedSettings.lua"/>
 
-	<Include file="Impl\Compression.lua"/>
-	<Include file="Impl\CommunicationProtocol.lua"/>
-	<Include file="Impl\CommunicationProtocolBroadcast.lua"/>
+	<Include file="Compression.lua"/>
+	<Include file="CommunicationProtocol.lua"/>
+	<Include file="CommunicationProtocolBroadcast.lua"/>
 
-	<Include file="Impl\UIMain.lua"/>
+	<Include file="UIMain.lua"/>
 
-	<Include file="UI\browsers\Icons.xml"/>
-	<Include file="UI\browsers\Companions.xml"/>
-	<Include file="UI\browsers\Musics.xml"/>
-	<Include file="UI\browsers\Colors.xml"/>
-	<Include file="UI\browsers\Images.xml"/>
-	<Include file="UI\browsers\PetBrowser.xml"/>
-	<Include file="Impl\Popup.lua"/>
+	<Include file="..\UI\Browsers\Icons.xml"/>
+	<Include file="..\UI\Browsers\Companions.xml"/>
+	<Include file="..\UI\Browsers\Musics.xml"/>
+	<Include file="..\UI\Browsers\Colors.xml"/>
+	<Include file="..\UI\Browsers\Images.xml"/>
+	<Include file="..\UI\Browsers\PetBrowser.xml"/>
+	<Include file="Popup.lua"/>
 
-	<Include file="UI\Profiles.xml"/>
-	<Include file="Impl\Profiles.lua"/>
-	<Include file="Impl\ProfilesChatLinksModule.lua"/>
+	<Include file="..\UI\Profiles.xml"/>
+	<Include file="Profiles.lua"/>
+	<Include file="ProfilesChatLinksModule.lua"/>
 
 </Ui>
