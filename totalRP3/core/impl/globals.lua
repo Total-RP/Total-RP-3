@@ -80,9 +80,6 @@ TRP3_API.globals = {
 		MSP = "msp",
 	},
 
-	is_classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC,
-	is_bcc = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC,
-
 	serious_day = currentDate.month == 4 and currentDate.day == 1,
 
 	-- Profile Constants
@@ -92,6 +89,23 @@ TRP3_API.globals = {
 	PSYCHO_MAX_VALUE_V2 = 20,
 	PSYCHO_DEFAULT_LEFT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(255, 140, 26):Freeze(),
 	PSYCHO_DEFAULT_RIGHT_COLOR = Ellyb.Color.CreateFromRGBAAsBytes(32, 208, 249):Freeze(),
+};
+
+-- TODO: Expansion constants are temporary and can be cleaned up once the next
+--       Classic Era patch (1.14.4+/1.15.0) goes live.
+
+local TRP3_EXPANSION_CATACLYSM = LE_EXPANSION_CATACLYSM or 3;
+local TRP3_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH or 7;
+
+TRP3_BroadcastMethod = {
+	Channel = 1,
+	Yell = 2,
+};
+
+TRP3_ClientFeatures = {
+	BroadcastMethod = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and TRP3_BroadcastMethod.Yell or TRP3_BroadcastMethod.Channel),
+	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_BATTLE_FOR_AZEROTH),
+	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_CATACLYSM),
 };
 
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.

@@ -293,13 +293,13 @@ TRP3_API.navigation.openMainFrame = function()
 	TRP3_MainFrame:Show();
 	TRP3_MainFrame:Raise();
 
-	TRP3_API.ui.misc.playUISound((TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc) and SOUNDKIT.IG_CHARACTER_INFO_TAB or SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
+	TRP3_API.ui.misc.playUISound((WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) and SOUNDKIT.IG_CHARACTER_INFO_TAB or SOUNDKIT.ACHIEVEMENT_MENU_OPEN);
 end
 
 local function switchMainFrame()
 	if TRP3_MainFrame:IsVisible() then
 		TRP3_MainFrame:Hide();
-		TRP3_API.ui.misc.playUISound((TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc) and SOUNDKIT.IG_MAINMENU_CLOSE or SOUNDKIT.ACHIEVEMENT_MENU_CLOSE);
+		TRP3_API.ui.misc.playUISound((WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE) and SOUNDKIT.IG_MAINMENU_CLOSE or SOUNDKIT.ACHIEVEMENT_MENU_CLOSE);
 	else
 		TRP3_API.navigation.openMainFrame();
 	end
@@ -424,7 +424,7 @@ local function onTutorialRefresh(pageID)
 	if currentPageId == pageID then
 		local currentPage = pageStructures[currentPageId];
 		TRP3_TutorialFrame:Hide();
-		if not TRP3_API.globals.is_classic and not TRP3_API.globals.is_bcc and currentPage.tutorialProvider and currentPage.tutorialProvider() then
+		if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and currentPage.tutorialProvider and currentPage.tutorialProvider() then
 			TRP3_MainTutorialButton:Show();
 			TRP3_MainTutorialButton.provider = currentPage.tutorialProvider;
 		else

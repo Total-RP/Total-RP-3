@@ -370,7 +370,8 @@ local function setConsultDisplay(context)
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetPoint("RIGHT", frame.Value, "LEFT", -5, 0);
 			setTooltipForSameFrame(TRP3_RegisterCharact_CharactPanel_ResidenceButton, "RIGHT", 0, 5, loc.REG_PLAYER_RESIDENCE_SHOW, loc.REG_PLAYER_RESIDENCE_SHOW_TT:format(dataTab.RC[4]));
 			TRP3_RegisterCharact_CharactPanel_ResidenceButton:SetScript("OnClick", function()
-				if TRP3_API.globals.is_classic or TRP3_API.globals.is_bcc then
+				if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+					-- Bug: https://github.com/Stanzilla/WoWUIBugs/issues/124
 					ShowUIPanel(WorldMapFrame);
 					WorldMapFrame:SetMapID(dataTab.RC[1]);
 				else

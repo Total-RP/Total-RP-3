@@ -131,18 +131,10 @@ end
 AddOn_TotalRP3.Ui = AddOn_TotalRP3.Ui or {};
 
 function AddOn_TotalRP3.Ui.IsPetBrowserEnabled()
-	-- Only suggest that this browser be usable for Hunters as we're using
-	-- the stable APIs for populating it.
-	--
-	-- Classic: This is disabled until the TBC prepatch as it relies on a lot
-	-- of post-8.1 changes in FrameXML to function.
-
 	if TRP3_API.globals.player_character.class ~= "HUNTER" then
-		return false;  -- Player isn't the correct class.
-	elseif TRP3_API.globals.is_classic then
-		return false;  -- Classic is unsupported.
-	elseif TRP3_API.globals.is_bcc then
-		return false;  -- BCC is also unsupported for now!
+		return false;  -- Player isn't a supported class.
+	elseif WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then
+		return false;  -- Classic is unsupported due to missing art assets.
 	else
 		return true;
 	end

@@ -17,8 +17,8 @@
 --- limitations under the License.
 ----------------------------------------------------------------------------------
 
-if WOW_PROJECT_ID ~= WOW_PROJECT_CLASSIC and WOW_PROJECT_ID ~= WOW_PROJECT_BURNING_CRUSADE_CLASSIC then
-	return;
+if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+	return;  -- This file contains only assets present in Classic.
 end
 
 local IMAGES = {
