@@ -1,11 +1,5 @@
-# EditorConfig is awesome: http://EditorConfig.org
-
-# top-most EditorConfig file
 root = true
 
-# For the sake of consistency across the entire project we want:
-# - UTF-8 encoding
-# - TABS!
 [*]
 end_of_line = unset
 charset = utf-8
@@ -16,7 +10,6 @@ insert_final_newline = true
 [*.sh]
 end_of_line = lf
 
-# CurseForge's .pkgmeta file has to be indented with spaces
 [.pkgmeta]
 indent_style = space
 indent_size = 2
