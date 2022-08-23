@@ -1,0 +1,68 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="UI\Widgets.xml"/>
+
+	<!-- Please note that the loading order matters a lot -->
+	<GameTooltip name="TRP3_MainTooltip" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate"/>
+	<GameTooltip name="TRP3_Toast" frameStrata="TOOLTIP" hidden="false" parent="UIParent" inherits="TRP3_TooltipTemplate">
+		<Scripts>
+			<OnHide>
+				self.isFading = nil;
+			</OnHide>
+		</Scripts>
+	</GameTooltip>
+
+	<Frame name="TRP3_ResizeShadowFrame" parent="UIParent" frameStrata="FULLSCREEN" hidden="true" resizable="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_400_24_5555" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Color b="1.0" r="1.0" g="1.0"/>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Include file="Impl\Enums.lua" />
+	<Include file="Models\Player.lua" />
+	<Include file="Models\Tests\Player.lua" />
+
+	<Include file="Impl\Globals.lua"/>
+	<Include file="Impl\Events.lua"/>
+	<Include file="Impl\Utils.lua"/>
+	<Include file="Impl\UITools.lua"/>
+	<Include file="Impl\Slash.lua"/>
+
+
+	<Include file="UI\Main.xml"/>
+	<Include file="Impl\MainStructure.lua"/>
+
+	<Include file="UI\Configuration.xml"/>
+	<Include file="Impl\Configuration.lua"/>
+	<Include file="Impl\AdvancedSettings.lua"/>
+
+	<Include file="Impl\Compression.lua"/>
+	<Include file="Impl\CommunicationProtocol.lua"/>
+	<Include file="Impl\CommunicationProtocolBroadcast.lua"/>
+
+	<Include file="Impl\UIMain.lua"/>
+
+	<Include file="UI\browsers\Icons.xml"/>
+	<Include file="UI\browsers\Companions.xml"/>
+	<Include file="UI\browsers\Musics.xml"/>
+	<Include file="UI\browsers\Colors.xml"/>
+	<Include file="UI\browsers\Images.xml"/>
+	<Include file="UI\browsers\PetBrowser.xml"/>
+	<Include file="Impl\Popup.lua"/>
+
+	<Include file="UI\Profiles.xml"/>
+	<Include file="Impl\Profiles.lua"/>
+	<Include file="Impl\ProfilesChatLinksModule.lua"/>
+
+</Ui>

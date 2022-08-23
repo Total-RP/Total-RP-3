@@ -1,0 +1,115 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="TRP3_ConfigurationModuleFrame" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_DIALOG_TOOLTIP_200_24_5555" type="global"/>
+		</KeyValues>
+		<Size x="0" y="60"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentModuleName" text="[name]" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="35" y="-8"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString name="$parentModuleVersion" text="[version]" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Size x="200" y="10"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentModuleName" x="5" y="-5"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+				<FontString name="$parentModuleID" text="[id]" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentModuleVersion" x="0" y="-3"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+				<FontString name="$parentStatus" text="[status]" inherits="GameFontNormalSmall" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentModuleVersion" x="0" y="-3"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="$parentInfo" inherits="TRP3_HelpButton">
+				<Anchors>
+					<Anchor point="TOPLEFT" x="13" y="-7"/>
+				</Anchors>
+			</Button>
+			<Button name="$parentAction">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-4" y="-4"/>
+				</Anchors>
+				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
+				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
+				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigurationModule" parent="TRP3_MainFramePageContainer" hidden="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="TRP3_ConfigurationModuleTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[modules_settings]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-25"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="TRP3_ConfigurationModuleFrame" inherits="TRP3_InnerFrame">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="TRP3_ConfigurationModuleTitle" relativePoint="BOTTOM" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="TRP3_ConfigurationModuleScroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="3"/>
+							<Anchor point="LEFT" x="17" y="0"/>
+							<Anchor point="RIGHT" x="-13" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<Frame name="TRP3_ConfigurationModuleContainer">
+								<Size x="463" y="50"/>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Include file="ModuleManagement.lua"/>
+	<Include file="Flyway\Flyway.lua"/>
+	<Include file="Flyway\FlywayPatches.lua"/>
+	<Include file="Dashboard\Dashboard.xml"/>
+	<Include file="Map\Map.xml"/>
+	<Include file="Register\Register.xml"/>
+	<Include file="Languages\Languages.xml"/>
+	<Include file="ChatFrame\ChatFrame.xml"/>
+	<Include file="TargetFrame\TargetFrame.xml"/>
+	<Include file="Toolbar\Toolbar.xml"/>
+	<Include file="Importer\Importer.xml"/>
+	<Include file="TooltipSkins\TooltipSkins.xml"/>
+	<Include file="ChatLinks\ChatLinks.xml"/>
+	<Include file="UnitPopups\UnitPopups.xml"/>
+	<Include file="NamePlates\NamePlates.xml"/>
+</Ui>
