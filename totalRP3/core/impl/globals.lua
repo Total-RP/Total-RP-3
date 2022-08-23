@@ -81,7 +81,7 @@ TRP3_API.globals = {
 	},
 
 	-- Please consider using TRP3_ClientFeatures going forward!
-	is_classic = (LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE),
+	is_classic = (LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_CLASSIC),
 	is_bcc = (LE_EXPANSION_LEVEL_CURRENT == LE_EXPANSION_BURNING_CRUSADE),
 
 	serious_day = currentDate.month == 4 and currentDate.day == 1,
