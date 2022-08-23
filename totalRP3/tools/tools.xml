@@ -6,5 +6,4 @@
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="HTML.xml" />
 	<Script file="Locale.lua"/>
-	<Script file="workarounds.lua"/>
 </Ui>
