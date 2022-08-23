@@ -1715,7 +1715,6 @@ This version is updated for TBC Classic 2.5.2.
 - Fixed an issue with the character scan tooltips not showing since patch 9.1.5.
 
 ]],
-
 	WHATS_NEW_24_12 = [[# Changelog version 2.3.11
 
 With the recent changes of patch 9.2.5, profiles can now be seen cross-faction for players in your party, or with whom you share a cross-faction WoW community.
@@ -1739,6 +1738,13 @@ With the recent changes of patch 9.2.5, profiles can now be seen cross-faction f
 
 
 	CM_CLASS_EVOKER = "Evoker",
+	CO_TOOLTIP_TITLE_COLOR = "Title text color",
+	CO_TOOLTIP_TITLE_COLOR_HELP = [[The color used in the tooltip to display full-length character titles.]],
+	CO_TOOLTIP_MAIN_COLOR = "Main text color",
+	CO_TOOLTIP_MAIN_COLOR_HELP = [[The color used in the tooltip to display text such as the race, level, and currently and OOC headers.]],
+	CO_TOOLTIP_SECONDARY_COLOR = "Secondary text color",
+	CO_TOOLTIP_SECONDARY_COLOR_HELP = [[The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.]],
+
 };
 
 -- Use Ellyb to generate the Localization system
