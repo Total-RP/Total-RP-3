@@ -363,6 +363,13 @@ end
 function Utils.str.texture(iconPath, iconSize)
 	assert(iconPath, "Icon path is nil.");
 	iconSize = iconSize or 15;
+
+	-- Removing extra sizes
+	local sanitizeIndex = iconPath:find(":");
+	if sanitizeIndex then
+		iconPath = iconPath:sub(1, sanitizeIndex - 1);
+	end
+
 	return strconcat("|T", iconPath, ":", iconSize, ":", iconSize, "|t");
 end
 
@@ -432,7 +439,7 @@ function Utils.str.safeMatch(text, pattern)
 end
 
 local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+	["|c[ %x]%x%x%x%x%x%x%x"] = "", -- color start
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
@@ -441,10 +448,14 @@ local escapes = {
 }
 function Utils.str.sanitize(text)
 	if not text then return end
-	for k, v in pairs(escapes) do
-		text = text:gsub(k, v);
-	end
-	return text;
+	-- Repeat until nested tags are eliminated.
+	repeat
+		local originalText = text;
+		for k, v in pairs(escapes) do
+			text = text:gsub(k, v);
+		end
+	until originalText == text;
+	return text
 end
 
 function Utils.str.crop(text, size)

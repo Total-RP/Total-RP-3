@@ -21,8 +21,6 @@
 ---@type
 local _, TRP3_API = ...;
 
--- Changed NPC talk prefix to a hardcoded one following option removal (Paul Corlay)
-
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local strconcat = strconcat;
