@@ -131,7 +131,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			</Frame>
 			<SimpleHTML name="$parentText" inherits="TRP3_HyperLinkedScripts">
 				<Size x="380" y="0"/>
-				<Color b="1.0" r="1.0" g="1.0"/>
 				<FontString inherits="GameFontNormalSmall"/>
 			</SimpleHTML>
 		</Frames>
