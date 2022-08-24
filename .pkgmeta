@@ -31,7 +31,6 @@ externals:
   totalRP3/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
   totalRP3/Libs/LibMSP: https://github.com/wow-rp-addons/LibMSP
   totalRP3/Libs/LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia
-  totalRP3/Libs/LibSerialize: https://github.com/rossnichols/LibSerialize
   totalRP3/Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
 
 embedded-libraries:

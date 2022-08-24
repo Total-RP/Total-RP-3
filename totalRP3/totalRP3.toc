@@ -32,7 +32,6 @@ Libs\LibDBIcon-1.0\lib.xml
 Libs\LibDeflate\lib.xml
 Libs\LibMSP\LibMSP.xml
 Libs\LibRPMedia\LibRPMedia-1.0.xml
-Libs\LibSerialize\lib.xml
 Libs\MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml
 Libs\TaintLess\TaintLess.xml
 Libs\UTF8\lib.xml
