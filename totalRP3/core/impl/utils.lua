@@ -365,9 +365,11 @@ function Utils.str.texture(iconPath, iconSize)
 	iconSize = iconSize or 15;
 
 	-- Removing extra sizes
-	local sanitizeIndex = iconPath:find(":");
-	if sanitizeIndex then
-		iconPath = iconPath:sub(1, sanitizeIndex - 1);
+	if type(iconPath) == "string" then
+		local sanitizeIndex = iconPath:find(":");
+		if sanitizeIndex then
+			iconPath = iconPath:sub(1, sanitizeIndex - 1);
+		end
 	end
 
 	return strconcat("|T", iconPath, ":", iconSize, ":", iconSize, "|t");
