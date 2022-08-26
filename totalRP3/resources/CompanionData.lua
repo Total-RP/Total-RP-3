@@ -252,278 +252,278 @@ TRP3_CompanionPetData = C_PetJournal and {} or {
 
 TRP3_CompanionMountData = C_MountJournal and {} or {
 	{ mountID = 6, spellID = 458, factionGroup = nil },  -- Brown Horse
-    { mountID = 7, spellID = 459, factionGroup = nil },  -- Gray Wolf
-    { mountID = 8, spellID = 468, factionGroup = nil },  -- White Stallion
-    { mountID = 9, spellID = 470, factionGroup = nil },  -- Black Stallion
-    { mountID = 11, spellID = 472, factionGroup = nil },  -- Pinto
-    { mountID = 12, spellID = 578, factionGroup = nil },  -- Black Wolf
-    { mountID = 13, spellID = 579, factionGroup = nil },  -- Red Wolf
-    { mountID = 14, spellID = 580, factionGroup = nil },  -- Timber Wolf
-    { mountID = 15, spellID = 581, factionGroup = nil },  -- Winter Wolf
-    { mountID = 17, spellID = 5784, factionGroup = nil },  -- Felsteed
-    { mountID = 18, spellID = 6648, factionGroup = nil },  -- Chestnut Mare
-    { mountID = 19, spellID = 6653, factionGroup = nil },  -- Dire Wolf
-    { mountID = 20, spellID = 6654, factionGroup = nil },  -- Brown Wolf
-    { mountID = 21, spellID = 6777, factionGroup = nil },  -- Gray Ram
-    { mountID = 22, spellID = 6896, factionGroup = nil },  -- Black Ram
-    { mountID = 24, spellID = 6898, factionGroup = nil },  -- White Ram
-    { mountID = 25, spellID = 6899, factionGroup = nil },  -- Brown Ram
-    { mountID = 26, spellID = 8394, factionGroup = nil },  -- Striped Frostsaber
-    { mountID = 27, spellID = 8395, factionGroup = nil },  -- Emerald Raptor
-    { mountID = 28, spellID = 8980, factionGroup = nil },  -- Skeletal Horse
-    { mountID = 31, spellID = 10789, factionGroup = nil },  -- Spotted Frostsaber
-    { mountID = 34, spellID = 10793, factionGroup = nil },  -- Striped Nightsaber
-    { mountID = 35, spellID = 10795, factionGroup = nil },  -- Ivory Raptor
-    { mountID = 36, spellID = 10796, factionGroup = nil },  -- Turquoise Raptor
-    { mountID = 38, spellID = 10799, factionGroup = nil },  -- Violet Raptor
-    { mountID = 39, spellID = 10873, factionGroup = nil },  -- Red Mechanostrider
-    { mountID = 40, spellID = 10969, factionGroup = nil },  -- Blue Mechanostrider
-    { mountID = 41, spellID = 13819, factionGroup = "Alliance" },  -- Warhorse
-    { mountID = 42, spellID = 15779, factionGroup = nil },  -- White Mechanostrider Mod B
-    { mountID = 45, spellID = 16055, factionGroup = nil },  -- Black Nightsaber
-    { mountID = 46, spellID = 16056, factionGroup = nil },  -- Ancient Frostsaber
-    { mountID = 50, spellID = 16080, factionGroup = nil },  -- Red Wolf
-    { mountID = 51, spellID = 16081, factionGroup = nil },  -- Winter Wolf
-    { mountID = 52, spellID = 16082, factionGroup = nil },  -- Palomino
-    { mountID = 53, spellID = 16083, factionGroup = nil },  -- White Stallion
-    { mountID = 54, spellID = 16084, factionGroup = nil },  -- Mottled Red Raptor
-    { mountID = 55, spellID = 17229, factionGroup = "Alliance" },  -- Winterspring Frostsaber
-    { mountID = 56, spellID = 17450, factionGroup = nil },  -- Ivory Raptor
-    { mountID = 57, spellID = 17453, factionGroup = nil },  -- Green Mechanostrider
-    { mountID = 58, spellID = 17454, factionGroup = nil },  -- Unpainted Mechanostrider
-    { mountID = 62, spellID = 17459, factionGroup = nil },  -- Icy Blue Mechanostrider Mod A
-    { mountID = 63, spellID = 17460, factionGroup = nil },  -- Frost Ram
-    { mountID = 64, spellID = 17461, factionGroup = nil },  -- Black Ram
-    { mountID = 65, spellID = 17462, factionGroup = nil },  -- Red Skeletal Horse
-    { mountID = 66, spellID = 17463, factionGroup = nil },  -- Blue Skeletal Horse
-    { mountID = 67, spellID = 17464, factionGroup = nil },  -- Brown Skeletal Horse
-    { mountID = 68, spellID = 17465, factionGroup = nil },  -- Green Skeletal Warhorse
-    { mountID = 69, spellID = 17481, factionGroup = nil },  -- Rivendare's Deathcharger
-    { mountID = 70, spellID = 18363, factionGroup = nil },  -- Riding Kodo
-    { mountID = 71, spellID = 18989, factionGroup = nil },  -- Gray Kodo
-    { mountID = 72, spellID = 18990, factionGroup = nil },  -- Brown Kodo
-    { mountID = 73, spellID = 18991, factionGroup = nil },  -- Green Kodo
-    { mountID = 74, spellID = 18992, factionGroup = nil },  -- Teal Kodo
-    { mountID = 75, spellID = 22717, factionGroup = nil },  -- Black War Steed
-    { mountID = 76, spellID = 22718, factionGroup = nil },  -- Black War Kodo
-    { mountID = 77, spellID = 22719, factionGroup = nil },  -- Black Battlestrider
-    { mountID = 78, spellID = 22720, factionGroup = nil },  -- Black War Ram
-    { mountID = 79, spellID = 22721, factionGroup = nil },  -- Black War Raptor
-    { mountID = 80, spellID = 22722, factionGroup = nil },  -- Red Skeletal Warhorse
-    { mountID = 81, spellID = 22723, factionGroup = nil },  -- Black War Tiger
-    { mountID = 82, spellID = 22724, factionGroup = nil },  -- Black War Wolf
-    { mountID = 83, spellID = 23161, factionGroup = nil },  -- Dreadsteed
-    { mountID = 84, spellID = 23214, factionGroup = "Alliance" },  -- Charger
-    { mountID = 85, spellID = 23219, factionGroup = nil },  -- Swift Mistsaber
-    { mountID = 87, spellID = 23221, factionGroup = nil },  -- Swift Frostsaber
-    { mountID = 88, spellID = 23222, factionGroup = nil },  -- Swift Yellow Mechanostrider
-    { mountID = 89, spellID = 23223, factionGroup = nil },  -- Swift White Mechanostrider
-    { mountID = 90, spellID = 23225, factionGroup = nil },  -- Swift Green Mechanostrider
-    { mountID = 91, spellID = 23227, factionGroup = nil },  -- Swift Palomino
-    { mountID = 92, spellID = 23228, factionGroup = nil },  -- Swift White Steed
-    { mountID = 93, spellID = 23229, factionGroup = nil },  -- Swift Brown Steed
-    { mountID = 94, spellID = 23238, factionGroup = nil },  -- Swift Brown Ram
-    { mountID = 95, spellID = 23239, factionGroup = nil },  -- Swift Gray Ram
-    { mountID = 96, spellID = 23240, factionGroup = nil },  -- Swift White Ram
-    { mountID = 97, spellID = 23241, factionGroup = nil },  -- Swift Blue Raptor
-    { mountID = 98, spellID = 23242, factionGroup = nil },  -- Swift Olive Raptor
-    { mountID = 99, spellID = 23243, factionGroup = nil },  -- Swift Orange Raptor
-    { mountID = 100, spellID = 23246, factionGroup = nil },  -- Purple Skeletal Warhorse
-    { mountID = 101, spellID = 23247, factionGroup = nil },  -- Great White Kodo
-    { mountID = 102, spellID = 23248, factionGroup = nil },  -- Great Gray Kodo
-    { mountID = 103, spellID = 23249, factionGroup = nil },  -- Great Brown Kodo
-    { mountID = 104, spellID = 23250, factionGroup = nil },  -- Swift Brown Wolf
-    { mountID = 105, spellID = 23251, factionGroup = nil },  -- Swift Timber Wolf
-    { mountID = 106, spellID = 23252, factionGroup = nil },  -- Swift Gray Wolf
-    { mountID = 107, spellID = 23338, factionGroup = nil },  -- Swift Stormsaber
-    { mountID = 108, spellID = 23509, factionGroup = "Horde" },  -- Frostwolf Howler
-    { mountID = 109, spellID = 23510, factionGroup = "Alliance" },  -- Stormpike Battle Charger
-    { mountID = 110, spellID = 24242, factionGroup = nil },  -- Swift Razzashi Raptor
-    { mountID = 111, spellID = 24252, factionGroup = nil },  -- Swift Zulian Tiger
-    { mountID = 117, spellID = 25953, factionGroup = nil },  -- Blue Qiraji Battle Tank
-    { mountID = 118, spellID = 26054, factionGroup = nil },  -- Red Qiraji Battle Tank
-    { mountID = 119, spellID = 26055, factionGroup = nil },  -- Yellow Qiraji Battle Tank
-    { mountID = 120, spellID = 26056, factionGroup = nil },  -- Green Qiraji Battle Tank
-    { mountID = 122, spellID = 26656, factionGroup = nil },  -- Black Qiraji Battle Tank
-    { mountID = 125, spellID = 30174, factionGroup = nil },  -- Riding Turtle
-    { mountID = 129, spellID = 32235, factionGroup = "Alliance" },  -- Golden Gryphon
-    { mountID = 130, spellID = 32239, factionGroup = "Alliance" },  -- Ebon Gryphon
-    { mountID = 131, spellID = 32240, factionGroup = "Alliance" },  -- Snowy Gryphon
-    { mountID = 132, spellID = 32242, factionGroup = "Alliance" },  -- Swift Blue Gryphon
-    { mountID = 133, spellID = 32243, factionGroup = "Horde" },  -- Tawny Wind Rider
-    { mountID = 134, spellID = 32244, factionGroup = "Horde" },  -- Blue Wind Rider
-    { mountID = 135, spellID = 32245, factionGroup = "Horde" },  -- Green Wind Rider
-    { mountID = 136, spellID = 32246, factionGroup = "Horde" },  -- Swift Red Wind Rider
-    { mountID = 137, spellID = 32289, factionGroup = "Alliance" },  -- Swift Red Gryphon
-    { mountID = 138, spellID = 32290, factionGroup = "Alliance" },  -- Swift Green Gryphon
-    { mountID = 139, spellID = 32292, factionGroup = "Alliance" },  -- Swift Purple Gryphon
-    { mountID = 140, spellID = 32295, factionGroup = "Horde" },  -- Swift Green Wind Rider
-    { mountID = 141, spellID = 32296, factionGroup = "Horde" },  -- Swift Yellow Wind Rider
-    { mountID = 142, spellID = 32297, factionGroup = "Horde" },  -- Swift Purple Wind Rider
-    { mountID = 146, spellID = 33660, factionGroup = nil },  -- Swift Pink Hawkstrider
-    { mountID = 147, spellID = 34406, factionGroup = nil },  -- Brown Elekk
-    { mountID = 149, spellID = 34767, factionGroup = "Horde" },  -- Summon Charger
-    { mountID = 150, spellID = 34769, factionGroup = "Horde" },  -- Summon Warhorse
-    { mountID = 151, spellID = 34790, factionGroup = nil },  -- Dark War Talbuk
-    { mountID = 152, spellID = 34795, factionGroup = nil },  -- Red Hawkstrider
-    { mountID = 153, spellID = 34896, factionGroup = nil },  -- Cobalt War Talbuk
-    { mountID = 154, spellID = 34897, factionGroup = nil },  -- White War Talbuk
-    { mountID = 155, spellID = 34898, factionGroup = nil },  -- Silver War Talbuk
-    { mountID = 156, spellID = 34899, factionGroup = nil },  -- Tan War Talbuk
-    { mountID = 157, spellID = 35018, factionGroup = nil },  -- Purple Hawkstrider
-    { mountID = 158, spellID = 35020, factionGroup = nil },  -- Blue Hawkstrider
-    { mountID = 159, spellID = 35022, factionGroup = nil },  -- Black Hawkstrider
-    { mountID = 160, spellID = 35025, factionGroup = nil },  -- Swift Green Hawkstrider
-    { mountID = 161, spellID = 35027, factionGroup = nil },  -- Swift Purple Hawkstrider
-    { mountID = 162, spellID = 35028, factionGroup = nil },  -- Swift Warstrider
-    { mountID = 163, spellID = 35710, factionGroup = nil },  -- Gray Elekk
-    { mountID = 164, spellID = 35711, factionGroup = nil },  -- Purple Elekk
-    { mountID = 165, spellID = 35712, factionGroup = nil },  -- Great Green Elekk
-    { mountID = 166, spellID = 35713, factionGroup = nil },  -- Great Blue Elekk
-    { mountID = 167, spellID = 35714, factionGroup = nil },  -- Great Purple Elekk
-    { mountID = 168, spellID = 36702, factionGroup = nil },  -- Fiery Warhorse
-    { mountID = 169, spellID = 37015, factionGroup = nil },  -- Swift Nether Drake
-    { mountID = 170, spellID = 39315, factionGroup = nil },  -- Cobalt Riding Talbuk
-    { mountID = 171, spellID = 39316, factionGroup = nil },  -- Dark Riding Talbuk
-    { mountID = 172, spellID = 39317, factionGroup = nil },  -- Silver Riding Talbuk
-    { mountID = 173, spellID = 39318, factionGroup = nil },  -- Tan Riding Talbuk
-    { mountID = 174, spellID = 39319, factionGroup = nil },  -- White Riding Talbuk
-    { mountID = 176, spellID = 39798, factionGroup = nil },  -- Green Riding Nether Ray
-    { mountID = 177, spellID = 39800, factionGroup = nil },  -- Red Riding Nether Ray
-    { mountID = 178, spellID = 39801, factionGroup = nil },  -- Purple Riding Nether Ray
-    { mountID = 179, spellID = 39802, factionGroup = nil },  -- Silver Riding Nether Ray
-    { mountID = 180, spellID = 39803, factionGroup = nil },  -- Blue Riding Nether Ray
-    { mountID = 183, spellID = 40192, factionGroup = nil },  -- Ashes of Al'ar
-    { mountID = 185, spellID = 41252, factionGroup = nil },  -- Raven Lord
-    { mountID = 186, spellID = 41513, factionGroup = nil },  -- Onyx Netherwing Drake
-    { mountID = 187, spellID = 41514, factionGroup = nil },  -- Azure Netherwing Drake
-    { mountID = 188, spellID = 41515, factionGroup = nil },  -- Cobalt Netherwing Drake
-    { mountID = 189, spellID = 41516, factionGroup = nil },  -- Purple Netherwing Drake
-    { mountID = 190, spellID = 41517, factionGroup = nil },  -- Veridian Netherwing Drake
-    { mountID = 191, spellID = 41518, factionGroup = nil },  -- Violet Netherwing Drake
-    { mountID = 196, spellID = 42776, factionGroup = nil },  -- Spectral Tiger
-    { mountID = 197, spellID = 42777, factionGroup = nil },  -- Swift Spectral Tiger
-    { mountID = 199, spellID = 43688, factionGroup = nil },  -- Amani War Bear
-    { mountID = 201, spellID = 43899, factionGroup = nil },  -- Brewfest Ram
-    { mountID = 202, spellID = 43900, factionGroup = nil },  -- Swift Brewfest Ram
-    { mountID = 203, spellID = 43927, factionGroup = nil },  -- Cenarion War Hippogryph
-    { mountID = 204, spellID = 44151, factionGroup = nil },  -- Turbo-Charged Flying Machine
-    { mountID = 205, spellID = 44153, factionGroup = nil },  -- Flying Machine
-    { mountID = 207, spellID = 44744, factionGroup = nil },  -- Merciless Nether Drake
-    { mountID = 211, spellID = 46197, factionGroup = nil },  -- X-51 Nether-Rocket
-    { mountID = 212, spellID = 46199, factionGroup = nil },  -- X-51 Nether-Rocket X-TREME
-    { mountID = 213, spellID = 46628, factionGroup = nil },  -- Swift White Hawkstrider
-    { mountID = 219, spellID = 48025, factionGroup = nil },  -- Headless Horseman's Mount
-    { mountID = 220, spellID = 48027, factionGroup = nil },  -- Black War Elekk
-    { mountID = 221, spellID = 48778, factionGroup = nil },  -- Acherus Deathcharger
-    { mountID = 222, spellID = 48954, factionGroup = nil },  -- Swift Zhevra
-    { mountID = 223, spellID = 49193, factionGroup = nil },  -- Vengeful Nether Drake
-    { mountID = 224, spellID = 49322, factionGroup = nil },  -- Swift Zhevra
-    { mountID = 225, spellID = 49378, factionGroup = nil },  -- Brewfest Riding Kodo
-    { mountID = 226, spellID = 49379, factionGroup = nil },  -- Great Brewfest Kodo
-    { mountID = 230, spellID = 51412, factionGroup = nil },  -- Big Battle Bear
-    { mountID = 236, spellID = 54729, factionGroup = nil },  -- Winged Steed of the Ebon Blade
-    { mountID = 237, spellID = 54753, factionGroup = nil },  -- White Polar Bear
-    { mountID = 240, spellID = 55531, factionGroup = "Horde" },  -- Mechano-hog
-    { mountID = 241, spellID = 58615, factionGroup = nil },  -- Brutal Nether Drake
-    { mountID = 243, spellID = 58983, factionGroup = nil },  -- Big Blizzard Bear
-    { mountID = 246, spellID = 59567, factionGroup = nil },  -- Azure Drake
-    { mountID = 247, spellID = 59568, factionGroup = nil },  -- Blue Drake
-    { mountID = 248, spellID = 59569, factionGroup = nil },  -- Bronze Drake
-    { mountID = 249, spellID = 59570, factionGroup = nil },  -- Red Drake
-    { mountID = 250, spellID = 59571, factionGroup = nil },  -- Twilight Drake
-    { mountID = 251, spellID = 59572, factionGroup = nil },  -- Black Polar Bear
-    { mountID = 253, spellID = 59650, factionGroup = nil },  -- Black Drake
-    { mountID = 254, spellID = 59785, factionGroup = "Alliance" },  -- Black War Mammoth
-    { mountID = 255, spellID = 59788, factionGroup = "Horde" },  -- Black War Mammoth
-    { mountID = 256, spellID = 59791, factionGroup = nil },  -- Wooly Mammoth
-    { mountID = 257, spellID = 59793, factionGroup = nil },  -- Wooly Mammoth
-    { mountID = 258, spellID = 59797, factionGroup = "Horde" },  -- Ice Mammoth
-    { mountID = 259, spellID = 59799, factionGroup = "Alliance" },  -- Ice Mammoth
-    { mountID = 262, spellID = 59961, factionGroup = nil },  -- Red Proto-Drake
-    { mountID = 263, spellID = 59976, factionGroup = nil },  -- Black Proto-Drake
-    { mountID = 264, spellID = 59996, factionGroup = nil },  -- Blue Proto-Drake
-    { mountID = 265, spellID = 60002, factionGroup = nil },  -- Time-Lost Proto-Drake
-    { mountID = 266, spellID = 60021, factionGroup = nil },  -- Plagued Proto-Drake
-    { mountID = 267, spellID = 60024, factionGroup = nil },  -- Violet Proto-Drake
-    { mountID = 268, spellID = 60025, factionGroup = nil },  -- Albino Drake
-    { mountID = 269, spellID = 60114, factionGroup = "Alliance" },  -- Armored Brown Bear
-    { mountID = 270, spellID = 60116, factionGroup = "Horde" },  -- Armored Brown Bear
-    { mountID = 271, spellID = 60118, factionGroup = "Alliance" },  -- Black War Bear
-    { mountID = 272, spellID = 60119, factionGroup = "Horde" },  -- Black War Bear
-    { mountID = 275, spellID = 60424, factionGroup = "Alliance" },  -- Mekgineer's Chopper
-    { mountID = 276, spellID = 61229, factionGroup = "Alliance" },  -- Armored Snowy Gryphon
-    { mountID = 277, spellID = 61230, factionGroup = "Horde" },  -- Armored Blue Wind Rider
-    { mountID = 278, spellID = 61294, factionGroup = nil },  -- Green Proto-Drake
-    { mountID = 279, spellID = 61309, factionGroup = nil },  -- Magnificent Flying Carpet
-    { mountID = 280, spellID = 61425, factionGroup = "Alliance" },  -- Traveler's Tundra Mammoth
-    { mountID = 284, spellID = 61447, factionGroup = "Horde" },  -- Traveler's Tundra Mammoth
-    { mountID = 285, spellID = 61451, factionGroup = nil },  -- Flying Carpet
-    { mountID = 286, spellID = 61465, factionGroup = "Alliance" },  -- Grand Black War Mammoth
-    { mountID = 287, spellID = 61467, factionGroup = "Horde" },  -- Grand Black War Mammoth
-    { mountID = 288, spellID = 61469, factionGroup = "Horde" },  -- Grand Ice Mammoth
-    { mountID = 289, spellID = 61470, factionGroup = "Alliance" },  -- Grand Ice Mammoth
-    { mountID = 291, spellID = 61996, factionGroup = "Alliance" },  -- Blue Dragonhawk
-    { mountID = 292, spellID = 61997, factionGroup = "Horde" },  -- Red Dragonhawk
-    { mountID = 293, spellID = 62048, factionGroup = nil },  -- Black Dragonhawk Mount
-    { mountID = 294, spellID = 63232, factionGroup = nil },  -- Stormwind Steed
-    { mountID = 295, spellID = 63635, factionGroup = nil },  -- Darkspear Raptor
-    { mountID = 296, spellID = 63636, factionGroup = nil },  -- Ironforge Ram
-    { mountID = 297, spellID = 63637, factionGroup = nil },  -- Darnassian Nightsaber
-    { mountID = 298, spellID = 63638, factionGroup = nil },  -- Gnomeregan Mechanostrider
-    { mountID = 299, spellID = 63639, factionGroup = nil },  -- Exodar Elekk
-    { mountID = 300, spellID = 63640, factionGroup = nil },  -- Orgrimmar Wolf
-    { mountID = 301, spellID = 63641, factionGroup = nil },  -- Thunder Bluff Kodo
-    { mountID = 302, spellID = 63642, factionGroup = nil },  -- Silvermoon Hawkstrider
-    { mountID = 303, spellID = 63643, factionGroup = nil },  -- Forsaken Warhorse
-    { mountID = 304, spellID = 63796, factionGroup = nil },  -- Mimiron's Head
-    { mountID = 305, spellID = 63844, factionGroup = nil },  -- Argent Hippogryph
-    { mountID = 306, spellID = 63956, factionGroup = nil },  -- Ironbound Proto-Drake
-    { mountID = 307, spellID = 63963, factionGroup = nil },  -- Rusted Proto-Drake
-    { mountID = 308, spellID = 64656, factionGroup = nil },  -- Blue Skeletal Warhorse
-    { mountID = 309, spellID = 64657, factionGroup = nil },  -- White Kodo
-    { mountID = 310, spellID = 64658, factionGroup = nil },  -- Black Wolf
-    { mountID = 311, spellID = 64659, factionGroup = "Horde" },  -- Venomhide Ravasaur
-    { mountID = 312, spellID = 64731, factionGroup = nil },  -- Sea Turtle
-    { mountID = 313, spellID = 64927, factionGroup = nil },  -- Deadly Gladiator's Frost Wyrm
-    { mountID = 314, spellID = 64977, factionGroup = nil },  -- Black Skeletal Horse
-    { mountID = 317, spellID = 65439, factionGroup = nil },  -- Furious Gladiator's Frost Wyrm
-    { mountID = 318, spellID = 65637, factionGroup = nil },  -- Great Red Elekk
-    { mountID = 319, spellID = 65638, factionGroup = nil },  -- Swift Moonsaber
-    { mountID = 320, spellID = 65639, factionGroup = nil },  -- Swift Red Hawkstrider
-    { mountID = 321, spellID = 65640, factionGroup = nil },  -- Swift Gray Steed
-    { mountID = 322, spellID = 65641, factionGroup = nil },  -- Great Golden Kodo
-    { mountID = 323, spellID = 65642, factionGroup = nil },  -- Turbostrider
-    { mountID = 324, spellID = 65643, factionGroup = nil },  -- Swift Violet Ram
-    { mountID = 325, spellID = 65644, factionGroup = nil },  -- Swift Purple Raptor
-    { mountID = 326, spellID = 65645, factionGroup = nil },  -- White Skeletal Warhorse
-    { mountID = 327, spellID = 65646, factionGroup = nil },  -- Swift Burgundy Wolf
-    { mountID = 328, spellID = 65917, factionGroup = nil },  -- Magic Rooster
-    { mountID = 329, spellID = 66087, factionGroup = "Alliance" },  -- Silver Covenant Hippogryph
-    { mountID = 330, spellID = 66088, factionGroup = "Horde" },  -- Sunreaver Dragonhawk
-    { mountID = 331, spellID = 66090, factionGroup = "Alliance" },  -- Quel'dorei Steed
-    { mountID = 332, spellID = 66091, factionGroup = "Horde" },  -- Sunreaver Hawkstrider
-    { mountID = 336, spellID = 66846, factionGroup = nil },  -- Ochre Skeletal Warhorse
-    { mountID = 337, spellID = 66847, factionGroup = nil },  -- Striped Dawnsaber
-    { mountID = 338, spellID = 66906, factionGroup = nil },  -- Argent Charger
-    { mountID = 340, spellID = 67336, factionGroup = nil },  -- Relentless Gladiator's Frost Wyrm
-    { mountID = 341, spellID = 67466, factionGroup = nil },  -- Argent Warhorse
-    { mountID = 342, spellID = 68056, factionGroup = "Horde" },  -- Swift Horde Wolf
-    { mountID = 343, spellID = 68057, factionGroup = "Alliance" },  -- Swift Alliance Steed
-    { mountID = 344, spellID = 68187, factionGroup = "Alliance" },  -- Crusader's White Warhorse
-    { mountID = 345, spellID = 68188, factionGroup = "Horde" },  -- Crusader's Black Warhorse
-    { mountID = 349, spellID = 69395, factionGroup = nil },  -- Onyxian Drake
-    { mountID = 352, spellID = 71342, factionGroup = nil },  -- X-45 Heartbreaker
-    { mountID = 358, spellID = 71810, factionGroup = nil },  -- Wrathful Gladiator's Frost Wyrm
-    { mountID = 363, spellID = 72286, factionGroup = nil },  -- Invincible
-    { mountID = 364, spellID = 72807, factionGroup = nil },  -- Icebound Frostbrood Vanquisher
-    { mountID = 365, spellID = 72808, factionGroup = nil },  -- Bloodbathed Frostbrood Vanquisher
-    { mountID = 366, spellID = 73313, factionGroup = nil },  -- Crimson Deathcharger
-    { mountID = 371, spellID = 74856, factionGroup = nil },  -- Blazing Hippogryph
-    { mountID = 372, spellID = 74918, factionGroup = nil },  -- Wooly White Rhino
-    { mountID = 375, spellID = 75596, factionGroup = nil },  -- Frosty Flying Carpet
-    { mountID = 376, spellID = 75614, factionGroup = nil },  -- Celestial Steed
-    { mountID = 382, spellID = 75973, factionGroup = nil },  -- X-53 Touring Rocket
+	{ mountID = 7, spellID = 459, factionGroup = nil },  -- Gray Wolf
+	{ mountID = 8, spellID = 468, factionGroup = nil },  -- White Stallion
+	{ mountID = 9, spellID = 470, factionGroup = nil },  -- Black Stallion
+	{ mountID = 11, spellID = 472, factionGroup = nil },  -- Pinto
+	{ mountID = 12, spellID = 578, factionGroup = nil },  -- Black Wolf
+	{ mountID = 13, spellID = 579, factionGroup = nil },  -- Red Wolf
+	{ mountID = 14, spellID = 580, factionGroup = nil },  -- Timber Wolf
+	{ mountID = 15, spellID = 581, factionGroup = nil },  -- Winter Wolf
+	{ mountID = 17, spellID = 5784, factionGroup = nil },  -- Felsteed
+	{ mountID = 18, spellID = 6648, factionGroup = nil },  -- Chestnut Mare
+	{ mountID = 19, spellID = 6653, factionGroup = nil },  -- Dire Wolf
+	{ mountID = 20, spellID = 6654, factionGroup = nil },  -- Brown Wolf
+	{ mountID = 21, spellID = 6777, factionGroup = nil },  -- Gray Ram
+	{ mountID = 22, spellID = 6896, factionGroup = nil },  -- Black Ram
+	{ mountID = 24, spellID = 6898, factionGroup = nil },  -- White Ram
+	{ mountID = 25, spellID = 6899, factionGroup = nil },  -- Brown Ram
+	{ mountID = 26, spellID = 8394, factionGroup = nil },  -- Striped Frostsaber
+	{ mountID = 27, spellID = 8395, factionGroup = nil },  -- Emerald Raptor
+	{ mountID = 28, spellID = 8980, factionGroup = nil },  -- Skeletal Horse
+	{ mountID = 31, spellID = 10789, factionGroup = nil },  -- Spotted Frostsaber
+	{ mountID = 34, spellID = 10793, factionGroup = nil },  -- Striped Nightsaber
+	{ mountID = 35, spellID = 10795, factionGroup = nil },  -- Ivory Raptor
+	{ mountID = 36, spellID = 10796, factionGroup = nil },  -- Turquoise Raptor
+	{ mountID = 38, spellID = 10799, factionGroup = nil },  -- Violet Raptor
+	{ mountID = 39, spellID = 10873, factionGroup = nil },  -- Red Mechanostrider
+	{ mountID = 40, spellID = 10969, factionGroup = nil },  -- Blue Mechanostrider
+	{ mountID = 41, spellID = 13819, factionGroup = "Alliance" },  -- Warhorse
+	{ mountID = 42, spellID = 15779, factionGroup = nil },  -- White Mechanostrider Mod B
+	{ mountID = 45, spellID = 16055, factionGroup = nil },  -- Black Nightsaber
+	{ mountID = 46, spellID = 16056, factionGroup = nil },  -- Ancient Frostsaber
+	{ mountID = 50, spellID = 16080, factionGroup = nil },  -- Red Wolf
+	{ mountID = 51, spellID = 16081, factionGroup = nil },  -- Winter Wolf
+	{ mountID = 52, spellID = 16082, factionGroup = nil },  -- Palomino
+	{ mountID = 53, spellID = 16083, factionGroup = nil },  -- White Stallion
+	{ mountID = 54, spellID = 16084, factionGroup = nil },  -- Mottled Red Raptor
+	{ mountID = 55, spellID = 17229, factionGroup = "Alliance" },  -- Winterspring Frostsaber
+	{ mountID = 56, spellID = 17450, factionGroup = nil },  -- Ivory Raptor
+	{ mountID = 57, spellID = 17453, factionGroup = nil },  -- Green Mechanostrider
+	{ mountID = 58, spellID = 17454, factionGroup = nil },  -- Unpainted Mechanostrider
+	{ mountID = 62, spellID = 17459, factionGroup = nil },  -- Icy Blue Mechanostrider Mod A
+	{ mountID = 63, spellID = 17460, factionGroup = nil },  -- Frost Ram
+	{ mountID = 64, spellID = 17461, factionGroup = nil },  -- Black Ram
+	{ mountID = 65, spellID = 17462, factionGroup = nil },  -- Red Skeletal Horse
+	{ mountID = 66, spellID = 17463, factionGroup = nil },  -- Blue Skeletal Horse
+	{ mountID = 67, spellID = 17464, factionGroup = nil },  -- Brown Skeletal Horse
+	{ mountID = 68, spellID = 17465, factionGroup = nil },  -- Green Skeletal Warhorse
+	{ mountID = 69, spellID = 17481, factionGroup = nil },  -- Rivendare's Deathcharger
+	{ mountID = 70, spellID = 18363, factionGroup = nil },  -- Riding Kodo
+	{ mountID = 71, spellID = 18989, factionGroup = nil },  -- Gray Kodo
+	{ mountID = 72, spellID = 18990, factionGroup = nil },  -- Brown Kodo
+	{ mountID = 73, spellID = 18991, factionGroup = nil },  -- Green Kodo
+	{ mountID = 74, spellID = 18992, factionGroup = nil },  -- Teal Kodo
+	{ mountID = 75, spellID = 22717, factionGroup = nil },  -- Black War Steed
+	{ mountID = 76, spellID = 22718, factionGroup = nil },  -- Black War Kodo
+	{ mountID = 77, spellID = 22719, factionGroup = nil },  -- Black Battlestrider
+	{ mountID = 78, spellID = 22720, factionGroup = nil },  -- Black War Ram
+	{ mountID = 79, spellID = 22721, factionGroup = nil },  -- Black War Raptor
+	{ mountID = 80, spellID = 22722, factionGroup = nil },  -- Red Skeletal Warhorse
+	{ mountID = 81, spellID = 22723, factionGroup = nil },  -- Black War Tiger
+	{ mountID = 82, spellID = 22724, factionGroup = nil },  -- Black War Wolf
+	{ mountID = 83, spellID = 23161, factionGroup = nil },  -- Dreadsteed
+	{ mountID = 84, spellID = 23214, factionGroup = "Alliance" },  -- Charger
+	{ mountID = 85, spellID = 23219, factionGroup = nil },  -- Swift Mistsaber
+	{ mountID = 87, spellID = 23221, factionGroup = nil },  -- Swift Frostsaber
+	{ mountID = 88, spellID = 23222, factionGroup = nil },  -- Swift Yellow Mechanostrider
+	{ mountID = 89, spellID = 23223, factionGroup = nil },  -- Swift White Mechanostrider
+	{ mountID = 90, spellID = 23225, factionGroup = nil },  -- Swift Green Mechanostrider
+	{ mountID = 91, spellID = 23227, factionGroup = nil },  -- Swift Palomino
+	{ mountID = 92, spellID = 23228, factionGroup = nil },  -- Swift White Steed
+	{ mountID = 93, spellID = 23229, factionGroup = nil },  -- Swift Brown Steed
+	{ mountID = 94, spellID = 23238, factionGroup = nil },  -- Swift Brown Ram
+	{ mountID = 95, spellID = 23239, factionGroup = nil },  -- Swift Gray Ram
+	{ mountID = 96, spellID = 23240, factionGroup = nil },  -- Swift White Ram
+	{ mountID = 97, spellID = 23241, factionGroup = nil },  -- Swift Blue Raptor
+	{ mountID = 98, spellID = 23242, factionGroup = nil },  -- Swift Olive Raptor
+	{ mountID = 99, spellID = 23243, factionGroup = nil },  -- Swift Orange Raptor
+	{ mountID = 100, spellID = 23246, factionGroup = nil },  -- Purple Skeletal Warhorse
+	{ mountID = 101, spellID = 23247, factionGroup = nil },  -- Great White Kodo
+	{ mountID = 102, spellID = 23248, factionGroup = nil },  -- Great Gray Kodo
+	{ mountID = 103, spellID = 23249, factionGroup = nil },  -- Great Brown Kodo
+	{ mountID = 104, spellID = 23250, factionGroup = nil },  -- Swift Brown Wolf
+	{ mountID = 105, spellID = 23251, factionGroup = nil },  -- Swift Timber Wolf
+	{ mountID = 106, spellID = 23252, factionGroup = nil },  -- Swift Gray Wolf
+	{ mountID = 107, spellID = 23338, factionGroup = nil },  -- Swift Stormsaber
+	{ mountID = 108, spellID = 23509, factionGroup = "Horde" },  -- Frostwolf Howler
+	{ mountID = 109, spellID = 23510, factionGroup = "Alliance" },  -- Stormpike Battle Charger
+	{ mountID = 110, spellID = 24242, factionGroup = nil },  -- Swift Razzashi Raptor
+	{ mountID = 111, spellID = 24252, factionGroup = nil },  -- Swift Zulian Tiger
+	{ mountID = 117, spellID = 25953, factionGroup = nil },  -- Blue Qiraji Battle Tank
+	{ mountID = 118, spellID = 26054, factionGroup = nil },  -- Red Qiraji Battle Tank
+	{ mountID = 119, spellID = 26055, factionGroup = nil },  -- Yellow Qiraji Battle Tank
+	{ mountID = 120, spellID = 26056, factionGroup = nil },  -- Green Qiraji Battle Tank
+	{ mountID = 122, spellID = 26656, factionGroup = nil },  -- Black Qiraji Battle Tank
+	{ mountID = 125, spellID = 30174, factionGroup = nil },  -- Riding Turtle
+	{ mountID = 129, spellID = 32235, factionGroup = "Alliance" },  -- Golden Gryphon
+	{ mountID = 130, spellID = 32239, factionGroup = "Alliance" },  -- Ebon Gryphon
+	{ mountID = 131, spellID = 32240, factionGroup = "Alliance" },  -- Snowy Gryphon
+	{ mountID = 132, spellID = 32242, factionGroup = "Alliance" },  -- Swift Blue Gryphon
+	{ mountID = 133, spellID = 32243, factionGroup = "Horde" },  -- Tawny Wind Rider
+	{ mountID = 134, spellID = 32244, factionGroup = "Horde" },  -- Blue Wind Rider
+	{ mountID = 135, spellID = 32245, factionGroup = "Horde" },  -- Green Wind Rider
+	{ mountID = 136, spellID = 32246, factionGroup = "Horde" },  -- Swift Red Wind Rider
+	{ mountID = 137, spellID = 32289, factionGroup = "Alliance" },  -- Swift Red Gryphon
+	{ mountID = 138, spellID = 32290, factionGroup = "Alliance" },  -- Swift Green Gryphon
+	{ mountID = 139, spellID = 32292, factionGroup = "Alliance" },  -- Swift Purple Gryphon
+	{ mountID = 140, spellID = 32295, factionGroup = "Horde" },  -- Swift Green Wind Rider
+	{ mountID = 141, spellID = 32296, factionGroup = "Horde" },  -- Swift Yellow Wind Rider
+	{ mountID = 142, spellID = 32297, factionGroup = "Horde" },  -- Swift Purple Wind Rider
+	{ mountID = 146, spellID = 33660, factionGroup = nil },  -- Swift Pink Hawkstrider
+	{ mountID = 147, spellID = 34406, factionGroup = nil },  -- Brown Elekk
+	{ mountID = 149, spellID = 34767, factionGroup = "Horde" },  -- Summon Charger
+	{ mountID = 150, spellID = 34769, factionGroup = "Horde" },  -- Summon Warhorse
+	{ mountID = 151, spellID = 34790, factionGroup = nil },  -- Dark War Talbuk
+	{ mountID = 152, spellID = 34795, factionGroup = nil },  -- Red Hawkstrider
+	{ mountID = 153, spellID = 34896, factionGroup = nil },  -- Cobalt War Talbuk
+	{ mountID = 154, spellID = 34897, factionGroup = nil },  -- White War Talbuk
+	{ mountID = 155, spellID = 34898, factionGroup = nil },  -- Silver War Talbuk
+	{ mountID = 156, spellID = 34899, factionGroup = nil },  -- Tan War Talbuk
+	{ mountID = 157, spellID = 35018, factionGroup = nil },  -- Purple Hawkstrider
+	{ mountID = 158, spellID = 35020, factionGroup = nil },  -- Blue Hawkstrider
+	{ mountID = 159, spellID = 35022, factionGroup = nil },  -- Black Hawkstrider
+	{ mountID = 160, spellID = 35025, factionGroup = nil },  -- Swift Green Hawkstrider
+	{ mountID = 161, spellID = 35027, factionGroup = nil },  -- Swift Purple Hawkstrider
+	{ mountID = 162, spellID = 35028, factionGroup = nil },  -- Swift Warstrider
+	{ mountID = 163, spellID = 35710, factionGroup = nil },  -- Gray Elekk
+	{ mountID = 164, spellID = 35711, factionGroup = nil },  -- Purple Elekk
+	{ mountID = 165, spellID = 35712, factionGroup = nil },  -- Great Green Elekk
+	{ mountID = 166, spellID = 35713, factionGroup = nil },  -- Great Blue Elekk
+	{ mountID = 167, spellID = 35714, factionGroup = nil },  -- Great Purple Elekk
+	{ mountID = 168, spellID = 36702, factionGroup = nil },  -- Fiery Warhorse
+	{ mountID = 169, spellID = 37015, factionGroup = nil },  -- Swift Nether Drake
+	{ mountID = 170, spellID = 39315, factionGroup = nil },  -- Cobalt Riding Talbuk
+	{ mountID = 171, spellID = 39316, factionGroup = nil },  -- Dark Riding Talbuk
+	{ mountID = 172, spellID = 39317, factionGroup = nil },  -- Silver Riding Talbuk
+	{ mountID = 173, spellID = 39318, factionGroup = nil },  -- Tan Riding Talbuk
+	{ mountID = 174, spellID = 39319, factionGroup = nil },  -- White Riding Talbuk
+	{ mountID = 176, spellID = 39798, factionGroup = nil },  -- Green Riding Nether Ray
+	{ mountID = 177, spellID = 39800, factionGroup = nil },  -- Red Riding Nether Ray
+	{ mountID = 178, spellID = 39801, factionGroup = nil },  -- Purple Riding Nether Ray
+	{ mountID = 179, spellID = 39802, factionGroup = nil },  -- Silver Riding Nether Ray
+	{ mountID = 180, spellID = 39803, factionGroup = nil },  -- Blue Riding Nether Ray
+	{ mountID = 183, spellID = 40192, factionGroup = nil },  -- Ashes of Al'ar
+	{ mountID = 185, spellID = 41252, factionGroup = nil },  -- Raven Lord
+	{ mountID = 186, spellID = 41513, factionGroup = nil },  -- Onyx Netherwing Drake
+	{ mountID = 187, spellID = 41514, factionGroup = nil },  -- Azure Netherwing Drake
+	{ mountID = 188, spellID = 41515, factionGroup = nil },  -- Cobalt Netherwing Drake
+	{ mountID = 189, spellID = 41516, factionGroup = nil },  -- Purple Netherwing Drake
+	{ mountID = 190, spellID = 41517, factionGroup = nil },  -- Veridian Netherwing Drake
+	{ mountID = 191, spellID = 41518, factionGroup = nil },  -- Violet Netherwing Drake
+	{ mountID = 196, spellID = 42776, factionGroup = nil },  -- Spectral Tiger
+	{ mountID = 197, spellID = 42777, factionGroup = nil },  -- Swift Spectral Tiger
+	{ mountID = 199, spellID = 43688, factionGroup = nil },  -- Amani War Bear
+	{ mountID = 201, spellID = 43899, factionGroup = nil },  -- Brewfest Ram
+	{ mountID = 202, spellID = 43900, factionGroup = nil },  -- Swift Brewfest Ram
+	{ mountID = 203, spellID = 43927, factionGroup = nil },  -- Cenarion War Hippogryph
+	{ mountID = 204, spellID = 44151, factionGroup = nil },  -- Turbo-Charged Flying Machine
+	{ mountID = 205, spellID = 44153, factionGroup = nil },  -- Flying Machine
+	{ mountID = 207, spellID = 44744, factionGroup = nil },  -- Merciless Nether Drake
+	{ mountID = 211, spellID = 46197, factionGroup = nil },  -- X-51 Nether-Rocket
+	{ mountID = 212, spellID = 46199, factionGroup = nil },  -- X-51 Nether-Rocket X-TREME
+	{ mountID = 213, spellID = 46628, factionGroup = nil },  -- Swift White Hawkstrider
+	{ mountID = 219, spellID = 48025, factionGroup = nil },  -- Headless Horseman's Mount
+	{ mountID = 220, spellID = 48027, factionGroup = nil },  -- Black War Elekk
+	{ mountID = 221, spellID = 48778, factionGroup = nil },  -- Acherus Deathcharger
+	{ mountID = 222, spellID = 48954, factionGroup = nil },  -- Swift Zhevra
+	{ mountID = 223, spellID = 49193, factionGroup = nil },  -- Vengeful Nether Drake
+	{ mountID = 224, spellID = 49322, factionGroup = nil },  -- Swift Zhevra
+	{ mountID = 225, spellID = 49378, factionGroup = nil },  -- Brewfest Riding Kodo
+	{ mountID = 226, spellID = 49379, factionGroup = nil },  -- Great Brewfest Kodo
+	{ mountID = 230, spellID = 51412, factionGroup = nil },  -- Big Battle Bear
+	{ mountID = 236, spellID = 54729, factionGroup = nil },  -- Winged Steed of the Ebon Blade
+	{ mountID = 237, spellID = 54753, factionGroup = nil },  -- White Polar Bear
+	{ mountID = 240, spellID = 55531, factionGroup = "Horde" },  -- Mechano-hog
+	{ mountID = 241, spellID = 58615, factionGroup = nil },  -- Brutal Nether Drake
+	{ mountID = 243, spellID = 58983, factionGroup = nil },  -- Big Blizzard Bear
+	{ mountID = 246, spellID = 59567, factionGroup = nil },  -- Azure Drake
+	{ mountID = 247, spellID = 59568, factionGroup = nil },  -- Blue Drake
+	{ mountID = 248, spellID = 59569, factionGroup = nil },  -- Bronze Drake
+	{ mountID = 249, spellID = 59570, factionGroup = nil },  -- Red Drake
+	{ mountID = 250, spellID = 59571, factionGroup = nil },  -- Twilight Drake
+	{ mountID = 251, spellID = 59572, factionGroup = nil },  -- Black Polar Bear
+	{ mountID = 253, spellID = 59650, factionGroup = nil },  -- Black Drake
+	{ mountID = 254, spellID = 59785, factionGroup = "Alliance" },  -- Black War Mammoth
+	{ mountID = 255, spellID = 59788, factionGroup = "Horde" },  -- Black War Mammoth
+	{ mountID = 256, spellID = 59791, factionGroup = nil },  -- Wooly Mammoth
+	{ mountID = 257, spellID = 59793, factionGroup = nil },  -- Wooly Mammoth
+	{ mountID = 258, spellID = 59797, factionGroup = "Horde" },  -- Ice Mammoth
+	{ mountID = 259, spellID = 59799, factionGroup = "Alliance" },  -- Ice Mammoth
+	{ mountID = 262, spellID = 59961, factionGroup = nil },  -- Red Proto-Drake
+	{ mountID = 263, spellID = 59976, factionGroup = nil },  -- Black Proto-Drake
+	{ mountID = 264, spellID = 59996, factionGroup = nil },  -- Blue Proto-Drake
+	{ mountID = 265, spellID = 60002, factionGroup = nil },  -- Time-Lost Proto-Drake
+	{ mountID = 266, spellID = 60021, factionGroup = nil },  -- Plagued Proto-Drake
+	{ mountID = 267, spellID = 60024, factionGroup = nil },  -- Violet Proto-Drake
+	{ mountID = 268, spellID = 60025, factionGroup = nil },  -- Albino Drake
+	{ mountID = 269, spellID = 60114, factionGroup = "Alliance" },  -- Armored Brown Bear
+	{ mountID = 270, spellID = 60116, factionGroup = "Horde" },  -- Armored Brown Bear
+	{ mountID = 271, spellID = 60118, factionGroup = "Alliance" },  -- Black War Bear
+	{ mountID = 272, spellID = 60119, factionGroup = "Horde" },  -- Black War Bear
+	{ mountID = 275, spellID = 60424, factionGroup = "Alliance" },  -- Mekgineer's Chopper
+	{ mountID = 276, spellID = 61229, factionGroup = "Alliance" },  -- Armored Snowy Gryphon
+	{ mountID = 277, spellID = 61230, factionGroup = "Horde" },  -- Armored Blue Wind Rider
+	{ mountID = 278, spellID = 61294, factionGroup = nil },  -- Green Proto-Drake
+	{ mountID = 279, spellID = 61309, factionGroup = nil },  -- Magnificent Flying Carpet
+	{ mountID = 280, spellID = 61425, factionGroup = "Alliance" },  -- Traveler's Tundra Mammoth
+	{ mountID = 284, spellID = 61447, factionGroup = "Horde" },  -- Traveler's Tundra Mammoth
+	{ mountID = 285, spellID = 61451, factionGroup = nil },  -- Flying Carpet
+	{ mountID = 286, spellID = 61465, factionGroup = "Alliance" },  -- Grand Black War Mammoth
+	{ mountID = 287, spellID = 61467, factionGroup = "Horde" },  -- Grand Black War Mammoth
+	{ mountID = 288, spellID = 61469, factionGroup = "Horde" },  -- Grand Ice Mammoth
+	{ mountID = 289, spellID = 61470, factionGroup = "Alliance" },  -- Grand Ice Mammoth
+	{ mountID = 291, spellID = 61996, factionGroup = "Alliance" },  -- Blue Dragonhawk
+	{ mountID = 292, spellID = 61997, factionGroup = "Horde" },  -- Red Dragonhawk
+	{ mountID = 293, spellID = 62048, factionGroup = nil },  -- Black Dragonhawk Mount
+	{ mountID = 294, spellID = 63232, factionGroup = nil },  -- Stormwind Steed
+	{ mountID = 295, spellID = 63635, factionGroup = nil },  -- Darkspear Raptor
+	{ mountID = 296, spellID = 63636, factionGroup = nil },  -- Ironforge Ram
+	{ mountID = 297, spellID = 63637, factionGroup = nil },  -- Darnassian Nightsaber
+	{ mountID = 298, spellID = 63638, factionGroup = nil },  -- Gnomeregan Mechanostrider
+	{ mountID = 299, spellID = 63639, factionGroup = nil },  -- Exodar Elekk
+	{ mountID = 300, spellID = 63640, factionGroup = nil },  -- Orgrimmar Wolf
+	{ mountID = 301, spellID = 63641, factionGroup = nil },  -- Thunder Bluff Kodo
+	{ mountID = 302, spellID = 63642, factionGroup = nil },  -- Silvermoon Hawkstrider
+	{ mountID = 303, spellID = 63643, factionGroup = nil },  -- Forsaken Warhorse
+	{ mountID = 304, spellID = 63796, factionGroup = nil },  -- Mimiron's Head
+	{ mountID = 305, spellID = 63844, factionGroup = nil },  -- Argent Hippogryph
+	{ mountID = 306, spellID = 63956, factionGroup = nil },  -- Ironbound Proto-Drake
+	{ mountID = 307, spellID = 63963, factionGroup = nil },  -- Rusted Proto-Drake
+	{ mountID = 308, spellID = 64656, factionGroup = nil },  -- Blue Skeletal Warhorse
+	{ mountID = 309, spellID = 64657, factionGroup = nil },  -- White Kodo
+	{ mountID = 310, spellID = 64658, factionGroup = nil },  -- Black Wolf
+	{ mountID = 311, spellID = 64659, factionGroup = "Horde" },  -- Venomhide Ravasaur
+	{ mountID = 312, spellID = 64731, factionGroup = nil },  -- Sea Turtle
+	{ mountID = 313, spellID = 64927, factionGroup = nil },  -- Deadly Gladiator's Frost Wyrm
+	{ mountID = 314, spellID = 64977, factionGroup = nil },  -- Black Skeletal Horse
+	{ mountID = 317, spellID = 65439, factionGroup = nil },  -- Furious Gladiator's Frost Wyrm
+	{ mountID = 318, spellID = 65637, factionGroup = nil },  -- Great Red Elekk
+	{ mountID = 319, spellID = 65638, factionGroup = nil },  -- Swift Moonsaber
+	{ mountID = 320, spellID = 65639, factionGroup = nil },  -- Swift Red Hawkstrider
+	{ mountID = 321, spellID = 65640, factionGroup = nil },  -- Swift Gray Steed
+	{ mountID = 322, spellID = 65641, factionGroup = nil },  -- Great Golden Kodo
+	{ mountID = 323, spellID = 65642, factionGroup = nil },  -- Turbostrider
+	{ mountID = 324, spellID = 65643, factionGroup = nil },  -- Swift Violet Ram
+	{ mountID = 325, spellID = 65644, factionGroup = nil },  -- Swift Purple Raptor
+	{ mountID = 326, spellID = 65645, factionGroup = nil },  -- White Skeletal Warhorse
+	{ mountID = 327, spellID = 65646, factionGroup = nil },  -- Swift Burgundy Wolf
+	{ mountID = 328, spellID = 65917, factionGroup = nil },  -- Magic Rooster
+	{ mountID = 329, spellID = 66087, factionGroup = "Alliance" },  -- Silver Covenant Hippogryph
+	{ mountID = 330, spellID = 66088, factionGroup = "Horde" },  -- Sunreaver Dragonhawk
+	{ mountID = 331, spellID = 66090, factionGroup = "Alliance" },  -- Quel'dorei Steed
+	{ mountID = 332, spellID = 66091, factionGroup = "Horde" },  -- Sunreaver Hawkstrider
+	{ mountID = 336, spellID = 66846, factionGroup = nil },  -- Ochre Skeletal Warhorse
+	{ mountID = 337, spellID = 66847, factionGroup = nil },  -- Striped Dawnsaber
+	{ mountID = 338, spellID = 66906, factionGroup = nil },  -- Argent Charger
+	{ mountID = 340, spellID = 67336, factionGroup = nil },  -- Relentless Gladiator's Frost Wyrm
+	{ mountID = 341, spellID = 67466, factionGroup = nil },  -- Argent Warhorse
+	{ mountID = 342, spellID = 68056, factionGroup = "Horde" },  -- Swift Horde Wolf
+	{ mountID = 343, spellID = 68057, factionGroup = "Alliance" },  -- Swift Alliance Steed
+	{ mountID = 344, spellID = 68187, factionGroup = "Alliance" },  -- Crusader's White Warhorse
+	{ mountID = 345, spellID = 68188, factionGroup = "Horde" },  -- Crusader's Black Warhorse
+	{ mountID = 349, spellID = 69395, factionGroup = nil },  -- Onyxian Drake
+	{ mountID = 352, spellID = 71342, factionGroup = nil },  -- X-45 Heartbreaker
+	{ mountID = 358, spellID = 71810, factionGroup = nil },  -- Wrathful Gladiator's Frost Wyrm
+	{ mountID = 363, spellID = 72286, factionGroup = nil },  -- Invincible
+	{ mountID = 364, spellID = 72807, factionGroup = nil },  -- Icebound Frostbrood Vanquisher
+	{ mountID = 365, spellID = 72808, factionGroup = nil },  -- Bloodbathed Frostbrood Vanquisher
+	{ mountID = 366, spellID = 73313, factionGroup = nil },  -- Crimson Deathcharger
+	{ mountID = 371, spellID = 74856, factionGroup = nil },  -- Blazing Hippogryph
+	{ mountID = 372, spellID = 74918, factionGroup = nil },  -- Wooly White Rhino
+	{ mountID = 375, spellID = 75596, factionGroup = nil },  -- Frosty Flying Carpet
+	{ mountID = 376, spellID = 75614, factionGroup = nil },  -- Celestial Steed
+	{ mountID = 382, spellID = 75973, factionGroup = nil },  -- X-53 Touring Rocket
 };
 
 --
