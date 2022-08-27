@@ -285,7 +285,8 @@ local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 		-- Get the index of the last channel
 		local lastChannelIndex = 0;
 		for index = broadcastChannelIndex, MAX_WOW_CHAT_CHANNELS do
-			if (C_ChatInfo.GetChannelShortcut(index) or "") ~= "" then
+			local shortcut = C_ChatInfo.GetChannelShortcut(index);
+			if shortcut and shortcut ~= "" then
 				lastChannelIndex = index;
 			end
 		end
@@ -299,7 +300,7 @@ local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 		for index = broadcastChannelIndex, lastChannelIndex - 1 do
 			swapChannelsByIndex(index, index + 1);
 		end
-		Log.log("Moved broadcast channel from position " .. broadcastChannelIndex .. "to" .. lastChannelIndex .. ".");
+		Log.log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
 
 		hideBroadcastChannelFromChatFrame();
 	end
@@ -309,7 +310,7 @@ end
 -- @return isReady (boolean)
 local function isChannelListReady()
 	-- The channel list is empty
-	if #{GetChannelList()} == 0 then
+	if select("#", GetChannelList()) == 0 then
 		return false;
 	end
 
@@ -317,7 +318,8 @@ local function isChannelListReady()
 	local hasGaps = false;
 	local previousIndex = 0;
 	for index = 1, MAX_WOW_CHAT_CHANNELS do
-		if (C_ChatInfo.GetChannelShortcut(index) or "") ~= "" then
+		local shortcut = C_ChatInfo.GetChannelShortcut(index);
+		if shortcut and shortcut ~= "" then
 			if index ~= previousIndex + 1 then
 				hasGaps = true;
 				break;
@@ -327,7 +329,7 @@ local function isChannelListReady()
 	end
 
 	-- Consider the channel list is ready if there is no gap
-	return not(hasGaps);
+	return not hasGaps;
 end
 
 if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
@@ -361,16 +363,15 @@ Comm.broadcast.init = function()
 			-- We'll send out the event nice and early to say we're setting up.
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
 
-			-- Allow to join the broadcast channel even if the channel list is not ready
-			-- after 10 seconds.
-			local canJoinWhenNotReady = false;
-			C_Timer.After(10, function() canJoinWhenNotReady = true end);
+			-- Force joining the broadcast channel if we wait too long.
+			local forceJoinChannel = false;
+			C_Timer.After(10, function() forceJoinChannel = true end);
 
 			local firstTime = true;
 			ticker = C_Timer.NewTicker(1, function(_)
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
-					if canJoinWhenNotReady or isChannelListReady() then
+					if forceJoinChannel or isChannelListReady() then
 						Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
 						JoinChannelByName(string.lower(config_BroadcastChannel()));
 					end
