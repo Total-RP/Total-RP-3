@@ -20,280 +20,510 @@
 -- Companion Data Tables
 --
 
+-- The following static data set can be generated with the below SQL query
+-- over a CSV import of the client databases.
+--
+-- All databases should be for the latest Classic release with the exception
+-- of "battlepetspecies" which should be from Retail. This table exists to
+-- prune out items and spells that summon critters that aren't actual pets,
+-- like the combat companion summons from some Engineering items.
+--
+-- Note that the source data sets has some duplicate items and spells for
+-- Collectors Edition and TCG pets. The GROUP BY clause handles these cases.
+--
+--    SELECT
+--        battlepetspecies.ID AS CritterSpeciesID,
+--        battlepetspecies.CreatureID AS CritterCreatureID,
+--        spelleffect.SpellID AS CritterSpellID,
+--        itemeffect.ParentItemID AS CritterItemID,
+--        spellname.Name_lang AS CritterSpellName
+--    FROM battlepetspecies
+--    INNER JOIN spelleffect ON
+--        spelleffect.'EffectMiscValue[0]' = battlepetspecies.CreatureID
+--        AND spelleffect.effect = 28
+--    INNER JOIN spellname ON
+--        spellname.ID = CritterSpellID
+--    INNER JOIN itemeffect ON
+--        itemeffect.SpellID = CritterSpellID
+--    GROUP BY CritterSpeciesID, CritterCreatureID
+--    ORDER BY CritterSpeciesID ASC
+
 TRP3_CompanionPetData = C_PetJournal and {} or {
-
-	--
-	-- Classic
-	--
-
-	{ speciesID = 106,  itemID = 19450, spellID = 23811, creatureID = 14878 }, -- A Jubling's Tiny Home
-	{ speciesID = 52,   itemID = 11023, spellID = 10685, creatureID = 7394  }, -- Ancona Chicken
-	{ speciesID = 75,   itemID = 10360, spellID = 10714, creatureID = 7565  }, -- Black Kingsnake
-	{ speciesID = 107,  itemID = 20371, spellID = 24696, creatureID = 15186 }, -- Blue Murloc Egg
-	{ speciesID = 77,   itemID = 10361, spellID = 10716, creatureID = 7562  }, -- Brown Snake
-	{ speciesID = 128,  itemID = 23083, spellID = 28871, creatureID = 16701 }, -- Captured Flame
-	{ speciesID = 42,   itemID = 8491,  spellID = 10675, creatureID = 7383  }, -- Cat Carrier (Black Tabby)
-	{ speciesID = 40,   itemID = 8485,  spellID = 10673, creatureID = 7385  }, -- Cat Carrier (Bombay)
-	{ speciesID = 41,   itemID = 8486,  spellID = 10674, creatureID = 7384  }, -- Cat Carrier (Cornish Rex)
-	{ speciesID = 43,   itemID = 8487,  spellID = 10676, creatureID = 7382  }, -- Cat Carrier (Orange Tabby)
-	{ speciesID = 44,   itemID = 8490,  spellID = 10677, creatureID = 7380  }, -- Cat Carrier (Siamese)
-	{ speciesID = 45,   itemID = 8488,  spellID = 10678, creatureID = 7381  }, -- Cat Carrier (Silver Tabby)
-	{ speciesID = 46,   itemID = 8489,  spellID = 10679, creatureID = 7386  }, -- Cat Carrier (White Kitten)
-	{ speciesID = 84,   itemID = 11110, spellID = 13548, creatureID = 7392  }, -- Chicken Egg
-	{ speciesID = 55,   itemID = 10393, spellID = 10688, creatureID = 7395  }, -- Cockroach
-	{ speciesID = 78,   itemID = 10392, spellID = 10717, creatureID = 7567  }, -- Crimson Snake
-	{ speciesID = 56,   itemID = 10822, spellID = 10695, creatureID = 7543  }, -- Dark Whelpling
-	{ speciesID = 93,   itemID = 13584, spellID = 17708, creatureID = 11326 }, -- Diablo Stone
-	{ speciesID = 114,  itemID = 20769, spellID = 25162, creatureID = 15429 }, -- Disgusting Oozeling
-	{ speciesID = 68,   itemID = 8500,  spellID = 10707, creatureID = 7553  }, -- Great Horned Owl
-	{ speciesID = 757,  itemID = 19055, spellID = 23531, creatureID = 14755 }, -- Green Dragon Orb
-	{ speciesID = 67,   itemID = 8501,  spellID = 10706, creatureID = 7555  }, -- Hawk Owl
-	{ speciesID = 130,  itemID = 23713, spellID = 30156, creatureID = 17255 }, -- Hippogryph Hatchling
-	{ speciesID = 95,   itemID = 15996, spellID = 19772, creatureID = 12419 }, -- Lifelike Mechanical Toad
-	{ speciesID = 86,   itemID = 11826, spellID = 15049, creatureID = 9657  }, -- Lil' Smoky
-	{ speciesID = 83,   itemID = 10398, spellID = 12243, creatureID = 8376  }, -- Mechanical Chicken
-	{ speciesID = 39,   itemID = 4401,  spellID = 4055,  creatureID = 2671  }, -- Mechanical Squirrel Box
-	{ speciesID = 1168, itemID = 20651, spellID = 25018, creatureID = 15361 }, -- Orange Murloc Egg
-	{ speciesID = 92,   itemID = 13583, spellID = 17707, creatureID = 11325 }, -- Panda Collar
-	{ speciesID = 47,   itemID = 8496,  spellID = 10680, creatureID = 7390  }, -- Parrot Cage (Cockatiel)
-	{ speciesID = 50,   itemID = 8492,  spellID = 10683, creatureID = 7387  }, -- Parrot Cage (Green Wing Macaw)
-	{ speciesID = 49,   itemID = 8494,  spellID = 10682, creatureID = 7391  }, -- Parrot Cage (Hyacinth Macaw)
-	{ speciesID = 51,   itemID = 8495,  spellID = 10684, creatureID = 7389  }, -- Parrot Cage (Senegal)
-	{ speciesID = 85,   itemID = 11825, spellID = 15048, creatureID = 9656  }, -- Pet Bombling
-	{ speciesID = 126,  itemID = 23007, spellID = 28739, creatureID = 16548 }, -- Piglet's Collar
-	{ speciesID = 121,  itemID = 22114, spellID = 27241, creatureID = 16069 }, -- Pink Murloc Egg
-	{ speciesID = 124,  itemID = 22781, spellID = 28505, creatureID = 16456 }, -- Polar Bear Collar
-	{ speciesID = 70,   itemID = 10394, spellID = 10709, creatureID = 14421 }, -- Prairie Dog Whistle
-	{ speciesID = 72,   itemID = 8497,  spellID = 10711, creatureID = 7560  }, -- Rabbit Crate (Snowshoe)
-	{ speciesID = 127,  itemID = 23015, spellID = 28740, creatureID = 16549 }, -- Rat Cage
-	{ speciesID = 758,  itemID = 19054, spellID = 23530, creatureID = 14756 }, -- Red Dragon Orb
-	{ speciesID = 120,  itemID = 21305, spellID = 26541, creatureID = 15705 }, -- Red Helper Box
-	{ speciesID = 90,   itemID = 12529, spellID = 16450, creatureID = 10598 }, -- Smolderweb Carrier
-	{ speciesID = 87,   itemID = 11474, spellID = 15067, creatureID = 9662  }, -- Sprite Darter Egg
-	{ speciesID = 58,   itemID = 8499,  spellID = 10697, creatureID = 7544  }, -- Tiny Crimson Whelpling
-	{ speciesID = 59,   itemID = 8498,  spellID = 10698, creatureID = 7545  }, -- Tiny Emerald Whelpling
-	{ speciesID = 116,  itemID = 21277, spellID = 26010, creatureID = 15699 }, -- Tranquil Mechanical Yeti
-	{ speciesID = 65,   itemID = 11026, spellID = 10704, creatureID = 7549  }, -- Tree Frog Box
-	{ speciesID = 122,  itemID = 22235, spellID = 27570, creatureID = 16085 }, -- Truesilver Shafted Arrow
-	{ speciesID = 125,  itemID = 23002, spellID = 28738, creatureID = 16547 }, -- Turtle Box
-	{ speciesID = 1073, itemID = 22780, spellID = 28487, creatureID = 16445 }, -- White Murloc Egg
-	{ speciesID = 1927, itemID = 23712, spellID = 30152, creatureID = 17254 }, -- White Tiger Cub
-	{ speciesID = 64,   itemID = 11027, spellID = 10703, creatureID = 7550  }, -- Wood Frog Box
-	{ speciesID = 89,   itemID = 12264, spellID = 15999, creatureID = 10259 }, -- Worg Carrier
-	{ speciesID = 94,   itemID = 13582, spellID = 17709, creatureID = 11327 }, -- Zergling Leash
-
-	--
-	-- Burning Crusade
-	--
-
-	{ speciesID = 57,   itemID = 34535, spellID = 10696, creatureID = 7547  }, -- Azure Whelpling
-	{ speciesID = 156,  itemID = 32588, spellID = 40549, creatureID = 23234 }, -- Banana Charm
-	{ speciesID = 145,  itemID = 29958, spellID = 36031, creatureID = 21056 }, -- Blue Dragonhawk Hatchling
-	{ speciesID = 138,  itemID = 29901, spellID = 35907, creatureID = 21010 }, -- Blue Moth Egg
-	{ speciesID = 137,  itemID = 29364, spellID = 35239, creatureID = 20472 }, -- Brown Rabbit Crate
-	{ speciesID = 146,  itemID = 29960, spellID = 36034, creatureID = 21076 }, -- Captured Firefly
-	{ speciesID = 174,  itemID = 35350, spellID = 46426, creatureID = 26056 }, -- Chuck's Bucket
-	{ speciesID = 180,  itemID = 37298, spellID = 48408, creatureID = 27346 }, -- Competitor's Souvenir
-	{ speciesID = 169,  itemID = 34493, spellID = 45127, creatureID = 25110 }, -- Dragon Kite
-	{ speciesID = 158,  itemID = 32616, spellID = 40614, creatureID = 23258 }, -- Egbert's Egg
-	{ speciesID = 159,  itemID = 32622, spellID = 40634, creatureID = 23266 }, -- Elekk Training Collar
-	{ speciesID = 155,  itemID = 32498, spellID = 40405, creatureID = 23198 }, -- Fortune Coin
-	{ speciesID = 179,  itemID = 37297, spellID = 48406, creatureID = 27217 }, -- Gold Medallion
-	{ speciesID = 142,  itemID = 29953, spellID = 36027, creatureID = 21055 }, -- Golden Dragonhawk Hatchling
-	{ speciesID = 170,  itemID = 34518, spellID = 45174, creatureID = 25146 }, -- Golden Pig Coin
-	{ speciesID = 111,  itemID = 30360, spellID = 24988, creatureID = 15358 }, -- Lurky's Egg
-	{ speciesID = 132,  itemID = 27445, spellID = 33050, creatureID = 18839 }, -- Magical Crawdad Box
-	{ speciesID = 136,  itemID = 29363, spellID = 35156, creatureID = 20408 }, -- Mana Wyrmling
-	{ speciesID = 149,  itemID = 31760, spellID = 39181, creatureID = 22445 }, -- Miniwing
-	{ speciesID = 165,  itemID = 33993, spellID = 43918, creatureID = 24480 }, -- Mojo
-	{ speciesID = 164,  itemID = 33818, spellID = 43698, creatureID = 24389 }, -- Muckbreath's Bucket
-	{ speciesID = 186,  itemID = 38628, spellID = 51716, creatureID = 28470 }, -- Nether Ray Fry
-	{ speciesID = 131,  itemID = 25535, spellID = 32298, creatureID = 18381 }, -- Netherwhelp's Collar
-	{ speciesID = 175,  itemID = 35504, spellID = 46599, creatureID = 26119 }, -- Phoenix Hatchling
-	{ speciesID = 143,  itemID = 29956, spellID = 36028, creatureID = 21064 }, -- Red Dragonhawk Hatchling
-	{ speciesID = 139,  itemID = 29902, spellID = 35909, creatureID = 21009 }, -- Red Moth Egg
-	{ speciesID = 168,  itemID = 34492, spellID = 45125, creatureID = 25109 }, -- Rocket Chicken
-	{ speciesID = 172,  itemID = 34955, spellID = 45890, creatureID = 25706 }, -- Scorched Stone
-	{ speciesID = 144,  itemID = 29957, spellID = 36029, creatureID = 21063 }, -- Silver Dragonhawk Hatchling
-	{ speciesID = 171,  itemID = 34519, spellID = 45175, creatureID = 25147 }, -- Silver Pig Coin
-	{ speciesID = 162,  itemID = 33154, spellID = 42609, creatureID = 23909 }, -- Sinister Squashling
-	{ speciesID = 157,  itemID = 32617, spellID = 40613, creatureID = 23231 }, -- Sleepy Willy
-	{ speciesID = 173,  itemID = 35349, spellID = 46425, creatureID = 26050 }, -- Snarly's Bucket
-	{ speciesID = 183,  itemID = 38050, spellID = 49964, creatureID = 27914 }, -- Soul-Trader Beacon
-	{ speciesID = 167,  itemID = 34478, spellID = 45082, creatureID = 25062 }, -- Tiny Sporebat
-	{ speciesID = 163,  itemID = 33816, spellID = 43697, creatureID = 24388 }, -- Toothy's Bucket
-	{ speciesID = 189,  itemID = 39656, spellID = 53082, creatureID = 29089 }, -- Tyrael's Hilt
-	{ speciesID = 141,  itemID = 29904, spellID = 35911, creatureID = 21018 }, -- White Moth Egg
-	{ speciesID = 153,  itemID = 32233, spellID = 39709, creatureID = 22943 }, -- Wolpertinger's Tankard
-	{ speciesID = 140,  itemID = 29903, spellID = 35910, creatureID = 21008 }, -- Yellow Moth Egg
+	{ speciesID = 39, creatureID = 2671, spellID = 4055, itemID = 4401 },  -- Mechanical Squirrel
+	{ speciesID = 40, creatureID = 7385, spellID = 10673, itemID = 8485 },  -- Bombay Cat
+	{ speciesID = 41, creatureID = 7384, spellID = 10674, itemID = 8486 },  -- Cornish Rex Cat
+	{ speciesID = 42, creatureID = 7383, spellID = 10675, itemID = 8491 },  -- Black Tabby Cat
+	{ speciesID = 43, creatureID = 7382, spellID = 10676, itemID = 8487 },  -- Orange Tabby Cat
+	{ speciesID = 44, creatureID = 7380, spellID = 10677, itemID = 8490 },  -- Siamese Cat
+	{ speciesID = 45, creatureID = 7381, spellID = 10678, itemID = 8488 },  -- Silver Tabby Cat
+	{ speciesID = 46, creatureID = 7386, spellID = 10679, itemID = 8489 },  -- White Kitten
+	{ speciesID = 47, creatureID = 7390, spellID = 10680, itemID = 8496 },  -- Cockatiel
+	{ speciesID = 49, creatureID = 7391, spellID = 10682, itemID = 8494 },  -- Hyacinth Macaw
+	{ speciesID = 50, creatureID = 7387, spellID = 10683, itemID = 8492 },  -- Green Wing Macaw
+	{ speciesID = 51, creatureID = 7389, spellID = 10684, itemID = 8495 },  -- Senegal
+	{ speciesID = 52, creatureID = 7394, spellID = 10685, itemID = 11023 },  -- Ancona Chicken
+	{ speciesID = 55, creatureID = 7395, spellID = 10688, itemID = 10393 },  -- Cockroach
+	{ speciesID = 56, creatureID = 7543, spellID = 10695, itemID = 10822 },  -- Dark Whelpling
+	{ speciesID = 57, creatureID = 7547, spellID = 10696, itemID = 34535 },  -- Azure Whelpling
+	{ speciesID = 58, creatureID = 7544, spellID = 10697, itemID = 8499 },  -- Crimson Whelpling
+	{ speciesID = 59, creatureID = 7545, spellID = 10698, itemID = 8498 },  -- Emerald Whelpling
+	{ speciesID = 64, creatureID = 7550, spellID = 10703, itemID = 11027 },  -- Wood Frog
+	{ speciesID = 65, creatureID = 7549, spellID = 10704, itemID = 11026 },  -- Tree Frog
+	{ speciesID = 67, creatureID = 7555, spellID = 10706, itemID = 8501 },  -- Hawk Owl
+	{ speciesID = 68, creatureID = 7553, spellID = 10707, itemID = 8500 },  -- Great Horned Owl
+	{ speciesID = 70, creatureID = 14421, spellID = 10709, itemID = 10394 },  -- Brown Prairie Dog
+	{ speciesID = 72, creatureID = 7560, spellID = 10711, itemID = 8497 },  -- Snowshoe Rabbit
+	{ speciesID = 74, creatureID = 7561, spellID = 10713, itemID = 44822 },  -- Albino Snake
+	{ speciesID = 75, creatureID = 7565, spellID = 10714, itemID = 10360 },  -- Black Kingsnake
+	{ speciesID = 77, creatureID = 7562, spellID = 10716, itemID = 10361 },  -- Brown Snake
+	{ speciesID = 78, creatureID = 7567, spellID = 10717, itemID = 10392 },  -- Crimson Snake
+	{ speciesID = 83, creatureID = 8376, spellID = 12243, itemID = 10398 },  -- Mechanical Chicken
+	{ speciesID = 84, creatureID = 30379, spellID = 13548, itemID = 11110 },  -- Westfall Chicken
+	{ speciesID = 85, creatureID = 9656, spellID = 15048, itemID = 11825 },  -- Pet Bombling
+	{ speciesID = 86, creatureID = 9657, spellID = 15049, itemID = 11826 },  -- Lil' Smoky
+	{ speciesID = 87, creatureID = 9662, spellID = 15067, itemID = 11474 },  -- Sprite Darter Hatchling
+	{ speciesID = 89, creatureID = 10259, spellID = 15999, itemID = 12264 },  -- Worg Pup
+	{ speciesID = 90, creatureID = 10598, spellID = 16450, itemID = 12529 },  -- Smolderweb Hatchling
+	{ speciesID = 92, creatureID = 11325, spellID = 17707, itemID = 13583 },  -- Panda Cub
+	{ speciesID = 93, creatureID = 11326, spellID = 17708, itemID = 13584 },  -- Mini Diablo
+	{ speciesID = 94, creatureID = 11327, spellID = 17709, itemID = 13582 },  -- Zergling
+	{ speciesID = 95, creatureID = 12419, spellID = 19772, itemID = 15996 },  -- Lifelike Toad
+	{ speciesID = 106, creatureID = 14878, spellID = 23811, itemID = 19450 },  -- Jubling
+	{ speciesID = 107, creatureID = 15186, spellID = 24696, itemID = 20371 },  -- Murky
+	{ speciesID = 111, creatureID = 15358, spellID = 24988, itemID = 30360 },  -- Lurky
+	{ speciesID = 114, creatureID = 15429, spellID = 25162, itemID = 20769 },  -- Disgusting Oozeling
+	{ speciesID = 116, creatureID = 15699, spellID = 26010, itemID = 21277 },  -- Tranquil Mechanical Yeti
+	{ speciesID = 117, creatureID = 15710, spellID = 26045, itemID = 21309 },  -- Tiny Snowman
+	{ speciesID = 118, creatureID = 15706, spellID = 26529, itemID = 21308 },  -- Winter Reindeer
+	{ speciesID = 119, creatureID = 15698, spellID = 26533, itemID = 21301 },  -- Father Winter's Helper
+	{ speciesID = 120, creatureID = 15705, spellID = 26541, itemID = 21305 },  -- Winter's Little Helper
+	{ speciesID = 121, creatureID = 16069, spellID = 27241, itemID = 22114 },  -- Gurky
+	{ speciesID = 122, creatureID = 16085, spellID = 27570, itemID = 22235 },  -- Peddlefeet
+	{ speciesID = 124, creatureID = 16456, spellID = 28505, itemID = 22781 },  -- Poley
+	{ speciesID = 125, creatureID = 16547, spellID = 28738, itemID = 23002 },  -- Speedy
+	{ speciesID = 126, creatureID = 16548, spellID = 28739, itemID = 23007 },  -- Mr. Wiggles
+	{ speciesID = 127, creatureID = 16549, spellID = 28740, itemID = 23015 },  -- Whiskers the Rat
+	{ speciesID = 128, creatureID = 16701, spellID = 28871, itemID = 23083 },  -- Spirit of Summer
+	{ speciesID = 130, creatureID = 17255, spellID = 30156, itemID = 23713 },  -- Hippogryph Hatchling
+	{ speciesID = 131, creatureID = 18381, spellID = 32298, itemID = 25535 },  -- Netherwhelp
+	{ speciesID = 132, creatureID = 18839, spellID = 33050, itemID = 27445 },  -- Magical Crawdad
+	{ speciesID = 136, creatureID = 20408, spellID = 35156, itemID = 29363 },  -- Mana Wyrmling
+	{ speciesID = 137, creatureID = 20472, spellID = 35239, itemID = 29364 },  -- Brown Rabbit
+	{ speciesID = 138, creatureID = 21010, spellID = 35907, itemID = 29901 },  -- Blue Moth
+	{ speciesID = 139, creatureID = 21009, spellID = 35909, itemID = 29902 },  -- Red Moth
+	{ speciesID = 140, creatureID = 21008, spellID = 35910, itemID = 29903 },  -- Yellow Moth
+	{ speciesID = 141, creatureID = 21018, spellID = 35911, itemID = 29904 },  -- White Moth
+	{ speciesID = 142, creatureID = 21055, spellID = 36027, itemID = 29953 },  -- Golden Dragonhawk Hatchling
+	{ speciesID = 143, creatureID = 21064, spellID = 36028, itemID = 29956 },  -- Red Dragonhawk Hatchling
+	{ speciesID = 144, creatureID = 21063, spellID = 36029, itemID = 29957 },  -- Silver Dragonhawk Hatchling
+	{ speciesID = 145, creatureID = 21056, spellID = 36031, itemID = 29958 },  -- Blue Dragonhawk Hatchling
+	{ speciesID = 146, creatureID = 21076, spellID = 36034, itemID = 29960 },  -- Firefly
+	{ speciesID = 149, creatureID = 22445, spellID = 39181, itemID = 31760 },  -- Miniwing
+	{ speciesID = 153, creatureID = 22943, spellID = 39709, itemID = 32233 },  -- Wolpertinger
+	{ speciesID = 155, creatureID = 23198, spellID = 40405, itemID = 32498 },  -- Lucky
+	{ speciesID = 156, creatureID = 23234, spellID = 40549, itemID = 32588 },  -- Bananas
+	{ speciesID = 157, creatureID = 23231, spellID = 40613, itemID = 32617 },  -- Willy
+	{ speciesID = 158, creatureID = 23258, spellID = 40614, itemID = 32616 },  -- Egbert
+	{ speciesID = 159, creatureID = 23266, spellID = 40634, itemID = 32622 },  -- Peanut
+	{ speciesID = 160, creatureID = 23274, spellID = 40990, itemID = 40653 },  -- Stinker
+	{ speciesID = 162, creatureID = 23909, spellID = 42609, itemID = 33154 },  -- Sinister Squashling
+	{ speciesID = 163, creatureID = 24388, spellID = 43697, itemID = 33816 },  -- Toothy
+	{ speciesID = 164, creatureID = 24389, spellID = 43698, itemID = 33818 },  -- Muckbreath
+	{ speciesID = 165, creatureID = 24480, spellID = 43918, itemID = 33993 },  -- Mojo
+	{ speciesID = 166, creatureID = 24753, spellID = 44369, itemID = 46707 },  -- Pint-Sized Pink Pachyderm
+	{ speciesID = 167, creatureID = 25062, spellID = 45082, itemID = 34478 },  -- Tiny Sporebat
+	{ speciesID = 168, creatureID = 25109, spellID = 45125, itemID = 34492 },  -- Rocket Chicken
+	{ speciesID = 169, creatureID = 25110, spellID = 45127, itemID = 34493 },  -- Dragon Kite
+	{ speciesID = 170, creatureID = 25146, spellID = 45174, itemID = 34518 },  -- Golden Pig
+	{ speciesID = 171, creatureID = 25147, spellID = 45175, itemID = 34519 },  -- Silver Pig
+	{ speciesID = 172, creatureID = 25706, spellID = 45890, itemID = 34955 },  -- Scorchling
+	{ speciesID = 173, creatureID = 26050, spellID = 46425, itemID = 35349 },  -- Snarly
+	{ speciesID = 174, creatureID = 26056, spellID = 46426, itemID = 35350 },  -- Chuck
+	{ speciesID = 175, creatureID = 26119, spellID = 46599, itemID = 35504 },  -- Phoenix Hatchling
+	{ speciesID = 179, creatureID = 27217, spellID = 48406, itemID = 37297 },  -- Spirit of Competition
+	{ speciesID = 180, creatureID = 27346, spellID = 48408, itemID = 37298 },  -- Essence of Competition
+	{ speciesID = 183, creatureID = 27914, spellID = 49964, itemID = 38050 },  -- Ethereal Soul-Trader
+	{ speciesID = 186, creatureID = 28470, spellID = 51716, itemID = 38628 },  -- Nether Ray Fry
+	{ speciesID = 187, creatureID = 28513, spellID = 51851, itemID = 38658 },  -- Vampiric Batling
+	{ speciesID = 188, creatureID = 28883, spellID = 52615, itemID = 39286 },  -- Frosty
+	{ speciesID = 189, creatureID = 29089, spellID = 53082, itemID = 39656 },  -- Mini Tyrael
+	{ speciesID = 190, creatureID = 29147, spellID = 53316, itemID = 39973 },  -- Ghostly Skull
+	{ speciesID = 191, creatureID = 24968, spellID = 54187, itemID = 34425 },  -- Clockwork Rocket Bot
+	{ speciesID = 192, creatureID = 29726, spellID = 55068, itemID = 41133 },  -- Mr. Chilly
+	{ speciesID = 193, creatureID = 31575, spellID = 59250, itemID = 43698 },  -- Giant Sewer Rat
+	{ speciesID = 194, creatureID = 32589, spellID = 61348, itemID = 39896 },  -- Tickbird Hatchling
+	{ speciesID = 195, creatureID = 32590, spellID = 61349, itemID = 39899 },  -- White Tickbird Hatchling
+	{ speciesID = 196, creatureID = 32592, spellID = 61350, itemID = 44721 },  -- Proto-Drake Whelp
+	{ speciesID = 197, creatureID = 32591, spellID = 61351, itemID = 39898 },  -- Cobra Hatchling
+	{ speciesID = 198, creatureID = 32595, spellID = 61357, itemID = 44723 },  -- Pengu
+	{ speciesID = 199, creatureID = 32643, spellID = 61472, itemID = 44738 },  -- Kirin Tor Familiar
+	{ speciesID = 200, creatureID = 32791, spellID = 61725, itemID = 44794 },  -- Spring Rabbit
+	{ speciesID = 201, creatureID = 32818, spellID = 61773, itemID = 44810 },  -- Plump Turkey
+	{ speciesID = 202, creatureID = 32841, spellID = 61855, itemID = 44819 },  -- Baby Blizzard Bear
+	{ speciesID = 203, creatureID = 32939, spellID = 61991, itemID = 44841 },  -- Little Fawn
+	{ speciesID = 204, creatureID = 33188, spellID = 62491, itemID = 44965 },  -- Teldrassil Sproutling
+	{ speciesID = 205, creatureID = 33194, spellID = 62508, itemID = 44970 },  -- Dun Morogh Cub
+	{ speciesID = 206, creatureID = 33197, spellID = 62510, itemID = 44971 },  -- Tirisfal Batling
+	{ speciesID = 207, creatureID = 33198, spellID = 62513, itemID = 44973 },  -- Durotar Scorpion
+	{ speciesID = 209, creatureID = 33200, spellID = 62516, itemID = 44974 },  -- Elwynn Lamb
+	{ speciesID = 210, creatureID = 33219, spellID = 62542, itemID = 44980 },  -- Mulgore Hatchling
+	{ speciesID = 211, creatureID = 33226, spellID = 62561, itemID = 44983 },  -- Strand Crawler
+	{ speciesID = 212, creatureID = 33205, spellID = 62562, itemID = 44984 },  -- Ammen Vale Lashling
+	{ speciesID = 213, creatureID = 33227, spellID = 62564, itemID = 44982 },  -- Enchanted Broom
+	{ speciesID = 214, creatureID = 33238, spellID = 62609, itemID = 44998 },  -- Argent Squire
+	{ speciesID = 215, creatureID = 33274, spellID = 62674, itemID = 45002 },  -- Mechanopeep
+	{ speciesID = 216, creatureID = 33239, spellID = 62746, itemID = 45022 },  -- Argent Gruntling
+	{ speciesID = 217, creatureID = 33578, spellID = 63318, itemID = 45180 },  -- Murkimus the Gladiator
+	{ speciesID = 218, creatureID = 33810, spellID = 63712, itemID = 45606 },  -- Sen'jin Fetish
+	{ speciesID = 224, creatureID = 34364, spellID = 65358, itemID = 46398 },  -- Calico Cat
+	{ speciesID = 225, creatureID = 33530, spellID = 65381, itemID = 46545 },  -- Curious Oracle Hatchling
+	{ speciesID = 226, creatureID = 33529, spellID = 65382, itemID = 46544 },  -- Curious Wolvar Pup
+	{ speciesID = 227, creatureID = 34587, spellID = 65682, itemID = 46767 },  -- Warbot
+	{ speciesID = 228, creatureID = 34694, spellID = 66030, itemID = 46802 },  -- Grunty
+	{ speciesID = 229, creatureID = 34724, spellID = 66096, itemID = 46820 },  -- Shimmering Wyrmling
+	{ speciesID = 231, creatureID = 34930, spellID = 66520, itemID = 46894 },  -- Jade Tiger
+	{ speciesID = 232, creatureID = 35396, spellID = 67413, itemID = 48112 },  -- Darting Hatchling
+	{ speciesID = 233, creatureID = 35395, spellID = 67414, itemID = 48114 },  -- Deviate Hatchling
+	{ speciesID = 234, creatureID = 35400, spellID = 67415, itemID = 48116 },  -- Gundrak Hatchling
+	{ speciesID = 235, creatureID = 35387, spellID = 67416, itemID = 48118 },  -- Leaping Hatchling
+	{ speciesID = 236, creatureID = 35399, spellID = 67417, itemID = 48120 },  -- Obsidian Hatchling
+	{ speciesID = 237, creatureID = 35397, spellID = 67418, itemID = 48122 },  -- Ravasaur Hatchling
+	{ speciesID = 238, creatureID = 35398, spellID = 67419, itemID = 48124 },  -- Razormaw Hatchling
+	{ speciesID = 239, creatureID = 35394, spellID = 67420, itemID = 48126 },  -- Razzashi Hatchling
+	{ speciesID = 240, creatureID = 35468, spellID = 67527, itemID = 48527 },  -- Onyx Panther
+	{ speciesID = 241, creatureID = 36482, spellID = 68767, itemID = 49287 },  -- Tuskarr Kite
+	{ speciesID = 242, creatureID = 36511, spellID = 68810, itemID = 49343 },  -- Spectral Tiger Cub
+	{ speciesID = 243, creatureID = 36607, spellID = 69002, itemID = 49362 },  -- Onyxian Whelpling
+	{ speciesID = 244, creatureID = 36871, spellID = 69452, itemID = 49646 },  -- Core Hound Pup
+	{ speciesID = 245, creatureID = 36908, spellID = 69535, itemID = 49662 },  -- Gryphon Hatchling
+	{ speciesID = 246, creatureID = 36909, spellID = 69536, itemID = 49663 },  -- Wind Rider Cub
+	{ speciesID = 247, creatureID = 36910, spellID = 69539, itemID = 49664 },  -- Zipao Tiger
+	{ speciesID = 248, creatureID = 36911, spellID = 69541, itemID = 49665 },  -- Pandaren Monk
+	{ speciesID = 249, creatureID = 36979, spellID = 69677, itemID = 49693 },  -- Lil' K.T.
+	{ speciesID = 250, creatureID = 37865, spellID = 70613, itemID = 49912 },  -- Perky Pug
+	{ speciesID = 251, creatureID = 38374, spellID = 71840, itemID = 50446 },  -- Toxic Wasteling
+	{ speciesID = 253, creatureID = 40198, spellID = 74932, itemID = 53641 },  -- Frigid Frostling
+	{ speciesID = 254, creatureID = 40295, spellID = 75134, itemID = 54436 },  -- Blue Clockwork Rocket Bot
+	{ speciesID = 255, creatureID = 40624, spellID = 75613, itemID = 54810 },  -- Celestial Dragon
+	{ speciesID = 256, creatureID = 40703, spellID = 75906, itemID = 54847 },  -- Lil' XT
+	{ speciesID = 257, creatureID = 40721, spellID = 75936, itemID = 54857 },  -- Murkimus the Gladiator
+	{ speciesID = 258, creatureID = 42078, spellID = 78381, itemID = 56806 },  -- Mini Thor
+	{ speciesID = 757, creatureID = 14755, spellID = 23531, itemID = 19055 },  -- Tiny Green Dragon
+	{ speciesID = 758, creatureID = 14756, spellID = 23530, itemID = 19054 },  -- Tiny Red Dragon
+	{ speciesID = 1073, creatureID = 16445, spellID = 28487, itemID = 22780 },  -- Terky
+	{ speciesID = 1168, creatureID = 15361, spellID = 25018, itemID = 20651 },  -- Murki
+	{ speciesID = 1351, creatureID = 34770, spellID = 66175, itemID = 46831 },  -- Macabre Marionette
+	{ speciesID = 1927, creatureID = 17254, spellID = 30152, itemID = 23712 },  -- White Tiger Cub
 };
 
+-- The following static data set can be generated with the below SQL query
+-- over a CSV import of the client databases.
+--
+-- All databases should be for the latest Classic release with the exception
+-- of "mount" which should be from Retail. Note that getting accurate mount
+-- data is... tricky due to the nature of class-specific mounts not having
+-- source items, and a lot of mounts not actually being implemented.
+--
+--     SELECT
+--         mount.ID AS MountID,
+--         mount.SourceSpellID AS MountSpellID,
+--         CASE
+--             WHEN spellmisc.'Attributes[7]' & 0x100 THEN "Horde"
+--             WHEN spellmisc.'Attributes[7]' & 0x200 THEN "Alliance"
+--             ELSE NULL
+--         END AS MountFactionGroup,
+--         spellname.Name_lang AS MountSpellName
+--     FROM mount
+--     INNER JOIN spelleffect ON
+--         spelleffect.SpellID = mount.SourceSpellID
+--         AND spelleffect.effect = 6
+--         AND spelleffect.effectaura = 78
+--     INNER JOIN spellmisc ON
+--         spellmisc.SpellID = MountSpellID
+--     INNER JOIN spellname ON
+--         spellname.ID = MountSpellID
+--     WHERE
+--         mount.Description_lang != ""
+--         AND (
+--             MountSpellID IN (SELECT spelllevels.SpellID FROM spelllevels WHERE spelllevels.BaseLevel > 0)
+--             OR MountSpellID IN (SELECT itemeffect.SpellID FROM itemeffect)
+--         )
+--     ORDER BY MountID ASC
+
 TRP3_CompanionMountData = C_MountJournal and {} or {
-
-	--
-	-- Classic
-	--
-
-	{ mountID = 77,  itemID = 18243, spellID = 22719 }, -- Black Battlestrider
-	{ mountID = 122, itemID = 21176, spellID = 26656 }, -- Black Qiraji Resonating Crystal
-	{ mountID = 9,   itemID = 2411,  spellID = 470   }, -- Black Stallion Bridle
-	{ mountID = 76,  itemID = 18247, spellID = 22718 }, -- Black War Kodo
-	{ mountID = 78,  itemID = 18244, spellID = 22720 }, -- Black War Ram
-	{ mountID = 75,  itemID = 18241, spellID = 22717 }, -- Black War Steed Bridle
-	{ mountID = 40,  itemID = 8595,  spellID = 10969 }, -- Blue Mechanostrider
-	{ mountID = 117, itemID = 21218, spellID = 25953 }, -- Blue Qiraji Resonating Crystal
-	{ mountID = 66,  itemID = 13332, spellID = 17463 }, -- Blue Skeletal Horse
-	{ mountID = 6,   itemID = 5656,  spellID = 458   }, -- Brown Horse Bridle
-	{ mountID = 72,  itemID = 15290, spellID = 18990 }, -- Brown Kodo
-	{ mountID = 25,  itemID = 5872,  spellID = 6899  }, -- Brown Ram
-	{ mountID = 67,  itemID = 13333, spellID = 17464 }, -- Brown Skeletal Horse
-	{ mountID = 18,  itemID = 5655,  spellID = 6648  }, -- Chestnut Mare Bridle
-	{ mountID = 69,  itemID = 13335, spellID = 17481 }, -- Deathcharger's Reins
-	{ mountID = 71,  itemID = 15277, spellID = 18989 }, -- Gray Kodo
-	{ mountID = 21,  itemID = 5864,  spellID = 6777  }, -- Gray Ram
-	{ mountID = 103, itemID = 18794, spellID = 23249 }, -- Great Brown Kodo
-	{ mountID = 102, itemID = 18795, spellID = 23248 }, -- Great Gray Kodo
-	{ mountID = 101, itemID = 18793, spellID = 23247 }, -- Great White Kodo
-	{ mountID = 57,  itemID = 13321, spellID = 17453 }, -- Green Mechanostrider
-	{ mountID = 120, itemID = 21323, spellID = 26056 }, -- Green Qiraji Resonating Crystal
-	{ mountID = 68,  itemID = 13334, spellID = 17465 }, -- Green Skeletal Warhorse
-	{ mountID = 82,  itemID = 18245, spellID = 22724 }, -- Horn of the Black War Wolf
-	{ mountID = 20,  itemID = 5668,  spellID = 6654  }, -- Horn of the Brown Wolf
-	{ mountID = 19,  itemID = 5665,  spellID = 6653  }, -- Horn of the Dire Wolf
-	{ mountID = 108, itemID = 19029, spellID = 23509 }, -- Horn of the Frostwolf Howler
-	{ mountID = 104, itemID = 18796, spellID = 23250 }, -- Horn of the Swift Brown Wolf
-	{ mountID = 106, itemID = 18798, spellID = 23252 }, -- Horn of the Swift Gray Wolf
-	{ mountID = 105, itemID = 18797, spellID = 23251 }, -- Horn of the Swift Timber Wolf
-	{ mountID = 14,  itemID = 1132,  spellID = 580   }, -- Horn of the Timber Wolf
-	{ mountID = 11,  itemID = 2414,  spellID = 472   }, -- Pinto Bridle
-	{ mountID = 100, itemID = 18791, spellID = 23246 }, -- Purple Skeletal Warhorse
-	{ mountID = 39,  itemID = 8563,  spellID = 10873 }, -- Red Mechanostrider
-	{ mountID = 118, itemID = 21321, spellID = 26054 }, -- Red Qiraji Resonating Crystal
-	{ mountID = 65,  itemID = 13331, spellID = 17462 }, -- Red Skeletal Horse
-	{ mountID = 80,  itemID = 18248, spellID = 22722 }, -- Red Skeletal Warhorse
-	{ mountID = 81,  itemID = 18242, spellID = 22723 }, -- Reins of the Black War Tiger
-	{ mountID = 31,  itemID = 8632,  spellID = 10789 }, -- Reins of the Spotted Frostsaber
-	{ mountID = 26,  itemID = 8631,  spellID = 8394  }, -- Reins of the Striped Frostsaber
-	{ mountID = 34,  itemID = 8629,  spellID = 10793 }, -- Reins of the Striped Nightsaber
-	{ mountID = 87,  itemID = 18766, spellID = 23221 }, -- Reins of the Swift Frostsaber
-	{ mountID = 85,  itemID = 18767, spellID = 23219 }, -- Reins of the Swift Mistsaber
-	{ mountID = 107, itemID = 18902, spellID = 23338 }, -- Reins of the Swift Stormsaber
-	{ mountID = 55,  itemID = 13086, spellID = 17229 }, -- Reins of the Winterspring Frostsaber
-	{ mountID = 109, itemID = 19030, spellID = 23510 }, -- Stormpike Battle Charger
-	{ mountID = 84,  itemID = nil,   spellID = 23214 }, -- Summon Charger
-	{ mountID = 83,  itemID = nil,   spellID = 23161 }, -- Summon Dreadsteed
-	{ mountID = 17,  itemID = nil,   spellID = 5784  }, -- Summon Felsteed
-	{ mountID = 41,  itemID = nil,   spellID = 13819 }, -- Summon Warhorse
-	{ mountID = 97,  itemID = 18788, spellID = 23241 }, -- Swift Blue Raptor
-	{ mountID = 94,  itemID = 18786, spellID = 23238 }, -- Swift Brown Ram
-	{ mountID = 93,  itemID = 18777, spellID = 23229 }, -- Swift Brown Steed
-	{ mountID = 95,  itemID = 18787, spellID = 23239 }, -- Swift Gray Ram
-	{ mountID = 90,  itemID = 18772, spellID = 23225 }, -- Swift Green Mechanostrider
-	{ mountID = 98,  itemID = 18789, spellID = 23242 }, -- Swift Olive Raptor
-	{ mountID = 99,  itemID = 18790, spellID = 23243 }, -- Swift Orange Raptor
-	{ mountID = 91,  itemID = 18776, spellID = 23227 }, -- Swift Palomino
-	{ mountID = 110, itemID = 19872, spellID = 24242 }, -- Swift Razzashi Raptor
-	{ mountID = 89,  itemID = 18773, spellID = 23223 }, -- Swift White Mechanostrider
-	{ mountID = 96,  itemID = 18785, spellID = 23240 }, -- Swift White Ram
-	{ mountID = 92,  itemID = 18778, spellID = 23228 }, -- Swift White Steed
-	{ mountID = 88,  itemID = 18774, spellID = 23222 }, -- Swift Yellow Mechanostrider
-	{ mountID = 111, itemID = 19902, spellID = 24252 }, -- Swift Zulian Tiger
-	{ mountID = 58,  itemID = 13322, spellID = 17454 }, -- Unpainted Mechanostrider
-	{ mountID = 79,  itemID = 18246, spellID = 22721 }, -- Whistle of the Black War Raptor
-	{ mountID = 27,  itemID = 8588,  spellID = 8395  }, -- Whistle of the Emerald Raptor
-	{ mountID = 36,  itemID = 8591,  spellID = 10796 }, -- Whistle of the Turquoise Raptor
-	{ mountID = 38,  itemID = 8592,  spellID = 10799 }, -- Whistle of the Violet Raptor
-	{ mountID = 24,  itemID = 5873,  spellID = 6898  }, -- White Ram
-	{ mountID = 119, itemID = 21324, spellID = 26055 }, -- Yellow Qiraji Resonating Crystal
-
-	--
-	-- Burning Crusade
-	--
-
-	{ mountID = 125, itemID = 23720, spellID = 30174 }, -- Riding Turtle
-	{ mountID = 129, itemID = 25470, spellID = 32235 }, -- Golden Gryphon
-	{ mountID = 130, itemID = 25471, spellID = 32239 }, -- Ebon Gryphon
-	{ mountID = 131, itemID = 25472, spellID = 32240 }, -- Snowy Gryphon
-	{ mountID = 132, itemID = 25473, spellID = 32242 }, -- Swift Blue Gryphon
-	{ mountID = 133, itemID = 25474, spellID = 32243 }, -- Tawny Windrider
-	{ mountID = 134, itemID = 25475, spellID = 32244 }, -- Blue Windrider
-	{ mountID = 135, itemID = 25476, spellID = 32245 }, -- Green Windrider
-	{ mountID = 136, itemID = 25477, spellID = 32246 }, -- Swift Red Windrider
-	{ mountID = 137, itemID = 25527, spellID = 32289 }, -- Swift Red Gryphon
-	{ mountID = 138, itemID = 25528, spellID = 32290 }, -- Swift Green Gryphon
-	{ mountID = 139, itemID = 25529, spellID = 32292 }, -- Swift Purple Gryphon
-	{ mountID = 140, itemID = 25531, spellID = 32295 }, -- Swift Green Windrider
-	{ mountID = 141, itemID = 25532, spellID = 32296 }, -- Swift Yellow Windrider
-	{ mountID = 142, itemID = 25533, spellID = 32297 }, -- Swift Purple Windrider
-	{ mountID = 146, itemID = 28936, spellID = 33660 }, -- Swift Pink Hawkstrider
-	{ mountID = 147, itemID = 28481, spellID = 34406 }, -- Brown Elekk
-	{ mountID = 149, itemID = nil,   spellID = 34767 }, -- Summon Thalassian Charger
-	{ mountID = 150, itemID = nil,   spellID = 34769 }, -- Summon Thalassian Warhorse
-	{ mountID = 151, itemID = 29228, spellID = 34790 }, -- Reins of the Dark War Talbuk
-	{ mountID = 152, itemID = 28927, spellID = 34795 }, -- Red Hawkstrider
-	{ mountID = 153, itemID = 29102, spellID = 34896 }, -- Reins of the Cobalt War Talbuk
-	{ mountID = 153, itemID = 29227, spellID = 34896 }, -- Reins of the Cobalt War Talbuk
-	{ mountID = 154, itemID = 29103, spellID = 34897 }, -- Reins of the White War Talbuk
-	{ mountID = 154, itemID = 29231, spellID = 34897 }, -- Reins of the White War Talbuk
-	{ mountID = 155, itemID = 29104, spellID = 34898 }, -- Reins of the Silver War Talbuk
-	{ mountID = 155, itemID = 29229, spellID = 34898 }, -- Reins of the Silver War Talbuk
-	{ mountID = 156, itemID = 29105, spellID = 34899 }, -- Reins of the Tan War Talbuk
-	{ mountID = 156, itemID = 29230, spellID = 34899 }, -- Reins of the Tan War Talbuk
-	{ mountID = 157, itemID = 29222, spellID = 35018 }, -- Purple Hawkstrider
-	{ mountID = 158, itemID = 29220, spellID = 35020 }, -- Blue Hawkstrider
-	{ mountID = 159, itemID = 29221, spellID = 35022 }, -- Black Hawkstrider
-	{ mountID = 160, itemID = 29223, spellID = 35025 }, -- Swift Green Hawkstrider
-	{ mountID = 161, itemID = 29224, spellID = 35027 }, -- Swift Purple Hawkstrider
-	{ mountID = 162, itemID = 34129, spellID = 35028 }, -- Swift Warstrider
-	{ mountID = 163, itemID = 29744, spellID = 35710 }, -- Gray Elekk
-	{ mountID = 164, itemID = 29743, spellID = 35711 }, -- Purple Elekk
-	{ mountID = 165, itemID = 29746, spellID = 35712 }, -- Great Green Elekk
-	{ mountID = 166, itemID = 29745, spellID = 35713 }, -- Great Blue Elekk
-	{ mountID = 167, itemID = 29747, spellID = 35714 }, -- Great Purple Elekk
-	{ mountID = 168, itemID = 30480, spellID = 36702 }, -- Fiery Warhorse's Reins
-	{ mountID = 169, itemID = 30609, spellID = 37015 }, -- Swift Nether Drake
-	{ mountID = 170, itemID = 31829, spellID = 39315 }, -- Reins of the Cobalt Riding Talbuk
-	{ mountID = 170, itemID = 31830, spellID = 39315 }, -- Reins of the Cobalt Riding Talbuk
-	{ mountID = 171, itemID = 28915, spellID = 39316 }, -- Reins of the Dark Riding Talbuk
-	{ mountID = 172, itemID = 31831, spellID = 39317 }, -- Reins of the Silver Riding Talbuk
-	{ mountID = 172, itemID = 31832, spellID = 39317 }, -- Reins of the Silver Riding Talbuk
-	{ mountID = 173, itemID = 31833, spellID = 39318 }, -- Reins of the Tan Riding Talbuk
-	{ mountID = 173, itemID = 31834, spellID = 39318 }, -- Reins of the Tan Riding Talbuk
-	{ mountID = 174, itemID = 31835, spellID = 39319 }, -- Reins of the White Riding Talbuk
-	{ mountID = 174, itemID = 31836, spellID = 39319 }, -- Reins of the White Riding Talbuk
-	{ mountID = 176, itemID = 32314, spellID = 39798 }, -- Green Riding Nether Ray
-	{ mountID = 177, itemID = 32317, spellID = 39800 }, -- Red Riding Nether Ray
-	{ mountID = 178, itemID = 32316, spellID = 39801 }, -- Purple Riding Nether Ray
-	{ mountID = 179, itemID = 32318, spellID = 39802 }, -- Silver Riding Nether Ray
-	{ mountID = 180, itemID = 32319, spellID = 39803 }, -- Blue Riding Nether Ray
-	{ mountID = 183, itemID = 32458, spellID = 40192 }, -- Ashes of Al'ar
-	{ mountID = 185, itemID = 32768, spellID = 41252 }, -- Reins of the Raven Lord
-	{ mountID = 186, itemID = 32857, spellID = 41513 }, -- Reins of the Onyx Netherwing Drake
-	{ mountID = 187, itemID = 32858, spellID = 41514 }, -- Reins of the Azure Netherwing Drake
-	{ mountID = 188, itemID = 32859, spellID = 41515 }, -- Reins of the Cobalt Netherwing Drake
-	{ mountID = 189, itemID = 32860, spellID = 41516 }, -- Reins of the Purple Netherwing Drake
-	{ mountID = 190, itemID = 32861, spellID = 41517 }, -- Reins of the Veridian Netherwing Drake
-	{ mountID = 191, itemID = 32862, spellID = 41518 }, -- Reins of the Violet Netherwing Drake
-	{ mountID = 196, itemID = 33224, spellID = 42776 }, -- Reins of the Spectral Tiger
-	{ mountID = 197, itemID = 33225, spellID = 42777 }, -- Reins of the Swift Spectral Tiger
-	{ mountID = 199, itemID = 33809, spellID = 43688 }, -- Amani War Bear
-	{ mountID = 201, itemID = 33976, spellID = 43899 }, -- Brewfest Ram
-	{ mountID = 202, itemID = 33977, spellID = 43900 }, -- Swift Brewfest Ram
-	{ mountID = 203, itemID = 33999, spellID = 43927 }, -- Cenarion War Hippogryph
-	{ mountID = 204, itemID = 34061, spellID = 44151 }, -- Turbo-Charged Flying Machine Control
-	{ mountID = 205, itemID = 34060, spellID = 44153 }, -- Flying Machine Control
-	{ mountID = 207, itemID = 34092, spellID = 44744 }, -- Merciless Nether Drake
-	{ mountID = 211, itemID = 35225, spellID = 46197 }, -- X-51 Nether-Rocket
-	{ mountID = 212, itemID = 35226, spellID = 46199 }, -- X-51 Nether-Rocket X-TREME
-	{ mountID = 213, itemID = 35513, spellID = 46628 }, -- Swift White Hawkstrider
-	{ mountID = 219, itemID = 37012, spellID = 48025 }, -- The Horseman's Reins
-	{ mountID = 220, itemID = 35906, spellID = 48027 }, -- Reins of the Black War Elekk
-	{ mountID = 222, itemID = 37598, spellID = 48954 }, -- Swift Zhevra
-	{ mountID = 223, itemID = 37676, spellID = 49193 }, -- Vengeful Nether Drake
-	{ mountID = 224, itemID = 37719, spellID = 49322 }, -- Swift Zhevra
-	{ mountID = 225, itemID = 37827, spellID = 49378 }, -- Brewfest Kodo
-	{ mountID = 226, itemID = 37828, spellID = 49379 }, -- Great Brewfest Kodo
-	{ mountID = 230, itemID = 38576, spellID = 51412 }, -- Big Battle Bear
+	{ mountID = 6, spellID = 458, factionGroup = nil },  -- Brown Horse
+	{ mountID = 7, spellID = 459, factionGroup = nil },  -- Gray Wolf
+	{ mountID = 8, spellID = 468, factionGroup = nil },  -- White Stallion
+	{ mountID = 9, spellID = 470, factionGroup = nil },  -- Black Stallion
+	{ mountID = 11, spellID = 472, factionGroup = nil },  -- Pinto
+	{ mountID = 12, spellID = 578, factionGroup = nil },  -- Black Wolf
+	{ mountID = 13, spellID = 579, factionGroup = nil },  -- Red Wolf
+	{ mountID = 14, spellID = 580, factionGroup = nil },  -- Timber Wolf
+	{ mountID = 15, spellID = 581, factionGroup = nil },  -- Winter Wolf
+	{ mountID = 17, spellID = 5784, factionGroup = nil },  -- Felsteed
+	{ mountID = 18, spellID = 6648, factionGroup = nil },  -- Chestnut Mare
+	{ mountID = 19, spellID = 6653, factionGroup = nil },  -- Dire Wolf
+	{ mountID = 20, spellID = 6654, factionGroup = nil },  -- Brown Wolf
+	{ mountID = 21, spellID = 6777, factionGroup = nil },  -- Gray Ram
+	{ mountID = 22, spellID = 6896, factionGroup = nil },  -- Black Ram
+	{ mountID = 24, spellID = 6898, factionGroup = nil },  -- White Ram
+	{ mountID = 25, spellID = 6899, factionGroup = nil },  -- Brown Ram
+	{ mountID = 26, spellID = 8394, factionGroup = nil },  -- Striped Frostsaber
+	{ mountID = 27, spellID = 8395, factionGroup = nil },  -- Emerald Raptor
+	{ mountID = 28, spellID = 8980, factionGroup = nil },  -- Skeletal Horse
+	{ mountID = 31, spellID = 10789, factionGroup = nil },  -- Spotted Frostsaber
+	{ mountID = 34, spellID = 10793, factionGroup = nil },  -- Striped Nightsaber
+	{ mountID = 35, spellID = 10795, factionGroup = nil },  -- Ivory Raptor
+	{ mountID = 36, spellID = 10796, factionGroup = nil },  -- Turquoise Raptor
+	{ mountID = 38, spellID = 10799, factionGroup = nil },  -- Violet Raptor
+	{ mountID = 39, spellID = 10873, factionGroup = nil },  -- Red Mechanostrider
+	{ mountID = 40, spellID = 10969, factionGroup = nil },  -- Blue Mechanostrider
+	{ mountID = 41, spellID = 13819, factionGroup = "Alliance" },  -- Warhorse
+	{ mountID = 42, spellID = 15779, factionGroup = nil },  -- White Mechanostrider Mod B
+	{ mountID = 45, spellID = 16055, factionGroup = nil },  -- Black Nightsaber
+	{ mountID = 46, spellID = 16056, factionGroup = nil },  -- Ancient Frostsaber
+	{ mountID = 50, spellID = 16080, factionGroup = nil },  -- Red Wolf
+	{ mountID = 51, spellID = 16081, factionGroup = nil },  -- Winter Wolf
+	{ mountID = 52, spellID = 16082, factionGroup = nil },  -- Palomino
+	{ mountID = 53, spellID = 16083, factionGroup = nil },  -- White Stallion
+	{ mountID = 54, spellID = 16084, factionGroup = nil },  -- Mottled Red Raptor
+	{ mountID = 55, spellID = 17229, factionGroup = "Alliance" },  -- Winterspring Frostsaber
+	{ mountID = 56, spellID = 17450, factionGroup = nil },  -- Ivory Raptor
+	{ mountID = 57, spellID = 17453, factionGroup = nil },  -- Green Mechanostrider
+	{ mountID = 58, spellID = 17454, factionGroup = nil },  -- Unpainted Mechanostrider
+	{ mountID = 62, spellID = 17459, factionGroup = nil },  -- Icy Blue Mechanostrider Mod A
+	{ mountID = 63, spellID = 17460, factionGroup = nil },  -- Frost Ram
+	{ mountID = 64, spellID = 17461, factionGroup = nil },  -- Black Ram
+	{ mountID = 65, spellID = 17462, factionGroup = nil },  -- Red Skeletal Horse
+	{ mountID = 66, spellID = 17463, factionGroup = nil },  -- Blue Skeletal Horse
+	{ mountID = 67, spellID = 17464, factionGroup = nil },  -- Brown Skeletal Horse
+	{ mountID = 68, spellID = 17465, factionGroup = nil },  -- Green Skeletal Warhorse
+	{ mountID = 69, spellID = 17481, factionGroup = nil },  -- Rivendare's Deathcharger
+	{ mountID = 70, spellID = 18363, factionGroup = nil },  -- Riding Kodo
+	{ mountID = 71, spellID = 18989, factionGroup = nil },  -- Gray Kodo
+	{ mountID = 72, spellID = 18990, factionGroup = nil },  -- Brown Kodo
+	{ mountID = 73, spellID = 18991, factionGroup = nil },  -- Green Kodo
+	{ mountID = 74, spellID = 18992, factionGroup = nil },  -- Teal Kodo
+	{ mountID = 75, spellID = 22717, factionGroup = nil },  -- Black War Steed
+	{ mountID = 76, spellID = 22718, factionGroup = nil },  -- Black War Kodo
+	{ mountID = 77, spellID = 22719, factionGroup = nil },  -- Black Battlestrider
+	{ mountID = 78, spellID = 22720, factionGroup = nil },  -- Black War Ram
+	{ mountID = 79, spellID = 22721, factionGroup = nil },  -- Black War Raptor
+	{ mountID = 80, spellID = 22722, factionGroup = nil },  -- Red Skeletal Warhorse
+	{ mountID = 81, spellID = 22723, factionGroup = nil },  -- Black War Tiger
+	{ mountID = 82, spellID = 22724, factionGroup = nil },  -- Black War Wolf
+	{ mountID = 83, spellID = 23161, factionGroup = nil },  -- Dreadsteed
+	{ mountID = 84, spellID = 23214, factionGroup = "Alliance" },  -- Charger
+	{ mountID = 85, spellID = 23219, factionGroup = nil },  -- Swift Mistsaber
+	{ mountID = 87, spellID = 23221, factionGroup = nil },  -- Swift Frostsaber
+	{ mountID = 88, spellID = 23222, factionGroup = nil },  -- Swift Yellow Mechanostrider
+	{ mountID = 89, spellID = 23223, factionGroup = nil },  -- Swift White Mechanostrider
+	{ mountID = 90, spellID = 23225, factionGroup = nil },  -- Swift Green Mechanostrider
+	{ mountID = 91, spellID = 23227, factionGroup = nil },  -- Swift Palomino
+	{ mountID = 92, spellID = 23228, factionGroup = nil },  -- Swift White Steed
+	{ mountID = 93, spellID = 23229, factionGroup = nil },  -- Swift Brown Steed
+	{ mountID = 94, spellID = 23238, factionGroup = nil },  -- Swift Brown Ram
+	{ mountID = 95, spellID = 23239, factionGroup = nil },  -- Swift Gray Ram
+	{ mountID = 96, spellID = 23240, factionGroup = nil },  -- Swift White Ram
+	{ mountID = 97, spellID = 23241, factionGroup = nil },  -- Swift Blue Raptor
+	{ mountID = 98, spellID = 23242, factionGroup = nil },  -- Swift Olive Raptor
+	{ mountID = 99, spellID = 23243, factionGroup = nil },  -- Swift Orange Raptor
+	{ mountID = 100, spellID = 23246, factionGroup = nil },  -- Purple Skeletal Warhorse
+	{ mountID = 101, spellID = 23247, factionGroup = nil },  -- Great White Kodo
+	{ mountID = 102, spellID = 23248, factionGroup = nil },  -- Great Gray Kodo
+	{ mountID = 103, spellID = 23249, factionGroup = nil },  -- Great Brown Kodo
+	{ mountID = 104, spellID = 23250, factionGroup = nil },  -- Swift Brown Wolf
+	{ mountID = 105, spellID = 23251, factionGroup = nil },  -- Swift Timber Wolf
+	{ mountID = 106, spellID = 23252, factionGroup = nil },  -- Swift Gray Wolf
+	{ mountID = 107, spellID = 23338, factionGroup = nil },  -- Swift Stormsaber
+	{ mountID = 108, spellID = 23509, factionGroup = "Horde" },  -- Frostwolf Howler
+	{ mountID = 109, spellID = 23510, factionGroup = "Alliance" },  -- Stormpike Battle Charger
+	{ mountID = 110, spellID = 24242, factionGroup = nil },  -- Swift Razzashi Raptor
+	{ mountID = 111, spellID = 24252, factionGroup = nil },  -- Swift Zulian Tiger
+	{ mountID = 117, spellID = 25953, factionGroup = nil },  -- Blue Qiraji Battle Tank
+	{ mountID = 118, spellID = 26054, factionGroup = nil },  -- Red Qiraji Battle Tank
+	{ mountID = 119, spellID = 26055, factionGroup = nil },  -- Yellow Qiraji Battle Tank
+	{ mountID = 120, spellID = 26056, factionGroup = nil },  -- Green Qiraji Battle Tank
+	{ mountID = 122, spellID = 26656, factionGroup = nil },  -- Black Qiraji Battle Tank
+	{ mountID = 125, spellID = 30174, factionGroup = nil },  -- Riding Turtle
+	{ mountID = 129, spellID = 32235, factionGroup = "Alliance" },  -- Golden Gryphon
+	{ mountID = 130, spellID = 32239, factionGroup = "Alliance" },  -- Ebon Gryphon
+	{ mountID = 131, spellID = 32240, factionGroup = "Alliance" },  -- Snowy Gryphon
+	{ mountID = 132, spellID = 32242, factionGroup = "Alliance" },  -- Swift Blue Gryphon
+	{ mountID = 133, spellID = 32243, factionGroup = "Horde" },  -- Tawny Wind Rider
+	{ mountID = 134, spellID = 32244, factionGroup = "Horde" },  -- Blue Wind Rider
+	{ mountID = 135, spellID = 32245, factionGroup = "Horde" },  -- Green Wind Rider
+	{ mountID = 136, spellID = 32246, factionGroup = "Horde" },  -- Swift Red Wind Rider
+	{ mountID = 137, spellID = 32289, factionGroup = "Alliance" },  -- Swift Red Gryphon
+	{ mountID = 138, spellID = 32290, factionGroup = "Alliance" },  -- Swift Green Gryphon
+	{ mountID = 139, spellID = 32292, factionGroup = "Alliance" },  -- Swift Purple Gryphon
+	{ mountID = 140, spellID = 32295, factionGroup = "Horde" },  -- Swift Green Wind Rider
+	{ mountID = 141, spellID = 32296, factionGroup = "Horde" },  -- Swift Yellow Wind Rider
+	{ mountID = 142, spellID = 32297, factionGroup = "Horde" },  -- Swift Purple Wind Rider
+	{ mountID = 146, spellID = 33660, factionGroup = nil },  -- Swift Pink Hawkstrider
+	{ mountID = 147, spellID = 34406, factionGroup = nil },  -- Brown Elekk
+	{ mountID = 149, spellID = 34767, factionGroup = "Horde" },  -- Summon Charger
+	{ mountID = 150, spellID = 34769, factionGroup = "Horde" },  -- Summon Warhorse
+	{ mountID = 151, spellID = 34790, factionGroup = nil },  -- Dark War Talbuk
+	{ mountID = 152, spellID = 34795, factionGroup = nil },  -- Red Hawkstrider
+	{ mountID = 153, spellID = 34896, factionGroup = nil },  -- Cobalt War Talbuk
+	{ mountID = 154, spellID = 34897, factionGroup = nil },  -- White War Talbuk
+	{ mountID = 155, spellID = 34898, factionGroup = nil },  -- Silver War Talbuk
+	{ mountID = 156, spellID = 34899, factionGroup = nil },  -- Tan War Talbuk
+	{ mountID = 157, spellID = 35018, factionGroup = nil },  -- Purple Hawkstrider
+	{ mountID = 158, spellID = 35020, factionGroup = nil },  -- Blue Hawkstrider
+	{ mountID = 159, spellID = 35022, factionGroup = nil },  -- Black Hawkstrider
+	{ mountID = 160, spellID = 35025, factionGroup = nil },  -- Swift Green Hawkstrider
+	{ mountID = 161, spellID = 35027, factionGroup = nil },  -- Swift Purple Hawkstrider
+	{ mountID = 162, spellID = 35028, factionGroup = nil },  -- Swift Warstrider
+	{ mountID = 163, spellID = 35710, factionGroup = nil },  -- Gray Elekk
+	{ mountID = 164, spellID = 35711, factionGroup = nil },  -- Purple Elekk
+	{ mountID = 165, spellID = 35712, factionGroup = nil },  -- Great Green Elekk
+	{ mountID = 166, spellID = 35713, factionGroup = nil },  -- Great Blue Elekk
+	{ mountID = 167, spellID = 35714, factionGroup = nil },  -- Great Purple Elekk
+	{ mountID = 168, spellID = 36702, factionGroup = nil },  -- Fiery Warhorse
+	{ mountID = 169, spellID = 37015, factionGroup = nil },  -- Swift Nether Drake
+	{ mountID = 170, spellID = 39315, factionGroup = nil },  -- Cobalt Riding Talbuk
+	{ mountID = 171, spellID = 39316, factionGroup = nil },  -- Dark Riding Talbuk
+	{ mountID = 172, spellID = 39317, factionGroup = nil },  -- Silver Riding Talbuk
+	{ mountID = 173, spellID = 39318, factionGroup = nil },  -- Tan Riding Talbuk
+	{ mountID = 174, spellID = 39319, factionGroup = nil },  -- White Riding Talbuk
+	{ mountID = 176, spellID = 39798, factionGroup = nil },  -- Green Riding Nether Ray
+	{ mountID = 177, spellID = 39800, factionGroup = nil },  -- Red Riding Nether Ray
+	{ mountID = 178, spellID = 39801, factionGroup = nil },  -- Purple Riding Nether Ray
+	{ mountID = 179, spellID = 39802, factionGroup = nil },  -- Silver Riding Nether Ray
+	{ mountID = 180, spellID = 39803, factionGroup = nil },  -- Blue Riding Nether Ray
+	{ mountID = 183, spellID = 40192, factionGroup = nil },  -- Ashes of Al'ar
+	{ mountID = 185, spellID = 41252, factionGroup = nil },  -- Raven Lord
+	{ mountID = 186, spellID = 41513, factionGroup = nil },  -- Onyx Netherwing Drake
+	{ mountID = 187, spellID = 41514, factionGroup = nil },  -- Azure Netherwing Drake
+	{ mountID = 188, spellID = 41515, factionGroup = nil },  -- Cobalt Netherwing Drake
+	{ mountID = 189, spellID = 41516, factionGroup = nil },  -- Purple Netherwing Drake
+	{ mountID = 190, spellID = 41517, factionGroup = nil },  -- Veridian Netherwing Drake
+	{ mountID = 191, spellID = 41518, factionGroup = nil },  -- Violet Netherwing Drake
+	{ mountID = 196, spellID = 42776, factionGroup = nil },  -- Spectral Tiger
+	{ mountID = 197, spellID = 42777, factionGroup = nil },  -- Swift Spectral Tiger
+	{ mountID = 199, spellID = 43688, factionGroup = nil },  -- Amani War Bear
+	{ mountID = 201, spellID = 43899, factionGroup = nil },  -- Brewfest Ram
+	{ mountID = 202, spellID = 43900, factionGroup = nil },  -- Swift Brewfest Ram
+	{ mountID = 203, spellID = 43927, factionGroup = nil },  -- Cenarion War Hippogryph
+	{ mountID = 204, spellID = 44151, factionGroup = nil },  -- Turbo-Charged Flying Machine
+	{ mountID = 205, spellID = 44153, factionGroup = nil },  -- Flying Machine
+	{ mountID = 207, spellID = 44744, factionGroup = nil },  -- Merciless Nether Drake
+	{ mountID = 211, spellID = 46197, factionGroup = nil },  -- X-51 Nether-Rocket
+	{ mountID = 212, spellID = 46199, factionGroup = nil },  -- X-51 Nether-Rocket X-TREME
+	{ mountID = 213, spellID = 46628, factionGroup = nil },  -- Swift White Hawkstrider
+	{ mountID = 219, spellID = 48025, factionGroup = nil },  -- Headless Horseman's Mount
+	{ mountID = 220, spellID = 48027, factionGroup = nil },  -- Black War Elekk
+	{ mountID = 221, spellID = 48778, factionGroup = nil },  -- Acherus Deathcharger
+	{ mountID = 222, spellID = 48954, factionGroup = nil },  -- Swift Zhevra
+	{ mountID = 223, spellID = 49193, factionGroup = nil },  -- Vengeful Nether Drake
+	{ mountID = 224, spellID = 49322, factionGroup = nil },  -- Swift Zhevra
+	{ mountID = 225, spellID = 49378, factionGroup = nil },  -- Brewfest Riding Kodo
+	{ mountID = 226, spellID = 49379, factionGroup = nil },  -- Great Brewfest Kodo
+	{ mountID = 230, spellID = 51412, factionGroup = nil },  -- Big Battle Bear
+	{ mountID = 236, spellID = 54729, factionGroup = nil },  -- Winged Steed of the Ebon Blade
+	{ mountID = 237, spellID = 54753, factionGroup = nil },  -- White Polar Bear
+	{ mountID = 240, spellID = 55531, factionGroup = "Horde" },  -- Mechano-hog
+	{ mountID = 241, spellID = 58615, factionGroup = nil },  -- Brutal Nether Drake
+	{ mountID = 243, spellID = 58983, factionGroup = nil },  -- Big Blizzard Bear
+	{ mountID = 246, spellID = 59567, factionGroup = nil },  -- Azure Drake
+	{ mountID = 247, spellID = 59568, factionGroup = nil },  -- Blue Drake
+	{ mountID = 248, spellID = 59569, factionGroup = nil },  -- Bronze Drake
+	{ mountID = 249, spellID = 59570, factionGroup = nil },  -- Red Drake
+	{ mountID = 250, spellID = 59571, factionGroup = nil },  -- Twilight Drake
+	{ mountID = 251, spellID = 59572, factionGroup = nil },  -- Black Polar Bear
+	{ mountID = 253, spellID = 59650, factionGroup = nil },  -- Black Drake
+	{ mountID = 254, spellID = 59785, factionGroup = "Alliance" },  -- Black War Mammoth
+	{ mountID = 255, spellID = 59788, factionGroup = "Horde" },  -- Black War Mammoth
+	{ mountID = 256, spellID = 59791, factionGroup = nil },  -- Wooly Mammoth
+	{ mountID = 257, spellID = 59793, factionGroup = nil },  -- Wooly Mammoth
+	{ mountID = 258, spellID = 59797, factionGroup = "Horde" },  -- Ice Mammoth
+	{ mountID = 259, spellID = 59799, factionGroup = "Alliance" },  -- Ice Mammoth
+	{ mountID = 262, spellID = 59961, factionGroup = nil },  -- Red Proto-Drake
+	{ mountID = 263, spellID = 59976, factionGroup = nil },  -- Black Proto-Drake
+	{ mountID = 264, spellID = 59996, factionGroup = nil },  -- Blue Proto-Drake
+	{ mountID = 265, spellID = 60002, factionGroup = nil },  -- Time-Lost Proto-Drake
+	{ mountID = 266, spellID = 60021, factionGroup = nil },  -- Plagued Proto-Drake
+	{ mountID = 267, spellID = 60024, factionGroup = nil },  -- Violet Proto-Drake
+	{ mountID = 268, spellID = 60025, factionGroup = nil },  -- Albino Drake
+	{ mountID = 269, spellID = 60114, factionGroup = "Alliance" },  -- Armored Brown Bear
+	{ mountID = 270, spellID = 60116, factionGroup = "Horde" },  -- Armored Brown Bear
+	{ mountID = 271, spellID = 60118, factionGroup = "Alliance" },  -- Black War Bear
+	{ mountID = 272, spellID = 60119, factionGroup = "Horde" },  -- Black War Bear
+	{ mountID = 275, spellID = 60424, factionGroup = "Alliance" },  -- Mekgineer's Chopper
+	{ mountID = 276, spellID = 61229, factionGroup = "Alliance" },  -- Armored Snowy Gryphon
+	{ mountID = 277, spellID = 61230, factionGroup = "Horde" },  -- Armored Blue Wind Rider
+	{ mountID = 278, spellID = 61294, factionGroup = nil },  -- Green Proto-Drake
+	{ mountID = 279, spellID = 61309, factionGroup = nil },  -- Magnificent Flying Carpet
+	{ mountID = 280, spellID = 61425, factionGroup = "Alliance" },  -- Traveler's Tundra Mammoth
+	{ mountID = 284, spellID = 61447, factionGroup = "Horde" },  -- Traveler's Tundra Mammoth
+	{ mountID = 285, spellID = 61451, factionGroup = nil },  -- Flying Carpet
+	{ mountID = 286, spellID = 61465, factionGroup = "Alliance" },  -- Grand Black War Mammoth
+	{ mountID = 287, spellID = 61467, factionGroup = "Horde" },  -- Grand Black War Mammoth
+	{ mountID = 288, spellID = 61469, factionGroup = "Horde" },  -- Grand Ice Mammoth
+	{ mountID = 289, spellID = 61470, factionGroup = "Alliance" },  -- Grand Ice Mammoth
+	{ mountID = 291, spellID = 61996, factionGroup = "Alliance" },  -- Blue Dragonhawk
+	{ mountID = 292, spellID = 61997, factionGroup = "Horde" },  -- Red Dragonhawk
+	{ mountID = 293, spellID = 62048, factionGroup = nil },  -- Black Dragonhawk Mount
+	{ mountID = 294, spellID = 63232, factionGroup = nil },  -- Stormwind Steed
+	{ mountID = 295, spellID = 63635, factionGroup = nil },  -- Darkspear Raptor
+	{ mountID = 296, spellID = 63636, factionGroup = nil },  -- Ironforge Ram
+	{ mountID = 297, spellID = 63637, factionGroup = nil },  -- Darnassian Nightsaber
+	{ mountID = 298, spellID = 63638, factionGroup = nil },  -- Gnomeregan Mechanostrider
+	{ mountID = 299, spellID = 63639, factionGroup = nil },  -- Exodar Elekk
+	{ mountID = 300, spellID = 63640, factionGroup = nil },  -- Orgrimmar Wolf
+	{ mountID = 301, spellID = 63641, factionGroup = nil },  -- Thunder Bluff Kodo
+	{ mountID = 302, spellID = 63642, factionGroup = nil },  -- Silvermoon Hawkstrider
+	{ mountID = 303, spellID = 63643, factionGroup = nil },  -- Forsaken Warhorse
+	{ mountID = 304, spellID = 63796, factionGroup = nil },  -- Mimiron's Head
+	{ mountID = 305, spellID = 63844, factionGroup = nil },  -- Argent Hippogryph
+	{ mountID = 306, spellID = 63956, factionGroup = nil },  -- Ironbound Proto-Drake
+	{ mountID = 307, spellID = 63963, factionGroup = nil },  -- Rusted Proto-Drake
+	{ mountID = 308, spellID = 64656, factionGroup = nil },  -- Blue Skeletal Warhorse
+	{ mountID = 309, spellID = 64657, factionGroup = nil },  -- White Kodo
+	{ mountID = 310, spellID = 64658, factionGroup = nil },  -- Black Wolf
+	{ mountID = 311, spellID = 64659, factionGroup = "Horde" },  -- Venomhide Ravasaur
+	{ mountID = 312, spellID = 64731, factionGroup = nil },  -- Sea Turtle
+	{ mountID = 313, spellID = 64927, factionGroup = nil },  -- Deadly Gladiator's Frost Wyrm
+	{ mountID = 314, spellID = 64977, factionGroup = nil },  -- Black Skeletal Horse
+	{ mountID = 317, spellID = 65439, factionGroup = nil },  -- Furious Gladiator's Frost Wyrm
+	{ mountID = 318, spellID = 65637, factionGroup = nil },  -- Great Red Elekk
+	{ mountID = 319, spellID = 65638, factionGroup = nil },  -- Swift Moonsaber
+	{ mountID = 320, spellID = 65639, factionGroup = nil },  -- Swift Red Hawkstrider
+	{ mountID = 321, spellID = 65640, factionGroup = nil },  -- Swift Gray Steed
+	{ mountID = 322, spellID = 65641, factionGroup = nil },  -- Great Golden Kodo
+	{ mountID = 323, spellID = 65642, factionGroup = nil },  -- Turbostrider
+	{ mountID = 324, spellID = 65643, factionGroup = nil },  -- Swift Violet Ram
+	{ mountID = 325, spellID = 65644, factionGroup = nil },  -- Swift Purple Raptor
+	{ mountID = 326, spellID = 65645, factionGroup = nil },  -- White Skeletal Warhorse
+	{ mountID = 327, spellID = 65646, factionGroup = nil },  -- Swift Burgundy Wolf
+	{ mountID = 328, spellID = 65917, factionGroup = nil },  -- Magic Rooster
+	{ mountID = 329, spellID = 66087, factionGroup = "Alliance" },  -- Silver Covenant Hippogryph
+	{ mountID = 330, spellID = 66088, factionGroup = "Horde" },  -- Sunreaver Dragonhawk
+	{ mountID = 331, spellID = 66090, factionGroup = "Alliance" },  -- Quel'dorei Steed
+	{ mountID = 332, spellID = 66091, factionGroup = "Horde" },  -- Sunreaver Hawkstrider
+	{ mountID = 336, spellID = 66846, factionGroup = nil },  -- Ochre Skeletal Warhorse
+	{ mountID = 337, spellID = 66847, factionGroup = nil },  -- Striped Dawnsaber
+	{ mountID = 338, spellID = 66906, factionGroup = nil },  -- Argent Charger
+	{ mountID = 340, spellID = 67336, factionGroup = nil },  -- Relentless Gladiator's Frost Wyrm
+	{ mountID = 341, spellID = 67466, factionGroup = nil },  -- Argent Warhorse
+	{ mountID = 342, spellID = 68056, factionGroup = "Horde" },  -- Swift Horde Wolf
+	{ mountID = 343, spellID = 68057, factionGroup = "Alliance" },  -- Swift Alliance Steed
+	{ mountID = 344, spellID = 68187, factionGroup = "Alliance" },  -- Crusader's White Warhorse
+	{ mountID = 345, spellID = 68188, factionGroup = "Horde" },  -- Crusader's Black Warhorse
+	{ mountID = 349, spellID = 69395, factionGroup = nil },  -- Onyxian Drake
+	{ mountID = 352, spellID = 71342, factionGroup = nil },  -- X-45 Heartbreaker
+	{ mountID = 358, spellID = 71810, factionGroup = nil },  -- Wrathful Gladiator's Frost Wyrm
+	{ mountID = 363, spellID = 72286, factionGroup = nil },  -- Invincible
+	{ mountID = 364, spellID = 72807, factionGroup = nil },  -- Icebound Frostbrood Vanquisher
+	{ mountID = 365, spellID = 72808, factionGroup = nil },  -- Bloodbathed Frostbrood Vanquisher
+	{ mountID = 366, spellID = 73313, factionGroup = nil },  -- Crimson Deathcharger
+	{ mountID = 371, spellID = 74856, factionGroup = nil },  -- Blazing Hippogryph
+	{ mountID = 372, spellID = 74918, factionGroup = nil },  -- Wooly White Rhino
+	{ mountID = 375, spellID = 75596, factionGroup = nil },  -- Frosty Flying Carpet
+	{ mountID = 376, spellID = 75614, factionGroup = nil },  -- Celestial Steed
+	{ mountID = 382, spellID = 75973, factionGroup = nil },  -- X-53 Touring Rocket
 };
 
 --
@@ -354,6 +584,33 @@ do
 		end
 	end
 
+	local function GetPetName(petInfo)
+		local name;
+
+		-- From Wrath onwards we prefer the spell name as this matches what
+		-- is actually shown in the companions UI.
+
+		if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_BURNING_CRUSADE then
+			name = C_Item.GetItemNameByID(petInfo.itemID);
+		else
+			name = GetSpellInfo(petInfo.spellID);
+		end
+
+		return name;
+	end
+
+	local function GetPetIcon(petInfo)
+		local icon;
+
+		if LE_EXPANSION_LEVEL_CURRENT <= LE_EXPANSION_BURNING_CRUSADE then
+			icon = C_Item.GetItemIconByID(petInfo.itemID);
+		else
+			icon = GetSpellTexture(petInfo.spellID);
+		end
+
+		return icon;
+	end
+
 	function TRP3_API.utils.resources.GetNumPets()
 		return #TRP3_CompanionPetData;
 	end
@@ -369,14 +626,14 @@ do
 			return nil;
 		end
 
-		local customName = C_Item.GetItemNameByID(petInfo.itemID);
+		local customName = GetPetName(petInfo);
 		local level = 1;
 		local xp = 1;
 		local maxXp = 1;
 		local displayID = nil;
 		local isFavorite = false;
 		local name = customName;
-		local icon = C_Item.GetItemIconByID(petInfo.itemID);
+		local icon = GetPetIcon(petInfo);
 		local petType = nil;
 		local creatureID = petInfo.creatureID;
 		local sourceText = nil;
@@ -400,12 +657,12 @@ do
 		local petID = tostring(petInfo.speciesID);
 		local speciesID = petInfo.speciesID;
 		local owned = true;
-		local customName = C_Item.GetItemNameByID(petInfo.itemID);
+		local customName = GetPetName(petInfo);
 		local level = 1;
 		local favorite = false;
 		local isRevoked = false;
 		local speciesName = customName;
-		local icon = C_Item.GetItemIconByID(petInfo.itemID);
+		local icon = GetPetIcon(petInfo);
 		local petType = nil;
 		local creatureID = petInfo.creatureID;
 		local tooltip = nil;
@@ -433,7 +690,7 @@ do
 		local petInfo = companionPetsByCreatureID[creatureID];
 
 		if petInfo then
-			return C_Item.GetItemNameByID(petInfo.itemID);
+			return GetPetName(petInfo);
 		end
 	end
 
@@ -444,9 +701,10 @@ do
 
 	function TRP3_API.utils.resources.GetMountIDs()
 		local mountIDs = {};
+		local factionGroup = UnitFactionGroup("player");
 
 		for _, mountInfo in ipairs(TRP3_CompanionMountData) do
-			if mountInfo.itemID or IsSpellKnown(mountInfo.spellID) then
+			if not mountInfo.factionGroup or factionGroup == mountInfo.factionGroup then
 				table.insert(mountIDs, mountInfo.mountID);
 			end
 		end
@@ -461,16 +719,16 @@ do
 			return;
 		end
 
-		local name = (mountInfo.itemID ~= nil) and C_Item.GetItemNameByID(mountInfo.itemID) or GetSpellInfo(mountInfo.spellID);
+		local name = GetSpellInfo(mountInfo.spellID);
 		local spellID = mountInfo.spellID;
-		local icon = (mountInfo.itemID ~= nil) and C_Item.GetItemIconByID(mountInfo.itemID) or GetSpellTexture(mountInfo.spellID);
+		local icon = GetSpellTexture(mountInfo.spellID);
 		local isActive = TRP3_API.utils.resources.GetSummonedMountID() == mountInfo.mountID;
 		local isUsable = true;
 		local sourceType = nil;
 		local isFavorite = false;
-		local isFactionSpecific = false;
+		local isFactionSpecific = (mountInfo.factionGroup ~= nil);
 		local faction = nil;
-		local isCollected = (mountInfo.classID == nil or mountInfo.classID == select(2, UnitClassBase("player")));
+		local isCollected = true;
 		local shouldHideOnChar = not isCollected;
 
 		return name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID;
