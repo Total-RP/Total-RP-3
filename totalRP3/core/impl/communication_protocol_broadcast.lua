@@ -271,22 +271,65 @@ local function hideBroadcastChannelFromChatFrame()
 	RemoveChatWindowChannel(chatFrame:GetID(), broadcastChannelName);
 end
 
+--- Swap channels by index, without losing the color association on Retail.
+local swapChannelsByIndex = ChatConfigChannelSettings_SwapChannelsByIndex or C_ChatInfo.SwapChatChannelsByChannelIndex;
+
 --- Makes sure the broadcast channel is always at the bottom of list.
 --- This is so the user always have the channels they actually use first and that the broadcast channel
 --- is never taking the General or Trade chat position.
 local function moveBroadcastChannelToTheBottomOfTheList(forceMove)
 	if getConfigValue(TRP3_API.ADVANCED_SETTINGS_KEYS.MAKE_SURE_BROADCAST_CHANNEL_IS_LAST) and (forceMove or helloWorlded) then
-		local broadcastChannelName = config_BroadcastChannel();
+		local broadcastChannelIndex = GetChannelName(config_BroadcastChannel());
+		if broadcastChannelIndex == nil then return end
 
-		for channelIndex = 1, MAX_WOW_CHAT_CHANNELS do
-			local _, channelName = GetChannelName(channelIndex);
-			if channelName == broadcastChannelName then
-				(SwapChatChannelByLocalID or C_ChatInfo.SwapChatChannelsByChannelIndex)(channelIndex, channelIndex + 1);
+		-- Get the index of the last channel
+		local lastChannelIndex = 0;
+		for index = broadcastChannelIndex, MAX_WOW_CHAT_CHANNELS do
+			local shortcut = C_ChatInfo.GetChannelShortcut(index);
+			if shortcut and shortcut ~= "" then
+				lastChannelIndex = index;
 			end
 		end
 
-		hideBroadcastChannelFromChatFrame()
+		-- No need to move, the broadcast channel is already the last one
+		if broadcastChannelIndex == lastChannelIndex then
+			return;
+		end
+
+		-- Bubble the broadcast channel up to the last position
+		for index = broadcastChannelIndex, lastChannelIndex - 1 do
+			swapChannelsByIndex(index, index + 1);
+		end
+		Log.log("Moved broadcast channel from position " .. broadcastChannelIndex .. " to " .. lastChannelIndex .. ".");
+
+		hideBroadcastChannelFromChatFrame();
 	end
+end
+
+--- Return true if the channel list is ready for the broadcast channel to join.
+-- @return isReady (boolean)
+local function isChannelListReady()
+	-- The channel list is empty
+	if select("#", GetChannelList()) == 0 then
+		return false;
+	end
+
+	-- Find gaps in the channel list
+	local hasGaps = false;
+	local previousIndex = 0;
+	for index = 1, MAX_WOW_CHAT_CHANNELS do
+		local shortcut = C_ChatInfo.GetChannelShortcut(index);
+		if shortcut and shortcut ~= "" then
+			if index ~= previousIndex + 1 then
+				hasGaps = true;
+				break;
+			end
+			previousIndex = index;
+		end
+	end
+
+	-- Consider the channel list is ready if there is no gap
+	return not hasGaps;
 end
 
 if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
@@ -320,12 +363,18 @@ Comm.broadcast.init = function()
 			-- We'll send out the event nice and early to say we're setting up.
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);
 
+			-- Force joining the broadcast channel if we wait too long.
+			local forceJoinChannel = false;
+			C_Timer.After(10, function() forceJoinChannel = true end);
+
 			local firstTime = true;
 			ticker = C_Timer.NewTicker(1, function(_)
 				if firstTime then firstTime = false; return; end
 				if GetChannelName(string.lower(config_BroadcastChannel())) == 0 then
-					Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
-					JoinChannelByName(string.lower(config_BroadcastChannel()));
+					if forceJoinChannel or isChannelListReady() then
+						Log.log("Step 1: Try to connect to broadcast channel: " .. config_BroadcastChannel());
+						JoinChannelByName(string.lower(config_BroadcastChannel()));
+					end
 				else
 					Log.log("Step 2: Connected to broadcast channel: " .. config_BroadcastChannel() .. ". Now sending HELLO command.");
 					moveBroadcastChannelToTheBottomOfTheList(true);
@@ -333,7 +382,7 @@ Comm.broadcast.init = function()
 						broadcast(HELLO_CMD, Globals.version, Globals.version_display, Globals.extended_version, Globals.extended_display_version);
 					end
 				end
-			end, 9);
+			end, 15);
 		else
 			-- Broadcast isn't enabled so we should probably say it's offline.
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_OFFLINE, loc.BROADCAST_OFFLINE_DISABLED);

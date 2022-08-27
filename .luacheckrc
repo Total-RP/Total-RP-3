@@ -187,6 +187,7 @@ stds.wow = {
 
 		C_ChatInfo = {
 			fields = {
+				"GetChannelShortcut",
 				"RegisterAddonMessagePrefix",
 				"SwapChatChannelsByChannelIndex",
 			},
@@ -297,6 +298,7 @@ stds.wow = {
 		"BNGetGameAccountInfoByGUID",
 		"BNGetInfo",
 		"CallErrorHandler",
+		"ChatConfigChannelSettings_SwapChannelsByIndex",
 		"ChatEdit_FocusActiveWindow",
 		"ChatEdit_GetActiveWindow",
 		"ChatFrame_AddMessageEventFilter",
@@ -330,6 +332,7 @@ stds.wow = {
 		"GetAddOnMetadata",
 		"GetAutoCompleteRealms",
 		"GetChannelDisplayInfo",
+		"GetChannelList",
 		"GetChannelName",
 		"GetChannelRosterInfo",
 		"GetClassColor",
