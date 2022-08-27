@@ -333,6 +333,13 @@ local function GenerateColoredTooltipLine(text, r, g, b)
 	-- Workaround for issue #606 where certain unicode character ranges make
 	-- GameTooltip:AddLine not respect colors. We wrap the text in an
 	-- enclosing pair of color sequences to force it to be respected.
+	--
+	-- Empty lines need to have one character at-minimum to prevent errors
+	-- when assigning tooltip line fonts later.
+	if not text or text == "" then
+		text = " ";
+	end
+
 	return string.format("|cff%.2x%.2x%.2x%s|r", r * 255, g * 255, b * 255, text);
 end
 
@@ -341,14 +348,11 @@ local function Build(self)
 	local tooltipLineIndex = 1;
 	for lineIndex, line in ipairs(self._content) do
 		if line.type == BUILDER_TYPE_LINE then
-			if line.text == "" then line.text = " " end
 			local text = GenerateColoredTooltipLine(line.text, line.red, line.green, line.blue);
 			self.tooltip:AddLine(text, 1, 1, 1, line.lineWrap);
 			setLineFont(self.tooltip, tooltipLineIndex, line.lineSize);
 			tooltipLineIndex = tooltipLineIndex + 1;
 		elseif line.type == BUILDER_TYPE_DOUBLELINE then
-			if line.textL == "" then line.textL = " " end
-			if line.textR == "" then line.textR = " " end
 			local textL = GenerateColoredTooltipLine(line.textL, line.redL, line.greenL, line.blueL);
 			local textR = GenerateColoredTooltipLine(line.textR, line.redR, line.greenR, line.blueR);
 			self.tooltip:AddDoubleLine(textL, textR, 1, 1, 1, 1, 1, 1);
