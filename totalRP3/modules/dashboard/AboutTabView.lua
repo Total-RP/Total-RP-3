@@ -165,6 +165,9 @@ local CreditsData =
 	[CreditCategory.Discord] =
 	{
 		{
+			name = "Ghost",
+		},
+		{
 			name = "Katorie",
 		},
 		{
