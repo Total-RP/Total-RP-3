@@ -1121,16 +1121,15 @@ Your profiles, companions profiles and settings will be temporarily stashed away
 	MORE_MODULES_2 = [[{h2:c}Optional modules{/h2}
 {h3}Total RP 3: Extended{/h3}
 |cff9999ffTotal RP 3: Extended|r add the possibility to create new content in WoW: campaigns with quests and dialogues, items, documents (books, signs, contracts, …) and many more!
-{link*http://extended.totalrp3.info*Download on Curse.com}
+{link*https://www.curseforge.com/wow/addons/total-rp-3-extended*Download on CurseForge}
 
-{h3}Kui |cff9966ffNameplates|r module{/h3}
-The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to the KuiNameplates add-on:
-• See the full RP name of a character on their nameplate, instead of their default name, colored like in their tooltip.
-• See customized pets names.
-• Hide the names of players without an RP profile!
-{link*http://mods.curse.com/addons/wow/total-rp-3-kuinameplates-module*Download on Curse.com}.
+{h3}TRP3 Currently Frame{/h3}
+Adds a standalone frame to your UI that displays your "Currently" text and allows you to edit it easily.
+{link*https://www.curseforge.com/wow/addons/trp3-currently-frame*Download on CurseForge}
 
-
+{h3}TRP3 Location Toggle{/h3}
+Adds a simple button to the toolbar to toggle on and off the map scan location feature.
+{link*https://www.curseforge.com/wow/addons/trp3-location-toggle*Download on CurseForge}
 ]],
 
 	THANK_YOU_1 = [[{h1:c}Total RP 3{/h1}
