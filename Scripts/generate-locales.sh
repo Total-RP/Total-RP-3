@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-declare cf_api_token="${CF_API_TOKEN}"
+declare cf_api_token="${CF_API_KEY}"
 declare cf_project_id=75973
 declare cf_localization_url="https://wow.curseforge.com/api/projects/${cf_project_id}/localization/export"
 declare cf_localization_opts="&export-type=Table&unlocalized=Ignore"
