@@ -9,7 +9,7 @@ declare cf_localization_opts="&export-type=Table&unlocalized=Ignore"
 fetch_locale() {
 	local lang="$1"
 
-	curl -sfH "X-API-Token: ${cf_api_token}" --retry 5 --retry-delay 5 --retry-all-errors \
+	curl -sfH "X-API-Token: ${cf_api_token}" --retry 5 --retry-delay 5 \
 		"${cf_localization_url}?lang=${lang}${cf_localization_opts}"
 }
 
