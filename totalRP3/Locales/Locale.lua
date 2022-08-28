@@ -1728,45 +1728,6 @@ With the recent changes of patch 9.2.5, profiles can now be seen cross-faction f
 -- Use Ellyb to generate the Localization system
 TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
 
--- Register all locales into the localization system
--- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
--- See https://wow.curseforge.com/projects/total-rp-3/localization
----@type table<string, string>
-local localeContent = {};
-
---@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("enUS", "English", localeContent);
-
---@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", localeContent);
-
---@localization(locale="frFR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("frFR", "Français", localeContent);
-
---@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", localeContent);
-
---@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", localeContent);
-
---@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", localeContent);
-
---@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("koKR", "한국어", localeContent);
-
---@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ptBR", "Português", localeContent);
-
---@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", localeContent);
-
---@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", localeContent);
-
---@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", localeContent);
-
 local Locale = {};
 TRP3_API.Locale = Locale;
 
