@@ -1,6 +1,8 @@
 ---
 name: Import CurseForge Localization
 on:
+  schedule:
+    - cron: '* * * * *'
   workflow_dispatch: {}
 
 jobs:
