@@ -1000,7 +1000,20 @@ local function onMiscInfoDragStart(handle)
 	-- Stick the icon of the item in question onto the cursor for some feedback.
 	-- Also throw in some sound cues a-la spellbook drag/drop.
 	local node = handle.node;
-	SetCursor(node.Icon.Icon:GetTexture());
+
+	-- Avoid a game crash if the icon if the MI entry being dragged exceeds
+	-- supported dimensions of 64x64. We also need to use a file ID for the
+	-- defaulted cursor to work around _another_ quirk where a file path
+	-- will display at completely the wrong size.
+
+	local useExplicitSize = true;
+	local iconWidth, iconHeight = node.Icon.Icon:GetSize(useExplicitSize);
+	if iconWidth <= 64 and iconHeight <= 64 then
+		SetCursor(node.Icon.Icon:GetTexture());
+	else
+		local INV_MISC_QUESTIONMARK = 134400;
+		SetCursor(INV_MISC_QUESTIONMARK);
+	end
 
 	-- For some reason there's no constant for the pickup sound effect
 	-- used by ability icons. Logically this'd be present as
