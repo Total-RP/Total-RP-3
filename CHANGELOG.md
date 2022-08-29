@@ -17,7 +17,7 @@
 - Removed some unwanted modifications in profiles.
 - Fixed a potential crash when reordering miscellaneous information lines.
 - Added a delay before joining the broadcast channel to reduce issues with chat channels swapping numbers/colors.
-- Fixed dead links in "About Total RP 3"
+- Fixed dead links in "About Total RP 3".
 
 # Changelog version 2.3.11
 
