@@ -1,3 +1,24 @@
+# Changelog version 2.3.12
+
+**Classic users: Companion profiles may have to be relinked due to API changes.**
+
+## Added
+
+- Added settings to change the colors you see for other players' tooltips.
+- Added 5 new music files from patch 9.2.7, as well as data for WotLK Classic.
+- Added macro conditionals support for the "/trp3 profile" command.
+- Added a tooltip to view settings texts in full even if they are too long.
+- Added Evoker class color preset to the color picker.
+
+## Fixed
+
+- Fixed an issue with tooltip color rendering when using some Unicode characters.
+- Fixed inconsistent linebreaks in Template 1.
+- Removed some unwanted modifications in profiles.
+- Fixed a potential crash when reordering miscellaneous information lines.
+- Added a delay before joining the broadcast channel to reduce issues with chat channels swapping numbers/colors.
+- Fixed dead links in "About Total RP 3"
+
 # Changelog version 2.3.11
 
 **With the recent changes of patch 9.2.5, profiles can now be seen cross-faction for players in your party, or with whom you share a cross-faction WoW community.**
