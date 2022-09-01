@@ -42,10 +42,10 @@ local showIconBrowser = function(callback)
 end;
 
 local function updateAboutTemplateFonts(frame)
-	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
-	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
-	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
-	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
+	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE), "");
+	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE), "");
+	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE), "");
+	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE), "");
 end
 
 local function updateAllAboutTemplateFonts()
