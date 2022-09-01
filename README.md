@@ -34,8 +34,8 @@ Total RP 3 is also a **fully modular** add-on. You choose exactly which features
 - **Find other Total RP 3 users on the world map** to see where people tend to gather. You can choose to hide yourself from the map, or to only show yourself while you're in-character.
 - A customizable **target frame** containing useful interactions for your roleplay target, like opening their profile, playing their theme song, or altering your relationship with that character.
 - **Chat customizations** like OOC and emote chat coloring as well as full role-play names using custom colors in the chat. ([Details on Chat Formatting][chatf])
-- **NPC speeches** to make an NPC say or do something during an event.
-- Total RP 3 can communicate with **MyRolePlay**, **XRP** and other MSP add-ons so you can see and read through other players' profiles, even if they are using a different roleplaying add-on.
+- **NPC speeches** to mimic NPC chat, whispers, yells and emotes.
+- Total RP 3 can communicate with **MyRolePlay**, **XRP** and most other roleplaying add-ons so you can see and read through other players' profiles, even if they are using a different roleplaying add-on.
 - A customizable **toolbar** with useful actions like switching from switching from one profile to another, switching from **IC** to **OOC**, from AFK to DND, switching languages, and more!
 - **Import your existing profiles** from **Total RP 2**, **MyRolePlay** or **XRP**. ([Tutorial][import])
 - **Mature profile filtering** to warn you before opening profiles that may contain mature content.
