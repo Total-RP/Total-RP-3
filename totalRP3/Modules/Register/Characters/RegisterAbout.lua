@@ -221,12 +221,10 @@ local function showTemplate2(dataTab)
 			icon:SetPoint("LEFT", 15, 0);
 			text:SetPoint("LEFT", icon, "RIGHT", 10, 0);
 			text:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -20, -10)
-			text:SetJustifyH("LEFT")
 		else
 			icon:SetPoint("RIGHT", -15, 0);
 			text:SetPoint("RIGHT", icon, "LEFT", -10, 0);
 			text:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -10)
-			text:SetJustifyH("RIGHT")
 		end
 
 		if frameTab.TX and frameTab.TX:len() > 0 then
