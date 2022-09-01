@@ -465,7 +465,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	-- Resizing
 	TRP3_API.events.listenToEvent(TRP3_API.events.NAVIGATION_RESIZED, function(containerWidth)
 		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetSize(containerWidth - 75, 5);
-		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html);
+		TRP3_CompanionsPageInformationConsult_About_ScrollText:SetText(TRP3_CompanionsPageInformationConsult_About_ScrollText.html or "");
 		TRP3_CompanionsPageInformationEdit_About_TextScrollText:SetSize(containerWidth - 85, 5);
 	end);
 end);
