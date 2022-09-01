@@ -767,7 +767,7 @@ local function onAboutReceived(profileID)
 end
 
 local function resetHTMLText(frame)
-	frame:SetText(frame.html);
+	frame:SetText(frame.html or "");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
