@@ -11,7 +11,7 @@ SCHEMA_URL := https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xs
 all: check
 
 check:
-	@luacheck -q $(shell git ls-files '*.lua' ':!:totalRP3/Libs/*')
+	@luacheck -q $(shell git ls-files '*.lua')
 	@xmllint --schema <(curl -s $(SCHEMA_URL)) --noout $(shell git ls-files '*.xml' ':!:totalRP3/Libs/*' ':!:*/Bindings.xml')
 
 dist:
