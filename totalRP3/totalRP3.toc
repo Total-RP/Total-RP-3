@@ -17,6 +17,26 @@
 ## X-Wago-ID: q96dnGOm
 ## X-WoWI-ID: 24113
 
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceSerializer-3.0\AceSerializer-3.0.xml
+Libs\Chomp\Chomp.xml
+Libs\Ellyb\Ellyb.xml
+Libs\LibChatAnims\LibChatAnims.xml
+Libs\LibCompress\lib.xml
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
+Libs\LibDBIcon-1.0\lib.xml
+Libs\LibDeflate\lib.xml
+Libs\LibMSP\LibMSP.xml
+Libs\LibRPMedia\LibRPMedia-1.0.xml
+Libs\LibSerialize\lib.xml
+Libs\MSA-DropDownMenu-1.0\MSA-DropDownMenu-1.0.xml
+Libs\TaintLess\TaintLess.xml
+Libs\UTF8\lib.xml
+
 totalRP3.xml
 
 #@do-not-package@

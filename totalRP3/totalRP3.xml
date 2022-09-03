@@ -18,7 +18,6 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI-Classic.xsd">
-	<Include file="libs\libs.xml"/>
 	<Include file="init.lua"/>
 	<Include file="tools\tools.xml"/>
 	<Include file="core\core.xml"/>
