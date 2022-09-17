@@ -447,6 +447,7 @@ local escapes = {
 	["|T.-|t"] = "", -- textures
 	["|A.-|a"] = "", -- atlas textures
 	["|K.-|k"] = "", -- protected strings
+	["|W(.-)|w"] = "%1", -- word wrapping
 }
 function Utils.str.sanitize(text)
 	if not text then return end
