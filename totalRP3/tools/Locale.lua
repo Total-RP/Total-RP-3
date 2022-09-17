@@ -489,6 +489,12 @@ Class: 50 characters|r]],
 	CO_TOOLTIP_HEALTH_NUMBER = "Number",
 	CO_TOOLTIP_HEALTH_PERCENT = "Percentage",
 	CO_TOOLTIP_HEALTH_BOTH = "Number + Percentage",
+	CO_TOOLTIP_TITLE_COLOR = "Title text color",
+	CO_TOOLTIP_TITLE_COLOR_HELP = [[The color used in the tooltip to display full-length character titles.]],
+	CO_TOOLTIP_MAIN_COLOR = "Main text color",
+	CO_TOOLTIP_MAIN_COLOR_HELP = [[The color used in the tooltip to display text such as the race, level, and currently and OOC headers.]],
+	CO_TOOLTIP_SECONDARY_COLOR = "Secondary text color",
+	CO_TOOLTIP_SECONDARY_COLOR_HELP = [[The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.]],
 	CO_REGISTER = "Register settings",
 	CO_REGISTER_ABOUT_SETTINGS = "\"About\" settings",
 	CO_REGISTER_ABOUT_H1_SIZE = "Header 1 text size",
@@ -903,6 +909,7 @@ Total RP is not responsible for links leading to harmful content.]],
 	CM_CLASS_MONK = "Monk",
 	CM_CLASS_DRUID = "Druid",
 	CM_CLASS_DEMONHUNTER = "Demon Hunter",
+	CM_CLASS_EVOKER = "Evoker",
 	CM_CLASS_UNKNOWN = "Unknown",
 	CM_RESIZE = "Resize",
 	CM_RESIZE_TT = "Drag to resize the frame.",
@@ -1728,21 +1735,6 @@ With the recent changes of patch 9.2.5, profiles can now be seen cross-faction f
 - Fixed the target frame not having the proper skin when using ElvUI.
 
 ]],
-
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-
-	CM_CLASS_EVOKER = "Evoker",
-	CO_TOOLTIP_TITLE_COLOR = "Title text color",
-	CO_TOOLTIP_TITLE_COLOR_HELP = [[The color used in the tooltip to display full-length character titles.]],
-	CO_TOOLTIP_MAIN_COLOR = "Main text color",
-	CO_TOOLTIP_MAIN_COLOR_HELP = [[The color used in the tooltip to display text such as the race, level, and currently and OOC headers.]],
-	CO_TOOLTIP_SECONDARY_COLOR = "Secondary text color",
-	CO_TOOLTIP_SECONDARY_COLOR_HELP = [[The color used in the tooltip to display secondary subtext such as realm and guild names, the currently and OOC contents, and zone or health information.]],
 	WHATS_NEW_24_13 = [[# Changelog version 2.3.12
 
 Classic users: Companion profiles may have to be relinked due to API changes.
@@ -1763,6 +1755,20 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 - Fixed a potential crash when reordering miscellaneous information lines.
 - Added a delay before joining the broadcast channel to reduce issues with chat channels swapping numbers/colors.
 - Fixed dead links in "About Total RP 3".
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_24_14 = [[# Changelog version 2.3.13
+
+	## Fixed
+
+		- Fixed missing death knight icons on Classic WotLK.
+		- Fixed some more profile modifications.
 
 ]],
 
