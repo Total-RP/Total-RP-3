@@ -442,6 +442,7 @@ end
 
 local escapes = {
 	["|c[ %x][ %x][ %x][ %x][ %x][ %x][ %x][ %x]"] = "", -- color start
+	["|cn[^:]+:"] = "", -- 10.0 color start
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
