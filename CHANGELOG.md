@@ -1,3 +1,10 @@
+# Changelog version 2.3.13
+
+## Fixed
+
+- Fixed missing death knight icons on Classic WotLK.
+- Fixed some more profile modifications.
+
 # Changelog version 2.3.12
 
 **Classic users: Companion profiles may have to be relinked due to API changes.**
