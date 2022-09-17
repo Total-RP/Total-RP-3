@@ -136,7 +136,7 @@ local function onStart()
 		local oldWidth = ui_TargetFrame:GetWidth();
 		ui_TargetFrame:SetWidth(math.max(30 + index * buttonSize, 200));
 		-- Updating anchors so the toolbar expands from the center
-		local anchor, _, _, tfX, tfY = ui_TargetFrame:GetPoint();
+		local anchor, _, _, tfX, tfY = ui_TargetFrame:GetPoint(1);
 		if anchor == "LEFT" then
 			tfX = tfX - (ui_TargetFrame:GetWidth() - oldWidth) / 2;
 		elseif anchor == "RIGHT" then
