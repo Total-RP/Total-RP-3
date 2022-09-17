@@ -225,6 +225,7 @@ local function getTooltipTextColors()
 
 	return colors;
 end
+TRP3_API.ui.tooltip.getTooltipTextColors = getTooltipTextColors;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- UTIL METHOD
