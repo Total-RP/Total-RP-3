@@ -15,7 +15,7 @@ check:
 	@xmllint --schema <(curl -s $(SCHEMA_URL)) --noout $(shell git ls-files '*.xml' ':!:totalRP3/Libs/*' ':!:*/Bindings.xml')
 
 dist:
-	@curl -s $(PACKAGER_URL) | bash -s -- -d -l
+	@curl -s $(PACKAGER_URL) | bash -s -- -d -l -S
 
 libs:
 	@curl -s $(PACKAGER_URL) | bash -s -- -c -d -z
