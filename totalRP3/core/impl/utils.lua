@@ -441,7 +441,7 @@ function Utils.str.safeMatch(text, pattern)
 end
 
 local escapes = {
-	["|c[ %x]%x%x%x%x%x%x%x"] = "", -- color start
+	["|c[ %x][ %x][ %x][ %x][ %x][ %x][ %x][ %x]"] = "", -- color start
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
