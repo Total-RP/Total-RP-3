@@ -36,12 +36,12 @@ end
 
 ---@param editBox EditBox|ScriptObject
 function EditBoxes.selectAllTextOnFocus(editBox)
-	editBox:HookScript("OnEditFocusGained", editBox.HighlightText);
+	editBox:HookScript("OnEditFocusGained", function(self) self:HighlightText(); end);
 end
 
 ---@param editBox EditBox|ScriptObject
 function EditBoxes.looseFocusOnEscape(editBox)
-	editBox:HookScript("OnEscapePressed", editBox.ClearFocus);
+	editBox:HookScript("OnEscapePressed", function(self) self:ClearFocus(); end);
 end
 
 --- Mixin for edit boxes that will handle serialized data.
