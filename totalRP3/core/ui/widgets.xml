@@ -925,19 +925,19 @@
 
 	<!-- Resize button -->
 	<Button name="TRP3_ResizeButton" virtual="true">
-		<Size x="24" y="24"/>
+		<Size x="32" y="32"/>
 		<Scripts>
 			<OnLoad>
 				TRP3_API.ui.frame.initResize(self);
 			</OnLoad>
 		</Scripts>
-		<NormalTexture atlas="RedButton-Condense">
+		<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up">
 			<TexCoords left="1" right="0" top="0" bottom="1"/>
 		</NormalTexture>
-		<PushedTexture atlas="RedButton-Condense-Pressed">
+		<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down">
 			<TexCoords left="1" right="0" top="0" bottom="1"/>
 		</PushedTexture>
-		<HighlightTexture atlas="RedButton-Highlight" alphaMode="ADD"/>
+		<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
 	</Button>
 
 	<Slider name="TRP3_Scrollbar" virtual="true">
