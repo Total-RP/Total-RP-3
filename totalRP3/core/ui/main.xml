@@ -217,30 +217,30 @@
 			<!-- CLOSE MAIN FRAME -->
 			<Button parentKey="Close" inherits="UIPanelCloseButton">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="4" y="4"/>
+					<Anchor point="TOPRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
 
 			<!-- MaxiButton -->
 			<Button parentKey="Maximize">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+					<Anchor point="TOPRIGHT" x="-22" y="0"/>
 				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-BiggerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-BiggerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Size x="24" y="24"/>
+				<NormalTexture atlas="RedButton-Expand"/>
+				<PushedTexture atlas="RedButton-Expand-Pressed"/>
+				<HighlightTexture atlas="RedButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
 			<!-- MiniButton -->
 			<Button parentKey="Minimize" hidden="true">
 				<Anchors>
-					<Anchor point="TOPRIGHT" x="-16" y="4"/>
+					<Anchor point="TOPRIGHT" x="-22" y="0"/>
 				</Anchors>
-				<Size x="32" y="32"/>
-				<NormalTexture file="Interface\Buttons\UI-Panel-SmallerButton-Up"/>
-				<PushedTexture file="Interface\Buttons\UI-Panel-SmallerButton-Down"/>
-				<HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+				<Size x="24" y="24"/>
+				<NormalTexture atlas="RedButton-Condense"/>
+				<PushedTexture atlas="RedButton-Condense-Pressed"/>
+				<HighlightTexture atlas="RedButton-Highlight" alphaMode="ADD"/>
 			</Button>
 
 			<!-- RESIZING BUTTON -->
@@ -250,7 +250,7 @@
 					<KeyValue key="minHeight" value="500" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
@@ -506,7 +506,7 @@
 					<KeyValue key="minHeight" value="500" type="number"/>
 				</KeyValues>
 				<Anchors>
-					<Anchor point="BOTTOMRIGHT" x="4" y="-4"/>
+					<Anchor point="BOTTOMRIGHT" x="0" y="0"/>
 				</Anchors>
 			</Button>
 		</Frames>
