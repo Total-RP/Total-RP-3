@@ -2,14 +2,14 @@ package-as: totalRP3
 enable-nolib-creation: no
 
 ignore:
-  - Libs/*/*.rockspec
-  - Libs/*/*.toc
-  - Libs/*/changelog.*
-  - Libs/*/CHANGELOG.*
-  - Libs/*/docs
-  - Libs/*/examples
-  - Libs/*/README.*
-  - Libs/*/tests
+  - totalRP3/Libs/*/*.rockspec
+  - totalRP3/Libs/*/*.toc
+  - totalRP3/Libs/*/changelog.*
+  - totalRP3/Libs/*/CHANGELOG.*
+  - totalRP3/Libs/*/docs
+  - totalRP3/Libs/*/examples
+  - totalRP3/Libs/*/README.*
+  - totalRP3/Libs/*/tests
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
