@@ -16,7 +16,7 @@ jobs:
         uses: nebularg/actions-luacheck@v1
         with:
           args: --no-color -q
-          files: $(shell git ls-files '*.lua' ':!:totalRP3/Locales/????.lua')
+          files: $(git ls-files '*.lua' ':!:totalRP3/Locales/????.lua')
           annotate: warning
 
       - name: Run editorconfig-checker
