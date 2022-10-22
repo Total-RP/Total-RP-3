@@ -289,6 +289,13 @@ function CurrentUser:GetProfileName()
 	return TRP3_API.profile.getPlayerCurrentProfile().profileName;
 end
 
+function CurrentUser:IsProfileDefault()
+	local profileID = self:GetProfileID();
+	local defaultID = TRP3_API.configuration.getValue("default_profile_id");
+
+	return profileID == defaultID;
+end
+
 function CurrentUser:SetProfileID(profileID)
 	TRP3_API.profile.selectProfile(profileID);
 end
@@ -328,7 +335,7 @@ function CurrentUser:SetCurrentlyText(text)
 	local currentText = self:GetCurrentlyText();
 	local trimmedText = string.trim(text);
 
-	if currentText == trimmedText then
+	if currentText == trimmedText or self:IsProfileDefault() then
 		return;
 	end
 
