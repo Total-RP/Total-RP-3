@@ -149,9 +149,15 @@ end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
+	TRP3_API.slash.registerCommand({
+		id = "currently",
+		helpLine = " " .. loc.SLASH_CMD_CURRENTLY_HELP,
+		handler = function(...)
+			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
+			currentUser:SetCurrentlyText(string.join(" ", ...));
+		end
+	});
 
-
-	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
 		id = "roll",
 		helpLine = " " .. loc.DICE_HELP,

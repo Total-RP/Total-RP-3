@@ -187,6 +187,10 @@ function Player:GetRoleplayStatus()
 	return self:GetInfo("character/RP");
 end
 
+function Player:GetCurrentlyText()
+	return self:GetInfo("character/CU");
+end
+
 function Player:GetAccountType()
 	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
 	return characterInfo.isTrial
@@ -317,6 +321,18 @@ function CurrentUser:SetRoleplayStatus(roleplayStatus)
 	local characterData = self:GetInfo("character");
 	characterData.RP = roleplayStatus;
 
+	IncrementSubtableVersion(self, "character");
+end
+
+function CurrentUser:SetCurrentlyText(text)
+	local currentText = self:GetCurrentlyText();
+
+	if currentText == text then
+		return;
+	end
+
+	local characterData = self:GetInfo("character");
+	characterData.CU = text;
 	IncrementSubtableVersion(self, "character");
 end
 
