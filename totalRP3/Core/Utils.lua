@@ -445,6 +445,30 @@ function Utils.str.sanitize(text)
 	return text
 end
 
+local validSuffixes = {
+	"^a", "^b", -- MRP
+	"^%-alpha", "^%-beta" -- TRP3
+};
+
+function Utils.str.sanitizeVersion(text)
+	if not text then return "0" end
+	-- Dev version
+	if text == "-dev" or text == "v-dev" then return text end
+
+	text = Utils.str.sanitize(text);
+
+	local version, suffix = text:match("^([%d%.]+)(.*)$");
+	if not version then
+		version = "0";
+	end
+	for _, str in pairs(validSuffixes) do
+		local validSuffix = suffix:match(str);
+		if validSuffix then version = version .. validSuffix break end
+	end
+
+	return version;
+end
+
 function Utils.str.crop(text, size)
 	text = string.trim(text or "");
 

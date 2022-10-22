@@ -250,12 +250,12 @@ end
 --- Raises error if unknown unitName
 function TRP3_API.register.saveClientInformation(unitID, client, clientVersion, msp, extended, trialAccount, extendedVersion)
 	local character = getUnitIDCharacter(unitID);
-	character.client = client;
-	character.clientVersion = clientVersion;
+	character.client = Utils.str.sanitize(client);
+	character.clientVersion = Utils.str.sanitizeVersion(clientVersion);
 	character.msp = msp;
 	character.extended = extended;
 	character.isTrial = trialAccount;
-	character.extendedVersion = extendedVersion
+	character.extendedVersion = Utils.str.sanitizeVersion(extendedVersion);
 end
 
 --- Raises error if unknown unitName
