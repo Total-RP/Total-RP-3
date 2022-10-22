@@ -154,7 +154,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		helpLine = " " .. loc.SLASH_CMD_CURRENTLY_HELP,
 		handler = function(...)
 			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
-			currentUser:SetCurrentlyText(string.join(" ", ...));
+
+			if currentUser:IsProfileDefault() then
+				SendSystemMessage(loc.SLASH_CMD_CURRENTLY_ERROR_DEFAULT);
+			else
+				currentUser:SetCurrentlyText(string.join(" ", ...));
+				SendSystemMessage(loc.SLASH_CMD_CURRENTLY_CHANGED);
+			end
 		end
 	});
 

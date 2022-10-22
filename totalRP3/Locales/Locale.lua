@@ -1751,7 +1751,9 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	SLASH_CMD_CURRENTLY_HELP = "Changes the in-character 'currently' text for your current profile.",
+	SLASH_CMD_CURRENTLY_HELP = "Changes the in-character \"Currently\" text for your current profile.",
+	SLASH_CMD_CURRENTLY_CHANGED = "Successfully updated \"Currently\" text for your current profile.",
+	SLASH_CMD_CURRENTLY_ERROR_DEFAULT = "The \"Currently\" text for your current profile cannot be changed as it is the default profile.",
 	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
 
 };

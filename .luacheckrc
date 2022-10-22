@@ -398,6 +398,7 @@ stds.wow = {
 		"SecondsToClock",
 		"SecureCmdOptionParse",
 		"SendChatMessage",
+		"SendSystemMessage",
 		"SetCursor",
 		"SetCVar",
 		"SetPetStablePaperdoll",
