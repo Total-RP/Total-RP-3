@@ -457,13 +457,20 @@ function Utils.str.sanitizeVersion(text)
 
 	text = Utils.str.sanitize(text);
 
-	local version, suffix = text:match("^([%d%.]+)(.*)$");
+	local version, suffix = text:match("^(v?[%d%.]+)(.*)$");
 	if not version then
 		version = "0";
 	end
-	for _, str in pairs(validSuffixes) do
-		local validSuffix = suffix:match(str);
-		if validSuffix then version = version .. validSuffix break end
+
+	-- Looking for testing version suffix
+	if suffix then
+		for _, str in pairs(validSuffixes) do
+			local validSuffix = suffix:match(str);
+			if validSuffix then
+				version = version .. validSuffix
+				break
+			end
+		end
 	end
 
 	return version;
