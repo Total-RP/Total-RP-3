@@ -1737,11 +1737,6 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_24_14 = [[# Changelog version 2.3.13
 
 	## Fixed
@@ -1750,6 +1745,13 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 		- Fixed some more profile modifications.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffffff00disabled|r. Sorry for any inconvenience!",
 
 };
 
