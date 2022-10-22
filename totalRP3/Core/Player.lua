@@ -326,13 +326,14 @@ end
 
 function CurrentUser:SetCurrentlyText(text)
 	local currentText = self:GetCurrentlyText();
+	local trimmedText = string.trim(text);
 
-	if currentText == text then
+	if currentText == trimmedText then
 		return;
 	end
 
 	local characterData = self:GetInfo("character");
-	characterData.CU = text;
+	characterData.CU = trimmedText;
 	IncrementSubtableVersion(self, "character");
 end
 
