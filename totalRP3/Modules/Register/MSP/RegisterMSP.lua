@@ -435,6 +435,8 @@ local function onStart()
 						elseif field == "VA" then
 							if value and value:find("/", nil, true) then
 								character.client, character.clientVersion = value:match("^([^/;]+)/([^/;]+)");
+								character.client = Utils.str.sanitize(character.client);
+								character.clientVersion = Utils.str.sanitizeVersion(character.clientVersion);
 							else
 								character.client = UNKNOWN;
 								character.clientVersion = "0";

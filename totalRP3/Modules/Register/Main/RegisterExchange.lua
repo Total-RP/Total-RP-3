@@ -212,7 +212,7 @@ local queryInformationType, createVernumQuery;
 function createVernumQuery()
 	local query = {};
 	query[VERNUM_QUERY_INDEX_VERSION] = Globals.version; -- Your TRP3 version (number)
-	query[VERNUM_QUERY_INDEX_VERSION_DISPLAY] = Globals.version_display; -- Your TRP3 version (as it should be shown on tooltip)
+	query[VERNUM_QUERY_INDEX_VERSION_DISPLAY] = Utils.str.sanitizeVersion(Globals.version_display); -- Your TRP3 version (as it should be shown on tooltip)
 	-- Character
 	query[VERNUM_QUERY_INDEX_CHARACTER_PROFILE] = getPlayerCurrentProfileID() or "";
 	query[VERNUM_QUERY_INDEX_CHARACTER_CHARACTERISTICS_V] = get("player/characteristics").v or 0;
@@ -240,7 +240,7 @@ function createVernumQuery()
 	-- Extended
 	if Globals.extended_version then
 		query[VERNUM_QUERY_INDEX_EXTENDED] = Globals.extended_version;
-		query[VERNUM_QUERY_INDEX_EXTENDED_DISPLAY] = Globals.extended_display_version;
+		query[VERNUM_QUERY_INDEX_EXTENDED_DISPLAY] = Utils.str.sanitizeVersion(Globals.extended_display_version);
 	end
 	-- Trial accounts
 	query[VERNUM_QUERY_INDEX_TRIALS] = Globals.is_trial_account;
