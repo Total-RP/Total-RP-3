@@ -176,6 +176,8 @@ ColorManager.POWER_ENERGY = Ellyb.Color:new(PowerBarColor["ENERGY"]):Freeze();
 ColorManager.POWER_COMBO_POINTS = Ellyb.Color:new(PowerBarColor["COMBO_POINTS"]):Freeze();
 if PowerBarColor["RUNES"] then  -- Classic Wrath bein' all weird >:(
 	ColorManager.POWER_RUNES = Ellyb.Color:new(PowerBarColor["RUNES"]):Freeze();
+else
+	ColorManager.POWER_RUNES = Ellyb.Color:new("#808080"):Freeze();
 end
 ColorManager.POWER_RUNIC_POWER = Ellyb.Color:new(PowerBarColor["RUNIC_POWER"]):Freeze();
 ColorManager.POWER_SOUL_SHARDS = Ellyb.Color:new(PowerBarColor["SOUL_SHARDS"]):Freeze();
