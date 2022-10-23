@@ -5,6 +5,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="Init.lua"/>
+	<Include file="Locales\Locales.xml"/>
 	<Include file="Tools\Tools.xml"/>
 	<Include file="Core\Core.xml"/>
 	<Include file="Resources\Resources.xml"/>
