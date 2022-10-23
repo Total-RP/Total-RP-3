@@ -188,6 +188,21 @@ end
 -- else wants to provide.
 --
 
+local function NormalizeSearchString(name)
+	name = string.gsub(name, "[%p%c%s]", "-");
+	name = string.utf8lower(name);
+	return name;
+end
+
+local function DoesNormalizedStringMatch(haystack, needle)
+	haystack = NormalizeSearchString(haystack);
+	needle = NormalizeSearchString(needle);
+
+	local offset = 1;
+	local plain = true;
+	return string.find(haystack, needle, offset, plain) ~= nil;
+end
+
 local RoleplayStatusConditional = CreateFromMixins(TRP3_MacroConditionalMixin);
 
 function RoleplayStatusConditional:Evaluate(name, data)
@@ -210,26 +225,28 @@ function RoleplayStatusConditional:Evaluate(name, data)
 	return player:GetRoleplayStatus() == requiredStatus;
 end
 
-AddOn_TotalRP3.RegisterMacroConditional("ooc", RoleplayStatusConditional);
-AddOn_TotalRP3.RegisterMacroConditional("ic", RoleplayStatusConditional);
-AddOn_TotalRP3.RegisterMacroConditional("rpstatus", RoleplayStatusConditional);
-
 local ProfileNameConditional = CreateFromMixins(TRP3_MacroConditionalMixin);
-
-local function NormalizeProfileName(name)
-	name = string.gsub(name, "[%p%c%s]", "-");
-	name = string.utf8lower(name);
-	return name;
-end
 
 function ProfileNameConditional:Evaluate(_, data)
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
-	local currentProfileName = NormalizeProfileName(player:GetProfileName());
-	local desiredProfileName = NormalizeProfileName(data);
+	local currentProfileName = player:GetProfileName();
+	local desiredProfileName = data;
 
-	local offset = 1;
-	local plain = true;
-	return string.find(currentProfileName, desiredProfileName, offset, plain) ~= nil;
+	return DoesNormalizedStringMatch(currentProfileName, desiredProfileName);
 end
 
+local LocationNameConditional = CreateFromMixins(TRP3_MacroConditionalMixin);
+
+function LocationNameConditional:Evaluate(_, data)
+	local currentLocationName = GetMinimapZoneText();
+	local desiredLocationName = data;
+
+	return DoesNormalizedStringMatch(currentLocationName, desiredLocationName);
+end
+
+AddOn_TotalRP3.RegisterMacroConditional("ooc", RoleplayStatusConditional);
+AddOn_TotalRP3.RegisterMacroConditional("ic", RoleplayStatusConditional);
+AddOn_TotalRP3.RegisterMacroConditional("rpstatus", RoleplayStatusConditional);
 AddOn_TotalRP3.RegisterMacroConditional("profile", ProfileNameConditional);
+AddOn_TotalRP3.RegisterMacroConditional("loc", LocationNameConditional);
+AddOn_TotalRP3.RegisterMacroConditional("location", LocationNameConditional);
