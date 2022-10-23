@@ -340,11 +340,11 @@ function CurrentUser:SetFullTitle(fullTitle)
 	self:UpdateDataField("characteristics", "FT", fullTitle);
 end
 
-function CurrentUser:SetRoleplayClass(class)
+function CurrentUser:SetCustomClass(class)
 	self:UpdateDataField("characteristics", "CL", class);
 end
 
-function CurrentUser:SetRoleplayClassColor(color)
+function CurrentUser:SetCustomClassColor(color)
 	local hexcolor;
 
 	if type(color) == "string" and #color == 6 then
@@ -352,13 +352,13 @@ function CurrentUser:SetRoleplayClassColor(color)
 	elseif type(color) == "table" and color.GetRGBAsBytes then
 		hexcolor = string.format("%x%x%x", color:GetRGBAsBytes());
 	else
-		error("bad argument #2 to 'SetRoleplayClassColor': expected hex color string or color object", 2);
+		error("bad argument #2 to 'SetCustomClassColor': expected hex color string or color object", 2);
 	end
 
 	self:UpdateDataField("characteristics", "CH", hexcolor);
 end
 
-function CurrentUser:SetRoleplayRace(race)
+function CurrentUser:SetCustomRace(race)
 	self:UpdateDataField("characteristics", "RA", race);
 end
 

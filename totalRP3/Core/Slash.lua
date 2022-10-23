@@ -190,7 +190,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				local success = true;
 
 				if field == "class" then
-					currentUser:SetRoleplayClass(data);
+					currentUser:SetCustomClass(data);
 				elseif field == "classcolor" then
 					local hexcolor = string.match(data, "^#?(%x%x%x%x%x%x)$");
 
@@ -198,7 +198,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 						SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_COLOR, field, data));
 						success = false;
 					else
-						currentUser:SetRoleplayClassColor(hexcolor);
+						currentUser:SetCustomClassColor(hexcolor);
 					end
 				elseif field == "currently" then
 					currentUser:SetCurrentlyText(data);
@@ -220,7 +220,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 				elseif field == "oocinfo" then
 					currentUser:SetOutOfCharacterInfo(data);
 				elseif field == "race" then
-					currentUser:SetRoleplayRace(data);
+					currentUser:SetCustomRace(data);
 				elseif field == "title" then
 					currentUser:SetTitle(data);
 				end
