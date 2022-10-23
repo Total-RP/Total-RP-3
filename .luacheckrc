@@ -2,7 +2,7 @@ max_line_length = false
 
 exclude_files = {
 	"Scripts/mature_dictionary_template.lua",
-	"totalRP3/libs",
+	"totalRP3/Libs",
 };
 
 ignore = {

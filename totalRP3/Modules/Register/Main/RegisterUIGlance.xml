@@ -1,0 +1,79 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Button name="TRP3_GlanceBarSlotTemplate" virtual="true">
+		<Size x="20" y="20" />
+		<Layers>
+			<Layer level="OVERLAY">
+				<Texture file="Interface\MINIMAP\MiniMap-TrackingBorder.blp">
+					<Size x="40" y="40" />
+					<Anchors>
+						<Anchor point="CENTER" x="8" y="-8" />
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<NormalTexture name="$parentImage" file="Interface\TargetingFrame\UI-TargetingFrame-Seal.blp" />
+		<HighlightTexture file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight" alphaMode="ADD" />
+		<Scripts>
+			<OnEnter>
+				TRP3_RefreshTooltipForFrame(self);
+			</OnEnter>
+			<OnLeave>
+				TRP3_MainTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+
+	<Frame name="TRP3_GlanceBarTemplate" hidden="true" frameStrata="MEDIUM" toplevel="true" enableMouse="true" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_MIXED_TUTORIAL_TOOLTIP_418_16_3353" type="global"/>
+		</KeyValues>
+		<Size x="140" y="32" />
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" x="0" y="0" />
+		</Anchors>
+		<Frames>
+			<Button name="$parentSlot3" inherits="TRP3_GlanceBarSlotTemplate">
+				<Anchors>
+					<Anchor point="CENTER" x="2" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot2" inherits="TRP3_GlanceBarSlotTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot3" x="-5" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot1" inherits="TRP3_GlanceBarSlotTemplate">
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentSlot2" x="-5" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot4" inherits="TRP3_GlanceBarSlotTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot3" x="5" y="0" />
+				</Anchors>
+			</Button>
+			<Button name="$parentSlot5" inherits="TRP3_GlanceBarSlotTemplate">
+				<Anchors>
+					<Anchor point="LEFT" relativePoint="RIGHT" relativeTo="$parentSlot4" x="5" y="0" />
+				</Anchors>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				self:RegisterForDrag("LeftButton")
+			</OnLoad>
+			<OnDragStart>
+				self.isDraging = true;
+			</OnDragStart>
+			<OnDragStop>
+				self.isDraging = nil;
+			</OnDragStop>
+		</Scripts>
+	</Frame>
+
+</Ui>

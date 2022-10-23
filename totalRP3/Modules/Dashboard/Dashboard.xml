@@ -1,0 +1,160 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+	<Include file="NPCTalk.lua"/>
+	<Include file="Dashboard.lua"/>
+
+	<Include file="TabView.lua"/>
+	<Include file="WhatsNewTabView.lua"/>
+	<Include file="AboutTabView.lua"/>
+	<Include file="ModulesTabView.lua"/>
+
+	<Include file="HTMLContent.xml"/>
+	<Include file="TabFrame.xml"/>
+	<Include file="StatusPanel.xml"/>
+
+	<!-- Dashboard -->
+	<Frame name="TRP3_Dashboard" hidden="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_16" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\ARCHEOLOGY\Arch-BookCompletedLeft">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="5"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.95"/>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<Texture name="TRP3_DashboardLogo" file="Interface\AddOns\totalRP3\resources\trp3logo">
+					<Size x="256" y="128"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+
+			<!-- Status -->
+			<Frame parentKey="StatusPanel" name="$parentStatus" inherits="TRP3_DashboardStatusPanelTemplate">
+				<Size x="0" y="85"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="TRP3_DashboardLogo" x="0" y="-10"/>
+				</Anchors>
+			</Frame>
+
+			<!-- What's new / About / Thanks -->
+			<Frame name="TRP3_DashboardBottom" inherits="TRP3_DashboardTabFrame">
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+					<Anchor point="LEFT" x="10" y="0"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.StatusPanel" x="0" y="-35"/>
+					<Anchor point="BOTTOM" x="0" y="10"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						-- Define the tabs to display on this frame prior to
+						-- actually invoking its native OnLoad handler.
+						self.TabClasses = {
+							TRP3_API.dashboard.WhatsNewTabView,
+							TRP3_API.dashboard.AboutTabView,
+							TRP3_API.dashboard.ModulesTabView,
+						};
+
+						self:OnLoad(self);
+
+						-- Backwards compatibility: Assign global names to our children.
+						-- TODO: Remove in BFA?
+						TRP3_DashboardBottomScroll = self.ScrollFrame;
+						TRP3_DashboardBottomContent = self.ScrollFrame:GetScrollChild().HTML;
+					</OnLoad>
+				</Scripts>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_NPCTalk" inherits="TRP3_AltHoveredFrame" enableMouse="true" hidden="true" movable="true" clampedToScreen="true" parent="UIParent" frameStrata="DIALOG">
+		<Size x="350" y="215"/>
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Scripts>
+			<OnLoad inherit="prepend">
+				tinsert(UISpecialFrames, self:GetName());
+			</OnLoad>
+		</Scripts>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="title" inherits="GameFontNormalLarge" justifyH="CENTER" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="0" y="30"/>
+					<Anchors>
+						<Anchor point="TOP" x="0" y="-10"/>
+						<Anchor point="RIGHT" x="-10" y="0"/>
+						<Anchor point="LEFT" x="10" y="0"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+				<FontString parentKey="messageLabel" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" setAllPoints="true">
+					<Size x="150" y="30"/>
+					<Anchors>
+						<Anchor point="LEFT" x="25"/>
+						<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-30"/>
+					</Anchors>
+					<Color r="0.95" g="0.75" b="0.1"/>
+				</FontString>
+				<FontString parentKey="charactersCounter" inherits="GameFontNormal" justifyH="RIGHT" justifyV="MIDDLE">
+					<Size x="150" y="30"/>
+					<Anchors>
+						<Anchor point="RIGHT" x="-40"/>
+						<Anchor point="BOTTOM" y="15"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button parentKey="Close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" x="-5" y="-5"/>
+				</Anchors>
+			</Button>
+			<EditBox parentKey="name" inherits="TRP3_TitledHelpEditBox">
+				<Size y="18"/>
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-10"/>
+					<Anchor point="LEFT" relativePoint="LEFT" x="25"/>
+					<Anchor point="RIGHT" relativePoint="CENTER" relativeKey="$parent" x="-20"/>
+				</Anchors>
+			</EditBox>
+			<Frame parentKey="channelDropdown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true" name="$parentChannelDropdown">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.title" y="-5"/>
+					<Anchor point="RIGHT" relativePoint="RIGHT" x="-25"/>
+					<Anchor point="LEFT" relativePoint="CENTER" relativeKey="$parent" x="0"/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey="messageText" inherits="TRP3_TextArea">
+				<Size y="70"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.messageLabel" x="-5" y="8"/>
+					<Anchor point="RIGHT" x="-20" />
+				</Anchors>
+			</Frame>
+			<Button parentKey="send" inherits="TRP3_CommonButton">
+				<Anchors>
+					<Anchor point="CENTER"/>
+					<Anchor point="TOP" relativePoint="BOTTOM" relativeKey="$parent.messageText" y="-10"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

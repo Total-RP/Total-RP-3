@@ -1,0 +1,197 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<!--
+		WIDGETS
+	-->
+
+	<Frame name="TRP3_ConfigH1" virtual="true">
+		<Size x="0" y="35"/>
+		<Frames>
+			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+				<Size y="10"/>
+				<Anchors>
+					<Anchor point="LEFT"/>
+					<Anchor point="RIGHT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormalHuge" setAllPoints="true" justifyH="LEFT" wordwrap="true">
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigParagraph" virtual="true">
+		<Size x="0" y="65"/>
+		<Frames>
+			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT"/>
+					<Anchor point="BOTTOMRIGHT"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormalSmall" setAllPoints="true" justifyH="LEFT" wordwrap="true">
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigNote" virtual="true">
+		<Size x="0" y="35"/>
+		<Frames>
+			<Frame name="$parentTitle" parentKey="Title" inherits="TRP3_TruncatedTextTemplate">
+				<Size y="10"/>
+				<Anchors>
+					<Anchor point="LEFT" x="25" y="0"/>
+					<Anchor point="RIGHT" x="-150" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString parentKey="Text" inherits="GameFontNormal" setAllPoints="true" justifyH="LEFT">
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
+			<Button name="$parentHelp" inherits="TRP3_HelpButton">
+				<Size x="14" y="14"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativePoint="LEFT" relativeTo="$parentTitle" x="-10" y="1"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigColorPicker" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<Button name="$parentPicker" inherits="TRP3_ColorPickerButton">
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigEditBox" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<EditBox name="$parentBox" inherits="TRP3_TitledEditBox">
+				<Size x="140" y="18"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</EditBox>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigDropDown" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<Frame name="$parentDropDown" inherits="TRP3_DropDownMenuTemplate" enableMouse="true">
+				<Anchors>
+					<Anchor point="RIGHT" x="5" y="0"/>
+				</Anchors>
+			</Frame>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigCheck" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<CheckButton name="$parentCheck" inherits="TRP3_CheckBox" enableMouse="true">
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</CheckButton>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigButton" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<Button name="$parentButton" inherits="TRP3_CommonButton" enableMouse="true">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_ConfigSlider" inherits="TRP3_ConfigNote" virtual="true">
+		<Frames>
+			<Slider name="$parentSlider" inherits="OptionsSliderTemplate">
+				<Size x="140" y="15"/>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentValText" inherits="GameFontNormal" justifyH="CENTER" text="[value]">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="LEFT"/>
+								<Anchor point="RIGHT"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Anchors>
+					<Anchor point="RIGHT" x="-10" y="0"/>
+				</Anchors>
+			</Slider>
+		</Frames>
+	</Frame>
+
+	<!--
+		GENERAL SETTINGS
+	-->
+
+	<Frame name="TRP3_ConfigurationPage" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentTitle" inherits="GameFontNormalHuge" justifyH="CENTER" text="[settings_title]">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="50" y="-25"/>
+					</Anchors>
+					<Color r="0.95" g="0.95" b="0.95"/>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentInner" inherits="TRP3_InnerFrame">
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM" x="0" y="-20"/>
+					<Anchor point="BOTTOM" x="0" y="20"/>
+					<Anchor point="LEFT" x="20" y="0"/>
+					<Anchor point="RIGHT" x="-20" y="0"/>
+				</Anchors>
+				<Frames>
+					<ScrollFrame name="$parentScroll" inherits="UIPanelScrollFrameTemplate">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-5"/>
+							<Anchor point="BOTTOM" x="0" y="3"/>
+							<Anchor point="LEFT" x="17" y="0"/>
+							<Anchor point="RIGHT" x="-13" y="0"/>
+						</Anchors>
+						<ScrollChild>
+							<Frame name="$parentContainer">
+								<Size x="463" y="50"/>
+							</Frame>
+						</ScrollChild>
+					</ScrollFrame>
+				</Frames>
+			</Frame>
+		</Frames>
+	</Frame>
+
+</Ui>

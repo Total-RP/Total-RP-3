@@ -1,0 +1,53 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Include file="Characters\RegisterUICharacteristics.xml"/>
+	<Include file="Characters\RegisterUIAbout.xml"/>
+	<Include file="Characters\RegisterUIMisc.xml"/>
+	<Include file="Characters\RegisterUINotes.xml"/>
+	<Include file="Main\RegisterUIGlance.xml"/>
+	<Include file="Main\RegisterUIList.xml"/>
+	<Include file="Characters\RegisterUIMain.xml"/>
+	<Include file="Characters\RegisterMain.lua"/>
+	<Include file="Characters\RegisterIgnore.lua"/>
+	<Include file="Characters\RegisterCharacteristics.lua"/>
+	<Include file="Characters\RegisterAbout.lua"/>
+	<Include file="Characters\RegisterMisc.lua"/>
+	<Include file="Characters\RegisterNotes.lua"/>
+	<Include file="Characters\PlayerMapScan\PlayerMapScan.xml"/>
+	<Include file="Companions\RegisterUICompanionsMain.xml"/>
+	<Include file="Main\RegisterExchange.lua"/>
+	<Include file="Main\RegisterTooltip.lua"/>
+	<Include file="Main\RegisterList.lua"/>
+	<Include file="Main\RegisterPlayerChatLinksModule.lua"/>
+	<Include file="Main\RegisterCompanionChatLinksModule.lua"/>
+	<Include file="Main\AtFirstGlanceChatLinksModule.lua"/>
+	<Include file="Main\RegisterGlance.lua"/>
+	<Include file="MSP\Fields.lua"/>
+	<Include file="MSP\RegisterMSP.lua"/>
+
+	<Frame name="TRP3_CursorFrame" parent="UIParent" hidden="true">
+		<Size x="30" y="30" />
+		<Anchors>
+			<Anchor point="CENTER"/>
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture parentKey="Icon" file="Interface\Cursor\WorkOrders">
+					<Size x="30" y="30" />
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+	</Frame>
+
+	<Include file="Main\RegisterCursor.lua"/>
+	<Include file="Filter\RegisterMatureFilter.xml"/>
+	<Include file="Characters\ReportProfileButton.lua"/>
+</Ui>
