@@ -213,3 +213,23 @@ end
 AddOn_TotalRP3.RegisterMacroConditional("ooc", RoleplayStatusConditional);
 AddOn_TotalRP3.RegisterMacroConditional("ic", RoleplayStatusConditional);
 AddOn_TotalRP3.RegisterMacroConditional("rpstatus", RoleplayStatusConditional);
+
+local ProfileNameConditional = CreateFromMixins(TRP3_MacroConditionalMixin);
+
+local function NormalizeProfileName(name)
+	name = string.gsub(name, "[%p%c%s]", "-");
+	name = string.utf8lower(name);
+	return name;
+end
+
+function ProfileNameConditional:Evaluate(_, data)
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+	local currentProfileName = NormalizeProfileName(player:GetProfileName());
+	local desiredProfileName = NormalizeProfileName(data);
+
+	local offset = 1;
+	local plain = true;
+	return string.find(currentProfileName, desiredProfileName, offset, plain) ~= nil;
+end
+
+AddOn_TotalRP3.RegisterMacroConditional("profile", ProfileNameConditional);

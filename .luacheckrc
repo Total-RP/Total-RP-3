@@ -139,6 +139,7 @@ stds.wow = {
 				"join",
 				"split",
 				"trim",
+				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
 			},
 		},
