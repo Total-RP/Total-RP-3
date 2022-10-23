@@ -471,6 +471,7 @@ stds.wow = {
 		"ChatTypeInfo",
 		"DoublyLinkedListMixin",
 		"DropDownList1",
+		"EditModeManagerFrame",
 		"FontableFrameMixin",
 		"GameFontNormal",
 		"GameFontNormalHuge",
