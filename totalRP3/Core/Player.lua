@@ -6,16 +6,6 @@ local Ellyb = Ellyb(...);
 -- Imports.
 local Enums = AddOn_TotalRP3.Enums;
 
-local function IncrementSubtableVersion(player, subtableName)
-	local subtable = player:GetInfo(subtableName);
-	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
-
-	local playerName = TRP3_API.globals.player_id;
-	local profileID = player:GetProfileID();
-
-	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
-end
-
 ---@class Player : Object
 local Player, _private = Ellyb.Class("Player")
 ---@type Player
@@ -319,29 +309,90 @@ function CurrentUser:GetAccountType()
 end
 
 function CurrentUser:SetRoleplayStatus(roleplayStatus)
-	local currentStatus = self:GetRoleplayStatus();
-
-	if currentStatus == roleplayStatus then
-		return;
-	end
-
-	local characterData = self:GetInfo("character");
-	characterData.RP = roleplayStatus;
-
-	IncrementSubtableVersion(self, "character");
+	self:UpdateDataField("character", "RP", roleplayStatus);
 end
 
-function CurrentUser:SetCurrentlyText(text)
-	local currentText = self:GetCurrentlyText();
-	local trimmedText = string.trim(text);
+function CurrentUser:SetOutOfCharacterInfo(oocInfo)
+	self:UpdateDataField("character", "CO", oocInfo);
+end
 
-	if currentText == trimmedText or self:IsProfileDefault() then
+function CurrentUser:SetCurrentlyText(currentlyText)
+	self:UpdateDataField("character", "CU", currentlyText);
+end
+
+function CurrentUser:SetFirstName(firstName)
+	self:UpdateDataField("characteristics", "FN", firstName);
+end
+
+function CurrentUser:SetLastName(lastName)
+	self:UpdateDataField("characteristics", "LN", lastName);
+end
+
+function CurrentUser:SetCustomIcon(icon)
+	self:UpdateDataField("characteristics", "IC", icon);
+end
+
+function CurrentUser:SetTitle(title)
+	self:UpdateDataField("characteristics", "TI", title);
+end
+
+function CurrentUser:SetFullTitle(fullTitle)
+	self:UpdateDataField("characteristics", "FT", fullTitle);
+end
+
+function CurrentUser:SetRoleplayClass(class)
+	self:UpdateDataField("characteristics", "CL", class);
+end
+
+function CurrentUser:SetRoleplayClassColor(color)
+	local hexcolor;
+
+	if type(color) == "string" and #color == 6 then
+		hexcolor = color;
+	elseif type(color) == "table" and color.GetRGBAsBytes then
+		hexcolor = string.format("%x%x%x", color:GetRGBAsBytes());
+	else
+		error("bad argument #2 to 'SetRoleplayClassColor': expected hex color string or color object", 2);
+	end
+
+	self:UpdateDataField("characteristics", "CH", hexcolor);
+end
+
+function CurrentUser:SetRoleplayRace(race)
+	self:UpdateDataField("characteristics", "RA", race);
+end
+
+--[[ private ]] function CurrentUser:UpdateDataField(subtableName, field, value)
+	if self:IsProfileDefault() then
 		return;
 	end
 
-	local characterData = self:GetInfo("character");
-	characterData.CU = trimmedText;
-	IncrementSubtableVersion(self, "character");
+	local subtable = self:GetInfo(subtableName);
+
+	if subtable[field] == value then
+		return;
+	end
+
+	subtable[field] = value;
+	self:IncrementDataVersion(subtable);
+	self:NotifyDataUpdated(subtableName);
+end
+
+--[[ private ]] function CurrentUser:IncrementDataVersion(subtableOrSubtableName)
+	local subtable = subtableOrSubtableName;
+
+	if type(subtable) ~= "table" then
+		local subtableName = subtableOrSubtableName;
+		subtable = self:GetInfo(subtableName);
+	end
+
+	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
+end
+
+--[[ private ]] function CurrentUser:NotifyDataUpdated(subtableName)
+	local playerName = TRP3_API.globals.player_id;
+	local profileID = self:GetProfileID();
+	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
 end
 
 currentUser = CurrentUser()

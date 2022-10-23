@@ -1751,9 +1751,24 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	SLASH_CMD_CURRENTLY_HELP = "Changes the in-character \"Currently\" text for your current profile.",
-	SLASH_CMD_CURRENTLY_CHANGED = "Successfully updated \"Currently\" text for your current profile.",
-	SLASH_CMD_CURRENTLY_ERROR_DEFAULT = "The \"Currently\" text for your current profile cannot be changed as it is the default profile.",
+	SLASH_CMD_SET_HELP = "Changes the value associated with a field for your current profile.",
+	SLASH_CMD_SET_HELP_DETAILED = [[
+Usage:
+  /trp3 set <field name> [macro conditionals] <value...>
+
+Fields:
+  class, classcolor, currently, firstname, fulltitle, icon, lastname, oocinfo, race, title
+
+Examples:
+  /trp3 set currently Daydreaming about butterflies
+  /trp3 set title [form:1] Happy Bear; Angry Elf
+  /trp3 set classcolor #ff0000
+]],
+	SLASH_CMD_SET_FAILED_INVALID_FIELD = "No profile field named %1$q exists.",
+	SLASH_CMD_SET_FAILED_DEFAULT_PROFILE = "The %1$q field for your current profile cannot be changed as it is the default profile.",
+	SLASH_CMD_SET_FAILED_INVALID_COLOR = "Failed to update field %1$q: %2$q is not a valid color string.",
+	SLASH_CMD_SET_FAILED_INVALID_ICON = "Failed to update field %1$q: %2$q is not a icon name.",
+	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
 	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
 
 };

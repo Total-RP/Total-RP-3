@@ -148,18 +148,83 @@ function TRP3_API.slash.rollDices(...)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+	-- TODO: The "set" command below will be refactored and moved elsewhere in
+	--       a future update, and expanded to accommodate more fields.
+
+	local KNOWN_SET_FIELDS = tInvert({
+		"class", "classcolor", "currently", "firstname", "fulltitle", "icon", "lastname", "oocinfo", "race", "title",
+	});
 
 	TRP3_API.slash.registerCommand({
-		id = "currently",
-		helpLine = " " .. loc.SLASH_CMD_CURRENTLY_HELP,
-		handler = function(...)
+		id = "set",
+		helpLine = " " .. loc.SLASH_CMD_SET_HELP,
+		handler = function(field, ...)
+			local data = string.trim(string.join(" ", ...));
+			field = string.trim(field or "");
+
+			-- Only parse macro options if the given string appears to start
+			-- with one; this is because SecureCmdOptionParse if called on a
+			-- string that doesn't have a conditional will always only ever
+			-- return a string up to the first semicolon - as such if you
+			-- executed "/trp3 set field a;b;c" you'd only set "a".
+
+			if string.find(data, "^%[") then
+				data = string.trim(SecureCmdOptionParse(data));
+			end
+
 			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();
 
-			if currentUser:IsProfileDefault() then
-				SendSystemMessage(loc.SLASH_CMD_CURRENTLY_ERROR_DEFAULT);
+			-- In terms of errors we prioritise feedback regarding unknown
+			-- fields over errors about the default profile.
+
+			if field == "" or field == "help" then
+				SendSystemMessage(loc.SLASH_CMD_SET_HELP_DETAILED);
+			elseif not KNOWN_SET_FIELDS[field] then
+				SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_FIELD, field));
+			elseif currentUser:IsProfileDefault() then
+				SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_DEFAULT_PROFILE, field));
 			else
-				currentUser:SetCurrentlyText(string.join(" ", ...));
-				SendSystemMessage(loc.SLASH_CMD_CURRENTLY_CHANGED);
+				local success = true;
+
+				if field == "class" then
+					currentUser:SetRoleplayClass(data);
+				elseif field == "classcolor" then
+					local hexcolor = string.match(data, "^#?(%x%x%x%x%x%x)$");
+
+					if not hexcolor then
+						SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_COLOR, field, data));
+						success = false;
+					else
+						currentUser:SetRoleplayClassColor(hexcolor);
+					end
+				elseif field == "currently" then
+					currentUser:SetCurrentlyText(data);
+				elseif field == "firstname" then
+					currentUser:SetFirstName(data);
+				elseif field == "fulltitle" then
+					currentUser:SetFullTitle(data);
+				elseif field == "icon" then
+					local iconIndex = LibStub:GetLibrary("LibRPMedia-1.0"):GetIconIndexByName(data);
+
+					if not iconIndex then
+						SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_ICON, field, data));
+						success = false;
+					else
+						currentUser:SetCustomIcon(data);
+					end
+				elseif field == "lastname" then
+					currentUser:SetLastName(data);
+				elseif field == "oocinfo" then
+					currentUser:SetOutOfCharacterInfo(data);
+				elseif field == "race" then
+					currentUser:SetRoleplayRace(data);
+				elseif field == "title" then
+					currentUser:SetTitle(data);
+				end
+
+				if success then
+					SendSystemMessage(string.format(loc.SLASH_CMD_SET_SUCCESS, field));
+				end
 			end
 		end
 	});
