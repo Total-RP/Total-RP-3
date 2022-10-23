@@ -86,9 +86,133 @@ end
 -- The module is exported as a global for convenient debug access.
 --
 
+local function SetCustomClassColor(player, field, data)
+	local hexColorString = string.match(data, "^#?(%x%x%x%x%x%x)$");
+
+	if hexColorString then
+		player:SetCustomClassColor(hexColorString);
+		return true;
+	else
+		return false, string.format(L.SLASH_CMD_SET_FAILED_INVALID_COLOR, field, data);
+	end
+end
+
+local function SetCustomIcon(player, field, data)
+	local iconIndex = LibStub:GetLibrary("LibRPMedia-1.0"):GetIconIndexByName(data);
+
+	if iconIndex then
+		player:SetCustomIcon(data);
+		return true;
+	else
+		return false, string.format(L.SLASH_CMD_SET_FAILED_INVALID_ICON, field, data);
+	end
+end
+
+local function GenerateFieldSetter(methodName)
+	return function(player, _, data)
+		player[methodName](player, data);
+		return true;
+	end
+end
+
 TRP3_Automation = TRP3_Addon:NewModule("Automation", {
 	conditionalsByName = {},
+	settersByField = {},
 });
+
+function TRP3_Automation:OnInitialize()
+	self.settersByField = {};
+
+	self:RegisterFieldSetterCommand("class", GenerateFieldSetter("SetCustomClass"));
+	self:RegisterFieldSetterCommand("currently", GenerateFieldSetter("SetCurrentlyText"));
+	self:RegisterFieldSetterCommand("classcolor", SetCustomClassColor);
+	self:RegisterFieldSetterCommand("icon", SetCustomIcon);
+	self:RegisterFieldSetterCommand("firstname", GenerateFieldSetter("SetFirstName"));
+	self:RegisterFieldSetterCommand("fulltitle", GenerateFieldSetter("SetFullTitle"));
+	self:RegisterFieldSetterCommand("lastname", GenerateFieldSetter("SetLastName"));
+	self:RegisterFieldSetterCommand("oocinfo", GenerateFieldSetter("SetOutOfCharacterInfo"));
+	self:RegisterFieldSetterCommand("race", GenerateFieldSetter("SetCustomRace"));
+	self:RegisterFieldSetterCommand("title", GenerateFieldSetter("SetTitle"));
+end
+
+function TRP3_Automation:OnEnable()
+	TRP3_API.slash.registerCommand({
+		id = "set",
+		helpLine = " " .. L.SLASH_CMD_SET_HELP,
+		handler = GenerateClosure(TRP3_Automation.OnFieldSetCommand, self),
+	});
+end
+function TRP3_Automation:RegisterFieldSetterCommand(field, handler)
+	assert(not self.settersByField[field]);
+	self.settersByField[field] = handler;
+end
+
+function TRP3_Automation:GetFieldSetter(field)
+	return self.settersByField[field];
+end
+
+function TRP3_Automation:GetFieldSetterNames()
+	local names = {};
+
+	for field in pairs(self.settersByField) do
+		table.insert(names, field);
+	end
+
+	table.sort(names);
+
+	return names;
+end
+
+function TRP3_Automation:IsFieldSetterKnown(field)
+	return self.settersByField[field] ~= nil;
+end
+
+function TRP3_Automation:OnFieldSetCommand(field, ...)
+	field = string.trim(field or "");
+	local data = string.trim(string.join(" ", ...));
+
+	if string.find(data, "^%[") then
+		data = AddOn_TotalRP3.ParseMacroOption(data);
+	end
+
+	local player = AddOn_TotalRP3.Player.GetCurrentUser();
+
+	if field == "" or field == "help" then
+		local STEM_COLOR = "ffffffff"
+		local ARG1_COLOR = "ffffcc00"
+		local ARG2_COLOR = "ffcccccc"
+		local ARG3_COLOR = "ff82c5ff"
+
+		local stem = WrapTextInColorCode("/trp3 set", STEM_COLOR);
+		local arg1 = WrapTextInColorCode(L.SLASH_CMD_SET_HELP_ARG1, ARG1_COLOR);
+		local arg2 = WrapTextInColorCode(L.SLASH_CMD_SET_HELP_ARG2, ARG2_COLOR);
+		local arg3 = WrapTextInColorCode(L.SLASH_CMD_SET_HELP_ARG3, ARG3_COLOR);
+
+		local examples = {
+			"",  -- Empty initial line to force a break.
+			string.join(" ", stem, WrapTextInColorCode("currently", ARG1_COLOR), WrapTextInColorCode(L.SLASH_CMD_SET_HELP_EXAMPLE1, ARG3_COLOR)),
+			string.join(" ", stem, WrapTextInColorCode("title", ARG1_COLOR), WrapTextInColorCode("[form:1]", ARG2_COLOR), WrapTextInColorCode(L.SLASH_CMD_SET_HELP_EXAMPLE2, ARG3_COLOR)),
+			string.join(" ", stem, WrapTextInColorCode("classcolor", ARG1_COLOR), WrapTextInColorCode("#ff0000", ARG3_COLOR)),
+		};
+
+		SendSystemMessage(string.format(L.SLASH_CMD_HELP_USAGE, string.join(" ", stem, arg1, arg2, arg3)));
+		SendSystemMessage(string.format(L.SLASH_CMD_HELP_FIELDS, WrapTextInColorCode(table.concat(self:GetFieldSetterNames(), LIST_DELIMITER), ARG1_COLOR)));
+		SendSystemMessage(string.format(L.SLASH_CMD_HELP_EXAMPLES, table.concat(examples, "|n")));
+	elseif not self:IsFieldSetterKnown(field) then
+		SendSystemMessage(string.format(L.SLASH_CMD_SET_FAILED_INVALID_FIELD, field));
+	elseif player:IsProfileDefault() then
+		SendSystemMessage(L.SLASH_CMD_SET_FAILED_DEFAULT_PROFILE);
+	else
+		local setter = self:GetFieldSetter(field);
+		local ok, err = setter(player, field, data);
+
+		if ok then
+			SendSystemMessage(string.format(L.SLASH_CMD_SET_SUCCESS, field));
+		else
+			SendSystemMessage(err);
+		end
+	end
+end
 
 function TRP3_Automation:RegisterMacroConditional(name, conditional)
 	if string.find(name, "^no") then
