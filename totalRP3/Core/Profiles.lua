@@ -629,7 +629,7 @@ function TRP3_API.profile.init()
 			local profileName = table.concat(args, " ");
 
 			if string.sub(profileName, 1, 1) == "[" then
-				profileName = SecureCmdOptionParse(profileName);
+				profileName = AddOn_TotalRP3.ParseMacroOption(profileName);
 			end
 
 			for profileID, profile in pairs(profiles) do

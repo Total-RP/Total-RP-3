@@ -1767,6 +1767,7 @@ Examples:
 	SLASH_CMD_SET_FAILED_INVALID_COLOR = "Failed to update field %1$q: %2$q is not a valid color string.",
 	SLASH_CMD_SET_FAILED_INVALID_ICON = "Failed to update field %1$q: %2$q is not a icon name.",
 	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
+	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
 	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
 
 };

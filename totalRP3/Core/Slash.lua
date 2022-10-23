@@ -174,13 +174,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			field = string.trim(field or "");
 
 			-- Only parse macro options if the given string appears to start
-			-- with one; this is because SecureCmdOptionParse if called on a
+			-- with one; this is because ParseMacroOption if called on a
 			-- string that doesn't have a conditional will always only ever
 			-- return a string up to the first semicolon - as such if you
 			-- executed "/trp3 set field a;b;c" you'd only set "a".
 
 			if string.find(data, "^%[") then
-				data = string.trim(SecureCmdOptionParse(data));
+				data = AddOn_TotalRP3.ParseMacroOption(data);
 			end
 
 			local currentUser = AddOn_TotalRP3.Player.GetCurrentUser();

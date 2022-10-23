@@ -63,5 +63,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 	<Include file="..\UI\Profiles.xml"/>
 	<Include file="Profiles.lua"/>
 	<Include file="ProfilesChatLinksModule.lua"/>
+	<Include file="Automation.lua"/>
 
 </Ui>
