@@ -308,40 +308,64 @@ function CurrentUser:GetAccountType()
 	end
 end
 
+local function ShouldAllowFieldModification(player, subtableName, fieldName)
+	return (subtableName == "character" and fieldName == "RP")
+		or (not player:IsProfileDefault());
+end
+
+local function UpdateProfileField(player, subtableName, fieldName, value)
+	if not ShouldAllowFieldModification(player, subtableName, fieldName) then
+		return;
+	end
+
+	local subtable = player:GetInfo(subtableName);
+
+	if subtable[fieldName] == value then
+		return;
+	end
+
+	subtable[fieldName] = value;
+	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
+
+	local playerName = TRP3_API.globals.player_id;
+	local profileID = player:GetProfileID();
+	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
+end
+
 function CurrentUser:SetRoleplayStatus(roleplayStatus)
-	self:UpdateDataField("character", "RP", roleplayStatus);
+	UpdateProfileField(self, "character", "RP", roleplayStatus);
 end
 
 function CurrentUser:SetOutOfCharacterInfo(oocInfo)
-	self:UpdateDataField("character", "CO", oocInfo);
+	UpdateProfileField(self, "character", "CO", oocInfo);
 end
 
 function CurrentUser:SetCurrentlyText(currentlyText)
-	self:UpdateDataField("character", "CU", currentlyText);
+	UpdateProfileField(self, "character", "CU", currentlyText);
 end
 
 function CurrentUser:SetFirstName(firstName)
-	self:UpdateDataField("characteristics", "FN", firstName);
+	UpdateProfileField(self, "characteristics", "FN", firstName);
 end
 
 function CurrentUser:SetLastName(lastName)
-	self:UpdateDataField("characteristics", "LN", lastName);
+	UpdateProfileField(self, "characteristics", "LN", lastName);
 end
 
 function CurrentUser:SetCustomIcon(icon)
-	self:UpdateDataField("characteristics", "IC", icon);
+	UpdateProfileField(self, "characteristics", "IC", icon);
 end
 
 function CurrentUser:SetTitle(title)
-	self:UpdateDataField("characteristics", "TI", title);
+	UpdateProfileField(self, "characteristics", "TI", title);
 end
 
 function CurrentUser:SetFullTitle(fullTitle)
-	self:UpdateDataField("characteristics", "FT", fullTitle);
+	UpdateProfileField(self, "characteristics", "FT", fullTitle);
 end
 
 function CurrentUser:SetCustomClass(class)
-	self:UpdateDataField("characteristics", "CL", class);
+	UpdateProfileField(self, "characteristics", "CL", class);
 end
 
 function CurrentUser:SetCustomClassColor(color)
@@ -355,44 +379,11 @@ function CurrentUser:SetCustomClassColor(color)
 		error("bad argument #2 to 'SetCustomClassColor': expected hex color string or color object", 2);
 	end
 
-	self:UpdateDataField("characteristics", "CH", hexcolor);
+	UpdateProfileField(self, "characteristics", "CH", hexcolor);
 end
 
 function CurrentUser:SetCustomRace(race)
-	self:UpdateDataField("characteristics", "RA", race);
-end
-
---[[ private ]] function CurrentUser:UpdateDataField(subtableName, field, value)
-	if self:IsProfileDefault() then
-		return;
-	end
-
-	local subtable = self:GetInfo(subtableName);
-
-	if subtable[field] == value then
-		return;
-	end
-
-	subtable[field] = value;
-	self:IncrementDataVersion(subtable);
-	self:NotifyDataUpdated(subtableName);
-end
-
---[[ private ]] function CurrentUser:IncrementDataVersion(subtableOrSubtableName)
-	local subtable = subtableOrSubtableName;
-
-	if type(subtable) ~= "table" then
-		local subtableName = subtableOrSubtableName;
-		subtable = self:GetInfo(subtableName);
-	end
-
-	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
-end
-
---[[ private ]] function CurrentUser:NotifyDataUpdated(subtableName)
-	local playerName = TRP3_API.globals.player_id;
-	local profileID = self:GetProfileID();
-	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
+	UpdateProfileField(self, "characteristics", "RA", race);
 end
 
 currentUser = CurrentUser()
