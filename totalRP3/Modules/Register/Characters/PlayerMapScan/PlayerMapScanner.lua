@@ -166,3 +166,71 @@ TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
 	end)
 	--}}}
 end)
+
+-- Slash command integration
+
+local function IsLocationBroadcastEnabled()
+	return TRP3_API.configuration.getValue(CONFIG_ENABLE_MAP_LOCATION);
+end
+
+local function DisplayLocationBroadcastStatus()
+	if IsLocationBroadcastEnabled() then
+		SendSystemMessage(loc.SLASH_CMD_LOCATION_ENABLED);
+	else
+		SendSystemMessage(loc.SLASH_CMD_LOCATION_DISABLED);
+	end
+end
+
+local function SetLocationBroadcastEnabled(enabled)
+	local state = IsLocationBroadcastEnabled();
+
+	if state == enabled then
+		return;
+	end
+
+	TRP3_API.configuration.setValue(CONFIG_ENABLE_MAP_LOCATION, enabled);
+	DisplayLocationBroadcastStatus();
+end
+
+local function LocationBroadcastCommandHelp()
+	local stem = WrapTextInColorCode("/trp3 location", "ffffffff");
+	local options = WrapTextInColorCode("<on||off||toggle>", "ffffcc00");
+	local examples = {
+		"",  -- Empty leading line.
+		string.format(loc.SLASH_CMD_LOCATION_HELP_OFF, WrapTextInColorCode("/trp3 location off", "ffffffff")),
+		string.format(loc.SLASH_CMD_LOCATION_HELP_ON, WrapTextInColorCode("/trp3 location on", "ffffffff")),
+		string.format(loc.SLASH_CMD_LOCATION_HELP_STATUS, WrapTextInColorCode("/trp3 location status", "ffffffff")),
+		string.format(loc.SLASH_CMD_LOCATION_HELP_TOGGLE, WrapTextInColorCode("/trp3 location toggle", "ffffffff")),
+	};
+
+	SendSystemMessage(string.format(loc.SLASH_CMD_HELP_USAGE, string.join(" ", stem, options)));
+	SendSystemMessage(string.format(loc.SLASH_CMD_HELP_COMMANDS, table.concat(examples, "|n")));
+end
+
+TRP3_API.Events.registerCallback(TRP3_API.Events.WORKFLOW_ON_LOADED, function()
+	TRP3_API.slash.registerCommand({
+		id = "location",
+		helpLine = " " .. loc.SLASH_CMD_LOCATION_HELP,
+		handler = function(...)
+			local subcommand = string.trim(string.join(" ", ...));
+
+			if string.find(subcommand, "^%[") then
+				subcommand = AddOn_TotalRP3.ParseMacroOption(subcommand);
+			end
+
+			if subcommand == "" or subcommand == "help" then
+				LocationBroadcastCommandHelp();
+			elseif subcommand == "on" or subcommand == "enable" then
+				SetLocationBroadcastEnabled(true);
+			elseif subcommand == "off" or subcommand == "disable" then
+				SetLocationBroadcastEnabled(false);
+			elseif subcommand == "toggle" then
+				SetLocationBroadcastEnabled(not IsLocationBroadcastEnabled());
+			elseif subcommand == "status" then
+				DisplayLocationBroadcastStatus();
+			else
+				SendSystemMessage(string.format(loc.SLASH_CMD_LOCATION_FAILED, subcommand));
+			end
+		end
+	});
+end);

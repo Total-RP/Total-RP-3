@@ -210,7 +210,7 @@ local function GenerateCreditsString(credits)
 		local WEBSITE_LINK = string.format("{link*%1$s*%2$s}", "http://totalrp3.info", L.CREDITS_WEBSITE_LINK_TEXT);
 		local TWITTER_LINK = string.format("{twitter*%1$s*@%1$s}", "TotalRP3");
 		local DISCORD_LINK = string.format("{link*%1$s*%2$s}", "http://discord.totalrp3.info", L.CREDITS_DISCORD_LINK_TEXT);
-		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3_API.globals.version_display);
+		local VERSION_TEXT = string.format(L.CREDITS_VERSION_TEXT, TRP3_API.utils.str.sanitizeVersion(TRP3_API.globals.version_display));
 
 		local lines = {};
 

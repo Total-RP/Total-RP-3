@@ -1737,11 +1737,6 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_24_14 = [[# Changelog version 2.3.13
 
 	## Fixed
@@ -1751,49 +1746,41 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 
 ]],
 
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	SLASH_CMD_HELP_USAGE = "Usage: %1$s",
+	SLASH_CMD_HELP_COMMANDS = "Commands: %1$s",
+	SLASH_CMD_HELP_EXAMPLES = "Examples: %1$s",
+	SLASH_CMD_HELP_FIELDS = "Fields: %1$s",
+	SLASH_CMD_LOCATION_HELP = "Controls whether or not your character will appear in roleplay map scans.",
+	SLASH_CMD_LOCATION_HELP_ON = "%1$s will enable the broadcast of your characters' location.",
+	SLASH_CMD_LOCATION_HELP_OFF = "%1$s will disable the broadcast of your characters' location.",
+	SLASH_CMD_LOCATION_HELP_TOGGLE = "%1$s will toggle the current state of character location broadcasts.",
+	SLASH_CMD_LOCATION_HELP_STATUS = "%1$s will display whether or not location broadcasts are enabled.",
+	SLASH_CMD_LOCATION_FAILED = "Unknown location command: %s",
+	SLASH_CMD_LOCATION_ENABLED = "Character location broadcast is enabled.",
+	SLASH_CMD_LOCATION_DISABLED = "Character location broadcast is disabled.",
+	SLASH_CMD_SET_HELP = "Changes the value associated with a field for your current profile.",
+	SLASH_CMD_SET_HELP_ARG1 = "<field>",
+	SLASH_CMD_SET_HELP_ARG2 = "[macro conditionals]",
+	SLASH_CMD_SET_HELP_ARG3 = "<data...>",
+	SLASH_CMD_SET_HELP_EXAMPLE1 = "Daydreaming about butterflies",
+	SLASH_CMD_SET_HELP_EXAMPLE2 = "Happy Bear; Angry Elf",
+	SLASH_CMD_SET_FAILED_INVALID_FIELD = "No profile field named %1$q exists.",
+	SLASH_CMD_SET_FAILED_DEFAULT_PROFILE = "Your current profile cannot be updated as it is the default profile.",
+	SLASH_CMD_SET_FAILED_INVALID_COLOR = "Failed to update %1$q field: %2$q is not a valid color string.",
+	SLASH_CMD_SET_FAILED_INVALID_ICON = "Failed to update %1$q field: %2$q is not a valid icon name.",
+	SLASH_CMD_SET_SUCCESS = "Successfully updated the %1$q field for your current profile.",
+	MACRO_RPSTATUS_INVALID = "Unknown roleplay status: %s",
+	UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
+
 };
 
 -- Use Ellyb to generate the Localization system
 TRP3_API.loc = Ellyb.Localization(TRP3_API.loc);
-
--- Register all locales into the localization system
--- Note the localeContent is filled by the publishing script using CurseForge's localization tool when packaging builds
--- See https://wow.curseforge.com/projects/total-rp-3/localization
----@type table<string, string>
-local localeContent = {};
-
---@localization(locale="enUS", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("enUS", "English", localeContent);
-
---@localization(locale="deDE", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("deDE", "Deutsch", localeContent);
-
---@localization(locale="frFR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("frFR", "Français", localeContent);
-
---@localization(locale="esES", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", localeContent);
-
---@localization(locale="esMX", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("esMX", "Español (AL)", localeContent);
-
---@localization(locale="itIT", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("itIT", "Italiano", localeContent);
-
---@localization(locale="koKR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("koKR", "한국어", localeContent);
-
---@localization(locale="ptBR", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ptBR", "Português", localeContent);
-
---@localization(locale="ruRU", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("ruRU", "Pусский", localeContent);
-
---@localization(locale="zhCN", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhCN", "简体中文", localeContent);
-
---@localization(locale="zhTW", format="lua_table", table-name="localeContent", handle-unlocalized="ignore")@
-TRP3_API.loc:RegisterNewLocale("zhTW", "繁體中文", localeContent);
 
 local Locale = {};
 TRP3_API.Locale = Locale;

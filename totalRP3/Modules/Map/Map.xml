@@ -83,8 +83,6 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 			<AnimationGroup parentKey="content">
 				<Rotation parentKey="flash1Rotation" targetKey="$parent.$parent.flash1" degrees="-90"/>
 				<Rotation parentKey="flash2Rotation" targetKey="$parent.$parent.flash2" degrees="90"/>
-				<Scale duration="1" targetKey="flash1" scaleX="2.5" scaleY="2.5"/>
-				<Scale duration="1" targetKey="flash2" scaleX="2.5" scaleY="2.5"/>
 				<Rotation parentKey="hourGlassRotation" targetKey="$parent.$parent.hourGlass" degrees="-360"/>
 			</AnimationGroup>
 		</Animations>

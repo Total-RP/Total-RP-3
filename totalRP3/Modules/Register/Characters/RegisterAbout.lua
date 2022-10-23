@@ -42,10 +42,10 @@ local showIconBrowser = function(callback)
 end;
 
 local function updateAboutTemplateFonts(frame)
-	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE));
-	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE));
-	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE));
-	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE));
+	frame:SetFont("p", defaultFontParameters.p.font, getConfigValue(CONFIG_REGISTER_ABOUT_P_SIZE), "");
+	frame:SetFont("h1", defaultFontParameters.h1.font, getConfigValue(CONFIG_REGISTER_ABOUT_H1_SIZE), "");
+	frame:SetFont("h2", defaultFontParameters.h2.font, getConfigValue(CONFIG_REGISTER_ABOUT_H2_SIZE), "");
+	frame:SetFont("h3", defaultFontParameters.h3.font, getConfigValue(CONFIG_REGISTER_ABOUT_H3_SIZE), "");
 end
 
 local function updateAllAboutTemplateFonts()
@@ -221,12 +221,10 @@ local function showTemplate2(dataTab)
 			icon:SetPoint("LEFT", 15, 0);
 			text:SetPoint("LEFT", icon, "RIGHT", 10, 0);
 			text:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -20, -10)
-			text:SetJustifyH("LEFT")
 		else
 			icon:SetPoint("RIGHT", -15, 0);
 			text:SetPoint("RIGHT", icon, "LEFT", -10, 0);
 			text:SetPoint("TOPLEFT", frame, "TOPLEFT", 20, -10)
-			text:SetJustifyH("RIGHT")
 		end
 
 		if frameTab.TX and frameTab.TX:len() > 0 then
@@ -767,7 +765,7 @@ local function onAboutReceived(profileID)
 end
 
 local function resetHTMLText(frame)
-	frame:SetText(frame.html);
+	frame:SetText(frame.html or "");
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

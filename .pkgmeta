@@ -2,14 +2,14 @@ package-as: totalRP3
 enable-nolib-creation: no
 
 ignore:
-  - Libs/*/*.rockspec
-  - Libs/*/*.toc
-  - Libs/*/changelog.*
-  - Libs/*/CHANGELOG.*
-  - Libs/*/docs
-  - Libs/*/examples
-  - Libs/*/README.*
-  - Libs/*/tests
+  - totalRP3/Libs/*/*.rockspec
+  - totalRP3/Libs/*/*.toc
+  - totalRP3/Libs/*/changelog.*
+  - totalRP3/Libs/*/CHANGELOG.*
+  - totalRP3/Libs/*/docs
+  - totalRP3/Libs/*/examples
+  - totalRP3/Libs/*/README.*
+  - totalRP3/Libs/*/tests
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
@@ -29,9 +29,7 @@ externals:
   totalRP3/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
   totalRP3/Libs/LibDBIcon-1.0: https://repos.curseforge.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
   totalRP3/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
-  totalRP3/Libs/LibMSP:
-    url: https://github.com/wow-rp-addons/LibMSP
-    branch: main
+  totalRP3/Libs/LibMSP: https://github.com/wow-rp-addons/LibMSP
   totalRP3/Libs/LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia
   totalRP3/Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
 

@@ -148,10 +148,6 @@ function TRP3_API.slash.rollDices(...)
 end
 
 TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
-
-
-
-	-- Slash command to switch frames
 	TRP3_API.slash.registerCommand({
 		id = "roll",
 		helpLine = " " .. loc.DICE_HELP,

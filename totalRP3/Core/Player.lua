@@ -6,16 +6,6 @@ local Ellyb = Ellyb(...);
 -- Imports.
 local Enums = AddOn_TotalRP3.Enums;
 
-local function IncrementSubtableVersion(player, subtableName)
-	local subtable = player:GetInfo(subtableName);
-	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
-
-	local playerName = TRP3_API.globals.player_id;
-	local profileID = player:GetProfileID();
-
-	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
-end
-
 ---@class Player : Object
 local Player, _private = Ellyb.Class("Player")
 ---@type Player
@@ -187,6 +177,10 @@ function Player:GetRoleplayStatus()
 	return self:GetInfo("character/RP");
 end
 
+function Player:GetCurrentlyText()
+	return self:GetInfo("character/CU");
+end
+
 function Player:GetAccountType()
 	local characterInfo = TRP3_API.register.getUnitIDCharacter(self:GetCharacterID());
 	return characterInfo.isTrial
@@ -285,6 +279,13 @@ function CurrentUser:GetProfileName()
 	return TRP3_API.profile.getPlayerCurrentProfile().profileName;
 end
 
+function CurrentUser:IsProfileDefault()
+	local profileID = self:GetProfileID();
+	local defaultID = TRP3_API.configuration.getValue("default_profile_id");
+
+	return profileID == defaultID;
+end
+
 function CurrentUser:SetProfileID(profileID)
 	TRP3_API.profile.selectProfile(profileID);
 end
@@ -307,17 +308,83 @@ function CurrentUser:GetAccountType()
 	end
 end
 
-function CurrentUser:SetRoleplayStatus(roleplayStatus)
-	local currentStatus = self:GetRoleplayStatus();
+local function ShouldAllowFieldModification(player, subtableName, fieldName)
+	return (subtableName == "character" and fieldName == "RP")
+		or (subtableName == "character" and fieldName == "XP")
+		or (not player:IsProfileDefault());
+end
 
-	if currentStatus == roleplayStatus then
+local function UpdateProfileField(player, subtableName, fieldName, value)
+	if not ShouldAllowFieldModification(player, subtableName, fieldName) then
 		return;
 	end
 
-	local characterData = self:GetInfo("character");
-	characterData.RP = roleplayStatus;
+	local subtable = player:GetInfo(subtableName);
 
-	IncrementSubtableVersion(self, "character");
+	if subtable[fieldName] == value then
+		return;
+	end
+
+	subtable[fieldName] = value;
+	subtable.v = TRP3_API.utils.math.incrementNumber(subtable.v or 1, 2);
+
+	local playerName = TRP3_API.globals.player_id;
+	local profileID = player:GetProfileID();
+	TRP3_API.events.fireEvent(TRP3_API.events.REGISTER_DATA_UPDATED, playerName, profileID, subtableName);
+end
+
+function CurrentUser:SetRoleplayStatus(roleplayStatus)
+	UpdateProfileField(self, "character", "RP", roleplayStatus);
+end
+
+function CurrentUser:SetOutOfCharacterInfo(oocInfo)
+	UpdateProfileField(self, "character", "CO", oocInfo);
+end
+
+function CurrentUser:SetCurrentlyText(currentlyText)
+	UpdateProfileField(self, "character", "CU", currentlyText);
+end
+
+function CurrentUser:SetFirstName(firstName)
+	UpdateProfileField(self, "characteristics", "FN", firstName);
+end
+
+function CurrentUser:SetLastName(lastName)
+	UpdateProfileField(self, "characteristics", "LN", lastName);
+end
+
+function CurrentUser:SetCustomIcon(icon)
+	UpdateProfileField(self, "characteristics", "IC", icon);
+end
+
+function CurrentUser:SetTitle(title)
+	UpdateProfileField(self, "characteristics", "TI", title);
+end
+
+function CurrentUser:SetFullTitle(fullTitle)
+	UpdateProfileField(self, "characteristics", "FT", fullTitle);
+end
+
+function CurrentUser:SetCustomClass(class)
+	UpdateProfileField(self, "characteristics", "CL", class);
+end
+
+function CurrentUser:SetCustomClassColor(color)
+	local hexcolor;
+
+	if type(color) == "string" and #color == 6 then
+		hexcolor = color;
+	elseif type(color) == "table" and color.GetRGBAsBytes then
+		hexcolor = string.format("%02x%02x%02x", color:GetRGBAsBytes());
+	else
+		error("bad argument #2 to 'SetCustomClassColor': expected hex color string or color object", 2);
+	end
+
+	UpdateProfileField(self, "characteristics", "CH", hexcolor);
+end
+
+function CurrentUser:SetCustomRace(race)
+	UpdateProfileField(self, "characteristics", "RA", race);
 end
 
 currentUser = CurrentUser()
