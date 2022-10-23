@@ -310,6 +310,7 @@ end
 
 local function ShouldAllowFieldModification(player, subtableName, fieldName)
 	return (subtableName == "character" and fieldName == "RP")
+		or (subtableName == "character" and fieldName == "XP")
 		or (not player:IsProfileDefault());
 end
 
