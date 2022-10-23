@@ -61,14 +61,6 @@ end
 
 TRP3_MacroConditionalMixin = {};
 
-function TRP3_MacroConditionalMixin:OnInitialize()
-	-- Implement in a derived mixin to perform any early initialization logic.
-end
-
-function TRP3_MacroConditionalMixin:OnEnable()
-	-- Implement in a derived mixin to perform any late initialization logic.
-end
-
 function TRP3_MacroConditionalMixin:Evaluate(name, data)  -- luacheck: no unused (abstract signature)
 	-- Implement in a derived mixin to return true if conditions are met.
 	--
@@ -96,7 +88,6 @@ end
 
 TRP3_Automation = TRP3_Addon:NewModule("Automation", {
 	conditionalsByName = {},
-	conditionalModules = {},
 });
 
 function TRP3_Automation:RegisterMacroConditional(name, conditional)
@@ -106,8 +97,6 @@ function TRP3_Automation:RegisterMacroConditional(name, conditional)
 		return false, string.format("macro conditional already exists: %s", name);
 	end
 
-
-	self:RegisterMacroConditionalModule(name, conditional);
 	self.conditionalsByName[name] = conditional;
 
 	return true;
@@ -129,6 +118,10 @@ end
 -- string to find conditions, evaluating them, and then replacing their
 -- tokens in the option string with Blizzard-provided states that are known
 -- ahead-of-time to evaluate to true or false as necessary.
+--
+-- Evaluation of a conditional occurs once per unique combination of a
+-- conditional name and associated data string, eg. "[ooc][ooc]" would only
+-- evaluate the "ooc" condition a single time and will cache the result.
 
 local function EvaluateMacroConditions(conditionals, options)
 	local TRUE_STATE = SecureCmdOptionParse("[combat]combat;nocombat");
@@ -186,37 +179,6 @@ end
 function TRP3_Automation:ParseMacroOption(options)
 	options = EvaluateMacroConditions(self.conditionalsByName, options);
 	return SecureCmdOptionParse(options);
-end
-
--- When a conditional is registered for the first time we register a
--- submodule of this module so that Ace3 can automatically handle
--- dispatching the OnInitialize and OnEnable methods based upon the
--- current state of the load process.
---
--- The module is otherwise unused outside of these two points. The name
--- assigned to the module doesn't really matter, but for debug purposes
--- it'll use the name of the first alias the conditional is registered as.
-
-local TRP3_MacroConditionalModuleMixin = {};
-
-function TRP3_MacroConditionalModuleMixin:OnInitialize()
-	self.conditional:OnInitialize();
-end
-
-function TRP3_MacroConditionalModuleMixin:OnEnable()
-	self.conditional:OnEnable();
-end
-
-function TRP3_Automation:RegisterMacroConditionalModule(name, conditional)
-	local module = self.conditionalModules[conditional];
-
-	if not module then
-		local moduleName = string.format("Conditional[%s]", name);
-		local modulePrototype = Mixin({ conditional = conditional }, TRP3_MacroConditionalModuleMixin);
-
-		module = self:NewModule(moduleName, modulePrototype);
-		self.conditionalModules[conditional] = module;
-	end
 end
 
 --
