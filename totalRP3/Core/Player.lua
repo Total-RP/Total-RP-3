@@ -375,7 +375,7 @@ function CurrentUser:SetCustomClassColor(color)
 	if type(color) == "string" and #color == 6 then
 		hexcolor = color;
 	elseif type(color) == "table" and color.GetRGBAsBytes then
-		hexcolor = string.format("%x%x%x", color:GetRGBAsBytes());
+		hexcolor = string.format("%02x%02x%02x", color:GetRGBAsBytes());
 	else
 		error("bad argument #2 to 'SetCustomClassColor': expected hex color string or color object", 2);
 	end
