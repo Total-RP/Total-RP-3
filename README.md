@@ -19,7 +19,7 @@ Are you having an issue with Total RP 3? Check the [F.A.Q] and our [troubleshoo
 
 ## Description
 
-**Total RP 3** aims to be the best way to **customize, describe and drive your role-play interactions**, by combining powerful customization features with a user interface focused on usability and accessibility, along with many other features requested by our users. With this add-on, you can fully customize all the characteristics of your characters and companions (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
+**Total RP 3** aims to be the best way to **customize, describe and drive your role-play interactions** by combining powerful customization features with a clean and accessible user interface. With Total RP 3, you can fully customize all the characteristics of your characters and companions (pets, battle pets, mounts), like the name, the description or even attach an image to represent them.
 
 Our goal is to bring the **simplicity** and **user-friendliness** of add-ons like MyRolePlay but **without sacrificing your freedom** when defining your roleplay characters, while still adding neat features that you'll never want to live without.
 
