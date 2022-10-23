@@ -1757,7 +1757,7 @@ Usage:
   /trp3 set <field name> [macro conditionals] <value...>
 
 Fields:
-  class, classcolor, currently, firstname, fulltitle, icon, lastname, oocinfo, race, title
+  %1$s
 
 Examples:
   /trp3 set currently Daydreaming about butterflies

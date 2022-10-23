@@ -151,9 +151,11 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 	-- TODO: The "set" command below will be refactored and moved elsewhere in
 	--       a future update, and expanded to accommodate more fields.
 
-	local KNOWN_SET_FIELDS = tInvert({
+	local KNOWN_FIELDS_LIST = {
 		"class", "classcolor", "currently", "firstname", "fulltitle", "icon", "lastname", "oocinfo", "race", "title",
-	});
+	};
+
+	local KNOWN_FIELDS_MAP = tInvert(KNOWN_FIELDS_LIST);
 
 	TRP3_API.slash.registerCommand({
 		id = "set",
@@ -178,8 +180,9 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- fields over errors about the default profile.
 
 			if field == "" or field == "help" then
-				SendSystemMessage(loc.SLASH_CMD_SET_HELP_DETAILED);
-			elseif not KNOWN_SET_FIELDS[field] then
+				local fields = table.concat(KNOWN_FIELDS_LIST, ", ");
+				SendSystemMessage(string.format(loc.SLASH_CMD_SET_HELP_DETAILED, fields));
+			elseif not KNOWN_FIELDS_MAP[field] then
 				SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_FIELD, field));
 			elseif currentUser:IsProfileDefault() then
 				SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_DEFAULT_PROFILE, field));
