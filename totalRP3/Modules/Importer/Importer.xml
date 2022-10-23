@@ -1,0 +1,107 @@
+<!--
+	Copyright The Total RP 3 Authors
+	SPDX-License-Identifier: Apache-2.0
+-->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
+
+	<Frame name="TRP3_ProfileImporterLine" inherits="TRP3_ProfileManagerLine" virtual="true" />
+
+	<Frame name="TRP3_ImporterTemplate" virtual="true" inherits="BackdropTemplate">
+		<KeyValues>
+			<KeyValue key="backdropInfo" value="TRP3_BACKDROP_TOOLTIP_0_24" type="global"/>
+		</KeyValues>
+		<Anchors>
+			<Anchor point="TOPRIGHT" x="2" y="-28" />
+			<Anchor point="BOTTOMLEFT" x="2" y="0" />
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture file="Interface\SPELLBOOK\Spellbook-Page-1">
+					<Anchors>
+						<Anchor point="TOPRIGHT" x="-5" y="-2"/>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="-2"/>
+						<Anchor point="LEFT" x="5" y="0"/>
+					</Anchors>
+					<TexCoords left="0.07" right="1" top="0" bottom="0.98"/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentList" inherits="TRP3_InnerFrame">
+				<Size x="0" y="350" />
+				<Anchors>
+					<Anchor point="LEFT" x="33" y="0" />
+					<Anchor point="RIGHT" x="-20" y="0" />
+				</Anchors>
+				<Layers>
+					<Layer level="OVERLAY">
+						<FontString name="$parentEmpty" inherits="GameFontNormalLarge" justifyH="LEFT" text="[EMPTY]" hidden="true">
+							<Size x="0" y="10"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0.95" g="0.95" b="0.95"/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Frame name="$parentLine1" inherits="TRP3_ProfileImporterLine">
+						<Anchors>
+							<Anchor point="TOP" x="0" y="-12" />
+							<Anchor point="LEFT" x="8" y="0" />
+							<Anchor point="RIGHT" x="-22" y="0" />
+						</Anchors>
+					</Frame>
+					<Frame name="$parentLine2" inherits="TRP3_ProfileImporterLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine1" x="0" y="-1" />
+							<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+							<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentLine3" inherits="TRP3_ProfileImporterLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine2" x="0" y="-1" />
+							<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+							<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentLine4" inherits="TRP3_ProfileImporterLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine3" x="0" y="-1" />
+							<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+							<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
+						</Anchors>
+					</Frame>
+					<Frame name="$parentLine5" inherits="TRP3_ProfileImporterLine">
+						<Anchors>
+							<Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLine4" x="0" y="-1" />
+							<Anchor point="LEFT" x="0" y="0" relativeTo="$parentLine1" />
+							<Anchor point="RIGHT" x="0" y="0" relativeTo="$parentLine1"/>
+						</Anchors>
+					</Frame>
+					<Slider name="$parentSlider" parentKey="slider" inherits="TRP3_Scrollbar" />
+				</Frames>
+			</Frame>
+			<Button name="$parentAll" inherits="UIPanelButtonTemplate">
+				<Size x="150" y="20"/>
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP" relativeTo="$parentList" x="0" y="5"/>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+
+	<Frame name="TRP3_CharacterImporter" parentKey="characterImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_ProfileManager" frameLevel="2" hidden="true">
+	</Frame>
+
+	<Frame name="TRP3_CompanionImporter" inherits="TRP3_ImporterTemplate" parent="TRP3_CompanionsProfiles" frameLevel="2" hidden="true">
+	</Frame>
+
+
+	<Include file="Importer.lua"/>
+	<Include file="MRP_API.lua"/>
+	<Include file="XRP_API.lua"/>
+
+</Ui>

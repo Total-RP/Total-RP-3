@@ -2,32 +2,38 @@ package-as: totalRP3
 enable-nolib-creation: no
 
 ignore:
+  - totalRP3/Libs/*/*.rockspec
+  - totalRP3/Libs/*/*.toc
+  - totalRP3/Libs/*/changelog.*
+  - totalRP3/Libs/*/CHANGELOG.*
+  - totalRP3/Libs/*/docs
+  - totalRP3/Libs/*/examples
+  - totalRP3/Libs/*/README.*
+  - totalRP3/Libs/*/tests
   - README.md
   - CONTRIBUTING.md
   - CODE_OF_CONDUCT.md
   - LICENSE
+  - Makefile
   - Scripts
-  - totalRP3/libs/LibDeflate/.appveyor
-  - totalRP3/libs/LibDeflate/.rockspecs
-  - totalRP3/libs/LibDeflate/.travis
-  - totalRP3/libs/LibDeflate/docs
-  - totalRP3/libs/LibDeflate/examples
-  - totalRP3/libs/LibDeflate/tests
-  - totalRP3/libs/LibRPMedia/Exporter
-  - totalRP3/libs/LibRPMedia/Makefile
-  - totalRP3/libs/LibRPMedia/Tests
-  - totalRP3/libs/LibRPMedia/UI
+
+externals:
+  totalRP3/Libs/AceAddon-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceAddon-3.0
+  totalRP3/Libs/AceConsole-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceConsole-3.0
+  totalRP3/Libs/AceEvent-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceEvent-3.0
+  totalRP3/Libs/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
+  totalRP3/Libs/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  totalRP3/Libs/Chomp: https://github.com/wow-rp-addons/Chomp
+  totalRP3/Libs/LibChatAnims: https://repos.curseforge.com/wow/libchatanims/trunk/LibChatAnims
+  totalRP3/Libs/LibCompress: https://repos.curseforge.com/wow/libcompress/trunk
+  totalRP3/Libs/LibDataBroker-1.1: https://github.com/tekkub/libdatabroker-1-1
+  totalRP3/Libs/LibDBIcon-1.0: https://repos.curseforge.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+  totalRP3/Libs/LibDeflate: https://github.com/SafeteeWoW/LibDeflate
+  totalRP3/Libs/LibMSP: https://github.com/wow-rp-addons/LibMSP
+  totalRP3/Libs/LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia
+  totalRP3/Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
 
 embedded-libraries:
-  - ace3
-  - callbackhandler
-  - libchatanims
-  - libcompress
-  - libdatabroker-1-1
-  - libdbicon-1-0
-  - libdeflate
-  - librpmedia
-  - libstub
   - msa-dropdownmenu-10
   - utf8
 

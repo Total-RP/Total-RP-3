@@ -2,7 +2,7 @@ max_line_length = false
 
 exclude_files = {
 	"Scripts/mature_dictionary_template.lua",
-	"totalRP3/libs",
+	"totalRP3/Libs",
 };
 
 ignore = {
@@ -139,6 +139,7 @@ stds.wow = {
 				"join",
 				"split",
 				"trim",
+				"utf8lower", -- Added by the UTF8 library.
 				"utf8sub", -- Added by the UTF8 library.
 			},
 		},
@@ -309,6 +310,7 @@ stds.wow = {
 		"CloseDropDownMenus",
 		"CompactUnitFrame_UpdateHealthColor",
 		"CompactUnitFrame_UpdateName",
+		"CopyTable",
 		"CreateAndInitFromMixin",
 		"CreateColor",
 		"CreateFrame",
@@ -347,6 +349,7 @@ stds.wow = {
 		"GetLanguageByIndex",
 		"GetLocale",
 		"GetMaxLevelForLatestExpansion",
+		"GetMinimapZoneText",
 		"GetMouseFocus",
 		"GetNormalizedRealmName",
 		"GetNumLanguages",
@@ -396,8 +399,10 @@ stds.wow = {
 		"ScrollingEdit_OnLoad",
 		"ScrollingEdit_OnTextChanged",
 		"SecondsToClock",
+		"securecallfunction",
 		"SecureCmdOptionParse",
 		"SendChatMessage",
+		"SendSystemMessage",
 		"SetCursor",
 		"SetCVar",
 		"SetPetStablePaperdoll",
@@ -471,6 +476,7 @@ stds.wow = {
 		"ChatTypeInfo",
 		"DoublyLinkedListMixin",
 		"DropDownList1",
+		"EditModeManagerFrame",
 		"FontableFrameMixin",
 		"GameFontNormal",
 		"GameFontNormalHuge",

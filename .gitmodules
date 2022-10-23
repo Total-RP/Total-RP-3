@@ -1,15 +1,3 @@
 [submodule "Scripts/mature-dict"]
 	path = Scripts/mature-dict
 	url = https://github.com/Ellypse/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words
-[submodule "totalRP3/libs/LibMSP"]
-	path = totalRP3/libs/LibMSP
-	url = https://github.com/wow-rp-addons/LibMSP
-[submodule "totalRP3/libs/LibDeflate"]
-	path = totalRP3/libs/LibDeflate
-	url = https://github.com/SafeteeWoW/LibDeflate
-[submodule "totalRP3/libs/LibRPMedia"]
-	path = totalRP3/libs/LibRPMedia
-	url = https://github.com/wow-rp-addons/LibRPMedia
-[submodule "totalRP3/libs/LibDataBroker-1.1"]
-	path = totalRP3/libs/LibDataBroker-1.1
-	url = https://github.com/tekkub/libdatabroker-1-1.git
