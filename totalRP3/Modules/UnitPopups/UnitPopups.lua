@@ -7,7 +7,7 @@ local L = TRP3_API.loc;
 local GenerateConfigurationPage;
 
 local function ShouldIgnoreDeveloperAdvice()
-	return TRP3_API.configuration.getValue("UnitPopups_IgnoreDeveloperAdvice");
+	return TRP3_API.configuration.getValue("UnitPopups_IgnoreDeveloperAdvice") or not EditModeManagerFrame;
 end
 
 local function ShouldDisableOutOfCharacter()
@@ -284,24 +284,27 @@ function GenerateConfigurationPage()
 				inherit = "TRP3_ConfigParagraph",
 				title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
 			},
-			{
-				inherit = "TRP3_ConfigParagraph",
-				title = L.UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE,
-			},
-			-- TODO: Uncomment this when the taint issues are fixed; this is
-			--       temporarily hidden to make the UI less confusing.
-			-- {
-			-- 	inherit = "TRP3_ConfigButton",
-			-- 	title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
-			-- 	text = DISABLE,
-			-- 	OnClick = function()
-			-- 		TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
-			-- 			local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
-			-- 			TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
-			-- 			ReloadUI();
-			-- 		end);
-			-- 	end,
-			-- },
+			(function()
+				if ShouldIgnoreDeveloperAdvice() then
+					return {
+						inherit = "TRP3_ConfigButton",
+						title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
+						text = DISABLE,
+						OnClick = function()
+							TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+								local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
+								TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
+								ReloadUI();
+							end);
+						end,
+					};
+				else
+					return {
+						inherit = "TRP3_ConfigParagraph",
+						title = L.UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE,
+					};
+				end
+			end)(),
 			{
 				inherit = "TRP3_ConfigH1",
 				title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
@@ -311,28 +314,28 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
 				configKey = "UnitPopups_DisableOutOfCharacter",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
 				configKey = "UnitPopups_DisableInCombat",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
 				configKey = "UnitPopups_DisableInInstances",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
 				configKey = "UnitPopups_DisableOnUnitFrames",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -343,28 +346,28 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
 				configKey = "UnitPopups_ShowHeaderText",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
 				configKey = "UnitPopups_ShowSeparator",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
 				configKey = "UnitPopups_ShowOpenProfile",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
 				configKey = "UnitPopups_ShowCharacterStatus",
-				dependentOnOptions = { "UnitPopups_IgnoreDeveloperAdvice" },
+				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 		},
 	};
