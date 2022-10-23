@@ -1754,15 +1754,13 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	SLASH_CMD_SET_HELP = "Changes the value associated with a field for your current profile.",
 	SLASH_CMD_SET_HELP_DETAILED = [[
 Usage:
-  /trp3 set <field name> [macro conditionals] <value...>
-
-Fields:
   %1$s
 
+Fields:
+  %2$s
+
 Examples:
-  /trp3 set currently Daydreaming about butterflies
-  /trp3 set title [form:1] Happy Bear; Angry Elf
-  /trp3 set classcolor #ff0000
+  %3$s
 ]],
 	SLASH_CMD_SET_FAILED_INVALID_FIELD = "No profile field named %1$q exists.",
 	SLASH_CMD_SET_FAILED_DEFAULT_PROFILE = "The %1$q field for your current profile cannot be changed as it is the default profile.",

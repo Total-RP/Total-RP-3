@@ -157,6 +157,15 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 
 	local KNOWN_FIELDS_MAP = tInvert(KNOWN_FIELDS_LIST);
 
+	-- Deliberately not localizing these because we want flexibility to change
+	-- them later if the syntax changes without invalidating a lot of locales.
+
+	local EXAMPLE_COMMANDS = {
+		"|cffffffff/trp3 set|r |cffffcc00currently|r |cff82c5ffDaydreaming about butterflies|r",
+		"|cffffffff/trp3 set|r |cffffcc00title|r |cffcccccc[form:1]|r |cff82c5ffHappy Bear; Angry Elf|r",
+		"|cffffffff/trp3 set|r |cffffcc00classcolor|r |cff82c5ff#ff0000|r",
+	};
+
 	TRP3_API.slash.registerCommand({
 		id = "set",
 		helpLine = " " .. loc.SLASH_CMD_SET_HELP,
@@ -180,8 +189,10 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			-- fields over errors about the default profile.
 
 			if field == "" or field == "help" then
-				local fields = table.concat(KNOWN_FIELDS_LIST, ", ");
-				SendSystemMessage(string.format(loc.SLASH_CMD_SET_HELP_DETAILED, fields));
+				local usage = "|cffffffff/trp3 set|r |cffffcc00<field>|r |cffcccccc[macro conditionals]|r |cff82c5ff<value...>|r";
+				local fields = string.format("|cffffcc00%s|r", table.concat(KNOWN_FIELDS_LIST, ", "));
+				local examples = table.concat(EXAMPLE_COMMANDS, "\n  ");
+				SendSystemMessage(string.format(loc.SLASH_CMD_SET_HELP_DETAILED, usage, fields, examples));
 			elseif not KNOWN_FIELDS_MAP[field] then
 				SendSystemMessage(string.format(loc.SLASH_CMD_SET_FAILED_INVALID_FIELD, field));
 			elseif currentUser:IsProfileDefault() then
