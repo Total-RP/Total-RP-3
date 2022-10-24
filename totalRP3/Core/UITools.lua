@@ -564,7 +564,7 @@ local function getCompanionOwner(unitType, targetType)
 			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
 		end
 
-		if not ownerName or ownerName == UNKNOWNOBJECT then
+		if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
 			return nil;
 		elseif not ownerRealm or ownerRealm == "" then
 			return ownerName;
