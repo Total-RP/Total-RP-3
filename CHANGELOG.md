@@ -3,6 +3,7 @@
 ## Added
 
 - Added support for Retail 10.0.0.
+- Added 2246 icons from patch 10.0.0.
 - Added 2 new command lines for use in macros:
   - /trp3 set: Allows you to set a profile field to a given value.
   ![](https://user-images.githubusercontent.com/287102/197398575-4ea8f528-a212-4cdb-a4ce-9297638d4de9.png)
