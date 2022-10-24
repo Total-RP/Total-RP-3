@@ -194,7 +194,7 @@ end
 
 local function LocationBroadcastCommandHelp()
 	local stem = WrapTextInColorCode("/trp3 location", "ffffffff");
-	local options = WrapTextInColorCode("<on||off||toggle>", "ffffcc00");
+	local options = WrapTextInColorCode("<on||off||status||toggle>", "ffffcc00");
 	local examples = {
 		"",  -- Empty leading line.
 		string.format(loc.SLASH_CMD_LOCATION_HELP_OFF, WrapTextInColorCode("/trp3 location off", "ffffffff")),
