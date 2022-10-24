@@ -451,7 +451,7 @@ local validSuffixes = {
 };
 
 function Utils.str.sanitizeVersion(text)
-	if not text then return "0" end
+	if not text then return end
 	-- Dev version
 	if text == "-dev" or text == "v-dev" then return text end
 
