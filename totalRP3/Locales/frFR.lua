@@ -73,6 +73,7 @@ Importer du contenu créé avec une version différente peut poser des soucis en
 	["CM_CLASS_DEATHKNIGHT"] = "Chevalier de la mort",
 	["CM_CLASS_DEMONHUNTER"] = "Chasseur de démons",
 	["CM_CLASS_DRUID"] = "Druide",
+	["CM_CLASS_EVOKER"] = "Évocateur",
 	["CM_CLASS_HUNTER"] = "Chasseur",
 	["CM_CLASS_MAGE"] = "Mage",
 	["CM_CLASS_MONK"] = "Moine",
@@ -252,7 +253,7 @@ Cette option est particulièrement utile pour éviter les abus du système pour 
 	["CO_LOCATION_DISABLE_PVP_TT"] = [=[Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en mode PvP.
 
 Cette option est particulièrement utile sur les royaumes PvP où les utilisateurs de la faction opposée pourraient abuser du système pour vous traquer.]=],
-	["CO_LOCATION_DISABLE_WAR_MODE"] = "Désactiver la location en Mode Guerre",
+	["CO_LOCATION_DISABLE_WAR_MODE"] = "Désactiver le scan en Mode Guerre",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[Vous ne réponderez plus aux demandes de localisation des autres joueurs quand vous avez le Mode Guerre activé et que vous n'êtes pas dans une zone |cff69CCF0Sanctuaire|r.
 
 Cette option est particulièrement utile pour éviter les abus utilisant le système de localisation de Total RP 3 pour vous traquer en JcJ.]=],
@@ -377,6 +378,8 @@ Classe: 50 caractères |r]=],
 	["CO_TOOLTIP_HIDE_ORIGINAL"] = "Masquer l'infobulle originale",
 	["CO_TOOLTIP_ICONS"] = "Afficher les icônes",
 	["CO_TOOLTIP_IN_CHARACTER_ONLY"] = "Cacher quand HRP",
+	["CO_TOOLTIP_MAIN_COLOR"] = "Couleur principale",
+	["CO_TOOLTIP_MAIN_COLOR_HELP"] = "La couleur de texte utilisée dans l'infobulle pour la race, le niveau, et les entêtes Actuellement et Autres informations.",
 	["CO_TOOLTIP_MAINSIZE"] = "Taille de la police principale",
 	["CO_TOOLTIP_NO_FADE_OUT"] = "Cacher immédiatement au lieu de disparaître",
 	["CO_TOOLTIP_NOTIF"] = "Afficher les notifications",
@@ -393,12 +396,16 @@ Classe: 50 caractères |r]=],
 	["CO_TOOLTIP_REALM"] = "Afficher le royaume",
 	["CO_TOOLTIP_RELATION"] = "Afficher la couleur de la relation",
 	["CO_TOOLTIP_RELATION_TT"] = "Colorer la bordure de l'infobulle en fonction de la relation",
+	["CO_TOOLTIP_SECONDARY_COLOR"] = "Couleur secondaire",
+	["CO_TOOLTIP_SECONDARY_COLOR_HELP"] = "La couleur de texte utilisée dans l'infobulle pour le royaume, le nom de guilde, les champs Actuellement et Autres informations, et les informations de zone et de points de vie.",
 	["CO_TOOLTIP_SPACING"] = "Afficher les espaces",
 	["CO_TOOLTIP_SPACING_TT"] = "Ajoute des espaces pour aérer l'infobulle, dans le style de MyRolePlay.",
 	["CO_TOOLTIP_SUBSIZE"] = "Taille de la police secondaire",
 	["CO_TOOLTIP_TARGET"] = "Afficher la cible",
 	["CO_TOOLTIP_TERSIZE"] = "Taille de la police tertiaire",
 	["CO_TOOLTIP_TITLE"] = "Afficher le titre",
+	["CO_TOOLTIP_TITLE_COLOR"] = "Couleur de titre",
+	["CO_TOOLTIP_TITLE_COLOR_HELP"] = "La couleur de texte utilisée dans l'infobulle pour le titre complet.",
 	["CO_TOOLTIP_USE"] = "Utiliser les infobulles de personnages/compagnons",
 	["CO_TOOLTIP_ZONE"] = "Afficher la zone",
 	["CO_TOOLTIP_ZONE_TT"] = "Ceci ne sera affiché que si la cible ne se trouve pas dans la même zone que vous.",
@@ -494,6 +501,7 @@ aux autres que vous débutez dans le roleplay.]=],
 	["KUI_NAMEPLATES_MODULE_NAME"] = "Barres d'info Kui",
 	["KUI_NAMEPLATES_WARN_OUTDATED_MODULE"] = "Le module Kui |cff9966ffNameplates|r pour Total RP 3 a été intégré directement à l'addon principal.|n|nL'ancien plugin a été désactivé automatiquement, et |cffffcc00nous vous recommandons de le désinstaller|r parce qu'il n'est plus nécessaire.",
 	["LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT"] = "La langue parlée a été réinitialiser pour la langue par défaut %s car vous ne connaissez la langue précedemment sélectionnée %s.",
+	["MACRO_RPSTATUS_INVALID"] = "Statut inconnu: %s",
 	["MAP_BUTTON_NO_SCAN"] = "Pas de scan disponible",
 	["MAP_BUTTON_SCANNING"] = "Scan en cours",
 	["MAP_BUTTON_SUBTITLE"] = "Clic pour afficher les scans disponibles",
@@ -1266,6 +1274,29 @@ Si vous souhaitez signaler le profil de %s comme enfreignant le Code de Conduite
 	["REG_TT_ZONE"] = "Zone",
 	["SCRIPT_ERROR"] = "Erreur dans le script.",
 	["SCRIPT_UNKNOWN_EFFECT"] = "Erreur dans le script, effet inconnu.",
+	["SLASH_CMD_HELP_COMMANDS"] = "Commandes : %1$s",
+	["SLASH_CMD_HELP_EXAMPLES"] = "Exemples : %1$s",
+	["SLASH_CMD_HELP_FIELDS"] = "Champs : %1$s",
+	["SLASH_CMD_HELP_USAGE"] = "Utilisation : %1$s",
+	["SLASH_CMD_LOCATION_DISABLED"] = "Scan de position du personnage désactivé.",
+	["SLASH_CMD_LOCATION_ENABLED"] = "Scan de position du personnage activé.",
+	["SLASH_CMD_LOCATION_FAILED"] = "Commande de position inconnue : %s",
+	["SLASH_CMD_LOCATION_HELP"] = "Contrôle si votre personnage apparaît dans les scans de personnage sur la carte.",
+	["SLASH_CMD_LOCATION_HELP_OFF"] = "%1$s désactive le scan de position de vos personnages.",
+	["SLASH_CMD_LOCATION_HELP_ON"] = "%1$s active le scan de position de vos personnages.",
+	["SLASH_CMD_LOCATION_HELP_STATUS"] = "%1$s affiche si le scan de position de vos personnages est activé.",
+	["SLASH_CMD_LOCATION_HELP_TOGGLE"] = "%1$s bascule le scan de position de vos personnages.",
+	["SLASH_CMD_SET_FAILED_DEFAULT_PROFILE"] = "Votre profil actuel ne peut pas être modifié car il s'agit du profil par défaut.",
+	["SLASH_CMD_SET_FAILED_INVALID_COLOR"] = "Echec de la mise à jour du champ %1$q : %2$q n'est pas une chaîne de couleur valide.",
+	["SLASH_CMD_SET_FAILED_INVALID_FIELD"] = "Aucun profil nommé %1$q n'existe.",
+	["SLASH_CMD_SET_FAILED_INVALID_ICON"] = "Echec de la mise à jour du champ %1$q : %2$q n'est pas un nom d'icône valide.",
+	["SLASH_CMD_SET_HELP"] = "Change la valeur associée à un champ pour votre profile actuel",
+	["SLASH_CMD_SET_HELP_ARG1"] = "<champ>",
+	["SLASH_CMD_SET_HELP_ARG2"] = "[conditions macro]",
+	["SLASH_CMD_SET_HELP_ARG3"] = "<valeur...>",
+	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Rêve de papillons",
+	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Ours heureux; Elfe furieux",
+	["SLASH_CMD_SET_SUCCESS"] = "Le champ %1$q a été mis à jour avec succès pour votre profile actuel.",
 	["SLASH_CMD_STATUS_HELP"] = [=[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
 Change le statut de votre personnage en fonction de l'option spécifiée:
 
@@ -1407,6 +1438,7 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "Eléments de menu",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "Le module de menus d'unités ajoute des éléments additionnels aux menus de clic-droit sur les portraits d'unités et les noms dans la fenêtre de discussion.",
+	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note: |r A cause de problèmes avec le Mode Edition du patch 10.0.0, le module de menus d'unités a été |cffff0000désactivé|r. Désolé pour le dérangement !",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "Paramètres de menu",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "Afficher le bouton de statut de personnage",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "Si coché, ajoute une case à cocher au menu de votre propre portrait d'unité vous permettant de changer votre statut RP/HRP.",
@@ -1568,7 +1600,30 @@ Nous sommes au courant d'un bug depuis le patch 8.2 bloquant parfois **l'utilisa
 
 - Le scan de personnages sur Classic a été modifié pour pallier au manque de tests de Blizzard.
 - Correction d'un souci lors de l'utilisation d'une icone avec une apostrophe dans le nom.
-- Le filtre du navigateur d'images gère désormais correctement certains caractères spéciaux.]=]
+- Le filtre du navigateur d'images gère désormais correctement certains caractères spéciaux.]=],
+	["WHATS_NEW_25_1"] = [=[# Liste des changements de la version 2.4
+
+## Ajouté
+
+- Support de la version Retail 10.0.0.
+- Ajout de 2 commandes pour macros:
+  - /trp3 set: Change la valeur d'un champ du profil.
+  - /trp3 location: Contrôle si vous apparaissez ou non sur les scans de personnage de la carte.
+- Ajout de conditions de macro pour les 2 commandes ci-dessus:
+  - [ic], [ooc], [rpstatus:{status}] - Statut RP (IC) / HRP (OOC)
+  - [loc:{location name}], [location:{location name}] - Zone actuelle
+  - [profile:{profile name}] - Nom du profil actuel
+  - Les conditions de macro basiques sont aussi supportées.
+
+## Corrigé
+
+- Correction d'un problème avec le sélecteur de couleur ne fonctionnant pas pour WotLK Classic.
+- Correction d'un problème empêchant de lier un profil de compagnon aux élémentaires d'eau pour WotLK Classic.
+
+## Supprimé
+
+- Suppression temporaire des options dans les menus au clic droit pour Retail dû à un conflit avec le Mode Edition pouvant bloquer l'utilisation de compétences en combat. Elles seront rajoutées lorsque le conflit sera résolu.
+]=]
 }
 
 TRP3_API.loc:RegisterNewLocale("frFR", "Français", L);

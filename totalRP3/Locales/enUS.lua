@@ -506,6 +506,7 @@ to others that you are a beginner roleplayer.]=],
 	["KUI_NAMEPLATES_MODULE_NAME"] = "Kui Nameplates",
 	["KUI_NAMEPLATES_WARN_OUTDATED_MODULE"] = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
 	["LANG_CHANGE_CAUSED_REVERT_TO_DEFAULT"] = "Current spoken language reverted to default %s because you no longer know the previously selected language %s.",
+	["MACRO_RPSTATUS_INVALID"] = "Unknown roleplay status: %s",
 	["MAP_BUTTON_NO_SCAN"] = "No scan available",
 	["MAP_BUTTON_SCANNING"] = "Scanning",
 	["MAP_BUTTON_SUBTITLE"] = "Click to show available scans",
@@ -1288,6 +1289,29 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	["REG_TT_ZONE"] = "Zone",
 	["SCRIPT_ERROR"] = "Error in script.",
 	["SCRIPT_UNKNOWN_EFFECT"] = "Script error, unknown FX",
+	["SLASH_CMD_HELP_COMMANDS"] = "Commands: %1$s",
+	["SLASH_CMD_HELP_EXAMPLES"] = "Examples: %1$s",
+	["SLASH_CMD_HELP_FIELDS"] = "Fields: %1$s",
+	["SLASH_CMD_HELP_USAGE"] = "Usage: %1$s",
+	["SLASH_CMD_LOCATION_DISABLED"] = "Character location broadcast is disabled.",
+	["SLASH_CMD_LOCATION_ENABLED"] = "Character location broadcast is enabled.",
+	["SLASH_CMD_LOCATION_FAILED"] = "Unknown location command: %s",
+	["SLASH_CMD_LOCATION_HELP"] = "Controls whether or not your character will appear in roleplay map scans.",
+	["SLASH_CMD_LOCATION_HELP_OFF"] = "%1$s will disable the broadcast of your characters' location.",
+	["SLASH_CMD_LOCATION_HELP_ON"] = "%1$s will enable the broadcast of your characters' location.",
+	["SLASH_CMD_LOCATION_HELP_STATUS"] = "%1$s will display whether or not location broadcasts are enabled.",
+	["SLASH_CMD_LOCATION_HELP_TOGGLE"] = "%1$s will toggle the current state of character location broadcasts.",
+	["SLASH_CMD_SET_FAILED_DEFAULT_PROFILE"] = "Your current profile cannot be updated as it is the default profile.",
+	["SLASH_CMD_SET_FAILED_INVALID_COLOR"] = "Failed to update %1$q field: %2$q is not a valid color string.",
+	["SLASH_CMD_SET_FAILED_INVALID_FIELD"] = "No profile field named %1$q exists.",
+	["SLASH_CMD_SET_FAILED_INVALID_ICON"] = "Failed to update %1$q field: %2$q is not a valid icon name.",
+	["SLASH_CMD_SET_HELP"] = "Changes the value associated with a field for your current profile.",
+	["SLASH_CMD_SET_HELP_ARG1"] = "<field>",
+	["SLASH_CMD_SET_HELP_ARG2"] = "[macro conditionals]",
+	["SLASH_CMD_SET_HELP_ARG3"] = "<data...>",
+	["SLASH_CMD_SET_HELP_EXAMPLE1"] = "Daydreaming about butterflies",
+	["SLASH_CMD_SET_HELP_EXAMPLE2"] = "Happy Bear; Angry Elf",
+	["SLASH_CMD_SET_SUCCESS"] = "Successfully updated the %1$q field for your current profile.",
 	["SLASH_CMD_STATUS_HELP"] = [=[Usage: |cff00ff00/trp3 status ic || ooc || toggle|r
 Changes your character status to the specified option:
 
@@ -1422,6 +1446,7 @@ Total RP is not responsible for links leading to harmful content.]=],
 	["UNIT_POPUPS_CONFIG_ENTRIES_HEADER"] = "Menu entries",
 	["UNIT_POPUPS_CONFIG_MENU_TITLE"] = "Menu settings",
 	["UNIT_POPUPS_CONFIG_PAGE_HELP"] = "The unit popups module adds additional entries to the right-click menus found on unit frames and names in the chat frame.",
+	["UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE"] = "|cffffcc00Note: |r Due to issues with Edit Mode in patch 10.0.0 the unit popups module has been |cffff0000disabled|r. Sorry for any inconvenience!",
 	["UNIT_POPUPS_CONFIG_PAGE_TEXT"] = "Menu settings",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS"] = "Show character status toggle",
 	["UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP"] = "If checked, adds a checkbox to your own unit frame menu that allows you to toggle your in-character/out-of-character status.",
@@ -1836,7 +1861,25 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 - Removed the roleplay language flag.
 - Fixed a bug with chat channels on Classic.
 
-	]=]
+	]=],
+	["WHATS_NEW_25_1"] = [=[# Changelog version 2.4
+## Added
+- Added support for Retail 10.0.0.
+- Added 2 new command lines for use in macros:
+  - /trp3 set: Allows you to set a profile field to a given value.
+  - /trp3 location: Allows you to control whether or not you appear on the map scan.
+- Added macro conditionals for the 2 aforementioned command lines:
+  - [ic], [ooc], [rpstatus:{status}] - IC/OOC status
+  - [loc:{location name}], [location:{location name}] - Current location
+  - [profile:{profile name}] - Current profile name
+  - Regular macro conditionals are also supported
+## Fixed
+- Fixed an issue with the color picker not working in WotLK Classic.
+- Fixed an issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic.
+- More tooltip cleanup.
+## Removed
+- Removed temporarily right-click menu options in Retail due to a conflict with Edit Mode that can prevent the use of abilities in combat. They will be re-added once the conflict has been resolved.
+]=]
 }
 
 TRP3_API.loc:RegisterNewLocale("enUS", "English", L);
