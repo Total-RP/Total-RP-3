@@ -1850,7 +1850,7 @@ end
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function isColorBlindModeEnabled()
-	return ENABLE_COLORBLIND_MODE == "1";
+	return GetCVar("colorblindMode") == "1";
 end
 
 local REPLACE_PATTERN, NAME_PATTERN = "%%s", "([%%S%%-%%P]+)";
