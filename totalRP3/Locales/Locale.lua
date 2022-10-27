@@ -1393,14 +1393,14 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 - Fixed an issue with the residence button on Classic.
 
 ]],
-	WHATS_NEW_23_13 =  [[# Changelog version 1.6.13
+	WHATS_NEW_23_13 = [[# Changelog version 1.6.13
 
 ## Fixed
 
 - Fixed an issue with upgrade patches that would happen only for people with a clean install of the add-on. - #407
 
 ]],
-	WHATS_NEW_24_1 =  [[# Changelog version 2.0
+	WHATS_NEW_24_1 = [[# Changelog version 2.0
 
 ## Added
 
@@ -1426,7 +1426,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	BINDING_NAME_TRP3_OPEN_TARGET_PROFILE = "Open target profile",
 	BINDING_NAME_TRP3_TOGGLE_CHARACTER_STATUS = "Toggle character status",
-	WHATS_NEW_24_2 =  [[# Changelog version 2.1
+	WHATS_NEW_24_2 = [[# Changelog version 2.1
 
 ## Added
 
@@ -1453,7 +1453,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
-	WHATS_NEW_24_3 =  [[# Changelog version 2.2
+	WHATS_NEW_24_3 = [[# Changelog version 2.2
 
 ## Added
 
@@ -1617,6 +1617,10 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 	KUI_NAMEPLATES_MODULE_NAME = "Kui Nameplates",
 	KUI_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Kui nameplates.",
 	KUI_NAMEPLATES_WARN_OUTDATED_MODULE = "The Kui |cff9966ffNameplates|r plugin for Total RP 3 has been integrated directly into the main addon.|n|nThe old plugin has been disabled automatically, and |cffffcc00we recommend that you uninstall it|r as it is no longer needed.",
+
+	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
+	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
+	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "Plater |cff9966ffNameplates|r is outdated.",
 
 	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
 	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
@@ -1951,7 +1955,8 @@ function TRP3_API.locale.getLocale(localeID)
 	local locale = TRP3_API.loc:GetLocale(localeID);
 
 	TRP3_API.utils.log.log([[DEPRECATED USAGE OF TRP3_API.locale.getLocale(localeID) TO ADD LOCALIZATION KEYS.
-Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to insert localization strings.]], TRP3_API.utils.log.level.WARNING)
+Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to insert localization strings.]],
+		TRP3_API.utils.log.level.WARNING)
 
 	return {
 		localeContent = setmetatable({}, {
