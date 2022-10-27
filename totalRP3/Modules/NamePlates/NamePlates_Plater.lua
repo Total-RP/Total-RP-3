@@ -49,11 +49,7 @@ end
 
 function TRP3_PlaterNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
 	self:SetUnitDisplayInfo(unitToken, displayInfo);
-
-	print("OnNamePlateDataUpdated")
-
 	if nameplate.Plater then
-		print("Updating Nameplate")
 		self:UpdateNamePlate(nameplate);
 	end
 end
@@ -66,12 +62,12 @@ function TRP3_PlaterNamePlates:OnNamePlateCreate(nameplate)
 		return;
 	end
 
-	-- Several integrations are applied as posthooks so as to not conflict
-	-- too much with Kui's internal state.
-
 	hooksecurefunc(nameplate.unitFramePlater, "UpdateName", function(...) return self:OnNameplateNameTextUpdated(...); end);
 	hooksecurefunc(nameplate.unitFramePlater, "UpdateHealthColor",
 		function(...) return self:UpdateNamePlateHealthBar(...); end);
+
+	hooksecurefunc(Plater, "UpdateUnitName",
+		function(...) return self:UpdateNamePlateNameText(...); end);
 	--do
 	--	-- Icon widget.
 	--	local iconWidget = nameplate:CreateTexture("TRP3_Icon", "ARTWORK");
@@ -132,22 +128,23 @@ function TRP3_PlaterNamePlates:OnNamePlateHide(nameplate)
 end
 
 function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
-	print("OnNameplateNameTextUpdated")
 	if not self:CanCustomizeNamePlate(nameplate) then
+		return;
+	end
+
+	if nameplate.actorType ~= "friendlyplayer" then
 		return;
 	end
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unitFramePlater.namePlateUnitToken);
 	local displayText;
 
-	if displayInfo then
-		print("displayInfo and Name found")
+	if displayInfo and displayInfo.name then
 		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS) or
 			nameplate.namePlateUnitName;
 	end
 
 	if displayText then
-		print("Setting name")
 		nameplate.CurrentUnitNameString:SetText(displayText);
 
 		--if nameplate.IN_NAMEONLY then
@@ -167,12 +164,10 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayInfo and displayInfo.roleplayStatus then
-		print("Prepending RP status")
 		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.CurrentUnitNameString, displayInfo.roleplayStatus);
 	end
 
 	if displayInfo and displayInfo.shouldColorName then
-		print("Coloring Name")
 		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
 	end
 
@@ -259,20 +254,18 @@ end
 
 function TRP3_PlaterNamePlates:UpdateNamePlateNameText(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
-		print("Cannot customize Nameplate")
 		return;
 	end
-
-	print("Updating Nameplate Text!")
 
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unitFramePlater.namePlateUnitToken)
 
 	if not displayInfo then
-		print("No display info found for ", nameplate.unitFramePlater.namePlateUnitToken)
 		return;
 	end
 
-	print("Display info found!")
+	if nameplate.actorType ~= "friendlyplayer" then
+		return;
+	end
 
 	nameplate.CurrentUnitNameString:SetText(displayInfo.name or nameplate.namePlateUnitName);
 	self:OnNameplateNameTextUpdated(nameplate)
@@ -288,19 +281,20 @@ function TRP3_PlaterNamePlates:UpdateNamePlateVisibility(nameplate)
 	if displayInfo and displayInfo.shouldHide then
 		if nameplate:IsShown() then
 			nameplate:Hide();
-			--PlaterNameplatesCore:Hide(nameplate);
 		end
 	else
 		if not nameplate:IsShown() then
 			nameplate:Show();
-			--PlaterNameplatesCore:Show(nameplate);
 		end
 	end
 end
 
 function TRP3_PlaterNamePlates:UpdateNamePlate(nameplate)
 	if not self:CanCustomizeNamePlate(nameplate) then
-		print("CannotCustomizeNamePlate")
+		return;
+	end
+
+	if nameplate.actorType ~= "friendlyplayer" then
 		return;
 	end
 
@@ -321,23 +315,17 @@ end
 
 function TRP3_PlaterNamePlates:CanCustomizeNamePlate(nameplate)
 	if not nameplate.Plater then
-		print("Not Plater")
 		return false; -- Reject non-plater nameplates
 	elseif not nameplate.namePlateUnitReaction then
-		print("Not Reaction")
 		return false; -- Reject personal and invalid nameplates.
 	elseif not nameplate.unitFramePlater then
-		print("No UnitFrame")
 		return false; -- Nameplate doesn't have a unitframe (retail-specific).
 	elseif not nameplate.unitFramePlater.IsUIParent then
-		print("No UIParent")
 		return false;
 	elseif not nameplate.namePlateUnitGUID then
-		print("No GUID")
 		return false; -- Nameplate doesn't have an associated unit.
 	else
 		self:OnNamePlateCreate(nameplate)
-		print("Can Customize")
 		return true;
 	end
 end
@@ -347,7 +335,6 @@ function TRP3_PlaterNamePlates:GetUnitDisplayInfo(unitToken)
 end
 
 function TRP3_PlaterNamePlates:SetUnitDisplayInfo(unitToken, displayInfo)
-	print("Setting unit display info for ", unitToken)
 	self.unitDisplayInfo[unitToken] = displayInfo;
 end
 
