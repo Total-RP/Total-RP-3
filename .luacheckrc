@@ -62,6 +62,9 @@ read_globals = {
 	"WoWUnit",
 	"xrpSaved",
 
+	-- Common protocol globals
+	"GAME_LOCALE",
+
 	-- XRP Globals
 	"XRP_AE",
 	"XRP_AG",
@@ -319,6 +322,7 @@ stds.wow = {
 		"CreateTextureMarkup",
 		"CreateVector2D",
 		"DisableAddOn",
+		"EventRegistry",
 		"FCF_GetCurrentChatFrame",
 		"FindInTableIf",
 		"FormatLargeNumber",
