@@ -47,6 +47,10 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	self.initialized = {};
 end
 
+function TRP3_PlaterNamePlates:OnConfigurationChanged(_)
+	self:UpdateAllNamePlates()
+end
+
 function TRP3_PlaterNamePlates:OnNamePlateDataUpdated(_, nameplate, unitToken, displayInfo)
 	self:SetUnitDisplayInfo(unitToken, displayInfo);
 	if nameplate.Plater then
@@ -95,36 +99,12 @@ function TRP3_PlaterNamePlates:OnNamePlateCreate(nameplate)
 	self.initialized[nameplateKey] = true;
 end
 
-function TRP3_PlaterNamePlates:OnNamePlateShow(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateHealthUpdate(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateHealthColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateGlowColourChange(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateGainedTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateLostTarget(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateCombat(nameplate)
-	self:UpdateNamePlate(nameplate);
-end
-
-function TRP3_PlaterNamePlates:OnNamePlateHide(nameplate)
-	self:UpdateNamePlate(nameplate);
+function TRP3_PlaterNamePlates:AppendGuildNameToNameString(name, nameplate)
+	if nameplate.playerGuildName then
+		return name .. "\n" .. "<" .. nameplate.playerGuildName .. ">"
+	else
+		return name
+	end
 end
 
 function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
@@ -145,22 +125,7 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayText then
-		nameplate.CurrentUnitNameString:SetText(displayText);
-
-		--if nameplate.IN_NAMEONLY then
-		--	-- In name-only mode we need to account for health coloring, which
-		--	-- reads from the current state. We replace it long enough to
-		--	-- update the underlying font string before restoring it.
-		--	--
-		--	-- Note this needs to occur after a SetText call to replace the
-		--	-- name, as health coloring and level information is only placed
-		--	-- onto the name if either are enabled.
-		--
-		--	local originalText = nameplate.state.name;
-		--	nameplate.state.name = displayText;
-		--	Plater.UpdateUnitName(nameplate.plateFrame);
-		--	nameplate.state.name = originalText;
-		--end
+		nameplate.CurrentUnitNameString:SetText(self:AppendGuildNameToNameString(displayText, nameplate));
 	end
 
 	if displayInfo and displayInfo.roleplayStatus then
@@ -168,7 +133,15 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayInfo and displayInfo.shouldColorName then
-		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
+		--this coloring should be removed
+		if displayInfo.name == "Real Life Ghost" or displayInfo.name == "Laure" then
+			nameplate.CurrentUnitNameString:SetText(TRP3_API.utils.Oldgodify(displayText))
+		else
+			if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+				displayInfo.color:LightenColorUntilItIsReadableOnDarkBackgrounds()
+			end
+			nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
+		end
 	end
 
 	-- Refresh full title/icon customizations as these depend on name-only
