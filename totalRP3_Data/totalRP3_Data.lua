@@ -28,7 +28,8 @@ end
 local function OnAddonLoaded(owner, addonName)
 	if addonName == ADDON_NAME then
 		TRP3_AddonLocale = TRP3_AddonLocale or GetDefaultLocale();
-		EventRegistry:UnregisterCallback(owner, "ADDON_LOADED");
+		EventRegistry:UnregisterCallback("ADDON_LOADED", owner);
+		EventRegistry:UnregisterFrameEvent("ADDON_LOADED");
 	end
 end
 
