@@ -3,6 +3,8 @@
 
 local ADDON_NAME = ...;
 
+local EFFECTIVE_LOCALE  -- Set to the default locale during ADDON_LOADED.
+
 local function GetDefaultLocale()
 	-- GAME_LOCALE is an opt-in variable honored by other localization systems
 	-- and may be set by generic "change all addon locale"-style addons and
@@ -11,7 +13,7 @@ local function GetDefaultLocale()
 	return GAME_LOCALE or GetLocale();
 end
 
-local function GetSuggestedLocale()
+local function GetPreferredLocale()
 	local locale;
 
 	if type(TRP3_Configuration) == "table" then
@@ -27,6 +29,7 @@ end
 
 local function OnAddonLoaded(owner, addonName)
 	if addonName == ADDON_NAME then
+		EFFECTIVE_LOCALE = GetDefaultLocale()
 		TRP3_AddonLocale = TRP3_AddonLocale or GetDefaultLocale();
 		EventRegistry:UnregisterCallback("ADDON_LOADED", owner);
 		EventRegistry:UnregisterFrameEvent("ADDON_LOADED");
@@ -34,18 +37,18 @@ local function OnAddonLoaded(owner, addonName)
 end
 
 local function OnAddonsUnloading()
-	-- When persisting locales if the suggested one is also the default for the
-	-- client we don't store it. This is to accommodate cases where the locale
-	-- hasn't been explicitly configured by the user, where we'll instead want
-	-- to use the (possibly new) default locale on the following startup.
+	-- When persisting locales if the suggested one is also the effective one
+	-- for this session we don't store it. This is to accommodate cases where
+	-- the locale hasn't been explicitly configured by the user, where we'll
+	-- instead want to use the (possibly new) default locale on the following
+	-- startup.
 
-	local defaultLocale = GetDefaultLocale();
-	local suggestedLocale = GetSuggestedLocale();
+	local preferredLocale = GetPreferredLocale();
 
-	if suggestedLocale == defaultLocale then
+	if preferredLocale == EFFECTIVE_LOCALE then
 		TRP3_AddonLocale = nil;
 	else
-		TRP3_AddonLocale = suggestedLocale;
+		TRP3_AddonLocale = preferredLocale;
 	end
 end
 
