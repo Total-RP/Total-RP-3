@@ -8,11 +8,6 @@ local L = TRP3_API.loc;
 
 local Plater = _G["Plater"]
 
-local function IsNamePlateInNameOnlyMode(nameplate)
-	local unitframe = nameplate.unitFramePlater;
-	return nameplate.IN_NAMEONLY and unitframe and ShouldShowName(unitframe);
-end
-
 local TRP3_PlaterNamePlates = {};
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
@@ -24,6 +19,7 @@ function TRP3_PlaterNamePlates:OnModuleInitialize()
 	end
 
 	TRP3_PlaterNamePlates.platerVersion = Plater.versionString
+	TRP3_PlaterNamePlates.platerProfile = Plater.db.profile
 	TRP3_PlaterNamePlates.platerConfig = Plater.db.profile.plate_config
 
 	-- Define TRP3_NAMEPLATES_ADDON now to claim decoration rights. This
@@ -42,6 +38,8 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	end
 
 	TRP3_NamePlates.RegisterCallback(self, "OnNamePlateDataUpdated");
+
+	TRP3_API.Events.registerCallback("CONFIGURATION_CHANGED", function(...) return self:OnConfigurationChanged(...); end);
 
 	self.unitDisplayInfo = {};
 	self.initialized = {};
@@ -72,39 +70,58 @@ function TRP3_PlaterNamePlates:OnNamePlateCreate(nameplate)
 
 	hooksecurefunc(Plater, "UpdateUnitName",
 		function(...) return self:UpdateNamePlateNameText(...); end);
-	--do
-	--	-- Icon widget.
-	--	local iconWidget = nameplate:CreateTexture("TRP3_Icon", "ARTWORK");
-	--	iconWidget:ClearAllPoints();
-	--	iconWidget:SetPoint("RIGHT", nameplate.CurrentUnitNameString, "LEFT", -4, 0);
-	--	iconWidget:Hide()
-	--
-	--	nameplate.TRP3_Icon = iconWidget;
-	--
-	--end
-	--do
-	--	-- Title text widget.
-	--	local titleWidget = nameplate:CreateFontString(nil, "ARTWORK");
-	--	titleWidget:ClearAllPoints();
-	--	titleWidget:SetPoint("TOP", nameplate.NameText, "BOTTOM", 0, -2);
-	--	titleWidget:SetTextColor(1, 1, 1, 0.8);
-	--	titleWidget:SetShadowOffset(1, -1);
-	--	titleWidget:SetShadowColor(0, 0, 0, 1);
-	--	titleWidget:Hide()
-	--
-	--	--nameplate.handler:RegisterElement("TRP3_Title", titleWidget);
-	--	nameplate.TRP3_Title = titleWidget;
-	--end
+
+	do
+		-- Icon widget.
+		if nameplate.actorType == "friendlyplayer" then
+			local iconWidget = nameplate:CreateTexture("TRP3PlaterIcon", "ARTWORK");
+			iconWidget:ClearAllPoints();
+			iconWidget:SetPoint("RIGHT", nameplate.CurrentUnitNameString, "LEFT", -4, 0);
+			iconWidget:Hide()
+
+			nameplate.unitFramePlater.TRP3PlaterIcon = iconWidget;
+		end
+	end
+	do
+		-- Title text widget.
+		if nameplate.actorType == "friendlyplayer" then
+			local titleWidget = nameplate:CreateFontString("TRP3PlaterTitle", "ARTWORK");
+			titleWidget:ClearAllPoints();
+			titleWidget:SetPoint("TOP", nameplate.CurrentUnitNameString, "BOTTOM", 0, -2);
+			titleWidget:SetTextColor(1, 1, 1, 0.8);
+			titleWidget:SetShadowOffset(1, -1);
+			titleWidget:SetShadowColor(0, 0, 0, 1);
+			titleWidget:Hide()
+
+			nameplate.unitFramePlater.TRP3PlaterTitle = titleWidget;
+		end
+	end
 
 	self.initialized[nameplateKey] = true;
 end
 
 function TRP3_PlaterNamePlates:AppendGuildNameToNameString(name, nameplate)
 	if nameplate.playerGuildName then
-		return name .. "\n" .. "<" .. nameplate.playerGuildName .. ">"
+		if nameplate.PlateConfig.show_guild_name then
+			return name .. "\n" .. "<" .. nameplate.playerGuildName .. ">"
+		else
+			return name
+		end
 	else
 		return name
 	end
+end
+
+function TRP3_PlaterNamePlates:AppendFullTitleToNameString(name, fullTitle)
+	return name .. "\n" .. "<" .. fullTitle .. ">"
+end
+
+function TRP3_PlaterNamePlates:PrependIconToNameString(icon, nameplate)
+	-- Just in case we ever want to add the icon to the beginning of the name string for whatever reason?
+
+	local nameString = nameplate.CurrentUnitNameString
+
+	nameString:SetFormattedText("%s %s", icon, nameString:GetText());
 end
 
 function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
@@ -126,7 +143,8 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	if displayText then
 		local name = self:AppendGuildNameToNameString(displayText, nameplate)
-		if nameplate.namePlateUnitName == "Lorebee" then --remove this
+
+		if nameplate.namePlateUnitName == "Lorebee" and displayInfo.shouldColorName then --remove this
 			nameplate.CurrentUnitNameString:SetText(TRP3_API.utils.Oldgodify(name))
 		else
 			nameplate.CurrentUnitNameString:SetText(name);
@@ -137,18 +155,20 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.CurrentUnitNameString, displayInfo.roleplayStatus);
 	end
 
-	if displayInfo and displayInfo.shouldColorName then
-		--if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-		--	displayInfo.color:LightenColorUntilItIsReadableOnDarkBackgrounds()
-		--end
-		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
+	if displayInfo then
+		if displayInfo.shouldColorName then
+			--if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
+			--	displayInfo.color:LightenColorUntilItIsReadableOnDarkBackgrounds()
+			--end
+			nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
+		end
 	end
 
 	-- Refresh full title/icon customizations as these depend on name-only
 	-- mode which might be toggled before this hook is fired.
 
-	--self:UpdateNamePlateFullTitle(nameplate);
-	--self:UpdateNamePlateIcon(nameplate);
+	self:UpdateNamePlateFullTitle(nameplate);
+	self:UpdateNamePlateIcon(nameplate);
 end
 
 function TRP3_PlaterNamePlates:UpdateNamePlateHealthBar(nameplate)
@@ -160,8 +180,6 @@ function TRP3_PlaterNamePlates:UpdateNamePlateHealthBar(nameplate)
 
 	if displayInfo and displayInfo.shouldColorHealth then
 		nameplate.unitFramePlater.healthBar:SetColor(displayInfo.color:GetRGB());
-		--elseif nameplate.state.healthColour and not nameplate.state.health_colour_priority then
-		--	nameplate.unitFramePlater.healthBar:SetColor(unpack(nameplate.state.healthColour, 1, 3));
 	end
 end
 
@@ -178,51 +196,59 @@ function TRP3_PlaterNamePlates:UpdateNamePlateIcon(nameplate)
 	end
 
 	if displayIcon then
-		nameplate.TRP3_Icon = {};
-		nameplate.TRP3_Icon:ClearAllPoints();
-		nameplate.TRP3_Icon:SetTexture(TRP3_API.utils.getIconTexture(displayIcon));
-		nameplate.TRP3_Icon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
+		nameplate.unitFramePlater.TRP3PlaterIcon:ClearAllPoints();
+		nameplate.unitFramePlater.TRP3PlaterIcon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
+		nameplate.unitFramePlater.TRP3PlaterIcon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
 
-		if IsNamePlateInNameOnlyMode(nameplate) then
-			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.NameText, "LEFT", -4, 0);
-		else
-			nameplate.TRP3_Icon:SetPoint("RIGHT", nameplate.HealthBar, "LEFT", -4, 0);
-		end
+		nameplate.unitFramePlater.TRP3PlaterIcon:SetPoint("RIGHT", nameplate.CurrentUnitNameString, "LEFT", -4, 0);
 
-		nameplate.TRP3_Icon:Show();
-	elseif nameplate.TRP3_Icon then
-		nameplate.TRP3_Icon:Hide();
+		nameplate.unitFramePlater.TRP3PlaterIcon:Show();
+	elseif nameplate.unitFramePlater.TRP3PlaterIcon then
+		nameplate.unitFramePlater.TRP3PlaterIcon:Hide();
 	end
 end
 
 function TRP3_PlaterNamePlates:UpdateNamePlateFullTitle(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unitFramePlater.namePlateUnitToken);
 	local displayText = displayInfo and displayInfo.fullTitle or nil;
-	local displayFont = nameplate.ActorNameSpecial
+	local displayFont = nameplate.CurrentUnitNameString:GetFontObject()
 	local shouldHide = displayInfo and displayInfo.shouldHide or false;
 
 	-- Only enable this widget in name-only mode if we're permitted to
 	-- customize this nameplate, and if we've not been requested to hide it.
 
-	if not self:CanCustomizeNamePlate(nameplate) or not IsNamePlateInNameOnlyMode(nameplate) or shouldHide then
+	if not self:CanCustomizeNamePlate(nameplate) or shouldHide then
 		displayText = nil;
 		displayFont = nil;
 	end
 
+	-- keeping this in here in case the current method is bad
+
+	--if displayText and displayFont then
+	--	local r, g, b = TRP3_API.utils.color.hexaToNumber(TRP3_API.configuration.getValue("tooltip_title_color"))
+	--	local fontSize = DF:GetFontSize(nameplate.CurrentUnitNameString)
+	--	local fontFace = DF:GetFontFace(nameplate.CurrentUnitNameString)
+	--
+	--	--DF:SetFontColor(nameplate.unitFramePlater.TRP3PlaterTitle, r, g, b)
+	--	DF:SetFontSize(nameplate.unitFramePlater.TRP3PlaterTitle, fontSize)
+	--
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetFontObject(displayFont)
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetTextColor(r, g, b);
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle,
+	--		TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:Show();
+	--
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:ClearAllPoints();
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetPoint("TOP", nameplate.CurrentUnitNameString, "BOTTOM", 0, -2);
+	--elseif nameplate.unitFramePlater.TRP3PlaterTitle then
+	--	nameplate.unitFramePlater.TRP3PlaterTitle:Hide();
+	--end
+
 	if displayText and displayFont then
-		nameplate.TRP3_Title:SetFont(displayFont);
-		nameplate.TRP3_Title:SetTextColor(nameplate.playerGuildName:GetTextColor());
-		nameplate.TRP3_Title:SetText(TRP3_API.utils.str.crop(displayText, TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
-		nameplate.TRP3_Title:Show();
-
-		nameplate.playerGuildName:ClearAllPoints();
-		nameplate.playerGuildName:SetPoint("TOP", nameplate.TRP3_Title, "BOTTOM", 0, -2);
-	elseif nameplate.TRP3_Title then
-		nameplate.TRP3_Title:Hide();
-
-		nameplate.playerGuildName:ClearAllPoints();
-		nameplate.playerGuildName:SetPoint("TOP", nameplate.NameText, "BOTTOM", 0, -2);
+		nameplate.CurrentUnitNameString:SetText(self:AppendFullTitleToNameString(nameplate.CurrentUnitNameString:GetText(),
+			TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS)))
 	end
+
 end
 
 function TRP3_PlaterNamePlates:UpdateNamePlateNameText(nameplate)
@@ -271,7 +297,7 @@ function TRP3_PlaterNamePlates:UpdateNamePlate(nameplate)
 		return;
 	end
 
-	-- Some customizations are managed by posthooks on nameplate frames,
+	-- Some customizations are updated within other functions on nameplate frames,
 	-- including icons and full titles which are updated in response to
 	-- the name text being updated.
 
@@ -281,7 +307,7 @@ function TRP3_PlaterNamePlates:UpdateNamePlate(nameplate)
 end
 
 function TRP3_PlaterNamePlates:UpdateAllNamePlates()
-	for nameplate in C_NamePlate.GetNamePlates() do
+	for _, nameplate in ipairs(C_NamePlate:GetNamePlates()) do
 		self:UpdateNamePlate(nameplate);
 	end
 end

@@ -632,7 +632,7 @@ The Kui |cff9966ffNameplates|r module adds several Total RP 3 customizations to 
 	["NAMEPLATES_CONFIG_ICON_SIZE"] = "Icon size",
 	["NAMEPLATES_CONFIG_ICON_SIZE_HELP"] = "Configures the size of icons displayed on nameplates if the |cffffff00Show icons|r option is enabled.",
 	["NAMEPLATES_CONFIG_MENU_TITLE"] = "Nameplates",
-	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r and |cff9966ffKui|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
+	["NAMEPLATES_CONFIG_PAGE_HELP"] = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.\n\nIf using |cffa8deffPlater|r nameplates, you must be using the default profile for the RP names to work as intended.",
 	["NAMEPLATES_CONFIG_PAGE_TEXT"] = "Nameplate settings",
 	["NAMEPLATES_CONFIG_VISIBILITY_HEADER"] = "Visibility settings",
 	["NAMEPLATES_MODULE_ACTIVE_STATUS"] = "Module |cff00ff00active|r (%1$s|r)",
