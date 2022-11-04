@@ -124,6 +124,8 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	if displayInfo and displayInfo.name then
 		displayText = TRP3_API.utils.str.crop(displayInfo.name, TRP3_NamePlatesUtil.MAX_NAME_CHARS) or
 			nameplate.namePlateUnitName;
+	elseif displayInfo and not displayInfo.name then
+		displayText = nameplate.namePlateUnitName;
 	end
 
 	if displayText then
@@ -134,10 +136,15 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 		TRP3_NamePlatesUtil.PrependRoleplayStatusToFontString(nameplate.CurrentUnitNameString, displayInfo.roleplayStatus);
 	end
 
-	if displayInfo then
-		if displayInfo.shouldColorName then
-			nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
-		end
+	if displayInfo and displayInfo.shouldColorName then
+		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
+	end
+
+	if displayInfo and not displayInfo.shouldColorName then
+		local _, classFilename, _ = UnitClass(nameplate.namePlateUnitToken)
+		local color = C_ClassColor.GetClassColor(classFilename)
+
+		nameplate.CurrentUnitNameString:SetTextColor(color:GetRGB());
 	end
 
 	self:UpdateNamePlateFullTitle(nameplate);
@@ -199,7 +206,6 @@ function TRP3_PlaterNamePlates:UpdateNamePlateFullTitle(nameplate)
 		nameplate.CurrentUnitNameString:SetText(self:AppendFullTitleToNameString(nameplate.CurrentUnitNameString:GetText(),
 			TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS)))
 	end
-
 end
 
 function TRP3_PlaterNamePlates:UpdateNamePlateNameText(nameplate)
@@ -267,8 +273,6 @@ function TRP3_PlaterNamePlates:CanCustomizeNamePlate(nameplate)
 		return false; -- Reject personal and invalid nameplates.
 	elseif not nameplate.unitFramePlater then
 		return false; -- Nameplate doesn't have a unitframe (retail-specific).
-	elseif not nameplate.unitFramePlater.IsUIParent then
-		return false;
 	elseif not nameplate.namePlateUnitGUID then
 		return false; -- Nameplate doesn't have an associated unit.
 	else
