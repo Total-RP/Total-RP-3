@@ -127,13 +127,7 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayText then
-		local name = self:AppendGuildNameToNameString(displayText, nameplate)
-
-		if nameplate.namePlateUnitName == "Lorebee" and displayInfo.shouldColorName then --remove this
-			nameplate.CurrentUnitNameString:SetText(TRP3_API.utils.Oldgodify(name))
-		else
-			nameplate.CurrentUnitNameString:SetText(name);
-		end
+		nameplate.CurrentUnitNameString:SetText(self:AppendGuildNameToNameString(displayText, nameplate));
 	end
 
 	if displayInfo and displayInfo.roleplayStatus then
@@ -142,9 +136,6 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 
 	if displayInfo then
 		if displayInfo.shouldColorName then
-			--if AddOn_TotalRP3.Configuration.shouldDisplayIncreasedColorContrast() then
-			--	displayInfo.color:LightenColorUntilItIsReadableOnDarkBackgrounds()
-			--end
 			nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
 		end
 	end
