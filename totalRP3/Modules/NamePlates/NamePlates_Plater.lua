@@ -177,7 +177,7 @@ function TRP3_PlaterNamePlates:UpdateNamePlateIcon(nameplate)
 		displayIcon = nil;
 	end
 
-	if displayIcon then
+	if displayIcon and nameplate.unitFramePlater.TRP3PlaterIcon then
 		nameplate.unitFramePlater.TRP3PlaterIcon:ClearAllPoints();
 		nameplate.unitFramePlater.TRP3PlaterIcon:SetTexture(TRP3_API.utils.getIconTexture(displayInfo.icon));
 		nameplate.unitFramePlater.TRP3PlaterIcon:SetSize(TRP3_NamePlatesUtil.GetPreferredIconSize());
@@ -239,7 +239,8 @@ function TRP3_PlaterNamePlates:UpdateNamePlateVisibility(nameplate)
 
 	if displayInfo and displayInfo.shouldHide then
 		nameplate:Hide();
-	else
+	elseif not nameplate:IsShown() then
+		-- we need to (for now) check if the frame is shown before showing it to prevent an ADDON_ACTION_BLOCKED error
 		nameplate:Show();
 	end
 end

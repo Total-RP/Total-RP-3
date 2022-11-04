@@ -1620,7 +1620,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	PLATER_NAMEPLATES_MODULE_NAME = "Plater Nameplates",
 	PLATER_NAMEPLATES_MODULE_DESCRIPTION = "Enables the customization of Plater nameplates.",
-	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "Plater |cff9966ffNameplates|r is outdated.",
+	PLATER_NAMEPLATES_WARN_OUTDATED_MODULE = "|cffa8deffPlater|r Nameplates is outdated.",
 
 	CONFIG_COMMS_SETTINGS_HEADER = "Communications settings",
 	CONFIG_COMMS_QUEUE_POOL_COUNT = "Queue pool size",
