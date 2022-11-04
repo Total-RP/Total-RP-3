@@ -20,7 +20,6 @@ function TRP3_PlaterNamePlates:OnModuleInitialize()
 
 	TRP3_PlaterNamePlates.platerVersion = Plater.versionString
 	TRP3_PlaterNamePlates.platerProfile = Plater.db.profile
-	TRP3_PlaterNamePlates.platerConfig = Plater.db.profile.plate_config
 
 	-- Define TRP3_NAMEPLATES_ADDON now to claim decoration rights. This
 	-- should be sanity checked on OnModuleEnable to make sure someone else
@@ -74,26 +73,12 @@ function TRP3_PlaterNamePlates:OnNamePlateCreate(nameplate)
 	do
 		-- Icon widget.
 		if nameplate.actorType == "friendlyplayer" then
-			local iconWidget = nameplate:CreateTexture("TRP3PlaterIcon", "ARTWORK");
+			local iconWidget = nameplate:CreateTexture(nil, "ARTWORK");
 			iconWidget:ClearAllPoints();
 			iconWidget:SetPoint("RIGHT", nameplate.CurrentUnitNameString, "LEFT", -4, 0);
 			iconWidget:Hide()
 
 			nameplate.unitFramePlater.TRP3PlaterIcon = iconWidget;
-		end
-	end
-	do
-		-- Title text widget.
-		if nameplate.actorType == "friendlyplayer" then
-			local titleWidget = nameplate:CreateFontString("TRP3PlaterTitle", "ARTWORK");
-			titleWidget:ClearAllPoints();
-			titleWidget:SetPoint("TOP", nameplate.CurrentUnitNameString, "BOTTOM", 0, -2);
-			titleWidget:SetTextColor(1, 1, 1, 0.8);
-			titleWidget:SetShadowOffset(1, -1);
-			titleWidget:SetShadowColor(0, 0, 0, 1);
-			titleWidget:Hide()
-
-			nameplate.unitFramePlater.TRP3PlaterTitle = titleWidget;
 		end
 	end
 
@@ -113,7 +98,7 @@ function TRP3_PlaterNamePlates:AppendGuildNameToNameString(name, nameplate)
 end
 
 function TRP3_PlaterNamePlates:AppendFullTitleToNameString(name, fullTitle)
-	return name .. "\n" .. "<" .. fullTitle .. ">"
+	return name .. "\n" .. "" .. fullTitle .. ""
 end
 
 function TRP3_PlaterNamePlates:PrependIconToNameString(icon, nameplate)
@@ -163,9 +148,6 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 			nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
 		end
 	end
-
-	-- Refresh full title/icon customizations as these depend on name-only
-	-- mode which might be toggled before this hook is fired.
 
 	self:UpdateNamePlateFullTitle(nameplate);
 	self:UpdateNamePlateIcon(nameplate);
@@ -222,28 +204,6 @@ function TRP3_PlaterNamePlates:UpdateNamePlateFullTitle(nameplate)
 		displayFont = nil;
 	end
 
-	-- keeping this in here in case the current method is bad
-
-	--if displayText and displayFont then
-	--	local r, g, b = TRP3_API.utils.color.hexaToNumber(TRP3_API.configuration.getValue("tooltip_title_color"))
-	--	local fontSize = DF:GetFontSize(nameplate.CurrentUnitNameString)
-	--	local fontFace = DF:GetFontFace(nameplate.CurrentUnitNameString)
-	--
-	--	--DF:SetFontColor(nameplate.unitFramePlater.TRP3PlaterTitle, r, g, b)
-	--	DF:SetFontSize(nameplate.unitFramePlater.TRP3PlaterTitle, fontSize)
-	--
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetFontObject(displayFont)
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetTextColor(r, g, b);
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetText(TRP3_API.utils.str.crop(displayInfo.fullTitle,
-	--		TRP3_NamePlatesUtil.MAX_TITLE_CHARS));
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:Show();
-	--
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:ClearAllPoints();
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:SetPoint("TOP", nameplate.CurrentUnitNameString, "BOTTOM", 0, -2);
-	--elseif nameplate.unitFramePlater.TRP3PlaterTitle then
-	--	nameplate.unitFramePlater.TRP3PlaterTitle:Hide();
-	--end
-
 	if displayText and displayFont then
 		nameplate.CurrentUnitNameString:SetText(self:AppendFullTitleToNameString(nameplate.CurrentUnitNameString:GetText(),
 			TRP3_API.utils.str.crop(displayInfo.fullTitle, TRP3_NamePlatesUtil.MAX_TITLE_CHARS)))
@@ -278,13 +238,9 @@ function TRP3_PlaterNamePlates:UpdateNamePlateVisibility(nameplate)
 	local displayInfo = self:GetUnitDisplayInfo(nameplate.unitFramePlater.namePlateUnitToken);
 
 	if displayInfo and displayInfo.shouldHide then
-		if nameplate:IsShown() then
-			nameplate:Hide();
-		end
+		nameplate:Hide();
 	else
-		if not nameplate:IsShown() then
-			nameplate:Show();
-		end
+		nameplate:Show();
 	end
 end
 
