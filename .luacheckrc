@@ -85,6 +85,7 @@ read_globals = {
 	-- MSA-DropDownMenu-1.0
 	"MSA_CloseDropDownMenus",
 	"MSA_DropDownMenu_AddButton",
+	"MSA_DropDownMenu_AddSeparator",
 	"MSA_DropDownMenu_Create",
 	"MSA_DropDownMenu_CreateInfo",
 	"MSA_DROPDOWNMENU_INIT_MENU",
