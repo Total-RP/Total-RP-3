@@ -78,7 +78,7 @@ end
 function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
-	self:SetPassThroughButtons("RightButton");
+	self:SetPassThroughButtons("");
 
 	self.sender = displayData.sender;
 	self.playerName = displayData.playerName;
@@ -112,7 +112,7 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 end
 
 function TRP3_PlayerMapPinMixin:OnMouseDown(button)
-	if button == "LeftButton" then
+	if button == "RightButton" then
 		local level = 1;
 		local value = self:GetMouseOverPinsByTemplate(self.pinTemplate);
 		local anchor = "cursor";
