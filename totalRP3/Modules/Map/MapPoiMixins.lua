@@ -8,7 +8,6 @@ local Ellyb = Ellyb(...);
 local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 --region Ellyb imports
-local Tables = Ellyb.Tables;
 local Tooltips = Ellyb.Tooltips;
 --endregion
 
