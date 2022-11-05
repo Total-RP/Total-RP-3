@@ -117,6 +117,7 @@ function TRP3_PlayerMapPinMixin:OnMouseDown(button)
 		local value = self:GetMouseOverPinsByTemplate(self.pinTemplate);
 		local anchor = "cursor";
 
+		self:SortPins(value);
 		MSA_ToggleDropDownMenu(level, value, TRP3_PlayerMapPinDropDown, anchor);
 	end
 end

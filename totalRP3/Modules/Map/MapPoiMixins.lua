@@ -101,13 +101,15 @@ function GroupedCoalescedMapPinMixin:GetMouseOverPinsByTemplate(pinTemplate)
 	return pins;
 end
 
+function GroupedCoalescedMapPinMixin:SortPins(pins)
+	table.sort(pins, sortMarkerEntries);
+end
+
 function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	local tooltip = Tooltips.getTooltip(self);
 
 	local markerTooltipEntries = self:GetMouseOverPins();
-
-	-- Sort the entries prior to display.
-	sort(markerTooltipEntries, sortMarkerEntries);
+	self:SortPins(markerTooltipEntries);
 
 	-- Tracking variable for our last category inserted into the tip.
 	-- If it changes we'll stick in a separator.
