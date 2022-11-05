@@ -176,7 +176,7 @@ end
 --- Get a colored version of the roleplaying name prefixed with the custom icon
 ---@return string
 function Player:GetCustomColoredRoleplayingNamePrefixedWithIcon(iconSize)
-	local format = CreateFromMixins(format, { iconSize = iconSize });
+	local format = CreateFromMixins(TRP3_PlayerNameFormat.Fancy, { iconSize = iconSize });
 	return self:GenerateFormattedName(format);
 end
 
