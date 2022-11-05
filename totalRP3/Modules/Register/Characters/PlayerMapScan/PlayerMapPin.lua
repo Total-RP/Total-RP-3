@@ -39,13 +39,13 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 
 	local displayData = {};
 
-	--{{{ Player name
-	displayData.playerName = player:GetCustomColoredRoleplayingNamePrefixedWithIcon();
-	--}}}
+	displayData.sender = poiInfo.sender;
+	displayData.playerName = player:GenerateFormattedName(TRP3_PlayerNameFormat.Plain);
+	displayData.playerNameColored = player:GenerateFormattedName(TRP3_PlayerNameFormat.Colored);
+	displayData.playerNameFancy = player:GenerateFormattedName(TRP3_PlayerNameFormat.Fancy);
 
-	--{{{ Player relationship
-	-- Special case when seeing ourselves on the map (DEBUG)
 	if player:IsCurrentUser() then
+		-- Special case when seeing ourselves on the map (DEBUG)
 		displayData.iconAtlas = "PlayerPartyBlip";
 		displayData.iconColor = Ellyb.ColorManager.CYAN;
 		displayData.categoryName = loc.REG_RELATION .. ": " .. Ellyb.ColorManager.CYAN("SELF");
@@ -70,21 +70,24 @@ function TRP3_PlayerMapPinMixin:GetDisplayDataFromPoiInfo(poiInfo)
 			displayData.categoryPriority = TRP3_API.globals.RELATIONS_ORDER[relation] or huge;
 		end
 	end
-	--}}}
 
 	return displayData
 end
 
 --- This is called by the data provider to decorate the pin after the base pin mixin has done its job.
----@param displayData {playerName:string, categoryName:string|nil, categoryPriority:number|nil, iconColor: Color, opacity: number|nil}
 function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
+	self:SetPassThroughButtons("RightButton");
 
-	self.tooltipLine = displayData.playerName;
+	self.sender = displayData.sender;
+	self.playerName = displayData.playerName;
+	self.playerNameColored = displayData.playerNameColored;
+	self.playerNameFancy = displayData.playerNameFancy;
+	self.tooltipLine = displayData.playerNameFancy;
 	self.categoryName = displayData.categoryName;
 	self.categoryPriority = displayData.categoryPriority;
-	self.sortName = displayData.playerName:gsub("|T.-|t", ""):gsub("|c%x%x%x%x%x%x%x%x","");
+	self.sortName = displayData.playerName;
 
 	if displayData.iconColor then
 		self.Texture:SetVertexColor(displayData.iconColor:GetRGBA());
@@ -106,4 +109,50 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetAlpha(displayData.opacity or 1)
 
 	Ellyb.Tooltips.getTooltip(self):SetTitle(ORANGE(loc.REG_PLAYERS)):ClearLines();
+end
+
+function TRP3_PlayerMapPinMixin:OnMouseDown(button)
+	if button == "LeftButton" then
+		local level = 1;
+		local value = self:GetMouseOverPinsByTemplate(self.pinTemplate);
+		local anchor = "cursor";
+
+		MSA_ToggleDropDownMenu(level, value, TRP3_PlayerMapPinDropDown, anchor);
+	end
+end
+
+TRP3_PlayerMapPinDropDownMixin = {};
+
+function TRP3_PlayerMapPinDropDownMixin:OnLoad()
+	self.maximumCharacterCount = 25;
+
+	MSA_DropDownMenu_SetInitializeFunction(self, self.OnInitialize);
+end
+
+function TRP3_PlayerMapPinDropDownMixin:OnInitialize(level)
+	local pins = MSA_DROPDOWNMENU_MENU_VALUE;
+
+	if level ~= 1 or type(pins) ~= "table" or #pins == 0 then
+		return;
+	end
+
+	MSA_DropDownMenu_AddButton({ text = loc.MAP_SCAN_CHAR_TITLE, isTitle = true, notCheckable = true });
+
+	for i = 1, math.min(#pins, self.maximumCharacterCount) do
+		-- Sender is cached as an upvalue to avoid any edge case if the pin is
+		-- released while the context menu is kept open.
+
+		local pin = pins[i];
+		local sender = pin.sender;
+
+		local info = {};
+		info.text = string.format(loc.MAP_SCAN_OPEN_PROFILE, pin.playerNameColored);
+		info.func = function() TRP3_API.slash.openProfile(sender); end;
+		info.notCheckable = true;
+
+		MSA_DropDownMenu_AddButton(info);
+	end
+
+	MSA_DropDownMenu_AddSeparator({});
+	MSA_DropDownMenu_AddButton({ text = CANCEL, notCheckable = true });
 end

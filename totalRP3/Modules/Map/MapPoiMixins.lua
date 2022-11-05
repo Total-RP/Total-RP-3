@@ -66,27 +66,46 @@ local function sortMarkerEntries(a, b)
 		or (categoryA == categoryB and nameA < nameB);
 end
 
-function GroupedCoalescedMapPinMixin:OnMouseEnter()
+local function ExecuteOnAllPins(map, func)
+	if map.ExecuteOnAllPins then
+		map:ExecuteOnAllPins(func);
+	else
+		-- Classic compatibility.
+		for pin in map:EnumerateAllPins() do
+			func(pin);
+		end
+	end
+end
 
+function GroupedCoalescedMapPinMixin:GetMouseOverPins()
+	local pins = {};
+
+	local function CheckMouseOverPin(pin)
+		if pin:IsMouseOver() then
+			table.insert(pins, pin);
+		end
+	end;
+
+	ExecuteOnAllPins(self:GetMap(), CheckMouseOverPin);
+	return pins;
+end
+
+function GroupedCoalescedMapPinMixin:GetMouseOverPinsByTemplate(pinTemplate)
+	local pins = {};
+
+	for pin in self:GetMap():EnumeratePinsByTemplate(pinTemplate) do
+		if pin:IsMouseOver() then
+			table.insert(pins, pin);
+		end
+	end
+
+	return pins;
+end
+
+function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	local tooltip = Tooltips.getTooltip(self);
 
-	local markerTooltipEntries = Tables.getTempTable();
-
-	local function coalesceMarkerTooltip(marker)
-		if marker:IsVisible() and marker:IsMouseOver() then
-			table.insert(markerTooltipEntries, marker);
-		end
-	end
-
-	-- Iterate over the blips in a first pass to build a list of all the
-	-- ones we're mousing over.
-	if self:GetMap().ExecuteOnAllPins then
-		self:GetMap():ExecuteOnAllPins(coalesceMarkerTooltip);
-	else
-		for marker in self:GetMap():EnumerateAllPins() do
-			coalesceMarkerTooltip(marker);
-		end
-	end
+	local markerTooltipEntries = self:GetMouseOverPins();
 
 	-- Sort the entries prior to display.
 	sort(markerTooltipEntries, sortMarkerEntries);
@@ -111,8 +130,6 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 
 		tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
 	end
-
-	Tables.releaseTempTable(markerTooltipEntries)
 
 	tooltip:Show();
 end

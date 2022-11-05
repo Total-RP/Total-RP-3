@@ -142,19 +142,42 @@ function Player:GetCustomIcon()
 	end
 end
 
+TRP3_PlayerNameFormat =
+{
+	Plain = { useCustomColor = false, useCustomIcon = false },
+	Colored = { useCustomColor = true, useCustomIcon = false },
+	Fancy = { useCustomColor = true, useCustomIcon = true, iconSize = 15 },
+};
+
+function Player:GenerateFormattedName(format)
+	assert(format, "Usage: Player:GenerateFormattedName(format)");
+
+	local name = self:GetRoleplayingName();
+
+	if format.useCustomColor then
+		local color = self:GetCustomColorForDisplay();
+
+		if color then
+			name = color:WrapTextInColorCode(name);
+		end
+	end
+
+	if format.useCustomIcon then
+		local icon = self:GetCustomIcon();
+
+		if icon then
+			name = TRP3_API.utils.str.icon(icon, format.iconSize) .. " " .. name;
+		end
+	end
+
+	return name;
+end
+
 --- Get a colored version of the roleplaying name prefixed with the custom icon
 ---@return string
 function Player:GetCustomColoredRoleplayingNamePrefixedWithIcon(iconSize)
-	iconSize = iconSize or 15;
-	local name, color, icon = self:GetRoleplayingName(), self:GetCustomColorForDisplay(), self:GetCustomIcon();
-
-	if color ~= nil then
-		name = color:WrapTextInColorCode(name);
-	end
-	if icon ~= nil then
-		name = TRP3_API.utils.str.icon(icon, iconSize) .. " " .. name;
-	end
-	return name
+	local format = CreateFromMixins(format, { iconSize = iconSize });
+	return self:GenerateFormattedName(format);
 end
 
 function Player:IsCurrentUser()
