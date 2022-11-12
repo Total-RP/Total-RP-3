@@ -111,16 +111,11 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 	local markerTooltipEntries = self:GetMouseOverPins();
 	self:SortPins(markerTooltipEntries);
 
-	-- Tracking variable for our last category inserted into the tip.
-	-- If it changes we'll stick in a separator.
 	local lastCategory;
 
-	-- This layout will put the category status text above entries
-	-- when the type changes. Requires the entries be sorted by category.
 	for _, marker in pairs(markerTooltipEntries) do
 		if marker.categoryName ~= lastCategory and marker.tooltipLine then
-			-- If the previous category was nil we assume this is
-			-- the first, so we'll not put a separating border in.
+			-- Insert separator between categories except for on the first.
 			if lastCategory ~= nil then
 				tooltip:AddTempLine(TOOLTIP_CATEGORY_SEPARATOR, WHITE);
 			end
@@ -132,8 +127,14 @@ function GroupedCoalescedMapPinMixin:OnMouseEnter()
 		tooltip:AddTempLine(marker.tooltipLine or "", WHITE);
 	end
 
+	self:OnTooltipAboutToShow(tooltip);
 	tooltip:Show();
 end
+
+function GroupedCoalescedMapPinMixin:OnTooltipAboutToShow(tooltip)  -- luacheck: no unused (prototype)
+	-- No-op; implement in a derived mixin if you want to add any suffix lines.
+end
+
 MapPoiMixins.GroupedCoalescedMapPinMixin = GroupedCoalescedMapPinMixin;
 --endregion
 

@@ -130,6 +130,11 @@ function TRP3_PlayerMapPinMixin:OnMouseDown(button)
 	end
 end
 
+function TRP3_PlayerMapPinMixin:OnTooltipAboutToShow(tooltip)
+	tooltip:AddTempLine([[|TInterface\Common\UI-TooltipDivider-Transparent:8:128:0:0:8:8:0:128:0:8:255:255:255|t]]);
+	tooltip:AddTempLine(loc.MAP_SCAN_PLAYER_PIN_OPTIONS, WHITE_FONT_COLOR);
+end
+
 TRP3_PlayerMapPinDropDownMixin = {};
 
 function TRP3_PlayerMapPinDropDownMixin:OnLoad()
