@@ -518,7 +518,20 @@ local function IsBattlePetUnit(unitToken)
 end
 
 local function IsPetUnit(unitToken)
-	return UnitPlayerControlled(unitToken) and (UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet"));
+	if UnitPlayerControlled(unitToken) and (UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet")) then
+		return true;
+	elseif not TRP3_ClientFeatures.WaterElementalWorkaround then
+		return false;
+	end
+
+	-- Classic Wrath seems to dispute the idea that Mages' Water Elementals
+	-- are pets, and they report nil for UnitCreatureFamily too. For these
+	-- clients we'll just hardcode the creature ID and be done with it.
+
+	local unitGUID = UnitGUID(unitToken);
+	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
+
+	return guidType == "Creature" and (creatureID == 510 or creatureID == 37994);
 end
 
 ---
