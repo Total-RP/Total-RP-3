@@ -137,11 +137,9 @@ function TRP3_PlaterNamePlates:OnNameplateNameTextUpdated(nameplate)
 	end
 
 	if displayInfo and displayInfo.shouldColorName then
-		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB());
-	end
-
-	if displayInfo and not displayInfo.shouldColorName then
-		local _, classFilename, _ = UnitClass(nameplate.namePlateUnitToken)
+		nameplate.CurrentUnitNameString:SetTextColor(displayInfo.color:GetRGB())
+	elseif displayInfo and not displayInfo.shouldColorName and nameplate.namePlateUnitToken then
+		local className, classFilename, classID = UnitClass(nameplate.namePlateUnitToken)
 		local color = C_ClassColor.GetClassColor(classFilename)
 
 		nameplate.CurrentUnitNameString:SetTextColor(color:GetRGB());

@@ -1571,7 +1571,7 @@ We are aware of a current issue on Retail causing **quest item usage from the ob
 
 	NAMEPLATES_CONFIG_MENU_TITLE = "Nameplates",
 	NAMEPLATES_CONFIG_PAGE_TEXT = "Nameplate settings",
-	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.\n If using |cffa8deffPlater|r nameplates, you must be using the default profile for the RP names to work as intended.",
+	NAMEPLATES_CONFIG_PAGE_HELP = "Please note that only |cff449fe0Blizzard|r, |cff9966ffKui|r, and |cffa8deffPlater|r nameplates are currently supported. Refer to the help tip on each setting below for additional information.",
 	NAMEPLATES_CONFIG_VISIBILITY_HEADER = "Visibility settings",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT = "Disable customizations when in combat",
 	NAMEPLATES_CONFIG_DISABLE_IN_COMBAT_HELP = "If checked, disables nameplate customizations while you are in combat.\n\nThis may require you to toggle your nameplates to take effect.",
