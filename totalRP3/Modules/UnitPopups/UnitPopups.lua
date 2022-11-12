@@ -6,10 +6,6 @@ local L = TRP3_API.loc;
 
 local GenerateConfigurationPage;
 
-local function ShouldIgnoreDeveloperAdvice()
-	return TRP3_API.configuration.getValue("UnitPopups_IgnoreDeveloperAdvice") or not EditModeManagerFrame;
-end
-
 local function ShouldDisableOutOfCharacter()
 	return TRP3_API.configuration.getValue("UnitPopups_DisableOutOfCharacter");
 end
@@ -60,9 +56,32 @@ function UnitPopupsModule:OnModuleInitialize()
 end
 
 function UnitPopupsModule:OnModuleEnable()
-	if ShouldIgnoreDeveloperAdvice() then
-		hooksecurefunc("UnitPopup_ShowMenu", function(...) return self:OnUnitPopupShown(...); end);
+	-- Taint workaround for UIDropDownMenu and Edit Mode. When Edit Mode is
+	-- entered it'll call UIDropDownMenu_AddButton for the "Layouts" dropdown
+	-- without first initializing it via UIDropDownMenu_Initialize. This results
+	-- in it writing buttons to the last-opened dropdown list frame, which if
+	-- populated or modified by addons will have tainted 'numButtons' and
+	-- 'maxWidth' fields. These are read during the UIDropDownMenu_AddButton
+	-- call and spread taint back out into Edit Mode.
+	--
+	-- This workaround solves the issue by forcing DropDownList1 to be
+	-- reinitialized upon being hidden. This triggers a secure assignment of
+	-- constant zero to the aforementioned fields, preventing Edit Mode from
+	-- tainting.
+
+	if EditModeManagerFrame then
+		local DummyFrame = CreateFrame("Frame");
+
+		local function CleanseDropDownList()
+			if not UIDROPDOWNMENU_OPEN_MENU then
+				UIDropDownMenu_Initialize(DummyFrame);
+			end
+		end
+
+		hooksecurefunc("UIDropDownMenu_OnHide", CleanseDropDownList);
 	end
+
+	hooksecurefunc("UnitPopup_ShowMenu", function(...) return self:OnUnitPopupShown(...); end);
 end
 
 function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
@@ -228,11 +247,6 @@ TRP3_API.module.registerModule({
 --
 
 UnitPopupsModule.Configuration = {
-	UnitPopups_IgnoreDeveloperAdvice = {
-		key = "UnitPopups_IgnoreDeveloperAdvice",
-		default = false,
-	},
-
 	DisableOutOfCharacter = {
 		key = "UnitPopups_DisableOutOfCharacter",
 		default = false,
@@ -284,27 +298,18 @@ function GenerateConfigurationPage()
 				inherit = "TRP3_ConfigParagraph",
 				title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
 			},
-			(function()
-				if ShouldIgnoreDeveloperAdvice() then
-					return {
-						inherit = "TRP3_ConfigButton",
-						title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
-						text = DISABLE,
-						OnClick = function()
-							TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
-								local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
-								TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
-								ReloadUI();
-							end);
-						end,
-					};
-				else
-					return {
-						inherit = "TRP3_ConfigParagraph",
-						title = L.UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE,
-					};
-				end
-			end)(),
+			{
+				inherit = "TRP3_ConfigButton",
+				title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
+				text = DISABLE,
+				OnClick = function()
+					TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+						local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
+						TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
+						ReloadUI();
+					end);
+				end,
+			},
 			{
 				inherit = "TRP3_ConfigH1",
 				title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
@@ -314,28 +319,24 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
 				configKey = "UnitPopups_DisableOutOfCharacter",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
 				configKey = "UnitPopups_DisableInCombat",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
 				configKey = "UnitPopups_DisableInInstances",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
 				configKey = "UnitPopups_DisableOnUnitFrames",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -346,28 +347,24 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
 				configKey = "UnitPopups_ShowHeaderText",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
 				configKey = "UnitPopups_ShowSeparator",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
 				configKey = "UnitPopups_ShowOpenProfile",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
 				configKey = "UnitPopups_ShowCharacterStatus",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 		},
 	};
