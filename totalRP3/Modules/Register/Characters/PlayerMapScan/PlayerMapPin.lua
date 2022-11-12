@@ -112,13 +112,21 @@ function TRP3_PlayerMapPinMixin:Decorate(displayData)
 end
 
 function TRP3_PlayerMapPinMixin:OnMouseDown(button)
-	if button == "RightButton" then
-		local level = 1;
-		local value = self:GetMouseOverPinsByTemplate(self.pinTemplate);
-		local anchor = "cursor";
+	if button ~= "RightButton" then
+		return;
+	end
 
-		self:SortPins(value);
-		MSA_ToggleDropDownMenu(level, value, TRP3_PlayerMapPinDropDown, anchor);
+	local pins = self:GetMouseOverPinsByTemplate(self.pinTemplate);
+	self:SortPins(pins);
+
+	if #pins == 1 then
+		-- Single pin; open straight to profile.
+		TRP3_API.slash.openProfile(pins[1].sender);
+	else
+		-- More than one pin; user can select from a context menu.
+		local level = 1;
+		local anchor = "cursor";
+		MSA_ToggleDropDownMenu(level, pins, TRP3_PlayerMapPinDropDown, anchor);
 	end
 end
 
