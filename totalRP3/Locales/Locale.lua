@@ -1803,7 +1803,6 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	------------------------------------------------------------------------------------------------
 
 	MAP_SCAN_OPEN_PROFILE = "Open Profile: %1$s",
-	MAP_SCAN_PLAYER_PIN_OPTIONS = "|cffffcc00Right-Click:|r Open Profile",
 
 };
 
