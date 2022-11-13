@@ -191,8 +191,7 @@ local function showSpacing()
 end
 
 local function fadeOutEnabled()
-	return true; -- TEMPORARY WORKAROUND
-	--return not getConfigValue(CONFIG_NO_FADE_OUT);
+	return not getConfigValue(CONFIG_NO_FADE_OUT);
 end
 
 local function getCurrentMaxLines()
@@ -349,6 +348,7 @@ local function Build(self)
 		end
 	end
 	self.tooltip:Show();
+	self.tooltip.TimeSinceMouseOut = nil
 	for index, tempTable in ipairs(self._content) do
 		self._content[index] = nil;
 		releaseTempTable(tempTable);
@@ -1203,14 +1203,18 @@ local function getFadeTime()
 end
 
 local function onUpdate(self, elapsed)
-	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
-
 	if getAnchoredPosition() == "ANCHOR_CURSOR" then
 		placeTooltipOnCursor(self);
 	end
 
-	if (self.TimeSinceLastUpdate > getFadeTime()) then
-		self.TimeSinceLastUpdate = 0;
+	if not self.TimeSinceMouseOut then
+		return
+	end
+
+	self.TimeSinceMouseOut = self.TimeSinceMouseOut + elapsed;
+
+	if self.TimeSinceMouseOut > getFadeTime() then
+		self.TimeSinceMouseOut = 0;
 		if self.target and self.targetType and not self.isFading then
 			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
@@ -1226,9 +1230,13 @@ local function onUpdate(self, elapsed)
 end
 
 local function onUpdateCompanion(self, elapsed)
-	self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
-	if (self.TimeSinceLastUpdate > getFadeTime()) then
-		self.TimeSinceLastUpdate = 0;
+	if not self.TimeSinceMouseOut then
+		return
+	end
+
+	self.TimeSinceMouseOut = self.TimeSinceMouseOut + elapsed;
+	if (self.TimeSinceMouseOut > getFadeTime()) then
+		self.TimeSinceMouseOut = 0;
 		if self.target and self.targetType and not self.isFading then
 			if self.target ~= getUnitID(self.targetType) or not getUnitID("mouseover") then
 				self.isFading = true;
@@ -1256,6 +1264,12 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		if GameTooltip:GetUnit() then
 			local targetID, targetMode = getUnitID("mouseover");
 			Events.fireEvent(Events.MOUSE_OVER_CHANGED, targetID, targetMode, "mouseover");
+		end
+	end);
+	Utils.event.registerHandler("WORLD_CURSOR_TOOLTIP_UPDATE", function(mouseOver)
+		if mouseOver == 0 then
+			ui_CharacterTT.TimeSinceMouseOut = 0;
+			ui_CompanionTT.TimeSinceMouseOut = 0;
 		end
 	end);
 	hooksecurefunc(GameTooltip, "SetUnit", function()
@@ -1290,9 +1304,7 @@ local function onModuleInit()
 		end
 	end);
 
-	ui_CharacterTT.TimeSinceLastUpdate = 0;
 	ui_CharacterTT:SetScript("OnUpdate", onUpdate);
-	ui_CompanionTT.TimeSinceLastUpdate = 0;
 	ui_CompanionTT:SetScript("OnUpdate", onUpdateCompanion);
 
 	IC_GUILD = " |cff00ff00(" .. loc.REG_TT_GUILD_IC .. ")";
