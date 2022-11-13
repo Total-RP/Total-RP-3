@@ -7,7 +7,7 @@ local AddOn_TotalRP3 = AddOn_TotalRP3;
 
 -- AddOns imports
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
-local RED, GREY, ORANGE = Ellyb.ColorManager.RED, Ellyb.ColorManager.GREY, Ellyb.ColorManager.ORANGE;
+local RED, GREY = Ellyb.ColorManager.RED, Ellyb.ColorManager.GREY;
 
 local Compression = {};
 
