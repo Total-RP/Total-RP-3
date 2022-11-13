@@ -1746,11 +1746,6 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 
 ]],
 
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	SLASH_CMD_HELP_USAGE = "Usage: %1$s",
 	SLASH_CMD_HELP_COMMANDS = "Commands: %1$s",
 	SLASH_CMD_HELP_EXAMPLES = "Examples: %1$s",
@@ -1801,6 +1796,14 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 - Removed temporarily right-click menu options in Retail due to a conflict with Edit Mode that can prevent the use of abilities in combat. They will be re-added once the conflict has been resolved.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	MAP_SCAN_OPEN_PROFILE = "Open Profile: %1$s",
+	MAP_SCAN_PLAYER_PIN_OPTIONS = "|cffffcc00Right-Click:|r Open Profile",
 
 };
 
