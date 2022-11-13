@@ -41,7 +41,7 @@ local ChatLinkModule = TRP3_API.ChatLinkModule;
 local loc = TRP3_API.loc;
 --endregion
 
-local LINK_CODE = TRP3_ClientFeatures.LocalLinkPrefix .. "totalrp3";
+local LINK_CODE = "garrmission:totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
 
 local LINK_COLOR = ColorManager.YELLOW;

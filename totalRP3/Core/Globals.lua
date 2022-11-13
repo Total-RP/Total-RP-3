@@ -89,7 +89,6 @@ TRP3_ClientFeatures = {
 	BroadcastMethod = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and TRP3_BroadcastMethod.Yell or TRP3_BroadcastMethod.Channel),
 	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_BATTLE_FOR_AZEROTH),
 	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_CATACLYSM),
-	LocalLinkPrefix = (false and "addon:" or "garrmission:"),  -- TODO: insider information
 };
 
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.
