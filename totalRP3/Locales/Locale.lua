@@ -1962,11 +1962,9 @@ Please use TRP3_API.loc:GetLocale(localeID) and locale:AddText(key, value) to in
 	}
 end
 
--- The default locale for any lookups in script bodies is based on the client
--- locale; this may change later based on the "addon locale" setting and cause
--- differences, but for the majority of users it should go unnoticed.
---
--- Long term we should look at fixing those things; primary area being module
--- names and descriptions which are looked up in script bodies.
+-- The default locale for any lookups in script bodies is based on the addon
+-- locale global managed by the Data addon, which will prefer (in-order) the
+-- the previously configured state of the AddonLocale setting, the unofficial
+-- GAME_LOCALE global variable, or finally the default client locale.
 
-TRP3_API.loc:SetCurrentLocale(GetLocale(), true);
+TRP3_API.loc:SetCurrentLocale(TRP3_AddonLocale, true);

@@ -6,7 +6,7 @@
 ## Author: Telkostrasz & Ellypse
 ## Version: @project-version@
 ## Notes: The best data storage for the best roleplaying addon for World of Warcraft.|n|n|cffffd200Version:|r @project-version@
-## SavedVariables: TRP3_Register
+## SavedVariables: TRP3_AddonLocale, TRP3_Register
 ## LoadOnDemand: 1
 
 ## X-Category: Roleplay
