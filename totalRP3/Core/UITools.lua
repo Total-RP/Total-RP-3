@@ -545,11 +545,40 @@ local function getDummyGameTooltipTexts()
 end
 
 local function getCompanionOwner(unitType, targetType)
-	DUMMY_TOOLTIP:SetUnit(unitType);
-	if targetType == TRP3_Enums.UNIT_TYPE.PET then
-		return findPetOwner(getDummyGameTooltipTexts());
-	elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-		return findBattlePetOwner(getDummyGameTooltipTexts());
+	if C_TooltipInfo then
+		local tooltipData = C_TooltipInfo.GetUnit(unitType);
+		local ownerGUID;
+		local ownerName;
+		local ownerRealm;
+
+		for _, line in ipairs(tooltipData.lines) do
+			TooltipUtil.SurfaceArgs(line);
+
+			if line.type == Enum.TooltipDataLineType.UnitOwner then
+				ownerGUID = line.guid;
+				break;
+			end
+		end
+
+		if ownerGUID ~= nil then
+			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
+		end
+
+		if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
+			return nil;
+		elseif not ownerRealm or ownerRealm == "" then
+			return ownerName;
+		else
+			return string.join("-", ownerName, ownerRealm);
+		end
+	else
+		-- TODO: Remove the old tooltip scanning stuff in 3.4.1/3.4.2.
+		DUMMY_TOOLTIP:SetUnit(unitType);
+		if targetType == TRP3_Enums.UNIT_TYPE.PET then
+			return findPetOwner(getDummyGameTooltipTexts());
+		elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
+			return findBattlePetOwner(getDummyGameTooltipTexts());
+		end
 	end
 end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;

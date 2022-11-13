@@ -294,6 +294,28 @@ stds.wow = {
 			},
 		},
 
+		C_TooltipInfo = {
+			fields = {
+				"GetUnit",
+			},
+		},
+
+		Enum = {
+			fields = {
+				TooltipDataLineType = {
+					fields = {
+						"UnitOwner",
+					},
+				},
+			},
+		},
+
+		TooltipUtil = {
+			fields = {
+				"SurfaceArgs",
+			},
+		},
+
 		"AbbreviateLargeNumbers",
 		"Ambiguate",
 		"BNGetGameAccountInfoByGUID",
