@@ -78,7 +78,7 @@ function UnitPopupsModule:OnModuleEnable()
 			end
 		end
 
-		hooksecurefunc("UIDropDownMenu_OnHide", CleanseDropDownList);
+		hooksecurefunc("CloseDropDownMenus", CleanseDropDownList);
 	end
 
 	hooksecurefunc("UnitPopup_ShowMenu", function(...) return self:OnUnitPopupShown(...); end);
