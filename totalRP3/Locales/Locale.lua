@@ -1802,7 +1802,6 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	--- THEN MOVE IT UP ONCE IMPORTED
 	------------------------------------------------------------------------------------------------
 
-	MAP_SCAN_OPEN_PROFILE = "Open Profile: %1$s",
 	WHATS_NEW_25_2 = [[# Changelog version 2.4.1
 
 ## Added

@@ -160,7 +160,7 @@ function TRP3_PlayerMapPinDropDownMixin:OnInitialize(level)
 		local sender = pin.sender;
 
 		local info = {};
-		info.text = string.format(loc.MAP_SCAN_OPEN_PROFILE, pin.playerNameColored);
+		info.text = string.format("%1$s: %2$s", loc.CL_OPEN_PROFILE, pin.playerNameColored);
 		info.func = function() TRP3_API.slash.openProfile(sender); end;
 		info.notCheckable = true;
 
