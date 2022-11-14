@@ -191,8 +191,7 @@ local function showSpacing()
 end
 
 local function fadeOutEnabled()
-	return true; -- TEMPORARY WORKAROUND
-	--return not getConfigValue(CONFIG_NO_FADE_OUT);
+	return not getConfigValue(CONFIG_NO_FADE_OUT);
 end
 
 local function getCurrentMaxLines()
@@ -1199,7 +1198,7 @@ local function show(targetType, targetID, targetMode)
 end
 
 local function getFadeTime()
-	return (getAnchoredPosition() == "ANCHOR_CURSOR" or not fadeOutEnabled()) and 0 or 0.5;
+	return (getAnchoredPosition() == "ANCHOR_CURSOR" or not fadeOutEnabled()) and 0.05 or 0.5;
 end
 
 local function onUpdate(self, elapsed)
