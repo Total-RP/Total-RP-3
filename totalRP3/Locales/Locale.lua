@@ -1803,6 +1803,21 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 	------------------------------------------------------------------------------------------------
 
 	MAP_SCAN_OPEN_PROFILE = "Open Profile: %1$s",
+	WHATS_NEW_25_2 = [[# Changelog version 2.4.1
+
+## Added
+
+- Added support for Retail 10.0.2.
+- Added 5 icons, 68 images and 218 musics from patch 10.0.2 and before.
+- Added the ability to right-click a pin after a map scan to open someone's profile.
+
+## Fixed
+
+- Fixed the "Hide immediately instead of fading" tooltip setting.
+- Fixed another issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic
+- Fixed an issue with colorblind mode preventing companion tooltips from displaying.
+
+]],
 
 };
 
