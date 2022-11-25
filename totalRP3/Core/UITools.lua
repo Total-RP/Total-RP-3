@@ -531,7 +531,7 @@ local function IsPetUnit(unitToken)
 	local unitGUID = UnitGUID(unitToken);
 	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
 
-	return guidType == "Creature" and (creatureID == 510 or creatureID == 37994);
+	return guidType == "Creature" and (creatureID == "510" or creatureID == "37994");
 end
 
 ---
