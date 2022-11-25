@@ -518,7 +518,7 @@ local function IsBattlePetUnit(unitToken)
 end
 
 local function IsPetUnit(unitToken)
-	if UnitPlayerControlled(unitToken) and (UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet")) then
+	if UnitPlayerControlled(unitToken) and UnitCreatureFamily(unitToken) ~= nil then
 		return true;
 	elseif not TRP3_ClientFeatures.WaterElementalWorkaround then
 		return false;
