@@ -35,7 +35,7 @@ TRP3_API.globals = {
 	addon_name_me = "Total RP 3",
 	addon_id_length = 15,
 
-	version = 108,
+	version = 109,
 
 	--@debug@
 	version_display = "-dev",
@@ -89,6 +89,7 @@ TRP3_ClientFeatures = {
 	BroadcastMethod = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE and TRP3_BroadcastMethod.Yell or TRP3_BroadcastMethod.Channel),
 	WarMode = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_BATTLE_FOR_AZEROTH),
 	Transmogrification = (LE_EXPANSION_LEVEL_CURRENT >= TRP3_EXPANSION_CATACLYSM),
+	WaterElementalWorkaround = (WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE),
 };
 
 --- RELATIONS is a list of (backwards-compatible) relationship IDs.

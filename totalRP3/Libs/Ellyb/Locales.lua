@@ -51,4 +51,4 @@ Vous pouvez copier ce lien en utilisant le raccourci clavier %s pour ensuite le 
 	COPY_SYSTEM_MESSAGE = "Copié dans le presse-papiers.",
 })
 
-Ellyb.loc:SetCurrentLocale(GetLocale(), true);
+Ellyb.loc:SetCurrentLocale(TRP3_AddonLocale, true);

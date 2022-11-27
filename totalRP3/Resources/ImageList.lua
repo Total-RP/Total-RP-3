@@ -417,6 +417,16 @@ local IMAGES = {
 		height = 128
 	},
 	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_Dragonflight",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_DragonflightStart",
+		width = 128,
+		height = 128
+	},
+	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_EternalPalace",
 		width = 128,
 		height = 128
@@ -478,6 +488,11 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\Calendar\\Holidays\\Calendar_UldirStart",
+		width = 128,
+		height = 128
+	},
+	{
+		url = "Interface\\Calendar\\Holidays\\Calendar_VaultOfTheIncarnatesStart",
 		width = 128,
 		height = 128
 	},
@@ -579,6 +594,16 @@ local IMAGES = {
 	{
 		url = "Interface\\Credits\\CreditsScreenKeyArt8Shadowlands",
 		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\Credits\\CreditsScreenKeyArt9Dragonflight",
+		width = 512,
+		height = 256
+	},
+	{
+		url = "Interface\\DRESSUPFRAME\\DressUpBackground-Dracthyr1",
+		width = 256,
 		height = 256
 	},
 	{
@@ -707,6 +732,11 @@ local IMAGES = {
 		height = 512
 	},
 	{
+		url = "Interface\\DRESSUPFRAME\\DressingRoomEvoker",
+		width = 512,
+		height = 512
+	},
+	{
 		url = "Interface\\DRESSUPFRAME\\DressingRoomHunter",
 		width = 512,
 		height = 512
@@ -760,6 +790,191 @@ local IMAGES = {
 		url = "Interface\\FlavorImages\\ScarletCrusadeLogo",
 		width = 256,
 		height = 256
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-ArathiHighlands-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Argus-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Ashenvale-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Azshara-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-BlackrockMountain-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Dalaran-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Darkshore-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Drustvar-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Durotar-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-FrostfireRidge-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-FrostfireSea-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Gorgrond-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Highmountain-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-HillsbradFoothills-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Legion-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Nagrand-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-NagrandSea-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Nazmir-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-NorthernBarrens-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-ShadowmoonSea-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-ShadowmoonValley-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-SilverpineForest-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-SouthernBarrens-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-SpiresOfArak-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Stormheim-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Stormsong-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Suramar-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Talador-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-TannanJungle-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-TannanSea-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-TiragardeSound-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-TownAlliance-Back",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-TownHorde-Back",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Underground-Back",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Valsharah-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Voldun-Mid",
+		width = 512,
+		height = 128
+	},
+	{
+		url = "Interface\\Garrison\\_GarrMissionLocation-Zuldazar-Mid",
+		width = 512,
+		height = 128
 	},
 	{
 		url = "Interface\\Garrison\\ShadowlandsMissionLandingPageBackgroundKyrian",
@@ -1067,6 +1282,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-ArcaneVaults",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ArgentDungeon",
 		width = 256,
 		height = 256
@@ -1139,6 +1358,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-BrackenhideHollow",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Brew",
 		width = 256,
 		height = 256
@@ -1171,6 +1394,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-CentaurPlains",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-ChamberOfAspects",
 		width = 256,
 		height = 256
@@ -1196,6 +1423,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Draenor",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-DragonIslesContinent",
 		width = 256,
 		height = 256
 	}, {
@@ -1263,6 +1494,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-HallsofInfusion",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-HallsofLighting",
 		width = 256,
 		height = 256
@@ -1323,6 +1558,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-LifePools",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Love",
 		width = 256,
 		height = 256
@@ -1356,6 +1595,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-NeltharionsLair",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Neltharus",
 		width = 256,
 		height = 256
 	}, {
@@ -1511,6 +1754,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-TheAcademy",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-TheArcway",
 		width = 256,
 		height = 256
@@ -1643,6 +1890,10 @@ local IMAGES = {
 		width = 256,
 		height = 256
 	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-Uldaman-LegacyOfTyr",
+		width = 256,
+		height = 256
+	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-Uldir",
 		width = 256,
 		height = 256
@@ -1676,6 +1927,10 @@ local IMAGES = {
 		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\LFGIcon-VaultOfArchavon",
+		width = 256,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\LFGIcon-VaultOfTheIncarnates",
 		width = 256,
 		height = 256
 	}, {
@@ -1747,6 +2002,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-AzureVaults",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-BLACKFATHOMDEEPS",
 		width = 256,
 		height = 128
@@ -1764,6 +2023,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-BLACKWINGLAIR",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-BrackenhideHollow",
 		width = 256,
 		height = 128
 	}, {
@@ -1883,6 +2146,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-DragonIsles",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-EmberCourt",
 		width = 256,
 		height = 128
@@ -1948,6 +2215,10 @@ local IMAGES = {
 		height = 128
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HallsOfAtonement",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-HallsOfInfusion",
 		width = 256,
 		height = 128
 	}, {
@@ -2047,6 +2318,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-LifePools",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-LOVE",
 		width = 256,
 		height = 128
@@ -2099,7 +2374,15 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Neltharus",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NightmareofShekzeer",
+		width = 256,
+		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-NokhudOffensive",
 		width = 256,
 		height = 128
 	}, {
@@ -2291,6 +2574,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-TheAcademy",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-THEFORGEOFSOULS",
 		width = 256,
 		height = 128
@@ -2439,6 +2726,10 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-Uldaman-LegacyOfTyr",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ULDUAR",
 		width = 256,
 		height = 128
@@ -2463,13 +2754,29 @@ local IMAGES = {
 		width = 256,
 		height = 128
 	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ValleyOfPower",
+		width = 256,
+		height = 128
+	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VAULTOFARCHAVON",
 		width = 256,
 		height = 128
 	}, {
-		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-ValleyOfPower",
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VaultOfTheIncarnates",
 		width = 256,
 		height = 128
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VaultOfTheIncarnates1Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VaultOfTheIncarnates2Q",
+		width = 512,
+		height = 256
+	}, {
+		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VaultOfTheIncarnates3Q",
+		width = 512,
+		height = 256
 	}, {
 		url = "Interface\\LFGFRAME\\UI-LFG-BACKGROUND-VaultoftheWardens",
 		width = 256,
@@ -4592,6 +4899,16 @@ local IMAGES = {
 	},
 	{
 		url = "Interface\\QuestionFrame\\answer-pathofascension-vorkaiduo",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-sabellian",
+		width = 256,
+		height = 128
+	},
+	{
+		url = "Interface\\QuestionFrame\\answer-wrathion",
 		width = 256,
 		height = 128
 	},

@@ -518,7 +518,20 @@ local function IsBattlePetUnit(unitToken)
 end
 
 local function IsPetUnit(unitToken)
-	return UnitPlayerControlled(unitToken) and (UnitIsOtherPlayersPet(unitToken) or UnitIsUnit(unitToken, "pet"));
+	if UnitPlayerControlled(unitToken) and UnitCreatureFamily(unitToken) ~= nil then
+		return true;
+	elseif not TRP3_ClientFeatures.WaterElementalWorkaround then
+		return false;
+	end
+
+	-- Classic Wrath seems to dispute the idea that Mages' Water Elementals
+	-- are pets, and they report nil for UnitCreatureFamily too. For these
+	-- clients we'll just hardcode the creature ID and be done with it.
+
+	local unitGUID = UnitGUID(unitToken);
+	local guidType, _, _, _, _, creatureID = string.split("-", unitGUID or "", 7);
+
+	return guidType == "Creature" and (creatureID == "510" or creatureID == "37994");
 end
 
 ---
@@ -545,11 +558,40 @@ local function getDummyGameTooltipTexts()
 end
 
 local function getCompanionOwner(unitType, targetType)
-	DUMMY_TOOLTIP:SetUnit(unitType);
-	if targetType == TRP3_Enums.UNIT_TYPE.PET then
-		return findPetOwner(getDummyGameTooltipTexts());
-	elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-		return findBattlePetOwner(getDummyGameTooltipTexts());
+	if C_TooltipInfo then
+		local tooltipData = C_TooltipInfo.GetUnit(unitType);
+		local ownerGUID;
+		local ownerName;
+		local ownerRealm;
+
+		for _, line in ipairs(tooltipData.lines) do
+			TooltipUtil.SurfaceArgs(line);
+
+			if line.type == Enum.TooltipDataLineType.UnitOwner then
+				ownerGUID = line.guid;
+				break;
+			end
+		end
+
+		if ownerGUID ~= nil then
+			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
+		end
+
+		if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
+			return nil;
+		elseif not ownerRealm or ownerRealm == "" then
+			return ownerName;
+		else
+			return string.join("-", ownerName, ownerRealm);
+		end
+	else
+		-- TODO: Remove the old tooltip scanning stuff in 3.4.1/3.4.2.
+		DUMMY_TOOLTIP:SetUnit(unitType);
+		if targetType == TRP3_Enums.UNIT_TYPE.PET then
+			return findPetOwner(getDummyGameTooltipTexts());
+		elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
+			return findBattlePetOwner(getDummyGameTooltipTexts());
+		end
 	end
 end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;
