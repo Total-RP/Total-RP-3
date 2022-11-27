@@ -1421,12 +1421,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Removed temporarily right-click menu options in Retail due to a conflict with Edit Mode that can prevent the use of abilities in combat. They will be re-added once the conflict has been resolved.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_25_2 = [[# Changelog version 2.4.1
 
 ## Added
@@ -1440,6 +1434,23 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed the "Hide immediately instead of fading" tooltip setting.
 - Fixed another issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic
 - Fixed an issue with colorblind mode preventing companion tooltips from displaying.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_25_3 = [[# Changelog version 2.4.2
+
+## Fixed
+
+- Fixed missing dracthyr default profile icon.
+- Fixed companion profiles not working properly on the second pet from Animal Companion talent.
+- Fixed companion profiles on water elementals in WotLK Classic (for real this time).
+- Fixed broadcast channel order setting being checked before configuration was set up.
+- Fixed an issue with chat links that could lead to blocked actions.
 
 ]],
 

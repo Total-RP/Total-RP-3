@@ -1,3 +1,13 @@
+# Changelog version 2.4.2
+
+## Fixed
+
+- Fixed missing dracthyr default profile icon.
+- Fixed companion profiles not working properly on the second pet from Animal Companion talent.
+- Fixed companion profiles on water elementals in WotLK Classic (for real this time).
+- Fixed broadcast channel order setting being checked before configuration was set up.
+- Fixed an issue with chat links that could lead to blocked actions.
+
 # Changelog version 2.4.1
 
 ## Added
