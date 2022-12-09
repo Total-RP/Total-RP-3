@@ -380,16 +380,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
-	--date format options
-	local date_option_enum = AddOn_TotalRP3.Enums.DATE_OPTIONS;
-
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("increase_color_contrast", false);
-	registerConfigKey("date_format", date_option_enum.D_M_Y);
+	registerConfigKey("date_format", "");
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -446,23 +443,34 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 				end,
 			},
 			{
-				inherit = "TRP3_ConfigDropDown",
+				inherit = "TRP3_ConfigEditBox",
 				title = loc.CO_DATE_FORMAT,
-				listContent = {
-					{ date_option_enum.D_M_Y, "%d/%m/%y %H:%M" },
-					{ date_option_enum.M_D_Y, "%m/%d/%y %H:%M" },
-					{ date_option_enum.Y_M_D, "%y/%m/%d %H:%M" }
-				},
-				listCallback = function(newDateFormat)
-					local ancientDateFormatValue = getValue("date_format")
-					if newDateFormat == ancientDateFormatValue then
-						-- Date isn't changing.
-						return;
-					end
+				configKey = "date_format",
+				help = (function()
+					-- Unix timestamp for Mon Jan 2 15:04:05 UTC 2006.
+					local timestamp = 1136214245;
 
-					setValue("date_format", newDateFormat);
-				end,
-				listDefault = date_option_enum.D_M_Y,
+					local specifiers =
+					{
+						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Ellyb.ColorManager.CYAN("%a"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%a", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Ellyb.ColorManager.CYAN("%A"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%A", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Ellyb.ColorManager.CYAN("%b"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%b", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Ellyb.ColorManager.CYAN("%B"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%B", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Ellyb.ColorManager.CYAN("%d"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%d", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Ellyb.ColorManager.CYAN("%H"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%H", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Ellyb.ColorManager.CYAN("%I"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%I", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Ellyb.ColorManager.CYAN("%m"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%m", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Ellyb.ColorManager.CYAN("%M"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%M", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Ellyb.ColorManager.CYAN("%p"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%p", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Ellyb.ColorManager.CYAN("%S"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%S", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Ellyb.ColorManager.CYAN("%y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Ellyb.ColorManager.CYAN("%Y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%Y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Ellyb.ColorManager.CYAN("%%")),
+					};
+
+					return string.format(loc.CO_DATE_FORMAT_HELP, table.concat(specifiers, "|n"))
+				end)(),
+				instructions = Utils.GetDefaultDateFormat(),
 			}
 		}
 	}

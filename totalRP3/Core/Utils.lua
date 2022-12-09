@@ -1353,6 +1353,53 @@ TRP3_API.utils.Oldgodify = Oldgodify;
 -- Settings
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-function Utils.getPreferredDateFormat()
-	return TRP3_API.configuration.getValue("date_format");
+function Utils.GetDefaultLocale()
+	return GAME_LOCALE or GetLocale();
+end
+
+function Utils.GetPreferredLocale()
+	-- TODO: Our addon locale setting unfortunately defaults to the client
+	--       locale and gets sticky - if you install the addon on an esMX client
+	--       and then change to a ptBR one it'd stay set to esMX. As such, the
+	--       default fallback will almost always never actually occur.
+
+	return TRP3_API.configuration.getValue("AddonLocale") or Utils.GetDefaultLocale();
+end
+
+-- Ref: <https://en.wikipedia.org/wiki/Date_format_by_country>
+local LOCALIZED_DATE_FORMATS =
+{
+	deDE = "%d/%m/%Y %H:%M",
+	enGB = "%d/%m/%Y %H:%M",
+	enUS = "%m/%d/%Y %H:%M",
+	esES = "%d/%m/%Y %H:%M",
+	esMX = "%d/%m/%Y %H:%M",
+	frFR = "%d/%m/%Y %H:%M",
+	itIT = "%d/%m/%Y %H:%M",
+	koKR = "%Y-%m-%d %H:%M",
+	ptBR = "%d/%m/%Y %H:%M",
+	ptPT = "%d/%m/%Y %H:%M",
+	ruRU = "%Y-%m-%d %H:%M",
+	zhCN = "%Y-%m-%d %H:%M",
+	zhTW = "%Y-%m-%d %H:%M",
+};
+
+function Utils.GetDefaultDateFormat()
+	local locale = Utils.GetPreferredLocale();
+
+	if locale == "enUS" and LOCALE_enGB then
+		locale = "enGB";
+	end
+
+	return LOCALIZED_DATE_FORMATS[locale] or LOCALIZED_DATE_FORMATS.enGB;
+end
+
+function Utils.GetPreferredDateFormat()
+	local format = TRP3_API.configuration.getValue("date_format");
+
+	if type(format) ~= "string" or format == "" then
+		format = Utils.GetDefaultDateFormat();
+	end
+
+	return format;
 end

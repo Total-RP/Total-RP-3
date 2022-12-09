@@ -1453,7 +1453,23 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with chat links that could lead to blocked actions.
 
 ]],
+
 	CO_DATE_FORMAT = "Date Format",
+	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nSpecifiers:|n|n%1$s",
+	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_B = "%1$s: Full month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_d = "%1$s: Day of the month (%2$s)",
+	CO_DATE_FORMAT_SPEC_H = "%1$s: Hour using a 24-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_I = "%1$s: Hour using a 12-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_m = "%1$s: Month (%2$s)",
+	CO_DATE_FORMAT_SPEC_M = "%1$s: Minute (%2$s)",
+	CO_DATE_FORMAT_SPEC_p = "%1$s: Either 'am' or 'pm' (%2$s)",
+	CO_DATE_FORMAT_SPEC_S = "%1$s: Second (%2$s)",
+	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
+	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
+	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
 };
 
 -- Use Ellyb to generate the Localization system
