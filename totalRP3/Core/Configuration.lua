@@ -446,7 +446,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 			{
 				inherit = "TRP3_ConfigDropDown",
 				title = loc.CO_DATE_FORMAT,
-				listContent = { 
+				listContent = {
 					{ date_option_enum.D_M_Y, "%d/%m/%y %H:%M" },
 					{ date_option_enum.M_D_Y, "%m/%d/%y %H:%M" },
 					{ date_option_enum.Y_M_D, "%y/%m/%d %H:%M" }
@@ -457,7 +457,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 						-- Date isn't changing.
 						return;
 					end
-		
+
 					setValue("date_format", newDateFormat);
 				end,
 				listDefault = date_option_enum.D_M_Y,
