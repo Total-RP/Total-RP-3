@@ -278,7 +278,7 @@ local function decorateCharacterLine(line, characterIndex)
 	end
 
 	if profile.time and profile.zone then
-		local formatDate = date(getDateSettings(), profile.time);
+		local formatDate = date(Utils.getPreferredDateFormat(), profile.time);
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
@@ -294,7 +294,7 @@ local function decorateCharacterLine(line, characterIndex)
 
 	local timeStr = "";
 	if profile.time then
-		timeStr = date(getDateSettings(), profile.time);
+		timeStr = date(Utils.getPreferredDateFormat(), profile.time);
 	end
 	_G[line:GetName().."Time"]:SetText(timeStr);
 
@@ -1082,7 +1082,3 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		});
 	end
 end);
-
-function getDateSettings()
-	return TRP3_API.configuration.getValue(AddOn_TotalRP3.Enums.GENERAL_SETTINGS_CONFIG_KEYS.DATE_FORMAT);
-end

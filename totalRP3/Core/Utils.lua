@@ -1348,3 +1348,11 @@ local function Oldgodify(text)
 	return finalText
 end
 TRP3_API.utils.Oldgodify = Oldgodify;
+
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+-- Settings
+--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+function Utils.getPreferredDateFormat()
+	return TRP3_API.configuration.getValue("date_format");
+end
