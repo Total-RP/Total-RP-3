@@ -1403,3 +1403,15 @@ function Utils.GetPreferredDateFormat()
 
 	return format;
 end
+
+function Utils.GenerateFormattedDateString(time)
+	local format = Utils.GetPreferredDateFormat();
+	local ok, result = xpcall(date, CallErrorHandler, format, time);
+
+	if not ok then
+		format = Utils.GetDefaultDateFormat();
+		result = date(format, time);
+	end
+
+	return result;
+end
