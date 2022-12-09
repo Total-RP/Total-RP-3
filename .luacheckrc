@@ -428,6 +428,7 @@ stds.wow = {
 		"ScrollingEdit_OnLoad",
 		"ScrollingEdit_OnTextChanged",
 		"SecondsToClock",
+		"securecall",
 		"securecallfunction",
 		"SecureCmdOptionParse",
 		"SendChatMessage",

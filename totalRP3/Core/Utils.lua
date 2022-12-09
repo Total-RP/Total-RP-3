@@ -1406,9 +1406,9 @@ end
 
 function Utils.GenerateFormattedDateString(time)
 	local format = Utils.GetPreferredDateFormat();
-	local ok, result = xpcall(date, CallErrorHandler, format, time);
+	local result = securecall(date, format, time);
 
-	if not ok then
+	if not result then
 		format = Utils.GetDefaultDateFormat();
 		result = date(format, time);
 	end
