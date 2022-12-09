@@ -44,3 +44,13 @@ AddOn_TotalRP3.Enums.UNIT_TYPE = {
 	MOUNT = "MOUNT", -- Not a real unit, but used for companion profiles.
 	NPC = "NPC",
 };
+
+-- Configuration --
+AddOn_TotalRP3.Enums.GENERAL_SETTINGS_CONFIG_KEYS = {
+	DATE_FORMAT = "date_format"
+}
+AddOn_TotalRP3.Enums.DATE_OPTIONS = {
+	D_M_Y = "D/M/Y",
+	M_D_Y = "M/D/Y",
+	Y_M_D = "Y/M/D"
+}
