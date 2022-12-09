@@ -6,7 +6,6 @@ local _, TRP3_API = ...;
 
 -- TRP imports.
 local L = TRP3_API.loc;
-local Config = TRP3_API.configuration;
 local Enums = AddOn_TotalRP3.Enums;
 local Events = TRP3_API.events;
 local Globals = TRP3_API.globals;
