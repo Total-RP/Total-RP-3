@@ -6,7 +6,6 @@ local _, TRP3_API = ...;
 
 -- TRP imports.
 local L = TRP3_API.loc;
-local Config = TRP3_API.configuration;
 local Enums = AddOn_TotalRP3.Enums;
 local Events = TRP3_API.events;
 local Globals = TRP3_API.globals;
@@ -29,20 +28,7 @@ TRP3_DashboardStatusPanelMixin = DashboardStatusPanelMixin;
 
 -- Handler called when the frame is loaded.
 function DashboardStatusPanelMixin:OnLoad()
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:OnWorkflowLoaded(...); end);
-end
-
--- Handler called when addon workflow reaches the loaded state.
-function DashboardStatusPanelMixin:OnWorkflowLoaded()
-	-- Defer registering config handlers to here, since OnLoad is too early.
-	Config.registerHandler({ "AddonLocale" }, function(...) self:OnLocaleChanged(...); end);
-
-	self:LocalizeUI();
-end
-
--- Handler called when the addon locale changes.
-function DashboardStatusPanelMixin:OnLocaleChanged()
-	self:LocalizeUI();
+	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function() self:LocalizeUI(); end);
 end
 
 -- Updates all localization-dependant parts of the UI.
@@ -59,34 +45,13 @@ TRP3_DashboardStatusMenuMixin = DashboardStatusMenuMixin;
 
 -- Handler called when the menu frame is loaded.
 function DashboardStatusMenuMixin:OnLoad()
-	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:OnWorkflowLoaded(...); end);
+	Events.registerCallback(Events.WORKFLOW_ON_LOADED, function(...) self:InitializeMenu(...); end);
 	Events.registerCallback(Events.REGISTER_DATA_UPDATED, function(...) self:OnRegisterDataUpdated(...); end);
 end
 
 -- Handler called when the menu frame is shown.
 function DashboardStatusMenuMixin:OnShow()
 	self:RefreshMenu();
-end
-
--- Handler called when the addon workflow reaches the loaded state.
-function DashboardStatusMenuMixin:OnWorkflowLoaded()
-	-- Defer registering config handlers to here, since OnLoad is too early.
-	Config.registerHandler({ "AddonLocale" },
-		function(...) self:OnLocaleChanged(...); end);
-
-	self:InitializeMenu();
-end
-
--- Handler called when the addon locale is changed.
-function DashboardStatusMenuMixin:OnLocaleChanged()
-	if MSA_DROPDOWNMENU_OPEN_MENU == self then
-		-- Changing the locale will re-initialize the whole menu due to the
-		-- fact that the individual buttons within will be localized.
-		self:InitializeMenu();
-	else
-		-- Menu isn't open so we don't want to re-initialize.
-		self:RefreshMenu();
-	end
 end
 
 -- Handler called when register data is updated.

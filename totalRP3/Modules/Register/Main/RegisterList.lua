@@ -278,7 +278,7 @@ local function decorateCharacterLine(line, characterIndex)
 	end
 
 	if profile.time and profile.zone then
-		local formatDate = date(Utils.getPreferredDateFormat(), profile.time);
+		local formatDate = Utils.GenerateFormattedDateString(profile.time);
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
@@ -294,7 +294,7 @@ local function decorateCharacterLine(line, characterIndex)
 
 	local timeStr = "";
 	if profile.time then
-		timeStr = date(Utils.getPreferredDateFormat(), profile.time);
+		timeStr = Utils.GenerateFormattedDateString(profile.time);
 	end
 	_G[line:GetName().."Time"]:SetText(timeStr);
 
