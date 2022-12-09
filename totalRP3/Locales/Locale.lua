@@ -1455,7 +1455,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ]],
 
 	CO_DATE_FORMAT = "Date format",
-	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nSpecifiers:|n|n%1$s",
+	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
 	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
 	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
 	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
