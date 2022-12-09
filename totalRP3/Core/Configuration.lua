@@ -192,12 +192,14 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				box:SetScript("OnTextChanged", function(self)
 					local value = self:GetText();
+					self.Instructions:SetShown(value == "");
 					setValue(element.configKey, value);
 				end);
 				box:SetText(tostring(getValue(element.configKey)));
 			end
 			box:SetNumeric(element.numeric);
 			box:SetMaxLetters(element.maxLetters or 0);
+			box.Instructions:SetText(element.instructions or "");
 			local boxTitle = _G[widget:GetName().."BoxText"];
 			if boxTitle then
 				boxTitle:SetText(element.boxTitle);
