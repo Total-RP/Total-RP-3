@@ -1453,7 +1453,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with chat links that could lead to blocked actions.
 
 ]],
-
+	CO_DATE_FORMAT = "Date Format",
 };
 
 -- Use Ellyb to generate the Localization system

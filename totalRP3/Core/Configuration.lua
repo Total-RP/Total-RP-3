@@ -378,12 +378,16 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 		tinsert(localeTab, { locale:GetName(), locale:GetCode() });
 	end
 
+	--date format options
+	local date_option_enum = AddOn_TotalRP3.Enums.DATE_OPTIONS;
+
 	registerConfigKey("heavy_profile_alert", true);
 	registerConfigKey("new_version_alert", true);
 	registerConfigKey("ui_sounds", true);
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("increase_color_contrast", false);
+	registerConfigKey("date_format", date_option_enum.D_M_Y);
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -439,6 +443,25 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 					end);
 				end,
 			},
+			{
+				inherit = "TRP3_ConfigDropDown",
+				title = loc.CO_DATE_FORMAT,
+				listContent = {
+					{ date_option_enum.D_M_Y, "%d/%m/%y %H:%M" },
+					{ date_option_enum.M_D_Y, "%m/%d/%y %H:%M" },
+					{ date_option_enum.Y_M_D, "%y/%m/%d %H:%M" }
+				},
+				listCallback = function(newDateFormat)
+					local ancientDateFormatValue = getValue("date_format")
+					if newDateFormat == ancientDateFormatValue then
+						-- Date isn't changing.
+						return;
+					end
+
+					setValue("date_format", newDateFormat);
+				end,
+				listDefault = date_option_enum.D_M_Y,
+			}
 		}
 	}
 end);
