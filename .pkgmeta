@@ -32,10 +32,10 @@ externals:
   totalRP3/Libs/LibMSP: https://github.com/wow-rp-addons/LibMSP
   totalRP3/Libs/LibRPMedia: https://github.com/wow-rp-addons/LibRPMedia
   totalRP3/Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
+  totalRP3/Libs/UTF8: https://repos.curseforge.com/wow/utf8/trunk
 
 embedded-libraries:
   - msa-dropdownmenu-10
-  - utf8
 
 manual-changelog:
   filename: CHANGELOG.md
