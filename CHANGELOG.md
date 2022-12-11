@@ -1,3 +1,17 @@
+# Changelog version 2.4.3
+
+## Added
+
+- Added a setting to customize date formats displayed in the directory. (Thanks to Kisis for the initial work on it)
+  - The default format now respects regional formats based on current game client.
+  - Total RP 3: Extended will be updated to support this at a later date.
+
+## Fixed
+
+- Fixed tooltipData error showing since 10.0.2.
+- Fixed map scan not working on WotLK Classic.
+- Fixed potential taint issues leading to blocked actions.
+
 # Changelog version 2.4.2
 
 ## Fixed

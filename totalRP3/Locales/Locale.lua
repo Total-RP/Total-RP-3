@@ -1436,12 +1436,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with colorblind mode preventing companion tooltips from displaying.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
 	WHATS_NEW_25_3 = [[# Changelog version 2.4.2
 
 ## Fixed
@@ -1453,6 +1447,11 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with chat links that could lead to blocked actions.
 
 ]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
 
 	CO_DATE_FORMAT = "Date format",
 	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
@@ -1470,6 +1469,22 @@ If you wish to report %s's profile and you cannot target them you will need to o
 	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
 	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
 	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
+	WHATS_NEW_25_4 = [[# Changelog version 2.4.3
+
+## Added
+
+- Added a setting to customize date formats displayed in the directory. (Thanks to Kisis for the initial work on it)
+  - The default format now respects regional formats based on current game client.
+  - Total RP 3: Extended will be updated to support this at a later date.
+
+## Fixed
+
+- Fixed tooltipData error showing since 10.0.2.
+- Fixed map scan not working on WotLK Classic.
+- Fixed potential taint issues leading to blocked actions.
+
+]],
+
 };
 
 -- Use Ellyb to generate the Localization system
