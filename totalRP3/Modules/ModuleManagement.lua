@@ -11,15 +11,20 @@ local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
+--local moduleFrames = {};
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
-local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame, TRP3_API.ui.tooltip.setTooltipAll;
+local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame,
+	TRP3_API.ui.tooltip.setTooltipAll;
 local registerMenu = TRP3_API.navigation.menu.registerMenu;
 local registerPage, setPage = TRP3_API.navigation.page.registerPage, TRP3_API.navigation.page.setPage;
 local CreateFrame = CreateFrame;
 local callModuleFunction;
+local moduleHotReload;
 local initModule;
 local startModule;
+local disableModule;
 local onModuleStarted;
+local moduleStatusText;
 
 TRP3_API.module.status = {
 	MISSING_DEPENDENCY = 0,
@@ -50,9 +55,9 @@ end
 TRP3_API.module.registerModule = function(moduleStructure)
 
 	assert(moduleStructure, "Module structure can't be nil");
-	assert(moduleStructure.id, "Illegal module structure. Module id: "..moduleStructure.id);
-	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: "..moduleStructure.id);
-	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: "..moduleStructure.id);
+	assert(moduleStructure.id, "Illegal module structure. Module id: " .. moduleStructure.id);
+	assert(not MODULE_REGISTRATION[moduleStructure.id], "This module is already register: " .. moduleStructure.id);
+	assert(not hasBeenInit, "Module structure must be registered before Total RP 3 initialization: " .. moduleStructure.id);
 
 	if not moduleStructure.name or not type(moduleStructure.name) == "string" or moduleStructure.name:len() == 0 then
 		moduleStructure.name = moduleStructure.id;
@@ -98,18 +103,17 @@ local function getModules()
 	return MODULE_REGISTRATION;
 end
 
-
 --- Return the requested module structure
 local function getModule(moduleID)
 	assert(MODULE_REGISTRATION[moduleID], "Unknown module: " .. moduleID);
 	return MODULE_REGISTRATION[moduleID];
 end
 
-
 --- Check a module dependency
 -- Return true if dependency is OK.
 local function checkModuleDependency(_, dependency_id, dependency_version)
-	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and MODULE_ACTIVATION[dependency_id] ~= false;
+	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
+		MODULE_ACTIVATION[dependency_id] ~= false;
 end
 
 --- Check off dependencies for a module
@@ -147,7 +151,8 @@ local function handleModuleError(module, err)
 		return;
 	end
 
-	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id), tostring(err)), 1, 1, 1);
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff0000[TotalRP3] Error while loading module \"%s\": |r%s"):format(tostring(module.id)
+		, tostring(err)), 1, 1, 1);
 end
 
 --- Invokes a given module function with any additional given parameters,
@@ -242,7 +247,9 @@ end
 function startModule(module)
 	-- Disregard failed modules and yield their current error information.
 	if module.status ~= MODULE_STATUS.OK then
-		return false, module.error;
+		if module.status ~= MODULE_STATUS.DISABLED then
+			return false, module.error
+		end
 	end
 
 	-- No need to do anything if the lifecycle function isn't present.
@@ -260,6 +267,32 @@ function startModule(module)
 	return ok, err;
 end
 
+--- Disables the given module.
+--
+--  This will invoke the onStart function on the module if present and, if it
+--  fails, will capture error information and update the module status
+--  appropriately.
+--
+--  This function does nothing if the module status already indicates a
+--  failure has occurred.
+--
+--  @param module The module to start.
+function disableModule(module)
+	-- No need to do anything if the lifecycle function isn't present.
+	if module.onDisable == nil then
+		return true;
+	end
+
+	-- Call the lifecycle function and update the module status on failure.
+	local ok, err = callModuleFunction(module, "onDisable");
+	if not ok then
+		module.error = err;
+		module.status = MODULE_STATUS.ERROR_ON_LOAD;
+	end
+
+	return ok, err;
+end
+
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- MODULES STATUS
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -268,19 +301,19 @@ local function moduleInit()
 	TRP3_ConfigurationModuleTitle:SetText(loc.CO_MODULES);
 end
 
-local function moduleStatusText(statusCode)
+function moduleStatusText(statusCode)
 	if statusCode == MODULE_STATUS.OK then
-		return "|cff00ff00"..loc.CO_MODULES_STATUS_1;
+		return "|cff00ff00" .. loc.CO_MODULES_STATUS_1;
 	elseif statusCode == MODULE_STATUS.DISABLED then
-		return "|cff999999"..loc.CO_MODULES_STATUS_2;
+		return "|cff999999" .. loc.CO_MODULES_STATUS_2;
 	elseif statusCode == MODULE_STATUS.OUT_TO_DATE_TRP3 then
-		return "|cffff0000"..loc.CO_MODULES_STATUS_3;
+		return "|cffff0000" .. loc.CO_MODULES_STATUS_3;
 	elseif statusCode == MODULE_STATUS.ERROR_ON_INIT then
-		return "|cffff0000"..loc.CO_MODULES_STATUS_4;
+		return "|cffff0000" .. loc.CO_MODULES_STATUS_4;
 	elseif statusCode == MODULE_STATUS.ERROR_ON_LOAD then
-		return "|cffff0000"..loc.CO_MODULES_STATUS_5;
+		return "|cffff0000" .. loc.CO_MODULES_STATUS_5;
 	elseif statusCode == MODULE_STATUS.MISSING_DEPENDENCY then
-		return "|cffff0000"..loc.CO_MODULES_STATUS_0;
+		return "|cffff0000" .. loc.CO_MODULES_STATUS_0;
 	end
 	error("Unknown status code");
 end
@@ -294,7 +327,7 @@ local function getModuleHint_TRP(module)
 end
 
 local function getModuleHint_Deps(module)
-	local deps = loc.CO_MODULES_TT_DEPS..": ";
+	local deps = loc.CO_MODULES_TT_DEPS .. ": ";
 	if module.requiredDeps == nil then
 		deps = loc.CO_MODULES_TT_NONE;
 	else
@@ -303,7 +336,7 @@ local function getModuleHint_Deps(module)
 			if not checkModuleDependency(module.id, depTab[1], depTab[2]) then
 				deps_version_color = "|cffff0000";
 			end
-			deps = deps..(loc.CO_MODULES_TT_DEP:format(deps_version_color, depTab[1], depTab[2]));
+			deps = deps .. (loc.CO_MODULES_TT_DEP:format(deps_version_color, depTab[1], depTab[2]));
 		end
 	end
 	return deps;
@@ -329,10 +362,22 @@ local function onActionSelected(value, button)
 	local module = button:GetParent().module;
 	if value == 1 then
 		MODULE_ACTIVATION[module.id] = false;
-		ReloadUI();
+
+		if module.hotReload then
+			disableModule(module)
+			moduleHotReload(button:GetParent())
+		else
+			ReloadUI()
+		end
+
 	elseif value == 2 then
 		MODULE_ACTIVATION[module.id] = true;
-		ReloadUI();
+		if module.hotReload then
+			startModule(module)
+			moduleHotReload(button:GetParent())
+		else
+			ReloadUI()
+		end
 	end
 end
 
@@ -340,16 +385,16 @@ local function onActionClicked(button)
 	local module = button:GetParent().module;
 	local values = {};
 	if MODULE_ACTIVATION[module.id] ~= false then
-		tinsert(values, {loc.CO_MODULES_DISABLE, 1});
+		tinsert(values, { loc.CO_MODULES_DISABLE, 1 });
 	else
-		tinsert(values, {loc.CO_MODULES_ENABLE, 2});
+		tinsert(values, { loc.CO_MODULES_ENABLE, 2 });
 	end
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
 
 function onModuleStarted()
 	local modules = getModules();
-	local i=0;
+	local i = 0;
 	local sortedID = {};
 
 	-- Sort module id
@@ -361,7 +406,8 @@ function onModuleStarted()
 	local previous;
 	for _, moduleID in pairs(sortedID) do
 		local module = modules[moduleID];
-		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_"..i, TRP3_ConfigurationModuleContainer, "TRP3_ConfigurationModuleFrame");
+		local frame = CreateFrame("Frame", "TRP3_ConfigurationModule_" .. i, TRP3_ConfigurationModuleContainer,
+			"TRP3_ConfigurationModuleFrame");
 		frame.module = module;
 		frame:SetPoint("LEFT", 0, 0);
 		frame:SetPoint("RIGHT", 0, 0);
@@ -371,21 +417,61 @@ function onModuleStarted()
 			frame:SetPoint("TOP", 0, 0);
 		end
 		previous = frame;
-		_G[frame:GetName().."ModuleName"]:SetText(module.name);
-		_G[frame:GetName().."ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
-		_G[frame:GetName().."ModuleID"]:SetText(loc.CO_MODULES_ID:format(moduleID));
-		_G[frame:GetName().."Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
-		setTooltipForSameFrame(_G[frame:GetName().."Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+		_G[frame:GetName() .. "ModuleName"]:SetText(module.name);
+		_G[frame:GetName() .. "ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
+		_G[frame:GetName() .. "ModuleID"]:SetText(loc.CO_MODULES_ID:format(moduleID));
+		_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
+		setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
 		if module.status == MODULE_STATUS.OK then
 			frame:SetBackdropBorderColor(0, 1, 0);
 		else
 			frame:SetBackdropBorderColor(1, 1, 1);
 		end
-		local actionButton = _G[frame:GetName().."Action"];
+		local actionButton = _G[frame:GetName() .. "Action"];
 		setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
 		actionButton:SetScript("OnClick", onActionClicked);
 		i = i + 1;
 	end
+end
+
+function moduleHotReload(frame)
+	print("moduleHotReload")
+	local module = frame.module
+
+	module.status = MODULE_STATUS.OK
+	if MODULE_ACTIVATION[module.id] == nil then
+		MODULE_ACTIVATION[module.id] = true
+		if module.autoEnable ~= nil then
+			MODULE_ACTIVATION[module.id] = module.autoEnable
+		end
+	end
+	if MODULE_ACTIVATION[module.id] == false then
+		module.status = MODULE_STATUS.DISABLED
+	else
+		-- Check TRP requirement
+		if not checkModuleTRPVersion(module.id) then
+			module.status = MODULE_STATUS.OUT_TO_DATE_TRP3
+			-- Check dependencies
+		elseif module.requiredDeps then
+			if not checkModuleDependencies(module.id) then
+				module.status = MODULE_STATUS.MISSING_DEPENDENCY
+			end
+		end
+	end
+
+	_G[frame:GetName() .. "ModuleName"]:SetText(module.name);
+	_G[frame:GetName() .. "ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
+	_G[frame:GetName() .. "ModuleID"]:SetText(loc.CO_MODULES_ID:format(module.id));
+	_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
+	setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+	if module.status == MODULE_STATUS.OK then
+		frame:SetBackdropBorderColor(0, 1, 0);
+	else
+		frame:SetBackdropBorderColor(1, 1, 1);
+	end
+	local actionButton = _G[frame:GetName() .. "Action"];
+	setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
+	actionButton:SetScript("OnClick", onActionClicked);
 end
 
 --- This is fired on TRP3 init.
@@ -416,7 +502,7 @@ TRP3_API.module.init = function()
 			-- Check TRP requirement
 			if not checkModuleTRPVersion(moduleID) then
 				module.status = MODULE_STATUS.OUT_TO_DATE_TRP3;
-			-- Check dependencies
+				-- Check dependencies
 			elseif module.requiredDeps then
 				if not checkModuleDependencies(moduleID) then
 					module.status = MODULE_STATUS.MISSING_DEPENDENCY;
