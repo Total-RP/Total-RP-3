@@ -315,12 +315,6 @@ local function isChannelListReady()
 	return not hasGaps;
 end
 
-if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
-	Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-	Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
-	Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
-end
-
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 -- Init and helloWorld
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -342,6 +336,12 @@ Comm.broadcast.init = function()
 
 	-- Then, launch the loop
 	TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
+		if TRP3_ClientFeatures.BroadcastMethod == TRP3_BroadcastMethod.Channel then
+			Ellyb.GameEvents.registerCallback("CHANNEL_UI_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+			Ellyb.GameEvents.registerCallback("CHANNEL_COUNT_UPDATE", moveBroadcastChannelToTheBottomOfTheList);
+			Ellyb.GameEvents.registerCallback("CHAT_MSG_CHANNEL_JOIN", moveBroadcastChannelToTheBottomOfTheList);
+		end
+
 		if config_UseBroadcast() then
 			-- We'll send out the event nice and early to say we're setting up.
 			TRP3_API.events.fireEvent(TRP3_API.events.BROADCAST_CHANNEL_CONNECTING);

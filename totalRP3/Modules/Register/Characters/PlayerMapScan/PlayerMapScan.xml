@@ -4,8 +4,23 @@
 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
-	<Include file="PlayerMapPin.lua" />
-	<Include file="PlayerMapScanner.lua" />
-	<Frame name="TRP3_PlayerMapPinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_PlayerMapPinMixin" virtual="true" />
-	<Frame name="TRP3_PlayerHousePinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_PlayerHousePinMixin" virtual="true" />
+	<Include file="PlayerMapPin.lua"/>
+	<Include file="PlayerMapScanner.lua"/>
+
+	<Frame name="TRP3_PlayerMapPinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" enableMouse="true" mixin="TRP3_PlayerMapPinMixin" virtual="true">
+		<Scripts>
+			<OnMouseDown method="OnMouseDown"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_PlayerMapPinDropDown" inherits="TRP3_DropDownMenuTemplate" mixin="TRP3_PlayerMapPinDropDownMixin">
+		<KeyValues>
+			<KeyValue key="displayMode" value="MENU" type="string"/>
+		</KeyValues>
+		<Scripts>
+			<OnLoad method="OnLoad"/>
+		</Scripts>
+	</Frame>
+
+	<Frame name="TRP3_PlayerHousePinTemplate" inherits="BaseHighlightableMapPoiPinTemplate" mixin="TRP3_PlayerHousePinMixin" virtual="true"/>
 </Ui>

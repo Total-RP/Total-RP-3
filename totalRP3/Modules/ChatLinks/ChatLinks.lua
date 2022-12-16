@@ -41,7 +41,7 @@ local ChatLinkModule = TRP3_API.ChatLinkModule;
 local loc = TRP3_API.loc;
 --endregion
 
-local LINK_CODE = "totalrp3";
+local LINK_CODE = "garrmission:totalrp3";
 local LINK_LENGTHS = LINK_CODE:len();
 
 local LINK_COLOR = ColorManager.YELLOW;
@@ -108,13 +108,13 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		"CHAT_MSG_CHANNEL"
 	};
 
-	local FORMATTED_LINK_FORMAT = "|Htotalrp3:%s:%s|h%s|h";
+	local FORMATTED_LINK_FORMAT = "|H%s:%s:%s|h%s|h";
 	local function generateFormattedLink(text, playerName)
 		Ellyb.Assertions.isType(text, "string", "text");
 		Ellyb.Assertions.isType(playerName, "string", "playerName");
 
 		local formattedName = strconcat("[", text, "]");
-		return LINK_COLOR:WrapTextInColorCode(format(FORMATTED_LINK_FORMAT, playerName, text, formattedName));
+		return LINK_COLOR:WrapTextInColorCode(format(FORMATTED_LINK_FORMAT, LINK_CODE, playerName, text, formattedName));
 	end
 
 	-- MessageEventFilter to look for Total RP 3 chat links and format the message accordingly
@@ -207,8 +207,8 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 		showTooltip(self.itemData, self.sender);
 	end
 
-	-- |Htotalrp3:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
-	hooksecurefunc("ChatFrame_OnHyperlinkShow", function(_, link)
+	-- |H<LINK_CODE>:CharacterName-RealName:Non formatted item name|h|cffaabbcc[My item name]|r|h
+	hooksecurefunc("SetItemRef", function(link)
 		local linkType = link:sub(1, LINK_LENGTHS);
 		if linkType == LINK_CODE then
 			if IsShiftKeyDown() then
@@ -236,15 +236,6 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOADED, function()
 			end
 		end
 	end)
-
-	-- Sadly we need this so that Blizzard's code doesn't raise an error because we clicked on a link it doesn't understand
-	local OriginalSetHyperlink = ItemRefTooltip.SetHyperlink
-	function ItemRefTooltip:SetHyperlink(link, ...)
-		if (link and link:sub(0, 8) == "totalrp3") then
-			return;
-		end
-		return OriginalSetHyperlink(self, link, ...);
-	end
 
 	-- Register command prefix when requested for tooltip data for an item
 	AddOn_TotalRP3.Communications.registerSubSystemPrefix(CHAT_LINKS_PROTOCOL_REQUEST_PREFIX, function(identifier, sender)
