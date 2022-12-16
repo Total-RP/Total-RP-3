@@ -11,7 +11,6 @@ local importString = "1QXAZPTo2)l8LlmtIhGWR0D7Udl5r5EtHmyy7DN2AqylN4PowESStl3Tl)
 local Plater
 
 local TRP3_PlaterNamePlates = {}
-local PlaterMod
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
     if GetAddOnEnableState(nil, "Plater") ~= 2 then
@@ -39,7 +38,10 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
     if success ~= true then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
     if not scriptAdded then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
 
-    scriptAdded.Enabled = true
+    if not wasEnabled then
+        scriptAdded.Enabled = true
+    end
+
     Plater.RecompileScript(scriptAdded)
 
     TRP3_NAMEPLATES_ADDON = "Plater"
@@ -71,7 +73,5 @@ TRP3_API.module.registerModule({
     onStart = function() return TRP3_PlaterNamePlates:OnModuleEnable(); end,
     onDisable = function() return TRP3_PlaterNamePlates:OnModuleDisable(); end,
 });
-
-TRP3_PlaterNamePlates.PlaterMod = PlaterMod
 
 _G.TRP3_PlaterNamePlates = TRP3_PlaterNamePlates
