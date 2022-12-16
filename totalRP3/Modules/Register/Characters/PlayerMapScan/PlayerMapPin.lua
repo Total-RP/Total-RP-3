@@ -78,7 +78,9 @@ end
 function TRP3_PlayerMapPinMixin:Decorate(displayData)
 	self.Texture:SetSize(16, 16);
 	self:SetSize(16, 16);
-	self:SetPassThroughButtons("");
+	if self.SetPassThroughButtons then
+		self:SetPassThroughButtons("");
+	end
 
 	self.sender = displayData.sender;
 	self.playerName = displayData.playerName;

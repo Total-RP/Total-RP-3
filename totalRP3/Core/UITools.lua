@@ -564,6 +564,10 @@ local function getCompanionOwner(unitType, targetType)
 		local ownerName;
 		local ownerRealm;
 
+		if not tooltipData then
+			return;
+		end
+
 		for _, line in ipairs(tooltipData.lines) do
 			TooltipUtil.SurfaceArgs(line);
 

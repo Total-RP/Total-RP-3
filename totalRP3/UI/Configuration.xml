@@ -91,6 +91,13 @@ https://raw.githubusercontent.com/Meorawr/wow-ui-schema/main/UI.xsd">
 				<Anchors>
 					<Anchor point="RIGHT" x="-10" y="0"/>
 				</Anchors>
+				<Layers>
+					<Layer level="BORDER">
+						<FontString parentKey="Instructions" justifyH="LEFT" justifyV="MIDDLE" inherits="GameFontDisableSmall" setAllPoints="true">
+							<Color r="0.35" g="0.35" b="0.35"/>
+						</FontString>
+					</Layer>
+				</Layers>
 			</EditBox>
 		</Frames>
 	</Frame>

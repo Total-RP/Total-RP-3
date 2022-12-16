@@ -1020,7 +1020,7 @@ local currentLocale = DEFAULT_LOCALE;
 
 function TRP3_API.utils.resources.getMatureFilterDictionary()
 
-	currentLocale = TRP3_API.configuration.getValue("AddonLocale");
+	currentLocale = TRP3_API.utils.GetPreferredLocale();
 	if not dictionary[currentLocale] then
 		currentLocale = DEFAULT_LOCALE;
 	end

@@ -230,7 +230,6 @@ local MODE_CHARACTER, MODE_PETS, MODE_IGNORE = 1, 2, 3;
 local selectedIDs = {};
 local ICON_SIZE = 30;
 local currentMode = 1;
-local DATE_FORMAT = "%d/%m/%y %H:%M";
 local IGNORED_ICON = Utils.str.texture("Interface\\Buttons\\UI-GroupLoot-Pass-Down", 15);
 local GLANCE_ICON = Utils.str.texture("Interface\\MINIMAP\\TRACKING\\None", 15);
 local NEW_ABOUT_ICON = Utils.str.texture("Interface\\Buttons\\UI-GuildButton-PublicNote-Up", 15);
@@ -279,7 +278,7 @@ local function decorateCharacterLine(line, characterIndex)
 	end
 
 	if profile.time and profile.zone then
-		local formatDate = date(DATE_FORMAT, profile.time);
+		local formatDate = Utils.GenerateFormattedDateString(profile.time);
 		leftTooltipText = leftTooltipText .. "\n|r" .. loc.REG_LIST_CHAR_TT_DATE:format(formatDate, profile.zone);
 	end
 	-- Middle column : relation
@@ -295,7 +294,7 @@ local function decorateCharacterLine(line, characterIndex)
 
 	local timeStr = "";
 	if profile.time then
-		timeStr = date(DATE_FORMAT, profile.time);
+		timeStr = Utils.GenerateFormattedDateString(profile.time);
 	end
 	_G[line:GetName().."Time"]:SetText(timeStr);
 

@@ -192,12 +192,14 @@ local function buildConfigurationPage(structure)
 			if element.configKey then
 				box:SetScript("OnTextChanged", function(self)
 					local value = self:GetText();
+					self.Instructions:SetShown(value == "");
 					setValue(element.configKey, value);
 				end);
 				box:SetText(tostring(getValue(element.configKey)));
 			end
 			box:SetNumeric(element.numeric);
 			box:SetMaxLetters(element.maxLetters or 0);
+			box.Instructions:SetText(element.instructions or "");
 			local boxTitle = _G[widget:GetName().."BoxText"];
 			if boxTitle then
 				boxTitle:SetText(element.boxTitle);
@@ -384,6 +386,7 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 	registerConfigKey("ui_animations", true);
 	registerConfigKey("default_color_picker", false);
 	registerConfigKey("increase_color_contrast", false);
+	registerConfigKey("date_format", "");
 
 	-- Build widgets
 	TRP3_API.configuration.CONFIG_STRUCTURE_GENERAL = {
@@ -439,6 +442,36 @@ TRP3_API.events.listenToEvent(TRP3_API.events.WORKFLOW_ON_LOAD, function()
 					end);
 				end,
 			},
+			{
+				inherit = "TRP3_ConfigEditBox",
+				title = loc.CO_DATE_FORMAT,
+				configKey = "date_format",
+				help = (function()
+					-- Unix timestamp for Mon Jan 2 15:04:05 UTC 2006.
+					local timestamp = 1136214245;
+
+					local specifiers =
+					{
+						string.format(loc.CO_DATE_FORMAT_SPEC_a, TRP3_API.Ellyb.ColorManager.CYAN("%a"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%a", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_A, TRP3_API.Ellyb.ColorManager.CYAN("%A"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%A", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_b, TRP3_API.Ellyb.ColorManager.CYAN("%b"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%b", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_B, TRP3_API.Ellyb.ColorManager.CYAN("%B"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%B", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_d, TRP3_API.Ellyb.ColorManager.CYAN("%d"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%d", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_H, TRP3_API.Ellyb.ColorManager.CYAN("%H"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%H", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_I, TRP3_API.Ellyb.ColorManager.CYAN("%I"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%I", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_m, TRP3_API.Ellyb.ColorManager.CYAN("%m"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%m", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_M, TRP3_API.Ellyb.ColorManager.CYAN("%M"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%M", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_p, TRP3_API.Ellyb.ColorManager.CYAN("%p"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%p", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_S, TRP3_API.Ellyb.ColorManager.CYAN("%S"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%S", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_y, TRP3_API.Ellyb.ColorManager.CYAN("%y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_Y, TRP3_API.Ellyb.ColorManager.CYAN("%Y"), TRP3_API.Ellyb.ColorManager.GREEN(date("!%Y", timestamp))),
+						string.format(loc.CO_DATE_FORMAT_SPEC_ESC, TRP3_API.Ellyb.ColorManager.CYAN("%%")),
+					};
+
+					return string.format(loc.CO_DATE_FORMAT_HELP, table.concat(specifiers, "|n"))
+				end)(),
+				instructions = Utils.GetDefaultDateFormat(),
+			}
 		}
 	}
 end);
