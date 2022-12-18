@@ -13,48 +13,47 @@ local Plater
 local TRP3_PlaterNamePlates = {}
 
 function TRP3_PlaterNamePlates:OnModuleInitialize()
-    if GetAddOnEnableState(nil, "Plater") ~= 2 then
-        return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-    elseif TRP3_NAMEPLATES_ADDON ~= nil then
-        return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL;
-    end
+	if GetAddOnEnableState(nil, "Plater") ~= 2 then
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY
+	elseif TRP3_NAMEPLATES_ADDON ~= nil then
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_EXTERNAL
+	end
 
-    if self.PlaterMod then
-        Plater.RecompileScript(self.PlaterMod)
-    end
-
+	if self.PlaterMod then
+		Plater.RecompileScript(self.PlaterMod)
+	end
 end
 
 function TRP3_PlaterNamePlates:OnModuleEnable()
-    if not IsAddOnLoaded("Plater") then
-        return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY;
-    end
+	if not IsAddOnLoaded("Plater") then
+		return false, L.NAMEPLATES_MODULE_DISABLED_BY_DEPENDENCY
+	end
 
-    Plater = _G.Plater
+	Plater = _G.Plater
 
-    -- Setting the global TRP3_NAMEPLATES_ADDON is done via the mod and should not be set here.
-    local success, scriptAdded, wasEnabled = Plater.ImportScriptString(importString, true)
+	-- Setting the global TRP3_NAMEPLATES_ADDON is done via the mod and should not be set here.
+	local success, scriptAdded, wasEnabled = Plater.ImportScriptString(importString, true)
 
-    if success ~= true then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
-    if not scriptAdded then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
+	if success ~= true then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
+	if not scriptAdded then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
 
-    if not wasEnabled then
-        scriptAdded.Enabled = true
-    end
+	if not wasEnabled then
+		scriptAdded.Enabled = true
+	end
 
-    Plater.RecompileScript(scriptAdded)
+	Plater.RecompileScript(scriptAdded)
 
-    TRP3_NAMEPLATES_ADDON = "Plater"
+	TRP3_NAMEPLATES_ADDON = "Plater"
 
-    self.PlaterMod = scriptAdded
+	self.PlaterMod = scriptAdded
 end
 
 function TRP3_PlaterNamePlates:OnModuleDisable()
-    self.PlaterMod.Enabled = false
+	self.PlaterMod.Enabled = false
 
-    if not TRP3_PlaterNamePlates.PlaterMod.Enabled then
-        TRP3_NAMEPLATES_ADDON = nil
-    end
+	if not TRP3_PlaterNamePlates.PlaterMod.Enabled then
+		TRP3_NAMEPLATES_ADDON = nil
+	end
 end
 
 --
@@ -62,16 +61,16 @@ end
 --
 
 TRP3_API.module.registerModule({
-    id = "trp3_plater_nameplates",
-    name = L.PLATER_NAMEPLATES_MODULE_NAME,
-    description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,
-    version = 1,
-    minVersion = 92,
-    requiredDeps = { { "trp3_nameplates", 1 } },
-    hotReload = true,
-    onInit = function() return TRP3_PlaterNamePlates:OnModuleInitialize(); end,
-    onStart = function() return TRP3_PlaterNamePlates:OnModuleEnable(); end,
-    onDisable = function() return TRP3_PlaterNamePlates:OnModuleDisable(); end,
+	id = "trp3_plater_nameplates",
+	name = L.PLATER_NAMEPLATES_MODULE_NAME,
+	description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,
+	version = 1,
+	minVersion = 92,
+	requiredDeps = { { "trp3_nameplates", 1 } },
+	hotReload = true,
+	onInit = function() return TRP3_PlaterNamePlates:OnModuleInitialize(); end,
+	onStart = function() return TRP3_PlaterNamePlates:OnModuleEnable(); end,
+	onDisable = function() return TRP3_PlaterNamePlates:OnModuleDisable(); end,
 });
 
 _G.TRP3_PlaterNamePlates = TRP3_PlaterNamePlates
