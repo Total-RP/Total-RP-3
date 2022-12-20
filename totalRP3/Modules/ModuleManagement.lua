@@ -290,8 +290,6 @@ function disableModule(module)
 		module.status = MODULE_STATUS.ERROR_ON_LOAD;
 	end
 
-	moduleHotReload(button:GetParent())
-
 	return ok, err;
 end
 

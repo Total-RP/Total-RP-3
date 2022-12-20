@@ -32,9 +32,23 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	Plater = _G.Plater
 
 	-- Setting the global TRP3_NAMEPLATES_ADDON is done via the mod and should not be set here.
-	local success, scriptAdded, wasEnabled = Plater.ImportScriptString(importString, true)
+	local success, scriptAdded, wasEnabled = Plater.ImportScriptString(importString, false)
 
-	if success ~= true then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
+	if not success and not scriptAdded then
+		local scriptType = "hook"
+
+		local scriptDB = Plater.GetScriptDB(scriptType)
+		local newScriptTable = Plater.DecompressData(importString, "print")
+		local newScript = Plater.BuildScriptObjectFromIndexTable(newScriptTable, scriptType)
+
+		for i = 1, #scriptDB do
+			local scriptObject = scriptDB[i]
+			if scriptObject.Name == newScript.Name then
+				scriptAdded = scriptObject
+			end
+		end
+	end
+
 	if not scriptAdded then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
 
 	if not wasEnabled then
