@@ -269,14 +269,14 @@ end
 
 --- Disables the given module.
 --
---  This will invoke the onStart function on the module if present and, if it
+--  This will invoke the onDisable function on the module if present and, if it
 --  fails, will capture error information and update the module status
 --  appropriately.
 --
 --  This function does nothing if the module status already indicates a
 --  failure has occurred.
 --
---  @param module The module to start.
+--  @param module The module to disable.
 function disableModule(module)
 	-- No need to do anything if the lifecycle function isn't present.
 	if module.onDisable == nil then
@@ -289,6 +289,8 @@ function disableModule(module)
 		module.error = err;
 		module.status = MODULE_STATUS.ERROR_ON_LOAD;
 	end
+
+	moduleHotReload(button:GetParent())
 
 	return ok, err;
 end
