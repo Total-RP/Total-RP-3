@@ -435,7 +435,6 @@ function onModuleStarted()
 end
 
 function moduleHotReload(frame)
-	print("moduleHotReload")
 	local module = frame.module
 
 	module.status = MODULE_STATUS.OK

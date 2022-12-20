@@ -32,7 +32,7 @@ globals = {
 
 	-- AddOn Overrides
 	WIM = {
-		fields={
+		fields = {
 			constants = {
 				fields = {
 					classes = {
@@ -61,6 +61,7 @@ read_globals = {
 	"TipTac",
 	"WoWUnit",
 	"xrpSaved",
+	"Plater",
 
 	-- Common protocol globals
 	"GAME_LOCALE",
