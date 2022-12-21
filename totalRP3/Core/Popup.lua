@@ -351,7 +351,7 @@ local function filteredMusicBrowser()
 	end
 	filteredMusicList = getMusicList(filter); -- Music tab is unfiltered
 
-	TRP3_MusicBrowserTotal:SetText( (#filteredMusicList) .. " / " .. getMusicListSize() );
+	TRP3_MusicBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredMusicList, getMusicListSize()));
 	initList(
 		{
 			widgetTab = musicWidgetTab,
@@ -424,7 +424,7 @@ local function filteredIconBrowser()
 		filteredIconList = nil;
 	end
 	filteredIconList = getIconList(filter);
-	TRP3_IconBrowserTotal:SetText( (#filteredIconList) .. " / " .. getIconListSize() );
+	TRP3_IconBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredIconList, getIconListSize()));
 	initList(
 		{
 			widgetTab = iconWidgetTab,
@@ -695,7 +695,7 @@ end
 local function filteredCompanionBrowser()
 	local filter = TRP3_CompanionBrowserFilterBox:GetText();
 	local totalCompanionCount = getWoWCompanionFilteredList(filter);
-	TRP3_CompanionBrowserTotal:SetText( (#filteredCompanionList) .. " / " .. totalCompanionCount );
+	TRP3_CompanionBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, #filteredCompanionList, totalCompanionCount));
 	initList(
 		{
 			widgetTab = companionWidgetTab,
@@ -1106,7 +1106,7 @@ local function filteredImageBrowser()
 	local filter = TRP3_ImageBrowserFilterBox:GetText();
 	filteredImageList = getImageList(filter);
 	local size = #filteredImageList;
-	TRP3_ImageBrowserTotal:SetText( size .. " / " .. getImageListSize() );
+	TRP3_ImageBrowserTotal:SetText(string.format(GENERIC_FRACTION_STRING, size, getImageListSize()));
 	if size > 0 then
 		TRP3_ImageBrowserSelect:Enable();
 	else

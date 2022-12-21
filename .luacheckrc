@@ -542,6 +542,7 @@ stds.wow = {
 		"FOCUS",
 		"FUEL",
 		"FURY",
+		"GENERIC_FRACTION_STRING",
 		"HEALTH",
 		"HOLY_POWER",
 		"INSANITY",
