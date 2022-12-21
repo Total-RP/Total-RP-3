@@ -121,7 +121,7 @@ It can lead to instabilities and bugs inside the add-on, data corruption/loss of
 
 The codes you have inserted in your profile have been removed to prevent you from breaking the add-on.]],
 	REG_PLAYER_IGNORE = "Ignore linked characters (%s)",
-	REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters ?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
+	REG_PLAYER_IGNORE_WARNING = "Do you want to ignore those characters?\n\n|cffff9900%s\n\n|rYou can optionally enter the reason below. This is a personal note that will serve as reminder.",
 	REG_PLAYER_SHOWMISC = "Show miscellaneous frame",
 	REG_PLAYER_SHOWMISC_TT = "Check if you want to show custom fields for your character.\n\nIf you don't want to show custom fields, keep this box unchecked and the miscellaneous frame will remain totally hidden.",
 	REG_PLAYER_MISC_ADD = "Add an additional field",
@@ -268,8 +268,8 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_CHAR_SEL = "Selected character",
 	REG_LIST_CHAR_TT = "Click to show page",
 	REG_LIST_CHAR_TT_RELATION = "Relation:\n|cff00ff00%s",
-	REG_LIST_CHAR_TT_CHAR = "Bound WoW character(s):",
-	REG_LIST_CHAR_TT_CHAR_NO = "Not bound to any character",
+	REG_LIST_CHAR_TT_CHAR = "Linked WoW character(s):",
+	REG_LIST_CHAR_TT_CHAR_NO = "Not linked to any character",
 	REG_LIST_CHAR_TT_DATE = "Last seen date: |cff00ff00%s|r\nLast seen location: |cff00ff00%s|r",
 	REG_LIST_CHAR_TT_GLANCE = "At first glance",
 	REG_LIST_CHAR_TT_NEW_ABOUT = "Unread description",
@@ -305,8 +305,8 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_ACTIONS_PURGE_ALL_C = "This purge will remove all profiles and linked characters from the directory.\n\n|cff00ff00%s characters.",
 	REG_LIST_ACTIONS_PURGE_TIME = "Profiles not seen for 1 month",
 	REG_LIST_ACTIONS_PURGE_TIME_C = "This purge will remove all profiles that have not been seen for a month.\n\n|cff00ff00%s",
-	REG_LIST_ACTIONS_PURGE_UNLINKED = "Profiles not bound to a character",
-	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles that are not bound to a WoW character.\n\n|cff00ff00%s",
+	REG_LIST_ACTIONS_PURGE_UNLINKED = "Profiles not linked to a character",
+	REG_LIST_ACTIONS_PURGE_UNLINKED_C = "This purge will remove all profiles that are not linked to a WoW character.\n\n|cff00ff00%s",
 	REG_LIST_ACTIONS_PURGE_IGNORE = "Profiles from ignored characters",
 	REG_LIST_ACTIONS_PURGE_IGNORE_C = "This purge will remove all profiles linked to an ignored WoW character.\n\n|cff00ff00%s",
 	REG_LIST_ACTIONS_PURGE_EMPTY = "No profile to purge.",
@@ -326,21 +326,21 @@ The second column shows the relation between these characters and your current c
 The last column is for various flags. (ignored, etc.)]],
 	REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
 
-The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any bound WoW characters.
+The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any linked WoW characters.
 
-The |cff00ff00guild filter|r will search on guild name from bound WoW characters.
+The |cff00ff00guild filter|r will search on guild name from linked WoW characters.
 
-The |cff00ff00realm only filter|r will show only profiles bound to a WoW character of your current realm.]],
+The |cff00ff00realm only filter|r will show only profiles linked to a WoW character of your current realm.]],
 	REG_LIST_NOTIF_ADD = "New profile discovered for |cff00ff00%s",
 	REG_LIST_NOTIF_ADD_CONFIG = "New profile discovered",
 	REG_LIST_NOTIF_ADD_NOT = "This profile doesn't exist anymore.",
 	REG_COMPANION_LINKED = "The companion %s is now linked to the profile %s.",
 	REG_COMPANION = "Companion",
 	REG_COMPANIONS = "Companions",
-	REG_COMPANION_BOUNDS = "Binds",
+	REG_COMPANION_BOUNDS = "Links",
 	REG_COMPANION_TARGET_NO = "Your target is not a valid pet, minion, ghoul, mage elemental or a renamed battle pet.",
-	REG_COMPANION_BOUND_TO = "Bound to ...",
-	REG_COMPANION_UNBOUND = "Unbound from ...",
+	REG_COMPANION_BOUND_TO = "Link to...",
+	REG_COMPANION_UNBOUND = "Unlink from...",
 	REG_COMPANION_LINKED_NO = "The companion %s is no longer linked to any profile.",
 	REG_COMPANION_BOUND_TO_TARGET = "Target",
 	REG_COMPANION_BROWSER_BATTLE = "Battle pet browser",
@@ -662,17 +662,17 @@ Possible status:
 	PR_PROFILE_CREATED = "Profile %s created.",
 	PR_CREATE_PROFILE = "Create profile",
 	PR_PROFILE_DELETED = "Profile %s deleted.",
-	PR_PROFILE_HELP = "A profile contains all information about a |cffffff00\"character\"|r as a |cff00ff00roleplay character|r.\n\nA real |cffffff00\"WoW character\"|r can be bound to only one profile at a time, but can switch from one to another whenever you want.\n\nYou can also bind several |cffffff00\"WoW characters\"|r to the same |cff00ff00profile|r !",
-	PR_PROFILE_DETAIL = "This profile is currently bound to these WoW characters",
+	PR_PROFILE_HELP = "A profile contains all information about a |cffffff00\"character\"|r as a |cff00ff00roleplay character|r.\n\nA real |cffffff00\"WoW character\"|r can be linked to only one profile at a time, but can switch from one to another whenever you want.\n\nYou can also link several |cffffff00\"WoW characters\"|r to the same |cff00ff00profile|r!",
+	PR_PROFILE_DETAIL = "This profile is currently linked to these WoW characters",
 	PR_DELETE_PROFILE = "Delete profile",
 	PR_DUPLICATE_PROFILE = "Duplicate profile",
-	PR_UNUSED_PROFILE = "This profile is currently not bound to any WoW character.",
+	PR_UNUSED_PROFILE = "This profile is currently not linked to any WoW character.",
 	PR_PROFILE_LOADED = "The profile %s is loaded.",
 	PR_PROFILEMANAGER_CREATE_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.",
-	PR_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change the character's binds to %s.",
+	PR_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change the character's links to %s.",
 	PR_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your characters.",
 	PR_PROFILEMANAGER_ALREADY_IN_USE = "The profile name %s is not available.",
-	PR_PROFILEMANAGER_COUNT = "%s WoW character(s) bound to this profile.",
+	PR_PROFILEMANAGER_COUNT = "%s WoW character(s) linked to this profile.",
 	PR_PROFILEMANAGER_ACTIONS = "Actions",
 	PR_PROFILEMANAGER_SWITCH = "Select profile",
 	PR_PROFILEMANAGER_RENAME = "Rename profile",
@@ -698,11 +698,11 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_CO_MASTERS = "Masters",
 	PR_CO_EMPTY = "No companion profile",
 	PR_CO_NEW_PROFILE = "New companion profile",
-	PR_CO_COUNT = "%s pets/mounts bound to this profile.",
-	PR_CO_UNUSED_PROFILE = "This profile is currently not bound to any pet or mount.",
-	PR_CO_PROFILE_DETAIL = "This profile is currently bound to",
-	PR_CO_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the companion profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile will be destroyed !",
-	PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts binds to %s.",
+	PR_CO_COUNT = "%s pets/mounts linked to this profile.",
+	PR_CO_UNUSED_PROFILE = "This profile is currently not linked to any pet or mount.",
+	PR_CO_PROFILE_DETAIL = "This profile is currently linked to",
+	PR_CO_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the companion profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile will be destroyed!",
+	PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts links to %s.",
 	PR_CO_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your pets/mounts.",
 	PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway?",
 	PR_CO_PET = "Pet",
@@ -792,7 +792,7 @@ This will works:|cff00ff00
 - On any item in your bags
 - On any icon in the spellbook|r]],
 	UI_COMPANION_BROWSER_HELP = "Select a battle pet",
-	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be bound to a profile.\n\n|cff00ff00This section lists these battle pets only.",
+	UI_COMPANION_BROWSER_HELP_TT = "|cffffff00Warning: |rOnly renamed battle pets can be linked to a profile.\n\n|cff00ff00This section lists these battle pets only.",
 	UI_ICON_SELECT = "Select icon",
 	UI_MUSIC_BROWSER = "Music browser",
 	UI_MUSIC_SELECT = "Select music",
@@ -1238,9 +1238,9 @@ If you wish to report %s's profile and you cannot target them you will need to o
 
 	REG_COMPANION_BIND_TO_PET = "Pet",
 	UI_PET_BROWSER_ACCEPT = "Assign",
-	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be assigned a profile.",
-	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to bind it to the profile.",
-	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently assigned to the profile |cff00ff00%1$s|r. Assigning a profile to this pet will replace the current profile.",
+	UI_PET_BROWSER_EMPTY_TEXT = "You have no pets that can be linked to a profile.",
+	UI_PET_BROWSER_INTRO_TEXT = "Select a pet with the buttons below and click |cffffff00Assign|r to link it to the profile.",
+	UI_PET_BROWSER_BOUND_WARNING = "|cffff0000Warning: |rThis pet is currently linked to the profile |cff00ff00%1$s|r. Linking a profile to this pet will replace the current profile.",
 	UI_PET_BROWSER_NAME_WARNING = "|cffff0000Warning: |rThis pet has not been renamed. We recommend renaming the pet to prevent showing this profile on other pets you own with the same name.",
 	REG_PLAYER_MISC_PRESET_PRONOUNS = "Pronouns",
 
@@ -1403,7 +1403,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ## Fixed
 
 - Fixed an issue with the color picker not working in WotLK Classic.
-- Fixed an issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic.
+- Fixed an issue with water elemental pets not being valid targets to link a companion profile to in WotLK Classic.
 - More tooltip cleanup.
 
 ## Removed
@@ -1422,7 +1422,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ## Fixed
 
 - Fixed the "Hide immediately instead of fading" tooltip setting.
-- Fixed another issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic
+- Fixed another issue with water elemental pets not being valid targets to link a companion profile to in WotLK Classic
 - Fixed an issue with colorblind mode preventing companion tooltips from displaying.
 
 ]],
