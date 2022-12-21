@@ -37,11 +37,6 @@ L = {
 	["CL_IMPORT_COMPANION"] = "Begleiterprofil importieren",
 	["CL_IMPORT_GLANCE"] = "Importiere \"Auf den ersten Blick\"",
 	["CL_IMPORT_PROFILE"] = "Profil importieren",
-	["CL_MAKE_IMPORTABLE"] = [=[Du möchtest einen Link für %s generieren.
-
-Möchtest du diesen Link für andere Spieler importierbar machen? Dann wären sie in der Lage den Inhalt dieses Links zu kopieren und zu nutzen.
-
-Wenn du mit nein antwortest werden sie den Inhalt des Links nur anschauen können.]=],
 	["CL_MAKE_IMPORTABLE_BUTTON_TEXT"] = "Importierbar machen",
 	["CL_MAKE_IMPORTABLE_SIMPLER"] = [=[Diesen %s Link importierbar machen?
 
@@ -238,10 +233,6 @@ Wenn nicht, wird die Sprache beim nächsten Login geändert.]=],
 	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "Solange PvP aktiv ist, wirst du bei Scans nicht auf der Karte angezeigt. Nützlich, wenn du Missbrauch des Systems um dich zu verfolgen vermeiden willst.",
 	["CO_LOCATION_DISABLE_OOC"] = "Standort deaktivieren wenn OOC",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "Du wirst keine Antworten auf Standortanfragen anderer Spieler senden wenn dein RP Status auf Out Of Charakter gesetzt ist.",
-	["CO_LOCATION_DISABLE_PVP"] = "Standort deaktivieren wenn für PVP geflaggt",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[Du wirst keine Antworten auf Standortanfragen anderer Spieler senden, wenn du für PvP geflaggt bist.
-
-Diese Option is besonders auf PvP Realms nützlich, auf denen Spieler der anderen Fraktion das System ausnutzen können um dich zu verfolgen.]=],
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "Standort deaktivieren, wenn der Kriegsmodus an ist. ",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = "Solange der Kriegsmodus aktiv ist und du dich nicht in einer Ruhe-Zone bist, wirst du bei Scans nicht auf der Karte angezeigt. Nützlich, wenn du Missbrauch des Systems um dich zu verfolgen vermeiden willst.",
 	["CO_LOCATION_SHOW_DIFFERENT_WAR_MODES"] = "Zeige Spieler mit anderem Kriegsmodus.",
@@ -285,13 +276,7 @@ Möglicher Status:
 |cffff9900Wenn ein Modul deaktivert wird muss das UI neu geladen werden!]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
-	["CO_MSP_T3"] = "Benutze nur Template 3",
-	["CO_MSP_T3_TT"] = "Selbst, wenn du ein anderes \"Über\"-Template auswählst, wird immer Template 3 genutzt, um MSP-Kompatibilität zu gewährleisten.",
 	["CO_REGISTER"] = "Einstellungen registrieren",
-	["CO_REGISTER_ABOUT_VOTE"] = "Benutze Bewertungssystem",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "Aktiviert das Bewertungssystem, welches dir erlaubt, die Beschreibung von Charakteren als positiv oder negativ zu bewerten. Hierdurch kannt auch dein Charakter bewertet werden!",
-	["CO_REGISTER_AUTO_ADD"] = "Neue Spieler automatisch hinzufügen",
-	["CO_REGISTER_AUTO_ADD_TT"] = "Automatisch neue Spieler, denen du begegnest, zum Register hinzufügen.",
 	["CO_REGISTER_AUTO_PURGE"] = "Verzeichnis automatisch bereinigen",
 	["CO_REGISTER_AUTO_PURGE_0"] = "Bereinigung abschalten",
 	["CO_REGISTER_AUTO_PURGE_1"] = "Nach %s Tag(en)",
@@ -436,12 +421,6 @@ Dein Handeln wird nicht mit dem Charakter in Verbindung gebracht.]=],
 	["MAP_BUTTON_TITLE"] = "Nach Rollenspiel scannen",
 	["MAP_SCAN_CHAR"] = "Nach Charakteren scannen",
 	["MAP_SCAN_CHAR_TITLE"] = "Charaktere",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "Dieses Profil der cffffffffErwachseneninhalte Whitelist|r hinzufügen",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Der |cffffffffErwachseneninhalte Whitelist|r hinzufügen",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Bestätige, dass du %s der |cffffffffErwachseneninhalte Whitelist|r hinzufügen willst.
-
-Der Inhalt des Profils wird nicht länger versteckt sein.]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Dieses Profil der |cffffffffErwachseneninhalte Whitelist|r hinzufügen und die darin enthaltenen Inhalte für Erwachsene anzeigen.",
 	["MATURE_FILTER_EDIT_DICTIONARY"] = "Benutzerdefiniertes Wörterbuch bearbeiten",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Hinzufügen",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Dem Wörterbuch ein neues Wort hinzufügen",
@@ -463,12 +442,6 @@ Der Inhalt des Profils wird nicht länger versteckt sein.]=],
 	["MATURE_FILTER_OPTION_TT"] = [=[Wähle diese Option aus um die Filterung von Erwachseneninhalten zu aktivieren. Total RP 3 wird eintreffende Profile nach bestimmten Schlüsselworten durchsuchen die als Erwachseneninhalte festgelegt wurden und das Profil entsprechend markieren wenn ein solches Wort gefunden wird.
 
 Ein Profil mit Erwachseneninhalten wird einen stummgeschalteten Tooltip haben und du wirst bestätigen müssen, dass du es dir ansehen willst, wenn du es zum ersten Mal aufrufst.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Dieses Profil aus der |cffffffffErwachseneninhalte Whitelist|r entfernen",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Aus der |cffffffffErwachseneninhalte Whitelist|r entfernen",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Bestätige, dass du das Profil von %s aus der |cffffffffErwachseneninhalte Whitelist|r entfernen willst
-
-Der Inhalt des Profils wird wieder versteckt werden.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Dieses Profil aus der |cffffffffErwachseneninhalte Whitelist|r entfernen und den Erwachseneninhalt darin wieder verstecken.",
 	["MATURE_FILTER_STRENGTH"] = "Stärke des Schimpfwortfilters",
 	["MATURE_FILTER_STRENGTH_TT"] = "Setzt die Stärke des Schimpfwort Filters. cffcccccc1 ist schwach (Sätze werden ab 10 Schimpfwörtern erkannt), 10 ist stark (Es reicht ein einzelnes Schimpfwort zur Erkennung).|r",
 	["MATURE_FILTER_TITLE"] = "Filter für Profile mit Erwachseneninhalten",
@@ -783,7 +756,6 @@ Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Fenster hinzufügen",
 	["REG_PLAYER_ABOUT_EMPTY"] = "Keine Beschreibung",
 	["REG_PLAYER_ABOUT_HEADER"] = "Titeltag",
-	["REG_PLAYER_ABOUT_MUSIC"] = "Charaktersoundtrack",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Soundtrack abspielen",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Soundtrack abwählen",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Charakter Soundtrack wählen",
@@ -797,17 +769,6 @@ Wenn du TRP3 nicht als dein MSP Addon nutzen und diese Meldung nicht noch einmal
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Dein Text hier",
 	["REG_PLAYER_ABOUT_TAGS"] = "Formatierungstools",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unbekannter Soundtrack",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "Der Inhalt gefällt mir nicht.",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[Kein Charakter der mit diesem Profil verbunden ist, scheint online zu sein.
-Möchtest du das Profil trotzdem von Total RP 3 bewerten lassen?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Sende deine Bewertung an %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "Deine Bewertung wurde an %s gesendet!",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "Diese Bewertung ist komplett anonym und kann nur vom bewerteten Spieler eingesehen werden.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "Du kannst nur bewerten, wenn der Charakter online ist .",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "Ich mag den Inhalt",
-	["REG_PLAYER_ABOUT_VOTES"] = "Statistiken",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s Inhalt positiv bewerten
-|cffff0000%s Inhalt negativ bewerten]=],
 	["REG_PLAYER_ABOUTS"] = "Über %s",
 	["REG_PLAYER_ADD_NEW"] = "Neues Profil erstellen",
 	["REG_PLAYER_AGE"] = "Alter",
