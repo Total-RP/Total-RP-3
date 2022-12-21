@@ -19,7 +19,7 @@ L = {
 	REG_PLAYER_CARACT = "Characteristics",
 	REG_PLAYER_NAMESTITLES = "Names and titles",
 	REG_PLAYER_CHARACTERISTICS = "Characteristics",
-	REG_PLAYER_REGISTER = "Directory information",
+	REG_PLAYER_REGISTER = "Directory Information",
 	REG_PLAYER_ICON = "Character's icon",
 	REG_PLAYER_ICON_TT = "Select a graphic representation for your character.",
 	REG_PLAYER_TITLE = "Title",
@@ -64,10 +64,10 @@ L = {
 	REG_PLAYER_TRP2_TRAITS = "Physiognomy",
 	REG_PLAYER_TRP2_PIERCING = "Piercings",
 	REG_PLAYER_TRP2_TATTOO = "Tattoos",
-	REG_PLAYER_PSYCHO = "Personality traits",
+	REG_PLAYER_PSYCHO = "Personality Traits",
 	REG_PLAYER_ADD_NEW = "Create new",
 	REG_PLAYER_HISTORY = "History",
-	REG_PLAYER_MORE_INFO = "Additional information",
+	REG_PLAYER_MORE_INFO = "Additional Information",
 	REG_PLAYER_PHYSICAL = "Physical Description",
 	REG_PLAYER_NO_CHAR = "No characteristics",
 	REG_PLAYER_SHOWPSYCHO = "Show personality frame",
@@ -90,7 +90,7 @@ L = {
 	REG_PLAYER_PSYCHO_Egoiste = "Selfish";
 	REG_PLAYER_PSYCHO_Sincere = "Truthful";
 	REG_PLAYER_PSYCHO_Trompeur = "Deceitful";
-	REG_PLAYER_PSYCHO_Misericordieux = "Gentle ";
+	REG_PLAYER_PSYCHO_Misericordieux = "Gentle";
 	REG_PLAYER_PSYCHO_Cruel = "Brutal";
 	REG_PLAYER_PSYCHO_Pieux = "Superstitious";
 	REG_PLAYER_PSYCHO_Pragmatique = "Renegade";
@@ -483,7 +483,7 @@ Class: 50 characters|r]],
 
 |cffccccccNote: This feature is disabled during combat.|r]],
 	CO_CURSOR_DISABLE_OOC = "Disabled while OOC",
-	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|f.",
+	CO_CURSOR_DISABLE_OOC_TT = "Disable the cursor modifications when your roleplay status is set to |cffccccccOut Of Character|r.",
 	CO_CURSOR_MODIFIER_KEY = "Modifier key",
 	CO_CURSOR_MODIFIER_KEY_TT = "Requires a modifier key to be held down while right-clicking a player, to prevent accidental clicks.",
 	CO_MODULES = "Modules status",
@@ -499,8 +499,8 @@ Class: 50 characters|r]],
 	CO_MODULES_TT_NONE = "No dependencies";
 	CO_MODULES_TT_DEPS = "Dependencies";
 	CO_MODULES_TT_TRP = "%sFor Total RP 3 build %s minimum.|r",
-	CO_MODULES_TT_DEP = "\n%s- %s (version %s)|r",
-	CO_MODULES_TT_ERROR = "\n\n|cffff0000Error:|r\n%s";
+	CO_MODULES_TT_DEP = "%s- %s (version %s)|r",
+	CO_MODULES_TT_ERROR = "|cffff0000Error:|r\n%s";
 	CO_MODULES_TUTO = [[A module is a independent feature that can be enabled or disabled.
 
 Possible status:
