@@ -8,14 +8,14 @@ L = {
 	-- GENERAL
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s) ! Have fun !",
+	GEN_WELCOME_MESSAGE = "Thank you for using Total RP 3 (v %s)! Have fun!",
 	GEN_VERSION = "Version: %s (Build %s)",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- REGISTER
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	REG_PLAYER = "Character",
-	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway ?\n|cffff9900Any changes will be lost.",
+	REG_PLAYER_CHANGE_CONFIRM = "You may have unsaved data changes.\nDo you want to change page anyway?\n|cffff9900Any changes will be lost.",
 	REG_PLAYER_CARACT = "Characteristics",
 	REG_PLAYER_NAMESTITLES = "Names and titles",
 	REG_PLAYER_CHARACTERISTICS = "Characteristics",
@@ -41,19 +41,19 @@ L = {
 	REG_PLAYER_FULLTITLE = "Full title",
 	REG_PLAYER_FULLTITLE_TT = "Here you can write down your character's full title. It can either be a longer version of the Title or another title entirely.\n\nHowever, you may want to avoid repetitions, in case there's no additional info to mention.",
 	REG_PLAYER_RACE = "Race",
-	REG_PLAYER_RACE_TT = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes ...",
+	REG_PLAYER_RACE_TT = "Here goes your character's race. It doesn't have to be restricted to playable races. There are many Warcraft races that can assume common shapes...",
 	REG_PLAYER_BKG = "Background layout",
 	REG_PLAYER_BKG_TT = "This represents the graphical background to use for your Characteristics layout.",
 	REG_PLAYER_CLASS = "Class",
-	REG_PLAYER_CLASS_TT = "This is your character's custom class.\n\n|cff00ff00For instance :|r\nKnight, Pyrotechnist, Necromancer, Elite shooter, Arcanist ...",
+	REG_PLAYER_CLASS_TT = "This is your character's custom class.\n\n|cff00ff00For instance :|r\nKnight, Pyrotechnist, Necromancer, Elite shooter, Arcanist...",
 	REG_PLAYER_AGE = "Age",
 	REG_PLAYER_AGE_TT = "Here you can indicate how old your character is.\n\nThere are several ways to do this:|c0000ff00\n- Either use years,\n- Or an adjective (Young, Mature, Adult, Venerable, etc.).",
 	REG_PLAYER_EYE = "Eye color",
 	REG_PLAYER_EYE_TT = "Here you can indicate the color of your character's eyes.\n\nKeep in mind that, even if your character's face is constantly hidden, that might still be worth mentioning, just in case.",
 	REG_PLAYER_HEIGHT = "Height",
-	REG_PLAYER_HEIGHT_TT = "This is your character's height.\nThere are several ways to do this:|c0000ff00\n- A precise number: 170 cm, 6'5\" ...\n- A qualificative: Tall, short ...",
+	REG_PLAYER_HEIGHT_TT = "This is your character's height.\nThere are several ways to do this:|c0000ff00\n- A precise number: 170 cm, 6'5\"...\n- A qualificative: Tall, short...",
 	REG_PLAYER_WEIGHT = "Body shape",
-	REG_PLAYER_WEIGHT_TT = "This is your character's body shape.\nFor instance they could be |c0000ff00slim, fat or muscular...|r Or they could simply be regular !",
+	REG_PLAYER_WEIGHT_TT = "This is your character's body shape.\nFor instance they could be |c0000ff00slim, fat or muscular...|r Or they could simply be regular!",
 	REG_PLAYER_BIRTHPLACE = "Birthplace",
 	REG_PLAYER_BIRTHPLACE_TT = "Here you can indicate the birthplace of your character. This can either be a region, a zone, or even a continent. It's for you to decide how accurate you want to be.\n\n|c00ffff00You can use the button to the right to easily set your current location as Birthplace.",
 	REG_PLAYER_RESIDENCE = "Residence",
@@ -140,7 +140,7 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_ABOUT_REMOVE_FRAME = "Remove this frame",
 	REG_PLAYER_ABOUT_P = "Paragraph tag",
 	REG_PLAYER_ABOUT_TAGS = "Formatting tools",
-	REG_PLAYER_ABOUT_SOME = "Some text ...",
+	REG_PLAYER_ABOUT_SOME = "Some text...",
 	REG_PLAYER_ABOUT_EMPTY = "No description",
 	REG_PLAYER_STYLE_RPSTYLE_SHORT = "RP style",
 	REG_PLAYER_STYLE_RPSTYLE = "Roleplay style",
@@ -178,7 +178,7 @@ The codes you have inserted in your profile have been removed to prevent you fro
 	REG_PLAYER_GLANCE_TITLE = "Attribute name",
 	REG_PLAYER_GLANCE_UNUSED = "Unused slot",
 	REG_PLAYER_GLANCE_CONFIG = "|cff00ff00\"At first glance\"|r is a set of slots you can use to define important information about this character.\n\nYou can use these actions on the slots:\n|cffffff00Click:|r configure slot\n|cffffff00Double-click:|r toggle slot activation\n|cffffff00Right-click:|r slot presets\n|cffffff00Drag & drop:|r reorder slots",
-	REG_PLAYER_GLANCE_EDITOR = "Glance editor : Slot %s",
+	REG_PLAYER_GLANCE_EDITOR = "Glance editor: Slot %s",
 	REG_PLAYER_GLANCE_BAR_TARGET = "\"At first glance\" presets",
 	REG_PLAYER_GLANCE_BAR_LOAD_SAVE = "Group presets",
 	REG_PLAYER_GLANCE_BAR_SAVE = "Save group as a preset",
@@ -247,7 +247,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_RELATION_NEUTRAL_TT = "%s doesn't feel anything particular toward %s.",
 	REG_RELATION_BUSINESS_TT = "%s and %s are in a business relationship.",
 	REG_RELATION_FRIEND_TT = "%s considers %s a friend.",
-	REG_RELATION_LOVE_TT = "%s is in love with %s !",
+	REG_RELATION_LOVE_TT = "%s is in love with %s!",
 	REG_RELATION_FAMILY_TT = "%s shares blood ties with %s.",
 	REG_RELATION_TARGET = "|cffffff00Click: |rChange relation",
 	REG_TIME = "Time last seen",
@@ -274,7 +274,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_CHAR_TT_GLANCE = "At first glance",
 	REG_LIST_CHAR_TT_NEW_ABOUT = "Unread description",
 	REG_LIST_CHAR_TT_IGNORE = "Ignored character(s)",
-	REG_LIST_CHAR_FILTER = "Characters: %s / %s",
+	REG_LIST_CHAR_FILTER = "Characters: %s/%s",
 	REG_LIST_CHAR_EMPTY = "No character",
 	REG_LIST_CHAR_EMPTY2 = "No character matches your selection",
 	REG_LIST_CHAR_IGNORED = "Ignored",
@@ -282,7 +282,7 @@ It also works on the |cffffff00"At first glance" bar|r!]],
 	REG_LIST_IGNORE_TITLE = "Ignored list",
 	REG_LIST_IGNORE_EMPTY = "No ignored character",
 	REG_LIST_IGNORE_TT = "Reason:\n|cff00ff00%s\n\n|cffffff00Click to remove from ignore list",
-	REG_LIST_PETS_FILTER = "Companions: %s / %s",
+	REG_LIST_PETS_FILTER = "Companions: %s/%s",
 	REG_LIST_PETS_TITLE = "Companion list",
 	REG_LIST_PETS_EMPTY = "No companion",
 	REG_LIST_PETS_EMPTY2 = "No companion matches your selection",
@@ -323,7 +323,7 @@ You can optionally enter the reason below. This is a personal note, it will serv
 
 The second column shows the relation between these characters and your current character.
 
-The last column is for various flags. (ignored ..etc.)]],
+The last column is for various flags. (ignored, etc.)]],
 	REG_LIST_CHAR_TUTO_FILTER = [[You can filter the character list.
 
 The |cff00ff00name filter|r will perform a search on the profile full name (first name + last name) but also on any bound WoW characters.
@@ -383,7 +383,7 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 
 	CO_CONFIGURATION = "Settings",
 	CO_GENERAL = "General settings",
-	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now ?\n\nIf not, the language will be changed on the next connection.",
+	CO_GENERAL_CHANGELOCALE_ALERT = "Reload the interface in order to change the language to %s now?\n\nIf not, the language will be changed on the next load.",
 	CO_GENERAL_LOCALE = "Addon locale",
 	CO_GENERAL_COM = "Communication",
 	CO_GENERAL_MISC = "Miscellaneous",
@@ -400,7 +400,7 @@ These tools also allow you to insert |cffffff00images, icons or links to externa
 	CO_GENERAL_DEFAULT_COLOR_PICKER_TT = "Activate to always use the default color picker. Useful if you're using a color picker addon.",
 	CO_GENERAL_RESET_CUSTOM_COLORS = "Reset custom colors",
 	CO_GENERAL_RESET_CUSTOM_COLORS_TT = "Removes all custom colors saved in the color picker.",
-	CO_GENERAL_RESET_CUSTOM_COLORS_WARNING = "Are you sure you want to remove all custom colors saved in the color picker ?",
+	CO_GENERAL_RESET_CUSTOM_COLORS_WARNING = "Are you sure you want to remove all custom colors saved in the color picker?",
 	CO_TOOLTIP = "Tooltip settings",
 	CO_TOOLTIP_USE = "Use characters/companions tooltip",
 	CO_TOOLTIP_COMBAT = "Hide during combat",
@@ -508,7 +508,7 @@ Possible status:
 |cff999999Disabled:|r The module is disabled.
 |cffff9900Missing dependencies:|r Some dependencies are not loaded.
 |cffff9900TRP update required:|r The module requires a more recent version of TRP3.
-|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors !
+|cffff0000Error on init or on startup:|r The module loading sequence failed. The module will likely create errors!
 
 |cffff9900When disabling a module, a UI reload is necessary.]],
 	CO_MODULES_SHOWERROR = "Show error",
@@ -518,7 +518,7 @@ Possible status:
 	CO_TOOLBAR_CONTENT = "Toolbar settings",
 	CO_TOOLBAR_ICON_SIZE = "Icons size",
 	CO_TOOLBAR_MAX = "Max icons per line",
-	CO_TOOLBAR_MAX_TT = "Set to 1 if you want to display the bar vertically !",
+	CO_TOOLBAR_MAX_TT = "Set to 1 if you want to display the bar vertically!",
 	CO_TOOLBAR_CONTENT_CAPE = "Cape switch",
 	CO_TOOLBAR_CONTENT_HELMET = "Helmet switch",
 	CO_TOOLBAR_CONTENT_STATUS = "Player status (AFK/DND)",
@@ -538,7 +538,7 @@ Possible status:
 	CO_MINIMAP_BUTTON_SHOW_TITLE = "Show minimap button",
 	CO_MINIMAP_BUTTON_SHOW_HELP = [[If you are using another add-on to display Total RP 3's minimap button (FuBar, Titan, Bazooka) you can remove the button from the minimap.
 
-|cff00ff00Reminder : You can open Total RP 3 using /trp3 switch main|r]],
+|cff00ff00Reminder: You can open Total RP 3 using /trp3 switch main|r]],
 	CO_MINIMAP_BUTTON_FRAME = "Frame to anchor",
 	CO_MINIMAP_BUTTON_RESET = "Reset position",
 	CO_MINIMAP_BUTTON_RESET_BUTTON = "Reset",
@@ -576,7 +576,7 @@ Possible status:
 	CO_CHAT_MAIN_NPC = "NPC talk detection",
 	CO_CHAT_MAIN_NPC_USE = "Use NPC talk detection",
 	CO_CHAT_MAIN_NPC_PREFIX = "NPC talk detection pattern",
-	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.\n\n|cff00ff00By default : \"|| \"\n(without the \" and with a space after the pipe)",
+	CO_CHAT_MAIN_NPC_PREFIX_TT = "If a chat line said in the EMOTE channel begins with this prefix, it will be interpreted as an NPC chat.\n\n|cff00ff00By default: \"|| \"\n(without the \" and with a space after the pipe)",
 	CO_CHAT_MAIN_EMOTE = "Emote detection",
 	CO_CHAT_MAIN_EMOTE_USE = "Use emote detection",
 	CO_CHAT_MAIN_EMOTE_PATTERN = "Emote detection pattern",
@@ -594,9 +594,9 @@ Possible status:
 	CO_GLANCE_LOCK_TT = "Prevent the bar from being dragged",
 	CO_GLANCE_PRESET_TRP2 = "Use Total RP 2 style positions",
 	CO_GLANCE_PRESET_TRP2_BUTTON = "Use",
-	CO_GLANCE_PRESET_TRP2_HELP = "Shortcut to setup the bar in a TRP2 style : to the right of WoW target frame.",
+	CO_GLANCE_PRESET_TRP2_HELP = "Shortcut to setup the bar in a TRP2 style: to the right of WoW target frame.",
 	CO_GLANCE_PRESET_TRP3 = "Use Total RP 3 style positions",
-	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style : to the bottom of the TRP3 target frame.",
+	CO_GLANCE_PRESET_TRP3_HELP = "Shortcut to setup the bar in a TRP3 style: to the bottom of the TRP3 target frame.",
 	CO_GLANCE_TT_ANCHOR = "Tooltips anchor point",
 	CO_HIDE_EMPTY_MAP_BUTTON = "Hide when no scans available",
 	CO_MSP = "Mary Sue Protocol",
@@ -610,7 +610,7 @@ Possible status:
 	CO_LOCATION_DISABLE_CLASSIC_PVP = "Disable location when flagged for PvP",
 	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
-	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
+	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images, ...).",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TOOLBAR AND UI BUTTONS
@@ -643,7 +643,7 @@ Possible status:
 	TF_PLAY_THEME_TT = "|cffffff00Click:|r Play |cff00ff00%s\n|cffffff00Right-click:|r Stop theme",
 	TF_IGNORE = "Ignore player",
 	TF_IGNORE_TT = "|cffffff00Click:|r Ignore player",
-	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this ID ?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",
+	TF_IGNORE_CONFIRM = "Are you sure you want to ignore this player?\n\n|cffffff00%s|r\n\n|cffff7700You can optionally enter below the reason why you ignore it. This is a personal note, it won't be visible by others and will serve as a reminder.",
 	TF_IGNORE_NO_REASON = "No reason",
 	TB_LANGUAGE = "Language",
 	TB_LANGUAGES_TT = "Change language",
@@ -653,7 +653,7 @@ Possible status:
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PR_PROFILEMANAGER_TITLE = "Characters profiles",
-	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states ...) will be destroyed !",
+	PR_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile (Character info, inventory, quest log, applied states...) will be destroyed!",
 	PR_PROFILE = "Profile",
 	PR_PROFILES = "Profiles",
 	PR_PROFILE_CREATED = "Profile %s created.",
@@ -691,7 +691,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 |cffff9900Ghouls:|r As ghouls get a new name each time they are summoned, you will have to re-link the profile to the ghoul for all possible names.]],
 	PR_CO_PROFILE_HELP2 = [[Click here to create a new companion profile.
 
-|cff00ff00To link a profile to a pet (hunter pet, warlock minion ...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
+|cff00ff00To link a profile to a pet (hunter pet, warlock minion...), just summon the pet, select it and use the target frame to link it to a existing profile (or create a new one).|r]],
 	PR_CO_MASTERS = "Masters",
 	PR_CO_EMPTY = "No companion profile",
 	PR_CO_NEW_PROFILE = "New companion profile",
@@ -701,7 +701,7 @@ Just like characters profiles, a |cff00ff00companion profile|r can be linked to 
 	PR_CO_PROFILEMANAGER_DELETE_WARNING = "Are you sure you want to delete the companion profile %s?\nThis action cannot be undone and all TRP3 information linked to this profile will be destroyed !",
 	PR_CO_PROFILEMANAGER_DUPP_POPUP = "Please enter a name for the new profile.\nThe name cannot be empty.\n\nThis duplication will not change your pets/mounts binds to %s.",
 	PR_CO_PROFILEMANAGER_EDIT_POPUP = "Please enter a new name for this profile %s.\nThe name cannot be empty.\n\nChanging the name will not change any link between this profile and your pets/mounts.",
-	PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway ?",
+	PR_CO_WARNING_RENAME = "|cffff0000Warning:|r it's strongly recommended that you rename your pet before linking it to a profile.\n\nLink it anyway?",
 	PR_CO_PET = "Pet",
 	PR_CO_BATTLE = "Battle pet",
 	PR_CO_MOUNT = "Mount",
@@ -908,7 +908,7 @@ Total RP is not responsible for links leading to harmful content.]],
 
 	BW_COLOR_CODE = "Color code",
 	BW_COLOR_CODE_TT = "You can paste a 6 figures hexadecimal color code here and press Enter.",
-	BW_COLOR_CODE_ALERT = "Wrong hexadecimal code !",
+	BW_COLOR_CODE_ALERT = "Invalid hexadecimal color code!",
 	BW_CUSTOM_NAME = "Custom color name",
 	BW_CUSTOM_NAME_TITLE = "Name (Optional)",
 	BW_CUSTOM_NAME_TT = "You can set a name for the custom color you're saving. If left empty, it will use the hexadecimal color code.",
@@ -1049,7 +1049,7 @@ Putting your companion name in [brackets] will allow color and icon customizatio
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	PATTERN_ERROR = "Error in pattern.",
-	PATTERN_ERROR_TAG = "Error in pattern : unclosed text tag.",
+	PATTERN_ERROR_TAG = "Error in pattern: unclosed text tag.",
 	SCRIPT_UNKNOWN_EFFECT = "Script error, unknown FX",
 	SCRIPT_ERROR = "Error in script.",
 	NEW_VERSION_TITLE = "New update available",
