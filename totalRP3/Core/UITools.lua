@@ -483,11 +483,6 @@ end
 -- Companion ID
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
-local DUMMY_TOOLTIP = CreateFrame("GameTooltip", "TRP3_DUMMY_TOOLTIP", nil, "GameTooltipTemplate");
-DUMMY_TOOLTIP:SetOwner( WorldFrame, "ANCHOR_NONE" );
-
-local findPetOwner, findBattlePetOwner, UnitName = TRP3_API.Locale.findPetOwner, TRP3_API.Locale.findBattlePetOwner, UnitName;
-
 -- TODO (10.0): Remove the following backwards compatibility aliases.
 TRP3_API.ui.misc.TYPE_CHARACTER = TRP3_Enums.UNIT_TYPE.CHARACTER;
 TRP3_API.ui.misc.TYPE_PET = TRP3_Enums.UNIT_TYPE.PET;
@@ -549,20 +544,70 @@ function TRP3_API.ui.misc.getTargetType(unitType)
 	end
 end
 
-local function getDummyGameTooltipTexts()
-	local tab = {};
-	for j = 1, DUMMY_TOOLTIP:NumLines() do
-		tab[j] = _G["TRP3_DUMMY_TOOLTIPTextLeft" ..  j]:GetText();
+local ScanningTooltip = CreateFrame("GameTooltip", "TRP3_ScanningTooltip", nil, "GameTooltipTemplate");
+
+local COMBAT_PET_OWNER_PATTERNS;
+local COMPANION_PET_OWNER_PATTERNS;
+
+do
+	local function GenerateDeformattingPattern(text)
+		-- For French locales the "|2" needs to match both "de <name>" and
+		-- "d'<name>".
+		--
+		-- Additionally for UNITNAME_TITLE_COMPANION specifically, the
+		-- generated pattern is ambiguous with the template used for the
+		-- pet type and level line. This is avoided by making the match
+		-- pattern refuse to match spaces _and_ including start/end anchors.
+
+		text = string.gsub(text, "%%s", "([^%%s]+)");
+		text = string.gsub(text, "|2 ", "d[e'] ?");
+		return "^" .. text .. "$";
 	end
-	return tab;
+
+	COMBAT_PET_OWNER_PATTERNS =
+	{
+		GenerateDeformattingPattern(UNITNAME_TITLE_CHARM),
+		GenerateDeformattingPattern(UNITNAME_TITLE_CREATION),
+		GenerateDeformattingPattern(UNITNAME_TITLE_GUARDIAN),
+		GenerateDeformattingPattern(UNITNAME_TITLE_MINION),
+		GenerateDeformattingPattern(UNITNAME_TITLE_PET),
+	};
+
+	COMPANION_PET_OWNER_PATTERNS =
+	{
+		GenerateDeformattingPattern(UNITNAME_TITLE_COMPANION),
+		GenerateDeformattingPattern(UNITNAME_TITLE_SQUIRE),
+	};
+end
+
+function ScanningTooltip:GetLeftLineText(lineNumber)
+	local region = _G[self:GetName() .. "TextLeft" .. lineNumber];
+	return region and region:GetText() or "";
+end
+
+function ScanningTooltip:FindMatchingLine(patternList)
+	for lineNumber = 1, self:NumLines() do
+		local leftText = self:GetLeftLineText(lineNumber);
+
+		for _, pattern in ipairs(patternList) do
+			local ownerName = string.match(leftText or "", pattern);
+
+			if ownerName then
+				return ownerName;
+			end
+		end
+	end
+
+	return nil;
 end
 
 local function getCompanionOwner(unitType, targetType)
+	local ownerName;
+	local ownerRealm;
+
 	if C_TooltipInfo then
 		local tooltipData = C_TooltipInfo.GetUnit(unitType);
 		local ownerGUID;
-		local ownerName;
-		local ownerRealm;
 
 		if not tooltipData then
 			return;
@@ -580,22 +625,27 @@ local function getCompanionOwner(unitType, targetType)
 		if ownerGUID ~= nil then
 			ownerName, ownerRealm = select(6, GetPlayerInfoByGUID(ownerGUID));
 		end
-
-		if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
-			return nil;
-		elseif not ownerRealm or ownerRealm == "" then
-			return ownerName;
-		else
-			return string.join("-", ownerName, ownerRealm);
-		end
 	else
-		-- TODO: Remove the old tooltip scanning stuff in 3.4.1/3.4.2.
-		DUMMY_TOOLTIP:SetUnit(unitType);
+		-- TODO: Remove the old tooltip scanning stuff in 3.4.2.
+		ScanningTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
+		ScanningTooltip:SetUnit(unitType);
+		ScanningTooltip:Show();
+
 		if targetType == TRP3_Enums.UNIT_TYPE.PET then
-			return findPetOwner(getDummyGameTooltipTexts());
+			ownerName = ScanningTooltip:FindMatchingLine(COMBAT_PET_OWNER_PATTERNS);
 		elseif targetType == TRP3_Enums.UNIT_TYPE.BATTLE_PET then
-			return findBattlePetOwner(getDummyGameTooltipTexts());
+			ownerName = ScanningTooltip:FindMatchingLine(COMPANION_PET_OWNER_PATTERNS);
 		end
+
+		ScanningTooltip:Hide();
+	end
+
+	if not ownerName or ownerName == "" or ownerName == UNKNOWNOBJECT then
+		return nil;
+	elseif not ownerRealm or ownerRealm == "" then
+		return ownerName;
+	else
+		return string.join("-", ownerName, ownerRealm);
 	end
 end
 TRP3_API.ui.misc.getCompanionOwner = getCompanionOwner;

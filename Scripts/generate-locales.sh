@@ -38,7 +38,6 @@ EOF
 }
 
 generate_locale "deDE" "Deutsch" > totalRP3/Locales/deDE.lua
-generate_locale "enUS" "English" > totalRP3/Locales/enUS.lua
 generate_locale "esES" "Español (EU)" > totalRP3/Locales/esES.lua
 generate_locale "esMX" "Español (AL)" > totalRP3/Locales/esMX.lua
 generate_locale "frFR" "Français" > totalRP3/Locales/frFR.lua
