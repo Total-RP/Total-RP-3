@@ -18,6 +18,8 @@ jobs:
 
       - name: Upload CurseForge Localization
         run: Scripts/upload-localization.py --delete-missing-phrases
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
       - name: Send Webhook Notification
         if: failure()
