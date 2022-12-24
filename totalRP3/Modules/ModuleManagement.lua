@@ -364,8 +364,8 @@ local function onActionSelected(value, button)
 		MODULE_ACTIVATION[module.id] = false;
 
 		if module.hotReload then
-			disableModule(module)
-			moduleHotReload(button:GetParent())
+			disableModule(module) -- this just runs the onDisable callback for the module
+			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
 		else
 			ReloadUI()
 		end
@@ -373,8 +373,8 @@ local function onActionSelected(value, button)
 	elseif value == 2 then
 		MODULE_ACTIVATION[module.id] = true;
 		if module.hotReload then
-			startModule(module)
-			moduleHotReload(button:GetParent())
+			startModule(module) -- this just runs the onStart callback for the module
+			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
 		else
 			ReloadUI()
 		end
@@ -434,6 +434,8 @@ function onModuleStarted()
 	end
 end
 
+-- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
+-- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
 function moduleHotReload(frame)
 	local module = frame.module
 
