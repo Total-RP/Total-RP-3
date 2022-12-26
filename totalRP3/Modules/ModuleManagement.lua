@@ -111,9 +111,16 @@ end
 
 --- Check a module dependency
 -- Return true if dependency is OK.
-local function checkModuleDependency(_, dependency_id, dependency_version)
-	return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
-		MODULE_ACTIVATION[dependency_id] ~= false;
+local function checkModuleDependency(_, dependency)
+	local dependency_id = dependency[1]
+	local dependency_version = dependency[2]
+
+	if not dependency_version == "external" then
+		return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
+			MODULE_ACTIVATION[dependency_id] ~= false;
+	else
+		return GetAddOnEnableState(nil, dependency_id) == 2
+	end
 end
 
 --- Check off dependencies for a module
@@ -121,7 +128,7 @@ end
 local function checkModuleDependencies(moduleID)
 	local module = getModule(moduleID);
 	for _, depTab in pairs(module.requiredDeps) do
-		if not checkModuleDependency(moduleID, depTab[1], depTab[2]) then
+		if not checkModuleDependency(moduleID, depTab) then
 			return false;
 		end
 	end
@@ -364,7 +371,7 @@ local function onActionSelected(value, button)
 		MODULE_ACTIVATION[module.id] = false;
 
 		if module.hotReload then
-			disableModule(module) -- this just runs the onDisable callback for the module
+			disableModule(module) -- this runs the onDisable callback for the module
 			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
 		else
 			ReloadUI()
@@ -373,7 +380,7 @@ local function onActionSelected(value, button)
 	elseif value == 2 then
 		MODULE_ACTIVATION[module.id] = true;
 		if module.hotReload then
-			startModule(module) -- this just runs the onStart callback for the module
+			startModule(module) -- this runs the onStart callback for the module
 			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
 		else
 			ReloadUI()
@@ -460,19 +467,16 @@ function moduleHotReload(frame)
 		end
 	end
 
-	_G[frame:GetName() .. "ModuleName"]:SetText(module.name);
-	_G[frame:GetName() .. "ModuleVersion"]:SetText(loc.CO_MODULES_VERSION:format(module.version));
-	_G[frame:GetName() .. "ModuleID"]:SetText(loc.CO_MODULES_ID:format(module.id));
+	-- Update module status on it's frame in the settings menu
 	_G[frame:GetName() .. "Status"]:SetText(loc.CO_MODULES_STATUS:format(moduleStatusText(module.status)));
 	setTooltipForSameFrame(_G[frame:GetName() .. "Info"], "BOTTOMRIGHT", 0, 0, module.name, getModuleTooltip(module));
+
+	-- Update module frame color based on activation status
 	if module.status == MODULE_STATUS.OK then
 		frame:SetBackdropBorderColor(0, 1, 0);
 	else
 		frame:SetBackdropBorderColor(1, 1, 1);
 	end
-	local actionButton = _G[frame:GetName() .. "Action"];
-	setTooltipAll(actionButton, "BOTTOMLEFT", 10, 10, loc.CM_ACTIONS);
-	actionButton:SetScript("OnClick", onActionClicked);
 end
 
 --- This is fired on TRP3 init.

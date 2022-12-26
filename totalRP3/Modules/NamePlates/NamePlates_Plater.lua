@@ -34,6 +34,7 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	-- Setting the global TRP3_NAMEPLATES_ADDON is done via the mod and should not be set here.
 	local success, scriptAdded, wasEnabled = Plater.ImportScriptString(importString, false)
 
+	-- If the mod was not installed (is already up to date) then find the installed mod object so we can still control it
 	if not success and not scriptAdded then
 		local scriptType = "hook"
 
@@ -80,7 +81,7 @@ TRP3_API.module.registerModule({
 	description = L.PLATER_NAMEPLATES_MODULE_DESCRIPTION,
 	version = 1,
 	minVersion = 92,
-	requiredDeps = { { "trp3_nameplates", 1 } },
+	requiredDeps = { { "Plater", "external" } },
 	hotReload = true,
 	onInit = function() return TRP3_PlaterNamePlates:OnModuleInitialize(); end,
 	onStart = function() return TRP3_PlaterNamePlates:OnModuleEnable(); end,
