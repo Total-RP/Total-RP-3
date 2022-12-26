@@ -115,7 +115,7 @@ local function checkModuleDependency(_, dependency)
 	local dependency_id = dependency[1]
 	local dependency_version = dependency[2]
 
-	if not dependency_version == "external" then
+	if dependency_version ~= "external" then
 		return MODULE_REGISTRATION[dependency_id] and MODULE_REGISTRATION[dependency_id].version >= dependency_version and
 			MODULE_ACTIVATION[dependency_id] ~= false;
 	else
