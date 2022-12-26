@@ -340,7 +340,7 @@ local function getModuleHint_Deps(module)
 	else
 		for _, depTab in pairs(module.requiredDeps) do
 			local deps_version_color = "|cff00ff00";
-			if not checkModuleDependency(module.id, depTab[1], depTab[2]) then
+			if not checkModuleDependency(module.id, depTab) then
 				deps_version_color = "|cffff0000";
 			end
 			deps = deps .. (loc.CO_MODULES_TT_DEP:format(deps_version_color, depTab[1], depTab[2]));
