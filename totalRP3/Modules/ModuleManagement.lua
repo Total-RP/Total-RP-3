@@ -11,7 +11,6 @@ local loc = TRP3_API.loc;
 local MODULE_REGISTRATION = {};
 local MODULE_ACTIVATION;
 local hasBeenInit = false;
---local moduleFrames = {};
 local displayDropDown = TRP3_API.ui.listbox.displayDropDown;
 local setTooltipForSameFrame, setTooltipAll = TRP3_API.ui.tooltip.setTooltipForSameFrame,
 	TRP3_API.ui.tooltip.setTooltipAll;
