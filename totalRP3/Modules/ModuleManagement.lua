@@ -185,6 +185,7 @@ function callModuleFunction(module, funcName, ...)
 	-- but will allow the loading process to continue.
 	local ok, err, message;
 	if Globals.DEBUG_MODE then
+		TRP3_API.utils.log.log("Calling module function: " .. module.id .. "." .. funcName)
 		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
 	else
 		-- In release builds swallow the error via pcall. We'll forward it
@@ -353,7 +354,11 @@ local function getModuleTooltip(module)
 	local message = "";
 
 	if module.description and module.description:len() > 0 then
-		message = message .. "|cffffff00" .. module.description .. "|r\n\n";
+		message = message .. "|cffffff00" .. module.description .. "\n\n"
+	end
+
+	if module.hotReload then
+		message = message .. loc.CO_MODULES_SUPPORTS_HOTRELOAD .. "|r\n\n"
 	end
 
 	message = message .. getModuleHint_TRP(module) .. "\n\n" .. getModuleHint_Deps(module);
@@ -371,8 +376,7 @@ local function onActionSelected(value, button)
 		MODULE_ACTIVATION[module.id] = false;
 
 		if module.hotReload then
-			disableModule(module) -- this runs the onDisable callback for the module
-			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
+			moduleHotReload(button:GetParent(), value) -- this handles reloading the module display when hot reloading, also calls disableModule()
 		else
 			ReloadUI()
 		end
@@ -380,8 +384,7 @@ local function onActionSelected(value, button)
 	elseif value == 2 then
 		MODULE_ACTIVATION[module.id] = true;
 		if module.hotReload then
-			startModule(module) -- this runs the onStart callback for the module
-			moduleHotReload(button:GetParent()) -- this handles reloading the module display when hot reloading
+			moduleHotReload(button:GetParent(), value) -- this handles reloading the module display when hot reloading, also calls startModule()
 		else
 			ReloadUI()
 		end
@@ -443,7 +446,7 @@ end
 
 -- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
 -- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
-function moduleHotReload(frame)
+function moduleHotReload(frame, value)
 	local module = frame.module
 
 	module.status = MODULE_STATUS.OK
@@ -465,6 +468,12 @@ function moduleHotReload(frame)
 				module.status = MODULE_STATUS.MISSING_DEPENDENCY
 			end
 		end
+	end
+
+	if value == 1 then
+		disableModule(module)
+	elseif value == 2 then
+		startModule(module)
 	end
 
 	-- Update module status on it's frame in the settings menu

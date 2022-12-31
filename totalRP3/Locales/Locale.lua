@@ -527,6 +527,7 @@ Possible status:
 	CO_MODULES_SHOWERROR = "Show error",
 	CO_MODULES_DISABLE = "Disable module",
 	CO_MODULES_ENABLE = "Enable module",
+	CO_MODULES_SUPPORTS_HOTRELOAD = "This module supports hot reload.",
 	CO_TOOLBAR = "Frames settings",
 	CO_TOOLBAR_CONTENT = "Toolbar settings",
 	CO_TOOLBAR_ICON_SIZE = "Icons size",
