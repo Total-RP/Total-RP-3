@@ -184,7 +184,7 @@ function callModuleFunction(module, funcName, ...)
 	-- but will allow the loading process to continue.
 	local ok, err, message;
 	if Globals.DEBUG_MODE then
-		TRP3_API.utils.log.log("Calling module function: " .. module.id .. "." .. funcName)
+		Log.log("Calling module function: " .. module.id .. "." .. funcName)
 		ok, err, message = xpcall(module[funcName], CallErrorHandler, ...);
 	else
 		-- In release builds swallow the error via pcall. We'll forward it
