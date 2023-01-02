@@ -254,9 +254,7 @@ end
 function startModule(module)
 	-- Disregard failed modules and yield their current error information.
 	if module.status ~= MODULE_STATUS.OK then
-		if module.status ~= MODULE_STATUS.DISABLED then
-			return false, module.error
-		end
+		return false, module.error
 	end
 
 	-- No need to do anything if the lifecycle function isn't present.
@@ -445,9 +443,11 @@ end
 
 -- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
 -- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
+-- Should only be called (currently) from onActionSelected()
 function moduleHotReload(frame, value)
 	local module = frame.module
 
+	Log.log("Hot reloading module: " .. module.id)
 	module.status = MODULE_STATUS.OK
 	if MODULE_ACTIVATION[module.id] == nil then
 		MODULE_ACTIVATION[module.id] = true
