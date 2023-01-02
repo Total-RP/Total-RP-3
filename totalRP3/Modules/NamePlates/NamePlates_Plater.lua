@@ -58,6 +58,8 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 
 	TRP3_NAMEPLATES_ADDON = "Plater"
 
+	Plater.ForceTickOnAllNameplates()
+
 	self.PlaterMod = scriptAdded
 end
 
