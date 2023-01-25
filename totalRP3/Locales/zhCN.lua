@@ -40,7 +40,6 @@ L = {
 	["CL_IMPORT_COMPANION"] = "导入同伴介绍",
 	["CL_IMPORT_GLANCE"] = "导入第一印象",
 	["CL_IMPORT_PROFILE"] = "导入配置文件",
-	["CL_MAKE_IMPORTABLE"] = "使其可导入",
 	["CL_MAKE_IMPORTABLE_BUTTON_TEXT"] = "使其可导入",
 	["CL_MAKE_IMPORTABLE_SIMPLER"] = [=[使这个%s链接可导入?
 
@@ -239,10 +238,6 @@ L = {
 	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "当你处于PVP状态时不再反馈其他玩家的定位请求，这可以防止其他玩家用定位系统追踪你。",
 	["CO_LOCATION_DISABLE_OOC"] = "当OOC时，禁用角色位置",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "当您将RP状态设置为非角色扮演状态OOC时，您将不会响应来自其他玩家的位置请求。",
-	["CO_LOCATION_DISABLE_PVP"] = "角色标记为PVP状态时，禁用角色位置",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[当您被标记为PvP时，您将不会响应来自其他玩家的位置请求。
-
-这个选项在PvP领域特别有用，其他阵营的玩家可以滥用位置系统来跟踪你。]=],
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "战争模式禁用位置系统",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[在启动战争模式并位于|cff69CCF0安全区|r外时，你不会对其他玩家的位置搜索发出回应。
 
@@ -289,8 +284,6 @@ L = {
 |cffff9900当禁用模块时，需要重新加载UI.]=],
 	["CO_MODULES_VERSION"] = "版本: %s",
 	["CO_MSP"] = "玛丽苏协议",
-	["CO_MSP_T3"] = "只使用模板3",
-	["CO_MSP_T3_TT"] = "遵循玛丽苏协议，\\\"人物卡\\\" 模板只能使用三个模板式样.一些人物卡配置文件可以用其他RP插件打开（但是这些插件不能共存）",
 	["CO_REGISTER"] = "登记设置",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "一级标题字号",
 	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "{h1}标题的字号，当前：%s",
@@ -301,12 +294,6 @@ L = {
 	["CO_REGISTER_ABOUT_P_SIZE"] = "文本字号",
 	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "不属于标题的文本的字号，当前：%s",
 	["CO_REGISTER_ABOUT_SETTINGS"] = "\"关于\"设定",
-	["CO_REGISTER_ABOUT_VOTE"] = "使用投票系统",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "启用投票系统，允许你对其他人的描述进行投票(“喜欢”或“不喜欢”)，并允许他们对你做同样的事情。",
-	["CO_REGISTER_AUTO_ADD"] = "自动添加新玩家",
-	["CO_REGISTER_AUTO_ADD_TT"] = [=[自动添加你遇到的新玩家.
-
-|cffff0000注意:禁用此选项将阻止您从尚未遇到的玩家获得任何新的配置文件！如果你不想收到其他玩家的新资料，只需要更新你已经看过的玩家，就可以使用这个选项。]=],
 	["CO_REGISTER_AUTO_PURGE"] = "自动清理玩家目录",
 	["CO_REGISTER_AUTO_PURGE_0"] = "禁用自动清理",
 	["CO_REGISTER_AUTO_PURGE_1"] = "在 %s 天后",
@@ -491,12 +478,6 @@ L = {
 	["MATURE_FILTER_ADD_TO_SAFELIST_OPTION"] = "添加到|cffffffff成人信息白名单|r",
 	["MATURE_FILTER_ADD_TO_SAFELIST_TEXT"] = "请确认将%s加入|cffffffff成人信息白名单|r，他们资料卡的信息将不再被隐藏。",
 	["MATURE_FILTER_ADD_TO_SAFELIST_TT"] = "将这个资料卡加入|cffffffff成人信息白名单|r并显示其中的成人内容。",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "将这个玩家文件添加到 |cffffffff白名单|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "添加到 |cffffffff白名单|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[确认你想要添加 %s 到 |cffffffff白名单|r.
-
-他们个人资料的内容将不再被隐藏。]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "将这个玩家文件添加到| cffffffff白名单| r并显示里面的成年人的内容。",
 	["MATURE_FILTER_EDIT_DICTIONARY"] = "编辑自定义字典",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "添加",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "在字典中添加一个新单词",
@@ -524,12 +505,6 @@ L = {
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_OPTION"] = "从|cffffffff成人信息白名单|r移除",
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TEXT"] = "请确认将%s移出|cffffffff成人信息白名单|r，他们资料卡的信息将再次被隐藏。",
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "将这个资料卡加入|cffffffff成人信息白名单|r并隐藏其中的成人内容。",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "从 |cffffffff白名单|r 当中删除这个文件并隐藏在里面的成人内容。",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "从 |cffffffff白名单|r当中移除",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[确认你想从 |cffffffff白名单|r中移除 %s 。
-
-他的玩家文件的内容将再次被隐藏.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "从 |cffffffff白名单|r 当中移除这个玩家并再次隐藏他的成人内容。",
 	["MATURE_FILTER_STRENGTH"] = "分级过滤器强度",
 	["MATURE_FILTER_STRENGTH_TT"] = [=[设置分级过滤器的强度。
 | cffcccccccc1是最弱的(表示需要10个成人词汇)，10个是最强的(表示需要1个成人词汇)]=],
@@ -902,7 +877,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "添加一个框架",
 	["REG_PLAYER_ABOUT_EMPTY"] = "没有说明",
 	["REG_PLAYER_ABOUT_HEADER"] = "页面标签",
-	["REG_PLAYER_ABOUT_MUSIC"] = "角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "播放角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "移除角色主题音乐",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "选择角色主题音乐",
@@ -916,17 +890,6 @@ Adds a simple button to the toolbar to toggle on and off the map scan location f
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "您在此处输入的文字",
 	["REG_PLAYER_ABOUT_TAGS"] = "格式化工具",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900未知主题",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "我不喜欢这个内容",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[与此人物卡相关的人物并不在线
-你想强制Total RP 3 发送你的投票结果吗 ?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "正在发送你的投票 %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "你的投票已经被送到了 %s !",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "你的投票完全是匿名的，只有这个玩家才能看到.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "只有这个玩家在线时才可以投票.",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "我喜欢这个内容",
-	["REG_PLAYER_ABOUT_VOTES"] = "统计资料",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s 喜欢这个内容
-|cffff0000%s 不喜欢这个内容]=],
 	["REG_PLAYER_ABOUTS"] = "关于 %s",
 	["REG_PLAYER_ADD_NEW"] = "创建新的",
 	["REG_PLAYER_AGE"] = "年龄",

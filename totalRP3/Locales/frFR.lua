@@ -42,11 +42,6 @@ L = {
 	["CL_IMPORT_COMPANION"] = "Importer le profil de companion",
 	["CL_IMPORT_GLANCE"] = "Importer le coup d'œil",
 	["CL_IMPORT_PROFILE"] = "Importer le profil",
-	["CL_MAKE_IMPORTABLE"] = [=[Vous êtes sur le point de créer un lien de %s.
-
-Souhaitez vous rendre ce lien importable pour les autres joueurs ? Ils seront capable de copier et utiliser le contenu du lien envoyé.
-
-Si vous choisissez non, ils pourront uniquement consulter le contenu du lien.]=],
 	["CL_MAKE_IMPORTABLE_BUTTON_TEXT"] = "Lien importable",
 	["CL_MAKE_IMPORTABLE_SIMPLER"] = [=[Faire un lien %s importable?
 
@@ -249,10 +244,6 @@ Cela provoquera un rechargement de l'interface.]=],
 Cette option est particulièrement utile pour éviter les abus du système pour vous traquer.]=],
 	["CO_LOCATION_DISABLE_OOC"] = "Désactiver le scan si HRP",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en statut HRP.",
-	["CO_LOCATION_DISABLE_PVP"] = "Désactiver le scan si PvP",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[Vous ne répondrez pas aux requêtes de positions de personnages si vous êtes en mode PvP.
-
-Cette option est particulièrement utile sur les royaumes PvP où les utilisateurs de la faction opposée pourraient abuser du système pour vous traquer.]=],
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "Désactiver le scan en Mode Guerre",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[Vous ne réponderez plus aux demandes de localisation des autres joueurs quand vous avez le Mode Guerre activé et que vous n'êtes pas dans une zone |cff69CCF0Sanctuaire|r.
 
@@ -297,8 +288,6 @@ Statuts possibles:
 |cffff9900Lorsque vous désactivez un module, il est nécessaire de recharger l'interface.]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
-	["CO_MSP_T3"] = "Utiliser uniquement le modèle 3",
-	["CO_MSP_T3_TT"] = "Même si vous choisissez un autre modèle \"À propos\", le modèle 3 sera toujours utilisé pour la compatibilité avec MSP.",
 	["CO_REGISTER"] = "Registre",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "Taille de texte d'en-tête 1",
 	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Taille du texte entre les balises {h1}. Valeur par défaut: %s",
@@ -309,12 +298,6 @@ Statuts possibles:
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Taille de texte de paragraphe",
 	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "Taille du texte en dehors des balises. Valeur par défaut: %s",
 	["CO_REGISTER_ABOUT_SETTINGS"] = "Paramètres d'à propos",
-	["CO_REGISTER_ABOUT_VOTE"] = "Utiliser le système de vote",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "Active le système de vote, vous permettant de voter (\"j'aime\" ou \"je n'aime pas\") pour les descriptions des autres et leur permettant de faire de même pour vous.",
-	["CO_REGISTER_AUTO_ADD"] = "Ajouter automatiquement les nouveaux joueurs",
-	["CO_REGISTER_AUTO_ADD_TT"] = [=[Ajouter automatiquement les nouveaux joueurs que vous rencontrez au registre.
-
-|cffff0000Note: Désactiver cette option vous empêchera de recevoir de nouveaux profils de joueurs vous n'avez pas encore rencontrés ! Utilisez cette option si vous ne voulez pas recevoir de nouveaux profils d'autres joueurs, seulement des mises à jour de joueurs vous avez déjà rencontrés.]=],
 	["CO_REGISTER_AUTO_PURGE"] = "Purge auto. du registre",
 	["CO_REGISTER_AUTO_PURGE_0"] = "Désactiver la purge",
 	["CO_REGISTER_AUTO_PURGE_1"] = "Après %s jours",
@@ -517,12 +500,6 @@ aux autres que vous débutez dans le roleplay.]=],
 
 Le contenu de son profil ne sera plus caché.]=],
 	["MATURE_FILTER_ADD_TO_SAFELIST_TT"] = "Ajouter ce profil à la |cffffffffliste verte mature|r et afficher le contenu mature.",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "Ajouter ce profil à la |cffffffffliste blanche mature|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Ajouter à la |cffffffffliste blanche mature|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Confirmez que vous souhaitez ajouter %s à la |cffffffffliste blanche mature|r.
-
-Le contenu de son profil ne sera plus caché.]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Ajouter ce profil à la |cffffffffliste blanche mature|r et afficher le contenu mature.",
 	["MATURE_FILTER_EDIT_DICTIONARY"] = "Éditer le dictionnaire",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Ajouter",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Ajouter un nouveau mot au dictionnaire",
@@ -550,12 +527,6 @@ Un profil marqué comme contenant du contenu mature aura son infobulle censurée
 
 Le contenu de son profile sera à nouveau masqué.]=],
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "Retirer ce profil de la |cffffffffliste verte mature|r et masquer à nouveau le contenu.",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Retirer ce profil de la |cffffffffliste blanche mature|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Retirer ce profil de la |cffffffffliste blanche mature|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Confirmez que vous souhaitez retirer %s de la |cffffffffliste blanche mature|r.
-
-Le contenu de son profile sera à nouveau masqué.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Retirer ce profil de la |cffffffffliste blanche mature|r et masquer à nouveau le contenu.",
 	["MATURE_FILTER_STRENGTH"] = "Niveau du filtre mature",
 	["MATURE_FILTER_STRENGTH_TT"] = [=[Défini le niveau du filtre mature.
 
@@ -925,7 +896,6 @@ Si vous ne souhaitez pas que TRP3 soit votre addon MSP et ne voulez plus voir ce
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Ajouter un cadre",
 	["REG_PLAYER_ABOUT_EMPTY"] = "Aucune description",
 	["REG_PLAYER_ABOUT_HEADER"] = "Tag de titre",
-	["REG_PLAYER_ABOUT_MUSIC"] = "Thème du personnage",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Jouer le thème",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Désélectionner le thème",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Choisir le thème du personnage",
@@ -939,17 +909,6 @@ Si vous ne souhaitez pas que TRP3 soit votre addon MSP et ne voulez plus voir ce
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Votre texte ici",
 	["REG_PLAYER_ABOUT_TAGS"] = "Outils de mise en page",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Thème inconnu",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "Je n'aime pas ce contenu",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[Aucun personnage lié à ce profil ne semble être connecté.
-Voulez-vous forcer Total RP 3 à envoyer tout de même votre vote ?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Envoi de votre vote à %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "Votre vote à été envoyé à %s !",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "Votre vote est totalement anonyme et ne peut être vu que par ce joueur.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "Vous ne pouvez voter que si le joueur est connecté.",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "J'aime ce contenu",
-	["REG_PLAYER_ABOUT_VOTES"] = "Statistiques",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s aiment ce contenu
-|cffff0000%s n'aiment pas ce contenu]=],
 	["REG_PLAYER_ABOUTS"] = "À propos de %s",
 	["REG_PLAYER_ADD_NEW"] = "Créer nouveau",
 	["REG_PLAYER_AGE"] = "Âge",
@@ -1456,151 +1415,6 @@ Total RP n'est pas responsable du contenu des liens partagés.]=],
 	["UNIT_POPUPS_MODULE_NAME"] = "Menus d'unités",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Ouvrir profil",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Options roleplay",
-	["WHATS_NEW_23"] = [=[# Liste des changements de la version 1.6.0
-
-## Notes personnelles
-
-Vous pouvez désormais prendre des notes personnelles depuis l'addon !
-
-Ces notes peuvent être écrites sur votre propre profil (si vous désirez prendre des notes génériques pour votre personnage), ou sur le profil de quelqu'un d'autre (le champ supérieur étant lié à votre profil actuel, le champ inférieur étant commun à tous vos profils). Ces notes sont privées, personne d'autre que vous ne peut les voir.
-
-{img:Interface\AddOns\totalRP3\resources\160-1.tga:480:480}
-
-Pour accéder aux notes personnelles, cliquez simplement sur le nouveau bouton Notes sur la fenêtre de cible, ou ouvrez un profil et cliquez sur l'onglet Notes.
-
-{img:Interface\AddOns\totalRP3\resources\160-2.tga:240:120}
-
-Le registre a aussi reçu une option pour n'afficher que les profils pour lesquels vous avez écrit des notes.
-
-{img:Interface\AddOns\totalRP3\resources\160-3.tga:480:120}
-
-## Ajouté
-
-- Ajout du format HTML pour les modèles 2 et 3 de l'onglet À propos. Vous pouvez désormais utiliser l'ensemble des balises lorsque vous utilisez ces modèles pour formatter leurs champs, en utilisant la barre d'outils désormais visible pour tous les modèles.
-
-{img:Interface\AddOns\totalRP3\resources\160-4.tga:480:480}
-
-- Ajout de la compatibilité avec d'autres addons RP pour les traits de personnalité et les balises HTML.
-
-## Modifié
-
-- Les boutons "Signaler un profil" renvoient désormais tous vers le [site d'assistance de Blizzard](https://battle.net/support/help/product/wow/197/1501/solution), la fonctionnalité de signalement en jeu précédemment ajoutée n'étant pas une méthode valide pour signaler l'abus par addon. La fenêtre affiche toujours une date et heure de réception du profil que vous pouvez fournir au service client de Blizzard afin de les aider à identifier l'offense.
-
-## Corrigé
-
-- Correction d'une erreur pouvant empêcher l'addon de charger.
-- Correction d'une erreur de compatibilité pour le modèle 3 si la langue de l'addon n'était pas anglaise.
-
-## Supprimé
-
-- Suppression de la sélection automatique du texte complet après un clic dans une zone de texte (champs À propos, Actuellement, Informations HRP...)
-- Suppression du code pour le poisson d'avril (RP.IO ainsi que les noms arc-en-ciel de compagnons accidentellement oubliés l'an dernier).]=],
-	["WHATS_NEW_23_1"] = [=[# Liste des changements de la version 1.6.1
-
-## Refonte du système de musiques
-
-- Des changements techniques du patch 8.2 ont requis de modifier la manière de gérer la musique dans l'addon. **Ceci signifie que la mise à jour est nécessaire pour pouvoir jouer des musiques dans l'addon.** Ce changement devrait être invisible et rétrocompatible (les thèmes musicaux de profils provenant de versions antérieures devraient pouvoir être jouer sans problème).
-- Ceci a permis l'ajout de musiques précédemment indisponibles (*fait signe aux musiques des elfes du vide*).
-- La durée de toutes les musiques est désormais visible dans l'infobulle au survol d'une musique dans la liste.
-
-## Modifié
-
-- Les réglages pour augmenter le contraste des couleurs dans les infobulles et la fenêtre de discussion ont été consolidés en un seul réglage dans les paramètres généraux. Ce réglage s'applique dans des endroits supplémentaires, comme les infobulles du scan sur la carte.
-
-## Corrigé
-
-- L'ancrage pour le bouton de scan de la carte peut désormais être réglé correctement.
-- Correction d'un échange de titres de menu déroulants pour les titres/paragraphes.
-- Correction d'un message d'erreur pouvant être causé par d'autres addons utilisant mal certains fonctions de l'API de WoW.]=],
-	["WHATS_NEW_23_10"] = [=[# Liste des changements de la version 1.6.10
-
-## Ajouté
-
-- Ajout de balises de discussion %xt and %xf. Ceux-ci seront automatiquement remplacés par le nom RP de votre cible et focalisation respectivement lorsque vous envoyez un message.
-- Ajout de paramètres pour ajuster la taille des textes dans l'onglet A propos.
-
-]=],
-	["WHATS_NEW_23_2"] = [=[# Liste des changements de la version 1.6.2
-
-## Ajouté
-
-- Ajout de 328 icônes et 20 images du patch 8.2.
-- Ajout d'un indicateur au navigateur de musiques lorsque le nom par défaut d'une musique diffère du nom correspondant au filtre actuel.
-
-## Corrigé
-
-- Correction de problèmes dans l'échange de données de musique entre TRP3 et MRP.=
-- Correction d'une duplication de lines dans l'infobulle du bouton de scan de la carte.
-- Corrections additionnelles potentielles au problème lié à la carte du monde à la connexion.]=],
-	["WHATS_NEW_23_4"] = [=[# Liste des changements de la version 1.6.4
-
-Nous sommes au courant d'un bug depuis le patch 8.2 bloquant parfois **l'utilisation des objets de quête depuis la liste d'objectifs**. Nous n'avons pas encore de correctif, mais **vous pouvez taper /reload lorsque le message d'erreur apparaît** pour corriger temporairement le problème. Nos excuses pour le désagrément.
-
-## Support pour WoW: Classic
-
-- Total RP 3: Classic est désormais disponible en téléchargement séparé sur CurseForge et WoWInterface ! Assurez-vous d'installer cette version à la place de la version standard de Total RP 3 si vous prévoyez de faire du jeu de rôle sur WoW: Classic.
-- Les points importants à noter pour la version Classic :
-  - Quelques icônes ont été changées dans l'addon pour remplacer des icônes manquantes dans Classic.
-  - Les profils pour montures et familiers pacifiques ont été désactivés, Blizzard ne nous ayant pas fourni d'accès à la beta. Nous les réimplémenterons dès que possible.
-  - Total RP 3: Extended ne sera pas porté pour Classic à sa sortie. Nous évaluerons à l'avenir l'intérêt d'un portage.
-
-## Modifié
-
-- Lors d'un scan de personnages sur la carte, les personnages avec lesquels vous avez une relation apparaîtront désormais au-dessus des autres.]=],
-	["WHATS_NEW_23_6"] = [=[
-# Liste des changements de la version 1.6.6
-
-## Ajouté
-
-- Ajout de commandes pour changer votre statut roleplay, utilisables dans des macros. Vous pouvez désormais utiliser `/trp3 status ic` pour passer RP, `/trp3 status ooc` pour passer HRP, ou `/trp3 status toggle` pour inverser votre statut.
-- Ajout d'un paramètre de discussion pour afficher un indicateur HRP à côté du nom dans la fenêtre de discussion.
-- Ajout d'un paramètre pour cacher de bouton de scan de la carte si aucun scan n'est disponible.
-- Ajout d'un champ de langage de jeu de rôle sur la fenêtre principale.
-  - Ce paramètre est défini par profil, choisit le langage de l'addon par défaut, et vous permet d'indiquer la langage dans lequel vous effectuez du jeu de rôle.
-  - Si le langage de votre addon ne correspond pas au langage de jeu de rôle d'un autre joueur, un drapeau en bas de l'infobulle indique leur langage de jeu de rôle.
-  - Ce changement est principalement destiné aux rôlistes sur Classic, du fait de l'absence de serveurs RP non-anglais.
-- Ajout de boutons pour changer l'affichage des casques et capes pour Classic.
-
-## Modifié
-
-- Le paramètre de mode de guerre a été renommé pour Classic pour référencer le mode PvP.
-
-## Corrigé
-
-- Correction de problèmes lorsque le module de fenêtre de cible était désactivé.
-- Correction d'un bug causant l'apparition de profils Mary-Sue Protocol en double dans le registre en désélectionnant "Ce royaume uniquement".
-- Correction de quelques icônes manquantes sur Classic (icônes par défaut du modèle 3, icônes pour `/trp3 roll`)
-- Correction d'un bug avec l'utilisation du paramètre "Clic droit pour ouvrir un profil" sur Classic.
-
-]=],
-	["WHATS_NEW_23_7"] = [=[# Liste des changements de la version 1.6.7
-
-## Ajouté
-
-- Ajout d'un paramètre de détection de dialogue dans les emotes pour les colorer automatiquement.
-- Ajout de 7 icones et 1 musique du patch 8.2.5.
-
-## Modifié
-
-- La liste de profils de compagnons accessible via la fenêtre de cible est désormais triée par ordre alphabétique, et "Créer nouveau profil" a été déplacé hors de cette liste.]=],
-	["WHATS_NEW_23_9"] = [=[# Liste des changements de la version 1.6.9
-
-## Ajouté
-
-- Ajout de 61 musiques, 5 images et 223 icones sur Retail du patch 8.3.
-- Ajout de 177 images sur Retail de patchs précédents.
-- Ajout d'une icone sur Classic du patch 1.13.3.
-- Ajout des icones par défaut pour Vulpérins et Mécagnomes.
-
-## Modifié
-
-- L'icone par défaut pour les Kul Tirans femelles a été modifiée.
-
-## Corrigé
-
-- Le scan de personnages sur Classic a été modifié pour pallier au manque de tests de Blizzard.
-- Correction d'un souci lors de l'utilisation d'une icone avec une apostrophe dans le nom.
-- Le filtre du navigateur d'images gère désormais correctement certains caractères spéciaux.]=],
 	["WHATS_NEW_25_1"] = [=[# Liste des changements de la version 2.4
 
 ## Ajouté
