@@ -41,7 +41,6 @@ L = {
 	["CL_IMPORT_COMPANION"] = "Import companion profile",
 	["CL_IMPORT_GLANCE"] = "Import at-first-glance",
 	["CL_IMPORT_PROFILE"] = "Import profile",
-	["CL_MAKE_IMPORTABLE"] = "Make importable",
 	["CL_MAKE_IMPORTABLE_BUTTON_TEXT"] = "Make importable",
 	["CL_MAKE_IMPORTABLE_SIMPLER"] = [=[Make this %s link importable?
 
@@ -201,6 +200,22 @@ Please keep in mind that changing those settings might alter your experience wit
 
 |cffccccccNote: This feature is disabled during combat.|r]=],
 	["CO_CURSOR_TITLE"] = "Cursor interactions",
+	["CO_DATE_FORMAT"] = "Date format",
+	["CO_DATE_FORMAT_HELP"] = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
+	["CO_DATE_FORMAT_SPEC_a"] = "%1$s: Abbreviated weekday name (%2$s)",
+	["CO_DATE_FORMAT_SPEC_A"] = "%1$s: Full weekday name (%2$s)",
+	["CO_DATE_FORMAT_SPEC_b"] = "%1$s: Abbreviated month name (%2$s)",
+	["CO_DATE_FORMAT_SPEC_B"] = "%1$s: Full month name (%2$s)",
+	["CO_DATE_FORMAT_SPEC_d"] = "%1$s: Day of the month (%2$s)",
+	["CO_DATE_FORMAT_SPEC_ESC"] = "%1$s: The literal character '%%'",
+	["CO_DATE_FORMAT_SPEC_H"] = "%1$s: Hour using a 24-hour clock (%2$s)",
+	["CO_DATE_FORMAT_SPEC_I"] = "%1$s: Hour using a 12-hour clock (%2$s)",
+	["CO_DATE_FORMAT_SPEC_m"] = "%1$s: Month (%2$s)",
+	["CO_DATE_FORMAT_SPEC_M"] = "%1$s: Minute (%2$s)",
+	["CO_DATE_FORMAT_SPEC_p"] = "%1$s: Either 'am' or 'pm' (%2$s)",
+	["CO_DATE_FORMAT_SPEC_S"] = "%1$s: Second (%2$s)",
+	["CO_DATE_FORMAT_SPEC_y"] = "%1$s: Two-digit year (%2$s)",
+	["CO_DATE_FORMAT_SPEC_Y"] = "%1$s: Full year (%2$s)",
 	["CO_GENERAL"] = "General settings",
 	["CO_GENERAL_BROADCAST"] = "Use broadcast channel",
 	["CO_GENERAL_BROADCAST_C"] = "Broadcast channel name",
@@ -245,10 +260,6 @@ If not, the language will be changed on the next connection.]=],
 This option is particularly useful to avoid abuses of the location system to track you.]=],
 	["CO_LOCATION_DISABLE_OOC"] = "Disable location when OOC",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "You will not respond to location requests from other players when you've set your RP status to Out Of Character.",
-	["CO_LOCATION_DISABLE_PVP"] = "Disable location when flagged for PvP",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[You will not respond to location requests from other players when you are flagged for PvP.
-
-This option is particularly useful on PvP realms where players from the other faction can abuse the location system to track you.]=],
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "Disable location when in War Mode",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[You will not respond to location requests from other players when you have War Mode enabled and you are outside of a |cff69CCF0Sanctuary|r.
 
@@ -298,8 +309,6 @@ Possible status:
 |cffff9900When disabling a module, a UI reload is necessary.]=],
 	["CO_MODULES_VERSION"] = "Version: %s",
 	["CO_MSP"] = "Mary Sue Protocol",
-	["CO_MSP_T3"] = "Use template 3 only",
-	["CO_MSP_T3_TT"] = "Even if you choose another \"about\" template, the template 3 will always be used for MSP compatibility.",
 	["CO_REGISTER"] = "Register settings",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "Header 1 text size",
 	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Size of the text between {h1} tags. Default: %s",
@@ -310,12 +319,6 @@ Possible status:
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Paragraph text size",
 	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "Size of the text outside of header tags. Default: %s",
 	["CO_REGISTER_ABOUT_SETTINGS"] = "\"About\" settings",
-	["CO_REGISTER_ABOUT_VOTE"] = "Use voting system",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "Enables the voting system, allowing you to vote ('like' or 'unlike') for others' descriptions and allowing them to do the same for you.",
-	["CO_REGISTER_AUTO_ADD"] = "Auto add new players",
-	["CO_REGISTER_AUTO_ADD_TT"] = [=[Automatically add new players you encounter to the register.
-
-|cffff0000Note: Disabling this option will prevent you from receiving any new profiles from players you have not encountered yet! Use this option if you do not want to receive new profiles form other players, only updates from players you have already seen.]=],
 	["CO_REGISTER_AUTO_PURGE"] = "Auto purge directory",
 	["CO_REGISTER_AUTO_PURGE_0"] = "Disable purge",
 	["CO_REGISTER_AUTO_PURGE_1"] = "After %s day(s)",
@@ -522,12 +525,6 @@ to others that you are a beginner roleplayer.]=],
 
 The content of their profiles will no longer be hidden.]=],
 	["MATURE_FILTER_ADD_TO_SAFELIST_TT"] = "Add this profile to the |cffffffffmature safelist|r and reveal the mature content found inside.",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "Add this profile to the |cffffffffmature white list|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Add to the |cffffffffmature white list|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Confirm that you want to add %s to the |cffffffffmature white list|r.
-
-The content of their profiles will no longer be hidden.]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Add this profile to the |cffffffffmature white list|r and reveal the mature content found inside.",
 	["MATURE_FILTER_EDIT_DICTIONARY"] = "Edit custom dictionary",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Add",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Add a new word to the dictionary",
@@ -557,12 +554,6 @@ A mature profile will have a muted tooltip and you will have to confirm that you
 
 The content of their profiles will be hidden again.]=],
 	["MATURE_FILTER_REMOVE_FROM_SAFELIST_TT"] = "Remove this profile from the |cffffffffmature safelist|r and hide again the mature content found inside.",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Remove this profile from the |cffffffffmature white list|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Remove from the |cffffffffmature white list|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Confirm that you want to remove %s from the |cffffffffmature white list|r.
-
-The content of their profiles will be hidden again.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Remove this profile from the |cffffffffmature white list|r and hide again the mature content found inside.",
 	["MATURE_FILTER_STRENGTH"] = "Mature filter strength",
 	["MATURE_FILTER_STRENGTH_TT"] = [=[Set the strength of the mature filter.
 
@@ -939,7 +930,6 @@ If you don't want TRP3 to be your MSP addon and don't want to see this alert aga
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Add a frame",
 	["REG_PLAYER_ABOUT_EMPTY"] = "No description",
 	["REG_PLAYER_ABOUT_HEADER"] = "Title tag",
-	["REG_PLAYER_ABOUT_MUSIC"] = "Character theme",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Play theme",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Unselect theme",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Select character theme",
@@ -953,17 +943,6 @@ If you don't want TRP3 to be your MSP addon and don't want to see this alert aga
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Your text here",
 	["REG_PLAYER_ABOUT_TAGS"] = "Formatting tools",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Unknown theme",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "I don't like this content",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[No characters linked to this profile seem to be online.
-Do you want to force Total RP 3 to send your vote anyway ?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Sending your vote to %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "Your vote has been sent to %s !",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "Your vote is totally anonymous and can only be seen by this player.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "You can vote only if the player is online.",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "I like this content",
-	["REG_PLAYER_ABOUT_VOTES"] = "Statistics",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s like this content
-|cffff0000%s dislike this content]=],
 	["REG_PLAYER_ABOUTS"] = "About %s",
 	["REG_PLAYER_ADD_NEW"] = "Create new",
 	["REG_PLAYER_AGE"] = "Age",
@@ -1464,404 +1443,6 @@ Total RP is not responsible for links leading to harmful content.]=],
 	["UNIT_POPUPS_MODULE_NAME"] = "Unit Popups",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Open Profile",
 	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Roleplay Options",
-	["WHATS_NEW_23"] = [=[
-# Changelog version 1.6.0
-
-## Personal notes
-
-You can now write personal notes inside the addon !
-
-These notes can either be written on your own profile (if you wish to take generic notes for your character), or on someone else's profile (the top field being tied to your current profile, the bottom field being common to all your profiles). These notes are obviously private, nobody else but you can see them.
-
-{img:Interface\AddOns\totalRP3\resources\160-1.tga:480:480}
-
-To access personal notes, simply click on the new Notes button on the target frame, or open a profile and click on the Notes tab.
-
-{img:Interface\AddOns\totalRP3\resources\160-2.tga:240:120}
-
-The register also received a checkbox to only display profiles on which you wrote notes.
-
-{img:Interface\AddOns\totalRP3\resources\160-3.tga:480:120}
-
-## Added
-
-- Added HTML support for About templates 2 and 3. You can now use the full array of HTML tags while using those templates to format their fields, using the toolbar which is now visible for all templates.
-
-{img:Interface\AddOns\totalRP3\resources\160-4.tga:480:480}
-
-- Added compatibility with other RP addons for personality traits and HTML tags.
-
-## Changed
-
-- The "Report profile" buttons will now both link to the [support website's page on harassment via addons](https://battle.net/support/help/product/wow/197/1501/solution), as the in-game report feature previously added was an invalid method to report addon abuse. The popup will still show a timestamp for the profile's reception, which you can provide to Blizzard CS to help them track the offense.
-
-## Fixed
-
-- Fixed an error which could prevent the addon from loading.
-- Fixed a compatibility issue for template 3 if the addon locale was not English.
-
-## Removed
-
-- Removed auto-highlighting of the full text when entering focus of a text area (About fields, Currently, OOC Info...)
-- Removed April Fools' code (including the forgotten rainbow companion names).
-
-]=],
-	["WHATS_NEW_23_1"] = [=[
-# Changelog version 1.6.1
-
-## Music system rework
-
-- Technical changes in patch 8.2 required us to change how music is handled by the addon. **This means the update is required for musics to work.** This change should be seamless and backwards compatible (music themes from profiles coming from outdated versions should still play fine).
-- This allowed for the addition of musics previously unavailable (looking at you, void elf musics).
-- The duration of all musics should now be visible in the music browser line tooltips.
-
-## Changed
-
-- Settings to increase color contrast in tooltips and chat have been consolidated in a single setting for both which can be found in the General settings. It also applies in more places, like the map scan tooltips.
-
-## Fixed
-
-- The anchor for the map scan button can now properly be set.
-- Fixed a switch in Headers/Paragraph dropdown titles
-- Fixed an error message that could be caused by other addons misusing official API functions.
-
-]=],
-	["WHATS_NEW_23_10"] = [=[
-# Changelog version 1.6.10
-
-## Added
-
-- Added %xt and %xf chat tokens. These will automatically be replaced by the RP name of your target and focus respectively when sending a message.
-- Added settings to adjust About font sizes.
-
-]=],
-	["WHATS_NEW_23_11"] = [=[
-	# Changelog version 1.6.11
-## Added
-- Added new chat tokens for first and last names: %xtf (Target's first name), %xtl (Target's last name), %xff (Focus' first name), %xfl (Focus' last name).
-## Fixed
-- Fixed an issue when trying to add a chat link to an empty chatbox.
-- Fixed a compatibility issue with PallyPower.
-]=],
-	["WHATS_NEW_23_12"] = [=[
-# Changelog version 1.6.12
-
-## Fixed
-
-- Tentatively fixed an issue with tooltip lines.
-- Fixed an issue with the residence button on Classic.
-
-]=],
-	["WHATS_NEW_23_2"] = [=[
-# Changelog version 1.6.2
-
-## Added
-
-- Added 328 icons and 20 images from patch 8.2.
-- Added an indicator to the music browser when the default name of a music differs from the one matching the current filter.
-
-## Fixed
-
-- Fixed issues in the music data transfer between TRP and MRP.
-- Fixed an issue with duplicated lines on the map scan button tooltip.
-- Further speculative fixes to the map issue on login.
-
-]=],
-	["WHATS_NEW_23_3"] = [=[
-# Changelog version 1.6.3
-
-## Changed
-
-- Companion tooltips will now adjust contrast for the custom color if the setting is enabled.
-
-## Fixed
-
-- Fixed a companion tooltip error when the API fails to return the pet type.
-- Fixed an issue which could make the toolbar appear above the world map.
-- Fixed an anchoring error with the target frame.
-
-]=],
-	["WHATS_NEW_23_4"] = [=[
-# Changelog version 1.6.4
-
-We are aware of a current issue on Retail causing **quest item usage from the objective tracker** to sometimes fail. While we do not have a fix for it just yet, **typing /reload after getting the error message** temporarily fixes the issue. Sorry for the inconvenience.
-
-## WoW: Classic support
-
-- Total RP 3: Classic is now available as a separate download on CurseForge and WoWInterface! Be sure to install it instead of the retail version of Total RP 3 if you plan on roleplaying in WoW: Classic.
-- Important points to be aware of for the Classic version:
-  - A few icons have been changed across the addon to replace missing icons in Classic.
-  - Companion profiles have been disabled for mounts and non-combat pets, as Blizzard did not provide us with beta access. We will work on implementing them back as soon as possible.
-  - Total RP 3: Extended will not be ported to Classic at launch. We will be evaluating if a Classic port makes sense for us to do at a later date.
-
-## Changed
-
-- When using the character map scan, characters with which you have set a relationship will now appear on top of the others.
-
-]=],
-	["WHATS_NEW_23_5"] = [=[
-# Changelog version 1.6.5
-
-## Added
-
-- Added Total RP 3: Extended version number alongside Total RP 3 version number at the bottom of the tooltip.
-
-## Fixed
-
-- Fixed an error when someone executes a scan in your zone. (Classic only)
-- Fixed a potential error when saving a glance slot.
-
-]=],
-	["WHATS_NEW_23_6"] = [=[
-# Changelog version 1.6.6
-
-## Added
-
-- Added slash commands to change your roleplay status, which you can use in macros. You can now use `/trp3 status ic` to get in character, `/trp3 status ooc` to get out of character, or `/trp3 status toggle` to switch status.
-- Added a chat setting to display the OOC indicator next to the name in chat.
-- Added a setting to hide the map scan button if no scan is available.
-- Added a roleplay language field to the main dashboard.
-  - This setting is profile-based, defaults to your addon language, and allows you to indicate the language you're roleplaying in.
-  - If your addon language doesn't match a player's roleplaying language, you'll see a flag at the bottom of their tooltip indicating their roleplaying language.
-  - This change is mainly aimed at Classic roleplayers, as only English RP realms were made.
-- Added back buttons to toggle helmet and cloak display for Classic.
-
-## Changed
-
-- Renamed the war mode setting to PvP mode for Classic.
-
-## Fixed
-
-- Fixed issues when the target bar module was disabled.
-- Fixed an issue causing duplicate Mary-Sue Protocol profiles to appear in the register when unchecking "This realm only".
-- Fixed a few remaining missing icons for Classic (default template 3 icons and `/trp3 roll` icons)
-- Fixed an issue when using the "Right-click to open profile" setting on Classic.
-
-]=],
-	["WHATS_NEW_23_7"] = [=[
-# Changelog version 1.6.7
-
-## Added
-
-- Added a setting to detect speech in emotes and automatically color it.
-- Added 7 icons and 1 music from patch 8.2.5.
-
-## Changed
-
-- The companion profiles list accessed through the target frame is now alphabetically sorted, and "Create new profile" has been moved out of it.
-
-]=],
-	["WHATS_NEW_23_8"] = [=[
-# Changelog version 1.6.8
-
-## Changed
-
-- **Classic:** Due to 1.13.3 API changes, the map scan has been modified to find characters in yell range only. It will only show on the map you're in. **Only characters using Total RP 3 version 1.6.8 will be visible on the scan.**
-
-*Reminder : You can disable your scan appearance by unchecking "Register settings > Location settings > Enable character location. Please don't hold on the update for visibility reasons.*
-
-- Speech detection will now only apply to emotes (including NPC emotes).
-
-## Fixed
-
-- Fixed a rare issue where the addon loading process would be interrupted by a setting key unable to be read.
-
-]=],
-	["WHATS_NEW_23_9"] = [=[
-# Changelog version 1.6.9
-
-## Added
-
-- Added 61 musics, 5 images and 223 icons on Retail from patch 8.3.
-- Added 177 images on Retail from previous patches.
-- Added 1 icon on Classic from patch 1.13.3.
-- Added default icons for Vulperas and Mechagnomes.
-
-## Changed
-
-- Changed default Kul Tiran female icon.
-
-## Fixed
-
-- Added workaround to Classic map scan to handle Blizzard's lack of tests.
-- Fixed an issue when trying to use icons with an apostrophe in their name.
-- Image browser filter now correctly handles some special characters.
-
-]=],
-	["WHATS_NEW_24_1"] = [=[# Changelog version 2.0
-
-## Added
-
-- Added a default profile.
-  - This profile cannot be modified and only contains basic character information (name, race, class).
-  - New characters will now be bound to the default profile instead of creating a new one automatically.
-  - A new profile is still required to add custom information.
-
-- Added a search bar in the character and companion profiles lists.
-
-## Fixed
-
-- Fixed a conflict between OOC detection and Russian declensions.
-- Fixed an issue related to Prat + WIM chat history.
-
-## Changed
-
-- Removed a personality trait preset.
-- Improved communication protocol to reduce profile transfer size.
-- Various compatibility changes related to 9.0 API modifications.
-
-]=],
-	["WHATS_NEW_24_10"] = [=[# Changelog version 2.3.7
-
-This version is updated for TBC Classic 2.5.2.
-
-# Fixed
-
-- 9.1 icons and musics have been properly added for retail.
-- Fixed an issue with TRP3: Extended creation exchange failing in very specific cases.
-
-]=],
-	["WHATS_NEW_24_13"] = [=[# Changelog version 2.3.12
-
-Classic users: Companion profiles may have to be relinked due to API changes.
-
-## Added
-
-- Added settings to change the colors you see for other players' tooltips.
-- Added 5 new music files from patch 9.2.7, as well as data for WotLK Classic.
-- Added macro conditionals support for the "/trp3 profile" command.
-- Added a tooltip to view settings texts in full even if they are too long.
-- Added Evoker class color preset to the color picker.
-
-## Fixed
-
-- Fixed an issue with tooltip color rendering when using some Unicode characters.
-- Fixed inconsistent linebreaks in Template 1.
-- Removed some unwanted modifications in profiles.
-- Fixed a potential crash when reordering miscellaneous information lines.
-- Added a delay before joining the broadcast channel to reduce issues with chat channels swapping numbers/colors.
-- Fixed dead links in "About Total RP 3".
-
-]=],
-	["WHATS_NEW_24_14"] = [=[# Changelog version 2.3.13
-
-	## Fixed
-
-		- Fixed missing death knight icons on Classic WotLK.
-		- Fixed some more profile modifications.
-
-]=],
-	["WHATS_NEW_24_2"] = [=[# Changelog version 2.1
-
-## Added
-
-- Added 113 images, 1437 icons and 613 musics from patch 9.0.
-- Added modifier to the dice roll output text.
-- Added keybinding options for opening the target profile and toggling RP status.
-
-## Fixed
-
-- Fixed an issue with the default tooltip appearing sometimes despite "Hide original tooltip" setting being checked.
-- Fixed an issue with the TRP3 tooltip being offset while the default tooltip is hidden.
-- Fixed an issue with the TRP3 tooltip briefly overlapping the default tooltip if quickly hovering from a player to a spell/item.
-- Fixed an issue when trying to open the Prat modules window while TRP3 is running.
-- Fixed a display issue with the NPC speech frame background.
-- Fixed alphabetical sorting when hovering a cluster of players in the map scan.
-- Potential fix for the guide channel being swapped with the xtensionxtooltip2 channel.
-
-]=],
-	["WHATS_NEW_24_3"] = [=[# Changelog version 2.2
-
-## Added
-
-- Added Pronouns preset in Additional information. When using this preset, the pronouns will be shown on your tooltip.
-- Added support for companion profiles on the secondary pet summoned with the hunter talent Animal Companion.
-- Added a hunter pet browser when binding a companion profile through the profile list.
-
-## Fixed
-
-- Fixed chat link tooltips being invisible when first opening one.
-- Fixed formatting issues with chat links.
-- Fixed an issue causing the battle pet browser to show an incomplete list if the battle pet collection had search filters applied.
-- Fixed invalid icons in the About tab when receiving a profile from other RP addons on Classic.
-- Fixed incorrect information on the tooltip of the NPC speech prefix setting.
-- Fixed an issue with Tukui chat history.
-
-]=],
-	["WHATS_NEW_24_4"] = [=[# Changelog version 2.3
-## Added
-- Added a module to customize nameplates with RP information. At present, **only default Blizzard nameplates and KuiNameplates** are supported.
-*As it is now redundant, the TRP3: KuiNameplates module will now disable itself and should be uninstalled.*
-- Added support for companion profiles in Classic.
-- Added entries on unit frames right-click menu to open profile + change roleplay status.
-- Added a window to copy character names linked to a profile when right-clicking it in the directory list.
-- Added an option to disable profile tooltips in instances.
-## Changed
-- The URL copy window now closes after pressing the copy shortcut.
-- The default profile no longer shows the amount of characters bound to it.
-- Cropped characteristic fields will now show a tooltip on hover with the full content of the field.
-- The description editor will now receive input focus after clicking any formatting tool button.
-- Customized names in chat frames that have excessively large lengths will now be cropped.
-- Custom colors for personality traits now apply to attribute names.
-## Fixed
-- Fixed an issue with chat customization not properly registering on login while using Prat.
-- Fixed missing sound cue when opening/closing the main window.
-- Fixed an issue that could cause PvP flagged players to show their location on map scans in Classic.
-- Fixed missing vulpera language icon.
-]=],
-	["WHATS_NEW_24_5"] = [=[# Changelog version 2.3.2
-
-## Added
-
-- Added settings for right-click options on unit frames and chat names.
-
-## Fixed
-
-- Fixed incorrect names showing up on Blizzard NPC nameplates.
-- Fixed display issue with KuiNameplates tank mode.
-- Fixed a dependency issue preventing chat customization from working when using Prat and Listener.
-- Fixed localization not being properly applied to various settings.
-
-]=],
-	["WHATS_NEW_24_6"] = [=[# Changelog version 2.3.3
-
-## Added
-- Added tooltip fields for character zone and health. These fields can be toggled in Tooltip settings.
-  - The zone field will only show when the character is in another zone (if looking at a party member for instance).
-  - The health field will only show if the character is not full health. It is disabled by default.
-
-## Fixed
-- Fixed a few issues with profile transfer.
-- Fixed Kui name-only RP nameplates not updating when level text and health were both disabled.
-- Fixed inability to set a pet profile when the pet is first summoned.
-- Fixed TRP tooltip overlapping with the main tooltip if the profile has been caught by the mature filter.
-- Fixed TRP chat links breaking from emote/OOC/speech detection.
-- Fixed Currently/OOC fields not properly hiding on tooltips if they only contained whitespaces.
-
-]=],
-	["WHATS_NEW_24_8"] = [=[# Changelog version 2.3.5
-
-## Added
-
-- Added support for Burning Crusade Classic.
-
-## Fixed
-
-- Fixed several performance issues when requesting character profiles.
-
-	]=],
-	["WHATS_NEW_24_9"] = [=[# Changelog version 2.3.6
-
-## Added
-
-- Added 323 new icons, 7 images and 138 new music files from patch 9.1.0.
-
-## Removed
-
-- Removed the roleplay language flag.
-- Fixed a bug with chat channels on Classic.
-
-	]=],
 	["WHATS_NEW_25_1"] = [=[# Changelog version 2.4
 ## Added
 - Added support for Retail 10.0.0.
@@ -1893,6 +1474,21 @@ Classic users: Companion profiles may have to be relinked due to API changes.
 - Fixed the "Hide immediately instead of fading" tooltip setting.
 - Fixed another issue with water elemental pets not being valid targets to bind a companion profile to in WotLK Classic
 - Fixed an issue with colorblind mode preventing companion tooltips from displaying.
+
+]=],
+	["WHATS_NEW_25_4"] = [=[# Changelog version 2.4.3
+
+## Added
+
+- Added a setting to customize date formats displayed in the directory. (Thanks to Kisis for the initial work on it)
+  - The default format now respects regional formats based on current game client.
+  - Total RP 3: Extended will be updated to support this at a later date.
+
+## Fixed
+
+- Fixed tooltipData error showing since 10.0.2.
+- Fixed map scan not working on WotLK Classic.
+- Fixed potential taint issues leading to blocked actions.
 
 ]=]
 }
