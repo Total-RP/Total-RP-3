@@ -1,5 +1,5 @@
-## Interface: 100002
-## Interface-Wrath: 30400
+## Interface: 100005
+## Interface-Wrath: 30401
 ## Interface-TBC: 20504
 ## Interface-Vanilla: 11403
 ## Title: Total RP 3: Data
