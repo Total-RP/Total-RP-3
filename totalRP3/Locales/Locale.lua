@@ -624,6 +624,22 @@ Possible status:
 	CO_LOCATION_DISABLE_CLASSIC_PVP_TT = "You will not respond to location requests from other players when you are flagged for PvP.\n\nThis option is particularly useful to avoid abuses of the location system to track you.",
 	CO_SANITIZER = "Sanitize incoming profiles",
 	CO_SANITIZER_TT = "Remove escaped sequences in tooltip fields from incoming profiles when TRP doesn't allow it (color, images ...).",
+	CO_DATE_FORMAT = "Date format",
+	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
+	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
+	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_B = "%1$s: Full month name (%2$s)",
+	CO_DATE_FORMAT_SPEC_d = "%1$s: Day of the month (%2$s)",
+	CO_DATE_FORMAT_SPEC_H = "%1$s: Hour using a 24-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_I = "%1$s: Hour using a 12-hour clock (%2$s)",
+	CO_DATE_FORMAT_SPEC_m = "%1$s: Month (%2$s)",
+	CO_DATE_FORMAT_SPEC_M = "%1$s: Minute (%2$s)",
+	CO_DATE_FORMAT_SPEC_p = "%1$s: Either 'am' or 'pm' (%2$s)",
+	CO_DATE_FORMAT_SPEC_S = "%1$s: Second (%2$s)",
+	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
+	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
+	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- TOOLBAR AND UI BUTTONS
@@ -1447,28 +1463,6 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed an issue with chat links that could lead to blocked actions.
 
 ]],
-
-	------------------------------------------------------------------------------------------------
-	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
-	--- THEN MOVE IT UP ONCE IMPORTED
-	------------------------------------------------------------------------------------------------
-
-	CO_DATE_FORMAT = "Date format",
-	CO_DATE_FORMAT_HELP = "Format string used for date/time strings in the addon.|n|nIf left empty, this will display date/time strings in a format appropriate to the configured locale of the addon.|n|nThe following format specifiers are supported:|n|n%1$s|n|nAll other characters are treated literally.",
-	CO_DATE_FORMAT_SPEC_a = "%1$s: Abbreviated weekday name (%2$s)",
-	CO_DATE_FORMAT_SPEC_A = "%1$s: Full weekday name (%2$s)",
-	CO_DATE_FORMAT_SPEC_b = "%1$s: Abbreviated month name (%2$s)",
-	CO_DATE_FORMAT_SPEC_B = "%1$s: Full month name (%2$s)",
-	CO_DATE_FORMAT_SPEC_d = "%1$s: Day of the month (%2$s)",
-	CO_DATE_FORMAT_SPEC_H = "%1$s: Hour using a 24-hour clock (%2$s)",
-	CO_DATE_FORMAT_SPEC_I = "%1$s: Hour using a 12-hour clock (%2$s)",
-	CO_DATE_FORMAT_SPEC_m = "%1$s: Month (%2$s)",
-	CO_DATE_FORMAT_SPEC_M = "%1$s: Minute (%2$s)",
-	CO_DATE_FORMAT_SPEC_p = "%1$s: Either 'am' or 'pm' (%2$s)",
-	CO_DATE_FORMAT_SPEC_S = "%1$s: Second (%2$s)",
-	CO_DATE_FORMAT_SPEC_y = "%1$s: Two-digit year (%2$s)",
-	CO_DATE_FORMAT_SPEC_Y = "%1$s: Full year (%2$s)",
-	CO_DATE_FORMAT_SPEC_ESC = "%1$s: The literal character '%%'",
 	WHATS_NEW_25_4 = [[# Changelog version 2.4.3
 
 ## Added
@@ -1482,6 +1476,19 @@ If you wish to report %s's profile and you cannot target them you will need to o
 - Fixed tooltipData error showing since 10.0.2.
 - Fixed map scan not working on WotLK Classic.
 - Fixed potential taint issues leading to blocked actions.
+
+]],
+
+	------------------------------------------------------------------------------------------------
+	--- PLACE LOCALIZATION NOT ALREADY UPLOADED TO CURSEFORGE HERE
+	--- THEN MOVE IT UP ONCE IMPORTED
+	------------------------------------------------------------------------------------------------
+
+	WHATS_NEW_25_5 = [[# Changelog version 2.4.4
+
+## Fixed
+
+- Fixed "not currently playing" error messages sometimes showing up for players from specific realms.
 
 ]],
 
