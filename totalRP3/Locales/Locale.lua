@@ -1489,6 +1489,7 @@ If you wish to report %s's profile and you cannot target them you will need to o
 ## Fixed
 
 - Fixed "not currently playing" error messages sometimes showing up for players from specific realms.
+- Fixed "Import profile" popup not properly resetting after importing a profile.
 
 ]],
 
