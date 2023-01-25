@@ -363,7 +363,7 @@ local function onActionSelected(value, button)
 	elseif value == PROFILEMANAGER_ACTIONS.IMPORT then
 		TRP3_ProfileImport.profileID = profileID;
 		TRP3_ProfileImport:Show();
-		TRP3_ProfileExport.content.scroll.text:SetText("");
+		TRP3_ProfileImport.content.scroll.text:SetText("");
 	end
 end
 
