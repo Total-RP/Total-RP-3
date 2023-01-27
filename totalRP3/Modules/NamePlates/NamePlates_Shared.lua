@@ -368,8 +368,6 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 					local desiredState = not preferredState;
 					local effectiveState = TRP3_NamePlatesUtil.IsNameOnlyModeEnabled();
 
-					TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(desiredState)
-
 					if desiredState ~= preferredState then
 						TRP3_NamePlatesUtil.SetNameOnlyModePreferred(desiredState);
 					end
