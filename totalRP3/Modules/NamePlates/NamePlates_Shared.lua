@@ -70,7 +70,7 @@ function TRP3_NamePlatesUtil.IsNameOnlyModePreferred()
 end
 
 function TRP3_NamePlatesUtil.SetNameOnlyModePreferred(preferred)
-	return TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", preferred);
+	TRP3_API.configuration.setValue("NamePlates_EnableNameOnlyMode", preferred);
 end
 
 function TRP3_NamePlatesUtil.IsNameOnlyModeEnabled()
