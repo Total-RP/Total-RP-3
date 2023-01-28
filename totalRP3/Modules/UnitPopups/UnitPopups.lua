@@ -4,11 +4,9 @@
 local TRP3_API = select(2, ...);
 local L = TRP3_API.loc;
 
-local GenerateConfigurationPage;
+local LibDropDownExtension = LibStub:GetLibrary("LibDropDownExtension-1.0");
 
-local function ShouldIgnoreDeveloperAdvice()
-	return TRP3_API.configuration.getValue("UnitPopups_IgnoreDeveloperAdvice") or not EditModeManagerFrame;
-end
+local GenerateConfigurationPage;
 
 local function ShouldDisableOutOfCharacter()
 	return TRP3_API.configuration.getValue("UnitPopups_DisableOutOfCharacter");
@@ -30,16 +28,16 @@ local function ShouldShowHeaderText()
 	return TRP3_API.configuration.getValue("UnitPopups_ShowHeaderText");
 end
 
-local function ShouldShowSeparator()
-	return TRP3_API.configuration.getValue("UnitPopups_ShowSeparator");
-end
-
 local function ShouldShowOpenProfile()
 	return TRP3_API.configuration.getValue("UnitPopups_ShowOpenProfile");
 end
 
 local function ShouldShowCharacterStatus()
-	return TRP3_API.configuration.getValue("UnitPopups_ShowCharacterStatus");
+	-- Character status is disabled as LibDropDownExtension has a rather silly
+	-- bug where it doesn't anchor the text to the right of the check texture
+	-- correctly, leading to two overlapping one another.
+
+	return false;
 end
 
 --
@@ -60,44 +58,42 @@ function UnitPopupsModule:OnModuleInitialize()
 end
 
 function UnitPopupsModule:OnModuleEnable()
-	if ShouldIgnoreDeveloperAdvice() then
-		hooksecurefunc("UnitPopup_ShowMenu", function(...) return self:OnUnitPopupShown(...); end);
-	end
+	local MAX_DROPDOWN_LEVEL = 1;
+
+	LibDropDownExtension:RegisterEvent("OnShow", GenerateClosure(self.OnUnitPopupShown, self), MAX_DROPDOWN_LEVEL);
 end
 
-function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, menuType)
+function UnitPopupsModule:OnUnitPopupShown(dropdownMenu, _, options)
 	if not dropdownMenu or dropdownMenu:IsForbidden() then
 		return;  -- Invalid or forbidden menu.
-	elseif UIDROPDOWNMENU_MENU_LEVEL ~= 1 then
-		return;  -- We don't support submenus.
 	elseif not self:ShouldCustomizeMenus() then
 		return;  -- Menu customizations are disabled.
 	elseif ShouldDisableOnUnitFrames() and dropdownMenu:GetParent() and dropdownMenu:GetParent():IsProtected() then
 		return;  -- Parent of the menu is a protected probably-unit frame.
 	end
 
+	-- The table of options that we insert to is local to our instance of the
+	-- event registration; as such we're safe to wipe it each time the menu
+	-- is shown to prevent entries getting duplicated each time.
+
+	table.wipe(options);
+
+	local menuType = dropdownMenu.which;
 	local buttons = self:GetButtonsForMenu(menuType);
 
 	if #buttons == 0 then
 		return;  -- No buttons to be shown.
 	end
 
-	-- The top-level menu has a separator/header display before the actual
-	-- items are added. This is user-configurable to deal with cases such
-	-- as the Raider.IO addon which itself also adds unit menu options with
-	-- its own separator.
-
-	if ShouldShowSeparator() then
-		UIDropDownMenu_AddSeparator();
-	end
-
 	if ShouldShowHeaderText() then
-		UIDropDownMenu_AddButton(self.MenuButtons.RoleplayOptions);
+		table.insert(options, self.MenuButtons.RoleplayOptions);
 	end
 
 	for _, button in ipairs(buttons) do
-		UIDropDownMenu_AddButton(button, UIDROPDOWNMENU_MENU_LEVEL);
+		table.insert(options, button);
 	end
+
+	return true;
 end
 
 function UnitPopupsModule:ShouldCustomizeMenus()
@@ -159,7 +155,7 @@ end
 local function ToggleCharacterStatus(button)
 	local player = AddOn_TotalRP3.Player.GetCurrentUser();
 
-	if button.checked() then
+	if button.option.checked() then
 		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.IN_CHARACTER);
 	else
 		player:SetRoleplayStatus(AddOn_TotalRP3.Enums.ROLEPLAY_STATUS.OUT_OF_CHARACTER);
@@ -228,11 +224,6 @@ TRP3_API.module.registerModule({
 --
 
 UnitPopupsModule.Configuration = {
-	UnitPopups_IgnoreDeveloperAdvice = {
-		key = "UnitPopups_IgnoreDeveloperAdvice",
-		default = false,
-	},
-
 	DisableOutOfCharacter = {
 		key = "UnitPopups_DisableOutOfCharacter",
 		default = false,
@@ -258,11 +249,6 @@ UnitPopupsModule.Configuration = {
 		default = true,
 	},
 
-	ShowSeparator = {
-		key = "UnitPopups_ShowSeparator",
-		default = true,
-	},
-
 	ShowOpenProfile = {
 		key = "UnitPopups_ShowOpenProfile",
 		default = true,
@@ -284,27 +270,18 @@ function GenerateConfigurationPage()
 				inherit = "TRP3_ConfigParagraph",
 				title = L.UNIT_POPUPS_CONFIG_PAGE_HELP,
 			},
-			(function()
-				if ShouldIgnoreDeveloperAdvice() then
-					return {
-						inherit = "TRP3_ConfigButton",
-						title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
-						text = DISABLE,
-						OnClick = function()
-							TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
-								local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
-								TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
-								ReloadUI();
-							end);
-						end,
-					};
-				else
-					return {
-						inherit = "TRP3_ConfigParagraph",
-						title = L.UNIT_POPUPS_CONFIG_PAGE_MODULE_OUT_ORDER_SORRY_FOR_ANY_INCONVENIENCE,
-					};
-				end
-			end)(),
+			{
+				inherit = "TRP3_ConfigButton",
+				title = L.UNIT_POPUPS_CONFIG_ENABLE_MODULE,
+				text = DISABLE,
+				OnClick = function()
+					TRP3_API.popup.showConfirmPopup(L.UNIT_POPUPS_MODULE_DISABLE_WARNING, function()
+						local current = TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"];
+						TRP3_Configuration.MODULE_ACTIVATION["trp3_unitpopups"] = not current;
+						ReloadUI();
+					end);
+				end,
+			},
 			{
 				inherit = "TRP3_ConfigH1",
 				title = L.UNIT_POPUPS_CONFIG_VISIBILITY_HEADER,
@@ -314,28 +291,24 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_OUT_OF_CHARACTER_HELP,
 				configKey = "UnitPopups_DisableOutOfCharacter",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_COMBAT_HELP,
 				configKey = "UnitPopups_DisableInCombat",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_IN_INSTANCES_HELP,
 				configKey = "UnitPopups_DisableInInstances",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES,
 				help = L.UNIT_POPUPS_CONFIG_DISABLE_ON_UNIT_FRAMES_HELP,
 				configKey = "UnitPopups_DisableOnUnitFrames",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigH1",
@@ -346,29 +319,20 @@ function GenerateConfigurationPage()
 				title = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_HEADER_TEXT_HELP,
 				configKey = "UnitPopups_ShowHeaderText",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
-			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR,
-				help = L.UNIT_POPUPS_CONFIG_SHOW_SEPARATOR_HELP,
-				configKey = "UnitPopups_ShowSeparator",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
 			{
 				inherit = "TRP3_ConfigCheck",
 				title = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE,
 				help = L.UNIT_POPUPS_CONFIG_SHOW_OPEN_PROFILE_HELP,
 				configKey = "UnitPopups_ShowOpenProfile",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
 			},
-			{
-				inherit = "TRP3_ConfigCheck",
-				title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
-				help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
-				configKey = "UnitPopups_ShowCharacterStatus",
-				dependentOnOptions = { not ShouldIgnoreDeveloperAdvice() and "UnitPopups_IgnoreDeveloperAdvice" or nil },
-			},
+			-- TODO: Re-add this option when LibDropDownExtension is fixed.
+			-- {
+			-- 	inherit = "TRP3_ConfigCheck",
+			-- 	title = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS,
+			-- 	help = L.UNIT_POPUPS_CONFIG_SHOW_CHARACTER_STATUS_HELP,
+			-- 	configKey = "UnitPopups_ShowCharacterStatus",
+			-- },
 		},
 	};
 end
