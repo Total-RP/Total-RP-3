@@ -373,8 +373,11 @@ function TRP3_NamePlatesUtil.GenerateConfigurationPage()
 					end
 
 					if desiredState ~= effectiveState then
-						TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(desiredState);
-						TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+						if desiredState then
+							TRP3_NamePlatesUtil.SetNameOnlyModeEnabled(desiredState);
+						else
+							TRP3_API.popup.showConfirmPopup(L.CO_UI_RELOAD_WARNING, ReloadUI);
+						end
 					end
 
 					UpdateNameOnlyModeCheckButton(button);
