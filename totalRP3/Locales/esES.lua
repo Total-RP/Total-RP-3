@@ -41,11 +41,6 @@ L = {
 	["CL_IMPORT_COMPANION"] = "Importar perfil de compañero",
 	["CL_IMPORT_GLANCE"] = "Importar a primera vista",
 	["CL_IMPORT_PROFILE"] = "Importar perfil",
-	["CL_MAKE_IMPORTABLE"] = [=[Estás a punto de crear un link a un/a %s.
-
-¿Quieres hacer este link importable por otros jugadores? Serán capaces de copiar y usar el contenido del link.
-
-Si respondes no, sólo serán capaces de consultar el contenido del link.]=],
 	["CL_MAKE_IMPORTABLE_BUTTON_TEXT"] = "Hacer importable",
 	["CL_MAKE_IMPORTABLE_SIMPLER"] = [=[¿Hacer el enlace %s importable?
 
@@ -246,10 +241,6 @@ Si no, el idioma será cambiado en la próxima conexión.]=],
 	["CO_LOCATION_DISABLE_CLASSIC_PVP_TT"] = "No vas a poder ser localizado por otros jugadores cuando estás marcado para JcJ. Esta opción es particularmente útil para evadir abusos del sistema de localización para perseguirte.",
 	["CO_LOCATION_DISABLE_OOC"] = "Desactivar rastreo en modo FdR",
 	["CO_LOCATION_DISABLE_OOC_TT"] = "No aparecerás en la solicitud de localización de otros personajes cuando estés Fuera de Personaje.",
-	["CO_LOCATION_DISABLE_PVP"] = "Desactivar rastreo en modo JcJ",
-	["CO_LOCATION_DISABLE_PVP_TT"] = [=[No aparecerás en la solicitud de localización de otros personajes cuando estés con el JcJ activado.
-
-Esta opción es útil en los reinos JcJ donde los jugadores de la facción contraria pueden usar este sistema para localizarte.]=],
 	["CO_LOCATION_DISABLE_WAR_MODE"] = "Deshabilitar ubicación en Modo de Guerra",
 	["CO_LOCATION_DISABLE_WAR_MODE_TT"] = [=[No aparecerás en la solicitud de localización de otros personajes cuando hayas activado el Modo Guerra y estés fuera de un |cff69CCF0santuario|r.
 
@@ -296,8 +287,6 @@ Posibles estados:
 |cffff9900Al desactivar un módulo, es necesario un reinicio de interfaz de usuario.]=],
 	["CO_MODULES_VERSION"] = "Versión: %s",
 	["CO_MSP"] = "Protocolo Mary Sue",
-	["CO_MSP_T3"] = "Usar sólo la plantilla 3",
-	["CO_MSP_T3_TT"] = "Incluso si usted elige una diferente plantilla para \"acerca de\", la plantilla 3 siempre se utilizará para la compatibilidad con PMS.",
 	["CO_REGISTER"] = "Configuración de registro",
 	["CO_REGISTER_ABOUT_H1_SIZE"] = "Tamaño del texto del encabezado 1",
 	["CO_REGISTER_ABOUT_H1_SIZE_TT"] = "Tamaño del texto entre las etiquetas {h1}. Por defecto: %s",
@@ -308,10 +297,6 @@ Posibles estados:
 	["CO_REGISTER_ABOUT_P_SIZE"] = "Tamaño del texto del párrafo",
 	["CO_REGISTER_ABOUT_P_SIZE_TT"] = "Tamaño del texto fuera de las etiquetas de encabezado. Por defecto: %s",
 	["CO_REGISTER_ABOUT_SETTINGS"] = "Configuraciones de \"Acerca de\"",
-	["CO_REGISTER_ABOUT_VOTE"] = "Usar sistema de votos",
-	["CO_REGISTER_ABOUT_VOTE_TT"] = "Activar el sistema de votación permitirá que votes (\"me gusta\" o \"no me gusta\") en las descripciones de los jugadores y que puedan votar en la tuya propia.",
-	["CO_REGISTER_AUTO_ADD"] = "Añadir nuevos jugadores automáticamente",
-	["CO_REGISTER_AUTO_ADD_TT"] = "Automáticamente añade nuevos jugadores que encuentres al registro.",
 	["CO_REGISTER_AUTO_PURGE"] = "Purgar directorio automáticamente",
 	["CO_REGISTER_AUTO_PURGE_0"] = "Deshabilitar purga",
 	["CO_REGISTER_AUTO_PURGE_1"] = "Después de %s día(s)",
@@ -491,12 +476,6 @@ a otros que eres recién iniciado en el rol.]=],
 	["MAP_BUTTON_TITLE"] = "Rastrear",
 	["MAP_SCAN_CHAR"] = "Rastrear personajes",
 	["MAP_SCAN_CHAR_TITLE"] = "Personajes",
-	["MATURE_FILTER_ADD_TO_WHITELIST"] = "Añadir este perfil a la |cfffffffflista blanca adulta|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_OPTION"] = "Añadir a la |cfffffffflista blanca adulta|r",
-	["MATURE_FILTER_ADD_TO_WHITELIST_TEXT"] = [=[Confirma que quieres añadir %s a la |cfffffffflista blanca adulta|r.
-
-El contenido de estos perfiles ya no permanecerá oculto.]=],
-	["MATURE_FILTER_ADD_TO_WHITELIST_TT"] = "Añadir este perfil a la |cfffffffflista blanca adulta|r y revelar su contenido adulto.",
 	["MATURE_FILTER_EDIT_DICTIONARY"] = "Editar diccionario personalizado",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_BUTTON"] = "Añadir",
 	["MATURE_FILTER_EDIT_DICTIONARY_ADD_TEXT"] = "Añadir nueva palabra al diccionario",
@@ -518,12 +497,6 @@ El contenido de estos perfiles ya no permanecerá oculto.]=],
 	["MATURE_FILTER_OPTION_TT"] = [=[Marca esta opción para habilitar el filtrado de perfiles adultos. Total RP 3 escaneará nuevos perfiles cuando se reciban a través de palabras clave reportadas como adultas y marcará el perfil como adulto si encuentra dicha palabra.
 
 Un perfil adulto tendrá la información oculta y tendrás que confirmar que deseas ver el perfil la primera vez que lo abras.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST"] = "Eliminar este perfil de la |cfffffffflista blanca adulta|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_OPTION"] = "Eliminar de la |cfffffffflista blanca adulta|r",
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TEXT"] = [=[Confirma que quieres eliminar a %s de la |cfffffffflista blanca adulta|r.
-
-El contenido de los perfiles volverá a ocultarse.]=],
-	["MATURE_FILTER_REMOVE_FROM_WHITELIST_TT"] = "Eliminar este perfil de la |cfffffffflista blanca adulta|r y ocultar de nuevo su contenido adulto.",
 	["MATURE_FILTER_STRENGTH"] = "Nivel de filtro adulto",
 	["MATURE_FILTER_STRENGTH_TT"] = [=[Ajusta el nivel del filtro adulto.
 
@@ -872,7 +845,6 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 	["REG_PLAYER_ABOUT_ADD_FRAME"] = "Añadir un marco",
 	["REG_PLAYER_ABOUT_EMPTY"] = "Sin descripción",
 	["REG_PLAYER_ABOUT_HEADER"] = "Etiqueta del título",
-	["REG_PLAYER_ABOUT_MUSIC"] = "Tema del personaje",
 	["REG_PLAYER_ABOUT_MUSIC_LISTEN"] = "Tocar tema",
 	["REG_PLAYER_ABOUT_MUSIC_REMOVE"] = "Deseleccionar tema",
 	["REG_PLAYER_ABOUT_MUSIC_SELECT"] = "Selecciona un tema para el personaje",
@@ -886,17 +858,6 @@ Si no quieres que el TRP3 sea tu PMS y no quieres ver esta alerta de nuevo, pued
 	["REG_PLAYER_ABOUT_T1_YOURTEXT"] = "Tu texto aquí",
 	["REG_PLAYER_ABOUT_TAGS"] = "Herramientas de formato",
 	["REG_PLAYER_ABOUT_UNMUSIC"] = "|cffff9900Tema desconocido",
-	["REG_PLAYER_ABOUT_VOTE_DOWN"] = "No me gusta",
-	["REG_PLAYER_ABOUT_VOTE_NO"] = [=[No hay personajes conectados vinculados a este perfil.
-¿Deseas mandar el voto de todas formas?]=],
-	["REG_PLAYER_ABOUT_VOTE_SENDING"] = "Enviando tu voto a %s ...",
-	["REG_PLAYER_ABOUT_VOTE_SENDING_OK"] = "¡Tu voto ha sido enviado a %s !",
-	["REG_PLAYER_ABOUT_VOTE_TT"] = "Tu voto es totalmente anónimo y sólo puede ser visto por este jugador.",
-	["REG_PLAYER_ABOUT_VOTE_TT2"] = "Sólo puedes votar si el jugador está conectado.",
-	["REG_PLAYER_ABOUT_VOTE_UP"] = "Me gusta",
-	["REG_PLAYER_ABOUT_VOTES"] = "Estadísticas",
-	["REG_PLAYER_ABOUT_VOTES_R"] = [=[|cff00ff00%s Me gusta
-|cffff0000%s No me gusta]=],
 	["REG_PLAYER_ABOUTS"] = "Acerca de %s",
 	["REG_PLAYER_ADD_NEW"] = "Crear nuevo",
 	["REG_PLAYER_AGE"] = "Edad",
@@ -1337,47 +1298,7 @@ Total RP no es responsable de los enlaces que conducen a contenidos nocivos.]=],
 	["UNIT_POPUPS_CURRENT_PROFILE"] = "Perfil Actual",
 	["UNIT_POPUPS_CURRENT_PROFILE_NAME"] = "Perfil Actual: %1$s",
 	["UNIT_POPUPS_OPEN_PROFILE"] = "Abrir Perfil",
-	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opciones de Roleplay",
-	["WHATS_NEW_23"] = [=[# Historial de cambios de la versión 1.6.0
-
-## Notas personales
-
-¡Ahora puedes escribir notas personales en el addon!
-
-Estas notas podrán ser escritas tanto en tu propio perfil (si quieres tomar notas genéricas para tu personaje) o en el de otra persona (el campo superior ligado a tu perfil actual, el campo inferior es el común a todos tus perfiles). Estas notas son obviamente privadas, por lo que solo tú podrás verlas.
-
-{img:Interface\AddOns\totalRP3\resources\160-1.tga:480:480}
-
-Para acceder a las notas personales, haz clic en el nuevo botón Notas del marco del objetivo, o abre un perfil y haz clic en la pestaña de Notas.
-
-{img:Interface\AddOns\totalRP3\resources\160-2.tga:240:120}
-
-El registro también tiene una casilla de verificación para solo mostrar aquellos perfiles en los que hayas escrito notas.
-
-{img:Interface\AddOns\totalRP3\resources\160-3.tga:480:120}
-
-## Añadido
-
-- Se ha añadido soporte HTML para los modelos 2 y 3 de Acerca de. Puedes formar etiquetas HTML mientras usas dichos modelos para dar formato a los campos, usando la barra de herramientas que ahora es visible para todos los modelos.
-
-{img:Interface\AddOns\totalRP3\resources\160-4.tga:480:480}
-
-- Se ha agregado compatibilidad con otros addons de rol para los rasgos de personalidad y etiquetas HTML.
-
-## Cambios
-
-- Los botones de "Reportar perfil" ahora llevarán a [la página de soporte de acoso a través de addons] (https://battle.net/support/help/product/wow/197/1501/solution), puesto que la herramienta de reporte del juego anteriormente añadido era un método inválido para reportar el abuso del addon. El popup mostrará la hora en la recepción del perfil, lo cual puedes proporcionar al soporte de Blizzard para ayudarles a rastrear la ofensa.
-
-## Arreglado
-
-- Se ha arreglado un error que provocaba que el addon no cargara.
-- Se ha solventado un problema de compatibilidad con el modelo 3 si el idioma del addon no era el inglés.
-
-## Eliminado
-
-- Se ha eliminado el resaltado automático del texto al ingresar el foco de un área de texto (campos Acerca de, Actualmente, Fuera de personaje, Información...)
-- Se ha eliminado el código de April Fool's (incluido el olvidado arcoíris en los nombres de compañero).]=],
-	["WHATS_NEW_24_9"] = "# Cambios en la versión 2.3.6 ## Agregado - Agregados 323 nuevos íconos, 7 imágenes y 138 nuevos archivos de música del parche 9.1.0. ## Removido - Se ha removido la bandera del lenguaje de roleplay. - Se ha corregido un error con los canales de chat de Classic."
+	["UNIT_POPUPS_ROLEPLAY_OPTIONS_HEADER"] = "Opciones de Roleplay"
 }
 
 TRP3_API.loc:RegisterNewLocale("esES", "Español (EU)", L);

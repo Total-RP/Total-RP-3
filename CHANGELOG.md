@@ -1,3 +1,10 @@
+# Changelog version 2.4.4
+
+## Fixed
+
+- Fixed "not currently playing" error messages sometimes showing up for players from specific realms.
+- Fixed "Import profile" popup not properly resetting after importing a profile.
+
 # Changelog version 2.4.3
 
 ## Added

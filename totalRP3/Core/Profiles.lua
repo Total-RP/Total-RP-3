@@ -34,6 +34,14 @@ local PR_DEFAULT_PROFILE = {
 	player = {},
 };
 
+local PROFILEMANAGER_ACTIONS = {
+	DELETE = "DELETE",
+	RENAME = "RENAME",
+	DUPLICATE = "DUPLICATE",
+	IMPORT = "IMPORT",
+	EXPORT = "EXPORT"
+}
+
 -- Return the default profile.
 -- Note that this profile is never directly linked to a character, only duplicated !
 TRP3_API.profile.getDefaultProfile = function()
@@ -335,13 +343,13 @@ end
 local function onActionSelected(value, button)
 	local profileID = button:GetParent().profileID;
 
-	if value == 1 then
+	if value == PROFILEMANAGER_ACTIONS.DELETE then
 		uiDeleteProfile(profileID);
-	elseif value == 2 then
+	elseif value == PROFILEMANAGER_ACTIONS.RENAME then
 		uiEditProfile(profileID);
-	elseif value == 3 then
+	elseif value == PROFILEMANAGER_ACTIONS.DUPLICATE then
 		uiDuplicateProfile(profileID);
-	elseif value == 4 then
+	elseif value == PROFILEMANAGER_ACTIONS.EXPORT then
 		local profile = profiles[profileID];
 		local serial = Utils.serial.serialize({Globals.version, profileID, profile });
 		if serial:len() < 20000 then
@@ -352,10 +360,10 @@ local function onActionSelected(value, button)
 		else
 			Utils.message.displayMessage(loc.PR_EXPORT_TOO_LARGE:format(serial:len() / 1024), 2);
 		end
-	elseif value == 5 then
+	elseif value == PROFILEMANAGER_ACTIONS.IMPORT then
 		TRP3_ProfileImport.profileID = profileID;
 		TRP3_ProfileImport:Show();
-		TRP3_ProfileExport.content.scroll.text:SetText("");
+		TRP3_ProfileImport.content.scroll.text:SetText("");
 	end
 end
 
@@ -364,10 +372,10 @@ local function onActionClicked(button)
 	local values = {};
 
 	tinsert(values, {loc.PR_PROFILE_MANAGEMENT_TITLE});
-	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, 2});
-	tinsert(values, {loc.PR_DUPLICATE_PROFILE, 3});
+	tinsert(values, {loc.PR_PROFILEMANAGER_RENAME, PROFILEMANAGER_ACTIONS.RENAME});
+	tinsert(values, {loc.PR_DUPLICATE_PROFILE, PROFILEMANAGER_ACTIONS.DUPLICATE});
 	if currentProfileId ~= profileID then
-		tinsert(values, {loc.PR_DELETE_PROFILE, 1});
+		tinsert(values, {loc.PR_DELETE_PROFILE, PROFILEMANAGER_ACTIONS.DELETE});
 	else
 		tinsert(values, {"|cff999999" .. loc.PR_DELETE_PROFILE, nil});
 	end
@@ -375,11 +383,11 @@ local function onActionClicked(button)
 	tinsert(values, {""});
 	tinsert(values, {loc.PR_EXPORT_IMPORT_TITLE});
 	if currentProfileId ~= profileID then
-		tinsert(values, {loc.PR_IMPORT_PROFILE, 5});
+		tinsert(values, {loc.PR_IMPORT_PROFILE, PROFILEMANAGER_ACTIONS.IMPORT});
 	else
 		tinsert(values, {"|cff999999" .. loc.PR_IMPORT_PROFILE, nil});
 	end
-	tinsert(values, {loc.PR_EXPORT_PROFILE, 4});
+	tinsert(values, {loc.PR_EXPORT_PROFILE, PROFILEMANAGER_ACTIONS.EXPORT});
 
 	displayDropDown(button, values, onActionSelected, 0, true);
 end
