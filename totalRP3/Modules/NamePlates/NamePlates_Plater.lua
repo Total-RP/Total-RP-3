@@ -1,4 +1,4 @@
--- back from the grave
+-- RP names for Plater Nameplates
 -- Copyright The Total RP 3 Authors
 -- SPDX-License-Identifier: Apache-2.0
 
