@@ -234,6 +234,9 @@ end
 	item.text = self:GetMenuItemText(item.value);
 	item.tooltipText = L.DB_STATUS_RP_OOC_TT;
 	self:AddButtonToMenu(item, level);
+
+	-- Updates selected options in the dropdown menu
+	self:RefreshMenu()
 end
 
 --[[override]] function DashboardRPStatusMenuMixin:OnMenuButtonClicked(button)
@@ -306,6 +309,9 @@ end
 	item.text = self:GetMenuItemText(item.value);
 	item.tooltipText = L.DB_STATUS_RP_VOLUNTEER_TT;
 	self:AddButtonToMenu(item, level);
+
+	-- Updates selected options in the dropdown menu
+	self:RefreshMenu()
 end
 
 --[[override]] function DashboardXPStatusMenuMixin:OnMenuButtonClicked(button)
