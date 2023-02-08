@@ -52,7 +52,6 @@ function TRP3_PlaterNamePlates:OnModuleEnable()
 	if not scriptAdded then return false, L.PLATER_NAMEPLATES_WARN_MOD_IMPORT_ERROR end
 
 	scriptAdded.Enabled = true
-	scriptAdded.Prio = 1
 
 	Plater.RecompileScript(scriptAdded)
 
