@@ -444,6 +444,11 @@ end
 -- There's a lot of reused code from onModuleStarted() and this can probably be simplified significantly
 -- This function reloads the module frame to show it's new state after enabling/disabling a module that supports hot reload
 -- Should only be called (currently) from onActionSelected()
+-- To assist people from the future, here's a quick run down on how to make a module hot-reloadable
+-- In your 'registerModule' parameters, ensure that you set 'hotReload' to true and define an 'onDisable' callback
+-- Make sure your `onStart` callback is self-sufficient and doesn't depend on any other state or on a UI reload to work properly
+-- In your `onDisable` callback make sure you clean up after yourself and don't leave unnecessary baggage lying around
+-- FIXME: When modules are loaded, if hotReload is set to true, there's no check for whether `onDisable` is defined.
 function moduleHotReload(frame, value)
 	local module = frame.module
 
